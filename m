@@ -2,249 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE6752D5F29
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 16:12:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66DC42D60A3
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Dec 2020 16:57:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387836AbgLJPKv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Dec 2020 10:10:51 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:64635 "EHLO
+        id S2391058AbgLJP5E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Dec 2020 10:57:04 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:62131 "EHLO
         so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389571AbgLJPKj (ORCPT
+        with ESMTP id S2391140AbgLJOiP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Dec 2020 10:10:39 -0500
+        Thu, 10 Dec 2020 09:38:15 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607613011; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=bm/jdIgPw8SeutCoCBlGCa00QC7QCiTiDQT0ChE5bAw=; b=gCx1slXZn7JkVuffIyoKwKhpUbQwV1qwa+sGoCSmNITGSm9oTpKQdXbVahxxvBY7xiOXP+pp
- EUdiM1MGTjEFS6rkOrzSJKdD/8XqUhNJZX3wQH3ZDmUqjegi3VByqhSjAHAjhjfYNR9X/WT8
- Fc2iAYgHij8Be5fSNbKQ36x7+us=
+ s=smtp; t=1607611077; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=2UENAvr3UnfyT7Yes7BqMsH/lz30eJAtHLCVlaAJ4LM=; b=ExXaNhU4Fm7GbJB4GFa4KJb8xOAq/c3gzFtA3sGE+5mdyQBMs+UfLiKrhTHMXRVPhX60MWr+
+ iZ1OAbBo4NKLWGD3/dLcML0axdDRZlbiJTN2psOIw01Qnl4Hhg6tFogRK0h6DeUzDrkohqQV
+ KKU+5bYtxloH1xP8Yv++V+7W3es=
 X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5fd23a393a8ba2142a270791 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 10 Dec 2020 15:09:45
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 5fd232a36752249c543cba33 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 10 Dec 2020 14:37:23
  GMT
-Sender: pillair=codeaurora.org@mg.codeaurora.org
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9CAB6C43464; Thu, 10 Dec 2020 15:09:45 +0000 (UTC)
+        id D03F6C43466; Thu, 10 Dec 2020 14:37:22 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
         URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from pillair-linux.qualcomm.com (unknown [202.46.22.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1CB4AC433CA;
-        Thu, 10 Dec 2020 15:09:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1CB4AC433CA
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7C4A5C433CA;
+        Thu, 10 Dec 2020 14:37:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7C4A5C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
-From:   Rakesh Pillai <pillair@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        briannorris@chromium.org, dianders@chromium.org,
-        kuabhs@chromium.org, youghand@codeaurora.org,
-        Rakesh Pillai <pillair@codeaurora.org>
-Subject: [PATCH] ath10k: Remove voltage regulator votes during wifi disable
-Date:   Thu, 10 Dec 2020 20:39:35 +0530
-Message-Id: <1607612975-5756-1-git-send-email-pillair@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc:     <davem@davemloft.net>, <kuba@kernel.org>,
+        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH wireless -next] wireless/ath10k: simplify the return expression of ath10k_ahb_chip_reset()
+References: <20201210140204.1774-1-zhengyongjun3@huawei.com>
+Date:   Thu, 10 Dec 2020 16:37:18 +0200
+In-Reply-To: <20201210140204.1774-1-zhengyongjun3@huawei.com> (Zheng Yongjun's
+        message of "Thu, 10 Dec 2020 22:02:04 +0800")
+Message-ID: <87mtyl4ti9.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When the wlan is disabled, i.e when all the interfaces are
-deleted, voltage regulator votes are not removed. This leads
-to more power consumption even when wlan is disabled.
+Zheng Yongjun <zhengyongjun3@huawei.com> writes:
 
-Move the adding/removing of voltage regulator votes as part
-of hif power on/off in SNOC targets, so that these voltage
-regulator votes are there only when wlan is enabled.
+> Simplify the return expression.
+>
+> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/ahb.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
+> index 05a61975c83f..0ba31c0bbd24 100644
+> --- a/drivers/net/wireless/ath/ath10k/ahb.c
+> +++ b/drivers/net/wireless/ath/ath10k/ahb.c
+> @@ -598,16 +598,10 @@ static int ath10k_ahb_prepare_device(struct ath10k *ar)
+>  
+>  static int ath10k_ahb_chip_reset(struct ath10k *ar)
+>  {
+> -	int ret;
+> -
+>  	ath10k_ahb_halt_chip(ar);
+>  	ath10k_ahb_clock_disable(ar);
+>  
+> -	ret = ath10k_ahb_prepare_device(ar);
+> -	if (ret)
+> -		return ret;
+> -
+> -	return 0;
+> +	return ath10k_ahb_prepare_device(ar);
+>  }
+>  
+>  static int ath10k_ahb_wake_target_cpu(struct ath10k *ar)
 
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+I prefer the original style, easier to add new code to the function.
 
-Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/snoc.c | 97 +++++++++++++++++-----------------
- 1 file changed, 49 insertions(+), 48 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index fd41f25..a5443fb 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1003,6 +1003,39 @@ static int ath10k_snoc_wlan_enable(struct ath10k *ar,
- 				       NULL);
- }
- 
-+static int ath10k_hw_power_on(struct ath10k *ar)
-+{
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	int ret;
-+
-+	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power on\n");
-+
-+	ret = regulator_bulk_enable(ar_snoc->num_vregs, ar_snoc->vregs);
-+	if (ret)
-+		return ret;
-+
-+	ret = clk_bulk_prepare_enable(ar_snoc->num_clks, ar_snoc->clks);
-+	if (ret)
-+		goto vreg_off;
-+
-+	return ret;
-+
-+vreg_off:
-+	regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
-+	return ret;
-+}
-+
-+static int ath10k_hw_power_off(struct ath10k *ar)
-+{
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+
-+	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power off\n");
-+
-+	clk_bulk_disable_unprepare(ar_snoc->num_clks, ar_snoc->clks);
-+
-+	return regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
-+}
-+
- static void ath10k_snoc_wlan_disable(struct ath10k *ar)
- {
- 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-@@ -1024,6 +1057,7 @@ static void ath10k_snoc_hif_power_down(struct ath10k *ar)
- 
- 	ath10k_snoc_wlan_disable(ar);
- 	ath10k_ce_free_rri(ar);
-+	ath10k_hw_power_off(ar);
- }
- 
- static int ath10k_snoc_hif_power_up(struct ath10k *ar,
-@@ -1034,10 +1068,16 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
- 	ath10k_dbg(ar, ATH10K_DBG_SNOC, "%s:WCN3990 driver state = %d\n",
- 		   __func__, ar->state);
- 
-+	ret = ath10k_hw_power_on(ar);
-+	if (ret) {
-+		ath10k_err(ar, "failed to power on device: %d\n", ret);
-+		return ret;
-+	}
-+
- 	ret = ath10k_snoc_wlan_enable(ar, fw_mode);
- 	if (ret) {
- 		ath10k_err(ar, "failed to enable wcn3990: %d\n", ret);
--		return ret;
-+		goto err_hw_power_off;
- 	}
- 
- 	ath10k_ce_alloc_rri(ar);
-@@ -1045,14 +1085,18 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
- 	ret = ath10k_snoc_init_pipes(ar);
- 	if (ret) {
- 		ath10k_err(ar, "failed to initialize CE: %d\n", ret);
--		goto err_wlan_enable;
-+		goto err_free_rri;
- 	}
- 
- 	return 0;
- 
--err_wlan_enable:
-+err_free_rri:
-+	ath10k_ce_free_rri(ar);
- 	ath10k_snoc_wlan_disable(ar);
- 
-+err_hw_power_off:
-+	ath10k_hw_power_off(ar);
-+
- 	return ret;
- }
- 
-@@ -1369,39 +1413,6 @@ static void ath10k_snoc_release_resource(struct ath10k *ar)
- 		ath10k_ce_free_pipe(ar, i);
- }
- 
--static int ath10k_hw_power_on(struct ath10k *ar)
--{
--	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
--	int ret;
--
--	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power on\n");
--
--	ret = regulator_bulk_enable(ar_snoc->num_vregs, ar_snoc->vregs);
--	if (ret)
--		return ret;
--
--	ret = clk_bulk_prepare_enable(ar_snoc->num_clks, ar_snoc->clks);
--	if (ret)
--		goto vreg_off;
--
--	return ret;
--
--vreg_off:
--	regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
--	return ret;
--}
--
--static int ath10k_hw_power_off(struct ath10k *ar)
--{
--	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
--
--	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power off\n");
--
--	clk_bulk_disable_unprepare(ar_snoc->num_clks, ar_snoc->clks);
--
--	return regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
--}
--
- static void ath10k_msa_dump_memory(struct ath10k *ar,
- 				   struct ath10k_fw_crash_data *crash_data)
- {
-@@ -1711,22 +1722,16 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_free_irq;
- 
--	ret = ath10k_hw_power_on(ar);
--	if (ret) {
--		ath10k_err(ar, "failed to power on device: %d\n", ret);
--		goto err_free_irq;
--	}
--
- 	ret = ath10k_setup_msa_resources(ar, msa_size);
- 	if (ret) {
- 		ath10k_warn(ar, "failed to setup msa resources: %d\n", ret);
--		goto err_power_off;
-+		goto err_free_irq;
- 	}
- 
- 	ret = ath10k_fw_init(ar);
- 	if (ret) {
- 		ath10k_err(ar, "failed to initialize firmware: %d\n", ret);
--		goto err_power_off;
-+		goto err_free_irq;
- 	}
- 
- 	ret = ath10k_qmi_init(ar, msa_size);
-@@ -1742,9 +1747,6 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
- err_fw_deinit:
- 	ath10k_fw_deinit(ar);
- 
--err_power_off:
--	ath10k_hw_power_off(ar);
--
- err_free_irq:
- 	ath10k_snoc_free_irq(ar);
- 
-@@ -1772,7 +1774,6 @@ static int ath10k_snoc_remove(struct platform_device *pdev)
- 	set_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
- 
- 	ath10k_core_unregister(ar);
--	ath10k_hw_power_off(ar);
- 	ath10k_fw_deinit(ar);
- 	ath10k_snoc_free_irq(ar);
- 	ath10k_snoc_release_resource(ar);
 -- 
-2.7.4
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
