@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74D582D7E10
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 19:27:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8556E2D7E19
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 19:32:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405292AbgLKS0S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Dec 2020 13:26:18 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:19492 "EHLO
+        id S2404295AbgLKS26 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Dec 2020 13:28:58 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:47736 "EHLO
         m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404288AbgLKS0E (ORCPT
+        with ESMTP id S1731854AbgLKS2z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Dec 2020 13:26:04 -0500
+        Fri, 11 Dec 2020 13:28:55 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607711144; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1607711312; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=2tXlrvEngnz7FDRn0kXCaY3N4A1ABiWiHlW0DRKvuSM=;
- b=p2C3ZVyBZqQTpCjr2RE60yA0cA6bRFBIApJ2POSdcRKniwoytH/iBcuf0qX4aS+DFF1q/Dsa
- LYRc7cMcfAKFi+VmuZC9zZxsjdOkM9RMjJCM0u3QH2+lJ76+ILnNSzWPsAqr/HRdmaanuKa/
- IKbMl9KT2uuzZXXvbXQF8CJ+o9M=
+ Content-Type: Sender; bh=oryGkYBZLctiChHEbMyugddvyjEotYdnJsGqR/JGfDo=;
+ b=nV9WivCpfikcWR1Q6NFrl09Vh3waQDanNulTZuokrpXRaD/FwzpB1ZJvBP2uU1lV8BJ1gimF
+ 2SAz12kwRdPm6vVKvKFQcMnTBvvzRHhBkB0PToL7aFlPL8dVMrHzYi83wAP7eec6ZLj/kigf
+ hes6EBKBjDEgYBH7bYmlywTZEPk=
 X-Mailgun-Sending-Ip: 69.72.43.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5fd3b98995aeb115f3c553d9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 11 Dec 2020 18:25:13
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5fd3ba3053d7c5ba600ef9a7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 11 Dec 2020 18:28:00
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A66ADC43462; Fri, 11 Dec 2020 18:25:12 +0000 (UTC)
+        id 2C244C43463; Fri, 11 Dec 2020 18:28:00 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,79 +40,52 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 759ECC433C6;
-        Fri, 11 Dec 2020 18:25:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 759ECC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B8F4FC433C6;
+        Fri, 11 Dec 2020 18:27:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B8F4FC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 02/17] iwlwifi: mvm: rs: Demote non-conformant function
- documentation headers
+Subject: Re: mt76: remove unused variable q
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201126133152.3211309-3-lee.jones@linaro.org>
-References: <20201126133152.3211309-3-lee.jones@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <1607542617-4005-1-git-send-email-jrdr.linux@gmail.com>
+References: <1607542617-4005-1-git-send-email-jrdr.linux@gmail.com>
+To:     Souptick Joarder <jrdr.linux@gmail.com>
+Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        davem@davemloft.net, kuba@kernel.org, matthias.bgg@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Souptick Joarder <jrdr.linux@gmail.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201211182512.A66ADC43462@smtp.codeaurora.org>
-Date:   Fri, 11 Dec 2020 18:25:12 +0000 (UTC)
+Message-Id: <20201211182800.2C244C43463@smtp.codeaurora.org>
+Date:   Fri, 11 Dec 2020 18:28:00 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lee Jones <lee.jones@linaro.org> wrote:
+Souptick Joarder <jrdr.linux@gmail.com> wrote:
 
-> Also add documentation for 'mvm'.
+> Kernel test robot reported warning:
 > 
-> Fixes the following W=1 kernel build warning(s):
+>    drivers/net/wireless/mediatek/mt76/tx.c: In function
+> 'mt76_txq_schedule':
+> >> drivers/net/wireless/mediatek/mt76/tx.c:499:21: warning: variable 'q'
+> >> set but not used [-Wunused-but-set-variable]
+>      499 |  struct mt76_queue *q;
+>          |                     ^
 > 
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:400: warning: cannot understand function prototype: 'const u16 expected_tpt_legacy[IWL_RATE_COUNT] = '
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:684: warning: Function parameter or member 'mvm' not described in '_rs_collect_tx_data'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:684: warning: Function parameter or member 'tbl' not described in '_rs_collect_tx_data'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:684: warning: Function parameter or member 'scale_index' not described in '_rs_collect_tx_data'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:684: warning: Function parameter or member 'attempts' not described in '_rs_collect_tx_data'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:684: warning: Function parameter or member 'successes' not described in '_rs_collect_tx_data'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:684: warning: Function parameter or member 'window' not described in '_rs_collect_tx_data'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:2677: warning: duplicate section name 'NOTE'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:2682: warning: Function parameter or member 'mvm' not described in 'rs_initialize_lq'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:2682: warning: Function parameter or member 'sta' not described in 'rs_initialize_lq'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:2682: warning: Function parameter or member 'lq_sta' not described in 'rs_initialize_lq'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:2682: warning: Function parameter or member 'band' not described in 'rs_initialize_lq'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:3761: warning: Function parameter or member 'mvm' not described in 'rs_program_fix_rate'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:3761: warning: Function parameter or member 'lq_sta' not described in 'rs_program_fix_rate'
->  drivers/net/wireless/intel/iwlwifi/mvm/rs.c:4213: warning: Function parameter or member 'mvm' not described in 'iwl_mvm_tx_protection'
-> 
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> Cc: Luca Coelho <luciano.coelho@intel.com>
-> Cc: Intel Linux Wireless <linuxwifi@intel.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
 
-6 patches applied to wireless-drivers-next.git, thanks.
+Patch applied to wireless-drivers-next.git, thanks.
 
-05d07f2dc9a9 iwlwifi: mvm: rs: Demote non-conformant function documentation headers
-dde0a25d06bf iwlwifi: iwl-eeprom-read: Demote one nonconformant function header
-220ee462702c iwlwifi: iwl-eeprom-parse: Fix 'struct iwl_eeprom_enhanced_txpwr's header
-5a2e2f91e8b5 iwlwifi: iwl-phy-db: Add missing struct member description for 'trans'
-fe472e9d47c8 iwlwifi: fw: dbg: Fix misspelling of 'reg_data' in function header
-81daab1f8d57 iwlwifi: fw: acpi: Demote non-conformant function headers
+7f469b6dc484 mt76: remove unused variable q
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201126133152.3211309-3-lee.jones@linaro.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/1607542617-4005-1-git-send-email-jrdr.linux@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
