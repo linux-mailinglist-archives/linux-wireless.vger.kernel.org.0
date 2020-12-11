@@ -2,78 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B337D2D7035
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 07:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A244F2D7061
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 07:54:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391154AbgLKGcT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Dec 2020 01:32:19 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:62707 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390670AbgLKGb7 (ORCPT
+        id S2436534AbgLKGxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Dec 2020 01:53:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58956 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2395564AbgLKGwb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Dec 2020 01:31:59 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607668295; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=W8N84GyQduUiMjF1lxp66AvS3Tf0GJQ+TGc3pwNrUGs=; b=UYqExS5B2zUrxw2aS5hVMPZ8LXqJu7+AOUBMyiGEHx+kcQnLwrDtjnvs/ALXeGeGaJoH+sjl
- GWk7lGEmBDprtj8k+iPTL26G4JiUQru/++M+SV5VB3DjmH2yjAV+hRd7Hzr0gYjVN8wFjj3j
- 9gM5KU6rq/vw1sU6sTRJDZjULVk=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
- 5fd3123842c04000266aa59f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 11 Dec 2020 06:31:20
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3B167C433C6; Fri, 11 Dec 2020 06:31:20 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B945AC433CA;
-        Fri, 11 Dec 2020 06:31:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B945AC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Peter Oh <peter.oh@eero.com>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 5/6] ath11k: pci: disable VDD4BLOW
-References: <1607609124-17250-1-git-send-email-kvalo@codeaurora.org>
-        <1607609124-17250-6-git-send-email-kvalo@codeaurora.org>
-        <d9b860d3-4ccc-f16c-9b0c-e0e7a0646e64@eero.com>
-Date:   Fri, 11 Dec 2020 08:31:16 +0200
-In-Reply-To: <d9b860d3-4ccc-f16c-9b0c-e0e7a0646e64@eero.com> (Peter Oh's
-        message of "Thu, 10 Dec 2020 14:04:43 -0800")
-Message-ID: <87a6uk97m3.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 11 Dec 2020 01:52:31 -0500
+Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9CABC0613D3;
+        Thu, 10 Dec 2020 22:51:50 -0800 (PST)
+Received: by mail-vk1-xa41.google.com with SMTP id s13so341235vkb.11;
+        Thu, 10 Dec 2020 22:51:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=U+kfsQcREhjj6iUweM6iPAiozZ1/2mIevjtLhHtCEI8=;
+        b=LcVvyaW8krm/Qx/WlnVFzJFkViCLf+MBIdWHyrLn3STwe5vC8M2b2nLO5coS9bEyWU
+         KBfLI2fN/zqgXok+phpVxpGul/mb0KKBSgdzwaOlrektD6PGMAykG7aTTKn66SoC6smC
+         ORhepN3WUO1fNoSD3unJXKlGnkzNQSFzH1g1OC+ZnxvvPkCyole4PMN/TypnFxsiEkkb
+         kaD99glswq5M/VGDsFdmAivN060XpCKeBDxZqge9Ju71THKusL4IAd6MTPTbib2pBifo
+         uBLSkrkSlTPS9Gc+v5hUULOULvZt6CIAnJEU5DCHVJ+DZ6jQtRf45EnYqzsfha4J+V5p
+         3Y4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=U+kfsQcREhjj6iUweM6iPAiozZ1/2mIevjtLhHtCEI8=;
+        b=XA9N4ajG9lyB3Udg4Tl47FFNGd3afhSquJqXtgJ0LiwfX8fT7ZZNgdRufDe8MM+ga+
+         76bGt91Avhcwc+tzIxAeLeuXrvwRzKcl5/U34BDW0VT4peoW+CUr0wpLYIeAQX7DClQM
+         SCcAgIPT7T6OYXIuZ13FyT7Zp5C3CCF6JQUGARxwwTbQ3L5YjWkUEQnBRgb8qzo4U/p3
+         18RNgE6OsbYLAmFxr9dVW8dyEdbK+Geuy+uqwOELTCyJ0G1yuKgvFitWoJ2bWGT92FiP
+         uNv4aiilem8t3soLaPhEEmYIgT4sE5UKYwqObPe0I2QN38+pgGsYHRV0jHPPf0E1JGLe
+         u5iw==
+X-Gm-Message-State: AOAM530Lgez2xG0WmIjtTkdwjLL2hQVQSey/4vuVAG4q/tAZX0uNeFg7
+        W16nzAMjhTDK9vUNhtcs56n4AbMx+1XPPsto8OU=
+X-Google-Smtp-Source: ABdhPJyGLEO+5mA6kP2n0J+TYi31DJbJy/NQ9a8ts0oVRZdMFNFCtcKaFFmD+6E9VvLtBmqTtuGf+pyTvkEGNkhdXj4=
+X-Received: by 2002:a1f:c545:: with SMTP id v66mr12563955vkf.15.1607669510097;
+ Thu, 10 Dec 2020 22:51:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <1607542617-4005-1-git-send-email-jrdr.linux@gmail.com> <87ft4e9lmg.fsf@codeaurora.org>
+In-Reply-To: <87ft4e9lmg.fsf@codeaurora.org>
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+Date:   Fri, 11 Dec 2020 12:21:38 +0530
+Message-ID: <CAFqt6zbgFuQWzmjtYFVcMTLd5zo4g9B1zvEyOzXmWTw=2jPMJQ@mail.gmail.com>
+Subject: Re: [PATCH] mt76: Fixed kernel test robot warning
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Peter Oh <peter.oh@eero.com> writes:
-
-> On 12/10/20 6:05 AM, Kalle Valo wrote:
->> From: Carl Huang <cjhuang@codeaurora.org>
->>
->> It's recommended to disable VDD4BLOW during initialisation.
+On Thu, Dec 10, 2020 at 12:46 PM Kalle Valo <kvalo@codeaurora.org> wrote:
 >
-> Can you explain more about "recommended by whom and why"?
+> Souptick Joarder <jrdr.linux@gmail.com> writes:
+>
+> > Kernel test robot throws below warning ->
+> >
+> >    drivers/net/wireless/mediatek/mt76/tx.c: In function
+> > 'mt76_txq_schedule':
+> >>> drivers/net/wireless/mediatek/mt76/tx.c:499:21: warning: variable 'q'
+> >>> set but not used [-Wunused-but-set-variable]
+> >      499 |  struct mt76_queue *q;
+> >          |                     ^
+> >
+> > This patch will silence this warning.
+> >
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+>
+> I would like to take this directly to wireless-drivers-next, ok?
 
-It's coming from the internal teams, I understood the internal driver
-does the same.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Ok.
+>
+> I'll also change the title to:
+>
+> mt76: remove unused variable q
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
