@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BED732D7D0B
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 18:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20E582D7D17
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 18:39:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395372AbgLKRhl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Dec 2020 12:37:41 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:15942 "EHLO
+        id S2405577AbgLKRiN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Dec 2020 12:38:13 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:31578 "EHLO
         m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2395377AbgLKRgv (ORCPT
+        with ESMTP id S2395323AbgLKRhH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Dec 2020 12:36:51 -0500
+        Fri, 11 Dec 2020 12:37:07 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1607708192; h=References: In-Reply-To: Message-Id: Date:
+ s=smtp; t=1607708203; h=References: In-Reply-To: Message-Id: Date:
  Subject: Cc: To: From: Sender;
- bh=8Nb64RVQOvYHeGACHp7hO/PtMyM1Lfitrt9he7u++0Q=; b=xJ3IxIQYarqshYIhZGD7hWAPL1JvB+D+hHLFJlbsbF5duSwuN+XOBdiaaLkoDnlWtpZOiai7
- w3PLch84/+Qtm+RkXCgdacOpl8XfHYL40rH1uWkZgjjLz3fVZKWlsY28ASziIx9m8yJ5vSPF
- F9hCV61Xg+qdptLHYWvuorFB3vk=
+ bh=EUjVLOm9H70OfH/V2weWB9IQ1ChH6bcyjVQIyD5TMk4=; b=nktjAfv7TVeIWmcsIrQ0ZcI2aUWVZI+YBg55+R/XSXl05AQ+vJTOYX4dq4/bFeDW5jDRQ/Fw
+ J8Um1weN/gZ05H1hGM9OfZLaiODUUdkZkrZyzx/EYqesjzZkufKHJHfGNuLPnI+6G2hbjwxQ
+ 36iNErQPVPZv2en5Kh5piFcCVKg=
 X-Mailgun-Sending-Ip: 69.72.43.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 5fd3ae03f81e894c55739b0b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 11 Dec 2020 17:36:03
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5fd3ae0465f116f2878561f0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 11 Dec 2020 17:36:04
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 53059C433C6; Fri, 11 Dec 2020 17:36:02 +0000 (UTC)
+        id C76A5C433ED; Fri, 11 Dec 2020 17:36:03 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,17 +38,17 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 05513C433CA;
-        Fri, 11 Dec 2020 17:36:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 05513C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66FEBC43461;
+        Fri, 11 Dec 2020 17:36:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 66FEBC43461
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 05/10] ath11k: htc: implement suspend handling
-Date:   Fri, 11 Dec 2020 19:35:45 +0200
-Message-Id: <1607708150-21066-6-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH 06/10] ath11k: dp: stop rx pktlog before suspend
+Date:   Fri, 11 Dec 2020 19:35:46 +0200
+Message-Id: <1607708150-21066-7-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1607708150-21066-1-git-send-email-kvalo@codeaurora.org>
 References: <1607708150-21066-1-git-send-email-kvalo@codeaurora.org>
@@ -58,112 +58,122 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Carl Huang <cjhuang@codeaurora.org>
 
-When ath11k sends suspend command to firmware, firmware will
-return suspend_complete events and add handlers for those.
+Stop dp rx pktlog when entering suspend and reap the mon_status buffer to keep
+it empty. During resume restart the reap timer.
 
 Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 
 Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c |  2 ++
- drivers/net/wireless/ath/ath11k/core.h |  4 ++++
- drivers/net/wireless/ath/ath11k/htc.c  | 23 ++++++++++++++++++++++-
- drivers/net/wireless/ath/ath11k/htc.h  |  4 +++-
- 4 files changed, 31 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp.h    |  1 +
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 48 +++++++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/dp_rx.h |  3 +++
+ drivers/net/wireless/ath/ath11k/mac.c   |  4 +++
+ 4 files changed, 56 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 3c28e7ad7d51..1c2789ce6239 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -968,6 +968,8 @@ struct ath11k_base *ath11k_core_alloc(struct device *dev, size_t priv_size,
- 	init_waitqueue_head(&ab->qmi.cold_boot_waitq);
- 	INIT_WORK(&ab->restart_work, ath11k_core_restart);
- 	timer_setup(&ab->rx_replenish_retry, ath11k_ce_rx_replenish_retry, 0);
-+	init_completion(&ab->htc_suspend);
-+
- 	ab->dev = dev;
- 	ab->bus_params = *bus_params;
- 	ab->hif.bus = bus;
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 3f539cf52690..689aa24fe28f 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -186,6 +186,7 @@ enum ath11k_dev_flags {
- 	ATH11K_FLAG_UNREGISTERING,
- 	ATH11K_FLAG_REGISTERED,
- 	ATH11K_FLAG_QMI_FAIL,
-+	ATH11K_FLAG_HTC_SUSPEND_COMPLETE,
- };
+diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
+index d4fd02375fad..1d9e2d6de3ae 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.h
++++ b/drivers/net/wireless/ath/ath11k/dp.h
+@@ -40,6 +40,7 @@ struct dp_rx_tid {
  
- enum ath11k_monitor_flags {
-@@ -732,6 +733,9 @@ struct ath11k_base {
- 	u32 num_db_cap;
+ #define DP_REO_DESC_FREE_THRESHOLD  64
+ #define DP_REO_DESC_FREE_TIMEOUT_MS 1000
++#define DP_MON_PURGE_TIMEOUT_MS     100
+ #define DP_MON_SERVICE_BUDGET       128
  
- 	struct timer_list mon_reap_timer;
-+
-+	struct completion htc_suspend;
-+
- 	/* must be last */
- 	u8 drv_priv[0] __aligned(sizeof(void *));
- };
-diff --git a/drivers/net/wireless/ath/ath11k/htc.c b/drivers/net/wireless/ath/ath11k/htc.c
-index 6b57dc273e0b..059b48ded5cc 100644
---- a/drivers/net/wireless/ath/ath11k/htc.c
-+++ b/drivers/net/wireless/ath/ath11k/htc.c
-@@ -231,6 +231,18 @@ static int ath11k_htc_process_trailer(struct ath11k_htc *htc,
- 	return status;
+ struct dp_reo_cache_flush_elem {
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 5de619d5c4e2..205c0f1a40e9 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -274,6 +274,28 @@ static void ath11k_dp_service_mon_ring(struct timer_list *t)
+ 		  msecs_to_jiffies(ATH11K_MON_TIMER_INTERVAL));
  }
  
-+static void ath11k_htc_suspend_complete(struct ath11k_base *ab, bool ack)
++static int ath11k_dp_purge_mon_ring(struct ath11k_base *ab)
 +{
-+	ath11k_dbg(ab, ATH11K_DBG_BOOT, "boot suspend complete %d\n", ack);
++	int i, reaped = 0;
++	unsigned long timeout = jiffies + msecs_to_jiffies(DP_MON_PURGE_TIMEOUT_MS);
 +
-+	if (ack)
-+		set_bit(ATH11K_FLAG_HTC_SUSPEND_COMPLETE, &ab->dev_flags);
-+	else
-+		clear_bit(ATH11K_FLAG_HTC_SUSPEND_COMPLETE, &ab->dev_flags);
++	do {
++		for (i = 0; i < ab->hw_params.num_rxmda_per_pdev; i++)
++			reaped += ath11k_dp_rx_process_mon_rings(ab, i,
++								 NULL,
++								 DP_MON_SERVICE_BUDGET);
 +
-+	complete(&ab->htc_suspend);
++		/* nothing more to reap */
++		if (reaped < DP_MON_SERVICE_BUDGET)
++			return 0;
++
++	} while (time_before(jiffies, timeout));
++
++	ath11k_warn(ab, "dp mon ring purge timeout");
++
++	return -ETIMEDOUT;
 +}
 +
- void ath11k_htc_rx_completion_handler(struct ath11k_base *ab,
- 				      struct sk_buff *skb)
- {
-@@ -328,8 +340,17 @@ void ath11k_htc_rx_completion_handler(struct ath11k_base *ab,
+ /* Returns number of Rx buffers replenished */
+ int ath11k_dp_rxbufs_replenish(struct ath11k_base *ab, int mac_id,
+ 			       struct dp_rxdma_ring *rx_ring,
+@@ -5026,3 +5048,29 @@ int ath11k_dp_rx_pdev_mon_detach(struct ath11k *ar)
+ 	ath11k_dp_mon_link_free(ar);
+ 	return 0;
+ }
++
++int ath11k_dp_rx_pktlog_start(struct ath11k_base *ab)
++{
++	/* start reap timer */
++	mod_timer(&ab->mon_reap_timer,
++		  jiffies + msecs_to_jiffies(ATH11K_MON_TIMER_INTERVAL));
++
++	return 0;
++}
++
++int ath11k_dp_rx_pktlog_stop(struct ath11k_base *ab, bool stop_timer)
++{
++	int ret;
++
++	if (stop_timer)
++		del_timer_sync(&ab->mon_reap_timer);
++
++	/* reap all the monitor related rings */
++	ret = ath11k_dp_purge_mon_ring(ab);
++	if (ret) {
++		ath11k_warn(ab, "failed to purge dp mon ring: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.h b/drivers/net/wireless/ath/ath11k/dp_rx.h
+index fbea45f79c9b..bf399312b5ff 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.h
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.h
+@@ -91,4 +91,7 @@ int ath11k_dp_rx_pdev_mon_detach(struct ath11k *ar);
+ int ath11k_dp_rx_pdev_mon_attach(struct ath11k *ar);
+ int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id);
  
- 			complete(&htc->ctl_resp);
- 			break;
-+		case ATH11K_HTC_MSG_SEND_SUSPEND_COMPLETE:
-+			ath11k_htc_suspend_complete(ab, true);
-+			break;
-+		case ATH11K_HTC_MSG_NACK_SUSPEND:
-+			ath11k_htc_suspend_complete(ab, false);
-+			break;
-+		case ATH11K_HTC_MSG_WAKEUP_FROM_SUSPEND_ID:
-+			break;
- 		default:
--			ath11k_warn(ab, "ignoring unsolicited htc ep0 event\n");
-+			ath11k_warn(ab, "ignoring unsolicited htc ep0 event %ld\n",
-+				    FIELD_GET(HTC_MSG_MESSAGEID, msg->msg_svc_id));
- 			break;
- 		}
- 		goto out;
-diff --git a/drivers/net/wireless/ath/ath11k/htc.h b/drivers/net/wireless/ath/ath11k/htc.h
-index 848147cf81ee..6c8a469d7f9d 100644
---- a/drivers/net/wireless/ath/ath11k/htc.h
-+++ b/drivers/net/wireless/ath/ath11k/htc.h
-@@ -65,7 +65,9 @@ enum ath11k_htc_msg_id {
- 	ATH11K_HTC_MSG_CONNECT_SERVICE_RESP_ID = 3,
- 	ATH11K_HTC_MSG_SETUP_COMPLETE_ID       = 4,
- 	ATH11K_HTC_MSG_SETUP_COMPLETE_EX_ID    = 5,
--	ATH11K_HTC_MSG_SEND_SUSPEND_COMPLETE   = 6
-+	ATH11K_HTC_MSG_SEND_SUSPEND_COMPLETE   = 6,
-+	ATH11K_HTC_MSG_NACK_SUSPEND	       = 7,
-+	ATH11K_HTC_MSG_WAKEUP_FROM_SUSPEND_ID  = 8,
- };
++int ath11k_dp_rx_pktlog_start(struct ath11k_base *ab);
++int ath11k_dp_rx_pktlog_stop(struct ath11k_base *ab, bool stop_timer);
++
+ #endif /* ATH11K_DP_RX_H */
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index d08afa111647..5c175e3e09b2 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -4146,6 +4146,10 @@ static int ath11k_mac_config_mon_status_default(struct ath11k *ar, bool enable)
+ 						       &tlv_filter);
+ 	}
  
- enum ath11k_htc_version {
++	if (enable && !ar->ab->hw_params.rxdma1_enable)
++		mod_timer(&ar->ab->mon_reap_timer, jiffies +
++			  msecs_to_jiffies(ATH11K_MON_TIMER_INTERVAL));
++
+ 	return ret;
+ }
+ 
 -- 
 2.7.4
 
