@@ -2,167 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 200832D77CD
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 15:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 002B42D7D05
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Dec 2020 18:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389707AbgLKO0t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Dec 2020 09:26:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44156 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732873AbgLKO0l (ORCPT
+        id S2395328AbgLKRhP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Dec 2020 12:37:15 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:35367 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2395366AbgLKRgr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Dec 2020 09:26:41 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3958EC0613CF;
-        Fri, 11 Dec 2020 06:26:00 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1knjMr-006pW4-KB; Fri, 11 Dec 2020 15:25:57 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
+        Fri, 11 Dec 2020 12:36:47 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1607708182; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=VelmzjqLTbhyNIdAI4LsuWemDxokFW108iLsQDzeVD4=; b=APQUB4F28oro4zzGCfvN973XSd30f4HofD/EoRluN3Dp7SDmuN4GzWF2OGx+3zY5KIjEPKMp
+ iVo8uctDc94GnJBb66RXkBH+wUJNXVFLHKBj92rekT02/NhRm5aBuYArdrO/xk3T5HgF3aL9
+ P9xueujkFvzJOBgoWE6bWVjKHbU=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5fd3adfbf81e894c557376b8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 11 Dec 2020 17:35:55
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 27E3EC433ED; Fri, 11 Dec 2020 17:35:55 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B8EEDC433CA;
+        Fri, 11 Dec 2020 17:35:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B8EEDC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211-next 2020-12-11
-Date:   Fri, 11 Dec 2020 15:25:51 +0100
-Message-Id: <20201211142552.209018-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH 00/10] ath11k: suspend support for QCA6390 PCI
+Date:   Fri, 11 Dec 2020 19:35:40 +0200
+Message-Id: <1607708150-21066-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dave,
+Here is suspend support for QCA6390 PCI devices. For suspend we switch firmware
+to WoW mode and keep the firmware running. At the moment we are not able to
+shutdown and fully power off the device due to bugs in MHI subsystem, so WoW
+mode is a workaround for the time being.
 
-Welcome back!
+This patchset depends on patchset:
 
-I'm a bit late with this, I guess, but I hope you can still
-pull it into net-next for 5.11. Nothing really stands out,
-we have some 6 GHz fixes, and various small things all over.
+ath11k: QCA6390 stability fixes
+https://patchwork.kernel.org/project/linux-wireless/list/?series=399797
 
-Please pull and let me know if there's any problem.
+Please review.
 
-Thanks,
-johannes
+Kalle
 
+Carl Huang (9):
+  ath11k: mhi: hook suspend and resume
+  ath11k: hif: implement suspend and resume functions
+  ath11k: pci: read select_window register to ensure write is finished
+  ath11k: htc: implement suspend handling
+  ath11k: dp: stop rx pktlog before suspend
+  ath11k: set credit_update flag for flow controlled ep only
+  ath11k: implement WoW enable and wakeup commands
+  ath11k: hif: add ce irq enable and disable functions
+  ath11k: implement suspend for QCA6390 PCI devices
 
+Kalle Valo (1):
+  ath11k: htc: remove unused struct ath11k_htc_ops
 
-The following changes since commit 91163f82143630a9629a8bf0227d49173697c69c:
+ drivers/net/wireless/ath/ath11k/Makefile |   3 +-
+ drivers/net/wireless/ath/ath11k/ce.c     |   2 +-
+ drivers/net/wireless/ath/ath11k/ce.h     |   2 +
+ drivers/net/wireless/ath/ath11k/core.c   |  88 +++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h   |  11 +++
+ drivers/net/wireless/ath/ath11k/dp.c     |   2 +-
+ drivers/net/wireless/ath/ath11k/dp.h     |   2 +
+ drivers/net/wireless/ath/ath11k/dp_rx.c  |  48 +++++++++
+ drivers/net/wireless/ath/ath11k/dp_rx.h  |   3 +
+ drivers/net/wireless/ath/ath11k/hif.h    |  32 ++++++
+ drivers/net/wireless/ath/ath11k/htc.c    |  31 +++++-
+ drivers/net/wireless/ath/ath11k/htc.h    |  10 +-
+ drivers/net/wireless/ath/ath11k/hw.h     |   1 +
+ drivers/net/wireless/ath/ath11k/mac.c    |   4 +
+ drivers/net/wireless/ath/ath11k/mhi.c    |  11 +++
+ drivers/net/wireless/ath/ath11k/mhi.h    |   3 +
+ drivers/net/wireless/ath/ath11k/pci.c    |  71 ++++++++++++-
+ drivers/net/wireless/ath/ath11k/wmi.c    |  99 +++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.h    | 165 +++++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wow.c    |  73 ++++++++++++++
+ drivers/net/wireless/ath/ath11k/wow.h    |  10 ++
+ 21 files changed, 656 insertions(+), 15 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath11k/wow.c
+ create mode 100644 drivers/net/wireless/ath/ath11k/wow.h
 
-  Merge branch 'add-ppp_generic-ioctls-to-bridge-channels' (2020-12-10 13:58:49 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2020-12-11
-
-for you to fetch changes up to c534e093d865d926d042e0a3f228d1152627ccab:
-
-  mac80211: add ieee80211_set_sar_specs (2020-12-11 13:39:59 +0100)
-
-----------------------------------------------------------------
-A new set of wireless changes:
- * validate key indices for key deletion
- * more preamble support in mac80211
- * various 6 GHz scan fixes/improvements
- * a common SAR power limitations API
- * various small fixes & code improvements
-
-----------------------------------------------------------------
-Anant Thazhemadam (1):
-      nl80211: validate key indexes for cfg80211_registered_device
-
-Avraham Stern (3):
-      nl80211: always accept scan request with the duration set
-      ieee80211: update reduced neighbor report TBTT info length
-      mac80211: support Rx timestamp calculation for all preamble types
-
-Ayala Beker (1):
-      cfg80211: scan PSC channels in case of scan with wildcard SSID
-
-Carl Huang (2):
-      nl80211: add common API to configure SAR power limitations
-      mac80211: add ieee80211_set_sar_specs
-
-Colin Ian King (1):
-      net: wireless: make a const array static, makes object smaller
-
-Emmanuel Grumbach (2):
-      rfkill: add a reason to the HW rfkill state
-      mac80211: don't filter out beacons once we start CSA
-
-Gustavo A. R. Silva (3):
-      cfg80211: Fix fall-through warnings for Clang
-      mac80211: Fix fall-through warnings for Clang
-      nl80211: Fix fall-through warnings for Clang
-
-Ilan Peer (6):
-      cfg80211: Parse SAE H2E only membership selector
-      mac80211: Skip entries with SAE H2E only membership selector
-      cfg80211: Update TSF and TSF BSSID for multi BSS
-      cfg80211: Save the regulatory domain when setting custom regulatory
-      mac80211: Fix calculation of minimal channel width
-      mac80211: Update rate control on channel change
-
-Johannes Berg (10):
-      mac80211: support MIC error/replay detected counters driver update
-      mac80211: disallow band-switch during CSA
-      cfg80211: include block-tx flag in channel switch started event
-      cfg80211: remove struct ieee80211_he_bss_color
-      mac80211: use struct assignment for he_obss_pd
-      cfg80211: support immediate reconnect request hint
-      mac80211: support driver-based disconnect with reconnect hint
-      mac80211: don't set set TDLS STA bandwidth wider than possible
-      mac80211: use bitfield helpers for BA session action frames
-      mac80211: ignore country element TX power on 6 GHz
-
-Lev Stipakov (1):
-      net: mac80211: use core API for updating TX/RX stats
-
-Sami Tolvanen (1):
-      cfg80211: fix callback type mismatches in wext-compat
-
-Shaul Triebitz (1):
-      mac80211: he: remove non-bss-conf fields from bss_conf
-
-Tom Rix (1):
-      mac80211: remove trailing semicolon in macro definitions
-
-Wen Gong (2):
-      mac80211: mlme: save ssid info to ieee80211_bss_conf while assoc
-      mac80211: fix a mistake check for rx_stats update
-
- include/linux/ieee80211.h     |   9 +-
- include/linux/rfkill.h        |  24 ++++-
- include/net/cfg80211.h        |  75 ++++++++++---
- include/net/mac80211.h        |  35 ++++++-
- include/uapi/linux/nl80211.h  | 114 +++++++++++++++++++-
- include/uapi/linux/rfkill.h   |  16 ++-
- net/mac80211/agg-rx.c         |   8 +-
- net/mac80211/agg-tx.c         |  12 +--
- net/mac80211/cfg.c            |  22 +++-
- net/mac80211/chan.c           |  71 ++++++++++++-
- net/mac80211/debugfs.c        |   2 +-
- net/mac80211/debugfs_key.c    |   2 +-
- net/mac80211/debugfs_netdev.c |   6 +-
- net/mac80211/debugfs_sta.c    |   2 +-
- net/mac80211/ieee80211_i.h    |  14 +--
- net/mac80211/key.c            |  49 +++++++++
- net/mac80211/mlme.c           | 123 +++++++++++++++-------
- net/mac80211/rx.c             |  20 +---
- net/mac80211/trace.h          |  23 +++-
- net/mac80211/tx.c             |  16 +--
- net/mac80211/util.c           |  66 +++++++++++-
- net/mac80211/vht.c            |  14 ++-
- net/rfkill/core.c             |  41 ++++++--
- net/wireless/core.h           |   2 +
- net/wireless/mlme.c           |  26 +++--
- net/wireless/nl80211.c        | 239 ++++++++++++++++++++++++++++++++++++++----
- net/wireless/nl80211.h        |   8 +-
- net/wireless/rdev-ops.h       |  12 +++
- net/wireless/reg.c            |  10 +-
- net/wireless/scan.c           |  21 ++--
- net/wireless/trace.h          |  31 +++++-
- net/wireless/util.c           |  52 +++++++--
- net/wireless/wext-compat.c    | 103 ++++++++++++------
- 33 files changed, 1041 insertions(+), 227 deletions(-)
+-- 
+2.7.4
 
