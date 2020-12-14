@@ -2,168 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 216EF2D8C86
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Dec 2020 10:30:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 439BC2D91A2
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Dec 2020 02:54:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405671AbgLMJ3q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Dec 2020 04:29:46 -0500
-Received: from mga04.intel.com ([192.55.52.120]:2912 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728505AbgLMJ3p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Dec 2020 04:29:45 -0500
-IronPort-SDR: 0Vf5U46hdeUhE5PAFZ6OSo+MXueUncpWjNHm0YN6XK1haUwEzULmoCKWOqoq11cU67NNNYx1rA
- uEttfx8YXR8g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9833"; a="172030455"
-X-IronPort-AV: E=Sophos;i="5.78,416,1599548400"; 
-   d="scan'208";a="172030455"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2020 01:28:58 -0800
-IronPort-SDR: igzxc+KPUqQlKlrismO/de0lyCHRGz048FzG4ti8posQxr7/vUHROVWLfP4TAXOOkhliHqAML0
- itYknxrYWlEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,416,1599548400"; 
-   d="scan'208";a="329549753"
-Received: from lkp-server01.sh.intel.com (HELO ecc0cebe68d1) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 13 Dec 2020 01:28:57 -0800
-Received: from kbuild by ecc0cebe68d1 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1koNgW-0001jq-OU; Sun, 13 Dec 2020 09:28:56 +0000
-Date:   Sun, 13 Dec 2020 17:28:44 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:master] BUILD SUCCESS
- e5795aacd71b697c739f2d193b0e275993d93187
-Message-ID: <5fd5decc.K+92xzlaUg9ViA0h%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S2437806AbgLNByC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Dec 2020 20:54:02 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:58119 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437812AbgLNBxz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 13 Dec 2020 20:53:55 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0BE1qqU23026825, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb04.realtek.com.tw[172.21.6.97])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0BE1qqU23026825
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 14 Dec 2020 09:52:52 +0800
+Received: from localhost (172.21.69.213) by RTEXMB04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Mon, 14 Dec
+ 2020 09:52:52 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <Larry.Finger@lwfinger.net>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] rtlwifi: rise completion at the last step of firmware callback
+Date:   Mon, 14 Dec 2020 09:52:38 +0800
+Message-ID: <20201214015238.3245-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.213]
+X-ClientProxiedBy: RTEXH365.realtek.com.tw (172.21.6.37) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
-branch HEAD: e5795aacd71b697c739f2d193b0e275993d93187  Merge tag 'wireless-drivers-next-2020-12-12' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next
+request_firmware_nowait() which schedules another work is used to load
+firmware when USB is probing. If USB is unplugged before running the
+firmware work, it goes disconnect ops, and then causes use-after-free.
+Though we wait for completion of firmware work before freeing the hw,
+firmware callback rises completion too early. So I move it to the
+last step.
 
-elapsed time: 723m
+usb 5-1: Direct firmware load for rtlwifi/rtl8192cufw.bin failed with error -2
+rtlwifi: Loading alternative firmware rtlwifi/rtl8192cufw.bin
+rtlwifi: Selected firmware is not available
+==================================================================
+BUG: KASAN: use-after-free in rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
+Write of size 4 at addr ffff8881454cff50 by task kworker/0:6/7379
 
-configs tested: 106
-configs skipped: 3
+CPU: 0 PID: 7379 Comm: kworker/0:6 Not tainted 5.10.0-rc7-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: events request_firmware_work_func
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x163 lib/dump_stack.c:118
+ print_address_description.constprop.0.cold+0xae/0x4c8 mm/kasan/report.c:385
+ __kasan_report mm/kasan/report.c:545 [inline]
+ kasan_report.cold+0x1f/0x37 mm/kasan/report.c:562
+ rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
+ request_firmware_work_func+0x12c/0x230 drivers/base/firmware_loader/main.c:1079
+ process_one_work+0x933/0x1520 kernel/workqueue.c:2272
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
+ kthread+0x38c/0x460 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The buggy address belongs to the page:
+page:00000000f54435b3 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1454cf
+flags: 0x200000000000000()
+raw: 0200000000000000 0000000000000000 ffffea00051533c8 0000000000000000
+raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-nios2                            alldefconfig
-sh                          polaris_defconfig
-m68k                        mvme16x_defconfig
-openrisc                            defconfig
-mips                        qi_lb60_defconfig
-arm                           tegra_defconfig
-mips                          rm200_defconfig
-sh                               j2_defconfig
-powerpc                     pseries_defconfig
-mips                        bcm63xx_defconfig
-mips                        nlm_xlp_defconfig
-arm                        shmobile_defconfig
-powerpc                 linkstation_defconfig
-sh                        apsh4ad0a_defconfig
-arc                           tb10x_defconfig
-riscv                             allnoconfig
-arm                        multi_v5_defconfig
-sh                                  defconfig
-powerpc                      pcm030_defconfig
-m68k                          atari_defconfig
-mips                      loongson3_defconfig
-powerpc                    amigaone_defconfig
-powerpc                       ebony_defconfig
-x86_64                              defconfig
-alpha                            allyesconfig
-mips                      maltasmvp_defconfig
-arc                 nsimosci_hs_smp_defconfig
-powerpc                 mpc832x_mds_defconfig
-powerpc                   currituck_defconfig
-arm                          pxa910_defconfig
-arm                          imote2_defconfig
-parisc                generic-32bit_defconfig
-csky                                defconfig
-arm                       multi_v4t_defconfig
-sh                         ecovec24_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20201213
-x86_64               randconfig-a006-20201213
-x86_64               randconfig-a002-20201213
-x86_64               randconfig-a005-20201213
-x86_64               randconfig-a004-20201213
-x86_64               randconfig-a001-20201213
-i386                 randconfig-a001-20201213
-i386                 randconfig-a004-20201213
-i386                 randconfig-a003-20201213
-i386                 randconfig-a002-20201213
-i386                 randconfig-a005-20201213
-i386                 randconfig-a006-20201213
-i386                 randconfig-a014-20201213
-i386                 randconfig-a013-20201213
-i386                 randconfig-a012-20201213
-i386                 randconfig-a011-20201213
-i386                 randconfig-a016-20201213
-i386                 randconfig-a015-20201213
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Memory state around the buggy address:
+ ffff8881454cfe00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff8881454cfe80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>ffff8881454cff00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                                                 ^
+ ffff8881454cff80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff8881454d0000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 
-clang tested configs:
-x86_64               randconfig-a016-20201213
-x86_64               randconfig-a012-20201213
-x86_64               randconfig-a013-20201213
-x86_64               randconfig-a015-20201213
-x86_64               randconfig-a014-20201213
-x86_64               randconfig-a011-20201213
-
+Reported-by: syzbot+65be4277f3c489293939@syzkaller.appspotmail.com
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/net/wireless/realtek/rtlwifi/core.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
+index a7259dbc953d..67550cab716a 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/core.c
++++ b/drivers/net/wireless/realtek/rtlwifi/core.c
+@@ -78,7 +78,6 @@ static void rtl_fw_do_work(const struct firmware *firmware, void *context,
+ 
+ 	rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
+ 		"Firmware callback routine entered!\n");
+-	complete(&rtlpriv->firmware_loading_complete);
+ 	if (!firmware) {
+ 		if (rtlpriv->cfg->alt_fw_name) {
+ 			err = request_firmware(&firmware,
+@@ -91,13 +90,13 @@ static void rtl_fw_do_work(const struct firmware *firmware, void *context,
+ 		}
+ 		pr_err("Selected firmware is not available\n");
+ 		rtlpriv->max_fw_size = 0;
+-		return;
++		goto exit;
+ 	}
+ found_alt:
+ 	if (firmware->size > rtlpriv->max_fw_size) {
+ 		pr_err("Firmware is too big!\n");
+ 		release_firmware(firmware);
+-		return;
++		goto exit;
+ 	}
+ 	if (!is_wow) {
+ 		memcpy(rtlpriv->rtlhal.pfirmware, firmware->data,
+@@ -109,6 +108,9 @@ static void rtl_fw_do_work(const struct firmware *firmware, void *context,
+ 		rtlpriv->rtlhal.wowlan_fwsize = firmware->size;
+ 	}
+ 	release_firmware(firmware);
++
++exit;
++	complete(&rtlpriv->firmware_loading_complete);
+ }
+ 
+ void rtl_fw_cb(const struct firmware *firmware, void *context)
+-- 
+2.21.0
+
