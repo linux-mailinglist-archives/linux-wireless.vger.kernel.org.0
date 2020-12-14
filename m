@@ -2,146 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A352D952D
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Dec 2020 10:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61D442D9550
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Dec 2020 10:34:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727413AbgLNJ0b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Dec 2020 04:26:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54782 "EHLO
+        id S1726289AbgLNJbg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Dec 2020 04:31:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728799AbgLNJ0X (ORCPT
+        with ESMTP id S1730023AbgLNJbY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Dec 2020 04:26:23 -0500
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EDBBC0613CF
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Dec 2020 01:25:43 -0800 (PST)
-Received: by mail-pf1-x434.google.com with SMTP id h186so1231203pfe.0
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Dec 2020 01:25:43 -0800 (PST)
+        Mon, 14 Dec 2020 04:31:24 -0500
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B560C0613CF
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Dec 2020 01:30:44 -0800 (PST)
+Received: by mail-pg1-x544.google.com with SMTP id e2so12089578pgi.5
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Dec 2020 01:30:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=5BoICWqtqzryLKiIFTNa4FGHNhwe9Zg4E1st2vLjeUM=;
-        b=MIqG/a8D3hexSJ0dbzRKohWhP0DQdaT+4rm2xITGALp+cXZx0/Oazjv7dOknjQcgGz
-         Lgk3FCa8tss2+neppiPBqt3MPP2ZL0KK7UROYvO19wJtOcCsdaZNCS9i0//++Ep/kZbO
-         0DMGVQNCe0uTfGe/dS79pSwiZ9ch4YOffXl6Q=
+        bh=YEoi4ydoX4lSDDhl6t62Odejo+db1GK7OU3FqP+BpUs=;
+        b=VMEYM3nUHBrKf26mpcPMC2yb7GXo6rpaGeYeZ+cr9EyJEWI2I73DhYTftb7DvdH7GA
+         N/GWuJ3+56EzFEH3o834gj9pfhPZutj10gU/6giAqDUa4HZIdR04aWTzbynVkDbCrarr
+         e2JiWCgEvS3iBEKQHm+3mupyQDfFzBliUNd0Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=5BoICWqtqzryLKiIFTNa4FGHNhwe9Zg4E1st2vLjeUM=;
-        b=JftzZsMnWt873Ox9uEwsu+K0xtXF06NsSDEtxq+B8g18oQ3PCOMCnaxTAJscbbrGyQ
-         mCT5lyUIK9L41iaosdLw1LRluSV+ZhSMcBEgE4uoYqRzyx0clVpQKX2Y0C/+R2PMdA7f
-         2ktCtI7bIpZ8fKJ028n2KE5+dueGXNBR1H+nxf1KNJeVuawuBMGayS0dPDbp7nzlJQCu
-         iFNIDNA+nH4ldntgVYKt1hpPcQRvmD+CS9TK975wq0DSsYzPGfuuptRs9A8s2ZhlJWYc
-         OUAmRFdia5XLKoapF/ENsdi7Vim3LDQqjYumzzJusbalxh+8xQKMZQdqJBN+wxvoHylk
-         moag==
-X-Gm-Message-State: AOAM533ONVSTQZtL/j4RkPlN3LWVycpEdBqrcqWYAHhADIkvUbZCqqLn
-        N63Ud8S+gqmFPL0hu5fYVqzKWoMbAODRRQHfyfaizzqhuZjTo7vWmBIyOshTENfFhZmNWwIA/Et
-        MGFDbxsaJMm5JXn4cOBs8FEwcD6s3lEhh50j4iVqAnunJhw/qJhExlZfVJBiUZniCndsLM+Rf02
-        wqpQ2q+js5lrgAbzjf
-X-Google-Smtp-Source: ABdhPJwLplIOzDDBUZHD3/bhJ2eXtSuTYw7EkUG1hl3IsVu/weajxyty4gP4d7ULq6P88lP5yhge+w==
-X-Received: by 2002:a63:f352:: with SMTP id t18mr23541724pgj.57.1607937942267;
-        Mon, 14 Dec 2020 01:25:42 -0800 (PST)
+        bh=YEoi4ydoX4lSDDhl6t62Odejo+db1GK7OU3FqP+BpUs=;
+        b=DXQvpGuK4va1/36Ufg1QWsaAmcRrNLCvRSYFUak/oL72osuetC2ZUSCk/POqg/ciM4
+         p7fQBAHBB6Dkz3Yl4toxikLrfLbp3YBPJKUsYbb7qbVoTvwZU0Xnu15/gy2dbsSfVDYd
+         qJ0hZf5wiMIaXZBwK4thpSc7rbEd/4eAfSauXhHtVkwJNdIwGqQFxKWbCrIgl6wOMNw6
+         lz/msf+LyqzDwySvsHXUyoo1kRS0V92t5yhKJlq+5EIIw4TzbnfXvXgxfEv6AHRaivYd
+         nwy64EMDv1YlvI2JTT4FkE6sDDwGP3QRyC4FtyK4a2LCSkRdLE+UjlGQwibxhiX1CH/b
+         imdA==
+X-Gm-Message-State: AOAM532tdHqt9gcygagozjlzmWI2m+wSmp4279mm4W84wQp35VdD3OzN
+        2JrM9RWmRjIIhN2c+VCJMVwVIZOZFv+0GVW4GuLX4BKi9PRBL16jtDkSmWlRHevTrkgwmLlTOsp
+        3j5mZxI3NuSh6PdH9Tg==
+X-Google-Smtp-Source: ABdhPJxdkBGxnlWyM53MJ6TNMjCSiHNSbWkSKYnli4S6UyORvBKrd46f+YvgUKd2AXfa/zuJ2CHUrw==
+X-Received: by 2002:aa7:8297:0:b029:198:15b2:ed0a with SMTP id s23-20020aa782970000b029019815b2ed0amr23127573pfm.47.1607938243777;
+        Mon, 14 Dec 2020 01:30:43 -0800 (PST)
 Received: from [10.230.33.3] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id 92sm18859755pjv.15.2020.12.14.01.25.38
+        by smtp.gmail.com with ESMTPSA id x6sm20310630pfq.57.2020.12.14.01.30.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Dec 2020 01:25:41 -0800 (PST)
-Subject: Re: [RFC] Introduce NL80211_IFTYPE_MLO_LINK_DEVICE for MLO link (IEEE
- 802.11be)
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Sunil Dutt <usdutt@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-References: <1607526302-8063-1-git-send-email-usdutt@codeaurora.org>
- <9320c4f30cd3ba67ababf8e245963b656e2bf1ad.camel@sipsolutions.net>
+        Mon, 14 Dec 2020 01:30:42 -0800 (PST)
+Subject: Re: [PATCH] brcmfmac: support BCM4365E with 43666 ChipCommon chip ID
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        sha-cyfmac-dev-list@infineon.com,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+References: <20201210190819.10444-1-zajec5@gmail.com>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <73cb65ef-8635-5aad-d22d-3764e919f55d@broadcom.com>
-Date:   Mon, 14 Dec 2020 10:25:35 +0100
+Message-ID: <5c4de2d5-5738-12f2-9f2f-92c2f31376a7@broadcom.com>
+Date:   Mon, 14 Dec 2020 10:30:32 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <9320c4f30cd3ba67ababf8e245963b656e2bf1ad.camel@sipsolutions.net>
+In-Reply-To: <20201210190819.10444-1-zajec5@gmail.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000e5e64405b6693947"
+        boundary="000000000000dd342505b6694bae"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000e5e64405b6693947
+--000000000000dd342505b6694bae
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-On 09-12-2020 16:36, Johannes Berg wrote:
-> Hi,
-> 
->> Multi-link support is introduced in 802.11be specification.
-> [...]
-> 
-> I'll definitely have to take a closer look at this and the spec and
-> think about it - but a couple of quick comments below.
+On 10-12-2020 20:08, Rafa=C5=82 Mi=C5=82ecki wrote:
+> From: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
+>=20
+> This adds support for the BCM43666/4 which seems to be using the same
+> firmware as BCM4366 (4366c0). I found it in the Netgear R8000P router.
 
-Did not get my hands on the spec yet, but just firing random thoughts. 
-This multi-link support sounds a bit like bonding. Could that be 
-leveraged for wireless? I wonder why there is a need for a non-netdev 
-interface. Does networking layer need to be aware of the multi-link for 
-scheduling traffic to it? Is there one driver per multi-link or per radio?
+minor nit below...
+
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c       | 1 +
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c       | 1 +
+>   drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 1 +
+>   3 files changed, 3 insertions(+)
 
 [...]
 
->>   	struct sk_buff *msg;
->>   	void *hdr;
->> +	struct nlattr *nested, *nested_mlo_links;
->> +	struct cfg80211_mlo_link_device_params *mlo_link;
->> +	int i = 0;
->>   
->>   	msg = nlmsg_new(100 + cr->req_ie_len + cr->resp_ie_len +
->>   			cr->fils.kek_len + cr->fils.pmk_len +
->> -			(cr->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
->> +			(cr->fils.pmkid ? WLAN_PMKID_LEN : 0) +
->> +			(cr->n_mlo_links ? cr->n_mlo_links * 32 : 0), gfp);
-> 
-> 32 probably should be some NLA_SIZE or something constant?
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/dr=
+ivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> index 45bc502fcb34..ff3721b20a9f 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> @@ -77,6 +77,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_f=
+wnames[] =3D {
+>   	BRCMF_FW_ENTRY(BRCM_CC_4366_CHIP_ID, 0x0000000F, 4366B),
+>   	BRCMF_FW_ENTRY(BRCM_CC_4366_CHIP_ID, 0xFFFFFFF0, 4366C),
+>   	BRCMF_FW_ENTRY(BRCM_CC_43664_CHIP_ID, 0xFFFFFFF0, 4366C),
+> +	BRCMF_FW_ENTRY(BRCM_CC_43666_CHIP_ID, 0x00000010, 4366C),
 
-Probably sizeof(*mlo_link) ?
+Our default approach is to enable it for all future revisions as was=20
+done for the two entries before this one.
 
-> There's also no point in the ternary operator since 0 * 32 is 0 :)
-> 
->>   /* Consumes bss object one way or another */
->> @@ -833,7 +849,9 @@ void cfg80211_connect_done(struct net_device *dev,
->>   	ev = kzalloc(sizeof(*ev) + (params->bssid ? ETH_ALEN : 0) +
->>   		     params->req_ie_len + params->resp_ie_len +
->>   		     params->fils.kek_len + params->fils.pmk_len +
->> -		     (params->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
->> +		     (params->fils.pmkid ? WLAN_PMKID_LEN : 0) +
->> +		     (params->n_mlo_links ? params->n_mlo_links *
->> +		      sizeof(struct cfg80211_mlo_link_device_params) : 0), gfp);
-> 
-> same here, no need for the ternary
-> 
-> 
-> It feels strangely asymmetric to have stop and no start ... but I guess
-> that's the part where I need to think about it and look a bit at how it
-> all works :)
+>   	BRCMF_FW_ENTRY(BRCM_CC_4371_CHIP_ID, 0xFFFFFFFF, 4371),
+>   };
 
-Had the same feeling in my gutt (wherever that is ;-)
-
-Regards,
-Arend
-
--- 
-This electronic communication and the information and any files transmitted 
-with it, or attached to it, are confidential and are intended solely for 
-the use of the individual or entity to whom it is addressed and may contain 
-information that is confidential, legally privileged, protected by privacy 
-laws, or otherwise restricted from disclosure to anyone else. If you are 
-not the intended recipient or the person responsible for delivering the 
-e-mail to the intended recipient, you are hereby notified that any use, 
-copying, distributing, dissemination, forwarding, printing, or copying of 
-this e-mail is strictly prohibited. If you received this e-mail in error, 
-please return the e-mail to the sender, delete it from your computer, and 
+--=20
+This electronic communication and the information and any files transmitted=
+=20
+with it, or attached to it, are confidential and are intended solely for=20
+the use of the individual or entity to whom it is addressed and may contain=
+=20
+information that is confidential, legally privileged, protected by privacy=
+=20
+laws, or otherwise restricted from disclosure to anyone else. If you are=20
+not the intended recipient or the person responsible for delivering the=20
+e-mail to the intended recipient, you are hereby notified that any use,=20
+copying, distributing, dissemination, forwarding, printing, or copying of=
+=20
+this e-mail is strictly prohibited. If you received this e-mail in error,=
+=20
+please return the e-mail to the sender, delete it from your computer, and=
+=20
 destroy any printed copy of it.
 
---000000000000e5e64405b6693947
+--000000000000dd342505b6694bae
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -212,13 +203,13 @@ WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
 HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
 YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
 QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
-IMeK0BriycKWS9uzqgyYQplGFrQW7dra0NmI8pyjHzMmMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
-BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMTIxNDA5MjU0MlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+IBSjMTctJimSVtL9p9+v5v1iWfqSn2ALR2QJgDGDf6BjMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIwMTIxNDA5MzA0NFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
 ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
-CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQADvr94iQzfPdsH1ljR
-hN1hIr9yLfUouWSRGdc+0Vl4sp0Qi8vtrM+76LFq84sWRKe0E64dbBaiB9VqAwBQU9kpoGLye/Tw
-FDOkHUls9KWs5S1cnwb5MVCFdz7ZdbNncpIEZGjRj5mbgnMzqAWrKGeIjf3cZP5CvCTqtA4CoeMY
-10WDjb/g6lH4egVuw/fZSG0ew+cxs/ebUSc2BzhXde9qj2ZE4xy0n4jBo8ykkHwzgAUomlqX58f/
-ZsSPnj5ZJE2+wqxcQ1GwrcrcK/5blzDH7q5ZgcDMvUidgo4bZyVJDQm3fP51Gh3FjjQ4rLr82PuO
-W1iX6XTgr1y79OpzQruh
---000000000000e5e64405b6693947--
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBWOjExp+hGZzNPssTV
+gkz7q6RADofhGthYimDNarzJu/1OpbnK//8+2vklypnjlR2Or36xb1gn28BReAwaz29P79i4JGkn
+AoyGHTxV44A2lsWsO4cmyy3isrZcyILs0m3O7LPsX4cMdVzwMHZlqzTbNDBpm2egDVZY4kOclJvo
+zYgNrOorsSi4iwTBGfJd3nDxSe/rtG7qiXPscpBO5CE+9NniQgIbMIXrYYc0/OXJVFrRKpaxjYxB
++IuUpbg1t7VEyIXJj507W9juTAgizGRIco7/AxXTBWzxV/EmsxrqGwNha+oXVp6TJb718CjGp5QC
+dsCMjKoD1iK0b9vSf/el
+--000000000000dd342505b6694bae--
