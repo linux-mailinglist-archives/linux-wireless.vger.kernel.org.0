@@ -2,55 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C2322D9E44
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Dec 2020 18:56:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4410E2DA41B
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Dec 2020 00:26:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408006AbgLNRxr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Dec 2020 12:53:47 -0500
-Received: from mail.w1.fi ([212.71.239.96]:59644 "EHLO
-        li674-96.members.linode.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2406969AbgLNRxc (ORCPT
+        id S1731746AbgLNXZI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Dec 2020 18:25:08 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40559 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730610AbgLNXZH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Dec 2020 12:53:32 -0500
-X-Greylist: delayed 450 seconds by postgrey-1.27 at vger.kernel.org; Mon, 14 Dec 2020 12:53:31 EST
-Received: from localhost (localhost [127.0.0.1])
-        by li674-96.members.linode.com (Postfix) with ESMTP id CD94E11B4A;
-        Mon, 14 Dec 2020 17:45:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at w1.fi
-Received: from li674-96.members.linode.com ([127.0.0.1])
-        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id yrN_DtLEk93m; Mon, 14 Dec 2020 17:45:13 +0000 (UTC)
-Received: by jm (sSMTP sendmail emulation); Mon, 14 Dec 2020 19:41:49 +0200
-Date:   Mon, 14 Dec 2020 19:41:49 +0200
-From:   Jouni Malinen <j@w1.fi>
-To:     Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        ath10k@lists.infradead.org, ath9k-devel@qca.qualcomm.com,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: CVE-2020-3702: Firmware updates for ath9k and ath10k chips
-Message-ID: <20201214174149.GA18899@w1.fi>
-References: <20200810090126.mtu3uocpcjg5se5e@pali>
- <20200812083600.6zxdf5pfktdzggd6@pali>
- <87lfik1av8.fsf@toke.dk>
- <20200812092334.GA17878@w1.fi>
- <20201007082502.3da6rw2bkudilqaq@pali>
- <20201207140438.as2i7kwquhdxqn53@pali>
+        Mon, 14 Dec 2020 18:25:07 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1koxCT-0002DV-Rd; Mon, 14 Dec 2020 23:24:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Carl Huang <cjhuang@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ath11k: add missing null check on allocated skb
+Date:   Mon, 14 Dec 2020 23:24:17 +0000
+Message-Id: <20201214232417.84556-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201207140438.as2i7kwquhdxqn53@pali>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 07, 2020 at 03:04:38PM +0100, Pali Rohár wrote:
-> Hello! Has somebody fixes this security issue in ath9k driver? About
-> 4 months passed and if this issue is not fixed, could you please share
-> at least incomplete / WIP patches? I would like to look at it and have
-> this issue finally fixed.
+From: Colin Ian King <colin.king@canonical.com>
 
-https://patchwork.kernel.org/project/linux-wireless/list/?series=401685
+Currently the null check on a newly allocated skb is missing and
+this can lead to a null pointer dereference is the allocation fails.
+Fix this by adding a null check and returning -ENOMEM.
 
+Addresses-Coverity: ("Dereference null return")
+Fixes: 43ed15e1ee01 ("ath11k: put hw to DBS using WMI_PDEV_SET_HW_MODE_CMDID")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index da4b546b62cb..c869ff479212 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -3460,6 +3460,8 @@ int ath11k_wmi_set_hw_mode(struct ath11k_base *ab,
+ 	len = sizeof(*cmd);
+ 
+ 	skb = ath11k_wmi_alloc_skb(wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
+ 	cmd = (struct wmi_pdev_set_hw_mode_cmd_param *)skb->data;
+ 
+ 	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_PDEV_SET_HW_MODE_CMD) |
 -- 
-Jouni Malinen                                            PGP id EFC895FA
+2.29.2
+
