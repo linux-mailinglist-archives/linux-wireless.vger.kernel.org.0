@@ -2,85 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D7A92DB2E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Dec 2020 18:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC0DD2DB2E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Dec 2020 18:42:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730771AbgLORb1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Dec 2020 12:31:27 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:46112 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730031AbgLORbW (ORCPT
+        id S1729005AbgLORlj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Dec 2020 12:41:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43774 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730153AbgLORlg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Dec 2020 12:31:22 -0500
-Received: from ironmsg07-lv.qualcomm.com (HELO ironmsg07-lv.qulacomm.com) ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 15 Dec 2020 09:30:42 -0800
-X-QCInternal: smtphost
-Received: from ironmsg02-blr.qualcomm.com ([10.86.208.131])
-  by ironmsg07-lv.qulacomm.com with ESMTP/TLS/AES256-SHA; 15 Dec 2020 09:30:40 -0800
-X-QCInternal: smtphost
-Received: from youghand-linux.qualcomm.com ([10.206.66.115])
-  by ironmsg02-blr.qualcomm.com with ESMTP; 15 Dec 2020 23:00:38 +0530
-Received: by youghand-linux.qualcomm.com (Postfix, from userid 2370257)
-        id 45E3A20F17; Tue, 15 Dec 2020 23:00:37 +0530 (IST)
-From:   Youghandhar Chintala <youghand@codeaurora.org>
-To:     johannes@sipsolutions.net, ath10k@lists.infradead.org
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        Tue, 15 Dec 2020 12:41:36 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFFD8C06179C;
+        Tue, 15 Dec 2020 09:40:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=oIC0MdRQMt1oa/a8mDmQrf1Hq+zlAnsG9Tdqvyanr4k=; b=l2rI2/aBl2diPgAOke4UXX/XnZ
+        54O/Vi01oGUaO7a5DLndyx7qnBunKZrSfGjQ1pnbGz+VDeIHErCd4MJlfAfIBvYv7eQ8YSqNAjJXT
+        hXp5xwSODWfS/mi1nulLWX4UarKTDxjmxpbchhYUxvp/1TQ0+eq9i6uXtyIn7XErs0z8=;
+Received: from p4ff13815.dip0.t-ipconnect.de ([79.241.56.21] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kpEJL-0006uH-JY; Tue, 15 Dec 2020 18:40:31 +0100
+To:     Youghandhar Chintala <youghand@codeaurora.org>,
+        johannes@sipsolutions.net
+Cc:     davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kuabhs@chromium.org,
         dianders@chromium.org, briannorris@chromium.org,
         pillair@codeaurora.org
-Subject: [PATCH 0/3] mac80211: Trigger disconnect for STA during recovery
-Date:   Tue, 15 Dec 2020 23:00:34 +0530
-Message-Id: <20201215173034.5939-1-youghand@codeaurora.org>
-X-Mailer: git-send-email 2.29.0
+References: <20201215172352.5311-1-youghand@codeaurora.org>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH 2/3] mac80211: Add support to trigger sta disconnect on
+ hardware restart
+Message-ID: <f2089f3c-db96-87bc-d678-199b440c05be@nbd.name>
+Date:   Tue, 15 Dec 2020 18:40:30 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
+ Gecko/20100101 Thunderbird/78.5.0
 MIME-Version: 1.0
+In-Reply-To: <20201215172352.5311-1-youghand@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Rakesh Pillai <pillair@codeaurora.org>
 
-Currently in case of target hardware restart ,we just reconfig and
-re-enable the security keys and enable the network queues to start
-data traffic back from where it was interrupted.
+On 2020-12-15 18:23, Youghandhar Chintala wrote:
+> Currently in case of target hardware restart, we just reconfig and
+> re-enable the security keys and enable the network queues to start
+> data traffic back from where it was interrupted.
+> 
+> Many ath10k wifi chipsets have sequence numbers for the data
+> packets assigned by firmware and the mac sequence number will
+> restart from zero after target hardware restart leading to mismatch
+> in the sequence number expected by the remote peer vs the sequence
+> number of the frame sent by the target firmware.
+> 
+> This mismatch in sequence number will cause out-of-order packets
+> on the remote peer and all the frames sent by the device are dropped
+> until we reach the sequence number which was sent before we restarted
+> the target hardware
+> 
+> In order to fix this, we trigger a sta disconnect, for the targets
+> which expose this corresponding wiphy flag, in case of target hw
+> restart. After this there will be a fresh connection and thereby
+> avoiding the dropping of frames by remote peer.
+> 
+> The right fix would be to pull the entire data path into the host
+> which is not feasible or would need lots of complex changes and
+> will still be inefficient.
+How about simply tracking which tids have aggregation enabled and send
+DELBA frames for those after the restart?
+It would mean less disruption for affected stations and less ugly hacks
+in the stack for unreliable hardware.
 
-Many ath10k wifi chipsets have sequence numbers for the data
-packets assigned by firmware and the mac sequence number will
-restart from zero after target hardware restart leading to mismatch
-in the sequence number expected by the remote peer vs the sequence
-number of the frame sent by the target firmware.
-
-This mismatch in sequence number will cause out-of-order packets
-on the remote peer and all the frames sent by the device are dropped
-until we reach the sequence number which was sent before we restarted
-the target hardware
-
-In order to fix this, we trigger a disconnect in case of hardware
-restart. After this there will be a fresh connection and thereby
-avoiding the dropping of frames by remote peer.
-
-The right fix would be to pull the entire data path into the host
-which is not feasible or would need lots of complex/inefficient
-datapath changes.
-
-Rakesh Pillai (1):
-  ath10k: Set wiphy flag to trigger sta disconnect on hardware restart
-
-Youghandhar Chintala (2):
-  cfg80211: Add wiphy flag to trigger STA disconnect after hardware
-    restart
-  mac80211: Add support to trigger sta disconnect on hardware restart
-
- drivers/net/wireless/ath/ath10k/core.c | 15 +++++++++++++++
- drivers/net/wireless/ath/ath10k/hw.h   |  3 +++
- drivers/net/wireless/ath/ath10k/mac.c  |  3 +++
- include/net/cfg80211.h                 |  4 ++++
- net/mac80211/ieee80211_i.h             |  3 +++
- net/mac80211/mlme.c                    |  9 +++++++++
- net/mac80211/util.c                    | 22 +++++++++++++++++++---
- 7 files changed, 56 insertions(+), 3 deletions(-)
-
--- 
-2.7.4
-
+- Felix
