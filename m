@@ -2,107 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2156E2DAC1C
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Dec 2020 12:34:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB192DAE0D
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Dec 2020 14:34:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728494AbgLOLdC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Dec 2020 06:33:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43184 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726951AbgLOLdC (ORCPT
+        id S1726844AbgLONdg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Dec 2020 08:33:36 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:37146 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726266AbgLONd0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Dec 2020 06:33:02 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E466C06179C
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Dec 2020 03:32:22 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id k10so16569517wmi.3
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Dec 2020 03:32:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=L9hmd5NaYgRFLNtIvDxRITmqvSUYC9E6zRaf6aLkJb4=;
-        b=FdU0COatfwVRh/zEb88il8Qi8p6ruwX9ZoZTmexthXDlriWbpaUdaX1mVR4289eRay
-         bTR2LYMaU+Gvi2b8zx4bY2cHKjhriZvIsGqiuY8mw9U1EG2xIYvFWCv0j9s6BLk1TGq8
-         lvNbnSLc44mTOxF1CRL5GuFdT344CLTjFAsQugnJjdWYC6omg44LIHqMw29uuWJBRua0
-         wX+rTzPTTf+xAE1HrouWZw2w7REfUL40dEBXJDh5aBxQk54FOn3k9OSk8OHhY9aUuC16
-         tDR+taNx7OWGAPugz7yoafxSYRkI8nw6Wdy4BlVDjbnKVY3F1Quq01nvPQi4Vk/Aihyn
-         Palw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=L9hmd5NaYgRFLNtIvDxRITmqvSUYC9E6zRaf6aLkJb4=;
-        b=geL/m0346BHughK1gDP6wUZRcCupwE1J5XB/aobhFYKNqE5I53jexHrcvGs4Dekebh
-         QDmillj88jKIIqznWjsLwRON3dEFThoI3W6AR6SoEUPMuFKdU+C6ULD3ObXaSSICzRxq
-         fVRTd4Zp4jVCzAsyVK7cTznYhm0rVU2EfJuvRjzNGX3mcxyvIulYeSffN006w88fNUT4
-         uUKtXpQJGqEiMHR+8Sy3DwH+TcVKihNaS4Le2Oox9gmya/kkfp1nXMxV5J+5Be2S6tjA
-         B3v7FOBFiXQy4Fcx/39hT3WKIfv0iRyZuz+2GcxogeJGWJ97giEKrAQzj1jSaYa1IYDo
-         b8xA==
-X-Gm-Message-State: AOAM531uaw0pshkwci/04qu7/M6ZfGEoEcceMd6QF38GZ40PsFQBm6zv
-        MfyPA0d9/tTpigZ/DcppJ0G/i5zURmU=
-X-Google-Smtp-Source: ABdhPJwc2QbiEHPIgT3tPTsREYG+J4wOtoNjtB3pGElPTMNeYNBxU3ha+I+4pFemv7GZC0TvVs5ixA==
-X-Received: by 2002:a7b:cb93:: with SMTP id m19mr33376559wmi.45.1608031940772;
-        Tue, 15 Dec 2020 03:32:20 -0800 (PST)
-Received: from ?IPv6:2003:ea:8f06:5500:d4d9:f1ee:1b1f:c865? (p200300ea8f065500d4d9f1ee1b1fc865.dip0.t-ipconnect.de. [2003:ea:8f06:5500:d4d9:f1ee:1b1f:c865])
-        by smtp.googlemail.com with ESMTPSA id n14sm36295307wmi.1.2020.12.15.03.32.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Dec 2020 03:32:19 -0800 (PST)
-Subject: Re: AX210 version 0024 not detected by iwlwifi
-To:     "Coelho, Luciano" <luciano.coelho@intel.com>,
-        linuxwifi <linuxwifi@intel.com>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <03e8284e-4ea8-fe3e-8da7-62a778b1a059@gmail.com>
- <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Message-ID: <0cbeae30-f330-ad7f-05ef-b8726b54036b@gmail.com>
-Date:   Tue, 15 Dec 2020 12:32:14 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        Tue, 15 Dec 2020 08:33:26 -0500
+X-UUID: 9b17ef357ac04b6e84b5f4d5ba5043f8-20201215
+X-UUID: 9b17ef357ac04b6e84b5f4d5ba5043f8-20201215
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1249573677; Tue, 15 Dec 2020 21:32:39 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 15 Dec 2020 21:32:37 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 15 Dec 2020 21:32:38 +0800
+From:   <sean.wang@mediatek.com>
+To:     <drinkcat@chromium.org>
+CC:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
+        <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <ryder.lee@mediatek.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH -next v2] mt76: mt7921: introduce mt7921e support
+Date:   Tue, 15 Dec 2020 21:32:35 +0800
+Message-ID: <1608039155-29313-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <CANMq1KAgYKBXGPMgpMpAF=6rWv3zVsHBBjwX1fOCRC2THCYM5Q@mail.gmail.com--annotate>
+References: <CANMq1KAgYKBXGPMgpMpAF=6rWv3zVsHBBjwX1fOCRC2THCYM5Q@mail.gmail.com--annotate>
 MIME-Version: 1.0
-In-Reply-To: <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-TM-SNTS-SMTP: E16242EE3AAC3FA2620671A2FC26BB456ECD5CE05658212073630134F05869002000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 23.11.2020 um 09:17 schrieb Coelho, Luciano:
-> Hi Heiner,
-> 
-> On Sun, 2020-11-22 at 22:35 +0100, Heiner Kallweit wrote:
->> I have an AX210 card that isn't detected by iwlwifi.
->>
->> 01:00.0 Network controller: Intel Corporation Device 2725 (rev 1a)
->>         Subsystem: Intel Corporation Device 0024
->>
->> Adding following entry seems to be sufficient.
->>
->>         {IWL_PCI_DEVICE(0x2725, 0x0020, iwlax210_2ax_cfg_ty_gf_a0)},
->> +       {IWL_PCI_DEVICE(0x2725, 0x0024, iwlax210_2ax_cfg_ty_gf_a0)},
->>         {IWL_PCI_DEVICE(0x2725, 0x0310, iwlax210_2ax_cfg_ty_gf_a0)},
->>
->> [  419.473140] iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
->> [  419.486984] iwlwifi 0000:01:00.0: api flags index 2 larger than supported by driver
->> [  419.487190] iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ Version: 93.8.63.28
->> [  419.488828] iwlwifi 0000:01:00.0: loaded firmware version 59.601f3a66.0 ty-a0-gf-a0-59.ucode op_mode iwlmvm
->> [  419.533136] iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz, REV=0x420
->>
->> Maybe there are more AX210 subversion id's to be added ..
->>
->> How about the api flags index warning? I saw it in several posts,
->> is there something to be fixed in the driver?
-> 
-> Good catch.  This indeed seems to be missing.  I'll add it and try to
-> send it still for the 5.10-rc series, so it propagates asap.
-> 
-At least on linux-next I still see the api flags index warning.
-Has the issue been addressed?
+From: Sean Wang <sean.wang@mediatek.com>
 
-> --
-> Cheers,
-> Luca.
-> 
-Heiner
+On Mon, Dec 14, 2020 at 8:56 PM <sean.wang@mediatek.com> wrote:
+>>
+>> From: Sean Wang <sean.wang@mediatek.com>
+>>
+>> Introduce support for mt7921e 802.11ax (Wi-Fi 6) 2x2:2SS chipset.
+>>
+>> Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>> Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
+>> Signed-off-by: Soul Huang <Soul.Huang@mediatek.com>
+>> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+>> ---
+>> v2:
+>>  - Mark the patch as -next
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/Kconfig    |    1 +
+>>  drivers/net/wireless/mediatek/mt76/Makefile   |    1 +
+>>  .../net/wireless/mediatek/mt76/mt7921/Kconfig |   10 +
+>>  .../wireless/mediatek/mt76/mt7921/Makefile    |    6 +
+>>  .../wireless/mediatek/mt76/mt7921/debugfs.c   |  180 ++
+>>  .../net/wireless/mediatek/mt76/mt7921/dma.c   |  356 +++
+>>  .../wireless/mediatek/mt76/mt7921/eeprom.c    |  247 ++
+>>  .../wireless/mediatek/mt76/mt7921/eeprom.h    |  126 +
+>>  .../net/wireless/mediatek/mt76/mt7921/init.c  |  482 +++
+>>  .../net/wireless/mediatek/mt76/mt7921/mac.c   | 1387 +++++++++
+>>  .../net/wireless/mediatek/mt76/mt7921/mac.h   |  367 +++
+>>  .../net/wireless/mediatek/mt76/mt7921/main.c  |  854 ++++++
+>>  .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 2588 +++++++++++++++++
+>>  .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  991 +++++++
+>>  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  379 +++
+>>  .../net/wireless/mediatek/mt76/mt7921/pci.c   |  209 ++
+>>  .../net/wireless/mediatek/mt76/mt7921/regs.h  |  455 +++
+>>  17 files changed, 8639 insertions(+)
+>
+>I'm not likely to review this, but, this is a _huge_ patch, is there a way to split it in easier to digest parts?
+>
+
+we will split the series for areas (e.g: dma, mcu, ..) and make sure each patch compile properly.
+
+>[snip]
+>
+>> +static void
+>> +mt7921_mcu_debug_msg_event(struct mt7921_dev *dev, struct sk_buff
+>> +*skb) {
+>> +       struct mt7921_mcu_rxd *rxd = (struct mt7921_mcu_rxd *)skb->data;
+>> +       struct debug_msg {
+>> +               __le16 id;
+>> +               u8 type;
+>> +               u8 flag;
+>> +               __le32 value;
+>> +               __le16 len;
+>> +               u8 content[512];
+>> +       } __packed * debug_msg;
+>> +       u16 cur_len;
+>> +       int i;
+>> +
+>> +       skb_pull(skb, sizeof(*rxd));
+>> +       debug_msg = (struct debug_msg *)skb->data;
+>> +
+>> +       cur_len = min_t(u16, le16_to_cpu(debug_msg->len), 512);
+>> +
+>> +       if (debug_msg->type == 0x3) {
+>> +               for (i = 0 ; i < cur_len; i++)
+>> +                       if (!debug_msg->content[i])
+>> +                               debug_msg->content[i] = ' ';
+>> +
+>> +               trace_printk("%s", debug_msg->content);
+>
+>Please do not use trace_printk in production code [1,2], it is only meant for debug use. Consider using trace events, or dev_dbg.
+
+ack, we will use dev_dbg instead.
+
+>
+>[1] https://elixir.bootlin.com/linux/v5.8/source/kernel/trace/trace.c#L3158
+>[2] https://elixir.bootlin.com/linux/v5.8/source/include/linux/kernel.h#L766
+>
+>> +       }
+>> +}
+>> +
+>
