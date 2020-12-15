@@ -2,132 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D1092DA9D0
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Dec 2020 10:12:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2156E2DAC1C
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Dec 2020 12:34:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727844AbgLOJKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Dec 2020 04:10:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49380 "EHLO
+        id S1728494AbgLOLdC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Dec 2020 06:33:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727700AbgLOJKL (ORCPT
+        with ESMTP id S1726951AbgLOLdC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Dec 2020 04:10:11 -0500
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DE53C0617A7
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Dec 2020 01:09:25 -0800 (PST)
-Received: by mail-vs1-xe42.google.com with SMTP id h6so10580152vsr.6
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Dec 2020 01:09:25 -0800 (PST)
+        Tue, 15 Dec 2020 06:33:02 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E466C06179C
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Dec 2020 03:32:22 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id k10so16569517wmi.3
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Dec 2020 03:32:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=luMq81MiEGmCMgx54RC3ze837GBAAVGMy04eT0X8dS8=;
-        b=lHaL17ncW3LPegqE6xpy/hFHjDpE+0ds0dJUUIPJXUk7h7LmL+GCvaHQzevNSsP/tN
-         eg6Pc6wZxxe+L1NYSULSO5i8HmQNKrBLyVWTQvU4DOIii+ZjzOcvWKuNbUE9Gd8zWrxo
-         KS6gktAV7O7Aha1f82qKQp1QYeXDeSwGdYiK1tmFHlAZvFNa/kxUDHw2rJllzhR8jOo6
-         ST1+ymvEqbzgYNQwTmSdH6iaVWSTLiNb4a3TJLWNjO3UL6Js8jITIYkZakas4E3n9QoO
-         PdRTKAM8gc/V07cRimmBswXx0LoHAjP41wuQXYUPe5y+PB+ppzlr1727ggbW2CXjRmny
-         ixvg==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=L9hmd5NaYgRFLNtIvDxRITmqvSUYC9E6zRaf6aLkJb4=;
+        b=FdU0COatfwVRh/zEb88il8Qi8p6ruwX9ZoZTmexthXDlriWbpaUdaX1mVR4289eRay
+         bTR2LYMaU+Gvi2b8zx4bY2cHKjhriZvIsGqiuY8mw9U1EG2xIYvFWCv0j9s6BLk1TGq8
+         lvNbnSLc44mTOxF1CRL5GuFdT344CLTjFAsQugnJjdWYC6omg44LIHqMw29uuWJBRua0
+         wX+rTzPTTf+xAE1HrouWZw2w7REfUL40dEBXJDh5aBxQk54FOn3k9OSk8OHhY9aUuC16
+         tDR+taNx7OWGAPugz7yoafxSYRkI8nw6Wdy4BlVDjbnKVY3F1Quq01nvPQi4Vk/Aihyn
+         Palw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=luMq81MiEGmCMgx54RC3ze837GBAAVGMy04eT0X8dS8=;
-        b=h8pDC+HbwXzBCr4NmIrCRR/qQzPjT6yhR6gdvg7E7grMi7aMjLB85Hn14QY7lLH0W8
-         9FRPRgvvY3YePSxyxiN50wO+dO/AAy3X+a4BZYt3FNqAHcyErOup75RVqVdsrmOHDYoQ
-         yy10QFkxqI3vzA5MXyMw4k/45qyl3UUALuExfjZ6DvScOIzNt1NZmREY4t4itGnEdYyj
-         1W5WVH25C7fCrZiMl0kGRNRmQpZAWJ3RUDzikPmD4x5LbB4TIVc7MU4TD4B337P3+V7H
-         lFq9eHBdSQd/s6JZeU1q+q2QFNN0X88MdCZ2hfM2r2mC+1ykUKppFAMPSqaf4+2Qxaj5
-         lgvA==
-X-Gm-Message-State: AOAM531vvqOjm9+R0JhI9QyIo0GpYQCEDCUcKwMw2jJ9pG+OKi/H3JQ/
-        JY4xdtKnHEA9QbXeewQWCy4GPoLgvXldpANZ00A=
-X-Google-Smtp-Source: ABdhPJxb77wnwRDv3GcVuR8gNw6CTKKseol5oiTXQnSZ2UuQDmn9FvE5iUQWKvSHNLCozcDjInpJNWqtWdc1y4vlhtU=
-X-Received: by 2002:a67:d20e:: with SMTP id y14mr15228493vsi.11.1608023364037;
- Tue, 15 Dec 2020 01:09:24 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=L9hmd5NaYgRFLNtIvDxRITmqvSUYC9E6zRaf6aLkJb4=;
+        b=geL/m0346BHughK1gDP6wUZRcCupwE1J5XB/aobhFYKNqE5I53jexHrcvGs4Dekebh
+         QDmillj88jKIIqznWjsLwRON3dEFThoI3W6AR6SoEUPMuFKdU+C6ULD3ObXaSSICzRxq
+         fVRTd4Zp4jVCzAsyVK7cTznYhm0rVU2EfJuvRjzNGX3mcxyvIulYeSffN006w88fNUT4
+         uUKtXpQJGqEiMHR+8Sy3DwH+TcVKihNaS4Le2Oox9gmya/kkfp1nXMxV5J+5Be2S6tjA
+         B3v7FOBFiXQy4Fcx/39hT3WKIfv0iRyZuz+2GcxogeJGWJ97giEKrAQzj1jSaYa1IYDo
+         b8xA==
+X-Gm-Message-State: AOAM531uaw0pshkwci/04qu7/M6ZfGEoEcceMd6QF38GZ40PsFQBm6zv
+        MfyPA0d9/tTpigZ/DcppJ0G/i5zURmU=
+X-Google-Smtp-Source: ABdhPJwc2QbiEHPIgT3tPTsREYG+J4wOtoNjtB3pGElPTMNeYNBxU3ha+I+4pFemv7GZC0TvVs5ixA==
+X-Received: by 2002:a7b:cb93:: with SMTP id m19mr33376559wmi.45.1608031940772;
+        Tue, 15 Dec 2020 03:32:20 -0800 (PST)
+Received: from ?IPv6:2003:ea:8f06:5500:d4d9:f1ee:1b1f:c865? (p200300ea8f065500d4d9f1ee1b1fc865.dip0.t-ipconnect.de. [2003:ea:8f06:5500:d4d9:f1ee:1b1f:c865])
+        by smtp.googlemail.com with ESMTPSA id n14sm36295307wmi.1.2020.12.15.03.32.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Dec 2020 03:32:19 -0800 (PST)
+Subject: Re: AX210 version 0024 not detected by iwlwifi
+To:     "Coelho, Luciano" <luciano.coelho@intel.com>,
+        linuxwifi <linuxwifi@intel.com>,
+        "Berg, Johannes" <johannes.berg@intel.com>,
+        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <03e8284e-4ea8-fe3e-8da7-62a778b1a059@gmail.com>
+ <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <0cbeae30-f330-ad7f-05ef-b8726b54036b@gmail.com>
+Date:   Tue, 15 Dec 2020 12:32:14 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Reply-To: kipkalyamissharrita@gmail.com
-Sender: mrs.latifakoumbousi4@gmail.com
-Received: by 2002:ab0:650a:0:0:0:0:0 with HTTP; Tue, 15 Dec 2020 01:09:23
- -0800 (PST)
-From:   "Miss.Harrita Kipkalya" <kipkalyamissharrita@gmail.com>
-Date:   Tue, 15 Dec 2020 01:09:23 -0800
-X-Google-Sender-Auth: 1j178MDrkViP5BwkeNV5rRx6KHw
-Message-ID: <CANg70n+AAm7Tj4F2CNV2WYJyOMxL8r2rh1Ohg0nW89Ow9W5gsQ@mail.gmail.com>
-Subject: My Dearest,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ce7fab1d400a04eb31727546b99af0292a0d30f4.camel@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My Dearest,
+Am 23.11.2020 um 09:17 schrieb Coelho, Luciano:
+> Hi Heiner,
+> 
+> On Sun, 2020-11-22 at 22:35 +0100, Heiner Kallweit wrote:
+>> I have an AX210 card that isn't detected by iwlwifi.
+>>
+>> 01:00.0 Network controller: Intel Corporation Device 2725 (rev 1a)
+>>         Subsystem: Intel Corporation Device 0024
+>>
+>> Adding following entry seems to be sufficient.
+>>
+>>         {IWL_PCI_DEVICE(0x2725, 0x0020, iwlax210_2ax_cfg_ty_gf_a0)},
+>> +       {IWL_PCI_DEVICE(0x2725, 0x0024, iwlax210_2ax_cfg_ty_gf_a0)},
+>>         {IWL_PCI_DEVICE(0x2725, 0x0310, iwlax210_2ax_cfg_ty_gf_a0)},
+>>
+>> [  419.473140] iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
+>> [  419.486984] iwlwifi 0000:01:00.0: api flags index 2 larger than supported by driver
+>> [  419.487190] iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ Version: 93.8.63.28
+>> [  419.488828] iwlwifi 0000:01:00.0: loaded firmware version 59.601f3a66.0 ty-a0-gf-a0-59.ucode op_mode iwlmvm
+>> [  419.533136] iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX210 160MHz, REV=0x420
+>>
+>> Maybe there are more AX210 subversion id's to be added ..
+>>
+>> How about the api flags index warning? I saw it in several posts,
+>> is there something to be fixed in the driver?
+> 
+> Good catch.  This indeed seems to be missing.  I'll add it and try to
+> send it still for the 5.10-rc series, so it propagates asap.
+> 
+At least on linux-next I still see the api flags index warning.
+Has the issue been addressed?
 
-I am writing this mail to you with tears and sorrow from my heart.
-With due respect, trust and humanity, i appeal to you to exercise a
-little patience and read through my letter i feel quite safe dealing
-with you in this important business having gone through your
-remarkable profile, honestly i am writing this email to you with
-pains, tears and sorrow from my heart, i will really like to have a
-good relationship with you and i have a special reason why I decided
-to contact you. I decided to contact you due to the urgency of my
-situation.
-
-My name is Miss.Harrita Kipkalya, 23yrs old female and i am from Kenya
-in East Africa. Light in complexion, single (never married) but
-presently i am residing here in Ouagadougou, Burkina Faso refugee
-camp. My father Late Dr Kipkalya Kones was the former Kenyan road
-Minister. He and Assistant Minister of Home Affairs Lorna Laboso had
-been on board the Cessna 210, which was headed to Kericho and crashed
-in a remote area called Kajong'a, in western Kenya. The plane crashed
-on the Tuesday 10th, June, 2008. You can read more about the crash
-through the below site:
-http://edition.cnn.com/2008/WORLD/africa/06/10/kenya.crash/index.html?iref=
-=3Dnextin
-
-After the burial of my father, my Fathers brother conspired and sold
-my father' s property to an Italian Expert rate which they shared the
-money among themselves and live nothing for me. One faithful morning,
-I opened my father's briefcase and found out the documents which he
-have deposited huge amount of money in one bank in Burkina Faso with
-my name as the next of kin because when he was alive he deposited some
-amount of money in a Bank in Burkina Faso which he used my name as the
-next of kin. The amount in question is $4.7Million.
-
-I have informed the bank about claiming this money and the only thing
-they told me is to look for a foreign partner who will assist me in
-the transfer due to my refugee status here in Burkina Faso. God told
-me that you are the honest and reliable person who will help me and
-stand as my trustee so that I will present you to the Bank for
-transferring of my father=E2=80=99s money to your bank account in overseas.=
-I
-have chosen to contact you after my prayers and I believe that you
-will not betray my trust. But rather take me as your own biological
-sister or daughter which I will be coming to your country as soon as
-this money is transferred to your account.
-
-My dearest, things are very bad for me here in the refugee camp where
-i am living today. People are dying here day after day because of lack
-of food and poor medical treatment. Even one of us died last night and
-was buried this morning. I am afraid of what i am seeing here. I don't
-know who it will be her turn tomorrow, I was planning to read law in
-my life before the ugly incident that killed my parents that put me in
-this horrible place i found myself toady. This place is like a prison
-as we are only allowed to go out on Monday and Friday of the week as
-given by the united nation rules and regulation here in Burkina Faso.
-It=E2=80=99s in this refugee we are only allowed to go out two times in a w=
-eek
-it=E2=80=99s just like one staying in the prison and i hope by Gods grace i
-will come out here soon. I don' t have any relatives now whom i can go
-to and the only person i have now is Rev Isaac Ambrose who is the
-pastor of the (Christ for all Churches) here in the refugee he has
-been very nice to me since i came here but i am not living with him
-rather i am leaving in the women's hostel because the refugee have two
-hostels one for men the other for women, so you can always contact me
-through this my both email address here
-(kipkalyamissharrita@gmail.com) thanks and am waiting for your reply.
-Please if you want to help me out of this situation respond back so
-that i will tell you more about me.
-
-Yours faithful
-Miss.Harrita Kipkalya
+> --
+> Cheers,
+> Luca.
+> 
+Heiner
