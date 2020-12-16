@@ -2,92 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 451F32DBF86
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Dec 2020 12:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66C3E2DBFE0
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Dec 2020 12:55:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgLPLgU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Dec 2020 06:36:20 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:62114 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbgLPLgU (ORCPT
+        id S1725960AbgLPLzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Dec 2020 06:55:13 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43561 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725789AbgLPLzN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Dec 2020 06:36:20 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608118560; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
- To: From: Sender; bh=hHQtI9K32e1pR5DjxtBhpvWTX4yp5Gz5VV4ep6xNEao=; b=OB1hu2tPt2RcOLDxBRnB7MN/1I8o7f/+kRKERXn8pPqvjWM3Ojz3oJH7pyWKHpAKwbtsuLHO
- vTREp6Vs5tbuucP7voWF9IW1f38zpy3HEH1IUQrCop0g5ZwJpdEJAzs0eyKc0QSfh/CtDx5r
- 6vtWSFX56196SQ9tTWi/fdULkLQ=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5fd9f105f5e9af65f8c71eeb (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 16 Dec 2020 11:35:33
- GMT
-Sender: pillair=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8D096C433CA; Wed, 16 Dec 2020 11:35:33 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from Pillair (unknown [137.97.117.56])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CA757C433CA;
-        Wed, 16 Dec 2020 11:35:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CA757C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
-From:   "Rakesh Pillai" <pillair@codeaurora.org>
-To:     "'Ben Greear'" <greearb@candelatech.com>,
-        "'Youghandhar Chintala'" <youghand@codeaurora.org>,
-        <johannes@sipsolutions.net>, <ath10k@lists.infradead.org>
-Cc:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kuabhs@chromium.org>,
-        <dianders@chromium.org>, <briannorris@chromium.org>
-References: <20201215172113.5038-1-youghand@codeaurora.org> <18dfa52b-5edd-f737-49c9-f532c1c10ba2@candelatech.com>
-In-Reply-To: <18dfa52b-5edd-f737-49c9-f532c1c10ba2@candelatech.com>
-Subject: RE: [PATCH 0/3] mac80211: Trigger disconnect for STA during recovery
-Date:   Wed, 16 Dec 2020 17:05:22 +0530
-Message-ID: <001901d6d39f$8eecc230$acc64690$@codeaurora.org>
+        Wed, 16 Dec 2020 06:55:13 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1kpVNx-00054E-QA; Wed, 16 Dec 2020 11:54:26 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] wilc1000: fix spelling mistake in Kconfig "devision" -> "division"
+Date:   Wed, 16 Dec 2020 11:54:25 +0000
+Message-Id: <20201216115425.12745-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQLNiuGMY1lcuX+3xoocSa3lALz5vQHQNXuRp/2kY0A=
-Content-Language: en-us
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Ben Greear <greearb@candelatech.com>
->=20
-> On 12/15/20 9:21 AM, Youghandhar Chintala wrote:
-> > From: Rakesh Pillai <pillair@codeaurora.org>
-> >
-> > Currently in case of target hardware restart ,we just reconfig and
-> > re-enable the security keys and enable the network queues to start
-> > data traffic back from where it was interrupted.
->=20
-> Are there any known mac80211 radios/drivers that *can* support =
-seamless
-> restarts?
->=20
-> If not, then just could always enable this feature in mac80211?
+There is a spelling mistake in the Kconfig help text. Fix it.
 
-I am not aware of any mac80211 target which can restart in a seamless =
-manner.
-Hence I chose to keep this optional and driver can expose this flag (if =
-needed) based on the hardware capability.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/ni/Kconfig                 | 2 +-
+ drivers/net/wireless/microchip/wilc1000/Kconfig | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-Rakesh Pillai.
+diff --git a/drivers/net/ethernet/ni/Kconfig b/drivers/net/ethernet/ni/Kconfig
+index 01229190132d..dcfbfa516e67 100644
+--- a/drivers/net/ethernet/ni/Kconfig
++++ b/drivers/net/ethernet/ni/Kconfig
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ #
+-# National Instuments network device configuration
++# National Instruments network device configuration
+ #
+ 
+ config NET_VENDOR_NI
+diff --git a/drivers/net/wireless/microchip/wilc1000/Kconfig b/drivers/net/wireless/microchip/wilc1000/Kconfig
+index 80c92e8bf8a5..7f15e42602dd 100644
+--- a/drivers/net/wireless/microchip/wilc1000/Kconfig
++++ b/drivers/net/wireless/microchip/wilc1000/Kconfig
+@@ -44,4 +44,4 @@ config WILC1000_HW_OOB_INTR
+ 	  chipset. This OOB interrupt is intended to provide a faster interrupt
+ 	  mechanism for SDIO host controllers that don't support SDIO interrupt.
+ 	  Select this option If the SDIO host controller in your platform
+-	  doesn't support SDIO time devision interrupt.
++	  doesn't support SDIO time division interrupt.
+-- 
+2.29.2
 
