@@ -2,85 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED49B2DB72E
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Dec 2020 00:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F42B2DBCBB
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Dec 2020 09:32:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725786AbgLOX6t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Dec 2020 18:58:49 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:56148 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726115AbgLOXaV (ORCPT
+        id S1725988AbgLPIcO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Dec 2020 03:32:14 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:51284 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725951AbgLPIcO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Dec 2020 18:30:21 -0500
-Received: from [192.168.254.6] (unknown [50.46.158.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id BA53D13C2B0
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Dec 2020 15:29:40 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com BA53D13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1608074980;
-        bh=Wc0Jh+mk2kOXVWVj1FYum6X+YMfNMdhAXilc9qPqPBk=;
-        h=To:From:Subject:Date:From;
-        b=TZr3AXfiWSbRWb8/UeMMwvjeDwTq+40fcz3ZcXAVeQtqBlxSLm2uHeRKGGQJPLJp9
-         7MQD62LCccdnOw5QHbgUiN9fZrZ070wF38IIzDx35jtB9wtBl7Id70ZTQkK9Zpd4Xe
-         /jUeTDZIhVG4K+wqAaP1TNyuKG+yt6e51BrM4y/o=
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Subject: ax200 performance results: 5.4 vs 5.10 kernel.
-Organization: Candela Technologies
-Message-ID: <e1415d52-bf07-c403-7265-96f097ee4e89@candelatech.com>
-Date:   Tue, 15 Dec 2020 15:29:40 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Wed, 16 Dec 2020 03:32:14 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BG8UIDc095718;
+        Wed, 16 Dec 2020 08:31:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=JzSZXbinXV21Z8vjxrONRNP3I5CvUYvCri5fHXXzL00=;
+ b=mBrTG8U9jvDP6wsyn5A09A5bQB/CCS4kwRnRYJxTY5uXHeqVQHf2XwjXrzgIBUrwT6Iu
+ HBcs8CgacPezSmuatOzPiXmm8uvIvuN6RMeDHBHb5TCuVbGRUr+ouancxrirpPAawmQo
+ FCI1+0ALkh3kpXPd6XlBAfMUFCp+4t6AS+Fz5Xx754QcV/5cd1UbfsQg59aYnB4L6yNp
+ eFmQ6eQ5/nMmJFLhQ3JiTEkqahADf4v5Hmzq6XsIoYqN2v669KKJzJV3gg+NHFefkdjO
+ YmPnMkKB1DB+dhJ72LYBUyhdfnOLrq+FMNkD2yO+mf2EroNA3sCIKxqOBIep1/gFs4kX pA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 35cn9reugv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 16 Dec 2020 08:31:28 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BG8UC5H171916;
+        Wed, 16 Dec 2020 08:31:28 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 35d7sxgfyh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 16 Dec 2020 08:31:28 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BG8VQA4000444;
+        Wed, 16 Dec 2020 08:31:26 GMT
+Received: from mwanda (/10.175.200.55)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 16 Dec 2020 00:31:26 -0800
+Date:   Wed, 16 Dec 2020 11:31:19 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Carl Huang <cjhuang@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/2] ath11k: Fix error code in ath11k_core_suspend()
+Message-ID: <X9nF17L2/EKOSbn/@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9836 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0
+ mlxlogscore=999 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012160054
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9836 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 clxscore=1011 spamscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012160054
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+The "if (!ret)" condition is inverted and it should be "if (ret)".  It
+means that we return success when we had intended to return an error
+code.
 
-TLDR:  5.10 seems to have performance regressions, especially in upload (ax200 sending to AP)
-direction with TCP.
+Fixes: d1b0c33850d2 ("ath11k: implement suspend for QCA6390 PCI devices")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Here's some results from testing ax200 on 5.4 and 5.10 kernels.
-
-Kernels can be found here:
-https://github.com/greearb?tab=repositories
-
-I have a system with 4 ax200 NICs plus some ath10k radios (ath10k idle in this
-test case).  AP is ath11k 8x8 hawkeye.
-
-5.4 (using out-of-tree backports ax200 driver since in-kernel driver was very unstable for us)
-I am not sure the exact version I backported, it was back in 6/8/2020 of this year.
-
-single station download: 900Mbps
-4 stations download: 900Mbps
-single station upload: 775Mbps
-4 stations upload: 700Mbps
-
-
-5.10 (we first tested in-kernel driver, and that showed poor upload, so then I tried
-hacking the backports release/core56 ax200 driver into 5.10.  Detailed testing results
-below are from the hacked in backports driver)
-
-single station download: 500Mbps
-4 stations download: 900Mbps
-single station upload: 450Mbps
-4 stations upload: 400Mbps
-
-UDP ran similarly.  TCP with 350 streams ran similarly.
-
-As always with wifi, there are a million things that could be weird
-about my test case.  If someone can do similar testing and report
-results, please do so we can compare.
-
-Thanks,
-Ben
-
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index b97c38b9a270..350b7913622c 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -185,7 +185,7 @@ int ath11k_core_suspend(struct ath11k_base *ab)
+ 	ath11k_hif_ce_irq_disable(ab);
+ 
+ 	ret = ath11k_hif_suspend(ab);
+-	if (!ret) {
++	if (ret) {
+ 		ath11k_warn(ab, "failed to suspend hif: %d\n", ret);
+ 		return ret;
+ 	}
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.29.2
+
