@@ -2,60 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1FEF2DC3A7
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Dec 2020 17:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57BF02DC544
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Dec 2020 18:25:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725769AbgLPQCL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Dec 2020 11:02:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54524 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725287AbgLPQCL (ORCPT
+        id S1727093AbgLPRZY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Dec 2020 12:25:24 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:60011 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727092AbgLPRZY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Dec 2020 11:02:11 -0500
-Received: from mail-oo1-xc41.google.com (mail-oo1-xc41.google.com [IPv6:2607:f8b0:4864:20::c41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23337C0617A6
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Dec 2020 08:01:31 -0800 (PST)
-Received: by mail-oo1-xc41.google.com with SMTP id k9so5833958oop.6
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Dec 2020 08:01:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=BQ1AOQRoQ7M00lxLPowuXvV1leu3PV3Bq+Px32yRjlg=;
-        b=kLc9xk+gyBJPnerHs2l5e7Vi+2sZmTrraSdPdGlGsIMlJDwhlDBia0rYQnvzZU7YGh
-         vDoPYF3HITZZXYKerFW/PVjlOc3YD1FdC6impvmiu3mvwBWowqjuQJv8cUVdc6AeqclM
-         PILNLrs1qSR0Wmggtk2RN8xDmErd4l87c6QDBqhcT7iQ0jf+aOO1dT1nbZx0QTBEX4lw
-         Fm4MZwO6F+Jn+CVEjyoxmHpSDgqpnGgAKZHuCxn0FNwzZEajmJ1CwgTtk/8/ZuB3sXPp
-         q99xgqG5p7bntMDuntx26QApIr6Pm5E/z4Dn2mLlVEUYKL7HH1cRroE9taGcayl2tLk0
-         mu4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=BQ1AOQRoQ7M00lxLPowuXvV1leu3PV3Bq+Px32yRjlg=;
-        b=XcLVxej4VB7E/HLWRUAAqMSamwttVeKVdFqgAPLvXb52DIfworpRPnljab7dWEerW2
-         6Z9EAsRA9p7WFlGIbeALMtHlzuRmekuD0lG0xt35vnGxX0l409Qowzs4J6Eza41+Ulil
-         lKwxtiaWkpPjHq8WKJQpxqwGeqS9Y5gS7L2qo+BHHvk/UxCvXKFqA5d7AJnybwIlHM2U
-         hCwFQU/Afm3JuC0TrbQg5EEv/nWrXWq7LHZk8s+kNuYpgJNOoNHaATuVk56U15GNHxir
-         MkEVB5G6E6RfeOyqFwP+SYrW8AoX5NFEOdpN5ToV+nBrI0bTbZOMybBW9vC1v52Sxsqv
-         OmTQ==
-X-Gm-Message-State: AOAM533FJlkPmWkRf2Ryari9MNNrgfBUaE7G3BB9fFhkidBs5p982y7u
-        sgk9oZy89OtUhOEVfb3hIXzdosNScKHOojSHCLM=
-X-Google-Smtp-Source: ABdhPJyav+feqrWWSxS3fzhPbtE1uetLAonZl3xs8VQ6hSXvyVot3pL/apcbsvwnl2R2EepmKIq7uG7tqYQ6RPpUzaI=
-X-Received: by 2002:a4a:a2c5:: with SMTP id r5mr25555445ool.72.1608134490494;
- Wed, 16 Dec 2020 08:01:30 -0800 (PST)
+        Wed, 16 Dec 2020 12:25:24 -0500
+X-UUID: 47f6b95d57d641b6b4ad8e77449b6b1b-20201217
+X-UUID: 47f6b95d57d641b6b4ad8e77449b6b1b-20201217
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1504879476; Thu, 17 Dec 2020 01:24:39 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 17 Dec 2020 01:24:34 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 17 Dec 2020 01:24:31 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: increase buffer size to receive large MPDUs
+Date:   Thu, 17 Dec 2020 01:24:33 +0800
+Message-ID: <00af8edba9bad0e3635ca6024fcf56b3bcd407f8.1608139125.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Received: by 2002:a4a:b1c5:0:0:0:0:0 with HTTP; Wed, 16 Dec 2020 08:01:30
- -0800 (PST)
-Reply-To: lovisabarkman1@gmail.com
-From:   Lovias Barkman <mc5296115@gmail.com>
-Date:   Wed, 16 Dec 2020 16:01:30 +0000
-Message-ID: <CAOMm2ertDGTATuwpbh0BHvE=m2RNB=0=q3MsbDJ3nNSOu_KXwA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 22E80B00BD3160462AC45C12C5C498467279081312E2CABE828927BE4E031CA82000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I am a widow and I want to make a donation of ($3.7 Million dollars )
-to help orphans and widows and charitable home in your country
+This improves 5G/HE Rx performance around 70mbps.
+
+Tested-by: Chih-Min Chen <chih-min.chen@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+index 8c1f9c77b14f..a8c783be297f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+@@ -203,7 +203,7 @@ int mt7915_dma_init(struct mt7915_dev *dev)
+ {
+ 	/* Increase buffer size to receive large VHT/HE MPDUs */
+ 	struct mt76_bus_ops *bus_ops;
+-	int rx_buf_size = MT_RX_BUF_SIZE * 2;
++	int rx_buf_size = MT_RX_BUF_SIZE * 4;
+ 	int ret;
+ 
+ 	dev->bus_ops = dev->mt76.bus;
+-- 
+2.18.0
+
