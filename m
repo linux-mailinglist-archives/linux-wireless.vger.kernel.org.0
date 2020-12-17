@@ -2,96 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F226B2DD916
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 20:08:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABAEC2DD920
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 20:11:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729689AbgLQTIN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 14:08:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51270 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729582AbgLQTIN (ORCPT
+        id S1730006AbgLQTJ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 14:09:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:42985 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727260AbgLQTJ1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 14:08:13 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B05C061794
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 11:07:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ilhWMgwi8RDi79jZRibgCVlyWoi9TCxB7IGa52NNEaw=; b=AQcZjhjEKkQPs21FN3D7Iw1wei
-        FGOBIQxdINgtPXHpHyls2yA4Kn2QnofqXqCUGQe+1GGpOr8wg5oKnd8J0wrx2vhxh1oPZHD6rklUc
-        usDdJfw3WIqoQaGfD7aF8wqcNv79PrZekJQkR3rir1LSpIH2wdY42JRSDoD0qQgGq8mI=;
-Received: from p4ff13815.dip0.t-ipconnect.de ([79.241.56.21] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kpycb-0008V4-Hb; Thu, 17 Dec 2020 20:07:29 +0100
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
-        linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-References: <20201216204316.44498-1-nbd@nbd.name>
- <20201216204316.44498-2-nbd@nbd.name> <87czz8bqbj.fsf@toke.dk>
- <add3d1fa-c2ad-5aaf-83c7-31e919129bbf@nbd.name> <871rfobn8w.fsf@toke.dk>
- <07ad2533-b477-abf1-5176-0521ca9ddf82@nbd.name> <874kkk9wep.fsf@toke.dk>
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH 2/7] mac80211: force calculation of software hash for tx
- fair queueing
-Message-ID: <eb5ffa8e-0ebc-381f-12c5-02b96bcea64e@nbd.name>
-Date:   Thu, 17 Dec 2020 20:07:29 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.5.0
+        Thu, 17 Dec 2020 14:09:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1608232080;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=tQDlFNlNuVGYhVYVH7sseQWqlAqcdzXvx4q32bqmEFA=;
+        b=cbkNJFhkq9xTxgsNGmYMd6tiz33OCi7Kv0McJJwh4oIqV5oM5Bxk5vkERqPktl0kfX6QEO
+        rD+kEI6D25iLOTp59ZWtPKuThn7R5Rukd4mxdjmqx9un1HhS0RvoV2strxGJGih3OMDFkt
+        oh32gsM0m3I806jzRMW0cclOdNO/vTc=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-253-Bp1SE1rgPj-GMqsiCb-0jA-1; Thu, 17 Dec 2020 14:07:58 -0500
+X-MC-Unique: Bp1SE1rgPj-GMqsiCb-0jA-1
+Received: by mail-ej1-f71.google.com with SMTP id w6so5382446ejo.2
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 11:07:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=tQDlFNlNuVGYhVYVH7sseQWqlAqcdzXvx4q32bqmEFA=;
+        b=XNb0S2s1bpO8JK83W8Fm5B187+UbJL8E9ZJ1KCzikwdisPMoUq6CpKUEAo/fsESWGU
+         2UycDaqvyRN22aDReE+j95bFmVjUl1V/whONsrxNFwCAqzumkahE0VxdmkayEpYxYQDu
+         tMpHRdxzpMYB9pgHZxg9wbKiB0Ip/d4boeUUvsjNWbRa+5hmjTQvqyOzwpnc8bs5/XbY
+         Nu+yp//Wh1WLQ25A5kfbBR9tf65P+FGTDEwTYro/tMeSW2cKy7ivwHthiNq7PYcxRpDj
+         /Lj22uC6hezhiNwlpiXFJjFs531THtGrJttcuKoAJppQUKs6zDLqaGmZr7U7U2oltrL5
+         1UGA==
+X-Gm-Message-State: AOAM532j59uL5XtzHlDKZbGDKkjaz3L1bFr3+a7cbq/HX79mdbRPva18
+        CqqsX6dX6vON2DdPU2sJjV/AxFU6L1qxmmkE2BJelYuVMkJBYf/CUHIZmhlLMz/VJmkD3ZYKxL9
+        pM1nHDa8BXngYURbvlzWpoXN/Mlg=
+X-Received: by 2002:a17:906:e082:: with SMTP id gh2mr463552ejb.406.1608232077273;
+        Thu, 17 Dec 2020 11:07:57 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwfrBnTeU15kgy9Yro+q1OVh6axpFKjlo4TAAoli5P+ygFqAW18UYZIr1UtyFupIWse7z4DKw==
+X-Received: by 2002:a17:906:e082:: with SMTP id gh2mr463537ejb.406.1608232077096;
+        Thu, 17 Dec 2020 11:07:57 -0800 (PST)
+Received: from localhost ([151.66.8.153])
+        by smtp.gmail.com with ESMTPSA id qh23sm4350625ejb.71.2020.12.17.11.07.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Dec 2020 11:07:56 -0800 (PST)
+Date:   Thu, 17 Dec 2020 20:07:53 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     kvalo@codeaurora.org
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/2] mt76: sdio: remove wake logic in
+ mt76s_process_tx_queue
+Message-ID: <20201217190753.GF16606@lore-desk>
+References: <cover.1607164041.git.lorenzo@kernel.org>
+ <d2d7d9d437f4dec2ef1df0ed070b9cf299f021ad.1607164041.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <874kkk9wep.fsf@toke.dk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="L2Brqb15TUChFOBK"
+Content-Disposition: inline
+In-Reply-To: <d2d7d9d437f4dec2ef1df0ed070b9cf299f021ad.1607164041.git.lorenzo@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 2020-12-17 18:26, Toke Høiland-Jørgensen wrote:
-> Felix Fietkau <nbd@nbd.name> writes:
->> If this becomes a problem, I think we should add a similar patch to
->> wireguard, which already calls skb_get_hash before encapsulating.
->> Other regular tunnels should already get a proper hash, since the flow
->> dissector will take care of it.
-> 
-> But then we'd need to go around adding this to all the places that uses
-> the hash just to work around a particular piece of broken(ish) hardware.
-> And we're hard-coding a behaviour in mac80211 that means we'll *always*
-> recompute the hash, even for hardware that's not similarly broken.
-> 
->> The reason I did this patch is because I have a patch to set the hw flow
->> hash in the skb on mtk_eth_soc, which does help GRO, but leads to
->> collisions on mac80211 fq.
-> 
-> So wouldn't the right thing to do here be to put a flag into the RX
-> device that makes the stack clear the hash after using it for GRO?
-I don't think the hardware is broken, I think fq is simply making
-assumptions about the hash that aren't met by the hw.
+--L2Brqb15TUChFOBK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The documentation in include/linux/skbuff.h mentions these requirements
-for the skb hash:
- * 1) Two packets in different flows have different hash values
- * 2) Two packets in the same flow should have the same hash value
+> Similar to mmio/usb code path, remove wake logic in mt76s_process_tx_queue
+> routine
 
-FWIW, I think the 'should' from 2) probably belongs to 1), otherwise it
-makes no sense. Two packets of the flow must return the same hash,
-otherwise the hash is broken. I'm assuming this is a typo.
+Starting from commit '90d494c99a99fa2eb858754345c4a9c851b409a0
+("mt76: improve tx queue stop/wake")', the wake queue logic on
+the sdio status path is no longer necessary since the hw queues
+are no longer stopped on the mt76 tx path.
 
-In addition to those properties, fq needs the hash to be
-cryptographically secure, so that it can use reciprocal_scale to sort
-flows into buckets without allowing an attacker to craft collisions.
-That's also the reason why it used to use skb_get_hash_perturb with a
-random perturbation until we got software hashes based on siphash.
+Regards,
+Lorenzo
 
-I think it's safe to assume that most hardware out there will not
-provide collision resistant hashes, so in my opinion fq cannot rely on a
-hardware hash. We don't need to go around and change all places that use
-the hash, just those that assume a collision resistant one.
+>=20
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/wireless/mediatek/mt76/sdio.c | 15 +++------------
+>  1 file changed, 3 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wire=
+less/mediatek/mt76/sdio.c
+> index 62b5b912818f..7cd995118257 100644
+> --- a/drivers/net/wireless/mediatek/mt76/sdio.c
+> +++ b/drivers/net/wireless/mediatek/mt76/sdio.c
+> @@ -157,7 +157,7 @@ static void mt76s_net_worker(struct mt76_worker *w)
+> =20
+>  static int mt76s_process_tx_queue(struct mt76_dev *dev, struct mt76_queu=
+e *q)
+>  {
+> -	bool wake, mcu =3D q =3D=3D dev->q_mcu[MT_MCUQ_WM];
+> +	bool mcu =3D q =3D=3D dev->q_mcu[MT_MCUQ_WM];
+>  	struct mt76_queue_entry entry;
+>  	int nframes =3D 0;
+> =20
+> @@ -177,21 +177,12 @@ static int mt76s_process_tx_queue(struct mt76_dev *=
+dev, struct mt76_queue *q)
+>  		nframes++;
+>  	}
+> =20
+> -	wake =3D q->stopped && q->queued < q->ndesc - 8;
+> -	if (wake)
+> -		q->stopped =3D false;
+> -
+>  	if (!q->queued)
+>  		wake_up(&dev->tx_wait);
+> =20
+> -	if (mcu)
+> -		goto out;
+> -
+> -	mt76_txq_schedule(&dev->phy, q->qid);
+> +	if (!mcu)
+> +		mt76_txq_schedule(&dev->phy, q->qid);
+> =20
+> -	if (wake)
+> -		ieee80211_wake_queue(dev->hw, q->qid);
+> -out:
+>  	return nframes;
+>  }
+> =20
+> --=20
+> 2.28.0
+>=20
 
-- Felix
+--L2Brqb15TUChFOBK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCX9ushgAKCRA6cBh0uS2t
+rMoXAP0TAvzxxZvTve9cRp+TQ0j5bBWOGEJ3bqQ3cQygOOz95wEAm4uKggyqlWBS
+8M4NbG3DCTum1xIKiNVFbUPJQTMNWgs=
+=z043
+-----END PGP SIGNATURE-----
+
+--L2Brqb15TUChFOBK--
+
