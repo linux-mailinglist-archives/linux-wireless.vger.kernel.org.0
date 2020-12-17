@@ -2,113 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 622002DD6B5
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 19:01:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B961B2DD805
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 19:15:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729492AbgLQSAg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 13:00:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55738 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726773AbgLQSAg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 13:00:36 -0500
-Date:   Thu, 17 Dec 2020 18:59:50 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608227995;
-        bh=Te50MoqqRMHM7fjIFunWe/+4qkBpnZytK59H2S49fM4=;
-        h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ilLDIMRlgRmsmdMzazd1qa0e6wiD7KS9YgSsra4lPbkQqTB5T1q6VtZjqh0UzggMK
-         8SjyDT7X3Q4XEKFZaEMUN7dMOtOFW/HywRmTivQ4woJmlMJoOqEs5w506PtNEmipmc
-         we4z5VnekH2fXU57QFgcmAOlpYX7byYC2A8iJD3iuj7nDTfrL4xiUzVySvv8AvCsI9
-         2sjciXGzkzdQVkki4/Dgff8PHOba4xVqM9bBHqKzmMxPGmN3zLf3oAMmpRLPJK6dtV
-         tribldj1pGaaKMBCTSItIALNaWLii08g8qRDDJ08dG88pWyDW1nBgS3VaKQbzGGdIo
-         TjvJ3DxcH8wLw==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH] mt76: mt76s: fix NULL pointer dereference in
- mt76s_process_tx_queue
-Message-ID: <20201217175950.GD16606@lore-desk>
-References: <b49c1b4edacd87b2241a9fd0431dd4864c8963f6.1607418933.git.lorenzo@kernel.org>
- <20201217163616.546AFC433CA@smtp.codeaurora.org>
- <20201217171105.GC16606@lore-desk>
- <58f03209-de19-0f35-fed3-d20366f933d2@nbd.name>
- <87r1nos4ym.fsf@codeaurora.org>
+        id S1731407AbgLQSOO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 13:14:14 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:46156 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1731465AbgLQSOL (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Dec 2020 13:14:11 -0500
+X-UUID: aea57221cf68497a80cc161d58647686-20201218
+X-UUID: aea57221cf68497a80cc161d58647686-20201218
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 381591907; Fri, 18 Dec 2020 02:13:25 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 18 Dec 2020 02:13:20 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 18 Dec 2020 02:13:20 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <ryder.lee@mediatek.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, Sean Wang <objelf@gmail.com>
+Subject: [PATCH -next v3 0/8] introduce mt7921e support
+Date:   Fri, 18 Dec 2020 02:13:13 +0800
+Message-ID: <cover.1608227863.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="YToU2i3Vx8H2dn7O"
-Content-Disposition: inline
-In-Reply-To: <87r1nos4ym.fsf@codeaurora.org>
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 66E4E9418E49B81874ED36765B42D89684E737952F514267B1C0BD3BDAFAB9682000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Sean Wang <objelf@gmail.com>
 
---YToU2i3Vx8H2dn7O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Introduce support for mt7921e 802.11ax (Wi-Fi 6) 2x2:2SS chipset.
 
-On Dec 17, Kalle Valo wrote:
-> Felix Fietkau <nbd@nbd.name> writes:
->=20
-> > On 2020-12-17 18:11, Lorenzo Bianconi wrote:
-> >>> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> >>>=20
-> >>> > Fix a possible NULL pointer dereference in mt76s_process_tx_queue t=
-hat
-> >>> > can occur if status thread runs before allocating tx queues
-> >>> >=20
-> >>> > Fixes: 6a618acb7e62 ("mt76: sdio: convert {status/net}_work to mt76=
-_worker")
-> >>> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> >>>=20
-> >>> Failed to apply to wireless-drivers:
-> >>=20
-> >> Hi Kalle,
-> >>=20
-> >> sorry for the noise. I guess to apply this patch we need to apply even=
- the
-> >> following series:
-> >> https://patchwork.kernel.org/project/linux-wireless/cover/cover.160716=
-4041.git.lorenzo@kernel.org/
-> >>=20
-> >> @Felix: do you think it is ok to apply "remove wake queue tx logic for
-> >> usb/sdio" series to wireless-drivers?
-> >
-> > Yes, that makes sense.
->=20
-> Ok, I assigned the series to me and changed this back to New state.
->=20
-> The commit logs in series don't really answer to "why?", though.
-> Lorenzo, can you reply to those patches and give more info how they
-> help? Or are they just cleanup?
+v2:
+- Mark the patch as -next
 
-It is mostly a cleanup since after commit
-90d494c99a99fa2eb858754345c4a9c851b409a0 ("mt76: improve tx queue stop/wake=
-"),
-we do not need the wake logic anymore in the status path since the queues
-are no longer stopped in the tx path.
+v3:
+- Remove sw scan support
+- Get rid of dbdc code
+- Run mt7921_configure_filter hodling mt76 mutex
+- Correct Txp programming in Txd
+- Correct fw log to host command
+- Correct eeprom offset definition
+- Update rate adaption info report
+- Remove unused code and fields in struture
+- Split the previous driver into several patches for easy review
 
-Regards,
-Lorenzo
+Sean Wang (8):
+  mt76: mt7921: add module support
+  mt76: mt7921: add MCU support
+  mt76: mt7921: add MAC support
+  mt76: mt7921: add DMA support
+  mt76: mt7921: add EEPROM support
+  mt76: mt7921: add ieee80211_ops
+  mt76: mt7921: introduce mt7921e support
+  mt76: mt7921: add debugfs support
 
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
+ drivers/net/wireless/mediatek/mt76/Kconfig    |    1 +
+ drivers/net/wireless/mediatek/mt76/Makefile   |    1 +
+ .../net/wireless/mediatek/mt76/mt7921/Kconfig |   10 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |    5 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  178 ++
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   |  356 +++
+ .../wireless/mediatek/mt76/mt7921/eeprom.c    |  101 +
+ .../wireless/mediatek/mt76/mt7921/eeprom.h    |   27 +
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  263 ++
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 1367 ++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |  333 +++
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  929 +++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 2391 +++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 1075 ++++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  352 +++
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  184 ++
+ .../net/wireless/mediatek/mt76/mt7921/regs.h  |  413 +++
+ 17 files changed, 7986 insertions(+)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/init.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/main.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/regs.h
 
---YToU2i3Vx8H2dn7O
-Content-Type: application/pgp-signature; name="signature.asc"
+--
+2.25.1
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCX9uckwAKCRA6cBh0uS2t
-rFkcAQDHB+L74RRN8L1UOWbM2e0+fr2zDvVAJSKxSb9gWYGznwEA56n/e2RIZuOd
-qNbutjZBQUrJXpwcJm1KPx5uq7Zy+AM=
-=4p3T
------END PGP SIGNATURE-----
-
---YToU2i3Vx8H2dn7O--
