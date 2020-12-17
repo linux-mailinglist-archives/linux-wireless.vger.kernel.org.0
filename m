@@ -2,84 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C0132DDB71
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 23:32:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66FA42DDBAF
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 23:59:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732162AbgLQWa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 17:30:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732155AbgLQWa6 (ORCPT
+        id S1732072AbgLQW6G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 17:58:06 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:41422 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730768AbgLQW6G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 17:30:58 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B7C3C0611CF
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 14:30:13 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id x12so304198plr.10
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 14:30:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Pf9ckCEVaJ6zRPQluKNLBc+gFVAc92xCjtYHcq1JC/A=;
-        b=mric7Hjj4cDYfT8pldW/fafGOVPxVs+mQFbytAiEFHYJTaxQpPs5WGeRJdQr7BzdVX
-         ihAg41fvq0zIyvX5aFC2MqMexW25taT4H6J7QvZ5mkEdMop5x6mlkPcFpIqq/IlNbkI0
-         0uIDEzpn4n4iOfw61QNDzjOWwaGBAtx2WH5M0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Pf9ckCEVaJ6zRPQluKNLBc+gFVAc92xCjtYHcq1JC/A=;
-        b=OVzUZ85GTiAaWlmSCpH5aImmplIya+Pk9fiaPawvWbEeCazV6e1dbGdqUCBtvzxyNt
-         a8MQ93nDpXkAkpd0os3T6Kt5DX/ZB7BNVfnaML4IpF4XtP5SD0gi/zjDAZ/AzMWoSFzN
-         ak2AGm3K+6Q6GOPAFKN0n3Oqu7cetVAn4LO/69BN124sdG2FXJnfr7hae7rfJ3q5gGGY
-         Y0gS/QlSIrjfhdNpAgRULwLqV0+f9k8qd4lYvLVGWujSdcaX6xYWmu7kTl+HmaxxpfRr
-         zYHc5+kSmIXAZdeHJzExVxFLuTpMaCklvwHyoBfvGgnnh6iC6ZPZie04CYZafNo4S0kv
-         +1MA==
-X-Gm-Message-State: AOAM531Nv8OboB8dCR2xRWTk6ngWcPthty5iEk6ztYBcLoyYUP23zFpG
-        y6Qf5k3UCHlvSDoc/F6clRU+Ag==
-X-Google-Smtp-Source: ABdhPJx2cbX0FBjlN0OqPmNj516SIg9lvraV+rd1J5A+Cm3zOrLoueWLJm2ajUoRLZxZZeF3sxFHWA==
-X-Received: by 2002:a17:90a:f311:: with SMTP id ca17mr1312552pjb.180.1608244213043;
-        Thu, 17 Dec 2020 14:30:13 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:8edc:d4ff:fe53:350d])
-        by smtp.gmail.com with ESMTPSA id c62sm6779936pfa.116.2020.12.17.14.30.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Dec 2020 14:30:12 -0800 (PST)
-Date:   Thu, 17 Dec 2020 14:30:09 -0800
-From:   Brian Norris <briannorris@chromium.org>
-To:     Youghandhar Chintala <youghand@codeaurora.org>
-Cc:     johannes@sipsolutions.net, ath10k@lists.infradead.org,
+        Thu, 17 Dec 2020 17:58:06 -0500
+Received: from [192.168.254.6] (unknown [50.46.158.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id AE28313C2B0;
+        Thu, 17 Dec 2020 14:57:24 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com AE28313C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1608245845;
+        bh=wKglh9KlDBoYb5sTHp2Zpmla8eV1kaQDIWTUPzEfRyo=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=cS/WEcr87wlLHpBF0id46WWTxCo51XmGYj77Tvo56pnMTrdwLdNB1MtH4HaHyOAjN
+         k+8SxCI7rDeTEcSIPDsVOXRHUWtq7yCy9xsWK0ZvwduUSkfRkXuifou+H8Ku+zn8yO
+         vDCDCIgoHcJwGiTSQV/1oN9T5wv6BwL5dbn9uSl4=
+Subject: Re: [PATCH 0/3] mac80211: Trigger disconnect for STA during recovery
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Youghandhar Chintala <youghand@codeaurora.org>,
+        johannes@sipsolutions.net, ath10k@lists.infradead.org,
         kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, kuabhs@chromium.org,
         dianders@chromium.org, pillair@codeaurora.org
-Subject: Re: [PATCH 0/3] mac80211: Trigger disconnect for STA during recovery
-Message-ID: <X9vb8TQvjElEtscA@google.com>
 References: <20201215172113.5038-1-youghand@codeaurora.org>
+ <18dfa52b-5edd-f737-49c9-f532c1c10ba2@candelatech.com>
+ <X9vaqxub2F/8YPT8@google.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <6cec8a4c-620f-093d-2739-7eafe89cd79a@candelatech.com>
+Date:   Thu, 17 Dec 2020 14:57:24 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201215172113.5038-1-youghand@codeaurora.org>
+In-Reply-To: <X9vaqxub2F/8YPT8@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 15, 2020 at 10:51:13PM +0530, Youghandhar Chintala wrote:
-> From: Rakesh Pillai <pillair@codeaurora.org>
+On 12/17/20 2:24 PM, Brian Norris wrote:
+> On Tue, Dec 15, 2020 at 10:23:33AM -0800, Ben Greear wrote:
+>> On 12/15/20 9:21 AM, Youghandhar Chintala wrote:
+>>> From: Rakesh Pillai <pillair@codeaurora.org>
+>>>
+>>> Currently in case of target hardware restart ,we just reconfig and
+>>> re-enable the security keys and enable the network queues to start
+>>> data traffic back from where it was interrupted.
+>>
+>> Are there any known mac80211 radios/drivers that *can* support seamless restarts?
+>>
+>> If not, then just could always enable this feature in mac80211?
+> 
+> I'm quite sure that iwlwifi intentionally supports a seamless restart.
+>  From my experience with dealing with user reports, I don't recall any
+> issues where restart didn't function as expected, unless there was some
+> deeper underlying failure (e.g., hardware/power failure; driver bugs /
+> lockups).
+> 
+> I don't have very good stats for ath10k/QCA6174, but it survives
+> our testing OK and I again don't recall any user-reported complaints in
+> this area. I'd say this is a weaker example though, as I don't have as
+> clear of data. (By contrast, ath10k/WCN399x, which Rakesh, et al, are
+> patching here, does not pass our tests at all, and clearly fails to
+> recover from "seamless" restarts, as noted in patch 3.)
+> 
+> I'd also note that we don't operate in AP mode -- only STA -- and IIRC
+> Ben, you've complained about AP mode in the past.
 
-I meant to mention in my other reply: the threading on this series is
-broken (as in, it doesn't exist). It looks like you're using
-git-send-email (good!), but somehow it doesn't have any In-Reply-To or
-References (bad!). Did you send all your mail in one invocation, or did
-you send them as separate git-send-email commands? Anyway, please
-investigate what when wrong so you can get this right in the future.
+I complain about all sorts of things, but I'm usually running
+station mode :)
 
-For one, this affects Patchwork's ability to group patch series (not to
-mention everybody who uses a decent mail reader, with proper threading).
-See for example the lore archive, which only is threading replies to
-this cover letter:
+Do you actually see iwlwifi stations stay associated through
+firmware crashes?
 
-https://lore.kernel.org/linux-wireless/20201215172113.5038-1-youghand@codeaurora.org/
+Anyway, happy to hear some have seamless recovery, and in that case,
+I have no objections to the patch.
 
-Regards,
-Brian
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
