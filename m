@@ -2,109 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CF272DD111
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 13:05:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44C282DD11A
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 13:10:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726595AbgLQMEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 07:04:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:36502 "EHLO
+        id S1726569AbgLQMKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 07:10:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:40528 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725871AbgLQMEl (ORCPT
+        by vger.kernel.org with ESMTP id S1726533AbgLQMKx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 07:04:41 -0500
+        Thu, 17 Dec 2020 07:10:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1608206595;
+        s=mimecast20190719; t=1608206966;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=Afc5DNVCTmHu6ou3VmVI5+a7NzkL4f43wyROhABnoYs=;
-        b=IliIgMggOGJswRz7zgFQxMEDv73JRDuEJ+EjFLkqfoSK97kptd8IIeY7uKyJOEtkyriO8G
-        cmaropgDSSTJ4BcUVuJSmkQRFMmIOOfMph6symNcBh1lCcKRzbemtL5UvYSrv01joJ6xyG
-        RYivAgZZgREROCzHzYO1TaMwZQTwvcU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-386-IqiVC2Y5NWOWG1KYVWbLDg-1; Thu, 17 Dec 2020 07:03:12 -0500
-X-MC-Unique: IqiVC2Y5NWOWG1KYVWbLDg-1
-Received: by mail-ej1-f71.google.com with SMTP id 2so8512985ejv.4
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 04:03:12 -0800 (PST)
+        bh=9NuUog3n8t1rMoDZI0xMlqDyO0CLx8FI8sn63mGxl0w=;
+        b=ak3vvOdGOwnPzzMKsiEgrFqwRPkYWpMleAgFpKSOaIUB/Is9n9L62T9tExnbRQ/T0FpzoD
+        ZpVT4X4tvbRFAH3NKt1f918Ub+ZGKPTeK7TgAKjVWyST+xZ0KWUWWAdDVeI+83/QeCozfo
+        zl3D4cb1r6T4jA4E6789mdbz2X7r3FU=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-219-LTOXF9-yOOCCEps4IRLX-w-1; Thu, 17 Dec 2020 07:09:24 -0500
+X-MC-Unique: LTOXF9-yOOCCEps4IRLX-w-1
+Received: by mail-ed1-f69.google.com with SMTP id z20so13267252edl.21
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 04:09:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Afc5DNVCTmHu6ou3VmVI5+a7NzkL4f43wyROhABnoYs=;
-        b=r0MMDCOHS3LKrs/VElITorxcbmE4xeTk3VJtWwHjNVQkRyv8qXOD+JVgYmlC07fyCW
-         cko3XeO59xeQjJBH7MRDKpu5QJMfFs8t+UQdSxycZmq5TuBZ82g6Pqvjukq+Yk7KCNKH
-         NUOopixiT9l/F2Zq19BoW20fh/LsZa0nwRrKbUYs9MVdIOd1XMBwhDPHw8OAeUOil5XX
-         YEoVDw9xw27QDMO6aFZNx9Zb5ZM9lBpgj3WRSOfQf8DYQ+/O0s3w9gKm/PVDijEj61+E
-         Q/4pq9THm7V12+7EzlWVBTB9fTi4qmmr1e3MTHgOy2v1jiXfa/1TdFTBNWbt0b5c8D1L
-         OtwQ==
-X-Gm-Message-State: AOAM530u7tQQIbBilPTNPsvuOdGRi4nB9TRe4jOpuNj4LwEXyHQPo9pk
-        JQZTzT7ZdwlXU28dRWsQMaNsF2Gg5FTBDR9CODQUgB4MrM/DGhMLFQs2m1odIwvNsvGUvHOildS
-        oifOFb109sYmlsIZVzelg/GqU02o=
-X-Received: by 2002:a17:906:b309:: with SMTP id n9mr12636096ejz.365.1608206591610;
-        Thu, 17 Dec 2020 04:03:11 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxDEfZGZY8RthLQuYsTsIyTlMxyzY35v+PQ321aIwKXbS+GZIuiiWa6u29YbdYFQKJtAEvaAQ==
-X-Received: by 2002:a17:906:b309:: with SMTP id n9mr12636085ejz.365.1608206591459;
-        Thu, 17 Dec 2020 04:03:11 -0800 (PST)
-Received: from localhost ([151.66.8.153])
-        by smtp.gmail.com with ESMTPSA id k3sm10088667eds.87.2020.12.17.04.03.10
+        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=9NuUog3n8t1rMoDZI0xMlqDyO0CLx8FI8sn63mGxl0w=;
+        b=C12EOXvbZX7AxrqhrpOeOmqlgGFcyWfw6beneUpcPV33SggesGU1KD3+l2MtiN034b
+         XChGS0yAlQC/Ek4Ck4K5kOtZLmGVixqqUEOy7NLJss37JgAaqLZJoTN3y0AHUlyJYXqd
+         TjB3dNeMoo5yc2A8JdedLLLfKgn1qShGgwrnFwyv2ybvXYYGgo/pa17PIENPhybzqH6P
+         +VvWFW9ToMMPJI0IO8+w8rdDgjaMhan56/03c96hvLsyv/Xc9KhSMruWcA+OlQIfDVnG
+         K40foCQvW/GdxK65Jv684J4xQz6/p4Uw7kOS5AYFzuZn7coJxEaDFYzhKAP1X5daFKBE
+         OgwQ==
+X-Gm-Message-State: AOAM533qSJvNh/GQ3AG9mcSQwfJ55VgWFea9fKfAoa5JMWzzyFObTpGf
+        iPUDJV4uBxgvhHe6aTXU8JXWcLEoRm4guCkndWTtSTMGaWxr9qrM/XkME0wjbe39sZKCdPcoUFe
+        s3oI+AGFSUixY20cTgxkcGH4DFWc=
+X-Received: by 2002:a50:d2d2:: with SMTP id q18mr37935154edg.346.1608206963457;
+        Thu, 17 Dec 2020 04:09:23 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJz1Y2Wj2Gc7KKfWRW7MnHBgVP+NfABsEH4sCev6Rnw8rnDKC4yVJrOl0/tu8spT8xatRiylug==
+X-Received: by 2002:a50:d2d2:: with SMTP id q18mr37935145edg.346.1608206963309;
+        Thu, 17 Dec 2020 04:09:23 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id b14sm7246732edf.34.2020.12.17.04.09.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Dec 2020 04:03:10 -0800 (PST)
-Date:   Thu, 17 Dec 2020 13:03:07 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     nbd@nbd.name, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 0/2] remove wake queue tx logic for usb/sdio
-Message-ID: <20201217120307.GB16606@lore-desk>
-References: <cover.1607164041.git.lorenzo@kernel.org>
+        Thu, 17 Dec 2020 04:09:22 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 3C44B1802A7; Thu, 17 Dec 2020 13:09:22 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/7] net/fq_impl: bulk-free packets from a flow on
+ overmemory
+In-Reply-To: <99ee36a1-4e30-194f-5101-0dc3d4d30a46@nbd.name>
+References: <20201216204316.44498-1-nbd@nbd.name>
+ <400936f158c59a25758ca05503c271710100476f.camel@sipsolutions.net>
+ <99ee36a1-4e30-194f-5101-0dc3d4d30a46@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Thu, 17 Dec 2020 13:09:22 +0100
+Message-ID: <877dpgbpn1.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="BwCQnh7xodEAoBMC"
-Content-Disposition: inline
-In-Reply-To: <cover.1607164041.git.lorenzo@kernel.org>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Felix Fietkau <nbd@nbd.name> writes:
 
---BwCQnh7xodEAoBMC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 2020-12-16 21:54, Johannes Berg wrote:
+>> On Wed, 2020-12-16 at 21:43 +0100, Felix Fietkau wrote:
+>>> 
+>>> +static int fq_flow_drop(struct fq *fq, struct fq_flow *flow,
+>>> +			fq_skb_free_t free_func)
+>>> +{
+>>> +	unsigned int packets = 0, bytes = 0, truesize = 0;
+>>> +	struct fq_tin *tin = flow->tin;
+>>> +	struct sk_buff *skb;
+>>> +	int pending;
+>>> +
+>>> +	lockdep_assert_held(&fq->lock);
+>>> +
+>>> +	pending = min_t(int, 32, skb_queue_len(&flow->queue) / 2);
+>>> 
+>> 
+>> Why 32?
+> I guess I forgot got make it configurable. sch_fq_codel uses 64, but
+> that seemed a bit excessive to me.
 
-> Similar to mmio, remove queue wake logic for sdio and usb code path
->=20
-> Lorenzo Bianconi (2):
->   mt76: usb: remove wake logic in mt76u_status_worker
->   mt76: sdio: remove wake logic in mt76s_process_tx_queue
->=20
->  drivers/net/wireless/mediatek/mt76/sdio.c | 15 +++------------
->  drivers/net/wireless/mediatek/mt76/usb.c  |  7 -------
->  2 files changed, 3 insertions(+), 19 deletions(-)
->=20
+I'm not sure it's worth a configuration knob. It's basically an
+arbitrary choice anyway, and only kicks in when an unresponsive flows
+keeps flooding a queue to the point of overflow (if it's many smaller
+flows the "never drop more than half a flow's backlog" should keep it
+from being excessive).
 
-Hi Felix,
+This (hopefully) only happens relatively rarely and hitting it with a
+really big hammer is the right thing to do in such a case to keep the
+box from falling over. Not sure if 32 or 64 makes much difference; guess
+it depends on the CPU-to-bandwidth ratio of the particular machine.
 
-do you think we can take this series in wireless-driver or do you prefer it
-goes through your tree?
-
-Regards,
-Lorenzo
-
-> --=20
-> 2.28.0
->=20
-
---BwCQnh7xodEAoBMC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCX9tI+QAKCRA6cBh0uS2t
-rPNeAQCd62XF2rqM82H19DjrmEtCPrsRlysizojzA0k236JYOQD/Rk6ppAwNelOz
-hPs0gDGYTge4g/0H0DWbduWNv3JAKQ0=
-=mj57
------END PGP SIGNATURE-----
-
---BwCQnh7xodEAoBMC--
+-Toke
 
