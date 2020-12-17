@@ -2,71 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5F222DCA36
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 01:58:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3588D2DCC85
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 07:37:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726547AbgLQA4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Dec 2020 19:56:12 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:40697 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725974AbgLQA4M (ORCPT
+        id S1726547AbgLQGgy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 01:36:54 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:60050 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725950AbgLQGgx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Dec 2020 19:56:12 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0BH0tCqzD015933, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0BH0tCqzD015933
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 17 Dec 2020 08:55:12 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Thu, 17 Dec 2020 08:55:12 +0800
-Received: from RTEXDAG02.realtek.com.tw ([fe80::89de:3ef2:d607:5db5]) by
- RTEXDAG02.realtek.com.tw ([fe80::89de:3ef2:d607:5db5%10]) with mapi id
- 15.01.2106.004; Thu, 17 Dec 2020 08:55:12 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "zhengyongjun3@huawei.com" <zhengyongjun3@huawei.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH wireless -next] rtw88: Delete useless kfree code
-Thread-Topic: [PATCH wireless -next] rtw88: Delete useless kfree code
-Thread-Index: AQHW06wufMk6AY6elEmDiuhimIySVan58QiA
-Date:   Thu, 17 Dec 2020 00:55:12 +0000
-Message-ID: <1608166499.2560.0.camel@realtek.com>
-References: <20201216130442.13869-1-zhengyongjun3@huawei.com>
-In-Reply-To: <20201216130442.13869-1-zhengyongjun3@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
+        Thu, 17 Dec 2020 01:36:53 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608186992; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=T98ZymsfGkNAWJBzVsq/XoQMbTEjejDOaTahaJBxNK4=;
+ b=q4JIkIfEc1vJQcM79t4jb+9tnYXki2N6Ki6uvktpdwVDaAhJuPce7d8wzjQFhZ06Xi5kRVfo
+ KHfXhMUhXLS2KSVirxICuMbVsPi0LZRtZdML7BMPZwl8J/ezp5upDboe4UvEAuOJJObpHAoE
+ trrUWOwbie8sSgDnwL2GHBENhNY=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 5fdafc510564dfefcdc974e0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Dec 2020 06:36:01
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0C71EC43463; Thu, 17 Dec 2020 06:36:01 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1AB14C433C6;
+        Thu, 17 Dec 2020 06:35:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1AB14C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <AD0CF813C7FD8447A8AAD43163028802@realtek.com>
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] ath11k: add missing null check on allocated skb
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201214232417.84556-1-colin.king@canonical.com>
+References: <20201214232417.84556-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Carl Huang <cjhuang@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201217063601.0C71EC43463@smtp.codeaurora.org>
+Date:   Thu, 17 Dec 2020 06:36:01 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gV2VkLCAyMDIwLTEyLTE2IGF0IDEzOjA0ICswMDAwLCBaaGVuZyBZb25nanVuIHdyb3RlOg0K
-PiBUaGUgcGFyYW1ldGVyIG9mIGtmcmVlIGZ1bmN0aW9uIGlzIE5VTEwsIHNvIGtmcmVlIGNvZGUg
-aXMgdXNlbGVzcywgZGVsZXRlIGl0Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogWmhlbmcgWW9uZ2p1
-biA8emhlbmd5b25nanVuM0BodWF3ZWkuY29tPg0KDQpBY2tlZC1ieTogUGluZy1LZSBTaGloIDxw
-a3NoaWhAcmVhbHRlay5jb20+DQoNCj4gLS0tDQo+IMKgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydHc4OC9tYWluLmMgfCAxIC0NCj4gwqAxIGZpbGUgY2hhbmdlZCwgMSBkZWxldGlvbigt
-KQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgv
-bWFpbi5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMNCj4g
-aW5kZXggNTY1ZWZkODgwNjI0Li4xNTU2OGNkNjcwYTMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+IEBAIC0xMjQ5LDcgKzEyNDksNiBAQCBzdGF0
-aWMgdm9pZCBydHdfc2V0X3N1cHBvcnRlZF9iYW5kKHN0cnVjdCBpZWVlODAyMTFfaHcNCj4gKmh3
-LA0KPiDCoA0KPiDCoGVycl9vdXQ6DQo+IMKgCXJ0d19lcnIocnR3ZGV2LCAiZmFpbGVkIHRvIHNl
-dCBzdXBwb3J0ZWQgYmFuZFxuIik7DQo+IC0Ja2ZyZWUoc2JhbmQpOw0KPiDCoH0NCj4gwqANCj4g
-wqBzdGF0aWMgdm9pZCBydHdfdW5zZXRfc3VwcG9ydGVkX2JhbmQoc3RydWN0IGllZWU4MDIxMV9o
-dyAqaHcsDQoNCg0K
+Colin King <colin.king@canonical.com> wrote:
+
+> Currently the null check on a newly allocated skb is missing and
+> this can lead to a null pointer dereference is the allocation fails.
+> Fix this by adding a null check and returning -ENOMEM.
+> 
+> Addresses-Coverity: ("Dereference null return")
+> Fixes: 43ed15e1ee01 ("ath11k: put hw to DBS using WMI_PDEV_SET_HW_MODE_CMDID")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+
+Patch applied to ath-current branch of ath.git, thanks.
+
+c86a36a621f2 ath11k: add missing null check on allocated skb
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20201214232417.84556-1-colin.king@canonical.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
