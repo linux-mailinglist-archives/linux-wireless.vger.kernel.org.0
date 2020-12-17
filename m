@@ -2,91 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D77D2DD009
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 12:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7C52DD0D7
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 12:53:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726631AbgLQLFc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 06:05:32 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:54228 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726155AbgLQLFb (ORCPT
+        id S1727303AbgLQLwy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 06:52:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48264 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726631AbgLQLwx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 06:05:31 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BHB0M6V097193;
-        Thu, 17 Dec 2020 11:04:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=5du7UrNqi0DDuPeUMHRCtr/U1TqeqgG+zv++ABVxKYM=;
- b=c0Zo9lgFtOe0Y9/r/B+4Hli/2EQZAMM+uTjvsWlYZ7gzlTLy70Eq/Y65KOr3IsRfWghH
- eS+hMqOh9/oo31jxZKQUh5ZhvLc4jgYpXhTK83kg+1q9ZxSS3Yz6m56kUVg8osDBDaVt
- xqB2iShHeFSbS8pj/YHBUC0VGo0fFk1Add4WZCzNNivOTNEs0viYlZOOcnNzOO0DZkv6
- olLSQM2lUSIV+pQTGG9N/HuDdRdg/2pO9VvLX2WjV6camx0FG7Px090SKvCDJpTGeWzJ
- ECX/txQqpcgfen2CvJJf7xtSliZceNi2rNEAGveACSWem8aXdsYiJTT5PDtbWYyKzsct sg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 35cn9rmukv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 17 Dec 2020 11:04:40 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BHB1Fwe096231;
-        Thu, 17 Dec 2020 11:04:40 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 35g3redv9m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 17 Dec 2020 11:04:40 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BHB4dEv016875;
-        Thu, 17 Dec 2020 11:04:39 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 17 Dec 2020 03:04:39 -0800
-Date:   Thu, 17 Dec 2020 14:04:32 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ath11k: dp: clean up a variable name
-Message-ID: <X9s7QAHDM2OTIo3a@mwanda>
+        Thu, 17 Dec 2020 06:52:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1608205887;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fOFdFRmxlC/MY/hwHY3z4AJ/88+5ehhfJJwxKIclB2k=;
+        b=UbjwFN9U4Ndz+Oan8NTUADlJsgMIrZYVkqOyh3P09iRujlMzZLBxCMKzAqai/qMoTfjOFa
+        Nsq/6/e1KLPhkXKwLy802pahCenzM1NlkOua9ZiOMB8emO6rxEIjezv4oq7N3y6Lgo1iN6
+        IdkCuiqKShndMg7w/aSeUi4kmqGYWi4=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-503-L50JD5G7MimG5Dgh9u780A-1; Thu, 17 Dec 2020 06:51:25 -0500
+X-MC-Unique: L50JD5G7MimG5Dgh9u780A-1
+Received: by mail-ej1-f70.google.com with SMTP id h17so8466286ejk.21
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 03:51:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=fOFdFRmxlC/MY/hwHY3z4AJ/88+5ehhfJJwxKIclB2k=;
+        b=Wz8inWZnZYfLchiWAttz+Xnu5yezH+76Vn+SLXQX+39uI19tAz3LMyKr/qjZQIg5dg
+         GmN3xCTdDji4KebscVlOo6Uxn8D5S8GFcGzqv5wOWWKXkTGyDDrST4FROruqX8r0AMdR
+         xDY5/Q497Ls+2hH5qkzI89hAdWgXtR/e3Rmio+EbBAL02tuxkBsx+9coQIkw/2fvztsR
+         IMyfK4Ag+jWRM++F3snjdU+uV9xBtpcGDMmv4/JpFFVi7arICNl+chKZ0Y38YY0thQoW
+         biD+re50WPWQzYLGJ33sAFNqcmmTEnhSP6iiMMHm/869UPTgufJKgfOoa8w+65UVnW2A
+         8WZw==
+X-Gm-Message-State: AOAM530Hf2iIx8Kw5kVTxmo2MH5B6smki8bfrqp3zJnQ2X65Fp3QOLxp
+        eqKeXXDVVfEgWFwSNIM6wUN8yKtaI4KvKe/yVNoHLHdeT90E5LBtnrKG01yiHLWgIuUir9haTet
+        t/DLBxssAb8vJ/d7vY/Dr1TmI2VA=
+X-Received: by 2002:a50:f089:: with SMTP id v9mr39072666edl.353.1608205884566;
+        Thu, 17 Dec 2020 03:51:24 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyxMB0atHxiqp4Lwd8C6FYXRj+umNI+gfHIxWaNlpFVQhmWpXGRuPZBZjJTlKEVstPQlGAcsQ==
+X-Received: by 2002:a50:f089:: with SMTP id v9mr39072652edl.353.1608205884442;
+        Thu, 17 Dec 2020 03:51:24 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id o10sm3556607eju.89.2020.12.17.03.51.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Dec 2020 03:51:23 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 88C5D1802A7; Thu, 17 Dec 2020 12:51:23 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: Re: [PATCH 1/7] net/fq_impl: bulk-free packets from a flow on
+ overmemory
+In-Reply-To: <20201216204316.44498-1-nbd@nbd.name>
+References: <20201216204316.44498-1-nbd@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Thu, 17 Dec 2020 12:51:23 +0100
+Message-ID: <87ft44bqh0.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9837 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
- spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012170080
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9837 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012170080
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The "&ar->ab->base_lock" and "&ab->base_lock" locks are the same lock
-but it's nicer to use the same name consistently everywhere.
+Felix Fietkau <nbd@nbd.name> writes:
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> This is similar to what sch_fq_codel does. It also amortizes the worst
+> case cost of a follow-up patch that changes the selection of the biggest
+> flow for dropping packets
+>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 205c0f1a40e9..1b6e663ae784 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1163,7 +1163,7 @@ int ath11k_dp_peer_rx_pn_replay_config(struct ath11k_vif *arvif,
- 		}
- 	}
- 
--	spin_unlock_bh(&ar->ab->base_lock);
-+	spin_unlock_bh(&ab->base_lock);
- 
- 	return ret;
- }
--- 
-2.29.2
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
