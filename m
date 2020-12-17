@@ -2,125 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B07DA2DD553
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 17:38:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A969A2DD555
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 17:39:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728109AbgLQQiE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 11:38:04 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:10238 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726613AbgLQQiD (ORCPT
+        id S1728127AbgLQQiu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 11:38:50 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:44206 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726773AbgLQQiu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 11:38:03 -0500
+        Thu, 17 Dec 2020 11:38:50 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608223064; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1608223110; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=Vx2C+sbNgyVTbuysVJH2GaPKH7UYBSRxZzN5DSynQGA=;
- b=H0T3k+wIXpUd+0IwSmoxTpg98v8f8jt1Z/KZpw89APmClk77a0S3J285yD48GFZ+G3J6JoLU
- BTieebILU6sS1YV0uEb+StihBP8L5jddQBGg2amXqA51N4281Ay3L6eLOVteSfKC873dNnby
- 46Q4NdX1Ro1rW4dmxtKwIexpzpc=
-X-Mailgun-Sending-Ip: 69.72.43.15
+ Content-Type: Sender; bh=Xg9MEWAHElZcDTMwerb+8DDdxVXFnWzkVVWchBYm6RE=;
+ b=GYBiCfl4d7Jq6hUbGXxdzDrg0///cfbHXmBtJU2FQVtOYx9tZJXNy4Xioy3GlpQOuXWxjEPA
+ WjptexQqYUZSGdXsYxjibp+tZw20WNZLWgZPS10gT5NJDT6Bv2T3CN7nV1sck6i7EIhFXHCw
+ D8ow6TsZMBCYVmsaN4lmHX4FJ6Y=
+X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5fdb89540564dfefcd8d3bb4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Dec 2020 16:37:40
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5fdb896b031793dcb416b8f1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Dec 2020 16:38:03
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 65051C433ED; Thu, 17 Dec 2020 16:37:39 +0000 (UTC)
+        id 25D23C43461; Thu, 17 Dec 2020 16:38:02 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id ECDF1C433C6;
-        Thu, 17 Dec 2020 16:37:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ECDF1C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A0348C433CA;
+        Thu, 17 Dec 2020 16:38:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A0348C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mt76: mt76u: fix NULL pointer dereference in
- mt76u_status_worker
+Subject: Re: [PATCH v2] rtlwifi: rise completion at the last step of firmware
+ callback
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <cd44dc407cf3e5f27688105d4a75fb1c68e62b06.1607419147.git.lorenzo@kernel.org>
-References: <cd44dc407cf3e5f27688105d4a75fb1c68e62b06.1607419147.git.lorenzo@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com
+In-Reply-To: <20201214053106.7748-1-pkshih@realtek.com>
+References: <20201214053106.7748-1-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <Larry.Finger@lwfinger.net>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20201217163739.65051C433ED@smtp.codeaurora.org>
-Date:   Thu, 17 Dec 2020 16:37:39 +0000 (UTC)
+Message-Id: <20201217163802.25D23C43461@smtp.codeaurora.org>
+Date:   Thu, 17 Dec 2020 16:38:02 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Fix the following NULL pointer dereference in mt76u_status_worker that
-> can occur if status thread runs before allocating tx queues
+> request_firmware_nowait() which schedules another work is used to load
+> firmware when USB is probing. If USB is unplugged before running the
+> firmware work, it goes disconnect ops, and then causes use-after-free.
+> Though we wait for completion of firmware work before freeing the hw,
+> firmware callback rises completion too early. So I move it to the
+> last step.
 > 
-> [   31.395373] BUG: kernel NULL pointer dereference, address: 000000000000002c
-> [   31.395769] #PF: supervisor read access in kernel mode
-> [   31.395985] #PF: error_code(0x0000) - not-present page
-> [   31.396178] PGD 0 P4D 0
-> [   31.396277] Oops: 0000 [#1] SMP
-> [   31.396430] CPU: 3 PID: 337 Comm: mt76-usb-status Not tainted 5.10.0-rc1-kvm+ #49
-> [   31.396703] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.13.0-3.fc33 04/01/2014
-> [   31.397048] RIP: 0010:mt76u_status_worker+0x2b/0x190
-> [   31.397931] RSP: 0018:ffffc9000076fe98 EFLAGS: 00010282
-> [   31.398118] RAX: 0000000000000001 RBX: ffff888111203fe8 RCX: 0000000000000000
-> [   31.398400] RDX: 0000000000000001 RSI: 0000000000000246 RDI: ffff888111203fe8
-> [   31.398668] RBP: ffff888111201d00 R08: 000000000000038c R09: 000000000000009b
-> [   31.398952] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-> [   31.399235] R13: 0000000000000000 R14: 0000000000000000 R15: ffff88810c987300
-> [   31.399494] FS:  0000000000000000(0000) GS:ffff88817bd80000(0000) knlGS:0000000000000000
-> [   31.399767] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   31.399991] CR2: 000000000000002c CR3: 0000000103525000 CR4: 00000000000006a0
-> [   31.400236] Call Trace:
-> [   31.400348]  ? schedule+0x3e/0xa0
-> [   31.400514]  __mt76_worker_fn+0x71/0xa0
-> [   31.400634]  ? mt76_get_min_avg_rssi+0x110/0x110
-> [   31.400827]  kthread+0x118/0x130
-> [   31.400984]  ? __kthread_bind_mask+0x60/0x60
-> [   31.401212]  ret_from_fork+0x1f/0x30
-> [   31.401353] Modules linked in:
-> [   31.401480] CR2: 000000000000002c
-> [   31.401627] ---[ end trace 8bf174505cc34851 ]---
-> [   31.401798] RIP: 0010:mt76u_status_worker+0x2b/0x190
-> [   31.402636] RSP: 0018:ffffc9000076fe98 EFLAGS: 00010282
-> [   31.402829] RAX: 0000000000000001 RBX: ffff888111203fe8 RCX: 0000000000000000
-> [   31.403118] RDX: 0000000000000001 RSI: 0000000000000246 RDI: ffff888111203fe8
-> [   31.403424] RBP: ffff888111201d00 R08: 000000000000038c R09: 000000000000009b
-> [   31.403689] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-> [   31.403933] R13: 0000000000000000 R14: 0000000000000000 R15: ffff88810c987300
-> [   31.404209] FS:  0000000000000000(0000) GS:ffff88817bd80000(0000) knlGS:0000000000000000
-> [   31.404482] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   31.404726] CR2: 000000000000002c CR3: 0000000103525000 CR4: 00000000000006a0
-> [   31.405294] mt76x0u: probe of 1-1:1.0 failed with error -110
-> [   31.406007] usb 1-1: USB disconnect, device number 2
-> [   31.840756] usb 1-1: new high-speed USB device number 3 using xhci_hcd
-> [   32.461295] usb 1-1: reset high-speed USB device number 3 using xhci_hcd
-> [   32.659932] mt76x0u 1-1:1.0: ASIC revision: 76100002 MAC revision: 76502000
-> [   33.197032] mt76x0u 1-1:1.0: EEPROM ver:02 fae:01
+> usb 5-1: Direct firmware load for rtlwifi/rtl8192cufw.bin failed with error -2
+> rtlwifi: Loading alternative firmware rtlwifi/rtl8192cufw.bin
+> rtlwifi: Selected firmware is not available
+> ==================================================================
+> BUG: KASAN: use-after-free in rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
+> Write of size 4 at addr ffff8881454cff50 by task kworker/0:6/7379
 > 
-> Fixes: 9daf27e62852 ("mt76: mt76u: use dedicated thread for status work")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> CPU: 0 PID: 7379 Comm: kworker/0:6 Not tainted 5.10.0-rc7-syzkaller #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+> Workqueue: events request_firmware_work_func
+> Call Trace:
+>  __dump_stack lib/dump_stack.c:77 [inline]
+>  dump_stack+0x107/0x163 lib/dump_stack.c:118
+>  print_address_description.constprop.0.cold+0xae/0x4c8 mm/kasan/report.c:385
+>  __kasan_report mm/kasan/report.c:545 [inline]
+>  kasan_report.cold+0x1f/0x37 mm/kasan/report.c:562
+>  rtl_fw_do_work.cold+0x68/0x6a drivers/net/wireless/realtek/rtlwifi/core.c:93
+>  request_firmware_work_func+0x12c/0x230 drivers/base/firmware_loader/main.c:1079
+>  process_one_work+0x933/0x1520 kernel/workqueue.c:2272
+>  worker_thread+0x64c/0x1120 kernel/workqueue.c:2418
+>  kthread+0x38c/0x460 kernel/kthread.c:292
+>  ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
+> 
+> The buggy address belongs to the page:
+> page:00000000f54435b3 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1454cf
+> flags: 0x200000000000000()
+> raw: 0200000000000000 0000000000000000 ffffea00051533c8 0000000000000000
+> raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+> page dumped because: kasan: bad access detected
+> 
+> Memory state around the buggy address:
+>  ffff8881454cfe00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>  ffff8881454cfe80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> >ffff8881454cff00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>                                                  ^
+>  ffff8881454cff80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>  ffff8881454d0000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+> 
+> Reported-by: syzbot+65be4277f3c489293939@syzkaller.appspotmail.com
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-drivers.git, thanks.
 
-e7f6f893ac39 mt76: mt76u: fix NULL pointer dereference in mt76u_status_worker
+4dfde294b979 rtlwifi: rise completion at the last step of firmware callback
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/cd44dc407cf3e5f27688105d4a75fb1c68e62b06.1607419147.git.lorenzo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201214053106.7748-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
