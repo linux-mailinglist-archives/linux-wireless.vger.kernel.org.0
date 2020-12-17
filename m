@@ -2,72 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C1142DCE91
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 10:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D77D2DD009
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 12:05:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726503AbgLQJlo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 04:41:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41802 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726155AbgLQJln (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 04:41:43 -0500
-Date:   Thu, 17 Dec 2020 10:40:59 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608198062;
-        bh=k9VsqX5zgs+qa4UGHl7EKWy6DX64SQa2wvRJvdVKswg=;
-        h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iv2Ke4P2qqYmxyQVijmbu2ZzpZexfRQJIOvwn4IlpFGLtTQ1PEMSLdx8fKn0MKBLo
-         8fREXOwBmRJgzbKOLG1OnjUXM+aJbXJqhAxYGOekwIkRdLb/5GdSOYAStZjn8GE317
-         Ttc6mK44FIEBycJ/vofDDnxHYl9oo3EVe00H0Tp5G8/4a22gz43pxfNXpaSJbwqyRN
-         AEIbGFMh1PNkwctCZoFjrgPDbbweSmCvnVtvTOa2J7tz5z6ZmKae75sQ8/ObsL0maw
-         uoT3bz8otEifilxSo32BF6+wDxzJl07SiL3Qhyn3XYf6WG97xpt0mcYmsp9LR+KX+z
-         gNU0zG/C/MZMg==
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+        id S1726631AbgLQLFc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 06:05:32 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:54228 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726155AbgLQLFb (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Dec 2020 06:05:31 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BHB0M6V097193;
+        Thu, 17 Dec 2020 11:04:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=5du7UrNqi0DDuPeUMHRCtr/U1TqeqgG+zv++ABVxKYM=;
+ b=c0Zo9lgFtOe0Y9/r/B+4Hli/2EQZAMM+uTjvsWlYZ7gzlTLy70Eq/Y65KOr3IsRfWghH
+ eS+hMqOh9/oo31jxZKQUh5ZhvLc4jgYpXhTK83kg+1q9ZxSS3Yz6m56kUVg8osDBDaVt
+ xqB2iShHeFSbS8pj/YHBUC0VGo0fFk1Add4WZCzNNivOTNEs0viYlZOOcnNzOO0DZkv6
+ olLSQM2lUSIV+pQTGG9N/HuDdRdg/2pO9VvLX2WjV6camx0FG7Px090SKvCDJpTGeWzJ
+ ECX/txQqpcgfen2CvJJf7xtSliZceNi2rNEAGveACSWem8aXdsYiJTT5PDtbWYyKzsct sg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 35cn9rmukv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 17 Dec 2020 11:04:40 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BHB1Fwe096231;
+        Thu, 17 Dec 2020 11:04:40 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 35g3redv9m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 17 Dec 2020 11:04:40 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BHB4dEv016875;
+        Thu, 17 Dec 2020 11:04:39 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 17 Dec 2020 03:04:39 -0800
+Date:   Thu, 17 Dec 2020 14:04:32 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jouni Malinen <jouni@codeaurora.org>, ath9k-devel@qca.qualcomm.com,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/5] ath: Use safer key clearing with key cache entries
-Message-ID: <20201217094059.zxyaiskfdypc7q47@pali>
-References: <20201214172118.18100-2-jouni@codeaurora.org>
- <20201217065148.188F7C433ED@smtp.codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] ath11k: dp: clean up a variable name
+Message-ID: <X9s7QAHDM2OTIo3a@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201217065148.188F7C433ED@smtp.codeaurora.org>
-User-Agent: NeoMutt/20180716
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9837 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012170080
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9837 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012170080
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thursday 17 December 2020 06:51:48 Kalle Valo wrote:
-> Jouni Malinen <jouni@codeaurora.org> wrote:
-> 
-> > It is possible for there to be pending frames in TXQs with a reference
-> > to the key cache entry that is being deleted. If such a key cache entry
-> > is cleared, those pending frame in TXQ might get transmitted without
-> > proper encryption. It is safer to leave the previously used key into the
-> > key cache in such cases. Instead, only clear the MAC address to prevent
-> > RX processing from using this key cache entry.
-> > 
-> > This is needed in particularly in AP mode where the TXQs cannot be
-> > flushed on station disconnection. This change alone may not be able to
-> > address all cases where the key cache entry might get reused for other
-> > purposes immediately (the key cache entry should be released for reuse
-> > only once the TXQs do not have any remaining references to them), but
-> > this makes it less likely to get unprotected frames and the more
-> > complete changes may end up being significantly more complex.
-> > 
-> > Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
-> > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-> 
-> 5 patches applied to ath-next branch of ath.git, thanks.
-> 
-> 56c5485c9e44 ath: Use safer key clearing with key cache entries
-> 73488cb2fa3b ath9k: Clear key cache explicitly on disabling hardware
-> d2d3e36498dd ath: Export ath_hw_keysetmac()
-> 144cd24dbc36 ath: Modify ath_key_delete() to not need full key entry
-> ca2848022c12 ath9k: Postpone key cache entry deletion for TXQ frames reference it
+The "&ar->ab->base_lock" and "&ab->base_lock" locks are the same lock
+but it's nicer to use the same name consistently everywhere.
 
-Hello! Should not these patches be suitable for backporting into stable
-kernels (via CC: stable@ commit message line) as they are related to
-security issue CVE-2020-3702?
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 205c0f1a40e9..1b6e663ae784 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1163,7 +1163,7 @@ int ath11k_dp_peer_rx_pn_replay_config(struct ath11k_vif *arvif,
+ 		}
+ 	}
+ 
+-	spin_unlock_bh(&ar->ab->base_lock);
++	spin_unlock_bh(&ab->base_lock);
+ 
+ 	return ret;
+ }
+-- 
+2.29.2
+
