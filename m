@@ -2,88 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C73AC2DD48C
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 16:49:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEA252DD4F2
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 17:08:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727260AbgLQPtR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 10:49:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48620 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726488AbgLQPtQ (ORCPT
+        id S1727303AbgLQQH1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 11:07:27 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:29511 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726595AbgLQQH1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 10:49:16 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC34FC0617A7
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 07:48:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=kLRlpJ2TWLDPPAbeHaEFlx9t97OCc2bBAhpKSZjJPI0=; b=EfekbltB2eoVvC+9T8yVXdtZt1
-        STQVDTg8G4oa+U1+cfZJPnItVDlkSKjXiSXuV1kVoyzSxHxGodDxj1VQ/f1kosFJ4FbCQszRtvs3N
-        QE8n9W482xtl4m5jUC0M08CkGMwbHXZA3IlkSDA1CtQsJf2HbI7g+GiKGoSk/K8Z5/y0=;
-Received: from p4ff13815.dip0.t-ipconnect.de ([79.241.56.21] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kpvVo-0003um-Sd; Thu, 17 Dec 2020 16:48:16 +0100
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        Thu, 17 Dec 2020 11:07:27 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608221223; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=QAEgX2Wvaq+oBIXDEcZp5ABlmZruy4PcNZJC3K3tuKk=; b=bXzsv6/bm6gc7hPHQRPguAeZQhjFG8iKS+mFKRkpCtH+rxFRDKcIduNsRSN+HegXJJQAsFf4
+ yitTXgEhMK5vgt/VHzD6wsthuJvlTzBPkh4+MZNhWv+TrkzZ3WreM0uhGWCEQfFwphgWDq5f
+ 71T4zJBsuIkMoEkSaRhSCsHGAAo=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
+ 5fdb82087549779c5b324474 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Dec 2020 16:06:32
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B300EC433CA; Thu, 17 Dec 2020 16:06:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 74770C433C6;
+        Thu, 17 Dec 2020 16:06:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 74770C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>
+Cc:     Jouni Malinen <jouni@codeaurora.org>, ath9k-devel@qca.qualcomm.com,
         linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-References: <20201216204316.44498-1-nbd@nbd.name>
- <20201216204316.44498-2-nbd@nbd.name> <87czz8bqbj.fsf@toke.dk>
- <add3d1fa-c2ad-5aaf-83c7-31e919129bbf@nbd.name> <871rfobn8w.fsf@toke.dk>
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH 2/7] mac80211: force calculation of software hash for tx
- fair queueing
-Message-ID: <07ad2533-b477-abf1-5176-0521ca9ddf82@nbd.name>
-Date:   Thu, 17 Dec 2020 16:48:15 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.5.0
+Subject: Re: [PATCH 1/5] ath: Use safer key clearing with key cache entries
+References: <20201214172118.18100-2-jouni@codeaurora.org>
+        <20201217065148.188F7C433ED@smtp.codeaurora.org>
+        <20201217094059.zxyaiskfdypc7q47@pali>
+Date:   Thu, 17 Dec 2020 18:06:27 +0200
+In-Reply-To: <20201217094059.zxyaiskfdypc7q47@pali> ("Pali \=\?utf-8\?Q\?Roh\?\=
+ \=\?utf-8\?Q\?\=C3\=A1r\=22's\?\= message of
+        "Thu, 17 Dec 2020 10:40:59 +0100")
+Message-ID: <871rfoto1o.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <871rfobn8w.fsf@toke.dk>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Pali Roh=C3=A1r <pali@kernel.org> writes:
 
-On 2020-12-17 14:01, Toke Høiland-Jørgensen wrote:
-> Felix Fietkau <nbd@nbd.name> writes:
-> 
->> On 2020-12-17 12:54, Toke Høiland-Jørgensen wrote:
->>> Felix Fietkau <nbd@nbd.name> writes:
->>> 
->>>> Depending on the source, a hardware calculated hash may not provide the
->>>> same level of collision resistance.
->>> 
->>> This seems like it would have performance implications?
->>> 
->>> Also, this can potentially discard information from tunnels that
->>> preserve the hash before encapsulation (we added support for this to
->>> Wireguard which had some nice effects on queueing of encapsulated
->>> traffic).
->> If the hash was calculated in software using the flow dissector, it will
->> be preserved, even if it went through a few virtual interfaces.
->> The only hashes discarded are hardware generated ones.
-> 
-> Yeah, but I was thinking something like:
-> 
-> Packet comes in with HW hash -> gets encapsulated (preserving the hash)
-> -> gets to mac80211 which discards the HW hash. So now you're replacing
-> a (possibly bad-quality) HW hash with a software hash of the *outer*
-> encapsulation header...
-If this becomes a problem, I think we should add a similar patch to
-wireguard, which already calls skb_get_hash before encapsulating.
-Other regular tunnels should already get a proper hash, since the flow
-dissector will take care of it.
+> On Thursday 17 December 2020 06:51:48 Kalle Valo wrote:
+>> Jouni Malinen <jouni@codeaurora.org> wrote:
+>>=20
+>> > It is possible for there to be pending frames in TXQs with a reference
+>> > to the key cache entry that is being deleted. If such a key cache entry
+>> > is cleared, those pending frame in TXQ might get transmitted without
+>> > proper encryption. It is safer to leave the previously used key into t=
+he
+>> > key cache in such cases. Instead, only clear the MAC address to prevent
+>> > RX processing from using this key cache entry.
+>> >=20
+>> > This is needed in particularly in AP mode where the TXQs cannot be
+>> > flushed on station disconnection. This change alone may not be able to
+>> > address all cases where the key cache entry might get reused for other
+>> > purposes immediately (the key cache entry should be released for reuse
+>> > only once the TXQs do not have any remaining references to them), but
+>> > this makes it less likely to get unprotected frames and the more
+>> > complete changes may end up being significantly more complex.
+>> >=20
+>> > Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+>> > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>>=20
+>> 5 patches applied to ath-next branch of ath.git, thanks.
+>>=20
+>> 56c5485c9e44 ath: Use safer key clearing with key cache entries
+>> 73488cb2fa3b ath9k: Clear key cache explicitly on disabling hardware
+>> d2d3e36498dd ath: Export ath_hw_keysetmac()
+>> 144cd24dbc36 ath: Modify ath_key_delete() to not need full key entry
+>> ca2848022c12 ath9k: Postpone key cache entry deletion for TXQ frames ref=
+erence it
+>
+> Hello! Should not these patches be suitable for backporting into stable
+> kernels (via CC: stable@ commit message line) as they are related to
+> security issue CVE-2020-3702?
 
-The reason I did this patch is because I have a patch to set the hw flow
-hash in the skb on mtk_eth_soc, which does help GRO, but leads to
-collisions on mac80211 fq.
+Yeah, but you were just a little late as I already applied them.
 
-- Felix
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
