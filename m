@@ -2,133 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 685FD2DD21F
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 14:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 406022DD40F
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 16:23:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728080AbgLQN0t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 08:26:49 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:37016 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727160AbgLQN0t (ORCPT
+        id S1728789AbgLQPXO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 10:23:14 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:28918 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728760AbgLQPXO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 08:26:49 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.69])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1kptHz-003JCS-M9; Thu, 17 Dec 2020 15:25:52 +0200
-Message-ID: <bd0157de19815f7e7d8f009539326fadfee61089.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 17 Dec 2020 15:25:50 +0200
-In-Reply-To: <d70a4e97-48e0-a4a4-40c2-77a7557db2ce@samsung.com>
-References: <20201129153055.1971298-1-luca@coelho.fi>
-         <iwlwifi.20201129172929.290fa5c5568a.Ic5732aa64de6ee97ae3578bd5779fc723ba489d1@changeid>
-         <CGME20201216102006eucas1p18cede9af63b9ad4aed211ecf47c9aa8f@eucas1p1.samsung.com>
-         <d70a4e97-48e0-a4a4-40c2-77a7557db2ce@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.1-2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+        Thu, 17 Dec 2020 10:23:14 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608218570; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=pyf2tLIZ+/7kutI8YsczrpoByzU49mm9UT18IYwlNEs=; b=Cqj3jSqL+0Lqmw32Tpx7UXO7dK19qd2eb8RRrb4ccJA/QFrZ+3yVKQ82TqpClapC0VriNBAs
+ KabQ7T4yGIUrmweAaOgzXq7aND617c0GTCapqIkf2ULCWJhp9JEXi5yKbM5fEimgce+haQq3
+ lfujxg0NERdWIz2XiceeMLW4WKQ=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
+ 5fdb77a793a3d2b1cda629e2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Dec 2020 15:22:15
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 035E0C433CA; Thu, 17 Dec 2020 15:22:15 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: Re: [PATCH 09/13] cfg80211: Save the regulatory domain when setting
- custom regulatory
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8B4E3C433C6;
+        Thu, 17 Dec 2020 15:22:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8B4E3C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v2] ath11k: pci: disable ASPM L0sLs before downloading firmware
+Date:   Thu, 17 Dec 2020 17:22:10 +0200
+Message-Id: <1608218530-15426-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-12-16 at 11:20 +0100, Marek Szyprowski wrote:
-> Hi Luca,
+From: Carl Huang <cjhuang@codeaurora.org>
 
-Hi Marek,
+Sometimes QCA6390 doesn't switch to amss state as device enters
+L1ss state, so disable L0sL1s during firmware downloading.
+Driver recovers the ASPM to default value in start callback
+or powerdown callback.
 
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 
-> On 29.11.2020 16:30, Luca Coelho wrote:
-> > From: Ilan Peer <ilan.peer@intel.com>
-> > 
-> > When custom regulatory was set, only the channels setting was updated, but
-> > the regulatory domain was not saved. Fix it by saving it.
-> > 
-> > Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> 
-> This patch landed recently in linux-next as commit beee24695157 
-> ("cfg80211: Save the regulatory domain when setting custom regulatory"). 
-> It triggers the following warning on all boards I have, which use 
-> Broadcom chips. Here is an example from Raspberry Pi4:
-> 
-> cfg80211: Loading compiled-in X.509 certificates for regulatory database
-> cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-> cfg80211: loaded regulatory.db is malformed or signature is missing/invalid
-> brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43455-sdio for chip 
-> BCM4345/6
-> brcmfmac mmc1:0001:1: Direct firmware load for 
-> brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt failed with error -2
-> brcmfmac mmc1:0001:1: Falling back to sysfs fallback for: 
-> brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt
-> brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43455-sdio for chip 
-> BCM4345/6
-> brcmfmac: brcmf_c_process_clm_blob: no clm_blob available (err=-11), 
-> device may have limited channels available
-> brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/6 wl0: Mar  1 2015 
-> 07:29:38 version 7.45.18 (r538002) FWID 01-6a2c8ad4
-> Bluetooth: hci0: BCM: chip id 107
-> Bluetooth: hci0: BCM: features 0x2f
-> Bluetooth: hci0: BCM4345C0
-> Bluetooth: hci0: BCM4345C0 (003.001.025) build 0000
-> Bluetooth: hci0: BCM4345C0 'brcm/BCM4345C0.hcd' Patch
-> 
-> =============================
-> WARNING: suspicious RCU usage
-> 5.10.0-next-20201215+ #9962 Not tainted
-> -----------------------------
-> net/wireless/reg.c:144 suspicious rcu_dereference_check() usage!
-> 
-> other info that might help us debug this:
-> 
-> 
-> rcu_scheduler_active = 2, debug_locks = 1
-> 2 locks held by kworker/1:1/32:
->   #0: ffff000003405738 ((wq_completion)events){+.+.}-{0:0}, at: 
-> process_one_work+0x200/0x728
->   #1: ffff80001321bdc0 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, 
-> at: process_one_work+0x200/0x728
-> 
-> stack backtrace:
-> CPU: 1 PID: 32 Comm: kworker/1:1 Not tainted 5.10.0-next-20201215+ #9962
-> Hardware name: Raspberry Pi 4 Model B (DT)
-> Workqueue: events request_firmware_work_func
-> Call trace:
->   dump_backtrace+0x0/0x1d0
->   show_stack+0x14/0x60
->   dump_stack+0xf4/0x15c
->   lockdep_rcu_suspicious+0xd4/0xf8
->   get_wiphy_regdom+0x6c/0x70 [cfg80211]
->   wiphy_apply_custom_regulatory+0x80/0xc8 [cfg80211]
->   brcmf_cfg80211_attach+0xb44/0x1330 [brcmfmac]
->   brcmf_attach+0x174/0x4b8 [brcmfmac]
->   brcmf_sdio_firmware_callback+0x670/0x7c8 [brcmfmac]
->   brcmf_fw_request_done+0x7c/0x100 [brcmfmac]
->   request_firmware_work_func+0x4c/0xd8
->   process_one_work+0x2a8/0x728
->   worker_thread+0x48/0x460
->   kthread+0x134/0x160
->   ret_from_fork+0x10/0x18
-> 
-> Reverting this patch on top of linux next-20201215 hides this issue.
+Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+---
 
-This is indeed an issue.  Now syzbot also reported it.  We currently
-have an issue with our test machinery that is not enabling lockdep and
-other lock checks...
+v2:
 
-We'll fix this asap.
+* add debug messages for asmp state 
 
---
-Cheers,
-Luca.
+* add comment to power_down()
+
+ drivers/net/wireless/ath/ath11k/pci.c | 36 +++++++++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/pci.h |  2 ++
+ 2 files changed, 38 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index 9f9a824a4c2d..20b415cd96c4 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -886,6 +886,32 @@ static void ath11k_pci_free_region(struct ath11k_pci *ab_pci)
+ 		pci_disable_device(pci_dev);
+ }
+ 
++static void ath11k_pci_aspm_disable(struct ath11k_pci *ab_pci)
++{
++	struct ath11k_base *ab = ab_pci->ab;
++
++	pcie_capability_read_word(ab_pci->pdev, PCI_EXP_LNKCTL,
++				  &ab_pci->link_ctl);
++
++	ath11k_dbg(ab, ATH11K_DBG_PCI, "pci link_ctl 0x%04x L0s %d L1 %d\n",
++		   ab_pci->link_ctl,
++		   u16_get_bits(ab_pci->link_ctl, PCI_EXP_LNKCTL_ASPM_L0S),
++		   u16_get_bits(ab_pci->link_ctl, PCI_EXP_LNKCTL_ASPM_L1));
++
++	/* disable L0s and L1 */
++	pcie_capability_write_word(ab_pci->pdev, PCI_EXP_LNKCTL,
++				   ab_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
++
++	set_bit(ATH11K_PCI_ASPM_RESTORE, &ab_pci->flags);
++}
++
++static void ath11k_pci_aspm_restore(struct ath11k_pci *ab_pci)
++{
++	if (test_and_clear_bit(ATH11K_PCI_ASPM_RESTORE, &ab_pci->flags))
++		pcie_capability_write_word(ab_pci->pdev, PCI_EXP_LNKCTL,
++					   ab_pci->link_ctl);
++}
++
+ static int ath11k_pci_power_up(struct ath11k_base *ab)
+ {
+ 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
+@@ -895,6 +921,11 @@ static int ath11k_pci_power_up(struct ath11k_base *ab)
+ 	clear_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags);
+ 	ath11k_pci_sw_reset(ab_pci->ab, true);
+ 
++	/* Disable ASPM during firmware download due to problems switching
++	 * to AMSS state.
++	 */
++	ath11k_pci_aspm_disable(ab_pci);
++
+ 	ret = ath11k_mhi_start(ab_pci);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to start mhi: %d\n", ret);
+@@ -908,6 +939,9 @@ static void ath11k_pci_power_down(struct ath11k_base *ab)
+ {
+ 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
+ 
++	/* restore aspm in case firmware bootup fails */
++	ath11k_pci_aspm_restore(ab_pci);
++
+ 	ath11k_pci_force_wake(ab_pci->ab);
+ 	ath11k_mhi_stop(ab_pci);
+ 	clear_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags);
+@@ -965,6 +999,8 @@ static int ath11k_pci_start(struct ath11k_base *ab)
+ 
+ 	set_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags);
+ 
++	ath11k_pci_aspm_restore(ab_pci);
++
+ 	ath11k_pci_ce_irqs_enable(ab);
+ 	ath11k_ce_rx_post_buf(ab);
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/pci.h b/drivers/net/wireless/ath/ath11k/pci.h
+index 0432a702416b..fe44d0dfce19 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.h
++++ b/drivers/net/wireless/ath/ath11k/pci.h
+@@ -63,6 +63,7 @@ struct ath11k_msi_config {
+ enum ath11k_pci_flags {
+ 	ATH11K_PCI_FLAG_INIT_DONE,
+ 	ATH11K_PCI_FLAG_IS_MSI_64,
++	ATH11K_PCI_ASPM_RESTORE,
+ };
+ 
+ struct ath11k_pci {
+@@ -80,6 +81,7 @@ struct ath11k_pci {
+ 
+ 	/* enum ath11k_pci_flags */
+ 	unsigned long flags;
++	u16 link_ctl;
+ };
+ 
+ static inline struct ath11k_pci *ath11k_pci_priv(struct ath11k_base *ab)
+-- 
+2.7.4
 
