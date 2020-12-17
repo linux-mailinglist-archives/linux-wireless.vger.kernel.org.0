@@ -2,109 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA252DD4F2
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 17:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99B462DD4FF
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Dec 2020 17:15:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727303AbgLQQH1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 11:07:27 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:29511 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726595AbgLQQH1 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 11:07:27 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608221223; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=QAEgX2Wvaq+oBIXDEcZp5ABlmZruy4PcNZJC3K3tuKk=; b=bXzsv6/bm6gc7hPHQRPguAeZQhjFG8iKS+mFKRkpCtH+rxFRDKcIduNsRSN+HegXJJQAsFf4
- yitTXgEhMK5vgt/VHzD6wsthuJvlTzBPkh4+MZNhWv+TrkzZ3WreM0uhGWCEQfFwphgWDq5f
- 71T4zJBsuIkMoEkSaRhSCsHGAAo=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
- 5fdb82087549779c5b324474 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Dec 2020 16:06:32
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B300EC433CA; Thu, 17 Dec 2020 16:06:31 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 74770C433C6;
-        Thu, 17 Dec 2020 16:06:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 74770C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>
-Cc:     Jouni Malinen <jouni@codeaurora.org>, ath9k-devel@qca.qualcomm.com,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/5] ath: Use safer key clearing with key cache entries
-References: <20201214172118.18100-2-jouni@codeaurora.org>
-        <20201217065148.188F7C433ED@smtp.codeaurora.org>
-        <20201217094059.zxyaiskfdypc7q47@pali>
-Date:   Thu, 17 Dec 2020 18:06:27 +0200
-In-Reply-To: <20201217094059.zxyaiskfdypc7q47@pali> ("Pali \=\?utf-8\?Q\?Roh\?\=
- \=\?utf-8\?Q\?\=C3\=A1r\=22's\?\= message of
-        "Thu, 17 Dec 2020 10:40:59 +0100")
-Message-ID: <871rfoto1o.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1729070AbgLQQOh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Dec 2020 11:14:37 -0500
+Received: from mout.gmx.net ([212.227.15.15]:58331 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728557AbgLQQOh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Dec 2020 11:14:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1608221582;
+        bh=H/K6LcxaUKdmSw0wEx0G2afNapJefkNpyXyrVK6Aap0=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+        b=cqXAd53eTa4nRQPRx4iPtHfWGyieS7D3JHKmYE8VI17KlI7iU13fs1IPydSl2le8q
+         v3cV2RkPgf/HJw2piTPf7BT4BHmk8sYqes3K4+Mv8MW4U9nw82TdBtOm22/KubtUhJ
+         nsrbVmCC8qg+NF0MXG2/YWYe6za4glpJq9BiRzOE=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from E480 ([188.105.239.238]) by mail.gmx.com (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MG9kM-1ktIUU1bqO-00GW9w; Thu, 17
+ Dec 2020 17:13:02 +0100
+Date:   Thu, 17 Dec 2020 17:13:02 +0100
+From:   Zhi Han <z.han@gmx.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     kuba@kernel.org
+Subject: [PATCH] mt7601u: process URBs in status EPROTO properly
+Message-ID: <20201217161302.GA12562@E480>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:yjSfMX+ggaOTtZFbwNaz5Ro7oygNbamaGQX+dUQ/S/vuKvl0VU7
+ G/BCn7Yd8mm/Zm4Umrsgra++CX+bpzK5ZIjf9v5I333ZHZMswEdhHD5Ih9sKcmuxSReeLHe
+ QbvCMw4NEtNZi/ib2p0N9I4n5s3/gxZFq8oEm0TXDw5ZYTlSrTRJ5aK+NF9j8e2c9ok2yoU
+ VmF4Q6N4faxZNPT+nPEuQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eOmwB5Jj+AM=:pNg97+f2GS3HRapKbLJ9NT
+ 2zWc4SfxlOMW9NA3DlihhDb3Zh+4EGFn93oBJZIZ5u5vQ8iL7SUcCobYbgQ5ijL+gvdq0a5/s
+ Xyn8inXyyhVNsGWu1W431zZzaFH125KAl55lNeyxQZ1Udv3pZiPdr81yMwurVGpZ7w3S/YAjl
+ /2fPPohQme8jfmU5bnaNJEQrq/wl5eqzaLIMu6gcTjMhc8XrwEfWcK6ebRdrLY3STIVRmSNNX
+ vxDb85l8+Nkc2zFfHBGrtp7HnJCfPcBP8PpTSYyO22Z4AHT//M1e6V09yuseDfJeBVZmiChKh
+ o+NeWxDG6Mb5eAYk2x6vMM9Ap+dvLC6gxXrxWUmJt0Ov5qS9+xF9PlljPl2h+RPgmABjZ6+IN
+ plxTdEmOZ5WmUzqBQtN2HRkTFDzaW3D18gYIXzYKZe8G79BXGuEl71mo6vP1jena59mkfJPrU
+ xAKZ7XSI/71MXvBNPTY8ifvMSAvWm1va+Qq0w4JHOpywSBPQa/vk20Pifc6BonBpPBH8GtBAN
+ DkjcWh56GXLYXx5VXh8uVD/pgq0w8M0nr42VLBTrhe2fulgHEjWamkTujAvD9xSGg1hzaesoK
+ uN1clBrCWhi/4Bp8WVxG4xXr8A9+RJ1ZdVheJ+cwZ/cPRw0cK+fiaeiVTHJg6RJZl0SuELnNf
+ teO6Uz1JidJi9H8X7qQjXOhyJ2BL1SZRpI4Vj8c1UKfCuxCgmS2BZFFcdHoWNl8/8MW5wQ5hD
+ t7n+Kfuw9ipzKHA8weG2z8oq6GqBkggNiZ9hm3WKynQAOrF/ofm59JousEn1PUVerzKPrGm+J
+ kjpgogH/PW+gVpkieFGOtQxzZ2Bx9Zppyz5/0jtU5gtMOdK56WAtFe2RsfL6UDEm7Wwt8L7mR
+ OyDw/liYBOtiwHkG2Kpw==
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pali Roh=C3=A1r <pali@kernel.org> writes:
+When the usb device being plugged out, before the usb_driver:disconnect
+called by e.g workqueue, it is possible that some URBs are still in
+processing, and being marked as EPROTO in host controller.
 
-> On Thursday 17 December 2020 06:51:48 Kalle Valo wrote:
->> Jouni Malinen <jouni@codeaurora.org> wrote:
->>=20
->> > It is possible for there to be pending frames in TXQs with a reference
->> > to the key cache entry that is being deleted. If such a key cache entry
->> > is cleared, those pending frame in TXQ might get transmitted without
->> > proper encryption. It is safer to leave the previously used key into t=
-he
->> > key cache in such cases. Instead, only clear the MAC address to prevent
->> > RX processing from using this key cache entry.
->> >=20
->> > This is needed in particularly in AP mode where the TXQs cannot be
->> > flushed on station disconnection. This change alone may not be able to
->> > address all cases where the key cache entry might get reused for other
->> > purposes immediately (the key cache entry should be released for reuse
->> > only once the TXQs do not have any remaining references to them), but
->> > this makes it less likely to get unprotected frames and the more
->> > complete changes may end up being significantly more complex.
->> >=20
->> > Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
->> > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->>=20
->> 5 patches applied to ath-next branch of ath.git, thanks.
->>=20
->> 56c5485c9e44 ath: Use safer key clearing with key cache entries
->> 73488cb2fa3b ath9k: Clear key cache explicitly on disabling hardware
->> d2d3e36498dd ath: Export ath_hw_keysetmac()
->> 144cd24dbc36 ath: Modify ath_key_delete() to not need full key entry
->> ca2848022c12 ath9k: Postpone key cache entry deletion for TXQ frames ref=
-erence it
->
-> Hello! Should not these patches be suitable for backporting into stable
-> kernels (via CC: stable@ commit message line) as they are related to
-> security issue CVE-2020-3702?
+Those URBs should not be scheduled in complete_rx callback function to
+get further processing.
 
-Yeah, but you were just a little late as I already applied them.
+Signed-off-by: Zhi Han <z.han@gmx.net>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt7601u/dma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
+index 09f931d4598c..7a9ab787cf3d 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/dma.c
++++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
+@@ -192,6 +192,7 @@ static void mt7601u_complete_rx(struct urb *urb)
+ 	case -ECONNRESET:
+ 	case -ESHUTDOWN:
+ 	case -ENOENT:
++	case -EPROTO:
+ 		return;
+ 	default:
+ 		dev_err_ratelimited(dev->dev, "rx urb failed: %d\n",
