@@ -2,213 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 888E52DE67B
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Dec 2020 16:25:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 072C82DE6F0
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Dec 2020 16:51:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727723AbgLRPZN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Dec 2020 10:25:13 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:54252 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727032AbgLRPZN (ORCPT
+        id S1726825AbgLRPu5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Dec 2020 10:50:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:52078 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725949AbgLRPu5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Dec 2020 10:25:13 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608305088; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=10T2syzErUleVhsAEgvjTpR6XMvt+TKXBY3rAUoTk6U=; b=peSfiPKpmc0v0JD923JesgquWVDNu+HIboDigeLWoms0ZINwRhaECMRfrxnQ6a1rOU9WtSkQ
- VnfZ0g6nOJ/EpZMwY9EvWV1AefbjClLF32BiroaXS9fm/3RwCNzUtNyKLBgmvDznkPKGHhuK
- zxh00knqKKqYRjAFPavVEseypcA=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5fdcc99d0564dfefcd7fb353 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 18 Dec 2020 15:24:13
- GMT
-Sender: periyasa=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 274CAC433ED; Fri, 18 Dec 2020 15:24:13 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from periyasa-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: periyasa)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 38E03C433C6;
-        Fri, 18 Dec 2020 15:24:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 38E03C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=periyasa@codeaurora.org
-From:   Karthikeyan Periyasamy <periyasa@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>
-Subject: [PATCH] ath11k: Update tx descriptor search index properly
-Date:   Fri, 18 Dec 2020 20:54:01 +0530
-Message-Id: <1608305041-21946-1-git-send-email-periyasa@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Fri, 18 Dec 2020 10:50:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1608306571;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LdrAHEfIJSq5BfsquB4o+vTwZH5hbPjbo+jbTjFSMzY=;
+        b=Ful6kHaQ24q1FCyEHglKzzlkPfMXeHXam3V1P18UeueuAkWvTQ8NWNRYofNvTlyIWxb5Tx
+        oEmYBEcnwDiMy3r7GIisvysyz7VSssYRpLk/83QLyK3KPvA6YAdNO667KRHu4p3tElY+V8
+        Ko5aRQ4XJ6CxwHISGnSu6aIw0wYLsqY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-377-dLwtmmgPOU6K3K_djGQLcw-1; Fri, 18 Dec 2020 10:49:29 -0500
+X-MC-Unique: dLwtmmgPOU6K3K_djGQLcw-1
+Received: by mail-wr1-f70.google.com with SMTP id i4so1370084wrm.21
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Dec 2020 07:49:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=LdrAHEfIJSq5BfsquB4o+vTwZH5hbPjbo+jbTjFSMzY=;
+        b=FUcMzkYL6ywsGYKDuh3c4kt57y8EMy4xlVlYNO/6pVJale1lpE+GVZhKk44SDNc6s7
+         q9I5AGOAkQUvp+emkO32byzR+krGUEWWu/cZKGtgFeWMGsiOapkGWfB4tnSc+rF+dyID
+         Ab+Cx3oty9LqEROxFz7sv7HEs5p2RL7P+oXQMD1DxLNWnglo8O5U5CJBjGHw4Jt41hRs
+         zjTwYKklC2KYRFwO9UNgW70x3aModqk9X15qXW1NWr17N43Qu7HZ+qncjsdYlj7VV/8I
+         k/JYa6NaT6pk3d7bxcs7Y8olCv2aO+cn9EEqaxD0O4RVSUdXCjTWX0FOzzoiEpKQZ/Iy
+         SSmw==
+X-Gm-Message-State: AOAM533fjz95CyeugfYLdBXp0TMubSLNZQ4OdIaitI3zdyAwTYvMcv2V
+        aD65pXd/hnEZsFQQyz+jQlQKfz6lFApxZ0hyz4rF8EdnN1KEFD7DnURvCO5W6h7aONbp2X3cCUO
+        tFiAPE7llvfTAWJ5+agAzgjpX/xs=
+X-Received: by 2002:adf:ca0c:: with SMTP id o12mr5291282wrh.154.1608306568205;
+        Fri, 18 Dec 2020 07:49:28 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxgoFU8XlHJhneA4B5eEb4+Z4G9ha5HPwiyLUVwQQIB/P69JWeKoFADBb7vw7ECmrsJXfV8dQ==
+X-Received: by 2002:adf:ca0c:: with SMTP id o12mr5291264wrh.154.1608306567981;
+        Fri, 18 Dec 2020 07:49:27 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id r13sm14211771wrs.6.2020.12.18.07.49.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Dec 2020 07:49:27 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id D77061802A9; Fri, 18 Dec 2020 16:49:26 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: Re: [PATCH 2/7] mac80211: force calculation of software hash for tx
+ fair queueing
+In-Reply-To: <2a7a3049-61c1-2932-cf43-425bb15af9e7@nbd.name>
+References: <20201216204316.44498-1-nbd@nbd.name>
+ <20201216204316.44498-2-nbd@nbd.name> <87czz8bqbj.fsf@toke.dk>
+ <add3d1fa-c2ad-5aaf-83c7-31e919129bbf@nbd.name> <871rfobn8w.fsf@toke.dk>
+ <07ad2533-b477-abf1-5176-0521ca9ddf82@nbd.name> <874kkk9wep.fsf@toke.dk>
+ <eb5ffa8e-0ebc-381f-12c5-02b96bcea64e@nbd.name> <87h7ojb82r.fsf@toke.dk>
+ <2a7a3049-61c1-2932-cf43-425bb15af9e7@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Fri, 18 Dec 2020 16:49:26 +0100
+Message-ID: <87zh2b9ks9.fsf@toke.dk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tx descriptor search index field should be updated with hw peer id
-and not by AST Hash. Incorrect search index causes throughput degradation
-in all the platforms. so updated the search index field with hw peer id,
-which is a common change applicable for all the platforms.
+Felix Fietkau <nbd@nbd.name> writes:
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01492-QCAHKSWPL_SILICONZ-1
+> On 2020-12-18 13:41, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Felix Fietkau <nbd@nbd.name> writes:
+>>=20
+>>> On 2020-12-17 18:26, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>>>> Felix Fietkau <nbd@nbd.name> writes:
+>>>>> If this becomes a problem, I think we should add a similar patch to
+>>>>> wireguard, which already calls skb_get_hash before encapsulating.
+>>>>> Other regular tunnels should already get a proper hash, since the flow
+>>>>> dissector will take care of it.
+>>>>=20
+>>>> But then we'd need to go around adding this to all the places that uses
+>>>> the hash just to work around a particular piece of broken(ish) hardwar=
+e.
+>>>> And we're hard-coding a behaviour in mac80211 that means we'll *always*
+>>>> recompute the hash, even for hardware that's not similarly broken.
+>>>>=20
+>>>>> The reason I did this patch is because I have a patch to set the hw f=
+low
+>>>>> hash in the skb on mtk_eth_soc, which does help GRO, but leads to
+>>>>> collisions on mac80211 fq.
+>>>>=20
+>>>> So wouldn't the right thing to do here be to put a flag into the RX
+>>>> device that makes the stack clear the hash after using it for GRO?
+>>> I don't think the hardware is broken, I think fq is simply making
+>>> assumptions about the hash that aren't met by the hw.
+>>>
+>>> The documentation in include/linux/skbuff.h mentions these requirements
+>>> for the skb hash:
+>>>  * 1) Two packets in different flows have different hash values
+>>>  * 2) Two packets in the same flow should have the same hash value
+>>>
+>>> FWIW, I think the 'should' from 2) probably belongs to 1), otherwise it
+>>> makes no sense. Two packets of the flow must return the same hash,
+>>> otherwise the hash is broken. I'm assuming this is a typo.
+>>=20
+>> There's some text further down indicating this is deliberate:
+>>=20
+>>  * A driver may indicate a hash level which is less specific than the
+>>  * actual layer the hash was computed on. For instance, a hash computed
+>>  * at L4 may be considered an L3 hash. This should only be done if the
+>>  * driver can't unambiguously determine that the HW computed the hash at
+>>  * the higher layer. Note that the "should" in the second property above
+>>  * permits this.
+>>=20
+>> So the way I'm reading that whole section, either the intent is that
+>> both properties should be fulfilled, or that the first one (being
+>> collision-free) is more important...
+> A hash - by definition - cannot be collision free.
+> But that's beside the point. On my hw, the hash itself seems collision
+> free for the flows that I'm pushing, but the result of the
+> reciprocal_scale isn't.
+> I took another look and figured out the reason for that:
+> The hw delivers a 14 bit hash. reciprocal_scale assumes that the values
+> are distributed across the full 32 bit range. So in this case, the lower
+> bits are pretty much ignored and the result of the reciprocal_scale is 0
+> or close to 0, which is what's causing the collisions in fq.
 
-Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/core.h   | 1 +
- drivers/net/wireless/ath/ath11k/dp_rx.c  | 8 ++++++--
- drivers/net/wireless/ath/ath11k/dp_tx.c  | 1 +
- drivers/net/wireless/ath/ath11k/hal_tx.c | 2 ++
- drivers/net/wireless/ath/ath11k/hal_tx.h | 1 +
- drivers/net/wireless/ath/ath11k/peer.c   | 9 +++++++--
- drivers/net/wireless/ath/ath11k/peer.h   | 3 ++-
- 7 files changed, 20 insertions(+), 5 deletions(-)
+Ah, right, that makes sense!
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 9db375b..8d29845 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -200,6 +200,7 @@ struct ath11k_vif {
- 	u32 beacon_interval;
- 	u32 dtim_period;
- 	u16 ast_hash;
-+	u16 ast_idx;
- 	u16 tcl_metadata;
- 	u8 hal_addr_search_flags;
- 	u8 search_type;
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 42328a0..2d90b80 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1652,6 +1652,7 @@ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
- 	u8 mac_addr[ETH_ALEN];
- 	u16 peer_mac_h16;
- 	u16 ast_hash;
-+	u16 hw_peer_id;
- 
- 	ath11k_dbg(ab, ATH11K_DBG_DP_HTT, "dp_htt rx msg type :0x%0x\n", type);
- 
-@@ -1672,7 +1673,7 @@ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
- 					 resp->peer_map_ev.info1);
- 		ath11k_dp_get_mac_addr(resp->peer_map_ev.mac_addr_l32,
- 				       peer_mac_h16, mac_addr);
--		ath11k_peer_map_event(ab, vdev_id, peer_id, mac_addr, 0);
-+		ath11k_peer_map_event(ab, vdev_id, peer_id, mac_addr, 0, 0);
- 		break;
- 	case HTT_T2H_MSG_TYPE_PEER_MAP2:
- 		vdev_id = FIELD_GET(HTT_T2H_PEER_MAP_INFO_VDEV_ID,
-@@ -1685,7 +1686,10 @@ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
- 				       peer_mac_h16, mac_addr);
- 		ast_hash = FIELD_GET(HTT_T2H_PEER_MAP_INFO2_AST_HASH_VAL,
- 				     resp->peer_map_ev.info2);
--		ath11k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash);
-+		hw_peer_id = FIELD_GET(HTT_T2H_PEER_MAP_INFO1_HW_PEER_ID,
-+				       resp->peer_map_ev.info1);
-+		ath11k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash,
-+				      hw_peer_id);
- 		break;
- 	case HTT_T2H_MSG_TYPE_PEER_UNMAP:
- 	case HTT_T2H_MSG_TYPE_PEER_UNMAP2:
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 6a3fcea..1a0b9be 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -165,6 +165,7 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
- 	ti.pkt_offset = 0;
- 	ti.lmac_id = ar->lmac_id;
- 	ti.bss_ast_hash = arvif->ast_hash;
-+	ti.bss_ast_idx = arvif->ast_idx;
- 	ti.dscp_tid_tbl_idx = 0;
- 
- 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.c b/drivers/net/wireless/ath/ath11k/hal_tx.c
-index a755aa8..569e790 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.c
-@@ -71,6 +71,8 @@ void ath11k_hal_tx_cmd_desc_setup(struct ath11k_base *ab, void *cmd,
- 	tcl_cmd->info3 = FIELD_PREP(HAL_TCL_DATA_CMD_INFO3_DSCP_TID_TABLE_IDX,
- 				    ti->dscp_tid_tbl_idx) |
- 			 FIELD_PREP(HAL_TCL_DATA_CMD_INFO3_SEARCH_INDEX,
-+				    ti->bss_ast_idx) |
-+			 FIELD_PREP(HAL_TCL_DATA_CMD_INFO3_CACHE_SET_NUM,
- 				    ti->bss_ast_hash);
- 	tcl_cmd->info4 = 0;
- }
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.h b/drivers/net/wireless/ath/ath11k/hal_tx.h
-index d4760a2..c291e59 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.h
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.h
-@@ -29,6 +29,7 @@ struct hal_tx_info {
- 	u32 flags1; /* %HAL_TCL_DATA_CMD_INFO2_ */
- 	u16 addr_search_flags; /* %HAL_TCL_DATA_CMD_INFO0_ADDR(X/Y)_ */
- 	u16 bss_ast_hash;
-+	u16 bss_ast_idx;
- 	u8 tid;
- 	u8 search_type; /* %HAL_TX_ADDR_SEARCH_ */
- 	u8 lmac_id;
-diff --git a/drivers/net/wireless/ath/ath11k/peer.c b/drivers/net/wireless/ath/ath11k/peer.c
-index b69e7eb..f49abefa 100644
---- a/drivers/net/wireless/ath/ath11k/peer.c
-+++ b/drivers/net/wireless/ath/ath11k/peer.c
-@@ -118,7 +118,7 @@ void ath11k_peer_unmap_event(struct ath11k_base *ab, u16 peer_id)
- }
- 
- void ath11k_peer_map_event(struct ath11k_base *ab, u8 vdev_id, u16 peer_id,
--			   u8 *mac_addr, u16 ast_hash)
-+			   u8 *mac_addr, u16 ast_hash, u16 hw_peer_id)
- {
- 	struct ath11k_peer *peer;
- 
-@@ -132,6 +132,7 @@ void ath11k_peer_map_event(struct ath11k_base *ab, u8 vdev_id, u16 peer_id,
- 		peer->vdev_id = vdev_id;
- 		peer->peer_id = peer_id;
- 		peer->ast_hash = ast_hash;
-+		peer->hw_peer_id = hw_peer_id;
- 		ether_addr_copy(peer->addr, mac_addr);
- 		list_add(&peer->list, &ab->peers);
- 		wake_up(&ab->peer_mapping_wq);
-@@ -309,7 +310,11 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
- 
- 	peer->pdev_idx = ar->pdev_idx;
- 	peer->sta = sta;
--	arvif->ast_hash = peer->ast_hash;
-+
-+	if (arvif->vif->type == NL80211_IFTYPE_STATION) {
-+		arvif->ast_hash = peer->ast_hash;
-+		arvif->ast_idx = peer->hw_peer_id;
-+	}
- 
- 	peer->sec_type = HAL_ENCRYPT_TYPE_OPEN;
- 	peer->sec_type_grp = HAL_ENCRYPT_TYPE_OPEN;
-diff --git a/drivers/net/wireless/ath/ath11k/peer.h b/drivers/net/wireless/ath/ath11k/peer.h
-index 8553ed0..619db00 100644
---- a/drivers/net/wireless/ath/ath11k/peer.h
-+++ b/drivers/net/wireless/ath/ath11k/peer.h
-@@ -14,6 +14,7 @@ struct ath11k_peer {
- 	int peer_id;
- 	u16 ast_hash;
- 	u8 pdev_idx;
-+	u16 hw_peer_id;
- 
- 	/* protected by ab->data_lock */
- 	struct ieee80211_key_conf *keys[WMI_MAX_KEY_INDEX + 1];
-@@ -31,7 +32,7 @@ struct ath11k_peer {
- 
- void ath11k_peer_unmap_event(struct ath11k_base *ab, u16 peer_id);
- void ath11k_peer_map_event(struct ath11k_base *ab, u8 vdev_id, u16 peer_id,
--			   u8 *mac_addr, u16 ast_hash);
-+			   u8 *mac_addr, u16 ast_hash, u16 hw_peer_id);
- struct ath11k_peer *ath11k_peer_find(struct ath11k_base *ab, int vdev_id,
- 				     const u8 *addr);
- struct ath11k_peer *ath11k_peer_find_by_addr(struct ath11k_base *ab,
--- 
-2.7.4
+> Maybe the assumption that the hash should be distributed across the full
+> 32 bit range should be documented somewhere :)
+
+Yeah, I agree. Maybe just updating that comment in skbuff.h? Do you want
+to fold such an update into your series? Otherwise I can send a patch
+once net-next opens...
+
+>>> In addition to those properties, fq needs the hash to be
+>>> cryptographically secure, so that it can use reciprocal_scale to sort
+>>> flows into buckets without allowing an attacker to craft collisions.
+>>> That's also the reason why it used to use skb_get_hash_perturb with a
+>>> random perturbation until we got software hashes based on siphash.
+>>>
+>>> I think it's safe to assume that most hardware out there will not
+>>> provide collision resistant hashes, so in my opinion fq cannot rely on a
+>>> hardware hash. We don't need to go around and change all places that use
+>>> the hash, just those that assume a collision resistant one.
+>>=20
+>> I did a quick grep-based survey of uses of skb_get_hash() outside
+>> drivers - this is what I found (with my interpretations of what they're
+>> used for):
+>>=20
+>> net/core/dev.c           : skb_tx_hash() - selecting TX queue w/reciproc=
+al scale
+>> net/core/dev.c           : RX flow steering, flow limiting
+>> net/core/dev.c           : GRO
+>> net/core/filter.c        : BPF helper
+>> include/net/ip_tunnels.h : flowi4_multipath_hash - so multipath selectio=
+n?
+>> net/ipv{4,6}/route.c     : multipath hashing (if l4)
+>> net/ipv6/seg6_iptunnel   : building flow labels
+>> net/mac80211/tx.c        : FQ
+>> net/mptcp/syncookies     : storing cookies (XOR w/net_hash_mix())
+>> net/netfilter/nft_hash.c : symhash input (seems to be load balancing)
+>> net/openvswitch          : flow hashing and actions
+>> net/packet/af_packet.c   : PACKET_FANOUT_HASH
+>> net/sched/sch_*.c        : flow hashing for queueing
+>>=20
+>> Apart from GRO it's not obvious to me that a trivially
+>> attacker-controlled hash is safe in any of those uses?
+> I looked at some of those uses you mentioned here.
+> Most of them fit into 2 categories:
+> 1. Sort into power-of-2 buckets and use hash & (size-1), effectively
+> using the lower bits only.
+> 2. Use reciprocal_scale - effectively using the higher bits only.
+> For the hash that my hw is reporting, type 1 is working and type 2 is
+> broken.
+>
+> So it seems to me that the solution would involve running a simple hash
+> on the 14 bit values to get the bits distributed to the full 32 bit
+> range without adding too much bias.
+> I will do this in the driver and drop this patch.
+
+Yes, this seems like a reasonable solution; great!
+
+> Thanks for looking into this,
+
+You're welcome :)
+
+-Toke
 
