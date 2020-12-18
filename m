@@ -2,115 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 278362DDBD3
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Dec 2020 00:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 614CA2DDE07
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Dec 2020 06:27:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732066AbgLQXTB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Dec 2020 18:19:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33390 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730245AbgLQXTB (ORCPT
+        id S1727150AbgLRF1k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Dec 2020 00:27:40 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:19171 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725290AbgLRF1j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Dec 2020 18:19:01 -0500
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1532C061794
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 15:18:20 -0800 (PST)
-Received: by mail-ot1-x32a.google.com with SMTP id i6so278869otr.2
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 15:18:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bz2IW955KN1kBMML3+o9Rok8vGvt7BDvNsrsFguY/2k=;
-        b=V3ch4Q5Jvb7jrGD/wLFLLaLNoGCKNaFt2CkOj1sJE/RvSa66LeG7kudveh8uXYqPO4
-         koJwcyXMIN1V+HzOaR9TmhmRfURoeVxrvugXQRsvAOZ9zqZSf92LL/XU+pRn0Hx/bvPD
-         idx6f4fUnIGiqbf7HkUhucvt6RjxggQFDgLxE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bz2IW955KN1kBMML3+o9Rok8vGvt7BDvNsrsFguY/2k=;
-        b=mFnIMHE3yhL6Svb6qySAoTxgQZkO+N3AAF3tj8LTr7yNp0C2GU2ik2u8+Dqf9TvQaW
-         QjhDhs0/laKbclUoQHlRBafGC/TwESVpNigrDK3EGXPrlSC4hGwtzqeyHJOuPxla+OG9
-         ncNdIT8Witzq3Nj58zQFjQH5oEHYXEL/PwOWNr/v3L+Gg2veCEafu7HcMEd/BO1j6t09
-         WZcHpG2hpfO0BixrXBiYKtWTr/iMefgMR/WFa1HllDLQwf6Xn2dgyPQnR8oIOUet8fRS
-         7VVSyfnql8jDZpbB61fy/lBS5RB/GbU3eZf4c12fRVUYqdSJmv/7Zw31b58S0n//l/dj
-         n1kA==
-X-Gm-Message-State: AOAM532BsgknPEy4Y5POWOC8ZnuduRUQSQCYoeNnTcdBbrUpC+uGkIms
-        upseH6qZafb2SfNjq8nT0ovDsTFPmrVFtA==
-X-Google-Smtp-Source: ABdhPJyqzv0L0y6qA5GOqWoqPii4EEkDBohANUpZDNrzmuGZymmJ8o/sZLTIxbWQM2RZWw8EIVqVOw==
-X-Received: by 2002:a9d:3be3:: with SMTP id k90mr1005915otc.50.1608247098793;
-        Thu, 17 Dec 2020 15:18:18 -0800 (PST)
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com. [209.85.167.175])
-        by smtp.gmail.com with ESMTPSA id x31sm1521544otb.4.2020.12.17.15.18.17
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Dec 2020 15:18:17 -0800 (PST)
-Received: by mail-oi1-f175.google.com with SMTP id x13so884817oic.5
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Dec 2020 15:18:17 -0800 (PST)
-X-Received: by 2002:aca:af4d:: with SMTP id y74mr1029540oie.105.1608247096801;
- Thu, 17 Dec 2020 15:18:16 -0800 (PST)
+        Fri, 18 Dec 2020 00:27:39 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608269236; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=TDNiaVMOFoCnxwVGcj/R5FSJ1oq2holdQERjw39ulbU=; b=BqoBDIwfq7J1ng6+5kDpa3LQ8czFRwlAF1VOkJuxsxsY7MrHHmgea3PCJjp1fOCH2ecPOgjA
+ iAKttJzfK1Tli4N8Jmy5/91u+6SBApRDXb1Ugd7a9jzE9s7MfxR4EVTD3pyFk1eFMmMZhqiw
+ MjRgKjBAg9D149LDCZf80c/EkBY=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n09.prod.us-west-2.postgun.com with SMTP id
+ 5fdc3d97065be8d8354e48ac (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 18 Dec 2020 05:26:47
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C3C64C433CA; Fri, 18 Dec 2020 05:26:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3856CC433CA;
+        Fri, 18 Dec 2020 05:26:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3856CC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/2] mt76: usb: remove wake logic in mt76u_status_worker
+References: <cover.1607164041.git.lorenzo@kernel.org>
+        <00009bf0cfdc9565e4432cad3ed51888c667c25d.1607164041.git.lorenzo@kernel.org>
+        <20201217191017.GG16606@lore-desk>
+Date:   Fri, 18 Dec 2020 07:26:42 +0200
+In-Reply-To: <20201217191017.GG16606@lore-desk> (Lorenzo Bianconi's message of
+        "Thu, 17 Dec 2020 20:10:17 +0100")
+Message-ID: <87blerhegd.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20201215172113.5038-1-youghand@codeaurora.org>
- <18dfa52b-5edd-f737-49c9-f532c1c10ba2@candelatech.com> <X9vaqxub2F/8YPT8@google.com>
- <6cec8a4c-620f-093d-2739-7eafe89cd79a@candelatech.com>
-In-Reply-To: <6cec8a4c-620f-093d-2739-7eafe89cd79a@candelatech.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 17 Dec 2020 15:18:04 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXP+b8bik767LxcN9jV+ETpJ+_4HKH7rvsGgXbAHidFAng@mail.gmail.com>
-Message-ID: <CA+ASDXP+b8bik767LxcN9jV+ETpJ+_4HKH7rvsGgXbAHidFAng@mail.gmail.com>
-Subject: Re: [PATCH 0/3] mac80211: Trigger disconnect for STA during recovery
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     Youghandhar Chintala <youghand@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        ath10k <ath10k@lists.infradead.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        kuabhs@chromium.org, Doug Anderson <dianders@chromium.org>,
-        Rakesh Pillai <pillair@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Dec 17, 2020 at 2:57 PM Ben Greear <greearb@candelatech.com> wrote:
-> On 12/17/20 2:24 PM, Brian Norris wrote:
-> > I'd also note that we don't operate in AP mode -- only STA -- and IIRC
-> > Ben, you've complained about AP mode in the past.
+Lorenzo Bianconi <lorenzo.bianconi@redhat.com> writes:
+
+>> Similar to mmio code path, remove wake logic in mt76u_status_worker
+>> handler
 >
-> I complain about all sorts of things, but I'm usually running
-> station mode :)
+> Starting from commit '90d494c99a99fa2eb858754345c4a9c851b409a0
+> ("mt76: improve tx queue stop/wake")', the wake queue logic on
+> the usb status path is no longer necessary since the hw queues
+> are no longer stopped on the mt76 tx path.
 
-Hehe, fair :) Maybe I'm mixed up.
+Thanks, I'll update the commit logs based on the info you provided.
 
-But I do get the feeling that specifically within the ath10k family,
-there are wildly different use cases (mobile, PC, AP) and chips (and
-firmware) that tend to go along with them, and that those use cases
-get a fairly different population of {developers, testers, reporters}.
-So claiming "feature X works" pretty much always has to be couched in
-which chips, firmware, and use case. And there's certainly some wisdom
-in these sections:
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#hardware_families
-https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#tested-on_tag
-
-> Do you actually see iwlwifi stations stay associated through
-> firmware crashes?
-
-Yes.
-
-> Anyway, happy to hear some have seamless recovery, and in that case,
-> I have no objections to the patch.
-
-OK! I hope I'm not the only one with such results, because then I
-still might question my sanity (and test coverage), but that's still
-my understanding.
-
-BTW, I haven't yet closely reviewed the patch series myself, but I ACK
-the concept.
-
-Brian
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
