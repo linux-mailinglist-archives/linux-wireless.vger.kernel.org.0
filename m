@@ -2,46 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 560D72DE946
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Dec 2020 19:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 242D22DE94B
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Dec 2020 19:52:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726540AbgLRSt5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Dec 2020 13:49:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43544 "EHLO
+        id S1727103AbgLRSvO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Dec 2020 13:51:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726481AbgLRSt5 (ORCPT
+        with ESMTP id S1726137AbgLRSvN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Dec 2020 13:49:57 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96561C0617A7
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Dec 2020 10:49:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=zRFXMkRycyC0MVrPiA/mwwIXpjM3W0G2IVjoa+Cfnm0=; b=teC4mz03EdIm/6Zt5z6VvfC9jp
-        b6OafvRT5ZiiaXaVAjWNbgxVaOtY82YvTiYUcVQ1GqH4wmyZuaWB/SbKcufNVrY0gsXlycjBoOYke
-        rXMGwN5dJlX5Z/okcp5oXGW201OhzLgo/maraGt/yaEvvX8rnImrGjsoXA/4BX5RSr34=;
-Received: from p4ff13815.dip0.t-ipconnect.de ([79.241.56.21] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1kqKoF-0000MY-2a; Fri, 18 Dec 2020 19:48:59 +0100
-Subject: Re: [PATCH] mt76: mt7915: increase buffer size to receive large MPDUs
-To:     Ryder Lee <ryder.lee@mediatek.com>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <00af8edba9bad0e3635ca6024fcf56b3bcd407f8.1608139125.git.ryder.lee@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <9b4df998-b73c-011b-11cc-007785e3fba5@nbd.name>
-Date:   Fri, 18 Dec 2020 19:48:58 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.5.0
+        Fri, 18 Dec 2020 13:51:13 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673B0C06138C;
+        Fri, 18 Dec 2020 10:50:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=nJyO2qR4GdRxx3I4G9kHv+IahinLZjL5hGQ7wDVeL1E=; b=W0PoEzI4cR3akjxSb/z2Jy82xk
+        GaItgrEdvZXIteqnsU4Qlygp8B5eY30vYh1WsHvPRfX/uC+SAH9n9dKzVn2vZH7/zEInyO3M9sMXx
+        aluaBedSqLTupYwUm/cB3KJ4wykLiK0xz/Bee7ytmdQNskKRC1IDQlVc3bbitHrTy/uEV6hT+1lA/
+        jznmxv/MjWOFlTG4jVIwYzeJ5lsGBBoxMrrD4ioVV1tcpJgXmmivqiLJ2A60jtHGu4MXIv/ZEWpHD
+        rPBSWFSx1+CT1JGVRGnQIQsTrrRoBOpsfW7Z56bHhU/qmZFw5nwdnl6Zjo62CDzn+bUpgQqCWDA8Y
+        CYRTq/6A==;
+Received: from [2601:1c0:6280:3f0::64ea]
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kqKph-00051z-SE; Fri, 18 Dec 2020 18:50:30 +0000
+Subject: Re: [PATCH -next] net: wireless/mediatek/mt7915: fix MESH ifdef block
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+References: <20201218173202.23159-1-rdunlap@infradead.org>
+ <87eejnrluw.fsf@codeaurora.org>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <488abe6b-3893-557a-8324-1be9b75657ce@infradead.org>
+Date:   Fri, 18 Dec 2020 10:50:25 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <00af8edba9bad0e3635ca6024fcf56b3bcd407f8.1608139125.git.ryder.lee@mediatek.com>
+In-Reply-To: <87eejnrluw.fsf@codeaurora.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -49,25 +51,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-12-16 18:24, Ryder Lee wrote:
-> This improves 5G/HE Rx performance around 70mbps.
+On 12/18/20 10:48 AM, Kalle Valo wrote:
+> Randy Dunlap <rdunlap@infradead.org> writes:
 > 
-> Tested-by: Chih-Min Chen <chih-min.chen@mediatek.com>
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7915/dma.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>> Fix a build error when CONFIG_MAC80211_MESH is not enabled:
+>>
+>> ../drivers/net/wireless/mediatek/mt76/mt7915/init.c:47:2: error: expected expression before '}' token
+>>   }, {
+>>   ^
+>>
+>> Fixes: af901eb4ab80 ("mt76: mt7915: get rid of dbdc debugfs knob")
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>> Cc: Shayne Chen <shayne.chen@mediatek.com>
+>> Cc: Ryder Lee <ryder.lee@mediatek.com>
+>> Cc: Lorenzo Bianconi <lorenzo@kernel.org>
+>> Cc: Felix Fietkau <nbd@nbd.name>
+>> Cc: linux-wireless@vger.kernel.org
+>> Cc: Kalle Valo <kvalo@codeaurora.org>
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-> index 8c1f9c77b14f..a8c783be297f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-> @@ -203,7 +203,7 @@ int mt7915_dma_init(struct mt7915_dev *dev)
->  {
->  	/* Increase buffer size to receive large VHT/HE MPDUs */
->  	struct mt76_bus_ops *bus_ops;
-> -	int rx_buf_size = MT_RX_BUF_SIZE * 2;
-> +	int rx_buf_size = MT_RX_BUF_SIZE * 4;
-This will not be needed after adding rx decapsulation offload.
+> Thanks, but why -next? I would rather queue this to wireless-drivers for
+> v5.11 as af901eb4ab80 is in Linu's tree now.
+> 
 
-- Felix
+Sorry, I found the build error in linux-next.
+My bad for not checking mainline.
+
+Shall I resend it?
+
+thanks.
+-- 
+~Randy
+
