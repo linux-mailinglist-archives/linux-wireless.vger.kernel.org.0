@@ -2,81 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE052DE9DF
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Dec 2020 20:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DC1E2DEEE3
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Dec 2020 13:52:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733244AbgLRTlz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Dec 2020 14:41:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51600 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726177AbgLRTlz (ORCPT
+        id S1726561AbgLSMwT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Dec 2020 07:52:19 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:54546 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726090AbgLSMwS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Dec 2020 14:41:55 -0500
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45866C0617A7
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Dec 2020 11:41:15 -0800 (PST)
-Received: by mail-pj1-x102a.google.com with SMTP id v1so1855240pjr.2
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Dec 2020 11:41:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eero.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=vTy4lGI2YMOaU1LOo0Ca6YZry6iYpOtB7i+T4PcUg2A=;
-        b=jCD+aFVXazJo5/FhYwoWM3l0xL0kvfh0ugtyXkKHKIa5RClOjr8fF3M3sZPZIKQ7I5
-         8VMQGDfKQenTp6asMQQozGJ0crsWIYdxQ79rDRhtVXL9m8w6yKcKMhya/kU5hyZWkGqy
-         9fHcyZKt/hofJ8UX259DTH0TtPhPg+ppG5s9s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=vTy4lGI2YMOaU1LOo0Ca6YZry6iYpOtB7i+T4PcUg2A=;
-        b=jNEzdPaM/eGCnmXEI4yGRDvMLrbj7UYFR+CSZ+yLLjQEK5xRsEzdWRos11q7JpuctH
-         Qv6Ni/Q6f2R6Pmf36lDB0l5xeam83rRJNOTa+E7Kh0NNXnU5DsF9XxW5lH6wdb6Wpq68
-         xP7UkG6FpES3Wji7fga70UiY9aCncgLO/33AGMBJ30QBsvnYiEfCuMGpNfLW3FSTJKCX
-         MgRyySKaISos6RSDHjVGGiI+Oz+ankMfn+rJGO6WFgIqlx47h5jPkqO1EA70w9+2zm4Q
-         Ymw5zZ+Oz9PBa2CxGgbTZTgwc9y87j42PqSsYpbPoHdq5mRB5fGPmgloWkP/doQQnz/1
-         4rqQ==
-X-Gm-Message-State: AOAM5321LmH2yXcPIiGX/dvDwQ5oiw9iuaRNmbghPrENsBfW3w65/tJr
-        1uyScsIfYu1Lknr9DUQCYZdEiL+5jOe1dZC2
-X-Google-Smtp-Source: ABdhPJzZmHAG60xEF3boTBFWTd5yANVIY0z9bPwBum2DqZKzVQHxPDNsRxHwQMYQTbHxI61M4jpr7Q==
-X-Received: by 2002:a17:90b:4a4c:: with SMTP id lb12mr5762615pjb.162.1608320474608;
-        Fri, 18 Dec 2020 11:41:14 -0800 (PST)
-Received: from [192.168.4.200] (c-76-102-118-9.hsd1.ca.comcast.net. [76.102.118.9])
-        by smtp.gmail.com with ESMTPSA id y69sm9285068pfb.64.2020.12.18.11.41.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Dec 2020 11:41:14 -0800 (PST)
-Subject: Re: [PATCH] ath11k: Update tx descriptor search index properly
-To:     Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-References: <1608305041-21946-1-git-send-email-periyasa@codeaurora.org>
-From:   Peter Oh <peter.oh@eero.com>
-Message-ID: <09bbb2fe-6e1c-9faa-232c-74b5a3a1e71d@eero.com>
-Date:   Fri, 18 Dec 2020 11:41:12 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Sat, 19 Dec 2020 07:52:18 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608382320; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=+Y2tNsCecFLAv1aRtNyApUxY3RBrrK572xFAYbx48aQ=; b=LycvdUwPFp7xed1tMPtMcP0er7YU40y1HxiIfibqo0ka5G73zajret4tV4YTzDDo+tAwzoAM
+ LixH+EhSvfJ9tAHLcaP5RAoMFR5PGtxZY0hYNIbWHQT4KlIMkM/yM4la1nu82URhvxmMw6mB
+ S8Pc8FktrEVecQcjsZkqjs5MjpA=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5fddf754bfd08afb0ddb8285 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Dec 2020 12:51:32
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 52D73C43463; Sat, 19 Dec 2020 12:51:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C6D25C433C6;
+        Sat, 19 Dec 2020 12:51:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C6D25C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     mostafa.afgani@purelifi.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        linux-kernel@vger.kernel.org (open list),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
+Subject: Re: [PATCH] [v11] wireless: Initial driver submission for pureLiFi STA devices
+References: <20200928102008.32568-1-srini.raju@purelifi.com>
+        <20201208115719.349553-1-srini.raju@purelifi.com>
+Date:   Sat, 19 Dec 2020 14:51:25 +0200
+In-Reply-To: <20201208115719.349553-1-srini.raju@purelifi.com> (Srinivasan
+        Raju's message of "Tue, 8 Dec 2020 17:27:04 +0530")
+Message-ID: <87wnxeq7qq.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <1608305041-21946-1-git-send-email-periyasa@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Srinivasan Raju <srini.raju@purelifi.com> writes:
 
-On 12/18/20 7:24 AM, Karthikeyan Periyasamy wrote:
-> Tx descriptor search index field should be updated with hw peer id
-> and not by AST Hash. Incorrect search index causes throughput degradation
-> in all the platforms. so updated the search index field with hw peer id,
-> which is a common change applicable for all the platforms.
+> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
+> and LiFi-XL USB devices.
+>
+> This driver implementation has been based on the zd1211rw driver.
+>
+> Driver is based on 802.11 softMAC Architecture and uses
+> native 802.11 for configuration and management.
+>
+> The driver is compiled and tested in ARM, x86 architectures and
+> compiled in powerpc architecture.
+>
+> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
 
-Could you be more details under what conditions you observed the 
-throughput degradation?
+My first quick comments after 10 minutes of looking at this driver, so
+not complete in any way:
 
+Does not compile:
 
-Thanks,
+ERROR: modpost: "upload_mac_and_serial" [drivers/net/wireless/purelifi/purelifi.ko] undefined!
 
-Peter
+>  MAINTAINERS                              |    5 +
+>  drivers/net/wireless/Kconfig             |    1 +
+>  drivers/net/wireless/Makefile            |    1 +
+>  drivers/net/wireless/purelifi/Kconfig    |   27 +
+>  drivers/net/wireless/purelifi/Makefile   |    3 +
+>  drivers/net/wireless/purelifi/chip.c     |   93 ++
+>  drivers/net/wireless/purelifi/chip.h     |   81 ++
+>  drivers/net/wireless/purelifi/dbgfs.c    |  150 +++
+>  drivers/net/wireless/purelifi/firmware.c |  384 ++++++++
+>  drivers/net/wireless/purelifi/intf.h     |   38 +
+>  drivers/net/wireless/purelifi/mac.c      |  873 ++++++++++++++++++
+>  drivers/net/wireless/purelifi/mac.h      |  189 ++++
+>  drivers/net/wireless/purelifi/usb.c      | 1075 ++++++++++++++++++++++
+>  drivers/net/wireless/purelifi/usb.h      |  199 ++++
 
+The directory structure should be:
+
+drivers/net/wireless/<vendor>/<drivername>/<file>
+
+So please come up with a unique name for the driver which describes the
+supported hardware somehow. Calling the driver "purelifi" is imho too
+generic, what happens if/when there's a second generation hardware and
+that needs a completely new driver? Just to give examples I like names
+like rtw88 and mt76.
+
+And I would prefer that the driver name is also used as the directory
+name for firmware files, easier to find that way.
+
+> --- /dev/null
+> +++ b/drivers/net/wireless/purelifi/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +obj-$(CONFIG_PURELIFI)		:= purelifi.o
+> +purelifi-objs 		+= chip.o usb.o mac.o firmware.o dbgfs.o
+> diff --git a/drivers/net/wireless/purelifi/chip.c b/drivers/net/wireless/purelifi/chip.c
+> new file mode 100644
+> index 000000000000..9a7ccd0f98f2
+> --- /dev/null
+> +++ b/drivers/net/wireless/purelifi/chip.c
+> @@ -0,0 +1,93 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+
+Copyright missing in all files.
+
+> +#undef  LOAD_MAC_AND_SERIAL_FROM_FILE
+> +#undef  LOAD_MAC_AND_SERIAL_FROM_FLASH
+> +#define LOAD_MAC_AND_SERIAL_FROM_EP0
+
+This should be dynamic and not compile time configurable. For example
+try file first, next flash and EP0 last, or something like that.
+
+> +const struct device_attribute purelifi_attr_frequency = {
+> +	  .attr = {.name = "frequency", .mode = (0666)},
+> +	  .show = purelifi_show_sysfs,
+> +	  .store = purelifi_store_frequency,
+> +};
+> +
+> +struct device_attribute purelifi_attr_modulation = {
+> +	.attr = {.name = "modulation", .mode = (0666)},
+> +	.show = purelifi_show_modulation,
+> +	.store = purelifi_store_modulation,
+> +};
+> +
+> +const struct proc_ops  modulation_fops = {
+> +	.proc_open  = modulation_open,
+> +	.proc_read  = modulation_read,
+> +	.proc_write = modulation_write
+> +};
+
+No procfs or sysfs files in wireless drivers, please. Needs a strong
+reason to have an exception for that rule.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
