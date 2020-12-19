@@ -2,115 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80E3D2DF08F
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Dec 2020 17:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F20452DF09D
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Dec 2020 18:09:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727032AbgLSQzs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Dec 2020 11:55:48 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:45144 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726843AbgLSQzs (ORCPT
+        id S1727190AbgLSRIj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Dec 2020 12:08:39 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:49635 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727186AbgLSRIj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Dec 2020 11:55:48 -0500
-Received: from [192.168.254.6] (unknown [50.46.158.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B576613C2B0;
-        Sat, 19 Dec 2020 08:55:06 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B576613C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1608396907;
-        bh=N8Teo2Gvj/dcotfU7a3Y6k0H/wTnwCczQpS2oTRP+k4=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=dgkA0UhIe/zektImVhncv+1MCMKZAVORkf0DA/F62xbk2jMreowvM9op8LGPjydav
-         1eIAzHsmHqPiwbLHjLA8V7tZ5sMKGCtPoxXKOCZw5O6SWyfzDWQkHBz5HQxPJkQ84s
-         2asDpS0mToV9TZizT2hdNp/UnQzFN5pTe51j95X0=
-Subject: Re: net: tso: add UDP segmentation support: adds regression for ax200
- upload
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>
-Cc:     Eric Dumazet <edumazet@google.com>,
-        netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org
-References: <5664fa0f-aef2-c336-651a-093c9eed23ab@candelatech.com>
- <765f370d-ce2d-b75a-2dde-87f69ae7c185@candelatech.com>
- <CANn89iKpa1y2SKJuR9kRi=AZs94sj+-tzRs+2D0vmxh+ahEcGA@mail.gmail.com>
- <adbee2ec-c6ba-7a17-eb98-1c53365fa911@candelatech.com>
- <CANn89iJQnSVZFp2XDgREN1QMtU4exOsnJq=5VzJ6tqTCJ7MH-g@mail.gmail.com>
- <c4bcee7d-b2eb-759c-c659-d65f3e7daec9@candelatech.com>
- <CANn89i++Kgkj57ms70a5GDOQ-Cpewx3NQkzP3EmZmLYQ4eHzww@mail.gmail.com>
- <5d89fd24-f00a-7e70-00ce-83529f13b05e@candelatech.com>
- <20201218121627.603329b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <9003ea3720a03b4bd1b8abf3d8f645563a58f953.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <43a5b45c-955a-22d4-2bf9-dbab852dbb5f@candelatech.com>
-Date:   Sat, 19 Dec 2020 08:55:05 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Sat, 19 Dec 2020 12:08:39 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <pborgers@zedat.fu-berlin.de>)
+          id 1kqfi1-000Usq-Dp; Sat, 19 Dec 2020 18:07:57 +0100
+Received: from a36t-ffs1.berlin.freifunk.net ([77.87.51.11] helo=mi.fu-berlin.de)
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <borgers@mi.fu-berlin.de>)
+          id 1kqfi0-001v1t-7m; Sat, 19 Dec 2020 18:07:57 +0100
+Received: by mi.fu-berlin.de (sSMTP sendmail emulation); Sat, 19 Dec 2020 18:07:55 +0100
+From:   Philipp Borgers <borgers@mi.fu-berlin.de>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Philipp Borgers <borgers@mi.fu-berlin.de>
+Subject: [PATCH] mac80211: add LDPC encoding to ieee80211_parse_tx_radiotap
+Date:   Sat, 19 Dec 2020 18:07:10 +0100
+Message-Id: <20201219170710.11706-1-borgers@mi.fu-berlin.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <9003ea3720a03b4bd1b8abf3d8f645563a58f953.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Original-Sender: borgers@mi.fu-berlin.de
+X-Originating-IP: 77.87.51.11
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/19/20 7:18 AM, Johannes Berg wrote:
-> On Fri, 2020-12-18 at 12:16 -0800, Jakub Kicinski wrote:
->> On Thu, 17 Dec 2020 12:40:26 -0800 Ben Greear wrote:
->>> On 12/17/20 10:20 AM, Eric Dumazet wrote:
->>>> On Thu, Dec 17, 2020 at 7:13 PM Ben Greear <greearb@candelatech.com> wrote:
->>>>> It is the iwlwifi/mvm logic that supports ax200.
->>>>
->>>> Let me ask again :
->>>>
->>>> I see two different potential call points :
->>>>
->>>> drivers/net/wireless/intel/iwlwifi/pcie/tx.c:1529:
->>>> tso_build_hdr(skb, hdr_page->pos, &tso, data_left, !total_len);
->>>> drivers/net/wireless/intel/iwlwifi/queue/tx.c:427:
->>>> tso_build_hdr(skb, hdr_page->pos, &tso, data_left, !total_len);
->>>>
->>>> To the best of your knowledge, which one would be used in your case ?
->>>>
->>>> Both are horribly complex, I do not want to spend time studying two
->>>> implementations.
->>>
->>> It is the queue/tx.c code that executes on my system, verified with
->>> printk.
->>
->> Not sure why Intel's not on CC here.
-> 
-> Heh :)
-> 
-> Let's also add linux-wireless.
-> 
->> Luca, is the ax200 TSO performance regression with recent kernel on your
->> radar?
-> 
-> It wasn't on mine for sure, so far. But it's supposed to be Christmas
-> vacation, so haven't checked our bug tracker etc. I see Emmanuel was at
-> least looking at the bug report, but not sure what else happened yet.
+This patch adds support for LDPC encoding to the radiotap tx parse
+function. Piror to this change adding the LDPC flag to the radiotap
+header did not encode frames with LDPC.
 
-Not to bitch and moan too much, but even the most basic of testing would
-have shown this, how can testing be so poor on the ax200 driver?
+Signed-off-by: Philipp Borgers <borgers@mi.fu-berlin.de>
+---
+ net/mac80211/tx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-It even shows up with the out-of-tree ax200 driver.
-
-> Off the top of my head, I don't really see the issue. Does anyone have
-> the ability to capture the frames over the air (e.g. with another AX200
-> in monitor mode, load the driver with amsdu_size=3 module parameter to
-> properly capture A-MSDUs)?
-
-I can do that at some point, and likely it could be reproduced with an /n or /ac
-AP and those are a lot easier to sniff.
-
-Thanks,
-Ben
-
-
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 8ba10a48ded4..7e84dad88b4e 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2132,6 +2132,10 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 			if (mcs_known & IEEE80211_RADIOTAP_MCS_HAVE_BW &&
+ 			    mcs_bw == IEEE80211_RADIOTAP_MCS_BW_40)
+ 				rate_flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
++
++			if (mcs_known & IEEE80211_RADIOTAP_MCS_HAVE_FEC &&
++			    mcs_flags & IEEE80211_RADIOTAP_MCS_FEC_LDPC)
++				info->flags |= IEEE80211_TX_CTL_LDPC;
+ 			break;
+ 
+ 		case IEEE80211_RADIOTAP_VHT:
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.29.2
+
