@@ -2,69 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F20452DF09D
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Dec 2020 18:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CF3E2DF120
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Dec 2020 19:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727190AbgLSRIj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Dec 2020 12:08:39 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:49635 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727186AbgLSRIj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Dec 2020 12:08:39 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <pborgers@zedat.fu-berlin.de>)
-          id 1kqfi1-000Usq-Dp; Sat, 19 Dec 2020 18:07:57 +0100
-Received: from a36t-ffs1.berlin.freifunk.net ([77.87.51.11] helo=mi.fu-berlin.de)
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <borgers@mi.fu-berlin.de>)
-          id 1kqfi0-001v1t-7m; Sat, 19 Dec 2020 18:07:57 +0100
-Received: by mi.fu-berlin.de (sSMTP sendmail emulation); Sat, 19 Dec 2020 18:07:55 +0100
-From:   Philipp Borgers <borgers@mi.fu-berlin.de>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Philipp Borgers <borgers@mi.fu-berlin.de>
-Subject: [PATCH] mac80211: add LDPC encoding to ieee80211_parse_tx_radiotap
-Date:   Sat, 19 Dec 2020 18:07:10 +0100
-Message-Id: <20201219170710.11706-1-borgers@mi.fu-berlin.de>
-X-Mailer: git-send-email 2.29.2
+        id S1727309AbgLSS43 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Dec 2020 13:56:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36004 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725951AbgLSS43 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 19 Dec 2020 13:56:29 -0500
+From:   Jakub Kicinski <kuba@kernel.org>
+Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+To:     davem@davemloft.net
+Cc:     netdev@vger.kernel.org, pv-drivers@vmware.com, doshir@vmware.com,
+        UNGLinuxDriver@microchip.com, steve.glendinning@shawell.net,
+        woojung.huh@microchip.com, ath9k-devel@qca.qualcomm.com,
+        linux-wireless@vger.kernel.org, drivers@pensando.io,
+        snelson@pensando.io, vladimir.oltean@nxp.com,
+        claudiu.manoil@nxp.com, alexandre.belloni@bootlin.com,
+        bryan.whitehead@microchip.com, o.rempel@pengutronix.de,
+        kernel@pengutronix.de, robin@protonic.nl, hkallweit1@gmail.com,
+        nic_swsd@realtek.com, lars.povlsen@microchip.com,
+        Steen.Hegelund@microchip.com, linux-kernel@vger.kernel.org,
+        corbet@lwn.net, Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net] MAINTAINERS: remove names from mailing list maintainers
+Date:   Sat, 19 Dec 2020 10:55:38 -0800
+Message-Id: <20201219185538.750076-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Original-Sender: borgers@mi.fu-berlin.de
-X-Originating-IP: 77.87.51.11
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds support for LDPC encoding to the radiotap tx parse
-function. Piror to this change adding the LDPC flag to the radiotap
-header did not encode frames with LDPC.
+When searching for inactive maintainers it's useful to filter
+out mailing list addresses. Such "maintainers" will obviously
+never feature in a "From:" line of an email or a review tag.
 
-Signed-off-by: Philipp Borgers <borgers@mi.fu-berlin.de>
+Since "L:" entries only provide the address of a mailing list
+without a fancy name extend this pattern to "M:" entries.
+
+Alternatively we could reserve M: entries for humans only
+and move the fake "maintainers" to L:. While I'd personally
+prefer to reserve M: for humans only, I'm not 100% that's
+a great choice either, given most L: entries are in fact
+open mailing lists with public archives.
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/mac80211/tx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ MAINTAINERS | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 8ba10a48ded4..7e84dad88b4e 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2132,6 +2132,10 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
- 			if (mcs_known & IEEE80211_RADIOTAP_MCS_HAVE_BW &&
- 			    mcs_bw == IEEE80211_RADIOTAP_MCS_BW_40)
- 				rate_flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
-+
-+			if (mcs_known & IEEE80211_RADIOTAP_MCS_HAVE_FEC &&
-+			    mcs_flags & IEEE80211_RADIOTAP_MCS_FEC_LDPC)
-+				info->flags |= IEEE80211_TX_CTL_LDPC;
- 			break;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 28d7acdb0591..20cd4cc08dd1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -203,8 +203,8 @@ F:	include/uapi/linux/nl80211.h
+ F:	net/wireless/
  
- 		case IEEE80211_RADIOTAP_VHT:
+ 8169 10/100/1000 GIGABIT ETHERNET DRIVER
+-M:	Realtek linux nic maintainers <nic_swsd@realtek.com>
+ M:	Heiner Kallweit <hkallweit1@gmail.com>
++M:	nic_swsd@realtek.com
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/net/ethernet/realtek/r8169*
+@@ -2119,7 +2119,7 @@ N:	atmel
+ ARM/Microchip Sparx5 SoC support
+ M:	Lars Povlsen <lars.povlsen@microchip.com>
+ M:	Steen Hegelund <Steen.Hegelund@microchip.com>
+-M:	Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
++M:	UNGLinuxDriver@microchip.com
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Supported
+ T:	git git://github.com/microchip-ung/linux-upstream.git
+@@ -3958,7 +3958,7 @@ F:	net/can/
+ CAN-J1939 NETWORK LAYER
+ M:	Robin van der Gracht <robin@protonic.nl>
+ M:	Oleksij Rempel <o.rempel@pengutronix.de>
+-R:	Pengutronix Kernel Team <kernel@pengutronix.de>
++R:	kernel@pengutronix.de
+ L:	linux-can@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/networking/j1939.rst
+@@ -11651,7 +11651,7 @@ F:	drivers/media/platform/atmel/atmel-isi.h
+ 
+ MICROCHIP KSZ SERIES ETHERNET SWITCH DRIVER
+ M:	Woojung Huh <woojung.huh@microchip.com>
+-M:	Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
++M:	UNGLinuxDriver@microchip.com
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+@@ -11661,7 +11661,7 @@ F:	net/dsa/tag_ksz.c
+ 
+ MICROCHIP LAN743X ETHERNET DRIVER
+ M:	Bryan Whitehead <bryan.whitehead@microchip.com>
+-M:	Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
++M:	UNGLinuxDriver@microchip.com
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/net/ethernet/microchip/lan743x_*
+@@ -11755,7 +11755,7 @@ F:	drivers/net/wireless/microchip/wilc1000/
+ 
+ MICROSEMI MIPS SOCS
+ M:	Alexandre Belloni <alexandre.belloni@bootlin.com>
+-M:	Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
++M:	UNGLinuxDriver@microchip.com
+ L:	linux-mips@vger.kernel.org
+ S:	Supported
+ F:	Documentation/devicetree/bindings/mips/mscc.txt
+@@ -12809,10 +12809,10 @@ F:	tools/objtool/
+ F:	include/linux/objtool.h
+ 
+ OCELOT ETHERNET SWITCH DRIVER
+-M:	Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
+ M:	Vladimir Oltean <vladimir.oltean@nxp.com>
+ M:	Claudiu Manoil <claudiu.manoil@nxp.com>
+ M:	Alexandre Belloni <alexandre.belloni@bootlin.com>
++M:	UNGLinuxDriver@microchip.com
+ L:	netdev@vger.kernel.org
+ S:	Supported
+ F:	drivers/net/dsa/ocelot/*
+@@ -13874,7 +13874,7 @@ F:	drivers/platform/x86/peaq-wmi.c
+ 
+ PENSANDO ETHERNET DRIVERS
+ M:	Shannon Nelson <snelson@pensando.io>
+-M:	Pensando Drivers <drivers@pensando.io>
++M:	drivers@pensando.io
+ L:	netdev@vger.kernel.org
+ S:	Supported
+ F:	Documentation/networking/device_drivers/ethernet/pensando/ionic.rst
+@@ -14653,7 +14653,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+ F:	drivers/net/wireless/ath/ath11k/
+ 
+ QUALCOMM ATHEROS ATH9K WIRELESS DRIVER
+-M:	QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
++M:	ath9k-devel@qca.qualcomm.com
+ L:	linux-wireless@vger.kernel.org
+ S:	Supported
+ W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath9k
+@@ -18338,7 +18338,7 @@ F:	include/linux/usb/isp116x.h
+ 
+ USB LAN78XX ETHERNET DRIVER
+ M:	Woojung Huh <woojung.huh@microchip.com>
+-M:	Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
++M:	UNGLinuxDriver@microchip.com
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/microchip,lan78xx.txt
+@@ -18452,7 +18452,7 @@ F:	drivers/net/usb/smsc75xx.*
+ 
+ USB SMSC95XX ETHERNET DRIVER
+ M:	Steve Glendinning <steve.glendinning@shawell.net>
+-M:	Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
++M:	UNGLinuxDriver@microchip.com
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/net/usb/smsc95xx.*
+@@ -18999,7 +18999,7 @@ F:	drivers/input/mouse/vmmouse.h
+ 
+ VMWARE VMXNET3 ETHERNET DRIVER
+ M:	Ronak Doshi <doshir@vmware.com>
+-M:	"VMware, Inc." <pv-drivers@vmware.com>
++M:	pv-drivers@vmware.com
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/net/vmxnet3/
 -- 
-2.29.2
+2.26.2
 
