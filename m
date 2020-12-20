@@ -2,63 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B44A92DF32F
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Dec 2020 04:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A78802DF551
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Dec 2020 13:06:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728337AbgLTDgi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Dec 2020 22:36:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57994 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728283AbgLTDga (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Dec 2020 22:36:30 -0500
-From:   Sasha Levin <sashal@kernel.org>
-Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sara Sharon <sara.sharon@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 1/3] cfg80211: initialize rekey_data
-Date:   Sat, 19 Dec 2020 22:35:29 -0500
-Message-Id: <20201220033531.2728916-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
+        id S1727386AbgLTMF1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Dec 2020 07:05:27 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:30767 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727300AbgLTMF1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 20 Dec 2020 07:05:27 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608465909; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=CX2oIfYFVzDbJHgQOYYN0XleZinN5DLGEAdsFl4VyXk=;
+ b=CSvH4IjDO2XybHZ3fRWOHs4NAZZJ88RN50tm9L8oUvcCThw+z+RlotR7pO/p+EWqxqAz1Nai
+ gBoTuesCV3VfTSRikwYkAsiD3WYcxYUWzu2vvpla3J/JvkDWaY1BxrhBCQmozXg8yDoeqcnG
+ J6N0d4+CAA2pNl4M8SnPU7fdtE8=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5fdf3dd3031793dcb45051ee (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 20 Dec 2020 12:04:35
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AD3BDC43463; Sun, 20 Dec 2020 12:04:35 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 072D1C433C6;
+        Sun, 20 Dec 2020 12:04:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 072D1C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [1/2] mt76: usb: remove wake logic in mt76u_status_worker
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <00009bf0cfdc9565e4432cad3ed51888c667c25d.1607164041.git.lorenzo@kernel.org>
+References: <00009bf0cfdc9565e4432cad3ed51888c667c25d.1607164041.git.lorenzo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201220120435.AD3BDC43463@smtp.codeaurora.org>
+Date:   Sun, 20 Dec 2020 12:04:35 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sara Sharon <sara.sharon@intel.com>
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-[ Upstream commit f495acd8851d7b345e5f0e521b2645b1e1f928a0 ]
+> Similar to mmio code path, remove wake logic in mt76u_status_worker handler.
+> Starting from commit 90d494c99a99 ("mt76: improve tx queue stop/wake")', the
+> wake queue logic on the usb status path is no longer necessary since the hw
+> queues are no longer stopped on the mt76 tx path.
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-In case we have old supplicant, the akm field is uninitialized.
+2 patches applied to wireless-drivers.git, thanks.
 
-Signed-off-by: Sara Sharon <sara.sharon@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20201129172929.930f0ab7ebee.Ic546e384efab3f4a89f318eafddc3eb7d556aecb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+e16ab3db87b3 mt76: usb: remove wake logic in mt76u_status_worker
+123bb2b73788 mt76: sdio: remove wake logic in mt76s_process_tx_queue
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 7748d674677c9..eb25998a0032e 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -9836,7 +9836,7 @@ static int nl80211_set_rekey_data(struct sk_buff *skb, struct genl_info *info)
- 	struct net_device *dev = info->user_ptr[1];
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
- 	struct nlattr *tb[NUM_NL80211_REKEY_DATA];
--	struct cfg80211_gtk_rekey_data rekey_data;
-+	struct cfg80211_gtk_rekey_data rekey_data = {};
- 	int err;
- 
- 	if (!info->attrs[NL80211_ATTR_REKEY_DATA])
 -- 
-2.27.0
+https://patchwork.kernel.org/project/linux-wireless/patch/00009bf0cfdc9565e4432cad3ed51888c667c25d.1607164041.git.lorenzo@kernel.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
