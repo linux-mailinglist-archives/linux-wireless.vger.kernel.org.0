@@ -2,84 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26F8E2DF5AF
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Dec 2020 15:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 931D42DF936
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 07:22:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727487AbgLTOg6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Dec 2020 09:36:58 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:55015 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726970AbgLTOg6 (ORCPT
+        id S1728372AbgLUGWr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Dec 2020 01:22:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52392 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727891AbgLUGWq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Dec 2020 09:36:58 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608474996; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=3uHl3ZOY5ex30zjTBUCloPec/y4isCuxKsN50qVLmnc=; b=pvVec2WC1IaRIyrBaXHKJI7/xPs8xAks9WRhSLIcyEA4kKxHzL/ewAQwF5i9fB3RDXMtXawa
- QNPh0C8/4fqMVZ7Hv12ucQDfEqb1tL8z1DrpJ+56RjsG/W1BvPZ/ixXDjIDuDoUoTiwPj3tB
- +bH7YSPtElFUEe+4zF2Cq+uMykE=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
- 5fdf61560564dfefcd6362d9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 20 Dec 2020 14:36:06
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 40290C43461; Sun, 20 Dec 2020 14:36:06 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 86513C433CA;
-        Sun, 20 Dec 2020 14:36:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 86513C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arend van Spriel <aspriel@gmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH] MAINTAINERS: switch to different email address
-References: <20201220141807.17278-1-aspriel@gmail.com>
-Date:   Sun, 20 Dec 2020 16:36:01 +0200
-In-Reply-To: <20201220141807.17278-1-aspriel@gmail.com> (Arend van Spriel's
-        message of "Sun, 20 Dec 2020 15:18:07 +0100")
-Message-ID: <87czz4r1da.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 21 Dec 2020 01:22:46 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2465BC0613D3
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Dec 2020 22:22:06 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id m12so20971639lfo.7
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Dec 2020 22:22:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/e3jNsq3iy3v40rws4mJ4ddje4NCepqN/jkGkUQj+WE=;
+        b=IGyJLrwNPs7nGGEVHTQab82fiJjb6Idsp5s6IB1R4RaWfyeKeQXU9t3UEqBpVGkMZD
+         qgXp8QFGBZ3P4HidQCrMOA6IrDOZQiKoA8xy8w43f/dCVFRQoNda8JDbNKiT4OS1zUso
+         dfpbm6nrZJoavjjOduhKN7Cj1BFsZwkoYO53ksa94098xyxknJiiZSaXoskClm0PI5MJ
+         dVlGOVXrB7FYjTROt6AVHUX5JzymRBThW1vAsfMgCeNZiraktIlK55yVSg49HUwOaKzR
+         7SFMGDvetsBuUQS15b0Wn7HnkOsrIGe7fappaBw6Lgpf+mRr0yO43orO0ebtKm5OzlYt
+         hSew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/e3jNsq3iy3v40rws4mJ4ddje4NCepqN/jkGkUQj+WE=;
+        b=gdDBw41bkgTyYZtgZtUJpQiggM4UX0RHqmWjIbHc6WYJjkTo8wnE5Pcma89XizU+w1
+         TmVlIG8rmF+Jkiy4MmUAcK4NhtzKRoZPbH31vNkwLHWTPbO3HwRnMNGM71SGbFV1/JSA
+         CiSFRg6MgtyX50SdFXuAPwhlWDYeQ7NNKbirQOoVYjUjX5iNkTOA12LafvgLmM4OIePs
+         ydVvsXqnwgvU/dUMhyMwgLCK11AmTT8n4L7zeXB9v22WwfChBML1HsJFPY0gNnTT5PbX
+         F0Jv6LxjVHoT7KuzAUnIgyXmkWCeYu2Txtgg8V4wHcgRd02x6F2DDYP4paayGUDh+ytQ
+         7WVA==
+X-Gm-Message-State: AOAM532cDj/JBpmV46Anc0s38lvm1gqHeVInmUK4ScdWkuKMvy6qbwYm
+        GBPlXn3Ui8coDuvqHhqx6mrgU42dbnCI8Opc
+X-Google-Smtp-Source: ABdhPJzUdmxt16lAcpr3XIJgaS3ZNd1qmGeb8QjncFPHRIJmPJNAdv0Y5Q2WBJiq/hVrXME+Ecnimg==
+X-Received: by 2002:a2e:b6d0:: with SMTP id m16mr5896530ljo.133.1608499681510;
+        Sun, 20 Dec 2020 13:28:01 -0800 (PST)
+Received: from 5550.lan (host-91-243-31-214.la.net.ua. [91.243.31.214])
+        by smtp.googlemail.com with ESMTPSA id u6sm1777338lfl.64.2020.12.20.13.28.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Dec 2020 13:28:00 -0800 (PST)
+From:   Illia Volochii <illia.volochii@gmail.com>
+To:     seth.forshee@canonical.com
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Illia Volochii <illia.volochii@gmail.com>
+Subject: [PATCH] wireless-regdb: Update regulatory rules for Ukraine (UA)
+Date:   Sun, 20 Dec 2020 23:27:21 +0200
+Message-Id: <20201220212721.22450-1-illia.volochii@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arend van Spriel <aspriel@gmail.com> writes:
+This patch is based on the latest Ukrainian norms https://zakon.rada.gov.ua/laws/show/z0201-15#n48.
 
-> Switching to private mail account as work email is polluted with a legal
-> disclaimer. Just making it extra clear by changing the email address in
-> the MAINTAINERS file as well.
->
-> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Arend van Spriel <aspriel@gmail.com>
-> ---
-> Hi Kalle,
->
-> Not sure if both s-o-b lines are really necessary, but better be safe
-> then sorry.
+* Extend some frequency ranges.
+* Increase EIRP of frequency ranges.
+* Set wmmrule=ETSI to frequency ranges that are related to EN 301 893.
+* Permit outdoor usage of 2.4 GHz band channels.
+* Prohibit outdoor usage of some 5 GHz band channels.
 
-I don't see a problem with having two signed offs though I don't think
-it's really needed as you are still just one person, I hope :)
+Signed-off-by: Illia Volochii <illia.volochii@gmail.com>
+---
+ db.txt | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-I'll queue this for v5.11.
-
+diff --git a/db.txt b/db.txt
+index c71a03a..86073d2 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1548,21 +1548,20 @@ country TZ:
+ 	(2402 - 2482 @ 40), (20)
+ 	(5735 - 5835 @ 80), (30)
+ 
+-# Source:
+-# #914 / 06 Sep 2007: http://www.ucrf.gov.ua/uk/doc/nkrz/1196068874
+-# #1174 / 23 Oct 2008: http://www.nkrz.gov.ua/uk/activities/ruling/1225269361
+-# (appendix 8)
+-# Listed 5GHz range is a lowest common denominator for all related
+-# rules in the referenced laws. Such a range is used because of
+-# disputable definitions there.
++# Source: https://zakon.rada.gov.ua/laws/show/z0201-15#n48
++# Although it is allowed to use up to 250 mW for some 5 GHz frequency ranges,
++# all of them are limited to 100 mW for IEEE 802.11n and IEEE 802.11ac.
++# 2.4 GHz band channels can be used outdoors when some requirements are met.
++# 5 GHz band channels must be used only indoors in some cases. They are neither
++# permitted nor denied outdoors in others.
+ country UA: DFS-ETSI
+-	(2400 - 2483.5 @ 40), (20), NO-OUTDOOR
+-	(5150 - 5250 @ 80), (20), NO-OUTDOOR, AUTO-BW
+-	(5250 - 5350 @ 80), (20), DFS, NO-OUTDOOR, AUTO-BW
+-	(5490 - 5670 @ 160), (20), DFS
+-	(5735 - 5835 @ 80), (20)
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (100 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
++	(5470 - 5725 @ 160), (100 mW), DFS, NO-OUTDOOR, wmmrule=ETSI
++	(5725 - 5850 @ 80), (100 mW), NO-OUTDOOR
+ 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+-	(57000 - 66000 @ 2160), (40)
++	(57000 - 66000 @ 2160), (40 mW), NO-OUTDOOR
+ 
+ country UG: DFS-FCC
+ 	(2402 - 2482 @ 40), (20)
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
