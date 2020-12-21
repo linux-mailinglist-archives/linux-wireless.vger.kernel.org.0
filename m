@@ -2,91 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 756002DF90B
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 06:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 362462DF9B0
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 09:00:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728524AbgLUF6U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Dec 2020 00:58:20 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:57010 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728517AbgLUF6T (ORCPT
+        id S1727275AbgLUH6q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Dec 2020 02:58:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38874 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727117AbgLUH6q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Dec 2020 00:58:19 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608530274; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=sEY+xIJ0XXXuL7Fjm7+Q2MBFKhj3vlIlLwjAvEKA18A=; b=nnzEZQ5VHwCxOpSDGqNtVbbHhCDvxhmBhlV7Gc7QHBall4bxHEwGQcTHTSHsdyLVSak+Vjog
- DojCBcS2p9DOuWk2GVmriS4XidKZrYluA6Y3QxwJbcL9cEw5y8HHwfxLb5hG36qE40L7jGRi
- b6OuTTXDS2EasYjKH+Q8MmR5gr0=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 5fe0394475ab652e87bad55f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 21 Dec 2020 05:57:24
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 009E3C433CA; Mon, 21 Dec 2020 05:57:23 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A35E9C433CA;
-        Mon, 21 Dec 2020 05:57:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A35E9C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list\:NETWORKING DRIVERS \(WIRELESS\)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] [v11] wireless: Initial driver submission for pureLiFi STA devices
-References: <20200928102008.32568-1-srini.raju@purelifi.com>
-        <20201208115719.349553-1-srini.raju@purelifi.com>
-        <87o8iqq6os.fsf@codeaurora.org>
-        <CWXP265MB17998064FCE8FCE6B313FAD1E0C00@CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM>
-Date:   Mon, 21 Dec 2020 07:57:17 +0200
-In-Reply-To: <CWXP265MB17998064FCE8FCE6B313FAD1E0C00@CWXP265MB1799.GBRP265.PROD.OUTLOOK.COM>
-        (Srinivasan Raju's message of "Mon, 21 Dec 2020 05:52:16 +0000")
-Message-ID: <877dpbd7lu.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 21 Dec 2020 02:58:46 -0500
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B67DC0613D3;
+        Sun, 20 Dec 2020 23:58:03 -0800 (PST)
+Received: by mail-pj1-x1036.google.com with SMTP id w1so7463637pjc.0;
+        Sun, 20 Dec 2020 23:58:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vuo/TbErUnOTi/BtCcE2qLWY5PtEW/w4cxfuLrmrRGI=;
+        b=KA1e7AOhJeu3VEaVRv+7iGg3OH8WFzJeus82szeqLp9hHrgBIchmk5Nm6caQn8+l9G
+         Kv8GGimfUO4fBjucCrQPQ55pKti32hbBn3rwJycHm50Yp9lB0Exo3VmPkBN3yPg3DrjS
+         5TOyKcQluDnzcpDm/LT74e05ydbq6NEYXdNtWCT3GYZZ+WwPl0b8OLiF85++FbBie503
+         nhdC8lBTRwAxty9dV3nD6VeiBfMJZS9CMdB9ZMi1qLUM3EFw194DWr4NlF7YKerZsFCB
+         LP5JlTxUPiL0F46Dbpn1UMsmL+qLiRjCoEWiOSx03J1d0eS3bRAh7AjhIjrtMAqAJ3Ae
+         2AQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vuo/TbErUnOTi/BtCcE2qLWY5PtEW/w4cxfuLrmrRGI=;
+        b=toEsVI3/V2TCKuFhyeus8+ALNFxpei97X8N7/mVolJ3Kc50k5C9ZPfmevzbZiiAtKQ
+         HIHqKvj0bb25ImqUsBsn9JK9lFV/ep16mq2im6oQJ0XQVuA3zipxnsPMYYVs8VcQvyPm
+         zoHfI63+0cdFO/tDcy4PQOB4sNi2HCZv5ylpehaUP0rBlcx1ye4EZocQsNhNceDzjlRK
+         7iycqe4hfLk0e3zYXr2gguZKZnbNGkGWUCB3EYf86z5pkA9+3mrC3cSngrnyOh06Yem3
+         Pddp2cyEoiNgQYejTc/xgbEdM4tSaS7pd3dFQsUOiKU+dSAMM2g2dZkQcunMJug/YPqP
+         B1xA==
+X-Gm-Message-State: AOAM531a5IM0tHxXer9VlCpVGFXlc1+DfzsCHu0A1ULk0oQjCIZyHplZ
+        eFyjGJw52gZbrWYlY71CCOY=
+X-Google-Smtp-Source: ABdhPJwJP2qXWVmVIYNVyefaLddDcIwYNgdOALxCjBSSMN53Ed/gxMKUE2QVCKA/8wgUwewEa7qIPg==
+X-Received: by 2002:a17:902:8c84:b029:dc:20bc:2812 with SMTP id t4-20020a1709028c84b02900dc20bc2812mr15299578plo.66.1608537482959;
+        Sun, 20 Dec 2020 23:58:02 -0800 (PST)
+Received: from localhost.localdomain ([103.248.31.152])
+        by smtp.googlemail.com with ESMTPSA id 145sm9979738pge.88.2020.12.20.23.57.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Dec 2020 23:58:02 -0800 (PST)
+From:   Amey Narkhede <ameynarkhede03@gmail.com>
+To:     imitsyanko@quantenna.com, geomatsi@gmail.com
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Amey Narkhede <ameynarkhede03@gmail.com>
+Subject: [PATCH] qtnfmac_pcie: Use module_pci_driver
+Date:   Mon, 21 Dec 2020 13:27:35 +0530
+Message-Id: <20201221075735.197255-1-ameynarkhede03@gmail.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Srinivasan Raju <srini.raju@purelifi.com> writes:
+Use module_pci_driver for drivers whose init and exit functions
+only register and unregister, respectively.
 
->> I see lots of magic numbers in the driver like 2, 0x33 and 0x34 here.
->> Please convert the magic numbers to proper defines explaining the
->> meaning. And for vendor commands you could even use enum to group
->> them better in .h file somewhere.
->
-> Hi Kalle,
->
-> Thanks for reviewing the driver, We will work on the comments.
+Signed-off-by: Amey Narkhede <ameynarkhede03@gmail.com>
+---
+ drivers/net/wireless/quantenna/qtnfmac/pcie/pcie.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-I haven't had time to do a throrough review yet, but I suggest fixing
-the stuff I commented and submitting v12. I'll then do a new review with
-v12.
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/pcie/pcie.c b/drivers/net/wireless/quantenna/qtnfmac/pcie/pcie.c
+index 5337e67092ca..d9d06af9adc6 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/pcie/pcie.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/pcie/pcie.c
+@@ -480,18 +480,7 @@ static struct pci_driver qtnf_pcie_drv_data = {
+ #endif
+ };
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+-static int __init qtnf_pcie_register(void)
+-{
+-	return pci_register_driver(&qtnf_pcie_drv_data);
+-}
+-
+-static void __exit qtnf_pcie_exit(void)
+-{
+-	pci_unregister_driver(&qtnf_pcie_drv_data);
+-}
+-
+-module_init(qtnf_pcie_register);
+-module_exit(qtnf_pcie_exit);
++module_pci_driver(qtnf_pcie_drv_data)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+ MODULE_AUTHOR("Quantenna Communications");
+ MODULE_DESCRIPTION("Quantenna PCIe bus driver for 802.11 wireless LAN.");
+--
+2.29.2
