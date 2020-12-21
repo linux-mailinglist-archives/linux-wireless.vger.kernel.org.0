@@ -2,111 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A722DFD5A
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 16:17:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 262AA2DFEC2
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 18:09:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726108AbgLUPQt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Dec 2020 10:16:49 -0500
-Received: from mx2.suse.de ([195.135.220.15]:50790 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725969AbgLUPQs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Dec 2020 10:16:48 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1608563762; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Vl0A2Nint1NzK8Ep4g4vvF4ZXCHhT/8ljndmCtaD508=;
-        b=YWccyOC1BccLfrfZAfSFjO6uE2vqdZbeseyR99Ekcmec1CYK8hOA9mxJ8p2PCmnNIeO56z
-        kppQfsWsz1axzdjaZuEIEaeRJ+aRMdpYIPHxQdSuS9E57euQkMNRoDYK4TXH3fFUEgQcTI
-        SWX7nE5rUlgrWezZch1AnghnYup+5Sw=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 10F91AD4D;
-        Mon, 21 Dec 2020 15:16:02 +0000 (UTC)
-Date:   Mon, 21 Dec 2020 16:16:01 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     Richard Fitzgerald <rf@opensource.cirrus.com>
-Cc:     rostedt@goodmis.org, sergey.senozhatsky@gmail.com,
-        shuah@kernel.org, patches@opensource.cirrus.com,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] lib: vsprintf: scanf: Negative number must have
- field width > 1
-Message-ID: <X+C8MeYHX0/FsPwS@alley>
-References: <20201217180057.23786-1-rf@opensource.cirrus.com>
+        id S1725854AbgLURJf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Dec 2020 12:09:35 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:14870 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725811AbgLURJf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Dec 2020 12:09:35 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608570551; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=pGeMzAVRZjV6bmGW6mYo9M0ETpj1teVIb876RuOlJcU=;
+ b=xIm+Tu7lQ3WMVEIMlVbjRvC63DSRhwF7R89QMsGMEyy7F1h48fnSWA/8YUiFhFjx/10KIMlN
+ kjYjMvqc7EhXyc/L98lKov1r2KBtNtfPZfSedTU0PwOyuc+fVxdi+ErSYbCBBGSesrBozeSF
+ qxdkC0ANOLmknK5bYNRcgfvPl+s=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5fe0d68ddb8e07fa6c2c89cc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 21 Dec 2020 17:08:29
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 585A1C433ED; Mon, 21 Dec 2020 17:08:29 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E222FC433CA;
+        Mon, 21 Dec 2020 17:08:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E222FC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201217180057.23786-1-rf@opensource.cirrus.com>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] MAINTAINERS: switch to different email address
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201220141807.17278-1-aspriel@gmail.com>
+References: <20201220141807.17278-1-aspriel@gmail.com>
+To:     Arend van Spriel <aspriel@gmail.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Arend van Spriel <aspriel@gmail.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20201221170829.585A1C433ED@smtp.codeaurora.org>
+Date:   Mon, 21 Dec 2020 17:08:29 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu 2020-12-17 18:00:54, Richard Fitzgerald wrote:
-> If a signed number field starts with a '-' the field width must be > 1,
-> or unlimited, to allow at least one digit after the '-'.
+Arend van Spriel <aspriel@gmail.com> wrote:
+
+> Switching to private mail account as work email is polluted with a legal
+> disclaimer. Just making it extra clear by changing the email address in
+> the MAINTAINERS file as well.
 > 
-> This patch adds a check for this. If a signed field starts with '-'
-> and field_width == 1 the scanf will quit.
-> 
-> It is ok for a signed number field to have a field width of 1 if it
-> starts with a digit. In that case the single digit can be converted.
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Arend van Spriel <aspriel@gmail.com>
 
-The change makes perfect sense. vsscanf() should always process only one
-character when the field width is 1.
+Patch applied to wireless-drivers.git, thanks.
 
-Well, it has a potential to break existing users that rely on the
-broken behavior. Fortunately, there seems be only one:
+bfe55584713b MAINTAINERS: switch to different email address
 
-	drivers/net/wireless/intel/iwlegacy/3945-mac.c: if (sscanf(buf, "%1i", &ant) != 1) {
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20201220141807.17278-1-aspriel@gmail.com/
 
-It is used to set a device parameter: il3945_mod_params.antenna.
-There are three valid values:
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-	enum il3945_antenna {
-		IL_ANTENNA_DIVERSITY,
-		IL_ANTENNA_MAIN,
-		IL_ANTENNA_AUX
-	};
-
-So, we should be on the safe side.
-
-Anyway, adding people from
-get_maintainer.pl drivers/net/wireless/intel/iwlegacy/3945-mac.c
-so that they are aware of this.
-
-> Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-
-Best Regards,
-Petr
-
-> ---
->  lib/vsprintf.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index 14c9a6af1b23..8954ff94a53c 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -3433,8 +3433,12 @@ int vsscanf(const char *buf, const char *fmt, va_list args)
->  		str = skip_spaces(str);
->  
->  		digit = *str;
-> -		if (is_sign && digit == '-')
-> +		if (is_sign && digit == '-') {
-> +			if (field_width == 1)
-> +				break;
-> +
->  			digit = *(str + 1);
-> +		}
->  
->  		if (!digit
->  		    || (base == 16 && !isxdigit(digit))
-> -- 
-> 2.20.1
