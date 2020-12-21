@@ -2,198 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 982E82E00D0
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 20:15:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3BB32E010A
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 20:33:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726718AbgLUTO4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Dec 2020 14:14:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59934 "EHLO
+        id S1726010AbgLUTcg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Dec 2020 14:32:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726575AbgLUTOz (ORCPT
+        with ESMTP id S1725807AbgLUTcf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Dec 2020 14:14:55 -0500
-Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C727FC0613D6
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Dec 2020 11:14:14 -0800 (PST)
-Received: by mail-io1-xd2b.google.com with SMTP id q137so9797711iod.9
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Dec 2020 11:14:14 -0800 (PST)
+        Mon, 21 Dec 2020 14:32:35 -0500
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82FFDC0613D6
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Dec 2020 11:31:55 -0800 (PST)
+Received: by mail-oi1-x234.google.com with SMTP id 15so12383432oix.8
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Dec 2020 11:31:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NCpPyVUyHj3sZhDD844T8joecQgf02sJErk51SRi6NI=;
-        b=RWeIDB0RKWVpwXQZ9JCTXzVnrnNqgoL309PXHi6HiX3aEg6VbFWQgu/L6hD2KWQs5R
-         yAiSf6ZYzdWT1IAmdxW0BK9acipxilhfiQDWxV9BFWPD2bEp+PpbzIAXALVWEUyiZObW
-         zaOoVlk7CvksKR0ItWXhJSyUHkvuObiStzNWnhS2lZeWHF/tDncbwrsXdNEQ7YhHZPYh
-         U34LPurNo3x8bPXH51q81kNzP2968VVEVXNOvlXODg+eGorcLh3ROA2a4xpe/zi2jbgS
-         eWt0I9avZRvmxI/yUbXfV4d8K3bqemTzGWFVVENtBhfQC3gcctszDwTyNWPAoMdAwRvP
-         8FVA==
+         :cc:content-transfer-encoding;
+        bh=N5yF8MX27ibe8pYaUNX9jkjz98WF9cXm94+NVHlwyyc=;
+        b=GrhC+e8EhcqI7uTngJIjhv7kKLDWW5kVVFQXdUvjlcvZ74knhY4R1EZpQiii79P0ds
+         eKRLxsKJ3wA8dQAS5ypOvr+nhykt2QxF4/2EWKBD2ITGhHwNGWpJ4VebS7uUL0+WaPys
+         KjDhC7ncbVv1SUcX2cz4GX99kfQ99IzB0GBx0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NCpPyVUyHj3sZhDD844T8joecQgf02sJErk51SRi6NI=;
-        b=Ai+f2+un370Rfu2JBiBh/D736wY9j7SF+y12TDOxnEil+jyOthsIA2ZIGpp+BSJ4MO
-         YETXgA+LANMZQgThtlPZjhYIGjC6dc+fHGPt1zrIc+/23UrZIIbAQAB8BLB3ALQckKGQ
-         0MXvbA3GTyIHPWVo2Woy8eeDxiTbgw9x1zi9sNzy1n/9L1dods06uxaK9cjBMfdomSoJ
-         T7p3Nw1ISGJfpvaHqMG7sXyKpaz56ZsgxBdUWvXnJFO/8UnnKyG90D3BKs76VSHFlYOQ
-         fTcClwqLd+98jM2qUuP4G2u1Ac0TNIt/T0TlR5UtlUBa/JRKHsj2xgfbBXzEKY/c3PoX
-         UwMA==
-X-Gm-Message-State: AOAM5310ofIJK8UjMJrSErWQ+0mtuprOVzV8YQLl8nhg94L2biDwX4Xg
-        k3SPPWvH8iIUrJrpiom25JifrB7Ep4utHFn37CGbNg==
-X-Google-Smtp-Source: ABdhPJwQAvuuxbLEhh4chSXtX3Kc9MFQV6lBWZsa5hLhDfWlyePcWufPQo3JuDfnt4g8oCVDV+vofdR/zbsUbWJajgw=
-X-Received: by 2002:a6b:928b:: with SMTP id u133mr15045807iod.145.1608578053569;
- Mon, 21 Dec 2020 11:14:13 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=N5yF8MX27ibe8pYaUNX9jkjz98WF9cXm94+NVHlwyyc=;
+        b=WOm/7wIq5WUwhD3X7zfJ6nkNons2rguJj7ksYv9qqKP92eRN09RrL1ChSVbZT00YUt
+         hr/xrAS+wE43QVwfUwW5TrIMZuLbi/rTA/sGh9m7Ls3yhXEGN0hvyvCxGpLqNkaJa/62
+         wjtP5L+w7XNfLxNjY36FvLtH1/p2OA5o1x1MxdII2KwxiY3HWSBP2SsBYFYA+49+FKpU
+         YGz2eAtftKdRzqAOMTYCsjNts6IBgXKbkh4pBM6jrFHqcpKEowjPVdlANpnvLetg1Q8+
+         ursQOJiypGJpHq9LPzwYp10XU0Whoi02noZw86OQaxO0dnogR34uPfvO1mZ/tIkgwe94
+         94tw==
+X-Gm-Message-State: AOAM530laxHkXb3tS52nyfFoh/SJjkNBF/lUasevcU3V01bmPWrcRrHC
+        woEs+oaJZUCKed1YakEis3O7SUF19rdNvg==
+X-Google-Smtp-Source: ABdhPJwo1B1gPhXM3uecF6iGawkR+vh+r2c+pDJd3v/CiacXTqsudXbdfxDbjMfQbL7Mk2xpXtPazA==
+X-Received: by 2002:aca:568f:: with SMTP id k137mr12218760oib.138.1608579114580;
+        Mon, 21 Dec 2020 11:31:54 -0800 (PST)
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com. [209.85.167.176])
+        by smtp.gmail.com with ESMTPSA id u85sm3786237oif.57.2020.12.21.11.31.53
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Dec 2020 11:31:53 -0800 (PST)
+Received: by mail-oi1-f176.google.com with SMTP id q25so12360267oij.10
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Dec 2020 11:31:53 -0800 (PST)
+X-Received: by 2002:aca:af4d:: with SMTP id y74mr11678757oie.105.1608579112704;
+ Mon, 21 Dec 2020 11:31:52 -0800 (PST)
 MIME-Version: 1.0
-References: <5664fa0f-aef2-c336-651a-093c9eed23ab@candelatech.com>
- <765f370d-ce2d-b75a-2dde-87f69ae7c185@candelatech.com> <CANn89iKpa1y2SKJuR9kRi=AZs94sj+-tzRs+2D0vmxh+ahEcGA@mail.gmail.com>
- <adbee2ec-c6ba-7a17-eb98-1c53365fa911@candelatech.com> <CANn89iJQnSVZFp2XDgREN1QMtU4exOsnJq=5VzJ6tqTCJ7MH-g@mail.gmail.com>
- <c4bcee7d-b2eb-759c-c659-d65f3e7daec9@candelatech.com> <CANn89i++Kgkj57ms70a5GDOQ-Cpewx3NQkzP3EmZmLYQ4eHzww@mail.gmail.com>
- <5d89fd24-f00a-7e70-00ce-83529f13b05e@candelatech.com> <20201218121627.603329b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <9003ea3720a03b4bd1b8abf3d8f645563a58f953.camel@sipsolutions.net>
- <43a5b45c-955a-22d4-2bf9-dbab852dbb5f@candelatech.com> <CANn89iJBO13s9fOVRnDyfj5HXt9wjnRpbh2_f5SuyNkNAfjzJQ@mail.gmail.com>
- <CANn89iJTCDof6ypxCkiGaPo+y0Bngg0NX5cLPWisTEZaFo1BQw@mail.gmail.com>
-In-Reply-To: <CANn89iJTCDof6ypxCkiGaPo+y0Bngg0NX5cLPWisTEZaFo1BQw@mail.gmail.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Mon, 21 Dec 2020 20:14:02 +0100
-Message-ID: <CANn89iJWG2n1s3j7EdpwkQQv-9dOY02V+FGYHAWguO4JiqWuJA@mail.gmail.com>
-Subject: Re: net: tso: add UDP segmentation support: adds regression for ax200 upload
-To:     Ben Greear <greearb@candelatech.com>,
-        Rainer Suhm <automat@posteo.de>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        Willem de Bruijn <willemb@google.com>
+References: <1608515579-1066-1-git-send-email-miaoqing@codeaurora.org>
+In-Reply-To: <1608515579-1066-1-git-send-email-miaoqing@codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 21 Dec 2020 11:31:40 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXP8LotnQZNvXYZqfYH8za6rx1DaZmnH21TsO2NmzX+OZA@mail.gmail.com>
+Message-ID: <CA+ASDXP8LotnQZNvXYZqfYH8za6rx1DaZmnH21TsO2NmzX+OZA@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: fix wmi mgmt tx queue full due to race condition
+To:     Miaoqing Pan <miaoqing@codeaurora.org>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 21, 2020 at 8:04 PM Eric Dumazet <edumazet@google.com> wrote:
->
-> On Mon, Dec 21, 2020 at 7:46 PM Eric Dumazet <edumazet@google.com> wrote:
-> >
-> > On Sat, Dec 19, 2020 at 5:55 PM Ben Greear <greearb@candelatech.com> wrote:
-> > >
-> > > On 12/19/20 7:18 AM, Johannes Berg wrote:
-> > > > On Fri, 2020-12-18 at 12:16 -0800, Jakub Kicinski wrote:
-> > > >> On Thu, 17 Dec 2020 12:40:26 -0800 Ben Greear wrote:
-> > > >>> On 12/17/20 10:20 AM, Eric Dumazet wrote:
-> > > >>>> On Thu, Dec 17, 2020 at 7:13 PM Ben Greear <greearb@candelatech.com> wrote:
-> > > >>>>> It is the iwlwifi/mvm logic that supports ax200.
-> > > >>>>
-> > > >>>> Let me ask again :
-> > > >>>>
-> > > >>>> I see two different potential call points :
-> > > >>>>
-> > > >>>> drivers/net/wireless/intel/iwlwifi/pcie/tx.c:1529:
-> > > >>>> tso_build_hdr(skb, hdr_page->pos, &tso, data_left, !total_len);
-> > > >>>> drivers/net/wireless/intel/iwlwifi/queue/tx.c:427:
-> > > >>>> tso_build_hdr(skb, hdr_page->pos, &tso, data_left, !total_len);
-> > > >>>>
-> > > >>>> To the best of your knowledge, which one would be used in your case ?
-> > > >>>>
-> > > >>>> Both are horribly complex, I do not want to spend time studying two
-> > > >>>> implementations.
-> > > >>>
-> > > >>> It is the queue/tx.c code that executes on my system, verified with
-> > > >>> printk.
-> > > >>
-> > > >> Not sure why Intel's not on CC here.
-> > > >
-> > > > Heh :)
-> > > >
-> > > > Let's also add linux-wireless.
-> > > >
-> > > >> Luca, is the ax200 TSO performance regression with recent kernel on your
-> > > >> radar?
-> > > >
-> > > > It wasn't on mine for sure, so far. But it's supposed to be Christmas
-> > > > vacation, so haven't checked our bug tracker etc. I see Emmanuel was at
-> > > > least looking at the bug report, but not sure what else happened yet.
-> > >
-> > > Not to bitch and moan too much, but even the most basic of testing would
-> > > have shown this, how can testing be so poor on the ax200 driver?
-> > >
-> > > It even shows up with the out-of-tree ax200 driver.
-> > >
-> > > > Off the top of my head, I don't really see the issue. Does anyone have
-> > > > the ability to capture the frames over the air (e.g. with another AX200
-> > > > in monitor mode, load the driver with amsdu_size=3 module parameter to
-> > > > properly capture A-MSDUs)?
-> > >
-> > > I can do that at some point, and likely it could be reproduced with an /n or /ac
-> > > AP and those are a lot easier to sniff.
-> > >
-> > > Thanks,
-> > > Ben
-> > >
-> > >
-> > > --
-> > > Ben Greear <greearb@candelatech.com>
-> > > Candela Technologies Inc  http://www.candelatech.com
-> >
-> > It seems the problem comes from some skbs reaching the driver with
-> > gso_type == 0,
-> > meaning skb_is_gso_tcp() is fuzzy. (net/core/tso.c is only one of the
-> > skb_is_gso_tcp() users)
-> >
-> > Local TCP stack should provide either SKB_GSO_TCPV4 or SKB_GSO_TCPV6
-> > for GSO packets.
-> >
-> > So maybe the issue is coming from traffic coming from a VM through a
-> > tun device or something,
-> > and our handling of GSO_ROBUST / DODGY never cared about setting
-> > SKB_GSO_TCPV4 or SKB_GSO_TCPV6 if not already given by user space ?
-> >
-> > Or a plain bug somewhere, possibly overwriting  gso_type with 0 or garbage...
->
-> Oh well, iwl_mvm_tx_tso_segment() 'builds' a fake gso packet.
->
-> I suspect this will fix the issue :
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> index a983c215df310776ffe67f3b3ffa203eab609bfc..e7ad6367c88de4aff700c630d850760d1d3bf011
-> 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> @@ -773,6 +773,7 @@ iwl_mvm_tx_tso_segment(struct sk_buff *skb,
-> unsigned int num_subframes,
->
->         next = skb_gso_segment(skb, netdev_flags);
->         skb_shinfo(skb)->gso_size = mss;
-> +       skb_shinfo(skb)->gso_type = ipv4 ? SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
->         if (WARN_ON_ONCE(IS_ERR(next)))
->                 return -EINVAL;
->         else if (next)
+Hi,
 
+On Sun, Dec 20, 2020 at 5:53 PM Miaoqing Pan <miaoqing@codeaurora.org> wrot=
+e:
+>
+> Failed to transmit wmi management frames:
+>
+> [84977.840894] ath10k_snoc a000000.wifi: wmi mgmt tx queue is full
+> [84977.840913] ath10k_snoc a000000.wifi: failed to transmit packet, dropp=
+ing: -28
+> [84977.840924] ath10k_snoc a000000.wifi: failed to submit frame: -28
+> [84977.840932] ath10k_snoc a000000.wifi: failed to transmit frame: -28
+>
+> This issue is caused by race condition between skb_dequeue and
+> __skb_queue_tail. The queue of =E2=80=98wmi_mgmt_tx_queue=E2=80=99 is pro=
+tected by a
+> different lock: ar->data_lock vs list->lock, the result is no protection.
 
-Or more precisely :
+Nice catch!
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index a983c215df310776ffe67f3b3ffa203eab609bfc..11145bf29f3cbeefcce1a05cc81fd90978f2cbfe
-100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -773,6 +773,7 @@ iwl_mvm_tx_tso_segment(struct sk_buff *skb,
-unsigned int num_subframes,
+> --- a/drivers/net/wireless/ath/ath10k/mac.c
+> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+> @@ -3763,23 +3763,16 @@ bool ath10k_mac_tx_frm_has_freq(struct ath10k *ar=
+)
+>  static int ath10k_mac_tx_wmi_mgmt(struct ath10k *ar, struct sk_buff *skb=
+)
+>  {
+>         struct sk_buff_head *q =3D &ar->wmi_mgmt_tx_queue;
+> -       int ret =3D 0;
+> -
+> -       spin_lock_bh(&ar->data_lock);
+>
+>         if (skb_queue_len(q) =3D=3D ATH10K_MAX_NUM_MGMT_PENDING) {
 
-        next = skb_gso_segment(skb, netdev_flags);
-        skb_shinfo(skb)->gso_size = mss;
-+       skb_shinfo(skb)->gso_type = ipv4 ? SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
-        if (WARN_ON_ONCE(IS_ERR(next)))
-                return -EINVAL;
-        else if (next)
-@@ -795,6 +796,7 @@ iwl_mvm_tx_tso_segment(struct sk_buff *skb,
-unsigned int num_subframes,
+I believe you should be switching this to use skb_queue_len_lockless()
+too. And this still probably leaves a TOCTOU race; maybe we should use
+">=3D" here, in case we queue a few SKBs simultaneously? It doesn't seem
+like we actually have a hard limit here, but it still seems like we
+shouldn't leave this potential inconsistency.
 
-                if (tcp_payload_len > mss) {
-                        skb_shinfo(tmp)->gso_size = mss;
-+                       skb_shinfo(tmp)->gso_type = ipv4 ?
-SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
-                } else {
-                        if (qos) {
-                                u8 *qc;
+Brian
+
+>                 ath10k_warn(ar, "wmi mgmt tx queue is full\n");
+> -               ret =3D -ENOSPC;
+> -               goto unlock;
+> +               return -ENOSPC;
+>         }
+>
+> -       __skb_queue_tail(q, skb);
+> +       skb_queue_tail(q, skb);
+>         ieee80211_queue_work(ar->hw, &ar->wmi_mgmt_tx_work);
