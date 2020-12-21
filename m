@@ -2,101 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A7512DFF82
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 19:18:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 332762DFFA3
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 19:24:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726713AbgLUSQl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Dec 2020 13:16:41 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:57345 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725785AbgLUSQk (ORCPT
+        id S1726518AbgLUSYF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Dec 2020 13:24:05 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:56335 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbgLUSYE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Dec 2020 13:16:40 -0500
+        Mon, 21 Dec 2020 13:24:04 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608574584; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=advVr5rSg5zOOn4yjOEJUBXVBEt3L/mvo2faQIC58Bc=; b=bKkNriUjWnUrWoMflfY7dvcOiaZd+47FNYlwSh7EJv9rwskyMFgMb4y6K8qLjR21BGMnSnHJ
- 3/koP8G8LWQGPXGv/rKZQ1SG/f/UvCNq0khOtsUOOf3tTfGzu0ViLWp/XUDx2l+sV8jl/RH9
- XYSh+GROXYRVWDYaGSADr08D0VY=
-X-Mailgun-Sending-Ip: 69.72.43.15
+ s=smtp; t=1608575024; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=S2DakKA1vosTrjIsbsXVh8dT8o3okJMOJDQvOtHEYhk=; b=HTv8iH7bU2vT/4jvP2u7nqawtMzo5boFL9VEOm5xA257wWrWMnH7avrtdQxA6LU4mZCF8BSz
+ ovNMe89KRmFt28aa6Dfyll4RKl4unjcKa4zpsGpz/9GihFCm2PwS+V8izQU6v7Me+3nFYmO4
+ oVmbgAsVVmAqGXaUntENhfxzd1s=
+X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 5fe0e63fda4719818836360c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 21 Dec 2020 18:15:27
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 5fe0e817120d248bb569f139 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 21 Dec 2020 18:23:19
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4CE6DC43464; Mon, 21 Dec 2020 18:15:27 +0000 (UTC)
+        id 2B597C43461; Mon, 21 Dec 2020 18:23:18 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E500AC433ED;
-        Mon, 21 Dec 2020 18:15:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E500AC433ED
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E94B7C433CA;
+        Mon, 21 Dec 2020 18:23:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E94B7C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Zekun Shen <bruceshenzk@gmail.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH] net: ath10k: santity check for ep connectivity
-References: <20200622022055.16028-1-bruceshenzk@gmail.com>
-Date:   Mon, 21 Dec 2020 20:15:22 +0200
-In-Reply-To: <20200622022055.16028-1-bruceshenzk@gmail.com> (Zekun Shen's
-        message of "Sun, 21 Jun 2020 22:20:54 -0400")
-Message-ID: <87sg7znhz9.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] ath10k: remove unused struct ath10k::dev_type
+Date:   Mon, 21 Dec 2020 20:23:14 +0200
+Message-Id: <1608574994-30706-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zekun Shen <bruceshenzk@gmail.com> writes:
+It's unused so let's get rid of it. Compile tested only, no functional changes.
 
-> Function ep_rx_complete is being called without NULL checking
-> in ath10k_htc_rx_completion_handler. Without such check, mal-
-> formed packet is able to cause jump to NULL.
->
-> ep->service_id seems a good candidate for sanity check as it is
-> used in usb.c.
->
-> Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath10k/htc.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/htc.c b/drivers/net/wireless/ath/ath10k/htc.c
-> index 31df6dd04..e00794d97 100644
-> --- a/drivers/net/wireless/ath/ath10k/htc.c
-> +++ b/drivers/net/wireless/ath/ath10k/htc.c
-> @@ -450,6 +450,11 @@ void ath10k_htc_rx_completion_handler(struct ath10k *ar, struct sk_buff *skb)
->  
->  	ep = &htc->endpoint[eid];
->  
-> +	if (ep->service_id == 0) {
-> +		ath10k_warn(ar, "HTC Rx: ep %d is not connect\n", eid);
-> +		goto out;
-> +	}
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/core.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-I think using ATH10K_HTC_SVC_ID_UNUSED is more descriptive than zero, as
-ath10k_htc_reset_endpoint_states() uses it. I fixed in the pending
-branch.
-
-I think also ath10k_htc_process_credit_report() might have a similar
-problem, can you take a look?
-
+diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+index f4be6bfb2539..cd206b16d68f 100644
+--- a/drivers/net/wireless/ath/ath10k/core.h
++++ b/drivers/net/wireless/ath/ath10k/core.h
+@@ -1019,7 +1019,6 @@ struct ath10k {
+ 	enum ath10k_hw_rev hw_rev;
+ 	u16 dev_id;
+ 	u32 chip_id;
+-	enum ath10k_dev_type dev_type;
+ 	u32 target_version;
+ 	u8 fw_version_major;
+ 	u32 fw_version_minor;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.7.4
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
