@@ -2,95 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF1752E0179
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 21:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD3D2E026D
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Dec 2020 23:22:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725854AbgLUUVF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Dec 2020 15:21:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41910 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725780AbgLUUVF (ORCPT
+        id S1725852AbgLUWWX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Dec 2020 17:22:23 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:53908 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbgLUWWW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Dec 2020 15:21:05 -0500
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6505C0613D6
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Dec 2020 12:20:24 -0800 (PST)
-Received: by mail-ot1-x32c.google.com with SMTP id i6so9998120otr.2
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Dec 2020 12:20:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=D3Dnzn17f9m0v155oO/9OuYuDJ7bDZTltdNjWrzci5E=;
-        b=AkxDwDnuYm53VqC4xV8e11XhP6gdcoAxI4s8RxA+JJO5ImqnyTmaRhj1T/8XCf751u
-         E8s/AHSvjZmFYhJEc1BTk5K/QUdbtx2kFGebwnnw20fny2nRTBNTB634tr4opKqqDrIp
-         RLXtLVTRQ1iOly5RVUhpyM9JPkOdBgGCuvZak=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=D3Dnzn17f9m0v155oO/9OuYuDJ7bDZTltdNjWrzci5E=;
-        b=kLyUdrfmTvKs9AseUQpMrf7igQvz7tAbswEswsUwukrDelE6ISnASxA+CXrZUShrZg
-         frWZaMmjSbZC21EMe1R2sb+K0bZQ1jebpd0hbCObSxxTAGyTiZZqsdkbqhFJyZcw7Rl3
-         juRam1l5kEgBXv5L+vxUmnc8kgUi3HMZXL0g2OM8J/l+feldw3ks+jHRYixvySAL/NWk
-         3sdb8fJttvZZc0j2P/UpdacNgaMvLfSEm1tKOR8BVdnHxWY0lF6BVuKDbH6dPPnh/V90
-         zB3cejH7A+qYjd9/GEjo45HeicXateXBXU9gY4vEzA5l+kf48WzY4XkLrxafIJp5Ke8s
-         1gLA==
-X-Gm-Message-State: AOAM530Cg5zRNI93cRqzAIFA9Urqcb5G2t/LXNREMOJ3NUsLplSdepTb
-        oaRLPqepZDGlooDQ77nsbF3248E1K7LhZw==
-X-Google-Smtp-Source: ABdhPJw+lT3xIgSz1hQX5n1ugiuG1OgbzuGaQcx/QynUf1COpobpLX4Hzedln0OZu5L6IgN/XfzPLg==
-X-Received: by 2002:a05:6830:1253:: with SMTP id s19mr13056137otp.270.1608582023939;
-        Mon, 21 Dec 2020 12:20:23 -0800 (PST)
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com. [209.85.161.43])
-        by smtp.gmail.com with ESMTPSA id h26sm4163104ots.9.2020.12.21.12.20.22
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Dec 2020 12:20:23 -0800 (PST)
-Received: by mail-oo1-f43.google.com with SMTP id k9so2483778oop.6
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Dec 2020 12:20:22 -0800 (PST)
-X-Received: by 2002:a05:6820:3d8:: with SMTP id s24mr12808980ooj.52.1608582022154;
- Mon, 21 Dec 2020 12:20:22 -0800 (PST)
-MIME-Version: 1.0
-References: <1608515579-1066-1-git-send-email-miaoqing@codeaurora.org>
- <CA+ASDXP8LotnQZNvXYZqfYH8za6rx1DaZmnH21TsO2NmzX+OZA@mail.gmail.com> <87ft3zndfr.fsf@codeaurora.org>
-In-Reply-To: <87ft3zndfr.fsf@codeaurora.org>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 21 Dec 2020 12:20:09 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXMK+8aOvtp-QgkXYXw=BZcFdo9H3ZFSXDsee0PFzUO97Q@mail.gmail.com>
-Message-ID: <CA+ASDXMK+8aOvtp-QgkXYXw=BZcFdo9H3ZFSXDsee0PFzUO97Q@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: fix wmi mgmt tx queue full due to race condition
+        Mon, 21 Dec 2020 17:22:22 -0500
+Received: from [192.168.254.6] (unknown [50.46.158.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 2539113C2B0;
+        Mon, 21 Dec 2020 14:21:42 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2539113C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1608589302;
+        bh=u1kcYItexzSqhZ/LdK+cgKFiRExwyVnWjAL3XOvHJuA=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=EOXB7iDHKaoeaTVuZOuPrO5CYcPhkz6qwxS8sU5bwEb5tCaLbQCQZPDI4PYAEw6GD
+         aPbOarnxWa2oM0+upV4JA8qNF4wkZfwT/BF4gJbTzcMT7d43MleUeTDxFPwTTpxEMM
+         E2WjNVO+yMAO5FTQVa8+41GSAMYIb6tHD1XU8g0U=
+Subject: Re: [PATCH v2] ath10k: Per-chain rssi should sum the secondary
+ channels
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        ath10k <ath10k@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+References: <20191217183343.25585-1-greearb@candelatech.com>
+ <20201221183044.9016DC433C6@smtp.codeaurora.org>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <ff0dde53-8483-88c9-3b7a-65e905bca632@candelatech.com>
+Date:   Mon, 21 Dec 2020 14:21:41 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
+MIME-Version: 1.0
+In-Reply-To: <20201221183044.9016DC433C6@smtp.codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 21, 2020 at 11:53 AM Kalle Valo <kvalo@codeaurora.org> wrote:
-> Brian Norris <briannorris@chromium.org> writes:
-> > On Sun, Dec 20, 2020 at 5:53 PM Miaoqing Pan <miaoqing@codeaurora.org> wrote:
-> >>         if (skb_queue_len(q) == ATH10K_MAX_NUM_MGMT_PENDING) {
-> >
-> > I believe you should be switching this to use skb_queue_len_lockless()
-> > too.
->
-> Why lockless? (reads documentation) Ah, is it due to memory
-> synchronisation now that we don't take the data_lock anymore?
+On 12/21/20 10:30 AM, Kalle Valo wrote:
+> greearb@candelatech.com wrote:
+> 
+>> From: Ben Greear <greearb@candelatech.com>
+>>
+>> This makes per-chain RSSI be more consistent between HT20, HT40, HT80.
+>> Instead of doing precise log math for adding dbm, I did a rough estimate,
+>> it seems to work good enough.
+>>
+>> Tested on ath10k-ct 9984 firmware.
+>>
+>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> 
+> Commented out code etc so I assume this is an RFC. Has anyone tested
+> this with upstream firmware?
 
-As the original post notes, there was no valid locking in the first
-place anyway, but now that we're fully relying on the queue lock, we
-either need to grab that lock, or else otherwise use lock-free-denoted
-methods.
+I probably tweaked this patch since sending.  my wave-1 didn't work with this approach,
+and in the end, to get a valid RSSI, I ended up reading the
+per-chain noise-floor periodically and storing that so I could use proper noise-floor
+instead of just -95.  I am not sure upstream firmware can support that, so probably
+not worth adding just the sum logic unless someone can figure out how to get the noise
+floor out of the firmware...
 
-One could say it's about data synchronization, but it's really about
-the lack of memory model -- C didn't have a formal one until
-relatively recently, and the kernel has always blazed its own way
-anyway. You need to annotate *something* about a bare read, otherwise
-it's not safe to do concurrently; either compiler or hardware can do
-nasty things to you. (In practice, it's unlikely this particular case
-will cause a problem for this reason; it's already a somewhat
-imprecise check anyway.)
+Thanks,
+Ben
 
-Brian
+
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
