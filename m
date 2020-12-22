@@ -2,154 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FEDA2E0D76
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 17:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA8B32E0E35
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 19:28:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727790AbgLVQi2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 11:38:28 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:61923 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726991AbgLVQi2 (ORCPT
+        id S1725895AbgLVS1o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 13:27:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48176 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725300AbgLVS1o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 11:38:28 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608655083; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=biEYqYTnVQqSnV+uJzCSSa8IwuXnVIABUcOcJUfi1vU=; b=Ncfs6MZO7tM5ZTq0krmfMnoGMsrNuoMkQlqBWZqWkwJyrOw55P8dpbOU1NYLBS369uJs8341
- MKcVzzCvpgOw7rBYDaDY4jFeYgTWPSjtdFAkitY87L1CZGSJV4uQ5l/9LJO+CSvZgwfVN6+d
- SNccabBVcm0hdabGMxWDACMH47E=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5fe220c87036173f4fd90525 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 22 Dec 2020 16:37:28
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D4336C433C6; Tue, 22 Dec 2020 16:37:27 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AA7A0C433CA;
-        Tue, 22 Dec 2020 16:37:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AA7A0C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 22 Dec 2020 13:27:44 -0500
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE78C0613D3
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 10:27:03 -0800 (PST)
+Received: by mail-ot1-x32a.google.com with SMTP id d20so12780021otl.3
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 10:27:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=v2yaYNLY/2Egp8td6IEyrDogvPXVN2oX1ZgCRI1aJpw=;
+        b=UyGc2LXc1kA1vAINEbUyBtkq1liuLGnZGnHW8D8jjlkmywJAJh4v+aH8SEnvo9If6B
+         2nb/wstlewkXJfht1E4j7JmQCmtHb94H5mFrf1XjmBojLoHwdiAPzF4uPrmGE419H/nt
+         gYaH2fjep7r/3WPOq1NRTfKZI8EuFExBgDc68=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=v2yaYNLY/2Egp8td6IEyrDogvPXVN2oX1ZgCRI1aJpw=;
+        b=f6Rni3FyPH2PJ/sLRp/pFq+liXMPj4k5TePkmF/4GzBohkHVMaoOmvdugVAMA/baXp
+         guSsR8VxxBbY31MO9GuEPJC4qvQv/UeCLZ/Fe+6psclACVXZfq4hCVCndVUeRvINYD/T
+         PmdzCBY/5dcL63Rt1Ep7qPt9XgU8+Iw5t6xJIl9w0xqt3VIDjJxhLeCeKMZ3RQOvujfc
+         FuCZL1J/Xn3hanSRmGtFcSKVeyPRoq1YaUraPnPZC+wi+30B87au61wk5PTye9FUT56j
+         174kL/5AcvYal99mjK1eZtvyO6cWGTMGgaI2cW3WopJQiJjnXy5ZBYcrpp/FHcs1wUm4
+         sCkw==
+X-Gm-Message-State: AOAM531xvZ0URH8C59A07OOf/vJRaDeZV7cdWSHst6hvCRVchO+tL2jm
+        zwtSvh6NkvvoxIFSLB4HWSMh1O2ItpETvQ==
+X-Google-Smtp-Source: ABdhPJwe4M2jWESNE3b40rngp5To9EaMsCM16GlGpGfzUoaUpxdu0YyffXyKTlZTApR3OihuEiNYnQ==
+X-Received: by 2002:a9d:892:: with SMTP id 18mr17319760otf.9.1608661622300;
+        Tue, 22 Dec 2020 10:27:02 -0800 (PST)
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com. [209.85.210.52])
+        by smtp.gmail.com with ESMTPSA id 73sm4665514otv.26.2020.12.22.10.27.01
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Dec 2020 10:27:01 -0800 (PST)
+Received: by mail-ot1-f52.google.com with SMTP id w3so12718969otp.13
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 10:27:01 -0800 (PST)
+X-Received: by 2002:a05:6830:1c2d:: with SMTP id f13mr16902484ote.365.1608661620897;
+ Tue, 22 Dec 2020 10:27:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2020-12-22
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20201222163727.D4336C433C6@smtp.codeaurora.org>
-Date:   Tue, 22 Dec 2020 16:37:27 +0000 (UTC)
+References: <1608618887-8857-1-git-send-email-miaoqing@codeaurora.org>
+In-Reply-To: <1608618887-8857-1-git-send-email-miaoqing@codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 22 Dec 2020 10:26:47 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXNvQ1-0-OvwPGKroUf+9chG3G3nuoiOS7W12Tp-F1T-3Q@mail.gmail.com>
+Message-ID: <CA+ASDXNvQ1-0-OvwPGKroUf+9chG3G3nuoiOS7W12Tp-F1T-3Q@mail.gmail.com>
+Subject: Re: [PATCH v2] ath10k: fix wmi mgmt tx queue full due to race condition
+To:     Miaoqing Pan <miaoqing@codeaurora.org>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Mon, Dec 21, 2020 at 10:34 PM Miaoqing Pan <miaoqing@codeaurora.org> wro=
+te:
+>
+> Failed to transmit wmi management frames:
+>
+> [84977.840894] ath10k_snoc a000000.wifi: wmi mgmt tx queue is full
+> [84977.840913] ath10k_snoc a000000.wifi: failed to transmit packet, dropp=
+ing: -28
+> [84977.840924] ath10k_snoc a000000.wifi: failed to submit frame: -28
+> [84977.840932] ath10k_snoc a000000.wifi: failed to transmit frame: -28
+>
+> This issue is caused by race condition between skb_dequeue and
+> __skb_queue_tail. The queue of =E2=80=98wmi_mgmt_tx_queue=E2=80=99 is pro=
+tected by a
+> different lock: ar->data_lock vs list->lock, the result is no protection.
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
-
-Kalle
-
-The following changes since commit 13458ffe0a953e17587f172a8e5059c243e6850a:
-
-  net: x25: Remove unimplemented X.25-over-LLC code stubs (2020-12-12 17:15:33 -0800)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-12-22
-
-for you to fetch changes up to bfe55584713b4d4d518ffe9cf2dab1129eba6321:
-
-  MAINTAINERS: switch to different email address (2020-12-21 19:07:39 +0200)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.11
-
-First set of fixes for v5.11, more fixes than usual this time. For
-ath11k we have several fixes for QCA6390 PCI support and mt76 has
-several. Also one build fix for mt76.
-
-mt76
-
-* fix two NULL pointer dereference
-
-* fix build error when CONFIG_MAC80211_MESH is disabled
-
-rtlwifi
-
-* fix use-after-free in firmware handling code
-
-ath11k
-
-* error handling fixes
-
-* fix crash found during connect and disconnect test
-
-* handle HT disable better
-
-* avoid printing qmi memory failure during firmware bootup
-
-* disable ASPM during firmware bootup
-
-----------------------------------------------------------------
-Arend van Spriel (1):
-      MAINTAINERS: switch to different email address
-
-Carl Huang (4):
-      ath11k: fix crash caused by NULL rx_channel
-      ath11k: start vdev if a bss peer is already created
-      ath11k: qmi: try to allocate a big block of DMA memory first
-      ath11k: pci: disable ASPM L0sLs before downloading firmware
-
-Colin Ian King (1):
-      ath11k: add missing null check on allocated skb
-
-Dan Carpenter (2):
-      ath11k: Fix error code in ath11k_core_suspend()
-      ath11k: Fix ath11k_pci_fix_l1ss()
-
-Kalle Valo (1):
-      Merge ath-current from git://git.kernel.org/.../kvalo/ath.git
-
-Lorenzo Bianconi (4):
-      mt76: mt76u: fix NULL pointer dereference in mt76u_status_worker
-      mt76: usb: remove wake logic in mt76u_status_worker
-      mt76: sdio: remove wake logic in mt76s_process_tx_queue
-      mt76: mt76s: fix NULL pointer dereference in mt76s_process_tx_queue
-
-Ping-Ke Shih (1):
-      rtlwifi: rise completion at the last step of firmware callback
-
-Randy Dunlap (1):
-      mt76: mt7915: fix MESH ifdef block
-
- MAINTAINERS                                      |  2 +-
- drivers/net/wireless/ath/ath11k/core.c           |  2 +-
- drivers/net/wireless/ath/ath11k/dp_rx.c          | 10 ++++--
- drivers/net/wireless/ath/ath11k/mac.c            |  8 +++--
- drivers/net/wireless/ath/ath11k/pci.c            | 44 +++++++++++++++++++++---
- drivers/net/wireless/ath/ath11k/pci.h            |  2 ++
- drivers/net/wireless/ath/ath11k/peer.c           | 17 +++++++++
- drivers/net/wireless/ath/ath11k/peer.h           |  2 ++
- drivers/net/wireless/ath/ath11k/qmi.c            | 24 +++++++++++--
- drivers/net/wireless/ath/ath11k/qmi.h            |  1 +
- drivers/net/wireless/ath/ath11k/wmi.c            |  3 ++
- drivers/net/wireless/mediatek/mt76/mt7915/init.c |  4 +--
- drivers/net/wireless/mediatek/mt76/sdio.c        | 19 ++++------
- drivers/net/wireless/mediatek/mt76/usb.c         |  9 ++---
- drivers/net/wireless/realtek/rtlwifi/core.c      |  8 +++--
- 15 files changed, 118 insertions(+), 37 deletions(-)
+Reviewed-by: Brian Norris <briannorris@chromium.org>
