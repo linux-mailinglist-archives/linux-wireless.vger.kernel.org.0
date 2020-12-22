@@ -2,62 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEE542E0EDB
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 20:21:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B932E0EE4
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 20:25:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727678AbgLVTUy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 14:20:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56318 "EHLO
+        id S1727590AbgLVTY3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 14:24:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726500AbgLVTUy (ORCPT
+        with ESMTP id S1727557AbgLVTY3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 14:20:54 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0569C0613D3
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 11:20:13 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id a12so34553108lfl.6
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 11:20:13 -0800 (PST)
+        Tue, 22 Dec 2020 14:24:29 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF2BC0613D3
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 11:23:48 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id o13so34575885lfr.3
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 11:23:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FPuCXixP7EtqyMJX4no93jVlw3DMMt3PppG42GBfh/4=;
-        b=IRGfWo+e1q6FjJdcfQClxg/M0rEaEyLJpCNsBMzqKctyYFgBxAWn9NPQXvVoYKHq+n
-         17Ssd6PA4HJO6JrXpePTUpL7kvfmQHd+K57hJEWRWY9XWL9ZyuR5NsvbB48s9my4K91Y
-         NnbkDhaEA06pGLAZdlGrEK17vuxE1fvBMyX/WjKrH0e8Ge/NMHJSjNe+PXKKoG9gFQzZ
-         jMET0mzJWsKX0dD8B/oSDpv8EfH6KTaAU+yoc2oS1V2Dbh4BETlZ8QEHqoQgEG08QQT7
-         /RirANYKEc+bsrtPmFubaqo8umpyXgSSnuhHZ9/HSlzitDOv35aNSBvYykS/NzsN7Mkz
-         CLnQ==
+        bh=bdK3bqAaXhjxbjLLRwmPmQtBbS0rf7DANa/y/ZggeCk=;
+        b=kdOd5IiB1Z2MgmQWRcjh2+8TvWAzJDo7Anxi9haqDGpZIULAt/d5LclHWrENhmgBAS
+         3Jerv2vzWsK647Ud2p7Fx/MsSQIGkkSxutblvgEpF8IQcV6xNY2qXmbceg074m+lieap
+         WxLZ5DxfX8slhcyWcW1XQujyiHB6hq5zIYkagmL67z49b72i2T/07LWyNDazcMvIcGOX
+         t31bxfdG2VQ3+4FSbMHRTDpHUAZA7Ez+sPkf+CCc2SGWUxcpxQ24nifwZSuqYHIPUZj7
+         XiPoqbf/v1PBWRzQXhyN0YcWF0LrEeS4wghK5TVhscWtZO2+GG5nInlLzhGHRdkVxORF
+         w3yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=FPuCXixP7EtqyMJX4no93jVlw3DMMt3PppG42GBfh/4=;
-        b=kotOIr7Y6KwwlvU41aNjazBcO7IUQHsHSAJYVAlTSAzrqo5lb6mmHY69YS38kos0Cr
-         jPMwJrhbd5eVq8EZKn1XC20+7xLRd+yhuc2OjpOe7PCv0qp3DyodvFlklDjBhiAsFfiL
-         sLf7x0dO42pets0RvsgDCn/nBSmM41iZIpSuacUyvGVqtUWVvED0YKXKpT8oTt9ADHyz
-         3GwP4g4zvNJrgYgZjUoeXKNWKpEEDj9ErSz1jBQaY4ZZH+eeMrJbPDHLm0MRnUIAh0AU
-         NV5s7a3IQa4/Sr/cGI8z7Y+yE7MwwjubQCB8oNBeBiD+N3PBLMVQ2SRQkqdeohmG4vU8
-         8oDQ==
-X-Gm-Message-State: AOAM532+WmjFjxY+9bsvtnuTj6e7g6HXwrzoGwlXA2l6HkXcyqlgURGP
-        s22Z+72SpA6AWCbDK5ZL5vU=
-X-Google-Smtp-Source: ABdhPJyzhesWalWuq/bH9QwsK55pvlBVO03uLtBS7GcqJobHUzLRlafgNTMvJGyrTZJLUwh85bPsWg==
-X-Received: by 2002:ac2:5309:: with SMTP id c9mr9762695lfh.447.1608664812153;
-        Tue, 22 Dec 2020 11:20:12 -0800 (PST)
+        bh=bdK3bqAaXhjxbjLLRwmPmQtBbS0rf7DANa/y/ZggeCk=;
+        b=VNIJ1v4jdxQ5HkLiKy75GUZLS43AlPtRbOGmXZKDxE4E/2sF+sHCJKxz1qVG5zhvBS
+         xonKv4zy5DZKSFigmS7ahyrPmxuNTLwc6+9u9IDli5QSbOW06+jkt3kmO9+jUuHBEXr6
+         MpYnHKzz7iEF6u7ZD8YNXzE84x+HY7mFumv/sRBdDl6SoBOjlbdch3B4Zfy7eVwN7vJQ
+         2zSLn3CE+/6XGCq8D+ZEuw2oo0dCwec6xkEjIVC09TXNUT+YncVtNteSX8iHBQCRTrn9
+         kDRMTUZouv1PTHR4c8SF80SnzFXSGcJqAx77571u//7E1QpJf0PWgO435bFjzsPZU1tn
+         tcSg==
+X-Gm-Message-State: AOAM532HGA1zAyC0uk0F+VC35PRdUOyAp+R8EewSXbPixukHevCEFtTg
+        894WqLC1zIM64HpjE46B3hozkninZfoumg==
+X-Google-Smtp-Source: ABdhPJzipiaEGWhOO4q3O1iWDXBbTSrA2ub7S+UiBBX62pQfgvJpLcICskUZ+/PqXzlbwnpjl2YwqQ==
+X-Received: by 2002:ac2:5e87:: with SMTP id b7mr8991703lfq.190.1608665027028;
+        Tue, 22 Dec 2020 11:23:47 -0800 (PST)
 Received: from 5550.lan (host-91-243-31-214.la.net.ua. [91.243.31.214])
-        by smtp.googlemail.com with ESMTPSA id v7sm2954307ljk.60.2020.12.22.11.20.11
+        by smtp.googlemail.com with ESMTPSA id k8sm2772582lfk.187.2020.12.22.11.23.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Dec 2020 11:20:11 -0800 (PST)
+        Tue, 22 Dec 2020 11:23:46 -0800 (PST)
 From:   Illia Volochii <illia.volochii@gmail.com>
 To:     illia.volochii@gmail.com
 Cc:     linux-wireless@vger.kernel.org, seth.forshee@canonical.com,
         wireless-regdb@lists.infradead.org
 Subject: [PATCH] wireless-regdb: Update regulatory rules for Ukraine (UA)
-Date:   Tue, 22 Dec 2020 21:17:38 +0200
-Message-Id: <20201222191738.56240-1-illia.volochii@gmail.com>
+Date:   Tue, 22 Dec 2020 21:23:28 +0200
+Message-Id: <20201222192329.56983-1-illia.volochii@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201220212721.22450-1-illia.volochii@gmail.com>
-References: <20201220212721.22450-1-illia.volochii@gmail.com>
+In-Reply-To: <20201222191738.56240-1-illia.volochii@gmail.com>
+References: <20201222191738.56240-1-illia.volochii@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -79,7 +79,7 @@ Signed-off-by: Illia Volochii <illia.volochii@gmail.com>
  1 file changed, 14 insertions(+), 13 deletions(-)
 
 diff --git a/db.txt b/db.txt
-index c71a03a..eaa3ea5 100644
+index c71a03a..be6edf0 100644
 --- a/db.txt
 +++ b/db.txt
 @@ -1548,21 +1548,22 @@ country TZ:
@@ -95,7 +95,7 @@ index c71a03a..eaa3ea5 100644
 -# disputable definitions there.
 +# Source: https://zakon.rada.gov.ua/laws/show/z0201-15#n48
 +# Power limit units are the same as provided in the source (i.e., mW for
-+2.4 and 5 GHz, dbm for 60 GHz).
++# 2.4 and 5 GHz, dbm for 60 GHz).
 +# Although it is allowed to use up to 250 mW for some 5 GHz frequency ranges,
 +# all of them are limited to 100 mW for IEEE 802.11n and IEEE 802.11ac.
 +# 2.4 GHz band channels can be used outdoors when some requirements are met.
