@@ -2,65 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3D92E0A0C
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 13:30:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A85D02E0ADD
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 14:35:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726557AbgLVM3h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 07:29:37 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:9470 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725985AbgLVM3h (ORCPT
+        id S1727705AbgLVNei (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 08:34:38 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:9547 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727288AbgLVNei (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 07:29:37 -0500
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4D0bGW4SyJzhvMR;
-        Tue, 22 Dec 2020 20:28:19 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 22 Dec 2020 20:28:52 +0800
-From:   Tian Tao <tiantao6@hisilicon.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH] rtw88: coex: remove useless if and else
-Date:   Tue, 22 Dec 2020 20:28:57 +0800
-Message-ID: <1608640137-8914-1-git-send-email-tiantao6@hisilicon.com>
-X-Mailer: git-send-email 2.7.4
+        Tue, 22 Dec 2020 08:34:38 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4D0cjN34sbzhvDn;
+        Tue, 22 Dec 2020 21:33:12 +0800 (CST)
+Received: from ubuntu.network (10.175.138.68) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 22 Dec 2020 21:33:49 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <davem@davemloft.net>, <kuba@kernel.org>,
+        <wcn36xx@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: [PATCH -next] scsi: megaraid: Remove unnecessary memset
+Date:   Tue, 22 Dec 2020 21:34:24 +0800
+Message-ID: <20201222133424.19969-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.56]
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.138.68]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccinelle report:
-drivers/net/wireless/realtek/rtw88/coex.c:1619:3-5: WARNING:
-possible condition with no effect (if == else)
+memcpy operation is next to memset code, and the size to copy is equals to the size to
+memset, so the memset operation is unnecessary, remove it.
 
-Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
- drivers/net/wireless/realtek/rtw88/coex.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/smd.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index 24530ca..df6676a 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -1616,12 +1616,7 @@ static void rtw_coex_action_bt_relink(struct rtw_dev *rtwdev)
- 	if (efuse->share_ant) { /* Shared-Ant */
- 		if (coex_stat->wl_gl_busy) {
- 			table_case = 26;
--			if (coex_stat->bt_hid_exist &&
--			    coex_stat->bt_profile_num == 1) {
--				tdma_case = 20;
--			} else {
--				tdma_case = 20;
--			}
-+			tdma_case = 20;
- 		} else {
- 			table_case = 1;
- 			tdma_case = 0;
+diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+index 766400f7b61c..273fed22711f 100644
+--- a/drivers/net/wireless/ath/wcn36xx/smd.c
++++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+@@ -484,7 +484,6 @@ static void init_hal_msg(struct wcn36xx_hal_msg_header *hdr,
+ 
+ #define PREPARE_HAL_PTT_MSG_BUF(send_buf, p_msg_body) \
+ 	do {							\
+-		memset(send_buf, 0, p_msg_body->header.len); \
+ 		memcpy(send_buf, p_msg_body, p_msg_body->header.len); \
+ 	} while (0)
+ 
 -- 
-2.7.4
+2.22.0
 
