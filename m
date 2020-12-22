@@ -2,83 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A02C2E0FF5
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 22:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26AA32E1059
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 23:43:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726826AbgLVVxZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 16:53:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41968 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726412AbgLVVxY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 16:53:24 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EF40222AAE;
-        Tue, 22 Dec 2020 21:52:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608673963;
-        bh=7kowbfjL5OoqD1iAtdFJlBQkMFagAj3Nmikv0ji2jc4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=kxtF5LwlRnNni5VHVHA1vZs8OfEPmi094SieZcYgsYYTa3FiV92Pr668PAVsHC+Y5
-         uuPC/cSByhJyUFOm7pD+Fnk02MZB9W5l9vE0Yfiq5MGJzYqXSckDZBWGU8M0tn0yDc
-         kEvil4Xc0l/yS9dJehe2+v3vTjEbdMxRmlB6WZZRejIOn+lxCpWqt22fMHl0NFzec6
-         JQ5MErDaQFY5WOZgdZaknupX05Pz4sfKWIb1Ws9N02X8lPPihDs7VUPxmI+FiH9gqH
-         WqqKwUo3Sxm1V+6uUMP6YQ/xtRuhZ/fFVXmb9S2Z1u1CyzNavrMjYYoftkUhn5U1Vt
-         CXckUeUndMgGA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7915: fix endianness warning in mt7915_mcu_set_radar_th
-Date:   Tue, 22 Dec 2020 22:52:36 +0100
-Message-Id: <8a4f5f1c5e9e02418a4652f08194378d4dca1655.1608673792.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        id S1728560AbgLVWiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 17:38:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58348 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728539AbgLVWiA (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 17:38:00 -0500
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A79C061793
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 14:37:19 -0800 (PST)
+Received: by mail-io1-xd33.google.com with SMTP id o6so13387315iob.10
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Dec 2020 14:37:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=djZGsbrkmGA94jAXMOhutdjZdetBTqkQXt4zsACd0OM=;
+        b=Z8Ugi74CxfCPMN3s/HZNn1ukTSQh20jHPmxZYidK/tLBsgUU85LmLkEK9m8Tiva5Du
+         9cVovmwScoIvz0x072sABbgGW852qliKBHsMYTnzCy4u5UtU/fx0an7c/QOq8EHgQZth
+         S7BTWvhvN8nhQkA6W/noUD1I18PhFFoisCdFQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=djZGsbrkmGA94jAXMOhutdjZdetBTqkQXt4zsACd0OM=;
+        b=CekdgX+1fWZGs0hvvGkP0qrU80rH38MXKWfrDR1L35unf3CxK1fVgljbPxb6hMllkT
+         5FVMLigIOW4Jk6rPpnSj+G0LsjsdPcknJnPYEWrRRZLMnfXl2e57147F4Bq44j2p+M2l
+         OsjQEFCuR71KxI9rHxsMxuhBmArNoh50kyL/8fSURKkPxf+jikTVDhot9DTySaMZ/kTL
+         p4xCx0Zx4ByhNoH5t8VXwC8ozDD3kXP1hoacgfpwlObyBmFjBHL2YGeOj4i+b5aKjbgi
+         WLs9nY85ifmdts2yyS+DhyOEtD9QLYUa2GzQio/BKJEfqMp/EEsEcOji9XLLJfYQGoPm
+         rfSQ==
+X-Gm-Message-State: AOAM533YWMMdd6KDoy2kfd6fYszCSYSIEZQB7cxgUwCge5vNWSEwlU1w
+        NuFYFyT3DwpuhPhtiqj/scJ2+Z0Gf4X96dN7Oj0kKA==
+X-Google-Smtp-Source: ABdhPJzjPE3ifZKjaoRV9kaxRig0JeWpFArkXbVay9Rq/k+MZUU5lRDgK84v6MDTfAop8WyZlSSNI01+2WrWzmEqp2k=
+X-Received: by 2002:a02:a304:: with SMTP id q4mr20446611jai.97.1608676639053;
+ Tue, 22 Dec 2020 14:37:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201215172435.5388-1-youghand@codeaurora.org>
+In-Reply-To: <20201215172435.5388-1-youghand@codeaurora.org>
+From:   Abhishek Kumar <kuabhs@chromium.org>
+Date:   Tue, 22 Dec 2020 14:36:58 -0800
+Message-ID: <CACTWRwsM_RJnssBpxDpRSbex4_1T9QDv3+ZT7eLnYsgOgtGFQw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] ath10k: Set wiphy flag to trigger sta disconnect on
+ hardware restart
+To:     Youghandhar Chintala <youghand@codeaurora.org>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Rakesh Pillai <pillair@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following sparse warning in mt7915_mcu_set_radar_th routine:
+On Tue, Dec 15, 2020 at 9:24 AM Youghandhar Chintala
+<youghand@codeaurora.org> wrote:
+>
+> From: Rakesh Pillai <pillair@codeaurora.org>
+>
+> Currently after the hardware restart triggered from the driver,
+> the station interface connection remains intact, since a disconnect
+> trigger is not sent to userspace. This can lead to a problem in
+> hardwares where the wifi mac sequence is added by the firmware.
+>
+> After the firmware restart, during subsytem recovery, the firmware
+> restarts its wifi mac sequence number. Hence AP to which our device
+> is connected will receive frames with a  wifi mac sequence number jump
+> to the past, thereby resulting in the AP dropping all these frames,
+> until the frame arrives with a wifi mac sequence number which AP was
+> expecting.
+>
+> To avoid such frame drops, its better to trigger a station disconnect
+> upon the  hardware restart. Indicate this support via a WIPHY flag
+> to mac80211, if the hardware params flag mentions the support to
+> add wifi mac sequence numbers for TX frames in the firmware.
+>
+> All the other hardwares, except WCN3990, are not affected by this
+> change, since the hardware params flag is not set for any hardware
+> except for WCN3990
+>
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
+> Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00048
+>
+> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> Signed-off-by: Youghandhar Chintala <youghand@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath10k/core.c | 15 +++++++++++++++
+>  drivers/net/wireless/ath/ath10k/hw.h   |  3 +++
+>  drivers/net/wireless/ath/ath10k/mac.c  |  3 +++
+>  3 files changed, 21 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> index 796107b..4155f94 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -90,6 +90,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+>                 .hw_filter_reset_required = true,
+>                 .fw_diag_ce_download = false,
+>                 .tx_stats_over_pktlog = true,
+> +               .tx_mac_seq_by_fw = false,
+Probably orthogonal to this patch, there is a static array maintained
+for different hardware configs and the structure members like
+"tx_mac_seq_by_fw" are initialized. This does not seem to be scalable
+and probably these parameters can be auto populated based on FW
+capabilities and so we don't have to maintain the static array.
+Thoughts?
 
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3154:17: warning: incorrect type in initializer (different base types)
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3154:17:    expected unsigned int [usertype] min_pri
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3154:17:    got restricted __le32 [usertype]
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3155:17: warning: incorrect type in initializer (different base types)
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3155:17:    expected unsigned int [usertype] max_pri
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3155:17:    got restricted __le32 [usertype]
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3162:17: warning: incorrect type in initializer (different base types)
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3162:17:    expected unsigned int [usertype] min_stgpr_diff
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3162:17:    got restricted __le32 [usertype]
-
-Fixes: cee236e1489ec ("mt76: mt7915: fix endian issues")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 5fdd1a6d32ee..6665a4dc1e98 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3129,8 +3129,8 @@ int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, int index,
- 		u8 max_crpn;
- 		u8 min_crpr;
- 		u8 min_pw;
--		u32 min_pri;
--		u32 max_pri;
-+		__le32 min_pri;
-+		__le32 max_pri;
- 		u8 max_pw;
- 		u8 min_crbn;
- 		u8 max_crbn;
-@@ -3138,7 +3138,7 @@ int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, int index,
- 		u8 max_stgpn;
- 		u8 min_stgpr;
- 		u8 rsv[2];
--		u32 min_stgpr_diff;
-+		__le32 min_stgpr_diff;
- 	} __packed req = {
- 		.tag = cpu_to_le32(0x2),
- 		.radar_type = cpu_to_le16(index),
--- 
-2.29.2
-
+-Abhishek
