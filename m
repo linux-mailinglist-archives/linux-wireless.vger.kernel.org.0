@@ -2,30 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 492762E0AE7
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 14:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B622E0B2B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Dec 2020 14:52:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727762AbgLVNfB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 08:35:01 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:10064 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727755AbgLVNfA (ORCPT
+        id S1727380AbgLVNv4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 08:51:56 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:9472 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726904AbgLVNv4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 08:35:00 -0500
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4D0cjb0y2szM4JZ;
-        Tue, 22 Dec 2020 21:33:23 +0800 (CST)
+        Tue, 22 Dec 2020 08:51:56 -0500
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4D0d515ddDzhvQW;
+        Tue, 22 Dec 2020 21:50:13 +0800 (CST)
 Received: from ubuntu.network (10.175.138.68) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 22 Dec 2020 21:34:10 +0800
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 22 Dec 2020 21:50:40 +0800
 From:   Zheng Yongjun <zhengyongjun3@huawei.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>,
-        <wcn36xx@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <Markus.Elfring@web.de>
 CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
-Subject: [PATCH -next] scsi: megaraid: Remove unnecessary memset
-Date:   Tue, 22 Dec 2020 21:34:42 +0800
-Message-ID: <20201222133442.20078-1-zhengyongjun3@huawei.com>
+Subject: [PATCH wireless v3 -next] brcmfmac: Delete useless kfree code
+Date:   Tue, 22 Dec 2020 21:51:13 +0800
+Message-ID: <20201222135113.20680-1-zhengyongjun3@huawei.com>
 X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -36,26 +38,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-memcpy operation is next to memset code, and the size to copy is equals to the size to
-memset, so the memset operation is unnecessary, remove it.
+A null pointer will be passed to a kfree() call after a kzalloc() call failed.
+This code is useless. Thus delete the extra function call.
+
+A goto statement is also no longer needed. Thus adjust an if branch.
 
 Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
- drivers/net/wireless/ath/wcn36xx/smd.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/firmware.c    | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 766400f7b61c..273fed22711f 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -484,7 +484,6 @@ static void init_hal_msg(struct wcn36xx_hal_msg_header *hdr,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+index d821a4758f8c..d40104b8df55 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+@@ -319,8 +319,10 @@ static void brcmf_fw_strip_multi_v2(struct nvram_parser *nvp, u16 domain_nr,
+ 	u8 *nvram;
  
- #define PREPARE_HAL_PTT_MSG_BUF(send_buf, p_msg_body) \
- 	do {							\
--		memset(send_buf, 0, p_msg_body->header.len); \
- 		memcpy(send_buf, p_msg_body, p_msg_body->header.len); \
- 	} while (0)
+ 	nvram = kzalloc(nvp->nvram_len + 1 + 3 + sizeof(u32), GFP_KERNEL);
+-	if (!nvram)
+-		goto fail;
++	if (!nvram) {
++		nvp->nvram_len = 0;
++		return;
++	}
  
+ 	/* Copy all valid entries, release old nvram and assign new one.
+ 	 * Valid entries are of type pcie/X/Y/ where X = domain_nr and
+@@ -350,10 +352,6 @@ static void brcmf_fw_strip_multi_v2(struct nvram_parser *nvp, u16 domain_nr,
+ 	kfree(nvp->nvram);
+ 	nvp->nvram = nvram;
+ 	nvp->nvram_len = j;
+-	return;
+-fail:
+-	kfree(nvram);
+-	nvp->nvram_len = 0;
+ }
+ 
+ static void brcmf_fw_add_defaults(struct nvram_parser *nvp)
 -- 
 2.22.0
 
