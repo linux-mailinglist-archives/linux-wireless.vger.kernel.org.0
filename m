@@ -2,76 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B45F2E15A5
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3222E1782
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 04:12:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731212AbgLWCut (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 21:50:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45306 "EHLO mail.kernel.org"
+        id S1727976AbgLWCSY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 21:18:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45396 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731205AbgLWCus (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:50:48 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 5A16122A83;
-        Wed, 23 Dec 2020 02:50:07 +0000 (UTC)
+        id S1727898AbgLWCSX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:18:23 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E2A472222A;
+        Wed, 23 Dec 2020 02:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608691807;
-        bh=8VFXTEfHDGjNESRmbEEfEo5L/KJO3UHHaAHamquqEoQ=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=rzI03I4pbTjxU0N2WSCSMJpYVJX/MjsP24v1Rz3Hov6OSRHasrvk5xB7lP1XWgcQi
-         o8kwj5M8r9hAG/kpuiL4jPwc6Wd++5rdUO0aQk0cGlNZfsveEir0bpkwvUXIlcie2Q
-         kagTdULleRX29NlCW/8S5RQVUP5NbGKkfGxPnHRnmnzmBZmREcpMruFKQEktPfEJPu
-         DKRZ4X/3KnYRZ8f1WViLhyHY4WMJQlimQr53rBnRGTCRQ6RRBMvoock4DKfJDPO/ce
-         C8xtbkSckGTltbaBcD9dNZg79KnZb67uFb3urDB/eoLe9sEkEXPXCw1r0dwLsBrkud
-         Ed72tqzn1MrvQ==
-Received: from pdx-korg-docbuild-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-1.ci.codeaurora.org (Postfix) with ESMTP id 4A03F60593;
-        Wed, 23 Dec 2020 02:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1608689836;
+        bh=55FbdZozjY9wsOB2yAn394jO2YjjJI+sp8UYjuYc7aM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=LdHLz//Al/C241hU3rDkSn10rFYH9hiA4pdHL0GR3DtXbLpFxxqVDR4TTLZXubdEC
+         xBA/C2lpN1fJLHh4TACxlrZTCQr4kqKXh/x+/aR0991oPjm5IrCboXGNC4GEOFqJVu
+         cQ/82fCrwDXGR6e4TCu+8s5oV4QayAmLxoEJiAH6HYK+REaju0ZTJsSBbbJqsCczPa
+         +4S2u1M5l5ByVsFxDer8Muug10uE2MvqRUrfoI5/I7+v0fAT4b4GTlfjS8N6sJQ1Ep
+         SFyU5EeHAYS8/GgFq8tMWfs6HImCKR3M6yc2XJuJ1+fleiUNZjg9WMUh8cnE4nNRBd
+         THWO3sbxPfF2w==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 037/217] mac80211: don't overwrite QoS TID of injected frames
+Date:   Tue, 22 Dec 2020 21:13:26 -0500
+Message-Id: <20201223021626.2790791-37-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20201223021626.2790791-1-sashal@kernel.org>
+References: <20201223021626.2790791-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] MAINTAINERS: remove names from mailing list maintainers
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <160869180729.29227.5706578456404319351.git-patchwork-notify@kernel.org>
-Date:   Wed, 23 Dec 2020 02:50:07 +0000
-References: <20201219185538.750076-1-kuba@kernel.org>
-In-Reply-To: <20201219185538.750076-1-kuba@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, pv-drivers@vmware.com,
-        doshir@vmware.com, UNGLinuxDriver@microchip.com,
-        steve.glendinning@shawell.net, woojung.huh@microchip.com,
-        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org,
-        drivers@pensando.io, snelson@pensando.io, vladimir.oltean@nxp.com,
-        claudiu.manoil@nxp.com, alexandre.belloni@bootlin.com,
-        bryan.whitehead@microchip.com, o.rempel@pengutronix.de,
-        kernel@pengutronix.de, robin@protonic.nl, hkallweit1@gmail.com,
-        nic_swsd@realtek.com, lars.povlsen@microchip.com,
-        Steen.Hegelund@microchip.com, linux-kernel@vger.kernel.org,
-        corbet@lwn.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+From: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
 
-This patch was applied to netdev/net.git (refs/heads/master):
+[ Upstream commit 527d675969a1dff17baa270d4447ac1c87058299 ]
 
-On Sat, 19 Dec 2020 10:55:38 -0800 you wrote:
-> When searching for inactive maintainers it's useful to filter
-> out mailing list addresses. Such "maintainers" will obviously
-> never feature in a "From:" line of an email or a review tag.
-> 
-> Since "L:" entries only provide the address of a mailing list
-> without a fancy name extend this pattern to "M:" entries.
-> 
-> [...]
+Currently ieee80211_set_qos_hdr sets the QoS TID of all frames based
+on the value assigned to skb->priority. This means it will also
+overwrite the QoS TID of injected frames. The commit 753ffad3d624
+("mac80211: fix TID field in monitor mode transmit") prevented
+injected frames from being modified because of this by setting
+skb->priority to the TID of the injected frame, which assured the
+QoS TID will not be changed to a different value. Unfortunately,
+this workaround complicates the handling of injected frames because
+we can't set skb->priority without affecting the TID value in the
+QoS field of injected frames.
 
-Here is the summary with links:
-  - [net] MAINTAINERS: remove names from mailing list maintainers
-    https://git.kernel.org/netdev/net/c/8b0f64b113d6
+To avoid this, and to simplify the next patch, detect if a frame is
+injected in ieee80211_set_qos_hdr and if so do not change its QoS
+field.
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Signed-off-by: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
+Link: https://lore.kernel.org/r/20201104061823.197407-4-Mathy.Vanhoef@kuleuven.be
+[fix typos in commit message]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mac80211/tx.c  | 5 +----
+ net/mac80211/wme.c | 8 ++++++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 56a4d0d20a267..bedb9d85f3d65 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2279,10 +2279,7 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 						    payload[7]);
+ 	}
+ 
+-	/*
+-	 * Initialize skb->priority for QoS frames. This is put in the TID field
+-	 * of the frame before passing it to the driver.
+-	 */
++	/* Initialize skb->priority for QoS frames */
+ 	if (ieee80211_is_data_qos(hdr->frame_control)) {
+ 		u8 *p = ieee80211_get_qos_ctl(hdr);
+ 		skb->priority = *p & IEEE80211_QOS_CTL_TAG1D_MASK;
+diff --git a/net/mac80211/wme.c b/net/mac80211/wme.c
+index 2fb99325135a0..b74cd9bd5f95e 100644
+--- a/net/mac80211/wme.c
++++ b/net/mac80211/wme.c
+@@ -249,6 +249,14 @@ void ieee80211_set_qos_hdr(struct ieee80211_sub_if_data *sdata,
+ 
+ 	p = ieee80211_get_qos_ctl(hdr);
+ 
++	/* don't overwrite the QoS field of injected frames */
++	if (info->flags & IEEE80211_TX_CTL_INJECTED) {
++		/* do take into account Ack policy of injected frames */
++		if (*p & IEEE80211_QOS_CTL_ACK_POLICY_NOACK)
++			info->flags |= IEEE80211_TX_CTL_NO_ACK;
++		return;
++	}
++
+ 	/* set up the first byte */
+ 
+ 	/*
+-- 
+2.27.0
 
