@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4CBF2E1436
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:47:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE2AC2E14D8
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:48:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729774AbgLWCWp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 21:22:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49802 "EHLO mail.kernel.org"
+        id S1729935AbgLWCoq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 21:44:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51318 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729762AbgLWCWk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:22:40 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A987F225AB;
-        Wed, 23 Dec 2020 02:22:24 +0000 (UTC)
+        id S1729762AbgLWCWr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:22:47 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AF211221E5;
+        Wed, 23 Dec 2020 02:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690145;
-        bh=ZqsyhDJr975uH78eq9vlqfIjc4P44FyApTZEkqL50qQ=;
+        s=k20201202; t=1608690152;
+        bh=hgehVMq8mURlrBR5kRfraFXCWYe/naiOqIOAOfTz+3w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WsJERloCOO1sEcnC3KH3uUL1DqJTLCoTslLq6iZ0XN/CTCPQrRUlII5NV6bybneJp
-         zSveHGUUqwr0Ufk02PxN1hmKKc/9nwsbzyGKdK5Cuh7pT/c4jiasNCpJgN67Pry57C
-         LrCSXn4WdRYRagKPr0S2Ka59WY8BfGqNIm/fek0/1N+hoi0eb4n8CoqJ9bM4+5ZouT
-         exjh33OMIJLIu4ttHkJwaGRChRLkHTjpq1UPuLD+rn05zu80ChEXTi5oBly1MhWrF8
-         Efjy5x4YBW70+9TmH0cVV37rcK7XtjFYPcE471kYXuDR9zMQVQ7NX7d7hUcQbg+qe2
-         +ZBCYX8CtdZgQ==
+        b=svv25BerBj/pxaENIuRvV5SBwEWWQ1AHdyxMM0Woeb3AQi+9JrzGKxZnp9NdHUlBd
+         Mb6miTG+kUCKFBVFTPPhwGC3JZRL1ORJsg50j8FDYVHTOpdCQSMMliWUDriB7znqfZ
+         ZWap4od1vnGDiWV+j8rOTHkIZ0l4Fb8GiEPTxtc2jfhXKStASkawM9NUTNPM7okyQs
+         Nis/fRYkZE1TbJ9tHwFq+UXM1P32ajX2PT42y0CkIWXrX09jumWK9KQAHd3dMYzH9S
+         1ivy/NxdNrZk6CXNqR02v5IYNTcrlYXF2ejCphnWqYy2flb0Yh/1RiG40B3+bKTuxt
+         LuWOcFOy9keWg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zhang Xiaohui <ruc_zhangxiaohui@163.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 66/87] mwifiex: Fix possible buffer overflows in mwifiex_cmd_802_11_ad_hoc_start
-Date:   Tue, 22 Dec 2020 21:20:42 -0500
-Message-Id: <20201223022103.2792705-66-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 72/87] iwlwifi: pcie: validate RX descriptor length
+Date:   Tue, 22 Dec 2020 21:20:48 -0500
+Message-Id: <20201223022103.2792705-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201223022103.2792705-1-sashal@kernel.org>
 References: <20201223022103.2792705-1-sashal@kernel.org>
@@ -43,37 +43,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 5c455c5ab332773464d02ba17015acdca198f03d ]
+[ Upstream commit df72138de4bc4e85e427aabc60fc51be6cc57fc7 ]
 
-mwifiex_cmd_802_11_ad_hoc_start() calls memcpy() without checking
-the destination size may trigger a buffer overflower,
-which a local user could use to cause denial of service
-or the execution of arbitrary code.
-Fix it by putting the length check before calling memcpy().
+Validate the maximum RX descriptor length against the size
+of the buffers we gave the device - if it doesn't fit then
+the hardware messed up.
 
-Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20201206084801.26479-1-ruc_zhangxiaohui@163.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20201209231352.6378fb435cc0.Ib07485f3dc5999c74b03f21e7a808c50a05e353c@changeid
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/join.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/join.c b/drivers/net/wireless/marvell/mwifiex/join.c
-index d87aeff70cefb..c2cb1e711c06e 100644
---- a/drivers/net/wireless/marvell/mwifiex/join.c
-+++ b/drivers/net/wireless/marvell/mwifiex/join.c
-@@ -877,6 +877,8 @@ mwifiex_cmd_802_11_ad_hoc_start(struct mwifiex_private *priv,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 80a1a50f5da51..ebdb143b1b5a1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -1256,6 +1256,13 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
  
- 	memset(adhoc_start->ssid, 0, IEEE80211_MAX_SSID_LEN);
+ 		len = iwl_rx_packet_len(pkt);
+ 		len += sizeof(u32); /* account for status word */
++
++		offset += ALIGN(len, FH_RSCSR_FRAME_ALIGN);
++
++		/* check that what the device tells us made sense */
++		if (offset > max_len)
++			break;
++
+ 		trace_iwlwifi_dev_rx(trans->dev, trans, pkt, len);
+ 		trace_iwlwifi_dev_rx_data(trans->dev, trans, pkt, len);
  
-+	if (req_ssid->ssid_len > IEEE80211_MAX_SSID_LEN)
-+		req_ssid->ssid_len = IEEE80211_MAX_SSID_LEN;
- 	memcpy(adhoc_start->ssid, req_ssid->ssid, req_ssid->ssid_len);
+@@ -1313,7 +1320,6 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
+ 		page_stolen |= rxcb._page_stolen;
+ 		if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560)
+ 			break;
+-		offset += ALIGN(len, FH_RSCSR_FRAME_ALIGN);
+ 	}
  
- 	mwifiex_dbg(adapter, INFO, "info: ADHOC_S_CMD: SSID = %s\n",
+ 	/* page was stolen from us -- free our reference */
 -- 
 2.27.0
 
