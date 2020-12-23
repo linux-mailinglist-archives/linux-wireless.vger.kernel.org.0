@@ -2,40 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C81A2E12F8
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:28:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7033C2E1625
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:59:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730937AbgLWC0n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 21:26:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57242 "EHLO mail.kernel.org"
+        id S1729729AbgLWC6W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 21:58:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45394 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729948AbgLWC0m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:26:42 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 310EF23137;
-        Wed, 23 Dec 2020 02:26:01 +0000 (UTC)
+        id S1729000AbgLWCUa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:20:30 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C3087225AC;
+        Wed, 23 Dec 2020 02:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690362;
-        bh=nOeGnM47NXqzixNLe4qRw94NmxKNh/WvY0n7mshNCpc=;
+        s=k20201202; t=1608690015;
+        bh=ZqsyhDJr975uH78eq9vlqfIjc4P44FyApTZEkqL50qQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cTe+MUsjCdvjW/wLOIkSygxMajmY/DVXU7vomAMWqpzGXMepaxXiL5GBkZ1r67WJB
-         9IUYkhpW16+iC+trYBHeVMBr+oV3otpWnBRJEtc7QTd4SBGTpFY+qIhgfVCAX+g+FA
-         T2UbepnDCHx2ESwpZn9PCc+UECecFDpxNZp4sUOBiVn/hvPWl0aAPK947v/xaKP6E3
-         WJwngpxaZa6eql52OhUiuSBbqvycruTZow+G4zjeeypxT5HhVoF0B1vHD5dWh0iEZX
-         mFD+QzNOsk9ahAFJDrUrOmn0Wk10z4WbTMiDpgof6MWEQys0zYoJq1hQQB1tlq3b28
-         qp+tllqtOBApw==
+        b=py3Szs3P2mDnGr+6zQ5Bk835mT58sT/be7XwyTBNAb3M443WVAA2nNnyIkjDsquyA
+         98gRF9GhnqzjAmUY2dFj/AZRl9Rha8SJP0s2xIowMFqVF0ROjVB5fNSv3ejZoDS8hE
+         7VMLUFf3pIigugVPE6KY4ULyNy3E3ZAuuYjo15YbZriL4N2Ohe2A9ax7QvakSVGazX
+         Pznc5qSAdMn+YozP0PPvdMqXuNg+DdnhUsqljKm9QKFbiD2GbRgHiBETOPbALs+L0/
+         SbcfgPINOOgMoOucRLFNuHzIOxMCuVNK89FMAJ4l0jbBGCRIA+nV4sBGxtIo38R6KD
+         ZKEWGGRjvM73A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Zhang Xiaohui <ruc_zhangxiaohui@163.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 36/38] mac80211: don't filter out beacons once we start CSA
-Date:   Tue, 22 Dec 2020 21:25:14 -0500
-Message-Id: <20201223022516.2794471-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 094/130] mwifiex: Fix possible buffer overflows in mwifiex_cmd_802_11_ad_hoc_start
+Date:   Tue, 22 Dec 2020 21:17:37 -0500
+Message-Id: <20201223021813.2791612-94-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201223022516.2794471-1-sashal@kernel.org>
-References: <20201223022516.2794471-1-sashal@kernel.org>
+In-Reply-To: <20201223021813.2791612-1-sashal@kernel.org>
+References: <20201223021813.2791612-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,49 +43,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
 
-[ Upstream commit 189a164d0fc6c59a22c4486d641d0a0a0d33387a ]
+[ Upstream commit 5c455c5ab332773464d02ba17015acdca198f03d ]
 
-I hit a bug in which we started a CSA with an action frame,
-but the AP changed its mind and didn't change the beacon.
-The CSA wasn't cancelled and we lost the connection.
+mwifiex_cmd_802_11_ad_hoc_start() calls memcpy() without checking
+the destination size may trigger a buffer overflower,
+which a local user could use to cause denial of service
+or the execution of arbitrary code.
+Fix it by putting the length check before calling memcpy().
 
-The beacons were ignored because they never changed: they
-never contained any CSA IE. Because they never changed, the
-CRC of the beacon didn't change either which made us ignore
-the beacons instead of processing them.
-
-Now what happens is:
-1) beacon has CRC X and it is valid. No CSA IE in the beacon
-2) as long as beacon's CRC X, don't process their IEs
-3) rx action frame with CSA
-4) invalidate the beacon's CRC
-5) rx beacon, CRC is still X, but now it is invalid
-6) process the beacon, detect there is no CSA IE
-7) abort CSA
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20201206145305.83470b8407e6.I739b907598001362744692744be15335436b8351@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20201206084801.26479-1-ruc_zhangxiaohui@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/marvell/mwifiex/join.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 6a94b14817471..7b9766998c105 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1296,6 +1296,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
- 	sdata->csa_chandef = csa_ie.chandef;
- 	sdata->csa_block_tx = csa_ie.mode;
- 	ifmgd->csa_ignored_same_chan = false;
-+	ifmgd->beacon_crc_valid = false;
+diff --git a/drivers/net/wireless/marvell/mwifiex/join.c b/drivers/net/wireless/marvell/mwifiex/join.c
+index d87aeff70cefb..c2cb1e711c06e 100644
+--- a/drivers/net/wireless/marvell/mwifiex/join.c
++++ b/drivers/net/wireless/marvell/mwifiex/join.c
+@@ -877,6 +877,8 @@ mwifiex_cmd_802_11_ad_hoc_start(struct mwifiex_private *priv,
  
- 	if (sdata->csa_block_tx)
- 		ieee80211_stop_vif_queues(local, sdata,
+ 	memset(adhoc_start->ssid, 0, IEEE80211_MAX_SSID_LEN);
+ 
++	if (req_ssid->ssid_len > IEEE80211_MAX_SSID_LEN)
++		req_ssid->ssid_len = IEEE80211_MAX_SSID_LEN;
+ 	memcpy(adhoc_start->ssid, req_ssid->ssid, req_ssid->ssid_len);
+ 
+ 	mwifiex_dbg(adapter, INFO, "info: ADHOC_S_CMD: SSID = %s\n",
 -- 
 2.27.0
 
