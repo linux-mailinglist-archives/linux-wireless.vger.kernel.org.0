@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C1912E12DE
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9583C2E1328
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:28:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730517AbgLWCZb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 21:25:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54924 "EHLO mail.kernel.org"
+        id S1730744AbgLWC0L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 21:26:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55386 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730461AbgLWCZa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:25:30 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ECA2A22D73;
-        Wed, 23 Dec 2020 02:25:09 +0000 (UTC)
+        id S1730722AbgLWC0E (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:26:04 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 942CF2256F;
+        Wed, 23 Dec 2020 02:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690310;
-        bh=NAXQDPM0ggw6+a4mpqlnVLPsMaR+G36xtopOYlKY85U=;
+        s=k20201202; t=1608690348;
+        bh=CTRk1fiM/gn5A1mN1CjHhnbYJPpvoOA/+UFzINdepwo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e9rMJjWiAykIX7VHmPcD6VWru3w68AvXz88LBSReBmHu+YBm9zeJvQPxupzxb2MJ+
-         bhK9BjF7+Yh8KkJM/E1Qv2e3Lv8n60OWOZ339badpI17jzUHiwVLKODgs5fbvt/+np
-         Vz4xYs9yFyI4xXtHu7fsq1PQl636KXu+vgTEcXfYmh90vwhcrEAkezNOI+NHMTnu1K
-         LwUC6A2l/ZWqRuTMBK0Gx4epXxTjdidUqqG/tYhp25QouJhsRKnTvlcHNbAqK8zVcJ
-         PIGHgFS47XYLfak7zLmERebQKjDZiSnhj0FhRzHgewY5u9lCeRuGYX+tBUw0uatSdn
-         FUt6ZikNWPGBw==
+        b=IFrhYJTEHqF2Lg0gcqEA2WYcMuLBXbqzxwfL4BlQDxa3OovqdcaqLJM9CK2J9cZmS
+         BBQXrYkakeQ71tSQe+bGiAcMHPrc27IbjxmEqCzJMFl978Fbt3p/B/KjlhbhVSCgpu
+         FUc85iUK+nPLbsBHOuXWUAujWbKO26J8Uuz1JDMX9ij2D6TaORoizvuhGgrptI71dh
+         /1qn7t5uCLSeAWLF+9BRNlYEm72agwtdgL9x3369+AEBpoUp8F64BxmWBXHGjwFxs6
+         p9pPQ0MHLHQyO4zo1rxRFhE+BIv7XL6pZhAkmGIgoJ53HsVL8M8mI4cAqMjLRUihL6
+         Htbm3DlyiNAEg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Dmitry Safonov <dima@arista.com>,
+        Yuji Nakao <contact@yujinakao.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 44/48] mac80211: Fix calculation of minimal channel width
-Date:   Tue, 22 Dec 2020 21:24:12 -0500
-Message-Id: <20201223022417.2794032-44-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 25/38] brcmsmac: ampdu: Check BA window size before checking block ack
+Date:   Tue, 22 Dec 2020 21:25:03 -0500
+Message-Id: <20201223022516.2794471-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201223022417.2794032-1-sashal@kernel.org>
-References: <20201223022417.2794032-1-sashal@kernel.org>
+In-Reply-To: <20201223022516.2794471-1-sashal@kernel.org>
+References: <20201223022516.2794471-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,70 +44,112 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Dmitry Safonov <dima@arista.com>
 
-[ Upstream commit bbf31e88df2f5da20ce613c340ce508d732046b3 ]
+[ Upstream commit 01c195de620bb6c3ecda0dbf295fe685d8232e10 ]
 
-When calculating the minimal channel width for channel context,
-the current operation Rx channel width of a station was used and not
-the overall channel width capability of the station, i.e., both for
-Tx and Rx.
+bindex can be out of BA window (64):
+  tid 0 seq 2983, start_seq 2915, bindex 68, index 39
+  tid 0 seq 2984, start_seq 2915, bindex 69, index 40
+  tid 0 seq 2985, start_seq 2915, bindex 70, index 41
+  tid 0 seq 2986, start_seq 2915, bindex 71, index 42
+  tid 0 seq 2879, start_seq 2915, bindex 4060, index 63
+  tid 0 seq 2854, start_seq 2915, bindex 4035, index 38
+  tid 0 seq 2795, start_seq 2915, bindex 3976, index 43
+  tid 0 seq 2989, start_seq 2924, bindex 65, index 45
+  tid 0 seq 2992, start_seq 2924, bindex 68, index 48
+  tid 0 seq 2993, start_seq 2924, bindex 69, index 49
+  tid 0 seq 2994, start_seq 2924, bindex 70, index 50
+  tid 0 seq 2997, start_seq 2924, bindex 73, index 53
+  tid 0 seq 2795, start_seq 2941, bindex 3950, index 43
+  tid 0 seq 2921, start_seq 2941, bindex 4076, index 41
+  tid 0 seq 2929, start_seq 2941, bindex 4084, index 49
+  tid 0 seq 3011, start_seq 2946, bindex 65, index 3
+  tid 0 seq 3012, start_seq 2946, bindex 66, index 4
+  tid 0 seq 3013, start_seq 2946, bindex 67, index 5
 
-Fix ieee80211_get_sta_bw() to use the maximal channel width the
-station is capable. While at it make the function static.
+In result isset() will try to dereference something on the stack,
+causing panics:
+  BUG: unable to handle page fault for address: ffffa742800ed01f
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 6a4e9067 P4D 6a4e9067 PUD 6a4ec067 PMD 6a4ed067 PTE 0
+  Oops: 0000 [#1] PREEMPT SMP PTI
+  CPU: 1 PID: 0 Comm: swapper/1 Kdump: loaded Not tainted 5.8.5-arch1-1-kdump #1
+  Hardware name: Apple Inc. MacBookAir3,1/Mac-942452F5819B1C1B, BIOS    MBA31.88Z.0061.B07.1201241641 01/24/12
+  RIP: 0010:brcms_c_ampdu_dotxstatus+0x343/0x9f0 [brcmsmac]
+  Code: 54 24 20 66 81 e2 ff 0f 41 83 e4 07 89 d1 0f b7 d2 66 c1 e9 03 0f b7 c9 4c 8d 5c 0c 48 49 8b 4d 10 48 8b 79 68 41 57 44 89 e1 <41> 0f b6 33 41 d3 e0 48 c7 c1 38 e0 ea c0 48 83 c7 10 44 21 c6 4c
+  RSP: 0018:ffffa742800ecdd0 EFLAGS: 00010207
+  RAX: 0000000000000019 RBX: 000000000000000b RCX: 0000000000000006
+  RDX: 0000000000000ffe RSI: 0000000000000004 RDI: ffff8fc6ad776800
+  RBP: ffff8fc6855acb00 R08: 0000000000000001 R09: 00000000000005d9
+  R10: 00000000fffffffe R11: ffffa742800ed01f R12: 0000000000000006
+  R13: ffff8fc68d75a000 R14: 00000000000005db R15: 0000000000000019
+  FS:  0000000000000000(0000) GS:ffff8fc6aad00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffffa742800ed01f CR3: 000000002480a000 CR4: 00000000000406e0
+  Call Trace:
+   <IRQ>
+   brcms_c_dpc+0xb46/0x1020 [brcmsmac]
+   ? wlc_intstatus+0xc8/0x180 [brcmsmac]
+   ? __raise_softirq_irqoff+0x1a/0x80
+   brcms_dpc+0x37/0xd0 [brcmsmac]
+   tasklet_action_common.constprop.0+0x51/0xb0
+   __do_softirq+0xff/0x340
+   ? handle_level_irq+0x1a0/0x1a0
+   asm_call_on_stack+0x12/0x20
+   </IRQ>
+   do_softirq_own_stack+0x5f/0x80
+   irq_exit_rcu+0xcb/0x120
+   common_interrupt+0xd1/0x200
+   asm_common_interrupt+0x1e/0x40
+  RIP: 0010:cpuidle_enter_state+0xb3/0x420
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20201206145305.4387040b99a0.I74bcf19238f75a5960c4098b10e355123d933281@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Check if the block is within BA window and only then check block's
+status. Otherwise as Behan wrote: "When I came back to Dublin I
+was courtmartialed in my absence and sentenced to death in my absence,
+so I said they could shoot me in my absence."
+
+Also reported:
+https://bbs.archlinux.org/viewtopic.php?id=258428
+https://lore.kernel.org/linux-wireless/87tuwgi92n.fsf@yujinakao.com/
+
+Reported-by: Yuji Nakao <contact@yujinakao.com>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20201116030635.645811-1-dima@arista.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/chan.c        | 10 ++++++----
- net/mac80211/ieee80211_i.h |  1 -
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/brcm80211/brcmsmac/ampdu.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index a0d901d8992ea..48b60b53ff3ff 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -190,11 +190,13 @@ ieee80211_find_reservation_chanctx(struct ieee80211_local *local,
- 	return NULL;
- }
- 
--enum nl80211_chan_width ieee80211_get_sta_bw(struct ieee80211_sta *sta)
-+static enum nl80211_chan_width ieee80211_get_sta_bw(struct sta_info *sta)
- {
--	switch (sta->bandwidth) {
-+	enum ieee80211_sta_rx_bandwidth width = ieee80211_sta_cap_rx_bw(sta);
+diff --git a/drivers/net/wireless/brcm80211/brcmsmac/ampdu.c b/drivers/net/wireless/brcm80211/brcmsmac/ampdu.c
+index fa391e4eb0989..44f65b8bff9e0 100644
+--- a/drivers/net/wireless/brcm80211/brcmsmac/ampdu.c
++++ b/drivers/net/wireless/brcm80211/brcmsmac/ampdu.c
+@@ -953,14 +953,19 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
+ 		index = TX_SEQ_TO_INDEX(seq);
+ 		ack_recd = false;
+ 		if (ba_recd) {
++			int block_acked;
 +
-+	switch (width) {
- 	case IEEE80211_STA_RX_BW_20:
--		if (sta->ht_cap.ht_supported)
-+		if (sta->sta.ht_cap.ht_supported)
- 			return NL80211_CHAN_WIDTH_20;
- 		else
- 			return NL80211_CHAN_WIDTH_20_NOHT;
-@@ -231,7 +233,7 @@ ieee80211_get_max_required_bw(struct ieee80211_sub_if_data *sdata)
- 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
- 			continue;
+ 			bindex = MODSUB_POW2(seq, start_seq, SEQNUM_MAX);
++			if (bindex < AMPDU_TX_BA_MAX_WSIZE)
++				block_acked = isset(bitmap, bindex);
++			else
++				block_acked = 0;
+ 			brcms_dbg_ht(wlc->hw->d11core,
+ 				     "tid %d seq %d, start_seq %d, bindex %d set %d, index %d\n",
+ 				     tid, seq, start_seq, bindex,
+-				     isset(bitmap, bindex), index);
++				     block_acked, index);
+ 			/* if acked then clear bit and free packet */
+-			if ((bindex < AMPDU_TX_BA_MAX_WSIZE)
+-			    && isset(bitmap, bindex)) {
++			if (block_acked) {
+ 				ini->txretry[index] = 0;
  
--		max_bw = max(max_bw, ieee80211_get_sta_bw(&sta->sta));
-+		max_bw = max(max_bw, ieee80211_get_sta_bw(sta));
- 	}
- 	rcu_read_unlock();
- 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 0b0de3030e0dc..15d9a61d20116 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2102,7 +2102,6 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
- 				 enum ieee80211_chanctx_mode chanmode,
- 				 u8 radar_detect);
- int ieee80211_max_num_channels(struct ieee80211_local *local);
--enum nl80211_chan_width ieee80211_get_sta_bw(struct ieee80211_sta *sta);
- void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
- 				       struct ieee80211_chanctx *ctx);
- 
+ 				/*
 -- 
 2.27.0
 
