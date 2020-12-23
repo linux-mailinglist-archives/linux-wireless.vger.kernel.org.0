@@ -2,36 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 111CA2E12D9
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:28:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C1912E12DE
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:28:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730474AbgLWCZW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 21:25:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52758 "EHLO mail.kernel.org"
+        id S1730517AbgLWCZb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 21:25:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54924 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730461AbgLWCZV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:25:21 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B9C2C22248;
-        Wed, 23 Dec 2020 02:25:03 +0000 (UTC)
+        id S1730461AbgLWCZa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:25:30 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ECA2A22D73;
+        Wed, 23 Dec 2020 02:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690304;
-        bh=dSJT/hf9sQ4STW0fKdZkEoCl8LAygSmBoFKw60XSpeg=;
+        s=k20201202; t=1608690310;
+        bh=NAXQDPM0ggw6+a4mpqlnVLPsMaR+G36xtopOYlKY85U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I8DFRsmFrJ1gUzoiTBLpGHGTfOPN3/9GQmNT2PxCNpPReONaZyPxOBwmPNZ/DFvs7
-         KWeKVnKQM1IqN4Rr/yOp5XJz31M4puSkfQbxVZ1xspfzaFXLdWgtWfYAGiCV/7VM3H
-         cqGpqYc6HR7W4wLA5wcxZHnNEodefVS7ttOONVqNaCDb9zCFXaKTbiy2FbHZklqE0D
-         Zbs3FIKNwiWadx0EdX0crEVwsxrQcHGPBM2jNOAFQzO/hZKGoH3PyHUk1jx+jnCBxk
-         JP26esxUS+GU0T/oTag0oiR5Up618QA2EyGz+HLWoYB0U1JbrmWFDLTsq8Py0q9Uv5
-         /Ibcgm0JaeVGA==
+        b=e9rMJjWiAykIX7VHmPcD6VWru3w68AvXz88LBSReBmHu+YBm9zeJvQPxupzxb2MJ+
+         bhK9BjF7+Yh8KkJM/E1Qv2e3Lv8n60OWOZ339badpI17jzUHiwVLKODgs5fbvt/+np
+         Vz4xYs9yFyI4xXtHu7fsq1PQl636KXu+vgTEcXfYmh90vwhcrEAkezNOI+NHMTnu1K
+         LwUC6A2l/ZWqRuTMBK0Gx4epXxTjdidUqqG/tYhp25QouJhsRKnTvlcHNbAqK8zVcJ
+         PIGHgFS47XYLfak7zLmERebQKjDZiSnhj0FhRzHgewY5u9lCeRuGYX+tBUw0uatSdn
+         FUt6ZikNWPGBw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
+Cc:     Ilan Peer <ilan.peer@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 39/48] iwlwifi: trans: consider firmware dead after errors
-Date:   Tue, 22 Dec 2020 21:24:07 -0500
-Message-Id: <20201223022417.2794032-39-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 44/48] mac80211: Fix calculation of minimal channel width
+Date:   Tue, 22 Dec 2020 21:24:12 -0500
+Message-Id: <20201223022417.2794032-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201223022417.2794032-1-sashal@kernel.org>
 References: <20201223022417.2794032-1-sashal@kernel.org>
@@ -43,38 +44,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 152fdc0f698896708f9d7889a4ba4da6944b74f7 ]
+[ Upstream commit bbf31e88df2f5da20ce613c340ce508d732046b3 ]
 
-If we get an error, no longer consider the firmware to be
-in IWL_TRANS_FW_ALIVE state.
+When calculating the minimal channel width for channel context,
+the current operation Rx channel width of a station was used and not
+the overall channel width capability of the station, i.e., both for
+Tx and Rx.
 
+Fix ieee80211_get_sta_bw() to use the maximal channel width the
+station is capable. While at it make the function static.
+
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20201206145305.4387040b99a0.I74bcf19238f75a5960c4098b10e355123d933281@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20201209231352.a9d01e79c1c7.Ib2deb076b392fb516a7230bac91d7ab8a9586d86@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/chan.c        | 10 ++++++----
+ net/mac80211/ieee80211_i.h |  1 -
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 0296124a7f9cf..360554727a817 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1238,8 +1238,10 @@ static inline void iwl_trans_fw_error(struct iwl_trans *trans)
- 		return;
- 
- 	/* prevent double restarts due to the same erroneous FW */
--	if (!test_and_set_bit(STATUS_FW_ERROR, &trans->status))
-+	if (!test_and_set_bit(STATUS_FW_ERROR, &trans->status)) {
- 		iwl_op_mode_nic_error(trans->op_mode);
-+		trans->state = IWL_TRANS_NO_FW;
-+	}
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index a0d901d8992ea..48b60b53ff3ff 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -190,11 +190,13 @@ ieee80211_find_reservation_chanctx(struct ieee80211_local *local,
+ 	return NULL;
  }
  
- /*****************************************************
+-enum nl80211_chan_width ieee80211_get_sta_bw(struct ieee80211_sta *sta)
++static enum nl80211_chan_width ieee80211_get_sta_bw(struct sta_info *sta)
+ {
+-	switch (sta->bandwidth) {
++	enum ieee80211_sta_rx_bandwidth width = ieee80211_sta_cap_rx_bw(sta);
++
++	switch (width) {
+ 	case IEEE80211_STA_RX_BW_20:
+-		if (sta->ht_cap.ht_supported)
++		if (sta->sta.ht_cap.ht_supported)
+ 			return NL80211_CHAN_WIDTH_20;
+ 		else
+ 			return NL80211_CHAN_WIDTH_20_NOHT;
+@@ -231,7 +233,7 @@ ieee80211_get_max_required_bw(struct ieee80211_sub_if_data *sdata)
+ 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
+ 			continue;
+ 
+-		max_bw = max(max_bw, ieee80211_get_sta_bw(&sta->sta));
++		max_bw = max(max_bw, ieee80211_get_sta_bw(sta));
+ 	}
+ 	rcu_read_unlock();
+ 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 0b0de3030e0dc..15d9a61d20116 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2102,7 +2102,6 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
+ 				 enum ieee80211_chanctx_mode chanmode,
+ 				 u8 radar_detect);
+ int ieee80211_max_num_channels(struct ieee80211_local *local);
+-enum nl80211_chan_width ieee80211_get_sta_bw(struct ieee80211_sta *sta);
+ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
+ 				       struct ieee80211_chanctx *ctx);
+ 
 -- 
 2.27.0
 
