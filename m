@@ -2,196 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C4A72E1E7F
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 16:43:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2D72E1F73
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 17:30:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729267AbgLWPlw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Dec 2020 10:41:52 -0500
-Received: from mail-bn8nam08on2089.outbound.protection.outlook.com ([40.107.100.89]:24001
-        "EHLO NAM04-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729218AbgLWPlo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Dec 2020 10:41:44 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jb5unaxYpVJoAWIDZujqMCUXh3/I2LFFCbO7/0uBvS+MuMgRgqCVJrwc/9v6YlD/stsUOXvMqu0wQaoPcuTossBEsjsGFVCnpCS37Smbq9MbSpl3EfM3ubh7Lxc8yhFPqNvovwMg6WMctZE6e+aFdMTti7RU+ONM1YGdaxJfAfNteWZ7pq/Ilbdp73lqzvOavVGT/uTUGeCYt+11JJd+fDRc8QPYN9LRQLAGiMXpjnHSCsK/OyMei+d1we9hnsXz6AfhMBuOnAXA0CHXLtHL9YTjyNuoGEV2wugs/Sisnz3sGiCS5ZRy3pPIuHH2Q0SiJL02c/BkkGutVr08dxnf+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PMPoZ8e8XcnIpeJ5w6rBJi1gpq16UR6xeMDyqo5yyuA=;
- b=FLfAIbBLX6ZXWtBDX5l3VxndShU4uzj+W0/54QP6nG6nE4vUgUmZHnlU885PhyU0NfxS88RUPO4rdawQOsXiHjZR8rT3NNkGlUzWXkzC2yBAhVzvl+JdY7z8zs8wsURfoaQHz9OO3jk9QRgkCezSJ5i89ViPjUp7sTWvw+ajLpf3QqmAwRxcZIRKmHLGD9M4p8sQoHqnHG1boV6yZJnkIZBR5jgYlXCypHI3foNJ9AzkbIqrINvN+Jf90+s5F2VuTfHmRm7UH49seirfcaL9fGr+gO5klINWh6zXjTqjQZl6wFLemEF1Ik4mY0MkNpc2KyBDAGGoLV5nNvQnTtAnpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PMPoZ8e8XcnIpeJ5w6rBJi1gpq16UR6xeMDyqo5yyuA=;
- b=SfCBQH0y6DU5XRZ2NRhZmaUw94G3dvXuRbXov0RqSBZNayfi3jzK5Hg79BgtXQM/hU9hjYF6FYE9VeHMyv9SQatWdppXua2KM0PiwroOCdpZ5WH2uVFwjPl8C3FPz2zrVq5ftFaxnv7sKAQIcHkNORCf2zkeoKYtx/AcL1ZDDIM=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=silabs.com;
-Received: from SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
- by SA0PR11MB4543.namprd11.prod.outlook.com (2603:10b6:806:99::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3676.29; Wed, 23 Dec
- 2020 15:40:37 +0000
-Received: from SN6PR11MB2718.namprd11.prod.outlook.com
- ([fe80::a989:f850:6736:97ca]) by SN6PR11MB2718.namprd11.prod.outlook.com
- ([fe80::a989:f850:6736:97ca%5]) with mapi id 15.20.3700.026; Wed, 23 Dec 2020
- 15:40:37 +0000
-From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>
-Subject: [PATCH v4 24/24] wfx: get out from the staging area
-Date:   Wed, 23 Dec 2020 16:39:25 +0100
-Message-Id: <20201223153925.73742-25-Jerome.Pouiller@silabs.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201223153925.73742-1-Jerome.Pouiller@silabs.com>
-References: <20201223153925.73742-1-Jerome.Pouiller@silabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Originating-IP: [82.67.86.106]
-X-ClientProxiedBy: SA0PR12CA0024.namprd12.prod.outlook.com
- (2603:10b6:806:6f::29) To SN6PR11MB2718.namprd11.prod.outlook.com
- (2603:10b6:805:63::18)
+        id S1726279AbgLWQaB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Dec 2020 11:30:01 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:19392 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725807AbgLWQaB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 23 Dec 2020 11:30:01 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1608740980; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=WsxL9dWR2xTprgyzzO62m8s4DtqyCU4DeHD8mtWpZ6k=;
+ b=mkjd6FCAHZaoXxfsOnzQXmhpQUC6WK8vTHV3sjQ1Blj9h8/mUEusd0e0nhFEKXcfnfBW1GDu
+ NRVxTGe6azl0dSchU//gNy5cEwZ04dTsc9Qkjr4KrgBh3Uszcdyyu8XSXfciP1CB/TNtZvkx
+ V12Adk/JTqk0x9VYDXmK30HtUTs=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 5fe370577036173f4ff168fc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 23 Dec 2020 16:29:11
+ GMT
+Sender: usdutt=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7790BC433CA; Wed, 23 Dec 2020 16:29:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: usdutt)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 86622C433C6;
+        Wed, 23 Dec 2020 16:29:09 +0000 (UTC)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from pc-42.silabs.com (82.67.86.106) by SA0PR12CA0024.namprd12.prod.outlook.com (2603:10b6:806:6f::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3700.27 via Frontend Transport; Wed, 23 Dec 2020 15:40:35 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 430d5c5b-077e-4346-c645-08d8a759186b
-X-MS-TrafficTypeDiagnostic: SA0PR11MB4543:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR11MB4543ABE0810977A8D738955193DE0@SA0PR11MB4543.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lEnB6cH22SG9rW9K8WZ1YwHj76dUKtge4mctfLhOkyOv0l1vE2ntNE2IH+1O5+VTqoZ2Los/Otzc3e9TDIcx3c2bYrHr0NRIGJ2yeAlDsCYCYFrt8yyllGnEuIXPubcJKjTZnCUrsbr5T+vxSfSypHScrCLQQ1IyI716oTY6PNmwxVP3UpS4RsAqF65nzWSvxNLZtBa0QuiQsmBYd1JTHJmPSDeM+BST/rNCfEoFiX4hbJVLuRYg5RXEl8IUISz19asv+CpqyMChnklwxggDgXSPHJJrn+R8EDWWRWgl/LYz5hEmd+h5eSjrDK59X3xoaYKuERHDsZ2bNlTlydZdI8zmD0L2mHAevEMnHhZLocEJgmibNs6ODDT7MB/ev0PCju5G/C1NaTsGdN6d4vh5VpHmy2hj+vPUV4dOEONZuuMqZKoS2WZuL4gRnx1QzTJiNIXAsmrVm2MDpO/RoMt83A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(376002)(366004)(346002)(396003)(39850400004)(5660300002)(956004)(2616005)(66476007)(66556008)(86362001)(36756003)(107886003)(66574015)(66946007)(6486002)(4326008)(83380400001)(966005)(6666004)(8676002)(186003)(52116002)(16526019)(7416002)(478600001)(26005)(1076003)(316002)(7696005)(54906003)(8936002)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?UndJWGNlZkVtNEtnWUx6ckVudnhjSXZKNDJobVlNZ2RNaTVGNjNOR2NKeDZr?=
- =?utf-8?B?MDhHckI4Si9CeHV6eHVCcW1naVFyUC9RRGdCalc1bEZkcWQvWjB3M1puSng4?=
- =?utf-8?B?WWxFR0hRbGlDK3BCNHdMSnhXdDFjUTJkSVdQN2d2djUvMHo1eHR1dXVJYW5m?=
- =?utf-8?B?clduWjlyU2x2Sk1tcUg2WHh1Tnc2a3d5MG10UTViTFdnSmhFZmVtNzhRUVA1?=
- =?utf-8?B?QnFlcFRzOTNIOGZWRUpUdFREdndOREdXd0x6VlpHeWdLS0xjOEVxUlE3Q1FU?=
- =?utf-8?B?WVNsTUgrSldXWXliZjYrTk52SFpLTUNzRjdCT2tOSkUreGZuYlpNVkVBQkFP?=
- =?utf-8?B?alRBT2pCdmR3Y2k5Ukp5Qkp6azdFSWlsYXhTeDcvNlpCYlhLSmFEM1Nzc3kv?=
- =?utf-8?B?S2FHdXBtVFp2bDZ2bVlmM0N2LzZzT3NGdWdzckxQWVVqTVJrYzd0WHB6S21S?=
- =?utf-8?B?ZWtEaUVsbmg4SlQvRERxRlhXTTBRWXpvK3Nrc2dYYTJ4U3c5d3JrU3RZbjhE?=
- =?utf-8?B?dFFHQTc2RWZuSzFFMEc3T2x3elJ0aXFNeStRM05EWXZxM1MwLzRQQUdvdWwr?=
- =?utf-8?B?aDF5bHJTL284ei8zSmQ0N3VJcERCd01rOWJ1THRIRnZFWlNMcSszM29reDJn?=
- =?utf-8?B?UXJUcDBWeVFtMG0yUXRZdzB6V3BybElmc0VPN3h4ZjNBSXo3ZnZxa2dMSkRP?=
- =?utf-8?B?QUt2V1Z6dFJnOUtYYlVwUi9rSTIzTnNjdXZNd24vajJ0Y09OZ1lXSkJoN1gv?=
- =?utf-8?B?ZHRtcXRMZmdlSm90RW9NNDRjZDBObEdnc1lXSUpYMXBnTjNsNDBQaHNQZ1RH?=
- =?utf-8?B?dDZjTmJFWUNzMUF6d0RtZTNmWGVqTmdrbFczVVFRbEwwcUgyclNoNmhXMmYz?=
- =?utf-8?B?RkRHKzhSU1BycHkwamVuYVR2alBhZUpORk5GSFR5RFBDd3Z0QUtTOE4yRTYr?=
- =?utf-8?B?UGErTjRJcnhjaHc4TXlyR2Nhc0E4bVpTMVlXNEhYMVNuNW5CWTYvRzZ5SlBj?=
- =?utf-8?B?dUtyR2xPWWU2dkJHR0J3d1RLZDgyUUg4Y0FjNnRhWTZKQ2pIdDMvTmJVSXVz?=
- =?utf-8?B?Z1BDTWJrNXpVVWNPWGhkNnBTUHgxc096aDNsUXV5R016eFRIUW51WEMzSUNz?=
- =?utf-8?B?c2o1S2d5Umh3M0dJQWlXeGlGci9QN0xNeDF2dU9KUlA2a3VMRDYxbXE1OGZU?=
- =?utf-8?B?M1pTb1MvN1dEdDlDd3ZaVTZwMFFEeU5IcGIrdlJoczIvbWZkTFE2cjlaNUFn?=
- =?utf-8?B?L2p5NlVoWlBGeGY0TFdBc0FUWnFJL3FuUVJib0lsUk1oYzJtTUJkc00vd1VQ?=
- =?utf-8?Q?QgGpCZqZygmXKpFbNj/fiClIBGmccMVj3S?=
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2020 15:40:37.5030
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-Network-Message-Id: 430d5c5b-077e-4346-c645-08d8a759186b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BCuniCxFEaI+KwV6lGfuqtoUUpOhIlQylogLJOSsj1MeMhKCGMbvztlEZnpn1pdWWXRX3Wkr5Wa8r2hEV4TpIg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4543
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Wed, 23 Dec 2020 21:59:09 +0530
+From:   usdutt@codeaurora.org
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [RFC] Introduce NL80211_IFTYPE_MLO_LINK_DEVICE for MLO link (IEEE
+ 802.11be)
+In-Reply-To: <73cb65ef-8635-5aad-d22d-3764e919f55d@broadcom.com>
+References: <1607526302-8063-1-git-send-email-usdutt@codeaurora.org>
+ <9320c4f30cd3ba67ababf8e245963b656e2bf1ad.camel@sipsolutions.net>
+ <73cb65ef-8635-5aad-d22d-3764e919f55d@broadcom.com>
+Message-ID: <3ca768c27ba95438b3867c03d17e2cef@codeaurora.org>
+X-Sender: usdutt@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKVGhl
-IHdmeCBkcml2ZXIgaXMgbm93IG1hdHVyZSBlbm91Z2ggdG8gbGVhdmUgdGhlIHN0YWdpbmcgYXJl
-YS4KClNpZ25lZC1vZmYtYnk6IErDqXLDtG1lIFBvdWlsbGVyIDxqZXJvbWUucG91aWxsZXJAc2ls
-YWJzLmNvbT4KLS0tCiBNQUlOVEFJTkVSUyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMyAr
-Ky0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL0tjb25maWcgICAgICAgICB8ICAxICsKIGRyaXZlcnMv
-bmV0L3dpcmVsZXNzL01ha2VmaWxlICAgICAgICB8ICAxICsKIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3NpbGFicy9LY29uZmlnICB8IDE4ICsrKysrKysrKysrKysrKysrKwogZHJpdmVycy9uZXQvd2ly
-ZWxlc3Mvc2lsYWJzL01ha2VmaWxlIHwgIDMgKysrCiBkcml2ZXJzL3N0YWdpbmcvS2NvbmZpZyAg
-ICAgICAgICAgICAgfCAgMiAtLQogZHJpdmVycy9zdGFnaW5nL01ha2VmaWxlICAgICAgICAgICAg
-IHwgIDEgLQogZHJpdmVycy9zdGFnaW5nL3dmeC9UT0RPICAgICAgICAgICAgIHwgIDYgLS0tLS0t
-CiA4IGZpbGVzIGNoYW5nZWQsIDI1IGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQogY3Jl
-YXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy9LY29uZmlnCiBjcmVh
-dGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3Mvc2lsYWJzL01ha2VmaWxlCiBkZWxl
-dGUgbW9kZSAxMDA2NDQgZHJpdmVycy9zdGFnaW5nL3dmeC9UT0RPCgpkaWZmIC0tZ2l0IGEvTUFJ
-TlRBSU5FUlMgYi9NQUlOVEFJTkVSUwppbmRleCA5ZDc3ODRhNWNiODguLjM1ODEwMjE5YmFkMCAx
-MDA2NDQKLS0tIGEvTUFJTlRBSU5FUlMKKysrIGIvTUFJTlRBSU5FUlMKQEAgLTE2MjE5LDcgKzE2
-MjE5LDggQEAgRjoJZHJpdmVycy9wbGF0Zm9ybS94ODYvdG91Y2hzY3JlZW5fZG1pLmMKIFNJTElD
-T04gTEFCUyBXSVJFTEVTUyBEUklWRVJTIChmb3IgV0Z4eHggc2VyaWVzKQogTToJSsOpcsO0bWUg
-UG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgogUzoJU3VwcG9ydGVkCi1GOglk
-cml2ZXJzL3N0YWdpbmcvd2Z4LworRjoJRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdz
-L25ldC93aXJlbGVzcy9zaWxhYnMsd2Z4LnlhbWwKK0Y6CWRyaXZlcnMvbmV0L3dpcmVsZXNzL3Np
-bGFicy93ZngvCiAKIFNJTElDT04gTU9USU9OIFNNNzEyIEZSQU1FIEJVRkZFUiBEUklWRVIKIE06
-CVN1ZGlwIE11a2hlcmplZSA8c3VkaXBtLm11a2hlcmplZUBnbWFpbC5jb20+CmRpZmYgLS1naXQg
-YS9kcml2ZXJzL25ldC93aXJlbGVzcy9LY29uZmlnIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvS2Nv
-bmZpZwppbmRleCA3YWRkMjAwMmZmNGMuLmU3OGZmN2FmNjUxNyAxMDA2NDQKLS0tIGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvS2NvbmZpZworKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9LY29uZmln
-CkBAIC0zMSw2ICszMSw3IEBAIHNvdXJjZSAiZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlw
-L0tjb25maWciCiBzb3VyY2UgImRyaXZlcnMvbmV0L3dpcmVsZXNzL3JhbGluay9LY29uZmlnIgog
-c291cmNlICJkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL0tjb25maWciCiBzb3VyY2UgImRy
-aXZlcnMvbmV0L3dpcmVsZXNzL3JzaS9LY29uZmlnIgorc291cmNlICJkcml2ZXJzL25ldC93aXJl
-bGVzcy9zaWxhYnMvS2NvbmZpZyIKIHNvdXJjZSAiZHJpdmVycy9uZXQvd2lyZWxlc3Mvc3QvS2Nv
-bmZpZyIKIHNvdXJjZSAiZHJpdmVycy9uZXQvd2lyZWxlc3MvdGkvS2NvbmZpZyIKIHNvdXJjZSAi
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvenlkYXMvS2NvbmZpZyIKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL01ha2VmaWxlIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvTWFrZWZpbGUKaW5k
-ZXggODBiMzI0NDk5Nzg2Li43Njg4NWU1ZjBlYTcgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL01ha2VmaWxlCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL01ha2VmaWxlCkBAIC0x
-Niw2ICsxNiw3IEBAIG9iai0kKENPTkZJR19XTEFOX1ZFTkRPUl9NSUNST0NISVApICs9IG1pY3Jv
-Y2hpcC8KIG9iai0kKENPTkZJR19XTEFOX1ZFTkRPUl9SQUxJTkspICs9IHJhbGluay8KIG9iai0k
-KENPTkZJR19XTEFOX1ZFTkRPUl9SRUFMVEVLKSArPSByZWFsdGVrLwogb2JqLSQoQ09ORklHX1dM
-QU5fVkVORE9SX1JTSSkgKz0gcnNpLworb2JqLSQoQ09ORklHX1dMQU5fVkVORE9SX1NJTEFCUykg
-Kz0gc2lsYWJzLwogb2JqLSQoQ09ORklHX1dMQU5fVkVORE9SX1NUKSArPSBzdC8KIG9iai0kKENP
-TkZJR19XTEFOX1ZFTkRPUl9USSkgKz0gdGkvCiBvYmotJChDT05GSUdfV0xBTl9WRU5ET1JfWllE
-QVMpICs9IHp5ZGFzLwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mvc2lsYWJzL0tj
-b25maWcgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9zaWxhYnMvS2NvbmZpZwpuZXcgZmlsZSBtb2Rl
-IDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjYyNjJhNzk5YmYzNgotLS0gL2Rldi9udWxsCisr
-KyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy9LY29uZmlnCkBAIC0wLDAgKzEsMTggQEAK
-KyMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAKKworY29uZmlnIFdMQU5fVkVORE9S
-X1NJTEFCUworCWJvb2wgIlNpbGljb24gTGFib3JhdG9yaWVzIGRldmljZXMiCisJZGVmYXVsdCB5
-CisJaGVscAorCSAgSWYgeW91IGhhdmUgYSB3aXJlbGVzcyBjYXJkIGJlbG9uZ2luZyB0byB0aGlz
-IGNsYXNzLCBzYXkgWS4KKworCSAgTm90ZSB0aGF0IHRoZSBhbnN3ZXIgdG8gdGhpcyBxdWVzdGlv
-biBkb2Vzbid0IGRpcmVjdGx5IGFmZmVjdCB0aGUKKwkgIGtlcm5lbDogc2F5aW5nIE4gd2lsbCBq
-dXN0IGNhdXNlIHRoZSBjb25maWd1cmF0b3IgdG8gc2tpcCBhbGwgdGhlCisJICBxdWVzdGlvbnMg
-YWJvdXQgdGhlc2UgY2FyZHMuIElmIHlvdSBzYXkgWSwgeW91IHdpbGwgYmUgYXNrZWQgZm9yCisJ
-ICB5b3VyIHNwZWNpZmljIGNhcmQgaW4gdGhlIGZvbGxvd2luZyBxdWVzdGlvbnMuCisKK2lmIFdM
-QU5fVkVORE9SX1NJTEFCUworCitzb3VyY2UgImRyaXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy93
-ZngvS2NvbmZpZyIKKworZW5kaWYgIyBXTEFOX1ZFTkRPUl9TSUxBQlMKZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvbmV0L3dpcmVsZXNzL3NpbGFicy9NYWtlZmlsZSBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3NpbGFicy9NYWtlZmlsZQpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAu
-LmMyMjYzZWUyMTAwNgotLS0gL2Rldi9udWxsCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3Np
-bGFicy9NYWtlZmlsZQpAQCAtMCwwICsxLDMgQEAKKyMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6
-IEdQTC0yLjAKKworb2JqLSQoQ09ORklHX1dGWCkgICAgICArPSB3ZngvCmRpZmYgLS1naXQgYS9k
-cml2ZXJzL3N0YWdpbmcvS2NvbmZpZyBiL2RyaXZlcnMvc3RhZ2luZy9LY29uZmlnCmluZGV4IGIy
-MmY3M2Q3YmZjNC4uYjA3ZGUzOWI5ZjBhIDEwMDY0NAotLS0gYS9kcml2ZXJzL3N0YWdpbmcvS2Nv
-bmZpZworKysgYi9kcml2ZXJzL3N0YWdpbmcvS2NvbmZpZwpAQCAtMTEwLDggKzExMCw2IEBAIHNv
-dXJjZSAiZHJpdmVycy9zdGFnaW5nL3FsZ2UvS2NvbmZpZyIKIAogc291cmNlICJkcml2ZXJzL3N0
-YWdpbmcvd2ltYXgvS2NvbmZpZyIKIAotc291cmNlICJkcml2ZXJzL3N0YWdpbmcvd2Z4L0tjb25m
-aWciCi0KIHNvdXJjZSAiZHJpdmVycy9zdGFnaW5nL2hpa2V5OXh4L0tjb25maWciCiAKIGVuZGlm
-ICMgU1RBR0lORwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zdGFnaW5nL01ha2VmaWxlIGIvZHJpdmVy
-cy9zdGFnaW5nL01ha2VmaWxlCmluZGV4IDIyNDUwNTllNjljNy4uYzZhOTkyZDFlZGQ1IDEwMDY0
-NAotLS0gYS9kcml2ZXJzL3N0YWdpbmcvTWFrZWZpbGUKKysrIGIvZHJpdmVycy9zdGFnaW5nL01h
-a2VmaWxlCkBAIC00NSw1ICs0NSw0IEBAIG9iai0kKENPTkZJR19GSUVMREJVU19ERVYpICAgICAr
-PSBmaWVsZGJ1cy8KIG9iai0kKENPTkZJR19LUEMyMDAwKQkJKz0ga3BjMjAwMC8KIG9iai0kKENP
-TkZJR19RTEdFKQkJKz0gcWxnZS8KIG9iai0kKENPTkZJR19XSU1BWCkJCSs9IHdpbWF4Lwotb2Jq
-LSQoQ09ORklHX1dGWCkJCSs9IHdmeC8KIG9iai15CQkJCSs9IGhpa2V5OXh4LwpkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9zdGFnaW5nL3dmeC9UT0RPIGIvZHJpdmVycy9zdGFnaW5nL3dmeC9UT0RPCmRl
-bGV0ZWQgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAxYjRiYzJhZjk0YjYuLjAwMDAwMDAwMDAwMAot
-LS0gYS9kcml2ZXJzL3N0YWdpbmcvd2Z4L1RPRE8KKysrIC9kZXYvbnVsbApAQCAtMSw2ICswLDAg
-QEAKLVRoaXMgaXMgYSBsaXN0IG9mIHRoaW5ncyB0aGF0IG5lZWQgdG8gYmUgZG9uZSB0byBnZXQg
-dGhpcyBkcml2ZXIgb3V0IG9mIHRoZQotc3RhZ2luZyBkaXJlY3RvcnkuCi0KLSAgLSBBcyBzdWdn
-ZXN0ZWQgYnkgRmVsaXgsIHJhdGUgY29udHJvbCBjb3VsZCBiZSBpbXByb3ZlZCBmb2xsb3dpbmcg
-dGhpcyBpZGVhOgotICAgICAgICBodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzMwOTk1NTku
-Z3YzUTc1S25OMUBwYy00Mi8KLQotLSAKMi4yOS4yCgo=
+On 2020-12-14 14:55, Arend van Spriel wrote:
+> On 09-12-2020 16:36, Johannes Berg wrote:
+>> Hi,
+>> 
+>>> Multi-link support is introduced in 802.11be specification.
+>> [...]
+>> 
+>> I'll definitely have to take a closer look at this and the spec and
+>> think about it - but a couple of quick comments below.
+
+Thanks for your comments. Please allow me to address your comments in 
+the subsequent patches.
+Our main intention through this RFC is to get the view on the proposal 
+to introduce a new NL80211_IFTYPE for an MLO Link.
+Please suggest on this.
+
+
+> Did not get my hands on the spec yet, but just firing random thoughts.
+> This multi-link support sounds a bit like bonding. Could that be
+> leveraged for wireless? I wonder why there is a need for a non-netdev
+> interface. Does networking layer need to be aware of the multi-link
+> for scheduling traffic to it? Is there one driver per multi-link or
+> per radio?
+
+The following is what the Bonding driver / interface does for the 
+multiple network interfaces.
+1. Bonding driver aggregates multiple network interfaces into a single 
+logical bonded interface.
+2. Each network interface is called as a slave in the bonding driver.
+3. It’s the Bonding driver that schedules the traffic across these 
+slaves.
+4. Bonding interface operates on one of the following modes ( mentioning 
+for a quick reference ).
+        balance-rr : Round-robin policy: Transmit packets in sequential 
+order from the first available slave through the last.
+        active-backup : Only one slave in the bond is active. A different 
+slave becomes active if, and only if, the active slave fails.
+        balance-xor : Transmit based on the selected transmit hash 
+policy.
+        balance-tlb : channel bonding that does not require any special 
+switch support. The outgoing traffic is distributed according to the 
+current load
+        balance-alb : includes balance-tlb plus receive load balancing.
+5. With the above modes, the scheduling of the traffic is determined 
+with in the kernel / bonding driver and have the host driver / firmware 
+follow it.
+
+The following are the factors for not considering the MLO Link as a 
+bonding interface and further to propose this RFC
+(new NL80211_IF_TYPE -> NL80211_IFTYPE_MLO_LINK_DEVICE).
+
+1. For MLO, our intention is to allow the traffic scheduling (among the 
+MLO links) to be closer to the lower layers in
+         the driver/firmware, etc, unlike the bonding driver where kernel 
+schedules the traffic.
+2. If MLO Link has to use a bonding interface, each MLO link has to be 
+associated with a network interface and thus each
+         of the MLO link has to be of NL80211_IF_TYPE  -> 
+NL80211_IFTYPE_STATION.
+3. This further means that NL80211_CONNECT / NL80211_ASSOCIATE needs to 
+get triggered on each of this MLO Link of the
+         MLO connection.
+4. Our intention is to consider the MLO station as a single network 
+interface . More specifically, have a single
+         NL80211_CONNECT / NL80211_CMD_ASSOCIATE triggered for each MLO 
+connection ( MLD + MLO Links).
+5. The reason we had to introduce a new NL80211_IF_TYPE -> 
+NL80211_IFTYPE_MLO_LINK_DEVICE is to have the corresponding
+        link connection specific information ( e.g., Connection State, 
+Connected BSS Info, Connection Frequency/properties, etc),
+        for each wdev / MLO Link and at the same  time have a single 
+connect / association request to the driver / AP.
+6. Further, these NL80211_IFTYPE_MLO_LINK_DEVICE link devices shall 
+represent an MLO Link and attribute to a network interface ( MLD ) of an
+       MLO connection.
+7. The current proposal to introduce a new NL80211_IF_TYPE should 
+support the architectures of MLO links across the multiple wiphy
+         interfaces or on the same wiphy interface. These wiphy 
+interfaces can be from different drivers too.
+
+Please review the above.
+
+> 
+> [...]
+> 
+>>>   	struct sk_buff *msg;
+>>>   	void *hdr;
+>>> +	struct nlattr *nested, *nested_mlo_links;
+>>> +	struct cfg80211_mlo_link_device_params *mlo_link;
+>>> +	int i = 0;
+>>>     	msg = nlmsg_new(100 + cr->req_ie_len + cr->resp_ie_len +
+>>>   			cr->fils.kek_len + cr->fils.pmk_len +
+>>> -			(cr->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
+>>> +			(cr->fils.pmkid ? WLAN_PMKID_LEN : 0) +
+>>> +			(cr->n_mlo_links ? cr->n_mlo_links * 32 : 0), gfp);
+>> 
+>> 32 probably should be some NLA_SIZE or something constant?
+> 
+> Probably sizeof(*mlo_link) ?
+> 
+>> There's also no point in the ternary operator since 0 * 32 is 0 :)
+>> 
+>>>   /* Consumes bss object one way or another */
+>>> @@ -833,7 +849,9 @@ void cfg80211_connect_done(struct net_device 
+>>> *dev,
+>>>   	ev = kzalloc(sizeof(*ev) + (params->bssid ? ETH_ALEN : 0) +
+>>>   		     params->req_ie_len + params->resp_ie_len +
+>>>   		     params->fils.kek_len + params->fils.pmk_len +
+>>> -		     (params->fils.pmkid ? WLAN_PMKID_LEN : 0), gfp);
+>>> +		     (params->fils.pmkid ? WLAN_PMKID_LEN : 0) +
+>>> +		     (params->n_mlo_links ? params->n_mlo_links *
+>>> +		      sizeof(struct cfg80211_mlo_link_device_params) : 0), gfp);
+>> 
+>> same here, no need for the ternary
+>> 
+>> 
+>> It feels strangely asymmetric to have stop and no start ... but I 
+>> guess
+>> that's the part where I need to think about it and look a bit at how 
+>> it
+>> all works :)
+> 
+> Had the same feeling in my gutt (wherever that is ;-)
+
+Sure. Will take this point. In fact, this was documented in the commit 
+message to consider the start (say start_mlo_link), but do not want the 
+drivers to depend on this trigger for starting the MLO link.
+For example, the host drivers with SME can as well start the MLO Link 
+after getting the Assoc response for MLO links from the AP.
+
+
+> 
+> Regards,
+> Arend
