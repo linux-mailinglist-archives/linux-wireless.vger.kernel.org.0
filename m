@@ -2,40 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A932E12A7
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 974A52E12D8
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:28:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728825AbgLWCXK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 21:23:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51404 "EHLO mail.kernel.org"
+        id S1730460AbgLWCZU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 21:25:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54312 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729870AbgLWCXJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:23:09 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4C54A22202;
-        Wed, 23 Dec 2020 02:22:47 +0000 (UTC)
+        id S1729535AbgLWCZS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:25:18 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7078D23333;
+        Wed, 23 Dec 2020 02:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690168;
-        bh=ZSp/1PNOV/gCSe20vBJHVmzdqDwADT4YFNctmtlsOi8=;
+        s=k20201202; t=1608690302;
+        bh=tRYjj1tnATnvy2ObahLEndF8reBD0F02HwaULfa6ITU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A+4Q7RTOqgJ4KWJWxzdaXondSuNkTIqtTS061qhksoCRkRBikdz2XlA/r+vULG+PD
-         cQCRA/smyo5xUaeOH8DefWw3P6f5TDI285j5PxOnZ5B4yrTcaK1wR7FspKrsaITPvQ
-         FgPZrCkRyJrkc8VNchh1iFR3sPwcdP0+bAfB6LSTXnMO7cguhVPRdEBM2PAuHWf6Fp
-         J6QOwLaND7TUa/lIiAK13kEXnXeoy4wc0BCtTsZHIBNIo82LtsQRsrujbV33MV6v/X
-         X9O3PGoEuKYnL9BDpMQ14/3Ps7AHEAbQ7GXpwskUNXRUjtpgWDwWnwDxeHfMIMMo9A
-         aYrclyHSv/Vig==
+        b=HkPra7B5v2utUino4gPdmx14PHSGy3FHse56daOBzP+thPC1Ivx2hwvBG9CUDtFJ+
+         AeOCnnoc0nPA471GfRpOTF+sm7Lt/2F2hN7jiR1nmUrQuzOT7G70OcqqKzC9GkgZdo
+         H+6/y1iVtd9wX3kZIR4648SI11Le9MlqVZVNsbQhOUdrmWIAE3uQkmWT+6qAaoFkis
+         pq0lwBEeQBIKz4YaswhQHwsNJfT8NDWLNlpp23N64UNCwVICqlMl47Ph26iRiriD04
+         DOVxFvav4jf36J+2ip7zKCOV6KS3Zuq2Pdmb837RagVtoV5RJrzs31ylys2T7ona0o
+         tPbTRnTAkGRWw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Zhang Xiaohui <ruc_zhangxiaohui@163.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 84/87] mac80211: Update rate control on channel change
-Date:   Tue, 22 Dec 2020 21:21:00 -0500
-Message-Id: <20201223022103.2792705-84-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 37/48] mwifiex: Fix possible buffer overflows in mwifiex_cmd_802_11_ad_hoc_start
+Date:   Tue, 22 Dec 2020 21:24:05 -0500
+Message-Id: <20201223022417.2794032-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201223022103.2792705-1-sashal@kernel.org>
-References: <20201223022103.2792705-1-sashal@kernel.org>
+In-Reply-To: <20201223022417.2794032-1-sashal@kernel.org>
+References: <20201223022417.2794032-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,141 +43,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
 
-[ Upstream commit 44b72ca8163b8cf94384a11fdec716f5478411bf ]
+[ Upstream commit 5c455c5ab332773464d02ba17015acdca198f03d ]
 
-A channel change or a channel bandwidth change can impact the
-rate control logic. However, the rate control logic was not updated
-before/after such a change, which might result in unexpected
-behavior.
+mwifiex_cmd_802_11_ad_hoc_start() calls memcpy() without checking
+the destination size may trigger a buffer overflower,
+which a local user could use to cause denial of service
+or the execution of arbitrary code.
+Fix it by putting the length check before calling memcpy().
 
-Fix this by updating the stations rate control logic when the
-corresponding channel context changes.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20201206145305.600d967fe3c9.I48305f25cfcc9c032c77c51396e9e9b882748a86@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20201206084801.26479-1-ruc_zhangxiaohui@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/chan.c | 61 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/join.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index b58813568c9ff..cc693ec0777d5 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -8,6 +8,7 @@
- #include <net/cfg80211.h>
- #include "ieee80211_i.h"
- #include "driver-ops.h"
-+#include "rate.h"
+diff --git a/drivers/net/wireless/marvell/mwifiex/join.c b/drivers/net/wireless/marvell/mwifiex/join.c
+index b89596c18b41a..313b5d9fd08ed 100644
+--- a/drivers/net/wireless/marvell/mwifiex/join.c
++++ b/drivers/net/wireless/marvell/mwifiex/join.c
+@@ -877,6 +877,8 @@ mwifiex_cmd_802_11_ad_hoc_start(struct mwifiex_private *priv,
  
- static int ieee80211_chanctx_num_assigned(struct ieee80211_local *local,
- 					  struct ieee80211_chanctx *ctx)
-@@ -339,10 +340,42 @@ void ieee80211_recalc_chanctx_min_def(struct ieee80211_local *local,
- 	drv_change_chanctx(local, ctx, IEEE80211_CHANCTX_CHANGE_MIN_WIDTH);
- }
+ 	memset(adhoc_start->ssid, 0, IEEE80211_MAX_SSID_LEN);
  
-+static void ieee80211_chan_bw_change(struct ieee80211_local *local,
-+				     struct ieee80211_chanctx *ctx)
-+{
-+	struct sta_info *sta;
-+	struct ieee80211_supported_band *sband =
-+		local->hw.wiphy->bands[ctx->conf.def.chan->band];
-+
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(sta, &local->sta_list,
-+				list) {
-+		enum ieee80211_sta_rx_bandwidth new_sta_bw;
-+
-+		if (!ieee80211_sdata_running(sta->sdata))
-+			continue;
-+
-+		if (rcu_access_pointer(sta->sdata->vif.chanctx_conf) !=
-+		    &ctx->conf)
-+			continue;
-+
-+		new_sta_bw = ieee80211_sta_cur_vht_bw(sta);
-+		if (new_sta_bw == sta->sta.bandwidth)
-+			continue;
-+
-+		sta->sta.bandwidth = new_sta_bw;
-+		rate_control_rate_update(local, sband, sta,
-+					 IEEE80211_RC_BW_CHANGED);
-+	}
-+	rcu_read_unlock();
-+}
-+
- static void ieee80211_change_chanctx(struct ieee80211_local *local,
- 				     struct ieee80211_chanctx *ctx,
- 				     const struct cfg80211_chan_def *chandef)
- {
-+	enum nl80211_chan_width width;
-+
- 	if (cfg80211_chandef_identical(&ctx->conf.def, chandef)) {
- 		ieee80211_recalc_chanctx_min_def(local, ctx);
- 		return;
-@@ -350,7 +383,25 @@ static void ieee80211_change_chanctx(struct ieee80211_local *local,
++	if (req_ssid->ssid_len > IEEE80211_MAX_SSID_LEN)
++		req_ssid->ssid_len = IEEE80211_MAX_SSID_LEN;
+ 	memcpy(adhoc_start->ssid, req_ssid->ssid, req_ssid->ssid_len);
  
- 	WARN_ON(!cfg80211_chandef_compatible(&ctx->conf.def, chandef));
- 
-+	width = ctx->conf.def.width;
- 	ctx->conf.def = *chandef;
-+
-+	/* expected to handle only 20/40/80/160 channel widths */
-+	switch (chandef->width) {
-+	case NL80211_CHAN_WIDTH_20_NOHT:
-+	case NL80211_CHAN_WIDTH_20:
-+	case NL80211_CHAN_WIDTH_40:
-+	case NL80211_CHAN_WIDTH_80:
-+	case NL80211_CHAN_WIDTH_80P80:
-+	case NL80211_CHAN_WIDTH_160:
-+		break;
-+	default:
-+		WARN_ON(1);
-+	}
-+
-+	if (chandef->width < width)
-+		ieee80211_chan_bw_change(local, ctx);
-+
- 	drv_change_chanctx(local, ctx, IEEE80211_CHANCTX_CHANGE_WIDTH);
- 	ieee80211_recalc_chanctx_min_def(local, ctx);
- 
-@@ -358,6 +409,9 @@ static void ieee80211_change_chanctx(struct ieee80211_local *local,
- 		local->_oper_chandef = *chandef;
- 		ieee80211_hw_config(local, 0);
- 	}
-+
-+	if (chandef->width > width)
-+		ieee80211_chan_bw_change(local, ctx);
- }
- 
- static struct ieee80211_chanctx *
-@@ -1040,8 +1094,14 @@ ieee80211_vif_use_reserved_reassign(struct ieee80211_sub_if_data *sdata)
- 	if (WARN_ON(!chandef))
- 		return -EINVAL;
- 
-+	if (old_ctx->conf.def.width > new_ctx->conf.def.width)
-+		ieee80211_chan_bw_change(local, new_ctx);
-+
- 	ieee80211_change_chanctx(local, new_ctx, chandef);
- 
-+	if (old_ctx->conf.def.width < new_ctx->conf.def.width)
-+		ieee80211_chan_bw_change(local, new_ctx);
-+
- 	vif_chsw[0].vif = &sdata->vif;
- 	vif_chsw[0].old_ctx = &old_ctx->conf;
- 	vif_chsw[0].new_ctx = &new_ctx->conf;
-@@ -1432,6 +1492,7 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
- 		ieee80211_recalc_smps_chanctx(local, ctx);
- 		ieee80211_recalc_radar_chanctx(local, ctx);
- 		ieee80211_recalc_chanctx_min_def(local, ctx);
-+		ieee80211_chan_bw_change(local, ctx);
- 
- 		list_for_each_entry_safe(sdata, sdata_tmp, &ctx->reserved_vifs,
- 					 reserved_chanctx_list) {
+ 	mwifiex_dbg(adapter, INFO, "info: ADHOC_S_CMD: SSID = %s\n",
 -- 
 2.27.0
 
