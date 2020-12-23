@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B7B62E16EB
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 04:10:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A98532E16EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 04:11:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731563AbgLWDDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 22:03:47 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:26495 "EHLO
+        id S1731586AbgLWDDv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 22:03:51 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:57490 "EHLO
         m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728632AbgLWDDq (ORCPT
+        with ESMTP id S1731572AbgLWDDs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 22:03:46 -0500
+        Tue, 22 Dec 2020 22:03:48 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1608692600; h=References: In-Reply-To: Message-Id: Date:
+ s=smtp; t=1608692603; h=References: In-Reply-To: Message-Id: Date:
  Subject: Cc: To: From: Sender;
- bh=COpPCI35yZLocAaYqn3iaC0V3RPVM6uVwo+YuNePICU=; b=tL0DB0Y1yd/C4chTn2x2/7RpUmMP7UZPM6Xccrpb0VLmZKrf3hIVq7e49nFlQ/E8KjH2ZaSm
- MS6s8XKYM6UoSvqc/s5sv/5Pkj4yag6lGEqmZVbocmQAX94luRMkbW0qBHM8V8E8BN89rzlX
- tEgQKg1XzxVzeQEQ7jUyr3xVpAE=
+ bh=ot/0oZtbqe97y4llOrqDK7mhoYrcCMKkAUi3OEmnWu8=; b=sEhE7EuNsnmBI/NebvU3uQXgTXGUIRtcUWeErjwCgIywqz6WtRspfdmhxZ5ZOAjvvsB/68nY
+ EWrCttvfbEG/Xe6Y9jzUoBR4N4wvUCMtW0UflIY3ihTQaPAo0x/LQKbKYr22eM4+yISeX4mA
+ h+Vkcb2eoUBjtaotUdqxNBmwvCg=
 X-Mailgun-Sending-Ip: 69.72.43.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
- 5fe2b34b3ac69bd6b8377272 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 23 Dec 2020 03:02:35
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 5fe2b34db00c0d7ad4a75f98 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 23 Dec 2020 03:02:37
  GMT
 Sender: cjhuang=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 05940C433C6; Wed, 23 Dec 2020 03:02:35 +0000 (UTC)
+        id 4114FC433C6; Wed, 23 Dec 2020 03:02:36 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,17 +38,17 @@ Received: from cjhuang-Inspiron-7590.qca.qualcomm.com (unknown [180.166.53.21])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: cjhuang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BF241C433CA;
-        Wed, 23 Dec 2020 03:02:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BF241C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0FBB0C43461;
+        Wed, 23 Dec 2020 03:02:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0FBB0C43461
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=cjhuang@codeaurora.org
 From:   Carl Huang <cjhuang@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 1/6] ath11k: get msi_data again after request_irq is called
-Date:   Tue, 22 Dec 2020 22:02:20 -0500
-Message-Id: <20201223030225.2345-2-cjhuang@codeaurora.org>
+Subject: [PATCH 2/6] ath11k: add ce and ext irq flag to indicate irq_handler
+Date:   Tue, 22 Dec 2020 22:02:21 -0500
+Message-Id: <20201223030225.2345-3-cjhuang@codeaurora.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20201223030225.2345-1-cjhuang@codeaurora.org>
 References: <20201223030225.2345-1-cjhuang@codeaurora.org>
@@ -56,84 +56,91 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The reservation mode of interrupts is kernel assigns a dummy vector
-when the interrupt is allocated and assigns a real vector when the
-request_irq is called. The reservation mode helps to ease vector
-pressure when devices with a large amount of queues/interrupts
-are initialized, but only a minimal subset of those queues/interrupts
-is actually used.
-
-So on reservation mode, the msi_data may change after request_irq
-is called, so ath11k reads msi_data again after request_irq is called,
-and then the correct msi_data is programmed into QCA6390 hardware
-components. Without this change, spurious interrupt occurs in case of
-one MSI vector. When VT-D in BIOS is enabled and ath11k can get 32 MSI
-vectors, ath11k always get the same msi_data before and after request_irq,
-that's why this change is only required when one MSI vector is to be
-supported.
+This change adds two flags to indicate whether irq handler for CE
+and dp can be called. This is because in one MSI vector case,
+interrupt is not disabled in hif_stop and hif_irq_disable. Otherwise,
+MHI interrupt is disabled too.
 
 Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 
 Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/pci.c | 37 +++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.h |  2 ++
+ drivers/net/wireless/ath/ath11k/pci.c  | 13 +++++++++++++
+ 2 files changed, 15 insertions(+)
 
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 799bf3d..3dacca5 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -741,6 +741,8 @@ struct ath11k_base {
+ 
+ 	struct completion htc_suspend;
+ 
++	bool ce_irq_enabled_flag;
++	bool ext_irq_enabled_flag;
+ 	/* must be last */
+ 	u8 drv_priv[0] __aligned(sizeof(void *));
+ };
 diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 78478b2..c1ae1df 100644
+index c1ae1df..deb2d47 100644
 --- a/drivers/net/wireless/ath/ath11k/pci.c
 +++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -804,6 +804,32 @@ static void ath11k_pci_disable_msi(struct ath11k_pci *ab_pci)
- 	pci_free_irq_vectors(ab_pci->pdev);
- }
- 
-+static int ath11k_pci_config_msi_data(struct ath11k_pci *ab_pci)
-+{
-+	struct msi_desc *msi_desc;
-+	int ret;
-+
-+	msi_desc = irq_get_msi_desc(ab_pci->pdev->irq);
-+	if (!msi_desc) {
-+		ath11k_err(ab_pci->ab, "%s msi_desc is NULL!\n", __func__);
-+		ret = -EINVAL;
-+		goto free_msi_vector;
-+	}
-+
-+	ab_pci->msi_ep_base_data = msi_desc->msg.data;
-+
-+	ath11k_dbg(ab_pci->ab, ATH11K_DBG_PCI,
-+		   "msi base data after request_irq is %d\n",
-+		   ab_pci->msi_ep_base_data);
-+
-+	return 0;
-+
-+free_msi_vector:
-+	pci_free_irq_vectors(ab_pci->pdev);
-+
-+	return ret;
-+}
-+
- static int ath11k_pci_claim(struct ath11k_pci *ab_pci, struct pci_dev *pdev)
+@@ -487,6 +487,8 @@ static void ath11k_pci_ce_irqs_disable(struct ath11k_base *ab)
  {
- 	struct ath11k_base *ab = ab_pci->ab;
-@@ -1174,6 +1200,17 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- 		goto err_ce_free;
- 	}
+ 	int i;
  
-+	/* kernel may allocate a dummy vector before request_irq and
-+	 * then allocate a real vector when request_irq is called.
-+	 * So get msi_data here again to avoid spurious interrupt
-+	 * as msi_data will configured to srngs.
-+	 */
-+	ret = ath11k_pci_config_msi_data(ab_pci);
-+	if (ret) {
-+		ath11k_err(ab, "failed to config msi_data: %d\n", ret);
-+		goto err_ce_free;
-+	}
++	ab->ce_irq_enabled_flag = false;
 +
- 	ret = ath11k_core_init(ab);
- 	if (ret) {
- 		ath11k_err(ab, "failed to init core: %d\n", ret);
+ 	for (i = 0; i < ab->hw_params.ce_count; i++) {
+ 		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+@@ -521,6 +523,9 @@ static irqreturn_t ath11k_pci_ce_interrupt_handler(int irq, void *arg)
+ {
+ 	struct ath11k_ce_pipe *ce_pipe = arg;
+ 
++	if (!ab->ce_irq_enabled_flag)
++		return IRQ_HANDLED;
++
+ 	ath11k_pci_ce_irq_disable(ce_pipe->ab, ce_pipe->pipe_num);
+ 	tasklet_schedule(&ce_pipe->intr_tq);
+ 
+@@ -539,6 +544,8 @@ static void __ath11k_pci_ext_irq_disable(struct ath11k_base *sc)
+ {
+ 	int i;
+ 
++	ab->ext_irq_enabled_flag = false;
++
+ 	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
+ 		struct ath11k_ext_irq_grp *irq_grp = &sc->ext_irq_grp[i];
+ 
+@@ -561,6 +568,8 @@ static void ath11k_pci_ext_irq_enable(struct ath11k_base *ab)
+ {
+ 	int i;
+ 
++	ab->ext_irq_enabled_flag = true;
++
+ 	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
+ 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
+@@ -613,6 +622,9 @@ static irqreturn_t ath11k_pci_ext_interrupt_handler(int irq, void *arg)
+ {
+ 	struct ath11k_ext_irq_grp *irq_grp = arg;
+ 
++	if (!irq_grp->ab->ext_irq_enabled_flag)
++		return IRQ_HANDLED;
++
+ 	ath11k_dbg(irq_grp->ab, ATH11K_DBG_PCI, "ext irq:%d\n", irq);
+ 
+ 	ath11k_pci_ext_grp_disable(irq_grp);
+@@ -1026,6 +1038,7 @@ static int ath11k_pci_start(struct ath11k_base *ab)
+ 	set_bit(ATH11K_PCI_FLAG_INIT_DONE, &ab_pci->flags);
+ 
+ 	ath11k_pci_aspm_restore(ab_pci);
++	ab->ce_irq_enabled_flag = true;
+ 
+ 	ath11k_pci_ce_irqs_enable(ab);
+ 	ath11k_ce_rx_post_buf(ab);
 -- 
 2.7.4
 
