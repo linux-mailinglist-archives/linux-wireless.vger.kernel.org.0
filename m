@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C083D2E14CF
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E755E2E143F
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:47:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730880AbgLWCoI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 21:44:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49658 "EHLO mail.kernel.org"
+        id S1729860AbgLWCXB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 21:23:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49802 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729819AbgLWCWz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:22:55 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8522622D73;
-        Wed, 23 Dec 2020 02:22:39 +0000 (UTC)
+        id S1729839AbgLWCW7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:22:59 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 101F82313F;
+        Wed, 23 Dec 2020 02:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690160;
-        bh=/458adE0gXv2aGVuKXeQDvGxAqn2ggSrCHf/FwV4Qy0=;
+        s=k20201202; t=1608690162;
+        bh=d6XhwrcEFVTHkM6rI7NkPi4qFZlLUNkeJ5b1KvMIDso=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q2wJOiNO7E8zAmCcZ+jK6uC9aIuyavucronRzCwAHxS0PPWjgNDtFLc+o13h5IZq5
-         1SpJ8I0ZCTWfMqL5btluOVgwtSPzhF1brSGLwQqiR8yxZYE12J/yZhMWOh3Yv1GgqP
-         CInM38Tm4hsVer0fmScMDn/6rRD8SyELfJccuDBS6CGfbo2C0hB06NrM9kieNroz3C
-         5CsD9TgXwsmMss1zffr6xLGdTAgl1UlcK1thEYuXm1u3Xf+1xbOdZwzdlphvPSEzf4
-         D9yVgbcoZjZnVimskAM6scyDLwCAOMQMoL1F+dJZt0Uoi4xEsTiPfS76yY7QSF++d0
-         YO1jQSTQUtHKw==
+        b=etO+6Jwe4uwBnyVUBqxK0fU+tzi64dxQ3IChaJI8FbtlabiRsHI9br6Pn9x75bWkz
+         O/S0WBc3K5kEeI/66/9h6Q34vX3mfWoyzz/5+EPfAf4sVKqTVfeSJws94UWji0l8O1
+         gVAkyAMOMe56N2pmovAF8bzFJKqOvpgCexKUyITPq4FXhIk0C3PFJPgjgo/7ceaw6e
+         hNBZj/5VLTrCC689LCmth3LxB6z7CbD4hsledRRRvP56aq2xIX/591ZCjOdBdmht4q
+         81lnGDb6FqBNa6j49iOPOEXsTKKt6SLzb2o1E/MMZIi2dvgD1FqqN4lepYfQY35Fmy
+         auC4Ww9GanjJw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
+Cc:     Avraham Stern <avraham.stern@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 78/87] cfg80211: Save the regulatory domain when setting custom regulatory
-Date:   Tue, 22 Dec 2020 21:20:54 -0500
-Message-Id: <20201223022103.2792705-78-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 80/87] mac80211: support Rx timestamp calculation for all preamble types
+Date:   Tue, 22 Dec 2020 21:20:56 -0500
+Message-Id: <20201223022103.2792705-80-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201223022103.2792705-1-sashal@kernel.org>
 References: <20201223022103.2792705-1-sashal@kernel.org>
@@ -44,48 +44,147 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit beee246951571cc5452176f3dbfe9aa5a10ba2b9 ]
+[ Upstream commit da3882331a55ba8c8eda0cfc077ad3b88c257e22 ]
 
-When custom regulatory was set, only the channels setting was updated, but
-the regulatory domain was not saved. Fix it by saving it.
+Add support for calculating the Rx timestamp for HE frames.
+Since now all frame types are supported, allow setting the Rx
+timestamp regardless of the frame type.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20201129172929.290fa5c5568a.Ic5732aa64de6ee97ae3578bd5779fc723ba489d1@changeid
+Link: https://lore.kernel.org/r/iwlwifi.20201206145305.4786559af475.Ia54486bb0a12e5351f9d5c60ef6fcda7c9e7141c@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/reg.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/mac80211/ieee80211_i.h |  9 ++----
+ net/mac80211/util.c        | 66 +++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 67 insertions(+), 8 deletions(-)
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index c7825b951f725..3427e6e4ce41c 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -2332,6 +2332,7 @@ static void handle_band_custom(struct wiphy *wiphy,
- void wiphy_apply_custom_regulatory(struct wiphy *wiphy,
- 				   const struct ieee80211_regdomain *regd)
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index a879d8071712b..43edb903be693 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1529,13 +1529,8 @@ ieee80211_have_rx_timestamp(struct ieee80211_rx_status *status)
  {
-+	const struct ieee80211_regdomain *new_regd, *tmp;
- 	enum nl80211_band band;
- 	unsigned int bands_set = 0;
- 
-@@ -2351,6 +2352,13 @@ void wiphy_apply_custom_regulatory(struct wiphy *wiphy,
- 	 * on your device's supported bands.
- 	 */
- 	WARN_ON(!bands_set);
-+	new_regd = reg_copy_regd(regd);
-+	if (IS_ERR(new_regd))
-+		return;
-+
-+	tmp = get_wiphy_regdom(wiphy);
-+	rcu_assign_pointer(wiphy->regd, new_regd);
-+	rcu_free_regdom(tmp);
+ 	WARN_ON_ONCE(status->flag & RX_FLAG_MACTIME_START &&
+ 		     status->flag & RX_FLAG_MACTIME_END);
+-	if (status->flag & (RX_FLAG_MACTIME_START | RX_FLAG_MACTIME_END))
+-		return true;
+-	/* can't handle non-legacy preamble yet */
+-	if (status->flag & RX_FLAG_MACTIME_PLCP_START &&
+-	    status->encoding == RX_ENC_LEGACY)
+-		return true;
+-	return false;
++	return !!(status->flag & (RX_FLAG_MACTIME_START | RX_FLAG_MACTIME_END |
++				  RX_FLAG_MACTIME_PLCP_START));
  }
- EXPORT_SYMBOL(wiphy_apply_custom_regulatory);
  
+ void ieee80211_vif_inc_num_mcast(struct ieee80211_sub_if_data *sdata);
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 7fa9871b1db9f..0234fae673ec2 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2897,6 +2897,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 	u64 ts = status->mactime;
+ 	struct rate_info ri;
+ 	u16 rate;
++	u8 n_ltf;
+ 
+ 	if (WARN_ON(!ieee80211_have_rx_timestamp(status)))
+ 		return 0;
+@@ -2907,11 +2908,58 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 
+ 	/* Fill cfg80211 rate info */
+ 	switch (status->encoding) {
++	case RX_ENC_HE:
++		ri.flags |= RATE_INFO_FLAGS_HE_MCS;
++		ri.mcs = status->rate_idx;
++		ri.nss = status->nss;
++		ri.he_ru_alloc = status->he_ru;
++		if (status->enc_flags & RX_ENC_FLAG_SHORT_GI)
++			ri.flags |= RATE_INFO_FLAGS_SHORT_GI;
++
++		/*
++		 * See P802.11ax_D6.0, section 27.3.4 for
++		 * VHT PPDU format.
++		 */
++		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++			mpdu_offset += 2;
++			ts += 36;
++
++			/*
++			 * TODO:
++			 * For HE MU PPDU, add the HE-SIG-B.
++			 * For HE ER PPDU, add 8us for the HE-SIG-A.
++			 * For HE TB PPDU, add 4us for the HE-STF.
++			 * Add the HE-LTF durations - variable.
++			 */
++		}
++
++		break;
+ 	case RX_ENC_HT:
+ 		ri.mcs = status->rate_idx;
+ 		ri.flags |= RATE_INFO_FLAGS_MCS;
+ 		if (status->enc_flags & RX_ENC_FLAG_SHORT_GI)
+ 			ri.flags |= RATE_INFO_FLAGS_SHORT_GI;
++
++		/*
++		 * See P802.11REVmd_D3.0, section 19.3.2 for
++		 * HT PPDU format.
++		 */
++		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++			mpdu_offset += 2;
++			if (status->enc_flags & RX_ENC_FLAG_HT_GF)
++				ts += 24;
++			else
++				ts += 32;
++
++			/*
++			 * Add Data HT-LTFs per streams
++			 * TODO: add Extension HT-LTFs, 4us per LTF
++			 */
++			n_ltf = ((ri.mcs >> 3) & 3) + 1;
++			n_ltf = n_ltf == 3 ? 4 : n_ltf;
++			ts += n_ltf * 4;
++		}
++
+ 		break;
+ 	case RX_ENC_VHT:
+ 		ri.flags |= RATE_INFO_FLAGS_VHT_MCS;
+@@ -2919,6 +2967,23 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 		ri.nss = status->nss;
+ 		if (status->enc_flags & RX_ENC_FLAG_SHORT_GI)
+ 			ri.flags |= RATE_INFO_FLAGS_SHORT_GI;
++
++		/*
++		 * See P802.11REVmd_D3.0, section 21.3.2 for
++		 * VHT PPDU format.
++		 */
++		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++			mpdu_offset += 2;
++			ts += 36;
++
++			/*
++			 * Add VHT-LTFs per streams
++			 */
++			n_ltf = (ri.nss != 1) && (ri.nss % 2) ?
++				ri.nss + 1 : ri.nss;
++			ts += 4 * n_ltf;
++		}
++
+ 		break;
+ 	default:
+ 		WARN_ON(1);
+@@ -2942,7 +3007,6 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 		ri.legacy = DIV_ROUND_UP(bitrate, (1 << shift));
+ 
+ 		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
+-			/* TODO: handle HT/VHT preambles */
+ 			if (status->band == NL80211_BAND_5GHZ) {
+ 				ts += 20 << shift;
+ 				mpdu_offset += 2;
 -- 
 2.27.0
 
