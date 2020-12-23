@@ -2,37 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B072E148E
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9C0E2E1464
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Dec 2020 03:47:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730742AbgLWCkh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Dec 2020 21:40:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50890 "EHLO mail.kernel.org"
+        id S1730243AbgLWCjF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Dec 2020 21:39:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52758 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728599AbgLWCXg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:23:36 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A7C4222525;
-        Wed, 23 Dec 2020 02:23:14 +0000 (UTC)
+        id S1730095AbgLWCX5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Dec 2020 21:23:57 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1BC7522248;
+        Wed, 23 Dec 2020 02:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608690195;
-        bh=nMZRhBg+UnCsq/FHTIs8Y2c4JJhhAhTMXJG8dB+pi3s=;
+        s=k20201202; t=1608690222;
+        bh=CkCr7Ne8EwKLQLtRVGEK4vxK5IljeBMhqVXo6PZ+UQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PTrX7DnEgLIRnhH3XE5eEPUShDXXdjaiAf8lhwke9PiizPdABi4u+v4IkFNmYPcOC
-         v3Eu0mQrLY4e3qY19St5+7hxbGMTk42YHX375aIy3glqvdCdE30lhzHeVzMVSO1yOR
-         EpYK/J54r8weNtgDdXLZql6SMYHSKeTwyN0Ms01+ASBZ0DcDWr4733ntABr+fRMVcA
-         tDIgPORKdBn0Xbk4LBSqKrA/4F3GUI47N5TpqT+NLPdmzz2psJgdBEjOVwbDJueTzB
-         4LAvhkltpRsmUHZ3FtQB4GZDlBExxu1/F4z08ZFmao7Q7TcflQgx0Hq8IZTFEs7hWT
-         nV1XDq51QkSAg==
+        b=sb4ppoO2fXgCY/lKTuqd81Yqj8mTHGvRTeYJbhx8jvEPTltrfqpkb5acnkYkIhh86
+         jnYz28wlAFD2b1TyRgOs5OY6LphJ/X9rssvs+7w6w3e55EF3EPy6n/JYNauDEFE+fG
+         hYwUNwPNK6/6wm6rbsxMlyBoQkqXyo51HdYDAEKoLvIt4gCMHqanryCG745XFV1xAf
+         5q6evvyBRPES4gDHSzWqKEakLE7X4Ltx+0pldOCm1tTqAqPKEXYxGs0dGp743gd8TU
+         l6UK+2Ex0EGYKeKmDS+F/YJbvQU9xTt7J1fMa/nf0Jvh4Z+GQ/hqiihmcUql2rlp+T
+         gw3STdhLykCCQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tsuchiya Yuto <kitakar@gmail.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
+Cc:     Dmitry Safonov <dima@arista.com>,
+        Yuji Nakao <contact@yujinakao.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 18/66] mwifiex: pcie: skip cancel_work_sync() on reset failure path
-Date:   Tue, 22 Dec 2020 21:22:04 -0500
-Message-Id: <20201223022253.2793452-18-sashal@kernel.org>
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 39/66] brcmsmac: ampdu: Check BA window size before checking block ack
+Date:   Tue, 22 Dec 2020 21:22:25 -0500
+Message-Id: <20201223022253.2793452-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201223022253.2793452-1-sashal@kernel.org>
 References: <20201223022253.2793452-1-sashal@kernel.org>
@@ -44,168 +46,112 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tsuchiya Yuto <kitakar@gmail.com>
+From: Dmitry Safonov <dima@arista.com>
 
-[ Upstream commit 4add4d988f95f47493500a7a19c623827061589b ]
+[ Upstream commit 01c195de620bb6c3ecda0dbf295fe685d8232e10 ]
 
-If a reset is performed, but even the reset fails for some reasons (e.g.,
-on Surface devices, the fw reset requires another quirks),
-cancel_work_sync() hangs in mwifiex_cleanup_pcie().
+bindex can be out of BA window (64):
+  tid 0 seq 2983, start_seq 2915, bindex 68, index 39
+  tid 0 seq 2984, start_seq 2915, bindex 69, index 40
+  tid 0 seq 2985, start_seq 2915, bindex 70, index 41
+  tid 0 seq 2986, start_seq 2915, bindex 71, index 42
+  tid 0 seq 2879, start_seq 2915, bindex 4060, index 63
+  tid 0 seq 2854, start_seq 2915, bindex 4035, index 38
+  tid 0 seq 2795, start_seq 2915, bindex 3976, index 43
+  tid 0 seq 2989, start_seq 2924, bindex 65, index 45
+  tid 0 seq 2992, start_seq 2924, bindex 68, index 48
+  tid 0 seq 2993, start_seq 2924, bindex 69, index 49
+  tid 0 seq 2994, start_seq 2924, bindex 70, index 50
+  tid 0 seq 2997, start_seq 2924, bindex 73, index 53
+  tid 0 seq 2795, start_seq 2941, bindex 3950, index 43
+  tid 0 seq 2921, start_seq 2941, bindex 4076, index 41
+  tid 0 seq 2929, start_seq 2941, bindex 4084, index 49
+  tid 0 seq 3011, start_seq 2946, bindex 65, index 3
+  tid 0 seq 3012, start_seq 2946, bindex 66, index 4
+  tid 0 seq 3013, start_seq 2946, bindex 67, index 5
 
-    # firmware went into a bad state
-    [...]
-    [ 1608.281690] mwifiex_pcie 0000:03:00.0: info: shutdown mwifiex...
-    [ 1608.282724] mwifiex_pcie 0000:03:00.0: rx_pending=0, tx_pending=1,	cmd_pending=0
-    [ 1608.292400] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    [ 1608.292405] mwifiex_pcie 0000:03:00.0: PREP_CMD: card is removed
-    # reset performed after firmware went into a bad state
-    [ 1609.394320] mwifiex_pcie 0000:03:00.0: WLAN FW already running! Skip FW dnld
-    [ 1609.394335] mwifiex_pcie 0000:03:00.0: WLAN FW is active
-    # but even the reset failed
-    [ 1619.499049] mwifiex_pcie 0000:03:00.0: mwifiex_cmd_timeout_func: Timeout cmd id = 0xfa, act = 0xe000
-    [ 1619.499094] mwifiex_pcie 0000:03:00.0: num_data_h2c_failure = 0
-    [ 1619.499103] mwifiex_pcie 0000:03:00.0: num_cmd_h2c_failure = 0
-    [ 1619.499110] mwifiex_pcie 0000:03:00.0: is_cmd_timedout = 1
-    [ 1619.499117] mwifiex_pcie 0000:03:00.0: num_tx_timeout = 0
-    [ 1619.499124] mwifiex_pcie 0000:03:00.0: last_cmd_index = 0
-    [ 1619.499133] mwifiex_pcie 0000:03:00.0: last_cmd_id: fa 00 07 01 07 01 07 01 07 01
-    [ 1619.499140] mwifiex_pcie 0000:03:00.0: last_cmd_act: 00 e0 00 00 00 00 00 00 00 00
-    [ 1619.499147] mwifiex_pcie 0000:03:00.0: last_cmd_resp_index = 3
-    [ 1619.499155] mwifiex_pcie 0000:03:00.0: last_cmd_resp_id: 07 81 07 81 07 81 07 81 07 81
-    [ 1619.499162] mwifiex_pcie 0000:03:00.0: last_event_index = 2
-    [ 1619.499169] mwifiex_pcie 0000:03:00.0: last_event: 58 00 58 00 58 00 58 00 58 00
-    [ 1619.499177] mwifiex_pcie 0000:03:00.0: data_sent=0 cmd_sent=1
-    [ 1619.499185] mwifiex_pcie 0000:03:00.0: ps_mode=0 ps_state=0
-    [ 1619.499215] mwifiex_pcie 0000:03:00.0: info: _mwifiex_fw_dpc: unregister device
-    # mwifiex_pcie_work hang happening
-    [ 1823.233923] INFO: task kworker/3:1:44 blocked for more than 122 seconds.
-    [ 1823.233932]       Tainted: G        WC OE     5.10.0-rc1-1-mainline #1
-    [ 1823.233935] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-    [ 1823.233940] task:kworker/3:1     state:D stack:    0 pid:   44 ppid:     2 flags:0x00004000
-    [ 1823.233960] Workqueue: events mwifiex_pcie_work [mwifiex_pcie]
-    [ 1823.233965] Call Trace:
-    [ 1823.233981]  __schedule+0x292/0x820
-    [ 1823.233990]  schedule+0x45/0xe0
-    [ 1823.233995]  schedule_timeout+0x11c/0x160
-    [ 1823.234003]  wait_for_completion+0x9e/0x100
-    [ 1823.234012]  __flush_work.isra.0+0x156/0x210
-    [ 1823.234018]  ? flush_workqueue_prep_pwqs+0x130/0x130
-    [ 1823.234026]  __cancel_work_timer+0x11e/0x1a0
-    [ 1823.234035]  mwifiex_cleanup_pcie+0x28/0xd0 [mwifiex_pcie]
-    [ 1823.234049]  mwifiex_free_adapter+0x24/0xe0 [mwifiex]
-    [ 1823.234060]  _mwifiex_fw_dpc+0x294/0x560 [mwifiex]
-    [ 1823.234074]  mwifiex_reinit_sw+0x15d/0x300 [mwifiex]
-    [ 1823.234080]  mwifiex_pcie_reset_done+0x50/0x80 [mwifiex_pcie]
-    [ 1823.234087]  pci_try_reset_function+0x5c/0x90
-    [ 1823.234094]  process_one_work+0x1d6/0x3a0
-    [ 1823.234100]  worker_thread+0x4d/0x3d0
-    [ 1823.234107]  ? rescuer_thread+0x410/0x410
-    [ 1823.234112]  kthread+0x142/0x160
-    [ 1823.234117]  ? __kthread_bind_mask+0x60/0x60
-    [ 1823.234124]  ret_from_fork+0x22/0x30
-    [...]
+In result isset() will try to dereference something on the stack,
+causing panics:
+  BUG: unable to handle page fault for address: ffffa742800ed01f
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 6a4e9067 P4D 6a4e9067 PUD 6a4ec067 PMD 6a4ed067 PTE 0
+  Oops: 0000 [#1] PREEMPT SMP PTI
+  CPU: 1 PID: 0 Comm: swapper/1 Kdump: loaded Not tainted 5.8.5-arch1-1-kdump #1
+  Hardware name: Apple Inc. MacBookAir3,1/Mac-942452F5819B1C1B, BIOS    MBA31.88Z.0061.B07.1201241641 01/24/12
+  RIP: 0010:brcms_c_ampdu_dotxstatus+0x343/0x9f0 [brcmsmac]
+  Code: 54 24 20 66 81 e2 ff 0f 41 83 e4 07 89 d1 0f b7 d2 66 c1 e9 03 0f b7 c9 4c 8d 5c 0c 48 49 8b 4d 10 48 8b 79 68 41 57 44 89 e1 <41> 0f b6 33 41 d3 e0 48 c7 c1 38 e0 ea c0 48 83 c7 10 44 21 c6 4c
+  RSP: 0018:ffffa742800ecdd0 EFLAGS: 00010207
+  RAX: 0000000000000019 RBX: 000000000000000b RCX: 0000000000000006
+  RDX: 0000000000000ffe RSI: 0000000000000004 RDI: ffff8fc6ad776800
+  RBP: ffff8fc6855acb00 R08: 0000000000000001 R09: 00000000000005d9
+  R10: 00000000fffffffe R11: ffffa742800ed01f R12: 0000000000000006
+  R13: ffff8fc68d75a000 R14: 00000000000005db R15: 0000000000000019
+  FS:  0000000000000000(0000) GS:ffff8fc6aad00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffffa742800ed01f CR3: 000000002480a000 CR4: 00000000000406e0
+  Call Trace:
+   <IRQ>
+   brcms_c_dpc+0xb46/0x1020 [brcmsmac]
+   ? wlc_intstatus+0xc8/0x180 [brcmsmac]
+   ? __raise_softirq_irqoff+0x1a/0x80
+   brcms_dpc+0x37/0xd0 [brcmsmac]
+   tasklet_action_common.constprop.0+0x51/0xb0
+   __do_softirq+0xff/0x340
+   ? handle_level_irq+0x1a0/0x1a0
+   asm_call_on_stack+0x12/0x20
+   </IRQ>
+   do_softirq_own_stack+0x5f/0x80
+   irq_exit_rcu+0xcb/0x120
+   common_interrupt+0xd1/0x200
+   asm_common_interrupt+0x1e/0x40
+  RIP: 0010:cpuidle_enter_state+0xb3/0x420
 
-This is a deadlock caused by calling cancel_work_sync() in
-mwifiex_cleanup_pcie():
+Check if the block is within BA window and only then check block's
+status. Otherwise as Behan wrote: "When I came back to Dublin I
+was courtmartialed in my absence and sentenced to death in my absence,
+so I said they could shoot me in my absence."
 
-- Device resets are done via mwifiex_pcie_card_reset()
-- which schedules card->work to call mwifiex_pcie_card_reset_work()
-- which calls pci_try_reset_function().
-- This leads to mwifiex_pcie_reset_done() be called on the same workqueue,
-  which in turn calls
-- mwifiex_reinit_sw() and that calls
-- _mwifiex_fw_dpc().
+Also reported:
+https://bbs.archlinux.org/viewtopic.php?id=258428
+https://lore.kernel.org/linux-wireless/87tuwgi92n.fsf@yujinakao.com/
 
-The problem is now that _mwifiex_fw_dpc() calls mwifiex_free_adapter()
-in case firmware initialization fails. That ends up calling
-mwifiex_cleanup_pcie().
-
-Note that all those calls are still running on the workqueue. So when
-mwifiex_cleanup_pcie() now calls cancel_work_sync(), it's really waiting
-on itself to complete, causing a deadlock.
-
-This commit fixes the deadlock by skipping cancel_work_sync() on a reset
-failure path.
-
-After this commit, when reset fails, the following output is
-expected to be shown:
-
-    kernel: mwifiex_pcie 0000:03:00.0: info: _mwifiex_fw_dpc: unregister device
-    kernel: mwifiex: Failed to bring up adapter: -5
-    kernel: mwifiex_pcie 0000:03:00.0: reinit failed: -5
-
-To reproduce this issue, for example, try putting the root port of wifi
-into D3 (replace "00:1d.3" with your setup).
-
-    # put into D3 (root port)
-    sudo setpci -v -s 00:1d.3 CAP_PM+4.b=0b
-
-Cc: Maximilian Luz <luzmaximilian@gmail.com>
-Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
+Reported-by: Yuji Nakao <contact@yujinakao.com>
+Signed-off-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20201028142346.18355-1-kitakar@gmail.com
+Link: https://lore.kernel.org/r/20201116030635.645811-1-dima@arista.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/pcie.c | 18 +++++++++++++++++-
- drivers/net/wireless/marvell/mwifiex/pcie.h |  2 ++
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ .../net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c  | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index 8ee9609ef9749..7f615ad98acaa 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -368,6 +368,8 @@ static void mwifiex_pcie_reset_prepare(struct pci_dev *pdev)
- 	clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
- 	clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET, &card->work_flags);
- 	mwifiex_dbg(adapter, INFO, "%s, successful\n", __func__);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
+index fa391e4eb0989..44f65b8bff9e0 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
+@@ -953,14 +953,19 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
+ 		index = TX_SEQ_TO_INDEX(seq);
+ 		ack_recd = false;
+ 		if (ba_recd) {
++			int block_acked;
 +
-+	card->pci_reset_ongoing = true;
- }
+ 			bindex = MODSUB_POW2(seq, start_seq, SEQNUM_MAX);
++			if (bindex < AMPDU_TX_BA_MAX_WSIZE)
++				block_acked = isset(bitmap, bindex);
++			else
++				block_acked = 0;
+ 			brcms_dbg_ht(wlc->hw->d11core,
+ 				     "tid %d seq %d, start_seq %d, bindex %d set %d, index %d\n",
+ 				     tid, seq, start_seq, bindex,
+-				     isset(bitmap, bindex), index);
++				     block_acked, index);
+ 			/* if acked then clear bit and free packet */
+-			if ((bindex < AMPDU_TX_BA_MAX_WSIZE)
+-			    && isset(bitmap, bindex)) {
++			if (block_acked) {
+ 				ini->txretry[index] = 0;
  
- /*
-@@ -396,6 +398,8 @@ static void mwifiex_pcie_reset_done(struct pci_dev *pdev)
- 		dev_err(&pdev->dev, "reinit failed: %d\n", ret);
- 	else
- 		mwifiex_dbg(adapter, INFO, "%s, successful\n", __func__);
-+
-+	card->pci_reset_ongoing = false;
- }
- 
- static const struct pci_error_handlers mwifiex_pcie_err_handler = {
-@@ -2980,7 +2984,19 @@ static void mwifiex_cleanup_pcie(struct mwifiex_adapter *adapter)
- 	int ret;
- 	u32 fw_status;
- 
--	cancel_work_sync(&card->work);
-+	/* Perform the cancel_work_sync() only when we're not resetting
-+	 * the card. It's because that function never returns if we're
-+	 * in reset path. If we're here when resetting the card, it means
-+	 * that we failed to reset the card (reset failure path).
-+	 */
-+	if (!card->pci_reset_ongoing) {
-+		mwifiex_dbg(adapter, MSG, "performing cancel_work_sync()...\n");
-+		cancel_work_sync(&card->work);
-+		mwifiex_dbg(adapter, MSG, "cancel_work_sync() done\n");
-+	} else {
-+		mwifiex_dbg(adapter, MSG,
-+			    "skipped cancel_work_sync() because we're in card reset failure path\n");
-+	}
- 
- 	ret = mwifiex_read_reg(adapter, reg->fw_status, &fw_status);
- 	if (fw_status == FIRMWARE_READY_PCIE) {
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.h b/drivers/net/wireless/marvell/mwifiex/pcie.h
-index f7ce9b6db6b41..72d0c01ff3592 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.h
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.h
-@@ -391,6 +391,8 @@ struct pcie_service_card {
- 	struct mwifiex_msix_context share_irq_ctx;
- 	struct work_struct work;
- 	unsigned long work_flags;
-+
-+	bool pci_reset_ongoing;
- };
- 
- static inline int
+ 				/*
 -- 
 2.27.0
 
