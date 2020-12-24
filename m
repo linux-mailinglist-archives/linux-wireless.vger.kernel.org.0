@@ -2,69 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55F7E2E275C
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Dec 2020 14:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 691F62E2847
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Dec 2020 18:10:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728850AbgLXN1n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Dec 2020 08:27:43 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:54626 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728795AbgLXN1m (ORCPT
+        id S1728655AbgLXRIy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Dec 2020 12:08:54 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:42416 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728266AbgLXRIy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Dec 2020 08:27:42 -0500
-Received: from mail-lf1-f72.google.com ([209.85.167.72])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1ksQdw-0004hs-DC
-        for linux-wireless@vger.kernel.org; Thu, 24 Dec 2020 13:27:00 +0000
-Received: by mail-lf1-f72.google.com with SMTP id i21so1490276lfe.14
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Dec 2020 05:27:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=e4xgp6vB88we292tJAxVZLyu5Zd9cAPYEm3vxvac9t8=;
-        b=r6L2CGbtC2th2cRPkzBPZ3xwF/e44WPzUBuiq9e5KnLgR+8tJpRikA9BuKBAxkP6UI
-         h2ql7ZR4rCs8pg4QuxKLkjEi2X9R0/LIr1sNZf+VTd4byM/g9KyArKFQHnsAomKJSXYz
-         1QPzVl+AWI2OEExJNg9xTmuSlFMsCPxNX3EN+0jRohRszGheWi7oteNhN6qovkeUQ94D
-         91tH2RpaiUx1luKr6BS0RgilFbR3yTeHRygYRm/W08YiCE6BimMtCosZ85Q/ZKvcOJ06
-         MRnjEDRBPNiv9Q2cEWHP9Qq1IR72HZ+KPDnMEJ3etBkekNZ9iqSRxv2Y4DpAsvPirvaq
-         66Yw==
-X-Gm-Message-State: AOAM530Ijsl4qij8j6UWwHfcV1UOYetxV3tLu16v97gjqww066PMPX1n
-        RsBr3PQ/XewXVv1SCw3lkbMNm+7AM4Qn3Q324ztFXvEE9fJpjfnv1AHa3PXd8sHj6tfrvwWkoia
-        4jT/6i2HmVeM2eySzp1DRvLu3egrmtojRdn5UYrCaxYznexpxwPN3ECABi1Ry
-X-Received: by 2002:a19:8316:: with SMTP id f22mr13780102lfd.10.1608816419700;
-        Thu, 24 Dec 2020 05:26:59 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwD9ypdnYcNz7oM44uRamuPm+qt+NL7wmz07Tk/v1s3MnEsvwGMmMb+R/NQ6FUjDI/wEghGsYLv5np7ml+Qi8I=
-X-Received: by 2002:a19:8316:: with SMTP id f22mr13780098lfd.10.1608816419461;
- Thu, 24 Dec 2020 05:26:59 -0800 (PST)
+        Thu, 24 Dec 2020 12:08:54 -0500
+Received: from [192.168.254.6] (unknown [50.46.158.169])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 7839313C2B0;
+        Thu, 24 Dec 2020 09:08:13 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7839313C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1608829693;
+        bh=oCowPKW6aP6ZhyDp64QY45cgY8fT8fWhW+s1yumAXc0=;
+        h=Subject:From:To:References:Date:In-Reply-To:From;
+        b=CZeIwiH0kGcdGDwwmLLGRSf5OVSRjWFxLZSX0sDgC8DvGTUX8xWhYICqF8RGXhX3Q
+         9Q+DnHZSQhoKQ/dB70T073PIj085ZbDKOUAMAKXk1LPrBWq2+Py7LsbZDydYlC3dB/
+         Y8To0BxNsg8Dn0vEz74tDJrbSXs2b+LKRB93x8U0=
+Subject: Re: skb_cb corruption in ath10k
+From:   Ben Greear <greearb@candelatech.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        ath10k <ath10k@lists.infradead.org>
+References: <86170a90-da2f-3227-d7e5-fe9486156705@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <c79bb1d2-3571-4f3f-12a8-bce6701a7241@candelatech.com>
+Date:   Thu, 24 Dec 2020 09:08:13 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Thu, 24 Dec 2020 21:26:48 +0800
-Message-ID: <CAAd53p7oymvge7DZ1_+7aA45EpNjG=FZ3PNJDv=_UT0ghv+rqQ@mail.gmail.com>
-Subject: 802.11ac AP mode support on Realtek 8821AE?
-To:     Pkshih <pkshih@realtek.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ethan Hsieh <ethan.hsieh@canonical.com>,
-        Hugh Chao <hugh.chao@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <86170a90-da2f-3227-d7e5-fe9486156705@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ping-Ke,
+On 12/21/20 3:55 PM, Ben Greear wrote:
+> Hello,
+> 
+> I'm trying to figure out what changed in the last few kernels that is making:
+> 
+> struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+> if (info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT)
+>      /* why is code here all of a sudden */
+> 
+> in data frames in ath10k,
+> when, to the best of my knowledge, nothing should be setting that up in the stack.
+> 
+> My guess is that something is stepping on the cb field somewhere in ath10k,
+> but I am not sure where that might be at this point.
+> 
+> And it also appears mac80211 or maybe supplicant is setting the rate-inject flag on some mgt frames,
+> but I think that is a separate concern at this point.
+> 
+> If anyone has any ideas of likely points, please let me know.
 
-We've found that when creating 5G AP on 8821AE, it's not on other
-devices' wifi list.
+This issue was me being confused about how the ath10k skb_cb sits in
+the same memory as the iee skb_cb.  I just needed to reorder the
+ath10k-skb-cb struct a bit to not clobber the control.flags area.
 
-Here's the steps I used to create an AP:
-$ nmcli c add type wifi ifname wlp3s0 con-name hello autoconnect no ssid hello
-$ nmcli c modify hello 802-11-wireless.mode ap ipv4.method shared
-802-11-wireless.band a
-$ nmcli connection up hello
+I also see no reason not to natually pack that stuct so that the
+pointers are 8-byte aligned.  Any idea why it is force-packed
+currently instead of using proper padding?
 
-If we change "802-11-wireless.band" to "bg", then the AP can be
-scanned by other devices.
-Does 8821AE have hardware capability to support 5G AP?
+Thanks,
+Ben
 
-Kai-Heng
+
