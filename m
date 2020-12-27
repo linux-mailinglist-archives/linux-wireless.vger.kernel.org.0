@@ -2,60 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E6B2E2FBA
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Dec 2020 04:17:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECCE62E318A
+	for <lists+linux-wireless@lfdr.de>; Sun, 27 Dec 2020 15:32:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726148AbgL0DMy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Dec 2020 22:12:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48696 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726024AbgL0DMx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Dec 2020 22:12:53 -0500
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D716C0613ED;
-        Sat, 26 Dec 2020 19:12:13 -0800 (PST)
-Received: by mail-qv1-xf2a.google.com with SMTP id a13so3658259qvv.0;
-        Sat, 26 Dec 2020 19:12:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=PRGhsysYP/LX6p1ks5M2vNgZZsBW+FKqozk0YtIMlDk=;
-        b=PyEk7AZXwHbwMFQmFvVKt4UantoLOR/FcyydpFeZe18eNtbB2u9zEvwqRhEsz9sD/L
-         MOdQAzKtiNUn+r4Dd6fJkfN1JDYRdZV+lcZgk3Qq+I4yNhGo8HoKxLHvI7uviuTJTk41
-         DZyOblWpCzps5dno3/zpfGn3MtmDhYwXxIsUCb5NyzvuagNSlnNEdquhLh1nIidmro3e
-         +WT0OoIHbW2PsGTkf0jzz1d38F9cQvYNMcZbTyGHx16VGSHqy1Oow3UufNTRfD7KeXC1
-         n6NFgKA/DLaCYppfcYD433QhJgmqfzUIyK6AhGObJYml+9/psrxbWSKUV2UduptWHGeH
-         WqXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=PRGhsysYP/LX6p1ks5M2vNgZZsBW+FKqozk0YtIMlDk=;
-        b=BVaDyw8QAFMnKbMdvdZfJvy7G9tb/lcpHp9YrPlN2Pcw4hlgMPDQ6MsiK5MdWDBheI
-         BxcpqVkjc9TdFJz8WUCWt6Qr+NCM+1h133Rg5pc8qBlf4CewV0WJ3EzFipv97QlC3tVm
-         w/hNZkBhl8kio5dn7fTi6AeKUb3BlW2dj8of1S3s/GsqSwNKY/g3928u2bXm+Jb4eaD1
-         qcwFQ0ETQ7oz/igGY0c4Bn+J2oXaXtt5V/WMfeDYPkKrU7XJvWF7ZFffrEoYNOkiUELh
-         7W4kc3ZaF1vf6Ytl/ymY2oYMJzoaavXLUbm6gU7M+2bt0r/M5aI/kqBDAMLt+3ojIGSV
-         kGGg==
-X-Gm-Message-State: AOAM532bxZNPEMVL8O4w0qaGswCQ20oEm+aBV1HIP0YVl27kJKsRRrxU
-        vucEN33hPnPSpkdNROn+xedoXqVCLo6D3A==
-X-Google-Smtp-Source: ABdhPJyAaQ4G9wCx964tyzHQgSDZB2d/ZHEd95wvoUF4w8E8NlfjPBKYV1koVHhrzms7BjgvbYP5Lg==
-X-Received: by 2002:a0c:e84c:: with SMTP id l12mr42185666qvo.0.1609038731615;
-        Sat, 26 Dec 2020 19:12:11 -0800 (PST)
-Received: from alpha-Inspiron-5480.192.168.10.1 ([170.84.225.75])
-        by smtp.gmail.com with ESMTPSA id p58sm21414461qte.38.2020.12.26.19.12.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Dec 2020 19:12:10 -0800 (PST)
-From:   Ramon Fontes <ramonreisfontes@gmail.com>
-To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net, kvalo@codeaurora.org,
-        davem@davemloft.net, Ramon Fontes <ramonreisfontes@gmail.com>
-Subject: [PATCH] mac80211_hwsim: indicate support for 6GHz (11ax) Advertise 6GHz Capabilities and channels to mac80211.
-Date:   Sun, 27 Dec 2020 00:11:55 -0300
-Message-Id: <20201227031155.81161-1-ramonreisfontes@gmail.com>
+        id S1726176AbgL0ObX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Dec 2020 09:31:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52458 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726137AbgL0ObX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 27 Dec 2020 09:31:23 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 406B022512;
+        Sun, 27 Dec 2020 14:30:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1609079441;
+        bh=O2sX8uZjt9scSCcmIw+t7xT09iHcoofo83upKVoPSqo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=t2yK7i4xhrs/eLYEkhJ7axAvoZeA4PSCfWGFxBLG8J+S6gAOHJGh/KExnILExpSWy
+         axC3xOFfmxk5Uo49YKyaUIyMwp6NdkWlk6f+HnlQrSY9XiBZht63jumWFGuCWcTObn
+         3XribF+9ZvvgwGSEKMVYzfTBxxfbgbh6f/Au9+VzL0ACWtCCmD9IFHpDpvavrVM/0V
+         JALlpyobV5w1C13+Ezcnwi8YJ4ZfEsNWB5t0BRRaZVsKERnra8NKRi7No0uFpR8005
+         onoULhVJoHYU4JLBTd4WiopaVez/79gHi9aXKPJc652NWXNYrH0Vf0gg2EzeSkaVDn
+         IGb95dTp25lmg==
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH] ath9k: Add separate entry for LED triggers to fix module builds
+Date:   Sun, 27 Dec 2020 15:30:34 +0100
+Message-Id: <20201227143034.1134829-1-krzk@kernel.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -63,127 +42,215 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Requires a few fixups to account for missing capabilities to actually
-enable 6GHz channels
+After commit 72cdab808714 ("ath9k: Do not select MAC80211_LEDS by
+default") a configuration like:
+ - MAC80211_LEDS=y
+ - LEDS_CLASS=m
+ - NEW_LEDS=y
+ - ATH9K=y
+leads to a build failure:
 
-Signed-off-by: Ramon Fontes <ramonreisfontes@gmail.com>
+    /usr/bin/ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_deinit_leds':
+    drivers/net/wireless/ath/ath9k/gpio.c:69: undefined reference to `led_classdev_unregister'
+    /usr/bin/ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `led_classdev_register':
+    include/linux/leds.h:190: undefined reference to `led_classdev_register_ext'
+
+To be able to use LED triggers, the LEDS_CLASS can only be a module
+if ath9k driver is a module as well.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: 72cdab808714 ("ath9k: Do not select MAC80211_LEDS by default")
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 74 ++++++++++++++++++++++++++-
- 1 file changed, 73 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/Kconfig        | 18 ++++++++++++------
+ drivers/net/wireless/ath/ath9k/ath9k.h        |  4 ++--
+ drivers/net/wireless/ath/ath9k/gpio.c         |  2 +-
+ drivers/net/wireless/ath/ath9k/htc.h          |  6 +++---
+ drivers/net/wireless/ath/ath9k/htc_drv_gpio.c |  2 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_init.c |  4 ++--
+ drivers/net/wireless/ath/ath9k/htc_drv_main.c |  2 +-
+ drivers/net/wireless/ath/ath9k/init.c         |  4 ++--
+ 8 files changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 3b3fc7c9c..fa7d4c20d 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -311,6 +311,12 @@ static struct net_device *hwsim_mon; /* global monitor netdev */
- 	.hw_value = (_freq), \
- }
+diff --git a/drivers/net/wireless/ath/ath9k/Kconfig b/drivers/net/wireless/ath/ath9k/Kconfig
+index a84bb9b6573f..6193dd4d85f0 100644
+--- a/drivers/net/wireless/ath/ath9k/Kconfig
++++ b/drivers/net/wireless/ath/ath9k/Kconfig
+@@ -23,9 +23,6 @@ config ATH9K
+ 	depends on MAC80211 && HAS_DMA
+ 	select ATH9K_HW
+ 	select ATH9K_COMMON
+-	imply NEW_LEDS
+-	imply LEDS_CLASS
+-	imply MAC80211_LEDS
+ 	help
+ 	  This module adds support for wireless adapters based on
+ 	  Atheros IEEE 802.11n AR5008, AR9001 and AR9002 family
+@@ -38,6 +35,18 @@ config ATH9K
  
-+#define CHAN6G(_freq) { \
-+	.band = NL80211_BAND_6GHZ, \
-+	.center_freq = (_freq), \
-+	.hw_value = (_freq), \
-+}
+ 	  If you choose to build a module, it'll be called ath9k.
+ 
++config ATH9K_LEDS
++	bool "Atheros ath9k LED triggers"
++	default y
++	depends on ATH9K || ATH9K_HTC
++	depends on NEW_LEDS
++	select LEDS_CLASS
++	select MAC80211_LEDS
++	help
++	  This option enables a few LED triggers for different
++	  packet receive/transmit events on Atheros family
++	  of wireless cards (PCI and HTC).
 +
- static const struct ieee80211_channel hwsim_channels_2ghz[] = {
- 	CHAN2G(2412), /* Channel 1 */
- 	CHAN2G(2417), /* Channel 2 */
-@@ -377,6 +383,68 @@ static const struct ieee80211_channel hwsim_channels_5ghz[] = {
- 	CHAN5G(5925), /* Channel 185 */
- };
+ config ATH9K_PCI
+ 	bool "Atheros ath9k PCI/PCIe bus support"
+ 	default y
+@@ -178,9 +187,6 @@ config ATH9K_HTC
+ 	depends on USB && MAC80211
+ 	select ATH9K_HW
+ 	select ATH9K_COMMON
+-	imply NEW_LEDS
+-	imply LEDS_CLASS
+-	imply MAC80211_LEDS
+ 	help
+ 	  Support for Atheros HTC based cards.
+ 	  Chipsets supported: AR9271
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index 13b4f5f50f8a..045118dc2a84 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -839,7 +839,7 @@ static inline int ath9k_dump_btcoex(struct ath_softc *sc, u8 *buf, u32 size)
+ #define ATH_LED_PIN_9485		6
+ #define ATH_LED_PIN_9462		4
  
-+static const struct ieee80211_channel hwsim_channels_6ghz[] = {
-+	CHAN6G(5955), /* Channel 1 */
-+	CHAN6G(5975), /* Channel 5 */
-+	CHAN6G(5995), /* Channel 9 */
-+	CHAN6G(6015), /* Channel 13 */
-+	CHAN6G(6035), /* Channel 17 */
-+	CHAN6G(6055), /* Channel 21 */
-+	CHAN6G(6075), /* Channel 25 */
-+	CHAN6G(6095), /* Channel 29 */
-+	CHAN6G(6115), /* Channel 33 */
-+	CHAN6G(6135), /* Channel 37 */
-+	CHAN6G(6155), /* Channel 41 */
-+	CHAN6G(6175), /* Channel 45 */
-+	CHAN6G(6195), /* Channel 49 */
-+	CHAN6G(6215), /* Channel 53 */
-+	CHAN6G(6235), /* Channel 57 */
-+	CHAN6G(6255), /* Channel 61 */
-+	CHAN6G(6275), /* Channel 65 */
-+	CHAN6G(6295), /* Channel 69 */
-+	CHAN6G(6315), /* Channel 73 */
-+	CHAN6G(6335), /* Channel 77 */
-+	CHAN6G(6355), /* Channel 81 */
-+	CHAN6G(6375), /* Channel 85 */
-+	CHAN6G(6395), /* Channel 89 */
-+	CHAN6G(6415), /* Channel 93 */
-+	CHAN6G(6435), /* Channel 97 */
-+	CHAN6G(6455), /* Channel 181 */
-+	CHAN6G(6475), /* Channel 105 */
-+	CHAN6G(6495), /* Channel 109 */
-+	CHAN6G(6515), /* Channel 113 */
-+	CHAN6G(6535), /* Channel 117 */
-+	CHAN6G(6555), /* Channel 121 */
-+	CHAN6G(6575), /* Channel 125 */
-+	CHAN6G(6595), /* Channel 129 */
-+	CHAN6G(6615), /* Channel 133 */
-+	CHAN6G(6635), /* Channel 137 */
-+	CHAN6G(6655), /* Channel 141 */
-+	CHAN6G(6675), /* Channel 145 */
-+	CHAN6G(6695), /* Channel 149 */
-+	CHAN6G(6715), /* Channel 153 */
-+	CHAN6G(6735), /* Channel 157 */
-+	CHAN6G(6755), /* Channel 161 */
-+	CHAN6G(6775), /* Channel 165 */
-+	CHAN6G(6795), /* Channel 169 */
-+	CHAN6G(6815), /* Channel 173 */
-+	CHAN6G(6835), /* Channel 177 */
-+	CHAN6G(6855), /* Channel 181 */
-+	CHAN6G(6875), /* Channel 185 */
-+	CHAN6G(6895), /* Channel 189 */
-+	CHAN6G(6915), /* Channel 193 */
-+	CHAN6G(6935), /* Channel 197 */
-+	CHAN6G(6955), /* Channel 201 */
-+	CHAN6G(6975), /* Channel 205 */
-+	CHAN6G(6995), /* Channel 209 */
-+	CHAN6G(7015), /* Channel 213 */
-+	CHAN6G(7035), /* Channel 217 */
-+	CHAN6G(7055), /* Channel 221 */
-+	CHAN6G(7075), /* Channel 225 */
-+	CHAN6G(7095), /* Channel 229 */
-+	CHAN6G(7115), /* Channel 233 */
-+};
-+
- #define NUM_S1G_CHANS_US 51
- static struct ieee80211_channel hwsim_channels_s1g[NUM_S1G_CHANS_US];
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ void ath_init_leds(struct ath_softc *sc);
+ void ath_deinit_leds(struct ath_softc *sc);
+ #else
+@@ -1030,7 +1030,7 @@ struct ath_softc {
+ 	struct ath_chanctx *cur_chan;
+ 	spinlock_t chan_lock;
  
-@@ -548,6 +616,7 @@ struct mac80211_hwsim_data {
- 	struct ieee80211_supported_band bands[NUM_NL80211_BANDS];
- 	struct ieee80211_channel channels_2ghz[ARRAY_SIZE(hwsim_channels_2ghz)];
- 	struct ieee80211_channel channels_5ghz[ARRAY_SIZE(hwsim_channels_5ghz)];
-+	struct ieee80211_channel channels_6ghz[ARRAY_SIZE(hwsim_channels_6ghz)];
- 	struct ieee80211_channel channels_s1g[ARRAY_SIZE(hwsim_channels_s1g)];
- 	struct ieee80211_rate rates[ARRAY_SIZE(hwsim_rates)];
- 	struct ieee80211_iface_combination if_combination;
-@@ -578,7 +647,8 @@ struct mac80211_hwsim_data {
- 		struct ieee80211_channel *channel;
- 		unsigned long next_start, start, end;
- 	} survey_data[ARRAY_SIZE(hwsim_channels_2ghz) +
--		      ARRAY_SIZE(hwsim_channels_5ghz)];
-+		      ARRAY_SIZE(hwsim_channels_5ghz) +
-+		      ARRAY_SIZE(hwsim_channels_6ghz)];
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ 	bool led_registered;
+ 	char led_name[32];
+ 	struct led_classdev led_cdev;
+diff --git a/drivers/net/wireless/ath/ath9k/gpio.c b/drivers/net/wireless/ath/ath9k/gpio.c
+index b457e52dd365..aeaa7752049d 100644
+--- a/drivers/net/wireless/ath/ath9k/gpio.c
++++ b/drivers/net/wireless/ath/ath9k/gpio.c
+@@ -20,7 +20,7 @@
+ /*	 LED functions		*/
+ /********************************/
  
- 	struct ieee80211_channel *channel;
- 	u64 beacon_int	/* beacon interval in us */;
-@@ -3149,6 +3219,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 		sizeof(hwsim_channels_2ghz));
- 	memcpy(data->channels_5ghz, hwsim_channels_5ghz,
- 		sizeof(hwsim_channels_5ghz));
-+	memcpy(data->channels_6ghz, hwsim_channels_6ghz,
-+		sizeof(hwsim_channels_6ghz));
- 	memcpy(data->channels_s1g, hwsim_channels_s1g,
- 	       sizeof(hwsim_channels_s1g));
- 	memcpy(data->rates, hwsim_rates, sizeof(hwsim_rates));
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ 
+ static void ath_fill_led_pin(struct ath_softc *sc)
+ {
+diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
+index 0a1634238e67..d3a25c8bfcb5 100644
+--- a/drivers/net/wireless/ath/ath9k/htc.h
++++ b/drivers/net/wireless/ath/ath9k/htc.h
+@@ -44,7 +44,7 @@
+ 
+ extern struct ieee80211_ops ath9k_htc_ops;
+ extern int htc_modparam_nohwcrypt;
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ extern int ath9k_htc_led_blink;
+ #endif
+ 
+@@ -510,7 +510,7 @@ struct ath9k_htc_priv {
+ 	bool ps_enabled;
+ 	bool ps_idle;
+ 
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ 	enum led_brightness brightness;
+ 	bool led_registered;
+ 	char led_name[32];
+@@ -604,7 +604,7 @@ void ath9k_htc_rfkill_poll_state(struct ieee80211_hw *hw);
+ 
+ struct base_eep_header *ath9k_htc_get_eeprom_base(struct ath9k_htc_priv *priv);
+ 
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ void ath9k_configure_leds(struct ath9k_htc_priv *priv);
+ void ath9k_init_leds(struct ath9k_htc_priv *priv);
+ void ath9k_deinit_leds(struct ath9k_htc_priv *priv);
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_gpio.c b/drivers/net/wireless/ath/ath9k/htc_drv_gpio.c
+index ecb848b60725..ffb8b656d257 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_gpio.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_gpio.c
+@@ -222,7 +222,7 @@ void ath9k_htc_init_btcoex(struct ath9k_htc_priv *priv, char *product)
+ /* LED */
+ /*******/
+ 
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ void ath9k_led_work(struct work_struct *work)
+ {
+ 	struct ath9k_htc_priv *priv = container_of(work,
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+index db0c6fa9c9dc..0195983ce79a 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+@@ -42,7 +42,7 @@ int htc_use_dev_fw = 0;
+ module_param_named(use_dev_fw, htc_use_dev_fw, int, 0444);
+ MODULE_PARM_DESC(use_dev_fw, "Use development FW version");
+ 
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ int ath9k_htc_led_blink = 1;
+ module_param_named(blink, ath9k_htc_led_blink, int, 0444);
+ MODULE_PARM_DESC(blink, "Enable LED blink on activity");
+@@ -867,7 +867,7 @@ static int ath9k_init_device(struct ath9k_htc_priv *priv,
+ 		goto err_rx;
+ 
+ 	ath9k_hw_disable(priv->ah);
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ 	/* must be initialized before ieee80211_register_hw */
+ 	priv->led_cdev.default_trigger = ieee80211_create_tpt_led_trigger(priv->hw,
+ 		IEEE80211_TPT_LEDTRIG_FL_RADIO, ath9k_htc_tpt_blink,
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_main.c b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
+index 2b7832b1c800..aedf325a0320 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_main.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_main.c
+@@ -1007,7 +1007,7 @@ static void ath9k_htc_stop(struct ieee80211_hw *hw)
+ 	cancel_work_sync(&priv->fatal_work);
+ 	cancel_work_sync(&priv->ps_work);
+ 
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ 	cancel_work_sync(&priv->led_work);
+ #endif
+ 	ath9k_htc_stop_ani(priv);
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index 42a208787f5a..82923d436d80 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -82,7 +82,7 @@ MODULE_PARM_DESC(use_msi, "Use MSI instead of INTx if possible");
+ 
+ bool is_ath9k_unloaded;
+ 
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ static const struct ieee80211_tpt_blink ath9k_tpt_blink[] = {
+ 	{ .throughput = 0 * 1024, .blink_time = 334 },
+ 	{ .throughput = 1 * 1024, .blink_time = 260 },
+@@ -1035,7 +1035,7 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
+ 
+ 	ath9k_init_txpower_limits(sc);
+ 
+-#ifdef CONFIG_MAC80211_LEDS
++#ifdef CONFIG_ATH9K_LEDS
+ 	/* must be initialized before ieee80211_register_hw */
+ 	sc->led_cdev.default_trigger = ieee80211_create_tpt_led_trigger(sc->hw,
+ 		IEEE80211_TPT_LEDTRIG_FL_RADIO, ath9k_tpt_blink,
 -- 
 2.25.1
 
