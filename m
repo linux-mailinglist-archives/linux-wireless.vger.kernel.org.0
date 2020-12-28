@@ -2,290 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 959202E68C8
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Dec 2020 17:42:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A62BE2E67B0
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Dec 2020 17:28:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2633841AbgL1Qkq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Dec 2020 11:40:46 -0500
-Received: from mail-lf1-f47.google.com ([209.85.167.47]:35506 "EHLO
-        mail-lf1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728670AbgL1M7a (ORCPT
+        id S2633509AbgL1Q2N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Dec 2020 11:28:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52804 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730747AbgL1Q2L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Dec 2020 07:59:30 -0500
-Received: by mail-lf1-f47.google.com with SMTP id h22so23754250lfu.2
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Dec 2020 04:59:11 -0800 (PST)
+        Mon, 28 Dec 2020 11:28:11 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B76EC0613D6
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Dec 2020 08:27:31 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id 190so10721910wmz.0
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Dec 2020 08:27:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gECcxq2qw+zXmYQFUDiMPYjiAGwU+p9TRbbMFSRba1E=;
+        b=vtxSLFXeaHiF+QAOu2TK/wOA3w6ZBJiMrCLOkYIheNFvQvUWhdpzJdN+dkJycymzvm
+         11suo+VXOmEqxJn8UiSf6Fzx3KdZjwCZ/wpmaNwdi89y2WhXt7TESZAc2dVckRL1cLuN
+         iQVnfwp9p00L7q1n6qSmYkD0WzxAmRLhsREzJD/cPgx7839UAw4qSuEmPTog0p5Pe4a7
+         t/eC4wz4syf3NvX3sKPWjhvIHgxRvZXRO3eoYCbyggp+RbFXeRZ9NhKC2m11tjO1V1ox
+         /D+j3uLPRnziFl6T3CRaSajtSuoO7jbaASy60h0kVRlDJ08/Kf3AtJXOTpnBSShZ07z8
+         0DzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=iZ+WbiQCz+3/ZItRJ6GMkcCXgDf03xN79xmUA4ksBr0=;
-        b=Zy3le80Q6bGYI3A3eg9XxEELFJl4R3c/R7yaC5WYWfOZz8xkTp5uIMS8nAYzKQgvFm
-         F2TZmLDcfsjMigi4hVIB/mwsnVxz7eYg7TPqPHFysdgIrv5+222LdUruqxHGy0L0RliJ
-         kW0lwn5EJ7akD6xtymXc1BPFeksPx9QfX0DchRCXCXXwBB7aADvyZEwR7/hRUpMBpvND
-         VizYKYfAMLGnMNpyxX73Vjw0jOkozjRZyMHRI3XiFRro67ogk6wrzjHsnfRHTC5Fu1yf
-         eKOT65fYbVVSxMz2F7vqlwRHRMz/nKWkI3SgjDBeH15BSnC/8Zp9c8FOrqVz73zgONw8
-         JVjQ==
-X-Gm-Message-State: AOAM530Mb2kR8pkokW5vHxQpBszamUl6anNN0Mt5BGUxtKiOzGT64a8W
-        PXvBDCEi7xWEbFJa7wPIMfDAPLcPkqA0IQ==
-X-Google-Smtp-Source: ABdhPJwBos5t7id+7U4kF6i82Ju7xUBxrUNKu0Wy35l/XJrNWuokSQ4yHZKOj8Cs3y7twOVOR9ONSg==
-X-Received: by 2002:ac2:50d0:: with SMTP id h16mr17927464lfm.300.1609160325813;
-        Mon, 28 Dec 2020 04:58:45 -0800 (PST)
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
-        by smtp.gmail.com with ESMTPSA id o11sm5330620lfi.267.2020.12.28.04.58.45
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Dec 2020 04:58:45 -0800 (PST)
-Received: by mail-lf1-f54.google.com with SMTP id o13so23714304lfr.3
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Dec 2020 04:58:45 -0800 (PST)
-X-Received: by 2002:a19:600d:: with SMTP id u13mr17608775lfb.312.1609160325196;
- Mon, 28 Dec 2020 04:58:45 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gECcxq2qw+zXmYQFUDiMPYjiAGwU+p9TRbbMFSRba1E=;
+        b=nXqDIr13jCaKhb7bVhjmB+nESpt/izulTpwM/SVKDX4kl8WtVtuL1bY1dBFYEPo43l
+         VKO5YX5bTUTPS1DAZeETW9N9kMOlFMfQ9jKSSPHks9YM2BSMJQUN88g8HFEk/KOPh/Go
+         l0FkPIeyfrPSF954fWmq5tyvD6qc67kC4MC9wWvdB58/MlCPdaBzluGGUZZqcqQFGl2Z
+         J4RLVb1GuE6dkgj/cbpDuECPq3DlkQuEUr1F3wZM3tPg43W46caIgkt5+ZvWBznkqFB/
+         /9vK63vos2ayNYO+kg49OdJvQ8fit2NOv9Dus/J/HgeV8GNhaVvajZNMi6Vr5Bgnv8GS
+         GWMA==
+X-Gm-Message-State: AOAM531cuWQrhkxUA8bgIoBijOBbclfzkuvZm+ZFKtq2PxW4kM4Ovu/p
+        bPkPGYuMjqJ7HoSIuYLpSG91fA==
+X-Google-Smtp-Source: ABdhPJxTIfo26rgnWPxAwDEm6OGfKK1lvq6VEPqI9wzL7VBRzTKNgpNdETe0KvxeeOH8rmQVOh0EmA==
+X-Received: by 2002:a1c:3d55:: with SMTP id k82mr20770616wma.57.1609172849971;
+        Mon, 28 Dec 2020 08:27:29 -0800 (PST)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id w21sm19523379wmi.45.2020.12.28.08.27.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Dec 2020 08:27:29 -0800 (PST)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
+        benl@squareup.com, loic.poulain@linaro.org
+Subject: [PATCH 00/13] wcn36xx: Enable downstream consistent Wake on Lan
+Date:   Mon, 28 Dec 2020 16:28:26 +0000
+Message-Id: <20201228162839.369156-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-From:   =?UTF-8?Q?Martin=2D=C3=89ric_Racine?= <martin-eric.racine@iki.fi>
-Date:   Mon, 28 Dec 2020 14:58:34 +0200
-X-Gmail-Original-Message-ID: <CAPZXPQfZPKokKwK4kwXfybBdmRNDnyHmjpk9Nx_OYd3wA9NEUw@mail.gmail.com>
-Message-ID: <CAPZXPQfZPKokKwK4kwXfybBdmRNDnyHmjpk9Nx_OYd3wA9NEUw@mail.gmail.com>
-Subject: rtl8xxxu: untested dongle, test results
-To:     linux-wireless@vger.kernel.org
-Cc:     jes.sorensen@gmail.com
-Content-Type: multipart/mixed; boundary="0000000000009237c005b785d566"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000009237c005b785d566
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This series enables Wake on WLAN for the wcn36xx. Downstream implements two
+competing methods for WoWLAN, only one of which is used in practice.
 
-(non-subscriber, please CC me in replies)
+1. The downstream prima driver and firmware have a dedicated wowlan SMD
+   command set, however for whatever reason, the downstream driver doesn't
+   actually use that code path for suspend/resume.
+   Similarly the downstream kernel will mask out the SMD interrupt when
+   entering into suspend, so its clear the firmware assisted wowlan command
+   is not used at all.
+   In short, the code is implemented but not used.
 
-Kernel: Linux 5.7.10 (Debian)
-Device:  D-Link DWA-131 rev. E1
-https://wikidevi.wi-cat.ru/D-Link_DWA-131_rev_E1
-https://eu.dlink.com/uk/en/products/dwa-131-wireless-n-nano-usb-adapter
+2. The alternative version of wake on wlan implemented downstream does
+   A. An RXP filter
+   B. Frimware ipv4 ARP offload
+   C. Frimware ipv6 namesapece offload
+   D. GTK replay counter save/update on suspend/resume
 
-Bought this to use as an AP with hostapd, but the AP feature
-apparently isn't supported yet. (it however is supported in the
-manufacturer's own Linux driver)
+This patchset replicates method #2 since it is the only method that
+actually works. When replicating the functionality from downstream to
+upsteam I found the RXP filter step to be redundant, so I skipped that.
 
-See enclosed files.
+Verified on Android/4.19 with qcom out-of-tree low-power patch on wcn3680.
+Verified on Debian/kvalo/master on wcn3680 and wcn3620.
 
-Next, I tested this as a client on another host (also running kernel
-5.7.10) connecting to a BGN access point. This is what I got on the
-client side:
+The Debian/upstream test doesn't include the low-power patches from qcom so
+the time it takes the system to wake up when pinged is longer.
 
-[   87.902641] wlxc4e90a041cb2: authenticate with 24:4b:fe:3d:d0:be
-[   87.969749] wlxc4e90a041cb2: send auth to 24:4b:fe:3d:d0:be (try 1/3)
-[   87.987682] wlxc4e90a041cb2: authenticated
-[   88.045388] wlxc4e90a041cb2: associate with 24:4b:fe:3d:d0:be (try 1/3)
-[   88.093604] wlxc4e90a041cb2: RX AssocResp from 24:4b:fe:3d:d0:be
-(capab=3D0x411 status=3D0 aid=3D4)
-[   88.219990] usb 1-3: rtl8xxxu_bss_info_changed: HT supported
-[   88.282793] wlxc4e90a041cb2: associated
-[   90.439696] IPv6: ADDRCONF(NETDEV_CHANGE): wlxc4e90a041cb2: link
-becomes ready
+Test method:
 
-I hope this helps.
+1. Enable magic packet wakeup on target
+   iw phy0 wowlan enable magic-packet
+   iw phy0 wowlan show
 
-Cheers!
-Martin-=C3=89ric
+2. Flush arp tables on host
+   sudo ip -s -s neigh flush all
+   sudo ip -6 -s -s neigh flush all
 
---0000000000009237c005b785d566
-Content-Type: text/plain; charset="US-ASCII"; name="iw_list_d-link_dwa-131_rev_e1.txt"
-Content-Disposition: attachment; 
-	filename="iw_list_d-link_dwa-131_rev_e1.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kj8kgkzt2>
-X-Attachment-Id: f_kj8kgkzt2
+3. Suspend device
+   echo 1 > /sys/kernel/debug/clk/debug_suspend
+   echo mem > /sys/power/state ; cat /sys/kernel/debug/rpm_stats
+   echo 0 > /sys/module/wcn36xx/parameters/debug_mask
+   dmesg
 
-V2lwaHkgcGh5NAoJbWF4ICMgc2NhbiBTU0lEczogNAoJbWF4IHNjYW4gSUVzIGxlbmd0aDogMjI1
-NyBieXRlcwoJbWF4ICMgc2NoZWQgc2NhbiBTU0lEczogMAoJbWF4ICMgbWF0Y2ggc2V0czogMAoJ
-bWF4ICMgc2NhbiBwbGFuczogMQoJbWF4IHNjYW4gcGxhbiBpbnRlcnZhbDogLTEKCW1heCBzY2Fu
-IHBsYW4gaXRlcmF0aW9uczogMAoJUlRTIHRocmVzaG9sZDogMjM0NwoJUmV0cnkgc2hvcnQgbGlt
-aXQ6IDcKCVJldHJ5IGxvbmcgbGltaXQ6IDQKCUNvdmVyYWdlIGNsYXNzOiAwICh1cCB0byAwbSkK
-CVN1cHBvcnRlZCBDaXBoZXJzOgoJCSogV0VQNDAgKDAwLTBmLWFjOjEpCgkJKiBXRVAxMDQgKDAw
-LTBmLWFjOjUpCgkJKiBUS0lQICgwMC0wZi1hYzoyKQoJCSogQ0NNUC0xMjggKDAwLTBmLWFjOjQp
-CgkJKiBDQ01QLTI1NiAoMDAtMGYtYWM6MTApCgkJKiBHQ01QLTEyOCAoMDAtMGYtYWM6OCkKCQkq
-IEdDTVAtMjU2ICgwMC0wZi1hYzo5KQoJQXZhaWxhYmxlIEFudGVubmFzOiBUWCAwIFJYIDAKCVN1
-cHBvcnRlZCBpbnRlcmZhY2UgbW9kZXM6CgkJICogbWFuYWdlZAoJCSAqIG1vbml0b3IKCUJhbmQg
-MToKCQlDYXBhYmlsaXRpZXM6IDB4NmMKCQkJSFQyMAoJCQlTTSBQb3dlciBTYXZlIGRpc2FibGVk
-CgkJCVJYIEhUMjAgU0dJCgkJCVJYIEhUNDAgU0dJCgkJCU5vIFJYIFNUQkMKCQkJTWF4IEFNU0RV
-IGxlbmd0aDogMzgzOSBieXRlcwoJCQlObyBEU1NTL0NDSyBIVDQwCgkJTWF4aW11bSBSWCBBTVBE
-VSBsZW5ndGggNjU1MzUgYnl0ZXMgKGV4cG9uZW50OiAweDAwMykKCQlNaW5pbXVtIFJYIEFNUERV
-IHRpbWUgc3BhY2luZzogMTYgdXNlYyAoMHgwNykKCQlIVCBUWC9SWCBNQ1MgcmF0ZSBpbmRleGVz
-IHN1cHBvcnRlZDogMC0xNSwgMzIKCQlCaXRyYXRlcyAobm9uLUhUKToKCQkJKiAxLjAgTWJwcwoJ
-CQkqIDIuMCBNYnBzCgkJCSogNS41IE1icHMKCQkJKiAxMS4wIE1icHMKCQkJKiA2LjAgTWJwcwoJ
-CQkqIDkuMCBNYnBzCgkJCSogMTIuMCBNYnBzCgkJCSogMTguMCBNYnBzCgkJCSogMjQuMCBNYnBz
-CgkJCSogMzYuMCBNYnBzCgkJCSogNDguMCBNYnBzCgkJCSogNTQuMCBNYnBzCgkJRnJlcXVlbmNp
-ZXM6CgkJCSogMjQxMiBNSHogWzFdICgyMC4wIGRCbSkKCQkJKiAyNDE3IE1IeiBbMl0gKDIwLjAg
-ZEJtKQoJCQkqIDI0MjIgTUh6IFszXSAoMjAuMCBkQm0pCgkJCSogMjQyNyBNSHogWzRdICgyMC4w
-IGRCbSkKCQkJKiAyNDMyIE1IeiBbNV0gKDIwLjAgZEJtKQoJCQkqIDI0MzcgTUh6IFs2XSAoMjAu
-MCBkQm0pCgkJCSogMjQ0MiBNSHogWzddICgyMC4wIGRCbSkKCQkJKiAyNDQ3IE1IeiBbOF0gKDIw
-LjAgZEJtKQoJCQkqIDI0NTIgTUh6IFs5XSAoMjAuMCBkQm0pCgkJCSogMjQ1NyBNSHogWzEwXSAo
-MjAuMCBkQm0pCgkJCSogMjQ2MiBNSHogWzExXSAoMjAuMCBkQm0pCgkJCSogMjQ2NyBNSHogWzEy
-XSAoMjAuMCBkQm0pCgkJCSogMjQ3MiBNSHogWzEzXSAoMjAuMCBkQm0pCgkJCSogMjQ4NCBNSHog
-WzE0XSAoZGlzYWJsZWQpCglTdXBwb3J0ZWQgY29tbWFuZHM6CgkJICogbmV3X2ludGVyZmFjZQoJ
-CSAqIHNldF9pbnRlcmZhY2UKCQkgKiBuZXdfa2V5CgkJICogc3RhcnRfYXAKCQkgKiBuZXdfc3Rh
-dGlvbgoJCSAqIG5ld19tcGF0aAoJCSAqIHNldF9tZXNoX2NvbmZpZwoJCSAqIHNldF9ic3MKCQkg
-KiBhdXRoZW50aWNhdGUKCQkgKiBhc3NvY2lhdGUKCQkgKiBkZWF1dGhlbnRpY2F0ZQoJCSAqIGRp
-c2Fzc29jaWF0ZQoJCSAqIGpvaW5faWJzcwoJCSAqIGpvaW5fbWVzaAoJCSAqIHJlbWFpbl9vbl9j
-aGFubmVsCgkJICogc2V0X3R4X2JpdHJhdGVfbWFzawoJCSAqIGZyYW1lCgkJICogZnJhbWVfd2Fp
-dF9jYW5jZWwKCQkgKiBzZXRfd2lwaHlfbmV0bnMKCQkgKiBzZXRfY2hhbm5lbAoJCSAqIHNldF93
-ZHNfcGVlcgoJCSAqIHByb2JlX2NsaWVudAoJCSAqIHNldF9ub2Fja19tYXAKCQkgKiByZWdpc3Rl
-cl9iZWFjb25zCgkJICogc3RhcnRfcDJwX2RldmljZQoJCSAqIHNldF9tY2FzdF9yYXRlCgkJICog
-Y29ubmVjdAoJCSAqIGRpc2Nvbm5lY3QKCQkgKiBzZXRfcW9zX21hcAoJCSAqIHNldF9tdWx0aWNh
-c3RfdG9fdW5pY2FzdAoJU3VwcG9ydGVkIFRYIGZyYW1lIHR5cGVzOgoJCSAqIElCU1M6IDB4MDAg
-MHgxMCAweDIwIDB4MzAgMHg0MCAweDUwIDB4NjAgMHg3MCAweDgwIDB4OTAgMHhhMCAweGIwIDB4
-YzAgMHhkMCAweGUwIDB4ZjAKCQkgKiBtYW5hZ2VkOiAweDAwIDB4MTAgMHgyMCAweDMwIDB4NDAg
-MHg1MCAweDYwIDB4NzAgMHg4MCAweDkwIDB4YTAgMHhiMCAweGMwIDB4ZDAgMHhlMCAweGYwCgkJ
-ICogQVA6IDB4MDAgMHgxMCAweDIwIDB4MzAgMHg0MCAweDUwIDB4NjAgMHg3MCAweDgwIDB4OTAg
-MHhhMCAweGIwIDB4YzAgMHhkMCAweGUwIDB4ZjAKCQkgKiBBUC9WTEFOOiAweDAwIDB4MTAgMHgy
-MCAweDMwIDB4NDAgMHg1MCAweDYwIDB4NzAgMHg4MCAweDkwIDB4YTAgMHhiMCAweGMwIDB4ZDAg
-MHhlMCAweGYwCgkJICogbWVzaCBwb2ludDogMHgwMCAweDEwIDB4MjAgMHgzMCAweDQwIDB4NTAg
-MHg2MCAweDcwIDB4ODAgMHg5MCAweGEwIDB4YjAgMHhjMCAweGQwIDB4ZTAgMHhmMAoJCSAqIFAy
-UC1jbGllbnQ6IDB4MDAgMHgxMCAweDIwIDB4MzAgMHg0MCAweDUwIDB4NjAgMHg3MCAweDgwIDB4
-OTAgMHhhMCAweGIwIDB4YzAgMHhkMCAweGUwIDB4ZjAKCQkgKiBQMlAtR086IDB4MDAgMHgxMCAw
-eDIwIDB4MzAgMHg0MCAweDUwIDB4NjAgMHg3MCAweDgwIDB4OTAgMHhhMCAweGIwIDB4YzAgMHhk
-MCAweGUwIDB4ZjAKCQkgKiBQMlAtZGV2aWNlOiAweDAwIDB4MTAgMHgyMCAweDMwIDB4NDAgMHg1
-MCAweDYwIDB4NzAgMHg4MCAweDkwIDB4YTAgMHhiMCAweGMwIDB4ZDAgMHhlMCAweGYwCglTdXBw
-b3J0ZWQgUlggZnJhbWUgdHlwZXM6CgkJICogSUJTUzogMHg0MCAweGIwIDB4YzAgMHhkMAoJCSAq
-IG1hbmFnZWQ6IDB4NDAgMHhiMCAweGQwCgkJICogQVA6IDB4MDAgMHgyMCAweDQwIDB4YTAgMHhi
-MCAweGMwIDB4ZDAKCQkgKiBBUC9WTEFOOiAweDAwIDB4MjAgMHg0MCAweGEwIDB4YjAgMHhjMCAw
-eGQwCgkJICogbWVzaCBwb2ludDogMHhiMCAweGMwIDB4ZDAKCQkgKiBQMlAtY2xpZW50OiAweDQw
-IDB4ZDAKCQkgKiBQMlAtR086IDB4MDAgMHgyMCAweDQwIDB4YTAgMHhiMCAweGMwIDB4ZDAKCQkg
-KiBQMlAtZGV2aWNlOiAweDQwIDB4ZDAKCXNvZnR3YXJlIGludGVyZmFjZSBtb2RlcyAoY2FuIGFs
-d2F5cyBiZSBhZGRlZCk6CgkJICogbW9uaXRvcgoJaW50ZXJmYWNlIGNvbWJpbmF0aW9ucyBhcmUg
-bm90IHN1cHBvcnRlZAoJSFQgQ2FwYWJpbGl0eSBvdmVycmlkZXM6CgkJICogTUNTOiBmZiBmZiBm
-ZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgoJCSAqIG1heGltdW0gQS1NU0RVIGxlbmd0aAoJCSAqIHN1
-cHBvcnRlZCBjaGFubmVsIHdpZHRoCgkJICogc2hvcnQgR0kgZm9yIDQwIE1IegoJCSAqIG1heCBB
-LU1QRFUgbGVuZ3RoIGV4cG9uZW50CgkJICogbWluIE1QRFUgc3RhcnQgc3BhY2luZwoJRGV2aWNl
-IHN1cHBvcnRzIFRYIHN0YXR1cyBzb2NrZXQgb3B0aW9uLgoJRGV2aWNlIHN1cHBvcnRzIEhULUlC
-U1MuCglEZXZpY2Ugc3VwcG9ydHMgU0FFIHdpdGggQVVUSEVOVElDQVRFIGNvbW1hbmQKCURldmlj
-ZSBzdXBwb3J0cyBsb3cgcHJpb3JpdHkgc2Nhbi4KCURldmljZSBzdXBwb3J0cyBzY2FuIGZsdXNo
-LgoJRGV2aWNlIHN1cHBvcnRzIEFQIHNjYW4uCglEZXZpY2Ugc3VwcG9ydHMgcGVyLXZpZiBUWCBw
-b3dlciBzZXR0aW5nCglEcml2ZXIgc3VwcG9ydHMgZnVsbCBzdGF0ZSB0cmFuc2l0aW9ucyBmb3Ig
-QVAvR08gY2xpZW50cwoJRHJpdmVyIHN1cHBvcnRzIGEgdXNlcnNwYWNlIE1QTQoJRGV2aWNlIHN1
-cHBvcnRzIGNvbmZpZ3VyaW5nIHZkZXYgTUFDLWFkZHIgb24gY3JlYXRlLgoJU3VwcG9ydGVkIGV4
-dGVuZGVkIGZlYXR1cmVzOgoJCSogWyBSUk0gXTogUlJNCgkJKiBbIEZJTFNfU1RBIF06IFNUQSBG
-SUxTIChGYXN0IEluaXRpYWwgTGluayBTZXR1cCkKCQkqIFsgQ1FNX1JTU0lfTElTVCBdOiBtdWx0
-aXBsZSBDUU1fUlNTSV9USE9MRCByZWNvcmRzCgkJKiBbIENPTlRST0xfUE9SVF9PVkVSX05MODAy
-MTEgXTogY29udHJvbCBwb3J0IG92ZXIgbmw4MDIxMQo=
---0000000000009237c005b785d566
-Content-Type: text/plain; charset="US-ASCII"; name="dmesg_d-link_dwa-131_rev_e1.txt"
-Content-Disposition: attachment; filename="dmesg_d-link_dwa-131_rev_e1.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kj8kgkz60>
-X-Attachment-Id: f_kj8kgkz60
+4. Ping either ipv4 or ipv6
+   ping 192.168.0.85
+   ping -6 fe80::6455:44ff:fe33:2211%wlo1
 
-WzEwMjcwOC44NzE3MDddIHVzYiAyLTEuNTogbmV3IGhpZ2gtc3BlZWQgVVNCIGRldmljZSBudW1i
-ZXIgMTQgdXNpbmcgZWhjaS1wY2kKWzEwMjcwOC45ODA3OTZdIHVzYiAyLTEuNTogTmV3IFVTQiBk
-ZXZpY2UgZm91bmQsIGlkVmVuZG9yPTIwMDEsIGlkUHJvZHVjdD0zMzE5LCBiY2REZXZpY2U9IDIu
-MDAKWzEwMjcwOC45ODA3OTldIHVzYiAyLTEuNTogTmV3IFVTQiBkZXZpY2Ugc3RyaW5nczogTWZy
-PTEsIFByb2R1Y3Q9MiwgU2VyaWFsTnVtYmVyPTMKWzEwMjcwOC45ODA4MDBdIHVzYiAyLTEuNTog
-UHJvZHVjdDogV2lyZWxlc3MgTiBOYW5vIFVTQiBBZGFwdGVyClsxMDI3MDguOTgwODAyXSB1c2Ig
-Mi0xLjU6IE1hbnVmYWN0dXJlcjogUmVhbHRlawpbMTAyNzA4Ljk4MDgwM10gdXNiIDItMS41OiBT
-ZXJpYWxOdW1iZXI6IDAwZTA0YzAwMDAwMQpbMTAyNzA5LjAyNzMxNV0gdXNiIDItMS41OiBUaGlz
-IFJlYWx0ZWsgVVNCIFdpRmkgZG9uZ2xlICgweDIwMDE6MHgzMzE5KSBpcyB1bnRlc3RlZCEKWzEw
-MjcwOS4wMjczMTddIHVzYiAyLTEuNTogUGxlYXNlIHJlcG9ydCByZXN1bHRzIHRvIEplcy5Tb3Jl
-bnNlbkBnbWFpbC5jb20KWzEwMjcwOS4yMTA2NjhdIHVzYiAyLTEuNTogVmVuZG9yOiBSZWFsdGVr
-ClsxMDI3MDkuMjEwNjcxXSB1c2IgMi0xLjU6IFByb2R1Y3Q6IFdpcmVsZXNzIE4KWzEwMjcwOS4y
-MTA2NzJdIHVzYiAyLTEuNTogU2VyaWFsOiBubyBVU0IgQWRhcApbMTAyNzA5LjIxMDY3NF0gdXNi
-IDItMS41OiBydGw4MTkyZXVfcGFyc2VfZWZ1c2U6IGR1bXBpbmcgZWZ1c2UgKDB4MjAwIGJ5dGVz
-KToKWzEwMjcwOS4yMTA2NzZdIHVzYiAyLTEuNTogMDA6IDI5IDgxIDAwIDdjIDAxIDQwIDAzIDAw
-ClsxMDI3MDkuMjEwNjc4XSB1c2IgMi0xLjU6IDA4OiA0MCA3NCAwNCA1MCAxNCAwMCAwMCAwMApb
-MTAyNzA5LjIxMDY3OV0gdXNiIDItMS41OiAxMDogMjEgMjEgMjEgMjEgMjEgMjEgMjUgMjUKWzEw
-MjcwOS4yMTA2ODFdIHVzYiAyLTEuNTogMTg6IDI1IDI1IDI1IGVlIDBmIGVmIGZmIGZmClsxMDI3
-MDkuMjEwNjgyXSB1c2IgMi0xLjU6IDIwOiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5
-LjIxMDY4M10gdXNiIDItMS41OiAyODogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4y
-MTA2ODVdIHVzYiAyLTEuNTogMzA6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEw
-Njg2XSB1c2IgMi0xLjU6IDM4OiBmZiBmZiAxZSAxZSAxZSAxZSAxZSAxZQpbMTAyNzA5LjIxMDY4
-N10gdXNiIDItMS41OiA0MDogMjQgMjQgMjQgMjQgMjQgZWUgMGYgZWYKWzEwMjcwOS4yMTA2ODld
-IHVzYiAyLTEuNTogNDg6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNjkwXSB1
-c2IgMi0xLjU6IDUwOiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDY5MV0gdXNi
-IDItMS41OiA1ODogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA2OTNdIHVzYiAy
-LTEuNTogNjA6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNjk0XSB1c2IgMi0x
-LjU6IDY4OiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDY5Nl0gdXNiIDItMS41
-OiA3MDogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA2OTddIHVzYiAyLTEuNTog
-Nzg6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNjk4XSB1c2IgMi0xLjU6IDgw
-OiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDcwMF0gdXNiIDItMS41OiA4ODog
-ZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3MDFdIHVzYiAyLTEuNTogOTA6IGZm
-IGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzAyXSB1c2IgMi0xLjU6IDk4OiBmZiBm
-ZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDcwNF0gdXNiIDItMS41OiBhMDogZmYgZmYg
-ZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3MDVdIHVzYiAyLTEuNTogYTg6IGZmIGZmIGZm
-IGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzA2XSB1c2IgMi0xLjU6IGIwOiBmZiBmZiBmZiBm
-ZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDcwOF0gdXNiIDItMS41OiBiODogMjEgMzYgMjEgMDAg
-MDAgMDAgZmYgZmYKWzEwMjcwOS4yMTA3MDldIHVzYiAyLTEuNTogYzA6IGZmIDAxIDAwIDEwIDAw
-IDAwIDAwIGZmClsxMDI3MDkuMjEwNzEwXSB1c2IgMi0xLjU6IGM4OiAwMCAwMCBmZiBmZiBmZiBm
-ZiBmZiBmZgpbMTAyNzA5LjIxMDcxMl0gdXNiIDItMS41OiBkMDogMDEgMjAgMTkgMzMgZTcgNDcg
-MDIgYzQKWzEwMjcwOS4yMTA3MTNdIHVzYiAyLTEuNTogZDg6IGU5IDBhIDA0IDFjIGIyIDA5IDAz
-IDUyClsxMDI3MDkuMjEwNzE1XSB1c2IgMi0xLjU6IGUwOiA2NSA2MSA2YyA3NCA2NSA2YiAxZCAw
-MwpbMTAyNzA5LjIxMDcxNl0gdXNiIDItMS41OiBlODogNTcgNjkgNzIgNjUgNmMgNjUgNzMgNzMK
-WzEwMjcwOS4yMTA3MTddIHVzYiAyLTEuNTogZjA6IDIwIDRlIDIwIDRlIDYxIDZlIDZmIDIwClsx
-MDI3MDkuMjEwNzE5XSB1c2IgMi0xLjU6IGY4OiA1NSA1MyA0MiAyMCA0MSA2NCA2MSA3MApbMTAy
-NzA5LjIxMDcyMF0gdXNiIDItMS41OiAxMDA6IDc0IDY1IDcyIDAwIGZmIGZmIGZmIGZmClsxMDI3
-MDkuMjEwNzIxXSB1c2IgMi0xLjU6IDEwODogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcw
-OS4yMTA3MjNdIHVzYiAyLTEuNTogMTEwOiBmZiBmZiBmZiBmZiBmZiBmZiBmZiAwZApbMTAyNzA5
-LjIxMDcyNF0gdXNiIDItMS41OiAxMTg6IDAzIDAwIDA1IDAwIDMwIDAwIDAwIDAwClsxMDI3MDku
-MjEwNzI2XSB1c2IgMi0xLjU6IDEyMDogMDAgOTMgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4y
-MTA3MjddIHVzYiAyLTEuNTogMTI4OiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIx
-MDcyOF0gdXNiIDItMS41OiAxMzA6IGY2IGE4IDk4IDJkIDAzIDkyIDk4IDAwClsxMDI3MDkuMjEw
-NzMwXSB1c2IgMi0xLjU6IDEzODogZmMgOGMgMDAgMTEgOWIgNDQgMDIgMGEKWzEwMjcwOS4yMTA3
-MzFdIHVzYiAyLTEuNTogMTQwOiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDcz
-Ml0gdXNiIDItMS41OiAxNDg6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzM0
-XSB1c2IgMi0xLjU6IDE1MDogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3MzVd
-IHVzYiAyLTEuNTogMTU4OiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDczNl0g
-dXNiIDItMS41OiAxNjA6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzM4XSB1
-c2IgMi0xLjU6IDE2ODogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3MzldIHVz
-YiAyLTEuNTogMTcwOiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDc0MV0gdXNi
-IDItMS41OiAxNzg6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzQyXSB1c2Ig
-Mi0xLjU6IDE4MDogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3NDNdIHVzYiAy
-LTEuNTogMTg4OiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDc0NV0gdXNiIDIt
-MS41OiAxOTA6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzQ2XSB1c2IgMi0x
-LjU6IDE5ODogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3NDddIHVzYiAyLTEu
-NTogMWEwOiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDc0OV0gdXNiIDItMS41
-OiAxYTg6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzUwXSB1c2IgMi0xLjU6
-IDFiMDogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3NTFdIHVzYiAyLTEuNTog
-MWI4OiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDc1M10gdXNiIDItMS41OiAx
-YzA6IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzU0XSB1c2IgMi0xLjU6IDFj
-ODogZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3NTZdIHVzYiAyLTEuNTogMWQw
-OiBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDc1N10gdXNiIDItMS41OiAxZDg6
-IGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzU4XSB1c2IgMi0xLjU6IDFlMDog
-ZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3NjBdIHVzYiAyLTEuNTogMWU4OiBm
-ZiBmZiBmZiBmZiBmZiBmZiBmZiBmZgpbMTAyNzA5LjIxMDc2MV0gdXNiIDItMS41OiAxZjA6IGZm
-IGZmIGZmIGZmIGZmIGZmIGZmIGZmClsxMDI3MDkuMjEwNzYyXSB1c2IgMi0xLjU6IDFmODogZmYg
-ZmYgZmYgZmYgZmYgZmYgZmYgZmYKWzEwMjcwOS4yMTA3NjZdIHVzYiAyLTEuNTogUlRMODE5MkVV
-IHJldiBCIChTTUlDKSAyVDJSLCBUWCBxdWV1ZXMgMywgV2lGaT0xLCBCVD0wLCBHUFM9MCwgSEkg
-UEE9MApbMTAyNzA5LjIxMDc2N10gdXNiIDItMS41OiBSVEw4MTkyRVUgTUFDOiBjNDplOTowYTow
-NDoxYzpiMgpbMTAyNzA5LjIxMDc2OV0gdXNiIDItMS41OiBydGw4eHh4dTogTG9hZGluZyBmaXJt
-d2FyZSBydGx3aWZpL3J0bDgxOTJldV9uaWMuYmluClsxMDI3MDkuMjI4MTczXSB1c2IgMi0xLjU6
-IGZpcm13YXJlOiBkaXJlY3QtbG9hZGluZyBmaXJtd2FyZSBydGx3aWZpL3J0bDgxOTJldV9uaWMu
-YmluClsxMDI3MDkuMjI4MTc5XSB1c2IgMi0xLjU6IEZpcm13YXJlIHJldmlzaW9uIDE5LjAgKHNp
-Z25hdHVyZSAweDkyZTEpClsxMDI3MTAuMzAzMDIwXSB1c2Jjb3JlOiByZWdpc3RlcmVkIG5ldyBp
-bnRlcmZhY2UgZHJpdmVyIHJ0bDh4eHh1Cg==
---0000000000009237c005b785d566
-Content-Type: text/plain; charset="US-ASCII"; name="hwinfo_d-link_dwa-131_rev_e1.txt"
-Content-Disposition: attachment; filename="hwinfo_d-link_dwa-131_rev_e1.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kj8kgkzk1>
-X-Attachment-Id: f_kj8kgkzk1
+In both cases using Wireshark we see the target system receive an ARP or
+NS6 lookup and respond, followed by the host sending a ping or ping6 and
+the target system coming out of suspend.
 
-Mjg6IFVTQiAwMC4wOiAwMjgyIFdMQU4gY29udHJvbGxlcgogIFtDcmVhdGVkIGF0IHVzYi4xMjJd
-CiAgVW5pcXVlIElEOiBCZ2pyLnl2WUJQeUxMcVY1CiAgUGFyZW50IElEOiBGS0dGLjROeF9xb0Rm
-U2Q3CiAgU3lzRlMgSUQ6IC9kZXZpY2VzL3BjaTAwMDA6MDAvMDAwMDowMDoxZC4wL3VzYjIvMi0x
-LzItMS41LzItMS41OjEuMAogIFN5c0ZTIEJ1c0lEOiAyLTEuNToxLjAKICBIYXJkd2FyZSBDbGFz
-czogbmV0d29yawogIE1vZGVsOiAiRC1MaW5rIFdpcmVsZXNzIE4gTmFubyBVU0IgQWRhcHRlciIK
-ICBIb3RwbHVnOiBVU0IKICBWZW5kb3I6IHVzYiAweDIwMDEgIkQtTGluayIKICBEZXZpY2U6IHVz
-YiAweDMzMTkgIldpcmVsZXNzIE4gTmFubyBVU0IgQWRhcHRlciIKICBSZXZpc2lvbjogIjIuMDAi
-CiAgU2VyaWFsIElEOiAiMDBlMDRjMDAwMDAxIgogIERyaXZlcjogInJ0bDh4eHh1IgogIERyaXZl
-ciBNb2R1bGVzOiAicnRsOHh4eHUiCiAgRGV2aWNlIEZpbGU6IHdseGM0ZTkwYTA0MWNiMgogIEZl
-YXR1cmVzOiBXTEFOCiAgU3BlZWQ6IDQ4MCBNYnBzCiAgSFcgQWRkcmVzczogZDY6ODM6OGY6ZDY6
-YmE6ZWQKICBQZXJtYW5lbnQgSFcgQWRkcmVzczogYzQ6ZTk6MGE6MDQ6MWM6YjIKICBMaW5rIGRl
-dGVjdGVkOiBubwogIFdMQU4gY2hhbm5lbHM6IDEgMiAzIDQgNSA2IDcgOCA5IDEwIDExIDEyIDEz
-CiAgV0xBTiBmcmVxdWVuY2llczogMi40MTIgMi40MTcgMi40MjIgMi40MjcgMi40MzIgMi40Mzcg
-Mi40NDIgMi40NDcgMi40NTIgMi40NTcgMi40NjIgMi40NjcgMi40NzIKICBXTEFOIGVuY3J5cHRp
-b24gbW9kZXM6IFdFUDQwIFdFUDEwNCBUS0lQIENDTVAKICBXTEFOIGF1dGhlbnRpY2F0aW9uIG1v
-ZGVzOiBvcGVuIHNoYXJlZGtleSB3cGEtcHNrIHdwYS1lYXAKICBNb2R1bGUgQWxpYXM6ICJ1c2I6
-djIwMDFwMzMxOWQwMjAwZGMwMGRzYzAwZHAwMGljRkZpc2NGRmlwRkZpbjAwIgogIERyaXZlciBJ
-bmZvICMwOgogICAgRHJpdmVyIFN0YXR1czogcnRsOHh4eHUgaXMgYWN0aXZlCiAgICBEcml2ZXIg
-QWN0aXZhdGlvbiBDbWQ6ICJtb2Rwcm9iZSBydGw4eHh4dSIKICBDb25maWcgU3RhdHVzOiBjZmc9
-bmV3LCBhdmFpbD15ZXMsIG5lZWQ9bm8sIGFjdGl2ZT11bmtub3duCiAgQXR0YWNoZWQgdG86ICMy
-OSAoSHViKQoK
---0000000000009237c005b785d566--
+Similarly watching GTK keying on the AP when the device is in suspend, we
+see the firmware successfully rekey and when we resume, the host picking up
+the rekey material with persistence of the WiFi link during suspend/resume.
+
+commit: 5336fad96e8f ("wcn36xx: Enable firmware offloaded keepalive")
+ensures that the link is kept alive in suspend, this additional set gives
+the ability to 
+
+- Resolve ARP/NS6 lookups without waking the system
+- Rekeying in suspend
+- Suspending and resuming based on received datagram
+
+https://git.linaro.org/people/bryan.odonoghue/kernel.git/log/?h=ath.master-wcn36xx-fw-offload-suspend-resume
+
+Bryan O'Donoghue (13):
+  wcn36xx: Return result of set_power_params in suspend
+  wcn36xx: Run suspend for the first ieee80211_vif
+  wcn36xx: Add ipv4 ARP offload support in suspend
+  wcn36xx: Do not flush indication queue on suspend/resume
+  wcn36xx: Add ipv6 address tracking
+  wcn36xx: Add ipv6 namespace offload in suspend
+  wcn36xx: Flag WIPHY_WOWLAN_MAGIC_PKT
+  wcn36xx: Add set_rekey_data callback
+  wcn36xx: Add GTK offload to WoWLAN path
+  wcn36xx: Add GTK offload info to WoWLAN resume
+  wcn36xx: Do not suspend if scan in progress
+  wcn36xx: Add Host suspend indication support
+  wcn36xx: Add host resume request support
+
+ drivers/net/wireless/ath/wcn36xx/hal.h     |  20 +-
+ drivers/net/wireless/ath/wcn36xx/main.c    | 123 +++++++++-
+ drivers/net/wireless/ath/wcn36xx/smd.c     | 271 +++++++++++++++++++++
+ drivers/net/wireless/ath/wcn36xx/smd.h     |  19 ++
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h |  15 ++
+ 5 files changed, 434 insertions(+), 14 deletions(-)
+
+-- 
+2.29.2
+
