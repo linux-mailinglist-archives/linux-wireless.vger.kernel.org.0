@@ -2,70 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D40E22E6D92
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Dec 2020 04:25:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A99342E6DC1
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Dec 2020 05:22:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726671AbgL2DYr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Dec 2020 22:24:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40982 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726434AbgL2DYq (ORCPT
+        id S1727171AbgL2EV2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Dec 2020 23:21:28 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:41410 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726014AbgL2EV1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Dec 2020 22:24:46 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2F0C0613D6;
-        Mon, 28 Dec 2020 19:24:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=Dezo73rP7nIDR3FlycJPSv87VABYoNgs4MDYbOjeNAw=; b=lyrGmh2xrriItbi00TkalkZq48
-        u4B+LYEF7jVeG4759ehvKikpvFjYt2LgqXwaobO9EqnI33htSdy1vkX6KXGCZH5RmY6CSj/yF4WPw
-        +12X1esbuGxy79kbGPuKd5vNtQ8cpjBKAoxfBlhR2q8qUpuUED+HzwS+vPzY5qTGGDgitZYWE+GHT
-        G6tK2Py1GsysamKpldhNoK91myYaQR2khyYGVORtTQgSaSwKAc0oS/DxKPzBJUc0hBUqJQ74rYcMF
-        nYHJ3wNrhIIsitnOwX6wCAV3oCeobqER6a8pm7A6mvhp20pJlyUPDmZzGBaArq40OQSNaypcPHE3v
-        l/1buqwA==;
-Received: from [2601:1c0:6280:3f0::2c43] (helo=smtpauth.infradead.org)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1ku5c9-0007Z2-Te; Tue, 29 Dec 2020 03:24:04 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        Carl Huang <cjhuang@codeaurora.org>
-Subject: [PATCH] wireless/cfg80211: fix multiple kernel-doc build warnings
-Date:   Mon, 28 Dec 2020 19:23:55 -0800
-Message-Id: <20201229032355.29060-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        Mon, 28 Dec 2020 23:21:27 -0500
+X-UUID: b11b50ffa73247058cc372dfa7aaf2a5-20201229
+X-UUID: b11b50ffa73247058cc372dfa7aaf2a5-20201229
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1311909604; Tue, 29 Dec 2020 12:15:34 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 29 Dec 2020 12:15:30 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 29 Dec 2020 12:16:36 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: drop zero-length packet to avoid Tx hang
+Date:   Tue, 29 Dec 2020 12:15:30 +0800
+Message-ID: <fe085320ea30e6b00c6bed0dab28823580e94978.1609215115.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 73D45B84F648B856B2FED6EF0181AE82A83F489DEC913880F16216F9A59B7CA12000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix 19 warnings like this:
+Hardware wouldn't add LLC-SNAP when skb->data_len is 0, which causes
+Tx hang, so add a check to drop this kind of packet.
 
-../include/net/cfg80211.h:1759: warning: Cannot understand  * @struct cfg80211_sar_chan_ranges - sar frequency ranges
-
-Fixes: 6bdb68cef7bf ("nl80211: add common API to configure SAR power limitations")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Carl Huang <cjhuang@codeaurora.org>
+Tested-by: Bo Jiao <bo.jiao@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- include/net/cfg80211.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- lnx-511-rc1.orig/include/net/cfg80211.h
-+++ lnx-511-rc1/include/net/cfg80211.h
-@@ -1756,7 +1756,7 @@ struct cfg80211_sar_specs {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index f504eeb221f9..a2d63b7a346a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -942,6 +942,9 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	int id, i, nbuf = tx_info->nbuf - 1;
+ 	u8 *txwi = (u8 *)txwi_ptr;
  
++	if (unlikely(tx_info->skb->len <= ETH_HLEN))
++		return -EINVAL;
++
+ 	if (!wcid)
+ 		wcid = &dev->mt76.global_wcid;
  
- /**
-- * @struct cfg80211_sar_chan_ranges - sar frequency ranges
-+ * struct cfg80211_sar_chan_ranges - sar frequency ranges
-  * @start_freq:  start range edge frequency
-  * @end_freq:    end range edge frequency
-  */
+-- 
+2.18.0
+
