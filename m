@@ -2,82 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C325D2E75D7
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Dec 2020 04:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AE7B2E75E0
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Dec 2020 04:48:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726203AbgL3DhT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Dec 2020 22:37:19 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:39177 "EHLO
+        id S1726196AbgL3Dr6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Dec 2020 22:47:58 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:40013 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726138AbgL3DhT (ORCPT
+        with ESMTP id S1726138AbgL3Dr6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Dec 2020 22:37:19 -0500
+        Tue, 29 Dec 2020 22:47:58 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0BU3aVbhD017533, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 0BU3kxNqB019409, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0BU3aVbhD017533
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 0BU3kxNqB019409
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 30 Dec 2020 11:36:31 +0800
-Received: from localhost (172.21.69.213) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 30 Dec
- 2020 11:36:31 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <ku920601@realtek.com>
-Subject: [PATCH] rtw88: coex: set 4 slot TDMA for BT link and WL busy
-Date:   Wed, 30 Dec 2020 11:36:02 +0800
-Message-ID: <20201230033602.13636-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
+        Wed, 30 Dec 2020 11:46:59 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 30 Dec 2020 11:46:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 30 Dec 2020 11:46:58 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833]) by
+ RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833%12]) with mapi id
+ 15.01.2106.006; Wed, 30 Dec 2020 11:46:58 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Tian Tao <tiantao6@hisilicon.com>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH] rtw88: coex: remove useless if and else
+Thread-Topic: [PATCH] rtw88: coex: remove useless if and else
+Thread-Index: AQHW2F4yxyUKKBxgKEKYnoZyzpOw4KoPCTkg
+Date:   Wed, 30 Dec 2020 03:46:58 +0000
+Message-ID: <b5be281952ed470a8af59044909a8fda@realtek.com>
+References: <1608640137-8914-1-git-send-email-tiantao6@hisilicon.com>
+In-Reply-To: <1608640137-8914-1-git-send-email-tiantao6@hisilicon.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.213]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.213]
-X-ClientProxiedBy: RTEXMBS01.realtek.com.tw (172.21.6.94) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To protect both of WL/BT performance while BT is under re-link state.
-4-slot mode TDMA can make the re-link more sensitive and mitigate the WL
-throughput drop.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> -----Original Message-----
+> From: Tian Tao [mailto:tiantao6@hisilicon.com]
+> Sent: Tuesday, December 22, 2020 8:29 PM
+> To: tony0620emma@gmail.com; kvalo@codeaurora.org; davem@davemloft.net; kuba@kernel.org
+> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org
+> Subject: [PATCH] rtw88: coex: remove useless if and else
+> 
+> Fix the following coccinelle report:
+> drivers/net/wireless/realtek/rtw88/coex.c:1619:3-5: WARNING:
+> possible condition with no effect (if == else)
+> 
+> Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/coex.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+> index 24530ca..df6676a 100644
+> --- a/drivers/net/wireless/realtek/rtw88/coex.c
+> +++ b/drivers/net/wireless/realtek/rtw88/coex.c
+> @@ -1616,12 +1616,7 @@ static void rtw_coex_action_bt_relink(struct rtw_dev *rtwdev)
+>  	if (efuse->share_ant) { /* Shared-Ant */
+>  		if (coex_stat->wl_gl_busy) {
+>  			table_case = 26;
+> -			if (coex_stat->bt_hid_exist &&
+> -			    coex_stat->bt_profile_num == 1) {
+> -				tdma_case = 20;
+> -			} else {
+> -				tdma_case = 20;
+> -			}
+> +			tdma_case = 20;
+>  		} else {
+>  			table_case = 1;
+>  			tdma_case = 0;
+
+I found we miss something in these branches, so I sent a patch,
+namely "rtw88: coex: set 4 slot TDMA for BT link and WL busy", to fix it.
+
+The link is
+https://patchwork.kernel.org/project/linux-wireless/patch/20201230033602.13636-1-pkshih@realtek.com/
+
 ---
- drivers/net/wireless/realtek/rtw88/coex.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Ping-Ke
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index 24530cafcba7..ea2be1e25065 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -1607,6 +1607,7 @@ static void rtw_coex_action_bt_relink(struct rtw_dev *rtwdev)
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
- 	struct rtw_chip_info *chip = rtwdev->chip;
- 	u8 table_case, tdma_case;
-+	u32 slot_type = 0;
- 
- 	rtw_dbg(rtwdev, RTW_DBG_COEX, "[BTCoex], %s()\n", __func__);
- 
-@@ -1618,6 +1619,7 @@ static void rtw_coex_action_bt_relink(struct rtw_dev *rtwdev)
- 			table_case = 26;
- 			if (coex_stat->bt_hid_exist &&
- 			    coex_stat->bt_profile_num == 1) {
-+				slot_type = TDMA_4SLOT;
- 				tdma_case = 20;
- 			} else {
- 				tdma_case = 20;
-@@ -1635,7 +1637,7 @@ static void rtw_coex_action_bt_relink(struct rtw_dev *rtwdev)
- 	}
- 
- 	rtw_coex_table(rtwdev, false, table_case);
--	rtw_coex_tdma(rtwdev, false, tdma_case);
-+	rtw_coex_tdma(rtwdev, false, tdma_case | slot_type);
- }
- 
- static void rtw_coex_action_bt_idle(struct rtw_dev *rtwdev)
--- 
-2.21.0
 
