@@ -2,141 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52C4F2E7EC9
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Dec 2020 09:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9559F2E7ED2
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Dec 2020 09:57:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726563AbgLaIyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Dec 2020 03:54:35 -0500
-Received: from muru.com ([72.249.23.125]:40646 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726130AbgLaIye (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Dec 2020 03:54:34 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id E63A3803A;
-        Thu, 31 Dec 2020 08:54:07 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        Raz Bouganim <r-bouganim@ti.com>,
-        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH] wlcore: Fix command execute failure 19 for wl12xx
-Date:   Thu, 31 Dec 2020 10:53:43 +0200
-Message-Id: <20201231085343.24337-1-tony@atomide.com>
-X-Mailer: git-send-email 2.29.2
+        id S1726594AbgLaI4d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Dec 2020 03:56:33 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:49170 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726290AbgLaI4d (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 31 Dec 2020 03:56:33 -0500
+X-UUID: e22e6e7170c24da6a260f82eca253b48-20201231
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=+l0F3UfPINeuQQDthlZCRT/biWv4vrO3YtRXXQfQwck=;
+        b=S7N8NI3Xg189PNdurdRvFAoVpT3UKa2gNkHcWbxk3bFKlvXqKw5ZLytfMWOvo4rq8a88sT59lL1+XeZPFUHvN/+E6k2oy0qcsgfHdysCF0XTpef0MDs/S2MMxDh4qDoeimAbnXKXy4T+LL1TWs+PitVVGaj2dCfpgVSLrMsLQ+Y=;
+X-UUID: e22e6e7170c24da6a260f82eca253b48-20201231
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 703152868; Thu, 31 Dec 2020 16:55:48 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 31 Dec 2020 16:55:46 +0800
+Received: from [172.21.77.33] (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 31 Dec 2020 16:55:46 +0800
+Message-ID: <1609404946.23449.15.camel@mtkswgap22>
+Subject: Re: [PATCH -next v4 02/13] mt76: mt7921: add MCU support
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     <sean.wang@mediatek.com>
+CC:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
+        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Date:   Thu, 31 Dec 2020 16:55:46 +0800
+In-Reply-To: <38dc730fe632525472456816dd51620d9b3ba547.1609347310.git.objelf@gmail.com>
+References: <cover.1609347310.git.objelf@gmail.com>
+         <38dc730fe632525472456816dd51620d9b3ba547.1609347310.git.objelf@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-TM-SNTS-SMTP: 349190E50DED03C0D3D922A6AEB26916EB510F5C7EE67374E4672B8003FCD22F2000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We can currently get a "command execute failure 19" error on beacon loss
-if the signal is weak:
+T24gVGh1LCAyMDIwLTEyLTMxIGF0IDAyOjA2ICswODAwLCBzZWFuLndhbmdAbWVkaWF0ZWsuY29t
+IHdyb3RlOg0KPiBGcm9tOiBTZWFuIFdhbmcgPHNlYW4ud2FuZ0BtZWRpYXRlay5jb20+DQo+IA0K
+PiBNVDc5MjEgY29udGFpbnMgYSBtaWNyb3Byb2Nlc3NvciB3aXRoIHdoaWNoIHRoZSBob3N0IGNh
+biB1c2UgY29tbWFuZC9ldmVudA0KPiB0byBjb21tdW5pY2F0ZSB0byBpbXBsZW1lbnQgb2ZmbG9h
+ZCBmZWF0dXJlcyBzdWNoIGFzIGVzdGFibGlzaCBjb25uZWN0aW9uLA0KPiBoYXJkd2FyZSBzY2Fu
+IGFuZCBzbyBvbi4gVGhlIGhvc3QgaGFzIHRvIGRvd25sb2FkIHRoZSBST00gcGF0Y2gsIFJBTQ0K
+PiBmaXJtd2FyZSBhbmQgZmluYWxseSBhY3RpdmF0ZSB0aGUgTUNVIHRvIGNvbXBsZXRlIHRoZSBN
+VDc5MjENCj4gaW5pdGlhbGl6YXRpb24uDQo+IA0KPiBDby1kZXZlbG9wZWQtYnk6IExvcmVuem8g
+QmlhbmNvbmkgPGxvcmVuem9Aa2VybmVsLm9yZz4NCj4gU2lnbmVkLW9mZi1ieTogTG9yZW56byBC
+aWFuY29uaSA8bG9yZW56b0BrZXJuZWwub3JnPg0KPiBDby1kZXZlbG9wZWQtYnk6IFNvdWwgSHVh
+bmcgPFNvdWwuSHVhbmdAbWVkaWF0ZWsuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBTb3VsIEh1YW5n
+IDxTb3VsLkh1YW5nQG1lZGlhdGVrLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogU2VhbiBXYW5nIDxz
+ZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KPiAtLS0NCj4gIC4uLi93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkyMS9NYWtlZmlsZSAgICB8ICAgIDIgKy0NCj4gIC4uLi9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc5MjEvbWFjLmggICB8ICAzMzMgKysrDQo+ICAuLi4vbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3OTIxL21jdS5jICAgfCAyNDM4ICsrKysrKysrKysrKysrKysrDQo+
+ICAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTIxL21jdS5oICAgfCAxMDUwICsr
+KysrKysNCj4gIC4uLi93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9tdDc5MjEuaCAgICB8
+ICAzNTMgKysrDQo+ICAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTIxL3JlZ3Mu
+aCAgfCAgNDEzICsrKw0KPiAgNiBmaWxlcyBjaGFuZ2VkLCA0NTg4IGluc2VydGlvbnMoKyksIDEg
+ZGVsZXRpb24oLSkNCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkyMS9tYWMuaA0KPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMv
+bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTIxL21jdS5jDQo+ICBjcmVhdGUgbW9kZSAx
+MDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MjEvbWN1LmgNCj4g
+IGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
+NzkyMS9tdDc5MjEuaA0KPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3OTIxL3JlZ3MuaA0KDQoNCj4gK3N0YXRpYyBpbnQNCj4gK210Nzky
+MV9tY3Vfc2VuZF9tZXNzYWdlKHN0cnVjdCBtdDc2X2RldiAqbWRldiwgc3RydWN0IHNrX2J1ZmYg
+KnNrYiwNCj4gKwkJCWludCBjbWQsIGludCAqd2FpdF9zZXEpDQo+ICt7DQo+ICsJc3RydWN0IG10
+NzkyMV9kZXYgKmRldiA9IGNvbnRhaW5lcl9vZihtZGV2LCBzdHJ1Y3QgbXQ3OTIxX2RldiwgbXQ3
+Nik7DQo+ICsJaW50IHR4ZF9sZW4sIG1jdV9jbWQgPSBjbWQgJiBNQ1VfQ01EX01BU0s7DQo+ICsJ
+ZW51bSBtdDc2X3R4cV9pZCB0eHEgPSBNVF9NQ1VRX1dNOw0KDQpJbXBsaWNpdCBjb252ZXJzaW9u
+IGZyb20gZW51bWVyYXRpb24gdHlwZSAnZW51bSBtdDc2X21jdXFfaWQnIHRvDQpkaWZmZXJlbnQg
+ZW51bWVyYXRpb24gdHlwZSAnZW51bSBtdDc2X3R4cV9pZCcgDQoNClNob3VsZCBiZSBlbnVtIG10
+NzZfbWN1cV9pZA0KDQoNCj4gK3N0YXRpYyBpbnQNCj4gK210NzkyMV9tY3Vfc3RhX2tleV90bHYo
+c3RydWN0IHNrX2J1ZmYgKnNrYiwgc3RydWN0IGllZWU4MDIxMV9rZXlfY29uZiAqa2V5LA0KPiAr
+CQkgICAgICAgZW51bSBzZXRfa2V5X2NtZCBjbWQpDQo+ICt7DQo+ICsJc3RydWN0IHN0YV9yZWNf
+c2VjICpzZWM7DQo+ICsJc3RydWN0IHRsdiAqdGx2Ow0KPiArCXUzMiBsZW4gPSBzaXplb2YoKnNl
+Yyk7DQo+ICsNCj4gKwl0bHYgPSBtdDc5MjFfbWN1X2FkZF90bHYoc2tiLCBTVEFfUkVDX0tFWV9W
+Miwgc2l6ZW9mKCpzZWMpKTsNCj4gKw0KPiArCXNlYyA9IChzdHJ1Y3Qgc3RhX3JlY19zZWMgKil0
+bHY7DQo+ICsJc2VjLT5hZGQgPSBjbWQ7DQo+ICsNCj4gKwlpZiAoY21kID09IFNFVF9LRVkpIHsN
+Cj4gKwkJc3RydWN0IHNlY19rZXkgKnNlY19rZXk7DQo+ICsJCXU4IGNpcGhlcjsNCj4gKw0KPiAr
+CQljaXBoZXIgPSBtdDc5MjFfbWN1X2dldF9jaXBoZXIoa2V5LT5jaXBoZXIpOw0KPiArCQlpZiAo
+Y2lwaGVyID09IE1UX0NJUEhFUl9OT05FKQ0KPiArCQkJcmV0dXJuIC1FT1BOT1RTVVBQOw0KPiAr
+DQo+ICsJCXNlY19rZXkgPSAmc2VjLT5rZXlbMF07DQo+ICsJCXNlY19rZXktPmNpcGhlcl9sZW4g
+PSBzaXplb2YoKnNlY19rZXkpOw0KPiArCQlzZWNfa2V5LT5rZXlfaWQgPSBrZXktPmtleWlkeDsN
+Cj4gKw0KPiArCQlpZiAoY2lwaGVyID09IE1UX0NJUEhFUl9CSVBfQ01BQ18xMjgpIHsNCg0KVGhp
+cyB3YXMgY29waWVkL3Bhc3RlZCBteSB3cm9uZyBmbG93IGZyb20gbXQ3OTE1IHNvIEkgZ3Vlc3Mg
+QklQX0NNQUNfMTI4DQpjYW5ub3Qgd29yay4gSSd2ZSBmaXhlZCB0aGlzIHJlY2VudGx5IGZvciBt
+dDc5MTUuIFlvdSBtYXkgdGFrZSBhIGxvb2sgYXQNCmh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5v
+cmcvcHJvamVjdC9saW51eC13aXJlbGVzcy9wYXRjaC9mYzZhYmNkODEwYTc0YmI0ZTg1NjhiMGY0
+NmJmYzg1MWZkY2ZkODAwLjE2MDc0NDUxNjEuZ2l0LnJ5ZGVyLmxlZUBtZWRpYXRlay5jb20vDQoN
+Ck9yLCBmYWxsYmFjayB0byBzdyB2ZXJzaW9uDQoNCj4gK2V4dGVybiBjb25zdCBzdHJ1Y3QgaWVl
+ZTgwMjExX29wcyBtdDc5MjFfb3BzOw0KPiArZXh0ZXJuIHN0cnVjdCBwY2lfZHJpdmVyIG10Nzky
+MV9wY2lfZHJpdmVyOw0KPiArDQo+ICt1MzIgbXQ3OTIxX3JlZ19tYXAoc3RydWN0IG10NzkyMV9k
+ZXYgKmRldiwgdTMyIGFkZHIpOw0KPiArDQo+ICtpbnQgbXQ3OTIxX3JlZ2lzdGVyX2RldmljZShz
+dHJ1Y3QgbXQ3OTIxX2RldiAqZGV2KTsNCj4gK3ZvaWQgbXQ3OTIxX3VucmVnaXN0ZXJfZGV2aWNl
+KHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYpOw0KPiAraW50IG10NzkyMV9lZXByb21faW5pdChzdHJ1
+Y3QgbXQ3OTIxX2RldiAqZGV2KTsNCj4gK3ZvaWQgbXQ3OTIxX2VlcHJvbV9wYXJzZV9iYW5kX2Nv
+bmZpZyhzdHJ1Y3QgbXQ3OTIxX3BoeSAqcGh5KTsNCj4gK2ludCBtdDc5MjFfZWVwcm9tX2dldF90
+YXJnZXRfcG93ZXIoc3RydWN0IG10NzkyMV9kZXYgKmRldiwNCj4gKwkJCQkgICBzdHJ1Y3QgaWVl
+ZTgwMjExX2NoYW5uZWwgKmNoYW4sDQo+ICsJCQkJICAgdTggY2hhaW5faWR4KTsNCj4gK3ZvaWQg
+bXQ3OTIxX2VlcHJvbV9pbml0X3NrdShzdHJ1Y3QgbXQ3OTIxX2RldiAqZGV2KTsNCj4gK2ludCBt
+dDc5MjFfZG1hX2luaXQoc3RydWN0IG10NzkyMV9kZXYgKmRldik7DQo+ICt2b2lkIG10NzkyMV9k
+bWFfcHJlZmV0Y2goc3RydWN0IG10NzkyMV9kZXYgKmRldik7DQo+ICt2b2lkIG10NzkyMV9kbWFf
+Y2xlYW51cChzdHJ1Y3QgbXQ3OTIxX2RldiAqZGV2KTsNCj4gK2ludCBtdDc5MjFfbWN1X2luaXQo
+c3RydWN0IG10NzkyMV9kZXYgKmRldik7DQo+ICtpbnQgbXQ3OTIxX21jdV9hZGRfYnNzX2luZm8o
+c3RydWN0IG10NzkyMV9waHkgKnBoeSwNCj4gKwkJCSAgICBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAq
+dmlmLCBpbnQgZW5hYmxlKTsNCj4gK2ludCBtdDc5MjFfbWN1X3N0YV91cGRhdGVfaGRyX3RyYW5z
+KHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYsDQo+ICsJCQkJICAgIHN0cnVjdCBpZWVlODAyMTFfdmlm
+ICp2aWYsDQo+ICsJCQkJICAgIHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEpOw0KPiAraW50IG10
+NzkyMV9tY3VfYWRkX2tleShzdHJ1Y3QgbXQ3OTIxX2RldiAqZGV2LCBzdHJ1Y3QgaWVlZTgwMjEx
+X3ZpZiAqdmlmLA0KPiArCQkgICAgICAgc3RydWN0IG10NzkyMV9zdGEgKm1zdGEsIHN0cnVjdCBp
+ZWVlODAyMTFfa2V5X2NvbmYgKmtleSwNCj4gKwkJICAgICAgIGVudW0gc2V0X2tleV9jbWQgY21k
+KTsNCj4gK2ludCBtdDc5MjFfc2V0X2NoYW5uZWwoc3RydWN0IG10NzkyMV9waHkgKnBoeSk7DQo+
+ICtpbnQgbXQ3OTIxX21jdV9zZXRfY2hhbl9pbmZvKHN0cnVjdCBtdDc5MjFfcGh5ICpwaHksIGlu
+dCBjbWQpOw0KPiAraW50IG10NzkyMV9tY3Vfc2V0X3R4KHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYs
+IHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYpOw0KPiAraW50IG10NzkyMV9tY3Vfc2V0X2VlcHJv
+bShzdHJ1Y3QgbXQ3OTIxX2RldiAqZGV2KTsNCj4gK2ludCBtdDc5MjFfbWN1X2dldF9lZXByb20o
+c3RydWN0IG10NzkyMV9kZXYgKmRldiwgdTMyIG9mZnNldCk7DQo+ICtpbnQgbXQ3OTIxX21jdV9z
+ZXRfbWFjKHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYsIGludCBiYW5kLCBib29sIGVuYWJsZSwNCj4g
+KwkJICAgICAgIGJvb2wgaGRyX3RyYW5zKTsNCj4gK2ludCBtdDc5MjFfbWN1X3NldF9ydHNfdGhy
+ZXNoKHN0cnVjdCBtdDc5MjFfcGh5ICpwaHksIHUzMiB2YWwpOw0KPiAraW50IG10NzkyMV9tY3Vf
+Z2V0X3J4X3JhdGUoc3RydWN0IG10NzkyMV9waHkgKnBoeSwgc3RydWN0IGllZWU4MDIxMV92aWYg
+KnZpZiwNCj4gKwkJCSAgIHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEsIHN0cnVjdCByYXRlX2lu
+Zm8gKnJhdGUpOw0KSnVzdCBhIHF1aWNrIGxvb2suIFNlZW0gc29tZSB1bnVzZWQgZnVuY3Rpb25z
+ICh1c2VkIGJ5IG10NzkxNSkgYXJlDQpleHBvcnRlZCBoZXJlLiBlLmcuIG10NzkyMV9tY3VfZ2V0
+X3J4X3JhdGUoKQ0KDQo=
 
-wlcore: Beacon loss detected. roles:0xff
-wlcore: Connection loss work (role_id: 0).
-...
-wlcore: ERROR command execute failure 19
-...
-WARNING: CPU: 0 PID: 1552 at drivers/net/wireless/ti/wlcore/main.c:803
-...
-(wl12xx_queue_recovery_work.part.0 [wlcore])
-(wl12xx_cmd_role_start_sta [wlcore])
-(wl1271_op_bss_info_changed [wlcore])
-(ieee80211_prep_connection [mac80211])
-
-Error 19 is defined as CMD_STATUS_WRONG_NESTING from the wlcore firmware,
-and seems to mean that the firmware no longer wants to see the quirk
-handling for WLCORE_QUIRK_START_STA_FAILS done.
-
-This quirk got added with commit 18eab430700d ("wlcore: workaround
-start_sta problem in wl12xx fw"), and it seems that this already got fixed
-in the firmware long time ago back in 2012 as wl18xx never had this quirk
-in place to start with.
-
-As we no longer even support firmware that early, to me it seems that it's
-safe to just drop WLCORE_QUIRK_START_STA_FAILS to fix the error. Looks
-like earlier firmware got disabled back in 2013 with commit 0e284c074ef9
-("wl12xx: increase minimum singlerole firmware version required").
-
-If it turns out we still need WLCORE_QUIRK_START_STA_FAILS with any
-firmware that the driver works with, we can simply revert this patch and
-add extra checks for firmware version used.
-
-With this fix wlcore reconnects properly after a beacon loss.
-
-Cc: Raz Bouganim <r-bouganim@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/net/wireless/ti/wl12xx/main.c   |  3 ---
- drivers/net/wireless/ti/wlcore/main.c   | 15 +--------------
- drivers/net/wireless/ti/wlcore/wlcore.h |  3 ---
- 3 files changed, 1 insertion(+), 20 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/ti/wl12xx/main.c
---- a/drivers/net/wireless/ti/wl12xx/main.c
-+++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -635,7 +635,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
- 		wl->mr_fw_name = WL127X_FW_NAME_MULTI;
-@@ -659,7 +658,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 		wl->plt_fw_name = WL127X_PLT_FW_NAME;
- 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
-@@ -688,7 +686,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 
- 		wlcore_set_min_fw_ver(wl, WL128X_CHIP_VER,
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -2878,21 +2878,8 @@ static int wlcore_join(struct wl1271 *wl, struct wl12xx_vif *wlvif)
- 
- 	if (is_ibss)
- 		ret = wl12xx_cmd_role_start_ibss(wl, wlvif);
--	else {
--		if (wl->quirks & WLCORE_QUIRK_START_STA_FAILS) {
--			/*
--			 * TODO: this is an ugly workaround for wl12xx fw
--			 * bug - we are not able to tx/rx after the first
--			 * start_sta, so make dummy start+stop calls,
--			 * and then call start_sta again.
--			 * this should be fixed in the fw.
--			 */
--			wl12xx_cmd_role_start_sta(wl, wlvif);
--			wl12xx_cmd_role_stop_sta(wl, wlvif);
--		}
--
-+	else
- 		ret = wl12xx_cmd_role_start_sta(wl, wlvif);
--	}
- 
- 	pm_runtime_mark_last_busy(wl->dev);
- 	pm_runtime_put_autosuspend(wl->dev);
-diff --git a/drivers/net/wireless/ti/wlcore/wlcore.h b/drivers/net/wireless/ti/wlcore/wlcore.h
---- a/drivers/net/wireless/ti/wlcore/wlcore.h
-+++ b/drivers/net/wireless/ti/wlcore/wlcore.h
-@@ -547,9 +547,6 @@ wlcore_set_min_fw_ver(struct wl1271 *wl, unsigned int chip,
- /* Each RX/TX transaction requires an end-of-transaction transfer */
- #define WLCORE_QUIRK_END_OF_TRANSACTION		BIT(0)
- 
--/* the first start_role(sta) sometimes doesn't work on wl12xx */
--#define WLCORE_QUIRK_START_STA_FAILS		BIT(1)
--
- /* wl127x and SPI don't support SDIO block size alignment */
- #define WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN		BIT(2)
- 
--- 
-2.29.2
