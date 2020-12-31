@@ -2,103 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEB342E7DC1
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Dec 2020 03:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4412C2E7EAA
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Dec 2020 09:14:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbgLaCrr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Dec 2020 21:47:47 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:50136 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbgLaCrq (ORCPT
+        id S1726155AbgLaIKE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Dec 2020 03:10:04 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:52149 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726037AbgLaIKE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Dec 2020 21:47:46 -0500
-Received: from [192.168.254.6] (unknown [50.46.152.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id D7CED13C2B0;
-        Wed, 30 Dec 2020 18:47:05 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D7CED13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1609382826;
-        bh=2mn5CDFdPiRtJXOt4x3nCCH4BwkT99QhAXktU+aBDls=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Xwn1SRMskSMLreyLl7fLjCIQAbZ7GZYkQHoipuGn/XNI51uC067fJ2AkITVA/NkeN
-         +SFYtT8Jmv+V7aHhvr+sMohSlXn4O9KRSfXB4hR7Qgrq+zhjmHF4/f60jlREYLbOLf
-         Ul7LMdrYyQyKqIia2M+cs7PQQUbm6T/UVNlaTkoc=
-Subject: Re: [PATCH 3/6] iwlwifi: Allow per-device fwcfg files.
-To:     Julian Calaby <julian.calaby@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, Luciano Coelho <luca@coelho.fi>
-References: <20201231000523.14963-1-greearb@candelatech.com>
- <20201231000523.14963-3-greearb@candelatech.com>
- <CAGRGNgXx3tqzOjLcKA=+FDrQsad_Hn=KX_gC+P4DFX+r8e2Fnw@mail.gmail.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <8b14768d-4ddb-6cb0-e27a-1fd1d8d1e41e@candelatech.com>
-Date:   Wed, 30 Dec 2020 18:47:04 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Thu, 31 Dec 2020 03:10:04 -0500
+X-UUID: cf74a61f49934849a61f51b8b2d1ea71-20201231
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=0YIiBbPcnXnoRpcQRpSuIjCOquv1iDX2d7sxAgSif/8=;
+        b=MrkeYOUZowizVdZj0HsVkgAMa/Ch/JPuAJLnG0Q21a/EN/ZjgOcIqZ3KmDeRHlWYzQlR/M1V+sQ+ko0+9dw89zwWZ1uY3Vopwx7DRQ5LySvh182KnF+ZTuCfBbezgW3PpoppnVWvB4JrHmsu74VrKRSwjjqoX1whUq7FBuSGwK4=;
+X-UUID: cf74a61f49934849a61f51b8b2d1ea71-20201231
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 283783325; Thu, 31 Dec 2020 16:09:18 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 31 Dec 2020 16:09:17 +0800
+Received: from [172.21.77.33] (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 31 Dec 2020 16:09:16 +0800
+Message-ID: <1609402157.22614.3.camel@mtkswgap22>
+Subject: Re: [PATCH -next v4 03/13] mt76: mt7921: add MAC support
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     <sean.wang@mediatek.com>
+CC:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
+        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Date:   Thu, 31 Dec 2020 16:09:17 +0800
+In-Reply-To: <3969b56ae9211955428fad2aeba695416362a095.1609347310.git.objelf@gmail.com>
+References: <cover.1609347310.git.objelf@gmail.com>
+         <3969b56ae9211955428fad2aeba695416362a095.1609347310.git.objelf@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 MIME-Version: 1.0
-In-Reply-To: <CAGRGNgXx3tqzOjLcKA=+FDrQsad_Hn=KX_gC+P4DFX+r8e2Fnw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/30/20 5:19 PM, Julian Calaby wrote:
-> Hi Ben,
-> 
-> On Thu, Dec 31, 2020 at 11:17 AM <greearb@candelatech.com> wrote:
->>
->> From: Ben Greear <greearb@candelatech.com>
->>
->> This allows one to set the NSS and some
->> other low-level features for ax200 radios.
->>
->> Signed-off-by: Ben Greear <greearb@candelatech.com>
->> ---
->>   drivers/net/wireless/intel/iwlwifi/iwl-dbg-cfg.c | 8 ++++++--
->>   1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-cfg.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-cfg.c
->> index 223c716d9fce..e2ae509d1650 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-cfg.c
->> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-cfg.c
->> @@ -246,12 +246,16 @@ void iwl_dbg_cfg_load_ini(struct device *dev, struct iwl_dbg_cfg *dbgcfg)
->>          const struct firmware *fw;
->>          char *data, *end, *pos;
->>          int err;
->> +       char fname[128];
->>
->>          if (dbgcfg->loaded)
->>                  return;
->>
->> -       /* TODO: maybe add a per-device file? */
->> -       err = firmware_request_nowarn(&fw, "iwl-dbg-cfg.ini", dev);
->> +       snprintf(fname, 127, "iwl-dbg-cfg-%s.ini", dev_name(dev));
->> +       fname[127] = 0;
->> +
->> +       /* TODO: maybe add a per-device file?  Yes, did that. --Ben */
-> 
-> You probably don't need the comment anymore =)
-> 
->> +       err = firmware_request_nowarn(&fw, fname, dev);
-> 
-> Would it make sense to fall back to "iwl-dbg-cfg.ini" if the
-> per-device one isn't available?
+T24gVGh1LCAyMDIwLTEyLTMxIGF0IDAyOjA2ICswODAwLCBzZWFuLndhbmdAbWVkaWF0ZWsuY29t
+IHdyb3RlOg0KPiBGcm9tOiBTZWFuIFdhbmcgPHNlYW4ud2FuZ0BtZWRpYXRlay5jb20+DQo+IA0K
+PiBBZGQgUnggcGFja2V0IGRlc2NyaXB0aW9uIHBhcnNpbmcsIFR4IHBhY2tldCBkZXNjcmlwdGlv
+biBjb21wb3NpdG9uLCBoYW5kbGUNCj4gcGFja2V0IHJlY3ljbGluZyBhbmQgcHJvdmlkZSBNQUMg
+aW5mb3JtYXRpb24gbXQ3NiBjb3JlIG5lZWRzIHRvIHN1cHBvcnQNCj4gbWFjODAyMTEuDQo+IA0K
+PiBDby1kZXZlbG9wZWQtYnk6IExvcmVuem8gQmlhbmNvbmkgPGxvcmVuem9Aa2VybmVsLm9yZz4N
+Cj4gU2lnbmVkLW9mZi1ieTogTG9yZW56byBCaWFuY29uaSA8bG9yZW56b0BrZXJuZWwub3JnPg0K
+PiBDby1kZXZlbG9wZWQtYnk6IFNvdWwgSHVhbmcgPFNvdWwuSHVhbmdAbWVkaWF0ZWsuY29tPg0K
+PiBTaWduZWQtb2ZmLWJ5OiBTb3VsIEh1YW5nIDxTb3VsLkh1YW5nQG1lZGlhdGVrLmNvbT4NCj4g
+U2lnbmVkLW9mZi1ieTogU2VhbiBXYW5nIDxzZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KPiAtLS0N
+Cg0KVHJpbSB0aGUgY29kZS4gUGxlYXNlIHRha2UgdGhlc2UgZml4dXBzIGludG8gYWNjb3VudC4N
+Cmh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcHJvamVjdC9saW51eC13aXJlbGVzcy9wYXRj
+aC82NTMzNjE0OGI1ZDQ0MGRjZWI5NjdhNDAxNDg4YjExOWUxNGI5YzVhLjE2MDcxMjQ2NTIuZ2l0
+LnJ5ZGVyLmxlZUBtZWRpYXRlay5jb20vDQpodHRwczovL3BhdGNod29yay5rZXJuZWwub3JnL3By
+b2plY3QvbGludXgtd2lyZWxlc3MvcGF0Y2gvNjlkNjJjZDQwYWU1MmUwZGRkNWIyNmJhOTZiYzc0
+ODAzODU1ODVhNS4xNjA3NTc4NjAxLmdpdC5yeWRlci5sZWVAbWVkaWF0ZWsuY29tLw0KDQpSeWRl
+cg0KDQo=
 
-It would be fine with me, lets see if Luca has any interest in the patches
-in general before I go tweaking on them...
-
-Thanks,
-Ben
-
-> 
-> Thanks,
-> 
-
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
