@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 782B32E7D4D
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Dec 2020 01:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C832E7D4F
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Dec 2020 01:09:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726356AbgLaAGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Dec 2020 19:06:14 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:47720 "EHLO
+        id S1726408AbgLaAGx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Dec 2020 19:06:53 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:47754 "EHLO
         mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726317AbgLaAGN (ORCPT
+        with ESMTP id S1726289AbgLaAGw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Dec 2020 19:06:13 -0500
+        Wed, 30 Dec 2020 19:06:52 -0500
 Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id A66C213C2B7;
+        by mail3.candelatech.com (Postfix) with ESMTP id CE3D113C2B9;
         Wed, 30 Dec 2020 16:05:32 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A66C213C2B7
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com CE3D113C2B9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
         s=default; t=1609373132;
-        bh=EgOrrtC4YhHgXlJn+I5ahTyMkr0l9CGLrIB7SLNkqzQ=;
+        bh=69xd9fncyK4BEHUUyMr7Pt9bTkPdpaT5zCUS4y2xqgg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B/VC07KHWmqJff6i9NnuWYiQm4BYXHbd72hi2fGwHAdHs4YeyXxoup0iARgLa8moD
-         YAqluy0Jn+Qdszn/iXEUuLRWpT+drE89AsVnLSGSj+X2nGAIcvt60Jzb6mYBzvrkVY
-         bgpjCJmR+hUtxna0foYSQXLvlrfeH4rK93pjc80Y=
+        b=NIPfNwLbEUwZ+9POJMgi9/B4GyOFIedH6XkT5LQ7W9nfO6Ff44Ym/J+SNQK/HvSd3
+         auVeahA0VyngT45WBuOMeuC/uydlXlOv+7Mc9D+E6QkuRV08RoGfwun84OjLTILXUc
+         +w0mxHPrLW6f7nlqogdLWWqpT1TB/Hm+eT0LgUNw=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     luca@coelho.fi, Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 5/6] iwlwifi: Make warnings unique to aid debugging.
-Date:   Wed, 30 Dec 2020 16:05:22 -0800
-Message-Id: <20201231000523.14963-5-greearb@candelatech.com>
+Subject: [PATCH 6/6] iwlwifi: Support configuring tx-agg limit.
+Date:   Wed, 30 Dec 2020 16:05:23 -0800
+Message-Id: <20201231000523.14963-6-greearb@candelatech.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20201231000523.14963-1-greearb@candelatech.com>
 References: <20201231000523.14963-1-greearb@candelatech.com>
@@ -40,50 +40,44 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-So we can be certain what code is generating kernel error
-messages.
+This should affect ampdu, I think...not sure it works
+as hoped.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c       | 4 ++--
- drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-modparams.h | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c       | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 1386d8397204..44947c6436d5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -491,7 +491,7 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
- 	/* Will also start the device */
- 	ret = iwl_mvm_load_ucode_wait_alive(mvm, IWL_UCODE_REGULAR);
- 	if (ret) {
--		IWL_ERR(mvm, "Failed to start RT ucode: %d\n", ret);
-+		IWL_ERR(mvm, "run-mvm-ucode: Failed to start RT ucode: %d\n", ret);
- 		goto error;
- 	}
- 	iwl_dbg_tlv_time_point(&mvm->fwrt, IWL_FW_INI_TIME_POINT_AFTER_ALIVE,
-@@ -1455,7 +1455,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h b/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
+index e8ce3a300857..070c8458e4cd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-modparams.h
+@@ -86,7 +86,7 @@ enum iwl_amsdu_size {
+ 	IWL_AMSDU_8K = 2,
+ 	IWL_AMSDU_12K = 3,
+ 	/* Add 2K at the end to avoid breaking current API */
+-	IWL_AMSDU_2K = 4,
++	IWL_AMSDU_2K = 4, /* ax200 blows up if you set it to this */
+ };
  
- 	ret = iwl_mvm_load_rt_fw(mvm);
- 	if (ret) {
--		IWL_ERR(mvm, "Failed to start RT ucode: %d\n", ret);
-+		IWL_ERR(mvm, "mvm-up: Failed to start RT ucode: %d\n", ret);
- 		if (ret != -ERFKILL)
- 			iwl_fw_dbg_error_collect(&mvm->fwrt,
- 						 FW_DBG_TRIGGER_DRIVER);
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-index baa83a0b8593..f31bdcfdc93e 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-@@ -355,7 +355,7 @@ static int iwl_pcie_gen2_send_hcmd_sync(struct iwl_trans *trans,
- 	}
- 
- 	if (test_bit(STATUS_FW_ERROR, &trans->status)) {
--		IWL_ERR(trans, "FW error in SYNC CMD %s\n", cmd_str);
-+		IWL_ERR(trans, "gen2: FW error in SYNC CMD %s\n", cmd_str);
- 		dump_stack();
- 		ret = -EIO;
- 		goto cancel;
+ enum iwl_uapsd_disable {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 8e7a3be7621a..a3fd791bab78 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -791,6 +791,11 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 	case IWL_AMSDU_DEF:
+ 		trans_cfg.rx_buf_size = rb_size_default;
+ 		break;
++	case IWL_AMSDU_2K:
++		/* ax200 blows up with this setting. */
++		if (mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
++			trans_cfg.rx_buf_size = IWL_AMSDU_2K;
++		break;
+ 	case IWL_AMSDU_4K:
+ 		trans_cfg.rx_buf_size = IWL_AMSDU_4K;
+ 		break;
 -- 
 2.20.1
 
