@@ -2,70 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4412C2E7EAA
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Dec 2020 09:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52C4F2E7EC9
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Dec 2020 09:54:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726155AbgLaIKE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Dec 2020 03:10:04 -0500
-Received: from mailgw01.mediatek.com ([210.61.82.183]:52149 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726037AbgLaIKE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Dec 2020 03:10:04 -0500
-X-UUID: cf74a61f49934849a61f51b8b2d1ea71-20201231
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=0YIiBbPcnXnoRpcQRpSuIjCOquv1iDX2d7sxAgSif/8=;
-        b=MrkeYOUZowizVdZj0HsVkgAMa/Ch/JPuAJLnG0Q21a/EN/ZjgOcIqZ3KmDeRHlWYzQlR/M1V+sQ+ko0+9dw89zwWZ1uY3Vopwx7DRQ5LySvh182KnF+ZTuCfBbezgW3PpoppnVWvB4JrHmsu74VrKRSwjjqoX1whUq7FBuSGwK4=;
-X-UUID: cf74a61f49934849a61f51b8b2d1ea71-20201231
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 283783325; Thu, 31 Dec 2020 16:09:18 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 31 Dec 2020 16:09:17 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 31 Dec 2020 16:09:16 +0800
-Message-ID: <1609402157.22614.3.camel@mtkswgap22>
-Subject: Re: [PATCH -next v4 03/13] mt76: mt7921: add MAC support
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     <sean.wang@mediatek.com>
-CC:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Date:   Thu, 31 Dec 2020 16:09:17 +0800
-In-Reply-To: <3969b56ae9211955428fad2aeba695416362a095.1609347310.git.objelf@gmail.com>
-References: <cover.1609347310.git.objelf@gmail.com>
-         <3969b56ae9211955428fad2aeba695416362a095.1609347310.git.objelf@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+        id S1726563AbgLaIyf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Dec 2020 03:54:35 -0500
+Received: from muru.com ([72.249.23.125]:40646 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726130AbgLaIye (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 31 Dec 2020 03:54:34 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id E63A3803A;
+        Thu, 31 Dec 2020 08:54:07 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        Raz Bouganim <r-bouganim@ti.com>,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH] wlcore: Fix command execute failure 19 for wl12xx
+Date:   Thu, 31 Dec 2020 10:53:43 +0200
+Message-Id: <20201231085343.24337-1-tony@atomide.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVGh1LCAyMDIwLTEyLTMxIGF0IDAyOjA2ICswODAwLCBzZWFuLndhbmdAbWVkaWF0ZWsuY29t
-IHdyb3RlOg0KPiBGcm9tOiBTZWFuIFdhbmcgPHNlYW4ud2FuZ0BtZWRpYXRlay5jb20+DQo+IA0K
-PiBBZGQgUnggcGFja2V0IGRlc2NyaXB0aW9uIHBhcnNpbmcsIFR4IHBhY2tldCBkZXNjcmlwdGlv
-biBjb21wb3NpdG9uLCBoYW5kbGUNCj4gcGFja2V0IHJlY3ljbGluZyBhbmQgcHJvdmlkZSBNQUMg
-aW5mb3JtYXRpb24gbXQ3NiBjb3JlIG5lZWRzIHRvIHN1cHBvcnQNCj4gbWFjODAyMTEuDQo+IA0K
-PiBDby1kZXZlbG9wZWQtYnk6IExvcmVuem8gQmlhbmNvbmkgPGxvcmVuem9Aa2VybmVsLm9yZz4N
-Cj4gU2lnbmVkLW9mZi1ieTogTG9yZW56byBCaWFuY29uaSA8bG9yZW56b0BrZXJuZWwub3JnPg0K
-PiBDby1kZXZlbG9wZWQtYnk6IFNvdWwgSHVhbmcgPFNvdWwuSHVhbmdAbWVkaWF0ZWsuY29tPg0K
-PiBTaWduZWQtb2ZmLWJ5OiBTb3VsIEh1YW5nIDxTb3VsLkh1YW5nQG1lZGlhdGVrLmNvbT4NCj4g
-U2lnbmVkLW9mZi1ieTogU2VhbiBXYW5nIDxzZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KPiAtLS0N
-Cg0KVHJpbSB0aGUgY29kZS4gUGxlYXNlIHRha2UgdGhlc2UgZml4dXBzIGludG8gYWNjb3VudC4N
-Cmh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcHJvamVjdC9saW51eC13aXJlbGVzcy9wYXRj
-aC82NTMzNjE0OGI1ZDQ0MGRjZWI5NjdhNDAxNDg4YjExOWUxNGI5YzVhLjE2MDcxMjQ2NTIuZ2l0
-LnJ5ZGVyLmxlZUBtZWRpYXRlay5jb20vDQpodHRwczovL3BhdGNod29yay5rZXJuZWwub3JnL3By
-b2plY3QvbGludXgtd2lyZWxlc3MvcGF0Y2gvNjlkNjJjZDQwYWU1MmUwZGRkNWIyNmJhOTZiYzc0
-ODAzODU1ODVhNS4xNjA3NTc4NjAxLmdpdC5yeWRlci5sZWVAbWVkaWF0ZWsuY29tLw0KDQpSeWRl
-cg0KDQo=
+We can currently get a "command execute failure 19" error on beacon loss
+if the signal is weak:
 
+wlcore: Beacon loss detected. roles:0xff
+wlcore: Connection loss work (role_id: 0).
+...
+wlcore: ERROR command execute failure 19
+...
+WARNING: CPU: 0 PID: 1552 at drivers/net/wireless/ti/wlcore/main.c:803
+...
+(wl12xx_queue_recovery_work.part.0 [wlcore])
+(wl12xx_cmd_role_start_sta [wlcore])
+(wl1271_op_bss_info_changed [wlcore])
+(ieee80211_prep_connection [mac80211])
+
+Error 19 is defined as CMD_STATUS_WRONG_NESTING from the wlcore firmware,
+and seems to mean that the firmware no longer wants to see the quirk
+handling for WLCORE_QUIRK_START_STA_FAILS done.
+
+This quirk got added with commit 18eab430700d ("wlcore: workaround
+start_sta problem in wl12xx fw"), and it seems that this already got fixed
+in the firmware long time ago back in 2012 as wl18xx never had this quirk
+in place to start with.
+
+As we no longer even support firmware that early, to me it seems that it's
+safe to just drop WLCORE_QUIRK_START_STA_FAILS to fix the error. Looks
+like earlier firmware got disabled back in 2013 with commit 0e284c074ef9
+("wl12xx: increase minimum singlerole firmware version required").
+
+If it turns out we still need WLCORE_QUIRK_START_STA_FAILS with any
+firmware that the driver works with, we can simply revert this patch and
+add extra checks for firmware version used.
+
+With this fix wlcore reconnects properly after a beacon loss.
+
+Cc: Raz Bouganim <r-bouganim@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/net/wireless/ti/wl12xx/main.c   |  3 ---
+ drivers/net/wireless/ti/wlcore/main.c   | 15 +--------------
+ drivers/net/wireless/ti/wlcore/wlcore.h |  3 ---
+ 3 files changed, 1 insertion(+), 20 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/ti/wl12xx/main.c
+--- a/drivers/net/wireless/ti/wl12xx/main.c
++++ b/drivers/net/wireless/ti/wl12xx/main.c
+@@ -635,7 +635,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
+ 		wl->mr_fw_name = WL127X_FW_NAME_MULTI;
+@@ -659,7 +658,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 		wl->plt_fw_name = WL127X_PLT_FW_NAME;
+ 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
+@@ -688,7 +686,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 
+ 		wlcore_set_min_fw_ver(wl, WL128X_CHIP_VER,
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -2878,21 +2878,8 @@ static int wlcore_join(struct wl1271 *wl, struct wl12xx_vif *wlvif)
+ 
+ 	if (is_ibss)
+ 		ret = wl12xx_cmd_role_start_ibss(wl, wlvif);
+-	else {
+-		if (wl->quirks & WLCORE_QUIRK_START_STA_FAILS) {
+-			/*
+-			 * TODO: this is an ugly workaround for wl12xx fw
+-			 * bug - we are not able to tx/rx after the first
+-			 * start_sta, so make dummy start+stop calls,
+-			 * and then call start_sta again.
+-			 * this should be fixed in the fw.
+-			 */
+-			wl12xx_cmd_role_start_sta(wl, wlvif);
+-			wl12xx_cmd_role_stop_sta(wl, wlvif);
+-		}
+-
++	else
+ 		ret = wl12xx_cmd_role_start_sta(wl, wlvif);
+-	}
+ 
+ 	pm_runtime_mark_last_busy(wl->dev);
+ 	pm_runtime_put_autosuspend(wl->dev);
+diff --git a/drivers/net/wireless/ti/wlcore/wlcore.h b/drivers/net/wireless/ti/wlcore/wlcore.h
+--- a/drivers/net/wireless/ti/wlcore/wlcore.h
++++ b/drivers/net/wireless/ti/wlcore/wlcore.h
+@@ -547,9 +547,6 @@ wlcore_set_min_fw_ver(struct wl1271 *wl, unsigned int chip,
+ /* Each RX/TX transaction requires an end-of-transaction transfer */
+ #define WLCORE_QUIRK_END_OF_TRANSACTION		BIT(0)
+ 
+-/* the first start_role(sta) sometimes doesn't work on wl12xx */
+-#define WLCORE_QUIRK_START_STA_FAILS		BIT(1)
+-
+ /* wl127x and SPI don't support SDIO block size alignment */
+ #define WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN		BIT(2)
+ 
+-- 
+2.29.2
