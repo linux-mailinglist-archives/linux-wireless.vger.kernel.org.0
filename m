@@ -2,68 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79F952E8B59
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Jan 2021 09:24:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34CDE2E8C03
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Jan 2021 12:53:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726363AbhACIVw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 3 Jan 2021 03:21:52 -0500
-Received: from mout.gmx.net ([212.227.15.18]:40349 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725829AbhACIVw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 3 Jan 2021 03:21:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1609662012;
-        bh=k5HEp7s8K6E5K8g8odOAEu/I6EoXFn4zzfGpoedVYJ8=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=h4Y49bokhbV/ekbTHvhpVKnd9MvXBl/RGbMFd3l7dou7lK0fe6Ks1+3pfYeiIrDIb
-         uh/PAWFmxJrAYDuL02RW9j/J6xmNO45UsNqpL/DYBuQ1E5wOaotNbPKroH2OglNT8c
-         TW33RicuRvWU/TxlT8dGgzhJS4IeDCKjWOn/DfPg=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from E480.localdomain ([84.61.118.33]) by mail.gmx.com (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MdefD-1kMdw539xh-00ZcFv; Sun, 03
- Jan 2021 09:20:12 +0100
-Date:   Sun, 3 Jan 2021 09:20:04 +0100
-From:   Zhi Han <z.han@gmx.net>
-To:     tangzhenhao <tzh18@mails.tsinghua.edu.cn>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        amitkarwar@gmail.com
-Subject: Re: [PATCH] drivers/net: fix a null-ptr-deref bug in
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-Message-ID: <20210103081939.GA10783@E480.localdomain>
-References: <20201209132640.36031-1-tzh18@mails.tsinghua.edu.cn>
- <20201217163316.7C64DC433CA@smtp.codeaurora.org>
+        id S1726505AbhACLwm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 3 Jan 2021 06:52:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39966 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726308AbhACLwl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 3 Jan 2021 06:52:41 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58AFC0613C1
+        for <linux-wireless@vger.kernel.org>; Sun,  3 Jan 2021 03:51:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=0F/uxxh1tk4AUJOcgH4KenhrV2+HLWTwhG8pMC8H0AU=; b=WAMWaBavkg7Kw2zg6C0LnNbhz9
+        0Bi1K7T0wqB+TNEp/eMns2RgfRGiryT+XYAs9WkiumuBFV4iaBp/zN9shvAd9SmwIi5Si/T4J1uIB
+        6H8/zIKMMJeaw2tCU3gtfl7S1LRJevELjunoSsQOZ4agFIduQILVJmr91SI1kXOKOipQ=;
+Received: from p54ae91f2.dip0.t-ipconnect.de ([84.174.145.242] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1kw1vB-0000gv-VE; Sun, 03 Jan 2021 12:51:42 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH v2 1/8] mac80211: minstrel_ht: clean up CCK code
+Date:   Sun,  3 Jan 2021 12:51:33 +0100
+Message-Id: <20210103115140.18614-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201217163316.7C64DC433CA@smtp.codeaurora.org>
-X-Provags-ID: V03:K1:tS9Gpbzz3FVyqHWyFhfcVmGBBQSfveZbmGYXUF7OEwA2m6kIKot
- +gdDs2qw+OU4VOAIVUllrbwabT8xWeI/UI1aJ5kb1QZhwZ8bEBjV3VlGlpDqFnlqvgIE0mP
- +1+7w4LXhkmVTML+HTkxAFkCmLUBg7dX2E+ouvjMPjXZz/hqbgyPFoyDV4bMgNH/2d3syA4
- rPfzdqQaYGtGHbDeKsGSg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:sANg/PNJHSo=:zF5v0KY961CCt0g7tehGzC
- iW4hXgLa8ANutlJ2R41ydpq2hRsJYHIMW9lSu/WmRQhmqRFwFHD1rXVzDcYgV9lExPeCvyN6c
- Zi8Hhrmh7tAIdgJBmXY3zsuDBSRanmwHFc6cXP35xu3zOea7ZquhQwNiQDXrZEVau0eJUBf6F
- MBNNuq3Fwt7+QxlpjgFdbWgMefMoY0G4QYEA2x3pvWXMO3hlW71mriEvjtHU8Y0lI1fHIvKDH
- hBduBu9/6ttGUU5qgwLBymzP9LZ2+cy1xptIEd90JvR+mef5qiLEMNoUHX57J5uyS2r6CZ0ma
- YQkOK0kM8KfaClmzatoDzN1w8XFYMT7uwj4V6/uAvJQmE0J82vmAGsUNpDzP8ynADwXsSkfBf
- v4BQR0/+MYM5quUJjMD2k9GOdiiKUX30qsGEGfDKTiwkHxPaE54yhX6is6h3LXFL9KYTdaRGT
- WsZfAJVKPPogoA0nn+NeZ8GyQbdrEHgMquHWuP5dC59UYR0pd7hMWrIz93ztly3fO0yyMTXp+
- YExoyt/8Ic985ZkqOAjhiPru+ErNEG5nHyvL3O6wvhtXo/jCZmTA1SL/WAgvticYR+Cjp++Qz
- B/k4Tnnwq0Cov7U4cYdpjJEHLHjcmNlHChijKAKN+WLqrlYgUfH07EMobiEU3TGKni9VXr8YV
- QCIf578xFct8cq13rMMpeQXCysKJluNRQauY8Z1/ONEfxuVnL8CktrAkrlFsI1tTrt5Y4F6k0
- NefAxz51GDtO4CqFKW1/9dY+axWrES0WPr8BcRN5uOq6UpbSgjXtSexCmZ6g+ibzcOggzBPO8
- TGTBLZDheldot3Ib3MhgafIreonVNQddTf8QwP3j7Hv0fFheN45yBtruQg1WzZfvke5j1/OKz
- aZlRcwqWnPIOlw4KCfkQ==
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tangzhenhao <tzh18@mails.tsinghua.edu.cn> wrote:
+- move ack overhead out of rate duration table
+- remove cck_supported, cck_supported_short
 
-> At line 257 in drivers/net/wireless/marvell/mwifiex/uap_txrx.c, the ret-val of skb_copy should be checked to avoid null-ptr-deref bug.
->
-> Signed-off-by: tangzhenhao <tzh18@mails.tsinghua.edu.cn>
+Preparation for adding OFDM legacy rates support
 
-"\n" should be added at the end of message to avoid corrupting other logs
-and to output timely.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+v2: fix using legacy-rates overhead in tpt calculation
+ net/mac80211/rc80211_minstrel_ht.c | 54 +++++++++++++++++-------------
+ net/mac80211/rc80211_minstrel_ht.h |  5 ++-
+ 2 files changed, 32 insertions(+), 27 deletions(-)
+
+diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+index b11a2af55b06..167d4fa5adf1 100644
+--- a/net/mac80211/rc80211_minstrel_ht.c
++++ b/net/mac80211/rc80211_minstrel_ht.c
+@@ -136,20 +136,16 @@
+ 	__VHT_GROUP(_streams, _sgi, _bw,				\
+ 		    VHT_GROUP_SHIFT(_streams, _sgi, _bw))
+ 
+-#define CCK_DURATION(_bitrate, _short, _len)		\
++#define CCK_DURATION(_bitrate, _short)			\
+ 	(1000 * (10 /* SIFS */ +			\
+ 	 (_short ? 72 + 24 : 144 + 48) +		\
+-	 (8 * (_len + 4) * 10) / (_bitrate)))
+-
+-#define CCK_ACK_DURATION(_bitrate, _short)			\
+-	(CCK_DURATION((_bitrate > 10 ? 20 : 10), false, 60) +	\
+-	 CCK_DURATION(_bitrate, _short, AVG_PKT_SIZE))
++	 (8 * (AVG_PKT_SIZE + 4) * 10) / (_bitrate)))
+ 
+ #define CCK_DURATION_LIST(_short, _s)			\
+-	CCK_ACK_DURATION(10, _short) >> _s,		\
+-	CCK_ACK_DURATION(20, _short) >> _s,		\
+-	CCK_ACK_DURATION(55, _short) >> _s,		\
+-	CCK_ACK_DURATION(110, _short) >> _s
++	CCK_DURATION(10, _short) >> _s,			\
++	CCK_DURATION(20, _short) >> _s,			\
++	CCK_DURATION(55, _short) >> _s,			\
++	CCK_DURATION(110, _short) >> _s
+ 
+ #define __CCK_GROUP(_s)					\
+ 	[MINSTREL_CCK_GROUP] = {			\
+@@ -163,7 +159,7 @@
+ 	}
+ 
+ #define CCK_GROUP_SHIFT					\
+-	GROUP_SHIFT(CCK_ACK_DURATION(10, false))
++	GROUP_SHIFT(CCK_DURATION(10, false))
+ 
+ #define CCK_GROUP __CCK_GROUP(CCK_GROUP_SHIFT)
+ 
+@@ -349,15 +345,19 @@ int
+ minstrel_ht_get_tp_avg(struct minstrel_ht_sta *mi, int group, int rate,
+ 		       int prob_avg)
+ {
+-	unsigned int nsecs = 0;
++	unsigned int nsecs = 0, overhead = mi->overhead;
++	unsigned int ampdu_len = 1;
+ 
+ 	/* do not account throughput if sucess prob is below 10% */
+ 	if (prob_avg < MINSTREL_FRAC(10, 100))
+ 		return 0;
+ 
+-	if (group != MINSTREL_CCK_GROUP)
+-		nsecs = 1000 * mi->overhead / minstrel_ht_avg_ampdu_len(mi);
++	if (group == MINSTREL_CCK_GROUP)
++		overhead = mi->overhead_legacy;
++	else
++		ampdu_len = minstrel_ht_avg_ampdu_len(mi);
+ 
++	nsecs = 1000 * overhead / ampdu_len;
+ 	nsecs += minstrel_mcs_groups[group].duration[rate] <<
+ 		 minstrel_mcs_groups[group].shift;
+ 
+@@ -1031,7 +1031,10 @@ minstrel_calc_retransmit(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
+ 	ctime += (t_slot * cw) >> 1;
+ 	cw = min((cw << 1) | 1, mp->cw_max);
+ 
+-	if (index / MCS_GROUP_RATES != MINSTREL_CCK_GROUP) {
++	if (index / MCS_GROUP_RATES == MINSTREL_CCK_GROUP) {
++		overhead = mi->overhead_legacy;
++		overhead_rtscts = mi->overhead_legacy_rtscts;
++	} else {
+ 		overhead = mi->overhead;
+ 		overhead_rtscts = mi->overhead_rtscts;
+ 	}
+@@ -1369,18 +1372,14 @@ minstrel_ht_update_cck(struct minstrel_priv *mp, struct minstrel_ht_sta *mi,
+ 	if (!ieee80211_hw_check(mp->hw, SUPPORTS_HT_CCK_RATES))
+ 		return;
+ 
+-	mi->cck_supported = 0;
+-	mi->cck_supported_short = 0;
+ 	for (i = 0; i < 4; i++) {
+ 		if (!rate_supported(sta, sband->band, mp->cck_rates[i]))
+ 			continue;
+ 
+-		mi->cck_supported |= BIT(i);
++		mi->supported[MINSTREL_CCK_GROUP] |= BIT(i);
+ 		if (sband->bitrates[i].flags & IEEE80211_RATE_SHORT_PREAMBLE)
+-			mi->cck_supported_short |= BIT(i);
++			mi->supported[MINSTREL_CCK_GROUP] |= BIT(i + 4);
+ 	}
+-
+-	mi->supported[MINSTREL_CCK_GROUP] = mi->cck_supported;
+ }
+ 
+ static void
+@@ -1394,12 +1393,13 @@ minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sband,
+ 	struct ieee80211_mcs_info *mcs = &sta->ht_cap.mcs;
+ 	u16 ht_cap = sta->ht_cap.cap;
+ 	struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
++	const struct ieee80211_rate *ctl_rate;
++	bool ldpc, erp;
+ 	int use_vht;
+ 	int n_supported = 0;
+ 	int ack_dur;
+ 	int stbc;
+ 	int i;
+-	bool ldpc;
+ 
+ 	/* fall back to the old minstrel for legacy stations */
+ 	if (!sta->ht_cap.ht_supported)
+@@ -1423,6 +1423,14 @@ minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sband,
+ 	mi->overhead += ack_dur;
+ 	mi->overhead_rtscts = mi->overhead + 2 * ack_dur;
+ 
++	ctl_rate = &sband->bitrates[rate_lowest_index(sband, sta)];
++	erp = ctl_rate->flags & IEEE80211_RATE_ERP_G;
++	ack_dur = ieee80211_frame_duration(sband->band, 10,
++					   ctl_rate->bitrate, erp, 1,
++					   ieee80211_chandef_get_shift(chandef));
++	mi->overhead_legacy = ack_dur;
++	mi->overhead_legacy_rtscts = mi->overhead_legacy + 2 * ack_dur;
++
+ 	mi->avg_ampdu_len = MINSTREL_FRAC(1, 1);
+ 
+ 	/* When using MRR, sample more on the first attempt, without delay */
+@@ -1523,8 +1531,6 @@ minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sband,
+ 	if (!n_supported)
+ 		goto use_legacy;
+ 
+-	mi->supported[MINSTREL_CCK_GROUP] |= mi->cck_supported_short << 4;
+-
+ 	/* create an initial rate table with the lowest supported rates */
+ 	minstrel_ht_update_stats(mp, mi, true);
+ 	minstrel_ht_update_rates(mp, mi);
+diff --git a/net/mac80211/rc80211_minstrel_ht.h b/net/mac80211/rc80211_minstrel_ht.h
+index 53ea3c29debf..11300fa48a2f 100644
+--- a/net/mac80211/rc80211_minstrel_ht.h
++++ b/net/mac80211/rc80211_minstrel_ht.h
+@@ -77,6 +77,8 @@ struct minstrel_ht_sta {
+ 	/* overhead time in usec for each frame */
+ 	unsigned int overhead;
+ 	unsigned int overhead_rtscts;
++	unsigned int overhead_legacy;
++	unsigned int overhead_legacy_rtscts;
+ 
+ 	unsigned int total_packets_last;
+ 	unsigned int total_packets_cur;
+@@ -97,9 +99,6 @@ struct minstrel_ht_sta {
+ 	/* current MCS group to be sampled */
+ 	u8 sample_group;
+ 
+-	u8 cck_supported;
+-	u8 cck_supported_short;
+-
+ 	/* Bitfield of supported MCS rates of all groups */
+ 	u16 supported[MINSTREL_GROUPS_NB];
+ 
+-- 
+2.28.0
+
