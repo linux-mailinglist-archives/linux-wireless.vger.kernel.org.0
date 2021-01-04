@@ -2,68 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4F12E979E
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jan 2021 15:49:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 692E32E9B16
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jan 2021 17:31:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727187AbhADOs7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Jan 2021 09:48:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49728 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726098AbhADOs7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Jan 2021 09:48:59 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7071D207BC;
-        Mon,  4 Jan 2021 14:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1609771698;
-        bh=tMK9lgZTp2/PYxk2/HncYQK0TyrP7dM/vOybkysA4ls=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=O5IWFhMU5QgFCcWzhum7IkBzJ98LRTKf29hw+C7u2zDTWascteDhcVLFmEFB3Z1LV
-         CQALfQgyt2ileBW9dth1lC+I/miX0hslj580mwizB431pX91ml1MlTs+hFKXj18HpN
-         j557hRsNIxbrDZn6iZEqIRIxJEgv+yoP5yn1ZNUcbp6ZCaSCx0nfqJNBsg8TgiaCRv
-         3Z3kGZeXrefIV7tR99yYpV3Tb3FEDGqAUH8tbYT4o7E9zzZRl4bK4g7pGdjfpkd/YE
-         3cb/J1zKRoiSi/7YGdYJQaveVp7rLHH1UiySVbi7gSg0jOKUcJV20yoLNJB1A1yfW8
-         fgVTdq0eFNqog==
-Received: from johan by xi.lan with local (Exim 4.93.0.4)
-        (envelope-from <johan@kernel.org>)
-        id 1kwR9a-0007Hi-KG; Mon, 04 Jan 2021 15:48:15 +0100
-Date:   Mon, 4 Jan 2021 15:48:14 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
-        devel@driverdev.osuosl.org, devicetree@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, netdev@vger.kernel.org,
-        linux-mmc@vger.kernel.org,
-        Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH v3 09/24] wfx: add hwio.c/hwio.h
-Message-ID: <X/MqrvQSAPXkqFVF@hovoldconsulting.com>
-References: <20201104155207.128076-1-Jerome.Pouiller@silabs.com>
- <87lfdp98rw.fsf@codeaurora.org>
- <X+IQRct0Zsm87H4+@kroah.com>
- <4279510.LvFx2qVVIh@pc-42>
- <20210104123410.GN2809@kadam>
+        id S1727466AbhADQbk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Jan 2021 11:31:40 -0500
+Received: from mail-40133.protonmail.ch ([185.70.40.133]:23641 "EHLO
+        mail-40133.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727166AbhADQbk (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 4 Jan 2021 11:31:40 -0500
+Date:   Mon, 04 Jan 2021 16:30:50 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tmb.nu;
+        s=protonmail; t=1609777857;
+        bh=UAzq6VXinnupBjd/KA8CzFQATjdrvi602WtQUG6OgWo=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=kIU+7UYW9DLmCsQC5m5RW5ivs0c8Pnzb4kNfDg+t0zFulOzHz7iVH7PT/kRD493P8
+         OUnasWz9VLWIcLDOUiQRShsnP1q88i0Ue+e7kt5TRHBLkH5tOQZmN0B5/jkAhzxDLd
+         PO/WsBMwmM/ZU4OfC5+RRiDY1oah9vFOPmX46pmY=
+To:     linux-wireless@vger.kernel.org
+From:   Thomas Backlund <tmb@tmb.nu>
+Cc:     pkshih@realtek.com
+Reply-To: Thomas Backlund <tmb@tmb.nu>
+Subject: Re: [PATCH V2 00/18] rtw89: add Realtek 802.11ax driver
+Message-ID: <8b91811c-09d4-3ccb-1e7b-bb1c9fe77f9d@tmb.nu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210104123410.GN2809@kadam>
+Content-Type: multipart/mixed;
+ boundary="b1_prOotEj2tw0jnmKdsZXuM9k4dWmJYqiW0ZzuaQUV8"
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 04, 2021 at 03:34:10PM +0300, Dan Carpenter wrote:
+This is a multi-part message in MIME format.
 
-> There is a Smatch warning for this, but I hadn't looked at the results
-> in a while. :/  I'm not sure how many are valid.  Some kind of
-> annotation would be nice.
+--b1_prOotEj2tw0jnmKdsZXuM9k4dWmJYqiW0ZzuaQUV8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> drivers/usb/class/usblp.c:593 usblp_ioctl() error: doing dma on the stack (&newChannel)
-> drivers/usb/serial/iuu_phoenix.c:542 iuu_uart_flush() error: doing dma on the stack (&rxcmd)
+Den 4.1.2021 kl. 11:17, skrev Ping-Ke Shih:
+> This driver named rtw89, which is the next generation of rtw88, supports
+> Realtek 8852AE 802.11ax 2x2 chip whose new features are OFDMA, DBCC,
+> Spatial reuse, TWT and BSS coloring; now some of them aren't implemented
+> though.
+>=20
 
-I only looked at these two but they are are indeed valid, and I've now
-fixed them up.
+Hi, for some reason patch 16/18 does not show up in patchwork.
 
-Johan
+Where can one get the needed firmware:
+
+$ modinfo rtw89_core.ko.xz  |grep firmware
+firmware:       rtw89/rtw8852a_fw.bin
+
+
+Also, the driver is missing the pci alias to get autoloading to work,=20
+like the attached patch.
+
+--
+Thomas
+
+
+
+--b1_prOotEj2tw0jnmKdsZXuM9k4dWmJYqiW0ZzuaQUV8
+Content-Type: text/plain; name=net-wireless-rtw89-add-missing-MODULE_DEVICE_TABLE.patch
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=net-wireless-rtw89-add-missing-MODULE_DEVICE_TABLE.patch
+
+CkFkZCBtaXNzaW5nIE1PRFVMRV9ERVZJQ0VfVEFCTEUoKSBuZWVkZWQgZm9yIG1vZHVsZSBhdXRv
+bG9hZGluZwoKU2lnbmVkLW9mZi1ieTogVGhvbWFzIEJhY2tsdW5kIDx0bWJAbWFnZWlhLm9yZz4K
+CmRpZmYgLU51cnAgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5Zy9wY2kuYyBi
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcGNpLmMKLS0tIGEvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9wY2kuYworKysgYi9kcml2ZXJzL25ldC93aXJlbGVz
+cy9yZWFsdGVrL3J0dzg5L3BjaS5jCkBAIC0yNTUzLDYgKzI1NTMsNyBAQCBzdGF0aWMgY29uc3Qg
+c3RydWN0IHBjaV9kZXZpY2VfaWQgcnR3ODlfCiAJeyBQQ0lfREVWSUNFKFBDSV9WRU5ET1JfSURf
+UkVBTFRFSywgMHg4ODUyKSwgLmRyaXZlcl9kYXRhID0gUlRMODg1MkEgfSwKIAl7fSwKIH07CitN
+T0RVTEVfREVWSUNFX1RBQkxFKHBjaSwgcnR3ODlfcGNpX2lkX3RhYmxlKTsKIAogc3RhdGljIHN0
+cnVjdCBwY2lfZHJpdmVyIHJ0dzg5X3BjaV9kcml2ZXIgPSB7CiAJLm5hbWUJCT0gInJ0dzg5X3Bj
+aSIsCg==
+
+--b1_prOotEj2tw0jnmKdsZXuM9k4dWmJYqiW0ZzuaQUV8--
+
