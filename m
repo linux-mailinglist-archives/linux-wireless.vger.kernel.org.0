@@ -2,142 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 125922E9BB9
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jan 2021 18:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AAC32E9C76
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Jan 2021 19:01:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727247AbhADRIu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Jan 2021 12:08:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:47001 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726300AbhADRIu (ORCPT
+        id S1727008AbhADSBI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Jan 2021 13:01:08 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:33089 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725921AbhADSBH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Jan 2021 12:08:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1609780043;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=2de/+aI5hpKlvLFsaL1DCMrkMJh+VBZyPlNqnu8zUTI=;
-        b=RCx57qhmjY3+xNtTjdihKWPaJSLY8/8zgzbrpV5WMCnIL3E4z02Nfj6yJCcdtwy1cvID84
-        vwBiXGdc0DwFEx/JWJYuPZYSCIIcI5yT+jCm8s9I1j3gBdtTInsQ+hmprFvImYOXWMEzOG
-        SlXXjV3NHx+qo5Vys6NWFkY6WGYoCdk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-429-AGzmScoiOH6WoGV6VKqzvQ-1; Mon, 04 Jan 2021 12:07:20 -0500
-X-MC-Unique: AGzmScoiOH6WoGV6VKqzvQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 87FF4100F340;
-        Mon,  4 Jan 2021 17:07:17 +0000 (UTC)
-Received: from x1.localdomain (ovpn-112-167.ams2.redhat.com [10.36.112.167])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 858C86F921;
-        Mon,  4 Jan 2021 17:07:14 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH] cfg80211: Fix "suspicious RCU usage in wiphy_apply_custom_regulatory" warning/backtrace
-Date:   Mon,  4 Jan 2021 18:07:13 +0100
-Message-Id: <20210104170713.66956-1-hdegoede@redhat.com>
+        Mon, 4 Jan 2021 13:01:07 -0500
+X-UUID: c26855aad3e047ef876eb9863c9bf4e5-20210105
+X-UUID: c26855aad3e047ef876eb9863c9bf4e5-20210105
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1940004791; Tue, 05 Jan 2021 02:00:21 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 5 Jan 2021 02:00:20 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 5 Jan 2021 02:00:20 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <ryder.lee@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, Sean Wang <objelf@gmail.com>
+Subject: [PATCH -next v5 00/15]  introduce mt7921e support
+Date:   Tue, 5 Jan 2021 02:00:04 +0800
+Message-ID: <cover.1609781247.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit beee24695157 ("cfg80211: Save the regulatory domain when
-setting custom regulatory") adds a get_wiphy_regdom call to
-wiphy_apply_custom_regulatory. But as the comment above
-wiphy_apply_custom_regulatory says:
-"/* Used by drivers prior to wiphy registration */"
-this function is used by driver's probe function before the wiphy is
-registered and at this point wiphy->regd will typically by NULL and
-calling rcu_dereference_rtnl on a NULL pointer causes the following
-warning/backtrace:
+From: Sean Wang <objelf@gmail.com>
 
-=============================
-WARNING: suspicious RCU usage
-5.11.0-rc1+ #19 Tainted: G        W
------------------------------
-net/wireless/reg.c:144 suspicious rcu_dereference_check() usage!
+Introduce support for mt7921e 802.11ax (Wi-Fi 6) 2x2:2SS chipset.
 
-other info that might help us debug this:
+v2:
+- Mark the patch as -next
 
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by kworker/2:0/22:
- #0: ffff9a4bc104df38 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x1ee/0x570
- #1: ffffb6e94010be78 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: process_one_work+0x1ee/0x570
+v3:
+- Remove sw scan support
+- Get rid of dbdc code
+- Run mt7921_configure_filter hodling mt76 mutex
+- Correct Txp programming in Txd
+- Correct fw log to host command
+- Correct eeprom offset definition
+- Update rate adaption info report
+- Remove unused code and fields in struture
+- Split the previous driver into several patches for easy review
 
-stack backtrace:
-CPU: 2 PID: 22 Comm: kworker/2:0 Tainted: G        W         5.11.0-rc1+ #19
-Hardware name: LENOVO 60073/INVALID, BIOS 01WT17WW 08/01/2014
-Workqueue: events request_firmware_work_func
-Call Trace:
- dump_stack+0x8b/0xb0
- get_wiphy_regdom+0x57/0x60 [cfg80211]
- wiphy_apply_custom_regulatory+0xa0/0xf0 [cfg80211]
- brcmf_cfg80211_attach+0xb02/0x1360 [brcmfmac]
- brcmf_attach+0x189/0x460 [brcmfmac]
- brcmf_sdio_firmware_callback+0x78a/0x8f0 [brcmfmac]
- brcmf_fw_request_done+0x67/0xf0 [brcmfmac]
- request_firmware_work_func+0x3d/0x70
- process_one_work+0x26e/0x570
- worker_thread+0x55/0x3c0
- ? process_one_work+0x570/0x570
- kthread+0x137/0x150
- ? __kthread_bind_mask+0x60/0x60
- ret_from_fork+0x22/0x30
+v4:
+- introduce sched scan support
+- introduce 802.11 PS support in sta mode
+- introduce support for hardware beacon filter
+- introduce beacon_loss mcu event
+- introduce PM support
+- refine sta_rec_phy and add sta_rec_ra_info
+- remove incorrect mt7921_mcu_tx_config member
+- fix erroneous endianness conversion in mt7921_tx_complete_skb()
+- fix endianness warning in mt7921_get_wtbl_info()
+- fix endianness warnings in mt7921_mcu_sta_tlv()
+- remove unused code in mt7921_mcu_send_message
+- remove scan with random mac until fw is ready
+- channel domain is added for hw scan
 
-Add a check for wiphy->regd being NULL before calling get_wiphy_regdom
-(as is already done in other places) to fix this.
+v5:
+- fix implicit conversion from enumeration type
+- remove unused function declaration
+- drop zero-length packet to avoid Tx hang
+- fix MT_CIPHER_BIP_CMAC_128 setkey
+- reset token when mac_reset happens
+- create mac.h when mac support is added
+- reorder the patch of adding module support
+- move mac_work in mt76_core module
+- move chainmask in mt76_phy
+- rebase per moving mac_work in mt76_core module
+- rebase per moving chainmask in mt76_phy
 
-wiphy->regd will likely always be NULL when wiphy_apply_custom_regulatory
-gets called, so arguably the tmp = get_wiphy_regdom() and
-rcu_free_regdom(tmp) calls should simply be dropped, this patch keeps the
-2 calls, to allow drivers to call wiphy_apply_custom_regulatory more then
-once if necessary.
+Lorenzo Bianconi (2):
+  mt76: move mac_work in mt76_core module
+  mt76: move chainmask in mt76_phy
 
-Cc: Ilan Peer <ilan.peer@intel.com>
-Fixes: beee24695157 ("cfg80211: Save the regulatory domain when setting custom regulator")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- net/wireless/reg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Sean Wang (13):
+  mt76: mt7921: add MAC support
+  mt76: mt7921: add MCU support
+  mt76: mt7921: add DMA support
+  mt76: mt7921: add EEPROM support
+  mt76: mt7921: add ieee80211_ops
+  mt76: mt7921: introduce mt7921e support
+  mt76: mt7921: add debugfs support
+  mt76: mt7921: add module support
+  mt76: mt7921: introduce schedule scan support
+  mt76: mt7921: introduce 802.11 PS support in sta mode
+  mt76: mt7921: introduce support for hardware beacon filter
+  mt76: mt7921: introduce beacon_loss mcu event
+  mt76: mt7921: introduce PM support
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index bb72447ad960..9254b9cbaa21 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -2547,7 +2547,7 @@ static void handle_band_custom(struct wiphy *wiphy,
- void wiphy_apply_custom_regulatory(struct wiphy *wiphy,
- 				   const struct ieee80211_regdomain *regd)
- {
--	const struct ieee80211_regdomain *new_regd, *tmp;
-+	const struct ieee80211_regdomain *new_regd, *tmp = NULL;
- 	enum nl80211_band band;
- 	unsigned int bands_set = 0;
- 
-@@ -2571,7 +2571,8 @@ void wiphy_apply_custom_regulatory(struct wiphy *wiphy,
- 	if (IS_ERR(new_regd))
- 		return;
- 
--	tmp = get_wiphy_regdom(wiphy);
-+	if (wiphy->regd)
-+		tmp = get_wiphy_regdom(wiphy);
- 	rcu_assign_pointer(wiphy->regd, new_regd);
- 	rcu_free_regdom(tmp);
- }
--- 
-2.28.0
+ drivers/net/wireless/mediatek/mt76/Kconfig    |    1 +
+ drivers/net/wireless/mediatek/mt76/Makefile   |    1 +
+ drivers/net/wireless/mediatek/mt76/mt76.h     |    5 +-
+ .../net/wireless/mediatek/mt76/mt7603/init.c  |    2 +-
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   |   14 +-
+ .../net/wireless/mediatek/mt76/mt7603/main.c  |   10 +-
+ .../wireless/mediatek/mt76/mt7603/mt7603.h    |    2 -
+ .../wireless/mediatek/mt76/mt7615/eeprom.c    |    2 +-
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |   16 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |   27 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |   15 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |    4 +-
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |    5 -
+ .../wireless/mediatek/mt76/mt7615/testmode.c  |    4 +-
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |    2 +-
+ .../net/wireless/mediatek/mt76/mt76x0/pci.c   |    4 +-
+ .../net/wireless/mediatek/mt76/mt76x0/usb.c   |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h  |    2 -
+ .../net/wireless/mediatek/mt76/mt76x02_mac.c  |   10 +-
+ .../net/wireless/mediatek/mt76/mt76x02_phy.c  |    4 +-
+ .../net/wireless/mediatek/mt76/mt76x02_util.c |    6 +-
+ .../net/wireless/mediatek/mt76/mt76x2/mcu.c   |    2 +-
+ .../wireless/mediatek/mt76/mt76x2/pci_init.c  |    2 +-
+ .../wireless/mediatek/mt76/mt76x2/pci_main.c  |    4 +-
+ .../wireless/mediatek/mt76/mt76x2/usb_init.c  |    2 +-
+ .../wireless/mediatek/mt76/mt76x2/usb_main.c  |    2 +-
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    |    2 +-
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |   17 +-
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   |   31 +-
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |   11 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |    8 +-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |    3 -
+ .../wireless/mediatek/mt76/mt7915/testmode.c  |    2 +-
+ .../net/wireless/mediatek/mt76/mt7921/Kconfig |   10 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |    5 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  178 +
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   |  356 ++
+ .../wireless/mediatek/mt76/mt7921/eeprom.c    |  101 +
+ .../wireless/mediatek/mt76/mt7921/eeprom.h    |   27 +
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  254 ++
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 1393 ++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |  333 ++
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 1051 ++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 2932 +++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 1175 +++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  377 +++
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  279 ++
+ .../net/wireless/mediatek/mt76/mt7921/regs.h  |  413 +++
+ 48 files changed, 8995 insertions(+), 115 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/init.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/main.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+
+--
+2.25.1
 
