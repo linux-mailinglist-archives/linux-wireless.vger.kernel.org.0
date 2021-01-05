@@ -2,111 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11DC42EA871
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Jan 2021 11:20:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B511C2EA8A6
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Jan 2021 11:28:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728917AbhAEKSz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Jan 2021 05:18:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45892 "EHLO
+        id S1729086AbhAEK21 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Jan 2021 05:28:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728806AbhAEKSy (ORCPT
+        with ESMTP id S1728070AbhAEK20 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Jan 2021 05:18:54 -0500
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D30CC061794
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Jan 2021 02:18:13 -0800 (PST)
-Received: by mail-qt1-x832.google.com with SMTP id y15so20479297qtv.5
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Jan 2021 02:18:13 -0800 (PST)
+        Tue, 5 Jan 2021 05:28:26 -0500
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D9EC061794;
+        Tue,  5 Jan 2021 02:27:46 -0800 (PST)
+Received: by mail-il1-x135.google.com with SMTP id q1so28137193ilt.6;
+        Tue, 05 Jan 2021 02:27:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pMYQCAQWDtb84xfdYjobTQDbgkruCJE1yZlI8ZVFvYI=;
-        b=GgLBoJE6REBZZeN9jf4/mUkTuE1eSkNE7rK+Kq/plkgbiSOyIwRF0N76kstEsJfhqR
-         GAX40plhePPiQaTjQKedi+rFi+HHdNeMMuZeWw2vf0IQRfAF5d4UsjPjMIMUDJFbMYOP
-         TA5BOo82lOF9qn+td2DolkcwRPOyjrYSKwWMBSJTJEy5sgvJxM9qEot3L9nTxfU1gwrL
-         4QbA6Rr0oKKGB+aUwhz0fs+L+zYx+KW9y9vGxfzYaF3JVSyU0x/9NjIJ2ax+C2tAfnLg
-         3IarKaC2f2gB317AkMSnwc+tubukPoTvC2/ReVE8Sx3Ip5VdLnbSzVaSTvQ+RTtlS3PN
-         LOAA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=06leFnGIwZWTXa+9aYwJRfo3DhaEXdzqEroBMYOjBd0=;
+        b=aV6Ifn8nUdMOFZVbPeCtaLLo1n3NMKzV13YxYcALQ9yNnh63ZGBcz0yrsuMVbqdGN+
+         ESDInYfpGrzjGvaWjmLXxWJicgeb84Etua5GAKGnx6U23u2fhmzOrXO9PpX13dRUD+tV
+         An8sFeiUG4LWRRZR1UkXtFPmKb6oc9G+eq5/aRzhuqJNDzDt3FoZfQgPmkebU5dadCk2
+         X9pCDLP5oYX06OZeTG0uaBjSG/iPaFyxTOAPlbDZZmhja+AM5t4nAxhl0Z/lwqqFOYzG
+         KaUFG/KoUpVZdVcyU+jw2+RrS3MQkwJtsba0VfDrfYoAypeuQufhG9r4Ar/W01gjEO62
+         HHkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pMYQCAQWDtb84xfdYjobTQDbgkruCJE1yZlI8ZVFvYI=;
-        b=ManChBH+eI3xemjOKToyi+ZJQ5lGd2Iaa1NwquZ1IJNq+5TqGYJSLi760MOZ2FgCbg
-         dGM7YLeofWh69eCyJWdCNrkwSRjQFGX8dYPWH7GHuaaLAhL/yAUdZ+WRW7t8iX6mHXXu
-         0V15bQNMuJ/xriIp2TJ2sj6ZeSCAnI+anIkUkk+iIk89sDn8DToE98Tlj/AOe2qO+HIq
-         wvx4559RCHi2OClyaCq4D4v9Hia3LMe8imoTURFKnEBM1/583H8VJ8v9I/OIabzY2PPi
-         NZwWE9tIy8tU8azfKxXWnOwM/DperOF7mB58gnyyIsLpWQ4w2bSnUJBei+VmSNQRw/4B
-         cQXw==
-X-Gm-Message-State: AOAM532vc+ezr12wfS/D1zwYLNxOSisP4k0lC4qM/mOG+rsfIw58Bnra
-        I7pKzJVgHXd47IjOcPs9/aX2uKVK4OknJHAH6gUwJw==
-X-Google-Smtp-Source: ABdhPJyPOGOYfXQAa5Uf3wjzOjx+ej22GkgAYLJNUJnd0ZZNaODQnPz1v4Ic02fufK7i6DwgVTGtnQHq0ScCPPJTFvY=
-X-Received: by 2002:ac8:4986:: with SMTP id f6mr74754126qtq.43.1609841892486;
- Tue, 05 Jan 2021 02:18:12 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=06leFnGIwZWTXa+9aYwJRfo3DhaEXdzqEroBMYOjBd0=;
+        b=aIx6vGNJoHj/5wK0i8dwbDhlzRb0ebNPuEnGvfd1FX9d1RsM2OgLjl3koI7rnTV7FA
+         vOmLGgZSXKy5rvRi6xsK6K9zVJy85FBi0oSNdWdYHWLFOB5UpSx549ZpoVLxm1xaid1A
+         UuNn19A0omytNvAzlMBdWgRKsm87WG0eWx6Kk3U0BB5OkCwEnpFArZnjIfDBg+fh74Pa
+         ede9RuoeyStisNxLgktNzDFNRh2WMuA5MEDLdJPjOOHPGFtVOhbLc4/qjyc67YGuj+J2
+         Skr8/BBg4mM24nhyCP9TPiu69h6bZv5CTp5NvstdpSUZ+jOdBVS3NHe9qlNlJYMOQwA1
+         xTkg==
+X-Gm-Message-State: AOAM531igK8Mu1b+VnYJm1cQvT+2pU/9ya9NV/dtpFSYhecBUH821ojK
+        BrW1sp4IacsYB40z7hTE70E=
+X-Google-Smtp-Source: ABdhPJwR+m757T7Pq5kNO9i+0WLiQmzubbeAflBMnJdCJtnXAFx/wxlIZe27CtSZ/Vq0JjUvouFIEQ==
+X-Received: by 2002:a92:d44e:: with SMTP id r14mr74244168ilm.83.1609842465881;
+        Tue, 05 Jan 2021 02:27:45 -0800 (PST)
+Received: from localhost.localdomain ([156.146.37.136])
+        by smtp.gmail.com with ESMTPSA id p18sm43514830ile.27.2021.01.05.02.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Jan 2021 02:27:45 -0800 (PST)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, christophe.jaillet@wanadoo.fr,
+        Larry.Finger@lwfinger.net, baijiaju1990@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Subject: [PATCH] drivers: wireless: rtlwifi: rtl8192ce: Fix construction of word rtl8192ce/trx.c
+Date:   Tue,  5 Jan 2021 15:57:51 +0530
+Message-Id: <20210105102751.21237-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <000000000000bbdb3b05b0477890@google.com> <CACT4Y+arc_qxVnb1+FZUzEM32eDBe7zYgZhcSCgyMUMwKkkeDw@mail.gmail.com>
- <a63808e2-3e76-596c-c0be-64922620820a@broadcom.com> <CACT4Y+ZkwMZ3Bu77WGtmOGihNbgspdicEq5d_LA1hDVL=KkZyA@mail.gmail.com>
-In-Reply-To: <CACT4Y+ZkwMZ3Bu77WGtmOGihNbgspdicEq5d_LA1hDVL=KkZyA@mail.gmail.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Tue, 5 Jan 2021 11:18:01 +0100
-Message-ID: <CACT4Y+aMM0HkZbQ6dkmG8jmLaj1cH0oLJGzRskFM3Q3k+ywJ5Q@mail.gmail.com>
-Subject: Re: WARNING: CPU: 1
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     syzbot <syzbot+3640e696903873858f7e@syzkaller.appspotmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Sep 28, 2020 at 12:04 PM Dmitry Vyukov <dvyukov@google.com> wrote:
->
-> On Mon, Sep 28, 2020 at 11:31 AM Arend Van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
-> >
-> > On 9/27/2020 10:47 AM, Dmitry Vyukov wrote:
-> > > On Sun, Sep 27, 2020 at 10:38 AM syzbot
-> > > <syzbot+3640e696903873858f7e@syzkaller.appspotmail.com> wrote:
-> > >>
-> > >> Hello,
-> > >>
-> > >> syzbot found the following issue on:
-> > >>
-> > >> HEAD commit:    748d1c8a Merge branch 'devlink-Use-nla_policy-to-validate-..
-> > >> git tree:       net-next
-> > >> console output: https://syzkaller.appspot.com/x/log.txt?x=13ac3ec3900000
-> > >> kernel config:  https://syzkaller.appspot.com/x/.config?x=51fb40e67d1e3dec
-> > >> dashboard link: https://syzkaller.appspot.com/bug?extid=3640e696903873858f7e
-> > >> compiler:       gcc (GCC) 10.1.0-syz 20200507
-> > >> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1599be03900000
-> > >> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=149fd44b900000
-> > >
-> > > Based on the reproducer, this looks like some wireless bug.
-> > > +net/wireless maintainers.
-> >
-> > I don't think so looking at this part of the stacktrace:
-> >
-> > [   51.814941]  [<ffffffff8465cc95>] macvlan_common_newlink+0xa15/0x1720
-> > [   51.833542]  [<ffffffff84662548>] macvtap_newlink+0x128/0x230
-> > [   51.858008]  [<ffffffff85b68bfe>] rtnl_newlink+0xe5e/0x1780
-> > [   51.925885]  [<ffffffff85b5d32b>] rtnetlink_rcv_msg+0x22b/0xc20
-> >
-> > Regards,
-> > Arend
->
-> That's the trace on the oldest release and the bisection was diverged
-> somewhere midway.
-> You may see this in the bisection log:
-> https://syzkaller.appspot.com/text?tag=Log&x=1474aaad900000
->
-> Initially it crashed with this warning:
-> all runs: crashed: WARNING in sta_info_insert_rcu
->
-> This function is in net/mac80211/sta_info.c.
+s/defautly/de-faulty/p
 
-#syz dup: WARNING in sta_info_insert_rcu
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c
+index 4165175cf5c0..d53397e7eb2e 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/trx.c
+@@ -671,7 +671,7 @@ bool rtl92ce_is_tx_desc_closed(struct ieee80211_hw *hw,
+ 	u8 own = (u8)rtl92ce_get_desc(hw, entry, true, HW_DESC_OWN);
+
+ 	/*beacon packet will only use the first
+-	 *descriptor defautly,and the own may not
++	 *descriptor de-faulty,and the own may not
+ 	 *be cleared by the hardware
+ 	 */
+ 	if (own)
+--
+2.26.2
+
