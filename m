@@ -2,67 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE7F52EAA42
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Jan 2021 12:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 987BB2EAAF5
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Jan 2021 13:33:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729856AbhAEL4X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Jan 2021 06:56:23 -0500
-Received: from smtprelay0228.hostedemail.com ([216.40.44.228]:35568 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726074AbhAEL4X (ORCPT
+        id S1730439AbhAEMdL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Jan 2021 07:33:11 -0500
+Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:33142 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728193AbhAEMdL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Jan 2021 06:56:23 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id C3DED12FB;
-        Tue,  5 Jan 2021 11:55:41 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1568:1593:1594:1711:1714:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3622:3865:3866:3867:3868:3871:3872:3873:4321:5007:6691:6742:7652:10004:10400:10848:11232:11658:11914:12297:12663:12740:12760:12895:13069:13161:13229:13255:13311:13357:13439:14180:14659:21060:21080:21627:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
-X-HE-Tag: talk84_2e09490274d8
-X-Filterd-Recvd-Size: 1813
-Received: from [192.168.1.159] (unknown [47.151.137.21])
-        (Authenticated sender: joe@perches.com)
-        by omf06.hostedemail.com (Postfix) with ESMTPA;
-        Tue,  5 Jan 2021 11:55:39 +0000 (UTC)
-Message-ID: <d6ee8f44f9ca285f17bdec972bcd0abb89fe64d6.camel@perches.com>
-Subject: Re: [PATCH] drivers: net: wireless: realtek: Fix the word
- association defautly de-faulty
-From:   Joe Perches <joe@perches.com>
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
-        Julian Calaby <julian.calaby@gmail.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        zhengbin13@huawei.com, baijiaju1990@gmail.com,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Date:   Tue, 05 Jan 2021 03:55:38 -0800
-In-Reply-To: <X/RQeqAikxaCO2o0@Gentoo>
-References: <20210105101738.13072-1-unixbhaskar@gmail.com>
-         <CAGRGNgX-JSPW8LSmAUbm=2jkx+K4EYdntCq6P2i8td0TUk7Nww@mail.gmail.com>
-         <X/RD/pll4UoRJG0w@Gentoo>
-         <CAGRGNgVHcOjt4at+tzgrPxn=04_Y3b16pihDw6xucg4Eh1GFSA@mail.gmail.com>
-         <X/RQeqAikxaCO2o0@Gentoo>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        Tue, 5 Jan 2021 07:33:11 -0500
+X-Greylist: delayed 361 seconds by postgrey-1.27 at vger.kernel.org; Tue, 05 Jan 2021 07:33:11 EST
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 3A7764360B;
+        Tue,  5 Jan 2021 04:26:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 3A7764360B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1609849579;
+        bh=dqacq57BwfJiDCTL9AzYfcuPIbbrixYEESPcebrImCk=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=g25hw1XUlLEX9qmSHmnqgRl4kLCVwVWE6aLzRQt3rNe3BrKbNS0s0H1Zmb05lGAlt
+         lgE5WRoCufnA/0i8ToDmZo7efJzctaMkqlHqd0MUr9I20JMc3Zro7jwncJ5zInzQY2
+         f3eGU+PEjF5/ypDJCkEjTMwITJ0jUOmnC74r+/1g=
+Received: from [10.230.41.55] (unknown [10.230.41.55])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 828FA187289;
+        Tue,  5 Jan 2021 04:26:18 -0800 (PST)
+Subject: Re: [PATCH] cfg80211: add VHT rate entries for MCS-10 and MCS-11
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+References: <20210105102250.3473-1-arend.vanspriel@broadcom.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <aa8ea0e1-4f9f-0f3b-ec37-3b59427b1f3c@broadcom.com>
+Date:   Tue, 5 Jan 2021 13:26:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
+In-Reply-To: <20210105102250.3473-1-arend.vanspriel@broadcom.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-01-05 at 17:11 +0530, Bhaskar Chowdhury wrote:
-> On 22:24 Tue 05 Jan 2021, Julian Calaby wrote:
-> > Hi Bhaskar,
-[]
-> > and your change is just making this comment worse.
-> really??? Not sure about it.
+On 05-01-2021 11:22, Arend van Spriel wrote:
+> Observed the warning in cfg80211_calculate_bitrate_vht() using an
+> 11ac chip reporting MCS-11. Since devices reporting non-standard
+> MCS-9 is already supported add similar entries for MCS-10 and MCS-11.
+> 
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> ---
+>   net/wireless/util.c | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
 
-I agree with Julian.  I'm fairly sure it's worse.
-The change you suggest doesn't parse well and is extremely odd.
-If you _really_ want to just change this use (and the others),
-I repeat his suggestion of "by default".
+Submitted a V2 so please discard this one.
 
-
+Regards,
+Arend
+---
+V1:https://patchwork.kernel.org/project/linux-wireless/patch/20210105102250.3473-1-arend.vanspriel@broadcom.com/
+V2: 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210105105839.3795-1-arend.vanspriel@broadcom.com/
