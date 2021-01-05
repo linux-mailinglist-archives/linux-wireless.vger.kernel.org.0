@@ -2,62 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F5672EA8ED
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Jan 2021 11:38:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CB2D2EA8F2
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Jan 2021 11:39:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729234AbhAEKgB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Jan 2021 05:36:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48556 "EHLO
+        id S1728789AbhAEKiy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Jan 2021 05:38:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728431AbhAEKgA (ORCPT
+        with ESMTP id S1728574AbhAEKix (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Jan 2021 05:36:00 -0500
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5983BC061574;
-        Tue,  5 Jan 2021 02:35:20 -0800 (PST)
-Received: by mail-io1-xd2f.google.com with SMTP id n4so27749116iow.12;
-        Tue, 05 Jan 2021 02:35:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=60AIUV4Jg1QdrWGAn445MgDZhFfwHKWY+s8i6/NBKBU=;
-        b=jCV95JyANFiRlp6NDcE4707Vv5U1woOyRCb/FSUewRJhD3KRIGIoiEWAPJPZ2cem9e
-         EMPVmFUKWkCW2wpJLCH7PywnmGUTAAD76N+ReMlG8ED8/8k8YJMFNR4k67jKZRBO4Q7A
-         +VnmQgU1pCOoXfdx7EpMUmWQI5LGZPRr9pEQyE/92focAl2F/04tRklXDSk2gKbJm+/Z
-         IIm593JUGDQeKhAyrQEWbb8oMFsfguUWCnYnVn5zai0Z6LmTfqOHqagjSgbp9PuBIV1q
-         CzUHIyOauxK0CibgiyBg7Hn1iuBg/6wMbxKwXQWdnEsYnu97H426WVV7MZP7yOedm30o
-         fc2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=60AIUV4Jg1QdrWGAn445MgDZhFfwHKWY+s8i6/NBKBU=;
-        b=Iqzu5AB/RjmIiZfNvTtfs4c2HF8BJ+H5zHEXm0A2jgZ20qewRzWE4ChWsUpldh3Y5H
-         AvbN6dM5IAVtanC8B+1Zx79BKNY2wJDzxgaS7TsSM3YuCTYIMe9FyZgaiVES5JuOvNqy
-         /IDGO3HVB+DMVrcRbId2n4WHb8gdwroYfTdqCeODTK1/07XtXEd7sywo6PddcYQjWIrs
-         XGQpuEiZooL3HdInDWKsXJvjTfG9xmqPBgcERWwtzOr0Ttr32CE+Qg9+O8SCgec/xmSw
-         biPcTduAgv+GKjlh3sQpg5wAltCBjOuommAMB7NqlUt5/JIK2FKu0eRDeAeXdNZY1IEY
-         YsjA==
-X-Gm-Message-State: AOAM531joaxtbM4mzsUxiEnm8XgIBD5CjPcK3ueyuvBf9KY/Md236o1j
-        phJ/7oEQBow+bIt7iQg+EpqS0dV/UjRL1wKw
-X-Google-Smtp-Source: ABdhPJzu3JB9gA9Gcz17wryDh6pSt/WfoquSP+LPAaxzNkC/Acsp01pkY2F8T7eC5yWfmeCS3iCyRQ==
-X-Received: by 2002:a02:ccdc:: with SMTP id k28mr63881476jaq.137.1609842919849;
-        Tue, 05 Jan 2021 02:35:19 -0800 (PST)
-Received: from localhost.localdomain ([156.146.37.136])
-        by smtp.gmail.com with ESMTPSA id r3sm42589955ilt.76.2021.01.05.02.35.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Jan 2021 02:35:19 -0800 (PST)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, Larry.Finger@lwfinger.net,
-        christophe.jaillet@wanadoo.fr, zhengbin13@huawei.com,
-        baijiaju1990@gmail.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH] drivers: rtlwifi: rtl8723ae: Fix word association in trx.c
-Date:   Tue,  5 Jan 2021 16:05:25 +0530
-Message-Id: <20210105103525.28159-1-unixbhaskar@gmail.com>
+        Tue, 5 Jan 2021 05:38:53 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F606C061574
+        for <linux-wireless@vger.kernel.org>; Tue,  5 Jan 2021 02:38:13 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kwjiV-001wMK-Ki; Tue, 05 Jan 2021 11:38:10 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: [PATCH v2] cfg80211/mac80211: fix kernel-doc for SAR APIs
+Date:   Tue,  5 Jan 2021 11:38:04 +0100
+Message-Id: <20210105113717.ae7e89ee09ea.I8b9f0a9cbfe186931ef9640046f414371f216914@changeid>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,24 +33,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
+
+A stray @ caused the kernel-doc parser to not understand
+this, fix that. Also add some missing kernel-doc.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Fixes: 6bdb68cef7bf ("nl80211: add common API to configure SAR power limitations")
+Fixes: c534e093d865 ("mac80211: add ieee80211_set_sar_specs")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/cfg80211.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
-index 340b3d68a54e..59e0a04b167d 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/trx.c
-@@ -673,7 +673,7 @@ bool rtl8723e_is_tx_desc_closed(struct ieee80211_hw *hw,
-
- 	/**
- 	 *beacon packet will only use the first
--	 *descriptor defautly,and the own may not
-+	 *descriptor de-faulty,and the own may not
- 	 *be cleared by the hardware
- 	 */
- 	if (own)
---
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 9a4bbccddc7f..1b3954afcda4 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1756,7 +1756,7 @@ struct cfg80211_sar_specs {
+ 
+ 
+ /**
+- * @struct cfg80211_sar_chan_ranges - sar frequency ranges
++ * struct cfg80211_sar_chan_ranges - sar frequency ranges
+  * @start_freq:  start range edge frequency
+  * @end_freq:    end range edge frequency
+  */
+@@ -3972,6 +3972,8 @@ struct mgmt_frame_regs {
+  *	This callback may sleep.
+  * @reset_tid_config: Reset TID specific configuration for the peer, for the
+  *	given TIDs. This callback may sleep.
++ *
++ * @set_sar_specs: Update the SAR (TX power) settings.
+  */
+ struct cfg80211_ops {
+ 	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
+@@ -4929,6 +4931,7 @@ struct wiphy_iftype_akm_suites {
+  * @max_data_retry_count: maximum supported per TID retry count for
+  *	configuration through the %NL80211_TID_CONFIG_ATTR_RETRY_SHORT and
+  *	%NL80211_TID_CONFIG_ATTR_RETRY_LONG attributes
++ * @sar_capa: SAR control capabilities
+  */
+ struct wiphy {
+ 	/* assign these fields before you register the wiphy */
+-- 
 2.26.2
 
