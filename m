@@ -2,162 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71AA62EA4FF
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Jan 2021 06:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77CF12EA6AC
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Jan 2021 09:38:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726096AbhAEFnJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Jan 2021 00:43:09 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:49322 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726059AbhAEFnI (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Jan 2021 00:43:08 -0500
-X-UUID: 7a4c8d4bfdfa4dc09d09a5fcddb489dd-20210105
-X-UUID: 7a4c8d4bfdfa4dc09d09a5fcddb489dd-20210105
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 489818393; Tue, 05 Jan 2021 13:42:26 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 5 Jan 2021 13:42:25 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 5 Jan 2021 13:42:25 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH] mt76: testmode: add support to set user-defined spe index
-Date:   Tue, 5 Jan 2021 13:41:24 +0800
-Message-ID: <20210105054124.5946-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S1727505AbhAEIgQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Jan 2021 03:36:16 -0500
+Received: from mail-eopbgr80049.outbound.protection.outlook.com ([40.107.8.49]:61901
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726097AbhAEIgQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 5 Jan 2021 03:36:16 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fkuZuoELwP4es2gvQT7WQcFpqKsRHIXH2Hq4V9FnwG05D1lq1Hg53JLXcbsHKjBmVeNoHwZVlPrRg1YO5BEB5M8Wx93LOKgKNuqjkD/OwSHkTRiAUYGdjaQ4je0klzArmbF+snkf+fCjC52fxo1zVKXmFn4b7MT+eAVcWBTq/Zt9M3QuqBQIZ4UesdT5wjfxaom/L0MUipPXOwbApFw6K9+o1LsRwBBpwM4vMapjbKe9yzojvMag1zkawM5HT9SI3zRzkcGNdfu0YeSTxR6YMqMOYjyaMAxoV+gjcQA2QwXHAQv77yZ9oDXrJfwkH+VpWe+0HuBcmKwfa8r2671ASQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m5GZR6d3CXEEkH9QktyIjhguh1bA4X+YSCSaXZk+WV4=;
+ b=INwe8SOOzrFL7dZcbtOCalQXy1y8uWFeWVcXj3fQD2rM6GUdAalOEowMVCQOkvuiOUiOzWzQ8mBaGDkcMorjJBC3D3p9SJ5v/dEnSCnG4AhwemEHQETMydn0HQJkc4dEvbHhbtryvCACeerilqP+PBFCp4S7lJJIm9m+P+TmFJ2CS78O+joLwY5nSQY0FwgkX1L51YYdeUDhpZwq5neLvhDm4xDYQULy78Odam1i4mppZXAx0Yag3ljMgUN5ZqnrMJwIOBhPz9WLhKFPRReDtyxYLzLgtJt9RaOJIHGJbjtw6OE+oio87YAsgFiZmmeushIi/qa4YsVD4aVVoI4apQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
+ dkim=pass header.d=celeno.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m5GZR6d3CXEEkH9QktyIjhguh1bA4X+YSCSaXZk+WV4=;
+ b=pcbOZb42YOVe4MCieZ9ckQQkMFeiPNM6b2mSdBV0jKQVC5BoT+M9C1AroJfyrXRbe3z5EUZIFl0K0bg1OG6z0A7KuLDmJL3czAU6T9hYFCIsUYyLlUlH9OH7Ph711sMjqvGO1G2hY8aXit+ypxX9NkattDHAMzVLP0RZGY44Fkg=
+Authentication-Results: celeno.com; dkim=none (message not signed)
+ header.d=none;celeno.com; dmarc=none action=none header.from=celeno.com;
+Received: from AM0P192MB0468.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:45::15)
+ by AM0P192MB0467.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:47::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3721.20; Tue, 5 Jan
+ 2021 08:35:27 +0000
+Received: from AM0P192MB0468.EURP192.PROD.OUTLOOK.COM
+ ([fe80::f46c:536b:3238:a27f]) by AM0P192MB0468.EURP192.PROD.OUTLOOK.COM
+ ([fe80::f46c:536b:3238:a27f%5]) with mapi id 15.20.3721.024; Tue, 5 Jan 2021
+ 08:35:27 +0000
+Subject: Re: [PATCH] mac80211: do not allow bigger VHT MPDUs than the hardware
+ supports
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, eliav.farber@celeno.com,
+        aviad.brikman@celeno.com
+References: <20200917125031.45009-1-nbd@nbd.name>
+From:   Shay Bar <shay.bar@celeno.com>
+Message-ID: <6327afad-03d4-f35d-e7ae-17ea2fdf1ff9@celeno.com>
+Date:   Tue, 5 Jan 2021 10:35:23 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
+In-Reply-To: <20200917125031.45009-1-nbd@nbd.name>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [87.70.56.235]
+X-ClientProxiedBy: LO2P265CA0459.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a2::15) To AM0P192MB0468.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:208:45::15)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.0.0.13] (87.70.56.235) by LO2P265CA0459.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:a2::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3742.6 via Frontend Transport; Tue, 5 Jan 2021 08:35:26 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0150e5f8-dc01-46c0-22ae-08d8b154da68
+X-MS-TrafficTypeDiagnostic: AM0P192MB0467:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0P192MB046747C993464C83A270DC02E7D10@AM0P192MB0467.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /M/qQabYLLbAqZFbJX5AblNmwpaQ/5LR6yS9vi/izUShuC9/zk1DAYrhq+BojAMyQxSROgASm3yYv2Lnyqf6FM7IBEwO2ZheepxxDgv/hWXrEJHGfjVm5NRZZWDRLipMLfMagCTr02JOrJGuZoF49IhQ8m7Umq4Z85IuDkbxlVo+wDmF4qpKJ6cXdxyWkRGDafRFs3zvEz7BSdKjfITFy8jFv4jNV64dKRTOBp9YGJjAbCtSp3nXhgBGF0bqsbJ5FjLgfCpJQJv9nL4E4BJvrOXfzClQGuNP+nZrGscgVYh7cricvKW7ncFNFMKBwHbxO912MFqQyH3WX3Md7/JTEq9JGciJ/xBP6B7K+HyUbDrT4KNomzF/EYkQqV65qxFlMx7IKVdCiPjTQgSAtd8HWecSNjRSbOrtbMuwyKGIrE53WHOxzb5ofyXVrJViHt8Z5wXSGCiJmZ9xisRekbZGJkFel0wjY+XG1KUHgU1KQe0ioyKFPFB0k9+N4tpuFD2d
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0P192MB0468.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(39840400004)(346002)(376002)(136003)(366004)(396003)(316002)(478600001)(16526019)(86362001)(4326008)(16576012)(66476007)(956004)(2616005)(53546011)(52116002)(31696002)(44832011)(66556008)(107886003)(6486002)(36756003)(8936002)(26005)(66946007)(2906002)(83380400001)(6666004)(31686004)(186003)(5660300002)(8676002)(135533001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?dFpEVDJFeEVFS2hjRG1qckxCeUVYUE1Pbmk3ZTlnd0RFNk94Q0V0dktIZDZ3?=
+ =?utf-8?B?ZGc3Zk1tbU92WC96S3grZVcvZkRhbWk0dXY5NVZJblJsR3lGd25icFFzWGs4?=
+ =?utf-8?B?N2FTdjFGSVF2b1RBZ01UWktDZ3ZGbnl1b2FIYk5XMWRhbENFUlRFWVFKbmJ4?=
+ =?utf-8?B?ZTRJZkxNNTlGTDNZakRDR0MzanNyalo3QVpNL3I1cC9ZWjZxZC9lby9PUDl3?=
+ =?utf-8?B?blpOaUV1NndBYnRJTmJoZFBIVVoyUkJsYjhnc3Jxai9sVTh0QXJWTlZwYW85?=
+ =?utf-8?B?ZTVoaW8vWWRHVm5ZWjBjdytBUVlDY3RKQk10UDBCdFZGK0Q5cVJHYnlnOElj?=
+ =?utf-8?B?OE91SXVYb2ZpMEt6bmhvbFRvL3RoQm5Lc3pkUzlwZ2dYbWxRWDFVSzhOUHBU?=
+ =?utf-8?B?RGFvK25uMTJrbkxTS3hUN2hiL2NZL3QrbzQzZE1NZGJvdkxteThHMVB3dG5h?=
+ =?utf-8?B?Y1VLRm5rSVIwNzQwYkdYVGhiNGlkbnJLTU9vdUJ0MHk0UXZzWFVnUWx3akxs?=
+ =?utf-8?B?enlBMUo0ajBVdFkvTEEzYWFrZk5MSTY2WElhRlJ6dlBLS1FpN29tM1RoWHI3?=
+ =?utf-8?B?UUprZUJYblJUeFlwN0JrNmV1Q0xET3A3dXVvczZsM3ZJelZZbW1JRkF1Vnh4?=
+ =?utf-8?B?SFNKRjJrdkFQejZPekVmQnJhNjlUemgwVGQzNzMrNTg3R3E3QzZkaHRXN1Vq?=
+ =?utf-8?B?ZklKRjBtdmMxemU4Ym91clgzS0FORjgyS1RabElSSS9lUGdZSWNNaVJFalBK?=
+ =?utf-8?B?MHVRTk42anhmaXJsc1BwZFdEUVJhMldGMUZoQ2dDbEx0M3B4c3hKeFk4OHJr?=
+ =?utf-8?B?aUZFQkdDQWtrNUpPdWVWWWdOR1h3S3hkUkc0MG9PMlhEN3dvMEliZ0w5YzBv?=
+ =?utf-8?B?bFRpak1aa2RYTnJUVUFzQ2pqNnUyeFMzT0VIZjVHUXAxcFdkSW44R1p3MmxY?=
+ =?utf-8?B?cU5FZ1ZIN1ZpbnpDVWg4ek5VMVpHNmVRM2ZEN3NPOTRUeHNGZjBSRE41N0o0?=
+ =?utf-8?B?K2VJNVI4NGljREovZDdJTVdqQXJHTnprb29qNHZIdTVaYTRadGprZUNJNTll?=
+ =?utf-8?B?bUZqdGM4aHlEVjFvN2lsUjlGSWNLYlJuUld3YTFWRmZuWTFZeHF5ZHBSYUhm?=
+ =?utf-8?B?UjI4QlA0c01GZ1AyQ3hoZUVzS0p1YXM3ZExoM29kNmg0NDZ1dWlnZ20raS85?=
+ =?utf-8?B?VDlCbXd4cml3akVXUjFralZBK1VlNVZXRzRlc1UrNDhxaHZGVTJEeEw5MllX?=
+ =?utf-8?B?Z0N3MGFJS0x5bzlmN2FyNlY4aGdDR1ExRm53dkFGaWxpM3N4R3JyMVNGSjlH?=
+ =?utf-8?Q?meR/sI2Dr+8rQ=3D?=
+X-OriginatorOrg: celeno.com
+X-MS-Exchange-CrossTenant-AuthSource: AM0P192MB0468.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2021 08:35:27.1552
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0150e5f8-dc01-46c0-22ae-08d8b154da68
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /TWgpU3+m8z4TczoQCh+SzjjcBVY4UNcYcr0somjOFlft71shxIwG5XWoZ7f98Ki2zVVPZ4djYhGHlOc54oU5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0467
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add spatial extension (spe) index as a configurable parameter in testmode.
-This is used for specifically configuring TX path, such as different
-WF TX priority, number of antennas and spatial streams.
 
-If spe_idx is not set, TX path depends on tx_antenna_mask; otherwise,
-both spe_idx and tx_antenna_mask are referenced to decide TX path.
+On 17/09/2020 15:50, Felix Fietkau wrote:
+> Limit maximum VHT MPDU size by local capability
+>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>   net/mac80211/vht.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
+> index 7e601d067d53..fb0e3a657d2d 100644
+> --- a/net/mac80211/vht.c
+> +++ b/net/mac80211/vht.c
+> @@ -168,10 +168,7 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
+>          /* take some capabilities as-is */
+>          cap_info = le32_to_cpu(vht_cap_ie->vht_cap_info);
+>          vht_cap->cap = cap_info;
+> -       vht_cap->cap &= IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895 |
+> -                       IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991 |
+> -                       IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454 |
+> -                       IEEE80211_VHT_CAP_RXLDPC |
+> +       vht_cap->cap &= IEEE80211_VHT_CAP_RXLDPC |
+>                          IEEE80211_VHT_CAP_VHT_TXOP_PS |
+>                          IEEE80211_VHT_CAP_HTC_VHT |
+>                          IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK |
+> @@ -180,6 +177,9 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
+>                          IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN |
+>                          IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN;
+>
+> +       vht_cap->cap |= min_t(u32, cap_info & IEEE80211_VHT_CAP_MAX_MPDU_MASK,
+> +                             own_cap.cap & IEEE80211_VHT_CAP_MAX_MPDU_MASK);
+> +
+>          /* and some based on our own capabilities */
+>          switch (own_cap.cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK) {
+>          case IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ:
+>
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76.h         |  1 +
- .../net/wireless/mediatek/mt76/mt7915/testmode.c  | 15 ++++++++++-----
- drivers/net/wireless/mediatek/mt76/testmode.c     |  4 ++++
- drivers/net/wireless/mediatek/mt76/testmode.h     |  2 ++
- 4 files changed, 17 insertions(+), 5 deletions(-)
+The vht_cap->cap IEEE80211_VHT_CAP_MAX_MPDU* reflect the associated STA 
+_RX_ capabilities.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 10034c21f812..245a7197b017 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -539,6 +539,7 @@ struct mt76_testmode_data {
- 	u8 tx_ltf;
- 
- 	u8 tx_antenna_mask;
-+	u8 tx_spe_idx;
- 
- 	u32 freq_offset;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-index b58c91ea3fa5..278f279cc67b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-@@ -205,6 +205,7 @@ mt7915_tm_set_tx_frames(struct mt7915_phy *phy, bool en)
- {
- 	static const u8 spe_idx_map[] = {0, 0, 1, 0, 3, 2, 4, 0,
- 					 9, 8, 6, 10, 16, 12, 18, 0};
-+	struct mt76_testmode_data *td = &phy->mt76->test;
- 	struct sk_buff *skb = phy->mt76->test.tx_skb;
- 	struct mt7915_dev *dev = phy->dev;
- 	struct ieee80211_tx_info *info;
-@@ -212,17 +213,21 @@ mt7915_tm_set_tx_frames(struct mt7915_phy *phy, bool en)
- 	mt7915_tm_set_trx(phy, TM_MAC_RX_RXV, false);
- 
- 	if (en) {
--		u8 tx_ant = phy->mt76->test.tx_antenna_mask;
--
- 		mutex_unlock(&dev->mt76.mutex);
- 		mt7915_set_channel(phy);
- 		mutex_lock(&dev->mt76.mutex);
- 
- 		mt7915_mcu_set_chan_info(phy, MCU_EXT_CMD_SET_RX_PATH);
- 
--		if (phy != &dev->phy)
--			tx_ant >>= 2;
--		phy->test.spe_idx = spe_idx_map[tx_ant];
-+		if (td->tx_spe_idx) {
-+			phy->test.spe_idx = td->tx_spe_idx;
-+		} else {
-+			u8 tx_ant = td->tx_antenna_mask;
-+
-+			if (phy != &dev->phy)
-+				tx_ant >>= 2;
-+			phy->test.spe_idx = spe_idx_map[tx_ant];
-+		}
- 	}
- 
- 	mt7915_tm_set_trx(phy, TM_MAC_TX, en);
-diff --git a/drivers/net/wireless/mediatek/mt76/testmode.c b/drivers/net/wireless/mediatek/mt76/testmode.c
-index 8b14620e16fc..ad8edf137b36 100644
---- a/drivers/net/wireless/mediatek/mt76/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/testmode.c
-@@ -14,6 +14,7 @@ static const struct nla_policy mt76_tm_policy[NUM_MT76_TM_ATTRS] = {
- 	[MT76_TM_ATTR_TX_RATE_STBC] = { .type = NLA_U8 },
- 	[MT76_TM_ATTR_TX_LTF] = { .type = NLA_U8 },
- 	[MT76_TM_ATTR_TX_ANTENNA] = { .type = NLA_U8 },
-+	[MT76_TM_ATTR_TX_SPE_IDX] = { .type = NLA_U8 },
- 	[MT76_TM_ATTR_TX_POWER_CONTROL] = { .type = NLA_U8 },
- 	[MT76_TM_ATTR_TX_POWER] = { .type = NLA_NESTED },
- 	[MT76_TM_ATTR_FREQ_OFFSET] = { .type = NLA_U32 },
-@@ -359,6 +360,7 @@ int mt76_testmode_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	    mt76_tm_get_u8(tb[MT76_TM_ATTR_TX_LTF], &td->tx_ltf, 0, 2) ||
- 	    mt76_tm_get_u8(tb[MT76_TM_ATTR_TX_ANTENNA], &td->tx_antenna_mask,
- 			   1 << (ext_phy * 2), phy->antenna_mask << (ext_phy * 2)) ||
-+	    mt76_tm_get_u8(tb[MT76_TM_ATTR_TX_SPE_IDX], &td->tx_spe_idx, 0, 27) ||
- 	    mt76_tm_get_u8(tb[MT76_TM_ATTR_TX_POWER_CONTROL],
- 			   &td->tx_power_control, 0, 1))
- 		goto out;
-@@ -499,6 +501,8 @@ int mt76_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *msg,
- 	     nla_put_u8(msg, MT76_TM_ATTR_TX_LTF, td->tx_ltf)) ||
- 	    (mt76_testmode_param_present(td, MT76_TM_ATTR_TX_ANTENNA) &&
- 	     nla_put_u8(msg, MT76_TM_ATTR_TX_ANTENNA, td->tx_antenna_mask)) ||
-+	    (mt76_testmode_param_present(td, MT76_TM_ATTR_TX_SPE_IDX) &&
-+	     nla_put_u8(msg, MT76_TM_ATTR_TX_SPE_IDX, td->tx_spe_idx)) ||
- 	    (mt76_testmode_param_present(td, MT76_TM_ATTR_TX_POWER_CONTROL) &&
- 	     nla_put_u8(msg, MT76_TM_ATTR_TX_POWER_CONTROL, td->tx_power_control)) ||
- 	    (mt76_testmode_param_present(td, MT76_TM_ATTR_FREQ_OFFSET) &&
-diff --git a/drivers/net/wireless/mediatek/mt76/testmode.h b/drivers/net/wireless/mediatek/mt76/testmode.h
-index 7efad685a17c..f215b377d7fb 100644
---- a/drivers/net/wireless/mediatek/mt76/testmode.h
-+++ b/drivers/net/wireless/mediatek/mt76/testmode.h
-@@ -29,6 +29,7 @@
-  * @MT76_TM_ATTR_TX_LTF: packet tx LTF, set 0 to 2 for 1x, 2x, and 4x LTF (u8)
-  *
-  * @MT76_TM_ATTR_TX_ANTENNA: tx antenna mask (u8)
-+ * @MT76_TM_ATTR_TX_SPE_IDX: tx spatial extension index (u8)
-  * @MT76_TM_ATTR_TX_POWER_CONTROL: enable tx power control (u8)
-  * @MT76_TM_ATTR_TX_POWER: per-antenna tx power array (nested, u8 attrs)
-  *
-@@ -56,6 +57,7 @@ enum mt76_testmode_attr {
- 	MT76_TM_ATTR_TX_LTF,
- 
- 	MT76_TM_ATTR_TX_ANTENNA,
-+	MT76_TM_ATTR_TX_SPE_IDX,
- 	MT76_TM_ATTR_TX_POWER_CONTROL,
- 	MT76_TM_ATTR_TX_POWER,
- 
--- 
-2.29.2
+Why would you override the original STA _RX_ capabilities (vht_cap->cap) 
+with your own HW _RX_ size limitation ?
+
+e.g. if HW support 11454 in TX and 3895 in RX, due to this change, you 
+limit your TX to your own _RX_ limitation (3895) while STA actually 
+reported 11454 RX.
 
