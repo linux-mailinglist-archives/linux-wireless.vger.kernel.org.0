@@ -2,100 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6DC92EC6CB
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Jan 2021 00:21:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F08202EC726
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Jan 2021 00:59:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727969AbhAFXUu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Jan 2021 18:20:50 -0500
-Received: from bilbo.ozlabs.org ([203.11.71.1]:60601 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727957AbhAFXUu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Jan 2021 18:20:50 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4DB51g2BkMz9sVm;
-        Thu,  7 Jan 2021 10:20:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1609975208;
-        bh=DJN3TBR7HBX0MH3urn36IhtdNpfrvjW2AVcJoxG+GQU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=sfpONZczjK1FwAm8LXekG3+aiG4gMcswTMseN/DrttN3l8Hb0XIqoXkuybhfLF5PV
-         bJ0i1qMEm0I6uBLLeCnoalEcJEKDBxhapRtWI3IOGlAIj1nyTn1wCkjHZmimqatA5I
-         iVV1YdzqBbPPBV9CR4MWPd5ebXINE3qwhX7YP/ls9qqhY9rGq3ZTCbYjHy3JS93yCz
-         m9Jg7oumVJSeQGjOmX+YlpVb84ifKXbx2uznvC9iHSY1EZzsXKkvlW0/xMamfXR3kP
-         an+lgoz8GKPfyJUwCxeFNZ9D81TvmVoBSjM2DSkVdD7IRb9U5EXvnSQxJNPYrruC5l
-         77HjuMGDadcQQ==
-Date:   Thu, 7 Jan 2021 10:20:06 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
+        id S1727536AbhAFX7S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Jan 2021 18:59:18 -0500
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:64467 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726918AbhAFX7S (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 Jan 2021 18:59:18 -0500
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 06 Jan 2021 15:50:58 -0800
+X-QCInternal: smtphost
+Received: from mxchen-linux.qualcomm.com (HELO mxchen-linux.localdomain) ([10.234.28.165])
+  by ironmsg05-sd.qualcomm.com with ESMTP; 06 Jan 2021 15:50:57 -0800
+Received: by mxchen-linux.localdomain (Postfix, from userid 451784)
+        id 009CE3D45; Wed,  6 Jan 2021 15:50:56 -0800 (PST)
+From:   Max Chen <mxchen@codeaurora.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Carl Huang <cjhuang@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        Networking <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: Re: linux-next: build warning after merge of the origin tree
-Message-ID: <20210107102006.2fd2460c@canb.auug.org.au>
-In-Reply-To: <5d8482756d40df615f908d7f24decdbb9ccb0ac3.camel@sipsolutions.net>
-References: <20210107090550.725f9dc9@canb.auug.org.au>
-        <220ccdfe5f7fad6483816cf470a506d250277a1a.camel@sipsolutions.net>
-        <20210107094414.607e884e@canb.auug.org.au>
-        <5d8482756d40df615f908d7f24decdbb9ccb0ac3.camel@sipsolutions.net>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/5TKbKUEcHup3XUNhed6rmVS";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Cc:     Max Chen <mxchen@codeaurora.org>, linux-wireless@vger.kernel.org,
+        wil6210@qti.qualcomm.com
+Subject: [PATCH 0/2] Add Extended MCS Phyrate Conversion Support on 60GHz
+Date:   Wed,  6 Jan 2021 15:50:48 -0800
+Message-Id: <1609977050-7089-1-git-send-email-mxchen@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/5TKbKUEcHup3XUNhed6rmVS
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+The following set of patches add phyrate conversion support for extended MCS
+on 60GHz band:
+-Cfg80211 support for extended MCS phyrate conversions
+-Wil6210 support for extended MCS 12.1
 
-Hi Johannes,
+Max Chen (2):
+  cfg80211: Add phyrate conversion support for extended MCS in 60GHz
+    band
+  wil6210: Add Support for Extended DMG MCS 12.1
 
-On Wed, 06 Jan 2021 23:46:45 +0100 Johannes Berg <johannes@sipsolutions.net=
-> wrote:
->
-> > > Right, thanks. I believe I also fixed it in the patch I sent a few da=
-ys
-> > > ago that fixed the other documentation warning related to SAR that you
-> > > reported. =20
-> >=20
-> > I don't think so :-(  I did a htmldocs build with your patch ([PATCH
-> > v2] cfg80211/mac80211: fix kernel-doc for SAR APIs) on top of Linus'
-> > tree and still got this warning.  That patch did not touch
-> > include/net/mac80211.h ... =20
->=20
-> Umm, I don't know what to say. I even added "cfg80211/mac80211" to the
-> subject, but somehow lost the change to mac80211.h. Sorry about that :(
+ drivers/net/wireless/ath/wil6210/cfg80211.c  | 38 ++++++++++++++++++++++------
+ drivers/net/wireless/ath/wil6210/debugfs.c   | 17 ++++++++-----
+ drivers/net/wireless/ath/wil6210/txrx_edma.c |  2 ++
+ drivers/net/wireless/ath/wil6210/wil6210.h   |  3 +++
+ drivers/net/wireless/ath/wil6210/wmi.c       | 11 ++++----
+ include/net/cfg80211.h                       |  2 ++
+ net/wireless/util.c                          | 21 +++++++++++++++
+ 7 files changed, 75 insertions(+), 19 deletions(-)
 
-No worries.
+-- 
+2.7.4
 
-> I'll get a v3 out.
-
-Thanks.
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/5TKbKUEcHup3XUNhed6rmVS
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/2RaYACgkQAVBC80lX
-0GzDXAf+LHyWITaVHMe0IY514xDxQKXdZnVdJ3aTNxqxOqq8RzUnnJJMCZWOeO0f
-YKD3X+Sll1Aw5i1DpESzlnNqz5u852c1z0bldJns+L1O63RG0lg3SNAz7/bIRxdy
-I3GwBSm1AmX/ko/RmCKwfOBoJpkq2jpe8BTtRl1z/UuZgADQ8mSwgJa7BJuVvoQ8
-O12yX3HJUBuAQnUAZwnE/izE/Mf2UQuwyk0rlSDGAD62ioKp48mNCBS9pavivV26
-PP5rVbOJxGdd2L/LgOFb2pNaXrbYBrhYGLU7c+VFH43qtN0Zsa+hsDQPfjgLiVIH
-UbYIWbrHKyhrQhlQtmrMtc2AGhLnUg==
-=Q9GU
------END PGP SIGNATURE-----
-
---Sig_/5TKbKUEcHup3XUNhed6rmVS--
