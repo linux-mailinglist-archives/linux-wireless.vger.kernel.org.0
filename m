@@ -2,88 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E45C52EC916
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Jan 2021 04:27:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C03592ECA95
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Jan 2021 07:40:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726379AbhAGD0l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Jan 2021 22:26:41 -0500
-Received: from ozlabs.org ([203.11.71.1]:54341 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725803AbhAGD0k (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Jan 2021 22:26:40 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4DBBTL4pzWz9sW0;
-        Thu,  7 Jan 2021 14:25:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1609989959;
-        bh=znFli4VeK1mU2u3SaFssFQErYIJ5L+bSWa+34l3uTCc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Jf+hX6O/9tF+IgQh/x0Py92Su9hV3POYpU+VzAHM5EWyYcBCDb2Cnf3MAyYaKWvyE
-         5EEF55/qLS8GxoQdbCyC3iXEaji8osUm5X1EkssEbYiUhSgvAdXuKbvlMdjKMk3QSY
-         oRmlQlqDK5oQJTttQC7Ya8XAUewUsyEyACS7mSUrMnJjFxWdYmK1kFfxySNrEk4zqY
-         yNUR75JXiSJc+lMotzgcVIENs/ErO2Kaf5L9P4UfNh0/PQvXbT7AUCrucReatQl/A+
-         o0db/8TMO1BO1Wuj8Aiedi3B+uU/YTX+JUd6nRKbmxTXov0M3wdSTrQDs17SBfd551
-         I3x4UxQnrm2Vg==
-Date:   Thu, 7 Jan 2021 14:25:55 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH v3] cfg80211/mac80211: fix kernel-doc for SAR APIs
-Message-ID: <20210107142555.302c7079@canb.auug.org.au>
-In-Reply-To: <20210106234740.96827c18f9bd.I8b9f0a9cbfe186931ef9640046f414371f216914@changeid>
-References: <20210106234740.96827c18f9bd.I8b9f0a9cbfe186931ef9640046f414371f216914@changeid>
+        id S1726817AbhAGGji (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Jan 2021 01:39:38 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:60106 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725929AbhAGGjh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 Jan 2021 01:39:37 -0500
+Received: from mail-oo1-f72.google.com ([209.85.161.72])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1kxOwh-0000up-5R
+        for linux-wireless@vger.kernel.org; Thu, 07 Jan 2021 06:38:55 +0000
+Received: by mail-oo1-f72.google.com with SMTP id l191so3573490ooc.15
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Jan 2021 22:38:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Gc+fC2uzrPTIv/OjMkzLquFL5H8Wh/2Rm6W4yaQ752c=;
+        b=l0x5jY/szezaw7kGSYEZYNMzSrdoSY7qfxHKV70/NmX6HM/1gtbxxaMjIo8u8gQAGL
+         lKDFRQyCO4U2ep7ZThhKcNBAH63bOgF6FvfgFck34Cxrwa6lTuDwjo8MZgJOH+FRgGSJ
+         BHB0bUwjNP0DnTiihQcasbUa/6RzdT58qXca1bqAg24xSKuQo71cPCfd+C33LM1SR182
+         H1xD3tdRsQbEgmdEWh0bbdizQfAV3v0tZe9E5F7jh1zmVkTJqAFRsRjdjTB7O8Y83tY4
+         fkwLFQowxTLXML4lsQyfu2b5B5Uzui/rC6CQ21RspegOPrKG8eQc1VgHD40BfnIYjM60
+         jJpw==
+X-Gm-Message-State: AOAM531ddf4BhOsEIkE0nqnF5eAqSfHTnTUSf4RHPD7h0k1/Y54WLaWF
+        ejmhbAxA6OoWdNEUPTDRIcc5IUEsa69+4IA4qO9IaEMEnXGO9yv+iBHHP1L1wHZaHc0WW1DRDeA
+        HpyoGm41+ILAbWF3jz5037pb35RZ6qMeaAOxR4e5o3TNoJ0RpIlnGyIigUKKK
+X-Received: by 2002:a9d:4816:: with SMTP id c22mr5539016otf.358.1610001534167;
+        Wed, 06 Jan 2021 22:38:54 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxIfDhiYPhS3S5PaeEdW+dFoXwmfFeAUrAJeItJZ9WP8HUWgmpU0R8GvY6EhnjGOtDrahFqtDToLumrSeZxMyQ=
+X-Received: by 2002:a9d:4816:: with SMTP id c22mr5539001otf.358.1610001533893;
+ Wed, 06 Jan 2021 22:38:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/lFaX9pAFy_iXKWAZKQUMtus";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+References: <20200805084559.30092-1-kai.heng.feng@canonical.com>
+ <c0c336d806584361992d4b52665fbb82@realtek.com> <9330BBA5-158B-49F1-8B7C-C2733F358AC1@canonical.com>
+In-Reply-To: <9330BBA5-158B-49F1-8B7C-C2733F358AC1@canonical.com>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Thu, 7 Jan 2021 14:38:42 +0800
+Message-ID: <CAAd53p6SA5gG8V27eD1Kh1ik932Kt8KzmYjLy33pOkw=QPKgpA@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: 8821c: Add RFE 2 support
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Andy Huang <tehuang@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/lFaX9pAFy_iXKWAZKQUMtus
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi Johannes,
-
-On Wed,  6 Jan 2021 23:47:41 +0100 Johannes Berg <johannes@sipsolutions.net=
-> wrote:
+On Wed, Aug 5, 2020 at 7:24 PM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
 >
-> From: Johannes Berg <johannes.berg@intel.com>
->=20
-> A stray @ caused the kernel-doc parser to not understand
-> this, fix that. Also add some missing kernel-doc.
->=20
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Fixes: 6bdb68cef7bf ("nl80211: add common API to configure SAR power limi=
-tations")
-> Fixes: c534e093d865 ("mac80211: add ieee80211_set_sar_specs")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Hi Tony,
+>
+> > On Aug 5, 2020, at 19:18, Tony Chuang <yhchuang@realtek.com> wrote:
+> >
+> >> 8821CE with RFE 2 isn't supported:
+> >> [   12.404834] rtw_8821ce 0000:02:00.0: rfe 2 isn't supported
+> >> [   12.404937] rtw_8821ce 0000:02:00.0: failed to setup chip efuse info
+> >> [   12.404939] rtw_8821ce 0000:02:00.0: failed to setup chip information
+> >>
+> >
+> > NACK
+> >
+> > The RFE type 2 should be working with some additional fixes.
+> > Did you tested connecting to AP with BT paired?
+>
+> No, I only tested WiFi.
+>
+> > The antenna configuration is different with RFE type 0.
+> > I will ask someone else to fix them.
+> > Then the RFE type 2 modules can be supported.
+>
+> Good to know that, I'll be patient and wait for a real fix.
 
-Tested-by: Stephen Rothwell <sfr@canb.auug.org.au> # build only
+It's been quite some time, is support for RFE type 2 ready now?
 
-Thanks
---=20
-Cheers,
-Stephen Rothwell
+Kai-Heng
 
---Sig_/lFaX9pAFy_iXKWAZKQUMtus
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/2f0MACgkQAVBC80lX
-0Gxm7Qf/UFmyK4jtX2USkFfXUm0rSU/1GInlvGc/PYa10oF7lDt3maC9ojC9R0qv
-p24NIbJXGEVjI0UbjIj5Qg6YLwRzA4IGxRoFOMNSbrabVBZ2GBGxlQ7mMXVmmSD/
-ZM5zkDz7ukEk9P32J0TcR87uOHZXhYPjDStx92nU1vGOjAGH2PsbKimt26f01ZDR
-TLy/tgsOEAsiSkAb/Dd3POH5dz3+aLeDd016dGPRJZyRiS/sfNA6C7e6LKiLIfmC
-P3Aj8QDOOH4IEYTAdmFk6L6bx1JZUYIRmwOREjTZClbnK4Ru+ZO2VAVRRq+J4+Pn
-YK3FHdkQOOflXcvahwnH+0ICXHbFhw==
-=69mV
------END PGP SIGNATURE-----
-
---Sig_/lFaX9pAFy_iXKWAZKQUMtus--
+>
+> Kai-Heng
+>
+> >
+> > Yen-Hsuan
+>
