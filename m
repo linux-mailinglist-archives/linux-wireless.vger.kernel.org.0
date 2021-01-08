@@ -2,101 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BEBF2EEB3F
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 03:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8604F2EEB49
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 03:30:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726326AbhAHC0M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Jan 2021 21:26:12 -0500
-Received: from mailgw01.mediatek.com ([210.61.82.183]:55208 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726113AbhAHC0M (ORCPT
+        id S1726771AbhAHC27 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Jan 2021 21:28:59 -0500
+Received: from mail-il1-f170.google.com ([209.85.166.170]:46109 "EHLO
+        mail-il1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726113AbhAHC26 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Jan 2021 21:26:12 -0500
-X-UUID: b0385c3ff01444b5bb6588fab7052502-20210108
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=I3SpUDHCtA6dMxMYwIXLmn6LKY44+n+kL11eKoRrlrk=;
-        b=FGznwx9AouX3h4yv486YuWbrFvvv41b9IdtB1/UDaMkaUdI8PlthYpIpzhbW5TzYzvrQUHUNePqym9EHNY4+hPDv8UuDYfOFwEj7ukeuEw0IfI6mPIqnH3/NI3MRVGuDSe9CjkzZND94bxng0eju5yPgTGZ8vuN80fT83yRmkF0=;
-X-UUID: b0385c3ff01444b5bb6588fab7052502-20210108
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2112544535; Fri, 08 Jan 2021 10:25:28 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 8 Jan 2021 10:25:26 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 8 Jan 2021 10:25:27 +0800
-Message-ID: <1610072726.27505.3.camel@mtkswgap22>
-Subject: Re: [PATCH] mac80211: check ATF flag in ieee80211_next_txq()
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>
-CC:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Date:   Fri, 8 Jan 2021 10:25:26 +0800
-In-Reply-To: <87a6tkki7m.fsf@toke.dk>
-References: <d9aef825d186a91ff91f6a81045d49d375533b14.1609894402.git.ryder.lee@mediatek.com>
-         <87r1my49us.fsf@toke.dk> <68ab89bc-70f4-e822-3d96-21ba3bd6511f@nbd.name>
-         <87k0sq3wfl.fsf@toke.dk> <1609985461.9743.2.camel@mtkswgap22>
-         <87a6tkki7m.fsf@toke.dk>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+        Thu, 7 Jan 2021 21:28:58 -0500
+Received: by mail-il1-f170.google.com with SMTP id 75so8815949ilv.13;
+        Thu, 07 Jan 2021 18:28:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=4v0yXGMtjVzg0GR4VJAcMxCAi3C/k0/sDlzwVx/HuwA=;
+        b=luowqDt1GljuRW+HqVhWSMjWF6Pe8EcAJYamJCX0tfLoBmIXGWd5/21goBKgRdG+Yt
+         j3q33B5m1IC+NAnL398C1Z2C9OTdwJ3Tab11Ie39HJCJ1tc5M+N/i41CFu9e3m7LwBqV
+         VeoJIGuSC9Uu/GhfPFKpgxxMsAZ0mWcruvRIEl/1+4bKtebeFgM5hzRF8qA2P4o3YQ/S
+         UxKiVriCb5QlKX/rxcx4W/2J3FJ9DxbLWnzYfu4YyBeHD9R1y0fEX+LOs02M5oA+xmU8
+         ynDuVUhliI9ZikUFPZyAMh/YCd8Dr6d/x2g2W9rbUJcl2q9iCpzmh6eZ9iHGjj6Kqq5U
+         4cUw==
+X-Gm-Message-State: AOAM530cf7wznbrK5DJk6olqf2sHSDCnEXp0u/8QDdMK3nbNgSY1VwwE
+        bgBuEEXpcQpSy5EiKNaWOs8LfnCWyA==
+X-Google-Smtp-Source: ABdhPJyb+2E6oPfTxbL0DlUunHkJR+PHkbpVAfqM8TZJ7y8fTIKJGU5mLf/lOpFwyffXDH0xl2JHsA==
+X-Received: by 2002:a92:d6cb:: with SMTP id z11mr1791226ilp.169.1610072897059;
+        Thu, 07 Jan 2021 18:28:17 -0800 (PST)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id s25sm1419581ioe.27.2021.01.07.18.28.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Jan 2021 18:28:16 -0800 (PST)
+Received: (nullmailer pid 1750590 invoked by uid 1000);
+        Fri, 08 Jan 2021 02:28:13 -0000
+Date:   Thu, 7 Jan 2021 19:28:13 -0700
+From:   Rob Herring <robh@kernel.org>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, linux-mmc@vger.kernel.org,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v4 02/24] dt-bindings: introduce silabs,wfx.yaml
+Message-ID: <20210108022813.GA1747586@robh.at.kernel.org>
+References: <20201223153925.73742-1-Jerome.Pouiller@silabs.com>
+ <20201223153925.73742-3-Jerome.Pouiller@silabs.com>
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: DA70B471866AF3664737057511791DB6EC031F379C592A5FD4A03F240628765F2000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201223153925.73742-3-Jerome.Pouiller@silabs.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVGh1LCAyMDIxLTAxLTA3IGF0IDE0OjA4ICswMTAwLCBUb2tlIEjDuGlsYW5kLUrDuHJnZW5z
-ZW4gd3JvdGU6DQo+IFJ5ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4gd3JpdGVzOg0K
-PiANCj4gPiBPbiBXZWQsIDIwMjEtMDEtMDYgYXQgMTY6NDEgKzAxMDAsIFRva2UgSMO4aWxhbmQt
-SsO4cmdlbnNlbiB3cm90ZToNCj4gPj4gRmVsaXggRmlldGthdSA8bmJkQG5iZC5uYW1lPiB3cml0
-ZXM6DQo+ID4+IA0KPiA+PiA+IE9uIDIwMjEtMDEtMDYgMTE6NTEsIFRva2UgSMO4aWxhbmQtSsO4
-cmdlbnNlbiB3cm90ZToNCj4gPj4gPj4gUnlkZXIgTGVlIDxyeWRlci5sZWVAbWVkaWF0ZWsuY29t
-PiB3cml0ZXM6DQo+ID4+ID4+IA0KPiA+PiA+Pj4gVGhlIHNlbGVjdGVkIHR4cSBzaG91bGQgYmUg
-c2NoZWR1bGVkIHVuY29uZGl0aW9uYWxseSBpZg0KPiA+PiA+Pj4gTkw4MDIxMV9FWFRfRkVBVFVS
-RV9BSVJUSU1FX0ZBSVJORVNTIGlzIG5vdCBzZXQgYnkgZHJpdmVyLg0KPiA+PiA+Pj4NCj4gPj4g
-Pj4+IEFsc28gcHV0IHRoZSBzdGEgdG8gdGhlIGVuZCBvZiB0aGUgYWN0aXZlX3R4cXMgbGlzdCBp
-Zg0KPiA+PiA+Pj4gZGVmaWNpdCBpcyBuZWdhdGl2ZSB0aGVuIG1vdmUgb24gdG8gdGhlIG5leHQg
-dHhxLg0KPiA+PiA+PiANCj4gPj4gPj4gV2h5IGlzIHRoaXMgbmVlZGVkPyBJZiB0aGUgZmVhdHVy
-ZSBpcyBub3Qgc2V0LCBubyBhaXJ0aW1lIHNob3VsZCBldmVyIGJlDQo+ID4+ID4+IGFjY291bnRl
-ZCB0byB0aGUgc3RhdGlvbiwgYW5kIHNvIHN0YS0+YWlydGltZVt0eHFpLT50eHEuYWNdLmRlZmlj
-aXQgd2lsbA0KPiA+PiA+PiBhbHdheXMgYmUgMCAtIHNvIHlvdSdyZSBqdXN0IGFkZGluZyBhbm90
-aGVyIGNoZWNrIHRoYXQgZG9lc24ndCBhY3R1YWxseQ0KPiA+PiA+PiBjaGFuZ2UgdGhlIGJlaGF2
-aW91ciwgYXJlbid0IHlvdT8NCj4gPj4gPg0KPiA+PiA+IEkgdGhpbmsgaXQgbWlnaHQgbWFrZSBz
-ZW5zZSB0byBrZWVwIGFpcnRpbWUgcmVwb3J0aW5nIGV2ZW4gd2hlbiBhaXJ0aW1lDQo+ID4+ID4g
-ZmFpcm5lc3MgaXMgZGlzYWJsZWQgYXQgcnVuIHRpbWUsIHNvIHRoaXMgcGF0Y2ggbWFrZXMgc2Vu
-c2UgdG8gbWUuDQo+ID4+ID4gSW5zdGVhZCBvZiB0aGlzIHBhdGNoLCB0aGUgcmlnaHQgcGxhY2Ug
-dG8gZGVhbCB3aXRoIHRoaXMgd291bGQgcHJvYmFibHkNCj4gPj4gPiBiZSBpZWVlODAyMTFfc3Rh
-X3JlZ2lzdGVyX2FpcnRpbWUuDQo+ID4+IA0KPiA+PiBXaGVuIHRoZSBmYWlybmVzcyBtZWNoYW5p
-c20gaXMgdXNlci1kaXNhYmxlZCBJIGFncmVlIGl0IG1ha2VzIHNlbnNlIHRvDQo+ID4+IHN0aWxs
-IGtlZXAgdGhlIGFjY291bnRpbmc7IGFuZCBpbiBmYWN0IHRoYXQncyB3aGF0DQo+ID4+IGllZWU4
-MDIxMV9zdGFfcmVnaXN0ZXJfYWlydGltZSgpIGFscmVhZHkgZG9lcyB3aGVuIHRoZSBhY2NvdW50
-aW5nIGlzDQo+ID4+IHR1cm5lZCBvZmYgYnkgd2F5IG9mIHRoZSBhaXJ0aW1lX2ZsYWdzIGZpZWxk
-Li4uIFNvIGRvbid0IHRoaW5rIGFueXRoaW5nDQo+ID4+IGVsc2UgaXMgbmVlZGVkIHRoZXJlIGVp
-dGhlcj8NCj4gPj4gDQo+ID4+IC1Ub2tlDQo+ID4NCj4gPiBOb3Qgc3VyZSBJIGdldCB0aGlzIHJp
-Z2h0LiBBcmUgeW91IHRhbGtpbmcgYWJvdXQgbG9jYWwtPmFpcnRpbWVfZmxhZ3MgPQ0KPiA+IEFJ
-UlRJTUVfVVNFX1RYIHwgQUlSVElNRV9VU0VfUlggPyBJIHRoaW5rIHRoYXQncyBkaWZmZXJlbnQg
-YW5kIHdlIHN0aWxsDQo+ID4gbmVlZCB0byB0YWtlIE5MODAyMTFfRVhUX0ZFQVRVUkVfQUlSVElN
-RV9GQUlSTkVTUyBpbnRvIGFjY291bnQsIHJpZ2h0Pw0KPiANCj4gSSBqdXN0IG1lYW50IHRoYXQg
-d2hhdCBGZWxpeCB3YXMgYXNraW5nIGZvciAoYSB3YXkgKmZvciB0aGUgdXNlciogdG8NCj4gZGlz
-YWJsZSBhaXJ0aW1lIGZhaXJuZXNzIHdoaWxlIHN0aWxsIGdldHRpbmcgdGhlIGFpcnRpbWUgdXNh
-Z2UNCj4gYWNjb3VudGVkKSBpcyBwb3NzaWJsZSBieSBzZXR0aW5nIHRob3NlIGZsYWdzLiBUaGUg
-RVhUX0ZFQVRVUkUgZmxhZyBpcw0KPiBtZWFudCBhcyBhIHdheSBmb3IgdGhlIGRyaXZlciB0byBz
-aWduYWwgdG8gbWFjODAyMTEgdGhhdCBpdCBzdXBwb3J0cw0KPiByZXBvcnRpbmcgYWlydGltZSBh
-dCBhbGw7IHNvIGlkZWFsbHkgaXQgc2hvdWxkIGJlIGEgZmxhZyB0aGF0IGlzIG9ubHkNCj4gc2V0
-IG9uY2UuDQo+IA0KPiBHb2luZyBiYWNrIGFuZCByZWFkaW5nIHlvdXIgaW5pdGlhbCByZXNwb25z
-ZSBpdCBzZWVtcyBsaWtlIHlvdSBtYXkgYmUNCj4gdG9nZ2xpbmcgdGhlIGZsYWcgZHluYW1pY2Fs
-bHkgaW4gdGhlIGRyaXZlciwgdGhvdWdoPyBJcyB0aGlzIGFjY3VyYXRlPw0KPiBBbmQgaWYgc28s
-IHdoeT8gSXMgaXQgbm90IGVub3VnaCBmb3IgeW91IHRvIGZpZGRsZSB3aXRoIHRoZQ0KPiBVU0Vf
-VFgvVVNFX1JYIGZsYWdzPyA6KQ0KPiANCj4gLVRva2UNCg0KR290Y2hhLiBXZSBqdXN0IHNldCBp
-dCBvbmNlIGluZGVlZC4gU28gdGhlIHdheSB5b3UgdGhpbmsgaXMgZGlzYWJsZSB0aGUNCkVYVF9G
-RUFUVVJFIGZsYWcgYW5kIGNsZWFyIEFJUlRJTUVfVVNFX1RYIHRocm91Z2ggZGVidWdmcw0KKERF
-QlVHRlNfQUREX01PREUoYWlydGltZV9mbGFncywgMDYwMCkpIGluIHRoZSBtZWFudGltZS4NCg0K
-UnlkZXINCg==
+On Wed, Dec 23, 2020 at 04:39:03PM +0100, Jerome Pouiller wrote:
+> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
 
+Commit message?
+
+checkpatch.pl reports trailing whitespace errors.
+
+> 
+> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  .../bindings/net/wireless/silabs,wfx.yaml     | 133 ++++++++++++++++++
+>  1 file changed, 133 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml b/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
+> new file mode 100644
+> index 000000000000..487d46c5fdc0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
+> @@ -0,0 +1,133 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright (c) 2020, Silicon Laboratories, Inc.
+> +%YAML 1.2
+> +---
+> +
+> +$id: http://devicetree.org/schemas/net/wireless/silabs,wfx.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Silicon Labs WFxxx devicetree bindings
+> +
+> +maintainers:
+> +  - Jérôme Pouiller <jerome.pouiller@silabs.com>
+> +
+> +description: >
+> +  Support for the Wifi chip WFxxx from Silicon Labs. Currently, the only device
+> +  from the WFxxx series is the WF200 described here:
+> +     https://www.silabs.com/documents/public/data-sheets/wf200-datasheet.pdf
+> +  
+> +  The WF200 can be connected via SPI or via SDIO.
+> +  
+> +  For SDIO:
+> +  
+> +    Declaring the WFxxx chip in device tree is mandatory (usually, the VID/PID is
+> +    sufficient for the SDIO devices).
+> +  
+> +    It is recommended to declare a mmc-pwrseq on SDIO host above WFx. Without
+> +    it, you may encounter issues during reboot. The mmc-pwrseq should be
+> +    compatible with mmc-pwrseq-simple. Please consult
+> +    Documentation/devicetree/bindings/mmc/mmc-pwrseq-simple.txt for more
+> +    information.
+> +  
+> +  For SPI:
+> +  
+> +    In add of the properties below, please consult
+> +    Documentation/devicetree/bindings/spi/spi-controller.yaml for optional SPI
+> +    related properties.
+> +
+> +properties:
+> +  compatible:
+> +    const: silabs,wf200
+> +
+> +  reg:
+> +    description:
+> +      When used on SDIO bus, <reg> must be set to 1. When used on SPI bus, it is
+> +      the chip select address of the device as defined in the SPI devices
+> +      bindings.
+> +    maxItems: 1
+> +
+> +  spi-max-frequency: true
+> +
+> +  interrupts:
+> +    description: The interrupt line. Triggers IRQ_TYPE_LEVEL_HIGH and
+> +      IRQ_TYPE_EDGE_RISING are both supported by the chip and the driver. When
+> +      SPI is used, this property is required. When SDIO is used, the "in-band"
+> +      interrupt provided by the SDIO bus is used unless an interrupt is defined
+> +      in the Device Tree.
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description: (SPI only) Phandle of gpio that will be used to reset chip
+> +      during probe. Without this property, you may encounter issues with warm
+> +      boot. (For legacy purpose, the gpio in inverted when compatible ==
+> +      "silabs,wfx-spi")
+> +
+> +      For SDIO, the reset gpio should declared using a mmc-pwrseq.
+> +    maxItems: 1
+> +
+> +  wakeup-gpios:
+> +    description: Phandle of gpio that will be used to wake-up chip. Without this
+> +      property, driver will disable most of power saving features.
+> +    maxItems: 1
+> +
+> +  silabs,antenna-config-file:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description: Use an alternative file for antenna configuration (aka
+> +      "Platform Data Set" in Silabs jargon). Default is 'wf200.pds'.
+> +
+> +  local-mac-address: true
+> +
+> +  mac-address: true
+> +
+> +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi0 {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        wifi@0 {
+> +            compatible = "silabs,wf200";
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&wfx_irq &wfx_gpios>;
+> +            reg = <0>;
+> +            interrupts-extended = <&gpio 16 IRQ_TYPE_EDGE_RISING>;
+> +            wakeup-gpios = <&gpio 12 GPIO_ACTIVE_HIGH>;
+> +            reset-gpios = <&gpio 13 GPIO_ACTIVE_LOW>;
+> +            spi-max-frequency = <42000000>;
+> +        };
+> +    };
+> +
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    wfx_pwrseq: wfx_pwrseq {
+> +        compatible = "mmc-pwrseq-simple";
+> +        pinctrl-names = "default";
+> +        pinctrl-0 = <&wfx_reset>;
+> +        reset-gpios = <&gpio 13 GPIO_ACTIVE_LOW>;
+> +    };
+> +
+> +    mmc0 {
+> +        mmc-pwrseq = <&wfx_pwrseq>;
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        wifi@1 {
+> +            compatible = "silabs,wf200";
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&wfx_wakeup>;
+> +            reg = <1>;
+> +            wakeup-gpios = <&gpio 12 GPIO_ACTIVE_HIGH>;
+> +        };
+> +    };
+> +...
+> -- 
+> 2.29.2
+> 
