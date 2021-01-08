@@ -2,236 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A421A2EF4E0
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 16:33:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F127A2EF67F
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 18:35:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727858AbhAHPdB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Jan 2021 10:33:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36456 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725806AbhAHPdB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Jan 2021 10:33:01 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B7ACC061380;
-        Fri,  8 Jan 2021 07:32:21 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id q4so5827807plr.7;
-        Fri, 08 Jan 2021 07:32:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=spFCEPnVm9qff+fH1Wbln13XJIpHbyb+5Fw9GfNHu/4=;
-        b=VgPpzcQ4hoBpx9OQaVDkhRHyJEBfJl53Ds4R/whOhJ/ugwxFoHOTMA3N0WLtrzLMMi
-         YSyAQuVCi2eW2AXNc2LtH0oqWiJ8a95tcXZnoaMwQwhVPrlh1PXK8mmC55n68gUWIfax
-         /28Ji49xo14MuuVldvwl3FjuGR5WkDxmkJ+m/NYaccaJvaVcgACLIDRMx5QpHXkrPzRm
-         xOhoP4IisH7kF5qJZ1Aa/EyiGSmKN7pKvVU5Kjkx4Z+I7TCqnuiuPd9ZPgelc20t1WRO
-         z3IKIm4TE4q5YWds8dWz9tm9pkHHMSKI9x4Q6l9Whw/SxMQoalXqiffNoU4ESEuOM0EK
-         CG9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=spFCEPnVm9qff+fH1Wbln13XJIpHbyb+5Fw9GfNHu/4=;
-        b=l7bmP5CJwTTaMbUEpUjqCQKYqVsjt9dXWO/BGxLUZFoX6KI0xK49ImSdCfAo7eChkJ
-         JyfGaQq03X11lo/AU9Pv/l9F/BYmyqnRNDTXJ7GRFElUT0mPI8NHwpQ9VzOOYaocUvd4
-         tkPYDHill4AUWQvlnVOvdWsKs0DvfM/S42BoiNdOhV7nRbLG1ANDvXCWnWavTzpFZ8Om
-         PSDz4pRInPJeuzgyzdcLMq1OoYzE3LJLFWMG0R+8ff3FjtN0EjoRKn7sP2g1xA9FhhLI
-         djhRurS+JZrqZlVZD14g1VwZ8QNyMOzuKaHbgh+D1i5oLmGtso4kvcxiwen0q4J9ngFm
-         hMKg==
-X-Gm-Message-State: AOAM532mnm0YmWf9Vx/gjITydiwtf92aTh25kDh066uiyYWTKVIdHABL
-        kuQ5Wm+9+wMwOGN/u/eAwc2X7KQcr77EjlvF
-X-Google-Smtp-Source: ABdhPJwC2wTfVVR8u5R/Lw33ammfmy4vuPocjr63UnBeehn8Nq4AYnbFGi9IriLCRavN4e/4FcNbvA==
-X-Received: by 2002:a17:90a:c592:: with SMTP id l18mr4400319pjt.212.1610119940149;
-        Fri, 08 Jan 2021 07:32:20 -0800 (PST)
-Received: from localhost.localdomain ([2405:201:600d:a089:9d25:60e2:6f4:74f8])
-        by smtp.googlemail.com with ESMTPSA id 129sm9048265pfw.86.2021.01.08.07.32.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Jan 2021 07:32:19 -0800 (PST)
-From:   Aditya Srivastava <yashsri421@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        lukas.bulwahn@gmail.com, yashsri421@gmail.com
-Subject: [PATCH] drivers: net: wireless: rtlwifi: fix bool comparison in expressions
-Date:   Fri,  8 Jan 2021 21:02:08 +0530
-Message-Id: <20210108153208.24065-1-yashsri421@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1728390AbhAHRfG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Jan 2021 12:35:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52654 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727785AbhAHRfF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 Jan 2021 12:35:05 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C0B392333E;
+        Fri,  8 Jan 2021 17:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610127264;
+        bh=wBZ5mumP3Adln5IPhn+gtns1tDptQ4ZE6Am/M1LMjao=;
+        h=From:To:Cc:Subject:Date:From;
+        b=P32z+17DsXRJA6l+/RPhWg+o/Lc2dN2HbklB7xD7v9N4teALWve14I0Clm7ZL3O8C
+         rPvsJ3/2BAjXIoZTf2iO3xernsCwGe+4ksk6Cu8XibDtw/MLS1q464odpsebySp0+4
+         p1dQLdDMixrEbWvbfOVfSftu/zVA+IH5OHsbzTIeh5CGmUkXnVm4tPs79bobBYjCfB
+         zxZORSBg0DlODYmaywOIlAmuRZaPMWDXa+Ydfm4H3o8xULCaW/ZYFCodPkEhZag8VZ
+         1m7eW/1pAYCtiTYDzVrRbCo/u3ZcnyHWKxv7Pj/c2/yyovIgo2UrvdYi21BnlEFWfb
+         GNjfiufsbENyQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7615: set mcu country code in mt7615_mcu_set_channel_domain()
+Date:   Fri,  8 Jan 2021 18:34:13 +0100
+Message-Id: <a86337de4272797c0e1ed5913fe0de0f02d9e130.1610127075.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are certain conditional expressions in rtlwifi, where a boolean
-variable is compared with true/false, in forms such as (foo == true) or
-(false != bar), which does not comply with checkpatch.pl (CHECK:
-BOOL_COMPARISON), according to which boolean variables should be
-themselves used in the condition, rather than comparing with true/false
+Update mcu country code running mt7615_mcu_set_channel_domain routine in
+mt7615_regd_notifier().
+Filter out disabled channels in mt7615_mcu_set_channel_domain().
 
-E.g., in drivers/net/wireless/realtek/rtlwifi/ps.c,
-"if (find_p2p_ie == true)" can be replaced with "if (find_p2p_ie)"
-
-Replace all such expressions with the bool variables appropriately
-
-Signed-off-by: Aditya Srivastava <yashsri421@gmail.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-- The changes made are compile tested
-- Applies perfecly on next-20210108
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 10 +++--
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 43 +++++++++++++------
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 ++
+ 4 files changed, 40 insertions(+), 17 deletions(-)
 
- drivers/net/wireless/realtek/rtlwifi/ps.c                 | 4 ++--
- drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c       | 8 ++++----
- drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.c       | 4 ++--
- drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c | 4 ++--
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c       | 4 ++--
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c      | 8 ++++----
- 6 files changed, 16 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
-index f99882255d48..629c03271bde 100644
---- a/drivers/net/wireless/realtek/rtlwifi/ps.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
-@@ -798,9 +798,9 @@ static void rtl_p2p_noa_ie(struct ieee80211_hw *hw, void *data,
- 		ie += 3 + noa_len;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 10034c21f812..5c86ade0aa1e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -647,6 +647,7 @@ struct mt76_dev {
  
--	if (find_p2p_ie == true) {
-+	if (find_p2p_ie) {
- 		if ((p2pinfo->p2p_ps_mode > P2P_PS_NONE) &&
--		    (find_p2p_ps_ie == false))
-+		    (!find_p2p_ps_ie))
- 			rtl_p2p_ps_cmd(hw, P2P_PS_DISABLE);
- 	}
+ 	struct mt76_rate_power rate_power;
+ 
++	char alpha2[3];
+ 	enum nl80211_dfs_regions region;
+ 
+ 	u32 debugfs_reg;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index a73b76e57c7f..635b94de1021 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -296,13 +296,15 @@ mt7615_regd_notifier(struct wiphy *wiphy,
+ 	struct mt7615_phy *phy = mphy->priv;
+ 	struct cfg80211_chan_def *chandef = &mphy->chandef;
+ 
++	memcpy(dev->mt76.alpha2, request->alpha2, sizeof(dev->mt76.alpha2));
+ 	dev->mt76.region = request->dfs_region;
+ 
+-	if (!(chandef->chan->flags & IEEE80211_CHAN_RADAR))
+-		return;
+-
+ 	mt7615_mutex_acquire(dev);
+-	mt7615_dfs_init_radar_detector(phy);
++
++	if (chandef->chan->flags & IEEE80211_CHAN_RADAR)
++		mt7615_dfs_init_radar_detector(phy);
++	mt7615_mcu_set_channel_domain(phy);
++
+ 	mt7615_mutex_release(dev);
  }
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-index d10c14c694da..6f61d6a10627 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-@@ -474,11 +474,11 @@ static void rtl88e_dm_dig(struct ieee80211_hw *hw)
- 	u8 dm_dig_max, dm_dig_min;
- 	u8 current_igi = dm_dig->cur_igvalue;
  
--	if (rtlpriv->dm.dm_initialgain_enable == false)
-+	if (!rtlpriv->dm.dm_initialgain_enable)
- 		return;
--	if (dm_dig->dig_enable_flag == false)
-+	if (!dm_dig->dig_enable_flag)
- 		return;
--	if (mac->act_scanning == true)
-+	if (mac->act_scanning)
- 		return;
- 
- 	if (mac->link_state >= MAC80211_LINKED)
-@@ -1637,7 +1637,7 @@ static void rtl88e_dm_fast_ant_training(struct ieee80211_hw *hw)
- 			}
- 		}
- 
--		if (bpkt_filter_match == false) {
-+		if (!bpkt_filter_match) {
- 			rtl_set_bbreg(hw, DM_REG_TXAGC_A_1_MCS32_11N,
- 				      BIT(16), 0);
- 			rtl_set_bbreg(hw, DM_REG_IGI_A_11N, BIT(7), 0);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.c
-index bd9160b166c5..861cc663ca93 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.c
-@@ -1269,12 +1269,12 @@ void rtl88ee_set_check_bssid(struct ieee80211_hw *hw, bool check_bssid)
- 	if (rtlpriv->psc.rfpwr_state != ERFON)
- 		return;
- 
--	if (check_bssid == true) {
-+	if (check_bssid) {
- 		reg_rcr |= (RCR_CBSSID_DATA | RCR_CBSSID_BCN);
- 		rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_RCR,
- 					      (u8 *)(&reg_rcr));
- 		_rtl88ee_set_bcn_ctrl_reg(hw, 0, BIT(4));
--	} else if (check_bssid == false) {
-+	} else if (!check_bssid) {
- 		reg_rcr &= (~(RCR_CBSSID_DATA | RCR_CBSSID_BCN));
- 		_rtl88ee_set_bcn_ctrl_reg(hw, BIT(4), 0);
- 		rtlpriv->cfg->ops->set_hw_reg(hw,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-index 265a1a336304..0b6a15c2e5cc 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-@@ -380,7 +380,7 @@ static void rtl92c_dm_initial_gain_multi_sta(struct ieee80211_hw *hw)
- 		initialized = false;
- 		dm_digtable->dig_ext_port_stage = DIG_EXT_PORT_STAGE_MAX;
- 		return;
--	} else if (initialized == false) {
-+	} else if (!initialized) {
- 		initialized = true;
- 		dm_digtable->dig_ext_port_stage = DIG_EXT_PORT_STAGE_0;
- 		dm_digtable->cur_igvalue = 0x20;
-@@ -509,7 +509,7 @@ static void rtl92c_dm_dig(struct ieee80211_hw *hw)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index c49e9041006f..715423c325e1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -2981,6 +2981,7 @@ int mt7615_mcu_set_channel_domain(struct mt7615_phy *phy)
  {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct mt76_phy *mphy = phy->mt76;
+ 	struct mt7615_dev *dev = phy->dev;
++	u32 country_code = MT76_ALPHA2_TO_CC(dev->mt76.alpha2);
+ 	struct mt7615_mcu_channel_domain {
+ 		__le32 country_code; /* regulatory_request.alpha2 */
+ 		u8 bw_2g; /* BW_20_40M		0
+@@ -2995,45 +2996,61 @@ int mt7615_mcu_set_channel_domain(struct mt7615_phy *phy)
+ 		u8 n_5ch;
+ 		__le16 pad2;
+ 	} __packed hdr = {
++		.country_code = cpu_to_le32(country_code),
+ 		.bw_2g = 0,
+ 		.bw_5g = 3,
+-		.n_2ch = mphy->sband_2g.sband.n_channels,
+-		.n_5ch = mphy->sband_5g.sband.n_channels,
+ 	};
+ 	struct mt7615_mcu_chan {
+ 		__le16 hw_value;
+ 		__le16 pad;
+ 		__le32 flags;
+-	} __packed;
+-	int i, n_channels = hdr.n_2ch + hdr.n_5ch;
+-	int len = sizeof(hdr) + n_channels * sizeof(struct mt7615_mcu_chan);
++	} __packed channel;
++	int len, i, n_max_channels, n_2ch = 0, n_5ch = 0;
++	struct ieee80211_channel *chan;
+ 	struct sk_buff *skb;
  
--	if (rtlpriv->dm.dm_initialgain_enable == false)
-+	if (!rtlpriv->dm.dm_initialgain_enable)
- 		return;
- 	if (!(rtlpriv->dm.dm_flag & DYNAMIC_FUNC_DIG))
- 		return;
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-index 47fabce5c235..73a5d8a068fc 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-@@ -458,7 +458,7 @@ static u8 _rtl92se_halset_sysclk(struct ieee80211_hw *hw, u8 data)
- 	tmpvalue = rtl_read_byte(rtlpriv, SYS_CLKR + 1);
- 	bresult = ((tmpvalue & BIT(7)) == (data & BIT(7)));
+ 	if (!mt7615_firmware_offload(dev))
+ 		return 0;
  
--	if ((data & (BIT(6) | BIT(7))) == false) {
-+	if (!(data & (BIT(6) | BIT(7)))) {
- 		waitcount = 100;
- 		tmpvalue = 0;
++	n_max_channels = mphy->sband_2g.sband.n_channels +
++			 mphy->sband_5g.sband.n_channels;
++	len = sizeof(hdr) + n_max_channels * sizeof(channel);
++
+ 	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL, len);
+ 	if (!skb)
+ 		return -ENOMEM;
  
-@@ -1268,7 +1268,7 @@ static u8 _rtl92s_set_sysclk(struct ieee80211_hw *hw, u8 data)
- 	tmp = rtl_read_byte(rtlpriv, SYS_CLKR + 1);
- 	result = ((tmp & BIT(7)) == (data & BIT(7)));
+-	skb_put_data(skb, &hdr, sizeof(hdr));
++	skb_reserve(skb, sizeof(hdr));
  
--	if ((data & (BIT(6) | BIT(7))) == false) {
-+	if (!(data & (BIT(6) | BIT(7)))) {
- 		waitcnt = 100;
- 		tmp = 0;
+-	for (i = 0; i < n_channels; i++) {
+-		struct ieee80211_channel *chan;
+-		struct mt7615_mcu_chan channel;
++	for (i = 0; i < mphy->sband_2g.sband.n_channels; i++) {
++		chan = &mphy->sband_2g.sband.channels[i];
++		if (chan->flags & IEEE80211_CHAN_DISABLED)
++			continue;
  
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-index 372d6f8caf06..e214b9062cc1 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-@@ -1812,7 +1812,7 @@ static bool _rtl8821ae_phy_bb8821a_config_parafile(struct ieee80211_hw *hw)
- 		return false;
+-		if (i < hdr.n_2ch)
+-			chan = &mphy->sband_2g.sband.channels[i];
+-		else
+-			chan = &mphy->sband_5g.sband.channels[i - hdr.n_2ch];
++		channel.hw_value = cpu_to_le16(chan->hw_value);
++		channel.flags = cpu_to_le32(chan->flags);
++		channel.pad = 0;
++
++		skb_put_data(skb, &channel, sizeof(channel));
++		n_2ch++;
++	}
++	for (i = 0; i < mphy->sband_5g.sband.n_channels; i++) {
++		chan = &mphy->sband_5g.sband.channels[i];
++		if (chan->flags & IEEE80211_CHAN_DISABLED)
++			continue;
+ 
+ 		channel.hw_value = cpu_to_le16(chan->hw_value);
+ 		channel.flags = cpu_to_le32(chan->flags);
+ 		channel.pad = 0;
+ 
+ 		skb_put_data(skb, &channel, sizeof(channel));
++		n_5ch++;
  	}
- 	_rtl8821ae_phy_init_tx_power_by_rate(hw);
--	if (rtlefuse->autoload_failflag == false) {
-+	if (!rtlefuse->autoload_failflag) {
- 		rtstatus = _rtl8821ae_phy_config_bb_with_pgheaderfile(hw,
- 						    BASEBAND_CONFIG_PHY_REG);
- 	}
-@@ -3980,7 +3980,7 @@ static void _rtl8821ae_iqk_tx(struct ieee80211_hw *hw, enum radio_path path)
- 				}
- 			}
  
--			if (tx0iqkok == false)
-+			if (!tx0iqkok)
- 				break;				/* TXK fail, Don't do RXK */
++	hdr.n_2ch = n_2ch;
++	hdr.n_5ch = n_5ch;
++	memcpy(__skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
++
+ 	return mt76_mcu_skb_send_msg(&dev->mt76, skb, MCU_CMD_SET_CHAN_DOMAIN,
+ 				     false);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 979c5c7fe93c..85e8b4cf23b8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -70,6 +70,9 @@
+ #define MT7615_MAX_SCHED_SCAN_SSID	10
+ #define MT7615_MAX_SCAN_MATCH		16
  
- 			if (vdf_enable == 1) {
-@@ -4090,7 +4090,7 @@ static void _rtl8821ae_iqk_tx(struct ieee80211_hw *hw, enum radio_path path)
- 						}
- 					}
- 
--					if (tx0iqkok == false) {   /* If RX mode TXK fail, then take TXK Result */
-+					if (!tx0iqkok) {   /* If RX mode TXK fail, then take TXK Result */
- 						tx_x0_rxk[cal] = tx_x0[cal];
- 						tx_y0_rxk[cal] = tx_y0[cal];
- 						tx0iqkok = true;
-@@ -4249,7 +4249,7 @@ static void _rtl8821ae_iqk_tx(struct ieee80211_hw *hw, enum radio_path path)
- 					}
- 				}
- 
--				if (tx0iqkok == false) {   /* If RX mode TXK fail, then take TXK Result */
-+				if (!tx0iqkok) {   /* If RX mode TXK fail, then take TXK Result */
- 					tx_x0_rxk[cal] = tx_x0[cal];
- 					tx_y0_rxk[cal] = tx_y0[cal];
- 					tx0iqkok = true;
++#define MT76_ALPHA2_TO_CC(alpha2)		\
++	(((u32)alpha2[2] << 16) | ((u32)alpha2[1] << 8) | (u32)alpha2[0])
++
+ struct mt7615_vif;
+ struct mt7615_sta;
+ struct mt7615_dfs_pulse;
 -- 
-2.17.1
+2.29.2
 
