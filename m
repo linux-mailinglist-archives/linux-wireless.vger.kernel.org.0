@@ -2,111 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FCE92EF851
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 20:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 373FB2EF87F
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 21:03:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728883AbhAHTmD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Jan 2021 14:42:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47120 "EHLO
+        id S1728927AbhAHUDk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Jan 2021 15:03:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727102AbhAHTmD (ORCPT
+        with ESMTP id S1727161AbhAHUDk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Jan 2021 14:42:03 -0500
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF6A4C061380;
-        Fri,  8 Jan 2021 11:41:22 -0800 (PST)
-Received: by mail-oi1-x230.google.com with SMTP id d203so12666597oia.0;
-        Fri, 08 Jan 2021 11:41:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=bloxaOqCPwKMlXiotLGhy7r42MyPMqUNsVDO+0panUs=;
-        b=Q2DzmpC6G2Ho+ySgesuMl1NfH6wgvOBvMZMqDPTmWwZwzJaVdGXpVMAhro6CX4tRcq
-         S9Uvu5qVrQ/H86tGDUh4OAoxNSYhEsNukqWtRGZ9R8aHSiXu8VIMWeFoTRXGow6ffZYO
-         H3ydzODDh6Llg7GAsQqLjX8Ad7ShyJo8bDPR87i47yAiQ+TdVEkjKn97oWC++DecWqjD
-         WZdSuHbhf1HRiVX1as76/AbKbRp67ExuQ29fvyeoRJW9+W/qUyy3Xy/HFDCedjQ7HZEb
-         e87xvAR18pSwDwvbalm6HE8whTUkkO7n5G5aTYj4nBichdWM9DZ2m6NuJiaBPTHMNIgb
-         Q6Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=bloxaOqCPwKMlXiotLGhy7r42MyPMqUNsVDO+0panUs=;
-        b=SEt5UUEIG0D3555jaL2+NrkXfm69PdCwH4yVcFKe5qFHWEfE00RxwNA21gBnTKoaa9
-         03FTyQr7T/XBKrZCm695e8N0P3MDeooUDz9DTcaZf9pO9wfLUbR1YVnfElBdJNzudE8+
-         hzDR+PBygAUfH+JGuQDSI1GWenMEJp5MA3K1mV1Tnko7WOOyFyVk9EOHDi15fFRf7Es+
-         RS0USW2B7qc41D4N6+/jQ6ZsYQXbQij+wbkTho686KeqhvwTC7w9zlZlfL+kKaB6nmOz
-         C23aL5wlg2ShI0fbEbfAlKa3CZZpP4T+mjd5NmHqJHXF2UP/sSWHtYQQJl+Vnha1911W
-         PVcQ==
-X-Gm-Message-State: AOAM533WHyGmHyQu6I0PQ5Z4Kpv+Ji7kfPutXseBmeXaXEJz2qAl6/cS
-        viVkb4u4xo8HWyYIMDpfPPM=
-X-Google-Smtp-Source: ABdhPJxbMX6pytlq+5CKW1fXJu7TJe79uCuJJ3Ws0aKgQt7kTLqX8B6mwICmkpDxQwsivSHS4Qg0dg==
-X-Received: by 2002:aca:3784:: with SMTP id e126mr3332568oia.170.1610134882338;
-        Fri, 08 Jan 2021 11:41:22 -0800 (PST)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id t72sm2130001oie.47.2021.01.08.11.41.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Jan 2021 11:41:21 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: [PATCH] drivers: net: wireless: rtlwifi: fix bool comparison in
- expressions
-To:     Aditya Srivastava <yashsri421@gmail.com>,
-        linux-wireless@vger.kernel.org
-Cc:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        lukas.bulwahn@gmail.com
-References: <20210108153208.24065-1-yashsri421@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <3c121981-1468-fc9d-7813-483246066cc4@lwfinger.net>
-Date:   Fri, 8 Jan 2021 13:41:20 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        Fri, 8 Jan 2021 15:03:40 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21CB3C061381
+        for <linux-wireless@vger.kernel.org>; Fri,  8 Jan 2021 12:03:00 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1kxxxf-003h79-VK; Fri, 08 Jan 2021 21:02:54 +0100
+Message-ID: <0efec65815ff9e26b3da69cb35d503a90086760c.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: fix incorrect strlen of .write in debugfs
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Sujuan Chen <sujuan.chen@mediatek.com>
+Date:   Fri, 08 Jan 2021 21:02:53 +0100
+In-Reply-To: <20210108105643.10834-1-shayne.chen@mediatek.com>
+References: <20210108105643.10834-1-shayne.chen@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-In-Reply-To: <20210108153208.24065-1-yashsri421@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/8/21 9:32 AM, Aditya Srivastava wrote:
-> There are certain conditional expressions in rtlwifi, where a boolean
-> variable is compared with true/false, in forms such as (foo == true) or
-> (false != bar), which does not comply with checkpatch.pl (CHECK:
-> BOOL_COMPARISON), according to which boolean variables should be
-> themselves used in the condition, rather than comparing with true/false
-> 
-> E.g., in drivers/net/wireless/realtek/rtlwifi/ps.c,
-> "if (find_p2p_ie == true)" can be replaced with "if (find_p2p_ie)"
-> 
-> Replace all such expressions with the bool variables appropriately
-> 
-> Signed-off-by: Aditya Srivastava<yashsri421@gmail.com>
-> ---
-> - The changes made are compile tested
-> - Applies perfecly on next-20210108
-> 
->   drivers/net/wireless/realtek/rtlwifi/ps.c                 | 4 ++--
->   drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c       | 8 ++++----
->   drivers/net/wireless/realtek/rtlwifi/rtl8188ee/hw.c       | 4 ++--
->   drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c | 4 ++--
->   drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c       | 4 ++--
->   drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c      | 8 ++++----
->   6 files changed, 16 insertions(+), 16 deletions(-)
+This looks wrong to me, am I missing something?
 
-As has been stated several times, this form of the subject is incorrect. It 
-should be: "rtlwifi: <driver_name>: <subject>
+> diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+> index 9135b6f..9991a6a 100644
+> --- a/net/mac80211/debugfs.c
+> +++ b/net/mac80211/debugfs.c
+> @@ -120,7 +120,6 @@ static ssize_t aqm_write(struct file *file,
+>  {
+>  	struct ieee80211_local *local = file->private_data;
+>  	char buf[100];
+> -	size_t len;
+>  
+>  	if (count > sizeof(buf))
+>  		return -EINVAL;
 
-I would prefer that there be separate patches for each driver, not that the 
-changes be lumped into a single patch as was done here. Such organization makes 
-it a lot easier to find the patches for a given driver in case something goes 
-wrong.Note: The driver for ps is rtl_pci, and that for rtl8192c is 
-rtl8192c-common. The other driver names match their directory.
+This ensures that count <= sizeof(buf)
 
-Larry
+> @@ -128,10 +127,10 @@ static ssize_t aqm_write(struct file *file,
+>  	if (copy_from_user(buf, user_buf, count))
+>  		return -EFAULT;
+
+We copy, that's fine.
+ 
+> -	buf[sizeof(buf) - 1] = '\0';
+> -	len = strlen(buf);
+> -	if (len > 0 && buf[len-1] == '\n')
+> -		buf[len-1] = 0;
+> +	if (count && buf[count - 1] == '\n')
+> +		buf[count - 1] = '\0';
+
+This I think really was meant as strlen, because if you write something
+like
+
+ 10\n\0\0\0\0
+
+before it would have parsed it as 10 still, now it gets confused?
+
+I guess I'm not worried about that though.
+
+> +	buf[count] = '\0';
+
+But if count == sizeof(buf) then this is an out-of-bounds write.
+
+Same for all the other copied instances.
+
+johannes
 
