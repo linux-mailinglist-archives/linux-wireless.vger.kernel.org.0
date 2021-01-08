@@ -2,147 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81E6A2EEE6B
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 09:17:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7A7E2EF0F7
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 11:59:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727418AbhAHIQ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Jan 2021 03:16:58 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:39183 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727091AbhAHIQ6 (ORCPT
+        id S1726468AbhAHK6t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Jan 2021 05:58:49 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:44933 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725901AbhAHK6t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Jan 2021 03:16:58 -0500
-Received: from mail-lf1-f72.google.com ([209.85.167.72])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1kxmwR-0004Hm-7i
-        for linux-wireless@vger.kernel.org; Fri, 08 Jan 2021 08:16:15 +0000
-Received: by mail-lf1-f72.google.com with SMTP id w11so7763970lff.22
-        for <linux-wireless@vger.kernel.org>; Fri, 08 Jan 2021 00:16:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=REesL7QBmEQnhMhvGq3VomUrVVNbzxhY+pMBcaqPvVE=;
-        b=jmHQRsIBfZGyoe3foTo0lOPh3PxNWkPBKbrUzw1Ne4v5wyc4SDKffvWHJy89H7tX+z
-         g/D9i0HGZe2ql08kw4VUJcOw/8RWNxm1yLjXq6XUw1hQXJ16L27pc35J8O06GtBFu6O0
-         hrCbd9hiDRUWDTfBQfz51838JdBNnDcHfbiYUFGgTT5/76N3drb3cteovruk4m3Aq1Q+
-         svSf1wgb+aoOO7Ro2mOxVv4GWf68oRiOBGQrjsnNuCGdrb/n7H50kVEgl9UojXqO7BDQ
-         hu00PD09MVrAklLn1sLGz5LZIBQpKmJKRBMRaIj5Y/aQtDy2Ah/bU8vvdfPlpOxj2kVP
-         Js6Q==
-X-Gm-Message-State: AOAM532QvC9LyNTizUAMrTuYaw/jMcet4ldTs1qd+nXd+0dqadOdzMlH
-        2HmRTnGbVYbnKGx1vkpfYNSBepP/HN4bmJVjyDu6UAocBBRIUQZQEfMgNRt73HC79q32lEnF+Si
-        nEbvj2AGyx0WTO8m2zyjexyJFiUZ7Q04TtGrfcTEgGH+X9+HBAKYtql2qOM95
-X-Received: by 2002:a19:dc5:: with SMTP id 188mr1236002lfn.513.1610093774679;
-        Fri, 08 Jan 2021 00:16:14 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxo7NtVJMWhTlbC504E2Ei/r6u6gbEf6EjORs7Q4Tv+o1d/U8SFTzgp5prHG9cZn7A24YDeaX6qqGOi5SP2ZY0=
-X-Received: by 2002:a19:dc5:: with SMTP id 188mr1235992lfn.513.1610093774439;
- Fri, 08 Jan 2021 00:16:14 -0800 (PST)
+        Fri, 8 Jan 2021 05:58:49 -0500
+X-UUID: a2812a66070e49b6adf58535417dd9c8-20210108
+X-UUID: a2812a66070e49b6adf58535417dd9c8-20210108
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1767557850; Fri, 08 Jan 2021 18:58:04 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 8 Jan 2021 18:58:02 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 8 Jan 2021 18:58:01 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+CC:     Johannes Berg <johannes@sipsolutions.net>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>
+Subject: [PATCH] mac80211: fix incorrect strlen of .write in debugfs
+Date:   Fri, 8 Jan 2021 18:56:43 +0800
+Message-ID: <20210108105643.10834-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <CAAd53p7oymvge7DZ1_+7aA45EpNjG=FZ3PNJDv=_UT0ghv+rqQ@mail.gmail.com>
- <e90f1953-cda0-baf7-1b5c-56c649df6b90@lwfinger.net> <CAAd53p4=tAmyCE3QhFP8N9We3T_CGvnLWYgZAH8naWc_njtrOQ@mail.gmail.com>
- <1609294366.3846.3.camel@realtek.com> <CAAd53p7xy8CBg=Hf7_hRJYPtunGMy=vK8a2OkseOfKX6LC=SPg@mail.gmail.com>
- <c429df24468b413b885acc14cc196dac@realtek.com> <CAAd53p4uVotbsXijpdE456bgQ52DuaPpZPYTz1=xDom1bPNGSw@mail.gmail.com>
- <1610085185.5799.10.camel@realtek.com>
-In-Reply-To: <1610085185.5799.10.camel@realtek.com>
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Fri, 8 Jan 2021 16:16:03 +0800
-Message-ID: <CAAd53p4Q7UQ_HjvqgN46AT0NOhr3r1Gmgnq4hgrS+0s7kbNuOQ@mail.gmail.com>
-Subject: Re: 802.11ac AP mode support on Realtek 8821AE?
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "hugh.chao@canonical.com" <hugh.chao@canonical.com>,
-        "ethan.hsieh@canonical.com" <ethan.hsieh@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-SNTS-SMTP: ABABAB4B14836EBA9C6DBD0A2BFFC1237D0049382AC8F90DB79B7B7F41F177EA2000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jan 8, 2021 at 1:53 PM Pkshih <pkshih@realtek.com> wrote:
->
-> On Tue, 2021-01-05 at 12:30 +0000, Kai-Heng Feng wrote:
-> > On Tue, Jan 5, 2021 at 10:07 AM Pkshih <pkshih@realtek.com> wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Kai-Heng Feng [mailto:kai.heng.feng@canonical.com]
-> > > > Sent: Wednesday, December 30, 2020 11:53 AM
-> > > > To: Pkshih
-> > > > Cc: Larry.Finger@lwfinger.net; linux-wireless@vger.kernel.org; hugh.chao@c
-> > anonical.com;
-> > > > ethan.hsieh@canonical.com
-> > > > Subject: Re: 802.11ac AP mode support on Realtek 8821AE?
-> > > >
-> > > > On Wed, Dec 30, 2020 at 10:13 AM Pkshih <pkshih@realtek.com> wrote:
-> > > > >
-> > > > > On Fri, 2020-12-25 at 12:16 +0800, Kai-Heng Feng wrote:
-> > > > > > On Fri, Dec 25, 2020 at 2:18 AM Larry Finger <Larry.Finger@lwfinger.ne
-> > t>
-> > > > > > wrote:
-> > > > > > >
-> > > > > > > On 12/24/20 7:26 AM, Kai-Heng Feng wrote:
-> > > > > > > > Hi Ping-Ke,
-> > > > > > > >
-> > > > > > > > We've found that when creating 5G AP on 8821AE, it's not on other
-> > > > > > > > devices' wifi list.
-> > > > > > > >
-> > > > > > > > Here's the steps I used to create an AP:
-> > > > > > > > $ nmcli c add type wifi ifname wlp3s0 con-name hello autoconnect
-> > no ssid
-> > > > > > hello
-> > > > > > > > $ nmcli c modify hello 802-11-wireless.mode ap ipv4.method shared
-> > > > > > > > 802-11-wireless.band a
-> > > > > > > > $ nmcli connection up hello
-> > > > > > > >
-> > > > > > > > If we change "802-11-wireless.band" to "bg", then the AP can be
-> > > > > > > > scanned by other devices.
-> > > > > > > > Does 8821AE have hardware capability to support 5G AP?
-> > > > >
-> > > > > Yes, it has hardware capability of 5G AP.
-> > > > >
-> > > > > I want to make sure which chip you use. 8821AE with rtlwifi, or 8821CE
-> > with
-> > > > > rtw88?
-> > > >
-> > > > 8821AE with rtlwifi here.
-> > > >
-> > >
-> > > I'm not an expert in network-manager, so I try to bring up 5G softap with
-> > hostapd,
-> > > and then my cellphone can connect to it and ping ok.
-> > > Could you try it with attached hostapd configuration file?
-> > >
-> > > I use default configuration but change below
-> > > interface=wlan0
-> > > ssid=test-8821ae
-> > > hw_mode=a
-> > > channel=149
-> > >
-> > > The driver I use is built-in in kernel 5.9.10.
-> > > The hostap is hostap_2_9-1731-g56a1df71e (just list the version I use; I
-> > believe other version also work)
-> >
-> > Using hostapd directly can make AP in 5G work. So apparently the issue
-> > lies between NetworkManager and WPA supplicant.
-> > However, though it works with hostapd, the signal strength is
-> > extremely weak. Is this expected?
-> >
->
-> I found PHY and RF parameters are not updated properly years ago.
-> It would be much better if attached patch is applied. Please help to
-> try if it also works for you.
+This fixes strlen mismatch problems happening in some .write callbacks
+of debugfs.
 
-Thanks, the signal strength still isn't super strong but much better
-than the previous state.
+When trying to configure airtime_flags in debugfs, an error appeared:
+# echo 0 > /sys/kernel/debug/ieee80211/phy0/airtime_flags
+ash: write error: Invalid argument
 
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+The error is returned from kstrtou16() since a wrong length makes it
+miss the real end of input string.  To fix this, use count as the string
+length, and set proper end of string for a char buffer.
 
->
-> side note: I don't submit this patch immediately, because I need
-> time to verify this patch before submitting.
->
-> ---
-> Ping-Ke
->
+The debug print is shown - airtime_flags_write: count = 2, len = 8,
+where the actual length is 2, but "len = strlen(buf)" gets 8.
+
+Also cleanup the other similar cases for the sake of consistency.
+
+Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+This patch is based on the discussion from
+https://patchwork.kernel.org/project/linux-wireless/list/?series=409693
+---
+ net/mac80211/debugfs.c | 36 ++++++++++++++++--------------------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
+
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index 9135b6f..9991a6a 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -120,7 +120,6 @@ static ssize_t aqm_write(struct file *file,
+ {
+ 	struct ieee80211_local *local = file->private_data;
+ 	char buf[100];
+-	size_t len;
+ 
+ 	if (count > sizeof(buf))
+ 		return -EINVAL;
+@@ -128,10 +127,10 @@ static ssize_t aqm_write(struct file *file,
+ 	if (copy_from_user(buf, user_buf, count))
+ 		return -EFAULT;
+ 
+-	buf[sizeof(buf) - 1] = '\0';
+-	len = strlen(buf);
+-	if (len > 0 && buf[len-1] == '\n')
+-		buf[len-1] = 0;
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++
++	buf[count] = '\0';
+ 
+ 	if (sscanf(buf, "fq_limit %u", &local->fq.limit) == 1)
+ 		return count;
+@@ -177,7 +176,6 @@ static ssize_t airtime_flags_write(struct file *file,
+ {
+ 	struct ieee80211_local *local = file->private_data;
+ 	char buf[16];
+-	size_t len;
+ 
+ 	if (count > sizeof(buf))
+ 		return -EINVAL;
+@@ -185,10 +183,10 @@ static ssize_t airtime_flags_write(struct file *file,
+ 	if (copy_from_user(buf, user_buf, count))
+ 		return -EFAULT;
+ 
+-	buf[sizeof(buf) - 1] = 0;
+-	len = strlen(buf);
+-	if (len > 0 && buf[len - 1] == '\n')
+-		buf[len - 1] = 0;
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++
++	buf[count] = '\0';
+ 
+ 	if (kstrtou16(buf, 0, &local->airtime_flags))
+ 		return -EINVAL;
+@@ -237,7 +235,6 @@ static ssize_t aql_txq_limit_write(struct file *file,
+ {
+ 	struct ieee80211_local *local = file->private_data;
+ 	char buf[100];
+-	size_t len;
+ 	u32 ac, q_limit_low, q_limit_high, q_limit_low_old, q_limit_high_old;
+ 	struct sta_info *sta;
+ 
+@@ -247,10 +244,10 @@ static ssize_t aql_txq_limit_write(struct file *file,
+ 	if (copy_from_user(buf, user_buf, count))
+ 		return -EFAULT;
+ 
+-	buf[sizeof(buf) - 1] = 0;
+-	len = strlen(buf);
+-	if (len > 0 && buf[len - 1] == '\n')
+-		buf[len - 1] = 0;
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++
++	buf[count] = '\0';
+ 
+ 	if (sscanf(buf, "%u %u %u", &ac, &q_limit_low, &q_limit_high) != 3)
+ 		return -EINVAL;
+@@ -306,7 +303,6 @@ static ssize_t force_tx_status_write(struct file *file,
+ {
+ 	struct ieee80211_local *local = file->private_data;
+ 	char buf[3];
+-	size_t len;
+ 
+ 	if (count > sizeof(buf))
+ 		return -EINVAL;
+@@ -314,10 +310,10 @@ static ssize_t force_tx_status_write(struct file *file,
+ 	if (copy_from_user(buf, user_buf, count))
+ 		return -EFAULT;
+ 
+-	buf[sizeof(buf) - 1] = '\0';
+-	len = strlen(buf);
+-	if (len > 0 && buf[len - 1] == '\n')
+-		buf[len - 1] = 0;
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++
++	buf[count] = '\0';
+ 
+ 	if (buf[0] == '0' && buf[1] == '\0')
+ 		local->force_tx_status = 0;
+-- 
+2.29.2
+
