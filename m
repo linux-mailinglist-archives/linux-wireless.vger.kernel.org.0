@@ -2,213 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AF0F2EFEA2
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jan 2021 09:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 409372F00A0
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jan 2021 16:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726454AbhAIIbm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Jan 2021 03:31:42 -0500
-Received: from mga05.intel.com ([192.55.52.43]:25582 "EHLO mga05.intel.com"
+        id S1726090AbhAIPKk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Jan 2021 10:10:40 -0500
+Received: from mout.gmx.net ([212.227.15.18]:36151 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726051AbhAIIbm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Jan 2021 03:31:42 -0500
-IronPort-SDR: uoFtIfYYDklVv7WKTqKqiUozZgy8M4qn9iwA776Dk3p0R5qieneoXoQ0XObaKbTEtqPvB78139
- F+IuuYEII6fA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9858"; a="262469692"
-X-IronPort-AV: E=Sophos;i="5.79,333,1602572400"; 
-   d="scan'208";a="262469692"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2021 00:31:01 -0800
-IronPort-SDR: uhmiLen5A3R2MnAsfs47BC+hq1rfylq6dnIu0sF64s3QNAW8j4Np0Pu2P2qudWfPcz0mTHKfKr
- EeMJvDvwRQJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,333,1602572400"; 
-   d="scan'208";a="380405469"
-Received: from lkp-server01.sh.intel.com (HELO 412602b27703) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 09 Jan 2021 00:31:00 -0800
-Received: from kbuild by 412602b27703 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1ky9eF-0000yb-E7; Sat, 09 Jan 2021 08:30:59 +0000
-Date:   Sat, 09 Jan 2021 16:30:26 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211:master] BUILD SUCCESS
- 51d62f2f2c501a93d9a6a46f43731f984e227764
-Message-ID: <5ff969a2.32Vv8J6vsCThXJ4V%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1725780AbhAIPKk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 9 Jan 2021 10:10:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1610204926;
+        bh=gRQzTwTPdkA2nUI4fsS/KliTKJ50VqqDw/SPyxSJ1bM=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=FpRAyloPHi6Vtqg6a1c1Nvvc0w3EgMHYuYpGcYYc5VWYnU9DMFbk0n29hrHWew2gy
+         R3QiIBnbR5Owe1HIGGsspox7/Aq9KbY7r0suAUgUDJT8ytZp3MkJw9SS5Xe+FHfaNH
+         azrW1+Q8LuDOYt113rK/qnTwrxA4v5YduCCf6QQ0=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost ([62.216.208.239]) by mail.gmx.com (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MLzFr-1kgJSx1U7V-00HwdG; Sat, 09
+ Jan 2021 16:08:46 +0100
+Date:   Sat, 9 Jan 2021 16:08:44 +0100
+From:   Peter Seiderer <ps.report@gmx.net>
+To:     Xiaohui Zhang <ruc_zhangxiaohui@163.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] mwifiex: Fix possible buffer overflows in
+ mwifiex_config_scan
+Message-ID: <20210109160844.4ca73bf1@gmx.net>
+In-Reply-To: <20201208124523.8169-1-ruc_zhangxiaohui@163.com>
+References: <20201208124523.8169-1-ruc_zhangxiaohui@163.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:30xLTHRB14W9YJQR86cyrEg0JHGs+QTIYyIe0cq6j84p0arEcxj
+ +Mov3HHLNZyED4eJhgtdlAjvon21l3NJaiQMmOmOvqhScVZ5wo7kY+P7xgalhWxR7OwfplP
+ bW9eZau5EmpinE0gNQb0HHQPBQACyC+8+QIa8G29tXqNGc9b0HDz+o66Xtzis4yeFVzjz9c
+ Y0AySjJGRHO+G8KEe7YsA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:YK4qyXyFlTg=:PsMa08IRANayP2z91ijaWP
+ ExlkyzB2VJtCZLEZDFStybz1cMRof9gIaai9TfhISG8YuaqeLaQ/+VsItNcswAQ+qyEjEfOZr
+ 7KcevDNZ3d5QZGYFcysPfztV6w7IlIGc4wKk5b423UM7OEsU08PebSi23wEs0joCF2lwmw+H8
+ UN4fR/jVqdvhgGmisYcPy7hQxJIDHB3BO3BTAoOfJrb1rDrz9qJwugMHRKjmg2oz3R8L5c2VU
+ 07zrbGBm9QZQOJ4DaHg6R199efV+FGxGNVqX38BJ8XKlv7FajEjawkoJonG4H22osYaMofKb4
+ +Lns3gJB7i0zSrp46lAZk+doUAlmGoYpE7Hs1ptVByvLFja3Z+Jx30VfDKsZJ+4wHD1SS692v
+ EQD64Csu9fBLim1stBKt1OCRqwH76QOguiunSwKfib4DCCK7mHywK87UsbfQRMVsgnP2ei86d
+ 6hIaWaxQcfDb03NGGsbSJDtnIbF4ubi7ToF6C9g8FVkgiqEG3+usG3X393n4YLLz9DPnMT0BM
+ ye06uO2AtK2E7sXQFRswq/thzAl5nN44FqHIOlPLlMuKq+tHbHeTdiKCJb008SSXf7petmfM+
+ U2kMzXmqMqf44CltqDvkzN9UTVdVXaXjtmwsNhsOJEfFEFMVTVt1pOIJ7qa3Zzy9HHTHBkn1a
+ lO5rtnKvFr0CxXyCfnhtaMf26/pmeUafr6fiGwwTIxZVMOJRdMZ43eAVgjQOlVU+18Od51Fxk
+ XyNA15gkllSJB9rjXq7MdV8cQkKEXfX1KVsPoz65QYoy22ET7ThBM6sagmJpgyetAE8+ht0sN
+ 4Q6xZr+6PQ95ROBn0UKfbXK0wM83oscmXy0bskRbFWdIHCWtAn2XKbCm6YGRaeGkVLCaufTff
+ ok5cX1mculOVvwtxzf4w==
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git  master
-branch HEAD: 51d62f2f2c501a93d9a6a46f43731f984e227764  cfg80211: Save the regulatory domain with a lock
+Hello Zhang,
 
-elapsed time: 735m
+On Tue,  8 Dec 2020 20:45:23 +0800, Xiaohui Zhang <ruc_zhangxiaohui@163.co=
+m> wrote:
 
-configs tested: 151
-configs skipped: 2
+> From: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+>
+> mwifiex_config_scan() calls memcpy() without checking
+> the destination size may trigger a buffer overflower,
+> which a local user could use to cause denial of service
+> or the execution of arbitrary code.
+> Fix it by putting the length check before calling memcpy().
+>
+> Signed-off-by: Zhang Xiaohui <ruc_zhangxiaohui@163.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/scan.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/w=
+ireless/marvell/mwifiex/scan.c
+> index c2a685f63..b1d90678f 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/scan.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+> @@ -930,6 +930,8 @@ mwifiex_config_scan(struct mwifiex_private *priv,
+>  				    "DIRECT-", 7))
+>  				wildcard_ssid_tlv->max_ssid_length =3D 0xfe;
+>
+> +			if (ssid_len > 1)
+> +				ssid_len =3D 1;
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Why do your believe the available size is only '1'? A SSID is expected
+to be of size IEEE80211_MAX_SSID_LE/32 and the wildcard_ssid_tlv pointer
+is casted from tlv_pos (some lines above) which is a pointer/index into
+scan_cfg_out->tlv_buf...
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-openrisc                            defconfig
-powerpc                      arches_defconfig
-mips                        qi_lb60_defconfig
-powerpc                     sbc8548_defconfig
-openrisc                 simple_smp_defconfig
-sh                           se7780_defconfig
-powerpc                      mgcoge_defconfig
-mips                      malta_kvm_defconfig
-m68k                        mvme16x_defconfig
-powerpc                         wii_defconfig
-riscv                          rv32_defconfig
-mips                           ip28_defconfig
-riscv                            alldefconfig
-mips                        jmr3927_defconfig
-arm                           spitz_defconfig
-arm                        magician_defconfig
-sh                            migor_defconfig
-arm                         socfpga_defconfig
-powerpc                       ebony_defconfig
-mips                         bigsur_defconfig
-arm                        realview_defconfig
-m68k                        m5307c3_defconfig
-mips                            gpr_defconfig
-powerpc                     tqm8540_defconfig
-powerpc                  iss476-smp_defconfig
-arm                           efm32_defconfig
-powerpc                     redwood_defconfig
-h8300                               defconfig
-m68k                        stmark2_defconfig
-xtensa                generic_kc705_defconfig
-mips                  decstation_64_defconfig
-sh                        sh7785lcr_defconfig
-riscv                            allmodconfig
-powerpc                    sam440ep_defconfig
-mips                         tb0219_defconfig
-mips                      bmips_stb_defconfig
-powerpc                      ppc6xx_defconfig
-mips                        workpad_defconfig
-mips                        omega2p_defconfig
-sh                            titan_defconfig
-powerpc                      ppc64e_defconfig
-sh                        dreamcast_defconfig
-arm                         lpc18xx_defconfig
-arm                        mvebu_v7_defconfig
-microblaze                          defconfig
-arm                        oxnas_v6_defconfig
-m68k                                defconfig
-m68k                         apollo_defconfig
-powerpc64                           defconfig
-arm                       cns3420vb_defconfig
-m68k                        mvme147_defconfig
-sh                            shmin_defconfig
-arm                          pxa3xx_defconfig
-riscv                    nommu_virt_defconfig
-sh                           se7619_defconfig
-mips                           ip22_defconfig
-powerpc                  mpc885_ads_defconfig
-mips                malta_kvm_guest_defconfig
-powerpc                       ppc64_defconfig
-powerpc                     tqm8560_defconfig
-mips                         cobalt_defconfig
-ia64                                defconfig
-powerpc                     pseries_defconfig
-arm                         lpc32xx_defconfig
-powerpc                     kilauea_defconfig
-m68k                             allyesconfig
-arm                       aspeed_g5_defconfig
-m68k                       m5249evb_defconfig
-mips                      maltaaprp_defconfig
-arc                          axs103_defconfig
-arm                     eseries_pxa_defconfig
-sh                          r7780mp_defconfig
-powerpc                      acadia_defconfig
-riscv                            allyesconfig
-arc                          axs101_defconfig
-mips                           gcw0_defconfig
-mips                      pic32mzda_defconfig
-parisc                generic-32bit_defconfig
-powerpc                mpc7448_hpc2_defconfig
-mips                      pistachio_defconfig
-powerpc                     akebono_defconfig
-sh                          rsk7269_defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a004-20210108
-x86_64               randconfig-a006-20210108
-x86_64               randconfig-a001-20210108
-x86_64               randconfig-a002-20210108
-x86_64               randconfig-a003-20210108
-x86_64               randconfig-a005-20210108
-i386                 randconfig-a005-20210108
-i386                 randconfig-a002-20210108
-i386                 randconfig-a001-20210108
-i386                 randconfig-a003-20210108
-i386                 randconfig-a006-20210108
-i386                 randconfig-a004-20210108
-i386                 randconfig-a016-20210108
-i386                 randconfig-a011-20210108
-i386                 randconfig-a014-20210108
-i386                 randconfig-a015-20210108
-i386                 randconfig-a013-20210108
-i386                 randconfig-a012-20210108
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+And the define (line 44) indicates there should be enough space for a SSID=
+:
 
-clang tested configs:
-x86_64               randconfig-a013-20210108
-x86_64               randconfig-a011-20210108
-x86_64               randconfig-a012-20210108
-x86_64               randconfig-a016-20210108
-x86_64               randconfig-a014-20210108
-x86_64               randconfig-a015-20210108
+  42 /* Memory needed to store a max number/size WildCard SSID TLV for a f=
+irmware
+  43         scan */
+  44 #define WILDCARD_SSID_TLV_MAX_SIZE  \
+  45         (MWIFIEX_MAX_SSID_LIST_LENGTH *                              =
+   \
+  46                 (sizeof(struct mwifiex_ie_types_wildcard_ssid_params)=
+   \
+  47                         + IEEE80211_MAX_SSID_LEN))
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+For sure something to improve here instead of using a confusing 'u8 ssid[1=
+]'
+in struct mwifiex_ie_types_wildcard_ssid_params...
+
+Regards,
+Peter
+
+>  			memcpy(wildcard_ssid_tlv->ssid,
+>  			       user_scan_in->ssid_list[i].ssid, ssid_len);
+>
+
