@@ -2,90 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 373FB2EF87F
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Jan 2021 21:03:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ED542EFC18
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Jan 2021 01:24:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728927AbhAHUDk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Jan 2021 15:03:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50454 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727161AbhAHUDk (ORCPT
+        id S1726216AbhAIAXD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Jan 2021 19:23:03 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:34458 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725872AbhAIAXD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Jan 2021 15:03:40 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21CB3C061381
-        for <linux-wireless@vger.kernel.org>; Fri,  8 Jan 2021 12:03:00 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1kxxxf-003h79-VK; Fri, 08 Jan 2021 21:02:54 +0100
-Message-ID: <0efec65815ff9e26b3da69cb35d503a90086760c.camel@sipsolutions.net>
+        Fri, 8 Jan 2021 19:23:03 -0500
+X-UUID: 2087cc9e142449a1a487af29da6a1889-20210109
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=7CYUlKecezZ1BJCyWACsMHG9HSdAtzLwoRJDZJLvlmg=;
+        b=EE1lsKQzli67viq9PmMnk8mcQizuxp5/LSQ6t0dhVoH2AHSULATmxaaZI66AsF9lq+7yVIoVOvY37OG71mk1zwR1+nPohCTa152KZfBmPJgSD7wnn9nJjLW+YyV7f4Uz0R1G7uo+2CQsiWlgALvimfvgWUHJWcRHwAE76AdmGUE=;
+X-UUID: 2087cc9e142449a1a487af29da6a1889-20210109
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 693531631; Sat, 09 Jan 2021 08:22:16 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 9 Jan 2021 08:22:13 +0800
+Received: from [172.21.77.33] (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 9 Jan 2021 08:22:13 +0800
+Message-ID: <1610151733.9343.3.camel@mtkswgap22>
 Subject: Re: [PATCH] mac80211: fix incorrect strlen of .write in debugfs
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Sujuan Chen <sujuan.chen@mediatek.com>
-Date:   Fri, 08 Jan 2021 21:02:53 +0100
-In-Reply-To: <20210108105643.10834-1-shayne.chen@mediatek.com>
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Felix Fietkau <nbd@nbd.name>
+Date:   Sat, 9 Jan 2021 08:22:13 +0800
+In-Reply-To: <0efec65815ff9e26b3da69cb35d503a90086760c.camel@sipsolutions.net>
 References: <20210108105643.10834-1-shayne.chen@mediatek.com>
+         <0efec65815ff9e26b3da69cb35d503a90086760c.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This looks wrong to me, am I missing something?
-
-> diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-> index 9135b6f..9991a6a 100644
-> --- a/net/mac80211/debugfs.c
-> +++ b/net/mac80211/debugfs.c
-> @@ -120,7 +120,6 @@ static ssize_t aqm_write(struct file *file,
->  {
->  	struct ieee80211_local *local = file->private_data;
->  	char buf[100];
-> -	size_t len;
->  
->  	if (count > sizeof(buf))
->  		return -EINVAL;
-
-This ensures that count <= sizeof(buf)
-
-> @@ -128,10 +127,10 @@ static ssize_t aqm_write(struct file *file,
->  	if (copy_from_user(buf, user_buf, count))
->  		return -EFAULT;
-
-We copy, that's fine.
- 
-> -	buf[sizeof(buf) - 1] = '\0';
-> -	len = strlen(buf);
-> -	if (len > 0 && buf[len-1] == '\n')
-> -		buf[len-1] = 0;
-> +	if (count && buf[count - 1] == '\n')
-> +		buf[count - 1] = '\0';
-
-This I think really was meant as strlen, because if you write something
-like
-
- 10\n\0\0\0\0
-
-before it would have parsed it as 10 still, now it gets confused?
-
-I guess I'm not worried about that though.
-
-> +	buf[count] = '\0';
-
-But if count == sizeof(buf) then this is an out-of-bounds write.
-
-Same for all the other copied instances.
-
-johannes
+T24gRnJpLCAyMDIxLTAxLTA4IGF0IDIxOjAyICswMTAwLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0K
+PiBUaGlzIGxvb2tzIHdyb25nIHRvIG1lLCBhbSBJIG1pc3Npbmcgc29tZXRoaW5nPw0KPiANCj4g
+PiBkaWZmIC0tZ2l0IGEvbmV0L21hYzgwMjExL2RlYnVnZnMuYyBiL25ldC9tYWM4MDIxMS9kZWJ1
+Z2ZzLmMNCj4gPiBpbmRleCA5MTM1YjZmLi45OTkxYTZhIDEwMDY0NA0KPiA+IC0tLSBhL25ldC9t
+YWM4MDIxMS9kZWJ1Z2ZzLmMNCj4gPiArKysgYi9uZXQvbWFjODAyMTEvZGVidWdmcy5jDQo+ID4g
+QEAgLTEyMCw3ICsxMjAsNiBAQCBzdGF0aWMgc3NpemVfdCBhcW1fd3JpdGUoc3RydWN0IGZpbGUg
+KmZpbGUsDQo+ID4gIHsNCj4gPiAgCXN0cnVjdCBpZWVlODAyMTFfbG9jYWwgKmxvY2FsID0gZmls
+ZS0+cHJpdmF0ZV9kYXRhOw0KPiA+ICAJY2hhciBidWZbMTAwXTsNCj4gPiAtCXNpemVfdCBsZW47
+DQo+ID4gIA0KPiA+ICAJaWYgKGNvdW50ID4gc2l6ZW9mKGJ1ZikpDQo+ID4gIAkJcmV0dXJuIC1F
+SU5WQUw7DQo+IA0KPiBUaGlzIGVuc3VyZXMgdGhhdCBjb3VudCA8PSBzaXplb2YoYnVmKQ0KPiAN
+Cj4gPiBAQCAtMTI4LDEwICsxMjcsMTAgQEAgc3RhdGljIHNzaXplX3QgYXFtX3dyaXRlKHN0cnVj
+dCBmaWxlICpmaWxlLA0KPiA+ICAJaWYgKGNvcHlfZnJvbV91c2VyKGJ1ZiwgdXNlcl9idWYsIGNv
+dW50KSkNCj4gPiAgCQlyZXR1cm4gLUVGQVVMVDsNCj4gDQo+IFdlIGNvcHksIHRoYXQncyBmaW5l
+Lg0KPiAgDQo+ID4gLQlidWZbc2l6ZW9mKGJ1ZikgLSAxXSA9ICdcMCc7DQo+ID4gLQlsZW4gPSBz
+dHJsZW4oYnVmKTsNCj4gPiAtCWlmIChsZW4gPiAwICYmIGJ1ZltsZW4tMV0gPT0gJ1xuJykNCj4g
+PiAtCQlidWZbbGVuLTFdID0gMDsNCj4gPiArCWlmIChjb3VudCAmJiBidWZbY291bnQgLSAxXSA9
+PSAnXG4nKQ0KPiA+ICsJCWJ1Zltjb3VudCAtIDFdID0gJ1wwJzsNCj4gDQo+IFRoaXMgSSB0aGlu
+ayByZWFsbHkgd2FzIG1lYW50IGFzIHN0cmxlbiwgYmVjYXVzZSBpZiB5b3Ugd3JpdGUgc29tZXRo
+aW5nDQo+IGxpa2UNCj4gDQo+ICAxMFxuXDBcMFwwXDANCj4gDQo+IGJlZm9yZSBpdCB3b3VsZCBo
+YXZlIHBhcnNlZCBpdCBhcyAxMCBzdGlsbCwgbm93IGl0IGdldHMgY29uZnVzZWQ/DQo+IA0KPiBJ
+IGd1ZXNzIEknbSBub3Qgd29ycmllZCBhYm91dCB0aGF0IHRob3VnaC4NCg0KSSB0aGluayB0aGUg
+cHJvYmxlbSBvbmx5IGhhcHBlbnMgb24gYWlydGltZV9mbGFnc193cml0ZSgpIHRoYXQgdXNlcw0K
+a3N0cnRvdTE2KCkNCg0KDQo+ID4gKwlidWZbY291bnRdID0gJ1wwJzsNCj4gDQo+IEJ1dCBpZiBj
+b3VudCA9PSBzaXplb2YoYnVmKSB0aGVuIHRoaXMgaXMgYW4gb3V0LW9mLWJvdW5kcyB3cml0ZS4N
+Cg0KUmlnaHQuIFRoZW4sIHdlIGNhbg0KDQogCWlmIChjb3VudCA+PSBzaXplb2YoYnVmKSkNCgkJ
+cmV0dXJuIC1FSU5WQUw7DQoNClJ5ZGVyDQoNCg0KDQo=
 
