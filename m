@@ -2,126 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B1E2F0723
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Jan 2021 13:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B94E2F09C1
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Jan 2021 21:58:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726789AbhAJMQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 10 Jan 2021 07:16:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41156 "EHLO
+        id S1726517AbhAJU6I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 10 Jan 2021 15:58:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726387AbhAJMQy (ORCPT
+        with ESMTP id S1726394AbhAJU6H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 10 Jan 2021 07:16:54 -0500
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE82C0617A7;
-        Sun, 10 Jan 2021 04:15:56 -0800 (PST)
-Received: by mail-pj1-x1034.google.com with SMTP id iq13so6110723pjb.3;
-        Sun, 10 Jan 2021 04:15:56 -0800 (PST)
+        Sun, 10 Jan 2021 15:58:07 -0500
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CC43C061786
+        for <linux-wireless@vger.kernel.org>; Sun, 10 Jan 2021 12:57:27 -0800 (PST)
+Received: by mail-vs1-xe36.google.com with SMTP id x26so8693402vsq.1
+        for <linux-wireless@vger.kernel.org>; Sun, 10 Jan 2021 12:57:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=T7ThywqXuhxC8F6Hh3LDj1yvDqMYokNpJlLIGbeNsvg=;
-        b=RJNN5BgGe8mKnEWypJ7UYPnfrK6Jxoaz8eUBmO+P/O89GAkqfT1ln2VZIiVO2f8AXR
-         bhqozprqbGV9Mg/ZisW9ECc8jP/mk+nqS89Qnr/DRD88jkss5HEz2HfSx7AEn0ycLRq8
-         4hG3cAX+L5XMyK58ByN8Bq4Jx9965rX7jPr59WKW3hJecoeWEck83icdNU7NEqtcCnnD
-         MiR34KsXkRGX+jrHvt9stgwoqGIcQI+WMBIahCmFsuBT3TLpSzgaXzgn1wkofsKpqLkf
-         tcGZbrtuyd9FCx8XYlBBXTf2Z9vflnJIN5b7Jpzr9zSYvzKCjPd3qWhafuqVw5qOig/y
-         fw0A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bI1dyqszMvncQd81wZke0E6VLoCiKKnOGwF/VN5SClY=;
+        b=UBkappg2aa+dBt4O7h/ywUpC8ll8u0HTPqS3uQ9zlBuyMrWzd0OjXEiYTtNnafVVW9
+         gj/fx1PUfsH9p4nZnk0XE3deh54XN5ZsyxEnqD5NEIAQz7zhVS67/lo2mgQNdWqny8Dx
+         3D6XwFd+U+QYa2BvP25p4jxm2WMT5Yv9ATLejs8/ITnZYueayqTT8x3HFPJ6PDdh7SDO
+         3lABPHpLbaTTsc5kTG7GX/hzIIQDFjAs3nSqfBJ/Hh58Oc7t9FF0qg+wUcFSrVpOanPo
+         vCirC7Lcjz2jafpyDaF+bg4IDAfh7pSsnfUpHXvrzefvg557167HLKrtP9hrlszqol4V
+         WOBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=T7ThywqXuhxC8F6Hh3LDj1yvDqMYokNpJlLIGbeNsvg=;
-        b=WTF7Mt/4tiZqCukmKSDi8Uq5r03gQc1vQArVJOKD1N+ZUj+M8u/8GaL3nfxtNFUSaq
-         dm5RtHR1vxtDIjQ1d+iQetIEb7aV79G6x0UQGVQRqXu+Rby/SZjc22aWV1LPMH04D3D5
-         MkjPL38YGaWUDsZIcflkmQUUsmVyZapmrf/mkL0dE1ov34QwzSkj2C1Kz9b3E/c/bngi
-         3OZCL1pEd0aTALsJebGGOouBEmCSpSE8LuVepEKO82UPVjPldOc/RdOetfjj84QynrZL
-         ZM1J4Uk0v6e8YZliBDasUgPx26JBYGvMdVFNvvviB6DHImDPxL1tR+9Z2QS/uZApZGEw
-         lQaw==
-X-Gm-Message-State: AOAM5335079NuY5memGFaSxfpvekn/na9u0cR6/ATUfB/bZclXiynj2O
-        dDrvqrnTHyOmhLwR/X2ZUtWU1yTjHXqGtA==
-X-Google-Smtp-Source: ABdhPJys2QAtK2nStXpmMUaaqsBFY49SSm7RfqzrRy2zOk36qHLcn1ATn8LKYR/FYtmW8MIDE65AIQ==
-X-Received: by 2002:a17:90a:5303:: with SMTP id x3mr13072178pjh.54.1610280955942;
-        Sun, 10 Jan 2021 04:15:55 -0800 (PST)
-Received: from localhost.localdomain ([2405:201:600d:a089:381d:ba42:3c3c:81ce])
-        by smtp.googlemail.com with ESMTPSA id y5sm10959791pjt.42.2021.01.10.04.15.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Jan 2021 04:15:55 -0800 (PST)
-From:   Aditya Srivastava <yashsri421@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        lukas.bulwahn@gmail.com, yashsri421@gmail.com
-Subject: [PATCH 5/5] rtlwifi: rtl8821ae: fix bool comparison in expressions
-Date:   Sun, 10 Jan 2021 17:45:25 +0530
-Message-Id: <20210110121525.2407-6-yashsri421@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210110121525.2407-1-yashsri421@gmail.com>
-References: <3c121981-1468-fc9d-7813-483246066cc4@lwfinger.net>
- <20210110121525.2407-1-yashsri421@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bI1dyqszMvncQd81wZke0E6VLoCiKKnOGwF/VN5SClY=;
+        b=KTHJwZwhPkxgfNZNKAcCF0sH1SUjd3rrjSTdhw9M8we5ZIaaU2T9Bj19/LZS3y5yfA
+         Aky1sqpwDeuL/aqajRSsAJNd4VLIbEfAmZFrU7eurttoTEtg1KYkUpDyH4S9htBm7AZ2
+         on/SghQbsJ7v0vuYgtogs2GNlddfDIbf7RLLa4in9s7joi6nCRNFzIxFZVy6M+AZ9wya
+         MSfjKaAI/r9Q5V8gwOZpQcZl68e8F8b43jeeIqBlWOB038kUxr+hxpn1dhLWBkKWTsnK
+         oza3QKjC+NBjSs4BwhXUYsLDMt7Lcw2wGFO4C7MR8YnorAV0j0yqVLEe3qMjcg02XK86
+         2MRQ==
+X-Gm-Message-State: AOAM530FVQ5jIuXiq6UPxVN2LLvnC+GCBHvBOFhT7yM8MYiZIaFD13tM
+        JpInJm94EarrHXiM8weilgac0ELLlqx39gMtyGA=
+X-Google-Smtp-Source: ABdhPJy2Hdpoct9cPuou6NfVpk4UVoEXbQXro4s4Pv0+OqMFpiH6KHKwqNm5bbqG6pZjVrHmgFxo5sQRkeDkRPTKAZU=
+X-Received: by 2002:a67:32c5:: with SMTP id y188mr10333337vsy.4.1610312246029;
+ Sun, 10 Jan 2021 12:57:26 -0800 (PST)
+MIME-Version: 1.0
+References: <CAM+r-RhxY4TA4zPm6e6ah9RWdBY67J=5oRS3+=+EQMomKa10QQ@mail.gmail.com>
+ <CA+icZUWcuka-6j139+89pSV5Z-r1fYVriz+wJE0gma4RO_PL9Q@mail.gmail.com>
+ <CAM+r-Rj3y6DGonMPQ_V7qCwWH7v1bgh5x7YmAzMh5-cY68jJiw@mail.gmail.com>
+ <CA+icZUXkwN=WT+hOop2WjwdVOp8UB93XKd07KB_EdCP5U_znsg@mail.gmail.com> <CAM+r-RgHsVSOjH8+2jaw6xJAm=ykcJa8Mw65jOma=w_yDyt5hA@mail.gmail.com>
+In-Reply-To: <CAM+r-RgHsVSOjH8+2jaw6xJAm=ykcJa8Mw65jOma=w_yDyt5hA@mail.gmail.com>
+From:   Luca Versari <veluca93@gmail.com>
+Date:   Sun, 10 Jan 2021 21:57:00 +0100
+Message-ID: <CAM+r-Rh-YmJhbDNEPGDa+=Fntp1ruEf3B6OxUWECXudsi8z04w@mail.gmail.com>
+Subject: Re: [BUG] Stacktrace in ath11k_pci
+To:     sedat.dilek@gmail.com
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are certain conditional expressions in rtl8821ae, where a boolean
-variable is compared with true/false, in forms such as (foo == true) or
-(false != bar), which does not comply with checkpatch.pl (CHECK:
-BOOL_COMPARISON), according to which boolean variables should be
-themselves used in the condition, rather than comparing with true/false
+FYI, the same problem is still happening with linux 5.10.6 and latest firmware.
 
-E.g., in drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c,
-"if (rtlefuse->autoload_failflag == false)" can be replaced with
-"if (!rtlefuse->autoload_failflag)"
-
-Replace all such expressions with the bool variables appropriately
-
-Signed-off-by: Aditya Srivastava <yashsri421@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-index 372d6f8caf06..e214b9062cc1 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-@@ -1812,7 +1812,7 @@ static bool _rtl8821ae_phy_bb8821a_config_parafile(struct ieee80211_hw *hw)
- 		return false;
- 	}
- 	_rtl8821ae_phy_init_tx_power_by_rate(hw);
--	if (rtlefuse->autoload_failflag == false) {
-+	if (!rtlefuse->autoload_failflag) {
- 		rtstatus = _rtl8821ae_phy_config_bb_with_pgheaderfile(hw,
- 						    BASEBAND_CONFIG_PHY_REG);
- 	}
-@@ -3980,7 +3980,7 @@ static void _rtl8821ae_iqk_tx(struct ieee80211_hw *hw, enum radio_path path)
- 				}
- 			}
- 
--			if (tx0iqkok == false)
-+			if (!tx0iqkok)
- 				break;				/* TXK fail, Don't do RXK */
- 
- 			if (vdf_enable == 1) {
-@@ -4090,7 +4090,7 @@ static void _rtl8821ae_iqk_tx(struct ieee80211_hw *hw, enum radio_path path)
- 						}
- 					}
- 
--					if (tx0iqkok == false) {   /* If RX mode TXK fail, then take TXK Result */
-+					if (!tx0iqkok) {   /* If RX mode TXK fail, then take TXK Result */
- 						tx_x0_rxk[cal] = tx_x0[cal];
- 						tx_y0_rxk[cal] = tx_y0[cal];
- 						tx0iqkok = true;
-@@ -4249,7 +4249,7 @@ static void _rtl8821ae_iqk_tx(struct ieee80211_hw *hw, enum radio_path path)
- 					}
- 				}
- 
--				if (tx0iqkok == false) {   /* If RX mode TXK fail, then take TXK Result */
-+				if (!tx0iqkok) {   /* If RX mode TXK fail, then take TXK Result */
- 					tx_x0_rxk[cal] = tx_x0[cal];
- 					tx_y0_rxk[cal] = tx_y0[cal];
- 					tx0iqkok = true;
--- 
-2.17.1
-
+On Sun, 3 Jan 2021 at 02:31, Luca Versari <veluca93@gmail.com> wrote:
+>
+> I can confirm I have the latest firmware installed (same sha256sum).
+>
+> On Sun, 3 Jan 2021 at 01:34, Sedat Dilek <sedat.dilek@gmail.com> wrote:
+> >
+> > On Sun, Jan 3, 2021 at 1:18 AM Luca Versari <veluca93@gmail.com> wrote:
+> > >
+> > > Thanks for the quick reply!
+> > > Unfortunately, this didn't seem to work - I'm still getting the same
+> > > stack trace:
+> > >
+> >
+> > Latest ath11k firmware?
+> >
+> > - Sedat -
+> >
+> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/ath11k
