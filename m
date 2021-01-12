@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C2962F34F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 17:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E452F3508
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 17:06:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405652AbhALQC5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Jan 2021 11:02:57 -0500
-Received: from mx2.suse.de ([195.135.220.15]:46562 "EHLO mx2.suse.de"
+        id S2392471AbhALQF6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Jan 2021 11:05:58 -0500
+Received: from mx2.suse.de ([195.135.220.15]:48880 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405624AbhALQC4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Jan 2021 11:02:56 -0500
+        id S2392162AbhALQF5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Jan 2021 11:05:57 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 2D2C3ABD6;
-        Tue, 12 Jan 2021 16:02:15 +0000 (UTC)
-Date:   Tue, 12 Jan 2021 17:02:15 +0100
-Message-ID: <s5h5z42qh2w.wl-tiwai@suse.de>
+        by mx2.suse.de (Postfix) with ESMTP id B7728AF6D;
+        Tue, 12 Jan 2021 16:05:15 +0000 (UTC)
+Date:   Tue, 12 Jan 2021 17:05:15 +0100
+Message-ID: <s5h4kjmqgxw.wl-tiwai@suse.de>
 From:   Takashi Iwai <tiwai@suse.de>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         Luca Coelho <luciano.coelho@intel.com>
-Subject: Re: [PATCH 1/2] iwlwifi: dbg: Don't touch the tlv data
-In-Reply-To: <87turmrw9j.fsf@codeaurora.org>
+Subject: Re: [PATCH 2/2] iwlwifi: dbg: Mark ucode tlv data as const
+In-Reply-To: <87pn2arw69.fsf@codeaurora.org>
 References: <20210112132449.22243-1-tiwai@suse.de>
-        <20210112132449.22243-2-tiwai@suse.de>
-        <87turmrw9j.fsf@codeaurora.org>
+        <20210112132449.22243-3-tiwai@suse.de>
+        <87pn2arw69.fsf@codeaurora.org>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
  FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
  (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -35,36 +35,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 12 Jan 2021 16:48:56 +0100,
+On Tue, 12 Jan 2021 16:50:54 +0100,
 Kalle Valo wrote:
 > 
 > Takashi Iwai <tiwai@suse.de> writes:
 > 
-> > The commit ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device
-> > memory") added a termination of name string just to be sure, and this
-> > seems causing a regression, a GPF triggered at firmware loading.
-> > Basically we shouldn't modify the firmware data that may be provided
-> > as read-only.
+> > The ucode TLV data may be read-only and should be treated as const
+> > pointers, but currently a few code forcibly cast to the writable
+> > pointer unnecessarily.  This gave developers a wrong impression as if
+> > it can be modified, resulting in crashing regressions already a couple
+> > of times.
 > >
-> > This patch drops the code that caused the regression and keep the tlv
-> > data as is.
+> > This patch adds the const prefix to those cast pointers, so that such
+> > attempt can be caught more easily in future.
 > >
-> > Fixes: ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device memory")
-> > BugLink: https://bugzilla.suse.com/show_bug.cgi?id=1180344
-> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=210733
 > > Signed-off-by: Takashi Iwai <tiwai@suse.de>
 > 
-> I'm planning to queue this to v5.11. Should I add cc stable?
+> So this need to go to -next, right?
 
-Yes, it hits 5.10.y.
+Yes, this isn't urgently needed for 5.11.
 
-> Luca, can I have your ack?
+> Does this depend on patch 1 or can
+> this be applied independently?
 
-It'd be great if this fix goes in quickly.
+It depends on the first patch, otherwise you'll get the warning in the
+code changing the const data (it must warn -- that's the purpose of
+this change :)
 
-
-BTW, I thought network people don't want to have Cc-to-stable in the
-patch, so I didn't put it by myself.  Is this rule still valid?
+So, if applying to a separate branch is difficult, applying together
+for 5.11 would be an option.
 
 
 thanks,
