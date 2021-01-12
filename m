@@ -2,69 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BBF2F2637
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 03:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8322F26A9
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 04:27:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729857AbhALCVF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Jan 2021 21:21:05 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:48390 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727886AbhALCVF (ORCPT
+        id S1726868AbhALD03 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Jan 2021 22:26:29 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:34872 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725885AbhALD03 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Jan 2021 21:21:05 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 10C2K97Q0017170, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 10C2K97Q0017170
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 12 Jan 2021 10:20:09 +0800
-Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 12 Jan 2021 10:20:08 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2044.4; Tue, 12 Jan 2021 10:20:08 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833]) by
- RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833%12]) with mapi id
- 15.01.2106.006; Tue, 12 Jan 2021 10:20:08 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "abaci-bugfix@linux.alibaba.com" <abaci-bugfix@linux.alibaba.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] rtw88: debug: style: Simplify bool comparison
-Thread-Topic: [PATCH] rtw88: debug: style: Simplify bool comparison
-Thread-Index: AQHW5/ucgdIAEnze3069k02IgzXoGqoivKgA
-Date:   Tue, 12 Jan 2021 02:20:08 +0000
-Message-ID: <1610417974.3495.6.camel@realtek.com>
-References: <1610356932-56073-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-In-Reply-To: <1610356932-56073-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <890FF8EFC305BA41B518A4523CA4C9E2@realtek.com>
-Content-Transfer-Encoding: base64
+        Mon, 11 Jan 2021 22:26:29 -0500
+X-UUID: 1626aee34ba5497bb7d5913a80228cce-20210112
+X-UUID: 1626aee34ba5497bb7d5913a80228cce-20210112
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 96550990; Tue, 12 Jan 2021 11:20:31 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 12 Jan 2021 11:20:30 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 12 Jan 2021 11:20:30 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+CC:     Johannes Berg <johannes@sipsolutions.net>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>
+Subject: [PATCH v2] mac80211: fix incorrect strlen of .write in debugfs
+Date:   Tue, 12 Jan 2021 11:20:28 +0800
+Message-ID: <20210112032028.7482-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIxLTAxLTExIGF0IDA5OjIyICswMDAwLCBZQU5HIExJIHdyb3RlOg0KPiBGaXgg
-dGhlIGZvbGxvd2luZyBjb2NjaWNoZWNrIHdhcm5pbmc6DQo+IMKgLi9kcml2ZXJzL25ldC93aXJl
-bGVzcy9yZWFsdGVrL3J0dzg4L2RlYnVnLmM6ODAwOjE3LTIzOiBXQVJOSU5HOg0KPiBDb21wYXJp
-c29uIG9mIDAvMSB0byBib29sIHZhcmlhYmxlDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBZQU5HIExJ
-IDxhYmFjaS1idWdmaXhAbGludXguYWxpYmFiYS5jb20+DQo+IFJlcG9ydGVkLWJ5OiBBYmFjaSBS
-b2JvdDxhYmFjaUBsaW51eC5hbGliYWJhLmNvbT4tLS0NCj4gwqBkcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg4L2RlYnVnLmMgfCAyICstDQo+IMKgMSBmaWxlIGNoYW5nZWQsIDEgaW5z
-ZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiANCg0KSSB0aGluayB0aGF0ICJydHc4ODoi
-IG9yICJydHc4ODogZGVidWc6IiBhcyBzdWJqZWN0IHByZWZpeCBpcyBlbm91Z2guDQpPdGhlcnMg
-YXJlIGdvb2QgdG8gbWUuDQoNCi0tLQ0KUGluZy1LZQ0KDQo=
+This fixes strlen mismatch problems happening in some .write callbacks
+of debugfs.
+
+When trying to configure airtime_flags in debugfs, an error appeared:
+ash: write error: Invalid argument
+
+The error is returned from kstrtou16() since a wrong length makes it
+miss the real end of input string.  To fix this, use count as the string
+length, and set proper end of string for a char buffer.
+
+The debug print is shown - airtime_flags_write: count = 2, len = 8,
+where the actual length is 2, but "len = strlen(buf)" gets 8.
+
+Also cleanup the other similar cases for the sake of consistency.
+
+Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+v2:
+- fix r/w buffer OOB
+- put buf[count] = '\0' to an else
+---
+ net/mac80211/debugfs.c | 44 +++++++++++++++++++-----------------------
+ 1 file changed, 20 insertions(+), 24 deletions(-)
+
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index 48f144f107d5..9e723d943421 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -120,18 +120,17 @@ static ssize_t aqm_write(struct file *file,
+ {
+ 	struct ieee80211_local *local = file->private_data;
+ 	char buf[100];
+-	size_t len;
+ 
+-	if (count > sizeof(buf))
++	if (count >= sizeof(buf))
+ 		return -EINVAL;
+ 
+ 	if (copy_from_user(buf, user_buf, count))
+ 		return -EFAULT;
+ 
+-	buf[sizeof(buf) - 1] = '\0';
+-	len = strlen(buf);
+-	if (len > 0 && buf[len-1] == '\n')
+-		buf[len-1] = 0;
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++	else
++		buf[count] = '\0';
+ 
+ 	if (sscanf(buf, "fq_limit %u", &local->fq.limit) == 1)
+ 		return count;
+@@ -177,18 +176,17 @@ static ssize_t airtime_flags_write(struct file *file,
+ {
+ 	struct ieee80211_local *local = file->private_data;
+ 	char buf[16];
+-	size_t len;
+ 
+-	if (count > sizeof(buf))
++	if (count >= sizeof(buf))
+ 		return -EINVAL;
+ 
+ 	if (copy_from_user(buf, user_buf, count))
+ 		return -EFAULT;
+ 
+-	buf[sizeof(buf) - 1] = 0;
+-	len = strlen(buf);
+-	if (len > 0 && buf[len - 1] == '\n')
+-		buf[len - 1] = 0;
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++	else
++		buf[count] = '\0';
+ 
+ 	if (kstrtou16(buf, 0, &local->airtime_flags))
+ 		return -EINVAL;
+@@ -237,20 +235,19 @@ static ssize_t aql_txq_limit_write(struct file *file,
+ {
+ 	struct ieee80211_local *local = file->private_data;
+ 	char buf[100];
+-	size_t len;
+ 	u32 ac, q_limit_low, q_limit_high, q_limit_low_old, q_limit_high_old;
+ 	struct sta_info *sta;
+ 
+-	if (count > sizeof(buf))
++	if (count >= sizeof(buf))
+ 		return -EINVAL;
+ 
+ 	if (copy_from_user(buf, user_buf, count))
+ 		return -EFAULT;
+ 
+-	buf[sizeof(buf) - 1] = 0;
+-	len = strlen(buf);
+-	if (len > 0 && buf[len - 1] == '\n')
+-		buf[len - 1] = 0;
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++	else
++		buf[count] = '\0';
+ 
+ 	if (sscanf(buf, "%u %u %u", &ac, &q_limit_low, &q_limit_high) != 3)
+ 		return -EINVAL;
+@@ -306,18 +303,17 @@ static ssize_t force_tx_status_write(struct file *file,
+ {
+ 	struct ieee80211_local *local = file->private_data;
+ 	char buf[3];
+-	size_t len;
+ 
+-	if (count > sizeof(buf))
++	if (count >= sizeof(buf))
+ 		return -EINVAL;
+ 
+ 	if (copy_from_user(buf, user_buf, count))
+ 		return -EFAULT;
+ 
+-	buf[sizeof(buf) - 1] = '\0';
+-	len = strlen(buf);
+-	if (len > 0 && buf[len - 1] == '\n')
+-		buf[len - 1] = 0;
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++	else
++		buf[count] = '\0';
+ 
+ 	if (buf[0] == '0' && buf[1] == '\0')
+ 		local->force_tx_status = 0;
+-- 
+2.29.2
+
