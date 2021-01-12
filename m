@@ -2,36 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 331D42F34E9
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 17:00:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C2962F34F7
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 17:03:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392135AbhALQAL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Jan 2021 11:00:11 -0500
-Received: from mx2.suse.de ([195.135.220.15]:45076 "EHLO mx2.suse.de"
+        id S2405652AbhALQC5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Jan 2021 11:02:57 -0500
+Received: from mx2.suse.de ([195.135.220.15]:46562 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392090AbhALQAK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Jan 2021 11:00:10 -0500
+        id S2405624AbhALQC4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Jan 2021 11:02:56 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id C46DEABD6;
-        Tue, 12 Jan 2021 15:59:28 +0000 (UTC)
-Date:   Tue, 12 Jan 2021 16:59:28 +0100
-Message-ID: <s5h7doiqh7j.wl-tiwai@suse.de>
+        by mx2.suse.de (Postfix) with ESMTP id 2D2C3ABD6;
+        Tue, 12 Jan 2021 16:02:15 +0000 (UTC)
+Date:   Tue, 12 Jan 2021 17:02:15 +0100
+Message-ID: <s5h5z42qh2w.wl-tiwai@suse.de>
 From:   Takashi Iwai <tiwai@suse.de>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Michal Kubecek <mkubecek@suse.cz>, linux-wireless@vger.kernel.org,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Arjen de Korte <suse+build@de-korte.org>,
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         Luca Coelho <luciano.coelho@intel.com>
-Subject: Re: regression in iwlwifi: page fault in iwl_dbg_tlv_alloc_region() (commit ba8f6f4ae254)
-In-Reply-To: <8735z6taya.fsf@codeaurora.org>
-References: <20201228115814.GA5880@lion.mk-sys.cz>
-        <87v9c2qtj9.fsf@tynnyri.adurom.net>
-        <s5ha6tes58m.wl-tiwai@suse.de>
-        <87v9c2ias2.fsf@codeaurora.org>
-        <s5h5z42s44x.wl-tiwai@suse.de>
-        <8735z6taya.fsf@codeaurora.org>
+Subject: Re: [PATCH 1/2] iwlwifi: dbg: Don't touch the tlv data
+In-Reply-To: <87turmrw9j.fsf@codeaurora.org>
+References: <20210112132449.22243-1-tiwai@suse.de>
+        <20210112132449.22243-2-tiwai@suse.de>
+        <87turmrw9j.fsf@codeaurora.org>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
  FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
  (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -41,84 +35,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 12 Jan 2021 16:46:21 +0100,
+On Tue, 12 Jan 2021 16:48:56 +0100,
 Kalle Valo wrote:
 > 
 > Takashi Iwai <tiwai@suse.de> writes:
 > 
-> > On Tue, 12 Jan 2021 13:45:33 +0100,
-> > Kalle Valo wrote:
-> >> 
-> >> Takashi Iwai <tiwai@suse.de> writes:
-> >> 
-> >> > On Tue, 12 Jan 2021 12:33:14 +0100,
-> >> > Kalle Valo wrote:
-> >> >> 
-> >> >> (adding luca)
-> >> >> 
-> >> >> Michal Kubecek <mkubecek@suse.cz> writes:
-> >> >> 
-> >> >> > FYI, there is a regression in iwlwifi driver caused by commit
-> >> >> > ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device memory")
-> >> >> > reported at
-> >> >> >
-> >> >> >   https://bugzilla.kernel.org/show_bug.cgi?id=210733
-> >> >> >   https://bugzilla.suse.com/show_bug.cgi?id=1180344
-> >> >> >
-> >> >> > The problem seems to be an attempt to write terminating null character
-> >> >> > into a string which may be read only. There is also a proposed fix.
-> >> >> 
-> >> >> Can someone submit a proper patch, please? See instructions below how to
-> >> >> submit.
-> >> >> 
-> >> >> And please add Fixes tag to the commit log:
-> >> >> 
-> >> >> Fixes: ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device memory")
-> >> >
-> >> > OK, I'll do it for my own
-> >> 
-> >> Thanks.
-> >> 
-> >> > but really I hoped that someone would have reacted on the bugzilla
-> >> > report before the official patch submission. So far no one from the
-> >> > upstream devs showed interest in the bug at all, unfortunately.
-> >> 
-> >> Bugzilla is problematic as I don't know if anyone tracks it actively, at
-> >> least I don't have time for that. I recommend reporting all wireless
-> >> issues to mailing lists to make sure everyone see it.
+> > The commit ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device
+> > memory") added a termination of name string just to be sure, and this
+> > seems causing a regression, a GPF triggered at firmware loading.
+> > Basically we shouldn't modify the firmware data that may be provided
+> > as read-only.
 > >
-> > I share your feeling as a subsystem maintainer, but at the same time,
-> > I see it's a big problem if the whole bugzilla reports are just
-> > silently ignored.  If it's a void, shouldn't we rather shut it down?
+> > This patch drops the code that caused the regression and keep the tlv
+> > data as is.
+> >
+> > Fixes: ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device memory")
+> > BugLink: https://bugzilla.suse.com/show_bug.cgi?id=1180344
+> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=210733
+> > Signed-off-by: Takashi Iwai <tiwai@suse.de>
 > 
-> I'm all for shutting down bugzilla.kernel.org as silent bug reports are
-> frustrating the users. But I don't know what others would think about
-> that, maybe some subsystems use it actively?
+> I'm planning to queue this to v5.11. Should I add cc stable?
 
-Yes, I'm still checking bugzilla.kernel.org for sound bug reports.
-Not always promptly reacting like the distro bugzilla, but it's
-regularly scanned and covered in the best effort basis.
+Yes, it hits 5.10.y.
 
-Graphics people already moved out of bugzilla to gitlab Issues in
-their own gitlab.freedesktop.org.  Not sure about others.
+> Luca, can I have your ack?
 
-> At least there should be a big warning for wireless bugs.
+It'd be great if this fix goes in quickly.
 
-Maybe we can ask Konstantin about that at least for wireless
-components?
 
-> > And, although a mailing list is fine to report via only some texts or
-> > some patches, it's not suitable to attach large logs or such, which is
-> > often essential for debugging.  Thanks to lore, the archivability is
-> > no longer a problem with ML recently, but the lack of data assignment
-> > is another problem, IMO.
-> 
-> Sure, I fully agree on the benefits of a bug tracker. The issue here is
-> the lack of people managing bug reports, not the tool.
+BTW, I thought network people don't want to have Cc-to-stable in the
+patch, so I didn't put it by myself.  Is this rule still valid?
 
-Yeah, it's not only about wireless but true in general: handling bug
-reports is a tough task and often annoying.  Moreover, everyone of
-course wants to believe that their driver is bug free :)
 
+thanks,
 
 Takashi
