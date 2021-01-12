@@ -2,177 +2,211 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE8322F26A9
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 04:27:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D2BE2F27FD
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 06:51:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726868AbhALD03 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Jan 2021 22:26:29 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:34872 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725885AbhALD03 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Jan 2021 22:26:29 -0500
-X-UUID: 1626aee34ba5497bb7d5913a80228cce-20210112
-X-UUID: 1626aee34ba5497bb7d5913a80228cce-20210112
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 96550990; Tue, 12 Jan 2021 11:20:31 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 12 Jan 2021 11:20:30 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 12 Jan 2021 11:20:30 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-CC:     Johannes Berg <johannes@sipsolutions.net>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>
-Subject: [PATCH v2] mac80211: fix incorrect strlen of .write in debugfs
-Date:   Tue, 12 Jan 2021 11:20:28 +0800
-Message-ID: <20210112032028.7482-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S1733301AbhALFu0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Jan 2021 00:50:26 -0500
+Received: from mga05.intel.com ([192.55.52.43]:60388 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728515AbhALFu0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Jan 2021 00:50:26 -0500
+IronPort-SDR: cyi5ppdjWgYvjnDPj+mLjqfQ79mQPGvNErJhlLO1tlK1lAmd6EzU82utqKhlixInUSNNVBMfaT
+ cQLGA9n0TN2g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9861"; a="262771401"
+X-IronPort-AV: E=Sophos;i="5.79,340,1602572400"; 
+   d="scan'208";a="262771401"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 21:49:45 -0800
+IronPort-SDR: 4UCJO1J4eTGDsVz6YgsWpZlyPQlnsLEVza9gIuDwML21J/fnsDOCzpYNKRX/7ShGBNv3C+zfyv
+ QTK6PKt7ZKww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,340,1602572400"; 
+   d="scan'208";a="351779267"
+Received: from lkp-server01.sh.intel.com (HELO 3cff8e4c45aa) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 11 Jan 2021 21:49:44 -0800
+Received: from kbuild by 3cff8e4c45aa with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kzCYp-0000Yf-BC; Tue, 12 Jan 2021 05:49:43 +0000
+Date:   Tue, 12 Jan 2021 13:49:22 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ dc5771dfb27d6da7c8d866a358ff5c86e95f06c6
+Message-ID: <5ffd3862.2ARjFlM5KSSpwIOf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This fixes strlen mismatch problems happening in some .write callbacks
-of debugfs.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
+branch HEAD: dc5771dfb27d6da7c8d866a358ff5c86e95f06c6  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
 
-When trying to configure airtime_flags in debugfs, an error appeared:
-ash: write error: Invalid argument
+elapsed time: 724m
 
-The error is returned from kstrtou16() since a wrong length makes it
-miss the real end of input string.  To fix this, use count as the string
-length, and set proper end of string for a char buffer.
+configs tested: 149
+configs skipped: 2
 
-The debug print is shown - airtime_flags_write: count = 2, len = 8,
-where the actual length is 2, but "len = strlen(buf)" gets 8.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Also cleanup the other similar cases for the sake of consistency.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+m68k                          hp300_defconfig
+arm                         bcm2835_defconfig
+openrisc                            defconfig
+mips                           rs90_defconfig
+csky                                defconfig
+arm                          iop32x_defconfig
+mips                  cavium_octeon_defconfig
+sh                           se7206_defconfig
+powerpc                  storcenter_defconfig
+arm                          ep93xx_defconfig
+powerpc                  iss476-smp_defconfig
+mips                        bcm63xx_defconfig
+sh                          r7785rp_defconfig
+arm                         s5pv210_defconfig
+sparc                       sparc32_defconfig
+microblaze                      mmu_defconfig
+arm                        realview_defconfig
+powerpc                       ppc64_defconfig
+powerpc                        cell_defconfig
+powerpc                 mpc834x_mds_defconfig
+powerpc                      walnut_defconfig
+powerpc                      arches_defconfig
+powerpc                      ppc6xx_defconfig
+mips                           mtx1_defconfig
+h8300                     edosk2674_defconfig
+arm                           h5000_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                           se7712_defconfig
+powerpc                  mpc885_ads_defconfig
+sh                        sh7763rdp_defconfig
+sh                     magicpanelr2_defconfig
+mips                         tb0287_defconfig
+powerpc                      ep88xc_defconfig
+m68k                       m5249evb_defconfig
+powerpc                     rainier_defconfig
+sh                   secureedge5410_defconfig
+arm                        vexpress_defconfig
+mips                malta_kvm_guest_defconfig
+mips                         rt305x_defconfig
+powerpc                      ppc64e_defconfig
+arm                         vf610m4_defconfig
+m68k                           sun3_defconfig
+openrisc                  or1klitex_defconfig
+powerpc                      katmai_defconfig
+powerpc                 canyonlands_defconfig
+powerpc                      mgcoge_defconfig
+m68k                       m5275evb_defconfig
+mips                       rbtx49xx_defconfig
+powerpc                      makalu_defconfig
+mips                           ip27_defconfig
+arm                       cns3420vb_defconfig
+parisc                generic-32bit_defconfig
+nios2                            alldefconfig
+mips                  maltasmvp_eva_defconfig
+powerpc                     sbc8548_defconfig
+arm                         palmz72_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20210111
+x86_64               randconfig-a006-20210111
+x86_64               randconfig-a001-20210111
+x86_64               randconfig-a003-20210111
+x86_64               randconfig-a005-20210111
+x86_64               randconfig-a002-20210111
+i386                 randconfig-a002-20210111
+i386                 randconfig-a005-20210111
+i386                 randconfig-a006-20210111
+i386                 randconfig-a001-20210111
+i386                 randconfig-a003-20210111
+i386                 randconfig-a004-20210111
+i386                 randconfig-a002-20210112
+i386                 randconfig-a005-20210112
+i386                 randconfig-a006-20210112
+i386                 randconfig-a003-20210112
+i386                 randconfig-a001-20210112
+i386                 randconfig-a004-20210112
+x86_64               randconfig-a015-20210110
+x86_64               randconfig-a012-20210110
+x86_64               randconfig-a013-20210110
+x86_64               randconfig-a016-20210110
+x86_64               randconfig-a014-20210110
+x86_64               randconfig-a011-20210110
+i386                 randconfig-a012-20210111
+i386                 randconfig-a011-20210111
+i386                 randconfig-a015-20210111
+i386                 randconfig-a013-20210111
+i386                 randconfig-a014-20210111
+i386                 randconfig-a016-20210111
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+riscv                          rv32_defconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+clang tested configs:
+x86_64               randconfig-a015-20210111
+x86_64               randconfig-a012-20210111
+x86_64               randconfig-a013-20210111
+x86_64               randconfig-a016-20210111
+x86_64               randconfig-a014-20210111
+x86_64               randconfig-a011-20210111
+x86_64               randconfig-a006-20210112
+x86_64               randconfig-a004-20210112
+x86_64               randconfig-a001-20210112
+x86_64               randconfig-a005-20210112
+x86_64               randconfig-a003-20210112
+x86_64               randconfig-a002-20210112
+
 ---
-v2:
-- fix r/w buffer OOB
-- put buf[count] = '\0' to an else
----
- net/mac80211/debugfs.c | 44 +++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 24 deletions(-)
-
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 48f144f107d5..9e723d943421 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -120,18 +120,17 @@ static ssize_t aqm_write(struct file *file,
- {
- 	struct ieee80211_local *local = file->private_data;
- 	char buf[100];
--	size_t len;
- 
--	if (count > sizeof(buf))
-+	if (count >= sizeof(buf))
- 		return -EINVAL;
- 
- 	if (copy_from_user(buf, user_buf, count))
- 		return -EFAULT;
- 
--	buf[sizeof(buf) - 1] = '\0';
--	len = strlen(buf);
--	if (len > 0 && buf[len-1] == '\n')
--		buf[len-1] = 0;
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
- 
- 	if (sscanf(buf, "fq_limit %u", &local->fq.limit) == 1)
- 		return count;
-@@ -177,18 +176,17 @@ static ssize_t airtime_flags_write(struct file *file,
- {
- 	struct ieee80211_local *local = file->private_data;
- 	char buf[16];
--	size_t len;
- 
--	if (count > sizeof(buf))
-+	if (count >= sizeof(buf))
- 		return -EINVAL;
- 
- 	if (copy_from_user(buf, user_buf, count))
- 		return -EFAULT;
- 
--	buf[sizeof(buf) - 1] = 0;
--	len = strlen(buf);
--	if (len > 0 && buf[len - 1] == '\n')
--		buf[len - 1] = 0;
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
- 
- 	if (kstrtou16(buf, 0, &local->airtime_flags))
- 		return -EINVAL;
-@@ -237,20 +235,19 @@ static ssize_t aql_txq_limit_write(struct file *file,
- {
- 	struct ieee80211_local *local = file->private_data;
- 	char buf[100];
--	size_t len;
- 	u32 ac, q_limit_low, q_limit_high, q_limit_low_old, q_limit_high_old;
- 	struct sta_info *sta;
- 
--	if (count > sizeof(buf))
-+	if (count >= sizeof(buf))
- 		return -EINVAL;
- 
- 	if (copy_from_user(buf, user_buf, count))
- 		return -EFAULT;
- 
--	buf[sizeof(buf) - 1] = 0;
--	len = strlen(buf);
--	if (len > 0 && buf[len - 1] == '\n')
--		buf[len - 1] = 0;
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
- 
- 	if (sscanf(buf, "%u %u %u", &ac, &q_limit_low, &q_limit_high) != 3)
- 		return -EINVAL;
-@@ -306,18 +303,17 @@ static ssize_t force_tx_status_write(struct file *file,
- {
- 	struct ieee80211_local *local = file->private_data;
- 	char buf[3];
--	size_t len;
- 
--	if (count > sizeof(buf))
-+	if (count >= sizeof(buf))
- 		return -EINVAL;
- 
- 	if (copy_from_user(buf, user_buf, count))
- 		return -EFAULT;
- 
--	buf[sizeof(buf) - 1] = '\0';
--	len = strlen(buf);
--	if (len > 0 && buf[len - 1] == '\n')
--		buf[len - 1] = 0;
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
- 
- 	if (buf[0] == '0' && buf[1] == '\0')
- 		local->force_tx_status = 0;
--- 
-2.29.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
