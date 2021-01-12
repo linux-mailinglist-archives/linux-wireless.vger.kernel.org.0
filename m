@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1605F2F348F
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 16:48:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5C012F34A1
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Jan 2021 16:51:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391899AbhALPrn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Jan 2021 10:47:43 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:52042 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391882AbhALPrn (ORCPT
+        id S2391936AbhALPt1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Jan 2021 10:49:27 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:48722 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728108AbhALPt1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Jan 2021 10:47:43 -0500
+        Tue, 12 Jan 2021 10:49:27 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610466444; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1610466542; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=Npsm5bOJjjcIuADdoI2VTocPa/2BU7I+DV9Z9yFCxjA=; b=KD4tTUQsBDeF5U+zykyP5VRXW2Bb5oQF0z2pCUdqtd9ySBmMRcsbuc5WCZf1qQlfOZhYGVB3
- mJWg00nLai2URJh1pAYrzlRnWrDfUKqWnHUsPaD/167JtP5cOoCBCQJDaqXCbyOFmOtWfNFo
- lnnm5suIq5HGkItj2G/gjxiOdpg=
-X-Mailgun-Sending-Ip: 198.61.254.31
+ bh=dQsFYL2Fqo/Ms9AYBDcr2klxwo7e9LsBdIxT+fqGyGA=; b=MSrFYSdoiUUisZiIzM/5jgUaOxgX2Sj/N1aHxoG7HnXqGnrJvcp577B1zLYyG183kzyNU7MY
+ FGmxBgoPn+IjdopuJugLeOxPIejAMNDSFIQwjYOoy8Nh2CDrCps6Oj7GIcw/lOKWeOoabc7u
+ Q5GVCiiIWx31hHLG4ijcg1lWwLc=
+X-Mailgun-Sending-Ip: 69.72.43.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 5ffdc4858fb3cda82feebb06 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 12 Jan 2021 15:47:17
+ smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
+ 5ffdc4ec2a47972bcc670e43 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 12 Jan 2021 15:49:00
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 39015C43462; Tue, 12 Jan 2021 15:47:17 +0000 (UTC)
+        id 63A32C433CA; Tue, 12 Jan 2021 15:49:00 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,26 +38,22 @@ Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.11
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C4861C433CA;
-        Tue, 12 Jan 2021 15:47:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C4861C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A213BC43466;
+        Tue, 12 Jan 2021 15:48:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A213BC43466
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "abaci-bugfix\@linux.alibaba.com" <abaci-bugfix@linux.alibaba.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "davem\@davemloft.net" <davem@davemloft.net>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kuba\@kernel.org" <kuba@kernel.org>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] rtlwifi: rtl8821ae: style: Simplify bool comparison
-References: <1610440409-73330-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-        <1610457587.2793.2.camel@realtek.com>
-Date:   Tue, 12 Jan 2021 17:47:12 +0200
-In-Reply-To: <1610457587.2793.2.camel@realtek.com> (pkshih@realtek.com's
-        message of "Tue, 12 Jan 2021 13:20:21 +0000")
-Message-ID: <87y2gyrwcf.fsf@codeaurora.org>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Luca Coelho <luciano.coelho@intel.com>
+Subject: Re: [PATCH 1/2] iwlwifi: dbg: Don't touch the tlv data
+References: <20210112132449.22243-1-tiwai@suse.de>
+        <20210112132449.22243-2-tiwai@suse.de>
+Date:   Tue, 12 Jan 2021 17:48:56 +0200
+In-Reply-To: <20210112132449.22243-2-tiwai@suse.de> (Takashi Iwai's message of
+        "Tue, 12 Jan 2021 14:24:48 +0100")
+Message-ID: <87turmrw9j.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -65,22 +61,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> writes:
+Takashi Iwai <tiwai@suse.de> writes:
 
-> On Tue, 2021-01-12 at 16:33 +0800, YANG LI wrote:
->> Fix the following coccicheck warning:
->> ./drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:3853:7-17:
->> WARNING: Comparison of 0/1 to bool variable
->> 
->> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
->> Signed-off-by: YANG LI <abaci-bugfix@linux.alibaba.com>
->> 
+> The commit ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device
+> memory") added a termination of name string just to be sure, and this
+> seems causing a regression, a GPF triggered at firmware loading.
+> Basically we shouldn't modify the firmware data that may be provided
+> as read-only.
 >
-> I think your name of Signed-off-by should be "Yang Li".
+> This patch drops the code that caused the regression and keep the tlv
+> data as is.
 >
-> And, the subject prefix "rtlwifi: " is preferred.
+> Fixes: ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device memory")
+> BugLink: https://bugzilla.suse.com/show_bug.cgi?id=1180344
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=210733
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
 
-I can fix those during commit.
+I'm planning to queue this to v5.11. Should I add cc stable?
+
+Luca, can I have your ack?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
