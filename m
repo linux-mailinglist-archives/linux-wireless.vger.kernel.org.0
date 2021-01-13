@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 212302F44BF
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jan 2021 08:00:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EF112F4500
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jan 2021 08:16:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726202AbhAMG7a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jan 2021 01:59:30 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:17887 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726110AbhAMG73 (ORCPT
+        id S1726567AbhAMHM4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jan 2021 02:12:56 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:25380 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726463AbhAMHM4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jan 2021 01:59:29 -0500
+        Wed, 13 Jan 2021 02:12:56 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610521149; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1610521959; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=s6hrVhIIAAhRoWH4ooGcWE7J9388oETD1zaTZL8KtrM=; b=ZTTTws+e/zrELPQELGWR6r29XNScRXQtIF5TqI650JEnmdDlXcMDSP4IjTx6UhF/mWir9jXw
- erC+F9zIFL/5xraFmVbwPSxHsHCRETtURbTSRlFCvBE3HQurE8L02Vd+qR3ucicTQzbcMr7F
- Ixm02SNx4LCpvtPu5B1kguQk/hA=
-X-Mailgun-Sending-Ip: 69.72.43.15
+ bh=42gdzoisX6avUXZqmMiYtvEe2JgypnINF9ruZIBAmLk=; b=gDXHEzCWIGwOCHbCRAQ/gJAgPdJwrr24bgzcH6TnSLYPEMEltEp6I3JgwaW3JxzYR7e8Z7t+
+ uavG2u2y9M6vXxh/f3q626J5ugNCvEw3WMocyd2WjLr8hl0QSyGuUyxZ4VcGwGPRHK/KzHgk
+ skjVMugHEDUxfozH449aC/x3YUg=
+X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
- 5ffe9a23f1be2d22c4bd6198 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 13 Jan 2021 06:58:43
+ smtp-out-n10.prod.us-west-2.postgun.com with SMTP id
+ 5ffe9d419dddba11a6e295a1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 13 Jan 2021 07:12:01
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C7990C43463; Wed, 13 Jan 2021 06:58:42 +0000 (UTC)
+        id C50B5C433CA; Wed, 13 Jan 2021 07:12:01 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,27 +38,30 @@ Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.11
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BA536C433C6;
-        Wed, 13 Jan 2021 06:58:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BA536C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C733CC433C6;
+        Wed, 13 Jan 2021 07:11:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C733CC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Michal Kubecek <mkubecek@suse.cz>, linux-wireless@vger.kernel.org,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Arjen de Korte <suse+build@de-korte.org>,
-        Luca Coelho <luciano.coelho@intel.com>
-Subject: Re: regression in iwlwifi: page fault in iwl_dbg_tlv_alloc_region() (commit ba8f6f4ae254)
-References: <20201228115814.GA5880@lion.mk-sys.cz>
-        <87v9c2qtj9.fsf@tynnyri.adurom.net> <s5ha6tes58m.wl-tiwai@suse.de>
-        <87v9c2ias2.fsf@codeaurora.org> <s5h5z42s44x.wl-tiwai@suse.de>
-        <8735z6taya.fsf@codeaurora.org> <s5h7doiqh7j.wl-tiwai@suse.de>
-Date:   Wed, 13 Jan 2021 08:58:37 +0200
-In-Reply-To: <s5h7doiqh7j.wl-tiwai@suse.de> (Takashi Iwai's message of "Tue,
-        12 Jan 2021 16:59:28 +0100")
-Message-ID: <87h7nls4pu.fsf@codeaurora.org>
+To:     Rong Chen <rong.a.chen@intel.com>
+Cc:     benl@squareup.com, loic.poulain@linaro.org,
+        kbuild-all@lists.01.org, kernel test robot <lkp@intel.com>,
+        linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        shawn.guo@linaro.org
+Subject: Re: [kbuild-all] Re: [PATCH 06/13] wcn36xx: Add ipv6 namespace offload in suspend
+References: <20201228162839.369156-7-bryan.odonoghue@linaro.org>
+        <202012290547.6ryYf96B-lkp@intel.com>
+        <bcf6adbc-e03a-6f02-e55f-6e0b738806fd@linaro.org>
+        <878s8zlnnc.fsf@codeaurora.org>
+        <ae4b3e6f-a08c-e1ba-e5a1-494a7db7e0bd@intel.com>
+        <877doitnd8.fsf@codeaurora.org>
+        <851a3629-8d18-08a7-2926-67dd45cabbed@intel.com>
+Date:   Wed, 13 Jan 2021 09:11:56 +0200
+In-Reply-To: <851a3629-8d18-08a7-2926-67dd45cabbed@intel.com> (Rong Chen's
+        message of "Wed, 13 Jan 2021 09:57:23 +0800")
+Message-ID: <87czy9s43n.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -66,82 +69,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Takashi Iwai <tiwai@suse.de> writes:
+Rong Chen <rong.a.chen@intel.com> writes:
 
-> On Tue, 12 Jan 2021 16:46:21 +0100,
-> Kalle Valo wrote:
->> 
->> Takashi Iwai <tiwai@suse.de> writes:
->> 
->> > On Tue, 12 Jan 2021 13:45:33 +0100,
->> > Kalle Valo wrote:
->> >> 
->> >> Takashi Iwai <tiwai@suse.de> writes:
->> >> 
->> >> > On Tue, 12 Jan 2021 12:33:14 +0100,
->> >> > Kalle Valo wrote:
->> >> >> 
->> >> >> (adding luca)
->> >> >> 
->> >> >> Michal Kubecek <mkubecek@suse.cz> writes:
->> >> >> 
->> >> >> > FYI, there is a regression in iwlwifi driver caused by commit
->> >> >> > ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device memory")
->> >> >> > reported at
->> >> >> >
->> >> >> >   https://bugzilla.kernel.org/show_bug.cgi?id=210733
->> >> >> >   https://bugzilla.suse.com/show_bug.cgi?id=1180344
->> >> >> >
->> >> >> > The problem seems to be an attempt to write terminating null character
->> >> >> > into a string which may be read only. There is also a proposed fix.
->> >> >> 
->> >> >> Can someone submit a proper patch, please? See instructions below how to
->> >> >> submit.
->> >> >> 
->> >> >> And please add Fixes tag to the commit log:
->> >> >> 
->> >> >> Fixes: ba8f6f4ae254 ("iwlwifi: dbg: add dumping special device memory")
->> >> >
->> >> > OK, I'll do it for my own
->> >> 
->> >> Thanks.
->> >> 
->> >> > but really I hoped that someone would have reacted on the bugzilla
->> >> > report before the official patch submission. So far no one from the
->> >> > upstream devs showed interest in the bug at all, unfortunately.
->> >> 
->> >> Bugzilla is problematic as I don't know if anyone tracks it actively, at
->> >> least I don't have time for that. I recommend reporting all wireless
->> >> issues to mailing lists to make sure everyone see it.
->> >
->> > I share your feeling as a subsystem maintainer, but at the same time,
->> > I see it's a big problem if the whole bugzilla reports are just
->> > silently ignored.  If it's a void, shouldn't we rather shut it down?
->> 
->> I'm all for shutting down bugzilla.kernel.org as silent bug reports are
->> frustrating the users. But I don't know what others would think about
->> that, maybe some subsystems use it actively?
+> On 1/12/21 7:18 PM, Kalle Valo wrote:
+>> "Chen, Rong A" <rong.a.chen@intel.com> writes:
+>>
+>>> On 1/11/2021 7:27 PM, Kalle Valo wrote:
+>>>> Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
+>>>>
+>>>>> On 28/12/2020 21:49, kernel test robot wrote:
+>>>>>> [auto build test ERROR on wireless-drivers-next/master]
+>>>>> hmm
+>>>>>
+>>>>> works against this
+>>>>>
+>>>>> * 77da2c99eca0 - (tag: ath-202012180905, ath.git/master) Add
+>>>>> localversion-wireless-testing-ath (11 days ago)
+>>>> The bot tested only ath-next from ath.git, not the master branch:
+>>> Hi,
+>>>
+>>> Thanks for the help, we have switched to test on master branch.
+>> The bot was correctly testing the ath-next branch, as I use that branch
+>> to commit the patches. Can you still change the bot back to use
+>> ath-next, just as it did previously?
+>>
+>> Sorry for the confusion.
+>>
 >
-> Yes, I'm still checking bugzilla.kernel.org for sound bug reports.
-> Not always promptly reacting like the distro bugzilla, but it's
-> regularly scanned and covered in the best effort basis.
->
-> Graphics people already moved out of bugzilla to gitlab Issues in
-> their own gitlab.freedesktop.org.  Not sure about others.
->
->> At least there should be a big warning for wireless bugs.
->
-> Maybe we can ask Konstantin about that at least for wireless
-> components?
+> Got it, we'll still test ath-next branch.
 
-Yeah, that would be a good idea. Can someone ask that?
-
-BTW, I checked our wiki and it states[1] that bug reports should be sent
-to the mailing list. But of course that information is pretty well
-hidden within the wiki so I doubt anyone sees it. Also there should be a
-big warning about bugzilla bugs. Any volunteers to improve our wiki? :)
-
-[1] https://wireless.wiki.kernel.org/en/users/documentation/reporting_bugs#drivers_mac80211_cfg80211_--_kernel_wireless_bugs
+Great, thank you. And thank you for maintaing kbuild bot, it's awesome :)
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
