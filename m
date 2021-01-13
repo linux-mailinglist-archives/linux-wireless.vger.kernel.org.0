@@ -2,78 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 151FF2F4A9C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jan 2021 12:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE4E2F4B07
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jan 2021 13:14:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726262AbhAMLsi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jan 2021 06:48:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58830 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbhAMLsi (ORCPT
+        id S1726618AbhAMMKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jan 2021 07:10:19 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:50904 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726426AbhAMMKT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jan 2021 06:48:38 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE0C9C061575;
-        Wed, 13 Jan 2021 03:47:57 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id z1so1891926ybr.4;
-        Wed, 13 Jan 2021 03:47:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=OgFoj8A8iH+xHmxdpvqXBMUS1oxib043+v3N6AYNDEs=;
-        b=JcPYAhk3ZGBKAFXDOwpNt/X9DrNPFhd1bGuLFR5lSfXhDI9Vq+jBid/7wbZBvuWMAy
-         AEhQQTNel27g9y6pS9AyOnT0Xe+8eMmA+p+2nqz+gSEMMW1YNAVF5QcNNEdC2KEs17x7
-         djzgx0RsEsGcxDzX/KksJmBwsvGckLqhs7OmHWWMo9b3nHEDZ5+mXybruvwISJ2yBjho
-         2Jv8u+k36j5M7Iqd7dyF3oYCAtNE/51rDBsmbW0RgzArXXxLn0ECv5olEFWIHTmiw9rC
-         GBUWA+rhmPT5yFLOEyJ+XmJcWpIy/Yq2H09Bin58xuBWLcCkNgK1TlN4ZX4ifP4g1i00
-         TWEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=OgFoj8A8iH+xHmxdpvqXBMUS1oxib043+v3N6AYNDEs=;
-        b=cKQkms2oJMZnpXUkylrfRObjU3oQyI5rnOPxkp6qNcsXTqA1+zgT1eJgtiZca83Kw0
-         dITJ9hBljmIJVi9Pjh4/p4U3Tlh8GM3AgbUme1ciN5gMhvou5kjrYVXpxWXn3VIqKo+1
-         B60+mAX2V3E+Vvo03Rw4WbJGA6J60eWuGgaZMRaEN1SKEvDG1jGW0EKy9DtjaJwDgzym
-         HtxrIJxz9EaHFqCqW1J79fMxG1sAgltIr71Ihz+/yEJNcbRhIcvgzbE20kEqlOcF0Ski
-         GhOJFyKLpUZsawi177DyF5W3703XDKWrsrROScu79tauVS67AocJK0/lyNAWuYby/7D+
-         t2eg==
-X-Gm-Message-State: AOAM530tL9TeGvGfT3GaDwy94f/IMJZtqWnU/JJwp+Mrh9xMmcLmhGB1
-        7FBx0yq5+uo2itFQTHMsKapu5h0+cA5cXe1GSzc=
-X-Google-Smtp-Source: ABdhPJyXLchdXSWvR3e0BYha1dSL/cMPRj2jOrT8OesBcOuuXG8yixGN2aAbOwrRIqRGOguo0l07uU86WPFPAKfrbf0=
-X-Received: by 2002:a25:538a:: with SMTP id h132mr2528613ybb.247.1610538477096;
- Wed, 13 Jan 2021 03:47:57 -0800 (PST)
+        Wed, 13 Jan 2021 07:10:19 -0500
+X-UUID: 5eb41e0cb22f45fda80acd8b2e0e7348-20210113
+X-UUID: 5eb41e0cb22f45fda80acd8b2e0e7348-20210113
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 332216038; Wed, 13 Jan 2021 20:09:36 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 13 Jan 2021 20:09:35 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 13 Jan 2021 20:09:35 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: simplify peer's TxBF capability check
+Date:   Wed, 13 Jan 2021 20:09:32 +0800
+Message-ID: <287bbdb0193bd74069219b97199ba4ec72127bd8.1610539467.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-From:   =?UTF-8?B?5oWV5Yas5Lqu?= <mudongliangabcd@gmail.com>
-Date:   Wed, 13 Jan 2021 19:47:31 +0800
-Message-ID: <CAD-N9QUvu8D0qbdy6HqKfVF2Lu2Z+e7Huf_vpHumE=dhqfUGgw@mail.gmail.com>
-Subject: KASAN: use-after-free Read in ath9k_hif_usb_rx_cb (2) should share
- the same root cause with "KASAN: slab-out-of-bounds Read in
- ath9k_hif_usb_rx_cb (2)"
-To:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net, kuba@kernel.org,
-        kvalo@codeaurora.org, linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear kernel developers,
+This is a preliminary patch for implicit beamforming support.
 
-I found that KASAN: use-after-free Read in ath9k_hif_usb_rx_cb (2) and
-"KASAN: slab-out-of-bounds Read in ath9k_hif_usb_rx_cb (2)" should
-share the same root cause.
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 50 +++++++------------
+ 1 file changed, 17 insertions(+), 33 deletions(-)
 
-The reasons for my above statement,  1) the stack trace is the same;
-2) we observed two crash behaviors appear alternatively when you run
-one PoC in its building environment multiple times. 3) their PoCs have
-a really high similarity
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 0baef70fc522..f38bc421ea8e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -66,9 +66,6 @@ struct mt7915_fw_region {
+ 
+ #define MCU_PATCH_ADDRESS		0x200000
+ 
+-#define MT_STA_BFER			BIT(0)
+-#define MT_STA_BFEE			BIT(1)
+-
+ #define FW_FEATURE_SET_ENCRYPT		BIT(0)
+ #define FW_FEATURE_SET_KEY_IDX		GENMASK(2, 1)
+ #define FW_FEATURE_OVERRIDE_ADDR	BIT(5)
+@@ -1948,16 +1945,23 @@ mt7915_mcu_sta_bfee_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 		bfee->fb_identity_matrix = true;
+ }
+ 
+-static u8
+-mt7915_mcu_sta_txbf_type(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+-			 struct ieee80211_sta *sta)
++static int
++mt7915_mcu_add_txbf(struct mt7915_dev *dev, struct ieee80211_vif *vif,
++		    struct ieee80211_sta *sta, bool enable)
+ {
+-	u8 type = 0;
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
++	struct mt7915_phy *phy;
++	struct sk_buff *skb;
++	int r, len;
++	bool ebfee = 0, ebf = 0;
+ 
+ 	if (vif->type != NL80211_IFTYPE_STATION &&
+ 	    vif->type != NL80211_IFTYPE_AP)
+ 		return 0;
+ 
++	phy = mvif->band_idx ? mt7915_ext_phy(dev) : &dev->phy;
++
+ 	if (sta->he_cap.has_he) {
+ 		struct ieee80211_he_cap_elem *pe;
+ 		const struct ieee80211_he_cap_elem *ve;
+@@ -1970,12 +1974,12 @@ mt7915_mcu_sta_txbf_type(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 		if ((HE_PHY(CAP3_SU_BEAMFORMER, pe->phy_cap_info[3]) ||
+ 		     HE_PHY(CAP4_MU_BEAMFORMER, pe->phy_cap_info[4])) &&
+ 		    HE_PHY(CAP4_SU_BEAMFORMEE, ve->phy_cap_info[4]))
+-			type |= MT_STA_BFEE;
++			ebfee = true;
+ 
+ 		if ((HE_PHY(CAP3_SU_BEAMFORMER, ve->phy_cap_info[3]) ||
+ 		     HE_PHY(CAP4_MU_BEAMFORMER, ve->phy_cap_info[4])) &&
+ 		    HE_PHY(CAP4_SU_BEAMFORMEE, pe->phy_cap_info[4]))
+-			type |= MT_STA_BFER;
++			ebf = true;
+ 	} else if (sta->vht_cap.vht_supported) {
+ 		struct ieee80211_sta_vht_cap *pc;
+ 		struct ieee80211_sta_vht_cap *vc;
+@@ -1989,36 +1993,16 @@ mt7915_mcu_sta_txbf_type(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 		     IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE;
+ 
+ 		if ((pc->cap & cr) && (vc->cap & ce))
+-			type |= MT_STA_BFEE;
++			ebfee = true;
+ 
+ 		if ((vc->cap & cr) && (pc->cap & ce))
+-			type |= MT_STA_BFER;
+-	} else if (sta->ht_cap.ht_supported) {
+-		/* TODO: iBF */
++			ebf = true;
+ 	}
+ 
+-	return type;
+-}
+-
+-static int
+-mt7915_mcu_add_txbf(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+-		    struct ieee80211_sta *sta, bool enable)
+-{
+-	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+-	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+-	struct mt7915_phy *phy;
+-	struct sk_buff *skb;
+-	int r, len;
+-	u8 type;
+-
+-	phy = mvif->band_idx ? mt7915_ext_phy(dev) : &dev->phy;
+-
+-	type = mt7915_mcu_sta_txbf_type(phy, vif, sta);
+-
+ 	/* must keep each tag independent */
+ 
+ 	/* starec bf */
+-	if (type & MT_STA_BFER) {
++	if (ebf) {
+ 		len = sizeof(struct sta_req_hdr) + sizeof(struct sta_rec_bf);
+ 
+ 		skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
+@@ -2034,7 +2018,7 @@ mt7915_mcu_add_txbf(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 	}
+ 
+ 	/* starec bfee */
+-	if (type & MT_STA_BFEE) {
++	if (ebfee) {
+ 		len = sizeof(struct sta_req_hdr) + sizeof(struct sta_rec_bfee);
+ 
+ 		skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
+-- 
+2.18.0
 
-If you can have any issues with this statement or our information is
-useful for you, please let us know. Thanks very much.
-
---
-My best regards to you.
-
-     No System Is Safe!
-     Dongliang Mu
