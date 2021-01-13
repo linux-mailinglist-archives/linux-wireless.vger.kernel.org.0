@@ -2,84 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 338432F416E
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jan 2021 02:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C24E92F44AC
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Jan 2021 07:52:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727398AbhAMB67 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Jan 2021 20:58:59 -0500
-Received: from mga11.intel.com ([192.55.52.93]:59524 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727366AbhAMB67 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Jan 2021 20:58:59 -0500
-IronPort-SDR: JJJkmFOxAO6VFR3JqMjFKPsBns4dthduZJ4KTPGKMXLwRB8FFQue/3Rp+zUh16OZ6dG7eaNiOF
- oryYvYo5qgZw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9862"; a="174628358"
-X-IronPort-AV: E=Sophos;i="5.79,343,1602572400"; 
-   d="scan'208";a="174628358"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2021 17:58:17 -0800
-IronPort-SDR: wXy5/s4dFTNXnmTzpL9m3RnBZB8z6liFqxsZDLrRll5/6tUHUhs7Nv8uDD/o4Kz+h4NYLopIjr
- VbDmFwcX26gA==
-X-IronPort-AV: E=Sophos;i="5.79,343,1602572400"; 
-   d="scan'208";a="381657778"
-Received: from shao2-debian.sh.intel.com (HELO [10.239.13.117]) ([10.239.13.117])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2021 17:58:15 -0800
-Subject: Re: [kbuild-all] Re: [PATCH 06/13] wcn36xx: Add ipv6 namespace
- offload in suspend
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        kernel test robot <lkp@intel.com>,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        kbuild-all@lists.01.org, shawn.guo@linaro.org, benl@squareup.com,
-        loic.poulain@linaro.org
-References: <20201228162839.369156-7-bryan.odonoghue@linaro.org>
- <202012290547.6ryYf96B-lkp@intel.com>
- <bcf6adbc-e03a-6f02-e55f-6e0b738806fd@linaro.org>
- <878s8zlnnc.fsf@codeaurora.org>
- <ae4b3e6f-a08c-e1ba-e5a1-494a7db7e0bd@intel.com>
- <877doitnd8.fsf@codeaurora.org>
-From:   Rong Chen <rong.a.chen@intel.com>
-Message-ID: <851a3629-8d18-08a7-2926-67dd45cabbed@intel.com>
-Date:   Wed, 13 Jan 2021 09:57:23 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726459AbhAMGvL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jan 2021 01:51:11 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:54407 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726235AbhAMGvL (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 13 Jan 2021 01:51:11 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1610520648; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=LEaPdDLevh2p3sskm5HfcmgXr0Bdw4YtFZo1OimLfYE=; b=px64J8IGwuz1IGtXJk7QO2uyGYzHUqUIV531dr003+knAE8Dio3Tx6jZbp3CL2o0iUI+WneX
+ urMMXyvsWK/DWcCvZ1yk7Ksr262tdlM6kARB9rRXmQGYLGrnAfs9JCdqS9x0bsNh6MCOctGD
+ vcVv+NTTdc1QkQ+Jx4Meu+iwVls=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-west-2.postgun.com with SMTP id
+ 5ffe98212a47972bcc779b73 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 13 Jan 2021 06:50:09
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D36FCC43461; Wed, 13 Jan 2021 06:50:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C538DC433C6;
+        Wed, 13 Jan 2021 06:50:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C538DC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     "Coelho\, Luciano" <luciano.coelho@intel.com>
+Cc:     "tiwai\@suse.de" <tiwai@suse.de>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH 2/2] iwlwifi: dbg: Mark ucode tlv data as const
+References: <20210112132449.22243-1-tiwai@suse.de>
+        <20210112132449.22243-3-tiwai@suse.de> <87pn2arw69.fsf@codeaurora.org>
+        <s5h4kjmqgxw.wl-tiwai@suse.de>
+        <636fdc5b53b6f4855e25981e0454064524e6905d.camel@intel.com>
+Date:   Wed, 13 Jan 2021 08:50:04 +0200
+In-Reply-To: <636fdc5b53b6f4855e25981e0454064524e6905d.camel@intel.com>
+        (Luciano Coelho's message of "Tue, 12 Jan 2021 17:13:59 +0000")
+Message-ID: <87lfcxs543.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <877doitnd8.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+"Coelho, Luciano" <luciano.coelho@intel.com> writes:
 
-
-On 1/12/21 7:18 PM, Kalle Valo wrote:
-> "Chen, Rong A" <rong.a.chen@intel.com> writes:
+> On Tue, 2021-01-12 at 17:05 +0100, Takashi Iwai wrote:
+>> On Tue, 12 Jan 2021 16:50:54 +0100,
+>> Kalle Valo wrote:
+>> > 
+>> > Takashi Iwai <tiwai@suse.de> writes:
+>> > 
+>> > > The ucode TLV data may be read-only and should be treated as const
+>> > > pointers, but currently a few code forcibly cast to the writable
+>> > > pointer unnecessarily.  This gave developers a wrong impression as if
+>> > > it can be modified, resulting in crashing regressions already a couple
+>> > > of times.
+>> > > 
+>> > > This patch adds the const prefix to those cast pointers, so that such
+>> > > attempt can be caught more easily in future.
+>> > > 
+>> > > Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>> > 
+>> > So this need to go to -next, right?
+>> 
+>> Yes, this isn't urgently needed for 5.11.
 >
->> On 1/11/2021 7:27 PM, Kalle Valo wrote:
->>> Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
->>>
->>>> On 28/12/2020 21:49, kernel test robot wrote:
->>>>> [auto build test ERROR on wireless-drivers-next/master]
->>>> hmm
->>>>
->>>> works against this
->>>>
->>>> * 77da2c99eca0 - (tag: ath-202012180905, ath.git/master) Add
->>>> localversion-wireless-testing-ath (11 days ago)
->>> The bot tested only ath-next from ath.git, not the master branch:
->> Hi,
->>
->> Thanks for the help, we have switched to test on master branch.
-> The bot was correctly testing the ath-next branch, as I use that branch
-> to commit the patches. Can you still change the bot back to use
-> ath-next, just as it did previously?
+> Acked-by: Luca Coelho <luciano.coelho@intel.com>
 >
-> Sorry for the confusion.
 >
+>> > Does this depend on patch 1 or can
+>> > this be applied independently?
+>> 
+>> It depends on the first patch, otherwise you'll get the warning in the
+>> code changing the const data (it must warn -- that's the purpose of
+>> this change :)
+>> 
+>> So, if applying to a separate branch is difficult, applying together
+>> for 5.11 would be an option.
+>
+> It doesn't matter to me how you apply it.  Applying together is
+> obviously going to be easier, but applying separately wouldn't be that
+> hard either.  You'd just have to track when 1/2 went into net-next
+> before applying this one.  Kalle's call.
 
-Got it, we'll still test ath-next branch.
+Ok, I'll apply this to wireless-drivers-next after wireless-drivers is
+merged to -next. It might take a while.
 
-Best Regards,
-Rong Chen
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
