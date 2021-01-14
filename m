@@ -2,51 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 234992F5D40
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 10:25:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48A142F5DBA
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 10:35:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728087AbhANJZR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jan 2021 04:25:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55794 "EHLO
+        id S1728475AbhANJet (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jan 2021 04:34:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727174AbhANJZQ (ORCPT
+        with ESMTP id S1727778AbhANJer (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jan 2021 04:25:16 -0500
+        Thu, 14 Jan 2021 04:34:47 -0500
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB5DC061786;
-        Thu, 14 Jan 2021 01:24:35 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6FD2C061575
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Jan 2021 01:33:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
         MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=2uqg5pSRojZBo6w/FGO6uS669NIaxCuaEwl+DtcVLgI=; b=MZMILskZu+w7kBlmRGoaNKncmM
-        y1maASYjvLIo6Bp3jZNfXsd7014BWXk649R8jFm5IYA99cb6JJ2OoVsOhPWvEQir5k2uB7MTZMEoj
-        v1DLlNQo2/Bmqe2+jmlHhsK92jcO6zJEukKJ0OrqGZdP4kc9kStxqAAUVfCLjpjV3jtQ=;
+        bh=NoyuDLH/uTNtcownHjy45bgi6oB6avEVSl4tL4ZrXdE=; b=Gk2pDQd6svRbj9hZ6kLeg+aUCQ
+        MC0ESatxg/M81/0SGc3OzpqT4Mi4aG4UM07iuVcXjTC7Ay8z9NYM+HaxzJL1I9/xTiXbkeR3S7TqU
+        GgXIKZcqUP5dRR0OT5xQ0Do6U6SSTm5E/l2mF98yz9VdvoefqscDRzJmgPQc7hRDouLw=;
 Received: from p54ae91f2.dip0.t-ipconnect.de ([84.174.145.242] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1kzyrn-0004T9-UU; Thu, 14 Jan 2021 10:24:31 +0100
-Subject: Re: [PATCH] mt76: Fix queue ID variable types after mcu queue split
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        id 1kzz0k-0004yu-C7; Thu, 14 Jan 2021 10:33:46 +0100
+Subject: Re: [PATCH] mt76: testmode: add support to set user-defined spe index
+To:     Shayne Chen <shayne.chen@mediatek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Ryder Lee <ryder.lee@mediatek.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-References: <20201229211548.1348077-1-natechancellor@gmail.com>
- <20201231100918.GA1819773@computer-5.station> <87k0sjlwyb.fsf@codeaurora.org>
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <20210105054124.5946-1-shayne.chen@mediatek.com>
 From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <9af48c35-c987-7eb4-e3a1-5e54555f988b@nbd.name>
-Date:   Thu, 14 Jan 2021 10:24:30 +0100
+Message-ID: <a2d8b06c-f4d7-b460-f988-8fe7b9b50540@nbd.name>
+Date:   Thu, 14 Jan 2021 10:33:45 +0100
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
  Gecko/20100101 Thunderbird/78.6.1
 MIME-Version: 1.0
-In-Reply-To: <87k0sjlwyb.fsf@codeaurora.org>
+In-Reply-To: <20210105054124.5946-1-shayne.chen@mediatek.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -54,55 +51,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-01-11 09:06, Kalle Valo wrote:
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+
+On 2021-01-05 06:41, Shayne Chen wrote:
+> Add spatial extension (spe) index as a configurable parameter in testmode.
+> This is used for specifically configuring TX path, such as different
+> WF TX priority, number of antennas and spatial streams.
 > 
->>> Clang warns in both mt7615 and mt7915:
->>> 
->>> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:271:9: warning: implicit
->>> conversion from enumeration type 'enum mt76_mcuq_id' to different
->>> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->>>                 txq = MT_MCUQ_FWDL;
->>>                     ~ ^~~~~~~~~~~~
->>> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:278:9: warning: implicit
->>> conversion from enumeration type 'enum mt76_mcuq_id' to different
->>> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->>>                 txq = MT_MCUQ_WA;
->>>                     ~ ^~~~~~~~~~
->>> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:282:9: warning: implicit
->>> conversion from enumeration type 'enum mt76_mcuq_id' to different
->>> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->>>                 txq = MT_MCUQ_WM;
->>>                     ~ ^~~~~~~~~~
->>> 3 warnings generated.
->>> 
->>> drivers/net/wireless/mediatek/mt76/mt7615/mcu.c:238:9: warning: implicit
->>> conversion from enumeration type 'enum mt76_mcuq_id' to different
->>> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->>>                 qid = MT_MCUQ_WM;
->>>                     ~ ^~~~~~~~~~
->>> drivers/net/wireless/mediatek/mt76/mt7615/mcu.c:240:9: warning: implicit
->>> conversion from enumeration type 'enum mt76_mcuq_id' to different
->>> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->>>                 qid = MT_MCUQ_FWDL;
->>>                     ~ ^~~~~~~~~~~~
->>> 2 warnings generated.
->>> 
->>> Use the proper type for the queue ID variables to fix these warnings.
->>> Additionally, rename the txq variable in mt7915_mcu_send_message to be
->>> more neutral like mt7615_mcu_send_message.
->>> 
->>> Fixes: e637763b606b ("mt76: move mcu queues to mt76_dev q_mcu array")
->>> Link: https://github.com/ClangBuiltLinux/linux/issues/1229
->>> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
->>
->> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> If spe_idx is not set, TX path depends on tx_antenna_mask; otherwise,
+> both spe_idx and tx_antenna_mask are referenced to decide TX path.
 > 
-> I see that Felix already applied this, but as this is a regression
-> starting from v5.11-rc1 I think it should be applied to
-> wireless-drivers. Felix, can you drop this from your tree so that I
-> could apply it to wireless-drivers?
-Sure, will do.
+> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76.h         |  1 +
+>  .../net/wireless/mediatek/mt76/mt7915/testmode.c  | 15 ++++++++++-----
+>  drivers/net/wireless/mediatek/mt76/testmode.c     |  4 ++++
+>  drivers/net/wireless/mediatek/mt76/testmode.h     |  2 ++
+>  4 files changed, 17 insertions(+), 5 deletions(-)
+> 
+> index 7efad685a17c..f215b377d7fb 100644
+> --- a/drivers/net/wireless/mediatek/mt76/testmode.h
+> +++ b/drivers/net/wireless/mediatek/mt76/testmode.h
+> @@ -29,6 +29,7 @@
+>   * @MT76_TM_ATTR_TX_LTF: packet tx LTF, set 0 to 2 for 1x, 2x, and 4x LTF (u8)
+>   *
+>   * @MT76_TM_ATTR_TX_ANTENNA: tx antenna mask (u8)
+> + * @MT76_TM_ATTR_TX_SPE_IDX: tx spatial extension index (u8)
+>   * @MT76_TM_ATTR_TX_POWER_CONTROL: enable tx power control (u8)
+>   * @MT76_TM_ATTR_TX_POWER: per-antenna tx power array (nested, u8 attrs)
+>   *
+> @@ -56,6 +57,7 @@ enum mt76_testmode_attr {
+>  	MT76_TM_ATTR_TX_LTF,
+>  
+>  	MT76_TM_ATTR_TX_ANTENNA,
+> +	MT76_TM_ATTR_TX_SPE_IDX,In order to avoid breaking the ABI, please only add new entries at the
+end of the enum, above the "keep last" line.
+I'll fix it up locally this time.
 
 - Felix
-
