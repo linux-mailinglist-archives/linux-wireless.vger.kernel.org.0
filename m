@@ -2,44 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BE252F671A
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 18:15:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8DAD2F6793
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 18:30:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726661AbhANRNK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jan 2021 12:13:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56076 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726067AbhANRNJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jan 2021 12:13:09 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 21D3D23B1C;
-        Thu, 14 Jan 2021 17:12:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610644349;
-        bh=P2CKuvPXVX1Am6zvxrbxWJQCeeQG3gHEoIcmlXsAOyo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gxFumVRsvbe0M2xNMW66ltOrMtHs6320bGHDGOQA8s40Z5njTeKOsjF/WNT+3Mz2H
-         mX6SjcLafMgymOit8qEKB6edl9FU9qVRdUIg7Uws8HeRp8gmjHR5b7zJ/8OJq/PSrm
-         Psq4CePmoHIJo769T+aT/L6Fbj5TGwKtiN9S2bie7qgnz9HJj4BMtfc9xfZHteiaW5
-         zxT9wKDLuqyksSahuYbcUkzqrjvCZqV7/VI8pSdXSxpBf67FJZJy571Gf/jDcd+zJp
-         1Qo8XQXDzlZlaeTAipkk/4fMsY/+/A0TsB8pgeiX4XIHrOa8tIw4C4Yb9KSdbC9hGz
-         adKGnuWUi099Q==
-Date:   Thu, 14 Jan 2021 09:12:28 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        nbd@nbd.name, matthias_berndt@gmx.de, mozlima@gmail.com
-Subject: Re: [PATCH wireless-drivers] mt7601u: fix rx buffer refcounting
-Message-ID: <20210114091228.2b95fd4b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <62b2380c8c2091834cfad05e1059b55f945bd114.1610643952.git.lorenzo@kernel.org>
-References: <62b2380c8c2091834cfad05e1059b55f945bd114.1610643952.git.lorenzo@kernel.org>
+        id S1729045AbhANR0g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jan 2021 12:26:36 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:52468 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728957AbhANR0f (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 Jan 2021 12:26:35 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1610645175; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=XM1YMfBnE8uyWCbYGW+mzahVhM+v5GtXtGEBuN14Zpo=;
+ b=mjFBaAgjDVnT8cW2GvK2MF7m5u4RRYFwpPG+RKT68IgbAU7E71SQu3gdNerobho/4EG7uyUQ
+ YdiKvoYrZ6EIXeUkZtnFbD1IuEQ+0OFJ3ietdQNHXL5Hc9yPeHofTtEMq8Zovnd3uvEW2XaE
+ gZpwizfmzthT9t6IQeibtzqhqn8=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 60007e91d84bad3547b046b9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 17:25:37
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 84AF2C433ED; Thu, 14 Jan 2021 17:25:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9FB97C433CA;
+        Thu, 14 Jan 2021 17:25:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9FB97C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH wireless -next] rtw88: Delete useless kfree code
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201216130442.13869-1-zhengyongjun3@huawei.com>
+References: <20201216130442.13869-1-zhengyongjun3@huawei.com>
+To:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc:     <tony0620emma@gmail.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210114172537.84AF2C433ED@smtp.codeaurora.org>
+Date:   Thu, 14 Jan 2021 17:25:37 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 14 Jan 2021 18:10:52 +0100 Lorenzo Bianconi wrote:
-> Fix the following crash due to erroneous page refcounting:
+Zheng Yongjun <zhengyongjun3@huawei.com> wrote:
 
-Acked-by: Jakub Kicinski <kubakici@wp.pl>
+> The parameter of kfree function is NULL, so kfree code is useless, delete it.
+> 
+> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+Patch applied to wireless-drivers-next.git, thanks.
+
+8873e8f56f74 rtw88: Delete useless kfree code
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20201216130442.13869-1-zhengyongjun3@huawei.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
