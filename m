@@ -2,119 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0A922F6653
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 17:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B1272F667B
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 17:56:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727052AbhANQtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jan 2021 11:49:47 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:33365 "EHLO
+        id S1727480AbhANQzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jan 2021 11:55:03 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:29995 "EHLO
         so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725928AbhANQtr (ORCPT
+        with ESMTP id S1727305AbhANQzC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jan 2021 11:49:47 -0500
+        Thu, 14 Jan 2021 11:55:02 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610642968; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1610643281; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=pTOhOFjKTSVZKN1D0SJ1Pg5lWOEdKXufF+sYmOfnZOw=;
- b=uK7m3LlTMNeYZcTmuS+5lJm56cD5bsc6Pbkwn6rrSg6veFCosQGXkBP/4ZVHiNs0xxbE+YRC
- MZTVw86QYph8A/pOGHXalFOOPKx1RZ0GCf/+9JPLyEV+JuUPtHhsVJMhaDqmH9rTDGQaO7xw
- lUNBV9bsGDuHcBeZcx2UH4TTOgo=
+ Content-Type: Sender; bh=2dDSdRh9UZ/2znGwAyp9VyErRlya3vyr5Lu5YMhcqbE=;
+ b=NoaEb990Vz3wMWbKNuYXf5DqqnzPpkkBNnKHktCcKCsIGoF2WwBCjdQQhNifrM7BelQrIllC
+ C8jmWSh4C8ubt3AaMk8PQaoN0Su1Rla7TDVB7QwLyjnAbBkiGgmrmPlMrrbxuAI1y8Vp+sCN
+ FwRewjwQ+cmTGfMZ64mjfGwMRg8=
 X-Mailgun-Sending-Ip: 198.61.254.31
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 600075ebc88af06107ced53c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 16:48:43
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 6000772c415a6293c59074c7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 16:54:04
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BE983C43461; Thu, 14 Jan 2021 16:48:42 +0000 (UTC)
+        id D9318C43466; Thu, 14 Jan 2021 16:54:04 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D370BC433C6;
-        Thu, 14 Jan 2021 16:48:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D370BC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8E295C43461;
+        Thu, 14 Jan 2021 16:54:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8E295C43461
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mt76: Fix queue ID variable types after mcu queue split
+Subject: Re: [PATCH] mt76: mt7915: fix misplaced #ifdef
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201229211548.1348077-1-natechancellor@gmail.com>
-References: <20201229211548.1348077-1-natechancellor@gmail.com>
-To:     Nathan Chancellor <natechancellor@gmail.com>
+In-Reply-To: <20210103135811.3749775-1-arnd@kernel.org>
+References: <20210103135811.3749775-1-arnd@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
 Cc:     Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         Ryder Lee <ryder.lee@mediatek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Nathan Chancellor <natechancellor@gmail.com>
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210114164842.BE983C43461@smtp.codeaurora.org>
-Date:   Thu, 14 Jan 2021 16:48:42 +0000 (UTC)
+Message-Id: <20210114165404.D9318C43466@smtp.codeaurora.org>
+Date:   Thu, 14 Jan 2021 16:54:04 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nathan Chancellor <natechancellor@gmail.com> wrote:
+Arnd Bergmann <arnd@kernel.org> wrote:
 
-> Clang warns in both mt7615 and mt7915:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:271:9: warning: implicit
-> conversion from enumeration type 'enum mt76_mcuq_id' to different
-> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->                 txq = MT_MCUQ_FWDL;
->                     ~ ^~~~~~~~~~~~
-> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:278:9: warning: implicit
-> conversion from enumeration type 'enum mt76_mcuq_id' to different
-> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->                 txq = MT_MCUQ_WA;
->                     ~ ^~~~~~~~~~
-> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:282:9: warning: implicit
-> conversion from enumeration type 'enum mt76_mcuq_id' to different
-> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->                 txq = MT_MCUQ_WM;
->                     ~ ^~~~~~~~~~
-> 3 warnings generated.
+> The lone '|' at the end of a line causes a build failure:
 > 
-> drivers/net/wireless/mediatek/mt76/mt7615/mcu.c:238:9: warning: implicit
-> conversion from enumeration type 'enum mt76_mcuq_id' to different
-> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->                 qid = MT_MCUQ_WM;
->                     ~ ^~~~~~~~~~
-> drivers/net/wireless/mediatek/mt76/mt7615/mcu.c:240:9: warning: implicit
-> conversion from enumeration type 'enum mt76_mcuq_id' to different
-> enumeration type 'enum mt76_txq_id' [-Wenum-conversion]
->                 qid = MT_MCUQ_FWDL;
->                     ~ ^~~~~~~~~~~~
-> 2 warnings generated.
+> drivers/net/wireless/mediatek/mt76/mt7915/init.c:47:2: error: expected expression before '}' token
 > 
-> Use the proper type for the queue ID variables to fix these warnings.
-> Additionally, rename the txq variable in mt7915_mcu_send_message to be
-> more neutral like mt7615_mcu_send_message.
+> Replace the #ifdef with an equivalent IS_ENABLED() check.
 > 
-> Fixes: e637763b606b ("mt76: move mcu queues to mt76_dev q_mcu array")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1229
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Fixes: af901eb4ab80 ("mt76: mt7915: get rid of dbdc debugfs knob")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Patch applied to wireless-drivers.git, thanks.
+This was already fixed by:
 
-b7c568752ef3 mt76: Fix queue ID variable types after mcu queue split
+0bd157fa2aaa mt76: mt7915: fix MESH ifdef block
+
+Recorded preimage for 'drivers/net/wireless/mediatek/mt76/mt7915/init.c'
+error: Failed to merge in the changes.
+Applying: mt76: mt7915: fix misplaced #ifdef
+Using index info to reconstruct a base tree...
+M	drivers/net/wireless/mediatek/mt76/mt7915/init.c
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/mediatek/mt76/mt7915/init.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/mediatek/mt76/mt7915/init.c
+Patch failed at 0001 mt76: mt7915: fix misplaced #ifdef
+The copy of the patch that failed is found in: .git/rebase-apply/patch
+
+Patch set to Superseded.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201229211548.1348077-1-natechancellor@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210103135811.3749775-1-arnd@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
