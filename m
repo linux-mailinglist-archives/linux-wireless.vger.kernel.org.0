@@ -2,112 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F9122F5F27
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 11:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46AD52F600B
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 12:31:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727819AbhANKpZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jan 2021 05:45:25 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:43024 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727440AbhANKpZ (ORCPT
+        id S1728929AbhANLam (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jan 2021 06:30:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54494 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728816AbhANLaY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jan 2021 05:45:25 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610621104; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=OjjfXZal6B47GNRAOFXmbhnpHD2u3Oq2qC6Px4eVK1Q=; b=Mte+adddAGpWgLthdrce7mKlzS5ZeaQODY6dqmQVvdcxkE4BuGs7JGNZZTvfRvhnlXzkPO7r
- YS/iaIGeaK0Sjle2Upz+HmvFl2988mXl4yXYLxan3h00Y2XlAr/66/6sHFEvOp6o8dIvIANl
- wOHr3JmDnJV1XEEu9/YkzLpzsQs=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
- 600020978fb3cda82f3ce0c6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 10:44:39
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 47896C43464; Thu, 14 Jan 2021 10:44:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E11AFC433CA;
-        Thu, 14 Jan 2021 10:44:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E11AFC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Petr =?utf-8?Q?=C5=A0tetiar?= <ynezz@true.cz>
-Cc:     Arnd Bergmann <arnd@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mt76: mt7915: fix misplaced #ifdef
-References: <20210103135811.3749775-1-arnd@kernel.org>
-        <20210106135801.GA27377@meh.true.cz>
-Date:   Thu, 14 Jan 2021 12:44:31 +0200
-In-Reply-To: <20210106135801.GA27377@meh.true.cz> ("Petr \=\?utf-8\?Q\?\=C5\=A0t\?\=
- \=\?utf-8\?Q\?etiar\=22's\?\= message of
-        "Wed, 6 Jan 2021 14:58:01 +0100")
-Message-ID: <87r1mnhk6o.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 14 Jan 2021 06:30:24 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 925BDC061798
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Jan 2021 03:29:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=c5Ag22wQQvDBoNg142bW0jk8oMULth+A1IKpzmgTgCg=; b=A5EXGv7H0tHJRRHnzeTC4IncZ8
+        +eMUZDu5UODHMMBu7+DfMf4vyTa/xzUfK2Mn6VGoqSCm4GJM9VDXx5mhOP4RsFoiRs2xcUEPW5cgS
+        3SMA8fZqnTa7ovS8fsWOwNxuqcwWPcaDVB6J9hvCFP57Ad7QicrHL7lZ7hxUHRUCXpQo=;
+Received: from p54ae91f2.dip0.t-ipconnect.de ([84.174.145.242] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1l00og-0001PU-K2
+        for linux-wireless@vger.kernel.org; Thu, 14 Jan 2021 12:29:26 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/7] mt76: mt7603: fix ED/CCA monitoring with single-stream devices
+Date:   Thu, 14 Jan 2021 12:29:19 +0100
+Message-Id: <20210114112925.87646-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Petr =C5=A0tetiar <ynezz@true.cz> writes:
+Do not use the RSSI values of the unavailable chain
 
-> Arnd Bergmann <arnd@kernel.org> [2021-01-03 14:57:55]:
->
-> Hi,
->
-> just a small nitpick,
->
->> From: Arnd Bergmann <arnd@arndb.de>
->>=20
->> The lone '|' at the end of a line causes a build failure:
->>=20
->> drivers/net/wireless/mediatek/mt76/mt7915/init.c:47:2: error:
->> expected expression before '}' token
->>=20
->> Replace the #ifdef with an equivalent IS_ENABLED() check.
->>=20
->> Fixes: af901eb4ab80 ("mt76: mt7915: get rid of dbdc debugfs knob")
->
-> I think, that the correct fixes tag is following:
->
->  Fixes: 8aa2c6f4714e ("mt76: mt7915: support 32 station interfaces")
->
-> I've used the af901eb4ab80 as well first in
-> https://github.com/openwrt/mt76/pull/490 but then looked at it once more =
-and
-> actually found the probably correct 8aa2c6f4714e.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-Ok, I'll change that during commit.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 7f0e3df3a094..cc4e7bc48294 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1631,9 +1631,13 @@ mt7603_edcca_check(struct mt7603_dev *dev)
+ 	if (rssi0 > 128)
+ 		rssi0 -= 256;
+ 
+-	rssi1 = FIELD_GET(MT_AGC_41_RSSI_1, val);
+-	if (rssi1 > 128)
+-		rssi1 -= 256;
++	if (dev->mphy.antenna_mask & BIT(1)) {
++		rssi1 = FIELD_GET(MT_AGC_41_RSSI_1, val);
++		if (rssi1 > 128)
++			rssi1 -= 256;
++	} else {
++		rssi1 = rssi0;
++	}
+ 
+ 	if (max(rssi0, rssi1) >= -40 &&
+ 	    dev->ed_strong_signal < MT7603_EDCCA_BLOCK_TH)
+-- 
+2.28.0
 
-Felix, I'm planning to apply this to wireless-drivers and assigned this
-to me in patchwork.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
