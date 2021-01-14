@@ -2,84 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C2E62F6799
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 18:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 421E02F679F
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 18:30:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729149AbhANR1H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jan 2021 12:27:07 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:56445 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727171AbhANR1G (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jan 2021 12:27:06 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610645200; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=UveevYkhHPCg3wMYxJs8ePKC6d95luHIeHqI7MrVjcg=;
- b=KjrCfhWV0ccuGMLH2TnX2HPRt+Khr7hdIyskDFDkPt9BMJJl2V1UAgjptr9h6eGewqaNAVe0
- +KuVf4msq3iXMGg0sIjda4WC/u7HVd5HfNZOJwHoScwgp1+jy3adSna9UG9kDU6DtrYjwv0v
- TL5bRRLLqK1J4GklGXol/mKTJlE=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 60007ecde53eb5da8c7caeb2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 17:26:37
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0CA70C43220; Thu, 14 Jan 2021 17:26:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AFBD4C43220;
-        Thu, 14 Jan 2021 17:26:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AFBD4C43220
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1727222AbhANR1l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jan 2021 12:27:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60350 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726131AbhANR1k (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 Jan 2021 12:27:40 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DB65623A5E;
+        Thu, 14 Jan 2021 17:26:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610645220;
+        bh=nos0bBc5pgySiP30SzeOjyU7HnizzHqLaYUX4u67vH4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=m1OV1B5v1CSF5OR+ZuSAm6ol/24w4L213y0G1SYMver+Mcn/ChSdM1BPdJLEwl7En
+         Q5mSy/9GoD1w0ocfAHzoU3gyJ+e2/pgzfVHS3vqkB7gk/yl4D8j8ikwc8oHv21jWgC
+         GrvIF742Gi/55SIrrs/S6HW/rqXJ3Y9UAy8EHumm+C3TplLecijadnTkn4VczieDNs
+         /NtfW4z3xTdR81IVhJaVKfKSgoMHxlerqI+70IqnlRvUE6RyX/WBbZx0g1b2+HVGaR
+         XNDHxpvfDy3uyiOdudtJ7UomJMjQZr3GqgYnz4gP5Nt8FC3Msfk6tR/I/Qrx/6UacM
+         xxLrc5aGSsOsw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     lorenzo.bianconi@redhat.com, kuba@kernel.org, nbd@nbd.name,
+        sean.wang@mediatek.com
+Subject: [PATCH wireless-drivers] mt76: mt7663s: fix rx buffer refcounting
+Date:   Thu, 14 Jan 2021 18:26:47 +0100
+Message-Id: <dca19c9d445156201bc41f7cbb6e894bbc9a678c.1610644945.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: rtw88: 8821c: apply CCK PD level which calculates from dynamic
- mechanism
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201228082516.16488-1-pkshih@realtek.com>
-References: <20201228082516.16488-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <vincent_fann@realtek.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210114172637.0CA70C43220@smtp.codeaurora.org>
-Date:   Thu, 14 Jan 2021 17:26:36 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Similar to mt7601u driver, fix erroneous rx page refcounting
 
-> From: Vincent Fann <vincent_fann@realtek.com>
-> 
-> Hal function must follow the value that calculates from dynamic mechanism.
-> Force to set new_lvl to 4 damages receiving ability. System will not able
-> to reconnect to the AP if wifi unexpected disconnecting at this moment.
-> 
-> Signed-off-by: Vincent Fann <vincent_fann@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Fixes: a66cbdd6573d ("mt76: mt7615: introduce mt7663s support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-840105e4f12f rtw88: 8821c: apply CCK PD level which calculates from dynamic mechanism
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
+index 13d77f8fca86..9fb506f2ace6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
+@@ -83,7 +83,7 @@ static int mt7663s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
+ {
+ 	struct mt76_queue *q = &dev->q_rx[qid];
+ 	struct mt76_sdio *sdio = &dev->sdio;
+-	int len = 0, err, i, order;
++	int len = 0, err, i;
+ 	struct page *page;
+ 	u8 *buf;
+ 
+@@ -96,8 +96,7 @@ static int mt7663s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
+ 	if (len > sdio->func->cur_blksize)
+ 		len = roundup(len, sdio->func->cur_blksize);
+ 
+-	order = get_order(len);
+-	page = __dev_alloc_pages(GFP_KERNEL, order);
++	page = __dev_alloc_pages(GFP_KERNEL, get_order(len));
+ 	if (!page)
+ 		return -ENOMEM;
+ 
+@@ -106,7 +105,7 @@ static int mt7663s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
+ 	err = sdio_readsb(sdio->func, buf, MCR_WRDR(qid), len);
+ 	if (err < 0) {
+ 		dev_err(dev->dev, "sdio read data failed:%d\n", err);
+-		__free_pages(page, order);
++		put_page(page);
+ 		return err;
+ 	}
+ 
+@@ -123,7 +122,7 @@ static int mt7663s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
+ 		if (q->queued + i + 1 == q->ndesc)
+ 			break;
+ 	}
+-	__free_pages(page, order);
++	put_page(page);
+ 
+ 	spin_lock_bh(&q->lock);
+ 	q->head = (q->head + i) % q->ndesc;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201228082516.16488-1-pkshih@realtek.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.29.2
 
