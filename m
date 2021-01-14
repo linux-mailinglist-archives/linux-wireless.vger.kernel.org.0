@@ -2,47 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3B3D2F5718
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 02:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7F2A2F568E
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 02:58:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728891AbhANB6q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Jan 2021 20:58:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54086 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729543AbhAMXkF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Jan 2021 18:40:05 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BF55823383;
-        Wed, 13 Jan 2021 23:29:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610580593;
-        bh=EQJe8YysK2tcSoGTGUzG3jrrjUDLm0Dv5OUBJ2bLzDs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GVoQEn2xdJUKGdv+fcd+if0u+jXtTD8ueIY8vDd6pGq0Z7JJbKwh6DUXXTHqoZgeQ
-         gc4DLbnRfIAGRcdQEhMaZ1ie+vc6TxPDQ7Fglntc2CVq8n4CqLPbdYqfoijrL4Zgs3
-         S140DtZv6G82abaRy6XovZBV1psy8bF2RYOyJaqFAtLnDHuTwuqTON0eHdTLDk+CwD
-         WZeS28cGXGSjhYxlSGlZoV9oLQvh3xxw2EUjB3Nc9V31sGFOAb8x7clZ71Yn0WmUZT
-         SjaNK0wcUj4vby2dPvGsHMOtxTKslcj4qa323AFlwQJ7KiMQlJkxcNterMRJZhzLUi
-         bgpStCpfQgXjg==
-Date:   Wed, 13 Jan 2021 15:29:53 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH] mt7601u: use ieee80211_rx_list to pass frames to the
- network stack as a batch
-Message-ID: <20210113152953.05dd40b4@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <5c72fa2dda45c1ae3f285af80c02f3db23341d85.1610580222.git.lorenzo@kernel.org>
-References: <5c72fa2dda45c1ae3f285af80c02f3db23341d85.1610580222.git.lorenzo@kernel.org>
+        id S1728549AbhANBtT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Jan 2021 20:49:19 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:33167 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729867AbhANAgm (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 13 Jan 2021 19:36:42 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 10E0ZlXP2003434, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 10E0ZlXP2003434
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 14 Jan 2021 08:35:47 +0800
+Received: from localhost (172.21.69.213) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 14 Jan
+ 2021 08:35:46 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
+Subject: [PATCH v3 0/8] rtw88: improve TX performance in field
+Date:   Thu, 14 Jan 2021 08:34:48 +0800
+Message-ID: <20210114003456.3011-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.213]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 14 Jan 2021 00:26:26 +0100 Lorenzo Bianconi wrote:
-> Similar to mt76 driver, rely on ieee80211_rx_list in order to
-> improve icache footprint
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Improve TX performance in aspects of protocol and software design. Also,
+update PHY parameters to fix incorrect RSSI report.
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+v2: Since 5/5 of v1 is too large, I split it into three patches.
+v3: Since 6/7 of v2 is still too large for patchwork, I split parameter
+    into four patches.
+
+Po-Hao Huang (8):
+  rtw88: add dynamic rrsr configuration
+  rtw88: add rts condition
+  rtw88: add napi support
+  rtw88: replace tx tasklet with tx work
+  rtw88: 8822c: update MAC/BB parameter tables to v60
+  rtw88: 8822c: update RF_A parameter tables to v60
+  rtw88: 8822c: update RF_B (1/2) parameter tables to v60
+  rtw88: 8822c: update RF_B (2/2) parameter tables to v60
+
+ drivers/net/wireless/realtek/rtw88/mac80211.c |     2 +-
+ drivers/net/wireless/realtek/rtw88/main.c     |    10 +-
+ drivers/net/wireless/realtek/rtw88/main.h     |     8 +-
+ drivers/net/wireless/realtek/rtw88/pci.c      |   108 +-
+ drivers/net/wireless/realtek/rtw88/pci.h      |     5 +
+ drivers/net/wireless/realtek/rtw88/phy.c      |    62 +-
+ drivers/net/wireless/realtek/rtw88/phy.h      |     3 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |     2 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h |     2 -
+ .../wireless/realtek/rtw88/rtw8822c_table.c   | 32755 ++++++++++++----
+ drivers/net/wireless/realtek/rtw88/tx.c       |    11 +-
+ drivers/net/wireless/realtek/rtw88/tx.h       |     6 +-
+ drivers/net/wireless/realtek/rtw88/util.c     |    20 +
+ drivers/net/wireless/realtek/rtw88/util.h     |    54 +
+ 14 files changed, 24667 insertions(+), 8381 deletions(-)
+
+-- 
+2.21.0
+
