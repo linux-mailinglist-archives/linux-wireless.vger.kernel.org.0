@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8DAD2F6793
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 18:30:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A76392F6797
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 18:30:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729045AbhANR0g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jan 2021 12:26:36 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:52468 "EHLO
+        id S1729139AbhANR1B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jan 2021 12:27:01 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:37529 "EHLO
         m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728957AbhANR0f (ORCPT
+        with ESMTP id S1727305AbhANR07 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jan 2021 12:26:35 -0500
+        Thu, 14 Jan 2021 12:26:59 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610645175; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1610645193; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=XM1YMfBnE8uyWCbYGW+mzahVhM+v5GtXtGEBuN14Zpo=;
- b=mjFBaAgjDVnT8cW2GvK2MF7m5u4RRYFwpPG+RKT68IgbAU7E71SQu3gdNerobho/4EG7uyUQ
- YdiKvoYrZ6EIXeUkZtnFbD1IuEQ+0OFJ3ietdQNHXL5Hc9yPeHofTtEMq8Zovnd3uvEW2XaE
- gZpwizfmzthT9t6IQeibtzqhqn8=
+ Content-Type: Sender; bh=FxZ+5EnQoaUBXAHSecRXWfDC2xmn1Vy+cv3RX7qWJMA=;
+ b=vjSC2VSs7mTLiqIZhc1EsgIwm11WxpInigrH3YI6AOyzT8KArtl4h2POsS/YeNN+G2GvlmPz
+ RC4z1YtV75E05NY8G5Qdncy3SZdeBlJ4NUd7tJsti81pYcyjjrb+TD9RJMD8XKfogiWOQdTe
+ 9CPQy11L+JvUcuEN7DqLAN/1VAU=
 X-Mailgun-Sending-Ip: 69.72.43.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 60007e91d84bad3547b046b9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 17:25:37
+ smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
+ 60007eae8fb3cda82fa635c9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 17:26:06
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 84AF2C433ED; Thu, 14 Jan 2021 17:25:37 +0000 (UTC)
+        id D69D8C4346B; Thu, 14 Jan 2021 17:26:05 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,43 +40,47 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9FB97C433CA;
-        Thu, 14 Jan 2021 17:25:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9FB97C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7D01DC43469;
+        Thu, 14 Jan 2021 17:26:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7D01DC43469
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless -next] rtw88: Delete useless kfree code
+Subject: Re: [PATCH] rtw88: reduce the log level for failure of tx report
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201216130442.13869-1-zhengyongjun3@huawei.com>
-References: <20201216130442.13869-1-zhengyongjun3@huawei.com>
-To:     Zheng Yongjun <zhengyongjun3@huawei.com>
-Cc:     <tony0620emma@gmail.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>
+In-Reply-To: <20201228082433.16431-1-pkshih@realtek.com>
+References: <20201228082433.16431-1-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <timlee@realtek.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210114172537.84AF2C433ED@smtp.codeaurora.org>
-Date:   Thu, 14 Jan 2021 17:25:37 +0000 (UTC)
+Message-Id: <20210114172605.D69D8C4346B@smtp.codeaurora.org>
+Date:   Thu, 14 Jan 2021 17:26:05 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zheng Yongjun <zhengyongjun3@huawei.com> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> The parameter of kfree function is NULL, so kfree code is useless, delete it.
+> From: Chin-Yen Lee <timlee@realtek.com>
 > 
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Sometimes driver does not get tx report from firmware because wifi
+> environment is too noisy to get ack from AP about a TX frame,
+> or firmware is too busy to report driver in a estimated time.
+> But the condition will not affect wifi function or throughput.
+> So we reduce the log level to rtw_debug instead of scary backtrace.
+> 
+> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-8873e8f56f74 rtw88: Delete useless kfree code
+ac9533d2a637 rtw88: reduce the log level for failure of tx report
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201216130442.13869-1-zhengyongjun3@huawei.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201228082433.16431-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
