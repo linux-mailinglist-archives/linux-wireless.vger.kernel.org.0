@@ -2,85 +2,237 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F2F22F5B38
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 08:23:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 557B82F5C10
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 09:07:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727271AbhANHWx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jan 2021 02:22:53 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:39821 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726266AbhANHWw (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jan 2021 02:22:52 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610608947; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=6Qup6eTt72dD/FoH11S+QWujoErcazjSwoOinFYv054=; b=MBQ9vl7QToex0ewMv/q74hQQceGJfVb4n58Xq+wsHYWWSTN7HtyzNyPVw2kQBUAQddGpVZRX
- +5zzN7pEzD3lYDjZc+yrO9a+JSa1n2J+lzHf1wcOzeFTwcJ6fGgjOAnmouFNG1Xz4ioVjpOR
- frzuEHTxQZpmrxEiE/94LoSqnX8=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5ffff119415a6293c5e8c418 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 07:22:01
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B056CC43461; Thu, 14 Jan 2021 07:22:01 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DA940C433ED;
-        Thu, 14 Jan 2021 07:21:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DA940C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <phhuang@realtek.com>
-Subject: Re: [PATCH RESEND v3 0/8] rtw88: improve TX performance in field
-References: <20210114010950.3316-1-pkshih@realtek.com>
-Date:   Thu, 14 Jan 2021 09:21:57 +0200
-In-Reply-To: <20210114010950.3316-1-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Thu, 14 Jan 2021 09:09:42 +0800")
-Message-ID: <874kjkrnje.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1728292AbhANIGq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jan 2021 03:06:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59020 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728130AbhANIGX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 Jan 2021 03:06:23 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AFD9323A58;
+        Thu, 14 Jan 2021 08:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610611500;
+        bh=KzRA72DJ8FelN5FRPnISDXzhJWHYX6V5D7cnrrYqmns=;
+        h=From:To:Cc:Subject:Date:From;
+        b=nOm4NqCaUWLg4HTBDeJeoBxDK1hE6KD6kwIaS5QUdGE5d95M0LOuBe17UH6ZhtxWj
+         2SIokKCq5OrWbc/QTRPFACCsP/28F9IHn5ydVSMGUJC9s2jP+tMN80H9tSZ77bm3FC
+         VuJGlQICCzi4qz/Gjt5ZVImWz1CaQcpPOemSSW2UY1plhyCBX0ffc8ZreB8SYwreWG
+         a2Wjqa/k8fmoxGbUlaKINA7quVFVGZDOIEdybff/MtPHwEQKCte3px4suSSxEJzxPs
+         ZezS17i65C2hxskblSDd8TCCCI/NNP1qdJmjaooHey/QEueJfY+BWtlFyEGbMsiuzC
+         o3DjiUV3zELfQ==
+Received: by mail.kernel.org with local (Exim 4.94)
+        (envelope-from <mchehab@kernel.org>)
+        id 1kzxcn-00EQ6N-K6; Thu, 14 Jan 2021 09:04:57 +0100
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Evgeniy Polyakov <zbr@ioremap.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jon Maloy <jmaloy@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Richard Gong <richard.gong@linux.intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Will Drewry <wad@chromium.org>,
+        Ying Xue <ying.xue@windriver.com>,
+        dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        tipc-discussion@lists.sourceforge.net
+Subject: [PATCH v6 00/16] Fix several bad kernel-doc markups
+Date:   Thu, 14 Jan 2021 09:04:36 +0100
+Message-Id: <cover.1610610937.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Hi Jon,
 
-> Improve TX performance in aspects of protocol and software design. Also,
-> update PHY parameters to fix incorrect RSSI report.
->
-> v2: Since 5/5 of v1 is too large, I split it into three patches.
-> v3: Since 6/7 of v2 is still too large for patchwork, I split parameter
->     into four patches.
->
-> ---
-> RESEND v3 due to no appearance of patchwork
+This series have three parts:
 
-Please avoid using "RESEND", instead just increase the version (in this
-case you should have used v4). Makes my sorting easier and it's not like
-we are running out of numbers for versions :)
+1)  10 remaining fixup patches from the series I sent back on Dec, 1st:
 
-And mailing lists and patchwork can be slow sometimes (recently more
-often), so please wait at least 12h before resubmitting any patches. Now
-both v3 and "v3 RESEND" are in patchwork.
+   parport: fix a kernel-doc markup
+   rapidio: fix kernel-doc a markup
+   fs: fix kernel-doc markups
+   pstore/zone: fix a kernel-doc markup
+   firmware: stratix10-svc: fix kernel-doc markups
+   connector: fix a kernel-doc markup
+   lib/crc7: fix a kernel-doc markup
+   memblock: fix kernel-doc markups
+   w1: fix a kernel-doc markup
+   selftests: kselftest_harness.h: partially fix kernel-doc markups
+
+2) The patch adding the new check to ensure that the kernel-doc
+   markup will be used for the right declaration;
+
+3) 5 additional patches, produced against next-20210114 with new
+   problems detected after the original series: 
+
+ net: tip: fix a couple kernel-doc markups
+ net: cfg80211: fix a kerneldoc markup
+ reset: core: fix a kernel-doc markup
+ drm: drm_crc: fix a kernel-doc markup
+ platform/surface: aggregator: fix a kernel-doc markup
+
+It probably makes sense to merge at least the first 11 patches
+via the doc tree, as they should apply cleanly there, and
+having the last 5 patches merged via each maintainer's tree.
+
+-
+
+Kernel-doc has always be limited to a probably bad documented
+rule:
+
+The kernel-doc markups should appear *imediatelly before* the
+function or data structure that it documents.
+
+On other words, if a C file would contain something like this:
+
+	/**
+	 * foo - function foo
+	 * @args: foo args
+	 */
+	static inline void bar(int args);
+
+	/**
+	 * bar - function bar
+	 * @args: foo args
+	 */
+	static inline void foo(void *args);
+
+
+The output (in ReST format) will be:
+
+	.. c:function:: void bar (int args)
+
+	   function foo
+
+	**Parameters**
+
+	``int args``
+	  foo args
+
+
+	.. c:function:: void foo (void *args)
+
+	   function bar
+
+	**Parameters**
+
+	``void *args``
+	  foo args
+
+Which is clearly a wrong result.  Before this changeset, 
+not even a warning is produced on such cases.
+
+As placing such markups just before the documented
+data is a common practice, on most cases this is fine.
+
+However, as patches touch things, identifiers may be
+renamed, and people may forget to update the kernel-doc
+markups to follow such changes.
+
+This has been happening for quite a while, as there are
+lots of files with kernel-doc problems.
+
+This series address those issues and add a file at the
+end that will enforce that the identifier will match the
+kernel-doc markup, avoiding this problem from
+keep happening as time goes by.
+
+This series is based on current upstream tree.
+
+@maintainers: feel free to pick the patches and
+apply them directly on your trees, as all patches on 
+this series are independent from the other ones.
+
+--
+
+v6:
+  - rebased on the top of next-20210114 and added a few extra fixes
+
+v5:
+  - The completion.h patch was replaced by another one which drops
+    an obsolete macro;
+  - Some typos got fixed and review tags got added;
+  - Dropped patches that were already merged at linux-next.
+
+v4:
+
+  - Patches got rebased and got some acks.
+
+Mauro Carvalho Chehab (16):
+  parport: fix a kernel-doc markup
+  rapidio: fix kernel-doc a markup
+  fs: fix kernel-doc markups
+  pstore/zone: fix a kernel-doc markup
+  firmware: stratix10-svc: fix kernel-doc markups
+  connector: fix a kernel-doc markup
+  lib/crc7: fix a kernel-doc markup
+  memblock: fix kernel-doc markups
+  w1: fix a kernel-doc markup
+  selftests: kselftest_harness.h: partially fix kernel-doc markups
+  scripts: kernel-doc: validate kernel-doc markup with the actual names
+  net: tip: fix a couple kernel-doc markups
+  net: cfg80211: fix a kerneldoc markup
+  reset: core: fix a kernel-doc markup
+  drm: drm_crc: fix a kernel-doc markup
+  platform/surface: aggregator: fix a kernel-doc markup
+
+ drivers/parport/share.c                       |  2 +-
+ .../surface/aggregator/ssh_request_layer.c    |  2 +-
+ drivers/rapidio/rio.c                         |  2 +-
+ drivers/reset/core.c                          |  4 +-
+ fs/dcache.c                                   | 73 ++++++++++---------
+ fs/inode.c                                    |  4 +-
+ fs/pstore/zone.c                              |  2 +-
+ fs/seq_file.c                                 |  5 +-
+ fs/super.c                                    | 12 +--
+ include/drm/drm_crtc.h                        |  2 +-
+ include/linux/connector.h                     |  2 +-
+ .../firmware/intel/stratix10-svc-client.h     | 10 +--
+ include/linux/memblock.h                      |  4 +-
+ include/linux/parport.h                       | 31 ++++++++
+ include/linux/w1.h                            |  2 +-
+ include/net/cfg80211.h                        |  2 +-
+ lib/crc7.c                                    |  2 +-
+ net/tipc/link.c                               |  2 +-
+ net/tipc/node.c                               |  2 +-
+ scripts/kernel-doc                            | 62 ++++++++++++----
+ tools/testing/selftests/kselftest_harness.h   | 26 ++++---
+ 21 files changed, 160 insertions(+), 93 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.29.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
