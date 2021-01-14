@@ -2,90 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 421E02F679F
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 18:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0DF52F679C
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Jan 2021 18:30:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727222AbhANR1l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Jan 2021 12:27:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60350 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726131AbhANR1k (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Jan 2021 12:27:40 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DB65623A5E;
-        Thu, 14 Jan 2021 17:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610645220;
-        bh=nos0bBc5pgySiP30SzeOjyU7HnizzHqLaYUX4u67vH4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=m1OV1B5v1CSF5OR+ZuSAm6ol/24w4L213y0G1SYMver+Mcn/ChSdM1BPdJLEwl7En
-         Q5mSy/9GoD1w0ocfAHzoU3gyJ+e2/pgzfVHS3vqkB7gk/yl4D8j8ikwc8oHv21jWgC
-         GrvIF742Gi/55SIrrs/S6HW/rqXJ3Y9UAy8EHumm+C3TplLecijadnTkn4VczieDNs
-         /NtfW4z3xTdR81IVhJaVKfKSgoMHxlerqI+70IqnlRvUE6RyX/WBbZx0g1b2+HVGaR
-         XNDHxpvfDy3uyiOdudtJ7UomJMjQZr3GqgYnz4gP5Nt8FC3Msfk6tR/I/Qrx/6UacM
-         xxLrc5aGSsOsw==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     lorenzo.bianconi@redhat.com, kuba@kernel.org, nbd@nbd.name,
-        sean.wang@mediatek.com
-Subject: [PATCH wireless-drivers] mt76: mt7663s: fix rx buffer refcounting
-Date:   Thu, 14 Jan 2021 18:26:47 +0100
-Message-Id: <dca19c9d445156201bc41f7cbb6e894bbc9a678c.1610644945.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        id S1726590AbhANR1b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Jan 2021 12:27:31 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:37529 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725995AbhANR1b (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 Jan 2021 12:27:31 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1610645232; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=LC/R6flxorfyLlnp0KYnEJ6bCzJ41pYSl9q+Dswq5tQ=;
+ b=oY5DU063SU59g0DgtMqVRvlhh67HzCN8vtQV1YFz1wCmRpQel8MfIT7yJ0A/t3BttckamAo/
+ BHnq2yZ/SaJX/th/bWhM1JyMGZtGoQ+D4eGDPXmFSCoCuKfyi+p0PqcrVQMephuOi0GLqJiD
+ 2hZTngN+SpdRxSrlDgAdrnB7+sg=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
+ 60007eebf1be2d22c417d5e1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Jan 2021 17:27:07
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 49EE0C433CA; Thu, 14 Jan 2021 17:27:06 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D42F2C433CA;
+        Thu, 14 Jan 2021 17:27:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D42F2C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] rtw88: coex: set 4 slot TDMA for BT link and WL busy
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210112021135.3823-1-pkshih@realtek.com>
+References: <20210112021135.3823-1-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <ku920601@realtek.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210114172706.49EE0C433CA@smtp.codeaurora.org>
+Date:   Thu, 14 Jan 2021 17:27:06 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to mt7601u driver, fix erroneous rx page refcounting
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-Fixes: a66cbdd6573d ("mt76: mt7615: introduce mt7663s support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+> From: Ching-Te Ku <ku920601@realtek.com>
+> 
+> To protect both of WL/BT performance while BT is under re-link state.
+> 4-slot mode TDMA can make the re-link more sensitive and mitigate the WL
+> throughput drop.
+> 
+> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-index 13d77f8fca86..9fb506f2ace6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-@@ -83,7 +83,7 @@ static int mt7663s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
- {
- 	struct mt76_queue *q = &dev->q_rx[qid];
- 	struct mt76_sdio *sdio = &dev->sdio;
--	int len = 0, err, i, order;
-+	int len = 0, err, i;
- 	struct page *page;
- 	u8 *buf;
- 
-@@ -96,8 +96,7 @@ static int mt7663s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
- 	if (len > sdio->func->cur_blksize)
- 		len = roundup(len, sdio->func->cur_blksize);
- 
--	order = get_order(len);
--	page = __dev_alloc_pages(GFP_KERNEL, order);
-+	page = __dev_alloc_pages(GFP_KERNEL, get_order(len));
- 	if (!page)
- 		return -ENOMEM;
- 
-@@ -106,7 +105,7 @@ static int mt7663s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
- 	err = sdio_readsb(sdio->func, buf, MCR_WRDR(qid), len);
- 	if (err < 0) {
- 		dev_err(dev->dev, "sdio read data failed:%d\n", err);
--		__free_pages(page, order);
-+		put_page(page);
- 		return err;
- 	}
- 
-@@ -123,7 +122,7 @@ static int mt7663s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
- 		if (q->queued + i + 1 == q->ndesc)
- 			break;
- 	}
--	__free_pages(page, order);
-+	put_page(page);
- 
- 	spin_lock_bh(&q->lock);
- 	q->head = (q->head + i) % q->ndesc;
+Patch applied to wireless-drivers-next.git, thanks.
+
+5f782c11569d rtw88: coex: set 4 slot TDMA for BT link and WL busy
+
 -- 
-2.29.2
+https://patchwork.kernel.org/project/linux-wireless/patch/20210112021135.3823-1-pkshih@realtek.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
