@@ -2,173 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5D042F72A9
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jan 2021 07:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7BF32F7316
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jan 2021 07:57:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727983AbhAOGAI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Jan 2021 01:00:08 -0500
-Received: from mga18.intel.com ([134.134.136.126]:32496 "EHLO mga18.intel.com"
+        id S1728269AbhAOG5D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Jan 2021 01:57:03 -0500
+Received: from muru.com ([72.249.23.125]:44884 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726019AbhAOGAH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Jan 2021 01:00:07 -0500
-IronPort-SDR: laENljNXzRTd9AeadIh2M8BEoXoUcjFN4ykUyrHXZdxf6cJzcB3yG7IznXTGpmqjRprXc+md6v
- ciMJKT1aEiYw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9864"; a="166172641"
-X-IronPort-AV: E=Sophos;i="5.79,348,1602572400"; 
-   d="scan'208";a="166172641"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2021 21:59:25 -0800
-IronPort-SDR: mD5LVoP1mkgUaTNiLA83G9Q9nI41nOaNqwrnMAt1akWiKQSRoUt/lkJMvqiYmXHecRWyYovC1Y
- ++H1U5dngP7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,348,1602572400"; 
-   d="scan'208";a="352720077"
-Received: from lkp-server01.sh.intel.com (HELO 260eafd5ecd0) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 14 Jan 2021 21:59:23 -0800
-Received: from kbuild by 260eafd5ecd0 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l0I8p-0000DC-5n; Fri, 15 Jan 2021 05:59:23 +0000
-Date:   Fri, 15 Jan 2021 13:58:29 +0800
-From:   kernel test robot <lkp@intel.com>
+        id S1725880AbhAOG5D (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 Jan 2021 01:57:03 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 52E32805C;
+        Fri, 15 Jan 2021 06:56:22 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD SUCCESS
- 07ceefa3012f43512e93931980bd3bdf5af96344
-Message-ID: <60012f05.34/j5id0KiI8LjF9%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        Raz Bouganim <r-bouganim@ti.com>,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCHv2 ] wlcore: Fix command execute failure 19 for wl12xx
+Date:   Fri, 15 Jan 2021 08:56:13 +0200
+Message-Id: <20210115065613.7731-1-tony@atomide.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-branch HEAD: 07ceefa3012f43512e93931980bd3bdf5af96344  wlcore: Downgrade exceeded max RX BA sessions to debug
+We can currently get a "command execute failure 19" error on beacon loss
+if the signal is weak:
 
-elapsed time: 720m
+wlcore: Beacon loss detected. roles:0xff
+wlcore: Connection loss work (role_id: 0).
+...
+wlcore: ERROR command execute failure 19
+...
+WARNING: CPU: 0 PID: 1552 at drivers/net/wireless/ti/wlcore/main.c:803
+...
+(wl12xx_queue_recovery_work.part.0 [wlcore])
+(wl12xx_cmd_role_start_sta [wlcore])
+(wl1271_op_bss_info_changed [wlcore])
+(ieee80211_prep_connection [mac80211])
 
-configs tested: 111
-configs skipped: 2
+Error 19 is defined as CMD_STATUS_WRONG_NESTING from the wlcore firmware,
+and seems to mean that the firmware no longer wants to see the quirk
+handling for WLCORE_QUIRK_START_STA_FAILS done.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This quirk got added with commit 18eab430700d ("wlcore: workaround
+start_sta problem in wl12xx fw"), and it seems that this already got fixed
+in the firmware long time ago back in 2012 as wl18xx never had this quirk
+in place to start with.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                       imx_v4_v5_defconfig
-arc                      axs103_smp_defconfig
-sh                          r7785rp_defconfig
-m68k                        m5272c3_defconfig
-arm                        oxnas_v6_defconfig
-sh                                  defconfig
-powerpc                    socrates_defconfig
-arm                           spitz_defconfig
-sh                            migor_defconfig
-arm                           sunxi_defconfig
-powerpc                      tqm8xx_defconfig
-xtensa                    smp_lx200_defconfig
-arm                         vf610m4_defconfig
-mips                          rb532_defconfig
-sh                             shx3_defconfig
-powerpc                 mpc837x_mds_defconfig
-i386                             alldefconfig
-powerpc                     redwood_defconfig
-arm                            lart_defconfig
-arm                            pleb_defconfig
-sh                     sh7710voipgw_defconfig
-sh                     magicpanelr2_defconfig
-mips                malta_kvm_guest_defconfig
-c6x                         dsk6455_defconfig
-arm                             ezx_defconfig
-arm                      integrator_defconfig
-powerpc                   lite5200b_defconfig
-arc                            hsdk_defconfig
-riscv                    nommu_virt_defconfig
-mips                      maltaaprp_defconfig
-arm                          imote2_defconfig
-powerpc                    mvme5100_defconfig
-sh                           se7712_defconfig
-powerpc                     taishan_defconfig
-mips                             allmodconfig
-m68k                           sun3_defconfig
-m68k                        stmark2_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20210114
-i386                 randconfig-a005-20210114
-i386                 randconfig-a006-20210114
-i386                 randconfig-a001-20210114
-i386                 randconfig-a003-20210114
-i386                 randconfig-a004-20210114
-x86_64               randconfig-a015-20210114
-x86_64               randconfig-a012-20210114
-x86_64               randconfig-a013-20210114
-x86_64               randconfig-a016-20210114
-x86_64               randconfig-a014-20210114
-x86_64               randconfig-a011-20210114
-i386                 randconfig-a012-20210114
-i386                 randconfig-a011-20210114
-i386                 randconfig-a016-20210114
-i386                 randconfig-a015-20210114
-i386                 randconfig-a013-20210114
-i386                 randconfig-a014-20210114
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+As we no longer even support firmware that early, to me it seems that it's
+safe to just drop WLCORE_QUIRK_START_STA_FAILS to fix the error. Looks
+like earlier firmware got disabled back in 2013 with commit 0e284c074ef9
+("wl12xx: increase minimum singlerole firmware version required").
 
-clang tested configs:
-x86_64               randconfig-a004-20210114
-x86_64               randconfig-a006-20210114
-x86_64               randconfig-a001-20210114
-x86_64               randconfig-a003-20210114
-x86_64               randconfig-a005-20210114
-x86_64               randconfig-a002-20210114
+If it turns out we still need WLCORE_QUIRK_START_STA_FAILS with any
+firmware that the driver works with, we can simply revert this patch and
+add extra checks for firmware version used.
 
+With this fix wlcore reconnects properly after a beacon loss.
+
+Cc: Raz Bouganim <r-bouganim@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Changes since v1: Update to apply without fuzz
+---
+ drivers/net/wireless/ti/wl12xx/main.c   |  3 ---
+ drivers/net/wireless/ti/wlcore/main.c   | 15 +--------------
+ drivers/net/wireless/ti/wlcore/wlcore.h |  3 ---
+ 3 files changed, 1 insertion(+), 20 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/ti/wl12xx/main.c
+index 3c9c623bb4283..9d7dbfe7fe0c3 100644
+--- a/drivers/net/wireless/ti/wl12xx/main.c
++++ b/drivers/net/wireless/ti/wl12xx/main.c
+@@ -635,7 +635,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
+ 		wl->mr_fw_name = WL127X_FW_NAME_MULTI;
+@@ -659,7 +658,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 		wl->plt_fw_name = WL127X_PLT_FW_NAME;
+ 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
+@@ -688,7 +686,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 
+ 		wlcore_set_min_fw_ver(wl, WL128X_CHIP_VER,
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index fb0305d075dd3..8509b989940c2 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -2872,21 +2872,8 @@ static int wlcore_join(struct wl1271 *wl, struct wl12xx_vif *wlvif)
+ 
+ 	if (is_ibss)
+ 		ret = wl12xx_cmd_role_start_ibss(wl, wlvif);
+-	else {
+-		if (wl->quirks & WLCORE_QUIRK_START_STA_FAILS) {
+-			/*
+-			 * TODO: this is an ugly workaround for wl12xx fw
+-			 * bug - we are not able to tx/rx after the first
+-			 * start_sta, so make dummy start+stop calls,
+-			 * and then call start_sta again.
+-			 * this should be fixed in the fw.
+-			 */
+-			wl12xx_cmd_role_start_sta(wl, wlvif);
+-			wl12xx_cmd_role_stop_sta(wl, wlvif);
+-		}
+-
++	else
+ 		ret = wl12xx_cmd_role_start_sta(wl, wlvif);
+-	}
+ 
+ 	return ret;
+ }
+diff --git a/drivers/net/wireless/ti/wlcore/wlcore.h b/drivers/net/wireless/ti/wlcore/wlcore.h
+index b7821311ac75b..81c94d390623b 100644
+--- a/drivers/net/wireless/ti/wlcore/wlcore.h
++++ b/drivers/net/wireless/ti/wlcore/wlcore.h
+@@ -547,9 +547,6 @@ wlcore_set_min_fw_ver(struct wl1271 *wl, unsigned int chip,
+ /* Each RX/TX transaction requires an end-of-transaction transfer */
+ #define WLCORE_QUIRK_END_OF_TRANSACTION		BIT(0)
+ 
+-/* the first start_role(sta) sometimes doesn't work on wl12xx */
+-#define WLCORE_QUIRK_START_STA_FAILS		BIT(1)
+-
+ /* wl127x and SPI don't support SDIO block size alignment */
+ #define WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN		BIT(2)
+ 
+-- 
+2.30.0
+
