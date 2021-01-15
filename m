@@ -2,71 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B41A32F7639
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jan 2021 11:09:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63FC52F7654
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Jan 2021 11:13:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbhAOKHm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Jan 2021 05:07:42 -0500
-Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:46210 "EHLO
-        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726660AbhAOKHm (ORCPT
+        id S1731736AbhAOKLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Jan 2021 05:11:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726375AbhAOKLa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Jan 2021 05:07:42 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R791e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=abaci-bugfix@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0ULoF6Qe_1610705212;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:abaci-bugfix@linux.alibaba.com fp:SMTPD_---0ULoF6Qe_1610705212)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 15 Jan 2021 18:06:57 +0800
-From:   Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
-To:     pkshih@realtek.com
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        Larry.Finger@lwfinger.net, chiu@endlessos.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
-Subject: [PATCH] rtlwifi/rtl8192se: Simplify bool comparison.
-Date:   Fri, 15 Jan 2021 18:06:51 +0800
-Message-Id: <1610705211-22865-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        Fri, 15 Jan 2021 05:11:30 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F56FC061757
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Jan 2021 02:10:50 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1l0M45-006bJg-Ax; Fri, 15 Jan 2021 11:10:45 +0100
+Message-ID: <faca6aa3128471b3ed8c82a2116c25ad8bc149b6.camel@sipsolutions.net>
+Subject: Re: [PATCHv2 1/2] nl80211: vendor-cmd: qca: add command for ap
+ power save
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jouni Malinen <j@w1.fi>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, vnaralas@codeaurora.org,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Date:   Fri, 15 Jan 2021 11:10:44 +0100
+In-Reply-To: <20201223124622.GA12620@w1.fi>
+References: <1598257589-19091-1-git-send-email-vnaralas@codeaurora.org>
+         <4b4a0d79a243c1c3b8044730da0493c96ba294bf.camel@sipsolutions.net>
+         <871rilf2th.fsf@codeaurora.org>
+         <dbaa655c3f15f800f73b7c19f2b1a054@codeaurora.org>
+         <87eelr1oq9.fsf@codeaurora.org>
+         <f6c148a3-73de-1481-5f63-2deecb599468@broadcom.com>
+         <81ced18ac5b87a17cf31797cf91669bc@codeaurora.org>
+         <87sg9rtugu.fsf@codeaurora.org>
+         <60c779b7c17b8ea40c2bba08d8fca98e83581580.camel@sipsolutions.net>
+         <20201223124622.GA12620@w1.fi>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the follow coccicheck warnings:
+On Wed, 2020-12-23 at 14:46 +0200, Jouni Malinen wrote:
+> On Fri, Nov 06, 2020 at 11:41:06AM +0100, Johannes Berg wrote:
+> > I suspect that SET_POWERSAVE might be confusing.
+> 
+> Why? Isn't the use case here very similar to the existing station mode
+> use of power save even if the power saving mechanism is more of a vendor
+> specific extension that applies while there are no associated stations?
 
-./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:2305:6-27:
-WARNING: Comparison of 0/1 to bool variable.
+Yeah, true, fair point.
 
-./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1376:5-26:
-WARNING: Comparison of 0/1 to bool variable.
+However, set-powersave is a bit of a legacy API with state in the
+kernel, and sometimes restrictions on how/when you can set it etc. I'm
+not sure it's a good idea for those reasons alone?
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> > Perhaps just with an attribute used in START_AP (and CHANGE_BEACON if
+> > needed) would be sufficient?
+> 
+> NL80211_CMD_START_AP with a new attribute (or even re-use of
+> NL80211_ATTR_PS_STATE) might work for a case where this does not need to
+> be changed dynamically during the lifetime of the BSS.
+> NL80211_CMD_SET_BEACON (which maps to the change_beacon() callback)
+> feels like something that is currently limited to Beacon data updates
+> with its use of struct cfg80211_beacon_data instead of struct
+> cfg80211_ap_settings..
+> 
+> That SET_BEACON name is still from the old NEW/SET/DEL_BEACON time.
+> Should that be renamed to NL80211_CMD_UPDATE_AP if we extend this to
+> changes that are not really targeting the Beacon frame payload itself?
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-index 47fabce..aff8ab0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-@@ -1373,7 +1373,7 @@ static void _rtl92se_gen_refreshledstate(struct ieee80211_hw *hw)
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_led *pled0 = &rtlpriv->ledctl.sw_led0;
- 
--	if (rtlpci->up_first_time == 1)
-+	if (rtlpci->up_first_time)
- 		return;
- 
- 	if (rtlpriv->psc.rfoff_reason == RF_CHANGE_BY_IPS)
-@@ -2302,7 +2302,7 @@ bool rtl92se_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
- 	bool turnonbypowerdomain = false;
- 
- 	/* just 8191se can check gpio before firstup, 92c/92d have fixed it */
--	if ((rtlpci->up_first_time == 1) || (rtlpci->being_init_adapter))
-+	if (rtlpci->up_first_time || rtlpci->being_init_adapter)
- 		return false;
- 
- 	if (ppsc->swrf_processing)
--- 
-1.8.3.1
+I'd be surprised if we don't already have non-beacon state there ... but
+it looks like only very little non-beacon state, namely the FTM
+responder state.
+
+Renaming seems reasonable, we've done it before with START_AP.
+
+> And should the cfg80211_beacon_data argument be replaced with
+> cfg80211_ap_settings? It looks like we already have some struct
+> cfg80211_ap_settings values like inactivity_timeout and beacon_rate (and
+> maybe some HE parameters?) that one might want to update during the
+> lifetime of the BSS..
+
+That also seems reasonable.
+
+johannes
 
