@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E90CB2F8D64
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Jan 2021 13:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 610522F8D65
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Jan 2021 13:54:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726785AbhAPMx2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Jan 2021 07:53:28 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:36247 "EHLO
+        id S1726917AbhAPMxk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Jan 2021 07:53:40 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:36246 "EHLO
         smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726603AbhAPMx2 (ORCPT
+        with ESMTP id S1726862AbhAPMxj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Jan 2021 07:53:28 -0500
+        Sat, 16 Jan 2021 07:53:39 -0500
 Received: from legolas.fritz.box (unknown [84.174.243.181])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 46AD258008E;
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 644EA58008F;
         Sat, 16 Jan 2021 13:52:04 +0100 (CET)
 From:   Markus Theil <markus.theil@tu-ilmenau.de>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH 3/4] rfkill: support hard block reason in python code
-Date:   Sat, 16 Jan 2021 13:51:45 +0100
-Message-Id: <20210116125146.31932-4-markus.theil@tu-ilmenau.de>
+Subject: [PATCH 4/4] rfkill: support hard block reason in C code
+Date:   Sat, 16 Jan 2021 13:51:46 +0100
+Message-Id: <20210116125146.31932-5-markus.theil@tu-ilmenau.de>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210116125146.31932-1-markus.theil@tu-ilmenau.de>
 References: <20210116125146.31932-1-markus.theil@tu-ilmenau.de>
@@ -35,148 +35,59 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
 ---
- rfkill.py | 60 ++++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 44 insertions(+), 16 deletions(-)
+ rfkill.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/rfkill.py b/rfkill.py
-index 983671f..57d21b0 100755
---- a/rfkill.py
-+++ b/rfkill.py
-@@ -28,6 +28,9 @@ import os
-  _OP_CHANGE,
-  _OP_CHANGE_ALL) = list(range(4))
+diff --git a/rfkill.c b/rfkill.c
+index 8cd81fe..7fa5c39 100644
+--- a/rfkill.c
++++ b/rfkill.c
+@@ -51,15 +51,16 @@ static void rfkill_event(void)
+ 			break;
+ 		}
  
-+HARD_BLOCK_SIGNAL = 1 << 0
-+HARD_BLOCK_NOT_OWNER = 1 << 1
-+
- _type_names = {
-     TYPE_ALL: "all",
-     TYPE_WLAN: "Wireless LAN",
-@@ -40,10 +43,14 @@ _type_names = {
-     TYPE_NFC: "NFC",
- }
+-		if (len != RFKILL_EVENT_SIZE_V1) {
++		if (len != RFKILL_EVENT_SIZE_V1 && len != RFKILL_EVENT_SIZE_V1 + 1) {
+ 			fprintf(stderr, "Wrong size of RFKILL event\n");
+ 			continue;
+ 		}
  
--# idx, type, op, soft, hard
--_event_struct = '@IBBBB'
-+# idx, type, op, soft, hard, hard_block_reasons
-+_event_struct = '@IBBBBB'
- _event_sz = struct.calcsize(_event_struct)
+ 		gettimeofday(&tv, NULL);
+-		printf("%ld.%06u: idx %u type %u op %u soft %u hard %u\n",
++		printf("%ld.%06u: idx %u type %u op %u soft %u hard %u hard block reasons 0x%02x\n",
+ 			(long) tv.tv_sec, (unsigned int) tv.tv_usec,
+-			event.idx, event.type, event.op, event.soft, event.hard);
++			event.idx, event.type, event.op, event.soft, event.hard,
++			event.hard_block_reasons);
+ 		fflush(stdout);
+ 	}
  
-+# idx, type, op, soft, hard
-+_event_struct_old = '@IBBBB'
-+_event_old_sz = struct.calcsize(_event_struct_old)
-+
- class RFKillException(Exception):
-     pass
+@@ -214,7 +215,7 @@ static int rfkill_list(const char *param)
+ 			break;
+ 		}
  
-@@ -63,7 +70,7 @@ class RFKill(object):
-     @property
-     def type(self):
-         if not self._type:
--            for r, s, h in RFKill.list():
-+            for r, s, h, hbr in RFKill.list():
-                 if r.idx == self.idx:
-                     self._type = r._type
-                     break
-@@ -76,7 +83,7 @@ class RFKill(object):
-     @property
-     def blocked(self):
-         l = RFKill.list()
--        for r, s, h in l:
-+        for r, s, h, hbr in l:
-             if r.idx == self.idx:
-                 return (s, h)
-         raise RFKillException("RFKill instance no longer exists")
-@@ -97,48 +104,60 @@ class RFKill(object):
-         return self.blocked[1]
+-		if (len != RFKILL_EVENT_SIZE_V1) {
++		if (len != RFKILL_EVENT_SIZE_V1 && len != RFKILL_EVENT_SIZE_V1 + 1) {
+ 			fprintf(stderr, "Wrong size of RFKILL event\n");
+ 			continue;
+ 		}
+@@ -242,6 +243,16 @@ static int rfkill_list(const char *param)
+ 						type2string(event.type));
+ 		printf("\tSoft blocked: %s\n", event.soft ? "yes" : "no");
+ 		printf("\tHard blocked: %s\n", event.hard ? "yes" : "no");
++		if (len >= RFKILL_EVENT_SIZE_V1 + 1) {
++			printf("\tHard block reasons: ");
++			if (event.hard_block_reasons == 0)
++				printf("[NONE]");
++			if (event.hard_block_reasons & RFKILL_HARD_BLOCK_NOT_OWNER)
++				printf("[NOT_OWNER]");
++			if (event.hard_block_reasons & RFKILL_HARD_BLOCK_SIGNAL)
++				printf("[SIGNAL]");
++			printf("\n");
++		}
+ 	}
  
-     def block(self):
--        rfk = open('/dev/rfkill', 'wb')
--        s = struct.pack(_event_struct, self.idx, TYPE_ALL, _OP_CHANGE, 1, 0)
-+        rfk = open('/dev/rfkill', 'wb', 0)
-+        s = struct.pack(_event_struct, self.idx, TYPE_ALL, _OP_CHANGE, 1, 0, 0)
-         rfk.write(s)
-         rfk.close()
- 
-     def unblock(self):
--        rfk = open('/dev/rfkill', 'wb')
--        s = struct.pack(_event_struct, self.idx, TYPE_ALL, _OP_CHANGE, 0, 0)
-+        rfk = open('/dev/rfkill', 'wb', 0)
-+        s = struct.pack(_event_struct, self.idx, TYPE_ALL, _OP_CHANGE, 0, 0, 0)
-         rfk.write(s)
-         rfk.close()
- 
-     @classmethod
-     def block_all(cls, t=TYPE_ALL):
--        rfk = open('/dev/rfkill', 'wb')
-+        rfk = open('/dev/rfkill', 'wb', 0)
-         print(rfk)
--        s = struct.pack(_event_struct, 0, t, _OP_CHANGE_ALL, 1, 0)
-+        s = struct.pack(_event_struct, 0, t, _OP_CHANGE_ALL, 1, 0, 0)
-         rfk.write(s)
-         rfk.close()
- 
-     @classmethod
-     def unblock_all(cls, t=TYPE_ALL):
--        rfk = open('/dev/rfkill', 'wb')
--        s = struct.pack(_event_struct, 0, t, _OP_CHANGE_ALL, 0, 0)
-+        rfk = open('/dev/rfkill', 'wb', 0)
-+        s = struct.pack(_event_struct, 0, t, _OP_CHANGE_ALL, 0, 0, 0)
-         rfk.write(s)
-         rfk.close()
- 
-     @classmethod
-     def list(cls):
-         res = []
--        rfk = open('/dev/rfkill', 'rb')
-+        rfk = open('/dev/rfkill', 'rb', 0)
-+
-         fd = rfk.fileno()
-         flgs = fcntl.fcntl(fd, fcntl.F_GETFL)
-         fcntl.fcntl(fd, fcntl.F_SETFL, flgs | os.O_NONBLOCK)
-         while True:
-             try:
-                 d = rfk.read(_event_sz)
--                _idx, _t, _op, _s, _h = struct.unpack(_event_struct, d)
-+                read_len = len(d)
-+                assert read_len in [_event_sz, _event_old_sz]
-+
-+                # init additional fields of newer formats to 'None' here
-+                _hbr = None
-+
-+                # hard block reason included ?
-+                if read_len >= _event_sz:
-+                    _idx, _t, _op, _s, _h, _hbr = struct.unpack(_event_struct, d)
-+                else:
-+                    _idx, _t, _op, _s, _h = struct.unpack(_event_struct_old, d)
-+
-                 if _op != _OP_ADD:
-                     continue
-                 r = RFKill(_idx)
-                 r._type = _t
--                res.append((r, _s, _h))
-+                res.append((r, _s, _h, _hbr))
-             except IOError:
-                 break
-             except TypeError:
-@@ -146,7 +165,16 @@ class RFKill(object):
-         return res
- 
- if __name__ == "__main__":
--    for r, s, h in RFKill.list():
-+    for r, s, h, hbr in RFKill.list():
-         print("%d: %s: %s" % (r.idx, r.name, r.type_name))
-         print("\tSoft blocked: %s" % ("yes" if s else "no"))
-         print("\tHard blocked: %s" % ("yes" if h else "no"))
-+        if hbr != None:
-+            print("\tHard block reasons: ", end="")
-+            if hbr == 0:
-+                print("[NONE]", end="")
-+            if hbr & HARD_BLOCK_NOT_OWNER:
-+                print("[NOT_OWNER]", end="")
-+            if hbr & HARD_BLOCK_SIGNAL:
-+                print("[SIGNAL]", end="")
-+            print()
+ 	close(fd);
 -- 
 2.30.0
 
