@@ -2,106 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 731B92F9431
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Jan 2021 18:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4C62F9456
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Jan 2021 18:59:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729934AbhAQRmE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Jan 2021 12:42:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41074 "EHLO
+        id S1729542AbhAQR6O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 17 Jan 2021 12:58:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728394AbhAQRmE (ORCPT
+        with ESMTP id S1728498AbhAQR6M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Jan 2021 12:42:04 -0500
-X-Greylist: delayed 847 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 17 Jan 2021 09:41:23 PST
-Received: from canardo.mork.no (canardo.mork.no [IPv6:2001:4641::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84464C061573
-        for <linux-wireless@vger.kernel.org>; Sun, 17 Jan 2021 09:41:23 -0800 (PST)
-Received: from miraculix.mork.no (fwa136.mork.no [192.168.9.136])
-        (authenticated bits=0)
-        by canardo.mork.no (8.15.2/8.15.2) with ESMTPSA id 10HHQt5j003973
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Sun, 17 Jan 2021 18:26:55 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-        t=1610904416; bh=i47PqHy/XxOXMLZAW0NVDTePUMLKmi1DFXvfHx3nEJw=;
-        h=From:To:Cc:Subject:References:Date:Message-ID:From;
-        b=hCfQDsTjTh9vaPO6u7W3dOPTpWs5uyXaigI8ZrAkZrN6Q590Mt7oxfsZJBv7yLkNq
-         bzASp1mDUJpj7oL34VqgofCFh7m8uOX5Z/ptyiSTSYdaSh+X6RLF0MzgqjqRwdP5+N
-         l/Z9JNPDO1Zk6daq6A/Sxjp30cZ9SBgpzz3uNVs4=
-Received: from bjorn by miraculix.mork.no with local (Exim 4.94)
-        (envelope-from <bjorn@mork.no>)
-        id 1l1BpG-002NpQ-MU; Sun, 17 Jan 2021 18:26:54 +0100
-From:   =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     M Chetan Kumar <m.chetan.kumar@intel.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, johannes@sipsolutions.net,
-        krishna.c.sudi@intel.com
-Subject: Re: [PATCH 17/18] net: iosm: readme file
-Organization: m
-References: <20210107170523.26531-1-m.chetan.kumar@intel.com>
-        <20210107170523.26531-18-m.chetan.kumar@intel.com>
-        <X/eJ/rl4U6edWr3i@lunn.ch>
-Date:   Sun, 17 Jan 2021 18:26:54 +0100
-In-Reply-To: <X/eJ/rl4U6edWr3i@lunn.ch> (Andrew Lunn's message of "Thu, 7 Jan
-        2021 23:23:58 +0100")
-Message-ID: <87turftqxt.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        Sun, 17 Jan 2021 12:58:12 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A1ECC061573;
+        Sun, 17 Jan 2021 09:57:32 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id a12so14287916wrv.8;
+        Sun, 17 Jan 2021 09:57:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:subject:message-id:mime-version:content-disposition;
+        bh=fvHzBYZV8x8XbF+aJQXnA43cGURhKXftc1C9GinwpVY=;
+        b=YzMh16erNxjWlLJA9m4ixIEo3WA/8yp4beEnQznj+TmxwWn+RoljgsIGOgyUHuL0m4
+         eX2zbm6VHtIC8BRz/qZxshqqB81j/Q5djJv9zG43T4Fhzd5nJnLPG4N1lyB2qrLJewHF
+         FOQCQAx3FvKQnnKcg8wCrpuvaoi6rF+H2nYJIQAkTbV1WEx4c+otD31RW34zxuc78QD6
+         Om0ezjJvovyH+bzB/q8BbzDB5Wvcrxy0svWegDBU+M967sDFtvyjQFnWlYPiwK+SZxyC
+         meLIwnT8tU9LGxJlH9y0WCX0+EVaiNCdaFJ93c30p6HvzrMbARRc8PEBVYgc+8vPl99Z
+         X/sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:subject:message-id:mime-version
+         :content-disposition;
+        bh=fvHzBYZV8x8XbF+aJQXnA43cGURhKXftc1C9GinwpVY=;
+        b=NIsDuiNDIeNA0VR4zla/RK+pQByxRoWF7zD2N+yQ3A0KDEjuKqk1nxBu7CsdDgwvgp
+         9A4yuUk4uTo6Uo2JtXqYfd53HDK2mmsS3CawlJ0v8gTaLBfbk5k9U0i5142n7j05vd72
+         Ty9RvFGZ+YDhxJ0JzemuCLx5Dh2UyUO0Wxqp/okOCWu1tWUadki8Mj+zBYc+zVFT8XSw
+         LX3VltfIK1hAl5oo21fx8oPqLES2KnuHpzhy3ITFJEdp9A+SojYK3cOMDTu3YeuS/w68
+         RLEAfwPCJpvqpGmACiGFNnVST09z2I2JvDJs8Ht5GIRQ+vcWBEv2Vlh+G+1PWM3dJAhw
+         NTjw==
+X-Gm-Message-State: AOAM533cT7Sw9+qkqqotgjc21ijX4z4BTsFVJSrrYXqSa+9rnBCOXVln
+        WxfNI7FXGDcjHC+G//o9aXQWuspm8ICVMg==
+X-Google-Smtp-Source: ABdhPJxY14ynV1CiTvdhO4uI3DReG+Pl9THAONvy9F+QNiqKensogXcEp5Jcdg3lhbteUoOuBmXiYw==
+X-Received: by 2002:a5d:62c7:: with SMTP id o7mr22085360wrv.257.1610906250713;
+        Sun, 17 Jan 2021 09:57:30 -0800 (PST)
+Received: from medion (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
+        by smtp.gmail.com with ESMTPSA id k9sm21782546wma.17.2021.01.17.09.57.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Jan 2021 09:57:29 -0800 (PST)
+From:   Alex Dewar <alex.dewar90@gmail.com>
+X-Google-Original-From: Alex Dewar <alex.dewar@gmx.co.uk>
+Date:   Sun, 17 Jan 2021 17:55:33 +0000
+To:     davem@davemloft.net, Jakub@medion, Kicinski@medion,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: How to port rtl8xxxu to new device...?
+Message-ID: <20210117175533.ya3wcb6yyqfgwiln@medion>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 0.102.4 at canardo
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sorry about being much too late into this discussion.  I'm not having
-the bandwidth to read netdev anymore, and just stumbled across this now.
+Hi all,
 
-Andrew Lunn <andrew@lunn.ch> writes:
+I'm currently trying to port the rtl8xxxu driver to RTL8822u chips (one
+of which I own), but I'm finding it hard to figure out where to start
+and I figured that some wiser minds could maybe help steer me in the
+right direction.
 
-> So, this is what all the Ethernet nonsense is all about. You have a
-> session ID you need to somehow represent to user space. And you
-> decided to use VLANs. But to use VLANs, you need an Ethernet
-> header. So you added a bogus Ethernet header.
+I've managed to get as far as reading and writing to various registers
+as part of the device setup, but the dongle appears to crash at the
+downloading firmware stage. At the moment it just feels like I'm
+changing random bits and pieces to see what happens. I'm using this
+downstream driver for reference: https://github.com/RinCat/RTL88x2BU-Linux-Driver
 
-Actually, the original reasoning was the other way around.
+Does anyone know of any documentation or anything that could be useful
+for working on this?
 
-The bogus ethernet header was added because I had seen the 3G modem
-vendors do that for a few years already, in the modem firmware.  And I
-didn't think enough about it to realize that it was a really bad idea,
-or even that it was something I could change.  Or should change.
-
-I cannot blame the MBIM sesison to VLAN mapping idea on anyone else.  As
-far as I can remember, that was just something that popped up in my head
-while working on the cdc_mbim driver. But it came as a consequence of
-already having the bogus ethernet header.  And I didn't really
-understand that I could define a new wwan subsystem with new device
-types. I thought I had to use whatever was there already.
-
-I was young and stupid. Now I'm not that young anymore ;-)
-
-Never ever imagined that this would be replicated in another driver,
-though.  That doesn't really make much sense.  We have learned by now,
-haven't we?  This subject has been discussed a few times in the past,
-and Johannes summary is my understanding as well:
-"I don't think anyone likes that"
-
-The DSS mapping sucks even more that the IPS mapping, BTW.  I don't
-think there are any real users?  Not that I know of, at least.  DSS is
-much better implmeneted as some per-session character device, as
-requested by numerous people for years.  Sorry for not listening. Looks
-like it is too late now.
-
-> Is any of this VLAN stuff required by MBIM?
-
-No.  It's my fault and mine alone.
-
-> I suggest you throw away the pretence this is an Ethernet device. It
-> is not.
-
-I completely agree.  I wish I had gone for simple raw-ip devices both in
-the qmi_wwan and cdc_mbim.  But qmi_wwan got them later, so there is
-already support for such things in wwan userspace.
-
-
-Bj=C3=B8rn
+Best,
+Alex
