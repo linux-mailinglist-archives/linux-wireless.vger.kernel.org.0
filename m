@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D59972F91E0
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Jan 2021 12:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7B42F91E4
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Jan 2021 12:12:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728417AbhAQLMP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Jan 2021 06:12:15 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:40638 "EHLO
+        id S1728452AbhAQLMw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 17 Jan 2021 06:12:52 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:40644 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728271AbhAQLLe (ORCPT
+        with ESMTP id S1728275AbhAQLLf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Jan 2021 06:11:34 -0500
+        Sun, 17 Jan 2021 06:11:35 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1l15xF-003sZv-3j; Sun, 17 Jan 2021 13:10:45 +0200
+        id 1l15xG-003sZv-33; Sun, 17 Jan 2021 13:10:46 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sun, 17 Jan 2021 13:10:33 +0200
-Message-Id: <iwlwifi.20210117130510.4bd0eca8c0ef.I1601aad2eb2cc83f6f73b8ca52be57bb9fd626ab@changeid>
+Date:   Sun, 17 Jan 2021 13:10:34 +0200
+Message-Id: <iwlwifi.20210117130510.a5951ac4fc06.I9c84a147288fcfb1b019572c6758f2d92949f5d7@changeid>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210117111038.1402870-1-luca@coelho.fi>
 References: <20210117111038.1402870-1-luca@coelho.fi>
@@ -31,381 +31,623 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 06/11] iwlwifi: mvm: add support for new flush queue response
+Subject: [PATCH 07/11] iwlwifi: pcie: properly implement NAPI
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-In the new api all the flush in the FW is done before we
-get the response and in the response we only get the updated
-read pointer and all queued packets don't get anymore rx_tx
-per packet to free the queued packet, so driver needs to free
-all queued packets on flushed queue at once after flush response.
+Instead of pretending to have NAPI and then relying entirely on
+interrupts anyway, properly implement NAPI and schedule the poll
+when we get an interrupt, re-enabling the interrupt only after
+the poll completed.
 
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/tx.h    |  26 ++++
- .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   4 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   5 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 122 +++++++++++++-----
- 6 files changed, 127 insertions(+), 38 deletions(-)
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  14 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  | 224 ++++++++++++------
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |   4 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |   4 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |   8 +-
+ 5 files changed, 171 insertions(+), 83 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-index b2d8ccf5f5dd..644ced53160a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-@@ -855,6 +855,32 @@ struct iwl_tx_path_flush_cmd {
- 	__le16 reserved;
- } __packed; /* TX_PATH_FLUSH_CMD_API_S_VER_2 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index a528d3d99c5a..f4281b51248b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -418,8 +418,7 @@ IWL_TRANS_GET_PCIE_TRANS(struct iwl_trans *trans)
+ 	return (void *)trans->trans_specific;
+ }
  
-+#define IWL_TX_FLUSH_QUEUE_RSP 16
-+
-+/**
-+ * struct iwl_flush_queue_info - virtual flush queue info
-+ * @queue_num: virtual queue id
-+ * @read_before_flush: read pointer before flush
-+ * @read_after_flush: read pointer after flush
-+ */
-+struct iwl_flush_queue_info {
-+	__le16 tid;
-+	__le16 queue_num;
-+	__le16 read_before_flush;
-+	__le16 read_after_flush;
-+} __packed; /* TFDQ_FLUSH_INFO_API_S_VER_1 */
-+
-+/**
-+ * struct iwl_tx_path_flush_cmd_rsp -- queue/FIFO flush command response
-+ * @num_flushed_queues: number of queues in queues array
-+ * @queues: all flushed queues
-+ */
-+struct iwl_tx_path_flush_cmd_rsp {
-+	__le16 sta_id;
-+	__le16 num_flushed_queues;
-+	struct iwl_flush_queue_info queues[IWL_TX_FLUSH_QUEUE_RSP];
-+} __packed; /* TX_PATH_FLUSH_CMD_RSP_API_S_VER_1 */
-+
- /* Available options for the SCD_QUEUE_CFG HCMD */
- enum iwl_scd_cfg_actions {
- 	SCD_CFG_DISABLE_QUEUE		= 0x0,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index 8fb7911cfd6c..e8e94bcef3b4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -91,7 +91,7 @@ static ssize_t iwl_dbgfs_tx_flush_write(struct iwl_mvm *mvm, char *buf,
- 				    "FLUSHING all tids queues on sta_id = %d\n",
- 				    flush_arg);
- 		mutex_lock(&mvm->mutex);
--		ret = iwl_mvm_flush_sta_tids(mvm, flush_arg, 0xFFFF, 0)
-+		ret = iwl_mvm_flush_sta_tids(mvm, flush_arg, 0xFFFF)
- 			? : count;
- 		mutex_unlock(&mvm->mutex);
- 		return ret;
-@@ -101,7 +101,7 @@ static ssize_t iwl_dbgfs_tx_flush_write(struct iwl_mvm *mvm, char *buf,
- 			    flush_arg);
- 
- 	mutex_lock(&mvm->mutex);
--	ret =  iwl_mvm_flush_tx_path(mvm, flush_arg, 0) ? : count;
-+	ret =  iwl_mvm_flush_tx_path(mvm, flush_arg) ? : count;
- 	mutex_unlock(&mvm->mutex);
- 
- 	return ret;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index b323e44fb565..f2bb7776ec7e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4684,7 +4684,7 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
- 		if (drop) {
- 			mutex_lock(&mvm->mutex);
- 			iwl_mvm_flush_tx_path(mvm,
--				iwl_mvm_flushable_queues(mvm) & queues, 0);
-+				iwl_mvm_flushable_queues(mvm) & queues);
- 			mutex_unlock(&mvm->mutex);
- 		} else {
- 			iwl_trans_wait_tx_queues_empty(mvm->trans, queues);
-@@ -4702,7 +4702,7 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
- 			continue;
- 
- 		if (drop)
--			iwl_mvm_flush_sta_tids(mvm, i, 0xFFFF, 0);
-+			iwl_mvm_flush_sta_tids(mvm, i, 0xFFFF);
- 		else
- 			iwl_mvm_wait_sta_queues_empty(mvm,
- 					iwl_mvm_sta_from_mac80211(sta));
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index e13fe0e0025f..5d022776a2da 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1473,10 +1473,9 @@ const char *iwl_mvm_get_tx_fail_reason(u32 status);
- #else
- static inline const char *iwl_mvm_get_tx_fail_reason(u32 status) { return ""; }
- #endif
--int iwl_mvm_flush_tx_path(struct iwl_mvm *mvm, u32 tfd_msk, u32 flags);
-+int iwl_mvm_flush_tx_path(struct iwl_mvm *mvm, u32 tfd_msk);
- int iwl_mvm_flush_sta(struct iwl_mvm *mvm, void *sta, bool internal);
--int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id,
--			   u16 tids, u32 flags);
-+int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id, u16 tids);
- 
- void iwl_mvm_async_handlers_purge(struct iwl_mvm *mvm);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index dc174410bf9c..f54dda8bfdae 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -3105,11 +3105,11 @@ int iwl_mvm_sta_tx_agg_flush(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 
- 		if (iwl_mvm_has_new_tx_api(mvm)) {
- 			if (iwl_mvm_flush_sta_tids(mvm, mvmsta->sta_id,
--						   BIT(tid), 0))
-+						   BIT(tid)))
- 				IWL_ERR(mvm, "Couldn't flush the AGG queue\n");
- 			iwl_trans_wait_txq_empty(mvm->trans, txq_id);
- 		} else {
--			if (iwl_mvm_flush_tx_path(mvm, BIT(txq_id), 0))
-+			if (iwl_mvm_flush_tx_path(mvm, BIT(txq_id)))
- 				IWL_ERR(mvm, "Couldn't flush the AGG queue\n");
- 			iwl_trans_wait_tx_queues_empty(mvm->trans, BIT(txq_id));
- 		}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 7448175c4cd8..c8c07b7fe0ad 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1701,7 +1701,8 @@ void iwl_mvm_rx_tx_cmd(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
- 
- static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 			       int txq, int index,
--			       struct ieee80211_tx_info *ba_info, u32 rate)
-+			       struct ieee80211_tx_info *tx_info, u32 rate,
-+			       bool is_flush)
+-static inline void iwl_pcie_clear_irq(struct iwl_trans *trans,
+-				      struct msix_entry *entry)
++static inline void iwl_pcie_clear_irq(struct iwl_trans *trans, int queue)
  {
- 	struct sk_buff_head reclaimed_skbs;
- 	struct iwl_mvm_tid_data *tid_data = NULL;
-@@ -1744,7 +1745,8 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 		 * frames because before failing a frame the firmware transmits
- 		 * it without aggregation at least once.
- 		 */
--		info->flags |= IEEE80211_TX_STAT_ACK;
-+		if (!is_flush)
-+			info->flags |= IEEE80211_TX_STAT_ACK;
+ 	/*
+ 	 * Before sending the interrupt the HW disables it to prevent
+@@ -429,7 +428,7 @@ static inline void iwl_pcie_clear_irq(struct iwl_trans *trans,
+ 	 * write 1 clear (W1C) register, meaning that it's being clear
+ 	 * by writing 1 to the bit.
+ 	 */
+-	iwl_write32(trans, CSR_MSIX_AUTOMASK_ST_AD, BIT(entry->entry));
++	iwl_write32(trans, CSR_MSIX_AUTOMASK_ST_AD, BIT(queue));
+ }
+ 
+ static inline struct iwl_trans *
+@@ -462,7 +461,6 @@ int iwl_pcie_rx_stop(struct iwl_trans *trans);
+ void iwl_pcie_rx_free(struct iwl_trans *trans);
+ void iwl_pcie_free_rbs_pool(struct iwl_trans *trans);
+ void iwl_pcie_rx_init_rxb_lists(struct iwl_rxq *rxq);
+-int iwl_pcie_dummy_napi_poll(struct napi_struct *napi, int budget);
+ void iwl_pcie_rxq_alloc_rbs(struct iwl_trans *trans, gfp_t priority,
+ 			    struct iwl_rxq *rxq);
+ 
+@@ -569,9 +567,9 @@ static inline void iwl_disable_interrupts(struct iwl_trans *trans)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 	_iwl_disable_interrupts(trans);
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
+ }
+ 
+ static inline void _iwl_enable_interrupts(struct iwl_trans *trans)
+@@ -601,9 +599,9 @@ static inline void iwl_enable_interrupts(struct iwl_trans *trans)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 	_iwl_enable_interrupts(trans);
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
+ }
+ static inline void iwl_enable_hw_int_msk_msix(struct iwl_trans *trans, u32 msk)
+ {
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 37bbd9a07f36..f7b0a35dcf98 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -207,10 +207,10 @@ static void iwl_pcie_rxq_check_wrptr(struct iwl_trans *trans)
+ 
+ 		if (!rxq->need_update)
+ 			continue;
+-		spin_lock(&rxq->lock);
++		spin_lock_bh(&rxq->lock);
+ 		iwl_pcie_rxq_inc_wr_ptr(trans, rxq);
+ 		rxq->need_update = false;
+-		spin_unlock(&rxq->lock);
++		spin_unlock_bh(&rxq->lock);
  	}
+ }
+ 
+@@ -255,7 +255,7 @@ static void iwl_pcie_rxmq_restock(struct iwl_trans *trans,
+ 	if (!test_bit(STATUS_DEVICE_ENABLED, &trans->status))
+ 		return;
+ 
+-	spin_lock(&rxq->lock);
++	spin_lock_bh(&rxq->lock);
+ 	while (rxq->free_count) {
+ 		/* Get next free Rx buffer, remove from free list */
+ 		rxb = list_first_entry(&rxq->rx_free, struct iwl_rx_mem_buffer,
+@@ -269,16 +269,16 @@ static void iwl_pcie_rxmq_restock(struct iwl_trans *trans,
+ 		rxq->write = (rxq->write + 1) & (rxq->queue_size - 1);
+ 		rxq->free_count--;
+ 	}
+-	spin_unlock(&rxq->lock);
++	spin_unlock_bh(&rxq->lock);
  
  	/*
-@@ -1763,7 +1765,7 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 
- 	if (tid_data->txq_id != txq) {
- 		IWL_ERR(mvm,
--			"invalid BA notification: Q %d, tid %d\n",
-+			"invalid reclaim request: Q %d, tid %d\n",
- 			tid_data->txq_id, tid);
- 		rcu_read_unlock();
- 		return;
-@@ -1778,26 +1780,28 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 	freed = 0;
- 
- 	/* pack lq color from tid_data along the reduced txp */
--	ba_info->status.status_driver_data[0] =
-+	tx_info->status.status_driver_data[0] =
- 		RS_DRV_DATA_PACK(tid_data->lq_color,
--				 ba_info->status.status_driver_data[0]);
--	ba_info->status.status_driver_data[1] = (void *)(uintptr_t)rate;
-+				 tx_info->status.status_driver_data[0]);
-+	tx_info->status.status_driver_data[1] = (void *)(uintptr_t)rate;
- 
- 	skb_queue_walk(&reclaimed_skbs, skb) {
- 		struct ieee80211_hdr *hdr = (void *)skb->data;
- 		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 
--		if (ieee80211_is_data_qos(hdr->frame_control))
--			freed++;
--		else
--			WARN_ON_ONCE(tid != IWL_MAX_TID_COUNT);
-+		if (!is_flush) {
-+			if (ieee80211_is_data_qos(hdr->frame_control))
-+				freed++;
-+			else
-+				WARN_ON_ONCE(tid != IWL_MAX_TID_COUNT);
-+		}
- 
- 		/* this is the first skb we deliver in this batch */
- 		/* put the rate scaling data there */
- 		if (freed == 1) {
- 			info->flags |= IEEE80211_TX_STAT_AMPDU;
--			memcpy(&info->status, &ba_info->status,
--			       sizeof(ba_info->status));
-+			memcpy(&info->status, &tx_info->status,
-+			       sizeof(tx_info->status));
- 			iwl_mvm_hwrate_to_tx_status(rate, info);
- 		}
- 	}
-@@ -1808,7 +1812,7 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 	 * possible (i.e. first MPDU in the aggregation wasn't acked)
- 	 * Still it's important to update RS about sent vs. acked.
+ 	 * If we've added more space for the firmware to place data, tell it.
+ 	 * Increment device's write pointer in multiples of 8.
  	 */
--	if (skb_queue_empty(&reclaimed_skbs)) {
-+	if (!is_flush && skb_queue_empty(&reclaimed_skbs)) {
- 		struct ieee80211_chanctx_conf *chanctx_conf = NULL;
+ 	if (rxq->write_actual != (rxq->write & ~0x7)) {
+-		spin_lock(&rxq->lock);
++		spin_lock_bh(&rxq->lock);
+ 		iwl_pcie_rxq_inc_wr_ptr(trans, rxq);
+-		spin_unlock(&rxq->lock);
++		spin_unlock_bh(&rxq->lock);
+ 	}
+ }
  
- 		if (mvmsta->vif)
-@@ -1818,13 +1822,13 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 		if (WARN_ON_ONCE(!chanctx_conf))
- 			goto out;
+@@ -514,10 +514,10 @@ static void iwl_pcie_rx_allocator(struct iwl_trans *trans)
+ 	IWL_DEBUG_TPT(trans, "Pending allocation requests = %d\n", pending);
  
--		ba_info->band = chanctx_conf->def.chan->band;
--		iwl_mvm_hwrate_to_tx_status(rate, ba_info);
-+		tx_info->band = chanctx_conf->def.chan->band;
-+		iwl_mvm_hwrate_to_tx_status(rate, tx_info);
+ 	/* If we were scheduled - there is at least one request */
+-	spin_lock(&rba->lock);
++	spin_lock_bh(&rba->lock);
+ 	/* swap out the rba->rbd_empty to a local list */
+ 	list_replace_init(&rba->rbd_empty, &local_empty);
+-	spin_unlock(&rba->lock);
++	spin_unlock_bh(&rba->lock);
  
- 		if (!iwl_mvm_has_tlc_offload(mvm)) {
- 			IWL_DEBUG_TX_REPLY(mvm,
- 					   "No reclaim. Update rs directly\n");
--			iwl_mvm_rs_tx_status(mvm, sta, tid, ba_info, false);
-+			iwl_mvm_rs_tx_status(mvm, sta, tid, tx_info, false);
+ 	while (pending) {
+ 		int i;
+@@ -577,21 +577,21 @@ static void iwl_pcie_rx_allocator(struct iwl_trans *trans)
+ 					      pending);
  		}
+ 
+-		spin_lock(&rba->lock);
++		spin_lock_bh(&rba->lock);
+ 		/* add the allocated rbds to the allocator allocated list */
+ 		list_splice_tail(&local_allocated, &rba->rbd_allocated);
+ 		/* get more empty RBDs for current pending requests */
+ 		list_splice_tail_init(&rba->rbd_empty, &local_empty);
+-		spin_unlock(&rba->lock);
++		spin_unlock_bh(&rba->lock);
+ 
+ 		atomic_inc(&rba->req_ready);
+ 
  	}
  
-@@ -1899,7 +1903,7 @@ void iwl_mvm_rx_ba_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
- 					   (int)(le16_to_cpu(ba_tfd->q_num)),
- 					   le16_to_cpu(ba_tfd->tfd_index),
- 					   &ba_info,
--					   le32_to_cpu(ba_res->tx_rate));
-+					   le32_to_cpu(ba_res->tx_rate), false);
- 		}
+-	spin_lock(&rba->lock);
++	spin_lock_bh(&rba->lock);
+ 	/* return unused rbds to the allocator empty list */
+ 	list_splice_tail(&local_empty, &rba->rbd_empty);
+-	spin_unlock(&rba->lock);
++	spin_unlock_bh(&rba->lock);
  
- 		if (mvmsta)
-@@ -1942,7 +1946,7 @@ void iwl_mvm_rx_ba_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
- 	rcu_read_unlock();
+ 	IWL_DEBUG_TPT(trans, "%s, exit.\n", __func__);
+ }
+@@ -1008,10 +1008,76 @@ void iwl_pcie_rx_init_rxb_lists(struct iwl_rxq *rxq)
+ 	rxq->used_count = 0;
+ }
  
- 	iwl_mvm_tx_reclaim(mvm, sta_id, tid, txq, index, &ba_info,
--			   tid_data->rate_n_flags);
-+			   tid_data->rate_n_flags, false);
+-int iwl_pcie_dummy_napi_poll(struct napi_struct *napi, int budget)
++static int iwl_pcie_rx_handle(struct iwl_trans *trans, int queue, int budget);
++
++static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
+ {
+-	WARN_ON(1);
+-	return 0;
++	struct iwl_rxq *rxq = container_of(napi, struct iwl_rxq, napi);
++	struct iwl_trans_pcie *trans_pcie;
++	struct iwl_trans *trans;
++	int ret;
++
++	trans_pcie = container_of(napi->dev, struct iwl_trans_pcie, napi_dev);
++	trans = trans_pcie->trans;
++
++	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
++
++	if (ret < budget) {
++		spin_lock(&trans_pcie->irq_lock);
++		if (test_bit(STATUS_INT_ENABLED, &trans->status))
++			_iwl_enable_interrupts(trans);
++		spin_unlock(&trans_pcie->irq_lock);
++
++		napi_complete_done(&rxq->napi, ret);
++	}
++
++	return ret;
++}
++
++static int iwl_pcie_napi_poll_msix(struct napi_struct *napi, int budget)
++{
++	struct iwl_rxq *rxq = container_of(napi, struct iwl_rxq, napi);
++	struct iwl_trans_pcie *trans_pcie;
++	struct iwl_trans *trans;
++	int ret;
++
++	trans_pcie = container_of(napi->dev, struct iwl_trans_pcie, napi_dev);
++	trans = trans_pcie->trans;
++
++	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
++
++	if (ret < budget) {
++		spin_lock(&trans_pcie->irq_lock);
++		iwl_pcie_clear_irq(trans, rxq->id);
++		spin_unlock(&trans_pcie->irq_lock);
++
++		napi_complete_done(&rxq->napi, ret);
++	}
++
++	return ret;
++}
++
++static int iwl_pcie_napi_poll_msix_shared(struct napi_struct *napi, int budget)
++{
++	struct iwl_rxq *rxq = container_of(napi, struct iwl_rxq, napi);
++	struct iwl_trans_pcie *trans_pcie;
++	struct iwl_trans *trans;
++	int ret;
++
++	trans_pcie = container_of(napi->dev, struct iwl_trans_pcie, napi_dev);
++	trans = trans_pcie->trans;
++
++	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
++
++	if (ret < budget) {
++		spin_lock(&trans_pcie->irq_lock);
++		iwl_pcie_clear_irq(trans, 0);
++		spin_unlock(&trans_pcie->irq_lock);
++
++		napi_complete_done(&rxq->napi, ret);
++	}
++
++	return ret;
+ }
  
- 	IWL_DEBUG_TX_REPLY(mvm,
- 			   "BA_NOTIFICATION Received from %pM, sta_id = %d\n",
-@@ -1966,7 +1970,7 @@ void iwl_mvm_rx_ba_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
-  * 2) flush the Tx path
-  * 3) wait for the transport queues to be empty
+ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
+@@ -1030,12 +1096,12 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
+ 
+ 	cancel_work_sync(&rba->rx_alloc);
+ 
+-	spin_lock(&rba->lock);
++	spin_lock_bh(&rba->lock);
+ 	atomic_set(&rba->req_pending, 0);
+ 	atomic_set(&rba->req_ready, 0);
+ 	INIT_LIST_HEAD(&rba->rbd_allocated);
+ 	INIT_LIST_HEAD(&rba->rbd_empty);
+-	spin_unlock(&rba->lock);
++	spin_unlock_bh(&rba->lock);
+ 
+ 	/* free all first - we might be reconfigured for a different size */
+ 	iwl_pcie_free_rbs_pool(trans);
+@@ -1062,9 +1128,25 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
+ 
+ 		iwl_pcie_rx_init_rxb_lists(rxq);
+ 
+-		if (!rxq->napi.poll)
++		if (!rxq->napi.poll) {
++			int (*poll)(struct napi_struct *, int) = iwl_pcie_napi_poll;
++
++			if (trans_pcie->msix_enabled) {
++				poll = iwl_pcie_napi_poll_msix;
++
++				if (trans_pcie->shared_vec_mask & IWL_SHARED_IRQ_NON_RX &&
++				    i == 0)
++					poll = iwl_pcie_napi_poll_msix_shared;
++
++				if (trans_pcie->shared_vec_mask & IWL_SHARED_IRQ_FIRST_RSS &&
++				    i == 1)
++					poll = iwl_pcie_napi_poll_msix_shared;
++			}
++
+ 			netif_napi_add(&trans_pcie->napi_dev, &rxq->napi,
+-				       iwl_pcie_dummy_napi_poll, 64);
++				       poll, NAPI_POLL_WEIGHT);
++			napi_enable(&rxq->napi);
++		}
+ 
+ 		spin_unlock(&rxq->lock);
+ 	}
+@@ -1163,8 +1245,10 @@ void iwl_pcie_rx_free(struct iwl_trans *trans)
+ 
+ 		iwl_pcie_free_rxq_dma(trans, rxq);
+ 
+-		if (rxq->napi.poll)
++		if (rxq->napi.poll) {
++			napi_disable(&rxq->napi);
+ 			netif_napi_del(&rxq->napi);
++		}
+ 	}
+ 	kfree(trans_pcie->rx_pool);
+ 	kfree(trans_pcie->global_table);
+@@ -1417,16 +1501,15 @@ static struct iwl_rx_mem_buffer *iwl_pcie_get_rxb(struct iwl_trans *trans,
+ /*
+  * iwl_pcie_rx_handle - Main entry function for receiving responses from fw
   */
--int iwl_mvm_flush_tx_path(struct iwl_mvm *mvm, u32 tfd_msk, u32 flags)
-+int iwl_mvm_flush_tx_path(struct iwl_mvm *mvm, u32 tfd_msk)
+-static void iwl_pcie_rx_handle(struct iwl_trans *trans, int queue)
++static int iwl_pcie_rx_handle(struct iwl_trans *trans, int queue, int budget)
  {
- 	int ret;
- 	struct iwl_tx_path_flush_cmd_v1 flush_cmd = {
-@@ -1975,29 +1979,89 @@ int iwl_mvm_flush_tx_path(struct iwl_mvm *mvm, u32 tfd_msk, u32 flags)
- 	};
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+-	struct napi_struct *napi;
+ 	struct iwl_rxq *rxq;
+-	u32 r, i, count = 0;
++	u32 r, i, count = 0, handled = 0;
+ 	bool emergency = false;
  
- 	WARN_ON(iwl_mvm_has_new_tx_api(mvm));
+ 	if (WARN_ON_ONCE(!trans_pcie->rxq || !trans_pcie->rxq[queue].bd))
+-		return;
++		return budget;
+ 
+ 	rxq = &trans_pcie->rxq[queue];
+ 
+@@ -1444,7 +1527,7 @@ static void iwl_pcie_rx_handle(struct iwl_trans *trans, int queue)
+ 	if (i == r)
+ 		IWL_DEBUG_RX(trans, "Q %d: HW = SW = %d\n", rxq->id, r);
+ 
+-	while (i != r) {
++	while (i != r && ++handled < budget) {
+ 		struct iwl_rb_allocator *rba = &trans_pcie->rba;
+ 		struct iwl_rx_mem_buffer *rxb;
+ 		/* number of RBDs still waiting for page allocation */
+@@ -1545,18 +1628,9 @@ static void iwl_pcie_rx_handle(struct iwl_trans *trans, int queue)
+ 	if (unlikely(emergency && count))
+ 		iwl_pcie_rxq_alloc_rbs(trans, GFP_ATOMIC, rxq);
+ 
+-	napi = &rxq->napi;
+-	if (napi->poll) {
+-		napi_gro_flush(napi, false);
 -
--	ret = iwl_mvm_send_cmd_pdu(mvm, TXPATH_FLUSH, flags,
-+	ret = iwl_mvm_send_cmd_pdu(mvm, TXPATH_FLUSH, 0,
- 				   sizeof(flush_cmd), &flush_cmd);
- 	if (ret)
- 		IWL_ERR(mvm, "Failed to send flush command (%d)\n", ret);
- 	return ret;
+-		if (napi->rx_count) {
+-			netif_receive_skb_list(&napi->rx_list);
+-			INIT_LIST_HEAD(&napi->rx_list);
+-			napi->rx_count = 0;
+-		}
+-	}
+-
+ 	iwl_pcie_rxq_restock(trans, rxq);
++
++	return handled;
  }
  
--int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id,
--			   u16 tids, u32 flags)
-+int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id, u16 tids)
+ static struct iwl_trans_pcie *iwl_pcie_get_trans_pcie(struct msix_entry *entry)
+@@ -1576,6 +1650,7 @@ irqreturn_t iwl_pcie_irq_rx_msix_handler(int irq, void *dev_id)
+ 	struct msix_entry *entry = dev_id;
+ 	struct iwl_trans_pcie *trans_pcie = iwl_pcie_get_trans_pcie(entry);
+ 	struct iwl_trans *trans = trans_pcie->trans;
++	struct iwl_rxq *rxq = &trans_pcie->rxq[entry->entry];
+ 
+ 	trace_iwlwifi_dev_irq_msix(trans->dev, entry, false, 0, 0);
+ 
+@@ -1585,11 +1660,12 @@ irqreturn_t iwl_pcie_irq_rx_msix_handler(int irq, void *dev_id)
+ 	lock_map_acquire(&trans->sync_cmd_lockdep_map);
+ 
+ 	local_bh_disable();
+-	iwl_pcie_rx_handle(trans, entry->entry);
++	if (napi_schedule_prep(&rxq->napi))
++		__napi_schedule(&rxq->napi);
++	else
++		iwl_pcie_clear_irq(trans, entry->entry);
+ 	local_bh_enable();
+ 
+-	iwl_pcie_clear_irq(trans, entry);
+-
+ 	lock_map_release(&trans->sync_cmd_lockdep_map);
+ 
+ 	return IRQ_HANDLED;
+@@ -1757,10 +1833,11 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
+ 	struct isr_statistics *isr_stats = &trans_pcie->isr_stats;
+ 	u32 inta = 0;
+ 	u32 handled = 0;
++	bool polling = false;
+ 
+ 	lock_map_acquire(&trans->sync_cmd_lockdep_map);
+ 
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 
+ 	/* dram interrupt table not set yet,
+ 	 * use legacy interrupt.
+@@ -1797,7 +1874,7 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
+ 		 */
+ 		if (test_bit(STATUS_INT_ENABLED, &trans->status))
+ 			_iwl_enable_interrupts(trans);
+-		spin_unlock(&trans_pcie->irq_lock);
++		spin_unlock_bh(&trans_pcie->irq_lock);
+ 		lock_map_release(&trans->sync_cmd_lockdep_map);
+ 		return IRQ_NONE;
+ 	}
+@@ -1808,7 +1885,7 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
+ 		 * already raised an interrupt.
+ 		 */
+ 		IWL_WARN(trans, "HARDWARE GONE?? INTA == 0x%08x\n", inta);
+-		spin_unlock(&trans_pcie->irq_lock);
++		spin_unlock_bh(&trans_pcie->irq_lock);
+ 		goto out;
+ 	}
+ 
+@@ -1829,7 +1906,7 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
+ 		IWL_DEBUG_ISR(trans, "inta 0x%08x, enabled 0x%08x\n",
+ 			      inta, iwl_read32(trans, CSR_INT_MASK));
+ 
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
+ 
+ 	/* Now service all interrupt bits discovered above. */
+ 	if (inta & CSR_INT_BIT_HW_ERR) {
+@@ -1949,7 +2026,10 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
+ 		isr_stats->rx++;
+ 
+ 		local_bh_disable();
+-		iwl_pcie_rx_handle(trans, 0);
++		if (napi_schedule_prep(&trans_pcie->rxq[0].napi)) {
++			polling = true;
++			__napi_schedule(&trans_pcie->rxq[0].napi);
++		}
+ 		local_bh_enable();
+ 	}
+ 
+@@ -1974,20 +2054,22 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
+ 			 inta & ~trans_pcie->inta_mask);
+ 	}
+ 
+-	spin_lock(&trans_pcie->irq_lock);
+-	/* only Re-enable all interrupt if disabled by irq */
+-	if (test_bit(STATUS_INT_ENABLED, &trans->status))
+-		_iwl_enable_interrupts(trans);
+-	/* we are loading the firmware, enable FH_TX interrupt only */
+-	else if (handled & CSR_INT_BIT_FH_TX)
+-		iwl_enable_fw_load_int(trans);
+-	/* Re-enable RF_KILL if it occurred */
+-	else if (handled & CSR_INT_BIT_RF_KILL)
+-		iwl_enable_rfkill_int(trans);
+-	/* Re-enable the ALIVE / Rx interrupt if it occurred */
+-	else if (handled & (CSR_INT_BIT_ALIVE | CSR_INT_BIT_FH_RX))
+-		iwl_enable_fw_load_int_ctx_info(trans);
+-	spin_unlock(&trans_pcie->irq_lock);
++	if (!polling) {
++		spin_lock_bh(&trans_pcie->irq_lock);
++		/* only Re-enable all interrupt if disabled by irq */
++		if (test_bit(STATUS_INT_ENABLED, &trans->status))
++			_iwl_enable_interrupts(trans);
++		/* we are loading the firmware, enable FH_TX interrupt only */
++		else if (handled & CSR_INT_BIT_FH_TX)
++			iwl_enable_fw_load_int(trans);
++		/* Re-enable RF_KILL if it occurred */
++		else if (handled & CSR_INT_BIT_RF_KILL)
++			iwl_enable_rfkill_int(trans);
++		/* Re-enable the ALIVE / Rx interrupt if it occurred */
++		else if (handled & (CSR_INT_BIT_ALIVE | CSR_INT_BIT_FH_RX))
++			iwl_enable_fw_load_int_ctx_info(trans);
++		spin_unlock_bh(&trans_pcie->irq_lock);
++	}
+ 
+ out:
+ 	lock_map_release(&trans->sync_cmd_lockdep_map);
+@@ -2049,7 +2131,7 @@ void iwl_pcie_reset_ict(struct iwl_trans *trans)
+ 	if (!trans_pcie->ict_tbl)
+ 		return;
+ 
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 	_iwl_disable_interrupts(trans);
+ 
+ 	memset(trans_pcie->ict_tbl, 0, ICT_SIZE);
+@@ -2067,7 +2149,7 @@ void iwl_pcie_reset_ict(struct iwl_trans *trans)
+ 	trans_pcie->ict_index = 0;
+ 	iwl_write32(trans, CSR_INT, trans_pcie->inta_mask);
+ 	_iwl_enable_interrupts(trans);
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
+ }
+ 
+ /* Device is going down disable ict interrupt usage */
+@@ -2075,9 +2157,9 @@ void iwl_pcie_disable_ict(struct iwl_trans *trans)
  {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 	trans_pcie->use_ict = false;
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
+ }
+ 
+ irqreturn_t iwl_pcie_isr(int irq, void *data)
+@@ -2109,10 +2191,11 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
+ 	struct iwl_trans *trans = trans_pcie->trans;
+ 	struct isr_statistics *isr_stats = &trans_pcie->isr_stats;
+ 	u32 inta_fh, inta_hw;
++	bool polling = false;
+ 
+ 	lock_map_acquire(&trans->sync_cmd_lockdep_map);
+ 
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 	inta_fh = iwl_read32(trans, CSR_MSIX_FH_INT_CAUSES_AD);
+ 	inta_hw = iwl_read32(trans, CSR_MSIX_HW_INT_CAUSES_AD);
+ 	/*
+@@ -2120,7 +2203,7 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
+ 	 */
+ 	iwl_write32(trans, CSR_MSIX_FH_INT_CAUSES_AD, inta_fh);
+ 	iwl_write32(trans, CSR_MSIX_HW_INT_CAUSES_AD, inta_hw);
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
+ 
+ 	trace_iwlwifi_dev_irq_msix(trans->dev, entry, true, inta_fh, inta_hw);
+ 
+@@ -2146,14 +2229,20 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
+ 	if ((trans_pcie->shared_vec_mask & IWL_SHARED_IRQ_NON_RX) &&
+ 	    inta_fh & MSIX_FH_INT_CAUSES_Q0) {
+ 		local_bh_disable();
+-		iwl_pcie_rx_handle(trans, 0);
++		if (napi_schedule_prep(&trans_pcie->rxq[0].napi)) {
++			polling = true;
++			__napi_schedule(&trans_pcie->rxq[0].napi);
++		}
+ 		local_bh_enable();
+ 	}
+ 
+ 	if ((trans_pcie->shared_vec_mask & IWL_SHARED_IRQ_FIRST_RSS) &&
+ 	    inta_fh & MSIX_FH_INT_CAUSES_Q1) {
+ 		local_bh_disable();
+-		iwl_pcie_rx_handle(trans, 1);
++		if (napi_schedule_prep(&trans_pcie->rxq[1].napi)) {
++			polling = true;
++			__napi_schedule(&trans_pcie->rxq[1].napi);
++		}
+ 		local_bh_enable();
+ 	}
+ 
+@@ -2248,7 +2337,8 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
+ 		wake_up(&trans_pcie->fw_reset_waitq);
+ 	}
+ 
+-	iwl_pcie_clear_irq(trans, entry);
++	if (!polling)
++		iwl_pcie_clear_irq(trans, entry->entry);
+ 
+ 	lock_map_release(&trans->sync_cmd_lockdep_map);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index c602b815dcc2..70515550c91e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -213,9 +213,9 @@ static int iwl_pcie_gen2_nic_init(struct iwl_trans *trans)
+ 			       trans->cfg->min_txq_size);
+ 
+ 	/* TODO: most of the logic can be removed in A0 - but not in Z0 */
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 	iwl_pcie_gen2_apm_init(trans);
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
+ 
+ 	iwl_op_mode_nic_config(trans->op_mode);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 285e0d586021..5e6dc194fe14 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -511,9 +511,9 @@ static int iwl_pcie_nic_init(struct iwl_trans *trans)
  	int ret;
-+	struct iwl_tx_path_flush_cmd_rsp *rsp;
- 	struct iwl_tx_path_flush_cmd flush_cmd = {
- 		.sta_id = cpu_to_le32(sta_id),
- 		.tid_mask = cpu_to_le16(tids),
- 	};
  
-+	struct iwl_host_cmd cmd = {
-+		.id = TXPATH_FLUSH,
-+		.len = { sizeof(flush_cmd), },
-+		.data = { &flush_cmd, },
-+	};
-+
- 	WARN_ON(!iwl_mvm_has_new_tx_api(mvm));
+ 	/* nic_init */
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 	ret = iwl_pcie_apm_init(trans);
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
  
--	ret = iwl_mvm_send_cmd_pdu(mvm, TXPATH_FLUSH, flags,
--				   sizeof(flush_cmd), &flush_cmd);
--	if (ret)
-+	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP, TXPATH_FLUSH, 0) > 0)
-+		cmd.flags |= CMD_WANT_SKB;
-+
-+	IWL_DEBUG_TX_QUEUES(mvm, "flush for sta id %d tid mask 0x%x\n",
-+			    sta_id, tids);
-+
-+	ret = iwl_mvm_send_cmd(mvm, &cmd);
-+
-+	if (ret) {
- 		IWL_ERR(mvm, "Failed to send flush command (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	if (cmd.flags & CMD_WANT_SKB) {
-+		int i;
-+		int num_flushed_queues;
-+
-+		if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) != sizeof(*rsp))) {
-+			ret = -EIO;
-+			goto free_rsp;
-+		}
-+
-+		rsp = (void *)cmd.resp_pkt->data;
-+
-+		if (WARN_ONCE(le16_to_cpu(rsp->sta_id) != sta_id,
-+			      "sta_id %d != rsp_sta_id %d",
-+			      sta_id, le16_to_cpu(rsp->sta_id))) {
-+			ret = -EIO;
-+			goto free_rsp;
-+		}
-+
-+		num_flushed_queues = le16_to_cpu(rsp->num_flushed_queues);
-+		if (WARN_ONCE(num_flushed_queues > IWL_TX_FLUSH_QUEUE_RSP,
-+			      "num_flushed_queues %d", num_flushed_queues)) {
-+			ret = -EIO;
-+			goto free_rsp;
-+		}
-+
-+		for (i = 0; i < num_flushed_queues; i++) {
-+			struct ieee80211_tx_info tx_info = {};
-+			struct iwl_flush_queue_info *queue_info = &rsp->queues[i];
-+			int tid = le16_to_cpu(queue_info->tid);
-+			int read_before = le16_to_cpu(queue_info->read_before_flush);
-+			int read_after = le16_to_cpu(queue_info->read_after_flush);
-+			int queue_num = le16_to_cpu(queue_info->queue_num);
-+
-+			if (tid == IWL_MGMT_TID)
-+				tid = IWL_MAX_TID_COUNT;
-+
-+			IWL_DEBUG_TX_QUEUES(mvm,
-+					    "tid %d queue_id %d read-before %d read-after %d\n",
-+					    tid, queue_num, read_before, read_after);
-+
-+			iwl_mvm_tx_reclaim(mvm, sta_id, tid, queue_num, read_after,
-+					   &tx_info, 0, true);
-+		}
-+free_rsp:
-+		iwl_free_resp(&cmd);
-+	}
- 	return ret;
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 5dda0015522d..7d1785fb0e40 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -393,7 +393,7 @@ static void iwl_pcie_tx_stop_fh(struct iwl_trans *trans)
+ 	int ch, ret;
+ 	u32 mask = 0;
+ 
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
+ 
+ 	if (!iwl_trans_grab_nic_access(trans, &flags))
+ 		goto out;
+@@ -414,7 +414,7 @@ static void iwl_pcie_tx_stop_fh(struct iwl_trans *trans)
+ 	iwl_trans_release_nic_access(trans, &flags);
+ 
+ out:
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
  }
  
-@@ -2010,10 +2074,10 @@ int iwl_mvm_flush_sta(struct iwl_mvm *mvm, void *sta, bool internal)
- 		     offsetof(struct iwl_mvm_sta, sta_id));
+ /*
+@@ -571,7 +571,7 @@ int iwl_pcie_tx_init(struct iwl_trans *trans)
+ 		alloc = true;
+ 	}
  
- 	if (iwl_mvm_has_new_tx_api(mvm))
--		return iwl_mvm_flush_sta_tids(mvm, mvm_sta->sta_id, 0xffff, 0);
-+		return iwl_mvm_flush_sta_tids(mvm, mvm_sta->sta_id, 0xffff);
+-	spin_lock(&trans_pcie->irq_lock);
++	spin_lock_bh(&trans_pcie->irq_lock);
  
- 	if (internal)
--		return iwl_mvm_flush_tx_path(mvm, int_sta->tfd_queue_msk, 0);
-+		return iwl_mvm_flush_tx_path(mvm, int_sta->tfd_queue_msk);
+ 	/* Turn off all Tx DMA fifos */
+ 	iwl_scd_deactivate_fifos(trans);
+@@ -580,7 +580,7 @@ int iwl_pcie_tx_init(struct iwl_trans *trans)
+ 	iwl_write_direct32(trans, FH_KW_MEM_ADDR_REG,
+ 			   trans_pcie->kw.dma >> 4);
  
--	return iwl_mvm_flush_tx_path(mvm, mvm_sta->tfd_queue_msk, 0);
-+	return iwl_mvm_flush_tx_path(mvm, mvm_sta->tfd_queue_msk);
- }
+-	spin_unlock(&trans_pcie->irq_lock);
++	spin_unlock_bh(&trans_pcie->irq_lock);
+ 
+ 	/* Alloc and init all Tx queues, including the command queue (#4/#9) */
+ 	for (txq_id = 0; txq_id < trans->trans_cfg->base_params->num_of_queues;
 -- 
 2.29.2
 
