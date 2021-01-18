@@ -2,91 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6C922F9EBC
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jan 2021 12:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC9E2F9FAB
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jan 2021 13:31:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390982AbhARLuc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Jan 2021 06:50:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47982 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390941AbhARLuZ (ORCPT
+        id S2403950AbhARMa2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jan 2021 07:30:28 -0500
+Received: from dvalin.narfation.org ([213.160.73.56]:33556 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391442AbhARMaZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Jan 2021 06:50:25 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD20C061573
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jan 2021 03:49:45 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id hs11so20945544ejc.1
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Jan 2021 03:49:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=TOTP066HoV3zrlO1R4iH0ZuR58PSnBoIUmJpWoBcZsc=;
-        b=hx0RRaTa0YqTeI2N940kV8iDO67Ep1kA2/WRdk1irVts/iqPOCDIPc2rXsJU+Fvzq3
-         VLgbkVyU7a2xDu5qhwjg2knjazCiC8Iw8UvabZpW58OMlSvlfaoh0K3XbIrXXM+8UUKl
-         jDtGu94DQv2w/ATzdh2e1QDxAkt6TRFMrYpDSZKK2q9GGPQ8WxYJvglUxfZHghp070PR
-         sxBfZd8FNCj+ZCEgg+EuoPnxjwS0CVriIiL5I2d9dZleYlv4pdOurdExV9wbJV2wYtY8
-         NjKMLG2G6yHnzj7YB2EvJTyWJn03yKisl3Q8v0HnTrYLtjgZTWw55vZuk+4bO0uS+XxM
-         DhYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=TOTP066HoV3zrlO1R4iH0ZuR58PSnBoIUmJpWoBcZsc=;
-        b=AZyczBzsqBEKqEb1DH+j7E41Xs2fOZciCWjUIb8j9nwfghQjJGS4m5mA4wBDnn0kF+
-         Z7TYllG3zNWh5jJnxLzvb8pPE9NST2pYqgKHAB2ZN82Gf5gdNsy+avlSfiks/AfX/5qE
-         z7dUKlshiRqsBpRE4BXtaPT6nqqqBFHno9K9zujdy2Oagi2V2XxYWZuu4Xl90vFsObqf
-         C0HfjBDjpf+ilUyJGQZMA8ko+65egUZoJkTexkDnQPxaug1hq7onj5dYNWtKF8nJEK+5
-         +1aFsoniiWdrSTR/q3jSoK93yZKaZUryXMsXa0y01LaTB+Si4xdTrL6vvsIj/3ytfOdg
-         DozA==
-X-Gm-Message-State: AOAM530zHK8wS6Q/KuzELhrWCQXR/y6/pvbD5pqrpskgzV5bm5O5fYut
-        bH8CstW0nHOBXg0dF+Cp9PqaA0UaAkM=
-X-Google-Smtp-Source: ABdhPJzFbMYYW2OXTLOgKEve9eZH3bkc74GqecG00ZgipqvlDKg0mVDs6THChMc4TCgbiwtwWLJrLQ==
-X-Received: by 2002:a17:906:94d2:: with SMTP id d18mr16979448ejy.94.1610970583875;
-        Mon, 18 Jan 2021 03:49:43 -0800 (PST)
-Received: from [192.168.50.4] (iskon6580.duo.carnet.hr. [31.147.121.180])
-        by smtp.gmail.com with UTF8SMTPSA id e7sm8530683ejm.115.2021.01.18.03.49.42
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Jan 2021 03:49:42 -0800 (PST)
-From:   Davor Saric <davor.sharic@gmail.com>
-Subject: iwlwifi failes to initialize
-To:     linux-wireless@vger.kernel.org
-Message-ID: <cb81615b-1c6a-8add-ff2a-5533c9620d7a@gmail.com>
-Date:   Mon, 18 Jan 2021 12:49:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101
- Thunderbird/85.0
+        Mon, 18 Jan 2021 07:30:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1610972981;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=zcXZJtCMsN1bEAU2v8thA93ulKj3jUB/Kn5V4Q6D4t4=;
+        b=mc8AYzN/gfhEVETSJ1chubqJYv0lR9UhOtuf3zu6BkSYNqvM0tjiLqfgMpl39eraHgliyU
+        OTsXbRiBGOBnxIXaonIwtwXz3SEyAsF39ZUhFNfGSUmugwkoWm5UXg+wYypTk4rh7pJPKd
+        KuhBrD8BWwYk3vnHr24sPGcknvTlz7s=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Sven Eckelmann <sven@narfation.org>
+Subject: Re: ath11k: IPQ8074: hw2.0: WMI_PEER_STA_KICKOUT after 3900 seconds
+Date:   Mon, 18 Jan 2021 13:29:36 +0100
+Message-ID: <12689791.y0N7aAr316@ripper>
+In-Reply-To: <3150903.KgjxqYA5nG@ripper>
+References: <3150903.KgjxqYA5nG@ripper>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart4156957.MSiuQNM8U4"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+--nextPart4156957.MSiuQNM8U4
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Sven Eckelmann <sven@narfation.org>
+Subject: Re: ath11k: IPQ8074: hw2.0: WMI_PEER_STA_KICKOUT after 3900 seconds
+Date: Mon, 18 Jan 2021 13:29:36 +0100
+Message-ID: <12689791.y0N7aAr316@ripper>
+In-Reply-To: <3150903.KgjxqYA5nG@ripper>
+References: <3150903.KgjxqYA5nG@ripper>
 
-I am trying to send email with all the details here but its getting 
-rejected due to "spam" or html or something. It wrongly interprets the 
-content of my email.
+On Friday, 15 January 2021 15:22:02 CET Sven Eckelmann wrote:
+> a rather odd behavior was noticed with ath11k and EAP.
+[...]
+> Btw. rekeying was disabled (but also setting it to 900s or 3600s doesn't 
+> change the behavior at all. So here my hostapd config for completeness:
 
-My wifi card fails to initialize on power on and it is not related to 
-Fast boot. It is happening between linux boots. I am on Arch linux and 
-using 5.4 lts kernel. It is the same with recent kernels. I have to 
-reset the card with following to make it work.
+It seems like it also happens after 3900 seconds with PSK. So following
+config will also create this problem:
 
-modprobe -r iwlwifi
-echo 1 > /sys/bus/pci/devices/0000\:06\:00.0/reset
-modprobe iwlwifi
+    driver=nl80211
+    logger_syslog=127
+    logger_syslog_level=0
+    logger_stdout=127
+    logger_stdout_level=0
+    country_code=US
+    ieee80211d=1
+    hw_mode=g
+    beacon_int=100
+    channel=6
+    
+    ieee80211n=1
+    ht_coex=0
+    ht_capab=[LDPC][SHORT-GI-20][SHORT-GI-40][TX-STBC][RX-STBC1][MAX-AMSDU-7935][DSSS_CCK-40]
+    
+    interface=ap2_1
+    ctrl_interface=/var/run/hostapd
+    ap_isolate=1
+    bss_load_update_period=60
+    chan_util_avg_period=600
+    disassoc_low_ack=1
+    preamble=1
+    wmm_enabled=1
+    ignore_broadcast_ssid=0
+    uapsd_advertisement_enabled=1
+    utf8_ssid=1
+    multi_ap=0
+    wpa_passphrase=testtest
+    auth_algs=1
+    wpa=2
+    wpa_pairwise=CCMP
+    ssid=psktest
+    bridge=br-lan
+    wpa_disable_eapol_key_retries=0
+    wpa_key_mgmt=WPA-PSK
+    okc=0
+    disable_pmksa_caching=1
+    bssid=f8:d9:b8:2e:37:d0
 
-In dmesg there is an error related:
-iwlwifi 0000:06:00.0: enabling device (0000 -> 0002)
-iwlwifi: probe of 0000:06:00.0 failed with error -110
+And this problem is trivial to see on the AP (with a single client) using the 
+following patch:
 
-Intel(R) Dual Band
-Wireless AC 8265, REV=0x230
+    diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+    index 9fa6ff9..d1b2c61 100644
+    --- a/drivers/net/wireless/ath/ath11k/wmi.c
+    +++ b/drivers/net/wireless/ath/ath11k/wmi.c
+    @@ -6504,6 +6504,7 @@ static void ath11k_peer_sta_kickout_event(struct ath11k_base *ab, struct sk_buff
+     	ath11k_dbg(ab, ATH11K_DBG_WMI, "peer sta kickout event %pM",
+     		   arg.mac_addr);
+     
+    +	WARN_ON(1);
+     	ieee80211_report_low_ack(sta, 10);
+     
+     exit:
 
-BIOS of motherboard is latest.
 
-Regards,
-Davor
+Maybe someone knows whether there is already a non upstream (keepalive?) patch 
+from QCA in their wlan-open repository (in some of the branches) which I might 
+miss.
+
+Kind regards,
+	Sven
+--nextPart4156957.MSiuQNM8U4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmAFfzAACgkQXYcKB8Em
+e0agwhAAlv3QyHyUEC9IYllKc1ZoTQ0gZDsvIVnouZb9+PHQsr8Z2B46C9Nk9TPq
+7AZek7cI14zdlJMYHXd42fcjNjclXiEhAXRfUrJWQv10nbEZl3lhB/wK4nuXhFW/
+w1088Vj97egLPs9jfwNav51StGKqw47nYNWIKZE8ZeaD3FvmK8WPrcD48LfqYb1s
+OS5Arv5jKnIWTQB7+ayy34BfXsswO65465txCZjHXv6dR8/SING1WcE3i+diPrUL
+rbT7OhOL80+ToUIEmtHfRFsnUaY6UcGWAvP04djYhM7T3/HSdt5gVfjgKe0ZDnzu
+eiNHaOhuPnwLVtb/JcZaN4kcO92sRlJuEx229IiA8Tk1HzHa/71IRSno0YI/uThi
+9mYwEaVoplmzdcRj4jslyCw5L0XbpA/JDlsJo91/0QJMhU0L+jm1a1xky1v8zK+W
+q5LnyOtiNrYpiAb0e93CNJ09ev3uKkU2boTDBuzL4wrZHUom4cbkB9654P7Le3Zw
+12BRzsbCYIhXxMFVDJQihtxnVwRbcjbFf62UeA8xRxz9Q1RBxoSd3hVsNhvKmjC5
+tVODXM6XAPDa3q7sx2Fgzv0njMkpzxQ75bDsJSzgRuOmAeTgWRcx8LBs05E6slRO
+KQ8DNlImKtbu7eREjTn+TI05dTY0cFBM61X9SWiWHy0SZGIjvc0=
+=A2Fa
+-----END PGP SIGNATURE-----
+
+--nextPart4156957.MSiuQNM8U4--
+
+
+
