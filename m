@@ -2,60 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 532BA2F9599
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Jan 2021 22:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C3182F9B04
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Jan 2021 09:11:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729739AbhAQVrs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Jan 2021 16:47:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56640 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728042AbhAQVrr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Jan 2021 16:47:47 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0AD4920791;
-        Sun, 17 Jan 2021 21:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610920023;
-        bh=DsImuYJ84kSef06kOjeMCoxSqfX77ZpNBhBovu1VUQk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qg+GAWiiN2058uOnmEYwp4QO16n3ujB6c1vUUbTtwtgJSthnWrD3NQuKkzjLvrjmN
-         vV3hwX4D0LTodb8oZFEMhRqtHMR7GN0Misj2NEdeKepjEHC3Jnp1BvYUm++uPBk1vZ
-         Rue/Q64rwRMoScDFBUQ4p6p8/CDgmORwzpu092YPo6UvLoHYGtsNXaGo53RGBw3q1w
-         hv10fBEteJkN9kiAC1tMoO1rrt5GdB2T5EVPa533lp9LjeCVixsq0mjOH8hBkbTIyC
-         vfqsUq77aSGdkSo0zY3gSBZcrTUFySH6NtY5AeovUgEGjZ0sUrtGcbvrzTB8gCSj6t
-         ka2Zoiol93vIg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     lorenzo.bianconi@redhat.com, kuba@kernel.org, z.han@gmx.net
-Subject: [PATCH] mt7601u: process tx URBs with status EPROTO properly
-Date:   Sun, 17 Jan 2021 22:46:56 +0100
-Message-Id: <72392e8341aa8591c0b9962661a6ca26b1198f32.1610919534.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        id S2387557AbhARIKV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Jan 2021 03:10:21 -0500
+Received: from mail-io1-f72.google.com ([209.85.166.72]:43074 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387465AbhARIJz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Jan 2021 03:09:55 -0500
+Received: by mail-io1-f72.google.com with SMTP id n18so8043423ioo.10
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Jan 2021 00:09:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=wEiWUD1KoU2kz++HYBOdztSbeG+sfsDlGM9Lh98rKKM=;
+        b=sUFyyddtFWH7ij22xIyV1TEAbuu/SQPxsZ+PUcpkXDRTvipJjcyqMLIZuKOcmEIVBF
+         SUjzTk4nQcrqvOaK/L0gdOVSP1ldkvKexqwweEnsBFcFQBgYmgr2RVe9e2yC7CIuCDCt
+         lMLn7rVTrVvexIlYB/YcBJnzhGjIurTkv4mwV5WLEvmeTQv4FFP3ECpD6U5+rTWRKfwS
+         o4p0HkQ4S4abWdjrD1eZ+KrkreiZbO5g2Ci8wT7k8uUl5z/9Yf5hxpiBhv3bXRdKPcKn
+         tZYg8NF3QCo4FJF9I4Pyyu+v0E1oironWMvWKivWRy9zeefDV5Eayzhjd3THNi2jO0o8
+         BxiQ==
+X-Gm-Message-State: AOAM532p/jkQ5arErsGrHaOimh1AAy+lyx5dRXk11gjy9vfuZPH0oyVX
+        yQG+Yq3UEP3G/u8CgSweg5Yv6a0OoysX/KRiIkOpygvXtF4+
+X-Google-Smtp-Source: ABdhPJy3DgoWHLFvzuYDkJzDwwA1JaPpvsFtlorUiuid/k905n8sJMZK4Xd3jj5HaJiA1RUHc/Jk2/sDAy2KQkj3cP16ie+7PFKI
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a92:cccd:: with SMTP id u13mr20286819ilq.273.1610957353923;
+ Mon, 18 Jan 2021 00:09:13 -0800 (PST)
+Date:   Mon, 18 Jan 2021 00:09:13 -0800
+In-Reply-To: <000000000000f054d005b8f87274@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000d43c1305b9283c0a@google.com>
+Subject: Re: WARNING in io_disable_sqo_submit
+From:   syzbot <syzbot+2f5d1785dc624932da78@syzkaller.appspotmail.com>
+To:     asml.silence@gmail.com, axboe@kernel.dk, davem@davemloft.net,
+        hdanton@sina.com, io-uring@vger.kernel.org,
+        johannes.berg@intel.com, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+        viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to commit '0e40dbd56d67 ("mt7601u: process URBs in status EPROTO
-properly")', do not process tx URBs if marked with status set to EPROTO.
+syzbot has bisected this issue to:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt7601u/dma.c | 1 +
- 1 file changed, 1 insertion(+)
+commit dcd479e10a0510522a5d88b29b8f79ea3467d501
+Author: Johannes Berg <johannes.berg@intel.com>
+Date:   Fri Oct 9 12:17:11 2020 +0000
 
-diff --git a/drivers/net/wireless/mediatek/mt7601u/dma.c b/drivers/net/wireless/mediatek/mt7601u/dma.c
-index 234e5059e5e6..85bda46d4cf9 100644
---- a/drivers/net/wireless/mediatek/mt7601u/dma.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/dma.c
-@@ -237,6 +237,7 @@ static void mt7601u_complete_tx(struct urb *urb)
- 	case -ECONNRESET:
- 	case -ESHUTDOWN:
- 	case -ENOENT:
-+	case -EPROTO:
- 		return;
- 	default:
- 		dev_err_ratelimited(dev->dev, "tx urb failed: %d\n",
--- 
-2.29.2
+    mac80211: always wind down STA state
 
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13b8b83b500000
+start commit:   a1339d63 Merge tag 'powerpc-5.11-4' of git://git.kernel.or..
+git tree:       upstream
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1078b83b500000
+console output: https://syzkaller.appspot.com/x/log.txt?x=17b8b83b500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c60c9ff9cc916cbc
+dashboard link: https://syzkaller.appspot.com/bug?extid=2f5d1785dc624932da78
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10f207c7500000
+
+Reported-by: syzbot+2f5d1785dc624932da78@syzkaller.appspotmail.com
+Fixes: dcd479e10a05 ("mac80211: always wind down STA state")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
