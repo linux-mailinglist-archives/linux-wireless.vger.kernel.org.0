@@ -2,114 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 075032FBFF7
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jan 2021 20:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81AD22FC3BB
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jan 2021 23:40:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729879AbhASTXn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Jan 2021 14:23:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58164 "EHLO
+        id S2387605AbhASOg1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Jan 2021 09:36:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389681AbhASTQO (ORCPT
+        with ESMTP id S2389396AbhASKDk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Jan 2021 14:16:14 -0500
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41033C061575
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Jan 2021 11:15:33 -0800 (PST)
-Received: by mail-ot1-x329.google.com with SMTP id o11so20906247ote.4
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Jan 2021 11:15:33 -0800 (PST)
+        Tue, 19 Jan 2021 05:03:40 -0500
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E1DC061757
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Jan 2021 02:02:59 -0800 (PST)
+Received: by mail-io1-xd2d.google.com with SMTP id d13so35166073ioy.4
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Jan 2021 02:02:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=5M/xwriCvZ1ehbhOrKqRjMwNoC7bFrlBY9OQlV4JhBQ=;
-        b=VWO3o72xi9hscdAVyxdDSmzYIRxLsgi6uCN7en9qrfVE7711O7MAhTXDHS/7XGm9hh
-         p91gsGfWQTBnBlIWrIJqmzr00hP935pwO4oe/C03aHZJ8kvKLi5B1mqsOQccAf+U7kgI
-         xH3t0UJRWdDdIeUH5fZvbFR/tFgWEBfJGkrPQ=
+        bh=7L3sZXwRHIpVGKeGthU15hEuDgHxM9YUe2i8FEz3+gs=;
+        b=QGc5x3VhQAJwu9nD5rJcKEp7vy4eTMIP/DLoZvlgiuzey24WjILHwG/xbnAmw+fX+s
+         A0iieuCNoXFpIpT2nt9Z10PuJTcPQjCaiqHLC5+pxUD1LaEbdxjvd8dQD9nCMr72p86z
+         cJpfXQsNy6ErQa0k1l/udkHM2S+WCtQPyqjkTpXZjl8GthPLHEq5RsoBuphWYrY9ObKn
+         qNsVkZeEBHrZQXLGrmYwIsXete6eSacpg77CUrIWndGErafoKhSI+rqqVNWj+7idr9rc
+         jeqXH7GhLljBVNu2Ob5/ZMG84SvflkaULxL9utzFy9ASFoFiXA2il+dbFoKoyRiZZCp3
+         woyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5M/xwriCvZ1ehbhOrKqRjMwNoC7bFrlBY9OQlV4JhBQ=;
-        b=HtIPaB1w9DnXB31QqUD/U2zuGvYmqISn0L+Qn3lurMG4/fU2PcNKJ33z/LFUZotnMD
-         IS1vPXZzcJ3mU2nvlox7q/eTyxnHDc4F0XlLYUg+McSDo8vaPbtl88PIUMZw3kCASpKJ
-         iC87IZA0zMuMhvD4Au6t31wADGX+HYhvT8x7Tgdk1SBWqpsBy7/x6BmVQdwM2LKD1Wr6
-         mCq44DoVphMTu3uu7iXNN1JxF/jFKtBtF4nrfI/HyOYRJE0/ZKCBV8T0D/gaz8LQCHdL
-         bg1RdBedcZN95oVeaA5cTBHFggDsgO8KWfvNud3hXjbN2uIsDTsPEdw1d3SwOpm+s4JP
-         88FQ==
-X-Gm-Message-State: AOAM530nRZ8xOOPBIROEY7CBK4VIocbzbQXB4uNVRTW5pSyh7GS9cBrZ
-        pDhZfyj46sSgm+y0WGVQXo6XGwSpscU0ug==
-X-Google-Smtp-Source: ABdhPJzsaN8ktPQo3ER1ttUzP6rQ8zqpLfMQhgZAeBD4rJL00gIW3q5cKfDpgAx35rtu7OBhs4aJSw==
-X-Received: by 2002:a9d:4d95:: with SMTP id u21mr4431767otk.11.1611083732316;
-        Tue, 19 Jan 2021 11:15:32 -0800 (PST)
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com. [209.85.167.175])
-        by smtp.gmail.com with ESMTPSA id y12sm4861210oti.0.2021.01.19.11.15.31
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Jan 2021 11:15:31 -0800 (PST)
-Received: by mail-oi1-f175.google.com with SMTP id f132so22332548oib.12
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Jan 2021 11:15:31 -0800 (PST)
-X-Received: by 2002:aca:df02:: with SMTP id w2mr766754oig.77.1611083731008;
- Tue, 19 Jan 2021 11:15:31 -0800 (PST)
+        bh=7L3sZXwRHIpVGKeGthU15hEuDgHxM9YUe2i8FEz3+gs=;
+        b=FFM+vDHUFCwp/YMr9sVosQ9ZFhLpezolzC6VfHOdv6MlHqfkKWRwkquarOtgHKIs/n
+         WRhUzT5V2N5FPwHLlps/aqb8CQdVArv2KLVqfv5T8lXtimc7FOP7ZFS/ZTf5ZeCnK/mN
+         E4T8j+T2qE9dj76yhfOOAPGSTJINiG/QTLOKMTds5D4je2NgnWJT0iTcp9UQ+BcykId7
+         vq9ckD6jWWkbteBCGXDs136NztDypiVyAc85xnZfV/erCVvVsbhxa+a1rK1EGLWnTtIW
+         ofbQTGINYG6+e/zjvs7YdVA6aCVbQBAbnSDv3qTU51YcdIeJ9WEm2eig7Ah7b3XSThjX
+         V6PA==
+X-Gm-Message-State: AOAM533fCR3TyNHwS0Npd0UYQywIu9Xluwa17OfPLZ1lt01ps+JSzcmf
+        66Sn40xPRnJodwxT/00nRgINLgGri97eyyRXAQV35A==
+X-Google-Smtp-Source: ABdhPJzJFqOALKVpKAZAZX8QjvCsPOaDOUqDydlCGkCxthSCtEcAnOjgoR+7aNvkIFDuQy9vC4C2eqtTcd8mtFBdaRI=
+X-Received: by 2002:a92:d3c7:: with SMTP id c7mr2711479ilh.137.1611050578589;
+ Tue, 19 Jan 2021 02:02:58 -0800 (PST)
 MIME-Version: 1.0
-References: <1610703513-933-1-git-send-email-abaci-bugfix@linux.alibaba.com> <CA+ASDXPCcgfXQNGRQThKHSRcxZ7i6=1GM0+sZL+ZAid8e=+sRQ@mail.gmail.com>
-In-Reply-To: <CA+ASDXPCcgfXQNGRQThKHSRcxZ7i6=1GM0+sZL+ZAid8e=+sRQ@mail.gmail.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 19 Jan 2021 11:15:19 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXPFGxKBBMU1ZKO6oSTNeSKMeZktfbDWndEqXJ1_6ojTcQ@mail.gmail.com>
-Message-ID: <CA+ASDXPFGxKBBMU1ZKO6oSTNeSKMeZktfbDWndEqXJ1_6ojTcQ@mail.gmail.com>
-Subject: Re: [PATCH] marvell/mwifiex: replace one-element array with
- flexible-array member.
-To:     Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
-Cc:     amit karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
+References: <5664fa0f-aef2-c336-651a-093c9eed23ab@candelatech.com>
+ <765f370d-ce2d-b75a-2dde-87f69ae7c185@candelatech.com> <CANn89iKpa1y2SKJuR9kRi=AZs94sj+-tzRs+2D0vmxh+ahEcGA@mail.gmail.com>
+ <adbee2ec-c6ba-7a17-eb98-1c53365fa911@candelatech.com> <CANn89iJQnSVZFp2XDgREN1QMtU4exOsnJq=5VzJ6tqTCJ7MH-g@mail.gmail.com>
+ <c4bcee7d-b2eb-759c-c659-d65f3e7daec9@candelatech.com> <CANn89i++Kgkj57ms70a5GDOQ-Cpewx3NQkzP3EmZmLYQ4eHzww@mail.gmail.com>
+ <5d89fd24-f00a-7e70-00ce-83529f13b05e@candelatech.com> <20201218121627.603329b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <9003ea3720a03b4bd1b8abf3d8f645563a58f953.camel@sipsolutions.net>
+ <43a5b45c-955a-22d4-2bf9-dbab852dbb5f@candelatech.com> <CANn89iJBO13s9fOVRnDyfj5HXt9wjnRpbh2_f5SuyNkNAfjzJQ@mail.gmail.com>
+ <CANn89iJTCDof6ypxCkiGaPo+y0Bngg0NX5cLPWisTEZaFo1BQw@mail.gmail.com>
+ <CANn89iJWG2n1s3j7EdpwkQQv-9dOY02V+FGYHAWguO4JiqWuJA@mail.gmail.com> <d75b2c43a416d4bb84185aab4005d42e49962e36.camel@sipsolutions.net>
+In-Reply-To: <d75b2c43a416d4bb84185aab4005d42e49962e36.camel@sipsolutions.net>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Tue, 19 Jan 2021 11:02:47 +0100
+Message-ID: <CANn89iLZ9Y0fMk8X1a4=J7Xf2H=M0oLK_SekOLZypN+2-8a0yw@mail.gmail.com>
+Subject: Re: net: tso: add UDP segmentation support: adds regression for ax200 upload
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Ben Greear <greearb@candelatech.com>,
+        Rainer Suhm <automat@posteo.de>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
+        Luca Coelho <luciano.coelho@intel.com>,
+        netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+        Willem de Bruijn <willemb@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-One more thing, for context:
-
-On Tue, Jan 19, 2021 at 11:11 AM Brian Norris <briannorris@chromium.org> wrote:
-> On Fri, Jan 15, 2021 at 1:39 AM Jiapeng Zhong
-> <abaci-bugfix@linux.alibaba.com> wrote:
-> >
-> > Fix the follow coccicheck warnings:
-> >
-> > ./drivers/net/wireless/marvell/mwifiex/fw.h: WARNING use flexible-array
-> > member instead(https://www.kernel.org/doc/html/latest/process/
-> > deprecated.html#zero-length-and-one-element-arrays)
-> >
-> > Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> > Signed-off-by: Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+On Tue, Jan 19, 2021 at 9:53 AM Johannes Berg <johannes@sipsolutions.net> wrote:
 >
-> Past experience unfortunately requires me to ask: did you test your
-> changes? I understand that's a mostly legit warning, and a good
-> deprecation notice, but that doesn't mean this is the right fix. One
-> probably should instead audit the usage sites to see if they *are*
-> already making proper sizeof (or other) comparisons, and if not, fix
-> those first. And if any sites *are* doing correct sizeof computations
-> using the existing struct layouts, then you are probably breaking
-> them.
+> Hi Eric, all,
 >
-> Or if you have audited the usage of these structs, it's nice to make a
-> small explanation of why this is correct, so I (and other readers)
-> don't have to ask these questions :)
+> Sorry we've been so silent on this.
+>
+> > --- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+> > @@ -773,6 +773,7 @@ iwl_mvm_tx_tso_segment(struct sk_buff *skb,
+> > unsigned int num_subframes,
+> >
+> >         next = skb_gso_segment(skb, netdev_flags);
+> >         skb_shinfo(skb)->gso_size = mss;
+> > +       skb_shinfo(skb)->gso_type = ipv4 ? SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
+> >         if (WARN_ON_ONCE(IS_ERR(next)))
+> >                 return -EINVAL;
+> >         else if (next)
+> > @@ -795,6 +796,7 @@ iwl_mvm_tx_tso_segment(struct sk_buff *skb,
+> > unsigned int num_subframes,
+> >
+> >                 if (tcp_payload_len > mss) {
+> >                         skb_shinfo(tmp)->gso_size = mss;
+> > +                       skb_shinfo(tmp)->gso_type = ipv4 ?
+> > SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
+> >                 } else {
+> >                         if (qos) {
+> >                                 u8 *qc;
+>
+> This does fix the problems reported on iwlwifi, were you planning to
+> submit it as a proper patch?
 
-FYI, there are others who I believe are making similar blind changes
-to this code:
-
-[PATCH 1/1] mwifiex: Fix possible buffer overflows in mwifiex_config_scan
-https://lore.kernel.org/linux-wireless/CA+ASDXPkLg2GGFJTt25YO7wae==YAHftf8JXu520pL_vZaT3ug@mail.gmail.com/
-
-For that particular case (the 'ssid' field in
-mwifiex_ie_types_wildcard_ssid_params), the previous patch-er was
-incorrect, and I believe your change is a better one. But neither of
-you provided useful analysis.
-
-Brian
+Sure, I will do, thanks !
