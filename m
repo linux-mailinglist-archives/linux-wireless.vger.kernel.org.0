@@ -2,103 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4D22FBE46
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jan 2021 18:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AA9E2FBF0A
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jan 2021 19:33:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390181AbhASRta (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Jan 2021 12:49:30 -0500
-Received: from mail-io1-f70.google.com ([209.85.166.70]:51035 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391638AbhASRk4 (ORCPT
+        id S2389698AbhASSbx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Jan 2021 13:31:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48566 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389743AbhASSbi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Jan 2021 12:40:56 -0500
-Received: by mail-io1-f70.google.com with SMTP id p77so27058330iod.17
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Jan 2021 09:40:40 -0800 (PST)
+        Tue, 19 Jan 2021 13:31:38 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF87BC061573
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Jan 2021 10:30:57 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id hs11so27598149ejc.1
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Jan 2021 10:30:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=g9SgOlxYVvQ5SykEbLqivdPZ1RRrVaUEDGfu6tDXXes=;
+        b=Azp8/6cplfyE/Ul9u9ni5oDuy7+6hd05JizMm7DgY5rDm/gK2VBNGkiQ32Pe+GPe1n
+         lcNFg0/AGfsnlj/Rk5EgQKn2cx9Mn/9VMCANm5LZlR1eELNLBNXV7cXyYVNUIKBSPeKC
+         frFYH5a8snAI0Jf1yhFBkFRFeiR1ofQkoC2V5slx2j2Lbk7tFgnLcgizxb7xiMUK+81E
+         +PLhC9ea0ZDaoU4UzgEzn0l3Z9V2uNv8cZcmM+AMMsrZNQ0Wr0TWF4hlcRrPv5RAejVt
+         Glio2ZfVxkQrDnSfq8B7eD0dFurqAVj1ny8sCPXGrmbOtlfNYavNx5pHtTH8WGla+J3h
+         TzHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=cz+TyUAdSvRaaR7wt0B3euj1+FtE/JPqehIJ2K4wFxI=;
-        b=acT9XNiA9DGF5JzCFv8xZL+unWOcT7J+R2fpY7XaJwedS3l2bH75LPnBPiCcoGM/e4
-         JuLfQLJiTFRSvUzyDriOTh4eFbduBtmtMAQ48hBUZrrDFfxbZcn2b8rJnReNhKj7zZUZ
-         S/Xmv/ZSprsbgKm73tXHc84NZ+j7XFGF0dE49egGLYwXtVIs7xa3sE8v6VJ/pYQQuW8x
-         KS2Lx0A+wXoFMp6rzt1XBtpU71Vny8f8iRdK38Ari1+gXCR6MGY1cBwT0TFrLPUz+5RO
-         8G0OGUplpTUM+LoW3yDOA2ervn0TWaIcH0kyBZ7xF+06z8JPxcVGPMbUgfoUPCetAlk4
-         o4tQ==
-X-Gm-Message-State: AOAM531UHrrjDOcYkdBkSEsuwBAnJ7FNFV2fR2a/u2FqITlyXIiOw70f
-        fX8cvj2H9QScnyrchDFuCHEVkTminQUBDQEYQnscM7VidTEo
-X-Google-Smtp-Source: ABdhPJwlc+pZ9ZKO5apRJCpOHaEETxebGPE+1ywptP03q7TAFkDD2MsfFXq3OJiJKgmCn346FiZgeNF7pFQ6Mw8wNF7tnjaJ8vul
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=g9SgOlxYVvQ5SykEbLqivdPZ1RRrVaUEDGfu6tDXXes=;
+        b=XwZql5sDGrSTwHaHK5jfP2vYhk5tPhP0+AysEZ7tYYH5wZ08bsESI2YInHgUGm83p1
+         K4yyb7gq+jfV4cPt3vJxb4x5+nTPmcE2g6Rg1ca96Xhsj2VJKu+6qnwlMcGf6d+HvQXZ
+         Y+GWxrprnvHAWfsp+sXgEnnnNKC7tTsjucSPnG8ie3w6Ze/N/UI8YThmGuV9Xnq+4+BC
+         nzAS8VPUslBfmNfG0RXJjStag8B20l/vpLhvXhmiSO/13dk4PWlA++jvQ0kDT1mLbLb8
+         8hiiU9ZCKXIMijjzAi+59P+YwFXQMZp82YApT78/zP1ZG9BZXiiddCXhaqeFycYCVrZM
+         g8GQ==
+X-Gm-Message-State: AOAM530jecyXIvLv08ga1wfVmLBexqXsLvXKGwzCC/+LNCBTPJYKm6on
+        /ueGkQAsRQFmMmnvFY2rKgw=
+X-Google-Smtp-Source: ABdhPJyHZDeewQ5pXc0Gjy9Dfb6mggZQcVEspM4XKAt55fPWiG0zt+wvc2DwnQgVtEkzBvyDyR2vwQ==
+X-Received: by 2002:a17:906:52c1:: with SMTP id w1mr3964792ejn.214.1611081056673;
+        Tue, 19 Jan 2021 10:30:56 -0800 (PST)
+Received: from [10.0.0.15] (80-89-109-210.hdsl.highway.telekom.at. [80.89.109.210])
+        by smtp.gmail.com with ESMTPSA id fi14sm11171048ejb.53.2021.01.19.10.30.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Jan 2021 10:30:55 -0800 (PST)
+From:   Till Kamppeter <till.kamppeter@gmail.com>
+Subject: Google Summer of Code 2020 - Project ideas page for the Linux
+ Foundation online
+To:     Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        "Luis R. Rodriguez" <mcgrof@gmail.com>,
+        Jeff Licquia <jeff@licquia.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Open Printing <printing-architecture@lists.linux-foundation.org>,
+        dl9pf@gmx.de, Mats Wichmann <mats@wichmann.us>,
+        Denis Silakov <silakov@ispras.ru>,
+        =?UTF-8?Q?Jan-Simon_M=c3=b6ller?= <jsmoeller@linuxfoundation.org>,
+        Daniel Baluta <daniel.baluta@gmail.com>,
+        Vadim Mutilin <mutilin@ispras.ru>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Ira McDonald <blueroofmusic@gmail.com>,
+        Michael Sweet <msweet@msweet.org>,
+        Tobias Hoffmann <smilingthax@googlemail.com>,
+        Jay Berkenbilt <ejb@ql.org>,
+        Nicholas Mc Guire <der.herr@hofr.at>,
+        Matt Germonprez <germonprez@gmail.com>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Gary O'Neall <garysourceauditor@gmail.com>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        Nicholas Mc Guire <der.herr@hofr.at>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Rithvik Patibandla <rithvikp98@gmail.com>,
+        Dheeraj Yadav <dhirajyadav135@gmail.com>,
+        Deepak Patankar <patankardeepak04@gmail.com>
+Cc:     Aveek Basu <basu.aveek@gmail.com>
+Message-ID: <5ea4c46e-bd90-8a94-e2d1-4c908269fac4@gmail.com>
+Date:   Tue, 19 Jan 2021 19:30:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-X-Received: by 2002:a92:b503:: with SMTP id f3mr4214202ile.123.1611078015449;
- Tue, 19 Jan 2021 09:40:15 -0800 (PST)
-Date:   Tue, 19 Jan 2021 09:40:15 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000d1018c05b944543e@google.com>
-Subject: WARNING in cfg80211_bss_update
-From:   syzbot <syzbot+95c52e652a2fac1fcdf5@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Hi,
 
-syzbot found the following issue on:
+the Linux Foundation will apply again as mentoring organization in this 
+year's Google Summer of Code.
 
-HEAD commit:    66c55602 skbuff: back tiny skbs with kmalloc() in __netdev..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=121bf89f500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c60c9ff9cc916cbc
-dashboard link: https://syzkaller.appspot.com/bug?extid=95c52e652a2fac1fcdf5
-compiler:       gcc (GCC) 10.1.0-syz 20200507
+Note that GSoC 2021 will be different, the 3-months student projects 
+will be replaced by part-time projects, 6-weeks full-time-equivalent, to 
+be done in a 10-week time-window. Stipends are appropriately reduced to 
+the half amount, leading to the same per-hour value.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+On January 29, 2021 the application period for mentoring organizations 
+for the Google Summer of Code 2021 will start.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+95c52e652a2fac1fcdf5@syzkaller.appspotmail.com
+To be successful, we need a rich project idea list so that we will get 
+selected by Google.
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 25700 at net/wireless/scan.c:1565 cfg80211_combine_bsses net/wireless/scan.c:1565 [inline]
-WARNING: CPU: 1 PID: 25700 at net/wireless/scan.c:1565 cfg80211_bss_update+0x16cd/0x1c60 net/wireless/scan.c:1746
-Modules linked in:
-CPU: 1 PID: 25700 Comm: kworker/u4:15 Not tainted 5.11.0-rc3-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: phy12 ieee80211_iface_work
-RIP: 0010:cfg80211_combine_bsses net/wireless/scan.c:1565 [inline]
-RIP: 0010:cfg80211_bss_update+0x16cd/0x1c60 net/wireless/scan.c:1746
-Code: 00 48 c7 c7 20 8c 61 8a c6 05 88 7d b9 04 01 e8 a7 15 83 00 e9 27 ff ff ff e8 8f f0 3c f9 0f 0b e9 c2 f4 ff ff e8 83 f0 3c f9 <0f> 0b 4c 89 f7 e8 89 be 8c fb 31 ff 89 c6 88 44 24 70 e8 ec f6 3c
-RSP: 0000:ffffc90002e46f50 EFLAGS: 00010212
-RAX: 00000000000026ce RBX: 0000000000000001 RCX: ffffc90015d60000
-RDX: 0000000000040000 RSI: ffffffff8835d93d RDI: 0000000000000003
-RBP: ffff88802f58fc00 R08: 0000000000000000 R09: 0000000000000000
-R10: ffffffff8835d08d R11: 0000000000000000 R12: ffff888022182c68
-R13: 0000000000000005 R14: ffff88802f58fc10 R15: ffff888022182c00
-FS:  0000000000000000(0000) GS:ffff8880b9f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2ee27000 CR3: 00000000144e2000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- cfg80211_inform_single_bss_frame_data+0x6e2/0xe90 net/wireless/scan.c:2400
- cfg80211_inform_bss_frame_data+0xa7/0xb10 net/wireless/scan.c:2433
- ieee80211_bss_info_update+0x3ce/0xb20 net/mac80211/scan.c:190
- ieee80211_rx_bss_info net/mac80211/ibss.c:1126 [inline]
- ieee80211_rx_mgmt_probe_beacon+0xccd/0x16b0 net/mac80211/ibss.c:1615
- ieee80211_ibss_rx_queued_mgmt+0xe3e/0x1870 net/mac80211/ibss.c:1642
- ieee80211_iface_work+0x761/0x9e0 net/mac80211/iface.c:1423
- process_one_work+0x98d/0x15f0 kernel/workqueue.c:2275
- worker_thread+0x64c/0x1120 kernel/workqueue.c:2421
- kthread+0x3b1/0x4a0 kernel/kthread.c:292
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:296
+I have set up a page for project ideas for the Linux Foundation's 
+participation in the Google Summer of Code 2021:
 
+https://wiki.linuxfoundation.org/gsoc/google-summer-code-2021
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Please add your ideas to the sub-page of your work group. Also remove 
+project ideas which are already done in one of the previous years or not 
+needed any more and make sure that all contact info is up-to-date and 
+all links are working.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+If you have problems mail me with your project ideas and other editing 
+wishes.
+
+The ideas list is in the Linux Foundation Wiki. If you want to edit and 
+did not have the edit rights already from previous years, please tell me 
+and I give you edit rights. I need your Linux Foundation user name for 
+that and the e-mail address associated with this account for this.
+
+Please also take into account that the deadline for our application as 
+mentoring organization is Feb 19 and after that Google will evaluate the 
+applications. So have your ideas (at least most of them, ideas can be 
+posted up to the student application deadline) in by then to raise our 
+chances to get accepted.
+
+Please also tell us if you do not want to participate any more with your 
+workgroup, so that we can remove your sub-page.
+
+    Till
