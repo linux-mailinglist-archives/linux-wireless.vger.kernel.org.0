@@ -2,74 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 146EF2FB130
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jan 2021 07:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC83B2FB18F
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jan 2021 07:37:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726023AbhASGKR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Jan 2021 01:10:17 -0500
-Received: from mail-02.mail-europe.com ([51.89.119.103]:48758 "EHLO
-        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390462AbhASFam (ORCPT
+        id S1727780AbhASGdn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Jan 2021 01:33:43 -0500
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:59595 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727860AbhASGdi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Jan 2021 00:30:42 -0500
-Date:   Tue, 19 Jan 2021 05:29:03 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1611034150;
-        bh=IdgqE5AmCK6s+9cL32+cDBDpit/K3Mz/iWpiUoTHZko=;
-        h=Date:To:From:Reply-To:Subject:From;
-        b=ESQ16yRbB7kYXzo3gtYhSBKXBkOJ0P2+miQKTCc7w+N5tMoHMKomJxdno9JWCCpJZ
-         1VXpnXBIIzbEuuzGx/1HSpUV4GbCKO8m03hbE5rCtqH2OzPwjTBt6Q8vr+bekpum4q
-         MyahPFwfBMaG7z7VGaiWvLFlevZohvkwGKfFmxUg=
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   John Kavan <jkvt@protonmail.com>
-Reply-To: John Kavan <jkvt@protonmail.com>
-Subject: DFS/radar detection in mt7612 vs mt7612u
-Message-ID: <dUoftpoHuAmD7Z8azZFQxfzyVrbsJ_0yvg4NXMPAN4IT7x-HJtnyIKkyPAMHQPPivCkXNmlSDHj_nZWX3tfwUA4O-5VKs9a9zw4_YW_28WQ=@protonmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+        Tue, 19 Jan 2021 01:33:38 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R351e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=abaci-bugfix@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0UMDPCxf_1611037957;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:abaci-bugfix@linux.alibaba.com fp:SMTPD_---0UMDPCxf_1611037957)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 19 Jan 2021 14:32:41 +0800
+From:   Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+To:     pkshih@realtek.com
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        Larry.Finger@lwfinger.net, chiu@endlessos.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+Subject: [PATCH v2] rtlwifi: rtl8192se: Simplify bool comparison.
+Date:   Tue, 19 Jan 2021 14:32:35 +0800
+Message-Id: <1611037955-105333-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Fix the follow coccicheck warnings:
 
-mt7612u does not seem to have DFS/radar detection enabled, while mt7612 has=
- it enabled according to a snipped below from mt76x02_util.c where radar_de=
-tect_widths is not defined for mt7612u
+./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:2305:6-27:
+WARNING: Comparison of 0/1 to bool variable.
 
-Any particular reason for that, can DFS be enabled on mt7612u?
+./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1376:5-26:
+WARNING: Comparison of 0/1 to bool variable.
 
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+---
+Changes in v2:
+  -Modified subject.
 
-Thanks!
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
-static const struct ieee80211_iface_combination mt76x02_if_comb[] =3D {
-=09{
-=09=09.limits =3D mt76x02_if_limits,
-=09=09.n_limits =3D ARRAY_SIZE(mt76x02_if_limits),
-=09=09.max_interfaces =3D 8,
-=09=09.num_different_channels =3D 1,
-=09=09.beacon_int_infra_match =3D true,
-=09=09.radar_detect_widths =3D BIT(NL80211_CHAN_WIDTH_20_NOHT) |
-=09=09=09=09       BIT(NL80211_CHAN_WIDTH_20) |
-=09=09=09=09       BIT(NL80211_CHAN_WIDTH_40) |
-=09=09=09=09       BIT(NL80211_CHAN_WIDTH_80),
-=09}
-};
-
-static const struct ieee80211_iface_combination mt76x02u_if_comb[] =3D {
-=09{
-=09=09.limits =3D mt76x02u_if_limits,
-=09=09.n_limits =3D ARRAY_SIZE(mt76x02u_if_limits),
-=09=09.max_interfaces =3D 2,
-=09=09.num_different_channels =3D 1,
-=09=09.beacon_int_infra_match =3D true,
-=09}
-};
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+index 47fabce..aff8ab0 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+@@ -1373,7 +1373,7 @@ static void _rtl92se_gen_refreshledstate(struct ieee80211_hw *hw)
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_led *pled0 = &rtlpriv->ledctl.sw_led0;
+ 
+-	if (rtlpci->up_first_time == 1)
++	if (rtlpci->up_first_time)
+ 		return;
+ 
+ 	if (rtlpriv->psc.rfoff_reason == RF_CHANGE_BY_IPS)
+@@ -2302,7 +2302,7 @@ bool rtl92se_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
+ 	bool turnonbypowerdomain = false;
+ 
+ 	/* just 8191se can check gpio before firstup, 92c/92d have fixed it */
+-	if ((rtlpci->up_first_time == 1) || (rtlpci->being_init_adapter))
++	if (rtlpci->up_first_time || rtlpci->being_init_adapter)
+ 		return false;
+ 
+ 	if (ppsc->swrf_processing)
+-- 
+1.8.3.1
 
