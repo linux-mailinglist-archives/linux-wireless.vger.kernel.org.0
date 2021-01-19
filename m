@@ -2,68 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 446462FB31F
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jan 2021 08:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9739F2FB3A6
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Jan 2021 09:02:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730826AbhASHgn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Jan 2021 02:36:43 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:57366 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730636AbhASHgg (ORCPT
+        id S1730994AbhASIBr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Jan 2021 03:01:47 -0500
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:59551 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730806AbhASIAE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Jan 2021 02:36:36 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 10J7ZKrJ4019225, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 10J7ZKrJ4019225
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 19 Jan 2021 15:35:20 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 19 Jan 2021 15:35:20 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833]) by
- RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833%12]) with mapi id
- 15.01.2106.006; Tue, 19 Jan 2021 15:35:20 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "abaci-bugfix@linux.alibaba.com" <abaci-bugfix@linux.alibaba.com>
-CC:     "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "chiu@endlessos.org" <chiu@endlessos.org>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2] rtlwifi: rtl8192se: Simplify bool comparison.
-Thread-Topic: [PATCH v2] rtlwifi: rtl8192se: Simplify bool comparison.
-Thread-Index: AQHW7izmHuC9KfGQ3U+TQixYySp3yKouCKEA
-Date:   Tue, 19 Jan 2021 07:35:19 +0000
-Message-ID: <1611041680.9785.1.camel@realtek.com>
-References: <1611037955-105333-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-In-Reply-To: <1611037955-105333-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2FF55E670DAFCB488BE4711BC4C7E884@realtek.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+        Tue, 19 Jan 2021 03:00:04 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R951e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04420;MF=abaci-bugfix@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0UMDlRSu_1611043152;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:abaci-bugfix@linux.alibaba.com fp:SMTPD_---0UMDlRSu_1611043152)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 19 Jan 2021 15:59:16 +0800
+From:   Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+To:     pkshih@realtek.com
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        Larry.Finger@lwfinger.net, chiu@endlessos.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+Subject: [PATCH v3] rtlwifi: rtl8192se: Simplify bool comparison
+Date:   Tue, 19 Jan 2021 15:59:10 +0800
+Message-Id: <1611043150-78723-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVHVlLCAyMDIxLTAxLTE5IGF0IDE0OjMyICswODAwLCBKaWFwZW5nIFpob25nIHdyb3RlOg0K
-PiBGaXggdGhlIGZvbGxvdyBjb2NjaWNoZWNrIHdhcm5pbmdzOg0KPiANCj4gLi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MnNlL2h3LmM6MjMwNTo2LTI3Og0KPiBX
-QVJOSU5HOiBDb21wYXJpc29uIG9mIDAvMSB0byBib29sIHZhcmlhYmxlLg0KPiANCj4gLi9kcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MnNlL2h3LmM6MTM3Njo1LTI2
-Og0KPiBXQVJOSU5HOiBDb21wYXJpc29uIG9mIDAvMSB0byBib29sIHZhcmlhYmxlLg0KPiANCj4g
-UmVwb3J0ZWQtYnk6IEFiYWNpIFJvYm90IDxhYmFjaUBsaW51eC5hbGliYWJhLmNvbT4NCj4gU2ln
-bmVkLW9mZi1ieTogSmlhcGVuZyBaaG9uZyA8YWJhY2ktYnVnZml4QGxpbnV4LmFsaWJhYmEuY29t
-Pg0KPiAtLS0NCj4gQ2hhbmdlcyBpbiB2MjoNCj4gwqAgLU1vZGlmaWVkIHN1YmplY3QuDQo+IA0K
-DQpZb3UgZm9yZ2V0IHRvIHJlbW92ZSB0aGUgcGVyaW9kIGF0IHRoZSBlbmQgb2Ygc3ViamVjdC4N
-CmkuZS4NCiJydGx3aWZpOiBydGw4MTkyc2U6IFNpbXBsaWZ5IGJvb2wgY29tcGFyaXNvbiINCg0K
-LS0tDQpQaW5nLUtlDQoNCg==
+Fix the follow coccicheck warnings:
+
+./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:2305:6-27:
+WARNING: Comparison of 0/1 to bool variable.
+
+./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1376:5-26:
+WARNING: Comparison of 0/1 to bool variable.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+---
+Changes in v3:
+  - Modified subject.
+
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+index 47fabce..aff8ab0 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+@@ -1373,7 +1373,7 @@ static void _rtl92se_gen_refreshledstate(struct ieee80211_hw *hw)
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_led *pled0 = &rtlpriv->ledctl.sw_led0;
+ 
+-	if (rtlpci->up_first_time == 1)
++	if (rtlpci->up_first_time)
+ 		return;
+ 
+ 	if (rtlpriv->psc.rfoff_reason == RF_CHANGE_BY_IPS)
+@@ -2302,7 +2302,7 @@ bool rtl92se_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
+ 	bool turnonbypowerdomain = false;
+ 
+ 	/* just 8191se can check gpio before firstup, 92c/92d have fixed it */
+-	if ((rtlpci->up_first_time == 1) || (rtlpci->being_init_adapter))
++	if (rtlpci->up_first_time || rtlpci->being_init_adapter)
+ 		return false;
+ 
+ 	if (ppsc->swrf_processing)
+-- 
+1.8.3.1
+
