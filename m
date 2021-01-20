@@ -2,60 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF702FCB7B
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 08:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6549C2FCD32
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 10:12:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727037AbhATH2C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jan 2021 02:28:02 -0500
-Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131]:52030 "EHLO
-        out30-131.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725320AbhATH2A (ORCPT
+        id S1726929AbhATJLB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jan 2021 04:11:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40678 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729997AbhATJJQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jan 2021 02:28:00 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04420;MF=abaci-bugfix@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0UMJ.y0-_1611127630;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:abaci-bugfix@linux.alibaba.com fp:SMTPD_---0UMJ.y0-_1611127630)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 20 Jan 2021 15:27:14 +0800
-From:   Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
-To:     pkshih@realtek.com
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        bigeasy@linutronix.de, colin.king@canonical.com,
+        Wed, 20 Jan 2021 04:09:16 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F76C061575;
+        Wed, 20 Jan 2021 01:08:35 -0800 (PST)
+Date:   Wed, 20 Jan 2021 10:08:33 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1611133713;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=HDlaTP4HiR73CiOBJBp2jl7j7+FC5G0dQd8NMjFKNWc=;
+        b=ckascHNA8+O5wDLv+8y8JbSaDJJtV8c/hb2AEqEsCB8k1Ecx986uG38dNvj1mMR9ZOcmpc
+        KFOtIQkAMTSLr+t6MxIdG3zkB6LiE+zFybmiitBDkWnjLKSSnB7DJOH3tZXVRMwbC5+DdS
+        fBba77/rIbLEmiDZYNbr/BvXLHnLp6QBmNsX6dwmH2cDBijhkn6k7y4VKD4X+4TLoL8ZPp
+        s8vqYyyYyPirl3uHHyT4dhtJReqw77Uwev1dscp4vDPDF0B4hp40cPjKT8lrHEtPvIxE4z
+        1CAqjhLgaAns22LsbsJM4LtZ5+57qzWle9VR5Fqb0+a2vFEjYmEGcNUCRbh88Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1611133713;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=HDlaTP4HiR73CiOBJBp2jl7j7+FC5G0dQd8NMjFKNWc=;
+        b=VubDNdSxrWMJ3ilgkp6KWIa2awyA6D1x9HaK/inoxyg/WIhd4qhx/eaA/CCsBxOKdlIWyT
+        GN8BovqKMHORzLCQ==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+Cc:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, colin.king@canonical.com,
         Larry.Finger@lwfinger.net, andriy.shevchenko@linux.intel.com,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
-Subject: [PATCH] rtlwifi: Assign boolean values to a bool variable
-Date:   Wed, 20 Jan 2021 15:27:08 +0800
-Message-Id: <1611127628-50504-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rtlwifi: Assign boolean values to a bool variable
+Message-ID: <20210120090833.loukh7x72dk5jhox@linutronix.de>
+References: <1611127628-50504-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1611127628-50504-1-git-send-email-abaci-bugfix@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warnings:
+On 2021-01-20 15:27:08 [+0800], Jiapeng Zhong wrote:
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+> index be4c0e6..c198222 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+> @@ -873,7 +873,7 @@ static void halbtc_display_wifi_status(struct btc_coexist *btcoexist,
+>  	dc_mode = true;	/*TODO*/
+>  	under_ips = rtlpriv->psc.inactive_pwrstate == ERFOFF ? 1 : 0;
+>  	under_lps = rtlpriv->psc.dot11_psmode == EACTIVE ? 0 : 1;
+> -	low_power = 0; /*TODO*/
+> +	low_power = false; /*TODO*/
 
-./drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c:
-892:1-10: WARNING: Assignment of 0/1 to bool variable.
+you could drop that assignment as it is already initialized to false at
+the top.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
----
- drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>  	seq_printf(m, "\n %-35s = %s%s%s%s",
+>  		   "Power Status",
+>  		   (dc_mode ? "DC mode" : "AC mode"),
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-index be4c0e6..c198222 100644
---- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-@@ -873,7 +873,7 @@ static void halbtc_display_wifi_status(struct btc_coexist *btcoexist,
- 	dc_mode = true;	/*TODO*/
- 	under_ips = rtlpriv->psc.inactive_pwrstate == ERFOFF ? 1 : 0;
- 	under_lps = rtlpriv->psc.dot11_psmode == EACTIVE ? 0 : 1;
--	low_power = 0; /*TODO*/
-+	low_power = false; /*TODO*/
- 	seq_printf(m, "\n %-35s = %s%s%s%s",
- 		   "Power Status",
- 		   (dc_mode ? "DC mode" : "AC mode"),
--- 
-1.8.3.1
-
+Sebastian
