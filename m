@@ -2,63 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E24E72FD9C6
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 20:38:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 787D52FDB09
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 21:44:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392619AbhATTfm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jan 2021 14:35:42 -0500
-Received: from vps0.lunn.ch ([185.16.172.187]:50784 "EHLO vps0.lunn.ch"
+        id S2387853AbhATUmE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jan 2021 15:42:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45138 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392596AbhATTff (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jan 2021 14:35:35 -0500
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1l2JFj-001hDA-As; Wed, 20 Jan 2021 20:34:51 +0100
-Date:   Wed, 20 Jan 2021 20:34:51 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     =?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>
-Cc:     M Chetan Kumar <m.chetan.kumar@intel.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, johannes@sipsolutions.net,
-        krishna.c.sudi@intel.com
-Subject: Re: [PATCH 17/18] net: iosm: readme file
-Message-ID: <YAiF2/lMGZ0mPUSK@lunn.ch>
-References: <20210107170523.26531-1-m.chetan.kumar@intel.com>
- <20210107170523.26531-18-m.chetan.kumar@intel.com>
- <X/eJ/rl4U6edWr3i@lunn.ch>
- <87turftqxt.fsf@miraculix.mork.no>
+        id S1730157AbhATUik (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 Jan 2021 15:38:40 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B15F1233FC;
+        Wed, 20 Jan 2021 20:37:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611175073;
+        bh=PoEuM5RihGLtvLuo+/upWFzSGJuLQE0GJTiZhs/OkXA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rCT1jSJhdukpLq3EZ/Q0CgA+H4LT8Kzm3VMcYVliKfKDHLddigqQvycfBG4o4OPPk
+         7xrXK6tulPdVWbCclghNnXvG4mlQkyyWAeCU/vTjDMwzY1nRO1XsSKy8LBWAMFWjBz
+         dLc/dmfMkyNEa4wvJwzUj5PpaMbRAmT8vSecjLap+k2o3Ax3uH+Tv+g+MhMZqOc+f6
+         xn/ItXwe092nCtxNghWu1TDC7gyKUcqM1MFbzToI9Wh0CfZBnDsz/xU8Ie+pPlcrRa
+         DctTZW66eAwGtoxakjipb3vWhXu9RwrR7fGx4TmxCaIjDrjQ2eu8BQL036/O0rHn3J
+         u5Bdb7w5GB5fw==
+Date:   Wed, 20 Jan 2021 12:37:52 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: mac80211 2021-01-18.2
+Message-ID: <20210120123752.636659d1@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <c066813abc5830eb094ae0c343a71e88b775b441.camel@sipsolutions.net>
+References: <20210118204750.7243-1-johannes@sipsolutions.net>
+        <161101020906.2232.13826999223880000897.git-patchwork-notify@kernel.org>
+        <c066813abc5830eb094ae0c343a71e88b775b441.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87turftqxt.fsf@miraculix.mork.no>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jan 17, 2021 at 06:26:54PM +0100, Bjørn Mork wrote:
-> I was young and stupid. Now I'm not that young anymore ;-)
+On Wed, 20 Jan 2021 18:59:21 +0100 Johannes Berg wrote:
+> Hi Jakub,
+> 
+> > This pull request was applied to netdev/net.git (refs/heads/master):  
+> 
+> Since you pulled this now, question:
+> 
+> I have some pending content for mac80211-next/net-next that either
+> conflicts with or requires a fix from here, or such.
+> 
+> Could you pull net into net-next, so I can get it into mac80211-next? Or
+> do you prefer another approach here? I could also double-apply the
+> single patch, or pull myself but then we'd get a lot of net content into
+> net-next only via mac80211-next which seems odd.
 
-We all make mistakes, when we don't have the knowledge there are other
-ways. That is partially what code review is about.
+Just merged net -> net-next, you can do your thing :)
 
-> Never ever imagined that this would be replicated in another driver,
-> though.  That doesn't really make much sense.  We have learned by now,
-> haven't we?  This subject has been discussed a few times in the past,
-> and Johannes summary is my understanding as well:
-> "I don't think anyone likes that"
-
-So there seems to be agreement there. But what is not clear, is
-anybody willing to do the work to fix this, and is there enough ROI.
-
-Do we expect more devices like this? Will 6G, 7G modems look very
-different? Be real network devices and not need any of this odd stuff?
-Or will they be just be incrementally better but mostly the same?
-
-I went into the review thinking it was an Ethernet driver, and kept
-having WTF moments. Now i know it is not an Ethernet driver, i can say
-it is not my domain, i don't know the field well enough to say if all
-these hacks are acceptable or not.
-
-It probably needs David and Jakub to set the direction to be followed.
-
-   Andrew
+Out of curiosity are you going to rebase mac80211-next or send a PR,
+fast forward and then apply the conflicting patches?
