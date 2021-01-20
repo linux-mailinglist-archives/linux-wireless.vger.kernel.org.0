@@ -2,552 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 844032FDD1D
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 00:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE4B2FDDC5
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 01:20:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732063AbhATWhI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jan 2021 17:37:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38612 "EHLO mail.kernel.org"
+        id S1732094AbhAUARp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jan 2021 19:17:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47970 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390592AbhATWQf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jan 2021 17:16:35 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F1A1236F9;
-        Wed, 20 Jan 2021 22:15:12 +0000 (UTC)
+        id S2404189AbhATXdl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 Jan 2021 18:33:41 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E5A8122B2A;
+        Wed, 20 Jan 2021 23:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611180914;
-        bh=fyCVmr9FhvWuweDIzL3OsCFctwVp8z/jWlFeqeMfNtg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=otIjsUTljGyDQhHXyPWGuYUHaoJ3IiLs2V7hGsdqqczF7BMgxS9H0NPoFiGC0nmWL
-         FOg4qEtR7Upjlb1bd0fTkNTX2DBvxCkDWVeNjI3aVeqvsSKnI4ggpwUrvwwhBt7wMT
-         ooDGXk4n3OuD217hensxObpCC+yhRJRC24j4ERFYqWEtJJpRVejpuEohrHVis1j4YD
-         vuYyeq7pI/e58OiZ6TXD7whC7LtyRQmLML3Wg9SekJYscsTfox/j8uslyaPcys5lV4
-         hhicFj3DfDLxjXfXvpkaJKZpa0DzUDiajZadINBVWynBxKPxzeItRHbiJaSp0nt87k
-         EEmp9W2P2HlVQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sean.wang@mediatek.com
-Subject: [PATCH 6/6] mt76: mt76_connac: move pm utility routines in mt76_connac_lib module
-Date:   Wed, 20 Jan 2021 23:14:40 +0100
-Message-Id: <efc40725c8ffa12540d8363a00dbdd9d0c8fce5d.1611180342.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <cover.1611180342.git.lorenzo@kernel.org>
-References: <cover.1611180342.git.lorenzo@kernel.org>
+        s=k20201202; t=1611185580;
+        bh=t2Zln7DBJVyoGoKcei8JH3sZLU0upaVxfgzcLoCEak4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=IzFlscfenbfXq3lZ44nay0YFMe3UwqmavlsSN6E94KeAJamdbc6Xc1cJiB3HERtgE
+         0WBwCVJdOO+nfa4vxRDGvV6vK8R+H2+5xoFDT5BIOmNSkGF1nsLWWbzDaUV5GkbtjN
+         wox04NN9fc0tEX/akjnaJgktQGG0Z+srQbXojsz/bDKCa3e1gm50c4O7hNnotLXH/B
+         RjUryg38Slzs+lJwdSB5p2FZNodS64mqnMJoeuLBomclL4labcgVwxbVlcYDN30Z5s
+         rwkaCnva15hu2Dr3tLFKTIMoRwvegZsP7YOVsnXaMo24etbpai46WrjjJogFZW9FbA
+         1lXsiY4NcOjNA==
+Date:   Wed, 20 Jan 2021 15:32:55 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     =?UTF-8?B?QmrDuHJu?= Mork <bjorn@mork.no>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        johannes@sipsolutions.net, krishna.c.sudi@intel.com
+Subject: Re: [PATCH 17/18] net: iosm: readme file
+Message-ID: <20210120153255.4fcf7e32@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <YAiF2/lMGZ0mPUSK@lunn.ch>
+References: <20210107170523.26531-1-m.chetan.kumar@intel.com>
+        <20210107170523.26531-18-m.chetan.kumar@intel.com>
+        <X/eJ/rl4U6edWr3i@lunn.ch>
+        <87turftqxt.fsf@miraculix.mork.no>
+        <YAiF2/lMGZ0mPUSK@lunn.ch>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move power_save common code shared between mt7663 and mt7921 in
-mt76_connac module
+On Wed, 20 Jan 2021 20:34:51 +0100 Andrew Lunn wrote:
+> On Sun, Jan 17, 2021 at 06:26:54PM +0100, Bj=C3=B8rn Mork wrote:
+> > I was young and stupid. Now I'm not that young anymore ;-) =20
+>=20
+> We all make mistakes, when we don't have the knowledge there are other
+> ways. That is partially what code review is about.
+>=20
+> > Never ever imagined that this would be replicated in another driver,
+> > though.  That doesn't really make much sense.  We have learned by now,
+> > haven't we?  This subject has been discussed a few times in the past,
+> > and Johannes summary is my understanding as well:
+> > "I don't think anyone likes that" =20
+>=20
+> So there seems to be agreement there. But what is not clear, is
+> anybody willing to do the work to fix this, and is there enough ROI.
+>=20
+> Do we expect more devices like this? Will 6G, 7G modems look very
+> different?=20
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
- .../net/wireless/mediatek/mt76/mt7615/mac.c   |  87 +------------
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  62 +++------
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  19 +--
- .../net/wireless/mediatek/mt76/mt7615/pci.c   |   2 +-
- .../net/wireless/mediatek/mt76/mt76_connac.h  |  29 +++++
- .../wireless/mediatek/mt76/mt76_connac_mac.c  | 119 ++++++++++++++++++
- 7 files changed, 177 insertions(+), 143 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+Didn't Intel sell its 5G stuff off to Apple?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/Makefile b/drivers/net/wireless/mediatek/mt76/Makefile
-index fd0a124335a0..eac419c64788 100644
---- a/drivers/net/wireless/mediatek/mt76/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/Makefile
-@@ -27,7 +27,7 @@ mt76x02-lib-y := mt76x02_util.o mt76x02_mac.o mt76x02_mcu.o \
- 
- mt76x02-usb-y := mt76x02_usb_mcu.o mt76x02_usb_core.o
- 
--mt76-connac-lib-y := mt76_connac_mcu.o
-+mt76-connac-lib-y := mt76_connac_mcu.o mt76_connac_mac.o
- 
- obj-$(CONFIG_MT76x0_COMMON) += mt76x0/
- obj-$(CONFIG_MT76x2_COMMON) += mt76x2/
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 904a8348f94b..6a3e1a609852 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1465,7 +1465,7 @@ static void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
- 	mt7615_mac_sta_poll(dev);
- 	rcu_read_unlock();
- 
--	mt7615_pm_power_save_sched(dev);
-+	mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
- 	mt76_worker_schedule(&dev->mt76.tx_worker);
- }
- 
-@@ -1789,11 +1789,11 @@ void mt7615_update_channel(struct mt76_dev *mdev)
- {
- 	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
- 
--	if (mt7615_pm_wake(dev))
-+	if (mt76_connac_pm_wake(&dev->mphy, &dev->pm))
- 		return;
- 
- 	__mt7615_update_channel(dev);
--	mt7615_pm_power_save_sched(dev);
-+	mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
- }
- EXPORT_SYMBOL_GPL(mt7615_update_channel);
- 
-@@ -1862,95 +1862,20 @@ void mt7615_pm_wake_work(struct work_struct *work)
- {
- 	struct mt7615_dev *dev;
- 	struct mt76_phy *mphy;
--	int i;
- 
- 	dev = (struct mt7615_dev *)container_of(work, struct mt7615_dev,
- 						pm.wake_work);
- 	mphy = dev->phy.mt76;
- 
--	if (mt7615_mcu_set_drv_ctrl(dev)) {
-+	if (!mt7615_mcu_set_drv_ctrl(dev))
-+		mt76_connac_pm_dequeue_skbs(mphy, &dev->pm);
-+	else
- 		dev_err(mphy->dev->dev, "failed to wake device\n");
--		goto out;
--	}
--
--	spin_lock_bh(&dev->pm.txq_lock);
--	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
--		struct mt76_wcid *wcid = dev->pm.tx_q[i].wcid;
--		struct ieee80211_sta *sta = NULL;
--
--		if (!dev->pm.tx_q[i].skb)
--			continue;
--
--		if (wcid && wcid->sta)
--			sta = container_of((void *)wcid, struct ieee80211_sta,
--					   drv_priv);
--
--		mt76_tx(mphy, sta, wcid, dev->pm.tx_q[i].skb);
--		dev->pm.tx_q[i].skb = NULL;
--	}
--	spin_unlock_bh(&dev->pm.txq_lock);
--
--	mt76_worker_schedule(&dev->mt76.tx_worker);
- 
--out:
- 	ieee80211_wake_queues(mphy->hw);
- 	complete_all(&dev->pm.wake_cmpl);
- }
- 
--int mt7615_pm_wake(struct mt7615_dev *dev)
--{
--	struct mt76_phy *mphy = dev->phy.mt76;
--
--	if (!mt7615_firmware_offload(dev))
--		return 0;
--
--	if (!mt76_is_mmio(mphy->dev))
--		return 0;
--
--	if (!test_bit(MT76_STATE_PM, &mphy->state))
--		return 0;
--
--	if (test_bit(MT76_HW_SCANNING, &mphy->state) ||
--	    test_bit(MT76_HW_SCHED_SCANNING, &mphy->state))
--		return 0;
--
--	if (queue_work(dev->mt76.wq, &dev->pm.wake_work))
--		reinit_completion(&dev->pm.wake_cmpl);
--
--	if (!wait_for_completion_timeout(&dev->pm.wake_cmpl, 3 * HZ)) {
--		ieee80211_wake_queues(mphy->hw);
--		return -ETIMEDOUT;
--	}
--
--	return 0;
--}
--EXPORT_SYMBOL_GPL(mt7615_pm_wake);
--
--void mt7615_pm_power_save_sched(struct mt7615_dev *dev)
--{
--	struct mt76_phy *mphy = dev->phy.mt76;
--
--	if (!mt7615_firmware_offload(dev))
--		return;
--
--	if (!mt76_is_mmio(mphy->dev))
--		return;
--
--	if (!dev->pm.enable || !test_bit(MT76_STATE_RUNNING, &mphy->state))
--		return;
--
--	dev->pm.last_activity = jiffies;
--
--	if (test_bit(MT76_HW_SCANNING, &mphy->state) ||
--	    test_bit(MT76_HW_SCHED_SCANNING, &mphy->state))
--		return;
--
--	if (!test_bit(MT76_STATE_PM, &mphy->state))
--		queue_delayed_work(dev->mt76.wq, &dev->pm.ps_work,
--				   dev->pm.idle_timeout);
--}
--EXPORT_SYMBOL_GPL(mt7615_pm_power_save_sched);
--
- void mt7615_pm_power_save_work(struct work_struct *work)
- {
- 	struct mt7615_dev *dev;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 3eafb9cbf827..f463465e0b3a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -24,22 +24,6 @@ static bool mt7615_dev_running(struct mt7615_dev *dev)
- 	return phy && test_bit(MT76_STATE_RUNNING, &phy->mt76->state);
- }
- 
--static void mt7615_free_pending_tx_skbs(struct mt7615_dev *dev,
--					struct mt7615_sta *msta)
--{
--	int i;
--
--	spin_lock_bh(&dev->pm.txq_lock);
--	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
--		if (msta && dev->pm.tx_q[i].wcid != &msta->wcid)
--			continue;
--
--		dev_kfree_skb(dev->pm.tx_q[i].skb);
--		dev->pm.tx_q[i].skb = NULL;
--	}
--	spin_unlock_bh(&dev->pm.txq_lock);
--}
--
- static int mt7615_start(struct ieee80211_hw *hw)
- {
- 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
-@@ -95,7 +79,7 @@ static void mt7615_stop(struct ieee80211_hw *hw)
- 	cancel_delayed_work_sync(&dev->pm.ps_work);
- 	cancel_work_sync(&dev->pm.wake_work);
- 
--	mt7615_free_pending_tx_skbs(dev, NULL);
-+	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
- 
- 	mt7615_mutex_acquire(dev);
- 
-@@ -258,7 +242,7 @@ static void mt7615_remove_interface(struct ieee80211_hw *hw,
- 	if (vif == phy->monitor_vif)
- 	    phy->monitor_vif = NULL;
- 
--	mt7615_free_pending_tx_skbs(dev, msta);
-+	mt76_connac_free_pending_tx_skbs(&dev->pm, &msta->wcid);
- 
- 	mt7615_mac_set_beacon_filter(phy, vif, false);
- 	mt7615_mcu_add_dev_info(phy, vif, false);
-@@ -581,6 +565,7 @@ int mt7615_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
- 	struct mt7615_sta *msta = (struct mt7615_sta *)sta->drv_priv;
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct mt7615_phy *phy;
- 	int idx, err;
- 
- 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7615_WTBL_STA - 1);
-@@ -593,21 +578,18 @@ int mt7615_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->wcid.idx = idx;
- 	msta->wcid.ext_phy = mvif->common.band_idx;
- 
--	err = mt7615_pm_wake(dev);
-+	phy = mvif->common.band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-+	err = mt76_connac_pm_wake(phy->mt76, &dev->pm);
- 	if (err)
- 		return err;
- 
--	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
--		struct mt7615_phy *phy;
--
--		phy = mvif->common.band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-+	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
- 		mt7615_mcu_add_bss_info(phy, vif, sta, true);
--	}
- 	mt7615_mac_wtbl_update(dev, idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 	mt7615_mcu_sta_add(&dev->phy, vif, sta, true);
- 
--	mt7615_pm_power_save_sched(dev);
-+	mt76_connac_power_save_sched(phy->mt76, &dev->pm);
- 
- 	return 0;
- }
-@@ -618,27 +600,26 @@ void mt7615_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- {
- 	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
- 	struct mt7615_sta *msta = (struct mt7615_sta *)sta->drv_priv;
-+	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct mt7615_phy *phy;
-+
-+	mt76_connac_free_pending_tx_skbs(&dev->pm, &msta->wcid);
- 
--	mt7615_free_pending_tx_skbs(dev, msta);
--	mt7615_pm_wake(dev);
-+	phy = mvif->common.band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-+	mt76_connac_pm_wake(phy->mt76, &dev->pm);
- 
- 	mt7615_mcu_sta_add(&dev->phy, vif, sta, false);
- 	mt7615_mac_wtbl_update(dev, msta->wcid.idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
--	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
--		struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
--		struct mt7615_phy *phy;
--
--		phy = mvif->common.band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-+	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
- 		mt7615_mcu_add_bss_info(phy, vif, sta, false);
--	}
- 
- 	spin_lock_bh(&dev->sta_poll_lock);
- 	if (!list_empty(&msta->poll_list))
- 		list_del_init(&msta->poll_list);
- 	spin_unlock_bh(&dev->sta_poll_lock);
- 
--	mt7615_pm_power_save_sched(dev);
-+	mt76_connac_power_save_sched(phy->mt76, &dev->pm);
- }
- EXPORT_SYMBOL_GPL(mt7615_mac_sta_remove);
- 
-@@ -723,16 +704,7 @@ static void mt7615_tx(struct ieee80211_hw *hw,
- 		skb_set_queue_mapping(skb, qid);
- 	}
- 
--	spin_lock_bh(&dev->pm.txq_lock);
--	if (!dev->pm.tx_q[qid].skb) {
--		ieee80211_stop_queues(hw);
--		dev->pm.tx_q[qid].wcid = wcid;
--		dev->pm.tx_q[qid].skb = skb;
--		queue_work(dev->mt76.wq, &dev->pm.wake_work);
--	} else {
--		dev_kfree_skb(skb);
--	}
--	spin_unlock_bh(&dev->pm.txq_lock);
-+	mt76_connac_pm_queue_skb(hw, &dev->pm, wcid, skb);
- }
- 
- static int mt7615_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
-@@ -1120,7 +1092,7 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
- 	int err = 0;
- 
- 	cancel_delayed_work_sync(&dev->pm.ps_work);
--	mt7615_free_pending_tx_skbs(dev, NULL);
-+	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
- 
- 	mt7615_mutex_acquire(dev);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 99a1a1a93b3b..931bbfd613b5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -382,8 +382,6 @@ void mt7615_mac_set_rates(struct mt7615_phy *phy, struct mt7615_sta *sta,
- 			  struct ieee80211_tx_rate *probe_rate,
- 			  struct ieee80211_tx_rate *rates);
- void mt7615_pm_wake_work(struct work_struct *work);
--int mt7615_pm_wake(struct mt7615_dev *dev);
--void mt7615_pm_power_save_sched(struct mt7615_dev *dev);
- void mt7615_pm_power_save_work(struct work_struct *work);
- int mt7615_mcu_del_wtbl_all(struct mt7615_dev *dev);
- int mt7615_mcu_set_chan_info(struct mt7615_phy *phy, int cmd);
-@@ -439,19 +437,10 @@ static inline u16 mt7615_wtbl_size(struct mt7615_dev *dev)
- 		return MT7615_WTBL_SIZE;
- }
- 
--static inline void mt7615_mutex_acquire(struct mt7615_dev *dev)
--	 __acquires(&dev->mt76.mutex)
--{
--	mutex_lock(&dev->mt76.mutex);
--	mt7615_pm_wake(dev);
--}
--
--static inline void mt7615_mutex_release(struct mt7615_dev *dev)
--	__releases(&dev->mt76.mutex)
--{
--	mt7615_pm_power_save_sched(dev);
--	mutex_unlock(&dev->mt76.mutex);
--}
-+#define mt7615_mutex_acquire(dev)	\
-+	mt76_connac_mutex_acquire(&(dev)->mt76, &(dev)->pm)
-+#define mt7615_mutex_release(dev)	\
-+	mt76_connac_mutex_release(&(dev)->mt76, &(dev)->pm)
- 
- static inline u8 mt7615_lmac_mapping(struct mt7615_dev *dev, u8 ac)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-index 5ac4193b770c..71487f532f36 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-@@ -76,7 +76,7 @@ static int mt7615_pci_suspend(struct pci_dev *pdev, pm_message_t state)
- 	bool hif_suspend;
- 	int i, err;
- 
--	err = mt7615_pm_wake(dev);
-+	err = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
- 	if (err < 0)
- 		return err;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index a20dc558e8f5..15a7b0a06053 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -59,4 +59,33 @@ struct mt76_connac_pm {
- 
- extern const struct wiphy_wowlan_support mt76_connac_wowlan_support;
- 
-+int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm);
-+void mt76_connac_power_save_sched(struct mt76_phy *phy,
-+				  struct mt76_connac_pm *pm);
-+void mt76_connac_free_pending_tx_skbs(struct mt76_connac_pm *pm,
-+				      struct mt76_wcid *wcid);
-+
-+static inline void
-+mt76_connac_mutex_acquire(struct mt76_dev *dev, struct mt76_connac_pm *pm)
-+	__acquires(&dev->mutex)
-+{
-+	mutex_lock(&dev->mutex);
-+	mt76_connac_pm_wake(&dev->phy, pm);
-+}
-+
-+static inline void
-+mt76_connac_mutex_release(struct mt76_dev *dev, struct mt76_connac_pm *pm)
-+	__releases(&dev->mutex)
-+{
-+	mt76_connac_power_save_sched(&dev->phy, pm);
-+	mutex_unlock(&dev->mutex);
-+}
-+
-+void mt76_connac_pm_queue_skb(struct ieee80211_hw *hw,
-+			      struct mt76_connac_pm *pm,
-+			      struct mt76_wcid *wcid,
-+			      struct sk_buff *skb);
-+void mt76_connac_pm_dequeue_skbs(struct mt76_phy *phy,
-+				 struct mt76_connac_pm *pm);
-+
- #endif /* __MT76_CONNAC_H */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-new file mode 100644
-index 000000000000..c5f5037f5757
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -0,0 +1,119 @@
-+// SPDX-License-Identifier: ISC
-+/* Copyright (C) 2020 MediaTek Inc. */
-+
-+#include "mt76_connac.h"
-+
-+int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm)
-+{
-+	struct mt76_dev *dev = phy->dev;
-+
-+	if (!pm->enable)
-+		return 0;
-+
-+	if (!mt76_is_mmio(dev))
-+		return 0;
-+
-+	if (!test_bit(MT76_STATE_PM, &phy->state))
-+		return 0;
-+
-+	if (test_bit(MT76_HW_SCANNING, &phy->state) ||
-+	    test_bit(MT76_HW_SCHED_SCANNING, &phy->state))
-+		return 0;
-+
-+	if (queue_work(dev->wq, &pm->wake_work))
-+		reinit_completion(&pm->wake_cmpl);
-+
-+	if (!wait_for_completion_timeout(&pm->wake_cmpl, 3 * HZ)) {
-+		ieee80211_wake_queues(phy->hw);
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_pm_wake);
-+
-+void mt76_connac_power_save_sched(struct mt76_phy *phy,
-+				  struct mt76_connac_pm *pm)
-+{
-+	struct mt76_dev *dev = phy->dev;
-+
-+	if (!mt76_is_mmio(dev))
-+		return;
-+
-+	if (!pm->enable || !test_bit(MT76_STATE_RUNNING, &phy->state))
-+		return;
-+
-+	pm->last_activity = jiffies;
-+
-+	if (test_bit(MT76_HW_SCANNING, &phy->state) ||
-+	    test_bit(MT76_HW_SCHED_SCANNING, &phy->state))
-+		return;
-+
-+	if (!test_bit(MT76_STATE_PM, &phy->state))
-+		queue_delayed_work(dev->wq, &pm->ps_work, pm->idle_timeout);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_power_save_sched);
-+
-+void mt76_connac_free_pending_tx_skbs(struct mt76_connac_pm *pm,
-+				      struct mt76_wcid *wcid)
-+{
-+	int i;
-+
-+	spin_lock_bh(&pm->txq_lock);
-+	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
-+		if (wcid && pm->tx_q[i].wcid != wcid)
-+			continue;
-+
-+		dev_kfree_skb(pm->tx_q[i].skb);
-+		pm->tx_q[i].skb = NULL;
-+	}
-+	spin_unlock_bh(&pm->txq_lock);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_free_pending_tx_skbs);
-+
-+void mt76_connac_pm_queue_skb(struct ieee80211_hw *hw,
-+			      struct mt76_connac_pm *pm,
-+			      struct mt76_wcid *wcid,
-+			      struct sk_buff *skb)
-+{
-+	int qid = skb_get_queue_mapping(skb);
-+	struct mt76_phy *phy = hw->priv;
-+
-+	spin_lock_bh(&pm->txq_lock);
-+	if (!pm->tx_q[qid].skb) {
-+		ieee80211_stop_queues(hw);
-+		pm->tx_q[qid].wcid = wcid;
-+		pm->tx_q[qid].skb = skb;
-+		queue_work(phy->dev->wq, &pm->wake_work);
-+	} else {
-+		dev_kfree_skb(skb);
-+	}
-+	spin_unlock_bh(&pm->txq_lock);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_pm_queue_skb);
-+
-+void mt76_connac_pm_dequeue_skbs(struct mt76_phy *phy,
-+				 struct mt76_connac_pm *pm)
-+{
-+	int i;
-+
-+	spin_lock_bh(&pm->txq_lock);
-+	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
-+		struct mt76_wcid *wcid = pm->tx_q[i].wcid;
-+		struct ieee80211_sta *sta = NULL;
-+
-+		if (!pm->tx_q[i].skb)
-+			continue;
-+
-+		if (wcid && wcid->sta)
-+			sta = container_of((void *)wcid, struct ieee80211_sta,
-+					   drv_priv);
-+
-+		mt76_tx(phy, sta, wcid, pm->tx_q[i].skb);
-+		pm->tx_q[i].skb = NULL;
-+	}
-+	spin_unlock_bh(&pm->txq_lock);
-+
-+	mt76_worker_schedule(&phy->dev->tx_worker);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_pm_dequeue_skbs);
--- 
-2.29.2
+> Be real network devices and not need any of this odd stuff?
+> Or will they be just be incrementally better but mostly the same?
+>=20
+> I went into the review thinking it was an Ethernet driver, and kept
+> having WTF moments. Now i know it is not an Ethernet driver, i can say
+> it is not my domain, i don't know the field well enough to say if all
+> these hacks are acceptable or not.
+>=20
+> It probably needs David and Jakub to set the direction to be followed.
 
+AFAIU all those cellar modems are relatively slow and FW-heavy, so the
+ideal solution IMO is not even a common kernel interface but actually
+a common device interface, like NVMe (or virtio for lack of better
+examples).
