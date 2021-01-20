@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C6022FDD12
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 00:40:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52FA22FDD17
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 00:41:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388173AbhATWfe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jan 2021 17:35:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38448 "EHLO mail.kernel.org"
+        id S2388268AbhATWgT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jan 2021 17:36:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38514 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388630AbhATWPn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jan 2021 17:15:43 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 14804235FF;
-        Wed, 20 Jan 2021 22:15:00 +0000 (UTC)
+        id S2389244AbhATWPx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 Jan 2021 17:15:53 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 17A7D2360D;
+        Wed, 20 Jan 2021 22:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611180902;
-        bh=vMV3OSM46xdP88rDLBEhMOAUkDDMvQEdukEvaGB1XoM=;
+        s=k20201202; t=1611180910;
+        bh=FbZXjAQM3qrj8keDKd9rdGp07BdsPRDn2CwmXtnkurM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TK5mQeefVhcfZGbncvjc3jV1TuVnckH/03HlD5m3VuEv/rmK9mI+KUdLjkcprcbSi
-         Wz6DWC1HT8zCR/6iF7CaOlm++Pf9sGJ5OUXMId4/3W7oZF8P4u7g+iZAKq4qGgGuqR
-         FG0wcXA7PvJoLGBZCHISz8ulgt6ZSBTJUA3fkh4TUVTA6h5+cZCPeLq62Uu1S55ZkV
-         xFfHnMWDiJJWrcRk3DWn9bUjD5ITTjHmjEMdwG/25MvZpqMgD6ze2VUFRO2Qrb9oNX
-         HY/gJsGsx9XEZ19fkDHoAkw0hDbTkh81Ps3/cjc6GJmmtEtGel3CXGxOE3pCw4ZOEw
-         S1BBqVVyriwZw==
+        b=q9e7f33wp5TyCIP+q1b++MKqlJg/ebbnQF04ZPdWnTUUDj9Ss3a4ua7CHp8dahvc2
+         MgLb8VwjqTDyCbOAGM6P0NdD+t+YciuRR3GoDw+ajiOoThNdmwMtc4rJ1v2/QodLIX
+         VO9b8IjUOVvAu/cDZ2j8eE2ckFyBFieel1FBk0jADe/+UmCg3390Gb8QweE1yY+F30
+         wqnM8MY9ZkSkFa3twMsetqyG6mBZYlD4pSB0DpBPSUD37DUP+KzvJpXlv8G8BW8YTT
+         NmBO4AntI493mBCQ7sTdAgEV5x1t6T2+ZSNnedGft4gqlmpo2PwL83bOMpRGp6dTf2
+         PRJ49izxB6ISA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         sean.wang@mediatek.com
-Subject: [PATCH 1/6] mt76: introduce mt76_vif data structure
-Date:   Wed, 20 Jan 2021 23:14:35 +0100
-Message-Id: <b1590b13ce46d392189fe628375a57e96f8324f4.1611180342.git.lorenzo@kernel.org>
+Subject: [PATCH 4/6] mt76: mt76_connac: move WoW and suspend code in mt76_connac_mcu module
+Date:   Wed, 20 Jan 2021 23:14:38 +0100
+Message-Id: <d11a1322c322412915d50572792fbef4d0d2d1e5.1611180342.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <cover.1611180342.git.lorenzo@kernel.org>
 References: <cover.1611180342.git.lorenzo@kernel.org>
@@ -39,588 +39,1124 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce mt76_vif data structure to share common fields between
-mt7615_vif and mt7921_vif and create a mcu common library
+Move WoW and suspend code in mt76_connac_mcu module in order to be reused
+in mt7615 and mt7921 drivers
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h     |   8 ++
- .../net/wireless/mediatek/mt76/mt7615/mac.c   |   2 +-
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  38 +++---
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 109 +++++++++---------
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |   7 +-
- .../wireless/mediatek/mt76/mt7615/pci_mac.c   |   2 +-
- 6 files changed, 85 insertions(+), 81 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  16 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 310 +-----------------
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   | 114 -------
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   6 -
+ .../net/wireless/mediatek/mt76/mt7615/pci.c   |   6 +-
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c  |   4 +-
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |   4 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 307 +++++++++++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 124 ++++++-
+ 9 files changed, 449 insertions(+), 442 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 3e2191efc4f0..8bf45497cfca 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -561,6 +561,14 @@ struct mt76_testmode_data {
- 	} rx_stats;
- };
- 
-+struct mt76_vif {
-+	u8 idx;
-+	u8 omac_idx;
-+	u8 band_idx;
-+	u8 wmm_idx;
-+	u8 scan_seq_num;
-+};
-+
- struct mt76_phy {
- 	struct ieee80211_hw *hw;
- 	struct mt76_dev *dev;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 26909fdbb0a5..18b947f3bb9c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -544,7 +544,7 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
- 	u16 seqno = 0;
- 
- 	if (vif) {
--		struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+		struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
- 
- 		omac_idx = mvif->omac_idx;
- 		wmm_idx = mvif->wmm_idx;
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index d655604b2993..3bbf6b79f6e0 100644
+index 985f2ec268dc..f726378fe9ea 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -187,8 +187,8 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
- 	    is_zero_ether_addr(vif->addr))
- 		phy->monitor_vif = vif;
+@@ -1115,8 +1115,8 @@ static int mt7615_cancel_remain_on_channel(struct ieee80211_hw *hw,
+ static int mt7615_suspend(struct ieee80211_hw *hw,
+ 			  struct cfg80211_wowlan *wowlan)
+ {
+-	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+ 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
++	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+ 	int err = 0;
  
--	mvif->idx = ffs(~dev->mt76.vif_mask) - 1;
--	if (mvif->idx >= MT7615_MAX_INTERFACES) {
-+	mvif->common.idx = ffs(~dev->mt76.vif_mask) - 1;
-+	if (mvif->common.idx >= MT7615_MAX_INTERFACES) {
- 		ret = -ENOSPC;
- 		goto out;
- 	}
-@@ -198,26 +198,26 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
- 		ret = -ENOSPC;
- 		goto out;
- 	}
--	mvif->omac_idx = idx;
-+	mvif->common.omac_idx = idx;
+ 	cancel_delayed_work_sync(&dev->pm.ps_work);
+@@ -1131,10 +1131,11 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
+ 	set_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
+ 	ieee80211_iterate_active_interfaces(hw,
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7615_mcu_set_suspend_iter, phy);
++					    mt76_connac_mcu_set_suspend_iter,
++					    phy->mt76);
  
--	mvif->band_idx = ext_phy;
-+	mvif->common.band_idx = ext_phy;
- 	if (mt7615_ext_phy(dev))
--		mvif->wmm_idx = ext_phy * (MT7615_MAX_WMM_SETS / 2) +
--				mvif->idx % (MT7615_MAX_WMM_SETS / 2);
-+		mvif->common.wmm_idx = ext_phy * (MT7615_MAX_WMM_SETS / 2) +
-+				mvif->common.idx % (MT7615_MAX_WMM_SETS / 2);
- 	else
--		mvif->wmm_idx = mvif->idx % MT7615_MAX_WMM_SETS;
-+		mvif->common.wmm_idx = mvif->common.idx % MT7615_MAX_WMM_SETS;
- 
--	dev->mt76.vif_mask |= BIT(mvif->idx);
--	dev->omac_mask |= BIT_ULL(mvif->omac_idx);
--	phy->omac_mask |= BIT_ULL(mvif->omac_idx);
-+	dev->mt76.vif_mask |= BIT(mvif->common.idx);
-+	dev->omac_mask |= BIT_ULL(mvif->common.omac_idx);
-+	phy->omac_mask |= BIT_ULL(mvif->common.omac_idx);
- 
- 	mt7615_mcu_set_dbdc(dev);
- 
--	idx = MT7615_WTBL_RESERVED - mvif->idx;
-+	idx = MT7615_WTBL_RESERVED - mvif->common.idx;
- 
- 	INIT_LIST_HEAD(&mvif->sta.poll_list);
- 	mvif->sta.wcid.idx = idx;
--	mvif->sta.wcid.ext_phy = mvif->band_idx;
-+	mvif->sta.wcid.ext_phy = mvif->common.band_idx;
- 	mvif->sta.wcid.hw_key_idx = -1;
- 	mt7615_mac_wtbl_update(dev, idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
-@@ -263,9 +263,9 @@ static void mt7615_remove_interface(struct ieee80211_hw *hw,
- 
- 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
- 
--	dev->mt76.vif_mask &= ~BIT(mvif->idx);
--	dev->omac_mask &= ~BIT_ULL(mvif->omac_idx);
--	phy->omac_mask &= ~BIT_ULL(mvif->omac_idx);
-+	dev->mt76.vif_mask &= ~BIT(mvif->common.idx);
-+	dev->omac_mask &= ~BIT_ULL(mvif->common.omac_idx);
-+	phy->omac_mask &= ~BIT_ULL(mvif->common.omac_idx);
+ 	if (!mt7615_dev_running(dev))
+-		err = mt7615_mcu_set_hif_suspend(dev, true);
++		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true);
  
  	mt7615_mutex_release(dev);
  
-@@ -445,7 +445,7 @@ static int
- mt7615_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif, u16 queue,
- 	       const struct ieee80211_tx_queue_params *params)
+@@ -1143,8 +1144,8 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
+ 
+ static int mt7615_resume(struct ieee80211_hw *hw)
  {
--	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
+-	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+ 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
++	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+ 	bool running;
+ 
+ 	mt7615_mutex_acquire(dev);
+@@ -1155,7 +1156,7 @@ static int mt7615_resume(struct ieee80211_hw *hw)
+ 	if (!running) {
+ 		int err;
+ 
+-		err = mt7615_mcu_set_hif_suspend(dev, false);
++		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false);
+ 		if (err < 0) {
+ 			mt7615_mutex_release(dev);
+ 			return err;
+@@ -1165,7 +1166,8 @@ static int mt7615_resume(struct ieee80211_hw *hw)
+ 	clear_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
+ 	ieee80211_iterate_active_interfaces(hw,
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7615_mcu_set_suspend_iter, phy);
++					    mt76_connac_mcu_set_suspend_iter,
++					    phy->mt76);
+ 
+ 	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
+ 				     MT7615_WATCHDOG_TIME);
+@@ -1190,7 +1192,7 @@ static void mt7615_set_rekey_data(struct ieee80211_hw *hw,
  	struct mt7615_dev *dev = mt7615_hw_dev(hw);
- 	int err;
  
-@@ -589,7 +589,7 @@ int mt7615_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->vif = mvif;
- 	msta->wcid.sta = 1;
- 	msta->wcid.idx = idx;
--	msta->wcid.ext_phy = mvif->band_idx;
-+	msta->wcid.ext_phy = mvif->common.band_idx;
- 
- 	err = mt7615_pm_wake(dev);
- 	if (err)
-@@ -598,7 +598,7 @@ int mt7615_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
- 		struct mt7615_phy *phy;
- 
--		phy = mvif->band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-+		phy = mvif->common.band_idx ? mt7615_ext_phy(dev) : &dev->phy;
- 		mt7615_mcu_add_bss_info(phy, vif, sta, true);
- 	}
- 	mt7615_mac_wtbl_update(dev, idx,
-@@ -627,7 +627,7 @@ void mt7615_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
- 		struct mt7615_phy *phy;
- 
--		phy = mvif->band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-+		phy = mvif->common.band_idx ? mt7615_ext_phy(dev) : &dev->phy;
- 		mt7615_mcu_add_bss_info(phy, vif, sta, false);
- 	}
- 
+ 	mt7615_mutex_acquire(dev);
+-	mt7615_mcu_update_gtk_rekey(hw, vif, data);
++	mt76_connac_mcu_update_gtk_rekey(hw, vif, data);
+ 	mt7615_mutex_release(dev);
+ }
+ #endif /* CONFIG_PM */
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 9aa4ec103262..ed289e056254 100644
+index 1d0bc5f67f0b..cec45ef813c8 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -486,7 +486,7 @@ mt7615_mcu_beacon_loss_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
- 	struct mt7615_beacon_loss_event *event = priv;
- 
--	if (mvif->idx != event->bss_idx)
-+	if (mvif->common.idx != event->bss_idx)
- 		return;
- 
- 	if (!(vif->driver_flags & IEEE80211_VIF_BEACON_FILTER))
-@@ -604,7 +604,7 @@ mt7615_mcu_muar_config(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		       bool bssid, bool enable)
- {
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
--	u32 idx = mvif->omac_idx - REPEATER_BSSID_START;
-+	u32 idx = mvif->common.omac_idx - REPEATER_BSSID_START;
- 	u32 mask = dev->omac_mask >> 32 & ~BIT(idx);
- 	const u8 *addr = vif->addr;
- 	struct {
-@@ -657,8 +657,8 @@ mt7615_mcu_add_dev(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		} __packed tlv;
- 	} data = {
- 		.hdr = {
--			.omac_idx = mvif->omac_idx,
--			.band_idx = mvif->band_idx,
-+			.omac_idx = mvif->common.omac_idx,
-+			.band_idx = mvif->common.band_idx,
- 			.tlv_num = cpu_to_le16(1),
- 			.is_tlv_append = 1,
- 		},
-@@ -666,11 +666,11 @@ mt7615_mcu_add_dev(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 			.tag = cpu_to_le16(DEV_INFO_ACTIVE),
- 			.len = cpu_to_le16(sizeof(struct req_tlv)),
- 			.active = enable,
--			.band_idx = mvif->band_idx,
-+			.band_idx = mvif->common.band_idx,
- 		},
- 	};
- 
--	if (mvif->omac_idx >= REPEATER_BSSID_START)
-+	if (mvif->common.omac_idx >= REPEATER_BSSID_START)
- 		return mt7615_mcu_muar_config(dev, vif, false, enable);
- 
- 	memcpy(data.tlv.omac_addr, vif->addr, ETH_ALEN);
-@@ -703,10 +703,10 @@ mt7615_mcu_add_beacon_offload(struct mt7615_dev *dev,
- 		u8 bcc_cnt;
- 		__le16 bcc_ie_pos;
- 	} __packed req = {
--		.omac_idx = mvif->omac_idx,
-+		.omac_idx = mvif->common.omac_idx,
- 		.enable = enable,
- 		.wlan_idx = wcid->idx,
--		.band_idx = mvif->band_idx,
-+		.band_idx = mvif->common.band_idx,
- 	};
- 	struct sk_buff *skb;
- 
-@@ -720,7 +720,7 @@ mt7615_mcu_add_beacon_offload(struct mt7615_dev *dev,
- 		return -EINVAL;
- 	}
- 
--	if (mvif->band_idx) {
-+	if (mvif->common.band_idx) {
- 		info = IEEE80211_SKB_CB(skb);
- 		info->hw_queue |= MT_TX_HW_QUEUE_EXT_PHY;
- 	}
-@@ -779,9 +779,9 @@ mt7615_mcu_alloc_sta_req(struct mt7615_dev *dev, struct mt7615_vif *mvif,
- 			 struct mt7615_sta *msta)
- {
- 	struct sta_req_hdr hdr = {
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->common.idx,
- 		.wlan_idx = msta ? msta->wcid.idx : 0,
--		.muar_idx = msta ? mvif->omac_idx : 0,
-+		.muar_idx = msta ? mvif->common.omac_idx : 0,
- 		.is_tlv_append = 1,
- 	};
- 	struct sk_buff *skb;
-@@ -893,7 +893,7 @@ mt7615_mcu_bss_basic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 	bss->network_type = cpu_to_le32(type);
- 	bss->dtim_period = vif->bss_conf.dtim_period;
- 	bss->bmc_tx_wlan_idx = wlan_idx;
--	bss->wmm_idx = mvif->wmm_idx;
-+	bss->wmm_idx = mvif->common.wmm_idx;
- 	bss->active = enable;
- 
+@@ -1384,15 +1384,6 @@ mt7615_mcu_send_ram_firmware(struct mt7615_dev *dev,
  	return 0;
-@@ -903,10 +903,10 @@ static void
- mt7615_mcu_bss_omac_tlv(struct sk_buff *skb, struct ieee80211_vif *vif)
- {
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	u8 omac_idx = mvif->common.omac_idx;
- 	struct bss_info_omac *omac;
- 	struct tlv *tlv;
- 	u32 type = 0;
--	u8 idx;
- 
- 	tlv = mt7615_mcu_add_tlv(skb, BSS_INFO_OMAC, sizeof(*omac));
- 
-@@ -933,11 +933,10 @@ mt7615_mcu_bss_omac_tlv(struct sk_buff *skb, struct ieee80211_vif *vif)
- 	}
- 
- 	omac = (struct bss_info_omac *)tlv;
--	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
- 	omac->conn_type = cpu_to_le32(type);
--	omac->omac_idx = mvif->omac_idx;
--	omac->band_idx = mvif->band_idx;
--	omac->hw_bss_idx = idx;
-+	omac->omac_idx = mvif->common.omac_idx;
-+	omac->band_idx = mvif->common.band_idx;
-+	omac->hw_bss_idx = omac_idx > EXT_BSSID_START ? HW_BSSID_0 : omac_idx;
  }
  
- /* SIFS 20us + 512 byte beacon tranmitted by 1Mbps (3906us) */
-@@ -949,7 +948,7 @@ mt7615_mcu_bss_ext_tlv(struct sk_buff *skb, struct mt7615_vif *mvif)
- 	int ext_bss_idx, tsf_offset;
- 	struct tlv *tlv;
- 
--	ext_bss_idx = mvif->omac_idx - EXT_BSSID_START;
-+	ext_bss_idx = mvif->common.omac_idx - EXT_BSSID_START;
- 	if (ext_bss_idx < 0)
- 		return;
- 
-@@ -1153,7 +1152,7 @@ mt7615_mcu_wtbl_generic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 		else
- 			generic->partial_aid = cpu_to_le16(sta->aid);
- 		memcpy(generic->peer_addr, sta->addr, ETH_ALEN);
--		generic->muar_idx = mvif->omac_idx;
-+		generic->muar_idx = mvif->common.omac_idx;
- 		generic->qos = sta->wme;
- 	} else {
- 		eth_broadcast_addr(generic->peer_addr);
-@@ -1255,7 +1254,7 @@ mt7615_mcu_add_bss(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	struct mt7615_dev *dev = phy->dev;
- 	struct sk_buff *skb;
- 
--	if (mvif->omac_idx >= REPEATER_BSSID_START)
-+	if (mvif->common.omac_idx >= REPEATER_BSSID_START)
- 		mt7615_mcu_muar_config(dev, vif, true, enable);
- 
- 	skb = mt7615_mcu_alloc_sta_req(dev, mvif, NULL);
-@@ -1267,8 +1266,8 @@ mt7615_mcu_add_bss(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 
- 	mt7615_mcu_bss_basic_tlv(skb, vif, sta, enable);
- 
--	if (enable && mvif->omac_idx >= EXT_BSSID_START &&
--	    mvif->omac_idx < REPEATER_BSSID_START)
-+	if (enable && mvif->common.omac_idx >= EXT_BSSID_START &&
-+	    mvif->common.omac_idx < REPEATER_BSSID_START)
- 		mt7615_mcu_bss_ext_tlv(skb, mvif);
- 
- 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
-@@ -1505,6 +1504,7 @@ mt7615_mcu_uni_add_dev(struct mt7615_dev *dev,
- 		       struct ieee80211_vif *vif, bool enable)
+-static const struct wiphy_wowlan_support mt7615_wowlan_support = {
+-	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT |
+-		 WIPHY_WOWLAN_SUPPORTS_GTK_REKEY | WIPHY_WOWLAN_NET_DETECT,
+-	.n_patterns = 1,
+-	.pattern_min_len = 1,
+-	.pattern_max_len = MT7615_WOW_PATTEN_MAX_LEN,
+-	.max_nd_match_sets = 10,
+-};
+-
+ static int mt7615_load_n9(struct mt7615_dev *dev, const char *name)
  {
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	u8 omac_idx = mvif->common.omac_idx;
- 	struct {
- 		struct {
- 			u8 omac_idx;
-@@ -1520,8 +1520,8 @@ mt7615_mcu_uni_add_dev(struct mt7615_dev *dev,
- 		} __packed tlv;
- 	} dev_req = {
- 		.hdr = {
--			.omac_idx = mvif->omac_idx,
--			.band_idx = mvif->band_idx,
-+			.omac_idx = omac_idx,
-+			.band_idx = mvif->common.band_idx,
- 		},
- 		.tlv = {
- 			.tag = cpu_to_le16(DEV_INFO_ACTIVE),
-@@ -1537,14 +1537,14 @@ mt7615_mcu_uni_add_dev(struct mt7615_dev *dev,
- 		struct mt7615_bss_basic_tlv basic;
- 	} basic_req = {
- 		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
- 		},
- 		.basic = {
- 			.tag = cpu_to_le16(UNI_BSS_INFO_BASIC),
- 			.len = cpu_to_le16(sizeof(struct mt7615_bss_basic_tlv)),
--			.omac_idx = mvif->omac_idx,
--			.band_idx = mvif->band_idx,
--			.wmm_idx = mvif->wmm_idx,
-+			.omac_idx = omac_idx,
-+			.band_idx = mvif->common.band_idx,
-+			.wmm_idx = mvif->common.wmm_idx,
- 			.active = enable,
- 			.bmc_tx_wlan_idx = cpu_to_le16(mvif->sta.wcid.idx),
- 			.sta_idx = cpu_to_le16(mvif->sta.wcid.idx),
-@@ -1570,7 +1570,7 @@ mt7615_mcu_uni_add_dev(struct mt7615_dev *dev,
- 		break;
- 	}
+ 	const struct mt7615_fw_trailer *hdr;
+@@ -1722,7 +1713,7 @@ int __mt7663_load_firmware(struct mt7615_dev *dev)
  
--	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
-+	idx = omac_idx > EXT_BSSID_START ? HW_BSSID_0 : omac_idx;
- 	basic_req.basic.hw_bss_idx = idx;
+ #ifdef CONFIG_PM
+ 	if (mt7615_firmware_offload(dev))
+-		dev->mt76.hw->wiphy->wowlan = &mt7615_wowlan_support;
++		dev->mt76.hw->wiphy->wowlan = &mt76_connac_wowlan_support;
+ #endif /* CONFIG_PM */
  
- 	memcpy(dev_req.tlv.omac_addr, vif->addr, ETH_ALEN);
-@@ -1603,6 +1603,7 @@ mt7615_mcu_uni_add_bss(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
- 	struct cfg80211_chan_def *chandef = &phy->mt76->chandef;
- 	int freq1 = chandef->center_freq1, freq2 = chandef->center_freq2;
-+	u8 omac_idx = mvif->common.omac_idx;
- 	struct mt7615_dev *dev = phy->dev;
- 	struct {
- 		struct {
-@@ -1613,16 +1614,16 @@ mt7615_mcu_uni_add_bss(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		struct mt7615_bss_qos_tlv qos;
- 	} basic_req = {
- 		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
- 		},
- 		.basic = {
- 			.tag = cpu_to_le16(UNI_BSS_INFO_BASIC),
- 			.len = cpu_to_le16(sizeof(struct mt7615_bss_basic_tlv)),
- 			.bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int),
- 			.dtim_period = vif->bss_conf.dtim_period,
--			.omac_idx = mvif->omac_idx,
--			.band_idx = mvif->band_idx,
--			.wmm_idx = mvif->wmm_idx,
-+			.omac_idx = omac_idx,
-+			.band_idx = mvif->common.band_idx,
-+			.wmm_idx = mvif->common.wmm_idx,
- 			.active = true, /* keep bss deactivated */
- 			.phymode = 0x38,
- 		},
-@@ -1653,7 +1654,7 @@ mt7615_mcu_uni_add_bss(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		} __packed rlm;
- 	} __packed rlm_req = {
- 		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
- 		},
- 		.rlm = {
- 			.tag = cpu_to_le16(UNI_BSS_INFO_RLM),
-@@ -1669,7 +1670,7 @@ mt7615_mcu_uni_add_bss(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	int err, conn_type;
- 	u8 idx;
+ 	dev_dbg(dev->mt76.dev, "Firmware init done\n");
+@@ -2541,301 +2532,6 @@ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ 				 sizeof(req), false);
+ }
  
--	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
-+	idx = omac_idx > EXT_BSSID_START ? HW_BSSID_0 : omac_idx;
- 	basic_req.basic.hw_bss_idx = idx;
- 
- 	switch (vif->type) {
-@@ -1775,7 +1776,7 @@ mt7615_mcu_uni_add_beacon_offload(struct mt7615_dev *dev,
- 		} __packed beacon_tlv;
- 	} req = {
- 		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
- 		},
- 		.beacon_tlv = {
- 			.tag = cpu_to_le16(UNI_BSS_INFO_BCN_CONTENT),
-@@ -2964,7 +2965,7 @@ int mt7615_mcu_set_vif_ps(struct mt7615_dev *dev, struct ieee80211_vif *vif)
- 			      * 2: dynamic power saving
- 			      */
- 	} req = {
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->common.idx,
- 		.ps_state = vif->bss_conf.ps ? 2 : 0,
- 	};
- 
-@@ -3078,12 +3079,12 @@ int mt7615_mcu_hw_scan(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		return -ENOMEM;
- 
- 	set_bit(MT76_HW_SCANNING, &phy->mt76->state);
--	mvif->scan_seq_num = (mvif->scan_seq_num + 1) & 0x7f;
-+	mvif->common.scan_seq_num = (mvif->common.scan_seq_num + 1) & 0x7f;
- 
- 	req = (struct mt7615_hw_scan_req *)skb_put(skb, sizeof(*req));
- 
--	req->seq_num = mvif->scan_seq_num | ext_phy << 7;
--	req->bss_idx = mvif->idx;
-+	req->seq_num = mvif->common.scan_seq_num | ext_phy << 7;
-+	req->bss_idx = mvif->common.idx;
- 	req->scan_type = sreq->n_ssids ? 1 : 0;
- 	req->probe_req_num = sreq->n_ssids ? 2 : 0;
- 	req->version = 1;
-@@ -3151,7 +3152,7 @@ int mt7615_mcu_cancel_hw_scan(struct mt7615_phy *phy,
- 		u8 is_ext_channel;
- 		u8 rsv[2];
- 	} __packed req = {
--		.seq_num = mvif->scan_seq_num,
-+		.seq_num = mvif->common.scan_seq_num,
- 	};
- 
- 	if (test_and_clear_bit(MT76_HW_SCANNING, &phy->mt76->state)) {
-@@ -3189,11 +3190,11 @@ int mt7615_mcu_sched_scan_req(struct mt7615_phy *phy,
- 	if (!skb)
- 		return -ENOMEM;
- 
--	mvif->scan_seq_num = (mvif->scan_seq_num + 1) & 0x7f;
-+	mvif->common.scan_seq_num = (mvif->common.scan_seq_num + 1) & 0x7f;
- 
- 	req = (struct mt7615_sched_scan_req *)skb_put(skb, sizeof(*req));
- 	req->version = 1;
--	req->seq_num = mvif->scan_seq_num | ext_phy << 7;
-+	req->seq_num = mvif->common.scan_seq_num | ext_phy << 7;
- 
- 	if (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
- 		get_random_mask_addr(req->random_mac, sreq->mac_addr,
-@@ -3547,7 +3548,7 @@ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		u8 bmc_triggered_ac;
- 		u8 pad;
- 	} req = {
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->common.idx,
- 		.aid = cpu_to_le16(vif->bss_conf.aid),
- 		.dtim_period = vif->bss_conf.dtim_period,
- 		.bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int),
-@@ -3556,7 +3557,7 @@ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		u8 bss_idx;
- 		u8 pad[3];
+-#ifdef CONFIG_PM
+-int mt7615_mcu_set_hif_suspend(struct mt7615_dev *dev, bool suspend)
+-{
+-	struct {
+-		struct {
+-			u8 hif_type; /* 0x0: HIF_SDIO
+-				      * 0x1: HIF_USB
+-				      * 0x2: HIF_PCIE
+-				      */
+-			u8 pad[3];
+-		} __packed hdr;
+-		struct hif_suspend_tlv {
+-			__le16 tag;
+-			__le16 len;
+-			u8 suspend;
+-		} __packed hif_suspend;
+-	} req = {
+-		.hif_suspend = {
+-			.tag = cpu_to_le16(0), /* 0: UNI_HIF_CTRL_BASIC */
+-			.len = cpu_to_le16(sizeof(struct hif_suspend_tlv)),
+-			.suspend = suspend,
+-		},
+-	};
+-
+-	if (mt76_is_mmio(&dev->mt76))
+-		req.hdr.hif_type = 2;
+-	else if (mt76_is_usb(&dev->mt76))
+-		req.hdr.hif_type = 1;
+-	else if (mt76_is_sdio(&dev->mt76))
+-		req.hdr.hif_type = 0;
+-
+-	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_HIF_CTRL, &req,
+-				 sizeof(req), true);
+-}
+-EXPORT_SYMBOL_GPL(mt7615_mcu_set_hif_suspend);
+-
+-static int
+-mt7615_mcu_set_wow_ctrl(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+-			bool suspend, struct cfg80211_wowlan *wowlan)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	struct mt7615_dev *dev = phy->dev;
+-	struct {
+-		struct {
+-			u8 bss_idx;
+-			u8 pad[3];
+-		} __packed hdr;
+-		struct mt7615_wow_ctrl_tlv wow_ctrl_tlv;
+-		struct mt7615_wow_gpio_param_tlv gpio_tlv;
+-	} req = {
+-		.hdr = {
+-			.bss_idx = mvif->common.idx,
+-		},
+-		.wow_ctrl_tlv = {
+-			.tag = cpu_to_le16(UNI_SUSPEND_WOW_CTRL),
+-			.len = cpu_to_le16(sizeof(struct mt7615_wow_ctrl_tlv)),
+-			.cmd = suspend ? 1 : 2,
+-		},
+-		.gpio_tlv = {
+-			.tag = cpu_to_le16(UNI_SUSPEND_WOW_GPIO_PARAM),
+-			.len = cpu_to_le16(sizeof(struct mt7615_wow_gpio_param_tlv)),
+-			.gpio_pin = 0xff, /* follow fw about GPIO pin */
+-		},
+-	};
+-
+-	if (wowlan->magic_pkt)
+-		req.wow_ctrl_tlv.trigger |= BIT(0);
+-	if (wowlan->disconnect)
+-		req.wow_ctrl_tlv.trigger |= BIT(2);
+-	if (wowlan->nd_config) {
+-		mt76_connac_mcu_sched_scan_req(phy->mt76, vif,
+-					       wowlan->nd_config);
+-		req.wow_ctrl_tlv.trigger |= BIT(5);
+-		mt76_connac_mcu_sched_scan_enable(phy->mt76, vif, suspend);
+-	}
+-
+-	if (mt76_is_mmio(&dev->mt76))
+-		req.wow_ctrl_tlv.wakeup_hif = WOW_PCIE;
+-	else if (mt76_is_usb(&dev->mt76))
+-		req.wow_ctrl_tlv.wakeup_hif = WOW_USB;
+-	else if (mt76_is_sdio(&dev->mt76))
+-		req.wow_ctrl_tlv.wakeup_hif = WOW_GPIO;
+-
+-	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_SUSPEND, &req,
+-				 sizeof(req), true);
+-}
+-
+-static int
+-mt7615_mcu_set_wow_pattern(struct mt7615_dev *dev,
+-			   struct ieee80211_vif *vif,
+-			   u8 index, bool enable,
+-			   struct cfg80211_pkt_pattern *pattern)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	struct mt7615_wow_pattern_tlv *ptlv;
+-	struct sk_buff *skb;
+-	struct req_hdr {
+-		u8 bss_idx;
+-		u8 pad[3];
+-	} __packed hdr = {
+-		.bss_idx = mvif->common.idx,
+-	};
+-
+-	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
+-				 sizeof(hdr) + sizeof(*ptlv));
+-	if (!skb)
+-		return -ENOMEM;
+-
+-	skb_put_data(skb, &hdr, sizeof(hdr));
+-	ptlv = (struct mt7615_wow_pattern_tlv *)skb_put(skb, sizeof(*ptlv));
+-	ptlv->tag = cpu_to_le16(UNI_SUSPEND_WOW_PATTERN);
+-	ptlv->len = cpu_to_le16(sizeof(*ptlv));
+-	ptlv->data_len = pattern->pattern_len;
+-	ptlv->enable = enable;
+-	ptlv->index = index;
+-
+-	memcpy(ptlv->pattern, pattern->pattern, pattern->pattern_len);
+-	memcpy(ptlv->mask, pattern->mask, pattern->pattern_len / 8);
+-
+-	return mt76_mcu_skb_send_msg(&dev->mt76, skb, MCU_UNI_CMD_SUSPEND,
+-				     true);
+-}
+-
+-static int
+-mt7615_mcu_set_suspend_mode(struct mt7615_dev *dev,
+-			    struct ieee80211_vif *vif,
+-			    bool enable, u8 mdtim, bool wow_suspend)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	struct {
+-		struct {
+-			u8 bss_idx;
+-			u8 pad[3];
+-		} __packed hdr;
+-		struct mt7615_suspend_tlv suspend_tlv;
+-	} req = {
+-		.hdr = {
+-			.bss_idx = mvif->common.idx,
+-		},
+-		.suspend_tlv = {
+-			.tag = cpu_to_le16(UNI_SUSPEND_MODE_SETTING),
+-			.len = cpu_to_le16(sizeof(struct mt7615_suspend_tlv)),
+-			.enable = enable,
+-			.mdtim = mdtim,
+-			.wow_suspend = wow_suspend,
+-		},
+-	};
+-
+-	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_SUSPEND, &req,
+-				 sizeof(req), true);
+-}
+-
+-static int
+-mt7615_mcu_set_gtk_rekey(struct mt7615_dev *dev,
+-			 struct ieee80211_vif *vif,
+-			 bool suspend)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	struct {
+-		struct {
+-			u8 bss_idx;
+-			u8 pad[3];
+-		} __packed hdr;
+-		struct mt7615_gtk_rekey_tlv gtk_tlv;
+-	} __packed req = {
+-		.hdr = {
+-			.bss_idx = mvif->common.idx,
+-		},
+-		.gtk_tlv = {
+-			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_GTK_REKEY),
+-			.len = cpu_to_le16(sizeof(struct mt7615_gtk_rekey_tlv)),
+-			.rekey_mode = !suspend,
+-		},
+-	};
+-
+-	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_OFFLOAD, &req,
+-				 sizeof(req), true);
+-}
+-
+-static int
+-mt7615_mcu_set_arp_filter(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+-			  bool suspend)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	struct {
+-		struct {
+-			u8 bss_idx;
+-			u8 pad[3];
+-		} __packed hdr;
+-		struct mt7615_arpns_tlv arpns;
+-	} req = {
+-		.hdr = {
+-			.bss_idx = mvif->common.idx,
+-		},
+-		.arpns = {
+-			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
+-			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
+-			.mode = suspend,
+-		},
+-	};
+-
+-	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_OFFLOAD, &req,
+-				 sizeof(req), true);
+-}
+-
+-void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
+-				 struct ieee80211_vif *vif)
+-{
+-	struct mt7615_phy *phy = priv;
+-	bool suspend = test_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
+-	struct ieee80211_hw *hw = phy->mt76->hw;
+-	struct cfg80211_wowlan *wowlan = hw->wiphy->wowlan_config;
+-	int i;
+-
+-	mt7615_mcu_set_gtk_rekey(phy->dev, vif, suspend);
+-	mt7615_mcu_set_arp_filter(phy->dev, vif, suspend);
+-
+-	mt7615_mcu_set_suspend_mode(phy->dev, vif, suspend, 1, true);
+-
+-	for (i = 0; i < wowlan->n_patterns; i++)
+-		mt7615_mcu_set_wow_pattern(phy->dev, vif, i, suspend,
+-					   &wowlan->patterns[i]);
+-	mt7615_mcu_set_wow_ctrl(phy, vif, suspend, wowlan);
+-}
+-
+-static void
+-mt7615_mcu_key_iter(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-		    struct ieee80211_sta *sta, struct ieee80211_key_conf *key,
+-		    void *data)
+-{
+-	struct mt7615_gtk_rekey_tlv *gtk_tlv = data;
+-	u32 cipher;
+-
+-	if (key->cipher != WLAN_CIPHER_SUITE_AES_CMAC &&
+-	    key->cipher != WLAN_CIPHER_SUITE_CCMP &&
+-	    key->cipher != WLAN_CIPHER_SUITE_TKIP)
+-		return;
+-
+-	if (key->cipher == WLAN_CIPHER_SUITE_TKIP) {
+-		gtk_tlv->proto = cpu_to_le32(NL80211_WPA_VERSION_1);
+-		cipher = BIT(3);
+-	} else {
+-		gtk_tlv->proto = cpu_to_le32(NL80211_WPA_VERSION_2);
+-		cipher = BIT(4);
+-	}
+-
+-	/* we are assuming here to have a single pairwise key */
+-	if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) {
+-		gtk_tlv->pairwise_cipher = cpu_to_le32(cipher);
+-		gtk_tlv->group_cipher = cpu_to_le32(cipher);
+-		gtk_tlv->keyid = key->keyidx;
+-	}
+-}
+-
+-int mt7615_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
+-				struct ieee80211_vif *vif,
+-				struct cfg80211_gtk_rekey_data *key)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	struct mt7615_dev *dev = mt7615_hw_dev(hw);
+-	struct mt7615_gtk_rekey_tlv *gtk_tlv;
+-	struct sk_buff *skb;
+-	struct {
+-		u8 bss_idx;
+-		u8 pad[3];
+-	} __packed hdr = {
+-		.bss_idx = mvif->common.idx,
+-	};
+-
+-	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
+-				 sizeof(hdr) + sizeof(*gtk_tlv));
+-	if (!skb)
+-		return -ENOMEM;
+-
+-	skb_put_data(skb, &hdr, sizeof(hdr));
+-	gtk_tlv = (struct mt7615_gtk_rekey_tlv *)skb_put(skb,
+-							 sizeof(*gtk_tlv));
+-	gtk_tlv->tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_GTK_REKEY);
+-	gtk_tlv->len = cpu_to_le16(sizeof(*gtk_tlv));
+-	gtk_tlv->rekey_mode = 2;
+-	gtk_tlv->option = 1;
+-
+-	rcu_read_lock();
+-	ieee80211_iter_keys_rcu(hw, vif, mt7615_mcu_key_iter, gtk_tlv);
+-	rcu_read_unlock();
+-
+-	memcpy(gtk_tlv->kek, key->kek, NL80211_KEK_LEN);
+-	memcpy(gtk_tlv->kck, key->kck, NL80211_KCK_LEN);
+-	memcpy(gtk_tlv->replay_ctr, key->replay_ctr, NL80211_REPLAY_CTR_LEN);
+-
+-	return mt76_mcu_skb_send_msg(&dev->mt76, skb, MCU_UNI_CMD_OFFLOAD,
+-				     true);
+-}
+-#endif /* CONFIG_PM */
+-
+ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 		       struct ieee80211_channel *chan, int duration)
+ {
+@@ -2870,14 +2566,14 @@ int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
+ 			u8 bss_idx;
+ 			u8 pad[3];
+ 		} __packed hdr;
+-		struct mt7615_arpns_tlv arp;
++		struct mt76_connac_arpns_tlv arp;
  	} req_hdr = {
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->common.idx,
- 	};
- 	int err;
- 
-@@ -3623,7 +3624,7 @@ mt7615_mcu_set_wow_ctrl(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		struct mt7615_wow_gpio_param_tlv gpio_tlv;
- 	} req = {
  		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
- 		},
- 		.wow_ctrl_tlv = {
- 			.tag = cpu_to_le16(UNI_SUSPEND_WOW_CTRL),
-@@ -3671,7 +3672,7 @@ mt7615_mcu_set_wow_pattern(struct mt7615_dev *dev,
- 		u8 bss_idx;
- 		u8 pad[3];
- 	} __packed hdr = {
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->common.idx,
- 	};
- 
- 	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
-@@ -3708,7 +3709,7 @@ mt7615_mcu_set_suspend_mode(struct mt7615_dev *dev,
- 		struct mt7615_suspend_tlv suspend_tlv;
- 	} req = {
- 		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
- 		},
- 		.suspend_tlv = {
- 			.tag = cpu_to_le16(UNI_SUSPEND_MODE_SETTING),
-@@ -3737,7 +3738,7 @@ mt7615_mcu_set_gtk_rekey(struct mt7615_dev *dev,
- 		struct mt7615_gtk_rekey_tlv gtk_tlv;
- 	} __packed req = {
- 		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
- 		},
- 		.gtk_tlv = {
- 			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_GTK_REKEY),
-@@ -3763,7 +3764,7 @@ mt7615_mcu_set_arp_filter(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		struct mt7615_arpns_tlv arpns;
- 	} req = {
- 		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
- 		},
- 		.arpns = {
- 			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
-@@ -3837,7 +3838,7 @@ int mt7615_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
- 		u8 bss_idx;
- 		u8 pad[3];
- 	} __packed hdr = {
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->common.idx,
- 	};
- 
- 	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
-@@ -3872,7 +3873,7 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
- 	struct mt7615_dev *dev = phy->dev;
- 	struct mt7615_roc_tlv req = {
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->common.idx,
- 		.active = !chan,
- 		.max_interval = cpu_to_le32(duration),
- 		.primary_chan = chan ? chan->hw_value : 0,
-@@ -3903,7 +3904,7 @@ int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
- 		struct mt7615_arpns_tlv arp;
- 	} req_hdr = {
- 		.hdr = {
--			.bss_idx = mvif->idx,
-+			.bss_idx = mvif->common.idx,
+ 			.bss_idx = mvif->common.idx,
  		},
  		.arp = {
  			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
-@@ -3945,7 +3946,7 @@ int mt7615_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
- 		u8 rsv[3];
- 	} __packed req = {
- 		.ct_win = cpu_to_le32(ct_window),
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->common.idx,
- 	};
+-			.len = cpu_to_le16(sizeof(struct mt7615_arpns_tlv)),
++			.len = cpu_to_le16(sizeof(struct mt76_connac_arpns_tlv)),
+ 			.ips_num = len,
+ 			.mode = 2,  /* update */
+ 			.option = 1,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+index 69f94b766938..446c6abf44d8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+@@ -254,96 +254,6 @@ struct mt7615_mcu_reg_event {
+ 	__le32 val;
+ } __packed;
  
- 	if (!mt7615_firmware_offload(dev))
+-enum {
+-	WOW_USB = 1,
+-	WOW_PCIE = 2,
+-	WOW_GPIO = 3,
+-};
+-
+-struct mt7615_wow_ctrl_tlv {
+-	__le16 tag;
+-	__le16 len;
+-	u8 cmd; /* 0x1: PM_WOWLAN_REQ_START
+-		 * 0x2: PM_WOWLAN_REQ_STOP
+-		 * 0x3: PM_WOWLAN_PARAM_CLEAR
+-		 */
+-	u8 trigger; /* 0: NONE
+-		     * BIT(0): NL80211_WOWLAN_TRIG_MAGIC_PKT
+-		     * BIT(1): NL80211_WOWLAN_TRIG_ANY
+-		     * BIT(2): NL80211_WOWLAN_TRIG_DISCONNECT
+-		     * BIT(3): NL80211_WOWLAN_TRIG_GTK_REKEY_FAILURE
+-		     * BIT(4): BEACON_LOST
+-		     * BIT(5): NL80211_WOWLAN_TRIG_NET_DETECT
+-		     */
+-	u8 wakeup_hif; /* 0x0: HIF_SDIO
+-			* 0x1: HIF_USB
+-			* 0x2: HIF_PCIE
+-			* 0x3: HIF_GPIO
+-			*/
+-	u8 pad;
+-	u8 rsv[4];
+-} __packed;
+-
+-struct mt7615_wow_gpio_param_tlv {
+-	__le16 tag;
+-	__le16 len;
+-	u8 gpio_pin;
+-	u8 trigger_lvl;
+-	u8 pad[2];
+-	__le32 gpio_interval;
+-	u8 rsv[4];
+-} __packed;
+-
+-#define MT7615_WOW_MASK_MAX_LEN		16
+-#define MT7615_WOW_PATTEN_MAX_LEN	128
+-struct mt7615_wow_pattern_tlv {
+-	__le16 tag;
+-	__le16 len;
+-	u8 index; /* pattern index */
+-	u8 enable; /* 0: disable
+-		    * 1: enable
+-		    */
+-	u8 data_len; /* pattern length */
+-	u8 pad;
+-	u8 mask[MT7615_WOW_MASK_MAX_LEN];
+-	u8 pattern[MT7615_WOW_PATTEN_MAX_LEN];
+-	u8 rsv[4];
+-} __packed;
+-
+-struct mt7615_suspend_tlv {
+-	__le16 tag;
+-	__le16 len;
+-	u8 enable; /* 0: suspend mode disabled
+-		    * 1: suspend mode enabled
+-		    */
+-	u8 mdtim; /* LP parameter */
+-	u8 wow_suspend; /* 0: update by origin policy
+-			 * 1: update by wow dtim
+-			 */
+-	u8 pad[5];
+-} __packed;
+-
+-struct mt7615_gtk_rekey_tlv {
+-	__le16 tag;
+-	__le16 len;
+-	u8 kek[NL80211_KEK_LEN];
+-	u8 kck[NL80211_KCK_LEN];
+-	u8 replay_ctr[NL80211_REPLAY_CTR_LEN];
+-	u8 rekey_mode; /* 0: rekey offload enable
+-			* 1: rekey offload disable
+-			* 2: rekey update
+-			*/
+-	u8 keyid;
+-	u8 pad[2];
+-	__le32 proto; /* WPA-RSN-WAPI-OPSN */
+-	__le32 pairwise_cipher;
+-	__le32 group_cipher;
+-	__le32 key_mgmt; /* NONE-PSK-IEEE802.1X */
+-	__le32 mgmt_group_cipher;
+-	u8 option; /* 1: rekey data update without enabling offload */
+-	u8 reserverd[3];
+-} __packed;
+-
+ struct mt7615_roc_tlv {
+ 	u8 bss_idx;
+ 	u8 token;
+@@ -361,30 +271,6 @@ struct mt7615_roc_tlv {
+ 	u8 rsv1[8];
+ } __packed;
+ 
+-struct mt7615_arpns_tlv {
+-	__le16 tag;
+-	__le16 len;
+-	u8 mode;
+-	u8 ips_num;
+-	u8 option;
+-	u8 pad[1];
+-} __packed;
+-
+-enum {
+-	UNI_SUSPEND_MODE_SETTING,
+-	UNI_SUSPEND_WOW_CTRL,
+-	UNI_SUSPEND_WOW_GPIO_PARAM,
+-	UNI_SUSPEND_WOW_WAKEUP_PORT,
+-	UNI_SUSPEND_WOW_PATTERN,
+-};
+-
+-enum {
+-	UNI_OFFLOAD_OFFLOAD_ARP,
+-	UNI_OFFLOAD_OFFLOAD_ND,
+-	UNI_OFFLOAD_OFFLOAD_GTK_REKEY,
+-	UNI_OFFLOAD_OFFLOAD_BMC_RPY_DETECT,
+-};
+-
+ enum {
+ 	PATCH_NOT_DL_SEM_FAIL	 = 0x0,
+ 	PATCH_IS_DL		 = 0x1,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 99adbc933d0c..490aad9c16ab 100644
+index 6dbcddaf205f..a03dd26d4970 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -133,12 +133,7 @@ struct mt7615_sta {
- };
- 
- struct mt7615_vif {
--	u8 idx;
--	u8 omac_idx;
--	u8 band_idx;
--	u8 wmm_idx;
--	u8 scan_seq_num;
--
-+	struct mt76_vif common; /* must be first */
- 	struct mt7615_sta sta;
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-index 4cf7c5d34325..1b4cb145f38e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-@@ -118,7 +118,7 @@ mt7615_write_fw_txp(struct mt7615_dev *dev, struct mt76_tx_info *tx_info,
- 		txp->flags |= cpu_to_le16(MT_CT_INFO_MGMT_FRAME);
- 
- 	if (vif) {
--		struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+		struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
- 
- 		txp->bss_idx = mvif->idx;
+@@ -574,12 +574,6 @@ int mt7615_mac_set_beacon_filter(struct mt7615_phy *phy,
+ 				 bool enable);
+ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ 			  bool enable);
+-int mt7615_mcu_set_hif_suspend(struct mt7615_dev *dev, bool suspend);
+-void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
+-				 struct ieee80211_vif *vif);
+-int mt7615_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
+-				struct ieee80211_vif *vif,
+-				struct cfg80211_gtk_rekey_data *key);
+ int mt7615_mcu_update_arp_filter(struct ieee80211_hw *hw,
+ 				 struct ieee80211_vif *vif,
+ 				 struct ieee80211_bss_conf *info);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+index b78014926f1f..5ac4193b770c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+@@ -83,7 +83,7 @@ static int mt7615_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	hif_suspend = !test_bit(MT76_STATE_SUSPEND, &dev->mphy.state) &&
+ 		      mt7615_firmware_offload(dev);
+ 	if (hif_suspend) {
+-		err = mt7615_mcu_set_hif_suspend(dev, true);
++		err = mt76_connac_mcu_set_hif_suspend(mdev, true);
+ 		if (err)
+ 			return err;
  	}
+@@ -131,7 +131,7 @@ static int mt7615_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	}
+ 	napi_enable(&mdev->tx_napi);
+ 	if (hif_suspend)
+-		mt7615_mcu_set_hif_suspend(dev, false);
++		mt76_connac_mcu_set_hif_suspend(mdev, false);
+ 
+ 	return err;
+ }
+@@ -173,7 +173,7 @@ static int mt7615_pci_resume(struct pci_dev *pdev)
+ 
+ 	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state) &&
+ 	    mt7615_firmware_offload(dev))
+-		err = mt7615_mcu_set_hif_suspend(dev, false);
++		err = mt76_connac_mcu_set_hif_suspend(mdev, false);
+ 
+ 	return err;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+index ff757c4a2377..305bb8597531 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+@@ -414,7 +414,7 @@ static int mt7663s_suspend(struct device *dev)
+ 	    mt7615_firmware_offload(mdev)) {
+ 		int err;
+ 
+-		err = mt7615_mcu_set_hif_suspend(mdev, true);
++		err = mt76_connac_mcu_set_hif_suspend(&mdev->mt76, true);
+ 		if (err < 0)
+ 			return err;
+ 	}
+@@ -453,7 +453,7 @@ static int mt7663s_resume(struct device *dev)
+ 
+ 	if (!test_bit(MT76_STATE_SUSPEND, &mdev->mphy.state) &&
+ 	    mt7615_firmware_offload(mdev))
+-		err = mt7615_mcu_set_hif_suspend(mdev, false);
++		err = mt76_connac_mcu_set_hif_suspend(&mdev->mt76, false);
+ 
+ 	return err;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+index 5438b0ba461f..0396ad532ba6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+@@ -169,7 +169,7 @@ static int mt7663u_suspend(struct usb_interface *intf, pm_message_t state)
+ 	    mt7615_firmware_offload(dev)) {
+ 		int err;
+ 
+-		err = mt7615_mcu_set_hif_suspend(dev, true);
++		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true);
+ 		if (err < 0)
+ 			return err;
+ 	}
+@@ -197,7 +197,7 @@ static int mt7663u_resume(struct usb_interface *intf)
+ 
+ 	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state) &&
+ 	    mt7615_firmware_offload(dev))
+-		err = mt7615_mcu_set_hif_suspend(dev, false);
++		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false);
+ 
+ 	return err;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index ed0e605d1c0b..ee5ebd7259a7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1179,5 +1179,312 @@ int mt76_connac_mcu_sched_scan_enable(struct mt76_phy *phy,
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_sched_scan_enable);
+ 
++#ifdef CONFIG_PM
++
++const struct wiphy_wowlan_support mt76_connac_wowlan_support = {
++	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT |
++		 WIPHY_WOWLAN_SUPPORTS_GTK_REKEY | WIPHY_WOWLAN_NET_DETECT,
++	.n_patterns = 1,
++	.pattern_min_len = 1,
++	.pattern_max_len = MT76_CONNAC_WOW_PATTEN_MAX_LEN,
++	.max_nd_match_sets = 10,
++};
++EXPORT_SYMBOL_GPL(mt76_connac_wowlan_support);
++
++static void
++mt76_connac_mcu_key_iter(struct ieee80211_hw *hw,
++			 struct ieee80211_vif *vif,
++			 struct ieee80211_sta *sta,
++			 struct ieee80211_key_conf *key,
++			 void *data)
++{
++	struct mt76_connac_gtk_rekey_tlv *gtk_tlv = data;
++	u32 cipher;
++
++	if (key->cipher != WLAN_CIPHER_SUITE_AES_CMAC &&
++	    key->cipher != WLAN_CIPHER_SUITE_CCMP &&
++	    key->cipher != WLAN_CIPHER_SUITE_TKIP)
++		return;
++
++	if (key->cipher == WLAN_CIPHER_SUITE_TKIP) {
++		gtk_tlv->proto = cpu_to_le32(NL80211_WPA_VERSION_1);
++		cipher = BIT(3);
++	} else {
++		gtk_tlv->proto = cpu_to_le32(NL80211_WPA_VERSION_2);
++		cipher = BIT(4);
++	}
++
++	/* we are assuming here to have a single pairwise key */
++	if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) {
++		gtk_tlv->pairwise_cipher = cpu_to_le32(cipher);
++		gtk_tlv->group_cipher = cpu_to_le32(cipher);
++		gtk_tlv->keyid = key->keyidx;
++	}
++}
++
++int mt76_connac_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
++				     struct ieee80211_vif *vif,
++				     struct cfg80211_gtk_rekey_data *key)
++{
++	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
++	struct mt76_connac_gtk_rekey_tlv *gtk_tlv;
++	struct mt76_phy *phy = hw->priv;
++	struct sk_buff *skb;
++	struct {
++		u8 bss_idx;
++		u8 pad[3];
++	} __packed hdr = {
++		.bss_idx = mvif->idx,
++	};
++
++	skb = mt76_mcu_msg_alloc(phy->dev, NULL,
++				 sizeof(hdr) + sizeof(*gtk_tlv));
++	if (!skb)
++		return -ENOMEM;
++
++	skb_put_data(skb, &hdr, sizeof(hdr));
++	gtk_tlv = (struct mt76_connac_gtk_rekey_tlv *)skb_put(skb,
++							 sizeof(*gtk_tlv));
++	gtk_tlv->tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_GTK_REKEY);
++	gtk_tlv->len = cpu_to_le16(sizeof(*gtk_tlv));
++	gtk_tlv->rekey_mode = 2;
++	gtk_tlv->option = 1;
++
++	rcu_read_lock();
++	ieee80211_iter_keys_rcu(hw, vif, mt76_connac_mcu_key_iter, gtk_tlv);
++	rcu_read_unlock();
++
++	memcpy(gtk_tlv->kek, key->kek, NL80211_KEK_LEN);
++	memcpy(gtk_tlv->kck, key->kck, NL80211_KCK_LEN);
++	memcpy(gtk_tlv->replay_ctr, key->replay_ctr, NL80211_REPLAY_CTR_LEN);
++
++	return mt76_mcu_skb_send_msg(phy->dev, skb, MCU_UNI_CMD_OFFLOAD, true);
++}
++EXPORT_SYMBOL_GPL(mt76_connac_mcu_update_gtk_rekey);
++
++static int
++mt76_connac_mcu_set_arp_filter(struct mt76_dev *dev, struct ieee80211_vif *vif,
++			       bool suspend)
++{
++	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
++	struct {
++		struct {
++			u8 bss_idx;
++			u8 pad[3];
++		} __packed hdr;
++		struct mt76_connac_arpns_tlv arpns;
++	} req = {
++		.hdr = {
++			.bss_idx = mvif->idx,
++		},
++		.arpns = {
++			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_ARP),
++			.len = cpu_to_le16(sizeof(struct mt76_connac_arpns_tlv)),
++			.mode = suspend,
++		},
++	};
++
++	return mt76_mcu_send_msg(dev, MCU_UNI_CMD_OFFLOAD, &req, sizeof(req),
++				 true);
++}
++
++static int
++mt76_connac_mcu_set_gtk_rekey(struct mt76_dev *dev, struct ieee80211_vif *vif,
++			      bool suspend)
++{
++	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
++	struct {
++		struct {
++			u8 bss_idx;
++			u8 pad[3];
++		} __packed hdr;
++		struct mt76_connac_gtk_rekey_tlv gtk_tlv;
++	} __packed req = {
++		.hdr = {
++			.bss_idx = mvif->idx,
++		},
++		.gtk_tlv = {
++			.tag = cpu_to_le16(UNI_OFFLOAD_OFFLOAD_GTK_REKEY),
++			.len = cpu_to_le16(sizeof(struct mt76_connac_gtk_rekey_tlv)),
++			.rekey_mode = !suspend,
++		},
++	};
++
++	return mt76_mcu_send_msg(dev, MCU_UNI_CMD_OFFLOAD, &req, sizeof(req),
++				 true);
++}
++
++static int
++mt76_connac_mcu_set_suspend_mode(struct mt76_dev *dev,
++				 struct ieee80211_vif *vif,
++				 bool enable, u8 mdtim,
++				 bool wow_suspend)
++{
++	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
++	struct {
++		struct {
++			u8 bss_idx;
++			u8 pad[3];
++		} __packed hdr;
++		struct mt76_connac_suspend_tlv suspend_tlv;
++	} req = {
++		.hdr = {
++			.bss_idx = mvif->idx,
++		},
++		.suspend_tlv = {
++			.tag = cpu_to_le16(UNI_SUSPEND_MODE_SETTING),
++			.len = cpu_to_le16(sizeof(struct mt76_connac_suspend_tlv)),
++			.enable = enable,
++			.mdtim = mdtim,
++			.wow_suspend = wow_suspend,
++		},
++	};
++
++	return mt76_mcu_send_msg(dev, MCU_UNI_CMD_SUSPEND, &req, sizeof(req),
++				 true);
++}
++
++static int
++mt76_connac_mcu_set_wow_pattern(struct mt76_dev *dev,
++				struct ieee80211_vif *vif,
++				u8 index, bool enable,
++				struct cfg80211_pkt_pattern *pattern)
++{
++	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
++	struct mt76_connac_wow_pattern_tlv *ptlv;
++	struct sk_buff *skb;
++	struct req_hdr {
++		u8 bss_idx;
++		u8 pad[3];
++	} __packed hdr = {
++		.bss_idx = mvif->idx,
++	};
++
++	skb = mt76_mcu_msg_alloc(dev, NULL, sizeof(hdr) + sizeof(*ptlv));
++	if (!skb)
++		return -ENOMEM;
++
++	skb_put_data(skb, &hdr, sizeof(hdr));
++	ptlv = (struct mt76_connac_wow_pattern_tlv *)skb_put(skb, sizeof(*ptlv));
++	ptlv->tag = cpu_to_le16(UNI_SUSPEND_WOW_PATTERN);
++	ptlv->len = cpu_to_le16(sizeof(*ptlv));
++	ptlv->data_len = pattern->pattern_len;
++	ptlv->enable = enable;
++	ptlv->index = index;
++
++	memcpy(ptlv->pattern, pattern->pattern, pattern->pattern_len);
++	memcpy(ptlv->mask, pattern->mask, pattern->pattern_len / 8);
++
++	return mt76_mcu_skb_send_msg(dev, skb, MCU_UNI_CMD_SUSPEND, true);
++}
++
++static int
++mt76_connac_mcu_set_wow_ctrl(struct mt76_phy *phy, struct ieee80211_vif *vif,
++			     bool suspend, struct cfg80211_wowlan *wowlan)
++{
++	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
++	struct mt76_dev *dev = phy->dev;
++	struct {
++		struct {
++			u8 bss_idx;
++			u8 pad[3];
++		} __packed hdr;
++		struct mt76_connac_wow_ctrl_tlv wow_ctrl_tlv;
++		struct mt76_connac_wow_gpio_param_tlv gpio_tlv;
++	} req = {
++		.hdr = {
++			.bss_idx = mvif->idx,
++		},
++		.wow_ctrl_tlv = {
++			.tag = cpu_to_le16(UNI_SUSPEND_WOW_CTRL),
++			.len = cpu_to_le16(sizeof(struct mt76_connac_wow_ctrl_tlv)),
++			.cmd = suspend ? 1 : 2,
++		},
++		.gpio_tlv = {
++			.tag = cpu_to_le16(UNI_SUSPEND_WOW_GPIO_PARAM),
++			.len = cpu_to_le16(sizeof(struct mt76_connac_wow_gpio_param_tlv)),
++			.gpio_pin = 0xff, /* follow fw about GPIO pin */
++		},
++	};
++
++	if (wowlan->magic_pkt)
++		req.wow_ctrl_tlv.trigger |= BIT(0);
++	if (wowlan->disconnect)
++		req.wow_ctrl_tlv.trigger |= BIT(2);
++	if (wowlan->nd_config) {
++		mt76_connac_mcu_sched_scan_req(phy, vif, wowlan->nd_config);
++		req.wow_ctrl_tlv.trigger |= BIT(5);
++		mt76_connac_mcu_sched_scan_enable(phy, vif, suspend);
++	}
++
++	if (mt76_is_mmio(dev))
++		req.wow_ctrl_tlv.wakeup_hif = WOW_PCIE;
++	else if (mt76_is_usb(dev))
++		req.wow_ctrl_tlv.wakeup_hif = WOW_USB;
++	else if (mt76_is_sdio(dev))
++		req.wow_ctrl_tlv.wakeup_hif = WOW_GPIO;
++
++	return mt76_mcu_send_msg(dev, MCU_UNI_CMD_SUSPEND, &req, sizeof(req),
++				 true);
++}
++
++int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend)
++{
++	struct {
++		struct {
++			u8 hif_type; /* 0x0: HIF_SDIO
++				      * 0x1: HIF_USB
++				      * 0x2: HIF_PCIE
++				      */
++			u8 pad[3];
++		} __packed hdr;
++		struct hif_suspend_tlv {
++			__le16 tag;
++			__le16 len;
++			u8 suspend;
++		} __packed hif_suspend;
++	} req = {
++		.hif_suspend = {
++			.tag = cpu_to_le16(0), /* 0: UNI_HIF_CTRL_BASIC */
++			.len = cpu_to_le16(sizeof(struct hif_suspend_tlv)),
++			.suspend = suspend,
++		},
++	};
++
++	if (mt76_is_mmio(dev))
++		req.hdr.hif_type = 2;
++	else if (mt76_is_usb(dev))
++		req.hdr.hif_type = 1;
++	else if (mt76_is_sdio(dev))
++		req.hdr.hif_type = 0;
++
++	return mt76_mcu_send_msg(dev, MCU_UNI_CMD_HIF_CTRL, &req, sizeof(req),
++				 true);
++}
++EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_hif_suspend);
++
++void mt76_connac_mcu_set_suspend_iter(void *priv, u8 *mac,
++				      struct ieee80211_vif *vif)
++{
++	struct mt76_phy *phy = priv;
++	bool suspend = test_bit(MT76_STATE_SUSPEND, &phy->state);
++	struct ieee80211_hw *hw = phy->hw;
++	struct cfg80211_wowlan *wowlan = hw->wiphy->wowlan_config;
++	int i;
++
++	mt76_connac_mcu_set_gtk_rekey(phy->dev, vif, suspend);
++	mt76_connac_mcu_set_arp_filter(phy->dev, vif, suspend);
++
++	mt76_connac_mcu_set_suspend_mode(phy->dev, vif, suspend, 1, true);
++
++	for (i = 0; i < wowlan->n_patterns; i++)
++		mt76_connac_mcu_set_wow_pattern(phy->dev, vif, i, suspend,
++						&wowlan->patterns[i]);
++	mt76_connac_mcu_set_wow_ctrl(phy, vif, suspend, wowlan);
++}
++EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_suspend_iter);
++
++#endif /* CONFIG_PM */
++
+ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
+ MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index ae923c500231..f9a30d70b79a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -611,6 +611,27 @@ enum {
+ 	UNI_BSS_INFO_UAPSD = 19,
+ };
+ 
++enum {
++	UNI_OFFLOAD_OFFLOAD_ARP,
++	UNI_OFFLOAD_OFFLOAD_ND,
++	UNI_OFFLOAD_OFFLOAD_GTK_REKEY,
++	UNI_OFFLOAD_OFFLOAD_BMC_RPY_DETECT,
++};
++
++enum {
++	UNI_SUSPEND_MODE_SETTING,
++	UNI_SUSPEND_WOW_CTRL,
++	UNI_SUSPEND_WOW_GPIO_PARAM,
++	UNI_SUSPEND_WOW_WAKEUP_PORT,
++	UNI_SUSPEND_WOW_PATTERN,
++};
++
++enum {
++	WOW_USB = 1,
++	WOW_PCIE = 2,
++	WOW_GPIO = 3,
++};
++
+ struct mt76_connac_bss_basic_tlv {
+ 	__le16 tag;
+ 	__le16 len;
+@@ -790,6 +811,102 @@ struct bss_info_uni_he {
+ 	u8 rsv[2];
+ } __packed;
+ 
++struct mt76_connac_gtk_rekey_tlv {
++	__le16 tag;
++	__le16 len;
++	u8 kek[NL80211_KEK_LEN];
++	u8 kck[NL80211_KCK_LEN];
++	u8 replay_ctr[NL80211_REPLAY_CTR_LEN];
++	u8 rekey_mode; /* 0: rekey offload enable
++			* 1: rekey offload disable
++			* 2: rekey update
++			*/
++	u8 keyid;
++	u8 pad[2];
++	__le32 proto; /* WPA-RSN-WAPI-OPSN */
++	__le32 pairwise_cipher;
++	__le32 group_cipher;
++	__le32 key_mgmt; /* NONE-PSK-IEEE802.1X */
++	__le32 mgmt_group_cipher;
++	u8 option; /* 1: rekey data update without enabling offload */
++	u8 reserverd[3];
++} __packed;
++
++#define MT76_CONNAC_WOW_MASK_MAX_LEN			16
++#define MT76_CONNAC_WOW_PATTEN_MAX_LEN			128
++
++struct mt76_connac_wow_pattern_tlv {
++	__le16 tag;
++	__le16 len;
++	u8 index; /* pattern index */
++	u8 enable; /* 0: disable
++		    * 1: enable
++		    */
++	u8 data_len; /* pattern length */
++	u8 pad;
++	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
++	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
++	u8 rsv[4];
++} __packed;
++
++struct mt76_connac_wow_ctrl_tlv {
++	__le16 tag;
++	__le16 len;
++	u8 cmd; /* 0x1: PM_WOWLAN_REQ_START
++		 * 0x2: PM_WOWLAN_REQ_STOP
++		 * 0x3: PM_WOWLAN_PARAM_CLEAR
++		 */
++	u8 trigger; /* 0: NONE
++		     * BIT(0): NL80211_WOWLAN_TRIG_MAGIC_PKT
++		     * BIT(1): NL80211_WOWLAN_TRIG_ANY
++		     * BIT(2): NL80211_WOWLAN_TRIG_DISCONNECT
++		     * BIT(3): NL80211_WOWLAN_TRIG_GTK_REKEY_FAILURE
++		     * BIT(4): BEACON_LOST
++		     * BIT(5): NL80211_WOWLAN_TRIG_NET_DETECT
++		     */
++	u8 wakeup_hif; /* 0x0: HIF_SDIO
++			* 0x1: HIF_USB
++			* 0x2: HIF_PCIE
++			* 0x3: HIF_GPIO
++			*/
++	u8 pad;
++	u8 rsv[4];
++} __packed;
++
++struct mt76_connac_wow_gpio_param_tlv {
++	__le16 tag;
++	__le16 len;
++	u8 gpio_pin;
++	u8 trigger_lvl;
++	u8 pad[2];
++	__le32 gpio_interval;
++	u8 rsv[4];
++} __packed;
++
++struct mt76_connac_arpns_tlv {
++	__le16 tag;
++	__le16 len;
++	u8 mode;
++	u8 ips_num;
++	u8 option;
++	u8 pad[1];
++} __packed;
++
++struct mt76_connac_suspend_tlv {
++	__le16 tag;
++	__le16 len;
++	u8 enable; /* 0: suspend mode disabled
++		    * 1: suspend mode enabled
++		    */
++	u8 mdtim; /* LP parameter */
++	u8 wow_suspend; /* 0: update by origin policy
++			 * 1: update by wow dtim
++			 */
++	u8 pad[5];
++} __packed;
++
++extern const struct wiphy_wowlan_support mt76_connac_wowlan_support;
++
+ struct sk_buff *
+ mt76_connac_mcu_alloc_sta_req(struct mt76_dev *dev, struct mt76_vif *mvif,
+ 			      struct mt76_wcid *wcid);
+@@ -864,5 +981,10 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
+ int mt76_connac_mcu_sched_scan_enable(struct mt76_phy *phy,
+ 				      struct ieee80211_vif *vif,
+ 				      bool enable);
+-
++int mt76_connac_mcu_update_gtk_rekey(struct ieee80211_hw *hw,
++				     struct ieee80211_vif *vif,
++				     struct cfg80211_gtk_rekey_data *key);
++int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend);
++void mt76_connac_mcu_set_suspend_iter(void *priv, u8 *mac,
++				      struct ieee80211_vif *vif);
+ #endif /* __MT76_CONNAC_MCU_H */
 -- 
 2.29.2
 
