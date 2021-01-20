@@ -2,24 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3D32FD9C7
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 20:38:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 085D52FD9C4
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 20:38:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392622AbhATTfs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jan 2021 14:35:48 -0500
-Received: from mailgw01.mediatek.com ([210.61.82.183]:48759 "EHLO
+        id S2392612AbhATTfi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jan 2021 14:35:38 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:48775 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2392614AbhATTfm (ORCPT
+        with ESMTP id S2392580AbhATTf1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jan 2021 14:35:42 -0500
-X-UUID: 0599e0c712064c2f9da0836cade56836-20210121
-X-UUID: 0599e0c712064c2f9da0836cade56836-20210121
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
+        Wed, 20 Jan 2021 14:35:27 -0500
+X-UUID: d02bb83abffe4109bef81d894f49748c-20210121
+X-UUID: d02bb83abffe4109bef81d894f49748c-20210121
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
         (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 361558771; Thu, 21 Jan 2021 03:33:54 +0800
+        with ESMTP id 1937928816; Thu, 21 Jan 2021 03:33:56 +0800
 Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
+ mtkmbs01n2.mediatek.inc (172.21.101.79) with Microsoft SMTP Server (TLS) id
  15.0.1497.2; Thu, 21 Jan 2021 03:33:53 +0800
 Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
@@ -33,14 +33,15 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
         Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH -next v6 01/15] mt76: move mac_work in mt76_core module
-Date:   Thu, 21 Jan 2021 03:33:37 +0800
-Message-ID: <acd4cd730dec4a6f6a4413bce54ad224ab5b7040.1611060302.git.objelf@gmail.com>
+Subject: [PATCH -next v6 02/15] mt76: move chainmask in mt76_phy
+Date:   Thu, 21 Jan 2021 03:33:38 +0800
+Message-ID: <9650420f84d31392167e4333261b65bfd879463e.1611060302.git.objelf@gmail.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1611060302.git.objelf@gmail.com>
 References: <cover.1611060302.git.objelf@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain
+X-TM-SNTS-SMTP: B44392636DA6C12B06BF9FE95A64489D258E8084107DF698D786BB8C3FAE361D2000:8
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -48,638 +49,446 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Move mac_work delayed_work and mac_work_count in mt76_phy since it is
-used by all drivers. This is a preliminary patch to create a common mcu
-library used by mt7615 and mt7921 drivers
+Move chainmask from driver phy to mt76_phy since it is used by all
+drivers. This is a preliminary patch to create a common mcu library used
+by mt7615 and mt7921 drivers
 
 Co-developed-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h     |  4 ++-
- .../net/wireless/mediatek/mt76/mt7603/init.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7603/mac.c   | 14 ++++-----
- .../net/wireless/mediatek/mt76/mt7603/main.c  | 10 +++----
- .../wireless/mediatek/mt76/mt7603/mt7603.h    |  2 --
- .../net/wireless/mediatek/mt76/mt7615/init.c  |  4 +--
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 25 ++++++++--------
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 13 +++++----
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 --
- .../net/wireless/mediatek/mt76/mt7615/usb.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt76x0/pci.c   |  4 +--
- .../net/wireless/mediatek/mt76/mt76x0/usb.c   |  4 +--
- .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  4 +--
- .../net/wireless/mediatek/mt76/mt76x02_util.c |  2 +-
- .../wireless/mediatek/mt76/mt76x2/pci_init.c  |  2 +-
- .../wireless/mediatek/mt76/mt76x2/pci_main.c  |  2 +-
- .../wireless/mediatek/mt76/mt76x2/usb_init.c  |  2 +-
- .../wireless/mediatek/mt76/mt76x2/usb_main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7915/init.c  |  4 +--
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 29 ++++++++++---------
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  9 +++---
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 --
- 22 files changed, 72 insertions(+), 73 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h           |  1 +
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c  |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c    | 12 ++++++------
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c     |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c    |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c     |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h  |  2 --
+ .../net/wireless/mediatek/mt76/mt7615/testmode.c    |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt76x02.h        |  2 --
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c    |  6 +++---
+ drivers/net/wireless/mediatek/mt76/mt76x02_phy.c    |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt76x02_util.c   |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c     |  2 +-
+ .../net/wireless/mediatek/mt76/mt76x2/pci_main.c    |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c  |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c    | 13 ++++++-------
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c     |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c    |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c     |  8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h  |  1 -
+ .../net/wireless/mediatek/mt76/mt7915/testmode.c    |  2 +-
+ 21 files changed, 37 insertions(+), 42 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 10034c21f812..52228936f792 100644
+index 52228936f792..1925e7fbc1b1 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -583,6 +583,9 @@ struct mt76_phy {
+@@ -579,6 +579,7 @@ struct mt76_phy {
+ 
+ 	int txpower_cur;
+ 	u8 antenna_mask;
++	u16 chainmask;
+ 
  #ifdef CONFIG_NL80211_TESTMODE
  	struct mt76_testmode_data test;
- #endif
-+
-+	struct delayed_work mac_work;
-+	u8 mac_work_count;
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+index 3232ebd5eda6..2eab23898c77 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -161,7 +161,7 @@ static void mt7615_eeprom_parse_hw_cap(struct mt7615_dev *dev)
  
- struct mt76_dev {
-@@ -623,7 +626,6 @@ struct mt76_dev {
- 
- 	struct mt76_worker tx_worker;
- 	struct napi_struct tx_napi;
--	struct delayed_work mac_work;
- 
- 	wait_queue_head_t tx_wait;
- 	struct sk_buff_head status_list;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-index b14e08046e20..f0b879c3eba8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-@@ -532,7 +532,7 @@ int mt7603_register_device(struct mt7603_dev *dev)
- 	spin_lock_init(&dev->sta_poll_lock);
- 	spin_lock_init(&dev->ps_lock);
- 
--	INIT_DELAYED_WORK(&dev->mt76.mac_work, mt7603_mac_work);
-+	INIT_DELAYED_WORK(&dev->mphy.mac_work, mt7603_mac_work);
- 	tasklet_setup(&dev->mt76.pre_tbtt_tasklet, mt7603_pre_tbtt_tasklet);
- 
- 	dev->slottime = 9;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index 55095e66f2ef..7f0e3df3a094 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -1788,7 +1788,7 @@ mt7603_false_cca_check(struct mt7603_dev *dev)
- void mt7603_mac_work(struct work_struct *work)
- {
- 	struct mt7603_dev *dev = container_of(work, struct mt7603_dev,
--					      mt76.mac_work.work);
-+					      mphy.mac_work.work);
- 	bool reset = false;
- 	int i, idx;
- 
-@@ -1796,7 +1796,7 @@ void mt7603_mac_work(struct work_struct *work)
- 
- 	mutex_lock(&dev->mt76.mutex);
- 
--	dev->mac_work_count++;
-+	dev->mphy.mac_work_count++;
- 	mt76_update_survey(&dev->mt76);
- 	mt7603_edcca_check(dev);
- 
-@@ -1807,7 +1807,7 @@ void mt7603_mac_work(struct work_struct *work)
- 		dev->mt76.aggr_stats[idx++] += val >> 16;
- 	}
- 
--	if (dev->mac_work_count == 10)
-+	if (dev->mphy.mac_work_count == 10)
- 		mt7603_false_cca_check(dev);
- 
- 	if (mt7603_watchdog_check(dev, &dev->rx_pse_check,
-@@ -1838,17 +1838,17 @@ void mt7603_mac_work(struct work_struct *work)
- 		dev->rx_dma_idx = ~0;
- 		memset(dev->tx_dma_idx, 0xff, sizeof(dev->tx_dma_idx));
- 		reset = true;
--		dev->mac_work_count = 0;
-+		dev->mphy.mac_work_count = 0;
- 	}
- 
--	if (dev->mac_work_count >= 10)
--		dev->mac_work_count = 0;
-+	if (dev->mphy.mac_work_count >= 10)
-+		dev->mphy.mac_work_count = 0;
- 
- 	mutex_unlock(&dev->mt76.mutex);
- 
- 	if (reset)
- 		mt7603_mac_watchdog_reset(dev);
- 
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
- 				     msecs_to_jiffies(MT7603_WATCHDOG_TIME));
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-index 6d47b57cbc39..d7e4bb29f5bb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-@@ -17,7 +17,7 @@ mt7603_start(struct ieee80211_hw *hw)
- 	mt7603_mac_start(dev);
- 	dev->mphy.survey_time = ktime_get_boottime();
- 	set_bit(MT76_STATE_RUNNING, &dev->mphy.state);
--	mt7603_mac_work(&dev->mt76.mac_work.work);
-+	mt7603_mac_work(&dev->mphy.mac_work.work);
- 
- 	return 0;
- }
-@@ -28,7 +28,7 @@ mt7603_stop(struct ieee80211_hw *hw)
- 	struct mt7603_dev *dev = hw->priv;
- 
- 	clear_bit(MT76_STATE_RUNNING, &dev->mphy.state);
--	cancel_delayed_work_sync(&dev->mt76.mac_work);
-+	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	mt7603_mac_stop(dev);
+ 	dev->chainmask = BIT(tx_mask) - 1;
+ 	dev->mphy.antenna_mask = dev->chainmask;
+-	dev->phy.chainmask = dev->chainmask;
++	dev->mphy.chainmask = dev->chainmask;
  }
  
-@@ -137,7 +137,7 @@ mt7603_set_channel(struct mt7603_dev *dev, struct cfg80211_chan_def *def)
- 	u8 bw = MT_BW_20;
- 	bool failed = false;
- 
--	cancel_delayed_work_sync(&dev->mt76.mac_work);
-+	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
- 
- 	mutex_lock(&dev->mt76.mutex);
-@@ -178,7 +178,7 @@ mt7603_set_channel(struct mt7603_dev *dev, struct cfg80211_chan_def *def)
- 
- 	mt76_txq_schedule_all(&dev->mphy);
- 
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
- 				     msecs_to_jiffies(MT7603_WATCHDOG_TIME));
- 
- 	/* reset channel stats */
-@@ -200,7 +200,7 @@ mt7603_set_channel(struct mt7603_dev *dev, struct cfg80211_chan_def *def)
- 	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
- 
- 	if (failed)
--		mt7603_mac_work(&dev->mt76.mac_work.work);
-+		mt7603_mac_work(&dev->mphy.mac_work.work);
- 
- 	return ret;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
-index 6e0a92a28b1c..b787c56fd8d6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
-@@ -132,8 +132,6 @@ struct mt7603_dev {
- 
- 	spinlock_t ps_lock;
- 
--	u8 mac_work_count;
--
- 	u8 mcu_running;
- 
- 	u8 ed_monitor_enabled;
+ static int mt7663_eeprom_get_target_power_index(struct mt7615_dev *dev,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index a73b76e57c7f..d89b607cce68 100644
+index d89b607cce68..8151c1d60728 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -408,7 +408,7 @@ int mt7615_register_ext_phy(struct mt7615_dev *dev)
- 	mphy->antenna_mask = BIT(hweight8(phy->chainmask)) - 1;
+@@ -362,9 +362,9 @@ mt7615_cap_dbdc_enable(struct mt7615_dev *dev)
+ 		dev->mphy.antenna_mask = dev->chainmask >> 2;
+ 	else
+ 		dev->mphy.antenna_mask = dev->chainmask >> 1;
+-	dev->phy.chainmask = dev->mphy.antenna_mask;
+-	dev->mphy.hw->wiphy->available_antennas_rx = dev->phy.chainmask;
+-	dev->mphy.hw->wiphy->available_antennas_tx = dev->phy.chainmask;
++	dev->mphy.chainmask = dev->mphy.antenna_mask;
++	dev->mphy.hw->wiphy->available_antennas_rx = dev->mphy.chainmask;
++	dev->mphy.hw->wiphy->available_antennas_tx = dev->mphy.chainmask;
+ 	mt76_set_stream_caps(&dev->mphy, true);
+ }
+ 
+@@ -375,7 +375,7 @@ mt7615_cap_dbdc_disable(struct mt7615_dev *dev)
+ 			IEEE80211_VHT_CAP_SHORT_GI_160 |
+ 			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ;
+ 	dev->mphy.antenna_mask = dev->chainmask;
+-	dev->phy.chainmask = dev->chainmask;
++	dev->mphy.chainmask = dev->chainmask;
+ 	dev->mphy.hw->wiphy->available_antennas_rx = dev->chainmask;
+ 	dev->mphy.hw->wiphy->available_antennas_tx = dev->chainmask;
+ 	mt76_set_stream_caps(&dev->mphy, true);
+@@ -404,8 +404,8 @@ int mt7615_register_ext_phy(struct mt7615_dev *dev)
+ 	phy = mphy->priv;
+ 	phy->dev = dev;
+ 	phy->mt76 = mphy;
+-	phy->chainmask = dev->chainmask & ~dev->phy.chainmask;
+-	mphy->antenna_mask = BIT(hweight8(phy->chainmask)) - 1;
++	mphy->chainmask = dev->chainmask & ~dev->mphy.chainmask;
++	mphy->antenna_mask = BIT(hweight8(mphy->chainmask)) - 1;
  	mt7615_init_wiphy(mphy->hw);
  
--	INIT_DELAYED_WORK(&phy->mac_work, mt7615_mac_work);
-+	INIT_DELAYED_WORK(&mphy->mac_work, mt7615_mac_work);
- 	INIT_DELAYED_WORK(&phy->scan_work, mt7615_scan_work);
- 	skb_queue_head_init(&phy->scan_event_list);
- 
-@@ -471,7 +471,7 @@ void mt7615_init_device(struct mt7615_dev *dev)
- 	init_completion(&dev->pm.wake_cmpl);
- 	spin_lock_init(&dev->pm.txq_lock);
- 	set_bit(MT76_STATE_PM, &dev->mphy.state);
--	INIT_DELAYED_WORK(&dev->phy.mac_work, mt7615_mac_work);
-+	INIT_DELAYED_WORK(&dev->mphy.mac_work, mt7615_mac_work);
- 	INIT_DELAYED_WORK(&dev->phy.scan_work, mt7615_scan_work);
- 	skb_queue_head_init(&dev->phy.scan_event_list);
- 	INIT_LIST_HEAD(&dev->sta_poll_list);
+ 	INIT_DELAYED_WORK(&mphy->mac_work, mt7615_mac_work);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 5d2a14cf5d40..2cc329019edc 100644
+index 2cc329019edc..26909fdbb0a5 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1976,17 +1976,17 @@ void mt7615_pm_power_save_work(struct work_struct *work)
- void mt7615_mac_work(struct work_struct *work)
- {
- 	struct mt7615_phy *phy;
--	struct mt76_dev *mdev;
-+	struct mt76_phy *mphy;
+@@ -326,7 +326,7 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ 		 * that PHY.
+ 		 */
+ 		if (phy_idx < 0) {
+-			int first_chain = ffs(phy2->chainmask) - 1;
++			int first_chain = ffs(phy2->mt76->chainmask) - 1;
  
--	phy = (struct mt7615_phy *)container_of(work, struct mt7615_phy,
--						mac_work.work);
--	mdev = &phy->dev->mt76;
-+	mphy = (struct mt76_phy *)container_of(work, struct mt76_phy,
-+					       mac_work.work);
-+	phy = mphy->priv;
- 
- 	mt7615_mutex_acquire(phy->dev);
- 
- 	mt7615_update_survey(phy->dev);
--	if (++phy->mac_work_count == 5) {
--		phy->mac_work_count = 0;
-+	if (++mphy->mac_work_count == 5) {
-+		mphy->mac_work_count = 0;
- 
- 		mt7615_mac_update_mib_stats(phy);
- 		mt7615_mac_scs_check(phy);
-@@ -1994,8 +1994,8 @@ void mt7615_mac_work(struct work_struct *work)
- 
- 	mt7615_mutex_release(phy->dev);
- 
--	mt76_tx_status_check(mdev, NULL, false);
--	ieee80211_queue_delayed_work(phy->mt76->hw, &phy->mac_work,
-+	mt76_tx_status_check(mphy->dev, NULL, false);
-+	ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
- 				     MT7615_WATCHDOG_TIME);
- }
- 
-@@ -2104,11 +2104,11 @@ void mt7615_mac_reset_work(struct work_struct *work)
- 	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
--	cancel_delayed_work_sync(&dev->phy.mac_work);
-+	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	del_timer_sync(&dev->phy.roc_timer);
- 	cancel_work_sync(&dev->phy.roc_work);
- 	if (phy2) {
--		cancel_delayed_work_sync(&phy2->mac_work);
-+		cancel_delayed_work_sync(&phy2->mt76->mac_work);
- 		del_timer_sync(&phy2->roc_timer);
- 		cancel_work_sync(&phy2->roc_work);
- 	}
-@@ -2163,10 +2163,11 @@ void mt7615_mac_reset_work(struct work_struct *work)
- 
- 	mt7615_mutex_release(dev);
- 
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->phy.mac_work,
-+	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
- 				     MT7615_WATCHDOG_TIME);
- 	if (phy2)
--		ieee80211_queue_delayed_work(ext_phy->hw, &phy2->mac_work,
-+		ieee80211_queue_delayed_work(ext_phy->hw,
-+					     &phy2->mt76->mac_work,
- 					     MT7615_WATCHDOG_TIME);
- 
- }
+ 			phy_idx = ((rxdg5 >> (first_chain * 8)) & 0xff) == 0;
+ 		}
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 3fc48aaa3b36..a7155509f95a 100644
+index a7155509f95a..5134d051dc2f 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -70,7 +70,7 @@ static int mt7615_start(struct ieee80211_hw *hw)
+@@ -911,7 +911,7 @@ mt7615_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+ 		else
+ 			tx_ant <<= 1;
+ 	}
+-	phy->chainmask = tx_ant;
++	phy->mt76->chainmask = tx_ant;
  
- 	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
+ 	mt76_set_stream_caps(phy->mt76, true);
  
--	ieee80211_queue_delayed_work(hw, &phy->mac_work,
-+	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
- 				     MT7615_WATCHDOG_TIME);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index c49e9041006f..c377860e220f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1662,7 +1662,7 @@ mt7615_mcu_uni_add_bss(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 			.center_chan = ieee80211_frequency_to_channel(freq1),
+ 			.center_chan2 = ieee80211_frequency_to_channel(freq2),
+ 			.tx_streams = hweight8(phy->mt76->antenna_mask),
+-			.rx_streams = phy->chainmask,
++			.rx_streams = phy->mt76->chainmask,
+ 			.short_st = true,
+ 		},
+ 	};
+@@ -2880,7 +2880,7 @@ int mt7615_mcu_set_chan_info(struct mt7615_phy *phy, int cmd)
+ 		.control_chan = chandef->chan->hw_value,
+ 		.center_chan = ieee80211_frequency_to_channel(freq1),
+ 		.tx_streams = hweight8(phy->mt76->antenna_mask),
+-		.rx_streams_mask = phy->chainmask,
++		.rx_streams_mask = phy->mt76->chainmask,
+ 		.center_chan2 = ieee80211_frequency_to_channel(freq2),
+ 	};
  
- 	if (!running)
-@@ -86,7 +86,7 @@ static void mt7615_stop(struct ieee80211_hw *hw)
- 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
- 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
- 
--	cancel_delayed_work_sync(&phy->mac_work);
-+	cancel_delayed_work_sync(&phy->mt76->mac_work);
- 	del_timer_sync(&phy->roc_timer);
- 	cancel_work_sync(&phy->roc_work);
- 
-@@ -300,7 +300,7 @@ int mt7615_set_channel(struct mt7615_phy *phy)
- 	bool ext_phy = phy != &dev->phy;
- 	int ret;
- 
--	cancel_delayed_work_sync(&phy->mac_work);
-+	cancel_delayed_work_sync(&phy->mt76->mac_work);
- 
- 	mt7615_mutex_acquire(dev);
- 
-@@ -335,7 +335,8 @@ int mt7615_set_channel(struct mt7615_phy *phy)
- 	mt76_txq_schedule_all(phy->mt76);
- 
- 	if (!mt76_testmode_enabled(phy->mt76))
--		ieee80211_queue_delayed_work(phy->mt76->hw, &phy->mac_work,
-+		ieee80211_queue_delayed_work(phy->mt76->hw,
-+					     &phy->mt76->mac_work,
- 					     MT7615_WATCHDOG_TIME);
- 
- 	return ret;
-@@ -1112,7 +1113,7 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
- 
- 	clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
- 	cancel_delayed_work_sync(&phy->scan_work);
--	cancel_delayed_work_sync(&phy->mac_work);
-+	cancel_delayed_work_sync(&phy->mt76->mac_work);
- 
- 	set_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
- 	ieee80211_iterate_active_interfaces(hw,
-@@ -1153,7 +1154,7 @@ static int mt7615_resume(struct ieee80211_hw *hw)
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
- 					    mt7615_mcu_set_suspend_iter, phy);
- 
--	ieee80211_queue_delayed_work(hw, &phy->mac_work,
-+	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
- 				     MT7615_WATCHDOG_TIME);
- 
- 	mt7615_mutex_release(dev);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 979c5c7fe93c..99365807142e 100644
+index 99365807142e..a773ea4d5b12 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -185,9 +185,6 @@ struct mt7615_phy {
+@@ -171,8 +171,6 @@ struct mt7615_phy {
+ 	s8 ofdm_sensitivity;
+ 	s8 cck_sensitivity;
  
- 	struct mib_stats mib;
- 
--	struct delayed_work mac_work;
--	u8 mac_work_count;
+-	u16 chainmask;
 -
- 	struct sk_buff_head scan_event_list;
- 	struct delayed_work scan_work;
+ 	s16 coverage_class;
+ 	u8 slottime;
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-index a60cfa345521..dbf59f1ccda2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-@@ -29,7 +29,7 @@ static void mt7663u_stop(struct ieee80211_hw *hw)
- 	del_timer_sync(&phy->roc_timer);
- 	cancel_work_sync(&phy->roc_work);
- 	cancel_delayed_work_sync(&phy->scan_work);
--	cancel_delayed_work_sync(&phy->mac_work);
-+	cancel_delayed_work_sync(&phy->mt76->mac_work);
- 	mt76u_stop_tx(&dev->mt76);
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+index b82915445d0d..a0542a309e27 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+@@ -178,7 +178,7 @@ mt7615_tm_set_tx_antenna(struct mt7615_phy *phy, bool en)
+ 		return;
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-index b87d8e136cb9..02d0aa0b815e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-@@ -16,7 +16,7 @@ static int mt76x0e_start(struct ieee80211_hw *hw)
+ 	if (!en)
+-		mask = phy->chainmask;
++		mask = phy->mt76->chainmask;
  
- 	mt76x02_mac_start(dev);
- 	mt76x0_phy_calibrate(dev, true);
--	ieee80211_queue_delayed_work(dev->mt76.hw, &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(dev->mt76.hw, &dev->mphy.mac_work,
- 				     MT_MAC_WORK_INTERVAL);
- 	ieee80211_queue_delayed_work(dev->mt76.hw, &dev->cal_work,
- 				     MT_CALIBRATE_INTERVAL);
-@@ -28,7 +28,7 @@ static int mt76x0e_start(struct ieee80211_hw *hw)
- static void mt76x0e_stop_hw(struct mt76x02_dev *dev)
- {
- 	cancel_delayed_work_sync(&dev->cal_work);
--	cancel_delayed_work_sync(&dev->mt76.mac_work);
-+	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	clear_bit(MT76_RESTART, &dev->mphy.state);
+ 	for (i = 0; i < 4; i++) {
+ 		mt76_rmw_field(dev, MT_WF_PHY_RFINTF3_0(i),
+@@ -306,7 +306,7 @@ mt7615_tm_set_params(struct mt76_phy *mphy, struct nlattr **tb,
+ 	    td->state == MT76_TM_STATE_OFF)
+ 		return 0;
  
- 	if (!mt76_poll(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_TX_DMA_BUSY,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index b12cb17cb43d..a593a7796d23 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -82,7 +82,7 @@ static void mt76x0u_stop(struct ieee80211_hw *hw)
+-	if (td->tx_antenna_mask & ~phy->chainmask)
++	if (td->tx_antenna_mask & ~mphy->chainmask)
+ 		return -EINVAL;
  
- 	clear_bit(MT76_STATE_RUNNING, &dev->mphy.state);
- 	cancel_delayed_work_sync(&dev->cal_work);
--	cancel_delayed_work_sync(&dev->mt76.mac_work);
-+	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	mt76u_stop_tx(&dev->mt76);
- 	mt76x02u_exit_beacon_config(dev);
+ 	for (i = 0; i < ARRAY_SIZE(tm_change_map); i++) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02.h b/drivers/net/wireless/mediatek/mt76/mt76x02.h
+index d626817a2103..4d58c2c1c0ac 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02.h
+@@ -82,8 +82,6 @@ struct mt76x02_dev {
  
-@@ -108,7 +108,7 @@ static int mt76x0u_start(struct ieee80211_hw *hw)
- 		return ret;
+ 	struct mutex phy_mutex;
  
- 	mt76x0_phy_calibrate(dev, true);
--	ieee80211_queue_delayed_work(dev->mt76.hw, &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(dev->mt76.hw, &dev->mphy.mac_work,
- 				     MT_MAC_WORK_INTERVAL);
- 	ieee80211_queue_delayed_work(dev->mt76.hw, &dev->cal_work,
- 				     MT_CALIBRATE_INTERVAL);
+-	u16 chainmask;
+-
+ 	u8 txdone_seq;
+ 	DECLARE_KFIFO_PTR(txstatus_fifo, struct mt76x02_tx_status);
+ 	spinlock_t txstatus_fifo_lock;
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index 16b40a73fd1f..e0c4e1981e5b 100644
+index e0c4e1981e5b..771bad60e1bc 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -1162,7 +1162,7 @@ static void mt76x02_edcca_check(struct mt76x02_dev *dev)
- void mt76x02_mac_work(struct work_struct *work)
+@@ -345,7 +345,7 @@ void mt76x02_mac_write_txwi(struct mt76x02_dev *dev, struct mt76x02_txwi *txwi,
+ 	u16 txwi_flags = 0;
+ 	u8 nss;
+ 	s8 txpwr_adj, max_txpwr_adj;
+-	u8 ccmp_pn[8], nstreams = dev->chainmask & 0xf;
++	u8 ccmp_pn[8], nstreams = dev->mphy.chainmask & 0xf;
+ 
+ 	memset(txwi, 0, sizeof(*txwi));
+ 
+@@ -685,7 +685,7 @@ mt76x02_mac_process_rate(struct mt76x02_dev *dev,
+ 		status->rate_idx = idx;
+ 		break;
+ 	case MT_PHY_TYPE_VHT: {
+-		u8 n_rxstream = dev->chainmask & 0xf;
++		u8 n_rxstream = dev->mphy.chainmask & 0xf;
+ 
+ 		status->encoding = RX_ENC_VHT;
+ 		status->rate_idx = FIELD_GET(MT_RATE_INDEX_VHT_IDX, idx);
+@@ -777,7 +777,7 @@ int mt76x02_mac_process_rx(struct mt76x02_dev *dev, struct sk_buff *skb,
+ 	u16 rate = le16_to_cpu(rxwi->rate);
+ 	u16 tid_sn = le16_to_cpu(rxwi->tid_sn);
+ 	bool unicast = rxwi->rxinfo & cpu_to_le32(MT_RXINFO_UNICAST);
+-	int pad_len = 0, nstreams = dev->chainmask & 0xf;
++	int pad_len = 0, nstreams = dev->mphy.chainmask & 0xf;
+ 	s8 signal;
+ 	u8 pn_len;
+ 	u8 wcid;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x02_phy.c
+index aaadc15ea83c..2e53b0c1afdd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_phy.c
+@@ -16,7 +16,7 @@ void mt76x02_phy_set_rxpath(struct mt76x02_dev *dev)
+ 	val = mt76_rr(dev, MT_BBP(AGC, 0));
+ 	val &= ~BIT(4);
+ 
+-	switch (dev->chainmask & 0xf) {
++	switch (dev->mphy.chainmask & 0xf) {
+ 	case 2:
+ 		val |= BIT(3);
+ 		break;
+@@ -35,7 +35,7 @@ void mt76x02_phy_set_txdac(struct mt76x02_dev *dev)
  {
- 	struct mt76x02_dev *dev = container_of(work, struct mt76x02_dev,
--					       mt76.mac_work.work);
-+					       mphy.mac_work.work);
- 	int i, idx;
+ 	int txpath;
  
- 	mutex_lock(&dev->mt76.mutex);
-@@ -1185,7 +1185,7 @@ void mt76x02_mac_work(struct work_struct *work)
- 
- 	mt76_tx_status_check(&dev->mt76, NULL, false);
- 
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
- 				     MT_MAC_WORK_INTERVAL);
- }
- 
+-	txpath = (dev->chainmask >> 8) & 0xf;
++	txpath = (dev->mphy.chainmask >> 8) & 0xf;
+ 	switch (txpath) {
+ 	case 2:
+ 		mt76_set(dev, MT_BBP(TXBE, 5), 0x3);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 7ac20d3c16d7..db7bd35d425c 100644
+index db7bd35d425c..1852b6c9add6 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -149,7 +149,7 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 	struct ieee80211_hw *hw = mt76_hw(dev);
- 	struct wiphy *wiphy = hw->wiphy;
+@@ -197,10 +197,10 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
+ 				IEEE80211_HT_CAP_LDPC_CODING;
+ 		dev->mphy.sband_5g.sband.ht_cap.cap |=
+ 				IEEE80211_HT_CAP_LDPC_CODING;
+-		dev->chainmask = 0x202;
++		dev->mphy.chainmask = 0x202;
+ 		dev->mphy.antenna_mask = 3;
+ 	} else {
+-		dev->chainmask = 0x101;
++		dev->mphy.chainmask = 0x101;
+ 		dev->mphy.antenna_mask = 1;
+ 	}
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c
+index 3c2738903d7d..ac83ce5f3e8b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c
+@@ -29,7 +29,7 @@ int mt76x2_mcu_set_channel(struct mt76x02_dev *dev, u8 channel, u8 bw,
+ 		.idx = channel,
+ 		.scan = scan,
+ 		.bw = bw,
+-		.chainmask = cpu_to_le16(dev->chainmask),
++		.chainmask = cpu_to_le16(dev->mphy.chainmask),
+ 	};
  
--	INIT_DELAYED_WORK(&dev->mt76.mac_work, mt76x02_mac_work);
-+	INIT_DELAYED_WORK(&dev->mphy.mac_work, mt76x02_mac_work);
- 
- 	hw->queues = 4;
- 	hw->max_rates = 1;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
-index 620484390418..c6fa8cf92529 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
-@@ -271,7 +271,7 @@ static int mt76x2_init_hardware(struct mt76x02_dev *dev)
- void mt76x2_stop_hardware(struct mt76x02_dev *dev)
- {
- 	cancel_delayed_work_sync(&dev->cal_work);
--	cancel_delayed_work_sync(&dev->mt76.mac_work);
-+	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	cancel_delayed_work_sync(&dev->wdt_work);
- 	clear_bit(MT76_RESTART, &dev->mphy.state);
- 	mt76x02_mcu_set_radio_state(dev, false);
+ 	/* first set the channel without the extension channel info */
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-index 98f4cf398320..93fa3f644bb8 100644
+index 93fa3f644bb8..933125b07ea3 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-@@ -14,7 +14,7 @@ mt76x2_start(struct ieee80211_hw *hw)
- 	mt76x02_mac_start(dev);
- 	mt76x2_phy_start(dev);
+@@ -116,7 +116,7 @@ static int mt76x2_set_antenna(struct ieee80211_hw *hw, u32 tx_ant,
  
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
- 				     MT_MAC_WORK_INTERVAL);
- 	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->wdt_work,
- 				     MT_WATCHDOG_TIME);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-index ffc2deba29ac..85dcdc22fbeb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-@@ -236,7 +236,7 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- void mt76x2u_stop_hw(struct mt76x02_dev *dev)
- {
- 	cancel_delayed_work_sync(&dev->cal_work);
--	cancel_delayed_work_sync(&dev->mt76.mac_work);
-+	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	mt76x2u_mac_stop(dev);
+ 	mutex_lock(&dev->mt76.mutex);
+ 
+-	dev->chainmask = (tx_ant == 3) ? 0x202 : 0x101;
++	dev->mphy.chainmask = (tx_ant == 3) ? 0x202 : 0x101;
+ 	dev->mphy.antenna_mask = tx_ant;
+ 
+ 	mt76_set_stream_caps(&dev->mphy, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index 0a3ac07bab4a..7807b9165e01 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -89,7 +89,7 @@ static void mt7915_eeprom_parse_hw_cap(struct mt7915_dev *dev)
+ 
+ 	dev->chainmask = BIT(nss) - 1;
+ 	dev->mphy.antenna_mask = BIT(tx_mask[0]) - 1;
+-	dev->phy.chainmask = dev->mphy.antenna_mask;
++	dev->mphy.chainmask = dev->mphy.antenna_mask;
  }
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-index bab4e6e1904e..b66836928d9d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-@@ -15,7 +15,7 @@ static int mt76x2u_start(struct ieee80211_hw *hw)
- 	if (ret)
- 		return ret;
- 
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
- 				     MT_MAC_WORK_INTERVAL);
- 	set_bit(MT76_STATE_RUNNING, &dev->mphy.state);
- 
+ int mt7915_eeprom_init(struct mt7915_dev *dev)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 255ccd7e3d27..6d1ea2998b52 100644
+index 6d1ea2998b52..e7fa68ae8640 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -240,7 +240,7 @@ static int mt7915_register_ext_phy(struct mt7915_dev *dev)
+@@ -235,8 +235,8 @@ static int mt7915_register_ext_phy(struct mt7915_dev *dev)
+ 	phy = mphy->priv;
+ 	phy->dev = dev;
+ 	phy->mt76 = mphy;
+-	phy->chainmask = dev->chainmask & ~dev->phy.chainmask;
+-	mphy->antenna_mask = BIT(hweight8(phy->chainmask)) - 1;
++	mphy->chainmask = dev->chainmask & ~dev->mphy.chainmask;
++	mphy->antenna_mask = BIT(hweight8(mphy->chainmask)) - 1;
  	mt7915_init_wiphy(mphy->hw);
  
  	INIT_LIST_HEAD(&phy->stats_list);
--	INIT_DELAYED_WORK(&phy->mac_work, mt7915_mac_work);
-+	INIT_DELAYED_WORK(&mphy->mac_work, mt7915_mac_work);
+@@ -329,7 +329,7 @@ static int mt7915_init_hardware(struct mt7915_dev *dev)
  
- 	mt7915_eeprom_parse_band_config(phy);
- 	mt7915_set_stream_vht_txbf_caps(phy);
-@@ -622,7 +622,7 @@ int mt7915_register_device(struct mt7915_dev *dev)
- 	dev->mt76.phy.priv = &dev->phy;
- 	INIT_LIST_HEAD(&dev->phy.stats_list);
- 	INIT_WORK(&dev->rc_work, mt7915_mac_sta_rc_work);
--	INIT_DELAYED_WORK(&dev->phy.mac_work, mt7915_mac_work);
-+	INIT_DELAYED_WORK(&dev->mphy.mac_work, mt7915_mac_work);
- 	INIT_LIST_HEAD(&dev->sta_rc_list);
- 	INIT_LIST_HEAD(&dev->sta_poll_list);
- 	spin_lock_init(&dev->sta_poll_lock);
+ void mt7915_set_stream_vht_txbf_caps(struct mt7915_phy *phy)
+ {
+-	int nss = hweight8(phy->chainmask);
++	int nss = hweight8(phy->mt76->chainmask);
+ 	u32 *cap = &phy->mt76->sband_5g.sband.vht_cap.cap;
+ 
+ 	*cap |= IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
+@@ -440,8 +440,7 @@ static int
+ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 		    struct ieee80211_sband_iftype_data *data)
+ {
+-	int i, idx = 0;
+-	int nss = hweight8(phy->chainmask);
++	int i, idx = 0, nss = hweight8(phy->mt76->chainmask);
+ 	u16 mcs_map = 0;
+ 
+ 	for (i = 0; i < 8; i++) {
+@@ -648,8 +647,8 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 		dev->mphy.sband_5g.sband.vht_cap.cap |=
+ 			IEEE80211_VHT_CAP_SHORT_GI_160 |
+ 			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ;
+-	dev->mphy.hw->wiphy->available_antennas_rx = dev->phy.chainmask;
+-	dev->mphy.hw->wiphy->available_antennas_tx = dev->phy.chainmask;
++	dev->mphy.hw->wiphy->available_antennas_rx = dev->mphy.chainmask;
++	dev->mphy.hw->wiphy->available_antennas_tx = dev->mphy.chainmask;
+ 
+ 	mt76_set_stream_caps(&dev->mphy, true);
+ 	mt7915_set_stream_vht_txbf_caps(&dev->phy);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index dc1f56fb823d..cdc4b3ed5259 100644
+index cdc4b3ed5259..261bb1890a4c 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1544,9 +1544,9 @@ void mt7915_mac_reset_work(struct work_struct *work)
- 	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
--	cancel_delayed_work_sync(&dev->phy.mac_work);
-+	cancel_delayed_work_sync(&dev->mphy.mac_work);
- 	if (phy2)
--		cancel_delayed_work_sync(&phy2->mac_work);
-+		cancel_delayed_work_sync(&phy2->mt76->mac_work);
+@@ -1362,7 +1362,7 @@ mt7915_phy_get_nf(struct mt7915_phy *phy, int idx)
+ 	u32 val, sum = 0, n = 0;
+ 	int nss, i;
  
- 	/* lock/unlock all queues to ensure that no tx is pending */
- 	mt76_txq_schedule_all(&dev->mphy);
-@@ -1600,10 +1600,11 @@ void mt7915_mac_reset_work(struct work_struct *work)
+-	for (nss = 0; nss < hweight8(phy->chainmask); nss++) {
++	for (nss = 0; nss < hweight8(phy->mt76->chainmask); nss++) {
+ 		u32 reg = MT_WF_IRPI(nss + (idx << dev->dbdc_support));
  
- 	mt7915_update_beacons(dev);
- 
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->phy.mac_work,
-+	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
- 				     MT7915_WATCHDOG_TIME);
- 	if (phy2)
--		ieee80211_queue_delayed_work(ext_phy->hw, &phy2->mac_work,
-+		ieee80211_queue_delayed_work(ext_phy->hw,
-+					     &phy2->mt76->mac_work,
- 					     MT7915_WATCHDOG_TIME);
- }
- 
-@@ -1714,17 +1715,17 @@ void mt7915_mac_sta_rc_work(struct work_struct *work)
- void mt7915_mac_work(struct work_struct *work)
- {
- 	struct mt7915_phy *phy;
--	struct mt76_dev *mdev;
-+	struct mt76_phy *mphy;
- 
--	phy = (struct mt7915_phy *)container_of(work, struct mt7915_phy,
--						mac_work.work);
--	mdev = &phy->dev->mt76;
-+	mphy = (struct mt76_phy *)container_of(work, struct mt76_phy,
-+					       mac_work.work);
-+	phy = mphy->priv;
- 
--	mutex_lock(&mdev->mutex);
-+	mutex_lock(&mphy->dev->mutex);
- 
--	mt76_update_survey(mdev);
--	if (++phy->mac_work_count == 5) {
--		phy->mac_work_count = 0;
-+	mt76_update_survey(mphy->dev);
-+	if (++mphy->mac_work_count == 5) {
-+		mphy->mac_work_count = 0;
- 
- 		mt7915_mac_update_mib_stats(phy);
- 	}
-@@ -1734,9 +1735,9 @@ void mt7915_mac_work(struct work_struct *work)
- 		mt7915_mac_sta_stats_work(phy);
- 	};
- 
--	mutex_unlock(&mdev->mutex);
-+	mutex_unlock(&mphy->dev->mutex);
- 
--	ieee80211_queue_delayed_work(phy->mt76->hw, &phy->mac_work,
-+	ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
- 				     MT7915_WATCHDOG_TIME);
- }
- 
+ 		for (i = 0; i < ARRAY_SIZE(nf_power); i++, reg += 4) {
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 3e0458fee937..60a0fc9ec3c7 100644
+index 60a0fc9ec3c7..24d912cb112d 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -50,7 +50,7 @@ static int mt7915_start(struct ieee80211_hw *hw)
- 	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
+@@ -812,7 +812,7 @@ mt7915_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+ 		else
+ 			tx_ant <<= 1;
+ 	}
+-	phy->chainmask = tx_ant;
++	phy->mt76->chainmask = tx_ant;
  
- 	if (!mt76_testmode_enabled(phy->mt76))
--		ieee80211_queue_delayed_work(hw, &phy->mac_work,
-+		ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
- 					     MT7915_WATCHDOG_TIME);
+ 	mt76_set_stream_caps(phy->mt76, true);
+ 	mt7915_set_stream_vht_txbf_caps(phy);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index ae9efdba8494..6c3d5ee2b888 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -834,9 +834,9 @@ static void
+ mt7915_mcu_bss_ra_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 		      struct mt7915_phy *phy)
+ {
++	int max_nss = hweight8(phy->mt76->chainmask);
+ 	struct bss_info_ra *ra;
+ 	struct tlv *tlv;
+-	int max_nss = hweight8(phy->chainmask);
  
- 	if (!running)
-@@ -66,7 +66,7 @@ static void mt7915_stop(struct ieee80211_hw *hw)
- 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
- 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
+ 	tlv = mt7915_mcu_add_tlv(skb, BSS_INFO_RA, sizeof(*ra));
  
--	cancel_delayed_work_sync(&phy->mac_work);
-+	cancel_delayed_work_sync(&phy->mt76->mac_work);
+@@ -1771,7 +1771,7 @@ mt7915_mcu_sta_bfer_vht(struct ieee80211_sta *sta, struct mt7915_phy *phy,
+ {
+ 	struct ieee80211_sta_vht_cap *pc = &sta->vht_cap;
+ 	struct ieee80211_sta_vht_cap *vc = &phy->mt76->sband_5g.sband.vht_cap;
+-	u8 bfee_nr, bfer_nr, n, tx_ant = hweight8(phy->chainmask) - 1;
++	u8 bfee_nr, bfer_nr, n, tx_ant = hweight8(phy->mt76->chainmask) - 1;
+ 	u16 mcs_map;
  
- 	mutex_lock(&dev->mt76.mutex);
+ 	bf->tx_mode = MT_PHY_TYPE_VHT;
+@@ -1868,9 +1868,9 @@ mt7915_mcu_sta_bfer_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 			struct ieee80211_vif *vif, struct mt7915_phy *phy,
+ 			bool enable)
+ {
++	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
+ 	struct sta_rec_bf *bf;
+ 	struct tlv *tlv;
+-	int tx_ant = hweight8(phy->chainmask) - 1;
+ 	const u8 matrix[4][4] = {
+ 		{0, 0, 0, 0},
+ 		{1, 1, 0, 0},	/* 2x1, 2x2, 2x3, 2x4 */
+@@ -1923,9 +1923,9 @@ static void
+ mt7915_mcu_sta_bfee_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 			struct mt7915_phy *phy)
+ {
++	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
+ 	struct sta_rec_bfee *bfee;
+ 	struct tlv *tlv;
+-	int tx_ant = hweight8(phy->chainmask) - 1;
+ 	u8 nr = 0;
  
-@@ -273,7 +273,7 @@ int mt7915_set_channel(struct mt7915_phy *phy)
- 	struct mt7915_dev *dev = phy->dev;
- 	int ret;
- 
--	cancel_delayed_work_sync(&phy->mac_work);
-+	cancel_delayed_work_sync(&phy->mt76->mac_work);
- 
- 	mutex_lock(&dev->mt76.mutex);
- 	set_bit(MT76_RESET, &phy->mt76->state);
-@@ -299,7 +299,8 @@ int mt7915_set_channel(struct mt7915_phy *phy)
- 	mt76_txq_schedule_all(phy->mt76);
- 
- 	if (!mt76_testmode_enabled(phy->mt76))
--		ieee80211_queue_delayed_work(phy->mt76->hw, &phy->mac_work,
-+		ieee80211_queue_delayed_work(phy->mt76->hw,
-+					     &phy->mt76->mac_work,
- 					     MT7915_WATCHDOG_TIME);
- 
- 	return ret;
+ 	tlv = mt7915_mcu_add_tlv(skb, STA_REC_BFEE, sizeof(*bfee));
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index df7ac2cf052f..a3cdaecef4ce 100644
+index a3cdaecef4ce..970c397734bd 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -140,8 +140,6 @@ struct mt7915_phy {
- 	struct mib_stats mib;
- 	struct list_head stats_list;
+@@ -126,7 +126,6 @@ struct mt7915_phy {
+ 	u64 omac_mask;
  
--	struct delayed_work mac_work;
--	u8 mac_work_count;
- 	u8 sta_work_count;
+ 	u16 noise;
+-	u16 chainmask;
  
- #ifdef CONFIG_NL80211_TESTMODE
+ 	s16 coverage_class;
+ 	u8 slottime;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+index b58c91ea3fa5..06353de2e762 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+@@ -316,7 +316,7 @@ mt7915_tm_set_params(struct mt76_phy *mphy, struct nlattr **tb,
+ 	    td->state == MT76_TM_STATE_OFF)
+ 		return 0;
+ 
+-	if (td->tx_antenna_mask & ~phy->chainmask)
++	if (td->tx_antenna_mask & ~mphy->chainmask)
+ 		return -EINVAL;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tm_change_map); i++) {
 -- 
 2.25.1
 
