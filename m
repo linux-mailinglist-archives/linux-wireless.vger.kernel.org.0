@@ -2,24 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D202FD9DB
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 20:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4804F2FDA21
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 20:55:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387461AbhATThi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jan 2021 14:37:38 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:43147 "EHLO
+        id S2388076AbhATTmZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jan 2021 14:42:25 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:43152 "EHLO
         mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2392625AbhATTfx (ORCPT
+        with ESMTP id S2392531AbhATTe5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jan 2021 14:35:53 -0500
-X-UUID: 59d9f4506e554428926130ad74e4ab76-20210121
-X-UUID: 59d9f4506e554428926130ad74e4ab76-20210121
+        Wed, 20 Jan 2021 14:34:57 -0500
+X-UUID: d41e1668d947474d997ff8b2e1af3573-20210121
+X-UUID: d41e1668d947474d997ff8b2e1af3573-20210121
 Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
         (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1445758545; Thu, 21 Jan 2021 03:33:57 +0800
+        with ESMTP id 934772853; Thu, 21 Jan 2021 03:33:56 +0800
 Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
+ mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
  15.0.1497.2; Thu, 21 Jan 2021 03:33:55 +0800
 Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
@@ -33,15 +33,14 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
         Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH -next v6 12/15] mt76: mt7921: introduce 802.11 PS support in sta mode
-Date:   Thu, 21 Jan 2021 03:33:48 +0800
-Message-ID: <10f91ffe7c2c8cc35ccf4e174cd46208430c8fc6.1611060302.git.objelf@gmail.com>
+Subject: [PATCH -next v6 13/15] mt76: mt7921: introduce support for hardware beacon filter
+Date:   Thu, 21 Jan 2021 03:33:49 +0800
+Message-ID: <09e1716c7a1ea891cd7a258c6fd13e3ab74d4750.1611060302.git.objelf@gmail.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1611060302.git.objelf@gmail.com>
 References: <cover.1611060302.git.objelf@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-SNTS-SMTP: D8CFF33BBDA2CC56C3BE57B94E486E651C03C70CA0A9C9A0DB2CFAD37C4770BA2000:8
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -49,7 +48,11 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Enable 802.11 power-save support available in mt7921 firmware
+Introduce support for hw beacon filter available in the mt7921 firmware.
+
+According to mt7921e firmware, enabling hardware filter would rely on
+mt7921_mcu_uni_bss_bcnft and disabling hardware filter still rely on legacy
+mt7921_mcu_set_bss_pm.
 
 Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
@@ -57,65 +60,22 @@ Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
 Signed-off-by: Soul Huang <Soul.Huang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt7921/init.c  |  2 +
- .../net/wireless/mediatek/mt76/mt7921/mac.c   |  3 +-
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  3 ++
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 37 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  2 +-
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
- 6 files changed, 45 insertions(+), 3 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 75 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  1 +
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  4 +
+ 3 files changed, 80 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 9aa110f6562b..039f9c206b05 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -83,6 +83,8 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
- 	ieee80211_hw_set(hw, SUPPORTS_TX_ENCAP_OFFLOAD);
- 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
-+	ieee80211_hw_set(hw, SUPPORTS_PS);
-+	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
- 
- 	hw->max_tx_fragments = 4;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index a5d3f5023ea4..ca059dc245a7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -690,8 +690,7 @@ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
- 	txwi[1] = cpu_to_le32(val);
- 	txwi[2] = 0;
- 
--	val = MT_TXD3_SW_POWER_MGMT |
--	      FIELD_PREP(MT_TXD3_REM_TX_COUNT, tx_count);
-+	val = FIELD_PREP(MT_TXD3_REM_TX_COUNT, tx_count);
- 	if (key)
- 		val |= MT_TXD3_PROTECT_FRAME;
- 	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 2147bcc53148..f0dda1531899 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -560,6 +560,9 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
- 		mt7921_mcu_set_tx(dev, vif);
- 
-+	if (changed & BSS_CHANGED_PS)
-+		mt7921_mcu_uni_bss_ps(dev, vif);
-+
- 	mutex_unlock(&dev->mt76.mutex);
- }
- 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 99fa49a69ae5..1e7be1d58850 100644
+index 1e7be1d58850..945d0e44ae71 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -2527,3 +2527,40 @@ u32 mt7921_get_wtbl_info(struct mt7921_dev *dev, u16 wlan_idx)
- 
- 	return 0;
+@@ -2564,3 +2564,78 @@ int mt7921_mcu_uni_bss_ps(struct mt7921_dev *dev, struct ieee80211_vif *vif)
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_BSS_INFO_UPDATE,
+ 				 &ps_req, sizeof(ps_req), true);
  }
 +
-+int mt7921_mcu_uni_bss_ps(struct mt7921_dev *dev, struct ieee80211_vif *vif)
++int mt7921_mcu_uni_bss_bcnft(struct mt7921_dev *dev, struct ieee80211_vif *vif,
++			     bool enable)
 +{
 +	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
 +	struct {
@@ -123,63 +83,95 @@ index 99fa49a69ae5..1e7be1d58850 100644
 +			u8 bss_idx;
 +			u8 pad[3];
 +		} __packed hdr;
-+		struct ps_tlv {
++		struct bcnft_tlv {
 +			__le16 tag;
 +			__le16 len;
-+			u8 ps_state; /* 0: device awake
-+				      * 1: static power save
-+				      * 2: dynamic power saving
-+				      * 3: inter TWT power saving
-+				      * 4: leave TWT power saving
-+				      */
-+			u8 pad[3];
-+		} __packed ps;
-+	} __packed ps_req = {
++			__le16 bcn_interval;
++			u8 dtim_period;
++			u8 pad;
++		} __packed bcnft;
++	} __packed bcnft_req = {
 +		.hdr = {
 +			.bss_idx = mvif->idx,
 +		},
-+		.ps = {
-+			.tag = cpu_to_le16(UNI_BSS_INFO_PS),
-+			.len = cpu_to_le16(sizeof(struct ps_tlv)),
-+			.ps_state = vif->bss_conf.ps ? 2 : 0,
++		.bcnft = {
++			.tag = cpu_to_le16(UNI_BSS_INFO_BCNFT),
++			.len = cpu_to_le16(sizeof(struct bcnft_tlv)),
++			.bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int),
++			.dtim_period = vif->bss_conf.dtim_period,
 +		},
 +	};
 +
 +	if (vif->type != NL80211_IFTYPE_STATION)
-+		return -EOPNOTSUPP;
++		return 0;
 +
 +	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD_BSS_INFO_UPDATE,
-+				 &ps_req, sizeof(ps_req), true);
++				 &bcnft_req, sizeof(bcnft_req), true);
++}
++
++int mt7921_mcu_set_bss_pm(struct mt7921_dev *dev, struct ieee80211_vif *vif,
++			  bool enable)
++{
++	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
++	struct {
++		u8 bss_idx;
++		u8 dtim_period;
++		__le16 aid;
++		__le16 bcn_interval;
++		__le16 atim_window;
++		u8 uapsd;
++		u8 bmc_delivered_ac;
++		u8 bmc_triggered_ac;
++		u8 pad;
++	} req = {
++		.bss_idx = mvif->idx,
++		.aid = cpu_to_le16(vif->bss_conf.aid),
++		.dtim_period = vif->bss_conf.dtim_period,
++		.bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int),
++	};
++	struct {
++		u8 bss_idx;
++		u8 pad[3];
++	} req_hdr = {
++		.bss_idx = mvif->idx,
++	};
++	int err;
++
++	if (vif->type != NL80211_IFTYPE_STATION)
++		return 0;
++
++	err = mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_ABORT, &req_hdr,
++				sizeof(req_hdr), false);
++	if (err < 0 || !enable)
++		return err;
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_CONNECTED, &req,
++				 sizeof(req), false);
 +}
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-index 6894b44ff62d..2103e1d3ac94 100644
+index 2103e1d3ac94..de3a9aabec04 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-@@ -185,7 +185,6 @@ struct mt7921_mcu_uni_event {
- /* offload mcu commands */
- enum {
- 	MCU_CMD_START_HW_SCAN = MCU_CE_PREFIX | 0x03,
--	MCU_CMD_SET_PS_PROFILE = MCU_CE_PREFIX | 0x05,
- 	MCU_CMD_SET_CHAN_DOMAIN = MCU_CE_PREFIX | 0x0f,
- 	MCU_CMD_SET_BSS_CONNECTED = MCU_CE_PREFIX | 0x16,
- 	MCU_CMD_SET_BSS_ABORT = MCU_CE_PREFIX | 0x17,
-@@ -211,6 +210,7 @@ enum {
- 	UNI_BSS_INFO_BCN_CONTENT = 7,
+@@ -211,6 +211,7 @@ enum {
  	UNI_BSS_INFO_QBSS = 15,
  	UNI_BSS_INFO_UAPSD = 19,
-+	UNI_BSS_INFO_PS = 21,
+ 	UNI_BSS_INFO_PS = 21,
++	UNI_BSS_INFO_BCNFT = 22,
  };
  
  enum {
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index dc6064100f53..2e617e85670d 100644
+index 2e617e85670d..d5f443f99ee3 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -362,4 +362,5 @@ int mt7921_mcu_sched_scan_enable(struct mt7921_phy *phy,
- int mt7921_mcu_cancel_hw_scan(struct mt7921_phy *phy,
+@@ -363,4 +363,8 @@ int mt7921_mcu_cancel_hw_scan(struct mt7921_phy *phy,
  			      struct ieee80211_vif *vif);
  u32 mt7921_get_wtbl_info(struct mt7921_dev *dev, u16 wlan_idx);
-+int mt7921_mcu_uni_bss_ps(struct mt7921_dev *dev, struct ieee80211_vif *vif);
+ int mt7921_mcu_uni_bss_ps(struct mt7921_dev *dev, struct ieee80211_vif *vif);
++int mt7921_mcu_uni_bss_bcnft(struct mt7921_dev *dev, struct ieee80211_vif *vif,
++			     bool enable);
++int mt7921_mcu_set_bss_pm(struct mt7921_dev *dev, struct ieee80211_vif *vif,
++			  bool enable);
  #endif
 -- 
 2.25.1
