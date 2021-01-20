@@ -2,70 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01A512FDB0C
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Jan 2021 21:44:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEEA72FDD0E
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 00:40:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388435AbhATUmI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jan 2021 15:42:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388535AbhATUkO (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jan 2021 15:40:14 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430CFC0613C1;
-        Wed, 20 Jan 2021 12:39:34 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1l2KGJ-009HTe-2E; Wed, 20 Jan 2021 21:39:31 +0100
-Message-ID: <16d5ca0467273e2d6f3830a161fe84de104447a6.camel@sipsolutions.net>
-Subject: Re: pull-request: mac80211 2021-01-18.2
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Date:   Wed, 20 Jan 2021 21:39:29 +0100
-In-Reply-To: <20210120123752.636659d1@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20210118204750.7243-1-johannes@sipsolutions.net>
-         <161101020906.2232.13826999223880000897.git-patchwork-notify@kernel.org>
-         <c066813abc5830eb094ae0c343a71e88b775b441.camel@sipsolutions.net>
-         <20210120123752.636659d1@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+        id S1732462AbhATWfP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Jan 2021 17:35:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38428 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388472AbhATWPa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 Jan 2021 17:15:30 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E27B6206ED;
+        Wed, 20 Jan 2021 22:14:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611180888;
+        bh=RmCUUcpgJruwf2Mkk/yImUPvHcho3UFDIDGJiuPQNmQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qVxKda8n9M/RplVRU7T0RL4Q8juPMp4g1qsL4Xsx79ZhEbxu0wiM+YXEU81EThs9B
+         wH2GComTN0Aa8p1adPo7gZJ8egTaIVs5UotNYsIQwowIx0pFfUpqnaSpbwE5sYjcyh
+         mYXflpIUQuLH4yCW8/jXCsm0Z68iAyMlXOaKJbcmJ6QGa2BXadZbpei7Y1F1t46+rD
+         cBPOWWOOvD0x2J2zN8vzGqKlaoBstyNne176oGD609NKs/nSOKsjXYQCSzH+0o2HhH
+         QDvaycuFi8+NWs6D4toG73A8HdhgGKTjOx4JcqIgpHs5/dmXtQDd7ywaboGjkI8QnJ
+         7QlJ//rWmwKeQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sean.wang@mediatek.com
+Subject: [PATCH 0/6] mt76: introduce mt76_connac common module
+Date:   Wed, 20 Jan 2021 23:14:34 +0100
+Message-Id: <cover.1611180342.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-01-20 at 12:37 -0800, Jakub Kicinski wrote:
-> On Wed, 20 Jan 2021 18:59:21 +0100 Johannes Berg wrote:
-> > Hi Jakub,
-> > 
-> > > This pull request was applied to netdev/net.git (refs/heads/master):  
-> > 
-> > Since you pulled this now, question:
-> > 
-> > I have some pending content for mac80211-next/net-next that either
-> > conflicts with or requires a fix from here, or such.
-> > 
-> > Could you pull net into net-next, so I can get it into mac80211-next? Or
-> > do you prefer another approach here? I could also double-apply the
-> > single patch, or pull myself but then we'd get a lot of net content into
-> > net-next only via mac80211-next which seems odd.
-> 
-> Just merged net -> net-next, you can do your thing :)
+Introduce mt76_connac common module for code sharing between mt7615 and mt7921
+drivers.
 
-Ok cool, thanks.
+Lorenzo Bianconi (6):
+  mt76: introduce mt76_vif data structure
+  mt76: mt76_connac: create mcu library
+  mt76: mt76_connac: move hw_scan and sched_scan routine in
+    mt76_connac_mcu module
+  mt76: mt76_connac: move WoW and suspend code in mt76_connac_mcu module
+  mt76: mt76_connac: move pm data struct in mt76_connac.h
+  mt76: mt76_connac: move pm utility routines in mt76_connac_lib module
 
-> Out of curiosity are you going to rebase mac80211-next or send a PR,
-> fast forward and then apply the conflicting patches?
+ drivers/net/wireless/mediatek/mt76/Kconfig    |    4 +
+ drivers/net/wireless/mediatek/mt76/Makefile   |    3 +
+ drivers/net/wireless/mediatek/mt76/mt76.h     |    8 +
+ .../net/wireless/mediatek/mt76/mt7615/Kconfig |    2 +-
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |   15 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |   91 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  159 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 1624 ++---------------
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   |  682 +------
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   97 +-
+ .../net/wireless/mediatek/mt76/mt7615/pci.c   |    9 +-
+ .../wireless/mediatek/mt76/mt7615/pci_mac.c   |    2 +-
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c  |    5 +-
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |    4 +-
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |   91 +
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  |  119 ++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 1490 +++++++++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  954 ++++++++++
+ 18 files changed, 2930 insertions(+), 2429 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
 
-Normally I'd send a PR for it and then fast-forward.
-
-However, it's actually empty at the moment, so I'm just going to fast-
-forward it to net-next before I apply the next patches :-)
-
-johannes
+-- 
+2.29.2
 
