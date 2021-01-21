@@ -2,63 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4422FE8F4
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 12:39:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF6202FE9F1
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 13:26:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730277AbhAULW6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Jan 2021 06:22:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43546 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729299AbhAULWJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Jan 2021 06:22:09 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 799F6238D7;
-        Thu, 21 Jan 2021 11:21:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1611228087;
-        bh=p/F2cRf0JaXDMfcU39v/0M/n67VUPSyvsSPiFPPDGZ4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SFNEvmlLdERsubFDap97OvzqtzuAqvYcNmxYf+ejBCBz5MT8FT8HlXAaZh7bvyQ8P
-         XnhG3BGAENw4E7/3Q1lfW775thc3Ek7LBmnrjIs1S/FZFxF5ks3OsbUuU3IvPTuheg
-         GXHgvIuMEbI1CJMTs2z6B8+ioEB68Z6intIIQt0M=
-Date:   Thu, 21 Jan 2021 12:21:24 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     =?utf-8?B?5oWV5Yas5Lqu?= <mudongliangabcd@gmail.com>
-Cc:     davem@davemloft.net, helmut.schaa@googlemail.com,
-        kvalo@codeaurora.org, linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        sgruszka@redhat.com
-Subject: Re: [PATCH] rt2x00: reset reg earlier in rt2500usb_register_read
-Message-ID: <YAljtMMV4oh5uAHC@kroah.com>
-References: <20210121092026.3261412-1-mudongliangabcd@gmail.com>
- <YAlORNKQ4y7bzYeZ@kroah.com>
- <CAD-N9QXhD48-6GbpCUYuxPKEbkzGgGTaFKQ8TAaQ93WfD_sT2A@mail.gmail.com>
+        id S1730954AbhAUM0D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Jan 2021 07:26:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53568 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729886AbhAUMZF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 21 Jan 2021 07:25:05 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECAA3C061757
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Jan 2021 04:24:24 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1l2Z0f-009X7F-N8; Thu, 21 Jan 2021 13:24:21 +0100
+Message-ID: <9406a5833f2bd6a15bf314717b7ac21952f11f24.camel@sipsolutions.net>
+Subject: Re: [PATCH 0/4] Updates for rfkill
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 21 Jan 2021 13:24:20 +0100
+In-Reply-To: <20210116125146.31932-1-markus.theil@tu-ilmenau.de>
+References: <20210116125146.31932-1-markus.theil@tu-ilmenau.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD-N9QXhD48-6GbpCUYuxPKEbkzGgGTaFKQ8TAaQ93WfD_sT2A@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jan 21, 2021 at 06:59:08PM +0800, 慕冬亮 wrote:
-> > >       rt2x00usb_vendor_request_buff(rt2x00dev, USB_MULTI_READ,
-> > >                                     USB_VENDOR_REQUEST_IN, offset,
-> > >                                     &reg, sizeof(reg));
-> >
-> > Are you sure this is valid to call this function with a variable on the
-> > stack like this?  How did you test this change?
-> 
-> First, I did not do any changes to this call. Second, the programming
-> style to pass the pointer of stack variable as arguments is not really
-> good. Third, I check this same code file, there are many code snippets
-> with such programming style. :(
+Hi Markus,
 
-I know you did not change it, what I am asking is how did you test this
-change works?  I think the kernel will warn you in huge ways that using
-this pointer on the stack is incorrect, which implies you did not test
-this change :(
+Thanks for the patches!
 
-thanks,
+I separately committed a fix for the buffering=0 issue, just so it's
+separate and not part of the other changes.
 
-greg k-h
+>   rfkill.py: migrate to python3
+
+Applied, but I made some cleanups.
+
+>   rfkill: update rfkill.h
+>   rfkill: support hard block reason in python code
+>   rfkill: support hard block reason in C code
+
+This is broken, unfortunately. Updating rfkill.h as is causes issues
+because we read more data than we are willing to accept, which you've
+fixed up in the support for hard block reasons patch. Seems that should
+partially be in the original patch - e.g. checking "size >= V1" instead
+of "size == V1".
+
+Additionally, the hard block reasons in C patch is wrong because if the
+read was short, the field is not initialized. Need to clear the event to
+zeroes before reading it, or at least at the beginnning (I guess we can
+assume the kernel will not change size between two reads).
+
+The python patch I applied with some fixups.
+
+johannes
+
