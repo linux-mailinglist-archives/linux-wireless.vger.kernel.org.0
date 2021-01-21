@@ -2,114 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA572FE011
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 04:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4B0B2FE243
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Jan 2021 07:07:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727067AbhAUDfr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Jan 2021 22:35:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32507 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2389277AbhAUBgj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Jan 2021 20:36:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611192896;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=b434st/d4UhGLE71zd3bXRuvYmRlQkOm8SFHO1G+7yM=;
-        b=fmbmqY0wAU9aCUA2tKShy81dlmartSnAYFz1jRhe+O/CY5mHLyQx0LLX01bEDzoPLCRuY2
-        EoTtiEFA583Sya5oaRy2s0VpQ9+Cifsmmdx/khcBiesBe1Is55gIw6DpQxCChk4wua5d7m
-        4ghCH68veD2ODCmcOqZV+PHUcFErGm4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-397-PtBUzNy_NxCS2247KOVU7w-1; Wed, 20 Jan 2021 20:34:52 -0500
-X-MC-Unique: PtBUzNy_NxCS2247KOVU7w-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9AB661842144;
-        Thu, 21 Jan 2021 01:34:50 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.10.110.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E0A1D5D74C;
-        Thu, 21 Jan 2021 01:34:48 +0000 (UTC)
-Message-ID: <82243bc066a12235099639928a271a8fe338668e.camel@redhat.com>
-Subject: Re: [PATCH 17/18] net: iosm: readme file
-From:   Dan Williams <dcbw@redhat.com>
-To:     Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>
-Cc:     =?ISO-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>,
-        M Chetan Kumar <m.chetan.kumar@intel.com>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        johannes@sipsolutions.net, krishna.c.sudi@intel.com
-Date:   Wed, 20 Jan 2021 19:34:48 -0600
-In-Reply-To: <20210120153255.4fcf7e32@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20210107170523.26531-1-m.chetan.kumar@intel.com>
-         <20210107170523.26531-18-m.chetan.kumar@intel.com>
-         <X/eJ/rl4U6edWr3i@lunn.ch> <87turftqxt.fsf@miraculix.mork.no>
-         <YAiF2/lMGZ0mPUSK@lunn.ch>
-         <20210120153255.4fcf7e32@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+        id S1726264AbhAUGFt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Jan 2021 01:05:49 -0500
+Received: from m12-17.163.com ([220.181.12.17]:49474 "EHLO m12-17.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726197AbhAUGFA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 21 Jan 2021 01:05:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=KtEXc
+        ox0mT+oOokFE25ZYZEgpVo5HBdz4Th5NXAN7i8=; b=RsZEw0g021xQbcMXHC2HD
+        widS1/cS1RwEsPkOZe2yizrz0S3jAfcU/J1ESDGKqb/DvqaMLxOHwozPPfPTKegn
+        l5gfoBlD9UlALmklWBa4leTIibCKH+n9P4pLYKrAF44IjCa5Qf1D9LTsrsOg4aRl
+        +qpcVZE78CFLGxYwVqkA4I=
+Received: from COOL-20201222LC.ccdomain.com (unknown [218.94.48.178])
+        by smtp13 (Coremail) with SMTP id EcCowABXCkIwGQlgfh6Mgw--.52708S2;
+        Thu, 21 Jan 2021 14:03:31 +0800 (CST)
+From:   dingsenjie@163.com
+To:     linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dingsenjie <dingsenjie@yulong.com>
+Subject: [PATCH] mt7915: Convert to DEFINE_SHOW_ATTRIBUTE
+Date:   Thu, 21 Jan 2021 14:03:24 +0800
+Message-Id: <20210121060324.21124-1-dingsenjie@163.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-CM-TRANSID: EcCowABXCkIwGQlgfh6Mgw--.52708S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZrWrXw45Zw1rXw48AryftFb_yoW5ZF1fpa
+        95uayjvr48Jr1kKrZ5JFWUZ3yrGanaq34UZr92934rCF4vqFn5tF4UGFWSvrW0y3y8Cr17
+        X3W5Kry3J3yYvr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jZEfOUUUUU=
+X-Originating-IP: [218.94.48.178]
+X-CM-SenderInfo: 5glqw25hqmxvi6rwjhhfrp/xtbBRRMhyFPAJqObPgAAsM
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-01-20 at 15:32 -0800, Jakub Kicinski wrote:
-> On Wed, 20 Jan 2021 20:34:51 +0100 Andrew Lunn wrote:
-> > On Sun, Jan 17, 2021 at 06:26:54PM +0100, Bjørn Mork wrote:
-> > > I was young and stupid. Now I'm not that young anymore ;-)  
-> > 
-> > We all make mistakes, when we don't have the knowledge there are
-> > other
-> > ways. That is partially what code review is about.
-> > 
-> > > Never ever imagined that this would be replicated in another
-> > > driver,
-> > > though.  That doesn't really make much sense.  We have learned by
-> > > now,
-> > > haven't we?  This subject has been discussed a few times in the
-> > > past,
-> > > and Johannes summary is my understanding as well:
-> > > "I don't think anyone likes that"  
-> > 
-> > So there seems to be agreement there. But what is not clear, is
-> > anybody willing to do the work to fix this, and is there enough
-> > ROI.
-> > 
-> > Do we expect more devices like this? Will 6G, 7G modems look very
-> > different? 
-> 
-> Didn't Intel sell its 5G stuff off to Apple?
+From: dingsenjie <dingsenjie@yulong.com>
 
-Yes, but they kept the ability to continue with 3G/4G hardware and
-other stuff.
+Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
 
-> > Be real network devices and not need any of this odd stuff?
-> > Or will they be just be incrementally better but mostly the same?
-> > 
-> > I went into the review thinking it was an Ethernet driver, and kept
-> > having WTF moments. Now i know it is not an Ethernet driver, i can
-> > say
-> > it is not my domain, i don't know the field well enough to say if
-> > all
-> > these hacks are acceptable or not.
-> > 
-> > It probably needs David and Jakub to set the direction to be
-> > followed.
-> 
-> AFAIU all those cellar modems are relatively slow and FW-heavy, so
-> the
-> ideal solution IMO is not even a common kernel interface but actually
-> a common device interface, like NVMe (or virtio for lack of better
-> examples).
+Signed-off-by: dingsenjie <dingsenjie@yulong.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/debugfs.c    | 36 ++++------------------
+ 1 file changed, 6 insertions(+), 30 deletions(-)
 
-That was supposed to be MBIM, but unfortunately those involved didn't
-iterate and MBIM got stuck. I don't think we'll see a standard as long
-as some vendors are dominant and see no need for it.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 7d810fb..fa5ce4e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -166,7 +166,7 @@ static int mt7915_ser_trigger_set(void *data, u64 val)
+ }
+ 
+ static int
+-mt7915_tx_stats_read(struct seq_file *file, void *data)
++mt7915_tx_stats_show(struct seq_file *file, void *data)
+ {
+ 	struct mt7915_dev *dev = file->private;
+ 	int stat[8], i, n;
+@@ -196,19 +196,7 @@ static int mt7915_ser_trigger_set(void *data, u64 val)
+ 	return 0;
+ }
+ 
+-static int
+-mt7915_tx_stats_open(struct inode *inode, struct file *f)
+-{
+-	return single_open(f, mt7915_tx_stats_read, inode->i_private);
+-}
+-
+-static const struct file_operations fops_tx_stats = {
+-	.open = mt7915_tx_stats_open,
+-	.read = seq_read,
+-	.llseek = seq_lseek,
+-	.release = single_release,
+-	.owner = THIS_MODULE,
+-};
++DEFINE_SHOW_ATTRIBUTE(mt7915_tx_stats);
+ 
+ static int mt7915_read_temperature(struct seq_file *s, void *data)
+ {
+@@ -353,7 +341,7 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
+ 				    mt7915_queues_read);
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "acq", dir,
+ 				    mt7915_queues_acq);
+-	debugfs_create_file("tx_stats", 0400, dir, dev, &fops_tx_stats);
++	debugfs_create_file("tx_stats", 0400, dir, dev, &mt7915_tx_stats_fops);
+ 	debugfs_create_file("fw_debug", 0600, dir, dev, &fops_fw_debug);
+ 	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
+ 	/* test knobs */
+@@ -384,7 +372,7 @@ static int mt7915_sta_fixed_rate_set(void *data, u64 rate)
+ 			 mt7915_sta_fixed_rate_set, "%llx\n");
+ 
+ static int
+-mt7915_sta_stats_read(struct seq_file *s, void *data)
++mt7915_sta_stats_show(struct seq_file *s, void *data)
+ {
+ 	struct ieee80211_sta *sta = s->private;
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+@@ -427,24 +415,12 @@ static int mt7915_sta_fixed_rate_set(void *data, u64 rate)
+ 	return 0;
+ }
+ 
+-static int
+-mt7915_sta_stats_open(struct inode *inode, struct file *f)
+-{
+-	return single_open(f, mt7915_sta_stats_read, inode->i_private);
+-}
+-
+-static const struct file_operations fops_sta_stats = {
+-	.open = mt7915_sta_stats_open,
+-	.read = seq_read,
+-	.llseek = seq_lseek,
+-	.release = single_release,
+-	.owner = THIS_MODULE,
+-};
++DEFINE_SHOW_ATTRIBUTE(mt7915_sta_stats);
+ 
+ void mt7915_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			    struct ieee80211_sta *sta, struct dentry *dir)
+ {
+ 	debugfs_create_file("fixed_rate", 0600, dir, sta, &fops_fixed_rate);
+-	debugfs_create_file("stats", 0400, dir, sta, &fops_sta_stats);
++	debugfs_create_file("stats", 0400, dir, sta, &mt7915_sta_stats_fops);
+ }
+ #endif
+-- 
+1.9.1
 
-Dan
 
