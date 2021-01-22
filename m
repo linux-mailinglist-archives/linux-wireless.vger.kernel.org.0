@@ -2,99 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 724CB2FFA8B
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Jan 2021 03:39:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ED5C2FFBEA
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Jan 2021 05:45:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726674AbhAVCio (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Jan 2021 21:38:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39692 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726693AbhAVCfc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Jan 2021 21:35:32 -0500
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 607D9C0617AA
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Jan 2021 18:34:12 -0800 (PST)
-Received: by mail-qt1-x829.google.com with SMTP id l23so686649qtq.13
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Jan 2021 18:34:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1kDimXzA9M9PWHfsqDnWeDFT1MG/Xxfjg/ovLBDA4+c=;
-        b=qAj/VV4Lrl8K+W4pjf254aWoi5EfYLj0YKA6oao5JlTjig5hlRgAI2cGjPgWmqZgFY
-         LFeSMCW+sd90dt/vsqN8J++wdLKvW7dEkBPw6mQmxoUPBHQNIVZAn6Fw27r4t4yIxQNe
-         RSjZfk5rT+Aj3cKCsYQbizUo9e46Hti2LqTGvOq9Ua91pCCzkPZ/llHTwO37yEaUWuNF
-         RBKzqmWDC1Nz1J5r/ma2c3wleiy1wQUFC/DE4c6NXiBW+5G2xw8/o/XoX2GssNUW/Hz8
-         DdAHRUUCb1Hwin50B48SQnzhiABzUG+RCKgxf8KCugYYs3d+uJMZKLNzBlaGaSju+SRR
-         sX0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=1kDimXzA9M9PWHfsqDnWeDFT1MG/Xxfjg/ovLBDA4+c=;
-        b=gOetbBogaYpnkPJvuD4JEF/SBrDjYU0KMfaxALDXw0C5ySMeWRg03eMKqVELT+ygTd
-         gauQsbxy9rPLSp5Gv0uZlptL2X0l4wpzA+GYHi3eb4Qw7FVMyrjFMTKcIHAF9FpcdDbz
-         KQAdlUXNKkP2XQCCOxnEDSdERsXWKUP6lfTZCzxGavq1YQKu/6IbwYuXR7obs3nfpDKI
-         EjX0HVdjmzJ0+KCUqXXjZmRAl64cLfe9rObBRZuDEZXt6URzIjs3ALEkky0y6OHhV6ql
-         tyxgaQwp/mL118WL9PYramps+u59O9YfuVKFtVFGpOXX1W5xQcV9Pf+1qPYdpkV4Apbp
-         GCTA==
-X-Gm-Message-State: AOAM5314YSPcW79qKs3jkkMS2uWYEnAA9OgN4MNdO9QsCHTO728680Jv
-        QmzE02726jcOuNWAzIsmkD8eiQ==
-X-Google-Smtp-Source: ABdhPJwYZGOnnyliQde+cwXundXxy/2FHbW2RABsQKlFRqW5EKcyGzrypdbPAT/yTsLipBiZRuL1Cg==
-X-Received: by 2002:aed:32a7:: with SMTP id z36mr2577143qtd.251.1611282851670;
-        Thu, 21 Jan 2021 18:34:11 -0800 (PST)
-Received: from pop-os.fios-router.home (pool-71-163-245-5.washdc.fios.verizon.net. [71.163.245.5])
-        by smtp.googlemail.com with ESMTPSA id m13sm4846025qtu.93.2021.01.21.18.34.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jan 2021 18:34:11 -0800 (PST)
-From:   Thara Gopinath <thara.gopinath@linaro.org>
-To:     rui.zhang@intel.com, daniel.lezcano@linaro.org,
-        davem@davemloft.net, kuba@kernel.org, luciano.coelho@intel.com
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-pm@vger.kernel.org, amitk@kernel.org,
-        nathan.errera@intel.com
-Subject: [PATCH v2 3/3] Documentation: driver-api: thermal: Remove thermal_notify_framework from documentation
-Date:   Thu, 21 Jan 2021 21:34:06 -0500
-Message-Id: <20210122023406.3500424-4-thara.gopinath@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210122023406.3500424-1-thara.gopinath@linaro.org>
-References: <20210122023406.3500424-1-thara.gopinath@linaro.org>
+        id S1726396AbhAVEpL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Jan 2021 23:45:11 -0500
+Received: from mga04.intel.com ([192.55.52.120]:53185 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725854AbhAVEpG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 21 Jan 2021 23:45:06 -0500
+IronPort-SDR: 1pYxxORjvd9dSNqMacArmXhmif369qyXZZUgdzwxEPyIq9YytfXcH9ws1X+nTD5LtlUcST05vZ
+ P3/xmw8KwpBw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9871"; a="176816135"
+X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; 
+   d="scan'208";a="176816135"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2021 20:44:24 -0800
+IronPort-SDR: M9ywtPms6TDqX0a3fMNEYzvHityQeGnYxgY+arN/U3/DW/phKVO12jsfh9o89aQ001a8ict0n/
+ TbJtMRj20lzg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; 
+   d="scan'208";a="427653102"
+Received: from lkp-server01.sh.intel.com (HELO 260eafd5ecd0) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 21 Jan 2021 20:44:22 -0800
+Received: from kbuild by 260eafd5ecd0 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1l2oJ4-0006yw-6N; Fri, 22 Jan 2021 04:44:22 +0000
+Date:   Fri, 22 Jan 2021 12:43:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS WITH WARNING
+ 791daf8fc49a16aef77d881f664a648642b75b45
+Message-ID: <600a5802.4NXIiMTWoZYBp4lh%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since thermal_notify_framework is no longer supported/implemented
-remove the entry from sysfs-api.rst.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
+branch HEAD: 791daf8fc49a16aef77d881f664a648642b75b45  cfg80211: avoid holding the RTNL when calling the driver
+
+Warning reports:
+
+https://lore.kernel.org/linux-wireless/202101220739.mkyobq8P-lkp@intel.com
+
+Warning in current branch:
+
+net/mac80211/he.c:60:25: sparse:    left side has type unsigned short
+net/mac80211/he.c:60:25: sparse:    right side has type restricted __le16
+net/mac80211/he.c:96:29: sparse:    right side has type fouled restricted __le16
+
+Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+`-- i386-randconfig-s002-20210122
+    |-- net-mac80211-he.c:sparse:left-side-has-type-unsigned-short
+    |-- net-mac80211-he.c:sparse:right-side-has-type-fouled-restricted-__le16
+    |-- net-mac80211-he.c:sparse:right-side-has-type-restricted-__le16
+    |-- net-mac80211-he.c:sparse:sparse:cast-to-restricted-__le16
+    |-- net-mac80211-he.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-he_mcs-got-restricted-__le16
+    |-- net-mac80211-he.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-he_own_rx-got-restricted-__le16
+    |-- net-mac80211-he.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-he_own_tx-got-restricted-__le16
+    |-- net-mac80211-he.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-he_peer_rx-got-restricted-__le16
+    |-- net-mac80211-he.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-unsigned-short-usertype-he_peer_tx-got-restricted-__le16
+    `-- net-mac80211-he.c:sparse:sparse:invalid-assignment:
+
+elapsed time: 720m
+
+configs tested: 83
+configs skipped: 2
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+h8300                       h8s-sim_defconfig
+arm                     davinci_all_defconfig
+arc                        nsim_700_defconfig
+powerpc                       holly_defconfig
+powerpc                 mpc85xx_cds_defconfig
+m68k                       m5249evb_defconfig
+arm                      pxa255-idp_defconfig
+xtensa                  audio_kc705_defconfig
+arm                          simpad_defconfig
+powerpc                 xes_mpc85xx_defconfig
+sh                          kfr2r09_defconfig
+mips                      pic32mzda_defconfig
+mips                      loongson3_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a002-20210121
+x86_64               randconfig-a003-20210121
+x86_64               randconfig-a001-20210121
+x86_64               randconfig-a005-20210121
+x86_64               randconfig-a006-20210121
+x86_64               randconfig-a004-20210121
+i386                 randconfig-a001-20210121
+i386                 randconfig-a002-20210121
+i386                 randconfig-a004-20210121
+i386                 randconfig-a006-20210121
+i386                 randconfig-a005-20210121
+i386                 randconfig-a003-20210121
+i386                 randconfig-a013-20210121
+i386                 randconfig-a011-20210121
+i386                 randconfig-a012-20210121
+i386                 randconfig-a014-20210121
+i386                 randconfig-a015-20210121
+i386                 randconfig-a016-20210121
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
 ---
- Documentation/driver-api/thermal/sysfs-api.rst | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
-
-diff --git a/Documentation/driver-api/thermal/sysfs-api.rst b/Documentation/driver-api/thermal/sysfs-api.rst
-index e7520cb439ac..d5b6ca812873 100644
---- a/Documentation/driver-api/thermal/sysfs-api.rst
-+++ b/Documentation/driver-api/thermal/sysfs-api.rst
-@@ -743,17 +743,7 @@ This function returns the thermal_instance corresponding to a given
- {thermal_zone, cooling_device, trip_point} combination. Returns NULL
- if such an instance does not exist.
- 
--4.3. thermal_notify_framework
-------------------------------
--
--This function handles the trip events from sensor drivers. It starts
--throttling the cooling devices according to the policy configured.
--For CRITICAL and HOT trip points, this notifies the respective drivers,
--and does actual throttling for other trip points i.e ACTIVE and PASSIVE.
--The throttling policy is based on the configured platform data; if no
--platform data is provided, this uses the step_wise throttling policy.
--
--4.4. thermal_cdev_update
-+4.3. thermal_cdev_update
- ------------------------
- 
- This function serves as an arbitrator to set the state of a cooling
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
