@@ -2,181 +2,209 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B13930023B
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Jan 2021 12:59:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F4063002C0
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Jan 2021 13:21:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727229AbhAVL6k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Jan 2021 06:58:40 -0500
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:43797 "EHLO
-        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727410AbhAVL5j (ORCPT
+        id S1727271AbhAVMSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Jan 2021 07:18:37 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:41694 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727584AbhAVMMD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Jan 2021 06:57:39 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 923885C00FF;
-        Fri, 22 Jan 2021 06:56:32 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Fri, 22 Jan 2021 06:56:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=s5zUnZIga8YCsxtkCuU8+h7RKOP
-        gKeLXxz7i8hp47Tw=; b=u3sYz1KDMTYFbEyeRuRyc9DDE0BL1+tHrf0hTyHkwbJ
-        OMT0G1tdavoYXzY8XYCMysbO3dU53BTBOHYNjhTKaWZCoKpqBuasX+U/YGGKFS9g
-        10Ezlgzn2mJQUEDkhI7+FUoTGDOa3iFFVzJ9xN9CmiumRfD98qGhI1yMPTb6Tn1D
-        CllR7QQaEslx3m1FXuEiiWagraEFlWgtR7oi/3Fw3ylqemQTjvD5qC2QPg4/a6JM
-        rd7PeXQREkp+u1AOZ7IP9s8/7wVLSPBt0RwW9uVwtA7D6ju9e11/Ux6gd59Nq081
-        AHnAi5FkhG9LwJ06tY3tdzrtXQkdpgAedwmC1xE50Zg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=s5zUnZ
-        Iga8YCsxtkCuU8+h7RKOPgKeLXxz7i8hp47Tw=; b=SGWWzpFwuWLwDF2fV5Q584
-        91wl4EOuI0qwRFdbCyor75KKCQNJASXnsbwJ4lY8mYfDRCCaqIZNz3bLVkIluYLj
-        DMnQTTOlEFPyMtsmVNzOoZuiDV+eLqOYCR5h61yPcpGRx/wRdeFnxl2r4F1HMeMk
-        PDscgV1K+C5hFWuGJBpKNeqxVEHE81ByXGqGC/txw+u54qYmjM2VFxMD2bZZT/Fb
-        GhGS3DaUtLNYdOzxPKJ4Q0RYj0SiU6/f9ZhvmtXWYyKZ9vjF/NYxKD0MR+mlbu79
-        vxGMxay8BBde7kFEye/l5MEPrq8vSC824mcmIdHG0z7lV+zyTRGvFE/uDnZ0eTGw
-        ==
-X-ME-Sender: <xms:cL0KYLr1d9153tsWM9GGNJRTXM0ivbMIufObuwg9H8qsNitgQwH25Q>
-    <xme:cL0KYFrYRi4voIwQlyLXp_tRF91QXGniKikLbmAmsiw-0zwBXC0uiVQLKOJJIohhR
-    LYbiBlhMFuh6Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrudeigdefkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepueelledthe
-    ekleethfeludduvdfhffeuvdffudevgeehkeegieffveehgeeftefgnecuffhomhgrihhn
-    pehkvghrnhgvlhdrohhrghenucfkphepkeefrdekiedrjeegrdeigeenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdr
-    tghomh
-X-ME-Proxy: <xmx:cL0KYINS49AoHePejXWusJWyOeJyPtMIMLV_2xiXAsWA4mbWnYtwgg>
-    <xmx:cL0KYO4_kxzevlvLKo7tZcjigruNp5HXpG5DerRjlwHjForzBy4Fvw>
-    <xmx:cL0KYK7QzQVwPPkRmDOtHsgZqHHakrNEZ398NZuvCOgGs6-3J9lc3Q>
-    <xmx:cL0KYKEFFYwonaOkGc-JnZRExXIqJ3y8n9dG-s4JOQW1SsIPQVXOXw>
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        by mail.messagingengine.com (Postfix) with ESMTPA id C3CEB24005A;
-        Fri, 22 Jan 2021 06:56:31 -0500 (EST)
-Date:   Fri, 22 Jan 2021 12:56:30 +0100
-From:   Greg KH <greg@kroah.com>
-To:     stf_xl@wp.pl
-Cc:     linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Bernhard <bernhard.gebetsberger@gmx.at>
-Subject: Re: [PATCH] usb, xhci, rt2800usb: do not perform Soft Retry
-Message-ID: <YAq9bt6q9dfk4F+F@kroah.com>
-References: <20210122104342.12451-1-stf_xl@wp.pl>
+        Fri, 22 Jan 2021 07:12:03 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20210122121108euoutp0130f02ba7b61790c704e97e1370bdabd9~cjLNaQRTx2914229142euoutp01V
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Jan 2021 12:11:08 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20210122121108euoutp0130f02ba7b61790c704e97e1370bdabd9~cjLNaQRTx2914229142euoutp01V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1611317468;
+        bh=ybRq2KpLljIs5KURHyM4ORkgC3K3UjPUtTtulXxBGwg=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=hkHAqcbCvQsm2RdwE/IjtXMNLfvKTu5KmHRmElKYdpKh66OlfMWvyFQ70+Yi7FS1q
+         l3rp/Qtd7m1Ev5X1VvjussgYkHL4qX2k0oUzyBFsjbpZeYlxLzy1bAkr7stma3wzU4
+         rGTziOpus1NEj8Jw0/nMp1aWN5sRG0iLslH4r0WU=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20210122121108eucas1p238157893e07432d2a7ece88264cebf92~cjLNSDIWb0469304693eucas1p2C;
+        Fri, 22 Jan 2021 12:11:08 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 32.5C.44805.CD0CA006; Fri, 22
+        Jan 2021 12:11:08 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458~cjLM028Mp0464504645eucas1p2E;
+        Fri, 22 Jan 2021 12:11:08 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20210122121107eusmtrp2506aacfdd2a6c09334b6edbf8c84a3d4~cjLM0Qg9A3059630596eusmtrp2N;
+        Fri, 22 Jan 2021 12:11:07 +0000 (GMT)
+X-AuditID: cbfec7f4-b4fff7000000af05-3e-600ac0dc0745
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id BC.E6.16282.BD0CA006; Fri, 22
+        Jan 2021 12:11:07 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20210122121107eusmtip2e1c673413bb8fb31c448c2303429d330~cjLMZaxxm2180921809eusmtip28;
+        Fri, 22 Jan 2021 12:11:07 +0000 (GMT)
+Subject: Re: [PATCH v2] cfg80211: avoid holding the RTNL when calling the
+ driver
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, Oliver Neukum <oneukum@suse.com>,
+        Johannes Berg <johannes.berg@intel.com>
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <6569c83a-11b0-7f13-4b4c-c0318780895c@samsung.com>
+Date:   Fri, 22 Jan 2021 13:11:07 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
+        Gecko/20100101 Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210122104342.12451-1-stf_xl@wp.pl>
+In-Reply-To: <20210119102145.99917b8fc5d6.Iacd5916c0e01f71342159f6d419e56dc4c3f07a2@changeid>
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuplleLIzCtJLcpLzFFi42LZduzned07B7gSDE4ulLB4tGIWu8XHDZ9Y
+        LN6suMNucWyBmEXX45VsDqwei/e8ZPLo793G4rF+y1UWj8+b5AJYorhsUlJzMstSi/TtErgy
+        rv64wFSwV6Fi3qkHjA2M96S7GDk5JARMJD5ue8vaxcjFISSwglHi05RFzBDOF0aJvj39bBDO
+        Z0aJnv5GFpiWw1O7oKqWM0p8fHQByvnIKHFt0xZmkCphgSCJmxu3gXWICPhL7DvQwA5iMwuk
+        S9ydNhssziZgKNH1tosNxOYVsJP49P0lmM0ioCrRNeklWI2oQJLE3TuHmSBqBCVOznwCFOfg
+        4BSIlXi13AJipLxE89bZzBC2uMStJ/OZIA49wiHxfL48hO0icffrZqi4sMSr41vYIWwZif87
+        Qeq5gOxmRomH59ayQzg9jBKXm2YwQlRZS9w594sNZDGzgKbE+l36EGFHiaZbG1lBwhICfBI3
+        3gpC3MAnMWnbdGaIMK9ER5sQRLWaxKzj6+DWHrxwiXkCo9IsJI/NQvLNLCTfzELYu4CRZRWj
+        eGppcW56arFRXmq5XnFibnFpXrpecn7uJkZgijn97/iXHYzLX33UO8TIxMF4iFGCg1lJhPeR
+        JUeCEG9KYmVValF+fFFpTmrxIUZpDhYlcd6kLWvihQTSE0tSs1NTC1KLYLJMHJxSDUwCUgpm
+        ky77/P518kKUgdqOVxsTqy/5Lmf2VOtVL7ye59R0bl4cV/zLOwUHdy0TW5bj++ra/NacVQ3N
+        d04k7+R5W2qncnV1cHSXxFRTH20ua++SdZ0bO54cLQ59vyLlVOOKRw9WpS//HRGsFb+8YMaz
+        bZvmODecc+ZakH5zsmPJOcUFr5QXlC5M36vv//SJ9f0G9jP2m8yE3q0Q/S/BKKxqLiJx0iAl
+        51qIv1IJ5w12/YXhzZrGCn+V2E85sQYwfZ7A5LO7f9+9D7Y3P+xYrPDXaeKeCUE87slVqYGt
+        nc0fmZfmO3pnZ+925l6/zzY1YcuK3Ydu3VXdti1600X322fZalb89u+4oHzjWaExY7ISS3FG
+        oqEWc1FxIgDVglzzoAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprPIsWRmVeSWpSXmKPExsVy+t/xe7q3D3AlGFydZ2rxaMUsdouPGz6x
+        WLxZcYfd4tgCMYuuxyvZHFg9Fu95yeTR37uNxWP9lqssHp83yQWwROnZFOWXlqQqZOQXl9gq
+        RRtaGOkZWlroGZlY6hkam8daGZkq6dvZpKTmZJalFunbJehlXP1xgalgr0LFvFMPGBsY70l3
+        MXJySAiYSBye2sXcxcjFISSwlFFiet9dVoiEjMTJaQ1QtrDEn2tdbBBF7xkl9rWeB0sICwRJ
+        3Ny4jQXEFhHwlVhw5z07iM0skC7R/v8yM4gtJBAjcWLvNkYQm03AUKLrLcggTg5eATuJT99f
+        gtksAqoSXZNegs0RFUiSODHrEzNEjaDEyZlPgOIcHJwCsRKvlltAjDeTmLf5ITOELS/RvHU2
+        lC0ucevJfKYJjEKzkHTPQtIyC0nLLCQtCxhZVjGKpJYW56bnFhvpFSfmFpfmpesl5+duYgTG
+        1LZjP7fsYFz56qPeIUYmDsZDjBIczEoivI8sORKEeFMSK6tSi/Lji0pzUosPMZoCvTORWUo0
+        OR8Y1Xkl8YZmBqaGJmaWBqaWZsZK4rwmR9bECwmkJ5akZqemFqQWwfQxcXBKNTAJXtJ9tEoo
+        6niNnfOarQ1/l85Lsz43qySN21Tdqqqu4FTEX0HfW1dMT4V95u/eH9h5pmTRtyd77QWP602z
+        slrcp3a9UvU4u5bami3Xu/W95uYv0rXvn1zl94bVcXZ18N2Y8F7Wyn8akrq7zbT2PA1aGDol
+        OtdclW/ZB4fWdQt4ph7yYpNf+vAW85pyv9JQmdQtC1vYL6m+/jI/dm62TOHnR7vYnxjkpwvu
+        4bWz+v9o1fdk7aNLH93gqO6xW2gYfm++svkFbcuCxqla+sWLf6m2cy99+0f63XkWeefIWfOa
+        1T50H5TPYEw4NPmTU+F9I5M3kU8EvGrmWe5kuPHmhdtElgs2Vy83PLtredNy5lwlluKMREMt
+        5qLiRACb6EH7MgMAAA==
+X-CMS-MailID: 20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458
+References: <20210119102145.99917b8fc5d6.Iacd5916c0e01f71342159f6d419e56dc4c3f07a2@changeid>
+        <CGME20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458@eucas1p2.samsung.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jan 22, 2021 at 11:43:42AM +0100, stf_xl@wp.pl wrote:
-> From: Stanislaw Gruszka <stf_xl@wp.pl>
-> 
-> Since f8f80be501aa ("xhci: Use soft retry to recover faster from transaction
-> errors") on some systems rt2800usb devices are unable to operate. Looks
-> that due to firmware or hardware limitations of those devices, they
-> require full recovery from USB Transaction Errors.
-> 
-> To avoid the problem add URB transfer flag, that restore pre f8f80be501aa
-> xhci behaviour when the flag is set. For now only add it only to rt2800usb
-> driver.
+Hi Johannes,
 
-This feels like a really heavy hammer, to add a xhci flag for a single
-broken device.
+On 19.01.2021 10:21, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+>
+> Currently, _everything_ in cfg80211 holds the RTNL, and if you
+> have a slow USB device (or a few) you can get some bad lock
+> contention on that.
+>
+> Fix that by re-adding a mutex to each wiphy/rdev as we had at
+> some point, so we have locking for the wireless_dev lists and
+> all the other things in there, and also so that drivers still
+> don't have to worry too much about it (they still won't get
+> parallel calls for a single device).
+>
+> Then, we can restrict the RTNL to a few cases where we add or
+> remove interfaces and really need the added protection. Some
+> of the global list management still also uses the RTNL, since
+> we need to have it anyway for netdev management, but we only
+> hold the RTNL for very short periods of time here.
+>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-Are you sure this is really needed?  What does this device do on other
-operating systems, do they have such a quirk for their host controller
-driver?
+This patch landed in today's (20210122) linux-next as commit 
+791daf8fc49a ("cfg80211: avoid holding the RTNL when calling the 
+driver"). Sadly, it causes deadlock with mwifiex driver. I think that 
+lockdep report describes it enough:
 
-Or is this due to the specific host controller device hardware?  Should
-this be a xhci quirk for a specific pci device instead?
+Bluetooth: vendor=0x2df, device=0x912e, class=255, fn=2
+cfg80211: Loading compiled-in X.509 certificates for regulatory database
+cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+Bluetooth: FW download over, size 800344 bytes
+btmrvl_sdio mmc2:0001:2: sdio device tree data not available
+mwifiex_sdio mmc2:0001:1: WLAN is not the winner! Skip FW dnld
+mwifiex_sdio mmc2:0001:1: WLAN FW is active
+mwifiex_sdio mmc2:0001:1: CMD_RESP: cmd 0x242 error, result=0x2
+mwifiex_sdio mmc2:0001:1: mwifiex_process_cmdresp: cmd 0x242 failed 
+during       initialization
 
+============================================
+WARNING: possible recursive locking detected
+5.11.0-rc4-00535-g791daf8fc49a #2336 Not tainted
+--------------------------------------------
+kworker/2:3/108 is trying to acquire lock:
+c4f62b38 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: _mwifiex_fw_dpc+0x2c0/0x49c 
+[mwifiex]
 
+but task is already holding lock:
+c4f62b38 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: _mwifiex_fw_dpc+0x248/0x49c 
+[mwifiex]
 
-> 
-> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=202541
-> Fixes: f8f80be501aa ("xhci: Use soft retry to recover faster from transaction errors")
-> Reported-and-tested-by: Bernhard <bernhard.gebetsberger@gmx.at>
-> Bisected-by: Bernhard <bernhard.gebetsberger@gmx.at>
-> Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-> ---
->  drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 3 +++
->  drivers/usb/core/urb.c                         | 2 +-
->  drivers/usb/host/xhci-ring.c                   | 3 ++-
->  include/linux/usb.h                            | 1 +
->  4 files changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-> index e4473a551241..f1d82b3e6bba 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-> @@ -214,6 +214,7 @@ void rt2x00usb_register_read_async(struct rt2x00_dev *rt2x00dev,
->  	usb_fill_control_urb(urb, usb_dev, usb_rcvctrlpipe(usb_dev, 0),
->  			     (unsigned char *)(&rd->cr), &rd->reg, sizeof(rd->reg),
->  			     rt2x00usb_register_read_async_cb, rd);
-> +	urb->transfer_flags |= URB_SOFT_RETRY_NOT_OK;
->  	usb_anchor_urb(urb, rt2x00dev->anchor);
->  	if (usb_submit_urb(urb, GFP_ATOMIC) < 0) {
->  		usb_unanchor_urb(urb);
-> @@ -323,6 +324,7 @@ static bool rt2x00usb_kick_tx_entry(struct queue_entry *entry, void *data)
->  			  usb_sndbulkpipe(usb_dev, entry->queue->usb_endpoint),
->  			  entry->skb->data, length,
->  			  rt2x00usb_interrupt_txdone, entry);
-> +	entry_priv->urb->transfer_flags |= URB_SOFT_RETRY_NOT_OK;
->  
->  	status = usb_submit_urb(entry_priv->urb, GFP_ATOMIC);
->  	if (status) {
-> @@ -409,6 +411,7 @@ static bool rt2x00usb_kick_rx_entry(struct queue_entry *entry, void *data)
->  			  usb_rcvbulkpipe(usb_dev, entry->queue->usb_endpoint),
->  			  entry->skb->data, entry->skb->len,
->  			  rt2x00usb_interrupt_rxdone, entry);
-> +	entry_priv->urb->transfer_flags |= URB_SOFT_RETRY_NOT_OK;
->  
->  	status = usb_submit_urb(entry_priv->urb, GFP_ATOMIC);
->  	if (status) {
-> diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
-> index 357b149b20d3..140bac59dc32 100644
-> --- a/drivers/usb/core/urb.c
-> +++ b/drivers/usb/core/urb.c
-> @@ -495,7 +495,7 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
->  
->  	/* Check against a simple/standard policy */
->  	allowed = (URB_NO_TRANSFER_DMA_MAP | URB_NO_INTERRUPT | URB_DIR_MASK |
-> -			URB_FREE_BUFFER);
-> +		   URB_SOFT_RETRY_NOT_OK | URB_FREE_BUFFER);
->  	switch (xfertype) {
->  	case USB_ENDPOINT_XFER_BULK:
->  	case USB_ENDPOINT_XFER_INT:
-> diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-> index 5677b81c0915..6712e1a7735c 100644
-> --- a/drivers/usb/host/xhci-ring.c
-> +++ b/drivers/usb/host/xhci-ring.c
-> @@ -2302,7 +2302,8 @@ static int process_bulk_intr_td(struct xhci_hcd *xhci, struct xhci_td *td,
->  		remaining	= 0;
->  		break;
->  	case COMP_USB_TRANSACTION_ERROR:
-> -		if ((ep_ring->err_count++ > MAX_SOFT_RETRY) ||
-> +		if (td->urb->transfer_flags & URB_SOFT_RETRY_NOT_OK ||
-> +		    (ep_ring->err_count++ > MAX_SOFT_RETRY) ||
->  		    le32_to_cpu(slot_ctx->tt_info) & TT_SLOT)
->  			break;
->  		*status = 0;
-> diff --git a/include/linux/usb.h b/include/linux/usb.h
-> index 7d72c4e0713c..dcdac2f03263 100644
-> --- a/include/linux/usb.h
-> +++ b/include/linux/usb.h
-> @@ -1329,6 +1329,7 @@ extern int usb_disabled(void);
->  #define URB_ISO_ASAP		0x0002	/* iso-only; use the first unexpired
->  					 * slot in the schedule */
->  #define URB_NO_TRANSFER_DMA_MAP	0x0004	/* urb->transfer_dma valid on submit */
-> +#define URB_SOFT_RETRY_NOT_OK	0x0008	/* Avoid XHCI Soft Retry */
+other info that might help us debug this:
+  Possible unsafe locking scenario:
 
-To match other flags here, how about "URB_NO_SOFT_RETRY"?
+        CPU0
+        ----
+   lock(&rdev->wiphy.mtx);
+   lock(&rdev->wiphy.mtx);
 
-thanks,
+  *** DEADLOCK ***
 
-greg k-h
+  May be due to missing lock nesting notation
+
+4 locks held by kworker/2:3/108:
+  #0: c1c066a8 ((wq_completion)events){+.+.}-{0:0}, at: 
+process_one_work+0x24c/0x888
+  #1: deccbf10 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: 
+process_one_work+0x24c/0x888
+  #2: c13202dc (rtnl_mutex){+.+.}-{3:3}, at: _mwifiex_fw_dpc+0x23c/0x49c 
+[mwifiex]
+  #3: c4f62b38 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: 
+_mwifiex_fw_dpc+0x248/0x49c [mwifiex]
+
+stack backtrace:
+CPU: 2 PID: 108 Comm: kworker/2:3 Not tainted 
+5.11.0-rc4-00535-g791daf8fc49a #2336
+Hardware name: Samsung Exynos (Flattened Device Tree)
+Workqueue: events request_firmware_work_func
+[<c01116e8>] (unwind_backtrace) from [<c010cf58>] (show_stack+0x10/0x14)
+[<c010cf58>] (show_stack) from [<c0b3ad3c>] (dump_stack+0xa4/0xc4)
+[<c0b3ad3c>] (dump_stack) from [<c0195fd8>] (__lock_acquire+0xc20/0x31cc)
+[<c0195fd8>] (__lock_acquire) from [<c019923c>] (lock_acquire+0x2e4/0x5dc)
+[<c019923c>] (lock_acquire) from [<c0b4217c>] (__mutex_lock+0xa4/0xb60)
+[<c0b4217c>] (__mutex_lock) from [<c0b42c54>] (mutex_lock_nested+0x1c/0x24)
+[<c0b42c54>] (mutex_lock_nested) from [<bf1c87f8>] 
+(_mwifiex_fw_dpc+0x2c0/0x49c [mwifiex])
+[<bf1c87f8>] (_mwifiex_fw_dpc [mwifiex]) from [<c06bfd18>] 
+(request_firmware_work_func+0x58/0x94)
+[<c06bfd18>] (request_firmware_work_func) from [<c0149d48>] 
+(process_one_work+0x30c/0x888)
+[<c0149d48>] (process_one_work) from [<c014a31c>] (worker_thread+0x58/0x594)
+[<c014a31c>] (worker_thread) from [<c0151284>] (kthread+0x154/0x19c)
+[<c0151284>] (kthread) from [<c010011c>] (ret_from_fork+0x14/0x38)
+Exception stack(0xdeccbfb0 to 0xdeccbff8)
+...
+
+ > ...
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
