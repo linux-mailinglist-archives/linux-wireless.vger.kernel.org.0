@@ -2,83 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AB1A301087
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Jan 2021 00:02:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 678F630111B
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Jan 2021 00:47:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728987AbhAVXAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Jan 2021 18:00:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49478 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728525AbhAVXAg (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Jan 2021 18:00:36 -0500
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B982C06174A
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Jan 2021 14:59:56 -0800 (PST)
-Received: by mail-oi1-x235.google.com with SMTP id q205so7785461oig.13
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Jan 2021 14:59:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dIFHFPrKW7JpzLF/A1gkPwmI3yVQYT3DCosEgoesovY=;
-        b=G71XFS8JNXxCwO7BXCPstGBCRP88249JZCwORgWKdY9+UnIrXiPhIJ+3tt3Xag4LMO
-         w8B8XHQ1AFhElanql23zRZLuZxWO34QeGWIkVoB8CiNHKoFfxTwDW4u2fnUyELU9jRGz
-         E8awpEb5z6YZSQTWN6m2PUb2ZReQKaJGDDCAY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dIFHFPrKW7JpzLF/A1gkPwmI3yVQYT3DCosEgoesovY=;
-        b=so4stiMmCIr82+7UxMiJYClA9cSqE+4MkKjsJoLcr9RbupeH33MmGUkpP5lvU+ZEix
-         C7tDOwFdzxvXbpQ+/f5cER65dPX+eSYMYlJpL5BWDrTknqsBFNdH9Uprw7uwTt+enWbr
-         fNO+J0sPEIG2r8E5vbAiz9wFDAIRRNwHN+31rC1zc6oNi1hJ9/p/NH4EWwWL1tw+KFXn
-         5+DbLu0RpHzNp43PcIDWq5maeGp5QyygsrVD9+T4Mhp4/8Dovha6Df1aUefklx/t9yJe
-         ecw9iRYKXYLNx4jox2iSffvD+5vvBB+ZE8kxl/AdnszjJALe1eIrhjy7TxGhcIGUYahk
-         KUjg==
-X-Gm-Message-State: AOAM531KBvWlGknS5kldBUaGf/SvJAWwL2rfloZmXMyDtLd5uI7vDpPO
-        HKS/+yILPd3umyRRbjg4QEzItPoDFk60tQ==
-X-Google-Smtp-Source: ABdhPJxY9wyt8z71A7bmEhmw4VtH/3AxNkX+jWOHhRPhAItZ71pOmYtxKOVlcW661TWitApKOtfKtg==
-X-Received: by 2002:aca:af58:: with SMTP id y85mr4751497oie.33.1611356395598;
-        Fri, 22 Jan 2021 14:59:55 -0800 (PST)
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com. [209.85.167.181])
-        by smtp.gmail.com with ESMTPSA id r204sm2040650oif.0.2021.01.22.14.59.54
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Jan 2021 14:59:54 -0800 (PST)
-Received: by mail-oi1-f181.google.com with SMTP id w124so7847688oia.6
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Jan 2021 14:59:54 -0800 (PST)
-X-Received: by 2002:aca:f40c:: with SMTP id s12mr4653465oih.105.1611356394174;
- Fri, 22 Jan 2021 14:59:54 -0800 (PST)
+        id S1726167AbhAVXqQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Jan 2021 18:46:16 -0500
+Received: from vps0.lunn.ch ([185.16.172.187]:55446 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725274AbhAVXqN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 Jan 2021 18:46:13 -0500
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
+        (envelope-from <andrew@lunn.ch>)
+        id 1l367J-002AH9-Ij; Sat, 23 Jan 2021 00:45:25 +0100
+Date:   Sat, 23 Jan 2021 00:45:25 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Dan Williams <dcbw@redhat.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        =?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        johannes@sipsolutions.net, krishna.c.sudi@intel.com
+Subject: Re: [PATCH 17/18] net: iosm: readme file
+Message-ID: <YAtjlYYivFEoNc/B@lunn.ch>
+References: <20210107170523.26531-1-m.chetan.kumar@intel.com>
+ <20210107170523.26531-18-m.chetan.kumar@intel.com>
+ <X/eJ/rl4U6edWr3i@lunn.ch>
+ <87turftqxt.fsf@miraculix.mork.no>
+ <YAiF2/lMGZ0mPUSK@lunn.ch>
+ <20210120153255.4fcf7e32@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <82243bc066a12235099639928a271a8fe338668e.camel@redhat.com>
 MIME-Version: 1.0
-References: <20210115092405.8081-1-pkshih@realtek.com> <20210115092405.8081-5-pkshih@realtek.com>
-In-Reply-To: <20210115092405.8081-5-pkshih@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Fri, 22 Jan 2021 14:59:42 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXO3D6jRuYp6EzNYo0PuS3voPv-h6h7dBjn03HqAphD-pw@mail.gmail.com>
-Message-ID: <CA+ASDXO3D6jRuYp6EzNYo0PuS3voPv-h6h7dBjn03HqAphD-pw@mail.gmail.com>
-Subject: Re: [PATCH v4 4/8] rtw88: replace tx tasklet with work queue
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        phhuang@realtek.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <82243bc066a12235099639928a271a8fe338668e.camel@redhat.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jan 15, 2021 at 1:26 AM Ping-Ke Shih <pkshih@realtek.com> wrote:
->
-> From: Po-Hao Huang <phhuang@realtek.com>
->
-> Replace tasklet so we can do tx scheduling in parallel. Since throughput
-> is delay-sensitive in most cases, we allocate a dedicated, high priority
-> wq for our needs.
->
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+On Wed, Jan 20, 2021 at 07:34:48PM -0600, Dan Williams wrote:
+> On Wed, 2021-01-20 at 15:32 -0800, Jakub Kicinski wrote:
+> > On Wed, 20 Jan 2021 20:34:51 +0100 Andrew Lunn wrote:
+> > > On Sun, Jan 17, 2021 at 06:26:54PM +0100, Bjørn Mork wrote:
+> > > > I was young and stupid. Now I'm not that young anymore ;-)  
+> > > 
+> > > We all make mistakes, when we don't have the knowledge there are
+> > > other
+> > > ways. That is partially what code review is about.
+> > > 
+> > > > Never ever imagined that this would be replicated in another
+> > > > driver,
+> > > > though.  That doesn't really make much sense.  We have learned by
+> > > > now,
+> > > > haven't we?  This subject has been discussed a few times in the
+> > > > past,
+> > > > and Johannes summary is my understanding as well:
+> > > > "I don't think anyone likes that"  
+> > > 
+> > > So there seems to be agreement there. But what is not clear, is
+> > > anybody willing to do the work to fix this, and is there enough
+> > > ROI.
+> > > 
+> > > Do we expect more devices like this? Will 6G, 7G modems look very
+> > > different? 
+> > 
+> > Didn't Intel sell its 5G stuff off to Apple?
+> 
+> Yes, but they kept the ability to continue with 3G/4G hardware and
+> other stuff.
 
-For this (and the rest of the series, minus comments on patch 3):
+But we can expect 6G in what, 2030? And 7G in 2040? Are they going to
+look different? Or is it going to be more of the same, meaningless
+ethernet headers, VLANs where VLANs make little sense?
 
-Reviewed-by: Brian Norris <briannorris@chromium.org>
+> > > Be real network devices and not need any of this odd stuff?
+> > > Or will they be just be incrementally better but mostly the same?
+> > > 
+> > > I went into the review thinking it was an Ethernet driver, and kept
+> > > having WTF moments. Now i know it is not an Ethernet driver, i can
+> > > say
+> > > it is not my domain, i don't know the field well enough to say if
+> > > all
+> > > these hacks are acceptable or not.
+> > > 
+> > > It probably needs David and Jakub to set the direction to be
+> > > followed.
+> > 
+> > AFAIU all those cellar modems are relatively slow and FW-heavy, so
+> > the
+> > ideal solution IMO is not even a common kernel interface but actually
+> > a common device interface, like NVMe (or virtio for lack of better
+> > examples).
+> 
+> That was supposed to be MBIM, but unfortunately those involved didn't
+> iterate and MBIM got stuck. I don't think we'll see a standard as long
+> as some vendors are dominant and see no need for it.
+
+We the kernel community need to decide, we are happy for this broken
+architecture to live on, and we should give suggest how to make this
+submission better. Or we need to push back and say for the long term
+good, this driver is not going to be accepted, use a more sensible
+architecture.
+
+	Andrew
