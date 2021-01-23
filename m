@@ -2,66 +2,185 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16C593013E7
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Jan 2021 09:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBFA23013EE
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Jan 2021 09:36:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726476AbhAWI1g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Jan 2021 03:27:36 -0500
-Received: from m12-11.163.com ([220.181.12.11]:34286 "EHLO m12-11.163.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725940AbhAWI1e (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Jan 2021 03:27:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=xCn6p9NJsojGDEOK0g
-        fOq+HkZhp0fhqQy2JmR2QKavs=; b=OCnBLxei5NPW0LcSnM4fFbcyAngSJ1/Ga1
-        Lj7CTjYKuhSqJnzvmmKNnsjcLIqdInnPxb3XudKQ+he7mfDokrpQFk/jaJ5qzUq/
-        sq34n7ToUFRuK5rd9vj1aQlelvZeLgkfXDfjwW4ODskMspGZGYO7wCSB5YvryjZY
-        ZyoPnJQQI=
-Received: from wengjianfeng.ccdomain.com (unknown [218.17.89.92])
-        by smtp7 (Coremail) with SMTP id C8CowAAXFZ2E3Qtgrj7KKA--.11235S2;
-        Sat, 23 Jan 2021 16:25:41 +0800 (CST)
-From:   samirweng1979 <samirweng1979@163.com>
-To:     mgreer@animalcreek.com, linux-nfc@lists.01.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        wengjianfeng <wengjianfeng@yulong.com>
-Subject: [PATCH] nfc: fix typo
-Date:   Sat, 23 Jan 2021 16:25:50 +0800
-Message-Id: <20210123082550.3748-1-samirweng1979@163.com>
-X-Mailer: git-send-email 2.15.0.windows.1
-X-CM-TRANSID: C8CowAAXFZ2E3Qtgrj7KKA--.11235S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtrW7Cw4DArW7tr1UXrWxCrg_yoWxKwbE9r
-        1kXrW7Xr97ur1jkr1UC3Z0vFyFy3W5WF9a9Fsa9FWSkryFyF47uw18uF1fXw15JrW5JFnr
-        uwnFg34Syw13WjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUYylk3UUUUU==
-X-Originating-IP: [218.17.89.92]
-X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiRQUjsVl906sOlAAAsU
+        id S1726708AbhAWIgC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Jan 2021 03:36:02 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:50154 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726605AbhAWIgA (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 23 Jan 2021 03:36:00 -0500
+X-UUID: c853dd6b63f645bfb3ca52a4471d4a6c-20210123
+X-UUID: c853dd6b63f645bfb3ca52a4471d4a6c-20210123
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1437877094; Sat, 23 Jan 2021 16:35:15 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 23 Jan 2021 16:35:14 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 23 Jan 2021 16:35:14 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <ryder.lee@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, Sean Wang <objelf@gmail.com>
+Subject: [PATCH -next v7 00/22] introduce mt7921e support
+Date:   Sat, 23 Jan 2021 16:34:51 +0800
+Message-ID: <cover.1611389300.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: wengjianfeng <wengjianfeng@yulong.com>
+From: Sean Wang <objelf@gmail.com>
 
-change 'regster' to 'register'
+Introduce support for mt7921e 802.11ax (Wi-Fi 6) 2x2:2SS chipset.
 
-Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
----
- drivers/nfc/trf7970a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2:
+- Mark the patch as -next
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index c70f62fe..3397802 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -169,7 +169,7 @@
- 
- /* Bits determining whether its a direct command or register R/W,
-  * whether to use a continuous SPI transaction or not, and the actual
-- * direct cmd opcode or regster address.
-+ * direct cmd opcode or register address.
-  */
- #define TRF7970A_CMD_BIT_CTRL			BIT(7)
- #define TRF7970A_CMD_BIT_RW			BIT(6)
--- 
-1.9.1
+v3:
+- Remove sw scan support
+- Get rid of dbdc code
+- Run mt7921_configure_filter hodling mt76 mutex
+- Correct Txp programming in Txd
+- Correct fw log to host command
+- Correct eeprom offset definition
+- Update rate adaption info report
+- Remove unused code and fields in struture
+- Split the previous driver into several patches for easy review
+
+v4:
+- introduce sched scan support
+- introduce 802.11 PS support in sta mode
+- introduce support for hardware beacon filter
+- introduce beacon_loss mcu event
+- introduce PM support
+- refine sta_rec_phy and add sta_rec_ra_info
+- remove incorrect mt7921_mcu_tx_config member
+- fix erroneous endianness conversion in mt7921_tx_complete_skb()
+- fix endianness warning in mt7921_get_wtbl_info()
+- fix endianness warnings in mt7921_mcu_sta_tlv()
+- remove unused code in mt7921_mcu_send_message
+- remove scan with random mac until fw is ready
+- channel domain is added for hw scan
+
+v5:
+- fix implicit conversion from enumeration type
+- remove unused function declaration
+- drop zero-length packet to avoid Tx hang
+- fix MT_CIPHER_BIP_CMAC_128 setkey
+- reset token when mac_reset happens
+- create mac.h when mac support is added
+- reorder the patch of adding module support
+- move mac_work in mt76_core module
+- move chainmask in mt76_phy
+- rebase per moving mac_work in mt76_core module
+- rebase per moving chainmask in mt76_phy
+
+v6:
+- use UNI_BSS_INFO_BCNFT and UNI_BSS_INFO_PS to carry out
+  enabling hardware beacon filter and 802.11 power saving
+  mode according to the MT7921 firmware
+
+v7:
+- remove the merged patches
+- rebase onto the series mt76: introduce mt76_connac common module
+	https://patchwork.kernel.org/project/linux-wireless/list/?series=418597
+- rely on mt76_connac_mcu common library
+- rely on mt76_connac_mcu module for sched_scan and hw_scan
+- rely on mt76_connac_mcu module for suspend and WoW support
+- introduce regdomain notifier support
+- enable MSI interrupts
+- introduce Runtime PM support
+- add coredump support
+- add sta statistics
+- disable Rx header translation on default
+- set nss to 2 on default
+
+Lorenzo Bianconi (6):
+  mt76: mt7921: rely on mt76_connac_mcu common library
+  mt76: mt7921: rely on mt76_connac_mcu module for sched_scan and
+    hw_scan
+  mt76: mt7921: rely on mt76_connac_mcu module for suspend and WoW
+    support
+  mt76: mt7921: introduce regdomain notifier support
+  mt76: mt7921: enable MSI interrupts
+  mt76: mt7663: introduce coredump support
+
+Sean Wang (16):
+  mt76: mt7921: add MAC support
+  mt76: mt7921: add MCU support
+  mt76: mt7921: add DMA support
+  mt76: mt7921: add EEPROM support
+  mt76: mt7921: add ieee80211_ops
+  mt76: mt7921: introduce mt7921e support
+  mt76: mt7921: add debugfs support
+  mt76: mt7921: add module support
+  mt76: mt7921: introduce schedule scan support
+  mt76: mt7921: introduce 802.11 PS support in sta mode
+  mt76: mt7921: introduce support for hardware beacon filter
+  mt76: mt7921: introduce beacon_loss mcu event
+  mt76: mt7921: introduce PM support
+  mt76: mt7921: introduce Runtime PM support
+  mt76: mt7921: add coredump support
+  mt76: mt7921: add sta statistics
+
+ drivers/net/wireless/mediatek/mt76/Kconfig    |    1 +
+ drivers/net/wireless/mediatek/mt76/Makefile   |    1 +
+ .../net/wireless/mediatek/mt76/mt7615/Kconfig |    1 +
+ .../wireless/mediatek/mt76/mt7615/debugfs.c   |   17 +
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |    2 +
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |   43 +
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |    4 +
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   |    1 +
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |    4 +-
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |   14 +
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  370 +++-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   25 +
+ .../net/wireless/mediatek/mt76/mt7921/Kconfig |   11 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |    5 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  250 +++
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   |  356 ++++
+ .../wireless/mediatek/mt76/mt7921/eeprom.c    |  100 ++
+ .../wireless/mediatek/mt76/mt7921/eeprom.h    |   27 +
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  282 +++
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 1516 +++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |  333 ++++
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 1161 +++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 1308 ++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  434 +++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  342 ++++
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  292 ++++
+ .../net/wireless/mediatek/mt76/mt7921/regs.h  |  419 +++++
+ 27 files changed, 7309 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/init.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/main.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+
+--
+2.25.1
 
