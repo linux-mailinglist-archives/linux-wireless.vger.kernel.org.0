@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 058E030138D
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Jan 2021 07:17:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16C593013E7
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Jan 2021 09:28:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725940AbhAWGQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Jan 2021 01:16:34 -0500
-Received: from m12-11.163.com ([220.181.12.11]:56488 "EHLO m12-11.163.com"
+        id S1726476AbhAWI1g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Jan 2021 03:27:36 -0500
+Received: from m12-11.163.com ([220.181.12.11]:34286 "EHLO m12-11.163.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726063AbhAWGQc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Jan 2021 01:16:32 -0500
+        id S1725940AbhAWI1e (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 23 Jan 2021 03:27:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
         s=s110527; h=From:Subject:Date:Message-Id; bh=xCn6p9NJsojGDEOK0g
-        fOq+HkZhp0fhqQy2JmR2QKavs=; b=hC0JhGapZYlivTTwT9L3oo9htgWFEXjK5F
-        NZiUxfwRgN2yt+msQZEnRmcTCRm30TyIh3ftsVPh35Haq7EB9M2ol7gexRCAkm8E
-        WSkHilQFfO+Xuukh7F3VhIqkFXG58ImXSWUNYmiDpZTNQeyA5vnbpbR9RVLRam0g
-        hAGTl1560=
+        fOq+HkZhp0fhqQy2JmR2QKavs=; b=OCnBLxei5NPW0LcSnM4fFbcyAngSJ1/Ga1
+        Lj7CTjYKuhSqJnzvmmKNnsjcLIqdInnPxb3XudKQ+he7mfDokrpQFk/jaJ5qzUq/
+        sq34n7ToUFRuK5rd9vj1aQlelvZeLgkfXDfjwW4ODskMspGZGYO7wCSB5YvryjZY
+        ZyoPnJQQI=
 Received: from wengjianfeng.ccdomain.com (unknown [218.17.89.92])
-        by smtp7 (Coremail) with SMTP id C8CowACHLp5yswtgvh2zKA--.10027S2;
-        Sat, 23 Jan 2021 13:26:11 +0800 (CST)
+        by smtp7 (Coremail) with SMTP id C8CowAAXFZ2E3Qtgrj7KKA--.11235S2;
+        Sat, 23 Jan 2021 16:25:41 +0800 (CST)
 From:   samirweng1979 <samirweng1979@163.com>
-To:     mgreer@animalcreek.com
-Cc:     linux-wireless@vger.kernel.org, linux-nfc@lists.01.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     mgreer@animalcreek.com, linux-nfc@lists.01.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         wengjianfeng <wengjianfeng@yulong.com>
 Subject: [PATCH] nfc: fix typo
-Date:   Sat, 23 Jan 2021 13:26:18 +0800
-Message-Id: <20210123052618.2448-1-samirweng1979@163.com>
+Date:   Sat, 23 Jan 2021 16:25:50 +0800
+Message-Id: <20210123082550.3748-1-samirweng1979@163.com>
 X-Mailer: git-send-email 2.15.0.windows.1
-X-CM-TRANSID: C8CowACHLp5yswtgvh2zKA--.10027S2
+X-CM-TRANSID: C8CowAAXFZ2E3Qtgrj7KKA--.11235S2
 X-Coremail-Antispam: 1Uf129KBjvdXoWrtrW7Cw4DArW7tr1UXrWxCrg_yoWxKwbE9r
         1kXrW7Xr97ur1jkr1UC3Z0vFyFy3W5WF9a9Fsa9FWSkryFyF47uw18uF1fXw15JrW5JFnr
-        uwnFg34Syw13WjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUYqJmUUUUUU==
+        uwnFg34Syw13WjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUYylk3UUUUU==
 X-Originating-IP: [218.17.89.92]
-X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/xtbBHBMjsV3l+aXMggAAs3
+X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiRQUjsVl906sOlAAAsU
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
