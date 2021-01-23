@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1515E30141F
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Jan 2021 10:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B22A4301433
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Jan 2021 10:36:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726722AbhAWJWl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Jan 2021 04:22:41 -0500
-Received: from mailgw01.mediatek.com ([210.61.82.183]:50165 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725766AbhAWJVq (ORCPT
+        id S1726588AbhAWJfe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Jan 2021 04:35:34 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:51787 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726810AbhAWJfO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Jan 2021 04:21:46 -0500
-X-UUID: beb4e61b00924fc7a4fbfc55f15c9a22-20210123
-X-UUID: beb4e61b00924fc7a4fbfc55f15c9a22-20210123
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        Sat, 23 Jan 2021 04:35:14 -0500
+X-UUID: d1caf148d88f437e83fb2861e2955953-20210123
+X-UUID: d1caf148d88f437e83fb2861e2955953-20210123
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
         (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 747134261; Sat, 23 Jan 2021 17:19:30 +0800
+        with ESMTP id 2114295564; Sat, 23 Jan 2021 17:32:52 +0800
 Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 23 Jan 2021 17:19:29 +0800
+ mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 23 Jan 2021 17:32:49 +0800
 Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 23 Jan 2021 17:19:29 +0800
+ Transport; Sat, 23 Jan 2021 17:32:49 +0800
 From:   <sean.wang@mediatek.com>
 To:     <jwboyer@kernel.org>, <dwmw2@infradead.org>, <ben@decadent.org.uk>,
         <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
@@ -33,10 +33,10 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <Eric.Liang@mediatek.com>, <linux-firmware@kernel.org>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Sean Wang <objelf@gmail.com>
-Subject: [PATCH] linux-firmware: add firmware for MT7921
-Date:   Sat, 23 Jan 2021 17:19:27 +0800
-Message-ID: <4d96fd86eb000098580ebed3b66d98ec41ae55e8.1611392981.git.objelf@gmail.com>
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] linux-firmware: add firmware for MT7921
+Date:   Sat, 23 Jan 2021 17:32:48 +0800
+Message-ID: <776caca339d638b4a1c556be5b10855696f2ee21.1611394224.git.objelf@gmail.com>
 X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -45,7 +45,7 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <objelf@gmail.com>
+From: Sean Wang <sean.wang@mediatek.com>
 
 Add binary firmware for MT7921 based devices
 
@@ -55,6 +55,8 @@ File: mediatek/WIFI_RAM_CODE_MT7961_1.bin
 Version: 20210122002730
 
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+v2: fix the author to be consistent with signed-off tag
 ---
  WHENCE                                     |  11 +++++++++++
  mediatek/WIFI_MT7961_patch_mcu_1_2_hdr.bin | Bin 0 -> 90464 bytes
