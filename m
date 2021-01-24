@@ -2,102 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37BC3301DF6
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Jan 2021 18:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B037E301E65
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Jan 2021 20:14:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726066AbhAXRjy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Jan 2021 12:39:54 -0500
-Received: from out4-smtp.messagingengine.com ([66.111.4.28]:48055 "EHLO
-        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725842AbhAXRjw (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Jan 2021 12:39:52 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 246F15C00A3;
-        Sun, 24 Jan 2021 12:38:44 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Sun, 24 Jan 2021 12:38:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=hFuytUMxrsRHZuxgi8tWvmAayIS
-        GiEYy95yz/w2iQA8=; b=dB/LVoCdGWgV/gr8Lh/mvCMv+nsBPtNmXFSA/GB6JJy
-        lT7YpdlwdQhco9EqJbTf8vqOLYeEk7qVPGWaFh3Mi7PycJ1z//gkORPZumUl4QFO
-        U/v7EO0TJTwiMSOt/8FRYwZbRjXQZmrGfYLYOlNunGAX7PZ5lQ4vndtBVkN/tiV6
-        xDFHXEzCUAxnFu9uQIWfgwJVDEIgxoxRRcVYAqwg+YsN5Qk4yOwLwUfOxjNgqWF2
-        N3UOl6DQHNBwz9R3qdtIEDbNEaRtU4oII9YVnIhoVoA5L1avYehr6Ib/tPWRoQvQ
-        HX5DeFFFPuDP2+RPfl0qLWHrCMNIUmRgnRneRoRx7Hw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=hFuytU
-        MxrsRHZuxgi8tWvmAayISGiEYy95yz/w2iQA8=; b=mzPsFzVYsGMBPui//S75rj
-        /QOg5LQeiblERR9EziJ7PfxR4aaxOZppEwCZ9Q3gab/81bdwVtKchKi8MJP5smVu
-        vP1IRP2w3VQGCCfE2ffdBa8OY8CM2KfgM6gO68kH/lF4A/7ljzpWC0P2viDodwaB
-        bvbaIPSoPv2qsj3egczzkSiFBXS9TM/oRMxhMPo1cP6D7vgs8eTRDYIo9ZHw0xQO
-        Mz41q7VHe/84YXhxDhJcgbXYyiGAEnQKmHsERocgIdmQW3JgNcCDBd1ckF0ouI3+
-        sCoWc34iOeR7hYKku6bBz796SZMzyWInD0OlrAueOT66AgQBvbePtih6BDWQd2xQ
-        ==
-X-ME-Sender: <xms:o7ANYANBx_A9U5HB7kUv3bBYoYonzeSsn1kB9prNTZ4as13oB3qTHQ>
-    <xme:o7ANYG98-VmjJmS5VheXk8qHSCVBOg1lLZzbzXRiI88FhrBrMOfXJ1DjcRseifgKw
-    rBLXut8s6Txkd0jsA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvddugddutdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvuffkfhggtggujghosehttd
-    ertddttddvnecuhfhrohhmpeforghrkhcuifhrvggvrhcuoehmghhrvggvrhesrghnihhm
-    rghltghrvggvkhdrtghomheqnecuggftrfgrthhtvghrnhepieeugfdutdefiedtvdffte
-    dufedvjeehgfevveefudfgjeffgeeiteetjedufffhnecukfhppeeikedrvddrkedvrddu
-    jedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmh
-    hgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhm
-X-ME-Proxy: <xmx:o7ANYHQNumQjNlqXBQeK52yAE-yv1SDiLCY5pbImWydo6VMMzpw3ow>
-    <xmx:o7ANYIteIU9yOHjbQE_8J81KrAzLIoiaNiwuv_B2S3PEKLraaIlAxA>
-    <xmx:o7ANYIfnjZpsofmgNMw0O7a-qFKWXXcXZFfp5fHcNa_yPeYskENjKw>
-    <xmx:pLANYH5C7Zst5GUtT4dH1tSzU4wvDefVcNpPJtYxnP6paeldc5InVg>
-Received: from blue.animalcreek.com (ip68-2-82-171.ph.ph.cox.net [68.2.82.171])
-        by mail.messagingengine.com (Postfix) with ESMTPA id E39B224005B;
-        Sun, 24 Jan 2021 12:38:42 -0500 (EST)
-Received: by blue.animalcreek.com (Postfix, from userid 1000)
-        id 61F451360081; Sun, 24 Jan 2021 10:38:42 -0700 (MST)
-Date:   Sun, 24 Jan 2021 10:38:42 -0700
-From:   Mark Greer <mgreer@animalcreek.com>
-To:     samirweng1979 <samirweng1979@163.com>
-Cc:     mgreer@animalcreek.com, linux-wireless@vger.kernel.org,
-        linux-nfc@lists.01.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        wengjianfeng <wengjianfeng@yulong.com>
-Subject: Re: [PATCH] nfc: fix typo
-Message-ID: <20210124173842.GC31737@animalcreek.com>
-References: <20210123052618.2448-1-samirweng1979@163.com>
+        id S1726555AbhAXTN2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Jan 2021 14:13:28 -0500
+Received: from mga17.intel.com ([192.55.52.151]:61104 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726164AbhAXTN0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 24 Jan 2021 14:13:26 -0500
+IronPort-SDR: 7azsOfFhoiZfi2hISx20S3nSnk8S5PiBiS+bZBq+gtVcPaUI74zXynmJzoDpIUbzlpjCoU6Gyb
+ u27u75r5Q/bA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9874"; a="159406881"
+X-IronPort-AV: E=Sophos;i="5.79,371,1602572400"; 
+   d="scan'208";a="159406881"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2021 11:12:45 -0800
+IronPort-SDR: qWtjuJbEWsi3QOU9wKu3xbCe0LNIrvSgJ/GkQbqw9jbpWxAFVpvjoOBZj95QVWXtJliAC4BpqE
+ j6/RPgNS3Qpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,371,1602572400"; 
+   d="scan'208";a="573288857"
+Received: from lkp-server01.sh.intel.com (HELO 27c4e0a4b6d9) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 24 Jan 2021 11:12:44 -0800
+Received: from kbuild by 27c4e0a4b6d9 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1l3koW-0000QK-9E; Sun, 24 Jan 2021 19:12:44 +0000
+Date:   Mon, 25 Jan 2021 03:12:27 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:rtnl] BUILD SUCCESS
+ 81df9f5e047aa0424b954a726c3fc3259be26526
+Message-ID: <600dc69b.K6ivddtoICAH0O8f%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210123052618.2448-1-samirweng1979@163.com>
-Organization: Animal Creek Technologies, Inc.
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jan 23, 2021 at 01:26:18PM +0800, samirweng1979 wrote:
-> From: wengjianfeng <wengjianfeng@yulong.com>
-> 
-> change 'regster' to 'register'
-> 
-> Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
-> ---
->  drivers/nfc/trf7970a.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-> index c70f62fe..3397802 100644
-> --- a/drivers/nfc/trf7970a.c
-> +++ b/drivers/nfc/trf7970a.c
-> @@ -169,7 +169,7 @@
->  
->  /* Bits determining whether its a direct command or register R/W,
->   * whether to use a continuous SPI transaction or not, and the actual
-> - * direct cmd opcode or regster address.
-> + * direct cmd opcode or register address.
->   */
->  #define TRF7970A_CMD_BIT_CTRL			BIT(7)
->  #define TRF7970A_CMD_BIT_RW			BIT(6)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git rtnl
+branch HEAD: 81df9f5e047aa0424b954a726c3fc3259be26526  cfg80211: avoid holding the RTNL when calling the driver
 
-Acked-by: Mark Greer <mgreer@animalcreek.com>
+elapsed time: 737m
+
+configs tested: 132
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                        mvebu_v5_defconfig
+mips                    maltaup_xpa_defconfig
+powerpc                      ppc40x_defconfig
+sh                              ul2_defconfig
+mips                       lemote2f_defconfig
+sh                          rsk7264_defconfig
+powerpc                 linkstation_defconfig
+arm                      pxa255-idp_defconfig
+arm                     am200epdkit_defconfig
+mips                      pistachio_defconfig
+xtensa                  cadence_csp_defconfig
+arm                            lart_defconfig
+mips                        omega2p_defconfig
+powerpc                    gamecube_defconfig
+sh                            migor_defconfig
+powerpc                      ppc44x_defconfig
+mips                         tb0219_defconfig
+powerpc                      pcm030_defconfig
+powerpc                       ebony_defconfig
+sh                             espt_defconfig
+sparc64                             defconfig
+arc                              allyesconfig
+powerpc                  mpc885_ads_defconfig
+s390                          debug_defconfig
+arm                          iop32x_defconfig
+arm                          tango4_defconfig
+mips                        nlm_xlr_defconfig
+sh                         apsh4a3a_defconfig
+powerpc                      cm5200_defconfig
+sparc                       sparc32_defconfig
+powerpc                mpc7448_hpc2_defconfig
+arm                    vt8500_v6_v7_defconfig
+sh                                  defconfig
+sh                           se7712_defconfig
+arm                        neponset_defconfig
+mips                        workpad_defconfig
+powerpc                      walnut_defconfig
+arm                           sama5_defconfig
+mips                          ath79_defconfig
+mips                         db1xxx_defconfig
+arm                             mxs_defconfig
+powerpc                  storcenter_defconfig
+arm                          lpd270_defconfig
+nios2                            alldefconfig
+arm                          pcm027_defconfig
+mips                       capcella_defconfig
+mips                          ath25_defconfig
+sh                   rts7751r2dplus_defconfig
+arm                          simpad_defconfig
+arm                         shannon_defconfig
+powerpc                        fsp2_defconfig
+arm                         s5pv210_defconfig
+arc                           tb10x_defconfig
+powerpc                 mpc834x_mds_defconfig
+powerpc                   lite5200b_defconfig
+arm                           stm32_defconfig
+arm                        realview_defconfig
+powerpc                     sbc8548_defconfig
+alpha                               defconfig
+arc                 nsimosci_hs_smp_defconfig
+arm                        vexpress_defconfig
+arm                        oxnas_v6_defconfig
+mips                           ci20_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210124
+i386                 randconfig-a002-20210124
+i386                 randconfig-a003-20210124
+x86_64               randconfig-a012-20210124
+x86_64               randconfig-a016-20210124
+x86_64               randconfig-a015-20210124
+x86_64               randconfig-a011-20210124
+x86_64               randconfig-a013-20210124
+x86_64               randconfig-a014-20210124
+i386                 randconfig-a013-20210124
+i386                 randconfig-a012-20210124
+i386                 randconfig-a014-20210124
+i386                 randconfig-a016-20210124
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a003-20210124
+x86_64               randconfig-a002-20210124
+x86_64               randconfig-a001-20210124
+x86_64               randconfig-a005-20210124
+x86_64               randconfig-a006-20210124
+x86_64               randconfig-a004-20210124
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
