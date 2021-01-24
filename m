@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B037E301E65
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Jan 2021 20:14:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1189C301E6A
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Jan 2021 20:15:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726555AbhAXTN2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Jan 2021 14:13:28 -0500
-Received: from mga17.intel.com ([192.55.52.151]:61104 "EHLO mga17.intel.com"
+        id S1726567AbhAXTOn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Jan 2021 14:14:43 -0500
+Received: from mga04.intel.com ([192.55.52.120]:25459 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726164AbhAXTN0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Jan 2021 14:13:26 -0500
-IronPort-SDR: 7azsOfFhoiZfi2hISx20S3nSnk8S5PiBiS+bZBq+gtVcPaUI74zXynmJzoDpIUbzlpjCoU6Gyb
- u27u75r5Q/bA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9874"; a="159406881"
+        id S1725948AbhAXTOn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 24 Jan 2021 14:14:43 -0500
+IronPort-SDR: CyPCE2laP7Y6+uDgb3Wbq8V/aGNOPcrdcbDQ+UXJ1MMrfHuaEcRLy0VnxI+DRWuV2QtC+/xwHG
+ QeP2S8n+WSWA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9874"; a="177058691"
 X-IronPort-AV: E=Sophos;i="5.79,371,1602572400"; 
-   d="scan'208";a="159406881"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2021 11:12:45 -0800
-IronPort-SDR: qWtjuJbEWsi3QOU9wKu3xbCe0LNIrvSgJ/GkQbqw9jbpWxAFVpvjoOBZj95QVWXtJliAC4BpqE
- j6/RPgNS3Qpg==
+   d="scan'208";a="177058691"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2021 11:13:46 -0800
+IronPort-SDR: 9PdGMWqGExI6ILZaYr806KIX32MVsRKgt50cDQSgW/MGerQwZliGl7KFXtfu7elIffIlAVk6xF
+ 45Bfu5wflChg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.79,371,1602572400"; 
-   d="scan'208";a="573288857"
+   d="scan'208";a="352708939"
 Received: from lkp-server01.sh.intel.com (HELO 27c4e0a4b6d9) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 24 Jan 2021 11:12:44 -0800
+  by orsmga003.jf.intel.com with ESMTP; 24 Jan 2021 11:13:45 -0800
 Received: from kbuild by 27c4e0a4b6d9 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1l3koW-0000QK-9E; Sun, 24 Jan 2021 19:12:44 +0000
-Date:   Mon, 25 Jan 2021 03:12:27 +0800
+        id 1l3kpU-0000Qk-EU; Sun, 24 Jan 2021 19:13:44 +0000
+Date:   Mon, 25 Jan 2021 03:12:56 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Johannes Berg <johannes.berg@intel.com>
 Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:rtnl] BUILD SUCCESS
- 81df9f5e047aa0424b954a726c3fc3259be26526
-Message-ID: <600dc69b.K6ivddtoICAH0O8f%lkp@intel.com>
+Subject: [mac80211-next:master] BUILD SUCCESS
+ 27bc93583e3518ef11f15e443bc4b7b3e736a320
+Message-ID: <600dc6b8.htL9gXOlDv1PbF70%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -43,10 +43,10 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git rtnl
-branch HEAD: 81df9f5e047aa0424b954a726c3fc3259be26526  cfg80211: avoid holding the RTNL when calling the driver
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
+branch HEAD: 27bc93583e3518ef11f15e443bc4b7b3e736a320  cfg80211: avoid holding the RTNL when calling the driver
 
-elapsed time: 737m
+elapsed time: 738m
 
 configs tested: 132
 configs skipped: 3
