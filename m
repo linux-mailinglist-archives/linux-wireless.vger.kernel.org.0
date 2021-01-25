@@ -2,80 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4743930252A
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jan 2021 13:52:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70A1F302620
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jan 2021 15:16:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728413AbhAYMvb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jan 2021 07:51:31 -0500
-Received: from maquina46.madrimasd.org ([193.145.15.46]:51497 "EHLO
-        estafeta21.imdea.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728378AbhAYMtr (ORCPT
+        id S1729298AbhAYOLg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jan 2021 09:11:36 -0500
+Received: from a1.mail.mailgun.net ([198.61.254.60]:46256 "EHLO
+        a1.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729171AbhAYOIr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 07:49:47 -0500
-Received: from antispam1r1.madrimasd.org (antispam1r1.madrimasd.org [10.17.49.176])
-        by estafeta21.imdea.org (ALVA Mail Server) with ESMTP id 4579D371344
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 13:25:12 +0100 (CET)
-X-Virus-Scanned: by ALVA antispam-antivirus system at imdea.org
-Received: from estafeta21.imdea.org ([10.17.49.129])
-        by antispam1r1.madrimasd.org (antispam1.imdea.org [10.17.49.176]) (amavisd-new, port 25021)
-        with ESMTP id Xl_nJ-PVyd4h for <linux-wireless@vger.kernel.org>;
-        Mon, 25 Jan 2021 13:24:41 +0100 (CET)
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Mon, 25 Jan 2021 09:08:47 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1611583684; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=eE+j5G3AHurYGidfRjN7A3PxjKJJsSCezYoKuHySqF4=;
+ b=G+hrPRr9K5ryvI8dCP3MfWva1/wbfe6b3pBZjlfCVLfW7orjVK/3kvuShf1FI4h9H6LJgeap
+ SjQ4Lb4iU1qj2ylVrWS9aEiXEYsexbznJdM8v/+tuuxNbUIzgYfanoz/ietotYYdHChttdPV
+ VJV1Nofo408BzZUvbsv+1FRB6aA=
+X-Mailgun-Sending-Ip: 198.61.254.60
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 600ecd9f5677aca7bd9d4e64 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Jan 2021 13:54:39
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 95478C433CA; Mon, 25 Jan 2021 13:54:38 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: pablo.jimenez)
-        by estafeta21.imdea.org (ALVA Mail Server) with ESMTPSA id B9A3F371334
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 13:24:41 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 estafeta21.imdea.org B9A3F371334
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=imdea.org; s=mail;
-        t=1611577481; bh=nffLrjzL8ycMFIgT3Yt6m1IhFEEjZw7dRZfPYVoEx2U=;
-        h=From:Date:Subject:To:From;
-        b=c5AjP/U9vVMyxuk/LAOrEtN5j/cWJOx8w4OVMHtgMKUqkywMHV3Z8UmpTKQoQG0qg
-         O+s90jXnK5IAIIqtqIuxv59eTLhzDub80kAOOReODfyX//iluzBk/k5CcaqS4X+REI
-         AZNL/9t80mYOAt3gOosfNgVlZSNaIZB9HQWuepqI=
-Received: by mail-io1-f42.google.com with SMTP id h11so25953611ioh.11
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 04:24:41 -0800 (PST)
-X-Gm-Message-State: AOAM530mUD+P05/hjmS11IcCERLjS8pfJvveHo8QavbzxgUwf8uAfXA5
-        iEc/T1xhd4k49t/FbEqhqXzeJNaUGvMtTP+hzDc=
-X-Google-Smtp-Source: ABdhPJz4kjnkiyJghElPid01aQ28n7JEluGAXGq7L/eug+vz7JFnBQhxDdMBD+/71hYhSSLmjolg14Lt9F2+Aa5vEjY=
-X-Received: by 2002:a6b:b245:: with SMTP id b66mr183417iof.76.1611577480663;
- Mon, 25 Jan 2021 04:24:40 -0800 (PST)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 719A0C433C6;
+        Mon, 25 Jan 2021 13:54:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 719A0C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-From:   =?UTF-8?Q?Pablo_Jim=C3=A9nez_Mateo?= <pablo.jimenezmateo@imdea.org>
-Date:   Mon, 25 Jan 2021 13:24:29 +0100
-X-Gmail-Original-Message-ID: <CAFJivsxRDcgRBPsxbG4AKh+vi5RcvpAPYdj43YTS5a3zh0fKMQ@mail.gmail.com>
-Message-ID: <CAFJivsxRDcgRBPsxbG4AKh+vi5RcvpAPYdj43YTS5a3zh0fKMQ@mail.gmail.com>
-Subject: [wil6210] Register mapping question
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH for v5.11 01/12] iwlwifi: mvm: skip power command when
+ unbinding vif during CSA
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <iwlwifi.20210115130252.64a2254ac5c3.Iaa3a9050bf3d7c9cd5beaf561e932e6defc12ec3@changeid>
+References: <iwlwifi.20210115130252.64a2254ac5c3.Iaa3a9050bf3d7c9cd5beaf561e932e6defc12ec3@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210125135438.95478C433CA@smtp.codeaurora.org>
+Date:   Mon, 25 Jan 2021 13:54:38 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I want to enable live debugging via the DEBUG register of the ARC600
-as shown here: http://me.bios.io/images/d/dd/ARCompactISA_ProgrammersRefere=
-nce.pdf
+Luca Coelho <luca@coelho.fi> wrote:
 
-I have been checking the file wil6210.h and I understand that some of
-the registers are defined there:
+> From: Sara Sharon <sara.sharon@intel.com>
+> 
+> In the new CSA flow, we remain associated during CSA, but
+> still do a unbind-bind to the vif. However, sending the power
+> command right after when vif is unbound but still associated
+> causes FW to assert (0x3400) since it cannot tell the LMAC id.
+> 
+> Just skip this command, we will send it again in a bit, when
+> assigning the new context.
+> 
+> Signed-off-by: Sara Sharon <sara.sharon@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-/* registers - FW addresses */
-#define RGF_USER_USAGE_1 (0x880004)
+12 patches applied to wireless-drivers.git, thanks.
 
-My question is regarding this mapping, I see that the names are not
-the ones of the Core Register Set or the Auxiliary Register Set (r0,
-r1, STATUS32, DEBUG and so on).
+bf544e9aa570 iwlwifi: mvm: skip power command when unbinding vif during CSA
+5c56d862c749 iwlwifi: mvm: take mutex for calling iwl_mvm_get_sync_time()
+34b9434cd0d4 iwlwifi: pcie: avoid potential PNVM leaks
+1c58bed4b7f7 iwlwifi: pnvm: don't skip everything when not reloading
+82a08d0cd7b5 iwlwifi: pnvm: don't try to load after failures
+a800f95858d0 iwlwifi: fix the NMI flow for old devices
+0f8d5656b3fd iwlwifi: queue: don't crash if txq->entries is NULL
+ed0022da8bd9 iwlwifi: pcie: set LTR on more devices
+98c7d21f957b iwlwifi: pcie: add a NULL check in iwl_pcie_txq_unmap
+2d6bc752cc28 iwlwifi: pcie: fix context info memory leak
+6701317476bb iwlwifi: pcie: use jiffies for memory read spin time limit
+3d372c4edfd4 iwlwifi: pcie: reschedule in long-running memory reads
 
-My question is how could I find the addresses to those registers?
-Let's say I want to write read to the DEBUG register (0x0) on the MAC
-and on the USER cores, how could I do that? What is the offset to
-those registers?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/iwlwifi.20210115130252.64a2254ac5c3.Iaa3a9050bf3d7c9cd5beaf561e932e6defc12ec3@changeid/
 
-If successful I will try to document all hardware addresses and
-hopefully implement further debug capabilities and send a patch!
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
- ------
-Pablo Jim=C3=A9nez Mateo,
-PhD student, IMDEA Networks
