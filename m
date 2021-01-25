@@ -2,98 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5CAA3047D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 20:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F305F3047CC
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 20:13:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388980AbhAZFzv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 00:55:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37744 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729948AbhAYPfv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 10:35:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B407F230FF;
-        Mon, 25 Jan 2021 15:22:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611588155;
-        bh=FVztG+NxYtVZq+jPplpedE8ZSN7U5DWNfbBcmiJa+x0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=BHMMvxaEgds7zuzg+e5b/4YNKyNAXRKR1qSOW1yKjIN2s/gvPKq/he3wvXrJAE9ZK
-         QniUHY9YwZTT+6lle7wx//3eYEv2rV2KmIsE6yAvcLOKuErCopxAniWvcM93MAgWek
-         SWcGkPZlBlztuco++06NiyyL0sIXnbxu+OVpf3knoqBrPPrBDUDPJLFjb6mnuhGtR4
-         dMdZSMabG1xgN3ByW5aeA89rB+JTp3mRWF9yAHK2cMSpFMOMQ6KpTD5ZtgMbEgOJcl
-         7h+d0ZoDJ3gluJQUR4DfOExVWmKyr1DCK1xv3O8bl43c3fvOVgE6UEdpFBrJxPVFjI
-         /E1F4/XcCCjvg==
-Received: by mail-oi1-f179.google.com with SMTP id k25so990456oik.13;
-        Mon, 25 Jan 2021 07:22:35 -0800 (PST)
-X-Gm-Message-State: AOAM530u5VSBiS6DAi/rnLhG2VOyvnJ7Ng/iFYssZ3gP98Nzq9RW+Jch
-        zz7z+xWhk8QAsh9mzU135qUWV4n/tjgpbp/w14w=
-X-Google-Smtp-Source: ABdhPJwFkwSM5HAigI7b/5HTex8RMIkP8MlT9k9NMmaZalYKyVlkCz9AWRlbT3owTxeRzCWUHQAUlb8j9egSmH+WUXc=
-X-Received: by 2002:aca:e103:: with SMTP id y3mr425239oig.11.1611588154937;
- Mon, 25 Jan 2021 07:22:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20210125113654.2408057-1-arnd@kernel.org> <CAJKOXPfteJ3Jia4Qd9DabjxcOtax3uDgi1fSbz4_+cHsJ1prQQ@mail.gmail.com>
- <CAK8P3a0apBUbck9Z3UMKfwSJw8a-UbbXLTLUvSyOKEwTgPLjqg@mail.gmail.com>
- <CAJKOXPc6LWnqiyO9WgxUZPo-vitNcQQr2oDoyD44P2YTSJ7j=g@mail.gmail.com>
- <CAK8P3a1NEbZtXVA0Z4P3K97L9waBp7nkCWOkdYjR3+7FUF0P0Q@mail.gmail.com> <CAJKOXPdWouEFtCp_iG+py1JcyrEU2Fj98jBAPTKZXQXCDQE54A@mail.gmail.com>
-In-Reply-To: <CAJKOXPdWouEFtCp_iG+py1JcyrEU2Fj98jBAPTKZXQXCDQE54A@mail.gmail.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Mon, 25 Jan 2021 16:22:18 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3ygYTEwjLbFuArdfNF1-yydVjtS2NZDAURKjOJGAxkAQ@mail.gmail.com>
-Message-ID: <CAK8P3a3ygYTEwjLbFuArdfNF1-yydVjtS2NZDAURKjOJGAxkAQ@mail.gmail.com>
-Subject: Re: [PATCH] ath9k: fix build error with LEDS_CLASS=m
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Flavio Suligoi <f.suligoi@asem.it>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S2389008AbhAZF41 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 00:56:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51438 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731677AbhAYTSf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Jan 2021 14:18:35 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B195C061797
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 11:17:40 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id 11so8981229pfu.4
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 11:17:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=rEHECdyQhXR56O9wH/xOk7o/1QE9qgszq9A9MWvgcjc=;
+        b=R1pavMFZ2+QaAEArZBQdAqlv6Llopzqhi75FC0Bb1KCuArvJiT0JEgljRg+MKtwP83
+         z7wOWPJBaw22tp4fmPhbMj7DdYJjgsqaBIVIEOmgh9s95F6BN+j+ityJJUYGTBeT3Ie7
+         E7AjQh+NkJevPsWSUZ+6m3DLi1+qGI8+kuleq/RAq+gb2ctQOrbsgT+gL+CJ8XT54H/p
+         t34Q5XkC0jbV1NKM3FBGSOEwED7IynLKkqNrbBEf/x4ctDNyOexbOI7pZkoOj8hT1Ro7
+         mGjoF0SsIAd78WAwTMx+v13pCrEd/q3MywNPOXohic/UahQIg/6mOO9hKJcOS0OYBDEk
+         rxfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rEHECdyQhXR56O9wH/xOk7o/1QE9qgszq9A9MWvgcjc=;
+        b=Hmtw/kr9ggfOamR8HP3SvyfWx4TGr1t8uDLE5yYB5QiqHqD11juydm/CJ2JCQ5IQYn
+         10hIHlUmp7MPjAqUPFuSJmcKCbTX0X+DCs5AnDpnDHHKsF4gTXhLvcr6HtlDnbF1HH4u
+         ms6bgbNWTUj3Hev4csOD01rq/LgkhDy/cj3OC2mW+iELM62YM7CNnEW79rwCLMW7bHHg
+         pa/fRGKYEFLAYpQscIZZ0XLy0jRtKNZ1iSYvrHdlevx5xjndG+hm75gG47bPqjStofIw
+         QY5jdwb/xZQmSmLtPsOq7N9YjQLCUc8jYrwAnbItiL0pOPJdn6CXL3+oDsiMP5kI8RIZ
+         OuiQ==
+X-Gm-Message-State: AOAM5335ySafgXdrxv7Yo8uIFQ5BYaweVPLrW9S1XZhn05fEynYSfIyi
+        IVUQLSOS26Eb/6rr9Ukawbc=
+X-Google-Smtp-Source: ABdhPJyAf5sg12wkqDZT035guNXiPpFDpKQ71JfH+8eG1FtjoqRLLwAsDr63IzgKfxCLKknIXaE/OQ==
+X-Received: by 2002:a63:7885:: with SMTP id t127mr2020212pgc.15.1611602260106;
+        Mon, 25 Jan 2021 11:17:40 -0800 (PST)
+Received: from localhost.localdomain ([183.83.147.80])
+        by smtp.gmail.com with ESMTPSA id x19sm17777969pfp.207.2021.01.25.11.17.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jan 2021 11:17:39 -0800 (PST)
+From:   chaitanya.mgit@gmail.com
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Cc:     Chaitanya Tata <chaitanya.mgit@gmail.com>,
+        Chaitanya Tata <chaitanya.tata@bluwireless.com>
+Subject: [PATCH] cfg80211: Skip key deletion for open associations
+Date:   Tue, 26 Jan 2021 00:47:27 +0530
+Message-Id: <20210125191727.518-1-chaitanya.mgit@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 25, 2021 at 4:04 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> On Mon, 25 Jan 2021 at 15:38, Arnd Bergmann <arnd@kernel.org> wrote:
-> > On Mon, Jan 25, 2021 at 2:27 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> I meant that having MAC80211_LEDS selected causes the ath9k driver to
-> toggle on/off the WiFi LED. Every second, regardless whether it's
-> doing something or not. In my setup, I have problems with a WiFi
-> dongle somehow crashing (WiFi disappears, nothing comes from the
-> dongle... maybe it's Atheros FW, maybe some HW problem) and I found
-> this LED on/off slightly increases the chances of this dongle-crash.
-> That was the actual reason behind my commits.
->
-> Second reason is that I don't want to send USB commands every second
-> when the device is idle. It unnecessarily consumes power on my
-> low-power device.
+From: Chaitanya Tata <chaitanya.mgit@gmail.com>
 
-Ok, I see.
+From: Chaitanya Tata <chaitanya.mgit@gmail.com>
 
-> Of course another solution is to just disable the trigger via sysfs
-> LED API. It would also work but my patch allows entire code to be
-> compiled-out (which was conditional in ath9k already).
->
-> Therefore the patch I sent allows the ath9k LED option to be fully
-> choosable. Someone wants every-second-LED-blink, sure, enable
-> ATH9K_LEDS and you have it. Someone wants to reduce the kernel size,
-> don't enable ATH9K_LEDS.
+If the association is open (no authentication and encryption) no need
+to delete the keys, though this is handled by all drivers, this is
+unnecessary.
 
-Originally, I think this is what CONFIG_MAC80211_LEDS was meant
-for, but it seems that this is not actually practical, since this also
-gets selected by half of the drivers using it, while the other half have
-a dependency on it. Out of the ones that select it, some in turn
-select LEDS_CLASS, while some depend on it.
+Signed-off-by: Chaitanya Tata <chaitanya.tata@bluwireless.com>
+---
+ net/wireless/sme.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-I think this needs a larger-scale cleanup for consistency between
-(at least) all the wireless drivers using LEDs. Either your patch
-or mine should get applied in the meantime, and I don't care much
-which one in this case, as we still have the remaining inconsistency.
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 38df713f2e2e..3850af772131 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -1099,7 +1099,6 @@ void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
+ 	wdev->ssid_len = 0;
+ 	wdev->conn_owner_nlportid = 0;
+ 	kfree_sensitive(wdev->connect_keys);
+-	wdev->connect_keys = NULL;
+ 
+ 	nl80211_send_disconnected(rdev, dev, reason, ie, ie_len, from_ap);
+ 
+@@ -1113,7 +1112,7 @@ void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
+ 	 * Delete all the keys ... pairwise keys can't really
+ 	 * exist any more anyway, but default keys might.
+ 	 */
+-	if (rdev->ops->del_key) {
++	if (wdev->connect_keys && rdev->ops->del_key) {
+ 		int max_key_idx = 5;
+ 
+ 		if (wiphy_ext_feature_isset(
+@@ -1127,6 +1126,8 @@ void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
+ 			rdev_del_key(rdev, dev, i, false, NULL);
+ 	}
+ 
++	wdev->connect_keys = NULL;
++
+ 	rdev_set_qos_map(rdev, dev, NULL);
+ 
+ #ifdef CONFIG_CFG80211_WEXT
+-- 
+2.17.1
 
-        Arnd
