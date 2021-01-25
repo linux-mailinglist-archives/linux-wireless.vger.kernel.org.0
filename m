@@ -2,81 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E19AA3035DD
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 06:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9DBC3035EB
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 06:57:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388972AbhAZFzk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 00:55:40 -0500
-Received: from m42-8.mailgun.net ([69.72.42.8]:43919 "EHLO m42-8.mailgun.net"
+        id S2388998AbhAZF4C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 00:56:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40606 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729626AbhAYOnN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 09:43:13 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611585754; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=QQM/nt2FFonPCqifNIq2JACCDZxSRJDHrOOwPcz1i0Q=;
- b=wUL/Vm5vXfvDSNQ9vNcrEkzwHmkkiukMyzX+q/dJAVHw6ULZ+84f9SrOTpxl2Q5M4O/A7rYL
- F/xY8gH3GspH4pdYr9IPrIsSR0P+PhkByDoMkQQP99rGR3x0t7eCMyrmHY8dUy/h4Ss3TIGj
- 92eSr+cfhrTDnH8qIrBr78ftvOg=
-X-Mailgun-Sending-Ip: 69.72.42.8
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 600ed8b75677aca7bddb40b4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Jan 2021 14:41:59
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B9301C433ED; Mon, 25 Jan 2021 14:41:59 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 460CAC433CA;
-        Mon, 25 Jan 2021 14:41:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 460CAC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1730355AbhAYPpi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Jan 2021 10:45:38 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B3C192224C;
+        Mon, 25 Jan 2021 15:04:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611587096;
+        bh=NpbOL0QAy2B+v2obTlYdRHqEBTB+JvqMn4xl7op6tQk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=nhVwK8YAdvdKoEPF2JktD7o2Kqm/pYYHEesrR/2aKWKgwr7rSdyvQRSFeHsqdW8/C
+         sWUPIulZ+zahhyz6yyZ9ThlEo4HuJ4D0KpYU+8KEeZ1hrLnPDHEq/RDKk0qnL8zhnu
+         rPCeg6RbLnar0PQbA2AN9IX60Pd6gO7BDYvCyi5wIgRnRWM2QFFOViRw/OuMuIZnaI
+         CMUFaYcPOr/b2Q7CU1kOgJfYXXtaCqIlDJnJ6cHz+dhHbWsyXWDyPHiTDXIaE+lG6Y
+         FYmFxsBBhh8uiFIg8PfY0pW110lc9hg7rwP5LHxvVp0mWUs2c25hMzlgU8dA/rdXZ7
+         /CtWoWgEYwPig==
+Received: by mail-ej1-f54.google.com with SMTP id by1so18497535ejc.0;
+        Mon, 25 Jan 2021 07:04:55 -0800 (PST)
+X-Gm-Message-State: AOAM533CV9GGZkdeWiMq5JQX1ODc9xU/xxek9E1nOBBzzsX7SAx7uLAP
+        7S9DIUUdu9yldLwDEu1wSypqmJmlz7BvLLd+RJw=
+X-Google-Smtp-Source: ABdhPJzojfz9zKZgZqlkUtTNjng/1jRATIl36jwsa/Jt/SJvnlIGM8ns0P8MPSjplQ4Nzdq74KQFPv1BPhXYQKoWZDo=
+X-Received: by 2002:a17:906:2898:: with SMTP id o24mr618828ejd.215.1611587094202;
+ Mon, 25 Jan 2021 07:04:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mt7601u: use ieee80211_rx_list to pass frames to the
- network
- stack as a batch
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <5c72fa2dda45c1ae3f285af80c02f3db23341d85.1610580222.git.lorenzo@kernel.org>
-References: <5c72fa2dda45c1ae3f285af80c02f3db23341d85.1610580222.git.lorenzo@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        kuba@kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210125144159.B9301C433ED@smtp.codeaurora.org>
-Date:   Mon, 25 Jan 2021 14:41:59 +0000 (UTC)
+References: <20210125113654.2408057-1-arnd@kernel.org> <CAJKOXPfteJ3Jia4Qd9DabjxcOtax3uDgi1fSbz4_+cHsJ1prQQ@mail.gmail.com>
+ <CAK8P3a0apBUbck9Z3UMKfwSJw8a-UbbXLTLUvSyOKEwTgPLjqg@mail.gmail.com>
+ <CAJKOXPc6LWnqiyO9WgxUZPo-vitNcQQr2oDoyD44P2YTSJ7j=g@mail.gmail.com> <CAK8P3a1NEbZtXVA0Z4P3K97L9waBp7nkCWOkdYjR3+7FUF0P0Q@mail.gmail.com>
+In-Reply-To: <CAK8P3a1NEbZtXVA0Z4P3K97L9waBp7nkCWOkdYjR3+7FUF0P0Q@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Mon, 25 Jan 2021 16:04:42 +0100
+X-Gmail-Original-Message-ID: <CAJKOXPdWouEFtCp_iG+py1JcyrEU2Fj98jBAPTKZXQXCDQE54A@mail.gmail.com>
+Message-ID: <CAJKOXPdWouEFtCp_iG+py1JcyrEU2Fj98jBAPTKZXQXCDQE54A@mail.gmail.com>
+Subject: Re: [PATCH] ath9k: fix build error with LEDS_CLASS=m
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Flavio Suligoi <f.suligoi@asem.it>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+On Mon, 25 Jan 2021 at 15:38, Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> On Mon, Jan 25, 2021 at 2:27 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > On Mon, 25 Jan 2021 at 14:09, Arnd Bergmann <arnd@kernel.org> wrote:
+> > > On Mon, Jan 25, 2021 at 12:40 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > > > On Mon, 25 Jan 2021 at 12:36, Arnd Bergmann <arnd@kernel.org> wrote:
+> > > > But we do not want to have this dependency (selecting MAC80211_LEDS).
+> > > > I fixed this problem here:
+> > > > https://lore.kernel.org/lkml/20201227143034.1134829-1-krzk@kernel.org/
+> > > > Maybe let's take this approach?
+> > >
+> > > Generally speaking, I don't like to have a device driver specific Kconfig
+> > > setting 'select' a subsystem', for two reasons:
+> > >
+> > > - you suddenly get asked for tons of new LED specific options when
+> > >   enabling seemingly benign options
+> > >
+> > > - Mixing 'depends on' and 'select' leads to bugs with circular
+> > >   dependencies that usually require turning some other 'select'
+> > >   into 'depends on'.
+> > >
+> > > The problem with LEDS_CLASS in particular is that there is a mix of drivers
+> > > using one vs the other roughly 50:50.
+> >
+> > Yes, you are right, I also don't like it. However it was like this
+> > before my commit so I am not introducing a new issue. The point is
+> > that in your choice the MAC80211_LEDS will be selected if LEDS_CLASS
+> > is present, which is exactly what I was trying to fix/remove. My WiFi
+> > dongle does not have a LED and it causes a periodic (every second)
+> > event. However I still have LEDS_CLASS for other LEDS in the system.
+>
+> What is the effect of this lost event every second? If it causes some
+> runtime warning or other problem, then neither of our fixes would
+> solve it completely, because someone with a distro kernel would
+> see the same issue when they have the symbol enabled but no
+> physical LED in the device.
 
-> Similar to mt76 driver, rely on ieee80211_rx_list in order to
-> improve icache footprint
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Acked-by: Jakub Kicinski <kuba@kernel.org>
+I meant that having MAC80211_LEDS selected causes the ath9k driver to
+toggle on/off the WiFi LED. Every second, regardless whether it's
+doing something or not. In my setup, I have problems with a WiFi
+dongle somehow crashing (WiFi disappears, nothing comes from the
+dongle... maybe it's Atheros FW, maybe some HW problem) and I found
+this LED on/off slightly increases the chances of this dongle-crash.
+That was the actual reason behind my commits.
 
-Patch applied to wireless-drivers-next.git, thanks.
+Second reason is that I don't want to send USB commands every second
+when the device is idle. It unnecessarily consumes power on my
+low-power device.
 
-2a9269b1cdc3 mt7601u: use ieee80211_rx_list to pass frames to the network stack as a batch
+Of course another solution is to just disable the trigger via sysfs
+LED API. It would also work but my patch allows entire code to be
+compiled-out (which was conditional in ath9k already).
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/5c72fa2dda45c1ae3f285af80c02f3db23341d85.1610580222.git.lorenzo@kernel.org/
+Therefore the patch I sent allows the ath9k LED option to be fully
+choosable. Someone wants every-second-LED-blink, sure, enable
+ATH9K_LEDS and you have it. Someone wants to reduce the kernel size,
+don't enable ATH9K_LEDS.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Best regards,
+Krzysztof
