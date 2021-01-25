@@ -2,73 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9C503026F6
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jan 2021 16:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E75C30272B
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jan 2021 16:50:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729888AbhAYO7g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jan 2021 09:59:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51010 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729869AbhAYO6d (ORCPT
+        id S1730284AbhAYPrU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jan 2021 10:47:20 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:41839 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730419AbhAYPrQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 09:58:33 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED6A6C06174A;
-        Mon, 25 Jan 2021 06:57:52 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1l43JE-00BS7e-SI; Mon, 25 Jan 2021 15:57:41 +0100
-Message-ID: <86b59e50756f63db9734d9a786271956d26b63ee.camel@sipsolutions.net>
-Subject: Re: net: tso: add UDP segmentation support: adds regression for
- ax200 upload
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Eric Dumazet <edumazet@google.com>
-Cc:     Ben Greear <greearb@candelatech.com>,
-        Rainer Suhm <automat@posteo.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
-        Willem de Bruijn <willemb@google.com>
-Date:   Mon, 25 Jan 2021 15:57:39 +0100
-In-Reply-To: <CANn89iLZ9Y0fMk8X1a4=J7Xf2H=M0oLK_SekOLZypN+2-8a0yw@mail.gmail.com> (sfid-20210119_110301_556335_ED40BD27)
-References: <5664fa0f-aef2-c336-651a-093c9eed23ab@candelatech.com>
-         <765f370d-ce2d-b75a-2dde-87f69ae7c185@candelatech.com>
-         <CANn89iKpa1y2SKJuR9kRi=AZs94sj+-tzRs+2D0vmxh+ahEcGA@mail.gmail.com>
-         <adbee2ec-c6ba-7a17-eb98-1c53365fa911@candelatech.com>
-         <CANn89iJQnSVZFp2XDgREN1QMtU4exOsnJq=5VzJ6tqTCJ7MH-g@mail.gmail.com>
-         <c4bcee7d-b2eb-759c-c659-d65f3e7daec9@candelatech.com>
-         <CANn89i++Kgkj57ms70a5GDOQ-Cpewx3NQkzP3EmZmLYQ4eHzww@mail.gmail.com>
-         <5d89fd24-f00a-7e70-00ce-83529f13b05e@candelatech.com>
-         <20201218121627.603329b2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <9003ea3720a03b4bd1b8abf3d8f645563a58f953.camel@sipsolutions.net>
-         <43a5b45c-955a-22d4-2bf9-dbab852dbb5f@candelatech.com>
-         <CANn89iJBO13s9fOVRnDyfj5HXt9wjnRpbh2_f5SuyNkNAfjzJQ@mail.gmail.com>
-         <CANn89iJTCDof6ypxCkiGaPo+y0Bngg0NX5cLPWisTEZaFo1BQw@mail.gmail.com>
-         <CANn89iJWG2n1s3j7EdpwkQQv-9dOY02V+FGYHAWguO4JiqWuJA@mail.gmail.com>
-         <d75b2c43a416d4bb84185aab4005d42e49962e36.camel@sipsolutions.net>
-         <CANn89iLZ9Y0fMk8X1a4=J7Xf2H=M0oLK_SekOLZypN+2-8a0yw@mail.gmail.com>
-         (sfid-20210119_110301_556335_ED40BD27)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+        Mon, 25 Jan 2021 10:47:16 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <pborgers@zedat.fu-berlin.de>)
+          id 1l43TK-003mVf-Cv; Mon, 25 Jan 2021 16:08:06 +0100
+Received: from a36t-ffs1.berlin.freifunk.net ([77.87.51.11] helo=mi.fu-berlin.de)
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <borgers@mi.fu-berlin.de>)
+          id 1l43TI-003QZF-TX; Mon, 25 Jan 2021 16:08:06 +0100
+Received: by mi.fu-berlin.de (sSMTP sendmail emulation); Mon, 25 Jan 2021 16:08:03 +0100
+From:   Philipp Borgers <borgers@mi.fu-berlin.de>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Philipp Borgers <borgers@mi.fu-berlin.de>
+Subject: [PATCH] mac80211: add STBC encoding to ieee80211_parse_tx_radiotap
+Date:   Mon, 25 Jan 2021 16:07:44 +0100
+Message-Id: <20210125150744.83065-1-borgers@mi.fu-berlin.de>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-Original-Sender: borgers@mi.fu-berlin.de
+X-Originating-IP: 77.87.51.11
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Eric,
+This patch adds support for STBC encoding to the radiotap tx parse
+function. Prior to this change adding the STBC flag to the radiotap
+header did not encode frames with STBC.
 
-On Tue, 2021-01-19 at 11:02 +0100, Eric Dumazet wrote:
-> 
-> > This does fix the problems reported on iwlwifi, were you planning to
-> > submit it as a proper patch?
-> 
-> Sure, I will do, thanks !
+Signed-off-by: Philipp Borgers <borgers@mi.fu-berlin.de>
+---
+ net/mac80211/tx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Did you do that and I missed it? Or would you prefer we did?
-
-Thanks,
-Johannes
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index ebb3228ce971..cd53675d9955 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2038,6 +2038,7 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 	u16 vht_known;
+ 	u8 vht_mcs = 0, vht_nss = 0;
+ 	int i;
++	int stbc;
+ 
+ 	/* check for not even having the fixed radiotap header part */
+ 	if (unlikely(skb->len < sizeof(struct ieee80211_radiotap_header)))
+@@ -2133,6 +2134,12 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 			if (mcs_known & IEEE80211_RADIOTAP_MCS_HAVE_BW &&
+ 			    mcs_bw == IEEE80211_RADIOTAP_MCS_BW_40)
+ 				rate_flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
++
++			if (mcs_known & IEEE80211_RADIOTAP_MCS_HAVE_STBC) {
++				stbc = mcs_flags & IEEE80211_RADIOTAP_MCS_STBC_MASK;
++				stbc = stbc >> IEEE80211_RADIOTAP_MCS_STBC_SHIFT;
++				info->flags |= stbc << IEEE80211_TX_CTL_STBC_SHIFT;
++			}
+ 			break;
+ 
+ 		case IEEE80211_RADIOTAP_VHT:
+-- 
+2.30.0
 
