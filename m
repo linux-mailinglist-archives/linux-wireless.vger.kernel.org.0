@@ -2,124 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 830963035D0
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 06:55:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 059CE3035D1
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 06:55:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731727AbhAZFxy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 00:53:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:55650 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728370AbhAYNAi (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 08:00:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611579549;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vyJ1k8AoxLtkQF8krVeUnvj4TqKQ2T24Y/tcDxbs1Go=;
-        b=Wzml19Dkhc5xoh8kP3SpBd3zSasynXb3DRAmQEDFOujg+7u6gkqn4E1s8oXGuaVN/LvidE
-        /jJ+mV63ZfD7b2A2n61K57Qf9ymx+MO3b/seLufk3HtFzRQg53VjRltM4BdK8PVgdRAe8U
-        JEyhrsljo2DftrQVVbmzkf0qNb/I+QY=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-528-HJ1mhWUsPnysnaI7yxOWyQ-1; Mon, 25 Jan 2021 07:59:07 -0500
-X-MC-Unique: HJ1mhWUsPnysnaI7yxOWyQ-1
-Received: by mail-ed1-f70.google.com with SMTP id j12so7319466edq.10
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 04:59:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vyJ1k8AoxLtkQF8krVeUnvj4TqKQ2T24Y/tcDxbs1Go=;
-        b=Uun/M+El3B/YULrKHWxVPQ0lHaPyn9ee2S8Ku2GJcyOT61EdfuW90ixd+uqDKLewse
-         mRNyoh4af7Z/0u6z5Nsw5bFbOCE1X/uSbGo3rxMRTQQe8uQNUgdYNJCLlQLAAmop7bkj
-         8XGAqHjzHugQGC5FnMPBMn4/uOthU4JENeTC1ej7Sy3eJLq1ozOWaMNZNH+c7LEw6nmO
-         E0MC518cfBLgnsBBtUasUC0QybYED0RhwqetS7SN9h6xDoPnSSb4Y3/UmC5lsTQCiaaJ
-         VCGz5vq9hpa8S8H6nJUM1NDI3Zqzoeg2b6bQCWri0u/SaP/9pkIbr6ksxXG6GU0rsIfk
-         KMAA==
-X-Gm-Message-State: AOAM532LOiHgdmpbtzF9AFOF55W3UrRYLQMHWL3WeqvBabUpT2fee/xa
-        jIY7M4kMso4IZA+oNCRXDtNR1VfJKY9ixFJSj/7QbfPkXrL7pJfBo0IQhXVM7e/bJjQoEnuX16z
-        tTw48yaHaGpYkb5+9kyG9z0BJB10=
-X-Received: by 2002:a17:906:3781:: with SMTP id n1mr288791ejc.296.1611579545761;
-        Mon, 25 Jan 2021 04:59:05 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJytbR6L3qYG5Lt1GNxqYBmOuRhfy1Dq13nsxJZfyvECoSC85SlUAbEXG5jCNIuDCw7GJy6v5g==
-X-Received: by 2002:a17:906:3781:: with SMTP id n1mr288787ejc.296.1611579545625;
-        Mon, 25 Jan 2021 04:59:05 -0800 (PST)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
-        by smtp.gmail.com with ESMTPSA id dm1sm10226654edb.72.2021.01.25.04.59.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Jan 2021 04:59:04 -0800 (PST)
-Subject: Re: pull-request: mac80211 2021-01-18.2
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "Peer, Ilan" <ilan.peer@intel.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Coelho, Luciano" <luciano.coelho@intel.com>
-References: <20210118204750.7243-1-johannes@sipsolutions.net>
- <77c606d4-a78a-1fa3-5937-b270c3d0bbd3@redhat.com>
- <b83f6cf001c4e3df97eeaed710b34fda0a08265f.camel@sipsolutions.net>
- <BN7PR11MB2610052E380E676ED5CCCC67E9BE9@BN7PR11MB2610.namprd11.prod.outlook.com>
- <348210d8-6940-ca8d-e3b1-f049330a2087@redhat.com>
- <666b3449fe33d34123255cc69da3aa46fc276dcb.camel@sipsolutions.net>
- <6c949dbe-5593-2274-7099-c2768b770aad@redhat.com>
- <671b0c37867803d7229ef0c4a33baf2c7778df08.camel@sipsolutions.net>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <92c434bd-bf79-2b49-2a0a-8e538d55551c@redhat.com>
-Date:   Mon, 25 Jan 2021 13:59:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S2388912AbhAZFyN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 00:54:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45958 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728849AbhAYN2p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Jan 2021 08:28:45 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5CC39230FF;
+        Mon, 25 Jan 2021 13:28:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611581284;
+        bh=Wcrnt9a6tlwxFh75n05d6QTgYKpioPtAnTptCbWjZQE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=o5SF/z9ajMcRl62SRaNmYtqXooicbAi3WW1iN7z1ytWd8ah8MwFUz1d/eL7XcjQjm
+         agFH14nXax/5dw/LCR/DdIvIrE4anBG67k52El622HblrkujOZ1/yx+nftxJBv2p/C
+         WPKaneuEimgr2mhNLvWVzE/eEyy55/g+DWg3Z9nieG0aHTiFJ1Z/UZc9pOcLj1Aikt
+         m/Pxm3Mouz+wt84THQprjnGcJasL6rcAbaF2DAwMcIbIYTA1wG419NkxKuEwLSBWbm
+         C48mh9yf6IX+VePx1JNCrOrAowxzlI1iDY874ZHMi0kPpRs3cy6D8HLUV+yXxUfb+v
+         KRIeVkH4M5baw==
+Received: by mail-ej1-f42.google.com with SMTP id ox12so18055160ejb.2;
+        Mon, 25 Jan 2021 05:28:04 -0800 (PST)
+X-Gm-Message-State: AOAM532lG9SFXC8IvFt1qhoIv6aZS2hG3ovn/xcreiuno7aJtt2H2C3J
+        Yzu27eVNIz4YMifjL5wvxx9NAqIGOmAHcsk1qZg=
+X-Google-Smtp-Source: ABdhPJwAZH0y+1uWVKT0bIlmN1qPDw4htbVM71bDR5Huc/2JDMSjtc6HKqDT/J2Dz91sFUk5PmuimiPuO2LL2lmqUiM=
+X-Received: by 2002:a17:906:2898:: with SMTP id o24mr349032ejd.215.1611581282765;
+ Mon, 25 Jan 2021 05:28:02 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <671b0c37867803d7229ef0c4a33baf2c7778df08.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210125113654.2408057-1-arnd@kernel.org> <CAJKOXPfteJ3Jia4Qd9DabjxcOtax3uDgi1fSbz4_+cHsJ1prQQ@mail.gmail.com>
+ <CAK8P3a0apBUbck9Z3UMKfwSJw8a-UbbXLTLUvSyOKEwTgPLjqg@mail.gmail.com>
+In-Reply-To: <CAK8P3a0apBUbck9Z3UMKfwSJw8a-UbbXLTLUvSyOKEwTgPLjqg@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Mon, 25 Jan 2021 14:27:51 +0100
+X-Gmail-Original-Message-ID: <CAJKOXPc6LWnqiyO9WgxUZPo-vitNcQQr2oDoyD44P2YTSJ7j=g@mail.gmail.com>
+Message-ID: <CAJKOXPc6LWnqiyO9WgxUZPo-vitNcQQr2oDoyD44P2YTSJ7j=g@mail.gmail.com>
+Subject: Re: [PATCH] ath9k: fix build error with LEDS_CLASS=m
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Flavio Suligoi <f.suligoi@asem.it>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Mon, 25 Jan 2021 at 14:09, Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> On Mon, Jan 25, 2021 at 12:40 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > On Mon, 25 Jan 2021 at 12:36, Arnd Bergmann <arnd@kernel.org> wrote:
+> > >
+> > > From: Arnd Bergmann <arnd@arndb.de>
+> > >
+> > > When CONFIG_ATH9K is built-in but LED support is in a loadable
+> > > module, both ath9k drivers fails to link:
+> > >
+> > > x86_64-linux-ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_deinit_leds':
+> > > gpio.c:(.text+0x36): undefined reference to `led_classdev_unregister'
+> > > x86_64-linux-ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_init_leds':
+> > > gpio.c:(.text+0x179): undefined reference to `led_classdev_register_ext'
+> > >
+> > > The problem is that the 'imply' keyword does not enforce any dependency
+> > > but is only a weak hint to Kconfig to enable another symbol from a
+> > > defconfig file.
+> > >
+> > > Change imply to a 'depends on LEDS_CLASS' that prevents the incorrect
+> > > configuration but still allows building the driver without LED support.
+> > >
+> > > The 'select MAC80211_LEDS' is now ensures that the LED support is
+> > > actually used if it is present, and the added Kconfig dependency
+> > > on MAC80211_LEDS ensures that it cannot be enabled manually when it
+> > > has no effect.
+> >
+> > But we do not want to have this dependency (selecting MAC80211_LEDS).
+> > I fixed this problem here:
+> > https://lore.kernel.org/lkml/20201227143034.1134829-1-krzk@kernel.org/
+> > Maybe let's take this approach?
+>
+> Generally speaking, I don't like to have a device driver specific Kconfig
+> setting 'select' a subsystem', for two reasons:
+>
+> - you suddenly get asked for tons of new LED specific options when
+>   enabling seemingly benign options
+>
+> - Mixing 'depends on' and 'select' leads to bugs with circular
+>   dependencies that usually require turning some other 'select'
+>   into 'depends on'.
+>
+> The problem with LEDS_CLASS in particular is that there is a mix of drivers
+> using one vs the other roughly 50:50.
 
-On 1/25/21 1:40 PM, Johannes Berg wrote:
-> Hi,
-> 
->>> I don't have that much sympathy for a staging driver that's clearly
->>> doing things differently than it was intended (the documentation states
->>> that the function should be called only before wiphy_register(), not
->>> during ndo_open). :-)
->>
->> I completely understand and I already was worried that this might be
->> a staging-driver issue, which is why I mentioned this was with a
->> staging driver in the more detailed bug-report email.
-> 
-> I guess I missed that, but no worries.
-> 
->>> But OTOH, that fix to the driver is simple and looks correct to me since
->>> it only ever has a static regdomain, and the notifier does the work of
->>> applying it to the channels as well.
->>
->> So I've given your fix a quick try and it leads to a NULL pointer deref.
-> 
-> Ouch. Oh. I see, that driver is *really* stupid, trying to get to the
-> wiphy from the adapter, but going through the wdev instead ... ouch.
-> 
-> Wow are these pointers a mess in that driver ... Something like this,
-> perhaps?
-> 
-> https://p.sipsolutions.net/4400d9a3b7b800bb.txt
+Yes, you are right, I also don't like it. However it was like this
+before my commit so I am not introducing a new issue. The point is
+that in your choice the MAC80211_LEDS will be selected if LEDS_CLASS
+is present, which is exactly what I was trying to fix/remove. My WiFi
+dongle does not have a LED and it causes a periodic (every second)
+event. However I still have LEDS_CLASS for other LEDS in the system.
 
-Yes this fixes things, thank you that saves me from having to debug
-the NULL ptr deref.
+Best regards,
+Krzysztof
 
-Do you want to submit this to Greg, or shall I (I've already
-added it to me local tree as a commit with you as the author) ?
-
-If you want me to submit it upstream, may I have / add your S-o-b
-for this ?
-
-Regards,
-
-Hans
-
+On Mon, 25 Jan 2021 at 14:09, Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> On Mon, Jan 25, 2021 at 12:40 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > On Mon, 25 Jan 2021 at 12:36, Arnd Bergmann <arnd@kernel.org> wrote:
+> > >
+> > > From: Arnd Bergmann <arnd@arndb.de>
+> > >
+> > > When CONFIG_ATH9K is built-in but LED support is in a loadable
+> > > module, both ath9k drivers fails to link:
+> > >
+> > > x86_64-linux-ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_deinit_leds':
+> > > gpio.c:(.text+0x36): undefined reference to `led_classdev_unregister'
+> > > x86_64-linux-ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_init_leds':
+> > > gpio.c:(.text+0x179): undefined reference to `led_classdev_register_ext'
+> > >
+> > > The problem is that the 'imply' keyword does not enforce any dependency
+> > > but is only a weak hint to Kconfig to enable another symbol from a
+> > > defconfig file.
+> > >
+> > > Change imply to a 'depends on LEDS_CLASS' that prevents the incorrect
+> > > configuration but still allows building the driver without LED support.
+> > >
+> > > The 'select MAC80211_LEDS' is now ensures that the LED support is
+> > > actually used if it is present, and the added Kconfig dependency
+> > > on MAC80211_LEDS ensures that it cannot be enabled manually when it
+> > > has no effect.
+> >
+> > But we do not want to have this dependency (selecting MAC80211_LEDS).
+> > I fixed this problem here:
+> > https://lore.kernel.org/lkml/20201227143034.1134829-1-krzk@kernel.org/
+> > Maybe let's take this approach?
+>
+> Generally speaking, I don't like to have a device driver specific Kconfig
+> setting 'select' a subsystem', for two reasons:
+>
+> - you suddenly get asked for tons of new LED specific options when
+>   enabling seemingly benign options
+>
+> - Mixing 'depends on' and 'select' leads to bugs with circular
+>   dependencies that usually require turning some other 'select'
+>   into 'depends on'.
+>
+> The problem with LEDS_CLASS in particular is that there is a mix of drivers
+> using one vs the other roughly 50:50.
+>
+>       Arnd
