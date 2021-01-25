@@ -2,110 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E19833035C9
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 06:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 939F63035CE
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 06:55:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388870AbhAZFx1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 00:53:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:46005 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727964AbhAYMVE (ORCPT
+        id S2388879AbhAZFxj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 00:53:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50502 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728268AbhAYMpG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 07:21:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611577144;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=EkySjmyy5bV42XAMy1/nKNEVTl7EAWsq5w4RqirjjF0=;
-        b=C8jaTRnvXZJP4TefcwGGRdn4UzpDUU9bCQhEDiHT8BIQtX+0jHFCpM8G+oAft4PAhPL+lq
-        sm+SdIMvv9ATR3Zyixcxk/BveiH+D+ZrnEOAobRLGVOEt3fuDYtePPOXt0bgICXdO17nd3
-        4PW41TVTGAiGd8+bAt/48pPXTX0NJBo=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-582-f2fwulGJNayQEJo9XInjRw-1; Mon, 25 Jan 2021 06:56:30 -0500
-X-MC-Unique: f2fwulGJNayQEJo9XInjRw-1
-Received: by mail-ej1-f72.google.com with SMTP id n18so3652709ejc.11
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 03:56:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=EkySjmyy5bV42XAMy1/nKNEVTl7EAWsq5w4RqirjjF0=;
-        b=mY/orPQhUJBSoj1r7R4vIv+oK10ihPCFmWHGht04+Md3xfxSbsD6ZSuv1N3fK1Cyex
-         cPKl+K883tYFZ7UeG74tPX+SR0QKvry4Yb7IApN6vn/ELF8Ukg84WLERmHaYHDmWO9g1
-         kX/o8/YuX4NkazK+mu7IgiP/oEFqTRqItwEHDK8kVdHUuaIRgzHUo2q7lWpnhPhH3W20
-         MU+8W0hAaqC8mFFuX0slozJBDd07++mYJCac5DrYsNQYoCGlWwAWPW+Dl14up9zUxnQz
-         Jg5KLSLwfSXF3L024/40JhZlsFykLRzuhEQIfpVOEMHCOT4BkBop6OyDHO/F6bWfffTp
-         cdRg==
-X-Gm-Message-State: AOAM532IHFxlHj7+fu4ap3TsURlF6xanQzu5Ho6W2OxQjf68kV7sHGww
-        /QbyhAKrDlG+BLRFB29NcFygLiyWuZXzLsAMV0prFvvsyWlcpBAbDSumBuZUmdUtTiScIoK0OMa
-        aL9kA42+qs5UEvZPUD6097CD1z3Q=
-X-Received: by 2002:a17:906:28d6:: with SMTP id p22mr115658ejd.365.1611575789409;
-        Mon, 25 Jan 2021 03:56:29 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw32TbIOVmFixRg2hrecc/z8+5ezjOWo20hjLhh8ao7DjXSozSpHP9cH+EHiw7dhQqtyMRb2A==
-X-Received: by 2002:a17:906:28d6:: with SMTP id p22mr115654ejd.365.1611575789279;
-        Mon, 25 Jan 2021 03:56:29 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id ce7sm8177313ejb.100.2021.01.25.03.56.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 03:56:28 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 643D518033D; Mon, 25 Jan 2021 12:56:27 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: Re: [PATCH 4/6] mac80211: minstrel_ht: significantly redesign the
- rate probing strategy
-In-Reply-To: <20210124122812.49929-4-nbd@nbd.name>
-References: <20210124122812.49929-1-nbd@nbd.name>
- <20210124122812.49929-4-nbd@nbd.name>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 25 Jan 2021 12:56:27 +0100
-Message-ID: <87o8hdmdqs.fsf@toke.dk>
+        Mon, 25 Jan 2021 07:45:06 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34670C06121F;
+        Mon, 25 Jan 2021 04:34:18 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1l414R-00BPl8-Jp; Mon, 25 Jan 2021 13:34:15 +0100
+Message-ID: <9cf620a5ae47bce0cf6344db502589a8763fc861.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] cfg80211: avoid holding the RTNL when calling the
+ driver
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, Oliver Neukum <oneukum@suse.com>
+Date:   Mon, 25 Jan 2021 13:34:14 +0100
+In-Reply-To: <b425cbc3-63a8-3252-e828-bcb7b336b783@samsung.com>
+References: <20210119102145.99917b8fc5d6.Iacd5916c0e01f71342159f6d419e56dc4c3f07a2@changeid>
+         <CGME20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458@eucas1p2.samsung.com>
+         <6569c83a-11b0-7f13-4b4c-c0318780895c@samsung.com>
+         <4ae7a27c32cbf85b4ddb05cc2a16e52918663633.camel@sipsolutions.net>
+         <b425cbc3-63a8-3252-e828-bcb7b336b783@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Hi Marek,
 
-> The biggest flaw in current minstrel_ht is the fact that it needs way too
-> many probing packets to be able to quickly find the best rate.
-> Depending on the wifi hardware and operating mode, this can significantly
-> reduce throughput when not operating at the highest available data rate.
->
-> In order to be able to significantly reduce the amount of rate sampling,
-> we need a much smarter selection of probing rates.
->
-> The new approach introduced by this patch maintains a limited set of
-> available rates to be tested during a statistics window.
->
-> They are split into distinct categories:
-> - MINSTREL_SAMPLE_TYPE_INC - incremental rate upgrade:
->   Pick the next rate group and find the first rate that is faster than
->   the current max. throughput rate
-> - MINSTREL_SAMPLE_TYPE_JUMP - random testing of higher rates:
->   Pick a random rate from the next group that is faster than the current
->   max throughput rate. This allows faster adaptation when the link changes
->   significantly
-> - MINSTREL_SAMPLE_TYPE_SLOW - test a rate between max_prob, max_tp2 and
->   max_tp in order to reduce the gap between them
->
-> In order to prioritize sampling, every 6 attempts are split into 3x INC,
-> 2x JUMP, 1x SLOW.
->
-> Available rates are checked and refilled on every stats window update.
+> I've checked today's linux-next with the updated commit 27bc93583e35 
+> ("cfg80211: avoid holding the RTNL when calling the driver") and there 
+> is still an issue there, but at least it doesn't cause a deadlock:
+> 
+> cfg80211: Loading compiled-in X.509 certificates for regulatory database
+> Bluetooth: vendor=0x2df, device=0x912a, class=255, fn=2
+> cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+> Bluetooth: FW download over, size 533976 bytes
+> btmrvl_sdio mmc3:0001:2: sdio device tree data not available
+> mwifiex_sdio mmc3:0001:1: WLAN FW already running! Skip FW dnld
+> mwifiex_sdio mmc3:0001:1: WLAN FW is active
+> mwifiex_sdio mmc3:0001:1: CMD_RESP: cmd 0x242 error, result=0x2
+> mwifiex_sdio mmc3:0001:1: mwifiex_process_cmdresp: cmd 0x242 failed 
+> during       initialization
+> ------------[ cut here ]------------
+> WARNING: CPU: 0 PID: 5 at net/wireless/core.c:1336 
+> cfg80211_register_netdevice+0xa4/0x198 [cfg80211]
 
-Very cool!
+Yeah, umm, brown paper bag style bug.
 
-> With this approach, we finally get a very small delta in throughput when
-> comparing setting the optimal data rate as a fixed rate vs normal rate
-> control operation.
+I meant to _move_ that line down, but somehow managed to _copy_ it down.
+Need to just remove it since rdev is not even initialized at that point.
 
-Can you quantify this "very small delta"? Would love to see some
-benchmark data :)
+I've updated my tree to include this:
 
--Toke
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 5e8b523dc645..200cd9f5fd5f 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1333,7 +1333,6 @@ int cfg80211_register_netdevice(struct net_device *dev)
+        int ret;
+ 
+        ASSERT_RTNL();
+-       lockdep_assert_held(&rdev->wiphy.mtx);
+ 
+        if (WARN_ON(!wdev))
+                return -EINVAL;
+
+johannes
 
