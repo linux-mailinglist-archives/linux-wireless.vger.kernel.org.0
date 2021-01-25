@@ -2,108 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2403D303212
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 03:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B19430328C
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 04:15:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729845AbhAYPi6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jan 2021 10:38:58 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:44746 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730075AbhAYPil (ORCPT
+        id S1726877AbhAYJtR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jan 2021 04:49:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40482 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727209AbhAYJsu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 10:38:41 -0500
-Received: from [192.168.254.6] (unknown [50.34.179.205])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 90D8F13C2B0;
-        Mon, 25 Jan 2021 07:15:05 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 90D8F13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1611587706;
-        bh=D72s6Vo8e4dexbEsXVvtzwjbmu/KhYklot7icQzzIgg=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=DICVx+MNcWTfvWUhTcJ/Rx5TquEP3WuZJZdwch/gBidovHK8jGHlDLlg4m6/hCcYl
-         ajsXQb1z5st6Eruwd43LvLsYCi890ixkKSz8GDF7rYHUJzKGSjxfoNrRM5tFbWhLGD
-         GArq1X2Gu+rBgoQoxyO4Ix+OXhS92I0jCbqGFlhc=
-Subject: Re: [PATCH net] iwlwifi: provide gso_type to GSO packets
-To:     Eric Dumazet <eric.dumazet@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     netdev <netdev@vger.kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-References: <20210125150949.619309-1-eric.dumazet@gmail.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <97cf98b0-d464-1901-f01f-ac5dd362561d@candelatech.com>
-Date:   Mon, 25 Jan 2021 07:15:04 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        Mon, 25 Jan 2021 04:48:50 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B2DBC061786;
+        Mon, 25 Jan 2021 01:47:39 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1l3yTA-00BN23-Cn; Mon, 25 Jan 2021 10:47:36 +0100
+Message-ID: <666b3449fe33d34123255cc69da3aa46fc276dcb.camel@sipsolutions.net>
+Subject: Re: pull-request: mac80211 2021-01-18.2
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        "Peer, Ilan" <ilan.peer@intel.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>
+Date:   Mon, 25 Jan 2021 10:47:21 +0100
+In-Reply-To: <348210d8-6940-ca8d-e3b1-f049330a2087@redhat.com>
+References: <20210118204750.7243-1-johannes@sipsolutions.net>
+         <77c606d4-a78a-1fa3-5937-b270c3d0bbd3@redhat.com>
+         <b83f6cf001c4e3df97eeaed710b34fda0a08265f.camel@sipsolutions.net>
+         <BN7PR11MB2610052E380E676ED5CCCC67E9BE9@BN7PR11MB2610.namprd11.prod.outlook.com>
+         <348210d8-6940-ca8d-e3b1-f049330a2087@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-In-Reply-To: <20210125150949.619309-1-eric.dumazet@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
 Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/25/21 7:09 AM, Eric Dumazet wrote:
-> From: Eric Dumazet <edumazet@google.com>
-> 
-> net/core/tso.c got recent support for USO, and this broke iwlfifi
-> because the driver implemented a limited form of GSO.
-> 
-> Providing ->gso_type allows for skb_is_gso_tcp() to provide
-> a correct result.
-> 
-> Fixes: 3d5b459ba0e3 ("net: tso: add UDP segmentation support")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Reported-by: Ben Greear <greearb@candelatech.com>
-> Bisected-by: Ben Greear <greearb@candelatech.com>
+Hi,
 
-I appreciate the credit, but the bisect and some other initial bug hunting was
-done by people on this thread:
+Sorry, apparently we have two threads.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=209913
+> Great, thank you for looking into this. Let me know if you have a patch
+> which you want me to test on a RTL8723BS adapter.
 
-Thanks,
-Ben
+Could you test this instead?
 
-> Tested-by: Ben Greear <greearb@candelatech.com>
-> Cc: Luca Coelho <luciano.coelho@intel.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> ---
->   drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> index a983c215df310776ffe67f3b3ffa203eab609bfc..3712adc3ccc2511d46bcc855efbfba41c487d8e6 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> @@ -773,6 +773,7 @@ iwl_mvm_tx_tso_segment(struct sk_buff *skb, unsigned int num_subframes,
->   
->   	next = skb_gso_segment(skb, netdev_flags);
->   	skb_shinfo(skb)->gso_size = mss;
-> +	skb_shinfo(skb)->gso_type = ipv4 ? SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
->   	if (WARN_ON_ONCE(IS_ERR(next)))
->   		return -EINVAL;
->   	else if (next)
-> @@ -795,6 +796,8 @@ iwl_mvm_tx_tso_segment(struct sk_buff *skb, unsigned int num_subframes,
->   
->   		if (tcp_payload_len > mss) {
->   			skb_shinfo(tmp)->gso_size = mss;
-> +			skb_shinfo(tmp)->gso_type = ipv4 ? SKB_GSO_TCPV4 :
-> +							   SKB_GSO_TCPV6;
->   		} else {
->   			if (qos) {
->   				u8 *qc;
-> 
+https://p.sipsolutions.net/235c352b8ae5db88.txt
 
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+I don't have that much sympathy for a staging driver that's clearly
+doing things differently than it was intended (the documentation states
+that the function should be called only before wiphy_register(), not
+during ndo_open). :-)
+
+But OTOH, that fix to the driver is simple and looks correct to me since
+it only ever has a static regdomain, and the notifier does the work of
+applying it to the channels as well.
+
+
+> One thing which I forgot to mention earlier, it is not just lockdep complaining
+> this appears to be a real deadlock, the wifi no longer functions, where
+> as it does function with the patch drops.
+
+Right.
+
+johannes
+
