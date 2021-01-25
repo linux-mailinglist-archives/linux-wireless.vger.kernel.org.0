@@ -2,124 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC0ED302D7F
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jan 2021 22:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15CBF302E66
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jan 2021 22:54:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732665AbhAYVXJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jan 2021 16:23:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:43563 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732629AbhAYVXC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 16:23:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611609694;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rd28uFgkWfVAPZ9+IJSx0LzXiPxSrrojDnszzeejnYY=;
-        b=iX98bxAn4JBalgj9KOTZdEbpjC/G4xyqtzDbrFDqw1dUMJ3B+UsVs6hk0A81k14F38OArE
-        UFBlDEGDREG0tnV0tbCxCxaarMBkDnGRA9PwEZoi5lB6kY3ul5kKceBGVf2jhCkr9ZUiZf
-        cFV03ZOxpNLO7wKClPjE2m4PbL7+Kkk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-524-MQfieMVNMKaFBDHMFR8jhA-1; Mon, 25 Jan 2021 16:21:33 -0500
-X-MC-Unique: MQfieMVNMKaFBDHMFR8jhA-1
-Received: by mail-ej1-f72.google.com with SMTP id ox17so4295391ejb.2
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 13:21:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=rd28uFgkWfVAPZ9+IJSx0LzXiPxSrrojDnszzeejnYY=;
-        b=WMxqDrn4JxeC5q7qTjgcUhHLK4ZUr8gzjfhs338Cb9JNMtt2e04LrYNehSVXhw/R8W
-         xzuS+dA8KpZJgVJgSDKkb1kkrsqcC0ojTC1VmT3ONjIVw3b7zZtPMGEdsIb8TNYfZz4k
-         Rig86UnJI5LXjUU7sO+TSVutnzQXH+ED8tf8madoBhEU0luNc4we1kKPfnq+FYSFOigg
-         90DEiBxAqdklNlbCFtxmyorBh78g+B0dwx7Y3NySb0xbz2kbYVHCkx7iDSfmtwEOceNC
-         WAufkVOtEABhdEkbpsa+dQksyQpUnoLvYQs3PhvdLTiH9t8pMbdSr3fHy7fb+SemLAcI
-         BThQ==
-X-Gm-Message-State: AOAM532PGiqKzFVfpULAgY5Mq75GOLy+fGO1TDCw1bHZ6SVN3f7A7bHV
-        6kuT2heq4ukKA+KylRdZoNuWpQA7601KaJAMdm5c5SOssXMnUiQ/cRb1DyPFdYZ8oIdOyduS2I7
-        aomKb25ts/kmrAAXHckeX+7g2Z6I=
-X-Received: by 2002:aa7:d88e:: with SMTP id u14mr2061669edq.72.1611609691915;
-        Mon, 25 Jan 2021 13:21:31 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw8rAa592wt8fi1IxBQe8qCYTxeccx00WgqFkS2U7n7qerc91eFx7EPPacSnT5AvylOAxaedA==
-X-Received: by 2002:aa7:d88e:: with SMTP id u14mr2061663edq.72.1611609691765;
-        Mon, 25 Jan 2021 13:21:31 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id ke7sm8857587ejc.7.2021.01.25.13.21.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 13:21:31 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id AA6EF18033A; Mon, 25 Jan 2021 22:21:30 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: Re: [PATCH 4/6] mac80211: minstrel_ht: significantly redesign the
- rate probing strategy
-In-Reply-To: <3ac94bcf-4c76-9c1e-c903-0810d2067b3a@nbd.name>
-References: <20210124122812.49929-1-nbd@nbd.name>
- <20210124122812.49929-4-nbd@nbd.name> <87o8hdmdqs.fsf@toke.dk>
- <3ac94bcf-4c76-9c1e-c903-0810d2067b3a@nbd.name>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 25 Jan 2021 22:21:30 +0100
-Message-ID: <87eei8d86d.fsf@toke.dk>
+        id S1732816AbhAYVxl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jan 2021 16:53:41 -0500
+Received: from m42-8.mailgun.net ([69.72.42.8]:35377 "EHLO m42-8.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733095AbhAYVxc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Jan 2021 16:53:32 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1611611591; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=KscB0GPHQ0ehYJeRFAeSeXcjWOC16Fmsc5gIQdGttuY=;
+ b=i58pwgUB9U1EpsWCVKfXtgNy2+L+DYSFiGpvU0tsp9mttDHoE2YzVvxZxlBbkGYdALiljbZh
+ yiG2odc9Tw/SmU1oYEfvUs9qy6hr/dWAfpzA/C+Sh7MogRTekna9IV886Miw3pCuXMBs1jQt
+ mWhJdAotmUtFxpCOP7uKinXNy5o=
+X-Mailgun-Sending-Ip: 69.72.42.8
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 600f3da32c36b2106dd15834 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Jan 2021 21:52:35
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 87FA8C433CA; Mon, 25 Jan 2021 21:52:34 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 586CDC433C6;
+        Mon, 25 Jan 2021 21:52:33 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 25 Jan 2021 13:52:33 -0800
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/2] nl80211: Commands for FILS discovery and unsolicited
+ broadcast probe response
+In-Reply-To: <ca7281ce-70bb-d1e2-3ec2-f07d91145c04@broadcom.com>
+References: <20210120005229.32582-1-alokad@codeaurora.org>
+ <20210120005229.32582-2-alokad@codeaurora.org>
+ <ca7281ce-70bb-d1e2-3ec2-f07d91145c04@broadcom.com>
+Message-ID: <430f10a576b8490f73827f800c87f58c@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+On 2021-01-20 02:10, Arend van Spriel wrote:
+> On 20-01-2021 01:52, Aloka Dixit wrote:
+>> This change moves the FILS discovery and unsolicited probe response
+>> configurations to new netlink commands instead of during beacon set 
+>> up.
+>> It allows modification of transmission parameters such as time 
+>> interval
+>> dynamically.
+> 
+> Why not have both, ie. support initial setup through START_AP and
+> allow modifications with new command or an existing one. Maybe we
+> should consolidate to what has been discussed in thread about AP power
+> save [1].
+> 
+> Regards,
+> Arend
+> 
+> [1]
+> https://patchwork.kernel.org/project/linux-wireless/patch/1598257589-19091-1-git-send-email-vnaralas@codeaurora.org/
 
-> On 2021-01-25 12:56, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Felix Fietkau <nbd@nbd.name> writes:
->>=20
->>> The biggest flaw in current minstrel_ht is the fact that it needs way t=
-oo
->>> many probing packets to be able to quickly find the best rate.
->>> Depending on the wifi hardware and operating mode, this can significant=
-ly
->>> reduce throughput when not operating at the highest available data rate.
->>>
->>> In order to be able to significantly reduce the amount of rate sampling,
->>> we need a much smarter selection of probing rates.
->>>
->>> The new approach introduced by this patch maintains a limited set of
->>> available rates to be tested during a statistics window.
->>>
->>> They are split into distinct categories:
->>> - MINSTREL_SAMPLE_TYPE_INC - incremental rate upgrade:
->>>   Pick the next rate group and find the first rate that is faster than
->>>   the current max. throughput rate
->>> - MINSTREL_SAMPLE_TYPE_JUMP - random testing of higher rates:
->>>   Pick a random rate from the next group that is faster than the current
->>>   max throughput rate. This allows faster adaptation when the link chan=
-ges
->>>   significantly
->>> - MINSTREL_SAMPLE_TYPE_SLOW - test a rate between max_prob, max_tp2 and
->>>   max_tp in order to reduce the gap between them
->>>
->>> In order to prioritize sampling, every 6 attempts are split into 3x INC,
->>> 2x JUMP, 1x SLOW.
->>>
->>> Available rates are checked and refilled on every stats window update.
->>=20
->> Very cool!
->>=20
->>> With this approach, we finally get a very small delta in throughput when
->>> comparing setting the optimal data rate as a fixed rate vs normal rate
->>> control operation.
->>=20
->> Can you quantify this "very small delta"? Would love to see some
->> benchmark data :)
-> Based on a quick test it seems to be around 5% (sometimes less) at VHT80
-> MCS6 nss=3D4 with ~350 mbit/s TCP throughput. I guess I might be able to
-> bring that down even further, once I optimize it some more.
-
-Cool! And pre-patch?
-
--Toke
-
+Hi Arend,
+FILS discovery and especially unsolicited probe response templates are 
+big. Sometimes send_and_recv() returns error due to memory 
+unavailability during wpa_driver_nl80211_set_ap() depending on how many 
+interfaces, which elements are added. Moving these to separate commands 
+resolves this issue along with more control over the time interval 
+during run-time.
+Thanks.
