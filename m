@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70A1F302620
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jan 2021 15:16:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0756302643
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Jan 2021 15:25:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729298AbhAYOLg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Jan 2021 09:11:36 -0500
-Received: from a1.mail.mailgun.net ([198.61.254.60]:46256 "EHLO
+        id S1729434AbhAYOYF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Jan 2021 09:24:05 -0500
+Received: from a1.mail.mailgun.net ([198.61.254.60]:41723 "EHLO
         a1.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729171AbhAYOIr (ORCPT
+        with ESMTP id S1729408AbhAYOXa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 09:08:47 -0500
+        Mon, 25 Jan 2021 09:23:30 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611583684; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1611584588; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=eE+j5G3AHurYGidfRjN7A3PxjKJJsSCezYoKuHySqF4=;
- b=G+hrPRr9K5ryvI8dCP3MfWva1/wbfe6b3pBZjlfCVLfW7orjVK/3kvuShf1FI4h9H6LJgeap
- SjQ4Lb4iU1qj2ylVrWS9aEiXEYsexbznJdM8v/+tuuxNbUIzgYfanoz/ietotYYdHChttdPV
- VJV1Nofo408BzZUvbsv+1FRB6aA=
+ Content-Type: Sender; bh=n6LnzX+9OwV112HZOi7kygONlFWnbReQdwO0xSe4hbU=;
+ b=q6OY7hFGe4JcldSA1mzyQfOrGdAxwwdnXQjbjBzsuz7LuxudSiJIvU2j8SAi4pTz7dgPozMo
+ 9Z7dLdVzjqTHETd9/X4MMfcy4bL++cnODVjFa5du0j+Aoe+A4yFKW4xUjKzfHfZmSvsmKHPp
+ 2dyQcWWObXvSEQ062hA8Yczu9Sw=
 X-Mailgun-Sending-Ip: 198.61.254.60
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 600ecd9f5677aca7bd9d4e64 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Jan 2021 13:54:39
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 600ed42b5677aca7bdc0eb77 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Jan 2021 14:22:35
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 95478C433CA; Mon, 25 Jan 2021 13:54:38 +0000 (UTC)
+        id 26373C43461; Mon, 25 Jan 2021 14:22:35 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,60 +40,56 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 719A0C433C6;
-        Mon, 25 Jan 2021 13:54:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 719A0C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BFE08C433CA;
+        Mon, 25 Jan 2021 14:22:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BFE08C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH for v5.11 01/12] iwlwifi: mvm: skip power command when
- unbinding vif during CSA
+Subject: Re: [PATCH 1/5] rtlwifi: rtl_pci: fix bool comparison in expressions
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <iwlwifi.20210115130252.64a2254ac5c3.Iaa3a9050bf3d7c9cd5beaf561e932e6defc12ec3@changeid>
-References: <iwlwifi.20210115130252.64a2254ac5c3.Iaa3a9050bf3d7c9cd5beaf561e932e6defc12ec3@changeid>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org
+In-Reply-To: <20210110121525.2407-2-yashsri421@gmail.com>
+References: <20210110121525.2407-2-yashsri421@gmail.com>
+To:     Aditya Srivastava <yashsri421@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        lukas.bulwahn@gmail.com, yashsri421@gmail.com
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210125135438.95478C433CA@smtp.codeaurora.org>
-Date:   Mon, 25 Jan 2021 13:54:38 +0000 (UTC)
+Message-Id: <20210125142235.26373C43461@smtp.codeaurora.org>
+Date:   Mon, 25 Jan 2021 14:22:35 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
+Aditya Srivastava <yashsri421@gmail.com> wrote:
 
-> From: Sara Sharon <sara.sharon@intel.com>
+> There are certain conditional expressions in rtl_pci, where a boolean
+> variable is compared with true/false, in forms such as (foo == true) or
+> (false != bar), which does not comply with checkpatch.pl (CHECK:
+> BOOL_COMPARISON), according to which boolean variables should be
+> themselves used in the condition, rather than comparing with true/false
 > 
-> In the new CSA flow, we remain associated during CSA, but
-> still do a unbind-bind to the vif. However, sending the power
-> command right after when vif is unbound but still associated
-> causes FW to assert (0x3400) since it cannot tell the LMAC id.
+> E.g., in drivers/net/wireless/realtek/rtlwifi/ps.c,
+> "if (find_p2p_ie == true)" can be replaced with "if (find_p2p_ie)"
 > 
-> Just skip this command, we will send it again in a bit, when
-> assigning the new context.
+> Replace all such expressions with the bool variables appropriately
 > 
-> Signed-off-by: Sara Sharon <sara.sharon@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> Signed-off-by: Aditya Srivastava <yashsri421@gmail.com>
 
-12 patches applied to wireless-drivers.git, thanks.
+5 patches applied to wireless-drivers-next.git, thanks.
 
-bf544e9aa570 iwlwifi: mvm: skip power command when unbinding vif during CSA
-5c56d862c749 iwlwifi: mvm: take mutex for calling iwl_mvm_get_sync_time()
-34b9434cd0d4 iwlwifi: pcie: avoid potential PNVM leaks
-1c58bed4b7f7 iwlwifi: pnvm: don't skip everything when not reloading
-82a08d0cd7b5 iwlwifi: pnvm: don't try to load after failures
-a800f95858d0 iwlwifi: fix the NMI flow for old devices
-0f8d5656b3fd iwlwifi: queue: don't crash if txq->entries is NULL
-ed0022da8bd9 iwlwifi: pcie: set LTR on more devices
-98c7d21f957b iwlwifi: pcie: add a NULL check in iwl_pcie_txq_unmap
-2d6bc752cc28 iwlwifi: pcie: fix context info memory leak
-6701317476bb iwlwifi: pcie: use jiffies for memory read spin time limit
-3d372c4edfd4 iwlwifi: pcie: reschedule in long-running memory reads
+d8cbaa3de403 rtlwifi: rtl_pci: fix bool comparison in expressions
+f7c76283fc5f rtlwifi: rtl8192c-common: fix bool comparison in expressions
+64338f0dfd6a rtlwifi: rtl8188ee: fix bool comparison in expressions
+33ae4623d544 rtlwifi: rtl8192se: fix bool comparison in expressions
+9264cabc1204 rtlwifi: rtl8821ae: fix bool comparison in expressions
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/iwlwifi.20210115130252.64a2254ac5c3.Iaa3a9050bf3d7c9cd5beaf561e932e6defc12ec3@changeid/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210110121525.2407-2-yashsri421@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
