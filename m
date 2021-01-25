@@ -2,173 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 089A13035C6
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 06:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E19833035C9
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 06:55:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388864AbhAZFxX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 00:53:23 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:60639 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727968AbhAYMVE (ORCPT
+        id S2388870AbhAZFx1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 00:53:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:46005 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727964AbhAYMVE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 25 Jan 2021 07:21:04 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20210125115623euoutp02421c72379789df784505c5dbc13bcad3~dd6LnB0Cu0542605426euoutp02C
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 11:56:23 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20210125115623euoutp02421c72379789df784505c5dbc13bcad3~dd6LnB0Cu0542605426euoutp02C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1611575783;
-        bh=Mq5BJ1+vePex+qTwblveMz5iiS+Z7q8tJa66kykf0ZI=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=Ls1MsuVsJsmtA1MWoFFK9OXp/K7oNB/pF+lZ574tQgSui2VZjwCCuANeXD8/9wV7o
-         cVcoL0BHZnWiJFGKQKfMcd82PnVu1RAQJ6RULMz6PZ+suu8QPo61v8WCqW8634UXpK
-         7kxE64Emxrk9BGkIckQ9wpKCU9MUazbmWi62epO0=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20210125115622eucas1p16882e454000fffd45560f125c7e7bafe~dd6LXnE730603906039eucas1p1t;
-        Mon, 25 Jan 2021 11:56:22 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 98.D9.44805.6E1BE006; Mon, 25
-        Jan 2021 11:56:22 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20210125115622eucas1p1d95ea4bff4043bd2524c98beafd32408~dd6K_IuN63035330353eucas1p1b;
-        Mon, 25 Jan 2021 11:56:22 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20210125115622eusmtrp1917aea26e690990dfcea6031a1d31807~dd6K9gjcP2084120841eusmtrp17;
-        Mon, 25 Jan 2021 11:56:22 +0000 (GMT)
-X-AuditID: cbfec7f4-b4fff7000000af05-ed-600eb1e6733d
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 34.05.21957.6E1BE006; Mon, 25
-        Jan 2021 11:56:22 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20210125115622eusmtip2da7cf912f5561017ad5a85bcd40d06de~dd6KpPK_E2285722857eusmtip2Q;
-        Mon, 25 Jan 2021 11:56:22 +0000 (GMT)
-Subject: Re: [PATCH v2] cfg80211: avoid holding the RTNL when calling the
- driver
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     netdev@vger.kernel.org, Oliver Neukum <oneukum@suse.com>
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <b425cbc3-63a8-3252-e828-bcb7b336b783@samsung.com>
-Date:   Mon, 25 Jan 2021 12:56:21 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
-        Gecko/20100101 Thunderbird/78.6.1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611577144;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=EkySjmyy5bV42XAMy1/nKNEVTl7EAWsq5w4RqirjjF0=;
+        b=C8jaTRnvXZJP4TefcwGGRdn4UzpDUU9bCQhEDiHT8BIQtX+0jHFCpM8G+oAft4PAhPL+lq
+        sm+SdIMvv9ATR3Zyixcxk/BveiH+D+ZrnEOAobRLGVOEt3fuDYtePPOXt0bgICXdO17nd3
+        4PW41TVTGAiGd8+bAt/48pPXTX0NJBo=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-582-f2fwulGJNayQEJo9XInjRw-1; Mon, 25 Jan 2021 06:56:30 -0500
+X-MC-Unique: f2fwulGJNayQEJo9XInjRw-1
+Received: by mail-ej1-f72.google.com with SMTP id n18so3652709ejc.11
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Jan 2021 03:56:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=EkySjmyy5bV42XAMy1/nKNEVTl7EAWsq5w4RqirjjF0=;
+        b=mY/orPQhUJBSoj1r7R4vIv+oK10ihPCFmWHGht04+Md3xfxSbsD6ZSuv1N3fK1Cyex
+         cPKl+K883tYFZ7UeG74tPX+SR0QKvry4Yb7IApN6vn/ELF8Ukg84WLERmHaYHDmWO9g1
+         kX/o8/YuX4NkazK+mu7IgiP/oEFqTRqItwEHDK8kVdHUuaIRgzHUo2q7lWpnhPhH3W20
+         MU+8W0hAaqC8mFFuX0slozJBDd07++mYJCac5DrYsNQYoCGlWwAWPW+Dl14up9zUxnQz
+         Jg5KLSLwfSXF3L024/40JhZlsFykLRzuhEQIfpVOEMHCOT4BkBop6OyDHO/F6bWfffTp
+         cdRg==
+X-Gm-Message-State: AOAM532IHFxlHj7+fu4ap3TsURlF6xanQzu5Ho6W2OxQjf68kV7sHGww
+        /QbyhAKrDlG+BLRFB29NcFygLiyWuZXzLsAMV0prFvvsyWlcpBAbDSumBuZUmdUtTiScIoK0OMa
+        aL9kA42+qs5UEvZPUD6097CD1z3Q=
+X-Received: by 2002:a17:906:28d6:: with SMTP id p22mr115658ejd.365.1611575789409;
+        Mon, 25 Jan 2021 03:56:29 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJw32TbIOVmFixRg2hrecc/z8+5ezjOWo20hjLhh8ao7DjXSozSpHP9cH+EHiw7dhQqtyMRb2A==
+X-Received: by 2002:a17:906:28d6:: with SMTP id p22mr115654ejd.365.1611575789279;
+        Mon, 25 Jan 2021 03:56:29 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id ce7sm8177313ejb.100.2021.01.25.03.56.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jan 2021 03:56:28 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 643D518033D; Mon, 25 Jan 2021 12:56:27 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: Re: [PATCH 4/6] mac80211: minstrel_ht: significantly redesign the
+ rate probing strategy
+In-Reply-To: <20210124122812.49929-4-nbd@nbd.name>
+References: <20210124122812.49929-1-nbd@nbd.name>
+ <20210124122812.49929-4-nbd@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Mon, 25 Jan 2021 12:56:27 +0100
+Message-ID: <87o8hdmdqs.fsf@toke.dk>
 MIME-Version: 1.0
-In-Reply-To: <4ae7a27c32cbf85b4ddb05cc2a16e52918663633.camel@sipsolutions.net>
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpkleLIzCtJLcpLzFFi42LZduzned1nG/kSDJb1mFt83PCJxeLNijvs
-        FscWiFl0PV7J5sDi0d+7jcVj/ZarLB6fN8kFMEdx2aSk5mSWpRbp2yVwZUz+tZSpoFOy4tzK
-        +gbGV6JdjJwcEgImEv0vVjN2MXJxCAmsYJToWLSLDcL5wihxZcs5qMxnRomTJ6eyw7TM3vAC
-        zBYSWM4o8e2GF0TRR0aJNQtAZnFyCAsESdzcuI0FxBYR8JfYd6ABqIGDg1nARmLhlWKQMJuA
-        oUTX2y42EJtXwE7i4/9VYDaLgKrEo4MrwcaICiRJ3L1zmAmiRlDi5MwnYCM5Bfwk3r1sYgax
-        mQXkJZq3zoayxSVuPZnPBHKPhMAWDoknt66xgeyVEHCR6L/AC3G/sMSr41ugfpGROD25hwWi
-        vplR4uG5tewQTg+jxOWmGYwQVdYSd879YoN4QFNi/S59iLCjRNOtjawQ8/kkbrwVhLiBT2LS
-        tunMEGFeiY42IYhqNYlZx9fBrT144RLzBEalWUg+m4Xkm1lIvpmFsHcBI8sqRvHU0uLc9NRi
-        o7zUcr3ixNzi0rx0veT83E2MwFRy+t/xLzsYl7/6qHeIkYmD8RCjBAezkgjvbj2eBCHelMTK
-        qtSi/Pii0pzU4kOM0hwsSuK8SVvWxAsJpCeWpGanphakFsFkmTg4pRqYJJyUipyjhLb5JO7Z
-        8MY9M7TPJLt936PS2XsqDrtFH2AyNes18OvRlFU65ep87kiJ93RRhbX6THnr19fyJU/wMrVm
-        9X17KyjwymKVlD6pk7pX1nKzbXi40/wXd8rnq7+3TFmqmCFT8q8ycOqKg4vSWB4KJxfeSPjI
-        XPkr69SZLYYWK0J5Pjzj64+w133L4JHvExr++eOuw29DPI7/MJVhEZn7VrEo+Mavmj2CIqXM
-        CpejFynzFG1LyTohyuygN+nZk8ZMbZltqxX8Tq+13WVcUL9hwaqr/7ZJvT/XU+jXL2hd4idX
-        Ft1k4mhY/v8qb4xv/ryyH5zf6nQ3qzKxGd8V/vn5goiNC5ddV+PDpUosxRmJhlrMRcWJALHk
-        Il+UAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprKIsWRmVeSWpSXmKPExsVy+t/xe7rPNvIlGPS8l7L4uOETi8WbFXfY
-        LY4tELPoerySzYHFo793G4vH+i1XWTw+b5ILYI7SsynKLy1JVcjILy6xVYo2tDDSM7S00DMy
-        sdQzNDaPtTIyVdK3s0lJzcksSy3St0vQy5j8aylTQadkxbmV9Q2Mr0S7GDk5JARMJGZveMHe
-        xcjFISSwlFFi/pP/zBAJGYmT0xpYIWxhiT/Xutggit4zShxd2csGkhAWCJK4uXEbC4gtIuAr
-        seDOe6BJHBzMAjYSC68UQ9SvZJLYtfwhI0gNm4ChRNfbLrBeXgE7iY//V4HZLAKqEo8OrgSr
-        ERVIkjgx6xMzRI2gxMmZT8Dmcwr4Sbx72QQWZxYwk5i3+SGULS/RvHU2lC0ucevJfKYJjEKz
-        kLTPQtIyC0nLLCQtCxhZVjGKpJYW56bnFhvqFSfmFpfmpesl5+duYgTGz7ZjPzfvYJz36qPe
-        IUYmDsZDjBIczEoivLv1eBKEeFMSK6tSi/Lji0pzUosPMZoC/TORWUo0OR8YwXkl8YZmBqaG
-        JmaWBqaWZsZK4rxb566JFxJITyxJzU5NLUgtgulj4uCUamAy2Vm63FfeYpJT1M2YY+m719x6
-        NpOv2OWFSUq486fG13ptH45Y3pzhdHRDm7/Z9raQ417yE4+UObxo81wW8vsty2OF7dsZb78Q
-        KCou5lBX4U7exOWdd6dhL9P9lAs2ilMPx/fOu9PFfFuzPFrT9ydbq1qK2MEn0mZrBEqPyl80
-        DS9zXxS+vUdWuEqvwOq/Ws6TiidcM6TbjOSZVC55z2Vma/l6bRPLG598wW7h70u+zJ7+YKbQ
-        F2Mn0Rk6mvt+8fSoGJ2X398QtUM8dYf7gw95ObZv2hpili66VPTJ7uC33XkPDJ8//2AQaXN/
-        g9W7xXOzPvMoun1VO19k/FREUbnhl8TtJYtXzgoL+vU7arcSS3FGoqEWc1FxIgA4Gd/VKAMA
-        AA==
-X-CMS-MailID: 20210125115622eucas1p1d95ea4bff4043bd2524c98beafd32408
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458
-References: <20210119102145.99917b8fc5d6.Iacd5916c0e01f71342159f6d419e56dc4c3f07a2@changeid>
-        <CGME20210122121108eucas1p2d153ab9c3a95015221b470a66a0c8458@eucas1p2.samsung.com>
-        <6569c83a-11b0-7f13-4b4c-c0318780895c@samsung.com>
-        <4ae7a27c32cbf85b4ddb05cc2a16e52918663633.camel@sipsolutions.net>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Felix Fietkau <nbd@nbd.name> writes:
 
-On 22.01.2021 13:27, Johannes Berg wrote:
->> This patch landed in today's (20210122) linux-next as commit
->> 791daf8fc49a ("cfg80211: avoid holding the RTNL when calling the
->> driver"). Sadly, it causes deadlock with mwifiex driver. I think that
->> lockdep report describes it enough:
-> Yeah, umm, sorry about that. Evidently, I somehow managed to put
-> "wiphy_lock()" into that part of the code, rather than "wiphy_unlock()"!
+> The biggest flaw in current minstrel_ht is the fact that it needs way too
+> many probing packets to be able to quickly find the best rate.
+> Depending on the wifi hardware and operating mode, this can significantly
+> reduce throughput when not operating at the highest available data rate.
 >
-> I'll fix, thanks!
+> In order to be able to significantly reduce the amount of rate sampling,
+> we need a much smarter selection of probing rates.
+>
+> The new approach introduced by this patch maintains a limited set of
+> available rates to be tested during a statistics window.
+>
+> They are split into distinct categories:
+> - MINSTREL_SAMPLE_TYPE_INC - incremental rate upgrade:
+>   Pick the next rate group and find the first rate that is faster than
+>   the current max. throughput rate
+> - MINSTREL_SAMPLE_TYPE_JUMP - random testing of higher rates:
+>   Pick a random rate from the next group that is faster than the current
+>   max throughput rate. This allows faster adaptation when the link changes
+>   significantly
+> - MINSTREL_SAMPLE_TYPE_SLOW - test a rate between max_prob, max_tp2 and
+>   max_tp in order to reduce the gap between them
+>
+> In order to prioritize sampling, every 6 attempts are split into 3x INC,
+> 2x JUMP, 1x SLOW.
+>
+> Available rates are checked and refilled on every stats window update.
 
-I've checked today's linux-next with the updated commit 27bc93583e35 
-("cfg80211: avoid holding the RTNL when calling the driver") and there 
-is still an issue there, but at least it doesn't cause a deadlock:
+Very cool!
 
-cfg80211: Loading compiled-in X.509 certificates for regulatory database
-Bluetooth: vendor=0x2df, device=0x912a, class=255, fn=2
-cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-Bluetooth: FW download over, size 533976 bytes
-btmrvl_sdio mmc3:0001:2: sdio device tree data not available
-mwifiex_sdio mmc3:0001:1: WLAN FW already running! Skip FW dnld
-mwifiex_sdio mmc3:0001:1: WLAN FW is active
-mwifiex_sdio mmc3:0001:1: CMD_RESP: cmd 0x242 error, result=0x2
-mwifiex_sdio mmc3:0001:1: mwifiex_process_cmdresp: cmd 0x242 failed 
-during       initialization
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5 at net/wireless/core.c:1336 
-cfg80211_register_netdevice+0xa4/0x198 [cfg80211]
-Modules linked in: mwifiex_sdio mwifiex sha256_generic libsha256 
-sha256_arm btmrvl_sdio btmrvl cfg80211 bluetooth s5p_mfc exynos_gsc 
-v4l2_mem2mem videobuf2_dma_co
-ntig videobuf2_memops videobuf2_v4l2 videobuf2_common videodev 
-ecdh_generic ecc mc s5p_cec
-CPU: 1 PID: 18 Comm: kworker/1:0 Not tainted 
-5.11.0-rc4-00536-g27bc93583e35-dirty #2345
-Hardware name: Samsung Exynos (Flattened Device Tree)
-Workqueue: events request_firmware_work_func
-[<c01116e8>] (unwind_backtrace) from [<c010cf58>] (show_stack+0x10/0x14)
-[<c010cf58>] (show_stack) from [<c0b46744>] (dump_stack+0xa4/0xc4)
-[<c0b46744>] (dump_stack) from [<c01270ac>] (__warn+0x118/0x11c)
-[<c01270ac>] (__warn) from [<c0127164>] (warn_slowpath_fmt+0xb4/0xbc)
-[<c0127164>] (warn_slowpath_fmt) from [<bf1a9de0>] 
-(cfg80211_register_netdevice+0xa4/0x198 [cfg80211])
-[<bf1a9de0>] (cfg80211_register_netdevice [cfg80211]) from [<bf28f2e4>] 
-(mwifiex_add_virtual_intf+0x6a0/0x9f4 [mwifiex])
-[<bf28f2e4>] (mwifiex_add_virtual_intf [mwifiex]) from [<bf26c79c>] 
-(_mwifiex_fw_dpc+0x264/0x494 [mwifiex])
-[<bf26c79c>] (_mwifiex_fw_dpc [mwifiex]) from [<c06c881c>] 
-(request_firmware_work_func+0x58/0x94)
-[<c06c881c>] (request_firmware_work_func) from [<c0149af8>] 
-(process_one_work+0x30c/0x888)
-[<c0149af8>] (process_one_work) from [<c014a0cc>] (worker_thread+0x58/0x594)
-[<c014a0cc>] (worker_thread) from [<c015105c>] (kthread+0x154/0x19c)
-[<c015105c>] (kthread) from [<c010011c>] (ret_from_fork+0x14/0x38)
-Exception stack(0xc1cedfb0 to 0xc1cedff8)
-...
----[ end trace c04a86d3eb55e7cb ]---
-mwifiex_sdio mmc3:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (14.68.29.p59)
-mwifiex_sdio mmc3:0001:1: driver_version = mwifiex 1.0 (14.68.29.p59)
+> With this approach, we finally get a very small delta in throughput when
+> comparing setting the optimal data rate as a fixed rate vs normal rate
+> control operation.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Can you quantify this "very small delta"? Would love to see some
+benchmark data :)
+
+-Toke
 
