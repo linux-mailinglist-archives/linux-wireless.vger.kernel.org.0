@@ -2,82 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B69273043D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 17:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8AC2304450
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 18:01:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392880AbhAZQ2B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 11:28:01 -0500
-Received: from a1.mail.mailgun.net ([198.61.254.60]:64163 "EHLO
-        a1.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392877AbhAZQ0b (ORCPT
+        id S2390199AbhAZIds (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 03:33:48 -0500
+Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:51621 "EHLO
+        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2390159AbhAZIda (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Jan 2021 11:26:31 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611678362; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=roFrb5eBhPqZTvXpSEWS1kSBgr+K1E0l4LAsnVOoPAw=;
- b=n1aoX1lTrHon3BoUQSfkYZPdPicFypVRHGtyjguafZdKkhENeZSgkMTy6812DeZlentZ2+1/
- KIaHQXOdxJZNqgHDtXeF8o53RBgR7bnAjEyFNIcM/wEOhfEinaki70ELzshfe76w5ilccedM
- zO8QSE4HtawGhCEJwFrfsqAC1oQ=
-X-Mailgun-Sending-Ip: 198.61.254.60
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 6010427cfb02735e8cffe38d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 26 Jan 2021 16:25:32
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2357AC433ED; Tue, 26 Jan 2021 16:25:31 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AAB1EC433CA;
-        Tue, 26 Jan 2021 16:25:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AAB1EC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless v2 -next] wcn36xx: Remove unnecessary memset
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201223012516.24286-1-zhengyongjun3@huawei.com>
-References: <20201223012516.24286-1-zhengyongjun3@huawei.com>
-To:     Zheng Yongjun <zhengyongjun3@huawei.com>
-Cc:     <davem@davemloft.net>, <kuba@kernel.org>,
-        <wcn36xx@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210126162531.2357AC433ED@smtp.codeaurora.org>
-Date:   Tue, 26 Jan 2021 16:25:31 +0000 (UTC)
+        Tue, 26 Jan 2021 03:33:30 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=abaci-bugfix@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0UMxkBnT_1611649917;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:abaci-bugfix@linux.alibaba.com fp:SMTPD_---0UMxkBnT_1611649917)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 26 Jan 2021 16:32:13 +0800
+From:   Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+To:     kvalo@codeaurora.org
+Cc:     pkshih@realtek.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+Subject: [PATCH v3] rtlwifi: Simplify bool comparison
+Date:   Tue, 26 Jan 2021 16:31:56 +0800
+Message-Id: <1611649916-21936-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zheng Yongjun <zhengyongjun3@huawei.com> wrote:
+Fix the following coccicheck warning:
+./drivers/net/wireless/realtek/rtlwifi/ps.c:798:7-21: WARNING:
+Comparison to bool
+./drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:3848:7-17:
+WARNING: Comparison of 0/1 to bool variable
 
-> memcpy operation is next to memset code, and the size to copy is equals to the size to
-> memset, so the memset operation is unnecessary, remove it.
-> 
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>
+---
 
-Patch applied to ath-next branch of ath.git, thanks.
+Changes in v3:
+-modify email address to a unique one
+-modify subject prefix to "rtlwifi"
+-merge this patch with another patch 
 
-337cd0d3ce0c wcn36xx: Remove unnecessary memset
+ drivers/net/wireless/realtek/rtlwifi/ps.c            | 4 ++--
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
+index f9988225..629c032 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/ps.c
++++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
+@@ -798,9 +798,9 @@ static void rtl_p2p_noa_ie(struct ieee80211_hw *hw, void *data,
+ 		ie += 3 + noa_len;
+ 	}
+ 
+-	if (find_p2p_ie == true) {
++	if (find_p2p_ie) {
+ 		if ((p2pinfo->p2p_ps_mode > P2P_PS_NONE) &&
+-		    (find_p2p_ps_ie == false))
++		    (!find_p2p_ps_ie))
+ 			rtl_p2p_ps_cmd(hw, P2P_PS_DISABLE);
+ 	}
+ }
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+index 372d6f8..1fb857c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+@@ -3848,7 +3848,7 @@ static void _rtl8821ae_iqk_tx(struct ieee80211_hw *hw, enum radio_path path)
+ 			else
+ 				rtl_write_dword(rtlpriv, 0xc8c, 0x00163e96);
+ 
+-			if (vdf_enable == 1) {
++			if (vdf_enable) {
+ 				rtl_dbg(rtlpriv, COMP_IQK, DBG_LOUD, "VDF_enable\n");
+ 				for (k = 0; k <= 2; k++) {
+ 					switch (k) {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201223012516.24286-1-zhengyongjun3@huawei.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+1.8.3.1
 
