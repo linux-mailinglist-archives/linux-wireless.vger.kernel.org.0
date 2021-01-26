@@ -2,127 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A043303ADF
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 11:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7546303B05
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 12:03:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404673AbhAZKzg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 05:55:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55004 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392020AbhAZKzD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Jan 2021 05:55:03 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C6BC061573;
-        Tue, 26 Jan 2021 02:54:22 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1l4LzE-00BsQd-2V; Tue, 26 Jan 2021 11:54:16 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     devel@driverdev.osuosl.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        ilan.peer@intel.com, Johannes Berg <johannes.berg@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH] staging: rtl8723bs: fix wireless regulatory API misuse
-Date:   Tue, 26 Jan 2021 11:54:09 +0100
-Message-Id: <20210126115409.d5fd6f8fe042.Ib5823a6feb2e2aa01ca1a565d2505367f38ad246@changeid>
-X-Mailer: git-send-email 2.26.2
+        id S2404786AbhAZLDJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 06:03:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35818 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404774AbhAZLDF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 26 Jan 2021 06:03:05 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5A3E423104;
+        Tue, 26 Jan 2021 11:02:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611658945;
+        bh=cuf+7kki04NnMhtDTTOevd4ortyvy8aAh/LrEWAERVc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dGtoip9HJAD1+QL2NOncQ4BFY0MtNeUhLiih1izREzeRpN4i2FhAJAzYEf/kumlko
+         7nULR6UaVaHfpzINWDUc/DaOif6T5Sv+WbuoRua9TX73jD8+13xlZJmQ4HdxcqaCOk
+         aq6qF6fGefP6IhdavEpo9lUcaCWUkEbHrtIUim0FcICwINPsi2sfgKuQh/wIEJQegv
+         QV8dfgmLXydHu3gxfBUetsswALjCnVWjHNHuy3znKyso1JAUu0IhUonXWVlHslSVnM
+         p5PPn8I00sf/Fh+BbrWob1Ti0oxtZddAdb6xwqAav0HsDMXGBzThWgzAw14jgTtjFC
+         DsyJYcX0CMVbA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com
+Subject: [PATCH wireless-drivers] mt76: dma: fix a possible memory leak in mt76_add_fragment()
+Date:   Tue, 26 Jan 2021 12:02:13 +0100
+Message-Id: <4f9dd73407da88b2a552517ce8db242d86bf4d5c.1611616130.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Fix a memory leak in mt76_add_fragment routine returning the buffer
+to the page_frag_cache when we receive a new fragment and the
+skb_shared_info frag array is full.
 
-This code ends up calling wiphy_apply_custom_regulatory(), for which
-we document that it should be called before wiphy_register(). This
-driver doesn't do that, but calls it from ndo_open() with the RTNL
-held, which caused deadlocks.
-
-Since the driver just registers static regdomain data and then the
-notifier applies the channel changes if any, there's no reason for
-it to call this in ndo_open(), move it earlier to fix the deadlock.
-
-Reported-and-tested-by: Hans de Goede <hdegoede@redhat.com>
-Fixes: 51d62f2f2c50 ("cfg80211: Save the regulatory domain with a lock")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: b102f0c522cf6 ("mt76: fix array overflow on receiving too many fragments for a packet")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Greg, can you take this for 5.11 please? Or if you prefer, since the
-patch that exposed this and broke the driver went through my tree, I
-can take it as well.
----
- drivers/staging/rtl8723bs/include/rtw_wifi_regd.h |  6 +++---
- drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c |  6 +++---
- drivers/staging/rtl8723bs/os_dep/wifi_regd.c      | 10 +++-------
- 3 files changed, 9 insertions(+), 13 deletions(-)
+ drivers/net/wireless/mediatek/mt76/dma.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/rtl8723bs/include/rtw_wifi_regd.h b/drivers/staging/rtl8723bs/include/rtw_wifi_regd.h
-index ab5a8627d371..f798b0c744a4 100644
---- a/drivers/staging/rtl8723bs/include/rtw_wifi_regd.h
-+++ b/drivers/staging/rtl8723bs/include/rtw_wifi_regd.h
-@@ -20,9 +20,9 @@ enum country_code_type_t {
- 	COUNTRY_CODE_MAX
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 73eeb00d5aa6..e81dfaf99bcb 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -509,15 +509,17 @@ static void
+ mt76_add_fragment(struct mt76_dev *dev, struct mt76_queue *q, void *data,
+ 		  int len, bool more)
+ {
+-	struct page *page = virt_to_head_page(data);
+-	int offset = data - page_address(page);
+ 	struct sk_buff *skb = q->rx_head;
+ 	struct skb_shared_info *shinfo = skb_shinfo(skb);
  
--int rtw_regd_init(struct adapter *padapter,
--	void (*reg_notifier)(struct wiphy *wiphy,
--		struct regulatory_request *request));
-+void rtw_regd_init(struct wiphy *wiphy,
-+		   void (*reg_notifier)(struct wiphy *wiphy,
-+					struct regulatory_request *request));
- void rtw_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request);
- 
- 
-diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-index bf1417236161..11032316c53d 100644
---- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-+++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-@@ -3211,9 +3211,6 @@ void rtw_cfg80211_init_wiphy(struct adapter *padapter)
- 			rtw_cfg80211_init_ht_capab(&bands->ht_cap, NL80211_BAND_2GHZ, rf_type);
+ 	if (shinfo->nr_frags < ARRAY_SIZE(shinfo->frags)) {
+-		offset += q->buf_offset;
++		struct page *page = virt_to_head_page(data);
++		int offset = data - page_address(page) + q->buf_offset;
++
+ 		skb_add_rx_frag(skb, shinfo->nr_frags, page, offset, len,
+ 				q->buf_size);
++	} else {
++		skb_free_frag(data);
  	}
  
--	/* init regulary domain */
--	rtw_regd_init(padapter, rtw_reg_notifier);
--
- 	/* copy mac_addr to wiphy */
- 	memcpy(wiphy->perm_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
- 
-@@ -3328,6 +3325,9 @@ int rtw_wdev_alloc(struct adapter *padapter, struct device *dev)
- 	*((struct adapter **)wiphy_priv(wiphy)) = padapter;
- 	rtw_cfg80211_preinit_wiphy(padapter, wiphy);
- 
-+	/* init regulary domain */
-+	rtw_regd_init(wiphy, rtw_reg_notifier);
-+
- 	ret = wiphy_register(wiphy);
- 	if (ret < 0) {
- 		DBG_8192C("Couldn't register wiphy device\n");
-diff --git a/drivers/staging/rtl8723bs/os_dep/wifi_regd.c b/drivers/staging/rtl8723bs/os_dep/wifi_regd.c
-index 578b9f734231..2833fc6901e6 100644
---- a/drivers/staging/rtl8723bs/os_dep/wifi_regd.c
-+++ b/drivers/staging/rtl8723bs/os_dep/wifi_regd.c
-@@ -139,15 +139,11 @@ static void _rtw_regd_init_wiphy(struct rtw_regulatory *reg,
- 	_rtw_reg_apply_flags(wiphy);
- }
- 
--int rtw_regd_init(struct adapter *padapter,
--		  void (*reg_notifier)(struct wiphy *wiphy,
--				       struct regulatory_request *request))
-+void rtw_regd_init(struct wiphy *wiphy,
-+		   void (*reg_notifier)(struct wiphy *wiphy,
-+					struct regulatory_request *request))
- {
--	struct wiphy *wiphy = padapter->rtw_wdev->wiphy;
--
- 	_rtw_regd_init_wiphy(NULL, wiphy, reg_notifier);
--
--	return 0;
- }
- 
- void rtw_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
+ 	if (more)
 -- 
-2.26.2
+2.29.2
 
