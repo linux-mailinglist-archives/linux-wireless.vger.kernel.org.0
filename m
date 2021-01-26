@@ -2,64 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38DAF303B6E
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 12:22:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B9CB303CA1
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 13:11:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392290AbhAZLV3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 06:21:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40916 "EHLO mail.kernel.org"
+        id S2404982AbhAZMLP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 07:11:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38906 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392194AbhAZLVT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Jan 2021 06:21:19 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7039022795;
-        Tue, 26 Jan 2021 11:20:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1611660038;
-        bh=cxRRKLvkAzn2aBTFkAN9CJZ7uMjLsyIWHcwe3vNgWns=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mboS0X9Ca6iVq9Fp7TWZryUk0WK0mCud4u2Gn2bvqyR8Tg60493cnPLHqJT/TsstQ
-         HZyG+oSPHSEEjGphSBg+68LZYU3EAVpHn9G0VK3ysj0M5aTo0FwwohhObGsu9dziND
-         Vh0cTQuEWEIoc1sgAGgYrvOXRqnBzT0RahtGfg1E=
-Date:   Tue, 26 Jan 2021 12:20:36 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, ilan.peer@intel.com,
-        Johannes Berg <johannes.berg@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [PATCH] staging: rtl8723bs: fix wireless regulatory API misuse
-Message-ID: <YA/7BL3eblv1glZr@kroah.com>
-References: <20210126115409.d5fd6f8fe042.Ib5823a6feb2e2aa01ca1a565d2505367f38ad246@changeid>
+        id S2404062AbhAZLOr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 26 Jan 2021 06:14:47 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 27DAD23108;
+        Tue, 26 Jan 2021 11:14:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611659647;
+        bh=ZcIldbls1k+3Cum94TvuyMTcJRknOrkNe2eLWhGJ03k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=QLBp/Ido6ZvX882ck39JcQE8B7XHDBl3UF78Zu4U2Mno9tpPalXOQKUruGAwDKcNE
+         KZPoJ3qRcbU3/JhK4jGfDRq4o2VHLK40QweO3wTtuuJ2qzBcUW59TlPRrq4WVwQ9xY
+         +0XWVW0qOQMjugWvphG2S5IpEsDKeVwOAhRu7C8g/6cW1t6NtbxNjp+u6z2zLQCqMc
+         wXZ5s9Tms/zyDyD0IswPAuAhzwMwKW/Uqd5+eW3NOzj7XkQ5iDI1paJFHjq4WVZ1mU
+         Hx+hbrguXU5ZLXKLlm2Ba+v4q10+MzXiXHP6EgRaV8W3mRdWZ/cMlfk869Zr+94eg9
+         kiFgWaU1uWUBw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH v3 0/6] mt76: introduce mt76_connac common module
+Date:   Tue, 26 Jan 2021 12:13:50 +0100
+Message-Id: <cover.1611659413.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210126115409.d5fd6f8fe042.Ib5823a6feb2e2aa01ca1a565d2505367f38ad246@changeid>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 11:54:09AM +0100, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> This code ends up calling wiphy_apply_custom_regulatory(), for which
-> we document that it should be called before wiphy_register(). This
-> driver doesn't do that, but calls it from ndo_open() with the RTNL
-> held, which caused deadlocks.
-> 
-> Since the driver just registers static regdomain data and then the
-> notifier applies the channel changes if any, there's no reason for
-> it to call this in ndo_open(), move it earlier to fix the deadlock.
-> 
-> Reported-and-tested-by: Hans de Goede <hdegoede@redhat.com>
-> Fixes: 51d62f2f2c50 ("cfg80211: Save the regulatory domain with a lock")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
-> Greg, can you take this for 5.11 please? Or if you prefer, since the
-> patch that exposed this and broke the driver went through my tree, I
-> can take it as well.
+Introduce mt76_connac common module for code sharing between mt7615
+and mt7921 drivers.
 
-Please feel free to take it through yours, as I don't think I'll have
-any more staging patches for 5.11-final (or none have been sent to me
-yet), so this might be the fastest way in:
+Changes since v2:
+- fix typo in mt7615_mcu_wtbl_sta_add()
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Changes since v1:
+- rename mt76_vif struct of mt7615_vif in mt76
+
+Lorenzo Bianconi (6):
+  mt76: introduce mt76_vif data structure
+  mt76: mt76_connac: create mcu library
+  mt76: mt76_connac: move hw_scan and sched_scan routine in
+    mt76_connac_mcu module
+  mt76: mt76_connac: move WoW and suspend code in mt76_connac_mcu module
+  mt76: mt76_connac: move pm data struct in mt76_connac.h
+  mt76: mt76_connac: move pm utility routines in mt76_connac_lib module
+
+ drivers/net/wireless/mediatek/mt76/Kconfig    |    4 +
+ drivers/net/wireless/mediatek/mt76/Makefile   |    3 +
+ drivers/net/wireless/mediatek/mt76/mt76.h     |    8 +
+ .../net/wireless/mediatek/mt76/mt7615/Kconfig |    2 +-
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |   15 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |   91 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  159 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 1624 ++---------------
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   |  682 +------
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   97 +-
+ .../net/wireless/mediatek/mt76/mt7615/pci.c   |    9 +-
+ .../wireless/mediatek/mt76/mt7615/pci_mac.c   |    2 +-
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c  |    5 +-
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |    4 +-
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |   91 +
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  |  119 ++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 1490 +++++++++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  954 ++++++++++
+ 18 files changed, 2930 insertions(+), 2429 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+
+-- 
+2.29.2
+
