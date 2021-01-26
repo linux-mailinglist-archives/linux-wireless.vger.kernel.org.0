@@ -2,56 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C20303C7D
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 13:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D1C4303E17
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 14:07:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392325AbhAZMGT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 07:06:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32780 "EHLO
+        id S2391192AbhAZNGb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 08:06:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392346AbhAZLW6 (ORCPT
+        with ESMTP id S2390642AbhAZNGU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Jan 2021 06:22:58 -0500
+        Tue, 26 Jan 2021 08:06:20 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 913ACC061797;
-        Tue, 26 Jan 2021 03:21:17 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C91C0611C2;
+        Tue, 26 Jan 2021 05:05:38 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1l4MPK-00Bsxn-Ff; Tue, 26 Jan 2021 12:21:14 +0100
-Message-ID: <e0eac0c0576c260ccdd849996805562167fcc009.camel@sipsolutions.net>
-Subject: Re: [PATCH] staging: rtl8723bs: fix wireless regulatory API misuse
+        id 1l4O2K-00Bud6-Bx; Tue, 26 Jan 2021 14:05:36 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, ilan.peer@intel.com,
-        Hans de Goede <hdegoede@redhat.com>
-Date:   Tue, 26 Jan 2021 12:21:13 +0100
-In-Reply-To: <YA/7BL3eblv1glZr@kroah.com>
-References: <20210126115409.d5fd6f8fe042.Ib5823a6feb2e2aa01ca1a565d2505367f38ad246@changeid>
-         <YA/7BL3eblv1glZr@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211 2021-01-26
+Date:   Tue, 26 Jan 2021 14:05:28 +0100
+Message-Id: <20210126130529.75225-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-01-26 at 12:20 +0100, Greg Kroah-Hartman wrote:
-> 
-> > Greg, can you take this for 5.11 please? Or if you prefer, since the
-> > patch that exposed this and broke the driver went through my tree, I
-> > can take it as well.
-> 
-> Please feel free to take it through yours, as I don't think I'll have
-> any more staging patches for 5.11-final (or none have been sent to me
-> yet), so this might be the fastest way in:
-> 
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Hi Jakub,
 
-OK, will do, thanks!
+We have a few fixes - note one is for a staging driver, but acked by
+Greg and fixing the driver for a change that came through my tree.
 
+Please pull and let me know if there's any problem.
+
+Thanks,
 johannes
+
+
+
+The following changes since commit 1c45ba93d34cd6af75228f34d0675200c81738b5:
+
+  net: dsa: microchip: Adjust reset release timing to match reference reset circuit (2021-01-20 20:52:28 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-01-26
+
+for you to fetch changes up to 81f153faacd04c049e5482d6ff33daddc30ed44e:
+
+  staging: rtl8723bs: fix wireless regulatory API misuse (2021-01-26 12:21:42 +0100)
+
+----------------------------------------------------------------
+A couple of fixes:
+ * fix 160 MHz channel switch in mac80211
+ * fix a staging driver to not deadlock due to some
+   recent cfg80211 changes
+ * fix NULL-ptr deref if cfg80211 returns -EINPROGRESS
+   to wext (syzbot)
+ * pause TX in mac80211 in type change to prevent crashes
+   (syzbot)
+
+----------------------------------------------------------------
+Johannes Berg (3):
+      wext: fix NULL-ptr-dereference with cfg80211's lack of commit()
+      mac80211: pause TX while changing interface type
+      staging: rtl8723bs: fix wireless regulatory API misuse
+
+Shay Bar (1):
+      mac80211: 160MHz with extended NSS BW in CSA
+
+ drivers/staging/rtl8723bs/include/rtw_wifi_regd.h |  6 +++---
+ drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c |  6 +++---
+ drivers/staging/rtl8723bs/os_dep/wifi_regd.c      | 10 +++-------
+ net/mac80211/ieee80211_i.h                        |  1 +
+ net/mac80211/iface.c                              |  6 ++++++
+ net/mac80211/spectmgmt.c                          | 10 +++++++---
+ net/wireless/wext-core.c                          |  5 +++--
+ 7 files changed, 26 insertions(+), 18 deletions(-)
 
