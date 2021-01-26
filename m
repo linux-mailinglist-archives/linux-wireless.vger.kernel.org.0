@@ -2,218 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E6D8305CC9
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 14:17:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B4BA305C8F
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 14:10:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S313420AbhAZWoE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 17:44:04 -0500
-Received: from mga09.intel.com ([134.134.136.24]:7697 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727015AbhAZEju (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Jan 2021 23:39:50 -0500
-IronPort-SDR: cTynPScqYQwtAnoEgvgTf86Us0d/OUg75B+dt4zQwZH/4Oo1xFvnvgQ+yW0KlNbGNaMmykt6An
- jcYpLgg3gzaA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9875"; a="179993083"
-X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
-   d="scan'208";a="179993083"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2021 20:39:02 -0800
-IronPort-SDR: oPvpCjV+boBpDnVEcIIzrwJ1zSJ2JPXVT3z+LTE0HWHeygoGoCrZ3EIJVWYfTNTw6PhtO2DWm8
- nOMgyouQmj6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
-   d="scan'208";a="361839359"
-Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 25 Jan 2021 20:39:00 -0800
-Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l4G84-0000XE-A0; Tue, 26 Jan 2021 04:39:00 +0000
-Date:   Tue, 26 Jan 2021 12:38:58 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD SUCCESS
- 4832bb371c4175ffb506a96accbb08ef2b2466e7
-Message-ID: <600f9ce2.cwqpVXuQ+Qxhy+r0%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S313744AbhAZWow (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 17:44:52 -0500
+Received: from smtprelay0161.hostedemail.com ([216.40.44.161]:46970 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727782AbhAZREe (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 26 Jan 2021 12:04:34 -0500
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave01.hostedemail.com (Postfix) with ESMTP id A67621803DDAB;
+        Tue, 26 Jan 2021 16:46:57 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id E64DE180A90FF;
+        Tue, 26 Jan 2021 16:46:55 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:968:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:2911:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:4321:4425:5007:7652:10004:10400:11232:11473:11657:11658:11914:12043:12297:12555:12740:12895:13069:13311:13357:13439:13894:14659:14721:21080:21324:21451:21627:30012:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: burn65_26005d02758f
+X-Filterd-Recvd-Size: 2031
+Received: from [192.168.1.159] (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf05.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 26 Jan 2021 16:46:54 +0000 (UTC)
+Message-ID: <7d113851044ad16fa7f4c4e5c32af723e2f3c359.camel@perches.com>
+Subject: Re: [PATCH v3] rtlwifi: Simplify bool comparison
+From:   Joe Perches <joe@perches.com>
+To:     Jiapeng Zhong <abaci-bugfix@linux.alibaba.com>,
+        kvalo@codeaurora.org
+Cc:     pkshih@realtek.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Tue, 26 Jan 2021 08:46:53 -0800
+In-Reply-To: <1611649916-21936-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+References: <1611649916-21936-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-branch HEAD: 4832bb371c4175ffb506a96accbb08ef2b2466e7  iwl4965: do not process non-QOS frames on txq->sched_retry path
+On Tue, 2021-01-26 at 16:31 +0800, Jiapeng Zhong wrote:
+> Fix the following coccicheck warning:
+> ./drivers/net/wireless/realtek/rtlwifi/ps.c:798:7-21: WARNING:
+> Comparison to bool
+> ./drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:3848:7-17:
+> WARNING: Comparison of 0/1 to bool variable
+[]
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
+[]
+> @@ -798,9 +798,9 @@ static void rtl_p2p_noa_ie(struct ieee80211_hw *hw, void *data,
+>  		ie += 3 + noa_len;
+>  	}
+>  
+> 
+> -	if (find_p2p_ie == true) {
+> +	if (find_p2p_ie) {
+>  		if ((p2pinfo->p2p_ps_mode > P2P_PS_NONE) &&
+> -		    (find_p2p_ps_ie == false))
+> +		    (!find_p2p_ps_ie))
+>  			rtl_p2p_ps_cmd(hw, P2P_PS_DISABLE);
+>  	}
 
-elapsed time: 730m
+Always review suggested coccinelle patches before submission and
+see if there are ways to improve the code beyond what the spatch
+tool suggests.
 
-configs tested: 156
-configs skipped: 2
+Perhaps integrate these tests and removed an indent level too:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+	if (find_p2p_ie && !find_p2p_ps_ie &&
+	    p2pinfo->p2p_ps_mode > P2P_PS_NONE)
+		rtl_p2p_ps_cmd(hw, P2P_PS_DISABLE);
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                    adder875_defconfig
-powerpc                      obs600_defconfig
-mips                     decstation_defconfig
-mips                          rm200_defconfig
-mips                  decstation_64_defconfig
-arm                       mainstone_defconfig
-sh                           se7712_defconfig
-arm                        keystone_defconfig
-powerpc                     ksi8560_defconfig
-sh                          rsk7201_defconfig
-sh                           se7722_defconfig
-powerpc               mpc834x_itxgp_defconfig
-sh                   sh7770_generic_defconfig
-arm                          badge4_defconfig
-sh                        sh7757lcr_defconfig
-c6x                                 defconfig
-mips                         db1xxx_defconfig
-m68k                       m5249evb_defconfig
-powerpc                          g5_defconfig
-sh                           se7343_defconfig
-powerpc                    klondike_defconfig
-arm                         palmz72_defconfig
-m68k                        stmark2_defconfig
-mips                         rt305x_defconfig
-powerpc                      arches_defconfig
-mips                        omega2p_defconfig
-mips                          ath25_defconfig
-powerpc                     skiroot_defconfig
-powerpc                 mpc8315_rdb_defconfig
-mips                         tb0287_defconfig
-arm                         assabet_defconfig
-powerpc                       eiger_defconfig
-sh                           sh2007_defconfig
-powerpc                     stx_gp3_defconfig
-powerpc                     rainier_defconfig
-arc                    vdk_hs38_smp_defconfig
-mips                       capcella_defconfig
-mips                            gpr_defconfig
-s390                             allyesconfig
-powerpc                       holly_defconfig
-arm                            u300_defconfig
-powerpc                     ppa8548_defconfig
-nios2                               defconfig
-powerpc                   motionpro_defconfig
-i386                             alldefconfig
-mips                  maltasmvp_eva_defconfig
-sh                           se7705_defconfig
-mips                  cavium_octeon_defconfig
-powerpc                     tqm5200_defconfig
-arm                          lpd270_defconfig
-sh                 kfr2r09-romimage_defconfig
-arm                            mmp2_defconfig
-ia64                      gensparse_defconfig
-arm                              alldefconfig
-mips                   sb1250_swarm_defconfig
-sh                               alldefconfig
-sh                               j2_defconfig
-mips                      pistachio_defconfig
-openrisc                    or1ksim_defconfig
-sh                          polaris_defconfig
-arm                           corgi_defconfig
-powerpc                      walnut_defconfig
-arm                        mvebu_v7_defconfig
-mips                         mpc30x_defconfig
-powerpc                         ps3_defconfig
-arm                  colibri_pxa300_defconfig
-arm                     eseries_pxa_defconfig
-sparc64                          alldefconfig
-sh                        dreamcast_defconfig
-xtensa                  cadence_csp_defconfig
-arc                            hsdk_defconfig
-powerpc                     mpc83xx_defconfig
-arm                          imote2_defconfig
-m68k                            q40_defconfig
-mips                malta_qemu_32r6_defconfig
-arm                        multi_v7_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20210125
-x86_64               randconfig-a002-20210125
-x86_64               randconfig-a001-20210125
-x86_64               randconfig-a005-20210125
-x86_64               randconfig-a006-20210125
-x86_64               randconfig-a004-20210125
-i386                 randconfig-a002-20210125
-i386                 randconfig-a004-20210125
-i386                 randconfig-a005-20210125
-i386                 randconfig-a003-20210125
-i386                 randconfig-a001-20210125
-i386                 randconfig-a006-20210125
-x86_64               randconfig-a012-20210126
-x86_64               randconfig-a016-20210126
-x86_64               randconfig-a015-20210126
-x86_64               randconfig-a011-20210126
-x86_64               randconfig-a013-20210126
-x86_64               randconfig-a014-20210126
-i386                 randconfig-a013-20210125
-i386                 randconfig-a011-20210125
-i386                 randconfig-a012-20210125
-i386                 randconfig-a015-20210125
-i386                 randconfig-a014-20210125
-i386                 randconfig-a016-20210125
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
 
-clang tested configs:
-x86_64               randconfig-a012-20210125
-x86_64               randconfig-a016-20210125
-x86_64               randconfig-a015-20210125
-x86_64               randconfig-a011-20210125
-x86_64               randconfig-a013-20210125
-x86_64               randconfig-a014-20210125
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
