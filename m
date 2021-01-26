@@ -2,72 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB6D304C87
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Jan 2021 23:48:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC677305192
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 05:59:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730098AbhAZWrE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Jan 2021 17:47:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44340 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405825AbhAZU4B (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Jan 2021 15:56:01 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75E23C06174A;
-        Tue, 26 Jan 2021 12:55:20 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1l4VMh-00C2sE-Kg; Tue, 26 Jan 2021 21:55:07 +0100
-Message-ID: <596880294af8224f2f28311c39491bdfa3b39f2e.camel@sipsolutions.net>
-Subject: Re: [PATCH net] iwlwifi: provide gso_type to GSO packets
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Eric Dumazet <eric.dumazet@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        netdev <netdev@vger.kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Ben Greear <greearb@candelatech.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 26 Jan 2021 21:55:06 +0100
-In-Reply-To: <20210126123207.5c79f4c0@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20210125150949.619309-1-eric.dumazet@gmail.com>
-         <20210126123207.5c79f4c0@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+        id S234412AbhA0E7M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 23:59:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47160 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388261AbhAZXUx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 26 Jan 2021 18:20:53 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 8907264D7A;
+        Tue, 26 Jan 2021 23:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611703212;
+        bh=zp9CpCikTkrKgUNLhsZAw69V5Jd+59X2HEzhbxUNYk0=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=pszYXfAPj4wwl1USetPju/ENSdd5Lq1ZpZRZs5I2mV/QE3VOZc3T/XXQXYgyPL9Mi
+         HSWD1yTd8eQwMdr8zGuflYGPCa97Gz5cz2nWO1W5z99FtskJTf8WltyWHLMDIbwS3w
+         e9EqjsZFTpu0tbpD2IQ7CFZA5AEvF+AbNcrTHf9yzYTH2vSC2uJq+K/mv+2C/EMTsZ
+         vovwrWd6B03GwET53ytNw+zc5ugD/jpRHbzScROXuB5/h99+MMPuURPLnAqFvhdt3f
+         H1d5n2roreDP4wBRAt0lsqLol4DbsjueTkEx82fJZxw3sirt6JVhP5EFmEptMAtkJ+
+         6gH4WKHdZ/SVg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 81BDD652DA;
+        Tue, 26 Jan 2021 23:20:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] iwlwifi: provide gso_type to GSO packets
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161170321252.26028.13767129342012102952.git-patchwork-notify@kernel.org>
+Date:   Tue, 26 Jan 2021 23:20:12 +0000
+References: <20210125150949.619309-1-eric.dumazet@gmail.com>
+In-Reply-To: <20210125150949.619309-1-eric.dumazet@gmail.com>
+To:     Eric Dumazet <eric.dumazet@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+        edumazet@google.com, greearb@candelatech.com,
+        luciano.coelho@intel.com, linux-wireless@vger.kernel.org,
+        johannes@sipsolutions.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-01-26 at 12:32 -0800, Jakub Kicinski wrote:
-> On Mon, 25 Jan 2021 07:09:49 -0800 Eric Dumazet wrote:
-> > From: Eric Dumazet <edumazet@google.com>
-> > 
-> > net/core/tso.c got recent support for USO, and this broke iwlfifi
-> > because the driver implemented a limited form of GSO.
-> > 
-> > Providing ->gso_type allows for skb_is_gso_tcp() to provide
-> > a correct result.
-> > 
-> > Fixes: 3d5b459ba0e3 ("net: tso: add UDP segmentation support")
-> > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > Reported-by: Ben Greear <greearb@candelatech.com>
-> > Bisected-by: Ben Greear <greearb@candelatech.com>
-> > Tested-by: Ben Greear <greearb@candelatech.com>
-> > Cc: Luca Coelho <luciano.coelho@intel.com>
-> > Cc: linux-wireless@vger.kernel.org
-> > Cc: Johannes Berg <johannes@sipsolutions.net>
+Hello:
+
+This patch was applied to netdev/net.git (refs/heads/master):
+
+On Mon, 25 Jan 2021 07:09:49 -0800 you wrote:
+> From: Eric Dumazet <edumazet@google.com>
 > 
-> Johannes, Eric tagged this for net, are you okay with me taking it?
-> No strong preference here.
+> net/core/tso.c got recent support for USO, and this broke iwlfifi
+> because the driver implemented a limited form of GSO.
+> 
+> Providing ->gso_type allows for skb_is_gso_tcp() to provide
+> a correct result.
+> 
+> [...]
 
-I guess that really would normally go through Luca's and Kalle's trees,
-but yes, please just take it, it's been long and it won't conflict with
-anything.
+Here is the summary with links:
+  - [net] iwlwifi: provide gso_type to GSO packets
+    https://git.kernel.org/netdev/net/c/81a86e1bd8e7
 
-johannes
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
