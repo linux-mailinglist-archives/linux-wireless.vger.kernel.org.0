@@ -2,120 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA32B305B7B
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 13:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E6D8305CC9
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 14:17:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343532AbhA0MfI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jan 2021 07:35:08 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:45102 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237969AbhA0Mb3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jan 2021 07:31:29 -0500
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10RC2Nkh117828;
-        Wed, 27 Jan 2021 07:30:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=rwzNdVxaabwTTzTgTZiXcpB5MZiv4i4Keynxr5b824I=;
- b=VKGYx+Yu4qp0Ov/MuEfEu9mWOggHrC9iBzT/DriErNwUnp7Z7Hhi7zMFSGM3KDJX8WqB
- +hN1QC7L1GaKVhph2FRR2Eb9TttgHq8HwB2Sy85+bCDMJBRRR+zwMyxbcfOI97dGUFG0
- CTyloZkSAYkmfUodCXcbRk5JbW+LoNHAnTUuz/BN7bo1yoNDnGr/MBYHy+PJ/FNuReDx
- WG/1rSlWm6EHh8wKm2Gv8UAywyN3D4T/wrP9BzIQlrrfEFNCrylyJQ2+Yb4Ux1hQZw0R
- m5B03B9I4ikPy1xSn1z0EA1QAggwZV5UmVkM8PCCzjXvU5trcFNyq+yc461hLLjsvQ1W Hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 36awe7eyxp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 27 Jan 2021 07:30:37 -0500
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10RC30MO119656;
-        Wed, 27 Jan 2021 07:30:37 -0500
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 36awe7eyws-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 27 Jan 2021 07:30:37 -0500
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-        by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10RCEBZL002533;
-        Wed, 27 Jan 2021 12:30:34 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma01fra.de.ibm.com with ESMTP id 368be81ya7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 27 Jan 2021 12:30:34 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10RCUVv446793006
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 27 Jan 2021 12:30:31 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 8C60442042;
-        Wed, 27 Jan 2021 12:30:31 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DE3BF42045;
-        Wed, 27 Jan 2021 12:30:30 +0000 (GMT)
-Received: from localhost (unknown [9.171.68.8])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed, 27 Jan 2021 12:30:30 +0000 (GMT)
-Date:   Wed, 27 Jan 2021 13:30:29 +0100
-From:   Vasily Gorbik <gor@linux.ibm.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Dave Airlie <airlied@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-s390@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] Fix "ordering" comment typos
-Message-ID: <your-ad-here.call-01611750629-ext-5157@work.hours>
-References: <20210126195042.2909405-1-helgaas@kernel.org>
+        id S313420AbhAZWoE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Jan 2021 17:44:04 -0500
+Received: from mga09.intel.com ([134.134.136.24]:7697 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727015AbhAZEju (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Jan 2021 23:39:50 -0500
+IronPort-SDR: cTynPScqYQwtAnoEgvgTf86Us0d/OUg75B+dt4zQwZH/4Oo1xFvnvgQ+yW0KlNbGNaMmykt6An
+ jcYpLgg3gzaA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9875"; a="179993083"
+X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
+   d="scan'208";a="179993083"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2021 20:39:02 -0800
+IronPort-SDR: oPvpCjV+boBpDnVEcIIzrwJ1zSJ2JPXVT3z+LTE0HWHeygoGoCrZ3EIJVWYfTNTw6PhtO2DWm8
+ nOMgyouQmj6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,375,1602572400"; 
+   d="scan'208";a="361839359"
+Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 25 Jan 2021 20:39:00 -0800
+Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1l4G84-0000XE-A0; Tue, 26 Jan 2021 04:39:00 +0000
+Date:   Tue, 26 Jan 2021 12:38:58 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ 4832bb371c4175ffb506a96accbb08ef2b2466e7
+Message-ID: <600f9ce2.cwqpVXuQ+Qxhy+r0%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210126195042.2909405-1-helgaas@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2021-01-27_05:2021-01-27,2021-01-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 spamscore=0 clxscore=1011 suspectscore=0
- impostorscore=0 bulkscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0
- mlxlogscore=936 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2101270063
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 01:50:42PM -0600, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> Fix comment typos in "ordering".
-> 
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
->  arch/s390/include/asm/facility.h             | 2 +-
->  drivers/gpu/drm/qxl/qxl_drv.c                | 2 +-
->  drivers/net/wireless/intel/iwlwifi/fw/file.h | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> 
-> Unless somebody objects, I'll just merge these typo fixes via the PCI tree.
-> 
-> 
-> diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
-> index 68c476b20b57..91b5d714d28f 100644
-> --- a/arch/s390/include/asm/facility.h
-> +++ b/arch/s390/include/asm/facility.h
-> @@ -44,7 +44,7 @@ static inline int __test_facility(unsigned long nr, void *facilities)
->  }
->  
->  /*
-> - * The test_facility function uses the bit odering where the MSB is bit 0.
-> + * The test_facility function uses the bit ordering where the MSB is bit 0.
->   * That makes it easier to query facility bits with the bit number as
->   * documented in the Principles of Operation.
->   */
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+branch HEAD: 4832bb371c4175ffb506a96accbb08ef2b2466e7  iwl4965: do not process non-QOS frames on txq->sched_retry path
 
-Acked-by: Vasily Gorbik <gor@linux.ibm.com>
+elapsed time: 730m
+
+configs tested: 156
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                    adder875_defconfig
+powerpc                      obs600_defconfig
+mips                     decstation_defconfig
+mips                          rm200_defconfig
+mips                  decstation_64_defconfig
+arm                       mainstone_defconfig
+sh                           se7712_defconfig
+arm                        keystone_defconfig
+powerpc                     ksi8560_defconfig
+sh                          rsk7201_defconfig
+sh                           se7722_defconfig
+powerpc               mpc834x_itxgp_defconfig
+sh                   sh7770_generic_defconfig
+arm                          badge4_defconfig
+sh                        sh7757lcr_defconfig
+c6x                                 defconfig
+mips                         db1xxx_defconfig
+m68k                       m5249evb_defconfig
+powerpc                          g5_defconfig
+sh                           se7343_defconfig
+powerpc                    klondike_defconfig
+arm                         palmz72_defconfig
+m68k                        stmark2_defconfig
+mips                         rt305x_defconfig
+powerpc                      arches_defconfig
+mips                        omega2p_defconfig
+mips                          ath25_defconfig
+powerpc                     skiroot_defconfig
+powerpc                 mpc8315_rdb_defconfig
+mips                         tb0287_defconfig
+arm                         assabet_defconfig
+powerpc                       eiger_defconfig
+sh                           sh2007_defconfig
+powerpc                     stx_gp3_defconfig
+powerpc                     rainier_defconfig
+arc                    vdk_hs38_smp_defconfig
+mips                       capcella_defconfig
+mips                            gpr_defconfig
+s390                             allyesconfig
+powerpc                       holly_defconfig
+arm                            u300_defconfig
+powerpc                     ppa8548_defconfig
+nios2                               defconfig
+powerpc                   motionpro_defconfig
+i386                             alldefconfig
+mips                  maltasmvp_eva_defconfig
+sh                           se7705_defconfig
+mips                  cavium_octeon_defconfig
+powerpc                     tqm5200_defconfig
+arm                          lpd270_defconfig
+sh                 kfr2r09-romimage_defconfig
+arm                            mmp2_defconfig
+ia64                      gensparse_defconfig
+arm                              alldefconfig
+mips                   sb1250_swarm_defconfig
+sh                               alldefconfig
+sh                               j2_defconfig
+mips                      pistachio_defconfig
+openrisc                    or1ksim_defconfig
+sh                          polaris_defconfig
+arm                           corgi_defconfig
+powerpc                      walnut_defconfig
+arm                        mvebu_v7_defconfig
+mips                         mpc30x_defconfig
+powerpc                         ps3_defconfig
+arm                  colibri_pxa300_defconfig
+arm                     eseries_pxa_defconfig
+sparc64                          alldefconfig
+sh                        dreamcast_defconfig
+xtensa                  cadence_csp_defconfig
+arc                            hsdk_defconfig
+powerpc                     mpc83xx_defconfig
+arm                          imote2_defconfig
+m68k                            q40_defconfig
+mips                malta_qemu_32r6_defconfig
+arm                        multi_v7_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a003-20210125
+x86_64               randconfig-a002-20210125
+x86_64               randconfig-a001-20210125
+x86_64               randconfig-a005-20210125
+x86_64               randconfig-a006-20210125
+x86_64               randconfig-a004-20210125
+i386                 randconfig-a002-20210125
+i386                 randconfig-a004-20210125
+i386                 randconfig-a005-20210125
+i386                 randconfig-a003-20210125
+i386                 randconfig-a001-20210125
+i386                 randconfig-a006-20210125
+x86_64               randconfig-a012-20210126
+x86_64               randconfig-a016-20210126
+x86_64               randconfig-a015-20210126
+x86_64               randconfig-a011-20210126
+x86_64               randconfig-a013-20210126
+x86_64               randconfig-a014-20210126
+i386                 randconfig-a013-20210125
+i386                 randconfig-a011-20210125
+i386                 randconfig-a012-20210125
+i386                 randconfig-a015-20210125
+i386                 randconfig-a014-20210125
+i386                 randconfig-a016-20210125
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a012-20210125
+x86_64               randconfig-a016-20210125
+x86_64               randconfig-a015-20210125
+x86_64               randconfig-a011-20210125
+x86_64               randconfig-a013-20210125
+x86_64               randconfig-a014-20210125
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
