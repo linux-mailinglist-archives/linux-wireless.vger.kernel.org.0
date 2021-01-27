@@ -2,153 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4FB306313
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 19:16:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 165F1306465
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 20:47:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232970AbhA0SP3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jan 2021 13:15:29 -0500
-Received: from m42-8.mailgun.net ([69.72.42.8]:52334 "EHLO m42-8.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232758AbhA0SPP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jan 2021 13:15:15 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611771289; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=WhuOmKVFHa3k/WZWZ6j7B7SJho9Di137vDufHGsKghk=; b=RnmWeLwwAa77sErbNOd14Did60WSKTRG43/LI5q8GoOE5j4xl/afmoipiyuCnzA/RmGvOCfe
- WJ2jrrEzzFtZrDPlGlB4/xGFY3bA9oki6uW0rXf2Aw2a+GFyL8MHXw7lokXAJyk+dj1qPtwK
- 3RXBgkqA7lyeuDxrmND6kLinfLw=
-X-Mailgun-Sending-Ip: 69.72.42.8
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 6011ad7a6287154b875f6789 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Jan 2021 18:14:18
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CCD4EC43461; Wed, 27 Jan 2021 18:14:17 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 08DB2C433CA;
-        Wed, 27 Jan 2021 18:14:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 08DB2C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Venkateswara Naralasetty <vnaralas@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCHv2 2/2] ath11k: Add ap power save support
-References: <1598257589-19091-1-git-send-email-vnaralas@codeaurora.org>
-        <1598257589-19091-2-git-send-email-vnaralas@codeaurora.org>
-        <87h7n28di7.fsf@codeaurora.org>
-Date:   Wed, 27 Jan 2021 20:14:13 +0200
-In-Reply-To: <87h7n28di7.fsf@codeaurora.org> (Kalle Valo's message of "Wed, 27
-        Jan 2021 20:02:08 +0200")
-Message-ID: <87czxq8cy2.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S231887AbhA0Tnw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jan 2021 14:43:52 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:49633 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1344686AbhA0TjX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Jan 2021 14:39:23 -0500
+X-UUID: adf8f7751fe442e0a703979c54496f6f-20210128
+X-UUID: adf8f7751fe442e0a703979c54496f6f-20210128
+Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1691694604; Thu, 28 Jan 2021 03:34:06 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 28 Jan 2021 03:33:58 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 28 Jan 2021 03:33:58 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Ryder.Lee@mediatek.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, Sean Wang <objelf@gmail.com>
+Subject: [PATCH -next v8 00/20]introduce mt7921e support
+Date:   Thu, 28 Jan 2021 03:33:37 +0800
+Message-ID: <cover.1611774181.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
 Content-Type: text/plain
+X-TM-SNTS-SMTP: A7AE99663C5CA7AE56A75F43AC166F097F35AEFEA1EA60DF175845760528C1162000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+From: Sean Wang <objelf@gmail.com>
 
-> Venkateswara Naralasetty <vnaralas@codeaurora.org> writes:
->
->> AP power save where AP goes to power save mode when no stations associate
->> to it and come out of power save when any station associate to AP.
->>
->> This AP power save capability can be used to save power with the drawback
->> of reduced range or delayed discovery of the AP
->>
->> This patch also porvides user configuration to enable/disable
->> this feature using vendor command. This feature is disabled by default.
->>
->> Tested-on: IPQ8074 WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
->>
->> Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
->
-> [...]
->
->> +static int ath11k_vendor_set_wifi_config(struct wiphy *wihpy,
->
-> s/wihpy/wiphy/
->
->> +					 struct wireless_dev *wdev,
->> +					 const void *data,
->> +					 int data_len)
->> +{
->> +	struct ieee80211_vif *vif;
->> +	struct ath11k_vif *arvif;
->> +	struct ath11k *ar;
->> +	struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_CONFIG_MAX + 1];
->> +	int ret = 0;
->> +
->> +	if (!wdev)
->> +		return -EINVAL;
->> +
->> +	vif = wdev_to_ieee80211_vif(wdev);
->> +	if (!vif)
->> +		return -EINVAL;
->> +
->> +	arvif = (struct ath11k_vif *)vif->drv_priv;
->> +	if (!arvif)
->> +		return -EINVAL;
->> +
->> +	ar = arvif->ar;
->> +
->> +	mutex_lock(&ar->conf_mutex);
->> +
->> +	ret = nla_parse(tb, QCA_WLAN_VENDOR_ATTR_CONFIG_MAX, data, data_len,
->> +			ath11k_vendor_set_wifi_config_policy, NULL);
->> +	if (ret) {
->> +		ath11k_warn(ar->ab, "invalid set wifi config policy attribute\n");
->> +		goto exit;
->> +	}
->> +
->> +	ar->ap_ps_enabled = nla_get_flag(tb[QCA_WLAN_VENDOR_ATTR_CONFIG_GTX]);
->> +	ret = ath11k_mac_ap_ps_recalc(ar);
->> +	if (ret) {
->> +		ath11k_warn(ar->ab, "failed to send ap ps ret %d\n", ret);
->> +		goto exit;
->> +	}
->> +
->> +exit:
->> +	mutex_unlock(&ar->conf_mutex);
->> +	return ret;
->> +}
->
-> Something which I find awkward here is that this is per pdev (=all
-> vdevs), even though the vendor command is per vif. So if you change the
-> config on one vif, all other vifs will change as well. And there's no
-> way to check if the state from user space as there's only a set command
-> and no equivalent get command.
+Introduce support for mt7921e 802.11ax (Wi-Fi 6) 2x2:2SS chipset.
 
-Actually the problem comes here:
+v2:
+- Mark the patch as -next
 
-+static struct wiphy_vendor_command ath11k_vendor_commands[] = {
-+	{
-+		.info.vendor_id = QCA_NL80211_VENDOR_ID,
-+		.info.subcmd = QCA_NL80211_VENDOR_SUBCMD_SET_WIFI_CONFIGURATION,
-+		.flags = WIPHY_VENDOR_CMD_NEED_WDEV |
-+			WIPHY_VENDOR_CMD_NEED_RUNNING,
-+		.doit = ath11k_vendor_set_wifi_config,
-+		.policy = ath11k_vendor_set_wifi_config_policy,
-+		.maxattr = QCA_WLAN_VENDOR_ATTR_CONFIG_MAX
-+	}
+v3:
+- Remove sw scan support
+- Get rid of dbdc code
+- Run mt7921_configure_filter hodling mt76 mutex
+- Correct Txp programming in Txd
+- Correct fw log to host command
+- Correct eeprom offset definition
+- Update rate adaption info report
+- Remove unused code and fields in struture
+- Split the previous driver into several patches for easy review
 
-If it's per pdev you shouldn't set WIPHY_VENDOR_CMD_NEED_WDEV.
+v4:
+- introduce sched scan support
+- introduce 802.11 PS support in sta mode
+- introduce support for hardware beacon filter
+- introduce beacon_loss mcu event
+- introduce PM support
+- refine sta_rec_phy and add sta_rec_ra_info
+- remove incorrect mt7921_mcu_tx_config member
+- fix erroneous endianness conversion in mt7921_tx_complete_skb()
+- fix endianness warning in mt7921_get_wtbl_info()
+- fix endianness warnings in mt7921_mcu_sta_tlv()
+- remove unused code in mt7921_mcu_send_message
+- remove scan with random mac until fw is ready
+- channel domain is added for hw scan
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+v5:
+- fix implicit conversion from enumeration type
+- remove unused function declaration
+- drop zero-length packet to avoid Tx hang
+- fix MT_CIPHER_BIP_CMAC_128 setkey
+- reset token when mac_reset happens
+- create mac.h when mac support is added
+- reorder the patch of adding module support
+- move mac_work in mt76_core module
+- move chainmask in mt76_phy
+- rebase per moving mac_work in mt76_core module
+- rebase per moving chainmask in mt76_phy
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+v6:
+- use UNI_BSS_INFO_BCNFT and UNI_BSS_INFO_PS to carry out
+  enabling hardware beacon filter and 802.11 power saving
+  mode according to the MT7921 firmware
+
+v7:
+- remove the merged patches
+- rebase onto the series mt76: introduce mt76_connac common module
+	https://patchwork.kernel.org/project/linux-wireless/list/?series=418597
+- rely on mt76_connac_mcu common library
+- rely on mt76_connac_mcu module for sched_scan and hw_scan
+- rely on mt76_connac_mcu module for suspend and WoW support
+- introduce regdomain notifier support
+- enable MSI interrupts
+- introduce Runtime PM support
+- add coredump support
+- add sta statistics
+- disable Rx header translation on default
+- set nss to 2 on default
+
+v8:
+- fold mt76: mt7921: add sta statistics into
+       mt76: mt7921: add ieee80211_ops and
+       mt76: mt7921: add module support into
+       mt76: mt7921: introduce mt7921e support
+  according to Ryder's review
+
+Lorenzo Bianconi (6):
+  mt76: mt7921: rely on mt76_connac_mcu common library
+  mt76: mt7921: rely on mt76_connac_mcu module for sched_scan and
+    hw_scan
+  mt76: mt7921: rely on mt76_connac_mcu module for suspend and WoW
+    support
+  mt76: mt7921: introduce regdomain notifier support
+  mt76: mt7921: enable MSI interrupts
+  mt76: mt7663: introduce coredump support
+
+Sean Wang (14):
+  mt76: mt7921: add MAC support
+  mt76: mt7921: add MCU support
+  mt76: mt7921: add DMA support
+  mt76: mt7921: add EEPROM support
+  mt76: mt7921: add ieee80211_ops
+  mt76: mt7921: introduce mt7921e support
+  mt76: mt7921: add debugfs support
+  mt76: mt7921: introduce schedule scan support
+  mt76: mt7921: introduce 802.11 PS support in sta mode
+  mt76: mt7921: introduce support for hardware beacon filter
+  mt76: mt7921: introduce beacon_loss mcu event
+  mt76: mt7921: introduce PM support
+  mt76: mt7921: introduce Runtime PM support
+  mt76: mt7921: add coredump support
+
+ drivers/net/wireless/mediatek/mt76/Kconfig    |    1 +
+ drivers/net/wireless/mediatek/mt76/Makefile   |    1 +
+ .../net/wireless/mediatek/mt76/mt7615/Kconfig |    1 +
+ .../wireless/mediatek/mt76/mt7615/debugfs.c   |   17 +
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |    2 +
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |   43 +
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |    5 +
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   |    1 +
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |    4 +-
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |   14 +
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  370 +++-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   25 +
+ .../net/wireless/mediatek/mt76/mt7921/Kconfig |   11 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |    5 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  250 +++
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   |  356 ++++
+ .../wireless/mediatek/mt76/mt7921/eeprom.c    |  100 ++
+ .../wireless/mediatek/mt76/mt7921/eeprom.h    |   27 +
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  282 +++
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 1516 +++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |  333 ++++
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 1161 +++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 1308 ++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  434 +++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  342 ++++
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  292 ++++
+ .../net/wireless/mediatek/mt76/mt7921/regs.h  |  419 +++++
+ 27 files changed, 7310 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/init.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/main.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+
+--
+2.25.1
+
