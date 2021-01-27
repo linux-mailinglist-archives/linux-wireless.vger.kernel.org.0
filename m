@@ -2,147 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D17AA30616B
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 17:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB533062EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 19:03:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234993AbhA0Q7G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jan 2021 11:59:06 -0500
-Received: from mail-il1-f200.google.com ([209.85.166.200]:57210 "EHLO
-        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234239AbhA0Q5E (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jan 2021 11:57:04 -0500
-Received: by mail-il1-f200.google.com with SMTP id s4so2192544ilv.23
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Jan 2021 08:56:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=l/aVeDKTBQ9QZ6G/vbWHBu+UX2b0yRaS/S8fyUsx9vQ=;
-        b=ZOOupDzLWdGjgvE9pq4wBDpIO63Npd9bPB7kYuZP0jHC/34BnSGIA/xO7LhhZrUXe1
-         caeyqn6vSa38dzxP2TY9F644r0nqlBgPJdcywthpCZ6K+DytnPJavlK8RVeBvzucj0Hg
-         L2AXTVvrT9kNWww9CcGwcG/zfV+QeZoph+/ukNlHQF3DM4fBQvo2wjvgkqP0yM4vXqi+
-         t04KB3jNNMAGtwI4bIZF6HIZe6zgpHZCJLKNKRnkGdAey/xdqc41cb+oXOkTg9M7A/GW
-         o1rwZG/ifJMlg+puYZ1aCQ76kv7a7t2CJX43uMC+q/jHOLi3lXzTJmMxbSc6vq4wzpJ9
-         Bj2A==
-X-Gm-Message-State: AOAM530PT8ZvdrxpfhneeZ1g1cDmTDskEB/9x19iP1townSt2TAie2SN
-        agSgZxQBCUIj2KhlwEHVWA7OHWxZKK/3jLdnUudK31VIaXiI
-X-Google-Smtp-Source: ABdhPJzXirQ+/bLhDe/iqJka1KLsT+EEumuwLl4oWMu8CmR9BtN8xc2YofHeXhmPjArq1x/Tpq/EYF5ooUgGfMZAfELGsc+SH2IK
+        id S1344044AbhA0SDM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jan 2021 13:03:12 -0500
+Received: from m42-8.mailgun.net ([69.72.42.8]:36766 "EHLO m42-8.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1344062AbhA0SDI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Jan 2021 13:03:08 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1611770564; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=Aa8Yz4TOcxxy5SMMiNekghF7jVfm6er9unCPcWAijYw=; b=vgVGXoPrb5CtNzUWA9X6p1MHnoM/KywJjuyC1OQeauHUwcJ2Gk9Kqoqhxjq61TkX8W3/dAwV
+ SelLT9hk7F9cZBbvNQ8wwYX1o0/pEBihBoPpdAfDgpP/LbvnykMGbDlxYyoOrCYmM25Pokoe
+ vF03/zvG8Qo0mLeXkQWono/fZJE=
+X-Mailgun-Sending-Ip: 69.72.42.8
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 6011aaa5d75e1218e3047678 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Jan 2021 18:02:13
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B4105C433CA; Wed, 27 Jan 2021 18:02:12 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 41DC6C433ED;
+        Wed, 27 Jan 2021 18:02:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 41DC6C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Venkateswara Naralasetty <vnaralas@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCHv2 2/2] ath11k: Add ap power save support
+References: <1598257589-19091-1-git-send-email-vnaralas@codeaurora.org>
+        <1598257589-19091-2-git-send-email-vnaralas@codeaurora.org>
+Date:   Wed, 27 Jan 2021 20:02:08 +0200
+In-Reply-To: <1598257589-19091-2-git-send-email-vnaralas@codeaurora.org>
+        (Venkateswara Naralasetty's message of "Mon, 24 Aug 2020 13:56:29
+        +0530")
+Message-ID: <87h7n28di7.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-Received: by 2002:a02:3441:: with SMTP id z1mr9774976jaz.63.1611766582715;
- Wed, 27 Jan 2021 08:56:22 -0800 (PST)
-Date:   Wed, 27 Jan 2021 08:56:22 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000009fae0b05b9e4a6dd@google.com>
-Subject: linux-next test error: possible deadlock in cfg80211_netdev_notifier_call
-From:   syzbot <syzbot+3d2d5e6cc3fb15c6a0fd@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        sfr@canb.auug.org.au, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Venkateswara Naralasetty <vnaralas@codeaurora.org> writes:
 
-syzbot found the following issue on:
+> AP power save where AP goes to power save mode when no stations associate
+> to it and come out of power save when any station associate to AP.
+>
+> This AP power save capability can be used to save power with the drawback
+> of reduced range or delayed discovery of the AP
+>
+> This patch also porvides user configuration to enable/disable
+> this feature using vendor command. This feature is disabled by default.
+>
+> Tested-on: IPQ8074 WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
 
-HEAD commit:    b28241d8 Add linux-next specific files for 20210127
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=13316b44d00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=37c8f99c7210a867
-dashboard link: https://syzkaller.appspot.com/bug?extid=3d2d5e6cc3fb15c6a0fd
-compiler:       gcc (GCC) 10.1.0-syz 20200507
+[...]
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+3d2d5e6cc3fb15c6a0fd@syzkaller.appspotmail.com
+> +static int ath11k_vendor_set_wifi_config(struct wiphy *wihpy,
 
-batman_adv: batadv0: Not using interface batadv_slave_1 (retrying later): interface not active
-device hsr_slave_0 entered promiscuous mode
-device hsr_slave_1 entered promiscuous mode
-============================================
-WARNING: possible recursive locking detected
-5.11.0-rc5-next-20210127-syzkaller #0 Not tainted
---------------------------------------------
-syz-executor.0/8425 is trying to acquire lock:
-ffff8881446785e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5267 [inline]
-ffff8881446785e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: cfg80211_netdev_notifier_call+0x615/0x1180 net/wireless/core.c:1393
+s/wihpy/wiphy/
 
-but task is already holding lock:
-ffff8881446785e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5267 [inline]
-ffff8881446785e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: virt_wifi_newlink+0x4cb/0x940 drivers/net/wireless/virt_wifi.c:540
+> +					 struct wireless_dev *wdev,
+> +					 const void *data,
+> +					 int data_len)
+> +{
+> +	struct ieee80211_vif *vif;
+> +	struct ath11k_vif *arvif;
+> +	struct ath11k *ar;
+> +	struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_CONFIG_MAX + 1];
+> +	int ret = 0;
+> +
+> +	if (!wdev)
+> +		return -EINVAL;
+> +
+> +	vif = wdev_to_ieee80211_vif(wdev);
+> +	if (!vif)
+> +		return -EINVAL;
+> +
+> +	arvif = (struct ath11k_vif *)vif->drv_priv;
+> +	if (!arvif)
+> +		return -EINVAL;
+> +
+> +	ar = arvif->ar;
+> +
+> +	mutex_lock(&ar->conf_mutex);
+> +
+> +	ret = nla_parse(tb, QCA_WLAN_VENDOR_ATTR_CONFIG_MAX, data, data_len,
+> +			ath11k_vendor_set_wifi_config_policy, NULL);
+> +	if (ret) {
+> +		ath11k_warn(ar->ab, "invalid set wifi config policy attribute\n");
+> +		goto exit;
+> +	}
+> +
+> +	ar->ap_ps_enabled = nla_get_flag(tb[QCA_WLAN_VENDOR_ATTR_CONFIG_GTX]);
+> +	ret = ath11k_mac_ap_ps_recalc(ar);
+> +	if (ret) {
+> +		ath11k_warn(ar->ab, "failed to send ap ps ret %d\n", ret);
+> +		goto exit;
+> +	}
+> +
+> +exit:
+> +	mutex_unlock(&ar->conf_mutex);
+> +	return ret;
+> +}
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+Something which I find awkward here is that this is per pdev (=all
+vdevs), even though the vendor command is per vif. So if you change the
+config on one vif, all other vifs will change as well. And there's no
+way to check if the state from user space as there's only a set command
+and no equivalent get command.
 
-       CPU0
-       ----
-  lock(&rdev->wiphy.mtx);
-  lock(&rdev->wiphy.mtx);
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-2 locks held by syz-executor.0/8425:
- #0: ffffffff8cc71b08 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock net/core/rtnetlink.c:72 [inline]
- #0: ffffffff8cc71b08 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x3f9/0xad0 net/core/rtnetlink.c:5550
- #1: ffff8881446785e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5267 [inline]
- #1: ffff8881446785e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: virt_wifi_newlink+0x4cb/0x940 drivers/net/wireless/virt_wifi.c:540
-
-stack backtrace:
-CPU: 1 PID: 8425 Comm: syz-executor.0 Not tainted 5.11.0-rc5-next-20210127-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- __dump_stack lib/dump_stack.c:79 [inline]
- dump_stack+0x107/0x163 lib/dump_stack.c:120
- print_deadlock_bug kernel/locking/lockdep.c:2829 [inline]
- check_deadlock kernel/locking/lockdep.c:2872 [inline]
- validate_chain kernel/locking/lockdep.c:3661 [inline]
- __lock_acquire.cold+0x14c/0x3b4 kernel/locking/lockdep.c:4899
- lock_acquire kernel/locking/lockdep.c:5509 [inline]
- lock_acquire+0x1a8/0x720 kernel/locking/lockdep.c:5474
- __mutex_lock_common kernel/locking/mutex.c:956 [inline]
- __mutex_lock+0x134/0x1110 kernel/locking/mutex.c:1103
- wiphy_lock include/net/cfg80211.h:5267 [inline]
- cfg80211_netdev_notifier_call+0x615/0x1180 net/wireless/core.c:1393
- notifier_call_chain+0xb5/0x200 kernel/notifier.c:83
- call_netdevice_notifiers_info+0xb5/0x130 net/core/dev.c:2040
- call_netdevice_notifiers_extack net/core/dev.c:2052 [inline]
- call_netdevice_notifiers net/core/dev.c:2066 [inline]
- register_netdevice+0x1034/0x14a0 net/core/dev.c:10008
- virt_wifi_newlink+0x4d3/0x940 drivers/net/wireless/virt_wifi.c:541
- __rtnl_newlink+0x108b/0x16e0 net/core/rtnetlink.c:3443
- rtnl_newlink+0x64/0xa0 net/core/rtnetlink.c:3491
- rtnetlink_rcv_msg+0x44e/0xad0 net/core/rtnetlink.c:5553
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2494
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:654 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:674
- __sys_sendto+0x21c/0x320 net/socket.c:1977
- __do_sys_sendto net/socket.c:1989 [inline]
- __se_sys_sendto net/socket.c:1985 [inline]
- __x64_sys_sendto+0xdd/0x1b0 net/socket.c:1985
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x417c97
-Code: 2c 00 00 00 0f 05 48 3d 01 f0 ff ff 0f 83 81 19 00 00 c3 48 83 ec 08 e8 e7 fa ff ff 48 89 04 24 49 89 ca b8 2c 00 00 00 0f 05 <48> 8b 3c 24 48 89 c2 e8 2d fb ff ff 48 89 d0 48 83 c4 08 48 3d 01
-RSP: 002b:00007ffd43a145b0 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00000000016b4300 RCX: 0000000000417c97
-RDX: 000000000000004c RSI: 00000000016b4350 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 00007ffd43a145c0 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000000
-R13: 0000000000000000 R14: 00000000016b4350 R15: 0000000000000003
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
