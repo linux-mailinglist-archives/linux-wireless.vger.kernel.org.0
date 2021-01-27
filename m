@@ -2,93 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 035AF3058EB
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 11:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77EAA305976
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 12:21:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236166AbhA0K4Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jan 2021 05:56:25 -0500
-Received: from m42-8.mailgun.net ([69.72.42.8]:44840 "EHLO m42-8.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236247AbhA0KyW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jan 2021 05:54:22 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611744837; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=SheNhVtT9eDL5luFgog3R/47oD2k+j9pqHrgMva/o9Y=;
- b=t6lpPA2E8ttj++cYFa1iPUxTDp8sPfLeuW3bBsfOAUMb0uxFhr8Md0LJqnX7ScFFnA8VNRIj
- PyxNSgjzSX+HFRt85uzRk1nVF8FUK4FxPFxjd5WrwpuDkYbOUxK8DpVAJcwrA9U0JbKGmCnJ
- gLWRbjrtVawhaAtQITAZGuk6HrQ=
-X-Mailgun-Sending-Ip: 69.72.42.8
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 60114627a8db6424322afbed (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Jan 2021 10:53:27
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5D660C433C6; Wed, 27 Jan 2021 10:53:27 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 69528C433CA;
-        Wed, 27 Jan 2021 10:53:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 69528C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S235819AbhA0LUd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jan 2021 06:20:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235978AbhA0Khu (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Jan 2021 05:37:50 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACC2C061573;
+        Wed, 27 Jan 2021 02:37:10 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1l4iBx-00CMrJ-Pj; Wed, 27 Jan 2021 11:36:54 +0100
+Message-ID: <64336aa2e21936095eb7e52ee32289b30b855863.camel@sipsolutions.net>
+Subject: Re: [PATCH] ath9k: fix build error with LEDS_CLASS=m
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Kalle Valo <kvalo@codeaurora.org>, Arnd Bergmann <arnd@kernel.org>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Flavio Suligoi <f.suligoi@asem.it>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Wed, 27 Jan 2021 11:36:34 +0100
+In-Reply-To: <87bldaacqu.fsf@codeaurora.org>
+References: <20210125113654.2408057-1-arnd@kernel.org>
+         <CAJKOXPfteJ3Jia4Qd9DabjxcOtax3uDgi1fSbz4_+cHsJ1prQQ@mail.gmail.com>
+         <CAK8P3a0apBUbck9Z3UMKfwSJw8a-UbbXLTLUvSyOKEwTgPLjqg@mail.gmail.com>
+         <CAJKOXPc6LWnqiyO9WgxUZPo-vitNcQQr2oDoyD44P2YTSJ7j=g@mail.gmail.com>
+         <CAK8P3a1NEbZtXVA0Z4P3K97L9waBp7nkCWOkdYjR3+7FUF0P0Q@mail.gmail.com>
+         <CAJKOXPdWouEFtCp_iG+py1JcyrEU2Fj98jBAPTKZXQXCDQE54A@mail.gmail.com>
+         <CAK8P3a3ygYTEwjLbFuArdfNF1-yydVjtS2NZDAURKjOJGAxkAQ@mail.gmail.com>
+         <87bldaacqu.fsf@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 3/3] ath10k: allow dynamic SAR power limits via common
- API
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201203103728.3034-4-cjhuang@codeaurora.org>
-References: <20201203103728.3034-4-cjhuang@codeaurora.org>
-To:     Carl Huang <cjhuang@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        briannorris@chromium.org, dianders@chromium.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210127105327.5D660C433C6@smtp.codeaurora.org>
-Date:   Wed, 27 Jan 2021 10:53:27 +0000 (UTC)
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Carl Huang <cjhuang@codeaurora.org> wrote:
-
-> ath10k assigns ath10k_mac_set_sar_specs to ath10k_ops, and
-> this function is called when user space application calls
-> NL80211_CMD_SET_SAR_SPECS. ath10k also registers SAR type,
-> and supported frequency ranges to wiphy so user space can
-> query SAR capabilities.
+On Wed, 2021-01-27 at 12:35 +0200, Kalle Valo wrote:
+> Arnd Bergmann <arnd@kernel.org> writes:
 > 
-> This SAR power limitation is compared to regulatory txpower
-> and selects the minimal one to set when station is connected.
-> Otherwise, it delays until the station is connected. If the
-> station is disconnected, it returns to regulatory txpower.
+> > On Mon, Jan 25, 2021 at 4:04 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > > On Mon, 25 Jan 2021 at 15:38, Arnd Bergmann <arnd@kernel.org> wrote:
+> > > > On Mon, Jan 25, 2021 at 2:27 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > > 
+> > > I meant that having MAC80211_LEDS selected causes the ath9k driver to
+> > > toggle on/off the WiFi LED. Every second, regardless whether it's
+> > > doing something or not. In my setup, I have problems with a WiFi
+> > > dongle somehow crashing (WiFi disappears, nothing comes from the
+> > > dongle... maybe it's Atheros FW, maybe some HW problem) and I found
+> > > this LED on/off slightly increases the chances of this dongle-crash.
+> > > That was the actual reason behind my commits.
+> > > 
+> > > Second reason is that I don't want to send USB commands every second
+> > > when the device is idle. It unnecessarily consumes power on my
+> > > low-power device.
+> > 
+> > Ok, I see.
+> > 
+> > > Of course another solution is to just disable the trigger via sysfs
+> > > LED API. It would also work but my patch allows entire code to be
+> > > compiled-out (which was conditional in ath9k already).
+> > > 
+> > > Therefore the patch I sent allows the ath9k LED option to be fully
+> > > choosable. Someone wants every-second-LED-blink, sure, enable
+> > > ATH9K_LEDS and you have it. Someone wants to reduce the kernel size,
+> > > don't enable ATH9K_LEDS.
+> > 
+> > Originally, I think this is what CONFIG_MAC80211_LEDS was meant
+> > for, but it seems that this is not actually practical, since this also
+> > gets selected by half of the drivers using it, while the other half have
+> > a dependency on it. Out of the ones that select it, some in turn
+> > select LEDS_CLASS, while some depend on it.
+> > 
+> > I think this needs a larger-scale cleanup for consistency between
+> > (at least) all the wireless drivers using LEDs.
 > 
-> This feature is controlled by hw parameter: dynamic_sar_support.
+> I agree, this needs cleanup.
 > 
-> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
+> > Either your patch or mine should get applied in the meantime, and I
+> > don't care much which one in this case, as we still have the remaining
+> > inconsistency.
 > 
-> Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
-> Reviewed-by: Brian Norris <briannorris@chromium.org>
-> Reviewed-by: Abhishek Kumar <kuabhs@chromium.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> My problem with Krzysztof's patch[1] is that it adds a new Kconfig
+> option for ath9k, is that really necessary? Like Arnd said, we should
+> fix drivers to use CONFIG_MAC80211_LEDS instead of having driver
+> specific options.
+> 
+> So I would prefer take this Arnd's patch instead and queue it for v5.11.
+> But as it modifies mac80211 I'll need an ack from Johannes, what do you
+> think?
 
-In the pending branch removed test for !sar->sub_specs based on Dan's report.
+Sure, that seems fine.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201203103728.3034-4-cjhuang@codeaurora.org/
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
