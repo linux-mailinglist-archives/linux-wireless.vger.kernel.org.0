@@ -2,49 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD5E305FD9
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 16:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0F75306082
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 17:05:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236383AbhA0Pkb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jan 2021 10:40:31 -0500
-Received: from a1.mail.mailgun.net ([198.61.254.60]:44133 "EHLO
-        a1.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236209AbhA0PeL (ORCPT
+        id S236818AbhA0QE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jan 2021 11:04:58 -0500
+Received: from mail-yb1-f171.google.com ([209.85.219.171]:33599 "EHLO
+        mail-yb1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236374AbhA0QCB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jan 2021 10:34:11 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611761632; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=6DkDkEV7TGoJ4NLBbSGZElh1mjjPhmyjl8xd9psqcTo=; b=gCsh8GDN5EpUHJatooqGAn4wXdLHDidNNF06jdR150eAgFQ0kwA5vlnw2VurOylp8apAp1zO
- Why+XUuoeJKNXOQxaT2TiPRDhmgFhcEWhnaIQRcoh/A7UHQ52PPiFMnPevZnhycPrPnxbmgA
- kqNlexThs4EepTaHXeRh0DBU3W0=
-X-Mailgun-Sending-Ip: 198.61.254.60
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 601187bc2c36b2106d390520 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Jan 2021 15:33:16
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C163FC43463; Wed, 27 Jan 2021 15:33:15 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 45BA3C43463;
-        Wed, 27 Jan 2021 15:33:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 45BA3C43463
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Emil Renner Berthing <kernel@esmil.dk>
+        Wed, 27 Jan 2021 11:02:01 -0500
+Received: by mail-yb1-f171.google.com with SMTP id i141so2510023yba.0;
+        Wed, 27 Jan 2021 08:01:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yepEAjXY6R6spMmhtoWe8WjXNXVezUuhMTMgdZv+bxY=;
+        b=Ab+6BerXgphwVaPZZKiT7IeYqSXYvDe4NV40EkUShsZoZo3hadfZ+1eng2WzscJiCS
+         eqbNkg8si0rCA6BdLCTHVfj4Ziy0Nf32vsDFAyvLeD8HETrpT+i8V4ghBW/1lPE0NRhf
+         IQXF9CvQ1SSJrovZF5XTb5D3VsZyWJKCCyOg+/ML/HZOI8x8jWKXBxWFmncQAUHdVf8h
+         ATQPWHIqIgUEiX/qnBIM9QBTtY570Uign1q2YtItDUWH88nHOCJO2zBcBVQzJ4BQHdPz
+         lZvt4nwCinKfzDUdAMksR+ww7en89UbGkt3KrIRMu0RyJ2LP7Ul0Vog5+pH2B15xKFiZ
+         7nwQ==
+X-Gm-Message-State: AOAM533CQveumLuNRsnh8We3D2XDDgF1OqTpbNyEqKfovPBwrUOTsaH1
+        tuoTh55vHSc97WHtIIIbTdXbrVzFicpptn8vHyU=
+X-Google-Smtp-Source: ABdhPJzg/HGDPUImAxYpyvDw+CFmq8I77SNxfyByZ6JGDcF7jwdlWSZG9M7iYncmpN6BcAFWQbVigJ0zAGn6Nuvt1Tg=
+X-Received: by 2002:a25:324b:: with SMTP id y72mr17025245yby.23.1611763280688;
+ Wed, 27 Jan 2021 08:01:20 -0800 (PST)
+MIME-Version: 1.0
+References: <20210126171550.3066-1-kernel@esmil.dk> <CAF=yD-LGoVkf5ARHPsGAMbsruDq7iQ=X8c3cZRp5XaZC936EMw@mail.gmail.com>
+ <87pn1q8l0t.fsf@codeaurora.org> <CANBLGcwmTt2bmpwST1qHzOFhVoYYPC_gEz3nARzR9mOOg6nOHA@mail.gmail.com>
+ <87lfce8keh.fsf@codeaurora.org>
+In-Reply-To: <87lfce8keh.fsf@codeaurora.org>
+From:   Emil Renner Berthing <kernel@esmil.dk>
+Date:   Wed, 27 Jan 2021 17:01:08 +0100
+Message-ID: <CANBLGcwfK41+E9JzrU_Hym8VK5S4rGdsyKCHMRiABQvt2zL4kg@mail.gmail.com>
+Subject: Re: [PATCH] rtlwifi: use tasklet_setup to initialize rx_work_tasklet
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         Network Development <netdev@vger.kernel.org>,
@@ -54,89 +49,64 @@ Cc:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
         Allen Pais <allen.lkml@gmail.com>,
         Romain Perier <romain.perier@gmail.com>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rtlwifi: use tasklet_setup to initialize rx_work_tasklet
-References: <20210126171550.3066-1-kernel@esmil.dk>
-        <CAF=yD-LGoVkf5ARHPsGAMbsruDq7iQ=X8c3cZRp5XaZC936EMw@mail.gmail.com>
-        <87pn1q8l0t.fsf@codeaurora.org>
-        <CANBLGcwmTt2bmpwST1qHzOFhVoYYPC_gEz3nARzR9mOOg6nOHA@mail.gmail.com>
-Date:   Wed, 27 Jan 2021 17:33:10 +0200
-In-Reply-To: <CANBLGcwmTt2bmpwST1qHzOFhVoYYPC_gEz3nARzR9mOOg6nOHA@mail.gmail.com>
-        (Emil Renner Berthing's message of "Wed, 27 Jan 2021 16:25:39 +0100")
-Message-ID: <87lfce8keh.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Emil Renner Berthing <kernel@esmil.dk> writes:
+On Wed, 27 Jan 2021 at 16:33, Kalle Valo <kvalo@codeaurora.org> wrote:
+> ...
+> Forgot to mention that I can remove the Fixes tags during commit, so no
+> need to resend just because of those.
 
-> On Wed, 27 Jan 2021 at 16:20, Kalle Valo <kvalo@codeaurora.org> wrote:
->>
->> Willem de Bruijn <willemdebruijn.kernel@gmail.com> writes:
->>
->> > On Wed, Jan 27, 2021 at 5:23 AM Emil Renner Berthing <kernel@esmil.dk> wrote:
->> >>
->> >> In commit d3ccc14dfe95 most of the tasklets in this driver was
->> >> updated to the new API. However for the rx_work_tasklet only the
->> >> type of the callback was changed from
->> >>   void _rtl_rx_work(unsigned long data)
->> >> to
->> >>   void _rtl_rx_work(struct tasklet_struct *t).
->> >>
->> >> The initialization of rx_work_tasklet was still open-coded and the
->> >> function pointer just cast into the old type, and hence nothing sets
->> >> rx_work_tasklet.use_callback = true and the callback was still called as
->> >>
->> >>   t->func(t->data);
->> >>
->> >> with uninitialized/zero t->data.
->> >>
->> >> Commit 6b8c7574a5f8 changed the casting of _rtl_rx_work a bit and
->> >> initialized t->data to a pointer to the tasklet cast to an unsigned
->> >> long.
->> >>
->> >> This way calling t->func(t->data) might actually work through all the
->> >> casting, but it still doesn't update the code to use the new tasklet
->> >> API.
->> >>
->> >> Let's use the new tasklet_setup to initialize rx_work_tasklet properly
->> >> and set rx_work_tasklet.use_callback = true so that the callback is
->> >> called as
->> >>
->> >>   t->callback(t);
->> >>
->> >> without all the casting.
->> >>
->> >> Fixes: 6b8c7574a5f8 ("rtlwifi: fix build warning")
->> >> Fixes: d3ccc14dfe95 ("rtlwifi/rtw88: convert tasklets to use new
->> >> tasklet_setup() API")
->> >> Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
->> >
->> > Since the current code works, this could target net-next
->>
->> This should go to wireless-drivers-next, not net-next.
->>
->> > without Fixes tags.
->>
->> Correct, no need for Fixes tag as there's no bug to fix. This is only
->> cleanup AFAICS.
+Cool, thanks.
 
-Forgot to mention that I can remove the Fixes tags during commit, so no
-need to resend just because of those.
+> > I can definitely see how you can reasonably disagree, but I would not
+> > be comfortable having code that only works because the calling
+> > conventions of all relevant architectures happen to put the first
+> > unsigned long argument and the first pointer argument in the same
+> > register.
+>
+> If there's a bug this patch fixes please explain it clearly in the
+> commit log. But as I read it (though I admit very quickly) I understood
+> this is just cleanup.
 
-> I can definitely see how you can reasonably disagree, but I would not
-> be comfortable having code that only works because the calling
-> conventions of all relevant architectures happen to put the first
-> unsigned long argument and the first pointer argument in the same
-> register.
+Sorry, I'll try again.
 
-If there's a bug this patch fixes please explain it clearly in the
-commit log. But as I read it (though I admit very quickly) I understood
-this is just cleanup.
+So the tasklet_struct looks like this:
+struct tasklet_struct {
+  ..
+  bool use_callback;
+  union {
+    void (*func)(unsigned long);
+    void (*callback)(struct tasklet_struct *);
+  };
+  unsigned long data;
+};
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+..and the use_callback flag is used like this:
+if (t->use_callback)
+  t->callback(t);
+else
+  t->func(t->data);
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Now commit d3ccc14dfe95 changed the _rtl_rx_work to be of the new
+callback, not func, type. But it didn't actually set the use_callback
+flag, and just typecast the _rtl_rx_work function pointer and assigned
+it to the func member. So _rtl_rx_work is still called as
+t->func(t->data) even though it was rewritten to be called as
+t->callback(t).
+Now 6b8c7574a5f8 set t->data = (unsigned long)t, so calling
+t->func(t->data) will probably work on most architectures because:
+
+a) "unsigned long" and "struct tasklet_struct *" has the same width on
+all Linux-capable architectures and
+b) calling t->func(t->data) will put the value from t->data into the
+same register as the function
+    void _rtl_rx_work(struct tasklet_struct *t)
+  expects to find the pointer t in the C calling conventions used by
+all relevant architectures.
+
+I guess it's debatable weather this is a bug or just ugly code.
+
+/Emil
