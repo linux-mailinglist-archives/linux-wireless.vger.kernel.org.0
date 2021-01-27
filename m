@@ -2,111 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0F75306082
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 17:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0299306114
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 17:33:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236818AbhA0QE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jan 2021 11:04:58 -0500
-Received: from mail-yb1-f171.google.com ([209.85.219.171]:33599 "EHLO
-        mail-yb1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236374AbhA0QCB (ORCPT
+        id S1343995AbhA0QdH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jan 2021 11:33:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42916 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343556AbhA0QdD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jan 2021 11:02:01 -0500
-Received: by mail-yb1-f171.google.com with SMTP id i141so2510023yba.0;
-        Wed, 27 Jan 2021 08:01:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yepEAjXY6R6spMmhtoWe8WjXNXVezUuhMTMgdZv+bxY=;
-        b=Ab+6BerXgphwVaPZZKiT7IeYqSXYvDe4NV40EkUShsZoZo3hadfZ+1eng2WzscJiCS
-         eqbNkg8si0rCA6BdLCTHVfj4Ziy0Nf32vsDFAyvLeD8HETrpT+i8V4ghBW/1lPE0NRhf
-         IQXF9CvQ1SSJrovZF5XTb5D3VsZyWJKCCyOg+/ML/HZOI8x8jWKXBxWFmncQAUHdVf8h
-         ATQPWHIqIgUEiX/qnBIM9QBTtY570Uign1q2YtItDUWH88nHOCJO2zBcBVQzJ4BQHdPz
-         lZvt4nwCinKfzDUdAMksR+ww7en89UbGkt3KrIRMu0RyJ2LP7Ul0Vog5+pH2B15xKFiZ
-         7nwQ==
-X-Gm-Message-State: AOAM533CQveumLuNRsnh8We3D2XDDgF1OqTpbNyEqKfovPBwrUOTsaH1
-        tuoTh55vHSc97WHtIIIbTdXbrVzFicpptn8vHyU=
-X-Google-Smtp-Source: ABdhPJzg/HGDPUImAxYpyvDw+CFmq8I77SNxfyByZ6JGDcF7jwdlWSZG9M7iYncmpN6BcAFWQbVigJ0zAGn6Nuvt1Tg=
-X-Received: by 2002:a25:324b:: with SMTP id y72mr17025245yby.23.1611763280688;
- Wed, 27 Jan 2021 08:01:20 -0800 (PST)
+        Wed, 27 Jan 2021 11:33:03 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3B3C06174A
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Jan 2021 08:32:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=4BI2w2u7FTlvE8MpAESrQZEF5eb3f5AeuOs1JiirDiY=; b=mWfrP5gKfJQCtU4TxJ7PXfgwCW
+        7QTLsjnAOdIhk6CbGYL8KVD17/i5T2lSS6Q1TADtfiUkYO9c1xRoDPYAJWAZ10biUAW3+WOU6txXX
+        nJaFaok0f2vHIWSYNOvaLaoTDXUIUM9fZil1+xONOZ5BvZ87ADZRkT2itPa3CAJpPzQg=;
+Received: from p54ae9023.dip0.t-ipconnect.de ([84.174.144.35] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1l4njx-0004dB-0i
+        for linux-wireless@vger.kernel.org; Wed, 27 Jan 2021 17:32:21 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH v2 6/7] mt76: mt7915: fix eeprom parsing for DBDC
+Date:   Wed, 27 Jan 2021 17:32:19 +0100
+Message-Id: <20210127163219.90806-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20210114112925.87646-6-nbd@nbd.name>
+References: <20210114112925.87646-6-nbd@nbd.name>
 MIME-Version: 1.0
-References: <20210126171550.3066-1-kernel@esmil.dk> <CAF=yD-LGoVkf5ARHPsGAMbsruDq7iQ=X8c3cZRp5XaZC936EMw@mail.gmail.com>
- <87pn1q8l0t.fsf@codeaurora.org> <CANBLGcwmTt2bmpwST1qHzOFhVoYYPC_gEz3nARzR9mOOg6nOHA@mail.gmail.com>
- <87lfce8keh.fsf@codeaurora.org>
-In-Reply-To: <87lfce8keh.fsf@codeaurora.org>
-From:   Emil Renner Berthing <kernel@esmil.dk>
-Date:   Wed, 27 Jan 2021 17:01:08 +0100
-Message-ID: <CANBLGcwfK41+E9JzrU_Hym8VK5S4rGdsyKCHMRiABQvt2zL4kg@mail.gmail.com>
-Subject: Re: [PATCH] rtlwifi: use tasklet_setup to initialize rx_work_tasklet
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Allen Pais <allen.lkml@gmail.com>,
-        Romain Perier <romain.perier@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 27 Jan 2021 at 16:33, Kalle Valo <kvalo@codeaurora.org> wrote:
-> ...
-> Forgot to mention that I can remove the Fixes tags during commit, so no
-> need to resend just because of those.
+Annotate WIFI_CONF eeprom mask values with the byte number
+Fix parsing per-band number of chains
 
-Cool, thanks.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+v2: detect faulty eeprom path settings that worked before this patch
 
-> > I can definitely see how you can reasonably disagree, but I would not
-> > be comfortable having code that only works because the calling
-> > conventions of all relevant architectures happen to put the first
-> > unsigned long argument and the first pointer argument in the same
-> > register.
->
-> If there's a bug this patch fixes please explain it clearly in the
-> commit log. But as I read it (though I admit very quickly) I understood
-> this is just cleanup.
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    | 28 +++++++++++--------
+ .../wireless/mediatek/mt76/mt7915/eeprom.h    | 17 ++++++-----
+ 2 files changed, 26 insertions(+), 19 deletions(-)
 
-Sorry, I'll try again.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index 7807b9165e01..291a781dada2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -53,7 +53,7 @@ void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+ 	u32 val;
+ 
+ 	val = mt7915_eeprom_read(dev, MT_EE_WIFI_CONF + ext_phy);
+-	val = FIELD_GET(MT_EE_WIFI_CONF_BAND_SEL, val);
++	val = FIELD_GET(MT_EE_WIFI_CONF0_BAND_SEL, val);
+ 	switch (val) {
+ 	case MT_EE_5GHZ:
+ 		phy->mt76->cap.has_5ghz = true;
+@@ -70,25 +70,29 @@ void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+ 
+ static void mt7915_eeprom_parse_hw_cap(struct mt7915_dev *dev)
+ {
+-	u8 nss, tx_mask[2] = {}, *eeprom = dev->mt76.eeprom.data;
++	u8 nss, nss_band, *eeprom = dev->mt76.eeprom.data;
+ 
+ 	mt7915_eeprom_parse_band_config(&dev->phy);
+ 
+ 	/* read tx mask from eeprom */
+-	tx_mask[0] = FIELD_GET(MT_EE_WIFI_CONF_TX_MASK,
+-			       eeprom[MT_EE_WIFI_CONF]);
+-	if (dev->dbdc_support)
+-		tx_mask[1] = FIELD_GET(MT_EE_WIFI_CONF_TX_MASK,
+-				       eeprom[MT_EE_WIFI_CONF + 1]);
+-
+-	nss = tx_mask[0] + tx_mask[1];
+-	if (!nss || nss > 4) {
+-		tx_mask[0] = 4;
++	nss = FIELD_GET(MT_EE_WIFI_CONF0_TX_PATH, eeprom[MT_EE_WIFI_CONF]);
++	if (!nss || nss > 4)
+ 		nss = 4;
++
++	nss_band = nss;
++
++	if (dev->dbdc_support) {
++		nss_band = FIELD_GET(MT_EE_WIFI_CONF3_TX_PATH_B0,
++				     eeprom[MT_EE_WIFI_CONF + 3]);
++		if (!nss_band || nss_band > 2)
++			nss_band = 2;
++
++		if (nss_band >= nss)
++			nss = 4;
+ 	}
+ 
+ 	dev->chainmask = BIT(nss) - 1;
+-	dev->mphy.antenna_mask = BIT(tx_mask[0]) - 1;
++	dev->mphy.antenna_mask = BIT(nss_band) - 1;
+ 	dev->mphy.chainmask = dev->mphy.antenna_mask;
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+index 6712032b40df..7999e95560a8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+@@ -25,11 +25,14 @@ enum mt7915_eeprom_field {
+ 	__MT_EE_MAX =		0xe00
+ };
+ 
+-#define MT_EE_WIFI_CONF_TX_MASK			GENMASK(2, 0)
+-#define MT_EE_WIFI_CONF_BAND_SEL		GENMASK(7, 6)
+-#define MT_EE_WIFI_CONF_TSSI0_2G		BIT(0)
+-#define MT_EE_WIFI_CONF_TSSI0_5G		BIT(2)
+-#define MT_EE_WIFI_CONF_TSSI1_5G		BIT(4)
++#define MT_EE_WIFI_CONF0_TX_PATH		GENMASK(2, 0)
++#define MT_EE_WIFI_CONF0_BAND_SEL		GENMASK(7, 6)
++#define MT_EE_WIFI_CONF1_BAND_SEL		GENMASK(7, 6)
++#define MT_EE_WIFI_CONF3_TX_PATH_B0		GENMASK(1, 0)
++#define MT_EE_WIFI_CONF3_TX_PATH_B1		GENMASK(5, 4)
++#define MT_EE_WIFI_CONF7_TSSI0_2G		BIT(0)
++#define MT_EE_WIFI_CONF7_TSSI0_5G		BIT(2)
++#define MT_EE_WIFI_CONF7_TSSI1_5G		BIT(4)
+ 
+ enum mt7915_eeprom_band {
+ 	MT_EE_DUAL_BAND,
+@@ -116,9 +119,9 @@ mt7915_tssi_enabled(struct mt7915_dev *dev, enum nl80211_band band)
+ 
+ 	/* TODO: DBDC */
+ 	if (band == NL80211_BAND_5GHZ)
+-		return eep[MT_EE_WIFI_CONF + 7] & MT_EE_WIFI_CONF_TSSI0_5G;
++		return eep[MT_EE_WIFI_CONF + 7] & MT_EE_WIFI_CONF7_TSSI0_5G;
+ 	else
+-		return eep[MT_EE_WIFI_CONF + 7] & MT_EE_WIFI_CONF_TSSI0_2G;
++		return eep[MT_EE_WIFI_CONF + 7] & MT_EE_WIFI_CONF7_TSSI0_2G;
+ }
+ 
+ extern const struct sku_group mt7915_sku_groups[];
+-- 
+2.28.0
 
-So the tasklet_struct looks like this:
-struct tasklet_struct {
-  ..
-  bool use_callback;
-  union {
-    void (*func)(unsigned long);
-    void (*callback)(struct tasklet_struct *);
-  };
-  unsigned long data;
-};
-
-..and the use_callback flag is used like this:
-if (t->use_callback)
-  t->callback(t);
-else
-  t->func(t->data);
-
-Now commit d3ccc14dfe95 changed the _rtl_rx_work to be of the new
-callback, not func, type. But it didn't actually set the use_callback
-flag, and just typecast the _rtl_rx_work function pointer and assigned
-it to the func member. So _rtl_rx_work is still called as
-t->func(t->data) even though it was rewritten to be called as
-t->callback(t).
-Now 6b8c7574a5f8 set t->data = (unsigned long)t, so calling
-t->func(t->data) will probably work on most architectures because:
-
-a) "unsigned long" and "struct tasklet_struct *" has the same width on
-all Linux-capable architectures and
-b) calling t->func(t->data) will put the value from t->data into the
-same register as the function
-    void _rtl_rx_work(struct tasklet_struct *t)
-  expects to find the pointer t in the C calling conventions used by
-all relevant architectures.
-
-I guess it's debatable weather this is a bug or just ugly code.
-
-/Emil
