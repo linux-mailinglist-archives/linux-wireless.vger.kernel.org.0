@@ -2,113 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77EAA305976
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 12:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA32B305B7B
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Jan 2021 13:35:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235819AbhA0LUd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jan 2021 06:20:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235978AbhA0Khu (ORCPT
+        id S1343532AbhA0MfI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Jan 2021 07:35:08 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:45102 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237969AbhA0Mb3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jan 2021 05:37:50 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACC2C061573;
-        Wed, 27 Jan 2021 02:37:10 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1l4iBx-00CMrJ-Pj; Wed, 27 Jan 2021 11:36:54 +0100
-Message-ID: <64336aa2e21936095eb7e52ee32289b30b855863.camel@sipsolutions.net>
-Subject: Re: [PATCH] ath9k: fix build error with LEDS_CLASS=m
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@codeaurora.org>, Arnd Bergmann <arnd@kernel.org>
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Flavio Suligoi <f.suligoi@asem.it>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Wed, 27 Jan 2021 11:36:34 +0100
-In-Reply-To: <87bldaacqu.fsf@codeaurora.org>
-References: <20210125113654.2408057-1-arnd@kernel.org>
-         <CAJKOXPfteJ3Jia4Qd9DabjxcOtax3uDgi1fSbz4_+cHsJ1prQQ@mail.gmail.com>
-         <CAK8P3a0apBUbck9Z3UMKfwSJw8a-UbbXLTLUvSyOKEwTgPLjqg@mail.gmail.com>
-         <CAJKOXPc6LWnqiyO9WgxUZPo-vitNcQQr2oDoyD44P2YTSJ7j=g@mail.gmail.com>
-         <CAK8P3a1NEbZtXVA0Z4P3K97L9waBp7nkCWOkdYjR3+7FUF0P0Q@mail.gmail.com>
-         <CAJKOXPdWouEFtCp_iG+py1JcyrEU2Fj98jBAPTKZXQXCDQE54A@mail.gmail.com>
-         <CAK8P3a3ygYTEwjLbFuArdfNF1-yydVjtS2NZDAURKjOJGAxkAQ@mail.gmail.com>
-         <87bldaacqu.fsf@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+        Wed, 27 Jan 2021 07:31:29 -0500
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10RC2Nkh117828;
+        Wed, 27 Jan 2021 07:30:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=rwzNdVxaabwTTzTgTZiXcpB5MZiv4i4Keynxr5b824I=;
+ b=VKGYx+Yu4qp0Ov/MuEfEu9mWOggHrC9iBzT/DriErNwUnp7Z7Hhi7zMFSGM3KDJX8WqB
+ +hN1QC7L1GaKVhph2FRR2Eb9TttgHq8HwB2Sy85+bCDMJBRRR+zwMyxbcfOI97dGUFG0
+ CTyloZkSAYkmfUodCXcbRk5JbW+LoNHAnTUuz/BN7bo1yoNDnGr/MBYHy+PJ/FNuReDx
+ WG/1rSlWm6EHh8wKm2Gv8UAywyN3D4T/wrP9BzIQlrrfEFNCrylyJQ2+Yb4Ux1hQZw0R
+ m5B03B9I4ikPy1xSn1z0EA1QAggwZV5UmVkM8PCCzjXvU5trcFNyq+yc461hLLjsvQ1W Hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 36awe7eyxp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Jan 2021 07:30:37 -0500
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10RC30MO119656;
+        Wed, 27 Jan 2021 07:30:37 -0500
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 36awe7eyws-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Jan 2021 07:30:37 -0500
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10RCEBZL002533;
+        Wed, 27 Jan 2021 12:30:34 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by ppma01fra.de.ibm.com with ESMTP id 368be81ya7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Jan 2021 12:30:34 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10RCUVv446793006
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 27 Jan 2021 12:30:31 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8C60442042;
+        Wed, 27 Jan 2021 12:30:31 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DE3BF42045;
+        Wed, 27 Jan 2021 12:30:30 +0000 (GMT)
+Received: from localhost (unknown [9.171.68.8])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed, 27 Jan 2021 12:30:30 +0000 (GMT)
+Date:   Wed, 27 Jan 2021 13:30:29 +0100
+From:   Vasily Gorbik <gor@linux.ibm.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Dave Airlie <airlied@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-s390@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH] Fix "ordering" comment typos
+Message-ID: <your-ad-here.call-01611750629-ext-5157@work.hours>
+References: <20210126195042.2909405-1-helgaas@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210126195042.2909405-1-helgaas@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-27_05:2021-01-27,2021-01-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 spamscore=0 clxscore=1011 suspectscore=0
+ impostorscore=0 bulkscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0
+ mlxlogscore=936 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2009150000 definitions=main-2101270063
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-01-27 at 12:35 +0200, Kalle Valo wrote:
-> Arnd Bergmann <arnd@kernel.org> writes:
+On Tue, Jan 26, 2021 at 01:50:42PM -0600, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
 > 
-> > On Mon, Jan 25, 2021 at 4:04 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > > On Mon, 25 Jan 2021 at 15:38, Arnd Bergmann <arnd@kernel.org> wrote:
-> > > > On Mon, Jan 25, 2021 at 2:27 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > > 
-> > > I meant that having MAC80211_LEDS selected causes the ath9k driver to
-> > > toggle on/off the WiFi LED. Every second, regardless whether it's
-> > > doing something or not. In my setup, I have problems with a WiFi
-> > > dongle somehow crashing (WiFi disappears, nothing comes from the
-> > > dongle... maybe it's Atheros FW, maybe some HW problem) and I found
-> > > this LED on/off slightly increases the chances of this dongle-crash.
-> > > That was the actual reason behind my commits.
-> > > 
-> > > Second reason is that I don't want to send USB commands every second
-> > > when the device is idle. It unnecessarily consumes power on my
-> > > low-power device.
-> > 
-> > Ok, I see.
-> > 
-> > > Of course another solution is to just disable the trigger via sysfs
-> > > LED API. It would also work but my patch allows entire code to be
-> > > compiled-out (which was conditional in ath9k already).
-> > > 
-> > > Therefore the patch I sent allows the ath9k LED option to be fully
-> > > choosable. Someone wants every-second-LED-blink, sure, enable
-> > > ATH9K_LEDS and you have it. Someone wants to reduce the kernel size,
-> > > don't enable ATH9K_LEDS.
-> > 
-> > Originally, I think this is what CONFIG_MAC80211_LEDS was meant
-> > for, but it seems that this is not actually practical, since this also
-> > gets selected by half of the drivers using it, while the other half have
-> > a dependency on it. Out of the ones that select it, some in turn
-> > select LEDS_CLASS, while some depend on it.
-> > 
-> > I think this needs a larger-scale cleanup for consistency between
-> > (at least) all the wireless drivers using LEDs.
+> Fix comment typos in "ordering".
 > 
-> I agree, this needs cleanup.
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+>  arch/s390/include/asm/facility.h             | 2 +-
+>  drivers/gpu/drm/qxl/qxl_drv.c                | 2 +-
+>  drivers/net/wireless/intel/iwlwifi/fw/file.h | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> > Either your patch or mine should get applied in the meantime, and I
-> > don't care much which one in this case, as we still have the remaining
-> > inconsistency.
 > 
-> My problem with Krzysztof's patch[1] is that it adds a new Kconfig
-> option for ath9k, is that really necessary? Like Arnd said, we should
-> fix drivers to use CONFIG_MAC80211_LEDS instead of having driver
-> specific options.
+> Unless somebody objects, I'll just merge these typo fixes via the PCI tree.
 > 
-> So I would prefer take this Arnd's patch instead and queue it for v5.11.
-> But as it modifies mac80211 I'll need an ack from Johannes, what do you
-> think?
+> 
+> diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
+> index 68c476b20b57..91b5d714d28f 100644
+> --- a/arch/s390/include/asm/facility.h
+> +++ b/arch/s390/include/asm/facility.h
+> @@ -44,7 +44,7 @@ static inline int __test_facility(unsigned long nr, void *facilities)
+>  }
+>  
+>  /*
+> - * The test_facility function uses the bit odering where the MSB is bit 0.
+> + * The test_facility function uses the bit ordering where the MSB is bit 0.
+>   * That makes it easier to query facility bits with the bit number as
+>   * documented in the Principles of Operation.
+>   */
 
-Sure, that seems fine.
-
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-
-johannes
-
+Acked-by: Vasily Gorbik <gor@linux.ibm.com>
