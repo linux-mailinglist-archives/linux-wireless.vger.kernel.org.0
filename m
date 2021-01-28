@@ -2,130 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A0D30731F
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 10:49:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1AB23073C2
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 11:31:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231764AbhA1Jsd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 04:48:33 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:54378 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232154AbhA1JqV (ORCPT
+        id S231657AbhA1KaK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 05:30:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48060 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229774AbhA1KaI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 04:46:21 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 10S9jONu9003601, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmbs03.realtek.com.tw[172.21.6.96])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 10S9jONu9003601
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 28 Jan 2021 17:45:24 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 28 Jan 2021 17:45:24 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833]) by
- RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833%12]) with mapi id
- 15.01.2106.006; Thu, 28 Jan 2021 17:45:24 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>
-CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Bernie Huang <phhuang@realtek.com>
-Subject: RE: [PATCH v4 3/8] rtw88: add napi support
-Thread-Topic: [PATCH v4 3/8] rtw88: add napi support
-Thread-Index: AQHW6yCPbtjrLodDrUGqlkIx94yfwqozx6WAgAkWW6A=
-Date:   Thu, 28 Jan 2021 09:45:24 +0000
-Message-ID: <d84e1a2c0d8e481588eec7248abf5c1a@realtek.com>
-References: <20210115092405.8081-1-pkshih@realtek.com>
- <20210115092405.8081-4-pkshih@realtek.com>
- <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com>
-In-Reply-To: <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Thu, 28 Jan 2021 05:30:08 -0500
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 597E3C061573;
+        Thu, 28 Jan 2021 02:29:27 -0800 (PST)
+Received: by mail-lj1-x235.google.com with SMTP id s18so5675012ljg.7;
+        Thu, 28 Jan 2021 02:29:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yMLTIPyc/LiQ2bi7uEqiU4NDimPedT3k+buADRHwdTU=;
+        b=QFePxmMTPUq6l/K2kvKuT5EUpnlXD+oMUphHFUWQphUh154VEiEKNgki2GaMRiCFPh
+         2u1v1nC9swFExYJhcS/GzSu+SaQ38wE8qPaQKanwn6GfSKrX9bd2MeC+F0GnXxHipsOM
+         Ldvv3CnWjpXEA0XLRAWLaDCYyK+zdYztlgb9fZOEEE6W9RisUGHLpd10PBfdlBNEjoLV
+         y9fLucwUqTi9/kniAJHWUyd3Ak1dJ99kaWkPknEHlxiav4ya8ZAfMSau8rN4eETsEC4Y
+         vWvWPpN1PwDkteAGMB5YRZ4f9YKLEgAThZPP+13eR+cNnJP/Vba/7lOcqpBTBvDBjCEZ
+         JdkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yMLTIPyc/LiQ2bi7uEqiU4NDimPedT3k+buADRHwdTU=;
+        b=RE7xD47nKA5UyYh3CXVBYeS+j9Mc2TJQ6HuCjnU/dTdpxzL8Ti0Lzgv5ksPnMQ78+I
+         V32b5uQG9vsyM/7sh0pHWDpyfKa8ksK82hZHvXn9VAZv1o7AZ11/Xx6DijcfZ9uHaDT1
+         /cTrGuKvO6CIfmVm/LrxxHk9dv2FtJkxMKHGyn6I2Jdz7/u5N2Je2pqT0jDHHsWhz7wK
+         VXiq7Ywrh53XR7141RUguWma04B4FYq2Ix587PeatDpvkvP892nCCtevds/F9LXn+ANv
+         R4G5V3WWaQ30oDBknK6Fxp+ezI7prR+dw8tAGsNHfBJNXFSeJtjmHVXNFL/mH4xMpNhX
+         hheQ==
+X-Gm-Message-State: AOAM531kpGIJm5/SYmlBTVk/4qIQmUTtuBjg6QhR45mWiWQfL10BoAhF
+        WOarxVhS7wx7YH5u7f5SsG40s3dGyBJAGIK81yvfdJwSoLw=
+X-Google-Smtp-Source: ABdhPJz1AmHnLn2KLgRF4r4Hmx5P13kWS8+cqvl6PWUGuwWzFvBAPV3paGe7pBeKMz9IdzvJVas6y7g+gElcNSvmvcY=
+X-Received: by 2002:a2e:9b57:: with SMTP id o23mr8388781ljj.314.1611829765892;
+ Thu, 28 Jan 2021 02:29:25 -0800 (PST)
 MIME-Version: 1.0
+References: <1611823636-18377-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+In-Reply-To: <1611823636-18377-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Thu, 28 Jan 2021 21:29:14 +1100
+Message-ID: <CAGRGNgWM=dQx4suXZJX+u6m0i4=Qx3hZFZWdWJ8VO+FG_edH2w@mail.gmail.com>
+Subject: Re: [PATCH] b43: Remove redundant code
+To:     Abaci Team <abaci-bugfix@linux.alibaba.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        b43-dev <b43-dev@lists.infradead.org>, netdev@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJyaWFuIE5vcnJpcyBbbWFp
-bHRvOmJyaWFubm9ycmlzQGNocm9taXVtLm9yZ10NCj4gU2VudDogU2F0dXJkYXksIEphbnVhcnkg
-MjMsIDIwMjEgNjo1OCBBTQ0KPiBUbzogUGtzaGloDQo+IENjOiBZYW4tSHN1YW4gQ2h1YW5nOyBL
-YWxsZSBWYWxvOyBsaW51eC13aXJlbGVzczsgQmVybmllIEh1YW5nDQo+IFN1YmplY3Q6IFJlOiBb
-UEFUQ0ggdjQgMy84XSBydHc4ODogYWRkIG5hcGkgc3VwcG9ydA0KPiANCj4gT24gRnJpLCBKYW4g
-MTUsIDIwMjEgYXQgMToyNiBBTSBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3Jv
-dGU6DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuYw0K
-PiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmMNCj4gPiBA
-QCAtOTM1LDE2ICs5MzUsNDkgQEAgc3RhdGljIHZvaWQgcnR3X3BjaV90eF9pc3Ioc3RydWN0IHJ0
-d19kZXYgKnJ0d2Rldiwgc3RydWN0IHJ0d19wY2kgKnJ0d3BjaSwNCj4gPiAgICAgICAgIHJpbmct
-PnIucnAgPSBjdXJfcnA7DQo+ID4gIH0NCj4gPg0KPiA+IC1zdGF0aWMgdm9pZCBydHdfcGNpX3J4
-X2lzcihzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCBzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpLA0KPiA+
-ICtzdGF0aWMgdm9pZCBydHdfcGNpX3J4X2lzcihzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KQ0KPiA+
-ICt7DQo+ID4gKyAgICAgICBzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpID0gKHN0cnVjdCBydHdfcGNp
-ICopcnR3ZGV2LT5wcml2Ow0KPiA+ICsgICAgICAgc3RydWN0IG5hcGlfc3RydWN0ICpuYXBpID0g
-JnJ0d3BjaS0+bmFwaTsNCj4gPiArDQo+ID4gKyAgICAgICBuYXBpX3NjaGVkdWxlKG5hcGkpOw0K
-PiANCj4gSSBkb24ndCBjbGFpbSB0byBiZSBhbGwgdGhhdCBmYW1pbGlhciB3aXRoIE5BUEksIGJ1
-dCBteSB1bmRlcnN0YW5kaW5nDQo+IGlzIHRoYXQgeW91IGFyZSBzY2hlZHVsaW5nIGEgTkFQSSBw
-b2xsLCBidXQgaW1tZWRpYXRlbHkgYWZ0ZXIgeW91DQo+IHJldHVybiBoZXJlLCB5b3UncmUgcmUt
-ZW5hYmxpbmcgeW91ciBSWCBpbnRlcnJ1cHQuIFRoYXQgZG9lc24ndCBzb3VuZA0KPiBsaWtlIGhv
-dyBOQVBJIGlzIHN1cHBvc2VkIHRvIHdvcmsgLS0geW91J3JlIHN1cHBvc2VkIHRvIHdhaXQgdG8N
-Cj4gcmUtZW5hYmxlIHlvdXIgaW50ZXJydXB0IHVudGlsIHlvdSdyZSBkb25lIHdpdGggeW91ciBw
-b2xsaW5nIGZ1bmN0aW9uLg0KPiBSZWY6IGh0dHBzOi8vd2lraS5saW51eGZvdW5kYXRpb24ub3Jn
-L25ldHdvcmtpbmcvbmFwaQ0KPiANCg0KV2lsbCByZS1lbmFibGUgUlggSU1SIHVudGlsIG5hcGlf
-cG9sbCBmdW5jdGlvbiBpcyBkb25lLg0KDQo+ID4gK30NCj4gLi4uDQo+ID4gK3N0YXRpYyB1MzIg
-cnR3X3BjaV9yeF9uYXBpKHN0cnVjdCBydHdfZGV2ICpydHdkZXYsIHN0cnVjdCBydHdfcGNpICpy
-dHdwY2ksDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgdTggaHdfcXVldWUpDQo+IC4u
-Lg0KPiANCj4gQXJlIHlvdSBzdXJlIHlvdSBkb24ndCB3YW50IGFueSBsb2NraW5nIGluIHJ0d19w
-Y2lfcnhfbmFwaSgpPw0KPiBQcmV2aW91c2x5LCB5b3UgaGVsZCBpcnFfbG9jayBmb3IgdGhlIGVu
-dGlyZXR5IG9mIHJ0d19wY2lfcnhfaXNyKCksDQo+IGJ1dCBub3cgYWxsIHRoZSBSWCB3b3JrIGlz
-IGJlaW5nIGRlZmVycmVkIHRvIGEgTkFQSSBjb250ZXh0LCB3aXRob3V0DQo+IGFueSBhZGRpdGlv
-bmFsIGxvY2suIElJVUMsIHRoYXQgbWVhbnMgeW91IGNhbiBiZSBib3RoIGhhbmRsaW5nIFJYIGFu
-ZA0KPiBvdGhlciBJU1Igb3BlcmF0aW9ucyBhdCB0aGUgc2FtZSB0aW1lLiBJcyB0aGF0IGludGVu
-dGlvbmFsPw0KPiANCg0KaXJxX2xvY2sgaXMgdXNlZCB0byBwcm90ZWN0IFRYIHJpbmctPnF1ZXVl
-LiBUaGUgVFggc2tiKHMpIGFyZSBxdWV1ZWQgaW50byB0aGUNCnF1ZXVlLCBhbmQgdW5saW5rIHRo
-ZSBza2IgdW50aWwgVFhfT0tfSVNSIGlzIHJlY2VpdmVkLiBTbywgUlggZG9lc24ndCBuZWVkIHRv
-DQpob2xkIHRoaXMgbG9jay4NCg0KPiA+ICtzdGF0aWMgaW50IHJ0d19wY2lfbmFwaV9wb2xsKHN0
-cnVjdCBuYXBpX3N0cnVjdCAqbmFwaSwgaW50IGJ1ZGdldCkNCj4gPiArew0KPiA+ICsgICAgICAg
-c3RydWN0IHJ0d19wY2kgKnJ0d3BjaSA9IGNvbnRhaW5lcl9vZihuYXBpLCBzdHJ1Y3QgcnR3X3Bj
-aSwgbmFwaSk7DQo+ID4gKyAgICAgICBzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2ID0gY29udGFpbmVy
-X29mKCh2b2lkICopcnR3cGNpLCBzdHJ1Y3QgcnR3X2RldiwNCj4gPiArICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcHJpdik7DQo+ID4gKyAgICAgICBpbnQgd29y
-a19kb25lID0gMDsNCj4gPiArDQo+ID4gKyAgICAgICB3aGlsZSAod29ya19kb25lIDwgYnVkZ2V0
-KSB7DQo+ID4gKyAgICAgICAgICAgICAgIHUzMiB3b3JrX2RvbmVfb25jZTsNCj4gPiArDQo+ID4g
-KyAgICAgICAgICAgICAgIHdvcmtfZG9uZV9vbmNlID0gcnR3X3BjaV9yeF9uYXBpKHJ0d2Rldiwg
-cnR3cGNpLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBSVFdfUlhfUVVFVUVfTVBEVSk7DQo+ID4gKyAgICAgICAgICAgICAgIGlmICh3b3JrX2Rv
-bmVfb25jZSA9PSAwKQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiA+ICsg
-ICAgICAgICAgICAgICB3b3JrX2RvbmUgKz0gd29ya19kb25lX29uY2U7DQo+ID4gKyAgICAgICB9
-DQo+ID4gKyAgICAgICBpZiAod29ya19kb25lIDwgYnVkZ2V0KSB7DQo+ID4gKyAgICAgICAgICAg
-ICAgIG5hcGlfY29tcGxldGVfZG9uZShuYXBpLCB3b3JrX2RvbmUpOw0KPiA+ICsgICAgICAgICAg
-ICAgICAvKiBXaGVuIElTUiBoYXBwZW5zIGR1cmluZyBwb2xsaW5nIGFuZCBiZWZvcmUgbmFwaV9j
-b21wbGV0ZQ0KPiA+ICsgICAgICAgICAgICAgICAgKiB3aGlsZSBubyBmdXJ0aGVyIGRhdGEgaXMg
-cmVjZWl2ZWQuIERhdGEgb24gdGhlIGRtYV9yaW5nIHdpbGwNCj4gPiArICAgICAgICAgICAgICAg
-ICogbm90IGJlIHByb2Nlc3NlZCBpbW1lZGlhdGVseS4gQ2hlY2sgd2hldGhlciBkbWEgcmluZyBp
-cw0KPiA+ICsgICAgICAgICAgICAgICAgKiBlbXB0eSBhbmQgcGVyZm9ybSBuYXBpX3NjaGVkdWxl
-IGFjY29yZGluZ2x5Lg0KPiA+ICsgICAgICAgICAgICAgICAgKi8NCj4gPiArICAgICAgICAgICAg
-ICAgaWYgKHJ0d19wY2lfZ2V0X2h3X3J4X3JpbmdfbnIocnR3ZGV2LCBydHdwY2ksIE5VTEwsIE5V
-TEwpKQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIG5hcGlfc2NoZWR1bGUobmFwaSk7DQo+
-ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+ICsgICAgICAgcmV0dXJuIHdvcmtfZG9uZTsNCj4gPiAr
-fQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgcnR3X3BjaV9uYXBpX2luaXQoc3RydWN0IHJ0d19k
-ZXYgKnJ0d2RldikNCj4gPiArew0KPiA+ICsgICAgICAgc3RydWN0IHJ0d19wY2kgKnJ0d3BjaSA9
-IChzdHJ1Y3QgcnR3X3BjaSAqKXJ0d2Rldi0+cHJpdjsNCj4gPiArDQo+ID4gKyAgICAgICBpbml0
-X2R1bW15X25ldGRldigmcnR3cGNpLT5uZXRkZXYpOw0KPiA+ICsgICAgICAgbmV0aWZfbmFwaV9h
-ZGQoJnJ0d3BjaS0+bmV0ZGV2LCAmcnR3cGNpLT5uYXBpLCBydHdfcGNpX25hcGlfcG9sbCwNCj4g
-PiArICAgICAgICAgICAgICAgICAgICAgIFJUV19OQVBJX1dFSUdIVF9OVU0pOw0KPiA+ICsgICAg
-ICAgbmFwaV9lbmFibGUoJnJ0d3BjaS0+bmFwaSk7DQo+ID4gK30NCj4gLi4uDQo+ID4gQEAgLTE1
-NDcsNiArMTYyNCw4IEBAIGludCBydHdfcGNpX3Byb2JlKHN0cnVjdCBwY2lfZGV2ICpwZGV2LA0K
-PiA+ICAgICAgICAgICAgICAgICBnb3RvIGVycl9kZXN0cm95X3BjaTsNCj4gPiAgICAgICAgIH0N
-Cj4gPg0KPiA+ICsgICAgICAgcnR3X3BjaV9uYXBpX2luaXQocnR3ZGV2KTsNCj4gDQo+IFlvdSdy
-ZSBpbml0aWFsaXppbmcgTkFQSSBhZnRlciB5b3UndmUgYWxyZWFkeSBlc3RhYmxpc2hlZCB5b3Vy
-IElTUiwNCj4gYW5kIHlvdXIgSVNSIG1pZ2h0IHN0YXJ0IHNjaGVkdWxpbmcgTkFQSS4gRXZlbiBp
-ZiB0aGF0J3MgdW5saWtlbHkNCj4gKGJlY2F1c2UgeW91IGhhdmVuJ3QgaW5pdGlhdGVkIGFueSBS
-WCB0cmFmZmljIHlldCksIGl0IHNlZW1zIGxpa2UgYW4NCj4gb3JkZXJpbmcgcHJvYmxlbSAtLSBz
-aG91bGRuJ3QgeW91IGluaXRpYWxpemUgdGhlIE5BUEkgZGV2aWNlLCB0aGVuIHNldA0KPiB1cCB0
-aGUgSVNSLCBhbmQgb25seSB0aGVuIGNhbGwgbmFwaV9lbmFibGUoKT8NCj4gDQoNCldpbGwgZG8g
-aXQuDQoNClRoYW5rcyBmb3IgeW91ciBhZHZpY2UuDQoNCi0tLQ0KUGluZy1LZQ0KDQoNCg==
+Hi ..... <insert name here>,
+
+(No proper name in the from field or signed-off-by, as you're already aware)
+
+On Thu, Jan 28, 2021 at 7:53 PM Abaci Team
+<abaci-bugfix@linux.alibaba.com> wrote:
+>
+> Fix the following coccicheck warnings:
+>
+> ./drivers/net/wireless/broadcom/b43/phy_n.c:4640:2-4: WARNING: possible
+> condition with no effect (if == else).
+>
+> ./drivers/net/wireless/broadcom/b43/phy_n.c:4606:2-4: WARNING: possible
+> condition with no effect (if == else).
+>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Suggested-by: Jiapeng Zhong <oswb@linux.alibaba.com>
+> Signed-off-by: Abaci Team <abaci-bugfix@linux.alibaba.com>
+> ---
+>  drivers/net/wireless/broadcom/b43/phy_n.c | 16 ----------------
+>  1 file changed, 16 deletions(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+> index b669dff..39a335f 100644
+> --- a/drivers/net/wireless/broadcom/b43/phy_n.c
+> +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+> @@ -4601,16 +4601,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
+>         if (nphy->hang_avoid)
+>                 b43_nphy_stay_in_carrier_search(dev, 1);
+>
+> -       if (nphy->gband_spurwar_en) {
+> -               /* TODO: N PHY Adjust Analog Pfbw (7) */
+> -               if (channel == 11 && b43_is_40mhz(dev)) {
+> -                       ; /* TODO: N PHY Adjust Min Noise Var(2, tone, noise)*/
+> -               } else {
+> -                       ; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
+> -               }
+> -               /* TODO: N PHY Adjust CRS Min Power (0x1E) */
+> -       }
+
+I'm not sure how useful this patch is, even though it is technically correct.
+
+The b43 driver was almost entirely reverse engineered from various
+sources so there's still a lot of places, like this, where placeholder
+comments were written until the actual code that would have been here
+was ready / reverse engineered.
+
+That said, I believe the driver works well enough for all it's users
+and has not seen any significant changes in a long time.
+
+Thanks,
+
+-- 
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
+
+On Thu, Jan 28, 2021 at 7:53 PM Abaci Team
+<abaci-bugfix@linux.alibaba.com> wrote:
+>
+> Fix the following coccicheck warnings:
+>
+> ./drivers/net/wireless/broadcom/b43/phy_n.c:4640:2-4: WARNING: possible
+> condition with no effect (if == else).
+>
+> ./drivers/net/wireless/broadcom/b43/phy_n.c:4606:2-4: WARNING: possible
+> condition with no effect (if == else).
+>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Suggested-by: Jiapeng Zhong <oswb@linux.alibaba.com>
+> Signed-off-by: Abaci Team <abaci-bugfix@linux.alibaba.com>
+> ---
+>  drivers/net/wireless/broadcom/b43/phy_n.c | 16 ----------------
+>  1 file changed, 16 deletions(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+> index b669dff..39a335f 100644
+> --- a/drivers/net/wireless/broadcom/b43/phy_n.c
+> +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+> @@ -4601,16 +4601,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
+>         if (nphy->hang_avoid)
+>                 b43_nphy_stay_in_carrier_search(dev, 1);
+>
+> -       if (nphy->gband_spurwar_en) {
+> -               /* TODO: N PHY Adjust Analog Pfbw (7) */
+> -               if (channel == 11 && b43_is_40mhz(dev)) {
+> -                       ; /* TODO: N PHY Adjust Min Noise Var(2, tone, noise)*/
+> -               } else {
+> -                       ; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
+> -               }
+> -               /* TODO: N PHY Adjust CRS Min Power (0x1E) */
+> -       }
+> -
+>         if (nphy->aband_spurwar_en) {
+>                 if (channel == 54) {
+>                         tone[0] = 0x20;
+> @@ -4636,12 +4626,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
+>                         tone[0] = 0;
+>                         noise[0] = 0;
+>                 }
+> -
+> -               if (!tone[0] && !noise[0]) {
+> -                       ; /* TODO: N PHY Adjust Min Noise Var(1, tone, noise)*/
+> -               } else {
+> -                       ; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
+> -               }
+>         }
+>
+>         if (nphy->hang_avoid)
+> --
+> 1.8.3.1
+>
+
+
+-- 
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
