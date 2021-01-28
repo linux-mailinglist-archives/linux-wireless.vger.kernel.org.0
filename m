@@ -2,67 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5BA6306B85
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 04:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C674306F03
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 08:23:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231126AbhA1DUy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Jan 2021 22:20:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51284 "EHLO mail.kernel.org"
+        id S231848AbhA1HVk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 02:21:40 -0500
+Received: from m42-8.mailgun.net ([69.72.42.8]:58607 "EHLO m42-8.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229831AbhA1DUx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Jan 2021 22:20:53 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 810BA64DD8;
-        Thu, 28 Jan 2021 03:20:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611804012;
-        bh=O6tUNpIcgF4x9X6sgd3rpc6974VmXxPMWsMT4uncE54=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=DOLUptACjMX/Noui5srpX2o2GysdjXnQFxf2YqmSwMJ9pE8AE2VCmpHdUWp3clLWj
-         7BWTKfh7H43LgFzpepa1y8OWgMvccJzL9voR2yWITBx1XTHbG4eNeKYloDp1wN2cgZ
-         1sqenq3q3fsbD93FKWUgPdCyJi49SB8t8u933yKCGJLj/eJ7+kKEt+UwTj4FvAFkhW
-         BL8+5CJ6diD4yxrWpeDNarKTD7SE8c/1GF5yiDZ39l473yrzav2bRY8VRRj4AOtiBa
-         ag624rLhjF1eotPGuf8mIR++pWzBzC9ddXNUuZ8W61Gqc30RP97fLQ+d8eBDB1C+gG
-         64Txkl6/n+23Q==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 7C58365307;
-        Thu, 28 Jan 2021 03:20:12 +0000 (UTC)
+        id S231841AbhA1HTi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Jan 2021 02:19:38 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1611818358; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=br0U6qOZfM/WO5fj2/vEmOrOoda1LXeAqowypE5hm90=;
+ b=FiCCZF2s2nQY1h9ypf5n/OvfzT3JOpvWJi14s0YuJQFaBhMvYIY4pHI6oqsWT7vJoCZ2YgwU
+ kVkaWiD5jbLTD6uDX+LnM41+fdIEzkKgcTU2HwbHmktkKZkouA83fHb6Ztl71ZlAD0T28FmC
+ vFS6BF5O+K/olZ5IuGCh4oUG0jY=
+X-Mailgun-Sending-Ip: 69.72.42.8
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6012654dad6c46299d96cd2f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Jan 2021 07:18:37
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C63FEC43462; Thu, 28 Jan 2021 07:18:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AE65AC433CA;
+        Thu, 28 Jan 2021 07:18:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AE65AC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: mac80211-next 2021-01-27
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161180401250.7081.14497810946310131416.git-patchwork-notify@kernel.org>
-Date:   Thu, 28 Jan 2021 03:20:12 +0000
-References: <20210127210915.135550-1-johannes@sipsolutions.net>
-In-Reply-To: <20210127210915.135550-1-johannes@sipsolutions.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 3/3] ath10k: allow dynamic SAR power limits via common
+ API
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201203103728.3034-4-cjhuang@codeaurora.org>
+References: <20201203103728.3034-4-cjhuang@codeaurora.org>
+To:     Carl Huang <cjhuang@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        briannorris@chromium.org, dianders@chromium.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210128071837.C63FEC43462@smtp.codeaurora.org>
+Date:   Thu, 28 Jan 2021 07:18:37 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Carl Huang <cjhuang@codeaurora.org> wrote:
 
-This pull request was applied to netdev/net-next.git (refs/heads/master):
-
-On Wed, 27 Jan 2021 22:09:14 +0100 you wrote:
-> Hi Jakub,
+> ath10k assigns ath10k_mac_set_sar_specs to ath10k_ops, and
+> this function is called when user space application calls
+> NL80211_CMD_SET_SAR_SPECS. ath10k also registers SAR type,
+> and supported frequency ranges to wiphy so user space can
+> query SAR capabilities.
 > 
-> Alright ... let's try again, with two more fixes on top, one
-> for the virt_wifi deadlock and one for a minstrel regression
-> in the earlier patches.
+> This SAR power limitation is compared to regulatory txpower
+> and selects the minimal one to set when station is connected.
+> Otherwise, it delays until the station is connected. If the
+> station is disconnected, it returns to regulatory txpower.
 > 
-> Please pull and let me know if there's any problem.
+> This feature is controlled by hw parameter: dynamic_sar_support.
 > 
-> [...]
+> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
+> 
+> Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
+> Reviewed-by: Brian Norris <briannorris@chromium.org>
+> Reviewed-by: Abhishek Kumar <kuabhs@chromium.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Here is the summary with links:
-  - pull-request: mac80211-next 2021-01-27
-    https://git.kernel.org/netdev/net-next/c/5998dd0217df
+Patch applied to ath-next branch of ath.git, thanks.
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+442545ba5452 ath10k: allow dynamic SAR power limits via common API
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20201203103728.3034-4-cjhuang@codeaurora.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
