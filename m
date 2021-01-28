@@ -2,119 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 149E43070C0
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 09:13:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 409923071FB
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 09:53:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231403AbhA1IKG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 03:10:06 -0500
-Received: from a1.mail.mailgun.net ([198.61.254.60]:27394 "EHLO
-        a1.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231684AbhA1IJo (ORCPT
+        id S231770AbhA1IrR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 03:47:17 -0500
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:40571 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232086AbhA1Iqv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 03:09:44 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611821361; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=/o88EhhP0c4dq6yUyZ8eKopV10aGp5VPu/c4f/R2ei8=;
- b=VrH+vAgzlAWW0w3vFgYG7XyA+8N1IICbyTP/Y6zYAhgDbCHtXw6AdevwMyjDyD7wpU0mmjh1
- eV8AStP+/MwzDqg8yxlSbUKaZFYABgs15MdxxfkCgRu774Mcs6od2aOZ25aMBSqqhEqe1KHs
- Kkmn+PANis67UtIwXxWjv8Mtk7I=
-X-Mailgun-Sending-Ip: 198.61.254.60
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 6012710fe32560064279c7a3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Jan 2021 08:08:47
- GMT
-Sender: youghand=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C921BC43462; Thu, 28 Jan 2021 08:08:46 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: youghand)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1F1EBC433CA;
-        Thu, 28 Jan 2021 08:08:46 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Thu, 28 Jan 2021 13:38:46 +0530
-From:   youghand@codeaurora.org
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kuabhs@chromium.org,
-        dianders@chromium.org, briannorris@chromium.org,
-        pillair@codeaurora.org
-Subject: Re: [PATCH 2/3] mac80211: Add support to trigger sta disconnect on
- hardware restart
-In-Reply-To: <f2089f3c-db96-87bc-d678-199b440c05be@nbd.name>
-References: <20201215172352.5311-1-youghand@codeaurora.org>
- <f2089f3c-db96-87bc-d678-199b440c05be@nbd.name>
-Message-ID: <ba0e6a3b783722c22715ae21953b1036@codeaurora.org>
-X-Sender: youghand@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+        Thu, 28 Jan 2021 03:46:51 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=abaci-bugfix@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0UN7ZE16_1611823637;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:abaci-bugfix@linux.alibaba.com fp:SMTPD_---0UN7ZE16_1611823637)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Thu, 28 Jan 2021 16:47:21 +0800
+From:   Abaci Team <abaci-bugfix@linux.alibaba.com>
+To:     kvalo@codeaurora.org
+Cc:     davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, lee.jones@linaro.org,
+        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Abaci Team <abaci-bugfix@linux.alibaba.com>
+Subject: [PATCH] b43: Remove redundant code
+Date:   Thu, 28 Jan 2021 16:47:16 +0800
+Message-Id: <1611823636-18377-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-12-15 23:10, Felix Fietkau wrote:
-> On 2020-12-15 18:23, Youghandhar Chintala wrote:
->> Currently in case of target hardware restart, we just reconfig and
->> re-enable the security keys and enable the network queues to start
->> data traffic back from where it was interrupted.
->> 
->> Many ath10k wifi chipsets have sequence numbers for the data
->> packets assigned by firmware and the mac sequence number will
->> restart from zero after target hardware restart leading to mismatch
->> in the sequence number expected by the remote peer vs the sequence
->> number of the frame sent by the target firmware.
->> 
->> This mismatch in sequence number will cause out-of-order packets
->> on the remote peer and all the frames sent by the device are dropped
->> until we reach the sequence number which was sent before we restarted
->> the target hardware
->> 
->> In order to fix this, we trigger a sta disconnect, for the targets
->> which expose this corresponding wiphy flag, in case of target hw
->> restart. After this there will be a fresh connection and thereby
->> avoiding the dropping of frames by remote peer.
->> 
->> The right fix would be to pull the entire data path into the host
->> which is not feasible or would need lots of complex changes and
->> will still be inefficient.
-> How about simply tracking which tids have aggregation enabled and send
-> DELBA frames for those after the restart?
-> It would mean less disruption for affected stations and less ugly hacks
-> in the stack for unreliable hardware.
-> 
-> - Felix
+Fix the following coccicheck warnings:
 
-Hi Felix,
+./drivers/net/wireless/broadcom/b43/phy_n.c:4640:2-4: WARNING: possible
+condition with no effect (if == else).
 
-We did try to send an ADDBA frame to the AP once the SSR happened. The 
-AP ack’ed the frame and the new BA session with renewed sequence number 
-was established. But still, the AP did not respond to the ping requests 
-with the new sequence number. It did not respond until one of the two 
-happened.
-1.	The sequence number was more than the sequence number that DUT had 
-used before SSR happened
-2.	DUT disconnected and then reconnected.
-The other option is to send a DELBA frame to the AP and make the AP also 
-force to establish the BA session from its side. This we feel can have 
-some interoperability issues as some of the AP’s may not honour the 
-DELBA frame and will continue to use the earlier BA session that it had 
-established. Given that re-negotiating the BA session is prone to IOT 
-issues, we feel that it would be good to go with the 
-Disconnect/Reconnect solution which is foolproof and will work in all 
-scenarios.
+./drivers/net/wireless/broadcom/b43/phy_n.c:4606:2-4: WARNING: possible
+condition with no effect (if == else).
 
-Regards,
-Youghandhar
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Suggested-by: Jiapeng Zhong <oswb@linux.alibaba.com>
+Signed-off-by: Abaci Team <abaci-bugfix@linux.alibaba.com>
+---
+ drivers/net/wireless/broadcom/b43/phy_n.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+index b669dff..39a335f 100644
+--- a/drivers/net/wireless/broadcom/b43/phy_n.c
++++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+@@ -4601,16 +4601,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
+ 	if (nphy->hang_avoid)
+ 		b43_nphy_stay_in_carrier_search(dev, 1);
+ 
+-	if (nphy->gband_spurwar_en) {
+-		/* TODO: N PHY Adjust Analog Pfbw (7) */
+-		if (channel == 11 && b43_is_40mhz(dev)) {
+-			; /* TODO: N PHY Adjust Min Noise Var(2, tone, noise)*/
+-		} else {
+-			; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
+-		}
+-		/* TODO: N PHY Adjust CRS Min Power (0x1E) */
+-	}
+-
+ 	if (nphy->aband_spurwar_en) {
+ 		if (channel == 54) {
+ 			tone[0] = 0x20;
+@@ -4636,12 +4626,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
+ 			tone[0] = 0;
+ 			noise[0] = 0;
+ 		}
+-
+-		if (!tone[0] && !noise[0]) {
+-			; /* TODO: N PHY Adjust Min Noise Var(1, tone, noise)*/
+-		} else {
+-			; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
+-		}
+ 	}
+ 
+ 	if (nphy->hang_avoid)
+-- 
+1.8.3.1
+
