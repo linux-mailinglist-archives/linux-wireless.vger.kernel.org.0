@@ -2,184 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1AB23073C2
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 11:31:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F496307553
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 12:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231657AbhA1KaK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 05:30:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48060 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbhA1KaI (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 05:30:08 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 597E3C061573;
-        Thu, 28 Jan 2021 02:29:27 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id s18so5675012ljg.7;
-        Thu, 28 Jan 2021 02:29:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yMLTIPyc/LiQ2bi7uEqiU4NDimPedT3k+buADRHwdTU=;
-        b=QFePxmMTPUq6l/K2kvKuT5EUpnlXD+oMUphHFUWQphUh154VEiEKNgki2GaMRiCFPh
-         2u1v1nC9swFExYJhcS/GzSu+SaQ38wE8qPaQKanwn6GfSKrX9bd2MeC+F0GnXxHipsOM
-         Ldvv3CnWjpXEA0XLRAWLaDCYyK+zdYztlgb9fZOEEE6W9RisUGHLpd10PBfdlBNEjoLV
-         y9fLucwUqTi9/kniAJHWUyd3Ak1dJ99kaWkPknEHlxiav4ya8ZAfMSau8rN4eETsEC4Y
-         vWvWPpN1PwDkteAGMB5YRZ4f9YKLEgAThZPP+13eR+cNnJP/Vba/7lOcqpBTBvDBjCEZ
-         JdkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yMLTIPyc/LiQ2bi7uEqiU4NDimPedT3k+buADRHwdTU=;
-        b=RE7xD47nKA5UyYh3CXVBYeS+j9Mc2TJQ6HuCjnU/dTdpxzL8Ti0Lzgv5ksPnMQ78+I
-         V32b5uQG9vsyM/7sh0pHWDpyfKa8ksK82hZHvXn9VAZv1o7AZ11/Xx6DijcfZ9uHaDT1
-         /cTrGuKvO6CIfmVm/LrxxHk9dv2FtJkxMKHGyn6I2Jdz7/u5N2Je2pqT0jDHHsWhz7wK
-         VXiq7Ywrh53XR7141RUguWma04B4FYq2Ix587PeatDpvkvP892nCCtevds/F9LXn+ANv
-         R4G5V3WWaQ30oDBknK6Fxp+ezI7prR+dw8tAGsNHfBJNXFSeJtjmHVXNFL/mH4xMpNhX
-         hheQ==
-X-Gm-Message-State: AOAM531kpGIJm5/SYmlBTVk/4qIQmUTtuBjg6QhR45mWiWQfL10BoAhF
-        WOarxVhS7wx7YH5u7f5SsG40s3dGyBJAGIK81yvfdJwSoLw=
-X-Google-Smtp-Source: ABdhPJz1AmHnLn2KLgRF4r4Hmx5P13kWS8+cqvl6PWUGuwWzFvBAPV3paGe7pBeKMz9IdzvJVas6y7g+gElcNSvmvcY=
-X-Received: by 2002:a2e:9b57:: with SMTP id o23mr8388781ljj.314.1611829765892;
- Thu, 28 Jan 2021 02:29:25 -0800 (PST)
+        id S231221AbhA1L6G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 06:58:06 -0500
+Received: from mga06.intel.com ([134.134.136.31]:61294 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229661AbhA1L6F (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Jan 2021 06:58:05 -0500
+IronPort-SDR: mVllWHH6EAOv8/BRWPbGDLWpz7h5bHCUYtPXgTLG0DMmBa2le7wPrI8KkuEClclJnXi439OVmx
+ X9MAihK3CAAQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9877"; a="241746574"
+X-IronPort-AV: E=Sophos;i="5.79,382,1602572400"; 
+   d="scan'208";a="241746574"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2021 03:57:06 -0800
+IronPort-SDR: Xx0HFQ6eq/VmmZXxagnCQp+1r2Q4eEj0cpyeEgy7XSXAEiGjxKtL+8FF8I1BNhCxj2i58CCSLA
+ mtDkwf7M3/Kg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,382,1602572400"; 
+   d="scan'208";a="363701497"
+Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 28 Jan 2021 03:57:05 -0800
+Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1l55v6-0002ra-I5; Thu, 28 Jan 2021 11:57:04 +0000
+Date:   Thu, 28 Jan 2021 19:56:35 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS
+ d3b9b45f7e981bcc6355414c63633fe33d95660c
+Message-ID: <6012a673.HtImKWsZ2m8tp7yT%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <1611823636-18377-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-In-Reply-To: <1611823636-18377-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Thu, 28 Jan 2021 21:29:14 +1100
-Message-ID: <CAGRGNgWM=dQx4suXZJX+u6m0i4=Qx3hZFZWdWJ8VO+FG_edH2w@mail.gmail.com>
-Subject: Re: [PATCH] b43: Remove redundant code
-To:     Abaci Team <abaci-bugfix@linux.alibaba.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        b43-dev <b43-dev@lists.infradead.org>, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi ..... <insert name here>,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
+branch HEAD: d3b9b45f7e981bcc6355414c63633fe33d95660c  mac80211: minstrel_ht: fix regression in the max_prob_rate fix
 
-(No proper name in the from field or signed-off-by, as you're already aware)
+elapsed time: 722m
 
-On Thu, Jan 28, 2021 at 7:53 PM Abaci Team
-<abaci-bugfix@linux.alibaba.com> wrote:
->
-> Fix the following coccicheck warnings:
->
-> ./drivers/net/wireless/broadcom/b43/phy_n.c:4640:2-4: WARNING: possible
-> condition with no effect (if == else).
->
-> ./drivers/net/wireless/broadcom/b43/phy_n.c:4606:2-4: WARNING: possible
-> condition with no effect (if == else).
->
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Suggested-by: Jiapeng Zhong <oswb@linux.alibaba.com>
-> Signed-off-by: Abaci Team <abaci-bugfix@linux.alibaba.com>
-> ---
->  drivers/net/wireless/broadcom/b43/phy_n.c | 16 ----------------
->  1 file changed, 16 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
-> index b669dff..39a335f 100644
-> --- a/drivers/net/wireless/broadcom/b43/phy_n.c
-> +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
-> @@ -4601,16 +4601,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
->         if (nphy->hang_avoid)
->                 b43_nphy_stay_in_carrier_search(dev, 1);
->
-> -       if (nphy->gband_spurwar_en) {
-> -               /* TODO: N PHY Adjust Analog Pfbw (7) */
-> -               if (channel == 11 && b43_is_40mhz(dev)) {
-> -                       ; /* TODO: N PHY Adjust Min Noise Var(2, tone, noise)*/
-> -               } else {
-> -                       ; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
-> -               }
-> -               /* TODO: N PHY Adjust CRS Min Power (0x1E) */
-> -       }
+configs tested: 125
+configs skipped: 2
 
-I'm not sure how useful this patch is, even though it is technically correct.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-The b43 driver was almost entirely reverse engineered from various
-sources so there's still a lot of places, like this, where placeholder
-comments were written until the actual code that would have been here
-was ready / reverse engineered.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                         rt305x_defconfig
+sh                           se7724_defconfig
+arm                           u8500_defconfig
+h8300                    h8300h-sim_defconfig
+mips                      loongson3_defconfig
+powerpc                     stx_gp3_defconfig
+arm                     eseries_pxa_defconfig
+xtensa                    xip_kc705_defconfig
+mips                            gpr_defconfig
+arm                          pxa910_defconfig
+um                             i386_defconfig
+mips                    maltaup_xpa_defconfig
+mips                       bmips_be_defconfig
+powerpc                     mpc83xx_defconfig
+sh                            migor_defconfig
+powerpc                     ppa8548_defconfig
+mips                           ip28_defconfig
+alpha                            alldefconfig
+powerpc                    gamecube_defconfig
+sparc                       sparc32_defconfig
+mips                         tb0226_defconfig
+xtensa                           allyesconfig
+mips                      pic32mzda_defconfig
+powerpc                     pseries_defconfig
+arm                          ep93xx_defconfig
+openrisc                    or1ksim_defconfig
+sh                         apsh4a3a_defconfig
+arm                       aspeed_g5_defconfig
+arm                        mvebu_v5_defconfig
+m68k                       m5275evb_defconfig
+powerpc                      ppc44x_defconfig
+sh                          rsk7269_defconfig
+mips                         db1xxx_defconfig
+nios2                            allyesconfig
+powerpc                     rainier_defconfig
+powerpc                      makalu_defconfig
+powerpc                      tqm8xx_defconfig
+arm                          moxart_defconfig
+mips                         bigsur_defconfig
+arc                        nsim_700_defconfig
+ia64                         bigsur_defconfig
+powerpc                 canyonlands_defconfig
+powerpc                  mpc885_ads_defconfig
+nios2                         3c120_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                 mpc8313_rdb_defconfig
+arc                            hsdk_defconfig
+mips                        bcm63xx_defconfig
+powerpc                    sam440ep_defconfig
+arm                           tegra_defconfig
+mips                          ath79_defconfig
+sh                          r7780mp_defconfig
+mips                       capcella_defconfig
+mips                       lemote2f_defconfig
+mips                 decstation_r4k_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                             allyesconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20210128
+i386                 randconfig-a006-20210128
+x86_64               randconfig-a012-20210128
+x86_64               randconfig-a015-20210128
+x86_64               randconfig-a016-20210128
+x86_64               randconfig-a011-20210128
+x86_64               randconfig-a013-20210128
+x86_64               randconfig-a014-20210128
+i386                 randconfig-a013-20210128
+i386                 randconfig-a011-20210128
+i386                 randconfig-a012-20210128
+i386                 randconfig-a016-20210128
+i386                 randconfig-a014-20210128
+i386                 randconfig-a015-20210128
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-That said, I believe the driver works well enough for all it's users
-and has not seen any significant changes in a long time.
+clang tested configs:
+x86_64               randconfig-a002-20210128
+x86_64               randconfig-a003-20210128
+x86_64               randconfig-a001-20210128
+x86_64               randconfig-a005-20210128
+x86_64               randconfig-a006-20210128
+x86_64               randconfig-a004-20210128
 
-Thanks,
-
--- 
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
-
-On Thu, Jan 28, 2021 at 7:53 PM Abaci Team
-<abaci-bugfix@linux.alibaba.com> wrote:
->
-> Fix the following coccicheck warnings:
->
-> ./drivers/net/wireless/broadcom/b43/phy_n.c:4640:2-4: WARNING: possible
-> condition with no effect (if == else).
->
-> ./drivers/net/wireless/broadcom/b43/phy_n.c:4606:2-4: WARNING: possible
-> condition with no effect (if == else).
->
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Suggested-by: Jiapeng Zhong <oswb@linux.alibaba.com>
-> Signed-off-by: Abaci Team <abaci-bugfix@linux.alibaba.com>
-> ---
->  drivers/net/wireless/broadcom/b43/phy_n.c | 16 ----------------
->  1 file changed, 16 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
-> index b669dff..39a335f 100644
-> --- a/drivers/net/wireless/broadcom/b43/phy_n.c
-> +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
-> @@ -4601,16 +4601,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
->         if (nphy->hang_avoid)
->                 b43_nphy_stay_in_carrier_search(dev, 1);
->
-> -       if (nphy->gband_spurwar_en) {
-> -               /* TODO: N PHY Adjust Analog Pfbw (7) */
-> -               if (channel == 11 && b43_is_40mhz(dev)) {
-> -                       ; /* TODO: N PHY Adjust Min Noise Var(2, tone, noise)*/
-> -               } else {
-> -                       ; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
-> -               }
-> -               /* TODO: N PHY Adjust CRS Min Power (0x1E) */
-> -       }
-> -
->         if (nphy->aband_spurwar_en) {
->                 if (channel == 54) {
->                         tone[0] = 0x20;
-> @@ -4636,12 +4626,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
->                         tone[0] = 0;
->                         noise[0] = 0;
->                 }
-> -
-> -               if (!tone[0] && !noise[0]) {
-> -                       ; /* TODO: N PHY Adjust Min Noise Var(1, tone, noise)*/
-> -               } else {
-> -                       ; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
-> -               }
->         }
->
->         if (nphy->hang_avoid)
-> --
-> 1.8.3.1
->
-
-
--- 
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
