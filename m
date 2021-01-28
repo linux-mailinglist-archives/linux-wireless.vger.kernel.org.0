@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E2F306F08
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 08:23:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52E30306F96
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 08:36:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231472AbhA1HWe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 02:22:34 -0500
-Received: from a1.mail.mailgun.net ([198.61.254.60]:43802 "EHLO
-        a1.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231299AbhA1HUr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 02:20:47 -0500
+        id S231938AbhA1HdY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 02:33:24 -0500
+Received: from m42-8.mailgun.net ([69.72.42.8]:41302 "EHLO m42-8.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231517AbhA1HbE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Jan 2021 02:31:04 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611818428; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1611819041; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=JuLPSAdeilKNwqBLkl73niz+lwfFEnxP7Hjg4m3No88=;
- b=dCdohXrtWFXB/f5q6RtXFCFRa6bB3B58DwdGRt4DzWFAuaZHorXQN+B+l4HfEMGivaE1tF3+
- 4g1Aa4QcBrzPw1UL4PVSY/i/3iFXD5Nllg3h7j0zZMTidTPUCSrUBs1NG0CSWfmCYbvazKVf
- WlnwiY5AuABkq5xlwSinH2oWTsI=
-X-Mailgun-Sending-Ip: 198.61.254.60
+ Content-Type: Sender; bh=Ma2PF13HPKHocMPcRDFwaF+lTIVz0C9tWL5CYpm4JgU=;
+ b=EV/4Qq4mO+3XdZrV7x/WRRcuAry0D00exVUMrHUVT3oXWD1Wz/lRLXA7RsCbOdKGrlnQ+sdE
+ aNQZ5yhAnqzIz6uC1o6eKioTKfWBwBvSTROSzXLb1AvEatZhWzSFlupFYEZ8ZfWoqm3tSw3U
+ kjeEI9BPn5qkhoqLPItv9yYABgU=
+X-Mailgun-Sending-Ip: 69.72.42.8
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
  smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 6012659de3256006425d20f9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Jan 2021 07:19:57
+ 60126801e325600642638c35 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Jan 2021 07:30:09
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 04FA8C433C6; Thu, 28 Jan 2021 07:19:57 +0000 (UTC)
+        id A219DC43466; Thu, 28 Jan 2021 07:30:08 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,78 +39,70 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5CC21C433CA;
-        Thu, 28 Jan 2021 07:19:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5CC21C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6FEF2C43461;
+        Thu, 28 Jan 2021 07:30:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6FEF2C43461
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] ath10k: fix wmi mgmt tx queue full due to race
- condition
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath9k: fix build error with LEDS_CLASS=m
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1608618887-8857-1-git-send-email-miaoqing@codeaurora.org>
-References: <1608618887-8857-1-git-send-email-miaoqing@codeaurora.org>
-To:     Miaoqing Pan <miaoqing@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        briannorris@chromium.org, Miaoqing Pan <miaoqing@codeaurora.org>
+In-Reply-To: <20210125113654.2408057-1-arnd@kernel.org>
+References: <20210125113654.2408057-1-arnd@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     ath9k-devel@qca.qualcomm.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Flavio Suligoi <f.suligoi@asem.it>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210128071957.04FA8C433C6@smtp.codeaurora.org>
-Date:   Thu, 28 Jan 2021 07:19:57 +0000 (UTC)
+Message-Id: <20210128073008.A219DC43466@smtp.codeaurora.org>
+Date:   Thu, 28 Jan 2021 07:30:08 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Miaoqing Pan <miaoqing@codeaurora.org> wrote:
+Arnd Bergmann <arnd@kernel.org> wrote:
 
-> Failed to transmit wmi management frames:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> [84977.840894] ath10k_snoc a000000.wifi: wmi mgmt tx queue is full
-> [84977.840913] ath10k_snoc a000000.wifi: failed to transmit packet, dropping: -28
-> [84977.840924] ath10k_snoc a000000.wifi: failed to submit frame: -28
-> [84977.840932] ath10k_snoc a000000.wifi: failed to transmit frame: -28
+> When CONFIG_ATH9K is built-in but LED support is in a loadable
+> module, both ath9k drivers fails to link:
 > 
-> This issue is caused by race condition between skb_dequeue and
-> __skb_queue_tail. The queue of ‘wmi_mgmt_tx_queue’ is protected by a
-> different lock: ar->data_lock vs list->lock, the result is no protection.
-> So when ath10k_mgmt_over_wmi_tx_work() and ath10k_mac_tx_wmi_mgmt()
-> running concurrently on different CPUs, there appear to be a rare corner
-> cases when the queue length is 1,
+> x86_64-linux-ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_deinit_leds':
+> gpio.c:(.text+0x36): undefined reference to `led_classdev_unregister'
+> x86_64-linux-ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_init_leds':
+> gpio.c:(.text+0x179): undefined reference to `led_classdev_register_ext'
 > 
->   CPUx (skb_deuque)			CPUy (__skb_queue_tail)
-> 					next=list
-> 					prev=list
->   struct sk_buff *skb = skb_peek(list);	WRITE_ONCE(newsk->next, next);
->   WRITE_ONCE(list->qlen, list->qlen - 1);WRITE_ONCE(newsk->prev, prev);
->   next       = skb->next;		WRITE_ONCE(next->prev, newsk);
->   prev       = skb->prev;		WRITE_ONCE(prev->next, newsk);
->   skb->next  = skb->prev = NULL;	list->qlen++;
->   WRITE_ONCE(next->prev, prev);
->   WRITE_ONCE(prev->next, next);
+> The problem is that the 'imply' keyword does not enforce any dependency
+> but is only a weak hint to Kconfig to enable another symbol from a
+> defconfig file.
 > 
-> If the instruction ‘next = skb->next’ is executed before
-> ‘WRITE_ONCE(prev->next, newsk)’, newsk will be lost, as CPUx get the
-> old ‘next’ pointer, but the length is still added by one. The final
-> result is the length of the queue will reach the maximum value but
-> the queue is empty.
+> Change imply to a 'depends on LEDS_CLASS' that prevents the incorrect
+> configuration but still allows building the driver without LED support.
 > 
-> So remove ar->data_lock, and use 'skb_queue_tail' instead of
-> '__skb_queue_tail' to prevent the potential race condition. Also switch
-> to use skb_queue_len_lockless, in case we queue a few SKBs simultaneously.
+> The 'select MAC80211_LEDS' is now ensures that the LED support is
+> actually used if it is present, and the added Kconfig dependency
+> on MAC80211_LEDS ensures that it cannot be enabled manually when it
+> has no effect.
 > 
-> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1.c2-00033-QCAHLSWMTPLZ-1
-> 
-> Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
-> Reviewed-by: Brian Norris <briannorris@chromium.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Fixes: 197f466e93f5 ("ath9k_htc: Do not select MAC80211_LEDS by default")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Acked-by: Johannes Berg <johannes@sipsolutions.net>
 
-Patch applied to ath-next branch of ath.git, thanks.
+Patch applied to wireless-drivers.git, thanks.
 
-b55379e343a3 ath10k: fix wmi mgmt tx queue full due to race condition
+b64acb28da83 ath9k: fix build error with LEDS_CLASS=m
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1608618887-8857-1-git-send-email-miaoqing@codeaurora.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210125113654.2408057-1-arnd@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
