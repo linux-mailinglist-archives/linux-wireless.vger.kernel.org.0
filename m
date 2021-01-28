@@ -2,84 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 409923071FB
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 09:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36A0D30731F
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 10:49:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231770AbhA1IrR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 03:47:17 -0500
-Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:40571 "EHLO
-        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232086AbhA1Iqv (ORCPT
+        id S231764AbhA1Jsd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 04:48:33 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:54378 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232154AbhA1JqV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 03:46:51 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=abaci-bugfix@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0UN7ZE16_1611823637;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:abaci-bugfix@linux.alibaba.com fp:SMTPD_---0UN7ZE16_1611823637)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 28 Jan 2021 16:47:21 +0800
-From:   Abaci Team <abaci-bugfix@linux.alibaba.com>
-To:     kvalo@codeaurora.org
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, lee.jones@linaro.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Abaci Team <abaci-bugfix@linux.alibaba.com>
-Subject: [PATCH] b43: Remove redundant code
-Date:   Thu, 28 Jan 2021 16:47:16 +0800
-Message-Id: <1611823636-18377-1-git-send-email-abaci-bugfix@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        Thu, 28 Jan 2021 04:46:21 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 10S9jONu9003601, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmbs03.realtek.com.tw[172.21.6.96])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 10S9jONu9003601
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 28 Jan 2021 17:45:24 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 28 Jan 2021 17:45:24 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833]) by
+ RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833%12]) with mapi id
+ 15.01.2106.006; Thu, 28 Jan 2021 17:45:24 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Brian Norris <briannorris@chromium.org>
+CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Bernie Huang <phhuang@realtek.com>
+Subject: RE: [PATCH v4 3/8] rtw88: add napi support
+Thread-Topic: [PATCH v4 3/8] rtw88: add napi support
+Thread-Index: AQHW6yCPbtjrLodDrUGqlkIx94yfwqozx6WAgAkWW6A=
+Date:   Thu, 28 Jan 2021 09:45:24 +0000
+Message-ID: <d84e1a2c0d8e481588eec7248abf5c1a@realtek.com>
+References: <20210115092405.8081-1-pkshih@realtek.com>
+ <20210115092405.8081-4-pkshih@realtek.com>
+ <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com>
+In-Reply-To: <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.213]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warnings:
-
-./drivers/net/wireless/broadcom/b43/phy_n.c:4640:2-4: WARNING: possible
-condition with no effect (if == else).
-
-./drivers/net/wireless/broadcom/b43/phy_n.c:4606:2-4: WARNING: possible
-condition with no effect (if == else).
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Suggested-by: Jiapeng Zhong <oswb@linux.alibaba.com>
-Signed-off-by: Abaci Team <abaci-bugfix@linux.alibaba.com>
----
- drivers/net/wireless/broadcom/b43/phy_n.c | 16 ----------------
- 1 file changed, 16 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
-index b669dff..39a335f 100644
---- a/drivers/net/wireless/broadcom/b43/phy_n.c
-+++ b/drivers/net/wireless/broadcom/b43/phy_n.c
-@@ -4601,16 +4601,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
- 	if (nphy->hang_avoid)
- 		b43_nphy_stay_in_carrier_search(dev, 1);
- 
--	if (nphy->gband_spurwar_en) {
--		/* TODO: N PHY Adjust Analog Pfbw (7) */
--		if (channel == 11 && b43_is_40mhz(dev)) {
--			; /* TODO: N PHY Adjust Min Noise Var(2, tone, noise)*/
--		} else {
--			; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
--		}
--		/* TODO: N PHY Adjust CRS Min Power (0x1E) */
--	}
--
- 	if (nphy->aband_spurwar_en) {
- 		if (channel == 54) {
- 			tone[0] = 0x20;
-@@ -4636,12 +4626,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
- 			tone[0] = 0;
- 			noise[0] = 0;
- 		}
--
--		if (!tone[0] && !noise[0]) {
--			; /* TODO: N PHY Adjust Min Noise Var(1, tone, noise)*/
--		} else {
--			; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
--		}
- 	}
- 
- 	if (nphy->hang_avoid)
--- 
-1.8.3.1
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJyaWFuIE5vcnJpcyBbbWFp
+bHRvOmJyaWFubm9ycmlzQGNocm9taXVtLm9yZ10NCj4gU2VudDogU2F0dXJkYXksIEphbnVhcnkg
+MjMsIDIwMjEgNjo1OCBBTQ0KPiBUbzogUGtzaGloDQo+IENjOiBZYW4tSHN1YW4gQ2h1YW5nOyBL
+YWxsZSBWYWxvOyBsaW51eC13aXJlbGVzczsgQmVybmllIEh1YW5nDQo+IFN1YmplY3Q6IFJlOiBb
+UEFUQ0ggdjQgMy84XSBydHc4ODogYWRkIG5hcGkgc3VwcG9ydA0KPiANCj4gT24gRnJpLCBKYW4g
+MTUsIDIwMjEgYXQgMToyNiBBTSBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3Jv
+dGU6DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuYw0K
+PiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmMNCj4gPiBA
+QCAtOTM1LDE2ICs5MzUsNDkgQEAgc3RhdGljIHZvaWQgcnR3X3BjaV90eF9pc3Ioc3RydWN0IHJ0
+d19kZXYgKnJ0d2Rldiwgc3RydWN0IHJ0d19wY2kgKnJ0d3BjaSwNCj4gPiAgICAgICAgIHJpbmct
+PnIucnAgPSBjdXJfcnA7DQo+ID4gIH0NCj4gPg0KPiA+IC1zdGF0aWMgdm9pZCBydHdfcGNpX3J4
+X2lzcihzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCBzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpLA0KPiA+
+ICtzdGF0aWMgdm9pZCBydHdfcGNpX3J4X2lzcihzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KQ0KPiA+
+ICt7DQo+ID4gKyAgICAgICBzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpID0gKHN0cnVjdCBydHdfcGNp
+ICopcnR3ZGV2LT5wcml2Ow0KPiA+ICsgICAgICAgc3RydWN0IG5hcGlfc3RydWN0ICpuYXBpID0g
+JnJ0d3BjaS0+bmFwaTsNCj4gPiArDQo+ID4gKyAgICAgICBuYXBpX3NjaGVkdWxlKG5hcGkpOw0K
+PiANCj4gSSBkb24ndCBjbGFpbSB0byBiZSBhbGwgdGhhdCBmYW1pbGlhciB3aXRoIE5BUEksIGJ1
+dCBteSB1bmRlcnN0YW5kaW5nDQo+IGlzIHRoYXQgeW91IGFyZSBzY2hlZHVsaW5nIGEgTkFQSSBw
+b2xsLCBidXQgaW1tZWRpYXRlbHkgYWZ0ZXIgeW91DQo+IHJldHVybiBoZXJlLCB5b3UncmUgcmUt
+ZW5hYmxpbmcgeW91ciBSWCBpbnRlcnJ1cHQuIFRoYXQgZG9lc24ndCBzb3VuZA0KPiBsaWtlIGhv
+dyBOQVBJIGlzIHN1cHBvc2VkIHRvIHdvcmsgLS0geW91J3JlIHN1cHBvc2VkIHRvIHdhaXQgdG8N
+Cj4gcmUtZW5hYmxlIHlvdXIgaW50ZXJydXB0IHVudGlsIHlvdSdyZSBkb25lIHdpdGggeW91ciBw
+b2xsaW5nIGZ1bmN0aW9uLg0KPiBSZWY6IGh0dHBzOi8vd2lraS5saW51eGZvdW5kYXRpb24ub3Jn
+L25ldHdvcmtpbmcvbmFwaQ0KPiANCg0KV2lsbCByZS1lbmFibGUgUlggSU1SIHVudGlsIG5hcGlf
+cG9sbCBmdW5jdGlvbiBpcyBkb25lLg0KDQo+ID4gK30NCj4gLi4uDQo+ID4gK3N0YXRpYyB1MzIg
+cnR3X3BjaV9yeF9uYXBpKHN0cnVjdCBydHdfZGV2ICpydHdkZXYsIHN0cnVjdCBydHdfcGNpICpy
+dHdwY2ksDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgdTggaHdfcXVldWUpDQo+IC4u
+Lg0KPiANCj4gQXJlIHlvdSBzdXJlIHlvdSBkb24ndCB3YW50IGFueSBsb2NraW5nIGluIHJ0d19w
+Y2lfcnhfbmFwaSgpPw0KPiBQcmV2aW91c2x5LCB5b3UgaGVsZCBpcnFfbG9jayBmb3IgdGhlIGVu
+dGlyZXR5IG9mIHJ0d19wY2lfcnhfaXNyKCksDQo+IGJ1dCBub3cgYWxsIHRoZSBSWCB3b3JrIGlz
+IGJlaW5nIGRlZmVycmVkIHRvIGEgTkFQSSBjb250ZXh0LCB3aXRob3V0DQo+IGFueSBhZGRpdGlv
+bmFsIGxvY2suIElJVUMsIHRoYXQgbWVhbnMgeW91IGNhbiBiZSBib3RoIGhhbmRsaW5nIFJYIGFu
+ZA0KPiBvdGhlciBJU1Igb3BlcmF0aW9ucyBhdCB0aGUgc2FtZSB0aW1lLiBJcyB0aGF0IGludGVu
+dGlvbmFsPw0KPiANCg0KaXJxX2xvY2sgaXMgdXNlZCB0byBwcm90ZWN0IFRYIHJpbmctPnF1ZXVl
+LiBUaGUgVFggc2tiKHMpIGFyZSBxdWV1ZWQgaW50byB0aGUNCnF1ZXVlLCBhbmQgdW5saW5rIHRo
+ZSBza2IgdW50aWwgVFhfT0tfSVNSIGlzIHJlY2VpdmVkLiBTbywgUlggZG9lc24ndCBuZWVkIHRv
+DQpob2xkIHRoaXMgbG9jay4NCg0KPiA+ICtzdGF0aWMgaW50IHJ0d19wY2lfbmFwaV9wb2xsKHN0
+cnVjdCBuYXBpX3N0cnVjdCAqbmFwaSwgaW50IGJ1ZGdldCkNCj4gPiArew0KPiA+ICsgICAgICAg
+c3RydWN0IHJ0d19wY2kgKnJ0d3BjaSA9IGNvbnRhaW5lcl9vZihuYXBpLCBzdHJ1Y3QgcnR3X3Bj
+aSwgbmFwaSk7DQo+ID4gKyAgICAgICBzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2ID0gY29udGFpbmVy
+X29mKCh2b2lkICopcnR3cGNpLCBzdHJ1Y3QgcnR3X2RldiwNCj4gPiArICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcHJpdik7DQo+ID4gKyAgICAgICBpbnQgd29y
+a19kb25lID0gMDsNCj4gPiArDQo+ID4gKyAgICAgICB3aGlsZSAod29ya19kb25lIDwgYnVkZ2V0
+KSB7DQo+ID4gKyAgICAgICAgICAgICAgIHUzMiB3b3JrX2RvbmVfb25jZTsNCj4gPiArDQo+ID4g
+KyAgICAgICAgICAgICAgIHdvcmtfZG9uZV9vbmNlID0gcnR3X3BjaV9yeF9uYXBpKHJ0d2Rldiwg
+cnR3cGNpLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICBSVFdfUlhfUVVFVUVfTVBEVSk7DQo+ID4gKyAgICAgICAgICAgICAgIGlmICh3b3JrX2Rv
+bmVfb25jZSA9PSAwKQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiA+ICsg
+ICAgICAgICAgICAgICB3b3JrX2RvbmUgKz0gd29ya19kb25lX29uY2U7DQo+ID4gKyAgICAgICB9
+DQo+ID4gKyAgICAgICBpZiAod29ya19kb25lIDwgYnVkZ2V0KSB7DQo+ID4gKyAgICAgICAgICAg
+ICAgIG5hcGlfY29tcGxldGVfZG9uZShuYXBpLCB3b3JrX2RvbmUpOw0KPiA+ICsgICAgICAgICAg
+ICAgICAvKiBXaGVuIElTUiBoYXBwZW5zIGR1cmluZyBwb2xsaW5nIGFuZCBiZWZvcmUgbmFwaV9j
+b21wbGV0ZQ0KPiA+ICsgICAgICAgICAgICAgICAgKiB3aGlsZSBubyBmdXJ0aGVyIGRhdGEgaXMg
+cmVjZWl2ZWQuIERhdGEgb24gdGhlIGRtYV9yaW5nIHdpbGwNCj4gPiArICAgICAgICAgICAgICAg
+ICogbm90IGJlIHByb2Nlc3NlZCBpbW1lZGlhdGVseS4gQ2hlY2sgd2hldGhlciBkbWEgcmluZyBp
+cw0KPiA+ICsgICAgICAgICAgICAgICAgKiBlbXB0eSBhbmQgcGVyZm9ybSBuYXBpX3NjaGVkdWxl
+IGFjY29yZGluZ2x5Lg0KPiA+ICsgICAgICAgICAgICAgICAgKi8NCj4gPiArICAgICAgICAgICAg
+ICAgaWYgKHJ0d19wY2lfZ2V0X2h3X3J4X3JpbmdfbnIocnR3ZGV2LCBydHdwY2ksIE5VTEwsIE5V
+TEwpKQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIG5hcGlfc2NoZWR1bGUobmFwaSk7DQo+
+ID4gKyAgICAgICB9DQo+ID4gKw0KPiA+ICsgICAgICAgcmV0dXJuIHdvcmtfZG9uZTsNCj4gPiAr
+fQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgcnR3X3BjaV9uYXBpX2luaXQoc3RydWN0IHJ0d19k
+ZXYgKnJ0d2RldikNCj4gPiArew0KPiA+ICsgICAgICAgc3RydWN0IHJ0d19wY2kgKnJ0d3BjaSA9
+IChzdHJ1Y3QgcnR3X3BjaSAqKXJ0d2Rldi0+cHJpdjsNCj4gPiArDQo+ID4gKyAgICAgICBpbml0
+X2R1bW15X25ldGRldigmcnR3cGNpLT5uZXRkZXYpOw0KPiA+ICsgICAgICAgbmV0aWZfbmFwaV9h
+ZGQoJnJ0d3BjaS0+bmV0ZGV2LCAmcnR3cGNpLT5uYXBpLCBydHdfcGNpX25hcGlfcG9sbCwNCj4g
+PiArICAgICAgICAgICAgICAgICAgICAgIFJUV19OQVBJX1dFSUdIVF9OVU0pOw0KPiA+ICsgICAg
+ICAgbmFwaV9lbmFibGUoJnJ0d3BjaS0+bmFwaSk7DQo+ID4gK30NCj4gLi4uDQo+ID4gQEAgLTE1
+NDcsNiArMTYyNCw4IEBAIGludCBydHdfcGNpX3Byb2JlKHN0cnVjdCBwY2lfZGV2ICpwZGV2LA0K
+PiA+ICAgICAgICAgICAgICAgICBnb3RvIGVycl9kZXN0cm95X3BjaTsNCj4gPiAgICAgICAgIH0N
+Cj4gPg0KPiA+ICsgICAgICAgcnR3X3BjaV9uYXBpX2luaXQocnR3ZGV2KTsNCj4gDQo+IFlvdSdy
+ZSBpbml0aWFsaXppbmcgTkFQSSBhZnRlciB5b3UndmUgYWxyZWFkeSBlc3RhYmxpc2hlZCB5b3Vy
+IElTUiwNCj4gYW5kIHlvdXIgSVNSIG1pZ2h0IHN0YXJ0IHNjaGVkdWxpbmcgTkFQSS4gRXZlbiBp
+ZiB0aGF0J3MgdW5saWtlbHkNCj4gKGJlY2F1c2UgeW91IGhhdmVuJ3QgaW5pdGlhdGVkIGFueSBS
+WCB0cmFmZmljIHlldCksIGl0IHNlZW1zIGxpa2UgYW4NCj4gb3JkZXJpbmcgcHJvYmxlbSAtLSBz
+aG91bGRuJ3QgeW91IGluaXRpYWxpemUgdGhlIE5BUEkgZGV2aWNlLCB0aGVuIHNldA0KPiB1cCB0
+aGUgSVNSLCBhbmQgb25seSB0aGVuIGNhbGwgbmFwaV9lbmFibGUoKT8NCj4gDQoNCldpbGwgZG8g
+aXQuDQoNClRoYW5rcyBmb3IgeW91ciBhZHZpY2UuDQoNCi0tLQ0KUGluZy1LZQ0KDQoNCg==
