@@ -2,75 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CDE8307CB4
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 18:39:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98A4E307E6A
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 19:48:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232982AbhA1RhX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 12:37:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54944 "EHLO
+        id S232250AbhA1Srm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 13:47:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233172AbhA1RgU (ORCPT
+        with ESMTP id S232464AbhA1Sph (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 12:36:20 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08E3C061794
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jan 2021 09:35:38 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1l5BCi-00CwTh-PC; Thu, 28 Jan 2021 18:35:36 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        syzbot+4305e814f9b267131776@syzkaller.appspotmail.com
-Subject: [PATCH 4/4] cfg80211: call cfg80211_destroy_ifaces() with wiphy lock held
-Date:   Thu, 28 Jan 2021 18:35:28 +0100
-Message-Id: <20210128183454.d31df9cbd7ce.I1beb07c9492f0ade900e864a098c57041e7a7ebf@changeid>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210128173528.76393-1-johannes@sipsolutions.net>
-References: <20210128173528.76393-1-johannes@sipsolutions.net>
+        Thu, 28 Jan 2021 13:45:37 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6EA2C06178A;
+        Thu, 28 Jan 2021 10:44:56 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id d2so7843018edz.3;
+        Thu, 28 Jan 2021 10:44:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7KqrQELa5Ib7c8yGtm34ctZRTTgOgBVXw/XDTJkuZzM=;
+        b=IXUtJ5Szhp/b70fyb4fSpJB8MQDglir6QCQtRcOrmv1bOwcD30SolN6AWHVYYLzuwS
+         Ph9uWqoX8bPzCBV5yduoFUKIMf/UTx1rJTaO0PZoaUQLZXV3B5EJcQQxwUEA5XuZ2d3s
+         CPYwOuFB3/APwHAQ3lBl+Ic/R+5RplfC+/sBICq2Xs93/BbeEaV7gefkYvgc7UaF9nKw
+         pyXGaplyNyZNFjRpLi+t3zesfnHoGqLYcjCKlX9WVN5eFXEW32BbGusLapPR6aRLoKeC
+         lzeArUreGdckovm7Dnp8qmYzXUyrLZzgSqhE+N8/+Nx25xagQ7UO5FFCOQIdZfC0vK1X
+         vkOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7KqrQELa5Ib7c8yGtm34ctZRTTgOgBVXw/XDTJkuZzM=;
+        b=ogCpXC1JFrPWlzMro0/tNi/7ppNGLQ12sWKglQh68DwsU4Hwua/wq12JoAVsozlJQ5
+         LKnXr4HE61jjgPmCegWsvDcat463jPkB2ZQ7yKPZqLnytQppMDfuFZwAlHNo1bKs/le1
+         fJ1ykVjQIZ+WbvWR6J6TAtrNL1X/gl+2N+sl3nB4Q1z4r7rPul7mmZOZ0iXeyhYGdJFR
+         ReZ2GnzVYLvRnKP8hxtdzcYfPem4iSrAoZCFaVDR+qgrKcgXPYuHbKGU0aXyEubQnxHy
+         C6MJiIKJ7EgZjx568MkP3c0qPhmvXMiHAxh+BHF99JiNf75bLOlyTbW/fQ59GVS+OCuf
+         bRnA==
+X-Gm-Message-State: AOAM530xWh0hcK+GJSM+lwrOlwFYbX8sPLyn0POZRzGlf70LRQhqYY/l
+        X9v7n/5hYb5AWLGVKJkqMVGXaixNpCOxOtek6kg=
+X-Google-Smtp-Source: ABdhPJwYXgpelFGaMKtoBoeGm2MCJD/XU+Wcb7Htk7rD2MP9VZhUJRVc4yNmq5clr0JIitmRa50x0bg55Xw+iNAQrBY=
+X-Received: by 2002:aa7:d1d7:: with SMTP id g23mr1120272edp.6.1611859495550;
+ Thu, 28 Jan 2021 10:44:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210128171048.644669-1-colin.king@canonical.com>
+In-Reply-To: <20210128171048.644669-1-colin.king@canonical.com>
+From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date:   Thu, 28 Jan 2021 13:44:18 -0500
+Message-ID: <CAF=yD-KvXYW-r69k8Mf80uQ5Ww60HEfT+FrxNbu4FCxOF=Xy0Q@mail.gmail.com>
+Subject: Re: [PATCH] rtlwifi: rtl8192se: remove redundant initialization of
+ variable rtstatus
+To:     Colin King <colin.king@canonical.com>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Thu, Jan 28, 2021 at 12:15 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The variable rtstatu is being initialized with a value that is never
+> read and it is being updated later with a new value.  The initialization
+> is redundant and can be removed.
+>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-This is needed since it calls into the driver, which must have the
-same context as if we got to destroy an interface through nl80211.
-Fix this, and add a direct lockdep assertion so we don't see it
-pop up only when the driver calls back to cfg80211.
+(for netdrv)
 
-Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
-Reported-by: syzbot+4305e814f9b267131776@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 200cd9f5fd5f..18f9a5c214b5 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -334,6 +334,7 @@ void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev)
- 	struct wireless_dev *wdev, *tmp;
- 
- 	ASSERT_RTNL();
-+	lockdep_assert_wiphy(&rdev->wiphy);
- 
- 	list_for_each_entry_safe(wdev, tmp, &rdev->wiphy.wdev_list, list) {
- 		if (wdev->nl_owner_dead)
-@@ -349,7 +350,9 @@ static void cfg80211_destroy_iface_wk(struct work_struct *work)
- 			    destroy_work);
- 
- 	rtnl_lock();
-+	wiphy_lock(&rdev->wiphy);
- 	cfg80211_destroy_ifaces(rdev);
-+	wiphy_unlock(&rdev->wiphy);
- 	rtnl_unlock();
- }
- 
--- 
-2.26.2
-
+Acked-by: Willem de Bruijn <willemb@google.com>
