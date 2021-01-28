@@ -2,64 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C185C307BEF
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 18:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F366307CC3
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 18:42:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232697AbhA1RN5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 12:13:57 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:46787 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231436AbhA1RLg (ORCPT
+        id S232979AbhA1RhJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 12:37:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54930 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233162AbhA1RgS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 12:11:36 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1l5Aoi-000613-GH; Thu, 28 Jan 2021 17:10:48 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rtlwifi: rtl8192se: remove redundant initialization of variable rtstatus
-Date:   Thu, 28 Jan 2021 17:10:48 +0000
-Message-Id: <20210128171048.644669-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        Thu, 28 Jan 2021 12:36:18 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0CBFC0613ED
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Jan 2021 09:35:37 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1l5BCg-00CwTh-TH
+        for linux-wireless@vger.kernel.org; Thu, 28 Jan 2021 18:35:35 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 0/4] rtnl-locking fixes
+Date:   Thu, 28 Jan 2021 18:35:24 +0100
+Message-Id: <20210128173528.76393-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+As really I expected, a number of issues were reported just now by
+syzbot, and while looking I found one more. Fix them.
 
-The variable rtstatu is being initialized with a value that is never
-read and it is being updated later with a new value.  The initialization
-is redundant and can be removed.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-index 63283d9e7485..aaa004d4d6d0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-@@ -1017,7 +1017,7 @@ bool rtl92s_phy_bb_config(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
--	bool rtstatus = true;
-+	bool rtstatus;
- 	u8 pathmap, index, rf_num = 0;
- 	u8 path1, path2;
- 
--- 
-2.29.2
 
