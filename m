@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B4F9306F9A
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 08:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7D94306FAF
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 08:41:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231872AbhA1He0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 02:34:26 -0500
-Received: from a1.mail.mailgun.net ([198.61.254.60]:60336 "EHLO
-        a1.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232045AbhA1Hb4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 02:31:56 -0500
+        id S231964AbhA1HhG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 02:37:06 -0500
+Received: from m42-8.mailgun.net ([69.72.42.8]:12703 "EHLO m42-8.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232095AbhA1HeT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Jan 2021 02:34:19 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611819097; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1611819240; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=3UQYDSoOS9pMxODiH1PAyl7ABGpw/hk66ZH3BbOb1Pw=;
- b=uYDl83GnrPJrO8+xwaM8oJ6q54jO1G+IJHVcnJIiwWRNr1vrKIvtx1Vu+xe2vSaJNIdBSm8S
- WdZ5HcuCv96cG9chw0k/DCrWfn1uw+BjMfaQubU4qOY1DmJxEcUMwvZHnyRyAqTkaWw2dReA
- 1/2Bo1k0z6p/mDz/JYCyxnMVEgQ=
-X-Mailgun-Sending-Ip: 198.61.254.60
+ Content-Type: Sender; bh=9W6Vf1R++yjjF3FxF3cPAfaLSdNa8uzt5rRAyBg4yjw=;
+ b=G/L7+Nr4GLztBxkccbwdKLeQyMzc1M/sSVX0A4M4UNan6+SOJWGYwgBoe51vwSfOo8WQZscY
+ YRicuSi8iJGfvl5/tS9QM162je4BTqtx8B2GaCYhaiK+O+xfvpJdFgRGIRZxRTNu9WOgYNbL
+ 2ylznz32A7nrVmtXAyUwNl/WwK8=
+X-Mailgun-Sending-Ip: 69.72.42.8
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 6012682dfb02735e8cc4ac85 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Jan 2021 07:30:53
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 601268c1beacd1a252aa8e90 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Jan 2021 07:33:21
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 18CC3C433C6; Thu, 28 Jan 2021 07:30:53 +0000 (UTC)
+        id 35C1BC433ED; Thu, 28 Jan 2021 07:33:21 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,45 +39,67 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 24BFBC433CA;
-        Thu, 28 Jan 2021 07:30:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 24BFBC433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE25CC433C6;
+        Thu, 28 Jan 2021 07:33:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BE25CC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless-drivers] mt76: dma: fix a possible memory leak in
- mt76_add_fragment()
+Subject: Re: [PATCH] ath9k: Add separate entry for LED triggers to fix module
+ builds
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <4f9dd73407da88b2a552517ce8db242d86bf4d5c.1611616130.git.lorenzo@kernel.org>
-References: <4f9dd73407da88b2a552517ce8db242d86bf4d5c.1611616130.git.lorenzo@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
-        lorenzo.bianconi@redhat.com
+In-Reply-To: <20201227143034.1134829-1-krzk@kernel.org>
+References: <20201227143034.1134829-1-krzk@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        kernel test robot <lkp@intel.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210128073053.18CC3C433C6@smtp.codeaurora.org>
-Date:   Thu, 28 Jan 2021 07:30:53 +0000 (UTC)
+Message-Id: <20210128073321.35C1BC433ED@smtp.codeaurora.org>
+Date:   Thu, 28 Jan 2021 07:33:21 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> Fix a memory leak in mt76_add_fragment routine returning the buffer
-> to the page_frag_cache when we receive a new fragment and the
-> skb_shared_info frag array is full.
+> After commit 72cdab808714 ("ath9k: Do not select MAC80211_LEDS by
+> default") a configuration like:
+>  - MAC80211_LEDS=y
+>  - LEDS_CLASS=m
+>  - NEW_LEDS=y
+>  - ATH9K=y
+> leads to a build failure:
 > 
-> Fixes: b102f0c522cf6 ("mt76: fix array overflow on receiving too many fragments for a packet")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Acked-by: Felix Fietkau <nbd@nbd.name>
+>     /usr/bin/ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_deinit_leds':
+>     drivers/net/wireless/ath/ath9k/gpio.c:69: undefined reference to `led_classdev_unregister'
+>     /usr/bin/ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `led_classdev_register':
+>     include/linux/leds.h:190: undefined reference to `led_classdev_register_ext'
+> 
+> To be able to use LED triggers, the LEDS_CLASS can only be a module
+> if ath9k driver is a module as well.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Fixes: 72cdab808714 ("ath9k: Do not select MAC80211_LEDS by default")
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Patch applied to wireless-drivers.git, thanks.
+I took Arnd's patch instead:
 
-93a1d4791c10 mt76: dma: fix a possible memory leak in mt76_add_fragment()
+https://patchwork.kernel.org/project/linux-wireless/patch/20210125113654.2408057-1-arnd@kernel.org/
+
+But I think we really need the cleanup Arnd proposes during the discussion so
+that we have consistent LED handling in wireless drivers. Patches very welcome.
+
+Patch set to Superseded.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/4f9dd73407da88b2a552517ce8db242d86bf4d5c.1611616130.git.lorenzo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20201227143034.1134829-1-krzk@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
