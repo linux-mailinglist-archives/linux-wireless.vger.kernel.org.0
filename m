@@ -2,104 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7D94306FAF
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 08:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 149E43070C0
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 09:13:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231964AbhA1HhG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 02:37:06 -0500
-Received: from m42-8.mailgun.net ([69.72.42.8]:12703 "EHLO m42-8.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232095AbhA1HeT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 02:34:19 -0500
+        id S231403AbhA1IKG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 03:10:06 -0500
+Received: from a1.mail.mailgun.net ([198.61.254.60]:27394 "EHLO
+        a1.mail.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231684AbhA1IJo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Jan 2021 03:09:44 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1611819240; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=9W6Vf1R++yjjF3FxF3cPAfaLSdNa8uzt5rRAyBg4yjw=;
- b=G/L7+Nr4GLztBxkccbwdKLeQyMzc1M/sSVX0A4M4UNan6+SOJWGYwgBoe51vwSfOo8WQZscY
- YRicuSi8iJGfvl5/tS9QM162je4BTqtx8B2GaCYhaiK+O+xfvpJdFgRGIRZxRTNu9WOgYNbL
- 2ylznz32A7nrVmtXAyUwNl/WwK8=
-X-Mailgun-Sending-Ip: 69.72.42.8
+ s=smtp; t=1611821361; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=/o88EhhP0c4dq6yUyZ8eKopV10aGp5VPu/c4f/R2ei8=;
+ b=VrH+vAgzlAWW0w3vFgYG7XyA+8N1IICbyTP/Y6zYAhgDbCHtXw6AdevwMyjDyD7wpU0mmjh1
+ eV8AStP+/MwzDqg8yxlSbUKaZFYABgs15MdxxfkCgRu774Mcs6od2aOZ25aMBSqqhEqe1KHs
+ Kkmn+PANis67UtIwXxWjv8Mtk7I=
+X-Mailgun-Sending-Ip: 198.61.254.60
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 601268c1beacd1a252aa8e90 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Jan 2021 07:33:21
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 6012710fe32560064279c7a3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Jan 2021 08:08:47
  GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Sender: youghand=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 35C1BC433ED; Thu, 28 Jan 2021 07:33:21 +0000 (UTC)
+        id C921BC43462; Thu, 28 Jan 2021 08:08:46 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE25CC433C6;
-        Thu, 28 Jan 2021 07:33:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BE25CC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        (Authenticated sender: youghand)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1F1EBC433CA;
+        Thu, 28 Jan 2021 08:08:46 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath9k: Add separate entry for LED triggers to fix module
- builds
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20201227143034.1134829-1-krzk@kernel.org>
-References: <20201227143034.1134829-1-krzk@kernel.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Thu, 28 Jan 2021 13:38:46 +0530
+From:   youghand@codeaurora.org
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        kernel test robot <lkp@intel.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210128073321.35C1BC433ED@smtp.codeaurora.org>
-Date:   Thu, 28 Jan 2021 07:33:21 +0000 (UTC)
+        linux-kernel@vger.kernel.org, kuabhs@chromium.org,
+        dianders@chromium.org, briannorris@chromium.org,
+        pillair@codeaurora.org
+Subject: Re: [PATCH 2/3] mac80211: Add support to trigger sta disconnect on
+ hardware restart
+In-Reply-To: <f2089f3c-db96-87bc-d678-199b440c05be@nbd.name>
+References: <20201215172352.5311-1-youghand@codeaurora.org>
+ <f2089f3c-db96-87bc-d678-199b440c05be@nbd.name>
+Message-ID: <ba0e6a3b783722c22715ae21953b1036@codeaurora.org>
+X-Sender: youghand@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
-
-> After commit 72cdab808714 ("ath9k: Do not select MAC80211_LEDS by
-> default") a configuration like:
->  - MAC80211_LEDS=y
->  - LEDS_CLASS=m
->  - NEW_LEDS=y
->  - ATH9K=y
-> leads to a build failure:
+On 2020-12-15 23:10, Felix Fietkau wrote:
+> On 2020-12-15 18:23, Youghandhar Chintala wrote:
+>> Currently in case of target hardware restart, we just reconfig and
+>> re-enable the security keys and enable the network queues to start
+>> data traffic back from where it was interrupted.
+>> 
+>> Many ath10k wifi chipsets have sequence numbers for the data
+>> packets assigned by firmware and the mac sequence number will
+>> restart from zero after target hardware restart leading to mismatch
+>> in the sequence number expected by the remote peer vs the sequence
+>> number of the frame sent by the target firmware.
+>> 
+>> This mismatch in sequence number will cause out-of-order packets
+>> on the remote peer and all the frames sent by the device are dropped
+>> until we reach the sequence number which was sent before we restarted
+>> the target hardware
+>> 
+>> In order to fix this, we trigger a sta disconnect, for the targets
+>> which expose this corresponding wiphy flag, in case of target hw
+>> restart. After this there will be a fresh connection and thereby
+>> avoiding the dropping of frames by remote peer.
+>> 
+>> The right fix would be to pull the entire data path into the host
+>> which is not feasible or would need lots of complex changes and
+>> will still be inefficient.
+> How about simply tracking which tids have aggregation enabled and send
+> DELBA frames for those after the restart?
+> It would mean less disruption for affected stations and less ugly hacks
+> in the stack for unreliable hardware.
 > 
->     /usr/bin/ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `ath_deinit_leds':
->     drivers/net/wireless/ath/ath9k/gpio.c:69: undefined reference to `led_classdev_unregister'
->     /usr/bin/ld: drivers/net/wireless/ath/ath9k/gpio.o: in function `led_classdev_register':
->     include/linux/leds.h:190: undefined reference to `led_classdev_register_ext'
-> 
-> To be able to use LED triggers, the LEDS_CLASS can only be a module
-> if ath9k driver is a module as well.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Fixes: 72cdab808714 ("ath9k: Do not select MAC80211_LEDS by default")
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> - Felix
 
-I took Arnd's patch instead:
+Hi Felix,
 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210125113654.2408057-1-arnd@kernel.org/
+We did try to send an ADDBA frame to the AP once the SSR happened. The 
+AP ack’ed the frame and the new BA session with renewed sequence number 
+was established. But still, the AP did not respond to the ping requests 
+with the new sequence number. It did not respond until one of the two 
+happened.
+1.	The sequence number was more than the sequence number that DUT had 
+used before SSR happened
+2.	DUT disconnected and then reconnected.
+The other option is to send a DELBA frame to the AP and make the AP also 
+force to establish the BA session from its side. This we feel can have 
+some interoperability issues as some of the AP’s may not honour the 
+DELBA frame and will continue to use the earlier BA session that it had 
+established. Given that re-negotiating the BA session is prone to IOT 
+issues, we feel that it would be good to go with the 
+Disconnect/Reconnect solution which is foolproof and will work in all 
+scenarios.
 
-But I think we really need the cleanup Arnd proposes during the discussion so
-that we have consistent LED handling in wireless drivers. Patches very welcome.
-
-Patch set to Superseded.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20201227143034.1134829-1-krzk@kernel.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Regards,
+Youghandhar
