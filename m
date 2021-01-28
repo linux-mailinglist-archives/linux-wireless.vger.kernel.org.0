@@ -2,210 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6100F3078BD
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 15:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCBA8307A9D
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Jan 2021 17:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231945AbhA1OxL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 09:53:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:47159 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232211AbhA1OvF (ORCPT
+        id S232394AbhA1QXA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 11:23:00 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:45447 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232237AbhA1QWx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 09:51:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611845377;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=R1wB61RtOlNZBu/4s6IPC3Y9aKTFBZ1hLdvLyyOkKJs=;
-        b=WqFU9kgFmkXEjbhwx3ZkfXE+VIF/e09eFv77i3Li4pxhhBrI1GtwmInueWz6ZU3sCtL8q2
-        x2IMbaw3xYLqn0xlCzq5Eu0FaFt6aLItJ9TfbEOoy7E3CzwZkMPj6+mCrj1cR457DYD/uC
-        xX704j2xsv3yysDSb6+odikCqhHxWso=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-468-pIC15DYFMBG7mjKzcykp1Q-1; Thu, 28 Jan 2021 09:49:35 -0500
-X-MC-Unique: pIC15DYFMBG7mjKzcykp1Q-1
-Received: by mail-qt1-f199.google.com with SMTP id t5so3637386qti.5
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jan 2021 06:49:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=R1wB61RtOlNZBu/4s6IPC3Y9aKTFBZ1hLdvLyyOkKJs=;
-        b=sJb3YiqKbS7g+FGWBAimuY0uI5WsGgb8MXXpovNXrOKJjMNOPBjssYpJiwkuoRhAdV
-         w2pqP8CDIW7EvdP4UnvQGxL+zuAkLKAhSSZ6nMksdoCSNq8CG5uhIqHInFTwAyY+YFc8
-         Q9PoXrl/S/CjCZn3yLKH4zZki554l20145yT1PeuldmaLeCHO+DMTcBbhDWW8Ch/2sP/
-         ybB9CJ0PT/aSZCFNOWVkzOmtz2n3u3IUw+GRQdErWtZVhTEgfAuRVyDLtEUSfmP7FhIs
-         Fnl0JuWd2lWunNns8U1rKOvVoNHZ3mYNElSjpsPLANZlnMDGQndk74eZfYEBgtHb+9wK
-         0fGA==
-X-Gm-Message-State: AOAM5307CWhID/MvTtyb1lhGrDTQcFpJUqR8fcwbhJZXxsjEFtBdg2F/
-        /FBucqkc+erOnHN24ezuyihUFyKvFEORoU15NiSDT4TYHK2MFuT070c7yXHbzO5lac5S4PqoZbo
-        GGSsfbMfHbtEALOANEDx+xUceVCY=
-X-Received: by 2002:a05:6214:12ab:: with SMTP id w11mr15366683qvu.8.1611845375233;
-        Thu, 28 Jan 2021 06:49:35 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxCLuqdGPwPS5PK3P3TXw9Qxq7+q25oB8+s3fAglKWy2HeY2liKG0cQB0vFgfE3eC2o2geTNg==
-X-Received: by 2002:a05:6214:12ab:: with SMTP id w11mr15366658qvu.8.1611845374975;
-        Thu, 28 Jan 2021 06:49:34 -0800 (PST)
-Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id q25sm3635809qkq.32.2021.01.28.06.49.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 06:49:34 -0800 (PST)
-From:   trix@redhat.com
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH] ath11k: remove h from printk format specifier
-Date:   Thu, 28 Jan 2021 06:49:28 -0800
-Message-Id: <20210128144928.2557605-1-trix@redhat.com>
-X-Mailer: git-send-email 2.27.0
+        Thu, 28 Jan 2021 11:22:53 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1l5A3Y-0002sn-Qn; Thu, 28 Jan 2021 16:22:06 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] libertas: remove redundant initialization of variable ret
+Date:   Thu, 28 Jan 2021 16:22:02 +0000
+Message-Id: <20210128162202.642848-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-This change fixes the checkpatch warning described in this commit
-commit cbacb5ab0aa0 ("docs: printk-formats: Stop encouraging use of
-  unnecessary %h[xudi] and %hh[xudi]")
+The variable ret is being initialized with a value that is never read
+and it is being updated later with a new value.  The initialization is
+redundant and can be removed.
 
-Standard integer promotion is already done and %hx and %hhx is useless
-so do not encourage the use of %hh[xudi] or %h[xudi].
-
-Signed-off-by: Tom Rix <trix@redhat.com>
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 10 +++++-----
- drivers/net/wireless/ath/ath11k/mac.c   | 10 +++++-----
- drivers/net/wireless/ath/ath11k/trace.h |  2 +-
- drivers/net/wireless/ath/ath11k/wmi.c   |  4 ++--
- 4 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/wireless/marvell/libertas/if_sdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 42328a06107b..859cfcabceb5 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1292,7 +1292,7 @@ int ath11k_dp_htt_tlv_iter(struct ath11k_base *ab, const void *ptr, size_t len,
- 		len -= sizeof(*tlv);
+diff --git a/drivers/net/wireless/marvell/libertas/if_sdio.c b/drivers/net/wireless/marvell/libertas/if_sdio.c
+index 44fbd0acb87a..a63c5e622ee3 100644
+--- a/drivers/net/wireless/marvell/libertas/if_sdio.c
++++ b/drivers/net/wireless/marvell/libertas/if_sdio.c
+@@ -981,7 +981,7 @@ static int if_sdio_host_to_card(struct lbs_private *priv,
  
- 		if (tlv_len > len) {
--			ath11k_err(ab, "htt tlv parse failure of tag %hhu at byte %zd (%zu bytes left, %hhu expected)\n",
-+			ath11k_err(ab, "htt tlv parse failure of tag %u at byte %zd (%zu bytes left, %u expected)\n",
- 				   tlv_tag, ptr - begin, len, tlv_len);
- 			return -EINVAL;
- 		}
-@@ -1381,22 +1381,22 @@ ath11k_update_per_peer_tx_stats(struct ath11k *ar,
- 	 */
+ static int if_sdio_enter_deep_sleep(struct lbs_private *priv)
+ {
+-	int ret = -1;
++	int ret;
+ 	struct cmd_header cmd;
  
- 	if (flags == WMI_RATE_PREAMBLE_HE && mcs > 11) {
--		ath11k_warn(ab, "Invalid HE mcs %hhd peer stats",  mcs);
-+		ath11k_warn(ab, "Invalid HE mcs %d peer stats",  mcs);
- 		return;
- 	}
- 
- 	if (flags == WMI_RATE_PREAMBLE_HE && mcs > ATH11K_HE_MCS_MAX) {
--		ath11k_warn(ab, "Invalid HE mcs %hhd peer stats",  mcs);
-+		ath11k_warn(ab, "Invalid HE mcs %d peer stats",  mcs);
- 		return;
- 	}
- 
- 	if (flags == WMI_RATE_PREAMBLE_VHT && mcs > ATH11K_VHT_MCS_MAX) {
--		ath11k_warn(ab, "Invalid VHT mcs %hhd peer stats",  mcs);
-+		ath11k_warn(ab, "Invalid VHT mcs %d peer stats",  mcs);
- 		return;
- 	}
- 
- 	if (flags == WMI_RATE_PREAMBLE_HT && (mcs > ATH11K_HT_MCS_MAX || nss < 1)) {
--		ath11k_warn(ab, "Invalid HT mcs %hhd nss %hhd peer stats",
-+		ath11k_warn(ab, "Invalid HT mcs %d nss %d peer stats",
- 			    mcs, nss);
- 		return;
- 	}
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index c1608f64ea95..9f56e0ad1fee 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4849,7 +4849,7 @@ static int ath11k_mac_op_add_chanctx(struct ieee80211_hw *hw,
- 	struct ath11k_base *ab = ar->ab;
- 
- 	ath11k_dbg(ab, ATH11K_DBG_MAC,
--		   "mac chanctx add freq %hu width %d ptr %pK\n",
-+		   "mac chanctx add freq %u width %d ptr %pK\n",
- 		   ctx->def.chan->center_freq, ctx->def.width, ctx);
- 
- 	mutex_lock(&ar->conf_mutex);
-@@ -4873,7 +4873,7 @@ static void ath11k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
- 	struct ath11k_base *ab = ar->ab;
- 
- 	ath11k_dbg(ab, ATH11K_DBG_MAC,
--		   "mac chanctx remove freq %hu width %d ptr %pK\n",
-+		   "mac chanctx remove freq %u width %d ptr %pK\n",
- 		   ctx->def.chan->center_freq, ctx->def.width, ctx);
- 
- 	mutex_lock(&ar->conf_mutex);
-@@ -5117,7 +5117,7 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
- 		arvif = (void *)vifs[i].vif->drv_priv;
- 
- 		ath11k_dbg(ab, ATH11K_DBG_MAC,
--			   "mac chanctx switch vdev_id %i freq %hu->%hu width %d->%d\n",
-+			   "mac chanctx switch vdev_id %i freq %u->%u width %d->%d\n",
- 			   arvif->vdev_id,
- 			   vifs[i].old_ctx->def.chan->center_freq,
- 			   vifs[i].new_ctx->def.chan->center_freq,
-@@ -5214,7 +5214,7 @@ static void ath11k_mac_op_change_chanctx(struct ieee80211_hw *hw,
- 	mutex_lock(&ar->conf_mutex);
- 
- 	ath11k_dbg(ab, ATH11K_DBG_MAC,
--		   "mac chanctx change freq %hu width %d ptr %pK changed %x\n",
-+		   "mac chanctx change freq %u width %d ptr %pK changed %x\n",
- 		   ctx->def.chan->center_freq, ctx->def.width, ctx, changed);
- 
- 	/* This shouldn't really happen because channel switching should use
-@@ -5583,7 +5583,7 @@ static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
--	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac set fixed rate params vdev %i rate 0x%02hhx nss %hhu sgi %hhu\n",
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac set fixed rate params vdev %i rate 0x%02x nss %u sgi %u\n",
- 		   arvif->vdev_id, rate, nss, sgi);
- 
- 	vdev_param = WMI_VDEV_PARAM_FIXED_RATE;
-diff --git a/drivers/net/wireless/ath/ath11k/trace.h b/drivers/net/wireless/ath/ath11k/trace.h
-index 66d0aae7816c..d2d2a3cb0826 100644
---- a/drivers/net/wireless/ath/ath11k/trace.h
-+++ b/drivers/net/wireless/ath/ath11k/trace.h
-@@ -43,7 +43,7 @@ TRACE_EVENT(ath11k_htt_pktlog,
- 	),
- 
- 	TP_printk(
--		"%s %s size %hu pktlog_checksum %d",
-+		"%s %s size %u pktlog_checksum %d",
- 		__get_str(driver),
- 		__get_str(device),
- 		__entry->buf_len,
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 73869d445c5b..2e6ce28ecc8d 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -169,7 +169,7 @@ ath11k_wmi_tlv_iter(struct ath11k_base *ab, const void *ptr, size_t len,
- 		len -= sizeof(*tlv);
- 
- 		if (tlv_len > len) {
--			ath11k_err(ab, "wmi tlv parse failure of tag %hhu at byte %zd (%zu bytes left, %hhu expected)\n",
-+			ath11k_err(ab, "wmi tlv parse failure of tag %u at byte %zd (%zu bytes left, %u expected)\n",
- 				   tlv_tag, ptr - begin, len, tlv_len);
- 			return -EINVAL;
- 		}
-@@ -177,7 +177,7 @@ ath11k_wmi_tlv_iter(struct ath11k_base *ab, const void *ptr, size_t len,
- 		if (tlv_tag < ARRAY_SIZE(wmi_tlv_policies) &&
- 		    wmi_tlv_policies[tlv_tag].min_len &&
- 		    wmi_tlv_policies[tlv_tag].min_len > tlv_len) {
--			ath11k_err(ab, "wmi tlv parse failure of tag %hhu at byte %zd (%hhu bytes is less than min length %zu)\n",
-+			ath11k_err(ab, "wmi tlv parse failure of tag %u at byte %zd (%u bytes is less than min length %zu)\n",
- 				   tlv_tag, ptr - begin, tlv_len,
- 				   wmi_tlv_policies[tlv_tag].min_len);
- 			return -EINVAL;
+ 	memset(&cmd, 0, sizeof(cmd));
 -- 
-2.27.0
+2.29.2
 
