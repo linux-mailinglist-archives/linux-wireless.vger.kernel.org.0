@@ -2,206 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A03030823B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 01:11:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 463903083C0
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 03:24:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229832AbhA2ALT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 19:11:19 -0500
-Received: from mga04.intel.com ([192.55.52.120]:14250 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229692AbhA2ALS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 19:11:18 -0500
-IronPort-SDR: x6HBYZc7UbSJGkkQ0OMYe5oiupvvlQfgFZIpkpQ2WhUvU5CB+4j/VMSDbC7BuazxKeRf7O3rw8
- 3S+8Rzeaj7iw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9878"; a="177772949"
-X-IronPort-AV: E=Sophos;i="5.79,384,1602572400"; 
-   d="scan'208";a="177772949"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2021 16:10:38 -0800
-IronPort-SDR: qdo1CdSTvPYYrfyqaMl5oUYe2+kRUrz1I8syDcEygvSWktWiIUhPNxkXjMpRTCKMk3TsvjFHNr
- S2iaU0mSPwFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,384,1602572400"; 
-   d="scan'208";a="409348437"
-Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 28 Jan 2021 16:10:37 -0800
-Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l5HMy-0003Dq-TS; Fri, 29 Jan 2021 00:10:36 +0000
-Date:   Fri, 29 Jan 2021 08:09:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211:master] BUILD SUCCESS
- 44a674d6f79867d5652026f1cc11f7ba8a390183
-Message-ID: <60135247.cqsBoMNxZwfRTDSN%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S231608AbhA2CXF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Jan 2021 21:23:05 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:42597 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231551AbhA2CXC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Jan 2021 21:23:02 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 10T2MFowC015057, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 10T2MFowC015057
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 29 Jan 2021 10:22:15 +0800
+Received: from localhost (172.21.69.213) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 29 Jan
+ 2021 10:22:15 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v3 00/18] rtw89: add Realtek 802.11ax driver
+Date:   Fri, 29 Jan 2021 10:20:59 +0800
+Message-ID: <20210129022117.28463-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.213]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
-branch HEAD: 44a674d6f79867d5652026f1cc11f7ba8a390183  Merge tag 'mlx5-fixes-2021-01-26' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux
+This driver named rtw89, which is the next generation of rtw88, supports
+Realtek 8852AE 802.11ax 2x2 chip whose new features are OFDMA, DBCC,
+Spatial reuse, TWT and BSS coloring; now some of them aren't implemented
+though.
 
-elapsed time: 784m
+The chip architecture is entirely different from the chips supported by
+rtw88 like RTL8822CE 802.11ac chip. First of all, register address ranges
+are totally redefined, so it's impossible to reuse register definition. To
+communicate with firmware, new H2C/C2H format is proposed. In order to have
+better utilization, TX DMA flow is changed to two stages DMA. To provide
+rich RX status information, additional RX PPDU packets are added.
 
-configs tested: 144
-configs skipped: 3
+Since there are so many differences mentioned above, we decide to propose
+a new driver. It has many authors, they are listed in alphabetic order:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Chin-Yen Lee <timlee@realtek.com>
+Ping-Ke Shih <pkshih@realtek.com>
+Po Hao Huang <phhuang@realtek.com>
+Tzu-En Huang <tehuang@realtek.com>
+Vincent Fann <vincent_fann@realtek.com>
+Yan-Hsuan Chuang <tony0620emma@gmail.com>
+Zong-Zhe Yang <kevin_yang@realtek.com>
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                  colibri_pxa300_defconfig
-powerpc                   bluestone_defconfig
-nios2                         3c120_defconfig
-arc                        vdk_hs38_defconfig
-sh                           se7724_defconfig
-mips                malta_qemu_32r6_defconfig
-powerpc                         ps3_defconfig
-nds32                            alldefconfig
-c6x                        evmc6457_defconfig
-m68k                            q40_defconfig
-m68k                       m5208evb_defconfig
-sh                            titan_defconfig
-arm                         lpc18xx_defconfig
-sh                         microdev_defconfig
-mips                         mpc30x_defconfig
-riscv                               defconfig
-arc                     nsimosci_hs_defconfig
-c6x                        evmc6474_defconfig
-xtensa                           allyesconfig
-mips                      pic32mzda_defconfig
-powerpc                     pseries_defconfig
-arm                          ep93xx_defconfig
-openrisc                    or1ksim_defconfig
-nios2                            allyesconfig
-sh                         apsh4a3a_defconfig
-arm                       aspeed_g5_defconfig
-arm                        mvebu_v5_defconfig
-m68k                       m5275evb_defconfig
-powerpc                      ppc44x_defconfig
-arm                        clps711x_defconfig
-arm                            qcom_defconfig
-mips                      malta_kvm_defconfig
-arm                        vexpress_defconfig
-xtensa                generic_kc705_defconfig
-sh                          rsk7269_defconfig
-mips                            ar7_defconfig
-arm                       multi_v4t_defconfig
-xtensa                         virt_defconfig
-mips                       capcella_defconfig
-parisc                generic-32bit_defconfig
-microblaze                      mmu_defconfig
-sh                          sdk7780_defconfig
-sh                   secureedge5410_defconfig
-arc                              alldefconfig
-mips                   sb1250_swarm_defconfig
-openrisc                            defconfig
-ia64                        generic_defconfig
-openrisc                 simple_smp_defconfig
-powerpc                    sam440ep_defconfig
-arm                         hackkit_defconfig
-powerpc                 mpc8272_ads_defconfig
-arm                         vf610m4_defconfig
-arm                        trizeps4_defconfig
-sh                        edosk7705_defconfig
-mips                  cavium_octeon_defconfig
-sparc                            allyesconfig
-powerpc                  storcenter_defconfig
-x86_64                              defconfig
-m68k                                defconfig
-powerpc                    ge_imp3a_defconfig
-arm                         at91_dt_defconfig
-arm                            lart_defconfig
-sh                          r7785rp_defconfig
-ia64                         bigsur_defconfig
-m68k                        m5272c3_defconfig
-sh                          r7780mp_defconfig
-mips                          ath79_defconfig
-mips                       lemote2f_defconfig
-mips                 decstation_r4k_defconfig
-c6x                        evmc6678_defconfig
-m68k                        mvme16x_defconfig
-arc                         haps_hs_defconfig
-sparc64                          alldefconfig
-arm                  colibri_pxa270_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210128
-i386                 randconfig-a002-20210128
-i386                 randconfig-a004-20210128
-i386                 randconfig-a005-20210128
-i386                 randconfig-a003-20210128
-i386                 randconfig-a006-20210128
-x86_64               randconfig-a012-20210128
-x86_64               randconfig-a015-20210128
-x86_64               randconfig-a016-20210128
-x86_64               randconfig-a011-20210128
-x86_64               randconfig-a013-20210128
-x86_64               randconfig-a014-20210128
-i386                 randconfig-a013-20210128
-i386                 randconfig-a011-20210128
-i386                 randconfig-a012-20210128
-i386                 randconfig-a016-20210128
-i386                 randconfig-a014-20210128
-i386                 randconfig-a015-20210128
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                                  kexec
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
+v2:
+  - fix compiler warnings made by W=1
+    Reported-by: kernel test robot <lkp@intel.com>
+  - sort header file alphabetically
+  - fix "networking block comments" reported by checkpatch
+v3:
+  - fix "networking block comments" reported by checkpatch
+  - Add MODULE_DEVICE_TABLE() generated by Thomas Backlund <tmb@mageia.org>
+  - Add missed BB settings
+  - error handle of RX BD and DESC length
+  - reduce debug level of C2H ACKs
+  - fix rekey failure due to wrong operator
 
-clang tested configs:
-x86_64               randconfig-a002-20210128
-x86_64               randconfig-a003-20210128
-x86_64               randconfig-a001-20210128
-x86_64               randconfig-a005-20210128
-x86_64               randconfig-a006-20210128
-x86_64               randconfig-a004-20210128
+Ping-Ke Shih (18):
+  rtw89: add CAM files
+  rtw89: add BT coexistence files
+  rtw89: add core and trx files
+  rtw89: add debug files
+  rtw89: add efuse files
+  rtw89: add files to download and communicate with firmware
+  rtw89: add MAC files
+  rtw89: implement mac80211 ops
+  rtw89: add pci files
+  rtw89: add phy files
+  rtw89: define register names
+  rtw89: add regulatory support
+  rtw89: 8852a: add 8852a specific files
+  rtw89: 8852a: add 8852a RFK files
+  rtw89: 8852a: add 8852a RFK tables
+  rtw89: 8852a: add 8852a tables
+  rtw89: add ser to recover error reported by firmware
+  rtw89: add Kconfig and Makefile
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/net/wireless/realtek/Kconfig          |     1 +
+ drivers/net/wireless/realtek/Makefile         |     1 +
+ drivers/net/wireless/realtek/rtw89/Kconfig    |    50 +
+ drivers/net/wireless/realtek/rtw89/Makefile   |    23 +
+ drivers/net/wireless/realtek/rtw89/cam.c      |   669 +
+ drivers/net/wireless/realtek/rtw89/cam.h      |   164 +
+ drivers/net/wireless/realtek/rtw89/coex.c     |   385 +
+ drivers/net/wireless/realtek/rtw89/coex.h     |   102 +
+ drivers/net/wireless/realtek/rtw89/core.c     |  1733 ++
+ drivers/net/wireless/realtek/rtw89/core.h     |  1918 ++
+ drivers/net/wireless/realtek/rtw89/debug.c    |  1927 ++
+ drivers/net/wireless/realtek/rtw89/debug.h    |    75 +
+ drivers/net/wireless/realtek/rtw89/efuse.c    |   188 +
+ drivers/net/wireless/realtek/rtw89/efuse.h    |    13 +
+ drivers/net/wireless/realtek/rtw89/fw.c       |   990 +
+ drivers/net/wireless/realtek/rtw89/fw.h       |  1056 +
+ drivers/net/wireless/realtek/rtw89/mac.c      |  3259 ++
+ drivers/net/wireless/realtek/rtw89/mac.h      |   763 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   521 +
+ drivers/net/wireless/realtek/rtw89/pci.c      |  2598 ++
+ drivers/net/wireless/realtek/rtw89/pci.h      |   560 +
+ drivers/net/wireless/realtek/rtw89/phy.c      |  2474 ++
+ drivers/net/wireless/realtek/rtw89/phy.h      |   278 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  1855 ++
+ drivers/net/wireless/realtek/rtw89/regd.c     |   351 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1357 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.h |    78 +
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c |  3558 +++
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.h |    20 +
+ .../realtek/rtw89/rtw8852a_rfk_table.c        |  1561 +
+ .../realtek/rtw89/rtw8852a_rfk_table.h        |   129 +
+ .../wireless/realtek/rtw89/rtw8852a_table.c   | 24997 ++++++++++++++++
+ .../wireless/realtek/rtw89/rtw8852a_table.h   |    28 +
+ drivers/net/wireless/realtek/rtw89/ser.c      |   427 +
+ drivers/net/wireless/realtek/rtw89/ser.h      |    14 +
+ drivers/net/wireless/realtek/rtw89/txrx.h     |   385 +
+ 36 files changed, 54508 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/Kconfig
+ create mode 100644 drivers/net/wireless/realtek/rtw89/Makefile
+ create mode 100644 drivers/net/wireless/realtek/rtw89/cam.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/cam.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/coex.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/coex.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/core.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/core.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/debug.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/debug.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/efuse.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/efuse.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/fw.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/fw.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/mac.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/mac.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/mac80211.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/pci.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/pci.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/phy.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/phy.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/reg.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/regd.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk_table.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_table.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/ser.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/ser.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/txrx.h
+
+-- 
+2.21.0
+
