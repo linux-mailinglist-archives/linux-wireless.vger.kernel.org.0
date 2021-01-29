@@ -2,170 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B83AC3085A8
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 07:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B457B308A54
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 17:37:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232111AbhA2GXH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Jan 2021 01:23:07 -0500
-Received: from mga12.intel.com ([192.55.52.136]:2110 "EHLO mga12.intel.com"
+        id S231638AbhA2Qf5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Jan 2021 11:35:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55666 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232059AbhA2GXE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Jan 2021 01:23:04 -0500
-IronPort-SDR: 9bMMpj5eNw0E9OKIgkpC7s6RQsBpv/VuhGtdiJOitgTCXu8v2hemJHZM35wNw1m1t0Bymp3/jo
- TpLvW48d/H6g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9878"; a="159545824"
-X-IronPort-AV: E=Sophos;i="5.79,384,1602572400"; 
-   d="scan'208";a="159545824"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2021 22:22:30 -0800
-IronPort-SDR: kL56GqKNZJsk0kqGugYu1Sn57pKDN70aFy4UB9Os18BfySVPdSnOONksajA3Gv4UsY3ODk+3F5
- PomiVTwvfIlg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,384,1602572400"; 
-   d="scan'208";a="474420758"
-Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 28 Jan 2021 22:22:29 -0800
-Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1l5NAq-0003aD-DE; Fri, 29 Jan 2021 06:22:28 +0000
-Date:   Fri, 29 Jan 2021 14:22:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:master] BUILD SUCCESS
- 776a39b8196dbca4afb69669db0d9926ffac29ab
-Message-ID: <6013a99c.ONRWpgK5XLBDmNFG%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S231642AbhA2Qdy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Jan 2021 11:33:54 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A0FC164DFB;
+        Fri, 29 Jan 2021 16:24:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611937470;
+        bh=rX//8lmNsK9ouUWLaFuelzOZswldJFRqZnwM9SrzbmA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=rIdEcRXyknFPg6vCzipnjyc/WTpKmyVlmoOuN2YwQwtLSqPW+EJuS+WD4+mmtmLKX
+         5gwOC0Z/ybiPmQnrOTa5DIRP0EqAkElggSbcll5Mb43sr62i2YUhpexHQULXJat2jy
+         t8gzwcPAlLkFM/HjstxhS06O3sImop4QIX3GpQsMvn/XvnpP0qeTH6ccTQeGbsJFiT
+         43ospAl2b7n4fvB5j2fjm+yxiWBJePUJtikrT7XbZEOnXC501ZBbw0lCpbTd01mHZG
+         8npsCU1Y65UT2PgkQ3xfqqvnU5/rvG4k1Qx5v6xqT3b0Q+eY0XRk4h9Z2RwE7u356y
+         534BjZuz4AGww==
+Date:   Fri, 29 Jan 2021 10:24:28 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Dave Airlie <airlied@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-s390@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH] Fix "ordering" comment typos
+Message-ID: <20210129162428.GA85218@bjorn-Precision-5520>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210126195042.2909405-1-helgaas@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
-branch HEAD: 776a39b8196dbca4afb69669db0d9926ffac29ab  cfg80211: call cfg80211_destroy_ifaces() with wiphy lock held
+On Tue, Jan 26, 2021 at 01:50:42PM -0600, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> Fix comment typos in "ordering".
+> 
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+>  arch/s390/include/asm/facility.h             | 2 +-
+>  drivers/gpu/drm/qxl/qxl_drv.c                | 2 +-
+>  drivers/net/wireless/intel/iwlwifi/fw/file.h | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> 
+> Unless somebody objects, I'll just merge these typo fixes via the PCI tree.
 
-elapsed time: 727m
+Applied to pci/misc for v5.12 with acks from Kalle and Vasily.
 
-configs tested: 108
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                         ps3_defconfig
-arm                          pxa3xx_defconfig
-riscv                    nommu_virt_defconfig
-m68k                           sun3_defconfig
-arm                     eseries_pxa_defconfig
-arm                            pleb_defconfig
-powerpc                     rainier_defconfig
-arm                          badge4_defconfig
-arm                        spear3xx_defconfig
-mips                           ip28_defconfig
-powerpc                    ge_imp3a_defconfig
-mips                     cu1830-neo_defconfig
-nios2                         3c120_defconfig
-sh                          polaris_defconfig
-mips                  decstation_64_defconfig
-sh                          kfr2r09_defconfig
-mips                       bmips_be_defconfig
-powerpc                 mpc837x_mds_defconfig
-mips                      maltasmvp_defconfig
-arm                          simpad_defconfig
-powerpc                 mpc8272_ads_defconfig
-arm                        shmobile_defconfig
-arm                           u8500_defconfig
-powerpc                 linkstation_defconfig
-parisc                generic-64bit_defconfig
-arm                            mmp2_defconfig
-powerpc                      acadia_defconfig
-arm                            u300_defconfig
-mips                      maltaaprp_defconfig
-m68k                        m5307c3_defconfig
-sh                           se7751_defconfig
-arm                           h3600_defconfig
-arc                        nsimosci_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210128
-i386                 randconfig-a002-20210128
-i386                 randconfig-a004-20210128
-i386                 randconfig-a005-20210128
-i386                 randconfig-a003-20210128
-i386                 randconfig-a006-20210128
-x86_64               randconfig-a012-20210128
-x86_64               randconfig-a015-20210128
-x86_64               randconfig-a016-20210128
-x86_64               randconfig-a011-20210128
-x86_64               randconfig-a013-20210128
-x86_64               randconfig-a014-20210128
-i386                 randconfig-a013-20210128
-i386                 randconfig-a011-20210128
-i386                 randconfig-a012-20210128
-i386                 randconfig-a016-20210128
-i386                 randconfig-a014-20210128
-i386                 randconfig-a015-20210128
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a002-20210128
-x86_64               randconfig-a003-20210128
-x86_64               randconfig-a001-20210128
-x86_64               randconfig-a005-20210128
-x86_64               randconfig-a006-20210128
-x86_64               randconfig-a004-20210128
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
+> index 68c476b20b57..91b5d714d28f 100644
+> --- a/arch/s390/include/asm/facility.h
+> +++ b/arch/s390/include/asm/facility.h
+> @@ -44,7 +44,7 @@ static inline int __test_facility(unsigned long nr, void *facilities)
+>  }
+>  
+>  /*
+> - * The test_facility function uses the bit odering where the MSB is bit 0.
+> + * The test_facility function uses the bit ordering where the MSB is bit 0.
+>   * That makes it easier to query facility bits with the bit number as
+>   * documented in the Principles of Operation.
+>   */
+> diff --git a/drivers/gpu/drm/qxl/qxl_drv.c b/drivers/gpu/drm/qxl/qxl_drv.c
+> index 6e7f16f4cec7..dab190a547cc 100644
+> --- a/drivers/gpu/drm/qxl/qxl_drv.c
+> +++ b/drivers/gpu/drm/qxl/qxl_drv.c
+> @@ -141,7 +141,7 @@ static void qxl_drm_release(struct drm_device *dev)
+>  
+>  	/*
+>  	 * TODO: qxl_device_fini() call should be in qxl_pci_remove(),
+> -	 * reodering qxl_modeset_fini() + qxl_device_fini() calls is
+> +	 * reordering qxl_modeset_fini() + qxl_device_fini() calls is
+>  	 * non-trivial though.
+>  	 */
+>  	qxl_modeset_fini(qdev);
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+> index 597bc88479ba..04fbfe5cbeb0 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+> @@ -866,7 +866,7 @@ struct iwl_fw_dbg_trigger_time_event {
+>   * tx_bar: tid bitmap to configure on what tid the trigger should occur
+>   *	when a BAR is send (for an Rx BlocAck session).
+>   * frame_timeout: tid bitmap to configure on what tid the trigger should occur
+> - *	when a frame times out in the reodering buffer.
+> + *	when a frame times out in the reordering buffer.
+>   */
+>  struct iwl_fw_dbg_trigger_ba {
+>  	__le16 rx_ba_start;
+> -- 
+> 2.25.1
+> 
