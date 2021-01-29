@@ -2,109 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B457B308A54
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 17:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18CAA308B4D
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 18:19:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231638AbhA2Qf5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Jan 2021 11:35:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55666 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231642AbhA2Qdy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Jan 2021 11:33:54 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A0FC164DFB;
-        Fri, 29 Jan 2021 16:24:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611937470;
-        bh=rX//8lmNsK9ouUWLaFuelzOZswldJFRqZnwM9SrzbmA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=rIdEcRXyknFPg6vCzipnjyc/WTpKmyVlmoOuN2YwQwtLSqPW+EJuS+WD4+mmtmLKX
-         5gwOC0Z/ybiPmQnrOTa5DIRP0EqAkElggSbcll5Mb43sr62i2YUhpexHQULXJat2jy
-         t8gzwcPAlLkFM/HjstxhS06O3sImop4QIX3GpQsMvn/XvnpP0qeTH6ccTQeGbsJFiT
-         43ospAl2b7n4fvB5j2fjm+yxiWBJePUJtikrT7XbZEOnXC501ZBbw0lCpbTd01mHZG
-         8npsCU1Y65UT2PgkQ3xfqqvnU5/rvG4k1Qx5v6xqT3b0Q+eY0XRk4h9Z2RwE7u356y
-         534BjZuz4AGww==
-Date:   Fri, 29 Jan 2021 10:24:28 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Dave Airlie <airlied@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Luca Coelho <luciano.coelho@intel.com>,
+        id S232490AbhA2RR4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Jan 2021 12:17:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:41425 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232463AbhA2RPt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Jan 2021 12:15:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611940462;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=VEZe0PYUvvqJZcjfeapjJ+WDBnyr8d5weQk4MFfmHK8=;
+        b=fbrXiXcQ4nBGBL+lxq5jipVNvWe7ZpfZEV+x7bEu+xJi1UxqA/T9n+yAqnAy+CKtgQtsyr
+        Cyd4MPB+eq1NiHCK+vV1bTGea/E7Vh0pJ6BHgNdWG+iC2UMUPNpIWuL4HALjP3PFNdHxB8
+        39KE9odV77QsXuR3xNQF74VeNGO6Qes=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-231-wnDjvP9NOIWB5ygWWHm7fw-1; Fri, 29 Jan 2021 12:14:18 -0500
+X-MC-Unique: wnDjvP9NOIWB5ygWWHm7fw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 650F11800D41;
+        Fri, 29 Jan 2021 17:14:16 +0000 (UTC)
+Received: from x1.localdomain (ovpn-115-174.ams2.redhat.com [10.36.115.174])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 48DBB101E581;
+        Fri, 29 Jan 2021 17:14:14 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-s390@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] Fix "ordering" comment typos
-Message-ID: <20210129162428.GA85218@bjorn-Precision-5520>
+        Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: [PATCH 1/2] brcmfmac: Add DMI nvram filename quirk for Predia Basic tablet
+Date:   Fri, 29 Jan 2021 18:14:12 +0100
+Message-Id: <20210129171413.139880-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210126195042.2909405-1-helgaas@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 01:50:42PM -0600, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> Fix comment typos in "ordering".
-> 
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
->  arch/s390/include/asm/facility.h             | 2 +-
->  drivers/gpu/drm/qxl/qxl_drv.c                | 2 +-
->  drivers/net/wireless/intel/iwlwifi/fw/file.h | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> 
-> Unless somebody objects, I'll just merge these typo fixes via the PCI tree.
+The Predia Basic tablet contains quite generic names in the sys_vendor and
+product_name DMI strings, without this patch brcmfmac will try to load:
+brcmfmac43340-sdio.Insyde-CherryTrail.txt as nvram file which is a bit
+too generic.
 
-Applied to pci/misc for v5.12 with acks from Kalle and Vasily.
+Add a DMI quirk so that a unique and clearly identifiable nvram file name
+is used on the Predia Basic tablet.
 
-> diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
-> index 68c476b20b57..91b5d714d28f 100644
-> --- a/arch/s390/include/asm/facility.h
-> +++ b/arch/s390/include/asm/facility.h
-> @@ -44,7 +44,7 @@ static inline int __test_facility(unsigned long nr, void *facilities)
->  }
->  
->  /*
-> - * The test_facility function uses the bit odering where the MSB is bit 0.
-> + * The test_facility function uses the bit ordering where the MSB is bit 0.
->   * That makes it easier to query facility bits with the bit number as
->   * documented in the Principles of Operation.
->   */
-> diff --git a/drivers/gpu/drm/qxl/qxl_drv.c b/drivers/gpu/drm/qxl/qxl_drv.c
-> index 6e7f16f4cec7..dab190a547cc 100644
-> --- a/drivers/gpu/drm/qxl/qxl_drv.c
-> +++ b/drivers/gpu/drm/qxl/qxl_drv.c
-> @@ -141,7 +141,7 @@ static void qxl_drm_release(struct drm_device *dev)
->  
->  	/*
->  	 * TODO: qxl_device_fini() call should be in qxl_pci_remove(),
-> -	 * reodering qxl_modeset_fini() + qxl_device_fini() calls is
-> +	 * reordering qxl_modeset_fini() + qxl_device_fini() calls is
->  	 * non-trivial though.
->  	 */
->  	qxl_modeset_fini(qdev);
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-> index 597bc88479ba..04fbfe5cbeb0 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-> @@ -866,7 +866,7 @@ struct iwl_fw_dbg_trigger_time_event {
->   * tx_bar: tid bitmap to configure on what tid the trigger should occur
->   *	when a BAR is send (for an Rx BlocAck session).
->   * frame_timeout: tid bitmap to configure on what tid the trigger should occur
-> - *	when a frame times out in the reodering buffer.
-> + *	when a frame times out in the reordering buffer.
->   */
->  struct iwl_fw_dbg_trigger_ba {
->  	__le16 rx_ba_start;
-> -- 
-> 2.25.1
-> 
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ .../net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+index 4aa2561934d7..824a79f24383 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+@@ -40,6 +40,10 @@ static const struct brcmf_dmi_data pov_tab_p1006w_data = {
+ 	BRCM_CC_43340_CHIP_ID, 2, "pov-tab-p1006w-data"
+ };
+ 
++static const struct brcmf_dmi_data predia_basic_data = {
++	BRCM_CC_43341_CHIP_ID, 2, "predia-basic"
++};
++
+ static const struct dmi_system_id dmi_platform_data[] = {
+ 	{
+ 		/* ACEPC T8 Cherry Trail Z8350 mini PC */
+@@ -111,6 +115,16 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&pov_tab_p1006w_data,
+ 	},
++	{
++		/* Predia Basic tablet (+ with keyboard dock) */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
++			/* Mx.WT107.KUBNGEA02 with the version-nr dropped */
++			DMI_MATCH(DMI_BIOS_VERSION, "Mx.WT107.KUBNGEA"),
++		},
++		.driver_data = (void *)&predia_basic_data,
++	},
+ 	{}
+ };
+ 
+-- 
+2.29.2
+
