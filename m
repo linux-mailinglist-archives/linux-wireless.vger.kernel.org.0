@@ -2,104 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BDA43084C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 05:58:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4CF308584
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 07:16:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbhA2E44 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Jan 2021 23:56:56 -0500
-Received: from mail-il1-f198.google.com ([209.85.166.198]:38764 "EHLO
-        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231826AbhA2E4x (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Jan 2021 23:56:53 -0500
-Received: by mail-il1-f198.google.com with SMTP id p14so6646007ilb.5
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Jan 2021 20:56:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=5HJJHwoEpOZhCJ2Q8NMzhO+pVec1fTvP+K0SZl/lhmU=;
-        b=CL2W5hT1UDdLxztAR/rWFHuX/CgHNfLnyW1ObnJoS/AhvnAlaTf4EXhYPWhR/fNAJ/
-         bYbWuJLIVmvlWl3wEQJRgKS3TNQkxWwRayJKXC1yF10Zx0LddVuep8jqVjPv+gX88N2o
-         c4NIsoDpeHl01vFeHbm9xm4W83ok6IzllX3UBnUXdwmXN54CYhzjZtNCzgfZCUj15peB
-         oBxxwMKVVz8u3EM6BuOyrydTy+bK0n0dWFWi59iv70I2AGtqcZF3rl8F2ZF8hkaIA8sU
-         mjvNhamMQ53MOxPOciJSmepeR5b+vYQUrbb32oGCuMwtEeZ+6iWIgpT9eoKycxwFzxZj
-         /miw==
-X-Gm-Message-State: AOAM532VsNZdy76rNqZseJZyCaTS9BO/jW1Dodb3QjLmJojqfUmT52/v
-        2GSnbrUm2emocM1p1wzxSZlSp5D56eirgSovZvkldeNBD+qU
-X-Google-Smtp-Source: ABdhPJz/Vq3nzt9CY51VeWeyBilYqIeTSmbpT3y6W5fowFqDd+Dd4x4kc6wrI7oS+2nOQhTUEAncGm2YBOpSE8sqqMB9ssXSLsY0
-MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:d42:: with SMTP id h2mr2276531ilj.204.1611896172699;
- Thu, 28 Jan 2021 20:56:12 -0800 (PST)
-Date:   Thu, 28 Jan 2021 20:56:12 -0800
-In-Reply-To: <00000000000066c54105b9f8cf2b@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000c9e8e505ba02d2a7@google.com>
-Subject: Re: WARNING in cfg80211_change_iface
-From:   syzbot <syzbot+d2d412349f88521938aa@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes.berg@intel.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        id S231865AbhA2GL2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Jan 2021 01:11:28 -0500
+Received: from m12-14.163.com ([220.181.12.14]:56035 "EHLO m12-14.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230121AbhA2GL1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Jan 2021 01:11:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=DyTPjUOQqGfQiWxuxf
+        Z3mJqKKyZRDIcPBWvisZNPE/U=; b=bAzgSzH8axssCHgTC1FTI67vQg98Yos88o
+        pCb0QxcXroUH++P+z2OhnY+XLKTHppUbJpjc3ccIAEc+vqi2o7XkXpuIvwQSdq51
+        Je8yzcysNZug90TTNZStFtQFp/ELazCfjD/XpEygBac/YynbIpgg6DOip25w/Wi1
+        zzS/dos4U=
+Received: from wengjianfeng.ccdomain.com (unknown [119.137.52.46])
+        by smtp10 (Coremail) with SMTP id DsCowAAnLhrJYhNgYLViiQ--.9590S2;
+        Fri, 29 Jan 2021 09:20:11 +0800 (CST)
+From:   samirweng1979 <samirweng1979@163.com>
+To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        wengjianfeng <wengjianfeng@yulong.com>
+Subject: [PATCH] rtl8xxxu: assign value when defining variables
+Date:   Fri, 29 Jan 2021 09:20:19 +0800
+Message-Id: <20210129012019.11348-1-samirweng1979@163.com>
+X-Mailer: git-send-email 2.15.0.windows.1
+X-CM-TRANSID: DsCowAAnLhrJYhNgYLViiQ--.9590S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtrWruw48ZFyfZrWkXF4fZrb_yoWfGrb_ua
+        40qan7Zry8Jr4Fyr4Yyr47ZrWFyFZ8J3Z5Ca42grW5Ww45JrWFkwn5X343Jr4fXw4rZF98
+        G3Z7G3W0y34kXjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU5aAp5UUUUU==
+X-Originating-IP: [119.137.52.46]
+X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiRQspsVl91ALJWgAAs3
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+From: wengjianfeng <wengjianfeng@yulong.com>
 
-HEAD commit:    d03154e8 Add linux-next specific files for 20210128
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=1243cbc8d00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6953ffb584722a1
-dashboard link: https://syzkaller.appspot.com/bug?extid=d2d412349f88521938aa
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10df256f500000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=166b17a4d00000
+define ret and then assign value to it, which we should do one time.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d2d412349f88521938aa@syzkaller.appspotmail.com
+Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 8420 at net/wireless/util.c:1013 cfg80211_change_iface+0xa10/0xf30 net/wireless/util.c:1013
-Modules linked in:
-CPU: 1 PID: 8420 Comm: syz-executor656 Not tainted 5.11.0-rc5-next-20210128-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:cfg80211_change_iface+0xa10/0xf30 net/wireless/util.c:1013
-Code: 8d bd e8 05 00 00 be ff ff ff ff e8 fa 22 c6 00 31 ff 41 89 c6 89 c6 e8 be bd 37 f9 45 85 f6 0f 85 b4 f6 ff ff e8 30 b6 37 f9 <0f> 0b e9 a8 f6 ff ff e8 24 b6 37 f9 65 ff 05 8d 90 c6 77 48 c7 c0
-RSP: 0018:ffffc900017bfbb8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff8880178ac000 RCX: 0000000000000000
-RDX: ffff88801fa53800 RSI: ffffffff883b5f20 RDI: 0000000000000003
-RBP: ffff888021c50000 R08: 0000000000000000 R09: ffffc900017bfc30
-R10: ffffffff883b5f12 R11: 0000000000000002 R12: 0000000000000002
-R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000000002295880(0000) GS:ffff8880b9e00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffcbcf59000 CR3: 0000000011147000 CR4: 00000000001506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- cfg80211_wext_siwmode net/wireless/wext-compat.c:64 [inline]
- __cfg80211_wext_siwmode+0x1bb/0x200 net/wireless/wext-compat.c:1559
- ioctl_standard_call+0xcd/0x1f0 net/wireless/wext-core.c:1017
- wireless_process_ioctl+0xc8/0x4c0 net/wireless/wext-core.c:955
- wext_ioctl_dispatch net/wireless/wext-core.c:988 [inline]
- wext_ioctl_dispatch net/wireless/wext-core.c:976 [inline]
- wext_handle_ioctl+0x26b/0x280 net/wireless/wext-core.c:1049
- sock_ioctl+0x410/0x6a0 net/socket.c:1111
- vfs_ioctl fs/ioctl.c:48 [inline]
- __do_sys_ioctl fs/ioctl.c:753 [inline]
- __se_sys_ioctl fs/ioctl.c:739 [inline]
- __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:739
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x441529
-Code: e8 ec 05 03 00 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 8b 0d fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffd97527908 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007ffd97527930 RCX: 0000000000441529
-RDX: 0000000020000000 RSI: 0000000000008b06 RDI: 0000000000000003
-RBP: 0000000000000003 R08: 0000002200000000 R09: 0000002200000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000032
-R13: 0000000000000000 R14: 000000000000000c R15: 0000000000000004
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+index 9f1f93d..b2ee168 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -1505,9 +1505,7 @@ static int rtl8192eu_power_on(struct rtl8xxxu_priv *priv)
+ {
+ 	u16 val16;
+ 	u32 val32;
+-	int ret;
+-
+-	ret = 0;
++	int ret = 0;
+ 
+ 	val32 = rtl8xxxu_read32(priv, REG_SYS_CFG);
+ 	if (val32 & SYS_CFG_SPS_LDO_SEL) {
+-- 
+1.9.1
+
 
