@@ -2,115 +2,265 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89A24308B4E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 18:19:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8601F308BB0
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Jan 2021 18:43:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232498AbhA2RSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Jan 2021 12:18:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:46959 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230389AbhA2RP6 (ORCPT
+        id S232533AbhA2Ren (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Jan 2021 12:34:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232448AbhA2RcU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Jan 2021 12:15:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611940471;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=efmTMLOeM+i6jTSBInz91CbTaryKB5itJPA8N9uo2Ms=;
-        b=WCeqQboZc4zZ2uLpv+VuijQ1xy8UEALaw7lecgaxjfAvZXOO7tr8HpO3oaYTiLTHx8bSE5
-        4blsvRhjvfwWprCj8gzwRgoVJD7N6gmyFRhsgr/XUJSdzvNtWcVI4y4+QP2/fZpsJ/GF4P
-        dlWVgHzJwceClY/fUX5SYVPhCxKD6E4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-395-3g8rGFNVPJSHWr0rbpKKgQ-1; Fri, 29 Jan 2021 12:14:22 -0500
-X-MC-Unique: 3g8rGFNVPJSHWr0rbpKKgQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id ACBB2911E3;
-        Fri, 29 Jan 2021 17:14:18 +0000 (UTC)
-Received: from x1.localdomain (ovpn-115-174.ams2.redhat.com [10.36.115.174])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id ABE7710023AB;
-        Fri, 29 Jan 2021 17:14:16 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Subject: [PATCH 2/2] brcmfmac: Add DMI nvram filename quirk for Voyo winpad A15 tablet
-Date:   Fri, 29 Jan 2021 18:14:13 +0100
-Message-Id: <20210129171413.139880-2-hdegoede@redhat.com>
-In-Reply-To: <20210129171413.139880-1-hdegoede@redhat.com>
-References: <20210129171413.139880-1-hdegoede@redhat.com>
+        Fri, 29 Jan 2021 12:32:20 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C380CC061756
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Jan 2021 09:31:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:Cc:Subject:From:To:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=3/+ptPh9GhcYasBGEZ47/dgKF6stDiUMqnuwSjcYF38=; b=MHyHkzdUl6NbNrALhvg0EzhDXM
+        ng1oKZye7S8FOLghb14Y8TGsLWQ5mPURFkS0pCDgv5vTbU7Ba0XByDlBoyIkBU7uagB3MtjLf06d6
+        4NjVlBBlduUq+dNA5BHbulRxVCjGjKUXIPLV2QoacLkTrQRJ74+5+cH6s1G62iqHVsuQ=;
+Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1l5XcO-0004Sx-Vn; Fri, 29 Jan 2021 18:31:37 +0100
+To:     Kalle Valo <kvalo@codeaurora.org>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2021-01-29
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Message-ID: <3eba5570-7cff-f51e-4050-aa0054f98f81@nbd.name>
+Date:   Fri, 29 Jan 2021 18:31:36 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
+ Gecko/20100101 Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The Voyo winpad A15 tablet contains quite generic names in the sys_vendor
-and product_name DMI strings, without this patch brcmfmac will try to load:
-rcmfmac4330-sdio.To be filled by O.E.M.-To be filled by O.E.M..txt
-as nvram file which is a bit too generic.
+Hi Kalle,
 
-Add a DMI quirk so that a unique and clearly identifiable nvram file name
-is used on the Voyo winpad A15 tablet.
+here's my first pull request for 5.12.
 
-While preparing a matching linux-firmware update I noticed that the nvram
-is identical to the nvram used on the Prowise-PT301 tablet, so the new DMI
-quirk entry simply points to the already existing Prowise-PT301 nvram file.
+The following changes since commit 4832bb371c4175ffb506a96accbb08ef2b2466e7:
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- .../wireless/broadcom/brcm80211/brcmfmac/dmi.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+  iwl4965: do not process non-QOS frames on txq->sched_retry path (2021-01-25 16:43:27 +0200)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-index 824a79f24383..6d5188b78f2d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-@@ -44,6 +44,14 @@ static const struct brcmf_dmi_data predia_basic_data = {
- 	BRCM_CC_43341_CHIP_ID, 2, "predia-basic"
- };
- 
-+/* Note the Voyo winpad A15 tablet uses the same Ampak AP6330 module, with the
-+ * exact same nvram file as the Prowise-PT301 tablet. Since the nvram for the
-+ * Prowise-PT301 is already in linux-firmware we just point to that here.
-+ */
-+static const struct brcmf_dmi_data voyo_winpad_a15_data = {
-+	BRCM_CC_4330_CHIP_ID, 4, "Prowise-PT301"
-+};
-+
- static const struct dmi_system_id dmi_platform_data[] = {
- 	{
- 		/* ACEPC T8 Cherry Trail Z8350 mini PC */
-@@ -125,6 +133,16 @@ static const struct dmi_system_id dmi_platform_data[] = {
- 		},
- 		.driver_data = (void *)&predia_basic_data,
- 	},
-+	{
-+		/* Voyo winpad A15 tablet */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "11/20/2014"),
-+		},
-+		.driver_data = (void *)&voyo_winpad_a15_data,
-+	},
- 	{}
- };
- 
--- 
-2.29.2
+are available in the Git repository at:
 
+  https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-01-29
+
+for you to fetch changes up to d2bf7959d9c0f631ef860edaf834d55773fdedff:
+
+  mt76: mt7663: introduce coredump support (2021-01-29 18:10:02 +0100)
+
+----------------------------------------------------------------
+mt76 patches for 5.12
+
+* add new mt7921e driver
+* factor out common code shared between 7615/7663 and 7921
+* performance optimizations
+* 7915 dbdc fixes
+* 802.11 encap offload support
+* support for multiple pcie gen1 host interfaces on 7915
+* 7915 testmode support
+* bugfixes
+* testmode support enhancements
+* endian fixes
+* 7915 txbf support
+
+----------------------------------------------------------------
+Felix Fietkau (15):
+      mt76: mt7603: fix ED/CCA monitoring with single-stream devices
+      mt76: mt7915: ensure that init work completes before starting the device
+      mt76: mt7915: do not set DRR group for stations
+      mt76: mt7915: rework mcu API
+      mt76: mt7915: disable RED support in the WA firmware
+      mt76: mt7915: fix eeprom parsing for DBDC
+      mt76: mt7915: fix eeprom DBDC band selection
+      mt76: mt7615: unify init work
+      mt76: mt7915: bring up the WA event rx queue for band1
+      mt76: fix crash on tearing down ext phy
+      mt76: mt7915: add support for using a secondary PCIe link for gen1
+      mt76: mt7915: make vif index per adapter instead of per band
+      mt76: move vif_mask back from mt76_phy to mt76_dev
+      mt76: reduce q->lock hold time
+      mt76: mt7615: reduce VHT maximum MPDU length
+
+Lorenzo Bianconi (19):
+      mt76: mt7915: run mt7915_configure_filter holding mt76 mutex
+      mt76: mt7915: fix endianness warning in mt7915_mcu_set_radar_th
+      mt76: mt7915: simplify mt7915_mcu_send_message routine
+      mt76: move mac_work in mt76_core module
+      mt76: move chainmask in mt76_phy
+      mt76: mt7615: set mcu country code in mt7615_mcu_set_channel_domain()
+      mt76: usb: process URBs with status EPROTO properly
+      mt76: introduce mt76_vif data structure
+      mt76: mt76_connac: create mcu library
+      mt76: mt76_connac: move hw_scan and sched_scan routine in mt76_connac_mcu module
+      mt76: mt76_connac: move WoW and suspend code in mt76_connac_mcu module
+      mt76: mt76_connac: move pm data struct in mt76_connac.h
+      mt76: mt76_connac: move pm utility routines in mt76_connac_lib module
+      mt76: mt7921: rely on mt76_connac_mcu common library
+      mt76: mt7921: rely on mt76_connac_mcu module for sched_scan and hw_scan
+      mt76: mt7921: rely on mt76_connac_mcu module for suspend and WoW support
+      mt76: mt7921: introduce regdomain notifier support
+      mt76: mt7921: enable MSI interrupts
+      mt76: mt7663: introduce coredump support
+
+Ryder Lee (9):
+      mt76: mt7915: add vif check in mt7915_update_vif_beacon()
+      mt76: mt7615: add vif check in mt7615_update_vif_beacon()
+      mt76: mt7915: fix MT_CIPHER_BIP_CMAC_128 setkey
+      mt76: mt7915: reset token when mac_reset happens
+      mt76: mt7615: reset token when mac_reset happens
+      mt76: mt7915: drop zero-length packet to avoid Tx hang
+      mt76: mt7915: simplify peer's TxBF capability check
+      mt76: mt7915: add implicit Tx beamforming support
+      mt76: mt7915: support TxBF for DBDC
+
+Sean Wang (14):
+      mt76: mt7921: add MAC support
+      mt76: mt7921: add MCU support
+      mt76: mt7921: add DMA support
+      mt76: mt7921: add EEPROM support
+      mt76: mt7921: add ieee80211_ops
+      mt76: mt7921: introduce mt7921e support
+      mt76: mt7921: add debugfs support
+      mt76: mt7921: introduce schedule scan support
+      mt76: mt7921: introduce 802.11 PS support in sta mode
+      mt76: mt7921: introduce support for hardware beacon filter
+      mt76: mt7921: introduce beacon_loss mcu event
+      mt76: mt7921: introduce PM support
+      mt76: mt7921: introduce Runtime PM support
+      mt76: mt7921: add coredump support
+
+Shayne Chen (18):
+      mt76: mt7915: add support for flash mode
+      mt76: mt7915: add partial add_bss_info command on testmode init
+      mt76: testmode: introduce dbdc support
+      mt76: testmode: move mtd part to mt76_dev
+      mt76: mt7915: move testmode data from dev to phy
+      mt76: mt7615: move testmode data from dev to phy
+      mt76: mt7915: force ldpc for bw larger than 20MHz in testmode
+      mt76: testmode: add support to set user-defined spe index
+      mt76: testmode: add attributes for ipg related parameters
+      mt76: testmode: make tx queued limit adjustable
+      mt76: mt7915: split edca update function
+      mt76: mt7915: add support for ipg in testmode
+      mt76: mt7915: calculate new packet length when tx_time is set in testmode
+      mt76: mt7915: clean hw queue before starting new testmode tx
+      mt76: testmode: add a new state for continuous tx
+      mt76: mt7915: rework set state part in testmode
+      mt76: mt7915: add support for continuous tx in testmode
+      mt76: mt7615: mt7915: disable txpower sku when testmode enabled
+
+Xu Wang (1):
+      mt76: mt7915: Remove unneeded semicolon
+
+Zheng Yongjun (2):
+      mt76: mt7615: convert comma to semicolon
+      mt76: mt7915: convert comma to semicolon
+
+ drivers/net/wireless/mediatek/mt76/Kconfig           |    5 +
+ drivers/net/wireless/mediatek/mt76/Makefile          |    4 +
+ drivers/net/wireless/mediatek/mt76/dma.c             |    8 +-
+ drivers/net/wireless/mediatek/mt76/eeprom.c          |    4 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c        |    8 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h            |   75 +++-
+ drivers/net/wireless/mediatek/mt76/mt7603/init.c     |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |   24 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/main.c     |   16 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h   |    2 -
+ drivers/net/wireless/mediatek/mt76/mt7615/Kconfig    |    3 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c  |   17 +
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c   |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c     |   64 ++--
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c      |  210 ++++++-----
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c     |  192 +++++-----
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      | 1617 ++++++++--------------------------------------------------------------------------
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.h      |  683 +----------------------------------
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h   |  132 ++-----
+ drivers/net/wireless/mediatek/mt76/mt7615/pci.c      |    9 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c |   23 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c  |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/sdio.c     |   11 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/testmode.c |  101 +++---
+ drivers/net/wireless/mediatek/mt76/mt7615/usb.c      |   12 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac.h     |  105 ++++++
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |  119 +++++++
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 1842 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |  979 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci.c      |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb.c      |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h         |    2 -
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c     |   10 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c    |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_phy.c     |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_util.c    |   14 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c      |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c  |   28 ++
+ drivers/net/wireless/mediatek/mt76/mt7915/dma.c      |  102 ++++--
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c   |   42 ++-
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h   |   25 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c     |   48 +--
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c      |  129 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.h      |    2 +
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c     |   46 +--
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  542 +++++++++++++++-------------
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.h      |   63 ++++
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h   |   69 ++--
+ drivers/net/wireless/mediatek/mt76/mt7915/pci.c      |  177 ++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7915/regs.h     |   29 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/testmode.c |  528 +++++++++++++++++++++++----
+ drivers/net/wireless/mediatek/mt76/mt7915/testmode.h |   59 +++
+ drivers/net/wireless/mediatek/mt76/mt7921/Kconfig    |   11 +
+ drivers/net/wireless/mediatek/mt76/mt7921/Makefile   |    5 +
+ drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c  |  250 +++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/dma.c      |  356 ++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c   |  100 ++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h   |   27 ++
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c     |  282 +++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 1516 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.h      |  333 +++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c     | 1161 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      | 1308 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.h      |  434 ++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |  342 ++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c      |  292 +++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/regs.h     |  419 ++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/testmode.c        |  124 ++++---
+ drivers/net/wireless/mediatek/mt76/testmode.h        |   17 +
+ drivers/net/wireless/mediatek/mt76/tx.c              |   39 +-
+ drivers/net/wireless/mediatek/mt76/usb.c             |    1 +
+ 75 files changed, 12019 insertions(+), 3210 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/init.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/main.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/regs.h
