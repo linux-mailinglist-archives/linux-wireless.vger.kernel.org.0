@@ -2,61 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73EAD309518
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Jan 2021 13:32:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC7C1309537
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Jan 2021 14:04:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230455AbhA3M3j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 30 Jan 2021 07:29:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:32786 "EHLO mail.kernel.org"
+        id S231715AbhA3ND0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 30 Jan 2021 08:03:26 -0500
+Received: from m12-11.163.com ([220.181.12.11]:39610 "EHLO m12-11.163.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229468AbhA3M3j (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 30 Jan 2021 07:29:39 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B468264E0A;
-        Sat, 30 Jan 2021 12:28:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612009738;
-        bh=Gwc7vUiEZvimS+IIMKUpR78vlH/Cub57vXOGFvL0r0w=;
-        h=From:To:Cc:Subject:Date:From;
-        b=AUAzPVv3swYXRlEssz8PjLSI4TTwJO9O4xJAt14DuGWt7FKP5elkpCWSeKnlAf7Fk
-         EaG294t1FLbqCp8U+Tsp47r1pKnJkLOnRQV1sTaSQUAzlvtadrkyIHnGwmFb7145N5
-         1xgbS+jbwAbxx6KS1kzJf4fE4305SoFeD18BeCmqkeAsU43B/ChasDOnMKqueYyrzi
-         nE/1svSB4kggZ/I+J3lLL4j6KshYTuC0PTxdVT4cJABvPQDHXKfHdTLwQFWxcMRwSC
-         VBlYcbF++ig+R9G6+hqFphRkd+UVn1PXVZXy+IRtcRgrDMj+Y0vFlh6A3C5tTDanxW
-         jfF4naO0s/I6A==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7921: enable random mac addr during scanning
-Date:   Sat, 30 Jan 2021 13:28:36 +0100
-Message-Id: <1de60edd8de6da4d482eed80908d510fd55dd79f.1612009684.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.29.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S229620AbhA3NDZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 30 Jan 2021 08:03:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=brTi98KYrf7biHo0Yw
+        HGNh8Yu8nQX0FxJDmIDrvdGxA=; b=fCRf3YEfQosarwTRLGiP4P9OnEuija+7nX
+        Y/GcOP11eB6++Esc+zmmn4XzaL2XDRreLCPvb4JfxF46vDLg8TSzQVt+yRCWFNbO
+        YNTv7lBLKRO3hTFCMGos2+dbgHooFoZmYqT/PATlXSs5JdIhwJc0Ddk7FMH9WDHq
+        m0Tbu6XR4=
+Received: from wengjianfeng.ccdomain.com (unknown [119.137.55.243])
+        by smtp7 (Coremail) with SMTP id C8CowACHsqxTCRVgZyo8LQ--.30869S2;
+        Sat, 30 Jan 2021 15:23:00 +0800 (CST)
+From:   samirweng1979 <samirweng1979@163.com>
+To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        wengjianfeng <wengjianfeng@yulong.com>
+Subject: [PATCH v2] rtl8xxxu: remove unused assignment value
+Date:   Sat, 30 Jan 2021 15:23:10 +0800
+Message-Id: <20210130072310.17252-1-samirweng1979@163.com>
+X-Mailer: git-send-email 2.15.0.windows.1
+X-CM-TRANSID: C8CowACHsqxTCRVgZyo8LQ--.30869S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtrWrtw4DXF4rGr4fJrWxCrg_yoWfuwb_uw
+        1Iv3ZrZry8Jr1Fyr43KrsrArWFyFWDJ3Z5Cay29FW3Ww43JayFvwnYv343Gr4fWw4ruryU
+        WwnrGa48trW8XjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU5ku4UUUUUU==
+X-Originating-IP: [119.137.55.243]
+X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiHRQqsVSIpMzD7AAAsJ
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Notify mac80211 mt7921 devices support random mac address during hw
-frequency scanning
+From: wengjianfeng <wengjianfeng@yulong.com>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+at first, ret was assigned to zero, but later assigned to
+a funciton,so the assignment to zero is no use, which can
+simple be removed instead.
+
+Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 89a13b4a74a4..4070f7156aa5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -95,6 +95,7 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 	wiphy->reg_notifier = mt7921_regd_notifier;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+index 9f1f93d..cfe2dfd 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -1507,8 +1507,6 @@ static int rtl8192eu_power_on(struct rtl8xxxu_priv *priv)
+ 	u32 val32;
+ 	int ret;
  
-+	wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
- 
- 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
+-	ret = 0;
+-
+ 	val32 = rtl8xxxu_read32(priv, REG_SYS_CFG);
+ 	if (val32 & SYS_CFG_SPS_LDO_SEL) {
+ 		rtl8xxxu_write8(priv, REG_LDO_SW_CTRL, 0xc3);
 -- 
-2.29.2
+1.9.1
 
