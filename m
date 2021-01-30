@@ -2,138 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2DE3094F8
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Jan 2021 12:48:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73EAD309518
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Jan 2021 13:32:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231150AbhA3LrS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 30 Jan 2021 06:47:18 -0500
-Received: from m12-14.163.com ([220.181.12.14]:56124 "EHLO m12-14.163.com"
+        id S230455AbhA3M3j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 30 Jan 2021 07:29:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:32786 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229854AbhA3LrR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 30 Jan 2021 06:47:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=3HDPhqmHgPvzBuo5bl
-        I2uMvrIMia8BZyw9nwfQ+vqKI=; b=qSO5dwxKRPS+O7ue1pZWMtRYe4apzK0OHk
-        4+KscBzTNAtxPfEbDPakqPZuWZ98v00Jin2ChKzGumdscgJAKqoV0JRVQ/MQH6ss
-        rjoAMEtv1h5/uY9gmBSbyXWNEk4F60p6g4ukie6hiPTBd4Z6T5c1vssLulMLHRsy
-        JdBnWfBgs=
-Received: from wengjianfeng.ccdomain.com (unknown [119.137.55.243])
-        by smtp10 (Coremail) with SMTP id DsCowAAXHSHjAhVgHN0oig--.12311S2;
-        Sat, 30 Jan 2021 14:55:33 +0800 (CST)
-From:   samirweng1979 <samirweng1979@163.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        wengjianfeng <wengjianfeng@yulong.com>
-Subject: [PATCH] wl1251: cmd: remove redundant assignment
-Date:   Sat, 30 Jan 2021 14:55:42 +0800
-Message-Id: <20210130065542.20252-1-samirweng1979@163.com>
-X-Mailer: git-send-email 2.15.0.windows.1
-X-CM-TRANSID: DsCowAAXHSHjAhVgHN0oig--.12311S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJF45uw15ArW5AFW8tF1DKFg_yoW5Jw13pF
-        93u347tr98tr1UXrWrZw4kZa9ag3W8JrW7GrWDu34qqF1ayr4FkrZ0gFy09F98ua9YyrW3
-        tFZ0gF4rWF1DCFUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jNUUUUUUUU=
-X-Originating-IP: [119.137.55.243]
-X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiRQUqsVl91BTTQAAAss
+        id S229468AbhA3M3j (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 30 Jan 2021 07:29:39 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B468264E0A;
+        Sat, 30 Jan 2021 12:28:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612009738;
+        bh=Gwc7vUiEZvimS+IIMKUpR78vlH/Cub57vXOGFvL0r0w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=AUAzPVv3swYXRlEssz8PjLSI4TTwJO9O4xJAt14DuGWt7FKP5elkpCWSeKnlAf7Fk
+         EaG294t1FLbqCp8U+Tsp47r1pKnJkLOnRQV1sTaSQUAzlvtadrkyIHnGwmFb7145N5
+         1xgbS+jbwAbxx6KS1kzJf4fE4305SoFeD18BeCmqkeAsU43B/ChasDOnMKqueYyrzi
+         nE/1svSB4kggZ/I+J3lLL4j6KshYTuC0PTxdVT4cJABvPQDHXKfHdTLwQFWxcMRwSC
+         VBlYcbF++ig+R9G6+hqFphRkd+UVn1PXVZXy+IRtcRgrDMj+Y0vFlh6A3C5tTDanxW
+         jfF4naO0s/I6A==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7921: enable random mac addr during scanning
+Date:   Sat, 30 Jan 2021 13:28:36 +0100
+Message-Id: <1de60edd8de6da4d482eed80908d510fd55dd79f.1612009684.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: wengjianfeng <wengjianfeng@yulong.com>
+Notify mac80211 mt7921 devices support random mac address during hw
+frequency scanning
 
--ENOMEM has been used as a return value,it is not necessary to
-assign it, and if kzalloc fail,not need free it,so just return
--ENOMEM when kzalloc fail.
-
-Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/ti/wl1251/cmd.c | 36 ++++++++++++------------------------
- 1 file changed, 12 insertions(+), 24 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ti/wl1251/cmd.c b/drivers/net/wireless/ti/wl1251/cmd.c
-index e1095b8..498c8db 100644
---- a/drivers/net/wireless/ti/wl1251/cmd.c
-+++ b/drivers/net/wireless/ti/wl1251/cmd.c
-@@ -175,10 +175,8 @@ int wl1251_cmd_vbm(struct wl1251 *wl, u8 identity,
- 	wl1251_debug(DEBUG_CMD, "cmd vbm");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 89a13b4a74a4..4070f7156aa5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -95,6 +95,7 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
+ 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
+ 	wiphy->reg_notifier = mt7921_regd_notifier;
  
- 	vbm = kzalloc(sizeof(*vbm), GFP_KERNEL);
--	if (!vbm) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!vbm)
-+		return -ENOMEM;
++	wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
  
- 	/* Count and period will be filled by the target */
- 	vbm->tim.bitmap_ctrl = bitmap_control;
-@@ -213,10 +211,8 @@ int wl1251_cmd_data_path_rx(struct wl1251 *wl, u8 channel, bool enable)
- 	wl1251_debug(DEBUG_CMD, "cmd data path");
- 
- 	cmd = kzalloc(sizeof(*cmd), GFP_KERNEL);
--	if (!cmd) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!cmd)
-+		return -ENOMEM;
- 
- 	cmd->channel = channel;
- 
-@@ -279,10 +275,8 @@ int wl1251_cmd_join(struct wl1251 *wl, u8 bss_type, u8 channel,
- 	u8 *bssid;
- 
- 	join = kzalloc(sizeof(*join), GFP_KERNEL);
--	if (!join) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!join)
-+		return -ENOMEM;
- 
- 	wl1251_debug(DEBUG_CMD, "cmd join%s ch %d %d/%d",
- 		     bss_type == BSS_TYPE_IBSS ? " ibss" : "",
-@@ -324,10 +318,8 @@ int wl1251_cmd_ps_mode(struct wl1251 *wl, u8 ps_mode)
- 	wl1251_debug(DEBUG_CMD, "cmd set ps mode");
- 
- 	ps_params = kzalloc(sizeof(*ps_params), GFP_KERNEL);
--	if (!ps_params) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!ps_params)
-+		return -ENOMEM;
- 
- 	ps_params->ps_mode = ps_mode;
- 	ps_params->send_null_data = 1;
-@@ -356,10 +348,8 @@ int wl1251_cmd_read_memory(struct wl1251 *wl, u32 addr, void *answer,
- 	wl1251_debug(DEBUG_CMD, "cmd read memory");
- 
- 	cmd = kzalloc(sizeof(*cmd), GFP_KERNEL);
--	if (!cmd) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!cmd)
-+		return -ENOMEM;
- 
- 	WARN_ON(len > MAX_READ_SIZE);
- 	len = min_t(size_t, len, MAX_READ_SIZE);
-@@ -401,10 +391,8 @@ int wl1251_cmd_template_set(struct wl1251 *wl, u16 cmd_id,
- 	cmd_len = ALIGN(sizeof(*cmd) + buf_len, 4);
- 
- 	cmd = kzalloc(cmd_len, GFP_KERNEL);
--	if (!cmd) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!cmd)
-+		return -ENOMEM;
- 
- 	cmd->size = cpu_to_le16(buf_len);
- 
+ 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
 -- 
-1.9.1
-
+2.29.2
 
