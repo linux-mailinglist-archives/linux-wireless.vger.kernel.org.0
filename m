@@ -2,67 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A08309F01
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Jan 2021 21:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F23E830CF18
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 23:37:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231202AbhAaUrc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 Jan 2021 15:47:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55420 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbhAaUr3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 Jan 2021 15:47:29 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1D86C061573
-        for <linux-wireless@vger.kernel.org>; Sun, 31 Jan 2021 12:46:48 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id s3so2873643edi.7
-        for <linux-wireless@vger.kernel.org>; Sun, 31 Jan 2021 12:46:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:message-id:subject:reply-to:to:date:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=dvq1MPvNC+UUn6WXzOeHefYShSdkA00farn93A4MAZU=;
-        b=KCNL0/SsLW2hye1zRhxJ5HnGgiX6MIPn2zWBNm0WpAMTCj5zvEdMkANINpgMUIqKHG
-         uTfW7711dLGzxKtOG+D4gI5nsFWWOgBh+F7Zx+mTaAU9G6FDwoo4uB5yg9PMCNhaB1li
-         jEjjFaIHprot692sTBlUtbGgCV36HX6vLYhLgi3VEHj19eI4YwxvdBMWCXMfjLVktXhn
-         lyDLkuvv8aE5a3B44e4HXeuOaSnfNWTSLOtnwylYF0AocKEP/Zevj8GNCU40jT0v5Shv
-         LCN4xgxRde6OFw7fiXW0giBvwZyJ1in7jCjHEIobG/kZI3TMLrvE8KObG5DaZoOFD7zI
-         iNhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:message-id:subject:reply-to:to:date
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=dvq1MPvNC+UUn6WXzOeHefYShSdkA00farn93A4MAZU=;
-        b=Eg2deP2eEkX1sHi44WM594uqa9s09+gUYR686xF4XwgImWyaWnNxdbJtAZbDDzut/F
-         1LRfgCKCYY/eirpziDm7LxCDY96PYctJrE3SyOjA5orLyzNTiRmyDqcEHSwgvGzmpcvX
-         1qTokXngYSXqITQH/R/sbOCJEge6Mqzi99mqRWdWPz0zhZwQWTBefNPv5TZ8hG/VYm4t
-         3DvXhzfhbRm8AK4C9ZeQMfMhxsacJ4/U7nYSRrRwrbP+WqbuhInMq6SUmvEV41M7VCcv
-         a6PjNvsEdmpD+mg2kqoPH30Ng+2u8kim25f1OWEMffWeyRgrqZNJToAEDBm1mSAGrHcp
-         ZVPA==
-X-Gm-Message-State: AOAM530W0l1/bKj+hcEzgtbMRoC2d32pnka2uYpvntpRMQAiMxB9JsHN
-        W7fTB2HhL499PQKk9HpzhyTELtvWAys=
-X-Google-Smtp-Source: ABdhPJzmElqZb4Gn4e+L7HKvqozI6wfyq1Ve6W6oZ9UP4ngTfM1mXM1RB0sMJOsXnWQZVP9R29AEYg==
-X-Received: by 2002:a05:6402:4312:: with SMTP id m18mr15748176edc.99.1612126007298;
-        Sun, 31 Jan 2021 12:46:47 -0800 (PST)
-Received: from [192.168.100.54] (mm-58-44-120-178.brest.dynamic.pppoe.byfly.by. [178.120.44.58])
-        by smtp.gmail.com with ESMTPSA id u16sm6948609ejn.117.2021.01.31.12.46.45
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Jan 2021 12:46:46 -0800 (PST)
-From:   Artur Sinila <logarithmus.dev@gmail.com>
-X-Google-Original-From: Artur Sinila <opensource@logarithmus.dev>
-Message-ID: <b7200bf4d9c10c1968ac87e9fb84e9cd97ebcac5.camel@logarithmus.dev>
-Subject: Hello there
-Reply-To: opensource@logarithmus.dev
-To:     linux-wireless@vger.kernel.org
-Date:   Sun, 31 Jan 2021 23:46:44 +0300
-Content-Type: text/plain
-User-Agent: Evolution 3.38.0 
+        id S235924AbhBBWee (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 17:34:34 -0500
+Received: from [20.39.40.203] ([20.39.40.203]:61037 "EHLO optinix.in"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S230091AbhBBWeU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Feb 2021 17:34:20 -0500
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+        b=Z/qoYR5e93G/1E5Uh8tLreepyziGYShILI7fcXozE97A3DqZKBadv9kcBZBcmHZnqAUcLkt0g+COxgI6WqJ5gdfKqksQSW540KJaAE4DNiZ+EZYtErJhsiZnZCgjfp9yI8W2dpgN2EsH5zUvgVY6Bl2MWU8ziaGqy1DCXSk4DXXi+2CTtkJX9uQrf2ohPvP7bhav6zr4dJxTQjQYoopWjV3h9j7RqQq/UIXqX3VBjVDZARoXQTZUB0KN0A
+        F7X8DeijiSCFEdYkkdQwasjHi3K0B6KloKBXegK0TgQ39PHt5t2MVnmtmeZadY0DbdImfujjk25mqjLTG700JJRoTl9A==
+Received: from User (Unknown [52.231.31.5])
+        by optinix.in with ESMTP
+        ; Sat, 30 Jan 2021 02:14:15 +0000
+Message-ID: <B0CC978E-0149-4652-A2D0-17DE1F49BCC1@optinix.in>
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <support@digitalsol.in>
+Subject: Re:read
+Date:   Sat, 30 Jan 2021 02:14:13 -0000
 MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello there!
+Hello,
+
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
+
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
+
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
 
