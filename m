@@ -2,97 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6983090B0
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Jan 2021 00:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7265309399
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Jan 2021 10:44:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231138AbhA2XkF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Jan 2021 18:40:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbhA2XkD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Jan 2021 18:40:03 -0500
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3632C061573
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jan 2021 15:39:23 -0800 (PST)
-Received: by mail-oi1-x235.google.com with SMTP id a77so11801367oii.4
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jan 2021 15:39:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JV19cANjpLfdHa/gkRlYR/E8vwFJkEmktdsDw/as+Tg=;
-        b=YS2z2+yzCDkAuo5BmnLTCUCCTaHSBrIJhkBw2ayMty3OYBUSDXpsJW2xgIAk14w8DZ
-         7XvkVv+N6ZsE7FDhDNvHB1KMYBeeIUF4gtJ9M78ZqpgaC+H/ux9ZwXOKgn5WSybmZ1IP
-         DSjlbCrtBqi90ylIwWFCKllNuOx2mwgu764dw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JV19cANjpLfdHa/gkRlYR/E8vwFJkEmktdsDw/as+Tg=;
-        b=Z4zbJfFcU6OUh55sVcERmDW534VigX14nMeVIsAMYKYj9ZMnIJRUbRrN4tnOw3dJpZ
-         C0jj7llchAG42WJxS0cJVYaXL8W+rdEupBjtwweLbT1SLbE15qaechvoiMD6D2/Adbgg
-         ImueM8wmTbLddJFlF0wuZfxJtjaIDf8Lo3Oapai0l5Em2hiMAHmXlcEuirkUTX+yJ4pp
-         vn8OpW/NIb6VyzHwcvsbcPTqeEFF52tuEtJ/CUsFdOiJoTwZ1wZvEv+XvJogvU/WY1au
-         DEEvTmqyY+v7TVT8nTNyDrVfStt2EbGmHkkar2FMrmJsQq49prjqqtjAlZKzWeWXKP7R
-         aq+Q==
-X-Gm-Message-State: AOAM53077cDKEqOC0teNixdgH973VngioMas+6Ilr9cuYD4CqQqz8T8X
-        A10G4ByNuWTn99m4zNJ/Q7ksz+LrnVixBw==
-X-Google-Smtp-Source: ABdhPJxlk6/do6R2F8M0spaW3mqUWg4qIQNB6yDRGkdhCu+c8sZhoYYBvX/2OBKoYBWjbr7/aTSCtw==
-X-Received: by 2002:aca:4c03:: with SMTP id z3mr4067148oia.21.1611963562173;
-        Fri, 29 Jan 2021 15:39:22 -0800 (PST)
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com. [209.85.161.46])
-        by smtp.gmail.com with ESMTPSA id z10sm2757196oid.51.2021.01.29.15.39.20
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Jan 2021 15:39:20 -0800 (PST)
-Received: by mail-oo1-f46.google.com with SMTP id n19so2739651ooj.11
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Jan 2021 15:39:20 -0800 (PST)
-X-Received: by 2002:a4a:a289:: with SMTP id h9mr4694397ool.56.1611963559740;
- Fri, 29 Jan 2021 15:39:19 -0800 (PST)
+        id S231754AbhA3JnY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 30 Jan 2021 04:43:24 -0500
+Received: from mga01.intel.com ([192.55.52.88]:45287 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230104AbhA3Jhl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 30 Jan 2021 04:37:41 -0500
+IronPort-SDR: J6uNHDAQBVx5syfekeP42G7T/go2cduJ/AogSTMdrJxR4cl0HuqbS6mXLEXijmUnPm7/bPE3bp
+ ME+qNnW4ZlxA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9879"; a="199369138"
+X-IronPort-AV: E=Sophos;i="5.79,387,1602572400"; 
+   d="scan'208";a="199369138"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2021 22:59:54 -0800
+IronPort-SDR: ZP8SxT7lidCvnBWP0NxefSByK/0Nm/DqeeNTa0h0DvNuEN9en0CVLQ/weJz5nyHP9+pZENvYvW
+ fuGNmmR+5Z3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,387,1602572400"; 
+   d="scan'208";a="431325917"
+Received: from lkp-server02.sh.intel.com (HELO 625d3a354f04) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 29 Jan 2021 22:59:53 -0800
+Received: from kbuild by 625d3a354f04 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1l5kEa-0004M6-Gd; Sat, 30 Jan 2021 06:59:52 +0000
+Date:   Sat, 30 Jan 2021 14:59:26 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:pending] BUILD SUCCESS
+ 20fe1e68f89ee43e97038c312c18b2fd82ce1041
+Message-ID: <601503ce.ZZoJXqEyjVvIX03z%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20210115092405.8081-1-pkshih@realtek.com> <20210115092405.8081-4-pkshih@realtek.com>
- <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com> <d84e1a2c0d8e481588eec7248abf5c1a@realtek.com>
-In-Reply-To: <d84e1a2c0d8e481588eec7248abf5c1a@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Fri, 29 Jan 2021 15:39:08 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXM7e4eSiJNoVMES7=mZ3M-NGpVZ9jLbjNm4yqMSYH4r+Q@mail.gmail.com>
-Message-ID: <CA+ASDXM7e4eSiJNoVMES7=mZ3M-NGpVZ9jLbjNm4yqMSYH4r+Q@mail.gmail.com>
-Subject: Re: [PATCH v4 3/8] rtw88: add napi support
-To:     Pkshih <pkshih@realtek.com>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Bernie Huang <phhuang@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 1:45 AM Pkshih <pkshih@realtek.com> wrote:
-> > -----Original Message-----
-> > From: Brian Norris [mailto:briannorris@chromium.org]
-> > On Fri, Jan 15, 2021 at 1:26 AM Ping-Ke Shih <pkshih@realtek.com> wrote:
-> > > +static u32 rtw_pci_rx_napi(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
-> > >                            u8 hw_queue)
-> > ...
-> >
-> > Are you sure you don't want any locking in rtw_pci_rx_napi()?
-> > Previously, you held irq_lock for the entirety of rtw_pci_rx_isr(),
-> > but now all the RX work is being deferred to a NAPI context, without
-> > any additional lock. IIUC, that means you can be both handling RX and
-> > other ISR operations at the same time. Is that intentional?
-> >
->
-> irq_lock is used to protect TX ring->queue. The TX skb(s) are queued into the
-> queue, and unlink the skb until TX_OK_ISR is received. So, RX doesn't need to
-> hold this lock.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
+branch HEAD: 20fe1e68f89ee43e97038c312c18b2fd82ce1041  Merge tag 'mt76-for-kvalo-2021-01-29' of https://github.com/nbd168/wireless into pending
 
-I could be misunderstanding your locking model, but IIUC, you're left
-with zero locking between NAPI RX and all other operations (H2C, link
-up/down -- including DMA free, etc.). irq_lock used to protect you
-from that.
+elapsed time: 724m
 
-If I'm right, maybe it needs a rename and/or some additional comments.
+configs tested: 105
+configs skipped: 2
 
-Brian
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                       imx_v4_v5_defconfig
+riscv                             allnoconfig
+m68k                           sun3_defconfig
+riscv                            allmodconfig
+arm                  colibri_pxa300_defconfig
+x86_64                           allyesconfig
+powerpc                 mpc8315_rdb_defconfig
+mips                         rt305x_defconfig
+sh                          kfr2r09_defconfig
+arc                 nsimosci_hs_smp_defconfig
+arm                             rpc_defconfig
+arm                      jornada720_defconfig
+arc                          axs101_defconfig
+powerpc                 mpc8540_ads_defconfig
+sh                               j2_defconfig
+arm                          ep93xx_defconfig
+sh                        dreamcast_defconfig
+sh                          rsk7203_defconfig
+arm                      tct_hammer_defconfig
+powerpc                    mvme5100_defconfig
+sh                           se7712_defconfig
+c6x                        evmc6474_defconfig
+arm                         shannon_defconfig
+mips                      pistachio_defconfig
+arm                        multi_v5_defconfig
+mips                          ath79_defconfig
+sh                           se7721_defconfig
+xtensa                         virt_defconfig
+powerpc                    amigaone_defconfig
+mips                      pic32mzda_defconfig
+powerpc                     asp8347_defconfig
+sh                   sh7770_generic_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a005-20210130
+i386                 randconfig-a003-20210130
+i386                 randconfig-a002-20210130
+i386                 randconfig-a001-20210130
+i386                 randconfig-a004-20210130
+i386                 randconfig-a006-20210130
+i386                 randconfig-a013-20210130
+i386                 randconfig-a011-20210130
+i386                 randconfig-a015-20210130
+i386                 randconfig-a012-20210130
+i386                 randconfig-a014-20210130
+i386                 randconfig-a016-20210130
+x86_64               randconfig-a004-20210130
+x86_64               randconfig-a002-20210130
+x86_64               randconfig-a001-20210130
+x86_64               randconfig-a005-20210130
+x86_64               randconfig-a006-20210130
+x86_64               randconfig-a003-20210130
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+x86_64                                   rhel
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a012-20210129
+x86_64               randconfig-a015-20210129
+x86_64               randconfig-a016-20210129
+x86_64               randconfig-a011-20210129
+x86_64               randconfig-a013-20210129
+x86_64               randconfig-a014-20210129
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
