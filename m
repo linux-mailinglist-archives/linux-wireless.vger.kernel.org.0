@@ -2,115 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01401309EEF
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Jan 2021 21:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A08309F01
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Jan 2021 21:47:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbhAaUdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 Jan 2021 15:33:14 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:43196 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229987AbhAaUb4 (ORCPT
+        id S231202AbhAaUrc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 31 Jan 2021 15:47:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55420 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229564AbhAaUr3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 Jan 2021 15:31:56 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1l6HMV-0041H2-E6; Sun, 31 Jan 2021 20:22:15 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Sun, 31 Jan 2021 20:22:01 +0200
-Message-Id: <iwlwifi.20210131201907.4a802b308a0f.I77855abbf6dc1a6edf9c914f3313a87bd78de4df@changeid>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210131182212.929755-1-luca@coelho.fi>
-References: <20210131182212.929755-1-luca@coelho.fi>
+        Sun, 31 Jan 2021 15:47:29 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1D86C061573
+        for <linux-wireless@vger.kernel.org>; Sun, 31 Jan 2021 12:46:48 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id s3so2873643edi.7
+        for <linux-wireless@vger.kernel.org>; Sun, 31 Jan 2021 12:46:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:message-id:subject:reply-to:to:date:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=dvq1MPvNC+UUn6WXzOeHefYShSdkA00farn93A4MAZU=;
+        b=KCNL0/SsLW2hye1zRhxJ5HnGgiX6MIPn2zWBNm0WpAMTCj5zvEdMkANINpgMUIqKHG
+         uTfW7711dLGzxKtOG+D4gI5nsFWWOgBh+F7Zx+mTaAU9G6FDwoo4uB5yg9PMCNhaB1li
+         jEjjFaIHprot692sTBlUtbGgCV36HX6vLYhLgi3VEHj19eI4YwxvdBMWCXMfjLVktXhn
+         lyDLkuvv8aE5a3B44e4HXeuOaSnfNWTSLOtnwylYF0AocKEP/Zevj8GNCU40jT0v5Shv
+         LCN4xgxRde6OFw7fiXW0giBvwZyJ1in7jCjHEIobG/kZI3TMLrvE8KObG5DaZoOFD7zI
+         iNhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:message-id:subject:reply-to:to:date
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=dvq1MPvNC+UUn6WXzOeHefYShSdkA00farn93A4MAZU=;
+        b=Eg2deP2eEkX1sHi44WM594uqa9s09+gUYR686xF4XwgImWyaWnNxdbJtAZbDDzut/F
+         1LRfgCKCYY/eirpziDm7LxCDY96PYctJrE3SyOjA5orLyzNTiRmyDqcEHSwgvGzmpcvX
+         1qTokXngYSXqITQH/R/sbOCJEge6Mqzi99mqRWdWPz0zhZwQWTBefNPv5TZ8hG/VYm4t
+         3DvXhzfhbRm8AK4C9ZeQMfMhxsacJ4/U7nYSRrRwrbP+WqbuhInMq6SUmvEV41M7VCcv
+         a6PjNvsEdmpD+mg2kqoPH30Ng+2u8kim25f1OWEMffWeyRgrqZNJToAEDBm1mSAGrHcp
+         ZVPA==
+X-Gm-Message-State: AOAM530W0l1/bKj+hcEzgtbMRoC2d32pnka2uYpvntpRMQAiMxB9JsHN
+        W7fTB2HhL499PQKk9HpzhyTELtvWAys=
+X-Google-Smtp-Source: ABdhPJzmElqZb4Gn4e+L7HKvqozI6wfyq1Ve6W6oZ9UP4ngTfM1mXM1RB0sMJOsXnWQZVP9R29AEYg==
+X-Received: by 2002:a05:6402:4312:: with SMTP id m18mr15748176edc.99.1612126007298;
+        Sun, 31 Jan 2021 12:46:47 -0800 (PST)
+Received: from [192.168.100.54] (mm-58-44-120-178.brest.dynamic.pppoe.byfly.by. [178.120.44.58])
+        by smtp.gmail.com with ESMTPSA id u16sm6948609ejn.117.2021.01.31.12.46.45
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Jan 2021 12:46:46 -0800 (PST)
+From:   Artur Sinila <logarithmus.dev@gmail.com>
+X-Google-Original-From: Artur Sinila <opensource@logarithmus.dev>
+Message-ID: <b7200bf4d9c10c1968ac87e9fb84e9cd97ebcac5.camel@logarithmus.dev>
+Subject: Hello there
+Reply-To: opensource@logarithmus.dev
+To:     linux-wireless@vger.kernel.org
+Date:   Sun, 31 Jan 2021 23:46:44 +0300
+Content-Type: text/plain
+User-Agent: Evolution 3.38.0 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 01/12] iwlwifi: mvm: add IML/ROM information for other HW families
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
-
-This makes it easier to debug IML/ROM errors for other HW families
-as well.
-
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  1 +
- .../net/wireless/intel/iwlwifi/mvm/utils.c    | 24 +++++++++++++++----
- 2 files changed, 20 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-index 0b03fdedc1f7..9dd2d79f4d5a 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-@@ -359,6 +359,7 @@ enum {
- /* device family 22000 WPROT register */
- #define PREG_PRPH_WPROT_22000		0xA04D00
- 
-+#define SB_MODIFY_CFG_FLAG		0xA03088
- #define SB_CPU_1_STATUS			0xA01E30
- #define SB_CPU_2_STATUS			0xA01E34
- #define UMAG_SB_CPU_1_STATUS		0xA038C0
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-index 01a0fe86fd0d..b6b481ff1518 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
-@@ -499,18 +499,33 @@ static void iwl_mvm_dump_lmac_error_log(struct iwl_mvm *mvm, u8 lmac_num)
- static void iwl_mvm_dump_iml_error_log(struct iwl_mvm *mvm)
- {
- 	struct iwl_trans *trans = mvm->trans;
--	u32 error;
-+	u32 error, data1;
-+
-+	if (mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_22000) {
-+		error = UMAG_SB_CPU_2_STATUS;
-+		data1 = UMAG_SB_CPU_1_STATUS;
-+	} else if (mvm->trans->trans_cfg->device_family >=
-+		   IWL_DEVICE_FAMILY_8000) {
-+		error = SB_CPU_2_STATUS;
-+		data1 = SB_CPU_1_STATUS;
-+	} else {
-+		return;
-+	}
- 
- 	error = iwl_read_umac_prph(trans, UMAG_SB_CPU_2_STATUS);
- 
- 	IWL_ERR(trans, "IML/ROM dump:\n");
- 
- 	if (error & 0xFFFF0000)
--		IWL_ERR(trans, "IML/ROM SYSASSERT:\n");
-+		IWL_ERR(trans, "0x%04X | IML/ROM SYSASSERT\n", error >> 16);
- 
- 	IWL_ERR(mvm, "0x%08X | IML/ROM error/state\n", error);
- 	IWL_ERR(mvm, "0x%08X | IML/ROM data1\n",
--		iwl_read_umac_prph(trans, UMAG_SB_CPU_1_STATUS));
-+		iwl_read_umac_prph(trans, data1));
-+
-+	if (mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_22000)
-+		IWL_ERR(mvm, "0x%08X | IML/ROM WFPM_AUTH_KEY_0\n",
-+			iwl_read_umac_prph(trans, SB_MODIFY_CFG_FLAG));
- }
- 
- void iwl_mvm_dump_nic_error_log(struct iwl_mvm *mvm)
-@@ -528,8 +543,7 @@ void iwl_mvm_dump_nic_error_log(struct iwl_mvm *mvm)
- 
- 	iwl_mvm_dump_umac_error_log(mvm);
- 
--	if (mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
--		iwl_mvm_dump_iml_error_log(mvm);
-+	iwl_mvm_dump_iml_error_log(mvm);
- 
- 	iwl_fw_error_print_fseq_regs(&mvm->fwrt);
- }
--- 
-2.29.2
+Hello there!
 
