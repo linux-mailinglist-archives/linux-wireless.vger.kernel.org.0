@@ -2,98 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABC81309C6E
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Jan 2021 15:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEBAA309C72
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Jan 2021 15:03:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbhAaNqk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 Jan 2021 08:46:40 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:42902 "EHLO
+        id S230517AbhAaNsP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 31 Jan 2021 08:48:15 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:42912 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231446AbhAaLea (ORCPT
+        with ESMTP id S230436AbhAaLqi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 Jan 2021 06:34:30 -0500
+        Sun, 31 Jan 2021 06:46:38 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1l6AXv-004131-OK; Sun, 31 Jan 2021 13:05:36 +0200
+        id 1l6AXy-004131-7h; Sun, 31 Jan 2021 13:05:38 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sun, 31 Jan 2021 13:05:21 +0200
-Message-Id: <20210131110533.887130-1-luca@coelho.fi>
+Date:   Sun, 31 Jan 2021 13:05:23 +0200
+Message-Id: <iwlwifi.20210131125921.7b908f5dd970.Id2aec0d7d33921aba77ba9853196f81d5950c31c@changeid>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210131110533.887130-1-luca@coelho.fi>
+References: <20210131110533.887130-1-luca@coelho.fi>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 00/12] iwlwifi: updates intended for v5.12 2021-01-31
+Subject: [PATCH 02/12] iwlwifi: bump FW API to 60 for AX devices
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Luca Coelho <luciano.coelho@intel.com>
 
-Hi,
+Start supporting API version 60 for AX devices.
 
-Here's the third set of patches intended for v5.12.  It's the usual
-development, new features, cleanups and bugfixes.
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The changes are:
-
-* One more CSA bug fix, this time in the AP side;
-* Bump fW API support;
-* Support for new So devices and a bit of reorg;
-* Some other clean-ups and small fixes.
-
-As usual, I'm pushing this to a pending branch, for kbuild bot, and
-will send a pull-request later.
-
-Please review.
-
-Cheers,
-Luca.
-
-
-Emmanuel Grumbach (2):
-  iwlwifi: mvm: cancel the scan delayed work when scan is aborted
-  iwlwifi: mvm: fix CSA AP side
-
-Ilan Peer (1):
-  iwlwifi: pcie: Disable softirqs during Rx queue init
-
-Johannes Berg (4):
-  iwlwifi: mvm: advertise BIGTK client support if available
-  iwlwifi: fw api: make hdr a zero-size array again
-  iwlwifi: mvm: slightly clean up rs_fw_set_supp_rates()
-  iwlwifi: mvm: make iwl_mvm_tt_temp_changed() static
-
-Luca Coelho (5):
-  iwlwifi: bump FW API to 60 for AX devices
-  iwlwifi: move SnJ and So rules to the new tables
-  iwlwifi: add support for SnJ with Jf devices
-  iwlwifi: mvm: move early time-point before nvm_init in non-unified
-  iwlwifi: pcie: add support for SnJ with Hr1
-
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |  58 ++++++-
- .../net/wireless/intel/iwlwifi/fw/api/rx.h    |   7 +-
- .../net/wireless/intel/iwlwifi/fw/api/tx.h    |   2 +-
- drivers/net/wireless/intel/iwlwifi/fw/file.h  |   2 +
- .../net/wireless/intel/iwlwifi/iwl-config.h   |   7 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   4 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  13 ++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   5 +-
- .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |   5 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 116 ++++++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c |   3 +
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  19 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 141 ++++++++++++------
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  36 ++---
- 15 files changed, 325 insertions(+), 95 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index 7220fc8fd9b0..d6c88c813880 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -9,7 +9,7 @@
+ #include "iwl-prph.h"
+ 
+ /* Highest firmware API version supported */
+-#define IWL_22000_UCODE_API_MAX	59
++#define IWL_22000_UCODE_API_MAX	60
+ 
+ /* Lowest firmware API version supported */
+ #define IWL_22000_UCODE_API_MIN	39
 -- 
 2.29.2
 
