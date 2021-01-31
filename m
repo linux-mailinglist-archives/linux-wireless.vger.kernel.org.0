@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9180309EB2
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Jan 2021 21:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 632E0309EE3
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Jan 2021 21:27:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231991AbhAaUKr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 Jan 2021 15:10:47 -0500
+        id S231138AbhAaUYq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 31 Jan 2021 15:24:46 -0500
 Received: from paleale.coelho.fi ([176.9.41.70]:43164 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231346AbhAaUI2 (ORCPT
+        with ESMTP id S231137AbhAaUNL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 Jan 2021 15:08:28 -0500
+        Sun, 31 Jan 2021 15:13:11 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1l6HMX-0041H2-N2; Sun, 31 Jan 2021 20:22:18 +0200
+        id 1l6HMY-0041H2-C3; Sun, 31 Jan 2021 20:22:18 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sun, 31 Jan 2021 20:22:04 +0200
-Message-Id: <iwlwifi.20210131201908.719de818c09a.I2788e6a4c411aa414eaa67e6b7b21d90ccd9d0c1@changeid>
+Date:   Sun, 31 Jan 2021 20:22:05 +0200
+Message-Id: <iwlwifi.20210131201908.0db829694810.I001f39d34ae46c87870d9bd94a4baaa3250578d1@changeid>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210131182212.929755-1-luca@coelho.fi>
 References: <20210131182212.929755-1-luca@coelho.fi>
@@ -31,88 +31,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 04/12] iwlwifi: mvm: add tx fail time point
+Subject: [PATCH 05/12] iwlwifi: mvm: add debugfs entry to trigger a dump as any time-point
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-This helps collect on any tx failure fw data to better understand what
-went wrong.
+This is used for different tests collecting different types of
+debug data from fw (e.g latency issues, hw issues etc).
 
 Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 26 ++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index b102fe116f04..03afced82afa 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1324,12 +1324,24 @@ static void iwl_mvm_hwrate_to_tx_status(u32 rate_n_flags,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 3834d7197e11..efc908231d74 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1349,6 +1349,24 @@ static ssize_t iwl_dbgfs_fw_dbg_collect_write(struct iwl_mvm *mvm,
+ 	return count;
  }
  
- static void iwl_mvm_tx_status_check_trigger(struct iwl_mvm *mvm,
--					    u32 status)
-+					    u32 status, __le16 frame_control)
- {
- 	struct iwl_fw_dbg_trigger_tlv *trig;
- 	struct iwl_fw_dbg_trigger_tx_status *status_trig;
- 	int i;
- 
-+	if ((status & TX_STATUS_MSK) != TX_STATUS_SUCCESS) {
-+		enum iwl_fw_ini_time_point tp =
-+			IWL_FW_INI_TIME_POINT_TX_FAILED;
++static ssize_t iwl_dbgfs_dbg_time_point_write(struct iwl_mvm *mvm,
++					      char *buf, size_t count,
++					      loff_t *ppos)
++{
++	u32 timepoint;
 +
-+		if (ieee80211_is_action(frame_control))
-+			tp = IWL_FW_INI_TIME_POINT_TX_WFD_ACTION_FRAME_FAILED;
++	if (kstrtou32(buf, 0, &timepoint))
++		return -EINVAL;
 +
-+		iwl_dbg_tlv_time_point(&mvm->fwrt,
-+				       tp, NULL);
-+		return;
-+	}
++	if (timepoint == IWL_FW_INI_TIME_POINT_INVALID ||
++	    timepoint >= IWL_FW_INI_TIME_POINT_NUM)
++		return -EINVAL;
 +
- 	trig = iwl_fw_dbg_trigger_on(&mvm->fwrt, NULL,
- 				     FW_DBG_TRIGGER_TX_STATUS);
- 	if (!trig)
-@@ -1447,7 +1459,7 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 		if (skb_freed > 1)
- 			info->flags |= IEEE80211_TX_STAT_ACK;
- 
--		iwl_mvm_tx_status_check_trigger(mvm, status);
-+		iwl_mvm_tx_status_check_trigger(mvm, status, hdr->frame_control);
- 
- 		info->status.rates[0].count = tx_resp->failure_frame + 1;
- 		iwl_mvm_hwrate_to_tx_status(le32_to_cpu(tx_resp->initial_rate),
-@@ -1631,10 +1643,13 @@ static void iwl_mvm_rx_tx_cmd_agg_dbg(struct iwl_mvm *mvm,
- 	struct agg_tx_status *frame_status =
- 		iwl_mvm_get_agg_status(mvm, tx_resp);
- 	int i;
-+	bool tirgger_timepoint = false;
- 
- 	for (i = 0; i < tx_resp->frame_count; i++) {
- 		u16 fstatus = le16_to_cpu(frame_status[i].status);
--
-+		/* In case one frame wasn't transmitted trigger time point */
-+		tirgger_timepoint |= ((fstatus & AGG_TX_STATE_STATUS_MSK) !=
-+				      AGG_TX_STATE_TRANSMITTED);
- 		IWL_DEBUG_TX_REPLY(mvm,
- 				   "status %s (0x%04x), try-count (%d) seq (0x%x)\n",
- 				   iwl_get_agg_tx_status(fstatus),
-@@ -1643,6 +1658,11 @@ static void iwl_mvm_rx_tx_cmd_agg_dbg(struct iwl_mvm *mvm,
- 					AGG_TX_STATE_TRY_CNT_POS,
- 				   le16_to_cpu(frame_status[i].sequence));
- 	}
++	iwl_dbg_tlv_time_point(&mvm->fwrt, timepoint, NULL);
 +
-+	if (tirgger_timepoint)
-+		iwl_dbg_tlv_time_point(&mvm->fwrt,
-+				       IWL_FW_INI_TIME_POINT_TX_FAILED, NULL);
++	return count;
++}
 +
- }
- #else
- static void iwl_mvm_rx_tx_cmd_agg_dbg(struct iwl_mvm *mvm,
+ #define ADD_TEXT(...) pos += scnprintf(buf + pos, bufsz - pos, __VA_ARGS__)
+ #ifdef CONFIG_IWLWIFI_BCAST_FILTERING
+ static ssize_t iwl_dbgfs_bcast_filters_read(struct file *file,
+@@ -1786,6 +1804,7 @@ MVM_DEBUGFS_WRITE_FILE_OPS(bt_force_ant, 10);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(scan_ant_rxchain, 8);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(fw_dbg_conf, 8);
+ MVM_DEBUGFS_WRITE_FILE_OPS(fw_dbg_collect, 64);
++MVM_DEBUGFS_WRITE_FILE_OPS(dbg_time_point, 64);
+ MVM_DEBUGFS_WRITE_FILE_OPS(indirection_tbl,
+ 			   (IWL_RSS_INDIRECTION_TABLE_SIZE * 2));
+ MVM_DEBUGFS_WRITE_FILE_OPS(inject_packet, 512);
 -- 
 2.29.2
 
