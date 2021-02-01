@@ -2,105 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3D1730A176
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Feb 2021 06:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 790D830A237
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Feb 2021 07:50:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbhBAFfU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Feb 2021 00:35:20 -0500
-Received: from mail-io1-f70.google.com ([209.85.166.70]:44167 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231474AbhBAF1E (ORCPT
+        id S232143AbhBAGm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Feb 2021 01:42:59 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:49560 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231834AbhBAGjV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Feb 2021 00:27:04 -0500
-Received: by mail-io1-f70.google.com with SMTP id e12so10972395ioh.11
-        for <linux-wireless@vger.kernel.org>; Sun, 31 Jan 2021 21:26:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=mOuteIF8UAPooau0D/cZWl4oFDJw4SLqefC73M8pDiU=;
-        b=pVgQd+I5Ppiae9O1rKCl6OKyeLbMojQR1Qn2ZKkfgdtBwD5D0X3tq+Cz1Pa4tqkz8F
-         v73sySwBnJFqL4eVzvYvNP+i3qFVl86s9X+d8luFSm+XAyz7IGCmiqmPfvn8aGW3yvl0
-         UzFdPNyXZVqwiM9oMABXmI7BCalSDXWaqn8qRTn7YafE+9VzuYb3loQ0G1AuGn4Gcs5O
-         UR7Lf++wx6jLzwFRXWdIBv1b1TM80sQiSN9gNUac7nLemhFpT0tNzQ+UkTDpGEgnAUFn
-         b4its+Uup3X9ZfmSHViEl1BSMm6p0SLazlKjCCGPZ67Aw+fFjsHj1X031XUWfxuWRcKC
-         Y33A==
-X-Gm-Message-State: AOAM530jjeS+0jNWPtBL7BSHIfGQyHyARNhVCykm51KquA03Tpd0vT+z
-        Pu5UiO5RGdqYlkC8FaSfujSaI7vTbYo9dxwv5KvAdcQgwHd8
-X-Google-Smtp-Source: ABdhPJwk6jyJ1h9tBbtnwk+FTCU6d5MxIKAPn2mwnsIFBSnobEXOxL0CfEPiBRKPR7+Ql7b/WSh0ZSF81ahIGyPXN+HSSjs5FhII
+        Mon, 1 Feb 2021 01:39:21 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1116cJkG5029187, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmbs03.realtek.com.tw[172.21.6.96])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 1116cJkG5029187
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 1 Feb 2021 14:38:19 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 1 Feb 2021 14:38:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833]) by
+ RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833%12]) with mapi id
+ 15.01.2106.006; Mon, 1 Feb 2021 14:38:19 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Brian Norris <briannorris@chromium.org>
+CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Bernie Huang <phhuang@realtek.com>
+Subject: RE: [PATCH v4 3/8] rtw88: add napi support
+Thread-Topic: [PATCH v4 3/8] rtw88: add napi support
+Thread-Index: AQHW6yCPbtjrLodDrUGqlkIx94yfwqozx6WAgAkWW6CAAfWCAIAEG6Ig
+Date:   Mon, 1 Feb 2021 06:38:19 +0000
+Message-ID: <e8e451faf35e47b494f6d49fe92d1858@realtek.com>
+References: <20210115092405.8081-1-pkshih@realtek.com>
+ <20210115092405.8081-4-pkshih@realtek.com>
+ <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com>
+ <d84e1a2c0d8e481588eec7248abf5c1a@realtek.com>
+ <CA+ASDXM7e4eSiJNoVMES7=mZ3M-NGpVZ9jLbjNm4yqMSYH4r+Q@mail.gmail.com>
+In-Reply-To: <CA+ASDXM7e4eSiJNoVMES7=mZ3M-NGpVZ9jLbjNm4yqMSYH4r+Q@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.213]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1564:: with SMTP id k4mr11437262ilu.282.1612157183044;
- Sun, 31 Jan 2021 21:26:23 -0800 (PST)
-Date:   Sun, 31 Jan 2021 21:26:23 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000037b29b05ba3f9859@google.com>
-Subject: WARNING in sta_info_insert_check
-From:   syzbot <syzbot+8dcc087eb24227ded47e@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    bec4c296 Merge tag 'ecryptfs-5.11-rc6-setxattr-fix' of git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11991778d00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f75d66d6d359ef2f
-dashboard link: https://syzkaller.appspot.com/bug?extid=8dcc087eb24227ded47e
-userspace arch: arm64
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8dcc087eb24227ded47e@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 118 at net/mac80211/sta_info.c:547 sta_info_insert_check+0x48/0xc4 net/mac80211/sta_info.c:547
-Modules linked in:
-CPU: 0 PID: 118 Comm: kworker/u4:3 Not tainted 5.11.0-rc5-syzkaller-00239-gbec4c2968fce #0
-Hardware name: linux,dummy-virt (DT)
-Workqueue: phy6 ieee80211_iface_work
-pstate: 40400009 (nZcv daif +PAN -UAO -TCO BTYPE=--)
-pc : sta_info_insert_check+0x48/0xc4 net/mac80211/sta_info.c:547
-lr : sta_info_insert_rcu+0x34/0x90 net/mac80211/sta_info.c:725
-sp : ffff800013f3bbf0
-x29: ffff800013f3bbf0 x28: ffff8000132e4538 
-x27: f6ff00002070c998 x26: dead000000000100 
-x25: dead000000000122 x24: f6ff00002070d340 
-x23: f6ff00002070d280 x22: faff000020710800 
-x21: faff000020710df0 x20: f6ff00002070c940 
-x19: f7ff000020784000 x18: 0000000000000000 
-x17: 0000000000000000 x16: 0000000000000000 
-x15: 0000ad1062c19046 x14: f7ff000020796098 
-x13: 000000000000044b x12: f6ff00002070c940 
-x11: 000000000000000c x10: 0000000000000000 
-x9 : faff000020713b90 x8 : 0000000000000fff 
-x7 : 0000000000000000 x6 : f6ff00002070c940 
-x5 : 0000000000000fff x4 : 0000000000000000 
-x3 : 0000000000000100 x2 : 00000000ffeeffff 
-x1 : 00000000ffffffff x0 : 00000000ffeefdf7 
-Call trace:
- sta_info_insert_check+0x48/0xc4 net/mac80211/sta_info.c:547
- sta_info_insert_rcu+0x34/0x90 net/mac80211/sta_info.c:725
- ieee80211_ibss_finish_sta+0x84/0x140 net/mac80211/ibss.c:592
- ieee80211_ibss_work+0xe4/0x560 net/mac80211/ibss.c:1700
- ieee80211_iface_work+0x2b8/0x33c net/mac80211/iface.c:1445
- process_one_work+0x1d8/0x360 kernel/workqueue.c:2275
- worker_thread+0x74/0x440 kernel/workqueue.c:2421
- kthread+0x178/0x180 kernel/kthread.c:292
- ret_from_fork+0x10/0x30 arch/arm64/kernel/entry.S:958
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJyaWFuIE5vcnJpcyBbbWFp
+bHRvOmJyaWFubm9ycmlzQGNocm9taXVtLm9yZ10NCj4gU2VudDogU2F0dXJkYXksIEphbnVhcnkg
+MzAsIDIwMjEgNzozOSBBTQ0KPiBUbzogUGtzaGloDQo+IENjOiBZYW4tSHN1YW4gQ2h1YW5nOyBL
+YWxsZSBWYWxvOyBsaW51eC13aXJlbGVzczsgQmVybmllIEh1YW5nDQo+IFN1YmplY3Q6IFJlOiBb
+UEFUQ0ggdjQgMy84XSBydHc4ODogYWRkIG5hcGkgc3VwcG9ydA0KPiANCj4gT24gVGh1LCBKYW4g
+MjgsIDIwMjEgYXQgMTo0NSBBTSBQa3NoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JvdGU6DQo+
+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTogQnJpYW4gTm9ycmlz
+IFttYWlsdG86YnJpYW5ub3JyaXNAY2hyb21pdW0ub3JnXQ0KPiA+ID4gT24gRnJpLCBKYW4gMTUs
+IDIwMjEgYXQgMToyNiBBTSBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JvdGU6
+DQo+ID4gPiA+ICtzdGF0aWMgdTMyIHJ0d19wY2lfcnhfbmFwaShzdHJ1Y3QgcnR3X2RldiAqcnR3
+ZGV2LCBzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpLA0KPiA+ID4gPiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICB1OCBod19xdWV1ZSkNCj4gPiA+IC4uLg0KPiA+ID4NCj4gPiA+IEFyZSB5b3Ugc3Vy
+ZSB5b3UgZG9uJ3Qgd2FudCBhbnkgbG9ja2luZyBpbiBydHdfcGNpX3J4X25hcGkoKT8NCj4gPiA+
+IFByZXZpb3VzbHksIHlvdSBoZWxkIGlycV9sb2NrIGZvciB0aGUgZW50aXJldHkgb2YgcnR3X3Bj
+aV9yeF9pc3IoKSwNCj4gPiA+IGJ1dCBub3cgYWxsIHRoZSBSWCB3b3JrIGlzIGJlaW5nIGRlZmVy
+cmVkIHRvIGEgTkFQSSBjb250ZXh0LCB3aXRob3V0DQo+ID4gPiBhbnkgYWRkaXRpb25hbCBsb2Nr
+LiBJSVVDLCB0aGF0IG1lYW5zIHlvdSBjYW4gYmUgYm90aCBoYW5kbGluZyBSWCBhbmQNCj4gPiA+
+IG90aGVyIElTUiBvcGVyYXRpb25zIGF0IHRoZSBzYW1lIHRpbWUuIElzIHRoYXQgaW50ZW50aW9u
+YWw/DQo+ID4gPg0KPiA+DQo+ID4gaXJxX2xvY2sgaXMgdXNlZCB0byBwcm90ZWN0IFRYIHJpbmct
+PnF1ZXVlLiBUaGUgVFggc2tiKHMpIGFyZSBxdWV1ZWQgaW50byB0aGUNCj4gPiBxdWV1ZSwgYW5k
+IHVubGluayB0aGUgc2tiIHVudGlsIFRYX09LX0lTUiBpcyByZWNlaXZlZC4gU28sIFJYIGRvZXNu
+J3QgbmVlZCB0bw0KPiA+IGhvbGQgdGhpcyBsb2NrLg0KPiANCj4gSSBjb3VsZCBiZSBtaXN1bmRl
+cnN0YW5kaW5nIHlvdXIgbG9ja2luZyBtb2RlbCwgYnV0IElJVUMsIHlvdSdyZSBsZWZ0DQo+IHdp
+dGggemVybyBsb2NraW5nIGJldHdlZW4gTkFQSSBSWCBhbmQgYWxsIG90aGVyIG9wZXJhdGlvbnMg
+KEgyQywgbGluaw0KPiB1cC9kb3duIC0tIGluY2x1ZGluZyBETUEgZnJlZSwgZXRjLikuIGlycV9s
+b2NrIHVzZWQgdG8gcHJvdGVjdCB5b3UNCj4gZnJvbSB0aGF0Lg0KPiANCg0KU29ycnksIEknbSB3
+cm9uZy4gSSB0aGluayBpcnFfbG9jayBpcyB1c2VkIHRvIHByb3RlY3Qgbm90IG9ubHkgVFggcmlu
+Zy0+cXVldWUNCmJ1dCBhbHNvIFRYL1JYIHJpbmdzLiBUaGUgUlggcmluZyBydHdwY2ktPnJ4X3Jp
+bmdzW1JUV19SWF9RVUVVRV9NUERVXSBpcyByZXNldA0KYnkgcnR3X3BjaV9yZXNldF9idWZfZGVz
+YygpIHdoZW4gcGNpX3N0b3AoKSwgYW5kIG5hcGlfcG9sbCgpIGFsc28gdXNlcyBpdCB0bw0Ka25v
+dyBob3cgbWFueSBSWCBwYWNrZXRzIGFyZSBuZWVkZWQgdG8gYmUgcmVjZWl2ZWQuIFRoZXJlZm9y
+ZSwgd2UgcGxhbiB0bw0KdXNlIGlycV9sb2NrIHRvIHByb3RlY3QgbmFwaV9wb2xsKCksIGFuZCB0
+aGVuIHNlZSBpZiBpdCBhZmZlY3RzIHBlcmZvcm1hbmNlLg0KDQo+IElmIEknbSByaWdodCwgbWF5
+YmUgaXQgbmVlZHMgYSByZW5hbWUgYW5kL29yIHNvbWUgYWRkaXRpb25hbCBjb21tZW50cy4NCj4g
+DQoNClRoZSBvcmlnaW5hbCBuYW1lIGFuZCBjb21tZW50Og0KCS8qIFVzZWQgZm9yIFBDSSBUWCBx
+dWV1ZWluZy4gKi8NCglzcGlubG9ja190IGlycV9sb2NrOw0KV2lsbCBjaGFuZ2UgdG8NCgkvKiBV
+c2VkIGZvciBQQ0kgVFgvUlggcmluZ3MgYW5kIFRYIHF1ZXVlaW5nLiAqLw0KCXNwaW5sb2NrX3Qg
+aXJxX2xvY2s7DQoNCi0tLQ0KUGluZy1LZQ0KDQo=
