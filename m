@@ -2,93 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 790D830A237
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Feb 2021 07:50:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEDD930A285
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Feb 2021 08:11:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232143AbhBAGm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Feb 2021 01:42:59 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:49560 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231834AbhBAGjV (ORCPT
+        id S232031AbhBAHKL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Feb 2021 02:10:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46320 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232399AbhBAHH5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Feb 2021 01:39:21 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1116cJkG5029187, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmbs03.realtek.com.tw[172.21.6.96])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 1116cJkG5029187
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 1 Feb 2021 14:38:19 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 1 Feb 2021 14:38:19 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833]) by
- RTEXMBS04.realtek.com.tw ([fe80::ecca:80ca:53:e833%12]) with mapi id
- 15.01.2106.006; Mon, 1 Feb 2021 14:38:19 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>
-CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Mon, 1 Feb 2021 02:07:57 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E7FC061574
+        for <linux-wireless@vger.kernel.org>; Sun, 31 Jan 2021 23:07:17 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id my11so9123166pjb.1
+        for <linux-wireless@vger.kernel.org>; Sun, 31 Jan 2021 23:07:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yEAXr+uYT47arw+BgtSxxjuiMvD2994EjnVkSqzNVfY=;
+        b=W57OCjk6JbbEC4TjR83KofLCibS8dcJom3IZSNhSRjw5CSmPK6uBlvGID5M8peSK1g
+         qbg2aSsCsVu9ARLEz506EijrXcJ5cuXfR7bEvPEGoLV1lckL1uC9baxQJI3Vvx2z3tj0
+         cyXH9yc3PwbWbOlLXj4Lhsj8YujMnzZQTFyj8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yEAXr+uYT47arw+BgtSxxjuiMvD2994EjnVkSqzNVfY=;
+        b=shx3eC0yXtWQ3hJDbwT61pZoMeYSioLJVeC+78BwEZH3OAVdxZYF8aVWuR1EuFC4aM
+         AzD7XvMpArnkUo4/7/mbA6k4HzMwxSwhOxHFmN6Luj7S/4RDwIo/12ltJyCeuGUe4SSh
+         sM0DjF+lWUa/s0onQQp+i0pcHbfuSR8snQy21xwI4hc6CuhtOwGl7ZSVkDdWBTouXA7L
+         AY9s2Oc1DYadG+c3/IllEAuBDJLM+8xGiuF/Ex3N+mP/TuYgwkJxZUrnviRYW9MqySgw
+         N3gHGCpThAD1a/Q1gvXUjawhoKgalOWP3ANOBBJVDlpdxR+fEpuVvk3rvpTiN5dqET/r
+         c7OQ==
+X-Gm-Message-State: AOAM532eLcG9CWhMtLcyXXZCZtxsIeQYM0fFu3qePXgao80fXGdqCMG7
+        XI9KcfizgdKvFwulDWh2/PNnhASvBsawXA==
+X-Google-Smtp-Source: ABdhPJzYlktOhXkvTLg/xc7MCjc/pyZp0lyHg6HFBKuSA4R/WhR/9EXFwjDKeLhZBARJQLstYAGF8Q==
+X-Received: by 2002:a17:90a:b282:: with SMTP id c2mr16030435pjr.54.1612163236914;
+        Sun, 31 Jan 2021 23:07:16 -0800 (PST)
+Received: from localhost ([2401:fa00:1:b:158e:ed37:38d6:db19])
+        by smtp.gmail.com with ESMTPSA id a22sm14306240pjh.5.2021.01.31.23.07.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 31 Jan 2021 23:07:16 -0800 (PST)
+From:   Yen-lin Lai <yenlinlai@chromium.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Yen-lin Lai <yenlinlai@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Bernie Huang <phhuang@realtek.com>
-Subject: RE: [PATCH v4 3/8] rtw88: add napi support
-Thread-Topic: [PATCH v4 3/8] rtw88: add napi support
-Thread-Index: AQHW6yCPbtjrLodDrUGqlkIx94yfwqozx6WAgAkWW6CAAfWCAIAEG6Ig
-Date:   Mon, 1 Feb 2021 06:38:19 +0000
-Message-ID: <e8e451faf35e47b494f6d49fe92d1858@realtek.com>
-References: <20210115092405.8081-1-pkshih@realtek.com>
- <20210115092405.8081-4-pkshih@realtek.com>
- <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com>
- <d84e1a2c0d8e481588eec7248abf5c1a@realtek.com>
- <CA+ASDXM7e4eSiJNoVMES7=mZ3M-NGpVZ9jLbjNm4yqMSYH4r+Q@mail.gmail.com>
-In-Reply-To: <CA+ASDXM7e4eSiJNoVMES7=mZ3M-NGpVZ9jLbjNm4yqMSYH4r+Q@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Xinming Hu <huxinming820@gmail.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH] mwifiex: Report connected BSS with cfg80211_connect_bss()
+Date:   Mon,  1 Feb 2021 15:06:49 +0800
+Message-Id: <20210201070649.1667209-1-yenlinlai@chromium.org>
+X-Mailer: git-send-email 2.30.0.365.g02bc693789-goog
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJyaWFuIE5vcnJpcyBbbWFp
-bHRvOmJyaWFubm9ycmlzQGNocm9taXVtLm9yZ10NCj4gU2VudDogU2F0dXJkYXksIEphbnVhcnkg
-MzAsIDIwMjEgNzozOSBBTQ0KPiBUbzogUGtzaGloDQo+IENjOiBZYW4tSHN1YW4gQ2h1YW5nOyBL
-YWxsZSBWYWxvOyBsaW51eC13aXJlbGVzczsgQmVybmllIEh1YW5nDQo+IFN1YmplY3Q6IFJlOiBb
-UEFUQ0ggdjQgMy84XSBydHc4ODogYWRkIG5hcGkgc3VwcG9ydA0KPiANCj4gT24gVGh1LCBKYW4g
-MjgsIDIwMjEgYXQgMTo0NSBBTSBQa3NoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JvdGU6DQo+
-ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTogQnJpYW4gTm9ycmlz
-IFttYWlsdG86YnJpYW5ub3JyaXNAY2hyb21pdW0ub3JnXQ0KPiA+ID4gT24gRnJpLCBKYW4gMTUs
-IDIwMjEgYXQgMToyNiBBTSBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JvdGU6
-DQo+ID4gPiA+ICtzdGF0aWMgdTMyIHJ0d19wY2lfcnhfbmFwaShzdHJ1Y3QgcnR3X2RldiAqcnR3
-ZGV2LCBzdHJ1Y3QgcnR3X3BjaSAqcnR3cGNpLA0KPiA+ID4gPiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB1OCBod19xdWV1ZSkNCj4gPiA+IC4uLg0KPiA+ID4NCj4gPiA+IEFyZSB5b3Ugc3Vy
-ZSB5b3UgZG9uJ3Qgd2FudCBhbnkgbG9ja2luZyBpbiBydHdfcGNpX3J4X25hcGkoKT8NCj4gPiA+
-IFByZXZpb3VzbHksIHlvdSBoZWxkIGlycV9sb2NrIGZvciB0aGUgZW50aXJldHkgb2YgcnR3X3Bj
-aV9yeF9pc3IoKSwNCj4gPiA+IGJ1dCBub3cgYWxsIHRoZSBSWCB3b3JrIGlzIGJlaW5nIGRlZmVy
-cmVkIHRvIGEgTkFQSSBjb250ZXh0LCB3aXRob3V0DQo+ID4gPiBhbnkgYWRkaXRpb25hbCBsb2Nr
-LiBJSVVDLCB0aGF0IG1lYW5zIHlvdSBjYW4gYmUgYm90aCBoYW5kbGluZyBSWCBhbmQNCj4gPiA+
-IG90aGVyIElTUiBvcGVyYXRpb25zIGF0IHRoZSBzYW1lIHRpbWUuIElzIHRoYXQgaW50ZW50aW9u
-YWw/DQo+ID4gPg0KPiA+DQo+ID4gaXJxX2xvY2sgaXMgdXNlZCB0byBwcm90ZWN0IFRYIHJpbmct
-PnF1ZXVlLiBUaGUgVFggc2tiKHMpIGFyZSBxdWV1ZWQgaW50byB0aGUNCj4gPiBxdWV1ZSwgYW5k
-IHVubGluayB0aGUgc2tiIHVudGlsIFRYX09LX0lTUiBpcyByZWNlaXZlZC4gU28sIFJYIGRvZXNu
-J3QgbmVlZCB0bw0KPiA+IGhvbGQgdGhpcyBsb2NrLg0KPiANCj4gSSBjb3VsZCBiZSBtaXN1bmRl
-cnN0YW5kaW5nIHlvdXIgbG9ja2luZyBtb2RlbCwgYnV0IElJVUMsIHlvdSdyZSBsZWZ0DQo+IHdp
-dGggemVybyBsb2NraW5nIGJldHdlZW4gTkFQSSBSWCBhbmQgYWxsIG90aGVyIG9wZXJhdGlvbnMg
-KEgyQywgbGluaw0KPiB1cC9kb3duIC0tIGluY2x1ZGluZyBETUEgZnJlZSwgZXRjLikuIGlycV9s
-b2NrIHVzZWQgdG8gcHJvdGVjdCB5b3UNCj4gZnJvbSB0aGF0Lg0KPiANCg0KU29ycnksIEknbSB3
-cm9uZy4gSSB0aGluayBpcnFfbG9jayBpcyB1c2VkIHRvIHByb3RlY3Qgbm90IG9ubHkgVFggcmlu
-Zy0+cXVldWUNCmJ1dCBhbHNvIFRYL1JYIHJpbmdzLiBUaGUgUlggcmluZyBydHdwY2ktPnJ4X3Jp
-bmdzW1JUV19SWF9RVUVVRV9NUERVXSBpcyByZXNldA0KYnkgcnR3X3BjaV9yZXNldF9idWZfZGVz
-YygpIHdoZW4gcGNpX3N0b3AoKSwgYW5kIG5hcGlfcG9sbCgpIGFsc28gdXNlcyBpdCB0bw0Ka25v
-dyBob3cgbWFueSBSWCBwYWNrZXRzIGFyZSBuZWVkZWQgdG8gYmUgcmVjZWl2ZWQuIFRoZXJlZm9y
-ZSwgd2UgcGxhbiB0bw0KdXNlIGlycV9sb2NrIHRvIHByb3RlY3QgbmFwaV9wb2xsKCksIGFuZCB0
-aGVuIHNlZSBpZiBpdCBhZmZlY3RzIHBlcmZvcm1hbmNlLg0KDQo+IElmIEknbSByaWdodCwgbWF5
-YmUgaXQgbmVlZHMgYSByZW5hbWUgYW5kL29yIHNvbWUgYWRkaXRpb25hbCBjb21tZW50cy4NCj4g
-DQoNClRoZSBvcmlnaW5hbCBuYW1lIGFuZCBjb21tZW50Og0KCS8qIFVzZWQgZm9yIFBDSSBUWCBx
-dWV1ZWluZy4gKi8NCglzcGlubG9ja190IGlycV9sb2NrOw0KV2lsbCBjaGFuZ2UgdG8NCgkvKiBV
-c2VkIGZvciBQQ0kgVFgvUlggcmluZ3MgYW5kIFRYIHF1ZXVlaW5nLiAqLw0KCXNwaW5sb2NrX3Qg
-aXJxX2xvY2s7DQoNCi0tLQ0KUGluZy1LZQ0KDQo=
+When a network is moved or reconfigured on the different channel, there
+can be multiple BSSes with the same BSSID and SSID in scan result
+before the old one expires. Then, it can cause cfg80211_connect_result
+to map current_bss to a bss with the wrong channel.
+
+Let mwifiex_cfg80211_assoc return the selected BSS and then the caller
+can report it cfg80211_connect_bss.
+
+Signed-off-by: Yen-lin Lai <yenlinlai@chromium.org>
+
+---
+
+ .../net/wireless/marvell/mwifiex/cfg80211.c   | 35 ++++++++++++++-----
+ 1 file changed, 26 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index a6b9dc6700b1..4bae83e47e9e 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -2173,7 +2173,8 @@ static int
+ mwifiex_cfg80211_assoc(struct mwifiex_private *priv, size_t ssid_len,
+ 		       const u8 *ssid, const u8 *bssid, int mode,
+ 		       struct ieee80211_channel *channel,
+-		       struct cfg80211_connect_params *sme, bool privacy)
++		       struct cfg80211_connect_params *sme, bool privacy,
++		       struct cfg80211_bss **sel_bss)
+ {
+ 	struct cfg80211_ssid req_ssid;
+ 	int ret, auth_type = 0;
+@@ -2307,17 +2308,31 @@ mwifiex_cfg80211_assoc(struct mwifiex_private *priv, size_t ssid_len,
+ 		}
+ 	}
+ 
++	if (bss)
++		cfg80211_ref_bss(priv->adapter->wiphy, bss);
++
+ 	ret = mwifiex_bss_start(priv, bss, &req_ssid);
+ 	if (ret)
+-		return ret;
++		goto cleanup;
+ 
+ 	if (mode == NL80211_IFTYPE_ADHOC) {
+ 		/* Inform the BSS information to kernel, otherwise
+ 		 * kernel will give a panic after successful assoc */
+-		if (mwifiex_cfg80211_inform_ibss_bss(priv))
+-			return -EFAULT;
++		if (mwifiex_cfg80211_inform_ibss_bss(priv)) {
++			ret = -EFAULT;
++			goto cleanup;
++		}
+ 	}
+ 
++	/* Pass the selected BSS entry to caller. */
++	if (sel_bss) {
++		*sel_bss = bss;
++		bss = NULL;
++	}
++
++cleanup:
++	if (bss)
++		cfg80211_put_bss(priv->adapter->wiphy, bss);
+ 	return ret;
+ }
+ 
+@@ -2334,6 +2349,7 @@ mwifiex_cfg80211_connect(struct wiphy *wiphy, struct net_device *dev,
+ {
+ 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(dev);
+ 	struct mwifiex_adapter *adapter = priv->adapter;
++	struct cfg80211_bss *bss = NULL;
+ 	int ret;
+ 
+ 	if (GET_BSS_ROLE(priv) != MWIFIEX_BSS_ROLE_STA) {
+@@ -2369,11 +2385,12 @@ mwifiex_cfg80211_connect(struct wiphy *wiphy, struct net_device *dev,
+ 		cfg80211_sched_scan_stopped_rtnl(priv->wdev.wiphy, 0);
+ 
+ 	ret = mwifiex_cfg80211_assoc(priv, sme->ssid_len, sme->ssid, sme->bssid,
+-				     priv->bss_mode, sme->channel, sme, 0);
++				     priv->bss_mode, sme->channel, sme, 0,
++				     &bss);
+ 	if (!ret) {
+-		cfg80211_connect_result(priv->netdev, priv->cfg_bssid, NULL, 0,
+-					NULL, 0, WLAN_STATUS_SUCCESS,
+-					GFP_KERNEL);
++		cfg80211_connect_bss(priv->netdev, priv->cfg_bssid, bss, NULL,
++				     0, NULL, 0, WLAN_STATUS_SUCCESS,
++				     GFP_KERNEL, NL80211_TIMEOUT_UNSPECIFIED);
+ 		mwifiex_dbg(priv->adapter, MSG,
+ 			    "info: associated to bssid %pM successfully\n",
+ 			    priv->cfg_bssid);
+@@ -2504,7 +2521,7 @@ mwifiex_cfg80211_join_ibss(struct wiphy *wiphy, struct net_device *dev,
+ 	ret = mwifiex_cfg80211_assoc(priv, params->ssid_len, params->ssid,
+ 				     params->bssid, priv->bss_mode,
+ 				     params->chandef.chan, NULL,
+-				     params->privacy);
++				     params->privacy, NULL);
+ done:
+ 	if (!ret) {
+ 		cfg80211_ibss_joined(priv->netdev, priv->cfg_bssid,
+-- 
+2.30.0.365.g02bc693789-goog
+
