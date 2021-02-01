@@ -2,64 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F23E830CF18
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 23:37:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3D1730A176
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Feb 2021 06:35:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235924AbhBBWee (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 17:34:34 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:61037 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S230091AbhBBWeU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 17:34:20 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=Z/qoYR5e93G/1E5Uh8tLreepyziGYShILI7fcXozE97A3DqZKBadv9kcBZBcmHZnqAUcLkt0g+COxgI6WqJ5gdfKqksQSW540KJaAE4DNiZ+EZYtErJhsiZnZCgjfp9yI8W2dpgN2EsH5zUvgVY6Bl2MWU8ziaGqy1DCXSk4DXXi+2CTtkJX9uQrf2ohPvP7bhav6zr4dJxTQjQYoopWjV3h9j7RqQq/UIXqX3VBjVDZARoXQTZUB0KN0A
-        F7X8DeijiSCFEdYkkdQwasjHi3K0B6KloKBXegK0TgQ39PHt5t2MVnmtmeZadY0DbdImfujjk25mqjLTG700JJRoTl9A==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Sat, 30 Jan 2021 02:14:15 +0000
-Message-ID: <B0CC978E-0149-4652-A2D0-17DE1F49BCC1@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Sat, 30 Jan 2021 02:14:13 -0000
+        id S229633AbhBAFfU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Feb 2021 00:35:20 -0500
+Received: from mail-io1-f70.google.com ([209.85.166.70]:44167 "EHLO
+        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231474AbhBAF1E (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Feb 2021 00:27:04 -0500
+Received: by mail-io1-f70.google.com with SMTP id e12so10972395ioh.11
+        for <linux-wireless@vger.kernel.org>; Sun, 31 Jan 2021 21:26:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=mOuteIF8UAPooau0D/cZWl4oFDJw4SLqefC73M8pDiU=;
+        b=pVgQd+I5Ppiae9O1rKCl6OKyeLbMojQR1Qn2ZKkfgdtBwD5D0X3tq+Cz1Pa4tqkz8F
+         v73sySwBnJFqL4eVzvYvNP+i3qFVl86s9X+d8luFSm+XAyz7IGCmiqmPfvn8aGW3yvl0
+         UzFdPNyXZVqwiM9oMABXmI7BCalSDXWaqn8qRTn7YafE+9VzuYb3loQ0G1AuGn4Gcs5O
+         UR7Lf++wx6jLzwFRXWdIBv1b1TM80sQiSN9gNUac7nLemhFpT0tNzQ+UkTDpGEgnAUFn
+         b4its+Uup3X9ZfmSHViEl1BSMm6p0SLazlKjCCGPZ67Aw+fFjsHj1X031XUWfxuWRcKC
+         Y33A==
+X-Gm-Message-State: AOAM530jjeS+0jNWPtBL7BSHIfGQyHyARNhVCykm51KquA03Tpd0vT+z
+        Pu5UiO5RGdqYlkC8FaSfujSaI7vTbYo9dxwv5KvAdcQgwHd8
+X-Google-Smtp-Source: ABdhPJwk6jyJ1h9tBbtnwk+FTCU6d5MxIKAPn2mwnsIFBSnobEXOxL0CfEPiBRKPR7+Ql7b/WSh0ZSF81ahIGyPXN+HSSjs5FhII
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+X-Received: by 2002:a05:6e02:1564:: with SMTP id k4mr11437262ilu.282.1612157183044;
+ Sun, 31 Jan 2021 21:26:23 -0800 (PST)
+Date:   Sun, 31 Jan 2021 21:26:23 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000037b29b05ba3f9859@google.com>
+Subject: WARNING in sta_info_insert_check
+From:   syzbot <syzbot+8dcc087eb24227ded47e@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hello,
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+syzbot found the following issue on:
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+HEAD commit:    bec4c296 Merge tag 'ecryptfs-5.11-rc6-setxattr-fix' of git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11991778d00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f75d66d6d359ef2f
+dashboard link: https://syzkaller.appspot.com/bug?extid=8dcc087eb24227ded47e
+userspace arch: arm64
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Regards,
-Ms. Reem.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8dcc087eb24227ded47e@syzkaller.appspotmail.com
 
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 118 at net/mac80211/sta_info.c:547 sta_info_insert_check+0x48/0xc4 net/mac80211/sta_info.c:547
+Modules linked in:
+CPU: 0 PID: 118 Comm: kworker/u4:3 Not tainted 5.11.0-rc5-syzkaller-00239-gbec4c2968fce #0
+Hardware name: linux,dummy-virt (DT)
+Workqueue: phy6 ieee80211_iface_work
+pstate: 40400009 (nZcv daif +PAN -UAO -TCO BTYPE=--)
+pc : sta_info_insert_check+0x48/0xc4 net/mac80211/sta_info.c:547
+lr : sta_info_insert_rcu+0x34/0x90 net/mac80211/sta_info.c:725
+sp : ffff800013f3bbf0
+x29: ffff800013f3bbf0 x28: ffff8000132e4538 
+x27: f6ff00002070c998 x26: dead000000000100 
+x25: dead000000000122 x24: f6ff00002070d340 
+x23: f6ff00002070d280 x22: faff000020710800 
+x21: faff000020710df0 x20: f6ff00002070c940 
+x19: f7ff000020784000 x18: 0000000000000000 
+x17: 0000000000000000 x16: 0000000000000000 
+x15: 0000ad1062c19046 x14: f7ff000020796098 
+x13: 000000000000044b x12: f6ff00002070c940 
+x11: 000000000000000c x10: 0000000000000000 
+x9 : faff000020713b90 x8 : 0000000000000fff 
+x7 : 0000000000000000 x6 : f6ff00002070c940 
+x5 : 0000000000000fff x4 : 0000000000000000 
+x3 : 0000000000000100 x2 : 00000000ffeeffff 
+x1 : 00000000ffffffff x0 : 00000000ffeefdf7 
+Call trace:
+ sta_info_insert_check+0x48/0xc4 net/mac80211/sta_info.c:547
+ sta_info_insert_rcu+0x34/0x90 net/mac80211/sta_info.c:725
+ ieee80211_ibss_finish_sta+0x84/0x140 net/mac80211/ibss.c:592
+ ieee80211_ibss_work+0xe4/0x560 net/mac80211/ibss.c:1700
+ ieee80211_iface_work+0x2b8/0x33c net/mac80211/iface.c:1445
+ process_one_work+0x1d8/0x360 kernel/workqueue.c:2275
+ worker_thread+0x74/0x440 kernel/workqueue.c:2421
+ kthread+0x178/0x180 kernel/kthread.c:292
+ ret_from_fork+0x10/0x30 arch/arm64/kernel/entry.S:958
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
