@@ -2,84 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E54B730C233
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 15:45:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07F9630C53B
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 17:18:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231927AbhBBOoX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 09:44:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58302 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234580AbhBBOl4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 09:41:56 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5166BC061573;
-        Tue,  2 Feb 2021 06:41:13 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1l6wrf-00EuM5-L5; Tue, 02 Feb 2021 15:41:11 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211-next 2021-02-02
-Date:   Tue,  2 Feb 2021 15:41:05 +0100
-Message-Id: <20210202144106.38207-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.26.2
+        id S236070AbhBBQP7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 11:15:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35006 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235023AbhBBPHE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Feb 2021 10:07:04 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 656AF64ED7;
+        Tue,  2 Feb 2021 15:06:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612278383;
+        bh=AY0jQNyvDyQq9Y0URkEU5m67QyTIMYz4QpKVrUqnIKs=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=bqAJuRwNsdvjftYUMuYOvlPK1ePuZgD0+5LrZdM5B0NlwfdIFdTC+V8mZi0HKkAvn
+         9fRWyO1p+/RHFRy62QwS1zviwVqAjkeABATliQzU4PeYXFbots2ztxN8oufI7Y+WLV
+         Oa0YTitFEFvcWbKOo1hVScJV+IjaZH2jEerv98hPispXlObqogy/dRQY5uxRVzYPEX
+         NPDW8k6vFnBIcFP5wpsf67wPRGG2hiSX+GrxNmKYebjQb8RlEiOJ6ZHj/raUCl0tsq
+         G6smR5VBtQMRmi9KRvB0dNjDoWCwy/kqXEEQBopTtgOuzTuVr0NnmYNwBrjZQIVoqx
+         pyp9n/umLhPGw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Shay Bar <shay.bar@celeno.com>,
+        Aviad Brikman <aviad.brikman@celeno.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 05/25] mac80211: 160MHz with extended NSS BW in CSA
+Date:   Tue,  2 Feb 2021 10:05:55 -0500
+Message-Id: <20210202150615.1864175-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210202150615.1864175-1-sashal@kernel.org>
+References: <20210202150615.1864175-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jakub,
+From: Shay Bar <shay.bar@celeno.com>
 
-And for mac80211-next, I have only locking fixes right now. I'm
-happy that it otherwise seems to be fine though, now no new bugs
-have been reported for a few days.
+[ Upstream commit dcf3c8fb32ddbfa3b8227db38aa6746405bd4527 ]
 
-I might send some more things your way another day, but wanted
-to get the locking fixes out sooner.
+Upon receiving CSA with 160MHz extended NSS BW from associated AP,
+STA should set the HT operation_mode based on new_center_freq_seg1
+because it is later used as ccfs2 in ieee80211_chandef_vht_oper().
 
-Please pull and let me know if there's any problem.
+Signed-off-by: Aviad Brikman <aviad.brikman@celeno.com>
+Signed-off-by: Shay Bar <shay.bar@celeno.com>
+Link: https://lore.kernel.org/r/20201222064714.24888-1-shay.bar@celeno.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mac80211/spectmgmt.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-Thanks,
-johannes
-
-
-
-The following changes since commit d1f3bdd4eaae1222063c2f309625656108815915:
-
-  net: dsa: rtl8366rb: standardize init jam tables (2021-01-27 20:21:20 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2021-02-02
-
-for you to fetch changes up to 40c575d1ec71f7a61c73ba1603a69650c130559c:
-
-  cfg80211: fix netdev registration deadlock (2021-02-01 19:30:54 +0100)
-
-----------------------------------------------------------------
-This time, only RTNL locking reduction fallout.
- - cfg80211_dev_rename() requires RTNL
- - cfg80211_change_iface() and cfg80211_set_encryption()
-   require wiphy mutex (was missing in wireless extensions)
- - cfg80211_destroy_ifaces() requires wiphy mutex
- - netdev registration can fail due to notifiers, and then
-   notifiers are "unrolled", need to handle this properly
-
-----------------------------------------------------------------
-Johannes Berg (5):
-      nl80211: call cfg80211_dev_rename() under RTNL
-      wext: call cfg80211_change_iface() with wiphy lock held
-      wext: call cfg80211_set_encryption() with wiphy lock held
-      cfg80211: call cfg80211_destroy_ifaces() with wiphy lock held
-      cfg80211: fix netdev registration deadlock
-
- include/net/cfg80211.h     |  4 +++-
- net/wireless/core.c        |  7 ++++++-
- net/wireless/nl80211.c     |  2 +-
- net/wireless/wext-compat.c | 14 ++++++++++++--
- 4 files changed, 22 insertions(+), 5 deletions(-)
+diff --git a/net/mac80211/spectmgmt.c b/net/mac80211/spectmgmt.c
+index ae1cb2c687224..76747bfdaddd0 100644
+--- a/net/mac80211/spectmgmt.c
++++ b/net/mac80211/spectmgmt.c
+@@ -133,16 +133,20 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (wide_bw_chansw_ie) {
++		u8 new_seg1 = wide_bw_chansw_ie->new_center_freq_seg1;
+ 		struct ieee80211_vht_operation vht_oper = {
+ 			.chan_width =
+ 				wide_bw_chansw_ie->new_channel_width,
+ 			.center_freq_seg0_idx =
+ 				wide_bw_chansw_ie->new_center_freq_seg0,
+-			.center_freq_seg1_idx =
+-				wide_bw_chansw_ie->new_center_freq_seg1,
++			.center_freq_seg1_idx = new_seg1,
+ 			/* .basic_mcs_set doesn't matter */
+ 		};
+-		struct ieee80211_ht_operation ht_oper = {};
++		struct ieee80211_ht_operation ht_oper = {
++			.operation_mode =
++				cpu_to_le16(new_seg1 <<
++					    IEEE80211_HT_OP_MODE_CCFS2_SHIFT),
++		};
+ 
+ 		/* default, for the case of IEEE80211_VHT_CHANWIDTH_USE_HT,
+ 		 * to the previously parsed chandef
+-- 
+2.27.0
 
