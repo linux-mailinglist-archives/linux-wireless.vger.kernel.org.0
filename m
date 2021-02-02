@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D77C30C41A
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 16:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E9B730C412
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 16:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235649AbhBBPlh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 10:41:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39414 "EHLO mail.kernel.org"
+        id S235543AbhBBPkZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 10:40:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39462 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235248AbhBBPOk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 10:14:40 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D5B8E64F94;
-        Tue,  2 Feb 2021 15:07:24 +0000 (UTC)
+        id S235269AbhBBPOv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Feb 2021 10:14:51 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A397364FA2;
+        Tue,  2 Feb 2021 15:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612278445;
-        bh=a7cpqNj4McTknLDLJ6IE1wMgM7KtFiLedfkTpgs8aEU=;
+        s=k20201202; t=1612278454;
+        bh=joKYNFrfxTJaTY/td3Bgwgy7/4s/D9KzIQu/cAYX05w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O0t3rsm6PpfDl084PTleJLwGbdATM4rGet9BS0BkatyLFMT5zW/FfbM/qpq1XlEsk
-         ce58eBNn5YwxP7m4LvzziNhJFs394DANRKxhxtaqtcpC4O7riJ/n7mZgfJUfZlt5Qm
-         wFckV9F5rgxYZJvYCxs3q4lVDFMxz/4QvHr2WHlsPQ2ipdLIf2brrBFot/Bm29ORat
-         EcIal9mplr+lU/rHSl78FpjoPddMn5+NQ+TLH03nwZpX+Q1enh3jVUeDiCatXOIs9d
-         rTGxzg3SbKZpBdF/B2oVWhHJ03Bi+uNd0DBHxjbHegNzEM+yHg3YksEn3XKo0BqBM5
-         azT4oNvzo4KZw==
+        b=Wry5aANPidZILEhKoxb2BIurX7TtgC+mXKW0UBJEuTXcX2Zx2AqEhM9+GsN64mxbt
+         oll8KCqE/aRc/j7QPpzreOJThoLjntpeepHDplBUTnObzBQ55RzVpszFfAh3xTYY4S
+         2TxVlR9hFG5dKL7Vp91cKD1EypE7oEPckbFs2EEBhqTe0PkKfdO4ssWLiB2yzpG2x8
+         GAusHBc52E8qFHVmgigVkExB5UG4wHHpXeiAbRFKqDN8rdTp5HdfvbbAwfv4PtUQI3
+         t5F8CJiWe3kQDiZ12WIU/g0beY4egL0zu8zEHCpjJG1eh7I6EtEdfN2iDG8kH1u51s
+         DsxxhvCYxz/fg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>,
@@ -30,12 +30,12 @@ Cc:     Johannes Berg <johannes.berg@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 08/10] iwlwifi: mvm: guard against device removal in reprobe
-Date:   Tue,  2 Feb 2021 10:07:12 -0500
-Message-Id: <20210202150715.1864614-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 3/7] iwlwifi: mvm: take mutex for calling iwl_mvm_get_sync_time()
+Date:   Tue,  2 Feb 2021 10:07:25 -0500
+Message-Id: <20210202150730.1864745-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210202150715.1864614-1-sashal@kernel.org>
-References: <20210202150715.1864614-1-sashal@kernel.org>
+In-Reply-To: <20210202150730.1864745-1-sashal@kernel.org>
+References: <20210202150730.1864745-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -46,45 +46,34 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7a21b1d4a728a483f07c638ccd8610d4b4f12684 ]
+[ Upstream commit 5c56d862c749669d45c256f581eac4244be00d4d ]
 
-If we get into a problem severe enough to attempt a reprobe,
-we schedule a worker to do that. However, if the problem gets
-more severe and the device is actually destroyed before this
-worker has a chance to run, we use a free device. Bump up the
-reference count of the device until the worker runs to avoid
-this situation.
+We need to take the mutex to call iwl_mvm_get_sync_time(), do it.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/iwlwifi.20210122144849.871f0892e4b2.I94819e11afd68d875f3e242b98bef724b8236f1e@changeid
+Link: https://lore.kernel.org/r/iwlwifi.20210115130252.4bb5ccf881a6.I62973cbb081e80aa5b0447a5c3b9c3251a65cf6b@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 0e26619fb330b..d932171617e6a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1192,6 +1192,7 @@ static void iwl_mvm_reprobe_wk(struct work_struct *wk)
- 	reprobe = container_of(wk, struct iwl_mvm_reprobe, work);
- 	if (device_reprobe(reprobe->dev))
- 		dev_err(reprobe->dev, "reprobe failed!\n");
-+	put_device(reprobe->dev);
- 	kfree(reprobe);
- 	module_put(THIS_MODULE);
- }
-@@ -1242,7 +1243,7 @@ void iwl_mvm_nic_restart(struct iwl_mvm *mvm, bool fw_error)
- 			module_put(THIS_MODULE);
- 			return;
- 		}
--		reprobe->dev = mvm->trans->dev;
-+		reprobe->dev = get_device(mvm->trans->dev);
- 		INIT_WORK(&reprobe->work, iwl_mvm_reprobe_wk);
- 		schedule_work(&reprobe->work);
- 	} else if (mvm->fwrt.cur_fw_img == IWL_UCODE_REGULAR &&
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+index 71a01df96f8b0..6db51abb8f4a3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+@@ -518,7 +518,10 @@ static ssize_t iwl_dbgfs_os_device_timediff_read(struct file *file,
+ 	const size_t bufsz = sizeof(buf);
+ 	int pos = 0;
+ 
++	mutex_lock(&mvm->mutex);
+ 	iwl_mvm_get_sync_time(mvm, &curr_gp2, &curr_os);
++	mutex_unlock(&mvm->mutex);
++
+ 	do_div(curr_os, NSEC_PER_USEC);
+ 	diff = curr_os - curr_gp2;
+ 	pos += scnprintf(buf + pos, bufsz - pos, "diff=%lld\n", diff);
 -- 
 2.27.0
 
