@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C04BD30C344
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 16:15:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBB0630C4B6
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 17:01:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235118AbhBBPNS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 10:13:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38140 "EHLO mail.kernel.org"
+        id S235952AbhBBQAk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 11:00:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38256 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235191AbhBBPL6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 10:11:58 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AFCF064F6C;
-        Tue,  2 Feb 2021 15:06:41 +0000 (UTC)
+        id S235200AbhBBPMA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Feb 2021 10:12:00 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 07AB064F7D;
+        Tue,  2 Feb 2021 15:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612278402;
-        bh=cLcsa51PyK+Y+1DrJUenXnA+a2UDeaAi47p99Do7Sq8=;
+        s=k20201202; t=1612278415;
+        bh=QzJeBS0buSUYwMAuGzi1I4Qv2WP5kLvvJR19riZnNOQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MuDJOEI1oR/CrOjRkTX5Yuh7wmPYFIewi6nbm0zGlYUA+9+SWgonNChgaTGnoAge/
-         wR+0UJbYODjzih3rW3zVVpTZZmCzpCAG5sTY/F2zeXeB0vSN1AtkSg9iLW8RfKduKP
-         CF8zxxy+8e3cBv5rQpX0eJ57jyyyjeprwQkJtCFPjYOBzrosk0n5ZtnHkGZ7AXXUPe
-         Pv6t1gMt6JkYxlwe0TrP5F13ns6SgoCLoex/NgoRgjRtBaGuEIlJd2LO+DotaYa8Vu
-         937ehMSk+rLsKxBjyC7kLnGKUd/f2UdBiAxw6ew3gPllh6/UhtmniuWmeW5lum8i0q
-         MpCyZ53lKDZ1w==
+        b=ONrmQutLajUyO7onyFaQ7p+3nAxS9Rero5yGTGFwgM+VgqRdSiT7qaVTZW2umfZ09
+         DSqNVk0QO3r5QFku+hdq+ELlfJAbsE1KFDOiAzQMe7MlPH7Gv6wfGsz7U3uWKs0nUn
+         YKWJWHlb0xTGocpvs+af8JdgfelfaQvkxNqmnnhLDTAeZXHC/gDOykylKH4rLgjXdR
+         ETHr1Gte/DjP+3VG10zJKxjMSXi8b22dcv+UgAIpx5zbnU1uWorM0Mli8IyGu3FIB/
+         Kl2iBAD2Fq0Y7mxxtXViBlYpadvq2RlsDYJ82rbSqEhqm/JGPa07LePSa5LVABBJtF
+         20InjMxE/nKlQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Shay Bar <shay.bar@celeno.com>,
+        Aviad Brikman <aviad.brikman@celeno.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 20/25] iwlwifi: queue: bail out on invalid freeing
-Date:   Tue,  2 Feb 2021 10:06:10 -0500
-Message-Id: <20210202150615.1864175-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 03/17] mac80211: 160MHz with extended NSS BW in CSA
+Date:   Tue,  2 Feb 2021 10:06:37 -0500
+Message-Id: <20210202150651.1864426-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210202150615.1864175-1-sashal@kernel.org>
-References: <20210202150615.1864175-1-sashal@kernel.org>
+In-Reply-To: <20210202150651.1864426-1-sashal@kernel.org>
+References: <20210202150651.1864426-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,41 +44,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Shay Bar <shay.bar@celeno.com>
 
-[ Upstream commit 0bed6a2a14afaae240cc431e49c260568488b51c ]
+[ Upstream commit dcf3c8fb32ddbfa3b8227db38aa6746405bd4527 ]
 
-If we find an entry without an SKB, we currently continue, but
-that will just result in an infinite loop since we won't increment
-the read pointer, and will try the same thing over and over again.
-Fix this.
+Upon receiving CSA with 160MHz extended NSS BW from associated AP,
+STA should set the HT operation_mode based on new_center_freq_seg1
+because it is later used as ccfs2 in ieee80211_chandef_vht_oper().
 
+Signed-off-by: Aviad Brikman <aviad.brikman@celeno.com>
+Signed-off-by: Shay Bar <shay.bar@celeno.com>
+Link: https://lore.kernel.org/r/20201222064714.24888-1-shay.bar@celeno.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/iwlwifi.20210122144849.abe2dedcc3ac.Ia6b03f9eeb617fd819e56dd5376f4bb8edc7b98a@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/queue/tx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/mac80211/spectmgmt.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-index af0b27a68d84d..9181221a2434d 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-@@ -887,10 +887,8 @@ void iwl_txq_gen2_unmap(struct iwl_trans *trans, int txq_id)
- 			int idx = iwl_txq_get_cmd_index(txq, txq->read_ptr);
- 			struct sk_buff *skb = txq->entries[idx].skb;
+diff --git a/net/mac80211/spectmgmt.c b/net/mac80211/spectmgmt.c
+index 5fe2b645912f6..132f8423addaa 100644
+--- a/net/mac80211/spectmgmt.c
++++ b/net/mac80211/spectmgmt.c
+@@ -132,16 +132,20 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_sub_if_data *sdata,
+ 	}
  
--			if (WARN_ON_ONCE(!skb))
--				continue;
--
--			iwl_txq_free_tso_page(trans, skb);
-+			if (!WARN_ON_ONCE(!skb))
-+				iwl_txq_free_tso_page(trans, skb);
- 		}
- 		iwl_txq_gen2_free_tfd(trans, txq);
- 		txq->read_ptr = iwl_txq_inc_wrap(trans, txq->read_ptr);
+ 	if (wide_bw_chansw_ie) {
++		u8 new_seg1 = wide_bw_chansw_ie->new_center_freq_seg1;
+ 		struct ieee80211_vht_operation vht_oper = {
+ 			.chan_width =
+ 				wide_bw_chansw_ie->new_channel_width,
+ 			.center_freq_seg0_idx =
+ 				wide_bw_chansw_ie->new_center_freq_seg0,
+-			.center_freq_seg1_idx =
+-				wide_bw_chansw_ie->new_center_freq_seg1,
++			.center_freq_seg1_idx = new_seg1,
+ 			/* .basic_mcs_set doesn't matter */
+ 		};
+-		struct ieee80211_ht_operation ht_oper = {};
++		struct ieee80211_ht_operation ht_oper = {
++			.operation_mode =
++				cpu_to_le16(new_seg1 <<
++					    IEEE80211_HT_OP_MODE_CCFS2_SHIFT),
++		};
+ 
+ 		/* default, for the case of IEEE80211_VHT_CHANWIDTH_USE_HT,
+ 		 * to the previously parsed chandef
 -- 
 2.27.0
 
