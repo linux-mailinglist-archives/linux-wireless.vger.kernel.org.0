@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07F9630C53B
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 17:18:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FCA730C4F0
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 17:08:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236070AbhBBQP7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 11:15:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35006 "EHLO mail.kernel.org"
+        id S236080AbhBBQHs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 11:07:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38256 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235023AbhBBPHE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 10:07:04 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 656AF64ED7;
-        Tue,  2 Feb 2021 15:06:22 +0000 (UTC)
+        id S235152AbhBBPJo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Feb 2021 10:09:44 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A5D6A64F61;
+        Tue,  2 Feb 2021 15:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612278383;
-        bh=AY0jQNyvDyQq9Y0URkEU5m67QyTIMYz4QpKVrUqnIKs=;
+        s=k20201202; t=1612278393;
+        bh=H+McNijkMR/bhxDtYibNQd0KYp1YtnL9gfDDcwOMDNk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bqAJuRwNsdvjftYUMuYOvlPK1ePuZgD0+5LrZdM5B0NlwfdIFdTC+V8mZi0HKkAvn
-         9fRWyO1p+/RHFRy62QwS1zviwVqAjkeABATliQzU4PeYXFbots2ztxN8oufI7Y+WLV
-         Oa0YTitFEFvcWbKOo1hVScJV+IjaZH2jEerv98hPispXlObqogy/dRQY5uxRVzYPEX
-         NPDW8k6vFnBIcFP5wpsf67wPRGG2hiSX+GrxNmKYebjQb8RlEiOJ6ZHj/raUCl0tsq
-         G6smR5VBtQMRmi9KRvB0dNjDoWCwy/kqXEEQBopTtgOuzTuVr0NnmYNwBrjZQIVoqx
-         pyp9n/umLhPGw==
+        b=WxYJg3fFDFV/+TGYoFDMc20aXJ8PbBcDtOST75fNlQ+z5EhqNVJSxoM1meTbRG5qZ
+         BKVYmhxW2ZBrLgA/M/YxGQPP1Fr5R0cydvlv1+EfZe1n7FLQ+xp7N5vgqARXRunUEI
+         eMZexZgzW02JxmXaY28LNAvyC3iE2wm3xg9qHQKVVaG2rhT2/zLGkANhUFDc/zSsXG
+         9UiQxZfNbmW86nDd+KM1Gn+OKsGVu44EWEzSGy8isVuscyzHfoXE9vra/eY5Wvc/bV
+         uF388cFNxOOh5VVY65Dah1eOgQDzMRHKvFDiO3Y82jex1sSRMkoHEBswANSeKcYXxJ
+         /OoNSzF42nkaQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Shay Bar <shay.bar@celeno.com>,
-        Aviad Brikman <aviad.brikman@celeno.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Sara Sharon <sara.sharon@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 05/25] mac80211: 160MHz with extended NSS BW in CSA
-Date:   Tue,  2 Feb 2021 10:05:55 -0500
-Message-Id: <20210202150615.1864175-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 13/25] iwlwifi: mvm: skip power command when unbinding vif during CSA
+Date:   Tue,  2 Feb 2021 10:06:03 -0500
+Message-Id: <20210202150615.1864175-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210202150615.1864175-1-sashal@kernel.org>
 References: <20210202150615.1864175-1-sashal@kernel.org>
@@ -44,51 +44,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shay Bar <shay.bar@celeno.com>
+From: Sara Sharon <sara.sharon@intel.com>
 
-[ Upstream commit dcf3c8fb32ddbfa3b8227db38aa6746405bd4527 ]
+[ Upstream commit bf544e9aa570034e094a8a40d5f9e1e2c4916d18 ]
 
-Upon receiving CSA with 160MHz extended NSS BW from associated AP,
-STA should set the HT operation_mode based on new_center_freq_seg1
-because it is later used as ccfs2 in ieee80211_chandef_vht_oper().
+In the new CSA flow, we remain associated during CSA, but
+still do a unbind-bind to the vif. However, sending the power
+command right after when vif is unbound but still associated
+causes FW to assert (0x3400) since it cannot tell the LMAC id.
 
-Signed-off-by: Aviad Brikman <aviad.brikman@celeno.com>
-Signed-off-by: Shay Bar <shay.bar@celeno.com>
-Link: https://lore.kernel.org/r/20201222064714.24888-1-shay.bar@celeno.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Just skip this command, we will send it again in a bit, when
+assigning the new context.
+
+Signed-off-by: Sara Sharon <sara.sharon@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/iwlwifi.20210115130252.64a2254ac5c3.Iaa3a9050bf3d7c9cd5beaf561e932e6defc12ec3@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/spectmgmt.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/mac80211/spectmgmt.c b/net/mac80211/spectmgmt.c
-index ae1cb2c687224..76747bfdaddd0 100644
---- a/net/mac80211/spectmgmt.c
-+++ b/net/mac80211/spectmgmt.c
-@@ -133,16 +133,20 @@ int ieee80211_parse_ch_switch_ie(struct ieee80211_sub_if_data *sdata,
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index b627e7da7ac9d..d42165559df6e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4249,6 +4249,9 @@ static void __iwl_mvm_unassign_vif_chanctx(struct iwl_mvm *mvm,
+ 	iwl_mvm_binding_remove_vif(mvm, vif);
  
- 	if (wide_bw_chansw_ie) {
-+		u8 new_seg1 = wide_bw_chansw_ie->new_center_freq_seg1;
- 		struct ieee80211_vht_operation vht_oper = {
- 			.chan_width =
- 				wide_bw_chansw_ie->new_channel_width,
- 			.center_freq_seg0_idx =
- 				wide_bw_chansw_ie->new_center_freq_seg0,
--			.center_freq_seg1_idx =
--				wide_bw_chansw_ie->new_center_freq_seg1,
-+			.center_freq_seg1_idx = new_seg1,
- 			/* .basic_mcs_set doesn't matter */
- 		};
--		struct ieee80211_ht_operation ht_oper = {};
-+		struct ieee80211_ht_operation ht_oper = {
-+			.operation_mode =
-+				cpu_to_le16(new_seg1 <<
-+					    IEEE80211_HT_OP_MODE_CCFS2_SHIFT),
-+		};
- 
- 		/* default, for the case of IEEE80211_VHT_CHANWIDTH_USE_HT,
- 		 * to the previously parsed chandef
+ out:
++	if (fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_CHANNEL_SWITCH_CMD) &&
++	    switching_chanctx)
++		return;
+ 	mvmvif->phy_ctxt = NULL;
+ 	iwl_mvm_power_update_mac(mvm);
+ }
 -- 
 2.27.0
 
