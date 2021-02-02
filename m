@@ -2,97 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0626B30C31F
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 16:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4CF630C694
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 17:54:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235167AbhBBPLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 10:11:07 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:56786 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234998AbhBBPI4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 10:08:56 -0500
-Received: from [192.168.254.6] (unknown [50.34.172.155])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 5973613C2B0
-        for <linux-wireless@vger.kernel.org>; Tue,  2 Feb 2021 07:08:13 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5973613C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1612278493;
-        bh=mLUYUP2tKewecuBHW4TVfIRrz+lfZgwQdf/WNAanqbQ=;
-        h=Subject:From:To:References:Date:In-Reply-To:From;
-        b=m0GQo8+6+JEIH7uAfmeKFoNM+y+ZQF34JuKYM4Y6T0BDlw4rcBo32q+gir0CG+0jG
-         OmKddECMwzCAltJuE7GyRIMbL+6ecGz/2Xpzyi7tPWS1LKwQ4oJX4HMtuGcRVCXVcE
-         h0qDYINBA2TLYICw2ES2nt9N2x6zEDDN9awJCxcg=
-Subject: Re: ax210: Why no 6E channels valid in regdom?
-From:   Ben Greear <greearb@candelatech.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <3b3b53f6-a974-601f-f136-d685c4841647@candelatech.com>
- <ee8074e5-dbc9-e70f-1d51-934de9ccdcf1@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <38c196d9-ab41-fe7c-3e2c-d02bf3474117@candelatech.com>
-Date:   Tue, 2 Feb 2021 07:08:13 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        id S236626AbhBBQwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 11:52:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35498 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236479AbhBBQut (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Feb 2021 11:50:49 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 6EBEC64F7E;
+        Tue,  2 Feb 2021 16:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612284607;
+        bh=Ytdw3WOGdT9xww9kCNTVv9sQsmMyzoPAqdxksZUNbIA=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=obTFqui1pgwjAeiVNRoU7WsAIClkhrWe0hxGly4zali+ct84fIm4AQ68Mf8qZlh66
+         oi/IdrTNvkhIK3BSGPlpdL14TI5/OT/vnUilapjh5KZI/Bn8KS+1K6L9IFEckKgZ7f
+         0Bk/8IBDz6vT8gOs4McLl596B2OoIQ298pxx7PAsb1b5UBHEZZXyn1i+RY3/8zV+j+
+         hEfK2eR148pyx8iX+6CcvboHhmGMF+MrE8ax/G8sSezavaCwK+eYEsZK8jBWLUFwqg
+         G/JRgY6PGNvwsFIJ72tUUo2bdntQRlWAz4NYvpNyc8ABmnBAbvx+Vz5UD7dVDqkKfn
+         kKZlJfkpMeTJg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 686C9609CE;
+        Tue,  2 Feb 2021 16:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <ee8074e5-dbc9-e70f-1d51-934de9ccdcf1@candelatech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
 Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: mac80211 2021-02-02
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161228460742.23213.1117377482651295585.git-patchwork-notify@kernel.org>
+Date:   Tue, 02 Feb 2021 16:50:07 +0000
+References: <20210202143505.37610-1-johannes@sipsolutions.net>
+In-Reply-To: <20210202143505.37610-1-johannes@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/30/21 9:09 AM, Ben Greear wrote:
-> On 1/29/21 2:31 PM, Ben Greear wrote:
->> I cannot figure out why my ax210 won't show any 6E channels.  It worked for a bit a few days
->> ago, but now it does not..and not sure why.  Looks like it uses some internal regdom.
->>
->> Any idea from these logs what is going on?
+Hello:
+
+This pull request was applied to netdev/net.git (refs/heads/master):
+
+On Tue,  2 Feb 2021 15:35:04 +0100 you wrote:
+> Hi Jakub,
 > 
-> Is that 'mcc' logic actually able to read the cellular network?  I am near enough to Canada
-> that sometimes my mobile phone will pick up those towers...could the ax210 possibly be
-> hearing the same and forcing itself to OO regdom, which would cause it to disable all 6E
-> channels?
-
-Ok, I think I see the pattern now.
-
-You have to admin-up the station and start scanning before it will show the
-6E channels in 'iw reg get'.  And that makes the 'band 4' frequencies become
-usable as well, as seen in 'iw phy foo info'.
-
-So, a bit confusing for me, but I guess it works as intended.
-
-This is with 5.11-rc5+ kernel and latest ax210 FW that I can find.
-
-Thanks,
-Ben
-
+> So, getting late, but we have two more fixes - the staging
+> one (acked by Greg) is for a recent regression I had through
+> my tree, and the rate tables one is kind of important for
+> (some) drivers to get proper rate scaling going.
 > 
-> Thanks,
-> Ben
-> 
->>
->>   kernel: iwlwifi 0000:0f:00.0: In iwl-mvm-init-mcc, nvm-type: 1  NVM_EXT: 1
->>   kernel: iwlwifi 0000:0f:00.0: init-fw-regd: r: 0000000000000000
->>   kernel: iwlwifi 0000:0f:00.0: Getting regdomain data for ZZ from FW
->>   kernel: iwlwifi 0000:0f:00.0: send MCC update to FW with 'ZZ' src = 16
->>   kernel: iwlwifi 0000:0f:00.0: MCC response status: 0x1. new MCC: 0x3030 ('00') n_chans: 110
->>   kernel: iwlwifi 0000:0f:00.0: MCC update response version: 6
->>   kernel: iwlwifi 0000:0f:00.0: setting alpha2 from FW to 00 (0x30, 0x30) src=7
->>   kernel: iwlwifi 0000:0f:00.0: Get current regdom: 000000001caad6b5  mcc-supported: 1
->>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 2484.000 MHz as custom regd has no rule that fits it
->> ....
->>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 5955.000 MHz as custom regd has no rule that fits it
->>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 5975.000 MHz as custom regd has no rule that fits it
->>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 5995.000 MHz as custom regd has no rule that fits it
->>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 6015.000 MHz as custom regd has no rule that fits it
->>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 6035.000 MHz as custom regd has no rule that fits it
->>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 6055.000 MHz as custom regd has no rule that fits it
->>
->> Thanks,
->> Ben
->>
-> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: mac80211 2021-02-02
+    https://git.kernel.org/netdev/net/c/f418bad6ccfa
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
