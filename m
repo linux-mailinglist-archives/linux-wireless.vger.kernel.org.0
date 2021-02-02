@@ -2,148 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA97B30B5F3
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 04:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F53130B684
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 05:34:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231442AbhBBDlo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Feb 2021 22:41:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57806 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231420AbhBBDln (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Feb 2021 22:41:43 -0500
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97AA2C061756
-        for <linux-wireless@vger.kernel.org>; Mon,  1 Feb 2021 19:41:03 -0800 (PST)
-Received: by mail-yb1-xb4a.google.com with SMTP id 11so21547747ybl.21
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Feb 2021 19:41:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:message-id:mime-version:subject:from:to:cc
-         :content-transfer-encoding;
-        bh=D+oCaSH/egr+du/U15EDzXJujV6XfQaQ8BeRYeS+FOw=;
-        b=Z2iGEcqXRzha0hs4uB18on6WXhNOiwH5oIuNWxO7+i9pFgG4yO5+PNFxSpdi2OX1we
-         mejdIp3pPbvVGoWEQF+PhFNM6gKtNqSKTclDzgyIr0M4r25ZhZWlrk1+AwDAFFbmK7gd
-         5Sr3tHstKgYdbZnTngG8XYBvXNTeToAFoq9H7+dF47qS6NC/pKY5lCR9kYqVNPx2eCKR
-         6GMTSRnyu661BY4iIzYCW2+gUWl3J9KBu8REjzX7/kGgVjbwsjGvDQSbpbZ6icivZsMx
-         SUT9OD6R9PyTP8VRC3MeM6jLrBUPgeA4KhypXyhaZO51v5/6gh8icG6yyz8pPbBmMGUm
-         98fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:message-id:mime-version:subject:from
-         :to:cc:content-transfer-encoding;
-        bh=D+oCaSH/egr+du/U15EDzXJujV6XfQaQ8BeRYeS+FOw=;
-        b=ifr24yOX2Ow8t01DONLTZMPgXrqAMlKLYQ5fykRogodOaHyw44kDylIskNkS2soHB4
-         FwjqIc6AWE73dZ2889z48MTmK5V4MRUfqXbhvXVYfoT8H529QikznE20B557LB7oY6QQ
-         /Imv1krt025/D9/VLELCnN4U38OU0qTdcfMUEXfU/f/GkgIr727NA635u/wSpFTPxUD5
-         gbFH/czIEidPOZd76cJdOksVQ2cDp8sW7Ogu4bfDSL1FtEGVKZy1rlxH1pUv42PIK0Xo
-         erxt18pWuznuJNoc/Or25ABDDOkOTkeoq8am3P1Nmofito3hvUxNnHCvw1HkFJynu1j4
-         hHRA==
-X-Gm-Message-State: AOAM533m14+tl86RomVbLWri5Jb7U4yFuX0Zj/IsgcaZB+xn8MdTd+7p
-        /1UW+xIvr5yGo8gMZWXYICBPFok3E8X5
-X-Google-Smtp-Source: ABdhPJw2ETAX1hsONKJlzEjpJMMlOH2itMPuxoZlT4BvLRw3NBtE9/epg4w/92S2E6Cx0SVNqFt2xCUeCq7k
-Sender: "amistry via sendgmr" <amistry@nandos.syd.corp.google.com>
-X-Received: from nandos.syd.corp.google.com ([2401:fa00:9:14:243a:8f72:7104:7a64])
- (user=amistry job=sendgmr) by 2002:a25:2d43:: with SMTP id
- s3mr14022034ybe.33.1612237262751; Mon, 01 Feb 2021 19:41:02 -0800 (PST)
-Date:   Tue,  2 Feb 2021 14:40:55 +1100
-Message-Id: <20210202144033.1.I9e556f9fb1110d58c31d04a8a1293995fb8bb678@changeid>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.30.0.365.g02bc693789-goog
-Subject: [PATCH] ath10k: Fix lockdep assertion warning in ath10k_sta_statistics
-From:   Anand K Mistry <amistry@google.com>
-To:     ath10k@lists.infradead.org
-Cc:     Anand K Mistry <amistry@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Wen Gong <wgong@codeaurora.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S231620AbhBBEd6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Feb 2021 23:33:58 -0500
+Received: from so15.mailgun.net ([198.61.254.15]:19033 "EHLO so15.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231477AbhBBEd5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Feb 2021 23:33:57 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1612240410; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=PtR/UtoHlz8eXcl6vbirWe2nIkoVwvfU1OnuGoOADZk=; b=rms6sCjBQ+3Ua0SfJVNoav+hqfrgiwTSRWrC79wczljo8nrwMvoAOImNMz1FAKPYKFbFZUV0
+ zhoqxHENjUInwPh4d9BYrvtVD9rsQpCw+GlNvSfM1B8dVQdjj0HNzUvSq8Aw5dOGVnLZDdHX
+ erdYir3HN+mLczHjgHt7kAAfgGc=
+X-Mailgun-Sending-Ip: 198.61.254.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6018d5f2ab96aecb9f8b9913 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 02 Feb 2021 04:32:50
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5647DC433ED; Tue,  2 Feb 2021 04:32:49 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E307AC433CA;
+        Tue,  2 Feb 2021 04:32:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E307AC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Peter Oh <peter.oh@eero.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        kernel-janitors@vger.kernel.org,
+        Carl Huang <cjhuang@codeaurora.org>,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH] ath11k: fix a locking bug in ath11k_mac_op_start()
+References: <YBfy+zc3XkiyIe6t@mwanda>
+        <896a68dd-02ec-4fe3-3fbf-ec1bd2decefe@eero.com>
+Date:   Tue, 02 Feb 2021 06:32:44 +0200
+In-Reply-To: <896a68dd-02ec-4fe3-3fbf-ec1bd2decefe@eero.com> (Peter Oh's
+        message of "Mon, 1 Feb 2021 13:47:27 -0800")
+Message-ID: <875z3b84yb.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath10k_debug_fw_stats_request just be called with conf_mutex held,
-otherwise the following warning is seen when lock debugging is enabled:
+Peter Oh <peter.oh@eero.com> writes:
 
-WARNING: CPU: 0 PID: 793 at drivers/net/wireless/ath/ath10k/debug.c:357 ath=
-10k_debug_fw_stats_request+0x12c/0x133 [ath10k_core]
-Modules linked in: snd_hda_codec_hdmi designware_i2s snd_hda_intel snd_inte=
-l_dspcfg snd_hda_codec i2c_piix4 snd_hwdep snd_hda_core acpi_als kfifo_buf =
-industrialio snd_soc_max98357a snd_soc_adau7002 snd_soc_acp_da7219mx98357_m=
-ach snd_soc_da7219 acp_audio_dma ccm xt_MASQUERADE fuse ath10k_pci ath10k_c=
-ore lzo_rle ath lzo_compress mac80211 zram cfg80211 r8152 mii joydev
-CPU: 0 PID: 793 Comm: wpa_supplicant Tainted: G        W         5.10.9 #5
-Hardware name: HP Grunt/Grunt, BIOS Google_Grunt.11031.104.0 09/05/2019
-RIP: 0010:ath10k_debug_fw_stats_request+0x12c/0x133 [ath10k_core]
-Code: 1e bb a1 ff ff ff 4c 89 ef 48 c7 c6 d3 31 2e c0 89 da 31 c0 e8 bd f8 =
-ff ff 89 d8 eb 02 31 c0 5b 41 5c 41 5d 41 5e 41 5f 5d c3 <0f> 0b e9 04 ff f=
-f ff 0f 1f 44 00 00 55 48 89 e5 41 56 53 48 89 fb
-RSP: 0018:ffffb2478099f7d0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff9e432700cce0 RCX: 11c85cfd6b8e3b00
-RDX: ffff9e432700cce0 RSI: ffff9e43127c5668 RDI: ffff9e4318deddf0
-RBP: ffffb2478099f7f8 R08: 0000000000000002 R09: 00000003fd7068cc
-R10: ffffffffc01b2749 R11: ffffffffc029efaf R12: ffff9e432700c000
-R13: ffff9e43127c33e0 R14: ffffb2478099f918 R15: ffff9e43127c33e0
-FS:  00007f7ea48e2740(0000) GS:ffff9e432aa00000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000059aa799ddf38 CR3: 0000000118de2000 CR4: 00000000001506f0
-Call Trace:
- ath10k_sta_statistics+0x4d/0x270 [ath10k_core]
- sta_set_sinfo+0x1be/0xaec [mac80211]
- ieee80211_get_station+0x58/0x76 [mac80211]
- rdev_get_station+0xf1/0x11e [cfg80211]
- nl80211_get_station+0x7f/0x146 [cfg80211]
- genl_rcv_msg+0x32e/0x35e
- ? nl80211_stop_ap+0x19/0x19 [cfg80211]
- ? nl80211_get_station+0x146/0x146 [cfg80211]
- ? genl_rcv+0x19/0x36
- ? genl_rcv+0x36/0x36
- netlink_rcv_skb+0x89/0xfb
- genl_rcv+0x28/0x36
- netlink_unicast+0x169/0x23b
- netlink_sendmsg+0x38a/0x402
- sock_sendmsg+0x72/0x76
- ____sys_sendmsg+0x153/0x1cc
- ? copy_msghdr_from_user+0x5d/0x85
- ___sys_sendmsg+0x7c/0xb5
- ? lock_acquire+0x181/0x23d
- ? syscall_trace_enter+0x15e/0x160
- ? find_held_lock+0x3d/0xb2
- ? syscall_trace_enter+0x15e/0x160
- ? sched_clock_cpu+0x15/0xc6
- __sys_sendmsg+0x62/0x9a
- do_syscall_64+0x43/0x55
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> On 2/1/21 4:24 AM, Dan Carpenter wrote:
+>> This error path leads to a Smatch warning:
+>>
+>>      drivers/net/wireless/ath/ath11k/mac.c:4269 ath11k_mac_op_start()
+>>      error: double unlocked '&ar->conf_mutex' (orig line 4251)
+>>
+>> We're not holding the lock when we do the "goto err;" so it leads to a
+>> double unlock.  We should hold the lock because the error path sets
+>> "ar->state" so the right fix is to take the lock before doing the goto.
+>>
+>> Fixes: c83c500b55b6 ("ath11k: enable idle power save mode")
+>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+>> ---
+>>   drivers/net/wireless/ath/ath11k/mac.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireles=
+s/ath/ath11k/mac.c
+>> index c1608f64ea95..12e981e9e3d7 100644
+>> --- a/drivers/net/wireless/ath/ath11k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+>> @@ -4259,6 +4259,7 @@ static int ath11k_mac_op_start(struct ieee80211_hw=
+ *hw)
+>>   						1, pdev->pdev_id);
+>>   		if (ret) {
+>>   			ath11k_err(ab, "failed to enable idle ps: %d\n", ret);
+>> +			mutex_lock(&ar->conf_mutex);
+>>   			goto err;
+>>   		}
+>>   	}
+>
+> It seems moving idle_ps condition in between ath11k_wmi_pdev_lro_cfg()
+> and mutex_unlock()
+> =C2=A0is a better way in this case.
 
-Fixes: 4913e675630e ("ath10k: enable rx duration report default for wmi tlv=
-")
+I agree. In Dan's approach I'm worried about the race when we unlock and
+lock again, the state can change in that case.
 
-Signed-off-by: Anand K Mistry <amistry@google.com>
----
-
- drivers/net/wireless/ath/ath10k/mac.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/a=
-th/ath10k/mac.c
-index 7d98250380ec..e815aab412d7 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -9117,7 +9117,9 @@ static void ath10k_sta_statistics(struct ieee80211_hw=
- *hw,
- 	if (!ath10k_peer_stats_enabled(ar))
- 		return;
-=20
-+	mutex_lock(&ar->conf_mutex);
- 	ath10k_debug_fw_stats_request(ar);
-+	mutex_unlock(&ar->conf_mutex);
-=20
- 	sinfo->rx_duration =3D arsta->rx_duration;
- 	sinfo->filled |=3D BIT_ULL(NL80211_STA_INFO_RX_DURATION);
 --=20
-2.30.0.365.g02bc693789-goog
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
