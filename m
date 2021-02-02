@@ -2,89 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 085A530C382
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 16:21:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0626B30C31F
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 16:11:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235470AbhBBPUq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 10:20:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39394 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235359AbhBBPQz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 10:16:55 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D49DE64FAF;
-        Tue,  2 Feb 2021 15:07:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612278474;
-        bh=vwY4oJVsAOPWacoX4pBi7QpzcbEii844hqLpg8lt2B0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A/Z4vTsE12uOH5V2rS4tuSjzT20++Izh39aDkSrBtYdmDomrS8wzg1pzjHo7DH3PI
-         VlENevyxj9FNQnvJVz5+FOZY2yZRlygHhW9F66tW2M2plmb34n+zDy/z26C3ZWuVeQ
-         EGEBd4BiNsQ44qva56B1wGf5tLcPT/jmYKX8ihBm1nTsAuuVP0gP7qr3BFDpUYyxCv
-         Ga+LWb594TrwsFGgifvXD3c+H2DR1qH7Ke4JbUXduii1M5qf2fzQtjUWmo87i5l/4o
-         rxnSUbr1UpeIYVpYjUeNYnYoXZhVVcgcgn0flJimUVXjIDBuG+aaYU9ry8Xx9L8N5X
-         aH6FX39k86Fsw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 3/5] iwlwifi: mvm: guard against device removal in reprobe
-Date:   Tue,  2 Feb 2021 10:07:48 -0500
-Message-Id: <20210202150750.1864953-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210202150750.1864953-1-sashal@kernel.org>
-References: <20210202150750.1864953-1-sashal@kernel.org>
+        id S235167AbhBBPLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 10:11:07 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:56786 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234998AbhBBPI4 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Feb 2021 10:08:56 -0500
+Received: from [192.168.254.6] (unknown [50.34.172.155])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 5973613C2B0
+        for <linux-wireless@vger.kernel.org>; Tue,  2 Feb 2021 07:08:13 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5973613C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1612278493;
+        bh=mLUYUP2tKewecuBHW4TVfIRrz+lfZgwQdf/WNAanqbQ=;
+        h=Subject:From:To:References:Date:In-Reply-To:From;
+        b=m0GQo8+6+JEIH7uAfmeKFoNM+y+ZQF34JuKYM4Y6T0BDlw4rcBo32q+gir0CG+0jG
+         OmKddECMwzCAltJuE7GyRIMbL+6ecGz/2Xpzyi7tPWS1LKwQ4oJX4HMtuGcRVCXVcE
+         h0qDYINBA2TLYICw2ES2nt9N2x6zEDDN9awJCxcg=
+Subject: Re: ax210: Why no 6E channels valid in regdom?
+From:   Ben Greear <greearb@candelatech.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <3b3b53f6-a974-601f-f136-d685c4841647@candelatech.com>
+ <ee8074e5-dbc9-e70f-1d51-934de9ccdcf1@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <38c196d9-ab41-fe7c-3e2c-d02bf3474117@candelatech.com>
+Date:   Tue, 2 Feb 2021 07:08:13 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <ee8074e5-dbc9-e70f-1d51-934de9ccdcf1@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 1/30/21 9:09 AM, Ben Greear wrote:
+> On 1/29/21 2:31 PM, Ben Greear wrote:
+>> I cannot figure out why my ax210 won't show any 6E channels.  It worked for a bit a few days
+>> ago, but now it does not..and not sure why.  Looks like it uses some internal regdom.
+>>
+>> Any idea from these logs what is going on?
+> 
+> Is that 'mcc' logic actually able to read the cellular network?  I am near enough to Canada
+> that sometimes my mobile phone will pick up those towers...could the ax210 possibly be
+> hearing the same and forcing itself to OO regdom, which would cause it to disable all 6E
+> channels?
 
-[ Upstream commit 7a21b1d4a728a483f07c638ccd8610d4b4f12684 ]
+Ok, I think I see the pattern now.
 
-If we get into a problem severe enough to attempt a reprobe,
-we schedule a worker to do that. However, if the problem gets
-more severe and the device is actually destroyed before this
-worker has a chance to run, we use a free device. Bump up the
-reference count of the device until the worker runs to avoid
-this situation.
+You have to admin-up the station and start scanning before it will show the
+6E channels in 'iw reg get'.  And that makes the 'band 4' frequencies become
+usable as well, as seen in 'iw phy foo info'.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/iwlwifi.20210122144849.871f0892e4b2.I94819e11afd68d875f3e242b98bef724b8236f1e@changeid
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/iwlwifi/mvm/ops.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+So, a bit confusing for me, but I guess it works as intended.
 
-diff --git a/drivers/net/wireless/iwlwifi/mvm/ops.c b/drivers/net/wireless/iwlwifi/mvm/ops.c
-index 13c97f665ba88..bb81261de45fa 100644
---- a/drivers/net/wireless/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/iwlwifi/mvm/ops.c
-@@ -909,6 +909,7 @@ static void iwl_mvm_reprobe_wk(struct work_struct *wk)
- 	reprobe = container_of(wk, struct iwl_mvm_reprobe, work);
- 	if (device_reprobe(reprobe->dev))
- 		dev_err(reprobe->dev, "reprobe failed!\n");
-+	put_device(reprobe->dev);
- 	kfree(reprobe);
- 	module_put(THIS_MODULE);
- }
-@@ -991,7 +992,7 @@ void iwl_mvm_nic_restart(struct iwl_mvm *mvm, bool fw_error)
- 			module_put(THIS_MODULE);
- 			return;
- 		}
--		reprobe->dev = mvm->trans->dev;
-+		reprobe->dev = get_device(mvm->trans->dev);
- 		INIT_WORK(&reprobe->work, iwl_mvm_reprobe_wk);
- 		schedule_work(&reprobe->work);
- 	} else if (mvm->cur_ucode == IWL_UCODE_REGULAR) {
--- 
-2.27.0
+This is with 5.11-rc5+ kernel and latest ax210 FW that I can find.
+
+Thanks,
+Ben
+
+> 
+> Thanks,
+> Ben
+> 
+>>
+>>   kernel: iwlwifi 0000:0f:00.0: In iwl-mvm-init-mcc, nvm-type: 1  NVM_EXT: 1
+>>   kernel: iwlwifi 0000:0f:00.0: init-fw-regd: r: 0000000000000000
+>>   kernel: iwlwifi 0000:0f:00.0: Getting regdomain data for ZZ from FW
+>>   kernel: iwlwifi 0000:0f:00.0: send MCC update to FW with 'ZZ' src = 16
+>>   kernel: iwlwifi 0000:0f:00.0: MCC response status: 0x1. new MCC: 0x3030 ('00') n_chans: 110
+>>   kernel: iwlwifi 0000:0f:00.0: MCC update response version: 6
+>>   kernel: iwlwifi 0000:0f:00.0: setting alpha2 from FW to 00 (0x30, 0x30) src=7
+>>   kernel: iwlwifi 0000:0f:00.0: Get current regdom: 000000001caad6b5  mcc-supported: 1
+>>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 2484.000 MHz as custom regd has no rule that fits it
+>> ....
+>>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 5955.000 MHz as custom regd has no rule that fits it
+>>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 5975.000 MHz as custom regd has no rule that fits it
+>>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 5995.000 MHz as custom regd has no rule that fits it
+>>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 6015.000 MHz as custom regd has no rule that fits it
+>>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 6035.000 MHz as custom regd has no rule that fits it
+>>   kernel: cfg80211: d8:f8:83:35:e9:f9: Disabling freq 6055.000 MHz as custom regd has no rule that fits it
+>>
+>> Thanks,
+>> Ben
+>>
+> 
 
