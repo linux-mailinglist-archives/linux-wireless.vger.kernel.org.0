@@ -2,110 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4307530BD3B
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 12:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6CC730C08C
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Feb 2021 15:02:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231375AbhBBLe6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 06:34:58 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:39762 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231312AbhBBLcl (ORCPT
+        id S233400AbhBBOBC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 09:01:02 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:46601 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233517AbhBBN6x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 06:32:41 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BOwGw190982;
-        Tue, 2 Feb 2021 11:31:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=mIAj0+BtQpwVNeD3mExb1e30dz1P2CVY0gpH20dJPwM=;
- b=Dl+OduYa/ToMiitDUCbixlER3h2NJcJ6WerwpbuxJaSSf7fAcN1ldv0dSIYcclAgDn92
- FSWG28NHsXdfUDEa3z4NFHQUQXhR/tDN+Dj5DQqrm64A7usugUyPh1qbuo1A3t4tGCgw
- 7oLQyDmKf2yADaQc3WRCqMacmizIEik8dPDf81nwIgXZvcJiu9gZqd+E/eqtK3FpM3PJ
- qGJWl+vvPWJFps3HnS/nsx/qb63Fikoi2b74Wid+YtMkSwl9knxlCEBBipp7pp/6xQYX
- QFmsGL0yFx+CV/k0SkFFUTqGaT1RX1G+aPaT+8UYfmSmhU00+hfXhhClRR7J9qUNxdIB yw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 36cydkt8x7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 11:31:49 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 112BUwI1059872;
-        Tue, 2 Feb 2021 11:31:47 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 36dhby3rjq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 02 Feb 2021 11:31:47 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 112BVjDM023682;
-        Tue, 2 Feb 2021 11:31:46 GMT
-Received: from mwanda (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 02 Feb 2021 03:31:45 -0800
-Date:   Tue, 2 Feb 2021 14:31:38 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>, Peter Oh <peter.oh@eero.com>
-Cc:     Carl Huang <cjhuang@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] ath11k: fix a locking bug in ath11k_mac_op_start()
-Message-ID: <YBk4GoeE+yc0wlJH@mwanda>
+        Tue, 2 Feb 2021 08:58:53 -0500
+X-UUID: 1bd7727d9a9847e2bf0c0024e7f98203-20210202
+X-UUID: 1bd7727d9a9847e2bf0c0024e7f98203-20210202
+Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 250054803; Tue, 02 Feb 2021 21:58:02 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 2 Feb 2021 21:58:00 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 2 Feb 2021 21:58:00 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: use PCI_VENDOR_ID_MEDIATEK to avoid open coded
+Date:   Tue, 2 Feb 2021 21:57:59 +0800
+Message-ID: <404c3c6be07d4c8b2a9a7297c387509b801e62a5.1612274129.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 suspectscore=0
- spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102020080
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9882 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1011
- spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102020079
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 4055448C08ED3A018B512A6FAED4963B84FC36D2EC8700AC96D435956B21B2082000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This error path leads to a Smatch warning:
+Use PCI standard defines.
 
-	drivers/net/wireless/ath/ath11k/mac.c:4269 ath11k_mac_op_start()
-	error: double unlocked '&ar->conf_mutex' (orig line 4251)
-
-We're not holding the lock when we do the "goto err;" so it leads to a
-double unlock.  The fix is to hold the lock for a little longer.
-
-Fixes: c83c500b55b6 ("ath11k: enable idle power save mode")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-v2: reviewers were concern that v1 was racy
+ drivers/net/wireless/mediatek/mt76/mt7603/pci.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/pci.c | 6 +++---
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 6 +++---
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci.c | 6 +++---
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 2 +-
+ 5 files changed, 11 insertions(+), 11 deletions(-)
 
- drivers/net/wireless/ath/ath11k/mac.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index c1608f64ea95..464d3425488b 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4248,8 +4248,6 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
- 	/* Configure the hash seed for hash based reo dest ring selection */
- 	ath11k_wmi_pdev_lro_cfg(ar, ar->pdev->pdev_id);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/pci.c b/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
+index 06fa28f645f2..aa6cb668b012 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
+@@ -7,7 +7,7 @@
+ #include "mt7603.h"
  
--	mutex_unlock(&ar->conf_mutex);
--
- 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx],
- 			   &ab->pdevs[ar->pdev_idx]);
+ static const struct pci_device_id mt76pci_device_table[] = {
+-	{ PCI_DEVICE(0x14c3, 0x7603) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7603) },
+ 	{ },
+ };
  
-@@ -4262,6 +4260,9 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
- 			goto err;
- 		}
- 	}
-+
-+	mutex_unlock(&ar->conf_mutex);
-+
- 	return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+index 71487f532f36..11f169cdd603 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+@@ -13,9 +13,9 @@
+ #include "mcu.h"
  
- err:
+ static const struct pci_device_id mt7615_pci_device_table[] = {
+-	{ PCI_DEVICE(0x14c3, 0x7615) },
+-	{ PCI_DEVICE(0x14c3, 0x7663) },
+-	{ PCI_DEVICE(0x14c3, 0x7611) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7615) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7663) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7611) },
+ 	{ },
+ };
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+index 02d0aa0b815e..5847f943e8da 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+@@ -221,9 +221,9 @@ mt76x0e_remove(struct pci_dev *pdev)
+ }
+ 
+ static const struct pci_device_id mt76x0e_device_table[] = {
+-	{ PCI_DEVICE(0x14c3, 0x7610) },
+-	{ PCI_DEVICE(0x14c3, 0x7630) },
+-	{ PCI_DEVICE(0x14c3, 0x7650) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7610) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7630) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7650) },
+ 	{ },
+ };
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+index ecaf85b483ac..adf288e50e21 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+@@ -10,9 +10,9 @@
+ #include "mt76x2.h"
+ 
+ static const struct pci_device_id mt76x2e_device_table[] = {
+-	{ PCI_DEVICE(0x14c3, 0x7662) },
+-	{ PCI_DEVICE(0x14c3, 0x7612) },
+-	{ PCI_DEVICE(0x14c3, 0x7602) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7662) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7612) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7602) },
+ 	{ },
+ };
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 5570b4a50531..33ed952d7f4c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -13,7 +13,7 @@
+ #include "../trace.h"
+ 
+ static const struct pci_device_id mt7921_pci_device_table[] = {
+-	{ PCI_DEVICE(0x14c3, 0x7961) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7961) },
+ 	{ },
+ };
+ 
 -- 
-2.30.0
+2.18.0
 
