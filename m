@@ -2,68 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A11730D79E
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Feb 2021 11:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C6030DDE3
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Feb 2021 16:17:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233629AbhBCKdM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Feb 2021 05:33:12 -0500
-Received: from m12-17.163.com ([220.181.12.17]:53410 "EHLO m12-17.163.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232865AbhBCKdL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Feb 2021 05:33:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=Oa9fJWAe0/0aV9P9p2
-        Zg+Ft1ZwGWfRwM5fVUa4V6GlY=; b=kIStVPWZKAlsZF75zqyOXOmRwHzfoo8vBB
-        nDyZL5IuOhQhwlE0h8d+XCIYYxO4d6AqBM43gJ4GdbJIM4fwxdaKAG3vlPd0q/Qn
-        spZ33oE6JqEzqgBmj0QLw3MtxArMj6zOkimMeh+Rb2X2waBH8p4UTXXLZmaxwFCV
-        THNcltOQU=
-Received: from wengjianfeng.ccdomain.com (unknown [119.137.55.230])
-        by smtp13 (Coremail) with SMTP id EcCowAAX_XTyRBpgXHrGjA--.48279S2;
-        Wed, 03 Feb 2021 14:38:43 +0800 (CST)
-From:   samirweng1979 <samirweng1979@163.com>
-To:     stf_xl@wp.pl, helmut.schaa@googlemail.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        wengjianfeng <wengjianfeng@yulong.com>
-Subject: [PATCH] rt2x00: remove duplicate word in comment
-Date:   Wed,  3 Feb 2021 14:38:50 +0800
-Message-Id: <20210203063850.15844-1-samirweng1979@163.com>
-X-Mailer: git-send-email 2.15.0.windows.1
-X-CM-TRANSID: EcCowAAX_XTyRBpgXHrGjA--.48279S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtrW7Cw47ur13tFy7JF1DZFb_yoWDWFX_ur
-        y8Wrs7Z348Jw1YvF4jvFW7Xrya9r93Zr1kGw1jgr9xWry5ZrWUWan3AF4Sqw1jkr40vrnx
-        GF4DJr9Yv3yjvjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU5hSdPUUUUU==
-X-Originating-IP: [119.137.55.230]
-X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiERMusV7+2swKlgAAs3
+        id S234292AbhBCPQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Feb 2021 10:16:36 -0500
+Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:42716 "EHLO
+        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S233759AbhBCPOw (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 3 Feb 2021 10:14:52 -0500
+X-Greylist: delayed 28096 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 10:14:46 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=w0lK0VI/z8H0duCatAteN0Iwc5
+        3G/G54MwGNKCfqonH6LHTViaP8936x7eQK7+re2PBNWY4tVbChNBcJyeAJfnieX/3WISXqPlMwWOC
+        fl7fvJ1xZpB4SP6ggH7J9g1MIqK6ZpQXo4+y7tK4qobcbm6QHPDPvTn+fJ1KnlpXIkyaAwiKZIg3+
+        AaI+TpfhTlxhAdHttFu2ogg1F+UklUQvcNwyV7oyRuJIIioseeYpfZZ9fjg2p6LGrb1qfupeXXTpo
+        Zk277PG4P2oOVwGioBRam0zGTwQWVIN7rioU987VZDnZDGscFlAousTOyLt6QntFSQhAVrF2OLcYd
+        k+0e1Nyg==;
+Received: from [127.0.0.1] (port=45548 helo=dot.dotlines.com.sg)
+        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
+        (envelope-from <noreply@carnivalassure.com.bd>)
+        id 1l7CVT-0005U9-8i; Wed, 03 Feb 2021 01:23:19 -0600
+MIME-Version: 1.0
+Date:   Wed, 03 Feb 2021 01:23:18 -0600
+From:   Francois Pinault <noreply@carnivalassure.com.bd>
+To:     undisclosed-recipients:;
+Subject: Hello/Hallo
+Organization: Donation
+Reply-To: francoispinault1936@outlook.com
+Mail-Reply-To: francoispinault1936@outlook.com
+Message-ID: <daf030622886954284fef423f887a757@carnivalassure.com.bd>
+X-Sender: noreply@carnivalassure.com.bd
+User-Agent: Roundcube Webmail/1.3.15
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
+X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
+X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: wengjianfeng <wengjianfeng@yulong.com>
 
-remove duplicate word 'we' in comment
 
-Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
----
- drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c b/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c
-index c861811..7158152 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c
-@@ -179,7 +179,7 @@ void rt2x00crypto_rx_insert_iv(struct sk_buff *skb,
- 	 * Make room for new data. There are 2 possibilities
- 	 * either the alignment is already present between
- 	 * the 802.11 header and payload. In that case we
--	 * we have to move the header less then the iv_len
-+	 * have to move the header less then the iv_len
- 	 * since we can use the already available l2pad bytes
- 	 * for the iv data.
- 	 * When the alignment must be added manually we must
 -- 
-1.9.1
+Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
+können mein Profil auf Wikipedia, Google oder Forbes überprüfen.
 
+Für Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
+mich umgehend unter francoispinault1936@outlook.com
 
+Mit freundlichen Grüßen,
+Herr Francois Pinault
