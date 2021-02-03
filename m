@@ -2,59 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C7F730D1BD
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Feb 2021 03:45:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A12130D1FD
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Feb 2021 04:11:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232262AbhBCCmU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Feb 2021 21:42:20 -0500
-Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:55450 "EHLO
-        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229889AbhBCCmR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Feb 2021 21:42:17 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=alimailimapcm10staff010182156082;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0UNjXycJ_1612320082;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UNjXycJ_1612320082)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 03 Feb 2021 10:41:22 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH] mt76: mt7915: remove unneeded semicolon
-Date:   Wed,  3 Feb 2021 10:41:20 +0800
-Message-Id: <1612320080-126736-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S232493AbhBCDKL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Feb 2021 22:10:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55966 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231934AbhBCDKK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Feb 2021 22:10:10 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 1B46F64F6A;
+        Wed,  3 Feb 2021 03:10:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612321812;
+        bh=qCxhU4oGeXDcmRe/OcfFGmztsqhLADlvqabHNTAROGM=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=sD5Yvl4tVeGgsVWlBVxu2dYYJDala9rFes/UnjhjSH7jXNXO3qACVUQJ/frEyugYx
+         OTEOw9JoB9CIT6v8Qnb4eecHzJMHtKS8UhmAIX2P11YLKnjFy2b0fn2P75AKvwN5Cj
+         GmYWWp900g1LVYKbff8T6zz71A11negtN1x/pYjct/3Q1eLMp2yEuAqOWGdyhjFTJw
+         db7+7c2oXWH69h+5xnFhRf9tj4/b1dWjcbODvJJhfwVaC1adA3UO4YgQPWev69vLLn
+         bqcvb2Lb6t0ic1960TfitBHoXjs9enanyfZv4vLdXdDWb4+SxbeootMq7Lb0NwSreo
+         rWeSU2wcUY8OA==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 10B10609E3;
+        Wed,  3 Feb 2021 03:10:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: mac80211-next 2021-02-02
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161232181206.32173.7600413164012224417.git-patchwork-notify@kernel.org>
+Date:   Wed, 03 Feb 2021 03:10:12 +0000
+References: <20210202144106.38207-1-johannes@sipsolutions.net>
+In-Reply-To: <20210202144106.38207-1-johannes@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Eliminate the following coccicheck warning:
-./drivers/net/wireless/mediatek/mt76/mt7915/mac.c:1694:2-3: Unneeded
-semicolon
+Hello:
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This pull request was applied to netdev/net-next.git (refs/heads/master):
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index f504eeb..a24d5b7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1691,7 +1691,7 @@ void mt7915_mac_work(struct work_struct *work)
- 	if (++phy->sta_work_count == 10) {
- 		phy->sta_work_count = 0;
- 		mt7915_mac_sta_stats_work(phy);
--	};
-+	}
- 
- 	mutex_unlock(&mdev->mutex);
- 
--- 
-1.8.3.1
+On Tue,  2 Feb 2021 15:41:05 +0100 you wrote:
+> Hi Jakub,
+> 
+> And for mac80211-next, I have only locking fixes right now. I'm
+> happy that it otherwise seems to be fine though, now no new bugs
+> have been reported for a few days.
+> 
+> I might send some more things your way another day, but wanted
+> to get the locking fixes out sooner.
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: mac80211-next 2021-02-02
+    https://git.kernel.org/netdev/net-next/c/0256317a6151
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
