@@ -2,69 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C6030DDE3
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Feb 2021 16:17:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0657130D419
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Feb 2021 08:35:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234292AbhBCPQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Feb 2021 10:16:36 -0500
-Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:42716 "EHLO
-        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233759AbhBCPOw (ORCPT
+        id S232024AbhBCHes (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Feb 2021 02:34:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50298 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231560AbhBCHeo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Feb 2021 10:14:52 -0500
-X-Greylist: delayed 28096 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 10:14:46 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=w0lK0VI/z8H0duCatAteN0Iwc5
-        3G/G54MwGNKCfqonH6LHTViaP8936x7eQK7+re2PBNWY4tVbChNBcJyeAJfnieX/3WISXqPlMwWOC
-        fl7fvJ1xZpB4SP6ggH7J9g1MIqK6ZpQXo4+y7tK4qobcbm6QHPDPvTn+fJ1KnlpXIkyaAwiKZIg3+
-        AaI+TpfhTlxhAdHttFu2ogg1F+UklUQvcNwyV7oyRuJIIioseeYpfZZ9fjg2p6LGrb1qfupeXXTpo
-        Zk277PG4P2oOVwGioBRam0zGTwQWVIN7rioU987VZDnZDGscFlAousTOyLt6QntFSQhAVrF2OLcYd
-        k+0e1Nyg==;
-Received: from [127.0.0.1] (port=45548 helo=dot.dotlines.com.sg)
-        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
-        (envelope-from <noreply@carnivalassure.com.bd>)
-        id 1l7CVT-0005U9-8i; Wed, 03 Feb 2021 01:23:19 -0600
+        Wed, 3 Feb 2021 02:34:44 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250A2C06174A;
+        Tue,  2 Feb 2021 23:33:49 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1l7CfJ-00FKfW-BY; Wed, 03 Feb 2021 08:33:29 +0100
+Message-ID: <9200710b2d9dafea4bfae4bb449a55fb44245d04.camel@sipsolutions.net>
+Subject: Re: [PATCH] wireless: fix typo issue
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     samirweng1979 <samirweng1979@163.com>, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        wengjianfeng <wengjianfeng@yulong.com>
+Date:   Wed, 03 Feb 2021 08:33:23 +0100
+In-Reply-To: <20210203070025.17628-1-samirweng1979@163.com>
+References: <20210203070025.17628-1-samirweng1979@163.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Date:   Wed, 03 Feb 2021 01:23:18 -0600
-From:   Francois Pinault <noreply@carnivalassure.com.bd>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Organization: Donation
-Reply-To: francoispinault1936@outlook.com
-Mail-Reply-To: francoispinault1936@outlook.com
-Message-ID: <daf030622886954284fef423f887a757@carnivalassure.com.bd>
-X-Sender: noreply@carnivalassure.com.bd
-User-Agent: Roundcube Webmail/1.3.15
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
-X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
-X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, 2021-02-03 at 15:00 +0800, samirweng1979 wrote:
+> From: wengjianfeng <wengjianfeng@yulong.com>
+> 
+> change 'iff' to 'if'.
+> 
+> Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
+> ---
+>  net/wireless/chan.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+> index 285b807..2f17edf 100644
+> --- a/net/wireless/chan.c
+> +++ b/net/wireless/chan.c
+> @@ -1084,7 +1084,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+>   * associated to an AP on the same channel or on the same UNII band
+>   * (assuming that the AP is an authorized master).
+>   * In addition allow operation on a channel on which indoor operation is
+> - * allowed, iff we are currently operating in an indoor environment.
+> + * allowed, if we are currently operating in an indoor environment.
+>   */
 
+I suspect that was intentional, as a common abbreviation for "if and
+only if".
 
--- 
-Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
-können mein Profil auf Wikipedia, Google oder Forbes überprüfen.
+johannes
 
-Für Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
-mich umgehend unter francoispinault1936@outlook.com
-
-Mit freundlichen Grüßen,
-Herr Francois Pinault
