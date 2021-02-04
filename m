@@ -2,99 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B741530E88E
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Feb 2021 01:35:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 580A330E8F7
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Feb 2021 01:54:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233480AbhBDAeb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Feb 2021 19:34:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44662 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231817AbhBDAea (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Feb 2021 19:34:30 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C8DEC061573;
-        Wed,  3 Feb 2021 16:33:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=BG5xo57883wZFg8LT27wpBNLDvItg9xhNzOkMkfoe78=; b=qnVs1N+XmTfCeuJFXLBv1CEQ/f
-        Swrxm7740kgfWXderYwwkfa7mlqKgktEJtO9OD5n+jNpkuC4aZnw4LFMpzN7LmO4pAFThuc75vLUk
-        i12t76pBsj8R/Sj1qb9zXfGjp1NsCvhjzL4vOWrtEK6h866ZW6WvUhX9VF7B/XhGGemfusuvJutWq
-        2WQgX6XNrm9yOWvNx4buJfjr6Co7nex3BEhsGMtZb6jLc5bB6KTD0hUOVP0gJjhOwwTmZTmvBLW8L
-        7h51zYZmfYkX8pZ1h7v2PBz0K8jmfJVXvfvGFKjmP0xr+7muc+ONSuufBP10BZN/uPJ8hxWNb6Azj
-        46JoVBig==;
-Received: from [2601:1c0:6280:3f0::aec2]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1l7Sac-0004GE-Aj; Thu, 04 Feb 2021 00:33:42 +0000
-Subject: Re: [PATCH] rt2x00: remove duplicate word in comment
-To:     wengjianfeng <samirweng1979@163.com>
-Cc:     stf_xl@wp.pl, helmut.schaa@googlemail.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        id S234421AbhBDAxV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Feb 2021 19:53:21 -0500
+Received: from m12-16.163.com ([220.181.12.16]:36768 "EHLO m12-16.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234266AbhBDAxU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 3 Feb 2021 19:53:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=hMNO2n8NEeG+F1B2PO
+        O/M8BjP3yqWv44VFvbWtGSjq4=; b=l75cnHo0BJ0WkcXu9BsVHmM5uKXLS7cD/C
+        OiEVuTCObm/AvtlWzyxV5/lmYoLJgs37PsmhbzTG/UadiJY6FfZ2mxevVInirv8F
+        /zFcAvq604EKZtgZjh8ghZRxKUZ8T0xquzDa9ZrxAFY+PbiqBf4fFymCsF+OBzdN
+        tMADId97s=
+Received: from wengjianfeng.ccdomain.com (unknown [218.17.89.92])
+        by smtp12 (Coremail) with SMTP id EMCowAAHDFD8RBtg9T6UaQ--.22444S2;
+        Thu, 04 Feb 2021 08:51:09 +0800 (CST)
+From:   samirweng1979 <samirweng1979@163.com>
+To:     stf_xl@wp.pl, rdunlap@infradead.org, helmut.schaa@googlemail.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         wengjianfeng <wengjianfeng@yulong.com>
-References: <20210203063850.15844-1-samirweng1979@163.com>
- <6bf90f62-f14e-9c4a-748b-4923fcae9bef@infradead.org>
- <20210204083007.000069d2@163.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <1ee1b354-0550-3fd8-f547-10827b3974ad@infradead.org>
-Date:   Wed, 3 Feb 2021 16:33:37 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
-MIME-Version: 1.0
-In-Reply-To: <20210204083007.000069d2@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH v2] rt2x00: remove duplicate word and fix typo in comment
+Date:   Thu,  4 Feb 2021 08:51:19 +0800
+Message-Id: <20210204005119.18060-1-samirweng1979@163.com>
+X-Mailer: git-send-email 2.15.0.windows.1
+X-CM-TRANSID: EMCowAAHDFD8RBtg9T6UaQ--.22444S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtrW3Gr48ZF1xCw1rZr4DCFg_yoWDZFg_ur
+        y8urs7Z348Ja4YvF4jvFW7Zrya9r93Zr1kGwnIg39xWryYvrWkWan3AF4Sqw1jkr4jvrnx
+        GF4DJF9Yv3yjqjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUYpnQUUUUUU==
+X-Originating-IP: [218.17.89.92]
+X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiLx0vsVUMXD4-kQAAs5
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/3/21 4:30 PM, wengjianfeng wrote:
-> On Wed, 3 Feb 2021 07:16:17 -0800
-> Randy Dunlap <rdunlap@infradead.org> wrote:
-> 
->> On 2/2/21 10:38 PM, samirweng1979 wrote:
->>> From: wengjianfeng <wengjianfeng@yulong.com>
->>>
->>> remove duplicate word 'we' in comment
->>>
->>> Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
->>> ---
->>>  drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c
->>> b/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c index
->>> c861811..7158152 100644 ---
->>> a/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c +++
->>> b/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c @@ -179,7
->>> +179,7 @@ void rt2x00crypto_rx_insert_iv(struct sk_buff *skb,
->>>  	 * Make room for new data. There are 2 possibilities
->>>  	 * either the alignment is already present between
->>>  	 * the 802.11 header and payload. In that case we
->>> -	 * we have to move the header less then the iv_len
->>> +	 * have to move the header less then the iv_len
->>
->> s/then/than/
->>
->>>  	 * since we can use the already available l2pad bytes
->>>  	 * for the iv data.
->>>  	 * When the alignment must be added manually we must
->>>
->>
->>
-> 
-> Hi Randy,
->    So you means add it for byte alignment, right? if yes,just ignore
->    the patch. thanks.
+From: wengjianfeng <wengjianfeng@yulong.com>
 
-No, I mean that there is a typo there also: "then" should be changed to "than"
-while you are making changes.
+remove duplicate word 'we' in comment
+change 'then' to 'than' in comment
 
-thanks.
+Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
+---
+ drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c b/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c
+index c861811..ad95f9e 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00crypto.c
+@@ -179,7 +179,7 @@ void rt2x00crypto_rx_insert_iv(struct sk_buff *skb,
+ 	 * Make room for new data. There are 2 possibilities
+ 	 * either the alignment is already present between
+ 	 * the 802.11 header and payload. In that case we
+-	 * we have to move the header less then the iv_len
++	 * have to move the header less than the iv_len
+ 	 * since we can use the already available l2pad bytes
+ 	 * for the iv data.
+ 	 * When the alignment must be added manually we must
 -- 
-~Randy
+1.9.1
+
 
