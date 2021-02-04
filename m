@@ -2,59 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D856530EDE5
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Feb 2021 09:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A94630EF7A
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Feb 2021 10:21:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233112AbhBDIBD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Feb 2021 03:01:03 -0500
-Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131]:60174 "EHLO
-        out30-131.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230252AbhBDIBC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Feb 2021 03:01:02 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R931e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0UNpwIFV_1612425610;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0UNpwIFV_1612425610)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 04 Feb 2021 16:00:16 +0800
-From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To:     stf_xl@wp.pl
+        id S233597AbhBDJRz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Feb 2021 04:17:55 -0500
+Received: from mx4.wp.pl ([212.77.101.11]:47292 "EHLO mx4.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235117AbhBDJO6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 4 Feb 2021 04:14:58 -0500
+Received: (wp-smtpd smtp.wp.pl 17215 invoked from network); 4 Feb 2021 10:14:04 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1612430044; bh=dXyM1tiDTBaOMaxbN/xXSQ8MKB+qXFyMO23iFtqxKK8=;
+          h=From:To:Cc:Subject;
+          b=qBgN3AKB3AxrCIiPZzpAe/UPp4tgk+81I3c0DNXU0mZ/7OQVcZd85zyD8aICCzEoA
+           q/3YEwXL2Mt5vo6wz1CyAHZ6Zid0W/+y2hKMizsPhKXuFuFVyKDeK8vNI0S0O6Jg43
+           7dWwjREBuC5sDkIYJyPINgW8g6ziuUS+XkEUcwSE=
+Received: from ip4-46-39-164-203.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.203])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <jiapeng.chong@linux.alibaba.com>; 4 Feb 2021 10:14:04 +0100
+Date:   Thu, 4 Feb 2021 10:14:03 +0100
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Subject: [PATCH] iwlegacy: 4965-mac: Simplify the calculation of variables
-Date:   Thu,  4 Feb 2021 16:00:08 +0800
-Message-Id: <1612425608-40450-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iwlegacy: 4965-mac: Simplify the calculation of variables
+Message-ID: <20210204091403.GA189022@wp.pl>
+References: <1612425608-40450-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1612425608-40450-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+X-WP-MailID: ac201b005bf07a06ef65f9ac6fd1eb06
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [gVO0]                               
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warnings:
+On Thu, Feb 04, 2021 at 04:00:08PM +0800, Jiapeng Chong wrote:
+> Fix the following coccicheck warnings:
+> 
+> ./drivers/net/wireless/intel/iwlegacy/4965-mac.c:2596:54-56: WARNING !A
+> || A && B is equivalent to !A || B.
+> 
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-./drivers/net/wireless/intel/iwlegacy/4965-mac.c:2596:54-56: WARNING !A
-|| A && B is equivalent to !A || B.
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index 28675a4..52db532 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -2593,8 +2593,7 @@ struct il_mod_params il4965_mod_params = {
- 	 */
- 	if (ret != IL_INVALID_STATION &&
- 	    (!(il->stations[ret].used & IL_STA_UCODE_ACTIVE) ||
--	     ((il->stations[ret].used & IL_STA_UCODE_ACTIVE) &&
--	      (il->stations[ret].used & IL_STA_UCODE_INPROGRESS)))) {
-+	      (il->stations[ret].used & IL_STA_UCODE_INPROGRESS))) {
- 		IL_ERR("Requested station info for sta %d before ready.\n",
- 		       ret);
- 		ret = IL_INVALID_STATION;
--- 
-1.8.3.1
-
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
