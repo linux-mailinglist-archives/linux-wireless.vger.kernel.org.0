@@ -2,87 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFC2531186A
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Feb 2021 03:38:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57CCF311839
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Feb 2021 03:31:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbhBFChL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Feb 2021 21:37:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37486 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230486AbhBFCeu (ORCPT
+        id S229534AbhBFCa5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Feb 2021 21:30:57 -0500
+Received: from mail-qk1-f199.google.com ([209.85.222.199]:47252 "EHLO
+        mail-qk1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229529AbhBFCaz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Feb 2021 21:34:50 -0500
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08528C061788
-        for <linux-wireless@vger.kernel.org>; Fri,  5 Feb 2021 14:00:49 -0800 (PST)
-Received: by mail-io1-xd2c.google.com with SMTP id n14so8777695iog.3
-        for <linux-wireless@vger.kernel.org>; Fri, 05 Feb 2021 14:00:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TjFoIlWrQQ6SMzxidSIU20LEs4MBYZ8U+Hbs2kdSGcY=;
-        b=E3xQASvh1UTu1+ew985C5nGgz+dZqjVwunktw31qnGEZjNfL0hXKiFy796OgliRWeF
-         AM7eZB+peG0BOA6Q31/k/yQy/UlzzkcFDtqmmzlmkXNuDZ0nZexQkVABdzuVCWUFV6xA
-         LSFXFaXdd9Fk9X9vhzetmL0b+meOsrs9iEGB4=
+        Fri, 5 Feb 2021 21:30:55 -0500
+Received: by mail-qk1-f199.google.com with SMTP id v130so7451471qkb.14
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Feb 2021 18:30:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TjFoIlWrQQ6SMzxidSIU20LEs4MBYZ8U+Hbs2kdSGcY=;
-        b=kBOyKFmCIkx0dNQZ+lkq8vvqfGq+/+MmmrwWT0b6x4yXG0rrN20hUM4XN6TtzHMVIX
-         v28uG4uubXMUv5gpAE8rR3cnls1QFg4GxX51VbIZciMEE4wf+yJrxDqbMICIg/+6RyDC
-         gjKztn9SuXW+fl4wKfgJfC74EtZGZunAGe8VuzEwWbkNbqDXgnYpt3TJKA0AhlT3wNJZ
-         qSW+2HiS4N75jLI1JfkkzbbJh29/BAiclBfYFIsZ7xx9Hyfp+VWU6/Fv1eF2/Xn44bqP
-         PokQZsAt63Y/JqvhZJ5ewg/V/tUu6YbzGDzN+988OqNz0OORoXH6lhNM3FOSN2jkbXUR
-         ewTA==
-X-Gm-Message-State: AOAM533V32N/AivI53DJ8QYopHbJnjnxMhPT8Gc+SI2l6jxYRmw02KSj
-        sUxv+OXrSa0Rn3qc0fqRQtethAg2AjDUlQPg5aDcZQ==
-X-Google-Smtp-Source: ABdhPJzQUJC+nALEv8999zWpWOq1rvvD0E2d2qR4O0M77d01+4sHlR2oV3jrZwnpdiQYYzQs2xGAJc7nwLwmlRRo3rI=
-X-Received: by 2002:a02:84e8:: with SMTP id f95mr7031738jai.4.1612562448532;
- Fri, 05 Feb 2021 14:00:48 -0800 (PST)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=k/BHxNQ7qd2sz72tiD4lLbHL6/gf5P11FZOhOOaqDKA=;
+        b=Mzo1q0MzjwFBtjIGqvYLOEhO7v0P2vmqPb7+PtaPmMj+mKa9Gykh0U9yfSg4TyzSsL
+         2APuPU6IoHrwxuNRD7l36JbWF9xZ3xsCeJGfH8y+uaIK7HgM1SzS0JmliLrac9rUWwHv
+         U6yStcPeJE0t7f9vYdysO3PZc2HrBJxl9FkKkipqgyWH9bSlG8Z1uWs6rXHmHeLhZ1oc
+         lfda6iAuN+jtOxQZ5tvpampNY3mw2PyHEsnU8sduUPvUoVxlVs7fyGIRjEeph4r13yVz
+         4QGkkp9HOotKftsH3RONq0E6Ee8HJbCVhTvdGf9DHbhyi0iQ5mEKTEf1N+pe8Xph8gKt
+         8EQw==
+X-Gm-Message-State: AOAM530F5Yn2r9NAXRSU1cxEFOwRjyVJVp9xo6envwvHLfZsthRK2DNT
+        Rz0QZoWd6BoovAraNMlOcDpg+Dk1FePHAHXUp+lzJOXaiLck
+X-Google-Smtp-Source: ABdhPJwdOFBnVKo83ZB4DdRWVey1q8/jHZh+2YsaX0RH9Pbo7VV9KaKdLnAguLfe4eReVq4qZQ1yu5RmW6bcEsjv7K2iZ9rsyvRs
 MIME-Version: 1.0
-References: <20201215172435.5388-1-youghand@codeaurora.org>
- <CACTWRwsM_RJnssBpxDpRSbex4_1T9QDv3+ZT7eLnYsgOgtGFQw@mail.gmail.com> <878s9o6aqa.fsf@codeaurora.org>
-In-Reply-To: <878s9o6aqa.fsf@codeaurora.org>
-From:   Abhishek Kumar <kuabhs@chromium.org>
-Date:   Fri, 5 Feb 2021 14:00:37 -0800
-Message-ID: <CACTWRwuGj-kriu10aOix-McK3G_934E=UMa4KzL0yeqtsJRV3A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] ath10k: Set wiphy flag to trigger sta disconnect on
- hardware restart
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Youghandhar Chintala <youghand@codeaurora.org>,
-        netdev <netdev@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Rakesh Pillai <pillair@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
+X-Received: by 2002:a02:5148:: with SMTP id s69mr7550314jaa.8.1612568424583;
+ Fri, 05 Feb 2021 15:40:24 -0800 (PST)
+Date:   Fri, 05 Feb 2021 15:40:24 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001f9bb705ba9f5861@google.com>
+Subject: general protection fault in ieee80211_assign_vif_chanctx
+From:   syzbot <syzbot+bbf402b783eeb6d908db@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> I'm not sure what you mean. But if you are saying that we should move
-> ath10k_hw_params_list entirely to firmware then that is a huge task as
-> we would need to make changes in every firmware branch, and there are so
-> many different branches that I have lost count. And due to backwards
-> compatibility we still need to have ath10k_hw_params_list in ath10k for
-> few years.
->
- Apologies for late reply on this thread. Yes you got me right( to
-move ath10k_hw_params_list entirely to firmware ). I wanted to trigger
-an idea and know what other people's views are, or atleast what are
-the challenges. As you said the task is much bigger with so many
-firmware branches. As long as you feel it is scalable for coming
-years, we should be good.
+Hello,
 
-As far as the patch is concerned, it LGTM.
+syzbot found the following issue on:
 
-Reviewed-by: Abhishek Kumar <kuabhs@chromium.org>
+HEAD commit:    3aaf0a27 Merge tag 'clang-format-for-linux-v5.11-rc7' of g..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11dde95f500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=266a5362c89c8127
+dashboard link: https://syzkaller.appspot.com/bug?extid=bbf402b783eeb6d908db
+compiler:       Debian clang version 11.0.1-2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11fea674d00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1054d88cd00000
 
-Thanks
-Abhishek
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+bbf402b783eeb6d908db@syzkaller.appspotmail.com
+
+general protection fault, probably for non-canonical address 0xfbd59c0000000020: 0000 [#1] PREEMPT SMP KASAN
+KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
+CPU: 0 PID: 10022 Comm: syz-executor445 Not tainted 5.11.0-rc6-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:ieee80211_chanctx_num_assigned net/mac80211/chan.c:22 [inline]
+RIP: 0010:ieee80211_assign_vif_chanctx+0x6a7/0xa80 net/mac80211/chan.c:746
+Code: 08 00 0f 85 96 00 00 00 e9 f7 00 00 00 e8 a1 ce 8a f8 49 83 c6 20 31 db 4c 89 f5 0f 1f 84 00 00 00 00 00 48 89 e8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 ef e8 fa 34 ce f8 48 8b 6d 00 4c 39 f5
+RSP: 0018:ffffc90007fef670 EFLAGS: 00010a02
+RAX: 1bd5a00000000020 RBX: 0000000000000002 RCX: ffff8880156c1bc0
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: dead000000000100 R08: ffffffff88ecf9e5 R09: fffffbfff1b672de
+R10: fffffbfff1b672de R11: 0000000000000000 R12: 0000000000000000
+R13: dffffc0000000000 R14: ffff888013e2b020 R15: ffff88801bff0bc0
+FS:  00007f5557b86700(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f5557b85288 CR3: 0000000024a0d000 CR4: 00000000001506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ __ieee80211_vif_release_channel+0x279/0x540 net/mac80211/chan.c:1619
+ ieee80211_vif_release_channel+0x13e/0x1a0 net/mac80211/chan.c:1833
+ ieee80211_ibss_disconnect+0x6ea/0x870 net/mac80211/ibss.c:735
+ ieee80211_ibss_leave+0x26/0xf0 net/mac80211/ibss.c:1871
+ rdev_leave_ibss net/wireless/rdev-ops.h:545 [inline]
+ __cfg80211_leave_ibss+0x11c/0x200 net/wireless/ibss.c:212
+ cfg80211_leave_ibss+0x5c/0x70 net/wireless/ibss.c:230
+ cfg80211_change_iface+0x428/0xaa0 net/wireless/util.c:1047
+ nl80211_set_interface+0x497/0x7f0 net/wireless/nl80211.c:3839
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:739 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0xe4e/0x1280 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x190/0x3a0 net/netlink/af_netlink.c:2494
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
+ netlink_unicast+0x786/0x940 net/netlink/af_netlink.c:1330
+ netlink_sendmsg+0x9ae/0xd50 net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec net/socket.c:652 [inline]
+ sock_sendmsg net/socket.c:672 [inline]
+ ____sys_sendmsg+0x519/0x800 net/socket.c:2345
+ ___sys_sendmsg net/socket.c:2399 [inline]
+ __sys_sendmsg+0x2bf/0x370 net/socket.c:2432
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x446889
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 41 15 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f5557b862f8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00000000004cb440 RCX: 0000000000446889
+RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000003
+RBP: 00000000004cb44c R08: 0000000000000003 R09: 0000000000000000
+R10: 0000000000000008 R11: 0000000000000246 R12: 000000000049b254
+R13: 0031313230386c6e R14: 0000000000000000 R15: 00000000004cb448
+Modules linked in:
+---[ end trace 986da0a98b3932dc ]---
+RIP: 0010:ieee80211_chanctx_num_assigned net/mac80211/chan.c:22 [inline]
+RIP: 0010:ieee80211_assign_vif_chanctx+0x6a7/0xa80 net/mac80211/chan.c:746
+Code: 08 00 0f 85 96 00 00 00 e9 f7 00 00 00 e8 a1 ce 8a f8 49 83 c6 20 31 db 4c 89 f5 0f 1f 84 00 00 00 00 00 48 89 e8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 ef e8 fa 34 ce f8 48 8b 6d 00 4c 39 f5
+RSP: 0018:ffffc90007fef670 EFLAGS: 00010a02
+RAX: 1bd5a00000000020 RBX: 0000000000000002 RCX: ffff8880156c1bc0
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: dead000000000100 R08: ffffffff88ecf9e5 R09: fffffbfff1b672de
+R10: fffffbfff1b672de R11: 0000000000000000 R12: 0000000000000000
+R13: dffffc0000000000 R14: ffff888013e2b020 R15: ffff88801bff0bc0
+FS:  00007f5557b86700(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f5557b43288 CR3: 0000000024a0d000 CR4: 00000000001506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
