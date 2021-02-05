@@ -2,67 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66A7E310F3C
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Feb 2021 18:58:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36C9F310F7D
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Feb 2021 19:07:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233594AbhBEQO0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Feb 2021 11:14:26 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:39774 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233603AbhBEQMR (ORCPT
+        id S233660AbhBEQYv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Feb 2021 11:24:51 -0500
+Received: from mout.kundenserver.de ([212.227.17.24]:42709 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233699AbhBEQWN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Feb 2021 11:12:17 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1l85Im-0004k3-Ez; Fri, 05 Feb 2021 17:53:52 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "John W . Linville" <linville@tuxdriver.com>,
-        Luis Carlos Cobo <luisca@cozybit.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mac80211: fix potential overflow when multiplying to u32 integers
-Date:   Fri,  5 Feb 2021 17:53:52 +0000
-Message-Id: <20210205175352.208841-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.29.2
+        Fri, 5 Feb 2021 11:22:13 -0500
+Received: from evilbit.green-communications.fr ([92.154.77.116]) by
+ mrelayeu.kundenserver.de (mreue108 [213.165.67.119]) with ESMTPSA (Nemesis)
+ id 1N6svJ-1m0EzP3GSF-018O3Y; Fri, 05 Feb 2021 19:01:44 +0100
+From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+To:     seth.forshee@canonical.com
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [PATCH] wireless-regdb: Do not hardcode 'sforshee' in the certificate commonName
+Date:   Fri,  5 Feb 2021 19:00:54 +0100
+Message-Id: <20210205180054.1031-1-nicolas.cavallari@green-communications.fr>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:ymhD0qZqklLWUvwlb16UebgKbX/qusgP7xT0Q7xb+o8aqcuNdRc
+ FESPXkkADLtcCdDFZN5ELcJJpEQShtxeZDIPCq7EHbr6jpaBHVNBN2huT1+Oh3umdiE9ig1
+ YPS+07c8ee//uI2pgWTsas/We5tPrfZX1vLiYCiJ3l8l2IipYiDh/MAWwDo2gwsgiKP542B
+ 1QsJV7LUn91jBLnsg1DeQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qEToY0s+9CY=:2RIaRdQcBFix8XlMktlUHo
+ RE/KPyPxj6iWFF1+Qckz2KTnOaFASs3RITBV65x1BzjCKdW/kkFFBoK50PovTmsBqRwtsOnJL
+ 76HROO6bBvPykYN6DOfJp5ZECP2AhgrGVG2Pfex7C+Gv0vWwULViYMaK8DE859vUFS7UbzkCk
+ FMHyPoXKQv1Q44ELf9w1rma8/yDEMLfR8Vn4iW1J/ovX4FaSaJ6pkg4VmTdducwQE7FlEunUm
+ IQCqiRN+NSEkrMPCB8PQWI/zpmQf/CAtEJNACPoHsjoGF7e8M6gHHN9krhDwvkIk/YHiD7qan
+ 0ZWYsGZIzt118IkgkFWGMnSHYclzKfxQbrn38cFPanNjRqv8D9QWGIWPtAdGCorhbMD57iUDm
+ iPgC95Wl94tBT7R9RSop/PkisOxDtoTrj1se9tXZ/KxdEUWHxsCF3nV2gkhj7lBT53Ea/AHdQ
+ dk515HNojOYMv5eCC7k1EyxdXpzOkac=
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+gen-pubcert.sh hardcodes the 'sforshee' common name when generating the
+certificate.  Make it depend on REGDB_AUTHOR instead, which defaults to
+$(whoami).
 
-The multiplication of the u32 variables tx_time and estimated_retx is
-performed using a 32 bit multiplication and the result is stored in
-a u64 result. This has a potential u32 overflow issue, so avoid this
-by casting tx_time to a u64 to force a 64 bit multiply.
-
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: 050ac52cbe1f ("mac80211: code for on-demand Hybrid Wireless Mesh Protocol")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
 ---
- net/mac80211/mesh_hwmp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Makefile       | 2 +-
+ gen-pubcert.sh | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 313eee12410e..3db514c4c63a 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -356,7 +356,7 @@ u32 airtime_link_metric_get(struct ieee80211_local *local,
- 	 */
- 	tx_time = (device_constant + 10 * test_frame_len / rate);
- 	estimated_retx = ((1 << (2 * ARITH_SHIFT)) / (s_unit - err));
--	result = (tx_time * estimated_retx) >> (2 * ARITH_SHIFT);
-+	result = ((u64)tx_time * estimated_retx) >> (2 * ARITH_SHIFT);
- 	return (u32)result;
- }
+diff --git a/Makefile b/Makefile
+index 2f1ed93..02176ec 100644
+--- a/Makefile
++++ b/Makefile
+@@ -80,7 +80,7 @@ $(REGDB_PUBKEY): $(REGDB_PRIVKEY)
  
+ $(REGDB_PUBCERT): $(REGDB_PRIVKEY)
+ 	@echo "Generating certificate for $(REGDB_AUTHOR)..."
+-	./gen-pubcert.sh $(REGDB_PRIVKEY) $(REGDB_PUBCERT)
++	./gen-pubcert.sh $(REGDB_PRIVKEY) $(REGDB_PUBCERT) $(REGDB_AUTHOR)
+ 	@echo $(REGDB_PUBKEY) > .custom
+ 
+ 
+diff --git a/gen-pubcert.sh b/gen-pubcert.sh
+index 1a4d579..a7e8538 100755
+--- a/gen-pubcert.sh
++++ b/gen-pubcert.sh
+@@ -1,7 +1,7 @@
+ #!/bin/bash
+ 
+-if [[ $# -ne 2 ]]; then
+-	echo "Usage: $0 priv-key out-file"
++if [[ $# -ne 3 ]]; then
++	echo "Usage: $0 priv-key out-file common-name"
+ 	exit 1
+ fi
+ 
+@@ -13,6 +13,6 @@ openssl req -new -key "$1" -days 36500 -utf8 -nodes -batch \
+ 		string_mask = utf8only
+ 		prompt = no
+ 		[ req_distinguished_name ]
+-		commonName = sforshee
++		commonName = $3
+ 		EOF
+ 	)
 -- 
-2.29.2
+2.30.0
 
