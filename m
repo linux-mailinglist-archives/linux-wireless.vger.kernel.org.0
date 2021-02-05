@@ -2,116 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB36E310542
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Feb 2021 07:57:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97F3B310779
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Feb 2021 10:16:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231199AbhBEG5q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Feb 2021 01:57:46 -0500
-Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:42143 "EHLO
-        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231328AbhBEG5i (ORCPT
+        id S229777AbhBEJNl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Feb 2021 04:13:41 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:43728 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230077AbhBEJHd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Feb 2021 01:57:38 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=alimailimapcm10staff010182156082;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0UNwO2eU_1612508200;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0UNwO2eU_1612508200)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 05 Feb 2021 14:56:45 +0800
-From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To:     m@bues.ch
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Subject: [PATCH] ssb: Use true and false for bool variable
-Date:   Fri,  5 Feb 2021 14:56:39 +0800
-Message-Id: <1612508199-92282-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        Fri, 5 Feb 2021 04:07:33 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1l7x4e-0044i1-K6; Fri, 05 Feb 2021 11:06:45 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri,  5 Feb 2021 11:06:30 +0200
+Message-Id: <20210205090642.1553849-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.30.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [RESEND PATCH 00/12]  iwlwifi: updates intended for v5.12 2021-01-31
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warnings:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-./include/linux/ssb/ssb_driver_gige.h:89:8-9: WARNING: return of 0/1 in
-function 'ssb_gige_one_dma_at_once' with return type bool.
+(resending because issues with spamcop seem to have prevented the
+patches from reaching patchwork and possibly others)
 
-./include/linux/ssb/ssb_driver_gige.h:79:8-9: WARNING: return of 0/1 in
-function 'ssb_gige_have_roboswitch' with return type bool.
+Hi,
 
-./include/linux/ssb/ssb_driver_gige.h:182:8-9: WARNING: return of 0/1 in
-function 'ssb_gige_must_flush_posted_writes' with return type bool.
+Here's the third set of patches intended for v5.12.  It's the usual
+development, new features, cleanups and bugfixes.
 
-./include/linux/ssb/ssb_driver_gige.h:178:8-9: WARNING: return of 0/1 in
-function 'ssb_gige_one_dma_at_once' with return type bool.
+The changes are:
 
-./include/linux/ssb/ssb_driver_gige.h:174:8-9: WARNING: return of 0/1 in
-function 'ssb_gige_have_roboswitch' with return type bool.
+* One more CSA bug fix, this time in the AP side;
+* Bump fW API support;
+* Support for new So devices and a bit of reorg;
+* Some other clean-ups and small fixes.
 
-./include/linux/ssb/ssb_driver_gige.h:170:8-9: WARNING: return of 0/1 in
-function 'ssb_gige_is_rgmii' with return type bool.
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
 
-./include/linux/ssb/ssb_driver_gige.h:162:8-9: WARNING: return of 0/1 in
-function 'pdev_is_ssb_gige_core' with return type bool.
+Please review.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
- include/linux/ssb/ssb_driver_gige.h | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+Cheers,
+Luca.
 
-diff --git a/include/linux/ssb/ssb_driver_gige.h b/include/linux/ssb/ssb_driver_gige.h
-index 31593b3..15ba0df 100644
---- a/include/linux/ssb/ssb_driver_gige.h
-+++ b/include/linux/ssb/ssb_driver_gige.h
-@@ -76,7 +76,7 @@ static inline bool ssb_gige_have_roboswitch(struct pci_dev *pdev)
- 	if (dev)
- 		return !!(dev->dev->bus->sprom.boardflags_lo &
- 			  SSB_GIGE_BFL_ROBOSWITCH);
--	return 0;
-+	return false;
- }
- 
- /* Returns whether we can only do one DMA at once. */
-@@ -86,7 +86,7 @@ static inline bool ssb_gige_one_dma_at_once(struct pci_dev *pdev)
- 	if (dev)
- 		return ((dev->dev->bus->chip_id == 0x4785) &&
- 			(dev->dev->bus->chip_rev < 2));
--	return 0;
-+	return false;
- }
- 
- /* Returns whether we must flush posted writes. */
-@@ -159,7 +159,7 @@ static inline void ssb_gige_exit(void)
- 
- static inline bool pdev_is_ssb_gige_core(struct pci_dev *pdev)
- {
--	return 0;
-+	return false;
- }
- static inline struct ssb_gige * pdev_to_ssb_gige(struct pci_dev *pdev)
- {
-@@ -167,19 +167,19 @@ static inline struct ssb_gige * pdev_to_ssb_gige(struct pci_dev *pdev)
- }
- static inline bool ssb_gige_is_rgmii(struct pci_dev *pdev)
- {
--	return 0;
-+	return false;
- }
- static inline bool ssb_gige_have_roboswitch(struct pci_dev *pdev)
- {
--	return 0;
-+	return false;
- }
- static inline bool ssb_gige_one_dma_at_once(struct pci_dev *pdev)
- {
--	return 0;
-+	return false;
- }
- static inline bool ssb_gige_must_flush_posted_writes(struct pci_dev *pdev)
- {
--	return 0;
-+	return false;
- }
- static inline int ssb_gige_get_macaddr(struct pci_dev *pdev, u8 *macaddr)
- {
+Emmanuel Grumbach (2):
+  iwlwifi: mvm: cancel the scan delayed work when scan is aborted
+  iwlwifi: mvm: fix CSA AP side
+
+Ilan Peer (1):
+  iwlwifi: pcie: Disable softirqs during Rx queue init
+
+Johannes Berg (4):
+  iwlwifi: mvm: advertise BIGTK client support if available
+  iwlwifi: fw api: make hdr a zero-size array again
+  iwlwifi: mvm: slightly clean up rs_fw_set_supp_rates()
+  iwlwifi: mvm: make iwl_mvm_tt_temp_changed() static
+
+Luca Coelho (5):
+  iwlwifi: bump FW API to 60 for AX devices
+  iwlwifi: move SnJ and So rules to the new tables
+  iwlwifi: add support for SnJ with Jf devices
+  iwlwifi: mvm: move early time-point before nvm_init in non-unified
+  iwlwifi: pcie: add support for SnJ with Hr1
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  58 ++++++-
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    |   7 +-
+ .../net/wireless/intel/iwlwifi/fw/api/tx.h    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   2 +
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |   7 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   4 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  13 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   5 +-
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |   5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 116 ++++++++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |   3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  19 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 141 ++++++++++++------
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  36 ++---
+ 15 files changed, 325 insertions(+), 95 deletions(-)
+
 -- 
-1.8.3.1
+2.30.0
 
