@@ -2,64 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF2D03111BD
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Feb 2021 21:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C460311388
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Feb 2021 22:29:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233647AbhBESSB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Feb 2021 13:18:01 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:55697 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S233183AbhBEPTk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Feb 2021 10:19:40 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=JFt3cjfr2gf0oZFNAIkKMxcz4dJD/YGkc0fGvOoSd3DydZ6om7JzTU837vBFVq1NIPU0D2QA5BLHZXE1+7cBmkJlbZjYCUFmJkkaBVbP88e4KHnDVRcctmBLIZ1pL5VerRqjcciKkL4DSuyXFJlGk3Z0CRoskvUoLBM7ZhpxLeqIU2BKsbHQXJZ1h2qHQhaHiD+VrGx+bGKjZzbhmRvwLDQIByq6jRcjht5MzYCcxpzOzp/k+Dev9dQj7B
-        WId68CyP4XonlI4wIMRo1xiGfUtKZ+P3cZo2ejPWBjr+ynq3dK3OxibTTEKfmOc5W1zmJFMAPQ+ZKxsa3M4d1PiYxHmg==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Mon, 1 Feb 2021 08:50:14 +0000
-Message-ID: <D474448D-A325-42CC-A881-8334C6C84BA7@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Mon, 1 Feb 2021 08:50:13 -0000
+        id S233061AbhBEV2A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Feb 2021 16:28:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55576 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231876AbhBEV1r (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Feb 2021 16:27:47 -0500
+X-Greylist: delayed 1119 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 05 Feb 2021 13:27:07 PST
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26499C0613D6;
+        Fri,  5 Feb 2021 13:27:07 -0800 (PST)
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1l88Kz-0008Kk-SC; Fri, 05 Feb 2021 22:08:21 +0100
+Date:   Fri, 5 Feb 2021 22:06:44 +0100
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ssb: Use true and false for bool variable
+Message-ID: <20210205220644.0d05f5ce@wiggum>
+In-Reply-To: <1612508199-92282-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+References: <1612508199-92282-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: multipart/signed; boundary="Sig_/jz6Nx+otOii=QehdirSLbMq";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+--Sig_/jz6Nx+otOii=QehdirSLbMq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+On Fri,  5 Feb 2021 14:56:39 +0800
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+> Fix the following coccicheck warnings:
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
-Regards,
-Ms. Reem.
+--=20
+Michael
 
+--Sig_/jz6Nx+otOii=QehdirSLbMq
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmAds2QACgkQ9TK+HZCN
+iw58hQ//T//CDvkFrpC+zCcZ6qfcfjLrO/d3Wswp1Ta01ZJIVEvpsHKb22VDnrAG
+YBnrcN8ZLSsMm9mcQrj4rzfLPhYEIOnaX4+4z8RtZZqwpK97A/3uVsGhx20U+E1k
+VwcHiIATbtzh7BeoLOrS/GW6f4zvJ+gld9hctJenKSe1vakBIuZ4ygCVSyX5kuiB
+QkWzZmEr4/SnqXAvCRF+CErP9jg3Ks1+uJRLxyj5XbA+MRFEjSajnfZlNiS2No2f
+nZxma6I9MpMIqsMLBFWHOWQkAVQPecFqGR25PPcYAe3kUT6vLbKjt4XTC5mOqA14
+CgwVynDEhBW4BpG2qzxUbS5/ahgmdbeOtF97aqXwX3fWD9PsFRvMAmYAn5SWKeS3
+Mtyvd9X9adDS39DkLtl8BftQ/shHAOS2iTAhfKZ79lnMdl6bcHhP8QvApTVc7mBk
+dx2sCT4Wu5uHZBeds0LyCPQCpqkTQ4AG+AhqhaZJV/RBmRTAwVYcx9dO+jTZSPj7
+XqTxafxJUi2wD7oAUIM7//Uy8fVvNiYVXrH9Zk8EXYRELY/v0NHlO3SBCxfhHaDm
+CfP15YzaNYnzsh8pWFHyTG30hoCzyDNhVezWSTYyWhhrTeB9I/mJ3qMHq27H3J90
+0Bt0xnQUDqp2tYPxm+w293AIoAnL69ZO2F0/r+wNplHtsKbyZMU=
+=h9ND
+-----END PGP SIGNATURE-----
+
+--Sig_/jz6Nx+otOii=QehdirSLbMq--
