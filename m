@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2ED8311F2B
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Feb 2021 18:43:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E62B311F36
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Feb 2021 18:51:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbhBFRkt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 6 Feb 2021 12:40:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33182 "EHLO mail.kernel.org"
+        id S230332AbhBFRut (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 6 Feb 2021 12:50:49 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34918 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230340AbhBFRkr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 6 Feb 2021 12:40:47 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 798A164E88;
-        Sat,  6 Feb 2021 17:40:06 +0000 (UTC)
+        id S230294AbhBFRus (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 6 Feb 2021 12:50:48 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id B0B7E60233;
+        Sat,  6 Feb 2021 17:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612633206;
-        bh=HtOjZjj2z6g1K8kAb394BCeTk6blhuDq2poMqcCU3vE=;
+        s=k20201202; t=1612633807;
+        bh=H1V81hpAl7b5UHm5eloWljxJGDlR07HgNP9s1nYU4Y8=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=N9IiaPlGIDnNSlP2gRGx4DeEjCVjXpReAdRfRbOXP+XMaBEHJ/qa5MUN1rHB2rhyJ
-         E1trm2u2kue1zbhOPULC4mv+JHAaK1kUdQLzmCqipVGWL7hrr/RQGNhR5zuclUzza7
-         X7VFYyYwS+viiGaJ57scDXZzwDad2gMUzen4oxED74+JAqcSxcyZOjzorRTFTV6rAd
-         95sJtgLS59xbUDlDqWh4oVwJ3aWNfhnyyggkuNheGi7xdQOn7lQmDjRPV2xRhljR/+
-         F5F0pVZd5tXEtpKhP3PG9co9kyq3VFnyTe0KdEvF657co+hsFqL10DxA5hixO4Ebto
-         TgLt7l8v529Gg==
+        b=ruktzYA+409ebtaXAHglbA9RiaamEQKdIWBM1i17YtkQdTE2Z1ya4TLDrMlYKiFIS
+         n3MmMMllWdvB1MvoZzsoRjE7LaqoCx2yyKyBVvU2Xs445Sdyhk4qYFbpiqIPzIZn1s
+         lbQL06q12vP4n3IA8TodyLGQVJUGb52du6UK/qHUxdpmgP0SkZm+0iDihY7stG7Yox
+         g1huXeVoQkiMgXocBF80MVVKeQiBn+Ekbnbq0EZzo+WppqnBMbwNzlMEFGd8A6L4wN
+         rdUE8ce6k9l+EmB3jL0wvZbeTvvqwXrBEPYOAenpClMZcsMLzd2cOXGXIp9EmeWLE2
+         dd3r8ZvHpsV5Q==
 Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 70B15609F7;
-        Sat,  6 Feb 2021 17:40:06 +0000 (UTC)
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id A4870609F7;
+        Sat,  6 Feb 2021 17:50:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-drivers-2021-02-05
+Subject: Re: pull-request: wireless-drivers-next-2021-02-05
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161263320645.14418.6438215599301292317.git-patchwork-notify@kernel.org>
-Date:   Sat, 06 Feb 2021 17:40:06 +0000
-References: <20210205163434.14D94C433ED@smtp.codeaurora.org>
-In-Reply-To: <20210205163434.14D94C433ED@smtp.codeaurora.org>
+Message-Id: <161263380766.19726.10360229022737793677.git-patchwork-notify@kernel.org>
+Date:   Sat, 06 Feb 2021 17:50:07 +0000
+References: <20210205161901.C7F83C433ED@smtp.codeaurora.org>
+In-Reply-To: <20210205161901.C7F83C433ED@smtp.codeaurora.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
@@ -43,21 +43,21 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hello:
 
-This pull request was applied to netdev/net.git (refs/heads/master):
+This pull request was applied to netdev/net-next.git (refs/heads/master):
 
-On Fri,  5 Feb 2021 16:34:34 +0000 (UTC) you wrote:
+On Fri,  5 Feb 2021 16:19:01 +0000 (UTC) you wrote:
 > Hi,
 > 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
 > 
 > Kalle
 > 
 > [...]
 
 Here is the summary with links:
-  - pull-request: wireless-drivers-2021-02-05
-    https://git.kernel.org/netdev/net/c/2da4b24b1dfb
+  - pull-request: wireless-drivers-next-2021-02-05
+    https://git.kernel.org/netdev/net-next/c/c90597bdebb5
 
 You are awesome, thank you!
 --
