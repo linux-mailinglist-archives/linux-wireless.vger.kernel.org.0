@@ -2,144 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8F22311CCB
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Feb 2021 12:02:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54B9D311CFC
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Feb 2021 12:53:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbhBFLCC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 6 Feb 2021 06:02:02 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:44034 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229507AbhBFLCB (ORCPT
+        id S229581AbhBFLwH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 6 Feb 2021 06:52:07 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:39653 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229541AbhBFLwF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 6 Feb 2021 06:02:01 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1l8LKy-0045Lv-PO; Sat, 06 Feb 2021 13:01:13 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Sat,  6 Feb 2021 13:01:10 +0200
-Message-Id: <iwlwifi.20210206130110.6f0c1849f7dc.I647b4d22f9468c2f34b777a4bfa445912c6f04f0@changeid>
+        Sat, 6 Feb 2021 06:52:05 -0500
+Received: from legolas.fritz.box (unknown [87.147.51.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id C9C96580060;
+        Sat,  6 Feb 2021 12:51:19 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH v3] mac80211: enable QoS support for nl80211 ctrl port
+Date:   Sat,  6 Feb 2021 12:51:12 +0100
+Message-Id: <20210206115112.567881-1-markus.theil@tu-ilmenau.de>
 X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH for v5.11] iwlwifi: add new cards for So and Qu family
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ihab Zhaika <ihab.zhaika@intel.com>
+This patch unifies sending control port frames
+over nl80211 and AF_PACKET sockets a little more.
 
-add few PCI ID'S for So with Hr and Qu with Hr in AX family.
+Before this patch, EAPOL frames got QoS prioritization
+only when using AF_PACKET sockets.
 
-Signed-off-by: Ihab Zhaika <ihab.zhaika@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+__ieee80211_select_queue only selects a QoS-enabled queue
+for control port frames, when the control port protocol
+is set correctly on the skb. For the AF_PACKET path this
+works, but the nl80211 path used ETH_P_802_3.
+
+Another check for injected frames in wme.c then prevented
+the QoS TID to be copied in the frame.
+
+In order to fix this, get rid of the frame injection marking
+for nl80211 ctrl port and set the correct ethernet protocol.
+
+Please note:
+An erlier version of this path tried to prevent
+frame aggregation for control port frames in order to speed up
+the initial connection setup a little. This seemed to cause
+issues on my older Intel dvm-based hardware, and was therefore
+removed again. Future commits which try to reintroduce this
+have to check carefully how hw behaves with aggregated and
+non-aggregated traffic for the same TID.
+My NIC: Intel(R) Centrino(R) Ultimate-N 6300 AGN, REV=0x74
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    | 18 +++++++++++++
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  3 +++
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 26 +++++++++++++++++++
- 3 files changed, 47 insertions(+)
+v3: move queue selection to ieee80211_tx_control_port
+v2: remove aggregation bypass for control port frames
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 8280092066e7..503d0feb6bbc 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -635,6 +635,24 @@ const struct iwl_cfg iwl_cfg_snj_a0_mr_a0 = {
- 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
- };
+ net/mac80211/status.c |  8 ++------
+ net/mac80211/tx.c     | 25 +++++++++++++++++++------
+ 2 files changed, 21 insertions(+), 12 deletions(-)
+
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 3485610755ef..9baf185ee4c7 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -628,16 +628,12 @@ static void ieee80211_report_ack_skb(struct ieee80211_local *local,
+ 		u64 cookie = IEEE80211_SKB_CB(skb)->ack.cookie;
+ 		struct ieee80211_sub_if_data *sdata;
+ 		struct ieee80211_hdr *hdr = (void *)skb->data;
+-		__be16 ethertype = 0;
+-
+-		if (skb->len >= ETH_HLEN && skb->protocol == cpu_to_be16(ETH_P_802_3))
+-			skb_copy_bits(skb, 2 * ETH_ALEN, &ethertype, ETH_TLEN);
  
-+const struct iwl_cfg iwl_cfg_so_a0_hr_a0 = {
-+	.fw_name_pre = IWL_SO_A_HR_B_FW_PRE,
-+	IWL_DEVICE_AX210,
-+	.num_rbds = IWL_NUM_RBDS_AX210_HE,
-+};
-+
-+const struct iwl_cfg iwl_cfg_quz_a0_hr_b0 = {
-+	.fw_name_pre = IWL_QUZ_A_HR_B_FW_PRE,
-+	IWL_DEVICE_22500,
-+	/*
-+	 * This device doesn't support receiving BlockAck with a large bitmap
-+	 * so we need to restrict the size of transmitted aggregation to the
-+	 * HT size; mac80211 would otherwise pick the HE max (256) by default.
+ 		rcu_read_lock();
+ 		sdata = ieee80211_sdata_from_skb(local, skb);
+ 		if (sdata) {
+-			if (ethertype == sdata->control_port_protocol ||
+-			    ethertype == cpu_to_be16(ETH_P_PREAUTH))
++			if (skb->protocol == sdata->control_port_protocol ||
++			    skb->protocol == cpu_to_be16(ETH_P_PREAUTH))
+ 				cfg80211_control_port_tx_status(&sdata->wdev,
+ 								cookie,
+ 								skb->data,
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index d626e6808bef..6ec415f043e1 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1182,9 +1182,7 @@ ieee80211_tx_prepare(struct ieee80211_sub_if_data *sdata,
+ 			tx->sta = rcu_dereference(sdata->u.vlan.sta);
+ 			if (!tx->sta && sdata->wdev.use_4addr)
+ 				return TX_DROP;
+-		} else if (info->flags & (IEEE80211_TX_INTFL_NL80211_FRAME_TX |
+-					  IEEE80211_TX_CTL_INJECTED) ||
+-			   tx->sdata->control_port_protocol == tx->skb->protocol) {
++		} else if (tx->sdata->control_port_protocol == tx->skb->protocol) {
+ 			tx->sta = sta_info_get_bss(sdata, hdr->addr1);
+ 		}
+ 		if (!tx->sta && !is_multicast_ether_addr(hdr->addr1))
+@@ -5404,6 +5402,7 @@ int ieee80211_tx_control_port(struct wiphy *wiphy, struct net_device *dev,
+ {
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	struct ieee80211_local *local = sdata->local;
++	struct sta_info *sta;
+ 	struct sk_buff *skb;
+ 	struct ethhdr *ehdr;
+ 	u32 ctrl_flags = 0;
+@@ -5426,8 +5425,7 @@ int ieee80211_tx_control_port(struct wiphy *wiphy, struct net_device *dev,
+ 	if (cookie)
+ 		ctrl_flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
+ 
+-	flags |= IEEE80211_TX_INTFL_NL80211_FRAME_TX |
+-		 IEEE80211_TX_CTL_INJECTED;
++	flags |= IEEE80211_TX_INTFL_NL80211_FRAME_TX;
+ 
+ 	skb = dev_alloc_skb(local->hw.extra_tx_headroom +
+ 			    sizeof(struct ethhdr) + len);
+@@ -5444,10 +5442,25 @@ int ieee80211_tx_control_port(struct wiphy *wiphy, struct net_device *dev,
+ 	ehdr->h_proto = proto;
+ 
+ 	skb->dev = dev;
+-	skb->protocol = htons(ETH_P_802_3);
++	skb->protocol = proto;
+ 	skb_reset_network_header(skb);
+ 	skb_reset_mac_header(skb);
+ 
++	/* update QoS header to prioritize control port frames if possible,
++	 * priorization also happens for control port frames send over
++	 * AF_PACKET
 +	 */
-+	.max_tx_agg_size = IEEE80211_MAX_AMPDU_BUF_HT,
-+	.num_rbds = IWL_NUM_RBDS_22000_HE,
-+};
++	rcu_read_lock();
 +
- MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QNJ_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 86e1d57df65e..c72d23d54d90 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -418,6 +418,7 @@ struct iwl_cfg {
- #define IWL_CFG_MAC_TYPE_QU		0x33
- #define IWL_CFG_MAC_TYPE_QUZ		0x35
- #define IWL_CFG_MAC_TYPE_QNJ		0x36
-+#define IWL_CFG_MAC_TYPE_SO		0x37
- #define IWL_CFG_MAC_TYPE_SNJ		0x42
- #define IWL_CFG_MAC_TYPE_MA		0x44
++	if (ieee80211_lookup_ra_sta(sdata, skb, &sta) == 0 && !IS_ERR(sta)) {
++		u16 queue = __ieee80211_select_queue(sdata, sta, skb);
++
++		skb_set_queue_mapping(skb, queue);
++		skb_get_hash(skb);
++	}
++
++	rcu_read_unlock();
++
+ 	/* mutex lock is only needed for incrementing the cookie counter */
+ 	mutex_lock(&local->mtx);
  
-@@ -604,6 +605,8 @@ extern const struct iwl_cfg iwlax201_cfg_snj_hr_b0;
- extern const struct iwl_cfg iwl_cfg_ma_a0_gf_a0;
- extern const struct iwl_cfg iwl_cfg_ma_a0_mr_a0;
- extern const struct iwl_cfg iwl_cfg_snj_a0_mr_a0;
-+extern const struct iwl_cfg iwl_cfg_so_a0_hr_a0;
-+extern const struct iwl_cfg iwl_cfg_quz_a0_hr_b0;
- #endif /* CONFIG_IWLMVM */
- 
- #endif /* __IWL_CONFIG_H__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index ed3f5b7aa71e..c55faa388948 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -934,6 +934,11 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY,
- 		      IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_quz_a0_hr1_b0, iwl_ax101_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_QUZ, SILICON_B_STEP,
-+		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY,
-+		      iwl_cfg_quz_a0_hr_b0, iwl_ax203_name),
- 
- /* Ma */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-@@ -952,6 +957,27 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_ANY, IWL_CFG_ANY,
- 		      iwl_cfg_snj_a0_mr_a0, iwl_ma_name),
- 
-+/* So with Hr */
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY,
-+		      iwl_cfg_so_a0_hr_a0, iwl_ax203_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY,
-+		      iwl_cfg_so_a0_hr_a0, iwl_ax203_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY,
-+		      IWL_CFG_160, IWL_CFG_ANY,
-+		      iwl_cfg_so_a0_hr_a0, iwl_ax101_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
-+		      IWL_CFG_160, IWL_CFG_ANY,
-+		      iwl_cfg_so_a0_hr_a0, iwl_ax201_name)
- 
- #endif /* CONFIG_IWLMVM */
- };
 -- 
 2.30.0
 
