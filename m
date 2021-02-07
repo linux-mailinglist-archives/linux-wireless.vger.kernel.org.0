@@ -2,102 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3C6312422
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Feb 2021 12:55:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4623B312513
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Feb 2021 16:17:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230124AbhBGLxv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 7 Feb 2021 06:53:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:25886 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230038AbhBGLxl (ORCPT
+        id S229908AbhBGPQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 7 Feb 2021 10:16:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229846AbhBGPQo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 7 Feb 2021 06:53:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612698731;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=aaAUCBAcr58sGZ9AaXinrBRzX6dEREqyHriRmijDonc=;
-        b=cghm05XOlfvVR8vx8dnOAF5SmqwXhuKvBZhlAEQKPWwjynK44mTOXEzJpsHsOyP9YVh6Wa
-        QUxFzKEhZvD5+xfb1ENOcI8DuWzU2YPpEV/KxJmBVf38aM5m3MLNBzBo5HKSEJA+QMadd5
-        lupiJqLBVi7XyDMdDvoyezqh44LW6Qg=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-208-bFTp54uxPHGIrfQt5tmn8g-1; Sun, 07 Feb 2021 06:52:09 -0500
-X-MC-Unique: bFTp54uxPHGIrfQt5tmn8g-1
-Received: by mail-yb1-f199.google.com with SMTP id h192so13310263ybg.23
-        for <linux-wireless@vger.kernel.org>; Sun, 07 Feb 2021 03:52:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aaAUCBAcr58sGZ9AaXinrBRzX6dEREqyHriRmijDonc=;
-        b=fMaw3cidYZ4hhRGotmDzWY2/wTMFc1dOYBzsvDaugaQvriIqgU8VYVSGyN4iv/D6bS
-         6/1looB+m0/tTRfk528KAOSlzQJ7aC9lQ0hl0cdqj5QHoYjXqRf4YQpZP8dUT7++w1o/
-         zTfCBgsMTvjZbn+0SLHbqdeDfTkk3w/p2IBuamLgrZQeajisNUnG7LemH0zjUeKekSpW
-         8Sq7AoO9lILgvk1nULZPQ98ksDYiQ31NDuaayAguVf67XygQgPyEaS06tSIvLyOqbV1u
-         6EkjT61lSeOTV7rP4Y+B0d87zsv7WVTSYOt21limoeRt19Zy07c9PpD2wRY/m9eVBsID
-         DaZw==
-X-Gm-Message-State: AOAM5330UYcCPsI2D+U2dLClrPzXdJalhCgLkO/ed6zlqHOeVMBVEG/U
-        oS7LW/ohZYi/5NFvFkBzuNd0wuIwVD2RwZsiu0zbU5YSiCLM/hbHSw5f0ebsw4Nrg+O4KYW85LZ
-        e97q41DoIn8fhsKBkCaTYqcc5mO39pGwGOzJ6Scr9ItM=
-X-Received: by 2002:a5b:702:: with SMTP id g2mr5454694ybq.285.1612698729067;
-        Sun, 07 Feb 2021 03:52:09 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyTiyeV6aiIPFuN+mpHm4JqIlX95G+eKQuOh/PjvkfC9N2DO4W1jHGf3U24v2SBwyc0oHub2HP2D2M3LsQuZsk=
-X-Received: by 2002:a5b:702:: with SMTP id g2mr5454678ybq.285.1612698728848;
- Sun, 07 Feb 2021 03:52:08 -0800 (PST)
+        Sun, 7 Feb 2021 10:16:44 -0500
+X-Greylist: delayed 392 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 07 Feb 2021 07:16:03 PST
+Received: from mail.blocktrron.ovh (mars.blocktrron.ovh [IPv6:2001:41d0:401:3000::cbd])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6CFEC061788
+        for <linux-wireless@vger.kernel.org>; Sun,  7 Feb 2021 07:16:03 -0800 (PST)
+Received: from localhost.localdomain (p200300e53f3fbd004aa0d92dd69c6c60.dip0.t-ipconnect.de [IPv6:2003:e5:3f3f:bd00:4aa0:d92d:d69c:6c60])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.blocktrron.ovh (Postfix) with ESMTPSA id BD7631E948;
+        Sun,  7 Feb 2021 16:09:27 +0100 (CET)
+From:   David Bauer <mail@david-bauer.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     lorenzo@kernel.org, nbd@nbd.name
+Subject: [PATCH] mt76: mt76x0: disable GTK offloading
+Date:   Sun,  7 Feb 2021 16:09:17 +0100
+Message-Id: <20210207150917.75536-1-mail@david-bauer.net>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-References: <20210205163434.14D94C433ED@smtp.codeaurora.org>
- <20210206093537.0bfaf0db@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <20210206194325.GA134674@lore-desk> <87r1ls5svl.fsf@codeaurora.org> <CAJ0CqmUkyKN_1MxSKejp90ONBtCTrsF1HUGRdh9+xNkdEjcwPg@mail.gmail.com>
-In-Reply-To: <CAJ0CqmUkyKN_1MxSKejp90ONBtCTrsF1HUGRdh9+xNkdEjcwPg@mail.gmail.com>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Sun, 7 Feb 2021 12:51:58 +0100
-Message-ID: <CAJ0CqmV2Qc6x_T6xQ1eBWc=9F67OWGUmH+nDLGfjSe7m0vW2bw@mail.gmail.com>
-Subject: Re: pull-request: wireless-drivers-2021-02-05
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Felix Fietkau <nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> >
->
-> [...]
->
-> >
-> > So what's the plan? Is there going to be a followup patch? And should
-> > that also go to v5.11 or can it wait v5.12?
-> >
-> > --
-> > https://patchwork.kernel.org/project/linux-wireless/list/
-> >
-> > https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-> >
->
-> Hi Kalle,
->
+When operating two VAP on a MT7610 with encryption (PSK2, SAE, OWE),
+only the first one to be created will transmit properly encrypteded
+frames.
 
-Hi Kalle,
+All subsequently created VAPs will sent out frames with the payload left
+unencrypted, breaking multicast traffic (ICMP6 NDP) and potentially
+disclosing information to a third party.
 
-> I will post two followup patches later today. I think the issues are
-> not harmful but it will be easier to post them to wireless-drivers
-> tree, agree?
->
+Disable GTK offloading and encrypt these frames in software to
+circumvent this issue. THis only seems to be necessary on MT7610 chips,
+as MT7612 is not affected from our testing.
 
-carefully reviewing the code, I do not think the second one is a real
-issue, so I have only posted a fix to address Jakub's comment.
+Signed-off-by: David Bauer <mail@david-bauer.net>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x02_util.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Regards,
-Lorenzo
-
-
-> Regards,
-> Lorenzo
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index 7ac20d3c16d7..aaa597b941cd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -447,6 +447,10 @@ int mt76x02_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+ 		return -EOPNOTSUPP;
+ 
++	/* MT76x0 GTK offloading does not work with more than one VIF */
++	if (is_mt76x0(dev) && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
++		return -EOPNOTSUPP;
++
+ 	msta = sta ? (struct mt76x02_sta *)sta->drv_priv : NULL;
+ 	wcid = msta ? &msta->wcid : &mvif->group_wcid;
+ 
+-- 
+2.30.0
 
