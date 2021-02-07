@@ -2,167 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14A5B312232
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Feb 2021 08:21:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A3431235F
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Feb 2021 11:09:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229566AbhBGHVK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 7 Feb 2021 02:21:10 -0500
-Received: from mail-io1-f69.google.com ([209.85.166.69]:57113 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbhBGHVF (ORCPT
+        id S229734AbhBGKIK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 7 Feb 2021 05:08:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:49894 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229711AbhBGKHw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 7 Feb 2021 02:21:05 -0500
-Received: by mail-io1-f69.google.com with SMTP id m2so9365876iow.23
-        for <linux-wireless@vger.kernel.org>; Sat, 06 Feb 2021 23:20:49 -0800 (PST)
+        Sun, 7 Feb 2021 05:07:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1612692385;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=nI3CuNAhEGALCXdE3wTR7z3x3Df42xi1niQl1wqF/K4=;
+        b=M558eJ5cknql1cgk0sNg1roINjs6dS25UVmUtc95c2FTxUG/BHK+d027uRZK8inEqQ3yOg
+        0WfHGqwUL4KdejynRNbTLiLe4YxRqOFnMEND5EaFKYds7ixC4/V2F7vrM7HuKFpKZRjOeF
+        qzJbQ1sbutyc5uLM3l0N3m5ZnH3YyT4=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-427-xrxSqaf4OTWYfu-AJAN-bw-1; Sun, 07 Feb 2021 05:06:24 -0500
+X-MC-Unique: xrxSqaf4OTWYfu-AJAN-bw-1
+Received: by mail-yb1-f200.google.com with SMTP id q191so13253686ybg.4
+        for <linux-wireless@vger.kernel.org>; Sun, 07 Feb 2021 02:06:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=xUTyJq/1MYIrp6IYEy72AdzuPFYzDzCFxmNycYmGDEQ=;
-        b=cGpZAh+yMW2HFSU1NZEW32GgV+ow7onlLlgSvutXTrQOeiyHe9zou/8pUNbcXOmPRI
-         dD+ZfXgNZyHOABpI54OTd/G42WRnmgDdq6ruAV6ssdvNGIg8iXvnLaVmYHbns+9DQtNk
-         xHBvEZGoDjAVtZ0QpMK+ZULRGBzcI1kxBL5P4f8RF0CvaVhOaWCOe6H+myDksxw21fhp
-         IXrLbpLljqy8VzYgNUtBYYv0f5739GuEDkwn0Evf92+/dI7Wzcc73JthdFMW7Klzg9qc
-         h07vQfvNbRNUKtvxzCJlhQqsKBK+EN7vGtzdf1nsAsQbKtfU9pRbZ6bkppWPK0YLAPK4
-         xp+Q==
-X-Gm-Message-State: AOAM531b2HwE2UCe2/XMi4vFhKg3DltZKBBp6VAF1YyXKEJfHSo2mbaT
-        eqab6PdM8lENFNQq9ZN2/uPxkyiUqlkRSZO9UfxmJib8ApVA
-X-Google-Smtp-Source: ABdhPJy5d/CmGb6qZJzwZqyuMm66N/qCjTWrq/ZIZa5coUS04XgiYv1DEc6PTEkr04vMNbglPQDiF4Cpi8x9U8qbXRQZ25ZmcHA9
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nI3CuNAhEGALCXdE3wTR7z3x3Df42xi1niQl1wqF/K4=;
+        b=ThkVihyHRpaqu+/Qs5dZWUC8rv1/zgX6y2cUEIUxjxxjgK8bZfruHNF21n66UF2EUF
+         vArD1FMjwDcBELdj0w+m9eopM7sYYIyPOPcmx2FIdhHFJ5USIq0Gf8uBuIBGOCLyYDXC
+         SL/XpR/UYZW9RJxw29/if+r0MRmxnT6yi3sTBPCr1JdrrX6JQXredy5+w9bkVlDTflzZ
+         JRgNIGyZXpt07eqEXlbR++9lWCPvWQExnYFb22l4BfjxdvwTgwYROtUMQ2NuO71+7y0e
+         +r92x3m75kvYE3gSapWpQZdN7KqFDugLCeIJwTuDJjKrn7NnzN6D4mcg+/Pn0/LebZ07
+         pfdA==
+X-Gm-Message-State: AOAM532DuqSwCASVDwU6p+mmqz/aoamvknRlirge1mjto8n9w2FgddM/
+        Khami19JTYqDxXzTmfwN7sA1HcAAbrycMf2JHMjK/WgbCjO7coNyEiIxJJFTf/gzWM9TT2k7afs
+        6qaUVVVOTgdG9hHVnv+BUAaMQsqR8JHw0aTO6cEpzqbA=
+X-Received: by 2002:a25:aad0:: with SMTP id t74mr5995791ybi.107.1612692383796;
+        Sun, 07 Feb 2021 02:06:23 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxBmqAhUy2O7xzTlMawk7rbbfe1u4MPWcHYEWQ2AVn3si3UQwS1OeW/o+Mt/cDXjNh8hxtpeXH4wMzSjonA+Cc=
+X-Received: by 2002:a25:aad0:: with SMTP id t74mr5995694ybi.107.1612692383612;
+ Sun, 07 Feb 2021 02:06:23 -0800 (PST)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:12:: with SMTP id b18mr10790843ioa.134.1612682424109;
- Sat, 06 Feb 2021 23:20:24 -0800 (PST)
-Date:   Sat, 06 Feb 2021 23:20:24 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000006536505bab9e3d4@google.com>
-Subject: memory leak in __ieee80211_beacon_get
-From:   syzbot <syzbot+e832ab33619901afc64a@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+References: <20210205163434.14D94C433ED@smtp.codeaurora.org>
+ <20210206093537.0bfaf0db@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <20210206194325.GA134674@lore-desk> <87r1ls5svl.fsf@codeaurora.org>
+In-Reply-To: <87r1ls5svl.fsf@codeaurora.org>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Sun, 7 Feb 2021 11:06:12 +0100
+Message-ID: <CAJ0CqmUkyKN_1MxSKejp90ONBtCTrsF1HUGRdh9+xNkdEjcwPg@mail.gmail.com>
+Subject: Re: pull-request: wireless-drivers-2021-02-05
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+>
 
-syzbot found the following issue on:
+[...]
 
-HEAD commit:    3aaf0a27 Merge tag 'clang-format-for-linux-v5.11-rc7' of g..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10f79330d00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b7edd79f26f7c0c3
-dashboard link: https://syzkaller.appspot.com/bug?extid=e832ab33619901afc64a
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13e46a40d00000
+>
+> So what's the plan? Is there going to be a followup patch? And should
+> that also go to v5.11 or can it wait v5.12?
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e832ab33619901afc64a@syzkaller.appspotmail.com
+Hi Kalle,
 
-BUG: memory leak
-unreferenced object 0xffff88811682b500 (size 232):
-  comm "softirq", pid 0, jiffies 4295119192 (age 15.070s)
-  hex dump (first 32 bytes):
-    10 c5 79 16 81 88 ff ff 10 c5 79 16 81 88 ff ff  ..y.......y.....
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<0000000092ce1185>] __alloc_skb+0x6d/0x280 net/core/skbuff.c:198
-    [<0000000027006abe>] __netdev_alloc_skb+0x6a/0x210 net/core/skbuff.c:446
-    [<00000000bbb79fe8>] netdev_alloc_skb include/linux/skbuff.h:2832 [inline]
-    [<00000000bbb79fe8>] dev_alloc_skb include/linux/skbuff.h:2845 [inline]
-    [<00000000bbb79fe8>] __ieee80211_beacon_get+0x662/0x7a0 net/mac80211/tx.c:4814
-    [<00000000d5da7a17>] ieee80211_beacon_get_tim+0x47/0x1c0 net/mac80211/tx.c:4928
-    [<0000000042c1663d>] ieee80211_beacon_get include/net/mac80211.h:4918 [inline]
-    [<0000000042c1663d>] mac80211_hwsim_beacon_tx+0xa1/0x2c0 drivers/net/wireless/mac80211_hwsim.c:1729
-    [<00000000681dd69b>] __iterate_interfaces+0x125/0x260 net/mac80211/util.c:793
-    [<00000000025fd347>] ieee80211_iterate_active_interfaces_atomic+0x2e/0x40 net/mac80211/util.c:829
-    [<00000000c135ff4a>] mac80211_hwsim_beacon+0x52/0xb0 drivers/net/wireless/mac80211_hwsim.c:1782
-    [<0000000018e3b983>] __run_hrtimer kernel/time/hrtimer.c:1519 [inline]
-    [<0000000018e3b983>] __hrtimer_run_queues+0x1ba/0x470 kernel/time/hrtimer.c:1583
-    [<00000000ac9fbd2f>] hrtimer_run_softirq+0x7e/0x100 kernel/time/hrtimer.c:1600
-    [<000000003b2a8015>] __do_softirq+0xbf/0x2ab kernel/softirq.c:343
-    [<00000000cfba3969>] asm_call_irq_on_stack+0xf/0x20
-    [<00000000a2e1da95>] __run_on_irqstack arch/x86/include/asm/irq_stack.h:26 [inline]
-    [<00000000a2e1da95>] run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:77 [inline]
-    [<00000000a2e1da95>] do_softirq_own_stack+0x32/0x40 arch/x86/kernel/irq_64.c:77
-    [<0000000075748e36>] invoke_softirq kernel/softirq.c:226 [inline]
-    [<0000000075748e36>] __irq_exit_rcu kernel/softirq.c:420 [inline]
-    [<0000000075748e36>] irq_exit_rcu+0x93/0xc0 kernel/softirq.c:432
-    [<000000006645e04e>] sysvec_apic_timer_interrupt+0x36/0x80 arch/x86/kernel/apic/apic.c:1096
-    [<00000000cffb1ca1>] asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:629
+I will post two followup patches later today. I think the issues are
+not harmful but it will be easier to post them to wireless-drivers
+tree, agree?
 
-BUG: memory leak
-unreferenced object 0xffff88811682db00 (size 232):
-  comm "softirq", pid 0, jiffies 4295119192 (age 15.070s)
-  hex dump (first 32 bytes):
-    10 c5 6b 16 81 88 ff ff 10 c5 6b 16 81 88 ff ff  ..k.......k.....
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<0000000092ce1185>] __alloc_skb+0x6d/0x280 net/core/skbuff.c:198
-    [<0000000027006abe>] __netdev_alloc_skb+0x6a/0x210 net/core/skbuff.c:446
-    [<00000000bbb79fe8>] netdev_alloc_skb include/linux/skbuff.h:2832 [inline]
-    [<00000000bbb79fe8>] dev_alloc_skb include/linux/skbuff.h:2845 [inline]
-    [<00000000bbb79fe8>] __ieee80211_beacon_get+0x662/0x7a0 net/mac80211/tx.c:4814
-    [<00000000d5da7a17>] ieee80211_beacon_get_tim+0x47/0x1c0 net/mac80211/tx.c:4928
-    [<0000000042c1663d>] ieee80211_beacon_get include/net/mac80211.h:4918 [inline]
-    [<0000000042c1663d>] mac80211_hwsim_beacon_tx+0xa1/0x2c0 drivers/net/wireless/mac80211_hwsim.c:1729
-    [<00000000681dd69b>] __iterate_interfaces+0x125/0x260 net/mac80211/util.c:793
-    [<00000000025fd347>] ieee80211_iterate_active_interfaces_atomic+0x2e/0x40 net/mac80211/util.c:829
-    [<00000000c135ff4a>] mac80211_hwsim_beacon+0x52/0xb0 drivers/net/wireless/mac80211_hwsim.c:1782
-    [<0000000018e3b983>] __run_hrtimer kernel/time/hrtimer.c:1519 [inline]
-    [<0000000018e3b983>] __hrtimer_run_queues+0x1ba/0x470 kernel/time/hrtimer.c:1583
-    [<00000000ac9fbd2f>] hrtimer_run_softirq+0x7e/0x100 kernel/time/hrtimer.c:1600
-    [<000000003b2a8015>] __do_softirq+0xbf/0x2ab kernel/softirq.c:343
-    [<00000000cfba3969>] asm_call_irq_on_stack+0xf/0x20
-    [<00000000a2e1da95>] __run_on_irqstack arch/x86/include/asm/irq_stack.h:26 [inline]
-    [<00000000a2e1da95>] run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:77 [inline]
-    [<00000000a2e1da95>] do_softirq_own_stack+0x32/0x40 arch/x86/kernel/irq_64.c:77
-    [<0000000075748e36>] invoke_softirq kernel/softirq.c:226 [inline]
-    [<0000000075748e36>] __irq_exit_rcu kernel/softirq.c:420 [inline]
-    [<0000000075748e36>] irq_exit_rcu+0x93/0xc0 kernel/softirq.c:432
-    [<000000006645e04e>] sysvec_apic_timer_interrupt+0x36/0x80 arch/x86/kernel/apic/apic.c:1096
-    [<00000000cffb1ca1>] asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:629
+Regards,
+Lorenzo
 
-BUG: memory leak
-unreferenced object 0xffff888116604400 (size 512):
-  comm "softirq", pid 0, jiffies 4295119192 (age 15.070s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<00000000d1a2675d>] __kmalloc_reserve net/core/skbuff.c:142 [inline]
-    [<00000000d1a2675d>] __alloc_skb+0xab/0x280 net/core/skbuff.c:210
-    [<0000000027006abe>] __netdev_alloc_skb+0x6a/0x210 net/core/skbuff.c:446
-    [<00000000bbb79fe8>] netdev_alloc_skb include/linux/skbuff.h:2832 [inline]
-    [<00000000bbb79fe8>] dev_alloc_skb include/linux/skbuff.h:2845 [inline]
-    [<00000000bbb79fe8>] __ieee80211_beacon_get+0x662/0x7a0 net/mac80211/tx.c:4814
-    [<00000000d5da7a17>] ieee80211_beacon_get_tim+0x47/0x1c0 net/mac80211/tx.c:4928
-    [<0000000042c1663d>] ieee80211_beacon_get include/net/mac80211.h:4918 [inline]
-    [<0000000042c1663d>] mac80211_hwsim_beacon_tx+0xa1/0x2c0 drivers/net/wireless/mac80211_hwsim.c:1729
-    [<00000000681dd69b>] __iterate_interfaces+0x125/0x260 net/mac80211/util.c:793
-    [<00000000025fd347>] ieee80211_iterate_active_interfaces_atomic+0x2e/0x40 net/mac80211/util.c:829
-    [<00000000c135ff4a>] mac80211_hwsim_beacon+0x52/0xb0 drivers/net/wireless/mac80211_hwsim.c:1782
-    [<0000000018e3b983>] __run_hrtimer kernel/time/hrtimer.c:1519 [inline]
-    [<0000000018e3b983>] __hrtimer_run_queues+0x1ba/0x470 kernel/time/hrtimer.c:1583
-    [<00000000ac9fbd2f>] hrtimer_run_softirq+0x7e/0x100 kernel/time/hrtimer.c:1600
-    [<000000003b2a8015>] __do_softirq+0xbf/0x2ab kernel/softirq.c:343
-    [<00000000cfba3969>] asm_call_irq_on_stack+0xf/0x20
-    [<00000000a2e1da95>] __run_on_irqstack arch/x86/include/asm/irq_stack.h:26 [inline]
-    [<00000000a2e1da95>] run_on_irqstack_cond arch/x86/include/asm/irq_stack.h:77 [inline]
-    [<00000000a2e1da95>] do_softirq_own_stack+0x32/0x40 arch/x86/kernel/irq_64.c:77
-    [<0000000075748e36>] invoke_softirq kernel/softirq.c:226 [inline]
-    [<0000000075748e36>] __irq_exit_rcu kernel/softirq.c:420 [inline]
-    [<0000000075748e36>] irq_exit_rcu+0x93/0xc0 kernel/softirq.c:432
-    [<000000006645e04e>] sysvec_apic_timer_interrupt+0x36/0x80 arch/x86/kernel/apic/apic.c:1096
-    [<00000000cffb1ca1>] asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:629
-
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
