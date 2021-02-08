@@ -2,73 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75C54313358
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 14:33:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B04A431335F
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 14:34:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230166AbhBHNcV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 08:32:21 -0500
-Received: from so15.mailgun.net ([198.61.254.15]:61535 "EHLO so15.mailgun.net"
+        id S231273AbhBHNd1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 08:33:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58186 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229759AbhBHNcK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 08:32:10 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612791111; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=oNMERzZVWVaCbjiM7xG76XnAPHjGJaARTIMS+Ct+WtY=; b=Va9ieY8714TxkUVxMqIOSUNi28tbPE4+cOyzw6Xa4LnDQH4Ip073k2KuOwe8h8/lDD4DrLIL
- OtSk8MqQ0K8/VFn9zC1QFlny8G8Gu/51+k39TMmHydcMIAyrU8YjS48jHe7/f5ZjPqd+qhWO
- WxuMa2yddgxH3pJghQu3J3BjBfg=
-X-Mailgun-Sending-Ip: 198.61.254.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 60213d2f81f6c45dcefe9dc2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 13:31:27
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7A1BCC433ED; Mon,  8 Feb 2021 13:31:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 415FEC433C6;
-        Mon,  8 Feb 2021 13:31:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 415FEC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 09/12] iwlwifi: pcie: Add support new CRFs for Ma
-References: <20210208124847.1934441-1-luca@coelho.fi>
-        <iwlwifi.20210208144305.0baae2775d7a.I7377b421b031796730daf809c4024a3c3ef95fa8@changeid>
-Date:   Mon, 08 Feb 2021 15:31:23 +0200
-In-Reply-To: <iwlwifi.20210208144305.0baae2775d7a.I7377b421b031796730daf809c4024a3c3ef95fa8@changeid>
-        (Luca Coelho's message of "Mon, 8 Feb 2021 14:48:44 +0200")
-Message-ID: <871rdq65zo.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S230186AbhBHNdV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Feb 2021 08:33:21 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0860564DD5;
+        Mon,  8 Feb 2021 13:32:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612791160;
+        bh=U/t1IwV4ufUUzFNMKU88aGBBQ6IzUhzBsbhwEAmEs8w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fcqXZDxEe9hQYI2EY054RB0ZN+wx43xyPV1k9dt1TeMary+tHuz+z6G1WoGEA7JhJ
+         ptzSE8qz34rcX8xH8i5Hv1FcMOi1+6ItnG2aOqZ0RMpNFsvUW6IzP+hx/N/uTMfwdV
+         8I6Y3Y5Bx0G+M+P1W4qVzPYiGgDuSJoueA2mO5gPtksMOwr/RKhHDFm2DmR3dHvyIy
+         RUK1JCR/KXrcvgxOdYPwDmfqiT9olxR+Rqorqk6buPlCPqLlOu2r5ah0rem3rDywbS
+         UwXDS0H5lG8lUtgDLpTmae4Dcq7wJiMYhX33VZcdrfIyzkrT/3iNBxEPUDCjgl+3s5
+         nDzbZyH3AlfHg==
+Date:   Mon, 8 Feb 2021 14:32:35 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, kuba@kernel.org, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH wireless-drivers] mt76: dma: do not report truncated
+ frames to mac80211
+Message-ID: <20210208133235.GF2593@lore-desk>
+References: <a03166fcc8214644333c68674a781836e0f57576.1612697217.git.lorenzo@kernel.org>
+ <87mtwfkr6u.fsf@tynnyri.adurom.net>
+ <20210208082516.GB2593@lore-desk>
+ <87im735593.fsf@codeaurora.org>
+ <20210208112035.GD2593@lore-desk>
+ <87a6se667c.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="/aVve/J9H4Wl5yVO"
+Content-Disposition: inline
+In-Reply-To: <87a6se667c.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
 
-> From: Matti Gottlieb <matti.gottlieb@intel.com>
->
-> Add support for Ma with Hr and Gf4
+--/aVve/J9H4Wl5yVO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-A proper english description would be nice. What's CRF? Or Ma? Even the
-title is just gibberish for me.
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>=20
+> >> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> >>=20
+> >> >> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> >> >>=20
+> >> >> > If the fragment is discarded in mt76_add_fragment() since shared_=
+info
+> >> >> > frag array is full, discard truncated frames and do not forward t=
+hem to
+> >> >> > mac80211.
+> >> >> >
+> >> >> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> >> >>=20
+> >> >> Should there be a Fixes line? I can add it.
+> >> >
+> >> > I am not sure it needs a Fixes tag.
+> >>=20
+> >> I think the commit log should have some kind of description about the
+> >> background of the issue, for example if this is a recent regression or
+> >> has been there forever etc.
+> >
+> > Agree. Can you please check the commit log below?
+> >
+> > "
+> > Commit 'b102f0c522cf6 ("mt76: fix array overflow on receiving too many
+> > fragments for a packet")' fixes a possible OOB access but it introduces=
+ a
+> > memory leak since the pending frame is not released to page_frag_cache =
+if
+> > the frag array of skb_shared_info is full.
+> > Commit '93a1d4791c10 ("mt76: dma: fix a possible memory leak in
+> > mt76_add_fragment()")' fixes the issue but does not free the truncated =
+skb that
+> > is forwarded to mac80211 layer. Fix the leftover issue discarding even =
+truncated
+> > skbs.
+> > "
+>=20
+> Looks good, but I think the recommended style for commit ids is not to
+> use ' chararacter. So I would change it to this:
+>=20
+> ----------------------------------------------------------------------
+> Commit b102f0c522cf6 ("mt76: fix array overflow on receiving too many
+> fragments for a packet") fixes a possible OOB access but it introduces a
+> memory leak since the pending frame is not released to page_frag_cache
+> if the frag array of skb_shared_info is full. Commit 93a1d4791c10
+> ("mt76: dma: fix a possible memory leak in mt76_add_fragment()") fixes
+> the issue but does not free the truncated skb that is forwarded to
+> mac80211 layer. Fix the leftover issue discarding even truncated skbs.
+> ----------------------------------------------------------------------
+>=20
+> Should I add that to the commit log and queue the patch to be applied
+> after the merge window opens?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+ack, fine to me, thx.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards,
+Lorenzo
+
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+
+--/aVve/J9H4Wl5yVO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYCE9cQAKCRA6cBh0uS2t
+rNF/AP4yrNcPIxu95cRWcmp5dFjLC2PxSmQAu5oiYlAQra/ahgD/QpZHnQgQASfq
++mWVdixoVTL1ePsz59fJxgm340KJ4AU=
+=Dkrz
+-----END PGP SIGNATURE-----
+
+--/aVve/J9H4Wl5yVO--
