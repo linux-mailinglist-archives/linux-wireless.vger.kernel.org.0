@@ -2,73 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FDA312AB7
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 07:33:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C6E7312B8A
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 09:16:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229800AbhBHGbU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 01:31:20 -0500
-Received: from mail29.static.mailgun.info ([104.130.122.29]:46742 "EHLO
+        id S229671AbhBHIPx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 03:15:53 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:27753 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229788AbhBHGaq (ORCPT
+        by vger.kernel.org with ESMTP id S229615AbhBHIPu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 01:30:46 -0500
+        Mon, 8 Feb 2021 03:15:50 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612765826; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1612772131; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=hVtdyALK1LIwJo49SrO0XacfxouogqCgXWnB5HqnzKM=; b=Hga/9aVc5yCut9RGYTKU9KgACA4PKpV8hGgkBx1z4gikHdVJTslSXxE5gqbXJqNpmw2KM9gH
- 2WgnwzhF6fr9LtfvzM9CrNt+KOECm+Cm31LHEwoi9juBQmWkuFc5CPt6CXScUKs8IjHkxYRV
- znhN3Rb1gLw6BvzTVLIY9N/TxiI=
+ bh=vLCSZ4RgVtw/ngT8xUNT7cpd3htXfCsewH3beMbUeUs=; b=AMcwW/zT01mlZ8+gXUs9YLxk7IxibS0g3Lasl6he+MvQ5PsVxYwt/9HYS8NDys9DZBL9GK0i
+ PiF5/exMUCjUoGbMxPBZn4M1HXFw/yRDPOhlQw143bzySR+PY4ma+HoGPkLFaraVLIaG86FL
+ HxhPfF+gJHLBjpRp9hIBZ6ZGeaI=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 6020da608e43a988b7296514 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 06:29:52
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 6020f3024bd23a05ae7ea0ed (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 08:14:58
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 21AD7C43461; Mon,  8 Feb 2021 06:29:52 +0000 (UTC)
+        id D3E66C43463; Mon,  8 Feb 2021 08:14:57 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
         autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0DC75C43461;
-        Mon,  8 Feb 2021 06:29:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0DC75C43461
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 96AC3C433C6;
+        Mon,  8 Feb 2021 08:14:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 96AC3C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
-        kuba@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH wireless-drivers] mt76: dma: do not report truncated frames to mac80211
-References: <a03166fcc8214644333c68674a781836e0f57576.1612697217.git.lorenzo@kernel.org>
-Date:   Mon, 08 Feb 2021 08:29:45 +0200
-In-Reply-To: <a03166fcc8214644333c68674a781836e0f57576.1612697217.git.lorenzo@kernel.org>
-        (Lorenzo Bianconi's message of "Sun, 7 Feb 2021 12:48:31 +0100")
-Message-ID: <87mtwfkr6u.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: pull-request: wireless-drivers-2021-02-05
+References: <20210205163434.14D94C433ED@smtp.codeaurora.org>
+        <20210206093537.0bfaf0db@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <20210206194325.GA134674@lore-desk> <87r1ls5svl.fsf@codeaurora.org>
+        <CAJ0CqmUkyKN_1MxSKejp90ONBtCTrsF1HUGRdh9+xNkdEjcwPg@mail.gmail.com>
+Date:   Mon, 08 Feb 2021 10:14:53 +0200
+In-Reply-To: <CAJ0CqmUkyKN_1MxSKejp90ONBtCTrsF1HUGRdh9+xNkdEjcwPg@mail.gmail.com>
+        (Lorenzo Bianconi's message of "Sun, 7 Feb 2021 11:06:12 +0100")
+Message-ID: <87mtwf562q.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
+Lorenzo Bianconi <lorenzo.bianconi@redhat.com> writes:
 
-> If the fragment is discarded in mt76_add_fragment() since shared_info
-> frag array is full, discard truncated frames and do not forward them to
-> mac80211.
+>> So what's the plan? Is there going to be a followup patch? And should
+>> that also go to v5.11 or can it wait v5.12?
+>>
+>> --
+>> https://patchwork.kernel.org/project/linux-wireless/list/
+>>
+>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>>
 >
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Hi Kalle,
+>
+> I will post two followup patches later today. I think the issues are
+> not harmful but it will be easier to post them to wireless-drivers
+> tree, agree?
 
-Should there be a Fixes line? I can add it.
+Most likely Linus releases the final v5.11 next Sunday, so we are very
+close to release. If this is not urgent I would rather wait for the
+merge window to open (on Sunday) and apply the patch for v5.12 to avoid
+a last minute rush. Would that work?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
