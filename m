@@ -2,181 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7B2A31389C
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 16:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9751D313A26
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 17:55:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234230AbhBHPzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 10:55:03 -0500
-Received: from mail.toke.dk ([45.145.95.4]:49143 "EHLO mail.toke.dk"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234217AbhBHPyi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 10:54:38 -0500
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1612799630; bh=cUXTygvQBSe9tf+PWQFop4Z2psD8Qa1X0wGFrUmgGKU=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=P5q5p6XCF6P7GVC5+IpntTLeQRF7hPtwUIjrmVy/XaAFw2WyJIuwXTlnY1UKQnb7w
-         6P6gYsgNZBw6iMHseFz+fk5trBAJUWWDY1qucN6+JNkZrUhalPGOk9XVavKaDbc/c4
-         Z28te0JnDWpn/jBgLUjzZup0glTmyuemWSWWoRsaYnLgCw63LH80cX/QTlyfoLt41Z
-         KYmbcnBPBC6SeKeMB4DlGSNeixfriFYHobHPWzr5Si5PR7rjyF046QnWwjtKlPx+So
-         RbE9i3GK5Hsth0RavgD38gPnyIJhuPRVn8weH4A7YNtVptMO4XF2RKq6sA2SZ7Nejt
-         ppTSvuZ7ROKdw==
-To:     Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] mac80211: only schedule TXQ when reasonable airtime
- reporting
-In-Reply-To: <1612796033.13185.5.camel@mtkswgap22>
-References: <c48c3555ab2261d6b6674ac7de8203359b80b127.1612529311.git.ryder.lee@mediatek.com>
- <878s82ve1c.fsf@toke.dk> <1612665675.2364.43.camel@mtkswgap22>
- <1612796033.13185.5.camel@mtkswgap22>
-Date:   Mon, 08 Feb 2021 16:53:50 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <878s7ytv1t.fsf@toke.dk>
+        id S229565AbhBHQzR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 11:55:17 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:30585 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234554AbhBHQyM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Feb 2021 11:54:12 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1612803229; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=u1BEfMErIr52nTI/YnRIphw1LwcFyUW7r5oxsqGWh38=;
+ b=alwUG/EmPXjTzZ+Mn3Jg0Uu6YYYGU64Xsrd2MhplG/p4XCoOT9oysJyubU0GzGVLobBDjclP
+ 535RfBYmG80qjGnJEgNjU7R870yDJWl5WbJlCQsi1/2zEo6om1p3Ybmi8cwlf4qejRbCOV3G
+ FB2cR3Hp++pv+xo9vtwzZ5HXLq4=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 60216c838e43a988b71781ef (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 16:53:23
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A8490C43461; Mon,  8 Feb 2021 16:53:23 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AFDC8C43462;
+        Mon,  8 Feb 2021 16:53:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AFDC8C43462
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: pull-request: iwlwifi-next 2021-02-05
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <274043dd180b451125ab059601416d64a951a9f6.camel@coelho.fi>
+References: <274043dd180b451125ab059601416d64a951a9f6.camel@coelho.fi>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210208165323.A8490C43461@smtp.codeaurora.org>
+Date:   Mon,  8 Feb 2021 16:53:23 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ryder Lee <ryder.lee@mediatek.com> writes:
+Luca Coelho <luca@coelho.fi> wrote:
 
-> On Sun, 2021-02-07 at 10:41 +0800, Ryder Lee wrote:
->> On Fri, 2021-02-05 at 14:29 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrot=
-e:
->
->> > > @@ -3770,6 +3770,10 @@ struct ieee80211_txq *ieee80211_next_txq(stru=
-ct ieee80211_hw *hw, u8 ac)
->> > >  				sta->airtime_weight;
->> > >=20=20
->> > >  		if (deficit < 0 || !aql_check) {
->> > > +			if (txqi->schedule_round =3D=3D local->schedule_round[ac])
->> > > +				goto out;
->> > > +
->> > > +			txqi->schedule_round =3D local->schedule_round[ac];
->> >=20
->> > I think this change may be worth making anyway, but for a different
->> > reason: Without it, a station that fails aql_check will keep getting
->> > recycled through the list, advancing its deficit. Which could actually
->> > be the reason AQL breaks airtime fairness; did you observe any
->> > difference in fairness with this change?
->>=20
->> Our case is: mt7915 provides per-peer airtime counters. However, some of
->> them were not properly configured, so certain stations reported large
->> amount of airtime which led to deficit < 0, and as you said, ending up
->> with recycle + very longer lock hold time (0.9s in our tests) and
->> breaking fairness.
+> Hi Kalle,
+> 
+> Here's the first batch of patches intended for v5.12.  This includes
+> the four last patchsets I sent out for v5.12.  Usual development work.
+> More details about the contents in the tag description.
+> 
+> Please let me know if there are any issues.
+> 
+> Cheers,
+> Luca.
+> 
+> 
+> The following changes since commit 4832bb371c4175ffb506a96accbb08ef2b2466e7:
+> 
+>   iwl4965: do not process non-QOS frames on txq->sched_retry path (2021-01-25 16:43:27 +0200)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2021-02-05
+> 
+> for you to fetch changes up to 47ef328c2090cc790c0766094557aedd04ac923f:
+> 
+>   iwlwifi: pcie: Disable softirqs during Rx queue init (2021-02-05 12:00:13 +0200)
+> 
+> ----------------------------------------------------------------
+> iwlwifi patches intended for v5.12
+> 
+> * Check FW notification sizes for robustness;
+> * Improvements in the NAPI implementation;
+> * Implement a workaround for CCA-EXT;
+> * Add new FW API support;
+> * Fix a CSA bug;
+> * Implement PHY integration version parsing;
+> * A bit of refactoring;
+> * One more CSA bug fix, this time in the AP side;
+> * Support for new So devices and a bit of reorg;
+> * Per Platform Antenna Gain (PPAG) fixes and improvements;
+> * Improvements in the debug framework;
+> * Some other clean-ups and small fixes.
+> 
+> ----------------------------------------------------------------
+> Dror Moshe (2):
+>       iwlwifi: parse phy integration string from FW TLV
+>       iwlwifi: mvm: debugfs for phy-integration-ver
+> 
+> Emmanuel Grumbach (4):
+>       iwlwifi: remove TRANS_PM_OPS
+>       iwlwifi: mvm: don't check system_pm_mode without mutex held
+>       iwlwifi: mvm: cancel the scan delayed work when scan is aborted
+>       iwlwifi: mvm: fix CSA AP side
+> 
+> Haim Dreyfuss (1):
+>       iwlwifi: mvm: don't send commands during suspend\resume transition
+> 
+> Ilan Peer (1):
+>       iwlwifi: pcie: Disable softirqs during Rx queue init
+> 
+> Johannes Berg (13):
+>       iwlwifi: mvm: add notification size checks
+>       iwlwifi: mvm: check more notification sizes
+>       iwlwifi: mvm: remove debugfs injection limitations
+>       iwlwifi: mvm: scan: fix scheduled scan restart handling
+>       iwlwifi: mvm: handle CCA-EXT delay firmware notification
+>       iwlwifi: pcie: properly implement NAPI
+>       iwlwifi: mvm: simplify TX power setting
+>       iwlwifi: mvm: debugfs: check length precisely in inject_packet
+>       iwlwifi: always allow maximum A-MSDU on newer devices
+>       iwlwifi: mvm: advertise BIGTK client support if available
+>       iwlwifi: fw api: make hdr a zero-size array again
+>       iwlwifi: mvm: slightly clean up rs_fw_set_supp_rates()
+>       iwlwifi: mvm: make iwl_mvm_tt_temp_changed() static
+> 
+> Krishnanand Prabhu (1):
+>       iwlwifi: mvm: add explicit check for non-data frames in get Tx rate
+> 
+> Luca Coelho (12):
+>       iwlwifi: bump FW API to 60 for AX devices
+>       iwlwifi: move SnJ and So rules to the new tables
+>       iwlwifi: add support for SnJ with Jf devices
+>       iwlwifi: mvm: move early time-point before nvm_init in non-unified
+>       iwlwifi: pcie: add support for SnJ with Hr1
+>       iwlwifi: mvm: set enabled in the PPAG command properly
+>       iwlwifi: mvm: implement approved list for the PPAG feature
+>       iwlwifi: mvm: add HP to the PPAG approved list
+>       iwlwifi: mvm: add Samsung to the PPAG approved list
+>       iwlwifi: mvm: add Microsoft to the PPAG approved list
+>       iwlwifi: mvm: add Asus to the PPAG approved list
+>       iwlwifi: bump FW API to 61 for AX devices
+> 
+> Mordechay Goodstein (9):
+>       iwlwifi: mvm: add support for new flush queue response
+>       iwl-trans: iwlwifi: move sync NMI logic to trans
+>       iwlwifi: dbg: dump paged memory from index 1
+>       iwlwifi: tx: move handing sync/async host command to trans
+>       iwlwifi: mvm: add IML/ROM information for other HW families
+>       iwlwifi: mvm: add triggers for MLME events
+>       iwlwifi: fwrt: add suspend/resume time point
+>       iwlwifi: mvm: add tx fail time point
+>       iwlwifi: mvm: add debugfs entry to trigger a dump as any time-point
+> 
+> Shaul Triebitz (1):
+>       iwlwifi: mvm: csa: do not abort CSA before disconnect
+> 
+>  drivers/net/wireless/intel/iwlwifi/cfg/22000.c        |  58 +++++++++++++++++++--
+>  drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h  |  18 ++++++-
+>  drivers/net/wireless/intel/iwlwifi/fw/api/debug.h     |  15 ++++++
+>  drivers/net/wireless/intel/iwlwifi/fw/api/rx.h        |   7 ++-
+>  drivers/net/wireless/intel/iwlwifi/fw/api/tx.h        |  28 +++++++++-
+>  drivers/net/wireless/intel/iwlwifi/fw/dbg.c           |  34 ++++++------
+>  drivers/net/wireless/intel/iwlwifi/fw/file.h          |   3 ++
+>  drivers/net/wireless/intel/iwlwifi/fw/img.h           |   3 ++
+>  drivers/net/wireless/intel/iwlwifi/fw/init.c          |   2 +
+>  drivers/net/wireless/intel/iwlwifi/iwl-config.h       |   7 ++-
+>  drivers/net/wireless/intel/iwlwifi/iwl-drv.c          |  14 +++++
+>  drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c |   7 ++-
+>  drivers/net/wireless/intel/iwlwifi/iwl-io.c           |  36 +++++++++++++
+>  drivers/net/wireless/intel/iwlwifi/iwl-prph.h         |   1 +
+>  drivers/net/wireless/intel/iwlwifi/iwl-trans.c        |  18 ++++++-
+>  drivers/net/wireless/intel/iwlwifi/iwl-trans.h        |  33 ++++++------
+>  drivers/net/wireless/intel/iwlwifi/mvm/d3.c           |  31 +++--------
+>  drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c      |  79 ++++++++++++++++++++--------
+>  drivers/net/wireless/intel/iwlwifi/mvm/fw.c           |  39 +++++++++++++-
+>  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c     |  18 +++----
+>  drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c     | 114 ++++++++++++++++++++++++++++++++++-------
+>  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h          |  16 ++++--
+>  drivers/net/wireless/intel/iwlwifi/mvm/ops.c          | 195 +++++++++++++++++++++++++++++++++++++++++++++++++++------------------
+>  drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c        |   5 +-
+>  drivers/net/wireless/intel/iwlwifi/mvm/rx.c           |  13 +++--
+>  drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c         | 125 +++++++++++++++++++++++++++++++++++++++++----
+>  drivers/net/wireless/intel/iwlwifi/mvm/scan.c         |  12 ++++-
+>  drivers/net/wireless/intel/iwlwifi/mvm/sta.c          |  23 +++++----
+>  drivers/net/wireless/intel/iwlwifi/mvm/tt.c           |   8 +--
+>  drivers/net/wireless/intel/iwlwifi/mvm/tx.c           | 175 +++++++++++++++++++++++++++++++++++++++++++++++---------------
+>  drivers/net/wireless/intel/iwlwifi/mvm/utils.c        |  61 +++++++++++++++++++---
+>  drivers/net/wireless/intel/iwlwifi/pcie/drv.c         | 141 ++++++++++++++++++++++++++++++++++----------------
+>  drivers/net/wireless/intel/iwlwifi/pcie/internal.h    |  20 ++++----
+>  drivers/net/wireless/intel/iwlwifi/pcie/rx.c          | 267 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------
+>  drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c  |   4 +-
+>  drivers/net/wireless/intel/iwlwifi/pcie/trans.c       |  92 +++++++++------------------------
+>  drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c     | 125 +--------------------------------------------
+>  drivers/net/wireless/intel/iwlwifi/pcie/tx.c          | 150 +++--------------------------------------------------
+>  drivers/net/wireless/intel/iwlwifi/queue/tx.c         | 129 ++++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/net/wireless/intel/iwlwifi/queue/tx.h         |   1 +
+>  40 files changed, 1389 insertions(+), 738 deletions(-)
 
-First of all, if the driver reports wrong airtime values, of course it
-is going to affect fairness. The right thing in that case is to fix the
-driver, or turn off reporting if it can't be fixed.
+Pulled, thanks.
 
-> Found a problem when we are in low traffic with this patch.This will
-> increase latency (i.e ping)
->
->
-> So, we have to
->
-> 	if (deficit < 0 || !aql_check) {
-> 		if (txqi->schedule_round =3D=3D local->schedule_round[ac])
-> 			// re-schedule
+b7e6725df786 Merge tag 'iwlwifi-next-for-kalle-2021-02-05' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
 
-You mean, signal the driver to start over? But then you're just undoing
-the check you just inserted here...
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/274043dd180b451125ab059601416d64a951a9f6.camel@coelho.fi/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-...and thinking about it a bit more, I don't actually think adding this
-check is the right thing to do. As you've just discovered, the deficit
-scheduler relies on the "goto begin" below (and thus being able to
-keep spinning and increasing the deficit) to make progress. So if you
-short-circuit that, you'll get blocking, but if you keep rotating the
-queues for other reasons (like AQL does) you no longer get fairness.
-
-Ultimately this comes from using two different sources of airtime:
-predicted values (in AQL) and after-the-fact reporting (in the fairness
-scheduler). There's a time lag between when these two values are
-applied, which leads to the fairness scheduler insisting that a station
-should be the next one to transmit even though AQL is blocking it.
-
-Hmm, I wonder what would happen if we just accounted the AQL balance in
-the fairness deficit as well? Something like the patch below
-(compile-tested only). I'm not sure what the effect of running the
-deficit backwards like this is; we may get weird oscillating values when
-we subtract the AQL value and the "real" value hasn't been accounted
-yet. But it may also turn out to not be a big issue; worth testing,
-maybe?
-
-The alternative would be to switch to using only the AQL values for
-fairness as well; if the AQL predictions are reasonably accurate this
-would likely work well enough. Got any idea how much they are off?
-
--Toke
-
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index ec6973ee88ef..86718a6429e6 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1893,12 +1893,10 @@ void ieee80211_sta_set_buffered(struct ieee80211_st=
-a *pubsta,
- }
- EXPORT_SYMBOL(ieee80211_sta_set_buffered);
-=20
--void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
--                                   u32 tx_airtime, u32 rx_airtime)
-+static void __ieee80211_sta_register_airtime(struct ieee80211_local *local,
-+                                            struct sta_info *sta, u8 ac,
-+                                            u32 tx_airtime, u32 rx_airtime)
- {
--       struct sta_info *sta =3D container_of(pubsta, struct sta_info, sta);
--       struct ieee80211_local *local =3D sta->sdata->local;
--       u8 ac =3D ieee80211_ac_from_tid(tid);
-        u32 airtime =3D 0;
-=20
-        if (sta->local->airtime_flags & AIRTIME_USE_TX)
-@@ -1912,6 +1910,16 @@ void ieee80211_sta_register_airtime(struct ieee80211=
-_sta *pubsta, u8 tid,
-        sta->airtime[ac].deficit -=3D airtime;
-        spin_unlock_bh(&local->active_txq_lock[ac]);
- }
-+
-+void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
-+                                   u32 tx_airtime, u32 rx_airtime)
-+{
-+       struct sta_info *sta =3D container_of(pubsta, struct sta_info, sta);
-+       struct ieee80211_local *local =3D sta->sdata->local;
-+       u8 ac =3D ieee80211_ac_from_tid(tid);
-+
-+       __ieee80211_sta_register_airtime(local, sta, ac, tx_airtime, rx_air=
-time);
-+}
- EXPORT_SYMBOL(ieee80211_sta_register_airtime);
-=20
- void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
-@@ -1924,9 +1932,11 @@ void ieee80211_sta_update_pending_airtime(struct iee=
-e80211_local *local,
-                return;
-=20
-        if (!tx_completed) {
--               if (sta)
-+               if (sta) {
-                        atomic_add(tx_airtime,
-                                   &sta->airtime[ac].aql_tx_pending);
-+                       __ieee80211_sta_register_airtime(local, sta, ac, tx=
-_airtime, 0);
-+               }
-=20
-                atomic_add(tx_airtime, &local->aql_total_pending_airtime);
-                return;
-@@ -1938,6 +1948,7 @@ void ieee80211_sta_update_pending_airtime(struct ieee=
-80211_local *local,
-                if (tx_pending < 0)
-                        atomic_cmpxchg(&sta->airtime[ac].aql_tx_pending,
-                                       tx_pending, 0);
-+               __ieee80211_sta_register_airtime(local, sta, ac, -tx_airtim=
-e, 0);
-        }
-=20
-        tx_pending =3D atomic_sub_return(tx_airtime,
