@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E310312F3D
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 11:42:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B277A312F46
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 11:44:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232590AbhBHKlg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 05:41:36 -0500
-Received: from so15.mailgun.net ([198.61.254.15]:29531 "EHLO so15.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232435AbhBHKj1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 05:39:27 -0500
+        id S232645AbhBHKma (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 05:42:30 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:47554 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232381AbhBHKkY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Feb 2021 05:40:24 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612780742; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1612780800; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=gHHW9t8XRWnujhHiEyRdWOS3KbhDsL4evfJXjkWAVR8=;
- b=Mwwlb7ZAV1HghKyThoM09/4hMthQmFqU7U/z7BQY3OgH4yHopFlYFaQZwLWuDy7atsItarwP
- 7NyhiruVmSPw673B6kfSYfwYOFxAF7BK5gSunxLzaZ7u3YafcS3j3R/ugS7pniI6k5Cc9vjj
- 9TCtvQRkkOGxZ/TN8yhaDlCoRMs=
-X-Mailgun-Sending-Ip: 198.61.254.15
+ Content-Type: Sender; bh=rsWO5gVXQJgQ7C6h+zCZSstEnkqvJD9Aka1MxQopoAM=;
+ b=gQqmeRjixO4aOa5voWWPUS4uQ3WYSwHi7ALPUXj5J7kW4gYsbGSsOypJvKvU8s5d3X4L4gks
+ aNC7bN+1B+EyPYAX8n/I5qEwl/CLKUsD4EkNgj93U9JRKOgGVBdE/hc+iAKq34+v8fzH/SU1
+ aqbGjBIM9xi6Vs58EYVf5AQm3mE=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 602114a981f6c45dce6ab818 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 10:38:33
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 602114e58e43a988b7a023a6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 10:39:33
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EE4E3C433ED; Mon,  8 Feb 2021 10:38:32 +0000 (UTC)
+        id CF51AC43464; Mon,  8 Feb 2021 10:39:32 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,76 +40,50 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DF897C433C6;
-        Mon,  8 Feb 2021 10:38:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DF897C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7F72AC433ED;
+        Mon,  8 Feb 2021 10:39:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7F72AC433ED
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: rtlwifi: use tasklet_setup to initialize rx_work_tasklet
+Subject: Re: [PATCH] rtlwifi: rtl8192se: remove redundant initialization of
+ variable rtstatus
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210126171550.3066-1-kernel@esmil.dk>
-References: <20210126171550.3066-1-kernel@esmil.dk>
-To:     Emil Renner Berthing <kernel@esmil.dk>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
+In-Reply-To: <20210128171048.644669-1-colin.king@canonical.com>
+References: <20210128171048.644669-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Allen Pais <allen.lkml@gmail.com>,
-        Romain Perier <romain.perier@gmail.com>,
-        linux-kernel@vger.kernel.org
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210208103832.EE4E3C433ED@smtp.codeaurora.org>
-Date:   Mon,  8 Feb 2021 10:38:32 +0000 (UTC)
+Message-Id: <20210208103932.CF51AC43464@smtp.codeaurora.org>
+Date:   Mon,  8 Feb 2021 10:39:32 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Emil Renner Berthing <kernel@esmil.dk> wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> In commit d3ccc14dfe95 most of the tasklets in this driver was
-> updated to the new API. However for the rx_work_tasklet only the
-> type of the callback was changed from
->   void _rtl_rx_work(unsigned long data)
-> to
->   void _rtl_rx_work(struct tasklet_struct *t).
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> The initialization of rx_work_tasklet was still open-coded and the
-> function pointer just cast into the old type, and hence nothing sets
-> rx_work_tasklet.use_callback = true and the callback was still called as
+> The variable rtstatu is being initialized with a value that is never
+> read and it is being updated later with a new value.  The initialization
+> is redundant and can be removed.
 > 
->   t->func(t->data);
-> 
-> with uninitialized/zero t->data.
-> 
-> Commit 6b8c7574a5f8 changed the casting of _rtl_rx_work a bit and
-> initialized t->data to a pointer to the tasklet cast to an unsigned
-> long.
-> 
-> This way calling t->func(t->data) might actually work through all the
-> casting, but it still doesn't update the code to use the new tasklet
-> API.
-> 
-> Let's use the new tasklet_setup to initialize rx_work_tasklet properly
-> and set rx_work_tasklet.use_callback = true so that the callback is
-> called as
-> 
->   t->callback(t);
-> 
-> without all the casting.
-> 
-> Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > Acked-by: Willem de Bruijn <willemb@google.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-ca04217add8e rtlwifi: use tasklet_setup to initialize rx_work_tasklet
+711fa16f1dfe rtlwifi: rtl8192se: remove redundant initialization of variable rtstatus
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210126171550.3066-1-kernel@esmil.dk/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210128171048.644669-1-colin.king@canonical.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
