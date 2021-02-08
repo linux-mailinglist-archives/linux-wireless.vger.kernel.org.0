@@ -2,58 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2670C313A8B
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 18:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2A60313A95
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 18:14:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231311AbhBHRMb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 12:12:31 -0500
-Received: from mail29.static.mailgun.info ([104.130.122.29]:23041 "EHLO
+        id S233721AbhBHRO3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 12:14:29 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:51634 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230125AbhBHRLY (ORCPT
+        by vger.kernel.org with ESMTP id S233142AbhBHROR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 12:11:24 -0500
+        Mon, 8 Feb 2021 12:14:17 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612804261; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1612804433; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=j4v1m7WvFUznw6JnVEh5YmNm65JzeRSJWKDypgu7710=; b=ECsiJi85g1MamVqBM3xVuOesRcftrTA0wzkNNNryaOGyPa6IbloXwkKDqdc7Ue8CSRSlzDf8
- 4N1BP8q+w0ruXp/fqHabrT8F+TJSC0/AXqsNP+TnWpVs8wOfKnvYPT3FJUuwDOsFac+DFJLg
- Ss198860b3oSsJhafjRZaAurFKU=
+ bh=O6ofAG6NyOeRkj9Z+F82du1IZa7Q0kHkjFxEMa4Ueuc=; b=o4z4d0mOGk/P77kfTwKpMawgJAIVIposRbr+JHde1uu4WOp26BzKiRRoXLPuazkvco5D9quW
+ oLIXAz0JEGCfcGawV8N8IpfNeAgSJoUbLSqq7qAt7SJ6mql7ouLrENfeQnF++5RspAtp+hi6
+ sf70Q9rJy/soKSm1s+GTxfYMzfk=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 60217078e4842e9128a0ffce (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 17:10:16
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 602171338e43a988b72c77fb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 17:13:23
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B34ECC433ED; Mon,  8 Feb 2021 17:10:15 +0000 (UTC)
+        id 15DB4C43461; Mon,  8 Feb 2021 17:13:23 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4A135C433C6;
-        Mon,  8 Feb 2021 17:10:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4A135C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9F49DC433ED;
+        Mon,  8 Feb 2021 17:13:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9F49DC433ED
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Subject: Re: pull request: mt76 2021-01-29
 References: <3eba5570-7cff-f51e-4050-aa0054f98f81@nbd.name>
-        <20210208102728.F3395C43461@smtp.codeaurora.org>
-        <00fa069f-3174-85fa-f4d1-fb4e403a9401@nbd.name>
-Date:   Mon, 08 Feb 2021 19:10:12 +0200
-In-Reply-To: <00fa069f-3174-85fa-f4d1-fb4e403a9401@nbd.name> (Felix Fietkau's
-        message of "Mon, 8 Feb 2021 12:40:02 +0100")
-Message-ID: <87lfby4haj.fsf@codeaurora.org>
+        <20210208102728.BBBE3C433CA@smtp.codeaurora.org>
+        <20210208110931.GC2593@lore-desk>
+Date:   Mon, 08 Feb 2021 19:13:19 +0200
+In-Reply-To: <20210208110931.GC2593@lore-desk> (Lorenzo Bianconi's message of
+        "Mon, 8 Feb 2021 12:09:31 +0100")
+Message-ID: <87h7mm4h5c.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -61,51 +62,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
->> This had conflicts:
->> 
->> $ git pull https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-01-29
->>>From https://github.com/nbd168/wireless
->>  * tag                         mt76-for-kvalo-2021-01-29 -> FETCH_HEAD
->> Auto-merging drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
->> CONFLICT (content): Merge conflict in drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
->> Auto-merging drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
->> Automatic merge failed; fix conflicts and then commit the result.
->> 
->> With this commit from w-d:
->> 
->> b7c568752ef3 mt76: Fix queue ID variable types after mcu queue split
->> 
->> And these commits from your tag:
->> 
+> [...]
 >> b8135057988e mt76: mt7915: simplify mt7915_mcu_send_message routine
 >> c203dd621780 mt76: mt7915: rework mcu API
 >> 
 >> This was not easy to fix. Felix & Lorenzo, please carefully check my resolution
 >> in the pending branch:
->> 
->> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=pending&id=dfe85c17c7c7183e1d409b948fae9d8e545cb25d
->> 
->> This is the diff output of my resolution:
->> 
->> diff --cc drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
->> index e211a2bd4d3c,0296f2aa7997..000000000000
->> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
->> @@@ -267,22 -260,16 +260,16 @@@
->>         if (!seq)
->>                 seq = ++dev->mt76.mcu.msg_seq & 0xf;
->>   
->> -       if (cmd == -MCU_CMD_FW_SCATTER) {
->>  -      if (cmd == MCU_CMD(FW_SCATTER)) {
->>  -              txq = MT_MCUQ_FWDL;
->> ++      if (cmd == MCU_CMD_FW_SCATTER) {
 >
-> This needs to be if (cmd == MCU_CMD(FW_SCATTER))
-> The rest looks good to me.
+> Hi Kalle,
+>
+> it is not easy to check a patch of a patch :) one comment inline.
 
-Thanks. Pulled manually, fixed that and pushed to master branch.
+Tell me about it, fixing conflicts is an art form in it's own right :)
+This is exactly why I'm keeping the bar high for fixes going
+wireless-drivers, I just don't want to deal with the conflicts.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
