@@ -2,315 +2,204 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 587C231312F
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 12:44:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0177331318E
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 12:57:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233287AbhBHLn7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 06:43:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34690 "EHLO
+        id S231979AbhBHL4l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 06:56:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233257AbhBHLlN (ORCPT
+        with ESMTP id S233381AbhBHLyd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 06:41:13 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86224C061756
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Feb 2021 03:40:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=bJBrQiAF8T+e5PHubXg4N/RP4AYH6wJYBm2bswZq1a0=; b=oPqNxfOHriHtHWpfk4hgOfYrsI
-        rqAsBLfmS6dOLgNFHOXdWQZXfgsDA5K8EZHIClKJw2ZiXClvBnnh4CdQiO437aaHPzdnwNhI5hEek
-        gOwwYcfqXozZTbUZF8e6AAl/l5MYR4Wi0ENQGGWt7IyIrVYbr4Ql5TrsjCcUgwIZFsfM=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1l94th-0006eX-VA; Mon, 08 Feb 2021 12:40:06 +0100
-Subject: Re: pull request: mt76 2021-01-29
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <3eba5570-7cff-f51e-4050-aa0054f98f81@nbd.name>
- <20210208102728.F3395C43461@smtp.codeaurora.org>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <00fa069f-3174-85fa-f4d1-fb4e403a9401@nbd.name>
-Date:   Mon, 8 Feb 2021 12:40:02 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.0
+        Mon, 8 Feb 2021 06:54:33 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75ECEC06178A
+        for <linux-wireless@vger.kernel.org>; Mon,  8 Feb 2021 03:53:53 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id q131so9543599pfq.10
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Feb 2021 03:53:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to;
+        bh=LlRtscP31jjkoBNcF+xhsv68o4dXSdWdSE1x69lIkFU=;
+        b=aPaz/R7Hz8b9DVFvjudIbBIqy2nuqqmKkR6Yr4Hc2yP4pogmB4iJeWh+5/3nBGLWzN
+         Wke5vf/YLusAL1cnMM5lP+4kCLF1F/BOMoU+3AZ1ft3q7iqEPGJtYZx+xlY7ii63Trh0
+         BGEBPdkK7WpG/2H2vTaBe1fdakWQhP4z8Emds=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to;
+        bh=LlRtscP31jjkoBNcF+xhsv68o4dXSdWdSE1x69lIkFU=;
+        b=RTRTvAF+Lpsy/mD/FlUpJlfI1gTaNYOWJDsxtz7hxSAhRUGVN4OvVKXaLEL9RBnrkw
+         r30hKGHgPA0xJfR/edTGilURhxX828y7LJgmQvgrTVOGb2YbEFpZnqIGAsSDop/sOfgg
+         icRpo8vFgrzV2KN1gnOpu9fsJSd8d9jQx7PHtr/S8aqwtNnbIkJOjctXeFquel9m674a
+         796hRCbMbX/WdXsN2bTAJ/36620UVtK3a0MpsiQcoFgKnfBHKmjdBMYcLk8WDZtWAc/f
+         YcUJF2Ncl4+XCBcd4T9AGl45yKWFUxXbZ51UKX+FwL0cK63/AdxI2P2Ki752GDo8vjT8
+         Fywg==
+X-Gm-Message-State: AOAM5333l+T+6JFPJP6+NqX3xqP07p6XwYjH8iYLMDThbIhm+wG+sl9i
+        +aUXAtKxP9PLdQjbeyL0l7oyb6VakCp5R2t63HJJ+aoAVywRIrp5JCd8bVsmmPaR6H8ZCxVY3X9
+        5vsSZaT8l58kfQYZ7/Ygp/IjhLV0C58Y=
+X-Google-Smtp-Source: ABdhPJy+G/Xnc3EBeFF+LHVb4gnf4qVUaGT40yDcO1ZhNb8sBuKs7/OH0podtlqCHNxKPpXSd44duQ==
+X-Received: by 2002:a63:6f8a:: with SMTP id k132mr17237134pgc.59.1612785232731;
+        Mon, 08 Feb 2021 03:53:52 -0800 (PST)
+Received: from [10.230.40.53] ([192.19.152.250])
+        by smtp.gmail.com with ESMTPSA id a37sm18912454pgm.79.2021.02.08.03.53.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Feb 2021 03:53:51 -0800 (PST)
+Subject: Re: [PATCH v2] brcmfmac: add support for CQM RSSI notifications
+To:     =?UTF-8?Q?Alvin_=c5=a0ipraga?= <ALSI@bang-olufsen.dk>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20210114163641.2427591-1-alsi@bang-olufsen.dk>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <a8a021d2-259d-4f09-3c25-af2ea0fd91dc@broadcom.com>
+Date:   Mon, 8 Feb 2021 12:53:47 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-In-Reply-To: <20210208102728.F3395C43461@smtp.codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20210114163641.2427591-1-alsi@bang-olufsen.dk>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000ebe7bd05bad1d23a"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--000000000000ebe7bd05bad1d23a
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-On 2021-02-08 11:27, Kalle Valo wrote:
-> Felix Fietkau <nbd@nbd.name> wrote:
-> 
->> Hi Kalle,
->> 
->> here's my first pull request for 5.12.
->> 
->> The following changes since commit 4832bb371c4175ffb506a96accbb08ef2b2466e7:
->> 
->>   iwl4965: do not process non-QOS frames on txq->sched_retry path (2021-01-25 16:43:27 +0200)
->> 
->> are available in the Git repository at:
->> 
->>   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-01-29
->> 
->> for you to fetch changes up to d2bf7959d9c0f631ef860edaf834d55773fdedff:
->> 
->>   mt76: mt7663: introduce coredump support (2021-01-29 18:10:02 +0100)
->> 
->> ----------------------------------------------------------------
->> mt76 patches for 5.12
->> 
->> * add new mt7921e driver
->> * factor out common code shared between 7615/7663 and 7921
->> * performance optimizations
->> * 7915 dbdc fixes
->> * 802.11 encap offload support
->> * support for multiple pcie gen1 host interfaces on 7915
->> * 7915 testmode support
->> * bugfixes
->> * testmode support enhancements
->> * endian fixes
->> * 7915 txbf support
->> 
->> ----------------------------------------------------------------
->> Felix Fietkau (15):
->>       mt76: mt7603: fix ED/CCA monitoring with single-stream devices
->>       mt76: mt7915: ensure that init work completes before starting the device
->>       mt76: mt7915: do not set DRR group for stations
->>       mt76: mt7915: rework mcu API
->>       mt76: mt7915: disable RED support in the WA firmware
->>       mt76: mt7915: fix eeprom parsing for DBDC
->>       mt76: mt7915: fix eeprom DBDC band selection
->>       mt76: mt7615: unify init work
->>       mt76: mt7915: bring up the WA event rx queue for band1
->>       mt76: fix crash on tearing down ext phy
->>       mt76: mt7915: add support for using a secondary PCIe link for gen1
->>       mt76: mt7915: make vif index per adapter instead of per band
->>       mt76: move vif_mask back from mt76_phy to mt76_dev
->>       mt76: reduce q->lock hold time
->>       mt76: mt7615: reduce VHT maximum MPDU length
->> 
->> Lorenzo Bianconi (19):
->>       mt76: mt7915: run mt7915_configure_filter holding mt76 mutex
->>       mt76: mt7915: fix endianness warning in mt7915_mcu_set_radar_th
->>       mt76: mt7915: simplify mt7915_mcu_send_message routine
->>       mt76: move mac_work in mt76_core module
->>       mt76: move chainmask in mt76_phy
->>       mt76: mt7615: set mcu country code in mt7615_mcu_set_channel_domain()
->>       mt76: usb: process URBs with status EPROTO properly
->>       mt76: introduce mt76_vif data structure
->>       mt76: mt76_connac: create mcu library
->>       mt76: mt76_connac: move hw_scan and sched_scan routine in mt76_connac_mcu module
->>       mt76: mt76_connac: move WoW and suspend code in mt76_connac_mcu module
->>       mt76: mt76_connac: move pm data struct in mt76_connac.h
->>       mt76: mt76_connac: move pm utility routines in mt76_connac_lib module
->>       mt76: mt7921: rely on mt76_connac_mcu common library
->>       mt76: mt7921: rely on mt76_connac_mcu module for sched_scan and hw_scan
->>       mt76: mt7921: rely on mt76_connac_mcu module for suspend and WoW support
->>       mt76: mt7921: introduce regdomain notifier support
->>       mt76: mt7921: enable MSI interrupts
->>       mt76: mt7663: introduce coredump support
->> 
->> Ryder Lee (9):
->>       mt76: mt7915: add vif check in mt7915_update_vif_beacon()
->>       mt76: mt7615: add vif check in mt7615_update_vif_beacon()
->>       mt76: mt7915: fix MT_CIPHER_BIP_CMAC_128 setkey
->>       mt76: mt7915: reset token when mac_reset happens
->>       mt76: mt7615: reset token when mac_reset happens
->>       mt76: mt7915: drop zero-length packet to avoid Tx hang
->>       mt76: mt7915: simplify peer's TxBF capability check
->>       mt76: mt7915: add implicit Tx beamforming support
->>       mt76: mt7915: support TxBF for DBDC
->> 
->> Sean Wang (14):
->>       mt76: mt7921: add MAC support
->>       mt76: mt7921: add MCU support
->>       mt76: mt7921: add DMA support
->>       mt76: mt7921: add EEPROM support
->>       mt76: mt7921: add ieee80211_ops
->>       mt76: mt7921: introduce mt7921e support
->>       mt76: mt7921: add debugfs support
->>       mt76: mt7921: introduce schedule scan support
->>       mt76: mt7921: introduce 802.11 PS support in sta mode
->>       mt76: mt7921: introduce support for hardware beacon filter
->>       mt76: mt7921: introduce beacon_loss mcu event
->>       mt76: mt7921: introduce PM support
->>       mt76: mt7921: introduce Runtime PM support
->>       mt76: mt7921: add coredump support
->> 
->> Shayne Chen (18):
->>       mt76: mt7915: add support for flash mode
->>       mt76: mt7915: add partial add_bss_info command on testmode init
->>       mt76: testmode: introduce dbdc support
->>       mt76: testmode: move mtd part to mt76_dev
->>       mt76: mt7915: move testmode data from dev to phy
->>       mt76: mt7615: move testmode data from dev to phy
->>       mt76: mt7915: force ldpc for bw larger than 20MHz in testmode
->>       mt76: testmode: add support to set user-defined spe index
->>       mt76: testmode: add attributes for ipg related parameters
->>       mt76: testmode: make tx queued limit adjustable
->>       mt76: mt7915: split edca update function
->>       mt76: mt7915: add support for ipg in testmode
->>       mt76: mt7915: calculate new packet length when tx_time is set in testmode
->>       mt76: mt7915: clean hw queue before starting new testmode tx
->>       mt76: testmode: add a new state for continuous tx
->>       mt76: mt7915: rework set state part in testmode
->>       mt76: mt7915: add support for continuous tx in testmode
->>       mt76: mt7615: mt7915: disable txpower sku when testmode enabled
->> 
->> Xu Wang (1):
->>       mt76: mt7915: Remove unneeded semicolon
->> 
->> Zheng Yongjun (2):
->>       mt76: mt7615: convert comma to semicolon
->>       mt76: mt7915: convert comma to semicolon
->> 
->>  drivers/net/wireless/mediatek/mt76/Kconfig           |    5 +
->>  drivers/net/wireless/mediatek/mt76/Makefile          |    4 +
->>  drivers/net/wireless/mediatek/mt76/dma.c             |    8 +-
->>  drivers/net/wireless/mediatek/mt76/eeprom.c          |    4 +-
->>  drivers/net/wireless/mediatek/mt76/mac80211.c        |    8 +-
->>  drivers/net/wireless/mediatek/mt76/mt76.h            |   75 +++-
->>  drivers/net/wireless/mediatek/mt76/mt7603/init.c     |    2 +-
->>  drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |   24 +-
->>  drivers/net/wireless/mediatek/mt76/mt7603/main.c     |   16 +-
->>  drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h   |    2 -
->>  drivers/net/wireless/mediatek/mt76/mt7615/Kconfig    |    3 +-
->>  drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c  |   17 +
->>  drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c   |    2 +-
->>  drivers/net/wireless/mediatek/mt76/mt7615/init.c     |   64 ++--
->>  drivers/net/wireless/mediatek/mt76/mt7615/mac.c      |  210 ++++++-----
->>  drivers/net/wireless/mediatek/mt76/mt7615/main.c     |  192 +++++-----
->>  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      | 1617 ++++++++--------------------------------------------------------------------------
->>  drivers/net/wireless/mediatek/mt76/mt7615/mcu.h      |  683 +----------------------------------
->>  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h   |  132 ++-----
->>  drivers/net/wireless/mediatek/mt76/mt7615/pci.c      |    9 +-
->>  drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c |   23 +-
->>  drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c  |    2 +-
->>  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c     |   11 +-
->>  drivers/net/wireless/mediatek/mt76/mt7615/testmode.c |  101 +++---
->>  drivers/net/wireless/mediatek/mt76/mt7615/usb.c      |   12 +-
->>  drivers/net/wireless/mediatek/mt76/mt76_connac.h     |  105 ++++++
->>  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |  119 +++++++
->>  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 1842 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |  979 ++++++++++++++++++++++++++++++++++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c      |    4 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x0/usb.c      |    4 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x02.h         |    2 -
->>  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c     |   10 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c    |    2 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x02_phy.c     |    4 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x02_util.c    |   14 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c      |    2 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c |    2 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c |    4 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c |    2 +-
->>  drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c |    2 +-
->>  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c  |   28 ++
->>  drivers/net/wireless/mediatek/mt76/mt7915/dma.c      |  102 ++++--
->>  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c   |   42 ++-
->>  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h   |   25 +-
->>  drivers/net/wireless/mediatek/mt76/mt7915/init.c     |   48 +--
->>  drivers/net/wireless/mediatek/mt76/mt7915/mac.c      |  129 +++++--
->>  drivers/net/wireless/mediatek/mt76/mt7915/mac.h      |    2 +
->>  drivers/net/wireless/mediatek/mt76/mt7915/main.c     |   46 +--
->>  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  542 +++++++++++++++-------------
->>  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h      |   63 ++++
->>  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h   |   69 ++--
->>  drivers/net/wireless/mediatek/mt76/mt7915/pci.c      |  177 ++++++++-
->>  drivers/net/wireless/mediatek/mt76/mt7915/regs.h     |   29 +-
->>  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c |  528 +++++++++++++++++++++++----
->>  drivers/net/wireless/mediatek/mt76/mt7915/testmode.h |   59 +++
->>  drivers/net/wireless/mediatek/mt76/mt7921/Kconfig    |   11 +
->>  drivers/net/wireless/mediatek/mt76/mt7921/Makefile   |    5 +
->>  drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c  |  250 +++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/dma.c      |  356 ++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c   |  100 ++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h   |   27 ++
->>  drivers/net/wireless/mediatek/mt76/mt7921/init.c     |  282 +++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 1516 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/mac.h      |  333 +++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/main.c     | 1161 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      | 1308 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/mcu.h      |  434 ++++++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |  342 ++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/pci.c      |  292 +++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/mt7921/regs.h     |  419 ++++++++++++++++++++++
->>  drivers/net/wireless/mediatek/mt76/testmode.c        |  124 ++++---
->>  drivers/net/wireless/mediatek/mt76/testmode.h        |   17 +
->>  drivers/net/wireless/mediatek/mt76/tx.c              |   39 +-
->>  drivers/net/wireless/mediatek/mt76/usb.c             |    1 +
->>  75 files changed, 12019 insertions(+), 3210 deletions(-)
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac.h
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/Makefile
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/dma.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/init.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/main.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci.c
->>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-> 
-> This had conflicts:
-> 
-> $ git pull https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-01-29
->>From https://github.com/nbd168/wireless
->  * tag                         mt76-for-kvalo-2021-01-29 -> FETCH_HEAD
-> Auto-merging drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> CONFLICT (content): Merge conflict in drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> Auto-merging drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> Automatic merge failed; fix conflicts and then commit the result.
-> 
-> With this commit from w-d:
-> 
-> b7c568752ef3 mt76: Fix queue ID variable types after mcu queue split
-> 
-> And these commits from your tag:
-> 
-> b8135057988e mt76: mt7915: simplify mt7915_mcu_send_message routine
-> c203dd621780 mt76: mt7915: rework mcu API
-> 
-> This was not easy to fix. Felix & Lorenzo, please carefully check my resolution
-> in the pending branch:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=pending&id=dfe85c17c7c7183e1d409b948fae9d8e545cb25d
-> 
-> This is the diff output of my resolution:
-> 
-> diff --cc drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> index e211a2bd4d3c,0296f2aa7997..000000000000
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> @@@ -267,22 -260,16 +260,16 @@@
->         if (!seq)
->                 seq = ++dev->mt76.mcu.msg_seq & 0xf;
->   
-> -       if (cmd == -MCU_CMD_FW_SCATTER) {
->  -      if (cmd == MCU_CMD(FW_SCATTER)) {
->  -              txq = MT_MCUQ_FWDL;
-> ++      if (cmd == MCU_CMD_FW_SCATTER) {
-This needs to be if (cmd == MCU_CMD(FW_SCATTER))
-The rest looks good to me.
+On 1/14/2021 5:36 PM, 'Alvin =C5=A0ipraga' via BRCM80211-DEV-LIST,PDL wrote=
+:
+> Add support for CQM RSSI measurement reporting and advertise the
+> NL80211_EXT_FEATURE_CQM_RSSI_LIST feature. This enables a userspace
+> supplicant such as iwd to be notified of changes in the RSSI for roaming
+> and signal monitoring purposes.
 
-- Felix
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Alvin =C5=A0ipraga <alsi@bang-olufsen.dk>
+> ---
+> v1 -> v2:
+> - clarify firmware behaviour in a comment
+> - fix detection of upper bound RSSI transition
+> - improve clamping of min/max RSSI values
+> - remove unnecessary check on last RSSI value
+> ---
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 87 +++++++++++++++++++
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.h    |  6 ++
+>   .../broadcom/brcm80211/brcmfmac/fwil_types.h  | 28 ++++++
+>   3 files changed, 121 insertions(+)
+
+--=20
+This electronic communication and the information and any files transmitted=
+=20
+with it, or attached to it, are confidential and are intended solely for=20
+the use of the individual or entity to whom it is addressed and may contain=
+=20
+information that is confidential, legally privileged, protected by privacy=
+=20
+laws, or otherwise restricted from disclosure to anyone else. If you are=20
+not the intended recipient or the person responsible for delivering the=20
+e-mail to the intended recipient, you are hereby notified that any use,=20
+copying, distributing, dissemination, forwarding, printing, or copying of=
+=20
+this e-mail is strictly prohibited. If you received this e-mail in error,=
+=20
+please return the e-mail to the sender, delete it from your computer, and=
+=20
+destroy any printed copy of it.
+
+--000000000000ebe7bd05bad1d23a
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+pra5sIx/TR6gNtLG9MpND9zQt5j42hInkP81vqu9DG8lovoPMuR0JVpFRbPjHZ07cLqqbFMVS/8z
+53iSewIDAQABo4IB0zCCAc8wDgYDVR0PAQH/BAQDAgWgMIGeBggrBgEFBQcBAQSBkTCBjjBNBggr
+BgEFBQcwAoZBaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NwZXJzb25hbHNp
+Z24yc2hhMmczb2NzcC5jcnQwPQYIKwYBBQUHMAGGMWh0dHA6Ly9vY3NwMi5nbG9iYWxzaWduLmNv
+bS9nc3BlcnNvbmFsc2lnbjJzaGEyZzMwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAw
+RAYDVR0fBD0wOzA5oDegNYYzaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc3BlcnNvbmFsc2ln
+bjJzaGEyZzMuY3JsMCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYD
+VR0lBAwwCgYIKwYBBQUHAwQwHwYDVR0jBBgwFoAUaXKCYjFnlUSFd5GAxAQ2SZ17C2EwHQYDVR0O
+BBYEFHAaaA+cRo3vYiA6aKVu1bOs4YAYMA0GCSqGSIb3DQEBCwUAA4IBAQCYLdyC8SuyQV6oa5uH
+kGtqz9FCJC/9gSclQLM8dZLHF3FYX8LlcQg/3Ct5I29YLK3T/r35B2zGljtXqVOIeSEz7sDXfGNy
+3dnLIafB1y04e7aR+thVn5Rp1YTF01FUWYbZrixlVuKvjn8vtKC+HhAoDCxvqnqEuA/8Usn7B0/N
+uOA46oQTLe3kjdIgXWJ29JWVqFUavYdcK0+0zyfeMBCTO6heYABeMP3wzYHfcuFDhqldTCpumqhZ
+WwHVQUbAn+xLMIQpycIQFoJIGJX4MeaTSMfLNP2w7nP2uLNgIeleF284vS0XVkBXSCgIGylP4SN+
+HQYrv7fVCbtp+c7nFvP7MYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xv
+YmFsU2lnbiBudi1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNI
+QTI1NiAtIEczAgxR3m7Pj6LvQiWjJy0wDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIE
+IDTfGBVPqhak9g/Qi3y9lTLCfeKCCA0huqvwBJRrbRp1MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTIxMDIwODExNTM1M1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgB
+ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQow
+CwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAd4OFhO/HZ1tgMIM80
+S6vFUejSv0LCVboj/bRYjGLohryuwRn9Fe8MlTKTSsVWacan6ldVQsBG8NC7HFhMt5tJeBRCC+xK
+vx762+SJ1YJkjl960Hh2Rq1wbBiG2Rochz2azfKSNUV3s0oc4zn8k2oRb6h/eZ8wX3F2xVuhYj3Y
+nIa5sSQbC6Eg63CcfbQhWxhAf+fU5JFqihOUswpYTPCvnXYjX4gbV26Bhf7d0J8xmYRmwPGXnvo2
+/YNSDVGK4DP/2ByTuyDJaY9cAWyNxQaXBUI2zmum/HI7tvD9KP018hm/uBMWaE2zwx3Yb+671/5b
+hmWLTSkJu++pTOhB7guo
+--000000000000ebe7bd05bad1d23a--
