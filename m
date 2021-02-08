@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90CF73130CB
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 12:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36A633130DA
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 12:29:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233140AbhBHL1G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 06:27:06 -0500
-Received: from mail29.static.mailgun.info ([104.130.122.29]:32264 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233159AbhBHLYh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 06:24:37 -0500
+        id S233166AbhBHL3i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 06:29:38 -0500
+Received: from so15.mailgun.net ([198.61.254.15]:50923 "EHLO so15.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233181AbhBHL1Q (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Feb 2021 06:27:16 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612783447; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1612783616; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=94O3q+hrlwecJKOh0uEeXAGFAVqfWgT1LWYjYLGX8bE=;
- b=WAqGyLG9Tw2UUhKacmmIXUq3edwfBdFSvb73N2aMsNKdtLogjzY92FnCQX1QV17wGgwhNOg2
- Ws89QlT1e/GbwavPTp0nt855vBZ7LuMTMatoG5gHamIMhZnLHggIG0hNeUgU6tiHXjoFcAQ6
- B/KEhi1gbqPyLflTNtMxyavBxcg=
-X-Mailgun-Sending-Ip: 104.130.122.29
+ Content-Type: Sender; bh=5QCI63NH6Wa4pD81iDZmUJs/qJLaqHjMmad3Bk2CwNE=;
+ b=BDcgBfBJ+OSgJwTum8Wn7Xy59jSrDROtst0v76/bOWMBOzq9TMbYk3DS34thw9j5thKNFpGn
+ B/60BAjbNf1f4ZAl02OlnWjeLoZ75YIuh0Oerv0UKvTNwgPDgjCAEaV+Vbb259vw3rL2GBEe
+ 1XkyPUeFMBnMFgqTSCaF7pg+4MU=
+X-Mailgun-Sending-Ip: 198.61.254.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 60211f323919dfb4559bf54c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 11:23:30
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 60211fe1f112b7872c458818 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 11:26:25
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4B57BC43464; Mon,  8 Feb 2021 11:23:29 +0000 (UTC)
+        id 5CA59C433CA; Mon,  8 Feb 2021 11:26:25 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,57 +39,64 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 02154C433ED;
-        Mon,  8 Feb 2021 11:23:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 02154C433ED
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 740CFC43464;
+        Mon,  8 Feb 2021 11:26:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 740CFC43464
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: mwl8k: fix alignment constraints
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] ssb: Use true and false for bool variable
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210204162813.3159319-1-arnd@kernel.org>
-References: <20210204162813.3159319-1-arnd@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Lennert Buytenhek <buytenh@wantstofly.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Romain Perier <romain.perier@gmail.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Allen Pais <allen.lkml@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <1612508199-92282-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+References: <1612508199-92282-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     m@bues.ch, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210208112329.4B57BC43464@smtp.codeaurora.org>
-Date:   Mon,  8 Feb 2021 11:23:29 +0000 (UTC)
+Message-Id: <20210208112625.5CA59C433CA@smtp.codeaurora.org>
+Date:   Mon,  8 Feb 2021 11:26:25 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> wrote:
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
 
-> From: Arnd Bergmann <arnd@arndb.de>
+> Fix the following coccicheck warnings:
 > 
-> sturct mwl8k_dma_data contains a ieee80211_hdr structure, which is required to
-> have at least two byte alignment, and this conflicts with the __packed
-> attribute:
+> ./include/linux/ssb/ssb_driver_gige.h:89:8-9: WARNING: return of 0/1 in
+> function 'ssb_gige_one_dma_at_once' with return type bool.
 > 
-> vers/net/wireless/marvell/mwl8k.c:811:1: warning: alignment 1 of 'struct mwl8k_dma_data' is less than 2 [-Wpacked-not-aligned]
+> ./include/linux/ssb/ssb_driver_gige.h:79:8-9: WARNING: return of 0/1 in
+> function 'ssb_gige_have_roboswitch' with return type bool.
 > 
-> Mark mwl8k_dma_data itself as having two-byte alignment to ensure the
-> inner structure is properly aligned.
+> ./include/linux/ssb/ssb_driver_gige.h:182:8-9: WARNING: return of 0/1 in
+> function 'ssb_gige_must_flush_posted_writes' with return type bool.
 > 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ./include/linux/ssb/ssb_driver_gige.h:178:8-9: WARNING: return of 0/1 in
+> function 'ssb_gige_one_dma_at_once' with return type bool.
+> 
+> ./include/linux/ssb/ssb_driver_gige.h:174:8-9: WARNING: return of 0/1 in
+> function 'ssb_gige_have_roboswitch' with return type bool.
+> 
+> ./include/linux/ssb/ssb_driver_gige.h:170:8-9: WARNING: return of 0/1 in
+> function 'ssb_gige_is_rgmii' with return type bool.
+> 
+> ./include/linux/ssb/ssb_driver_gige.h:162:8-9: WARNING: return of 0/1 in
+> function 'pdev_is_ssb_gige_core' with return type bool.
+> 
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> Acked-by: Michael Büsch <m@bues.ch>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-bfdc4d7cbe57 mwl8k: fix alignment constraints
+4331667fa14e ssb: Use true and false for bool variable
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210204162813.3159319-1-arnd@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/1612508199-92282-1-git-send-email-jiapeng.chong@linux.alibaba.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
