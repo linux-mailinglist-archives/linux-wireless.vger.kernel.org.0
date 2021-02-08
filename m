@@ -2,70 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C64F13129B2
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 05:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21FDA312AB7
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 07:33:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229669AbhBHEQu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 7 Feb 2021 23:16:50 -0500
-Received: from m12-14.163.com ([220.181.12.14]:37843 "EHLO m12-14.163.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229590AbhBHEQr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 7 Feb 2021 23:16:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=3PjaSyTPIF/0eA0o6d
-        2SeGzWaUYGs51QsvtN6khf1pE=; b=QlscQxfQYcjauD2p8tY0SBGqexmoXtdBDm
-        C+QVwbzMOMBr0vaC1c7+3EmezDraM12EyrjIB8cstwGXYrVHyYRtUGCZ8/cJ9JGF
-        ki7jfbhluAuw6OCt1jw8rmZZ4vsDPqmbnYJU728GuDljyOJG7aVETd0XJAuMKWPC
-        Y67im/QbQ=
-Received: from wengjianfeng.ccdomain.com (unknown [119.137.53.134])
-        by smtp10 (Coremail) with SMTP id DsCowAA303CepCBg1rL5jw--.655S2;
-        Mon, 08 Feb 2021 10:40:32 +0800 (CST)
-From:   samirweng1979 <samirweng1979@163.com>
-To:     amitkarwar@gmail.com, siva8118@gmail.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        wengjianfeng <wengjianfeng@yulong.com>
-Subject: [PATCH RESEND] rsi: remove redundant assignment
-Date:   Mon,  8 Feb 2021 10:40:29 +0800
-Message-Id: <20210208024029.24412-1-samirweng1979@163.com>
-X-Mailer: git-send-email 2.15.0.windows.1
-X-CM-TRANSID: DsCowAA303CepCBg1rL5jw--.655S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtrWxWF1kZw1xWw1fKF4UJwb_yoW3Krb_ur
-        10qF4fWrWkG3W8Kryj9FW3Zr9Iya4UW3WrGw4qq3yfGryUtrZxAw15Crn3J3yDG34jvr9x
-        Gws7uryIva43ujkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUeg6pDUUUUU==
-X-Originating-IP: [119.137.53.134]
-X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiHQAzsVSIpToy4wAAsN
+        id S229800AbhBHGbU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 01:31:20 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:46742 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229788AbhBHGaq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Feb 2021 01:30:46 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1612765826; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=hVtdyALK1LIwJo49SrO0XacfxouogqCgXWnB5HqnzKM=; b=Hga/9aVc5yCut9RGYTKU9KgACA4PKpV8hGgkBx1z4gikHdVJTslSXxE5gqbXJqNpmw2KM9gH
+ 2WgnwzhF6fr9LtfvzM9CrNt+KOECm+Cm31LHEwoi9juBQmWkuFc5CPt6CXScUKs8IjHkxYRV
+ znhN3Rb1gLw6BvzTVLIY9N/TxiI=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6020da608e43a988b7296514 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 06:29:52
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 21AD7C43461; Mon,  8 Feb 2021 06:29:52 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0DC75C43461;
+        Mon,  8 Feb 2021 06:29:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0DC75C43461
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
+        kuba@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH wireless-drivers] mt76: dma: do not report truncated frames to mac80211
+References: <a03166fcc8214644333c68674a781836e0f57576.1612697217.git.lorenzo@kernel.org>
+Date:   Mon, 08 Feb 2021 08:29:45 +0200
+In-Reply-To: <a03166fcc8214644333c68674a781836e0f57576.1612697217.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Sun, 7 Feb 2021 12:48:31 +0100")
+Message-ID: <87mtwfkr6u.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: wengjianfeng <wengjianfeng@yulong.com>
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-INVALID_QUEUE has been used as a return value,it is not necessary to
-assign it to q_num,so just return INVALID_QUEUE.
+> If the fragment is discarded in mt76_add_fragment() since shared_info
+> frag array is full, discard truncated frames and do not forward them to
+> mac80211.
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
----
- drivers/net/wireless/rsi/rsi_91x_core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Should there be a Fixes line? I can add it.
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_core.c b/drivers/net/wireless/rsi/rsi_91x_core.c
-index 2d49c5b..a48e616 100644
---- a/drivers/net/wireless/rsi/rsi_91x_core.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_core.c
-@@ -193,8 +193,7 @@ static u8 rsi_core_determine_hal_queue(struct rsi_common *common)
- 		if (recontend_queue)
- 			goto get_queue_num;
- 
--		q_num = INVALID_QUEUE;
--		return q_num;
-+		return INVALID_QUEUE;
- 	}
- 
- 	common->selected_qnum = q_num;
 -- 
-1.9.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
