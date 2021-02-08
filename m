@@ -2,141 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E69D31305D
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 12:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91D3231308C
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 12:19:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232654AbhBHLNX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 06:13:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55320 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232965AbhBHLKe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 06:10:34 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A0EEF64E37;
-        Mon,  8 Feb 2021 11:09:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612782576;
-        bh=6H53zMW2E74KBJCGbq23Apj96Kf1NGymx1WwrP/kk8g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eFQIpE1WO1cjJhr0726KLEUsgw8yYlR3JwYcmpozV98F7+pGcRQ+faSJiOhwymK86
-         DJ7EAC2eJRo/Rhsem/2QjsdBoO5n4tvMPm0Fh/3WkTS/tHPxfXmP9fT1/PsO6Hh+kl
-         2pO+BVu5KzjtiAnVNQ+/61rgLoWclMCFHUdsVmFn7xC6TeJ1Bydelp1aTfkCh7nJaQ
-         naqoCSoglVSEIy6K1fUvu265ESsPo6WT+E6jWMNVFkopaz5BCezam73DPOUXFjBzoZ
-         Iifrb+eZQ32V/CVhYEStfTlsW/85tXyKzaOLH3dM3F6Ek8sBGYeficcyMNigCOr5Ij
-         hQFYYIK8FhRkw==
-Date:   Mon, 8 Feb 2021 12:09:31 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2021-01-29
-Message-ID: <20210208110931.GC2593@lore-desk>
-References: <3eba5570-7cff-f51e-4050-aa0054f98f81@nbd.name>
- <20210208102728.BBBE3C433CA@smtp.codeaurora.org>
+        id S233011AbhBHLTM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 06:19:12 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:60532 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232883AbhBHLQK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Feb 2021 06:16:10 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1612782945; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=8YyRH6LndgHopr6w5++mvejg0cNaNEaBc0/+JK7XBHE=;
+ b=qnd/Pdhl8CZ52on7d+0dVNb7ywRlmMfdxtuQWZevatAtEeCW9QWck6+fhOCcuJIVlInpbCpY
+ 5Lx6X/dofKTUh64HfRj6+WnwO6a6Ku2A6GrcRPmU1T/V3S7VDpRzcHUy/8u7daN9guKK19S5
+ ywTJl+Qfhiz4uOBrDuyXZpXrp6c=
+X-Mailgun-Sending-Ip: 104.130.122.29
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 60211d3d4bd23a05aecdbc06 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Feb 2021 11:15:09
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A96D5C43461; Mon,  8 Feb 2021 11:15:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E4E9C433CA;
+        Mon,  8 Feb 2021 11:15:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E4E9C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="NU0Ex4SbNnrxsi6C"
-Content-Disposition: inline
-In-Reply-To: <20210208102728.BBBE3C433CA@smtp.codeaurora.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 -next] atmel: at76c50x: use DEFINE_MUTEX() for mutex
+ lock
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20201224132456.31341-1-zhengyongjun3@huawei.com>
+References: <20201224132456.31341-1-zhengyongjun3@huawei.com>
+To:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc:     <davem@davemloft.net>, <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210208111508.A96D5C43461@smtp.codeaurora.org>
+Date:   Mon,  8 Feb 2021 11:15:08 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Zheng Yongjun <zhengyongjun3@huawei.com> wrote:
 
---NU0Ex4SbNnrxsi6C
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> mutex lock can be initialized automatically with DEFINE_MUTEX()
+> rather than explicitly calling mutex_init().
+> 
+> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 
-[...]
-> b8135057988e mt76: mt7915: simplify mt7915_mcu_send_message routine
-> c203dd621780 mt76: mt7915: rework mcu API
->=20
-> This was not easy to fix. Felix & Lorenzo, please carefully check my reso=
-lution
-> in the pending branch:
+Patch applied to wireless-drivers-next.git, thanks.
 
-Hi Kalle,
+ae30a740a176 atmel: at76c50x: use DEFINE_MUTEX() for mutex lock
 
-it is not easy to check a patch of a patch :) one comment inline.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20201224132456.31341-1-zhengyongjun3@huawei.com/
 
-Regards,
-Lorenzo
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
->=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-ne=
-xt.git/commit/?h=3Dpending&id=3Ddfe85c17c7c7183e1d409b948fae9d8e545cb25d
->=20
-> This is the diff output of my resolution:
->=20
-> diff --cc drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> index e211a2bd4d3c,0296f2aa7997..000000000000
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> @@@ -255,10 -248,10 +248,10 @@@ mt7915_mcu_send_message(struct mt76_de
->   {
->         struct mt7915_dev *dev =3D container_of(mdev, struct mt7915_dev, =
-mt76);
->         struct mt7915_mcu_txd *mcu_txd;
-> -       u8 seq, pkt_fmt, qidx;
->  -      enum mt76_txq_id txq;
->  +      enum mt76_mcuq_id qid;
->         __le32 *txd;
->         u32 val;
-> +       u8 seq;
->  =20
->         /* TODO: make dynamic based on msg type */
->         mdev->mcu.timeout =3D 20 * HZ;
-> @@@ -267,22 -260,16 +260,16 @@@
->         if (!seq)
->                 seq =3D ++dev->mt76.mcu.msg_seq & 0xf;
->  =20
-> -       if (cmd =3D=3D -MCU_CMD_FW_SCATTER) {
->  -      if (cmd =3D=3D MCU_CMD(FW_SCATTER)) {
->  -              txq =3D MT_MCUQ_FWDL;
-> ++      if (cmd =3D=3D MCU_CMD_FW_SCATTER) {
-
-I think it should be MCU_CMD(FW_SCATTER) here instead of MCU_CMD_FW_SCATTER.
-
->  +              qid =3D MT_MCUQ_FWDL;
->                 goto exit;
->         }
->  =20
->         mcu_txd =3D (struct mt7915_mcu_txd *)skb_push(skb, sizeof(*mcu_tx=
-d));
-> -=20
-> -       if (test_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state)) {
-> +       if (test_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state))
->  -              txq =3D MT_MCUQ_WA;
->  +              qid =3D MT_MCUQ_WA;
-> -               qidx =3D MT_TX_MCU_PORT_RX_Q0;
-> -               pkt_fmt =3D MT_TX_TYPE_CMD;
-> -       } else {
-> +       else
->  -              txq =3D MT_MCUQ_WM;
->  +              qid =3D MT_MCUQ_WM;
-> -               qidx =3D MT_TX_MCU_PORT_RX_Q0;
-> -               pkt_fmt =3D MT_TX_TYPE_CMD;
-> -       }
->  =20
->         txd =3D mcu_txd->txd;
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/patch/3eba5570-7cff-f=
-51e-4050-aa0054f98f81@nbd.name/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
->=20
-
---NU0Ex4SbNnrxsi6C
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYCEb6QAKCRA6cBh0uS2t
-rM9XAQDQfYz3HqfQPE84D3gzw6iNr3/EVBy1KKhEjVm0ZzCVDAD/ZSGMFOc2gslk
-Bm0mLYYgTDl7fs21UUVwPRX4bBd3EAc=
-=Ad6l
------END PGP SIGNATURE-----
-
---NU0Ex4SbNnrxsi6C--
