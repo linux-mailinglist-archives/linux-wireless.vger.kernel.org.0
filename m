@@ -2,194 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45A1231385C
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 16:45:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7B2A31389C
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 16:55:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234002AbhBHPoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 10:44:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58834 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233931AbhBHPoP (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 10:44:15 -0500
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18FE6C061786;
-        Mon,  8 Feb 2021 07:43:35 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id k25so15984066oik.13;
-        Mon, 08 Feb 2021 07:43:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=mrOgBXGvykD1boiJzHrnnWd5O3NLmXeKkU6TWI9sEeU=;
-        b=YXMu8Zxa0V/BkwinblBPSVuYytIjmfY9mn9YaU8UWzBkm/gDG9afmxNuhJrehArMWI
-         PTg8uSJFS5LCJmXe2Lqau2wKIFK/6B9bjcg9A5ZGCPMp5cjeCPWsGtsXp2TcHHc1um6E
-         b6zrhF3nRr0dRtxMQAc5BM7MKkPW5UH1nZbB7FeZaCcNMIaYrv94ArKG8RdjOtf5Sk0e
-         48DIvjxwDnoBnZ4WfF86NEB/VWhOkTOcfO8iNxT7Aj0+6atRAyBmyq0alpjA8ZS+x1SL
-         7TlHh0ynYR0FyYGyKx4tgTi4jip1jxCXLq+KgCT/W+NiqBn4i+5lBS5ViNvDpw06UbAf
-         XI8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=mrOgBXGvykD1boiJzHrnnWd5O3NLmXeKkU6TWI9sEeU=;
-        b=l6Ej7D0pIaNXKxtzRjHpqEKPs+zE/k7/8dhxT+AZUA8YP/Xn6y2srmpQQD54lIo5Pn
-         mjEwRauSoT430SSCL/J4T7tD8tvGHnraluG4HmBtaMpR585LKeJwro+evG48xz2yNS/G
-         9hQz6cXyxgEXrMLjL8vpoFxc58LxdXuRxdJ0nPi8zMX9Nw7MNGtFltRjnpXzoH72BZk5
-         4hg2qNT+eDAbm6F0UrXDDmaEePHJzAjGQCto9FQFBdW4b/WK4cs+QG/+3+o3GASgcaRe
-         3/f6EjTHPTcJ3KbZfjlSjQo5/NUUlgs5B7t0pHAfrSr0p6j7YDdCQYvhglqucZFiq6MK
-         TQGw==
-X-Gm-Message-State: AOAM532JScn7bNJiv50RAFmOXLX2CfdNb4wXcaOujoliSY+oBjJQ57a2
-        KXnWKO+tFtq9vXcf/tgXKv4=
-X-Google-Smtp-Source: ABdhPJwST4tEAPX7gfwckwPjokgM6XBwon9IuegiTtpOPYuJdQEWVoUojho/BfaGKHuDHUiNaKQSow==
-X-Received: by 2002:aca:5c54:: with SMTP id q81mr11146156oib.163.1612799014455;
-        Mon, 08 Feb 2021 07:43:34 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a1sm3105126oti.21.2021.02.08.07.43.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 08 Feb 2021 07:43:33 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 8 Feb 2021 07:43:32 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Youghandhar Chintala <youghand@codeaurora.org>
-Cc:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kuabhs@chromium.org,
-        dianders@chromium.org, briannorris@chromium.org,
-        pillair@codeaurora.org
-Subject: Re: [PATCH 2/3] mac80211: Add support to trigger sta disconnect on
- hardware restart
-Message-ID: <20210208154332.GA20186@roeck-us.net>
-References: <20201215172352.5311-1-youghand@codeaurora.org>
+        id S234230AbhBHPzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 10:55:03 -0500
+Received: from mail.toke.dk ([45.145.95.4]:49143 "EHLO mail.toke.dk"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234217AbhBHPyi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Feb 2021 10:54:38 -0500
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1612799630; bh=cUXTygvQBSe9tf+PWQFop4Z2psD8Qa1X0wGFrUmgGKU=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=P5q5p6XCF6P7GVC5+IpntTLeQRF7hPtwUIjrmVy/XaAFw2WyJIuwXTlnY1UKQnb7w
+         6P6gYsgNZBw6iMHseFz+fk5trBAJUWWDY1qucN6+JNkZrUhalPGOk9XVavKaDbc/c4
+         Z28te0JnDWpn/jBgLUjzZup0glTmyuemWSWWoRsaYnLgCw63LH80cX/QTlyfoLt41Z
+         KYmbcnBPBC6SeKeMB4DlGSNeixfriFYHobHPWzr5Si5PR7rjyF046QnWwjtKlPx+So
+         RbE9i3GK5Hsth0RavgD38gPnyIJhuPRVn8weH4A7YNtVptMO4XF2RKq6sA2SZ7Nejt
+         ppTSvuZ7ROKdw==
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] mac80211: only schedule TXQ when reasonable airtime
+ reporting
+In-Reply-To: <1612796033.13185.5.camel@mtkswgap22>
+References: <c48c3555ab2261d6b6674ac7de8203359b80b127.1612529311.git.ryder.lee@mediatek.com>
+ <878s82ve1c.fsf@toke.dk> <1612665675.2364.43.camel@mtkswgap22>
+ <1612796033.13185.5.camel@mtkswgap22>
+Date:   Mon, 08 Feb 2021 16:53:50 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <878s7ytv1t.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201215172352.5311-1-youghand@codeaurora.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 15, 2020 at 10:53:52PM +0530, Youghandhar Chintala wrote:
-> Currently in case of target hardware restart, we just reconfig and
-> re-enable the security keys and enable the network queues to start
-> data traffic back from where it was interrupted.
-> 
-> Many ath10k wifi chipsets have sequence numbers for the data
-> packets assigned by firmware and the mac sequence number will
-> restart from zero after target hardware restart leading to mismatch
-> in the sequence number expected by the remote peer vs the sequence
-> number of the frame sent by the target firmware.
-> 
-> This mismatch in sequence number will cause out-of-order packets
-> on the remote peer and all the frames sent by the device are dropped
-> until we reach the sequence number which was sent before we restarted
-> the target hardware
-> 
-> In order to fix this, we trigger a sta disconnect, for the targets
-> which expose this corresponding wiphy flag, in case of target hw
-> restart. After this there will be a fresh connection and thereby
-> avoiding the dropping of frames by remote peer.
-> 
-> The right fix would be to pull the entire data path into the host
-> which is not feasible or would need lots of complex changes and
-> will still be inefficient.
-> 
-> Tested on ath10k using WCN3990, QCA6174
-> 
-> Signed-off-by: Youghandhar Chintala <youghand@codeaurora.org>
-> Reviewed-by: Abhishek Kumar <kuabhs@chromium.org>
-> ---
->  net/mac80211/ieee80211_i.h |  3 +++
->  net/mac80211/mlme.c        |  9 +++++++++
->  net/mac80211/util.c        | 22 +++++++++++++++++++---
->  3 files changed, 31 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-> index cde2e3f..8cbeb5f 100644
-> --- a/net/mac80211/ieee80211_i.h
-> +++ b/net/mac80211/ieee80211_i.h
-> @@ -748,6 +748,8 @@ struct ieee80211_if_mesh {
->   *	back to wireless media and to the local net stack.
->   * @IEEE80211_SDATA_DISCONNECT_RESUME: Disconnect after resume.
->   * @IEEE80211_SDATA_IN_DRIVER: indicates interface was added to driver
-> + * @IEEE80211_SDATA_DISCONNECT_HW_RESTART: Disconnect after hardware restart
-> + *	recovery
->   */
->  enum ieee80211_sub_if_data_flags {
->  	IEEE80211_SDATA_ALLMULTI		= BIT(0),
-> @@ -755,6 +757,7 @@ enum ieee80211_sub_if_data_flags {
->  	IEEE80211_SDATA_DONT_BRIDGE_PACKETS	= BIT(3),
->  	IEEE80211_SDATA_DISCONNECT_RESUME	= BIT(4),
->  	IEEE80211_SDATA_IN_DRIVER		= BIT(5),
-> +	IEEE80211_SDATA_DISCONNECT_HW_RESTART	= BIT(6),
->  };
->  
->  /**
-> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-> index 6adfcb9..e4d0d16 100644
-> --- a/net/mac80211/mlme.c
-> +++ b/net/mac80211/mlme.c
-> @@ -4769,6 +4769,15 @@ void ieee80211_sta_restart(struct ieee80211_sub_if_data *sdata)
->  					      true);
->  		sdata_unlock(sdata);
->  		return;
-> +	} else if (sdata->flags & IEEE80211_SDATA_DISCONNECT_HW_RESTART) {
-> +		sdata->flags &= ~IEEE80211_SDATA_DISCONNECT_HW_RESTART;
-> +		mlme_dbg(sdata, "driver requested disconnect after hardware restart\n");
-> +		ieee80211_sta_connection_lost(sdata,
-> +					      ifmgd->associated->bssid,
-> +					      WLAN_REASON_UNSPECIFIED,
-> +					      true);
-> +		sdata_unlock(sdata);
-> +		return;
->  	}
->  	sdata_unlock(sdata);
->  }
-> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-> index 8c3c01a..98567a3 100644
-> --- a/net/mac80211/util.c
-> +++ b/net/mac80211/util.c
-> @@ -2567,9 +2567,12 @@ int ieee80211_reconfig(struct ieee80211_local *local)
->  	}
->  	mutex_unlock(&local->sta_mtx);
->  
-> -	/* add back keys */
-> -	list_for_each_entry(sdata, &local->interfaces, list)
-> -		ieee80211_reenable_keys(sdata);
-> +
-> +	if (!(hw->wiphy->flags & WIPHY_FLAG_STA_DISCONNECT_ON_HW_RESTART)) {
-> +		/* add back keys */
-> +		list_for_each_entry(sdata, &local->interfaces, list)
-> +			ieee80211_reenable_keys(sdata);
-> +	}
->  
->  	/* Reconfigure sched scan if it was interrupted by FW restart */
->  	mutex_lock(&local->mtx);
-> @@ -2643,6 +2646,19 @@ int ieee80211_reconfig(struct ieee80211_local *local)
->  					IEEE80211_QUEUE_STOP_REASON_SUSPEND,
->  					false);
->  
-> +	if ((hw->wiphy->flags & WIPHY_FLAG_STA_DISCONNECT_ON_HW_RESTART) &&
-> +	    !reconfig_due_to_wowlan) {
-> +		list_for_each_entry(sdata, &local->interfaces, list) {
-> +			if (!ieee80211_sdata_running(sdata))
-> +				continue;
-> +			if (sdata->vif.type == NL80211_IFTYPE_STATION) {
-> +				sdata->flags |=
-> +					IEEE80211_SDATA_DISCONNECT_HW_RESTART;
-> +				ieee80211_sta_restart(sdata);
+Ryder Lee <ryder.lee@mediatek.com> writes:
 
-If CONFIG_PM=n:
+> On Sun, 2021-02-07 at 10:41 +0800, Ryder Lee wrote:
+>> On Fri, 2021-02-05 at 14:29 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrot=
+e:
+>
+>> > > @@ -3770,6 +3770,10 @@ struct ieee80211_txq *ieee80211_next_txq(stru=
+ct ieee80211_hw *hw, u8 ac)
+>> > >  				sta->airtime_weight;
+>> > >=20=20
+>> > >  		if (deficit < 0 || !aql_check) {
+>> > > +			if (txqi->schedule_round =3D=3D local->schedule_round[ac])
+>> > > +				goto out;
+>> > > +
+>> > > +			txqi->schedule_round =3D local->schedule_round[ac];
+>> >=20
+>> > I think this change may be worth making anyway, but for a different
+>> > reason: Without it, a station that fails aql_check will keep getting
+>> > recycled through the list, advancing its deficit. Which could actually
+>> > be the reason AQL breaks airtime fairness; did you observe any
+>> > difference in fairness with this change?
+>>=20
+>> Our case is: mt7915 provides per-peer airtime counters. However, some of
+>> them were not properly configured, so certain stations reported large
+>> amount of airtime which led to deficit < 0, and as you said, ending up
+>> with recycle + very longer lock hold time (0.9s in our tests) and
+>> breaking fairness.
 
-ERROR: "ieee80211_sta_restart" [net/mac80211/mac80211.ko] undefined!
+First of all, if the driver reports wrong airtime values, of course it
+is going to affect fairness. The right thing in that case is to fix the
+driver, or turn off reporting if it can't be fixed.
 
-Guenter
+> Found a problem when we are in low traffic with this patch.This will
+> increase latency (i.e ping)
+>
+>
+> So, we have to
+>
+> 	if (deficit < 0 || !aql_check) {
+> 		if (txqi->schedule_round =3D=3D local->schedule_round[ac])
+> 			// re-schedule
 
-> +			}
-> +		}
-> +	}
-> +
->  	/*
->  	 * If this is for hw restart things are still running.
->  	 * We may want to change that later, however.
+You mean, signal the driver to start over? But then you're just undoing
+the check you just inserted here...
+
+
+...and thinking about it a bit more, I don't actually think adding this
+check is the right thing to do. As you've just discovered, the deficit
+scheduler relies on the "goto begin" below (and thus being able to
+keep spinning and increasing the deficit) to make progress. So if you
+short-circuit that, you'll get blocking, but if you keep rotating the
+queues for other reasons (like AQL does) you no longer get fairness.
+
+Ultimately this comes from using two different sources of airtime:
+predicted values (in AQL) and after-the-fact reporting (in the fairness
+scheduler). There's a time lag between when these two values are
+applied, which leads to the fairness scheduler insisting that a station
+should be the next one to transmit even though AQL is blocking it.
+
+Hmm, I wonder what would happen if we just accounted the AQL balance in
+the fairness deficit as well? Something like the patch below
+(compile-tested only). I'm not sure what the effect of running the
+deficit backwards like this is; we may get weird oscillating values when
+we subtract the AQL value and the "real" value hasn't been accounted
+yet. But it may also turn out to not be a big issue; worth testing,
+maybe?
+
+The alternative would be to switch to using only the AQL values for
+fairness as well; if the AQL predictions are reasonably accurate this
+would likely work well enough. Got any idea how much they are off?
+
+-Toke
+
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index ec6973ee88ef..86718a6429e6 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1893,12 +1893,10 @@ void ieee80211_sta_set_buffered(struct ieee80211_st=
+a *pubsta,
+ }
+ EXPORT_SYMBOL(ieee80211_sta_set_buffered);
+=20
+-void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
+-                                   u32 tx_airtime, u32 rx_airtime)
++static void __ieee80211_sta_register_airtime(struct ieee80211_local *local,
++                                            struct sta_info *sta, u8 ac,
++                                            u32 tx_airtime, u32 rx_airtime)
+ {
+-       struct sta_info *sta =3D container_of(pubsta, struct sta_info, sta);
+-       struct ieee80211_local *local =3D sta->sdata->local;
+-       u8 ac =3D ieee80211_ac_from_tid(tid);
+        u32 airtime =3D 0;
+=20
+        if (sta->local->airtime_flags & AIRTIME_USE_TX)
+@@ -1912,6 +1910,16 @@ void ieee80211_sta_register_airtime(struct ieee80211=
+_sta *pubsta, u8 tid,
+        sta->airtime[ac].deficit -=3D airtime;
+        spin_unlock_bh(&local->active_txq_lock[ac]);
+ }
++
++void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
++                                   u32 tx_airtime, u32 rx_airtime)
++{
++       struct sta_info *sta =3D container_of(pubsta, struct sta_info, sta);
++       struct ieee80211_local *local =3D sta->sdata->local;
++       u8 ac =3D ieee80211_ac_from_tid(tid);
++
++       __ieee80211_sta_register_airtime(local, sta, ac, tx_airtime, rx_air=
+time);
++}
+ EXPORT_SYMBOL(ieee80211_sta_register_airtime);
+=20
+ void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
+@@ -1924,9 +1932,11 @@ void ieee80211_sta_update_pending_airtime(struct iee=
+e80211_local *local,
+                return;
+=20
+        if (!tx_completed) {
+-               if (sta)
++               if (sta) {
+                        atomic_add(tx_airtime,
+                                   &sta->airtime[ac].aql_tx_pending);
++                       __ieee80211_sta_register_airtime(local, sta, ac, tx=
+_airtime, 0);
++               }
+=20
+                atomic_add(tx_airtime, &local->aql_total_pending_airtime);
+                return;
+@@ -1938,6 +1948,7 @@ void ieee80211_sta_update_pending_airtime(struct ieee=
+80211_local *local,
+                if (tx_pending < 0)
+                        atomic_cmpxchg(&sta->airtime[ac].aql_tx_pending,
+                                       tx_pending, 0);
++               __ieee80211_sta_register_airtime(local, sta, ac, -tx_airtim=
+e, 0);
+        }
+=20
+        tx_pending =3D atomic_sub_return(tx_airtime,
