@@ -2,72 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D9E33128FA
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 03:36:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C64F13129B2
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 05:20:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbhBHCeS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 7 Feb 2021 21:34:18 -0500
-Received: from m12-14.163.com ([220.181.12.14]:54748 "EHLO m12-14.163.com"
+        id S229669AbhBHEQu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 7 Feb 2021 23:16:50 -0500
+Received: from m12-14.163.com ([220.181.12.14]:37843 "EHLO m12-14.163.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229570AbhBHCeI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 7 Feb 2021 21:34:08 -0500
+        id S229590AbhBHEQr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 7 Feb 2021 23:16:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=OgKwUMofdoKu/7tnN0
-        0hu/u8x4YRxNderZkLq1lXjs8=; b=AYzWygfI+RZuDTyrucL4lp61pslPikSkJi
-        7J33R1eNLyDzYGeMIXor/NsAdjDYIGsdaUiBXz7o9cY7FTCQHt/+p1er3eguny/m
-        OA+ERuaWT3MneZlgDVjyC5hc56jIAamgfMdJ4sGzz4DL1r4gITXNaq1hl13v72Ws
-        EHf0+MINM=
+        s=s110527; h=From:Subject:Date:Message-Id; bh=3PjaSyTPIF/0eA0o6d
+        2SeGzWaUYGs51QsvtN6khf1pE=; b=QlscQxfQYcjauD2p8tY0SBGqexmoXtdBDm
+        C+QVwbzMOMBr0vaC1c7+3EmezDraM12EyrjIB8cstwGXYrVHyYRtUGCZ8/cJ9JGF
+        ki7jfbhluAuw6OCt1jw8rmZZ4vsDPqmbnYJU728GuDljyOJG7aVETd0XJAuMKWPC
+        Y67im/QbQ=
 Received: from wengjianfeng.ccdomain.com (unknown [119.137.53.134])
-        by smtp10 (Coremail) with SMTP id DsCowAAHHJiooiBgSZT4jw--.508S2;
-        Mon, 08 Feb 2021 10:32:10 +0800 (CST)
+        by smtp10 (Coremail) with SMTP id DsCowAA303CepCBg1rL5jw--.655S2;
+        Mon, 08 Feb 2021 10:40:32 +0800 (CST)
 From:   samirweng1979 <samirweng1979@163.com>
-To:     buytenh@wantstofly.org, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, gustavoars@kernel.org, ganapathi.bhat@nxp.com,
-        romain.perier@gmail.com, allen.lkml@gmail.com,
-        christophe.jaillet@wanadoo.fr
+To:     amitkarwar@gmail.com, siva8118@gmail.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         wengjianfeng <wengjianfeng@yulong.com>
-Subject: [PATCH RESEND] mwl8k: assign value when defining variables
-Date:   Mon,  8 Feb 2021 10:32:07 +0800
-Message-Id: <20210208023207.10368-1-samirweng1979@163.com>
+Subject: [PATCH RESEND] rsi: remove redundant assignment
+Date:   Mon,  8 Feb 2021 10:40:29 +0800
+Message-Id: <20210208024029.24412-1-samirweng1979@163.com>
 X-Mailer: git-send-email 2.15.0.windows.1
-X-CM-TRANSID: DsCowAAHHJiooiBgSZT4jw--.508S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtrW7KF1rJry3WFy8XrWkJFb_yoWfGFgE9r
-        1IvF1agryxJr1jyr4jka13Z3sYyF15XF1ruwsFqrZxGry8Ja90vwnYkF1ftrZrCF4IvF9r
-        Wrs8J3WYy3W3XjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU5TKZtUUUUU==
+X-CM-TRANSID: DsCowAA303CepCBg1rL5jw--.655S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtrWxWF1kZw1xWw1fKF4UJwb_yoW3Krb_ur
+        10qF4fWrWkG3W8Kryj9FW3Zr9Iya4UW3WrGw4qq3yfGryUtrZxAw15Crn3J3yDG34jvr9x
+        Gws7uryIva43ujkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUeg6pDUUUUU==
 X-Originating-IP: [119.137.53.134]
-X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbirBYzsVr7sMQ+cgAAsh
+X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiHQAzsVSIpToy4wAAsN
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: wengjianfeng <wengjianfeng@yulong.com>
 
-define refilled and then assign value to it, which should do
-that at the same time.
+INVALID_QUEUE has been used as a return value,it is not necessary to
+assign it to q_num,so just return INVALID_QUEUE.
 
 Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 3 +--
+ drivers/net/wireless/rsi/rsi_91x_core.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index abf3b02..435ef77 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -1208,9 +1208,8 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
- {
- 	struct mwl8k_priv *priv = hw->priv;
- 	struct mwl8k_rx_queue *rxq = priv->rxq + index;
--	int refilled;
-+	int refilled = 0;
+diff --git a/drivers/net/wireless/rsi/rsi_91x_core.c b/drivers/net/wireless/rsi/rsi_91x_core.c
+index 2d49c5b..a48e616 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_core.c
++++ b/drivers/net/wireless/rsi/rsi_91x_core.c
+@@ -193,8 +193,7 @@ static u8 rsi_core_determine_hal_queue(struct rsi_common *common)
+ 		if (recontend_queue)
+ 			goto get_queue_num;
  
--	refilled = 0;
- 	while (rxq->rxd_count < MWL8K_RX_DESCS && limit--) {
- 		struct sk_buff *skb;
- 		dma_addr_t addr;
+-		q_num = INVALID_QUEUE;
+-		return q_num;
++		return INVALID_QUEUE;
+ 	}
+ 
+ 	common->selected_qnum = q_num;
 -- 
 1.9.1
 
