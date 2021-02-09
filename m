@@ -2,127 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA050314963
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Feb 2021 08:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F1C314966
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Feb 2021 08:22:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230180AbhBIHTR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Feb 2021 02:19:17 -0500
-Received: from so15.mailgun.net ([198.61.254.15]:27373 "EHLO so15.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230034AbhBIHTL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Feb 2021 02:19:11 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612855127; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=Tz8B3SKK8X3XicV4RNnbjFdYo4FlBMTms7jwtNxn2o0=;
- b=bLpHmkdG6pIRjdKOcK24NIKDT8GWRufXhx93W4tDnn9/RAK89u7P+OPSvH0gWoGyxzyiZZMs
- D2QZy50pXBaM8PLmFzNaRiPQ734wQaYevluUYum5rXNRrwA/oKSObS5vJojTlmDF751oVB5T
- CXqOvuQPOV/m+WmSqJpzIbh9148=
-X-Mailgun-Sending-Ip: 198.61.254.15
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6022373a4bd23a05ae3c7569 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 09 Feb 2021 07:18:18
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3513DC43463; Tue,  9 Feb 2021 07:18:18 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5A89CC433CA;
-        Tue,  9 Feb 2021 07:18:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5A89CC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+        id S230250AbhBIHUd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Feb 2021 02:20:33 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:35936 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229671AbhBIHUE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 9 Feb 2021 02:20:04 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1197J3CZ0008195, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 1197J3CZ0008195
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 9 Feb 2021 15:19:03 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 9 Feb 2021 15:19:03 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::c516:1a26:2f9b:1e]) by
+ RTEXMBS04.realtek.com.tw ([fe80::c516:1a26:2f9b:1e%6]) with mapi id
+ 15.01.2106.006; Tue, 9 Feb 2021 15:19:03 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "briannorris@chromium.org" <briannorris@chromium.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        Bernie Huang <phhuang@realtek.com>
+Subject: Re: [PATCH v4 3/8] rtw88: add napi support
+Thread-Topic: [PATCH v4 3/8] rtw88: add napi support
+Thread-Index: AQHW6yCPbtjrLodDrUGqlkIx94yfwqozx6WAgAkWW6CAAfWCAIAEG6IggAwb6YA=
+Date:   Tue, 9 Feb 2021 07:19:03 +0000
+Message-ID: <1612855085.8436.15.camel@realtek.com>
+References: <20210115092405.8081-1-pkshih@realtek.com>
+         <20210115092405.8081-4-pkshih@realtek.com>
+         <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com>
+         <d84e1a2c0d8e481588eec7248abf5c1a@realtek.com>
+         <CA+ASDXM7e4eSiJNoVMES7=mZ3M-NGpVZ9jLbjNm4yqMSYH4r+Q@mail.gmail.com>
+         <e8e451faf35e47b494f6d49fe92d1858@realtek.com>
+In-Reply-To: <e8e451faf35e47b494f6d49fe92d1858@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.213]
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <130C2EAD5A3C4E4BA073D7B617495039@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: Fix lockdep assertion warning in
- ath10k_sta_statistics
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210202144033.1.I9e556f9fb1110d58c31d04a8a1293995fb8bb678@changeid>
-References: <20210202144033.1.I9e556f9fb1110d58c31d04a8a1293995fb8bb678@changeid>
-To:     Anand K Mistry <amistry@google.com>
-Cc:     ath10k@lists.infradead.org, Anand K Mistry <amistry@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Wen Gong <wgong@codeaurora.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210209071818.3513DC43463@smtp.codeaurora.org>
-Date:   Tue,  9 Feb 2021 07:18:18 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Anand K Mistry <amistry@google.com> wrote:
-
-> ath10k_debug_fw_stats_request just be called with conf_mutex held,
-> otherwise the following warning is seen when lock debugging is enabled:
-> 
-> WARNING: CPU: 0 PID: 793 at drivers/net/wireless/ath/ath10k/debug.c:357 ath10k_debug_fw_stats_request+0x12c/0x133 [ath10k_core]
-> Modules linked in: snd_hda_codec_hdmi designware_i2s snd_hda_intel snd_intel_dspcfg snd_hda_codec i2c_piix4 snd_hwdep snd_hda_core acpi_als kfifo_buf industrialio snd_soc_max98357a snd_soc_adau7002 snd_soc_acp_da7219mx98357_mach snd_soc_da7219 acp_audio_dma ccm xt_MASQUERADE fuse ath10k_pci ath10k_core lzo_rle ath lzo_compress mac80211 zram cfg80211 r8152 mii joydev
-> CPU: 0 PID: 793 Comm: wpa_supplicant Tainted: G        W         5.10.9 #5
-> Hardware name: HP Grunt/Grunt, BIOS Google_Grunt.11031.104.0 09/05/2019
-> RIP: 0010:ath10k_debug_fw_stats_request+0x12c/0x133 [ath10k_core]
-> Code: 1e bb a1 ff ff ff 4c 89 ef 48 c7 c6 d3 31 2e c0 89 da 31 c0 e8 bd f8 ff ff 89 d8 eb 02 31 c0 5b 41 5c 41 5d 41 5e 41 5f 5d c3 <0f> 0b e9 04 ff ff ff 0f 1f 44 00 00 55 48 89 e5 41 56 53 48 89 fb
-> RSP: 0018:ffffb2478099f7d0 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff9e432700cce0 RCX: 11c85cfd6b8e3b00
-> RDX: ffff9e432700cce0 RSI: ffff9e43127c5668 RDI: ffff9e4318deddf0
-> RBP: ffffb2478099f7f8 R08: 0000000000000002 R09: 00000003fd7068cc
-> R10: ffffffffc01b2749 R11: ffffffffc029efaf R12: ffff9e432700c000
-> R13: ffff9e43127c33e0 R14: ffffb2478099f918 R15: ffff9e43127c33e0
-> FS:  00007f7ea48e2740(0000) GS:ffff9e432aa00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 000059aa799ddf38 CR3: 0000000118de2000 CR4: 00000000001506f0
-> Call Trace:
->  ath10k_sta_statistics+0x4d/0x270 [ath10k_core]
->  sta_set_sinfo+0x1be/0xaec [mac80211]
->  ieee80211_get_station+0x58/0x76 [mac80211]
->  rdev_get_station+0xf1/0x11e [cfg80211]
->  nl80211_get_station+0x7f/0x146 [cfg80211]
->  genl_rcv_msg+0x32e/0x35e
->  ? nl80211_stop_ap+0x19/0x19 [cfg80211]
->  ? nl80211_get_station+0x146/0x146 [cfg80211]
->  ? genl_rcv+0x19/0x36
->  ? genl_rcv+0x36/0x36
->  netlink_rcv_skb+0x89/0xfb
->  genl_rcv+0x28/0x36
->  netlink_unicast+0x169/0x23b
->  netlink_sendmsg+0x38a/0x402
->  sock_sendmsg+0x72/0x76
->  ____sys_sendmsg+0x153/0x1cc
->  ? copy_msghdr_from_user+0x5d/0x85
->  ___sys_sendmsg+0x7c/0xb5
->  ? lock_acquire+0x181/0x23d
->  ? syscall_trace_enter+0x15e/0x160
->  ? find_held_lock+0x3d/0xb2
->  ? syscall_trace_enter+0x15e/0x160
->  ? sched_clock_cpu+0x15/0xc6
->  __sys_sendmsg+0x62/0x9a
->  do_syscall_64+0x43/0x55
->  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> 
-> Fixes: 4913e675630e ("ath10k: enable rx duration report default for wmi tlv")
-> Signed-off-by: Anand K Mistry <amistry@google.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-
-Patch applied to ath-next branch of ath.git, thanks.
-
-7df28718928d ath10k: Fix lockdep assertion warning in ath10k_sta_statistics
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210202144033.1.I9e556f9fb1110d58c31d04a8a1293995fb8bb678@changeid/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+T24gTW9uLCAyMDIxLTAyLTAxIGF0IDA2OjM4ICswMDAwLCBQa3NoaWggd3JvdGU6DQo+ID4gLS0t
+LS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBCcmlhbiBOb3JyaXMgW21haWx0bzpi
+cmlhbm5vcnJpc0BjaHJvbWl1bS5vcmddDQo+ID4gU2VudDogU2F0dXJkYXksIEphbnVhcnkgMzAs
+IDIwMjEgNzozOSBBTQ0KPiA+IFRvOiBQa3NoaWgNCj4gPiBDYzogWWFuLUhzdWFuIENodWFuZzsg
+S2FsbGUgVmFsbzsgbGludXgtd2lyZWxlc3M7IEJlcm5pZSBIdWFuZw0KPiA+IFN1YmplY3Q6IFJl
+OiBbUEFUQ0ggdjQgMy84XSBydHc4ODogYWRkIG5hcGkgc3VwcG9ydA0KPiA+wqANCj4gPiBPbiBU
+aHUsIEphbiAyOCwgMjAyMSBhdCAxOjQ1IEFNIFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3
+cm90ZToNCj4gPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+ID4gRnJvbTog
+QnJpYW4gTm9ycmlzIFttYWlsdG86YnJpYW5ub3JyaXNAY2hyb21pdW0ub3JnXQ0KPiA+ID4gPiBP
+biBGcmksIEphbiAxNSwgMjAyMSBhdCAxOjI2IEFNIFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0
+ZWsuY29tPiB3cm90ZToNCj4gPiA+ID4gPiArc3RhdGljIHUzMiBydHdfcGNpX3J4X25hcGkoc3Ry
+dWN0IHJ0d19kZXYgKnJ0d2Rldiwgc3RydWN0IHJ0d19wY2kNCj4gKnJ0d3BjaSwNCj4gPiA+ID4g
+PsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+dTggaHdfcXVldWUpDQo+ID4gPiA+IC4uLg0KPiA+ID4gPg0KPiA+ID4gPiBBcmUgeW91IHN1cmUg
+eW91IGRvbid0IHdhbnQgYW55IGxvY2tpbmcgaW4gcnR3X3BjaV9yeF9uYXBpKCk/DQo+ID4gPiA+
+IFByZXZpb3VzbHksIHlvdSBoZWxkIGlycV9sb2NrIGZvciB0aGUgZW50aXJldHkgb2YgcnR3X3Bj
+aV9yeF9pc3IoKSwNCj4gPiA+ID4gYnV0IG5vdyBhbGwgdGhlIFJYIHdvcmsgaXMgYmVpbmcgZGVm
+ZXJyZWQgdG8gYSBOQVBJIGNvbnRleHQsIHdpdGhvdXQNCj4gPiA+ID4gYW55IGFkZGl0aW9uYWwg
+bG9jay4gSUlVQywgdGhhdCBtZWFucyB5b3UgY2FuIGJlIGJvdGggaGFuZGxpbmcgUlggYW5kDQo+
+ID4gPiA+IG90aGVyIElTUiBvcGVyYXRpb25zIGF0IHRoZSBzYW1lIHRpbWUuIElzIHRoYXQgaW50
+ZW50aW9uYWw/DQo+ID4gPiA+DQo+ID4gPg0KPiA+ID4gaXJxX2xvY2sgaXMgdXNlZCB0byBwcm90
+ZWN0IFRYIHJpbmctPnF1ZXVlLiBUaGUgVFggc2tiKHMpIGFyZSBxdWV1ZWQgaW50bw0KPiB0aGUN
+Cj4gPiA+IHF1ZXVlLCBhbmQgdW5saW5rIHRoZSBza2IgdW50aWwgVFhfT0tfSVNSIGlzIHJlY2Vp
+dmVkLiBTbywgUlggZG9lc24ndCBuZWVkDQo+IHRvDQo+ID4gPiBob2xkIHRoaXMgbG9jay4NCj4g
+PsKgDQo+ID4gSSBjb3VsZCBiZSBtaXN1bmRlcnN0YW5kaW5nIHlvdXIgbG9ja2luZyBtb2RlbCwg
+YnV0IElJVUMsIHlvdSdyZSBsZWZ0DQo+ID4gd2l0aCB6ZXJvIGxvY2tpbmcgYmV0d2VlbiBOQVBJ
+IFJYIGFuZCBhbGwgb3RoZXIgb3BlcmF0aW9ucyAoSDJDLCBsaW5rDQo+ID4gdXAvZG93biAtLSBp
+bmNsdWRpbmcgRE1BIGZyZWUsIGV0Yy4pLiBpcnFfbG9jayB1c2VkIHRvIHByb3RlY3QgeW91DQo+
+ID4gZnJvbSB0aGF0Lg0KPiA+wqANCj4gDQo+IFNvcnJ5LCBJJ20gd3JvbmcuIEkgdGhpbmsgaXJx
+X2xvY2sgaXMgdXNlZCB0byBwcm90ZWN0IG5vdCBvbmx5IFRYIHJpbmctPnF1ZXVlDQo+IGJ1dCBh
+bHNvIFRYL1JYIHJpbmdzLiBUaGUgUlggcmluZyBydHdwY2ktPnJ4X3JpbmdzW1JUV19SWF9RVUVV
+RV9NUERVXSBpcyByZXNldA0KPiBieSBydHdfcGNpX3Jlc2V0X2J1Zl9kZXNjKCkgd2hlbiBwY2lf
+c3RvcCgpLCBhbmQgbmFwaV9wb2xsKCkgYWxzbyB1c2VzIGl0IHRvDQo+IGtub3cgaG93IG1hbnkg
+UlggcGFja2V0cyBhcmUgbmVlZGVkIHRvIGJlIHJlY2VpdmVkLiBUaGVyZWZvcmUsIHdlIHBsYW4g
+dG8NCj4gdXNlIGlycV9sb2NrIHRvIHByb3RlY3QgbmFwaV9wb2xsKCksIGFuZCB0aGVuIHNlZSBp
+ZiBpdCBhZmZlY3RzIHBlcmZvcm1hbmNlLg0KPiANCg0KSSBjaGFuZ2UgbXkgbWluZCwgYmVjYXVz
+ZSB1c2luZyBpcnFfbG9jayB0byBwcm90ZWN0IG5hcGlfcG9sbCBjYXVzZXMgZGVhZGxvY2suDQpJ
+IHRoaW5rIHRoYXQgaXQncyBkaXNhbGxvd2VkIHRvIGhvbGQgYSBzcGluX2xvY2tfYmggYW5kIGNh
+bGwgbmFwaSBBUElzIHRoYXQgdXNlcw0KUkNVIGxvY2suDQoNClRoZW4sIEkgaGF2ZSBhbm90aGVy
+IHNpbXBsZSB0aGlua2luZyAtLSBlbmFibGUgTkFQSSBvbmx5IGlmIGludGVycnVwdCBpcw0KZW5h
+YmxlZC4gT3RoZXIgb3BlcmF0aW9ucyB3aXRoIFJYIHJpbmcgYXJlIHdvcmtpbmcgb25seSBpZiBp
+bnRlcnJ1cHQgaXMNCmRpc2FibGVkLiBTbywgd2UgZG9uJ3QgbmVlZCBhIGxvY2sgdG8gcHJvdGVj
+dCBSWCByaW5nIGF0IGFsbC4NCg0KVGhlIGlycV9sb2NrIGlzIHN0aWxsIHVzZWQgdG8gcHJvdGVj
+dCBUWCByaW5nL3F1ZXVlLCBhbmQgbm93IGl0IGFsc28gdXNlZA0KdG8gcHJvdGVjdCBzd2l0Y2hp
+bmcgSU1SLiBTb21lIGNvbW1lbnRzIGFyZSBhZGRlZCB0byBkZXNjcmliZSBhYm91dCB0aGlzLg0K
+DQpBYm92ZSBpcyBpbXBsZW1lbnRlZCBpbiB2NS4NCg0KLS0tDQpQaW5nLUtlDQoNCg0K
