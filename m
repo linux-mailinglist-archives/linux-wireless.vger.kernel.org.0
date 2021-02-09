@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C77EA314940
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Feb 2021 08:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51056314941
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Feb 2021 08:10:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229725AbhBIHKJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Feb 2021 02:10:09 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:35123 "EHLO
+        id S229753AbhBIHKM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Feb 2021 02:10:12 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:35168 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbhBIHKI (ORCPT
+        with ESMTP id S229464AbhBIHKM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Feb 2021 02:10:08 -0500
+        Tue, 9 Feb 2021 02:10:12 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 11979K3L0006399, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 11979QTW0006511, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 11979K3L0006399
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 11979QTW0006511
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 9 Feb 2021 15:09:20 +0800
+        Tue, 9 Feb 2021 15:09:26 +0800
 Received: from localhost (172.21.69.213) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 9 Feb 2021
- 15:09:20 +0800
+ 15:09:25 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
-Subject: [PATCH v5 1/8] rtw88: add dynamic rrsr configuration
-Date:   Tue, 9 Feb 2021 15:07:48 +0800
-Message-ID: <20210209070755.23019-2-pkshih@realtek.com>
+Subject: [PATCH v5 2/8] rtw88: add rts condition
+Date:   Tue, 9 Feb 2021 15:07:49 +0800
+Message-ID: <20210209070755.23019-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20210209070755.23019-1-pkshih@realtek.com>
 References: <20210209070755.23019-1-pkshih@realtek.com>
@@ -35,7 +35,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [172.21.69.213]
-X-ClientProxiedBy: RTEXMBS01.realtek.com.tw (172.21.6.94) To
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -43,199 +43,65 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Po-Hao Huang <phhuang@realtek.com>
 
-Register rrsr determines the response rate we send.
-In field tests, using rate higher than current tx rate could lead
-to difficulty for the receiving end to receive management/control
-frames. Calculate current modulation level by tx rate then cross out
-rate higher than those.
+Since we set the IEEE80211_HW_HAS_RATE_CONTROL flag, so use_rts in
+ieee80211_tx_info will never be set in the ieee80211_xmit_fast path.
+Add length check for skb to decide whether rts is needed.
 
 Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Reviewed-by: Brian Norris <briannorris@chromium.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c     |  3 +
- drivers/net/wireless/realtek/rtw88/main.h     |  5 ++
- drivers/net/wireless/realtek/rtw88/phy.c      | 62 ++++++++++++++++++-
- drivers/net/wireless/realtek/rtw88/phy.h      |  3 +
- drivers/net/wireless/realtek/rtw88/reg.h      |  2 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.h |  2 -
- 6 files changed, 74 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw88/tx.c | 7 ++++++-
+ drivers/net/wireless/realtek/rtw88/tx.h | 4 ++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 757aaf45f65e..871496713f98 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -894,6 +894,7 @@ static u64 rtw_update_rate_mask(struct rtw_dev *rtwdev,
- 
- void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 18ec0088bf41..313b824dca6d 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -58,6 +58,10 @@ void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb)
+ 	SET_TX_DESC_SPE_RPT(txdesc, pkt_info->report);
+ 	SET_TX_DESC_SW_DEFINE(txdesc, pkt_info->sn);
+ 	SET_TX_DESC_USE_RTS(txdesc, pkt_info->rts);
++	if (pkt_info->rts) {
++		SET_TX_DESC_RTSRATE(txdesc, DESC_RATE24M);
++		SET_TX_DESC_DATA_RTS_SHORT(txdesc, 1);
++	}
+ 	SET_TX_DESC_DISQSELSEQ(txdesc, pkt_info->dis_qselseq);
+ 	SET_TX_DESC_EN_HWSEQ(txdesc, pkt_info->en_hwseq);
+ 	SET_TX_DESC_HW_SSN_SEL(txdesc, pkt_info->hw_ssn_sel);
+@@ -290,6 +294,7 @@ static void rtw_tx_data_pkt_info_update(struct rtw_dev *rtwdev,
  {
-+	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
- 	struct ieee80211_sta *sta = si->sta;
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
- 	struct rtw_hal *hal = &rtwdev->hal;
-@@ -938,6 +939,7 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
- 		} else {
- 			wireless_set = WIRELESS_OFDM;
- 		}
-+		dm_info->rrsr_val_init = RRSR_INIT_5G;
- 	} else if (hal->current_band_type == RTW_BAND_2G) {
- 		ra_mask |= sta->supp_rates[NL80211_BAND_2GHZ];
- 		if (sta->vht_cap.vht_supported) {
-@@ -955,6 +957,7 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
- 		} else {
- 			wireless_set = WIRELESS_CCK | WIRELESS_OFDM;
- 		}
-+		dm_info->rrsr_val_init = RRSR_INIT_2G;
- 	} else {
- 		rtw_err(rtwdev, "Unknown band type\n");
- 		wireless_set = 0;
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 87524199d0d6..296a9b4da4fd 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1495,6 +1495,9 @@ struct rtw_iqk_info {
- 	} result;
- };
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_hw *hw = rtwdev->hw;
+ 	struct rtw_sta_info *si;
+ 	u16 seq;
+ 	u8 ampdu_factor = 0;
+@@ -313,7 +318,7 @@ static void rtw_tx_data_pkt_info_update(struct rtw_dev *rtwdev,
+ 		ampdu_density = get_tx_ampdu_density(sta);
+ 	}
  
-+#define RRSR_INIT_2G 0x15f
-+#define RRSR_INIT_5G 0x150
-+
- struct rtw_dm_info {
- 	u32 cck_fa_cnt;
- 	u32 ofdm_fa_cnt;
-@@ -1525,6 +1528,8 @@ struct rtw_dm_info {
- 	u8 cck_gi_l_bnd;
+-	if (info->control.use_rts)
++	if (info->control.use_rts || skb->len > hw->wiphy->rts_threshold)
+ 		pkt_info->rts = true;
  
- 	u8 tx_rate;
-+	u32 rrsr_val_init;
-+	u32 rrsr_mask_min;
- 	u8 thermal_avg[RTW_RF_PATH_MAX];
- 	u8 thermal_meter_k;
- 	s8 delta_power_index[RTW_RF_PATH_MAX];
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index d44960cd940c..e114ddecac09 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -465,6 +465,60 @@ static void rtw_phy_ra_info_update(struct rtw_dev *rtwdev)
- 	rtw_iterate_stas_atomic(rtwdev, rtw_phy_ra_info_update_iter, rtwdev);
- }
- 
-+static u32 rtw_phy_get_rrsr_mask(struct rtw_dev *rtwdev, u8 rate_idx)
-+{
-+	u8 rate_order;
-+
-+	rate_order = rate_idx;
-+
-+	if (rate_idx >= DESC_RATEVHT4SS_MCS0)
-+		rate_order -= DESC_RATEVHT4SS_MCS0;
-+	else if (rate_idx >= DESC_RATEVHT3SS_MCS0)
-+		rate_order -= DESC_RATEVHT3SS_MCS0;
-+	else if (rate_idx >= DESC_RATEVHT2SS_MCS0)
-+		rate_order -= DESC_RATEVHT2SS_MCS0;
-+	else if (rate_idx >= DESC_RATEVHT1SS_MCS0)
-+		rate_order -= DESC_RATEVHT1SS_MCS0;
-+	else if (rate_idx >= DESC_RATEMCS24)
-+		rate_order -= DESC_RATEMCS24;
-+	else if (rate_idx >= DESC_RATEMCS16)
-+		rate_order -= DESC_RATEMCS16;
-+	else if (rate_idx >= DESC_RATEMCS8)
-+		rate_order -= DESC_RATEMCS8;
-+	else if (rate_idx >= DESC_RATEMCS0)
-+		rate_order -= DESC_RATEMCS0;
-+	else if (rate_idx >= DESC_RATE6M)
-+		rate_order -= DESC_RATE6M;
-+	else
-+		rate_order -= DESC_RATE1M;
-+
-+	if (rate_idx >= DESC_RATEMCS0 || rate_order == 0)
-+		rate_order++;
-+
-+	return GENMASK(rate_order + RRSR_RATE_ORDER_CCK_LEN - 1, 0);
-+}
-+
-+static void rtw_phy_rrsr_mask_min_iter(void *data, struct ieee80211_sta *sta)
-+{
-+	struct rtw_dev *rtwdev = (struct rtw_dev *)data;
-+	struct rtw_sta_info *si = (struct rtw_sta_info *)sta->drv_priv;
-+	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
-+	u32 mask = 0;
-+
-+	mask = rtw_phy_get_rrsr_mask(rtwdev, si->ra_report.desc_rate);
-+	if (mask < dm_info->rrsr_mask_min)
-+		dm_info->rrsr_mask_min = mask;
-+}
-+
-+static void rtw_phy_rrsr_update(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
-+
-+	dm_info->rrsr_mask_min = RRSR_RATE_ORDER_MAX;
-+	rtw_iterate_stas_atomic(rtwdev, rtw_phy_rrsr_mask_min_iter, rtwdev);
-+	rtw_write32(rtwdev, REG_RRSR, dm_info->rrsr_val_init & dm_info->rrsr_mask_min);
-+}
-+
- static void rtw_phy_dpk_track(struct rtw_dev *rtwdev)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
-@@ -561,13 +615,19 @@ static void rtw_phy_pwr_track(struct rtw_dev *rtwdev)
- 	rtwdev->chip->ops->pwr_track(rtwdev);
- }
- 
-+static void rtw_phy_ra_track(struct rtw_dev *rtwdev)
-+{
-+	rtw_phy_ra_info_update(rtwdev);
-+	rtw_phy_rrsr_update(rtwdev);
-+}
-+
- void rtw_phy_dynamic_mechanism(struct rtw_dev *rtwdev)
- {
- 	/* for further calculation */
- 	rtw_phy_statistics(rtwdev);
- 	rtw_phy_dig(rtwdev);
- 	rtw_phy_cck_pd(rtwdev);
--	rtw_phy_ra_info_update(rtwdev);
-+	rtw_phy_ra_track(rtwdev);
- 	rtw_phy_dpk_track(rtwdev);
- 	rtw_phy_pwr_track(rtwdev);
- }
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.h b/drivers/net/wireless/realtek/rtw88/phy.h
-index b924ed07630a..a4fcfb878550 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.h
-+++ b/drivers/net/wireless/realtek/rtw88/phy.h
-@@ -185,4 +185,7 @@ enum rtw_phy_cck_pd_lv {
- #define LSSI_READ_EDGE_MASK	0x80000000
- #define LSSI_READ_DATA_MASK	0xfffff
- 
-+#define RRSR_RATE_ORDER_MAX	0xfffff
-+#define RRSR_RATE_ORDER_CCK_LEN	4
-+
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index cf9a3b674d30..ea518aa78552 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -306,6 +306,8 @@
- #define REG_DARFRC		0x0430
- #define REG_DARFRCH		0x0434
- #define REG_RARFRCH		0x043C
-+#define REG_RRSR		0x0440
-+#define BITS_RRSR_RSC		GENMASK(22, 21)
- #define REG_ARFR0		0x0444
- #define REG_ARFRH0		0x0448
- #define REG_ARFR1_V1		0x044C
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-index 32b4771e04d0..bb2495b8609e 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-@@ -164,8 +164,6 @@ const struct rtw_table name ## _tbl = {			\
- 
- #define REG_ANAPARLDO_POW_MAC	0x0029
- #define BIT_LDOE25_PON		BIT(0)
--#define REG_RRSR		0x0440
--#define BITS_RRSR_RSC		(BIT(21) | BIT(22))
- 
- #define REG_TXDFIR0	0x808
- #define REG_DFIRBW	0x810
+ 	if (sta->vht_cap.vht_supported)
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
+index 6673dbcaa21c..022288c9b5fc 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.h
++++ b/drivers/net/wireless/realtek/rtw88/tx.h
+@@ -37,6 +37,10 @@
+ 	le32p_replace_bits((__le32 *)(txdesc) + 0x03, value, GENMASK(21, 17))
+ #define SET_TX_DESC_USE_RTS(tx_desc, value)                                    \
+ 	le32p_replace_bits((__le32 *)(txdesc) + 0x03, value, BIT(12))
++#define SET_TX_DESC_RTSRATE(txdesc, value)                                     \
++	le32p_replace_bits((__le32 *)(txdesc) + 0x04, value, GENMASK(28, 24))
++#define SET_TX_DESC_DATA_RTS_SHORT(txdesc, value)                              \
++	le32p_replace_bits((__le32 *)(txdesc) + 0x05, value, BIT(12))
+ #define SET_TX_DESC_AMPDU_DENSITY(txdesc, value)                               \
+ 	le32p_replace_bits((__le32 *)(txdesc) + 0x02, value, GENMASK(22, 20))
+ #define SET_TX_DESC_DATA_STBC(txdesc, value)                                   \
 -- 
 2.21.0
 
