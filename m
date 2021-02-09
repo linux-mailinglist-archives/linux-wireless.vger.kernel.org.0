@@ -2,62 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC214313BA3
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Feb 2021 18:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E03F3146A8
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Feb 2021 03:55:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235005AbhBHRxm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Feb 2021 12:53:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44220 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233901AbhBHRwb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Feb 2021 12:52:31 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 65F6D64E7D;
-        Mon,  8 Feb 2021 17:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612806710;
-        bh=bCiGBXtCLN+Ucd3tEwkHpGMNdULn+ciI9GbwA8Nbmfs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cT7oZVYE6NnaFcS8p4ImS+l/vIthyQDFVO8yBagTXoHMz4ryRjRBa84NtDN1nR6qY
-         Jr2+i4yrHV65R9qhhenuuuNoddeTY5xjd4Z6AxDV/CcuUSgNh0xo5kJXLtBrr0laaU
-         kUTbx4ZH0i6qdjE4SJ3rx/SBs4I/uSALcmmBxFXQdpEP/4zAwmzBqIOMnugyMhMEZZ
-         xODPnAVefbrUVUy1ygbAI1PzhVMQWucwOml9MqjuzBON+myXvTebiE15mBgZTyHPix
-         mNf3w+aY7QyudWZB6j2Byr/x08aPzbUMIE7nCTbLQW+qpHNqq09zE8MZzpz1hAFUNk
-         EskCZPF3D0XcA==
-Date:   Mon, 8 Feb 2021 09:51:49 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: pull-request: wireless-drivers-2021-02-05
-Message-ID: <20210208095149.1b7c1074@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20210208082253.GA2593@lore-desk>
-References: <20210205163434.14D94C433ED@smtp.codeaurora.org>
-        <20210206093537.0bfaf0db@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <20210206194325.GA134674@lore-desk>
-        <87r1ls5svl.fsf@codeaurora.org>
-        <CAJ0CqmUkyKN_1MxSKejp90ONBtCTrsF1HUGRdh9+xNkdEjcwPg@mail.gmail.com>
-        <87mtwf562q.fsf@codeaurora.org>
-        <20210208082253.GA2593@lore-desk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S230020AbhBICzt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Feb 2021 21:55:49 -0500
+Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131]:60487 "EHLO
+        out30-131.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229692AbhBICzP (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Feb 2021 21:55:15 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0UOGliBi_1612839265;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0UOGliBi_1612839265)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 09 Feb 2021 10:54:32 +0800
+From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To:     pkshih@realtek.com
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Subject: [PATCH] rtlwifi: rtl8192se: Simplify bool comparison
+Date:   Tue,  9 Feb 2021 10:54:24 +0800
+Message-Id: <1612839264-85773-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 8 Feb 2021 09:22:53 +0100 Lorenzo Bianconi wrote:
-> > > I will post two followup patches later today. I think the issues are
-> > > not harmful but it will be easier to post them to wireless-drivers
-> > > tree, agree?  
-> > 
-> > Most likely Linus releases the final v5.11 next Sunday, so we are very
-> > close to release. If this is not urgent I would rather wait for the
-> > merge window to open (on Sunday) and apply the patch for v5.12 to avoid
-> > a last minute rush. Would that work?  
-> 
-> Sure, I guess it is not urgent.
+Fix the follow coccicheck warnings:
 
-Agreed, thanks!
+./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:2305:6-27:
+WARNING: Comparison of 0/1 to bool variable.
+
+./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1376:5-26:
+WARNING: Comparison of 0/1 to bool variable.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+index 47fabce..aff8ab0 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+@@ -1373,7 +1373,7 @@ static void _rtl92se_gen_refreshledstate(struct ieee80211_hw *hw)
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_led *pled0 = &rtlpriv->ledctl.sw_led0;
+ 
+-	if (rtlpci->up_first_time == 1)
++	if (rtlpci->up_first_time)
+ 		return;
+ 
+ 	if (rtlpriv->psc.rfoff_reason == RF_CHANGE_BY_IPS)
+@@ -2302,7 +2302,7 @@ bool rtl92se_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
+ 	bool turnonbypowerdomain = false;
+ 
+ 	/* just 8191se can check gpio before firstup, 92c/92d have fixed it */
+-	if ((rtlpci->up_first_time == 1) || (rtlpci->being_init_adapter))
++	if (rtlpci->up_first_time || rtlpci->being_init_adapter)
+ 		return false;
+ 
+ 	if (ppsc->swrf_processing)
+-- 
+1.8.3.1
+
