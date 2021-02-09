@@ -2,21 +2,21 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0E2431596E
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Feb 2021 23:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA0A5315A47
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 00:52:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234466AbhBIW1c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Feb 2021 17:27:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55444 "EHLO mail.kernel.org"
+        id S234597AbhBIXu4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Feb 2021 18:50:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55568 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233990AbhBIWMQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Feb 2021 17:12:16 -0500
+        id S234146AbhBIWO6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 9 Feb 2021 17:14:58 -0500
 Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 45F7364E7D;
-        Tue,  9 Feb 2021 19:55:33 +0000 (UTC)
-Date:   Tue, 9 Feb 2021 14:55:31 -0500
+        by mail.kernel.org (Postfix) with ESMTPSA id F2F7364DDF;
+        Tue,  9 Feb 2021 21:34:32 +0000 (UTC)
+Date:   Tue, 9 Feb 2021 16:34:31 -0500
 From:   Steven Rostedt <rostedt@goodmis.org>
 To:     Brian Norris <briannorris@chromium.org>
 Cc:     Wen Gong <wgong@codeaurora.org>,
@@ -24,10 +24,11 @@ Cc:     Wen Gong <wgong@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>
 Subject: Re: [PATCH] ath10k: change len of trace_ath10k_log_dbg_dump for
  large buffer size
-Message-ID: <20210209145531.5977b16d@gandalf.local.home>
-In-Reply-To: <CA+ASDXN1V2HYA7C6s-q5bQNSxE7L5GCJiqfiJ_67R_hpUn4b_g@mail.gmail.com>
+Message-ID: <20210209163431.11133472@gandalf.local.home>
+In-Reply-To: <20210209145531.5977b16d@gandalf.local.home>
 References: <1612839593-2308-1-git-send-email-wgong@codeaurora.org>
         <CA+ASDXN1V2HYA7C6s-q5bQNSxE7L5GCJiqfiJ_67R_hpUn4b_g@mail.gmail.com>
+        <20210209145531.5977b16d@gandalf.local.home>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,85 +37,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 9 Feb 2021 11:35:07 -0800
-Brian Norris <briannorris@chromium.org> wrote:
+On Tue, 9 Feb 2021 14:55:31 -0500
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-> + Steven Rostedt
+> > [for-next][PATCH 2/2] tracing: Use temp buffer when filtering events
+> > https://lore.kernel.org/lkml/f16b14066317f6a926b6636df6974966@codeaurora.org/  
+> 
+> Note, that is only used when filtering happens, which doesn't appear to be
+> the case here.
 
-Thanks.
+I was basing this off of the original commands, but the stack dump says
+otherwise. But it should still work.
 
 > 
-> Hi Wen,
+> > 
+> > It seems like we should still try to get that fixed somehow, even if
+> > the below change is fine on its own (it probably doesn't make sense to
+> > such a large amount of data via tracepoints). It would be unfortunate
+> > for next poor soul to hit the same issues, just because they wanted to
+> > dump a few KB.  
 > 
-> (Trimming down the description a bit:)
+> Yeah, it was a design decision to cap the max size of events to just under
+> PAGE_SIZE. The ring buffer is broken up into pages (for zero copy
+> transfers to file systems and the network). Thus, no event is allowed to be
+> bigger than a page (and actually a bit smaller)
 > 
-> On Mon, Feb 8, 2021 at 6:59 PM Wen Gong <wgong@codeaurora.org> wrote:
-> >
-> > Kernel panic every time in kernel when running below case:
-> > steps:
-> > 1. connect to an AP with good signal strength
-> > 2. echo 0x7f > /sys/kernel/debug/ieee80211/phy0/ath10k/pktlog_filter
-> > 3. echo 0xffff 0 > /sys/kernel/debug/ieee80211/phy0/ath10k/fw_dbglog
-> > 4. echo 0 > /sys/module/ath10k_core/parameters/debug_mask
-> > 5. sudo trace-cmd record  -e ath10k
-> > 6. run "iperf -c 192.168.1.1 -u -b 100m -i 1 -t 30"
-> > 7. kernel panic immeditely
-> >
-> > It always crash at trace_event_raw_event_ath10k_xxx, below is 2 sample:  
-> ...
-> > The value of prog in filter_match_preds of kernel/trace/trace_events_filter.c
-> > is overwrite to the content of the UDP packets's content like this
-> > 0x0039383736353433, it is a invalid address, so crash.  
-> ...
-> > ath10k_htc_send_bundle_skbs allocate skb with size 49792(1556*32), it
-> > is bigger than PAGE_SIZE which is normally 4096, then ath10k_sdio_write
-> > call ath10k_dbg_dump to trace the large size skb and corrupt the trace
-> > data of tracing and lead crash. When disable the TX bundle of SDIO, it
-> > does not crash, but TX bundle is for improve throughput, so it is enabled
-> > by default. It is useless to call ath10k_dbg_dump to trace the large
-> > bundled skb, so this patch trace the top part of large bundled skb.  
-> ...
-> > trace_event_raw_event_ath10k_log_dbg_dump is generated by compiler, it
-> > call trace_event_buffer_reserve got get a struct pointer *entry, its
-> > type is trace_event_raw_ath10k_log_dbg_dump which is also generated by
-> > compiler, trace_event_buffer_reserve of kernel/trace/trace_events.c
-> > call trace_event_buffer_lock_reserve to get ring_buffer_event.
-> >
-> > In function trace_event_buffer_lock_reserve of kernel/trace/trace.c,
-> > the ring_buffer_time_stamp_abs is false and trace_file->flags is 0x40b
-> > which is set bit of EVENT_FILE_FL_FILTERED by debugging, so it use the
-> > temp buffer this_cpu_read(trace_buffered_event), and the buffer size
-> > is 1 page size which allocatee in trace_buffered_event_enable by
-> > alloc_pages_node, and then ath10k pass the buffer size > 1 page trigger
-> > overflow and crash.
-> >
-> > Based on upper test, try and debugging, pass large buff size to function
-> > trace_ath10k_log_dbg_dump cause crash, and it has ath10k_dbg in
-> > ath10k_sdio_write to print the length of skb/buffer, it is not necessary
-> > to trace all content of the large skb.  
+> That said, it shouldn't have crashed, it should have just failed to record.
 > 
-> Is this the same issue noted in this thread?
-> 
-> [for-next][PATCH 2/2] tracing: Use temp buffer when filtering events
-> https://lore.kernel.org/lkml/f16b14066317f6a926b6636df6974966@codeaurora.org/
+> I'll test it out and see why it crashed.
 
-Note, that is only used when filtering happens, which doesn't appear to be
-the case here.
+Looking at the original report, I see:
 
-> 
-> It seems like we should still try to get that fixed somehow, even if
-> the below change is fine on its own (it probably doesn't make sense to
-> such a large amount of data via tracepoints). It would be unfortunate
-> for next poor soul to hit the same issues, just because they wanted to
-> dump a few KB.
+ CPU: 1 PID: 141 Comm: kworker/u16:1 Not tainted 4.19.139 #162
 
-Yeah, it was a design decision to cap the max size of events to just under
-PAGE_SIZE. The ring buffer is broken up into pages (for zero copy
-transfers to file systems and the network). Thus, no event is allowed to be
-bigger than a page (and actually a bit smaller)
-
-That said, it shouldn't have crashed, it should have just failed to record.
-
-I'll test it out and see why it crashed.
+Does this still crash on the latest kernel?
 
 -- Steve
