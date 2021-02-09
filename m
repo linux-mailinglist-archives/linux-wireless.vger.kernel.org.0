@@ -2,63 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B07E314DA9
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Feb 2021 11:59:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF67E314DA7
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Feb 2021 11:59:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232109AbhBIK5Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Feb 2021 05:57:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42766 "EHLO mail.kernel.org"
+        id S232051AbhBIK5Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Feb 2021 05:57:16 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42788 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232144AbhBIKzE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Feb 2021 05:55:04 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 56F6E64DC3;
-        Tue,  9 Feb 2021 10:54:22 +0000 (UTC)
+        id S232147AbhBIKzG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 9 Feb 2021 05:55:06 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C2D6560232;
+        Tue,  9 Feb 2021 10:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612868063;
-        bh=ew1IiFmXF5iXC+PcTP3UBWWnHt0VLa9e330DM0XbHzk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=mwfDeRLJubv3fb0w8FPGzE2/Tl2SZTY2NCcj5PepVrCQ4WXCn3f5WVncQh4MPz8d9
-         2HF+MIK/ZXRlUSnHw3WexV4DfiXr9B4YA8XiINY5RatgzmvGHcsCTMuh4qxJUgrbFJ
-         mIWm06PqOHccR0wMoSD96WmYnIgoJ/H89Db9w6j3JKduuRyURVFTKuY2rbX9XgqyG+
-         2HR7Kyq9MrE8aYC/U9bfqlXw/I97L5OLGaoRh+gv7XPvoBM16Zb77LRzRq0nAHjcbe
-         1SPpE8zAQGljEgw0jPkBZhydpeyivIW7czqVM6WHfUkB3PhZe3BZ5+BuWB2UHAzOFN
-         KRqGVsFeTSviQ==
+        s=k20201202; t=1612868065;
+        bh=YYmCzokLVzN+NFU/pw6x+uMmp6N1ySVR7zhAyvx21TY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=N3yYrUpEalHGI/R8ct8a/9nZ3TrjMmTiYVGWDAzT7Rje9hgbw7Ni58qXHYifUgTsZ
+         31WaXgJD2wdo05xFujm9aAwC1tAXvgbwIZRCU0nksYU3UE3+fC+5AvBw4PP8MNSuD/
+         hUxhfC2a5awlotbRbyB1tuOhagzwXg+SxsyJgKxNn1VxNQiVyM2xNyW5tSMvMjyEHc
+         mFWaI6YUKCyJZgwVvuvc8cwD6AQw1rZ+d+BTP3AUE7WCReX3PiQt7BAoI4qlI+CLuZ
+         Gs5OBWEDXw1whLF+B07ph4LBRyFSwWKst/+yEqXyTvwiFY+O11OXWN3wkXG3x7faWo
+         5TYh/6q+RxG+A==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, sean.wang@mediatek.com,
         lorenzo.bianconi@redhat.com
-Subject: [PATCH 0/6] mt76: mt7921: multiple fixes
-Date:   Tue,  9 Feb 2021 11:54:01 +0100
-Message-Id: <cover.1612867656.git.lorenzo@kernel.org>
+Subject: [PATCH 1/6] mt76: mt7921: switch to new api for hardware beacon filter
+Date:   Tue,  9 Feb 2021 11:54:02 +0100
+Message-Id: <a114540553f3a78386e4aaeebcdebb1f0c8fb270.1612867656.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <cover.1612867656.git.lorenzo@kernel.org>
+References: <cover.1612867656.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Align mt7921 driver to fw APIs available in linux-firmware.
-Fix uninitialized pointer access.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Sean Wang (6):
-  mt76: mt7921: switch to new api for hardware beacon filter
-  mt76: connac: fix up the setting for ht40 mode in
-    mt76_connac_mcu_uni_add_bss
-  mt76: mt7921: fixup rx bitrate statistics
-  mt76: mt7921: add flush operation
-  mt76: mt7921: fix uninitialized pointer access in mt7921_get_wtbl_info
-  mt76: connac: update sched_scan cmd usage
+Current firmware only supports new api for enabling hardware beacon filter.
 
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |   5 -
- .../net/wireless/mediatek/mt76/mt76_connac.h  |   5 +
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  |   9 +-
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  14 +-
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 152 +++++++++---------
- .../net/wireless/mediatek/mt76/mt7921/mac.h   |  10 +-
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  12 +-
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  13 +-
- 8 files changed, 128 insertions(+), 92 deletions(-)
+Fixes: 1d8efc741df80 ("mt76: mt7921: introduce Runtime PM support")
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c  | 8 +++++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 729f6c42cdde..617e48f243f3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -296,7 +296,7 @@ static int mt7921_add_interface(struct ieee80211_hw *hw,
+ 		goto out;
+ 
+ 	if (dev->pm.enable) {
+-		ret = mt7921_mcu_set_bss_pm(dev, vif, true);
++		ret = mt7921_mcu_uni_bss_bcnft(dev, vif, true);
+ 		if (ret)
+ 			goto out;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index db125cd22b91..d784c75d47bf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1294,8 +1294,14 @@ mt7921_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+ 	struct mt7921_phy *phy = priv;
+ 	struct mt7921_dev *dev = phy->dev;
++	int ret;
++
++	if (dev->pm.enable)
++		ret = mt7921_mcu_uni_bss_bcnft(dev, vif, true);
++	else
++		ret = mt7921_mcu_set_bss_pm(dev, vif, false);
+ 
+-	if (mt7921_mcu_set_bss_pm(dev, vif, dev->pm.enable))
++	if (ret)
+ 		return;
+ 
+ 	if (dev->pm.enable) {
 -- 
 2.29.2
 
