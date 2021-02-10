@@ -2,32 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9063160F9
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 09:28:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52514316105
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 09:31:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbhBJI1g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 03:27:36 -0500
-Received: from so15.mailgun.net ([198.61.254.15]:52837 "EHLO so15.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231394AbhBJI0d (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Feb 2021 03:26:33 -0500
+        id S229503AbhBJIaJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 03:30:09 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:46539 "EHLO
+        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230101AbhBJI3v (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 10 Feb 2021 03:29:51 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612945567; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1612945765; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=9EoJ98RLCOjfNGA9m9IWMD0BBEcL08tR1uiW4fkuRXk=; b=LIeuY0QF0X+fPFbeEfsY1+Y4O+OvkOnd+NDiEbZzREibbHD96ucgyrUjNkgeqPcUzR6Mx1L2
- a++hy/2VQ1BkLs/Qs0opAlQQ78hnCUZSRKpiYOMv1UC2MPneu5GHvb+rkOlAcXaFhJdO1TP6
- 8YmbLmk1lUZ/FBk8hpyB5P9ceGI=
-X-Mailgun-Sending-Ip: 198.61.254.15
+ bh=BQcw0kZHs0UzLmmDYGY+jo88rGm4rVQUuEYLarQue+s=; b=I3By4EIma951xdeUfUAVOrFqzbaaYlwQ3gdUSPrMsBaYOf8vAjF+eoqqrbOQEcBbjOFWSNSD
+ omLOKVEN/L2kH5EAoTiNwnEwNyHYNvEvB8C6Y9XoqkOBItC64EEuZlG5vDA/rIyuFtQzJ+nb
+ t3j8IKMMXlrhJDNPE2g3vKAj7Ls=
+X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 6023988434db06ef79edb786 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 08:25:40
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 6023994481f6c45dce0f6d5b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 08:28:52
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 035F8C433ED; Wed, 10 Feb 2021 08:25:39 +0000 (UTC)
+        id 5679CC43469; Wed, 10 Feb 2021 08:28:50 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,23 +38,24 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4F74CC433ED;
-        Wed, 10 Feb 2021 08:25:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4F74CC433ED
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5CADDC43461;
+        Wed, 10 Feb 2021 08:28:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5CADDC43461
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
         linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH 4/5] ath10k: detect conf_mutex held ath10k_drain_tx() calls
+        ath10k@lists.infradead.org, kuba@kernel.org, davem@davemloft.net
+Subject: Re: [PATCH 5/5] ath10k: reduce invalid ht params rate message noise
 References: <cover.1612915444.git.skhan@linuxfoundation.org>
-        <a980abfb143f5240375f3f1046f0f26971c695e6.1612915444.git.skhan@linuxfoundation.org>
-Date:   Wed, 10 Feb 2021 10:25:35 +0200
-In-Reply-To: <a980abfb143f5240375f3f1046f0f26971c695e6.1612915444.git.skhan@linuxfoundation.org>
-        (Shuah Khan's message of "Tue, 9 Feb 2021 17:42:25 -0700")
-Message-ID: <87lfbwtjls.fsf@codeaurora.org>
+        <76a816d983e6c4d636311738396f97971b5523fb.1612915444.git.skhan@linuxfoundation.org>
+        <5c31f6dadbcc3dcb19239ad2b6106773@codeaurora.org>
+Date:   Wed, 10 Feb 2021 10:28:45 +0200
+In-Reply-To: <5c31f6dadbcc3dcb19239ad2b6106773@codeaurora.org> (Wen Gong's
+        message of "Wed, 10 Feb 2021 10:36:23 +0800")
+Message-ID: <87h7mktjgi.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -61,44 +63,59 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Shuah Khan <skhan@linuxfoundation.org> writes:
+Wen Gong <wgong@codeaurora.org> writes:
 
-> ath10k_drain_tx() must not be called with conf_mutex held as workers can
-> use that also. Add check to detect conf_mutex held calls.
+> On 2021-02-10 08:42, Shuah Khan wrote:
+>> ath10k_mac_get_rate_flags_ht() floods dmesg with the following
+>> messages,
+>> when it fails to find a match for mcs=7 and rate=1440.
+>>
+>> supported_ht_mcs_rate_nss2:
+>> {7,  {1300, 2700, 1444, 3000} }
+>>
+>> ath10k_pci 0000:02:00.0: invalid ht params rate 1440 100kbps nss 2
+>> mcs 7
+>>
+>> dev_warn_ratelimited() isn't helping the noise. Use dev_warn_once()
+>> instead.
+>>
+>> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+>> ---
+>>  drivers/net/wireless/ath/ath10k/mac.c | 5 +++--
+>>  1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath10k/mac.c
+>> b/drivers/net/wireless/ath/ath10k/mac.c
+>> index 3545ce7dce0a..276321f0cfdd 100644
+>> --- a/drivers/net/wireless/ath/ath10k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+>> @@ -8970,8 +8970,9 @@ static void ath10k_mac_get_rate_flags_ht(struct
+>> ath10k *ar, u32 rate, u8 nss, u8
+>>  		*bw |= RATE_INFO_BW_40;
+>>  		*flags |= RATE_INFO_FLAGS_SHORT_GI;
+>>  	} else {
+>> -		ath10k_warn(ar, "invalid ht params rate %d 100kbps nss %d mcs %d",
+>> -			    rate, nss, mcs);
+>> +		dev_warn_once(ar->dev,
+>> +			      "invalid ht params rate %d 100kbps nss %d mcs %d",
+>> +			      rate, nss, mcs);
+>>  	}
+>>  }
 >
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+> The {7,  {1300, 2700, 1444, 3000} } is a correct value.
+> The 1440 is report from firmware, its a wrong value, it has fixed in
+> firmware.
 
-The commit log does not answer to "Why?". How did you find this? What
-actual problem are you trying to solve?
+In what version?
 
-> ---
->  drivers/net/wireless/ath/ath10k/mac.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-> index 53f92945006f..3545ce7dce0a 100644
-> --- a/drivers/net/wireless/ath/ath10k/mac.c
-> +++ b/drivers/net/wireless/ath/ath10k/mac.c
-> @@ -4566,6 +4566,7 @@ static void ath10k_mac_op_wake_tx_queue(struct ieee80211_hw *hw,
->  /* Must not be called with conf_mutex held as workers can use that also. */
->  void ath10k_drain_tx(struct ath10k *ar)
->  {
-> +	WARN_ON(lockdep_is_held(&ar->conf_mutex));
+> If change it to dev_warn_once, then it will have no chance to find the
+> other wrong values which report by firmware, and it indicate
+> a wrong value to mac80211/cfg80211 and lead "iw wlan0 station dump"
+> get a wrong bitrate.
 
-Empty line after WARN_ON().
-
-Shouldn't this check debug_locks similarly lockdep_assert_held() does?
-
-#define lockdep_assert_held(l)	do {				\
-		WARN_ON(debug_locks && !lockdep_is_held(l));	\
-	} while (0)
-
-And I suspect you need #ifdef CONFIG_LOCKDEP which should fix the kbuild
-bot error.
-
-But honestly I would prefer to have lockdep_assert_not_held() in
-include/linux/lockdep.h, much cleaner that way. Also
-i915_gem_object_lookup_rcu() could then use the same macro.
+I agree, we should keep this warning. If the firmware still keeps
+sending invalid rates we should add a specific check to ignore the known
+invalid values, but not all of them.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
