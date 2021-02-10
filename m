@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C5F316A10
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 16:25:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 077B1316A13
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 16:25:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231925AbhBJPZC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 10:25:02 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:45366 "EHLO
+        id S231810AbhBJPZI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 10:25:08 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:45372 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231759AbhBJPYy (ORCPT
+        with ESMTP id S231768AbhBJPYy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 10 Feb 2021 10:24:54 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1l9rLU-0049nr-13; Wed, 10 Feb 2021 17:24:00 +0200
+        id 1l9rLU-0049nr-Mj; Wed, 10 Feb 2021 17:24:01 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 10 Feb 2021 17:23:53 +0200
-Message-Id: <iwlwifi.20210210172142.072aa2e8bbc5.Ib351ee5da47a4cee60d44e66d32d2f6bba6f3150@changeid>
+Date:   Wed, 10 Feb 2021 17:23:54 +0200
+Message-Id: <iwlwifi.20210210172142.7ce41ca91884.Ie234805047df3be84f4235f9dafaf4cdecf0db9a@changeid>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210210152355.419776-1-luca@coelho.fi>
 References: <20210210152355.419776-1-luca@coelho.fi>
@@ -31,153 +31,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 6/8] iwlwifi: pnvm: move file loading code to a separate function
+Subject: [PATCH 7/8] iwlwifi: pnvm: implement reading PNVM from UEFI
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Luca Coelho <luciano.coelho@intel.com>
 
-In preparation to support loading the PNVM from UEFI, move the
-function that loads the PNVM from the filesystem to a separate
-function.  This will make it easier to try to load from both places
-later on.
+We now support fetching the PNVM data from a UEFI variable.  Add the
+code to read this variable first and use it.  If it's not available,
+we fall back to reading the data from the filesystem, as before.
 
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 98 ++++++++++++--------
- 1 file changed, 61 insertions(+), 37 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 91 +++++++++++++++++++-
+ 1 file changed, 90 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-index 37ce4fe136c5..d515af8c1686 100644
+index d515af8c1686..5c2977b6364b 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-@@ -1,9 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
--/******************************************************************************
-- *
-- * Copyright(c) 2020 Intel Corporation
-- *
-- *****************************************************************************/
-+/*
-+ * Copyright(c) 2020-2021 Intel Corporation
-+ */
+@@ -10,6 +10,7 @@
+ #include "fw/api/commands.h"
+ #include "fw/api/nvm-reg.h"
+ #include "fw/api/alive.h"
++#include <linux/efi.h>
  
- #include "iwl-drv.h"
- #include "pnvm.h"
-@@ -221,9 +219,44 @@ static int iwl_pnvm_parse(struct iwl_trans *trans, const u8 *data,
+ struct iwl_pnvm_section {
+ 	__le32 offset;
+@@ -219,6 +220,88 @@ static int iwl_pnvm_parse(struct iwl_trans *trans, const u8 *data,
  	return -ENOENT;
  }
  
-+static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
++/*
++ * This is known to be broken on v4.19 and to work on v5.4.  Until we
++ * figure out why this is the case and how to make it work, simply
++ * disable the feature in old kernels.
++ */
++#if defined(CONFIG_EFI) && LINUX_VERSION_IS_GEQ(5,4,0)
++
++#define IWL_EFI_VAR_GUID EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
++				  0xb2, 0xec, 0xf5, 0xa3,	\
++				  0x59, 0x4f, 0x4a, 0xea)
++
++#define IWL_UEFI_OEM_PNVM_NAME	L"UefiCnvWlanOemSignedPnvm"
++
++#define IWL_HARDCODED_PNVM_SIZE 4096
++
++struct pnvm_sku_package {
++	u8 rev;
++	u8 reserved1[3];
++	u32 total_size;
++	u8 n_skus;
++	u8 reserved2[11];
++	u8 data[];
++};
++
++static int iwl_pnvm_get_from_efi(struct iwl_trans *trans,
++				 u8 **data, size_t *len)
 +{
-+	const struct firmware *pnvm;
-+	char pnvm_name[64];
-+	int ret;
++	struct efivar_entry *pnvm_efivar;
++	struct pnvm_sku_package *package;
++	unsigned long package_size;
++	int err;
 +
-+	/*
-+	 * The prefix unfortunately includes a hyphen at the end, so
-+	 * don't add the dot here...
-+	 */
-+	snprintf(pnvm_name, sizeof(pnvm_name), "%spnvm",
-+		 trans->cfg->fw_name_pre);
-+
-+	/* ...but replace the hyphen with the dot here. */
-+	if (strlen(trans->cfg->fw_name_pre) < sizeof(pnvm_name))
-+		pnvm_name[strlen(trans->cfg->fw_name_pre) - 1] = '.';
-+
-+	ret = firmware_request_nowarn(&pnvm, pnvm_name, trans->dev);
-+	if (ret) {
-+		IWL_DEBUG_FW(trans, "PNVM file %s not found %d\n",
-+			     pnvm_name, ret);
-+		return ret;
-+	}
-+
-+	*data = kmemdup(pnvm->data, pnvm->size, GFP_KERNEL);
-+	if (!*data)
++	pnvm_efivar = kzalloc(sizeof(*pnvm_efivar), GFP_KERNEL);
++	if (!pnvm_efivar)
 +		return -ENOMEM;
 +
-+	*len = pnvm->size;
++	memcpy(&pnvm_efivar->var.VariableName, IWL_UEFI_OEM_PNVM_NAME,
++	       sizeof(IWL_UEFI_OEM_PNVM_NAME));
++	pnvm_efivar->var.VendorGuid = IWL_EFI_VAR_GUID;
 +
-+	return 0;
-+}
-+
- int iwl_pnvm_load(struct iwl_trans *trans,
- 		  struct iwl_notif_wait_data *notif_wait)
- {
-+	u8 *data;
-+	size_t len;
- 	struct iwl_notification_wait pnvm_wait;
- 	static const u16 ntf_cmds[] = { WIDE_ID(REGULATORY_AND_NVM_GROUP,
- 						PNVM_INIT_COMPLETE_NTFY) };
-@@ -233,44 +266,35 @@ int iwl_pnvm_load(struct iwl_trans *trans,
- 	if (!trans->sku_id[0] && !trans->sku_id[1] && !trans->sku_id[2])
- 		return 0;
- 
--	/* load from disk only if we haven't done it (or tried) before */
--	if (!trans->pnvm_loaded) {
--		const struct firmware *pnvm;
--		char pnvm_name[64];
 +	/*
-+	 * If we already loaded (or tried to load) it before, we just
-+	 * need to set it again.
++	 * TODO: we hardcode a maximum length here, because reading
++	 * from the UEFI is not working.  To implement this properly,
++	 * we have to call efivar_entry_size().
 +	 */
-+	if (trans->pnvm_loaded) {
-+		ret = iwl_trans_set_pnvm(trans, NULL, 0);
-+		if (ret)
-+			return ret;
-+		goto skip_parse;
++	package_size = IWL_HARDCODED_PNVM_SIZE;
++
++	package = kmalloc(package_size, GFP_KERNEL);
++	if (!package) {
++		err = -ENOMEM;
++		goto out;
 +	}
- 
-+	/* Try to load the PNVM from the filesystem */
-+	ret = iwl_pnvm_get_from_fs(trans, &data, &len);
-+	if (ret) {
- 		/*
--		 * The prefix unfortunately includes a hyphen at the end, so
--		 * don't add the dot here...
-+		 * Pretend we've loaded it - at least we've tried and
-+		 * couldn't load it at all, so there's no point in
-+		 * trying again over and over.
- 		 */
--		snprintf(pnvm_name, sizeof(pnvm_name), "%spnvm",
--			 trans->cfg->fw_name_pre);
--
--		/* ...but replace the hyphen with the dot here. */
--		if (strlen(trans->cfg->fw_name_pre) < sizeof(pnvm_name))
--			pnvm_name[strlen(trans->cfg->fw_name_pre) - 1] = '.';
--
--		ret = firmware_request_nowarn(&pnvm, pnvm_name, trans->dev);
--		if (ret) {
--			IWL_DEBUG_FW(trans, "PNVM file %s not found %d\n",
--				     pnvm_name, ret);
--			/*
--			 * Pretend we've loaded it - at least we've tried and
--			 * couldn't load it at all, so there's no point in
--			 * trying again over and over.
--			 */
--			trans->pnvm_loaded = true;
--		} else {
--			iwl_pnvm_parse(trans, pnvm->data, pnvm->size);
-+		trans->pnvm_loaded = true;
- 
--			release_firmware(pnvm);
--		}
--	} else {
--		/* if we already loaded, we need to set it again */
--		ret = iwl_trans_set_pnvm(trans, NULL, 0);
--		if (ret)
--			return ret;
-+		goto skip_parse;
++
++	err = efivar_entry_get(pnvm_efivar, NULL, &package_size, package);
++	if (err) {
++		IWL_DEBUG_FW(trans,
++			     "PNVM UEFI variable not found %d (len %zd)\n",
++			     err, package_size);
++		goto out;
++	}
++
++	IWL_DEBUG_FW(trans, "Read PNVM fro UEFI with size %zd\n", package_size);
++
++	*data = kmemdup(package->data, *len, GFP_KERNEL);
++	if (!*data)
++		err = -ENOMEM;
++	*len = package_size - sizeof(*package);
++
++out:
++	kfree(package);
++	kfree(pnvm_efivar);
++
++	return err;
++}
++#else /* CONFIG_EFI */
++static inline int iwl_pnvm_get_from_efi(struct iwl_trans *trans,
++					u8 **data, size_t *len)
++{
++	return -EOPNOTSUPP;
++}
++#endif /* CONFIG_EFI */
++
+ static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
+ {
+ 	const struct firmware *pnvm;
+@@ -277,7 +360,12 @@ int iwl_pnvm_load(struct iwl_trans *trans,
+ 		goto skip_parse;
  	}
  
-+	iwl_pnvm_parse(trans, data, len);
+-	/* Try to load the PNVM from the filesystem */
++	/* First attempt to get the PNVM from BIOS */
++	ret = iwl_pnvm_get_from_efi(trans, &data, &len);
++	if (!ret)
++		goto parse;
 +
-+	kfree(data);
-+
-+skip_parse:
- 	iwl_init_notification_wait(notif_wait, &pnvm_wait,
- 				   ntf_cmds, ARRAY_SIZE(ntf_cmds),
- 				   iwl_pnvm_complete_fn, trans);
++	/* If it's not available, try from the filesystem */
+ 	ret = iwl_pnvm_get_from_fs(trans, &data, &len);
+ 	if (ret) {
+ 		/*
+@@ -290,6 +378,7 @@ int iwl_pnvm_load(struct iwl_trans *trans,
+ 		goto skip_parse;
+ 	}
+ 
++parse:
+ 	iwl_pnvm_parse(trans, data, len);
+ 
+ 	kfree(data);
 -- 
 2.30.0
 
