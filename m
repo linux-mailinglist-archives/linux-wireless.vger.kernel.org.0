@@ -2,118 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48EF83166CE
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 13:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C15C03166ED
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 13:41:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231925AbhBJMdj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 07:33:39 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:45118 "EHLO
+        id S230521AbhBJMlC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 07:41:02 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:45160 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230419AbhBJMat (ORCPT
+        with ESMTP id S231171AbhBJMix (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Feb 2021 07:30:49 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        Wed, 10 Feb 2021 07:38:53 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[127.0.1.1])
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1l9ocj-0049Yg-0Y; Wed, 10 Feb 2021 14:29:37 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 10 Feb 2021 14:29:27 +0200
-Message-Id: <iwlwifi.20210210142629.8a0c951bfdea.I850f29d3ff3931388447bda635dfbc742ea1df61@changeid>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210210122927.315774-1-luca@coelho.fi>
-References: <20210210122927.315774-1-luca@coelho.fi>
+        id 1l9okp-0049c5-VE; Wed, 10 Feb 2021 14:38:00 +0200
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+From:   Luca Coelho <luca@coelho.fi>
+In-Reply-To: <iwlwifi.20210210135352.71da7ce27261.I0d96fe7b799527c49f1270ddf9acdb152bdd4841@changeid>
+References: <iwlwifi.20210210135352.71da7ce27261.I0d96fe7b799527c49f1270ddf9acdb152bdd4841@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.9.1+
+Message-Id: <E1l9okp-0049c5-VE@farmhouse.coelho.fi>
+Date:   Wed, 10 Feb 2021 14:38:00 +0200
 X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH v2 12/12] iwlwifi:mvm: Add support for version 2 of the LARI_CONFIG_CHANGE command.
+Subject: Re: [PATCH v2 01/12] iwlwifi: pcie: add a few missing entries for So
+ with
+ Hr
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Luca Coelho <luca@coelho.fi> wrote:
 
-Add support for version 2 of the LARI_CONFIG_CHANGE command.
-this is needed to support UHB enable/disable from BIOS
+> From: Luca Coelho <luciano.coelho@intel.com>
+> 
+> Some devices were missing from the So with Hr section.
+> 
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- .../net/wireless/intel/iwlwifi/fw/api/nvm-reg.h   | 15 +++++++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c       | 13 ++++++++++---
- 2 files changed, 23 insertions(+), 5 deletions(-)
+12 patches applied to iwlwifi-next.git, thanks.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-index b2706209b7d7..fbca9dd872e7 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-@@ -415,14 +415,25 @@ enum iwl_lari_config_masks {
- };
- 
- /**
-- * struct iwl_lari_config_change_cmd - change LARI configuration
-+ * struct iwl_lari_config_change_cmd_v1 - change LARI configuration
-  * @config_bitmap: bit map of the config commands. each bit will trigger a
-  * different predefined FW config operation
-  */
--struct iwl_lari_config_change_cmd {
-+struct iwl_lari_config_change_cmd_v1 {
- 	__le32 config_bitmap;
- } __packed; /* LARI_CHANGE_CONF_CMD_S_VER_1 */
- 
-+/**
-+ * struct iwl_lari_config_change_cmd_v2 - change LARI configuration
-+ * @config_bitmap: bit map of the config commands. each bit will trigger a
-+ * different predefined FW config operation
-+ * @oem_uhb_allow_bitmap: bitmap of UHB enabled MCC sets
-+ */
-+struct iwl_lari_config_change_cmd_v2 {
-+	__le32 config_bitmap;
-+	__le32 oem_uhb_allow_bitmap;
-+} __packed; /* LARI_CHANGE_CONF_CMD_S_VER_2 */
-+
- /**
-  * struct iwl_pnvm_init_complete_ntfy - PNVM initialization complete
-  * @status: PNVM image loading status
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 76c460852398..20e93a9aff02 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1196,7 +1196,7 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- {
- 	u8 ret;
- 	int cmd_ret;
--	struct iwl_lari_config_change_cmd cmd = {};
-+	struct iwl_lari_config_change_cmd_v2 cmd = {};
- 
- 	if (iwl_mvm_eval_dsm_indonesia_5g2(mvm) == DSM_VALUE_INDONESIA_ENABLE)
- 		cmd.config_bitmap |=
-@@ -1214,11 +1214,18 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- 	/* apply more config masks here */
- 
- 	if (cmd.config_bitmap) {
--		IWL_DEBUG_RADIO(mvm, "sending LARI_CONFIG_CHANGE\n");
-+		size_t cmd_size = iwl_fw_lookup_cmd_ver(mvm->fw,
-+							REGULATORY_AND_NVM_GROUP,
-+							LARI_CONFIG_CHANGE, 1) == 2 ?
-+			sizeof(struct iwl_lari_config_change_cmd_v2) :
-+			sizeof(struct iwl_lari_config_change_cmd_v1);
-+		IWL_DEBUG_RADIO(mvm,
-+				"sending LARI_CONFIG_CHANGE, config_bitmap=0x%x\n",
-+				le32_to_cpu(cmd.config_bitmap));
- 		cmd_ret = iwl_mvm_send_cmd_pdu(mvm,
- 					       WIDE_ID(REGULATORY_AND_NVM_GROUP,
- 						       LARI_CONFIG_CHANGE),
--					       0, sizeof(cmd), &cmd);
-+					       0, cmd_size, &cmd);
- 		if (cmd_ret < 0)
- 			IWL_DEBUG_RADIO(mvm,
- 					"Failed to send LARI_CONFIG_CHANGE (%d)\n",
--- 
-2.30.0
+806832c9651b iwlwifi: pcie: add a few missing entries for So with Hr
+874020f8adce iwlwifi: pcie: don't disable interrupts for reg_lock
+f9a78edb2881 iwlwifi: acpi: fix PPAG table sizes
+5a6842455c11 iwlwifi: mvm: fix the type we use in the PPAG table validity checks
+551d793f6536 iwlwifi: mvm: store PPAG enabled/disabled flag properly
+659844d39182 iwlwifi: mvm: send stored PPAG command instead of local
+b06b598664da iwlwifi: mvm: enhance a print in CSA flows
+34b79fcf1e39 iwlwifi: mvm: remove useless iwl_mvm_resume_d3() function
+28db1862067c iwlwifi: mvm: assign SAR table revision to the command later
+9cf671d60fdb iwlwifi: pcie: NULLify pointers after free
+004272bc8d9d iwlwifi: when HW has rate offload don't look at control field
+1c094e5e2b02 iwlwifi: pcie: Change Ma device ID
 
