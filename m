@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E0653166BF
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 13:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AC5C3166C4
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 13:33:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231309AbhBJMcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 07:32:17 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:45066 "EHLO
+        id S231927AbhBJMce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 07:32:34 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:45072 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231894AbhBJMa0 (ORCPT
+        with ESMTP id S231899AbhBJMa0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 10 Feb 2021 07:30:26 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1l9ocb-0049Yg-WF; Wed, 10 Feb 2021 14:29:30 +0200
+        id 1l9occ-0049Yg-Jd; Wed, 10 Feb 2021 14:29:31 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 10 Feb 2021 14:29:17 +0200
-Message-Id: <iwlwifi.20210210142629.941d963ceb88.I72a89c0161d7beab99bc3a90707796c2a63e4197@changeid>
+Date:   Wed, 10 Feb 2021 14:29:18 +0200
+Message-Id: <iwlwifi.20210210142629.d282d0a9ee7b.I9a0ad29f80daba8956a6aa077ba865e19b2150be@changeid>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210210122927.315774-1-luca@coelho.fi>
 References: <20210210122927.315774-1-luca@coelho.fi>
@@ -31,84 +31,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH v2 02/12] iwlwifi: api: clean up some documentation/bits
+Subject: [PATCH v2 03/12] iwlwifi: dbg: add op_mode callback for collecting debug data.
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-Clean up some documentation references and some bits in the enums
-to make the documentation more useful.
+The first use is collecting debug data when transport stops the device.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/commands.h | 2 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/location.h | 7 ++++++-
- drivers/net/wireless/intel/iwlwifi/fw/api/tx.h       | 4 +++-
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h   |  4 +++-
+ drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h   | 14 +++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c       | 12 +++++++++++-
+ .../net/wireless/intel/iwlwifi/pcie/trans-gen2.c   |  4 ++++
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  4 ++++
+ 5 files changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-index b916b38b3092..8142dcfd8b40 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-@@ -284,7 +284,7 @@ enum iwl_legacy_cmds {
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
+index e9f19ecbc4ee..92c720527946 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
+@@ -1,12 +1,14 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2018-2019 Intel Corporation
++ * Copyright (C) 2018-2020 Intel Corporation
+  */
+ #ifndef __iwl_dbg_tlv_h__
+ #define __iwl_dbg_tlv_h__
  
- 	/* Phy */
- 	/**
--	 * @PHY_CONFIGURATION_CMD: &struct iwl_phy_cfg_cmd
-+	 * @PHY_CONFIGURATION_CMD: &struct iwl_phy_cfg_cmd_v1 or &struct iwl_phy_cfg_cmd_v3
- 	 */
- 	PHY_CONFIGURATION_CMD = 0x6a,
+ #include <linux/device.h>
+ #include <linux/types.h>
++#include <fw/file.h>
++#include <fw/api/dbg-tlv.h>
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-index 28aa28138908..ceeef8749765 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-@@ -12,7 +12,12 @@
- enum iwl_location_subcmd_ids {
- 	/**
- 	 * @TOF_RANGE_REQ_CMD: TOF ranging request,
--	 *	uses &struct iwl_tof_range_req_cmd
-+	 *	uses one of &struct iwl_tof_range_req_cmd_v5,
-+	 *	&struct iwl_tof_range_req_cmd_v7,
-+	 *	&struct iwl_tof_range_req_cmd_v8,
-+	 *	&struct iwl_tof_range_req_cmd_v9,
-+	 *	&struct iwl_tof_range_req_cmd_v11,
-+	 *	&struct iwl_tof_range_req_cmd_v7
- 	 */
- 	TOF_RANGE_REQ_CMD = 0x0,
- 	/**
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-index 95038b1a8c6f..24e4a82a55da 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-@@ -20,6 +20,7 @@
-  * @TX_CMD_FLG_VHT_NDPA: mark frame is NDPA for VHT beamformer sequence
-  * @TX_CMD_FLG_HT_NDPA: mark frame is NDPA for HT beamformer sequence
-  * @TX_CMD_FLG_CSI_FDBK2HOST: mark to send feedback to host (only if good CRC)
-+ * @TX_CMD_FLG_BT_PRIO_MASK: BT priority value
-  * @TX_CMD_FLG_BT_PRIO_POS: the position of the BT priority (bit 11 is ignored
-  *	on old firmwares).
-  * @TX_CMD_FLG_BT_DIS: disable BT priority for this frame
-@@ -51,6 +52,7 @@ enum iwl_tx_flags {
- 	TX_CMD_FLG_HT_NDPA		= BIT(9),
- 	TX_CMD_FLG_CSI_FDBK2HOST	= BIT(10),
- 	TX_CMD_FLG_BT_PRIO_POS		= 11,
-+	TX_CMD_FLG_BT_PRIO_MASK		= BIT(11) | BIT(12),
- 	TX_CMD_FLG_BT_DIS		= BIT(12),
- 	TX_CMD_FLG_SEQ_CTL		= BIT(13),
- 	TX_CMD_FLG_MORE_FRAG		= BIT(14),
-@@ -177,7 +179,7 @@ enum iwl_tx_offload_assist_flags_pos {
-  * ( TX_CMD = 0x1c )
-  * @len: in bytes of the payload, see below for details
-  * @offload_assist: TX offload configuration
-- * @tx_flags: combination of TX_CMD_FLG_*
-+ * @tx_flags: combination of TX_CMD_FLG_*, see &enum iwl_tx_flags
-  * @scratch: scratch buffer used by the device
-  * @rate_n_flags: rate for *all* Tx attempts, if TX_CMD_FLG_STA_RATE_MSK is
-  *	cleared. Combination of RATE_MCS_*
+ /**
+  * struct iwl_dbg_tlv_node - debug TLV node
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h b/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
+index 9097fe310693..868da7e79a45 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2005-2014, 2018-2019 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2020 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2015 Intel Deutschland GmbH
+  */
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/netdevice.h>
+ #include <linux/debugfs.h>
++#include "iwl-dbg-tlv.h"
+ 
+ struct iwl_op_mode;
+ struct iwl_trans;
+@@ -83,6 +84,7 @@ struct iwl_cfg;
+  * @nic_config: configure NIC, called before firmware is started.
+  *	May sleep
+  * @wimax_active: invoked when WiMax becomes active. May sleep
++ * @time_point: called when transport layer wants to collect debug data
+  */
+ struct iwl_op_mode_ops {
+ 	struct iwl_op_mode *(*start)(struct iwl_trans *trans,
+@@ -104,6 +106,9 @@ struct iwl_op_mode_ops {
+ 	void (*cmd_queue_full)(struct iwl_op_mode *op_mode);
+ 	void (*nic_config)(struct iwl_op_mode *op_mode);
+ 	void (*wimax_active)(struct iwl_op_mode *op_mode);
++	void (*time_point)(struct iwl_op_mode *op_mode,
++			   enum iwl_fw_ini_time_point tp_id,
++			   union iwl_dbg_tlv_tp_data *tp_data);
+ };
+ 
+ int iwl_opmode_register(const char *name, const struct iwl_op_mode_ops *ops);
+@@ -196,4 +201,11 @@ static inline void iwl_op_mode_wimax_active(struct iwl_op_mode *op_mode)
+ 	op_mode->ops->wimax_active(op_mode);
+ }
+ 
++static inline void iwl_op_mode_time_point(struct iwl_op_mode *op_mode,
++					  enum iwl_fw_ini_time_point tp_id,
++					  union iwl_dbg_tlv_tp_data *tp_data)
++{
++	op_mode->ops->time_point(op_mode, tp_id, tp_data);
++}
++
+ #endif /* __iwl_op_mode_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 16357c560f43..3f82b219b45b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1412,6 +1412,15 @@ static void iwl_mvm_cmd_queue_full(struct iwl_op_mode *op_mode)
+ 	iwl_mvm_nic_restart(mvm, true);
+ }
+ 
++static void iwl_op_mode_mvm_time_point(struct iwl_op_mode *op_mode,
++				       enum iwl_fw_ini_time_point tp_id,
++				       union iwl_dbg_tlv_tp_data *tp_data)
++{
++	struct iwl_mvm *mvm = IWL_OP_MODE_GET_MVM(op_mode);
++
++	iwl_dbg_tlv_time_point(&mvm->fwrt, tp_id, tp_data);
++}
++
+ #define IWL_MVM_COMMON_OPS					\
+ 	/* these could be differentiated */			\
+ 	.async_cb = iwl_mvm_async_cb,				\
+@@ -1424,7 +1433,8 @@ static void iwl_mvm_cmd_queue_full(struct iwl_op_mode *op_mode)
+ 	.nic_config = iwl_mvm_nic_config,			\
+ 	/* as we only register one, these MUST be common! */	\
+ 	.start = iwl_op_mode_mvm_start,				\
+-	.stop = iwl_op_mode_mvm_stop
++	.stop = iwl_op_mode_mvm_stop,				\
++	.time_point = iwl_op_mode_mvm_time_point
+ 
+ static const struct iwl_op_mode_ops iwl_mvm_ops = {
+ 	IWL_MVM_COMMON_OPS,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index 70515550c91e..0e55aacd6175 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -198,6 +198,10 @@ void iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	bool was_in_rfkill;
+ 
++	iwl_op_mode_time_point(trans->op_mode,
++			       IWL_FW_INI_TIME_POINT_HOST_DEVICE_DISABLE,
++			       NULL);
++
+ 	mutex_lock(&trans_pcie->mutex);
+ 	trans_pcie->opmode_down = true;
+ 	was_in_rfkill = test_bit(STATUS_RFKILL_OPMODE, &trans->status);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index c0d2221a18a9..c9e0cca1f903 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -1380,6 +1380,10 @@ static void iwl_trans_pcie_stop_device(struct iwl_trans *trans)
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	bool was_in_rfkill;
+ 
++	iwl_op_mode_time_point(trans->op_mode,
++			       IWL_FW_INI_TIME_POINT_HOST_DEVICE_DISABLE,
++			       NULL);
++
+ 	mutex_lock(&trans_pcie->mutex);
+ 	trans_pcie->opmode_down = true;
+ 	was_in_rfkill = test_bit(STATUS_RFKILL_OPMODE, &trans->status);
 -- 
 2.30.0
 
