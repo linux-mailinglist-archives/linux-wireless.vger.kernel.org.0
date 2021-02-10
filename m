@@ -2,57 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78EC9315B8A
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 01:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 533D8315B99
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 01:49:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234536AbhBJApw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Feb 2021 19:45:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33822 "EHLO
+        id S233912AbhBJAsr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Feb 2021 19:48:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234262AbhBJAnd (ORCPT
+        with ESMTP id S234149AbhBJApw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Feb 2021 19:43:33 -0500
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68D30C061793
-        for <linux-wireless@vger.kernel.org>; Tue,  9 Feb 2021 16:42:33 -0800 (PST)
-Received: by mail-ot1-x32d.google.com with SMTP id e4so283311ote.5
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Feb 2021 16:42:33 -0800 (PST)
+        Tue, 9 Feb 2021 19:45:52 -0500
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B7F5C0617AA
+        for <linux-wireless@vger.kernel.org>; Tue,  9 Feb 2021 16:42:35 -0800 (PST)
+Received: by mail-ot1-x331.google.com with SMTP id l23so258487otn.10
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Feb 2021 16:42:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=z79ZGo6240pzhO2w017tO0EYbGsfaiPNtzjr+o4CyVs=;
-        b=IzTLSvrpTU984HA6FPmdIzo9c6yUerDFYx83kwD6vDItCnWrzOaqUZxkMK4IpSWaRu
-         X7ouFY7siJXiMCMfiq0Uyv7L12I1VKyxkPiMaRgpx8/WEPNACGL3zdhgYDftwC/uzMyY
-         OA1xt8kCu8ptII2jy+Z3CIpBxzLL1s7XaMulQ=
+        bh=4ZnFgpWZW/pibsdLxTLSbnISeByhzyHarQxXUqXKzeg=;
+        b=hItZCUkUv3hVP0EKFKWGCHiq7LK6jTKvkwxQLRTVv+G2duyo63PGIc8YpI3DXE6v6Q
+         93/TWf1dv1X8blaa5DeXeJ06ryE89D1TQkJDMHeu8+4PcwShh/BskEUrk4FnAjGukA1/
+         b6mCu9NEcGcDsOJPB1nb3PYD86+w1ds5Zeedg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=z79ZGo6240pzhO2w017tO0EYbGsfaiPNtzjr+o4CyVs=;
-        b=MlmJhL4ceWAd7YIUNmVeIddPBj/1MFg/ocYuQHU95qZQTOjmdin/+gwSvO//xgKBMY
-         RXD9b2RAh1jVxzaxXx3gdqgvVTvXq0JHMwFZiWs4bXhuREpQ0dcIjrb2iXWkMMskUqm7
-         uPIs3/usZcGFB+ZTJaSMfyh8JxMRnOaQUhtiTVO2vSBnboyc20YtXnGWlhBgb/u51A+y
-         hXH5yzV8mTz9McJZieI4UMW/hkV9McfHW/nGMu6ML1y3DqOOBFPyADSVVJAct7N070Hh
-         ZUa7gvnC/2lMJZeI6rc9SKe9esZrHA7E/kkrNCkndaf2kFf3Vr79YnQjI6MqsHSOvCyD
-         TzMw==
-X-Gm-Message-State: AOAM5336I06Jp8Y3MRPOQbfjHc17b8defvcpjfZVTAFabWmw8MCVnZd8
-        Px44nb3DEUrGUnXN76WC6PDZWg==
-X-Google-Smtp-Source: ABdhPJxB0TlZqQYNJ/niDq4cWTmLSxwTkRDSAQZFaHU3r9ztbpakBwJQt50GOVe3qiWjqQ1PoSba0g==
-X-Received: by 2002:a05:6830:1bc9:: with SMTP id v9mr259484ota.106.1612917752876;
-        Tue, 09 Feb 2021 16:42:32 -0800 (PST)
+        bh=4ZnFgpWZW/pibsdLxTLSbnISeByhzyHarQxXUqXKzeg=;
+        b=ttHfKPOkFKdDhr8/Be0RUuL5JLNOxKI1ocIUhGg/tGssiBpahmAAIifi/veKNdP2/c
+         QThuKRJgmOclFM6fhzdjzoAeoBI6JqRC/1DW+xDjqHlaW006w38BeKe/eLpOxb+ZBJps
+         k2z1uidNJsU5F0OPTUWLeOOtrU/tNZsCqlCsLwI4hwmz9Bw88eogPu/GNAb2D7MSdncL
+         I9hAP/aAT2R0REbKoMTrkCOF8kbC1WomCkai2OQBco2gAMX3fIQjx+D/J8T46GPZNutd
+         6WRuBsnc/Qhl4zrzla+sMnsJPOvFZ65QewMkMp5JGVgreCSqG/yG3MJhPxT7jlHoCBgw
+         tu+Q==
+X-Gm-Message-State: AOAM530sn4kCJ6yQQPpfsCQfukJ5MVlsN5dH5wx32zF7jJFMSSPjE6i5
+        YhRqZDvptjYTQUAgd6u2oWpu7Q==
+X-Google-Smtp-Source: ABdhPJweKOk0U05wNNP7z8KOUn9C3PAmUn3jmo0QzHPBvGkR1giuIk30fNASdJrHyDRZtCLGpIiDCQ==
+X-Received: by 2002:a9d:4e2:: with SMTP id 89mr259973otm.140.1612917755107;
+        Tue, 09 Feb 2021 16:42:35 -0800 (PST)
 Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id s123sm103060oos.3.2021.02.09.16.42.31
+        by smtp.gmail.com with ESMTPSA id s123sm103060oos.3.2021.02.09.16.42.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Feb 2021 16:42:32 -0800 (PST)
+        Tue, 09 Feb 2021 16:42:34 -0800 (PST)
 From:   Shuah Khan <skhan@linuxfoundation.org>
 To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     Shuah Khan <skhan@linuxfoundation.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/5] ath10k: fix WARNING: suspicious RCU usage
-Date:   Tue,  9 Feb 2021 17:42:23 -0700
-Message-Id: <23a1333dfb0367cc69e7177a2e373df0b6d42980.1612915444.git.skhan@linuxfoundation.org>
+Subject: [PATCH 3/5] ath10k: change ath10k_offchan_tx_work() peer present msg to a warn
+Date:   Tue,  9 Feb 2021 17:42:24 -0700
+Message-Id: <3b1f71272d56ee1d7f567fbce13bdb56cc06d342.1612915444.git.skhan@linuxfoundation.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <cover.1612915444.git.skhan@linuxfoundation.org>
 References: <cover.1612915444.git.skhan@linuxfoundation.org>
@@ -62,124 +62,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_find_sta_by_ifaddr() must be called under the RCU lock and
-the resulting pointer is only valid under RCU lock as well.
-
-Fix ath10k_wmi_tlv_parse_peer_stats_info() to hold RCU lock before it
-calls ieee80211_find_sta_by_ifaddr() and release it when the resulting
-pointer is no longer needed. The log below shows the problem.
-
-While at it, fix ath10k_wmi_tlv_op_pull_peer_stats_info() to do the same.
-
-=============================
-WARNING: suspicious RCU usage
-5.11.0-rc7+ #20 Tainted: G        W
------------------------------
-include/linux/rhashtable.h:594 suspicious rcu_dereference_check() usage!
-other info that might help us debug this:
-               rcu_scheduler_active = 2, debug_locks = 1
-no locks held by ksoftirqd/5/44.
-
-stack backtrace:
-CPU: 5 PID: 44 Comm: ksoftirqd/5 Tainted: G        W         5.11.0-rc7+ #20
-Hardware name: LENOVO 10VGCTO1WW/3130, BIOS M1XKT45A 08/21/2019
-Call Trace:
- dump_stack+0x7d/0x9f
- lockdep_rcu_suspicious+0xdb/0xe5
- __rhashtable_lookup+0x1eb/0x260 [mac80211]
- ieee80211_find_sta_by_ifaddr+0x5b/0xc0 [mac80211]
- ath10k_wmi_tlv_parse_peer_stats_info+0x3e/0x90 [ath10k_core]
- ath10k_wmi_tlv_iter+0x6a/0xc0 [ath10k_core]
- ? ath10k_wmi_tlv_op_pull_mgmt_tx_bundle_compl_ev+0xe0/0xe0 [ath10k_core]
- ath10k_wmi_tlv_op_rx+0x5da/0xda0 [ath10k_core]
- ? trace_hardirqs_on+0x54/0xf0
- ? ath10k_ce_completed_recv_next+0x4e/0x60 [ath10k_core]
- ath10k_wmi_process_rx+0x1d/0x40 [ath10k_core]
- ath10k_htc_rx_completion_handler+0x115/0x180 [ath10k_core]
- ath10k_pci_process_rx_cb+0x149/0x1b0 [ath10k_pci]
- ? ath10k_htc_process_trailer+0x2d0/0x2d0 [ath10k_core]
- ? ath10k_pci_sleep.part.0+0x6a/0x80 [ath10k_pci]
- ath10k_pci_htc_rx_cb+0x15/0x20 [ath10k_pci]
- ath10k_ce_per_engine_service+0x61/0x80 [ath10k_core]
- ath10k_ce_per_engine_service_any+0x7d/0xa0 [ath10k_core]
- ath10k_pci_napi_poll+0x48/0x120 [ath10k_pci]
- net_rx_action+0x136/0x500
- __do_softirq+0xc6/0x459
- ? smpboot_thread_fn+0x2b/0x1f0
- run_ksoftirqd+0x2b/0x60
- smpboot_thread_fn+0x116/0x1f0
- kthread+0x14b/0x170
- ? smpboot_register_percpu_thread+0xe0/0xe0
- ? __kthread_bind_mask+0x70/0x70
- ret_from_fork+0x22/0x30
+Based on the comment block in this function and the FIXME for this, peer
+being present for the offchannel tx is unlikely. Peer is deleted once tx
+is complete. Change peer present msg to a warn to detect this condition.
 
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi-tlv.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index 7b5834157fe5..615157dd6866 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -225,6 +225,7 @@ static int ath10k_wmi_tlv_parse_peer_stats_info(struct ath10k *ar, u16 tag, u16
- 	const struct wmi_tlv_peer_stats_info *stat = ptr;
- 	struct ieee80211_sta *sta;
- 	struct ath10k_sta *arsta;
-+	int ret = 0;
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index e815aab412d7..53f92945006f 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -3954,9 +3954,8 @@ void ath10k_offchan_tx_work(struct work_struct *work)
+ 		spin_unlock_bh(&ar->data_lock);
  
- 	if (tag != WMI_TLV_TAG_STRUCT_PEER_STATS_INFO)
- 		return -EPROTO;
-@@ -240,10 +241,12 @@ static int ath10k_wmi_tlv_parse_peer_stats_info(struct ath10k *ar, u16 tag, u16
- 		   __le32_to_cpu(stat->last_tx_rate_code),
- 		   __le32_to_cpu(stat->last_tx_bitrate_kbps));
+ 		if (peer)
+-			/* FIXME: should this use ath10k_warn()? */
+-			ath10k_dbg(ar, ATH10K_DBG_MAC, "peer %pM on vdev %d already present\n",
+-				   peer_addr, vdev_id);
++			ath10k_warn(ar, "peer %pM on vdev %d already present\n",
++				    peer_addr, vdev_id);
  
-+	rcu_read_lock();
- 	sta = ieee80211_find_sta_by_ifaddr(ar->hw, stat->peer_macaddr.addr, NULL);
- 	if (!sta) {
- 		ath10k_warn(ar, "not found station for peer stats\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto exit;
- 	}
- 
- 	arsta = (struct ath10k_sta *)sta->drv_priv;
-@@ -252,7 +255,9 @@ static int ath10k_wmi_tlv_parse_peer_stats_info(struct ath10k *ar, u16 tag, u16
- 	arsta->tx_rate_code = __le32_to_cpu(stat->last_tx_rate_code);
- 	arsta->tx_bitrate_kbps = __le32_to_cpu(stat->last_tx_bitrate_kbps);
- 
--	return 0;
-+exit:
-+	rcu_read_unlock();
-+	return ret;
- }
- 
- static int ath10k_wmi_tlv_op_pull_peer_stats_info(struct ath10k *ar,
-@@ -573,13 +578,13 @@ static void ath10k_wmi_event_tdls_peer(struct ath10k *ar, struct sk_buff *skb)
- 	case WMI_TDLS_TEARDOWN_REASON_TX:
- 	case WMI_TDLS_TEARDOWN_REASON_RSSI:
- 	case WMI_TDLS_TEARDOWN_REASON_PTR_TIMEOUT:
-+		rcu_read_lock();
- 		station = ieee80211_find_sta_by_ifaddr(ar->hw,
- 						       ev->peer_macaddr.addr,
- 						       NULL);
- 		if (!station) {
- 			ath10k_warn(ar, "did not find station from tdls peer event");
--			kfree(tb);
--			return;
-+			goto exit;
- 		}
- 		arvif = ath10k_get_arvif(ar, __le32_to_cpu(ev->vdev_id));
- 		ieee80211_tdls_oper_request(
-@@ -590,6 +595,8 @@ static void ath10k_wmi_event_tdls_peer(struct ath10k *ar, struct sk_buff *skb)
- 					);
- 		break;
- 	}
-+exit:
-+	rcu_read_unlock();
- 	kfree(tb);
- }
- 
+ 		if (!peer) {
+ 			ret = ath10k_peer_create(ar, NULL, NULL, vdev_id,
 -- 
 2.27.0
 
