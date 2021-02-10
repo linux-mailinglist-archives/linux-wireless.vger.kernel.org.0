@@ -2,242 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49999316AB3
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 17:06:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58EFF316AE2
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 17:15:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232103AbhBJQGB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 11:06:01 -0500
-Received: from mail-il1-f199.google.com ([209.85.166.199]:44469 "EHLO
-        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232089AbhBJQF6 (ORCPT
+        id S231947AbhBJQOt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 11:14:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35846 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231950AbhBJQOZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Feb 2021 11:05:58 -0500
-Received: by mail-il1-f199.google.com with SMTP id a9so2870957ilm.11
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Feb 2021 08:05:41 -0800 (PST)
+        Wed, 10 Feb 2021 11:14:25 -0500
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95193C06178C
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Feb 2021 08:13:09 -0800 (PST)
+Received: by mail-il1-x12a.google.com with SMTP id y15so2308400ilj.11
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Feb 2021 08:13:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Sc0vbOHbxfn9JzOXGmtKhPpSM5gmhu52/wuwtc+m/jk=;
+        b=CQnI1cl/+RKOawcv1Cq/crfluAy6RYgUTGSmnwgRf/BdAc8rwoz1UigSks3ySZ3Bq0
+         XdSK4+gbQO6pBfnb+vvMEFG7JAT4MoYceD9fnSOfyIUTRbFyETH8LbTRcNIdzfUjp3uB
+         Y/2d/s5Tk1iNGW4xM8YKag3uhttUehCoZQ8NM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=SeMnrx8u2Er1+j2xRdaXYwb30WK+Viy2uB6pLm6nCnc=;
-        b=ue0T5QWtdaNRcWgta/72lzxls/YjatliBxYla3VnKdUemfafKCqQviwkQ9R+ra1UFj
-         5/pdMXdzR7IVR2DIs2wbgguICjAdktlzrTahVAIsweHsfaA4/SK+qu4IfD5RJ1xAubIn
-         sb/4ZufgW8EG3rGR7EdXpaHr1nDO/wrgcXyGh4LrTP2/TFnVNM7hZzBo0sxYItx/FPPl
-         8yJfrA4SZNaFf5rBF52lWcFGXwErvcvaBGUrLF8UuN3fFh1SwveSwnPM3OFJjR98XzvT
-         p7r8elBX+/mg1FllG5Lyi2UmItIuZ6pfu6nJXI53lE6FmfRFab+5kNfoS1fyOxyVx2qe
-         oVLg==
-X-Gm-Message-State: AOAM533Bpri7DZaPlClHRpDyE9txPyhrW1LtNu0KlXjFlsvprvYvDuiQ
-        3SxDEFgF/inPRU+XlX6STFI4thU5XFE1t1gft4vkUYABIQCk
-X-Google-Smtp-Source: ABdhPJwZWHxhwUVK0sL3usQDRUJC4b3ogHJG+SFp98HT1k+7Vo7cqdMZV0miDXIix/7wMPSMQVyH1hs/Ox5eZVGTasqpsgK1NeOO
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Sc0vbOHbxfn9JzOXGmtKhPpSM5gmhu52/wuwtc+m/jk=;
+        b=eVZe9KCiDv1qrBb5gMjnSvEo+PdkY9qsAp/5bmqLHewOTbf3J4Sy0R4EP01BaRo5BK
+         pxzyEdxBCq4FzOQe2/qHm7Kr+0yQuWMt394RHGnRjrV60Wnao0TxKzvSglB3fKKnNZQ1
+         CKrDucq63yq3lVDboyodDknnHmNpr5GiAmtoAjD97Qkz7GJTyimuq1toomABrIBpVSy6
+         HwI+UoPTS90iIKvXpNP3V5pk6v/QVREkPUm1AmRD8F2J/A0OVVQdy29aHrlxQao+Qv4G
+         S+2zDzuAoWQ9baFs3CXWApTQGbFffny//xZDRKdjqBACAD0G0LKa5iJhJS8NBA9RIUtW
+         K2mQ==
+X-Gm-Message-State: AOAM531hHhd8nbmmigRhqQDyWrApdcEmsoWBhgBxG0g8Q8l2LGa1/Alx
+        S3iDZvzS+xhefQ6fssi3USTAOA==
+X-Google-Smtp-Source: ABdhPJxqFfEGP4eD56gpzU1NU9/JmnxIk/kszmquParxawZ26pe0lwC7X5CNw3qHfJ8ZwuPYQRSp3A==
+X-Received: by 2002:a05:6e02:1bec:: with SMTP id y12mr1694292ilv.214.1612973588981;
+        Wed, 10 Feb 2021 08:13:08 -0800 (PST)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id i6sm1217646ilq.51.2021.02.10.08.13.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Feb 2021 08:13:08 -0800 (PST)
+Subject: Re: [PATCH 5/5] ath10k: reduce invalid ht params rate message noise
+To:     Kalle Valo <kvalo@codeaurora.org>, Wen Gong <wgong@codeaurora.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
+        kuba@kernel.org, davem@davemloft.net,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <cover.1612915444.git.skhan@linuxfoundation.org>
+ <76a816d983e6c4d636311738396f97971b5523fb.1612915444.git.skhan@linuxfoundation.org>
+ <5c31f6dadbcc3dcb19239ad2b6106773@codeaurora.org>
+ <87h7mktjgi.fsf@codeaurora.org>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <db4cd172-6121-a0b7-6c3f-f95baae1c1ed@linuxfoundation.org>
+Date:   Wed, 10 Feb 2021 09:13:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-X-Received: by 2002:a92:d30d:: with SMTP id x13mr1672388ila.217.1612973116341;
- Wed, 10 Feb 2021 08:05:16 -0800 (PST)
-Date:   Wed, 10 Feb 2021 08:05:16 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a1c5d705bafd914f@google.com>
-Subject: KASAN: invalid-free in ieee80211_ibss_leave
-From:   syzbot <syzbot+93976391bf299d425f44@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <87h7mktjgi.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 2/10/21 1:28 AM, Kalle Valo wrote:
+> Wen Gong <wgong@codeaurora.org> writes:
+> 
+>> On 2021-02-10 08:42, Shuah Khan wrote:
+>>> ath10k_mac_get_rate_flags_ht() floods dmesg with the following
+>>> messages,
+>>> when it fails to find a match for mcs=7 and rate=1440.
+>>>
+>>> supported_ht_mcs_rate_nss2:
+>>> {7,  {1300, 2700, 1444, 3000} }
+>>>
+>>> ath10k_pci 0000:02:00.0: invalid ht params rate 1440 100kbps nss 2
+>>> mcs 7
+>>>
+>>> dev_warn_ratelimited() isn't helping the noise. Use dev_warn_once()
+>>> instead.
+>>>
+>>> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+>>> ---
+>>>   drivers/net/wireless/ath/ath10k/mac.c | 5 +++--
+>>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath10k/mac.c
+>>> b/drivers/net/wireless/ath/ath10k/mac.c
+>>> index 3545ce7dce0a..276321f0cfdd 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/mac.c
+>>> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+>>> @@ -8970,8 +8970,9 @@ static void ath10k_mac_get_rate_flags_ht(struct
+>>> ath10k *ar, u32 rate, u8 nss, u8
+>>>   		*bw |= RATE_INFO_BW_40;
+>>>   		*flags |= RATE_INFO_FLAGS_SHORT_GI;
+>>>   	} else {
+>>> -		ath10k_warn(ar, "invalid ht params rate %d 100kbps nss %d mcs %d",
+>>> -			    rate, nss, mcs);
+>>> +		dev_warn_once(ar->dev,
+>>> +			      "invalid ht params rate %d 100kbps nss %d mcs %d",
+>>> +			      rate, nss, mcs);
+>>>   	}
+>>>   }
+>>
+>> The {7,  {1300, 2700, 1444, 3000} } is a correct value.
+>> The 1440 is report from firmware, its a wrong value, it has fixed in
+>> firmware.
+> 
+> In what version?
+> 
 
-syzbot found the following issue on:
+Here is the info:
 
-HEAD commit:    b75dba7f Merge tag 'libnvdimm-fixes-5.11-rc7' of git://git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1570c95f500000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e83e68d0a6aba5f6
-dashboard link: https://syzkaller.appspot.com/bug?extid=93976391bf299d425f44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=136f4d08d00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1278c7fcd00000
+ath10k_pci 0000:02:00.0: qca6174 hw3.2 target 0x05030000 chip_id 
+0x00340aff sub 17aa:0827
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+93976391bf299d425f44@syzkaller.appspotmail.com
+ath10k_pci 0000:02:00.0: firmware ver WLAN.RM.4.4.1-00140-QCARMSWPZ-1 
+api 6 features wowlan,ignore-otp,mfp crc32 29eb8ca1
 
-==================================================================
-BUG: KASAN: double-free or invalid-free in ieee80211_ibss_leave+0x83/0xe0 net/mac80211/ibss.c:1876
+ath10k_pci 0000:02:00.0: board_file api 2 bmi_id N/A crc32 4ac0889b
 
-CPU: 0 PID: 8472 Comm: syz-executor100 Not tainted 5.11.0-rc6-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- __dump_stack lib/dump_stack.c:79 [inline]
- dump_stack+0x107/0x163 lib/dump_stack.c:120
- print_address_description.constprop.0.cold+0x5b/0x2c6 mm/kasan/report.c:230
- kasan_report_invalid_free+0x51/0x80 mm/kasan/report.c:355
- ____kasan_slab_free+0xcc/0xe0 mm/kasan/common.c:341
- kasan_slab_free include/linux/kasan.h:192 [inline]
- __cache_free mm/slab.c:3424 [inline]
- kfree+0xed/0x270 mm/slab.c:3760
- ieee80211_ibss_leave+0x83/0xe0 net/mac80211/ibss.c:1876
- rdev_leave_ibss net/wireless/rdev-ops.h:545 [inline]
- __cfg80211_leave_ibss+0x19a/0x4c0 net/wireless/ibss.c:212
- __cfg80211_leave+0x327/0x430 net/wireless/core.c:1172
- cfg80211_leave net/wireless/core.c:1221 [inline]
- cfg80211_netdev_notifier_call+0x9e8/0x12c0 net/wireless/core.c:1335
- notifier_call_chain+0xb5/0x200 kernel/notifier.c:83
- call_netdevice_notifiers_info+0xb5/0x130 net/core/dev.c:2040
- call_netdevice_notifiers_extack net/core/dev.c:2052 [inline]
- call_netdevice_notifiers net/core/dev.c:2066 [inline]
- __dev_close_many+0xee/0x2e0 net/core/dev.c:1586
- __dev_close net/core/dev.c:1624 [inline]
- __dev_change_flags+0x2cb/0x730 net/core/dev.c:8476
- dev_change_flags+0x8a/0x160 net/core/dev.c:8549
- dev_ifsioc+0x210/0xa70 net/core/dev_ioctl.c:265
- dev_ioctl+0x1b1/0xc40 net/core/dev_ioctl.c:511
- sock_do_ioctl+0x148/0x2d0 net/socket.c:1060
- sock_ioctl+0x477/0x6a0 net/socket.c:1177
- vfs_ioctl fs/ioctl.c:48 [inline]
- __do_sys_ioctl fs/ioctl.c:753 [inline]
- __se_sys_ioctl fs/ioctl.c:739 [inline]
- __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:739
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x446c99
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 41 15 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fa8353b02f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00000000004cb440 RCX: 0000000000446c99
-RDX: 00000000200008c0 RSI: 0000000000008914 RDI: 0000000000000005
-RBP: 00000000004cb44c R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000049b07c
-R13: 0031313230386c6e R14: 0ba62cdd87f75d44 R15: 00000000004cb448
+ath10k_pci 0000:02:00.0: htt-ver 3.60 wmi-op 4 htt-op 3 cal otp max-sta 
+32 raw 0 hwcrypto 1
 
-Allocated by task 8465:
- kasan_save_stack+0x1b/0x40 mm/kasan/common.c:38
- kasan_set_track mm/kasan/common.c:46 [inline]
- set_alloc_info mm/kasan/common.c:401 [inline]
- ____kasan_kmalloc.constprop.0+0x7f/0xa0 mm/kasan/common.c:429
- kasan_kmalloc include/linux/kasan.h:219 [inline]
- __do_kmalloc mm/slab.c:3659 [inline]
- __kmalloc_track_caller+0x20a/0x440 mm/slab.c:3674
- kmemdup+0x23/0x50 mm/util.c:128
- kmemdup include/linux/string.h:520 [inline]
- ieee80211_ibss_join+0x8cf/0xfe0 net/mac80211/ibss.c:1824
- rdev_join_ibss net/wireless/rdev-ops.h:535 [inline]
- __cfg80211_join_ibss+0x807/0x1200 net/wireless/ibss.c:144
- nl80211_join_ibss+0xcbb/0x12b0 net/wireless/nl80211.c:10229
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:739
- genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2494
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1304 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1330
- netlink_sendmsg+0x856/0xd90 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec net/socket.c:652 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:672
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2345
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2399
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2432
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+>> If change it to dev_warn_once, then it will have no chance to find the
+>> other wrong values which report by firmware, and it indicate
+>> a wrong value to mac80211/cfg80211 and lead "iw wlan0 station dump"
+>> get a wrong bitrate.
+> 
 
-Freed by task 8473:
- kasan_save_stack+0x1b/0x40 mm/kasan/common.c:38
- kasan_set_track+0x1c/0x30 mm/kasan/common.c:46
- kasan_set_free_info+0x20/0x30 mm/kasan/generic.c:356
- ____kasan_slab_free+0xb0/0xe0 mm/kasan/common.c:362
- kasan_slab_free include/linux/kasan.h:192 [inline]
- __cache_free mm/slab.c:3424 [inline]
- kfree+0xed/0x270 mm/slab.c:3760
- ieee80211_ibss_leave+0x83/0xe0 net/mac80211/ibss.c:1876
- rdev_leave_ibss net/wireless/rdev-ops.h:545 [inline]
- __cfg80211_leave_ibss+0x19a/0x4c0 net/wireless/ibss.c:212
- __cfg80211_leave+0x327/0x430 net/wireless/core.c:1172
- cfg80211_leave net/wireless/core.c:1221 [inline]
- cfg80211_netdev_notifier_call+0x9e8/0x12c0 net/wireless/core.c:1335
- notifier_call_chain+0xb5/0x200 kernel/notifier.c:83
- call_netdevice_notifiers_info+0xb5/0x130 net/core/dev.c:2040
- call_netdevice_notifiers_extack net/core/dev.c:2052 [inline]
- call_netdevice_notifiers net/core/dev.c:2066 [inline]
- __dev_close_many+0xee/0x2e0 net/core/dev.c:1586
- __dev_close net/core/dev.c:1624 [inline]
- __dev_change_flags+0x2cb/0x730 net/core/dev.c:8476
- dev_change_flags+0x8a/0x160 net/core/dev.c:8549
- dev_ifsioc+0x210/0xa70 net/core/dev_ioctl.c:265
- dev_ioctl+0x1b1/0xc40 net/core/dev_ioctl.c:511
- sock_do_ioctl+0x148/0x2d0 net/socket.c:1060
- sock_ioctl+0x477/0x6a0 net/socket.c:1177
- vfs_ioctl fs/ioctl.c:48 [inline]
- __do_sys_ioctl fs/ioctl.c:753 [inline]
- __se_sys_ioctl fs/ioctl.c:739 [inline]
- __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:739
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+Agreed.
 
-Last potentially related work creation:
- kasan_save_stack+0x1b/0x40 mm/kasan/common.c:38
- kasan_record_aux_stack+0x87/0xb0 mm/kasan/generic.c:344
- insert_work+0x48/0x370 kernel/workqueue.c:1331
- __queue_work+0x5c1/0xf00 kernel/workqueue.c:1497
- queue_work_on+0xc7/0xd0 kernel/workqueue.c:1524
- queue_work include/linux/workqueue.h:507 [inline]
- call_usermodehelper_exec+0x1f0/0x4c0 kernel/umh.c:433
- kobject_uevent_env+0xf9f/0x1680 lib/kobject_uevent.c:617
- kobject_synth_uevent+0x701/0x850 lib/kobject_uevent.c:208
- uevent_store+0x20/0x50 drivers/base/core.c:2160
- dev_attr_store+0x50/0x80 drivers/base/core.c:1861
- sysfs_kf_write+0x110/0x160 fs/sysfs/file.c:139
- kernfs_fop_write_iter+0x342/0x500 fs/kernfs/file.c:296
- call_write_iter include/linux/fs.h:1901 [inline]
- new_sync_write+0x426/0x650 fs/read_write.c:518
- vfs_write+0x791/0xa30 fs/read_write.c:605
- ksys_write+0x12d/0x250 fs/read_write.c:658
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> I agree, we should keep this warning. If the firmware still keeps
+> sending invalid rates we should add a specific check to ignore the known
+> invalid values, but not all of them.
+> 
 
-Second to last potentially related work creation:
- kasan_save_stack+0x1b/0x40 mm/kasan/common.c:38
- kasan_record_aux_stack+0x87/0xb0 mm/kasan/generic.c:344
- insert_work+0x48/0x370 kernel/workqueue.c:1331
- __queue_work+0x5c1/0xf00 kernel/workqueue.c:1497
- queue_work_on+0xc7/0xd0 kernel/workqueue.c:1524
- queue_work include/linux/workqueue.h:507 [inline]
- call_usermodehelper_exec+0x1f0/0x4c0 kernel/umh.c:433
- kobject_uevent_env+0xf9f/0x1680 lib/kobject_uevent.c:617
- kobject_synth_uevent+0x701/0x850 lib/kobject_uevent.c:208
- uevent_store+0x20/0x50 drivers/base/core.c:2160
- dev_attr_store+0x50/0x80 drivers/base/core.c:1861
- sysfs_kf_write+0x110/0x160 fs/sysfs/file.c:139
- kernfs_fop_write_iter+0x342/0x500 fs/kernfs/file.c:296
- call_write_iter include/linux/fs.h:1901 [inline]
- new_sync_write+0x426/0x650 fs/read_write.c:518
- vfs_write+0x791/0xa30 fs/read_write.c:605
- ksys_write+0x12d/0x250 fs/read_write.c:658
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+Would it be helpful to adjust the default rate limits and set the to
+a higher value instead. It might be difficult to account all possible
+invalid values?
 
-The buggy address belongs to the object at ffff88801c155f00
- which belongs to the cache kmalloc-192 of size 192
-The buggy address is located 0 bytes inside of
- 192-byte region [ffff88801c155f00, ffff88801c155fc0)
-The buggy address belongs to the page:
-page:000000001221e238 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88801c155900 pfn:0x1c155
-flags: 0xfff00000000200(slab)
-raw: 00fff00000000200 ffffea0000928b48 ffffea00006de508 ffff888010c40000
-raw: ffff88801c155900 ffff88801c155000 000000010000000d 0000000000000000
-page dumped because: kasan: bad access detected
+Something like, ath10k_warn_ratelimited() to adjust the
 
-Memory state around the buggy address:
- ffff88801c155e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88801c155e80: 00 00 00 fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff88801c155f00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                   ^
- ffff88801c155f80: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
- ffff88801c156000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
+DEFAULT_RATELIMIT_INTERVAL and DEFAULT_RATELIMIT_BURST using
+DEFINE_RATELIMIT_STATE
+
+Let me know if you like this idea. I can send a patch in to do this.
+I will hang on to this firmware version for a little but longer, so
+we have a test case. :)
+
+thanks,
+-- Shuah
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
