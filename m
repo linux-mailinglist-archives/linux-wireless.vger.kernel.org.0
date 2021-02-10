@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BFE631615F
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 09:47:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C47E316162
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 09:48:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230483AbhBJIrT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 03:47:19 -0500
-Received: from so15.mailgun.net ([198.61.254.15]:38100 "EHLO so15.mailgun.net"
+        id S230494AbhBJIr2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 03:47:28 -0500
+Received: from so15.mailgun.net ([198.61.254.15]:46844 "EHLO so15.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230197AbhBJIng (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S230182AbhBJIng (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 10 Feb 2021 03:43:36 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612946585; h=References: In-Reply-To: Message-Id: Date:
+ s=smtp; t=1612946578; h=References: In-Reply-To: Message-Id: Date:
  Subject: Cc: To: From: Sender;
- bh=/y1H7m8tiDjR3yJ22JTzktykL76/exVvECpFNFsT0PE=; b=g8GqJC4AS/G+Iln86HSFxTbPbMbi4KPrrDFQgJL6F+xMTnRdx0zJUSxJvoEVgfECBc1zU+nu
- bjJdVsJaBJs1U95eTD9xFWYTexopfu1bBQ0ZFNyPK2s8/8poXCBvdAQQ9dHVJXb2A81V+Ex1
- j/YNakHclTghk/RJzyzvghy7EpI=
+ bh=2TP8qvWrDlpsJ33CkHR3Ln6RM1J+7f5c7dJpOmArdiQ=; b=Vjpox51T6j3fyTpo2no7UWLYyjmT/5kRqJAbxOP7S81nit3edgoQE4dv4rHmIG+M+nZogc+s
+ DIHDmqVPEVfs4fbBT6VQGKoj5UzkDpfYN8Dcdr7xh5j9FT1aKWu08q4N7XI3KrPrpX6V7Wwl
+ b+rIuFe67aC5L/n/4MDtIWHTkRM=
 X-Mailgun-Sending-Ip: 198.61.254.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 60239c75f112b7872c63f419 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 08:42:29
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 60239c7734db06ef79f407b8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 08:42:31
  GMT
 Sender: akolli=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 463F0C433ED; Wed, 10 Feb 2021 08:42:29 +0000 (UTC)
+        id A5CB4C43462; Wed, 10 Feb 2021 08:42:31 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,18 +37,18 @@ Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-O
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8F3EFC433C6;
-        Wed, 10 Feb 2021 08:42:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8F3EFC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 92FECC433CA;
+        Wed, 10 Feb 2021 08:42:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 92FECC433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=akolli@codeaurora.org
 From:   Anilkumar Kolli <akolli@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org,
         Anilkumar Kolli <akolli@codeaurora.org>
-Subject: [PATCH 03/11] ath11k: qmi: increase the number of fw segments
-Date:   Wed, 10 Feb 2021 14:12:02 +0530
-Message-Id: <1612946530-28504-4-git-send-email-akolli@codeaurora.org>
+Subject: [PATCH 04/11] ath11k: Update memory segment count for qcn9074
+Date:   Wed, 10 Feb 2021 14:12:03 +0530
+Message-Id: <1612946530-28504-5-git-send-email-akolli@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1612946530-28504-1-git-send-email-akolli@codeaurora.org>
 References: <1612946530-28504-1-git-send-email-akolli@codeaurora.org>
@@ -56,41 +56,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-QCN9074 firmware uses 20MB of HOST DDR memory, fw requests
-the memory in segmnets of size 1MB/512KB/256KB.
-Increase the number of fw memory segments to 52.
+QCN9074 FW requests three types memory segments during the boot,
+	qmi mem seg type 1 of size 15728640
+	qmi mem seg type 4 of size 3735552
+	qmi mem seg type 3 of size 1048576
+Segment type 3 is for M3 coredump memory.
 
 Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1.r2-00012-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/qmi.c | 2 +-
+ drivers/net/wireless/ath/ath11k/qmi.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 0db623ff4bb9..104eabd8df02 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -1760,7 +1760,7 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
+ 						  &chunk->paddr,
+ 						  GFP_KERNEL);
+ 		if (!chunk->vaddr) {
+-			if (ab->qmi.mem_seg_count <= 2) {
++			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
+ 				ath11k_dbg(ab, ATH11K_DBG_QMI,
+ 					   "qmi dma allocation failed (%d B type %u), will try later with small size\n",
+ 					    chunk->size,
 diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index 7bad374cc23a..1797c3b59f48 100644
+index 1797c3b59f48..a7d01c295e77 100644
 --- a/drivers/net/wireless/ath/ath11k/qmi.h
 +++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -23,7 +23,7 @@
- #define ATH11K_QMI_WLFW_SERVICE_INS_ID_V01_IPQ8074	0x02
- #define ATH11K_QMI_WLANFW_MAX_TIMESTAMP_LEN_V01	32
- #define ATH11K_QMI_RESP_LEN_MAX			8192
--#define ATH11K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01	32
-+#define ATH11K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01	52
+@@ -26,6 +26,7 @@
+ #define ATH11K_QMI_WLANFW_MAX_NUM_MEM_SEG_V01	52
  #define ATH11K_QMI_CALDB_SIZE			0x480000
  #define ATH11K_QMI_BDF_EXT_STR_LENGTH		0x20
++#define ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT	3
  
-@@ -216,8 +216,8 @@ struct qmi_wlanfw_ind_register_resp_msg_v01 {
- 	u64 fw_status;
- };
+ #define QMI_WLFW_REQUEST_MEM_IND_V01		0x0035
+ #define QMI_WLFW_FW_MEM_READY_IND_V01		0x0037
+@@ -141,6 +142,7 @@ struct ath11k_qmi {
+ #define QMI_IPQ8074_FW_MEM_MODE				0xFF
+ #define HOST_DDR_REGION_TYPE				0x1
+ #define BDF_MEM_REGION_TYPE				0x2
++#define M3_DUMP_REGION_TYPE				0x3
+ #define CALDB_MEM_REGION_TYPE				0x4
  
--#define QMI_WLANFW_REQUEST_MEM_IND_MSG_V01_MAX_LEN	1124
--#define QMI_WLANFW_RESPOND_MEM_REQ_MSG_V01_MAX_LEN	548
-+#define QMI_WLANFW_REQUEST_MEM_IND_MSG_V01_MAX_LEN	1824
-+#define QMI_WLANFW_RESPOND_MEM_REQ_MSG_V01_MAX_LEN	888
- #define QMI_WLANFW_RESPOND_MEM_RESP_MSG_V01_MAX_LEN	7
- #define QMI_WLANFW_REQUEST_MEM_IND_V01			0x0035
- #define QMI_WLANFW_RESPOND_MEM_REQ_V01			0x0036
+ struct qmi_wlanfw_host_cap_req_msg_v01 {
 -- 
 2.7.4
 
