@@ -2,144 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDA33316B17
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 17:24:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D22DA316B49
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 17:33:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232212AbhBJQXb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 11:23:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232322AbhBJQXY (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Feb 2021 11:23:24 -0500
-Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 439DBC0613D6
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Feb 2021 08:22:44 -0800 (PST)
-Received: by mail-il1-x136.google.com with SMTP id z18so2347684ile.9
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Feb 2021 08:22:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=JSh8ExYxdty8HZ11KujafrMp7iovLQF4x5Wy4WPKtFY=;
-        b=MqBF5ZEr+daNm21Pgbp5M3xc3FrA2e2xhHAo0Dk1bkOF988nmvj/JIs0ba1jcPJ203
-         rl6mzOsv2xikvam4uDDIWkXM2lxulDO5Pw/Sz92l1FqLWb4bICKwNCirxhULXoxgy6w7
-         RnfuncRvRYQFUiRv98y3Apa/O2gIu6jPfC9xo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=JSh8ExYxdty8HZ11KujafrMp7iovLQF4x5Wy4WPKtFY=;
-        b=HddHccqAUY7bhiaforJA6lWSvGoB4YCKXyYx0EJS3ARTHqPiE1ZRKgmzPb7O9kO/8m
-         7UIewci01ar4PyJ4KmEim0m+6WWv7p0wJhFcm6Z5HMMwUCIMUnzL4AFKYggkFK3w9xaB
-         wQHlxrL9pspm4UKJXRsm8jyrL1dYC20rZrg/OhhOe5wKS5vhrMUIio7kB9QicragaRF9
-         piWFPczckc0PktjjdJexQ2IPRxXsvLuvKEZGo5zCkJsY4C+YbWWAXf37Ad9pi7PIjywY
-         0WDvXpiWNL4zR0/8PE+pOGuBZ6U2ZOEVLgoxsnn49bAiecKaSnffnpY5H536PtSjJJrk
-         IdHA==
-X-Gm-Message-State: AOAM533CxyncXc226D0/UzMa/p6wfZU2YL3z39HcpUebWvgOkXaWUs6y
-        X7vx05FzT+bJTRILCpHN6CByWA==
-X-Google-Smtp-Source: ABdhPJzXyC8AmV48saKbwVck5pzWW/8Ry9H6e0li1SH7HuPENRqrnsNCXgsFgCru0G3RWsdbnHR4Nw==
-X-Received: by 2002:a92:dcc6:: with SMTP id b6mr1836908ilr.295.1612974163736;
-        Wed, 10 Feb 2021 08:22:43 -0800 (PST)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id k11sm1129540iop.45.2021.02.10.08.22.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Feb 2021 08:22:43 -0800 (PST)
-Subject: Re: [PATCH 2/5] ath10k: fix WARNING: suspicious RCU usage
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <23a1333dfb0367cc69e7177a2e373df0b6d42980.1612915444.git.skhan@linuxfoundation.org>
- <20210210081320.2FBE5C433CA@smtp.codeaurora.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <7230c9e5-2632-b77e-c4f9-10eca557a5bb@linuxfoundation.org>
-Date:   Wed, 10 Feb 2021 09:22:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        id S232590AbhBJQbe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 11:31:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58576 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232557AbhBJQbJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 10 Feb 2021 11:31:09 -0500
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8DBC464E76;
+        Wed, 10 Feb 2021 16:30:28 +0000 (UTC)
+Date:   Wed, 10 Feb 2021 11:30:26 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: change len of trace_ath10k_log_dbg_dump for
+ large buffer size
+Message-ID: <20210210113026.5f5ebe8a@gandalf.local.home>
+In-Reply-To: <9b479a88331dbf969f07708eabe53d14@codeaurora.org>
+References: <1612839593-2308-1-git-send-email-wgong@codeaurora.org>
+        <CA+ASDXN1V2HYA7C6s-q5bQNSxE7L5GCJiqfiJ_67R_hpUn4b_g@mail.gmail.com>
+        <20210209145531.5977b16d@gandalf.local.home>
+        <20210209163431.11133472@gandalf.local.home>
+        <9b479a88331dbf969f07708eabe53d14@codeaurora.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20210210081320.2FBE5C433CA@smtp.codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/10/21 1:13 AM, Kalle Valo wrote:
-> Shuah Khan <skhan@linuxfoundation.org> wrote:
-> 
->> ieee80211_find_sta_by_ifaddr() must be called under the RCU lock and
->> the resulting pointer is only valid under RCU lock as well.
->>
->> Fix ath10k_wmi_tlv_parse_peer_stats_info() to hold RCU lock before it
->> calls ieee80211_find_sta_by_ifaddr() and release it when the resulting
->> pointer is no longer needed. The log below shows the problem.
->>
->> While at it, fix ath10k_wmi_tlv_op_pull_peer_stats_info() to do the same.
->>
->> =============================
->> WARNING: suspicious RCU usage
->> 5.11.0-rc7+ #20 Tainted: G        W
->> -----------------------------
->> include/linux/rhashtable.h:594 suspicious rcu_dereference_check() usage!
->> other info that might help us debug this:
->>                 rcu_scheduler_active = 2, debug_locks = 1
->> no locks held by ksoftirqd/5/44.
->>
->> stack backtrace:
->> CPU: 5 PID: 44 Comm: ksoftirqd/5 Tainted: G        W         5.11.0-rc7+ #20
->> Hardware name: LENOVO 10VGCTO1WW/3130, BIOS M1XKT45A 08/21/2019
->> Call Trace:
->>   dump_stack+0x7d/0x9f
->>   lockdep_rcu_suspicious+0xdb/0xe5
->>   __rhashtable_lookup+0x1eb/0x260 [mac80211]
->>   ieee80211_find_sta_by_ifaddr+0x5b/0xc0 [mac80211]
->>   ath10k_wmi_tlv_parse_peer_stats_info+0x3e/0x90 [ath10k_core]
->>   ath10k_wmi_tlv_iter+0x6a/0xc0 [ath10k_core]
->>   ? ath10k_wmi_tlv_op_pull_mgmt_tx_bundle_compl_ev+0xe0/0xe0 [ath10k_core]
->>   ath10k_wmi_tlv_op_rx+0x5da/0xda0 [ath10k_core]
->>   ? trace_hardirqs_on+0x54/0xf0
->>   ? ath10k_ce_completed_recv_next+0x4e/0x60 [ath10k_core]
->>   ath10k_wmi_process_rx+0x1d/0x40 [ath10k_core]
->>   ath10k_htc_rx_completion_handler+0x115/0x180 [ath10k_core]
->>   ath10k_pci_process_rx_cb+0x149/0x1b0 [ath10k_pci]
->>   ? ath10k_htc_process_trailer+0x2d0/0x2d0 [ath10k_core]
->>   ? ath10k_pci_sleep.part.0+0x6a/0x80 [ath10k_pci]
->>   ath10k_pci_htc_rx_cb+0x15/0x20 [ath10k_pci]
->>   ath10k_ce_per_engine_service+0x61/0x80 [ath10k_core]
->>   ath10k_ce_per_engine_service_any+0x7d/0xa0 [ath10k_core]
->>   ath10k_pci_napi_poll+0x48/0x120 [ath10k_pci]
->>   net_rx_action+0x136/0x500
->>   __do_softirq+0xc6/0x459
->>   ? smpboot_thread_fn+0x2b/0x1f0
->>   run_ksoftirqd+0x2b/0x60
->>   smpboot_thread_fn+0x116/0x1f0
->>   kthread+0x14b/0x170
->>   ? smpboot_register_percpu_thread+0xe0/0xe0
->>   ? __kthread_bind_mask+0x70/0x70
->>   ret_from_fork+0x22/0x30
->>
->> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-> 
-> Unlucky timing also on this one, it conflicts with a patch I applied yesterday:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=ath-next&id=2615e3cdbd9c0e864f5906279c952a309871d225
-> 
-> Can you redo the patch to only change ath10k_wmi_event_tdls_peer()?
-> 
+On Wed, 10 Feb 2021 10:01:57 +0800
+Wen Gong <wgong@codeaurora.org> wrote:
 
-Yes. I will send the patch just for ath10k_wmi_event_tdls_peer()
-on top of your patch.
-
-> error: patch failed: drivers/net/wireless/ath/ath10k/wmi-tlv.c:240
-> error: drivers/net/wireless/ath/ath10k/wmi-tlv.c: patch does not apply
-> stg import: Diff does not apply cleanly
+> Not tested with latest kernel.
+> The reason is below which I said in 
+> https://lore.kernel.org/lkml/b504b3d7e989cae108669a0cd3072454@codeaurora.org/
 > 
-> Patch set to Changes Requested.
-> 
+> the per cpu buffer seems it is initilized in 
+> trace_buffered_event_enable,
+> it is only 1 page size as below:
+> void trace_buffered_event_enable(void)
+> {
+> ...
+> 	for_each_tracing_cpu(cpu) {
+> 		page = alloc_pages_node(cpu_to_node(cpu),
+> 					GFP_KERNEL | __GFP_NORETRY, 0);
+> If the size of buffer to trace is more than 1 page, such as 46680, then
+> it trigger kernel crash/panic in my case while run trace-cmd.
+> After debugging, the trace_file->flags in
+> trace_event_buffer_lock_reserve is 0x40b while run trace-cmd, and it is
+> 0x403 while collecting ftrace log.
 
-thanks,
--- Shuah
+Yeah, looking at this, I do see that this is a bug upstream.
+
+Can you test this patch?
+
+-- Steve
+
+
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index b79bcacdd6f9..a0b352aa23fe 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2739,7 +2739,7 @@ trace_event_buffer_lock_reserve(struct trace_buffer **current_rb,
+ 	    (entry = this_cpu_read(trace_buffered_event))) {
+ 		/* Try to use the per cpu buffer first */
+ 		val = this_cpu_inc_return(trace_buffered_event_cnt);
+-		if (val == 1) {
++		if (len < PAGE_SIZE && val == 1) {
+ 			trace_event_setup(entry, type, trace_ctx);
+ 			entry->array[0] = len;
+ 			return entry;
