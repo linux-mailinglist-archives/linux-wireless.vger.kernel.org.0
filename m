@@ -2,106 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B795F315D71
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 03:39:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7205C316028
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 08:40:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235104AbhBJCiw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Feb 2021 21:38:52 -0500
-Received: from mail29.static.mailgun.info ([104.130.122.29]:46691 "EHLO
+        id S232592AbhBJHjo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 02:39:44 -0500
+Received: from mail29.static.mailgun.info ([104.130.122.29]:64341 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235135AbhBJCh1 (ORCPT
+        by vger.kernel.org with ESMTP id S232539AbhBJHjj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Feb 2021 21:37:27 -0500
+        Wed, 10 Feb 2021 02:39:39 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612924625; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=KP3hTxbzRxMtj43K3BWRTDhhCWad/fnTc01joBzCoVI=;
- b=aN48IIPKLRt/7F7FjC4SJ462OFTwu3gryWbUPDJBzP9zilb8G8RmPD4Gqtxs63dtlRErZ10F
- zKqsyT+LAbHiUaDCVXb80uYsNXEGxsV38bIdK87c79Een9q9akDcT4t9fnc2E3PV19jRFfvl
- tKYuwI7+C55cDFAcpKMDfIWfC9I=
+ s=smtp; t=1612942754; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=j7EC7yuOLWlK92uihshdkBFebFz3jc9d4BgbYsfx9gU=;
+ b=QawEit4bya6qF4Btp1KxK+dQTvnoqvuPEHMPdP3nNEMJMH2QpFvKjqP/x8rgasQiDfl6DaJ/
+ lSI6C1sqlMhOj0eO/rwkdWlIMLdnIuFOMl82JAv88DCw/MfFWeGw1u+On/1y6I6d2CH0H8qq
+ OpEAbfztq3xMLZ+3m0aF+YqWm/w=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 602346a934db06ef7956bdc2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 02:36:25
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 60238d9ef112b7872c3f589d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 07:39:10
  GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B2EBEC43466; Wed, 10 Feb 2021 02:36:24 +0000 (UTC)
+        id 19952C433CA; Wed, 10 Feb 2021 07:39:10 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D431DC43461;
-        Wed, 10 Feb 2021 02:36:23 +0000 (UTC)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BD348C433C6;
+        Wed, 10 Feb 2021 07:39:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BD348C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Wed, 10 Feb 2021 10:36:23 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] ath10k: reduce invalid ht params rate message noise
-In-Reply-To: <76a816d983e6c4d636311738396f97971b5523fb.1612915444.git.skhan@linuxfoundation.org>
-References: <cover.1612915444.git.skhan@linuxfoundation.org>
- <76a816d983e6c4d636311738396f97971b5523fb.1612915444.git.skhan@linuxfoundation.org>
-Message-ID: <5c31f6dadbcc3dcb19239ad2b6106773@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Subject: Re: [PATCH] rtlwifi: rtl8192se: Simplify bool comparison
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1612839264-85773-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+References: <1612839264-85773-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     pkshih@realtek.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210210073910.19952C433CA@smtp.codeaurora.org>
+Date:   Wed, 10 Feb 2021 07:39:10 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-02-10 08:42, Shuah Khan wrote:
-> ath10k_mac_get_rate_flags_ht() floods dmesg with the following 
-> messages,
-> when it fails to find a match for mcs=7 and rate=1440.
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
+
+> Fix the follow coccicheck warnings:
 > 
-> supported_ht_mcs_rate_nss2:
-> {7,  {1300, 2700, 1444, 3000} }
+> ./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:2305:6-27:
+> WARNING: Comparison of 0/1 to bool variable.
 > 
-> ath10k_pci 0000:02:00.0: invalid ht params rate 1440 100kbps nss 2 mcs 
-> 7
+> ./drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1376:5-26:
+> WARNING: Comparison of 0/1 to bool variable.
 > 
-> dev_warn_ratelimited() isn't helping the noise. Use dev_warn_once()
-> instead.
-> 
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-> ---
->  drivers/net/wireless/ath/ath10k/mac.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/mac.c
-> b/drivers/net/wireless/ath/ath10k/mac.c
-> index 3545ce7dce0a..276321f0cfdd 100644
-> --- a/drivers/net/wireless/ath/ath10k/mac.c
-> +++ b/drivers/net/wireless/ath/ath10k/mac.c
-> @@ -8970,8 +8970,9 @@ static void ath10k_mac_get_rate_flags_ht(struct
-> ath10k *ar, u32 rate, u8 nss, u8
->  		*bw |= RATE_INFO_BW_40;
->  		*flags |= RATE_INFO_FLAGS_SHORT_GI;
->  	} else {
-> -		ath10k_warn(ar, "invalid ht params rate %d 100kbps nss %d mcs %d",
-> -			    rate, nss, mcs);
-> +		dev_warn_once(ar->dev,
-> +			      "invalid ht params rate %d 100kbps nss %d mcs %d",
-> +			      rate, nss, mcs);
->  	}
->  }
-The {7,  {1300, 2700, 1444, 3000} } is a correct value.
-The 1440 is report from firmware, its a wrong value, it has fixed in 
-firmware.
-If change it to dev_warn_once, then it will have no chance to find the 
-other wrong values which report by firmware, and it indicate
-a wrong value to mac80211/cfg80211 and lead "iw wlan0 station dump" get 
-a wrong bitrate.
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+
+Patch applied to wireless-drivers-next.git, thanks.
+
+15085446c171 rtlwifi: rtl8192se: Simplify bool comparison
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/1612839264-85773-1-git-send-email-jiapeng.chong@linux.alibaba.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
