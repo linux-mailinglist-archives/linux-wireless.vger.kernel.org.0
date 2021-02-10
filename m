@@ -2,125 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E19D315CD3
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 03:05:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E56315D02
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 03:14:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234849AbhBJCDt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Feb 2021 21:03:49 -0500
-Received: from mail29.static.mailgun.info ([104.130.122.29]:61321 "EHLO
-        mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235332AbhBJCD2 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Feb 2021 21:03:28 -0500
+        id S235290AbhBJCO0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Feb 2021 21:14:26 -0500
+Received: from so15.mailgun.net ([198.61.254.15]:50989 "EHLO so15.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235098AbhBJCMb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 9 Feb 2021 21:12:31 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1612922587; h=Message-ID: References: In-Reply-To: Subject:
+ s=smtp; t=1612923128; h=Message-ID: References: In-Reply-To: Subject:
  Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=0dBmtYl/6yYwIgz/exWY39dmedgS/t1WhlIOfdVWVKk=;
- b=VslQXgrnXRTUgHaDpKw3MMF9L9rCecU14gg3ZAmxkfq7wyHcDN8r2qApwmhSoCuoO3iQ+yRH
- x9GEwIJrtyUSnrhs3fb0qXhOVAUt4dJj5V/RzQ+7DxaQWM+IxkCxdFLt+9bCAGLoINkHXuZC
- MQ4AVcZJewsNoBWEAI1vykPwLAU=
-X-Mailgun-Sending-Ip: 104.130.122.29
+ MIME-Version: Sender; bh=rPQJZTrg1mOyXDXVX3wmGnneb1R6HB/8qj87QmbUn3A=;
+ b=jCwTFdSoFVxzJ8+ls+LF8OpR5qtb0ZpgQAXvbCqO0ZdamyIYxzflPQ5Xw55X5FproHSz36pd
+ Pp0YJZUtY3oLsZlAAH6JXXEN/f/ug1LCfvGnZfTSa1L8AoIF3cTZNgH6+Pj24opI1EvPjYTb
+ XRGIwYy6wq213kQ0wf2YKEq9vHQ=
+X-Mailgun-Sending-Ip: 198.61.254.15
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 60233e97f112b7872c8d5034 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 02:01:59
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 602340e83919dfb45574f944 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Feb 2021 02:11:52
  GMT
 Sender: wgong=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 32B60C43462; Wed, 10 Feb 2021 02:01:59 +0000 (UTC)
+        id 1B0D0C43469; Wed, 10 Feb 2021 02:11:52 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
         (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B9A67C433ED;
-        Wed, 10 Feb 2021 02:01:57 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BC40FC433ED;
+        Wed, 10 Feb 2021 02:11:50 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Wed, 10 Feb 2021 10:01:57 +0800
+Date:   Wed, 10 Feb 2021 10:11:50 +0800
 From:   Wen Gong <wgong@codeaurora.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>
 Subject: Re: [PATCH] ath10k: change len of trace_ath10k_log_dbg_dump for large
  buffer size
-In-Reply-To: <20210209163431.11133472@gandalf.local.home>
+In-Reply-To: <CA+ASDXN1V2HYA7C6s-q5bQNSxE7L5GCJiqfiJ_67R_hpUn4b_g@mail.gmail.com>
 References: <1612839593-2308-1-git-send-email-wgong@codeaurora.org>
  <CA+ASDXN1V2HYA7C6s-q5bQNSxE7L5GCJiqfiJ_67R_hpUn4b_g@mail.gmail.com>
- <20210209145531.5977b16d@gandalf.local.home>
- <20210209163431.11133472@gandalf.local.home>
-Message-ID: <9b479a88331dbf969f07708eabe53d14@codeaurora.org>
+Message-ID: <19b6ad684a01718c3823f882581fca36@codeaurora.org>
 X-Sender: wgong@codeaurora.org
 User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-02-10 05:34, Steven Rostedt wrote:
-> On Tue, 9 Feb 2021 14:55:31 -0500
-> Steven Rostedt <rostedt@goodmis.org> wrote:
+On 2021-02-10 03:35, Brian Norris wrote:
+> + Steven Rostedt
 > 
->> > [for-next][PATCH 2/2] tracing: Use temp buffer when filtering events
->> > https://lore.kernel.org/lkml/f16b14066317f6a926b6636df6974966@codeaurora.org/
+> Hi Wen,
+> 
+> (Trimming down the description a bit:)
+> 
+> On Mon, Feb 8, 2021 at 6:59 PM Wen Gong <wgong@codeaurora.org> wrote:
 >> 
->> Note, that is only used when filtering happens, which doesn't appear 
->> to be
->> the case here.
-> 
-> I was basing this off of the original commands, but the stack dump says
-> otherwise. But it should still work.
-> 
+>> Kernel panic every time in kernel when running below case:
+>> steps:
+>> 1. connect to an AP with good signal strength
+>> 2. echo 0x7f > /sys/kernel/debug/ieee80211/phy0/ath10k/pktlog_filter
+>> 3. echo 0xffff 0 > /sys/kernel/debug/ieee80211/phy0/ath10k/fw_dbglog
+>> 4. echo 0 > /sys/module/ath10k_core/parameters/debug_mask
+>> 5. sudo trace-cmd record  -e ath10k
+>> 6. run "iperf -c 192.168.1.1 -u -b 100m -i 1 -t 30"
+>> 7. kernel panic immeditely
 >> 
->> >
->> > It seems like we should still try to get that fixed somehow, even if
->> > the below change is fine on its own (it probably doesn't make sense to
->> > such a large amount of data via tracepoints). It would be unfortunate
->> > for next poor soul to hit the same issues, just because they wanted to
->> > dump a few KB.
+>> It always crash at trace_event_raw_event_ath10k_xxx, below is 2 
+>> sample:
+> ...
+>> The value of prog in filter_match_preds of 
+>> kernel/trace/trace_events_filter.c
+>> is overwrite to the content of the UDP packets's content like this
+>> 0x0039383736353433, it is a invalid address, so crash.
+> ...
+>> ath10k_htc_send_bundle_skbs allocate skb with size 49792(1556*32), it
+>> is bigger than PAGE_SIZE which is normally 4096, then 
+>> ath10k_sdio_write
+>> call ath10k_dbg_dump to trace the large size skb and corrupt the trace
+>> data of tracing and lead crash. When disable the TX bundle of SDIO, it
+>> does not crash, but TX bundle is for improve throughput, so it is 
+>> enabled
+>> by default. It is useless to call ath10k_dbg_dump to trace the large
+>> bundled skb, so this patch trace the top part of large bundled skb.
+> ...
+>> trace_event_raw_event_ath10k_log_dbg_dump is generated by compiler, it
+>> call trace_event_buffer_reserve got get a struct pointer *entry, its
+>> type is trace_event_raw_ath10k_log_dbg_dump which is also generated by
+>> compiler, trace_event_buffer_reserve of kernel/trace/trace_events.c
+>> call trace_event_buffer_lock_reserve to get ring_buffer_event.
 >> 
->> Yeah, it was a design decision to cap the max size of events to just 
->> under
->> PAGE_SIZE. The ring buffer is broken up into pages (for zero copy
->> transfers to file systems and the network). Thus, no event is allowed 
->> to be
->> bigger than a page (and actually a bit smaller)
+>> In function trace_event_buffer_lock_reserve of kernel/trace/trace.c,
+>> the ring_buffer_time_stamp_abs is false and trace_file->flags is 0x40b
+>> which is set bit of EVENT_FILE_FL_FILTERED by debugging, so it use the
+>> temp buffer this_cpu_read(trace_buffered_event), and the buffer size
+>> is 1 page size which allocatee in trace_buffered_event_enable by
+>> alloc_pages_node, and then ath10k pass the buffer size > 1 page 
+>> trigger
+>> overflow and crash.
 >> 
->> That said, it shouldn't have crashed, it should have just failed to 
->> record.
+>> Based on upper test, try and debugging, pass large buff size to 
+>> function
+>> trace_ath10k_log_dbg_dump cause crash, and it has ath10k_dbg in
+>> ath10k_sdio_write to print the length of skb/buffer, it is not 
+>> necessary
+>> to trace all content of the large skb.
+> 
+> Is this the same issue noted in this thread?
+Hi Norris,
+Yes, but it is not the total same issue.
+> 
+> [for-next][PATCH 2/2] tracing: Use temp buffer when filtering events
+> https://lore.kernel.org/lkml/f16b14066317f6a926b6636df6974966@codeaurora.org/
+> 
+> It seems like we should still try to get that fixed somehow, even if
+> the below change is fine on its own (it probably doesn't make sense to
+> such a large amount of data via tracepoints). It would be unfortunate
+> for next poor soul to hit the same issues, just because they wanted to
+> dump a few KB.
+For ath10k, we do not want to dump content which size > 1024.
+otherwise it will generate a much big file while collecting log, it make 
+us much
+hard to analyze the log.
+so this patch is to dump the top 1024 bytes only,
+its 1st goal is make log smaller.
+its 2nd effect is fix the crash issue,
+> 
+> Brian
+> 
+>>  drivers/net/wireless/ath/ath10k/debug.c | 2 +-
+>>  drivers/net/wireless/ath/ath10k/debug.h | 2 ++
+>>  2 files changed, 3 insertions(+), 1 deletion(-)
 >> 
->> I'll test it out and see why it crashed.
-> 
-> Looking at the original report, I see:
-> 
->  CPU: 1 PID: 141 Comm: kworker/u16:1 Not tainted 4.19.139 #162
-> 
-> Does this still crash on the latest kernel?
-> 
-> -- Steve
-Not tested with latest kernel.
-The reason is below which I said in 
-https://lore.kernel.org/lkml/b504b3d7e989cae108669a0cd3072454@codeaurora.org/
-
-the per cpu buffer seems it is initilized in 
-trace_buffered_event_enable,
-it is only 1 page size as below:
-void trace_buffered_event_enable(void)
-{
-...
-	for_each_tracing_cpu(cpu) {
-		page = alloc_pages_node(cpu_to_node(cpu),
-					GFP_KERNEL | __GFP_NORETRY, 0);
-If the size of buffer to trace is more than 1 page, such as 46680, then
-it trigger kernel crash/panic in my case while run trace-cmd.
-After debugging, the trace_file->flags in
-trace_event_buffer_lock_reserve is 0x40b while run trace-cmd, and it is
-0x403 while collecting ftrace log.
+>> diff --git a/drivers/net/wireless/ath/ath10k/debug.c 
+>> b/drivers/net/wireless/ath/ath10k/debug.c
+>> index e8250a665433..5433dbdde0e5 100644
+>> --- a/drivers/net/wireless/ath/ath10k/debug.c
+>> +++ b/drivers/net/wireless/ath/ath10k/debug.c
+>> @@ -2718,7 +2718,7 @@ void ath10k_dbg_dump(struct ath10k *ar,
+>> 
+>>         /* tracing code doesn't like null strings :/ */
+>>         trace_ath10k_log_dbg_dump(ar, msg ? msg : "", prefix ? prefix 
+>> : "",
+>> -                                 buf, len);
+>> +                                 buf, min_t(size_t, len, 
+>> ATH10K_LOG_DUMP_MAX));
+>>  }
+>>  EXPORT_SYMBOL(ath10k_dbg_dump);
+>> 
+>> diff --git a/drivers/net/wireless/ath/ath10k/debug.h 
+>> b/drivers/net/wireless/ath/ath10k/debug.h
+>> index 997c1c80aba7..cec9ba92f28f 100644
+>> --- a/drivers/net/wireless/ath/ath10k/debug.h
+>> +++ b/drivers/net/wireless/ath/ath10k/debug.h
+>> @@ -11,6 +11,8 @@
+>>  #include <linux/types.h>
+>>  #include "trace.h"
+>> 
+>> +#define ATH10K_LOG_DUMP_MAX 1024
+>> +
+>>  enum ath10k_debug_mask {
+>>         ATH10K_DBG_PCI          = 0x00000001,
+>>         ATH10K_DBG_WMI          = 0x00000002,
+>> --
+>> 2.23.0
+>> 
+>> 
+>> _______________________________________________
+>> ath10k mailing list
+>> ath10k@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/ath10k
