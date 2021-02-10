@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 968C03166C7
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 13:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 889B13166C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 13:34:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230295AbhBJMdI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 07:33:08 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:45090 "EHLO
+        id S231372AbhBJMdQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 07:33:16 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:45096 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231926AbhBJMae (ORCPT
+        with ESMTP id S231931AbhBJMah (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Feb 2021 07:30:34 -0500
+        Wed, 10 Feb 2021 07:30:37 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1l9ocf-0049Yg-3k; Wed, 10 Feb 2021 14:29:33 +0200
+        id 1l9ocf-0049Yg-Lw; Wed, 10 Feb 2021 14:29:34 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 10 Feb 2021 14:29:21 +0200
-Message-Id: <iwlwifi.20210210142629.e098026e83ad.I8870fcbc504a74cab6a50134b3df1131d6da946d@changeid>
+Date:   Wed, 10 Feb 2021 14:29:22 +0200
+Message-Id: <iwlwifi.20210210142629.1c8c4b58c932.I147373f6fd364606b0282af8d402c722eb917225@changeid>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210210122927.315774-1-luca@coelho.fi>
 References: <20210210122927.315774-1-luca@coelho.fi>
@@ -31,37 +31,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH v2 06/12] iwlwifi: queue: add fake tx time point
+Subject: [PATCH v2 07/12] iwlwifi: acpi: don't return valid pointer as an ERR_PTR
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Haim Dreyfuss <haim.dreyfuss@intel.com>
 
-In case we get TX sequence number out of range, trigger fake tx time
-point to collect FW debug data.
+iwl_acpi_get_wifi_pkg() may return a valid pointer (meaning success),
+while `tbl_rev` is invalid (equel to 1).
+In this case, we will treat that as an error.
+Subsequent "users" of this "error code" may either check for nonzero
+(good; pointers are never zero) or negative
+(bad; pointers may be "positive") fix that by splitting the if statement.
+First check if IS_ERR(wifi_pkg) and then if tbl_rev != 0.
 
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/queue/tx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 22 +++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-index 3cac83be596f..833f43d1ca7a 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-@@ -1577,6 +1577,10 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- 			__func__, txq_id, last_to_free,
- 			trans->trans_cfg->base_params->max_tfd_queue_size,
- 			txq->write_ptr, txq->read_ptr);
-+
-+		iwl_op_mode_time_point(trans->op_mode,
-+				       IWL_FW_INI_TIME_POINT_FAKE_TX,
-+				       NULL);
- 		goto out;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index d8b7776a8dde..6aa0dbfa3b6c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -478,11 +478,16 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 
+ 	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
+ 					 ACPI_WRDS_WIFI_DATA_SIZE, &tbl_rev);
+-	if (IS_ERR(wifi_pkg) || tbl_rev != 0) {
++	if (IS_ERR(wifi_pkg)) {
+ 		ret = PTR_ERR(wifi_pkg);
+ 		goto out_free;
  	}
  
++	if (tbl_rev != 0) {
++		ret = -EINVAL;
++		goto out_free;
++	}
++
+ 	if (wifi_pkg->package.elements[1].type != ACPI_TYPE_INTEGER) {
+ 		ret = -EINVAL;
+ 		goto out_free;
+@@ -516,11 +521,16 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 
+ 	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
+ 					 ACPI_EWRD_WIFI_DATA_SIZE, &tbl_rev);
+-	if (IS_ERR(wifi_pkg) || tbl_rev != 0) {
++	if (IS_ERR(wifi_pkg)) {
+ 		ret = PTR_ERR(wifi_pkg);
+ 		goto out_free;
+ 	}
+ 
++	if (tbl_rev != 0) {
++		ret = -EINVAL;
++		goto out_free;
++	}
++
+ 	if (wifi_pkg->package.elements[1].type != ACPI_TYPE_INTEGER ||
+ 	    wifi_pkg->package.elements[2].type != ACPI_TYPE_INTEGER) {
+ 		ret = -EINVAL;
+@@ -576,11 +586,17 @@ int iwl_sar_get_wgds_table(struct iwl_fw_runtime *fwrt)
+ 
+ 	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
+ 					 ACPI_WGDS_WIFI_DATA_SIZE, &tbl_rev);
+-	if (IS_ERR(wifi_pkg) || tbl_rev > 1) {
++
++	if (IS_ERR(wifi_pkg)) {
+ 		ret = PTR_ERR(wifi_pkg);
+ 		goto out_free;
+ 	}
+ 
++	if (tbl_rev > 1) {
++		ret = -EINVAL;
++		goto out_free;
++	}
++
+ 	fwrt->geo_rev = tbl_rev;
+ 	for (i = 0; i < ACPI_NUM_GEO_PROFILES; i++) {
+ 		for (j = 0; j < ACPI_GEO_TABLE_SIZE; j++) {
 -- 
 2.30.0
 
