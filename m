@@ -2,115 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA90317233
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Feb 2021 22:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E90883174C0
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Feb 2021 00:52:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232658AbhBJVVv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Feb 2021 16:21:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45726 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232578AbhBJVVu (ORCPT
+        id S233948AbhBJXvg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Feb 2021 18:51:36 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:45464 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234118AbhBJXvc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Feb 2021 16:21:50 -0500
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27ADCC0613D6
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Feb 2021 13:21:10 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id k25so3692561oik.13
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Feb 2021 13:21:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ip1AHGKwKY2VNyKo96TDsETMQmOB/EbZSzj9oNoDO2U=;
-        b=NWB5+chUooMs3Trh8sFoEbpC18itlf2XkqapW5z3nrQz7shRIGfGWseyQcnnL4V85x
-         HEpqNisHFxn8XKsIDQ144kk61XB2k82rqs9qxy63/SOGXYSfKhqht1LTRZJBKORiMt+t
-         +sHQua3NFMbahX/45R5RmXGkcX/rKvYPvc5E8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ip1AHGKwKY2VNyKo96TDsETMQmOB/EbZSzj9oNoDO2U=;
-        b=KvRLDrgGEzY121xxAIxa/oJxpVRZNI+358J5IIk1nQfK976vDr/zHfCnfzXmZGia7Z
-         3H3277ye9lDg/XttvO/D0UcOIAs/gonBaNM93jd0PQFfSYUKPdIiwsL/zRcf4ssAzhjo
-         kLkCTqUtvfsCMTQEUS1TO1vBJcQeq5ktjlkX6m2pEG6T/FNc98PCJ/LiQCUTW5G0HR7d
-         p4cuZam2rDDieH4EG+wMEIc+fqt5GLmv+BuCqsX/JB1GaM4PsXxxEIXq/Gm2PhhTsnLw
-         exMosMKRTSX5WsSEr3XGW7yGWtFIz9cY+xQYLWu2YN5DVGPiMAdwXFgMSaJThbhRlLVL
-         uLlQ==
-X-Gm-Message-State: AOAM531xOr/afcbcCmO8+OgkQR8kVa6BEX2+lH4eGlRrLF973wxiUbLS
-        4NCAjg07vSDbifE+2931qs84wA==
-X-Google-Smtp-Source: ABdhPJxrT8FYtLTqI2w9XouF8Nl/Ld4dzKncBZAgYE5/OdBRp3ZyZcfZDRKJ9fkokKBDb8panqyRpA==
-X-Received: by 2002:aca:af91:: with SMTP id y139mr718825oie.88.1612992069497;
-        Wed, 10 Feb 2021 13:21:09 -0800 (PST)
-Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id l4sm597454oou.8.2021.02.10.13.21.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Feb 2021 13:21:09 -0800 (PST)
-From:   Shuah Khan <skhan@linuxfoundation.org>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     Shuah Khan <skhan@linuxfoundation.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ath10k: hold RCU lock when calling ieee80211_find_sta_by_ifaddr()
-Date:   Wed, 10 Feb 2021 14:21:07 -0700
-Message-Id: <20210210212107.40373-1-skhan@linuxfoundation.org>
-X-Mailer: git-send-email 2.27.0
+        Wed, 10 Feb 2021 18:51:32 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1l9zFq-004ACH-Me; Thu, 11 Feb 2021 01:50:43 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 11 Feb 2021 01:50:41 +0200
+Message-Id: <iwlwifi.20210211015026.289084803334.Ie234805047df3be84f4235f9dafaf4cdecf0db9a@changeid>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH v2] iwlwifi: pnvm: implement reading PNVM from UEFI
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_find_sta_by_ifaddr() must be called under the RCU lock and
-the resulting pointer is only valid under RCU lock as well.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Fix ath10k_wmi_tlv_op_pull_peer_stats_info() to hold RCU lock before it
-calls ieee80211_find_sta_by_ifaddr() and release it when the resulting
-pointer is no longer needed.
+We now support fetching the PNVM data from a UEFI variable.  Add the
+code to read this variable first and use it.  If it's not available,
+we fall back to reading the data from the filesystem, as before.
 
-This problem was found while reviewing code to debug RCU warn from
-ath10k_wmi_tlv_parse_peer_stats_info().
-
-Link: https://lore.kernel.org/linux-wireless/7230c9e5-2632-b77e-c4f9-10eca557a5bb@linuxfoundation.org/
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
-Changes since v1:
-- v1 also included fix to ath10k_wmi_tlv_parse_peer_stats_info()
-  RCU wrn which was already fixed. v2 drops that and fixes just
-  ath10k_wmi_event_tdls_peer()
- 
- drivers/net/wireless/ath/ath10k/wmi-tlv.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 91 +++++++++++++++++++-
+ 1 file changed, 90 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index bfdd017f1405..d97b33f789e4 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -576,13 +576,13 @@ static void ath10k_wmi_event_tdls_peer(struct ath10k *ar, struct sk_buff *skb)
- 	case WMI_TDLS_TEARDOWN_REASON_TX:
- 	case WMI_TDLS_TEARDOWN_REASON_RSSI:
- 	case WMI_TDLS_TEARDOWN_REASON_PTR_TIMEOUT:
-+		rcu_read_lock();
- 		station = ieee80211_find_sta_by_ifaddr(ar->hw,
- 						       ev->peer_macaddr.addr,
- 						       NULL);
- 		if (!station) {
- 			ath10k_warn(ar, "did not find station from tdls peer event");
--			kfree(tb);
--			return;
-+			goto exit;
- 		}
- 		arvif = ath10k_get_arvif(ar, __le32_to_cpu(ev->vdev_id));
- 		ieee80211_tdls_oper_request(
-@@ -593,6 +593,9 @@ static void ath10k_wmi_event_tdls_peer(struct ath10k *ar, struct sk_buff *skb)
- 					);
- 		break;
- 	}
-+
-+exit:
-+	rcu_read_unlock();
- 	kfree(tb);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+index d515af8c1686..2cd07d2690e0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+@@ -10,6 +10,7 @@
+ #include "fw/api/commands.h"
+ #include "fw/api/nvm-reg.h"
+ #include "fw/api/alive.h"
++#include <linux/efi.h>
+ 
+ struct iwl_pnvm_section {
+ 	__le32 offset;
+@@ -219,6 +220,88 @@ static int iwl_pnvm_parse(struct iwl_trans *trans, const u8 *data,
+ 	return -ENOENT;
  }
  
++/*
++ * This is known to be broken on v4.19 and to work on v5.4.  Until we
++ * figure out why this is the case and how to make it work, simply
++ * disable the feature in old kernels.
++ */
++#if defined(CONFIG_EFI)
++
++#define IWL_EFI_VAR_GUID EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
++				  0xb2, 0xec, 0xf5, 0xa3,	\
++				  0x59, 0x4f, 0x4a, 0xea)
++
++#define IWL_UEFI_OEM_PNVM_NAME	L"UefiCnvWlanOemSignedPnvm"
++
++#define IWL_HARDCODED_PNVM_SIZE 4096
++
++struct pnvm_sku_package {
++	u8 rev;
++	u8 reserved1[3];
++	u32 total_size;
++	u8 n_skus;
++	u8 reserved2[11];
++	u8 data[];
++};
++
++static int iwl_pnvm_get_from_efi(struct iwl_trans *trans,
++				 u8 **data, size_t *len)
++{
++	struct efivar_entry *pnvm_efivar;
++	struct pnvm_sku_package *package;
++	unsigned long package_size;
++	int err;
++
++	pnvm_efivar = kzalloc(sizeof(*pnvm_efivar), GFP_KERNEL);
++	if (!pnvm_efivar)
++		return -ENOMEM;
++
++	memcpy(&pnvm_efivar->var.VariableName, IWL_UEFI_OEM_PNVM_NAME,
++	       sizeof(IWL_UEFI_OEM_PNVM_NAME));
++	pnvm_efivar->var.VendorGuid = IWL_EFI_VAR_GUID;
++
++	/*
++	 * TODO: we hardcode a maximum length here, because reading
++	 * from the UEFI is not working.  To implement this properly,
++	 * we have to call efivar_entry_size().
++	 */
++	package_size = IWL_HARDCODED_PNVM_SIZE;
++
++	package = kmalloc(package_size, GFP_KERNEL);
++	if (!package) {
++		err = -ENOMEM;
++		goto out;
++	}
++
++	err = efivar_entry_get(pnvm_efivar, NULL, &package_size, package);
++	if (err) {
++		IWL_DEBUG_FW(trans,
++			     "PNVM UEFI variable not found %d (len %zd)\n",
++			     err, package_size);
++		goto out;
++	}
++
++	IWL_DEBUG_FW(trans, "Read PNVM fro UEFI with size %zd\n", package_size);
++
++	*data = kmemdup(package->data, *len, GFP_KERNEL);
++	if (!*data)
++		err = -ENOMEM;
++	*len = package_size - sizeof(*package);
++
++out:
++	kfree(package);
++	kfree(pnvm_efivar);
++
++	return err;
++}
++#else /* CONFIG_EFI */
++static inline int iwl_pnvm_get_from_efi(struct iwl_trans *trans,
++					u8 **data, size_t *len)
++{
++	return -EOPNOTSUPP;
++}
++#endif /* CONFIG_EFI */
++
+ static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
+ {
+ 	const struct firmware *pnvm;
+@@ -277,7 +360,12 @@ int iwl_pnvm_load(struct iwl_trans *trans,
+ 		goto skip_parse;
+ 	}
+ 
+-	/* Try to load the PNVM from the filesystem */
++	/* First attempt to get the PNVM from BIOS */
++	ret = iwl_pnvm_get_from_efi(trans, &data, &len);
++	if (!ret)
++		goto parse;
++
++	/* If it's not available, try from the filesystem */
+ 	ret = iwl_pnvm_get_from_fs(trans, &data, &len);
+ 	if (ret) {
+ 		/*
+@@ -290,6 +378,7 @@ int iwl_pnvm_load(struct iwl_trans *trans,
+ 		goto skip_parse;
+ 	}
+ 
++parse:
+ 	iwl_pnvm_parse(trans, data, len);
+ 
+ 	kfree(data);
 -- 
-2.27.0
+2.30.0
 
