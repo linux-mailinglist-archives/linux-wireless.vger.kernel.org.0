@@ -2,89 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A13DA319483
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Feb 2021 21:32:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB9DF319486
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Feb 2021 21:32:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbhBKUbR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Feb 2021 15:31:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33028 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229849AbhBKUbP (ORCPT
+        id S231288AbhBKUb6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Feb 2021 15:31:58 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:45628 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231360AbhBKUbs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Feb 2021 15:31:15 -0500
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0814BC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Feb 2021 12:30:35 -0800 (PST)
-Received: by mail-ot1-x32f.google.com with SMTP id l23so6386945otn.10
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Feb 2021 12:30:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=seY9jQrIhwxdy16d00IF4zutM9CHG8sdW3Pm+wZ44qA=;
-        b=Y4djpH27l7H2T/tCMTp/6XTtHWboJMARiQ7k9nNNy/VPyFDCKbFGEHVlAK7Oxi2mRF
-         bFIWZLp37HshqadU8LjWCZHB6BKyNw2XFFC/QDwzMlH0NRrlPsb5GjvoFXH3seyoAVet
-         nl+RZ+T1murNub8nnNWWUu4tLZvQdgJa0mHgc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=seY9jQrIhwxdy16d00IF4zutM9CHG8sdW3Pm+wZ44qA=;
-        b=VYoygksb5JVfYadBzUVQIvtsR71DkuwYfmOqwz4i/4ZrECAxYAeOGqaJSlnFgdSvQW
-         oIXSyfOWj3yLplZnvEAQmzdYKbYsrKkBUOz9DP6GxnQZdt34fZ+YBwwNsPWo9CxBtDab
-         xfyJWlulEDg1OjRn679o3TOZVuGy3SOPynxaMG+ArcAphaE51k6UKGVMhyrYwIL9K8cN
-         O7vQtf26SLAzCT31DbNAi3xTNHnd3DyyfPq6q/Dr7gGTCJ9lJQhb4gc1w1hi0gbmCpsG
-         hBZuWsed4oJsWhs1Dr3IIexlVoOFObIfUu5jrnNnTjJMZOWK50kR1hND6FM2nxD4/E4r
-         +YBg==
-X-Gm-Message-State: AOAM530I1EuW/n0h6mvnrcuQVMSkJHC8K/7fkMN5V7Ui7ousVargGdlW
-        QmwcoNcKkPShT2yaiPRk40OakmJMk7l29Q==
-X-Google-Smtp-Source: ABdhPJzUMtnkYGAbmloHlXz7ETBmFCWIPALW5CylP5UN5TMcbMP/Ez/PRNTHJM28Cs98BEeA/Pe7rA==
-X-Received: by 2002:a9d:6ac3:: with SMTP id m3mr6987846otq.52.1613075433913;
-        Thu, 11 Feb 2021 12:30:33 -0800 (PST)
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com. [209.85.210.51])
-        by smtp.gmail.com with ESMTPSA id z30sm1239605otj.61.2021.02.11.12.30.32
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Feb 2021 12:30:32 -0800 (PST)
-Received: by mail-ot1-f51.google.com with SMTP id d7so6405306otq.6
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Feb 2021 12:30:32 -0800 (PST)
-X-Received: by 2002:a9d:6ac5:: with SMTP id m5mr6998379otq.365.1613075432196;
- Thu, 11 Feb 2021 12:30:32 -0800 (PST)
+        Thu, 11 Feb 2021 15:31:48 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1lAIc4-004DFW-Bn; Thu, 11 Feb 2021 22:30:56 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 11 Feb 2021 22:30:55 +0200
+Message-Id: <iwlwifi.20210211223049.40d545a0fa89.I04793aaa5312b926335c8db32131f000432df511@changeid>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-References: <20210115092405.8081-1-pkshih@realtek.com> <20210115092405.8081-4-pkshih@realtek.com>
- <CA+ASDXPtwyZMByRDaAQv9b-DEBeRgPxpDz4+mCP-zi6P_-zr7w@mail.gmail.com>
- <d84e1a2c0d8e481588eec7248abf5c1a@realtek.com> <CA+ASDXM7e4eSiJNoVMES7=mZ3M-NGpVZ9jLbjNm4yqMSYH4r+Q@mail.gmail.com>
- <e8e451faf35e47b494f6d49fe92d1858@realtek.com> <1612855085.8436.15.camel@realtek.com>
-In-Reply-To: <1612855085.8436.15.camel@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 11 Feb 2021 12:30:21 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXO6ASrx1JiNo22HkOVsECw6J9++snqeGGpUiNz3OBg+Cw@mail.gmail.com>
-Message-ID: <CA+ASDXO6ASrx1JiNo22HkOVsECw6J9++snqeGGpUiNz3OBg+Cw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/8] rtw88: add napi support
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        Bernie Huang <phhuang@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH] iwlwifi: remove incorrect comment in pnvm
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Feb 8, 2021 at 11:19 PM Pkshih <pkshih@realtek.com> wrote:
-> Then, I have another simple thinking -- enable NAPI only if interrupt is
-> enabled. Other operations with RX ring are working only if interrupt is
-> disabled. So, we don't need a lock to protect RX ring at all.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-That makes more sense; thanks for the update.
+We use this driver as a backport that also runs on older kernels (as
+part of the backports project).  So we use some checks to backport or
+prevent code from compiling in incompatible kernel version.
 
-> The irq_lock is still used to protect TX ring/queue, and now it also used
-> to protect switching IMR. Some comments are added to describe about this.
->
-> Above is implemented in v5.
+When I took one of the PNVM patches from the backport, I accidentally
+left the comment that a certain part of the code doesn't work in older
+kernels.  This obviously should never be valid for the mainline.
+Remove this comment.
 
-I've taken a brief look, and that looks better. I'll likely provide my
-Reviewed-by there.
+Reported-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Thanks,
-Brian
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+index 2cd07d2690e0..fd070ca5e517 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+@@ -220,11 +220,6 @@ static int iwl_pnvm_parse(struct iwl_trans *trans, const u8 *data,
+ 	return -ENOENT;
+ }
+ 
+-/*
+- * This is known to be broken on v4.19 and to work on v5.4.  Until we
+- * figure out why this is the case and how to make it work, simply
+- * disable the feature in old kernels.
+- */
+ #if defined(CONFIG_EFI)
+ 
+ #define IWL_EFI_VAR_GUID EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
+-- 
+2.30.0
+
