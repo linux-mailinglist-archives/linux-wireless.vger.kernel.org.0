@@ -2,108 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2098A3186AD
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Feb 2021 10:16:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A595C3186EF
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Feb 2021 10:22:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbhBKJDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Feb 2021 04:03:38 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40688 "EHLO mail.kernel.org"
+        id S230019AbhBKJTk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Feb 2021 04:19:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41372 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229674AbhBKJCJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Feb 2021 04:02:09 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4034361493;
-        Thu, 11 Feb 2021 09:01:28 +0000 (UTC)
+        id S230097AbhBKJM3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 11 Feb 2021 04:12:29 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8AE7260230;
+        Thu, 11 Feb 2021 09:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613034088;
-        bh=MI4GYWPIWY+Zo+3Vcbn2NZOTHyDJviJuOQCLUENsNaU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XhMmg385YljefngT4REeoAxmYkaqRvrvK979A0MYtA6H2V0oPPoKbk/8GGo5H+6Do
-         Wd9f1eb8l00beJviYdTJwrVlWtesAQ/lrzNqDR7QHffNAPJvGuDLb35x57AzoSneX3
-         Lt23Le2gDgaknHctGE5+fkxF9X6Lg5+4ZkiRebme2vJl/M++l1OP+og5m1nDpa/bg/
-         jQ/pecH81iUWfxgwdHK82RRkIaM83ITJUIhhFDigaKgIU5W8JfyQacK/qmoPL7gyUI
-         is+fz4PDdb7Uaw09ChU7glUn7LkzjEkEUPBGo27RPhXctCFvnBEcQ6oGWDHYMn3KGa
-         yp44jzee9U3Qw==
-Date:   Thu, 11 Feb 2021 10:01:23 +0100
+        s=k20201202; t=1613034704;
+        bh=KSkB8+5Av7i//eI1gaHzYK/t/JWChGWDMMfyA8oqHI4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=M/OnrVcy65DK05CmLLr8EY7nh99eDiPg6Av64JnjYq6c3LY6XV6u2k1hK6trxOrZO
+         MfxZS7qsrbDLS4p0PPO5h8eQ0bjTuJfP6a7ZhlI6BXvtAXCvh6EoVGxCzuLRu8tKXY
+         86ZAgwB2uMG6SFfprIYesI6HZH5GMOUfTN83aCmrzhTCKwFyVP3hpTUBFqAA7mCa1n
+         qeWVuFuq7xNTUovx8YTrRenTSUqaP/tWIndpqiSeDJWDaGcTMJ5ynVZKPnoxCoxWgG
+         xKrXDEPI+Z4FlEKD5wMshIHvRRJvlkNU5l2EYcEhiyNtOdBbDn2Hk3K7NjvlqdhTGm
+         kp5NctDg8rM1g==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     shayne.chen@mediatek.com, linux-wireless@vger.kernel.org
-Subject: Re: [bug report] mt76: mt7915: add support for continuous tx in
- testmode
-Message-ID: <YCTyY2GProMYGluQ@lore-desk>
-References: <YCO+SaK0nJvCG5J5@mwanda>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, shayne.chen@mediatek.com,
+        dan.carpenter@oracle.com, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: mt7915: fix uninitialized variable in mt7915_tm_set_tx_cont()
+Date:   Thu, 11 Feb 2021 10:11:29 +0100
+Message-Id: <44ad7cca29f159aa2ae721b8f7a2d1b5ab540b31.1613034563.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="1BCbwhKgNRkdwKLM"
-Content-Disposition: inline
-In-Reply-To: <YCO+SaK0nJvCG5J5@mwanda>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Set MT_PHY_TYPE_OFDM as default value for mode variable in
+mt7915_tm_set_tx_cont routine in order to proper initialize it even
+for default case.
 
---1BCbwhKgNRkdwKLM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 3f0caa3cbf94: "mt76: mt7915: add support for continuous tx in testmode"
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/testmode.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> Hello Shayne Chen,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+index 7fb2170a9561..a76af0701179 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+@@ -569,9 +569,6 @@ mt7915_tm_set_tx_cont(struct mt7915_phy *phy, bool en)
+ 	case MT76_TM_TX_MODE_CCK:
+ 		mode = MT_PHY_TYPE_CCK;
+ 		break;
+-	case MT76_TM_TX_MODE_OFDM:
+-		mode = MT_PHY_TYPE_OFDM;
+-		break;
+ 	case MT76_TM_TX_MODE_HT:
+ 		mode = MT_PHY_TYPE_HT;
+ 		break;
+@@ -590,7 +587,9 @@ mt7915_tm_set_tx_cont(struct mt7915_phy *phy, bool en)
+ 	case MT76_TM_TX_MODE_HE_MU:
+ 		mode = MT_PHY_TYPE_HE_MU;
+ 		break;
++	case MT76_TM_TX_MODE_OFDM:
+ 	default:
++		mode = MT_PHY_TYPE_OFDM;
+ 		break;
+ 	}
+ 
+-- 
+2.29.2
 
-Hi Dan,
-
-right. I will post a fix soon.
-
-Regards,
-Lorenzo
-
->=20
-> The patch 3f0caa3cbf94: "mt76: mt7915: add support for continuous tx
-> in testmode" from Jan 5, 2021, leads to the following static checker
-> warning:
->=20
-> 	drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:597 mt7915_tm_set_t=
-x_cont()
-> 	error: uninitialized symbol 'mode'.
->=20
-> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
->    583                  break;
->    584          case MT76_TM_TX_MODE_HE_EXT_SU:
->    585                  mode =3D MT_PHY_TYPE_HE_EXT_SU;
->    586                  break;
->    587          case MT76_TM_TX_MODE_HE_TB:
->    588                  mode =3D MT_PHY_TYPE_HE_TB;
->    589                  break;
->    590          case MT76_TM_TX_MODE_HE_MU:
->    591                  mode =3D MT_PHY_TYPE_HE_MU;
->    592                  break;
->    593          default:
->=20
-> "mode" is uninitialized on the default path.
->=20
->    594                  break;
->    595          }
->    596 =20
->    597          rateval =3D  mode << 6 | rate_idx;
->                            ^^^^^^^^^
->=20
->    598          tx_cont->rateval =3D cpu_to_le16(rateval);
->    599 =20
->    600  out:
->    601          if (!en) {
->    602                  int ret;
->    603 =20
->=20
-> regards,
-> dan carpenter
-
---1BCbwhKgNRkdwKLM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYCTyYQAKCRA6cBh0uS2t
-rCcxAQCt+xkfnkzgvyjjua9lInDh8GXtlPwbMHlCDzWZi1CsywEA8+FAisPEXzO/
-xJjYgFB+3TiEfV4a/QYKU9NJHeT+8AU=
-=kHpH
------END PGP SIGNATURE-----
-
---1BCbwhKgNRkdwKLM--
