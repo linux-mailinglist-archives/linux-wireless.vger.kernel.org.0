@@ -2,124 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F299319842
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Feb 2021 03:15:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0A63198EC
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Feb 2021 04:46:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbhBLCOj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Feb 2021 21:14:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50216 "EHLO
+        id S229499AbhBLDpj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Feb 2021 22:45:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229710AbhBLCOe (ORCPT
+        with ESMTP id S229493AbhBLDpi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Feb 2021 21:14:34 -0500
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 417ECC061797
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Feb 2021 18:13:17 -0800 (PST)
-Received: by mail-io1-xd29.google.com with SMTP id s24so7850986iob.6
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Feb 2021 18:13:17 -0800 (PST)
+        Thu, 11 Feb 2021 22:45:38 -0500
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FEEDC061574
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Feb 2021 19:44:58 -0800 (PST)
+Received: by mail-ot1-x331.google.com with SMTP id k10so7287906otl.2
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Feb 2021 19:44:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=b//uXdEXn/IbyWUN9jECjkifnnE9MDyqXLg0odI7qQ8=;
-        b=eXyRVsRfEN70euVgiAtmESC4LEMBc5UdUY6dgr3lsi5tPhEcUNuJKHboVU/N4Z265E
-         g2OYFrPAw/oLLZRyqHCo//ujRwPC/5I0w7ywJ0ZJqi9IrwIo7aFiqcZrgyncJHuYJizB
-         rXHnCfSBrNh4n6qGKt2bOvDMi0tLR4BhXM5w0=
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=x4SDy/3FUZQaQWYaudQGkVl4Fs4MFq5b1IZKtVmijUM=;
+        b=ei+BFKKaLh6pNi9JSxtd8Tmd06eM+Hpa3ndQ3I73D4xZG2qKWiLSQGGyv1c2cQfbIX
+         piRwV3aUseMXN3EZM05LlmpDmuPqj37/AADgophw7MD7GG4Z84in5XkhTZx2mh1ZUQHl
+         hP6mtQ9dbXVWcvP3cK56EupTnSscpZDZ4hqBg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=b//uXdEXn/IbyWUN9jECjkifnnE9MDyqXLg0odI7qQ8=;
-        b=BRfq5HK7TASW8kT5jcMcHIUMCwVPm26QnDo8PEhxubE+jycXXgBy6w5MDUfPL41oYM
-         hcmqdkIGoN2928XW+BZh7W9emWlK3rfsST4gzkkDBcjcD0+KL98pNMq213mYM8IfqBhf
-         +MsYWtfNAsM1ZRrzH7+8/GPSi2OcZMG0cp7kN9XPv0iDcUVQB/20q/1tWiTItIYYDPxh
-         vScQOQEJm7dR5wHkZcRLCB1yQntHKVZBCyfIzPwjx5s1b+QIBKqDmT0vxg5czsWj6Zqa
-         Q9Jqgn35JAwWyFikgkpo3/8dy+VkxCkRCmdAacnKyRUUYmSnsleGMUS8BN8kqoHgbK63
-         hPUw==
-X-Gm-Message-State: AOAM530brI1OvHD5GUs20ba1B75NrjW6mJ6HiX/y6GmB3JEly4uS21uy
-        a2k7XyU7Gxkpjq+smnigQ4DHhA==
-X-Google-Smtp-Source: ABdhPJx/RCdCsRX+e5oooz5vMln7HcisejHBH5jilCl4mDg+LF74Is7NKrlK5kw310Vr5GykMGekEA==
-X-Received: by 2002:a6b:5a0f:: with SMTP id o15mr506350iob.49.1613095996797;
-        Thu, 11 Feb 2021 18:13:16 -0800 (PST)
-Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id c2sm3480594ilk.32.2021.02.11.18.13.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Feb 2021 18:13:16 -0800 (PST)
-From:   Shuah Khan <skhan@linuxfoundation.org>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     Shuah Khan <skhan@linuxfoundation.org>,
-        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ath9k: fix ath_tx_process_buffer() potential null ptr dereference
-Date:   Thu, 11 Feb 2021 19:13:08 -0700
-Message-Id: <43ed9abb9e8d7112f3cc168c2f8c489e253635ba.1613090339.git.skhan@linuxfoundation.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1613090339.git.skhan@linuxfoundation.org>
-References: <cover.1613090339.git.skhan@linuxfoundation.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=x4SDy/3FUZQaQWYaudQGkVl4Fs4MFq5b1IZKtVmijUM=;
+        b=iMLNT9vQRFZDp7JhrhQKj5jF6FS6w2y2p0NFwO9TsaK/Fpg8baPxW0bIJqmPV1Q2I+
+         n4nZkazRRszDioZpcQMj6FR+JEWoDoiX4xfhu64oVUdTdTtEfHpmhp791fnIy2ggcGcY
+         hyeqhpv/+sm+04uHvCUf/oBNiklZe2VVXWAViFTSEgcy8ijHOab1ryIhr6PS5aKn8Ybg
+         c3ebIMXI4RlxU1eEXIGeWzsUwQzenJuq7V0ff4ictyNFGZftUuQAzG8KirqsDb3NfxPf
+         BsUC+UP8RofH2x4bu8osFP/zicxxacIJOjhSYntAUks2bwFU6+DBhA3WWwtIPszfL1Q0
+         7FoQ==
+X-Gm-Message-State: AOAM531HXGXhXUJDUL56yv2fV8cWBRm6G9vWIA5ZfcJF0EmKiZwv09Mz
+        u8Pz54+ctQ43ijDtcdXYyE9Pl4IKKUgq8g==
+X-Google-Smtp-Source: ABdhPJzo+NqmTPDA29vbMpOpmjs2lWCIem7FoByBfDV4/9llKQ7QAp4SbN7RQUNG4SgHG2t15CzyaQ==
+X-Received: by 2002:a05:6830:1f4e:: with SMTP id u14mr761534oth.65.1613101497093;
+        Thu, 11 Feb 2021 19:44:57 -0800 (PST)
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com. [209.85.210.51])
+        by smtp.gmail.com with ESMTPSA id l133sm1572126oia.37.2021.02.11.19.44.56
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Feb 2021 19:44:56 -0800 (PST)
+Received: by mail-ot1-f51.google.com with SMTP id l23so7251306otn.10
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Feb 2021 19:44:56 -0800 (PST)
+X-Received: by 2002:a9d:3d76:: with SMTP id a109mr767748otc.203.1613101495918;
+ Thu, 11 Feb 2021 19:44:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210209070755.23019-1-pkshih@realtek.com> <20210209070755.23019-4-pkshih@realtek.com>
+In-Reply-To: <20210209070755.23019-4-pkshih@realtek.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 11 Feb 2021 19:44:43 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXN_TgaHvbthz-SqHdjrmRHVpEag9+sQWkGcivNFv94GAA@mail.gmail.com>
+Message-ID: <CA+ASDXN_TgaHvbthz-SqHdjrmRHVpEag9+sQWkGcivNFv94GAA@mail.gmail.com>
+Subject: Re: [PATCH v5 3/8] rtw88: add napi support
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Bernie Huang <phhuang@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath_tx_process_buffer() references ieee80211_find_sta_by_ifaddr()
-return pointer (sta) outside null check. Fix it by moving the code
-block under the null check.
+On Mon, Feb 8, 2021 at 11:11 PM Ping-Ke Shih <pkshih@realtek.com> wrote:
+>
+> From: Po-Hao Huang <phhuang@realtek.com>
+>
+> Use napi to reduce overhead on rx interrupts.
+>
+> Driver used to interrupt kernel for every Rx packet, this could
+> affect both system and network performance. NAPI is a mechanism that
+> uses polling when processing huge amount of traffic, by doing this
+> the number of interrupts can be decreased.
+>
+> Network performance can also benefit from this patch. Since TCP
+> connection is bidirectional and acks are required for every several
+> packets. These ack packets occupie the PCI bus bandwidth and could
+> lead to performance degradation.
+>
+> When napi is used, GRO receive is enabled by default in the mac80211
+> stack. So mac80211 won't pass every RX TCP packets to the kernel TCP
+> network stack immediately. Instead an aggregated large length TCP packet
+> will be delivered.
+>
+> This reduces the tx acks sent and gains rx performance. After the patch,
+> the Rx throughput increases about 25Mbps in 11ac.
+>
+> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-This problem was found while reviewing code to debug RCU warn from
-ath10k_wmi_tlv_parse_peer_stats_info() and a subsequent manual audit
-of other callers of ieee80211_find_sta_by_ifaddr() that don't hold
-RCU read lock.
+I think this version handles my review comments and straightens up the
+locking situation:
 
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
----
-- Note: This patch is compile tested. I don't have access to
-  hardware.
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Tested-by: Brian Norris <briannorris@chromium.org>
 
- drivers/net/wireless/ath/ath9k/xmit.c | 28 +++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index 1d36aae3f7b6..735858144e3a 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -711,20 +711,24 @@ static void ath_tx_process_buffer(struct ath_softc *sc, struct ath_txq *txq,
- 		ath_tx_count_airtime(sc, sta, bf, ts, tid->tidno);
- 		if (ts->ts_status & (ATH9K_TXERR_FILT | ATH9K_TXERR_XRETRY))
- 			tid->clear_ps_filter = true;
--	}
- 
--	if (!bf_isampdu(bf)) {
--		if (!flush) {
--			info = IEEE80211_SKB_CB(bf->bf_mpdu);
--			memcpy(info->control.rates, bf->rates,
--			       sizeof(info->control.rates));
--			ath_tx_rc_status(sc, bf, ts, 1, txok ? 0 : 1, txok);
--			ath_dynack_sample_tx_ts(sc->sc_ah, bf->bf_mpdu, ts,
--						sta);
-+		if (!bf_isampdu(bf)) {
-+			if (!flush) {
-+				info = IEEE80211_SKB_CB(bf->bf_mpdu);
-+				memcpy(info->control.rates, bf->rates,
-+				       sizeof(info->control.rates));
-+				ath_tx_rc_status(sc, bf, ts, 1,
-+						 txok ? 0 : 1, txok);
-+				ath_dynack_sample_tx_ts(sc->sc_ah,
-+							bf->bf_mpdu, ts, sta);
-+			}
-+			ath_tx_complete_buf(sc, bf, txq, bf_head, sta,
-+					    ts, txok);
-+		} else {
-+			ath_tx_complete_aggr(sc, txq, bf, bf_head, sta,
-+					     tid, ts, txok);
- 		}
--		ath_tx_complete_buf(sc, bf, txq, bf_head, sta, ts, txok);
--	} else
--		ath_tx_complete_aggr(sc, txq, bf, bf_head, sta, tid, ts, txok);
-+	}
- 
- 	if (!flush)
- 		ath_txq_schedule(sc, txq);
--- 
-2.27.0
-
+Thanks.
