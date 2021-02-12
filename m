@@ -2,76 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B69F3199BB
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Feb 2021 06:39:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FFB93199DF
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Feb 2021 07:13:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbhBLFhh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Feb 2021 00:37:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37012 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbhBLFhh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Feb 2021 00:37:37 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26425C061574;
-        Thu, 11 Feb 2021 21:36:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=IrIGGg1sQ0NzZ4N2HMEewDUIFN5I3hxmFeu/bsPG8go=; b=hRoL8HWatqx5zH5SPjceLEYXES
-        J6w7esRc5f2yF/oZQdxX7QVK+3IgqtYpRUWhd9DHQTk0mSMklrWLNXPoDtzY8RVE5U8bk6IYRLz5i
-        hnx+WQteK7BK9N5aTYOHiMA1WqqIxt+6OZElBFNwTJ0mB+h8KqAq2sqQZpyHOPEPgmMI=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lAR8N-0003rX-I8; Fri, 12 Feb 2021 06:36:51 +0100
-Subject: Re: [PATCH] mt76: hold RCU lock when calling
- ieee80211_find_sta_by_ifaddr()
-To:     Shuah Khan <skhan@linuxfoundation.org>,
-        lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1613090339.git.skhan@linuxfoundation.org>
- <1cfa036227cfa9fdd04316c01e1d754f13a70d9e.1613090339.git.skhan@linuxfoundation.org>
- <20210212021312.40486-1-skhan@linuxfoundation.org>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <3949e1fc-c050-73e0-d02f-63a25c4821ef@nbd.name>
-Date:   Fri, 12 Feb 2021 06:36:26 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.0
+        id S229706AbhBLGMy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Feb 2021 01:12:54 -0500
+Received: from so15.mailgun.net ([198.61.254.15]:38191 "EHLO so15.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229701AbhBLGMr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 12 Feb 2021 01:12:47 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1613110349; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=NS+j9B8F4UbvzG79z6s402dP/vEhbKM4061Z8Tc+74w=; b=oglDq3B3eyCLPtqwUuGpGdUHBGAV+7kUcW5xA0Drxh/6fJ55hlLtc0Di6iIJi4M3sFKBUwep
+ PBOnfEjyUs+sPGoiTz/JtEfkwHCLL7S9+zaw1mzaaSAyrH7b/9TiGsLza5IGuAJPvVGrBMzM
+ TqLqoH6r7jat8uBchjmcEkrvZ0U=
+X-Mailgun-Sending-Ip: 198.61.254.15
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 60261c2be4842e91289980e1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 12 Feb 2021 06:11:55
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1D3CAC433ED; Fri, 12 Feb 2021 06:11:55 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 74E4FC433CA;
+        Fri, 12 Feb 2021 06:11:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 74E4FC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: remove incorrect comment in pnvm
+References: <iwlwifi.20210211223049.40d545a0fa89.I04793aaa5312b926335c8db32131f000432df511@changeid>
+Date:   Fri, 12 Feb 2021 08:11:51 +0200
+In-Reply-To: <iwlwifi.20210211223049.40d545a0fa89.I04793aaa5312b926335c8db32131f000432df511@changeid>
+        (Luca Coelho's message of "Thu, 11 Feb 2021 22:30:55 +0200")
+Message-ID: <87o8gpstlk.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20210212021312.40486-1-skhan@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Luca Coelho <luca@coelho.fi> writes:
 
-On 2021-02-12 03:13, Shuah Khan wrote:
-> ieee80211_find_sta_by_ifaddr() must be called under the RCU lock and
-> the resulting pointer is only valid under RCU lock as well.
-> 
-> Fix mt76_check_sta() to hold RCU read lock before it calls
-> ieee80211_find_sta_by_ifaddr() and release it when the resulting
-> pointer is no longer needed.
-> 
-> This problem was found while reviewing code to debug RCU warn from
-> ath10k_wmi_tlv_parse_peer_stats_info() and a subsequent manual audit
-> of other callers of ieee80211_find_sta_by_ifaddr() that don't hold
-> RCU read lock.
-> 
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-If I'm not mistaken, this patch is unnecessary. mt76_check_sta is only
-called from mt76_rx_poll_complete, which itself is only called under RCU
-lock.
+> From: Luca Coelho <luciano.coelho@intel.com>
+>
+> We use this driver as a backport that also runs on older kernels (as
+> part of the backports project).  So we use some checks to backport or
+> prevent code from compiling in incompatible kernel version.
+>
+> When I took one of the PNVM patches from the backport, I accidentally
+> left the comment that a certain part of the code doesn't work in older
+> kernels.  This obviously should never be valid for the mainline.
+> Remove this comment.
+>
+> Reported-by: Kalle Valo <kvalo@codeaurora.org>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-- Felix
+Thanks, I assigned this to myself on patchwork and apply directly to
+wireless-drivers-next.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
