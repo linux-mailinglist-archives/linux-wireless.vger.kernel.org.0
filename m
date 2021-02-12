@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C60B31A858
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6D431A857
 	for <lists+linux-wireless@lfdr.de>; Sat, 13 Feb 2021 00:30:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232255AbhBLXaV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Feb 2021 18:30:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40698 "EHLO
+        id S232228AbhBLXaT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Feb 2021 18:30:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232210AbhBLXaO (ORCPT
+        with ESMTP id S231809AbhBLXaO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 12 Feb 2021 18:30:14 -0500
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B80C06178A
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Feb 2021 15:28:50 -0800 (PST)
-Received: by mail-il1-x12d.google.com with SMTP id e1so759833ilu.0
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Feb 2021 15:28:50 -0800 (PST)
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E741C061793
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Feb 2021 15:28:51 -0800 (PST)
+Received: by mail-io1-xd2a.google.com with SMTP id n201so880987iod.12
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Feb 2021 15:28:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=1wSxvbwUEoDssegEiDIXApZTFvBALKvAL8rqFJ8yZX4=;
-        b=DFRS+WXDEc4iZ1ShbpQsHajWLBQKVvhfTN3u7g1O6dJyUV896yDZDOQmFgj9e+KLLS
-         34AzYt97lc7Q2hdk4LuOMiCliCRp9ErMbytM4JhkKn2DVY3puRy23XwIdfvFzPlnGIZw
-         vCB8+jHiHVwhkDw6Zkvtt0NYFMf1SYbPk5+04=
+        bh=8w8XQdxn9R0vTUUYKwbH7//7X6JrjWFRUImHZ2qHCEA=;
+        b=MsK4Yp5tiWM/fulpatrxLLYBqeCGXaamHRMCb6oq63sXWcNUVVP2iuH/EpRTU/P71N
+         U5wVLxv4rRqyBLWYgo0h0gt5H8QyMeMDAyvdeKpgYBwlKGWxkRM7vtC8dzVJXzNqIv/F
+         go9UPLuCyA4cdM5ZZwhtXWdBYV1CGlDpw4UV8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=1wSxvbwUEoDssegEiDIXApZTFvBALKvAL8rqFJ8yZX4=;
-        b=fvqHYLvb0xhSxdxfNoZBjwFOFcv6OhrPoparnrPrNmQvluzk0cf59nb9jEbZzM4CW8
-         kNaPV+uYUj5fAH+gL32mmmXr/so85YN+anKxsghh42hRUyyeJ0hMl/rLe/pURwzDel0k
-         xUH58tZYhyA1pqVi3bt826ahKb366Z/ymsDiLqCATUkRBn2RPo78u1kKtjM2LKdk1e8N
-         KTbwkLUjmLPxFnX+LDmbJFRXSYOBwvhWL0W/Bm6/C24/Y8JTYaA+j6OCGOmYfoOoaotW
-         PeESqSOmQbOnqjMcy/0SBDTnjZmAFoMGFlShz9fzHz3uj9FaUtBo7vcmPnj0ZzBUi3q3
-         r9pw==
-X-Gm-Message-State: AOAM532hyWUS6k3M3dVN5EiCKlVU/oK9PKjdiyoKXNQoQDbTBPIgccSt
-        G3kowWbhY+pthcF5rv8oKbQzcw==
-X-Google-Smtp-Source: ABdhPJxRKCYNptgNLxveP5apbElOd/18CigXfgCySvTQBKH9f6qS/GXTzMlOyyP5wPkJP62xH336qw==
-X-Received: by 2002:a05:6e02:4c9:: with SMTP id f9mr4232513ils.186.1613172528970;
-        Fri, 12 Feb 2021 15:28:48 -0800 (PST)
+        bh=8w8XQdxn9R0vTUUYKwbH7//7X6JrjWFRUImHZ2qHCEA=;
+        b=KGl/B2lFW0aeo6cKmtyeS6SLio6M8FpcHCPdhGWUv7imhFky9+zS6xpySU1NHE3wIw
+         rC0K/CzxeGZtaTTIekkVxeVU8O+G0WCbCwx4mdvoqAByf3T2TSN202n7apzq0MMdkRmy
+         58Cjkj4GD3kz4f4PvRW9AbvE7RnYeGln7ycHFWN7dFebi/2x/ajivioHMnszWDeQmI+V
+         vRbpizAiqUo8RlJRhNZNZbLD1PqIWeJcjFrBQlV4nSkLH4c83IBpzES2YFD7x9d/yjbS
+         MIrDZdFkgNDfiBwlPz8JhiP89wdo9G/+u2LhxiXcoONfjP9uh/jzAT96B+g4UIvQSrQ2
+         DUJQ==
+X-Gm-Message-State: AOAM531xj8b0ydgqRLmJSWinF3STesTCzsY2q6derEmxaBH2JbQx2Inh
+        1QNBVYlEn+NZspXl2TatX9Csug==
+X-Google-Smtp-Source: ABdhPJyflu0RNWiIV3nbQa149G0hby7tBp9QoVfXWvAf6vhrbVm0ZDp9jsGcpqvP08a3LAahnffRrg==
+X-Received: by 2002:a05:6638:3c6:: with SMTP id r6mr4761929jaq.115.1613172530821;
+        Fri, 12 Feb 2021 15:28:50 -0800 (PST)
 Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id i20sm5180328ilc.2.2021.02.12.15.28.48
+        by smtp.gmail.com with ESMTPSA id i20sm5180328ilc.2.2021.02.12.15.28.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Feb 2021 15:28:48 -0800 (PST)
+        Fri, 12 Feb 2021 15:28:50 -0800 (PST)
 From:   Shuah Khan <skhan@linuxfoundation.org>
 To:     peterz@infradead.org, mingo@redhat.com, will@kernel.org,
         kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     Shuah Khan <skhan@linuxfoundation.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] lockdep: add lockdep_assert_not_held()
-Date:   Fri, 12 Feb 2021 16:28:42 -0700
-Message-Id: <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
+Subject: [PATCH 2/2] ath10k: detect conf_mutex held ath10k_drain_tx() calls
+Date:   Fri, 12 Feb 2021 16:28:43 -0700
+Message-Id: <0686097db95ae32ce6805e5163798d912b394f37.1613171185.git.skhan@linuxfoundation.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <cover.1613171185.git.skhan@linuxfoundation.org>
 References: <cover.1613171185.git.skhan@linuxfoundation.org>
@@ -63,55 +63,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some kernel functions must not be called holding a specific lock. Doing
-so could lead to locking problems. Currently these routines call
-lock_is_held() to check for lock hold followed by WARN_ON.
+ath10k_drain_tx() must not be called with conf_mutex held as workers can
+use that also. Add call to lockdep_assert_not_held() on conf_mutex to
+detect if conf_mutex is held by the caller.
 
-Adding a common lockdep interface will help reduce the duplication of this
-logic in the rest of the kernel.
+The idea for this patch stemmed from coming across the comment block
+above the ath10k_drain_tx() while reviewing the conf_mutex holds during
+to debug the conf_mutex lock assert in ath10k_debug_fw_stats_request().
 
-Add lockdep_assert_not_held() to be used in these functions to detect
-incorrect calls while holding a lock.
-
-lockdep_assert_not_held() provides the opposite functionality of
-lockdep_assert_held() which is used to assert calls that require
-holding a specific lock.
-
-The need for lockdep_assert_not_held() came up in a discussion on
-ath10k patch. ath10k_drain_tx() and i915_vma_pin_ww() are examples
-of functions that can use lockdep_assert_not_held().
+Adding detection to assert on conf_mutex hold will help detect incorrect
+usages that could lead to locking problems when async worker routines try
+to call this routine.
 
 Link: https://lore.kernel.org/linux-wireless/871rdmu9z9.fsf@codeaurora.org/
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 ---
- include/linux/lockdep.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index b9e9adec73e8..567e3a1a27ce 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -294,6 +294,10 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
- 
- #define lockdep_depth(tsk)	(debug_locks ? (tsk)->lockdep_depth : 0)
- 
-+#define lockdep_assert_not_held(l)	do {			\
-+		WARN_ON(debug_locks && lockdep_is_held(l));	\
-+	} while (0)
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index c202b167d8c6..7de05b679ad2 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -4728,6 +4728,8 @@ static void ath10k_mac_op_wake_tx_queue(struct ieee80211_hw *hw,
+ /* Must not be called with conf_mutex held as workers can use that also. */
+ void ath10k_drain_tx(struct ath10k *ar)
+ {
++	lockdep_assert_not_held(&ar->conf_mutex);
 +
- #define lockdep_assert_held(l)	do {				\
- 		WARN_ON(debug_locks && !lockdep_is_held(l));	\
- 	} while (0)
-@@ -383,8 +387,9 @@ extern int lock_is_held(const void *);
- extern int lockdep_is_held(const void *);
- #define lockdep_is_held_type(l, r)		(1)
- 
-+#define lockdep_assert_not_held(l)		do { (void)(l); } while (0)
- #define lockdep_assert_held(l)			do { (void)(l); } while (0)
--#define lockdep_assert_held_write(l)	do { (void)(l); } while (0)
-+#define lockdep_assert_held_write(l)		do { (void)(l); } while (0)
- #define lockdep_assert_held_read(l)		do { (void)(l); } while (0)
- #define lockdep_assert_held_once(l)		do { (void)(l); } while (0)
+ 	/* make sure rcu-protected mac80211 tx path itself is drained */
+ 	synchronize_net();
  
 -- 
 2.27.0
