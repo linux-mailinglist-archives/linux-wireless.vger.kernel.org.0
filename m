@@ -2,67 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C638319C85
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Feb 2021 11:19:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E18319C99
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Feb 2021 11:27:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230482AbhBLKTF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Feb 2021 05:19:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40706 "EHLO
+        id S229906AbhBLKX7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Feb 2021 05:23:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230323AbhBLKSz (ORCPT
+        with ESMTP id S230396AbhBLKXs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Feb 2021 05:18:55 -0500
+        Fri, 12 Feb 2021 05:23:48 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1FFC061574;
-        Fri, 12 Feb 2021 02:18:15 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB412C0613D6
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Feb 2021 02:22:20 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1lAVWb-001nzl-Fy; Fri, 12 Feb 2021 11:18:09 +0100
-Message-ID: <0a95501d45fd23baa7ce5bab88c033380e2d095b.camel@sipsolutions.net>
-Subject: Re: Potential invalid ~ operator in net/mac80211/cfg.c
+        id 1lAVac-001o4X-Jq; Fri, 12 Feb 2021 11:22:18 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Date:   Fri, 12 Feb 2021 11:18:08 +0100
-In-Reply-To: <86c1e5aa-459d-6d76-69e4-f7bc177214bf@canonical.com>
-References: <4bb65f2f-48f9-7d9c-ab2e-15596f15a4d8@canonical.com>
-         <15f435a791b0c4b853c8c6b284042c7057d6efaf.camel@sipsolutions.net>
-         <1383c6f1-1317-daed-ecc7-e5cc3f309c41@canonical.com>
-         <86c1e5aa-459d-6d76-69e4-f7bc177214bf@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+To:     linux-wireless@vger.kernel.org
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] mac80211: fix rate mask reset
+Date:   Fri, 12 Feb 2021 11:22:14 +0100
+Message-Id: <20210212112213.36b38078f569.I8546a20c80bc1669058eb453e213630b846e107b@changeid>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-02-05 at 18:20 +0000, Colin Ian King wrote:
-> 
-> > > https://lore.kernel.org/linux-wireless/516C0C7F.3000204@openwrt.org/
-> > > 
-> > > But maybe that isn't actually quite right due to integer promotion?
-> > > OTOH, that's a u8, so it should do the ~ in u8 space, and then compare
-> > > to 0 also?
-> > 
-> > rc_rateidx_vht_mcs_mask is a u64, so I think the expression could be
-> > expressed as:
-> 
-> oops, fat fingered that, it is a u16 not a u64
+From: Johannes Berg <johannes.berg@intel.com>
 
-Right, u16, I must've looked at some ancient version or something.
+Coverity reported the strange "if (~...)" condition that's
+always true. It suggested that ! was intended instead of ~,
+but upon further analysis I'm convinced that what really was
+intended was a comparison to 0xff/0xffff (in HT/VHT cases
+respectively), since this indicates that all of the rates
+are enabled.
 
-But no, I was obviously wrong with what I said above.
+Change the comparison accordingly.
 
-So of course the condition is always true, like you said.
+I'm guessing this never really mattered because a reset to
+not having a rate mask is basically equivalent to having a
+mask that enables all rates.
 
-However, what was intended doesn't look like !, but rather == 0xff and
-== 0xffff respectively, I'll send a patch.
+Reported-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 2ffbe6d33366 ("mac80211: fix and optimize MCS mask handling")
+Fixes: b119ad6e726c ("mac80211: add rate mask logic for vht rates")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/cfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-johannes
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index c4c70e30ad7f..68a0de02b561 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2950,14 +2950,14 @@ static int ieee80211_set_bitrate_mask(struct wiphy *wiphy,
+ 			continue;
+ 
+ 		for (j = 0; j < IEEE80211_HT_MCS_MASK_LEN; j++) {
+-			if (~sdata->rc_rateidx_mcs_mask[i][j]) {
++			if (sdata->rc_rateidx_mcs_mask[i][j] != 0xff) {
+ 				sdata->rc_has_mcs_mask[i] = true;
+ 				break;
+ 			}
+ 		}
+ 
+ 		for (j = 0; j < NL80211_VHT_NSS_MAX; j++) {
+-			if (~sdata->rc_rateidx_vht_mcs_mask[i][j]) {
++			if (sdata->rc_rateidx_vht_mcs_mask[i][j] != 0xffff) {
+ 				sdata->rc_has_vht_mcs_mask[i] = true;
+ 				break;
+ 			}
+-- 
+2.26.2
 
