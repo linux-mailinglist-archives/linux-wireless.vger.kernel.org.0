@@ -2,67 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4900931B1AF
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Feb 2021 18:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8A231B219
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Feb 2021 19:50:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229818AbhBNRxz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Feb 2021 12:53:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44766 "EHLO
+        id S229783AbhBNSuC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 Feb 2021 13:50:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbhBNRxx (ORCPT
+        with ESMTP id S229642AbhBNSt7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Feb 2021 12:53:53 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 087A2C061756;
-        Sun, 14 Feb 2021 09:53:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=6eDzsMVYwupeCX4Qk3KisD8eSo5kOICuWVyDL4sF11o=; b=yhL7m6buGH9tujVqPbEPvFohLA
-        Ib//hYBaSFwSJstxdChCuXAFoITUA/1UmehUKdApxlj7ON6pU7RJOHCPDjT8oehQqX8xmETkDlPlD
-        0Ap3JCr31qgzLViR4NOby/cGgom3ATbU69Lc9IENobKLzL8aLctgTlu3sEAH8XbC09MEbaNrLKpXU
-        jhdIyoVCO5AGRkkWos3LJiSBl8F9y9sIBQl9+zQnqAoThAC5+ts62AMFuBiVz4zRQWg8B6xn3bJwR
-        xDwdwnKdM/x1KWCa6Y/WTS7lVTCmuJ4auTfgQ1B5GWVx11PqlZObX3Vqyst7Labmm3c3TgM00mq45
-        uYenX46w==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1lBLZx-0005mj-TD; Sun, 14 Feb 2021 17:53:06 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5E7E13019CE;
-        Sun, 14 Feb 2021 18:53:01 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 2E40320299B4B; Sun, 14 Feb 2021 18:53:01 +0100 (CET)
-Date:   Sun, 14 Feb 2021 18:53:01 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     mingo@redhat.com, will@kernel.org, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] lockdep: add lockdep_assert_not_held()
-Message-ID: <YCljfeNr4m5mZa4N@hirez.programming.kicks-ass.net>
-References: <cover.1613171185.git.skhan@linuxfoundation.org>
- <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
+        Sun, 14 Feb 2021 13:49:59 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02732C061574
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Feb 2021 10:49:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=q+cg1oObXGpi/3y0MDcBEnirsfQ+3Z1hURC29KRqHag=; b=sztb+xsMylgaRKicwUUDDHoA6v
+        ZUW5pD790dBYHqJset2nNYmnYrX3GfT5oINaCxFHE/Bt16x7LjoIvrxtEQBYKDQyXeJ0kzU0RnSAx
+        OExlNwVAtybkzbfdFGUXqlCmbZE1qtrWw9X1YKq+yZeZdleHjVohXOiYYb9ki86sNLxU=;
+Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lBMSJ-00080x-Dx; Sun, 14 Feb 2021 19:49:15 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org, hurricos@gmail.com
+Subject: [PATCH] ath9k: fix transmitting to stations in dynamic SMPS mode
+Date:   Sun, 14 Feb 2021 19:49:11 +0100
+Message-Id: <20210214184911.96702-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Feb 12, 2021 at 04:28:42PM -0700, Shuah Khan wrote:
+When transmitting to a receiver in dynamic SMPS mode, all transmissions that
+use multiple spatial streams need to be sent using CTS-to-self or RTS/CTS to
+give the receiver's extra chains some time to wake up.
+This fixes the tx rate getting stuck at <= MCS7 for some clients, especially
+Intel ones, which make aggressive use of SMPS.
 
-> +#define lockdep_assert_not_held(l)	do {			\
-> +		WARN_ON(debug_locks && lockdep_is_held(l));	\
-> +	} while (0)
-> +
+Cc: stable@vger.kernel.org
+Reported-by: Martin Kennedy <hurricos@gmail.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/ath/ath9k/ath9k.h | 3 ++-
+ drivers/net/wireless/ath/ath9k/xmit.c  | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-This thing isn't as straight forward as you might think, but it'll
-mostly work.
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index 13b4f5f50f8a..ef6f5ea06c1f 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -177,7 +177,8 @@ struct ath_frame_info {
+ 	s8 txq;
+ 	u8 keyix;
+ 	u8 rtscts_rate;
+-	u8 retries : 7;
++	u8 retries : 6;
++	u8 dyn_smps : 1;
+ 	u8 baw_tracked : 1;
+ 	u8 tx_power;
+ 	enum ath9k_key_type keytype:2;
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index e60d4737fc6e..5691bd6eb82c 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -1271,6 +1271,11 @@ static void ath_buf_set_rate(struct ath_softc *sc, struct ath_buf *bf,
+ 				 is_40, is_sgi, is_sp);
+ 			if (rix < 8 && (tx_info->flags & IEEE80211_TX_CTL_STBC))
+ 				info->rates[i].RateFlags |= ATH9K_RATESERIES_STBC;
++			if (rix >= 8 && fi->dyn_smps) {
++				info->rates[i].RateFlags |=
++					ATH9K_RATESERIES_RTS_CTS;
++				info->flags |= ATH9K_TXDESC_CTSENA;
++			}
+ 
+ 			info->txpower[i] = ath_get_rate_txpower(sc, bf, rix,
+ 								is_40, false);
+@@ -2114,6 +2119,7 @@ static void setup_frame_info(struct ieee80211_hw *hw,
+ 		fi->keyix = an->ps_key;
+ 	else
+ 		fi->keyix = ATH9K_TXKEYIX_INVALID;
++	fi->dyn_smps = sta && sta->smps_mode == IEEE80211_SMPS_DYNAMIC;
+ 	fi->keytype = keytype;
+ 	fi->framelen = framelen;
+ 	fi->tx_power = txpower;
+-- 
+2.28.0
 
-Notably this thing will misfire when lockdep_off() is employed. It
-certainyl needs a comment to explain the subtleties.
