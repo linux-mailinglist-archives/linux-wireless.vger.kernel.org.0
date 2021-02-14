@@ -2,71 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C57531AD76
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Feb 2021 18:55:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0BC131AECA
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Feb 2021 04:05:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229759AbhBMRww (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 Feb 2021 12:52:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49432 "EHLO
+        id S229758AbhBNDD0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Feb 2021 22:03:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229789AbhBMRwm (ORCPT
+        with ESMTP id S229615AbhBNDDU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 Feb 2021 12:52:42 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7085C06178C
-        for <linux-wireless@vger.kernel.org>; Sat, 13 Feb 2021 09:51:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=98aJN4IgCwZRNNHnxh9mFC2qbV2kNIxBsTGqOP8Iiq4=; b=QrD/PvowL+A5dz9ghc+mf4lt0C
-        d6+xh39HGnSWNJDVYoateT4j67siV4IYtmOzdPuhm+i19nrVjNBTHUQvmRiFYPw+H8PlAQnswtqyJ
-        ozAzeAzGX9tkIY47kwH+1wYfr5qg6jpREfzgEhtsvsKd9W25WxsxlhW6R+Tkq8n6gNJY=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lAz4R-0007si-6p
-        for linux-wireless@vger.kernel.org; Sat, 13 Feb 2021 18:51:03 +0100
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 7/7] mt76: mt7915: fix tx skb dma unmap
-Date:   Sat, 13 Feb 2021 18:51:00 +0100
-Message-Id: <20210213175100.22608-7-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20210213175100.22608-1-nbd@nbd.name>
-References: <20210213175100.22608-1-nbd@nbd.name>
+        Sat, 13 Feb 2021 22:03:20 -0500
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C6BC061574;
+        Sat, 13 Feb 2021 19:02:40 -0800 (PST)
+Received: by mail-qk1-x72d.google.com with SMTP id r77so3491214qka.12;
+        Sat, 13 Feb 2021 19:02:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=pfkCu/2YNhQQQ4K/N1pykusMLuslfMq4zgYXmHw5i7I=;
+        b=EGqEyVq6AEu7tH7SG4ChhAcc1+NQzRzSbqGEmnfRprvKidjA8W9AhMvhNehVKF4GKe
+         xtMVAJAmHM0ISoZ9eOnEWEyFHKxo5Ibso7KA18gtSAMTTsn0d2QM09wQw58yqGrM104B
+         nrNWmwG6LHQfDqhiSfYbfQ7uZNx3+h0PXXseM2nLxGHnNvE/e6m1ecP0lyFexs+tkTtj
+         pT5Yk8fFv3ibo3vaPA+nuZo8XQq3ipO8lWQnph44jD8ya64+nGriVLQjuAGdZGVEBv4t
+         wtRVaLPCq5XWpgEc1oAkyCPT74sZHZ3TILP1nL6ly3EwyjZ4hoHpKVthjZdGwypUYEWS
+         9cFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=pfkCu/2YNhQQQ4K/N1pykusMLuslfMq4zgYXmHw5i7I=;
+        b=tH/zIjTRGnlfzlGfvZjyF1vTZlEX3hsY7Atf5en/c/EGW9kBMlcxjLanm6QJ29m/C4
+         3cI9GkLTcJZNfAyPBpAV6JXVmXtQ4JZTJonR0YhE22+jd/hP9s0aBwTU0EmIz8AeEJ8Y
+         vwplye3J917BrkSAMKKqNDz3EnXW1yIRndNPYwzo7NGJG8nNIpnBEjNaSU4iZsnnSfdI
+         3E6jx+R9LA8WX2XI4/MEUxe/+yFx+C/zUPT0UOvQF0ySHZUkJJ1FGPNHpY291mTGSC6U
+         4UHJ+ZSc1JDZ7N/kJCcHnF5FvlQnLy42Ssg83KhjPuCfv41abwzfgSllvPy6QBP22FyH
+         VyLw==
+X-Gm-Message-State: AOAM532z+A5RCnwf2dI3R3mW0/k6g54s4ddeX3ewFIqVEXp2poGgWvox
+        /p2hnBz8Qvtcn3t9tla+Z6Q=
+X-Google-Smtp-Source: ABdhPJy6ydxy5+ZHCLyKfDKUCRjMwWodTcNqq0E7xSUolZsp+2Pasb6AtXRHS9ppq1A3hhb7WbIuPQ==
+X-Received: by 2002:a05:620a:ed8:: with SMTP id x24mr9541803qkm.381.1613271759753;
+        Sat, 13 Feb 2021 19:02:39 -0800 (PST)
+Received: from fedora ([45.152.180.20])
+        by smtp.gmail.com with ESMTPSA id f26sm9295497qkh.80.2021.02.13.19.02.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Feb 2021 19:02:39 -0800 (PST)
+Date:   Sat, 13 Feb 2021 22:02:37 -0500
+From:   Nigel Christian <nigel.l.christian@gmail.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7921: remove unnecessary variable
+Message-ID: <YCiSzfUQi2YtC+l4@fedora>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The first pointer in the txp needs to be unmapped as well, otherwise it will
-leak DMA mapping entries
+In mt7921_pm_set() the variable "ret" is initialized to zero
+and then returned. Remove it and return zero.
 
-Reported-by: Ben Greear <greearb@candelatech.com>
-Fixes: 27d5c528a7ca ("mt76: fix double DMA unmap of the first buffer on 7615/7915")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 71ccefcdc89c..b3168dd3baed 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1136,7 +1136,7 @@ void mt7915_txp_skb_unmap(struct mt76_dev *dev,
- 	int i;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index 0dc8e25e18e4..4bc3dd99bd14 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -164,7 +164,6 @@ mt7921_pm_set(void *data, u64 val)
+ {
+ 	struct mt7921_dev *dev = data;
+ 	struct mt76_phy *mphy = dev->phy.mt76;
+-	int ret = 0;
  
- 	txp = mt7915_txwi_to_txp(dev, t);
--	for (i = 1; i < txp->nbuf; i++)
-+	for (i = 0; i < txp->nbuf; i++)
- 		dma_unmap_single(dev->dev, le32_to_cpu(txp->buf[i]),
- 				 le16_to_cpu(txp->len[i]), DMA_TO_DEVICE);
+ 	mt7921_mutex_acquire(dev);
+ 
+@@ -175,7 +174,7 @@ mt7921_pm_set(void *data, u64 val)
+ 					    mt7921_pm_interface_iter, mphy->priv);
+ 	mt7921_mutex_release(dev);
+ 
+-	return ret;
++	return 0;
  }
+ 
+ static int
 -- 
-2.28.0
+2.29.2
 
