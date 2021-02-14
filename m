@@ -2,99 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0BC131AECA
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Feb 2021 04:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E502D31AEEE
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Feb 2021 05:54:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbhBNDD0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 Feb 2021 22:03:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53392 "EHLO
+        id S229733AbhBNEvp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Feb 2021 23:51:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbhBNDDU (ORCPT
+        with ESMTP id S229575AbhBNEvn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 Feb 2021 22:03:20 -0500
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C6BC061574;
-        Sat, 13 Feb 2021 19:02:40 -0800 (PST)
-Received: by mail-qk1-x72d.google.com with SMTP id r77so3491214qka.12;
-        Sat, 13 Feb 2021 19:02:40 -0800 (PST)
+        Sat, 13 Feb 2021 23:51:43 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DECF9C061574;
+        Sat, 13 Feb 2021 20:51:02 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id n8so4661098wrm.10;
+        Sat, 13 Feb 2021 20:51:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=pfkCu/2YNhQQQ4K/N1pykusMLuslfMq4zgYXmHw5i7I=;
-        b=EGqEyVq6AEu7tH7SG4ChhAcc1+NQzRzSbqGEmnfRprvKidjA8W9AhMvhNehVKF4GKe
-         xtMVAJAmHM0ISoZ9eOnEWEyFHKxo5Ibso7KA18gtSAMTTsn0d2QM09wQw58yqGrM104B
-         nrNWmwG6LHQfDqhiSfYbfQ7uZNx3+h0PXXseM2nLxGHnNvE/e6m1ecP0lyFexs+tkTtj
-         pT5Yk8fFv3ibo3vaPA+nuZo8XQq3ipO8lWQnph44jD8ya64+nGriVLQjuAGdZGVEBv4t
-         wtRVaLPCq5XWpgEc1oAkyCPT74sZHZ3TILP1nL6ly3EwyjZ4hoHpKVthjZdGwypUYEWS
-         9cFw==
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=QWltJyjSukm6dD9CtsghbdIltEUfUbDDMp2ulH7Ot1A=;
+        b=WIJGa5RmN2k28pdCdgxK491hBJJgzkMCC5XreKPXnPpEy3E9W3v0BOQObfGLInq8Od
+         gsCEn2OYI1w3OIhqvGW4hr/7w+en96YfXAvIN6tcFc6O7PgVeZ44Orxzw5dziI2wXr9+
+         oUBAigUFYPshQ75/gFHgsreR3z288VS4tLf1DJKEoFWbJ9QYU81JCszH5r37jSVFbdfW
+         6Qd0EhtuEDT7dfSL6hnEJOq3OgfSfPK3fqC70fpB6XfG524TlI0mAeIICGx2iMudWKch
+         kQfqIuXbaj3i08hnwO+ZMRoQCefCDerwdpMFwbhckgtbKBLykocJ2ozTIcKJmU8cXtox
+         Pa5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=pfkCu/2YNhQQQ4K/N1pykusMLuslfMq4zgYXmHw5i7I=;
-        b=tH/zIjTRGnlfzlGfvZjyF1vTZlEX3hsY7Atf5en/c/EGW9kBMlcxjLanm6QJ29m/C4
-         3cI9GkLTcJZNfAyPBpAV6JXVmXtQ4JZTJonR0YhE22+jd/hP9s0aBwTU0EmIz8AeEJ8Y
-         vwplye3J917BrkSAMKKqNDz3EnXW1yIRndNPYwzo7NGJG8nNIpnBEjNaSU4iZsnnSfdI
-         3E6jx+R9LA8WX2XI4/MEUxe/+yFx+C/zUPT0UOvQF0ySHZUkJJ1FGPNHpY291mTGSC6U
-         4UHJ+ZSc1JDZ7N/kJCcHnF5FvlQnLy42Ssg83KhjPuCfv41abwzfgSllvPy6QBP22FyH
-         VyLw==
-X-Gm-Message-State: AOAM532z+A5RCnwf2dI3R3mW0/k6g54s4ddeX3ewFIqVEXp2poGgWvox
-        /p2hnBz8Qvtcn3t9tla+Z6Q=
-X-Google-Smtp-Source: ABdhPJy6ydxy5+ZHCLyKfDKUCRjMwWodTcNqq0E7xSUolZsp+2Pasb6AtXRHS9ppq1A3hhb7WbIuPQ==
-X-Received: by 2002:a05:620a:ed8:: with SMTP id x24mr9541803qkm.381.1613271759753;
-        Sat, 13 Feb 2021 19:02:39 -0800 (PST)
-Received: from fedora ([45.152.180.20])
-        by smtp.gmail.com with ESMTPSA id f26sm9295497qkh.80.2021.02.13.19.02.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Feb 2021 19:02:39 -0800 (PST)
-Date:   Sat, 13 Feb 2021 22:02:37 -0500
-From:   Nigel Christian <nigel.l.christian@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7921: remove unnecessary variable
-Message-ID: <YCiSzfUQi2YtC+l4@fedora>
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=QWltJyjSukm6dD9CtsghbdIltEUfUbDDMp2ulH7Ot1A=;
+        b=ozJagcWXR9C7FHE3fWtgJmmWAgs179H+edgP4h5i23yuX+6iAB65hD8pWIhu3fnVbU
+         GQAIjbJy9jCV7jV6BrPUiFPWsnEb72imOOzsxb5nIWdiZUJVAfY7h6OGVOBV3K5o2HTG
+         XILdQKiAsnxcLDeeWvV88DbpnxNVpNLgjhUURY76O0RZspIyc1XzE3RcFDjRWGtYCw4A
+         QW3SqAAD+lux/HdKisQdfnCCzxIfK8Iqa7LG1WkVNKERDEV59KNE9RHlR3E+4DIlTYEz
+         kPHlxHHr4pBNns6PHZSdP0saA26QhGo8XHFtc+KU5Hlj9vFRLc0b+WBcwwrlVbjz/53j
+         /djg==
+X-Gm-Message-State: AOAM532IQtyMKDb7T+qxCtFYKxXC5cszRyz4C6KCLeHW00JL7llYVakT
+        KUtetHmRxan2gNwiIJ2jhQ==
+X-Google-Smtp-Source: ABdhPJwRvf+AqBIKI62H0+KXP1e26dDVlwDrJ21jmn1P80WLBvbsMnE7QuQhsoXHui8dpFsDI9wTnQ==
+X-Received: by 2002:adf:f905:: with SMTP id b5mr11574719wrr.129.1613278261394;
+        Sat, 13 Feb 2021 20:51:01 -0800 (PST)
+Received: from [192.168.1.5] ([154.124.31.147])
+        by smtp.gmail.com with ESMTPSA id j23sm17473242wmo.18.2021.02.13.20.50.59
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Sat, 13 Feb 2021 20:51:00 -0800 (PST)
+Message-ID: <6028ac34.1c69fb81.61833.32c2@mx.google.com>
+Sender: skylar anderson <calanthcamara@gmail.com>
+From:   CALANTHA CAMARA <sgt.andersonskylar0@gmail.com>
+X-Google-Original-From: CALANTHA CAMARA
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Hi dear
+To:     Recipients <CALANTHA@vger.kernel.org>
+Date:   Sun, 14 Feb 2021 04:50:56 +0000
+Reply-To: calanthac20@gmail.com
+X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In mt7921_pm_set() the variable "ret" is initialized to zero
-and then returned. Remove it and return zero.
-
-Signed-off-by: Nigel Christian <nigel.l.christian@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-index 0dc8e25e18e4..4bc3dd99bd14 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-@@ -164,7 +164,6 @@ mt7921_pm_set(void *data, u64 val)
- {
- 	struct mt7921_dev *dev = data;
- 	struct mt76_phy *mphy = dev->phy.mt76;
--	int ret = 0;
- 
- 	mt7921_mutex_acquire(dev);
- 
-@@ -175,7 +174,7 @@ mt7921_pm_set(void *data, u64 val)
- 					    mt7921_pm_interface_iter, mphy->priv);
- 	mt7921_mutex_release(dev);
- 
--	return ret;
-+	return 0;
- }
- 
- static int
--- 
-2.29.2
-
+do you speak english or what
