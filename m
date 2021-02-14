@@ -2,92 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2823F31AF6D
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Feb 2021 07:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4900931B1AF
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Feb 2021 18:54:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbhBNGPN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Feb 2021 01:15:13 -0500
-Received: from m42-2.mailgun.net ([69.72.42.2]:50200 "EHLO m42-2.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229563AbhBNGPK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Feb 2021 01:15:10 -0500
-X-Greylist: delayed 347 seconds by postgrey-1.27 at vger.kernel.org; Sun, 14 Feb 2021 01:15:10 EST
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1613283289; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=e3eec5zLeqEMGut+FCmYCRWQIFaz4ukcUuaM5KHUywY=; b=M5mtZc8G/18NCU9a6BuUYas0ruZIwedEnPO7CGpvIP8fAcSsP6cMH9W5ia//fp1N4NuKVFsk
- ODDNbrP+bJjvRliepYn+kbt6noRqggf3LHG5kq1bJ57NksIgARj5AdVOJN3BSaOA9h31lUfW
- 2Tzk21SQ2KjT8oV+UmNVkWJO+5k=
-X-Mailgun-Sending-Ip: 69.72.42.2
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6028be5b4bd23a05aea78c36 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 14 Feb 2021 06:08:27
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5F610C43461; Sun, 14 Feb 2021 06:08:27 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 28C69C433C6;
-        Sun, 14 Feb 2021 06:08:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 28C69C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
+        id S229818AbhBNRxz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 Feb 2021 12:53:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44766 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229730AbhBNRxx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 14 Feb 2021 12:53:53 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 087A2C061756;
+        Sun, 14 Feb 2021 09:53:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=6eDzsMVYwupeCX4Qk3KisD8eSo5kOICuWVyDL4sF11o=; b=yhL7m6buGH9tujVqPbEPvFohLA
+        Ib//hYBaSFwSJstxdChCuXAFoITUA/1UmehUKdApxlj7ON6pU7RJOHCPDjT8oehQqX8xmETkDlPlD
+        0Ap3JCr31qgzLViR4NOby/cGgom3ATbU69Lc9IENobKLzL8aLctgTlu3sEAH8XbC09MEbaNrLKpXU
+        jhdIyoVCO5AGRkkWos3LJiSBl8F9y9sIBQl9+zQnqAoThAC5+ts62AMFuBiVz4zRQWg8B6xn3bJwR
+        xDwdwnKdM/x1KWCa6Y/WTS7lVTCmuJ4auTfgQ1B5GWVx11PqlZObX3Vqyst7Labmm3c3TgM00mq45
+        uYenX46w==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1lBLZx-0005mj-TD; Sun, 14 Feb 2021 17:53:06 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5E7E13019CE;
+        Sun, 14 Feb 2021 18:53:01 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 2E40320299B4B; Sun, 14 Feb 2021 18:53:01 +0100 (CET)
+Date:   Sun, 14 Feb 2021 18:53:01 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
 To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+Cc:     mingo@redhat.com, will@kernel.org, kvalo@codeaurora.org,
         davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] ath10k: detect conf_mutex held ath10k_drain_tx() calls
+Subject: Re: [PATCH 1/2] lockdep: add lockdep_assert_not_held()
+Message-ID: <YCljfeNr4m5mZa4N@hirez.programming.kicks-ass.net>
 References: <cover.1613171185.git.skhan@linuxfoundation.org>
-        <0686097db95ae32ce6805e5163798d912b394f37.1613171185.git.skhan@linuxfoundation.org>
-Date:   Sun, 14 Feb 2021 08:08:21 +0200
-In-Reply-To: <0686097db95ae32ce6805e5163798d912b394f37.1613171185.git.skhan@linuxfoundation.org>
-        (Shuah Khan's message of "Fri, 12 Feb 2021 16:28:43 -0700")
-Message-ID: <877dnbrxka.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+ <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Shuah Khan <skhan@linuxfoundation.org> writes:
+On Fri, Feb 12, 2021 at 04:28:42PM -0700, Shuah Khan wrote:
 
-> ath10k_drain_tx() must not be called with conf_mutex held as workers can
-> use that also. Add call to lockdep_assert_not_held() on conf_mutex to
-> detect if conf_mutex is held by the caller.
->
-> The idea for this patch stemmed from coming across the comment block
-> above the ath10k_drain_tx() while reviewing the conf_mutex holds during
-> to debug the conf_mutex lock assert in ath10k_debug_fw_stats_request().
->
-> Adding detection to assert on conf_mutex hold will help detect incorrect
-> usages that could lead to locking problems when async worker routines try
-> to call this routine.
->
-> Link: https://lore.kernel.org/linux-wireless/871rdmu9z9.fsf@codeaurora.org/
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+> +#define lockdep_assert_not_held(l)	do {			\
+> +		WARN_ON(debug_locks && lockdep_is_held(l));	\
+> +	} while (0)
+> +
 
-This can go via the same tree as patch 1:
+This thing isn't as straight forward as you might think, but it'll
+mostly work.
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
-
-But I can also take this to my ath tree, once patch 1 has reached it.
-Just let me know what is preferred.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Notably this thing will misfire when lockdep_off() is employed. It
+certainyl needs a comment to explain the subtleties.
