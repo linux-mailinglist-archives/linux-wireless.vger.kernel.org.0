@@ -2,75 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8D4431BB34
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Feb 2021 15:38:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AACA31BEB3
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Feb 2021 17:19:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230196AbhBOOgS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Feb 2021 09:36:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55062 "EHLO
+        id S232129AbhBOQQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Feb 2021 11:16:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230178AbhBOOgQ (ORCPT
+        with ESMTP id S232624AbhBOP7Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Feb 2021 09:36:16 -0500
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B65C061574;
-        Mon, 15 Feb 2021 06:35:36 -0800 (PST)
-Received: by mail-pg1-x52a.google.com with SMTP id o38so4299951pgm.9;
-        Mon, 15 Feb 2021 06:35:36 -0800 (PST)
+        Mon, 15 Feb 2021 10:59:24 -0500
+Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E3CC0613D6;
+        Mon, 15 Feb 2021 07:58:44 -0800 (PST)
+Received: by mail-oo1-xc30.google.com with SMTP id z36so1634418ooi.6;
+        Mon, 15 Feb 2021 07:58:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=6y2TjDWm6GiCRVPHYsBwGulwO9kJcdSY7Gz+WazHK7Q=;
-        b=aGDHSlDDZbKZt95gh3ah8dMEA/+GcEgpoPdTL+N0PiBuKG7dHaiOmLB/ZBgKn/kHMR
-         aQwoTHght8CqJdMoPgJNAZZYCCe3v658URzmGp4J7YgOqov5wgf71zBK5+a8/jHpxGqq
-         JEDg9CTsQHITqk8u5bdRh86+vgW7jNLYQs56vxCIe4c+Ga8SsgJ6niDjD/YlHvMI2jQB
-         95/scIu82dy6RyuGsNXSJt7XRP/RrW2RtBkiAPfDdMzgNBDroF9grTIHFqiEM2pVE0pP
-         qyta0R1bS5DRwm5M7gjhAik5AcjtA/LI9LmjeKICG8lV1WTdLLsfmqrqOJGY/W9auQhn
-         5qTw==
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=WEACmCkgL/TM4hrtjiINmc1isFYTeQEPw/cMrn0TOb8=;
+        b=pxCnbeanx20AM85pB9UePv+EUKwTcmmMHTq33viceAq5x5Lo3xrjSGaZ1JHgngvSiJ
+         sYbmLHNDHJXxvSpb5aFLVfME/p37XMw/roWLW8VewXfUhFKINStji5A97O+eF1gwTyXU
+         hAGvNx0HtN2RoAx2eT3HqRH6HSKzK2CQgJpSklFNZc+rm194Rk9Rorr+XZl6YlJ1vvmK
+         foIRc6MtNcCOzTRjohd5d9jPNFaJhdA8BCRBIykfV9uf+Z91tla+15R+beP7FmeSwFnc
+         6lrjGB2w9xgfGVIe8Uf3xnkrktdcmj7IcMwXK3ig8FtrJOvjrN0JmXn30Iu/+SPtN1BW
+         vRqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=6y2TjDWm6GiCRVPHYsBwGulwO9kJcdSY7Gz+WazHK7Q=;
-        b=iV5ITGqDUKpC3S4F+nj4ygNl4D13hlLoy7jLiYHuqL1anGSKes9qOXsccjYe/y51rv
-         b7Hs/imii2mRmDzJ3PpiJdBexqvKodHNHh8uyVo+69IvnCR1YCtOwMVt3lDzfEyaglOo
-         WydisMNCT2mDvaQVin91byQVR/DVOcnD6p7QpwfAEcDWlRKAY1rqcAmxT/gEWhzH76b/
-         V1lQpizTeSc0Cj3+46JI4ujC7YKe2oH443JQBDXYRePUq6MWwkaNAU+uHNdI/PRQbo7H
-         RCIQcgXBqQNprpqE3/ak3fK7n4rcVyoQUm2yrksmRQdG92qJe4VG1mq6JBf9x1i4pWLv
-         rLvw==
-X-Gm-Message-State: AOAM532H7NBA/wmrNEUYOOVjueH5qIHfoUtmUfEtyoywIiNBGda6hh+l
-        MtG1srT7CON0h87XhBJrVl9utnPvZ7pW4Nzk58+eeHK6Vr01Oe8Y
-X-Google-Smtp-Source: ABdhPJwY2EqGHBgBjsq4KCFfJqmQEIwzjxAWCQ16mrZpT+kriAPiRr8ZlKT2W1mUfqGgicuynb6kvre6HBKiteoUCfQ=
-X-Received: by 2002:a65:5ac9:: with SMTP id d9mr14884798pgt.74.1613399735737;
- Mon, 15 Feb 2021 06:35:35 -0800 (PST)
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=WEACmCkgL/TM4hrtjiINmc1isFYTeQEPw/cMrn0TOb8=;
+        b=HDHzCja5H5PFpr+8/o+IzkqHYPjLvwuWUGlSir09/RzD72V8xGMS/ULHhmcy74JD9w
+         BPloPy4f+/Hjfg8BE3DuLR7R4QMRqFfOp9T/w85xFuyb6F8ehrjXn0YxjRDCrlWfcS+n
+         nQtkPzzX30+kzf+ohCtq/3/vKfDK3zp+SbVrmLh3YPcL6pnfjVI4Mr87P0V8jyGirvZV
+         dSxAq+SDKO67KjYbr7VP/wXesNzxUemY5kFxnffMGEGYSabW5cwf15jNvqNsIwQPSC0A
+         yzrWeM0tssU65zgA9Je0PPzVDT3qd45XjEDgdVcno3/M/IK/6LGn2EYvYKNssz3dJ/x6
+         fzrg==
+X-Gm-Message-State: AOAM530o8CWuvdh0utl7NgYIxfIth32g5GaLDQvXqaCeggAi/5Hu6wYM
+        Zg6Hl0vgVw4iTG8Y+mEpVUm31mNam4M=
+X-Google-Smtp-Source: ABdhPJyey6pEye22s5MbAnms/IMF/0TE5yuvKM3/n0AGkX9+CrcF435g/f0ANgpkmjk8OgbJ1Ohw2Q==
+X-Received: by 2002:a4a:96b3:: with SMTP id s48mr11234851ooi.11.1613404723229;
+        Mon, 15 Feb 2021 07:58:43 -0800 (PST)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id o98sm3728749ota.0.2021.02.15.07.58.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Feb 2021 07:58:42 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: [PATCH] b43: N-PHY: Fix the update of coef for the PHY revision
+ >= 3case
+To:     Colin King <colin.king@canonical.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        "John W . Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210215120532.76889-1-colin.king@canonical.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <a1f578d8-bfaf-ec92-7874-84a586385495@lwfinger.net>
+Date:   Mon, 15 Feb 2021 09:58:41 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 15 Feb 2021 16:35:19 +0200
-Message-ID: <CAHp75VecgvsDqRwmyJZb8z0n4XAUjEStrVmXDZ9-knud7_eO3A@mail.gmail.com>
-Subject: commit 0f0aefd733f7 to linux-firmware effectively broke all of the
- setups with old kernels
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     =?UTF-8?Q?=EF=BF=BCPeter_Robinson?= <pbrobinson@gmail.com>,
-        Josh Boyer <jwboyer@kernel.org>, Ferry Toth <fntoth@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210215120532.76889-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi!
+On 2/15/21 6:05 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The documentation for the PHY update [1] states:
+> 
+> Loop 4 times with index i
+> 
+>      If PHY Revision >= 3
+>          Copy table[i] to coef[i]
+>      Otherwise
+>          Set coef[i] to 0
+> 
+> the copy of the table to coef is currently implemented the wrong way
+> around, table is being updated from uninitialized values in coeff.
+> Fix this by swapping the assignment around.
+> 
+> [1] https://bcm-v4.sipsolutions.net/802.11/PHY/N/RestoreCal/
+> 
+> Fixes: 2f258b74d13c ("b43: N-PHY: implement restoring general configuration")
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/net/wireless/broadcom/b43/phy_n.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+> index b669dff24b6e..665b737fbb0d 100644
+> --- a/drivers/net/wireless/broadcom/b43/phy_n.c
+> +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+> @@ -5311,7 +5311,7 @@ static void b43_nphy_restore_cal(struct b43_wldev *dev)
+>   
+>   	for (i = 0; i < 4; i++) {
+>   		if (dev->phy.rev >= 3)
+> -			table[i] = coef[i];
+> +			coef[i] = table[i];
+>   		else
+>   			coef[i] = 0;
+>   	}
+> 
 
-Seems the commit 0f0aefd733f7 to linux-firmware effectively broke all
-of the setups with the old kernels. Firmware name is an ABI (!) and
-replacing it like this will definitely break systems with older
-kernels. Linux firmware package likely, but unfortunately, should
-carry on both versions as long as it's needed. Alternative solution is
-to provide the links during installation.
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Btw, I haven't seen the driver change for that. Care to provide a
-commit ID in upstream?
+Good catch, thanks.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Larry
+
