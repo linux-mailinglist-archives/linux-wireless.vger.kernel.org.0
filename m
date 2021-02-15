@@ -2,123 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AACA31BEB3
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Feb 2021 17:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D245531BE7E
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Feb 2021 17:12:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232129AbhBOQQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Feb 2021 11:16:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44766 "EHLO
+        id S230318AbhBOQMN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Feb 2021 11:12:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232624AbhBOP7Y (ORCPT
+        with ESMTP id S232916AbhBOQGc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Feb 2021 10:59:24 -0500
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E3CC0613D6;
-        Mon, 15 Feb 2021 07:58:44 -0800 (PST)
-Received: by mail-oo1-xc30.google.com with SMTP id z36so1634418ooi.6;
-        Mon, 15 Feb 2021 07:58:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=WEACmCkgL/TM4hrtjiINmc1isFYTeQEPw/cMrn0TOb8=;
-        b=pxCnbeanx20AM85pB9UePv+EUKwTcmmMHTq33viceAq5x5Lo3xrjSGaZ1JHgngvSiJ
-         sYbmLHNDHJXxvSpb5aFLVfME/p37XMw/roWLW8VewXfUhFKINStji5A97O+eF1gwTyXU
-         hAGvNx0HtN2RoAx2eT3HqRH6HSKzK2CQgJpSklFNZc+rm194Rk9Rorr+XZl6YlJ1vvmK
-         foIRc6MtNcCOzTRjohd5d9jPNFaJhdA8BCRBIykfV9uf+Z91tla+15R+beP7FmeSwFnc
-         6lrjGB2w9xgfGVIe8Uf3xnkrktdcmj7IcMwXK3ig8FtrJOvjrN0JmXn30Iu/+SPtN1BW
-         vRqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=WEACmCkgL/TM4hrtjiINmc1isFYTeQEPw/cMrn0TOb8=;
-        b=HDHzCja5H5PFpr+8/o+IzkqHYPjLvwuWUGlSir09/RzD72V8xGMS/ULHhmcy74JD9w
-         BPloPy4f+/Hjfg8BE3DuLR7R4QMRqFfOp9T/w85xFuyb6F8ehrjXn0YxjRDCrlWfcS+n
-         nQtkPzzX30+kzf+ohCtq/3/vKfDK3zp+SbVrmLh3YPcL6pnfjVI4Mr87P0V8jyGirvZV
-         dSxAq+SDKO67KjYbr7VP/wXesNzxUemY5kFxnffMGEGYSabW5cwf15jNvqNsIwQPSC0A
-         yzrWeM0tssU65zgA9Je0PPzVDT3qd45XjEDgdVcno3/M/IK/6LGn2EYvYKNssz3dJ/x6
-         fzrg==
-X-Gm-Message-State: AOAM530o8CWuvdh0utl7NgYIxfIth32g5GaLDQvXqaCeggAi/5Hu6wYM
-        Zg6Hl0vgVw4iTG8Y+mEpVUm31mNam4M=
-X-Google-Smtp-Source: ABdhPJyey6pEye22s5MbAnms/IMF/0TE5yuvKM3/n0AGkX9+CrcF435g/f0ANgpkmjk8OgbJ1Ohw2Q==
-X-Received: by 2002:a4a:96b3:: with SMTP id s48mr11234851ooi.11.1613404723229;
-        Mon, 15 Feb 2021 07:58:43 -0800 (PST)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id o98sm3728749ota.0.2021.02.15.07.58.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Feb 2021 07:58:42 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: [PATCH] b43: N-PHY: Fix the update of coef for the PHY revision
- >= 3case
-To:     Colin King <colin.king@canonical.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        "John W . Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210215120532.76889-1-colin.king@canonical.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <a1f578d8-bfaf-ec92-7874-84a586385495@lwfinger.net>
-Date:   Mon, 15 Feb 2021 09:58:41 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Mon, 15 Feb 2021 11:06:32 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D427AC0613D6;
+        Mon, 15 Feb 2021 08:04:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=ABknkne7Nrn83Z017RdB6TUScjJdC65GnVh/Mnzaro4=; b=OhNLW94ejUS39Nx7GhTuQ7ezdo
+        q5Wb7HXw3WDjDr/XnEMyiKNF5Uxs9VTjZBW+3vEUNADCSPX5PvM77kgXHpbL7bgAujmpCQ5cflRMe
+        tTgMXTJRBXrL7pptc1mjtI4Jb+Qby+L9ULklOfDMW0Dl/q7eIbus7Trt8VNc+I11PIct7CPbs7t8D
+        0PeT8FwhMlogzUvkCLX9hiAhpOezlGe1hVcHmhsWIwL93pymNLCGpOaHgh+7EqwwQL8oYfRkyi1uW
+        igN+zxx/JApi6jslEPnSmi77+yruJVv/f3P68A4EU9er5WeSclCa3/+wZCUuIxe0eSgGCmWJOYPTg
+        L2U9YsRQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lBgM7-00Fky1-Ex; Mon, 15 Feb 2021 16:04:20 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 430053007CD;
+        Mon, 15 Feb 2021 17:04:10 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 2CD1D20431BC4; Mon, 15 Feb 2021 17:04:10 +0100 (CET)
+Date:   Mon, 15 Feb 2021 17:04:10 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Shuah Khan <skhan@linuxfoundation.org>, mingo@redhat.com,
+        will@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] lockdep: add lockdep_assert_not_held()
+Message-ID: <YCqbehyyeUoL0pPT@hirez.programming.kicks-ass.net>
+References: <cover.1613171185.git.skhan@linuxfoundation.org>
+ <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
+ <YCljfeNr4m5mZa4N@hirez.programming.kicks-ass.net>
+ <20210215104402.GC4507@worktop.programming.kicks-ass.net>
+ <79aeb83a288051bd3a2a3f15e5ac42e06f154d48.camel@sipsolutions.net>
 MIME-Version: 1.0
-In-Reply-To: <20210215120532.76889-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <79aeb83a288051bd3a2a3f15e5ac42e06f154d48.camel@sipsolutions.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/15/21 6:05 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Mon, Feb 15, 2021 at 02:12:30PM +0100, Johannes Berg wrote:
+> On Mon, 2021-02-15 at 11:44 +0100, Peter Zijlstra wrote:
+> > 
+> > I think something like so will work, but please double check.
 > 
-> The documentation for the PHY update [1] states:
+> Yeah, that looks better.
 > 
-> Loop 4 times with index i
+> > +++ b/include/linux/lockdep.h
+> > @@ -294,11 +294,15 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
+> >  
+> >  #define lockdep_depth(tsk)	(debug_locks ? (tsk)->lockdep_depth : 0)
+> >  
+> > -#define lockdep_assert_held(l)	do {				\
+> > -		WARN_ON(debug_locks && !lockdep_is_held(l));	\
+> > +#define lockdep_assert_held(l)	do {					\
+> > +		WARN_ON(debug_locks && lockdep_is_held(l) == 0));	\
+> >  	} while (0)
 > 
->      If PHY Revision >= 3
->          Copy table[i] to coef[i]
->      Otherwise
->          Set coef[i] to 0
-> 
-> the copy of the table to coef is currently implemented the wrong way
-> around, table is being updated from uninitialized values in coeff.
-> Fix this by swapping the assignment around.
-> 
-> [1] https://bcm-v4.sipsolutions.net/802.11/PHY/N/RestoreCal/
-> 
-> Fixes: 2f258b74d13c ("b43: N-PHY: implement restoring general configuration")
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/net/wireless/broadcom/b43/phy_n.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
-> index b669dff24b6e..665b737fbb0d 100644
-> --- a/drivers/net/wireless/broadcom/b43/phy_n.c
-> +++ b/drivers/net/wireless/broadcom/b43/phy_n.c
-> @@ -5311,7 +5311,7 @@ static void b43_nphy_restore_cal(struct b43_wldev *dev)
->   
->   	for (i = 0; i < 4; i++) {
->   		if (dev->phy.rev >= 3)
-> -			table[i] = coef[i];
-> +			coef[i] = table[i];
->   		else
->   			coef[i] = 0;
->   	}
-> 
+> That doesn't really need to change? It's the same.
 
-Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+Correct, but I found it more symmetric vs the not implementation below.
 
-Good catch, thanks.
+> > -#define lockdep_assert_held_write(l)	do {			\
+> > +#define lockdep_assert_not_held(l)	do {				\
+> > +		WARN_ON(debug_locks && lockdep_is_held(l) == 1));	\
+> > +	} while (0)
+> > +
+> > +#define lockdep_assert_held_write(l)	do {				\
+> >  		WARN_ON(debug_locks && !lockdep_is_held_type(l, 0));	\
+> >  	} while (0)
+> >  
+> > diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+> > index c1418b47f625..983ba206f7b2 100644
+> > --- a/kernel/locking/lockdep.
+> > +++ b/kernel/locking/lockdep.c
+> > @@ -5467,7 +5467,7 @@ noinstr int lock_is_held_type(const struct lockdep_map *lock, int read)
+> >  	int ret = 0;
+> >  
+> >  	if (unlikely(!lockdep_enabled()))
+> > -		return 1; /* avoid false negative lockdep_assert_held() */
+> > +		return -1; /* avoid false negative lockdep_assert_held() */
+> 
+> Maybe add lockdep_assert_not_held() to the comment, to explain the -1
+> (vs non-zero)?
 
-Larry
-
+Yeah, or frob a '*' in there.
