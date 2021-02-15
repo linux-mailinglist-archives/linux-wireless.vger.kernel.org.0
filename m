@@ -2,80 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69A0F31BEB9
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Feb 2021 17:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ECB231C118
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Feb 2021 19:04:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbhBOQQv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Feb 2021 11:16:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47386 "EHLO
+        id S230196AbhBOSD5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Feb 2021 13:03:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbhBOQL2 (ORCPT
+        with ESMTP id S230120AbhBOSDw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Feb 2021 11:11:28 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A1AC061756;
-        Mon, 15 Feb 2021 08:10:47 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lBgSF-003Kql-5a; Mon, 15 Feb 2021 17:10:31 +0100
-Message-ID: <eb819e72fb2d897e603654d44aeda8c6f337453f.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] lockdep: add lockdep_assert_not_held()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Shuah Khan <skhan@linuxfoundation.org>, mingo@redhat.com,
-        will@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 15 Feb 2021 17:10:14 +0100
-In-Reply-To: <YCqbehyyeUoL0pPT@hirez.programming.kicks-ass.net>
-References: <cover.1613171185.git.skhan@linuxfoundation.org>
-         <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
-         <YCljfeNr4m5mZa4N@hirez.programming.kicks-ass.net>
-         <20210215104402.GC4507@worktop.programming.kicks-ass.net>
-         <79aeb83a288051bd3a2a3f15e5ac42e06f154d48.camel@sipsolutions.net>
-         <YCqbehyyeUoL0pPT@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+        Mon, 15 Feb 2021 13:03:52 -0500
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19353C061574;
+        Mon, 15 Feb 2021 10:03:12 -0800 (PST)
+Received: by mail-ej1-x62d.google.com with SMTP id g5so9166182ejt.2;
+        Mon, 15 Feb 2021 10:03:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fJL/RsfeG/zLHNer8l8750jqxkvIthMoJ4fLpHP+s+Q=;
+        b=V4roTA+i2D75balDfj3Nzy8DbVKcCc6m0C7rOJ+JrqacB/s+zQe75i2WBIm1VdqiuG
+         uyNbM/uC55SxMcA7Lmi2HCyTZtu8o2MYDawOkUheTgGo31MmVB1MQ5VLWXW7tkzitlQj
+         58bBFyP+TAj4y7uoiZzqKSmB/4cGV1LywzWo8joMjzDW5YgC1uARRx3hNY1AX53zRmFB
+         VDTmvOi/KPiyMeLbzIJkHMLhs3jIJADKEGpd4612Uom7/QbR23KiceJqfOHWdZKJyKBF
+         YW2pxiH2B4+z3o3Ij8LgPWwin7x4AX3kfkYiO51AyfyHyWPzWCOTx7CKQAE5/3ebwY6M
+         MSJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fJL/RsfeG/zLHNer8l8750jqxkvIthMoJ4fLpHP+s+Q=;
+        b=OuCyI8FS5AQXRD1kNMe6jxCfFUqwwT9xfwPL+Q3EKLgt5xdGGnHvy5F9sQtakRerOH
+         nA0dL71mPT6KWBo7AiGtP/y6sFLG8wWd4tmYKtEykYitIDHsiOZ1R1O+8K5UAWLdPhjl
+         lLRGX9TZyEYUwzHp2Kvd+LcUyX9FKn47kWdYpfjri/mWW03Md2GL2UirbP9QXlN1xj/E
+         ZCeOAGZqWotMtnEm/dJJzbdDu7m3q5HUkmqudDsG8O8pThR1uBWzoo8oO+ihIjrL/mTG
+         MrXiOEA21ESRrdSpbg+0lTtUq1DTQ82RmDullqAb8De/bIVpfFfV/R16mYX7By5obptA
+         zStQ==
+X-Gm-Message-State: AOAM530CHTOZHJlHsGADR1K7l1Oce2aWCBrQor4F77aHx1l8BdrCWHzM
+        Zv1yfrjKG1/EVNUybDONfAudEvVnn+/WrjZ2LW/KRqPTiKs=
+X-Google-Smtp-Source: ABdhPJzoPEdf1j7n0BEtWFLtOViDHlf8SYNmkF8TguNuZRPNx6QFhL88w4kAje9ojgLGGUOOAnEfltepBpYX8aMwDYg=
+X-Received: by 2002:a17:907:2957:: with SMTP id et23mr1156885ejc.543.1613412190756;
+ Mon, 15 Feb 2021 10:03:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+References: <CAHp75VecgvsDqRwmyJZb8z0n4XAUjEStrVmXDZ9-knud7_eO3A@mail.gmail.com>
+In-Reply-To: <CAHp75VecgvsDqRwmyJZb8z0n4XAUjEStrVmXDZ9-knud7_eO3A@mail.gmail.com>
+From:   Peter Robinson <pbrobinson@gmail.com>
+Date:   Mon, 15 Feb 2021 18:02:59 +0000
+Message-ID: <CALeDE9PkZnrZ=cXKB16+oZ0=O=3XSYqsgXi9TKeuWT7KqXrdNQ@mail.gmail.com>
+Subject: Re: commit 0f0aefd733f7 to linux-firmware effectively broke all of
+ the setups with old kernels
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Josh Boyer <jwboyer@kernel.org>, Ferry Toth <fntoth@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2021-02-15 at 17:04 +0100, Peter Zijlstra wrote:
-> On Mon, Feb 15, 2021 at 02:12:30PM +0100, Johannes Berg wrote:
-> > On Mon, 2021-02-15 at 11:44 +0100, Peter Zijlstra wrote:
-> > > I think something like so will work, but please double check.
-> > 
-> > Yeah, that looks better.
-> > 
-> > > +++ b/include/linux/lockdep.h
-> > > @@ -294,11 +294,15 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
-> > >  
-> > >  #define lockdep_depth(tsk)	(debug_locks ? (tsk)->lockdep_depth : 0)
-> > >  
-> > > -#define lockdep_assert_held(l)	do {				\
-> > > -		WARN_ON(debug_locks && !lockdep_is_held(l));	\
-> > > +#define lockdep_assert_held(l)	do {					\
-> > > +		WARN_ON(debug_locks && lockdep_is_held(l) == 0));	\
-> > >  	} while (0)
-> > 
-> > That doesn't really need to change? It's the same.
-> 
-> Correct, but I found it more symmetric vs the not implementation below.
+> Seems the commit 0f0aefd733f7 to linux-firmware effectively broke all
+> of the setups with the old kernels. Firmware name is an ABI (!) and
+> replacing it like this will definitely break systems with older
+> kernels. Linux firmware package likely, but unfortunately, should
+> carry on both versions as long as it's needed. Alternative solution is
+> to provide the links during installation.
 
-Fair enough. One might argue that you should have an
+It does provide the links using the copy-firmware.sh and the details in WHENCE.
 
-enum lockdep_lock_state {
-	LOCK_STATE_NOT_HELD, /* 0 now */
-	LOCK_STATE_HELD, /* 1 now */
-	LOCK_STATE_UNKNOWN, /* -1 with your patch but might as well be 2 */
-};
-
-:)
-
-johannes
-
+The alternative is to leave firmwares in place with CVEs.
