@@ -2,92 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8561C31B642
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Feb 2021 10:15:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1421D31B78A
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Feb 2021 11:46:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230130AbhBOJNX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Feb 2021 04:13:23 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:61708 "EHLO z11.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229764AbhBOJNV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Feb 2021 04:13:21 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1613380376; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=W2sk+Gk5BTxcdo7/vBuLPXm/MInjWkd57U6nnxHUMTk=; b=BV2rQEuH5kwUM3PrwZ/HPax1vjuOrTaLhFML7lHy4IO8V51x+7qlLmGXjqcBYqLjnkoPp20Q
- PQDqJHZq9T5PgQeUQG1L4SjtBmZW7oqTRx1i4siiMTWCa4ioS7ifNsXi80/kTYtcUxuodzw5
- aigDptJoEc1OEwEGaeFHgz0+j84=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 602a3aebd5a7a3baaeb05793 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Feb 2021 09:12:11
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 60186C433CA; Mon, 15 Feb 2021 09:12:11 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3EDE0C433ED;
-        Mon, 15 Feb 2021 09:12:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3EDE0C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, hurricos@gmail.com
-Subject: Re: [PATCH] ath9k: fix transmitting to stations in dynamic SMPS mode
-References: <20210214184911.96702-1-nbd@nbd.name>
-        <8735xyrkvy.fsf@codeaurora.org>
-        <d668f30a-f911-921f-d329-f6ac872d0bcc@nbd.name>
-Date:   Mon, 15 Feb 2021 11:12:06 +0200
-In-Reply-To: <d668f30a-f911-921f-d329-f6ac872d0bcc@nbd.name> (Felix Fietkau's
-        message of "Mon, 15 Feb 2021 08:20:04 +0100")
-Message-ID: <87y2fpr8yh.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S229907AbhBOKpT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Feb 2021 05:45:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33836 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230042AbhBOKo7 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Feb 2021 05:44:59 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89878C061574;
+        Mon, 15 Feb 2021 02:44:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=V15Ko0jDRPYeN/67QW78zQNnD8VcExjAsz8XTcjzpH0=; b=FQLYNszvDOtdGWgZii+WiBb+r2
+        fQYSdW1pQgcjxIeHKsYCBPXYDfjrGgSYz1rtEucTGaAG6dX+cej25NinPNM71gm5N9Q5aaSGizgA3
+        tZLza6Lmq3tTUF9yhpPqntfDryVkavGkkudpzJv7eQRJ5GVNkLsP8QNWVA1rgmNXTKHE5+WFlxU2W
+        d4YrJCxMgsSxe/KdxlBHdUrKWhtJ3D9hVvfNIWNvQ753sMvOF3O1oSf1RR6fV5a/dFeENJ7VLQved
+        4/LCeINLWhTmnHk28Aljj0dDCd8Dn9MbqL8uP+TIJD0H6vKOHRzmDjx0rGOoDfD1SWB1nepAmrd6z
+        HyHahSCg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1lBbMN-0006hm-9U; Mon, 15 Feb 2021 10:44:07 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 7CE01981573; Mon, 15 Feb 2021 11:44:02 +0100 (CET)
+Date:   Mon, 15 Feb 2021 11:44:02 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Shuah Khan <skhan@linuxfoundation.org>
+Cc:     mingo@redhat.com, will@kernel.org, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] lockdep: add lockdep_assert_not_held()
+Message-ID: <20210215104402.GC4507@worktop.programming.kicks-ass.net>
+References: <cover.1613171185.git.skhan@linuxfoundation.org>
+ <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
+ <YCljfeNr4m5mZa4N@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YCljfeNr4m5mZa4N@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+On Sun, Feb 14, 2021 at 06:53:01PM +0100, Peter Zijlstra wrote:
+> On Fri, Feb 12, 2021 at 04:28:42PM -0700, Shuah Khan wrote:
+> 
+> > +#define lockdep_assert_not_held(l)	do {			\
+> > +		WARN_ON(debug_locks && lockdep_is_held(l));	\
+> > +	} while (0)
+> > +
+> 
+> This thing isn't as straight forward as you might think, but it'll
+> mostly work.
+> 
+> Notably this thing will misfire when lockdep_off() is employed. It
+> certainyl needs a comment to explain the subtleties.
 
-> On 2021-02-15 05:54, Kalle Valo wrote:
->> Felix Fietkau <nbd@nbd.name> writes:
->> 
->>> When transmitting to a receiver in dynamic SMPS mode, all transmissions that
->>> use multiple spatial streams need to be sent using CTS-to-self or RTS/CTS to
->>> give the receiver's extra chains some time to wake up.
->>> This fixes the tx rate getting stuck at <= MCS7 for some clients, especially
->>> Intel ones, which make aggressive use of SMPS.
->>>
->>> Cc: stable@vger.kernel.org
->>> Reported-by: Martin Kennedy <hurricos@gmail.com>
->>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->> 
->> No Fixes tag so I assume this is not a regression?
->> 
->> Should this go to v5.12 or -next? I guess that depends how much testing
->> this patch has got.
->
-> I'd prefer v5.12. I got confirmation that the patch makes a big
-> difference in throughput with Intel clients (makes tx with MCS > 7
-> work), and I think there is very little potential for regressions.
+I think something like so will work, but please double check.
 
-Good, I'll queue this to v5.12 then. And we have plenty of time to fix
-any regressions anyway.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index b9e9adec73e8..c8b0d292bf8e 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -294,11 +294,15 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
+ 
+ #define lockdep_depth(tsk)	(debug_locks ? (tsk)->lockdep_depth : 0)
+ 
+-#define lockdep_assert_held(l)	do {				\
+-		WARN_ON(debug_locks && !lockdep_is_held(l));	\
++#define lockdep_assert_held(l)	do {					\
++		WARN_ON(debug_locks && lockdep_is_held(l) == 0));	\
+ 	} while (0)
+ 
+-#define lockdep_assert_held_write(l)	do {			\
++#define lockdep_assert_not_held(l)	do {				\
++		WARN_ON(debug_locks && lockdep_is_held(l) == 1));	\
++	} while (0)
++
++#define lockdep_assert_held_write(l)	do {				\
+ 		WARN_ON(debug_locks && !lockdep_is_held_type(l, 0));	\
+ 	} while (0)
+ 
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index c1418b47f625..983ba206f7b2 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -5467,7 +5467,7 @@ noinstr int lock_is_held_type(const struct lockdep_map *lock, int read)
+ 	int ret = 0;
+ 
+ 	if (unlikely(!lockdep_enabled()))
+-		return 1; /* avoid false negative lockdep_assert_held() */
++		return -1; /* avoid false negative lockdep_assert_held() */
+ 
+ 	raw_local_irq_save(flags);
+ 	check_flags(flags);
