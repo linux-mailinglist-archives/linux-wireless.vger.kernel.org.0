@@ -2,83 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29D1B31CB6E
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Feb 2021 14:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 264BD31CCDF
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Feb 2021 16:25:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbhBPNwZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Feb 2021 08:52:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43722 "EHLO
+        id S229927AbhBPPWw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Feb 2021 10:22:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229713AbhBPNwW (ORCPT
+        with ESMTP id S230087AbhBPPWt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Feb 2021 08:52:22 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84341C06174A
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Feb 2021 05:51:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=RSI6oKrtNkOYmjgNvOUbqLJBGmnOq4IwXSdNDvURzeg=; b=cy85HkeVbYWaKc/uRMjNuRRI3M
-        WY/axb/1xIxYMN4YcjWBi80y297DOHPh4lVK1NWjE76kBdnK+x5lrGqfGq86vtaZNM2strM3yeuVN
-        xBDvo5bVDwK9BVFnSvzx78S/nuhV3beTT2jkh+TzTTNtwjOCI6yudHSZeDb1o6XvXZ78=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lC0l9-0004IS-Kn; Tue, 16 Feb 2021 14:51:23 +0100
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@codeaurora.org
-Subject: [PATCH 5.12 2/2] mt76: mt7915: only modify tx buffer list after allocating tx token id
-Date:   Tue, 16 Feb 2021 14:51:19 +0100
-Message-Id: <20210216135119.23809-2-nbd@nbd.name>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20210216135119.23809-1-nbd@nbd.name>
-References: <20210216135119.23809-1-nbd@nbd.name>
+        Tue, 16 Feb 2021 10:22:49 -0500
+Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4CB9C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Feb 2021 07:22:09 -0800 (PST)
+Received: by mail-il1-x12c.google.com with SMTP id a16so8571221ilq.5
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Feb 2021 07:22:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=SCrgrLSKV5HQB6OBnUPMDNWqngKo2XMqSrnq8eY6WsA=;
+        b=ajjegBvT4OQM+IdOuLpL2uld2MxN/oDN6kZGeQJ6jVE0ibi30A0gcI4qbR9hT+SZCM
+         5xoSEvrsss7NQehq3M+FqsXtU8DQ0gdGxQkulre0qG0YTQMb0HgQXAykzpEb+D7K5m5S
+         UpDkHHhPyzJyEjDFP0lQRO3TDLGDiqmaU9Rpc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=SCrgrLSKV5HQB6OBnUPMDNWqngKo2XMqSrnq8eY6WsA=;
+        b=fYK3Q/su186X4rYPPiXZ48bI0R+0IKW5MYJP1Ub76HO3rXqQJzyXJp48zoMZUotexV
+         HFFn8/O/0a9lIctdPNrUZfuQsWcfS2osYIaEy5TCIF6dUHkcfRLMJQf5zxfguH0Z8Ocx
+         6MhuDpyAWLrGwF9Mos7c2glfNWD2DXMBQhaQIbOop12ERSFinSqtMY+NDcIAGjGOGV2f
+         6MkbPLhUqg0d+xJz9BLjxP6jGrTXhUewDKGvJNIhH3JbEqVKYUOqEMrXr8th5UxmJ5kS
+         MQdQmQSVUGf9ddZCrGyFMgpJjapV003UVYz8oP96nQyRsyBfeSEkOdE6HH4WPTY9vufW
+         zuNA==
+X-Gm-Message-State: AOAM531lrmBhNIjitX43zvBiovTPhWI0xV4ydAWX7z4LO2ZgNO0mu0w4
+        cRMa26JVsmqFyPRFT2+M0oMTbA==
+X-Google-Smtp-Source: ABdhPJx3G2o9JD9i7oWOVErd5QMCAoO1+MR1d8GDb1F3pSgZpS4a6A8llKG9+kyOBG7Q5e+j9HmybA==
+X-Received: by 2002:a92:d691:: with SMTP id p17mr16842092iln.135.1613488929142;
+        Tue, 16 Feb 2021 07:22:09 -0800 (PST)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id i4sm10577363ioa.30.2021.02.16.07.22.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Feb 2021 07:22:08 -0800 (PST)
+Subject: Re: [PATCH 2/2] ath9k: fix ath_tx_process_buffer() potential null ptr
+ dereference
+To:     Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     davem@davemloft.net, kuba@kernel.org, ath9k-devel@qca.qualcomm.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <43ed9abb9e8d7112f3cc168c2f8c489e253635ba.1613090339.git.skhan@linuxfoundation.org>
+ <20210216070336.D138BC43463@smtp.codeaurora.org>
+ <0fd9a538-e269-e10e-a7f9-02d4c5848420@nbd.name>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <caac2b21-d5de-32ac-0fe0-75af8fb80bbb@linuxfoundation.org>
+Date:   Tue, 16 Feb 2021 08:22:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <0fd9a538-e269-e10e-a7f9-02d4c5848420@nbd.name>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Modifying the tx buffer list too early can leak DMA mappings
+On 2/16/21 12:53 AM, Felix Fietkau wrote:
+> 
+> On 2021-02-16 08:03, Kalle Valo wrote:
+>> Shuah Khan <skhan@linuxfoundation.org> wrote:
+>>
+>>> ath_tx_process_buffer() references ieee80211_find_sta_by_ifaddr()
+>>> return pointer (sta) outside null check. Fix it by moving the code
+>>> block under the null check.
+>>>
+>>> This problem was found while reviewing code to debug RCU warn from
+>>> ath10k_wmi_tlv_parse_peer_stats_info() and a subsequent manual audit
+>>> of other callers of ieee80211_find_sta_by_ifaddr() that don't hold
+>>> RCU read lock.
+>>>
+>>> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>>
+>> Patch applied to ath-next branch of ath.git, thanks.
+>>
+>> a56c14bb21b2 ath9k: fix ath_tx_process_buffer() potential null ptr dereference
+> I just took another look at this patch, and it is completely bogus.
+> Not only does the stated reason not make any sense (sta is simply passed
+> to other functions, not dereferenced without checks), but this also
+> introduces a horrible memory leak by skipping buffer completion if sta
+> is NULL.
+> Please drop it, the code is fine as-is.
+> 
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+A comment describing what you said here might be a good addition to this
+comment block though.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index eb889f8d6fea..e5a258958ac9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -967,11 +967,6 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	}
- 	txp->nbuf = nbuf;
- 
--	/* pass partial skb header to fw */
--	tx_info->buf[1].len = MT_CT_PARSE_LEN;
--	tx_info->buf[1].skip_unmap = true;
--	tx_info->nbuf = MT_CT_DMA_BUF_NUM;
--
- 	txp->flags = cpu_to_le16(MT_CT_INFO_APPLY_TXD | MT_CT_INFO_FROM_HOST);
- 
- 	if (!key)
-@@ -1009,6 +1004,11 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 		txp->rept_wds_wcid = cpu_to_le16(0x3ff);
- 	tx_info->skb = DMA_DUMMY_DATA;
- 
-+	/* pass partial skb header to fw */
-+	tx_info->buf[1].len = MT_CT_PARSE_LEN;
-+	tx_info->buf[1].skip_unmap = true;
-+	tx_info->nbuf = MT_CT_DMA_BUF_NUM;
-+
- 	return 0;
- }
- 
--- 
-2.28.0
+thanks,
+-- Shuah
 
