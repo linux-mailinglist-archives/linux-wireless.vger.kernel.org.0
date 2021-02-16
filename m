@@ -2,105 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F239931C600
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Feb 2021 05:31:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C647631C6AD
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Feb 2021 08:04:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229996AbhBPEbR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Feb 2021 23:31:17 -0500
-Received: from m12-16.163.com ([220.181.12.16]:45325 "EHLO m12-16.163.com"
+        id S229784AbhBPHE3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Feb 2021 02:04:29 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:53865 "EHLO z11.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229910AbhBPEbN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Feb 2021 23:31:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=hboCNnAqFehWE69dM1
-        PgkN2wYQNA1HFncAXe/EplEqA=; b=iV3Fb/BsDarUdAE2B5f16hf6gTSOAzpPGJ
-        hkXFnHgga4ZMusUHHO5avxfPw/2KdX1T2goBpvBa4HYeVpg+FR/ZIbILP+7CorEI
-        VI6ysFBeBkgrLXilS3HbC2UtK3xUGY/fMS1uStiExbw6uDyHR08Ak+CHkG3/vk9n
-        hroNTsINw=
-Received: from localhost.localdomain (unknown [125.70.193.99])
-        by smtp12 (Coremail) with SMTP id EMCowACHIUkjSitgp1XkcA--.19808S2;
-        Tue, 16 Feb 2021 12:29:27 +0800 (CST)
-From:   Chen Lin <chen45464546@163.com>
-To:     pizza@shaftnet.org
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chen Lin <chen.lin5@zte.com.cn>
-Subject: [PATCH] cw1200: Remove unused function pointer typedef wsm_*
-Date:   Tue, 16 Feb 2021 12:30:33 +0800
-Message-Id: <1613449833-4910-1-git-send-email-chen45464546@163.com>
-X-Mailer: git-send-email 1.7.9.5
-X-CM-TRANSID: EMCowACHIUkjSitgp1XkcA--.19808S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uw15GryxWr1ruw4DtF4UCFg_yoW8Cw15pF
-        Z8Gay7KrWruFn0934UJr4Fv39xtanag3WDCrWDCw1S9rn7twn5GryUtw13JryYyayfWFya
-        yrn0yrWxAr1jkrUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jfL05UUUUU=
-X-Originating-IP: [125.70.193.99]
-X-CM-SenderInfo: hfkh0kqvuwkkiuw6il2tof0z/xtbBzgc7nlQHLpPThQAAsU
+        id S229635AbhBPHE0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Feb 2021 02:04:26 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1613459043; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=1hSt3wBVRzL1X2DnMZ20N61Zl1K47ziXTYF+NXq/lH0=;
+ b=KAQW9tygRIoAdWNAZZIUxcr0RnwvtcMH/mz3ZBF0CZ99kcAB5DcuzmsezkrMxdAnNj2AlsSN
+ MG9rxrx1JKUAitT9AwY+Qvc2P7XYsum4d1b+zgzbzqOvLNfOIHO0ESpTg4Dz0GGKNXejv0JV
+ YgAmgquGCgDfhWfAIQzCcKFSGJM=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 602b6e4981f6c45dce16c560 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Feb 2021 07:03:37
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D138BC43463; Tue, 16 Feb 2021 07:03:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4EC34C433C6;
+        Tue, 16 Feb 2021 07:03:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4EC34C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 2/2] ath9k: fix ath_tx_process_buffer() potential null ptr
+ dereference
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <43ed9abb9e8d7112f3cc168c2f8c489e253635ba.1613090339.git.skhan@linuxfoundation.org>
+References: <43ed9abb9e8d7112f3cc168c2f8c489e253635ba.1613090339.git.skhan@linuxfoundation.org>
+To:     Shuah Khan <skhan@linuxfoundation.org>
+Cc:     davem@davemloft.net, kuba@kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210216070336.D138BC43463@smtp.codeaurora.org>
+Date:   Tue, 16 Feb 2021 07:03:36 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chen Lin <chen.lin5@zte.com.cn>
+Shuah Khan <skhan@linuxfoundation.org> wrote:
 
-Remove the 'wsm_*' typedef as it is not used.
+> ath_tx_process_buffer() references ieee80211_find_sta_by_ifaddr()
+> return pointer (sta) outside null check. Fix it by moving the code
+> block under the null check.
+> 
+> This problem was found while reviewing code to debug RCU warn from
+> ath10k_wmi_tlv_parse_peer_stats_info() and a subsequent manual audit
+> of other callers of ieee80211_find_sta_by_ifaddr() that don't hold
+> RCU read lock.
+> 
+> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Signed-off-by: Chen Lin <chen.lin5@zte.com.cn>
----
- drivers/net/wireless/st/cw1200/wsm.h |   12 ------------
- 1 file changed, 12 deletions(-)
+Patch applied to ath-next branch of ath.git, thanks.
 
-diff --git a/drivers/net/wireless/st/cw1200/wsm.h b/drivers/net/wireless/st/cw1200/wsm.h
-index 1ffa479..89fdc91 100644
---- a/drivers/net/wireless/st/cw1200/wsm.h
-+++ b/drivers/net/wireless/st/cw1200/wsm.h
-@@ -785,8 +785,6 @@ struct wsm_tx_confirm {
- };
- 
- /* 3.15 */
--typedef void (*wsm_tx_confirm_cb) (struct cw1200_common *priv,
--				   struct wsm_tx_confirm *arg);
- 
- /* Note that ideology of wsm_tx struct is different against the rest of
-  * WSM API. wsm_hdr is /not/ a caller-adapted struct to be used as an input
-@@ -862,9 +860,6 @@ struct wsm_rx {
- /* = sizeof(generic hi hdr) + sizeof(wsm hdr) */
- #define WSM_RX_EXTRA_HEADROOM (16)
- 
--typedef void (*wsm_rx_cb) (struct cw1200_common *priv, struct wsm_rx *arg,
--			   struct sk_buff **skb_p);
--
- /* 3.17 */
- struct wsm_event {
- 	/* WSM_STATUS_... */
-@@ -1180,8 +1175,6 @@ struct wsm_switch_channel {
- int wsm_switch_channel(struct cw1200_common *priv,
- 		       const struct wsm_switch_channel *arg);
- 
--typedef void (*wsm_channel_switch_cb) (struct cw1200_common *priv);
--
- #define WSM_START_REQ_ID 0x0017
- #define WSM_START_RESP_ID 0x0417
- 
-@@ -1240,8 +1233,6 @@ int wsm_beacon_transmit(struct cw1200_common *priv,
- 
- int wsm_stop_find(struct cw1200_common *priv);
- 
--typedef void (*wsm_find_complete_cb) (struct cw1200_common *priv, u32 status);
--
- struct wsm_suspend_resume {
- 	/* See 3.52 */
- 	/* Link ID */
-@@ -1256,9 +1247,6 @@ struct wsm_suspend_resume {
- 	/* [out] */ int queue;
- };
- 
--typedef void (*wsm_suspend_resume_cb) (struct cw1200_common *priv,
--				       struct wsm_suspend_resume *arg);
--
- /* 3.54 Update-IE request. */
- struct wsm_update_ie {
- 	/* WSM_UPDATE_IE_... */
+a56c14bb21b2 ath9k: fix ath_tx_process_buffer() potential null ptr dereference
+
 -- 
-1.7.9.5
+https://patchwork.kernel.org/project/linux-wireless/patch/43ed9abb9e8d7112f3cc168c2f8c489e253635ba.1613090339.git.skhan@linuxfoundation.org/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
