@@ -2,91 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2356C31D3F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Feb 2021 03:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0C8731D5B3
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Feb 2021 08:32:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbhBQC35 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Feb 2021 21:29:57 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:11496 "EHLO z11.mailgun.us"
+        id S231612AbhBQHbv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Feb 2021 02:31:51 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:64451 "EHLO z11.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229553AbhBQC35 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Feb 2021 21:29:57 -0500
+        id S231383AbhBQHbt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Feb 2021 02:31:49 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1613528972; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=yYdgIAo1Ezv+KQtwbN1C/nqqV5mWYRPAN6dyt7pEHfM=;
- b=PT3SPo4qb4ubUj/G5pmK3xgUYaVTeiaNIzB7D2n8IJUIonA1KxRIHTEijd1hjEdQcrhyO++i
- 6zUy+jJ3zshsUCrvw2xbSmFiK3eeW/NFFQgneWYR+ww6MpH7fYEK5D6YCAJpOS29l/pSrTse
- cMx2Yl0bMEGE0mAc5MccT8LpPqc=
+ s=smtp; t=1613547089; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=VdTuFW1eZ3KIE8WTPHjDwu+M4861ybBJaxdd7BYbVgs=; b=gpRl6EI0zsNXZGsmWnIQlOfmCIUpBJa416/F01MfaSu8qNA0oE0SPtoIDWugBe78B97bA96U
+ ex0eDkgZ6MqgViDlJ0VnFHXsLbU+Vdi6Lmyc8zpLS25w/NwKBJE4dTgw/zb6/fCvG4jYMxjh
+ n+OFUFrRMLuh/wuZgDhfvsojP/o=
 X-Mailgun-Sending-Ip: 104.130.96.11
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 602c7f6706bddda9dfdf2c66 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Feb 2021 02:28:55
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 602cc6350b8eba4b52b50f20 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Feb 2021 07:31:01
  GMT
-Sender: akolli=codeaurora.org@mg.codeaurora.org
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8858BC433ED; Wed, 17 Feb 2021 02:28:54 +0000 (UTC)
+        id C6E75C43465; Wed, 17 Feb 2021 07:31:00 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E4834C433CA;
-        Wed, 17 Feb 2021 02:28:53 +0000 (UTC)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B0331C433CA;
+        Wed, 17 Feb 2021 07:30:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B0331C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Shuah Khan <skhan@linuxfoundation.org>
+Cc:     Felix Fietkau <nbd@nbd.name>, davem@davemloft.net, kuba@kernel.org,
+        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] ath9k: fix ath_tx_process_buffer() potential null ptr dereference
+References: <43ed9abb9e8d7112f3cc168c2f8c489e253635ba.1613090339.git.skhan@linuxfoundation.org>
+        <20210216070336.D138BC43463@smtp.codeaurora.org>
+        <0fd9a538-e269-e10e-a7f9-02d4c5848420@nbd.name>
+        <caac2b21-d5de-32ac-0fe0-75af8fb80bbb@linuxfoundation.org>
+Date:   Wed, 17 Feb 2021 09:30:55 +0200
+In-Reply-To: <caac2b21-d5de-32ac-0fe0-75af8fb80bbb@linuxfoundation.org> (Shuah
+        Khan's message of "Tue, 16 Feb 2021 08:22:07 -0700")
+Message-ID: <878s7nqhg0.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 17 Feb 2021 07:58:53 +0530
-From:   akolli@codeaurora.org
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        linux-wireless@vger.kernel.org, kvalo=codeaurora.org@codeaurora.org
-Subject: Re: [PATCH 06/11] ath11k: add static window support for register
- access
-In-Reply-To: <87czx0q7vy.fsf@codeaurora.org>
-References: <1612946530-28504-1-git-send-email-akolli@codeaurora.org>
- <1612946530-28504-7-git-send-email-akolli@codeaurora.org>
- <87czx0q7vy.fsf@codeaurora.org>
-Message-ID: <c8b8ce58aacef47cdce6398afd53eb54@codeaurora.org>
-X-Sender: akolli@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-02-16 22:15, Kalle Valo wrote:
-> Anilkumar Kolli <akolli@codeaurora.org> writes:
-> 
->> From: Karthikeyan Periyasamy <periyasa@codeaurora.org>
->> 
->> Three window slots can be configure. First window slot
->> dedicate for dynamic selection and remaining two slots
->> dedicate for static selection. To optimise the window
->> selection, frequent registers (UMAC, CE) are configure
->> in static window slot. so that we minimise the window
->> selection. Other registers are configure in dynamic window
->> slot. Get the window start address from the respective
->> offset and access the read/write register.
->> 
->> Tested-on: QCN9074 hw1.0 PCI 
->> WLAN.HK.2.4.0.1.r2-00012-QCAHKSWPL_SILICONZ-1
->> 
->> Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
-> 
-> Patches 6-10 are missing Anil's s-o-b. Anil, can I add them? If you
-> agree, please reply to this mail and include your s-o-b in the reply.
+Shuah Khan <skhan@linuxfoundation.org> writes:
 
-Sure Kalle, please add my s-o-b.
-Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+> On 2/16/21 12:53 AM, Felix Fietkau wrote:
+>>
+>> On 2021-02-16 08:03, Kalle Valo wrote:
+>>> Shuah Khan <skhan@linuxfoundation.org> wrote:
+>>>
+>>>> ath_tx_process_buffer() references ieee80211_find_sta_by_ifaddr()
+>>>> return pointer (sta) outside null check. Fix it by moving the code
+>>>> block under the null check.
+>>>>
+>>>> This problem was found while reviewing code to debug RCU warn from
+>>>> ath10k_wmi_tlv_parse_peer_stats_info() and a subsequent manual audit
+>>>> of other callers of ieee80211_find_sta_by_ifaddr() that don't hold
+>>>> RCU read lock.
+>>>>
+>>>> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+>>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>>>
+>>> Patch applied to ath-next branch of ath.git, thanks.
+>>>
+>>> a56c14bb21b2 ath9k: fix ath_tx_process_buffer() potential null ptr dereference
+>> I just took another look at this patch, and it is completely bogus.
+>> Not only does the stated reason not make any sense (sta is simply passed
+>> to other functions, not dereferenced without checks), but this also
+>> introduces a horrible memory leak by skipping buffer completion if sta
+>> is NULL.
+>> Please drop it, the code is fine as-is.
+>
+> A comment describing what you said here might be a good addition to this
+> comment block though.
 
-Thanks
-Anil
+Shuah, can you send a followup patch which reverts your change and adds
+the comment? I try to avoid rebasing my trees.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
