@@ -2,115 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BCF31DBC1
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Feb 2021 15:58:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FDBA31DF79
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Feb 2021 20:18:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233630AbhBQO5k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Feb 2021 09:57:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54296 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233622AbhBQO5h (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Feb 2021 09:57:37 -0500
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 531EEC0613D6
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Feb 2021 06:56:57 -0800 (PST)
-Received: by mail-il1-x12f.google.com with SMTP id z18so11489238ile.9
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Feb 2021 06:56:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ydHdMTd4ps0AXeryEcGbvz8MsZ78eQIQNAjnZKZ5I+Q=;
-        b=QArniZnH1HDN6XbvShuegQf8ATVhoFhQM5Sx7rfRv8KxefFdxWqqxZXVJJRewt1t9B
-         ui/nmcdNhusE232TDbipsbl7LSrJ2CDBYSH+/tbcHgCtWSljTZ8gAKTsF6RvKJJUI3SV
-         Sz1RjjI5qqmQw+u5ReOCNewVDaMRHDst8qXHo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ydHdMTd4ps0AXeryEcGbvz8MsZ78eQIQNAjnZKZ5I+Q=;
-        b=PDwCc0FcypqUfiF7Nnwt3iOPOe4GyShTf8hh5t5a4JwR3QwUYeFSSro1Avhtftp1E1
-         HAQwED6n6vtMRtHr4tDxYvy5KKbzE0P45z7IE/p0XJ/siU04zDW8jjGL80lQdC7uMH4g
-         89vLjd4qyb5LFhpGHPLDQUGSArugac9Uwb+cnTuYXm3hwrEsEdNtDAN+q3djVFVeDb9Z
-         Y/naqRxZaQQu5vXoMeNGzD6w5YBtsy7QKD6SQsRBKkHzD1V2yBgNibvW83KThWVHaci7
-         aVnJESDPImbN9S1bqUeTq1Hw3YGppZUhPEx5x4v2V2JAPv+Smn5u59aIvJWo9gLJpe8k
-         COnA==
-X-Gm-Message-State: AOAM532EhJni9WSWsaC3d8aPR353WFsTwUWAriK1T/+lLWyl7yDCW/Dq
-        sSFpWMpysBHiKfrnYri7zN4X0g==
-X-Google-Smtp-Source: ABdhPJw5y5a0RH3ydxnaC8AND6fqVq95Foh3kAjnn/EOfAMY55LcXRd2zLwX7KDppkSNGv0xtdzQBA==
-X-Received: by 2002:a92:8557:: with SMTP id f84mr21452757ilh.4.1613573816719;
-        Wed, 17 Feb 2021 06:56:56 -0800 (PST)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id n23sm1415589iog.3.2021.02.17.06.56.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Feb 2021 06:56:56 -0800 (PST)
-Subject: Re: [PATCH 2/2] ath9k: fix ath_tx_process_buffer() potential null ptr
- dereference
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Felix Fietkau <nbd@nbd.name>, davem@davemloft.net, kuba@kernel.org,
-        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <43ed9abb9e8d7112f3cc168c2f8c489e253635ba.1613090339.git.skhan@linuxfoundation.org>
- <20210216070336.D138BC43463@smtp.codeaurora.org>
- <0fd9a538-e269-e10e-a7f9-02d4c5848420@nbd.name>
- <caac2b21-d5de-32ac-0fe0-75af8fb80bbb@linuxfoundation.org>
- <878s7nqhg0.fsf@codeaurora.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <6bbeb37f-620e-d92d-d042-a507bbb39808@linuxfoundation.org>
-Date:   Wed, 17 Feb 2021 07:56:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
-MIME-Version: 1.0
-In-Reply-To: <878s7nqhg0.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S232476AbhBQTR7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Feb 2021 14:17:59 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:35598 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229804AbhBQTRf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Feb 2021 14:17:35 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1613589430; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=+Uv8rzU3yyfu1nObMEb3ysJ1lA3TWYdg3pXEEeXsODg=; b=vIQX840HAmpa17Oa6+csFWgf3q+uoUkU1I/Q9CvTfGZebTgR2Uvzm9zTjet+Xh/Cf69kOiSo
+ OXxm/Xj3h+oOPw1Muz3902/EhxwOkpTz2yKpuxpkGPVpSmBatG1grMKDBEqY0dtIP/aRlAHH
+ uWzd4+yW/JhcNqqq25i91040lLE=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 602d6b9d3af8a93304cf0db4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Feb 2021 19:16:45
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 538C5C433CA; Wed, 17 Feb 2021 19:16:44 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1BD60C433CA;
+        Wed, 17 Feb 2021 19:16:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1BD60C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] ath11k: print hardware name and version during initialisation
+Date:   Wed, 17 Feb 2021 21:16:40 +0200
+Message-Id: <1613589400-18891-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/17/21 12:30 AM, Kalle Valo wrote:
-> Shuah Khan <skhan@linuxfoundation.org> writes:
-> 
->> On 2/16/21 12:53 AM, Felix Fietkau wrote:
->>>
->>> On 2021-02-16 08:03, Kalle Valo wrote:
->>>> Shuah Khan <skhan@linuxfoundation.org> wrote:
->>>>
->>>>> ath_tx_process_buffer() references ieee80211_find_sta_by_ifaddr()
->>>>> return pointer (sta) outside null check. Fix it by moving the code
->>>>> block under the null check.
->>>>>
->>>>> This problem was found while reviewing code to debug RCU warn from
->>>>> ath10k_wmi_tlv_parse_peer_stats_info() and a subsequent manual audit
->>>>> of other callers of ieee80211_find_sta_by_ifaddr() that don't hold
->>>>> RCU read lock.
->>>>>
->>>>> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
->>>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->>>>
->>>> Patch applied to ath-next branch of ath.git, thanks.
->>>>
->>>> a56c14bb21b2 ath9k: fix ath_tx_process_buffer() potential null ptr dereference
->>> I just took another look at this patch, and it is completely bogus.
->>> Not only does the stated reason not make any sense (sta is simply passed
->>> to other functions, not dereferenced without checks), but this also
->>> introduces a horrible memory leak by skipping buffer completion if sta
->>> is NULL.
->>> Please drop it, the code is fine as-is.
->>
->> A comment describing what you said here might be a good addition to this
->> comment block though.
-> 
-> Shuah, can you send a followup patch which reverts your change and adds
-> the comment? I try to avoid rebasing my trees.
-> 
+This way it's easy for the user to find what device is actually installed. This
+also helps reporting bugs.
 
+Screenshot:
 
-I can do that.
+[  459.988812] ath11k_pci 0000:06:00.0: BAR 0: assigned [mem 0xdb000000-0xdbffffff 64bit]
+[  459.988867] ath11k_pci 0000:06:00.0: enabling device (0000 -> 0002)
+[  459.997048] ath11k_pci 0000:06:00.0: qca6390 hw2.0
+[  460.058093] mhi mhi0: Requested to power ON
+[  460.059741] mhi mhi0: Power on setup success
+[  460.476924] ath11k_pci 0000:06:00.0: chip_id 0x0 chip_family 0xb board_id 0xff soc_id 0xffffffff
+[  460.477032] ath11k_pci 0000:06:00.0: fw_version 0x101c06cc fw_build_timestamp 2020-06-24 19:50 fw_build_id
 
-thanks,
--- Shuah
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index ddedc331edef..77ce3347ab86 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1017,7 +1017,7 @@ static int ath11k_init_hw_params(struct ath11k_base *ab)
+ 
+ 	ab->hw_params = *hw_params;
+ 
+-	ath11k_dbg(ab, ATH11K_DBG_BOOT, "Hardware name %s\n", ab->hw_params.name);
++	ath11k_info(ab, "%s\n", ab->hw_params.name);
+ 
+ 	return 0;
+ }
+-- 
+2.7.4
+
