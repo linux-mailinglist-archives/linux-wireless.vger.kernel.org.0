@@ -2,128 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA22A31E187
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Feb 2021 22:38:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C79831E34C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Feb 2021 00:56:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232733AbhBQVhk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Feb 2021 16:37:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55536 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbhBQVhd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Feb 2021 16:37:33 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA95BC061574;
-        Wed, 17 Feb 2021 13:36:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:
-        Mime-Version:From:Content-Transfer-Encoding:Content-Type:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=/uZNGi666T9AmszXFdp2hSTIV5QmDVisC5kGWzPltv4=; b=gyGiYZP/VYLjWaMcd2rusQ1bHU
-        Ou2nATawQkD3aWr0LhiAqrPr7zvLO9/sXQR6u6ygILHvcHtk0+FEf9FQChPrTvHhjwWGjd+OaUySk
-        rzvcJqt7bElclKYtK2NM2KTYyafrGXgJrTCFeIA93X2QFx4Eg+Smxlf52ziXgpvIaPnk=;
-Received: from [2a01:598:b105:cab0:200c:a5c2:fc75:64e4]
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lCUUm-0002xn-5w; Wed, 17 Feb 2021 22:36:28 +0100
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   Felix Fietkau <nbd@nbd.name>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH 2/2] ath9k: fix ath_tx_process_buffer() potential null ptr dereference
-Date:   Wed, 17 Feb 2021 22:36:27 +0100
-Message-Id: <0B055508-7269-4D12-B355-586C8EEE26DD@nbd.name>
-References: <5d70b0ab-0627-74a1-3602-98a7c71b871a@linuxfoundation.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, davem@davemloft.net,
-        kuba@kernel.org, ath9k-devel@qca.qualcomm.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <5d70b0ab-0627-74a1-3602-98a7c71b871a@linuxfoundation.org>
-To:     Shuah Khan <skhan@linuxfoundation.org>
-X-Mailer: iPhone Mail (17F75)
+        id S230292AbhBQX4c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Feb 2021 18:56:32 -0500
+Received: from mga02.intel.com ([134.134.136.20]:16943 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229804AbhBQX4b (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Feb 2021 18:56:31 -0500
+IronPort-SDR: Q4zFW2QF2Z4CUDiPa4OoWcVmwuNXK5FtAJMacz3UGdmrilxvVhR/DZkxiud7kb/asZIp0o+j52
+ XLztc9tfMBqw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9898"; a="170486017"
+X-IronPort-AV: E=Sophos;i="5.81,185,1610438400"; 
+   d="scan'208";a="170486017"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2021 15:55:47 -0800
+IronPort-SDR: amIBj2d4APdWEtc9VCs4SLY8HMDet3Inkm61y80/z98z5LHbZBj4le1KMSM1zv7LJVFLdqev0i
+ sDBDE4Id8cxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,185,1610438400"; 
+   d="scan'208";a="426931463"
+Received: from lkp-server02.sh.intel.com (HELO cd560a204411) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 17 Feb 2021 15:55:45 -0800
+Received: from kbuild by cd560a204411 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lCWfZ-0009Ip-4A; Wed, 17 Feb 2021 23:55:45 +0000
+Date:   Thu, 18 Feb 2021 07:54:56 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS
+ b646acd5eb48ec49ef90404336d7e8ee502ecd05
+Message-ID: <602dacd0.Akp9a7ZVWl5iv+ZW%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
+branch HEAD: b646acd5eb48ec49ef90404336d7e8ee502ecd05  net: re-solve some conflicts after net -> net-next merge
 
-> On 17. Feb 2021, at 21:28, Shuah Khan <skhan@linuxfoundation.org> wrote:
->=20
-> =EF=BB=BFOn 2/17/21 7:56 AM, Shuah Khan wrote:
->>> On 2/17/21 12:30 AM, Kalle Valo wrote:
->>> Shuah Khan <skhan@linuxfoundation.org> writes:
->>>=20
->>>> On 2/16/21 12:53 AM, Felix Fietkau wrote:
->>>>>=20
->>>>> On 2021-02-16 08:03, Kalle Valo wrote:
->>>>>> Shuah Khan <skhan@linuxfoundation.org> wrote:
->>>>>>=20
->>>>>>> ath_tx_process_buffer() references ieee80211_find_sta_by_ifaddr()
->>>>>>> return pointer (sta) outside null check. Fix it by moving the code
->>>>>>> block under the null check.
->>>>>>>=20
->>>>>>> This problem was found while reviewing code to debug RCU warn from
->>>>>>> ath10k_wmi_tlv_parse_peer_stats_info() and a subsequent manual audit=
+elapsed time: 723m
 
->>>>>>> of other callers of ieee80211_find_sta_by_ifaddr() that don't hold
->>>>>>> RCU read lock.
->>>>>>>=20
->>>>>>> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
->>>>>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->>>>>>=20
->>>>>> Patch applied to ath-next branch of ath.git, thanks.
->>>>>>=20
->>>>>> a56c14bb21b2 ath9k: fix ath_tx_process_buffer() potential null ptr de=
-reference
->>>>> I just took another look at this patch, and it is completely bogus.
->>>>> Not only does the stated reason not make any sense (sta is simply pass=
-ed
->>>>> to other functions, not dereferenced without checks), but this also
->>>>> introduces a horrible memory leak by skipping buffer completion if sta=
+configs tested: 118
+configs skipped: 2
 
->>>>> is NULL.
->>>>> Please drop it, the code is fine as-is.
->>>>=20
->=20
-> Felix,
->=20
-> I looked at the code path again and found the following path that
-> can become a potential dereference downstream. My concern is
-> about potential dereference downstream.
->=20
-> First path: ath_tx_complete_buf()
->=20
-> 1. ath_tx_process_buffer() passes sta to ath_tx_complete_buf()
-> 2. ath_tx_complete_buf() doesn't check or dereference sta
->   Passes it on to ath_tx_complete()
-> 3. ath_tx_complete() doesn't check or dereference sta, but assigns
->   it to tx_info->status.status_driver_data[0]
->   tx_info->status.status_driver_data[0] =3D sta;
->=20
-> ath_tx_complete_buf() should be fixed to check sta perhaps?
->=20
-> This assignment without checking could lead to dereference at some
-> point in the future.
-The assignment is fine, no check needed here. If there was any invalid deref=
-erence here, we would see reports of crashes with NULL pointer dereference. S=
-ending packets with sta=3D=3DNULL is quite common, especially in AP mode.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> Second path: ath_tx_complete_aggr()
->=20
-> 1. ath_tx_process_buffer() passes sta to ath_tx_complete_aggr()
-> 2. No problems in this path as ath_tx_complete_aggr() checks
->   sta before use.
->=20
-> I can send the revert as it moves more code than necessary under
-> the null check. As you pointed out, it could lead to memory leak.
-> Not knowing this code well, I can't really tell where. However,
-> my original concern is valid for ath_tx_complete_buf
-I still don=E2=80=99t see anything to be concerned about. I don=E2=80=99t ev=
-en think passing a pointer that could be NULL to another function even deser=
-ves a comment in the code. Stuff like that is used in many other places as w=
-ell.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+xtensa                generic_kc705_defconfig
+powerpc                     redwood_defconfig
+arm                        shmobile_defconfig
+c6x                        evmc6678_defconfig
+powerpc                      walnut_defconfig
+ia64                            zx1_defconfig
+powerpc                  mpc885_ads_defconfig
+powerpc                mpc7448_hpc2_defconfig
+h8300                    h8300h-sim_defconfig
+arm                  colibri_pxa270_defconfig
+riscv                               defconfig
+sh                   rts7751r2dplus_defconfig
+mips                   sb1250_swarm_defconfig
+m68k                                defconfig
+arm                      jornada720_defconfig
+arm                       imx_v4_v5_defconfig
+ia64                          tiger_defconfig
+sh                           sh2007_defconfig
+sh                     sh7710voipgw_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a003-20210216
+x86_64               randconfig-a002-20210216
+x86_64               randconfig-a004-20210216
+x86_64               randconfig-a001-20210216
+x86_64               randconfig-a005-20210216
+x86_64               randconfig-a006-20210216
+i386                 randconfig-a003-20210217
+i386                 randconfig-a005-20210217
+i386                 randconfig-a002-20210217
+i386                 randconfig-a006-20210217
+i386                 randconfig-a001-20210217
+i386                 randconfig-a004-20210217
+i386                 randconfig-a003-20210216
+i386                 randconfig-a005-20210216
+i386                 randconfig-a002-20210216
+i386                 randconfig-a006-20210216
+i386                 randconfig-a001-20210216
+i386                 randconfig-a004-20210216
+x86_64               randconfig-a013-20210217
+x86_64               randconfig-a016-20210217
+x86_64               randconfig-a012-20210217
+x86_64               randconfig-a015-20210217
+x86_64               randconfig-a014-20210217
+x86_64               randconfig-a011-20210217
+x86_64               randconfig-a016-20210215
+x86_64               randconfig-a013-20210215
+x86_64               randconfig-a012-20210215
+x86_64               randconfig-a015-20210215
+x86_64               randconfig-a014-20210215
+x86_64               randconfig-a011-20210215
+i386                 randconfig-a016-20210216
+i386                 randconfig-a014-20210216
+i386                 randconfig-a012-20210216
+i386                 randconfig-a013-20210216
+i386                 randconfig-a011-20210216
+i386                 randconfig-a015-20210216
+i386                 randconfig-a016-20210217
+i386                 randconfig-a014-20210217
+i386                 randconfig-a012-20210217
+i386                 randconfig-a013-20210217
+i386                 randconfig-a011-20210217
+i386                 randconfig-a015-20210217
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-- Felix=
+clang tested configs:
+x86_64               randconfig-a003-20210215
+x86_64               randconfig-a002-20210215
+x86_64               randconfig-a001-20210215
+x86_64               randconfig-a004-20210215
+x86_64               randconfig-a005-20210215
+x86_64               randconfig-a006-20210215
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
