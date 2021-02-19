@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC3931FDE5
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Feb 2021 18:30:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BF8631FDE6
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Feb 2021 18:30:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229762AbhBSRaa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S229766AbhBSRaa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 19 Feb 2021 12:30:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35826 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:35828 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229755AbhBSRa3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S229752AbhBSRa3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 19 Feb 2021 12:30:29 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 406A864EB3;
-        Fri, 19 Feb 2021 17:29:28 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B012364EB4;
+        Fri, 19 Feb 2021 17:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613755769;
-        bh=YTnXJxbp4iMFaJefTnGhcfF8ZD7Kl5z84Qdir6O6OTw=;
+        s=k20201202; t=1613755770;
+        bh=9Kt1iqIuF9uVtbjCLpleISU4jYP/aYv06sPpjwtAk3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ieOSH6Ug7jqMoY/bqtGIuUX0PjHBK/FIdwKj4x6LQKReUQNz1/pZrrbePMnCewgWW
-         Qbuyk/z5At5AZeXTPDr0zF8dOuiEzkyscxeBTUy+GwCE5PPJKQhxMpeVmZYaIXPkK1
-         QRtAcZl/cDEiWxsFwI/Kit73Yks1SgMMbu6RuZg4qJoIr+wHHwKw4XGb2zsid4iRf7
-         569dyGsppuInKDnMTBZL74wvNzMGFa+rw+kP+FGz3tkFO6gZo5i27yWHiYMscyCShb
-         0sU05iTU1fMkgdZ8ZdkMW1Kz8Rsih+XZ9wQG3+DgYhdbTauxFKvrtav6GO+AOW4Tv/
-         FYXou51gQCYig==
+        b=IEV4sNK1rJKxUePBBCs8Z72O0vmofd4HUbHzw1WJEl/WsCcihZpGOBLvJreRA58ae
+         PKvPcOMqnyTUotZuYHyGKTBFgo+09IHNqoMxoQFn38jgUrwjPLxLrNLFPQjCLhhtfA
+         4eVes7WpTa4T58YJ0ooHJOwWvgGDvuE38baSj7fJa2dmG7oA9L3lqBzda7ZjtdV9mn
+         HMvywVlyv/i9z32IYFg/jTxp8zx9b0w6EAOZH/8rxCoKf/tr4Bil1tAy0nzwqhcqlD
+         q517v37TbvXlny5/szMqhmKeLbXMcA5xtiLgdzKKtXpNB53vELJCi5DZ6NpZH+k3/A
+         vweTGadjIQqvA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com
-Subject: [PATCH v2 7/8] mt76: mt7921: fix uninitialized pointer access in mt7921_get_wtbl_info
-Date:   Fri, 19 Feb 2021 18:28:50 +0100
-Message-Id: <1659ffde2cceea2914c1b87b89629bbacf15a62f.1613755428.git.lorenzo@kernel.org>
+Subject: [PATCH v2 8/8] mt76: connac: update sched_scan cmd usage
+Date:   Fri, 19 Feb 2021 18:28:51 +0100
+Message-Id: <d72e62226f5b61aa6333138a35db1f8cad588427.1613755428.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <cover.1613755428.git.lorenzo@kernel.org>
 References: <cover.1613755428.git.lorenzo@kernel.org>
@@ -41,63 +41,100 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-fix possible uninitialized pointer access in mt7921_get_wtbl_info
-routine
+Update sched_scan command usage according to the current firmware
+submitted into linux-firmware.git.
 
-[  270.073205] wlp1s0: deauthenticating from 9c:5c:8e:c9:93:14 by local choice (Reason: 3=DEAUTH_LEAVING)
-[  270.094918] 8<--- cut here ---
-[  270.097988] Unable to handle kernel NULL pointer dereference at virtual address 0000000a
-[  270.106120] pgd = 7ac68838
-[  270.108842] [0000000a] *pgd=00000000
-[  270.112426] Internal error: Oops: 805 [#1] SMP ARM
-[  270.117216] Modules linked in: mt7921e mt76_connac_lib mt76
-[  270.122803] CPU: 0 PID: 7 Comm: kworker/u8:0 Tainted: G        W         5.11.0-rc2+ #67
-[  270.130891] Hardware name: Mediatek Cortex-A7 (Device Tree)
-[  270.136459] Workqueue: phy0 mt7921_mac_work [mt7921e]
-[  270.141557] PC is at mt7921_get_wtbl_info+0x224/0x2d8 [mt7921e]
-[  270.147498] LR is at 0x0
-[  270.150026] pc : [<bf030398>]    lr : [<00000000>]    psr: 60000013
-
-...
-
-[  270.317696] 7fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[  270.325869] 7fe0: 00000000 00000000 00000000 00000000 00000013 00000000 00000000 00000000
-[  270.334043] [<bf030398>] (mt7921_get_wtbl_info [mt7921e]) from [<bf02ea9c>] (mt7921_mac_work+0x298/0x2c0 [mt7921e])
-[  270.344529] [<bf02ea9c>] (mt7921_mac_work [mt7921e]) from [<c013cde8>] (process_one_work+0x1f0/0x538)
-[  270.353780] [<c013cde8>] (process_one_work) from [<c013d17c>] (worker_thread+0x4c/0x55c)
-[  270.361874] [<c013d17c>] (worker_thread) from [<c01447a8>] (kthread+0x124/0x150)
-[  270.369275] [<c01447a8>] (kthread) from [<c0100150>] (ret_from_fork+0x14/0x24)
-[  270.376501] Exception stack(0xc19c7fb0 to 0xc19c7ff8)
-[  270.381550] 7fa0:                                     00000000 00000000 00000000 00000000
-[  270.389724] 7fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[  270.397896] 7fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[  270.404509] Code: e59de012 e1cdc1b6 e1cdc1b8 e59dc016 (e582e00a)
-
-Fixes: 1c099ab44727c ("mt76: mt7921: add MCU support")
+Fixes: 80fc1e37c0eb ("mt76: mt7921: rely on mt76_connac_mcu module for sched_scan and hw_scan")
+Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
+Signed-off-by: Soul Huang <Soul.Huang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h |  5 -----
+ drivers/net/wireless/mediatek/mt76/mt76_connac.h   |  5 +++++
+ .../net/wireless/mediatek/mt76/mt76_connac_mcu.c   |  7 +++++--
+ .../net/wireless/mediatek/mt76/mt76_connac_mcu.h   | 14 +++++++++++---
+ 4 files changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index d784c75d47bf..58de7f32a625 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -404,11 +404,10 @@ mt7921_mcu_tx_rate_report(struct mt7921_dev *dev, struct sk_buff *skb,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 491841bc6291..5ef19fbee6bd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -408,11 +408,6 @@ static inline bool is_mt7615(struct mt76_dev *dev)
+ 	return mt76_chip(dev) == 0x7615 || mt76_chip(dev) == 0x7611;
+ }
  
- 	if (wlan_idx >= MT76_N_WCIDS)
- 		return;
+-static inline bool is_mt7663(struct mt76_dev *dev)
+-{
+-	return mt76_chip(dev) == 0x7663;
+-}
+-
+ static inline bool is_mt7611(struct mt76_dev *dev)
+ {
+ 	return mt76_chip(dev) == 0x7611;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index 0d58606391b0..b811f3c410a1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -73,6 +73,11 @@ static inline bool is_mt7921(struct mt76_dev *dev)
+ 	return mt76_chip(dev) == 0x7961;
+ }
+ 
++static inline bool is_mt7663(struct mt76_dev *dev)
++{
++	return mt76_chip(dev) == 0x7663;
++}
 +
- 	wcid = rcu_dereference(dev->mt76.wcid[wlan_idx]);
--	if (!wcid) {
--		stats->tx_rate = rate;
-+	if (!wcid)
- 		return;
--	}
+ int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm);
+ void mt76_connac_power_save_sched(struct mt76_phy *phy,
+ 				  struct mt76_connac_pm *pm);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 81515419b5b6..125e02b34a5f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1438,10 +1438,13 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
+ 	req->version = 1;
+ 	req->seq_num = mvif->scan_seq_num | ext_phy << 7;
  
- 	msta = container_of(wcid, struct mt7921_sta, wcid);
- 	stats = &msta->stats;
+-	if (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
+-		get_random_mask_addr(req->random_mac, sreq->mac_addr,
++	if (is_mt7663(phy->dev) &&
++	    (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR)) {
++		get_random_mask_addr(req->mt7663.random_mac, sreq->mac_addr,
+ 				     sreq->mac_addr_mask);
+ 		req->scan_func = 1;
++	} else if (is_mt7921(phy->dev)) {
++		req->mt7921.bss_idx = mvif->idx;
+ 	}
+ 
+ 	req->ssids_num = sreq->n_ssids;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 9c26b90655a7..8478f019f5d3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -756,11 +756,19 @@ struct mt76_connac_sched_scan_req {
+ 	u8 channel_type;
+ 	u8 channels_num;
+ 	u8 intervals_num;
+-	u8 scan_func; /* BIT(0) eable random mac address */
++	u8 scan_func; /* MT7663: BIT(0) eable random mac address */
+ 	struct mt76_connac_mcu_scan_channel channels[64];
+ 	__le16 intervals[MT76_CONNAC_MAX_SCHED_SCAN_INTERVAL];
+-	u8 random_mac[ETH_ALEN]; /* valid when BIT(0) in scan_func is set */
+-	u8 pad2[58];
++	union {
++		struct {
++			u8 random_mac[ETH_ALEN];
++			u8 pad2[58];
++		} mt7663;
++		struct {
++			u8 bss_idx;
++			u8 pad2[63];
++		} mt7921;
++	};
+ } __packed;
+ 
+ struct mt76_connac_sched_scan_done {
 -- 
 2.29.2
 
