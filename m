@@ -2,95 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90E5831F4E2
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Feb 2021 06:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B52D31F554
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Feb 2021 08:18:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbhBSFme (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Feb 2021 00:42:34 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:44902 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbhBSFmd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Feb 2021 00:42:33 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 11J5fkZN3028986, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 11J5fkZN3028986
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 19 Feb 2021 13:41:47 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 19 Feb
- 2021 13:41:46 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <ku920601@realtek.com>,
-        <kevin_yang@realtek.com>
-Subject: [PATCH] rtw88: coex: add power off setting
-Date:   Fri, 19 Feb 2021 13:41:40 +0800
-Message-ID: <20210219054140.7835-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
+        id S229656AbhBSHSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Feb 2021 02:18:22 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:44628 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229636AbhBSHSW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Feb 2021 02:18:22 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1613719084; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=XnPBplKTeEgUlkIKsgNEBe4CAwle6UDe2Wk1H160kyM=; b=kp16gZ72ZucjCnrMC/h8ATxrIL9Hf+cFj3i/COIQxmCuqk5v4JWbNjHL4HDgNe4l3Siw0tG9
+ JZAs/77uWutl30mx6KXbSNbAvT6j7nOUwBOf2HR8n4Gq6rElSQMnA8bfj6Pj43zAHPDrQ2cI
+ hV/3Dxmcqd7h26VpOVlqrz0GB1g=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 602f660b37f02eb714b0ee71 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 19 Feb 2021 07:17:31
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7500EC43462; Fri, 19 Feb 2021 07:17:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 76430C433CA;
+        Fri, 19 Feb 2021 07:17:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 76430C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <Larry.Finger@lwfinger.net>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] rtlwifi: 8821ae: upgrade PHY and RF parameters
+References: <20210219052607.7323-1-pkshih@realtek.com>
+Date:   Fri, 19 Feb 2021 09:17:27 +0200
+In-Reply-To: <20210219052607.7323-1-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 19 Feb 2021 13:26:07 +0800")
+Message-ID: <87zh00jzlk.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS01.realtek.com.tw (172.21.6.94) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Clear WL/BT on/off bit in scoreboard register that is used to exchange
-WL/BT status. Since the status is preserved after warm reboot, we must
-clear it when WL is going to down.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/coex.c | 5 +++++
- drivers/net/wireless/realtek/rtw88/coex.h | 1 +
- drivers/net/wireless/realtek/rtw88/main.c | 1 +
- 3 files changed, 7 insertions(+)
+> New parameters with new format and its parser are updated by the
+> commit 84d26fda52e2 ("rtlwifi: Update 8821ae new phy parameters and its parser."),
+> but some parameters are missing. Use this commit to update to the novel
+> parameters that use new format.
+>
+> Fixes: 84d26fda52e2 ("rtlwifi: Update 8821ae new phy parameters and its parser")
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index ea2be1e25065..7eee2c5ecb11 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -2646,6 +2646,11 @@ void rtw_coex_power_on_setting(struct rtw_dev *rtwdev)
- 	rtw_coex_set_gnt_debug(rtwdev);
- }
- 
-+void rtw_coex_power_off_setting(struct rtw_dev *rtwdev)
-+{
-+	rtw_write16(rtwdev, REG_WIFI_BT_INFO, BIT_BT_INT_EN);
-+}
-+
- void rtw_coex_init_hw_config(struct rtw_dev *rtwdev, bool wifi_only)
- {
- 	__rtw_coex_init_hw_config(rtwdev, wifi_only);
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.h b/drivers/net/wireless/realtek/rtw88/coex.h
-index 8ab9852ec9ed..57018700ac39 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.h
-+++ b/drivers/net/wireless/realtek/rtw88/coex.h
-@@ -393,6 +393,7 @@ void rtw_coex_bt_multi_link_remain_work(struct work_struct *work);
- void rtw_coex_wl_ccklock_work(struct work_struct *work);
- 
- void rtw_coex_power_on_setting(struct rtw_dev *rtwdev);
-+void rtw_coex_power_off_setting(struct rtw_dev *rtwdev);
- void rtw_coex_init_hw_config(struct rtw_dev *rtwdev, bool wifi_only);
- void rtw_coex_ips_notify(struct rtw_dev *rtwdev, u8 type);
- void rtw_coex_lps_notify(struct rtw_dev *rtwdev, u8 type);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index e6989c0525cc..d20aa069d62a 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1138,6 +1138,7 @@ int rtw_core_start(struct rtw_dev *rtwdev)
- static void rtw_power_off(struct rtw_dev *rtwdev)
- {
- 	rtw_hci_stop(rtwdev);
-+	rtw_coex_power_off_setting(rtwdev);
- 	rtw_mac_power_off(rtwdev);
- }
- 
+What does this fix from user's point of view?
+
 -- 
-2.21.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
