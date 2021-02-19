@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E8B531FDE1
+	by mail.lfdr.de (Postfix) with ESMTP id 7F01031FDE2
 	for <lists+linux-wireless@lfdr.de>; Fri, 19 Feb 2021 18:30:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbhBSR34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Feb 2021 12:29:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35662 "EHLO mail.kernel.org"
+        id S229700AbhBSR36 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Feb 2021 12:29:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35666 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229636AbhBSR3z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Feb 2021 12:29:55 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9683464E86;
-        Fri, 19 Feb 2021 17:29:13 +0000 (UTC)
+        id S229636AbhBSR35 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Feb 2021 12:29:57 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B625D64EB1;
+        Fri, 19 Feb 2021 17:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613755754;
-        bh=swS/4qpAZ/hqSBinA9OmnMx6x7pB/o8RtEGCAqAU9A8=;
+        s=k20201202; t=1613755756;
+        bh=80LqvuQzMW/ojL+1PkGfKTLaCL5qkaf1dS1HRp7MsnA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P67zZe1apfaDBwBrMjQkmxDIeT2yYTGPc4trZOtEmT2LZoYOZulrqHVaW5InwZ+Ld
-         rPszdE2PVVYayAcfgU3WrBkErUEZna9/pWVNqGsCwVGr7j4wV9qmUWG5JBI0J51bbB
-         ky1MjzBwQiGJHLVspUrdq9jB38pCb6vEJL+TfsHSlmcgHwOfd5Kiq+tl3uu2T1UwVL
-         2CfsbdgV5T05brO5Pq+3XGs7bP1KCfH8EUvSxtl3smIBbKqyt/aWG3L1+MIi9S2ua2
-         d1f3i6SLQH88U8ORlJ7PECK/C1LIgYtULiFElQBaV95UK/BCvQnkKnUFQB8AujJd++
-         /eLrmq80AcJcw==
+        b=MR0HCifg8mQ6vs6MyKSPYbzVbiqTs16mRZP41RPSvMrzqVooT7S8LdJz09tiLUKhb
+         1XHZ3KWNv1AuecPVZvzT6Ien4qXy9MNESJcojko2Sq0hffyNl5WzhaO7/mkdAAFvCX
+         lboerlBpIOSqQttdKuDFcUNZsaI1zzTbLI+ckP9m012UFmfyNUMHzNlrLv82yure7M
+         o0oIlIpLUvok3PmJg8/+rO/MT0z2tnJYsZ5dLgmEt1ZRgME6Dmad9sVA23LsT/9ZOv
+         48Ksk75cBsmtPf35KF6On9Ka7nqHDz93qdl1GNxZ2EhzS353gC2pjNDP9ugOxmMEmy
+         K5UZfsNP384UA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com
-Subject: [PATCH v2 3/8] mt76: mt7921: switch to new api for hardware beacon filter
-Date:   Fri, 19 Feb 2021 18:28:46 +0100
-Message-Id: <22be936230c356e9b57f541aaa40d6552783e92d.1613755428.git.lorenzo@kernel.org>
+Subject: [PATCH v2 4/8] mt76: connac: fix up the setting for ht40 mode in mt76_connac_mcu_uni_add_bss
+Date:   Fri, 19 Feb 2021 18:28:47 +0100
+Message-Id: <5f8a202a6bd65594fc9468ea3d9af1ac90cee83d.1613755428.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <cover.1613755428.git.lorenzo@kernel.org>
 References: <cover.1613755428.git.lorenzo@kernel.org>
@@ -41,120 +41,38 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Current firmware only supports new api for enabling hardware beacon filter.
+Use proper value for ht40 mode configuration in mt76_connac_mcu_uni_add_bss
+routine and not ht20 one
 
-Fixes: 1d8efc741df80 ("mt76: mt7921: introduce Runtime PM support")
-Beacon filter cmd have to rely on the associatied access point's beacon
-interval and DTIM information.
-
+Fixes: d0e274af2f2e4 ("mt76: mt76_connac: create mcu library")
+Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
+Signed-off-by: Soul Huang <Soul.Huang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 49 +++++++++++++------
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  8 ++-
- 2 files changed, 40 insertions(+), 17 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 729f6c42cdde..11d85cf9cfb8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -295,15 +295,6 @@ static int mt7921_add_interface(struct ieee80211_hw *hw,
- 	if (ret)
- 		goto out;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index ac8d6ad76054..81515419b5b6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1198,6 +1198,7 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
+ 			.center_chan = ieee80211_frequency_to_channel(freq1),
+ 			.center_chan2 = ieee80211_frequency_to_channel(freq2),
+ 			.tx_streams = hweight8(phy->antenna_mask),
++			.ht_op_info = 4, /* set HT 40M allowed */
+ 			.rx_streams = phy->chainmask,
+ 			.short_st = true,
+ 		},
+@@ -1290,6 +1291,7 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
+ 	case NL80211_CHAN_WIDTH_20:
+ 	default:
+ 		rlm_req.rlm.bw = CMD_CBW_20MHZ;
++		rlm_req.rlm.ht_op_info = 0;
+ 		break;
+ 	}
  
--	if (dev->pm.enable) {
--		ret = mt7921_mcu_set_bss_pm(dev, vif, true);
--		if (ret)
--			goto out;
--
--		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
--		mt76_set(dev, MT_WF_RFCR(0), MT_WF_RFCR_DROP_OTHER_BEACON);
--	}
--
- 	dev->mt76.vif_mask |= BIT(mvif->mt76.idx);
- 	phy->omac_mask |= BIT_ULL(mvif->mt76.omac_idx);
- 
-@@ -349,13 +340,6 @@ static void mt7921_remove_interface(struct ieee80211_hw *hw,
- 		phy->monitor_vif = NULL;
- 
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, &msta->wcid);
--
--	if (dev->pm.enable) {
--		mt7921_mcu_set_bss_pm(dev, vif, false);
--		mt76_clear(dev, MT_WF_RFCR(0),
--			   MT_WF_RFCR_DROP_OTHER_BEACON);
--	}
--
- 	mt76_connac_mcu_uni_add_dev(&dev->mphy, vif, &mvif->sta.wcid, false);
- 
- 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
-@@ -561,6 +545,36 @@ static void mt7921_configure_filter(struct ieee80211_hw *hw,
- 	mt7921_mutex_release(dev);
- }
- 
-+static int
-+mt7921_bss_bcnft_apply(struct mt7921_dev *dev, struct ieee80211_vif *vif,
-+		       bool assoc)
-+{
-+	int ret;
-+
-+	if (!dev->pm.enable)
-+		return 0;
-+
-+	if (assoc) {
-+		ret = mt7921_mcu_uni_bss_bcnft(dev, vif, true);
-+		if (ret)
-+			return ret;
-+
-+		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
-+		mt76_set(dev, MT_WF_RFCR(0), MT_WF_RFCR_DROP_OTHER_BEACON);
-+
-+		return 0;
-+	}
-+
-+	ret = mt7921_mcu_set_bss_pm(dev, vif, false);
-+	if (ret)
-+		return ret;
-+
-+	vif->driver_flags &= ~IEEE80211_VIF_BEACON_FILTER;
-+	mt76_clear(dev, MT_WF_RFCR(0), MT_WF_RFCR_DROP_OTHER_BEACON);
-+
-+	return 0;
-+}
-+
- static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 				    struct ieee80211_vif *vif,
- 				    struct ieee80211_bss_conf *info,
-@@ -587,6 +601,9 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_PS)
- 		mt7921_mcu_uni_bss_ps(dev, vif);
- 
-+	if (changed & BSS_CHANGED_ASSOC)
-+		mt7921_bss_bcnft_apply(dev, vif, info->assoc);
-+
- 	mt7921_mutex_release(dev);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index db125cd22b91..d784c75d47bf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1294,8 +1294,14 @@ mt7921_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
- {
- 	struct mt7921_phy *phy = priv;
- 	struct mt7921_dev *dev = phy->dev;
-+	int ret;
-+
-+	if (dev->pm.enable)
-+		ret = mt7921_mcu_uni_bss_bcnft(dev, vif, true);
-+	else
-+		ret = mt7921_mcu_set_bss_pm(dev, vif, false);
- 
--	if (mt7921_mcu_set_bss_pm(dev, vif, dev->pm.enable))
-+	if (ret)
- 		return;
- 
- 	if (dev->pm.enable) {
 -- 
 2.29.2
 
