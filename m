@@ -2,76 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B52D31F554
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Feb 2021 08:18:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9F0631F55C
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Feb 2021 08:32:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229656AbhBSHSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Feb 2021 02:18:22 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:44628 "EHLO z11.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229636AbhBSHSW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Feb 2021 02:18:22 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1613719084; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=XnPBplKTeEgUlkIKsgNEBe4CAwle6UDe2Wk1H160kyM=; b=kp16gZ72ZucjCnrMC/h8ATxrIL9Hf+cFj3i/COIQxmCuqk5v4JWbNjHL4HDgNe4l3Siw0tG9
- JZAs/77uWutl30mx6KXbSNbAvT6j7nOUwBOf2HR8n4Gq6rElSQMnA8bfj6Pj43zAHPDrQ2cI
- hV/3Dxmcqd7h26VpOVlqrz0GB1g=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 602f660b37f02eb714b0ee71 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 19 Feb 2021 07:17:31
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7500EC43462; Fri, 19 Feb 2021 07:17:31 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 76430C433CA;
-        Fri, 19 Feb 2021 07:17:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 76430C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <Larry.Finger@lwfinger.net>, <linux-wireless@vger.kernel.org>
+        id S229535AbhBSH3q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Feb 2021 02:29:46 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:58399 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229481AbhBSH3q (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Feb 2021 02:29:46 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 11J7SqLF2021017, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 11J7SqLF2021017
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 19 Feb 2021 15:28:52 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 19 Feb 2021 15:28:52 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 19 Feb 2021 15:28:52 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::a98b:ac3a:714:c542]) by
+ RTEXMBS04.realtek.com.tw ([fe80::a98b:ac3a:714:c542%6]) with mapi id
+ 15.01.2106.006; Fri, 19 Feb 2021 15:28:52 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>
 Subject: Re: [PATCH] rtlwifi: 8821ae: upgrade PHY and RF parameters
+Thread-Topic: [PATCH] rtlwifi: 8821ae: upgrade PHY and RF parameters
+Thread-Index: AQHXBn/nSez1PcdjjUaqHv4RaW6HoapfEeaZ//98twA=
+Date:   Fri, 19 Feb 2021 07:28:51 +0000
+Message-ID: <1613719728.11718.3.camel@realtek.com>
 References: <20210219052607.7323-1-pkshih@realtek.com>
-Date:   Fri, 19 Feb 2021 09:17:27 +0200
-In-Reply-To: <20210219052607.7323-1-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 19 Feb 2021 13:26:07 +0800")
-Message-ID: <87zh00jzlk.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+         <87zh00jzlk.fsf@codeaurora.org>
+In-Reply-To: <87zh00jzlk.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <42EDB9504DF160408E06A0CA7D4321D0@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
-
-> New parameters with new format and its parser are updated by the
-> commit 84d26fda52e2 ("rtlwifi: Update 8821ae new phy parameters and its parser."),
-> but some parameters are missing. Use this commit to update to the novel
-> parameters that use new format.
->
-> Fixes: 84d26fda52e2 ("rtlwifi: Update 8821ae new phy parameters and its parser")
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-
-What does this fix from user's point of view?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+T24gRnJpLCAyMDIxLTAyLTE5IGF0IDA5OjE3ICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBQ
+aW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JpdGVzOg0KPiANCj4gPiBOZXcgcGFy
+YW1ldGVycyB3aXRoIG5ldyBmb3JtYXQgYW5kIGl0cyBwYXJzZXIgYXJlIHVwZGF0ZWQgYnkgdGhl
+DQo+ID4gY29tbWl0IDg0ZDI2ZmRhNTJlMiAoInJ0bHdpZmk6IFVwZGF0ZSA4ODIxYWUgbmV3IHBo
+eSBwYXJhbWV0ZXJzIGFuZCBpdHMgcGFyc2VyLiIpLA0KPiA+IGJ1dCBzb21lIHBhcmFtZXRlcnMg
+YXJlIG1pc3NpbmcuIFVzZSB0aGlzIGNvbW1pdCB0byB1cGRhdGUgdG8gdGhlIG5vdmVsDQo+ID4g
+cGFyYW1ldGVycyB0aGF0IHVzZSBuZXcgZm9ybWF0Lg0KPiA+DQo+ID4gRml4ZXM6IDg0ZDI2ZmRh
+NTJlMiAoInJ0bHdpZmk6IFVwZGF0ZSA4ODIxYWUgbmV3IHBoeSBwYXJhbWV0ZXJzIGFuZCBpdHMg
+cGFyc2VyIikNCj4gPiBTaWduZWQtb2ZmLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVr
+LmNvbT4NCj4gPiBUZXN0ZWQtYnk6IEthaS1IZW5nIEZlbmcgPGthaS5oZW5nLmZlbmdAY2Fub25p
+Y2FsLmNvbT4NCj4gDQo+IFdoYXQgZG9lcyB0aGlzIGZpeCBmcm9tIHVzZXIncyBwb2ludCBvZiB2
+aWV3Pw0KPiANCg0KVGhlIHNpZ25hbCBzdHJlbmd0aCBvZiA1RyBpcyBxdWl0ZSBsb3csIHNvIHVz
+ZXIgY2FuJ3QgY29ubmVjdCB0byBhbiBBUCBmYXIgYXdheS4NCg0KLS0tDQpQaW5nLUtlDQoNCg==
