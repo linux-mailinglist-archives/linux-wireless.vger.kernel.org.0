@@ -2,87 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB785320485
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Feb 2021 09:59:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC4B8320494
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Feb 2021 10:08:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbhBTI63 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Feb 2021 03:58:29 -0500
-Received: from lucky1.263xmail.com ([211.157.147.134]:52820 "EHLO
-        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229603AbhBTI62 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Feb 2021 03:58:28 -0500
-X-Greylist: delayed 431 seconds by postgrey-1.27 at vger.kernel.org; Sat, 20 Feb 2021 03:58:22 EST
-Received: from localhost (unknown [192.168.167.235])
-        by lucky1.263xmail.com (Postfix) with ESMTP id 01BFDC78E1;
-        Sat, 20 Feb 2021 16:46:05 +0800 (CST)
-X-MAIL-GRAY: 0
-X-MAIL-DELIVERY: 1
-X-ADDR-CHECKED4: 1
-X-ANTISPAM-LEVEL: 2
-X-ABS-CHECKED: 0
-Received: from localhost.localdomain (unknown [113.57.152.160])
-        by smtp.263.net (postfix) whith ESMTP id P19729T140184970585856S1613810765103785_;
-        Sat, 20 Feb 2021 16:46:05 +0800 (CST)
-X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <04315e02bf5ca4945840c9eb391ee223>
-X-RL-SENDER: chenhaoa@uniontech.com
-X-SENDER: chenhaoa@uniontech.com
-X-LOGIN-NAME: chenhaoa@uniontech.com
-X-FST-TO: tony0620emma@gmail.com
-X-SENDER-IP: 113.57.152.160
-X-ATTACHMENT-NUM: 0
-X-System-Flag: 0
-From:   Hao Chen <chenhaoa@uniontech.com>
-To:     tony0620emma@gmail.com
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        id S229926AbhBTJIp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Feb 2021 04:08:45 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:26982 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229657AbhBTJI0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 20 Feb 2021 04:08:26 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1613812085; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=K1oeCEHtgyAcQeVkUAX9y//DnPQ0qwPlMtqyd51eMEM=; b=hRD17bKWKfF4QbMDyYOAxR60Yb0rt1XwPag2S6D2CvpzWwpcE1sj9ORUYpIojXvqZBRAl+K2
+ mXWLV4ki6olKQCYsekzJjEiQ3fc42kqyCH77qjagHl5LF4AMBjuyskokzytiXuWqDtWERQ5W
+ +yBnqc3Fs4M4vm1u3/S/9e+oqZ4=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 6030d15b7237f827dc2d8747 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 20 Feb 2021 09:07:39
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D487EC43461; Sat, 20 Feb 2021 09:07:39 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B5C3BC433CA;
+        Sat, 20 Feb 2021 09:07:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B5C3BC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Hao Chen <chenhaoa@uniontech.com>
+Cc:     tony0620emma@gmail.com, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hao Chen <chenhaoa@uniontech.com>
-Subject: [PATCH] rtw88: 8822ce: fix wifi disconnect after S3/S4 on HONOR laptop
-Date:   Sat, 20 Feb 2021 16:46:02 +0800
-Message-Id: <20210220084602.22386-1-chenhaoa@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rtw88: 8822ce: fix wifi disconnect after S3/S4 on HONOR laptop
+References: <20210220084602.22386-1-chenhaoa@uniontech.com>
+Date:   Sat, 20 Feb 2021 11:07:34 +0200
+In-Reply-To: <20210220084602.22386-1-chenhaoa@uniontech.com> (Hao Chen's
+        message of "Sat, 20 Feb 2021 16:46:02 +0800")
+Message-ID: <878s7jjeeh.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When the laptop HONOR MagicBook 14 sleep to S3/S4, the laptop can't
-resume.
-The dmesg of kernel report:
-"[   99.990168] pcieport 0000:00:01.2: can't change power state
-from D3hot to D0 (config space inaccessible)
-[   99.993334] rtw_pci 0000:01:00.0: can't change power state
-from D3hot to D0 (config space inaccessible)
-[  104.435004] rtw_pci 0000:01:00.0: mac power on failed
-[  104.435010] rtw_pci 0000:01:00.0: failed to power on mac"
-When try to pointer the driver.pm to NULL, the problem is fixed.
-This driver hasn't implemented pm ops yet.It makes the sleep and
-wake procedure expected when pm's ops not NULL.
+Hao Chen <chenhaoa@uniontech.com> writes:
 
-Fixed: commit e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+> When the laptop HONOR MagicBook 14 sleep to S3/S4, the laptop can't
+> resume.
+> The dmesg of kernel report:
+> "[   99.990168] pcieport 0000:00:01.2: can't change power state
+> from D3hot to D0 (config space inaccessible)
+> [   99.993334] rtw_pci 0000:01:00.0: can't change power state
+> from D3hot to D0 (config space inaccessible)
+> [  104.435004] rtw_pci 0000:01:00.0: mac power on failed
+> [  104.435010] rtw_pci 0000:01:00.0: failed to power on mac"
+> When try to pointer the driver.pm to NULL, the problem is fixed.
+> This driver hasn't implemented pm ops yet.It makes the sleep and
+> wake procedure expected when pm's ops not NULL.
 
-Signed-off-by: Hao Chen <chenhaoa@uniontech.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8822ce.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+But why rtw_pci_suspend() and rtw_pci_resume() are empty? Should we just
+remove them if they cause issues for the users? And if they are really
+needed there should be a comment in the functions explaining the
+situation.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822ce.c b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
-index 3845b1333dc3..b4c6762ba7ac 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
-@@ -25,7 +25,7 @@ static struct pci_driver rtw_8822ce_driver = {
- 	.id_table = rtw_8822ce_id_table,
- 	.probe = rtw_pci_probe,
- 	.remove = rtw_pci_remove,
--	.driver.pm = &rtw_pm_ops,
-+	.driver.pm = NULL,
- 	.shutdown = rtw_pci_shutdown,
- };
- module_pci_driver(rtw_8822ce_driver);
+> Fixed: commit e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+
+This should be:
+
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+
 -- 
-2.20.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
