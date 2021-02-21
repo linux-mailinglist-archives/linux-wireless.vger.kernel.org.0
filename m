@@ -2,69 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 073E2320BEB
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Feb 2021 18:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6088D320C95
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Feb 2021 19:28:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbhBURGE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Feb 2021 12:06:04 -0500
-Received: from mtax.cdmx.gob.mx ([189.240.235.197]:21009 "EHLO
-        mtax.cdmx.gob.mx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229844AbhBURGA (ORCPT
+        id S230088AbhBUS2o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Feb 2021 13:28:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56838 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229966AbhBUS2k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Feb 2021 12:06:00 -0500
-X-Greylist: delayed 1060 seconds by postgrey-1.27 at vger.kernel.org; Sun, 21 Feb 2021 12:06:00 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
-        s=2020J4N146MXCTY; t=1613927162;
-        bh=cvwgd0oVr0ORJA7YY3yHss23gyUqPmAu64Rc0/n4rc4=;
-        h=Date:From:Reply-To:Subject;
-        b=cpASJU6yjuEMzDMilCZrnR00r1f30U5CHayjSV0jCbuLL6uLctjQAHxq2k9DTgCzh
-         LMeFuJ5dAX9788QPy2wlMjC6C+BW/apAgrweOo8K89I3zFQJpa3249PRc4/C1xiUh4
-         z0U+6sQ0PhH0PkMUfs1avLWeDWHS/o5eH+0DpcSo=
-Received: from correo.seciti.cdmx.gob.mx (unknown [10.250.102.17])
-        by Forcepoint Email with ESMTP id 307E1AE00C3F4272B92F;
-        Sun, 21 Feb 2021 10:47:42 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 945AA7579;
-        Sun, 21 Feb 2021 10:47:41 -0600 (CST)
-Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
-        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 1anNLpvY51bM; Sun, 21 Feb 2021 10:47:41 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by gdf-correo.df.gob.mx (Postfix) with ESMTP id EDC6871F5;
-        Sun, 21 Feb 2021 10:47:33 -0600 (CST)
-X-Virus-Scanned: amavisd-new at gdf-correo.df.gob.mx
-Received: from correo.seciti.cdmx.gob.mx ([127.0.0.1])
-        by localhost (gdf-correo.df.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id d90tIXZ3z4p6; Sun, 21 Feb 2021 10:47:33 -0600 (CST)
-Received: from gdf-correo.df.gob.mx (localhost [127.0.0.1])
-        by gdf-correo.df.gob.mx (Postfix) with ESMTP id 226F289CD;
-        Sun, 21 Feb 2021 10:47:25 -0600 (CST)
-Date:   Sun, 21 Feb 2021 10:47:24 -0600 (CST)
-From:   Adrien Saif <fvaldesm@caprepol.cdmx.gob.mx>
-Reply-To: Adrien Saif <adriensaiff202@gmail.com>
-Message-ID: <487322768.664287.1613926044815.JavaMail.zimbra@caprepol.cdmx.gob.mx>
-Subject: Reply back
+        Sun, 21 Feb 2021 13:28:40 -0500
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E97AC06178A
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Feb 2021 10:27:59 -0800 (PST)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:2934:574d:d80c:39f5])
+        by laurent.telenet-ops.be with bizsmtp
+        id XuTw240073eQ4Ry01uTwbv; Sun, 21 Feb 2021 19:27:56 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1lDtSV-000YhP-P7; Sun, 21 Feb 2021 19:27:55 +0100
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1lDtSV-008gzw-3G; Sun, 21 Feb 2021 19:27:55 +0100
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] ath11k: qmi: use %pad to format dma_addr_t
+Date:   Sun, 21 Feb 2021 19:27:54 +0100
+Message-Id: <20210221182754.2071863-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [197.234.221.124]
-X-Mailer: Zimbra 8.0.6_GA_5922 (zclient/8.0.6_GA_5922)
-Thread-Topic: Reply back
-Thread-Index: iSYXkjFJ8uZT0zcs9x6GKCXoFL4/jw==
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+If CONFIG_ARCH_DMA_ADDR_T_64BIT=n:
 
+    drivers/net/wireless/ath/ath11k/qmi.c: In function ‘ath11k_qmi_respond_fw_mem_request’:
+    drivers/net/wireless/ath/ath11k/qmi.c:1690:8: warning: format ‘%llx’ expects argument of type ‘long long unsigned int’, but argument 5 has type ‘dma_addr_t’ {aka ‘unsigned int’} [-Wformat=]
+     1690 |        "qmi req mem_seg[%d] 0x%llx %u %u\n", i,
+	  |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     1691 |         ab->qmi.target_mem[i].paddr,
+	  |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	  |                              |
+	  |                              dma_addr_t {aka unsigned int}
+    drivers/net/wireless/ath/ath11k/debug.h:64:30: note: in definition of macro ‘ath11k_dbg’
+       64 |   __ath11k_dbg(ar, dbg_mask, fmt, ##__VA_ARGS__); \
+	  |                              ^~~
+    drivers/net/wireless/ath/ath11k/qmi.c:1690:34: note: format string is defined here
+     1690 |        "qmi req mem_seg[%d] 0x%llx %u %u\n", i,
+	  |                               ~~~^
+	  |                                  |
+	  |                                  long long unsigned int
+	  |                               %x
 
---
+Fixes: d5395a5486596308 ("ath11k: qmi: add debug message for allocated memory segment addresses and sizes")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+ drivers/net/wireless/ath/ath11k/qmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Hello,
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 1aca841cd147cfee..7968fe4eda22a839 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -1687,8 +1687,8 @@ static int ath11k_qmi_respond_fw_mem_request(struct ath11k_base *ab)
+ 			req->mem_seg[i].size = ab->qmi.target_mem[i].size;
+ 			req->mem_seg[i].type = ab->qmi.target_mem[i].type;
+ 			ath11k_dbg(ab, ATH11K_DBG_QMI,
+-				   "qmi req mem_seg[%d] 0x%llx %u %u\n", i,
+-				    ab->qmi.target_mem[i].paddr,
++				   "qmi req mem_seg[%d] %pad %u %u\n", i,
++				    &ab->qmi.target_mem[i].paddr,
+ 				    ab->qmi.target_mem[i].size,
+ 				    ab->qmi.target_mem[i].type);
+ 		}
+-- 
+2.25.1
 
-This is attorney Adrien Saif, the legal practitioner to Qatif Oil And Gas Group of Companies.
-Did you receive the proposal we sent to you via email days ago?
-
-
-Best Regards,
-Adrien Saif
