@@ -2,134 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE7B321F6F
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 19:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 019D9322028
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 20:31:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231952AbhBVSxx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Feb 2021 13:53:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59418 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231997AbhBVSwh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Feb 2021 13:52:37 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 717B6C06178C
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Feb 2021 10:51:57 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1lEGJ6-0008Gn-TH; Mon, 22 Feb 2021 19:51:44 +0100
-Received: from pengutronix.de (unknown [IPv6:2a03:f580:87bc:d400:52ba:71b5:63be:d0d8])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 2A7515E71DB;
-        Mon, 22 Feb 2021 18:51:42 +0000 (UTC)
-Date:   Mon, 22 Feb 2021 19:51:41 +0100
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Robin van der Gracht <robin@protonic.nl>,
-        kernel@pengutronix.de, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Eric Dumazet <edumazet@google.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH net v1 3/3] [RFC] mac80211: ieee80211_store_ack_skb():
- make use of skb_clone_sk_optional()
-Message-ID: <20210222185141.oma64d4uq64pys45@pengutronix.de>
-References: <20210222151247.24534-1-o.rempel@pengutronix.de>
- <20210222151247.24534-4-o.rempel@pengutronix.de>
- <3823be537c3c138de90154835573113c6577188e.camel@sipsolutions.net>
+        id S233176AbhBVTaF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Feb 2021 14:30:05 -0500
+Received: from m42-2.mailgun.net ([69.72.42.2]:47657 "EHLO m42-2.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233321AbhBVT1v (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Feb 2021 14:27:51 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614022050; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=r5K63Go6dNwm808NunS14UEUj0MvExkwJGR/rs0kO7M=; b=kcwXzlNaMQT/oJQy11tOQj6CxaEdAdddcyGg3GL0uKGkkOfYCLRghShUGuoMl4b9vj++vK5B
+ eovInlNqCeAFE5l+xt1pwthGzro4t4wSoUJ3bSC/WOxKt3vqrughuqOjMId0YyzTczFMlWEu
+ Blq0mzmu/Xppu8UZfMqDyNJKd0o=
+X-Mailgun-Sending-Ip: 69.72.42.2
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 60340584ba086638309f136c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Feb 2021 19:27:00
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 03DD6C43462; Mon, 22 Feb 2021 19:27:00 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3B515C433CA;
+        Mon, 22 Feb 2021 19:26:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3B515C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=alokad@codeaurora.org
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Aloka Dixit <alokad@codeaurora.org>
+Subject: [PATCH V5 0/2] WMI and debugfs calls for TWT dialogs
+Date:   Mon, 22 Feb 2021 11:26:49 -0800
+Message-Id: <20210222192651.1782-1-alokad@codeaurora.org>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qcmaz5my6wsby6p5"
-Content-Disposition: inline
-In-Reply-To: <3823be537c3c138de90154835573113c6577188e.camel@sipsolutions.net>
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This patchset adds support for TWT dialogs using debugfs.
+Individual patch files show changes in V5.
 
---qcmaz5my6wsby6p5
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+John Crispin (2):
+  ath11k: add WMI calls to manually add/del/pause/resume TWT dialogs
+  ath11k: add debugfs for TWT debug calls
 
-On 22.02.2021 17:30:59, Johannes Berg wrote:
-> On Mon, 2021-02-22 at 16:12 +0100, Oleksij Rempel wrote:
-> > This code is trying to clone the skb with optional skb->sk. But this
-> > will fail to clone the skb if socket was closed just after the skb was
-> > pushed into the networking stack.
->=20
-> Which IMHO is completely fine. If we then still clone the SKB we can't
-> do anything with it, since the point would be to ... send it back to the
-> socket, but it's gone.
+ drivers/net/wireless/ath/ath11k/core.h  |   4 +
+ drivers/net/wireless/ath/ath11k/debug.c | 224 ++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/debug.h |  13 ++
+ drivers/net/wireless/ath/ath11k/mac.c   |   3 +
+ drivers/net/wireless/ath/ath11k/wmi.c   | 218 ++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath11k/wmi.h   | 114 ++++++++++++
+ 6 files changed, 572 insertions(+), 4 deletions(-)
 
-Ok, but why is the skb cloned if there is no socket linked in skb->sk?
 
-| static u16 ieee80211_store_ack_skb(struct ieee80211_local *local,
-| 				   struct sk_buff *skb,
-| 				   u32 *info_flags,
-| 				   u64 *cookie)
-| {
-| 	struct sk_buff *ack_skb;
-| 	u16 info_id =3D 0;
-|=20
-| 	if (skb->sk)
-| 		ack_skb =3D skb_clone_sk(skb);
-| 	else
-| 		ack_skb =3D skb_clone(skb, GFP_ATOMIC);
+base-commit: f5242d42da02730c67d517a7402015c13f59deee
+-- 
+2.25.0
 
-Looks like this is dead code, since both callers of
-ieee80211_store_ack_skb() first check if there is a skb->sk
-
-| 	if (unlikely(!multicast && ((skb->sk &&
-| 		     skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS) ||
-| 		     ctrl_flags & IEEE80211_TX_CTL_REQ_TX_STATUS)))
-| 		info_id =3D ieee80211_store_ack_skb(local, skb, &info_flags,
-| 						  cookie);
-
-> Nothing to fix here, I'd think. If you wanted to get a copy back that
-> gives you the status of the SKB, it should not come as a huge surprise
-> that you have to keep the socket open for that :)
->=20
-> Having the ACK skb will just make us do more work by handing it back
-> to skb_complete_wifi_ack() at TX status time, which is supposed to put
-> it into the socket's error queue, but if the socket is closed ... no
-> point in that.
-
-We haven't looked at the callers of ieee80211_store_ack_skb().
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde           |
-Embedded Linux                   | https://www.pengutronix.de  |
-Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
-
---qcmaz5my6wsby6p5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEK3kIWJt9yTYMP3ehqclaivrt76kFAmAz/ToACgkQqclaivrt
-76m93wf/eWUzTatxExdw00AuLvib66LXKeD9tLGTQx/Lc7sJ66kOcJ91wO7VKTIY
-2HRsx2m23gP1jkxX1fHFg2BsreVXHdZqE5TycY7FM2vW5dqhsKdZD7Ts43uc9pxI
-XHYDmBlF7oUeoibHpKp5bp3hTruvAGQ/nw4UJ/vymQ8RLEZia8u1W3neQwBcQaTa
-MS+fg4FzktN4VcDzMr5lLCuUsxFV7hUZF+PqPYeeHvF1ymdJHviuaqpIX/ZimpIR
-X+/Ka56E9bgodvkLIFupXin4CTe01fCqRiHxyPLqVL0zHLIMbYqAKIp5d4aIpNMA
-9ojbC9JrGBO0ku47jjTzB3ESXC6wRg==
-=j/gi
------END PGP SIGNATURE-----
-
---qcmaz5my6wsby6p5--
