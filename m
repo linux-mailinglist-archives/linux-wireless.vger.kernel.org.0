@@ -2,80 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD9AE321B27
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 16:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85EF6321B22
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 16:18:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231411AbhBVPRS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Feb 2021 10:17:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40406 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231420AbhBVPP2 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Feb 2021 10:15:28 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAEB7C0611C3
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Feb 2021 07:12:59 -0800 (PST)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lECtF-0007dv-15; Mon, 22 Feb 2021 16:12:49 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1lECtE-00075k-HH; Mon, 22 Feb 2021 16:12:48 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     mkl@pengutronix.de, "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Robin van der Gracht <robin@protonic.nl>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
-        linux-can@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH net v1 3/3] [RFC] mac80211: ieee80211_store_ack_skb(): make use of skb_clone_sk_optional()
-Date:   Mon, 22 Feb 2021 16:12:47 +0100
-Message-Id: <20210222151247.24534-4-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210222151247.24534-1-o.rempel@pengutronix.de>
-References: <20210222151247.24534-1-o.rempel@pengutronix.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+        id S231149AbhBVPRC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Feb 2021 10:17:02 -0500
+Received: from m42-2.mailgun.net ([69.72.42.2]:35793 "EHLO m42-2.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231354AbhBVPPM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Feb 2021 10:15:12 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614006885; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=MSV/THMzoBnQi6LSC3Z/xQNg2Rkhgq33GnztMeXgZEc=; b=mKaDShiEb4PI78q4RSfXomcbkiW/mncU3U3HjX4cPCjnVqimc3z34Gp44WFCSYRyiiz+44BN
+ W8dUYOI8tA1HQ046wsOBdFKy0G2qd1H3tqCdsV0303t8A/T1wS75kZ1x1lAX73FbU56KeWll
+ NkdiU7BpAXDJQVbL1+SL2gtzpTg=
+X-Mailgun-Sending-Ip: 69.72.42.2
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 6033ca463bd0a42cc9a32491 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Feb 2021 15:14:14
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4F289C43462; Mon, 22 Feb 2021 15:14:13 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1020DC43461;
+        Mon, 22 Feb 2021 15:14:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1020DC43461
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH 5.12] ath11k: fix AP mode for QCA6390
+Date:   Mon, 22 Feb 2021 17:14:09 +0200
+Message-Id: <1614006849-25764-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This code is trying to clone the skb with optional skb->sk. But this
-will fail to clone the skb if socket was closed just after the skb was
-pushed into the networking stack.
+Commit c134d1f8c436 ("ath11k: Handle errors if peer creation fails") completely
+broke AP mode on QCA6390:
 
-Fixes: a7528198add8 ("mac80211: support control port TX status reporting")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+kernel: [  151.230734] ath11k_pci 0000:06:00.0: failed to create peer after vdev start delay: -22
+wpa_supplicant[2307]: Failed to set beacon parameters
+wpa_supplicant[2307]: Interface initialization failed
+wpa_supplicant[2307]: wlan0: interface state UNINITIALIZED->DISABLED
+wpa_supplicant[2307]: wlan0: AP-DISABLED
+wpa_supplicant[2307]: wlan0: Unable to setup interface.
+wpa_supplicant[2307]: Failed to initialize AP interface
+
+This was because commit c134d1f8c436 ("ath11k: Handle errors if peer creation
+fails") added error handling for ath11k_peer_create(), which had been failing
+all along but was unnoticed due to the missing error handling. The actual bug
+was introduced already in commit aa44b2f3ecd4 ("ath11k: start vdev if a bss peer is
+already created").
+
+ath11k_peer_create() was failing because for AP mode the peer is created
+already earlier op_add_interface() and we should skip creation here, but the
+check for modes was wrong.  Fixing that makes AP mode work again.
+
+This shouldn't affect IPQ8074 nor QCN9074 as they have hw_params.vdev_start_delay disabled.
+
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+
+Fixes: c134d1f8c436 ("ath11k: Handle errors if peer creation fails")
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- net/mac80211/tx.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 5d06de61047a..c0dd326db10d 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2439,11 +2439,7 @@ static u16 ieee80211_store_ack_skb(struct ieee80211_local *local,
- 	struct sk_buff *ack_skb;
- 	u16 info_id = 0;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 335d49af7dd5..76f3343183fe 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -5450,8 +5450,8 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 	}
  
--	if (skb->sk)
--		ack_skb = skb_clone_sk(skb);
--	else
--		ack_skb = skb_clone(skb, GFP_ATOMIC);
--
-+	ack_skb = skb_clone_sk_optional(skb);
- 	if (ack_skb) {
- 		unsigned long flags;
- 		int id;
+ 	if (ab->hw_params.vdev_start_delay &&
+-	    (arvif->vdev_type == WMI_VDEV_TYPE_AP ||
+-	    arvif->vdev_type == WMI_VDEV_TYPE_MONITOR)) {
++	    arvif->vdev_type != WMI_VDEV_TYPE_AP &&
++	    arvif->vdev_type != WMI_VDEV_TYPE_MONITOR) {
+ 		param.vdev_id = arvif->vdev_id;
+ 		param.peer_type = WMI_PEER_TYPE_DEFAULT;
+ 		param.peer_addr = ar->mac_addr;
 -- 
-2.29.2
+2.7.4
 
