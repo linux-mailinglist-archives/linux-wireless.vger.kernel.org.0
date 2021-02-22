@@ -2,89 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6088D320C95
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Feb 2021 19:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8F4320EB2
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 01:23:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbhBUS2o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Feb 2021 13:28:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56838 "EHLO
+        id S230024AbhBVAXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Feb 2021 19:23:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbhBUS2k (ORCPT
+        with ESMTP id S230019AbhBVAXe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Feb 2021 13:28:40 -0500
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E97AC06178A
-        for <linux-wireless@vger.kernel.org>; Sun, 21 Feb 2021 10:27:59 -0800 (PST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:2934:574d:d80c:39f5])
-        by laurent.telenet-ops.be with bizsmtp
-        id XuTw240073eQ4Ry01uTwbv; Sun, 21 Feb 2021 19:27:56 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1lDtSV-000YhP-P7; Sun, 21 Feb 2021 19:27:55 +0100
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1lDtSV-008gzw-3G; Sun, 21 Feb 2021 19:27:55 +0100
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] ath11k: qmi: use %pad to format dma_addr_t
-Date:   Sun, 21 Feb 2021 19:27:54 +0100
-Message-Id: <20210221182754.2071863-1-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.25.1
+        Sun, 21 Feb 2021 19:23:34 -0500
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13A6C061574
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Feb 2021 16:22:54 -0800 (PST)
+Received: by mail-il1-x131.google.com with SMTP id h18so1308135ils.2
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Feb 2021 16:22:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=egauge.net; s=google;
+        h=message-id:subject:from:to:cc:date:organization:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=h8sXftnuWoOIlOxeQC10YLx5roZ7sm+l8z4T99ZxVJw=;
+        b=UZiXxU9fTG2G6P9IEk8k8CNePGdL9QE/0CS6RsvlWqKIY30eAfw+9UgEMz/EOcnKsj
+         kKchfgtiMipfd0Yjix7n4YKxCTVplTwbsg8LV00r6ppmCQUJI2y2IbfNql2ndmIuHBKt
+         Eb+UPhiMO+GEiihnpYE4+8ELaHvTV/SxgSXAIZlVO8yOCxW5deor2/G4PIPzH19VnQCz
+         Lo636KqRKztNtrj67rkGlaqe496/ZR8sXaw7qUwhdAKlwLdq01Y4cdZR4nw85rgVRIK3
+         FC8GbRM2xpVcXv2Y+aXqw1NrWW6MJJPYbJOzjRCeSsplS44ele3jJLS6IvW4uPN7FnX6
+         bh7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:organization
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=h8sXftnuWoOIlOxeQC10YLx5roZ7sm+l8z4T99ZxVJw=;
+        b=qcdDFQF8lVO1+KtVhjAtT5rjmd/HvvTZmXzi9W6X4lN7IGDz3w5UROwDGz9iuNSTRf
+         qVEsANxYTmr66B8Ix/bbQFx7tYsAaPi0m12EttdR2qOgl2hokGCl7qL76YIf26KSSWY7
+         Sz8RKsu/5dIOuW2YTVAdUlA+THHBnKQjGU7ZdP2xg0CqOBgRagv9Jnul8xZC5r6Ayngi
+         2HoRw2/P86YK0aJeCmj8aw7kmPHgbZ5YzovIiuMhBnYXTlN8TLPGQNzNjFzUABKBljCv
+         OIR1JuTWic/JczinH6bk7EeBtXCefo1Fc21Vle2Djc8pyRVPyc5ifWGJXakO/RZQz4Yf
+         X0cQ==
+X-Gm-Message-State: AOAM531cRjVr2T2Mi2i4ktphwVsQDGK3UG8dGS1sE3eb+eTUU8w/1snM
+        r0bYks6rhXBr5o5w73KSXhkfpFeZ/ZjDd4U=
+X-Google-Smtp-Source: ABdhPJyPYPIqqo47seIvyhLWadyrQ8BjQcmox37XqdHC3+UTV6i45H/FZtNjYJ6Z3w9P/MXAOleMng==
+X-Received: by 2002:a92:cda1:: with SMTP id g1mr12999883ild.267.1613953373756;
+        Sun, 21 Feb 2021 16:22:53 -0800 (PST)
+Received: from ?IPv6:2601:281:8300:4e0:c915:9fee:d41e:b60d? ([2601:281:8300:4e0:c915:9fee:d41e:b60d])
+        by smtp.gmail.com with ESMTPSA id v1sm10485004ilm.35.2021.02.21.16.22.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Feb 2021 16:22:53 -0800 (PST)
+Message-ID: <e8ed97f214f6087b7ac59298c8efe2d1144f7d55.camel@egauge.net>
+Subject: wilc1000 driver
+From:   David Mosberger-Tang <davidm@egauge.net>
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>, davidm@egauge.net
+Date:   Sun, 21 Feb 2021 17:22:52 -0700
+Organization: eGauge Systems LLC
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If CONFIG_ARCH_DMA_ADDR_T_64BIT=n:
+So, I'd like to provide some patches for the wilc driver, but I'm
+unclear what the most effective way to go about this is.
 
-    drivers/net/wireless/ath/ath11k/qmi.c: In function ‘ath11k_qmi_respond_fw_mem_request’:
-    drivers/net/wireless/ath/ath11k/qmi.c:1690:8: warning: format ‘%llx’ expects argument of type ‘long long unsigned int’, but argument 5 has type ‘dma_addr_t’ {aka ‘unsigned int’} [-Wformat=]
-     1690 |        "qmi req mem_seg[%d] 0x%llx %u %u\n", i,
-	  |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     1691 |         ab->qmi.target_mem[i].paddr,
-	  |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	  |                              |
-	  |                              dma_addr_t {aka unsigned int}
-    drivers/net/wireless/ath/ath11k/debug.h:64:30: note: in definition of macro ‘ath11k_dbg’
-       64 |   __ath11k_dbg(ar, dbg_mask, fmt, ##__VA_ARGS__); \
-	  |                              ^~~
-    drivers/net/wireless/ath/ath11k/qmi.c:1690:34: note: format string is defined here
-     1690 |        "qmi req mem_seg[%d] 0x%llx %u %u\n", i,
-	  |                               ~~~^
-	  |                                  |
-	  |                                  long long unsigned int
-	  |                               %x
+The driver in mainline (driver/net/wireless/microchip/wilc1000) only
+seems to support WILC1000 (not WILC3000) and uses firmware:
 
-Fixes: d5395a5486596308 ("ath11k: qmi: add debug message for allocated memory segment addresses and sizes")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
- drivers/net/wireless/ath/ath11k/qmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+  atmel/wilc1000_wifi_firmware-1.bin
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 1aca841cd147cfee..7968fe4eda22a839 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1687,8 +1687,8 @@ static int ath11k_qmi_respond_fw_mem_request(struct ath11k_base *ab)
- 			req->mem_seg[i].size = ab->qmi.target_mem[i].size;
- 			req->mem_seg[i].type = ab->qmi.target_mem[i].type;
- 			ath11k_dbg(ab, ATH11K_DBG_QMI,
--				   "qmi req mem_seg[%d] 0x%llx %u %u\n", i,
--				    ab->qmi.target_mem[i].paddr,
-+				   "qmi req mem_seg[%d] %pad %u %u\n", i,
-+				    &ab->qmi.target_mem[i].paddr,
- 				    ab->qmi.target_mem[i].size,
- 				    ab->qmi.target_mem[i].type);
- 		}
--- 
-2.25.1
+whereas the linux-at91 driver (driver/staging/wilc1000) supports both
+WILC1000 and WILC3000 and uses firmware
+
+  mch/wilc1000_wifi_firmware.bin
+
+(for WILC1000).
+
+For the hardware I have (embedded system with WILC1000/SPI), the
+mainline driver doesn't load, whereas the driver from linux-at91 does
+load and work(mostly).
+
+I'd really like to work off of mainline since it's much easier to track
+things with a repository that's updated frequently, but it looks to me
+like the mainline may be missing a lot of code that's already in
+linux-at91.
+
+What am I supposed to do?
+
+  --david
 
