@@ -2,170 +2,241 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78AE9321533
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 12:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D4D8321738
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 13:46:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230428AbhBVLiD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Feb 2021 06:38:03 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:33648 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230399AbhBVLhy (ORCPT
+        id S230521AbhBVMof (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Feb 2021 07:44:35 -0500
+Received: from regular1.263xmail.com ([211.150.70.202]:46326 "EHLO
+        regular1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231586AbhBVMnf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Feb 2021 06:37:54 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 11MBaqhH7002021, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmbs01.realtek.com.tw[172.21.6.94])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 11MBaqhH7002021
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 22 Feb 2021 19:36:52 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 22 Feb 2021 19:36:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 22 Feb 2021 19:36:51 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::a98b:ac3a:714:c542]) by
- RTEXMBS04.realtek.com.tw ([fe80::a98b:ac3a:714:c542%6]) with mapi id
- 15.01.2106.006; Mon, 22 Feb 2021 19:36:51 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "chenhaoa@uniontech.com" <chenhaoa@uniontech.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mon, 22 Feb 2021 07:43:35 -0500
+Received: from localhost (unknown [192.168.167.224])
+        by regular1.263xmail.com (Postfix) with ESMTP id 8FFEC6DF;
+        Mon, 22 Feb 2021 20:37:11 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-ANTISPAM-LEVEL: 2
+X-SKE-CHECKED: 1
+X-ABS-CHECKED: 1
+Received: from [10.20.32.136] (unknown [61.183.83.60])
+        by smtp.263.net (postfix) whith ESMTP id P17592T140304516622080S1613997418087359_;
+        Mon, 22 Feb 2021 20:37:11 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <7279b217e2a45cb39a118c7eabfb8cd2>
+X-RL-SENDER: chenhaoa@uniontech.com
+X-SENDER: chenhaoa@uniontech.com
+X-LOGIN-NAME: chenhaoa@uniontech.com
+X-FST-TO: zhanjun@uniontech.com
+X-SENDER-IP: 61.183.83.60
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+Subject: Re: [PATCH] rtw88: 8822ce: fix wifi disconnect after S3/S4 on HONOR
+ laptop
+To:     Pkshih <pkshih@realtek.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        Timlee <timlee@realtek.com>,
-        "zhanjun@uniontech.com" <zhanjun@uniontech.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
+        Timlee <timlee@realtek.com>, "kuba@kernel.org" <kuba@kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         "davem@davemloft.net" <davem@davemloft.net>,
         "arnd@arndb.de" <arnd@arndb.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2] rtw88: 8822ce: fix wifi disconnect after S3/S4 on HONOR laptop
-Thread-Topic: [PATCH v2] rtw88: 8822ce: fix wifi disconnect after S3/S4 on
- HONOR laptop
-Thread-Index: AQHXCQAH7RfNyn4HvEexqF5ErvwOdKpj+arv//+MPYA=
-Date:   Mon, 22 Feb 2021 11:36:51 +0000
-Message-ID: <1613993809.2331.12.camel@realtek.com>
-References: <20210222094638.18392-1-chenhaoa@uniontech.com>
-         <87h7m4iefe.fsf@codeaurora.org>
-In-Reply-To: <87h7m4iefe.fsf@codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [125.224.90.247]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D8FFCD5F8872CA4F8CC42ED3E7B9798E@realtek.com>
-Content-Transfer-Encoding: base64
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        zhanjun@uniontech.com
+References: <20210220084602.22386-1-chenhaoa@uniontech.com>
+ <878s7jjeeh.fsf@codeaurora.org>
+ <1323517535.1654941.1613976259730.JavaMail.xmail@bj-wm-cp-15>
+ <874ki4k1ej.fsf@codeaurora.org> <1613992840.2331.8.camel@realtek.com>
+From:   Hao Chen <chenhaoa@uniontech.com>
+Message-ID: <4ab0ff2e-4f56-6f16-4e67-26f19de92a14@uniontech.com>
+Date:   Mon, 22 Feb 2021 20:36:58 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
+In-Reply-To: <1613992840.2331.8.camel@realtek.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIxLTAyLTIyIGF0IDEyOjI5ICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBI
-YW8gQ2hlbiA8Y2hlbmhhb2FAdW5pb250ZWNoLmNvbT4gd3JpdGVzOg0KPiANCj4gPiBUaGUgbGFw
-dG9wJ3Mgd2lmaSBkaXNjb25uZWN0IGFmdGVyIHRoZSBsYXB0b3AgSE9OT1IgTWFnaWNCb29rIDE0
-DQo+ID4gc2xlZXAgdG8gUzMvUzQgYW5kIHdha2UgdXAuDQo+ID4NCj4gPiBUaGUgZG1lc2cgb2Yg
-a2VybmVsIHJlcG9ydDoNCj4gPiAiW8KgwqDCoDk5Ljk5MDE2OF0gcGNpZXBvcnQgMDAwMDowMDow
-MS4yOiBjYW4ndCBjaGFuZ2UgcG93ZXIgc3RhdGUgZnJvbSBEM2hvdA0KPiA+IHRvIEQwIChjb25m
-aWcgc3BhY2UgaW5hY2Nlc3NpYmxlKQ0KPiA+IFvCoMKgwqA5OS45OTAxNzZdIEFDUEk6IEVDOiBp
-bnRlcnJ1cHQgdW5ibG9ja2VkDQo+ID4gW8KgwqDCoDk5Ljk5MzMzNF0gcnR3X3BjaSAwMDAwOjAx
-OjAwLjA6IGNhbid0IGNoYW5nZSBwb3dlciBzdGF0ZSBmcm9tIEQzaG90DQo+ID4gdG8gRDAgKGNv
-bmZpZyBzcGFjZSBpbmFjY2Vzc2libGUpDQo+ID4gLi4uLi4uDQo+ID4gW8KgwqAxMDIuMTMzNTAw
-XSBydHdfcGNpIDAwMDA6MDE6MDAuMDogbWFjIHBvd2VyIG9uIGZhaWxlZA0KPiA+IFvCoMKgMTAy
-LjEzMzUwM10gcnR3X3BjaSAwMDAwOjAxOjAwLjA6IGZhaWxlZCB0byBwb3dlciBvbiBtYWMNCj4g
-PiBbwqDCoDEwMi4xMzM1MDVdIC0tLS0tLS0tLS0tLVsgY3V0IGhlcmUgXS0tLS0tLS0tLS0tLQ0K
-PiA+IFvCoMKgMTAyLjEzMzUwNl0gSGFyZHdhcmUgYmVjYW1lIHVuYXZhaWxhYmxlIHVwb24gcmVz
-dW1lLiBUaGlzIGNvdWxkIGJlIGENCj4gPiBzb2Z0d2FyZSBpc3N1ZSBwcmlvciB0byBzdXNwZW5k
-IG9yIGEgaGFyZHdhcmUgaXNzdWUuDQo+ID4gW8KgwqAxMDIuMTMzNTY5XSBXQVJOSU5HOiBDUFU6
-IDQgUElEOiA1NjEyIGF0IG5ldC9tYWM4MDIxMS91dGlsLmM6MjIzMg0KPiA+IGllZWU4MDIxMV9y
-ZWNvbmZpZysweDliLzB4MTQ5MCBbbWFjODAyMTFdDQo+ID4gW8KgwqAxMDIuMTMzNTcwXSBNb2R1
-bGVzIGxpbmtlZCBpbjogY2NtIHJmY29tbSB1dmN2aWRlbyB2aWRlb2J1ZjJfdm1hbGxvYw0KPiA+
-IHZpZGVvYnVmMl9tZW1vcHMgdmlkZW9idWYyX3Y0bDIgdmlkZW9idWYyX2NvbW1vbiB2aWRlb2Rl
-diBtYyBjbWFjIGJuZXDCoA0KPiA+IGJ0dXNiIGJ0cnRsIGJ0YmNtIGJ0aW50ZWwgZWRhY19tY2Vf
-YW1kIGJsdWV0b290aCBrdm1fYW1kIGVjZGhfZ2VuZXJpY8KgDQo+ID4gZWNjIGt2bSBubHNfaXNv
-ODg1OV8xIHJ0d3BjaSBydHc4OCBjcmN0MTBkaWZfcGNsbXVsIGNyYzMyX3BjbG11bCBtYWM4MDIx
-McKgDQo+ID4gZ2hhc2hfY2xtdWxuaV9pbnRlbCBhZXNuaV9pbnRlbCBzbmRfaGRhX2NvZGVjX3Jl
-YWx0ZWsgY3J5cHRvX3NpbWQgaHVhd2VpX3dtaQ0KPiA+IHNuZF9oZGFfY29kZWNfZ2VuZXJpYyBj
-cnlwdGQgY2ZnODAyMTEgd21pX2Jtb2Ygc2VyaW9fcmF3IHNwYXJzZV9rZXltYXANCj4gPiBsZWR0
-cmlnX2F1ZGlvIHNwNTEwMF90Y28gZ2x1ZV9oZWxwZXIgam95ZGV2IHNuZF9oZGFfY29kZWNfaGRt
-aSBzbmRfaGRhX2ludGVsDQo+ID4gc25kX2ludGVsX2RzcGNmZyB3ZGF0X3dkdCBzbmRfaGRhX2Nv
-ZGVjIHNuZF9oZGFfY29yZSBwY3Nwa3Igc25kX2h3ZGVwIHNuZF9wY20NCj4gPiBlZmlfcHN0b3Jl
-IHNuZF90aW1lciBsaWJhcmM0IGsxMHRlbXAgc25kIHNvdW5kY29yZSBzbmRfcGNpX2FjcDN4IGNj
-cCBtYWNfaGlkDQo+ID4gYmluZm10X21pc2MgaXBfdGFibGVzIHhfdGFibGVzIGF1dG9mczQgYW1k
-Z3B1IGFtZF9pb21tdV92MiBncHVfc2NoZWTCoA0KPiA+IGkyY19hbGdvX2JpdCB0dG0gZHJtX2tt
-c19oZWxwZXIgc3lzY29weWFyZWEgc3lzZmlsbHJlY3Qgc3lzaW1nYmx0IGZiX3N5c19mb3BzDQo+
-ID4gdXNibW91c2UgY2VjIG52bWUgaGlkX2dlbmVyaWMgaTJjX3BpaXg0IHVzYmhpZCBudm1lX2Nv
-cmUgZHJtIHdtaSB2aWRlbw0KPiA+IFvCoMKgMTAyLjEzMzYxN10gQ1BVOiA0IFBJRDogNTYxMiBD
-b21tOiBrd29ya2VyL3UzMjoxNiBOb3QgdGFpbnRlZCA1LjcuNy1hbWQ2NC1kZXNrdG9wLTg4MjIg
-IzMNCj4gPiBbwqDCoDEwMi4xMzM2MThdIEhhcmR3YXJlIG5hbWU6IEhVQVdFSSBOQkxMLVdYWDkv
-TkJMTC1XWFg5LVBDQiwgQklPUyAxLjA2IDA5LzI5LzIwMjANCj4gPiBbwqDCoDEwMi4xMzM2MjNd
-IFdvcmtxdWV1ZTogZXZlbnRzX3VuYm91bmQgYXN5bmNfcnVuX2VudHJ5X2ZuDQo+ID4gW8KgwqAx
-MDIuMTMzNjUxXSBSSVA6IDAwMTA6aWVlZTgwMjExX3JlY29uZmlnKzB4OWIvMHgxNDkwIFttYWM4
-MDIxMV0NCj4gPiBbwqDCoDEwMi4xMzM2NTRdIENvZGU6IDMxIGRiIGU4IGU4IGZiIDI3IGMyIDQx
-IGM2IDg1IDM0IDA1IDAwIDAwIDAwIDRjIDg5IGVmIGU4IDM4DQo+ID4gNTYgZmMgZmYgODkgNDUg
-YjggODUgYzAgNzQgNGMgNDggYzcgYzcgZDAgMGMgMDkgYzEgZTggMDEgZTAgMjUgYzIgPDBmPiAw
-YiA0Yw0KPiA+IDg5IGVmIGU4IDJiIGQxIGZmIGZmIGU5IDAyIDAzIDAwIDAwIDgwIDdkIDlmIDAw
-IDBmIDg1IDFkDQo+ID4gW8KgwqAxMDIuMTMzNjU1XSBSU1A6IDAwMTg6ZmZmZmJlNTJjMDU5ZmQw
-OCBFRkxBR1M6IDAwMDEwMjg2DQo+ID4gW8KgwqAxMDIuMTMzNjU3XSBSQVg6IDAwMDAwMDAwMDAw
-MDAwMDAgUkJYOiAwMDAwMDAwMDAwMDAwMDAwIFJDWDogMDAwMDAwMDAwMDAwMDAwNw0KPiA+IFvC
-oMKgMTAyLjEzMzY1OF0gUkRYOiAwMDAwMDAwMDAwMDAwMDA3IFJTSTogMDAwMDAwMDAwMDAwMDA5
-NiBSREk6IGZmZmY5ZDU3M2Y1MTljYzANCj4gPiBbwqDCoDEwMi4xMzM2NTldIFJCUDogZmZmZmJl
-NTJjMDU5ZmQ4MCBSMDg6IGZmZmZmZmZmZmZkOTYyNDUgUjA5OiAwMDAwMDAwMDAwMDJjYjgwDQo+
-ID4gW8KgwqAxMDIuMTMzNjYwXSBSMTA6IDAwMDAwMDAxNjk4OWU1NGMgUjExOiAwMDAwMDAwMDAw
-MDJhMzYwIFIxMjogZmZmZjlkNTczMWY1MDMwMA0KPiA+IFvCoMKgMTAyLjEzMzY2MV0gUjEzOiBm
-ZmZmOWQ1NzMxZjUwODAwIFIxNDogZmZmZjlkNTczMWY1MDRjOCBSMTU6IGZmZmZmZmZmODQ2M2Zi
-ZWYNCj4gPiBbwqDCoDEwMi4xMzM2NjRdIEZTOsKgwqAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdT
-OmZmZmY5ZDU3M2Y1MDAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPiA+IFvCoMKg
-MTAyLjEzMzY2NV0gQ1M6wqDCoDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgw
-MDUwMDMzDQo+ID4gW8KgwqAxMDIuMTMzNjY2XSBDUjI6IDAwMDAwMDAwMDAwMDAwMDAgQ1IzOiAw
-MDAwMDAwMzMzMjBhMDAwIENSNDogMDAwMDAwMDAwMDM0MGVlMA0KPiA+IFvCoMKgMTAyLjEzMzY2
-N10gQ2FsbCBUcmFjZToNCj4gPiBbwqDCoDEwMi4xMzM2NzNdwqDCoD8gZW5xdWV1ZV9lbnRpdHkr
-MHhlMy8weDY4MA0KPiA+IFvCoMKgMTAyLjEzMzcwNV3CoMKgaWVlZTgwMjExX3Jlc3VtZSsweDU1
-LzB4NzAgW21hYzgwMjExXQ0KPiA+IFvCoMKgMTAyLjEzMzcyOV3CoMKgd2lwaHlfcmVzdW1lKzB4
-ODQvMHgxMzAgW2NmZzgwMjExXQ0KPiA+IFvCoMKgMTAyLjEzMzc1Ml3CoMKgPyBhZGRyZXNzZXNf
-c2hvdysweGEwLzB4YTAgW2NmZzgwMjExXQ0KPiA+IFvCoMKgMTAyLjEzMzc1N13CoMKgZHBtX3J1
-bl9jYWxsYmFjaysweDViLzB4MTUwDQo+ID4gW8KgwqAxMDIuMTMzNzYwXcKgwqBkZXZpY2VfcmVz
-dW1lKzB4YWQvMHgxZjANCj4gPiBbwqDCoDEwMi4xMzM3NjJdwqDCoGFzeW5jX3Jlc3VtZSsweDFk
-LzB4MzANCj4gPiBbwqDCoDEwMi4xMzM3NjRdwqDCoGFzeW5jX3J1bl9lbnRyeV9mbisweDNlLzB4
-MTcwDQo+ID4gW8KgwqAxMDIuMTMzNzY4XcKgwqBwcm9jZXNzX29uZV93b3JrKzB4MWFiLzB4Mzgw
-DQo+ID4gW8KgwqAxMDIuMTMzNzcxXcKgwqB3b3JrZXJfdGhyZWFkKzB4MzcvMHgzYjANCj4gPiBb
-wqDCoDEwMi4xMzM3NzRdwqDCoGt0aHJlYWQrMHgxMjAvMHgxNDANCj4gPiBbwqDCoDEwMi4xMzM3
-NzZdwqDCoD8gY3JlYXRlX3dvcmtlcisweDFiMC8weDFiMA0KPiA+IFvCoMKgMTAyLjEzMzc3OF3C
-oMKgPyBrdGhyZWFkX3BhcmsrMHg5MC8weDkwDQo+ID4gW8KgwqAxMDIuMTMzNzgyXcKgwqByZXRf
-ZnJvbV9mb3JrKzB4MjIvMHg0MA0KPiA+IFvCoMKgMTAyLjEzMzc4NV0gLS0tWyBlbmQgdHJhY2Ug
-NDYyMjliZmQzYTQyNzNiZSBdLS0tDQo+ID4gW8KgwqAxMDIuMTM0MTM3XSAtLS0tLS0tLS0tLS1b
-IGN1dCBoZXJlIF0tLS0tLS0tLS0tLS0NCj4gPiBbwqDCoDEwMi4xMzQxNDFdIHdscDFzMDrCoMKg
-RmFpbGVkIGNoZWNrLXNkYXRhLWluLWRyaXZlciBjaGVjaywgZmxhZ3M6IDB4MA0KPiA+IFvCoMKg
-MTAyLjEzNDE5NV0gV0FSTklORzogQ1BVOiAwIFBJRDogNTYxMiBhdCBuZXQvbWFjODAyMTEvZHJp
-dmVyLW9wcy5oOjE5DQo+ID4gZHJ2X3JlbW92ZV9pbnRlcmZhY2UrMHhmZS8weDExMCBbbWFjODAy
-MTFdIg0KPiA+DQo+ID4gV2hlbiB0cnkgdG8gcG9pbnRlciB0aGUgZHJpdmVyLnBtIHRvIE5VTEws
-IHRoZSBwcm9ibGVtIGlzIGZpeGVkLg0KPiA+IEl0IG1ha2VzIHRoZSBzbGVlcCBhbmQgd2FrZSBw
-cm9jZWR1cmUgZXhwZWN0ZWQgd2hlbiBwbSdzIG9wcyBub3QgTlVMTC4NCj4gPg0KPiA+IEJ5IGBn
-aXQgYmxhbWVgIGNvbW1hbmQsIEkga25vdyB0aGF0IHRoZSBhc3NpZ25tZW50IG9mIC5kcml2ZXIu
-cG0gPQ0KPiA+IFJUV19QTV9PUFMgd2FzIGluIGNvbW1pdCA0NGJjMTdmN2Y1YjMgKCJydHc4ODog
-c3VwcG9ydCB3b3dsYW4gZmVhdHVyZSBmb3INCj4gPiA4ODIyYyIpLCBhbmQgYW5vdGhlcg0KPiA+
-IGNvbW1pdCA3ZGM3YzQxNjA3ZDEgKCJydHc4ODogYXZvaWQgdW51c2VkIGZ1bmN0aW9uIHdhcm5p
-bmdzIikNCj4gPiBwb2ludGVkIG91dCBydHdfcGNpX3Jlc3VtZSgpIGFuZCBydHdfcGNpX3N1c3Bl
-bmQoKSBhcmUgbm90IHVzZWQgYXQNCj4gPiBhbGwuDQo+ID4NCj4gPiBTbyBJIHRoaW5rIGl0J3Mg
-c2FmZSB0byByZW1vdmUgdGhlbS4NCj4gPg0KPiA+IEZpeGVzOiA3ZGM3YzQxNjA3ZDEgKCJydHc4
-ODogYXZvaWQgdW51c2VkIGZ1bmN0aW9uIHdhcm5pbmdzIikNCj4gPiBGaXhlczogNDRiYzE3Zjdm
-NWIzICgicnR3ODg6IHN1cHBvcnQgd293bGFuIGZlYXR1cmUgZm9yIDg4MjJjIikNCj4gPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IEhhbyBDaGVuIDxjaGVuaGFvYUB1bmlvbnRlY2guY29tPg0KPiA+IC0t
-LQ0KPiA+wqDCoGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmNlLmMg
-fCAxIC0NCj4gPsKgwqAxIGZpbGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQ0KPiA+DQo+ID4gZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmNlLmMg
-Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MjJjZS5jDQo+ID4gaW5k
-ZXggMzg0NWIxMzMzZGMzLi40YzA2MzE5MmY4MDEgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIyY2UuYw0KPiA+ICsrKyBiL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmNlLmMNCj4gPiBAQCAtMjUsNyArMjUs
-NiBAQCBzdGF0aWMgc3RydWN0IHBjaV9kcml2ZXIgcnR3Xzg4MjJjZV9kcml2ZXIgPSB7DQo+ID7C
-oMKgCS5pZF90YWJsZSA9IHJ0d184ODIyY2VfaWRfdGFibGUsDQo+ID7CoMKgCS5wcm9iZSA9IHJ0
-d19wY2lfcHJvYmUsDQo+ID7CoMKgCS5yZW1vdmUgPSBydHdfcGNpX3JlbW92ZSwNCj4gPiAtCS5k
-cml2ZXIucG0gPSAmcnR3X3BtX29wcywNCj4gDQo+IFdoeSBqdXN0IDg4MjJjZT8gV2h5IG5vdCBy
-ZW1vdmUgcnR3X3BtX29wcyBlbnRpcmVseSBpZiBpdCBqdXN0IGNyZWF0ZXMNCj4gcHJvYmxlbXM/
-DQo+IA0KDQpJIHRoaW5rIHdlIGNhbid0IHJlbW92ZSBydHdfcG1fb3BzLCBiZWNhdXNlIHdvd2xh
-biB3aWxsIG5vdCB3b3JrLg0KV2UgbmVlZCB0byBmaW5kIG91dCB3aHkgdGhlIHRhcmdldCBwbGF0
-Zm9ybSBjYW4ndCBwcm9wZXJseSByZXN1bWUgd2l0aA0KdGhpcyBkZWNsYXJhdGlvbi4NCg0KLS0N
-ClBpbmctS2UNCg0K
+Hi:
+
+I have tried setting module parameter disable_aspm=1, but it's not useful.
+
+ >The cpu info is follow:
+
+uos@uos-PC:~$ lscpu
+Architecture:        x86_64
+CPU op-mode(s):      32-bit, 64-bit
+Byte Order:          Little Endian
+Address sizes:       48 bits physical, 48 bits virtual
+CPU(s):              6
+On-line CPU(s) list: 0-5
+Thread(s) per core:  1
+Core(s) per socket:  6
+Socket(s):           1
+NUMA node(s):        1
+Vendor ID:           AuthenticAMD
+CPU family:          23
+Model:               96
+Model name:          AMD Ryzen 5 4500U with Radeon Graphics
+Stepping:            1
+CPU MHz:             2375.000
+CPU max MHz:         2375.0000
+CPU min MHz:         1400.0000
+BogoMIPS:            4740.81
+Virtualization:      AMD-V
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            512K
+L3 cache:            4096K
+NUMA node0 CPU(s):   0-5
+Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr 
+pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext 
+fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid 
+extd_apicid aperfmperf pni pclmulqdq monitor ssse3 fma cx16 sse4_1 
+sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm 
+extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit 
+wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb 
+cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 
+avx2 smep bmi2 cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt 
+xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local 
+clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save 
+tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold 
+avic v_vmsave_vmload vgif umip rdpid overflow_recov succor smca
+
+
+ >The pci bridge info is follow:
+
+uos@uos-PC:~$ sudo lspci -vvv -s 00:01.0
+00:01.0 PCI bridge: Intel Corporation 6th-9th Gen Core Processor PCIe 
+Controller (x16) (rev 05) (prog-if 00 [Normal decode])
+         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
+ParErr- Stepping- SERR- FastB2B- DisINTx+
+         Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- 
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+         Latency: 0, Cache Line Size: 64 bytes
+         Interrupt: pin A routed to IRQ 121
+         Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+         I/O behind bridge: 00003000-00003fff
+         Memory behind bridge: a0200000-a02fffff
+         Prefetchable memory behind bridge: 
+00000000b0000000-00000000bfffffff
+         Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- 
+<TAbort- <MAbort- <SERR- <PERR-
+         BridgeCtl: Parity- SERR+ NoISA- VGA+ MAbort- >Reset- FastB2B-
+                 PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+         Capabilities: [88] Subsystem: ASRock Incorporation Xeon E3-1200 
+v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x16)
+         Capabilities: [80] Power Management version 3
+                 Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA 
+PME(D0+,D1-,D2-,D3hot+,D3cold+)
+                 Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+         Capabilities: [90] MSI: Enable+ Count=1/1 Maskable- 64bit-
+                 Address: fee00258  Data: 0000
+         Capabilities: [a0] Express (v2) Root Port (Slot+), MSI 00
+                 DevCap: MaxPayload 256 bytes, PhantFunc 0
+                         ExtTag- RBE+
+                 DevCtl: Report errors: Correctable- Non-Fatal- Fatal- 
+Unsupported-
+                         RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop-
+                         MaxPayload 256 bytes, MaxReadReq 128 bytes
+                 DevSta: CorrErr- UncorrErr- FatalErr- UnsuppReq- 
+AuxPwr- TransPend-
+                 LnkCap: Port #2, Speed 8GT/s, Width x16, ASPM L0s L1, 
+Exit Latency L0s <256ns, L1 <8us
+                         ClockPM- Surprise- LLActRep- BwNot+ ASPMOptComp+
+                 LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- CommClk+
+                         ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+                 LnkSta: Speed 8GT/s, Width x8, TrErr- Train- SlotClk+ 
+DLActive- BWMgmt+ ABWMgmt+
+                 SltCap: AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- 
+HotPlug- Surprise-
+                         Slot #1, PowerLimit 75.000W; Interlock- NoCompl+
+                 SltCtl: Enable: AttnBtn- PwrFlt- MRL- PresDet- CmdCplt- 
+HPIrq- LinkChg-
+                         Control: AttnInd Unknown, PwrInd Unknown, 
+Power- Interlock-
+                 SltSta: Status: AttnBtn- PowerFlt- MRL- CmdCplt- 
+PresDet+ Interlock-
+                         Changed: MRL- PresDet+ LinkState-
+                 RootCtl: ErrCorrectable- ErrNon-Fatal- ErrFatal- 
+PMEIntEna- CRSVisible-
+                 RootCap: CRSVisible-
+                 RootSta: PME ReqID 0000, PMEStatus- PMEPending-
+                 DevCap2: Completion Timeout: Not Supported, 
+TimeoutDis-, LTR+, OBFF Via WAKE# ARIFwd-
+                 DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-, 
+LTR+, OBFF Via WAKE# ARIFwd-
+                 LnkCtl2: Target Link Speed: 8GT/s, EnterCompliance- 
+SpeedDis-
+                          Transmit Margin: Normal Operating Range, 
+EnterModifiedCompliance- ComplianceSOS-
+                          Compliance De-emphasis: -6dB
+                 LnkSta2: Current De-emphasis Level: -6dB, 
+EqualizationComplete+, EqualizationPhase1+
+                          EqualizationPhase2+, EqualizationPhase3+, 
+LinkEqualizationRequest-
+         Capabilities: [100 v1] Virtual Channel
+                 Caps:   LPEVC=0 RefClk=100ns PATEntryBits=1
+                 Arb:    Fixed- WRR32- WRR64- WRR128-
+                 Ctrl:   ArbSelect=Fixed
+                 Status: InProgress-
+                 VC0:    Caps:   PATOffset=00 MaxTimeSlots=1 RejSnoopTrans-
+                         Arb:    Fixed+ WRR32- WRR64- WRR128- TWRR128- 
+WRR256-
+                         Ctrl:   Enable+ ID=0 ArbSelect=Fixed TC/VC=ff
+                         Status: NegoPending- InProgress-
+         Capabilities: [140 v1] Root Complex Link
+                 Desc:   PortNumber=02 ComponentID=01 EltType=Config
+                 Link0:  Desc:   TargetPort=00 TargetComponent=01 
+AssocRCRB- LinkType=MemMapped LinkValid+
+                         Addr:   00000000fed19000
+         Capabilities: [d94 v1] #19
+         Kernel driver in use: pcieport
+
+
+在 2021/2/22 下午7:20, Pkshih 写道:
+> On Mon, 2021-02-22 at 09:27 +0200, Kalle Valo wrote:
+>> 陈浩 <chenhaoa@uniontech.com> writes:
+>>
+>>> By git blame command, I know that the assignment of .driver.pm =
+>>> RTW_PM_OPS
+>>>
+>>> was in commit 44bc17f7f5b3b("rtw88: support wowlan feature for
+>>> 8822c"),
+>>>
+>>> and another commit 7dc7c41607d19("avoid unused function warnings")
+>>>
+>>> pointed out rtw_pci_resume() and rtw_pci_suspend() are not used at
+>>> all.
+>>>
+>>> So I think it's safe to remove them.
+>>>
+> I think ".driver.pm = &rtw_pm_ops" is a switch to enable wowlan feature.
+> That means that wowlan doesn't work without this declaration.
+>
+>>> Currently, I find that the rtl8822ce wifi chip and the pci bridge of
+>>> it are not linked by pci
+>>>
+>>> after wake up by `lspci` command.
+>>>
+>>> when I set `pcie_aspm.policy=performance ` in the GRUB. The machine
+>>> sleep and
+>>>
+>>> wake up normal.So I think when this ops is assignmented,the sleep and
+>>> wake up procedure
+>>>
+>>> may cause pci device not linked.
+> Please try setting module parameter disable_aspm=1 with pci.ko.
+>
+> Could I know what the CPU and pci bridge chipset are used by HONOR laptop?
+>
+>> Please don't use HTML, our lists automatically drop all HTML email.
+>>
+
+
