@@ -2,121 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C8F43220F6
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 21:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1373F322145
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 22:23:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230498AbhBVUwm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Feb 2021 15:52:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230006AbhBVUwj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Feb 2021 15:52:39 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F4FDC061574
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Feb 2021 12:51:59 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id s24so14770380iob.6
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Feb 2021 12:51:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=kuUm+XwaOMq3E6+R97zywmgPDYZMExhRWYsNZ2tzM1k=;
-        b=fshLji8N5sLxudDYL0zctHxlngBXio5EBB4HIyt9yiFXqb1lvBv7Hbg+a7SdaXnU92
-         t0Z88p6rhVp/LijwWirktql4JIJkb3Keslasl6Nr4g75JqqmbL+wXydCnu7Ugt6pdfTv
-         qTcfLe0SVAhU+urDYqQa/2mcMfm2rDU+5gpBM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=kuUm+XwaOMq3E6+R97zywmgPDYZMExhRWYsNZ2tzM1k=;
-        b=lZI2iVjpwiDpRB/M4kxdO9JVZaa5dKe7o+7ptpoOr12x3RVlnrC9fYp6YlVztuJ/Bz
-         qZph3A5xPgX0XpZ2YY/DHwALxqETzbvOho/ghKUwdIgf6fCfghE0M2o3Musm3LT4fAb7
-         Ad+AvgTTHoO8QQfulqun9PU2HVUoGpVRvF0vDTcLWjFJKAYEr2zgh9/8pWjA1H5U5tO6
-         qs6uMU6e2ePhQuQqtVh7WxxLDlOzF14HWCItaq8BmbQX7t712i+7VAIZumbsbU49u7P/
-         n83IxxGzujuHYk1mvhjst3AFKe7l2TmcKPezuQYz3M3r3N35ePlK0HbkPJDW/Ii29KHh
-         Jp2w==
-X-Gm-Message-State: AOAM532NZDlF+UIvfmKxlA90ync6PMBgKR9c0/cL9QgUW96HEo1gDoQZ
-        wP47+SSSexp89T/ea6M64aNUEA==
-X-Google-Smtp-Source: ABdhPJwzv6hjO87ytJYuheqlXuPEKrgLDRMEEqLMjH49Kte3lJoKPb495/7/SFdW8rMylcM2rbxG/A==
-X-Received: by 2002:a5e:dd46:: with SMTP id u6mr14196077iop.73.1614027118926;
-        Mon, 22 Feb 2021 12:51:58 -0800 (PST)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id d12sm12524039ila.71.2021.02.22.12.51.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Feb 2021 12:51:58 -0800 (PST)
-Subject: Re: [PATCH 1/2] lockdep: add lockdep_assert_not_held()
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     mingo@redhat.com, will@kernel.org, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <cover.1613171185.git.skhan@linuxfoundation.org>
- <37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org>
- <YCljfeNr4m5mZa4N@hirez.programming.kicks-ass.net>
- <20210215104402.GC4507@worktop.programming.kicks-ass.net>
- <79aeb83a288051bd3a2a3f15e5ac42e06f154d48.camel@sipsolutions.net>
- <YCqbehyyeUoL0pPT@hirez.programming.kicks-ass.net>
- <eb819e72fb2d897e603654d44aeda8c6f337453f.camel@sipsolutions.net>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <c9293180-3eba-a5f3-b34e-b44ebdd60077@linuxfoundation.org>
-Date:   Mon, 22 Feb 2021 13:51:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        id S231537AbhBVVWG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Feb 2021 16:22:06 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:62095 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229947AbhBVVWE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Feb 2021 16:22:04 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614028898; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=uqTLrCwBw4mrF8gNiVQFV4EBmM37BGXbbNVy5UvbM9g=; b=h8MRCPp7daqtPf8qo2ADkLPVXADx+3IpGmLrvNrlsVtsKWyQRnfX88KPaPM2IzLnGw6ZOXmO
+ xzg2lHXZv2ywBZS+dAQlGdQJCBC0cQDfEZIcYzxt1g42K1FldQFY04LP7tZH6mMKeUNAfkBD
+ Vvli0HRCIFBJjT2kafylAugkRf8=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 60342041bf31d00be0266907 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Feb 2021 21:21:05
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CAD19C433CA; Mon, 22 Feb 2021 21:21:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 04CC3C433C6;
+        Mon, 22 Feb 2021 21:21:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 04CC3C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=alokad@codeaurora.org
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
+Subject: [PATCH] nl80211: Add missing line in nl80211_fils_discovery_policy
+Date:   Mon, 22 Feb 2021 13:20:59 -0800
+Message-Id: <20210222212059.22492-1-alokad@codeaurora.org>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <eb819e72fb2d897e603654d44aeda8c6f337453f.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/15/21 9:10 AM, Johannes Berg wrote:
-> On Mon, 2021-02-15 at 17:04 +0100, Peter Zijlstra wrote:
->> On Mon, Feb 15, 2021 at 02:12:30PM +0100, Johannes Berg wrote:
->>> On Mon, 2021-02-15 at 11:44 +0100, Peter Zijlstra wrote:
->>>> I think something like so will work, but please double check.
->>>
->>> Yeah, that looks better.
->>>
->>>> +++ b/include/linux/lockdep.h
->>>> @@ -294,11 +294,15 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
->>>>   
->>>>   #define lockdep_depth(tsk)	(debug_locks ? (tsk)->lockdep_depth : 0)
->>>>   
->>>> -#define lockdep_assert_held(l)	do {				\
->>>> -		WARN_ON(debug_locks && !lockdep_is_held(l));	\
->>>> +#define lockdep_assert_held(l)	do {					\
->>>> +		WARN_ON(debug_locks && lockdep_is_held(l) == 0));	\
->>>>   	} while (0)
->>>
->>> That doesn't really need to change? It's the same.
->>
->> Correct, but I found it more symmetric vs the not implementation below.
-> 
-> Fair enough. One might argue that you should have an
-> 
-> enum lockdep_lock_state {
-> 	LOCK_STATE_NOT_HELD, /* 0 now */
-> 	LOCK_STATE_HELD, /* 1 now */
-> 	LOCK_STATE_UNKNOWN, /* -1 with your patch but might as well be 2 */
-> };
-> 
-> :)
-> 
+Add NL80211_FILS_DISCOVERY_ATTR_TMPL explicitly in
+nl80211_fils_discovery_policy definition.
 
+Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
+---
+ net/wireless/nl80211.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Thank you both. Picking this back up. Will send v2 incorporating
-your comments and suggestions.
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 521d36bb0803..201a36ff91fa 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -407,9 +407,10 @@ static const struct nla_policy
+ nl80211_fils_discovery_policy[NL80211_FILS_DISCOVERY_ATTR_MAX + 1] = {
+ 	[NL80211_FILS_DISCOVERY_ATTR_INT_MIN] = NLA_POLICY_MAX(NLA_U32, 10000),
+ 	[NL80211_FILS_DISCOVERY_ATTR_INT_MAX] = NLA_POLICY_MAX(NLA_U32, 10000),
+-	NLA_POLICY_RANGE(NLA_BINARY,
+-			 NL80211_FILS_DISCOVERY_TMPL_MIN_LEN,
+-			 IEEE80211_MAX_DATA_LEN),
++	[NL80211_FILS_DISCOVERY_ATTR_TMPL] =
++			NLA_POLICY_RANGE(NLA_BINARY,
++					 NL80211_FILS_DISCOVERY_TMPL_MIN_LEN,
++					 IEEE80211_MAX_DATA_LEN),
+ };
+ 
+ static const struct nla_policy
 
-thanks,
--- Shuah
-
-
-
-
+base-commit: 38b5133ad607ecdcc8d24906d1ac9cc8df41acd5
+-- 
+2.25.0
 
