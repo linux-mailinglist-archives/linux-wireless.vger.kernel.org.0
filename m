@@ -2,105 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C03732116D
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 08:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 989003212A4
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 10:06:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230084AbhBVHd7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Feb 2021 02:33:59 -0500
-Received: from m42-2.mailgun.net ([69.72.42.2]:46810 "EHLO m42-2.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230081AbhBVHd5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Feb 2021 02:33:57 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1613979214; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=Z6NPu4HTwd6RoX5QLHaiXavsPcZ8QsNgXjRqKbtMV3c=;
- b=OybmIEDnS0mz4xhCEeN77cXZvFMhjksBr/nSUtNqkb1OETFvZgtC6b2+XBDdqT47YFqbDhyM
- fj6Q7T+fhFgfhVNte2CuScrTaLUV0TJppOcPCcM/59+HtmsKE9NEgRC3TZA4d/MY0j/Gy+S6
- 3QSuKsJl2UAezYrmiG21i0mXPho=
-X-Mailgun-Sending-Ip: 69.72.42.2
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 60335e2a0ccf3cf226bdb176 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Feb 2021 07:32:58
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E5B9AC43461; Mon, 22 Feb 2021 07:32:57 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3D530C433C6;
-        Mon, 22 Feb 2021 07:32:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D530C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] Revert "ath9k: fix ath_tx_process_buffer() potential null
- ptr
- dereference"
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210217211801.22540-1-skhan@linuxfoundation.org>
-References: <20210217211801.22540-1-skhan@linuxfoundation.org>
-To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     davem@davemloft.net, kuba@kernel.org, nbd@nbd.name,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210222073257.E5B9AC43461@smtp.codeaurora.org>
-Date:   Mon, 22 Feb 2021 07:32:57 +0000 (UTC)
+        id S230131AbhBVJFt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Feb 2021 04:05:49 -0500
+Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:42584 "EHLO
+        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230110AbhBVJEX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Feb 2021 04:04:23 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R801e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0UPBkFG5_1613984612;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0UPBkFG5_1613984612)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 22 Feb 2021 17:03:39 +0800
+From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        matthias.bgg@gmail.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Subject: [PATCH] mt76: mt7921: remove unneeded semicolon
+Date:   Mon, 22 Feb 2021 17:03:31 +0800
+Message-Id: <1613984611-116179-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Shuah Khan <skhan@linuxfoundation.org> wrote:
+Fix the following coccicheck warnings:
 
-> This reverts commit a56c14bb21b296fb6d395164ab62ef2e419e5069.
-> 
-> ath_tx_process_buffer() doesn't dereference or check sta and passes it
-> to ath_tx_complete_aggr() and ath_tx_complete_buf().
-> 
-> ath_tx_complete_aggr() checks the pointer before use. No problem here.
-> 
-> ath_tx_complete_buf() doesn't check or dereference sta and passes it on
-> to ath_tx_complete(). ath_tx_complete() doesn't check or dereference sta,
-> but assigns it to tx_info->status.status_driver_data[0]
-> 
-> ath_tx_complete_buf() is called from ath_tx_complete_aggr() passing
-> null ieee80211_sta pointer.
-> 
-> There is a potential for dereference later on, if and when the
-> tx_info->status.status_driver_data[0]is referenced. In addition, the
-> rcu read lock might be released before referencing the contents.
-> 
-> ath_tx_complete_buf() should be fixed to check sta perhaps? Worth
-> looking into.
-> 
-> Reverting this patch because it doesn't solve the problem and introduces
-> memory leak by skipping buffer completion if the pointer (sta) is NULL.
-> 
-> Fixes: a56c14bb21b2 ("ath9k: fix ath_tx_process_buffer() potential null ptr dereference")
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+./drivers/net/wireless/mediatek/mt76/mt7921/mac.c:1402:2-3: Unneeded
+semicolon.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-14ebaeeff8d0 Revert "ath9k: fix ath_tx_process_buffer() potential null ptr dereference"
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 3f90974..e56cde3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1399,7 +1399,7 @@ void mt7921_mac_work(struct work_struct *work)
+ 	if (++phy->sta_work_count == 10) {
+ 		phy->sta_work_count = 0;
+ 		mt7921_mac_sta_stats_work(phy);
+-	};
++	}
+ 
+ 	mt7921_mutex_release(phy->dev);
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210217211801.22540-1-skhan@linuxfoundation.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+1.8.3.1
 
