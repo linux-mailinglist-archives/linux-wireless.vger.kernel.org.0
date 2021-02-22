@@ -2,130 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C55232178D
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 13:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC64B3217F4
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 14:07:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230256AbhBVMt4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Feb 2021 07:49:56 -0500
-Received: from mail-eopbgr80079.outbound.protection.outlook.com ([40.107.8.79]:29895
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231752AbhBVMsT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Feb 2021 07:48:19 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=itsBjreFMRadscO45qq/mFrqsUZIf3F/8N8GDAk3yCYk301cxvwEbi4hKZvh8XtxNcMKPbl/B+Jo9SkwncEhH2I9YgTGUWQgvIWjO21KD0legRaPNspnqOGyEe/1nG3RZ+S0E8HWhauXHDqohtGrYMPU+a2K7rA1DWoGHV5FfdrY44lncARi/l0FpGi/QTobDX8dIiRyMYTOVym5nn8yV5S4QtZodymeFY7Ch4gsz6FJu7Bi6F3FXJ8gudKmxTeBo+xHIX2CX76LDpqsG4eBufJP8A9kv5WESRnaPf6NAIh2ljOx4sMeRR54XxTQlnrqn9HQP2OZfeOVIgyc5NfP4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OumTrqIdQYuSUkCZ6//VKOh5VTLfJ6QiHflrJPLp0Fo=;
- b=JDFqm426xVnfPNRhHip65CCRfcjgeehj/md6zkQMX1uFPIFqG1w1g5+6WTN4g1kLAMYJrs6Ze9fZIF8CM1in2ZyBouQkkQ4j8u8i/JDdZswvb3J2d7kWiwTvMHXCNzWWhYx4jK/ZWaR9bWsXwpeDZJ394i/N9lwahCKc2QeA85KM0USUKQt7h53YQJyBSBc3FMVDtFMpc6VHxFCXGuKipf3TsUucHRTnAYzIVaLQvNKkVuSi67zI3xJjEAQKgTG+xemZievpRO26WyQXIfDhgxCio5Qdri0msj4eshvB3JJGvz6Cn/lMUcGP+HP1f8OMDClKElf7foA8c/o01XF/nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OumTrqIdQYuSUkCZ6//VKOh5VTLfJ6QiHflrJPLp0Fo=;
- b=dF0d7tlgMjN+jSYzE3ww32KlsOLsxgbJN4XKNho4vttSkdFXxs7Ebv/hUJtGN5YvcuEo+5pabLqNQymSQVWXsbCc6X6FETBxjVqpTRreuhkYrhuB9/urh8RDBWVDs/j8b40wBqV8/pCYro7TddIFrgB23O/az+UgNJmUYA62rjE=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=nxp.com;
-Received: from DB7PR04MB4538.eurprd04.prod.outlook.com (2603:10a6:5:2e::18) by
- DB8PR04MB7113.eurprd04.prod.outlook.com (2603:10a6:10:12a::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3868.31; Mon, 22 Feb 2021 12:47:31 +0000
-Received: from DB7PR04MB4538.eurprd04.prod.outlook.com
- ([fe80::11d3:a9e:6ccc:4bdc]) by DB7PR04MB4538.eurprd04.prod.outlook.com
- ([fe80::11d3:a9e:6ccc:4bdc%6]) with mapi id 15.20.3868.029; Mon, 22 Feb 2021
- 12:47:31 +0000
-From:   Sharvari Harisangam <sharvari.harisangam@nxp.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Rakesh Parmar <rakesh.parmar@nxp.com>,
-        Cathy Luo <xiaohua.luo@nxp.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Pali Rohar <pali@kernel.org>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>
-Subject: [PATCH] MAINTAINERS: update for mwifiex driver maintainers
-Date:   Mon, 22 Feb 2021 18:19:44 +0530
-Message-Id: <1613998184-20047-1-git-send-email-sharvari.harisangam@nxp.com>
-X-Mailer: git-send-email 2.7.4
-Content-Type: text/plain
-X-Originating-IP: [115.112.95.158]
-X-ClientProxiedBy: SGAP274CA0018.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::30)
- To DB7PR04MB4538.eurprd04.prod.outlook.com (2603:10a6:5:2e::18)
+        id S230413AbhBVNEw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Feb 2021 08:04:52 -0500
+Received: from regular1.263xmail.com ([211.150.70.199]:52172 "EHLO
+        regular1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231864AbhBVNDL (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Feb 2021 08:03:11 -0500
+Received: from localhost (unknown [192.168.167.16])
+        by regular1.263xmail.com (Postfix) with ESMTP id 78C60125B;
+        Mon, 22 Feb 2021 20:57:26 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-ANTISPAM-LEVEL: 2
+X-SKE-CHECKED: 1
+X-ABS-CHECKED: 1
+Received: from [10.20.32.136] (unknown [113.57.152.160])
+        by smtp.263.net (postfix) whith ESMTP id P32471T140678937954048S1613998646619075_;
+        Mon, 22 Feb 2021 20:57:27 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <7ab80288a791c98ae489bd27ea30762a>
+X-RL-SENDER: chenhaoa@uniontech.com
+X-SENDER: chenhaoa@uniontech.com
+X-LOGIN-NAME: chenhaoa@uniontech.com
+X-FST-TO: linux-wireless@vger.kernel.org
+X-SENDER-IP: 113.57.152.160
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+Subject: Re: [PATCH v2] rtw88: 8822ce: fix wifi disconnect after S3/S4 on
+ HONOR laptop
+To:     Pkshih <pkshih@realtek.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        Timlee <timlee@realtek.com>,
+        "zhanjun@uniontech.com" <zhanjun@uniontech.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20210222094638.18392-1-chenhaoa@uniontech.com>
+ <87h7m4iefe.fsf@codeaurora.org> <1613993809.2331.12.camel@realtek.com>
+From:   Hao Chen <chenhaoa@uniontech.com>
+Message-ID: <e3cc6cd6-8f98-2fca-dfa6-b1b3835adf6c@uniontech.com>
+Date:   Mon, 22 Feb 2021 20:57:25 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from pe-lt747.in-pnq01.nxp.com (115.112.95.158) by SGAP274CA0018.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3868.27 via Frontend Transport; Mon, 22 Feb 2021 12:47:28 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: f3c52544-0a02-4fb9-3bf5-08d8d730042b
-X-MS-TrafficTypeDiagnostic: DB8PR04MB7113:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DB8PR04MB711367079AE95BBE3935FB40FC819@DB8PR04MB7113.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1107;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bzPwYlJ7+WeoR+7r78a1tH0K9PKDgdvfnxaUTUf6qrp9GEXnvGuHfyMDMRlI70glEGSm+sLetkL/8E6C+iUGYLNQH/vQ2hC87BVCTOrb3KFPuUMQWnkiX4YAQU6ek/RiHL7fwmMl24nPyJPNTXSIdp5NPgBUEN5tGV0kaDSP/GqqGupo8nXLLxNEGHhHQDcYVCv/Aug5EkBjIaYjsQvzO1yXImwxNzu9xIXPxI513JcsyT1XD8xdEdSyMsKRuOuIF+OnmrMnmu+p1OW0y6xup5GOZVmk0sbwvAGAUgC1xosw58AygPz1hX9uYTCxv7h4MFp98b/JdTIPDGE3BJUOInqaluhIKCnN28BlItng+3jzYNuZetzLchNiOzfoWZ5qQiq5w7fohT6CR8JUr3rHS/ULk0yVaaq9cPQjibxbFzML5SXAOFVbpiiZm7P1FNWfL/eI44LoOIwt/ZeJ1eQkVFKBQXVf09vKdToYoVJB4SdapwM8whIUd0lqzSWaOYvD3hxuWC/mXA8mYWuHa+3/oQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4538.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(346002)(39860400002)(366004)(136003)(186003)(2616005)(26005)(55236004)(956004)(6666004)(54906003)(66476007)(5660300002)(16526019)(7696005)(6916009)(83380400001)(36756003)(4326008)(52116002)(2906002)(8676002)(316002)(478600001)(66556008)(86362001)(66946007)(4744005)(6486002)(8936002)(44832011);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?qep4hNwCU8qCUJSVjsqN6m9yD6RQbDUT+bBvaPFZCw+6gEaNcN320nE04hiE?=
- =?us-ascii?Q?va/oRmcsd838WlThRWGIZudK8aJqIx78avHgihxDd686H8a9KhvqQlZr2r1r?=
- =?us-ascii?Q?r79yxMVxMi8Uy+80X2WkCoh18zz9Tgn5MRU1r4wqmlXJNfnpSjFQORvymbCM?=
- =?us-ascii?Q?UaMA+dCZy/tybMKNn84p040Q3vhMyPFSUIu47QciATCvIq3SU0K3mfkChG+m?=
- =?us-ascii?Q?xKCb2t6O4rzHaMmb7L4v0Zvrr7ZJOHKlUVggJSi8DB4O6qIrfzcorIAa3EWe?=
- =?us-ascii?Q?IcqL6QdlY2bsYJC6xyG67hGdJNqQ6rHAxDS6N12dG+v2bX96f6YFfjUoYSN7?=
- =?us-ascii?Q?0cAHCFSeu7ovjHF3tLxi3p8gddA8AG8wA2tM6SyNISgCKl65bLlHpa65fxLX?=
- =?us-ascii?Q?4n15QT7dSRX569juo9T0ocLbqcEMeHtUnpi/EPGfhleBuK9HpgPbcJOzbngo?=
- =?us-ascii?Q?2ybEAo3BeVhkQeIrDmTQV/KcYr2DFP/U/7xmVuEuLqiwQZKYikI2uv+4JsRd?=
- =?us-ascii?Q?/W7j+u8QDPuf5oj2O9c+iUs9FaV+e7vr+Gy5xwgha784a0vyAuZvfxcI+Bmq?=
- =?us-ascii?Q?aSFB7Nu56qvMCqR54eK1IDraDlcgwzZvXDZtHssA/WxGH+vcfLQZroUYSGxC?=
- =?us-ascii?Q?QVQJX5mObCKb0pKH+BvankdTig7X3PJPf/L0Gv1bYU5JY5Slxzh8mm0AF5MG?=
- =?us-ascii?Q?xqVc/448PImO02XK11C5QoYJ4x9kwpy0RuFGYG+Gqno1ssy6RdV+mW5Zw79C?=
- =?us-ascii?Q?N46MZjX48dq3hyMOLjkgncR8mZ5K8i4pOnhueAIVFFAUcheoYS3pmZbeHRZV?=
- =?us-ascii?Q?NgnG2FGTe74KqJuRL+Zu+YX+UdDl3synjDv7buiOCp9qX7BziIXcplP9u0OJ?=
- =?us-ascii?Q?j/9WBubcUEs0PDkpgKoZLzGbvrfn7Cp3XfW+NgRVMEk8CRFY07mJRX31DFef?=
- =?us-ascii?Q?FTQZnhzdWlG1Z8dt1lEnlqkk1/AD14QOSRHDzBzTR+uMqFwajQ8c4G2DEd96?=
- =?us-ascii?Q?q66CHRhNqqnqY7/rb6UVkMEpSgfcnu+pLusYKMxew7CdQrIFLZ8Iym36vNe+?=
- =?us-ascii?Q?ldfkBapfFoRz+/yQzto8dsCy4dSYDM0S9jD14yHRUpYpTgAi6jXLEldvajsr?=
- =?us-ascii?Q?4gaG6CZQ/IE6zX33le2oqksm9r4ZBIDtqfyDcwjOo3E3DVYEcejRppLkFyMX?=
- =?us-ascii?Q?nT71MyFjfxEHdPcogxElki/kzkvMF6+xA5p1h+ic9fjOSbodanIRJutWNMld?=
- =?us-ascii?Q?7wbaiDgptb7r7XDlOlm/ezUyDJRD5mva1UtqMNAFwMJFWUbv7zQM1/+FnDU2?=
- =?us-ascii?Q?t2dHTk4RXJ/NgmColcR2W9WG?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3c52544-0a02-4fb9-3bf5-08d8d730042b
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4538.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2021 12:47:31.0953
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RcxNyM1TsmTT/WXnkK9p45DTsQQet2pwRQBKBDhYCKG6l2xjtijPIk4OsZzXnzYW7LOTrmGS6TsTt5aSa13YxNH2sZRE14xCAfgq8/gAzlk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7113
+In-Reply-To: <1613993809.2331.12.camel@realtek.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add Sharvari Harisangam to Maintainer list.
-Replace Ganapathi Bhat's email id in Maintainer list.
+Because I only have the `HONOR magic 14` laptop with rtl8822ce wifi chip 
+:-(
 
-Signed-off-by: Rakesh Parmar <rakesh.parmar@nxp.com>
-Signed-off-by: Sharvari Harisangam <sharvari.harisangam@nxp.com>
----
- MAINTAINERS | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I will try to find out why the target platform can't properly resume with
+this declaration.Thanks.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 99335fd..98fd98e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10685,7 +10685,8 @@ F:	drivers/net/ethernet/marvell/mvpp2/
- 
- MARVELL MWIFIEX WIRELESS DRIVER
- M:	Amitkumar Karwar <amitkarwar@gmail.com>
--M:	Ganapathi Bhat <ganapathi.bhat@nxp.com>
-+M:	Ganapathi Bhat <ganapathi017@gmail.com>
-+M:	Sharvari Harisangam <sharvari.harisangam@nxp.com>
- M:	Xinming Hu <huxinming820@gmail.com>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--- 
-2.7.4
+在 2021/2/22 下午7:36, Pkshih 写道:
+> On Mon, 2021-02-22 at 12:29 +0200, Kalle Valo wrote:
+>> Hao Chen <chenhaoa@uniontech.com> writes:
+>>
+>>> The laptop's wifi disconnect after the laptop HONOR MagicBook 14
+>>> sleep to S3/S4 and wake up.
+>>>
+>>> The dmesg of kernel report:
+>>> "[   99.990168] pcieport 0000:00:01.2: can't change power state from D3hot
+>>> to D0 (config space inaccessible)
+>>> [   99.990176] ACPI: EC: interrupt unblocked
+>>> [   99.993334] rtw_pci 0000:01:00.0: can't change power state from D3hot
+>>> to D0 (config space inaccessible)
+>>> ......
+>>> [  102.133500] rtw_pci 0000:01:00.0: mac power on failed
+>>> [  102.133503] rtw_pci 0000:01:00.0: failed to power on mac
+>>> [  102.133505] ------------[ cut here ]------------
+>>> [  102.133506] Hardware became unavailable upon resume. This could be a
+>>> software issue prior to suspend or a hardware issue.
+>>> [  102.133569] WARNING: CPU: 4 PID: 5612 at net/mac80211/util.c:2232
+>>> ieee80211_reconfig+0x9b/0x1490 [mac80211]
+>>> [  102.133570] Modules linked in: ccm rfcomm uvcvideo videobuf2_vmalloc
+>>> videobuf2_memops videobuf2_v4l2 videobuf2_common videodev mc cmac bnep
+>>> btusb btrtl btbcm btintel edac_mce_amd bluetooth kvm_amd ecdh_generic
+>>> ecc kvm nls_iso8859_1 rtwpci rtw88 crct10dif_pclmul crc32_pclmul mac80211
+>>> ghash_clmulni_intel aesni_intel snd_hda_codec_realtek crypto_simd huawei_wmi
+>>> snd_hda_codec_generic cryptd cfg80211 wmi_bmof serio_raw sparse_keymap
+>>> ledtrig_audio sp5100_tco glue_helper joydev snd_hda_codec_hdmi snd_hda_intel
+>>> snd_intel_dspcfg wdat_wdt snd_hda_codec snd_hda_core pcspkr snd_hwdep snd_pcm
+>>> efi_pstore snd_timer libarc4 k10temp snd soundcore snd_pci_acp3x ccp mac_hid
+>>> binfmt_misc ip_tables x_tables autofs4 amdgpu amd_iommu_v2 gpu_sched
+>>> i2c_algo_bit ttm drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops
+>>> usbmouse cec nvme hid_generic i2c_piix4 usbhid nvme_core drm wmi video
+>>> [  102.133617] CPU: 4 PID: 5612 Comm: kworker/u32:16 Not tainted 5.7.7-amd64-desktop-8822 #3
+>>> [  102.133618] Hardware name: HUAWEI NBLL-WXX9/NBLL-WXX9-PCB, BIOS 1.06 09/29/2020
+>>> [  102.133623] Workqueue: events_unbound async_run_entry_fn
+>>> [  102.133651] RIP: 0010:ieee80211_reconfig+0x9b/0x1490 [mac80211]
+>>> [  102.133654] Code: 31 db e8 e8 fb 27 c2 41 c6 85 34 05 00 00 00 4c 89 ef e8 38
+>>> 56 fc ff 89 45 b8 85 c0 74 4c 48 c7 c7 d0 0c 09 c1 e8 01 e0 25 c2 <0f> 0b 4c
+>>> 89 ef e8 2b d1 ff ff e9 02 03 00 00 80 7d 9f 00 0f 85 1d
+>>> [  102.133655] RSP: 0018:ffffbe52c059fd08 EFLAGS: 00010286
+>>> [  102.133657] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000007
+>>> [  102.133658] RDX: 0000000000000007 RSI: 0000000000000096 RDI: ffff9d573f519cc0
+>>> [  102.133659] RBP: ffffbe52c059fd80 R08: ffffffffffd96245 R09: 000000000002cb80
+>>> [  102.133660] R10: 000000016989e54c R11: 000000000002a360 R12: ffff9d5731f50300
+>>> [  102.133661] R13: ffff9d5731f50800 R14: ffff9d5731f504c8 R15: ffffffff8463fbef
+>>> [  102.133664] FS:  0000000000000000(0000) GS:ffff9d573f500000(0000) knlGS:0000000000000000
+>>> [  102.133665] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>>> [  102.133666] CR2: 0000000000000000 CR3: 000000033320a000 CR4: 0000000000340ee0
+>>> [  102.133667] Call Trace:
+>>> [  102.133673]  ? enqueue_entity+0xe3/0x680
+>>> [  102.133705]  ieee80211_resume+0x55/0x70 [mac80211]
+>>> [  102.133729]  wiphy_resume+0x84/0x130 [cfg80211]
+>>> [  102.133752]  ? addresses_show+0xa0/0xa0 [cfg80211]
+>>> [  102.133757]  dpm_run_callback+0x5b/0x150
+>>> [  102.133760]  device_resume+0xad/0x1f0
+>>> [  102.133762]  async_resume+0x1d/0x30
+>>> [  102.133764]  async_run_entry_fn+0x3e/0x170
+>>> [  102.133768]  process_one_work+0x1ab/0x380
+>>> [  102.133771]  worker_thread+0x37/0x3b0
+>>> [  102.133774]  kthread+0x120/0x140
+>>> [  102.133776]  ? create_worker+0x1b0/0x1b0
+>>> [  102.133778]  ? kthread_park+0x90/0x90
+>>> [  102.133782]  ret_from_fork+0x22/0x40
+>>> [  102.133785] ---[ end trace 46229bfd3a4273be ]---
+>>> [  102.134137] ------------[ cut here ]------------
+>>> [  102.134141] wlp1s0:  Failed check-sdata-in-driver check, flags: 0x0
+>>> [  102.134195] WARNING: CPU: 0 PID: 5612 at net/mac80211/driver-ops.h:19
+>>> drv_remove_interface+0xfe/0x110 [mac80211]"
+>>>
+>>> When try to pointer the driver.pm to NULL, the problem is fixed.
+>>> It makes the sleep and wake procedure expected when pm's ops not NULL.
+>>>
+>>> By `git blame` command, I know that the assignment of .driver.pm =
+>>> RTW_PM_OPS was in commit 44bc17f7f5b3 ("rtw88: support wowlan feature for
+>>> 8822c"), and another
+>>> commit 7dc7c41607d1 ("rtw88: avoid unused function warnings")
+>>> pointed out rtw_pci_resume() and rtw_pci_suspend() are not used at
+>>> all.
+>>>
+>>> So I think it's safe to remove them.
+>>>
+>>> Fixes: 7dc7c41607d1 ("rtw88: avoid unused function warnings")
+>>> Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
+>>>
+>>> Signed-off-by: Hao Chen <chenhaoa@uniontech.com>
+>>> ---
+>>>    drivers/net/wireless/realtek/rtw88/rtw8822ce.c | 1 -
+>>>    1 file changed, 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822ce.c b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
+>>> index 3845b1333dc3..4c063192f801 100644
+>>> --- a/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
+>>> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
+>>> @@ -25,7 +25,6 @@ static struct pci_driver rtw_8822ce_driver = {
+>>>    	.id_table = rtw_8822ce_id_table,
+>>>    	.probe = rtw_pci_probe,
+>>>    	.remove = rtw_pci_remove,
+>>> -	.driver.pm = &rtw_pm_ops,
+>> Why just 8822ce? Why not remove rtw_pm_ops entirely if it just creates
+>> problems?
+>>
+> I think we can't remove rtw_pm_ops, because wowlan will not work.
+> We need to find out why the target platform can't properly resume with
+> this declaration.
+>
+> --
+> Ping-Ke
+>
+
 
