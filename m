@@ -2,111 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A8E8322248
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Feb 2021 23:42:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFEED32237E
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 02:22:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231789AbhBVWmJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Feb 2021 17:42:09 -0500
-Received: from m42-2.mailgun.net ([69.72.42.2]:62272 "EHLO m42-2.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231723AbhBVWlz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Feb 2021 17:41:55 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614033706; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=hFjUAOZ7u63AI9ublwtyX5L63eqbhEid0wjw6PbzIbY=;
- b=Ix5BuVoIPdd2Oiq65aPYCIdj5SRgp5qPoE/RR280y7ZPSq2aNbzGXJc5xRHFO9IUqeUYvz2R
- WBolyl0Ht0ZXsXA/hPMj0OvXswRQ7zqGff0w6DjYxuLX3d8s5lapEIUO8VKEVvL88oM6khZC
- Q8VLqHdTi7hrRHGGerp8JyZe8G0=
-X-Mailgun-Sending-Ip: 69.72.42.2
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 603432fee87943df306edb4b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 22 Feb 2021 22:41:02
- GMT
-Sender: alokad=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A7ADCC433ED; Mon, 22 Feb 2021 22:41:01 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 595F8C433C6;
-        Mon, 22 Feb 2021 22:41:01 +0000 (UTC)
+        id S230139AbhBWBUw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Feb 2021 20:20:52 -0500
+Received: from mail-il1-f199.google.com ([209.85.166.199]:43565 "EHLO
+        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230010AbhBWBUt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Feb 2021 20:20:49 -0500
+Received: by mail-il1-f199.google.com with SMTP id b4so9181207ilj.10
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Feb 2021 17:20:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=ACL/TW56hmM3icGPdSa0X3n3g07ekXH6PTx0W+ED+Os=;
+        b=e0G4eel/BZcFRZfxoK+746D/5J8Rr/xlct/LY91OB1EVbKTR+A8WLiHHGxjOa9DbmY
+         0qRbtPDZws751C5FXN1sUK45QPrVyZUZs1QA8j7rNkC0renAGTn7LP7wbPY7tuK5k7Oa
+         kMS/zbuAmiaJ4mqIc6Fv2vAsLxvGs809stSGq3AvBsVKfKyj+12gXuLv+moA5X/Gktx+
+         nIPMrzBXSgGl6/ROJJfdKqm1W1/4KDdTzqrYomTxDgStdBSr5wNpo+2sb92EbujLCe/c
+         3xW12Im4Yozi70n7gFtPg6aQLvET0rACZx+WFIXj1oXikVDyIBqjGtsUpl4Ng+hZtX/Y
+         1cYg==
+X-Gm-Message-State: AOAM532jKLvZ+WEkik+kw1JKP8YDjPQwoVVHlucmviiepTVg6CFqtqxD
+        ejkwQ8SQYWJvg390xrL9RGx/2rXHPGdgzt2pF5uQhjfE443l
+X-Google-Smtp-Source: ABdhPJx9ZFVHGhyVAJurNdjMzu3Qfr+RlQdpRk1YumGN7EUKjFQqc3Ah/e+LPTa1FrJaCYq/dtjAB9VwGPIQe5m3XHIN7YtRNaeU
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 22 Feb 2021 14:41:01 -0800
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH V7 0/4] mac80211: add multiple bssid support
-In-Reply-To: <c3b48c141c763e0cc1beb74482cd0bb4fbc546aa.camel@sipsolutions.net>
-References: <20210120005120.32424-1-alokad@codeaurora.org>
- (sfid-20210120_015542_749517_52354F67)
- <c3b48c141c763e0cc1beb74482cd0bb4fbc546aa.camel@sipsolutions.net>
-Message-ID: <64f490e2a559a0ed33c59d0fc7326582@codeaurora.org>
-X-Sender: alokad@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+X-Received: by 2002:a02:a888:: with SMTP id l8mr6116516jam.50.1614043208198;
+ Mon, 22 Feb 2021 17:20:08 -0800 (PST)
+Date:   Mon, 22 Feb 2021 17:20:08 -0800
+In-Reply-To: <0000000000007f199405baa1ffc4@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000013b2eb05bbf6b8ce@google.com>
+Subject: Re: WARNING in init_timer_key
+From:   syzbot <syzbot+105896fac213f26056f9@syzkaller.appspotmail.com>
+To:     a@unstable.cc, b.a.t.m.a.n@lists.open-mesh.org,
+        davem@davemloft.net, gerrit@erg.abdn.ac.uk, hkallweit1@gmail.com,
+        johannes.berg@intel.com, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, mareklindner@neomailbox.ch,
+        netdev@vger.kernel.org, sven@narfation.org, sw@simonwunderlich.de,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-02-12 01:59, Johannes Berg wrote:
-> Hi,
-> 
->> John Crispin (4):
->>   nl80211: add basic multiple bssid support
->>   mac80211: add multiple bssid support to interface handling
->>   mac80211: add multiple bssid/EMA support to beacon handling
->>   mac80211: CSA on non-transmitting interfaces
-> 
-> As much as I hate to send this back to you ...
-> 
-> I don't understand how you can not have an nl80211 feature flag for AP-
-> side multi-BSSID support, yet have a mac80211-level feature flag?
-> 
-> For STA side we could get away with it because we present all the BSSes
-> in cfg80211's scan results, and even a version of wpa_supplicant that's
-> not aware of multi-BSSID should be able to pick one of the non-
-> transmitting BSSes and connect to it.
-> 
-> But here? I don't understand how that'd be possible.
-> 
+syzbot has bisected this issue to:
 
-Will add nl80211 feature flags for MBSSID and EMA.
+commit b9df4fd7e99cb8bfd80c4143f3045d63b1754ad0
+Author: Heiner Kallweit <hkallweit1@gmail.com>
+Date:   Sun Oct 6 16:19:54 2019 +0000
 
-> Also, are the interface limits (# of AP interfaces) even sufficient, or
-> should there be different limits for non-transmitting? I could imagine
-> that it'd be easier to have more interfaces if they're 
-> non-transmitting,
-> since then you don't have to deal with more beacons but only more MAC
-> addresses.
-> 
+    net: core: change return type of pskb_may_pull to bool
 
-This implementation allows a single MBSSID-set, so only one transmitting
-interface per wiphy.
-Even if non-transmitting don't have beacons associated, drivers will 
-have
-limit depending on contexts allocated for other interface 
-characteristics.
-Hence these limits are accepted using 'max_num_vaps' and
-'max_profile_periodicity'.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=11b4545cd00000
+start commit:   1048ba83 Linux 5.11-rc6
+git tree:       upstream
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=13b4545cd00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=15b4545cd00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3ae5569643a9955f
+dashboard link: https://syzkaller.appspot.com/bug?extid=105896fac213f26056f9
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16f0e564d00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=147075e8d00000
 
-> So from that POV this seems rather lacking the necessary bits to be 
-> able
-> to confidently use it from userspace?
-> 
-> johannes
+Reported-by: syzbot+105896fac213f26056f9@syzkaller.appspotmail.com
+Fixes: b9df4fd7e99c ("net: core: change return type of pskb_may_pull to bool")
 
-Next version will have feature flags as well as max VAPs and profile
-periodicity exposed to application.
-
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
