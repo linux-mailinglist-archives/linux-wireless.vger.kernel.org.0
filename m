@@ -2,586 +2,926 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F773231A1
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 20:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ACDA32332E
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 22:23:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234065AbhBWTxE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Feb 2021 14:53:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42258 "EHLO
+        id S230268AbhBWVWB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Feb 2021 16:22:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231719AbhBWTxD (ORCPT
+        with ESMTP id S231274AbhBWVVx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Feb 2021 14:53:03 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5692C061574;
-        Tue, 23 Feb 2021 11:52:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Type:In-Reply-To:MIME-Version:
-        Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=NooctSGWGo+oPjlqYKPhPB0HtWXtcWSxzvRbtRkOTeg=; b=W0Bp1hLBL8/XcrL9TJZunXCnDK
-        BoAyoRo7J0+VHdqtCPsVRmQKpocpJHDNC+8FxD3l1utPWYw0sJRh+gIUGFXVONdZGrww2AnGPdM1C
-        QTwNebs+w24ktexMQ9rCUZkd0rUvhFu/4d9ehbB0jDbus/ieswGugpnzyWCkmaytf367Uq7pZ6Ttv
-        JQmWDpei609FirEfRAQDTj4nrYaWXqkPdIB0TCGBNZDQkfly5Ls3I5SZaRRycjCcdj85860MaCJX9
-        UO+hW7eKmsxbA1ZvxiSXBwJe0x3H8/XN1H1tettVmKXxq2X2ID58o+rTWaE4eZEr/tjVmy//mZaYy
-        JKSEIWaw==;
-Received: from [2601:1c0:6280:3f0::d05b]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1lEdjH-0007Wt-1b; Tue, 23 Feb 2021 19:52:19 +0000
-Subject: Re: linux-next: Tree for Feb 23
- [drivers/net/wireless/intel/iwlwifi/iwlwifi.ko]
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-References: <20210223173539.049dd40d@canb.auug.org.au>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <a3f440a5-2178-ffd8-a043-25b18fa42f0f@infradead.org>
-Date:   Tue, 23 Feb 2021 11:52:13 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Tue, 23 Feb 2021 16:21:53 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DCC4C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Feb 2021 13:21:12 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lEf7E-007ZoZ-6g; Tue, 23 Feb 2021 22:21:08 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Bob Copeland <me@bobcopeland.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wmediumd: lib: update from usfstl
+Date:   Tue, 23 Feb 2021 22:21:02 +0100
+Message-Id: <20210223212102.2189124-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <20210223173539.049dd40d@canb.auug.org.au>
-Content-Type: multipart/mixed;
- boundary="------------4C5599FC94B11D1DD6BB435E"
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------4C5599FC94B11D1DD6BB435E
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+From: Johannes Berg <johannes.berg@intel.com>
 
-On 2/22/21 10:35 PM, Stephen Rothwell wrote:
-> Hi all,
-> 
-> Please do not add any changes destined for v5.13 to your linux-next
-> included branches until after v5.12-rc1 has been released.
-> 
-> Changes since 20210222:
-> 
+This updates the code from the usfstl lib, notably bringing
+in a bugfix for a race during the handling of the response
+to UM_TIMETRAVEL_WAIT.
+---
+ wmediumd/inc/usfstl/list.h       |  13 ++-
+ wmediumd/inc/usfstl/loop.h       |  16 ++++
+ wmediumd/inc/usfstl/sched.h      | 103 ++++++++++++++++-------
+ wmediumd/inc/usfstl/schedctrl.h  |   2 +-
+ wmediumd/inc/usfstl/vhost.h      |   6 ++
+ wmediumd/inc/usfstl/vhostproto.h |   1 +
+ wmediumd/lib/loop.c              |   6 +-
+ wmediumd/lib/sched.c             | 112 ++++++++++++++++++++++++-
+ wmediumd/lib/schedctrl.c         | 106 +++++++++++++++---------
+ wmediumd/lib/uds.c               |   6 +-
+ wmediumd/lib/vhost.c             | 136 +++++++++++++++++++++----------
+ 11 files changed, 386 insertions(+), 121 deletions(-)
 
-Still seeing this build error on x86_64:
-
-ERROR: modpost: "iwl_so_trans_cfg" [drivers/net/wireless/intel/iwlwifi/iwlwifi.ko] undefined!
-
-
-Full randconfig file is attached.
-
+diff --git a/wmediumd/inc/usfstl/list.h b/wmediumd/inc/usfstl/list.h
+index f3ed4d170df3..a07c9e91e0a4 100644
+--- a/wmediumd/inc/usfstl/list.h
++++ b/wmediumd/inc/usfstl/list.h
+@@ -13,7 +13,7 @@
+ #endif
+ 
+ #ifndef container_of
+-#define container_of(ptr, type, member) ((type *)(void*)( (char*)ptr - offsetof(type, member)))
++#define container_of(ptr, type, member) ((type *)(void *)((char *)ptr - offsetof(type, member)))
+ #endif
+ 
+ struct usfstl_list_entry {
+@@ -24,7 +24,7 @@ struct usfstl_list {
+ 	struct usfstl_list_entry list;
+ };
+ 
+-#define USFSTL_LIST_INIT(name) { 	\
++#define USFSTL_LIST_INIT(name) {	\
+ 	.list.next = &(name).list,	\
+ 	.list.prev = &(name).list,	\
+ }
+@@ -64,6 +64,13 @@ static inline void usfstl_list_append(struct usfstl_list *list,
+ 	     item; \
+ 	     item = usfstl_next_item(_list, item, typeof(*item), member))
+ 
++#define usfstl_for_each_list_item_safe(item, next, _list, member) \
++	for (item = usfstl_list_first_item(_list, typeof(*item), member), \
++	     next = item ? usfstl_next_item(_list, item, typeof(*next), member) : NULL; \
++	     item; \
++	     item = next, \
++	     next = item ? usfstl_next_item(_list, next, typeof(*next), member) : NULL)
++
+ #define usfstl_for_each_list_item_continue_safe(item, next, _list, member) \
+ 	for (item = item ? usfstl_next_item(_list, item, typeof(*item), member) : \
+ 			   usfstl_list_first_item(_list, typeof(*item), member), \
+@@ -71,7 +78,7 @@ static inline void usfstl_list_append(struct usfstl_list *list,
+ 	     item; \
+ 	     item = next, next = item ? usfstl_next_item(_list, next, typeof(*item), member) : NULL)
+ 
+-static inline bool usfstl_list_empty(struct usfstl_list *list)
++static inline bool usfstl_list_empty(const struct usfstl_list *list)
+ {
+ 	return list->list.next == &list->list;
+ }
+diff --git a/wmediumd/inc/usfstl/loop.h b/wmediumd/inc/usfstl/loop.h
+index bab3017f9e9e..6d6204daba91 100644
+--- a/wmediumd/inc/usfstl/loop.h
++++ b/wmediumd/inc/usfstl/loop.h
+@@ -38,6 +38,8 @@ struct usfstl_loop_entry {
+ 	void *data;
+ };
+ 
++extern struct usfstl_list g_usfstl_loop_entries;
++
+ /**
+  * g_usfstl_loop_pre_handler_fn - pre-handler function
+  *
+@@ -68,4 +70,18 @@ void usfstl_loop_unregister(struct usfstl_loop_entry *entry);
+  */
+ void usfstl_loop_wait_and_handle(void);
+ 
++/**
++ * usfstl_loop_for_each_entry - iterate main loop entries
++ */
++#define usfstl_loop_for_each_entry(entry) \
++	usfstl_for_each_list_item(entry, &g_usfstl_loop_entries, list)
++
++/**
++ * usfstl_loop_for_each_entry_safe - iterate main loop entries safely
++ *
++ * Where "safely" means safe to concurrent modification.
++ */
++#define usfstl_loop_for_each_entry_safe(entry, tmp) \
++	usfstl_for_each_list_item_safe(entry, tmp, &g_usfstl_loop_entries, list)
++
+ #endif // _USFSTL_LOOP_H_
+diff --git a/wmediumd/inc/usfstl/sched.h b/wmediumd/inc/usfstl/sched.h
+index 2cef1f1b4561..48e3826b70e1 100644
+--- a/wmediumd/inc/usfstl/sched.h
++++ b/wmediumd/inc/usfstl/sched.h
+@@ -6,7 +6,6 @@
+ #ifndef _USFSTL_SCHED_H_
+ #define _USFSTL_SCHED_H_
+ #include <stdint.h>
+-#include <stdlib.h>
+ #include <inttypes.h>
+ #include <stdbool.h>
+ #include "assert.h"
+@@ -41,6 +40,29 @@
+  * external, scheduler to synchronize multiple components.
+  */
+ 
++/**
++ * struct usfstl_job - usfstl scheduler job
++ * @time: time this job fires
++ * @priority: priority of the job, in case of multiple happening
++ *	at the same time; higher value means higher priority
++ * @group: group value, in range 0-31
++ * @name: job name
++ * @data: job data
++ * @callback: called when the job occurs
++ */
++struct usfstl_job {
++	uint64_t start;
++	uint32_t priority;
++	uint8_t group;
++	const char *name;
++
++	void *data;
++	void (*callback)(struct usfstl_job *job);
++
++	/* private: */
++	struct usfstl_list_entry entry;
++};
++
+ /**
+  * struct usfstl_scheduler - usfstl scheduler structure
+  * @external_request: If external scheduler integration is required,
+@@ -50,6 +72,8 @@
+  *	for the previously requested runtime being granted, and you
+  *	must call usfstl_sched_set_time() before returning from this
+  *	function.
++ * @external_sync_from: For external scheduler integration, return current
++ *	time based on external time info.
+  * @time_advanced: Set this to have logging (or similar) when time
+  *	advances. Note that the argument is relative to the previous
+  *	time, if you need the current absolute time use
+@@ -61,9 +85,11 @@
+ struct usfstl_scheduler {
+ 	void (*external_request)(struct usfstl_scheduler *, uint64_t);
+ 	void (*external_wait)(struct usfstl_scheduler *);
++	uint64_t (*external_sync_from)(struct usfstl_scheduler *sched);
+ 	void (*time_advanced)(struct usfstl_scheduler *, uint64_t delta);
+ 
+ /* private: */
++	void (*next_time_changed)(struct usfstl_scheduler *);
+ 	uint64_t current_time;
+ 	uint64_t prev_external_sync, next_external_sync;
+ 
+@@ -81,9 +107,17 @@ struct usfstl_scheduler {
+ 		uint64_t start;
+ 		uint32_t nsec_per_tick;
+ 		uint8_t timer_triggered:1,
+-		        initialized:1;
++			initialized:1;
+ 	} wallclock;
+ 
++	struct {
++		struct usfstl_scheduler *parent;
++		int64_t offset;
++		uint32_t tick_ratio;
++		struct usfstl_job job;
++		bool waiting;
++	} link;
++
+ 	struct {
+ 		void *ctrl;
+ 	} ext;
+@@ -95,30 +129,6 @@ struct usfstl_scheduler {
+ 		.pending_jobs = USFSTL_LIST_INIT(name.pending_jobs),	\
+ 	}
+ 
+-/**
+- * struct usfstl_job - usfstl scheduler job
+- * @time: time this job fires
+- * @priority: priority of the job, in case of multiple happening
+- *	at the same time; higher value means higher priority
+- * @group: group value, in range 0-31
+- * @name: job name
+- * @data: job data
+- * @callback: called when the job occurs
+- */
+-struct usfstl_job {
+-	uint64_t start;
+-	uint32_t priority;
+-	uint8_t group;
+-	const char *name;
+-
+-	void *data;
+-	void (*callback)(struct usfstl_job *job);
+-
+-	/* private: */
+-	struct usfstl_list_entry entry;
+-};
+-
+-
+ #define usfstl_time_check(x) \
+ 	({ uint64_t __t; typeof(x) __x; (void)(&__t == &__x); 1; })
+ 
+@@ -145,17 +155,18 @@ struct usfstl_job {
+ 	uint64_t _a = a;						\
+ 	uint64_t _b = b;						\
+ 	if (!usfstl_time_cmp(_a, op, _b))				\
+-		abort();						\
++		usfstl_abort(__FILE__, __LINE__,			\
++			     "usfstl_time_cmp(" #a ", " #op ", " #b ")",\
++			     "  " #a " = %" PRIu64 "\n"			\
++			     "  " #b " = %" PRIu64 "\n",		\
++			     _a, _b);					\
+ } while (0)
+ 
+ /**
+  * usfstl_sched_current_time - return current time
+  * @sched: the scheduler to operate with
+  */
+-static inline uint64_t usfstl_sched_current_time(struct usfstl_scheduler *sched)
+-{
+-	return sched->current_time;
+-}
++uint64_t usfstl_sched_current_time(struct usfstl_scheduler *sched);
+ 
+ /**
+  * usfstl_sched_add_job - add job execution
+@@ -364,4 +375,34 @@ void usfstl_sched_wallclock_exit(struct usfstl_scheduler *sched);
+  */
+ void usfstl_sched_wallclock_wait_and_handle(struct usfstl_scheduler *sched);
+ 
++/**
++ * usfstl_sched_link - link a scheduler to another one
++ * @sched: the scheduler to link, must not already use the external
++ *	request methods, of course. Should also not be running.
++ * @parent: the parent scheduler to link to
++ * @tick_ratio: "tick_ratio" parent ticks == 1 of our ticks;
++ *	e.g. 1000 for if @sched should have microseconds, while @parent
++ *	uses nanoseconds.
++ *
++ * This links two schedulers together, and requesting any runtime in the
++ * inner scheduler (@sched) depends on the parent scheduler (@parent)
++ * granting it.
++ *
++ * Time in the inner scheduler is adjusted in two ways:
++ * 1) there's a "tick_ratio" as described above
++ * 2) at the time of linking, neither scheduler changes its current
++ *    time, instead an offset between the two is maintained, so the
++ *    inner scheduler can be at e.g. zero and be linked to a parent
++ *    that has already been running for a while.
++ */
++void usfstl_sched_link(struct usfstl_scheduler *sched,
++		       struct usfstl_scheduler *parent,
++		       uint32_t tick_ratio);
++
++/**
++ * usfstl_sched_unlink - unlink a scheduler again
++ * @sched: the scheduler to unlink, must be linked
++ */
++void usfstl_sched_unlink(struct usfstl_scheduler *sched);
++
+ #endif // _USFSTL_SCHED_H_
+diff --git a/wmediumd/inc/usfstl/schedctrl.h b/wmediumd/inc/usfstl/schedctrl.h
+index 236aa6725068..c8b1cb612ae4 100644
+--- a/wmediumd/inc/usfstl/schedctrl.h
++++ b/wmediumd/inc/usfstl/schedctrl.h
+@@ -16,7 +16,7 @@ struct usfstl_sched_ctrl {
+ 	int64_t offset;
+ 	uint32_t nsec_per_tick;
+ 	int fd;
+-	unsigned int waiting:1, acked:1, frozen:1;
++	unsigned int waiting:1, acked:1, frozen:1, started:1;
+ 	uint32_t expected_ack_seq;
+ };
+ 
+diff --git a/wmediumd/inc/usfstl/vhost.h b/wmediumd/inc/usfstl/vhost.h
+index c451c560caaf..f07a33d7142c 100644
+--- a/wmediumd/inc/usfstl/vhost.h
++++ b/wmediumd/inc/usfstl/vhost.h
+@@ -127,6 +127,12 @@ void usfstl_vhost_user_dev_notify(struct usfstl_vhost_user_dev *dev,
+ 				  unsigned int vring,
+ 				  const uint8_t *buf, size_t buflen);
+ 
++/**
++ * usfstl_vhost_user_config_changed - notify host of a config change event
++ * @dev: device to send to
++ */
++void usfstl_vhost_user_config_changed(struct usfstl_vhost_user_dev *dev);
++
+ /**
+  * usfstl_vhost_user_to_va - translate address
+  * @dev: device to translate address for
+diff --git a/wmediumd/inc/usfstl/vhostproto.h b/wmediumd/inc/usfstl/vhostproto.h
+index 375755f2aa92..8e7a76e7a63a 100644
+--- a/wmediumd/inc/usfstl/vhostproto.h
++++ b/wmediumd/inc/usfstl/vhostproto.h
+@@ -82,6 +82,7 @@ struct vhost_user_msg {
+ #define VHOST_USER_GET_CONFIG			24
+ #define VHOST_USER_VRING_KICK			35
+ 
++#define VHOST_USER_SLAVE_CONFIG_CHANGE_MSG	 2
+ #define VHOST_USER_SLAVE_VRING_CALL		 4
+ 
+ #define VHOST_USER_F_PROTOCOL_FEATURES 30
+diff --git a/wmediumd/lib/loop.c b/wmediumd/lib/loop.c
+index 67f6876165c7..e2b28efd20ce 100644
+--- a/wmediumd/lib/loop.c
++++ b/wmediumd/lib/loop.c
+@@ -29,7 +29,7 @@ void usfstl_loop_register(struct usfstl_loop_entry *entry)
+ {
+ 	struct usfstl_loop_entry *tmp;
+ 
+-	usfstl_for_each_list_item(tmp, &g_usfstl_loop_entries, list) {
++	usfstl_loop_for_each_entry(tmp) {
+ 		if (entry->priority >= tmp->priority) {
+ 			usfstl_list_insert_before(&tmp->list, &entry->list);
+ 			return;
+@@ -54,7 +54,7 @@ void usfstl_loop_wait_and_handle(void)
+ 		FD_ZERO(&rd_set);
+ 		FD_ZERO(&exc_set);
+ 
+-		usfstl_for_each_list_item(tmp, &g_usfstl_loop_entries, list) {
++		usfstl_loop_for_each_entry(tmp) {
+ 			FD_SET(tmp->fd, &rd_set);
+ 			FD_SET(tmp->fd, &exc_set);
+ 			if ((unsigned int)tmp->fd > max)
+@@ -64,7 +64,7 @@ void usfstl_loop_wait_and_handle(void)
+ 		num = select(max + 1, &rd_set, NULL, &exc_set, NULL);
+ 		assert(num > 0);
+ 
+-		usfstl_for_each_list_item(tmp, &g_usfstl_loop_entries, list) {
++		usfstl_loop_for_each_entry(tmp) {
+ 			void *data = g_usfstl_loop_pre_handler_fn_data;
+ 
+ 			if (!FD_ISSET(tmp->fd, &rd_set) &&
+diff --git a/wmediumd/lib/sched.c b/wmediumd/lib/sched.c
+index 2694a034d7dd..7ebd81a99b4e 100644
+--- a/wmediumd/lib/sched.c
++++ b/wmediumd/lib/sched.c
+@@ -8,6 +8,22 @@
+ #include <usfstl/assert.h>
+ #include <usfstl/sched.h>
+ #include <usfstl/list.h>
++#include "internal.h"
++
++uint64_t usfstl_sched_current_time(struct usfstl_scheduler *sched)
++{
++	uint64_t current_time;
++
++	if (!sched->external_sync_from || !sched->waiting)
++		return sched->current_time;
++
++	current_time = sched->external_sync_from(sched);
++
++	/* update current time after sync */
++	usfstl_sched_set_time(sched, current_time);
++
++	return current_time;
++}
+ 
+ static bool usfstl_sched_external_request(struct usfstl_scheduler *sched,
+ 					  uint64_t time)
+@@ -90,6 +106,9 @@ void usfstl_sched_add_job(struct usfstl_scheduler *sched, struct usfstl_job *job
+ 	 * external scheduler.
+ 	 */
+ 	usfstl_sched_external_request(sched, job->start);
++
++	if (sched->next_time_changed)
++		sched->next_time_changed(sched);
+ }
+ 
+ bool usfstl_job_scheduled(struct usfstl_job *job)
+@@ -169,8 +188,13 @@ struct usfstl_job *usfstl_sched_next(struct usfstl_scheduler *sched)
+ 	 * If external scheduler is active, we might get here with nothing
+ 	 * to do, so we just need to wait for an external input/job which
+ 	 * will add an job to our scheduler in usfstl_sched_add_job().
++	 *
++	 * And due to the fact that we don't have any API for canceling external
++	 * time request, we can request external time which adds a job on the
++	 * external scheduler and cancel internally, and get scheduled to run
++	 * with nothing to do.
+ 	 */
+-	if (usfstl_list_empty(&sched->joblist) && sched->external_request)
++	while (usfstl_list_empty(&sched->joblist) && sched->external_request)
+ 		usfstl_sched_external_wait(sched);
+ 
+ 	while ((job = usfstl_sched_next_pending(sched, NULL))) {
+@@ -293,3 +317,89 @@ void usfstl_sched_restore_groups(struct usfstl_scheduler *sched,
+ 	usfstl_sched_restore_blocked_jobs(sched);
+ 	usfstl_sched_remove_blocked_jobs(sched);
+ }
++
++static void usfstl_sched_link_job_callback(struct usfstl_job *job)
++{
++	struct usfstl_scheduler *sched = job->data;
++
++	sched->link.waiting = false;
++}
++
++static uint64_t usfstl_sched_link_external_sync_from(struct usfstl_scheduler *sched)
++{
++	uint64_t parent_time;
++
++	parent_time = usfstl_sched_current_time(sched->link.parent);
++
++	return DIV_ROUND_UP(parent_time - sched->link.offset,
++			    sched->link.tick_ratio);
++}
++
++static void usfstl_sched_link_external_wait(struct usfstl_scheduler *sched)
++{
++	sched->link.waiting = true;
++
++	while (sched->link.waiting)
++		usfstl_sched_next(sched->link.parent);
++
++	usfstl_sched_set_time(sched, usfstl_sched_current_time(sched));
++}
++
++static void usfstl_sched_link_external_request(struct usfstl_scheduler *sched,
++					       uint64_t time)
++{
++	uint64_t parent_time;
++	struct usfstl_job *job = &sched->link.job;
++
++	parent_time = sched->link.tick_ratio * time + sched->link.offset;
++
++	usfstl_sched_del_job(job);
++	job->start = parent_time;
++	usfstl_sched_add_job(sched->link.parent, job);
++}
++
++void usfstl_sched_link(struct usfstl_scheduler *sched,
++		       struct usfstl_scheduler *parent,
++		       uint32_t tick_ratio)
++{
++	struct usfstl_job *job;
++
++	USFSTL_ASSERT(tick_ratio, "a ratio must be set");
++	USFSTL_ASSERT(!sched->link.parent, "must not be linked");
++
++	USFSTL_ASSERT_EQ(sched->external_request, NULL, "%p");
++	sched->external_request = usfstl_sched_link_external_request;
++
++	USFSTL_ASSERT_EQ(sched->external_wait, NULL, "%p");
++	sched->external_wait = usfstl_sched_link_external_wait;
++
++	USFSTL_ASSERT_EQ(sched->external_sync_from, NULL, "%p");
++	sched->external_sync_from = usfstl_sched_link_external_sync_from;
++
++	sched->link.tick_ratio = tick_ratio;
++	sched->link.parent = parent;
++
++	sched->link.job.callback = usfstl_sched_link_job_callback;
++	sched->link.job.data = sched;
++
++	/* current_time = (parent_time - offset) / tick_ratio */
++	sched->link.offset = sched->link.parent->current_time -
++		sched->current_time * sched->link.tick_ratio;
++
++	/* if we have a job already, request to run it */
++	job = usfstl_sched_next_pending(sched, NULL);
++	if (job)
++		usfstl_sched_external_request(sched, job->start);
++}
++
++void usfstl_sched_unlink(struct usfstl_scheduler *sched)
++{
++	USFSTL_ASSERT(sched->link.parent, "must be linked");
++
++	sched->external_sync_from = NULL;
++	sched->external_wait = NULL;
++	sched->external_request = NULL;
++
++	usfstl_sched_del_job(&sched->link.job);
++	memset(&sched->link, 0, sizeof(sched->link));
++}
+diff --git a/wmediumd/lib/schedctrl.c b/wmediumd/lib/schedctrl.c
+index 540826026d68..bcd5f896ea61 100644
+--- a/wmediumd/lib/schedctrl.c
++++ b/wmediumd/lib/schedctrl.c
+@@ -24,43 +24,6 @@ static void _usfstl_sched_ctrl_send_msg(struct usfstl_sched_ctrl *ctrl,
+ 			 (int)sizeof(msg), "%d");
+ }
+ 
+-static void usfstl_sched_ctrl_send_msg(struct usfstl_sched_ctrl *ctrl,
+-				       enum um_timetravel_ops op,
+-				       uint64_t time)
+-{
+-	static uint32_t seq, old_expected;
+-
+-	do {
+-		seq++;
+-	} while (seq == 0);
+-
+-	_usfstl_sched_ctrl_send_msg(ctrl, op, time, seq);
+-	old_expected = ctrl->expected_ack_seq;
+-	ctrl->expected_ack_seq = seq;
+-
+-	USFSTL_ASSERT_EQ((int)ctrl->acked, 0, "%d");
+-
+-	while (!ctrl->acked)
+-		usfstl_loop_wait_and_handle();
+-	ctrl->acked = 0;
+-	ctrl->expected_ack_seq = old_expected;
+-
+-	if (op == UM_TIMETRAVEL_GET) {
+-		if (ctrl->frozen) {
+-			uint64_t local;
+-
+-			local = ctrl->sched->current_time * ctrl->nsec_per_tick;
+-			ctrl->offset = ctrl->ack_time - local;
+-		} else {
+-			uint64_t time;
+-
+-			time = DIV_ROUND_UP(ctrl->ack_time - ctrl->offset,
+-					    ctrl->nsec_per_tick);
+-			usfstl_sched_set_time(ctrl->sched, time);
+-		}
+-	}
+-}
+-
+ static void usfstl_sched_ctrl_sock_read(int fd, void *data)
+ {
+ 	struct usfstl_sched_ctrl *ctrl = data;
+@@ -101,10 +64,72 @@ static void usfstl_sched_ctrl_sock_read(int fd, void *data)
+ 	_usfstl_sched_ctrl_send_msg(ctrl, UM_TIMETRAVEL_ACK, 0, msg.seq);
+ }
+ 
++static void usfstl_sched_ctrl_send_msg(struct usfstl_sched_ctrl *ctrl,
++				       enum um_timetravel_ops op,
++				       uint64_t time)
++{
++	static uint32_t seq, old_expected;
++
++	do {
++		seq++;
++	} while (seq == 0);
++
++	_usfstl_sched_ctrl_send_msg(ctrl, op, time, seq);
++	old_expected = ctrl->expected_ack_seq;
++	ctrl->expected_ack_seq = seq;
++
++	USFSTL_ASSERT_EQ((int)ctrl->acked, 0, "%d");
++
++	/*
++	 * Race alert!
++	 *
++	 * UM_TIMETRAVEL_WAIT basically passes the run "token" to the
++	 * controller, which passes it to another participant of the
++	 * simulation. This other participant might immediately send
++	 * us another message on a different channel, e.g. if this
++	 * code is used in a vhost-user device.
++	 *
++	 * If here we were to use use usfstl_loop_wait_and_handle(),
++	 * we could actually get and process the vhost-user message
++	 * before the ACK for the WAIT message here, depending on the
++	 * (host) kernel's message ordering and select() handling etc.
++	 *
++	 * To avoid this, directly read the ACK message for the WAIT,
++	 * without handling any other sockets (first).
++	 */
++	if (op == UM_TIMETRAVEL_WAIT) {
++		usfstl_sched_ctrl_sock_read(ctrl->fd, ctrl);
++		USFSTL_ASSERT(ctrl->acked);
++	}
++
++	while (!ctrl->acked)
++		usfstl_loop_wait_and_handle();
++	ctrl->acked = 0;
++	ctrl->expected_ack_seq = old_expected;
++
++	if (op == UM_TIMETRAVEL_GET) {
++		if (ctrl->frozen) {
++			uint64_t local;
++
++			local = ctrl->sched->current_time * ctrl->nsec_per_tick;
++			ctrl->offset = ctrl->ack_time - local;
++		} else {
++			uint64_t time;
++
++			time = DIV_ROUND_UP(ctrl->ack_time - ctrl->offset,
++					    ctrl->nsec_per_tick);
++			usfstl_sched_set_time(ctrl->sched, time);
++		}
++	}
++}
++
+ static void usfstl_sched_ctrl_request(struct usfstl_scheduler *sched, uint64_t time)
+ {
+ 	struct usfstl_sched_ctrl *ctrl = sched->ext.ctrl;
+ 
++	if (!ctrl->started)
++		return;
++
+ 	usfstl_sched_ctrl_send_msg(ctrl, UM_TIMETRAVEL_REQUEST,
+ 				   time * ctrl->nsec_per_tick + ctrl->offset);
+ }
+@@ -133,6 +158,8 @@ void usfstl_sched_ctrl_start(struct usfstl_sched_ctrl *ctrl,
+ 	USFSTL_ASSERT_EQ(ctrl->sched, NULL, "%p");
+ 	USFSTL_ASSERT_EQ(sched->ext.ctrl, NULL, "%p");
+ 
++	memset(ctrl, 0, sizeof(*ctrl));
++
+ 	/*
+ 	 * The remote side assumes we start at 0, so if we don't have 0 right
+ 	 * now keep the difference in our own offset (in nsec).
+@@ -156,6 +183,7 @@ void usfstl_sched_ctrl_start(struct usfstl_sched_ctrl *ctrl,
+ 
+ 	/* tell the other side we're starting  */
+ 	usfstl_sched_ctrl_send_msg(ctrl, UM_TIMETRAVEL_START, client_id);
++	ctrl->started = 1;
+ 
+ 	/* if we have a job already, request it */
+ 	job = usfstl_sched_next_pending(sched, NULL);
+@@ -174,6 +202,8 @@ void usfstl_sched_ctrl_sync_to(struct usfstl_sched_ctrl *ctrl)
+ {
+ 	uint64_t time;
+ 
++	USFSTL_ASSERT(ctrl->started, "cannot sync to scheduler until started");
++
+ 	time = usfstl_sched_current_time(ctrl->sched) * ctrl->nsec_per_tick;
+ 	time += ctrl->offset;
+ 
+@@ -182,6 +212,8 @@ void usfstl_sched_ctrl_sync_to(struct usfstl_sched_ctrl *ctrl)
+ 
+ void usfstl_sched_ctrl_sync_from(struct usfstl_sched_ctrl *ctrl)
+ {
++	if (!ctrl->started)
++		return;
+ 	usfstl_sched_ctrl_send_msg(ctrl, UM_TIMETRAVEL_GET, -1);
+ }
+ 
+diff --git a/wmediumd/lib/uds.c b/wmediumd/lib/uds.c
+index 5601bc4795c5..fc0fe2ad81f0 100644
+--- a/wmediumd/lib/uds.c
++++ b/wmediumd/lib/uds.c
+@@ -76,7 +76,7 @@ void usfstl_uds_remove(const char *path)
+ 	struct usfstl_loop_entry *tmp;
+ 	struct usfstl_uds_server *uds, *found = NULL;
+ 
+-	usfstl_for_each_list_item(tmp, &g_usfstl_loop_entries, list) {
++	usfstl_loop_for_each_entry(tmp) {
+ 		if (tmp->handler != usfstl_uds_accept_handler)
+ 			continue;
+ 
+@@ -89,6 +89,7 @@ void usfstl_uds_remove(const char *path)
+ 
+ 	USFSTL_ASSERT(found);
+ 
++	close(found->entry.fd);
+ 	usfstl_loop_unregister(&found->entry);
+ 	unlink(path);
+ 	free(found);
+@@ -142,7 +143,7 @@ void usfstl_uds_disconnect(int fd)
+ 	struct usfstl_loop_entry *tmp;
+ 	struct usfstl_uds_client *uds, *found = NULL;
+ 
+-	usfstl_for_each_list_item(tmp, &g_usfstl_loop_entries, list) {
++	usfstl_loop_for_each_entry(tmp) {
+ 		if (tmp->handler != usfstl_uds_readable_handler)
+ 			continue;
+ 
+@@ -155,6 +156,7 @@ void usfstl_uds_disconnect(int fd)
+ 
+ 	USFSTL_ASSERT(found);
+ 
++	close(fd);
+ 	usfstl_loop_unregister(&found->entry);
+ 	free(found);
+ }
+diff --git a/wmediumd/lib/vhost.c b/wmediumd/lib/vhost.c
+index cc35d8cd7aa4..9d4644199390 100644
+--- a/wmediumd/lib/vhost.c
++++ b/wmediumd/lib/vhost.c
+@@ -218,6 +218,49 @@ static int usfstl_vhost_user_read_msg(int fd, struct msghdr *msghdr)
+ 	return 0;
+ }
+ 
++static void usfstl_vhost_user_send_msg(struct usfstl_vhost_user_dev_int *dev,
++				       struct vhost_user_msg *msg)
++{
++	size_t msgsz = sizeof(msg->hdr) + msg->hdr.size;
++	bool ack = dev->ext.protocol_features &
++		   (1ULL << VHOST_USER_PROTOCOL_F_REPLY_ACK);
++	ssize_t written;
++
++	if (ack)
++		msg->hdr.flags |= VHOST_USER_MSG_FLAGS_NEED_REPLY;
++
++	written = write(dev->req_fd, msg, msgsz);
++	USFSTL_ASSERT_EQ(written, (ssize_t)msgsz, "%zd");
++
++	if (ack) {
++		struct usfstl_loop_entry entry = {
++			.fd = dev->req_fd,
++			.priority = 0x7fffffff, // max
++			.handler = usfstl_vhost_user_readable_handler,
++		};
++		struct iovec msg_iov = {
++			.iov_base = msg,
++			.iov_len = sizeof(*msg),
++		};
++		struct msghdr msghdr = {
++			.msg_iovlen = 1,
++			.msg_iov = &msg_iov,
++		};
++
++		/*
++		 * Wait for the fd to be readable - we may have to
++		 * handle other simulation (time) messages while
++		 * waiting ...
++		 */
++		usfstl_loop_register(&entry);
++		while (entry.fd != -1)
++			usfstl_loop_wait_and_handle();
++		USFSTL_ASSERT_EQ(usfstl_vhost_user_read_msg(dev->req_fd,
++							    &msghdr),
++				 0, "%d");
++	}
++}
++
+ static void usfstl_vhost_user_send_virtq_buf(struct usfstl_vhost_user_dev_int *dev,
+ 					     struct usfstl_vhost_user_buf *buf,
+ 					     int virtq_idx)
+@@ -256,44 +299,8 @@ static void usfstl_vhost_user_send_virtq_buf(struct usfstl_vhost_user_dev_int *d
+ 				.idx = virtq_idx,
+ 			},
+ 		};
+-		bool ack = dev->ext.protocol_features &
+-			   (1ULL << VHOST_USER_PROTOCOL_F_REPLY_ACK);
+-		size_t msgsz = sizeof(msg.hdr) + msg.hdr.size;
+-
+-		if (ack)
+-			msg.hdr.flags |= VHOST_USER_MSG_FLAGS_NEED_REPLY;
+-
+-		written = write(dev->req_fd, &msg, msgsz);
+-		USFSTL_ASSERT_EQ(written, (ssize_t)msgsz, "%zd");
+-
+-		if (ack) {
+-			struct usfstl_loop_entry entry = {
+-				.fd = dev->req_fd,
+-				.priority = 0x7fffffff, // max
+-				.handler = usfstl_vhost_user_readable_handler,
+-			};
+-			struct iovec msg_iov = {
+-				.iov_base = &msg,
+-				.iov_len = sizeof(msg),
+-			};
+-			struct msghdr msghdr = {
+-				.msg_iovlen = 1,
+-				.msg_iov = &msg_iov,
+-			};
+-
+-			/*
+-			 * Wait for the fd to be readable - we may have to
+-			 * handle other simulation (time) messages while
+-			 * waiting ...
+-			 */
+-			usfstl_loop_register(&entry);
+-			while (entry.fd != -1)
+-				usfstl_loop_wait_and_handle();
+-			USFSTL_ASSERT_EQ(usfstl_vhost_user_read_msg(dev->req_fd,
+-								    &msghdr),
+-				       0, "%d");
+-		}
+ 
++		usfstl_vhost_user_send_msg(dev, &msg);
+ 		return;
+ 	}
+ 
+@@ -380,11 +387,30 @@ static void usfstl_vhost_user_virtq_fdkick(struct usfstl_loop_entry *entry)
+ 	usfstl_vhost_user_virtq_kick(dev, virtq);
+ }
+ 
++static void usfstl_vhost_user_clear_mappings(struct usfstl_vhost_user_dev_int *dev)
++{
++	unsigned int idx;
++	for (idx = 0; idx < MAX_REGIONS; idx++) {
++		if (dev->region_vaddr[idx]) {
++			munmap(dev->region_vaddr[idx],
++			       dev->regions[idx].size + dev->regions[idx].mmap_offset);
++			dev->region_vaddr[idx] = NULL;
++		}
++
++		if (dev->region_fds[idx] != -1) {
++			close(dev->region_fds[idx]);
++			dev->region_fds[idx] = -1;
++		}
++	}
++}
++
+ static void usfstl_vhost_user_setup_mappings(struct usfstl_vhost_user_dev_int *dev)
+ {
+ 	unsigned int idx;
+ 
+ 	for (idx = 0; idx < dev->n_regions; idx++) {
++		USFSTL_ASSERT(!dev->region_vaddr[idx]);
++
+ 		/*
+ 		 * Cannot rely on the offset being page-aligned, I think ...
+ 		 * adjust for it later when we translate addresses instead.
+@@ -416,7 +442,7 @@ usfstl_vhost_user_update_virtq_kick(struct usfstl_vhost_user_dev_int *dev,
+ 
+ static void usfstl_vhost_user_dev_free(struct usfstl_vhost_user_dev_int *dev)
+ {
+-	unsigned int virtq, region;
++	unsigned int virtq;
+ 
+ 	usfstl_loop_unregister(&dev->entry);
+ 	usfstl_sched_del_job(&dev->irq_job);
+@@ -427,14 +453,17 @@ static void usfstl_vhost_user_dev_free(struct usfstl_vhost_user_dev_int *dev)
+ 			close(dev->virtqs[virtq].call_fd);
+ 	}
+ 
+-	for (region = 0; region < MAX_REGIONS; region++) {
+-		if (!dev->region_vaddr[region])
+-			continue;
+-		munmap(dev->region_vaddr[region], dev->regions[region].size);
+-	}
++	usfstl_vhost_user_clear_mappings(dev);
++
++	if (dev->req_fd != -1)
++		close(dev->req_fd);
+ 
+ 	if (dev->ext.server->ops->disconnected)
+ 		dev->ext.server->ops->disconnected(&dev->ext);
++
++	if (dev->entry.fd != -1)
++		close(dev->entry.fd);
++
+ 	free(dev);
+ }
+ 
+@@ -517,6 +546,7 @@ static void usfstl_vhost_user_handle_msg(struct usfstl_loop_entry *entry)
+ 	case VHOST_USER_SET_MEM_TABLE:
+ 		USFSTL_ASSERT(len >= (int)sizeof(msg.payload.mem_regions));
+ 		USFSTL_ASSERT(msg.payload.mem_regions.n_regions <= MAX_REGIONS);
++		usfstl_vhost_user_clear_mappings(dev);
+ 		memcpy(dev->regions, msg.payload.mem_regions.regions,
+ 		       msg.payload.mem_regions.n_regions *
+ 		       sizeof(dev->regions[0]));
+@@ -537,6 +567,7 @@ static void usfstl_vhost_user_handle_msg(struct usfstl_loop_entry *entry)
+ 			      dev->ext.server->max_queues);
+ 		USFSTL_ASSERT_EQ(msg.payload.vring_addr.flags, (uint32_t)0, "0x%x");
+ 		USFSTL_ASSERT(!dev->virtqs[msg.payload.vring_addr.idx].enabled);
++		dev->virtqs[msg.payload.vring_addr.idx].last_avail_idx = 0;
+ 		dev->virtqs[msg.payload.vring_addr.idx].virtq.desc =
+ 			usfstl_vhost_user_to_va(&dev->ext,
+ 					      msg.payload.vring_addr.descriptor);
+@@ -603,6 +634,8 @@ static void usfstl_vhost_user_handle_msg(struct usfstl_loop_entry *entry)
+ 		break;
+ 	case VHOST_USER_SET_SLAVE_REQ_FD:
+ 		USFSTL_ASSERT_EQ(len, (ssize_t)0, "%zd");
++		if (dev->req_fd != -1)
++			close(dev->req_fd);
+ 		usfstl_vhost_user_get_msg_fds(&msghdr, &dev->req_fd, 1);
+ 		USFSTL_ASSERT(dev->req_fd != -1);
+ 		break;
+@@ -761,6 +794,23 @@ void usfstl_vhost_user_dev_notify(struct usfstl_vhost_user_dev *extdev,
+ 	usfstl_vhost_user_free_buf(buf);
+ }
+ 
++void usfstl_vhost_user_config_changed(struct usfstl_vhost_user_dev *dev)
++{
++	struct usfstl_vhost_user_dev_int *idev;
++	struct vhost_user_msg msg = {
++		.hdr.request = VHOST_USER_SLAVE_CONFIG_CHANGE_MSG,
++		.hdr.flags = VHOST_USER_VERSION,
++	};
++
++	idev = container_of(dev, struct usfstl_vhost_user_dev_int, ext);
++
++	if (!(idev->ext.protocol_features &
++			(1ULL << VHOST_USER_PROTOCOL_F_CONFIG)))
++		return;
++
++	usfstl_vhost_user_send_msg(idev, &msg);
++}
++
+ void *usfstl_vhost_user_to_va(struct usfstl_vhost_user_dev *extdev, uint64_t addr)
+ {
+ 	struct usfstl_vhost_user_dev_int *dev;
 -- 
-~Randy
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
+2.26.2
 
---------------4C5599FC94B11D1DD6BB435E
-Content-Type: application/gzip;
- name="config-r7986.gz"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="config-r7986.gz"
-
-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
---------------4C5599FC94B11D1DD6BB435E--
