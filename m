@@ -2,97 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9783322792
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 10:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B40CF3227E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 10:33:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232291AbhBWJNQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Feb 2021 04:13:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47060 "EHLO mail.kernel.org"
+        id S232381AbhBWJcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Feb 2021 04:32:05 -0500
+Received: from m42-2.mailgun.net ([69.72.42.2]:49055 "EHLO m42-2.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231696AbhBWJM7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Feb 2021 04:12:59 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3BFD4601FA;
-        Tue, 23 Feb 2021 09:12:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614071536;
-        bh=DjqJjoufcjzpUfw/QLHeD87CQ3boRTZ3pvy1/b0MsKM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IJ0Jc4epoVOQ8K3M5oRA+ZUfR1he8niW5pIP0sj0nUuYpSgHKONp8Je6AaZZa20KX
-         p/t7tr+guBLAS79EvRiFvE+GTMoVdaCdGMX9/8NPIvzhaPL1gS0OLT03fQayyrmNpQ
-         VanviheTjJhB54LESIeAqAHCpULfvSoVzX5oBAlOEp/jn4ufer8nMqNheXTpFEeseu
-         hZCJOaLrOj5M4Q89s0cTxy2z+vR2Obj8L6q9GeLqKToG2zYOYiJ4Vt4Q2CbREeN8U1
-         PEfvCfRBezMtsccwmMZhsuOcMO9bAJ9+dBJuBPEPDSudDbcRTepmWCM8Y4HWFk/hqJ
-         fqN0s9LaMbo4A==
-Date:   Tue, 23 Feb 2021 10:12:11 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 2/2] mt76: mt7615: remove hdr->fw_ver check
-Message-ID: <YDTG6xGgCjbinhte@lore-desk>
-References: <61d40a20375f888c122ee0e186168fc2db863fc3.1614058187.git.ryder.lee@mediatek.com>
- <d0ed6b4f2dbac66ac9e31f3725bc4db5cc50f1f3.1614058187.git.ryder.lee@mediatek.com>
+        id S232248AbhBWJ3r (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Feb 2021 04:29:47 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614072567; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=ccLpLZFPE7URe8mBNmsAYM6Yt6q2HVKFu6qwIkLkSYc=; b=HUi/i7YV7Iwbr6LozIkU+9k9Tfv3VML1p83S4viW+l62fNz+58/4rNo8oIjObaYed5Mh0DoU
+ ZyPj9o86PJ8VjAEUQWlTE1ZYWachUO+lKR0tCPOjUJxqDodWECxGeEL+KWjedZk9Ztz/Y+Mf
+ 5JoyrtwfCaff2E86iNhcqhb0yYs=
+X-Mailgun-Sending-Ip: 69.72.42.2
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 6034cae99946643859716a9e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Feb 2021 09:29:13
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2F514C43461; Tue, 23 Feb 2021 09:29:13 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 36879C433C6;
+        Tue, 23 Feb 2021 09:29:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 36879C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tony0620emma\@gmail.com" <tony0620emma@gmail.com>,
+        Timlee <timlee@realtek.com>,
+        "zhanjun\@uniontech.com" <zhanjun@uniontech.com>,
+        "kuba\@kernel.org" <kuba@kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "davem\@davemloft.net" <davem@davemloft.net>,
+        "arnd\@arndb.de" <arnd@arndb.de>,
+        "chenhaoa\@uniontech.com" <chenhaoa@uniontech.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] rtw88: 8822ce: fix wifi disconnect after S3/S4 on HONOR laptop
+References: <20210222094638.18392-1-chenhaoa@uniontech.com>
+        <87h7m4iefe.fsf@codeaurora.org> <1613993809.2331.12.camel@realtek.com>
+        <878s7fi7m5.fsf@codeaurora.org> <1614069836.8409.0.camel@realtek.com>
+Date:   Tue, 23 Feb 2021 11:29:07 +0200
+In-Reply-To: <1614069836.8409.0.camel@realtek.com> (pkshih@realtek.com's
+        message of "Tue, 23 Feb 2021 08:43:59 +0000")
+Message-ID: <874ki3i13w.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="aZDrB28CWxLVbpCm"
-Content-Disposition: inline
-In-Reply-To: <d0ed6b4f2dbac66ac9e31f3725bc4db5cc50f1f3.1614058187.git.ryder.lee@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Pkshih <pkshih@realtek.com> writes:
 
---aZDrB28CWxLVbpCm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Tue, 2021-02-23 at 09:08 +0200, Kalle Valo wrote:
+>> Pkshih <pkshih@realtek.com> writes:
+>>=20
+>> >> > --- a/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
+>> >> > +++ b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
+>> >> > @@ -25,7 +25,6 @@ static struct pci_driver rtw_8822ce_driver =3D {
+>> >> >=C2=A0=C2=A0	.id_table =3D rtw_8822ce_id_table,
+>> >> >=C2=A0=C2=A0	.probe =3D rtw_pci_probe,
+>> >> >=C2=A0=C2=A0	.remove =3D rtw_pci_remove,
+>> >> > -	.driver.pm =3D &rtw_pm_ops,
+>> >>=C2=A0
+>> >> Why just 8822ce? Why not remove rtw_pm_ops entirely if it just creates
+>> >> problems?
+>> >
+>> > I think we can't remove rtw_pm_ops, because wowlan will not work.
+>>=20
+>> Ah. A comment code in the code stating that would be nice.
+>>=20
+>
+> I'll do it.
 
-> Only mt7615 uses v1 version. Also, some of released firmware doesn't
-> have hdr->fw_ver.
->=20
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7615/mcu.c
-> index 393ce09d3956..65c6ab14fe6f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> @@ -1449,8 +1449,7 @@ static int mt7615_load_n9(struct mt7615_dev *dev, c=
-onst char *name)
->  		 sizeof(dev->mt76.hw->wiphy->fw_version),
->  		 "%.10s-%.15s", hdr->fw_ver, hdr->build_date);
-> =20
-> -	if (!is_mt7615(&dev->mt76) &&
-> -	    !strncmp(hdr->fw_ver, "2.0", sizeof(hdr->fw_ver))) {
-> +	if (!is_mt7615(&dev->mt76)) {
->  		dev->fw_ver =3D MT7615_FIRMWARE_V2;
->  		dev->mcu_ops =3D &sta_update_ops;
->  	} else {
+Thank you.
 
-so there are some v2 fw version w/o fw_ver field, correct? Is this fw in
-linux-firmware?
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Regards,
-Lorenzo
-
-> --=20
-> 2.18.0
->=20
-
---aZDrB28CWxLVbpCm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYDTG5wAKCRA6cBh0uS2t
-rCRXAQCV+tBJ1+NpNuY++xxAaztdP5BxlB8GjYx6vMsm7kVxegD/VXUUKUK6RtL0
-4cHkqnAcKhHrjWm4udlXVrOMM2p4VAc=
-=fCnQ
------END PGP SIGNATURE-----
-
---aZDrB28CWxLVbpCm--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
