@@ -2,144 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8197322AA6
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 13:37:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B1E3322BB9
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 14:53:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232689AbhBWMhO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Feb 2021 07:37:14 -0500
-Received: from m12-17.163.com ([220.181.12.17]:34151 "EHLO m12-17.163.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232589AbhBWMhJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Feb 2021 07:37:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=dIDU6J0odxG9RlqAj0
-        JO+hMmJN5ibrBl7SIKeXUpRbI=; b=JD38dWm62FEVyxAELIIIkjEfH+rLQvtUBW
-        xNqE8GX5Ehu+lNYyo7hd5k3s4A8QlP6H5QNXPFMWEbureSr2xDPXDTfzmuGnENpd
-        xQknTtKUUKuhsLDhxQjxKUqRg/fKAX/f8U5VAolv7EPI7z+AI8C0bHJC5QX9uO1P
-        rveTxh/UQ=
-Received: from wengjianfeng.ccdomain.com (unknown [119.137.54.165])
-        by smtp13 (Coremail) with SMTP id EcCowABnbp52pzRgb_LjmQ--.8535S2;
-        Tue, 23 Feb 2021 14:58:01 +0800 (CST)
-From:   samirweng1979 <samirweng1979@163.com>
-To:     imitsyanko@quantenna.com, geomatsi@gmail.com, kvalo@codeaurora.org,
-        kuba@kernel.org, ohannes.berg@intel.com, dlebed@quantenna.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        wengjianfeng <wengjianfeng@yulong.com>
-Subject: [PATCH] qtnfmac: remove meaningless labels
-Date:   Tue, 23 Feb 2021 14:57:54 +0800
-Message-Id: <20210223065754.34392-1-samirweng1979@163.com>
-X-Mailer: git-send-email 2.15.0.windows.1
-X-CM-TRANSID: EcCowABnbp52pzRgb_LjmQ--.8535S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tr18Jr1DWw45KFyxAw48Xrb_yoW5JF1xpr
-        WrXa9Fkay8K3yvqas5ArZ5Zr1Yvw1xKFWxKrW8C3s5u3W0yr1rKa1Yva4YyrZ8JFW8Jryj
-        qFWvqF1Uu3ZY9a7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j8miiUUUUU=
-X-Originating-IP: [119.137.54.165]
-X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiEQM2sV7+2yasZQABsA
+        id S232821AbhBWNwq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Feb 2021 08:52:46 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:12566 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230441AbhBWNwX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Feb 2021 08:52:23 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DlL5B4kT9zMcm0;
+        Tue, 23 Feb 2021 21:49:34 +0800 (CST)
+Received: from localhost.localdomain (10.175.102.38) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 23 Feb 2021 21:51:27 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Hulk Robot <hulkci@huawei.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Emmanuel Grumbach" <emmanuel.grumbach@intel.com>,
+        Gil Adam <gil.adam@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: [PATCH] iwlwifi: mvm: add terminate entry for dmi_system_id tables
+Date:   Tue, 23 Feb 2021 14:00:39 +0000
+Message-ID: <20210223140039.1708534-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.102.38]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: wengjianfeng <wengjianfeng@yulong.com>
+Make sure dmi_system_id tables are NULL terminated.
 
-some function's label meaningless, the return statement follows
-the goto statement, so just remove it.
-
-Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
+Fixes: a2ac0f48a07c ("iwlwifi: mvm: implement approved list for the PPAG feature")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/net/wireless/quantenna/qtnfmac/cfg80211.c | 27 +++++------------------
- 1 file changed, 6 insertions(+), 21 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-index 504b4d0..84b15a6 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-@@ -680,13 +680,10 @@ static int qtnf_set_default_key(struct wiphy *wiphy, struct net_device *dev,
- 		eth_zero_addr(vif->bssid);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 15e2773ce7e7..5ee64f7f3c85 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -1083,6 +1083,7 @@ static const struct dmi_system_id dmi_ppag_approved_list[] = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTek COMPUTER INC."),
+ 		},
+ 	},
++	{}
+ };
  
- 	ret = qtnf_cmd_send_connect(vif, sme);
--	if (ret) {
-+	if (ret)
- 		pr_err("VIF%u.%u: failed to connect\n",
- 		       vif->mac->macid, vif->vifid);
--		goto out;
--	}
- 
--out:
- 	return ret;
- }
- 
-@@ -702,13 +699,10 @@ static int qtnf_set_default_key(struct wiphy *wiphy, struct net_device *dev,
- 		pr_warn("unexpected bssid: %pM", auth->bssid);
- 
- 	ret = qtnf_cmd_send_external_auth(vif, auth);
--	if (ret) {
-+	if (ret)
- 		pr_err("VIF%u.%u: failed to report external auth\n",
- 		       vif->mac->macid, vif->vifid);
--		goto out;
--	}
- 
--out:
- 	return ret;
- }
- 
-@@ -727,8 +721,7 @@ static int qtnf_set_default_key(struct wiphy *wiphy, struct net_device *dev,
- 	}
- 
- 	if (vif->wdev.iftype != NL80211_IFTYPE_STATION) {
--		ret = -EOPNOTSUPP;
--		goto out;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	ret = qtnf_cmd_send_disconnect(vif, reason_code);
-@@ -742,7 +735,6 @@ static int qtnf_set_default_key(struct wiphy *wiphy, struct net_device *dev,
- 				      NULL, 0, true, GFP_KERNEL);
- 	}
- 
--out:
- 	return ret;
- }
- 
-@@ -935,13 +927,10 @@ static int qtnf_update_owe_info(struct wiphy *wiphy, struct net_device *dev,
- 		return -EOPNOTSUPP;
- 
- 	ret = qtnf_cmd_send_update_owe(vif, owe_info);
--	if (ret) {
-+	if (ret)
- 		pr_err("VIF%u.%u: failed to update owe info\n",
- 		       vif->mac->macid, vif->vifid);
--		goto out;
--	}
- 
--out:
- 	return ret;
- }
- 
-@@ -987,18 +976,14 @@ static int qtnf_resume(struct wiphy *wiphy)
- 	vif = qtnf_mac_get_base_vif(mac);
- 	if (!vif) {
- 		pr_err("MAC%u: primary VIF is not configured\n", mac->macid);
--		ret = -EFAULT;
--		goto exit;
-+		return -EFAULT;
- 	}
- 
- 	ret = qtnf_cmd_send_wowlan_set(vif, NULL);
--	if (ret) {
-+	if (ret)
- 		pr_err("MAC%u: failed to reset WoWLAN triggers\n",
- 		       mac->macid);
--		goto exit;
--	}
- 
--exit:
- 	return ret;
- }
- 
--- 
-1.9.1
-
+ static int iwl_mvm_ppag_init(struct iwl_mvm *mvm)
 
