@@ -2,101 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B40CF3227E0
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 10:33:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA95322809
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 10:50:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232381AbhBWJcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Feb 2021 04:32:05 -0500
-Received: from m42-2.mailgun.net ([69.72.42.2]:49055 "EHLO m42-2.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232248AbhBWJ3r (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Feb 2021 04:29:47 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614072567; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=ccLpLZFPE7URe8mBNmsAYM6Yt6q2HVKFu6qwIkLkSYc=; b=HUi/i7YV7Iwbr6LozIkU+9k9Tfv3VML1p83S4viW+l62fNz+58/4rNo8oIjObaYed5Mh0DoU
- ZyPj9o86PJ8VjAEUQWlTE1ZYWachUO+lKR0tCPOjUJxqDodWECxGeEL+KWjedZk9Ztz/Y+Mf
- 5JoyrtwfCaff2E86iNhcqhb0yYs=
-X-Mailgun-Sending-Ip: 69.72.42.2
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 6034cae99946643859716a9e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Feb 2021 09:29:13
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2F514C43461; Tue, 23 Feb 2021 09:29:13 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 36879C433C6;
-        Tue, 23 Feb 2021 09:29:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 36879C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony0620emma\@gmail.com" <tony0620emma@gmail.com>,
-        Timlee <timlee@realtek.com>,
-        "zhanjun\@uniontech.com" <zhanjun@uniontech.com>,
-        "kuba\@kernel.org" <kuba@kernel.org>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-        "davem\@davemloft.net" <davem@davemloft.net>,
-        "arnd\@arndb.de" <arnd@arndb.de>,
-        "chenhaoa\@uniontech.com" <chenhaoa@uniontech.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2] rtw88: 8822ce: fix wifi disconnect after S3/S4 on HONOR laptop
-References: <20210222094638.18392-1-chenhaoa@uniontech.com>
-        <87h7m4iefe.fsf@codeaurora.org> <1613993809.2331.12.camel@realtek.com>
-        <878s7fi7m5.fsf@codeaurora.org> <1614069836.8409.0.camel@realtek.com>
-Date:   Tue, 23 Feb 2021 11:29:07 +0200
-In-Reply-To: <1614069836.8409.0.camel@realtek.com> (pkshih@realtek.com's
-        message of "Tue, 23 Feb 2021 08:43:59 +0000")
-Message-ID: <874ki3i13w.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S231177AbhBWJs5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Feb 2021 04:48:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53474 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231815AbhBWJsW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Feb 2021 04:48:22 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BDAFC06174A;
+        Tue, 23 Feb 2021 01:47:42 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lEUHz-007Iqu-8F; Tue, 23 Feb 2021 10:47:31 +0100
+Message-ID: <7909a51a9b234932e1761484a1c2ab5d8fa16317.camel@sipsolutions.net>
+Subject: Re: [PATCH net v1 3/3] [RFC] mac80211: ieee80211_store_ack_skb():
+ make use of skb_clone_sk_optional()
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Marc Kleine-Budde <mkl@pengutronix.de>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Robin van der Gracht <robin@protonic.nl>,
+        kernel@pengutronix.de, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Eric Dumazet <edumazet@google.com>,
+        linux-wireless@vger.kernel.org
+Date:   Tue, 23 Feb 2021 10:47:22 +0100
+In-Reply-To: <20210222185141.oma64d4uq64pys45@pengutronix.de>
+References: <20210222151247.24534-1-o.rempel@pengutronix.de>
+         <20210222151247.24534-4-o.rempel@pengutronix.de>
+         <3823be537c3c138de90154835573113c6577188e.camel@sipsolutions.net>
+         <20210222185141.oma64d4uq64pys45@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> writes:
+On Mon, 2021-02-22 at 19:51 +0100, Marc Kleine-Budde wrote:
+> On 22.02.2021 17:30:59, Johannes Berg wrote:
+> > On Mon, 2021-02-22 at 16:12 +0100, Oleksij Rempel wrote:
+> > > This code is trying to clone the skb with optional skb->sk. But this
+> > > will fail to clone the skb if socket was closed just after the skb was
+> > > pushed into the networking stack.
+> > 
+> > Which IMHO is completely fine. If we then still clone the SKB we can't
+> > do anything with it, since the point would be to ... send it back to the
+> > socket, but it's gone.
+> 
+> Ok, but why is the skb cloned if there is no socket linked in skb->sk?
 
-> On Tue, 2021-02-23 at 09:08 +0200, Kalle Valo wrote:
->> Pkshih <pkshih@realtek.com> writes:
->>=20
->> >> > --- a/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
->> >> > +++ b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
->> >> > @@ -25,7 +25,6 @@ static struct pci_driver rtw_8822ce_driver =3D {
->> >> >=C2=A0=C2=A0	.id_table =3D rtw_8822ce_id_table,
->> >> >=C2=A0=C2=A0	.probe =3D rtw_pci_probe,
->> >> >=C2=A0=C2=A0	.remove =3D rtw_pci_remove,
->> >> > -	.driver.pm =3D &rtw_pm_ops,
->> >>=C2=A0
->> >> Why just 8822ce? Why not remove rtw_pm_ops entirely if it just creates
->> >> problems?
->> >
->> > I think we can't remove rtw_pm_ops, because wowlan will not work.
->>=20
->> Ah. A comment code in the code stating that would be nice.
->>=20
->
-> I'll do it.
+Hm? There are two different ways to get here, one with and one without a
+socket.
 
-Thank you.
+johannes
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
