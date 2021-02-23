@@ -2,92 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E109322628
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 08:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA78C3226B6
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Feb 2021 08:59:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231495AbhBWHJf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Feb 2021 02:09:35 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:58301 "EHLO z11.mailgun.us"
+        id S231913AbhBWH7g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Feb 2021 02:59:36 -0500
+Received: from m12-11.163.com ([220.181.12.11]:43084 "EHLO m12-11.163.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229949AbhBWHJe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Feb 2021 02:09:34 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614064154; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=pTEQghgVkfDvWMsdEuAjG7tlCrXlwH0AYTvKRDuVXFI=; b=fZVOTXnvhaQ0N0LkfSfNXRzh0kCFtZqSgdMwa1Mm9OvQVDcbOriABChubUzNixZscUiZgnKA
- TUyu3EXDfzLkh2ouoke8dkU5NxP9o6do2mjij+lJSahY6B92nVylEw7giCH/xrS1clmb+mc9
- F3WMIVKJuNO5+JO3sKVeaZC30C4=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 6034a9f9ba086638301f0698 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Feb 2021 07:08:40
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A2487C43464; Tue, 23 Feb 2021 07:08:40 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 037B3C433CA;
-        Tue, 23 Feb 2021 07:08:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 037B3C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "chenhaoa\@uniontech.com" <chenhaoa@uniontech.com>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony0620emma\@gmail.com" <tony0620emma@gmail.com>,
-        Timlee <timlee@realtek.com>,
-        "zhanjun\@uniontech.com" <zhanjun@uniontech.com>,
-        "kuba\@kernel.org" <kuba@kernel.org>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-        "davem\@davemloft.net" <davem@davemloft.net>,
-        "arnd\@arndb.de" <arnd@arndb.de>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2] rtw88: 8822ce: fix wifi disconnect after S3/S4 on HONOR laptop
-References: <20210222094638.18392-1-chenhaoa@uniontech.com>
-        <87h7m4iefe.fsf@codeaurora.org> <1613993809.2331.12.camel@realtek.com>
-Date:   Tue, 23 Feb 2021 09:08:34 +0200
-In-Reply-To: <1613993809.2331.12.camel@realtek.com> (pkshih@realtek.com's
-        message of "Mon, 22 Feb 2021 11:36:51 +0000")
-Message-ID: <878s7fi7m5.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        id S229961AbhBWH7g (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Feb 2021 02:59:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=Cqg2tfDAyG9gUkQICL
+        2EEDUEWWRv38aK2GdMgtbwE7c=; b=guJnL843fWgen70r8LUxLWQrXwvEiMavaC
+        CerXCrmnExhi7Qfeu983DxdG9Z3a17IDpAZ41w9z/R03SZ+nPY0nDh4b1D7r74KY
+        cWelbotCIPccsuX2iCNQVJ161HSHckX98L3vjg/H4pxTaR7XSG7odR8NFxsCd5Vh
+        q6RDCaV6o=
+Received: from wengjianfeng.ccdomain.com (unknown [119.137.54.165])
+        by smtp7 (Coremail) with SMTP id C8CowAB3bJTDtDRglzn_Ow--.63394S2;
+        Tue, 23 Feb 2021 15:54:44 +0800 (CST)
+From:   samirweng1979 <samirweng1979@163.com>
+To:     tony0620emma@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        inux-kernel@vger.kernel.org, wengjianfeng <wengjianfeng@yulong.com>
+Subject: [PATCH] rtw88: remove unnecessary variable
+Date:   Tue, 23 Feb 2021 15:54:38 +0800
+Message-Id: <20210223075438.13676-1-samirweng1979@163.com>
+X-Mailer: git-send-email 2.15.0.windows.1
+X-CM-TRANSID: C8CowAB3bJTDtDRglzn_Ow--.63394S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWrtrWxAFyDurW7CrWrtry7Jrb_yoW8Jr1Dpa
+        yYg345Aay3Kr4UWa15Jan7AFy3Way7JrW2krZYy3y5Z3yxXa4fJFZ0gFyjvrn0gryUCF9I
+        qrs0q3ZrGas8WFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjD73UUUUU=
+X-Originating-IP: [119.137.54.165]
+X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiEQM2sV7+2yasZQADsC
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> writes:
+From: wengjianfeng <wengjianfeng@yulong.com>
 
->> > --- a/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
->> > +++ b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
->> > @@ -25,7 +25,6 @@ static struct pci_driver rtw_8822ce_driver =3D {
->> >=C2=A0=C2=A0	.id_table =3D rtw_8822ce_id_table,
->> >=C2=A0=C2=A0	.probe =3D rtw_pci_probe,
->> >=C2=A0=C2=A0	.remove =3D rtw_pci_remove,
->> > -	.driver.pm =3D &rtw_pm_ops,
->>=20
->> Why just 8822ce? Why not remove rtw_pm_ops entirely if it just creates
->> problems?
->
-> I think we can't remove rtw_pm_ops, because wowlan will not work.
+The variable ret is defined at the beginning and initialized
+to 0 until the function returns ret, and the variable ret is
+not reassigned.Therefore, we do not need to define the variable
+ret, just return 0 directly at the end of the function.
 
-Ah. A comment code in the code stating that would be nice.
+Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
+---
+ drivers/net/wireless/realtek/rtw88/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index e6989c0..4c7e3e4 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1393,7 +1393,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rtwdev)
+ 	struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_hal *hal = &rtwdev->hal;
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
+-	int ret = 0;
+ 
+ 	switch (rtw_hci_type(rtwdev)) {
+ 	case RTW_HCI_TYPE_PCIE:
+@@ -1431,7 +1430,7 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rtwdev)
+ 
+ 	hal->bfee_sts_cap = 3;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int rtw_chip_efuse_enable(struct rtw_dev *rtwdev)
+-- 
+1.9.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
