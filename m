@@ -2,94 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E46324240
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 17:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32045324255
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 17:45:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234883AbhBXQiH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 11:38:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234826AbhBXQgF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 11:36:05 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9116EC061574;
-        Wed, 24 Feb 2021 08:35:23 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id w7so2322915wmb.5;
-        Wed, 24 Feb 2021 08:35:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MVmZumu1MFGQXdL/ioPLeL2JHnOHtr9yLNDGu09SiDU=;
-        b=pw5L1f3RLGOqplHvTDu852ma9AAsisWzlTmcgXbJQ9pIv9lusTz/QpJvx+qwUYTNPe
-         Ns0ArGEg+i6MnThU+83EDMrQjAqN9I2AEKhlek+LzJBWrT4fhWPE0TN6ZwUG7n1a9Ejo
-         7RxFMYA5HO9HGGphWYvK/akpLOnJnbCsr804MD9LoLiO4eReezhPeVIkAYyOgIB9Qr4n
-         fGmlRT+tnUVBvNAMBYI0Y/jp0UznSOGAhzRRDSr8ucR/EpgxaXN+YonRZoYLNWCNX2y/
-         7y3Ftf3S0HldrxUL/0/kQYWqxKhgzkwA9D0lXIWKHJPox2ZQR38wKnDEJcPO0Ji3+pWs
-         PsHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MVmZumu1MFGQXdL/ioPLeL2JHnOHtr9yLNDGu09SiDU=;
-        b=sbkwX2cLAkSYKH3TrjUGSapouJLL9fOtXDaJlMPSSJo41t69I1x8yf7KdvxTlqutQj
-         TBqfnAGgpgfQr8D0LG6WX6LRGq0Wdz3q0HyTMdA0PbErMQnZGhfCAsRuP4o9aJMMbq0o
-         5BBMyUdKZIKvCwVSuRVVccfLWC7Tgmb7XNV3jLnuu+Gx42aFZuyIEwmX8+xb3FDEFV7r
-         t7up4hdTY2HzUFMQMRFIho5M+EcXovWqnB/41nDjqn3VyT/SnAMJG8hesbLrsemUJhE1
-         XxlFfQ4uOlXU3hdVMQXTi9JAeXXVmwQdmNJ9nzRCRgOpa+sLXHSt5n1Q9YevfnoBY8re
-         lEsQ==
-X-Gm-Message-State: AOAM533c6nnV1A5sOHu5LjYzUG2V0rvreX5HFyyE43jIilnn8YtGoBZR
-        aXLdC6i7smpWUm52/nT6rZKN/2NEY09NDg==
-X-Google-Smtp-Source: ABdhPJwxS6v9BlqfcuCI1OW0dTrLpo1LCDLoI+Wdi08TD4ObG9RfSSYhOGjwHPRBFqERRT677UvLkw==
-X-Received: by 2002:a05:600c:17d1:: with SMTP id y17mr4526397wmo.164.1614184522411;
-        Wed, 24 Feb 2021 08:35:22 -0800 (PST)
-Received: from little.cd.corp (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id 36sm5259254wrj.97.2021.02.24.08.35.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Feb 2021 08:35:21 -0800 (PST)
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Ajay Singh <ajay.kathat@microchip.com>,
+        id S235019AbhBXQo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 11:44:58 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:21043 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233693AbhBXQo5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 11:44:57 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614185077; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=47RZdZMX6h81pOYJV0C4w+7D68ydw/vNclxkO6cmVt0=; b=cZefkEaYrqyLDSMX0Vp4/2bA91IllTVLsdA4moycXQ11I5xeDodstB8pVIan3WJSvy+bqxGv
+ Cg1mKkNojOVDUlymRyHlUD3EJLjlm6k6dHn8tbjgiGyVI5sreceGv9KtPjqs41TqPfeRc8Bh
+ I6IGN4u11fMffG+J4FQkDLFDNOU=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 60368254095efe1816fbc6f3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Feb 2021 16:44:04
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id DA8DAC433C6; Wed, 24 Feb 2021 16:44:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F319FC433CA;
+        Wed, 24 Feb 2021 16:44:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F319FC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Marcus Folkesson <marcus.folkesson@gmail.com>
-Subject: [PATCH] wilc1000: write value to WILC_INTR2_ENABLE register
-Date:   Wed, 24 Feb 2021 17:37:06 +0100
-Message-Id: <20210224163706.519658-1-marcus.folkesson@gmail.com>
-X-Mailer: git-send-email 2.30.0
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wilc1000: write value to WILC_INTR2_ENABLE register
+References: <20210224163706.519658-1-marcus.folkesson@gmail.com>
+Date:   Wed, 24 Feb 2021 18:43:59 +0200
+In-Reply-To: <20210224163706.519658-1-marcus.folkesson@gmail.com> (Marcus
+        Folkesson's message of "Wed, 24 Feb 2021 17:37:06 +0100")
+Message-ID: <87pn0pfmb4.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Write the value instead of reading it twice.
+Marcus Folkesson <marcus.folkesson@gmail.com> writes:
 
-Fixes: 5e63a598441a ("staging: wilc1000: added 'wilc_' prefix for function in wilc_sdio.c file")
+> Write the value instead of reading it twice.
+>
+> Fixes: 5e63a598441a ("staging: wilc1000: added 'wilc_' prefix for function in wilc_sdio.c file")
+>
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> ---
+>  drivers/net/wireless/microchip/wilc1000/sdio.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
+> index 351ff909ab1c..e14b9fc2c67a 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+> @@ -947,7 +947,7 @@ static int wilc_sdio_sync_ext(struct wilc *wilc, int nint)
+>  			for (i = 0; (i < 3) && (nint > 0); i++, nint--)
+>  				reg |= BIT(i);
+>  
+> -			ret = wilc_sdio_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
+> +			ret = wilc_sdio_write_reg(wilc, WILC_INTR2_ENABLE, reg);
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
----
- drivers/net/wireless/microchip/wilc1000/sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+To me it looks like the bug existed before commit 5e63a598441a:
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 351ff909ab1c..e14b9fc2c67a 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -947,7 +947,7 @@ static int wilc_sdio_sync_ext(struct wilc *wilc, int nint)
- 			for (i = 0; (i < 3) && (nint > 0); i++, nint--)
- 				reg |= BIT(i);
- 
--			ret = wilc_sdio_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
-+			ret = wilc_sdio_write_reg(wilc, WILC_INTR2_ENABLE, reg);
- 			if (ret) {
- 				dev_err(&func->dev,
- 					"Failed write reg (%08x)...\n",
+-			ret = sdio_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
++			ret = wilc_sdio_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
+
+https://git.kernel.org/linus/5e63a598441a
+
 -- 
-2.30.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
