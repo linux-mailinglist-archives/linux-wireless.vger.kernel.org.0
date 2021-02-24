@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D724A32378D
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 07:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1265032378E
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 07:54:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232139AbhBXGxm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 01:53:42 -0500
-Received: from m42-2.mailgun.net ([69.72.42.2]:23948 "EHLO m42-2.mailgun.net"
+        id S232563AbhBXGyQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 01:54:16 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:63816 "EHLO z11.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231627AbhBXGxk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 01:53:40 -0500
+        id S230386AbhBXGyO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 01:54:14 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614149601; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1614149630; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=HiqdAfaO+QlNjNRJjL7NW+saAsZWa3q1nNLfJxYwlWE=;
- b=DYiau+rKOvPIvI/JQietKDZiAA0xpYhDJ/SlugfcIXbgMmBtNoanX/bDHnzcMj384vhJpKym
- gL9QbuDhETgQBa0LWoysaUdg0LU48uhatiedH4F1IS54GF4lNUTrF88+LV/XLoDopJJxjf+J
- LullXxa36UjNkXZyyxI0/xQ3XoA=
-X-Mailgun-Sending-Ip: 69.72.42.2
+ Content-Type: Sender; bh=MHS+FWRAMrdC80h0tzPcGk54lO0X0VMJLwQu1YDgv9I=;
+ b=k4yKdFRrwi81/aDDvXbeREHoWbs8m13WrlAyAwy8NbA665FPNeUBfRQTYqxAK3n/7L5a/NHS
+ bqhbzb7snibL77ChF+y0amdrfrBa7c1lRoHv8V6NU0CXRBYiPzZ6i7r0yiW4jzcQtYn+UwyT
+ L/hVjJo4ZeE/411Po17fe4VDUXM=
+X-Mailgun-Sending-Ip: 104.130.96.11
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 6035f7baba08663830c5e14c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Feb 2021 06:52:42
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 6035f7e3090a774287983925 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Feb 2021 06:53:23
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E1513C43461; Wed, 24 Feb 2021 06:52:41 +0000 (UTC)
+        id 67BBBC433ED; Wed, 24 Feb 2021 06:53:23 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,42 +39,51 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 79224C433ED;
-        Wed, 24 Feb 2021 06:52:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 79224C433ED
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0B9A9C433CA;
+        Wed, 24 Feb 2021 06:53:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0B9A9C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] ath11k: qmi: add more debug messages
+Subject: Re: [PATCH] ath11k: fix potential wmi_mgmt_tx_queue race condition
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1613569421-14177-1-git-send-email-kvalo@codeaurora.org>
-References: <1613569421-14177-1-git-send-email-kvalo@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+In-Reply-To: <1613630709-704-1-git-send-email-miaoqing@codeaurora.org>
+References: <1613630709-704-1-git-send-email-miaoqing@codeaurora.org>
+To:     Miaoqing Pan <miaoqing@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Miaoqing Pan <miaoqing@codeaurora.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210224065241.E1513C43461@smtp.codeaurora.org>
-Date:   Wed, 24 Feb 2021 06:52:41 +0000 (UTC)
+Message-Id: <20210224065323.67BBBC433ED@smtp.codeaurora.org>
+Date:   Wed, 24 Feb 2021 06:53:23 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> wrote:
+Miaoqing Pan <miaoqing@codeaurora.org> wrote:
 
-> To make it easier to follow the qmi event flow.
+> There is a potential race condition between skb_queue_len()
+> and skb_queue_tail(), the former may get old value before
+> updated by the latter.
+> 
+> So use skb_queue_len_lockless() instead. And also use '>=',
+> in case we queue a few SKBs simultaneously.
+> 
+> Found while discussing a similar fix for ath10k:
+> https://patchwork.kernel.org/project/linux-wireless/patch/1608515579-1066-1-git-send-email-miaoqing@codeaurora.org/
 > 
 > No functional changes, compile tested only.
 > 
+> Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-bf458d79cfc4 ath11k: qmi: add more debug messages
-097e9f071455 ath11k: qmi: cosmetic changes to error messages
+3808a18043a8 ath11k: fix potential wmi_mgmt_tx_queue race condition
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1613569421-14177-1-git-send-email-kvalo@codeaurora.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/1613630709-704-1-git-send-email-miaoqing@codeaurora.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
