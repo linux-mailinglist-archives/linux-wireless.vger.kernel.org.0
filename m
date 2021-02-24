@@ -2,131 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7D8323E8F
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 14:44:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FC173243E9
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 19:43:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237511AbhBXNl1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 08:41:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59904 "EHLO mail.kernel.org"
+        id S234745AbhBXSnJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 13:43:09 -0500
+Received: from m12-17.163.com ([220.181.12.17]:33467 "EHLO m12-17.163.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234663AbhBXNOD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 08:14:03 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4CA1C64FBB;
-        Wed, 24 Feb 2021 12:56:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614171368;
-        bh=nxlM2Mb20XDKoSVuF4P+ZrVBhgICX7u2M73ee0gDt7Y=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d6F1kF9WLHSSfVTERgRZakLLrE+76IVE6TSPcUpxjd1XM6Be/H5oz7Cw7tRpoKOiD
-         2ENOQvzNKEwh2HKz84Mp2UNW6Q9eaLRL1QjrYqzVZvZSxUh0Xe8W/oYiIg1bQapMgK
-         DqtXQwPn7ap0z0razaqZTzVl2nRAZbj7iMPNc9burqYXtWj5QcNb0HswPhrm5p9o3g
-         PPiB+d8mrqXacb2rttpNGLzbpGh4rgxcwOzY3RAJBMd/FMLtlIrvgikluJppAZxaUo
-         TEvrY8Z+CKkEdN1SuYo0IxKgoeZA7Y7GKF/RuzrDIkD5iEjMKHSHfcoUKCbHYMXh62
-         7rHUXzIQWZ8Qw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 06/11] ath10k: fix wmi mgmt tx queue full due to race condition
-Date:   Wed, 24 Feb 2021 07:55:54 -0500
-Message-Id: <20210224125600.484437-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210224125600.484437-1-sashal@kernel.org>
-References: <20210224125600.484437-1-sashal@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S234713AbhBXSnE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 13:43:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=M7lgOilBE4+RiTqnQt
+        8/YITeMu7EbnvDl36J3i8eanY=; b=AdAOgUGqwUoV5CxA3Wagy6iRPS4vt8QIg3
+        GIRpW/ZxCs7yQkT9je21MUA1OUQWrderqfTuM36qJY5JJ/u0ITxsaVXoaTO2I/uL
+        v95lXOWb1lBr+eCujMR/DA5SFRL0lPpkKpNu6M+0ePpnJBNQO5x0ncMC2QU4D+QD
+        L38k89smg=
+Received: from localhost.localdomain (unknown [36.170.35.29])
+        by smtp13 (Coremail) with SMTP id EcCowABnDXrRTjZg3uC1mg--.22722S2;
+        Wed, 24 Feb 2021 21:04:18 +0800 (CST)
+From:   zhangkun4jr@163.com
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath9k-devel@qca.qualcomm.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zhang Kun <zhangkun@cdjrlc.com>
+Subject: [PATCH] ath9k:remove unneeded variable in ath9k_dump_legacy_btcoex
+Date:   Wed, 24 Feb 2021 21:03:56 +0800
+Message-Id: <20210224130356.51444-1-zhangkun4jr@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: EcCowABnDXrRTjZg3uC1mg--.22722S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKF4fGFWrJw4kJFWUXr1UWrg_yoWkGwb_CF
+        y8Kr97Jr1UJw1F9F47Ja1avryqkws0qF1xX3ZFvF95Jw47JrnrZ3y5Zr95Xr929r4FyF9I
+        kF1DGF12ya4qgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU5RwZ7UUUUU==
+X-Originating-IP: [36.170.35.29]
+X-CM-SenderInfo: x2kd0whnxqkyru6rljoofrz/1tbirApDtVr7sVyZcwAAs2
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miaoqing Pan <miaoqing@codeaurora.org>
+From: Zhang Kun <zhangkun@cdjrlc.com>
 
-[ Upstream commit b55379e343a3472c35f4a1245906db5158cab453 ]
+Remove unneeded variable 'len' in ath9k_dump_legacy_btcoex.
 
-Failed to transmit wmi management frames:
-
-[84977.840894] ath10k_snoc a000000.wifi: wmi mgmt tx queue is full
-[84977.840913] ath10k_snoc a000000.wifi: failed to transmit packet, dropping: -28
-[84977.840924] ath10k_snoc a000000.wifi: failed to submit frame: -28
-[84977.840932] ath10k_snoc a000000.wifi: failed to transmit frame: -28
-
-This issue is caused by race condition between skb_dequeue and
-__skb_queue_tail. The queue of ‘wmi_mgmt_tx_queue’ is protected by a
-different lock: ar->data_lock vs list->lock, the result is no protection.
-So when ath10k_mgmt_over_wmi_tx_work() and ath10k_mac_tx_wmi_mgmt()
-running concurrently on different CPUs, there appear to be a rare corner
-cases when the queue length is 1,
-
-  CPUx (skb_deuque)			CPUy (__skb_queue_tail)
-					next=list
-					prev=list
-  struct sk_buff *skb = skb_peek(list);	WRITE_ONCE(newsk->next, next);
-  WRITE_ONCE(list->qlen, list->qlen - 1);WRITE_ONCE(newsk->prev, prev);
-  next       = skb->next;		WRITE_ONCE(next->prev, newsk);
-  prev       = skb->prev;		WRITE_ONCE(prev->next, newsk);
-  skb->next  = skb->prev = NULL;	list->qlen++;
-  WRITE_ONCE(next->prev, prev);
-  WRITE_ONCE(prev->next, next);
-
-If the instruction ‘next = skb->next’ is executed before
-‘WRITE_ONCE(prev->next, newsk)’, newsk will be lost, as CPUx get the
-old ‘next’ pointer, but the length is still added by one. The final
-result is the length of the queue will reach the maximum value but
-the queue is empty.
-
-So remove ar->data_lock, and use 'skb_queue_tail' instead of
-'__skb_queue_tail' to prevent the potential race condition. Also switch
-to use skb_queue_len_lockless, in case we queue a few SKBs simultaneously.
-
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1.c2-00033-QCAHLSWMTPLZ-1
-
-Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/1608618887-8857-1-git-send-email-miaoqing@codeaurora.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zhang Kun <zhangkun@cdjrlc.com>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/net/wireless/ath/ath9k/gpio.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 7fbf2abcfc433..5fad38c3feb14 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3336,23 +3336,16 @@ static bool ath10k_mac_need_offchan_tx_work(struct ath10k *ar)
- static int ath10k_mac_tx_wmi_mgmt(struct ath10k *ar, struct sk_buff *skb)
+diff --git a/drivers/net/wireless/ath/ath9k/gpio.c b/drivers/net/wireless/ath/ath9k/gpio.c
+index b457e52dd365..09ec937024c0 100644
+--- a/drivers/net/wireless/ath/ath9k/gpio.c
++++ b/drivers/net/wireless/ath/ath9k/gpio.c
+@@ -496,16 +496,14 @@ static int ath9k_dump_mci_btcoex(struct ath_softc *sc, u8 *buf, u32 size)
+ 
+ static int ath9k_dump_legacy_btcoex(struct ath_softc *sc, u8 *buf, u32 size)
  {
- 	struct sk_buff_head *q = &ar->wmi_mgmt_tx_queue;
--	int ret = 0;
 -
--	spin_lock_bh(&ar->data_lock);
+ 	struct ath_btcoex *btcoex = &sc->btcoex;
+-	u32 len = 0;
  
--	if (skb_queue_len(q) == ATH10K_MAX_NUM_MGMT_PENDING) {
-+	if (skb_queue_len_lockless(q) >= ATH10K_MAX_NUM_MGMT_PENDING) {
- 		ath10k_warn(ar, "wmi mgmt tx queue is full\n");
--		ret = -ENOSPC;
--		goto unlock;
-+		return -ENOSPC;
- 	}
+ 	ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+ 	ATH_DUMP_BTCOEX("BTCoex Period (msec)", btcoex->btcoex_period);
+ 	ATH_DUMP_BTCOEX("Duty Cycle", btcoex->duty_cycle);
+ 	ATH_DUMP_BTCOEX("BT Wait time", btcoex->bt_wait_time);
  
--	__skb_queue_tail(q, skb);
-+	skb_queue_tail(q, skb);
- 	ieee80211_queue_work(ar->hw, &ar->wmi_mgmt_tx_work);
- 
--unlock:
--	spin_unlock_bh(&ar->data_lock);
--
--	return ret;
+-	return len;
 +	return 0;
  }
  
- static void ath10k_mac_tx(struct ath10k *ar, struct sk_buff *skb)
+ int ath9k_dump_btcoex(struct ath_softc *sc, u8 *buf, u32 size)
 -- 
-2.27.0
+2.17.1
+
 
