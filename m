@@ -2,196 +2,415 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E03AF323BD8
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 13:23:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F56C323C23
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 13:51:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234605AbhBXMWu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 07:22:50 -0500
-Received: from esa.microchip.iphmx.com ([68.232.154.123]:48090 "EHLO
-        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234592AbhBXMWs (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 07:22:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1614169366; x=1645705366;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=IJl5Wyo74a8eOocXY8Df1ZxlNf98dZaxGSa1HpMTp44=;
-  b=pc59Xv9YsQcBXQRhhNf03Ja+KWdKFp4n3t7Mg6o2XpMKhHVj+jw5514Q
-   zftSvuqZ+uehIlk8SpyuSme8LPU+6MWek+vY9wFpwYIxeB18lhDTw0pvd
-   vXYOEudXFrxEzMFeNnsDN3MovcyG05U6MgL5rJGTM4tIteqeCdEzIiJJi
-   oEaX2nPW+ogkHDZlGa7nvz2dAoOgmt7fBnjK7mWtFJSQ3ipCZzK4vDsMa
-   r0q0Litj2VL5kekWe2vyazcvScWdK0hTZEdKfvgxrhuvDXaBS0xgbqbmi
-   RlagkOT/vlBeij54rwoZ82RKFav4RvMYM7EZhCP5QqviWWt39sWOkmOKb
-   w==;
-IronPort-SDR: ONIC5eoL4V+baxpac963NLp61//aV/Ntkhq8KLsMrwTGeUO8Dybj9lgb/POjwnBr/AGUR7dHrj
- nq0oAUGghqcPpt+2X24YyuNM7nAPZ06UVXp5i/UlmbgN1x5u/JIvHE1+S9A7vUKpqk3GHVNMQx
- VYIGD1laVTis064Xfow6UBUubCdhG7taFlNSDKQE0HDE4H1+rTfI3Bn8x2Hm86coKPL/TsUJME
- EQ8L5juGtYaISExIHHNmHy96LMSTWcYTuOUppazdWQothsSS28QRJo6WE74EYIGytPYW2MOI6H
- Jm4=
-X-IronPort-AV: E=Sophos;i="5.81,202,1610434800"; 
-   d="scan'208";a="45280750"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Feb 2021 05:21:29 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Wed, 24 Feb 2021 05:21:29 -0700
-Received: from NAM02-BL2-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3 via Frontend
- Transport; Wed, 24 Feb 2021 05:21:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RVpEnNym446o9K3qP7QKNr7cWxpYB9iCBl9tYkDlAY7D8PhEkUrkenh9YCQ96Swd+paEBaEyohMMSdgR9FPiUXi6vSeQIaFB1U2zr+CyS+4M0zz2RUQO58tWluRs30a3waoDg1mx7Ou9x041E4YM62qEtyF5SU9V4Q/7EDEkJIfvi6jRsl7rUixXTfq/ndH/8lIB7LTkVz0Re4RJaYXfuaJ/HeK5cZD76PJBKkI3YaJyGR/0gvokCqvH+pTI7piMiY83kpCEOw653U+n8E4SRjNXle2FxSiMpSHSxBHIy2M4P/4o+H+A0e0YFy9enTurwe7rHE2TPF45Kfry2Ks0vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ELAclxir8PkQqv9apRMgR2D4d54m6oinR5cXOMU0Xlg=;
- b=LKZ5nqpcPcZDSVk9x337XbRJnsu8kY+/v0nCTd/gQBdASH0RI47WiBrm/+8QpnbbImBEkQ93lekMbfF8YOhbsfJ/1Nf3MWnmTAQiUrLpZCgl+gt2xoCEZSQ6WbBH/ALbzSV9eABRKlWmmqJyHm1gZtON8GUHIAFmrHaLjeNQ4esfWkscVfnjFzEean/keZjNq1VL9SAe/yT8spl0EgFsw87oedWFbPxrmKACfq4uA3VDqlomvtYOkJL4FxBBYUoNqFJhbxiUfCQSju8SbdXpMMtSHvC7ZTbClCNUHzLD1VQRYxLh3X33Y1MZZ2CMbkiw1pwvs7CTmW95BbWDbsV/Bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ELAclxir8PkQqv9apRMgR2D4d54m6oinR5cXOMU0Xlg=;
- b=ZLZIhu9PWw5cNL0IKnZBxK7/bxTKB+IXGvZsM5st+50WgbX2DV3V/lTohbAv/+9wcuWeNY71tnm8J5wDNDrBpUG4qPMblcI3PrJdlEgv1pw3vOrkFxiCU1JLj8n8um7AhoCPU8PM8uOpdfZ1PAsLeTXniIHaQs4LoLClM3eUCmI=
-Received: from SJ0PR11MB4943.namprd11.prod.outlook.com (2603:10b6:a03:2ad::17)
- by BYAPR11MB3542.namprd11.prod.outlook.com (2603:10b6:a03:b2::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3868.29; Wed, 24 Feb
- 2021 12:21:28 +0000
-Received: from SJ0PR11MB4943.namprd11.prod.outlook.com
- ([fe80::6c3c:2ae0:c40b:6082]) by SJ0PR11MB4943.namprd11.prod.outlook.com
- ([fe80::6c3c:2ae0:c40b:6082%3]) with mapi id 15.20.3868.034; Wed, 24 Feb 2021
- 12:21:28 +0000
-From:   <Ajay.Kathat@microchip.com>
-To:     <linux-wireless@vger.kernel.org>, <kvalo@codeaurora.org>
-CC:     <Claudiu.Beznea@microchip.com>, <Ajay.Kathat@microchip.com>
-Subject: [PATCH] wilc1000: use wilc handler as cookie in
- request_threaded_irq()
-Thread-Topic: [PATCH] wilc1000: use wilc handler as cookie in
- request_threaded_irq()
-Thread-Index: AQHXCqeTc8gMGR/R+EWdEgZdzjM0Kw==
-Date:   Wed, 24 Feb 2021 12:21:28 +0000
-Message-ID: <20210224122044.15146-1-ajay.kathat@microchip.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: git-send-email 2.17.1
-authentication-results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=microchip.com;
-x-originating-ip: [106.51.110.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8b2b439b-33cb-4a09-039a-08d8d8beb5fd
-x-ms-traffictypediagnostic: BYAPR11MB3542:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR11MB35429C1E3974F9BEBDD7689FE39F9@BYAPR11MB3542.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3044;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: TI50IzUMzvR5MmS+eHBln3a6oTJzvRRqINB/UsBL46De/vrc8ZNMvaVc/HOGADH6hPu2PV5GEagGcBp5u1LTab4rDHKo9rijuaaFovIoClAZfS0h2hfBUeuw6BSuG5+w3WscWNl0+UXqVf3jH13r95ZLAE79Sbk4vGJ6PiOCzpNMhnWiVy9hFWjO53rBfNSfZztwTFwBHaWQxEYA1oARCrjWjpM+RddyDER0Klp5EfYgBxu345dVyC8wKMwkWKMDEES4E2Tz2171L24e95HmMPs1IFQ6vJEPiV+pKhF6mxgpboWUqIlKeZpQ8MugU8u/mqFQEJPJSiSg+WbkIOBLUO5X1vh01AjOv7kdJVAmLU1wt5ZMkSbxZ+xWwCDdMhYuEnaLDZAojmf0attBfPziuMUYBH2X9YeI8QRXZJ6/ei1/31AB9pY8hd1FDa+WUXavCVX+2EUhQltojFiRUOnDpsQ4ox4tEpOL1+HCRUBrmXBaJl2yvVXcftU99+ecEPTalUQcFRkWs03NNT/s9L0uxQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4943.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(39860400002)(366004)(396003)(136003)(376002)(316002)(71200400001)(186003)(4326008)(6486002)(86362001)(36756003)(8676002)(8936002)(54906003)(478600001)(55236004)(2616005)(2906002)(83380400001)(26005)(5660300002)(1076003)(64756008)(66476007)(6506007)(6512007)(66556008)(91956017)(110136005)(76116006)(107886003)(66946007)(66446008);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?iso-8859-1?Q?TZRpIiRVeAiPrl1lgVrFpZwWbsrKP5q+vlL/wRC6kaKJVO5Cz2mcrExUi/?=
- =?iso-8859-1?Q?/QFOQdVWcMCbrGbZlxgx5KUlgVKV4UkRIZxcb/cb2rkO11mtbD2hS8oGJK?=
- =?iso-8859-1?Q?/HURsssuX8Yv2ZZWoS6PQX/z9S2mLCllZoKJIYd02oNjzyZf6/ixYSx1T1?=
- =?iso-8859-1?Q?GiU1aPixg2HLBSYFqIlzGd4itXTDRKd2nyx/DIJhtRkMMrNiS5I4FVN6wW?=
- =?iso-8859-1?Q?Ad1XCdKPPbDT+WBQ8uJx0Y+8q9go0bpfavwIy1fnADIRbou3ZPlnGpSQ1H?=
- =?iso-8859-1?Q?0CZYQmO+xk7oL8AGQ6rowhYQDTagHyykv1LeQO1kTx4O6eUl5VIpB8xuKK?=
- =?iso-8859-1?Q?YPtPTIsRbou6hYktPc1NR31zVDCDdtwOr+fspoScsul4HMUSDBLvyVOJqU?=
- =?iso-8859-1?Q?UWlrUrW3Blh3XMdUpqZ3miI/1dQvOs5qxHMeOgrT15FKjJwKfyBzn3uKJC?=
- =?iso-8859-1?Q?5kR33c+MHQtBgEHUmM5DQzOMONylyuwWtuOoemOl1aXUf1PjFS22hmarIF?=
- =?iso-8859-1?Q?QW42IW4p0h4ycpNqXl+R+4EdKTtt8TNoMWa3x9pu3ZhPrry8anJbh653q5?=
- =?iso-8859-1?Q?lbxS5lCIEN+aY2F09gqiTGg1tORc303MK5xy8olrpeILo9k0Yvj7ermVSv?=
- =?iso-8859-1?Q?ZT5wMGl00tf2HFqpUwIc3whmmGftWrBDe4RPN6FekuIQuEVWoYsmUafcvb?=
- =?iso-8859-1?Q?cHdKCUR/ZlW98QWnP7LQcPPFvJEFeeAWzB/VsCO3L04+sUq9soMRNOD5k6?=
- =?iso-8859-1?Q?556DpjbBAs2guTnqkhaKAbZKX5YPt9GRImBDzYr9suJ+/+IpOr5ikigDY1?=
- =?iso-8859-1?Q?ii/hclGrSDcQIvuT/XyUIzrjEcVrsU3aVoS2H9qCgzl7++oY9nvGV9m4aY?=
- =?iso-8859-1?Q?5vxAIEQ921Fe+WrPcgGJ+9URzm568XZWSQ7E2igl2YAWpIdcfOjGA6sIB8?=
- =?iso-8859-1?Q?6Tz/pIQJSw6Vf3A60L0/+Msxf6dqVbW6PYKqbfY/Uvj8YlD06MtYVWbb0/?=
- =?iso-8859-1?Q?9NCkF4LpQFwnYA63ae2PNLD0L7+IE/0lUxkymylFp0jduxOprgQVzcl5Zi?=
- =?iso-8859-1?Q?/1Vn5j7UkIvf8bkmo9T+sJ0GEpAhJ7GXgHnO6lJqbKRCwJZX6DntkkU316?=
- =?iso-8859-1?Q?H/TwW6WKC13HRzClQuZ6gWWb5NbBAiGNeboGgb7uys0Y6bJ6cVgicHajMj?=
- =?iso-8859-1?Q?CIopxxFypIq3pgcpMTW0cK/dyR92DXcLn6txTgKq2fG6YwYDZ8OZ7O3Euf?=
- =?iso-8859-1?Q?04aEU49sh5UEQy1tAYWNnWCimZzTFkQhOdBe7VgukGIUi/e5WmXI2px0rM?=
- =?iso-8859-1?Q?KTfHScit2gc7qGQDtGigg7jM+mZ7hagcYfxu7XiPET1lKllh/oMhYacIqi?=
- =?iso-8859-1?Q?ay4573CLCTJrhOJa0tCbgj1rND+HRvBg=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S233034AbhBXMvR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 07:51:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49446 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229507AbhBXMvK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 07:51:10 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DEDD364DAF;
+        Wed, 24 Feb 2021 12:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614171028;
+        bh=TSUkDEg3idbCvGR1Il326oKHNcQCPo7tDTvdJZbZUeY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Zg9p1o4r8WxWMc8WrM2qcVMRtkKdFEHakKMRBxoHHM58msBSjKgdKugccqMyioOax
+         JLVp8Jmnck3rcoae9mewdeFVre6DPOkOeaj+oYpTE1fjTaNPb0kPl0DZCgv4v8byWJ
+         YrQZtZYJcdnNtubNk1Y68Nc+0vkMg6ostoFbY51lHdDKxgXOGNm3EL8JlQU4WXv+Cd
+         U/WYc08/SSonYiSSqcYKzYMcgKlCuwL/OKv/HQ/R4yuxkCDRLUhf2wv/UyX5JbRYif
+         sNpTWL+kk7GHBGXXX2rBsod9Y/1e0yzcq/4KgWgqZrmotYjMxdp6O170czg41AwnZn
+         XAr4sGmHIhU0g==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Wen Gong <wgong@codeaurora.org>, Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.11 01/67] ath10k: prevent deinitializing NAPI twice
+Date:   Wed, 24 Feb 2021 07:49:19 -0500
+Message-Id: <20210224125026.481804-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4943.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b2b439b-33cb-4a09-039a-08d8d8beb5fd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2021 12:21:28.0931
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1KKbgnbHNwgRhW5EJNqRqhm/MKbnvYz00zV2spwzob+6ATNnvVamSK+s/IhF0dp7ddMX6+9j7pfpO03LUbRnKkAUUO8UZCsJOjhIo+HeeBk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3542
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ajay Singh <ajay.kathat@microchip.com>
+From: Wen Gong <wgong@codeaurora.org>
 
-Use same cookie for request_threaded_irq() & free_irq() to properly free
-IRQ during module unload. free_irq() already uses *wilc* handler so the
-changes are required for request_threaded_irq().
+[ Upstream commit e2f8b74e58cb1560c1399ba94a470b770e858259 ]
 
-Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+It happened "Kernel panic - not syncing: hung_task: blocked tasks" when
+test simulate crash and ifconfig down/rmmod meanwhile.
+
+Test steps:
+
+1.Test commands, either can reproduce the hang for PCIe, SDIO and SNOC.
+echo soft > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash;sleep 0.05;ifconfig wlan0 down
+echo soft > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash;rmmod ath10k_sdio
+echo hw-restart > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash;rmmod ath10k_pci
+
+2. dmesg:
+[ 5622.548630] ath10k_sdio mmc1:0001:1: simulating soft firmware crash
+[ 5622.655995] ieee80211 phy0: Hardware restart was requested
+[ 5776.355164] INFO: task shill:1572 blocked for more than 122 seconds.
+[ 5776.355687] INFO: task kworker/1:2:24437 blocked for more than 122 seconds.
+[ 5776.359812] Kernel panic - not syncing: hung_task: blocked tasks
+[ 5776.359836] CPU: 1 PID: 55 Comm: khungtaskd Tainted: G        W         4.19.86 #137
+[ 5776.359846] Hardware name: MediaTek krane sku176 board (DT)
+[ 5776.359855] Call trace:
+[ 5776.359868]  dump_backtrace+0x0/0x170
+[ 5776.359881]  show_stack+0x20/0x2c
+[ 5776.359896]  dump_stack+0xd4/0x10c
+[ 5776.359916]  panic+0x12c/0x29c
+[ 5776.359937]  hung_task_panic+0x0/0x50
+[ 5776.359953]  kthread+0x120/0x130
+[ 5776.359965]  ret_from_fork+0x10/0x18
+[ 5776.359986] SMP: stopping secondary CPUs
+[ 5776.360012] Kernel Offset: 0x141ea00000 from 0xffffff8008000000
+[ 5776.360026] CPU features: 0x0,2188200c
+[ 5776.360035] Memory Limit: none
+
+command "ifconfig wlan0 down" or "rmmod ath10k_sdio" will be blocked
+callstack of ifconfig:
+[<0>] __switch_to+0x120/0x13c
+[<0>] msleep+0x28/0x38
+[<0>] ath10k_sdio_hif_stop+0x24c/0x294 [ath10k_sdio]
+[<0>] ath10k_core_stop+0x50/0x78 [ath10k_core]
+[<0>] ath10k_halt+0x120/0x178 [ath10k_core]
+[<0>] ath10k_stop+0x4c/0x8c [ath10k_core]
+[<0>] drv_stop+0xe0/0x1e4 [mac80211]
+[<0>] ieee80211_stop_device+0x48/0x54 [mac80211]
+[<0>] ieee80211_do_stop+0x678/0x6f8 [mac80211]
+[<0>] ieee80211_stop+0x20/0x30 [mac80211]
+[<0>] __dev_close_many+0xb8/0x11c
+[<0>] __dev_change_flags+0xe0/0x1d0
+[<0>] dev_change_flags+0x30/0x6c
+[<0>] devinet_ioctl+0x370/0x564
+[<0>] inet_ioctl+0xdc/0x304
+[<0>] sock_do_ioctl+0x50/0x288
+[<0>] compat_sock_ioctl+0x1b4/0x1aac
+[<0>] __se_compat_sys_ioctl+0x100/0x26fc
+[<0>] __arm64_compat_sys_ioctl+0x20/0x2c
+[<0>] el0_svc_common+0xa4/0x154
+[<0>] el0_svc_compat_handler+0x2c/0x38
+[<0>] el0_svc_compat+0x8/0x18
+[<0>] 0xffffffffffffffff
+
+callstack of rmmod:
+[<0>] __switch_to+0x120/0x13c
+[<0>] msleep+0x28/0x38
+[<0>] ath10k_sdio_hif_stop+0x294/0x31c [ath10k_sdio]
+[<0>] ath10k_core_stop+0x50/0x78 [ath10k_core]
+[<0>] ath10k_halt+0x120/0x178 [ath10k_core]
+[<0>] ath10k_stop+0x4c/0x8c [ath10k_core]
+[<0>] drv_stop+0xe0/0x1e4 [mac80211]
+[<0>] ieee80211_stop_device+0x48/0x54 [mac80211]
+[<0>] ieee80211_do_stop+0x678/0x6f8 [mac80211]
+[<0>] ieee80211_stop+0x20/0x30 [mac80211]
+[<0>] __dev_close_many+0xb8/0x11c
+[<0>] dev_close_many+0x70/0x100
+[<0>] dev_close+0x4c/0x80
+[<0>] cfg80211_shutdown_all_interfaces+0x50/0xcc [cfg80211]
+[<0>] ieee80211_remove_interfaces+0x58/0x1a0 [mac80211]
+[<0>] ieee80211_unregister_hw+0x40/0x100 [mac80211]
+[<0>] ath10k_mac_unregister+0x1c/0x44 [ath10k_core]
+[<0>] ath10k_core_unregister+0x38/0x7c [ath10k_core]
+[<0>] ath10k_sdio_remove+0x8c/0xd0 [ath10k_sdio]
+[<0>] sdio_bus_remove+0x48/0x108
+[<0>] device_release_driver_internal+0x138/0x1ec
+[<0>] driver_detach+0x6c/0xa8
+[<0>] bus_remove_driver+0x78/0xa8
+[<0>] driver_unregister+0x30/0x50
+[<0>] sdio_unregister_driver+0x28/0x34
+[<0>] cleanup_module+0x14/0x6bc [ath10k_sdio]
+[<0>] __arm64_sys_delete_module+0x1e0/0x22c
+[<0>] el0_svc_common+0xa4/0x154
+[<0>] el0_svc_compat_handler+0x2c/0x38
+[<0>] el0_svc_compat+0x8/0x18
+[<0>] 0xffffffffffffffff
+
+SNOC:
+[  647.156863] Call trace:
+[  647.162166] [<ffffff80080855a4>] __switch_to+0x120/0x13c
+[  647.164512] [<ffffff800899d8b8>] __schedule+0x5ec/0x798
+[  647.170062] [<ffffff800899dad8>] schedule+0x74/0x94
+[  647.175050] [<ffffff80089a0848>] schedule_timeout+0x314/0x42c
+[  647.179874] [<ffffff80089a0a14>] schedule_timeout_uninterruptible+0x34/0x40
+[  647.185780] [<ffffff80082a494>] msleep+0x28/0x38
+[  647.192546] [<ffffff800117ec4c>] ath10k_snoc_hif_stop+0x4c/0x1e0 [ath10k_snoc]
+[  647.197439] [<ffffff80010dfbd8>] ath10k_core_stop+0x50/0x7c [ath10k_core]
+[  647.204652] [<ffffff80010c8f48>] ath10k_halt+0x114/0x16c [ath10k_core]
+[  647.211420] [<ffffff80010cad68>] ath10k_stop+0x4c/0x88 [ath10k_core]
+[  647.217865] [<ffffff8000fdbf54>] drv_stop+0x110/0x244 [mac80211]
+[  647.224367] [<ffffff80010147ac>] ieee80211_stop_device+0x48/0x54 [mac80211]
+[  647.230359] [<ffffff8000ff3eec>] ieee80211_do_stop+0x6a4/0x73c [mac80211]
+[  647.237033] [<ffffff8000ff4500>] ieee80211_stop+0x20/0x30 [mac80211]
+[  647.243942] [<ffffff80087e39b8>] __dev_close_many+0xa0/0xfc
+[  647.250435] [<ffffff80087e3888>] dev_close_many+0x70/0x100
+[  647.255651] [<ffffff80087e3a60>] dev_close+0x4c/0x80
+[  647.261244] [<ffffff8000f1ba54>] cfg80211_shutdown_all_interfaces+0x44/0xcc [cfg80211]
+[  647.266383] [<ffffff8000ff3fdc>] ieee80211_remove_interfaces+0x58/0x1b4 [mac80211]
+[  647.274128] [<ffffff8000fda540>] ieee80211_unregister_hw+0x50/0x120 [mac80211]
+[  647.281659] [<ffffff80010ca314>] ath10k_mac_unregister+0x1c/0x44 [ath10k_core]
+[  647.288839] [<ffffff80010dfc94>] ath10k_core_unregister+0x48/0x90 [ath10k_core]
+[  647.296027] [<ffffff800117e598>] ath10k_snoc_remove+0x5c/0x150 [ath10k_snoc]
+[  647.303229] [<ffffff80085625fc>] platform_drv_remove+0x28/0x50
+[  647.310517] [<ffffff80085601a4>] device_release_driver_internal+0x114/0x1b8
+[  647.316257] [<ffffff80085602e4>] driver_detach+0x6c/0xa8
+[  647.323021] [<ffffff800855e5b8>] bus_remove_driver+0x78/0xa8
+[  647.328571] [<ffffff800856107c>] driver_unregister+0x30/0x50
+[  647.334213] [<ffffff8008562674>] platform_driver_unregister+0x1c/0x28
+[  647.339876] [<ffffff800117fefc>] cleanup_module+0x1c/0x120 [ath10k_snoc]
+[  647.346196] [<ffffff8008143ab8>] SyS_delete_module+0x1dc/0x22c
+
+PCIe:
+[  615.392770] rmmod           D    0  3523   3458 0x00000080
+[  615.392777] Call Trace:
+[  615.392784]  __schedule+0x617/0x7d3
+[  615.392791]  ? __mod_timer+0x263/0x35c
+[  615.392797]  schedule+0x62/0x72
+[  615.392803]  schedule_timeout+0x8d/0xf3
+[  615.392809]  ? run_local_timers+0x6b/0x6b
+[  615.392814]  msleep+0x1b/0x22
+[  615.392824]  ath10k_pci_hif_stop+0x68/0xd6 [ath10k_pci]
+[  615.392844]  ath10k_core_stop+0x44/0x67 [ath10k_core]
+[  615.392859]  ath10k_halt+0x102/0x153 [ath10k_core]
+[  615.392873]  ath10k_stop+0x38/0x75 [ath10k_core]
+[  615.392893]  drv_stop+0x9a/0x13c [mac80211]
+[  615.392915]  ieee80211_do_stop+0x772/0x7cd [mac80211]
+[  615.392937]  ieee80211_stop+0x1a/0x1e [mac80211]
+[  615.392945]  __dev_close_many+0x9e/0xf0
+[  615.392952]  dev_close_many+0x62/0xe8
+[  615.392958]  dev_close+0x54/0x7d
+[  615.392975]  cfg80211_shutdown_all_interfaces+0x6e/0xa5 [cfg80211]
+[  615.393021]  ieee80211_remove_interfaces+0x52/0x1aa [mac80211]
+[  615.393049]  ieee80211_unregister_hw+0x54/0x136 [mac80211]
+[  615.393068]  ath10k_mac_unregister+0x19/0x4a [ath10k_core]
+[  615.393091]  ath10k_core_unregister+0x39/0x7e [ath10k_core]
+[  615.393104]  ath10k_pci_remove+0x3d/0x7f [ath10k_pci]
+[  615.393117]  pci_device_remove+0x41/0xa6
+[  615.393129]  device_release_driver_internal+0x123/0x1ec
+[  615.393140]  driver_detach+0x60/0x90
+[  615.393152]  bus_remove_driver+0x72/0x9f
+[  615.393164]  pci_unregister_driver+0x1e/0x87
+[  615.393177]  SyS_delete_module+0x1d7/0x277
+[  615.393188]  do_syscall_64+0x6b/0xf7
+[  615.393199]  entry_SYSCALL_64_after_hwframe+0x41/0xa6
+
+The test command run simulate_fw_crash firstly and it call into
+ath10k_sdio_hif_stop from ath10k_core_restart, then napi_disable
+is called and bit NAPI_STATE_SCHED is set. After that, function
+ath10k_sdio_hif_stop is called again from ath10k_stop by command
+"ifconfig wlan0 down" or "rmmod ath10k_sdio", then command blocked.
+
+It is blocked by napi_synchronize, napi_disable will set bit with
+NAPI_STATE_SCHED, and then napi_synchronize will enter dead loop
+becuase bit NAPI_STATE_SCHED is set by napi_disable.
+
+function of napi_synchronize
+static inline void napi_synchronize(const struct napi_struct *n)
+{
+	if (IS_ENABLED(CONFIG_SMP))
+		while (test_bit(NAPI_STATE_SCHED, &n->state))
+			msleep(1);
+	else
+		barrier();
+}
+
+function of napi_disable
+void napi_disable(struct napi_struct *n)
+{
+	might_sleep();
+	set_bit(NAPI_STATE_DISABLE, &n->state);
+
+	while (test_and_set_bit(NAPI_STATE_SCHED, &n->state))
+		msleep(1);
+	while (test_and_set_bit(NAPI_STATE_NPSVC, &n->state))
+		msleep(1);
+
+	hrtimer_cancel(&n->timer);
+
+	clear_bit(NAPI_STATE_DISABLE, &n->state);
+}
+
+Add flag for it avoid the hang and crash.
+
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
+Tested-on: WCN3990 hw1.0 SNOC hw1.0 WLAN.HL.3.1-01307.1-QCAHLSWMTPL-2
+
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/1598617348-2325-1-git-send-email-wgong@codeaurora.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/microchip/wilc1000/netdev.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath10k/ahb.c  |  5 ++---
+ drivers/net/wireless/ath/ath10k/core.c | 25 +++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath10k/core.h |  5 +++++
+ drivers/net/wireless/ath/ath10k/pci.c  |  7 ++++---
+ drivers/net/wireless/ath/ath10k/sdio.c |  5 ++---
+ drivers/net/wireless/ath/ath10k/snoc.c |  6 +++---
+ 6 files changed, 41 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net=
-/wireless/microchip/wilc1000/netdev.c
-index 1b205e7d97a8..66f725aad209 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -24,12 +24,10 @@
-=20
- static irqreturn_t isr_uh_routine(int irq, void *user_data)
+diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
+index 05a61975c83f4..869524852fbaa 100644
+--- a/drivers/net/wireless/ath/ath10k/ahb.c
++++ b/drivers/net/wireless/ath/ath10k/ahb.c
+@@ -626,7 +626,7 @@ static int ath10k_ahb_hif_start(struct ath10k *ar)
  {
--	struct net_device *dev =3D user_data;
--	struct wilc_vif *vif =3D netdev_priv(dev);
--	struct wilc *wilc =3D vif->wilc;
-+	struct wilc *wilc =3D (struct wilc *)user_data;
-=20
- 	if (wilc->close) {
--		netdev_err(dev, "Can't handle UH interrupt\n");
-+		pr_err("Can't handle UH interrupt");
- 		return IRQ_HANDLED;
- 	}
- 	return IRQ_WAKE_THREAD;
-@@ -37,12 +35,10 @@ static irqreturn_t isr_uh_routine(int irq, void *user_d=
-ata)
-=20
- static irqreturn_t isr_bh_routine(int irq, void *userdata)
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot ahb hif start\n");
+ 
+-	napi_enable(&ar->napi);
++	ath10k_core_napi_enable(ar);
+ 	ath10k_ce_enable_interrupts(ar);
+ 	ath10k_pci_enable_legacy_irq(ar);
+ 
+@@ -644,8 +644,7 @@ static void ath10k_ahb_hif_stop(struct ath10k *ar)
+ 	ath10k_ahb_irq_disable(ar);
+ 	synchronize_irq(ar_ahb->irq);
+ 
+-	napi_synchronize(&ar->napi);
+-	napi_disable(&ar->napi);
++	ath10k_core_napi_sync_disable(ar);
+ 
+ 	ath10k_pci_flush(ar);
+ }
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index eeb6ff6aa2e1e..a419ec7130f97 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -2305,6 +2305,31 @@ void ath10k_core_start_recovery(struct ath10k *ar)
+ }
+ EXPORT_SYMBOL(ath10k_core_start_recovery);
+ 
++void ath10k_core_napi_enable(struct ath10k *ar)
++{
++	lockdep_assert_held(&ar->conf_mutex);
++
++	if (test_bit(ATH10K_FLAG_NAPI_ENABLED, &ar->dev_flags))
++		return;
++
++	napi_enable(&ar->napi);
++	set_bit(ATH10K_FLAG_NAPI_ENABLED, &ar->dev_flags);
++}
++EXPORT_SYMBOL(ath10k_core_napi_enable);
++
++void ath10k_core_napi_sync_disable(struct ath10k *ar)
++{
++	lockdep_assert_held(&ar->conf_mutex);
++
++	if (!test_bit(ATH10K_FLAG_NAPI_ENABLED, &ar->dev_flags))
++		return;
++
++	napi_synchronize(&ar->napi);
++	napi_disable(&ar->napi);
++	clear_bit(ATH10K_FLAG_NAPI_ENABLED, &ar->dev_flags);
++}
++EXPORT_SYMBOL(ath10k_core_napi_sync_disable);
++
+ static void ath10k_core_restart(struct work_struct *work)
  {
--	struct net_device *dev =3D userdata;
--	struct wilc_vif *vif =3D netdev_priv(userdata);
--	struct wilc *wilc =3D vif->wilc;
-+	struct wilc *wilc =3D (struct wilc *)userdata;
-=20
- 	if (wilc->close) {
--		netdev_err(dev, "Can't handle BH interrupt\n");
-+		pr_err("Can't handle BH interrupt\n");
- 		return IRQ_HANDLED;
- 	}
-=20
-@@ -60,7 +56,7 @@ static int init_irq(struct net_device *dev)
- 	ret =3D request_threaded_irq(wl->dev_irq_num, isr_uh_routine,
- 				   isr_bh_routine,
- 				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
--				   "WILC_IRQ", dev);
-+				   "WILC_IRQ", wl);
- 	if (ret) {
- 		netdev_err(dev, "Failed to request IRQ [%d]\n", ret);
- 		return ret;
---=20
-2.24.0
+ 	struct ath10k *ar = container_of(work, struct ath10k, restart_work);
+diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+index 51f7e960e2977..f4be6bfb25392 100644
+--- a/drivers/net/wireless/ath/ath10k/core.h
++++ b/drivers/net/wireless/ath/ath10k/core.h
+@@ -868,6 +868,9 @@ enum ath10k_dev_flags {
+ 
+ 	/* Indicates that ath10k device is during recovery process and not complete */
+ 	ATH10K_FLAG_RESTARTING,
++
++	/* protected by conf_mutex */
++	ATH10K_FLAG_NAPI_ENABLED,
+ };
+ 
+ enum ath10k_cal_mode {
+@@ -1308,6 +1311,8 @@ static inline bool ath10k_peer_stats_enabled(struct ath10k *ar)
+ 
+ extern unsigned long ath10k_coredump_mask;
+ 
++void ath10k_core_napi_sync_disable(struct ath10k *ar);
++void ath10k_core_napi_enable(struct ath10k *ar);
+ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
+ 				  enum ath10k_bus bus,
+ 				  enum ath10k_hw_rev hw_rev,
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 2328df09875ce..e7fde635e0eef 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -1958,7 +1958,7 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
+ 
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot hif start\n");
+ 
+-	napi_enable(&ar->napi);
++	ath10k_core_napi_enable(ar);
+ 
+ 	ath10k_pci_irq_enable(ar);
+ 	ath10k_pci_rx_post(ar);
+@@ -2075,8 +2075,9 @@ static void ath10k_pci_hif_stop(struct ath10k *ar)
+ 
+ 	ath10k_pci_irq_disable(ar);
+ 	ath10k_pci_irq_sync(ar);
+-	napi_synchronize(&ar->napi);
+-	napi_disable(&ar->napi);
++
++	ath10k_core_napi_sync_disable(ar);
++
+ 	cancel_work_sync(&ar_pci->dump_work);
+ 
+ 	/* Most likely the device has HTT Rx ring configured. The only way to
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index c415090d1f37c..b746052737e0b 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -1859,7 +1859,7 @@ static int ath10k_sdio_hif_start(struct ath10k *ar)
+ 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+ 	int ret;
+ 
+-	napi_enable(&ar->napi);
++	ath10k_core_napi_enable(ar);
+ 
+ 	/* Sleep 20 ms before HIF interrupts are disabled.
+ 	 * This will give target plenty of time to process the BMI done
+@@ -1992,8 +1992,7 @@ static void ath10k_sdio_hif_stop(struct ath10k *ar)
+ 
+ 	spin_unlock_bh(&ar_sdio->wr_async_lock);
+ 
+-	napi_synchronize(&ar->napi);
+-	napi_disable(&ar->napi);
++	ath10k_core_napi_sync_disable(ar);
+ }
+ 
+ #ifdef CONFIG_PM
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index bf9a8cb713dc0..2c2df0b8b3fd9 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -915,8 +915,7 @@ static void ath10k_snoc_hif_stop(struct ath10k *ar)
+ 	if (!test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
+ 		ath10k_snoc_irq_disable(ar);
+ 
+-	napi_synchronize(&ar->napi);
+-	napi_disable(&ar->napi);
++	ath10k_core_napi_sync_disable(ar);
+ 	ath10k_snoc_buffer_cleanup(ar);
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot hif stop\n");
+ }
+@@ -926,7 +925,8 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+ 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+ 
+ 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+-	napi_enable(&ar->napi);
++
++	ath10k_core_napi_enable(ar);
+ 	ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
+ 
+-- 
+2.27.0
+
