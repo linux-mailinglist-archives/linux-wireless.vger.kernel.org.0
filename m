@@ -2,79 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0316E32356F
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 02:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49E9E323616
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 04:39:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230371AbhBXBqC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Feb 2021 20:46:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33322 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbhBXBqA (ORCPT
+        id S233067AbhBXDjb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Feb 2021 22:39:31 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:4490 "EHLO
+        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229967AbhBXDja (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Feb 2021 20:46:00 -0500
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09B1C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Feb 2021 17:45:20 -0800 (PST)
-Received: by mail-qt1-x82f.google.com with SMTP id v3so383707qtw.4
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Feb 2021 17:45:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bobcopeland-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=KifinP2uSeHnHoq5vyPTB5LaxGLxzPlPKJ9g8VpQp6w=;
-        b=haQ4uM/IRMzkaUR5aqZftA3hy2075+BOO4PzbCKKfMwXCcqK/0PivVe6+1J3ZxPJyc
-         c01l2gkD+p+Nx/35O8CJ+0HJE1CLxOBrQLKz4dCnKW5Lc88BwPO9C45q0BqILs5LTrKQ
-         161oYvtu48jW2eGH8kop5cJJ1ICiDjKJQHnBncRqqx5aVrp4Hl9RfE1+Jd+S/MmB1DlD
-         nfsd78vfBjYtxZWu4D42N8MCnvSr6tc+0Rk7Aey293+Ljzjg626JlBcSOH+SvFbiw+cT
-         4NYn+X0a5sof64TGfnRrYOrLxcsirA4onnWqtW/R3vlSHsYyoZTXSPw07ZHlytT/xDpJ
-         rQ9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=KifinP2uSeHnHoq5vyPTB5LaxGLxzPlPKJ9g8VpQp6w=;
-        b=kTe7+U7DStxmXwI8O3yX7EUmpvYkoFyQp+lXaxlfihtYJYTdI2phAE62L02WrH1zEF
-         5k2kzz0st9PFbuu43il5tigxl+dI7GFk+ZIT9F1d6Chg/Jx5b5a4MWm5x4+irVJlKXeo
-         xF8sx8DnT4+jk4TqZxfD9oEWmxaGD0jEnVk0XdQLmoST9zqXIcOfyZwNt2YYAhfwQLAM
-         UZx//g5D8LxqPSYxVM3wqjqIZHCUKa37d6rcIfmBMXvnv+Bc7wA3+Tn52BZl4IabV/YB
-         NFDcvW5a7IFoG4WB4E6L9sLrOBSAX9eQOZi02pps0NU8uomq9fJSGNxe6frW7BgJ/qrb
-         2lTg==
-X-Gm-Message-State: AOAM531gN3xLNXlvTpOgsQNZ9FylxPBumzmicXEKeJV9BmYAldAUni0T
-        FP+mrRERae54OcTYOrhJfhUjGA==
-X-Google-Smtp-Source: ABdhPJzEGgb2qEcfaWNVoZ3RwlxfmFn9Qprfp0sak4Dt7CiDA8S+I3eU8vxbz1oObQCJq93ht++a5A==
-X-Received: by 2002:ac8:3872:: with SMTP id r47mr16271839qtb.96.1614131119890;
-        Tue, 23 Feb 2021 17:45:19 -0800 (PST)
-Received: from elrond.bobcopeland.com ([2607:fea8:5ac0:7d5:d9c6:1353:8483:98a])
-        by smtp.gmail.com with ESMTPSA id o5sm452292qkh.59.2021.02.23.17.45.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Feb 2021 17:45:18 -0800 (PST)
-Received: by elrond.bobcopeland.com (Postfix, from userid 1000)
-        id BC8E2FC007E; Tue, 23 Feb 2021 20:45:17 -0500 (EST)
-Date:   Tue, 23 Feb 2021 20:45:17 -0500
-From:   Bob Copeland <me@bobcopeland.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH] wmediumd: lib: update from usfstl
-Message-ID: <20210224014517.GB27894@bobcopeland.com>
-References: <20210223212102.2189124-1-johannes@sipsolutions.net>
+        Tue, 23 Feb 2021 22:39:30 -0500
+X-Greylist: delayed 320 seconds by postgrey-1.27 at vger.kernel.org; Tue, 23 Feb 2021 22:39:30 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+        h=from:subject:mime-version:to:cc:content-transfer-encoding:
+        content-type;
+        s=sgd; bh=HMkSw7IOvssTgDSrtIkerCdgmEF1qqotALIXwHQL8v0=;
+        b=Qh+zePS3F/BpZD/n9+9PG00Bf2+uexnrTOM3fgzKfT3sBuYPVo0ATVNE/uRJcHrHe9Yc
+        ZBImKnHeUprp9BEV6W+F2fvWUBTEjF7EOwV+wCBMxLfSEphru7+lLZ/nTN2QxjS0hyYyZK
+        UJHzj/yWlL4L/pI2GQ+pO5JYAqvhZ18Jk=
+Received: by filterdrecv-p3mdw1-7745b6f999-sfwps with SMTP id filterdrecv-p3mdw1-7745b6f999-sfwps-19-6035C903-20
+        2021-02-24 03:33:23.522967355 +0000 UTC m=+609418.677037305
+Received: from pearl.egauge.net (unknown)
+        by ismtpd0023p1las1.sendgrid.net (SG) with ESMTP
+        id H1GRjH_-QNuumsdAuJQVLw
+        Wed, 24 Feb 2021 03:33:23.307 +0000 (UTC)
+Received: by pearl.egauge.net (Postfix, from userid 1000)
+        id 837747001EB; Tue, 23 Feb 2021 20:33:22 -0700 (MST)
+From:   David Mosberger-Tang <davidm@egauge.net>
+Subject: [PATCH] wilc1000: Support chip sleep over SPI
+Date:   Wed, 24 Feb 2021 03:33:23 +0000 (UTC)
+Message-Id: <20210224033317.1507603-1-davidm@egauge.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvLqPTrJ6otTC=2F10Oq?=
+ =?us-ascii?Q?hiyJh=2FA6EPW7PdArPNCO42mDjyhcLTtJh39J8FF?=
+ =?us-ascii?Q?NB59fb+AHNqeeAiiMmiHkiQjkAyDQEsWNoClo7N?=
+ =?us-ascii?Q?aKGw3p5UGZIQ6HYAkl+lV6b7EYzxX2mNcqtW6LJ?=
+ =?us-ascii?Q?LGriSVnnR3zq7XsHdbYhSFI7bOhB6IGISj0IYlM?=
+ =?us-ascii?Q?a76MN5G1YlTtdiqSyU+0Q=3D=3D?=
+To:     linux-wireless@vger.kernel.org
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        davidm@egauge.net
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210223212102.2189124-1-johannes@sipsolutions.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks, applied.
+chip_allow_sleep() only supported wakeup via SDIO, which made the
+driver unusable over SPI.  This code is a straight forward port from
+the driver in the linux-at91 repository.
 
-On Tue, Feb 23, 2021 at 10:21:02PM +0100, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> This updates the code from the usfstl lib, notably bringing
-> in a bugfix for a race during the handling of the response
-> to UM_TIMETRAVEL_WAIT.
+Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+---
+ .../net/wireless/microchip/wilc1000/wlan.c    | 56 +++++++++++++++++--
+ .../net/wireless/microchip/wilc1000/wlan.h    |  6 ++
+ 2 files changed, 58 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 31d51385ba93..d4a90c490084 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -552,12 +552,60 @@ static struct rxq_entry_t *wilc_wlan_rxq_remove(struct wilc *wilc)
+ void chip_allow_sleep(struct wilc *wilc)
+ {
+ 	u32 reg = 0;
++	const struct wilc_hif_func *hif_func = wilc->hif_func;
++	u32 wakeup_reg, wakeup_bit;
++	u32 to_host_from_fw_reg, to_host_from_fw_bit;
++	u32 from_host_to_fw_reg, from_host_to_fw_bit;
++	u32 trials = 100;
++	int ret;
++
++	if (wilc->io_type == WILC_HIF_SDIO) {
++		wakeup_reg = WILC_SDIO_WAKEUP_REG;
++		wakeup_bit = WILC_SDIO_WAKEUP_BIT;
++		from_host_to_fw_reg = WILC_SDIO_HOST_TO_FW_REG;
++		from_host_to_fw_bit = WILC_SDIO_HOST_TO_FW_BIT;
++		to_host_from_fw_reg = WILC_SDIO_FW_TO_HOST_REG;
++		to_host_from_fw_bit = WILC_SDIO_FW_TO_HOST_BIT;
++	} else {
++		wakeup_reg = WILC_SPI_WAKEUP_REG;
++		wakeup_bit = WILC_SPI_WAKEUP_BIT;
++		from_host_to_fw_reg = WILC_SPI_HOST_TO_FW_REG;
++		from_host_to_fw_bit = WILC_SPI_HOST_TO_FW_BIT;
++		to_host_from_fw_reg = WILC_SPI_FW_TO_HOST_REG;
++		to_host_from_fw_bit = WILC_SPI_FW_TO_HOST_BIT;
++	}
++
++	while (trials--) {
++		ret = hif_func->hif_read_reg(wilc, to_host_from_fw_reg, &reg);
++		if (ret)
++			return;
++		if ((reg & to_host_from_fw_bit) == 0)
++			break;
++	}
++	if (!trials)
++		pr_warn("FW not responding\n");
+ 
+-	wilc->hif_func->hif_read_reg(wilc, WILC_SDIO_WAKEUP_REG, &reg);
++	/* Clear bit 1 */
++	ret = hif_func->hif_read_reg(wilc, wakeup_reg, &reg);
++	if (ret)
++		return;
++	if (reg & wakeup_bit) {
++		reg &= ~wakeup_bit;
++		ret = hif_func->hif_write_reg(wilc, wakeup_reg, reg);
++		if (ret)
++			return;
++	}
+ 
+-	wilc->hif_func->hif_write_reg(wilc, WILC_SDIO_WAKEUP_REG,
+-				      reg & ~WILC_SDIO_WAKEUP_BIT);
+-	wilc->hif_func->hif_write_reg(wilc, WILC_SDIO_HOST_TO_FW_REG, 0);
++	ret = hif_func->hif_read_reg(wilc, from_host_to_fw_reg, &reg);
++	if (ret)
++		return;
++	if (reg & from_host_to_fw_bit) {
++		reg &= ~from_host_to_fw_bit;
++		ret = hif_func->hif_write_reg(wilc, from_host_to_fw_reg, reg);
++		if (ret)
++			return;
++
++	}
+ }
+ EXPORT_SYMBOL_GPL(chip_allow_sleep);
+ 
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
+index d55eb6b3a12a..6479acc12b95 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.h
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
+@@ -97,6 +97,12 @@
+ #define WILC_SPI_WAKEUP_REG		0x1
+ #define WILC_SPI_WAKEUP_BIT		BIT(1)
+ 
++#define WILC_SPI_HOST_TO_FW_REG		0x0b
++#define WILC_SPI_HOST_TO_FW_BIT		BIT(0)
++
++#define WILC_SPI_FW_TO_HOST_REG		0x10
++#define WILC_SPI_FW_TO_HOST_BIT		BIT(0)
++
+ #define WILC_SPI_PROTOCOL_OFFSET	(WILC_SPI_PROTOCOL_CONFIG - \
+ 					 WILC_SPI_REG_BASE)
+ 
 -- 
-Bob Copeland %% https://bobcopeland.com/
+2.25.1
+
