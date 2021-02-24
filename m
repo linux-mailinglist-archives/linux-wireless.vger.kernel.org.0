@@ -2,152 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49E9E323616
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 04:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAABE3236DC
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 06:29:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233067AbhBXDjb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Feb 2021 22:39:31 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:4490 "EHLO
-        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229967AbhBXDja (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Feb 2021 22:39:30 -0500
-X-Greylist: delayed 320 seconds by postgrey-1.27 at vger.kernel.org; Tue, 23 Feb 2021 22:39:30 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:mime-version:to:cc:content-transfer-encoding:
-        content-type;
-        s=sgd; bh=HMkSw7IOvssTgDSrtIkerCdgmEF1qqotALIXwHQL8v0=;
-        b=Qh+zePS3F/BpZD/n9+9PG00Bf2+uexnrTOM3fgzKfT3sBuYPVo0ATVNE/uRJcHrHe9Yc
-        ZBImKnHeUprp9BEV6W+F2fvWUBTEjF7EOwV+wCBMxLfSEphru7+lLZ/nTN2QxjS0hyYyZK
-        UJHzj/yWlL4L/pI2GQ+pO5JYAqvhZ18Jk=
-Received: by filterdrecv-p3mdw1-7745b6f999-sfwps with SMTP id filterdrecv-p3mdw1-7745b6f999-sfwps-19-6035C903-20
-        2021-02-24 03:33:23.522967355 +0000 UTC m=+609418.677037305
-Received: from pearl.egauge.net (unknown)
-        by ismtpd0023p1las1.sendgrid.net (SG) with ESMTP
-        id H1GRjH_-QNuumsdAuJQVLw
-        Wed, 24 Feb 2021 03:33:23.307 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 837747001EB; Tue, 23 Feb 2021 20:33:22 -0700 (MST)
-From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH] wilc1000: Support chip sleep over SPI
-Date:   Wed, 24 Feb 2021 03:33:23 +0000 (UTC)
-Message-Id: <20210224033317.1507603-1-davidm@egauge.net>
-X-Mailer: git-send-email 2.25.1
+        id S233895AbhBXF3O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 00:29:14 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:28665 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233585AbhBXF3N (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 00:29:13 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614144533; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=bqZgK84veN6xeoN7CZnEfdbEuapwt1aQ7AG/IzhUPDs=; b=UCHvTrWu5QVG54DOsz6eerIHWngTfUA5E9XmtoHst+z8gB522qZIRg14NTU0R3JJPgzq1Bdr
+ N+79YOyNivn1gCny+JqUQohfqoz3nFBrNZPxeJAWonk9ZleiDLSwW798O+iO2+dKv8gGx9uA
+ zmKjUfk4OD5lTNscRAsXb7klYz0=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6035e415ba08663830a7fef6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Feb 2021 05:28:53
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 205F5C43464; Wed, 24 Feb 2021 05:28:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AF438C433ED;
+        Wed, 24 Feb 2021 05:28:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AF438C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com
+Subject: Re: [PATCH v2 3/8] mt76: mt7921: switch to new api for hardware beacon filter
+References: <cover.1613755428.git.lorenzo@kernel.org>
+        <22be936230c356e9b57f541aaa40d6552783e92d.1613755428.git.lorenzo@kernel.org>
+Date:   Wed, 24 Feb 2021 07:28:45 +0200
+In-Reply-To: <22be936230c356e9b57f541aaa40d6552783e92d.1613755428.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Fri, 19 Feb 2021 18:28:46 +0100")
+Message-ID: <87wnuydofm.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvLqPTrJ6otTC=2F10Oq?=
- =?us-ascii?Q?hiyJh=2FA6EPW7PdArPNCO42mDjyhcLTtJh39J8FF?=
- =?us-ascii?Q?NB59fb+AHNqeeAiiMmiHkiQjkAyDQEsWNoClo7N?=
- =?us-ascii?Q?aKGw3p5UGZIQ6HYAkl+lV6b7EYzxX2mNcqtW6LJ?=
- =?us-ascii?Q?LGriSVnnR3zq7XsHdbYhSFI7bOhB6IGISj0IYlM?=
- =?us-ascii?Q?a76MN5G1YlTtdiqSyU+0Q=3D=3D?=
-To:     linux-wireless@vger.kernel.org
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        davidm@egauge.net
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-chip_allow_sleep() only supported wakeup via SDIO, which made the
-driver unusable over SPI.  This code is a straight forward port from
-the driver in the linux-at91 repository.
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
----
- .../net/wireless/microchip/wilc1000/wlan.c    | 56 +++++++++++++++++--
- .../net/wireless/microchip/wilc1000/wlan.h    |  6 ++
- 2 files changed, 58 insertions(+), 4 deletions(-)
+> From: Sean Wang <sean.wang@mediatek.com>
+>
+> Current firmware only supports new api for enabling hardware beacon filter.
+>
+> Fixes: 1d8efc741df80 ("mt76: mt7921: introduce Runtime PM support")
+> Beacon filter cmd have to rely on the associatied access point's beacon
+> interval and DTIM information.
+>
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 31d51385ba93..d4a90c490084 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -552,12 +552,60 @@ static struct rxq_entry_t *wilc_wlan_rxq_remove(struct wilc *wilc)
- void chip_allow_sleep(struct wilc *wilc)
- {
- 	u32 reg = 0;
-+	const struct wilc_hif_func *hif_func = wilc->hif_func;
-+	u32 wakeup_reg, wakeup_bit;
-+	u32 to_host_from_fw_reg, to_host_from_fw_bit;
-+	u32 from_host_to_fw_reg, from_host_to_fw_bit;
-+	u32 trials = 100;
-+	int ret;
-+
-+	if (wilc->io_type == WILC_HIF_SDIO) {
-+		wakeup_reg = WILC_SDIO_WAKEUP_REG;
-+		wakeup_bit = WILC_SDIO_WAKEUP_BIT;
-+		from_host_to_fw_reg = WILC_SDIO_HOST_TO_FW_REG;
-+		from_host_to_fw_bit = WILC_SDIO_HOST_TO_FW_BIT;
-+		to_host_from_fw_reg = WILC_SDIO_FW_TO_HOST_REG;
-+		to_host_from_fw_bit = WILC_SDIO_FW_TO_HOST_BIT;
-+	} else {
-+		wakeup_reg = WILC_SPI_WAKEUP_REG;
-+		wakeup_bit = WILC_SPI_WAKEUP_BIT;
-+		from_host_to_fw_reg = WILC_SPI_HOST_TO_FW_REG;
-+		from_host_to_fw_bit = WILC_SPI_HOST_TO_FW_BIT;
-+		to_host_from_fw_reg = WILC_SPI_FW_TO_HOST_REG;
-+		to_host_from_fw_bit = WILC_SPI_FW_TO_HOST_BIT;
-+	}
-+
-+	while (trials--) {
-+		ret = hif_func->hif_read_reg(wilc, to_host_from_fw_reg, &reg);
-+		if (ret)
-+			return;
-+		if ((reg & to_host_from_fw_bit) == 0)
-+			break;
-+	}
-+	if (!trials)
-+		pr_warn("FW not responding\n");
- 
--	wilc->hif_func->hif_read_reg(wilc, WILC_SDIO_WAKEUP_REG, &reg);
-+	/* Clear bit 1 */
-+	ret = hif_func->hif_read_reg(wilc, wakeup_reg, &reg);
-+	if (ret)
-+		return;
-+	if (reg & wakeup_bit) {
-+		reg &= ~wakeup_bit;
-+		ret = hif_func->hif_write_reg(wilc, wakeup_reg, reg);
-+		if (ret)
-+			return;
-+	}
- 
--	wilc->hif_func->hif_write_reg(wilc, WILC_SDIO_WAKEUP_REG,
--				      reg & ~WILC_SDIO_WAKEUP_BIT);
--	wilc->hif_func->hif_write_reg(wilc, WILC_SDIO_HOST_TO_FW_REG, 0);
-+	ret = hif_func->hif_read_reg(wilc, from_host_to_fw_reg, &reg);
-+	if (ret)
-+		return;
-+	if (reg & from_host_to_fw_bit) {
-+		reg &= ~from_host_to_fw_bit;
-+		ret = hif_func->hif_write_reg(wilc, from_host_to_fw_reg, reg);
-+		if (ret)
-+			return;
-+
-+	}
- }
- EXPORT_SYMBOL_GPL(chip_allow_sleep);
- 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-index d55eb6b3a12a..6479acc12b95 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.h
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -97,6 +97,12 @@
- #define WILC_SPI_WAKEUP_REG		0x1
- #define WILC_SPI_WAKEUP_BIT		BIT(1)
- 
-+#define WILC_SPI_HOST_TO_FW_REG		0x0b
-+#define WILC_SPI_HOST_TO_FW_BIT		BIT(0)
-+
-+#define WILC_SPI_FW_TO_HOST_REG		0x10
-+#define WILC_SPI_FW_TO_HOST_BIT		BIT(0)
-+
- #define WILC_SPI_PROTOCOL_OFFSET	(WILC_SPI_PROTOCOL_CONFIG - \
- 					 WILC_SPI_REG_BASE)
- 
+The Fixes tag is in odd place.
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
