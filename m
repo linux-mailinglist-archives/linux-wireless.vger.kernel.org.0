@@ -2,36 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A32323E77
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 14:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41693323E6A
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 14:37:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235505AbhBXNhd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 08:37:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54882 "EHLO mail.kernel.org"
+        id S232949AbhBXNfs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 08:35:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51110 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235252AbhBXM55 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 07:57:57 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6FABB64EF5;
-        Wed, 24 Feb 2021 12:52:18 +0000 (UTC)
+        id S234772AbhBXM5v (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 07:57:51 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4C9BD64F3C;
+        Wed, 24 Feb 2021 12:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614171139;
-        bh=Agm5hJ+b07cFBx0KwJBSDzNwjcfKPOaJQm5RF0xouSs=;
+        s=k20201202; t=1614171143;
+        bh=gOJ4KNBRe1gQ0EC8G3x8EkpMv27fqxU7e0yNcEZW3AE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f+EJbXx6y6qWMQAMDvjktjB0UeIAb5a4iLyK/P5NsqGt0+rsDAWcmYmbp77SEx06c
-         X0UmB/k3JJrvaWci1aeSdtpUAmrRwTCjp/YyW3D1lwywxcAkHOObW5bFCe3gec2ssY
-         eqxemdC7X2KuGpprzxLAJn1nv9Jt8e6lMlkz+Cp7s+ilD4F3mhbVuzHu/YICHJuzG5
-         tEzk3kP1rlzwK7i1e5wR+UDoG+R7a7mBKgHEeacgswBnRfS6rfUDhkcYBreplH3Sve
-         TG6N2aEdq2bBNlzcoF7XgDh/Ab4Gj1E7ARGlCp1I4/MXrNZBifYVVjP/a5gq4DOUuL
-         jyFTCdgCH0+qw==
+        b=H2O88S4+qn21cakRlKoitMcjaTFYP4WsM7eXWa+xZoquCr/VL4A3LCyW5MrmyyUE+
+         ChA3KFIq8cZmjnKJhO4XPztkDRb6RSBu8Xo8U/lJWbSyZSfpp0g52zJjP02Xq8tgo7
+         Im58/QDxGBw7bMPjlDvWhF7X7LuJSpUVFzQknTVaM8L2jSbPz71/7KXVRcyPfIo60J
+         ZPcjiMPhgIvlZumb6hZQKWAxlp7P0ESnIJckiL7BUTYYDhsxYg9ZQXAOP/Jo5cLxcr
+         r1yQInQNb0Mz3V5ZOEOrVP5zuff2de8ZZoareCjRCU8xYHlVdUKgOc5hVqPBkxy4Y/
+         090KQLSJbhcpw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Raz Bouganim <r-bouganim@ti.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 05/56] wlcore: Fix command execute failure 19 for wl12xx
-Date:   Wed, 24 Feb 2021 07:51:21 -0500
-Message-Id: <20210224125212.482485-5-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 08/56] mt76: mt7615: reset token when mac_reset happens
+Date:   Wed, 24 Feb 2021 07:51:24 -0500
+Message-Id: <20210224125212.482485-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210224125212.482485-1-sashal@kernel.org>
 References: <20210224125212.482485-1-sashal@kernel.org>
@@ -43,124 +44,102 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit cb88d01b67383a095e3f7caeb4cdade5a6cf0417 ]
+[ Upstream commit a6275e934605646ef81b02d8d1164f21343149c9 ]
 
-We can currently get a "command execute failure 19" error on beacon loss
-if the signal is weak:
+Reset token in mt7615_mac_reset_work() to avoid possible leakege.
 
-wlcore: Beacon loss detected. roles:0xff
-wlcore: Connection loss work (role_id: 0).
-...
-wlcore: ERROR command execute failure 19
-...
-WARNING: CPU: 0 PID: 1552 at drivers/net/wireless/ti/wlcore/main.c:803
-...
-(wl12xx_queue_recovery_work.part.0 [wlcore])
-(wl12xx_cmd_role_start_sta [wlcore])
-(wl1271_op_bss_info_changed [wlcore])
-(ieee80211_prep_connection [mac80211])
-
-Error 19 is defined as CMD_STATUS_WRONG_NESTING from the wlcore firmware,
-and seems to mean that the firmware no longer wants to see the quirk
-handling for WLCORE_QUIRK_START_STA_FAILS done.
-
-This quirk got added with commit 18eab430700d ("wlcore: workaround
-start_sta problem in wl12xx fw"), and it seems that this already got fixed
-in the firmware long time ago back in 2012 as wl18xx never had this quirk
-in place to start with.
-
-As we no longer even support firmware that early, to me it seems that it's
-safe to just drop WLCORE_QUIRK_START_STA_FAILS to fix the error. Looks
-like earlier firmware got disabled back in 2013 with commit 0e284c074ef9
-("wl12xx: increase minimum singlerole firmware version required").
-
-If it turns out we still need WLCORE_QUIRK_START_STA_FAILS with any
-firmware that the driver works with, we can simply revert this patch and
-add extra checks for firmware version used.
-
-With this fix wlcore reconnects properly after a beacon loss.
-
-Cc: Raz Bouganim <r-bouganim@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210115065613.7731-1-tony@atomide.com
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wl12xx/main.c   |  3 ---
- drivers/net/wireless/ti/wlcore/main.c   | 15 +--------------
- drivers/net/wireless/ti/wlcore/wlcore.h |  3 ---
- 3 files changed, 1 insertion(+), 20 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 20 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 +-
+ .../wireless/mediatek/mt76/mt7615/pci_init.c  | 12 +----------
+ 3 files changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/ti/wl12xx/main.c
-index 3c9c623bb4283..9d7dbfe7fe0c3 100644
---- a/drivers/net/wireless/ti/wl12xx/main.c
-+++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -635,7 +635,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
- 		wl->mr_fw_name = WL127X_FW_NAME_MULTI;
-@@ -659,7 +658,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 		wl->plt_fw_name = WL127X_PLT_FW_NAME;
- 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
-@@ -688,7 +686,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 
- 		wlcore_set_min_fw_ver(wl, WL128X_CHIP_VER,
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index 6863fd552d5e7..6e402d62dbe4a 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -2872,21 +2872,8 @@ static int wlcore_join(struct wl1271 *wl, struct wl12xx_vif *wlvif)
- 
- 	if (is_ibss)
- 		ret = wl12xx_cmd_role_start_ibss(wl, wlvif);
--	else {
--		if (wl->quirks & WLCORE_QUIRK_START_STA_FAILS) {
--			/*
--			 * TODO: this is an ugly workaround for wl12xx fw
--			 * bug - we are not able to tx/rx after the first
--			 * start_sta, so make dummy start+stop calls,
--			 * and then call start_sta again.
--			 * this should be fixed in the fw.
--			 */
--			wl12xx_cmd_role_start_sta(wl, wlvif);
--			wl12xx_cmd_role_stop_sta(wl, wlvif);
--		}
--
-+	else
- 		ret = wl12xx_cmd_role_start_sta(wl, wlvif);
--	}
- 
- 	return ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 3d62fda067e44..f1f954ff46856 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -2098,6 +2098,23 @@ void mt7615_dma_reset(struct mt7615_dev *dev)
  }
-diff --git a/drivers/net/wireless/ti/wlcore/wlcore.h b/drivers/net/wireless/ti/wlcore/wlcore.h
-index b7821311ac75b..81c94d390623b 100644
---- a/drivers/net/wireless/ti/wlcore/wlcore.h
-+++ b/drivers/net/wireless/ti/wlcore/wlcore.h
-@@ -547,9 +547,6 @@ wlcore_set_min_fw_ver(struct wl1271 *wl, unsigned int chip,
- /* Each RX/TX transaction requires an end-of-transaction transfer */
- #define WLCORE_QUIRK_END_OF_TRANSACTION		BIT(0)
+ EXPORT_SYMBOL_GPL(mt7615_dma_reset);
  
--/* the first start_role(sta) sometimes doesn't work on wl12xx */
--#define WLCORE_QUIRK_START_STA_FAILS		BIT(1)
++void mt7615_tx_token_put(struct mt7615_dev *dev)
++{
++	struct mt76_txwi_cache *txwi;
++	int id;
++
++	spin_lock_bh(&dev->token_lock);
++	idr_for_each_entry(&dev->token, txwi, id) {
++		mt7615_txp_skb_unmap(&dev->mt76, txwi);
++		if (txwi->skb)
++			dev_kfree_skb_any(txwi->skb);
++		mt76_put_txwi(&dev->mt76, txwi);
++	}
++	spin_unlock_bh(&dev->token_lock);
++	idr_destroy(&dev->token);
++}
++EXPORT_SYMBOL_GPL(mt7615_tx_token_put);
++
+ void mt7615_mac_reset_work(struct work_struct *work)
+ {
+ 	struct mt7615_phy *phy2;
+@@ -2141,6 +2158,9 @@ void mt7615_mac_reset_work(struct work_struct *work)
+ 
+ 	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_PDMA_STOPPED);
+ 
++	mt7615_tx_token_put(dev);
++	idr_init(&dev->token);
++
+ 	if (mt7615_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
+ 		mt7615_dma_reset(dev);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 6a9f9187f76ac..5b06294d654aa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -619,7 +619,7 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 			  struct mt76_tx_info *tx_info);
+ 
+ void mt7615_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
 -
- /* wl127x and SPI don't support SDIO block size alignment */
- #define WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN		BIT(2)
++void mt7615_tx_token_put(struct mt7615_dev *dev);
+ void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			 struct sk_buff *skb);
+ void mt7615_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta, bool ps);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+index 06a0f8f7bc893..7b81aef3684ed 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+@@ -153,9 +153,7 @@ int mt7615_register_device(struct mt7615_dev *dev)
+ 
+ void mt7615_unregister_device(struct mt7615_dev *dev)
+ {
+-	struct mt76_txwi_cache *txwi;
+ 	bool mcu_running;
+-	int id;
+ 
+ 	mcu_running = mt7615_wait_for_mcu_init(dev);
+ 
+@@ -165,15 +163,7 @@ void mt7615_unregister_device(struct mt7615_dev *dev)
+ 		mt7615_mcu_exit(dev);
+ 	mt7615_dma_cleanup(dev);
+ 
+-	spin_lock_bh(&dev->token_lock);
+-	idr_for_each_entry(&dev->token, txwi, id) {
+-		mt7615_txp_skb_unmap(&dev->mt76, txwi);
+-		if (txwi->skb)
+-			dev_kfree_skb_any(txwi->skb);
+-		mt76_put_txwi(&dev->mt76, txwi);
+-	}
+-	spin_unlock_bh(&dev->token_lock);
+-	idr_destroy(&dev->token);
++	mt7615_tx_token_put(dev);
+ 
+ 	tasklet_disable(&dev->irq_tasklet);
  
 -- 
 2.27.0
