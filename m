@@ -2,41 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41693323E6A
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 14:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2586323E7B
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 14:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232949AbhBXNfs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 08:35:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51110 "EHLO mail.kernel.org"
+        id S235970AbhBXNjC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 08:39:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55000 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234772AbhBXM5v (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 07:57:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4C9BD64F3C;
-        Wed, 24 Feb 2021 12:52:22 +0000 (UTC)
+        id S235298AbhBXM6O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 07:58:14 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DFFA864F41;
+        Wed, 24 Feb 2021 12:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614171143;
-        bh=gOJ4KNBRe1gQ0EC8G3x8EkpMv27fqxU7e0yNcEZW3AE=;
+        s=k20201202; t=1614171145;
+        bh=/3qepqFuwx2o2Q0GqQTDfjoUqx+xpBTb8hukpeOCjds=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H2O88S4+qn21cakRlKoitMcjaTFYP4WsM7eXWa+xZoquCr/VL4A3LCyW5MrmyyUE+
-         ChA3KFIq8cZmjnKJhO4XPztkDRb6RSBu8Xo8U/lJWbSyZSfpp0g52zJjP02Xq8tgo7
-         Im58/QDxGBw7bMPjlDvWhF7X7LuJSpUVFzQknTVaM8L2jSbPz71/7KXVRcyPfIo60J
-         ZPcjiMPhgIvlZumb6hZQKWAxlp7P0ESnIJckiL7BUTYYDhsxYg9ZQXAOP/Jo5cLxcr
-         r1yQInQNb0Mz3V5ZOEOrVP5zuff2de8ZZoareCjRCU8xYHlVdUKgOc5hVqPBkxy4Y/
-         090KQLSJbhcpw==
+        b=TQCPFxDIi00XYQuDGwJNRl8leOED8AGhg2z3GP5G/OVxocXeltEvySidaa1uAslJK
+         2Qf9nDgsl6RWNwQbQQUGRhvllewJh6i9VFTOJU+f+AHN0e6Wsx3+39MwQKu5ASGdXj
+         SKh/Fs81CERAHdhNCs9q3uGi/0gy1YmhneCt4pLx2IQ5hw+g1vfKKGhbYmq/k9ETtL
+         ERC1gtidHL63JJh0GTYtck6N1H7tpWtsSJ1fi5GSqqi21UWJKhrI8tR++Ah86i/hKK
+         ZnQZ6Q9jknnLp31SDtld2VKNFEBQpb8p2dEbem60qeoJers371/NHOnQKLGsb7BQIH
+         zVpK+EtauqTYg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 08/56] mt76: mt7615: reset token when mac_reset happens
-Date:   Wed, 24 Feb 2021 07:51:24 -0500
-Message-Id: <20210224125212.482485-8-sashal@kernel.org>
+Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 10/56] ath10k: fix wmi mgmt tx queue full due to race condition
+Date:   Wed, 24 Feb 2021 07:51:26 -0500
+Message-Id: <20210224125212.482485-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210224125212.482485-1-sashal@kernel.org>
 References: <20210224125212.482485-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -44,103 +45,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+From: Miaoqing Pan <miaoqing@codeaurora.org>
 
-[ Upstream commit a6275e934605646ef81b02d8d1164f21343149c9 ]
+[ Upstream commit b55379e343a3472c35f4a1245906db5158cab453 ]
 
-Reset token in mt7615_mac_reset_work() to avoid possible leakege.
+Failed to transmit wmi management frames:
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+[84977.840894] ath10k_snoc a000000.wifi: wmi mgmt tx queue is full
+[84977.840913] ath10k_snoc a000000.wifi: failed to transmit packet, dropping: -28
+[84977.840924] ath10k_snoc a000000.wifi: failed to submit frame: -28
+[84977.840932] ath10k_snoc a000000.wifi: failed to transmit frame: -28
+
+This issue is caused by race condition between skb_dequeue and
+__skb_queue_tail. The queue of ‘wmi_mgmt_tx_queue’ is protected by a
+different lock: ar->data_lock vs list->lock, the result is no protection.
+So when ath10k_mgmt_over_wmi_tx_work() and ath10k_mac_tx_wmi_mgmt()
+running concurrently on different CPUs, there appear to be a rare corner
+cases when the queue length is 1,
+
+  CPUx (skb_deuque)			CPUy (__skb_queue_tail)
+					next=list
+					prev=list
+  struct sk_buff *skb = skb_peek(list);	WRITE_ONCE(newsk->next, next);
+  WRITE_ONCE(list->qlen, list->qlen - 1);WRITE_ONCE(newsk->prev, prev);
+  next       = skb->next;		WRITE_ONCE(next->prev, newsk);
+  prev       = skb->prev;		WRITE_ONCE(prev->next, newsk);
+  skb->next  = skb->prev = NULL;	list->qlen++;
+  WRITE_ONCE(next->prev, prev);
+  WRITE_ONCE(prev->next, next);
+
+If the instruction ‘next = skb->next’ is executed before
+‘WRITE_ONCE(prev->next, newsk)’, newsk will be lost, as CPUx get the
+old ‘next’ pointer, but the length is still added by one. The final
+result is the length of the queue will reach the maximum value but
+the queue is empty.
+
+So remove ar->data_lock, and use 'skb_queue_tail' instead of
+'__skb_queue_tail' to prevent the potential race condition. Also switch
+to use skb_queue_len_lockless, in case we queue a few SKBs simultaneously.
+
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1.c2-00033-QCAHLSWMTPLZ-1
+
+Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/1608618887-8857-1-git-send-email-miaoqing@codeaurora.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 20 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 +-
- .../wireless/mediatek/mt76/mt7615/pci_init.c  | 12 +----------
- 3 files changed, 22 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 3d62fda067e44..f1f954ff46856 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -2098,6 +2098,23 @@ void mt7615_dma_reset(struct mt7615_dev *dev)
- }
- EXPORT_SYMBOL_GPL(mt7615_dma_reset);
- 
-+void mt7615_tx_token_put(struct mt7615_dev *dev)
-+{
-+	struct mt76_txwi_cache *txwi;
-+	int id;
-+
-+	spin_lock_bh(&dev->token_lock);
-+	idr_for_each_entry(&dev->token, txwi, id) {
-+		mt7615_txp_skb_unmap(&dev->mt76, txwi);
-+		if (txwi->skb)
-+			dev_kfree_skb_any(txwi->skb);
-+		mt76_put_txwi(&dev->mt76, txwi);
-+	}
-+	spin_unlock_bh(&dev->token_lock);
-+	idr_destroy(&dev->token);
-+}
-+EXPORT_SYMBOL_GPL(mt7615_tx_token_put);
-+
- void mt7615_mac_reset_work(struct work_struct *work)
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 2e3eb5bbe49c8..ced664eaffb41 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -3763,23 +3763,16 @@ bool ath10k_mac_tx_frm_has_freq(struct ath10k *ar)
+ static int ath10k_mac_tx_wmi_mgmt(struct ath10k *ar, struct sk_buff *skb)
  {
- 	struct mt7615_phy *phy2;
-@@ -2141,6 +2158,9 @@ void mt7615_mac_reset_work(struct work_struct *work)
- 
- 	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_PDMA_STOPPED);
- 
-+	mt7615_tx_token_put(dev);
-+	idr_init(&dev->token);
-+
- 	if (mt7615_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
- 		mt7615_dma_reset(dev);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 6a9f9187f76ac..5b06294d654aa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -619,7 +619,7 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 			  struct mt76_tx_info *tx_info);
- 
- void mt7615_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
+ 	struct sk_buff_head *q = &ar->wmi_mgmt_tx_queue;
+-	int ret = 0;
 -
-+void mt7615_tx_token_put(struct mt7615_dev *dev);
- void mt7615_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			 struct sk_buff *skb);
- void mt7615_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta, bool ps);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-index 06a0f8f7bc893..7b81aef3684ed 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-@@ -153,9 +153,7 @@ int mt7615_register_device(struct mt7615_dev *dev)
+-	spin_lock_bh(&ar->data_lock);
  
- void mt7615_unregister_device(struct mt7615_dev *dev)
- {
--	struct mt76_txwi_cache *txwi;
- 	bool mcu_running;
--	int id;
+-	if (skb_queue_len(q) == ATH10K_MAX_NUM_MGMT_PENDING) {
++	if (skb_queue_len_lockless(q) >= ATH10K_MAX_NUM_MGMT_PENDING) {
+ 		ath10k_warn(ar, "wmi mgmt tx queue is full\n");
+-		ret = -ENOSPC;
+-		goto unlock;
++		return -ENOSPC;
+ 	}
  
- 	mcu_running = mt7615_wait_for_mcu_init(dev);
+-	__skb_queue_tail(q, skb);
++	skb_queue_tail(q, skb);
+ 	ieee80211_queue_work(ar->hw, &ar->wmi_mgmt_tx_work);
  
-@@ -165,15 +163,7 @@ void mt7615_unregister_device(struct mt7615_dev *dev)
- 		mt7615_mcu_exit(dev);
- 	mt7615_dma_cleanup(dev);
+-unlock:
+-	spin_unlock_bh(&ar->data_lock);
+-
+-	return ret;
++	return 0;
+ }
  
--	spin_lock_bh(&dev->token_lock);
--	idr_for_each_entry(&dev->token, txwi, id) {
--		mt7615_txp_skb_unmap(&dev->mt76, txwi);
--		if (txwi->skb)
--			dev_kfree_skb_any(txwi->skb);
--		mt76_put_txwi(&dev->mt76, txwi);
--	}
--	spin_unlock_bh(&dev->token_lock);
--	idr_destroy(&dev->token);
-+	mt7615_tx_token_put(dev);
- 
- 	tasklet_disable(&dev->irq_tasklet);
- 
+ static enum ath10k_mac_tx_path
 -- 
 2.27.0
 
