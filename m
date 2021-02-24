@@ -2,40 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FE36323E80
+	by mail.lfdr.de (Postfix) with ESMTP id F0E7A323E81
 	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 14:43:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235836AbhBXNkL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 08:40:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58120 "EHLO mail.kernel.org"
+        id S237423AbhBXNkU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 08:40:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58132 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235652AbhBXND5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 08:03:57 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1C75064F60;
-        Wed, 24 Feb 2021 12:53:45 +0000 (UTC)
+        id S235660AbhBXNEO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 08:04:14 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CD87E64F67;
+        Wed, 24 Feb 2021 12:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614171226;
-        bh=XWwdvKa+yGap+kfqCy925w3+oMXoPmsNCeaWLgR7aoI=;
+        s=k20201202; t=1614171229;
+        bh=HBRms3nF2tU3+fv4FTm+jLga1ZDeMgjJe7VGSovrdu8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uw898aThAEJ4OIYmsiLzPzLZFR5mXzvwjG5DgDjwDnXlI3GOtNmrB05BUT3OQM8n3
-         YLn3DFyH6LW7IEqiSAEr27maKv6CE4kWx5FiTIZzX+VFlw68adGcjSHfABfU8rh68W
-         9Q9EG7Ws8beR8ptK4CYigj87+TH5nMZAqAj49dgq8QKgz13SYypiXsX5/hNgocaeHd
-         PpOi24PAiZHX4vdopW4LnkDINELdlLh68MV+SJV/aaHa2Zhb+Bsi4wC1GHAdFr87xk
-         qEk0qGNFvmfj5Ix4QE2RR8aVDzhaItn5yrDQXcj1hD5oDoxY7W4x93qY2XB/hc5FcA
-         ZW11ZG5bUHZuw==
+        b=IOVlAmeALfDhxE/48HjRoYPIxEkStEBLokk288qQewqLt/eHFmOwOf0jgqUBUQmVf
+         UlgetyvFIclKLDhz42TEWXf+DDoYL8noC3u3is8QD47ZxcyL3xTISYVkodP9KKQXIZ
+         5vYwqfpe6kF7GD845lcJpyp6Jbm++3yj41PWlRKSwZkwQHcNVTXnZwi9UTAaBBGvyT
+         w0scpiVRJAUO6hjnL2uqW0JmLzKG4OjDq9EZqP6Nuen+ChKTkW1VCUBoomETWiQn5+
+         uHdMqtE2yVSDlKydoAmPoJkxA0aeI8NSgntkGPSVdL/NENLOZWxy+QxBGX/bbDB/fm
+         h3b/X4lK9W33Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Raz Bouganim <r-bouganim@ti.com>,
+Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
+        Brian Norris <briannorris@chromium.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 04/40] wlcore: Fix command execute failure 19 for wl12xx
-Date:   Wed, 24 Feb 2021 07:53:04 -0500
-Message-Id: <20210224125340.483162-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 07/40] ath10k: fix wmi mgmt tx queue full due to race condition
+Date:   Wed, 24 Feb 2021 07:53:07 -0500
+Message-Id: <20210224125340.483162-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210224125340.483162-1-sashal@kernel.org>
 References: <20210224125340.483162-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -43,125 +45,88 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Miaoqing Pan <miaoqing@codeaurora.org>
 
-[ Upstream commit cb88d01b67383a095e3f7caeb4cdade5a6cf0417 ]
+[ Upstream commit b55379e343a3472c35f4a1245906db5158cab453 ]
 
-We can currently get a "command execute failure 19" error on beacon loss
-if the signal is weak:
+Failed to transmit wmi management frames:
 
-wlcore: Beacon loss detected. roles:0xff
-wlcore: Connection loss work (role_id: 0).
-...
-wlcore: ERROR command execute failure 19
-...
-WARNING: CPU: 0 PID: 1552 at drivers/net/wireless/ti/wlcore/main.c:803
-...
-(wl12xx_queue_recovery_work.part.0 [wlcore])
-(wl12xx_cmd_role_start_sta [wlcore])
-(wl1271_op_bss_info_changed [wlcore])
-(ieee80211_prep_connection [mac80211])
+[84977.840894] ath10k_snoc a000000.wifi: wmi mgmt tx queue is full
+[84977.840913] ath10k_snoc a000000.wifi: failed to transmit packet, dropping: -28
+[84977.840924] ath10k_snoc a000000.wifi: failed to submit frame: -28
+[84977.840932] ath10k_snoc a000000.wifi: failed to transmit frame: -28
 
-Error 19 is defined as CMD_STATUS_WRONG_NESTING from the wlcore firmware,
-and seems to mean that the firmware no longer wants to see the quirk
-handling for WLCORE_QUIRK_START_STA_FAILS done.
+This issue is caused by race condition between skb_dequeue and
+__skb_queue_tail. The queue of ‘wmi_mgmt_tx_queue’ is protected by a
+different lock: ar->data_lock vs list->lock, the result is no protection.
+So when ath10k_mgmt_over_wmi_tx_work() and ath10k_mac_tx_wmi_mgmt()
+running concurrently on different CPUs, there appear to be a rare corner
+cases when the queue length is 1,
 
-This quirk got added with commit 18eab430700d ("wlcore: workaround
-start_sta problem in wl12xx fw"), and it seems that this already got fixed
-in the firmware long time ago back in 2012 as wl18xx never had this quirk
-in place to start with.
+  CPUx (skb_deuque)			CPUy (__skb_queue_tail)
+					next=list
+					prev=list
+  struct sk_buff *skb = skb_peek(list);	WRITE_ONCE(newsk->next, next);
+  WRITE_ONCE(list->qlen, list->qlen - 1);WRITE_ONCE(newsk->prev, prev);
+  next       = skb->next;		WRITE_ONCE(next->prev, newsk);
+  prev       = skb->prev;		WRITE_ONCE(prev->next, newsk);
+  skb->next  = skb->prev = NULL;	list->qlen++;
+  WRITE_ONCE(next->prev, prev);
+  WRITE_ONCE(prev->next, next);
 
-As we no longer even support firmware that early, to me it seems that it's
-safe to just drop WLCORE_QUIRK_START_STA_FAILS to fix the error. Looks
-like earlier firmware got disabled back in 2013 with commit 0e284c074ef9
-("wl12xx: increase minimum singlerole firmware version required").
+If the instruction ‘next = skb->next’ is executed before
+‘WRITE_ONCE(prev->next, newsk)’, newsk will be lost, as CPUx get the
+old ‘next’ pointer, but the length is still added by one. The final
+result is the length of the queue will reach the maximum value but
+the queue is empty.
 
-If it turns out we still need WLCORE_QUIRK_START_STA_FAILS with any
-firmware that the driver works with, we can simply revert this patch and
-add extra checks for firmware version used.
+So remove ar->data_lock, and use 'skb_queue_tail' instead of
+'__skb_queue_tail' to prevent the potential race condition. Also switch
+to use skb_queue_len_lockless, in case we queue a few SKBs simultaneously.
 
-With this fix wlcore reconnects properly after a beacon loss.
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1.c2-00033-QCAHLSWMTPLZ-1
 
-Cc: Raz Bouganim <r-bouganim@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210115065613.7731-1-tony@atomide.com
+Link: https://lore.kernel.org/r/1608618887-8857-1-git-send-email-miaoqing@codeaurora.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wl12xx/main.c   |  3 ---
- drivers/net/wireless/ti/wlcore/main.c   | 15 +--------------
- drivers/net/wireless/ti/wlcore/wlcore.h |  3 ---
- 3 files changed, 1 insertion(+), 20 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/ti/wl12xx/main.c
-index 3c9c623bb4283..9d7dbfe7fe0c3 100644
---- a/drivers/net/wireless/ti/wl12xx/main.c
-+++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -635,7 +635,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
- 		wl->mr_fw_name = WL127X_FW_NAME_MULTI;
-@@ -659,7 +658,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 		wl->plt_fw_name = WL127X_PLT_FW_NAME;
- 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
-@@ -688,7 +686,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
- 		wl->quirks |= WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN |
- 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
- 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
--			      WLCORE_QUIRK_START_STA_FAILS |
- 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
- 
- 		wlcore_set_min_fw_ver(wl, WL128X_CHIP_VER,
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index 5f74cf821068d..be0ed19f93569 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -2862,21 +2862,8 @@ static int wlcore_join(struct wl1271 *wl, struct wl12xx_vif *wlvif)
- 
- 	if (is_ibss)
- 		ret = wl12xx_cmd_role_start_ibss(wl, wlvif);
--	else {
--		if (wl->quirks & WLCORE_QUIRK_START_STA_FAILS) {
--			/*
--			 * TODO: this is an ugly workaround for wl12xx fw
--			 * bug - we are not able to tx/rx after the first
--			 * start_sta, so make dummy start+stop calls,
--			 * and then call start_sta again.
--			 * this should be fixed in the fw.
--			 */
--			wl12xx_cmd_role_start_sta(wl, wlvif);
--			wl12xx_cmd_role_stop_sta(wl, wlvif);
--		}
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 915ba2a7f7448..47b733fdf4fcb 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -3624,23 +3624,16 @@ bool ath10k_mac_tx_frm_has_freq(struct ath10k *ar)
+ static int ath10k_mac_tx_wmi_mgmt(struct ath10k *ar, struct sk_buff *skb)
+ {
+ 	struct sk_buff_head *q = &ar->wmi_mgmt_tx_queue;
+-	int ret = 0;
 -
-+	else
- 		ret = wl12xx_cmd_role_start_sta(wl, wlvif);
--	}
+-	spin_lock_bh(&ar->data_lock);
  
- 	return ret;
+-	if (skb_queue_len(q) == ATH10K_MAX_NUM_MGMT_PENDING) {
++	if (skb_queue_len_lockless(q) >= ATH10K_MAX_NUM_MGMT_PENDING) {
+ 		ath10k_warn(ar, "wmi mgmt tx queue is full\n");
+-		ret = -ENOSPC;
+-		goto unlock;
++		return -ENOSPC;
+ 	}
+ 
+-	__skb_queue_tail(q, skb);
++	skb_queue_tail(q, skb);
+ 	ieee80211_queue_work(ar->hw, &ar->wmi_mgmt_tx_work);
+ 
+-unlock:
+-	spin_unlock_bh(&ar->data_lock);
+-
+-	return ret;
++	return 0;
  }
-diff --git a/drivers/net/wireless/ti/wlcore/wlcore.h b/drivers/net/wireless/ti/wlcore/wlcore.h
-index b7821311ac75b..81c94d390623b 100644
---- a/drivers/net/wireless/ti/wlcore/wlcore.h
-+++ b/drivers/net/wireless/ti/wlcore/wlcore.h
-@@ -547,9 +547,6 @@ wlcore_set_min_fw_ver(struct wl1271 *wl, unsigned int chip,
- /* Each RX/TX transaction requires an end-of-transaction transfer */
- #define WLCORE_QUIRK_END_OF_TRANSACTION		BIT(0)
  
--/* the first start_role(sta) sometimes doesn't work on wl12xx */
--#define WLCORE_QUIRK_START_STA_FAILS		BIT(1)
--
- /* wl127x and SPI don't support SDIO block size alignment */
- #define WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN		BIT(2)
- 
+ static enum ath10k_mac_tx_path
 -- 
 2.27.0
 
