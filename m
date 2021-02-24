@@ -2,126 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A9053245B1
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 22:21:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D2B324790
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 00:37:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235536AbhBXVUt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 16:20:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
+        id S232014AbhBXXhh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 18:37:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232263AbhBXVUp (ORCPT
+        with ESMTP id S229967AbhBXXhf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 16:20:45 -0500
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355A3C06178A
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Feb 2021 13:19:35 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id u4so4108239ljh.6
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Feb 2021 13:19:35 -0800 (PST)
+        Wed, 24 Feb 2021 18:37:35 -0500
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75B1C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Feb 2021 15:36:55 -0800 (PST)
+Received: by mail-il1-x12a.google.com with SMTP id k2so3333761ili.4
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Feb 2021 15:36:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6CnGA5dPETVoqoo5V9RmQYxGLOqYjvP5UErpZ6Y7yE4=;
-        b=bNIBZaSb4MTT1WZX/0v81PJWc+tMSat+ez4FgxAqYUOxme3m8oPkkR8S/rPcnEJm6Y
-         D8/jDocklHUkQe6yE9xwW/A9mhN58agRtkEYUSNrKQhCH/xcdegBhdmB3UGouk7RI5Bx
-         XQIOEekBdmRRIGBhvMNSORufI5N4h6h5TkayAPrivoSjx7V+MGwr/umOOx0ErOjNlo81
-         IwXj2dL31dZUUhr7LO2RczDmuZBCRfqX6lZdsMO3+TAMXx1qT3xx82pg+lQCoMlPCeG8
-         MtRO0mLUTuXkRQGBl7okdhnvLwuWU/WQRZ80dDV7zDjgy9vgQUN6Ll8drl1u/cws/qG/
-         5tFw==
+        d=egauge.net; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :organization:user-agent:mime-version:content-transfer-encoding;
+        bh=Xnx5YCELXGugULeGE4MpmhZ4uvev3/xHPGHOZI7+C1I=;
+        b=CzFRIfSP6jrZnWsLuhUGWLYnluq3RGPkrN+mIDPmMUn4q0cw6wmJ+DA9glfhBPhY0L
+         3ny4yzu/FC4iG2gI3ywX/Qu5rSTRDjrgk0KingR1it9BZDfIJpSUjkKr9W4KkydF1+rZ
+         v90SVfEyaN1y1SOY3hJTk9dsRee1xOTnHOVQCEChq4KXmKAwLun4Jlfd9YUaUYrxaZ+A
+         l7MnC1dCUCkcxeshpX4u6Z39I4ufJgbJtIcsUACcNH1SvrmcTyCzxDWhbQhGfqanqxcZ
+         OdRf56VVI/DkDXnaQBu8HCpyn2vsSmKneElOR36KaVBEp8fLDu8Ol/YfFUWahAdD/sqW
+         OILQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6CnGA5dPETVoqoo5V9RmQYxGLOqYjvP5UErpZ6Y7yE4=;
-        b=Yw1p+OF3BSOSKb11pefpOqsurnQrJsn9jkavYSrI1Zr3BGB90cgACW+ZTVSE5ccDyg
-         +6KMDEhApGETXOp4ZFRL7vDMxh18rAIKzMRRHplUV8ttRGb4P+2iduNhLh28gl6qDTU8
-         pAfDxxLxpsBeZOAXebZnIodoCRmfalhwXM+RKcJ5Z4WoF7jaaxFDUEVLWHl2Ge67q+oi
-         yAZewOr2TY1hMbQMLwZxw2AHXyfSlxbAnrh4pNnpNKnbt7C2cHLYhwYNthqAveCWItK5
-         UeRRWl/JBvquZg1zQk7Mn64iC/SV4NblVbM/eT5JzQ11HSEcKsKcW+GAyOEr2eoNSOB4
-         7CYQ==
-X-Gm-Message-State: AOAM531b8fYNu3LW6OmkFLOUKLNh7ImwFrZvQrS0ew084yQM4SnSHZbN
-        0PGMpamleYM8gNX6mKiMRzj2xhZIrdOek0MzZ74=
-X-Google-Smtp-Source: ABdhPJyvtAyxE4lQJhLy205thCCF4tBilxjOckcMTvF/5QU0PMkaHt/xk2mecrGe4RQEeT691s5yNhBhjMtJimK+CEY=
-X-Received: by 2002:a2e:87cb:: with SMTP id v11mr3925054ljj.9.1614201573746;
- Wed, 24 Feb 2021 13:19:33 -0800 (PST)
-MIME-Version: 1.0
-References: <20210224055135.1509200-1-davidm@egauge.net> <20210224055135.1509200-4-davidm@egauge.net>
-In-Reply-To: <20210224055135.1509200-4-davidm@egauge.net>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Thu, 25 Feb 2021 08:19:21 +1100
-Message-ID: <CAGRGNgUR7wHgprWcqz5orJNuhcxeLMSE1C3WCi1_UH_MCwJ6Cg@mail.gmail.com>
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:organization:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=Xnx5YCELXGugULeGE4MpmhZ4uvev3/xHPGHOZI7+C1I=;
+        b=n0n17sUkO25RD5RV+6w90DnbIHVZuJpoijCrUh/JU3++pb2x+RWNYhd5uWBINZtMmn
+         /qBoGw1MlxfLcTHi9EFPTfGCkyRrEsjZN5lB+bIVa83SNj2VDttUBqbJt3XjRR/Ih3QX
+         3cXvbUASQ4bIWER6MxPSfwdAhgAdbLZszduH535BOOIhTQGk/xe8vjGpnPfw2waOgc4N
+         PiHAXllw93wTMAd+/FQdrwfv1ClwmUhKALXkcYc84dbkfB7KQxRuVYZMungjapJbA4y3
+         I3mykxtdQVkutRs8LJsLP4BL4YMPOMyv/WE4l7DpTBZZMcXsBXHFNVz7wBGV/izTPV+X
+         J0yA==
+X-Gm-Message-State: AOAM533TDDvmlFYdAkkJcn95+Jvkfgsalv0V9mjgYsZC9FAPe1aXLSCI
+        kz+EJjspHH3rsaQ6SChX1Tnp
+X-Google-Smtp-Source: ABdhPJyA+mTq2N9kKs0U1g0B0bf6gS7wPBNZCi57s0vVriob4O/71uFHjgBRXzHucZ4e3i79f0MjOQ==
+X-Received: by 2002:a05:6e02:1885:: with SMTP id o5mr129976ilu.78.1614209815070;
+        Wed, 24 Feb 2021 15:36:55 -0800 (PST)
+Received: from bixby ([2601:281:8280:3560:dc4c:ffc8:6468:4a5b])
+        by smtp.gmail.com with ESMTPSA id j1sm2171837ilu.78.2021.02.24.15.36.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Feb 2021 15:36:54 -0800 (PST)
+Message-ID: <70567db1d625086e051b305320c9d4be7deb1b82.camel@egauge.net>
 Subject: Re: [PATCH 4/4] wilc1000: Add support for enabling CRC
-To:     David Mosberger-Tang <davidm@egauge.net>
+From:   David Mosberger-Tang <davidm@egauge.net>
+To:     Julian Calaby <julian.calaby@gmail.com>
 Cc:     linux-wireless@vger.kernel.org,
         Ajay Singh <ajay.kathat@microchip.com>,
         Claudiu Beznea <claudiu.beznea@microchip.com>
+Date:   Wed, 24 Feb 2021 16:36:53 -0700
+In-Reply-To: <CAGRGNgUR7wHgprWcqz5orJNuhcxeLMSE1C3WCi1_UH_MCwJ6Cg@mail.gmail.com>
+References: <20210224055135.1509200-1-davidm@egauge.net>
+         <20210224055135.1509200-4-davidm@egauge.net>
+         <CAGRGNgUR7wHgprWcqz5orJNuhcxeLMSE1C3WCi1_UH_MCwJ6Cg@mail.gmail.com>
+Organization: eGauge Systems LLC
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi David,
+Julian,
 
-On Wed, Feb 24, 2021 at 6:56 PM David Mosberger-Tang <davidm@egauge.net> wrote:
->
-> The driver so far has always disabled CRC protection.  This means any
-> data corruption that occurred during the SPI transfers could
-> potentially go unnoticed.  This patch adds the macros ENABLE_CRC7 and
-> ENABLE_CRC16 to allow compile-time selection of whether or not CRC7
-> and CRC16, respectively, should be enabled.
->
-> The default configuration remains unchanged, with both CRC7 and CRC16
-> off.
->
-> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
-> ---
->  .../net/wireless/microchip/wilc1000/Kconfig   |   1 +
->  drivers/net/wireless/microchip/wilc1000/spi.c | 151 +++++++++++++-----
->  2 files changed, 108 insertions(+), 44 deletions(-)
->
-> diff --git a/drivers/net/wireless/microchip/wilc1000/Kconfig b/drivers/net/wireless/microchip/wilc1000/Kconfig
-> index 7f15e42602dd..62cfcdc9aacc 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/Kconfig
-> +++ b/drivers/net/wireless/microchip/wilc1000/Kconfig
-> @@ -27,6 +27,7 @@ config WILC1000_SPI
->         depends on CFG80211 && INET && SPI
->         select WILC1000
->         select CRC7
-> +       select CRC_ITU_T
->         help
->           This module adds support for the SPI interface of adapters using
->           WILC1000 chipset. The Atmel WILC1000 has a Serial Peripheral
-> diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-> index b0e096a03a28..c745a440d273 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/spi.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-> @@ -7,10 +7,23 @@
->  #include <linux/clk.h>
->  #include <linux/spi/spi.h>
->  #include <linux/crc7.h>
-> +#include <linux/crc-itu-t.h>
->
->  #include "netdev.h"
->  #include "cfg80211.h"
->
-> +/**
-> + * Establish the driver's desired CRC configuration.  CRC7 is used for
-> + * command transfers which have no other protection against corruption
-> + * during the SPI transfer.  Commands are short so CRC7 is relatively
-> + * cheap.  CRC16 is used for data transfers, including network packet
-> + * transfers.  Since those transfers can be large, CRC16 is relatively
-> + * expensive.  CRC16 is also often redundant as network packets
-> + * typically are protected by their own, higher-level checksum.
-> + */
-> +#define ENABLE_CRC7    0       /* set to 1 to protect SPI commands with CRC7 */
-> +#define ENABLE_CRC16   0       /* set to 1 to protect SPI data with CRC16 */
+On Thu, 2021-02-25 at 08:19 +1100, Julian Calaby wrote:
+> Hi David,
+> 
+> On Wed, Feb 24, 2021 at 6:56 PM David Mosberger-Tang <
+> davidm@egauge.net> wrote:
+> > 
+> > +#define ENABLE_CRC7    0       /* set to 1 to protect SPI commands
+> > with CRC7 */
+> > +#define ENABLE_CRC16   0       /* set to 1 to protect SPI data
+> > with CRC16 */
+> 
+> Should these be Kconfig variables instead?
 
-Should these be Kconfig variables instead?
+I'd certainly like that.  Ajay, would you be OK with that?
 
-Thanks,
+  --david
 
--- 
-Julian Calaby
 
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
