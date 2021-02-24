@@ -2,98 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32045324255
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 17:45:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9053245B1
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 22:21:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235019AbhBXQo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 11:44:58 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:21043 "EHLO z11.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233693AbhBXQo5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 11:44:57 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614185077; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=47RZdZMX6h81pOYJV0C4w+7D68ydw/vNclxkO6cmVt0=; b=cZefkEaYrqyLDSMX0Vp4/2bA91IllTVLsdA4moycXQ11I5xeDodstB8pVIan3WJSvy+bqxGv
- Cg1mKkNojOVDUlymRyHlUD3EJLjlm6k6dHn8tbjgiGyVI5sreceGv9KtPjqs41TqPfeRc8Bh
- I6IGN4u11fMffG+J4FQkDLFDNOU=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 60368254095efe1816fbc6f3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Feb 2021 16:44:04
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DA8DAC433C6; Wed, 24 Feb 2021 16:44:04 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F319FC433CA;
-        Wed, 24 Feb 2021 16:44:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F319FC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wilc1000: write value to WILC_INTR2_ENABLE register
-References: <20210224163706.519658-1-marcus.folkesson@gmail.com>
-Date:   Wed, 24 Feb 2021 18:43:59 +0200
-In-Reply-To: <20210224163706.519658-1-marcus.folkesson@gmail.com> (Marcus
-        Folkesson's message of "Wed, 24 Feb 2021 17:37:06 +0100")
-Message-ID: <87pn0pfmb4.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S235536AbhBXVUt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 16:20:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232263AbhBXVUp (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 16:20:45 -0500
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355A3C06178A
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Feb 2021 13:19:35 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id u4so4108239ljh.6
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Feb 2021 13:19:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6CnGA5dPETVoqoo5V9RmQYxGLOqYjvP5UErpZ6Y7yE4=;
+        b=bNIBZaSb4MTT1WZX/0v81PJWc+tMSat+ez4FgxAqYUOxme3m8oPkkR8S/rPcnEJm6Y
+         D8/jDocklHUkQe6yE9xwW/A9mhN58agRtkEYUSNrKQhCH/xcdegBhdmB3UGouk7RI5Bx
+         XQIOEekBdmRRIGBhvMNSORufI5N4h6h5TkayAPrivoSjx7V+MGwr/umOOx0ErOjNlo81
+         IwXj2dL31dZUUhr7LO2RczDmuZBCRfqX6lZdsMO3+TAMXx1qT3xx82pg+lQCoMlPCeG8
+         MtRO0mLUTuXkRQGBl7okdhnvLwuWU/WQRZ80dDV7zDjgy9vgQUN6Ll8drl1u/cws/qG/
+         5tFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6CnGA5dPETVoqoo5V9RmQYxGLOqYjvP5UErpZ6Y7yE4=;
+        b=Yw1p+OF3BSOSKb11pefpOqsurnQrJsn9jkavYSrI1Zr3BGB90cgACW+ZTVSE5ccDyg
+         +6KMDEhApGETXOp4ZFRL7vDMxh18rAIKzMRRHplUV8ttRGb4P+2iduNhLh28gl6qDTU8
+         pAfDxxLxpsBeZOAXebZnIodoCRmfalhwXM+RKcJ5Z4WoF7jaaxFDUEVLWHl2Ge67q+oi
+         yAZewOr2TY1hMbQMLwZxw2AHXyfSlxbAnrh4pNnpNKnbt7C2cHLYhwYNthqAveCWItK5
+         UeRRWl/JBvquZg1zQk7Mn64iC/SV4NblVbM/eT5JzQ11HSEcKsKcW+GAyOEr2eoNSOB4
+         7CYQ==
+X-Gm-Message-State: AOAM531b8fYNu3LW6OmkFLOUKLNh7ImwFrZvQrS0ew084yQM4SnSHZbN
+        0PGMpamleYM8gNX6mKiMRzj2xhZIrdOek0MzZ74=
+X-Google-Smtp-Source: ABdhPJyvtAyxE4lQJhLy205thCCF4tBilxjOckcMTvF/5QU0PMkaHt/xk2mecrGe4RQEeT691s5yNhBhjMtJimK+CEY=
+X-Received: by 2002:a2e:87cb:: with SMTP id v11mr3925054ljj.9.1614201573746;
+ Wed, 24 Feb 2021 13:19:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210224055135.1509200-1-davidm@egauge.net> <20210224055135.1509200-4-davidm@egauge.net>
+In-Reply-To: <20210224055135.1509200-4-davidm@egauge.net>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Thu, 25 Feb 2021 08:19:21 +1100
+Message-ID: <CAGRGNgUR7wHgprWcqz5orJNuhcxeLMSE1C3WCi1_UH_MCwJ6Cg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] wilc1000: Add support for enabling CRC
+To:     David Mosberger-Tang <davidm@egauge.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Marcus Folkesson <marcus.folkesson@gmail.com> writes:
+Hi David,
 
-> Write the value instead of reading it twice.
+On Wed, Feb 24, 2021 at 6:56 PM David Mosberger-Tang <davidm@egauge.net> wrote:
 >
-> Fixes: 5e63a598441a ("staging: wilc1000: added 'wilc_' prefix for function in wilc_sdio.c file")
+> The driver so far has always disabled CRC protection.  This means any
+> data corruption that occurred during the SPI transfers could
+> potentially go unnoticed.  This patch adds the macros ENABLE_CRC7 and
+> ENABLE_CRC16 to allow compile-time selection of whether or not CRC7
+> and CRC16, respectively, should be enabled.
 >
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> The default configuration remains unchanged, with both CRC7 and CRC16
+> off.
+>
+> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 > ---
->  drivers/net/wireless/microchip/wilc1000/sdio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  .../net/wireless/microchip/wilc1000/Kconfig   |   1 +
+>  drivers/net/wireless/microchip/wilc1000/spi.c | 151 +++++++++++++-----
+>  2 files changed, 108 insertions(+), 44 deletions(-)
 >
-> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-> index 351ff909ab1c..e14b9fc2c67a 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-> @@ -947,7 +947,7 @@ static int wilc_sdio_sync_ext(struct wilc *wilc, int nint)
->  			for (i = 0; (i < 3) && (nint > 0); i++, nint--)
->  				reg |= BIT(i);
->  
-> -			ret = wilc_sdio_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
-> +			ret = wilc_sdio_write_reg(wilc, WILC_INTR2_ENABLE, reg);
+> diff --git a/drivers/net/wireless/microchip/wilc1000/Kconfig b/drivers/net/wireless/microchip/wilc1000/Kconfig
+> index 7f15e42602dd..62cfcdc9aacc 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/Kconfig
+> +++ b/drivers/net/wireless/microchip/wilc1000/Kconfig
+> @@ -27,6 +27,7 @@ config WILC1000_SPI
+>         depends on CFG80211 && INET && SPI
+>         select WILC1000
+>         select CRC7
+> +       select CRC_ITU_T
+>         help
+>           This module adds support for the SPI interface of adapters using
+>           WILC1000 chipset. The Atmel WILC1000 has a Serial Peripheral
+> diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+> index b0e096a03a28..c745a440d273 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/spi.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+> @@ -7,10 +7,23 @@
+>  #include <linux/clk.h>
+>  #include <linux/spi/spi.h>
+>  #include <linux/crc7.h>
+> +#include <linux/crc-itu-t.h>
+>
+>  #include "netdev.h"
+>  #include "cfg80211.h"
+>
+> +/**
+> + * Establish the driver's desired CRC configuration.  CRC7 is used for
+> + * command transfers which have no other protection against corruption
+> + * during the SPI transfer.  Commands are short so CRC7 is relatively
+> + * cheap.  CRC16 is used for data transfers, including network packet
+> + * transfers.  Since those transfers can be large, CRC16 is relatively
+> + * expensive.  CRC16 is also often redundant as network packets
+> + * typically are protected by their own, higher-level checksum.
+> + */
+> +#define ENABLE_CRC7    0       /* set to 1 to protect SPI commands with CRC7 */
+> +#define ENABLE_CRC16   0       /* set to 1 to protect SPI data with CRC16 */
 
-To me it looks like the bug existed before commit 5e63a598441a:
+Should these be Kconfig variables instead?
 
--			ret = sdio_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
-+			ret = wilc_sdio_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
-
-https://git.kernel.org/linus/5e63a598441a
+Thanks,
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Julian Calaby
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
