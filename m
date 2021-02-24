@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2586323E7B
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 14:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F443323E7C
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Feb 2021 14:43:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235970AbhBXNjC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Feb 2021 08:39:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55000 "EHLO mail.kernel.org"
+        id S237393AbhBXNjl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Feb 2021 08:39:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55588 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235298AbhBXM6O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Feb 2021 07:58:14 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DFFA864F41;
-        Wed, 24 Feb 2021 12:52:24 +0000 (UTC)
+        id S235539AbhBXM6l (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Feb 2021 07:58:41 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A881364F07;
+        Wed, 24 Feb 2021 12:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614171145;
-        bh=/3qepqFuwx2o2Q0GqQTDfjoUqx+xpBTb8hukpeOCjds=;
+        s=k20201202; t=1614171155;
+        bh=wSLg7UG1E0Bc3+E/7Mg/ToevwJcWlTFMn4NDpoHxxEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TQCPFxDIi00XYQuDGwJNRl8leOED8AGhg2z3GP5G/OVxocXeltEvySidaa1uAslJK
-         2Qf9nDgsl6RWNwQbQQUGRhvllewJh6i9VFTOJU+f+AHN0e6Wsx3+39MwQKu5ASGdXj
-         SKh/Fs81CERAHdhNCs9q3uGi/0gy1YmhneCt4pLx2IQ5hw+g1vfKKGhbYmq/k9ETtL
-         ERC1gtidHL63JJh0GTYtck6N1H7tpWtsSJ1fi5GSqqi21UWJKhrI8tR++Ah86i/hKK
-         ZnQZ6Q9jknnLp31SDtld2VKNFEBQpb8p2dEbem60qeoJers371/NHOnQKLGsb7BQIH
-         zVpK+EtauqTYg==
+        b=ONxmHmtsN9ATilgrX9mhjCiQo3eMI0nrBPDCwto5CvIiOw8tN5c2DAuAFoAuwS/DZ
+         2fPbmZZi0vjQkKdZJrNAyIN4IZaqk2JXrrTe24h+/k0cif3V/+HcHk/KxbfZWp9hh8
+         fCv5wTEo+1adHmT8b3m26l+SGqBR46OWkqsFuZmwCU/ROwTbYNrQBVGvPXNV2OIo17
+         piDFrhc89YMP2CwN6Ecyrfu6TZdx7I4NTfRJT9AcjaNibJTA03e4hh7fxjnKa4hlV2
+         lv+OZFE3NiWALgAkPBYxRqa3+pN0WmrmaoHEI7JnzUx+Gu40782bI2nUoprPbk+Rbt
+         pPP3ZT10ZjA6g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
-        Brian Norris <briannorris@chromium.org>,
+Cc:     Hans de Goede <hdegoede@redhat.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 10/56] ath10k: fix wmi mgmt tx queue full due to race condition
-Date:   Wed, 24 Feb 2021 07:51:26 -0500
-Message-Id: <20210224125212.482485-10-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 17/56] brcmfmac: Add DMI nvram filename quirk for Predia Basic tablet
+Date:   Wed, 24 Feb 2021 07:51:33 -0500
+Message-Id: <20210224125212.482485-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210224125212.482485-1-sashal@kernel.org>
 References: <20210224125212.482485-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -45,88 +45,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miaoqing Pan <miaoqing@codeaurora.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit b55379e343a3472c35f4a1245906db5158cab453 ]
+[ Upstream commit af4b3a6f36d6c2fc5fca026bccf45e0fdcabddd9 ]
 
-Failed to transmit wmi management frames:
+The Predia Basic tablet contains quite generic names in the sys_vendor and
+product_name DMI strings, without this patch brcmfmac will try to load:
+brcmfmac43340-sdio.Insyde-CherryTrail.txt as nvram file which is a bit
+too generic.
 
-[84977.840894] ath10k_snoc a000000.wifi: wmi mgmt tx queue is full
-[84977.840913] ath10k_snoc a000000.wifi: failed to transmit packet, dropping: -28
-[84977.840924] ath10k_snoc a000000.wifi: failed to submit frame: -28
-[84977.840932] ath10k_snoc a000000.wifi: failed to transmit frame: -28
+Add a DMI quirk so that a unique and clearly identifiable nvram file name
+is used on the Predia Basic tablet.
 
-This issue is caused by race condition between skb_dequeue and
-__skb_queue_tail. The queue of ‘wmi_mgmt_tx_queue’ is protected by a
-different lock: ar->data_lock vs list->lock, the result is no protection.
-So when ath10k_mgmt_over_wmi_tx_work() and ath10k_mac_tx_wmi_mgmt()
-running concurrently on different CPUs, there appear to be a rare corner
-cases when the queue length is 1,
-
-  CPUx (skb_deuque)			CPUy (__skb_queue_tail)
-					next=list
-					prev=list
-  struct sk_buff *skb = skb_peek(list);	WRITE_ONCE(newsk->next, next);
-  WRITE_ONCE(list->qlen, list->qlen - 1);WRITE_ONCE(newsk->prev, prev);
-  next       = skb->next;		WRITE_ONCE(next->prev, newsk);
-  prev       = skb->prev;		WRITE_ONCE(prev->next, newsk);
-  skb->next  = skb->prev = NULL;	list->qlen++;
-  WRITE_ONCE(next->prev, prev);
-  WRITE_ONCE(prev->next, next);
-
-If the instruction ‘next = skb->next’ is executed before
-‘WRITE_ONCE(prev->next, newsk)’, newsk will be lost, as CPUx get the
-old ‘next’ pointer, but the length is still added by one. The final
-result is the length of the queue will reach the maximum value but
-the queue is empty.
-
-So remove ar->data_lock, and use 'skb_queue_tail' instead of
-'__skb_queue_tail' to prevent the potential race condition. Also switch
-to use skb_queue_len_lockless, in case we queue a few SKBs simultaneously.
-
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1.c2-00033-QCAHLSWMTPLZ-1
-
-Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/1608618887-8857-1-git-send-email-miaoqing@codeaurora.org
+Link: https://lore.kernel.org/r/20210129171413.139880-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 2e3eb5bbe49c8..ced664eaffb41 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3763,23 +3763,16 @@ bool ath10k_mac_tx_frm_has_freq(struct ath10k *ar)
- static int ath10k_mac_tx_wmi_mgmt(struct ath10k *ar, struct sk_buff *skb)
- {
- 	struct sk_buff_head *q = &ar->wmi_mgmt_tx_queue;
--	int ret = 0;
--
--	spin_lock_bh(&ar->data_lock);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+index 4aa2561934d77..824a79f243830 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+@@ -40,6 +40,10 @@ static const struct brcmf_dmi_data pov_tab_p1006w_data = {
+ 	BRCM_CC_43340_CHIP_ID, 2, "pov-tab-p1006w-data"
+ };
  
--	if (skb_queue_len(q) == ATH10K_MAX_NUM_MGMT_PENDING) {
-+	if (skb_queue_len_lockless(q) >= ATH10K_MAX_NUM_MGMT_PENDING) {
- 		ath10k_warn(ar, "wmi mgmt tx queue is full\n");
--		ret = -ENOSPC;
--		goto unlock;
-+		return -ENOSPC;
- 	}
++static const struct brcmf_dmi_data predia_basic_data = {
++	BRCM_CC_43341_CHIP_ID, 2, "predia-basic"
++};
++
+ static const struct dmi_system_id dmi_platform_data[] = {
+ 	{
+ 		/* ACEPC T8 Cherry Trail Z8350 mini PC */
+@@ -111,6 +115,16 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&pov_tab_p1006w_data,
+ 	},
++	{
++		/* Predia Basic tablet (+ with keyboard dock) */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
++			/* Mx.WT107.KUBNGEA02 with the version-nr dropped */
++			DMI_MATCH(DMI_BIOS_VERSION, "Mx.WT107.KUBNGEA"),
++		},
++		.driver_data = (void *)&predia_basic_data,
++	},
+ 	{}
+ };
  
--	__skb_queue_tail(q, skb);
-+	skb_queue_tail(q, skb);
- 	ieee80211_queue_work(ar->hw, &ar->wmi_mgmt_tx_work);
- 
--unlock:
--	spin_unlock_bh(&ar->data_lock);
--
--	return ret;
-+	return 0;
- }
- 
- static enum ath10k_mac_tx_path
 -- 
 2.27.0
 
