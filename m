@@ -2,89 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A2BE324AAE
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 07:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F57324AC8
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 08:07:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232982AbhBYG4m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Feb 2021 01:56:42 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:36820 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232429AbhBYG4k (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Feb 2021 01:56:40 -0500
-X-UUID: cd16b42e45084b0396e63f7a149c83bc-20210225
-X-UUID: cd16b42e45084b0396e63f7a149c83bc-20210225
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1416992479; Thu, 25 Feb 2021 14:55:51 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 25 Feb 2021 14:55:50 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 25 Feb 2021 14:55:50 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] mt76: mt7615: add missing capabilities for DBDC
-Date:   Thu, 25 Feb 2021 14:55:48 +0800
-Message-ID: <6db470fc868e6215f969690ce04d50a595d7fe4c.1614235992.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <fe9afbb21ade32aac31f077bb1e741f917bd4596.1614235992.git.ryder.lee@mediatek.com>
-References: <fe9afbb21ade32aac31f077bb1e741f917bd4596.1614235992.git.ryder.lee@mediatek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: B9272D57C3D5D59240B9C754354933433CC29B38BD304882B8575962BEFA927B2000:8
-X-MTK:  N
+        id S232263AbhBYHGV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Feb 2021 02:06:21 -0500
+Received: from m42-2.mailgun.net ([69.72.42.2]:21868 "EHLO m42-2.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232403AbhBYHFe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Feb 2021 02:05:34 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614236702; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=jeOdVFlDiszL8H7p1XC0HdBnkmqIUHHc8qG4WUD0lx0=; b=b1XXonNoOPb2mJfYtxtlCg7g4joJ6DEfePMBWNwuCjtK7C3wasywbPJsipa1vON1LSU60s6s
+ tY24Jv4WuB+ieAP5qE4wP+we1o9s8LqajQPuxiqIxhUHAR8u74wDk+D69RF9ZX8l9xrlJ6FJ
+ 7T8biKIBEB2FHUAmX0fj9ID5Prk=
+X-Mailgun-Sending-Ip: 69.72.42.2
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 60374bfbe9080d5ff796c6d2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 25 Feb 2021 07:04:27
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E06BAC43462; Thu, 25 Feb 2021 07:04:26 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C99A3C433C6;
+        Thu, 25 Feb 2021 07:04:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C99A3C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     rdunlap@infradead.org, luciano.coelho@intel.com
+Subject: [PATCH 5.12] iwlwifi: pcie: fix iwl_so_trans_cfg link error when CONFIG_IWLMVM is disabled
+Date:   Thu, 25 Feb 2021 09:04:21 +0200
+Message-Id: <1614236661-20274-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Same as mt7915, this should improve performance.
+Randy reported an error on his randconfig builds:
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+ERROR: modpost: "iwl_so_trans_cfg" [drivers/net/wireless/intel/iwlwifi/iwlwifi.ko] undefined!
+
+The problem was that when CONFIG_IWLMVM was disabled we were still accessing
+iwl_so_trans_cfg. Fix it by moving IS_ENABLED() check before the access.
+
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 88a2ee7e7143..fced902d11bc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -368,6 +368,17 @@ mt7615_init_wiphy(struct ieee80211_hw *hw)
- 		hw->max_tx_fragments = MT_TXP_MAX_BUF_NUM;
- 	else
- 		hw->max_tx_fragments = MT_HW_TXP_MAX_BUF_NUM;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 314fec4a89ad..ffaf973dae94 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1106,6 +1106,8 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		}
+ 	}
+ 
++#if IS_ENABLED(CONFIG_IWLMVM)
 +
-+	if (phy->mt76->cap.has_2ghz)
-+		phy->mt76->sband_2g.sband.ht_cap.cap |=
-+			IEEE80211_HT_CAP_LDPC_CODING;
-+
-+	if (phy->mt76->cap.has_5ghz) {
-+		phy->mt76->sband_5g.sband.ht_cap.cap |=
-+			IEEE80211_HT_CAP_LDPC_CODING;
-+		phy->mt76->sband_5g.sband.vht_cap.cap |=
-+			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
-+	}
- }
+ 	/*
+ 	 * Workaround for problematic SnJ device: sometimes when
+ 	 * certain RF modules are connected to SnJ, the device ID
+@@ -1116,7 +1118,6 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (CSR_HW_REV_TYPE(iwl_trans->hw_rev) == IWL_CFG_MAC_TYPE_SNJ)
+ 		iwl_trans->trans_cfg = &iwl_so_trans_cfg;
  
- static void
-@@ -505,10 +516,6 @@ void mt7615_init_device(struct mt7615_dev *dev)
- 
- 	mt7615_init_wiphy(hw);
- 	dev->pm.idle_timeout = MT7615_PM_TIMEOUT;
--	dev->mphy.sband_2g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
--	dev->mphy.sband_5g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
--	dev->mphy.sband_5g.sband.vht_cap.cap |=
--			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
- 	mt7615_cap_dbdc_disable(dev);
- 	dev->phy.dfs_state = -1;
- 
+-#if IS_ENABLED(CONFIG_IWLMVM)
+ 	/*
+ 	 * special-case 7265D, it has the same PCI IDs.
+ 	 *
 -- 
-2.18.0
+2.7.4
 
