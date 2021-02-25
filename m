@@ -2,87 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D4C8325544
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 19:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8072F32555C
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 19:22:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbhBYSLz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Feb 2021 13:11:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44594 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232095AbhBYSK6 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Feb 2021 13:10:58 -0500
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C63C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Feb 2021 10:10:18 -0800 (PST)
-Received: by mail-io1-xd35.google.com with SMTP id p16so6867687ioj.4
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Feb 2021 10:10:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version:content-transfer-encoding;
-        bh=cp2kY8C+D5s6UKa/zc6D53lHNbaENlHeW8EVg2V6of4=;
-        b=iAOzBH7wG1ujFtJWEWvTZdx4CLWWrxZ8bO+Z4nEGKOV8F/RvtnjJCbzLLiA1lEQuyC
-         HYRPpvnGQ0sue2N7CWfVTF5eUse2k3tcE4KKAFsQ/t2rga3llrr7DKk3zPM/9wYnTrwa
-         r50OSFwwkR2dkLcuHV86FlbK/y/OUQQO5oIsQYMbRD7uFXTTKwWggFTXsPOX5bT4nq/F
-         zpZR6sW7NcT+F1R9AvRm+qfeSW1p2XnJC3v9oZXuhDQsH0MBq+58G7Zji7kNY/510Nx5
-         Spq1XYI75zJWT5Dzs4kcJ3Ac1Jy9/QP3RNUIAmnRWnlO0CkVlHh4EpiLWP4p1np/Nfxs
-         4rWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=cp2kY8C+D5s6UKa/zc6D53lHNbaENlHeW8EVg2V6of4=;
-        b=mCsLJr7qqu5I65tAFFSx68W7yiHemxBrMYUBfJHg0B00rG97FC2tiago1U812TkcAh
-         YRxuO9GYFAxxwfula9VSeKNYRnZo0sW6gpOg7vHfGaKZg/q6odOuasOiEeDLM2fJXGEK
-         JOxrpfAZTcm73Qhbsd2v/KtV+vhST94tb5ij4Nf2rtCcLCNiLxZZtB1X/TSvZx8bVtbG
-         ANeRTOkSlM3XSEfhUL/x0hAi0ZgwCebZdDeU3jiw6xT2IAQ/pHv9iA4Y8xIgyNaknzVM
-         +1o0sHL09y1w9I4vLpAKvZRoaCEgWR2aMPpZviFxRP1BFywNX60fN10eiw4OVvqcPC9n
-         mw8w==
-X-Gm-Message-State: AOAM531M8Z6VieU0+mpbtK/lVcpgqWvHOgBkNVPjhKc5DqjDmAi6b7Rn
-        2BP6IJ6G7fU4m3YYlLF6iGUR
-X-Google-Smtp-Source: ABdhPJzLu9qKnPMRGkXh8yG36O9Ewvn395JlhJFYMosxg2qzx6ebRYUvx1PZmEsEaZXEjVmIHucnbA==
-X-Received: by 2002:a05:6638:512:: with SMTP id i18mr4556766jar.126.1614276617626;
-        Thu, 25 Feb 2021 10:10:17 -0800 (PST)
-Received: from bixby ([2601:281:8280:3560:dc4c:ffc8:6468:4a5b])
-        by smtp.gmail.com with ESMTPSA id x7sm3837110ioa.48.2021.02.25.10.10.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Feb 2021 10:10:16 -0800 (PST)
-Message-ID: <0dc801dd40ccb8bd8197cf117c0b73c63fdcf6f2.camel@egauge.net>
-Subject: Re: [PATCH 3/4] wilc1000: Check for errors at end of DMA write
-From:   David Mosberger-Tang <davidm@egauge.net>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>
-Date:   Thu, 25 Feb 2021 11:10:15 -0700
-In-Reply-To: <87eeh4eelz.fsf@tynnyri.adurom.net>
-References: <20210224055135.1509200-1-davidm@egauge.net>
-         <20210224055135.1509200-3-davidm@egauge.net>
-         <87eeh4eelz.fsf@tynnyri.adurom.net>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        id S232008AbhBYSVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Feb 2021 13:21:38 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:63571 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229522AbhBYSVh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Feb 2021 13:21:37 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614277275; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=mHL2o5cdwInZ5auVjA1RzFMxGmXtPE8iZ7MSS/BW+Rk=; b=cLSEOqRqCYTPneQaEcijbGX/U1bL/yVGmk+tg2dcbNx46/fIHDPUCGtCaYjlqT4rk0wZJ937
+ 4ESA6NpkzOkwzKOuqdEvT3qZ4tmX+GgoIJFEabc7ObwyWhbeuzOP2YcKmw+X+UwxcfUDmJgM
+ lW62adfjrCrWLJWm20WJbsUgEO8=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 6037ea941d6d3a470f690784 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 25 Feb 2021 18:21:08
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AEFEEC433C6; Thu, 25 Feb 2021 18:21:07 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 71C15C433CA;
+        Thu, 25 Feb 2021 18:21:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 71C15C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ihab Zhaika <ihab.zhaika@intel.com>,
+        Matti Gottlieb <matti.gottlieb@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: fix link error without CONFIG_IWLMVM
+References: <20210225143236.3543360-1-arnd@kernel.org>
+Date:   Thu, 25 Feb 2021 20:21:02 +0200
+In-Reply-To: <20210225143236.3543360-1-arnd@kernel.org> (Arnd Bergmann's
+        message of "Thu, 25 Feb 2021 15:30:37 +0100")
+Message-ID: <87wnuwdn5d.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-02-25 at 10:27 +0200, Kalle Valo wrote:
-> David Mosberger-Tang <davidm@egauge.net> writes:
-> > +	for (i = sizeof(rsp) - 2; i >= 0; --i)
-> > +		if ((rsp[i] & 0xf0) == 0xc0)
-> > +			break;
-> 
-> No magic numbers. Please create proper defines for these.]
+Arnd Bergmann <arnd@kernel.org> writes:
+
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> +	if (rsp[i] != 0xc3 || rsp[i + 1] != 0x00) {
-> 
-> Same here.
+> A runtime check that was introduced recently failed to
+> check for the matching Kconfig symbol:
+>
+> ld.lld: error: undefined symbol: iwl_so_trans_cfg
+>>>> referenced by drv.c
+>>>>               net/wireless/intel/iwlwifi/pcie/drv.o:(iwl_pci_probe)
+>
+> Fixes: 930be4e76f26 ("iwlwifi: add support for SnJ with Jf devices")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Good points.  I'll change those, thanks.
+A sent a similar patch this morning:
 
-  --david
+https://patchwork.kernel.org/project/linux-wireless/patch/1614236661-20274-1-git-send-email-kvalo@codeaurora.org/
 
+But I forgot to include an Fixes tag, I'll add that to my patch during commit.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
