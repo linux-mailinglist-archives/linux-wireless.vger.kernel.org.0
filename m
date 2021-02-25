@@ -2,91 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 431D53251E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 16:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC3BC3252F0
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 17:02:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232350AbhBYPBW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Feb 2021 10:01:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36056 "EHLO mail.kernel.org"
+        id S233162AbhBYQBf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Feb 2021 11:01:35 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:35727 "EHLO z11.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232296AbhBYPBH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Feb 2021 10:01:07 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7024464F17;
-        Thu, 25 Feb 2021 15:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614265226;
-        bh=a/04c2nTy0GlyhPSNi1+WMgFD2zAC0g91qf3en1lMLo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LEDUqRTCMenTu9MnNcW1qob6RYDrqs1gz1VtBztoWFVDSpAvVZf6RE6B5qU+6cBjk
-         E5A8uOpoJvPVDZhA1IAMy2tUVFJQtfqQLp7LRPNIHbxOk2cRaS61LpZHyWdumt/P+B
-         rWlN1QvnRZkoVsDDP2HjPlbTl5qVm/kU7hb78IywItFArL2p00/n9Sq/7UrkyzGcvH
-         cPbVmKao7NukQmUDujfQcneYHhKc/QWLt10ZMrk8ZHFLEiJo4Gu82nZvidg4q+bdAq
-         ar7EvPI7N8wpkhMcwlUkhr/KdtGe5YaxLdm0qhoq9xB83cMehBHqpRd194JPxe+zQq
-         S6qMO9MKOCzzQ==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>,
+        id S233070AbhBYQB3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Feb 2021 11:01:29 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614268871; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=nax/2qkYZxFNNsM/IxQmHhHuh8ylQMIKgrDBwB+k6Ek=; b=aItq5QFcYgmmN6KvAKcBYqsyd03I2l1zqVwrcdl6CIWz9EdlsGE1m5ywpr5B997Mxsux7xZy
+ npds5JpHKMSgCkoUv2DMaFBaCYNNScVhK3onxN7Z8hJ2dsThKj/DKrWczylz3MCvpmWUO68q
+ m3D2m8d/Zsi4Ko064DDEuRk+iUg=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 6037c98f1d6d3a470fdfe110 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 25 Feb 2021 16:00:15
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5F3E6C433CA; Thu, 25 Feb 2021 16:00:14 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 51CAFC433CA;
+        Thu, 25 Feb 2021 16:00:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 51CAFC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ryder Lee <ryder.lee@mediatek.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
         Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         clang-built-linux@googlegroups.com
-Subject: [PATCH 2/2] mt76: mt7921: remove incorrect error handling
-Date:   Thu, 25 Feb 2021 15:59:15 +0100
-Message-Id: <20210225145953.404859-2-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210225145953.404859-1-arnd@kernel.org>
+Subject: Re: [PATCH 1/2] mt76: mt7915: fix unused 'mode' variable
 References: <20210225145953.404859-1-arnd@kernel.org>
+Date:   Thu, 25 Feb 2021 18:00:07 +0200
+In-Reply-To: <20210225145953.404859-1-arnd@kernel.org> (Arnd Bergmann's
+        message of "Thu, 25 Feb 2021 15:59:14 +0100")
+Message-ID: <871rd4f88o.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Arnd Bergmann <arnd@kernel.org> writes:
 
-Clang points out a mistake in the error handling in
-mt7921_mcu_tx_rate_report(), which tries to dereference a pointer that
-cannot be initialized because of the error that is being handled:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> clang points out a possible corner case in the mt7915_tm_set_tx_cont()
+> function if called with invalid arguments:
+>
+> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:593:2: warning: variable 'mode' is used uninitialized whenever switch default is taken [-Wsometimes-uninitialized]
+>         default:
+>         ^~~~~~~
+> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:597:13: note: uninitialized use occurs here
+>         rateval =  mode << 6 | rate_idx;
+>                    ^~~~
+> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:506:37: note: initialize the variable 'mode' to silence this warning
+>         u8 rate_idx = td->tx_rate_idx, mode;
+>                                            ^
+>
+> Change it to return an error instead of continuing with invalid data
+> here.
+>
+> Fixes: 3f0caa3cbf94 ("mt76: mt7915: add support for continuous tx in testmode")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-drivers/net/wireless/mediatek/mt76/mt7921/mcu.c:409:3: warning: variable 'stats' is uninitialized when used here [-Wuninitialized]
-                stats->tx_rate = rate;
-                ^~~~~
-drivers/net/wireless/mediatek/mt76/mt7921/mcu.c:401:32: note: initialize the variable 'stats' to silence this warning
-        struct mt7921_sta_stats *stats;
-                                      ^
-Just remove the obviously incorrect line.
+Felix, can I take these two to wireless-drivers? An ack would be good.
 
-Fixes: 1c099ab44727 ("mt76: mt7921: add MCU support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index db125cd22b91..b5cc72e7e81c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -405,10 +405,8 @@ mt7921_mcu_tx_rate_report(struct mt7921_dev *dev, struct sk_buff *skb,
- 	if (wlan_idx >= MT76_N_WCIDS)
- 		return;
- 	wcid = rcu_dereference(dev->mt76.wcid[wlan_idx]);
--	if (!wcid) {
--		stats->tx_rate = rate;
-+	if (!wcid)
- 		return;
--	}
- 
- 	msta = container_of(wcid, struct mt7921_sta, wcid);
- 	stats = &msta->stats;
 -- 
-2.29.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
