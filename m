@@ -2,75 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03877324DE5
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 11:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D178324E30
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 11:31:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233720AbhBYKTK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Feb 2021 05:19:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234464AbhBYKQl (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Feb 2021 05:16:41 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 128F2C061788
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Feb 2021 02:16:01 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id r25so4834863ljk.11
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Feb 2021 02:16:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Lzneafrv4gkzqn4kfu/KQ1crwPLI6hdEl1hsjBDsRtU=;
-        b=fXxFwsyu/MTYDNWoekH10CYuRt28hnsQzCwryiEwUnPJl3nwSohYNj36pNlafgveDM
-         Ot56gts01STTvoN0E7V9ptb/pLhkusyJ9g+BnYGQxXf2tNZH6y5CfX3qSxGP0aLk1Whn
-         oLFLlebmOqu2tuuhQvpGTip0e7mMnyRfC9x0W2nB2BNfF4dvwB39unRu6ZrRe7gQDHk1
-         liQWWFeJxbJDof+t6YqC7XGjaboxJlfaYCnucgd1BVVsDAQBGLdKooC8QjWquFhyDp39
-         U5IxfAYg24LLB56BVB703jyNao01ze4cuCFHo1ufTa3KiYFs6/00GYkHjf14ZfzMj/48
-         owww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Lzneafrv4gkzqn4kfu/KQ1crwPLI6hdEl1hsjBDsRtU=;
-        b=ri2W8Hd8JvsCzqDwMlUK6QUeSIdfaWlJIbZ6sZSKd+/KojZDi1nhAyAiKJtiUurZkJ
-         tgNy4tGT3BcFr6hkE1eIlJDE9DlxYJeS4paJlfyZeTdeI/FGlPGLMJWtBtAy9lsd99Ww
-         RrAqcFm3TzMhUmFahxuu7PRlr8/274i/pn+xLQdWrjXIKmAEn4NnEDZzOpCjGqcsjfYf
-         PFuOOAE8vk6tt6CUKRM2TBfu1O393pkwU84PUXxAoZaDd19xbggYoRNexPoy1p2Dpas0
-         djLVPLk2jZYvTKc+j+ludtXXqzhbvyRnq8jXvRlDnxP2APuL3NrBG7EXDbJcW+yUIhyS
-         Af6Q==
-X-Gm-Message-State: AOAM533FfMi9mOKB04t9R+pYrmQiwUqj+ztRCHZudJH7zFiNk41YcKbs
-        h+M9FvrzZJMtLsLhjCYKh0TYpGAtkGw0prZZCMI=
-X-Google-Smtp-Source: ABdhPJzRT5KOqFrP7KUAi4JLBapYujw9RD0+Fd2zQkesnWJuK2mGdjIH6GQoqfSZbyzO/QM712+T99abKtXm8o1whAY=
-X-Received: by 2002:a05:651c:3cb:: with SMTP id f11mr1225228ljp.272.1614248159646;
- Thu, 25 Feb 2021 02:15:59 -0800 (PST)
+        id S234920AbhBYK2w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Feb 2021 05:28:52 -0500
+Received: from m42-2.mailgun.net ([69.72.42.2]:27770 "EHLO m42-2.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233603AbhBYKYB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Feb 2021 05:24:01 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614248630; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=OnrGOA7+vtKJaM77uUe4Y7LYAd/8kech7ZlLX5tFEs0=; b=iLCmvJvoEcIE1UEGyuvk67+TYQubKZ3Ri6ZiZl1138r8TbCuJxMXJn++duXPgch3QqTpdVXp
+ jBZ1GBIwupOGcbISmi07wCU/xfAR8yMmKt7yXiLyDIq7g4VTdUSuVWl4VIo+mjqCoh3kOrwO
+ vYZH/Dv4b8ysu+Y+u9n64vOA+IE=
+X-Mailgun-Sending-Ip: 69.72.42.2
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 60377a86cc1f7d7e95a066bf (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 25 Feb 2021 10:23:02
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 30A44C433ED; Thu, 25 Feb 2021 10:23:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C14B4C433C6;
+        Thu, 25 Feb 2021 10:22:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C14B4C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     kernel test robot <lkp@intel.com>
+Cc:     samirweng1979 <samirweng1979@163.com>, imitsyanko@quantenna.com,
+        geomatsi@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        colin.king@canonical.com, kbuild-all@lists.01.org,
+        clang-built-linux@googlegroups.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        wengjianfeng <wengjianfeng@yulong.com>
+Subject: Re: [PATCH] qtnfmac: remove meaningless goto statement and labels
+References: <20210225064842.36952-1-samirweng1979@163.com>
+        <202102251757.V6qESTrL-lkp@intel.com>
+Date:   Thu, 25 Feb 2021 12:22:54 +0200
+In-Reply-To: <202102251757.V6qESTrL-lkp@intel.com> (kernel test robot's
+        message of "Thu, 25 Feb 2021 18:04:03 +0800")
+Message-ID: <875z2gfnup.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a05:6520:334a:b029:c0:c57c:f584 with HTTP; Thu, 25 Feb 2021
- 02:15:59 -0800 (PST)
-Reply-To: georgemike7031@gmail.com
-From:   george mike <barrimurphy1965@gmail.com>
-Date:   Thu, 25 Feb 2021 11:15:59 +0100
-Message-ID: <CAGZA+7oa6xszGH_-iRu6N4TZgfzdj6QpJb7T8bX5OfjX1iFD9Q@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hallo
+kernel test robot <lkp@intel.com> writes:
 
-Mijn naam is George Mike. Ik ben advocaat van beroep. Ik wil je aanbieden
-de nabestaanden van mijn cli=C3=ABnt. U erft de som van ($ 8,5 miljoen)
-dollars die mijn cli=C3=ABnt voor zijn dood op de bank had achtergelaten.
+> Hi samirweng1979,
+>
+> Thank you for the patch! Yet something to improve:
+>
+> [auto build test ERROR on wireless-drivers-next/master]
+> [also build test ERROR on wireless-drivers/master sparc-next/master v5.11 next-20210225]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+>
+> url:    https://github.com/0day-ci/linux/commits/samirweng1979/qtnfmac-remove-meaningless-goto-statement-and-labels/20210225-145714
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+> config: x86_64-randconfig-a001-20210225 (attached as .config)
+> compiler: clang version 13.0.0 (https://github.com/llvm/llvm-project a921aaf789912d981cbb2036bdc91ad7289e1523)
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # install x86_64 cross compiling tool for clang build
+>         # apt-get install binutils-x86-64-linux-gnu
+>         # https://github.com/0day-ci/linux/commit/d18bea1fd25dee219ae56343ff9caf9cb6eb1519
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review samirweng1979/qtnfmac-remove-meaningless-goto-statement-and-labels/20210225-145714
+>         git checkout d18bea1fd25dee219ae56343ff9caf9cb6eb1519
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=x86_64 
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>
+> All errors (new ones prefixed by >>):
+>
+>>> drivers/net/wireless/quantenna/qtnfmac/commands.c:1901:8: error: use of undeclared label 'out'
+>                    goto out;
 
-Mijn cli=C3=ABnt is een staatsburger van uw land die samen met zijn vrouw
-is omgekomen bij een auto-ongeluk
-en enige zoon. Ik heb recht op 50% van het totale fonds en 50%
-voor jou zijn.
-Neem hier contact op met mijn priv=C3=A9-e-mailadres voor meer details:
-georgemike7031@gmail.com
+Do you compile test your patches? This error implies that not.
+Compilation test is a hard requirement for patches.
 
-Bij voorbaat hartelijk dank,
-De heer George Mike,
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
