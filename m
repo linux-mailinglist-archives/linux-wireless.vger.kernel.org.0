@@ -2,195 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B47325708
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 20:47:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9E1032571C
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 20:54:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234048AbhBYTrQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Feb 2021 14:47:16 -0500
-Received: from mga14.intel.com ([192.55.52.115]:34382 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235178AbhBYTpB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Feb 2021 14:45:01 -0500
-IronPort-SDR: tGNTDucXWw4dqR6fRQxUcbRt05S4jjxirICLTq0T9QxMdSdL6PvAo60ftnyCU9mhkXdSgQw8xj
- JuyazRbIcnig==
-X-IronPort-AV: E=McAfee;i="6000,8403,9906"; a="184954360"
-X-IronPort-AV: E=Sophos;i="5.81,206,1610438400"; 
-   d="scan'208";a="184954360"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2021 11:42:08 -0800
-IronPort-SDR: LSAI9ru+eWqgHD4Io3JWynZGBpvu9Xx5PvoL8LkPeBv3ozOaWllK/5ZCX1n7kczJ0t1oQvRc0i
- TT3aVWLggALA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,206,1610438400"; 
-   d="scan'208";a="424774294"
-Received: from lkp-server01.sh.intel.com (HELO 16660e54978b) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 25 Feb 2021 11:42:07 -0800
-Received: from kbuild by 16660e54978b with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lFMWU-0002qc-Tx; Thu, 25 Feb 2021 19:42:06 +0000
-Date:   Fri, 26 Feb 2021 03:42:04 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:pending] BUILD SUCCESS
- 6a50a3c949db01857a1165ba677d092a9f24fd1f
-Message-ID: <6037fd8c.3eOsKw8+RlmSMsh3%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S234205AbhBYTxr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Feb 2021 14:53:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38088 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233961AbhBYTvt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Feb 2021 14:51:49 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48E2C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Feb 2021 11:50:58 -0800 (PST)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lFMet-008Zjo-Nf; Thu, 25 Feb 2021 20:50:47 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org, Bob Copeland <me@bobcopeland.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wmediumd: lib: sched: fix another scheduling corner case
+Date:   Thu, 25 Feb 2021 20:50:42 +0100
+Message-Id: <20210225195042.2657805-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
-branch HEAD: 6a50a3c949db01857a1165ba677d092a9f24fd1f  iwlwifi: pcie: fix iwl_so_trans_cfg link error when CONFIG_IWLMVM is disabled
+From: Johannes Berg <johannes.berg@intel.com>
 
-elapsed time: 722m
+When running with an external scheduler that also uses the
+event loop, we can detect e.g. a client disconnecting from
+a server while in usfstl_sched_forward(), causing us to not
+have a job anymore on the scheduler afterwards, which then
+causes the assert at the end to get reached erroneously.
 
-configs tested: 133
-configs skipped: 2
+Move the job check and external wait into the loop so these
+cases are covered correctly.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                     tqm8541_defconfig
-arm                          gemini_defconfig
-powerpc                 xes_mpc85xx_defconfig
-m68k                            q40_defconfig
-arm                            mmp2_defconfig
-m68k                       m5275evb_defconfig
-arm                         socfpga_defconfig
-arm                           h3600_defconfig
-powerpc64                           defconfig
-mips                      pic32mzda_defconfig
-powerpc                mpc7448_hpc2_defconfig
-m68k                          amiga_defconfig
-arm                          ep93xx_defconfig
-sh                           se7619_defconfig
-powerpc                 mpc836x_mds_defconfig
-powerpc                      pcm030_defconfig
-arm                          iop32x_defconfig
-mips                        bcm47xx_defconfig
-powerpc                 mpc837x_mds_defconfig
-microblaze                      mmu_defconfig
-powerpc                     stx_gp3_defconfig
-powerpc                 mpc836x_rdk_defconfig
-powerpc                    ge_imp3a_defconfig
-mips                           ip27_defconfig
-mips                        omega2p_defconfig
-arc                        nsim_700_defconfig
-s390                             allmodconfig
-riscv                            allyesconfig
-arc                    vdk_hs38_smp_defconfig
-powerpc                 canyonlands_defconfig
-sh                     sh7710voipgw_defconfig
-powerpc                     akebono_defconfig
-h8300                       h8s-sim_defconfig
-sh                          rsk7264_defconfig
-mips                            e55_defconfig
-powerpc                     kilauea_defconfig
-arm                         lpc18xx_defconfig
-mips                         tb0219_defconfig
-powerpc                     ep8248e_defconfig
-arm                   milbeaut_m10v_defconfig
-riscv                             allnoconfig
-arm                            zeus_defconfig
-powerpc                      ep88xc_defconfig
-mips                          rm200_defconfig
-powerpc                       ebony_defconfig
-mips                           xway_defconfig
-arm                           omap1_defconfig
-sh                              ul2_defconfig
-powerpc64                        alldefconfig
-openrisc                 simple_smp_defconfig
-sh                      rts7751r2d1_defconfig
-mips                           gcw0_defconfig
-arm                         vf610m4_defconfig
-arm                             ezx_defconfig
-arm                        oxnas_v6_defconfig
-mips                      maltaaprp_defconfig
-powerpc                 mpc832x_mds_defconfig
-arm                       cns3420vb_defconfig
-sh                   secureedge5410_defconfig
-riscv                    nommu_virt_defconfig
-arm                          simpad_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20210225
-i386                 randconfig-a006-20210225
-i386                 randconfig-a004-20210225
-i386                 randconfig-a001-20210225
-i386                 randconfig-a003-20210225
-i386                 randconfig-a002-20210225
-x86_64               randconfig-a015-20210225
-x86_64               randconfig-a011-20210225
-x86_64               randconfig-a012-20210225
-x86_64               randconfig-a016-20210225
-x86_64               randconfig-a013-20210225
-x86_64               randconfig-a014-20210225
-i386                 randconfig-a013-20210225
-i386                 randconfig-a012-20210225
-i386                 randconfig-a011-20210225
-i386                 randconfig-a014-20210225
-i386                 randconfig-a016-20210225
-i386                 randconfig-a015-20210225
-riscv                    nommu_k210_defconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a001-20210225
-x86_64               randconfig-a002-20210225
-x86_64               randconfig-a003-20210225
-x86_64               randconfig-a005-20210225
-x86_64               randconfig-a004-20210225
-x86_64               randconfig-a006-20210225
-
+This actually happened in wmediumd on client disconnect at
+this exact time, while running usfstl_sched_forward().
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ wmediumd/lib/sched.c | 48 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 15 deletions(-)
+
+diff --git a/wmediumd/lib/sched.c b/wmediumd/lib/sched.c
+index 7ebd81a99b4e..7d0618b49cf2 100644
+--- a/wmediumd/lib/sched.c
++++ b/wmediumd/lib/sched.c
+@@ -182,22 +182,38 @@ void usfstl_sched_start(struct usfstl_scheduler *sched)
+ 
+ struct usfstl_job *usfstl_sched_next(struct usfstl_scheduler *sched)
+ {
+-	struct usfstl_job *job;
+-
+-	/*
+-	 * If external scheduler is active, we might get here with nothing
+-	 * to do, so we just need to wait for an external input/job which
+-	 * will add an job to our scheduler in usfstl_sched_add_job().
+-	 *
+-	 * And due to the fact that we don't have any API for canceling external
+-	 * time request, we can request external time which adds a job on the
+-	 * external scheduler and cancel internally, and get scheduled to run
+-	 * with nothing to do.
+-	 */
+-	while (usfstl_list_empty(&sched->joblist) && sched->external_request)
+-		usfstl_sched_external_wait(sched);
++	while (true) {
++		struct usfstl_job *job = usfstl_sched_next_pending(sched, NULL);
++
++		if (!job) {
++			/*
++			 * If external scheduler is active, we might get here
++			 * with nothing to do, so we just need to wait for an
++			 * external input/job which will add a job to our
++			 * scheduler.
++			 *
++			 * Due to the fact that we don't have any API for
++			 * cancelling external time requests, we might have
++			 * requested time from the external scheduler for a
++			 * job that subsequently got removed, ending up here
++			 * without a job, or one further in the future which
++			 * would cause usfstl_sched_forward() to wait again.
++			 *
++			 * Additionally, we might only remove the job we just
++			 * found during the usfstl_sched_forward() below, if
++			 * that causes the main loop to run and we detect an
++			 * event that causes a job removal (such as a client
++			 * disconnecting from a server), so the job pointer we
++			 * have might go stale. Hence, all of this needs to be
++			 * checked in the overall loop.
++			 */
++			if (sched->external_request) {
++				usfstl_sched_external_wait(sched);
++				continue;
++			}
++			break;
++		}
+ 
+-	while ((job = usfstl_sched_next_pending(sched, NULL))) {
+ 		/*
+ 		 * Forward, but only if job isn't in the past - this
+ 		 * can happen if some job was inserted while we
+@@ -214,6 +230,8 @@ struct usfstl_job *usfstl_sched_next(struct usfstl_scheduler *sched)
+ 		 * might have inserted an earlier job into the timeline.
+ 		 * If it's not this job's turn yet, reinsert it and check
+ 		 * what's up next in the next loop iteration.
++		 *
++		 * Also, 'job' might now have been removed, see above.
+ 		 */
+ 		if (usfstl_sched_next_pending(sched, NULL) != job)
+ 			continue;
+-- 
+2.26.2
+
