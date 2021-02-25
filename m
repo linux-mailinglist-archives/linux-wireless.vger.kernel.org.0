@@ -2,80 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00E2B3254AF
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 18:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6C2B32550E
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Feb 2021 19:01:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232372AbhBYRl7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Feb 2021 12:41:59 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45801 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232103AbhBYRlz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Feb 2021 12:41:55 -0500
-Received: from 1-171-225-221.dynamic-ip.hinet.net ([1.171.225.221] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1lFKdQ-0007iq-Oa; Thu, 25 Feb 2021 17:41:09 +0000
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     bhelgaas@google.com
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        id S233162AbhBYSB0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Feb 2021 13:01:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50866 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233755AbhBYR7S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Feb 2021 12:59:18 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F73964DE8;
+        Thu, 25 Feb 2021 17:58:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614275918;
+        bh=kkEUBtk21fzvQ+eByMWisdjrqhC+DKiVgrkLgH0ss/M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ev8I77FFegc2EdWHko9oWR26IKdMF6+y2de4p0n8wL3eoj2h3N3kPlco84vQb4Ua2
+         I/ND8Raybh6OjAgIDKQwYtn4/Rub1R8ufc/dK8Yhrhii8kQVKhbB+YzPyhAYxCALSR
+         EKpalFu3yn6QUgcNqEa/yQAZ4LJQt/nzdNd/6GOnq0xGbP/r06vVf56CG1LtWR8I/n
+         cx3rE5IpLMAQOe+tYk/kI+BcNjTfj50Wolh+y2bxxyIaM+ZQ/tXDyJQfR/yc25JENz
+         +//LzlT/UmhktjLycSIn5K0hWtTI6pq4vw2kQL39hWP/iBJjT4qCw1jmRXDKnK24eR
+         PyUCV6l4hRGzw==
+Date:   Thu, 25 Feb 2021 10:58:36 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org (open list:REALTEK WIRELESS DRIVER
-        (rtw88)), netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-kernel@vger.kernel.org (open list),
-        linux-pci@vger.kernel.org (open list:PCI SUBSYSTEM)
-Subject: [PATCH 3/3] PCI: Convert rtw88 power cycle quirk to shutdown quirk
-Date:   Fri, 26 Feb 2021 01:40:40 +0800
-Message-Id: <20210225174041.405739-3-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210225174041.405739-1-kai.heng.feng@canonical.com>
-References: <20210225174041.405739-1-kai.heng.feng@canonical.com>
+        Arnd Bergmann <arnd@arndb.de>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Subject: Re: [PATCH 1/2] mt76: mt7915: fix unused 'mode' variable
+Message-ID: <20210225175836.GA23011@24bbad8f3778>
+References: <20210225145953.404859-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210225145953.404859-1-arnd@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Now we have a generic D3 shutdown quirk, so convert the original
-approach to a PCI quirk.
+On Thu, Feb 25, 2021 at 03:59:14PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> clang points out a possible corner case in the mt7915_tm_set_tx_cont()
+> function if called with invalid arguments:
+> 
+> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:593:2: warning: variable 'mode' is used uninitialized whenever switch default is taken [-Wsometimes-uninitialized]
+>         default:
+>         ^~~~~~~
+> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:597:13: note: uninitialized use occurs here
+>         rateval =  mode << 6 | rate_idx;
+>                    ^~~~
+> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:506:37: note: initialize the variable 'mode' to silence this warning
+>         u8 rate_idx = td->tx_rate_idx, mode;
+>                                            ^
+> 
+> Change it to return an error instead of continuing with invalid data
+> here.
+> 
+> Fixes: 3f0caa3cbf94 ("mt76: mt7915: add support for continuous tx in testmode")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+> index 7fb2170a9561..aa629e1fb420 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+> @@ -543,6 +543,7 @@ mt7915_tm_set_tx_cont(struct mt7915_phy *phy, bool en)
+>  		tx_cont->bw = CMD_CBW_20MHZ;
+>  		break;
+>  	default:
+> +		return -EINVAL;
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
- drivers/net/wireless/realtek/rtw88/pci.c | 2 --
- drivers/pci/quirks.c                     | 6 ++++++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+Remove the break if we are adding a return?
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 786a48649946..cddc9b09bb1f 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1709,8 +1709,6 @@ void rtw_pci_shutdown(struct pci_dev *pdev)
- 
- 	if (chip->ops->shutdown)
- 		chip->ops->shutdown(rtwdev);
--
--	pci_set_power_state(pdev, PCI_D3hot);
- }
- EXPORT_SYMBOL(rtw_pci_shutdown);
- 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 0a848ef0b7db..dfb8746e3b72 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5627,3 +5627,9 @@ static void pci_fixup_shutdown_d3(struct pci_dev *pdev)
- 		pci_set_power_state(pdev, PCI_D3cold);
- }
- DECLARE_PCI_FIXUP_SHUTDOWN(PCI_VENDOR_ID_AMD, 0x1639, pci_fixup_shutdown_d3);
-+DECLARE_PCI_FIXUP_SHUTDOWN(PCI_VENDOR_ID_REALTEK, 0xd723, pci_fixup_shutdown_d3);
-+DECLARE_PCI_FIXUP_SHUTDOWN(PCI_VENDOR_ID_REALTEK, 0xc821, pci_fixup_shutdown_d3);
-+DECLARE_PCI_FIXUP_SHUTDOWN(PCI_VENDOR_ID_REALTEK, 0xb822, pci_fixup_shutdown_d3);
-+DECLARE_PCI_FIXUP_SHUTDOWN(PCI_VENDOR_ID_REALTEK, 0xb822, pci_fixup_shutdown_d3);
-+DECLARE_PCI_FIXUP_SHUTDOWN(PCI_VENDOR_ID_REALTEK, 0xc822, pci_fixup_shutdown_d3);
-+DECLARE_PCI_FIXUP_SHUTDOWN(PCI_VENDOR_ID_REALTEK, 0xc82f, pci_fixup_shutdown_d3);
--- 
-2.30.0
-
+>  		break;
+>  	}
+>  
+> @@ -591,6 +592,7 @@ mt7915_tm_set_tx_cont(struct mt7915_phy *phy, bool en)
+>  		mode = MT_PHY_TYPE_HE_MU;
+>  		break;
+>  	default:
+> +		return -EINVAL;
+>  		break;
+>  	}
+>  
+> -- 
+> 2.29.2
+> 
