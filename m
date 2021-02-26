@@ -2,108 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D0E93264CF
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Feb 2021 16:39:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3ABF3265D0
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Feb 2021 17:45:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbhBZPjB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Feb 2021 10:39:01 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:26939 "EHLO z11.mailgun.us"
+        id S230112AbhBZQpK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Feb 2021 11:45:10 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:49091 "EHLO z11.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229571AbhBZPjB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Feb 2021 10:39:01 -0500
+        id S229993AbhBZQpJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Feb 2021 11:45:09 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614353912; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=Y11jeY4eLgaDwVm86bt5UA29oOY9D+tX6VVltEVFFPs=; b=f9J9a8ByiDJSKDCKjDq0ZITRuKpo21LXQ5VsQ5SA/pNfphde+JbgudJJL2HONkaCTzcGtzQ2
- hDbjrLIVg+QjZli1qoshUWNWt3ZDA9JCYlSvi6yUwXLJtBAAABqtEkInDKv9C1A3BPnBmbKW
- HTKV9pyaCPVRDMw+rv9biki7jVM=
+ s=smtp; t=1614357884; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=sql488y/qu9t/oHUz8BmsXLbW0bUGtT0YMWwo5A+/D4=; b=cxhYbaNzQOLMbC0O11rTl6UYuvvme3oHYxlnLak0vmxcyhuy6AU8aWiHUIJYns0GjG/7WzvL
+ iA2ymhXg0mSeGe1Y3zD8xQCYG6MxhzBdY3Y91u/Ml2c8j8G/WMxAN9cRWolmQUI6eIJwBZSK
+ 0lJKmAsEqXMZVvsAnJWU95dlT68=
 X-Mailgun-Sending-Ip: 104.130.96.11
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 603915d69e950d0db1c942a8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 26 Feb 2021 15:37:58
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 6039255c75e4458f08fdce01 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 26 Feb 2021 16:44:12
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 64348C433CA; Fri, 26 Feb 2021 15:37:57 +0000 (UTC)
+        id CDD03C433CA; Fri, 26 Feb 2021 16:44:11 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1ED7BC433C6;
-        Fri, 26 Feb 2021 15:37:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1ED7BC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7633AC433C6;
+        Fri, 26 Feb 2021 16:44:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7633AC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] [v2] mt76: mt7915: fix unused 'mode' variable
-References: <20210226142215.3482168-1-arnd@kernel.org>
-Date:   Fri, 26 Feb 2021 17:37:50 +0200
-In-Reply-To: <20210226142215.3482168-1-arnd@kernel.org> (Arnd Bergmann's
-        message of "Fri, 26 Feb 2021 15:21:27 +0100")
-Message-ID: <87lfbaalgx.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-2021-02-26
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20210226164411.CDD03C433CA@smtp.codeaurora.org>
+Date:   Fri, 26 Feb 2021 16:44:11 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ linux-wireless
+Hi,
 
-Arnd Bergmann <arnd@kernel.org> writes:
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> clang points out a possible corner case in the mt7915_tm_set_tx_cont()
-> function if called with invalid arguments:
->
-> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:593:2: warning: variable 'mode' is used uninitialized whenever switch default is taken [-Wsometimes-uninitialized]
->         default:
->         ^~~~~~~
-> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:597:13: note: uninitialized use occurs here
->         rateval =  mode << 6 | rate_idx;
->                    ^~~~
-> drivers/net/wireless/mediatek/mt76/mt7915/testmode.c:506:37: note: initialize the variable 'mode' to silence this warning
->         u8 rate_idx = td->tx_rate_idx, mode;
->                                            ^
->
-> Change it to return an error instead of continuing with invalid data
-> here.
->
-> Fixes: 3f0caa3cbf94 ("mt76: mt7915: add support for continuous tx in testmode")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> v2: remove the extra 'break;' after return.
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Kalle
 
-You forgot to Cc linux-wireless and hence patchwork didn't see this, so
-I applied this manually instead:
+The following changes since commit 773dc50d71690202afd7b5017c060c6ca8c75dd9:
 
-c490492f15f6 mt76: mt7915: fix unused 'mode' variable
+  Merge branch 'Xilinx-axienet-updates' (2021-02-12 17:38:53 -0800)
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+are available in the git repository at:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-02-26
+
+for you to fetch changes up to c490492f15f656340b35cb9e36b9bfdea3539e19:
+
+  mt76: mt7915: fix unused 'mode' variable (2021-02-26 17:35:15 +0200)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.12
+
+First set of fixes for v5.12. One iwlwifi kernel crash fix and smaller
+fixes to multiple drivers.
+
+ath9k
+
+* fix Spatial Multiplexing Power Save (SMPS) handling to improve thoughtput
+
+mt76
+
+* error handling fixes
+
+* memory leax fixes
+
+iwlwifi
+
+* don't crash during debug collection on DVM devices
+
+MAINTAINERS
+
+* email address update
+
+ath11k
+
+* fix GCC warning about DMA address debug messages
+
+* fix regression which broke QCA6390 AP mode
+
+----------------------------------------------------------------
+Arnd Bergmann (2):
+      mt76: mt7921: remove incorrect error handling
+      mt76: mt7915: fix unused 'mode' variable
+
+Felix Fietkau (3):
+      ath9k: fix transmitting to stations in dynamic SMPS mode
+      mt76: fix tx skb error handling in mt76_dma_tx_queue_skb
+      mt76: mt7915: only modify tx buffer list after allocating tx token id
+
+Geert Uytterhoeven (1):
+      ath11k: qmi: use %pad to format dma_addr_t
+
+Johannes Berg (1):
+      iwlwifi: avoid crash on unsupported debug collection
+
+Kalle Valo (2):
+      ath11k: fix AP mode for QCA6390
+      iwlwifi: pcie: fix iwl_so_trans_cfg link error when CONFIG_IWLMVM is disabled
+
+Lorenzo Bianconi (1):
+      mt76: dma: do not report truncated frames to mac80211
+
+Sharvari Harisangam (1):
+      MAINTAINERS: update for mwifiex driver maintainers
+
+ MAINTAINERS                                        |  3 ++-
+ drivers/net/wireless/ath/ath11k/mac.c              |  4 ++--
+ drivers/net/wireless/ath/ath11k/qmi.c              |  4 ++--
+ drivers/net/wireless/ath/ath9k/ath9k.h             |  3 ++-
+ drivers/net/wireless/ath/ath9k/xmit.c              |  6 +++++
+ drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h   |  2 ++
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c      |  3 ++-
+ drivers/net/wireless/mediatek/mt76/dma.c           | 26 +++++++++++-----------
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c    | 10 ++++-----
+ .../net/wireless/mediatek/mt76/mt7915/testmode.c   |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c    |  4 +---
+ 11 files changed, 39 insertions(+), 30 deletions(-)
