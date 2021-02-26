@@ -2,122 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A063C3261CB
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Feb 2021 12:11:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11CD13261E2
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Feb 2021 12:18:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229990AbhBZLKf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Feb 2021 06:10:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36592 "EHLO mail.kernel.org"
+        id S230460AbhBZLSQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Feb 2021 06:18:16 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43830 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229556AbhBZLKe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Feb 2021 06:10:34 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2C79E64E6C;
-        Fri, 26 Feb 2021 11:09:53 +0000 (UTC)
+        id S230124AbhBZLSM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Feb 2021 06:18:12 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3BBE964EBA;
+        Fri, 26 Feb 2021 11:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614337793;
-        bh=XKQsWPvdzq64BeQHNfSblBPY8Ec1i9KpZVWh59++8mk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gcjvcRK5rXHGPdLgv4cOCXcjveQ1dAiH1l1Bxj/S+h5sv1ptpWp4SpeZE/E6X2evT
-         FWAi1I+dcIVmJchWD/4m4gaDmhOc60JQPavKcQ9vRUlXlxquySO/8wSrPNs7r4Cc6y
-         TC/vNcVqJHYSH9DcdLzVLebyp/BixAf5ax2y/6/NDac9Ts/2k7pT3PIsvt3erFzo/h
-         fDnnjiztAxyrAXNecRS4ySl3+RSnE5GrYXkZK6z+h1oOdrHodXlqa/QJ0oHKM2QKus
-         Cedj7VwQCsEli6zOPJ+8jHmXQU7Vxfmf8cHvO6UuhpjpTv0VuwRh+03AmZJKmB/t9Q
-         dMCpzns/DQuiA==
-Date:   Fri, 26 Feb 2021 12:09:48 +0100
+        s=k20201202; t=1614338252;
+        bh=b3UuRimThtySXP0S16xTaIzHBNXT+8ZxJ1WAwJvTpHQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FjrhKhNvCT22UockjFevlqjL1H+IMCVLkNJv9Ng4Gsum6/TTt0CR8RpmvN7qqI5ZC
+         9hIXzT6grcU+mh42/dtWKpr9qAYPNrfJ+W0YNfDpfRJGVHcwqDxg1sbUUOaN9FiNQS
+         oiOL1Xx2mD3shtOiN4i6zfGTlsSKcuki0uJFtNjawkLtY9xpp7GiwUPJC7ScpRjDTJ
+         5Wg/NhwWRZRHRwnlcrsu6JwGRrvPmhifXqP9uNOY4O/BeFbnXe/dZQvnGjPjAuD+5A
+         yE8ZYMb1+9rQUMzZ5sW8EW60I29+SzuIs/4AJaV9sXJWuNahteHlhPNVPR8eoN/O0H
+         PxGSA72DiW71w==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     sean.wang@mediatek.com
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
-        YN.Chen@mediatek.com, robin.chiu@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, Eric.Liang@mediatek.com,
-        Stella.Chang@mediatek.com, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 1/2] mt76: mt7921: fix the base of PCIe interrupt
-Message-ID: <YDjW/LfRmgb84T4H@lore-desk>
-References: <4ff45223ff7ecff8e20a722ffd2db77fe51fea00.1614327185.git.objelf@gmail.com>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7921: check mcu returned values in mt7921_start
+Date:   Fri, 26 Feb 2021 12:17:23 +0100
+Message-Id: <0fe54e045204d54a9dbcb4325efc13d24938eeee.1614338015.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="TeJPtBiF6yJ8P6Q6"
-Content-Disposition: inline
-In-Reply-To: <4ff45223ff7ecff8e20a722ffd2db77fe51fea00.1614327185.git.objelf@gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Properly check returned values from mcu utility routines in
+mt7921_start.
 
---TeJPtBiF6yJ8P6Q6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-> From: Sean Wang <sean.wang@mediatek.com>
->=20
-> Should use 0x10000 as the base to operate PCIe interrupt according
-> to the vendor reference driver.
->=20
-> Fixes: ffa1bf97425b ("mt76: mt7921: introduce PM support")
-> Co-developed-by: YN Chen <YN.Chen@mediatek.com>
-> Signed-off-by: YN Chen <YN.Chen@mediatek.com>
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index cdb474ff370a..409bae30b8d9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -173,22 +173,31 @@ static int mt7921_start(struct ieee80211_hw *hw)
+ {
+ 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
+ 	struct mt7921_phy *phy = mt7921_hw_phy(hw);
++	int err;
+ 
+ 	mt7921_mutex_acquire(dev);
+ 
+-	mt76_connac_mcu_set_mac_enable(&dev->mt76, 0, true, false);
+-	mt76_connac_mcu_set_channel_domain(phy->mt76);
++	err = mt76_connac_mcu_set_mac_enable(&dev->mt76, 0, true, false);
++	if (err)
++		goto out;
++
++	err = mt76_connac_mcu_set_channel_domain(phy->mt76);
++	if (err)
++		goto out;
++
++	err = mt7921_mcu_set_chan_info(phy, MCU_EXT_CMD_SET_RX_PATH);
++	if (err)
++		goto out;
+ 
+-	mt7921_mcu_set_chan_info(phy, MCU_EXT_CMD_SET_RX_PATH);
+ 	mt7921_mac_reset_counters(phy);
+ 	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
+ 
+ 	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
+ 				     MT7921_WATCHDOG_TIME);
+-
++out:
+ 	mt7921_mutex_release(dev);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static void mt7921_stop(struct ieee80211_hw *hw)
+-- 
+2.29.2
 
-For the series:
-
-Tested-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/pci.c  | 4 ++--
->  drivers/net/wireless/mediatek/mt76/mt7921/regs.h | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/pci.c
-> index 3e430c04c97e..def8b7816609 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> @@ -137,7 +137,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
-> =20
->  	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
-> =20
-> -	mt7921_l1_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
-> +	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
-> =20
->  	ret =3D devm_request_irq(mdev->dev, pdev->irq, mt7921_irq_handler,
->  			       IRQF_SHARED, KBUILD_MODNAME, dev);
-> @@ -248,7 +248,7 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
->  		return 0;
-> =20
->  	/* enable interrupt */
-> -	mt7921_l1_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
-> +	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
->  	mt7921_irq_enable(dev, MT_INT_RX_DONE_ALL | MT_INT_TX_DONE_ALL |
->  			  MT_INT_MCU_CMD);
-> =20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/regs.h
-> index 419add751980..c4bd31cc81cb 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-> @@ -391,7 +391,7 @@
->  #define MT_HW_CHIPID			0x70010200
->  #define MT_HW_REV			0x70010204
-> =20
-> -#define MT_PCIE_MAC_BASE		0x74030000
-> +#define MT_PCIE_MAC_BASE		0x10000
->  #define MT_PCIE_MAC(ofs)		(MT_PCIE_MAC_BASE + (ofs))
->  #define MT_PCIE_MAC_INT_ENABLE		MT_PCIE_MAC(0x188)
-> =20
-> --=20
-> 2.25.1
->=20
-
---TeJPtBiF6yJ8P6Q6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYDjW+gAKCRA6cBh0uS2t
-rOmCAQCGVOdXmAXui1aktXC219Tdpl8GYbAGv6Pmht16KBauswD+KyYzlblAvYc5
-3TKPeEeY4rUsGsD/dKRZJzo2Yzc/twM=
-=upGh
------END PGP SIGNATURE-----
-
---TeJPtBiF6yJ8P6Q6--
