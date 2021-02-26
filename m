@@ -2,73 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C31FE3269A5
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Feb 2021 22:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C962C326A5C
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Feb 2021 00:21:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbhBZVi0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Feb 2021 16:38:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58832 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230010AbhBZViX (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Feb 2021 16:38:23 -0500
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 861D0C061574;
-        Fri, 26 Feb 2021 13:37:43 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id p21so6973203pgl.12;
-        Fri, 26 Feb 2021 13:37:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=YZ8sIE0SfUCNUaFWNqwI5F5nfIUi/RZN8Zp0MikDfW4=;
-        b=i9Nyay78GChs7jbzOmoAdgqg2exELjiHMJpXn0xXQsrVmlYs2bKEpuCliUi17NxX6Y
-         RZ9KKGWZGS4/CPyBx29o+yH9ijVoATREa8oO+ggIqLYt+DVww2WhK02ehvzNMF3B+u+K
-         s8xwLRfsWBScbdPCqJXU3bfnGvixyshKKUwk/qZXo2SOAwH+Wo2pL9O8bCbsVkbxsfr7
-         cH8ip7YYTO4aQiySvtXVkXu80IkOj9lQ/de4/2Vy64szna4fJP5NkmpQAsjZKKGwn1XP
-         pW/rP5A9CfFAJFDgYlOonbUBxk1XajRjrE54A2Uyc3sBX94mnS8ucpYTvVuUyP1cHglP
-         h5XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=YZ8sIE0SfUCNUaFWNqwI5F5nfIUi/RZN8Zp0MikDfW4=;
-        b=E0ea4WozcJVkk5wmlr+P2TDq7UCA6AwBZ/W/BHop0iDtfacS98+tEU1z7BDQd3lwpb
-         CjmB0ebVqg/BPKlsS/NstqXw6I9PiTQg5xlpf2Y96cnfPuipZa5XCO2484jNzlWSXgt9
-         AaS9gTr601Wspnrfl3I5pm1NKnzb/44qrGYxGbhl5N7joh3fmN5yuopObf6ADEXeZCvj
-         9A+IPI3fK/2EXHIB1azvzwsyY/fl2ldrXMSP6vi2aV8VwCq9coP+x2UMC8FuNYtQWI9y
-         pAdpVFA/CvoD/4D2r5NYIaBoWSzejjSehoaGh4US05fv3WOnfRwuuv0BIfCxr7/nMzWy
-         1ndQ==
-X-Gm-Message-State: AOAM532OpiWqUu47znYiezJmWVsjH/I869+sFzo4JO8gTdl/3hs9PEzT
-        bPc5jPiYE0syA77wm3mHLA8JU/QMEimMk4AY
-X-Google-Smtp-Source: ABdhPJwfctXVVUNuksWHVLJXgIc1k48O98MFJJ/pvbjn7X7n+H8LYq6eiUWsEquGlp7/oCbFfzJwiA==
-X-Received: by 2002:a63:f91b:: with SMTP id h27mr4719212pgi.133.1614375463113;
-        Fri, 26 Feb 2021 13:37:43 -0800 (PST)
-Received: from localhost.localdomain ([216.243.37.48])
-        by smtp.gmail.com with ESMTPSA id b187sm9277958pgc.23.2021.02.26.13.37.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Feb 2021 13:37:42 -0800 (PST)
-From:   vic.michel.web@gmail.com
-To:     weiyongjun1@huawei.com
-Cc:     emmanuel.grumbach@intel.com, gil.adam@intel.com, hulkci@huawei.com,
-        johannes.berg@intel.com, kuba@kernel.org, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org, luciano.coelho@intel.com,
-        mordechay.goodstein@intel.com, netdev@vger.kernel.org,
-        Victor Michel <vic.michel.web@gmail.com>
-Subject: Re: [PATCH] iwlwifi: mvm: add terminate entry for dmi_system_id tables
-Date:   Fri, 26 Feb 2021 13:37:22 -0800
-Message-Id: <20210226213722.37192-1-vic.michel.web@gmail.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210223140039.1708534-1-weiyongjun1@huawei.com>
-References: <20210223140039.1708534-1-weiyongjun1@huawei.com>
+        id S229953AbhBZXUu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Feb 2021 18:20:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34154 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229745AbhBZXUt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Feb 2021 18:20:49 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 071E364EF0;
+        Fri, 26 Feb 2021 23:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614381609;
+        bh=QksqskGUkMvHUQIKJEolQWLsuCwmDKwE85wVKBA4snE=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=jfbk9EDMmwddtZm2B2hohgVuu2wF2si2ijrRJNj8AbBehyQ4zKIO/PWCVCsg5ZsqK
+         CpOxbyYI/edqUFf7XkiXkwj34bHOG4Ewee2M0S6m/ucAj+6TXKUUzz2FjVCVe+jFni
+         9rNIGcLdGdtF2yvPPvJAaa/PGYg5wmyZ5PAto7f2afesfXWCzWIj3LVDjOPohicDG2
+         GNACLKv9r4i+ov5RubWNM3J38j3mIdrhOonwniARxzl7GFvWZc//t+4h3tm3AVC8tz
+         23AFFbuxPGXZjyrVCORky5yr+XGP/ibEQ2+T1DvYLD9GNUaTU8JPcVm5xle7F7zYPm
+         a8k1b/h/SP85w==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id E7C2160A14;
+        Fri, 26 Feb 2021 23:20:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-drivers-2021-02-26
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161438160894.18491.5701850193914012065.git-patchwork-notify@kernel.org>
+Date:   Fri, 26 Feb 2021 23:20:08 +0000
+References: <20210226164411.CDD03C433CA@smtp.codeaurora.org>
+In-Reply-To: <20210226164411.CDD03C433CA@smtp.codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This fixes a BUG triggered when loading the iwlwifi driver, which reproduces
-consistently when I compile the kernel with LTO_CLANG_THIN.
+Hello:
 
-Tested-by: Victor Michel <vic.michel.web@gmail.com>
+This pull request was applied to netdev/net.git (refs/heads/master):
+
+On Fri, 26 Feb 2021 16:44:11 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net tree, more info below. Please let me know if there
+> are any problems.
+> 
+> Kalle
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-drivers-2021-02-26
+    https://git.kernel.org/netdev/net/c/0d1bf7a5e225
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
