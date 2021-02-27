@@ -2,100 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49E20326AA2
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Feb 2021 01:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC23326BE7
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Feb 2021 06:59:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230132AbhB0AIc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Feb 2021 19:08:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34392 "EHLO
+        id S229849AbhB0F7S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 27 Feb 2021 00:59:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbhB0AIZ (ORCPT
+        with ESMTP id S229752AbhB0F7L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Feb 2021 19:08:25 -0500
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDDB0C0617A7
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Feb 2021 16:07:07 -0800 (PST)
-Received: by mail-il1-x12d.google.com with SMTP id q5so9532476ilc.10
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Feb 2021 16:07:07 -0800 (PST)
+        Sat, 27 Feb 2021 00:59:11 -0500
+Received: from mail-vs1-xe64.google.com (mail-vs1-xe64.google.com [IPv6:2607:f8b0:4864:20::e64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D08C06174A
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Feb 2021 21:58:31 -0800 (PST)
+Received: by mail-vs1-xe64.google.com with SMTP id b6so5899667vsf.8
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Feb 2021 21:58:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=KDyipOQ/zGVT/OsO6YP4rsNag+Kuytihig+gLKvB9Z8=;
-        b=LaYZeGozYDZh8m9Zcr5DguvGQyzVvG1qk6+v/7FntdsL/I3sVG06wPjHdPnjcZrUET
-         xY5SJ7hU/xLUPFWSmJiJh2JucnddnVTTkkP5NzwA29W6K1xcDQ1SIXbxGUPeBds0IIBb
-         /0QQjolx3Ez78Pr0DP8b/cqMkvnkaddIjzBWY=
+        d=morsemicro-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=NGi/66p31sIEdoj6s6Pv9ccJ5vtDCnjdabQba4LwrRI=;
+        b=Y3AjkSTz4x+s+L64fwrLnD/s3RD73DHJCiT7eXEz+myqbjv/dbE9hUh0irJx0R93cN
+         m6TqMxs1fQW5d6rJZZerjW2D+/sKnmBlZxwcGmtx8ww9sj0SPTDJ2HbRpvOGfbvv138/
+         52b+IGSKu71rhjKbPt4sDEQE4wxpRZJNxlBK+93ddok2fE24DI4F3x8Xhflc+kQEDzSI
+         RvwEDbG5pnpwMQzNtus6MhU5LkkxCjxIuUJu5kP6yW4nE5pdZgvVIyTaHX01nbM0Wpph
+         lILZvs/plWXEGOWn8WPAGjDZOLlvkFveBJMZpYVVVHq7EFqG4DoCVcMaBvtPACTUvcUF
+         iLWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=KDyipOQ/zGVT/OsO6YP4rsNag+Kuytihig+gLKvB9Z8=;
-        b=kXAaSxnYqKL2U+RgOdI/LXIvoIuNWY9XqmxJAbAUUQNSv5z4YUCaVRGb7RuWp7U9AV
-         2Tx+vKMQdklq08+OBgCwNJXlXgpb7TPtRcCQNyP7B0f5iYDRIjW9SurPwQ5Orycl3GuS
-         p3UhbcVA8TgOopIsP2aA5qcg9jKJV9onYhXyeJf4BA1NM5S6nLHRdwyLeHG+3mzuR9T2
-         GAnTylfuBpSRNPVgheKib3hMvX64Qw/MaFffWGD+Gfdo4PIReTVyppE0GY441ALwExMv
-         Za4ACqgzoktKjZRzRBksHlm4uZYtsm6y7TsKdsfiHY6z/mEEYrp0KKsylepSuUyDR85k
-         4VeQ==
-X-Gm-Message-State: AOAM533m60aSgaWqdN9Cmyco7xMYmQ/wxKmGnS9KkDlwphqWWKVcXJsH
-        PEYOUMWC8Muj/T3yQZ+M3e1ttQ==
-X-Google-Smtp-Source: ABdhPJwzOwoAwB9GujMwkiN8ETBH1uSIX3ovqFMW7TfdMkfk0kJBXFE16/UXQm9KzXnBkIgQeIHe0w==
-X-Received: by 2002:a92:cd8a:: with SMTP id r10mr4471884ilb.110.1614384427380;
-        Fri, 26 Feb 2021 16:07:07 -0800 (PST)
-Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id w16sm5228805ilh.35.2021.02.26.16.07.06
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=NGi/66p31sIEdoj6s6Pv9ccJ5vtDCnjdabQba4LwrRI=;
+        b=h+rhaFgN9uDa+LvhQjIiid6XakyCUyY8Tb7Pn1u09ha761ks/Krgx1tZAm2b8qQQo2
+         8AmYzbjo6REWkJ1PD5vnFEifku6QZf28tVoxG29aZxzOZwRFtvaW/9/UptgU+6Jrdhas
+         f6u1CnBv1jOYvotRCC8gidrv90bVFP5l7MCAenVuPQpxb5/n9+kZUQhEFEea6W00GWPK
+         pCSWrfVvhy2XatmOUNPU+WDJx7kzay+n9Xv96/qLz+wiOIiP0Os2aDVKSSDPzYhO/OKa
+         Hv5JSRiJDPb1NxS0ADl+omb6aMOKz2d773Oa9FbGlSK02tSrGd8VnJZWadIVTSYL+xSl
+         0Alw==
+X-Gm-Message-State: AOAM533WkuUo1JP32U1toCfapO59J0SfMuZxY3nBrn+dyGhjycgTBK7k
+        zlvbtt/hpnEgVxuwtztjwvNCjhdZU4ilaWr7Va5J3f2vig3PjpY7RZ11hd+MNupf6A==
+X-Google-Smtp-Source: ABdhPJwAEt6yI1disXW/dKYWAb2e0thGlG8IIs5XkuL4Yy7qR+OIWJsmB4l5oLGBqvgMCFrvR73rjmc8kvz3
+X-Received: by 2002:a67:cb87:: with SMTP id h7mr3303884vsl.33.1614405510411;
+        Fri, 26 Feb 2021 21:58:30 -0800 (PST)
+Received: from bdawood.hub ([2405:6e00:1023:7100:7de3:6a0:678b:f1cd])
+        by smtp-relay.gmail.com with ESMTPS id s189sm2505730vkh.12.2021.02.26.21.58.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Feb 2021 16:07:07 -0800 (PST)
-From:   Shuah Khan <skhan@linuxfoundation.org>
-To:     peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     Shuah Khan <skhan@linuxfoundation.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] ath10k: detect conf_mutex held ath10k_drain_tx() calls
-Date:   Fri, 26 Feb 2021 17:07:00 -0700
-Message-Id: <c9c2cd7b79f5551741c063239013919bf0e3f984.1614383025.git.skhan@linuxfoundation.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1614383025.git.skhan@linuxfoundation.org>
-References: <cover.1614383025.git.skhan@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Fri, 26 Feb 2021 21:58:30 -0800 (PST)
+X-Relaying-Domain: morsemicro.com
+From:   Bassem Dawood <bassem@morsemicro.com>
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Cc:     Bassem Dawood <bassem@morsemicro.com>
+Subject: [PATCH] mac80211: Enable power save after receiving NULL packet ACK
+Date:   Sat, 27 Feb 2021 16:58:15 +1100
+Message-Id: <20210227055815.14838-1-bassem@morsemicro.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath10k_drain_tx() must not be called with conf_mutex held as workers can
-use that also. Add call to lockdep_assert_not_held() on conf_mutex to
-detect if conf_mutex is held by the caller.
+Trigger dynamic_ps_timer to re-evaluate power saving once a null function
+packet (with PM = 1) is ACKed.
 
-The idea for this patch stemmed from coming across the comment block
-above the ath10k_drain_tx() while reviewing the conf_mutex holds during
-to debug the conf_mutex lock assert in ath10k_debug_fw_stats_request().
-
-Adding detection to assert on conf_mutex hold will help detect incorrect
-usages that could lead to locking problems when async worker routines try
-to call this routine.
-
-Link: https://lore.kernel.org/lkml/37a29c383bff2fb1605241ee6c7c9be3784fb3c6.1613171185.git.skhan@linuxfoundation.org/
-Link: https://lore.kernel.org/linux-wireless/871rdmu9z9.fsf@codeaurora.org/
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Bassem Dawood <bassem@morsemicro.com>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/status.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index bb6c5ee43ac0..5ce4f8d038b9 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -4727,6 +4727,8 @@ static void ath10k_mac_op_wake_tx_queue(struct ieee80211_hw *hw,
- /* Must not be called with conf_mutex held as workers can use that also. */
- void ath10k_drain_tx(struct ath10k *ar)
- {
-+	lockdep_assert_not_held(&ar->conf_mutex);
-+
- 	/* make sure rcu-protected mac80211 tx path itself is drained */
- 	synchronize_net();
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 3485610755ef..c106f81478df 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -1013,9 +1013,9 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 		if (info->flags & IEEE80211_TX_STAT_ACK) {
+ 			local->ps_sdata->u.mgd.flags |=
+ 					IEEE80211_STA_NULLFUNC_ACKED;
+-		} else
+-			mod_timer(&local->dynamic_ps_timer, jiffies +
+-					msecs_to_jiffies(10));
++		}
++		mod_timer(&local->dynamic_ps_timer, jiffies +
++				msecs_to_jiffies(10));
+ 	}
  
+ 	ieee80211_report_used_skb(local, skb, false);
 -- 
-2.27.0
+2.17.1
 
