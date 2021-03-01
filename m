@@ -2,61 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D46BF32796D
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 09:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9CA93279D7
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 09:49:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233238AbhCAIkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Mar 2021 03:40:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48622 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233320AbhCAIjf (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Mar 2021 03:39:35 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38E2C06174A;
-        Mon,  1 Mar 2021 00:38:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=sX04iQ+W/jdAFUfzECen1rbHlQQujm/m2fcunYtptNQ=; b=ZYYzApmDSrC3A3mJrNEFnMMTYl
-        Owuvu468Iuob1Pq9iJPfzUjQBKXokwT+Z+rAcEYcI0NNzi05Bg8UDaBAea38MJMFbmvyOOpLc0CgJ
-        2jswcasOIJ64Siu4srdOZA/FyydukB0bkxkBxKF76ZvwoXfog/DVhV+omLsVVa4a6POR6luiRAqps
-        y6i+bhXOKa2495dMEX+J/vobKhmrGSmeUwp68RhYCFT0ehH7e9VPF3J51C5BOwM7eI5cXLK2BvdSO
-        sJNHqNjDk0B6BgfVye0j5QK22pqMrOfd/xN9yAioufjtRf++r3/NwW4dc0khHx3yLeVq5uxUkKWH2
-        +J3y1jCQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lGe4K-00FUD5-V9; Mon, 01 Mar 2021 08:38:27 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 18F4D3049DC;
-        Mon,  1 Mar 2021 09:38:20 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id ED854201A7CFC; Mon,  1 Mar 2021 09:38:19 +0100 (CET)
-Date:   Mon, 1 Mar 2021 09:38:19 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Shuah Khan <skhan@linuxfoundation.org>
-Cc:     mingo@redhat.com, will@kernel.org, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        id S233481AbhCAIrd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Mar 2021 03:47:33 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:38902 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233479AbhCAIqp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Mar 2021 03:46:45 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614588371; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=O3yhFBjQe0kRff0bAX1BbX9HwQn6+fCi8LLDaatQMAw=; b=D6uDlw0FzOZq0b0LcoEV+zxkinvh2JqpE/jaIZwrBAhSjgwvgAn01tqBd1PvAMxtbdt1fIPE
+ yVGKWWOop6F4Sa2ldutuwJwomJxFWWk2wu0rIyC3S6yD1RWiW467/a42aJ/eT5cvdOaChwgh
+ 5w+W9MqEWxEPAeKdIKM8j4Jgwd0=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 603ca9b216ba745201a067fb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 01 Mar 2021 08:45:38
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 29C02C43466; Mon,  1 Mar 2021 08:45:38 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8CD2AC433C6;
+        Mon,  1 Mar 2021 08:45:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8CD2AC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ath10k@lists.infradead.org, mingo@redhat.com, kuba@kernel.org,
+        will@kernel.org, davem@davemloft.net
 Subject: Re: [PATCH v3 0/3] Add lockdep_assert_not_held()
-Message-ID: <YDyn+6N6EfgWJ5GV@hirez.programming.kicks-ass.net>
 References: <cover.1614383025.git.skhan@linuxfoundation.org>
+        <YDyn+6N6EfgWJ5GV@hirez.programming.kicks-ass.net>
+Date:   Mon, 01 Mar 2021 10:45:32 +0200
+In-Reply-To: <YDyn+6N6EfgWJ5GV@hirez.programming.kicks-ass.net> (Peter
+        Zijlstra's message of "Mon, 1 Mar 2021 09:38:19 +0100")
+Message-ID: <878s779s9f.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1614383025.git.skhan@linuxfoundation.org>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Feb 26, 2021 at 05:06:57PM -0700, Shuah Khan wrote:
-> Shuah Khan (3):
->   lockdep: add lockdep_assert_not_held()
->   lockdep: add lockdep lock state defines
->   ath10k: detect conf_mutex held ath10k_drain_tx() calls
+Peter Zijlstra <peterz@infradead.org> writes:
 
-Thanks!
+> On Fri, Feb 26, 2021 at 05:06:57PM -0700, Shuah Khan wrote:
+>> Shuah Khan (3):
+>>   lockdep: add lockdep_assert_not_held()
+>>   lockdep: add lockdep lock state defines
+>>   ath10k: detect conf_mutex held ath10k_drain_tx() calls
+>
+> Thanks!
+
+Via which tree should these go?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
