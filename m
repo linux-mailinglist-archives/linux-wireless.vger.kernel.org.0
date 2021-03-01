@@ -2,85 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A626327936
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 09:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D46BF32796D
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 09:40:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232986AbhCAI3I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Mar 2021 03:29:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
+        id S233238AbhCAIkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Mar 2021 03:40:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232898AbhCAI3B (ORCPT
+        with ESMTP id S233320AbhCAIjf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Mar 2021 03:29:01 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7BFC06174A;
-        Mon,  1 Mar 2021 00:28:20 -0800 (PST)
+        Mon, 1 Mar 2021 03:39:35 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38E2C06174A;
+        Mon,  1 Mar 2021 00:38:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=SLHlTyr7J4bDHB68FVUYkSlUgSwJhgwwD2i9uVB39uY=; b=uVn9nYvH4/M/8OLvG8WZEVQfCq
-        hBlKT6zXgY5YuhHzZxPgXGbisSXRCSaQWTTJN+dcVKLbhdt2dcascK+Es+bZuplCOAR6XYv3/HM4G
-        nzdBWK57VLtTZ+BT3ZNLFNghOxviSosPsXMZrN6Zkj2ZQOnlxZWNtgoCdAP2Yn7PlE+CL8f3co4Id
-        cd/6wC5Dujkq0m1aDBCVt+KVIBO9eBfGw3i9sXXm4sHlCgqGgbKsshfn+O81aAERgTMuJXcRfbeKF
-        A+ZMau+w9bTvecM2jrIkxlxUL7lPBQCC54Shq83LaiagCZyPGgSUXxATnX0FHVKF8r18ZJiaFhOgQ
-        15iTFYrg==;
+        bh=sX04iQ+W/jdAFUfzECen1rbHlQQujm/m2fcunYtptNQ=; b=ZYYzApmDSrC3A3mJrNEFnMMTYl
+        Owuvu468Iuob1Pq9iJPfzUjQBKXokwT+Z+rAcEYcI0NNzi05Bg8UDaBAea38MJMFbmvyOOpLc0CgJ
+        2jswcasOIJ64Siu4srdOZA/FyydukB0bkxkBxKF76ZvwoXfog/DVhV+omLsVVa4a6POR6luiRAqps
+        y6i+bhXOKa2495dMEX+J/vobKhmrGSmeUwp68RhYCFT0ehH7e9VPF3J51C5BOwM7eI5cXLK2BvdSO
+        sJNHqNjDk0B6BgfVye0j5QK22pqMrOfd/xN9yAioufjtRf++r3/NwW4dc0khHx3yLeVq5uxUkKWH2
+        +J3y1jCQ==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1lGduU-0006I4-HY; Mon, 01 Mar 2021 08:28:10 +0000
+        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lGe4K-00FUD5-V9; Mon, 01 Mar 2021 08:38:27 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A0F6F301959;
-        Mon,  1 Mar 2021 09:28:06 +0100 (CET)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 18F4D3049DC;
+        Mon,  1 Mar 2021 09:38:20 +0100 (CET)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 8785025F2CD01; Mon,  1 Mar 2021 09:28:06 +0100 (CET)
-Date:   Mon, 1 Mar 2021 09:28:06 +0100
+        id ED854201A7CFC; Mon,  1 Mar 2021 09:38:19 +0100 (CET)
+Date:   Mon, 1 Mar 2021 09:38:19 +0100
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     Shuah Khan <skhan@linuxfoundation.org>
 Cc:     mingo@redhat.com, will@kernel.org, kvalo@codeaurora.org,
         davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] lockdep: add lockdep_assert_not_held()
-Message-ID: <YDyllv3zs+lWtgCV@hirez.programming.kicks-ass.net>
-References: <cover.1614355914.git.skhan@linuxfoundation.org>
- <a40d18bba5a52662ac8fc556e1fce3752ea08472.1614355914.git.skhan@linuxfoundation.org>
- <YDli+H48Ft3F6k9/@hirez.programming.kicks-ass.net>
- <0ee409b7-b0d5-43c2-c247-b0482c392dea@linuxfoundation.org>
+Subject: Re: [PATCH v3 0/3] Add lockdep_assert_not_held()
+Message-ID: <YDyn+6N6EfgWJ5GV@hirez.programming.kicks-ass.net>
+References: <cover.1614383025.git.skhan@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0ee409b7-b0d5-43c2-c247-b0482c392dea@linuxfoundation.org>
+In-Reply-To: <cover.1614383025.git.skhan@linuxfoundation.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Feb 26, 2021 at 02:16:12PM -0700, Shuah Khan wrote:
-> On 2/26/21 2:07 PM, Peter Zijlstra wrote:
-> > On Fri, Feb 26, 2021 at 10:52:13AM -0700, Shuah Khan wrote:
-> > > +		/* avoid false negative lockdep_assert_not_held()
-> > > +		 * and lockdep_assert_held()
-> > > +		 */
-> > 
-> > That's a coding style fail.
-> > 
-> 
-> Checkpatch didn't complain.
+On Fri, Feb 26, 2021 at 05:06:57PM -0700, Shuah Khan wrote:
+> Shuah Khan (3):
+>   lockdep: add lockdep_assert_not_held()
+>   lockdep: add lockdep lock state defines
+>   ath10k: detect conf_mutex held ath10k_drain_tx() calls
 
-  Documentation/CodingStyle
-
-(or whatever unreadable rst crap it is today :-( )
-
-and:
-
-  https://lkml.kernel.org/lkml/CA+55aFyQYJerovMsSoSKS7PessZBr4vNp-3QUUwhqk4A4_jcbg@mail.gmail.com/
-
-> What's your preference? Does the following work for you?
-> 
-> /*
->  * avoid false negative lockdep_assert_not_held()
->  * and lockdep_assert_held()
->  */
-
-Yep (ideally even with a Capital and full stop).
+Thanks!
