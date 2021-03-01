@@ -2,72 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7C8F327859
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 08:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A626327936
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 09:30:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232565AbhCAHlM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Mar 2021 02:41:12 -0500
-Received: from mail.zju.edu.cn ([61.164.42.155]:23772 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232559AbhCAHlE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Mar 2021 02:41:04 -0500
-Received: by ajax-webmail-mail-app2 (Coremail) ; Mon, 1 Mar 2021 15:41:24
- +0800 (GMT+08:00)
-X-Originating-IP: [10.192.85.18]
-Date:   Mon, 1 Mar 2021 15:41:24 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   dinghao.liu@zju.edu.cn
-To:     "Stanislaw Gruszka" <stf_xl@wp.pl>
-Cc:     kjlu@umn.edu, "Kalle Valo" <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jakub Kicinski" <kuba@kernel.org>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: Re: [PATCH] iwlegacy: Add missing check in il4965_commit_rxon
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20200917(3e19599d)
- Copyright (c) 2002-2021 www.mailtech.cn zju.edu.cn
-In-Reply-To: <20210301072547.GA118024@wp.pl>
-References: <20210228122522.2513-1-dinghao.liu@zju.edu.cn>
- <20210301072547.GA118024@wp.pl>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        id S232986AbhCAI3I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Mar 2021 03:29:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232898AbhCAI3B (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Mar 2021 03:29:01 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7BFC06174A;
+        Mon,  1 Mar 2021 00:28:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=SLHlTyr7J4bDHB68FVUYkSlUgSwJhgwwD2i9uVB39uY=; b=uVn9nYvH4/M/8OLvG8WZEVQfCq
+        hBlKT6zXgY5YuhHzZxPgXGbisSXRCSaQWTTJN+dcVKLbhdt2dcascK+Es+bZuplCOAR6XYv3/HM4G
+        nzdBWK57VLtTZ+BT3ZNLFNghOxviSosPsXMZrN6Zkj2ZQOnlxZWNtgoCdAP2Yn7PlE+CL8f3co4Id
+        cd/6wC5Dujkq0m1aDBCVt+KVIBO9eBfGw3i9sXXm4sHlCgqGgbKsshfn+O81aAERgTMuJXcRfbeKF
+        A+ZMau+w9bTvecM2jrIkxlxUL7lPBQCC54Shq83LaiagCZyPGgSUXxATnX0FHVKF8r18ZJiaFhOgQ
+        15iTFYrg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1lGduU-0006I4-HY; Mon, 01 Mar 2021 08:28:10 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A0F6F301959;
+        Mon,  1 Mar 2021 09:28:06 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 8785025F2CD01; Mon,  1 Mar 2021 09:28:06 +0100 (CET)
+Date:   Mon, 1 Mar 2021 09:28:06 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Shuah Khan <skhan@linuxfoundation.org>
+Cc:     mingo@redhat.com, will@kernel.org, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] lockdep: add lockdep_assert_not_held()
+Message-ID: <YDyllv3zs+lWtgCV@hirez.programming.kicks-ass.net>
+References: <cover.1614355914.git.skhan@linuxfoundation.org>
+ <a40d18bba5a52662ac8fc556e1fce3752ea08472.1614355914.git.skhan@linuxfoundation.org>
+ <YDli+H48Ft3F6k9/@hirez.programming.kicks-ass.net>
+ <0ee409b7-b0d5-43c2-c247-b0482c392dea@linuxfoundation.org>
 MIME-Version: 1.0
-Message-ID: <5aa56fec.9fb9e.177ecbc1359.Coremail.dinghao.liu@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: by_KCgDXvYikmjxgmSraAQ--.34822W
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAg0LBlZdtSi7-wAFsV
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW7Jw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ee409b7-b0d5-43c2-c247-b0482c392dea@linuxfoundation.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBPbiBTdW4sIEZlYiAyOCwgMjAyMSBhdCAwODoyNToyMlBNICswODAwLCBEaW5naGFvIExpdSB3
-cm90ZToKPiA+IFRoZXJlIGlzIG9uZSBpbF9zZXRfdHhfcG93ZXIoKSBjYWxsIGluIHRoaXMgZnVu
-Y3Rpb24gd2l0aG91dAo+ID4gcmV0dXJuIHZhbHVlIGNoZWNrLiBQcmludCBlcnJvciBtZXNzYWdl
-IGFuZCByZXR1cm4gZXJyb3IgY29kZQo+ID4gb24gZmFpbHVyZSBqdXN0IGxpa2UgdGhlIG90aGVy
-IGlsX3NldF90eF9wb3dlcigpIGNhbGwuCj4gCj4gV2UgaGF2ZSBmZXcgY2FsbHMgZm9yIGlsX3Nl
-dF90eF9wb3dlcigpLCBvbiBzb21lIGNhc2VzIHdlCj4gY2hlY2sgcmV0dXJuIG9uIHNvbWUgbm90
-LiBUaGF0IGNvcnJlY3QgYXMgc2V0dGluZyB0eCBwb3dlcgo+IGNhbiBiZSBkZWZlcnJlZCBpbnRl
-cm5hbGx5IGlmIG5vdCBwb3NzaWJsZSBhdCB0aGUgbW9tZW50Lgo+IAo+ID4gU2lnbmVkLW9mZi1i
-eTogRGluZ2hhbyBMaXUgPGRpbmdoYW8ubGl1QHpqdS5lZHUuY24+Cj4gPiAtLS0KPiA+ICBkcml2
-ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2xlZ2FjeS80OTY1LmMgfCA2ICsrKysrLQo+ID4gIDEg
-ZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiA+IAo+ID4gZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bGVnYWN5LzQ5NjUuYyBiL2Ry
-aXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bGVnYWN5LzQ5NjUuYwo+ID4gaW5kZXggOWZhNTU2
-NDg2NTExLi4zMjM1YjhiZTE4OTQgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9pbnRlbC9pd2xlZ2FjeS80OTY1LmMKPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2lu
-dGVsL2l3bGVnYWN5LzQ5NjUuYwo+ID4gQEAgLTEzNjEsNyArMTM2MSwxMSBAQCBpbDQ5NjVfY29t
-bWl0X3J4b24oc3RydWN0IGlsX3ByaXYgKmlsKQo+ID4gIAkJICogV2UgZG8gbm90IGNvbW1pdCB0
-eCBwb3dlciBzZXR0aW5ncyB3aGlsZSBjaGFubmVsIGNoYW5naW5nLAo+ID4gIAkJICogZG8gaXQg
-bm93IGlmIHR4IHBvd2VyIGNoYW5nZWQuCj4gPiAgCQkgKi8KPiA+IC0JCWlsX3NldF90eF9wb3dl
-cihpbCwgaWwtPnR4X3Bvd2VyX25leHQsIGZhbHNlKTsKPiA+ICsJCXJldCA9IGlsX3NldF90eF9w
-b3dlcihpbCwgaWwtPnR4X3Bvd2VyX25leHQsIGZhbHNlKTsKPiA+ICsJCWlmIChyZXQpIHsKPiA+
-ICsJCQlJTF9FUlIoIkVycm9yIHNlbmRpbmcgVFggcG93ZXIgKCVkKVxuIiwgcmV0KTsKPiA+ICsJ
-CQlyZXR1cm4gcmV0Owo+ID4gKwkJCj4gCj4gVGhpcyBpcyBub3QgZ29vZCBjaGFuZ2UuIFdlIGRv
-IG5vdCBjaGVjayByZXR1cm4gdmFsdWUgb2YKPiBpbF9jb21taXRfcnhvbigpLCBleGNlcHQgd2hl
-biBjcmVhdGluZyBpbnRlcmZhY2UuIFNvIHRoaXMgY2hhbmdlIG1pZ2h0Cj4gYnJva2UgY3JlYXRp
-bmcgaW50ZXJmYWNlLCB3aGF0IHdvcmtlZCBvdGhlcndpc2Ugd2hlbiBpbF9zZXRfdHhfcG93ZXIo
-KQo+IHJldHVybmVkIGVycm9yLgo+IAoKSXQncyBjbGVhciB0byBtZSwgVGhhbmtzIGZvciB5b3Vy
-IGV4cGxhbmF0aW9uIQoKUmVnYXJkcywKRGluZ2hhbwo=
+On Fri, Feb 26, 2021 at 02:16:12PM -0700, Shuah Khan wrote:
+> On 2/26/21 2:07 PM, Peter Zijlstra wrote:
+> > On Fri, Feb 26, 2021 at 10:52:13AM -0700, Shuah Khan wrote:
+> > > +		/* avoid false negative lockdep_assert_not_held()
+> > > +		 * and lockdep_assert_held()
+> > > +		 */
+> > 
+> > That's a coding style fail.
+> > 
+> 
+> Checkpatch didn't complain.
+
+  Documentation/CodingStyle
+
+(or whatever unreadable rst crap it is today :-( )
+
+and:
+
+  https://lkml.kernel.org/lkml/CA+55aFyQYJerovMsSoSKS7PessZBr4vNp-3QUUwhqk4A4_jcbg@mail.gmail.com/
+
+> What's your preference? Does the following work for you?
+> 
+> /*
+>  * avoid false negative lockdep_assert_not_held()
+>  * and lockdep_assert_held()
+>  */
+
+Yep (ideally even with a Capital and full stop).
