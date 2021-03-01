@@ -2,86 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F5AC32783A
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 08:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B32E327843
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 08:27:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232415AbhCAHYp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Mar 2021 02:24:45 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:39354 "EHLO z11.mailgun.us"
+        id S232495AbhCAH0p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Mar 2021 02:26:45 -0500
+Received: from mx3.wp.pl ([212.77.101.10]:41987 "EHLO mx3.wp.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232286AbhCAHYk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Mar 2021 02:24:40 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614583456; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=0Tdki5YTFBWfPCqCABdVwedB+bTfQqu93GYTHRYGeEc=; b=wUIhfqmEo5S4qbLFbg5hKI92GyvPSwVzZlCKtVBMg8Pvz5s0kqTH2IPBVuhy9KaWel/DF1jk
- eO6/x/sfaT+KYqwc9lGFd4Bjli2wFoWAahCyGyA44rimHWI152IngcbiSactnNeEqEcgg+0x
- /3WBf0kc95gAvjShCis2dngNPnY=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 603c96807aa94c52e7bef06c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 01 Mar 2021 07:23:44
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8F6C4C433C6; Mon,  1 Mar 2021 07:23:44 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3E01FC433CA;
-        Mon,  1 Mar 2021 07:23:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3E01FC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "Bjoern A. Zeeb" <bz@FreeBSD.ORG>
-Cc:     linux-wireless@vger.kernel.org, luciano.coelho@intel.com
-Subject: Re: [PATCH iwlwifi-next] iwlwifi: de-const properly where needed
-References: <alpine.BSF.2.00.2102261652510.72241@ai.fobar.qr>
-Date:   Mon, 01 Mar 2021 09:23:38 +0200
-In-Reply-To: <alpine.BSF.2.00.2102261652510.72241@ai.fobar.qr> (Bjoern A.
-        Zeeb's message of "Fri, 26 Feb 2021 16:53:25 +0000 (UTC)")
-Message-ID: <87tupvcp6t.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S232492AbhCAH0n (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Mar 2021 02:26:43 -0500
+Received: (wp-smtpd smtp.wp.pl 14851 invoked from network); 1 Mar 2021 08:25:47 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1614583548; bh=caswnsyka5PEQKPkgMw1QK+L+kDqw+U3lis6uLlqdwQ=;
+          h=From:To:Cc:Subject;
+          b=ij7ENGWGuXkLO6Kdm5TdqpoCfYx7ir/553xjFx4nqgoc20qUabZcbCx+QpNd71lYu
+           B7Y5dDAmyFxMnvxgp9uEj+U238WRDUpZ4Ow4uc9r0NyrbTuofsJvEuX7fD+ARnOGUt
+           3VfO1OeGig5L683pnbm1AykvDBZr5m5g9I9uvD4E=
+Received: from ip4-46-39-164-204.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.204])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <dinghao.liu@zju.edu.cn>; 1 Mar 2021 08:25:47 +0100
+Date:   Mon, 1 Mar 2021 08:25:47 +0100
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc:     kjlu@umn.edu, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iwlegacy: Add missing check in il4965_commit_rxon
+Message-ID: <20210301072547.GA118024@wp.pl>
+References: <20210228122522.2513-1-dinghao.liu@zju.edu.cn>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210228122522.2513-1-dinghao.liu@zju.edu.cn>
+X-WP-MailID: 978dc73fa3a4319775c96140784be0be
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [AbOk]                               
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Bjoern A. Zeeb" <bz@FreeBSD.ORG> writes:
+On Sun, Feb 28, 2021 at 08:25:22PM +0800, Dinghao Liu wrote:
+> There is one il_set_tx_power() call in this function without
+> return value check. Print error message and return error code
+> on failure just like the other il_set_tx_power() call.
 
-> In order to de-const variables simply casting through (void *) is
-> not enough: "cast from 'const .. *' to 'void *' drops const qualifier".
-> Cast through (uintptr_t) as well [1] to make this compile on systems
-> with more strict requirements.
-> In addition passing const void *data to dma_map_single() also
-> drops the (const) qualifier.  De-constify on variable on assignment
-> which may be overwritten later.  In either case the (void *) cast
-> to dma_map_single() is not needed (anymore) either.
->
-> [1] See __DECONST() in sys/sys/cdefs.h in FreeBSD
->
-> Sponsored-by:  The FreeBSD Foundation
-> Signed-off-by: Bjoern A. Zeeb <bz@FreeBSD.ORG>
+We have few calls for il_set_tx_power(), on some cases we
+check return on some not. That correct as setting tx power
+can be deferred internally if not possible at the moment.
 
-Why are we using the const in the first place? That sounds like a bug to
-me.
+> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+> ---
+>  drivers/net/wireless/intel/iwlegacy/4965.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlegacy/4965.c b/drivers/net/wireless/intel/iwlegacy/4965.c
+> index 9fa556486511..3235b8be1894 100644
+> --- a/drivers/net/wireless/intel/iwlegacy/4965.c
+> +++ b/drivers/net/wireless/intel/iwlegacy/4965.c
+> @@ -1361,7 +1361,11 @@ il4965_commit_rxon(struct il_priv *il)
+>  		 * We do not commit tx power settings while channel changing,
+>  		 * do it now if tx power changed.
+>  		 */
+> -		il_set_tx_power(il, il->tx_power_next, false);
+> +		ret = il_set_tx_power(il, il->tx_power_next, false);
+> +		if (ret) {
+> +			IL_ERR("Error sending TX power (%d)\n", ret);
+> +			return ret;
+> +		
 
-BTW, your patches are hard to read due to excessive context, I guess you
-are using a very large context value with diff? Our recommendation is to
-use git with default values, see the wiki below for more info.
+This is not good change. We do not check return value of
+il_commit_rxon(), except when creating interface. So this change might
+broke creating interface, what worked otherwise when il_set_tx_power()
+returned error.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Stanislaw
