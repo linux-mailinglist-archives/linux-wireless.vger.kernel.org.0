@@ -2,93 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 986B13282A9
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 16:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CDBC328312
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 17:08:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237365AbhCAPig (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Mar 2021 10:38:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54154 "EHLO
+        id S237516AbhCAQHH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Mar 2021 11:07:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237260AbhCAPi2 (ORCPT
+        with ESMTP id S237526AbhCAQFf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Mar 2021 10:38:28 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A2CC061756;
-        Mon,  1 Mar 2021 07:37:45 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id d15so1386816wrv.5;
-        Mon, 01 Mar 2021 07:37:45 -0800 (PST)
+        Mon, 1 Mar 2021 11:05:35 -0500
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA487C06178B
+        for <linux-wireless@vger.kernel.org>; Mon,  1 Mar 2021 08:04:54 -0800 (PST)
+Received: by mail-io1-xd32.google.com with SMTP id z13so18298285iox.8
+        for <linux-wireless@vger.kernel.org>; Mon, 01 Mar 2021 08:04:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=2mjETDS/R3AcrHDxH+eBHTmfWCAT1YYDng8uSVTe0DQ=;
-        b=ZijXwVTP9y+09zH0zD9ZoS6JDGqj/lSjfXbcaqFGfzV9rSL6eZVDHZAW0kSlgtHg15
-         zwQQgWIduKj22O5riA3/wQKzgjWbCcsUTgJrGgdFo4tHxpYgKSErmSv7Bl3QFKUK1mNJ
-         yeevnPS0LmK/KCLrwuWm8JQQvVkkoN68zBP8yCEtzAY/avhw4l+9BZjmF+1gH3otdnip
-         uqovBZ4TOm4bb00bOgcxPTkYyd0DU/3PXoa34WBSE6jK72v0CO2OFhYe3IRbPaZmN4vI
-         Nhscr25Rfao5pxLgOBHh9AFUPv9oUNvWJI+/5wp7+rv2bcXH/Jjg7LOy18A2Lah7zHmS
-         vPHw==
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=EKrTHUD8nTlc92mQngo8dvkuTImbzwvaVzeVetCu0jw=;
+        b=OzKMNXek+I8inLFREphZnBTEPyMtKFd05n2jkhYEACrXQV50yWIreQxlvXh+bFeZdj
+         m3mnr4ReYJxUEjpJoUUPkkWeMqnfuBbkfXQTCvtwielou8eZA/Yjk2ftF0lc2+EZb7gz
+         AhJs+aZXzWmdcKcQYYgS9wuGbmOU0SNPmtXgc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2mjETDS/R3AcrHDxH+eBHTmfWCAT1YYDng8uSVTe0DQ=;
-        b=H7z4FaUVUN9ntiJ+h1J3nmmPuT4hYLK3jGESibYBczhDd8HFs2n9m2QIkuWGYLETQx
-         dmtbgXAeoJSWwxV3uJibrVnB5fm9uXRTjoFqgt+dI5oUqgdYXX0atu0XxlsKfbJ67kGN
-         oCuK5ZKV0zk5zdZFsmA0WzCamRQlN2LwMUsm9LTft/3AiDOvOS+Qw6RvWlKFul273FXU
-         Fw5/FJFOpQZN40VKLYQMWRRJVavHUW0K4gSYPZ0c1FtAlJgR7SyFxo6rM1g9DpfPRuE2
-         Y8xrTQ98pQdJZhbjtdQI2AxRDr40bSZxxF0JtMX8l2+m7P9HabS7B9XdV+bXzxiWFqxw
-         Xy/w==
-X-Gm-Message-State: AOAM531HjXPIHuyY1zQghrmlHQplWNOQOZ8kCE3iruX6x8U5tnuLnm6B
-        PbOLE/+WitII+ZeaTueOyEU=
-X-Google-Smtp-Source: ABdhPJwVOsqMcVd+MawWtsgwbNmlYQ/GlTYMnDc8ODM0H4y4vaQ4CERjuc4s6tjZRpm4/l1Xlb2hrw==
-X-Received: by 2002:a5d:424c:: with SMTP id s12mr15556026wrr.161.1614613064575;
-        Mon, 01 Mar 2021 07:37:44 -0800 (PST)
-Received: from ubuntudesktop (205.158.32.217.dyn.plus.net. [217.32.158.205])
-        by smtp.gmail.com with ESMTPSA id n1sm28452749wrx.45.2021.03.01.07.37.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Mar 2021 07:37:44 -0800 (PST)
-Date:   Mon, 1 Mar 2021 15:37:42 +0000
-From:   Lee <leegib@gmail.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     devel@driverdev.osuosl.org, gregkh@linuxfoundation.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] staging: rtl8192e: Fix possible buffer overflow in
- _rtl92e_wx_set_scan
-Message-ID: <20210301153742.GA427438@ubuntudesktop>
-References: <20210226114829.316980-1-leegib@gmail.com>
- <20210226134333.GA2087@kadam>
- <20210226140526.GG2222@kadam>
- <20210301132535.GR2087@kadam>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=EKrTHUD8nTlc92mQngo8dvkuTImbzwvaVzeVetCu0jw=;
+        b=kJDEWGmwXdP8XEhrc/ikRXjpiww9EDRRtngiUkIBAWLQ+2K3dYtNS8VeJt+x9SwbQc
+         nKsWhDv47KVxkG8u9bKN50NvZ5Jkf9C0THbtPu7Ip39tdxTcxYVuFm3qY8O9I37aDPb4
+         CT3gjQGI9n9MhYgkckPXzDJ/eabD4RfVBz2Vs6bHCLmPidolIjNMruFN58Ivh6CvXxxg
+         aENIqxiaxMxidl9qQVx+H2WJ7IFbb32RDTRBTyZzxggFYh9HoQgqrQBTP4cxBPObLTvk
+         m7hImePrSLAAaU61q9WCB0X55/vMoN7cG0q/psPcC2crs35IDY7xOC40GDHRAZvfZ2QI
+         eFaQ==
+X-Gm-Message-State: AOAM530W5eHjvUch7zvYmxHkAdLSTBQHSiIihn0voWM2sCn7XbjzXUN+
+        P4YHleCBTOYnpjtE8/7TZY5EKg==
+X-Google-Smtp-Source: ABdhPJyHDG0iYVZlSzcNqnmMybFrQ2QGhS+B6rbmCLoGXy1bRb60o28gANXZXohEvaUxVInLWPvkRg==
+X-Received: by 2002:a6b:b2cd:: with SMTP id b196mr1301123iof.67.1614614694219;
+        Mon, 01 Mar 2021 08:04:54 -0800 (PST)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id y3sm570760iot.15.2021.03.01.08.04.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Mar 2021 08:04:53 -0800 (PST)
+Subject: Re: [PATCH v3 0/3] Add lockdep_assert_not_held()
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
+        mingo@redhat.com, kuba@kernel.org, will@kernel.org,
+        davem@davemloft.net, Shuah Khan <skhan@linuxfoundation.org>
+References: <cover.1614383025.git.skhan@linuxfoundation.org>
+ <YDyn+6N6EfgWJ5GV@hirez.programming.kicks-ass.net>
+ <878s779s9f.fsf@codeaurora.org>
+ <YDy1j+hMLGUWKKV6@hirez.programming.kicks-ass.net>
+ <87sg5f87df.fsf@codeaurora.org>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <5a34de30-6de2-8985-ef6f-5873228a3231@linuxfoundation.org>
+Date:   Mon, 1 Mar 2021 09:04:53 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210301132535.GR2087@kadam>
+In-Reply-To: <87sg5f87df.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 3/1/21 4:02 AM, Kalle Valo wrote:
+> Peter Zijlstra <peterz@infradead.org> writes:
+> 
+>> On Mon, Mar 01, 2021 at 10:45:32AM +0200, Kalle Valo wrote:
+>>> Peter Zijlstra <peterz@infradead.org> writes:
+>>>
+>>>> On Fri, Feb 26, 2021 at 05:06:57PM -0700, Shuah Khan wrote:
+>>>>> Shuah Khan (3):
+>>>>>    lockdep: add lockdep_assert_not_held()
+>>>>>    lockdep: add lockdep lock state defines
+>>>>>    ath10k: detect conf_mutex held ath10k_drain_tx() calls
+>>>>
+>>>> Thanks!
+>>>
+>>> Via which tree should these go?
+>>
+>> I've just queued the lot for locking/core, which will show up in tip
+>> when the robots don't hate on it.
+>>
+>> Does that work for you?
+> 
+> That's perfect, thanks! Just making sure that the patches don't get
+> lost.
+> 
 
+Awesome. Thank you.
 
-
-> This check worked out pretty well.  It's probably 50% bugs?  Unfiltered
-> results below.  The trick of warning for "if (ststr(member, "->ssid")) "
-> and the memcpy length couldn't be verified turned out to be the best.
-
-That list looks great. I checked out 2 of those listed at random and 
-they look like valid bugs to me.
-
-> But there are quite a few real bugs as well.  If anyone wants to fix any
-> of these just claim a bug, and I won't send a patch for that warning.
-> :)  Lee, I think you mentioned that you had found a related buffer
-> overflow fix?  Did the check find it?
-
-
-I think I found 2 in these files:
-
-drivers/staging/rtl8712/rtl871x_cmd.c    
-drivers/staging/wfx/hif_tx.c
-
-Regards,
-Lee
-
+thanks,
+-- Shuah
