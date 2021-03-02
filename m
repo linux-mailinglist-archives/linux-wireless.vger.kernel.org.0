@@ -2,84 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C78F932AFB2
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70CB232AFB0
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238619AbhCCA2J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Mar 2021 19:28:09 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:60276 "EHLO z11.mailgun.us"
+        id S238597AbhCCA2G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:28:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33144 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1384601AbhCBPWk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 10:22:40 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614698433; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=X/rBB6Mfb3HTFcW5K4H5qHEV4T8XyPF6bjBJnHNM3aY=; b=oE0c5slesIwpaQDLUQiE738KJjqq+Bl/yUwsxdE7hV5FdS0h7JKb6jr6FWMRyjDNsP+jHhN2
- kOxnPUdYvq3O4L5y1Q84nd2tzRdAW7jthxCDhUW/xxzrNul8XDXFX1z5d3PlHUFXr8iPzFXw
- hkCiz6N4JhnZnzZX4ZwKfwOIKYk=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 603e50ce540e11609c9a36fb (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 02 Mar 2021 14:50:54
- GMT
-Sender: vamsin=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 92603C433ED; Tue,  2 Mar 2021 14:50:53 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from hu-vamsin-hyd.qualcomm.com (unknown [202.46.22.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vamsin)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1C3AEC433CA;
-        Tue,  2 Mar 2021 14:50:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1C3AEC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=vamsin@codeaurora.org
-From:   Vamsi Krishna <vamsin@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] nl80211: Add interface to indicate TDLS peer's HE capability
-Date:   Tue,  2 Mar 2021 20:20:36 +0530
-Message-Id: <1614696636-30144-1-git-send-email-vamsin@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1448614AbhCBPHa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Mar 2021 10:07:30 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0220E64F31;
+        Tue,  2 Mar 2021 14:55:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614696906;
+        bh=8It4yP7aeowMnxrRjMp2VuO3oZ/kpVFvOz2t0EfqsLI=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=cJviZO4CmzYCEFaTgFTU1n0fOKlFhyAC9Sb9iQlOW8un8OszNwLsc+5T6uVi7L7sS
+         KiegQBH3npHiSHLSUDx72vwgeju9bK6ss2NjV8prGv6J40SsO+d4f3uvy4MWIIm9rD
+         QsHZyXTiJSdc/qkUocY/84iCAxLFsPSK3C+v6OU5o2SiShm1FjAHhvHhOst5Sj8Vd9
+         X+HdQndb7DuYD6FmVsUNb/2HFMqk+KChELcqtYF/ANkp2SIn91s9iA+P6rOa5NhlJQ
+         fxHs8Ic6nPL92Hg//aqOlxhH3XlpeLrG03IPtjwHt0ZKKF0JfCzDIS+0BZxWjOtz6w
+         CRaTepHP7AqfA==
+Date:   Tue, 2 Mar 2021 15:55:02 +0100 (CET)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+cc:     "Coelho, Luciano" <luciano.coelho@intel.com>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] iwlwifi: don't call netif_napi_add() with rxq->lock
+ held (was Re: Lockdep warning in iwl_pcie_rx_handle())
+In-Reply-To: <87blc192cz.fsf@codeaurora.org>
+Message-ID: <nycvar.YFH.7.76.2103021554160.12405@cbobk.fhfr.pm>
+References: <nycvar.YFH.7.76.2103012136570.12405@cbobk.fhfr.pm> <2db8f779b4b37d4498cfeaed77d5ede54e429a6e.camel@sipsolutions.net> <nycvar.YFH.7.76.2103021025410.12405@cbobk.fhfr.pm> <nycvar.YFH.7.76.2103021134060.12405@cbobk.fhfr.pm>
+ <7de7aa19e5ea8a856cce4193ebb3c31b4ef78ca7.camel@intel.com> <87blc192cz.fsf@codeaurora.org>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enhance enum nl80211_tdls_peer_capability to configure TDLS peer's
-support for HE mode. Userspace decodes the TDLS setup response frame
-and confugures the HE mode support to driver if the peer has advertized
-HE mode support in TDLS setup response frame. The driver uses this
-information to decide whether to include HE operation IE in TDLS setup
-confirmation frame.
+On Tue, 2 Mar 2021, Kalle Valo wrote:
 
-Signed-off-by: Vamsi Krishna <vamsin@codeaurora.org>
+> > Thanks, Jiri! Let's take your patch since you already sent it out.
+> >
+> > Kalle, can you please take this directly to wireless-drivers.git?
+> >
+> > Acked-by: Luca Coelho <luciano.coelho@intel.com>
+> 
+> Ok but I don't see this either in patchwork or lore, hopefully it shows
+> up later.
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index ac78da9..adc890e 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -6295,11 +6295,13 @@ struct nl80211_vendor_cmd_info {
-  * @NL80211_TDLS_PEER_HT: TDLS peer is HT capable.
-  * @NL80211_TDLS_PEER_VHT: TDLS peer is VHT capable.
-  * @NL80211_TDLS_PEER_WMM: TDLS peer is WMM capable.
-+ * @NL80211_TDLS_PEER_HE: TDLS peer is HE capable.
-  */
- enum nl80211_tdls_peer_capability {
- 	NL80211_TDLS_PEER_HT = 1<<0,
- 	NL80211_TDLS_PEER_VHT = 1<<1,
- 	NL80211_TDLS_PEER_WMM = 1<<2,
-+	NL80211_TDLS_PEER_HE = 1<<3,
- };
- 
- /**
+Not sure about patchwork, but vger had hiccup (again) earlier today, 
+everything depending on the ML traffic is probably slower.
+
+lore has it now though: 
+
+	https://lore.kernel.org/lkml/nycvar.YFH.7.76.2103021134060.12405@cbobk.fhfr.pm/
+
+Thanks,
+
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+Jiri Kosina
+SUSE Labs
 
