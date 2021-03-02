@@ -2,162 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC3D432AF71
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:27:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B07532AF79
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:28:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237127AbhCCAWG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Mar 2021 19:22:06 -0500
-Received: from mga12.intel.com ([192.55.52.136]:24564 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1837119AbhCBH0S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 02:26:18 -0500
-IronPort-SDR: RxaJkYKD2/xLsdqV7Tm5OAuzMcH4W+/qt3Ah9cYilcq4ExseiDUDt2MohlLgiJTYdo2sMULDNG
- Xt5MPPxngbVA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="165952426"
-X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
-   d="scan'208";a="165952426"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2021 23:24:24 -0800
-IronPort-SDR: ReSQ9tbePiDIQ56hrGaUrqi0qOHcxCf5SpYg29SYBRgoWU0aczO8YJsFzxcSLHlfBHc6NpT1De
- rrmOe/CGWMow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
-   d="scan'208";a="398195112"
-Received: from orsmsx605.amr.corp.intel.com ([10.22.229.18])
-  by fmsmga008.fm.intel.com with ESMTP; 01 Mar 2021 23:24:23 -0800
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX605.amr.corp.intel.com (10.22.229.18) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 1 Mar 2021 23:24:23 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 1 Mar 2021 23:24:23 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2
- via Frontend Transport; Mon, 1 Mar 2021 23:24:23 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.48) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2106.2; Mon, 1 Mar 2021 23:24:22 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lKcEfkGvKdLp4eDG9ZjgtW41vX90FTZN5V/h04tOtG3FKOYMCuBI8XK/vOZcFSjXBbQv1IFC3vHLNsCoPCawAufogN8voivUot/QDuGoX4XamB/IToBdbT8DVCaP9YTMtwezKQnozIiFHb7/XDjqCHrA7UujjFTgoMuaff2ENQrID14h+u+hsht3fmcDkPXdn2W2muYrpcCq3LJ1X9Z5IJiuz59jEfBmetdgM+pwr9Yy3C/oD03xIH0qyHUPIHN2MqmOWLl58a1LAqy0ImhcFuoyIJnxLV1Vx3o6j7g8CWWDUSAeJXqU449KPtfKZfgNEwx0EF9Sg2uF4R2FpsbrRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T9keEohbXvJYYrGLzJEUx5smQh4egbv9kakzBNuG8FE=;
- b=divMPDLWB9I9ATcVwEk7cVPkPiMQ5uyBd76SrQBQl+fq/p6n2sN4EKWPXvnSwNKGmucHKqH9ABBbM+rd6drWe6wnUwIIfb0eAGCSYipOpcwHj92/WBiWigo5bP2QP3IIgFdCsIbhXVX/BL9upHJxIm/DE7Pdc0Hm0euPDSVhieCguun4l+CHTAqkyI3hzuQPYg0gj4FKyoTvOR/QVsqTRFPh2RovhXzDQ321DCI0TLQ3/2cQ9Wtu+hKODk0+FK79dh770vv6P8kqprS1rek+6O6Js/8pReqIHuAWqtKVjDqYCIxxDvmH6AccluILxu8gn93/kzC3mQpB1gwMSECVIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T9keEohbXvJYYrGLzJEUx5smQh4egbv9kakzBNuG8FE=;
- b=Jc6M0YIZtGnHRgBqywFSIXO97skzz9dBOmRQuO97XvsQRI3cuyXYGYzMMn6BgUKdK238Xacn+zhKiF05MVlYiszqD/Y/7+MccBVXUfWoTRKm0Q1M5r2lY8uJaSOpsvSwz12Qm7OebKLeFNb2SyjckJ3uta9Lk0A7935Tc5X6hE0=
-Received: from BYAPR11MB3207.namprd11.prod.outlook.com (2603:10b6:a03:7c::14)
- by BYAPR11MB3829.namprd11.prod.outlook.com (2603:10b6:a03:fa::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.28; Tue, 2 Mar
- 2021 07:24:22 +0000
-Received: from BYAPR11MB3207.namprd11.prod.outlook.com
- ([fe80::c951:3ae4:1aca:9daf]) by BYAPR11MB3207.namprd11.prod.outlook.com
- ([fe80::c951:3ae4:1aca:9daf%3]) with mapi id 15.20.3890.023; Tue, 2 Mar 2021
- 07:24:22 +0000
-From:   "Coelho, Luciano" <luciano.coelho@intel.com>
-To:     "pierre-louis.bossart@linux.intel.com" 
-        <pierre-louis.bossart@linux.intel.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] iwlwifi: fix ARCH=i386 compilation warnings
-Thread-Topic: [PATCH] iwlwifi: fix ARCH=i386 compilation warnings
-Thread-Index: AQHXDwHCZhYGmtuUrkCfjHc0gwOiPapwNEqkgAAX0oA=
-Date:   Tue, 2 Mar 2021 07:24:22 +0000
-Message-ID: <d8437a2c23aa2217233a55222c6968d1ce887bf2.camel@intel.com>
-References: <20210302011640.1276636-1-pierre-louis.bossart@linux.intel.com>
-         <87k0qq85bj.fsf@codeaurora.org>
-In-Reply-To: <87k0qq85bj.fsf@codeaurora.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: linux.intel.com; dkim=none (message not signed)
- header.d=none;linux.intel.com; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [192.198.151.182]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d13a723b-69d9-4b51-eba1-08d8dd4c3363
-x-ms-traffictypediagnostic: BYAPR11MB3829:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR11MB3829A1112A5F79491BE0E47190999@BYAPR11MB3829.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3513;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: iqAhtCcJwbSm4uxy5Pnxi+vxP9PmyzQXv/1Wi9OG7vlZUkypZyk4kZgoMCXszF9HR3Jsee8tGIjsV+UaSsaF4rpMnCS8HTeb/WWjhxN8nEYPpfUCv37o1o9b3KHa1kclUr+ynm9oEuN3L0vEie/OYN6LNP/rVIxeJQHWgh/uYn5xYhFoHkKULqIqD77aQVtPDL0JYdjgm0r5XkweYZp1RElYiQ+EzPnABdppUG5LMqD2cUNi4OKesySXxhC0FcdaU8mjNm8Uu1V19Q279k5XXHknyCw0B0F0GWEjvlpEoDyptJIliHjXtKQX9Yy73JY85Rwwag0mSFf2Wyj6S6h4HRnuLXMWxOyV1U+D7X5tO65xHKZ6FsZc1igKMRHCQZUw6NOmfavXFW4sGe/w24qmeEUxVTaoXy6+LDk7EPswAHUFIoAy2FLR9OyonK+t4O+wgGcW46ixRva0AGFhZq6uxmbpseYF1tTQQy4yjcRLN9yf5r4JtNdCe6HwbCiKL3tgSyQ65xCQKdMFZShgA51FvA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3207.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(346002)(136003)(396003)(376002)(366004)(5660300002)(26005)(6486002)(316002)(4326008)(54906003)(64756008)(83380400001)(2616005)(110136005)(66446008)(66476007)(66556008)(76116006)(186003)(66946007)(91956017)(86362001)(6512007)(478600001)(71200400001)(2906002)(8936002)(6506007)(8676002)(36756003)(4744005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?cWV2YUxBaE9Ec2tjcFQ0SXlDSFRwN1NGTFA0b1RhVy9VSTRSck5EZzJPL280?=
- =?utf-8?B?WStkemd6RUFTUXNYUENNNzd1N21BSGQyRFFlRExMTUNyc25UQi9ZYm9Ob2pX?=
- =?utf-8?B?N0pTVUVtckhjc0NjQUV4K2d3Z0RHQkVWbEc1STVSVjFRb2JFcmVWYVUyZm1D?=
- =?utf-8?B?YjV0N2VJRWJEcVcwMHpoWXM5NEhBUzE2YU04SzZoOFQvYU1wQUVmS21BWWx5?=
- =?utf-8?B?KzVKbDE3KzduUjRJTHArZm1aWTkydFRzd1I3TERFQUxweGppMTI2cmJTckNC?=
- =?utf-8?B?cWRsclJKNDJHQkxlcG1iLzVnL3Y3WkNkUUM1enhxRHIzcGpUckE3cTNpanVY?=
- =?utf-8?B?bGdJVVZYTWpPRVhndHh6SDJXZXI1MWdQZW1vaGRZd1k0VFJKbXNZOVdvMUhT?=
- =?utf-8?B?K3BVSFZwZUpmYVBnUU5oTnlEQXNsYjVLQUZyamZUUHl6d2U2Mkk4M3dKbkQ3?=
- =?utf-8?B?WndtR0NDTGlBL1hldmlSSE1OUi9OOGM1MzVWcnNqWnpjelQ1eXpCYlJQZlhT?=
- =?utf-8?B?YjNiZyt2clhWaUozYzVNcGtsMVJmWk9GbU5HYnEvMzQ5dXk3RnR0N0lvcm1B?=
- =?utf-8?B?S3pQRDcrSm80bEFCRU1CT2xqc2Jsamk1c2t6TmxKMkQwZm1LTUJKVW9HN28y?=
- =?utf-8?B?MzZ3NTU5SkpGMmJvYi8rNko0Z3VURTdlTHByTnhUWTNQWDlnMksvdSs2TXRM?=
- =?utf-8?B?OExnNHBQeFc2cTVXY0JoemRIeDBkVkMwTmpMbnlIWkV2eTFNcmoxdnNFU2lB?=
- =?utf-8?B?SWhNUnlpMkx2eUNiMXRLdDhZOVYyMVdScmtQc1liMG5FUmR4OEZ6M1ZMUlY5?=
- =?utf-8?B?RFp2c1ZOR3VGYkhXRFVNYkpDMW0yckJ1SnRwMzIxUkprRS9CalVRSW5pVkZ0?=
- =?utf-8?B?Q2pMd201R0tyMkRxNE8ySWp2dWZDdk5YczhMVmR4dUhmS2FYdXZzRm5BTnhU?=
- =?utf-8?B?K3MzNFN6ejV6RkN4US9FV1NGeUhtb05sUUhyeXZ5MFJKTG1wdHVmOHdsblk3?=
- =?utf-8?B?NW0zUzJ2L0NwY1pwTDBaNjYzZXgydS9iUmtwRjdjSTlRQzF6Tm5OclNzUG5W?=
- =?utf-8?B?Q094RU9JaVFXcFgraVY5UkJZWXV4a1FqdkR0YW5Wdktod0luUXV6NmtaUzZN?=
- =?utf-8?B?aGJTRGVENnJlZkVWSGdFRXZZVncrbXdWTzJIeU1DSXVmaXkzcVR3QTU4dVIy?=
- =?utf-8?B?WnAwZUVCemRPYWlPeFNCQzZ6MGQ5cGlWSzNtdFZXb1JSSURoMmIwMlo4cHpG?=
- =?utf-8?B?V2xhbkRyT3cwYnNobmJLUU1KWHd6OW5qNHRTQjRGYy9ZTCtMbUdURzlTNGxn?=
- =?utf-8?B?b3hLeTcvR0RWb2FNWUNQaG1KUUlRcVd0eHV5T3RRU2c0VmRqNXNQeWxMTnZs?=
- =?utf-8?B?cmdsclFNajVwMDI4bCtscGQ2TGxZM0dtWGxMVHZlQ0hOYStReUpwV0lDNHdE?=
- =?utf-8?B?TkN4MmJjQkpNNS94Y2d5NWM1OG1IV0xmK0VMZjhzdmZwa2lzcDR4SEdpR0oy?=
- =?utf-8?B?cGFkdkFBMFVJVnZTTTE5bmk2WGlkcTBCQ0ZNYzRBZXhvL2h6ZjJYNjFFM3NR?=
- =?utf-8?B?YkFIaEVTRDEvUnJ5dDNxTE05VHNkWVUvaDNKWnh2N21mejBVUjFxMnIyc2JR?=
- =?utf-8?B?MU1URGFmNnVacnJtM2dETklXK1hUNzNTS3pnZVJUdzBVaXc5czl0azZaOUZn?=
- =?utf-8?B?TTMxbkdZMTRiSVVqb0N4NHo0Y2wxQWhqeWFZRGlYWk1WUFZHSWJ3eEwyTXhN?=
- =?utf-8?B?eEpRSDZQZ2dDcnAvM3N4bTlYYk83NExqaFFoN20wdSt5d3Yzbjk5OStWMW1R?=
- =?utf-8?B?MVpSb2IrL01KTlBKMUk3UT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E186667C187400429AD17AAD2E3DBFF8@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S237553AbhCCAYb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:24:31 -0500
+Received: from mail-io1-f72.google.com ([209.85.166.72]:40118 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349044AbhCBILu (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Mar 2021 03:11:50 -0500
+Received: by mail-io1-f72.google.com with SMTP id x26so15420174ior.7
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Mar 2021 00:10:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=lENl+ygXfuI4U13OijQQtdYBATbbeyHGFqkfZhZDnSQ=;
+        b=G40tQnnNeEMywQ5vznKF3L9Vu4/yetrki10Gs1qFAAjbOm+F6YR1fghyTSfObGoifC
+         GrEeiEl0FdIWwMY4qebdOV8FOKgzXyvrHxQGK8Z1UZfqC7Mb4/gbLoteQ0FejtDvJJZm
+         rHBVX12bnC0R0hM0QCBhgYeDvpPdM2UxbrENC49LCLUmw3IWbjEpNUVHFQpfFTdn6j4T
+         I2q94+EJ5Uxkzap53HptLgb3oz058Pa8sbIIGzx/krnRbXwCcze/y3oWAfhzwOKpxIts
+         bmaMGMiqynLd406fZRBe0xGgOOUvUIinGhhXS/vv5G4T42jenTF+4zUaml12Qa0xmvos
+         wAag==
+X-Gm-Message-State: AOAM531PfvK3+RkJ5OZ0tTWHDgVavXta3XaxEkziz5eg+V+tup0uA1PJ
+        9aHFYJWHG5JHW5KY5iM8DKsaViksp7hw2x4ry3du5GLHtZhx
+X-Google-Smtp-Source: ABdhPJz9hMN7MbhVTN4o1FQtNf/QBqaBIrou910FUJeAatGukIkJSmIeJUToitSIHraJd1vfTd8VjMZ9I/UTCz1k15io7LgX8bP6
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3207.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d13a723b-69d9-4b51-eba1-08d8dd4c3363
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2021 07:24:22.1155
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: j+ldmJJMvt9Auv8jN/FrUQnQKgGK+QDiwlClXQFvphXhC/lTmy6vM9Syz+MC+QSV1wmAdtxURlfLTftMEKs+C7p5uFtCwdDFcJ6TcZF9Rxw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3829
-X-OriginatorOrg: intel.com
+X-Received: by 2002:a05:6e02:4a7:: with SMTP id e7mr16621500ils.19.1614672622077;
+ Tue, 02 Mar 2021 00:10:22 -0800 (PST)
+Date:   Tue, 02 Mar 2021 00:10:22 -0800
+In-Reply-To: <00000000000039404305bc049fa5@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000114a1905bc89445d@google.com>
+Subject: Re: BUG: soft lockup in ieee80211_tasklet_handler
+From:   syzbot <syzbot+27df43cf7ae73de7d8ee@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, hdanton@sina.com, johannes@sipsolutions.net,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVHVlLCAyMDIxLTAzLTAyIGF0IDA3OjU4ICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBQ
-aWVycmUtTG91aXMgQm9zc2FydCA8cGllcnJlLWxvdWlzLmJvc3NhcnRAbGludXguaW50ZWwuY29t
-PiB3cml0ZXM6DQo+IA0KPiA+IEFuIHVuc2lnbmVkIGxvbmcgdmFyaWFibGUgc2hvdWxkIHJlbHkg
-b24gJyVsdScgZm9ybWF0IHN0cmluZ3MsIG5vdCAnJXpkJw0KPiA+IA0KPiA+IEZpeGVzOiBhMWE2
-YTRjZjQ5ZWNlICgiaXdsd2lmaTogcG52bTogaW1wbGVtZW50IHJlYWRpbmcgUE5WTSBmcm9tIFVF
-RkkiKQ0KPiA+IFNpZ25lZC1vZmYtYnk6IFBpZXJyZS1Mb3VpcyBCb3NzYXJ0IDxwaWVycmUtbG91
-aXMuYm9zc2FydEBsaW51eC5pbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gd2FybmluZ3MgZm91bmQg
-d2l0aCB2NS4xMi1yYzEgYW5kIG5leHQtMjAyMTAzMDENCj4gDQo+IEx1Y2EsIGNhbiBJIHRha2Ug
-dGhpcyB0byB3aXJlbGVzcy1kcml2ZXJzPw0KDQpZZXMsIHBsZWFzZS4NCg0KQWNrZWQtYnk6IEx1
-Y2EgQ29lbGhvIDxsdWNpYW5vLmNvZWxob0BpbnRlbC5jb20+DQoNCi0tDQpDaGVlcnMsDQpMdWNh
-Lg0K
+syzbot has found a reproducer for the following issue on:
+
+HEAD commit:    7a7fd0de Merge branch 'kmap-conversion-for-5.12' of git://..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=14df34ead00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e0da2d01cc636e2c
+dashboard link: https://syzkaller.appspot.com/bug?extid=27df43cf7ae73de7d8ee
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=154a476cd00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1152fb82d00000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+27df43cf7ae73de7d8ee@syzkaller.appspotmail.com
+
+watchdog: BUG: soft lockup - CPU#0 stuck for 123s! [syz-executor290:22312]
+Modules linked in:
+irq event stamp: 18402725
+hardirqs last  enabled at (18402724): [<ffffffff89200d42>] asm_sysvec_irq_work+0x12/0x20 arch/x86/include/asm/idtentry.h:658
+hardirqs last disabled at (18402725): [<ffffffff8902dd0b>] sysvec_apic_timer_interrupt+0xb/0xc0 arch/x86/kernel/apic/apic.c:1100
+softirqs last  enabled at (18165196): [<ffffffff8144d934>] invoke_softirq kernel/softirq.c:221 [inline]
+softirqs last  enabled at (18165196): [<ffffffff8144d934>] __irq_exit_rcu kernel/softirq.c:422 [inline]
+softirqs last  enabled at (18165196): [<ffffffff8144d934>] irq_exit_rcu+0x134/0x200 kernel/softirq.c:434
+softirqs last disabled at (18165199): [<ffffffff8144d934>] invoke_softirq kernel/softirq.c:221 [inline]
+softirqs last disabled at (18165199): [<ffffffff8144d934>] __irq_exit_rcu kernel/softirq.c:422 [inline]
+softirqs last disabled at (18165199): [<ffffffff8144d934>] irq_exit_rcu+0x134/0x200 kernel/softirq.c:434
+CPU: 0 PID: 22312 Comm: syz-executor290 Not tainted 5.12.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:write_comp_data kernel/kcov.c:218 [inline]
+RIP: 0010:__sanitizer_cov_trace_switch+0x63/0xf0 kernel/kcov.c:320
+Code: 4d 8b 10 31 c9 65 4c 8b 24 25 00 f0 01 00 4d 85 d2 74 6b 4c 89 e6 bf 03 00 00 00 4c 8b 4c 24 20 49 8b 6c c8 10 e8 2d ff ff ff <84> c0 74 47 49 8b 84 24 b8 14 00 00 41 8b bc 24 b4 14 00 00 48 8b
+RSP: 0018:ffffc900000078d8 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000006
+RDX: 0000000000000000 RSI: ffff88801c370000 RDI: 0000000000000003
+RBP: 00000000000000b0 R08: ffffffff8a84bea0 R09: ffffffff885fcfcf
+R10: 0000000000000008 R11: 0000000000000080 R12: ffff88801c370000
+R13: 0000000000000080 R14: ffff888012b6a450 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000004d0110 CR3: 0000000027282000 CR4: 0000000000350ef0
+Call Trace:
+ <IRQ>
+ ieee80211_rx_h_mgmt net/mac80211/rx.c:3588 [inline]
+ ieee80211_rx_handlers+0x89ef/0xae60 net/mac80211/rx.c:3793
+ ieee80211_invoke_rx_handlers net/mac80211/rx.c:3823 [inline]
+ ieee80211_prepare_and_rx_handle+0x22ad/0x5070 net/mac80211/rx.c:4537
+ __ieee80211_rx_handle_packet net/mac80211/rx.c:4635 [inline]
+ ieee80211_rx_list+0x930/0x2680 net/mac80211/rx.c:4819
+ ieee80211_rx_napi+0xf7/0x3d0 net/mac80211/rx.c:4842
+ ieee80211_rx include/net/mac80211.h:4524 [inline]
+ ieee80211_tasklet_handler+0xd4/0x130 net/mac80211/main.c:235
+ tasklet_action_common.constprop.0+0x1d7/0x2d0 kernel/softirq.c:557
+ __do_softirq+0x29b/0x9f6 kernel/softirq.c:345
+ invoke_softirq kernel/softirq.c:221 [inline]
+ __irq_exit_rcu kernel/softirq.c:422 [inline]
+ irq_exit_rcu+0x134/0x200 kernel/softirq.c:434
+ sysvec_apic_timer_interrupt+0x93/0xc0 arch/x86/kernel/apic/apic.c:1100
+ </IRQ>
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:632
+RIP: 0010:mm_update_next_owner+0x432/0x7a0 kernel/exit.c:388
+Code: 8d ad b0 fb ff ff 48 81 fd 50 c8 cb 8b 0f 84 65 01 00 00 e8 90 e6 2e 00 48 8d bd dc fb ff ff 48 89 f8 48 c1 e8 03 0f b6 14 18 <48> 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 b5 02 00 00 44
+RSP: 0018:ffffc9000ab77b18 EFLAGS: 00000217
+RAX: 1ffff110041046f5 RBX: dffffc0000000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff814470e0 RDI: ffff8880208237ac
+RBP: ffff888020823bd0 R08: 0000000000000000 R09: ffffffff8bc0a083
+R10: ffffffff8144711f R11: 0000000000000001 R12: ffff888018b00000
+R13: ffff888020823780 R14: 0000000000200000 R15: ffff888011520010
+ exit_mm kernel/exit.c:500 [inline]
+ do_exit+0xb02/0x2a60 kernel/exit.c:812
+ do_group_exit+0x125/0x310 kernel/exit.c:922
+ get_signal+0x42c/0x2100 kernel/signal.c:2773
+ arch_do_signal_or_restart+0x2a8/0x1eb0 arch/x86/kernel/signal.c:811
+ handle_signal_work kernel/entry/common.c:147 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x148/0x250 kernel/entry/common.c:208
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:290 [inline]
+ syscall_exit_to_user_mode+0x19/0x50 kernel/entry/common.c:301
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x453dd9
+Code: Unable to access opcode bytes at RIP 0x453daf.
+RSP: 002b:00007fcbbf2d5218 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffe00 RBX: 00000000004d8268 RCX: 0000000000453dd9
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00000000004d8268
+RBP: 00000000004d8260 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004d826c
+R13: 00007ffe178897df R14: 00007fcbbf2d5300 R15: 0000000000022000
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 PID: 22313 Comm: syz-executor290 Not tainted 5.12.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:queued_write_lock_slowpath+0x131/0x270 kernel/locking/qrwlock.c:76
+Code: 00 00 00 00 fc ff df 49 01 c7 41 83 c6 03 41 0f b6 07 41 38 c6 7c 08 84 c0 0f 85 fe 00 00 00 8b 03 3d 00 01 00 00 74 19 f3 90 <41> 0f b6 07 41 38 c6 7c ec 84 c0 74 e8 48 89 df e8 8a 5c 5d 00 eb
+RSP: 0018:ffffc9000a37fa60 EFLAGS: 00000006
+RAX: 0000000000000300 RBX: ffffffff8bc0a080 RCX: ffffffff8159ecfa
+RDX: fffffbfff1781411 RSI: 0000000000000004 RDI: ffffffff8bc0a080
+RBP: 00000000000000ff R08: 0000000000000001 R09: ffffffff8bc0a083
+R10: fffffbfff1781410 R11: 0000000000000000 R12: 1ffff9200146ff4d
+R13: ffffffff8bc0a084 R14: 0000000000000003 R15: fffffbfff1781410
+FS:  0000000000000000(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000004a0d38 CR3: 0000000027282000 CR4: 0000000000350ee0
+Call Trace:
+ queued_write_lock include/asm-generic/qrwlock.h:97 [inline]
+ do_raw_write_lock+0x1ce/0x280 kernel/locking/spinlock_debug.c:207
+ exit_notify kernel/exit.c:667 [inline]
+ do_exit+0xc4a/0x2a60 kernel/exit.c:845
+ do_group_exit+0x125/0x310 kernel/exit.c:922
+ get_signal+0x42c/0x2100 kernel/signal.c:2773
+ arch_do_signal_or_restart+0x2a8/0x1eb0 arch/x86/kernel/signal.c:811
+ handle_signal_work kernel/entry/common.c:147 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x148/0x250 kernel/entry/common.c:208
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:290 [inline]
+ syscall_exit_to_user_mode+0x19/0x50 kernel/entry/common.c:301
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x453dd9
+Code: Unable to access opcode bytes at RIP 0x453daf.
+RSP: 002b:00007fcbbf2b4218 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffe00 RBX: 00000000004d8278 RCX: 0000000000453dd9
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00000000004d8278
+RBP: 00000000004d8270 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004d827c
+R13: 00007ffe178897df R14: 00007fcbbf2b4300 R15: 0000000000022000
+
