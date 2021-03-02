@@ -2,198 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E222232AF98
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4321C32AF9D
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238297AbhCCA1N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Mar 2021 19:27:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37520 "EHLO mail.kernel.org"
+        id S238338AbhCCA1Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:27:25 -0500
+Received: from mga09.intel.com ([134.134.136.24]:22604 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1578093AbhCBKfg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 05:35:36 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8F64264F0D;
-        Tue,  2 Mar 2021 10:34:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614681294;
-        bh=ugJHg9cYk74SjXydnucoKS21JJi70MPT/T1tFbGj1Aw=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=XHfzaFb3CI/GV4HUw7gVLbAtfxuEFo8wByxVuPgt7dni1p6zPlFgUXJUUYZc7XMsw
-         LF/76BS7cBXKtfjQ00Vab5i8La+GUupSGypjSfAM/NTc9CJmbV+8Y72hm3il4AC5NJ
-         JN26aE/zppIjV6ZatuVBzv8mjAydhHhwfJCsE/7B5drCPuAw1rDl1oJbY1LNGLBOUh
-         V973vLkV9gGPa6Wjegi71ADKHC+vKJIPCRYDw2yfR0cjV/JlJWatpd/jdiTjMroWS5
-         bNgSSZ1EcpeBoYLS98p/l5UYCC+FI6pPR3IwymQ57gB16cUZRxytQA1xMxIvS3LnLE
-         oFQAa7GOlwrZw==
-Date:   Tue, 2 Mar 2021 11:34:51 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iwlwifi: don't call netif_napi_add() with rxq->lock held
+        id S1383185AbhCBKtw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Mar 2021 05:49:52 -0500
+IronPort-SDR: wVtBiUJgvTE5GDjlg8shZ5pX0vJ1BqoIu4wPwEWUNP9jJFAqAgsJPh/WjDeXFLkNLagifPuAZJ
+ q10YAX5RpSMw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="186891240"
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
+   d="scan'208";a="186891240"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 02:48:11 -0800
+IronPort-SDR: PgpaEwnRAsmPSgoVHftEZmwVxMILFAN0cICbbu9acRkRHawAEFOpXF/6JCv7JRGmvZqyC6sSSk
+ y3/R6lgV2lmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
+   d="scan'208";a="427445134"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by fmsmga004.fm.intel.com with ESMTP; 02 Mar 2021 02:48:11 -0800
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 2 Mar 2021 02:48:10 -0800
+Received: from fmsmsx608.amr.corp.intel.com (10.18.126.88) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 2 Mar 2021 02:48:10 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx608.amr.corp.intel.com (10.18.126.88) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2
+ via Frontend Transport; Tue, 2 Mar 2021 02:48:10 -0800
+Received: from NAM04-SN1-obe.outbound.protection.outlook.com (104.47.44.55) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2106.2; Tue, 2 Mar 2021 02:48:10 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WDRWMhvUUHS4toK4rt2FgQFs0N701xTKQFgTw9jZ2UqkXR9csJWoGRBZOJgh4zaVc7DNcSSxSgWgSl08Q3/8yCRYZj2BqTCHHB9O/RWJj8zgNcaQguDdm4z1VjeQcmkessg9nft+1eMzCztRyXAv/kihiz3pjWPdCDYUQ16SEuvs4VaAjleO21u/WM0ANbrpKa68qimOOS5kx+fWRpQa2XroEEFQp1NBfS83B6/sL+BLSrU19ehxQemX6S6bjyfZZPAQBDCeE3cDCySpmpARqUmErpNyn+OjFXLoCILo2yJXKJtXeariMkP76LJ2kLoMTC2NTj68yxJtPrqISz5rGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pgwVw0Hj8WxzpgaC5uNep1fY4XZofVLXBNgD6zS+71g=;
+ b=ZPeHB3xH3uGorTUP42oi5F0ylP1s9PY7aWiMGHyitW84rvsHIeanGKFhffwTT89mWlKmqVglvFT+cncRkFMO7XYclXWx31e1UW/CY5o2lab35+zcE7kl0NEk/85xNfDLvRTjQjCbNYv40SxSoeL62vjQuf64sMe5ws8nazBUAHpeH37LBNk41P2pdOXb6iVKfC2TX3WoIY/kMfFY4ulvBwVMLBzqmLixd0eLplb5ABp21gnbz9TW+tR188gPZEPwiJ1PH+DWSpd5vETUzXZJ1SRN57ojxgQl7giA6SrPAy05lzX2Qywablk1vrpwTM+aAadYXy6DAx7GyT9xZbMOvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pgwVw0Hj8WxzpgaC5uNep1fY4XZofVLXBNgD6zS+71g=;
+ b=frKocWt+pul1EgNuzRK2KazMKYTS8iJ4/4/Yqmr7YyWMqlYditLmX8wxP2FiQ507zo8a3WmjVPjCwAdutLd4LIy7GFIGhUnqxyRGAYwLH1neHPNcKQQwwB5cPVqlO1hPP86avm82pnNQMOuOGl8lGUn/gqJjd+4gQUxfaKF9sL4=
+Received: from BYAPR11MB3207.namprd11.prod.outlook.com (2603:10b6:a03:7c::14)
+ by SJ0PR11MB4863.namprd11.prod.outlook.com (2603:10b6:a03:2ae::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.19; Tue, 2 Mar
+ 2021 10:48:08 +0000
+Received: from BYAPR11MB3207.namprd11.prod.outlook.com
+ ([fe80::c951:3ae4:1aca:9daf]) by BYAPR11MB3207.namprd11.prod.outlook.com
+ ([fe80::c951:3ae4:1aca:9daf%3]) with mapi id 15.20.3890.023; Tue, 2 Mar 2021
+ 10:48:08 +0000
+From:   "Coelho, Luciano" <luciano.coelho@intel.com>
+To:     "jikos@kernel.org" <jikos@kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iwlwifi: don't call netif_napi_add() with rxq->lock held
  (was Re: Lockdep warning in iwl_pcie_rx_handle())
+Thread-Topic: [PATCH] iwlwifi: don't call netif_napi_add() with rxq->lock held
+ (was Re: Lockdep warning in iwl_pcie_rx_handle())
+Thread-Index: AQHXD0ZRst4T6GhNS06Vr+mACGRVqqpwhIKA
+Date:   Tue, 2 Mar 2021 10:48:08 +0000
+Message-ID: <716376e9cf4b0b459dbe72b8697c1e26ca7b6a9a.camel@intel.com>
+References: <nycvar.YFH.7.76.2103012136570.12405@cbobk.fhfr.pm>
+         (sfid-20210301_215846_256695_15E0D07E)
+ <2db8f779b4b37d4498cfeaed77d5ede54e429a6e.camel@sipsolutions.net>
+         <nycvar.YFH.7.76.2103021025410.12405@cbobk.fhfr.pm>
 In-Reply-To: <nycvar.YFH.7.76.2103021025410.12405@cbobk.fhfr.pm>
-Message-ID: <nycvar.YFH.7.76.2103021134060.12405@cbobk.fhfr.pm>
-References: <nycvar.YFH.7.76.2103012136570.12405@cbobk.fhfr.pm>  (sfid-20210301_215846_256695_15E0D07E) <2db8f779b4b37d4498cfeaed77d5ede54e429a6e.camel@sipsolutions.net> <nycvar.YFH.7.76.2103021025410.12405@cbobk.fhfr.pm>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [192.198.151.166]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e13dcc6f-7438-466b-2661-08d8dd68ab06
+x-ms-traffictypediagnostic: SJ0PR11MB4863:
+x-ms-exchange-minimumurldomainage: spinics.net#7446
+x-microsoft-antispam-prvs: <SJ0PR11MB486321E8D5F38EB6BB67103790999@SJ0PR11MB4863.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: n5Z1ods37Vy20i8yLDDqxkQv1DODtt8lIU8Ahg7ebp5JKqGwgCGZKrNas2/opEsAAsvdJlxmZMqvkkk4mo/5DgPYZq23RmkdxkdXJkDzOg4YgzaSRoI9Om7CYWSg8hi6eEtciI2U4iYByZT96YaHR83soTryj/+cGehOP5XgroMuzvrjvhUyunaY0CGpIDOP9hdV5nXKVpZfU7e00q3dvLRNdKfWgz2BNhKQBdeVdZ68YZku2Jws0EvM7Lt9hNkvW9+/WKLbkgVrgKUkv9CwSmWSmUC7cZCzWF3oSUuNv3WZAKq67+8qWSt81d6pboNZIuahoJm60ZruuLnVe60OQ5xLJcIoxU5B37RWrXRNTRkcUkA9XBgfD5O8uA4ZMIx9RhAY3HVZAnuEOKk6qn8Wn1DUxahcrRx6BddKQMdtWD7O5iODast99aqIANnUinbkiDB7YVYAK26adirOP0UpWNz5YeQ65O5+sHtGzRD7y4t++vC62Xw4rxhjNnDE0n+JLdTdbN4IfuSdIcsHZKDFnYRq3O24xaesqDoigrckyPOjK4zYF1aTAmSWATMDvhABUUJQJowRU4htztfI1VMCtA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3207.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(376002)(396003)(136003)(346002)(366004)(110136005)(966005)(478600001)(36756003)(54906003)(8936002)(86362001)(316002)(83380400001)(6506007)(5660300002)(6486002)(6512007)(66946007)(76116006)(4326008)(26005)(66556008)(91956017)(66476007)(66446008)(64756008)(2906002)(71200400001)(2616005)(8676002)(186003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: =?utf-8?B?WU1kc0dHSWNXaGZwNTA3UjhnaGVXT3p4M0hTOEY0dkdlS3QwbUF4Zi9yKzgr?=
+ =?utf-8?B?VHhuR3M0MWJydDNEcWpLclh5VTlkQTYwRDkwcFVrSGJCUFkyUkZtcnQyQXov?=
+ =?utf-8?B?L1A5NGk3SEZCMld5SmFVM2pZemNUVW1LQVhlaUNHRzBmUEtQK3hJbktrQVo1?=
+ =?utf-8?B?WVd2b0dYSlFUVkZiUDBwYjFBNVNjTDQydkhhUDdDNFdTWENpU3ZPNWJ4dzRE?=
+ =?utf-8?B?WnB6SW5HYUxWSGFpZkQ4Nk0wMGFPOGVoZzZLSldtQ3I4dk1CcERYdU9IN0do?=
+ =?utf-8?B?K2NlL0lYNE93c0l4OGdQSWRLbzBYcDFEQm5pQm91ZzNmYWRGZDl0U0E3S05W?=
+ =?utf-8?B?UGtjWUMvMUZ6TmJhYjVHalg5Y1JGKzJHUHhaUmFkdjhaS2EwbzZYejJrL3gz?=
+ =?utf-8?B?TnJONnpOV2VUUmE1OTh5d1gzOW9nbFM5UVorSFFJZHEvVm9MRmVHVDMxWndL?=
+ =?utf-8?B?SUx3US9DV3ZlMkM1N1N4WDlBMFEzZVU3TWNUV2FKYW5INjU5NDgzWDlRd3B1?=
+ =?utf-8?B?Mm1LakZpU0srNUpudDJsYkhZTDJWTGJteWlvWjVweWlmM1kyaXpiek1ndXJl?=
+ =?utf-8?B?OGNESlNGZi9oekg2T1IxcnRmNEJIRHpUY0M2ZGlhT0toU014L2VoU0NpeUJl?=
+ =?utf-8?B?cHlXUG1Tcm11TldCYkVTTVR0K296cjBSeU5Dc0hQQ1Q2ajJLY2JES0RhZVRK?=
+ =?utf-8?B?YWdNOU51L1ZaKzlaUW1LTXNJYnIyaXZLaFdYMjlhd2dnRjVXRzNnbVljc01J?=
+ =?utf-8?B?NmVOQ2g3OGV5bStzY0hvZUhpQkx6ZSt2YWM2b1FnU3dOQkxSeHFLck5kb2J4?=
+ =?utf-8?B?MFByU1NvaTY3NXZQeGlkdzRGRUtRVkpwTWhaQ1p0TXJqU1RnVFZXZTlHWTl5?=
+ =?utf-8?B?dG4vTUROWkIvQWs0aWlRYnRzQzh5b052MWFhQkhmSzZmU3dYdjZaQlFGQjFm?=
+ =?utf-8?B?MjMrZHk0SzlkNWxuQVBVa3JxK0pPaytaYUV6VHdFYXphZ3VyaFMxcDZzS24y?=
+ =?utf-8?B?M3lIS1JQaGk2UldCUHFYb0dJSVRjTDg4UHFxYTBHaktmQ3FQNlcwYlNlVVZo?=
+ =?utf-8?B?WXF3YThRSU80N2JGOXhQWWY2aDhUYXdnczRsNXJaYzZVZVowbHNya01zLzAw?=
+ =?utf-8?B?RFIvelhFV3ZOYm5HenVlQ3BCUVNKeUVaWVZjamFaeGI5c0gvL3FvODhreTdx?=
+ =?utf-8?B?T1FKdGZnU211VkJsVUVaRWN4cTBnMUhZZTlvTjJlQnJ5V2RBOVJmbVNlSjRT?=
+ =?utf-8?B?S1IzQXJURWV6QnhXa0pDMDM4Z01UWmVaaGY1ajJ3TjU0c1RkQVA1TlhjMGRY?=
+ =?utf-8?B?RzF6Z0JKaU1MbWhmN3hTaWZ3WllwQ09rdGozMHBDbjdXZkN5bUZXcEM2K3BO?=
+ =?utf-8?B?bUhwb0k4UFVudE1sTGNMTnkxek1GUlpMQnBTK1l0R0w2N0ZHVWdnRDJrek52?=
+ =?utf-8?B?NGIyWllLTGtiL21VVkFtY28vdUVOZGhyRzgydEtrYWNLZ3Z4dHVLNFlzZGVT?=
+ =?utf-8?B?aXpoc0V6NWppdFVsekxZemhGZG9uMS9jOUhWY1cxTlhqZHNrWjFiZ0FvUnFn?=
+ =?utf-8?B?Nk9YVkFiZEVLeW52RXdLSjIxbWZDMkN4d1BSVWZySnJheG50dncrd1k5aXhX?=
+ =?utf-8?B?bUlhUnh6NVMrRU1nQW5wZzNkY090bTdvMVFqaWF0dHkrR1k1MkxyWTY4dWI0?=
+ =?utf-8?B?WVV4akoyb1RxSUhiSUtIUU9pblJtOVArbFloU3NtZXdYMVBwK0JCdC9DVWRm?=
+ =?utf-8?B?WXd4MXd0V2tJb1Q5cGtQQkF6bnJ0Y3FodnRxcUVYUCtKMnA5dmJVN253MmhE?=
+ =?utf-8?B?cFJHSjhndWtJQitQM2FVdz09?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <0A61B9F8B1F1D9488C062B76D5637FF5@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3207.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e13dcc6f-7438-466b-2661-08d8dd68ab06
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2021 10:48:08.7490
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /FxQRWyGNSCyUUiq0o2M4uoamDaNuXn4JTqRwrlmUx9CBvxKwGWoVBLRdBDGw+Hn7KwzjGNGP8FVy/n4jgyFRE3T5WIvRH7lPGmzHDRo4PE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4863
+X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jiri Kosina <jkosina@suse.cz>
-
-We can't call netif_napi_add() with rxq-lock held, as there is a potential
-for deadlock as spotted by lockdep (see below). rxq->lock is not
-protecting anything over the netif_napi_add() codepath anyway, so let's
-drop it just before calling into NAPI.
-
- ========================================================
- WARNING: possible irq lock inversion dependency detected
- 5.12.0-rc1-00002-gbada49429032 #5 Not tainted
- --------------------------------------------------------
- irq/136-iwlwifi/565 just changed the state of lock:
- ffff89f28433b0b0 (&rxq->lock){+.-.}-{2:2}, at: iwl_pcie_rx_handle+0x7f/0x960 [iwlwifi]
- but this lock took another, SOFTIRQ-unsafe lock in the past:
-  (napi_hash_lock){+.+.}-{2:2}
-
- and interrupts could create inverse lock ordering between them.
-
- other info that might help us debug this:
-  Possible interrupt unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(napi_hash_lock);
-                                local_irq_disable();
-                                lock(&rxq->lock);
-                                lock(napi_hash_lock);
-   <Interrupt>
-     lock(&rxq->lock);
-
-  *** DEADLOCK ***
-
- 1 lock held by irq/136-iwlwifi/565:
-  #0: ffff89f2b1440170 (sync_cmd_lockdep_map){+.+.}-{0:0}, at: iwl_pcie_irq_handler+0x5/0xb30
-
- the shortest dependencies between 2nd lock and 1st lock:
-  -> (napi_hash_lock){+.+.}-{2:2} {
-     HARDIRQ-ON-W at:
-                       lock_acquire+0x277/0x3d0
-                       _raw_spin_lock+0x2c/0x40
-                       netif_napi_add+0x14b/0x270
-                       e1000_probe+0x2fe/0xee0 [e1000e]
-                       local_pci_probe+0x42/0x90
-                       pci_device_probe+0x10b/0x1c0
-                       really_probe+0xef/0x4b0
-                       driver_probe_device+0xde/0x150
-                       device_driver_attach+0x4f/0x60
-                       __driver_attach+0x9c/0x140
-                       bus_for_each_dev+0x79/0xc0
-                       bus_add_driver+0x18d/0x220
-                       driver_register+0x5b/0xf0
-                       do_one_initcall+0x5b/0x300
-                       do_init_module+0x5b/0x21c
-                       load_module+0x1dae/0x22c0
-                       __do_sys_finit_module+0xad/0x110
-                       do_syscall_64+0x33/0x80
-                       entry_SYSCALL_64_after_hwframe+0x44/0xae
-     SOFTIRQ-ON-W at:
-                       lock_acquire+0x277/0x3d0
-                       _raw_spin_lock+0x2c/0x40
-                       netif_napi_add+0x14b/0x270
-                       e1000_probe+0x2fe/0xee0 [e1000e]
-                       local_pci_probe+0x42/0x90
-                       pci_device_probe+0x10b/0x1c0
-                       really_probe+0xef/0x4b0
-                       driver_probe_device+0xde/0x150
-                       device_driver_attach+0x4f/0x60
-                       __driver_attach+0x9c/0x140
-                       bus_for_each_dev+0x79/0xc0
-                       bus_add_driver+0x18d/0x220
-                       driver_register+0x5b/0xf0
-                       do_one_initcall+0x5b/0x300
-                       do_init_module+0x5b/0x21c
-                       load_module+0x1dae/0x22c0
-                       __do_sys_finit_module+0xad/0x110
-                       do_syscall_64+0x33/0x80
-                       entry_SYSCALL_64_after_hwframe+0x44/0xae
-     INITIAL USE at:
-                      lock_acquire+0x277/0x3d0
-                      _raw_spin_lock+0x2c/0x40
-                      netif_napi_add+0x14b/0x270
-                      e1000_probe+0x2fe/0xee0 [e1000e]
-                      local_pci_probe+0x42/0x90
-                      pci_device_probe+0x10b/0x1c0
-                      really_probe+0xef/0x4b0
-                      driver_probe_device+0xde/0x150
-                      device_driver_attach+0x4f/0x60
-                      __driver_attach+0x9c/0x140
-                      bus_for_each_dev+0x79/0xc0
-                      bus_add_driver+0x18d/0x220
-                      driver_register+0x5b/0xf0
-                      do_one_initcall+0x5b/0x300
-                      do_init_module+0x5b/0x21c
-                      load_module+0x1dae/0x22c0
-                      __do_sys_finit_module+0xad/0x110
-                      do_syscall_64+0x33/0x80
-                      entry_SYSCALL_64_after_hwframe+0x44/0xae
-   }
-   ... key      at: [<ffffffffae84ef38>] napi_hash_lock+0x18/0x40
-   ... acquired at:
-    _raw_spin_lock+0x2c/0x40
-    netif_napi_add+0x14b/0x270
-    _iwl_pcie_rx_init+0x1f4/0x710 [iwlwifi]
-    iwl_pcie_rx_init+0x1b/0x3b0 [iwlwifi]
-    iwl_trans_pcie_start_fw+0x2ac/0x6a0 [iwlwifi]
-    iwl_mvm_load_ucode_wait_alive+0x116/0x460 [iwlmvm]
-    iwl_run_init_mvm_ucode+0xa4/0x3a0 [iwlmvm]
-    iwl_op_mode_mvm_start+0x9ed/0xbf0 [iwlmvm]
-    _iwl_op_mode_start.isra.4+0x42/0x80 [iwlwifi]
-    iwl_opmode_register+0x71/0xe0 [iwlwifi]
-    iwl_mvm_init+0x34/0x1000 [iwlmvm]
-    do_one_initcall+0x5b/0x300
-    do_init_module+0x5b/0x21c
-    load_module+0x1dae/0x22c0
-    __do_sys_finit_module+0xad/0x110
-    do_syscall_64+0x33/0x80
-    entry_SYSCALL_64_after_hwframe+0x44/0xae
-
-[ ... lockdep output trimmed .... ]
-
-Fixes: 25edc8f259c7106 ("iwlwifi: pcie: properly implement NAPI")
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
----
-
-v1->v2: Previous patch was not refreshed against current code-base, sorry.
-
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 42426e25cac6..2bec97133119 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1129,6 +1129,8 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
- 
- 		iwl_pcie_rx_init_rxb_lists(rxq);
- 
-+		spin_unlock_bh(&rxq->lock);
-+
- 		if (!rxq->napi.poll) {
- 			int (*poll)(struct napi_struct *, int) = iwl_pcie_napi_poll;
- 
-@@ -1149,7 +1151,6 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
- 			napi_enable(&rxq->napi);
- 		}
- 
--		spin_unlock_bh(&rxq->lock);
- 	}
- 
- 	/* move the pool to the default queue and allocator ownerships */
-
-
--- 
-Jiri Kosina
-SUSE Labs
-
+T24gVHVlLCAyMDIxLTAzLTAyIGF0IDEwOjI3ICswMTAwLCBKaXJpIEtvc2luYSB3cm90ZToNCj4g
+T24gTW9uLCAxIE1hciAyMDIxLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0KPiANCj4gPiA+IEkgYW0g
+Z2V0dGluZyB0aGUgc3BsYXQgYmVsb3cgd2l0aCBMaW51cycgdHJlZSBhcyBvZiB0b2RheSAoNS4x
+MS1yYzEsIA0KPiA+ID4gZmUwN2JmZGEyZmIpLiBJIGhhdmVuJ3Qgc3RhcnRlZCB0byBsb29rIGlu
+dG8gdGhlIGNvZGUgeWV0LCBidXQgYXBwYXJlbnRseSANCj4gPiA+IHRoaXMgaGFzIGJlZW4gYWxy
+ZWFkeSByZXBvcnRlZCBieSBIZWluZXIgaGVyZToNCj4gPiA+IA0KPiA+ID4gCWh0dHBzOi8vd3d3
+LnNwaW5pY3MubmV0L2xpc3RzL2xpbnV4LXdpcmVsZXNzL21zZzIwODM1My5odG1sDQo+ID4gPiAN
+Cj4gPiA+IHNvIGJlZm9yZSBJIHN0YXJ0IGRpZ2dpbmcgZGVlcCBpbnRvIGl0ICh0aGUgcHJldmlv
+dXMga2VybmVsIHRoaXMgDQo+ID4gPiBwYXJ0aWN1bGFyIG1hY2hpbmUgaGFkIGlzIDUuOSwgc28g
+SSdkIHJhdGhlciBhdm9pZCBsZW5naHR5IGJpc2VjdCBmb3Igbm93IA0KPiA+ID4gaW4gY2FzZSBz
+b21lb25lIGhhcyBhbHJlYWR5IGxvb2tlZCBpbnRvIGl0IGFuZCBoYXMgaWRlYXMgd2hlcmUgdGhl
+IHByb2JsZW0gDQo+ID4gPiBpcyksIEkgdGhvdWdodCBJJ2QgYXNrIHdoZXRoZXIgdGhpcyBoYXMg
+YmVlbiByb290LWNhdXNlZCBlbHNld2hlcmUgDQo+ID4gPiBhbHJlYWR5Lg0KPiA+IA0KPiA+IFll
+YWgsIEknbSBwcmV0dHkgc3VyZSB3ZSBoYXZlIGEgZml4IGZvciB0aGlzLCB0aG91Z2ggSSdtIG5v
+dCBzdXJlIHJpZ2h0DQo+ID4gbm93IHdoZXJlIGl0IGlzIGluIHRoZSBwaXBlbGluZS4NCj4gPiAN
+Cj4gPiBJdCdzIGNhbGxlZCAiaXdsd2lmaTogcGNpZTogZG9uJ3QgYWRkIE5BUEkgdW5kZXIgcnhx
+LT5sb2NrIiBidXQgcmlnaHQNCj4gPiBub3cgSSBjYW4ndCBmaW5kIGl0IGluIGFueSBvZiB0aGUg
+cHVibGljIGFyY2hpdmVzLg0KPiANCj4gSSB3YXMgbm90IGFibGUgdG8gZmluZCB0aGF0IHBhdGNo
+IGFueXdoZXJlIGluZGVlZCwgYnV0IGluIHRoZSBtZWFudGltZSBJIA0KPiBmaXhlZCBpdCBieSB0
+aGUgcGF0Y2ggYmVsb3cuIFBsZWFzZSBjb25zaWRlciBtZXJnaW5nIGVpdGhlciBvZiB0aGUgZml4
+ZXMuDQoNCkkgY2hlY2tlZCBteSBxdWV1ZSBhbmQgSSByZWFsaXplZCB0aGF0IHRoZSBwYXRjaCBK
+b2hhbm5lcyBtZW50aW9uZWQgd2FzDQptYXJrZWQgYXMgYSBmaXggZm9yIGEgZml4IGFuZCBteSBz
+Y3JpcHQgaGFkIGlzc3VlcyB3aXRoIHJlY3Vyc2l2ZQ0KZml4ZXMuICBJdCBub3JtYWxseSBzcXVh
+c2hlcyBmaXhlcyB0byBwYXRjaGVzIGJlZm9yZSB0aGUgbGF0dGVyIGFyZQ0Kc2VudCBvdXQuICBN
+eSBiYWQuDQoNCkthbGxlLCBwbGVhc2UgdGFrZSBKaXJpJ3MgdjIgdG8gd2lyZWxlc3MtZHJpdmVy
+cy5naXQuICBJJ2xsIGdpdmUgbXkgYWNrDQpzZXBhcmF0ZWx5IGluIHJlcGx5IHRvIHYyLg0KDQot
+LQ0KQ2hlZXJzLA0KTHVjYS4NCg==
