@@ -2,99 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F3FB32AF8F
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9288A32AF96
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238140AbhCCA0e convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Mar 2021 19:26:34 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:47063 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379001AbhCBJhR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 04:37:17 -0500
-Received: from ip5f5af0a0.dynamic.kabel-deutschland.de ([95.90.240.160] helo=wittgenstein)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1lH1Rq-00008b-Gf; Tue, 02 Mar 2021 09:36:10 +0000
-Date:   Tue, 2 Mar 2021 10:36:09 +0100
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Triggering WARN in net/wireless/nl80211.c
-Message-ID: <20210302093609.a6vmvwtlu3qns67s@wittgenstein>
+        id S238210AbhCCA1E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:27:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35454 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1382901AbhCBK1k (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Mar 2021 05:27:40 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ECBA664F0E;
+        Tue,  2 Mar 2021 10:26:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614680819;
+        bh=otX1s0/VSffz4emUbWo67pKZwgqBZ3NNNIHTpQfvty0=;
+        h=Date:From:To:cc:Subject:From;
+        b=j5qVe8JKK63Rk1XO5wNuqBcxMzSl6DJj+JriVeZajDy5mmCKzX12tsg6DSleZwNN0
+         zswp8b6SBVSUPXd0XO9oQU8zYgvtgXguRS5g2fJ6x9y8tvRP3BJLioKW0o4GSS159g
+         5L9dumYaQ8illzqIu8Xw3wzZj+8FZILFH+/OT1RCxk5GQmzC0UXsydLznc3/qXNh+M
+         O1k8cvx7Ps5JZ7hkPqADu/AiR0C2ZLoMewXvDtBJivu2ylbQf9zoCQ9IDI+ITNcowr
+         vBZ6OmpJCUY5vwFDJzBepYMtHW3QuDPQDqhHsVr34gc+OISKxYDymuaRKHVggqjS0M
+         RJveddpFNf4sw==
+Date:   Tue, 2 Mar 2021 11:26:55 +0100 (CET)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlwifi: Fix softirq/hardirq disabling in
+ iwl_pcie_enqueue_hcmd()
+Message-ID: <nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hey everyone,
+From: Jiri Kosina <jkosina@suse.cz>
 
-I get the following WARN triggered in net/wireless/nl80211.c during boot
-on v5.12-rc1:
+It's possible for iwl_pcie_enqueue_hcmd() to be called with hard IRQs 
+disabled (e.g. from LED core). We can't enable BHs in such a situation.
 
-[   36.749643] ------------[ cut here ]------------
-[   36.749645] WARNING: CPU: 7 PID: 829 at net/wireless/nl80211.c:7746 nl80211_get_reg_do+0x215/0x250 [cfg80211]
-[   36.749683] Modules linked in: bnep ccm algif_aead des_generic libdes arc4 algif_skcipher cmac md4 algif_hash af_alg typec_displayport binfmt_misc snd_hda_codec_hdmi nls_iso8859_1 joydev mei_hdcp intel_rapl_msr x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel kvm snd_hda_codec_realtek snd_hda_codec_generic rapl iwlmvm intel_cstate mac80211 snd_hda_intel snd_intel_dspcfg input_leds snd_seq_midi snd_hda_codec rmi_smbus libarc4 snd_seq_midi_event rmi_core serio_raw snd_hda_core uvcvideo snd_rawmidi efi_pstore iwlwifi snd_hwdep intel_wmi_thunderbolt videobuf2_vmalloc snd_pcm wmi_bmof btusb videobuf2_memops thinkpad_acpi videobuf2_v4l2 btrtl videobuf2_common processor_thermal_device btbcm processor_thermal_rfim nvram snd_seq btintel platform_profile videodev processor_thermal_mbox ucsi_acpi bluetooth ledtrig_audio processor_thermal_rapl mei_me snd_seq_device intel_rapl_common typec_ucsi mc ecdh_generic cfg80211 ecc intel_pch_thermal mei intel_soc_dts_iosf intel_xhci_usb_role_switch
-[   36.749713]  typec snd_timer snd soundcore int3403_thermal int340x_thermal_zone acpi_pad mac_hid int3400_thermal acpi_thermal_rel sch_fq_codel pkcs8_key_parser ip_tables x_tables autofs4 btrfs blake2b_generic xor zstd_compress raid6_pq libcrc32c dm_crypt uas usb_storage i915 crct10dif_pclmul crc32_pclmul ghash_clmulni_intel i2c_algo_bit aesni_intel crypto_simd drm_kms_helper cryptd syscopyarea nvme sysfillrect psmouse sysimgblt fb_sys_fops nvme_core cec e1000e i2c_i801 drm i2c_smbus wmi video
-[   36.749735] CPU: 7 PID: 829 Comm: iwd Tainted: G     U            5.12.0-rc1-brauner-v5.12-rc1 #316
-[   36.749737] Hardware name: LENOVO 20KHCTO1WW/20KHCTO1WW, BIOS N23ET75W (1.50 ) 10/13/2020
-[   36.749738] RIP: 0010:nl80211_get_reg_do+0x215/0x250 [cfg80211]
-[   36.749763] Code: 00 e8 8f f0 07 d0 85 c0 0f 84 ee fe ff ff eb a3 4c 89 e7 48 89 45 c0 e8 49 6d 44 d0 e8 64 09 47 d0 48 8b 45 c0 e9 36 ff ff ff <0f> 0b 4c 89 e7 e8 31 6d 44 d0 e8 4c 09 47 d0 b8 ea ff ff ff e9 1d
-[   36.749765] RSP: 0018:ffffa71800b7bb10 EFLAGS: 00010202
-[   36.749766] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-[   36.749767] RDX: ffff8bef4beb0008 RSI: 0000000000000000 RDI: ffff8bef4beb0300
-[   36.749768] RBP: ffffa71800b7bb50 R08: ffff8bef4beb0300 R09: ffff8bef4b7ba014
-[   36.749770] R10: 0000000000000000 R11: 000000000000001f R12: ffff8bef4d38e800
-[   36.749771] R13: ffffa71800b7bb78 R14: ffff8bef4b7ba014 R15: 0000000000000000
-[   36.749772] FS:  00007f89333c4740(0000) GS:ffff8bf2d17c0000(0000) knlGS:0000000000000000
-[   36.749773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   36.749774] CR2: 00007ffdda038ca8 CR3: 0000000108ca0002 CR4: 00000000003706e0
-[   36.749776] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[   36.749777] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[   36.749778] Call Trace:
-[   36.749781]  ? rtnl_unlock+0xe/0x10
-[   36.749786]  genl_family_rcv_msg_doit.isra.0+0xec/0x150
-[   36.749791]  genl_rcv_msg+0xe5/0x1e0
-[   36.749793]  ? __cfg80211_rdev_from_attrs+0x1c0/0x1c0 [cfg80211]
-[   36.749821]  ? nl80211_send_regdom.constprop.0+0x1a0/0x1a0 [cfg80211]
-[   36.749847]  ? genl_family_rcv_msg_doit.isra.0+0x150/0x150
-[   36.749850]  netlink_rcv_skb+0x55/0x100
-[   36.749853]  genl_rcv+0x29/0x40
-[   36.749855]  netlink_unicast+0x1a8/0x250
-[   36.749858]  netlink_sendmsg+0x233/0x460
-[   36.749860]  sock_sendmsg+0x65/0x70
-[   36.749863]  __sys_sendto+0x113/0x190
-[   36.749865]  ? __secure_computing+0x42/0xe0
-[   36.749867]  __x64_sys_sendto+0x29/0x30
-[   36.749869]  do_syscall_64+0x38/0x90
-[   36.749872]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-[   36.749874] RIP: 0033:0x7f89334e16c0
-[   36.749875] Code: c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 1d 45 31 c9 45 31 c0 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 68 c3 0f 1f 80 00 00 00 00 55 48 83 ec 20 48
-[   36.749877] RSP: 002b:00007ffdda03da08 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-[   36.749878] RAX: ffffffffffffffda RBX: 0000561f2c3c7b00 RCX: 00007f89334e16c0
-[   36.749879] RDX: 000000000000001c RSI: 0000561f2c3e66c0 RDI: 0000000000000004
-[   36.749880] RBP: 0000561f2c3d28e0 R08: 0000000000000000 R09: 0000000000000000
-[   36.749880] R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffdda03da6c
-[   36.749881] R13: 00007ffdda03da68 R14: 0000561f2c3d1790 R15: 0000000000000000
-[   36.749883] ---[ end trace 7cf430797302f3ab ]---
+Turn the unconditional BH-enable/BH-disable code into 
+hardirq-disable/conditional-enable.
 
-> dmesg | grep -i wifi
-[   32.842573] Intel(R) Wireless WiFi driver for Linux
-[   32.869098] iwlwifi 0000:02:00.0: Found debug destination: EXTERNAL_DRAM
-[   32.869102] iwlwifi 0000:02:00.0: Found debug configuration: 0
-[   32.869688] iwlwifi 0000:02:00.0: loaded firmware version 36.79ff3ccf.0 8265-36.ucode op_mode iwlmvm
-[   32.931443] iwlwifi 0000:02:00.0: Detected Intel(R) Dual Band Wireless AC 8265, REV=0x230
-[   32.952115] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
-[   32.952519] iwlwifi 0000:02:00.0: Allocated 0x00400000 bytes for firmware monitor.
-[   33.016062] iwlwifi 0000:02:00.0: base HW address: 3c:6a:a7:16:8c:cb
-[   36.861423] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
-[   36.993832] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
-[   37.061293] iwlwifi 0000:02:00.0: FW already configured (0) - re-configuring
+This fixes the warning below.
 
-Thanks!
-Christian
+ WARNING: CPU: 1 PID: 1139 at kernel/softirq.c:178 __local_bh_enable_ip+0xa5/0xf0
+ CPU: 1 PID: 1139 Comm: NetworkManager Not tainted 5.12.0-rc1-00004-gb4ded168af79 #7
+ Hardware name: LENOVO 20K5S22R00/20K5S22R00, BIOS R0IET38W (1.16 ) 05/31/2017
+ RIP: 0010:__local_bh_enable_ip+0xa5/0xf0
+ Code: f7 69 e8 ee 23 14 00 fb 66 0f 1f 44 00 00 65 8b 05 f0 f4 f7 69 85 c0 74 3f 48 83 c4 08 5b c3 65 8b 05 9b fe f7 69 85 c0 75 8e <0f> 0b eb 8a 48 89 3c 24 e8 4e 20 14 00 48 8b 3c 24 eb 91 e8 13 4e
+ RSP: 0018:ffffafd580b13298 EFLAGS: 00010046
+ RAX: 0000000000000000 RBX: 0000000000000201 RCX: 0000000000000000
+ RDX: 0000000000000003 RSI: 0000000000000201 RDI: ffffffffc1272389
+ RBP: ffff96517ae4c018 R08: 0000000000000001 R09: 0000000000000000
+ R10: ffffafd580b13178 R11: 0000000000000001 R12: ffff96517b060000
+ R13: 0000000000000000 R14: ffffffff80000000 R15: 0000000000000001
+ FS:  00007fc604ebefc0(0000) GS:ffff965267480000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055fb3fef13b2 CR3: 0000000109112004 CR4: 00000000003706e0
+ Call Trace:
+  ? _raw_spin_unlock_bh+0x1f/0x30
+  iwl_pcie_enqueue_hcmd+0x5d9/0xa00 [iwlwifi]
+  iwl_trans_txq_send_hcmd+0x6c/0x430 [iwlwifi]
+  iwl_trans_send_cmd+0x88/0x170 [iwlwifi]
+  ? lock_acquire+0x277/0x3d0
+  iwl_mvm_send_cmd+0x32/0x80 [iwlmvm]
+  iwl_mvm_led_set+0xc2/0xe0 [iwlmvm]
+  ? led_trigger_event+0x46/0x70
+  led_trigger_event+0x46/0x70
+  ieee80211_do_open+0x5c5/0xa20 [mac80211]
+  ieee80211_open+0x67/0x90 [mac80211]
+  __dev_open+0xd4/0x150
+  __dev_change_flags+0x19e/0x1f0
+  dev_change_flags+0x23/0x60
+  do_setlink+0x30d/0x1230
+  ? lock_is_held_type+0xb4/0x120
+  ? __nla_validate_parse.part.7+0x57/0xcb0
+  ? __lock_acquire+0x2e1/0x1a50
+  __rtnl_newlink+0x560/0x910
+  ? __lock_acquire+0x2e1/0x1a50
+  ? __lock_acquire+0x2e1/0x1a50
+  ? lock_acquire+0x277/0x3d0
+  ? sock_def_readable+0x5/0x290
+  ? lock_is_held_type+0xb4/0x120
+  ? find_held_lock+0x2d/0x90
+  ? sock_def_readable+0xb3/0x290
+  ? lock_release+0x166/0x2a0
+  ? lock_is_held_type+0x90/0x120
+  rtnl_newlink+0x47/0x70
+  rtnetlink_rcv_msg+0x25c/0x470
+  ? netlink_deliver_tap+0x97/0x3e0
+  ? validate_linkmsg+0x350/0x350
+  netlink_rcv_skb+0x50/0x100
+  netlink_unicast+0x1b2/0x280
+  netlink_sendmsg+0x336/0x450
+  sock_sendmsg+0x5b/0x60
+  ____sys_sendmsg+0x1ed/0x250
+  ? copy_msghdr_from_user+0x5c/0x90
+  ___sys_sendmsg+0x88/0xd0
+  ? lock_is_held_type+0xb4/0x120
+  ? find_held_lock+0x2d/0x90
+  ? lock_release+0x166/0x2a0
+  ? __fget_files+0xfe/0x1d0
+  ? __sys_sendmsg+0x5e/0xa0
+  __sys_sendmsg+0x5e/0xa0
+  ? lockdep_hardirqs_on_prepare+0xd9/0x170
+  do_syscall_64+0x33/0x80
+  entry_SYSCALL_64_after_hwframe+0x44/0xae
+ RIP: 0033:0x7fc605c9572d
+ Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 da ee ff ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 44 24 08 e8 2e ef ff ff 48
+ RSP: 002b:00007fffc83789f0 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 000055ef468570c0 RCX: 00007fc605c9572d
+ RDX: 0000000000000000 RSI: 00007fffc8378a30 RDI: 000000000000000c
+ RBP: 0000000000000010 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000000
+ R13: 00007fffc8378b80 R14: 00007fffc8378b7c R15: 0000000000000000
+ irq event stamp: 170785
+ hardirqs last  enabled at (170783): [<ffffffff9609a8c2>] __local_bh_enable_ip+0x82/0xf0
+ hardirqs last disabled at (170784): [<ffffffff96a8613d>] _raw_read_lock_irqsave+0x8d/0x90
+ softirqs last  enabled at (170782): [<ffffffffc1272389>] iwl_pcie_enqueue_hcmd+0x5d9/0xa00 [iwlwifi]
+ softirqs last disabled at (170785): [<ffffffffc1271ec6>] iwl_pcie_enqueue_hcmd+0x116/0xa00 [iwlwifi]
+
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index fb3d2f6299aa..0b35bf258fad 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -928,6 +928,7 @@ int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
+ 	u32 cmd_pos;
+ 	const u8 *cmddata[IWL_MAX_CMD_TBS_PER_TFD];
+ 	u16 cmdlen[IWL_MAX_CMD_TBS_PER_TFD];
++	unsigned long flags;
+ 
+ 	if (WARN(!trans->wide_cmd_header &&
+ 		 group_id > IWL_ALWAYS_LONG_GROUP,
+@@ -1011,10 +1012,10 @@ int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
+ 		goto free_dup_buf;
+ 	}
+ 
+-	spin_lock_bh(&txq->lock);
++	spin_lock_irqsave(&txq->lock, flags);
+ 
+ 	if (iwl_txq_space(trans, txq) < ((cmd->flags & CMD_ASYNC) ? 2 : 1)) {
+-		spin_unlock_bh(&txq->lock);
++		spin_unlock_irqrestore(&txq->lock, flags);
+ 
+ 		IWL_ERR(trans, "No space in command queue\n");
+ 		iwl_op_mode_cmd_queue_full(trans->op_mode);
+@@ -1174,7 +1175,7 @@ int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
+  unlock_reg:
+ 	spin_unlock(&trans_pcie->reg_lock);
+  out:
+-	spin_unlock_bh(&txq->lock);
++	spin_unlock_irqrestore(&txq->lock, flags);
+  free_dup_buf:
+ 	if (idx < 0)
+ 		kfree(dup_buf);
+
+-- 
+Jiri Kosina
+SUSE Labs
+
