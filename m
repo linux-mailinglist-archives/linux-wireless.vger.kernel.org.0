@@ -2,74 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B602C32AFCA
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF69E32AFCE
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:30:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239071AbhCCA2r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Mar 2021 19:28:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50532 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1835424AbhCBTGm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 14:06:42 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2675C64F0A;
-        Tue,  2 Mar 2021 19:06:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614711960;
-        bh=LfnPQ8j71OOwDeXh2lFzTn3X1RHPgd8vGYaDBzgkpE4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=q7D962wwFW76mUvpmvcr+e3cmlX1cDru3vp9950L0WE9EHcBd9UApQwZgodC+F9RU
-         g19fCoI1R/4vgTE2uKgqKEvjPfQu93cx2nHWuViELmWN2dvtEr5PHx44KKGqzemu39
-         59DiJtuQfTSdVXv0hCTfKcT8D67Av82MZI9Qg6wT4rwIoaqKqITlwVbw7KeEMGQXcy
-         ExixosIoj3A4/E9sqOtLRcI2ICQ6e8Rhlmp7exGgPsIBcU9fUr+WcG8rLRStHQhn3a
-         G5iqmspT3DxXRnWBrrbVSxiYj61MVJT+RpOnnf9I3DJ0WwYSwULOlInpD81EMzyAmp
-         xkmE8gqE9u80Q==
-Date:   Tue, 2 Mar 2021 11:05:59 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     "Coelho, Luciano" <luciano.coelho@intel.com>
-Cc:     "nathan@kernel.org" <nathan@kernel.org>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "gil.adam@intel.com" <gil.adam@intel.com>,
-        "Berg, Johannes" <johannes.berg@intel.com>,
-        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Goodstein, Mordechay" <mordechay.goodstein@intel.com>,
-        "hulkci@huawei.com" <hulkci@huawei.com>,
-        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] iwlwifi: mvm: add terminate entry for dmi_system_id
- tables
-Message-ID: <20210302110559.1809ceaf@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <bd1bd942bcccffb9b3453344b611a13876d0e565.camel@intel.com>
-References: <20210223140039.1708534-1-weiyongjun1@huawei.com>
-        <20210226210640.GA21320@MSI.localdomain>
-        <87h7ly9fph.fsf@codeaurora.org>
-        <bd1bd942bcccffb9b3453344b611a13876d0e565.camel@intel.com>
+        id S239135AbhCCA2x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:28:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46140 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1581882AbhCBT23 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Mar 2021 14:28:29 -0500
+Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4261CC061788;
+        Tue,  2 Mar 2021 11:27:47 -0800 (PST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4DqnD32Fqfz1rvxr;
+        Tue,  2 Mar 2021 20:25:52 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 4DqnD01Pyvz1qwjl;
+        Tue,  2 Mar 2021 20:25:52 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id cgdcMnRzD3HI; Tue,  2 Mar 2021 20:25:50 +0100 (CET)
+X-Auth-Info: PuXIev8z3GrAlFtwE2wNXw8ehidMZTw3YtY26thEaug=
+Received: from [IPv6:::1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Tue,  2 Mar 2021 20:25:50 +0100 (CET)
+Subject: Re: [PATCH AUTOSEL 5.10 050/217] rsi: Fix TX EAPOL packet handling
+ against iwlwifi AP
+To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Cc:     Angus Ainslie <angus@akkea.ca>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Martin Kepplinger <martink@posteo.de>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20201223021626.2790791-1-sashal@kernel.org>
+ <20201223021626.2790791-50-sashal@kernel.org>
+From:   Marek Vasut <marex@denx.de>
+Message-ID: <68699f8a-2fcd-3b3d-f809-afa54790e9f9@denx.de>
+Date:   Tue, 2 Mar 2021 20:25:49 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20201223021626.2790791-50-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2 Mar 2021 18:31:11 +0000 Coelho, Luciano wrote:
-> On Sat, 2021-02-27 at 08:39 +0200, Kalle Valo wrote:
-> > Nathan Chancellor <nathan@kernel.org> writes:
-> > > We received a report about a crash in iwlwifi when compiled with LTO and
-> > > this fix resolves it.  
-> > 
-> > That information should be added to the commit log.
-> > 
-> > Luca, should I take this to wireless-drivers?  
-> 
-> I just saw Jens' patch now and I don't remember if I acked this one?
-> 
-> In any, I assigned it to you in patchwork, so please take it directly
-> to w-d.
-> 
-> Acked-by: Luca Coelho <luciano.coelho@intel.com>
+On 12/23/20 3:13 AM, Sasha Levin wrote:
 
-Thanks, I'm getting pinged, too. It sounded like Kalle would like to
-see the commit log improved, if Wei doesn't respond could you please
-step in to make sure this fix is part of Dave's next PR to Linus?
+Hello Sasha,
 
-Thanks!
+> From: Marek Vasut <marex@denx.de>
+> 
+> [ Upstream commit 65277100caa2f2c62b6f3c4648b90d6f0435f3bc ]
+> 
+> In case RSI9116 SDIO WiFi operates in STA mode against Intel 9260 in AP mode,
+> the association fails. The former is using wpa_supplicant during association,
+> the later is set up using hostapd:
+
+[...]
+
+Was this patch possibly missed from 5.10.y ?
+
+Also, while at it, I think it might make sense to pick the following two 
+patches as well, they dramatically reduce interrupt rate of the RSI WiFi 
+device, so it stops overloading lower-end devices:
+287431463e786 ("rsi: Move card interrupt handling to RX thread")
+abd131a19f6b8 ("rsi: Clean up loop in the interrupt handler")
