@@ -2,16 +2,16 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E1D532AFD0
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:30:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E19C32AFB7
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239187AbhCCA25 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Mar 2021 19:28:57 -0500
-Received: from mail-dm6nam10on2068.outbound.protection.outlook.com ([40.107.93.68]:63489
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        id S238691AbhCCA2U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:28:20 -0500
+Received: from mail-bn8nam12on2078.outbound.protection.outlook.com ([40.107.237.78]:36096
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1347870AbhCBTtK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 14:49:10 -0500
+        id S1836719AbhCBP7H (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Mar 2021 10:59:07 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
  b=MQcVSmLFy4RYvLPitiTTKBbWbAYNKm/n5m51iDhIEys5n6r+4M+G3C3kd6q4I2+6s9ln1c3lM8tywJmnVB2yL904UROGQwLm3QSyI44xLrcnw30WbB9az/7+s8csIL6YpgSQaRZVg2c1LTPrgB/dC1GQjKrtzUx6VENSxRFMxEN3zqJc4fBwqAeBwSC7S04b7h0KRLk2epj9GIFYpg5kZEIlmW/9janLJkuqzZM6e3GYHj6YfZbkXwEIeoK5+nOqM3nBAQ02+Eqxa3Av5N07zb42+A0m+26sn74cncqfI9pb+pTVlumfMdIg7Mx4WuXQb5wp+s7tTjMh9c6pPzp1UQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
