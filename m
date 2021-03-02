@@ -2,78 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8826D32AF62
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:26:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 720FD32AF6D
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:27:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233829AbhCCATJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Mar 2021 19:19:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60180 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1446101AbhCBDDs (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Mar 2021 22:03:48 -0500
-Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D134C061788
-        for <linux-wireless@vger.kernel.org>; Mon,  1 Mar 2021 19:03:07 -0800 (PST)
-Received: by mail-qv1-xf33.google.com with SMTP id n4so6949927qvl.4
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Mar 2021 19:03:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bobcopeland-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=7Ap+lMZ5e7U/+z95W+/q7xprCOW2/VbHhOzWoWjMPbk=;
-        b=RMwrkfa8c6nbnhjzbkiDdDGxTayZHbFwg3STR/aDfbX773xuPHCAW+vi4jkNwLH7Np
-         lO1aCyUuN+yTN0KVddt58v4hDeaf7SwBpygkzbKe6LnxULbO7R8BWT4P8PQjc1h2rAD5
-         4+mDVDNX0ljHKXYqYJ1Jxb/LuvFTY2mt2u+YO5wxZy1487ADFr4zBJDfrY2VAnzs7tKy
-         l+NES8YM1z7Zga6sv0c3DjnQ6DAFCJilKwr6IOQPKrA0dWrOH9W61AAZMjEYHukcK0Sa
-         JRdYPTYaxH5eXPevuoSHkl6mexg2Dwlb5MttjXN2WuIQoO7XeN5o/I4vvcJu5H668m0k
-         QpZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7Ap+lMZ5e7U/+z95W+/q7xprCOW2/VbHhOzWoWjMPbk=;
-        b=qA6PtMDeijlP5LQodlnADFwwv7yMJbXvqvKBjvav91ljDYlcsB/AAM3lJeBoZOVBvG
-         LsA06lrNNn2GehGileFbbj+Nf4hYw/UVeIv24+CiADxPdsJoCzrFLyuY9AnPpte7PfNH
-         DDBcLg2n76QUWzZZg2dMBsOKGZtXoyGjTz406asTy+HVZdf2Kye5Dd0vd65qBGDx371Y
-         Jfe07UdJIg2RuLachLksBf8VcVRmT8N842D1uJWxUKhR9vp6IHCZc8Wez/eAAcqPeCsr
-         3slTRKbzv9k+QtiQQjRtefV7z4IKbBqdZyf6+0GTtbUhHDlwoNMQAqLZGYQu81q6x+wR
-         BhYQ==
-X-Gm-Message-State: AOAM5317wCoEY0af+Tn3siRfEJEd00c+qi28WTrZCAHvxP9OgM0cm3p/
-        yctRmoSBwCt+upKuScnGPoQQeA==
-X-Google-Smtp-Source: ABdhPJzJq9JUoxi1g5ExnamYWl0X2ddP1wan/s2z0eUPIOvv3Nf9vIB3T0YYfmFAF9yA5Qzx/YuF4A==
-X-Received: by 2002:a0c:a5a6:: with SMTP id z35mr1760056qvz.24.1614654186704;
-        Mon, 01 Mar 2021 19:03:06 -0800 (PST)
-Received: from elrond.bobcopeland.com ([2607:fea8:5ac0:7d5:a81b:d39d:76c7:d569])
-        by smtp.gmail.com with ESMTPSA id n136sm10144384qke.123.2021.03.01.19.03.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Mar 2021 19:03:06 -0800 (PST)
-Received: by elrond.bobcopeland.com (Postfix, from userid 1000)
-        id 6B547FC007E; Mon,  1 Mar 2021 22:03:05 -0500 (EST)
-Date:   Mon, 1 Mar 2021 22:03:05 -0500
-From:   Bob Copeland <me@bobcopeland.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
+        id S237078AbhCCAVC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:21:02 -0500
+Received: from z11.mailgun.us ([104.130.96.11]:59451 "EHLO z11.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1347801AbhCBF7i (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Mar 2021 00:59:38 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614664755; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=SDD1P47XNaiUZrFMTSvgy2G91aczIhSVqpNha7zFNTg=; b=wDeHo8uoEiteRoOJzsIS8HiOiBTXj5596VdgJPxa/kep5JvdH3+1vNkt6VYdN3J+3Emrd5B4
+ xsDZU3IJO9zA2UgO2o+UmsSHDabQHyv5NnQZCnEQvQpZNds2u2c/zaDr0WQubsqAiZ21yxJV
+ S3MaKSi5DGd1KtnD1QXMvrMS4Co=
+X-Mailgun-Sending-Ip: 104.130.96.11
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 603dd4171d4da3b75de04428 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 02 Mar 2021 05:58:47
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CEB27C43464; Tue,  2 Mar 2021 05:58:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 09D31C433CA;
+        Tue,  2 Mar 2021 05:58:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 09D31C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH] wmediumd: lib: sched: fix another scheduling corner case
-Message-ID: <20210302030305.GD27894@bobcopeland.com>
-References: <20210225195042.2657805-1-johannes@sipsolutions.net>
+        Luca Coelho <luciano.coelho@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH] iwlwifi: fix ARCH=i386 compilation warnings
+References: <20210302011640.1276636-1-pierre-louis.bossart@linux.intel.com>
+Date:   Tue, 02 Mar 2021 07:58:40 +0200
+In-Reply-To: <20210302011640.1276636-1-pierre-louis.bossart@linux.intel.com>
+        (Pierre-Louis Bossart's message of "Mon, 1 Mar 2021 19:16:37 -0600")
+Message-ID: <87k0qq85bj.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210225195042.2657805-1-johannes@sipsolutions.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Feb 25, 2021 at 08:50:42PM +0100, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> When running with an external scheduler that also uses the
-> event loop, we can detect e.g. a client disconnecting from
-> a server while in usfstl_sched_forward(), causing us to not
-> have a job anymore on the scheduler afterwards, which then
-> causes the assert at the end to get reached erroneously.
+Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com> writes:
 
-Applied, thanks.
+> An unsigned long variable should rely on '%lu' format strings, not '%zd'
+>
+> Fixes: a1a6a4cf49ece ("iwlwifi: pnvm: implement reading PNVM from UEFI")
+> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> ---
+> warnings found with v5.12-rc1 and next-20210301
+
+Luca, can I take this to wireless-drivers?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
