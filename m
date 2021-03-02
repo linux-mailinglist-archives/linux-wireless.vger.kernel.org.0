@@ -2,62 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FA1A329356
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Mar 2021 22:15:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2990332AEF0
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:13:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243909AbhCAVP0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Mar 2021 16:15:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41312 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237864AbhCAVN0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Mar 2021 16:13:26 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD500C061788;
-        Mon,  1 Mar 2021 13:12:45 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lGpqH-00ARN0-Um; Mon, 01 Mar 2021 22:12:38 +0100
-Message-ID: <2db8f779b4b37d4498cfeaed77d5ede54e429a6e.camel@sipsolutions.net>
-Subject: Re: Lockdep warning in iwl_pcie_rx_handle()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jiri Kosina <jikos@kernel.org>,
+        id S236472AbhCCAKI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:10:08 -0500
+Received: from mga05.intel.com ([192.55.52.43]:65115 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240262AbhCBBSq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 1 Mar 2021 20:18:46 -0500
+IronPort-SDR: ACEssgvXcps3ESo418MylkrQWFMc3Wit3GPq+5om41Dg4yeVu22RYSK2Zq4LVrnXK6/hiaDibj
+ E1Itm7zOjNfg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9910"; a="271650667"
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
+   d="scan'208";a="271650667"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2021 17:16:55 -0800
+IronPort-SDR: HdRnrgj/a/lToZBkv9SNvWc5tXGaZn3OSd8PLODP3ozFiJQMP1S9JaQTs9+L8CvnjhS/ErUxzG
+ Jq4/qkr1JGvw==
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
+   d="scan'208";a="434492460"
+Received: from dethomse-mob2.amr.corp.intel.com (HELO pbossart-mobl3.intel.com) ([10.213.173.10])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2021 17:16:55 -0800
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+To:     linux-wireless@vger.kernel.org,
         Luca Coelho <luciano.coelho@intel.com>
-Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 01 Mar 2021 22:12:21 +0100
-In-Reply-To: <nycvar.YFH.7.76.2103012136570.12405@cbobk.fhfr.pm> (sfid-20210301_215846_256695_15E0D07E)
-References: <nycvar.YFH.7.76.2103012136570.12405@cbobk.fhfr.pm>
-         (sfid-20210301_215846_256695_15E0D07E)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+Cc:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] iwlwifi: fix ARCH=i386 compilation warnings
+Date:   Mon,  1 Mar 2021 19:16:37 -0600
+Message-Id: <20210302011640.1276636-1-pierre-louis.bossart@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jiri,
+An unsigned long variable should rely on '%lu' format strings, not '%zd'
 
-> I am getting the splat below with Linus' tree as of today (5.11-rc1, 
-> fe07bfda2fb). I haven't started to look into the code yet, but apparently 
-> this has been already reported by Heiner here:
-> 
-> 	https://www.spinics.net/lists/linux-wireless/msg208353.html
-> 
-> so before I start digging deep into it (the previous kernel this 
-> particular machine had is 5.9, so I'd rather avoid lenghty bisect for now 
-> in case someone has already looked into it and has ideas where the problem 
-> is), I thought I'd ask whether this has been root-caused elsewhere 
-> already.
+Fixes: a1a6a4cf49ece ("iwlwifi: pnvm: implement reading PNVM from UEFI")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+---
+warnings found with v5.12-rc1 and next-20210301
 
-Yeah, I'm pretty sure we have a fix for this, though I'm not sure right
-now where it is in the pipeline.
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-It's called "iwlwifi: pcie: don't add NAPI under rxq->lock" but right
-now I can't find it in any of the public archives.
-
-johannes
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+index fd070ca5e517..40f2109a097f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+@@ -271,12 +271,12 @@ static int iwl_pnvm_get_from_efi(struct iwl_trans *trans,
+ 	err = efivar_entry_get(pnvm_efivar, NULL, &package_size, package);
+ 	if (err) {
+ 		IWL_DEBUG_FW(trans,
+-			     "PNVM UEFI variable not found %d (len %zd)\n",
++			     "PNVM UEFI variable not found %d (len %lu)\n",
+ 			     err, package_size);
+ 		goto out;
+ 	}
+ 
+-	IWL_DEBUG_FW(trans, "Read PNVM fro UEFI with size %zd\n", package_size);
++	IWL_DEBUG_FW(trans, "Read PNVM fro UEFI with size %lu\n", package_size);
+ 
+ 	*data = kmemdup(package->data, *len, GFP_KERNEL);
+ 	if (!*data)
+-- 
+2.25.1
 
