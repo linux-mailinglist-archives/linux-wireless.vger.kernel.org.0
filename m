@@ -2,233 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A539D32AF88
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F3FB32AF8F
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Mar 2021 04:29:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238064AbhCCA0T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Mar 2021 19:26:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45682 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1838109AbhCBJ2U (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 04:28:20 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2CFF064F0B;
-        Tue,  2 Mar 2021 09:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614677258;
-        bh=/d9JcsrJy2ZQxdWam/1fe7GqsKrPDyLOFEO8rkB2fm0=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=RpH6VV3LMhbD9S6/59a+5Ujmb1jNo8XGen3nZaJR1KibWK8aoNvfZsCbtZ49VSrf7
-         wmAWAvADsOvx4jhlR5X7x5kfGom9gyPGSlshAsMKrxNse7zzPGVGx/1Tb8YhO48lm0
-         mFKp/ag1NMswZfccEiLxadZ8fUq4MaSpxwcHDKNOLxYCwpWz0UmFLcp7+YUh6tGpTQ
-         pqMd3oEmatMAjAWWk6P+yea4ux/CAhyWWHlGVkS8WImaqijaraWPtotZnDyGijXLa0
-         scLcji3zZ189biIYvoNG5UWHAW5nBYkzpLPvYifUioN3N5I/l7KJoKQI14yNaN2uZ4
-         33tRGUEH0I4jA==
-Date:   Tue, 2 Mar 2021 10:27:34 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
+        id S238140AbhCCA0e convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Mar 2021 19:26:34 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:47063 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1379001AbhCBJhR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Mar 2021 04:37:17 -0500
+Received: from ip5f5af0a0.dynamic.kabel-deutschland.de ([95.90.240.160] helo=wittgenstein)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <christian.brauner@ubuntu.com>)
+        id 1lH1Rq-00008b-Gf; Tue, 02 Mar 2021 09:36:10 +0000
+Date:   Tue, 2 Mar 2021 10:36:09 +0100
+From:   Christian Brauner <christian.brauner@ubuntu.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
-cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iwlwifi: don't call netif_napi_add() with rxq->lock held
- (was Re: Lockdep warning in iwl_pcie_rx_handle())
-In-Reply-To: <2db8f779b4b37d4498cfeaed77d5ede54e429a6e.camel@sipsolutions.net>
-Message-ID: <nycvar.YFH.7.76.2103021025410.12405@cbobk.fhfr.pm>
-References: <nycvar.YFH.7.76.2103012136570.12405@cbobk.fhfr.pm>  (sfid-20210301_215846_256695_15E0D07E) <2db8f779b4b37d4498cfeaed77d5ede54e429a6e.camel@sipsolutions.net>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Triggering WARN in net/wireless/nl80211.c
+Message-ID: <20210302093609.a6vmvwtlu3qns67s@wittgenstein>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 1 Mar 2021, Johannes Berg wrote:
+Hey everyone,
 
-> > I am getting the splat below with Linus' tree as of today (5.11-rc1, 
-> > fe07bfda2fb). I haven't started to look into the code yet, but apparently 
-> > this has been already reported by Heiner here:
-> > 
-> > 	https://www.spinics.net/lists/linux-wireless/msg208353.html
-> > 
-> > so before I start digging deep into it (the previous kernel this 
-> > particular machine had is 5.9, so I'd rather avoid lenghty bisect for now 
-> > in case someone has already looked into it and has ideas where the problem 
-> > is), I thought I'd ask whether this has been root-caused elsewhere 
-> > already.
-> 
-> Yeah, I'm pretty sure we have a fix for this, though I'm not sure right
-> now where it is in the pipeline.
-> 
-> It's called "iwlwifi: pcie: don't add NAPI under rxq->lock" but right
-> now I can't find it in any of the public archives.
+I get the following WARN triggered in net/wireless/nl80211.c during boot
+on v5.12-rc1:
 
-I was not able to find that patch anywhere indeed, but in the meantime I 
-fixed it by the patch below. Please consider merging either of the fixes.
+[   36.749643] ------------[ cut here ]------------
+[   36.749645] WARNING: CPU: 7 PID: 829 at net/wireless/nl80211.c:7746 nl80211_get_reg_do+0x215/0x250 [cfg80211]
+[   36.749683] Modules linked in: bnep ccm algif_aead des_generic libdes arc4 algif_skcipher cmac md4 algif_hash af_alg typec_displayport binfmt_misc snd_hda_codec_hdmi nls_iso8859_1 joydev mei_hdcp intel_rapl_msr x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel kvm snd_hda_codec_realtek snd_hda_codec_generic rapl iwlmvm intel_cstate mac80211 snd_hda_intel snd_intel_dspcfg input_leds snd_seq_midi snd_hda_codec rmi_smbus libarc4 snd_seq_midi_event rmi_core serio_raw snd_hda_core uvcvideo snd_rawmidi efi_pstore iwlwifi snd_hwdep intel_wmi_thunderbolt videobuf2_vmalloc snd_pcm wmi_bmof btusb videobuf2_memops thinkpad_acpi videobuf2_v4l2 btrtl videobuf2_common processor_thermal_device btbcm processor_thermal_rfim nvram snd_seq btintel platform_profile videodev processor_thermal_mbox ucsi_acpi bluetooth ledtrig_audio processor_thermal_rapl mei_me snd_seq_device intel_rapl_common typec_ucsi mc ecdh_generic cfg80211 ecc intel_pch_thermal mei intel_soc_dts_iosf intel_xhci_usb_role_switch
+[   36.749713]  typec snd_timer snd soundcore int3403_thermal int340x_thermal_zone acpi_pad mac_hid int3400_thermal acpi_thermal_rel sch_fq_codel pkcs8_key_parser ip_tables x_tables autofs4 btrfs blake2b_generic xor zstd_compress raid6_pq libcrc32c dm_crypt uas usb_storage i915 crct10dif_pclmul crc32_pclmul ghash_clmulni_intel i2c_algo_bit aesni_intel crypto_simd drm_kms_helper cryptd syscopyarea nvme sysfillrect psmouse sysimgblt fb_sys_fops nvme_core cec e1000e i2c_i801 drm i2c_smbus wmi video
+[   36.749735] CPU: 7 PID: 829 Comm: iwd Tainted: G     U            5.12.0-rc1-brauner-v5.12-rc1 #316
+[   36.749737] Hardware name: LENOVO 20KHCTO1WW/20KHCTO1WW, BIOS N23ET75W (1.50 ) 10/13/2020
+[   36.749738] RIP: 0010:nl80211_get_reg_do+0x215/0x250 [cfg80211]
+[   36.749763] Code: 00 e8 8f f0 07 d0 85 c0 0f 84 ee fe ff ff eb a3 4c 89 e7 48 89 45 c0 e8 49 6d 44 d0 e8 64 09 47 d0 48 8b 45 c0 e9 36 ff ff ff <0f> 0b 4c 89 e7 e8 31 6d 44 d0 e8 4c 09 47 d0 b8 ea ff ff ff e9 1d
+[   36.749765] RSP: 0018:ffffa71800b7bb10 EFLAGS: 00010202
+[   36.749766] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+[   36.749767] RDX: ffff8bef4beb0008 RSI: 0000000000000000 RDI: ffff8bef4beb0300
+[   36.749768] RBP: ffffa71800b7bb50 R08: ffff8bef4beb0300 R09: ffff8bef4b7ba014
+[   36.749770] R10: 0000000000000000 R11: 000000000000001f R12: ffff8bef4d38e800
+[   36.749771] R13: ffffa71800b7bb78 R14: ffff8bef4b7ba014 R15: 0000000000000000
+[   36.749772] FS:  00007f89333c4740(0000) GS:ffff8bf2d17c0000(0000) knlGS:0000000000000000
+[   36.749773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   36.749774] CR2: 00007ffdda038ca8 CR3: 0000000108ca0002 CR4: 00000000003706e0
+[   36.749776] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[   36.749777] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[   36.749778] Call Trace:
+[   36.749781]  ? rtnl_unlock+0xe/0x10
+[   36.749786]  genl_family_rcv_msg_doit.isra.0+0xec/0x150
+[   36.749791]  genl_rcv_msg+0xe5/0x1e0
+[   36.749793]  ? __cfg80211_rdev_from_attrs+0x1c0/0x1c0 [cfg80211]
+[   36.749821]  ? nl80211_send_regdom.constprop.0+0x1a0/0x1a0 [cfg80211]
+[   36.749847]  ? genl_family_rcv_msg_doit.isra.0+0x150/0x150
+[   36.749850]  netlink_rcv_skb+0x55/0x100
+[   36.749853]  genl_rcv+0x29/0x40
+[   36.749855]  netlink_unicast+0x1a8/0x250
+[   36.749858]  netlink_sendmsg+0x233/0x460
+[   36.749860]  sock_sendmsg+0x65/0x70
+[   36.749863]  __sys_sendto+0x113/0x190
+[   36.749865]  ? __secure_computing+0x42/0xe0
+[   36.749867]  __x64_sys_sendto+0x29/0x30
+[   36.749869]  do_syscall_64+0x38/0x90
+[   36.749872]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[   36.749874] RIP: 0033:0x7f89334e16c0
+[   36.749875] Code: c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 1d 45 31 c9 45 31 c0 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 68 c3 0f 1f 80 00 00 00 00 55 48 83 ec 20 48
+[   36.749877] RSP: 002b:00007ffdda03da08 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+[   36.749878] RAX: ffffffffffffffda RBX: 0000561f2c3c7b00 RCX: 00007f89334e16c0
+[   36.749879] RDX: 000000000000001c RSI: 0000561f2c3e66c0 RDI: 0000000000000004
+[   36.749880] RBP: 0000561f2c3d28e0 R08: 0000000000000000 R09: 0000000000000000
+[   36.749880] R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffdda03da6c
+[   36.749881] R13: 00007ffdda03da68 R14: 0000561f2c3d1790 R15: 0000000000000000
+[   36.749883] ---[ end trace 7cf430797302f3ab ]---
 
-Also I am still seeing
+> dmesg | grep -i wifi
+[   32.842573] Intel(R) Wireless WiFi driver for Linux
+[   32.869098] iwlwifi 0000:02:00.0: Found debug destination: EXTERNAL_DRAM
+[   32.869102] iwlwifi 0000:02:00.0: Found debug configuration: 0
+[   32.869688] iwlwifi 0000:02:00.0: loaded firmware version 36.79ff3ccf.0 8265-36.ucode op_mode iwlmvm
+[   32.931443] iwlwifi 0000:02:00.0: Detected Intel(R) Dual Band Wireless AC 8265, REV=0x230
+[   32.952115] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
+[   32.952519] iwlwifi 0000:02:00.0: Allocated 0x00400000 bytes for firmware monitor.
+[   33.016062] iwlwifi 0000:02:00.0: base HW address: 3c:6a:a7:16:8c:cb
+[   36.861423] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
+[   36.993832] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
+[   37.061293] iwlwifi 0000:02:00.0: FW already configured (0) - re-configuring
 
-	WARNING: CPU: 2 PID: 1138 at kernel/softirq.c:178 __local_bh_enable_ip+0xa5/0xf0
-
-on the
-
-	[   21.902173]  iwl_pcie_enqueue_hcmd+0x5d9/0xa00 [iwlwifi]
-	[   21.906445]  iwl_trans_txq_send_hcmd+0x6c/0x430 [iwlwifi]
-	[   21.910757]  iwl_trans_send_cmd+0x88/0x170 [iwlwifi]
-	[   21.915074]  ? lock_acquire+0x277/0x3d0
-	[   21.919327]  iwl_mvm_send_cmd+0x32/0x80 [iwlmvm]
-	[   21.923616]  iwl_mvm_led_set+0xc2/0xe0 [iwlmvm]
-
-codepath, but I'll look into it separately.
-
-
-
-From: Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH] iwlwifi: don't call netif_napi_add() with rxq->lock held
-
-We can't call netif_napi_add() with rxq-lock held, as there is a potential
-for deadlock as spotted by lockdep (see below). rxq->lock is not
-protecting anything over the netif_napi_add() codepath anyway, so let's
-drop it just before calling into NAPI.
-
- ========================================================
- WARNING: possible irq lock inversion dependency detected
- 5.12.0-rc1-00002-gbada49429032 #5 Not tainted
- --------------------------------------------------------
- irq/136-iwlwifi/565 just changed the state of lock:
- ffff89f28433b0b0 (&rxq->lock){+.-.}-{2:2}, at: iwl_pcie_rx_handle+0x7f/0x960 [iwlwifi]
- but this lock took another, SOFTIRQ-unsafe lock in the past:
-  (napi_hash_lock){+.+.}-{2:2}
-
- and interrupts could create inverse lock ordering between them.
-
- other info that might help us debug this:
-  Possible interrupt unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(napi_hash_lock);
-                                local_irq_disable();
-                                lock(&rxq->lock);
-                                lock(napi_hash_lock);
-   <Interrupt>
-     lock(&rxq->lock);
-
-  *** DEADLOCK ***
-
- 1 lock held by irq/136-iwlwifi/565:
-  #0: ffff89f2b1440170 (sync_cmd_lockdep_map){+.+.}-{0:0}, at: iwl_pcie_irq_handler+0x5/0xb30
-
- the shortest dependencies between 2nd lock and 1st lock:
-  -> (napi_hash_lock){+.+.}-{2:2} {
-     HARDIRQ-ON-W at:
-                       lock_acquire+0x277/0x3d0
-                       _raw_spin_lock+0x2c/0x40
-                       netif_napi_add+0x14b/0x270
-                       e1000_probe+0x2fe/0xee0 [e1000e]
-                       local_pci_probe+0x42/0x90
-                       pci_device_probe+0x10b/0x1c0
-                       really_probe+0xef/0x4b0
-                       driver_probe_device+0xde/0x150
-                       device_driver_attach+0x4f/0x60
-                       __driver_attach+0x9c/0x140
-                       bus_for_each_dev+0x79/0xc0
-                       bus_add_driver+0x18d/0x220
-                       driver_register+0x5b/0xf0
-                       do_one_initcall+0x5b/0x300
-                       do_init_module+0x5b/0x21c
-                       load_module+0x1dae/0x22c0
-                       __do_sys_finit_module+0xad/0x110
-                       do_syscall_64+0x33/0x80
-                       entry_SYSCALL_64_after_hwframe+0x44/0xae
-     SOFTIRQ-ON-W at:
-                       lock_acquire+0x277/0x3d0
-                       _raw_spin_lock+0x2c/0x40
-                       netif_napi_add+0x14b/0x270
-                       e1000_probe+0x2fe/0xee0 [e1000e]
-                       local_pci_probe+0x42/0x90
-                       pci_device_probe+0x10b/0x1c0
-                       really_probe+0xef/0x4b0
-                       driver_probe_device+0xde/0x150
-                       device_driver_attach+0x4f/0x60
-                       __driver_attach+0x9c/0x140
-                       bus_for_each_dev+0x79/0xc0
-                       bus_add_driver+0x18d/0x220
-                       driver_register+0x5b/0xf0
-                       do_one_initcall+0x5b/0x300
-                       do_init_module+0x5b/0x21c
-                       load_module+0x1dae/0x22c0
-                       __do_sys_finit_module+0xad/0x110
-                       do_syscall_64+0x33/0x80
-                       entry_SYSCALL_64_after_hwframe+0x44/0xae
-     INITIAL USE at:
-                      lock_acquire+0x277/0x3d0
-                      _raw_spin_lock+0x2c/0x40
-                      netif_napi_add+0x14b/0x270
-                      e1000_probe+0x2fe/0xee0 [e1000e]
-                      local_pci_probe+0x42/0x90
-                      pci_device_probe+0x10b/0x1c0
-                      really_probe+0xef/0x4b0
-                      driver_probe_device+0xde/0x150
-                      device_driver_attach+0x4f/0x60
-                      __driver_attach+0x9c/0x140
-                      bus_for_each_dev+0x79/0xc0
-                      bus_add_driver+0x18d/0x220
-                      driver_register+0x5b/0xf0
-                      do_one_initcall+0x5b/0x300
-                      do_init_module+0x5b/0x21c
-                      load_module+0x1dae/0x22c0
-                      __do_sys_finit_module+0xad/0x110
-                      do_syscall_64+0x33/0x80
-                      entry_SYSCALL_64_after_hwframe+0x44/0xae
-   }
-   ... key      at: [<ffffffffae84ef38>] napi_hash_lock+0x18/0x40
-   ... acquired at:
-    _raw_spin_lock+0x2c/0x40
-    netif_napi_add+0x14b/0x270
-    _iwl_pcie_rx_init+0x1f4/0x710 [iwlwifi]
-    iwl_pcie_rx_init+0x1b/0x3b0 [iwlwifi]
-    iwl_trans_pcie_start_fw+0x2ac/0x6a0 [iwlwifi]
-    iwl_mvm_load_ucode_wait_alive+0x116/0x460 [iwlmvm]
-    iwl_run_init_mvm_ucode+0xa4/0x3a0 [iwlmvm]
-    iwl_op_mode_mvm_start+0x9ed/0xbf0 [iwlmvm]
-    _iwl_op_mode_start.isra.4+0x42/0x80 [iwlwifi]
-    iwl_opmode_register+0x71/0xe0 [iwlwifi]
-    iwl_mvm_init+0x34/0x1000 [iwlmvm]
-    do_one_initcall+0x5b/0x300
-    do_init_module+0x5b/0x21c
-    load_module+0x1dae/0x22c0
-    __do_sys_finit_module+0xad/0x110
-    do_syscall_64+0x33/0x80
-    entry_SYSCALL_64_after_hwframe+0x44/0xae
-
-[ ... lockdep output trimmed .... ]
-
-Fixes: 25edc8f259c7106 ("iwlwifi: pcie: properly implement NAPI")
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
----
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 1bccaa034284..6262dd9043aa 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1063,11 +1063,12 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
- 
- 		iwl_pcie_rx_init_rxb_lists(rxq);
- 
-+		spin_unlock_bh(&rxq->lock);
-+
- 		if (!rxq->napi.poll)
- 			netif_napi_add(&trans_pcie->napi_dev, &rxq->napi,
- 				       iwl_pcie_dummy_napi_poll, 64);
- 
--		spin_unlock_bh(&rxq->lock);
- 	}
- 
- 	/* move the pool to the default queue and allocator ownerships */
-
-
--- 
-Jiri Kosina
-SUSE Labs
-
+Thanks!
+Christian
