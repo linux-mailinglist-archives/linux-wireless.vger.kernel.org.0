@@ -2,75 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0E8D32C142
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 01:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 049FF32C145
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 01:02:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245654AbhCCVRp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Mar 2021 16:17:45 -0500
-Received: from m42-2.mailgun.net ([69.72.42.2]:53267 "EHLO m42-2.mailgun.net"
+        id S245688AbhCCVRt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Mar 2021 16:17:49 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43458 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1838739AbhCCTBq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Mar 2021 14:01:46 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614798092; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=XCaJkg/07Qju0xDLW2/0tiQPWCjxTw8nP7t7Cm/n/9g=; b=XaFAIdiA+het27O1HROZIzIMI4JigyuIX5m17XpKg4NwEALTAmiDau+M9s+MSDub9JTRIFV1
- FMBo42dWRHyQfI/f2gNAHaaP2jymkxR4Kdj8hEqpgoXnvBsZ1feRMAFbvvC3gj7+4ei0UnVg
- FH/L3YiwECQGOesE/Yj9Z3sVi58=
-X-Mailgun-Sending-Ip: 69.72.42.2
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 603fdcdff7ec0ea57cb09445 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 03 Mar 2021 19:00:47
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4706AC43464; Wed,  3 Mar 2021 19:00:46 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6515FC433ED;
-        Wed,  3 Mar 2021 19:00:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6515FC433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Josh Boyer <jwboyer@kernel.org>
-Cc:     Srinivasan Raju <srini.raju@purelifi.com>,
-        Linux Firmware <linux-firmware@kernel.org>,
-        mostafa.afgani@purelifi.com, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] [v6] linux-firmware: New firmware files for pureLiFi USB devices
-References: <20210226132057.120007-1-srini.raju@purelifi.com>
-        <CA+5PVA7okASXRaiA8LoNp1gVHAd7iDPvzXsr1x2rBkh=4-VZXA@mail.gmail.com>
-Date:   Wed, 03 Mar 2021 21:00:42 +0200
-In-Reply-To: <CA+5PVA7okASXRaiA8LoNp1gVHAd7iDPvzXsr1x2rBkh=4-VZXA@mail.gmail.com>
-        (Josh Boyer's message of "Wed, 3 Mar 2021 13:50:34 -0500")
-Message-ID: <87ft1c6p0l.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S241393AbhCCTUy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 3 Mar 2021 14:20:54 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ABDCA64EF3;
+        Wed,  3 Mar 2021 19:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614799177;
+        bh=foliZiz3rI2vyKLIHWNgT7LIMdi0MA4Hbv+MqoW7wR0=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=petoCf703nrmUXLuxW+FbHQpB4MLYYSf85UQvamRzAs5gkulHW/6iIeiGZ+pAdnJk
+         +QjhfFawL7p9U1FL+Z3lPZ46Jx7BzEZeWQD3Uwcogl0zGmlEiukicpwQBjsNXTwJMZ
+         lsuP1P7EcG7/ddHpwmZoRfiinFyXnOypinWjomf5d3PfLMzL63xW6HSHySsfz2KQpp
+         q/hMpUFn+TtID2YeAM8b3F7GKhPqr3M19V0FKAX30QPlMdzkdwK3jw1lL0HazT6z+o
+         YZjYXebeSb1dhB4l4RGQGCIF15QlayyAQ3gAvfjEXdeSAyS3EFY2p3Mbj6T855mHXK
+         CYzFQQ2V4xwIg==
+Date:   Wed, 3 Mar 2021 20:19:33 +0100 (CET)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iwlwifi: don't call netif_napi_add() with rxq->lock
+ held (was Re: Lockdep warning in iwl_pcie_rx_handle())
+In-Reply-To: <87y2f46qai.fsf@codeaurora.org>
+Message-ID: <nycvar.YFH.7.76.2103032018080.12405@cbobk.fhfr.pm>
+References: <nycvar.YFH.7.76.2103021134060.12405@cbobk.fhfr.pm> <20210303155941.25521C43463@smtp.codeaurora.org> <nycvar.YFH.7.76.2103031901140.12405@cbobk.fhfr.pm> <87y2f46qai.fsf@codeaurora.org>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(Srinivasan, please cc linux-wireless on wireless firmware submissions)
+On Wed, 3 Mar 2021, Kalle Valo wrote:
 
-Josh Boyer <jwboyer@kernel.org> writes:
+> > ... i believe you want to drop the "(was ...") part from the patch 
+> > subject.
+> 
+> Too late now, it's already applied and pull request sent. Why was it
+> there in the first place?
 
-> Is the driver reviewed and merged now?  If so, Kallle (or whomever)
-> can you provide a Reviewed-by?
+Yeah, it was, but I don't think it's a big issue :) So let it be.
 
-It's not merged yet, but we are getting closer.
+BTW, how about the other fix I sent? It's also fixing a real functional 
+issue, so it IMHO is a -rc material
+
+	https://lore.kernel.org/linux-wireless/nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm/
+
+Thanks,
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Jiri Kosina
+SUSE Labs
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
