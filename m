@@ -2,67 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3B8732C0F7
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 01:01:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C9E132C108
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 01:02:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233719AbhCCU6L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Mar 2021 15:58:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36248 "EHLO
+        id S232954AbhCCVQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Mar 2021 16:16:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352207AbhCCD3E (ORCPT
+        with ESMTP id S1343821AbhCCDpT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 22:29:04 -0500
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E90C06178A
-        for <linux-wireless@vger.kernel.org>; Tue,  2 Mar 2021 19:28:04 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id g4so15335458pgj.0
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Mar 2021 19:28:04 -0800 (PST)
+        Tue, 2 Mar 2021 22:45:19 -0500
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4730EC061356
+        for <linux-wireless@vger.kernel.org>; Tue,  2 Mar 2021 19:44:00 -0800 (PST)
+Received: by mail-pg1-x52b.google.com with SMTP id h4so15294794pgf.13
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Mar 2021 19:44:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=lZL2eJYA7JLGuwMpkwyDUuJobXoOishzpPGGWKhuCLs=;
-        b=i4Us81/bEcEeanb8zWo8Fk/UsNBzOMSbfzZtoJb/+/y8/BxECbm+rL7YGLEOg/volM
-         dprCNhDL+1eGyFVPo2aDUEjpyyYJfKRlQega8mzpWDVN7i9KbANSOQBdtwiE/OGYELZ7
-         7J11x3rIpaHQ8cuy5Ca2q46+0CccURCLFyM0P3HJ/g7EcQRTC6xW91cJi92JcNlJ9/hv
-         UXF+FqecnWToT1V4ILlCWQ2iKhGxq22KZrGmL0gXLxQCslII5rUxgF60a6qlWWDlUQuj
-         ZldbsMQjIK/T4qYAB8kSVdsDFcyVrBvm1kDrBWUHKrKuqyUJVZRxLNcNmSsU4fb9AFBZ
-         Hpng==
+        bh=cw/C/Hp7HXpJXE9ozrgzF5uT1arcWJuzdAxoWKlNXWo=;
+        b=lqFd5FLdAPXOLXB5MLYLDnNE+fSkq99jG4SIH+8xSXMrmrb5zlhq89PylNTI0vKivu
+         1LyCkzip84PbeEDHhlC55z42T1YDjAYfefvxjq7jH6ZRdJMMHku7S6MrrFyKPgm37P+p
+         kByeEDG09WILgDKclVyO6YbRkiRT89JPb6sIwIEW0B0ALqFGhPcLVOtGFPE9lfumgRV7
+         3S4TcRbYqiHrDrpNIT76MOl1het5MTS9B5QJNA2qq1+yeA1Of5nTix+bD7MNNFYUwDES
+         PiCSU98nGUfM5s2lZB9cvoD6laZkeTybJOX8VJcfFFk/vcZTOpoljpdEWe/YMAcakdgw
+         N1Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=lZL2eJYA7JLGuwMpkwyDUuJobXoOishzpPGGWKhuCLs=;
-        b=eB0rEOMdZJ7Gq2biYuu4qhlRJD7LSuhrJeRan7IX1iLMW2JGM/yJ+5mIfBfoyrBf8t
-         TScBXSBx1gzLDiLSv4TiWf7egVN/fq1lWfDkjDVcyABYOvOYxa9lw88oRWIs2Ur63HTg
-         S1/8uIJXOriolAeR6ij1dbpmBOKbQc0MZr3lP/eD7EAC3RWeqnv16IDNIy3btirSMOgj
-         QmvyjM5HDRzhXfk3ucevgn6WkP8PaI/Yo2Iqwz4jRHBJxK9dOw4sC6qjjz9uExmr3b2f
-         1CSa/cXtNWnXaLUngW1g9iVXQKz6Lt0PFH+/cPn6UfEvd9XWAop2ZKXE/unv0IVFB8o/
-         fYiw==
-X-Gm-Message-State: AOAM531Cp8ABRWpmJrFQTcVwvhB0pBg6FpuP1lyZpgl7a9uKzew9FULn
-        5cf9whK+qGrs4gElOCuI7jUuQevXzrqphU56xV5bqg==
-X-Google-Smtp-Source: ABdhPJwM7sqU2ntrS/8sRWNuGwfpYotvcX73KeRdJP2dhvxq5TUpwxc+uCNwXasz3Picp9U9hGUpVA==
-X-Received: by 2002:a63:c10:: with SMTP id b16mr21827274pgl.326.1614742083963;
-        Tue, 02 Mar 2021 19:28:03 -0800 (PST)
+        bh=cw/C/Hp7HXpJXE9ozrgzF5uT1arcWJuzdAxoWKlNXWo=;
+        b=sqZ9iYellrYVZDYOilEfpE7ex+685pbJCYKIrmZ2TUxDpVOBac+PMdQ8e7sethKDzs
+         1MVXlRH121bszRQaCWoKo+C7GH9MRPx4b0YYQewwWGJWsxWDiRR/ZvYEgrSSAz45uYv7
+         nh6bF1Tfcl3sKLmtSG/jK2ViuVGN9n0JKkuub0Cy+5z1FYX3BJozFrep/Du+mtvznUDw
+         uFRu3DcpJh1tJDPqhB4W8GpkN3LG+7HKN3ZSnwR3r5QJtzcr+6KuoacssIx1W3WIaLwP
+         VS9Q+XSCu4KbbL38op3qUyMLarqm+7lwYvQngn++GM9xMsVWCJzWOveSqDOVAfIEU1Og
+         gUCA==
+X-Gm-Message-State: AOAM531SV6IlhW9BxZFsQ8o8HLRaHbTsZlAjTE6ene959cSAYGSj10rB
+        Z5AiODjiIv17U2JVTD+fXaiEfn2OInLnmGdK0yAkjQ==
+X-Google-Smtp-Source: ABdhPJyoQV88wz5yLA12azfLH2/Krg0NW2h0WaEugR+3SKDVT8A8bS547AYyhx3WJgupw8dt7lDDuQ==
+X-Received: by 2002:a63:5ec3:: with SMTP id s186mr20743396pgb.179.1614743039551;
+        Tue, 02 Mar 2021 19:43:59 -0800 (PST)
 Received: from localhost.localdomain ([218.255.1.14])
-        by smtp.gmail.com with ESMTPSA id z8sm4526379pjr.57.2021.03.02.19.28.02
+        by smtp.gmail.com with ESMTPSA id iq6sm5201646pjb.31.2021.03.02.19.43.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Mar 2021 19:28:03 -0800 (PST)
+        Tue, 02 Mar 2021 19:43:59 -0800 (PST)
 From:   "Eric Y.Y. Wong" <eric.wongyeungyan@gmail.com>
 To:     linux-wireless@vger.kernel.org, lorenzo@kernel.org, nbd@nbd.name
 Cc:     ryder.lee@mediatek.com,
-        "Eric Y.Y. Wong" <wongyeungyan@yahoo.com.hk>
-Subject: [PATCH] mt76: mt76x0u: Add support for TP-Link T2UHP(UN) v1
-Date:   Wed,  3 Mar 2021 11:27:30 +0800
-Message-Id: <20210303032730.24584-1-eric.wongyeungyan@gmail.com>
+        "Eric Y.Y. Wong" <eric.wongyeungyan@gmail.com>
+Subject: [PATCH v2] mt76: mt76x0u: Add support for TP-Link T2UHP(UN) v1
+Date:   Wed,  3 Mar 2021 11:43:52 +0800
+Message-Id: <20210303034352.25051-1-eric.wongyeungyan@gmail.com>
 X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
-
-From: "Eric Y.Y. Wong" <wongyeungyan@yahoo.com.hk>
 
 There are two variants of TP-Link Archer T2UHP V1, which are US and UN:
 
@@ -142,6 +140,8 @@ eric@eric-VirtualBox:~/src$ dmesg | tail -n 30
 [  189.715268] wlx18d6c71b6e3e: RX AssocResp from d0:17:c2:e0:d7:9c (capab=0x1011 status=0 aid=8)
 [  189.734720] wlx18d6c71b6e3e: associated
 [  190.233239] IPv6: ADDRCONF(NETDEV_CHANGE): wlx18d6c71b6e3e: link becomes ready
+
+Signed-off-by: Eric Y.Y. Wong <eric.wongyeungyan@gmail.com>
 ---
  drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
