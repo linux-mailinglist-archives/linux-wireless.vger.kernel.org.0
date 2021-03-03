@@ -2,164 +2,269 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C9E132C108
+	by mail.lfdr.de (Postfix) with ESMTP id 8108632C10A
 	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 01:02:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232954AbhCCVQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Mar 2021 16:16:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39728 "EHLO
+        id S233786AbhCCVQi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Mar 2021 16:16:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343821AbhCCDpT (ORCPT
+        with ESMTP id S1352476AbhCCDt6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Mar 2021 22:45:19 -0500
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4730EC061356
-        for <linux-wireless@vger.kernel.org>; Tue,  2 Mar 2021 19:44:00 -0800 (PST)
-Received: by mail-pg1-x52b.google.com with SMTP id h4so15294794pgf.13
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Mar 2021 19:44:00 -0800 (PST)
+        Tue, 2 Mar 2021 22:49:58 -0500
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CCC2C06121D
+        for <linux-wireless@vger.kernel.org>; Tue,  2 Mar 2021 19:49:06 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id s16so13274952plr.9
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Mar 2021 19:49:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cw/C/Hp7HXpJXE9ozrgzF5uT1arcWJuzdAxoWKlNXWo=;
-        b=lqFd5FLdAPXOLXB5MLYLDnNE+fSkq99jG4SIH+8xSXMrmrb5zlhq89PylNTI0vKivu
-         1LyCkzip84PbeEDHhlC55z42T1YDjAYfefvxjq7jH6ZRdJMMHku7S6MrrFyKPgm37P+p
-         kByeEDG09WILgDKclVyO6YbRkiRT89JPb6sIwIEW0B0ALqFGhPcLVOtGFPE9lfumgRV7
-         3S4TcRbYqiHrDrpNIT76MOl1het5MTS9B5QJNA2qq1+yeA1Of5nTix+bD7MNNFYUwDES
-         PiCSU98nGUfM5s2lZB9cvoD6laZkeTybJOX8VJcfFFk/vcZTOpoljpdEWe/YMAcakdgw
-         N1Dw==
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=crpRlTuLsTSBDFZF1sG8XY3lyzjTrYU8f2s0Rmwad8E=;
+        b=hFWyfj3CaV8hJ4u7MmXF0hFuoziy8dw4cf2dba32u2CWwmQyOpRF2xRnw6POnIoIRA
+         dZGJt67sbZVhemUi9P0KnwXz8en0Q2DnBu3ZQxE0JbQ8edtIXrhqG77ccNoxSRi04BiW
+         ZQ8iYyz62GdZIAJkseRO8DREAOWjv9T4QIByjTQdS66S9pQXW2+2uPMt066mVwcYKjoz
+         cVNXFXGf2GLECiGgr2kyVZYewYa65JmrkqLiGWqk8vE+gW3ms+ahPfH+s0qB7z35OcJw
+         Ko5O+5i5R7Z1Ic5sLakbCyRxuWyBq/LF9acJlOmTHXtZATaeQvPMZ6imEAJVylYoimkp
+         R3vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=cw/C/Hp7HXpJXE9ozrgzF5uT1arcWJuzdAxoWKlNXWo=;
-        b=sqZ9iYellrYVZDYOilEfpE7ex+685pbJCYKIrmZ2TUxDpVOBac+PMdQ8e7sethKDzs
-         1MVXlRH121bszRQaCWoKo+C7GH9MRPx4b0YYQewwWGJWsxWDiRR/ZvYEgrSSAz45uYv7
-         nh6bF1Tfcl3sKLmtSG/jK2ViuVGN9n0JKkuub0Cy+5z1FYX3BJozFrep/Du+mtvznUDw
-         uFRu3DcpJh1tJDPqhB4W8GpkN3LG+7HKN3ZSnwR3r5QJtzcr+6KuoacssIx1W3WIaLwP
-         VS9Q+XSCu4KbbL38op3qUyMLarqm+7lwYvQngn++GM9xMsVWCJzWOveSqDOVAfIEU1Og
-         gUCA==
-X-Gm-Message-State: AOAM531SV6IlhW9BxZFsQ8o8HLRaHbTsZlAjTE6ene959cSAYGSj10rB
-        Z5AiODjiIv17U2JVTD+fXaiEfn2OInLnmGdK0yAkjQ==
-X-Google-Smtp-Source: ABdhPJyoQV88wz5yLA12azfLH2/Krg0NW2h0WaEugR+3SKDVT8A8bS547AYyhx3WJgupw8dt7lDDuQ==
-X-Received: by 2002:a63:5ec3:: with SMTP id s186mr20743396pgb.179.1614743039551;
-        Tue, 02 Mar 2021 19:43:59 -0800 (PST)
-Received: from localhost.localdomain ([218.255.1.14])
-        by smtp.gmail.com with ESMTPSA id iq6sm5201646pjb.31.2021.03.02.19.43.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Mar 2021 19:43:59 -0800 (PST)
-From:   "Eric Y.Y. Wong" <eric.wongyeungyan@gmail.com>
-To:     linux-wireless@vger.kernel.org, lorenzo@kernel.org, nbd@nbd.name
-Cc:     ryder.lee@mediatek.com,
-        "Eric Y.Y. Wong" <eric.wongyeungyan@gmail.com>
-Subject: [PATCH v2] mt76: mt76x0u: Add support for TP-Link T2UHP(UN) v1
-Date:   Wed,  3 Mar 2021 11:43:52 +0800
-Message-Id: <20210303034352.25051-1-eric.wongyeungyan@gmail.com>
-X-Mailer: git-send-email 2.30.1
+        bh=crpRlTuLsTSBDFZF1sG8XY3lyzjTrYU8f2s0Rmwad8E=;
+        b=DkY9kO/DRtpga1p/WKBdtON69o9r3MF3NZyEvhW1zEg1/UTZh/LeZVGM71xstd5jq0
+         4fNJdjrvHJmlXtn9coEohdNAqGUusxoOQ0tc3+mnxaPUu5YA44TOBqUs5wFxzutm8P0q
+         vRhCBKw76qaQAztMHYStOMoTqWbzp7+kZTKJmJqK2bi5L69rWH2u/oVwlMiY29d4mYGt
+         KrfKuMBNwQt0GlSUVufnvrWjLRzfZHQb/r+6M0/02YKv//AYrkeYti6FoKHVxNs9wSYS
+         wDs4xcakWM0Y28A1ojza9cCPaLKZYADY8D8OvfrOA7yPlOoekfA0d9pLOC3qxjzAGO9R
+         FuRw==
+X-Gm-Message-State: AOAM533uibm5zldrG6Y+MficF6CBBzaHID7AKPV+Mjs5fv45AWWcF6j5
+        70wZgzr0ioAdggwDRzhw1hkNicVx40pb4w==
+X-Google-Smtp-Source: ABdhPJwUKK3hKO4MDPskjC/TL/jcUD2lNdUvh2EiZ5gVgcCIYL2JOQDbqHRux31h+/PAqQA5ZR8g9A==
+X-Received: by 2002:a17:90a:f302:: with SMTP id ca2mr7828805pjb.233.1614743345940;
+        Tue, 02 Mar 2021 19:49:05 -0800 (PST)
+Received: from [192.168.1.134] ([66.219.217.173])
+        by smtp.gmail.com with ESMTPSA id u9sm21456493pgc.59.2021.03.02.19.49.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Mar 2021 19:49:05 -0800 (PST)
+Subject: Re: [PATCH] iwlwifi: ensure that DMI scan table is properly
+ terminated
+To:     "Coelho, Luciano" <luciano.coelho@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+References: <0d52ff85-323f-67b8-5fdb-bbf3093b0ccf@kernel.dk>
+ <782d5382b0c8c9b33277422c8e41180c49044128.camel@intel.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <3f8e28b1-0c15-7539-ef50-5cfb71a3591f@kernel.dk>
+Date:   Tue, 2 Mar 2021 20:49:03 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <782d5382b0c8c9b33277422c8e41180c49044128.camel@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are two variants of TP-Link Archer T2UHP V1, which are US and UN:
+On 3/2/21 11:34 AM, Coelho, Luciano wrote:
+> On Tue, 2021-03-02 at 11:20 -0700, Jens Axboe wrote:
+>> My laptop crashes at boot, and I ran the same kernel with KASAN enabled.
+>> Turns out the DMI addition for iwlwifi is broken (and untested?), since
+>> it doesn't properly terminate the scan table. Ensure that we do so.
+>>
+>> ==================================================================
+>> BUG: KASAN: global-out-of-bounds in dmi_check_system+0x5a/0x70
+>> Read of size 1 at addr ffffffffc16af750 by task NetworkManager/1913
+>>
+>> CPU: 4 PID: 1913 Comm: NetworkManager Not tainted 5.12.0-rc1+ #10057
+>> Hardware name: LENOVO 20THCTO1WW/20THCTO1WW, BIOS N2VET27W (1.12 ) 12/21/2020
+>> Call Trace:
+>>  dump_stack+0x90/0xbe
+>>  print_address_description.constprop.0+0x1d/0x140
+>>  ? dmi_check_system+0x5a/0x70
+>>  ? dmi_check_system+0x5a/0x70
+>>  kasan_report.cold+0x7b/0xd4
+>>  ? dmi_check_system+0x5a/0x70
+>>  __asan_load1+0x4d/0x50
+>>  dmi_check_system+0x5a/0x70
+>>  iwl_mvm_up+0x1360/0x1690 [iwlmvm]
+>>  ? iwl_mvm_send_recovery_cmd+0x270/0x270 [iwlmvm]
+>>  ? setup_object.isra.0+0x27/0xd0
+>>  ? kasan_poison+0x20/0x50
+>>  ? ___slab_alloc.constprop.0+0x483/0x5b0
+>>  ? mempool_kmalloc+0x17/0x20
+>>  ? ftrace_graph_ret_addr+0x2a/0xb0
+>>  ? kasan_poison+0x3c/0x50
+>>  ? cfg80211_iftype_allowed+0x2e/0x90 [cfg80211]
+>>  ? __kasan_check_write+0x14/0x20
+>>  ? mutex_lock+0x86/0xe0
+>>  ? __mutex_lock_slowpath+0x20/0x20
+>>  __iwl_mvm_mac_start+0x49/0x290 [iwlmvm]
+>>  iwl_mvm_mac_start+0x37/0x50 [iwlmvm]
+>>  drv_start+0x73/0x1b0 [mac80211]
+>>  ieee80211_do_open+0x53e/0xf10 [mac80211]
+>>  ? ieee80211_check_concurrent_iface+0x266/0x2e0 [mac80211]
+>>  ieee80211_open+0xb9/0x100 [mac80211]
+>>  __dev_open+0x1b8/0x280
+>>  ? dev_set_rx_mode+0x40/0x40
+>>  __dev_change_flags+0x32f/0x3a0
+>>  ? dev_set_allmulti+0x20/0x20
+>>  ? is_bpf_text_address+0x24/0x30
+>>  ? kernel_text_address+0xbb/0xd0
+>>  dev_change_flags+0x63/0xc0
+>>  do_setlink+0xb59/0x18c0
+>>  ? rtnetlink_put_metrics+0x2e0/0x2e0
+>>  ? stack_trace_consume_entry+0x90/0x90
+>>  ? if6_seq_show+0xb0/0xb0
+>>  ? kasan_save_stack+0x42/0x50
+>>  ? kasan_save_stack+0x23/0x50
+>>  ? kasan_set_track+0x20/0x30
+>>  ? kasan_set_free_info+0x24/0x40
+>>  ? __kasan_slab_free+0xea/0x120
+>>  ? kfree+0x94/0x250
+>>  ? memset+0x3c/0x50
+>>  ? __nla_validate_parse+0xc1/0x12d0
+>>  ? ____sys_sendmsg+0x430/0x450
+>>  ? ___sys_sendmsg+0xf2/0x160
+>>  ? __sys_sendmsg+0xc8/0x150
+>>  ? __x64_sys_sendmsg+0x48/0x50
+>>  ? do_syscall_64+0x32/0x80
+>>  ? entry_SYSCALL_64_after_hwframe+0x44/0xae
+>>  ? nla_get_range_signed+0x1c0/0x1c0
+>>  ? nla_put_ifalias+0x86/0xf0
+>>  ? __cgroup_bpf_run_filter_skb+0xc1/0x6f0
+>>  ? memcpy+0x4e/0x60
+>>  ? __kasan_check_read+0x11/0x20
+>>  __rtnl_newlink+0x905/0xde0
+>>  ? ipv6_dev_get_saddr+0x4c0/0x4c0
+>>  ? rtnl_setlink+0x250/0x250
+>>  ? ftrace_graph_ret_addr+0x2a/0xb0
+>>  ? entry_SYSCALL_64_after_hwframe+0x44/0xae
+>>  ? bpf_ksym_find+0x94/0xe0
+>>  ? __rcu_read_unlock+0x39/0x60
+>>  ? is_bpf_text_address+0x24/0x30
+>>  ? kernel_text_address+0xbb/0xd0
+>>  ? __kernel_text_address+0x12/0x40
+>>  ? unwind_get_return_address+0x36/0x50
+>>  ? create_prof_cpu_mask+0x30/0x30
+>>  ? arch_stack_walk+0x98/0xf0
+>>  ? stack_trace_save+0x94/0xc0
+>>  ? stack_trace_consume_entry+0x90/0x90
+>>  ? arch_stack_walk+0x98/0xf0
+>>  ? __kasan_kmalloc+0x81/0xa0
+>>  ? kmem_cache_alloc_trace+0xf4/0x220
+>>  rtnl_newlink+0x55/0x80
+>>  rtnetlink_rcv_msg+0x22f/0x560
+>>  ? __kasan_slab_alloc+0x5f/0x80
+>>  ? rtnl_calcit.isra.0+0x1e0/0x1e0
+>>  ? __x64_sys_sendmsg+0x48/0x50
+>>  ? do_syscall_64+0x32/0x80
+>>  ? entry_SYSCALL_64_after_hwframe+0x44/0xae
+>>  ? kernel_text_address+0xbb/0xd0
+>>  ? __kernel_text_address+0x12/0x40
+>>  ? unwind_get_return_address+0x36/0x50
+>>  netlink_rcv_skb+0xe7/0x210
+>>  ? rtnl_calcit.isra.0+0x1e0/0x1e0
+>>  ? netlink_ack+0x580/0x580
+>>  ? netlink_deliver_tap+0x68/0x3d0
+>>  rtnetlink_rcv+0x15/0x20
+>>  netlink_unicast+0x3a8/0x4f0
+>>  ? netlink_attachskb+0x430/0x430
+>>  ? __alloc_skb+0xd7/0x1e0
+>>  netlink_sendmsg+0x3ff/0x710
+>>  ? __rcu_read_unlock+0x39/0x60
+>>  ? netlink_unicast+0x4f0/0x4f0
+>>  ? iovec_from_user+0x6c/0x170
+>>  ? __import_iovec+0x137/0x1c0
+>>  ? netlink_unicast+0x4f0/0x4f0
+>>  sock_sendmsg+0x74/0x80
+>>  ____sys_sendmsg+0x430/0x450
+>>  ? kernel_sendmsg+0x40/0x40
+>>  ? do_recvmmsg+0x440/0x440
+>>  ? kasan_save_stack+0x42/0x50
+>>  ? kasan_save_stack+0x23/0x50
+>>  ? kasan_record_aux_stack+0xac/0xc0
+>>  ? call_rcu+0x5a/0x450
+>>  ? __fput+0x1d7/0x3d0
+>>  ? ____fput+0xe/0x10
+>>  ___sys_sendmsg+0xf2/0x160
+>>  ? sendmsg_copy_msghdr+0x120/0x120
+>>  ? __kasan_check_write+0x14/0x20
+>>  ? _raw_spin_lock+0x82/0xd0
+>>  ? _raw_read_lock_irq+0x50/0x50
+>>  ? __fget_files+0xce/0x110
+>>  ? __fget_light+0x72/0x100
+>>  ? __fdget+0x13/0x20
+>>  __sys_sendmsg+0xc8/0x150
+>>  ? __sys_sendmsg_sock+0x20/0x20
+>>  ? __kasan_check_read+0x11/0x20
+>>  ? fpregs_assert_state_consistent+0x5a/0x70
+>>  __x64_sys_sendmsg+0x48/0x50
+>>  do_syscall_64+0x32/0x80
+>>  entry_SYSCALL_64_after_hwframe+0x44/0xae
+>> RIP: 0033:0x7f752cc7312d
+>> Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 ca ee ff ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2f 44 89 c7 48 89 44 24 08 e8 fe ee ff ff 48
+>> RSP: 002b:00007ffd1962bc70 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
+>> RAX: ffffffffffffffda RBX: 000055e6574ba880 RCX: 00007f752cc7312d
+>> RDX: 0000000000000000 RSI: 00007ffd1962bcc0 RDI: 000000000000000c
+>> RBP: 00007ffd1962bcc0 R08: 0000000000000000 R09: 0000000000000000
+>> R10: 0000000000000001 R11: 0000000000000293 R12: 000055e6574ba880
+>> R13: 00007ffd1962be78 R14: 00007ffd1962be6c R15: 0000000000000000
+>>
+>> The buggy address belongs to the variable:
+>>  dmi_ppag_approved_list+0x570/0xffffffffffffde20 [iwlmvm]
+>>
+>> Memory state around the buggy address:
+>>  ffffffffc16af600: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>>  ffffffffc16af680: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>>> ffffffffc16af700: 00 00 00 00 00 00 00 00 f9 f9 f9 f9 00 00 00 01
+>>                                                  ^
+>>  ffffffffc16af780: f9 f9 f9 f9 00 00 00 00 00 00 02 f9 f9 f9 f9 f9
+>>  ffffffffc16af800: 00 00 00 07 f9 f9 f9 f9 00 00 00 00 00 00 00 01
+>> ==================================================================
+>>
+>> Fixes: a2ac0f48a07c ("iwlwifi: mvm: implement approved list for the PPAG feature")
+>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>>
+>> ---
+>>
+>> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+>> index 15e2773ce7e7..71e5306bd695 100644
+>> --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+>> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+>> @@ -1083,6 +1083,7 @@ static const struct dmi_system_id dmi_ppag_approved_list[] = {
+>>  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTek COMPUTER INC."),
+>>  		},
+>>  	},
+>> +	{ },
+>>  };
+>>  
+>>
+>>  static int iwl_mvm_ppag_init(struct iwl_mvm *mvm)
+>>
+> 
+> Hi Jens,
+> 
+> Thanks for the report and patch! And I'm sorry that we broke your
+> laptop's boot...
+> 
+> We already have a patch to fix this:
+> 
+> https://patchwork.kernel.org/project/linux-wireless/patch/20210223140039.1708534-1-weiyongjun1@huawei.com/
+> 
+> I thought I had already acked it for Kalle to take it directly to
+> wireless-drivers, but apparently I hadn't.
+> 
+> I acked now and assigned it to him.
 
-https://www.tp-link.com/us/support/download/archer-t2uhp/
-https://www.tp-link.com/hk/support/download/archer-t2uhp/v1/
+All good thanks, as long as it gets fixed and goes upstream I don't care
+where it's from :-)
 
-From the driver source code provided by the vendor:
-
-https://www.tp-link.com/hk/support/download/archer-t2uhp/v1/#Driver
-
-eric@eric-VirtualBox:~/src$ grep -n USB_DEVICE.*0x2357 DPA_mt7610u_wifi_sta_v3004_rev1_20140529/NETIF/common/rtusb_dev_id.c
-45:	{USB_DEVICE(0x2357,0x0105)}, /* T1Uv1 */
-46:	{USB_DEVICE(0x2357,0x010B)}, /* T2UHP_UN_v1 */
-47:	{USB_DEVICE(0x2357,0x0123)}, /* T2UHP_US_v1 */
-
-eric@eric-VirtualBox:~/src$ lsusb -d 2357:
-Bus 001 Device 003: ID 2357:010b TP-Link WiFi
-eric@eric-VirtualBox:~/src$ sudo modprobe mt76x0u
-eric@eric-VirtualBox:~/src$ sudo sh -c "echo 2357 010b > /sys/bus/usb/drivers/mt76x0u/new_id"
-
-[snip]
-
-eric@eric-VirtualBox:~/src$ ifconfig -a
-enp0s3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        ether 08:00:27:74:d9:ee  txqueuelen 1000  (Ethernet)
-        RX packets 78  bytes 16146 (16.1 KB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 75  bytes 8413 (8.4 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
-        inet 127.0.0.1  netmask 255.0.0.0
-        inet6 ::1  prefixlen 128  scopeid 0x10<host>
-        loop  txqueuelen 1000  (Local Loopback)
-        RX packets 56  bytes 5496 (5.4 KB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 56  bytes 5496 (5.4 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-wlx18d6c71b6e3e: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 192.168.1.106  netmask 255.255.255.0  broadcast 192.168.1.255
-        inet6 fe80::21c7:2d90:e47d:ee48  prefixlen 64  scopeid 0x20<link>
-        ether 18:d6:c7:1b:6e:3e  txqueuelen 1000  (Ethernet)
-        RX packets 37  bytes 5345 (5.3 KB)
-        RX errors 0  dropped 7  overruns 0  frame 0
-        TX packets 77  bytes 10513 (10.5 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-eric@eric-VirtualBox:~/src$ dmesg | tail -n 30
-               12:51:25.551584 main     Log opened 2021-03-01T12:51:25.551572000Z
-[   46.855763] 12:51:25.551995 main     OS Product: Linux
-[   46.855838] 12:51:25.552075 main     OS Release: 5.4.0-66-generic
-[   46.855897] 12:51:25.552150 main     OS Version: #74-Ubuntu SMP Wed Jan 27 22:54:38 UTC 2021
-[   46.855971] 12:51:25.552207 main     Executable: /opt/VBoxGuestAdditions-6.1.16/sbin/VBoxService
-               12:51:25.552208 main     Process ID: 898
-               12:51:25.552209 main     Package type: LINUX_64BITS_GENERIC
-[   46.858699] 12:51:25.554921 main     6.1.16 r140961 started. Verbose level = 0
-[   46.863116] 12:51:25.559319 main     vbglR3GuestCtrlDetectPeekGetCancelSupport: Supported (#1)
-[  140.687550] usb 1-2: new high-speed USB device number 3 using xhci_hcd
-[  140.838279] usb 1-2: New USB device found, idVendor=2357, idProduct=010b, bcdDevice= 1.00
-[  140.838281] usb 1-2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  140.838283] usb 1-2: Product: WiFi
-[  140.838284] usb 1-2: Manufacturer: MediaTek
-[  140.838285] usb 1-2: SerialNumber: 1.0
-[  178.374187] cfg80211: Loading compiled-in X.509 certificates for regulatory database
-[  178.378370] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-[  178.417507] usbcore: registered new interface driver mt76x0u
-[  178.557165] usb 1-2: reset high-speed USB device number 3 using xhci_hcd
-[  178.720436] mt76x0u 1-2:1.0: ASIC revision: 76100002 MAC revision: 76502000
-[  180.156077] mt76x0u 1-2:1.0: EEPROM ver:02 fae:04
-[  181.190558] ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
-[  181.225560] mt76x0u 1-2:1.0 wlx18d6c71b6e3e: renamed from wlan0
-[  188.660826] wlx18d6c71b6e3e: authenticate with d0:17:c2:e0:d7:9c
-[  189.447781] wlx18d6c71b6e3e: send auth to d0:17:c2:e0:d7:9c (try 1/3)
-[  189.618282] wlx18d6c71b6e3e: authenticated
-[  189.619008] wlx18d6c71b6e3e: associate with d0:17:c2:e0:d7:9c (try 1/3)
-[  189.715268] wlx18d6c71b6e3e: RX AssocResp from d0:17:c2:e0:d7:9c (capab=0x1011 status=0 aid=8)
-[  189.734720] wlx18d6c71b6e3e: associated
-[  190.233239] IPv6: ADDRCONF(NETDEV_CHANGE): wlx18d6c71b6e3e: link becomes ready
-
-Signed-off-by: Eric Y.Y. Wong <eric.wongyeungyan@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index a593a7796d23..f2b2fa733845 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -32,7 +32,8 @@ static struct usb_device_id mt76x0_device_table[] = {
- 	{ USB_DEVICE(0x20f4, 0x806b) },	/* TRENDnet TEW-806UBH  */
- 	{ USB_DEVICE(0x7392, 0xc711) }, /* Devolo Wifi ac Stick */
- 	{ USB_DEVICE(0x0df6, 0x0079) }, /* Sitecom Europe B.V. ac  Stick */
--	{ USB_DEVICE(0x2357, 0x0123) }, /* TP-LINK T2UHP */
-+	{ USB_DEVICE(0x2357, 0x0123) }, /* TP-LINK T2UHP_US_v1 */
-+	{ USB_DEVICE(0x2357, 0x010b) }, /* TP-LINK T2UHP_UN_v1 */
- 	/* TP-LINK Archer T1U */
- 	{ USB_DEVICE(0x2357, 0x0105), .driver_info = 1, },
- 	/* MT7630U */
 -- 
-2.30.1
+Jens Axboe
 
