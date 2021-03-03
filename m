@@ -2,107 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4248A32C112
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 01:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D4F032C117
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 01:02:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234679AbhCCVQo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Mar 2021 16:16:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37798 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1843002AbhCCKXf (ORCPT
+        id S235282AbhCCVQu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Mar 2021 16:16:50 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:47167 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234106AbhCCKwe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:23:35 -0500
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 679B1C0698C6
-        for <linux-wireless@vger.kernel.org>; Wed,  3 Mar 2021 01:07:03 -0800 (PST)
-Received: by mail-qt1-x829.google.com with SMTP id v3so16971026qtw.4
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Mar 2021 01:07:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xKpRIV0nBsirWLUBi5T/YqLwJUbvRGd0l5J76HxqqQY=;
-        b=i93FVC4prisYD3tUaa4qTULSzppFJdnwqaI0axKLqk4E1KHLGl0ajxMpSx/Tbcz5gz
-         cB+p+QCfBLFfjgNlV1gpaGUgstlS9F/9xajs3I7SB+BpptWiAPSxxY5Bf/9oiNmWwWx5
-         iImSH5q2b+x5PftlRI6vcph/A+eUGLveFSsOVWgp6xIAet72Oo3bSy6BHl1JZiHZjGi9
-         uvz9PBafoUuLvJ9kZdOPmWYbpzXTTt39rbO+031348ZQbxY6CD3J/+YmoQT3dJ1awTCf
-         8S3Tyc99ojTXxhyesNABrGX29I/Qyj0IqyrgPWjyPtXROEULfbOANHQPoiJ3gh8xbsWJ
-         VO3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xKpRIV0nBsirWLUBi5T/YqLwJUbvRGd0l5J76HxqqQY=;
-        b=fLBXGEmOfSuLzQCcAwpcMZkz1twTtjKQnTb5fa0TKMpX4fPRC++SVkdYyrdUDRAOtm
-         xz2mpMOYBSODHr/XzgtVrS8rpS89VL2tZ3HTpS+jVWrV80pHzyMHzVxYaTBFsijdhZ5d
-         fzHvKGGSbRgD2WrvhxUHPucERB7JZHM1K36U0goX9bwBkuga6CSS426TibSaKpEHnveF
-         TZbO1NK0dZ85liqfBVGP51ukPTva0N2PtlbrjfxTrNKxsoBVFINCyBzzFLxIwNeuQYwX
-         Cd8q6zzPG10HFY09rALmwhPIJu04nw1+Uqf7Tow5ApIp9za1cIonkaE4P3D3mXLnzXdU
-         VJ0A==
-X-Gm-Message-State: AOAM532xgwOntcVVBJ/CaNkfYnl3v/WcIEGWFNFa2D8kI8ylFhURsQ7f
-        ZL25qPMlt9jDtThK692FLaddndo7EeXlc5ruaQL5hA==
-X-Google-Smtp-Source: ABdhPJx8+N6LxjQ2TqesKmjDhe9IP8WsEr+KW8d/OM0/MKlgrV9PLrRVbVZT/kcWCKVmkhK0QwJAnR1Edcir13+sqW8=
-X-Received: by 2002:ac8:6f3b:: with SMTP id i27mr10377291qtv.67.1614762422440;
- Wed, 03 Mar 2021 01:07:02 -0800 (PST)
+        Wed, 3 Mar 2021 05:52:34 -0500
+X-UUID: 007660557151438fb654858e47d4244e-20210303
+X-UUID: 007660557151438fb654858e47d4244e-20210303
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 138093793; Wed, 03 Mar 2021 18:38:06 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 3 Mar 2021 18:38:03 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 3 Mar 2021 18:38:03 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/4] mt76: mt7915: fix rxrate reporting
+Date:   Wed, 3 Mar 2021 18:37:59 +0800
+Message-ID: <a379bb8534b2b8c24e30313b97aa8cfdf79c315b.1614753100.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <00000000000039404305bc049fa5@google.com> <20210224023026.3001-1-hdanton@sina.com>
- <0a0573f07a7e1468f83d52afcf8f5ba356725740.camel@sipsolutions.net> <20210303085912.1647-1-hdanton@sina.com>
-In-Reply-To: <20210303085912.1647-1-hdanton@sina.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Wed, 3 Mar 2021 10:06:51 +0100
-Message-ID: <CACT4Y+ZEdh6WJB8b5dg+jgv7thnrt=pVW6BzPngOyT3KKMaMtw@mail.gmail.com>
-Subject: Re: BUG: soft lockup in ieee80211_tasklet_handler
-To:     Hillf Danton <hdanton@sina.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        syzbot <syzbot+27df43cf7ae73de7d8ee@syzkaller.appspotmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 43E5F3BEE6F3F98E75647AB33B32E3F3AE7269CA5AC11EC62DD68CEED2F3F8FE2000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 3, 2021 at 9:59 AM Hillf Danton <hdanton@sina.com> wrote:
->
-> On Tue, 02 Mar 2021 15:18:16 +0100  Johannes Berg wrote:
-> > On Wed, 2021-02-24 at 10:30 +0800, Hillf Danton wrote:
-> > >
-> > > Add budget for the 80211 softint handler - it's feasible not to try to
-> > > build the giant pyramid in a week.
-> > >
-> > > --- x/net/mac80211/main.c
-> > > +++ y/net/mac80211/main.c
-> > > @@ -224,9 +224,15 @@ static void ieee80211_tasklet_handler(un
-> > >  {
-> > >     struct ieee80211_local *local = (struct ieee80211_local *) data;
-> > >     struct sk_buff *skb;
-> > > +   int i = 0;
-> > > +
-> > > +   while (i++ < 64) {
-> > > +           skb = skb_dequeue(&local->skb_queue);
-> > > +           if (!skb)
-> > > +                   skb = skb_dequeue(&local->skb_queue_unreliable);
-> > > +           if (!skb)
-> > > +                   return;
-> >
-> > I guess that's not such a bad idea, but I do wonder how we get here,
-> > userspace can submit packets faster than we can process?
->
-> I wonder why syzbot did not make other handlers stand out than
-> ieee80211_tasklet_handler.
+Avoid directly updating sinfo->rxrate from firmware since rate_info might
+be overwritten by wrong results even mt7915_mcu_get_rx_rate() fails check.
 
-syzbot has no relation to this whatsoever. It's just a proxy between
-the kernel and you. Ask the kernel ;)
+Add more error handlings accordingly.
 
-> > It feels like a simulation-only case, tbh, since over the air you have
-> > limits how much bandwidth you can get ... unless you have a very slow
-> > CPU?
->
-> Even with a slower CPU I want to run a FIFO task every tick - it can bear
-> latencies like two seconds.
-> >
-> > In any case, if you want anything merged you're going to have to submit
-> > a proper patch with a real commit message and Signed-off-by, etc.
-> >
-> > johannes
+Fixes: 11553d88d0b9 ("mt76: mt7915: query station rx rate from firmware")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  5 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 47 ++++++++++---------
+ 2 files changed, 30 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index cacc9b6933ca..bb49ea9307e0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -839,9 +839,12 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
+ 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+ 	struct mt7915_sta_stats *stats = &msta->stats;
++	struct rate_info rxrate = {};
+ 
+-	if (mt7915_mcu_get_rx_rate(phy, vif, sta, &sinfo->rxrate) == 0)
++	if (!mt7915_mcu_get_rx_rate(phy, vif, sta, &rxrate)) {
++		sinfo->rxrate = rxrate;
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BITRATE);
++	}
+ 
+ 	if (!stats->tx_rate.legacy && !stats->tx_rate.flags)
+ 		return;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index e0c03b7f278d..b204c5dd7914 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3552,9 +3552,8 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 	struct ieee80211_supported_band *sband;
+ 	struct mt7915_mcu_phy_rx_info *res;
+ 	struct sk_buff *skb;
+-	u16 flags = 0;
+ 	int ret;
+-	int i;
++	bool cck = false;
+ 
+ 	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_CMD(PHY_STAT_INFO),
+ 					&req, sizeof(req), true, &skb);
+@@ -3568,48 +3567,53 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 
+ 	switch (res->mode) {
+ 	case MT_PHY_TYPE_CCK:
++		cck = true;
++		fallthrough;
+ 	case MT_PHY_TYPE_OFDM:
+ 		if (mphy->chandef.chan->band == NL80211_BAND_5GHZ)
+ 			sband = &mphy->sband_5g.sband;
+ 		else
+ 			sband = &mphy->sband_2g.sband;
+ 
+-		for (i = 0; i < sband->n_bitrates; i++) {
+-			if (rate->mcs != (sband->bitrates[i].hw_value & 0xf))
+-				continue;
+-
+-			rate->legacy = sband->bitrates[i].bitrate;
+-			break;
+-		}
++		rate->mcs = mt76_get_rate(&dev->mt76, sband, rate->mcs, cck);
++		rate->legacy = sband->bitrates[rate->mcs].bitrate;
+ 		break;
+ 	case MT_PHY_TYPE_HT:
+ 	case MT_PHY_TYPE_HT_GF:
+-		if (rate->mcs > 31)
+-			return -EINVAL;
+-
+-		flags |= RATE_INFO_FLAGS_MCS;
++		if (rate->mcs > 31) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 
++		rate->flags = RATE_INFO_FLAGS_MCS;
+ 		if (res->gi)
+-			flags |= RATE_INFO_FLAGS_SHORT_GI;
++			rate->flags |= RATE_INFO_FLAGS_SHORT_GI;
+ 		break;
+ 	case MT_PHY_TYPE_VHT:
+-		flags |= RATE_INFO_FLAGS_VHT_MCS;
++		if (rate->mcs > 9) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 
++		rate->flags = RATE_INFO_FLAGS_VHT_MCS;
+ 		if (res->gi)
+-			flags |= RATE_INFO_FLAGS_SHORT_GI;
++			rate->flags |= RATE_INFO_FLAGS_SHORT_GI;
+ 		break;
+ 	case MT_PHY_TYPE_HE_SU:
+ 	case MT_PHY_TYPE_HE_EXT_SU:
+ 	case MT_PHY_TYPE_HE_TB:
+ 	case MT_PHY_TYPE_HE_MU:
++		if (res->gi > NL80211_RATE_INFO_HE_GI_3_2 || rate->mcs > 11) {
++			ret = -EINVAL;
++			goto out;
++		}
+ 		rate->he_gi = res->gi;
+-
+-		flags |= RATE_INFO_FLAGS_HE_MCS;
++		rate->flags = RATE_INFO_FLAGS_HE_MCS;
+ 		break;
+ 	default:
+-		break;
++		ret = -EINVAL;
++		goto out;
+ 	}
+-	rate->flags = flags;
+ 
+ 	switch (res->bw) {
+ 	case IEEE80211_STA_RX_BW_160:
+@@ -3626,7 +3630,8 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 		break;
+ 	}
+ 
++out:
+ 	dev_kfree_skb(skb);
+ 
+-	return 0;
++	return ret;
+ }
+-- 
+2.18.0
+
