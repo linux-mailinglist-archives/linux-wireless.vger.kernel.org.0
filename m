@@ -2,75 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2B1732CE89
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 09:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0F3532CF3B
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 10:05:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234822AbhCDIc3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Mar 2021 03:32:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42138 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234849AbhCDIcL (ORCPT
+        id S231585AbhCDJD5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Mar 2021 04:03:57 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:36366 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S237264AbhCDJDb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Mar 2021 03:32:11 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E4EBC06175F;
-        Thu,  4 Mar 2021 00:31:31 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lHjO1-00BY6u-PZ; Thu, 04 Mar 2021 09:31:09 +0100
-Message-ID: <fcf796892ce3e1b469a1f29ba1763a1652d72044.camel@sipsolutions.net>
-Subject: Re: BUG: soft lockup in ieee80211_tasklet_handler
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Dmitry Vyukov <dvyukov@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc:     Hillf Danton <hdanton@sina.com>,
-        syzbot <syzbot+27df43cf7ae73de7d8ee@syzkaller.appspotmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Date:   Thu, 04 Mar 2021 09:30:52 +0100
-In-Reply-To: <CACT4Y+ahrV-L8vV8Jm8XP=KwjWivFj445GULY1fbRN9t7buMGw@mail.gmail.com> (sfid-20210302_200147_707197_23EAE1A3)
-References: <00000000000039404305bc049fa5@google.com>
-         <20210224023026.3001-1-hdanton@sina.com>
-         <0a0573f07a7e1468f83d52afcf8f5ba356725740.camel@sipsolutions.net>
-         <CACT4Y+ahrV-L8vV8Jm8XP=KwjWivFj445GULY1fbRN9t7buMGw@mail.gmail.com>
-         (sfid-20210302_200147_707197_23EAE1A3)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+        Thu, 4 Mar 2021 04:03:31 -0500
+X-UUID: 9679b7cff3b14b269bcb494dabc073fd-20210304
+X-UUID: 9679b7cff3b14b269bcb494dabc073fd-20210304
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1959357008; Thu, 04 Mar 2021 17:02:47 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 4 Mar 2021 17:02:44 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 4 Mar 2021 17:02:44 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v4] mt76: mt7615: add missing capabilities for DBDC
+Date:   Thu, 4 Mar 2021 16:55:05 +0800
+Message-ID: <0573b06759c90309b5a6a6e2b6b95796e7db60c7.1614843966.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 963A089E76DA1727F5AD6D7B82587DDEB008139ED7B7D853073BDBB8C5E468822000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-03-02 at 20:01 +0100, Dmitry Vyukov wrote:
-> 
-> Looking at the reproducer that mostly contains just perf_event_open,
-> It may be the old known issue of perf_event_open with some extreme
-> parameters bringing down kernel.
-> +perf maintainers
-> And as far as I remember +Peter had some patch to restrict
-> perf_event_open parameters.
-> 
-> r0 = perf_event_open(&(0x7f000001d000)={0x1, 0x70, 0x0, 0x0, 0x0, 0x0,
-> 0x0, 0x3ff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-> 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-> 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xfffffffe, 0x0, @perf_config_ext}, 0x0,
-> 0x0, 0xffffffffffffffff, 0x0)
+This improves performance for second phy.
 
-Oh! Thanks for looking.
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+change since v4 - fix init order.
+change since v3 - none.
+change since v2 - adjust setup sequence.
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Seems that also applies to
-
-https://syzkaller.appspot.com/bug?extid=d6219cf21f26bdfcc22e
-
-FWIW. I was still tracking that one, but never had a chance to look at
-it (also way down the list since it was reported as directly in hwsim)
-
-johannes
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 88a2ee7e7143..e70e852c1af8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -448,6 +448,9 @@ int mt7615_register_ext_phy(struct mt7615_dev *dev)
+ 
+ 	/* second phy can only handle 5 GHz */
+ 	mphy->cap.has_5ghz = true;
++	mphy->sband_5g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
++	mphy->sband_5g.sband.vht_cap.cap |=
++			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
+ 
+ 	/* mt7615 second phy shares the same hw queues with the primary one */
+ 	for (i = 0; i <= MT_TXQ_PSD ; i++)
+-- 
+2.18.0
 
