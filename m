@@ -2,63 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FAA032C8ED
+	by mail.lfdr.de (Postfix) with ESMTP id E1C6932C8EE
 	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 02:17:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235188AbhCDA6g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S233274AbhCDA6g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Wed, 3 Mar 2021 19:58:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46310 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1388623AbhCDAMN (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Mar 2021 19:12:13 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9210CC061763
-        for <linux-wireless@vger.kernel.org>; Wed,  3 Mar 2021 16:06:30 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id k66so7887455wmf.1
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Mar 2021 16:06:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=Dw8xFgrZVztIlPSuTy10oAfdTu62xOSo1BQjghZZXo8=;
-        b=Cld5GzQlscnuJ4EmVzW8EFD/IWW4j+t6apQ87rw4rSpHip0miKspaqhC5lH3UHXsPK
-         zcRgqG1DuzC3oSDDTzcIRuMxuOcEmXp7y1bKIPN3veJsljeeymg1GVUU+uZvGIGBJ5RW
-         BDe0329dBpnTi4moeiRkdHtloP1lzxZMLF8MmcNmNiYv3ZT4sA8J+6RWPE8lUZb/wl7R
-         CD2uL3IrjlocBsn1FGvKfH9mWq0AlHkSwkPFB4PkVaeEt7rk/eAMjbAjcx6Qn9SYlF6X
-         QB2fQnHNQPJCsMJh/JnrpunsfiOUJf9tAt52neMAqxEVRpoIL0iFrTz9y2UoPv5DS5r4
-         0t1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=Dw8xFgrZVztIlPSuTy10oAfdTu62xOSo1BQjghZZXo8=;
-        b=ikb4o1QdYtUVLZW+jIhK85kWuwejLs5SlTj7X37AGGUK3ccuf2Ir0W1OW0N9o9eIxB
-         TYs8IHpG+oMCCxt27LH9e97BRiwsZa8NMlcsjYIPk4TH+D1VhugNjKIO/OZwOmz6zb75
-         UH/qEOljODwQYwo3tIAj8rbIT/ZqhiK5xa9pSHW5IqcyAg+QYAxnfpnUxIYOOrcPmrPV
-         yiIc/6ypJySAhCP9EhlQESdP7UHSRv7wW4kzTgwaHupL1+WfQItGt6nUMq/IHwfW8jaI
-         YkrSEWlOeVvnZLozdx3nPGTYapGZ9/4VuT9BkaBneTgwBOQnqs5o6i5f43P/UBSh0MpZ
-         4E7A==
-X-Gm-Message-State: AOAM532MAG/z6tlktm9MKu87Ino4fTEBH+necbA0t2KWXA9d0qC0IuAD
-        rupM/pLxOsq7oZpBnD9ZgVL2WMDpOGVKlScyAEBMP8mIUNs=
-X-Google-Smtp-Source: ABdhPJxwvxkSuioJ6cVc090AvFJzuCWSo4fDesiQKoRU2tb4ibvA0hQhkYzN6tdA5yNZkua/xgTdc0CTeqtLV98Ltgk=
-X-Received: by 2002:a05:600c:2947:: with SMTP id n7mr1180349wmd.61.1614816389028;
- Wed, 03 Mar 2021 16:06:29 -0800 (PST)
+Received: from mail.kernel.org ([198.145.29.99]:49478 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239825AbhCDAut (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 3 Mar 2021 19:50:49 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 0877164F70;
+        Thu,  4 Mar 2021 00:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614819007;
+        bh=VZGcO2toRp0M0Nzy52Q5kcFhVFR/QjmGPI5Nlc/3wEc=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=KL7zL6J7+1V9fHKIl6gx+TuJQLpXwmNnS2jLWOG/6IoE9V9SNEn7UiKFkTwfrGYE4
+         w2fQWwZNfBjZj7DSD8i6V0kGwMd66NeFgw7ZaqhhzkMz9LGdLoaxNpVOQ7Yc9MgTtW
+         pNyCj9c8PVvIa5ev5FxbjWnMGhgg4G5YhjCop1o3/8HkVMltQGOwzurxGNj51m0ITi
+         dj9Twwaoz6Op8Lr0MO0zzLY9Jh47ndH6xXO4mPdOQrSzru9KJZeYUizwzmwPe6oRqm
+         1ZQNBkn36zachMJrJt8Fm1OorGdkbVALd4AE5yyhTM34g2JIdRW2MCksJCUa1qno2r
+         i6yFjBhitpTlw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id F1349609E7;
+        Thu,  4 Mar 2021 00:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-From:   Joshua Zhao <swzhao@gmail.com>
-Date:   Wed, 3 Mar 2021 16:06:18 -0800
-Message-ID: <CAKmTU=qZUm5T=nOMT-4cpJekKevLETwxY07CDe00iwLxkMpJGQ@mail.gmail.com>
-Subject: bridge mac80211_hwsim AP to internet?
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-drivers-2021-03-03
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161481900698.22203.12756456853178390495.git-patchwork-notify@kernel.org>
+Date:   Thu, 04 Mar 2021 00:50:06 +0000
+References: <20210303172632.8B86DC433ED@smtp.codeaurora.org>
+In-Reply-To: <20210303172632.8B86DC433ED@smtp.codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-I'm using mac80211_hwsim to simulate a virtual STA and a virtual AP.
-How can I bridge the virtual AP to a backhaul link on my PC (e.g. a
-physical ethernet link) for real internet connection? i.e. so that my
-virtual STA can access the internet.  The AP could be configured in
-NAT mode or layer-2 bridge mode. Is it possible/supported?
+Hello:
 
-Many thanks!
-Joshua
+This pull request was applied to netdev/net.git (refs/heads/master):
+
+On Wed,  3 Mar 2021 17:26:32 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net tree, more info below. Please let me know if there
+> are any problems.
+> 
+> Kalle
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-drivers-2021-03-03
+    https://git.kernel.org/netdev/net/c/ef9a6df09c76
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
