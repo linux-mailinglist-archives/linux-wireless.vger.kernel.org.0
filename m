@@ -2,59 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E545432DA64
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 20:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFABE32DA67
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 20:31:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230207AbhCDT3z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Mar 2021 14:29:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43310 "EHLO
+        id S230227AbhCDTa7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Mar 2021 14:30:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230141AbhCDT3Y (ORCPT
+        with ESMTP id S230035AbhCDTae (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Mar 2021 14:29:24 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BCE2C061574
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Mar 2021 11:28:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=7i8BEbXDXEOW8E286D5JURPRm2okvke1VJqD1R/Oop4=; b=oy/Fil/cXzLyBMkS+Zdzw/o5fK
-        7sS5AzQoGZaDuDZ6D64Xygfw5oTGh4GSRWmF89/lfkxKv/F1hUPpmUGjWIztDX8GAWjzeXLXee6gL
-        o7RhOqlgUOIWMeDKc9nTWMOeIigFxyBXH20skz2mOiAbT7lM/NTykEzfYmWUcubbcLJ8=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lHtdy-0003kA-JI; Thu, 04 Mar 2021 20:28:18 +0100
-Subject: Re: [PATCH v4] mt76: mt7615: add missing capabilities for DBDC
-To:     Ryder Lee <ryder.lee@mediatek.com>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <0573b06759c90309b5a6a6e2b6b95796e7db60c7.1614843966.git.ryder.lee@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <384dc2df-60d7-c6bf-040c-d8583af30a98@nbd.name>
-Date:   Thu, 4 Mar 2021 20:28:17 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.1
+        Thu, 4 Mar 2021 14:30:34 -0500
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AFB5C061574
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Mar 2021 11:29:54 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id x29so11311967pgk.6
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Mar 2021 11:29:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:date:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=APIpr7XVs/HBr/adFXHx3C07/FjpOG07fNJORZo5/h0=;
+        b=VQ5SAtdqBI6iHaRbe2a5LReDMcAZHQdF7idyV3K4HnSvDIJjrAM5jrUREydmeSItRV
+         HXwBRj4HYwVqPki17zGYy9hUAQ/pKC57BqFhePOKYySDuUJERgYy1RjNWgE6tHu5Crln
+         WYEyIiF+B7PHI9pqwwEm/riL2DkK9iUrXBojZTku1uk03z1TB0boWDUpt/4MCg0nqxSf
+         XN5uwN0PpuP8QWRk4GU2BE9IAsarTdONqhexk+9CjaGWavDs9HgOHli5hOi1HExSmfB5
+         MlTmN7zFq4OfdU+C7RpoEWd6M5HWbJAb0sNtQupP59aDuP2BCyWfCzR4I2KFKlRwIiQD
+         nIjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:date:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=APIpr7XVs/HBr/adFXHx3C07/FjpOG07fNJORZo5/h0=;
+        b=UlAcmdIlIr3mklGN+9wMBic3xXDTkayHDobVOdQ8LshmZFpWnhXrA0fJjrqMEGWcgD
+         J3Sc6lbljwXOFQqQaTJM5pbuymv670VVcJvPrDlLAJ1aFRwI/INFpROUdVCVpTWQWqcW
+         chmrJuQQAUtxly5oB8Kn8sWyfrNLwyneKJFbF5s+/v0BexiDZ5EUOsRzKZBBQjhB/OTS
+         sldTOiwrRWR0qyd/K7ZswRMECyiSHz6oFOGauF4sjHaUlPJodBm6ZTJAdlEKK8hhz5rD
+         8WbVuyi1rZaYNxAsM8X4i1dPdMzWy721NPnK+y4QFKgDK9FukErL05AkwWFP2v67EooQ
+         Qfww==
+X-Gm-Message-State: AOAM5321pzrQa6I6/88N1bv0waGZ/wvsLeTQiHk2UMTkJ/cQ+6NsCrm1
+        Yovc6Edsa+bM/ukHnVKpyjZNG76yjk0=
+X-Google-Smtp-Source: ABdhPJwhXbILuXQ3Nf6ITiBtT4Q6r8H++QozXD3e69p5XVr2CB4Rj8466iKO2yArysP1i9gMCuunWQ==
+X-Received: by 2002:a63:db10:: with SMTP id e16mr4999986pgg.234.1614886193526;
+        Thu, 04 Mar 2021 11:29:53 -0800 (PST)
+Received: from localhost.localdomain ([50.39.173.103])
+        by smtp.gmail.com with ESMTPSA id r184sm182229pfc.107.2021.03.04.11.29.52
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Mar 2021 11:29:53 -0800 (PST)
+Message-ID: <1262e6e9c7d2ab499c15a3d297ed87206e49711b.camel@gmail.com>
+Subject: SAE offload on brcmfmac (BCM4345)
+From:   James Prestwood <prestwoj@gmail.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Thu, 04 Mar 2021 11:29:52 -0800
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-In-Reply-To: <0573b06759c90309b5a6a6e2b6b95796e7db60c7.1614843966.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
-On 2021-03-04 09:55, Ryder Lee wrote:
-> This improves performance for second phy.
-> 
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>I actually prefer v1 of this patch. You can fix the init order issues by
-simply dropping the if (phy->mt76->cap.has_*) checks, since they are not
-needed at all.
+I am trying to get SAE offload support on a BCM4345 (raspberry pi B+).
+From what I can tell it appears the Cypress firmware is not enabling
+the right bits. It looks like the brcmfmac driver has all the code to
+enable the extended feature. Here is what I have done so far:
 
-- Felix
+Cloned raspi linux kernel v5.4
+
+Downloaded latest Cypress firmware:
+https://community.cypress.com/t5/Resource-Library/Cypress-Linux-WiFi-Driver-Release-FMAC-2020-09-25/ta-p/251089
+
+Applied the patches from above. Note not *all* the patches applied
+(could be due to already upstreamed), but most did. I did have to fix
+an include issue so brcmfmac/cfg80211.c could reference
+LINUX_CODE_VERSION/LINUX_VERSION.
+
+Built new kernel/installed etc.
+
+After that everything built, and I do see SAE offload source code which
+sets the ext feature if BRCMF_FEAT_SAE is enabled.
+
+I see my new kernel here:
+
+Linux raspberrypi 5.4.83-v7+ #2 SMP Thu Mar 4 10:54:16 PST 2021 armv7l
+GNU/Linux
+
+and dmesg shows the new firmware loading:
+
+[    7.315275] brcmfmac: F1 signature read @0x18000000=0x15264345
+[    7.337608] brcmfmac: brcmf_fw_alloc_request: using
+brcm/brcmfmac43455-sdio for chip BCM4345/6
+[    7.338104] usbcore: registered new interface driver brcmfmac
+[    7.606184] brcmfmac: brcmf_fw_alloc_request: using
+brcm/brcmfmac43455-sdio for chip BCM4345/6
+[    7.616186] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/6
+wl0: Mar 23 2020 02:19:54 version 7.45.206 (r725000 CY) FWID 01-
+88ee44ea
+
+Yet iw does not have SAE_OFFLOAD set as an extended feature:
+
+Supported extended features:
+	* [ 4WAY_HANDSHAKE_STA_PSK ]: 4-way handshake with PSK in
+station mode
+	* [ 4WAY_HANDSHAKE_STA_1X ]: 4-way handshake with 802.1X in
+station mode
+	* [ DFS_OFFLOAD ]: DFS offload
+
+Thanks,
+James
+
