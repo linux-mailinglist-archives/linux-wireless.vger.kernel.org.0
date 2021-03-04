@@ -2,30 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35FEB32DB57
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 21:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 716C732DB91
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 22:09:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233559AbhCDUsX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Mar 2021 15:48:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59808 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233144AbhCDUsB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Mar 2021 15:48:01 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CB0DC64F78;
-        Thu,  4 Mar 2021 20:47:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614890833;
-        bh=fbItLtW0McjQ6cGOGdvkwgGtFHROSfMYY+UFxruVygw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FQssWwEajlQ0NQ6yLH/zQF/vR0g8Aq6xV6z/yjciuQMwxLEznjkoNTUPOUin08pqr
-         RkwDP9a928JPk8Y8lDrkLCoB+8paRFpHaabDHnRD1JBarrqDx0hFqV4kYAK52B57uY
-         kF8A4fUaNUZo2mixUOQYkgFEHXB6Ahd8/46j0df8F7iByPix8+15V06xOGhlyzfhB5
-         reT8WkbVlXOVD7XAwi5ncZ2OyeuH5JTynK7BhLCt08ijnOMKQm+kRaKD1gLPgzduKn
-         TG4oh9jpjIIDSYlfrI+n1HBCGnqwbczFVvhrQd3tz+jAecRvPcJjSiMDQgsSZxngSR
-         X3E+TXoL5N5Vg==
-Date:   Thu, 4 Mar 2021 15:47:12 -0500
-From:   Sasha Levin <sashal@kernel.org>
-To:     Marek Vasut <marex@denx.de>
+        id S235896AbhCDVIm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Mar 2021 16:08:42 -0500
+Received: from mail-out.m-online.net ([212.18.0.9]:51564 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234921AbhCDVId (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 4 Mar 2021 16:08:33 -0500
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4Ds3NF6Zhxz1qs10;
+        Thu,  4 Mar 2021 22:07:24 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 4Ds3ND3k9kz1qqkJ;
+        Thu,  4 Mar 2021 22:07:24 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id NF9l6MSuqCwo; Thu,  4 Mar 2021 22:07:22 +0100 (CET)
+X-Auth-Info: /bjdHCSRRBO1hy/kHQ3KWZ31WRCi0CyJyL23VTq/CMI=
+Received: from [IPv6:::1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Thu,  4 Mar 2021 22:07:22 +0100 (CET)
+Subject: Re: [PATCH AUTOSEL 5.10 050/217] rsi: Fix TX EAPOL packet handling
+ against iwlwifi AP
+To:     Sasha Levin <sashal@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         Angus Ainslie <angus@akkea.ca>,
         "David S . Miller" <davem@davemloft.net>,
@@ -36,50 +41,60 @@ Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
         Siva Rebbagondla <siva8118@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 050/217] rsi: Fix TX EAPOL packet handling
- against iwlwifi AP
-Message-ID: <YEFHULdbXVVxORn9@sashalap>
 References: <20201223021626.2790791-1-sashal@kernel.org>
  <20201223021626.2790791-50-sashal@kernel.org>
- <68699f8a-2fcd-3b3d-f809-afa54790e9f9@denx.de>
+ <68699f8a-2fcd-3b3d-f809-afa54790e9f9@denx.de> <YEFHULdbXVVxORn9@sashalap>
+From:   Marek Vasut <marex@denx.de>
+Message-ID: <d4b4f1d1-8041-3563-708a-850fe95549b8@denx.de>
+Date:   Thu, 4 Mar 2021 22:07:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <68699f8a-2fcd-3b3d-f809-afa54790e9f9@denx.de>
+In-Reply-To: <YEFHULdbXVVxORn9@sashalap>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Mar 02, 2021 at 08:25:49PM +0100, Marek Vasut wrote:
->On 12/23/20 3:13 AM, Sasha Levin wrote:
->
->Hello Sasha,
->
->>From: Marek Vasut <marex@denx.de>
+On 3/4/21 9:47 PM, Sasha Levin wrote:
+> On Tue, Mar 02, 2021 at 08:25:49PM +0100, Marek Vasut wrote:
+>> On 12/23/20 3:13 AM, Sasha Levin wrote:
 >>
->>[ Upstream commit 65277100caa2f2c62b6f3c4648b90d6f0435f3bc ]
+>> Hello Sasha,
 >>
->>In case RSI9116 SDIO WiFi operates in STA mode against Intel 9260 in AP mode,
->>the association fails. The former is using wpa_supplicant during association,
->>the later is set up using hostapd:
->
->[...]
->
->Was this patch possibly missed from 5.10.y ?
+>>> From: Marek Vasut <marex@denx.de>
+>>>
+>>> [ Upstream commit 65277100caa2f2c62b6f3c4648b90d6f0435f3bc ]
+>>>
+>>> In case RSI9116 SDIO WiFi operates in STA mode against Intel 9260 in 
+>>> AP mode,
+>>> the association fails. The former is using wpa_supplicant during 
+>>> association,
+>>> the later is set up using hostapd:
+>>
+>> [...]
+>>
+>> Was this patch possibly missed from 5.10.y ?
+> 
+> I'm not sure what happened there, but I can queue it up.
 
-I'm not sure what happened there, but I can queue it up.
+Thank you
 
->Also, while at it, I think it might make sense to pick the following 
->two patches as well, they dramatically reduce interrupt rate of the 
->RSI WiFi device, so it stops overloading lower-end devices:
->287431463e786 ("rsi: Move card interrupt handling to RX thread")
+>> Also, while at it, I think it might make sense to pick the following 
+>> two patches as well, they dramatically reduce interrupt rate of the 
+>> RSI WiFi device, so it stops overloading lower-end devices:
+>> 287431463e786 ("rsi: Move card interrupt handling to RX thread")
+> 
+> And this one too.
 
-And this one too.
+Thanks
 
->abd131a19f6b8 ("rsi: Clean up loop in the interrupt handler")
+>> abd131a19f6b8 ("rsi: Clean up loop in the interrupt handler")
+> 
+> But not this one, it looks like just a cleanup. Why is it needed?
 
-But not this one, it looks like just a cleanup. Why is it needed?
-
--- 
-Thanks,
-Sasha
+Now I got confused, yes, please skip abd131a19f6b8, thanks for spotting 
+it. (I still have one more patch for the RSI wifi which I need to send 
+out, but that's for later)
