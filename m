@@ -2,31 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3F2032CE66
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 09:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2B1732CE89
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Mar 2021 09:33:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236729AbhCDI1J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Mar 2021 03:27:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40978 "EHLO
+        id S234822AbhCDIc3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Mar 2021 03:32:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236725AbhCDI0v (ORCPT
+        with ESMTP id S234849AbhCDIcL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Mar 2021 03:26:51 -0500
+        Thu, 4 Mar 2021 03:32:11 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D35C061756
-        for <linux-wireless@vger.kernel.org>; Thu,  4 Mar 2021 00:26:10 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E4EBC06175F;
+        Thu,  4 Mar 2021 00:31:31 -0800 (PST)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1lHjJA-00BXy0-Am; Thu, 04 Mar 2021 09:26:08 +0100
-Message-ID: <c4ad2ef0c110fd038a82ff5b38bee42bc1a1a254.camel@sipsolutions.net>
-Subject: Re: bridge mac80211_hwsim AP to internet?
+        id 1lHjO1-00BY6u-PZ; Thu, 04 Mar 2021 09:31:09 +0100
+Message-ID: <fcf796892ce3e1b469a1f29ba1763a1652d72044.camel@sipsolutions.net>
+Subject: Re: BUG: soft lockup in ieee80211_tasklet_handler
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Joshua Zhao <swzhao@gmail.com>, linux-wireless@vger.kernel.org
-Date:   Thu, 04 Mar 2021 09:26:07 +0100
-In-Reply-To: <CAKmTU=qZUm5T=nOMT-4cpJekKevLETwxY07CDe00iwLxkMpJGQ@mail.gmail.com> (sfid-20210304_021016_482226_92E625AC)
-References: <CAKmTU=qZUm5T=nOMT-4cpJekKevLETwxY07CDe00iwLxkMpJGQ@mail.gmail.com>
-         (sfid-20210304_021016_482226_92E625AC)
+To:     Dmitry Vyukov <dvyukov@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc:     Hillf Danton <hdanton@sina.com>,
+        syzbot <syzbot+27df43cf7ae73de7d8ee@syzkaller.appspotmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Date:   Thu, 04 Mar 2021 09:30:52 +0100
+In-Reply-To: <CACT4Y+ahrV-L8vV8Jm8XP=KwjWivFj445GULY1fbRN9t7buMGw@mail.gmail.com> (sfid-20210302_200147_707197_23EAE1A3)
+References: <00000000000039404305bc049fa5@google.com>
+         <20210224023026.3001-1-hdanton@sina.com>
+         <0a0573f07a7e1468f83d52afcf8f5ba356725740.camel@sipsolutions.net>
+         <CACT4Y+ahrV-L8vV8Jm8XP=KwjWivFj445GULY1fbRN9t7buMGw@mail.gmail.com>
+         (sfid-20210302_200147_707197_23EAE1A3)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
@@ -36,17 +48,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-03-03 at 16:06 -0800, Joshua Zhao wrote:
-> Hi,
-> I'm using mac80211_hwsim to simulate a virtual STA and a virtual AP.
-> How can I bridge the virtual AP to a backhaul link on my PC (e.g. a
-> physical ethernet link) for real internet connection? i.e. so that my
-> virtual STA can access the internet.  The AP could be configured in
-> NAT mode or layer-2 bridge mode. Is it possible/supported?
+On Tue, 2021-03-02 at 20:01 +0100, Dmitry Vyukov wrote:
+> 
+> Looking at the reproducer that mostly contains just perf_event_open,
+> It may be the old known issue of perf_event_open with some extreme
+> parameters bringing down kernel.
+> +perf maintainers
+> And as far as I remember +Peter had some patch to restrict
+> perf_event_open parameters.
+> 
+> r0 = perf_event_open(&(0x7f000001d000)={0x1, 0x70, 0x0, 0x0, 0x0, 0x0,
+> 0x0, 0x3ff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
+> 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
+> 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xfffffffe, 0x0, @perf_config_ext}, 0x0,
+> 0x0, 0xffffffffffffffff, 0x0)
 
-Just like on a normal AP? Create a bridge interface (e.g. brctl) and add
-the AP and backhaul interface to it. Use IP assignment etc. on the
-bridge and configure hostapd accordingly to know about it.
+Oh! Thanks for looking.
+
+Seems that also applies to
+
+https://syzkaller.appspot.com/bug?extid=d6219cf21f26bdfcc22e
+
+FWIW. I was still tracking that one, but never had a chance to look at
+it (also way down the list since it was reported as directly in hwsim)
 
 johannes
 
