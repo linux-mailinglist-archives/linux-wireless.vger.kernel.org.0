@@ -2,96 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2B2532E53D
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Mar 2021 10:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 715F832E650
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Mar 2021 11:27:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbhCEJtW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Mar 2021 04:49:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42610 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229669AbhCEJsx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Mar 2021 04:48:53 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8CDC064ECF;
-        Fri,  5 Mar 2021 09:48:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614937733;
-        bh=PPSrmURA609muaJephVoMm0YZbJ0gmnU87bIHWpeduE=;
-        h=Date:From:To:Cc:Subject:From;
-        b=YNJOU7LAxyTmdN+z6jhZM3JLeP9qa3ZfZ5ELb4o6PYd0xy0qkoA4QjqigNJhLAL50
-         oIN8qnFApMSQsAqHlTJt4gyhqRNwvBa6t/9McFRk6Q2NWRhDzz3K41a0BFOCJ4nDaQ
-         RL70mOFW/0YiI7c+JFreT1TFSwX8Y127zqZTmqVz7YYbbeSNLOzc3YytW9LBkKtgsh
-         dDysvnxpUpjzmeP9jlKtXXBjHfx6b8gF+micLHx12Stw1p9v6414pt/RPFxrXNVwRM
-         wwRX5MaYeQejo6POvRJp9yV++A5GYYN2NFqAaG+w1pxbIbtVwH8+ly8lV+BsA+rYZl
-         Uh+WKTFH5f0bw==
-Date:   Fri, 5 Mar 2021 03:48:50 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for Clang
-Message-ID: <20210305094850.GA141221@embeddedor>
+        id S229517AbhCEK1L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Mar 2021 05:27:11 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:47846 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229836AbhCEK0v (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Mar 2021 05:26:51 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1lI7fQ-004PSY-5S; Fri, 05 Mar 2021 12:26:44 +0200
+Message-ID: <3f941262db82a01ff00dbdb405cc315ee4dec480.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>,
+        golan.ben.ami@intel.com
+Date:   Fri, 05 Mar 2021 12:26:05 +0200
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-II/rxtUXLlDKK2EeA/hp"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: pull request: iwlwifi firmware updates 2021-03-05
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In preparation to enable -Wimplicit-fallthrough for Clang, fix
-multiple warnings by replacing /* fall through */ comments with
-the new pseudo-keyword macro fallthrough; instead of letting the
-code fall through to the next case.
 
-Notice that Clang doesn't recognize /* fall through */ comments as
-implicit fall-through markings.
+--=-II/rxtUXLlDKK2EeA/hp
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Link: https://github.com/KSPP/linux/issues/115
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Hi,
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 5cd7ef3625c5..afc97958fa4d 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -1145,7 +1145,7 @@ void rtl8xxxu_gen1_config_channel(struct ieee80211_hw *hw)
- 	switch (hw->conf.chandef.width) {
- 	case NL80211_CHAN_WIDTH_20_NOHT:
- 		ht = false;
--		/* fall through */
-+		fallthrough;
- 	case NL80211_CHAN_WIDTH_20:
- 		opmode |= BW_OPMODE_20MHZ;
- 		rtl8xxxu_write8(priv, REG_BW_OPMODE, opmode);
-@@ -1272,7 +1272,7 @@ void rtl8xxxu_gen2_config_channel(struct ieee80211_hw *hw)
- 	switch (hw->conf.chandef.width) {
- 	case NL80211_CHAN_WIDTH_20_NOHT:
- 		ht = false;
--		/* fall through */
-+		fallthrough;
- 	case NL80211_CHAN_WIDTH_20:
- 		rf_mode_bw |= WMAC_TRXPTCL_CTL_BW_20;
- 		subchannel = 0;
-@@ -1741,11 +1741,11 @@ static int rtl8xxxu_identify_chip(struct rtl8xxxu_priv *priv)
- 		case 3:
- 			priv->ep_tx_low_queue = 1;
- 			priv->ep_tx_count++;
--			/* fall through */
-+			fallthrough;
- 		case 2:
- 			priv->ep_tx_normal_queue = 1;
- 			priv->ep_tx_count++;
--			/* fall through */
-+			fallthrough;
- 		case 1:
- 			priv->ep_tx_high_queue = 1;
- 			priv->ep_tx_count++;
--- 
-2.27.0
+This contains some new and updated firmwares for all our currently
+maintained FW binaries.
+
+Please pull or let me know if there are any issues.
+
+--
+Cheers,
+Luca.
+
+
+The following changes since commit 5ecd13ffe8e24385cf4f30f3d0dcaff4dfb24de2=
+:
+
+  Mellanox: Add new mlxsw_spectrum firmware xx.2008.2406 (2021-03-03 13:23:=
+49 -0500)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-firmware.gi=
+t iwlwifi-fw-2021-03-05
+
+for you to fetch changes up to 568016467deab716b8a382bf087209b781d4bca7:
+
+  iwlwifi: add new FWs from core59-66 release (2021-03-05 12:18:25 +0200)
+
+----------------------------------------------------------------
+Update iwlwifi firmwares to Core59-66
+
+----------------------------------------------------------------
+Luca Coelho (3):
+      iwlwifi: update 7265D firmware
+      iwlwifi: update 9000-family firmwares
+      iwlwifi: add new FWs from core59-66 release
+
+ WHENCE                            |  34 +++++++++++++++++++++++++++++++++-
+ iwlwifi-7265D-29.ucode            | Bin 1036444 -> 1036772 bytes
+ iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1512096 -> 1514240 bytes
+ iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1483116 -> 1485556 bytes
+ iwlwifi-Qu-b0-hr-b0-62.ucode      | Bin 0 -> 1329296 bytes
+ iwlwifi-Qu-b0-jf-b0-62.ucode      | Bin 0 -> 1248672 bytes
+ iwlwifi-Qu-c0-hr-b0-62.ucode      | Bin 0 -> 1329312 bytes
+ iwlwifi-Qu-c0-jf-b0-62.ucode      | Bin 0 -> 1248688 bytes
+ iwlwifi-QuZ-a0-hr-b0-62.ucode     | Bin 0 -> 1328924 bytes
+ iwlwifi-QuZ-a0-jf-b0-62.ucode     | Bin 0 -> 1248672 bytes
+ iwlwifi-cc-a0-62.ucode            | Bin 0 -> 1292672 bytes
+ iwlwifi-ty-a0-gf-a0-62.ucode      | Bin 0 -> 1455104 bytes
+ iwlwifi-ty-a0-gf-a0.pnvm          | Bin 0 -> 27456 bytes
+ 13 files changed, 33 insertions(+), 1 deletion(-)
+ create mode 100644 iwlwifi-Qu-b0-hr-b0-62.ucode
+ create mode 100644 iwlwifi-Qu-b0-jf-b0-62.ucode
+ create mode 100644 iwlwifi-Qu-c0-hr-b0-62.ucode
+ create mode 100644 iwlwifi-Qu-c0-jf-b0-62.ucode
+ create mode 100644 iwlwifi-QuZ-a0-hr-b0-62.ucode
+ create mode 100644 iwlwifi-QuZ-a0-jf-b0-62.ucode
+ create mode 100644 iwlwifi-cc-a0-62.ucode
+ create mode 100644 iwlwifi-ty-a0-gf-a0-62.ucode
+ create mode 100644 iwlwifi-ty-a0-gf-a0.pnvm
+
+
+--=-II/rxtUXLlDKK2EeA/hp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmBCBz0ACgkQoUecoho8
+xfptmg/9EGl6/fLQE6eyDvZsQJsHtvWXizGfVcGHuLXobNGdqse9KhTgdf9KJFsn
+LLWV0x7aHD+QTO+xtMz5OlAoRQ6ELw5/PjNKniz0vz8xXMRquev912NWUOL+Aagg
+CfyQVC7W9q2VoThT2/6pPhh0zK3YInCcRSAOFLf5E6auZqYsoKcs740gx6YT0JlB
+ZryIVqUm3EBqV/bpEvow32UeZ5yF+aWpEmIORYCCwFo/dvb6XrodgwLl2bmkt/yq
+IIHgeA62b/W1llY5Ba4hvvFwdgLgLpok5MrTW/w76DWWrqmDUE0YfntiP9DzDByV
+mq3W9I7ZT6iw/fZSDFk0KMPg5a8J0ZOaUwzECJqd9QFy5eirzR6i0KPAfip+5OB7
+X3qZFTqO1nZHNDxiTxQt5PyRipaieXSFN/0fYHgrmgwg/h89+XzVOHfEoEijq2hU
+EQKFEZZcIDYlVNg0tAKLjG87lDIOfNNoaGe5TujYbwjCegb8rtED1QndxD9Mf9xN
+WDToeFiazx7wZ/dfoR3KJBjAXyD6LUeQoWXDhO9MP+a1073eY5kvTBIK9RFc7YGI
+FKLUARfEQnGEtS7I9numbVEbrmrM8mCJOONBHEVCkQ5peC6loXnIcyE3nKKO5okk
+sHSF7JA99gtUD719JrwkOAJ+ppwCk8spz6agIp2J8kGxOYcljyw=
+=u406
+-----END PGP SIGNATURE-----
+
+--=-II/rxtUXLlDKK2EeA/hp--
 
