@@ -2,86 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B811532EC68
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Mar 2021 14:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FB9932ECEF
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Mar 2021 15:17:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230191AbhCENlC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Mar 2021 08:41:02 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:41413 "EHLO z11.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229701AbhCENkp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Mar 2021 08:40:45 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1614951644; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=DmIWVPazE1ZGWAakc7cfMkZrozZnhscQVMNNwhF/Zw0=; b=Uw2z5fGVPprFAguNDEL6Vm4WVGkIsYJS0GiZ+t5Fw+3Lq4dsykImXv+udyS2noMJxYetB9C8
- wBBo3FrqFP+q1k7NxBpg1KIs1lp+rQ9+1vp+Kx1ilF01+V6+fJ1YQIY21/OLPCWjrjJVwfLr
- eIMPpnXbnkoUK5gfXADPYm3rFK4=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 604234d62a5e6d1bfa490ca1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 05 Mar 2021 13:40:38
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BCE50C43464; Fri,  5 Mar 2021 13:40:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1EADCC433CA;
-        Fri,  5 Mar 2021 13:40:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1EADCC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for Clang
-References: <20210305094850.GA141221@embeddedor>
-Date:   Fri, 05 Mar 2021 15:40:33 +0200
-In-Reply-To: <20210305094850.GA141221@embeddedor> (Gustavo A. R. Silva's
-        message of "Fri, 5 Mar 2021 03:48:50 -0600")
-Message-ID: <871rct67n2.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S231236AbhCEOQt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Mar 2021 09:16:49 -0500
+Received: from mail-il1-f199.google.com ([209.85.166.199]:54685 "EHLO
+        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231151AbhCEOQS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Mar 2021 09:16:18 -0500
+Received: by mail-il1-f199.google.com with SMTP id w8so1738105ilg.21
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Mar 2021 06:16:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=mfuOjp5Z/tGbKX0ZKWisF3TPUViTIoNQsTJvHl29QCM=;
+        b=mAHyA3V0xpIXd/JQ/PYfkmNNiJEDLgaS43lQNTEx5hfgPw9SdO8ZK9e1U9x6wFLmZn
+         h+Y37eUhvrxK1ftACkbIZp0in4ZuElm9Efu5rCJKvs8Dgr0+1/SR1J0Lgt69s3atRiKL
+         6WQuKwxrKKUWg3CgVTi/t6CED/GXh2MvvqTsGVYhq6HFc1ZLnvxqXMEExBIS+5earE8I
+         CHQ3I0UU97knTJqITTvZs9STk4HC6JDff7r/UFKtaN26V6Y9yFGQynFOmvbR+rmecj9M
+         MW6ZyMrgDFpndwg/kp3qPAHtQt2ZFcr6u6hwfdlfJMCEpgob9mLRyoK4kSsRic90micc
+         d0lg==
+X-Gm-Message-State: AOAM5323vA5e6OHUJ94xnIYqI/6+UUHmkpn1+EY7fOu+ikb7Mme3FaAq
+        VBPr27bAKL4YfInIEjRq8yn/yxfwswKXWkSKpD7ssuDO5yE9
+X-Google-Smtp-Source: ABdhPJzhdCq+OH0uPbJie7DVKf0NBMi9zf6Wfy1m090wcIwuVEoGT7KE2S/Eu7tE0V4njvSY+0tij0PUmqywZ+ENf9/nEVi5HfOf
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a02:7f8c:: with SMTP id r134mr10057299jac.95.1614953775992;
+ Fri, 05 Mar 2021 06:16:15 -0800 (PST)
+Date:   Fri, 05 Mar 2021 06:16:15 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000002592aa05bccabae5@google.com>
+Subject: [syzbot] WARNING in carl9170_usb_send_rx_irq_urb/usb_submit_urb
+From:   syzbot <syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com>
+To:     andreyknvl@google.com, chunkeey@googlemail.com,
+        davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+Hello,
 
-> In preparation to enable -Wimplicit-fallthrough for Clang, fix
-> multiple warnings by replacing /* fall through */ comments with
-> the new pseudo-keyword macro fallthrough; instead of letting the
-> code fall through to the next case.
->
-> Notice that Clang doesn't recognize /* fall through */ comments as
-> implicit fall-through markings.
->
-> Link: https://github.com/KSPP/linux/issues/115
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+syzbot found the following issue on:
 
-It's not cool that you ignore the comments you got in [1], then after a
-while mark the patch as "RESEND" and not even include a changelog why it
-was resent.
+HEAD commit:    fe07bfda Linux 5.12-rc1
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=12020056d00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=fd36f4f4a84d245c
+dashboard link: https://syzkaller.appspot.com/bug?extid=0ae4804973be759fa420
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=111b8c42d00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=131dcb7f500000
 
-[1] https://patchwork.kernel.org/project/linux-wireless/patch/d522f387b2d0dde774785c7169c1f25aa529989d.1605896060.git.gustavoars@kernel.org/
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+usb 1-1: reset high-speed USB device number 2 using dummy_hcd
+usb 1-1: device descriptor read/64, error -71
+usb 1-1: Using ep0 maxpacket: 8
+usb 1-1: driver   API: 1.9.9 2016-02-15 [1-1]
+usb 1-1: firmware API: 1.9.6 2012-07-07
+------------[ cut here ]------------
+usb 1-1: BOGUS urb xfer, pipe 1 != type 3
+WARNING: CPU: 1 PID: 32 at drivers/usb/core/urb.c:493 usb_submit_urb+0xd27/0x1540 drivers/usb/core/urb.c:493
+Modules linked in:
+CPU: 1 PID: 32 Comm: kworker/1:1 Not tainted 5.12.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: events request_firmware_work_func
+RIP: 0010:usb_submit_urb+0xd27/0x1540 drivers/usb/core/urb.c:493
+Code: 84 d4 02 00 00 e8 69 99 b8 fd 4c 89 ef e8 d1 cd 1c ff 41 89 d8 44 89 e1 4c 89 f2 48 89 c6 48 c7 c7 00 02 62 86 e8 39 e9 fa 01 <0f> 0b e9 81 f8 ff ff e8 3d 99 b8 fd 48 81 c5 30 06 00 00 e9 ad f7
+RSP: 0018:ffffc900001f7bb0 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000000
+RDX: ffff8881008e0000 RSI: ffffffff812964e3 RDI: fffff5200003ef68
+RBP: ffff888116f510a0 R08: 0000000000000001 R09: 0000000000000000
+R10: ffffffff8149dffb R11: 0000000000000000 R12: 0000000000000001
+R13: ffff888116f500a0 R14: ffff8881057a4000 R15: ffff88810256d300
+FS:  0000000000000000(0000) GS:ffff8881f6b00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb73282f000 CR3: 0000000105642000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ carl9170_usb_send_rx_irq_urb+0x273/0x340 drivers/net/wireless/ath/carl9170/usb.c:504
+ carl9170_usb_init_device drivers/net/wireless/ath/carl9170/usb.c:939 [inline]
+ carl9170_usb_firmware_finish drivers/net/wireless/ath/carl9170/usb.c:999 [inline]
+ carl9170_usb_firmware_step2+0x1b9/0x290 drivers/net/wireless/ath/carl9170/usb.c:1028
+ request_firmware_work_func+0x12c/0x230 drivers/base/firmware_loader/main.c:1079
+ process_one_work+0x98d/0x1580 kernel/workqueue.c:2275
+ worker_thread+0x64c/0x1120 kernel/workqueue.c:2421
+ kthread+0x38c/0x460 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
