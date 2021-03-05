@@ -2,107 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 037A132E3E5
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Mar 2021 09:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2B2532E53D
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Mar 2021 10:49:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbhCEIqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Mar 2021 03:46:54 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:60173 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229558AbhCEIqs (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Mar 2021 03:46:48 -0500
-X-UUID: 2e6eecb41bd04971800f177d1f68bc76-20210305
-X-UUID: 2e6eecb41bd04971800f177d1f68bc76-20210305
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 978736947; Fri, 05 Mar 2021 16:46:44 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 5 Mar 2021 16:46:42 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 5 Mar 2021 16:46:42 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix possible deadlock while mt7915_register_ext_phy()
-Date:   Fri, 5 Mar 2021 16:46:41 +0800
-Message-ID: <96aaea810b92f701e74b27cf030f9ddced6f4a63.1614932804.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S229741AbhCEJtW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Mar 2021 04:49:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42610 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229669AbhCEJsx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Mar 2021 04:48:53 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8CDC064ECF;
+        Fri,  5 Mar 2021 09:48:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614937733;
+        bh=PPSrmURA609muaJephVoMm0YZbJ0gmnU87bIHWpeduE=;
+        h=Date:From:To:Cc:Subject:From;
+        b=YNJOU7LAxyTmdN+z6jhZM3JLeP9qa3ZfZ5ELb4o6PYd0xy0qkoA4QjqigNJhLAL50
+         oIN8qnFApMSQsAqHlTJt4gyhqRNwvBa6t/9McFRk6Q2NWRhDzz3K41a0BFOCJ4nDaQ
+         RL70mOFW/0YiI7c+JFreT1TFSwX8Y127zqZTmqVz7YYbbeSNLOzc3YytW9LBkKtgsh
+         dDysvnxpUpjzmeP9jlKtXXBjHfx6b8gF+micLHx12Stw1p9v6414pt/RPFxrXNVwRM
+         wwRX5MaYeQejo6POvRJp9yV++A5GYYN2NFqAaG+w1pxbIbtVwH8+ly8lV+BsA+rYZl
+         Uh+WKTFH5f0bw==
+Date:   Fri, 5 Mar 2021 03:48:50 -0600
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for Clang
+Message-ID: <20210305094850.GA141221@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_register_hw() is called with rtnl_lock held, and this could be
-caused lockdep from a work item that's on a workqueue that is flushed
-with the rtnl held.
+In preparation to enable -Wimplicit-fallthrough for Clang, fix
+multiple warnings by replacing /* fall through */ comments with
+the new pseudo-keyword macro fallthrough; instead of letting the
+code fall through to the next case.
 
-Move mt7915_register_ext_phy() outside the init_work().
+Notice that Clang doesn't recognize /* fall through */ comments as
+implicit fall-through markings.
 
-Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Link: https://github.com/KSPP/linux/issues/115
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 7 ++++---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 4 ++++
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 165be6abcc96..2ffadd22c259 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -181,8 +181,6 @@ static void mt7915_mac_init(struct mt7915_dev *dev)
- 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 	for (i = 0; i < 2; i++)
- 		mt7915_mac_init_band(dev, i);
--
--	mt7915_mcu_set_rts_thresh(&dev->phy, 0x92b);
- }
- 
- static int mt7915_txbf_init(struct mt7915_dev *dev)
-@@ -295,7 +293,6 @@ static void mt7915_init_work(struct work_struct *work)
- 	mt7915_mac_init(dev);
- 	mt7915_init_txpower(dev);
- 	mt7915_txbf_init(dev);
--	mt7915_register_ext_phy(dev);
- }
- 
- static int mt7915_init_hardware(struct mt7915_dev *dev)
-@@ -677,6 +674,10 @@ int mt7915_register_device(struct mt7915_dev *dev)
- 
- 	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
- 
-+	ret = mt7915_register_ext_phy(dev);
-+	if (ret)
-+		return ret;
-+
- 	return mt7915_init_debugfs(dev);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 255f87aa1830..cde8c1ce3ae0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -65,6 +65,10 @@ static int mt7915_start(struct ieee80211_hw *hw)
- 		mt7915_mac_enable_nf(dev, 1);
- 	}
- 
-+	ret = mt7915_mcu_set_rts_thresh(phy, 0x92b);
-+	if (ret)
-+		goto out;
-+
- 	ret = mt7915_mcu_set_sku_en(phy, true);
- 	if (ret)
- 		goto out;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 5cd7ef3625c5..afc97958fa4d 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -1145,7 +1145,7 @@ void rtl8xxxu_gen1_config_channel(struct ieee80211_hw *hw)
+ 	switch (hw->conf.chandef.width) {
+ 	case NL80211_CHAN_WIDTH_20_NOHT:
+ 		ht = false;
+-		/* fall through */
++		fallthrough;
+ 	case NL80211_CHAN_WIDTH_20:
+ 		opmode |= BW_OPMODE_20MHZ;
+ 		rtl8xxxu_write8(priv, REG_BW_OPMODE, opmode);
+@@ -1272,7 +1272,7 @@ void rtl8xxxu_gen2_config_channel(struct ieee80211_hw *hw)
+ 	switch (hw->conf.chandef.width) {
+ 	case NL80211_CHAN_WIDTH_20_NOHT:
+ 		ht = false;
+-		/* fall through */
++		fallthrough;
+ 	case NL80211_CHAN_WIDTH_20:
+ 		rf_mode_bw |= WMAC_TRXPTCL_CTL_BW_20;
+ 		subchannel = 0;
+@@ -1741,11 +1741,11 @@ static int rtl8xxxu_identify_chip(struct rtl8xxxu_priv *priv)
+ 		case 3:
+ 			priv->ep_tx_low_queue = 1;
+ 			priv->ep_tx_count++;
+-			/* fall through */
++			fallthrough;
+ 		case 2:
+ 			priv->ep_tx_normal_queue = 1;
+ 			priv->ep_tx_count++;
+-			/* fall through */
++			fallthrough;
+ 		case 1:
+ 			priv->ep_tx_high_queue = 1;
+ 			priv->ep_tx_count++;
 -- 
-2.18.0
+2.27.0
 
