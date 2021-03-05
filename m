@@ -2,89 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F1E732E01D
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Mar 2021 04:31:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8220332E38C
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Mar 2021 09:22:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbhCEDbb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Mar 2021 22:31:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34550 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbhCEDba (ORCPT
+        id S229601AbhCEIWw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Mar 2021 03:22:52 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:45940 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229489AbhCEIWm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Mar 2021 22:31:30 -0500
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CD1C061574;
-        Thu,  4 Mar 2021 19:31:29 -0800 (PST)
-Received: by mail-pj1-x1034.google.com with SMTP id l18so1070913pji.3;
-        Thu, 04 Mar 2021 19:31:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=3DJxHAaaivZloDKJkg7BmraW1QxR1uQyEaZvyq60QtM=;
-        b=G90QU+ixdE7gddy1nulVOaRcMw5p33BJcRUNVZMYb2MsNAi3VN83E2lcBSYX49Iv68
-         nX0x2GMyT35CXiXj/M7HW1LScfqTCR2jqvXr2Rfmbga/oKVr7h5l/ECiaIxU8a1skvkY
-         0huaucMpQzbTNownRDYDSvGKuGBsgxkNQ4wHtk2F0tFvofKy8H/8YmOKVC+osZpbwxB8
-         IVgRTwgoti8HsIB+omRnQtl8W1VkOCJMJ+VtQ+ExjuzZWv7A6615IyVWM3ILVSRKfgd3
-         lHdVL7jODYkT5moFiEtHhN0SD/E1H0Ufms2om4vG4VUfnxZb0x4uu3Esn7vBpGrrti8M
-         V78Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=3DJxHAaaivZloDKJkg7BmraW1QxR1uQyEaZvyq60QtM=;
-        b=l9pfUYZkS0N/oCYjotjRCQMRqZUuctfz7hT69TcWlMkTyxl6XLMenapkIgaxYh6YfY
-         3k7hOt0Ujdf+sOpzUAiV+wh3r2PC+1TmFc5dDFzZZ8F1J64J4Sb9W7kispBy8OOSU/bt
-         rx5qR36TolmvAYfuK79G5FxgI5iew3qLwHTk/PeaEOpqiZuyDmS3S69kh3b/t2jMT22z
-         zr5sh27HBhgb6K50XLDmiztBkZQEclpfVcMoMNlAruOmsRA/d2NcSVp8XoS+Furp2wN4
-         ME9r08Tka3Df0svb5dwV3VKMfynqkePGrUiyFZuytA2oK0pnRFrqCFoQQLKkkR4KRHpp
-         Xqhw==
-X-Gm-Message-State: AOAM530MTdCpdjmvq3JHnYFcxHzeEHNSW/2PicIqRB4EYOxaRD6Thj6n
-        rIEyL+64yTec57yMo1qtP3E=
-X-Google-Smtp-Source: ABdhPJzwhnyVa8A94pkpvh6czEX/mrz9sKQ2e8ru0ba4B1YycIkFNeP6RSRTg+rbceFq8xjGizT9Kg==
-X-Received: by 2002:a17:902:6b45:b029:e0:7a3:a8c with SMTP id g5-20020a1709026b45b02900e007a30a8cmr6885503plt.1.1614915089101;
-        Thu, 04 Mar 2021 19:31:29 -0800 (PST)
-Received: from localhost.localdomain ([45.135.186.129])
-        by smtp.gmail.com with ESMTPSA id i66sm712567pfe.31.2021.03.04.19.31.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Mar 2021 19:31:28 -0800 (PST)
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        lee.jones@linaro.org, colin.king@canonical.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [PATCH] marvell: libertas_tf: fix error return code of if_usb_prog_firmware()
-Date:   Thu,  4 Mar 2021 19:31:15 -0800
-Message-Id: <20210305033115.6015-1-baijiaju1990@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 5 Mar 2021 03:22:42 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1258ExbL085139;
+        Fri, 5 Mar 2021 08:22:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=QvKMRD5iNUl6kiX5MxFQrd+alqe/rtGHFgjL6zq2F60=;
+ b=AGXGMKINI2Ha6H/US8jvyxW/EQCAyJUuLsm4yXokpW2+mPHV5qTo/+onJuMuRWDnmTQz
+ FdG1wx2YkqlDE76zMCMGaUiEbaFyrI6Zl0hhGOKK6XK4oFgqgM0k+57kOVr6ZARpmpDW
+ tIpz4FHM+0jgwl/8RQldEgKZZdcngdVnNgLceo83gKzR1iiuvu8MRTDAqBe6hLEZ70Mk
+ eTqvYwO41tzjlVYspZVx//QA4S2SfWJfZsl4ZTTZUNAb6ow1JsRLq77XGNqbA2jkCDA0
+ mk2ZlB+3Xpxf7cgJSJGca2TCAcI0amWWig/FA5JjK9sM6IOK8eU7ea9AHrzG7DW+CEdl BQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 36yeqn9kej-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 Mar 2021 08:22:38 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1258Ei4m065988;
+        Fri, 5 Mar 2021 08:22:37 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 36yyuvy09s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 05 Mar 2021 08:22:36 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1258MaxK032041;
+        Fri, 5 Mar 2021 08:22:36 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 05 Mar 2021 00:22:35 -0800
+Date:   Fri, 5 Mar 2021 11:22:28 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Lee Gibson <leegib@gmail.com>
+Cc:     devel@driverdev.osuosl.org, gregkh@linuxfoundation.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] staging: rtl8192e: Fix possible buffer overflow in
+ _rtl92e_wx_set_scan
+Message-ID: <20210305082228.GG2222@kadam>
+References: <20210226114829.316980-1-leegib@gmail.com>
+ <20210226134333.GA2087@kadam>
+ <20210226140526.GG2222@kadam>
+ <20210301132535.GR2087@kadam>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210301132535.GR2087@kadam>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9913 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103050039
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9913 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 mlxlogscore=999 suspectscore=0 malwarescore=0
+ impostorscore=0 bulkscore=0 adultscore=0 mlxscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103050039
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When check_fwfile_format() fails, no error return code of
-if_usb_prog_firmware() is assigned.
-To fix this bug, ret is assigned with -EINVAL as error return code.
+Actually, I looked through a bunch of these and they're mostly false
+positives outside of staging.  I guess there are a few ways the ->ssid
+can be changed.  Via netlink, from the network or from the an ioctl.
 
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
----
- drivers/net/wireless/marvell/libertas_tf/if_usb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I still have a couple questions, but so far as I can see it's mostly the
+ioctl which has problems.
 
-diff --git a/drivers/net/wireless/marvell/libertas_tf/if_usb.c b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
-index a92916dc81a9..ceca22da5a29 100644
---- a/drivers/net/wireless/marvell/libertas_tf/if_usb.c
-+++ b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
-@@ -825,8 +825,10 @@ static int if_usb_prog_firmware(struct lbtf_private *priv)
- 	}
- 	kernel_param_unlock(THIS_MODULE);
- 
--	if (check_fwfile_format(cardp->fw->data, cardp->fw->size))
-+	if (check_fwfile_format(cardp->fw->data, cardp->fw->size)) {
-+		ret = -EINVAL;
- 		goto release_fw;
-+	}
- 
- restart:
- 	if (if_usb_submit_rx_urb_fwload(cardp) < 0) {
--- 
-2.17.1
+I really want Smatch to be able to figure the netlink stuff...  That
+should be doable.
+
+regards,
+dan carpenter
 
