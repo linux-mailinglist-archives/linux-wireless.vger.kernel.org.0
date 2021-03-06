@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3B132FCE4
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Mar 2021 20:53:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6691D32FCE6
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Mar 2021 20:54:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231177AbhCFTww (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 6 Mar 2021 14:52:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45136 "EHLO
+        id S231147AbhCFTx5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 6 Mar 2021 14:53:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230390AbhCFTww (ORCPT
+        with ESMTP id S231308AbhCFTxz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 6 Mar 2021 14:52:52 -0500
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32060C06174A;
-        Sat,  6 Mar 2021 11:52:52 -0800 (PST)
-Received: by mail-io1-xd35.google.com with SMTP id u8so5718772ior.13;
-        Sat, 06 Mar 2021 11:52:52 -0800 (PST)
+        Sat, 6 Mar 2021 14:53:55 -0500
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 278F6C06175F;
+        Sat,  6 Mar 2021 11:53:55 -0800 (PST)
+Received: by mail-il1-x12a.google.com with SMTP id v14so5231771ilj.11;
+        Sat, 06 Mar 2021 11:53:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:reply-to:from:date:message-id
          :subject:to:cc;
-        bh=SawKOOyQ1vlNQC1p3tm3qvoltBI/YC72sSTNIxokIes=;
-        b=RSkUOz4afLnlz1RpuQI0tsCd9wzFn9Idr/hX26vAJuvUS8+6mAT9d5Q6Bxx8/8ri5L
-         hsP8fduT6SULhq+QI1iAiMwNrYPDY3Tg3+zrwliFO61CjAe5VvtXRhNyEkBogooD5KiZ
-         E0BqexAbIfnO9hbrKdS+UKw1FbXgxzRGmQiGE8mff6ARMYW9C/EEJQ2k5Ktt+TZLt7vy
-         lhUJRmDAuWb4aWqDmgQQTGg4rxIv9t0/DvQaJiybmcQm1L9gHCOXU7y1wIOwpdDE1oGu
-         Lxf1/ZA5ETcZeCZqtmksW+plYm+MXBhaXqfBKKd9KketX7IDd4dmhFvi0xbZgdsDG3RH
-         O2+A==
+        bh=vlYF1Htq1UCj2PlrUUYbtgbjonQngGN1ifIxVwTgusM=;
+        b=S6SLmaBoQtcqiEbPuYj0AoHHu4EHwxmwfGRsdlpr3GzRbHivO798NjIbebYHovK388
+         PO2JNGDbTxFBswArVWxgyGtpuUp2q6nL+8tua0TKWqrt9vtQQKllkAwBO0zqANGc6Bx4
+         5AA86/5Hu1+YYYgDZDOwnfLAPseh9K+c84nuxXFmrf18IwdndZ57GgGBD7hyQLJocI29
+         GBKiZQ/XYa/kjE4S8Rb+LuUIax4Ht5tKGSwNTdRtzeDu7QnuqU1vmG3XGTJGi9OMcaIB
+         mCu9p56iuyAJuwAhDCJXoLr/+q2oqJslKKfBuF0fQHdZ0k0eUCYqDoS3RVHvF9trVmhG
+         SjcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
          :from:date:message-id:subject:to:cc;
-        bh=SawKOOyQ1vlNQC1p3tm3qvoltBI/YC72sSTNIxokIes=;
-        b=VgN5GTW9fHWOdQubiAyGn3qLHiwgINPkceItMAY1uaXB6zfmCDlyQs8Q1kcpYf+FNk
-         oC8MSUhCSMqsr5in13fH8TC16+6kwwOSPLBFrSoGojReg62rvErEnfu7XloOcanD+EyQ
-         LpzcHcKXDgCzBtAiPReTsK1NK7dAQZEOJUHIgBj0Bz2fQLdRjDR4YjSKEovhK4NGFNZf
-         SipMbEC3lDJhvsMzkUFw6hofxVHwcoMR9HRWazYOuvdLACDXRlNw+PUf6vJhr2dY0hV7
-         sn8HNRtkCVrRvYme1hKQ0oqAxeqtMWOapEx7IkbHOBHk7zdwOBHqlrd7L+MahjLRilR4
-         2eIA==
-X-Gm-Message-State: AOAM530W1uNoAvz3onUjurOLj01OdVqJjyt7jvrQt/9MSs9AzpbqSYc8
-        nhSwA0AJfr0FXvv5yqxv6Xf7h58rmdgioyMmfd4=
-X-Google-Smtp-Source: ABdhPJyPulR39aIriEXYRN4XtFJ+f7vz0iKwNH5W8sSipGC6cLH3SSrIFVhcUDy7uJBZA8vUzGJv6Z7v+tSo7HVHxJw=
-X-Received: by 2002:a02:9a0a:: with SMTP id b10mr16014069jal.132.1615060371492;
- Sat, 06 Mar 2021 11:52:51 -0800 (PST)
+        bh=vlYF1Htq1UCj2PlrUUYbtgbjonQngGN1ifIxVwTgusM=;
+        b=qdaj8riRLsGm2IQdFgde7fyYfJl1zSVGQlRUBYTIKpkI/tR/naJ+QDL0u/R1mfJ5Hl
+         AcwXHinfP+Pgv+0xi/qHfC3mLTgb2cOakBWIWqP0AWRp8trIOgX7AxD7y68T8fZqb5rG
+         8W0acDhDbAG7m6AlbnIe0TmOlz4nnFn6MwDLa5e91MB7g6b2DnYFwAmWWB58+Ijko4xr
+         YwHteGdrlkQfGf98jBxpqr7lTbL8braBuiidV0lEeQ7Yk5vZyEPiK04xT7SgKv+kspRd
+         sdUUHgWxXkWKsSOs1NgyLzg5CVXu/42Uhi9rvpcifInUps0dqicCP580Vhfr8VoMzh3T
+         wP4w==
+X-Gm-Message-State: AOAM531htCPN7j3ZSrVrautLk8JTOIRQGwAQKBMgmPOj3QgkZbTX7aw6
+        3yrCHKA5pZGcBpX1GhcYx14Qpw1xnSf+APTrAv0=
+X-Google-Smtp-Source: ABdhPJwGI5zB4p+cU14S7UalxhtlLHcDQwnoRKhxceC+wuGYIcFlv7mFVCzCcLfHGZeG+5Ardg+xo4STgUtQQsBvCRk=
+X-Received: by 2002:a92:ce84:: with SMTP id r4mr13811463ilo.112.1615060434707;
+ Sat, 06 Mar 2021 11:53:54 -0800 (PST)
 MIME-Version: 1.0
-References: <alpine.LSU.2.11.2103061139200.1285@eggly.anvils>
-In-Reply-To: <alpine.LSU.2.11.2103061139200.1285@eggly.anvils>
+References: <alpine.LSU.2.11.2103061139200.1285@eggly.anvils> <alpine.LSU.2.11.2103061147270.1285@eggly.anvils>
+In-Reply-To: <alpine.LSU.2.11.2103061147270.1285@eggly.anvils>
 Reply-To: sedat.dilek@gmail.com
 From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Sat, 6 Mar 2021 20:52:15 +0100
-Message-ID: <CA+icZUVedsZzJ7qk4fgSZV37M6YUjnP=sfWFK9V9f0y0KpQ4tA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iwlwifi: fix DVM build regression in 5.12-rc
+Date:   Sat, 6 Mar 2021 20:53:18 +0100
+Message-ID: <CA+icZUWwEAY5BvOGsvOY+VSxk=h6kd+twJ1okTGf4o2cuagPEQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iwlwifi: fix DVM boot regression in 5.12-rc
 To:     Hugh Dickins <hughd@google.com>
 Cc:     Luca Coelho <luciano.coelho@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -63,42 +63,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Mar 6, 2021 at 8:48 PM Hugh Dickins <hughd@google.com> wrote:
+On Sat, Mar 6, 2021 at 8:50 PM Hugh Dickins <hughd@google.com> wrote:
 >
-> There is no iwl_so_trans_cfg if CONFIG_IWLDVM but not CONFIG_IWLMVM:
-> move the CONFIG_IWLMVM guard up before the problematic SnJ workaround
-> to fix the build breakage.
+> No time_point op has been provided for DVM: check for NULL before
+> calling, to fix the oops (blank screen booting non-modular kernel).
 >
-> Fixes: 930be4e76f26 ("iwlwifi: add support for SnJ with Jf devices")
+> Fixes: d01293154c0a ("iwlwifi: dbg: add op_mode callback for collecting debug data.")
 > Signed-off-by: Hugh Dickins <hughd@google.com>
 
-See "iwlwifi: pcie: fix iwl_so_trans_cfg link error when CONFIG_IWLMVM
-is disabled" in [1].
+See "iwlwifi: avoid crash on unsupported debug collection" in [1].
 
 - Sedat -
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git/commit/?id=62541e266703549550e77fd46138422dbdc881f1
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git/commit/?id=4538c5ed0f7e892f1b643472e48146757d1e60c5
 
 > ---
 >
->  drivers/net/wireless/intel/iwlwifi/pcie/drv.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> --- 5.12-rc2/drivers/net/wireless/intel/iwlwifi/pcie/drv.c      2021-02-28 16:58:55.082425755 -0800
-> +++ linux/drivers/net/wireless/intel/iwlwifi/pcie/drv.c 2021-03-05 18:42:53.650809293 -0800
-> @@ -1106,6 +1106,7 @@ static int iwl_pci_probe(struct pci_dev
->                 }
->         }
+> --- 5.12-rc2/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h   2021-02-28 16:58:55.058425551 -0800
+> +++ linux/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h      2021-03-05 20:59:14.156217412 -0800
+> @@ -205,7 +205,8 @@ static inline void iwl_op_mode_time_poin
+>                                           enum iwl_fw_ini_time_point tp_id,
+>                                           union iwl_dbg_tlv_tp_data *tp_data)
+>  {
+> -       op_mode->ops->time_point(op_mode, tp_id, tp_data);
+> +       if (op_mode->ops->time_point)
+> +               op_mode->ops->time_point(op_mode, tp_id, tp_data);
+>  }
 >
-> +#if IS_ENABLED(CONFIG_IWLMVM)
->         /*
->          * Workaround for problematic SnJ device: sometimes when
->          * certain RF modules are connected to SnJ, the device ID
-> @@ -1116,7 +1117,6 @@ static int iwl_pci_probe(struct pci_dev
->         if (CSR_HW_REV_TYPE(iwl_trans->hw_rev) == IWL_CFG_MAC_TYPE_SNJ)
->                 iwl_trans->trans_cfg = &iwl_so_trans_cfg;
->
-> -#if IS_ENABLED(CONFIG_IWLMVM)
->         /*
->          * special-case 7265D, it has the same PCI IDs.
->          *
+>  #endif /* __iwl_op_mode_h__ */
