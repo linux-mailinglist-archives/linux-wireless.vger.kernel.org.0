@@ -2,89 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A6AD32FFA6
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Mar 2021 09:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A7732FFCC
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Mar 2021 10:09:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230228AbhCGIfF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 7 Mar 2021 03:35:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
+        id S230217AbhCGJIJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 7 Mar 2021 04:08:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230023AbhCGIe7 (ORCPT
+        with ESMTP id S230035AbhCGJIJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 7 Mar 2021 03:34:59 -0500
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D3A0C06174A;
-        Sun,  7 Mar 2021 00:34:59 -0800 (PST)
-Received: by mail-pg1-x52f.google.com with SMTP id o38so4388862pgm.9;
-        Sun, 07 Mar 2021 00:34:59 -0800 (PST)
+        Sun, 7 Mar 2021 04:08:09 -0500
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C2CC06174A;
+        Sun,  7 Mar 2021 01:08:08 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id u11so3431766plg.13;
+        Sun, 07 Mar 2021 01:08:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=Ztm3kMmO9foaT7tkUJFO2YdMILbFbAnDhEHXV2g/J4w=;
-        b=NJfBKm+6Po22NyGTrZqqEVmEdEdNe+GTidqjmEHd716kY6jxMvgBzSwkpnaTI77CtW
-         JWHi8stDcqW/bJtC7/luFcI9f5Os5LmJw4snh6bikdIqOEfLSmNcMikTolRd6wotD34V
-         J03OhLtLPoMP9pP21hYJN1+VS+pTxPuzwmQ8y6+fIlyLAMZLtfqiESrd6NxOdK0EeaDp
-         AadGekm+9mRbu8OzMoqhwZcevH4jFMi837azJda0h/u4EcgC0kh2huL0y00kRyYWXfah
-         aEcUQLsfXJ92j0FmJajL6EUu0r55zhbzpULw5a539NaMcaYXYr/BHoX4c7/RHGf5zTEM
-         cM7Q==
+        bh=Z5qBeDr73mu1Ohkca0kOr2L7Gmyz2MrOVp0HQy/wugc=;
+        b=lcE0KkdSv2Ghm7BZvnD5M7N25DsTIlsHNdJhND3axG20OJEXaQvWuYTzTbBbteRTdL
+         dVwm1ay15zRv59FsOotVdVWm+bGocg++UT2ZLXQtEFoYtdQNEZl6pzB9vD/raIef/pmp
+         NZl96AEeZNSxmsMSC7f/otCCHeV+ZutIgbQnlMmScK15QkZQB/lRuIpqD5XVJtZtmrWS
+         VORfZ7zb/vVhuUBz200A0UaYqWCaT8mvEOOuvFOh12u6Jq7TSZV/cer/K5dN5pn5+l0R
+         wW1LIeIgrTIB3Li/XoXUodfs5L0voveGlc2fafGeqMx0Ee405WsKotDazr1FmOUoUzek
+         6qig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Ztm3kMmO9foaT7tkUJFO2YdMILbFbAnDhEHXV2g/J4w=;
-        b=WxnZL9fKQmMMytzb7BeM1eGe935vCvA1nfsM34pU7bWET8THaqYl/Fi6M+PB54zaGi
-         3IS+18G0OPpM/a+AgVL+b8hzvazeJ5ZlcVwXrDjpvVIbhg+eWIr0RS+oNz06ngNkYNvx
-         EI/qqVVW7OXLJulzt0anMFnp4ro+Y2yf4mDbdvBKDPwnXyGOseLfVpg7gz9kgchMPb5B
-         DWxfVp5Pg7JuvN/ZZ48wLZHzWFvcgLftOFKYcNTr/AdiQlFcAWI4M5KUbYBepmy0hj0f
-         ZB1Wjth0HG+Kux+JV8DbZyTxvxDH8jfP0mV3ysHf0aDTTILN3HjodJjJukjBEHBWljzf
-         thzw==
-X-Gm-Message-State: AOAM532AxyqYRbzp8w1F3h4xh17UtrHfgN5L4MsWMBbrDzJnnZUJHKVM
-        6cgIAXARnPR3LlgnS4xX62s=
-X-Google-Smtp-Source: ABdhPJybCcPmwbuOYWbrYhW2kHIrHuCrDvfX/nvpR5jnAaXI3Xa0YmksH8Y+lKaOZJmJeoyoy7h3+Q==
-X-Received: by 2002:a65:524b:: with SMTP id q11mr15570433pgp.207.1615106098837;
-        Sun, 07 Mar 2021 00:34:58 -0800 (PST)
+        bh=Z5qBeDr73mu1Ohkca0kOr2L7Gmyz2MrOVp0HQy/wugc=;
+        b=TkHk4KbHxa4ne2PGW7ZALJv0MkTDM5ZsigiX+w3MxO2CaFEtazduIKU8dk8v66u5ez
+         H+85/dce2WzfRPrYATdFlN6qXMeC1QT7DFMtqE/HL3DZvCu4+MJJ4C7vsiE0OYjBoBm2
+         w0DIN7eR0IWF9cAlsoREdgFja/+HovRG4gUKgJnESOpnEBT3wqZxwNiCj6vYIjjoUwFH
+         UEidoHHAso1cpt24bHv2W/KwZ8uE6W/9cBk+J2E8/ClCyU5rQwgZGxFSmhfQJDE6E+j/
+         8pGEdKL9KDB4P+9hLwK2XFMFmDUUFg1XdiUCoXJ11AvyrGwwXHPTLO8QgeXoMdYrtBsu
+         v1CA==
+X-Gm-Message-State: AOAM533VhTuOCFYqSIdJE+b4/rbSylAm1MtKXPCLaj1wmnhPkNCuq6tn
+        PTvBqbxCCg+4crmVoO+Nr8Ez3XP+LlE6lmv9
+X-Google-Smtp-Source: ABdhPJyUZMWW/XQh/XPTCutpNf98E6TOQK9R+90dXDRFagLwTxSwMH7n953OClbRyV5kPLZ5+DWZmw==
+X-Received: by 2002:a17:902:9691:b029:e3:dd4b:f6bb with SMTP id n17-20020a1709029691b02900e3dd4bf6bbmr15801956plp.77.1615108088407;
+        Sun, 07 Mar 2021 01:08:08 -0800 (PST)
 Received: from localhost.localdomain ([45.135.186.66])
-        by smtp.gmail.com with ESMTPSA id h6sm6747519pfv.84.2021.03.07.00.34.54
+        by smtp.gmail.com with ESMTPSA id t5sm6600065pgl.89.2021.03.07.01.08.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Mar 2021 00:34:58 -0800 (PST)
+        Sun, 07 Mar 2021 01:08:07 -0800 (PST)
 From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-To:     amitkarwar@gmail.com, siva8118@gmail.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [PATCH] rsi: fix error return code of rsi_load_9116_firmware()
-Date:   Sun,  7 Mar 2021 00:34:45 -0800
-Message-Id: <20210307083445.21322-1-baijiaju1990@gmail.com>
+Subject: [PATCH] ath: ath6kl: fix error return code of ath6kl_htc_rx_bundle()
+Date:   Sun,  7 Mar 2021 01:07:57 -0800
+Message-Id: <20210307090757.22617-1-baijiaju1990@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When kmemdup() returns NULL to ta_firmware, no error return code of
-rsi_load_9116_firmware() is assigned.
-To fix this bug, status is assigned with -ENOMEM in this case.
+When hif_scatter_req_get() returns NULL to scat_req, no error return
+code of ath6kl_htc_rx_bundle() is assigned.
+To fix this bug, status is assigned with -EINVAL in this case.
 
 Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
 Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
 ---
- drivers/net/wireless/rsi/rsi_91x_hal.c | 4 +++-
+ drivers/net/wireless/ath/ath6kl/htc_mbox.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_hal.c b/drivers/net/wireless/rsi/rsi_91x_hal.c
-index ce9892152f4d..32ecb8b3d6c5 100644
---- a/drivers/net/wireless/rsi/rsi_91x_hal.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_hal.c
-@@ -1038,8 +1038,10 @@ static int rsi_load_9116_firmware(struct rsi_hw *adapter)
- 	}
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_mbox.c b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
+index 998947ef63b6..3f8857d19a0c 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_mbox.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
+@@ -1944,8 +1944,10 @@ static int ath6kl_htc_rx_bundle(struct htc_target *target,
  
- 	ta_firmware = kmemdup(fw_entry->data, fw_entry->size, GFP_KERNEL);
--	if (!ta_firmware)
-+	if (!ta_firmware) {
-+		status = -ENOMEM;
- 		goto fail_release_fw;
+ 	scat_req = hif_scatter_req_get(target->dev->ar);
+ 
+-	if (scat_req == NULL)
++	if (scat_req == NULL) {
++		status = -EINVAL;
+ 		goto fail_rx_pkt;
 +	}
- 	fw_p = ta_firmware;
- 	instructions_sz = fw_entry->size;
- 	rsi_dbg(INFO_ZONE, "FW Length = %d bytes\n", instructions_sz);
+ 
+ 	for (i = 0; i < n_scat_pkt; i++) {
+ 		int pad_len;
 -- 
 2.17.1
 
