@@ -2,97 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C620732FD23
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Mar 2021 21:34:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAB3332FFA0
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Mar 2021 09:30:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231395AbhCFUdr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 6 Mar 2021 15:33:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53888 "EHLO
+        id S230521AbhCGI3x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 7 Mar 2021 03:29:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231211AbhCFUdS (ORCPT
+        with ESMTP id S230035AbhCGI3Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 6 Mar 2021 15:33:18 -0500
-Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA044C06174A;
-        Sat,  6 Mar 2021 12:33:17 -0800 (PST)
-Received: by mail-io1-xd2b.google.com with SMTP id k2so5830551ioh.5;
-        Sat, 06 Mar 2021 12:33:17 -0800 (PST)
+        Sun, 7 Mar 2021 03:29:16 -0500
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A21B2C06174A;
+        Sun,  7 Mar 2021 00:29:14 -0800 (PST)
+Received: by mail-pg1-x536.google.com with SMTP id w34so3319999pga.8;
+        Sun, 07 Mar 2021 00:29:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=7sC/tFvb23jll3GtWYTTybk52/nCqyT0CiONRP5YWZ0=;
-        b=T2XURi0z3603AGh0plUV+gAY2C4jFansqvW2rmZAPDK9+2KinZMygcTro8Ocrnvwuz
-         KBuilClva5F/3gDwVyXd2xJG/zVJei3DdL6+pfBqVjK/rRQ7VJYqO/mg7sWJlMrCx4Go
-         ctOCP/aoURLRSdC6ya7+y8qYASX9ualBt2O4alO/qj6qxmixxoF5V63IM61EqkqQFhjB
-         UhEi4qp9VK9TTTAQtZjz+HhoSqYL4qc/JYRryuk+yx+1RMJcJkLIxK7YNnzCCNFKm43C
-         wSF/plvbNZ5cRjekjTn1ewsUxZrBkorfTT486DiaMRVMUEYSaahFsD6jThRCT6oEy+zE
-         ZrvA==
+        h=from:to:cc:subject:date:message-id;
+        bh=NNQWmSWoSMwDPekS2cJkkWfDwB9RRl0DHBbIEF+uvUc=;
+        b=YATLHDQ3SHj8htbm6yMAQsgzZe2syhBKTToCP4Ux6uqcySeMjwxiO+vSu8lh3GYgV5
+         euct7+9AnmN+kC3ZPvaRGFfXYokM5HoQZtWeJp/LXHIImT3qpPctG7+V8cDU2gTdkvcv
+         6ZYFo8Tn5IQKkTV4Ud7iZ+MBwKQ9YGs+hF1S7Lo0aviPnNm6U7EE3VuDU3Zj+nwJzZGe
+         xl23g3VU+M3YXt8kaoNrl44ggr4yDlhkidNX30I2QQLIWIPyX35Yf/7PTSEO9pDvDrr0
+         7X7Tb6/hLhi9apxUWZx2+6t214In6ymjKRvglUw61X38eT0ksC2pYkijr8LBcApXbX1O
+         b7Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=7sC/tFvb23jll3GtWYTTybk52/nCqyT0CiONRP5YWZ0=;
-        b=M+0ZcZ88js/jn0fZddVx5M+2myv5uIRwUzGuaW2a7Tktetsoy4jbB7/N2/Mqg8rpor
-         0+MUcNOuv2LQULXM0ah0/P8RnkKC0xwcuCAgXln1PlG58YGTDxosCCQoJnLNhAAk/87d
-         OMLL0if72PA/n/3/aYzCSZTHiYDTaslyg97wd/DyYyArsLLGzpW3fwJ9xW1UPXgCtx4n
-         0VWS9NHNNBOSnIOdmAtIFAY41h3V3mXXmSZwH2WHSgYFX/La7gF6/+6xlAeW0xDMrniU
-         AJ1Ous6WXZsGo5wIYvr6kCD2kJkCbmj0S/K5BLxj82L+H8EXYDrGbtbvcM1QuEB8nC7M
-         J2sA==
-X-Gm-Message-State: AOAM531Fsx3Q6RC6b+ge6GLwdKDqYO3xbEqQW3rDbOQ1AHFHTbWWY0Hh
-        ajBxb4tKSH7CVgKw9KzvOYF4NE/sVEz3dffQ9Cw=
-X-Google-Smtp-Source: ABdhPJzBECciT2r5H0BLAW6TVzZUgVb3JVteLt1pIlMQnrDaI5iVweScEFF76yDGh+siGI1DPJvFkElC4SezF18FyMs=
-X-Received: by 2002:a5e:8c16:: with SMTP id n22mr13101622ioj.156.1615062797373;
- Sat, 06 Mar 2021 12:33:17 -0800 (PST)
-MIME-Version: 1.0
-References: <alpine.LSU.2.11.2103061139200.1285@eggly.anvils>
- <CA+icZUVedsZzJ7qk4fgSZV37M6YUjnP=sfWFK9V9f0y0KpQ4tA@mail.gmail.com> <alpine.LSU.2.11.2103061224040.1637@eggly.anvils>
-In-Reply-To: <alpine.LSU.2.11.2103061224040.1637@eggly.anvils>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Sat, 6 Mar 2021 21:32:41 +0100
-Message-ID: <CA+icZUXhv+FWxvt4Fp9GdcXothC5qamzgksMBqn334Re06GAfA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iwlwifi: fix DVM build regression in 5.12-rc
-To:     Hugh Dickins <hughd@google.com>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Jiri Kosina <jikos@kernel.org>, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=NNQWmSWoSMwDPekS2cJkkWfDwB9RRl0DHBbIEF+uvUc=;
+        b=hxsQb4lAwcEHx5PWLUSKFAor7sY0e8dZJRu9hrJm0YRk8ET5V97Na/ZelQ5QE9nDZe
+         gRkvGgNFHCQy94skHW8nuCxN+MlDWVvr02ZzkkAT1jAZnDDr9s5IE6ILR9d45Qjwng+O
+         L7WnM2BG7DUfDZAsBjN/h7R9vef6vcatZfPZETjfkSlJfeyls/39VIOxYsKHG6i2fYS0
+         lpCMNSIesMdq1vbDm3WfaS4Q26ohieC3KJGgrBHMEfnuazUlp447odmV75QON/ubeDyy
+         eRRUtRbZbN5UkUgbGaso0S1ZQs/nTAnOp7SmTKAmlzx79EMsM4FpgrOkbAo+C4lwe2D5
+         HKbg==
+X-Gm-Message-State: AOAM533g1sDt14pCVV55gEC6Pjo7j7zLHma+2Zd5Jf2V+KiunxlVcyJQ
+        nqEIMOlbDe7N2e9cejD9aR4=
+X-Google-Smtp-Source: ABdhPJwP46rKvb4tExS2PYbbcbYqOSAR02QpneY1E41ik5pABMVSlYepxR7VPdGT2LhzjSGD1GNqug==
+X-Received: by 2002:a62:3507:0:b029:1ed:a492:fda6 with SMTP id c7-20020a6235070000b02901eda492fda6mr16182275pfa.37.1615105753894;
+        Sun, 07 Mar 2021 00:29:13 -0800 (PST)
+Received: from localhost.localdomain ([45.135.186.66])
+        by smtp.gmail.com with ESMTPSA id z22sm7050684pfa.41.2021.03.07.00.29.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Mar 2021 00:29:13 -0800 (PST)
+From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        lee.jones@linaro.org, colin.king@canonical.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: [PATCH] ti: wlcore: fix error return code of wl1271_cmd_build_ps_poll()
+Date:   Sun,  7 Mar 2021 00:29:06 -0800
+Message-Id: <20210307082906.20950-1-baijiaju1990@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Mar 6, 2021 at 9:27 PM Hugh Dickins <hughd@google.com> wrote:
->
-> On Sat, 6 Mar 2021, Sedat Dilek wrote:
-> > On Sat, Mar 6, 2021 at 8:48 PM Hugh Dickins <hughd@google.com> wrote:
-> > >
-> > > There is no iwl_so_trans_cfg if CONFIG_IWLDVM but not CONFIG_IWLMVM:
-> > > move the CONFIG_IWLMVM guard up before the problematic SnJ workaround
-> > > to fix the build breakage.
-> > >
-> > > Fixes: 930be4e76f26 ("iwlwifi: add support for SnJ with Jf devices")
-> > > Signed-off-by: Hugh Dickins <hughd@google.com>
-> >
-> > See "iwlwifi: pcie: fix iwl_so_trans_cfg link error when CONFIG_IWLMVM
-> > is disabled" in [1].
-> >
-> > - Sedat -
-> >
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git/commit/?id=62541e266703549550e77fd46138422dbdc881f1
->
-> Thanks for looking out that and the other one, Sedat: I swear I checked
-> linux-next before sending, but my check seems to have been... defective.
->
+When ieee80211_pspoll_get() returns NULL to skb, no error return code of
+wl1271_cmd_build_ps_poll() is assigned.
+To fix this bug, ret is assigned with -ENOMEM in this case.
 
-No problem, Hugh.
+Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+---
+ drivers/net/wireless/ti/wlcore/cmd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Here, I have also an iwldwm device aka Intel(R) Centrino(R) Advanced-N
-6230 AGN (REV=0xB0) and needed both patches.
-The opmode commit fixed a call-trace.
+diff --git a/drivers/net/wireless/ti/wlcore/cmd.c b/drivers/net/wireless/ti/wlcore/cmd.c
+index 32a2e27cc561..7bf8b8201fdd 100644
+--- a/drivers/net/wireless/ti/wlcore/cmd.c
++++ b/drivers/net/wireless/ti/wlcore/cmd.c
+@@ -1120,8 +1120,10 @@ int wl1271_cmd_build_ps_poll(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 	int ret = 0;
+ 
+ 	skb = ieee80211_pspoll_get(wl->hw, vif);
+-	if (!skb)
++	if (!skb) {
++		ret = -ENOMEM;
+ 		goto out;
++	}
+ 
+ 	ret = wl1271_cmd_template_set(wl, wlvif->role_id,
+ 				      CMD_TEMPL_PS_POLL, skb->data,
+-- 
+2.17.1
 
-It is always good to check wireless-drivers Git and/or linux-wireless ML.
-
-- Sedat -
