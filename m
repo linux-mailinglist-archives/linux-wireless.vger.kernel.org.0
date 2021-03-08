@@ -2,150 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F38C8330ADA
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Mar 2021 11:10:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49550330F0D
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Mar 2021 14:23:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231757AbhCHKJX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Mar 2021 05:09:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:49457 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231734AbhCHKJF (ORCPT
+        id S229818AbhCHNXD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Mar 2021 08:23:03 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:54410 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229690AbhCHNWo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Mar 2021 05:09:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1615198145;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=CzOMJxvMZUZvupDgYdFflYW7Y6Oequ28iaQXfd8r/v0=;
-        b=Hrw/dB8y4vuse3/XL1rjCWTiLuRZOxk7IFh/lgSbA+0AX12TRSDJUeDI4i96ndDfHzXAmL
-        /qy2UN2Ft20guJX7Ao6ldc2vTGNwtfJR1seBdtwv8GFFvWpO3KuvIiLhVPeJZdmGmw+Az+
-        8/xNySSNu4geihJf1sQMakFZJsrPG/Q=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-315-SR44KcFeNICOCrngCFfjtA-1; Mon, 08 Mar 2021 05:09:00 -0500
-X-MC-Unique: SR44KcFeNICOCrngCFfjtA-1
-Received: by mail-wr1-f70.google.com with SMTP id 75so4572851wrl.3
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Mar 2021 02:09:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=CzOMJxvMZUZvupDgYdFflYW7Y6Oequ28iaQXfd8r/v0=;
-        b=MfwKy/unOSO3h/eSbVQwJQDMSmLy+ZblwIXe7Zg2GC/pwmcx89Y+9U4GyUa10jxYzY
-         vggoNcrooiKvR8HB6/sYpxZQTwbkZXFVYrnncuEq4tb7NPUebWDk9geo8d03x9ncPYUt
-         aJmLtj1JZ7DeuZ1h5iCuRFPsNjjX6+jkpRvPE5d0EtEh+uLZDqLTkq7RmYf0dRp+58V9
-         Xbv+RiTMtkTD4UjTNKD4WX3TN73nKNMHcuZsAuVUmL9Qvmr+pgfeZhJuULFQdLCGeZPE
-         1oSMvyWv5Mv1vdgDFTjCMd44W5BPbWojryAmej4wGB1Q6asy4Butzcx/POvY0B80fmIz
-         6roQ==
-X-Gm-Message-State: AOAM533mhIFtQ6uz9GtDSiWi1kG9epKmArfwLCwVbg3JOHnDUWM+mBTJ
-        7jKFV97KB6GVoBEcWYDKEiWEZLDkyg4JqlyMG0A2H5vLWcTd+Mgn2PcsGX/C8vAWgt5VnDkaIBx
-        YcZi3VyDDx0gs58kQUSp/JIc3v7s=
-X-Received: by 2002:a5d:42d2:: with SMTP id t18mr21910440wrr.258.1615198139233;
-        Mon, 08 Mar 2021 02:08:59 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyFn43udCC5lQnzUscCYyNOG4YuVIWnndma7/6OBBNshN7k2AOdhd+SOkOD5rq09YdIDdAWFA==
-X-Received: by 2002:a5d:42d2:: with SMTP id t18mr21910429wrr.258.1615198139090;
-        Mon, 08 Mar 2021 02:08:59 -0800 (PST)
-Received: from localhost ([151.66.54.126])
-        by smtp.gmail.com with ESMTPSA id h6sm13479717wmi.6.2021.03.08.02.08.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Mar 2021 02:08:58 -0800 (PST)
-Date:   Mon, 8 Mar 2021 11:08:55 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com
-Subject: Re: [PATCH] mt76: mt7915: simplify mt7915_mac_sta_poll routine
-Message-ID: <YEX3t9lVlYhi4fYj@lore-desk>
-References: <db48916a553fee715fc9c0c1f83f363a01218dff.1615139832.git.lorenzo@kernel.org>
+        Mon, 8 Mar 2021 08:22:44 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 128DMJQB0014881, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmbs01.realtek.com.tw[172.21.6.94])
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 128DMJQB0014881
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 8 Mar 2021 21:22:19 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 8 Mar 2021 21:22:19 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 8 Mar 2021 21:22:18 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::a98b:ac3a:714:c542]) by
+ RTEXMBS04.realtek.com.tw ([fe80::a98b:ac3a:714:c542%6]) with mapi id
+ 15.01.2106.006; Mon, 8 Mar 2021 21:22:18 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "ccchiu77@gmail.com" <ccchiu77@gmail.com>
+CC:     "yhchuang@realtek.com" <yhchuang@realtek.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        Andy Huang <tehuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "reto.schneider@husqvarnagroup.com" 
+        <reto.schneider@husqvarnagroup.com>,
+        "kuba@kernel.org" <kuba@kernel.org>
+Subject: Re: Questions for TX power get/set implementation of realtek WiFi
+Thread-Topic: Questions for TX power get/set implementation of realtek WiFi
+Thread-Index: AQHXD03Lg6jdSFHX6E+9yFqWdHAnVap16NSAgANhkwCAAEzwAA==
+Date:   Mon, 8 Mar 2021 13:22:18 +0000
+Message-ID: <1615209724.1797.11.camel@realtek.com>
+References: <CANgQ54cmG4mCx42i1ErXMJpv=2OmOGjjEgv=8oy90CpKcwkpZg@mail.gmail.com>
+         <1615007321.1826.14.camel@realtek.com>
+         <CANgQ54dyKk_uoy_VWGxxTZd++5UaC7Tdq48dUzSPdVOE6H8iGQ@mail.gmail.com>
+In-Reply-To: <CANgQ54dyKk_uoy_VWGxxTZd++5UaC7Tdq48dUzSPdVOE6H8iGQ@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [111.246.39.14]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <25E9AB438177CA40AEA3AE4FA7C7A9CA@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="gFeNC2H+kRt15nxS"
-Content-Disposition: inline
-In-Reply-To: <db48916a553fee715fc9c0c1f83f363a01218dff.1615139832.git.lorenzo@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---gFeNC2H+kRt15nxS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> Drop unnecessary lock around sta_poll_list list in mt7915_mac_sta_poll
-> routine.
->=20
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
-Hi Felix,
-
-please let's drop this patch, as we discussed, there is a race on
-list_del_init(&msta->poll_list).
-
-Regards,
-Lorenzo
-
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 14 +++-----------
->  1 file changed, 3 insertions(+), 11 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7915/mac.c
-> index b3168dd3baed..cde98b86e2bb 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-> @@ -117,23 +117,15 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *=
-dev)
-> =20
->  	rcu_read_lock();
-> =20
-> -	while (true) {
-> +	while (!list_empty(&sta_poll_list)) {
->  		bool clear =3D false;
->  		u32 addr;
-> -		u16 idx;
-> =20
-> -		spin_lock_bh(&dev->sta_poll_lock);
-> -		if (list_empty(&sta_poll_list)) {
-> -			spin_unlock_bh(&dev->sta_poll_lock);
-> -			break;
-> -		}
->  		msta =3D list_first_entry(&sta_poll_list,
->  					struct mt7915_sta, poll_list);
->  		list_del_init(&msta->poll_list);
-> -		spin_unlock_bh(&dev->sta_poll_lock);
-> =20
-> -		idx =3D msta->wcid.idx;
-> -		addr =3D mt7915_mac_wtbl_lmac_addr(dev, idx) + 20 * 4;
-> +		addr =3D mt7915_mac_wtbl_lmac_addr(dev, msta->wcid.idx) + 20 * 4;
-> =20
->  		for (i =3D 0; i < IEEE80211_NUM_ACS; i++) {
->  			u32 tx_last =3D msta->airtime_ac[i];
-> @@ -152,7 +144,7 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *de=
-v)
->  		}
-> =20
->  		if (clear) {
-> -			mt7915_mac_wtbl_update(dev, idx,
-> +			mt7915_mac_wtbl_update(dev, msta->wcid.idx,
->  					       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
->  			memset(msta->airtime_ac, 0, sizeof(msta->airtime_ac));
->  		}
-> --=20
-> 2.29.2
->=20
-
---gFeNC2H+kRt15nxS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYEX3tQAKCRA6cBh0uS2t
-rPUgAP9mTwXac/abC9K5xi4U9DfnyEvyI9YQIdK7iauSKJdXMQEAyV0k9Q0xI6/9
-ZBbr2D2u0i7QYAYtnnZhR75hpGvwwgI=
-=SWNr
------END PGP SIGNATURE-----
-
---gFeNC2H+kRt15nxS--
-
+T24gTW9uLCAyMDIxLTAzLTA4IGF0IDA4OjQ2ICswMDAwLCDpgrHlkI3noqkgd3JvdGU6DQo+IFBr
+c2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiDmlrwgMjAyMeW5tDPmnIg25pelIOmAseWFrSDkuIvl
+jYgxOjA55a+r6YGT77yaDQo+ID4NCj4gPiBPbiBUdWUsIDIwMjEtMDMtMDIgYXQgMTA6MjEgKzAw
+MDAsIOmCseWQjeeiqSB3cm90ZToNCj4gPiA+IEhpIGd1eXMsDQo+ID4gPsKgwqDCoMKgwqBJJ20g
+cGxhbm5pbmcgdG8gaW1wbGVtZW50IHRoZSBnZXRfdHhwb3dlciBob29rIGZ1bmN0aW9uIG9mIHRo
+ZQ0KPiA+ID4gc3RydWN0IGllZWU4MDIxMV9vcHMgYW5kIGhhbmRsZSB0aGUgSUVFRTgwMjExX0NP
+TkZfQ0hBTkdFX1BPV0VSIGZvcg0KPiA+ID4gcnRsOHh4eHUgZHJpdmVyLiBTbyB0aGF0IHVzZXJz
+IGNhbiBnZXQgdGhlIGluZm9ybWF0aW9uIG9mIHRoZSBjdXJyZW50DQo+ID4gPiB0eCBwb3dlciBs
+aW1pdCBhbmQgc2V0IGEgbmV3IGxpbWl0IHZhbHVlIHdpdGggaXcgY29tbWFuZHMuDQo+ID4gPg0K
+PiA+ID7CoMKgwqDCoMKgSSBmb3VuZCB0aGVyZSdzIHBoeV90eHB3cl9pZHhfdG9fZGJtKCkgb2Yg
+ZWFjaCBkcml2ZXIgaW4NCj4gPiA+IHJlYWx0ZWsvcnRsd2lmaSB0byB0cmFuc2xhdGUgdGhlIHR4
+IHBvd2VyIGluZGV4IHBhcnNlZCBmcm9tIGVmdXNlIHRvDQo+ID4gPiB0eCBwb3dlciBsZXZlbCBp
+biBkQm0uIERvZXMgdGhlIHBvd2VyIGxldmVsIHRyYW5zbGF0ZWQgcmVwcmVzZW50IHRoZQ0KPiA+
+ID4gY3VycmVudCB0eCBwb3dlciBsaW1pdCBpbiBkQm0/IEluIG15IFJUTDgxODhDVVMgbW9kdWxl
+LCB0aGUgcG93ZXINCj4gPiA+IGluZGV4IG9mIENDSy9PRkRNIGZyb20gZWZ1c2UgZm9yIGVhY2gg
+Y2hhbm5lbCBpcyBiYXNpY2FsbHkgMzYvMzgsIHRodXMNCj4gPiA+IHRoZSB0cmFuc2xhdGVkIHR4
+cG93ZXIgbGV2ZWwgaXMgMTFkQm0uIElzIHRoaXMgdGhlIGV4cGVjdGVkIHZhbHVlIGZvcg0KPiA+
+ID4gdGhlIGRlZmF1bHQgdHhwb3dlciBsaW1pdCB2YWx1ZT8gT3IgZG8gSSBuZWVkIHNvbWUgb3Ro
+ZXIgZm9ybXVsYSB0bw0KPiA+ID4gY29tcHV0ZT8NCj4gPg0KPiA+IEJhc2ljYWxseSwgeW91IGNh
+biB1c2UgYSBsaW5lYXIgZXF1YXRpb24gdG8gdHJhbnNsYXRlIHBvd2VyIGxldmVsIGluIGRCbSB0
+bw0KPiA+IHR4IHBvd2VyIGluZGV4IHdyaXR0ZW4gdG8gaGFyZHdhcmUgcmVnaXN0ZXJzLg0KPiA+
+wqDCoMKgeSA9IGF4ICsgYg0KPiA+IHdoZXJlLA0KPiA+wqDCoMKgeTogdHggcG93ZXIgaW5kZXgg
+d3JpdHRlbiB0byByZWdpc3RlcnMNCj4gPsKgwqDCoHg6IHR4IHBvd2VyIGxldmVsIGluIGRCbQ0K
+PiA+wqDCoMKgYTogYSBjb25zdGFudCwgMg0KPiA+wqDCoMKgYjogYSBjb25zdGFudCBpbmR1Y2Vk
+IGJ5IHRoZSB2YWx1ZSBwcm9ncmFtbWVkIGluIGVmdXNlIHRoYXQgaXMgdXNlZCB0bw0KPiA+wqDC
+oMKgwqDCoMKgYWRhcHQgbW9kdWxlcyBkaWZmZXJlbmNlcyBvZiBSRiBjaGFyYWN0ZXJzLg0KPiA+
+DQo+IFRoYW5rcyBzbyBtdWNoLiBTbyBpdCBtZWFucyB0aGF0IHRoZSB0eHB3cl9pZHhfdG9fZGJt
+IGFuZCBkYm1fdG9faWR4DQo+IGZ1bmN0aW9ucyBpbiBydGx3aWZpIGZhbWlseSBkcml2ZXIgYXJl
+IGJhc2ljYWxseSBjb3JyZWN0LiBFeGNlcHQgdGhleQ0KPiB1c2UgdGhlIGNvbnN0YW50DQo+IGIg
+LTcgZm9yIENDSyBhbmQgLTggZm9yIE9GRE0gaW5zdGVhZCBvZiB0aGUgdmFsdWUgaW4gZWZ1c2Uu
+IEkgc2hvdWxkIGhhdmUNCj4gdGhpcyB2YWx1ZSBmcm9tIGVmdXNlLg0KDQpBcyBJIG1lbnRpb25l
+ZCwgdGhlIGNhbGlicmF0aW9uIHZhbHVlIGluIGVmdXNlIGlzIHVzZWQgdG8gb3V0cHV0IHByb3Bl
+cg0KcG93ZXIgdGhhdCBldmVyeSBoYXJkd2FyZSBtb2R1bGUgbXVzdCBiZSB0aGUgc2FtZSAod2l0
+aCBsaXR0bGUgdG9sZXJhbmNlKS4NCg0KSSdtIG5vdCBzdXJlIHdoeSBjb25zdGFudCBiIGlzbid0
+IHJlbGF0ZWQgdG8gdGhlIHZhbHVlIGluIGVmdXNlLg0KTWF5YmUsIHlvdSBjYW4gYXNzdW1lIHRo
+ZSBmdW5jdGlvbnMgYXJlIGNvcnJlY3QsIGFuZCBjb25maWd1cmUgdGhlIHBvd2VyDQp5b3UgZGVz
+aXJlLg0KDQo+IA0KPiA+ID4NCj4gPiA+wqDCoMKgwqDCoEFuZCBmb3IgdGhlIGhhbmRsZXIgb2Yg
+SUVFRTgwMjExX0NPTkZfQ0hBTkdFX1BPV0VSLCBjYW4gSQ0KPiA+ID4gdHJhbnNsYXRlIHRoZSBo
+dy0+Y29uZi5wb3dlcl9sZXZlbCB3aXRoIHRoZSBwaHlfZGJtX3RvX3R4cHdyX2lkeA0KPiA+ID4g
+ZnVuY3Rpb25zIEkgZm91bmQgaW4gc29tZSBydGx3aWZpIGZhbWlseSBkcml2ZXJzLCB0aGVuIGRp
+cmVjdGx5IHNldA0KPiA+ID4gdGhlIHR4cG93ZXIgaW5kZXggd2l0aCBwaHlfc2V0X3R4cG93ZXJf
+aW5kZXggZnVuY3Rpb25zIHdoaWNoIHdyaXRlDQo+ID4gPiBwb3dlciBpbmRleCB0byBiYnJlZyBm
+b3IgZGlmZmVyZW50IHJhdGVzIChDQ0sgYW5kIE9GRE0pPyBBcmUgdGhlcmUNCj4gPiA+IHNvbWUg
+aW52YWxpZCB2YWx1ZXMgSSBzaG91bGQgdGFrZSBjYXJlIG9mIGJlY2F1c2UgdGhlIFRDUCBSWA0K
+PiA+ID4gcGVyZm9ybWFuY2Ugc2VlbXMgdG8gYmUgZXh0cmVtZWx5IGxvdyB3aGVuIEkgd3JpdGUg
+dGhlIHBvd2VyIGluZGV4DQo+ID4gPiB2YWx1ZSB0cmFuc2xhdGVkIGZyb20gMjBkQm0gdG8gYmJy
+ZWcuIEFueSBzdWdnZXN0aW9ucyBmb3Igd2hhdCBJDQo+ID4gPiBzaG91bGQgaGFuZGxlIGJlZm9y
+ZSB3cml0aW5nIHRoZSBiYnJlZz8NCj4gPg0KPiA+IFRoZSBwb3dlciBsZXZlbCB5b3UncmUgZ29p
+bmcgdG8gc2V0IG11c3QgYmUgbGVzcyBvciBlcXVhbCB0byBvcmlnaW5hbA0KPiA+IG9uZSwgYmVj
+YXVzZSBpdCdzIHRoZSBoYXJkIGxpbWl0IG9mIGhhcmR3YXJlIGNhcGFiaWxpdHkuIElmIHRoZSBw
+b3dlcg0KPiA+IGxldmVsIGlzIHRvbyBsYXJnZSwgdGhlIHJlY2VpdmVyIGNhbid0IHVuZGVyc3Rh
+bmQgdGhlIHNpZ25hbC4gVGhlbiwNCj4gPiB0aGV5IGNhbid0IGV4Y2hhbmdlIGRhdGEgdGhhdCBs
+ZWFkcyBsb3cgcGVyZm9ybWFuY2UgYXMgeW91IHNlZS4NCj4gPiBJIHRoaW5rIHRoZSBwZXJmb3Jt
+YW5jZSB3b3VsZCBiZSBva2F5IGlmIHlvdSBjb25uZWN0IHRvIGEgbmVhciBBUCBhbmQNCj4gPiBw
+b3dlciBsZXZlbCAxMGRCbSBpcyBhZGFwdGVkLg0KPiA+DQo+IA0KPiBUaGFua3MgZm9yIGNsYXJp
+ZmljYXRpb24uIFNvIHRoZSBwb3dlciBpbmRleCBmcm9tIGVmdXNlIGlzIGJhc2ljYWxseSB0aGUN
+Cj4gaGFyZCBsaW1pdCBvZiB0aGUgdHggcG93ZXIgZm9yIGVhY2ggY2hhbm5lbCAoYW5kIHJhdGUp
+PyBUaGF0IGV4cGxhaW5zDQo+IG15IHBlcmZvcm1hbmNlIGlzc3VlIHdoaWxlIEkgb3ZlcnJpZGUg
+aXQgd2l0aCBoaWdoZXIgdmFsdWUuIFRoYW5rcw0KPiANCg0KVGhlIHZhbHVlIGluIGVmdXNlIGlz
+bid0IGxpbWl0IGJ1dCBjYWxpYnJhdGlvbiB2YWx1ZSBvZiB0YXJnZXQgcG93ZXIuDQpCdXQsIHll
+cywgeW91IGNhbiBzZWVuIGl0IGFzIGhhcmQgbGltaXQgYXMgd2VsbC4NCg0KLS0NClBpbmctS2UN
+Cg0KDQo=
