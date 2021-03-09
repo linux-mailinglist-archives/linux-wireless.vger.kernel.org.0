@@ -2,75 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8F833230A
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Mar 2021 11:29:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6696332318
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Mar 2021 11:33:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230045AbhCIK3D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Mar 2021 05:29:03 -0500
-Received: from m42-2.mailgun.net ([69.72.42.2]:57441 "EHLO m42-2.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229951AbhCIK3A (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Mar 2021 05:29:00 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1615285740; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=sB7cCEuMvHrtjL8oFz1GX7XYdpwuB1QICugYYTo73us=; b=Rr+5AMP5UTNZqCzD2xuKJn/9G9gwIwMRhw3frWisForNrb+VXPNKAUJAOUnJNAo2eqD6XVrz
- vsoI8vGlBDjla5tCrCY6ulTMs0/hQ1NOP2+jDXwKHGKmmjbnUtJ44exu/q04p9/5dHfFE0js
- Lp647jhlnmNC8umigbO7mVVwbF4=
-X-Mailgun-Sending-Ip: 69.72.42.2
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 60474dd5106ec1d9068c366c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 09 Mar 2021 10:28:37
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D810DC43466; Tue,  9 Mar 2021 10:28:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2E3F6C433CA;
-        Tue,  9 Mar 2021 10:28:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2E3F6C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        nbd@nbd.name, sean.wang@mediatek.com, leon.yen@mediatek.com
-Subject: Re: [PATCH wireless-drivers] mt76: mt7921: fix airtime reporting
-References: <c05333be0e3e85a50a71bb2de81034fe425e3701.1615284335.git.lorenzo@kernel.org>
-Date:   Tue, 09 Mar 2021 12:28:32 +0200
-In-Reply-To: <c05333be0e3e85a50a71bb2de81034fe425e3701.1615284335.git.lorenzo@kernel.org>
-        (Lorenzo Bianconi's message of "Tue, 9 Mar 2021 11:09:03 +0100")
-Message-ID: <87wnugzkmn.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S229775AbhCIKdT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Mar 2021 05:33:19 -0500
+Received: from mail1.protonmail.ch ([185.70.40.18]:33512 "EHLO
+        mail1.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230107AbhCIKdF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 9 Mar 2021 05:33:05 -0500
+Date:   Tue, 09 Mar 2021 10:32:58 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tmb.nu;
+        s=protonmail; t=1615285981;
+        bh=v1yaEUxC3sqt1vlV8fUDWRuFdt0sJJhvj9dGbjEBCLA=;
+        h=Date:To:From:Reply-To:Subject:From;
+        b=fVJQ8o3bkkMfDgFSetFdfQJwZWMovFncrZiWLbApkc2FLb9sWcP3vWJy6+7uVBLoO
+         jym8MKswDb8sQylEA1lUXxE3L0E269pYhR7PL9fJx0BVIN8NSDjt9BH5r0DRsh13EG
+         S3SnGaH9M+haRH/xreYyk6/0F8pwpilJ2tdyGOAE=
+To:     luciano.coelho@intel.com, linux-wireless@vger.kernel.org
+From:   Thomas Backlund <tmb@tmb.nu>
+Reply-To: Thomas Backlund <tmb@tmb.nu>
+Subject: Re: pull request: iwlwifi firmware updates 2021-03-05
+Message-ID: <2663a3a4-1ef6-6837-ba30-5db988e331ea@tmb.nu>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
-
-> Fix {tx,rx}_airtime reporting for mt7921 driver. Wrong register definitions
-> trigger a tx hangs before resetting airtime stats.
+Den 5.3.2021 kl. 12:26, skrev Luca Coelho:
+> Hi,
 >
-> Fixes: 163f4d22c118d ("mt76: mt7921: add MAC support")
-> Tested-by: Leon Yen <leon.yen@mediatek.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> This contains some new and updated firmwares for all our currently
+> maintained FW binaries.
+>
+> Please pull or let me know if there are any issues.
+>
 
-I'll queue this to v5.12 and assigned to me on patchwork. Felix, ack?
+Something not matching here...
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+filelist adds *-62.ucode
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+WHENCE adds *-59.ucode references
+
+--
+Thomas
+
+> --
+> Cheers,
+> Luca.
+>
+>
+> The following changes since commit 5ecd13ffe8e24385cf4f30f3d0dcaff4dfb24d=
+e2:
+>
+>    Mellanox: Add new mlxsw_spectrum firmware xx.2008.2406 (2021-03-03 13:=
+23:49 -0500)
+>
+> are available in the Git repository at:
+>
+>    git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-firmware=
+.git iwlwifi-fw-2021-03-05
+>
+> for you to fetch changes up to 568016467deab716b8a382bf087209b781d4bca7:
+>
+>    iwlwifi: add new FWs from core59-66 release (2021-03-05 12:18:25 +0200=
+)
+>
+> ----------------------------------------------------------------
+> Update iwlwifi firmwares to Core59-66
+>
+> ----------------------------------------------------------------
+> Luca Coelho (3):
+>        iwlwifi: update 7265D firmware
+>        iwlwifi: update 9000-family firmwares
+>        iwlwifi: add new FWs from core59-66 release
+>
+>   WHENCE                            |  34 +++++++++++++++++++++++++++++++=
+++-
+>   iwlwifi-7265D-29.ucode            | Bin 1036444 -> 1036772 bytes
+>   iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1512096 -> 1514240 bytes
+>   iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1483116 -> 1485556 bytes
+>   iwlwifi-Qu-b0-hr-b0-62.ucode      | Bin 0 -> 1329296 bytes
+>   iwlwifi-Qu-b0-jf-b0-62.ucode      | Bin 0 -> 1248672 bytes
+>   iwlwifi-Qu-c0-hr-b0-62.ucode      | Bin 0 -> 1329312 bytes
+>   iwlwifi-Qu-c0-jf-b0-62.ucode      | Bin 0 -> 1248688 bytes
+>   iwlwifi-QuZ-a0-hr-b0-62.ucode     | Bin 0 -> 1328924 bytes
+>   iwlwifi-QuZ-a0-jf-b0-62.ucode     | Bin 0 -> 1248672 bytes
+>   iwlwifi-cc-a0-62.ucode            | Bin 0 -> 1292672 bytes
+>   iwlwifi-ty-a0-gf-a0-62.ucode      | Bin 0 -> 1455104 bytes
+>   iwlwifi-ty-a0-gf-a0.pnvm          | Bin 0 -> 27456 bytes
+>   13 files changed, 33 insertions(+), 1 deletion(-)
+>   create mode 100644 iwlwifi-Qu-b0-hr-b0-62.ucode
+>   create mode 100644 iwlwifi-Qu-b0-jf-b0-62.ucode
+>   create mode 100644 iwlwifi-Qu-c0-hr-b0-62.ucode
+>   create mode 100644 iwlwifi-Qu-c0-jf-b0-62.ucode
+>   create mode 100644 iwlwifi-QuZ-a0-hr-b0-62.ucode
+>   create mode 100644 iwlwifi-QuZ-a0-jf-b0-62.ucode
+>   create mode 100644 iwlwifi-cc-a0-62.ucode
+>   create mode 100644 iwlwifi-ty-a0-gf-a0-62.ucode
+>   create mode 100644 iwlwifi-ty-a0-gf-a0.pnvm
+>
+
+
