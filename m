@@ -2,84 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFD943337ED
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Mar 2021 09:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 492A73338B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Mar 2021 10:27:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbhCJIzO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Mar 2021 03:55:14 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:43030 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232523AbhCJIyy (ORCPT
+        id S230397AbhCJJ0n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Mar 2021 04:26:43 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:48372 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229559AbhCJJ0k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Mar 2021 03:54:54 -0500
-X-UUID: 3d8355c8defd4eeda4875086578c8b15-20210310
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=SdbKNEFQj6KE5ljqlY4DgijhePB6jeycIgwGj26hkrs=;
-        b=OSypZczU+tVQt1VjGZtF8rB8AFyU2t1M2SSJcQDC/huBrk1njRnSQNXl762m2zu3yS9jgExy49Tvf6h+WmYQWsyqc2SNb6paCpR6FoWsS8x181ISwTZ4sdxM63RGbCGKo27DRIrt6aW13yB2RNPt+SSMvU7Ru4IsRRl6eAs0xJ4=;
-X-UUID: 3d8355c8defd4eeda4875086578c8b15-20210310
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 711503969; Wed, 10 Mar 2021 16:54:52 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 10 Mar 2021 16:54:50 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 10 Mar 2021 16:54:50 +0800
-Message-ID: <1615366490.10387.0.camel@mtkswgap22>
-Subject: Re: [kbuild] Re: [PATCH v2 1/2] mt76: mt7915: add missing
- capabilities for DBDC
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     <kbuild@lists.01.org>, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        <lkp@intel.com>, <kbuild-all@lists.01.org>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Date:   Wed, 10 Mar 2021 16:54:50 +0800
-In-Reply-To: <20210310083018.GH21246@kadam>
-References: <20210310083018.GH21246@kadam>
+        Wed, 10 Mar 2021 04:26:40 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1lJv6z-004SIf-95; Wed, 10 Mar 2021 11:26:38 +0200
+Message-ID: <42eb781e8f89b92ff54a4d65b0916d420eb2a381.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Thomas Backlund <tmb@tmb.nu>,
+        "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>,
+        golan.ben.ami@intel.com
+Date:   Wed, 10 Mar 2021 11:26:35 +0200
+In-Reply-To: <69d01bfd-a15f-2ebb-b55a-c6864a065e1f@tmb.nu>
+References: <8e3877efc92f413d47ee1d71a119885c765d7312.camel@coelho.fi>
+         <69d01bfd-a15f-2ebb-b55a-c6864a065e1f@tmb.nu>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: 52A78F482FCA1BF0DDF7F8DA1A1595CE86E8C0FD9664E8A8406C51CE7AFA5D132000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: Re: pull request: iwlwifi firmware updates 2021-03-05-v2
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gV2VkLCAyMDIxLTAzLTEwIGF0IDExOjMwICswMzAwLCBEYW4gQ2FycGVudGVyIHdyb3RlOg0K
-PiBIaSBSeWRlciwNCj4gDQo+IHVybDogICAgaHR0cHM6Ly9naXRodWIuY29tLzBkYXktY2kvbGlu
-dXgvY29tbWl0cy9SeWRlci1MZWUvbXQ3Ni1tdDc5MTUtYWRkLW1pc3NpbmctY2FwYWJpbGl0aWVz
-LWZvci1EQkRDLzIwMjEwMjI1LTIzMDMyMyANCj4gYmFzZTogICBodHRwczovL2dpdC5rZXJuZWwu
-b3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC9rdmFsby93aXJlbGVzcy1kcml2ZXJzLW5leHQu
-Z2l0ICBtYXN0ZXINCj4gY29uZmlnOiB4ODZfNjQtcmFuZGNvbmZpZy1tMDAxLTIwMjEwMzA5IChh
-dHRhY2hlZCBhcyAuY29uZmlnKQ0KPiBjb21waWxlcjogZ2NjLTkgKERlYmlhbiA5LjMuMC0yMikg
-OS4zLjANCj4gDQo+IElmIHlvdSBmaXggdGhlIGlzc3VlLCBraW5kbHkgYWRkIGZvbGxvd2luZyB0
-YWcgYXMgYXBwcm9wcmlhdGUNCj4gUmVwb3J0ZWQtYnk6IGtlcm5lbCB0ZXN0IHJvYm90IDxsa3BA
-aW50ZWwuY29tPg0KPiBSZXBvcnRlZC1ieTogRGFuIENhcnBlbnRlciA8ZGFuLmNhcnBlbnRlckBv
-cmFjbGUuY29tPg0KPiANCj4gc21hdGNoIHdhcm5pbmdzOg0KPiBkcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmM6MzUzIG10NzkxNV9zZXRfc3RyZWFtX3ZodF90
-eGJmX2NhcHMoKSBlcnJvcjogcG90ZW50aWFsbHkgZGVyZWZlcmVuY2luZyB1bmluaXRpYWxpemVk
-ICdjYXAnLg0KPiANCj4gdmltICsvY2FwICszNTMgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQo+IA0KPiAwMGIyZTE2ZTAwNjM5MCBSeWRlciBMZWUgMjAy
-MC0wNS0xMiAgMzQ0ICB2b2lkIG10NzkxNV9zZXRfc3RyZWFtX3ZodF90eGJmX2NhcHMoc3RydWN0
-IG10NzkxNV9waHkgKnBoeSkNCj4gMDBiMmUxNmUwMDYzOTAgUnlkZXIgTGVlIDIwMjAtMDUtMTIg
-IDM0NSAgew0KPiA1MGE2ZmU3OTYyM2UyMiBSeWRlciBMZWUgMjAyMS0wMi0yNSAgMzQ2ICAJaW50
-IG5zczsNCj4gNTBhNmZlNzk2MjNlMjIgUnlkZXIgTGVlIDIwMjEtMDItMjUgIDM0NyAgCXUzMiAq
-Y2FwOw0KPiA1MGE2ZmU3OTYyM2UyMiBSeWRlciBMZWUgMjAyMS0wMi0yNSAgMzQ4ICANCj4gNTBh
-NmZlNzk2MjNlMjIgUnlkZXIgTGVlIDIwMjEtMDItMjUgIDM0OSAgCWlmICghcGh5LT5tdDc2LT5j
-YXAuaGFzXzVnaHopDQo+IDUwYTZmZTc5NjIzZTIyIFJ5ZGVyIExlZSAyMDIxLTAyLTI1ICAzNTAg
-IAkJcmV0dXJuOw0KPiA1MGE2ZmU3OTYyM2UyMiBSeWRlciBMZWUgMjAyMS0wMi0yNSAgMzUxICAN
-Cj4gNTBhNmZlNzk2MjNlMjIgUnlkZXIgTGVlIDIwMjEtMDItMjUgIDM1MiAgCW5zcyA9IGh3ZWln
-aHQ4KHBoeS0+bXQ3Ni0+Y2hhaW5tYXNrKTsNCj4gNTBhNmZlNzk2MjNlMjIgUnlkZXIgTGVlIDIw
-MjEtMDItMjUgQDM1MyAgCSpjYXAgPSAmcGh5LT5tdDc2LT5zYmFuZF81Zy5zYmFuZC52aHRfY2Fw
-LmNhcDsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-Xl5eXg0KPiAiY2FwIiBpc24ndCBpbml0aWFsaXplZC4NCg0KVGhpcyBoYXMgYmVlbiBmaXhlZCBp
-biB2Mw0KaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wcm9qZWN0L2xpbnV4LW1lZGlhdGVr
-L3BhdGNoLzQyN2FiNWEyYTc5YjhiYmZhMDUyMjVjZmU0Y2ZiNTViM2YxNDNjOGMuMTYxNDM1NzM0
-Ni5naXQucnlkZXIubGVlQG1lZGlhdGVrLmNvbS8NCg0KUnlkZXINCg0K
+Your email was in HTML, so it probably didn't reach the list.
+
+On Wed, 2021-03-10 at 09:09 +0000, Thomas Backlund wrote:
+> 
+> More  "issues"...
+> 
+> Den 9.3.2021 kl. 13:57, skrev Luca Coelho:
+> Hi,
+> 
+> This is v2 of my update which contains some new and updated files for
+> all our currently maintained FW binaries.
+> 
+> In v2:
+> 
+>    * Fixed WHENCE so that the new files match, with "62" instead of
+>    "59".
+> 
+> Please pull or let me know if there are any issues.
+> 
+> --
+> Cheers,
+> Luca.
+> 
+> 
+> The following changes since commit
+> 5ecd13ffe8e24385cf4f30f3d0dcaff4dfb24de2:
+> 
+>   Mellanox: Add new mlxsw_spectrum firmware xx.2008.2406 (2021-03-03
+> 13:23:49 -0500)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-
+> firmware.git iwlwifi-fw-2021-03-05-v2
+> 
+> for you to fetch changes up to
+> b46d336044c448987589bd6cf3057f404c5581ad:
+> 
+>   iwlwifi: add new FWs from core59-66 release (2021-03-09 13:51:26
+> +0200)
+> 
+> ----------------------------------------------------------------
+> Update iwlwifi firmwares to Core59-66
+> 
+> ----------------------------------------------------------------
+> Luca Coelho (3):
+>       iwlwifi: update 7265D firmware
+> 
+> This one looks old... stuck in limbo for over 1.5 years... is that
+> correct ?
+> author    Luca Coelho <luciano.coelho@intel.com>    2019-08-23
+> 07:35:14 +0300
+>  committer    Luca Coelho <luciano.coelho@intel.com>    2021-03-05
+> 11:37:56 +0200
+
+Oh, I just reused the commit message from before and edited it as
+needed.  Does it really matter?
+
+>       iwlwifi: update 9000-family firmwares
+> 
+> This one adds duplicated fileinfo in WHENCE
+>  
+> https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git/commit/?id=a6720504c812c1e8b0979a81d15b6ce6b4d87ae7
+> instead of updating existing ones.
+
+Okay, I'll fix it.
+
+>       iwlwifi: add new FWs from core59-66 release
+> 
+> This one still adds some duplicated WHENCE stuff for  *-59.ucode:
+>  
+> https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git/commit/?id=b46d336044c448987589bd6cf3057f404c5581ad
+> 
+> +File: iwlwifi-cc-a0-59.ucode
+> +Version: 59.49eeb572.0
+> +
+> +File: iwlwifi-Qu-b0-hr-b0-59.ucode
+> +Version: 59.49eeb572.0
+
+Yep, copy/paste issue again, I'll fix it.
+
+--
+Luca.
 
