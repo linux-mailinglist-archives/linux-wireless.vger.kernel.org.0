@@ -2,100 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87A2E3380F4
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Mar 2021 23:55:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E41433810F
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Mar 2021 00:06:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229488AbhCKWyi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Mar 2021 17:54:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55536 "EHLO
+        id S229524AbhCKXGJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Mar 2021 18:06:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229756AbhCKWyf (ORCPT
+        with ESMTP id S229441AbhCKXFj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Mar 2021 17:54:35 -0500
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFADFC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 14:54:34 -0800 (PST)
-Received: by mail-pj1-x1034.google.com with SMTP id bt4so4201770pjb.5
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 14:54:34 -0800 (PST)
+        Thu, 11 Mar 2021 18:05:39 -0500
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04DB6C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 15:05:38 -0800 (PST)
+Received: by mail-pg1-x536.google.com with SMTP id o38so14620939pgm.9
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 15:05:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=JsyBj8TgECVSpAqmB3OvELcBoQCOHvZ23+pQb4do1r4=;
-        b=MI/Xns8EOVDhIxXQhqeqzbvHBIz+1NfMQsILVWbYrEjPInGpR6AwBAmx6/e4JriBJk
-         l8ZJOMVXI4Bj9Z0usXsEewvWUdyfzEX4hJ+ud2Rw7b/ftXAxupS+s+wk6KlORDGZOjuZ
-         Pir/gJw/+fQTmwVyYp88jvRasa6ReLmwwRKtBs8CRRj4kvAV7GQQ0VCNjWiZmDDRtJ8L
-         7FZjvDOD9qWjD+PiJfPCOt+jc/zYuotUGcxA/Nwkbj0qxxbo3gRZuddzHKNuDM4VMeqC
-         EDdjFmbJK9V8wrARQoNQ4hXhQwskKQImC04b+xYRAFpf6lXfHSYmTMvpUWkshTFV+3p5
-         Ls8A==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Da9GxoSQk57Tcb2hfIvd8QjmzuEWMdAsPWOiEuCWZOo=;
+        b=Dk9yRwmD88lN0V+KrzYrKTGgaLw/9C2IlSrEk1zk91FlZ6f35dQOObEpBMTxFmz8TS
+         x26TPlGBRkHsQw9k0GDBSAfK045UQVOL3993okO8sWapd4KP1rWl/3gmap0oSm33/ZTU
+         d/UdOt2ZNIZs0SAAmF1Pz7iXbuG+L2SAcqTyjl219laPVkmOpIXOK4nYgyuBaMnug16P
+         vM/6ZGIdIuehf8vkLLYR0ITNv6frTn7oiUrS1lCAScZxxCRWdTdjd+JRDTD83wqvNAxM
+         +CEhfScvjvXP32jSTDZiMNm3NPHLuIKflCAx5CoenQ1HONC/l5yol95V130cRPvjuQ4m
+         FmRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=JsyBj8TgECVSpAqmB3OvELcBoQCOHvZ23+pQb4do1r4=;
-        b=TXz0HnDQGfIOOnKYy6B3fyZzARK1jue1oGsf/uWpeZFq4uAANg7AU2dNzc2nKsCC4f
-         tQ2O2c+MRhXoJi74ueBFRUI+Lf+yV3FN3u+QbznVlF5dkEkJdd6VkksqdbJZX4MDJlOU
-         pDCsDKNss2C5bFUIOg/lgFE8AlgL2ybf5Td+7wUyASYZaIec9J94a4JfoTnn/Q5XbqFD
-         3P7EerER4eGYbxBWO5DJWTtQa8/9U+Bg3Zy9s0oFUtzvX+pZTL/7YfElWR9iamuKEuTA
-         GCByYqrxOqWWKB9yjxTgsVrRBbzJaOOOvEqZvgFMTDqW5wx4EVWb52nU7ly/R/yxsMOD
-         RI7A==
-X-Gm-Message-State: AOAM5314Wf/lL9l0YSh/cHMbcSJSH9cN6iBmd401EAHaF/U9+Uh6EKxM
-        nE2ryWTtH9voTajuRbnlSPATKdA1W6M=
-X-Google-Smtp-Source: ABdhPJzlKebWzK0DwmruHobFtbPNO0mAKjhw4DUNHsPygdUoG97OYUkr2rMxquxt44SpuBOmPwKPOQ==
-X-Received: by 2002:a17:902:b182:b029:e6:5e:f2ce with SMTP id s2-20020a170902b182b02900e6005ef2cemr10536254plr.50.1615503273535;
-        Thu, 11 Mar 2021 14:54:33 -0800 (PST)
-Received: from jprestwo-xps ([50.39.173.103])
-        by smtp.gmail.com with ESMTPSA id x7sm3405343pff.12.2021.03.11.14.54.32
-        for <linux-wireless@vger.kernel.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Da9GxoSQk57Tcb2hfIvd8QjmzuEWMdAsPWOiEuCWZOo=;
+        b=sjIbLPFUsSJq/gtAXXYJJeCeQ7nlbeUv7A+UDZpcetWKM6fSI6q4XAJoB4qLZ+DEgs
+         SLT+hQ38rNNDQ9S77b/E1XCxqfAkrpZ78fp6p8yc7TDsFGFbscRKrOE+d1m+nwpE0QUK
+         yoDSF8Uy89CIeFvbk+LI+SRAC3vg6i4H55qb+Yfw7oMVae/X2cN6iRHu5LiEs8jrBVGe
+         q4x+6fpOeDSG0T6RrUmUAPK2vTQgItu8d2zBwhjozo5gzBWe+1NiXCSzQBaiZLv644R3
+         zKUHinVvmkVETSNl6PbrET1nKCkG0iauXPEA/nisGq/oxkBhdXQH/pkVEZuMAYaj7Dxf
+         gnnw==
+X-Gm-Message-State: AOAM530Rwc5sSwHa+UzCJr1eBQWuE42DrFK5UCqqYWb+IFJ1QFcZlTJq
+        bIxUOEwKrjoye2Yu5Zf6/AVcKvbyZxA=
+X-Google-Smtp-Source: ABdhPJy2e6b646GignpEzQWnNEDbaoUPmHpKlsUrWq96cljs1bWcgMLUY9d3w+gIMoPWVPiusadu1g==
+X-Received: by 2002:aa7:9521:0:b029:1f1:b27f:1a43 with SMTP id c1-20020aa795210000b02901f1b27f1a43mr9516256pfp.4.1615503938093;
+        Thu, 11 Mar 2021 15:05:38 -0800 (PST)
+Received: from localhost.localdomain ([50.39.173.103])
+        by smtp.gmail.com with ESMTPSA id a7sm3336061pfo.105.2021.03.11.15.05.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Mar 2021 14:54:33 -0800 (PST)
-Message-ID: <f38178e49d50486bbf29e46b1514b92ff8681814.camel@gmail.com>
-Subject: Re: brcmfmac: Getting IEs from CMD_ROAM
+        Thu, 11 Mar 2021 15:05:37 -0800 (PST)
 From:   James Prestwood <prestwoj@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Thu, 11 Mar 2021 14:54:32 -0800
-In-Reply-To: <76d03f421dd7db33755675e424541a64aac95310.camel@gmail.com>
-References: <76d03f421dd7db33755675e424541a64aac95310.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+To:     linux-wireless@vger.kernel.org
+Cc:     James Prestwood <prestwoj@gmail.com>
+Subject: [PATCH] include: nl80211: better document CMD_ROAM behavior
+Date:   Thu, 11 Mar 2021 15:03:33 -0800
+Message-Id: <20210311230333.103934-1-prestwoj@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sorry for the noise, apparently you do a GET_SCAN after CMD_ROAM to
-obtain this info. I'll be writing a docs change soon to describe this.
+The docs were very sparse with how exactly CMD_ROAM should be
+used. Specifically related to BSS information normally obtained
+through a user space scan.
 
-On Thu, 2021-03-11 at 14:00 -0800, James Prestwood wrote:
-> Hi,
-> 
-> Adding FW roaming support to IWD has led me down this rabbit hole
-> with
-> CMD_ROAM, and I am attempting to understand how wpa_supplicant
-> handles
-> this. The brcmfmac card I am using sends a CMD_ROAM event which
-> contains some response IEs but no RSN element (nor any scan
-> information
-> like frequency, rssi, etc, thats another topic). This prevents the
-> supplicant from being able to complete the 4-way handshake.
-> 
-> Now, I have a dirty hack to re-use the previous BSS's RSN element
-> which
-> *works* but this will break e.g. roaming between WPA1 <-> WPA2, plus
-> 802.11 requires that the authenticator IE is verified during the 4-
-> way, 
-> which cant reliably happen if we just use an arbitrary RSN element
-> from
-> another BSS.
-> 
-> Is this a known issue? I'm trying to read the code in wpa_supplicant
-> and its making my head spin. It does attempt to parse the RSN element
-> from CMD_ROAM, but I expect that fails since its not included. If it
-> doesn't get it from CMD_ROAM where does it get it from? Or does it
-> spoof it like I am?
-> 
-> Thanks,
-> James
-> 
+Signed-off-by: James Prestwood <prestwoj@gmail.com>
+---
+ include/uapi/linux/nl80211.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index ac78da99fccd..5e30c7f6c484 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -655,6 +655,9 @@
+  *	When a security association was established on an 802.1X network using
+  *	fast transition, this event should be followed by an
+  *	%NL80211_CMD_PORT_AUTHORIZED event.
++ *	Following a %NL80211_CMD_ROAM event userspace can issue
++ *	%NL80211_CMD_GET_SCAN in order to obtain the scan information for the
++ *	new BSS the card/driver roamed to.
+  * @NL80211_CMD_DISCONNECT: drop a given connection; also used to notify
+  *	userspace that a connection was dropped by the AP or due to other
+  *	reasons, for this the %NL80211_ATTR_DISCONNECTED_BY_AP and
+-- 
+2.26.2
 
