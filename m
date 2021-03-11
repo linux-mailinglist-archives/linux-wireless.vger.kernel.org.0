@@ -2,155 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E95F7336CF8
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Mar 2021 08:16:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B2E2336E31
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Mar 2021 09:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231634AbhCKHQV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Mar 2021 02:16:21 -0500
-Received: from gateway24.websitewelcome.com ([192.185.50.252]:43653 "EHLO
-        gateway24.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231625AbhCKHQS (ORCPT
+        id S231717AbhCKIts (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Mar 2021 03:49:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42860 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231492AbhCKItj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Mar 2021 02:16:18 -0500
-Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
-        by gateway24.websitewelcome.com (Postfix) with ESMTP id 26FBBAD1E
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 01:16:18 -0600 (CST)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id KFYQlMHL6kscSKFYQlJQJr; Thu, 11 Mar 2021 01:16:18 -0600
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=P4Y38n76j62lvthTB0qszyWArTxZMSacXEcyaFhm0Ps=; b=nEEmjHx/6wNVcHPvj0mBJauBXh
-        mlfX6bQmPo5qB5ENedRT46pN4eCpVnY/cwL+kdkebtuhNjubEA26ySEvrjGAtl3AmC1G0SmK3Dk66
-        4iwYPBaPiDH+HLThkZ9Z65V1e7tyyl9Es0oZCKR/xwpyGlDJLjbrUuiCrP0bmzP8VtECXD7dZBRYH
-        EtRYN6Y6U89lFdENoDRQhp0t9HF0fsTKi19cGbtmtN6fY89k7lSRAQVcqqoKwDZYFmXZOb30tw3tO
-        gIemvgm1gVguNNGhCZTxbk9MNdEG3RdJcKlRjSNuS3Hgp+55ZmUiG2e/9d1mGTpJOvSNNN/0ar5GV
-        VrDltHng==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:48552 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1lKFYP-001Uab-MY; Thu, 11 Mar 2021 01:16:17 -0600
-Subject: Re: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for
- Clang
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Kees Cook <keescook@chromium.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20210305094850.GA141221@embeddedor>
- <871rct67n2.fsf@codeaurora.org> <202103101107.BE8B6AF2@keescook>
- <878s6uyy30.fsf@codeaurora.org>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <e10b2a6a-d91a-9783-ddbe-ea2c10a1539a@embeddedor.com>
-Date:   Thu, 11 Mar 2021 01:16:17 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        Thu, 11 Mar 2021 03:49:39 -0500
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57FBEC061574
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 00:49:39 -0800 (PST)
+Received: by mail-io1-xd35.google.com with SMTP id z13so21046726iox.8
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 00:49:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=zpzfg3Jgaizb9I5HHvPl/VwsK81WC5kXQ9JmOHSiJHM=;
+        b=jNRRzrbz/lkYMi5HTK7pGGePJO0PNsquTTwfgN2Aix5aAFc3bylh0a0e2e6SW4DbHl
+         wWRSHNJBUwQHRZYMqtyAJGiTYfeeMTdE433HJNWXAYJx7LRqGJU8old2JGvhL8Fd16hH
+         fOca0TY2Lk3vPCmybeAiG3t87P5qXvbt079DwTBnuWoVn88MrbX5XUAWLRD61wfiI702
+         Q3OHtOzGOVQPlGttTX2tQtxOPR9iWo2yPT00gO2k3R5wvKyv3DFxfTcbXGajgsqm6ZIV
+         mBnaTZ98ukcAYI5Wj28Cck+dsDmmsojD7GOKGT/oWmh+5s6ldCtR82yK3u4ZlnFMRDPF
+         9/Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=zpzfg3Jgaizb9I5HHvPl/VwsK81WC5kXQ9JmOHSiJHM=;
+        b=ecPvFFHWzO78RjnkSmGVniSWuV4OFDesaQXpiBna5kIA6huVkpGJaodYPbzhhE68mN
+         yM6Oi6ZjYFr1XdumypyjwhFbX50+syeQB6XWJcv6LfcQgEcEliKt5Au3S0HWAmAIe2AY
+         QkqSeJe7BK0q0zooY6YZG6O3wJzcxW43akvLfepKkqMPlWubt43v7sfTXQYVBIb5WDWo
+         iMPwN63tPwgyDS74JwqQX72kVVxHLH0ncCTB5yItsr5NJG/SQUbDj2hHn2KV8a5ZI83l
+         bsUBmTOsC4Sy2eoCYOrTOwpHW7qukXH7v4lI+NlSlRTmM7WEZzcUeOfTGp5hwnLcP9r/
+         9pYw==
+X-Gm-Message-State: AOAM531sWEWCXjwisAYFUeX10IGoY7dayvo8aLvC8sxiGqyj9O+Bseks
+        12dQ0pKyOkYCQ45a4/M8I0xdw0l/V/wPq5AXpPI=
+X-Google-Smtp-Source: ABdhPJy8nCD9b+szLyZnAGw3wonRt/dDljt4le11FlDwCMP5uycfB6l+Xxef1MKMzMPczEpXiHt804Tv+ahGyLzUH8w=
+X-Received: by 2002:a02:6a14:: with SMTP id l20mr2648332jac.12.1615452578278;
+ Thu, 11 Mar 2021 00:49:38 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <878s6uyy30.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1lKFYP-001Uab-MY
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:48552
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 7
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Received: by 2002:a6b:b4ce:0:0:0:0:0 with HTTP; Thu, 11 Mar 2021 00:49:37
+ -0800 (PST)
+From:   mark milley <markmilley20171@gmail.com>
+Date:   Thu, 11 Mar 2021 08:49:37 +0000
+Message-ID: <CAOHeAmr_32fgk5rB1EzYW9ZXjLNsCUTP6gALcrjLVGvb7Bez6A@mail.gmail.com>
+Subject: RE
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello.
 
+I'm Barrister Mark Milley, from West Africa. I have something
+important to discuss with you please contact me with my email address
+as following (markmilley201711@gmail.com ) Thanks i am expecting your
+reply.
 
-On 3/11/21 01:00, Kalle Valo wrote:
-> Kees Cook <keescook@chromium.org> writes:
-> 
->> On Fri, Mar 05, 2021 at 03:40:33PM +0200, Kalle Valo wrote:
->>> "Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
->>>
->>>> In preparation to enable -Wimplicit-fallthrough for Clang, fix
->>>> multiple warnings by replacing /* fall through */ comments with
->>>> the new pseudo-keyword macro fallthrough; instead of letting the
->>>> code fall through to the next case.
->>>>
->>>> Notice that Clang doesn't recognize /* fall through */ comments as
->>>> implicit fall-through markings.
->>>>
->>>> Link: https://github.com/KSPP/linux/issues/115
->>>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
->>>
->>> It's not cool that you ignore the comments you got in [1], then after a
->>> while mark the patch as "RESEND" and not even include a changelog why it
->>> was resent.
->>>
->>> [1] https://patchwork.kernel.org/project/linux-wireless/patch/d522f387b2d0dde774785c7169c1f25aa529989d.1605896060.git.gustavoars@kernel.org/
->>
->> Hm, this conversation looks like a miscommunication, mainly? I see
->> Gustavo, as requested by many others[1], replacing the fallthrough
->> comments with the "fallthrough" statement. (This is more than just a
->> "Clang doesn't parse comments" issue.)
-> 
-> v1 was clearly rejected by Jes, so sending a new version without any
-> changelog or comments is not the way to go. The changelog shoud at least
-> have had "v1 was rejected but I'm resending this again because <insert
-> reason here>" or something like that to make it clear what's happening.
-
-Why the fact that I replied to that original thread with the message
-below is being ignored?
-
-"Just notice that the idea behind this and the following patch is exactly
-the same:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id=3f95e92c8a8516b745594049dfccc8c5f8895eea
-
-I could resend this same patch with a different changelog text, but I
-don't think such a thing is necessary. However, if people prefer that
-approach, just let me know and I can do it.
-
-Thanks
---
-Gustavo"
-
-Why no one replied to what I was proposing at the time?
-
-It seems to me that the person that was ignored was actually me, and not the
-other way around. :/
-
---
-Gustavo
-
-> 
->> This could be a tree-wide patch and not bother you, but Greg KH has
->> generally advised us to send these changes broken out. Anyway, this
->> change still needs to land, so what would be the preferred path? I think
->> Gustavo could just carry it for Linus to merge without bothering you if
->> that'd be preferred?
-> 
-> I agree with Greg. Please don't do cleanups like this via another tree
-> as that just creates more work due to conflicts between the trees, which
-> is a lot more annoying to deal with than applying few patches. But when
-> submitting patches please follow the rules, don't cut corners.
-> 
-> Jes, I don't like 'fallthrough' either and prefer the original comment,
-> but the ship has sailed on this one. Maybe we should just take it?
-> 
+Yours
+Mark Milley
