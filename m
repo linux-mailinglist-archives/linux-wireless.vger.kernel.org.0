@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA180336BD7
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Mar 2021 07:02:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D357F336CA6
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Mar 2021 08:01:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229926AbhCKGBo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Mar 2021 01:01:44 -0500
-Received: from m42-2.mailgun.net ([69.72.42.2]:20807 "EHLO m42-2.mailgun.net"
+        id S231550AbhCKHAy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Mar 2021 02:00:54 -0500
+Received: from m42-2.mailgun.net ([69.72.42.2]:28777 "EHLO m42-2.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229924AbhCKGBa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Mar 2021 01:01:30 -0500
+        id S231495AbhCKHAo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 11 Mar 2021 02:00:44 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1615442490; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1615446044; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=iuDEpevXVvAPqRWOTgajEvmqN5hL4zfyLG6VEFB+gCk=; b=cZZLyyTIDWb5AwnoCXW6lIAPJiIjjtFV4vZmdBukoYf5swEpsV1tJamF8hhAJXvW5VtWCpza
- H8pm6EcF9I7sQQJJh1i9Gwu8Fke7eYBvjX+U6hqmYmbOH+jPJyRk/8uf0hm9JjBtewMdZMmE
- AuAYwWWFUm05W6RDhc8IP8M47zA=
+ bh=3+uYjBQK4ORw94HoS3mEIbHBXvqWMu6fhtYX/73Hjuc=; b=oCO1GMaPzOLZE4XRCz5vqesuPt6sXYabDpIUqu/wpBdqXu1fm6smrsMQ8FThbrRCPFIMP6av
+ A4wZd7yd7XRSC1p12WQhs8Wcna/s15f6gVqp3nBF9+uofxCCURcoprhzhd1Ni+zVIAup6wa/
+ c5wj7kMoawgSrmS8c5kGnMQgStY=
 X-Mailgun-Sending-Ip: 69.72.42.2
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 6049b233d3a53bc38f6134df (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 11 Mar 2021 06:01:23
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 6049bff9b86af9bf23f5b443 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 11 Mar 2021 07:00:09
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C5B0FC433ED; Thu, 11 Mar 2021 06:01:22 +0000 (UTC)
+        id 907F9C433CA; Thu, 11 Mar 2021 07:00:08 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,23 +37,26 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E57E5C433C6;
-        Thu, 11 Mar 2021 06:01:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E57E5C433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66F14C433CA;
+        Thu, 11 Mar 2021 07:00:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 66F14C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Aloka Dixit <alokad@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        John Crispin <john@phrozen.org>
-Subject: Re: [PATCH V5 1/2] ath11k: add WMI calls to manually add/del/pause/resume TWT dialogs
-References: <20210222192651.1782-2-alokad@codeaurora.org>
-        <20210309105025.72246C43462@smtp.codeaurora.org>
-        <347ccb1006ce48ff6da270560c867c06@codeaurora.org>
-Date:   Thu, 11 Mar 2021 08:01:18 +0200
-In-Reply-To: <347ccb1006ce48ff6da270560c867c06@codeaurora.org> (Aloka Dixit's
-        message of "Wed, 10 Mar 2021 10:42:55 -0800")
-Message-ID: <87czw6z0sx.fsf@codeaurora.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for Clang
+References: <20210305094850.GA141221@embeddedor>
+        <871rct67n2.fsf@codeaurora.org> <202103101107.BE8B6AF2@keescook>
+Date:   Thu, 11 Mar 2021 09:00:03 +0200
+In-Reply-To: <202103101107.BE8B6AF2@keescook> (Kees Cook's message of "Wed, 10
+        Mar 2021 11:14:56 -0800")
+Message-ID: <878s6uyy30.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -61,28 +64,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aloka Dixit <alokad@codeaurora.org> writes:
+Kees Cook <keescook@chromium.org> writes:
 
-> On 2021-03-09 02:50, Kalle Valo wrote:
->> Aloka Dixit <alokad@codeaurora.org> wrote:
->>
->>> These calls are used for debugging and will be required for WFA
->>> certification tests.
->>>
->>> Signed-off-by: John Crispin <john@phrozen.org>
->>> Co-developed-by: Aloka Dixit <alokad@codeaurora.org>
->>> Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
->>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->>
->> This patchset had new warnings:
->>
->> drivers/net/wireless/ath/ath11k/debugfs.c:16:15: warning: symbol
->> 'debugfs_ath11k' was not declared. Should it be static?
+> On Fri, Mar 05, 2021 at 03:40:33PM +0200, Kalle Valo wrote:
+>> "Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+>> 
+>> > In preparation to enable -Wimplicit-fallthrough for Clang, fix
+>> > multiple warnings by replacing /* fall through */ comments with
+>> > the new pseudo-keyword macro fallthrough; instead of letting the
+>> > code fall through to the next case.
+>> >
+>> > Notice that Clang doesn't recognize /* fall through */ comments as
+>> > implicit fall-through markings.
+>> >
+>> > Link: https://github.com/KSPP/linux/issues/115
+>> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> 
+>> It's not cool that you ignore the comments you got in [1], then after a
+>> while mark the patch as "RESEND" and not even include a changelog why it
+>> was resent.
+>> 
+>> [1] https://patchwork.kernel.org/project/linux-wireless/patch/d522f387b2d0dde774785c7169c1f25aa529989d.1605896060.git.gustavoars@kernel.org/
 >
-> This patch-set doesn't add any reference to 'debugfs_ath11k', so
-> don't know why this warning came up.
+> Hm, this conversation looks like a miscommunication, mainly? I see
+> Gustavo, as requested by many others[1], replacing the fallthrough
+> comments with the "fallthrough" statement. (This is more than just a
+> "Clang doesn't parse comments" issue.)
 
-Ah, sorry. That's coming from Anil's debugfs patch.
+v1 was clearly rejected by Jes, so sending a new version without any
+changelog or comments is not the way to go. The changelog shoud at least
+have had "v1 was rejected but I'm resending this again because <insert
+reason here>" or something like that to make it clear what's happening.
+
+> This could be a tree-wide patch and not bother you, but Greg KH has
+> generally advised us to send these changes broken out. Anyway, this
+> change still needs to land, so what would be the preferred path? I think
+> Gustavo could just carry it for Linus to merge without bothering you if
+> that'd be preferred?
+
+I agree with Greg. Please don't do cleanups like this via another tree
+as that just creates more work due to conflicts between the trees, which
+is a lot more annoying to deal with than applying few patches. But when
+submitting patches please follow the rules, don't cut corners.
+
+Jes, I don't like 'fallthrough' either and prefer the original comment,
+but the ship has sailed on this one. Maybe we should just take it?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
