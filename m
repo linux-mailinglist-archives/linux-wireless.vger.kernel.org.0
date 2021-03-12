@@ -2,121 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EFAD3384A6
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Mar 2021 05:31:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7831333938D
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Mar 2021 17:38:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232164AbhCLEbN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Mar 2021 23:31:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232151AbhCLEbC (ORCPT
+        id S232506AbhCLQhv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Mar 2021 11:37:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:60942 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232198AbhCLQhZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Mar 2021 23:31:02 -0500
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2B6C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 20:31:02 -0800 (PST)
-Received: by mail-yb1-xb2f.google.com with SMTP id f145so7648682ybg.11
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 20:31:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=VOTAsqudKrdJEt/NHo+GDkYcgaJTdlqeUy9CVdMpYbU=;
-        b=LjQlZL8XFkG77eQ/HXhA3UoO5orC+I+Lp0T+8N+H4HhwpiqqOEenbGS18WsSEf+T3Y
-         8AslWlcFre7bJRkflgQWS8t2DY9255RleAHPNBL7al4H2NiwFBzq9fRz2NadWxJUp8Ea
-         CigILJu1O/I/GH2vB9UODBhkaCg8f21iR4lSC39l3tfkBJnpZ4KfGMX7903XpVqxtJso
-         Ie4Q9QZ4A9zvLUVV/nl3cpUOEs8m/FLtKGvkCeLxfHdPYdcaBS5TkzerYZB5EM9KGYkv
-         k3Q5YPqYymOqeO/Uu+uLR5dtewUdCGibe6TvTqW5CYpVORhp4GdsTtML1OTdWRKNEkoM
-         GwIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=VOTAsqudKrdJEt/NHo+GDkYcgaJTdlqeUy9CVdMpYbU=;
-        b=fq6vWgwtPqBXh0yTdwsbHf0DPMl+/lxpi/Hr6Pg/A6TD4BysICchpxjkIMN17ebcrJ
-         0lyRBYw/9Fa8+xDJLQk+iJOmgrXNY1Oi7MHwrGjfN+nQS/xOBd89DeLoOegnoGEV3u8g
-         +z0RU+raSWQPa9KeBshH4V4Z4iyaMZ9aCk/Kyxi+lixHD8VhVokD1JOxbmpkd4DDbaCd
-         3oOcYxeXBF6TtZBdAR2CGVaKJ3lhbN3fFO9Npm6ValeZ2REHHbooBhPe91TDvNBqeWii
-         C6daQAl56+gGMFf5sG1/snEhAJFXHuFmtVkUxHZa6akUR4e21XrChJXyaCYpU0U91Ss3
-         nM/Q==
-X-Gm-Message-State: AOAM532jzEuWeku6wrCAb3l+O5EASfAsN9ccZxD/HzgVcT0yhHEAdC/O
-        q+Gffw4Zmn/clm71g1wEo4S7NqF530CeXPotU4c=
-X-Google-Smtp-Source: ABdhPJyh7nQhw0OBWCsjGBz+99DOU9gXgbNi1WAeTlAvneFcifjkvex/XUytAD+yM8DCqu+rwTJWOV/jEnW0V3bYlS4=
-X-Received: by 2002:a25:d7c5:: with SMTP id o188mr15775598ybg.15.1615523461068;
- Thu, 11 Mar 2021 20:31:01 -0800 (PST)
+        Fri, 12 Mar 2021 11:37:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1615567045;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=FnVUzFvzsl3Bp0QFRDBlIHeV43tl8slTgFSG/RNrL70=;
+        b=UdxRWwsvBgtrZ56feaDtqTWoDv35uNfgMy90MWuIZpWlb/EtkdMrUo6BgSLaydcL9YF+bL
+        YpJY6cvIW225smoHLXgx94ajK7P4W/70m4N4Knndvf58yFRSPfuL7F4Eqt76YDH9xYhOIo
+        r3gB4Eavm0WsJv0386YCMFWDVPw8uCU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-540-kF_I14VGMT-R9-CJQ8RLzQ-1; Fri, 12 Mar 2021 11:37:23 -0500
+X-MC-Unique: kF_I14VGMT-R9-CJQ8RLzQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4FF9E192D786;
+        Fri, 12 Mar 2021 16:37:22 +0000 (UTC)
+Received: from f33vm.wilsonet.com.wilsonet.com (dhcp-17-185.bos.redhat.com [10.18.17.185])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 077E8610A8;
+        Fri, 12 Mar 2021 16:37:15 +0000 (UTC)
+From:   Jarod Wilson <jarod@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Jarod Wilson <jarod@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH net] wireless/nl80211: fix wdev_id may be used uninitialized
+Date:   Fri, 12 Mar 2021 11:36:51 -0500
+Message-Id: <20210312163651.1398207-1-jarod@redhat.com>
 MIME-Version: 1.0
-Sender: mrs.kimhongyeoh56@gmail.com
-Received: by 2002:a05:7108:3445:0:0:0:0 with HTTP; Thu, 11 Mar 2021 20:31:00
- -0800 (PST)
-From:   Mrs Nadia Emaan <mrsnadiaemaan50@gmail.com>
-Date:   Fri, 12 Mar 2021 04:31:00 +0000
-X-Google-Sender-Auth: qZzlcfK6RzKPxPtOVkhsoO7eLMA
-Message-ID: <CADCBRF-Ts-oqYJe3=TdLvQPRWMU=KQNjc8hHCUfiiVgrBp41xw@mail.gmail.com>
-Subject: MAY THE PEACE OF GOD BE WITH YOU:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-May God Bless you,
+Build currently fails with -Werror=maybe-uninitialized set:
 
-I am contacting you through this means because I need your urgent
-assistance and also help me to carry a charity project in your
-country. I found your email address as a true child of God for past
-few days now that I have been praying to know if you are really the
-chosen one for this great charity project, according to God's
-direction, after all prayers I am convinced, and I have decided to
-contact you. Please, i want you use the funds for the Lord's work,
-with confidence, read and respond now.
+net/wireless/nl80211.c: In function '__cfg80211_wdev_from_attrs':
+net/wireless/nl80211.c:124:44: error: 'wdev_id' may be used
+uninitialized in this function [-Werror=maybe-uninitialized]
 
+Easy fix is to just initialize wdev_id to 0, since it's value doesn't
+otherwise matter unless have_wdev_id is true.
 
-My name is Mrs. Nadia  Emaan a widow, but currently based in West
-Africa since my life with my late husband, who was a businessman in
-this country before dying some years ago. We were married to many
-years without a child. He died after a brief illness that lasted only
-six days and I myself have been suffering from an ovarian cancer
-disease. At this moment I am about to finish the race in this way
-because the disease has reached a very bad stage, without any family
-member and without children. I hope you do not expose or betray this
-trust and I am sure that I am about to trust you for the mutual
-benefit of orphans and the less privileged. I have some funds that I
-inherited from my late husband, the total sum of ($ 12,500,000.00)
-deposited at a bank here in Burkina Faso. After knowing my current
-state of health, I decided to trust you with this fund, believing that
-you will use it in the way I will instruct here.
+Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+CC: Johannes Berg <johannes@sipsolutions.net>
+CC: "David S. Miller" <davem@davemloft.net>
+CC: Jakub Kicinski <kuba@kernel.org>
+CC: linux-wireless@vger.kernel.org
+CC: netdev@vger.kernel.org
+Signed-off-by: Jarod Wilson <jarod@redhat.com>
+---
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 521d36bb0803..a157783760c7 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -70,7 +70,7 @@ __cfg80211_wdev_from_attrs(struct cfg80211_registered_device *rdev,
+ 	struct wireless_dev *result = NULL;
+ 	bool have_ifidx = attrs[NL80211_ATTR_IFINDEX];
+ 	bool have_wdev_id = attrs[NL80211_ATTR_WDEV];
+-	u64 wdev_id;
++	u64 wdev_id = 0;
+ 	int wiphy_idx = -1;
+ 	int ifidx = -1;
+ 
+-- 
+2.29.2
 
-you will use this $12.5 Million for public benefit as follows;
-
-1. Establish An Orphanage Home To Help The Orphanages Children.
-2. Build A Hospital To Help The Poor.
-3. Build A Nursing Home For Elderly People Need Care & Meal.
-
-You will named them after my late husband.Therefore, I need you to
-help me and claim this money and use it for charities, for orphanages
-and provide justice and help to the poor, needy and to promote the
-words of God and the effort to maintain the house of God, according to
-the bible in the book of. Jeremiah 22: 15-16, without minding our
-different religions.
-
-It will be a pleasure to compensate with 40% percent of the total
-money for your effort in handling the transaction, while 60% of the
-money will go to charity project.
-
-All I need from you is sincerity and ability to complete the task of
-God without any failure. It will be my pleasure to see that the bank
-has finally released and transferred the fund to your bank account in
-the country, even before I die here in the hospital, due to my current
-state of health, everything must be processed as soon as possible.
-
-I am waiting for your immediate response, if you are only interested
-in obtaining more details about the transaction and execution of this
-humanitarian project for the glory and honor of God.
-
-Sorry if you received this letter in your spam, is due to recent
-connection/network error here in the country.
-
-Please I am waiting for your urgent reply now.
-
-May God Bless you,
-Mrs. Nadia  Emaan.
