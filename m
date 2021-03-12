@@ -2,66 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F0A33826A
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Mar 2021 01:33:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0651D33825D
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Mar 2021 01:33:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231492AbhCLAci (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Mar 2021 19:32:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48268 "EHLO
+        id S231355AbhCLAch (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Mar 2021 19:32:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231338AbhCLAcR (ORCPT
+        with ESMTP id S229664AbhCLAcS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Mar 2021 19:32:17 -0500
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20ED9C061761
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 16:32:17 -0800 (PST)
-Received: by mail-oi1-x22e.google.com with SMTP id v192so17553763oia.5
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 16:32:17 -0800 (PST)
+        Thu, 11 Mar 2021 19:32:18 -0500
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 188D0C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 16:32:18 -0800 (PST)
+Received: by mail-ot1-x32e.google.com with SMTP id p24so2720209ota.11
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 16:32:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=/wnT9KFtjE2dj5B3TvenbW5A0O1A3p6LBzIrAp2VB50=;
-        b=nQ/PHelfe6p0xzxLiT/y3D0LTRCKSdnNbhzgJmtQ6Seq6IB8FN4cNbEJOu6ewRcqqL
-         LVs49uIf89GWT58FnaQckw3dVUxx2zJYIPAJW0Csqv5mcXPI5kGoeR9jUZ5vAu+0+uMZ
-         BYui7+TEEdHWCANjaULtA02QMUr5XxawJzugVmlKBCnv8Bnwg4HjPQpyD5r0w7tWuLZc
-         jTRdxusyQZ0nSoIzDA3rt5wK7llfTQBpD+oUJbhCIbaMVXFa4x55VkMkyZdWbZwVTFIT
-         BmGNcA+RugSuylJhfmBLObGxuwcKkKPdEq1RbULeRfkdDlioMsnmmxG8ixXydVYVoFsH
-         7faQ==
+        bh=6yerQKfDnfz7buskmtSzYD6MzcxxmHz36LYzDDWncI4=;
+        b=j4+FEri2ovICTXT2ZO3+c/mLbrKpu5cWHdhqiPqMR0arRsjb8+lFV/4MQOFSL5/bOx
+         CrFy6v67inEGWaL51OH4w4L/9APFRcf/DaO9y7VMbTW5BjWfq3xr27OFA+Y/RuhBj+Vj
+         /QNKDkwP08lPGDIhDndxgwWEtpFdfFFOK7pDL5vILBuVqqdz+2n3hRNHUV6v9Fm2r71B
+         rcAbzQG6UJNvX/NhS+bzREx5gMy2lBu7xjWX6dv2bGVDb6B6ZvevK3wDTW50EjHmWefq
+         gw7+1ua4dhyLZzjjGu9DZkK0QxfWgUcUq8jaucpIvMpJrFt849ju/FB1D8KWwzYLT69+
+         FeZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=/wnT9KFtjE2dj5B3TvenbW5A0O1A3p6LBzIrAp2VB50=;
-        b=Q5fPuvueIoHHe7BYd5tQAxQpfauIP3/ai+8pESxu+9Mvw3Y3qrK5GTCf1jagOEG8hi
-         W6QvWCBwUPaZ2pemv0IuhmsnrUiyJT3nBEiAEzSyqLVMWwaR8I1+QoSEzluQ4NRVvLVd
-         xcViUpoGReBGUq/JYPal7DMvTyjZMHDK85+YpbTk1rkY75aFv2uWK3OYme/RfmH5+AN8
-         IxmR+NpNxIyt30c5IBcFXsPalMoaiJef/5JrRjswXWr/4iz5+AxtimVkXWOH5qy71fNG
-         l2zxGLB9Lcd+37RfzxD4avP0NL039szLp+6b1zX5ADGst+i4MdKw8bOVhFQOYscx6vhv
-         KITg==
-X-Gm-Message-State: AOAM532/rKBSdrFX+4IqPa59qDkcJpcAt/gff24xR85tNwmrlpefv8kz
-        kPKuUJ7lb0OCCBXefSvLi8b31w==
-X-Google-Smtp-Source: ABdhPJzwqufzHfZoLzOmD5jMfbWGNnlySFjzLTTO1fCcGhtliPRoFuEmoE+ER6cVwwNeAAYMLcXIOg==
-X-Received: by 2002:a05:6808:130a:: with SMTP id y10mr8294467oiv.138.1615509136575;
-        Thu, 11 Mar 2021 16:32:16 -0800 (PST)
+        bh=6yerQKfDnfz7buskmtSzYD6MzcxxmHz36LYzDDWncI4=;
+        b=O8Ox+kZoCRxqDSzZ7kZJrbnfFqDtlxpOHVhXI6OAOJhpusbfoQNTQC3byaBUVnXxP5
+         v6pRmAlPeUOKPtUI+k9gE7CvgzhKzH3YGSctLumX2xO9dloc/tvOCMZm1k1caQPCAvRj
+         qixDl0fVEcVCqgW46RhnpxxfsHUvl6RQ8nVu6WuMsCGOk7uJpBmKVmFYmI67uifQ5IIJ
+         vMPpxGrSV5k+ucWL/uAMaRc9Mso+7ZSqTYNnAFc/y3OvMEffbRYvuGeiPPhL7MRT0M2i
+         6L5tOacc7vodERfkvAjNNo1HbmuN4wR4pLk+7g7cGg1a4f2QaolxFKGC+LRVEQDDfLXD
+         2Z7A==
+X-Gm-Message-State: AOAM533wEuyBvOlUHaqSUIskL5tHvfq19tqpYvIzvUVhXONc5gLtmXbk
+        QMzDH0VNsFK0h+BZtAEGZfz8ag==
+X-Google-Smtp-Source: ABdhPJw71XAFXEC95aShYwX8z3HWOLkEXvyvBx7QSIHTC8+qxdNVlPBNNz+050QfFrq7anbHAYmiaw==
+X-Received: by 2002:a05:6830:1d69:: with SMTP id l9mr1227667oti.369.1615509137518;
+        Thu, 11 Mar 2021 16:32:17 -0800 (PST)
 Received: from localhost.localdomain (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id l190sm670835oig.39.2021.03.11.16.32.15
+        by smtp.gmail.com with ESMTPSA id l190sm670835oig.39.2021.03.11.16.32.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Mar 2021 16:32:16 -0800 (PST)
+        Thu, 11 Mar 2021 16:32:17 -0800 (PST)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH 2/5] wcn36xx: Allow firmware name to be overridden by DT
-Date:   Thu, 11 Mar 2021 16:33:15 -0800
-Message-Id: <20210312003318.3273536-3-bjorn.andersson@linaro.org>
+Subject: [PATCH 3/5] soc: qcom: wcnss_ctrl: Introduce local variable "dev"
+Date:   Thu, 11 Mar 2021 16:33:16 -0800
+Message-Id: <20210312003318.3273536-4-bjorn.andersson@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
 References: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
@@ -71,75 +71,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The WLAN NV firmware blob differs between platforms, and possibly
-devices, so add support in the wcn36xx driver for reading the path of
-this file from DT in order to allow these files to live in a generic
-file system (or linux-firmware).
-
-For some reason the parent (wcnss_ctrl) also needs to upload this blob,
-so rather than specifying the same information in both nodes wcn36xx
-reads the string from the parent's of_node.
+Introduce a local variable to carry the struct device *, to reduce the
+line lengths in the next patch.
 
 Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 ---
+ drivers/soc/qcom/wcnss_ctrl.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-This patch can be applied independently of the others, but relates to the
-acceptance of the addition to the DT binding (in patch 1/5). So my suggestion
-is that this one goes through the ath tree and the others through the Qualcomm
-SoC tree.
-
- drivers/net/wireless/ath/wcn36xx/main.c    | 7 +++++++
- drivers/net/wireless/ath/wcn36xx/smd.c     | 4 ++--
- drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 1 +
- 3 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index afb4877eaad8..87b5c0ff16c0 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1407,6 +1407,13 @@ static int wcn36xx_probe(struct platform_device *pdev)
- 		goto out_wq;
+diff --git a/drivers/soc/qcom/wcnss_ctrl.c b/drivers/soc/qcom/wcnss_ctrl.c
+index 32bed249f90e..358526b9de06 100644
+--- a/drivers/soc/qcom/wcnss_ctrl.c
++++ b/drivers/soc/qcom/wcnss_ctrl.c
+@@ -199,6 +199,7 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
+ {
+ 	struct wcnss_download_nv_req *req;
+ 	const struct firmware *fw;
++	struct device *dev = wcnss->dev;
+ 	const void *data;
+ 	ssize_t left;
+ 	int ret;
+@@ -207,9 +208,9 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
+ 	if (!req)
+ 		return -ENOMEM;
+ 
+-	ret = request_firmware(&fw, NVBIN_FILE, wcnss->dev);
++	ret = request_firmware(&fw, NVBIN_FILE, dev);
+ 	if (ret < 0) {
+-		dev_err(wcnss->dev, "Failed to load nv file %s: %d\n",
++		dev_err(dev, "Failed to load nv file %s: %d\n",
+ 			NVBIN_FILE, ret);
+ 		goto free_req;
  	}
+@@ -235,7 +236,7 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
  
-+	wcn->nv_file = WLAN_NV_FILE;
-+	ret = of_property_read_string(wcn->dev->parent->of_node, "firmware-name", &wcn->nv_file);
-+	if (ret < 0 && ret != -EINVAL) {
-+		wcn36xx_err("failed to read \"firmware-name\" property\n");
-+		goto out_wq;
-+	}
-+
- 	wcn->smd_channel = qcom_wcnss_open_channel(wcnss, "WLAN_CTRL", wcn36xx_smd_rsp_process, hw);
- 	if (IS_ERR(wcn->smd_channel)) {
- 		wcn36xx_err("failed to open WLAN_CTRL channel\n");
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index d0c3a1557e8d..7b928f988068 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -514,10 +514,10 @@ int wcn36xx_smd_load_nv(struct wcn36xx *wcn)
- 	u16 fm_offset = 0;
- 
- 	if (!wcn->nv) {
--		ret = request_firmware(&wcn->nv, WLAN_NV_FILE, wcn->dev);
-+		ret = request_firmware(&wcn->nv, wcn->nv_file, wcn->dev);
- 		if (ret) {
- 			wcn36xx_err("Failed to load nv file %s: %d\n",
--				      WLAN_NV_FILE, ret);
-+				    wcn->nv_file, ret);
- 			goto out;
+ 		ret = rpmsg_send(wcnss->channel, req, req->hdr.len);
+ 		if (ret < 0) {
+-			dev_err(wcnss->dev, "failed to send smd packet\n");
++			dev_err(dev, "failed to send smd packet\n");
+ 			goto release_fw;
  		}
- 	}
-diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-index 71fa9992b118..5977af2116e3 100644
---- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-+++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-@@ -185,6 +185,7 @@ struct wcn36xx {
- 	struct device		*dev;
- 	struct list_head	vif_list;
  
-+	const char		*nv_file;
- 	const struct firmware	*nv;
+@@ -248,7 +249,7 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
  
- 	u8			fw_revision;
+ 	ret = wait_for_completion_timeout(&wcnss->ack, WCNSS_REQUEST_TIMEOUT);
+ 	if (!ret) {
+-		dev_err(wcnss->dev, "timeout waiting for nv upload ack\n");
++		dev_err(dev, "timeout waiting for nv upload ack\n");
+ 		ret = -ETIMEDOUT;
+ 	} else {
+ 		*expect_cbc = wcnss->ack_status == WCNSS_ACK_COLD_BOOTING;
 -- 
 2.29.2
 
