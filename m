@@ -2,88 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E41433810F
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Mar 2021 00:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C405338271
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Mar 2021 01:33:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbhCKXGJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Mar 2021 18:06:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57886 "EHLO
+        id S229636AbhCLAcf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Mar 2021 19:32:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbhCKXFj (ORCPT
+        with ESMTP id S230192AbhCLAcQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Mar 2021 18:05:39 -0500
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04DB6C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 15:05:38 -0800 (PST)
-Received: by mail-pg1-x536.google.com with SMTP id o38so14620939pgm.9
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 15:05:38 -0800 (PST)
+        Thu, 11 Mar 2021 19:32:16 -0500
+Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68828C061762
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 16:32:15 -0800 (PST)
+Received: by mail-oo1-xc2d.google.com with SMTP id x187-20020a4a41c40000b02901b664cf3220so1135436ooa.10
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Mar 2021 16:32:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Da9GxoSQk57Tcb2hfIvd8QjmzuEWMdAsPWOiEuCWZOo=;
-        b=Dk9yRwmD88lN0V+KrzYrKTGgaLw/9C2IlSrEk1zk91FlZ6f35dQOObEpBMTxFmz8TS
-         x26TPlGBRkHsQw9k0GDBSAfK045UQVOL3993okO8sWapd4KP1rWl/3gmap0oSm33/ZTU
-         d/UdOt2ZNIZs0SAAmF1Pz7iXbuG+L2SAcqTyjl219laPVkmOpIXOK4nYgyuBaMnug16P
-         vM/6ZGIdIuehf8vkLLYR0ITNv6frTn7oiUrS1lCAScZxxCRWdTdjd+JRDTD83wqvNAxM
-         +CEhfScvjvXP32jSTDZiMNm3NPHLuIKflCAx5CoenQ1HONC/l5yol95V130cRPvjuQ4m
-         FmRA==
+        bh=XxSa1u7IyhhucY0ze3n3dBYIqxQ4tI9IFhWrRdx0ULk=;
+        b=zWgt1QAsksXwn37LZRT7NIO21xaLAynJ+w5PvmhbectrWotS+n50h0x+Uo5GlhZGiJ
+         V4ecIoUP/8fA+uao7odaE+Rhx5x+K7qQ1mGlL3Le3aP2dhIFEB1XDJG4UPW0pMIZKQ39
+         2H/RnWfSRrzxf3Shoi0y6i+x3yNXBKQUqLqbjMV/kU2qUb8HxdOVOjLnV50DHurc1fzb
+         504DbhhatvTwPWNfMb8OD0DQRcAsIBvigp9+7bLvl8FfzFX3AbpYyeICSfXiZc+2rYw6
+         ZePy/D6tmeber9lr/OekoFWDUkpLv+DPWDo21xUItVFCbqa778Zh9dnJ/5TQ/KM8rolB
+         K7mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Da9GxoSQk57Tcb2hfIvd8QjmzuEWMdAsPWOiEuCWZOo=;
-        b=sjIbLPFUsSJq/gtAXXYJJeCeQ7nlbeUv7A+UDZpcetWKM6fSI6q4XAJoB4qLZ+DEgs
-         SLT+hQ38rNNDQ9S77b/E1XCxqfAkrpZ78fp6p8yc7TDsFGFbscRKrOE+d1m+nwpE0QUK
-         yoDSF8Uy89CIeFvbk+LI+SRAC3vg6i4H55qb+Yfw7oMVae/X2cN6iRHu5LiEs8jrBVGe
-         q4x+6fpOeDSG0T6RrUmUAPK2vTQgItu8d2zBwhjozo5gzBWe+1NiXCSzQBaiZLv644R3
-         zKUHinVvmkVETSNl6PbrET1nKCkG0iauXPEA/nisGq/oxkBhdXQH/pkVEZuMAYaj7Dxf
-         gnnw==
-X-Gm-Message-State: AOAM530Rwc5sSwHa+UzCJr1eBQWuE42DrFK5UCqqYWb+IFJ1QFcZlTJq
-        bIxUOEwKrjoye2Yu5Zf6/AVcKvbyZxA=
-X-Google-Smtp-Source: ABdhPJy2e6b646GignpEzQWnNEDbaoUPmHpKlsUrWq96cljs1bWcgMLUY9d3w+gIMoPWVPiusadu1g==
-X-Received: by 2002:aa7:9521:0:b029:1f1:b27f:1a43 with SMTP id c1-20020aa795210000b02901f1b27f1a43mr9516256pfp.4.1615503938093;
-        Thu, 11 Mar 2021 15:05:38 -0800 (PST)
-Received: from localhost.localdomain ([50.39.173.103])
-        by smtp.gmail.com with ESMTPSA id a7sm3336061pfo.105.2021.03.11.15.05.37
+        bh=XxSa1u7IyhhucY0ze3n3dBYIqxQ4tI9IFhWrRdx0ULk=;
+        b=qIa3YbytOB5XSpS34FKqYdxKOweH+STYYxkMo4lUB3+60Qe5quEp3o3sArRDrjR05R
+         XkXjODWpOilSJBYXxQ0zpr3cYDMI+s4PO+pWYocn0Lzadk6qVomVrcLOJo3PBcoJNDzn
+         KrP1Relt50bJGq54zuV8dda1xMjrB3jECc/Vn74bEmLZBKOJE3Xk2KyB2PIAxDKu7Jqc
+         HaCl4+9EkH1Os8AcAmOdzDZzAoASlilAo+LjtvhSRTDksiMuiejCByf0DfjxhbxYDi8w
+         LMYia8uCS2Mz+/XY6bAYoKAL+iEMXrKrsuaDPbJTpoT5KmG71y9pQjEqsIdGu3+V9/0H
+         n8tQ==
+X-Gm-Message-State: AOAM532SVUVeemjwrWQ1ft7JvZbr7QApFcJDYpNKThuPsM5EbUrduJdr
+        sjW4xKMXuRXL+yVs9+kaOmSo1g==
+X-Google-Smtp-Source: ABdhPJz6UIt7SjxfugwIFCAKdOTG8YHF2em4Ltec3Ma2jacxcarQZOOzmo/0z43hYlYZv20QAiPhkA==
+X-Received: by 2002:a4a:dc51:: with SMTP id q17mr1259347oov.76.1615509134671;
+        Thu, 11 Mar 2021 16:32:14 -0800 (PST)
+Received: from localhost.localdomain (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id l190sm670835oig.39.2021.03.11.16.32.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Mar 2021 15:05:37 -0800 (PST)
-From:   James Prestwood <prestwoj@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     James Prestwood <prestwoj@gmail.com>
-Subject: [PATCH] include: nl80211: better document CMD_ROAM behavior
-Date:   Thu, 11 Mar 2021 15:03:33 -0800
-Message-Id: <20210311230333.103934-1-prestwoj@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        Thu, 11 Mar 2021 16:32:14 -0800 (PST)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH 0/5] qcom: wcnss: Allow overriding firmware form DT
+Date:   Thu, 11 Mar 2021 16:33:13 -0800
+Message-Id: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The docs were very sparse with how exactly CMD_ROAM should be
-used. Specifically related to BSS information normally obtained
-through a user space scan.
+The wireless subsystem found in Qualcomm MSM8974 and MSM8916 among others needs
+platform-, and perhaps even board-, specific firmware. Add support for
+providing this in devicetree.
 
-Signed-off-by: James Prestwood <prestwoj@gmail.com>
----
- include/uapi/linux/nl80211.h | 3 +++
- 1 file changed, 3 insertions(+)
+Bjorn Andersson (5):
+  dt-bindings: soc: qcom: wcnss: Add firmware-name property
+  wcn36xx: Allow firmware name to be overridden by DT
+  soc: qcom: wcnss_ctrl: Introduce local variable "dev"
+  soc: qcom: wcnss_ctrl: Allow reading firmware-name from DT
+  arm64: dts: qcom: msm8916: Enable modem and WiFi
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index ac78da99fccd..5e30c7f6c484 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -655,6 +655,9 @@
-  *	When a security association was established on an 802.1X network using
-  *	fast transition, this event should be followed by an
-  *	%NL80211_CMD_PORT_AUTHORIZED event.
-+ *	Following a %NL80211_CMD_ROAM event userspace can issue
-+ *	%NL80211_CMD_GET_SCAN in order to obtain the scan information for the
-+ *	new BSS the card/driver roamed to.
-  * @NL80211_CMD_DISCONNECT: drop a given connection; also used to notify
-  *	userspace that a connection was dropped by the AP or due to other
-  *	reasons, for this the %NL80211_ATTR_DISCONNECTED_BY_AP and
+ .../devicetree/bindings/soc/qcom/qcom,wcnss.txt   |  7 +++++++
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi         | 12 ++++++++++++
+ arch/arm64/boot/dts/qcom/msm8916.dtsi             |  2 +-
+ drivers/net/wireless/ath/wcn36xx/main.c           |  7 +++++++
+ drivers/net/wireless/ath/wcn36xx/smd.c            |  4 ++--
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h        |  1 +
+ drivers/soc/qcom/wcnss_ctrl.c                     | 15 ++++++++++-----
+ 7 files changed, 40 insertions(+), 8 deletions(-)
+
 -- 
-2.26.2
+2.29.2
 
