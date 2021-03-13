@@ -2,96 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 619B6339C2A
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Mar 2021 06:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFA44339C4A
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Mar 2021 06:50:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232179AbhCMFbl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 Mar 2021 00:31:41 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:11060 "EHLO z11.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229852AbhCMFbZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 Mar 2021 00:31:25 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1615613485; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=k9JxB+H+3CYGFE+sWWv4hE2XTv5Q5jaRYOuDcz/bFXk=; b=qPfBoK6oJLvvvevkSu1zAzRxeja0oOLC2qpBU80o9RjqEaSFn5OvcN6RKNO4Ac5z3/8cOkHl
- c1EMlVhiOeBKcBEWONsTnvrbLjyFLNpnvHryycuBGcF3q1byJ1uKtzTxTnguP/VK9u5sH7Br
- AA6DBiP+eZYhp1N9NsykeZojy+c=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 604c4e2b4db3bb68019ed886 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 13 Mar 2021 05:31:23
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 34DDCC43461; Sat, 13 Mar 2021 05:31:23 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 269D1C433CA;
-        Sat, 13 Mar 2021 05:31:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 269D1C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jiri Kosina <jikos@kernel.org>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        id S232702AbhCMFuK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Mar 2021 00:50:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59430 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232179AbhCMFuE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 13 Mar 2021 00:50:04 -0500
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E95DC061574;
+        Fri, 12 Mar 2021 21:50:04 -0800 (PST)
+Received: by mail-il1-x12d.google.com with SMTP id e7so4597983ile.7;
+        Fri, 12 Mar 2021 21:50:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=3H6MFCVhLmnM09/TpAZrPH+jErh+xZ0JJNfFLNUI1zA=;
+        b=s+k9bPKIXC+qokWwlf6bkEcKtiEEel9+ST3RyF9c4wAj8sP3+V17OXq3wx8w2B8UAW
+         5Y2c1psiHU3JeeWYZEeZoBBXEuUyNbmDPKogoPD4+8rmqz9BIZbd3mSlaqhTjkT+y6QD
+         JjstluumxjDGPH4UIo8J4/YSFO7edmF0kdbFmYrwuNSHidBsgBM2LlIweSa9D8iE4MCS
+         W9ayHAJ8hsC/v3l/vRUGHtb4mr583UealXzRXwXRbvE+3xvUjMClR+hXQNIqe6Q15Ukm
+         moAgzYVf7I7B3EjSGZdqXC/8mq4zCqwJSAsspJRFTGDvtMdxCNVktztFuFZDQE6QFeET
+         hneA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=3H6MFCVhLmnM09/TpAZrPH+jErh+xZ0JJNfFLNUI1zA=;
+        b=p2EEICCjYsNVHZtsj0WE/34nI/rghF9EbRaZks/OMA9oMw+Y3DPnDt6k+eTgR6oCSL
+         BTRNi6llD50sczy5ffG1vf37X4eEm30E9u47ZTv4nsaDNaRnUDUkzkJ/ou+qqXu4J3nI
+         2iJa9CBDpFJ0xiVaBSAD2kOf/MzXQkhw/eTVCdHT9Ay7leJkV3mub9vnxRPoAtQL5f4U
+         kvL2mZGdA1P5hKDxqnyUlR0dwr9N3y8uMND9jfvNm/FXU3DzCgGLhGWhIrlCZwKl1DdJ
+         JC4pdcxyzZe5xne0uIfxUs+bIjouxDbGkqIIQdfpe+8r5NXq8Rr9y931r3kwM05WZcRn
+         yfyA==
+X-Gm-Message-State: AOAM533mK5ZZil6V2ljMNuMJBubnEsyckS0dgrMNOq7FRd15Kig/c7HB
+        UspBJ0z9yuHX1tVxaVp2YahBaRHjyHTVgOaKdw0=
+X-Google-Smtp-Source: ABdhPJwmI728apDN+oe/BL0ZrtA0TZm2Eo6i1oZJACUbMySMwdGplUtO02cn9RQnkaWIJO5PDcihZkIdo72OAyYdLbI=
+X-Received: by 2002:a92:c145:: with SMTP id b5mr5248748ilh.186.1615614603364;
+ Fri, 12 Mar 2021 21:50:03 -0800 (PST)
+MIME-Version: 1.0
+References: <nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm>
+ <nycvar.YFH.7.76.2103080925230.12405@cbobk.fhfr.pm> <nycvar.YFH.7.76.2103130242460.12405@cbobk.fhfr.pm>
+ <87h7lfbowr.fsf@tynnyri.adurom.net>
+In-Reply-To: <87h7lfbowr.fsf@tynnyri.adurom.net>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Sat, 13 Mar 2021 06:49:27 +0100
+Message-ID: <CA+icZUW9uctLqNYro3ASDkwofE61Cz4E_qTjk_XQnzv-1s++aw@mail.gmail.com>
+Subject: Re: [PATCH] iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_enqueue_hcmd()
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_enqueue_hcmd()
-References: <nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm>
-        <nycvar.YFH.7.76.2103080925230.12405@cbobk.fhfr.pm>
-        <nycvar.YFH.7.76.2103130242460.12405@cbobk.fhfr.pm>
-Date:   Sat, 13 Mar 2021 07:31:16 +0200
-In-Reply-To: <nycvar.YFH.7.76.2103130242460.12405@cbobk.fhfr.pm> (Jiri
-        Kosina's message of "Sat, 13 Mar 2021 02:44:12 +0100 (CET)")
-Message-ID: <87h7lfbowr.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jiri Kosina <jikos@kernel.org> writes:
-
-> On Mon, 8 Mar 2021, Jiri Kosina wrote:
+On Sat, Mar 13, 2021 at 6:45 AM Kalle Valo <kvalo@codeaurora.org> wrote:
 >
->> > From: Jiri Kosina <jkosina@suse.cz>
->> > 
->> > It's possible for iwl_pcie_enqueue_hcmd() to be called with hard IRQs 
->> > disabled (e.g. from LED core). We can't enable BHs in such a situation.
->> > 
->> > Turn the unconditional BH-enable/BH-disable code into 
->> > hardirq-disable/conditional-enable.
->> > 
->> > This fixes the warning below.
->> 
->> Hi,
->> 
->> friendly ping on this one ... 
+> Jiri Kosina <jikos@kernel.org> writes:
 >
-> Luca,
+> > On Mon, 8 Mar 2021, Jiri Kosina wrote:
+> >
+> >> > From: Jiri Kosina <jkosina@suse.cz>
+> >> >
+> >> > It's possible for iwl_pcie_enqueue_hcmd() to be called with hard IRQs
+> >> > disabled (e.g. from LED core). We can't enable BHs in such a situation.
+> >> >
+> >> > Turn the unconditional BH-enable/BH-disable code into
+> >> > hardirq-disable/conditional-enable.
+> >> >
+> >> > This fixes the warning below.
+> >>
+> >> Hi,
+> >>
+> >> friendly ping on this one ...
+> >
+> > Luca,
+> >
+> > Johannes is telling me that he merged this patch internally, but I have no
+> > idea what is happening to it ... ?
+> >
+> > The reported splat is a clear bug, so it should be fixed one way or the
+> > other.
 >
-> Johannes is telling me that he merged this patch internally, but I have no 
-> idea what is happening to it ... ?
+> Should I take this to wireless-drivers?
 >
-> The reported splat is a clear bug, so it should be fixed one way or the 
-> other.
 
-Should I take this to wireless-drivers?
+If you do so, please add:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com> # LLVM/Clang v12.0.0-rc3
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+- Sedat -
+
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
