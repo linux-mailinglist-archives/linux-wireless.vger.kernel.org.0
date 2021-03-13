@@ -2,65 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB10F339EE9
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Mar 2021 16:23:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DA1E339EF7
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Mar 2021 16:47:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231497AbhCMPXJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 Mar 2021 10:23:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40812 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbhCMPW5 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 Mar 2021 10:22:57 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5DAC061574
-        for <linux-wireless@vger.kernel.org>; Sat, 13 Mar 2021 07:22:56 -0800 (PST)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lL66N-00Fegy-Dg; Sat, 13 Mar 2021 16:22:51 +0100
-Message-ID: <2d419a7d1d10067760fcc553582e87fb3ca4a34a.camel@sipsolutions.net>
-Subject: Re: [PATCH 5.12 regression fix] brcmfmac: p2p: Fix recently
- introduced deadlock issue
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Date:   Sat, 13 Mar 2021 16:22:50 +0100
-In-Reply-To: <20210313143635.109154-1-hdegoede@redhat.com> (sfid-20210313_153800_338272_9A5AD47E)
-References: <20210313143635.109154-1-hdegoede@redhat.com>
-         (sfid-20210313_153800_338272_9A5AD47E)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S233685AbhCMPno (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Mar 2021 10:43:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39304 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233478AbhCMPnO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 13 Mar 2021 10:43:14 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 553A364E07;
+        Sat, 13 Mar 2021 15:43:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615650194;
+        bh=giY0FNup90bsA9e7Qg8ciSUPfUygNZHjbQUyRstuaPw=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=A5aYnw9sIjY/tOhchJui1crLf0TwokhL9XpQD/RcEeYrUAjIN4qiPvt1GRaou5ukF
+         vGFAz2vRkTPxpCkMQs+ZW9uvbkmxPO3NZ7xqIhm3nh4Yk6f0A+YcQ2i/C6trUjUKjg
+         F5e8r3y8Fzb1fMBvq4ouU/BQU7dEHkSbxwb0FLVCnI7I+NG/J4/EPKvtpmrmayASMX
+         ElFr1+bx+/UT7l4NWLQeukTBx3q3nkM9h3i46XGfv4Im+t9wF+T4iaa2145LjA1xA6
+         XF2XtC7nJyZcwwKf5EacdoesEjGTRGVkOdccvI9KvNv2ktgAR0OaZjM6YjHDMMX8EF
+         6V1ouSogJzoQg==
+Date:   Sat, 13 Mar 2021 16:43:10 +0100 (CET)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iwlwifi: Fix softirq/hardirq disabling in
+ iwl_pcie_enqueue_hcmd()
+In-Reply-To: <87h7lfbowr.fsf@tynnyri.adurom.net>
+Message-ID: <nycvar.YFH.7.76.2103131642290.12405@cbobk.fhfr.pm>
+References: <nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm> <nycvar.YFH.7.76.2103080925230.12405@cbobk.fhfr.pm> <nycvar.YFH.7.76.2103130242460.12405@cbobk.fhfr.pm> <87h7lfbowr.fsf@tynnyri.adurom.net>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2021-03-13 at 15:36 +0100, Hans de Goede wrote:
-> Commit a05829a7222e ("cfg80211: avoid holding the RTNL when calling the
-> driver") replaced the rtnl_lock parameter passed to various brcmf
-> functions with just lock, because since that commit it is not just
-> about the rtnl_lock but also about the wiphy_lock .
-> 
-> During this search/replace the "if (!rtnl_locked)" check in brcmfmac/p2p.c
-> was accidentally replaced with "if (locked)", dropping the inversion of
-> the check. This causes the code to now call rtnl_lock() while already
-> holding the lock, causing a deadlock.
-> 
-> Add back the "!" to the if-condition to fix this.
+On Sat, 13 Mar 2021, Kalle Valo wrote:
 
-Ouch, sorry about that, and thanks for the fix!
+> >> > From: Jiri Kosina <jkosina@suse.cz>
+> >> > 
+> >> > It's possible for iwl_pcie_enqueue_hcmd() to be called with hard IRQs 
+> >> > disabled (e.g. from LED core). We can't enable BHs in such a situation.
+> >> > 
+> >> > Turn the unconditional BH-enable/BH-disable code into 
+> >> > hardirq-disable/conditional-enable.
+> >> > 
+> >> > This fixes the warning below.
+> >> 
+> >> Hi,
+> >> 
+> >> friendly ping on this one ... 
+> >
+> > Luca,
+> >
+> > Johannes is telling me that he merged this patch internally, but I have no 
+> > idea what is happening to it ... ?
+> >
+> > The reported splat is a clear bug, so it should be fixed one way or the 
+> > other.
+> 
+> Should I take this to wireless-drivers?
 
-johannes
+I can't speak for the maintainers, but as far as I am concerned, it 
+definitely is a 5.12 material, as it fixes real scheduling bug.
+
+Thanks,
+
+-- 
+Jiri Kosina
+SUSE Labs
 
