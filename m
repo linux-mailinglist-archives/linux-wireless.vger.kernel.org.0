@@ -2,83 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D545033A8E4
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 00:44:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E24C133AB31
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 06:40:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbhCNXnp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Mar 2021 19:43:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58642 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229607AbhCNXnQ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Mar 2021 19:43:16 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1966AC061763
-        for <linux-wireless@vger.kernel.org>; Sun, 14 Mar 2021 16:43:15 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id p21so54028706lfu.11
-        for <linux-wireless@vger.kernel.org>; Sun, 14 Mar 2021 16:43:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=F+5ScLWA/ADeBe/oMOOUSI5PFgHlHPjBcYld0NBl47Q=;
-        b=mbbr0Gj+pc1thMUzjA1Ykk4g0qVlesZ5yqBWQGQZQ2BMYA0ANKnd1T6YXtXZdx1N/G
-         BfK/HjcmtQCs4xNPI8gBj6iZYPwlfVMNci2z1lqWXYYTgbragAxRXxn3rJ7d2LRczwU1
-         zN43uYH2VSA1XOZQuq/89CLQKVP083Z8667YuHlylKu1JCM0fGeP9h7erm8CvuIMYiN0
-         DZ9OQkJ8MOHgwiV/uRf8kJQiCOZUSjE3OAakapMqvSAVZaTlkbZbvdi2b15l1msSLjog
-         NVJiYuuba2Zi8W7Nmt6Q755DrPAUx8eJGtLiLB4CMaNhU2PbDWuMKiozcoLsWxpd9cCe
-         NMXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=F+5ScLWA/ADeBe/oMOOUSI5PFgHlHPjBcYld0NBl47Q=;
-        b=Y1g+aDcrX2oXzT3Y9vlKbApFP+8s07RMIxTo2gLrc7OtUcllOrdqFE1K41wSg2hkIL
-         Px8jISOJh9ow3DNFN10Yei+v8QRolnk6KED2Ulu3y7i+k9fIeLX2AeXoCiHvGB/lyxOU
-         +lXBL2g8GBk3Fh0RefRNHWNfa5af8iNSEBrF6Yg0qNqX1A0tWatZPF5GLAS1/iCNv1GD
-         4p13DLCtltsbY8epvjp+3w0PuNAmDIgahyH/Pb7uuq8DQDf0jvhlS7/NPNpN0KG23Fsb
-         zoDsRPNb8pZUh5H78Va9GuR/UmoqoWbZ4wl+Uw2Xq6Hhple1jfo1+hYEJkjnBPc9LBXf
-         b9bA==
-X-Gm-Message-State: AOAM533TfGs4xiWWTB1mUA321PiP0cGWh/NL46XnBStnvEuz164ovDlX
-        HUyPooHGSUHdQa8b562eZiDyTFOFmz9CALV7XByUHQ==
-X-Google-Smtp-Source: ABdhPJzerti5+ixXGgGBHTSWzHl1Vc2msbMBqZNpmT3OP2WcE0GvfaNHIVnZGogSqwojo3DvpEfcwtLV+K6K/yYstfw=
-X-Received: by 2002:a05:6512:243:: with SMTP id b3mr6380364lfo.529.1615765392236;
- Sun, 14 Mar 2021 16:43:12 -0700 (PDT)
+        id S230011AbhCOFkR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 01:40:17 -0400
+Received: from m42-2.mailgun.net ([69.72.42.2]:12412 "EHLO m42-2.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230194AbhCOFkD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Mar 2021 01:40:03 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1615786803; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=FwJGjdysIo+zgRkoKbaKpsDYLmg5awOg5tV4j6Mxv6M=; b=jgWJ8PwfDMk14Kc3K4Tyyc4jrxiz9acGR1+3sZ8Tre2eaUNM3jvYfNOBJso3BygkiYdm4BRu
+ nEO1hJ88oAE0yo0h9OslB2Tu4BWrTpmvUYyrIMsvDroskRvHy5KHy2xDLypJqjR0sTlU01Kn
+ H6sgxjnZ4VxDSuhMvcXEGy6iV0U=
+X-Mailgun-Sending-Ip: 69.72.42.2
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 604ef3265d70193f88fa2e0f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Mar 2021 05:39:50
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6461EC43461; Mon, 15 Mar 2021 05:39:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 42DA4C433CA;
+        Mon, 15 Mar 2021 05:39:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 42DA4C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH net-next 0/3] iwlwifi: series with smaller improvements
+References: <22e63925-1469-2839-e4d3-c10d8658ba82@gmail.com>
+Date:   Mon, 15 Mar 2021 07:39:46 +0200
+In-Reply-To: <22e63925-1469-2839-e4d3-c10d8658ba82@gmail.com> (Heiner
+        Kallweit's message of "Sun, 14 Mar 2021 20:38:29 +0100")
+Message-ID: <87k0q9t1p9.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20210313215302.4076765-1-linus.walleij@linaro.org> <CAGRGNgU_C6keHC_Ty3iruJc5cwsBGJRRBm8DWH91fHjygPv0fg@mail.gmail.com>
-In-Reply-To: <CAGRGNgU_C6keHC_Ty3iruJc5cwsBGJRRBm8DWH91fHjygPv0fg@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 15 Mar 2021 00:43:01 +0100
-Message-ID: <CACRpkdbHfH=+m3EJ9CBGkQ3rh6MGtKy4ixk3fgu15rxEzMg5dw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Convert the BCM4329 bindings to YAML and extend
-To:     Julian Calaby <julian.calaby@gmail.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Mar 14, 2021 at 1:05 AM Julian Calaby <julian.calaby@gmail.com> wrote:
+Heiner Kallweit <hkallweit1@gmail.com> writes:
 
-> I don't know if this is necessary for SDIO, but should the non-4329
-> compatibles have the 4329 compatible as an alternative?
+> Series includes smaller improvements.
+>
+> Heiner Kallweit (3):
+>   iwlwifi: use DECLARE_BITMAP macro
+>   iwlwifi: switch "index larger than supported by driver" warning to
+>     debug level
+>   iwlwifi: use dma_set_mask_and_coherent
 
-I can, and I guess I should add it, as I grep:ed and saw this:
+iwlwifi patches go to iwlwifi-next, not net-next. But no need to resend
+just because of this.
 
-arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-compatible = "brcm,bcm4339-fmac", "brcm,bcm4329-fmac";
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-So from more to less specific.
-
-Yours,
-Linus Walleij
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
