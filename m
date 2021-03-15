@@ -2,103 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D58C133ADC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 09:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2739433AE3B
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 10:12:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbhCOImJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 04:42:09 -0400
-Received: from m42-2.mailgun.net ([69.72.42.2]:30052 "EHLO m42-2.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229574AbhCOIli (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 04:41:38 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1615797698; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=9Yz2prTldpg06djW1uSjsLo9RAV7sQVLS2v0kM5ni7Y=; b=atA8sXeHxcX6RGvxpdgJVQE0UOw2nSN9ITssYVkya2hmjSy2/KqqjCMdhZvlTDrU13sBt2Yx
- D03Yp1vwAcOUS3MGkt2Px3z9Ic3SdEjT3RAPjCcEnGf6woyqoIMjts05e4AT1Ia8vQEXNohj
- jCXYPGq4zdA7KMAVZTosRS+CfPM=
-X-Mailgun-Sending-Ip: 69.72.42.2
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 604f1dc05d70193f8863aebb (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Mar 2021 08:41:36
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 24727C43461; Mon, 15 Mar 2021 08:41:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2C5D0C43463;
-        Mon, 15 Mar 2021 08:41:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2C5D0C43463
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Aditya Srivastava <yashsri421@gmail.com>, siva8118@gmail.com,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        amitkarwar@gmail.com, David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/10] rsi: fix comment syntax in file headers
-References: <20210314201818.27380-1-yashsri421@gmail.com>
-        <CAKXUXMzH-cUVeuCT6eM_0iHzgKpzvZUPO6pKNpD0yUp2td09Ug@mail.gmail.com>
-Date:   Mon, 15 Mar 2021 10:41:30 +0200
-In-Reply-To: <CAKXUXMzH-cUVeuCT6eM_0iHzgKpzvZUPO6pKNpD0yUp2td09Ug@mail.gmail.com>
-        (Lukas Bulwahn's message of "Mon, 15 Mar 2021 09:01:56 +0100")
-Message-ID: <87a6r4u7ut.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S229544AbhCOJLs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 05:11:48 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:34042 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229467AbhCOJLf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Mar 2021 05:11:35 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12F9A6B9073804;
+        Mon, 15 Mar 2021 09:11:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=TyGg+uKj5swceqnF7ADrAAvVI400/7/tNo98mRFkVRE=;
+ b=vkpLBY1amFW28s74cLLzH8XTDwxCpvezENWmtyyvCHl/WAQ3FqbrgHJfcoXa87YXQqgf
+ NmsXOf2xoAKB4K8iNIvpXurMAnAyKUJEUglWQSQsjZ6zqCgrdIwMFnmrx7cev4uKMR4Q
+ W3gKh460xEkymW9kR45p0UoZ49oA6+PTTqsx5M0agvBHtlwDcVlz3h12ociwhsAHs3Xj
+ W5KyzxEenxT1p+3BIOwG9GX8/xNLLHsMnNeSLaPWBSU4yZmlhYQ3Wjcz0xEcGpQAi6tn
+ f0wWJ9+2rFw3NsP4w1fJyP0LzCmifkQpihfaiRDMetqxU98BI1GROo2h1sIGGhMtLNEC xQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 378p1nk1p9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 15 Mar 2021 09:11:22 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12F9B3qD108285;
+        Mon, 15 Mar 2021 09:11:21 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 37a4er8kt7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 15 Mar 2021 09:11:21 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 12F9BIlU022840;
+        Mon, 15 Mar 2021 09:11:18 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 15 Mar 2021 02:11:18 -0700
+Date:   Mon, 15 Mar 2021 12:11:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Tzu-En Huang <tehuang@realtek.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] rtw88: Fix an error code in rtw_debugfs_set_rsvd_page()
+Message-ID: <20210315091107.GO21246@kadam>
+References: <YCwgb/4F4Y+tyE56@mwanda>
+ <20210315080817.A3975C43461@smtp.codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210315080817.A3975C43461@smtp.codeaurora.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9923 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103150064
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9923 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 suspectscore=0 adultscore=0
+ spamscore=0 clxscore=1011 phishscore=0 malwarescore=0 priorityscore=1501
+ bulkscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103150064
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lukas Bulwahn <lukas.bulwahn@gmail.com> writes:
+On Mon, Mar 15, 2021 at 08:08:17AM +0000, Kalle Valo wrote:
+> Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> 
+> > The sscanf() function returns either 0 or 1 here.  It doesn't return
+> > error codes.  We should return -EINVAL if the string is invalid.
+> > 
+> > Fixes: c376c1fc87b7 ("rtw88: add h2c command in debugfs")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> Why do you remove the num variable? I think the code is more readable with it.
+> 
 
-> On Sun, Mar 14, 2021 at 9:18 PM Aditya Srivastava <yashsri421@gmail.com> wrote:
->>
->> The opening comment mark '/**' is used for highlighting the beginning of
->> kernel-doc comments.
->> There are files in drivers/net/wireless/rsi which follow this syntax in
->> their file headers, i.e. start with '/**' like comments, which causes
->> unexpected warnings from kernel-doc.
->>
->> E.g., running scripts/kernel-doc -none on drivers/net/wireless/rsi/rsi_coex.h
->> causes this warning:
->> "warning: wrong kernel-doc identifier on line:
->>  * Copyright (c) 2018 Redpine Signals Inc."
->>
->> Similarly for other files too.
->>
->> Provide a simple fix by replacing the kernel-doc like comment syntax with
->> general format, i.e. "/*", to prevent kernel-doc from parsing it.
->>
->
-> Aditya, thanks for starting to clean up the repository following your
-> investigation on kernel-doc warnings.
->
-> The changes to all those files look sound.
->
-> However I think these ten patches are really just _one change_, and
-> hence, all can be put into a single commit.
+The way I wrote it is slightly more normal (457 vs 333) and we don't use
+"num" except for the one if statement.  But I can write the other way.
+I'll resend.
 
-I agree, this is one logical change to a single driver so one patch will
-suffice. I think for cleanup changes like this one patch per driver is a
-good approach.
+regards,
+dan carpenter
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
