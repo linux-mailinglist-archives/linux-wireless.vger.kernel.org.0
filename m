@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 687AA33AD60
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 09:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2FBA33AD67
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 09:28:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230214AbhCOI0h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 04:26:37 -0400
-Received: from m42-2.mailgun.net ([69.72.42.2]:33956 "EHLO m42-2.mailgun.net"
+        id S230165AbhCOI1k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 04:27:40 -0400
+Received: from z11.mailgun.us ([104.130.96.11]:11075 "EHLO z11.mailgun.us"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230300AbhCOI0N (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 04:26:13 -0400
+        id S230403AbhCOI1T (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Mar 2021 04:27:19 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1615796773; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1615796838; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=mxLXYdvx85X9oDNgZm9abgFv4K/c40qOxczAgM8pC6g=;
- b=p5+wCPp1uQzXxduSfFbhuToLMjbY6kWtb81b7PwdGsfvXmCGCelkKsUf4ObggU3ohhmaCmDH
- 5YkLS0IT6JaBx1IZnedPQkAMbf1/ju+DOIMt53OJDlsh+agrE1bkluMpG6IJf7ngs2O7wbJO
- WhUTzTD8I0erpl/0W6TrtrEw9N0=
-X-Mailgun-Sending-Ip: 69.72.42.2
+ Content-Type: Sender; bh=NgPHPzVjjMah6W99FHyjlf0ngyHkhGVZpYfsTvh05xc=;
+ b=urGh57pWOKpkoBS+MWuQn1TmzSNoHEsyJNrVZZerJivvI7pMm5t3Zuxj9mCDozkr0fwo+oTO
+ B3ORzPXjv9qqsNer4AXnBsrKmMnA1v0z2jRWEle4vRuCN9OrNnp6dge3SWha5/Xj4P6ZqXF9
+ sWPOQ4v9JsG/jpgAE8gKePDYsXg=
+X-Mailgun-Sending-Ip: 104.130.96.11
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 604f1a25e2200c0a0d39fc18 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Mar 2021 08:26:13
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 604f1a4b5d70193f885bb5ed (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Mar 2021 08:26:51
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 12A93C43465; Mon, 15 Mar 2021 08:26:13 +0000 (UTC)
+        id A9DF3C43463; Mon, 15 Mar 2021 08:26:51 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,47 +39,45 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5F091C433ED;
-        Mon, 15 Mar 2021 08:26:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5F091C433ED
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3D85CC43461;
+        Mon, 15 Mar 2021 08:26:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D85CC43461
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: wilc1000: write value to WILC_INTR2_ENABLE register
+Subject: Re: [PATCH v2] wilc1000: use wilc handler as cookie in
+ request_threaded_irq()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210224163706.519658-1-marcus.folkesson@gmail.com>
-References: <20210224163706.519658-1-marcus.folkesson@gmail.com>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Marcus Folkesson <marcus.folkesson@gmail.com>
+In-Reply-To: <20210225042302.17048-1-ajay.kathat@microchip.com>
+References: <20210225042302.17048-1-ajay.kathat@microchip.com>
+To:     <Ajay.Kathat@microchip.com>
+Cc:     <linux-wireless@vger.kernel.org>, <Claudiu.Beznea@microchip.com>,
+        <Ajay.Kathat@microchip.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210315082613.12A93C43465@smtp.codeaurora.org>
-Date:   Mon, 15 Mar 2021 08:26:13 +0000 (UTC)
+Message-Id: <20210315082651.A9DF3C43463@smtp.codeaurora.org>
+Date:   Mon, 15 Mar 2021 08:26:51 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
+<Ajay.Kathat@microchip.com> wrote:
 
-> Write the value instead of reading it twice.
+> From: Ajay Singh <ajay.kathat@microchip.com>
 > 
-> Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> Use same cookie for request_threaded_irq() & free_irq() to properly free
+> IRQ during module unload. free_irq() already uses *wilc* handler so the
+> changes are required for request_threaded_irq().
+> 
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-e21b6e5a5462 wilc1000: write value to WILC_INTR2_ENABLE register
+50773696301b wilc1000: use wilc handler as cookie in request_threaded_irq()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210224163706.519658-1-marcus.folkesson@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210225042302.17048-1-ajay.kathat@microchip.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
