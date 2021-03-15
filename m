@@ -2,92 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2739433AE3B
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 10:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F7233AE9C
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 10:24:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbhCOJLs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 05:11:48 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:34042 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229467AbhCOJLf (ORCPT
+        id S229606AbhCOJYS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 05:24:18 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:47528 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229634AbhCOJX6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 05:11:35 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12F9A6B9073804;
-        Mon, 15 Mar 2021 09:11:22 GMT
+        Mon, 15 Mar 2021 05:23:58 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12F98uDI029713;
+        Mon, 15 Mar 2021 09:23:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=TyGg+uKj5swceqnF7ADrAAvVI400/7/tNo98mRFkVRE=;
- b=vkpLBY1amFW28s74cLLzH8XTDwxCpvezENWmtyyvCHl/WAQ3FqbrgHJfcoXa87YXQqgf
- NmsXOf2xoAKB4K8iNIvpXurMAnAyKUJEUglWQSQsjZ6zqCgrdIwMFnmrx7cev4uKMR4Q
- W3gKh460xEkymW9kR45p0UoZ49oA6+PTTqsx5M0agvBHtlwDcVlz3h12ociwhsAHs3Xj
- W5KyzxEenxT1p+3BIOwG9GX8/xNLLHsMnNeSLaPWBSU4yZmlhYQ3Wjcz0xEcGpQAi6tn
- f0wWJ9+2rFw3NsP4w1fJyP0LzCmifkQpihfaiRDMetqxU98BI1GROo2h1sIGGhMtLNEC xQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 378p1nk1p9-1
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=s9DhrO9uH8gUV9s+eQAL8ndad6+WRFuEKy/GLRVpLz8=;
+ b=VASFXSXih63jUvTq0rnxe2gTefl0anjOLM/NK0zWhN/cYqSEF35pBMgdpE/71Z834i7r
+ JgmbaczBWR2pnNPEoq8HdbO35hbDQAHJsD8BzsjxXMXcjd5fi926l+TZFW/JA/FkyLR8
+ +Pjqdegyh1u1S0Bod2uUpnv1Ayw4KxPtWJ5y911+00RUxFB15SRmdBF17K55pAi7Ymj4
+ qba33q63UiDcqyLDOC9rpEnSWfh1wq4Np4tyW+Dfx/J4z/16/M3FxQcFVWHeNPjsCsDu
+ h0U+yksLM7yC7V81gBD48iWx8jk4Wi+mx484lk7R9jGq+f8rElbzj56jYzdrmSxwFhV1 Iw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 378nbm34d2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 15 Mar 2021 09:11:22 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12F9B3qD108285;
-        Mon, 15 Mar 2021 09:11:21 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 37a4er8kt7-1
+        Mon, 15 Mar 2021 09:23:49 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12F99iIB182825;
+        Mon, 15 Mar 2021 09:23:47 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 3797axdxar-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 15 Mar 2021 09:11:21 +0000
+        Mon, 15 Mar 2021 09:23:47 +0000
 Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 12F9BIlU022840;
-        Mon, 15 Mar 2021 09:11:18 GMT
-Received: from kadam (/102.36.221.92)
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 12F9NjkI023768;
+        Mon, 15 Mar 2021 09:23:45 GMT
+Received: from mwanda (/102.36.221.92)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 15 Mar 2021 02:11:18 -0700
-Date:   Mon, 15 Mar 2021 12:11:07 +0300
+        with ESMTP ; Mon, 15 Mar 2021 02:23:45 -0700
+Date:   Mon, 15 Mar 2021 12:23:37 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+To:     Yan-Hsuan Chuang <tony0620emma@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Tzu-En Huang <tehuang@realtek.com>,
         linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] rtw88: Fix an error code in rtw_debugfs_set_rsvd_page()
-Message-ID: <20210315091107.GO21246@kadam>
-References: <YCwgb/4F4Y+tyE56@mwanda>
- <20210315080817.A3975C43461@smtp.codeaurora.org>
+Subject: [PATCH v2] rtw88: Fix an error code in rtw_debugfs_set_rsvd_page()
+Message-ID: <YE8nmatMDBDDWkjq@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210315080817.A3975C43461@smtp.codeaurora.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailer: git-send-email haha only kidding
 X-Proofpoint-IMR: 1
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9923 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
- malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103150064
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103150064
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9923 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 suspectscore=0 adultscore=0
- spamscore=0 clxscore=1011 phishscore=0 malwarescore=0 priorityscore=1501
- bulkscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 mlxscore=0 clxscore=1015 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2103150064
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Mar 15, 2021 at 08:08:17AM +0000, Kalle Valo wrote:
-> Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> 
-> > The sscanf() function returns either 0 or 1 here.  It doesn't return
-> > error codes.  We should return -EINVAL if the string is invalid.
-> > 
-> > Fixes: c376c1fc87b7 ("rtw88: add h2c command in debugfs")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> Why do you remove the num variable? I think the code is more readable with it.
-> 
+The sscanf() function returns the number of matches (0 or 1 in this
+case).  It doesn't return error codes.  We should return -EINVAL if the
+string is invalid
 
-The way I wrote it is slightly more normal (457 vs 333) and we don't use
-"num" except for the one if statement.  But I can write the other way.
-I'll resend.
+Fixes: c376c1fc87b7 ("rtw88: add h2c command in debugfs")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: Style change.  Keep "num" variable.
 
-regards,
-dan carpenter
+ drivers/net/wireless/realtek/rtw88/debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index 948cb79050ea..e7d51ac9b689 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -270,7 +270,7 @@ static ssize_t rtw_debugfs_set_rsvd_page(struct file *filp,
+ 
+ 	if (num != 2) {
+ 		rtw_warn(rtwdev, "invalid arguments\n");
+-		return num;
++		return -EINVAL;
+ 	}
+ 
+ 	debugfs_priv->rsvd_page.page_offset = offset;
+-- 
+2.30.1
 
