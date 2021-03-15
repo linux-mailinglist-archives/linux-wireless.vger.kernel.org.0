@@ -2,96 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49B7733C39E
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 18:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0BDD33C425
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 18:29:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234810AbhCORJ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 13:09:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58208 "EHLO
+        id S236071AbhCOR3I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 13:29:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235532AbhCORJw (ORCPT
+        with ESMTP id S234455AbhCOR2k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 13:09:52 -0400
-Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78A2DC0613D8
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 10:09:52 -0700 (PDT)
-Received: by mail-ua1-x942.google.com with SMTP id j19so4423111uax.2
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 10:09:52 -0700 (PDT)
+        Mon, 15 Mar 2021 13:28:40 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D9E4C06174A;
+        Mon, 15 Mar 2021 10:28:40 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id o3so2361737pfh.11;
+        Mon, 15 Mar 2021 10:28:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
-        b=aXgMsfvJxS8rnPrkFXfXe2FXnX4z8Cqcu/QhnL5Qn1DjMCuOtoNVfGi4EBSS9Iknwn
-         vlNLqDk2YbQyiCk670OLjQr7loetNG1u4FZO8UCDQ2J04lVrlvZVYZ8kX/m2f/vpT8RG
-         ZS2Q72l+5VWjpF0FapEgmyk86Q2RyIYtBwW0g+Kv5gwmZmeSODXVZRu5TrncT2JBKVWl
-         0T4REScA9GLg4vUJnQBLz/6DT44uKbQMn8TCECFL0QnRbFsF40mm5TjkcPcIZSc0whXV
-         T2AgYFv8Od1V+OxvkOJjvUw7wQyrmJeMqbP2Cwhn97vz8cjryp78SHO5Uey9b3DA2nH3
-         +UTg==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=5gnEZY9mFGBFMfKq49DrvBCMPyNX5q5pukAl05EuTws=;
+        b=O7d04w+g65wkjQSjN9kSHAW+hdiPAjBi25iwq/uLbh6IS3zxrFqvpnAi/VTkz+CizL
+         rfXV7/1plKzg4JvtsRMv8DGn32fjDN1MFrf/pgOFWvht0nh2KxM0BnxS7ZecU87zvVsK
+         5/Gl67eKcYe4Eo9s6/AgYVkrP1SHoBJHETrmAW92wsWf8eX+eH6W3rcSN3wMJAGInsFW
+         EQlK0GwegHsZvWA8rzmwsEwYo8N6NIC162Ecdby0XzavyBh0gGSB7KX2I34F23qYDcVY
+         wrwhZjNYxnWdsFznV5bZTGO3H5853/Z9czTvnQm3CDnlWgreKBHFMFr6325do7ABhNG3
+         dhnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
-        b=giROHMeVCls535zyETWmMKYCJWHlrDKaRIq/5iXGt+hCRBjxjVLk+2FHoJWD0y4N84
-         JAe7cY2GGCUrrZam9PhrXWbsttl/GOtmcscwu4w2c6yKK9DnrM0WR1LB5sG36UO7CX6i
-         qiaXIUGsJrmaWxlmhpQcVKuLRyTrA3ukjebvELRkdVHFyScphFHXYQSyAOK4KtfSvYRn
-         YhPNkTEonsYtkHXfFmGZE7xpE2Mjo/BueLFbSt3C14JpTMAB/nCnknaNfZEsRP2UoU/N
-         OrlJuCCOY/lKZdecGKm5YOjkvTtBsgzHIl1gNH8mPfpotTdSzINUZLDhIr6Mt4gLiJEm
-         KzaQ==
-X-Gm-Message-State: AOAM530imEPwOR1hvgSUcN1ejN4D5AeGDSuhRQRNDWAtzwAR7h4HCLFk
-        zx/eSL5AqkEprU8j2cn4yBkKGZpVk+rChk/6mjs=
-X-Google-Smtp-Source: ABdhPJz279ChG9se2R56+CgC4LM1QaXLH3vfcRaBnVrWnTQpeUm6AYsXRAqStDe2E32gf/IZJ47H7xYnUK1rrffxr7c=
-X-Received: by 2002:ab0:4129:: with SMTP id j38mr5247512uad.39.1615828191432;
- Mon, 15 Mar 2021 10:09:51 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=5gnEZY9mFGBFMfKq49DrvBCMPyNX5q5pukAl05EuTws=;
+        b=VFxMMs9IctzNG9bXOilzS8tuZNqKxhkQ+PLgli+U1Z2QDSrgr6fK/QZwcoefqQ7dMl
+         fk/X8C55Le0oWxKP2r7BAmk3hW19ZHfIstDeAtDuraIVqCt6pQ1UfyF5hQX30bHwPkFz
+         GPt6msvwvaBLbj7VlJli/3hKVLOY6hOoov3Hxzh3dSgF9+kW28jHCruIoDZZCwUYaUu3
+         nIaMTf4rfHqGI4wlXe/y7MEWfDptYwBSz8ygYcBXxk6bYCLOwcjtyUc6qFoRuTAF65cA
+         onJYRqnHPJLmZKMlCCDzT9dehCQ+gtavpMmA2YzVJgkqm/9O3oR6Gl88t9/VyMFdLTFn
+         jGfA==
+X-Gm-Message-State: AOAM532kR/GG3jRAHVrvQzRDBpFJuGh2aXgTjeDFsP1RuKyAzLXn+5ws
+        +tnDPDbzk1dZH3Z+xkxK+75T4ae8CixDMQ==
+X-Google-Smtp-Source: ABdhPJxCyPkvAC/1zsx3cLBzAVQAvVUt6KZS6L9LBmrU/jVzsbM4wwPNP8IatVlzERw24Tf6Vbq2Tg==
+X-Received: by 2002:a63:f70f:: with SMTP id x15mr170946pgh.109.1615829319543;
+        Mon, 15 Mar 2021 10:28:39 -0700 (PDT)
+Received: from ?IPv6:2405:201:600d:a089:d096:1684:81a3:45b7? ([2405:201:600d:a089:d096:1684:81a3:45b7])
+        by smtp.gmail.com with ESMTPSA id c24sm229672pjv.18.2021.03.15.10.28.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Mar 2021 10:28:39 -0700 (PDT)
+Subject: Re: [PATCH 00/10] rsi: fix comment syntax in file headers
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     siva8118@gmail.com, linux-kernel-mentees@lists.linuxfoundation.org,
+        amitkarwar@gmail.com, David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20210314201818.27380-1-yashsri421@gmail.com>
+ <CAKXUXMzH-cUVeuCT6eM_0iHzgKpzvZUPO6pKNpD0yUp2td09Ug@mail.gmail.com>
+ <87a6r4u7ut.fsf@codeaurora.org>
+From:   Aditya <yashsri421@gmail.com>
+Message-ID: <643c93f6-1c01-a18d-6ef6-d4d0fb5304fa@gmail.com>
+Date:   Mon, 15 Mar 2021 22:58:32 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Received: by 2002:ab0:2e8f:0:0:0:0:0 with HTTP; Mon, 15 Mar 2021 10:09:50
- -0700 (PDT)
-Reply-To: ezbtg22@gmail.com
-From:   "Mrs.E.Glenn" <mrganuserge654@gmail.com>
-Date:   Mon, 15 Mar 2021 10:09:50 -0700
-Message-ID: <CAH16wSNYh7NNhzrypnhaAQBv8EfF3vGrQ=w1tsAkdJyEQZxf=A@mail.gmail.com>
-Subject: From Mrs.Glenn
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <87a6r4u7ut.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-Dear Beloved,
+On 15/3/21 2:11 pm, Kalle Valo wrote:
+> Lukas Bulwahn <lukas.bulwahn@gmail.com> writes:
+> 
+>> On Sun, Mar 14, 2021 at 9:18 PM Aditya Srivastava <yashsri421@gmail.com> wrote:
+>>>
+>>> The opening comment mark '/**' is used for highlighting the beginning of
+>>> kernel-doc comments.
+>>> There are files in drivers/net/wireless/rsi which follow this syntax in
+>>> their file headers, i.e. start with '/**' like comments, which causes
+>>> unexpected warnings from kernel-doc.
+>>>
+>>> E.g., running scripts/kernel-doc -none on drivers/net/wireless/rsi/rsi_coex.h
+>>> causes this warning:
+>>> "warning: wrong kernel-doc identifier on line:
+>>>  * Copyright (c) 2018 Redpine Signals Inc."
+>>>
+>>> Similarly for other files too.
+>>>
+>>> Provide a simple fix by replacing the kernel-doc like comment syntax with
+>>> general format, i.e. "/*", to prevent kernel-doc from parsing it.
+>>>
+>>
+>> Aditya, thanks for starting to clean up the repository following your
+>> investigation on kernel-doc warnings.
+>>
+>> The changes to all those files look sound.
+>>
+>> However I think these ten patches are really just _one change_, and
+>> hence, all can be put into a single commit.
+> 
+> I agree, this is one logical change to a single driver so one patch will
+> suffice. I think for cleanup changes like this one patch per driver is a
+> good approach.
+> 
 
-I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
-in a hospital bed in Israel. I am 59 years and childless; my husband
-is dead. I was diagnosed with terminal cancer. And my doctor just
-predicted that I have but very limited time to live due to damages in
-my system and as a result of that I decided to dispose my 10.5 million
-US dollars to a God-fearing one for the continuation of charitable
-work. This is why I located you.
+Thanks for the feedback Lukas and Kalle. I will be sending the
+modified v2.
 
-My guess about you may not be accurate because I came across your
-contact at the humanitarian calendar event of the year but I believe
-in God who divinely directed me to you for this solemn proposal of
-charitable work.
-
-Therefore I wholeheartedly wish to bequeath my fortune to you as a
-God-fearing person for the continuation of charitable work anywhere
-around the world.
-
-I shall be going in for a surgery operations soonest and desire this
-money to be transferred to you as I do not wish to leave this money in
-the bank because bankers might misuse it for their own interest after
-my death.
-
-As soon as I receive your quick reply assuring me that you will
-utilize the money as I instructed you for the benefit of the less
-privilege, I shall give you more details and also instruct my bank to
-release the money to you for the charity project. I hope you receive
-this mail in good health.
-
-Please contact me on this E-mail (ezbtg22@gmail.com) because I don t
-know what will be my situation in next minute,
-
-I am waiting for your reply.
-
-Yours sincerely,
-Mrs Elizabet Glenn.
+Thanks
+Aditya
