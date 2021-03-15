@@ -2,200 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE9F33C448
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 18:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB8DE33C4C9
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 18:49:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233887AbhCORdX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 13:33:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35052 "EHLO
+        id S232142AbhCORtI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 13:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234049AbhCORdK (ORCPT
+        with ESMTP id S232018AbhCORsj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 13:33:10 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F487C06174A;
-        Mon, 15 Mar 2021 10:33:10 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id z5so15668620plg.3;
-        Mon, 15 Mar 2021 10:33:10 -0700 (PDT)
+        Mon, 15 Mar 2021 13:48:39 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D1AC061765
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 10:46:58 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id kr3-20020a17090b4903b02900c096fc01deso15192017pjb.4
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 10:46:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=JVL1LdnC9riyRpbnJrHgoR/ByMBICezHbJM/3f4VGqk=;
-        b=l/8CHKwpbPpr5pQct7s45rPhRAXpdacnGnqYDPhksHU/+rHlvCB8KxPX4wZ5z/Bq9a
-         wTrxF8wYseMXjOFCYxVbsrvlniJanpcrgdanJr2qYjlLCa2UDFDOhBm3rsajfSAQhBJM
-         UhU+Qi7XkMXu38SwM6g7yGIuAEwt6hbYmeJaR8AffwZuAQ1VUE5Ej08laKe9bh3Ne4E7
-         Ytm1jILF31M2hGEkBxh14AgPh3oLZeXaQqzv4mhl3HlmmdUErnQ6Je2tVfhd00Gal9iA
-         j3Yt0WQuhoskEmJq8on/ludZ6o+IDaTjT1eS2ePSx9qH7YgkQNW3Nnmaz/leA+YbbIgH
-         6fIQ==
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=U40mYr8ah8+CSLM6VDYRvcQoYQqEC1drsw9qoDV3nhE=;
+        b=ohIQaAv924eazjAr8zPL69BXR4StPgUgSClyVjNsjyST5wR4APzgN/B8YykOePV0B8
+         y7bcCSH/ZPYWCwdrNAN5kB5jQHRxuWcaIdnHnp6geyRF56oNrwYZNK06z7SdCPDtD/kf
+         nRo/j9LT77/GeyAGU7GDgtnhbtQF/U2/tGZauAdSKH6Glyg0A/T22VAgpxbExgTp4YuD
+         eAd/K50b4k8UVe8MVWVvvEgpIt7xC1qBHsxX1Y+eupcDv04qfGUpdjrzPyDIDBLuJmZg
+         ttKExVi7Z5XbWPaUmbEGHMQYkzAF70y/h5uTkm3fx+0OzTaDmzr6r+6gN/FVH7ehJ/Yk
+         BnXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=JVL1LdnC9riyRpbnJrHgoR/ByMBICezHbJM/3f4VGqk=;
-        b=DMnH189pfaPON9t+apJR/cVxErmV52yWAhTdF3pqvU11ei2jRHnlg5ZrH6ES2tt6tX
-         /Zwn159dUGSq8C8LRJH3wxP9mZ+ma+/dQZ/iJlVgW2mooqqz6CbHUCNdeNgxuDIqEEqR
-         hQiLbxYFAr4QGsRmUov1viC2ggTgcA0f0nqcHk6kZWrXxxgZ2diWW8udMeQUPJcqwvwI
-         Eze9VPJvtAlTDfNUgHz2yJPIaZpX+lw+RZLV+skiAwcXGFKdTOUiLmFnmS9CVTM82Uj6
-         qpeIenpHRgXE8l4+cZ69uLJdseUqnr0ZHA7ArLrw8Qu/FRNawnQS/Yf7yQJv659Hj/Yq
-         fDUA==
-X-Gm-Message-State: AOAM532bf16jTzTF4SMSebbVWv7eV4amMBZSBBDIzKQJo2BSCIm6kPVo
-        rTrVSkrIpQGlcCW15x9MGCk=
-X-Google-Smtp-Source: ABdhPJw4d1C0VzZto8nQ3ly7wtLCvTXvYzyjwc3JUJn6MHoOyC5o0PS4i+ywz2rBHxPREp7OxQvBUQ==
-X-Received: by 2002:a17:90a:ec15:: with SMTP id l21mr177524pjy.164.1615829589493;
-        Mon, 15 Mar 2021 10:33:09 -0700 (PDT)
-Received: from localhost.localdomain ([2405:201:600d:a089:d096:1684:81a3:45b7])
-        by smtp.googlemail.com with ESMTPSA id 184sm13450898pgj.93.2021.03.15.10.33.04
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=U40mYr8ah8+CSLM6VDYRvcQoYQqEC1drsw9qoDV3nhE=;
+        b=abtQVJSNsC0UJcCmbFeW8UlMoX+lTYZHOwLv0hY6YqFpgNkFp3Z6xFIl9IuEwCGQqn
+         9SR4O14xkJ3OOczzcxeUpjH2ph4Ioqrvuf60DwmMtkv1n192e8P/rhFDpzALjV9PmiIw
+         qMdpogOFZgb0biZ6UOStWKSdPSdrvYalG0un6d50C+3kl8D2HVjECGQXPdZeEpuOvNw1
+         Kv7kY2ifkACJF14nxwoa/c7hdX9fn+GtglfENUJegJfolUmOxtEgiQOlbKtt8p34ZzUS
+         tL4bVgDeubTTffxPgO9uve6WUCxGTs9qfXb6TGrhoOD5iT0p+BsdUIMSyBtQ3lrYO024
+         oKiA==
+X-Gm-Message-State: AOAM530w5YoY4C5GPGmZgYnJ2Mhkd+r93ihyOeRE022wJD6YHKUO3+9r
+        wcpmYI8sbu/S+c1JbV/MO5iaKialZyc=
+X-Google-Smtp-Source: ABdhPJwDyElcDwKFl3TG9oKP/hy7rrkw60vy+AxS1nog/aLXlOQ8no32jkmpP/JUbE6TkZnBf0qF3g==
+X-Received: by 2002:a17:90a:d3d1:: with SMTP id d17mr223859pjw.21.1615830417853;
+        Mon, 15 Mar 2021 10:46:57 -0700 (PDT)
+Received: from jprestwo-xps ([50.39.173.103])
+        by smtp.gmail.com with ESMTPSA id x7sm14522693pfp.23.2021.03.15.10.46.57
+        for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Mar 2021 10:33:09 -0700 (PDT)
-From:   Aditya Srivastava <yashsri421@gmail.com>
-To:     kvalo@codeaurora.org
-Cc:     yashsri421@gmail.com, lukas.bulwahn@gmail.com,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        amitkarwar@gmail.com, siva8118@gmail.com, davem@davemloft.net,
-        kuba@kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rsi: fix comment syntax in file headers
-Date:   Mon, 15 Mar 2021 23:02:59 +0530
-Message-Id: <20210315173259.8757-1-yashsri421@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 15 Mar 2021 10:46:57 -0700 (PDT)
+Message-ID: <0378ea17e0a8bdb72d635430ff14edc428591690.camel@gmail.com>
+Subject: Re: SAE offload on brcmfmac (BCM4345)
+From:   James Prestwood <prestwoj@gmail.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Mon, 15 Mar 2021 10:46:56 -0700
+In-Reply-To: <1262e6e9c7d2ab499c15a3d297ed87206e49711b.camel@gmail.com>
+References: <1262e6e9c7d2ab499c15a3d297ed87206e49711b.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The opening comment mark '/**' is used for highlighting the beginning of
-kernel-doc comments.
-There are some files in drivers/net/wireless/rsi which follow this syntax
-in their file headers, i.e. start with '/**' like comments, which causes
-unexpected warnings from kernel-doc.
+Maybe a simpler question: What brcmfmac cards *do* support SAE offload?
+So far I have tried:
 
-E.g., running scripts/kernel-doc -none on drivers/net/wireless/rsi/rsi_coex.h
-causes this warning:
-"warning: wrong kernel-doc identifier on line:
- * Copyright (c) 2018 Redpine Signals Inc."
+BCM4345 (raspberry pi 3 B+)
+BCM43602
+BCM43242
 
-Similarly for other files too.
+The last two are quite old (fw dated 2013/2015) so I wouldn't expect
+those to work. According to the documentation the BCM4345 should
+support SAE offload, but me and several others have tried checking the
+extended features and it is not enabled.
 
-Provide a simple fix by replacing such occurrences with general comment
-format, i.e., "/*", to prevent kernel-doc from parsing it.
+Thanks,
+James
 
-Signed-off-by: Aditya Srivastava <yashsri421@gmail.com>
----
-- Applies perfectly on next-20210312
-
-Changes in v2:
-- Convert the patch series to a single patch as suggested by Lukas and Kalle
-
- drivers/net/wireless/rsi/rsi_boot_params.h | 2 +-
- drivers/net/wireless/rsi/rsi_coex.h        | 2 +-
- drivers/net/wireless/rsi/rsi_common.h      | 2 +-
- drivers/net/wireless/rsi/rsi_debugfs.h     | 2 +-
- drivers/net/wireless/rsi/rsi_hal.h         | 2 +-
- drivers/net/wireless/rsi/rsi_main.h        | 2 +-
- drivers/net/wireless/rsi/rsi_mgmt.h        | 2 +-
- drivers/net/wireless/rsi/rsi_ps.h          | 2 +-
- drivers/net/wireless/rsi/rsi_sdio.h        | 2 +-
- drivers/net/wireless/rsi/rsi_usb.h         | 2 +-
- 10 files changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/wireless/rsi/rsi_boot_params.h b/drivers/net/wireless/rsi/rsi_boot_params.h
-index c1cf19d1e376..30e03aa6a529 100644
---- a/drivers/net/wireless/rsi/rsi_boot_params.h
-+++ b/drivers/net/wireless/rsi/rsi_boot_params.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2014 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-diff --git a/drivers/net/wireless/rsi/rsi_coex.h b/drivers/net/wireless/rsi/rsi_coex.h
-index 0fdc67f37a56..2c14e4c651b9 100644
---- a/drivers/net/wireless/rsi/rsi_coex.h
-+++ b/drivers/net/wireless/rsi/rsi_coex.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2018 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-diff --git a/drivers/net/wireless/rsi/rsi_common.h b/drivers/net/wireless/rsi/rsi_common.h
-index 60f1f286b030..7aa5124575cf 100644
---- a/drivers/net/wireless/rsi/rsi_common.h
-+++ b/drivers/net/wireless/rsi/rsi_common.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2014 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-diff --git a/drivers/net/wireless/rsi/rsi_debugfs.h b/drivers/net/wireless/rsi/rsi_debugfs.h
-index 580ad3b3f710..a6a28640ad40 100644
---- a/drivers/net/wireless/rsi/rsi_debugfs.h
-+++ b/drivers/net/wireless/rsi/rsi_debugfs.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2014 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-diff --git a/drivers/net/wireless/rsi/rsi_hal.h b/drivers/net/wireless/rsi/rsi_hal.h
-index 46e36df9e8e3..d044a440fa08 100644
---- a/drivers/net/wireless/rsi/rsi_hal.h
-+++ b/drivers/net/wireless/rsi/rsi_hal.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2017 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-diff --git a/drivers/net/wireless/rsi/rsi_main.h b/drivers/net/wireless/rsi/rsi_main.h
-index 73a19e43106b..a1065e5a92b4 100644
---- a/drivers/net/wireless/rsi/rsi_main.h
-+++ b/drivers/net/wireless/rsi/rsi_main.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2014 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-diff --git a/drivers/net/wireless/rsi/rsi_mgmt.h b/drivers/net/wireless/rsi/rsi_mgmt.h
-index 2ce2dcf57441..236b21482f38 100644
---- a/drivers/net/wireless/rsi/rsi_mgmt.h
-+++ b/drivers/net/wireless/rsi/rsi_mgmt.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2014 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-diff --git a/drivers/net/wireless/rsi/rsi_ps.h b/drivers/net/wireless/rsi/rsi_ps.h
-index 98ff6a4ced57..0be2f1e201e5 100644
---- a/drivers/net/wireless/rsi/rsi_ps.h
-+++ b/drivers/net/wireless/rsi/rsi_ps.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * Copyright (c) 2017 Redpine Signals Inc.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-diff --git a/drivers/net/wireless/rsi/rsi_sdio.h b/drivers/net/wireless/rsi/rsi_sdio.h
-index 1c756263cf15..7c91b126b350 100644
---- a/drivers/net/wireless/rsi/rsi_sdio.h
-+++ b/drivers/net/wireless/rsi/rsi_sdio.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * @section LICENSE
-  * Copyright (c) 2014 Redpine Signals Inc.
-  *
-diff --git a/drivers/net/wireless/rsi/rsi_usb.h b/drivers/net/wireless/rsi/rsi_usb.h
-index 8702f434b569..254d19b66412 100644
---- a/drivers/net/wireless/rsi/rsi_usb.h
-+++ b/drivers/net/wireless/rsi/rsi_usb.h
-@@ -1,4 +1,4 @@
--/**
-+/*
-  * @section LICENSE
-  * Copyright (c) 2014 Redpine Signals Inc.
-  *
--- 
-2.17.1
+On Thu, 2021-03-04 at 11:29 -0800, James Prestwood wrote:
+> Hi,
+> 
+> I am trying to get SAE offload support on a BCM4345 (raspberry pi
+> B+).
+> From what I can tell it appears the Cypress firmware is not enabling
+> the right bits. It looks like the brcmfmac driver has all the code to
+> enable the extended feature. Here is what I have done so far:
+> 
+> Cloned raspi linux kernel v5.4
+> 
+> Downloaded latest Cypress firmware:
+> https://community.cypress.com/t5/Resource-Library/Cypress-Linux-WiFi-Driver-Release-FMAC-2020-09-25/ta-p/251089
+> 
+> Applied the patches from above. Note not *all* the patches applied
+> (could be due to already upstreamed), but most did. I did have to fix
+> an include issue so brcmfmac/cfg80211.c could reference
+> LINUX_CODE_VERSION/LINUX_VERSION.
+> 
+> Built new kernel/installed etc.
+> 
+> After that everything built, and I do see SAE offload source code
+> which
+> sets the ext feature if BRCMF_FEAT_SAE is enabled.
+> 
+> I see my new kernel here:
+> 
+> Linux raspberrypi 5.4.83-v7+ #2 SMP Thu Mar 4 10:54:16 PST 2021
+> armv7l
+> GNU/Linux
+> 
+> and dmesg shows the new firmware loading:
+> 
+> [    7.315275] brcmfmac: F1 signature read @0x18000000=0x15264345
+> [    7.337608] brcmfmac: brcmf_fw_alloc_request: using
+> brcm/brcmfmac43455-sdio for chip BCM4345/6
+> [    7.338104] usbcore: registered new interface driver brcmfmac
+> [    7.606184] brcmfmac: brcmf_fw_alloc_request: using
+> brcm/brcmfmac43455-sdio for chip BCM4345/6
+> [    7.616186] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/6
+> wl0: Mar 23 2020 02:19:54 version 7.45.206 (r725000 CY) FWID 01-
+> 88ee44ea
+> 
+> Yet iw does not have SAE_OFFLOAD set as an extended feature:
+> 
+> Supported extended features:
+> 	* [ 4WAY_HANDSHAKE_STA_PSK ]: 4-way handshake with PSK in
+> station mode
+> 	* [ 4WAY_HANDSHAKE_STA_1X ]: 4-way handshake with 802.1X in
+> station mode
+> 	* [ DFS_OFFLOAD ]: DFS offload
+> 
+> Thanks,
+> James
+> 
 
