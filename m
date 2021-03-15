@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9D1833AD51
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 09:26:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 687AA33AD60
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 09:27:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbhCOIZa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 04:25:30 -0400
-Received: from z11.mailgun.us ([104.130.96.11]:52376 "EHLO z11.mailgun.us"
+        id S230214AbhCOI0h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 04:26:37 -0400
+Received: from m42-2.mailgun.net ([69.72.42.2]:33956 "EHLO m42-2.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230028AbhCOIZV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 04:25:21 -0400
+        id S230300AbhCOI0N (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Mar 2021 04:26:13 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1615796721; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1615796773; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=sF1weHI1X5T3Gz5RmoyK2eWG2yzLY3bB/Yjrd9Jj574=;
- b=IDemHt4rVPvJbEQG3nQHgB/ndC2id9t37GdS2RQb7AEuwUUAUfW6w0LYVjKZFUrWUEGnr+gz
- 2Qybt/N8hkyhEt8AeT0LcvyblHp6CiWlPSC6i5UhkDorIYYOqZ6V5cKiCc04lxTUfhJmetBy
- DYeM1nlAlvoP9n+oLN7silevMus=
-X-Mailgun-Sending-Ip: 104.130.96.11
+ Content-Type: Sender; bh=mxLXYdvx85X9oDNgZm9abgFv4K/c40qOxczAgM8pC6g=;
+ b=p5+wCPp1uQzXxduSfFbhuToLMjbY6kWtb81b7PwdGsfvXmCGCelkKsUf4ObggU3ohhmaCmDH
+ 5YkLS0IT6JaBx1IZnedPQkAMbf1/ju+DOIMt53OJDlsh+agrE1bkluMpG6IJf7ngs2O7wbJO
+ WhUTzTD8I0erpl/0W6TrtrEw9N0=
+X-Mailgun-Sending-Ip: 69.72.42.2
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 604f19d621031618f67a59c1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Mar 2021 08:24:54
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 604f1a25e2200c0a0d39fc18 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Mar 2021 08:26:13
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 88275C433CA; Mon, 15 Mar 2021 08:24:54 +0000 (UTC)
+        id 12A93C43465; Mon, 15 Mar 2021 08:26:13 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,45 +39,47 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A5B1FC433C6;
-        Mon, 15 Mar 2021 08:24:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A5B1FC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5F091C433ED;
+        Mon, 15 Mar 2021 08:26:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5F091C433ED
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wilc1000: Support chip sleep over SPI
+Subject: Re: wilc1000: write value to WILC_INTR2_ENABLE register
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210224033317.1507603-1-davidm@egauge.net>
-References: <20210224033317.1507603-1-davidm@egauge.net>
-To:     David Mosberger-Tang <davidm@egauge.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Ajay Singh <ajay.kathat@microchip.com>,
+In-Reply-To: <20210224163706.519658-1-marcus.folkesson@gmail.com>
+References: <20210224163706.519658-1-marcus.folkesson@gmail.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
-        davidm@egauge.net
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Marcus Folkesson <marcus.folkesson@gmail.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210315082454.88275C433CA@smtp.codeaurora.org>
-Date:   Mon, 15 Mar 2021 08:24:54 +0000 (UTC)
+Message-Id: <20210315082613.12A93C43465@smtp.codeaurora.org>
+Date:   Mon, 15 Mar 2021 08:26:13 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Mosberger-Tang <davidm@egauge.net> wrote:
+Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 
-> chip_allow_sleep() only supported wakeup via SDIO, which made the
-> driver unusable over SPI.  This code is a straight forward port from
-> the driver in the linux-at91 repository.
+> Write the value instead of reading it twice.
 > 
-> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
-> Acked-by: Ajay Singh <ajay.kathat@microchip.com>
+> Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-f135a1571a05 wilc1000: Support chip sleep over SPI
+e21b6e5a5462 wilc1000: write value to WILC_INTR2_ENABLE register
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210224033317.1507603-1-davidm@egauge.net/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210224163706.519658-1-marcus.folkesson@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
