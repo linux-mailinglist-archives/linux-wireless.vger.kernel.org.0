@@ -2,103 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F15B333B099
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 12:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 340FF33B1CE
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 12:56:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbhCOLFZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 07:05:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35168 "EHLO
+        id S230189AbhCOL4P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 07:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbhCOLFK (ORCPT
+        with ESMTP id S230034AbhCOLzn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 07:05:10 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 187D6C061762
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 04:05:10 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id q25so56124619lfc.8
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 04:05:10 -0700 (PDT)
+        Mon, 15 Mar 2021 07:55:43 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66964C061762
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 04:55:43 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id d15so8535772wrv.5
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 04:55:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Sgvr9igcXWBKUfY1IE4B67mheq905Em2jQKjOx4y1YE=;
-        b=HKhfeeknB7kfXg9qqI7wWyr88d6N6N0MnUy9HDIvwsgFr28rpFNDBeukf2x56mBXZj
-         7IlMrOSTUnj7+Vk9EhivUeiQ8sDpaVhccDqZR1tjkHXa2xLNGgg7ZCAwvsXHb3xGij6l
-         0gfIx7huASrtnFKcJxIdY/WZww0WvTf8WgknDunIM7IcpqEnJ+aROCHqsrcfZDvir0t9
-         hOgKn+wphPfw7jMHzivOFyB9L6174KZg3aYkaifYnqYxRyrGteoLhms1ppDCgZx+gK0p
-         RVfXT2Shj+bfkssrku57lF2Gk7O+Mq2REwSnmJFEShEDAG5PMQl/DF/iexdibaQhMMCz
-         NmoQ==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=UBBDD7je+wI0/qiKCUfZNAvigmk/8+/BAZtG2/aOZUg=;
+        b=N6ELYpJLg5vlEAT6sqrROQLbdwsOsBevNnuE1QAd64cpsbT2g6NOOVkNMlLkpjlNqX
+         Br6C5E9Rc3Qx8yPhMvDmcoy+7TG3KcWOQBvh7ElglfGJpd8SYGqYIdvXAhgQsf7XPsWJ
+         kF8JJQkdBSVlneQBgBIRmYX63R4HhWYHThWBoXA/TNOX+1pSozIu4xIpAMtXKXj4hoa6
+         CXK4tVZ7AO2OjFZYR+cm1sS4p+cBirnN4n4Um28WwDOBhCSglEsI1I6PSyFklCc8qqA3
+         2jfNJNPEvJj3AA1SZqz2eYQuNKjR5dwwjVpZfylxyXWIPmMvL8JBr6YTUos+3ZaDCCKT
+         CR4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Sgvr9igcXWBKUfY1IE4B67mheq905Em2jQKjOx4y1YE=;
-        b=jiQc0rB+Rl5kQE4escYOIxnViQIQ2pfCzcbJGY0NsD3WxtLlV0FMHFjilTzmk3XYi3
-         1zFDnzTeG6tHumkp5SNHlSLT64onXvNNISKNl0AnGa2CI/z7fh/xIeG0nDWnQk4myDet
-         qx57NncUkwVfzupM9vLhpSp2hHRpU0GObiHohOVtvUhcyorGhb6axiKmuQYyn+F1shcL
-         gnntDDBFLozR3YhCC21svnwui9RhvKATqG66mXv9qh8kmh0dK/CpWxagW8QJQLfaiWNz
-         yWg8i75aNJXlSnlIriHasYXQmsWl6vROmlYXLwX7Zd+aGF/J/F4r03VEXBWvHrSJ6ZBo
-         JhXw==
-X-Gm-Message-State: AOAM5309PY3Tm9mlPzk1dfyYKWFKKo6y1NbjmrvKHaMQPBQ5zToC7ZLV
-        uZcH2HiU/rYGyNqaN+Vllvic1OAJNkxNHokEDtSnrg==
-X-Google-Smtp-Source: ABdhPJxgA++CWYgtrmM/Gv6XPeHInoxEYMwul217KfTlYslgm0DxKCREAH3B2IZa7VtwpBjIvONTWthCpwTuZd52zt8=
-X-Received: by 2002:a05:6512:243:: with SMTP id b3mr7794596lfo.529.1615806308540;
- Mon, 15 Mar 2021 04:05:08 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=UBBDD7je+wI0/qiKCUfZNAvigmk/8+/BAZtG2/aOZUg=;
+        b=JMbck4FOZqJn/rmSVwyvgurJDbIK73wWJX8CLhZzAK8LDkmYgg/d2hhHLO6RG13Rxz
+         On6Cdt/sLy6CWPpI3Po+TdY8AV86jyu8YHq5tWqD6O4FU+j3MRh0FIW2jixxf1X6GBDI
+         saKRdyzdFUY0npWuOYlaFkjNO9K7+megrLloZMlw5HObokByNQlYwRFnsXSK2Sd6eI7w
+         ZTjYx7rg1DGq4UA+gmpAJCJYvuZntMLe0gPgHyK6fE1ts/sw2ytE4vABIMxkKdlOWPYH
+         lRROEbrc6AAeReGvCz9XROsvp20PbKjNFew7KZ/JWnDDUbA8DcvbU4Cvd26bxaVFNBaQ
+         pbQw==
+X-Gm-Message-State: AOAM532R8SPxixWO0ujqtajixYBu8cSlCO4/Ue2WPEHZg6eOB60F26e6
+        SefCq3SyKq5mJX72jTgzYl4bJuXTNOFAb/7C
+X-Google-Smtp-Source: ABdhPJy4XVY2mbl2fd/VclnvxuPs8C0fJP8y0Wfrk3vqPCi08hsBk6Z9IGpwuWyg48giiBKXkeYgRQ==
+X-Received: by 2002:a5d:61c9:: with SMTP id q9mr26501561wrv.219.1615809342141;
+        Mon, 15 Mar 2021 04:55:42 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id b131sm12406644wmb.34.2021.03.15.04.55.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Mar 2021 04:55:41 -0700 (PDT)
+Subject: Re: [PATCH 5/5] arm64: dts: qcom: msm8916: Enable modem and WiFi
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
+ <20210312003318.3273536-6-bjorn.andersson@linaro.org>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Message-ID: <0c7e402a-6c68-87f3-1ac3-bfb071926831@linaro.org>
+Date:   Mon, 15 Mar 2021 11:57:11 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-References: <20210313215302.4076765-1-linus.walleij@linaro.org>
-In-Reply-To: <20210313215302.4076765-1-linus.walleij@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 15 Mar 2021 12:04:57 +0100
-Message-ID: <CACRpkdZCoeb-uFgOrj5QETdiUPim9O=kXTXwqaFCZ-o76qzpuQ@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Convert the BCM4329 bindings to YAML and extend
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210312003318.3273536-6-bjorn.andersson@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-By the way, here is a question to the broadcom folks:
+On 12/03/2021 00:33, Bjorn Andersson wrote:
+> firmware-name = "qcom/msm8916/WCNSS_qcom_wlan_nv.bin";
 
-On Sat, Mar 13, 2021 at 10:53 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+On the Linaro debian build I have to do this
 
-> +          - brcm,bcm43143-fmac
-> +          - brcm,bcm4341b0-fmac
-> +          - brcm,bcm4341b4-fmac
-> +          - brcm,bcm4341b5-fmac
-> +          - brcm,bcm4329-fmac
-> +          - brcm,bcm4330-fmac
-> +          - brcm,bcm4334-fmac
-> +          - brcm,bcm43340-fmac
-> +          - brcm,bcm4335-fmac
-> +          - brcm,bcm43362-fmac
-> +          - brcm,bcm4339-fmac
-> +          - brcm,bcm43430a0-fmac
-> +          - brcm,bcm43430a1-fmac
-> +          - brcm,bcm43455-fmac
-> +          - brcm,bcm43456-fmac
-> +          - brcm,bcm4354-fmac
-> +          - brcm,bcm4356-fmac
-> +          - brcm,bcm4359-fmac
-> +          - cypress,cyw4373-fmac
-> +          - cypress,cyw43012-fmac
++       firmware-name = "wlan/prima/WCNSS_qcom_wlan_nv.bin";
 
-Here the "-fmac" suffix is added to distinguish the function from
-other functions
-in a combochip, usually WLAN + Bluetooth.
-
-Are there some of these that are just WLAN and not combochips? In that case they
-shall not have the "-fmac" suffix.
-
-Yours,
-Linus Walleij
+---
+bod
