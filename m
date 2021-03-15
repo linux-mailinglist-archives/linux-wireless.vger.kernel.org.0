@@ -2,77 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD77B33BF8C
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 16:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92A2F33C11C
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 17:04:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231449AbhCOPO7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 11:14:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60834 "EHLO
+        id S234025AbhCOQDq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 12:03:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232829AbhCOPOz (ORCPT
+        with ESMTP id S233556AbhCOQDR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 11:14:55 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BAFAC06174A
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 08:14:54 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id r15-20020a05600c35cfb029010e639ca09eso20505540wmq.1
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 08:14:54 -0700 (PDT)
+        Mon, 15 Mar 2021 12:03:17 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F747C06174A
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 09:03:17 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id p186so33773930ybg.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 09:03:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RUvePBBhxzF7wMfmevD5hG0lC6SANJu1Q9CbQ94+254=;
-        b=WBCrjOuSfJtfiUIVaJxfBrU5xiccxPrJQWEOderCsmAZFU0PNzxrd/fkU1Y/JIypt7
-         BHtmkt8yhIwHJYJyWctEVYeenvRrn9yVwKUs/UauGWidnt7YwSndz3J7jUomQOaKfwvf
-         TEnBMTzC+7k8LRSn9RaWZdhPBac98TsdwqKAgvhQeKAT4JYmP88kJYALzjA9bVnqPNFu
-         deTC1FITuQqzGsQVrSVpyAhVHMPCRWzaK64p5/Vj5LU9/cc8s8kuXWHssstu61gFsdXo
-         6mkY1kb7YyH5DHcw0sQP16hwiAULJIPjiB1PiHmSAApXE5dm1epWf+/Y7OABwBA6EWOr
-         zfug==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=3+ww5Yzbg92TgKgh9x7XkqByPZC12NmpSrqavo1/r1s=;
+        b=PiIvHS84FTy2LKcsQi3Nwy69hijvHPIkJGGdfLEDVP7xtI47NWSElMWovkinO+364N
+         /cbihpgprSeknf6fUxieRLEejFph28s4wNpEoAMw9/BDukXatQhHNuekqn6zR0I6xz1z
+         BE5/LTx5+qGnfvz6nYzDxi0PBGiYb2jKRaz6BkH0wOUzsczJqP8GpjPhuJhNAriBWeYe
+         FtqcWkpy/b9zTxfW40Y9aUeTpXnTpsgXhVEO8gpAU6OzSlfzgUI/7XzCf2Q2wyOKnWqF
+         +AtL+1Wg8sZutGoRw1AcL+YRrcNwKJCHaZ8BH8vG5aWvCa2rSO/53IXDyJ5vrIqLTgjy
+         Bv6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=RUvePBBhxzF7wMfmevD5hG0lC6SANJu1Q9CbQ94+254=;
-        b=L8992dy8KPAYeROae8rLUSyIUma8mmqMRe4KAOlfZoHOir/JF4qZ9PnP2zx+c+3q5D
-         yAgGLSs2clPy0yQCjzdsita4t6BzS73an76N4Nzl1WLAuED3fs4gMmkJ8o3qayF9gpHM
-         dXy8mTI3akAVRd1oGjNuVAJU15PcH7JxorUq44jzcO7zDlSME2O/4jiDiti98p/Hq4Px
-         tndjoChpvGnAZWptX25vFsw0gcrIPfhqWDI8j6udOOwrOPVNtfXYHRJt1S5eeyrOolAB
-         of3VsmajNhPV7IadjLKSwecPFOQjYU5bsbBMPQuBLzHfTRjmOwUTsZ6j/gcwLPZcp3ct
-         x/UA==
-X-Gm-Message-State: AOAM5337VK/L6FHNv7W/EOF5wjv7Tbv0B4jqZGeuzITCMmYiwSngpIMk
-        PoINZD3Z9tHeuhmf74LWiMgxhIr0r8nIR7U9
-X-Google-Smtp-Source: ABdhPJy9TKMsawEEoZPVyq1Zs3SCxqBXa60/8DYhFhcq+HpsFH7DuC9VjNWAzm9q5mRm83v95lstmA==
-X-Received: by 2002:a1c:f404:: with SMTP id z4mr171289wma.39.1615821293386;
-        Mon, 15 Mar 2021 08:14:53 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id t14sm19727899wru.64.2021.03.15.08.14.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Mar 2021 08:14:52 -0700 (PDT)
-Subject: Re: [PATCH v2 06/12] wcn36xx: Add ipv6 namespace offload in suspend
-To:     kernel test robot <lkp@intel.com>, kvalo@codeaurora.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, shawn.guo@linaro.org, benl@squareup.com,
-        loic.poulain@linaro.org, bjorn.andersson@linaro.org
-References: <20210315120937.2512341-7-bryan.odonoghue@linaro.org>
- <202103152217.bBCw97Sq-lkp@intel.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Message-ID: <4e4fc2cf-c864-3997-540d-8ec674caf51d@linaro.org>
-Date:   Mon, 15 Mar 2021 15:16:23 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=3+ww5Yzbg92TgKgh9x7XkqByPZC12NmpSrqavo1/r1s=;
+        b=aIb3cfl2eJByPTHTuzQ6HFXc8ppkPA20grsggvZnWPuqgbqKFasyjntuXr4V7CKfKM
+         vp40eyVpccGGd6oPGe4DFZ9hk+cJwyn8i+rdZwJ+1tQIvLUbXbruRam+e1ps1Lkqm0/B
+         VUirBpsOtPcZuKbOCHZvvefxob7LBCYtzvzcEr2ZSPsWYbS8M3WnJS6IsdrBdQkeQrcb
+         2Y+03fwDP+A9FLErqlucZKTX83YbuZCcx0MLzmMQS1/6BoVElCJgQADNO+sjpqfWTuKt
+         OXsv1Wv+wLOIyDaNy3d14d7xuqvStgVLNW+tpxEvOkeGOEjxEx4LvKFmtbcnLbiZPNeo
+         vYiA==
+X-Gm-Message-State: AOAM5335lg2Ck2s4lgetNNjQ0NVaHU5lyZTn3PvG+e4n2BozX+QVf/+H
+        rSbtqsNcIO3TmQ6pqlbViZ40e/ASgma9UIxHrh8=
+X-Google-Smtp-Source: ABdhPJz8Uz7SFURKDL1zQNEdyx93eqe7JLjiBxXJg2KpgKJUGO27pQgwpdpl/pQraL85ro832p1dP+rBJBymIWJzj08=
+X-Received: by 2002:a25:ab32:: with SMTP id u47mr604925ybi.46.1615824196327;
+ Mon, 15 Mar 2021 09:03:16 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <202103152217.bBCw97Sq-lkp@intel.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a81:68b:0:0:0:0:0 with HTTP; Mon, 15 Mar 2021 09:03:15 -0700 (PDT)
+Reply-To: chrrismark11@yahoo.com
+From:   "MR.CHRIS MARK" <micheallamberson5@gmail.com>
+Date:   Mon, 15 Mar 2021 17:03:15 +0100
+Message-ID: <CAB5+k-8zSnzaOPJzPzGMmsk7SFxp-YUiDEaBvciUXsfugOzUZg@mail.gmail.com>
+Subject: Re:GreetinGs
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 15/03/2021 14:18, kernel test robot wrote:
-> Reported-by: kernel test robot<lkp@intel.com>
+-- 
+Hello,
+             I have a project that will profit you and I, please reply
+ASAP with your Names and Mobile Phone for full details.
 
-I should ifdef this function for CONFIG_IPV6.
 
-I'll include that in V3 once I've left this set here long enough comments
+MR.CHRIS MARK
