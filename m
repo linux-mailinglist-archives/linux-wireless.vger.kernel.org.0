@@ -2,61 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B237933B22E
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 13:09:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09CD533B232
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Mar 2021 13:09:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbhCOMIf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Mar 2021 08:08:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48766 "EHLO
+        id S230437AbhCOMIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Mar 2021 08:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230447AbhCOMIK (ORCPT
+        with ESMTP id S230449AbhCOMIL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Mar 2021 08:08:10 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73209C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 05:08:10 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id 61so5561799wrm.12
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 05:08:10 -0700 (PDT)
+        Mon, 15 Mar 2021 08:08:11 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52598C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 05:08:11 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id b9so5570511wrt.8
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Mar 2021 05:08:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=NYk+e0v1fIIJdNtGGm5pPGaN1woGIuYcsbVccpj5KvM=;
-        b=oya9sOt/bAjZrmfhepm42rnPxi5a5a1YbgczIWnqr3NVQHKh4zkohqiPs+b1BpSnP/
-         AD2Yv+U9vl+aasOW8+ZyH9dBEg5HFEENgt3kb1YmZPOsEGbDuEs/JcVNFXTUeDJ2jL+W
-         LUderY90kDpe3ursrWzOiPDasNlDRFPEkKbsD1jdvB8DC43o2YduOB9v8wRNJp8fA2cq
-         dZmh+0yzIrC/24k61gWoO0gx2EGX/CVBWHZBOjTJra8oE04UAg5u2t8P/6RbM/mkYTLO
-         yANta9uVaw0BJbXpbTCAE3X3VXYMGqV9IMsn+2RppxaCm3nFHjR74M1WpYVssiyRJ0+B
-         K6MA==
+        bh=jZ3WKCazIuoUxdRWj4Ban4JPE+r27UOCDH/EMw86Dwc=;
+        b=a9K4toRB7jQlVdt6mKJ4d0L0yJ+9ZNwc4VgeWjc8VuYvomYeF+bjJTpSfd1lhb3gLc
+         8veu4Wf339Luv5hxRw7kWFoIVM9L5z7lVLDskBhowx0D1+fmsyFpFkPKm/domr0nwmoq
+         q9HOUoMy06yz+3/EwsKAK7G4lD3in+aqMSHp99TZVtEkkTC+OVybFjDHzTR7CApc28Tb
+         0S5H3lxb89PMQSRLX6vGbsw50cQi8WNztFdDlekKABh8jebfU6uDf1U3lnS/CtDM1Qqd
+         REvxIcUxmaW6jg5CxXROEcpQHtzyir4ny9/UQbZkmOq6dAxawpl3+nMGU7vLjYnaFjq9
+         lrPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=NYk+e0v1fIIJdNtGGm5pPGaN1woGIuYcsbVccpj5KvM=;
-        b=l4YqEP/1k77jB0CJL1zEAnZVHMN9Zzr0aFUULnzUCz+RZ7Dy3bq5kIcK2V5bgTW9/U
-         Xd2jgqxWzXI2ZSIcB1Cys0NArkaj12hVGj2mlKAcDRLNKaMkhmMJzk9NdJy41OTBYTe5
-         okeyWmFX0cvmGu3PV8HGjITxydPmyjBn7ZUp0aJU4ZxfUVzyE8RWG4Dozo+D2Tu6IrnO
-         10BROvOWq/PUfP+/JRdQLux4asxsqb2Uq+64fLYpfjfJHGARketaBDEm257wlQ02ckT6
-         5EFOsoTovAHQmRdXSKV4f5xZcYEl5mfXCuz58G55bSXtC5sS50u8fTTvi2OgeDzR9m9j
-         cJwA==
-X-Gm-Message-State: AOAM531DurAm+h/8aS64EaKILpZztCbSo9bv0cTWKbgJtlWluIUli9M8
-        2nV0kQ2zvM08LxCoLb5JFOQjiQ==
-X-Google-Smtp-Source: ABdhPJwrtLd7gEsgE15N92lTVRKIVOWqwi38BIRlzEWLtnUOPztqiKCUjUnj+uERIqAkgIOicD595g==
-X-Received: by 2002:a5d:4587:: with SMTP id p7mr27250214wrq.205.1615810089036;
-        Mon, 15 Mar 2021 05:08:09 -0700 (PDT)
+        bh=jZ3WKCazIuoUxdRWj4Ban4JPE+r27UOCDH/EMw86Dwc=;
+        b=W0qMLeMkD8D4ne3G+4tUgg+EK2THyh0jeNYm3YvaLAslYnpW1ZKxqwL0bxGyzbwP7R
+         J+HjrODRoB4ydBzCB8zEaIphFO+YbhgXjS+9W6ieI8kIA/f58q+o6xGyEiBh9IVs58TR
+         Q/x4ItgjJ3acVduy4prTR3/kGKvMFzPXjUXp5MScuhwvJyDYvIndBtM3/OaCks+DSXAf
+         YW4WG7UTf2ai811XtIr9gySdsew2iGTCQlTEx4w8cOly3rTc+uQlu4WPnQr1/rV6UvXd
+         MjB1OsY9l8VJisMio1gCwne8x64219aeqC3zJ7aaaJuVaUmMqa29u/giqkW9O4LVcDpV
+         0FYg==
+X-Gm-Message-State: AOAM5325+U/mEgILYurrEBAOsuGhdNkYhjWGCGzgoxCMoQpYDS5LQtqX
+        VCHO7D3CLy3hd9bWS7F/Gx+k3Q==
+X-Google-Smtp-Source: ABdhPJzwoLtBr4Q4Y23/6vr6QYFijfbt2ww9Bg7l/qkEVbE5dZtNjIaxtA/UCdjWq7MbI6fCn5geNw==
+X-Received: by 2002:a5d:5088:: with SMTP id a8mr27501854wrt.294.1615810090038;
+        Mon, 15 Mar 2021 05:08:10 -0700 (PDT)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id c18sm29239891wmk.0.2021.03.15.05.08.07
+        by smtp.gmail.com with ESMTPSA id c18sm29239891wmk.0.2021.03.15.05.08.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Mar 2021 05:08:08 -0700 (PDT)
+        Mon, 15 Mar 2021 05:08:09 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         benl@squareup.com, loic.poulain@linaro.org,
         bjorn.andersson@linaro.org
-Subject: [PATCH v2 01/12] wcn36xx: Return result of set_power_params in suspend
-Date:   Mon, 15 Mar 2021 12:09:26 +0000
-Message-Id: <20210315120937.2512341-2-bryan.odonoghue@linaro.org>
+Subject: [PATCH v2 02/12] wcn36xx: Run suspend for the first ieee80211_vif
+Date:   Mon, 15 Mar 2021 12:09:27 +0000
+Message-Id: <20210315120937.2512341-3-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210315120937.2512341-1-bryan.odonoghue@linaro.org>
 References: <20210315120937.2512341-1-bryan.odonoghue@linaro.org>
@@ -66,39 +66,90 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-wcn36xx_smd_set_power_params() can return an error. For the purposes of
-entering into suspend we need the suspend() function to trap and report
-errors up the stack.
+A subsequent set of patches will extend out suspend/resume support in this
+driver, we cannot set the firmware up for multiple ipv4/ipv6 addresses and
+as such we can't iterate through a list of ieee80211_vif.
 
-First step in this process is reporting the existing result code for
-wcn36xx_smd_set_power_params().
+Constrain the interaction with the firmware to the first ieee80211_vif on
+the suspend/resume/wowlan path.
 
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/main.c | 43 +++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index afb4877eaad8..b361e40697a6 100644
+index b361e40697a6..c0c1ea18864f 100644
 --- a/drivers/net/wireless/ath/wcn36xx/main.c
 +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1091,12 +1091,14 @@ static int wcn36xx_sta_remove(struct ieee80211_hw *hw,
+@@ -1088,15 +1088,39 @@ static int wcn36xx_sta_remove(struct ieee80211_hw *hw,
+ 
+ #ifdef CONFIG_PM
+ 
++struct ieee80211_vif *wcn36xx_get_first_vif(struct wcn36xx *wcn)
++{
++	struct wcn36xx_vif *tmp;
++	struct ieee80211_vif *vif = NULL;
++
++	list_for_each_entry(tmp, &wcn->vif_list, list) {
++		vif = wcn36xx_priv_to_vif(tmp);
++		if (vif)
++			break;
++	}
++	return vif;
++}
++
  static int wcn36xx_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wow)
  {
  	struct wcn36xx *wcn = hw->priv;
-+	int ret;
+-	int ret;
++	struct ieee80211_vif *vif = NULL;
++	struct wcn36xx_vif *vif_priv = NULL;
++	int ret = 0;
  
  	wcn36xx_dbg(WCN36XX_DBG_MAC, "mac suspend\n");
  
  	flush_workqueue(wcn->hal_ind_wq);
--	wcn36xx_smd_set_power_params(wcn, true);
--	return 0;
-+	ret = wcn36xx_smd_set_power_params(wcn, true);
+-	ret = wcn36xx_smd_set_power_params(wcn, true);
++	mutex_lock(&wcn->conf_mutex);
++	vif = wcn36xx_get_first_vif(wcn);
++	if (vif) {
++		vif_priv = wcn36xx_vif_to_priv(vif);
++		if (!vif_priv->sta_assoc)
++			goto out;
++		ret = wcn36xx_smd_set_power_params(wcn, true);
++	}
++out:
++	mutex_unlock(&wcn->conf_mutex);
+ 
+ 	return ret;
+ }
+@@ -1104,11 +1128,24 @@ static int wcn36xx_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wow)
+ static int wcn36xx_resume(struct ieee80211_hw *hw)
+ {
+ 	struct wcn36xx *wcn = hw->priv;
++	struct ieee80211_vif *vif = NULL;
++	struct wcn36xx_vif *vif_priv = NULL;
+ 
+ 	wcn36xx_dbg(WCN36XX_DBG_MAC, "mac resume\n");
+ 
+ 	flush_workqueue(wcn->hal_ind_wq);
+-	wcn36xx_smd_set_power_params(wcn, false);
++	mutex_lock(&wcn->conf_mutex);
++	vif = wcn36xx_get_first_vif(wcn);
++	if (vif) {
++		vif_priv = wcn36xx_vif_to_priv(vif);
++		if (!vif_priv->sta_assoc)
++			goto out;
 +
-+	return ret;
++		wcn36xx_smd_set_power_params(wcn, false);
++	}
++out:
++	mutex_unlock(&wcn->conf_mutex);
++
+ 	return 0;
  }
  
- static int wcn36xx_resume(struct ieee80211_hw *hw)
 -- 
 2.30.1
 
