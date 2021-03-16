@@ -2,97 +2,227 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0181E33DB32
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Mar 2021 18:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 362DF33DC37
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Mar 2021 19:09:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231978AbhCPRpq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Mar 2021 13:45:46 -0400
-Received: from z11.mailgun.us ([104.130.96.11]:21194 "EHLO z11.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239020AbhCPRpe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Mar 2021 13:45:34 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1615916733; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=cG9vldJJ1LkzKM/FgVY+2KK5neliGdtcrk5p6nSslQU=;
- b=mHl6AbP5bkfrg85dHIPfkuaDKLBhvC8O4GdW5+7Q5BVVZfwQ+A1DHesWn2mIcfWL+umAz93q
- Nk1735t6cGUfzKF+AO5kx+1WpaqwCkYa5OJtFWyIM2z9tEl9Ld/8RHrtbHt1NIdK5gt9edQ3
- PbOHALDojRNp3OavQpMyDwwMt0w=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6050eeb05d70193f88dc57a4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Mar 2021 17:45:20
- GMT
-Sender: gsamin=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 738EAC433C6; Tue, 16 Mar 2021 17:45:20 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: gsamin)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0D5C7C433C6;
-        Tue, 16 Mar 2021 17:45:19 +0000 (UTC)
+        id S239748AbhCPSJC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Mar 2021 14:09:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43058 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239790AbhCPSIO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Mar 2021 14:08:14 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA36C061756
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Mar 2021 11:08:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:References:Cc:To:From:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=YDbNnK85joaXkTpSJ6Gon8XsGgCp9wXnVry+/VcJhxI=; b=Tv1KanNu30+tL416zTCr/wRsWo
+        Ox54YCekMRPh/1i0o0DA1OmH7aud8ROlNYJXW9ezqJ/IMRwyD7x4P66G/nFcRYfArfjq4/u2dtXLZ
+        /LVgUsiQ4f7QHKw7FachEayOWNG1AbtKuScvrqK3/lOn2LrPLdUe7iYMw/StrfaLRGUo=;
+Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lME6x-0004CS-SA; Tue, 16 Mar 2021 19:08:07 +0100
+Subject: Re: pull request: mt76 2021-03-15
+From:   Felix Fietkau <nbd@nbd.name>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <6c132956-ef8d-6175-4a1d-bc3d4aa2e816@nbd.name>
+Message-ID: <442dd09f-9fae-3dc7-3990-6d6e3c26d6de@nbd.name>
+Date:   Tue, 16 Mar 2021 19:08:05 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
+ Gecko/20100101 Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Tue, 16 Mar 2021 23:15:19 +0530
-From:   Govindaraj Saminathan <gsamin@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH] mac80211: fix low throughput due to invalid addba
- extension
-In-Reply-To: <e38a1ff5efbe5532a97310c053b50c6ce5ef027e.camel@sipsolutions.net>
-References: <1615909674-13412-1-git-send-email-gsamin@codeaurora.org>
- <e38a1ff5efbe5532a97310c053b50c6ce5ef027e.camel@sipsolutions.net>
-Message-ID: <631e58cbfc146db2a6ca70ffc8b90648@codeaurora.org>
-X-Sender: gsamin@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+In-Reply-To: <6c132956-ef8d-6175-4a1d-bc3d4aa2e816@nbd.name>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-03-16 21:21, Johannes Berg wrote:
-> On Tue, 2021-03-16 at 21:17 +0530, Govindaraj wrote:
->> Addba request action frame received with the extension element from
->> certain 11ac stations,
->> 
+Hi Kalle,
+
+please hold off on merging this. I'm going to send a new one soon with
+fixes for regressions that were reported recently.
+
+- Felix
+
+On 2021-03-15 14:55, Felix Fietkau wrote:
+> Hi Kalle,
 > 
-> Please indicate which so we have a record of who's shipping broken 
-> junk.
+> here's my first pull request for 5.13.
 > 
->> but the cmd id and length not matching to addba
->> extension and it failing in element parsing.
+> The following changes since commit 05a59d79793d482f628a31753c671f2e92178a21:
 > 
->> Due to this, addba request
->> not acknowledged and aggregation not started which is causing low
->> throughput. Hence validating the cmd id before processing addba 
->> extension.
+>   Merge git://git.kernel.org:/pub/scm/linux/kernel/git/netdev/net (2021-03-09 17:15:56 -0800)
 > 
->>  	ies_len = len - offsetof(struct ieee80211_mgmt,
->>  				 u.action.u.addba_req.variable);
->> -	if (ies_len) {
->> +	if (ies_len &&
->> +	    mgmt->u.action.u.addba_req.variable[0] == WLAN_EID_ADDBA_EXT) {
->>  		ieee802_11_parse_elems(mgmt->u.action.u.addba_req.variable,
->>                                  ies_len, true, &elems, mgmt->bssid, 
->> NULL);
->>  		if (elems.parse_error)
+> are available in the Git repository at:
 > 
-> So we get into parse_error without this?
-yes, we getting parse error.
+>   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-03-15
 > 
-> What are they putting there instead?
-first 9 bytes are addba request action frame and remaining 7 bytes 
-extension causing for parse error.
-03 00 01 02 10 00 00 e0 0a cf 08 06 11a 46 09 fe
+> for you to fetch changes up to 8ffdcfcd7f111f3b89975f26da11fb43a0a37eb6:
 > 
-> johannes
+>   mt76: mt7921: remove redundant check on type (2021-03-15 00:07:18 +0100)
+> 
+> ----------------------------------------------------------------
+> mt76 patches for 5.13
+> 
+> * code cleanup
+> * mt7915/mt7615 decap offload support
+> * driver fixes
+> * mt7613 eeprom support
+> * MCU code unification
+> * threaded NAPI support
+> * new device IDs
+> * mt7921 device reset support
+> 
+> ----------------------------------------------------------------
+> Colin Ian King (1):
+>       mt76: mt7921: remove redundant check on type
+> 
+> David Bauer (1):
+>       mt76: mt76x0: disable GTK offloading
+> 
+> Eric Y.Y. Wong (1):
+>       mt76: mt76x0u: Add support for TP-Link T2UHP(UN) v1
+> 
+> Felix Fietkau (7):
+>       mt76: add support for 802.3 rx frames
+>       mt76: mt7915: add rx checksum offload support
+>       mt76: mt7915: add support for rx decapsulation offload
+>       mt76: mt7615: fix key set/delete issues
+>       mt76: mt7615: fix tx skb dma unmap
+>       mt76: mt7915: fix tx skb dma unmap
+>       mt76: use threaded NAPI
+> 
+> Jiapeng Chong (1):
+>       mt76: mt7921: remove unneeded semicolon
+> 
+> Lorenzo Bianconi (22):
+>       mt76: mt7915: enable hw rx-amsdu de-aggregation
+>       mt76: mt7921: enable random mac addr during scanning
+>       mt76: mt7921: removed unused definitions in mcu.h
+>       mt76: connac: always check return value from mt76_connac_mcu_alloc_wtbl_req
+>       mt76: mt7915: always check return value from mt7915_mcu_alloc_wtbl_req
+>       mt76: mt7615: fix memory leak in mt7615_coredump_work
+>       mt76: mt7921: fix aggr length histogram
+>       mt76: mt7915: fix aggr len debugfs node
+>       mt76: mt7921: fix stats register definitions
+>       mt76: mt7615: fix mib stats counter reporting to mac80211
+>       mt76: connac: fix kernel warning adding monitor interface
+>       mt76: check return value of mt76_txq_send_burst in mt76_txq_schedule_list
+>       mt76: mt7921: get rid of mt7921_sta_rc_update routine
+>       mt76: mt7921: check mcu returned values in mt7921_start
+>       mt76: mt7921: reduce mcu timeouts for suspend, offload and hif_ctrl msg
+>       mt76: introduce mcu_reset function pointer in mt76_mcu_ops structure
+>       mt76: mt7921: introduce mt7921_run_firmware utility routine.
+>       mt76: mt7921: introduce __mt7921_start utility routine
+>       mt76: dma: introduce mt76_dma_queue_reset routine
+>       mt76: dma: export mt76_dma_rx_cleanup routine
+>       mt76: mt7921: add wifi reset support
+>       mt76: mt7921: remove leftovers from dbdc configuration
+> 
+> Nigel Christian (1):
+>       mt76: mt7921: remove unnecessary variable
+> 
+> Ryder Lee (20):
+>       mt76: always use WTBL_MAX_SIZE for tlv allocation
+>       mt76: use PCI_VENDOR_ID_MEDIATEK to avoid open coded
+>       mt76: mt7615: enable hw rx-amsdu de-aggregation
+>       mt76: mt7615: add rx checksum offload support
+>       mt76: mt7615: add support for rx decapsulation offload
+>       mt76: mt7615: fix TSF configuration
+>       mt76: mt7615: remove hdr->fw_ver check
+>       mt76: mt7915: fix mib stats counter reporting to mac80211
+>       mt76: mt7915: add missing capabilities for DBDC
+>       mt76: mt7615: fix CSA notification for DBDC
+>       mt76: mt7615: stop ext_phy queue when mac reset happens
+>       mt76: mt7915: fix CSA notification for DBDC
+>       mt76: mt7915: stop ext_phy queue when mac reset happens
+>       mt76: mt7915: fix PHY mode for DBDC
+>       mt76: mt7915: fix rxrate reporting
+>       mt76: mt7915: fix txrate reporting
+>       mt76: mt7915: check mcu returned values in mt7915_ops
+>       mt76: mt7615: check mcu returned values in mt7615_ops
+>       mt76: mt7615: add missing capabilities for DBDC
+>       mt76: mt7915: fix possible deadlock while mt7915_register_ext_phy()
+> 
+> Sander Vanheule (1):
+>       mt76: mt7615: support loading EEPROM for MT7613BE
+> 
+> Sean Wang (12):
+>       mt76: mt7921: fix suspend/resume sequence
+>       mt76: mt7921: fix memory leak in mt7921_coredump_work
+>       mt76: mt7921: switch to new api for hardware beacon filter
+>       mt76: connac: fix up the setting for ht40 mode in mt76_connac_mcu_uni_add_bss
+>       mt76: mt7921: fixup rx bitrate statistics
+>       mt76: mt7921: add flush operation
+>       mt76: connac: update sched_scan cmd usage
+>       mt76: mt7921: fix the base of PCIe interrupt
+>       mt76: mt7921: fix the base of the dynamic remap
+>       mt76: mt7663: fix when beacon filter is being applied
+>       mt76: mt7663s: make all of packets 4-bytes aligned in sdio tx aggregation
+>       mt76: mt7663s: fix the possible device hang in high traffic
+> 
+>  drivers/net/wireless/mediatek/mt76/agg-rx.c           |  13 ++--
+>  drivers/net/wireless/mediatek/mt76/dma.c              |  53 ++++++++-----
+>  drivers/net/wireless/mediatek/mt76/mac80211.c         |  78 +++++++++++++++++--
+>  drivers/net/wireless/mediatek/mt76/mcu.c              |   4 +
+>  drivers/net/wireless/mediatek/mt76/mt76.h             |  20 ++++-
+>  drivers/net/wireless/mediatek/mt76/mt7603/dma.c       |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7603/mac.c       |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7603/pci.c       |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7615/dma.c       |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c    |   1 +
+>  drivers/net/wireless/mediatek/mt76/mt7615/init.c      |  16 ++--
+>  drivers/net/wireless/mediatek/mt76/mt7615/mac.c       | 195 +++++++++++++++++++++++++++++------------------
+>  drivers/net/wireless/mediatek/mt76/mt7615/mac.h       |   8 ++
+>  drivers/net/wireless/mediatek/mt76/mt7615/main.c      | 153 +++++++++++++++++++++++++++----------
+>  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c       |  69 +++++++++++++++--
+>  drivers/net/wireless/mediatek/mt76/mt7615/mcu.h       |  35 +++------
+>  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h    |  19 +++--
+>  drivers/net/wireless/mediatek/mt76/mt7615/pci.c       |   6 +-
+>  drivers/net/wireless/mediatek/mt76/mt7615/regs.h      |   9 ++-
+>  drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c |  11 ++-
+>  drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c  |   6 +-
+>  drivers/net/wireless/mediatek/mt76/mt76_connac.h      |   5 ++
+>  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c  |  34 ++++++++-
+>  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h  |  23 ++++--
+>  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c       |   6 +-
+>  drivers/net/wireless/mediatek/mt76/mt76x0/usb.c       |   3 +-
+>  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c      |   4 +-
+>  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c     |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt76x02_util.c     |   4 +
+>  drivers/net/wireless/mediatek/mt76/mt76x2/pci.c       |   6 +-
+>  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c   |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7915/dma.c       |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7915/init.c      |  63 +++++++++-------
+>  drivers/net/wireless/mediatek/mt76/mt7915/mac.c       | 103 +++++++++++++++++--------
+>  drivers/net/wireless/mediatek/mt76/mt7915/mac.h       |  15 ++++
+>  drivers/net/wireless/mediatek/mt76/mt7915/main.c      |  90 +++++++++++++++++-----
+>  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c       | 188 ++++++++++++++++++++++++++++++---------------
+>  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h       |  14 +++-
+>  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h    |  10 +--
+>  drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c   |   8 +-
+>  drivers/net/wireless/mediatek/mt76/mt7921/dma.c       |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7921/init.c      |   4 +-
+>  drivers/net/wireless/mediatek/mt76/mt7921/mac.c       | 397 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------------
+>  drivers/net/wireless/mediatek/mt76/mt7921/mac.h       |  10 ++-
+>  drivers/net/wireless/mediatek/mt76/mt7921/main.c      | 143 +++++++++++++++++++++--------------
+>  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c       |  55 ++++++++++----
+>  drivers/net/wireless/mediatek/mt76/mt7921/mcu.h       |  23 ------
+>  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h    |  16 ++--
+>  drivers/net/wireless/mediatek/mt76/mt7921/pci.c       |  20 ++---
+>  drivers/net/wireless/mediatek/mt76/mt7921/regs.h      |  31 +++++---
+>  drivers/net/wireless/mediatek/mt76/sdio.c             |   3 +
+>  drivers/net/wireless/mediatek/mt76/tx.c               |  15 ++--
+>  52 files changed, 1336 insertions(+), 669 deletions(-)
+> 
+
