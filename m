@@ -2,91 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA31E33D4C2
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Mar 2021 14:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC4133D592
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Mar 2021 15:14:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235006AbhCPNWN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Mar 2021 09:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36738 "EHLO
+        id S236041AbhCPONi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Mar 2021 10:13:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234839AbhCPNVp (ORCPT
+        with ESMTP id S236080AbhCPONK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Mar 2021 09:21:45 -0400
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FA4FC06174A
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Mar 2021 06:21:43 -0700 (PDT)
-Received: by mail-qv1-xf29.google.com with SMTP id by2so9465266qvb.11
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Mar 2021 06:21:43 -0700 (PDT)
+        Tue, 16 Mar 2021 10:13:10 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60C3EC06174A
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Mar 2021 07:13:10 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id f10so12779242ilq.5
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Mar 2021 07:13:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
-        h=from:subject:to:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=qUY/TfKraaa410J/01mW1vUlGGBXwjKSrYhZht8zlAA=;
-        b=yw+X+C6vkoqwlHwhxjMgBf9KG3NoGX+8Dg4C2OL3gAXF1UIEjOc3D+BvnTThWyCRU5
-         Kg4RLs+6YIVP/HHu2WDwfXAIa+2/RzsGoIwCbE4WL2XnprDB1SjDaAH9fMNxZhm/oRDM
-         1a5KzP0q8gPFiNJN/MGDH4jK04reykJ1vmqwSG1Y7Q8Pbf8/KjmOIXmHUU0wa+t5/7CH
-         rdLcdLXMp7YZR7QCBGQs6wRrvsoNqnM2d3siMFbMXwfXESqTKMy1Y+8P84G2/PfgnD6N
-         PC6A6naHiUxGH2n8QekvzUHJ1ZGGCKXbiOBHxX5axYEeCTA7bc192/TebMYD4M9I7ZbL
-         +sgQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=RJm2IchCn9OrHAOUqZO9DoNOk/mru8d5FcBKxtEuzDE=;
+        b=O+K6xgUJMLke9aVeLE/xkLszJQeQhG8r8KdEY5Nd4dG+z8GPRQK+31/bdrLEvGkRm7
+         r2gS2Mt1lE43PhmdiyjABRyE2bdMAaAj55m/2o+2tpBT4T+q1M0ArOV0Bn3s3sD9c0rL
+         G25gsGKkTbNn3qkB1p8IPZEHn9dFvP01P4IYwXKokd/jzFz9h37B0gorBbZr/K0aPrFe
+         gnYlC1dZCeV93VwBa1yAiwRPjRtZf+19tWsM8pL8jLCoIndhdvOJUewcfuBl7IEBTBYy
+         NHTFcTV7llReHISaTnstNwilQUofEDV1Kp14+yJz6ggXvCSpMM7t5ajW5bnKpyvL4QBF
+         yn+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=qUY/TfKraaa410J/01mW1vUlGGBXwjKSrYhZht8zlAA=;
-        b=YvshtzepweMekZ+Di/OqJtNN/ebwMk9ky3ixloIIs9Wq9XKPtdqNCoOTAxBSKb+rfV
-         8jJ5Ketb3FfBYwfyTMhyIcyLciYHIiI0TO4pTCqipQjTpu64u74MNZc5bi0FVuLnjCqv
-         0KP38GOBb/ePPQITGPqIiXiSh0S2QovRTDnQI8k1NYlQcjB+P1XsipbbQ3xjRY4hPcA0
-         KpBSfBhCxHcW3JXaqznZ/kt7HCbqV0lGtUx91sbEP+oKQuwK8t50itR6LNyv0QS8vJtI
-         TFZkfMaSEvw0gazJHNmTrYWD1PAZOLF3iZw9rqCqY7MzA4bfKT/A+/bQOXiXQizKkE0c
-         lqMA==
-X-Gm-Message-State: AOAM532aPDQ7xmEgHWCBpM6ELJ2Cxs51vJ81TRWLQ7s4mQBZIDn3DUtu
-        vTFHngzjoMXJ1RmOp+Gy7mY4rg==
-X-Google-Smtp-Source: ABdhPJwDg0g1aytukRTywSBP5WM37yZV5X9yIDwSwdHyQkKG86wc8C7nrSMBdAYPPOfm5oy6rOOlQA==
-X-Received: by 2002:ad4:5bad:: with SMTP id 13mr15656973qvq.20.1615900900140;
-        Tue, 16 Mar 2021 06:21:40 -0700 (PDT)
-Received: from [192.168.2.61] (bras-base-kntaon1617w-grc-09-184-148-53-47.dsl.bell.ca. [184.148.53.47])
-        by smtp.googlemail.com with ESMTPSA id 18sm15626140qkr.90.2021.03.16.06.21.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Mar 2021 06:21:39 -0700 (PDT)
-From:   Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: CFS for Netdev 0x15 open!
-To:     people <people@netdevconf.org>, netdev@vger.kernel.org,
-        netfilter-devel@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>, lwn@lwn.net
-Message-ID: <9ca7fbab-16f0-2e7b-a8cb-1fa834264d9a@mojatatu.com>
-Date:   Tue, 16 Mar 2021 09:21:38 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=RJm2IchCn9OrHAOUqZO9DoNOk/mru8d5FcBKxtEuzDE=;
+        b=uke2oSYgzIfjjSXzvtuUGQUNcoIzuWqsvmTalZTZPia8YLQWpopGSDagWxjsZUamVd
+         K7Y4kNxsEpEdOUesT58UatEu92cFgeEs6qE6ITYtsjbNW0juFzg9N/Ya57uJu9UuExgo
+         19pxRN97yDB2hE8qF6zrtpVKWU2x+EuL9XjM+tOj3SddT86ui8kpBxVI2eouaTXhFW+a
+         xH+95G9GDub5XWT4Ij6JHt9Hgu5xSGcmfFkFLtlefMG7EIA4V41buFiZbeGRTb5DOeOK
+         pVoLj4S9gGhtUC+AjaupcXZMhNDw4PhjEoNZOyeX9OP5sSrYY3+iv34ZQAjVy46+rf3G
+         6STg==
+X-Gm-Message-State: AOAM530EVEqU65tasHZsdgUAMUCs0XtlxnCE7/oucycwZ/avYsrZmR3M
+        bwHh98uA0PalbzYmnk40CI6ypF5BGD3FdeK28qe3gfsmkxQfcQ==
+X-Google-Smtp-Source: ABdhPJygOU7hinrHZ8LAD/J7OQK1NwOha0GGS34lX8mlSMR9FUvDNECPZpGz6MdqbNc1KI99HEpMyCLMX93BEB94xG0=
+X-Received: by 2002:a92:c7c2:: with SMTP id g2mr3902448ilk.209.1615903989905;
+ Tue, 16 Mar 2021 07:13:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAJCQCtRuZ0hACdwH1N23OZrxEVyM2W9gn_O4wZRcFSq_74Gkqg@mail.gmail.com>
+In-Reply-To: <CAJCQCtRuZ0hACdwH1N23OZrxEVyM2W9gn_O4wZRcFSq_74Gkqg@mail.gmail.com>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Tue, 16 Mar 2021 15:12:33 +0100
+Message-ID: <CA+icZUW-Ja4dDr8huyiwZrgCxf8vdxkYmP=tiueciJq5TAZsow@mail.gmail.com>
+Subject: Re: iwlwifi, WARNING at kernel/softirq.c:178 __local_bh_enable_ip
+To:     Chris Murphy <lists@colorremedies.com>
+Cc:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We are pleased to announce the opening of Call For
-Submissions(CFS) for Netdev 0x15.
+On Tue, Mar 16, 2021 at 2:50 AM Chris Murphy <lists@colorremedies.com> wrote:
+>
+> Hi,
+>
+> I'm getting a warning, new with kernel 5.12-rc3
+>
+> [   14.156547] WARNING: CPU: 0 PID: 766 at kernel/softirq.c:178
+> __local_bh_enable_ip+0x97/0xd0
+>
+> This is with Intel Corporation Wireless 8260, and firmware version
+> 36.ad812ee0.0 8000C-36.ucode
+>
+> Bug contains complete dmesg attached;
+> https://bugzilla.kernel.org/show_bug.cgi?id=212297
+>
+> Thanks,
+>
 
-For overview of topics, submissions and requirements
-please visit:
-https://netdevconf.info/0x15/submit-proposal.html
+Hi Chris,
 
-For all submitted sessions, we employ a double blind
-review process carried out by the Program Committee.
-Please refer to:
-https://www.netdevconf.info/0x15/pc_review.html
+can you try "[PATCH] iwlwifi: Fix softirq/hardirq disabling in
+iwl_pcie_enqueue_hcmd()" from [1]?
 
-Important dates:
+Thanks.
 
-June 10th, 2021 CFS closes
-June 15th, 2021 Acceptance Notifications complete
-July 15th, 2021 Slides and papers for talks are due.
-July 15th, Recordings start !!!
+Regards,
+- Sedat -
 
-For more frequent updates subscribe to the mailing
-list people@netdevconf.info or see us at the twitters
-as @netdev01
-
-cheers,
-jamal  (on behalf of the Netdev Society)
+[1] https://lore.kernel.org/linux-wireless/nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm/
