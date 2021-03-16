@@ -2,131 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A20A333CF39
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Mar 2021 09:03:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84D8733D067
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Mar 2021 10:20:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbhCPIDW convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Mar 2021 04:03:22 -0400
-Received: from mga09.intel.com ([134.134.136.24]:40127 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232577AbhCPIDF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Mar 2021 04:03:05 -0400
-IronPort-SDR: baPMBGcSlhUp+sNUWayTAZs6xnV2B4bTwrIepqye1q4pnbEPn2bYJz4Fc22REYeB2FWHRomBHb
- 5mgeJXvSv8Ew==
-X-IronPort-AV: E=McAfee;i="6000,8403,9924"; a="189310814"
-X-IronPort-AV: E=Sophos;i="5.81,251,1610438400"; 
-   d="scan'208";a="189310814"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2021 01:03:04 -0700
-IronPort-SDR: 4Mlf+xJkj70RZ08Adl2iC52T/Xk6/ENFhy59/2Pj5tyn0kcKwhlsNQJ8+GIkjBJu+nLCvAGJVR
- VpXWdqS3Y8HQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,251,1610438400"; 
-   d="scan'208";a="590576542"
-Received: from fmsmsx606.amr.corp.intel.com ([10.18.126.86])
-  by orsmga005.jf.intel.com with ESMTP; 16 Mar 2021 01:03:04 -0700
-Received: from shsmsx603.ccr.corp.intel.com (10.109.6.143) by
- fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 16 Mar 2021 01:03:03 -0700
-Received: from shsmsx601.ccr.corp.intel.com (10.109.6.141) by
- SHSMSX603.ccr.corp.intel.com (10.109.6.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 16 Mar 2021 16:03:01 +0800
-Received: from shsmsx601.ccr.corp.intel.com ([10.109.6.141]) by
- SHSMSX601.ccr.corp.intel.com ([10.109.6.141]) with mapi id 15.01.2106.013;
- Tue, 16 Mar 2021 16:03:01 +0800
-From:   "Li, Philip" <philip.li@intel.com>
-To:     =?iso-8859-1?Q?J=E9r=F4me_Pouiller?= <jerome.pouiller@silabs.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        lkp <lkp@intel.com>
-CC:     "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        id S235921AbhCPJTq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Mar 2021 05:19:46 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39790 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233947AbhCPJTa (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Mar 2021 05:19:30 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lM5rI-0002vz-C5; Tue, 16 Mar 2021 09:19:24 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Subject: RE: [kbuild-all] Re: [PATCH] wfx: fix irqf_oneshot.cocci warnings
-Thread-Topic: [kbuild-all] Re: [PATCH] wfx: fix irqf_oneshot.cocci warnings
-Thread-Index: AQHXGjluGKy1l/wG8EupGMY1Pavj+qqGQOCw
-Date:   Tue, 16 Mar 2021 08:03:00 +0000
-Message-ID: <a8dba72b92a7407c9f2d531527137643@intel.com>
-References: <20210315132501.441681-25-Jerome.Pouiller@silabs.com>
- <20210315210920.GA43634@d108da9836c5> <3096745.nmkoU2l6Xm@pc-42>
-In-Reply-To: <3096745.nmkoU2l6Xm@pc-42>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.5.1.3
-x-originating-ip: [10.239.127.36]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ath11k: qmi: Fix spelling mistake "requeqst" -> "request"
+Date:   Tue, 16 Mar 2021 09:19:24 +0000
+Message-Id: <20210316091924.15627-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Subject: [kbuild-all] Re: [PATCH] wfx: fix irqf_oneshot.cocci warnings
-> 
-> Hello,
-> 
-> On Monday 15 March 2021 22:09:20 CET kernel test robot wrote:
-> >
-> > From: kernel test robot <lkp@intel.com>
-> >
-> > drivers/net/wireless/silabs/wfx/bus_sdio.c:134:8-33: ERROR: Threaded IRQ with no primary handler requested without
-> IRQF_ONESHOT
-> >
-> >  Since commit 1c6c69525b40 ("genirq: Reject bogus threaded irq requests")
-> >  threaded IRQs without a primary handler need to be requested with
-> >  IRQF_ONESHOT, otherwise the request will fail.
-> >
-> >  So pass the IRQF_ONESHOT flag in this case.
-> >
-> > Generated by: scripts/coccinelle/misc/irqf_oneshot.cocci
-> >
-> > CC: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: kernel test robot <lkp@intel.com>
-> > ---
-> >
-> > url:    https://github.com/0day-ci/linux/commits/Jerome-Pouiller/wfx-get-out-from-the-staging-area/20210315-212855
-> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging.git b828324bba8f575fde487a91fec07303789dda8a
-> >
-> >  bus_sdio.c |    3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > --- a/drivers/net/wireless/silabs/wfx/bus_sdio.c
-> > +++ b/drivers/net/wireless/silabs/wfx/bus_sdio.c
-> > @@ -132,7 +132,8 @@ static int wfx_sdio_irq_subscribe(void *
-> >                 flags = IRQF_TRIGGER_HIGH;
-> >         flags |= IRQF_ONESHOT;
-> >         return devm_request_threaded_irq(&bus->func->dev, bus->of_irq, NULL,
-> > -                                        wfx_sdio_irq_handler_ext, flags,
-> > +                                        wfx_sdio_irq_handler_ext,
-> > +                                        flags | IRQF_ONESHOT,
-> >                                          "wfx", bus);
-> >  }
-> >
-> >
-> 
-> Obviously, "flags" always contains IRQF_ONESHOT. So, it is a false positive.
-Thanks for the feedback. Sorry about this false positive, this had been disabled
-for auto report now.
+From: Colin Ian King <colin.king@canonical.com>
 
-> 
-> 
-> --
-> Jérôme Pouiller
-> 
-> _______________________________________________
-> kbuild-all mailing list -- kbuild-all@lists.01.org
-> To unsubscribe send an email to kbuild-all-leave@lists.01.org
+There is a spelling mistake in an ath11k_warn message. Fix it.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/ath/ath11k/qmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index a612e279ea5b..b5e34d670715 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -2514,7 +2514,7 @@ static int ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
+ 
+ 	ret = ath11k_qmi_request_target_cap(ab);
+ 	if (ret < 0) {
+-		ath11k_warn(ab, "failed to requeqst qmi target capabilities: %d\n",
++		ath11k_warn(ab, "failed to request qmi target capabilities: %d\n",
+ 			    ret);
+ 		return ret;
+ 	}
+-- 
+2.30.2
+
