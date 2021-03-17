@@ -2,124 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5426233F578
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 17:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8DC33FB84
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 23:53:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232527AbhCQQ2H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Mar 2021 12:28:07 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:36730 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232547AbhCQQ1o (ORCPT
+        id S229505AbhCQWwb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Mar 2021 18:52:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50922 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229608AbhCQWwT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Mar 2021 12:27:44 -0400
-X-UUID: cab759e53d7a4d7099d82dd2afcc5c96-20210318
-X-UUID: cab759e53d7a4d7099d82dd2afcc5c96-20210318
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 378509917; Thu, 18 Mar 2021 00:27:39 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 18 Mar 2021 00:27:37 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 18 Mar 2021 00:27:37 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7622: add ePA/eLNA support
-Date:   Thu, 18 Mar 2021 00:27:36 +0800
-Message-ID: <1fb0ff65cb7d8c4f3197a87b43c26c5925e973ea.1615997929.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 17 Mar 2021 18:52:19 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC95CC06174A
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Mar 2021 15:52:18 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id v17so287608iot.6
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Mar 2021 15:52:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=WXYhupZX2ErX4pBb43XWlz6FEpr8DfumfrBgRMgf4oc=;
+        b=P3V2kK+7GdN+ByajsL4nuy6OImCiG0lgUrScudL77h2Rq4Bb0bFNIz82GTqqZFzYwm
+         G6gIcFPY61Wm56biJKPNJFepLRo/5BwfRL1gLiaO0TNVVNhJFWFs7Oyd/LUGQNld58t/
+         ccOKHcEklI0qD3MEDjeaSbJTJ/BMxeYFXX403QI3QNCXn6uuYIDyVsoykheWYN2DSeZp
+         r4iLCko0sZOXWxeAms8d209h6ZOx/cP3k9qm5O7kfJAeaObNm6Qd2GaMF5rgqG11o/A5
+         4CNCBlODRs1VEzrGogoVlS/dcSV96bPaWBONZC96BDmsk2vLwvHvRx/SQ9aXwIPwjzFa
+         hrFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=WXYhupZX2ErX4pBb43XWlz6FEpr8DfumfrBgRMgf4oc=;
+        b=EWBSUiz3a6tFhX9RebhiD7O3qv43xFVl14JogIUo+urF9v5i52/lZgmjU200+LrWpy
+         nOhdJmJ1L+FaN0b+CC6xlCbvOHPsNu/cCeo+kGbaqasHSBRUCqN6xQt08DlsQf/4qowk
+         +A1nHdR8SYMvXLBbZixDPaLD4VDVAVEupTl8ZRf0B8nV9PDEptNmu+zoLQZJKoZxY9hD
+         2Usp6aO+Od7/5U8Kpx2cCqHP/C2HXY5BCVce7NZ1PTtmnDKS3NzdD/MaoOxJ8xoTc4lQ
+         MrS/R5icrgLrHSa/tFaDJ3QZA61+TwskcBCP+umiWIh620N3G5uzPWYrkmLN0LryLqp8
+         j3AA==
+X-Gm-Message-State: AOAM530M8ctJLLEKAfY61F37BhMfPWOOT3XgLhcYYec87WOs0m+gmcze
+        VKMU7ApT5EIals8sdgI3DAx1mWWBl4Q+H0VpxJHqn+9oMUes6g==
+X-Google-Smtp-Source: ABdhPJyfEF3n1rSUW9jL3T4A4f6g1HbLD3uM8AGIwhynHyzThu57D4ItfKvR8sXBMezKb292Wdy4CS7YhRLo6Sjhsqc=
+X-Received: by 2002:a5d:9285:: with SMTP id s5mr8392522iom.139.1616021538161;
+ Wed, 17 Mar 2021 15:52:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 7D846F657E33A424517F43A1E3D6A28EA76700F69B8EB68FF761DD751EA164682000:8
-X-MTK:  N
+From:   Peter Collingbourne <pcc@google.com>
+Date:   Wed, 17 Mar 2021 15:52:07 -0700
+Message-ID: <CAMn1gO7evHe+pvcFwv1XE+y090CSWwXL=pRKjZwmnrZa3j4gtg@mail.gmail.com>
+Subject: Re: [PATCH v2] cfg80211: avoid holding the RTNL when calling the driver
+To:     johannes.berg@intel.com, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Switch pinmux to enable ePA/eLNA support.
+Hi Johannes,
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../wireless/mediatek/mt76/mt7615/eeprom.c    | 29 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7615/eeprom.h    |  4 +++
- 2 files changed, 33 insertions(+)
+I'm seeing warnings like this on 5.12.0-rc2 which I think were caused
+by your patch.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-index 6dbaaf95ee38..d3182573163c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/of.h>
-+#include <linux/pinctrl/consumer.h>
- #include "mt7615.h"
- #include "eeprom.h"
- 
-@@ -136,12 +137,40 @@ mt7615_eeprom_parse_hw_band_cap(struct mt7615_dev *dev)
- 	}
- }
- 
-+static void mt7615_eeprom_parse_hw_epa_cap(struct mt7615_dev *dev)
-+{
-+	struct pinctrl_state *state;
-+	struct pinctrl *pinctrl;
-+	u8 i, *eeprom = dev->mt76.eeprom.data;
-+
-+	if (!is_mt7622(&dev->mt76))
-+		return;
-+
-+	i = FIELD_GET(MT_EE_NIC_WIFI_CONF_BAND_PALNA, eeprom[MT_EE_WIFI_CONF]);
-+	if (i != MT_EE_NIC_WIFI_CONF_EPA_ELNA &&
-+	    i != MT_EE_NIC_WIFI_CONF_IPA_ELNA)
-+		return;
-+
-+	pinctrl = devm_pinctrl_get(dev->mt76.dev);
-+	if (IS_ERR(pinctrl))
-+		return;
-+
-+	state = pinctrl_lookup_state(pinctrl, "epa-state");
-+	if (IS_ERR(state))
-+		goto out;
-+
-+	pinctrl_select_state(pinctrl, state);
-+out:
-+	devm_pinctrl_put(pinctrl);
-+}
-+
- static void mt7615_eeprom_parse_hw_cap(struct mt7615_dev *dev)
- {
- 	u8 *eeprom = dev->mt76.eeprom.data;
- 	u8 tx_mask, max_nss;
- 
- 	mt7615_eeprom_parse_hw_band_cap(dev);
-+	mt7615_eeprom_parse_hw_epa_cap(dev);
- 
- 	if (is_mt7663(&dev->mt76)) {
- 		max_nss = 2;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-index a024dee10362..a609c4bb108c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-@@ -64,7 +64,11 @@ enum mt7615_eeprom_field {
- #define MT_EE_NIC_CONF_TSSI_2G			BIT(5)
- #define MT_EE_NIC_CONF_TSSI_5G			BIT(6)
- 
-+#define MT_EE_NIC_WIFI_CONF_BAND_PALNA		GENMASK(3, 2)
-+#define MT_EE_NIC_WIFI_CONF_IPA_ELNA		0x1
-+#define MT_EE_NIC_WIFI_CONF_EPA_ELNA		0x2
- #define MT_EE_NIC_WIFI_CONF_BAND_SEL		GENMASK(5, 4)
-+
- enum mt7615_eeprom_band {
- 	MT_EE_DUAL_BAND,
- 	MT_EE_5GHZ,
--- 
-2.18.0
+[    4.898946][  T455] ------------[ cut here ]------------
+[    4.899434][  T455] RTNL: assertion failed at net/core/dev.c (10988)
+[    4.900191][  T455] WARNING: CPU: 1 PID: 455 at
+net/core/dev.c:10988 dev_change_net_namespace+0x680/0x730
+[    4.901042][  T455] Modules linked in: zram zsmalloc
+vmw_vsock_virtio_transport virtio_pmem virtio_pci
+virtio_pci_modern_dev virtio_net virtio_mmio virtio_input
+virtio_console virtio_blk virtio_rng virtio_gpu virtio_dma_buf
+vexpress_sysreg system_heap snd_hda_intel snd_intel_dspcfg
+snd_hda_codec_realtek snd_hda_codec_generic snd_hda_codec snd_hda_core
+rtc_test psmouse net_failover nd_virtio md_mod mac80211_hwsim
+ledtrig_audio hci_vhci goldfish_sync(O) goldfish_pipe(O)
+goldfish_battery(O) goldfish_address_space(O) failover dummy_hcd
+dummy_cpufreq clk_vexpress_osc vexpress_config armmmci ambakmi
+[    4.906291][  T455] CPU: 1 PID: 455 Comm: iw Tainted: G           O
+     5.12.0-rc2-mainline-08319-g19e2e1d25c10 #1
+[    4.907475][  T455] Hardware name: linux,ranchu (DT)
+[    4.907988][  T455] pstate: 60400005 (nZCv daif +PAN -UAO -TCO BTYPE=--)
+[    4.908627][  T455] pc : dev_change_net_namespace+0x680/0x730
+[    4.909168][  T455] lr : dev_change_net_namespace+0x680/0x730
+[    4.909725][  T455] sp : ffffffc012df3830
+[    4.910118][  T455] x29: ffffffc012df3870 x28: ffffff800dd8b240
+[    4.910693][  T455] x27: ffffff801ca76000 x26: 0000000000000008
+[    4.911212][  T455] x25: ffffff801cac3210 x24: ffffffc011b5ac40
+[    4.911848][  T455] x23: ffffff801ca768e0 x22: ffffffc011798506
+[    4.912382][  T455] x21: ffffffc011b5ac40 x20: ffffff800db0b240
+[    4.912793][  T455] x19: ffffff801cb00000 x18: ffffffc012549080
+[    4.913200][  T455] x17: 0000000000000006 x16: 000000000000b70d
+[    4.913612][  T455] x15: 0000000000000019 x14: 02a5000000000000
+[    4.914135][  T455] x13: 0000000000000000 x12: 000000005c961000
+[    4.914752][  T455] x11: ffffffc0119d6070 x10: 0000000000000000
+[    4.915238][  T455] x9 : a0858573fdaceb00 x8 : a0858573fdaceb00
+[    4.915836][  T455] x7 : ffffffc011715fa9 x6 : 0000000000000003
+[    4.916352][  T455] x5 : 0000000000000001 x4 : 0000000000000001
+[    4.916909][  T455] x3 : ffffff800dd8b240 x2 : ffffff807fbb5988
+[    4.917411][  T455] x1 : 0000000000000000 x0 : 0000000000000030
+[    4.918034][  T455] Call trace:
+[    4.918327][  T455]  dev_change_net_namespace+0x680/0x730
+[    4.918827][  T455]  cfg80211_switch_netns+0x90/0x1b8
+[    4.919305][  T455]  nl80211_wiphy_netns+0x6c/0xf0
+[    4.919772][  T455]  genl_rcv_msg+0x3c0/0x3ec
+[    4.920163][  T455]  netlink_rcv_skb+0x108/0x124
+[    4.920650][  T455]  genl_rcv+0x38/0x54
+[    4.920955][  T455]  netlink_unicast_kernel+0xa0/0x140
+[    4.921484][  T455]  netlink_unicast+0xfc/0x1a4
+[    4.921918][  T455]  netlink_sendmsg+0x28c/0x320
+[    4.922363][  T455]  ____sys_sendmsg+0x17c/0x234
+[    4.922786][  T455]  __sys_sendmsg+0x190/0x1e8
+[    4.923183][  T455]  __arm64_sys_sendmsg+0x28/0x38
+[    4.923557][  T455]  el0_svc_common+0x94/0x118
+[    4.923921][  T455]  do_el0_svc+0x28/0x88
+[    4.924223][  T455]  el0_svc+0x2c/0x90
+[    4.924582][  T455]  el0_sync_handler+0x88/0xec
+[    4.925113][  T455]  el0_sync+0x194/0x1c0
+[    4.925572][  T455] ---[ end trace 8f99239e8a4e6dad ]---
+[    4.926322][  T455] ------------[ cut here ]------------
 
+Peter
