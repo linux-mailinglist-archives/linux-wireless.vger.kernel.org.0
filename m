@@ -2,206 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E4E933EA79
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 08:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41C3033EBF8
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 09:58:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229795AbhCQHZQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Mar 2021 03:25:16 -0400
-Received: from mail-eopbgr80044.outbound.protection.outlook.com ([40.107.8.44]:35718
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229707AbhCQHZQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Mar 2021 03:25:16 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZVmwYaLnwqDZ0XzlKmMGxIkhxlM/d8XtQH+XrX7aSsPxHKp6/DIF9AxnzD5CGVEoUAWvF7Fn1MwfSLIdJHtj5FM6/XOGk/K4jhL0l8xyQXZRh0n1cU3EdbgzUawRnqGaVPKAg9IezO+VfMEvySNmr3REHjM50CZH6yug/8xD6EHusDNU4gdW30g16mKsCcbd7HaVdDaVJLRH0qLYi2ntajjVNQ/h2SMGdPIIcSlbh08oSqRJ/wHmgd1YYt55CcnVwGaPn6VL4RN6r4OIRYOXcZOZzo2IZsDTVOGF/RiU3UcvpjM5Pa0coakXYPANQ2qtUxXKk4n/TBJzjSXiId41tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BjWikZz4yrpE7nc8R73X6PHX79F3A/v5LKLdnwEo8zE=;
- b=iys2EmOD0xpiXmJE9p3fjmrDpbluorL2cwz93zMP22p96EFgh03nMMpa1QKmpP1tJCFtLpzrSkkTt0SXRnLIqQlACSpg7MUOlXQhYRyLBFrlAP7ENH88kCiSUl0VAd1tyodbJKRp9nJfBuCW2DVz+6gtseIlj1NdeCwWVsL66N2iYdYTX28xkyWAT8L6cSfcaZlYAVWSLmhm11+oWwlt1xWudIo3Zjq47iss3ppnuYj4WfrX8x+EdV4JMSDQeryloba5szX3vyNmW5Za7JMz7tXnWgAGTUvvIrYyR2nJOPiKtfPfeKke4B5D3Z207GxVwvoy5nRKULV5OWmR5/X8+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BjWikZz4yrpE7nc8R73X6PHX79F3A/v5LKLdnwEo8zE=;
- b=VqLfPEEzY+Tz+j0kxUDflQBZGZiWIkhujuXm5hhq7dKpfa3pq13OA/Vn6H4WPBts477PtEh04240k1KlMPKITtMRuHHW34iP/yOozK8YtGX5qPx4DFmemPtqAIyRxf89/ThDieAAHAkuUZwbskmJdINUdoArOYiXSwsKZZeGcuc=
-Received: from DB7PR04MB4538.eurprd04.prod.outlook.com (2603:10a6:5:2e::18) by
- DBAPR04MB7368.eurprd04.prod.outlook.com (2603:10a6:10:1ad::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3955.18; Wed, 17 Mar 2021 07:25:12 +0000
-Received: from DB7PR04MB4538.eurprd04.prod.outlook.com
- ([fe80::11d3:a9e:6ccc:4bdc]) by DB7PR04MB4538.eurprd04.prod.outlook.com
- ([fe80::11d3:a9e:6ccc:4bdc%6]) with mapi id 15.20.3955.018; Wed, 17 Mar 2021
- 07:25:12 +0000
-From:   Sharvari Harisangam <sharvari.harisangam@nxp.com>
-To:     "zuoqilin1@163.com" <zuoqilin1@163.com>,
-        "amitkarwar@gmail.com" <amitkarwar@gmail.com>,
-        "ganapathi017@gmail.com" <ganapathi017@gmail.com>,
-        "huxinming820@gmail.com" <huxinming820@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        zuoqilin <zuoqilin@yulong.com>
-Subject: RE: [EXT] [PATCH] mwifiex: Remove redundant assignment
-Thread-Topic: [EXT] [PATCH] mwifiex: Remove redundant assignment
-Thread-Index: AQHXGvRBtUeRxvmxwkG0ilsZK0DEnKqHxwdw
-Date:   Wed, 17 Mar 2021 07:25:11 +0000
-Message-ID: <DB7PR04MB4538A2B9B59010BBD3261FB3FC6A9@DB7PR04MB4538.eurprd04.prod.outlook.com>
-References: <20210317060956.1009-1-zuoqilin1@163.com>
-In-Reply-To: <20210317060956.1009-1-zuoqilin1@163.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: 163.com; dkim=none (message not signed)
- header.d=none;163.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [116.75.140.0]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: bef3bf7a-262a-462a-8aeb-08d8e915cd46
-x-ms-traffictypediagnostic: DBAPR04MB7368:
-x-microsoft-antispam-prvs: <DBAPR04MB7368794DC3B848536EF573C1FC6A9@DBAPR04MB7368.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1303;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: yRLf4I17okMM9WqPaA3wxJ1nuN09wfb2ddyCuxkgF/jh9JD4xvdp5sw9YdR/5RXkBVfOnz1VpX5x4hDajwTdvAWjk/ekM8B7+9fSRY3p1U2OgQr03PtwYPdDQvpIf9HvtJzUw/j5P2Po9fZK8sVTSzIYRjkSEaD+f/sZ80Z2IG7G2B9cby6Fq4ZTCjJxRo6gaHV+Vw2N1IQb1hTwA+2Irpc3VuwiagCSAFVNtHNa/ZPoFFPUxX5a1Yqto84HzCt736hwOlIg+RiV+YQ2z9ztUxfr+6fdNPN255LkccQEEcU10PKzXVhuBS64GKLh9F/nqdTb685+4xZ1JXQsD8lEunTFqORsvZBUI5luCZawhl0P9HPQfdI37amDzLBHYTCxew/JAuttbjgxkvHcOZxwjqyuJJR8ebeuPUwkdWajMJNCBu4PBWo1pxewvxFVgo0o+r84GB6bBEDfnvgVLvtKWAKsXdijMGClAeQh2uhuLOHrWnK93TeVwCuQ4ma+SfBy57J4wYruRc6NxqcTYqx8c+NzEXF/hhRoPsf2dCl9CAxv1mgPebRlScci/odRAvpW
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4538.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(136003)(346002)(39860400002)(366004)(396003)(478600001)(71200400001)(7696005)(86362001)(55016002)(7416002)(26005)(55236004)(66476007)(66556008)(6506007)(53546011)(66946007)(64756008)(66446008)(44832011)(110136005)(9686003)(54906003)(8936002)(186003)(33656002)(316002)(8676002)(76116006)(5660300002)(2906002)(4326008)(83380400001)(52536014);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?YdxklHUonbzycmtJgB976qYSQlT4rSO60Vp9UBNe8gVKkVW5yFFNHZC4HRKZ?=
- =?us-ascii?Q?Lq2YrFdrCATRFYSM6M/fu3o/r6PytQdrEyWiJYxDNu2XJdQBsaHngU88YRFj?=
- =?us-ascii?Q?/ZesKfBnR+HIjuJBWbaLeZ146alX6v11XTAKlX9kS+8m9QyKC9/NDC+XGCYB?=
- =?us-ascii?Q?5AhDd8v0HTQLkggFHDP0AfckGEVdGywghxdJYsVbGcGA1+T9KdXz2xeSY4C1?=
- =?us-ascii?Q?7KxhDjScvtwvxMcrHPTX4q8hrQ4pzftGalztfFVA5HsliGCTKeF4I3P2kECy?=
- =?us-ascii?Q?N3YAdnh2XAwVooKBclwjoOjNv0Ip3JfzZLsQiowRlzE/Au5+4Gon0ERvfrFn?=
- =?us-ascii?Q?ZFBxQs+eykbK+jlRQMrw1uSNd9XaZM2jX0swWZ4p/6rf3kecqHqCeNeezgnO?=
- =?us-ascii?Q?HJ3bU9U51Y2mdmvxLD7qa2F4Pqcoa//gYJUB3pR1aCMmxb2YVNVuz+6W5Xn+?=
- =?us-ascii?Q?HAt5hzR0fvvKcY9hIX806fohmtaeH9SXUT1ezS2vJQVI1tUms/zraEGMURUE?=
- =?us-ascii?Q?wvflxkjGZv8fZ+z7n5RpJeFqbO1GUtERVpCcvqOAAZ0M+d7FE/rSV3iBaGAG?=
- =?us-ascii?Q?ZW9myx+88YVUFvU1SV7nafPQj+EQu7NmZbUbaHos2Pb6YcWVVS2Y40ayxD3W?=
- =?us-ascii?Q?oF7AEtGTXwEOHVgrfVUC7ouAURGEirxchhAFbKRzZ3y0ZkDUXAHRcIguc87/?=
- =?us-ascii?Q?WKvwWR5fMGvbW6W94ULD3RFlQ9TFc0SSjvuM3t2hVDDMGxl7lNGVkvEY7QfN?=
- =?us-ascii?Q?NVtwnxwp2PtP1AAKNTLr/I3C6+cTj27eMpfB4BJyhdr2Y2BBrk+Hh+pB4foP?=
- =?us-ascii?Q?/HDJrpyESC9S+KJE4JMK1M3a3r71KgDr5yPmVKUFpp7Lb9g9C8IjYCsBBaBi?=
- =?us-ascii?Q?cbnY4k5J/ziA8b7fmzbwkUdpOIkwKu9kfB93ahElD038Jl/BgLx8F4SlKmnN?=
- =?us-ascii?Q?bKv7Y/1k0MbwcHhJEMsMznXdk4cGYfehmAVSfSKLZ7nl3nNx/jqkDIniXrbO?=
- =?us-ascii?Q?eF/5C+g9xRpIQ+NaM8vhyVnIGHqsF4ZC3NgfAFom7Ur+j3qPtS34HVnChq4c?=
- =?us-ascii?Q?XO8VUQfhok1MLs18SctZ3DzZQl5DGLJ3KxiE/m0aCWlrc10VzuTL39QaY1G2?=
- =?us-ascii?Q?eOfDECQrzVkGp8nPsrA6UvSaus7secYBmKgpgIMAodzX9raj2xkFELgJjf2C?=
- =?us-ascii?Q?/pRzcM/sw2SpKZGH+Csw6NN4l0FVUKBZVak0T1GFm6mOqFF5SPqq2TbRB8x+?=
- =?us-ascii?Q?JKONsYjH4DHf8hvDQqpYqaj+Txpan15DSiDLAVjQICdUZSzvPjUFvfEfaIOk?=
- =?us-ascii?Q?w5M=3D?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S229871AbhCQI5v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Mar 2021 04:57:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45696 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229846AbhCQI5l (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Mar 2021 04:57:41 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1133464EE2;
+        Wed, 17 Mar 2021 08:57:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615971461;
+        bh=ZrBRcjp7OHgzFN1taAOk7PwXPIQl1nWc9kUbV1doVrQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bQuK0ZZuMlDf3NknmjN9HHKzk/JtO+nn7mX96Sps3zMI1bHQuqDt88+sR1jbClWCx
+         aff9GpIIxtfHpV0vrfNGCmL47QCLqxJsalt7akPn9ttF+Wb14xIpENAmS6XHw5C1Dk
+         Kp/NjWwHkBsDY6zx4OuNC23jSF6LlAWwaB3/AzJ7yiVwzWxajVdOZX7BWvtJrXFlMB
+         0gga8/OzUFmoAxPryIYlN/qLNzyx014zUGeDaj6RU8mM1RfwU8BU9BhMJAAMu0UyoI
+         kgnH3bPTP31alqQQFG5eN94UaWpJlqqHDmg5/3K1v97JrsNDU4nmZC8FsDi0IlQd1M
+         z95Ykmq9J93xw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        ryder.lee@mediatek.com
+Subject: [PATCH] mt76: move de-amsdu buffer per-phy
+Date:   Wed, 17 Mar 2021 09:57:35 +0100
+Message-Id: <3cebac3977b265fb6207baeaadd577a286548cb3.1615971393.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4538.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bef3bf7a-262a-462a-8aeb-08d8e915cd46
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2021 07:25:11.9463
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WvlBDhIwwPw1ClboFtnlFnsgOBDyIcZtuY8DG/9WtAIjVqh2VqhOaLRWWFPrd9LqFfh+G/iRfnpf74+G1FsE1J4+7bsbdQoR6+5RftExO1E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7368
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We need to return 0 in success case. So this can't be removed.
+mt7615d users report the following crash running both phy concurrently:
 
-> -----Original Message-----
-> From: zuoqilin1@163.com <zuoqilin1@163.com>
-> Sent: Wednesday, March 17, 2021 11:40 AM
-> To: amitkarwar@gmail.com; ganapathi017@gmail.com; Sharvari Harisangam
-> <sharvari.harisangam@nxp.com>; huxinming820@gmail.com;
-> kvalo@codeaurora.org; davem@davemloft.net; kuba@kernel.org
-> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-
-> kernel@vger.kernel.org; zuoqilin <zuoqilin@yulong.com>
-> Subject: [EXT] [PATCH] mwifiex: Remove redundant assignment
->=20
-> Caution: EXT Email
->=20
-> From: zuoqilin <zuoqilin@yulong.com>
->=20
-> There is no need to define the err variable, and then assign -EINVAL, we =
-can
-> directly return -EINVAL.
->=20
-> Signed-off-by: zuoqilin <zuoqilin@yulong.com>
-> ---
->  drivers/net/wireless/marvell/mwifiex/ie.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/marvell/mwifiex/ie.c
-> b/drivers/net/wireless/marvell/mwifiex/ie.c
-> index 40e99ea..c88213c 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/ie.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/ie.c
-> @@ -333,7 +333,6 @@ static int mwifiex_uap_parse_tail_ies(struct
-> mwifiex_private *priv,
->         u16 gen_idx =3D MWIFIEX_AUTO_IDX_MASK, ie_len =3D 0;
->         int left_len, parsed_len =3D 0;
->         unsigned int token_len;
-> -       int err =3D 0;
->=20
->         if (!info->tail || !info->tail_len)
->                 return 0;
-> @@ -351,7 +350,6 @@ static int mwifiex_uap_parse_tail_ies(struct
-> mwifiex_private *priv,
->                 hdr =3D (void *)(info->tail + parsed_len);
->                 token_len =3D hdr->len + sizeof(struct ieee_types_header)=
-;
->                 if (token_len > left_len) {
-> -                       err =3D -EINVAL;
->                         goto out;
->                 }
->=20
-> @@ -377,7 +375,6 @@ static int mwifiex_uap_parse_tail_ies(struct
-> mwifiex_private *priv,
->                         fallthrough;
->                 default:
->                         if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
-> -                               err =3D -EINVAL;
->                                 goto out;
->                         }
->                         memcpy(gen_ie->ie_buffer + ie_len, hdr, token_len=
-); @@ -397,7
-> +394,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *p=
-riv,
->         if (vendorhdr) {
->                 token_len =3D vendorhdr->len + sizeof(struct ieee_types_h=
-eader);
->                 if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
-> -                       err =3D -EINVAL;
->                         goto out;
->                 }
->                 memcpy(gen_ie->ie_buffer + ie_len, vendorhdr, token_len);=
- @@ -415,7
-> +411,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *p=
-riv,
->=20
->         if (mwifiex_update_uap_custom_ie(priv, gen_ie, &gen_idx, NULL, NU=
-LL,
->                                          NULL, NULL)) {
-> -               err =3D -EINVAL;
->                 goto out;
->         }
->=20
-> @@ -423,7 +418,7 @@ static int mwifiex_uap_parse_tail_ies(struct
-> mwifiex_private *priv,
->=20
->   out:
->         kfree(gen_ie);
-> -       return err;
-> +       return -EINVAL;
->  }
->=20
->  /* This function parses different IEs-head & tail IEs, beacon IEs,
-> --
-> 1.9.1
+[  147.273909] CPU 1 Unable to handle kernel paging request at virtual address 00000000, epc == 8e4f288c, ra == 8e58a968
+[  147.284570] Oops[#1]:
+[  147.286854] CPU: 1 PID: 3724 Comm: kworker/u9:3 Not tainted 5.4.105 #0
+[  147.293403] Workqueue: napi_workq napi_workfn
+[  147.297742] $ 0   : 00000000 00000001 8e595ec0 00000000
+[  147.302950] $ 4   : 8e595ec0 00000000 8e5ca600 00000000
+[  147.308161] $ 8   : 00000000 000004c1 80808080 fefefeff
+[  147.313370] $12   : 00000000 00000000 80704f1c 00000040
+[  147.323781] $20   : 00000050 00000044 00000011 01ce9502
+[  147.334195] $28   : 8e004000 8e005d18 8ddf2020 8e58a968
+[  147.342266] Lo    : 00000000
+[  147.350397] ra    : 8e58a968 mt7615_queue_rx_skb+0x94c/0xd0c [mt7615_common]
+[  147.361580] Cause : 4080000c (ExcCode 03)
+[  147.368434] PrId  : 0001992f (MIPS 1004Kc)
+[  147.456965] Process kworker/u9:3 (pid: 3724, threadinfo=9ece68d6, task=b16d155f, tls=00000000)
+[  147.473857]         0001ce95 00004188 00000000 00000080 00004c10 00000002 8074a2b8 80043dcc
+[  147.490505]         00000000 8e4f0110 8069ddf4 806ab148 8dfc0000 00001000 00000000 00000050
+[  147.507150]         ...
+[  147.512033] [<8e4f288c>] mt76_rx+0x124/0x320 [mt76]
+[  147.526633]
+[  147.528512] ---[ end trace 3d137e75bb109149 ]---
+
+The issue has been introduce enabling hw rx de-amsdu since the hw can
+interleave amsdu frames from both phy. Fix the issue moving the de-amsdu
+buffer per-phy.
+
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 29 ++++++++++---------
+ drivers/net/wireless/mediatek/mt76/mt76.h     | 11 +++----
+ 2 files changed, 21 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index a41e8cc3a8b1..7684a8cf00fb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -508,40 +508,41 @@ void mt76_free_device(struct mt76_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt76_free_device);
+ 
+-static void mt76_rx_release_burst(struct mt76_dev *dev, enum mt76_rxq_id q,
++static void mt76_rx_release_burst(struct mt76_phy *phy, enum mt76_rxq_id q,
+ 				  struct sk_buff *skb)
+ {
+ 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
+-	struct sk_buff *nskb = dev->rx_amsdu[q].head;
++	struct sk_buff *nskb = phy->rx_amsdu[q].head;
++	struct mt76_dev *dev = phy->dev;
+ 
+ 	/* first amsdu subframe */
+-	if (status->first_amsdu) {
+-		dev->rx_amsdu[q].tail = &skb_shinfo(skb)->frag_list;
+-		dev->rx_amsdu[q].seqno = status->seqno;
+-		dev->rx_amsdu[q].head = skb;
++	if (status->amsdu && !phy->rx_amsdu[q].head) {
++		phy->rx_amsdu[q].tail = &skb_shinfo(skb)->frag_list;
++		phy->rx_amsdu[q].seqno = status->seqno;
++		phy->rx_amsdu[q].head = skb;
+ 		goto enqueue;
+ 	}
+ 
+ 	/* ampdu or out-of-order amsdu subframes */
+-	if (!status->amsdu || status->seqno != dev->rx_amsdu[q].seqno) {
++	if (!status->amsdu || status->seqno != phy->rx_amsdu[q].seqno) {
+ 		/* release pending frames */
+-		if (dev->rx_amsdu[q].head)
++		if (phy->rx_amsdu[q].head)
+ 			__skb_queue_tail(&dev->rx_skb[q],
+-					 dev->rx_amsdu[q].head);
++					 phy->rx_amsdu[q].head);
+ 		nskb = skb;
+ 		goto reset_burst;
+ 	}
+ 
+ 	/* trailing amsdu subframes */
+-	*dev->rx_amsdu[q].tail = skb;
++	*phy->rx_amsdu[q].tail = skb;
+ 	if (!status->last_amsdu) {
+-		dev->rx_amsdu[q].tail = &skb->next;
++		phy->rx_amsdu[q].tail = &skb->next;
+ 		return;
+ 	}
+ 
+ reset_burst:
+-	dev->rx_amsdu[q].head = NULL;
+-	dev->rx_amsdu[q].tail = NULL;
++	phy->rx_amsdu[q].head = NULL;
++	phy->rx_amsdu[q].tail = NULL;
+ enqueue:
+ 	if (nskb)
+ 		__skb_queue_tail(&dev->rx_skb[q], nskb);
+@@ -565,7 +566,7 @@ void mt76_rx(struct mt76_dev *dev, enum mt76_rxq_id q, struct sk_buff *skb)
+ 	}
+ #endif
+ 
+-	mt76_rx_release_burst(dev, q, skb);
++	mt76_rx_release_burst(phy, q, skb);
+ }
+ EXPORT_SYMBOL_GPL(mt76_rx);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index cba41a71f4a0..2cfe5584f33f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -609,6 +609,12 @@ struct mt76_phy {
+ 
+ 	struct delayed_work mac_work;
+ 	u8 mac_work_count;
++
++	struct {
++		struct sk_buff *head;
++		struct sk_buff **tail;
++		u16 seqno;
++	} rx_amsdu[__MT_RXQ_MAX];
+ };
+ 
+ struct mt76_dev {
+@@ -641,11 +647,6 @@ struct mt76_dev {
+ 	spinlock_t rx_lock;
+ 	struct napi_struct napi[__MT_RXQ_MAX];
+ 	struct sk_buff_head rx_skb[__MT_RXQ_MAX];
+-	struct {
+-		struct sk_buff *head;
+-		struct sk_buff **tail;
+-		u16 seqno;
+-	} rx_amsdu[__MT_RXQ_MAX];
+ 
+ 	struct list_head txwi_cache;
+ 	struct mt76_queue *q_mcu[__MT_MCUQ_MAX];
+-- 
+2.30.2
 
