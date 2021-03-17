@@ -2,68 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4A0033F4DB
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 17:01:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5426233F578
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 17:28:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232097AbhCQQAa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Mar 2021 12:00:30 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34388 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231938AbhCQQAL (ORCPT
+        id S232527AbhCQQ2H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Mar 2021 12:28:07 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:36730 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232547AbhCQQ1o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Mar 2021 12:00:11 -0400
-Received: from mail-ot1-f69.google.com ([209.85.210.69])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1lMXwl-00078G-Vv
-        for linux-wireless@vger.kernel.org; Wed, 17 Mar 2021 15:18:56 +0000
-Received: by mail-ot1-f69.google.com with SMTP id q1so22906169ota.20
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Mar 2021 08:18:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=IMQkeb8C8zTS2KQtguiqq0hY0iudIDCXnoKwS1K8RHs=;
-        b=Qr+yVLdUc9ZDs60jRKxxLzk3j1exIRgVHVCZ/LjEbV7y+X3g8gJWwwoxq5I/PT/Cup
-         2wiWMsTUSH0zytZ2FUqYCcrvktFcNsb+nAOEsvJ4mE4Zyym0n3BdV/nx4+m6FGybfJZa
-         u6+dJ5J1SnMR7awoOv7/b3PvYHa4FXTZ6KpP14z5oK823riTlSCghsnQZaR174/G6nlb
-         4ONWEokNonj1IBzqRmAjAJaeYDR5J6NdeksLylQkvLcwy8AQgc8lRDV5nf7N/kVEXTzq
-         Nb+76+7uNXutQLux6jjAagonJfwBnlFEK2q+rFaJUKLwXt4gZGhM1J4atKxsqxFXwiVi
-         Nqfg==
-X-Gm-Message-State: AOAM531DoRYLMLTYuz76NSaU6nHZV2uRlBf/A2a0JexXlj4kxDV6MK/9
-        vW2I1cFtf8hjYp8JvybmrL28tgN0Kp837s8+T3gfEHtylMykzFn/ZTOGnB2p+gcGxMOJNoKNL9P
-        XN6YJZkQX7056hUsfloSmiV+rNwTw1gCXxl/x/W9QNaK/
-X-Received: by 2002:aca:d5d1:: with SMTP id m200mr3103991oig.102.1615994335063;
-        Wed, 17 Mar 2021 08:18:55 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxPDGcpB3AYV2GfSYPe9ARdwP8BP/TaRDgKfT82eqzMEsiWZUQXI4DAG6c76D5tVNlRoGhuuQ==
-X-Received: by 2002:aca:d5d1:: with SMTP id m200mr3103977oig.102.1615994334923;
-        Wed, 17 Mar 2021 08:18:54 -0700 (PDT)
-Received: from localhost ([2605:a601:ac0f:820:7d7a:9094:cb30:6686])
-        by smtp.gmail.com with ESMTPSA id k9sm8757560ots.24.2021.03.17.08.18.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Mar 2021 08:18:50 -0700 (PDT)
-Date:   Wed, 17 Mar 2021 10:18:49 -0500
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wireless-regdb: Do not hardcode 'sforshee' in the
- certificate commonName
-Message-ID: <YFId2V808BExp/TH@ubuntu-x1>
-References: <20210205180054.1031-1-nicolas.cavallari@green-communications.fr>
+        Wed, 17 Mar 2021 12:27:44 -0400
+X-UUID: cab759e53d7a4d7099d82dd2afcc5c96-20210318
+X-UUID: cab759e53d7a4d7099d82dd2afcc5c96-20210318
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 378509917; Thu, 18 Mar 2021 00:27:39 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 18 Mar 2021 00:27:37 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 18 Mar 2021 00:27:37 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7622: add ePA/eLNA support
+Date:   Thu, 18 Mar 2021 00:27:36 +0800
+Message-ID: <1fb0ff65cb7d8c4f3197a87b43c26c5925e973ea.1615997929.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210205180054.1031-1-nicolas.cavallari@green-communications.fr>
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 7D846F657E33A424517F43A1E3D6A28EA76700F69B8EB68FF761DD751EA164682000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Feb 05, 2021 at 07:00:54PM +0100, Nicolas Cavallari wrote:
-> gen-pubcert.sh hardcodes the 'sforshee' common name when generating the
-> certificate.  Make it depend on REGDB_AUTHOR instead, which defaults to
-> $(whoami).
-> 
-> Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Switch pinmux to enable ePA/eLNA support.
 
-Applied, thanks!
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt7615/eeprom.c    | 29 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7615/eeprom.h    |  4 +++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+index 6dbaaf95ee38..d3182573163c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/of.h>
++#include <linux/pinctrl/consumer.h>
+ #include "mt7615.h"
+ #include "eeprom.h"
+ 
+@@ -136,12 +137,40 @@ mt7615_eeprom_parse_hw_band_cap(struct mt7615_dev *dev)
+ 	}
+ }
+ 
++static void mt7615_eeprom_parse_hw_epa_cap(struct mt7615_dev *dev)
++{
++	struct pinctrl_state *state;
++	struct pinctrl *pinctrl;
++	u8 i, *eeprom = dev->mt76.eeprom.data;
++
++	if (!is_mt7622(&dev->mt76))
++		return;
++
++	i = FIELD_GET(MT_EE_NIC_WIFI_CONF_BAND_PALNA, eeprom[MT_EE_WIFI_CONF]);
++	if (i != MT_EE_NIC_WIFI_CONF_EPA_ELNA &&
++	    i != MT_EE_NIC_WIFI_CONF_IPA_ELNA)
++		return;
++
++	pinctrl = devm_pinctrl_get(dev->mt76.dev);
++	if (IS_ERR(pinctrl))
++		return;
++
++	state = pinctrl_lookup_state(pinctrl, "epa-state");
++	if (IS_ERR(state))
++		goto out;
++
++	pinctrl_select_state(pinctrl, state);
++out:
++	devm_pinctrl_put(pinctrl);
++}
++
+ static void mt7615_eeprom_parse_hw_cap(struct mt7615_dev *dev)
+ {
+ 	u8 *eeprom = dev->mt76.eeprom.data;
+ 	u8 tx_mask, max_nss;
+ 
+ 	mt7615_eeprom_parse_hw_band_cap(dev);
++	mt7615_eeprom_parse_hw_epa_cap(dev);
+ 
+ 	if (is_mt7663(&dev->mt76)) {
+ 		max_nss = 2;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
+index a024dee10362..a609c4bb108c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
+@@ -64,7 +64,11 @@ enum mt7615_eeprom_field {
+ #define MT_EE_NIC_CONF_TSSI_2G			BIT(5)
+ #define MT_EE_NIC_CONF_TSSI_5G			BIT(6)
+ 
++#define MT_EE_NIC_WIFI_CONF_BAND_PALNA		GENMASK(3, 2)
++#define MT_EE_NIC_WIFI_CONF_IPA_ELNA		0x1
++#define MT_EE_NIC_WIFI_CONF_EPA_ELNA		0x2
+ #define MT_EE_NIC_WIFI_CONF_BAND_SEL		GENMASK(5, 4)
++
+ enum mt7615_eeprom_band {
+ 	MT_EE_DUAL_BAND,
+ 	MT_EE_5GHZ,
+-- 
+2.18.0
+
