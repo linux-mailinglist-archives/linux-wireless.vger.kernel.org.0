@@ -2,110 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37D5933E988
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 07:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E05E33E9CB
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 07:36:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbhCQGKu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Mar 2021 02:10:50 -0400
-Received: from m12-11.163.com ([220.181.12.11]:42451 "EHLO m12-11.163.com"
+        id S229492AbhCQGeN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Mar 2021 02:34:13 -0400
+Received: from m12-11.163.com ([220.181.12.11]:55874 "EHLO m12-11.163.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230014AbhCQGKo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Mar 2021 02:10:44 -0400
+        id S230020AbhCQGeG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Mar 2021 02:34:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=AULiu
-        rs4YjStSWptxVN159c8g3BSq/8ES1Yp+KInKUc=; b=W9mh2oxHiSK7/TrssMukF
-        l9hWYDyWK+wF5HVI3ENlfqf3xblXWLFnHT+NREQlKsdvXAlG5wIPWZanTXlVd5c4
-        9ZUL//N4NAdVosP0z2u67Fd6lelo+gjf4MdSWYRZPbB/zo5G2TFlbjtvwWufSCI8
-        6r4tLp8ooMnooZXq+nYPK4=
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=8Y3HR
+        MDBaV95f2J1fKzScv+yjUogarkNBO6uLyNIbM0=; b=ExQmo9CIqHMlqsCjg9ZyI
+        RxPadlPtSLmHClojmPjZABzAj8/XxRodsjaNqrIcETqXCeUDxkkwD1WhsfyhsArv
+        3vFcrH+FlRqgCpMiEhE9JbVEpGB7UkRtuUgnrggh7tfNyDob4thEmBEkyJDXW5I7
+        bPk60DP+2yO5y2k+kw45Hs=
 Received: from COOL-20201210PM.ccdomain.com (unknown [218.94.48.178])
-        by smtp7 (Coremail) with SMTP id C8CowABXXUUpnVFgjbvKSg--.5830S2;
-        Wed, 17 Mar 2021 14:09:50 +0800 (CST)
+        by smtp7 (Coremail) with SMTP id C8CowADHz0fGolFgBC7NSg--.5880S2;
+        Wed, 17 Mar 2021 14:33:45 +0800 (CST)
 From:   zuoqilin1@163.com
 To:     amitkarwar@gmail.com, ganapathi017@gmail.com,
         sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+        kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, zuoqilin <zuoqilin@yulong.com>
-Subject: [PATCH] mwifiex: Remove redundant assignment
-Date:   Wed, 17 Mar 2021 14:09:56 +0800
-Message-Id: <20210317060956.1009-1-zuoqilin1@163.com>
+Subject: [PATCH] mwifiex: Remove unneeded variable: "ret"
+Date:   Wed, 17 Mar 2021 14:33:53 +0800
+Message-Id: <20210317063353.1055-1-zuoqilin1@163.com>
 X-Mailer: git-send-email 2.28.0.windows.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: C8CowABXXUUpnVFgjbvKSg--.5830S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJr45Gw4xtr48KFWkKFyDJrb_yoW8uryfpF
-        s8W34vyw4rJF1kCws8AF1xAFW5K3WxKFy29F1rt34Skws29F93XF4UKryF9r4xKrs7Zry5
-        ArW0q3W5A34kJFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jcOz3UUUUU=
+X-CM-TRANSID: C8CowADHz0fGolFgBC7NSg--.5880S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKw1rGF43KryDKrWDWFy5twb_yoWDXwb_K3
+        4I9w4fKrZrJ3s7Kr4UCFsrX3sakr4rXFn7ua12qFWfGaykta98C3WkCrs7JrZakwsIqr9r
+        uwn8GFyxJa18WjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU05l1DUUUUU==
 X-Originating-IP: [218.94.48.178]
-X-CM-SenderInfo: 52xr1xpolqiqqrwthudrp/xtbBRQ1YiVPAKjBU8QABs0
+X-CM-SenderInfo: 52xr1xpolqiqqrwthudrp/xtbBRQ1YiVPAKjBU8QACs3
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: zuoqilin <zuoqilin@yulong.com>
 
-There is no need to define the err variable,
-and then assign -EINVAL, we can directly return -EINVAL.
+Remove unneeded variable: "ret"
 
 Signed-off-by: zuoqilin <zuoqilin@yulong.com>
 ---
- drivers/net/wireless/marvell/mwifiex/ie.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/ie.c b/drivers/net/wireless/marvell/mwifiex/ie.c
-index 40e99ea..c88213c 100644
---- a/drivers/net/wireless/marvell/mwifiex/ie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/ie.c
-@@ -333,7 +333,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
- 	u16 gen_idx = MWIFIEX_AUTO_IDX_MASK, ie_len = 0;
- 	int left_len, parsed_len = 0;
- 	unsigned int token_len;
--	int err = 0;
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index c2a685f..0b877f3 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -1211,7 +1211,6 @@ enum cipher_suite {
+ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
+ 				    struct mwifiex_bssdescriptor *bss_entry)
+ {
+-	int ret = 0;
+ 	u8 element_id;
+ 	struct ieee_types_fh_param_set *fh_param_set;
+ 	struct ieee_types_ds_param_set *ds_param_set;
+@@ -1464,7 +1463,7 @@ int mwifiex_update_bss_desc_with_ie(struct mwifiex_adapter *adapter,
+ 		bytes_left -= total_ie_len;
  
- 	if (!info->tail || !info->tail_len)
- 		return 0;
-@@ -351,7 +350,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
- 		hdr = (void *)(info->tail + parsed_len);
- 		token_len = hdr->len + sizeof(struct ieee_types_header);
- 		if (token_len > left_len) {
--			err = -EINVAL;
- 			goto out;
- 		}
- 
-@@ -377,7 +375,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
- 			fallthrough;
- 		default:
- 			if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
--				err = -EINVAL;
- 				goto out;
- 			}
- 			memcpy(gen_ie->ie_buffer + ie_len, hdr, token_len);
-@@ -397,7 +394,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
- 	if (vendorhdr) {
- 		token_len = vendorhdr->len + sizeof(struct ieee_types_header);
- 		if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
--			err = -EINVAL;
- 			goto out;
- 		}
- 		memcpy(gen_ie->ie_buffer + ie_len, vendorhdr, token_len);
-@@ -415,7 +411,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
- 
- 	if (mwifiex_update_uap_custom_ie(priv, gen_ie, &gen_idx, NULL, NULL,
- 					 NULL, NULL)) {
--		err = -EINVAL;
- 		goto out;
- 	}
- 
-@@ -423,7 +418,7 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
- 
-  out:
- 	kfree(gen_ie);
--	return err;
-+	return -EINVAL;
+ 	}	/* while (bytes_left > 2) */
+-	return ret;
++	return 0;
  }
  
- /* This function parses different IEs-head & tail IEs, beacon IEs,
+ /*
 -- 
 1.9.1
 
