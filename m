@@ -2,94 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C13733F01B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 13:18:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4A0033F4DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 17:01:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbhCQMS0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Mar 2021 08:18:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54958 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbhCQMSS (ORCPT
+        id S232097AbhCQQAa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Mar 2021 12:00:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34388 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231938AbhCQQAL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Mar 2021 08:18:18 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B163C06174A;
-        Wed, 17 Mar 2021 05:18:18 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id lr13so2223429ejb.8;
-        Wed, 17 Mar 2021 05:18:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=v5N6Wrb+7I1coNpm4gtBKvbrfokvWhrg9piV4XwzHCg=;
-        b=LkTAvUIv2c08lGXVubN0boeSaP5tZsOQHfrjsgC12FrfOgqWaii/qNa7/6gDZlTnES
-         9K8ob5YKPVdoamI5qk02W+zJ//DwOnr9v5yKwDIJcVtz88qwnOUhpy+wkHQzN+m0Uag0
-         7UIJVXM4QMYt5tBCmYcFVkEJQuT/MkwwTFcwGn8D1E+GT5XEWW2oABuCV9Lh2p0FQp+U
-         vU521/k5V3knepvZJ/Xj9fNITXqXeJrOfb2K8ZWx//mMl5OzvX/Fec8QgRIsiNPQbjw3
-         eOyHERfgd28/PJbMICNlDn539dKJLwTh3FJ7qE71QjsZbpKBAuf/aZhdfeWTOW599TN7
-         upyw==
+        Wed, 17 Mar 2021 12:00:11 -0400
+Received: from mail-ot1-f69.google.com ([209.85.210.69])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1lMXwl-00078G-Vv
+        for linux-wireless@vger.kernel.org; Wed, 17 Mar 2021 15:18:56 +0000
+Received: by mail-ot1-f69.google.com with SMTP id q1so22906169ota.20
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Mar 2021 08:18:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=v5N6Wrb+7I1coNpm4gtBKvbrfokvWhrg9piV4XwzHCg=;
-        b=F/p/L39LDE1IBC5Fe1lXzZXjP/ICeCWwvBLca/6y9fpFqmf5DuvA1OXUwCHskpSyDk
-         IqRv1c9PS8GiIPfYA+NsOcNBnXHVQcsWwfvJTYGxmu72SD9wp8wMYqttc+MIMGJFVeyk
-         srIqgj4HOM+OqVt1EYddwA9G4DXRgDpvPqSLkAl3DsNbI0xSv06+A+RWkVAQ+e8M8VM9
-         PFno/qh8vrV7Nth6ZaTgIK6LyN1p12qBZPwV6LQmNOP7hAO09Qjz93yn3XQPfNGP0HLi
-         TY4aV0jd9fkXp2B1aCRwpypGoc3J04zOkC7kz7IrZBiuApgsCa8Ekh5NEgkX9cMGaUoj
-         eRzg==
-X-Gm-Message-State: AOAM530XFpQqKtpI2vbZwvH3/ZNy2wXNyjuEucrWUdD/mFKcNnFYpjiw
-        IXHgEZJLlIKx1o7h96b2scOBXvKSeNNpY8ai
-X-Google-Smtp-Source: ABdhPJybO/Q00n5VVmOuBQJHeMQ+9ors8Bof6REOLhaDmiddfN+vsPFOTVHyNiSo68oDee+A8TZAJw==
-X-Received: by 2002:a17:906:151a:: with SMTP id b26mr15364067ejd.492.1615983497009;
-        Wed, 17 Mar 2021 05:18:17 -0700 (PDT)
-Received: from ubuntudesktop.lan (205.158.32.217.dyn.plus.net. [217.32.158.205])
-        by smtp.gmail.com with ESMTPSA id b22sm12239375edv.96.2021.03.17.05.18.16
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IMQkeb8C8zTS2KQtguiqq0hY0iudIDCXnoKwS1K8RHs=;
+        b=Qr+yVLdUc9ZDs60jRKxxLzk3j1exIRgVHVCZ/LjEbV7y+X3g8gJWwwoxq5I/PT/Cup
+         2wiWMsTUSH0zytZ2FUqYCcrvktFcNsb+nAOEsvJ4mE4Zyym0n3BdV/nx4+m6FGybfJZa
+         u6+dJ5J1SnMR7awoOv7/b3PvYHa4FXTZ6KpP14z5oK823riTlSCghsnQZaR174/G6nlb
+         4ONWEokNonj1IBzqRmAjAJaeYDR5J6NdeksLylQkvLcwy8AQgc8lRDV5nf7N/kVEXTzq
+         Nb+76+7uNXutQLux6jjAagonJfwBnlFEK2q+rFaJUKLwXt4gZGhM1J4atKxsqxFXwiVi
+         Nqfg==
+X-Gm-Message-State: AOAM531DoRYLMLTYuz76NSaU6nHZV2uRlBf/A2a0JexXlj4kxDV6MK/9
+        vW2I1cFtf8hjYp8JvybmrL28tgN0Kp837s8+T3gfEHtylMykzFn/ZTOGnB2p+gcGxMOJNoKNL9P
+        XN6YJZkQX7056hUsfloSmiV+rNwTw1gCXxl/x/W9QNaK/
+X-Received: by 2002:aca:d5d1:: with SMTP id m200mr3103991oig.102.1615994335063;
+        Wed, 17 Mar 2021 08:18:55 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxPDGcpB3AYV2GfSYPe9ARdwP8BP/TaRDgKfT82eqzMEsiWZUQXI4DAG6c76D5tVNlRoGhuuQ==
+X-Received: by 2002:aca:d5d1:: with SMTP id m200mr3103977oig.102.1615994334923;
+        Wed, 17 Mar 2021 08:18:54 -0700 (PDT)
+Received: from localhost ([2605:a601:ac0f:820:7d7a:9094:cb30:6686])
+        by smtp.gmail.com with ESMTPSA id k9sm8757560ots.24.2021.03.17.08.18.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Mar 2021 05:18:16 -0700 (PDT)
-From:   Lee Gibson <leegib@gmail.com>
-To:     kvalo@codeaurora.org
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Lee Gibson <leegib@gmail.com>
-Subject: [PATCH] wl1251: Fix possible buffer overflow in wl1251_cmd_scan
-Date:   Wed, 17 Mar 2021 12:18:07 +0000
-Message-Id: <20210317121807.389169-1-leegib@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 17 Mar 2021 08:18:50 -0700 (PDT)
+Date:   Wed, 17 Mar 2021 10:18:49 -0500
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wireless-regdb: Do not hardcode 'sforshee' in the
+ certificate commonName
+Message-ID: <YFId2V808BExp/TH@ubuntu-x1>
+References: <20210205180054.1031-1-nicolas.cavallari@green-communications.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210205180054.1031-1-nicolas.cavallari@green-communications.fr>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Function wl1251_cmd_scan calls memcpy without checking the length.
-A user could control that length and trigger a buffer overflow.
-Fix by checking the length is within the maximum allowed size.
+On Fri, Feb 05, 2021 at 07:00:54PM +0100, Nicolas Cavallari wrote:
+> gen-pubcert.sh hardcodes the 'sforshee' common name when generating the
+> certificate.  Make it depend on REGDB_AUTHOR instead, which defaults to
+> $(whoami).
+> 
+> Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
 
-Signed-off-by: Lee Gibson <leegib@gmail.com>
----
- drivers/net/wireless/ti/wl1251/cmd.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wl1251/cmd.c b/drivers/net/wireless/ti/wl1251/cmd.c
-index 498c8db2eb48..e4d028a53d91 100644
---- a/drivers/net/wireless/ti/wl1251/cmd.c
-+++ b/drivers/net/wireless/ti/wl1251/cmd.c
-@@ -455,8 +455,11 @@ int wl1251_cmd_scan(struct wl1251 *wl, u8 *ssid, size_t ssid_len,
- 	}
- 
- 	cmd->params.ssid_len = ssid_len;
--	if (ssid)
--		memcpy(cmd->params.ssid, ssid, ssid_len);
-+	if (ssid) {
-+		int len = min_t(int, ssid_len, IEEE80211_MAX_SSID_LEN);
-+
-+		memcpy(cmd->params.ssid, ssid, len);
-+	}
- 
- 	ret = wl1251_cmd_send(wl, CMD_SCAN, cmd, sizeof(*cmd));
- 	if (ret < 0) {
--- 
-2.25.1
-
+Applied, thanks!
