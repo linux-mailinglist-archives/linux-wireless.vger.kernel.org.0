@@ -2,109 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1CE33E8D1
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 06:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37D5933E988
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 07:11:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbhCQFNe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Mar 2021 01:13:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46566 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbhCQFNJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Mar 2021 01:13:09 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B08C06174A;
-        Tue, 16 Mar 2021 22:13:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
-        Reply-To:Cc:Content-ID:Content-Description;
-        bh=cZcEzHgW+4rcNDTh82K71mdBQTkdlVir75xxgpYjdxM=; b=NUiXTAcUBtZH434r5MP4HXE5uK
-        wgEEKaMi9n3Fz1XnBkclBOkO+Sht50u9SJ4Vgr9HoXmMDnpa8xu+hI1CGvdHDJanzRo7H3Fhz8jLG
-        KhKh7yMJr2vxr7r8qDRpCQAV1Eu7sPrHES/aXD6y/wfowsmv972SkrIhxWVGR0AKiCFk2CDxJTbsj
-        n88YyRACAhlzF1JkbBwy0CcWy2RPzZ+9dQtrXdn2WRTX9PDbP9cAwMOVkHBznu/Qks7bN2FfGu1QA
-        6KDZwhlfSX166TIyL+5+OeT4Wiyo1W0JeqMQOi9Jm0CIqrkZT1NFPCL8VLxGTcvndF19Pj00NDbAL
-        HW+VrmGg==;
-Received: from [2601:1c0:6280:3f0::9757]
-        by merlin.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lMOUT-001bTB-6f; Wed, 17 Mar 2021 05:13:05 +0000
-Subject: Re: [PATCH] wireless: intel: iwlwifi: fw: api: Absolute rudimentary
- typo fixes in the file power.h
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
-        luciano.coelho@intel.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, gil.adam@intel.com,
-        johannes.berg@intel.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210317042540.4097078-1-unixbhaskar@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <fd1ac68e-6285-582a-3b05-c11fddf8fd61@infradead.org>
-Date:   Tue, 16 Mar 2021 22:13:01 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        id S230016AbhCQGKu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Mar 2021 02:10:50 -0400
+Received: from m12-11.163.com ([220.181.12.11]:42451 "EHLO m12-11.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230014AbhCQGKo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Mar 2021 02:10:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=AULiu
+        rs4YjStSWptxVN159c8g3BSq/8ES1Yp+KInKUc=; b=W9mh2oxHiSK7/TrssMukF
+        l9hWYDyWK+wF5HVI3ENlfqf3xblXWLFnHT+NREQlKsdvXAlG5wIPWZanTXlVd5c4
+        9ZUL//N4NAdVosP0z2u67Fd6lelo+gjf4MdSWYRZPbB/zo5G2TFlbjtvwWufSCI8
+        6r4tLp8ooMnooZXq+nYPK4=
+Received: from COOL-20201210PM.ccdomain.com (unknown [218.94.48.178])
+        by smtp7 (Coremail) with SMTP id C8CowABXXUUpnVFgjbvKSg--.5830S2;
+        Wed, 17 Mar 2021 14:09:50 +0800 (CST)
+From:   zuoqilin1@163.com
+To:     amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, zuoqilin <zuoqilin@yulong.com>
+Subject: [PATCH] mwifiex: Remove redundant assignment
+Date:   Wed, 17 Mar 2021 14:09:56 +0800
+Message-Id: <20210317060956.1009-1-zuoqilin1@163.com>
+X-Mailer: git-send-email 2.28.0.windows.1
 MIME-Version: 1.0
-In-Reply-To: <20210317042540.4097078-1-unixbhaskar@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: C8CowABXXUUpnVFgjbvKSg--.5830S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr45Gw4xtr48KFWkKFyDJrb_yoW8uryfpF
+        s8W34vyw4rJF1kCws8AF1xAFW5K3WxKFy29F1rt34Skws29F93XF4UKryF9r4xKrs7Zry5
+        ArW0q3W5A34kJFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jcOz3UUUUU=
+X-Originating-IP: [218.94.48.178]
+X-CM-SenderInfo: 52xr1xpolqiqqrwthudrp/xtbBRQ1YiVPAKjBU8QABs0
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/16/21 9:25 PM, Bhaskar Chowdhury wrote:
-> 
-> s/folowing/following/
-> s/Celsuis/Celsius/
-> s/temerature/temperature/  ...twice
-> 
-> 
-> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+From: zuoqilin <zuoqilin@yulong.com>
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+There is no need to define the err variable,
+and then assign -EINVAL, we can directly return -EINVAL.
 
-> ---
->  drivers/net/wireless/intel/iwlwifi/fw/api/power.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-> index 798417182d54..f7c7852127d3 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-> @@ -54,7 +54,7 @@ struct iwl_ltr_config_cmd_v1 {
->   * @flags: See &enum iwl_ltr_config_flags
->   * @static_long: static LTR Long register value.
->   * @static_short: static LTR Short register value.
-> - * @ltr_cfg_values: LTR parameters table values (in usec) in folowing order:
-> + * @ltr_cfg_values: LTR parameters table values (in usec) in following order:
->   *	TX, RX, Short Idle, Long Idle. Used only if %LTR_CFG_FLAG_UPDATE_VALUES
->   *	is set.
->   * @ltr_short_idle_timeout: LTR Short Idle timeout (in usec). Used only if
-> @@ -493,7 +493,7 @@ union iwl_ppag_table_cmd {
->   *      Roaming Energy Delta Threshold, otherwise use normal Energy Delta
->   *      Threshold. Typical energy threshold is -72dBm.
->   * @bf_temp_threshold: This threshold determines the type of temperature
-> - *	filtering (Slow or Fast) that is selected (Units are in Celsuis):
-> + *	filtering (Slow or Fast) that is selected (Units are in Celsius):
->   *	If the current temperature is above this threshold - Fast filter
->   *	will be used, If the current temperature is below this threshold -
->   *	Slow filter will be used.
-> @@ -501,12 +501,12 @@ union iwl_ppag_table_cmd {
->   *      calculated for this and the last passed beacon is greater than this
->   *      threshold. Zero value means that the temperature change is ignored for
->   *      beacon filtering; beacons will not be  forced to be sent to driver
-> - *      regardless of whether its temerature has been changed.
-> + *      regardless of whether its temperature has been changed.
->   * @bf_temp_slow_filter: Send Beacon to driver if delta in temperature values
->   *      calculated for this and the last passed beacon is greater than this
->   *      threshold. Zero value means that the temperature change is ignored for
->   *      beacon filtering; beacons will not be forced to be sent to driver
-> - *      regardless of whether its temerature has been changed.
-> + *      regardless of whether its temperature has been changed.
->   * @bf_enable_beacon_filter: 1, beacon filtering is enabled; 0, disabled.
->   * @bf_debug_flag: beacon filtering debug configuration
->   * @bf_escape_timer: Send beacons to to driver if no beacons were passed
-> --
+Signed-off-by: zuoqilin <zuoqilin@yulong.com>
+---
+ drivers/net/wireless/marvell/mwifiex/ie.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-
+diff --git a/drivers/net/wireless/marvell/mwifiex/ie.c b/drivers/net/wireless/marvell/mwifiex/ie.c
+index 40e99ea..c88213c 100644
+--- a/drivers/net/wireless/marvell/mwifiex/ie.c
++++ b/drivers/net/wireless/marvell/mwifiex/ie.c
+@@ -333,7 +333,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 	u16 gen_idx = MWIFIEX_AUTO_IDX_MASK, ie_len = 0;
+ 	int left_len, parsed_len = 0;
+ 	unsigned int token_len;
+-	int err = 0;
+ 
+ 	if (!info->tail || !info->tail_len)
+ 		return 0;
+@@ -351,7 +350,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 		hdr = (void *)(info->tail + parsed_len);
+ 		token_len = hdr->len + sizeof(struct ieee_types_header);
+ 		if (token_len > left_len) {
+-			err = -EINVAL;
+ 			goto out;
+ 		}
+ 
+@@ -377,7 +375,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 			fallthrough;
+ 		default:
+ 			if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
+-				err = -EINVAL;
+ 				goto out;
+ 			}
+ 			memcpy(gen_ie->ie_buffer + ie_len, hdr, token_len);
+@@ -397,7 +394,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 	if (vendorhdr) {
+ 		token_len = vendorhdr->len + sizeof(struct ieee_types_header);
+ 		if (ie_len + token_len > IEEE_MAX_IE_SIZE) {
+-			err = -EINVAL;
+ 			goto out;
+ 		}
+ 		memcpy(gen_ie->ie_buffer + ie_len, vendorhdr, token_len);
+@@ -415,7 +411,6 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 
+ 	if (mwifiex_update_uap_custom_ie(priv, gen_ie, &gen_idx, NULL, NULL,
+ 					 NULL, NULL)) {
+-		err = -EINVAL;
+ 		goto out;
+ 	}
+ 
+@@ -423,7 +418,7 @@ static int mwifiex_uap_parse_tail_ies(struct mwifiex_private *priv,
+ 
+  out:
+ 	kfree(gen_ie);
+-	return err;
++	return -EINVAL;
+ }
+ 
+ /* This function parses different IEs-head & tail IEs, beacon IEs,
 -- 
-~Randy
+1.9.1
 
