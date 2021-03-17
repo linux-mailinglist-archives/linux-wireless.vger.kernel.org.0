@@ -2,78 +2,206 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A7BF33EC1D
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 10:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F9533ED5E
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 10:48:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229510AbhCQJCh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Mar 2021 05:02:37 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:45090 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229791AbhCQJCL (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Mar 2021 05:02:11 -0400
-X-UUID: 55ea8d88e39648cebb49f755b1cd679d-20210317
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=bP1JIVhz8tGSM0Ac7THmvms6DCOPcIoJsm1v6ns4Eq4=;
-        b=K2PDRcpm1CcraQX+GXMSvL1EHDwq0RHX87wqjcq58HRzYsuUbA167V5+gg34BcfoJCJ9xMdypJvC0zrKbJ4AEhIsGEN0avsvQn0ISaWo4TaiM86KcBhVkF/dldyOj8r6yIXUZn9Xhm3oamhO/fkQ7NfIQhpsj1Z0b2AB30x/FPs=;
-X-UUID: 55ea8d88e39648cebb49f755b1cd679d-20210317
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2003114022; Wed, 17 Mar 2021 17:02:06 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by mtkexhb01.mediatek.inc
- (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 17 Mar
- 2021 17:02:05 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 17 Mar 2021 17:02:04 +0800
-Message-ID: <1615971725.19256.0.camel@mtkswgap22>
-Subject: Re: [PATCH] mt76: move de-amsdu buffer per-phy
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     <nbd@nbd.name>, <linux-wireless@vger.kernel.org>,
-        <lorenzo.bianconi@redhat.com>
-Date:   Wed, 17 Mar 2021 17:02:05 +0800
-In-Reply-To: <3cebac3977b265fb6207baeaadd577a286548cb3.1615971393.git.lorenzo@kernel.org>
-References: <3cebac3977b265fb6207baeaadd577a286548cb3.1615971393.git.lorenzo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+        id S229607AbhCQJru (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Mar 2021 05:47:50 -0400
+Received: from mga01.intel.com ([192.55.52.88]:12752 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229904AbhCQJrg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Mar 2021 05:47:36 -0400
+IronPort-SDR: 7wy24VO0yBKcTSYpcEZllmgIHdAI9P8npavhx/LJrmkCqpYANPeRl+Rdgxc3Yzm52Pocdk+hu4
+ WSAfu7Xzf7jQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9925"; a="209392290"
+X-IronPort-AV: E=Sophos;i="5.81,255,1610438400"; 
+   d="scan'208";a="209392290"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2021 02:47:36 -0700
+IronPort-SDR: ULkg8uN+zrQGhXYTzThhB2JNa9mVewzkVyIGIMmtjtjtj/ZdcDoCTV2ZROXGE6gkOWPkN6SQZw
+ C+dYxt8wIwEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.81,255,1610438400"; 
+   d="scan'208";a="379221252"
+Received: from lkp-server02.sh.intel.com (HELO 1c294c63cb86) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 17 Mar 2021 02:47:35 -0700
+Received: from kbuild by 1c294c63cb86 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lMSm6-0000bz-Hg; Wed, 17 Mar 2021 09:47:34 +0000
+Date:   Wed, 17 Mar 2021 17:46:33 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211:master] BUILD SUCCESS
+ 239729a21e528466d02f5558936306ffa9314ad1
+Message-ID: <6051cff9.kzO2NXT44mkoPgV4%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gV2VkLCAyMDIxLTAzLTE3IGF0IDA5OjU3ICswMTAwLCBMb3JlbnpvIEJpYW5jb25pIHdyb3Rl
-Og0KPiBtdDc2MTVkIHVzZXJzIHJlcG9ydCB0aGUgZm9sbG93aW5nIGNyYXNoIHJ1bm5pbmcgYm90
-aCBwaHkgY29uY3VycmVudGx5Og0KPiANCj4gWyAgMTQ3LjI3MzkwOV0gQ1BVIDEgVW5hYmxlIHRv
-IGhhbmRsZSBrZXJuZWwgcGFnaW5nIHJlcXVlc3QgYXQgdmlydHVhbCBhZGRyZXNzIDAwMDAwMDAw
-LCBlcGMgPT0gOGU0ZjI4OGMsIHJhID09IDhlNThhOTY4DQo+IFsgIDE0Ny4yODQ1NzBdIE9vcHNb
-IzFdOg0KPiBbICAxNDcuMjg2ODU0XSBDUFU6IDEgUElEOiAzNzI0IENvbW06IGt3b3JrZXIvdTk6
-MyBOb3QgdGFpbnRlZCA1LjQuMTA1ICMwDQo+IFsgIDE0Ny4yOTM0MDNdIFdvcmtxdWV1ZTogbmFw
-aV93b3JrcSBuYXBpX3dvcmtmbg0KPiBbICAxNDcuMjk3NzQyXSAkIDAgICA6IDAwMDAwMDAwIDAw
-MDAwMDAxIDhlNTk1ZWMwIDAwMDAwMDAwDQo+IFsgIDE0Ny4zMDI5NTBdICQgNCAgIDogOGU1OTVl
-YzAgMDAwMDAwMDAgOGU1Y2E2MDAgMDAwMDAwMDANCj4gWyAgMTQ3LjMwODE2MV0gJCA4ICAgOiAw
-MDAwMDAwMCAwMDAwMDRjMSA4MDgwODA4MCBmZWZlZmVmZg0KPiBbICAxNDcuMzEzMzcwXSAkMTIg
-ICA6IDAwMDAwMDAwIDAwMDAwMDAwIDgwNzA0ZjFjIDAwMDAwMDQwDQo+IFsgIDE0Ny4zMjM3ODFd
-ICQyMCAgIDogMDAwMDAwNTAgMDAwMDAwNDQgMDAwMDAwMTEgMDFjZTk1MDINCj4gWyAgMTQ3LjMz
-NDE5NV0gJDI4ICAgOiA4ZTAwNDAwMCA4ZTAwNWQxOCA4ZGRmMjAyMCA4ZTU4YTk2OA0KPiBbICAx
-NDcuMzQyMjY2XSBMbyAgICA6IDAwMDAwMDAwDQo+IFsgIDE0Ny4zNTAzOTddIHJhICAgIDogOGU1
-OGE5NjggbXQ3NjE1X3F1ZXVlX3J4X3NrYisweDk0Yy8weGQwYyBbbXQ3NjE1X2NvbW1vbl0NCj4g
-WyAgMTQ3LjM2MTU4MF0gQ2F1c2UgOiA0MDgwMDAwYyAoRXhjQ29kZSAwMykNCj4gWyAgMTQ3LjM2
-ODQzNF0gUHJJZCAgOiAwMDAxOTkyZiAoTUlQUyAxMDA0S2MpDQo+IFsgIDE0Ny40NTY5NjVdIFBy
-b2Nlc3Mga3dvcmtlci91OTozIChwaWQ6IDM3MjQsIHRocmVhZGluZm89OWVjZTY4ZDYsIHRhc2s9
-YjE2ZDE1NWYsIHRscz0wMDAwMDAwMCkNCj4gWyAgMTQ3LjQ3Mzg1N10gICAgICAgICAwMDAxY2U5
-NSAwMDAwNDE4OCAwMDAwMDAwMCAwMDAwMDA4MCAwMDAwNGMxMCAwMDAwMDAwMiA4MDc0YTJiOCA4
-MDA0M2RjYw0KPiBbICAxNDcuNDkwNTA1XSAgICAgICAgIDAwMDAwMDAwIDhlNGYwMTEwIDgwNjlk
-ZGY0IDgwNmFiMTQ4IDhkZmMwMDAwIDAwMDAxMDAwIDAwMDAwMDAwIDAwMDAwMDUwDQo+IFsgIDE0
-Ny41MDcxNTBdICAgICAgICAgLi4uDQo+IFsgIDE0Ny41MTIwMzNdIFs8OGU0ZjI4OGM+XSBtdDc2
-X3J4KzB4MTI0LzB4MzIwIFttdDc2XQ0KPiBbICAxNDcuNTI2NjMzXQ0KPiBbICAxNDcuNTI4NTEy
-XSAtLS1bIGVuZCB0cmFjZSAzZDEzN2U3NWJiMTA5MTQ5IF0tLS0NCj4gDQo+IFRoZSBpc3N1ZSBo
-YXMgYmVlbiBpbnRyb2R1Y2UgZW5hYmxpbmcgaHcgcnggZGUtYW1zZHUgc2luY2UgdGhlIGh3IGNh
-bg0KPiBpbnRlcmxlYXZlIGFtc2R1IGZyYW1lcyBmcm9tIGJvdGggcGh5LiBGaXggdGhlIGlzc3Vl
-IG1vdmluZyB0aGUgZGUtYW1zZHUNCj4gYnVmZmVyIHBlci1waHkuDQo+IA0KPiBTaWduZWQtb2Zm
-LWJ5OiBMb3JlbnpvIEJpYW5jb25pIDxsb3JlbnpvQGtlcm5lbC5vcmc+DQoNCkFja2VkLWJ5OiBS
-eWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQoNCg==
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
+branch HEAD: 239729a21e528466d02f5558936306ffa9314ad1  wireless/nl80211: fix wdev_id may be used uninitialized
 
+elapsed time: 722m
+
+configs tested: 144
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+xtensa                           allyesconfig
+arm                     eseries_pxa_defconfig
+mips                          rb532_defconfig
+arm                       spear13xx_defconfig
+arm                           sunxi_defconfig
+powerpc                       maple_defconfig
+arc                                 defconfig
+sh                           se7724_defconfig
+arm                           omap1_defconfig
+sh                   sh7770_generic_defconfig
+arm                        multi_v7_defconfig
+powerpc                     akebono_defconfig
+mips                     loongson1b_defconfig
+arc                         haps_hs_defconfig
+arm                           u8500_defconfig
+xtensa                generic_kc705_defconfig
+powerpc                      pasemi_defconfig
+arm                            pleb_defconfig
+um                             i386_defconfig
+mips                       capcella_defconfig
+alpha                            allyesconfig
+arm                          gemini_defconfig
+csky                             alldefconfig
+powerpc                  storcenter_defconfig
+powerpc                       ppc64_defconfig
+mips                           ip27_defconfig
+sh                          r7785rp_defconfig
+arm                         lubbock_defconfig
+mips                    maltaup_xpa_defconfig
+mips                     loongson1c_defconfig
+sh                        sh7785lcr_defconfig
+sh                        edosk7760_defconfig
+openrisc                            defconfig
+powerpc                      bamboo_defconfig
+powerpc                 mpc85xx_cds_defconfig
+powerpc                   bluestone_defconfig
+mips                         tb0219_defconfig
+powerpc                      ppc6xx_defconfig
+arm                         assabet_defconfig
+mips                      pistachio_defconfig
+mips                  decstation_64_defconfig
+powerpc                    sam440ep_defconfig
+powerpc                      walnut_defconfig
+arm                        vexpress_defconfig
+mips                       bmips_be_defconfig
+arm                          imote2_defconfig
+mips                         tb0287_defconfig
+arm                        clps711x_defconfig
+powerpc                 mpc8313_rdb_defconfig
+arm                          ep93xx_defconfig
+powerpc                     mpc512x_defconfig
+arm                         orion5x_defconfig
+powerpc                    amigaone_defconfig
+m68k                        m5307c3_defconfig
+xtensa                  audio_kc705_defconfig
+powerpc                 mpc8540_ads_defconfig
+powerpc                     pseries_defconfig
+arm                        neponset_defconfig
+arm                        trizeps4_defconfig
+sh                        edosk7705_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20210317
+x86_64               randconfig-a001-20210317
+x86_64               randconfig-a005-20210317
+x86_64               randconfig-a004-20210317
+x86_64               randconfig-a003-20210317
+x86_64               randconfig-a002-20210317
+i386                 randconfig-a001-20210316
+i386                 randconfig-a005-20210316
+i386                 randconfig-a002-20210316
+i386                 randconfig-a003-20210316
+i386                 randconfig-a004-20210316
+i386                 randconfig-a006-20210316
+x86_64               randconfig-a011-20210316
+x86_64               randconfig-a016-20210316
+x86_64               randconfig-a013-20210316
+x86_64               randconfig-a014-20210316
+x86_64               randconfig-a015-20210316
+x86_64               randconfig-a012-20210316
+i386                 randconfig-a013-20210316
+i386                 randconfig-a016-20210316
+i386                 randconfig-a011-20210316
+i386                 randconfig-a012-20210316
+i386                 randconfig-a015-20210316
+i386                 randconfig-a014-20210316
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a006-20210316
+x86_64               randconfig-a001-20210316
+x86_64               randconfig-a005-20210316
+x86_64               randconfig-a004-20210316
+x86_64               randconfig-a003-20210316
+x86_64               randconfig-a002-20210316
+x86_64               randconfig-a011-20210317
+x86_64               randconfig-a016-20210317
+x86_64               randconfig-a013-20210317
+x86_64               randconfig-a014-20210317
+x86_64               randconfig-a015-20210317
+x86_64               randconfig-a012-20210317
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
