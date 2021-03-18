@@ -2,77 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B6DE340ABF
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 17:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 714FC340ACD
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 18:01:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231910AbhCRQ4d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Mar 2021 12:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58114 "EHLO
+        id S231992AbhCRRB1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Mar 2021 13:01:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231208AbhCRQ4Y (ORCPT
+        with ESMTP id S231129AbhCRRBD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Mar 2021 12:56:24 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85BE9C06174A;
-        Thu, 18 Mar 2021 09:56:21 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id e8so3009131iok.5;
-        Thu, 18 Mar 2021 09:56:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dDE2Pj6zPBoLkTC6ITLinz5e4ZGgBzK1S0hNUB7Kgo4=;
-        b=Gq+RnpKwjwSwpl/BhBUphQ1mCiavUToGuFeB9BzjbGwcjLaLd5SNOQT+bhqiZzjNxY
-         aewiHjutZMxQMcWTyC+Jghwpnq6zu8zJlWfUGi6yA1z6LhAbKRfjsi3iRFAkDiVIxTer
-         uHgi3lOVIjyoZtBpfPwo4Uur99xNj8hB1YS9CZUxlTSOskcRrDyWfFBcc9QhVctgN+1h
-         DrJJMrrPAlDD/9hTiDVwpsqXhEG3YWzX4H6Uifj6d7flnlI8Bu7xvosdrnx+m2fyHctk
-         n1m4nYzzOwdkiYdNlWm00aWXKzB4Z+wKWJIoR87momxAcDkXf7LNQ+GVC1Jj8bEPYCFp
-         ohIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dDE2Pj6zPBoLkTC6ITLinz5e4ZGgBzK1S0hNUB7Kgo4=;
-        b=WmOBTbefH6Kg2evVyepMkYraAnfHA51939zOH9G7hRBp1CZONArRpJa1bUCtEE888D
-         NvPIvTZ8gBKalhKdGxuSlb3PTFkQSFFEcK4bWLFLONX0bWFttSQ1TEhTOJQbZUhPal7E
-         q4kIhyPUt1c7fSyZNeBiZvGWrtBLaAyvzyVhYS2NldCDtyWGqnnYUhZ4CWZWVZ5NvxeJ
-         64GF7uCA4lmaqUCZ4tWMnFttl9vfaC8jG+tyR8Z51OEttsYp2aR/96YgPavf1ymjSMDD
-         LvZfwUh7gzvfS8u3ZhKShNzHzV05ig1AgTDFTH9eVb6VbeIqeTLfipXRRj4XBDfOxtCY
-         BKww==
-X-Gm-Message-State: AOAM532K9C1ey++y5Ua80QDsaMwcILK1g1ROPzXmXFLFa9iHDLkkwYtn
-        aewpDUw3Y46XBHf5C9xNOZnvVQ99vYGza/p4PJg=
-X-Google-Smtp-Source: ABdhPJyuhwEiD1aXPEVMyywdX8pbLTjaBm2ZyriSZhM/4G5K8OGRsCWc/5Ge+QVS/r/TJrW3eRr4VTuT/5fTTCiurSM=
-X-Received: by 2002:a05:6638:359:: with SMTP id x25mr7955573jap.136.1616086580921;
- Thu, 18 Mar 2021 09:56:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
-In-Reply-To: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
-From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Date:   Thu, 18 Mar 2021 10:56:10 -0600
-Message-ID: <CAOCk7Nq5B=TKh40wseAdnjGufcXuMRkc-e1GMsKDvZ-T7NfPGg@mail.gmail.com>
-Subject: Re: [PATCH 0/5] qcom: wcnss: Allow overriding firmware form DT
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
-        MSM <linux-arm-msm@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>, wcn36xx@lists.infradead.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+        Thu, 18 Mar 2021 13:01:03 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C57FC06174A
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 10:01:03 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lMw17-000ERX-Ut; Thu, 18 Mar 2021 18:01:02 +0100
+Message-ID: <8cb6896efc94008f4862ae94375f67cd1b379dcd.camel@sipsolutions.net>
+Subject: Re: mac80211_hwsim: wrong tx/rx bitrate when width != 20MHz
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ramon Fontes <ramonreisfontes@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Thu, 18 Mar 2021 18:01:01 +0100
+In-Reply-To: <CAK8U23bTXsJrCLbAOMB+qk5ZPrnaTOoncA3Xe=HGNBPwkNkc1g@mail.gmail.com> (sfid-20200930_042153_224585_BA641453)
+References: <CAK8U23bTXsJrCLbAOMB+qk5ZPrnaTOoncA3Xe=HGNBPwkNkc1g@mail.gmail.com>
+         (sfid-20200930_042153_224585_BA641453)
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-form -> from in the subject?
+On Tue, 2020-09-29 at 23:21 -0300, Ramon Fontes wrote:
+> I'm running 2 virtual interfaces: one in master mode with hostapd
+> (802.11n in 40MHz) and the other one in managed mode.
+> 
+> I can confirm that the AP is working on 40MHz:
+> 
+> ap1 iw dev ap1-wlan1 info
+> Interface ap1-wlan1
+> ifindex 221
+> wdev 0x6c00000001
+> addr 02:00:00:00:02:00
+> ssid new-ssid
+> type AP
+> wiphy 108
+> channel 3 (2422 MHz), width: 40 MHz, center1: 2432 MHz
+> txpower 14.00 dBm
+> 
+> as well as the client:
+> 
+> sta1 iw dev sta1-wlan0 info
+> Interface sta1-wlan0
+> ifindex 219
+> wdev 0x6a00000001
+> addr 00:00:00:00:00:02
+> ssid new-ssid
+> type managed
+> wiphy 106
+> channel 3 (2422 MHz), width: 40 MHz, center1: 2432 MHz
+> txpower 14.00 dBm
+> 
+> However, tx/rx bitrates of the client are not equivalent to the 40 MHz
+> channels. Only the MCS index seems to be ok and I can change it via
+> iw.
 
-On Thu, Mar 11, 2021 at 5:34 PM Bjorn Andersson
-<bjorn.andersson@linaro.org> wrote:
->
-> The wireless subsystem found in Qualcomm MSM8974 and MSM8916 among others needs
-> platform-, and perhaps even board-, specific firmware. Add support for
-> providing this in devicetree.
+You are setting it fixed? What if set the bandwidth too?
+
+Or maybe that's not implemented right?
+
+I was going to say that for rate scaling there's no requirement to pick
+40MHz, although there's no reason (especially in hwsim) for it to pick
+anything else either, so that's a bit odd.
+
+> For some reason I can see the correct tx/rx bitrate right at the
+> beginning of the association (e.g. tx bitrate: 270.0 MBit/s MCS 15
+> 40MHz), but right after that they change to 20 MHz. I have been trying
+> to identify errors in mac80211_hwsim, but I was not successful. Can
+> anybody help me? I did tests with/without wmediumd and the results are
+> the same.
+
+Now I'm confused - you said here "they change", but above you set you
+were actually setting them fixed? So they should change?
+
+If you do nothing fixed, what happens?
+
+johannes
+
