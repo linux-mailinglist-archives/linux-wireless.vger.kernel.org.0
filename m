@@ -2,58 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1CE5340AFD
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 18:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74473340B04
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 18:07:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231919AbhCRRGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Mar 2021 13:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60208 "EHLO
+        id S232206AbhCRRHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Mar 2021 13:07:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232075AbhCRRGG (ORCPT
+        with ESMTP id S232255AbhCRRG7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Mar 2021 13:06:06 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CC7C06174A
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 10:06:06 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lMw60-000EWb-FW; Thu, 18 Mar 2021 18:06:04 +0100
-Message-ID: <fee413b8499827dcdbd90cdb968aaa9210de750f.camel@sipsolutions.net>
-Subject: Re: WMM doesn't work for VLAN frame
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Cedric VONCKEN <cedric.voncken@acksys.fr>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Thu, 18 Mar 2021 18:06:03 +0100
-In-Reply-To: <PR3PR01MB67144B33C65712847FFB558D906B9@PR3PR01MB6714.eurprd01.prod.exchangelabs.com> (sfid-20210316_161819_662475_641D2A95)
-References: <PR3PR01MB67144B33C65712847FFB558D906B9@PR3PR01MB6714.eurprd01.prod.exchangelabs.com>
-         (sfid-20210316_161819_662475_641D2A95)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Thu, 18 Mar 2021 13:06:59 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494D9C061761
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 10:06:59 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id o19-20020a9d22130000b02901bfa5b79e18so5879092ota.0
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 10:06:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=EDdfsUwbPl0ZGq8W3pDbYPnirHDxA/3J0stRMcNF0Dg=;
+        b=oRJZAS68b40yb38sZtyOpRDHIksYzLVy02oabfn866Hs3YyRLMQ9eN3F7H+eY0+1Si
+         xCNuv9BRJuSWAX8FMGVN2YO/5LzbL5M3F9mNn94CX3IsnpwkRC91dUMM4eU1lcpeQRzU
+         ryLxuwQAoXMty9V2zSAI9n+OhKSq4ivq17r+Xs1rJaRL03lmqDVpR2GrrTzv/MQbFa76
+         ButnbScHf0u3fC1ijw9uXSTkbw3sEM6mlkIXHbWfnZPif/ZStTwOuez4xbh2xq8bIoAC
+         6knnnPcg5PruVshvHdHl8sW5xcMtTFBYRI8a+LweNz/rgKlJd6FK7z1ueSqfo2VquKpr
+         jDYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=EDdfsUwbPl0ZGq8W3pDbYPnirHDxA/3J0stRMcNF0Dg=;
+        b=hBHm6b8Rvr7VqbKr3KiqcJUfkaSj3gbT7xvofFowYwaG0PSWf0uTLcFT0SucNuI4WA
+         jH00dHdyQ6y8Xf45TDb3plDoyfH5wJB3M9P3A0ookwhgV+/tPL/HCq25eB4utrwGF/y2
+         /Phc2rdv35w+OdwRRE9gIJNxMO8C4lXgM8Z07cChuU1Kn/Ra+Q1FQ1LG6en0BUcSTrcw
+         D89m00TtTJxETOXIiGibQgwZtpx9DO/sNVUCR464SaqMpJDUgxw9eEMyL8AXgY4Xano8
+         UYnwXLwAr9GVEiwNYponiAiA1rXQIdB2wHT5OapZsExOCAtEWvum69FhwBb7aRLfMpse
+         lfOA==
+X-Gm-Message-State: AOAM533BSfhune4r4oQGzSJ24VivVBBVfqk24YdFx3ryQ/FAuuVwlhkG
+        VlCIa+2bfdvM9OIHwa863Zz+ewp8y+g+KA==
+X-Google-Smtp-Source: ABdhPJzf/Rw1E3Gk1SXd4/sFwfQABV43qXhdPVCJWAOiKt5jrh4jvCA4u7gzetMyoiT+LKNKiE2KlA==
+X-Received: by 2002:a9d:5e89:: with SMTP id f9mr8268359otl.241.1616087218543;
+        Thu, 18 Mar 2021 10:06:58 -0700 (PDT)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id s3sm657086ool.36.2021.03.18.10.06.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Mar 2021 10:06:58 -0700 (PDT)
+Date:   Thu, 18 Mar 2021 12:06:56 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        MSM <linux-arm-msm@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>, wcn36xx@lists.infradead.org,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+Subject: Re: [PATCH 0/5] qcom: wcnss: Allow overriding firmware form DT
+Message-ID: <YFOIsIxIC2mgzhZ1@builder.lan>
+References: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
+ <CAOCk7Nq5B=TKh40wseAdnjGufcXuMRkc-e1GMsKDvZ-T7NfPGg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOCk7Nq5B=TKh40wseAdnjGufcXuMRkc-e1GMsKDvZ-T7NfPGg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-03-16 at 15:15 +0000, Cedric VONCKEN wrote:
+On Thu 18 Mar 11:56 CDT 2021, Jeffrey Hugo wrote:
+
+> form -> from in the subject?
 > 
-> 	Explantation of the issue
-> 		1. The validate_xmit_vlan function add the the vlan tag in the skb frame, set skb->protocol to VLAN protocol (0x8100) and set skb->vlan_tci to 0.
-> 		2. The cfg80211_classify8021d use these fields to determine the frame priority, but the skb->protocol value (0x8100) is not handled byt this function and this function return a default value 0.
 
-(some line breaks would've been nice)
+Seems like I only failed in the cover letter, right?
 
-Well, since your own commit (!) c6ca5e28bc005 the VLAN TCI is used. If
-the VLAN TCI is 0, then you don't get anything else?
+Regards,
+Bjorn
 
-Not sure what you were expecting different now?
-
-
-Oh. You're saying that somehow the order of functions changed? But
-validate_xmit_vlan() only pushes a hw offload vlan tag into the frame
-(wifi devices aren't offload capable)?
-
-johannes
-
+> On Thu, Mar 11, 2021 at 5:34 PM Bjorn Andersson
+> <bjorn.andersson@linaro.org> wrote:
+> >
+> > The wireless subsystem found in Qualcomm MSM8974 and MSM8916 among others needs
+> > platform-, and perhaps even board-, specific firmware. Add support for
+> > providing this in devicetree.
