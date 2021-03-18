@@ -2,83 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C3BA340C98
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 19:13:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBDDD340DE5
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 20:11:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232426AbhCRSNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Mar 2021 14:13:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47102 "EHLO
+        id S232689AbhCRTLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Mar 2021 15:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232530AbhCRSMe (ORCPT
+        with ESMTP id S231590AbhCRTLB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Mar 2021 14:12:34 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE42CC06174A;
-        Thu, 18 Mar 2021 11:12:33 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id t6so5734790ilp.11;
-        Thu, 18 Mar 2021 11:12:33 -0700 (PDT)
+        Thu, 18 Mar 2021 15:11:01 -0400
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A80EAC06174A
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 12:11:01 -0700 (PDT)
+Received: by mail-il1-x134.google.com with SMTP id d2so5892249ilm.10
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 12:11:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=q41xXuRmur179OHVx//rhAqOsEcMpgA+YrpYo7J41Gs=;
-        b=T+Il8wRP5/FIUoeDAvnQz9LVZSgHUpRSk2v95XYOaoKJe14ZwbG/TuPOYQTGiLKx1T
-         L2U0Ro2gkPwIwen3Nsb8405VKPRwo8CfvWqz0kX46Q0EfqaXIBObrzmYic5PoUa7Yq2M
-         YdViJwR959Mq0kjLyY/2SD/VQb956vVIQjtMyk3X3rJFnvzM+f+5xMe8nghOT02Dd8AX
-         s/RQCdIh1dVYFkQjKmxmpts/qF07bbUiJGhCcIgoXJYys/mSJF20yTXyin5/RRH7ZhH8
-         tQ1gNqeEl3IF8V52FIjn+u076EJopMKRk1Z56SEYQtcMx1e5VFFmeq7JDLS04lK0fNaF
-         3DCw==
+        bh=hl/o1czNNh5eByBOw2SNzW+IoLTK83DZiXZSJxM0tiQ=;
+        b=tgdA7HX1OB8coNDG57ztJeSNSTNOPXdyhJEVRUaRg6O4ah3TJqZjg6gfYl89R/o8UG
+         E/ySnIL7fH5xxigZCGthDXYlPYwHEeF0GlLTQUWqGpjR7GIkbhf9f4ZJUHS7q5RD8TX3
+         HnrO5Tr0wm++4l8QiDI5HAIaNhw99ljY4U3YFHyeGjXHbrRgpYM9J7DBrZxQLzrN28TC
+         ghtD1NRyXzPm09bLSm83KoYmEvdlmLaj3PcLVQTmCOfQC6rEfnc16C9jysMJx1//slKr
+         YYK0Es5YmWa+RFjA630FKrbwwKaRWU1RWTWbtqGEHaUZgjGmxEuXA+Zel7H0WMZsUjFJ
+         5xoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=q41xXuRmur179OHVx//rhAqOsEcMpgA+YrpYo7J41Gs=;
-        b=MXuFmjPysw4gKATSJFaJbsr+Dzs8IiCZ3I5x0eejx63xBDrBQqy0hX4leJnIlY1EaY
-         GiGlfnMkCjjZMeeiNgTuwnXHJDMb6F8afWGP+xWBYHFANmNnb5mrm1rGy4pN7MGmIw9V
-         Qc6LtgFwqzCVhZNpgmgj6eterHGHv9i1d1h4xJ6lG/WA/izguPus0SMy+sDeWndQnwTu
-         rvfxW5JeLQW/gizUjbx1k0di9CA7l18ayZii/zkPBG0B3VDAhgKSNHZgfaWHfN+TPh/m
-         iYCE2bIuh9f/f51IwhKh56obfbHnbb6Icss5XiLHYlZvOfTdov4qK2Wq5mtFXWOD6K6b
-         KDMQ==
-X-Gm-Message-State: AOAM531pWUX/llxmNRS+H2DWN/vQkfQ2Dyj5Al93hRlUFtvhuB4W6rHV
-        6WrlruucL4uMrpTrGi35cNPKkXV4fcvPObBzGZc=
-X-Google-Smtp-Source: ABdhPJxCjCW9kXCdSRTEyPNBJPdoVR+YRar9BF6hVktq6LhZLgBZ05ns7zXGmjM10DygGEah3i1SbmoBj1XuLlWFBOY=
-X-Received: by 2002:a92:d5c4:: with SMTP id d4mr2705539ilq.102.1616091153416;
- Thu, 18 Mar 2021 11:12:33 -0700 (PDT)
+        bh=hl/o1czNNh5eByBOw2SNzW+IoLTK83DZiXZSJxM0tiQ=;
+        b=AGnieHShl5omyv/TNWB03nnd1AfpsGJpnZoWehhNIuBBIH0Q8LzJmfxsO6x1KtwsRb
+         F/fGA5oik8wVcZw+IBqz1HcFeLJWHoMcvtCgjC8cnaJkQdwQAGGXN1/LeNXRHI0R7OEM
+         F07wCnSLI/zvtdc8N9DyeSkz+guY+xcCpvBBOfbQmX9EmbTlTGLs+hxnM5yxX4iZjdqm
+         ywAdUbdzoOkv3m/r10UwBDn8yk6gLI4WnTq0liu5OSBwZN1oAT4nhe+FYLbLixMZ75lm
+         fpmSw9gR9wVzClqUnfZfNtOAwRW55IDT95CDtGssOrL44qp5DC3OhapBQeN/dYgbitDr
+         UXEA==
+X-Gm-Message-State: AOAM532sDgxMcPYpfH43/umWvksQ9yDi/kSrBYv3eYhCxtEn90y2J0aF
+        qyPBtSz6J0qKfJ5fxGCccu5MPpUt91wwZbM3V0GHSd2q6cg=
+X-Google-Smtp-Source: ABdhPJxoPBsJFiyUwkLlhss7mbcR+fhYKCnd2JnVlI83uwuQoRBwFEsuVUAZYqwpX26bP+xRZbqk72eyvrOo7ahmG+g=
+X-Received: by 2002:a05:6e02:1411:: with SMTP id n17mr53238ilo.61.1616094661045;
+ Thu, 18 Mar 2021 12:11:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
- <CAOCk7Nq5B=TKh40wseAdnjGufcXuMRkc-e1GMsKDvZ-T7NfPGg@mail.gmail.com> <YFOIsIxIC2mgzhZ1@builder.lan>
-In-Reply-To: <YFOIsIxIC2mgzhZ1@builder.lan>
-From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Date:   Thu, 18 Mar 2021 12:12:22 -0600
-Message-ID: <CAOCk7NqBnfb-snrd=kh9d4TQc+pobDN+rYPpVJrdLXWSqGq8mg@mail.gmail.com>
-Subject: Re: [PATCH 0/5] qcom: wcnss: Allow overriding firmware form DT
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
-        MSM <linux-arm-msm@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>, wcn36xx@lists.infradead.org,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+References: <CAMn1gO7evHe+pvcFwv1XE+y090CSWwXL=pRKjZwmnrZa3j4gtg@mail.gmail.com>
+ <a4502cc2a3547780b075e4ee0d3946f9b727adb9.camel@sipsolutions.net>
+In-Reply-To: <a4502cc2a3547780b075e4ee0d3946f9b727adb9.camel@sipsolutions.net>
+From:   Peter Collingbourne <pcc@google.com>
+Date:   Thu, 18 Mar 2021 12:10:49 -0700
+Message-ID: <CAMn1gO6PoOZyejd_Pu0fj9DHz7d8ty8-sb8voRvXd3=-XV23jA@mail.gmail.com>
+Subject: Re: [PATCH v2] cfg80211: avoid holding the RTNL when calling the driver
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Mar 18, 2021 at 11:06 AM Bjorn Andersson
-<bjorn.andersson@linaro.org> wrote:
+On Thu, Mar 18, 2021 at 12:55 AM Johannes Berg
+<johannes@sipsolutions.net> wrote:
 >
-> On Thu 18 Mar 11:56 CDT 2021, Jeffrey Hugo wrote:
+> Hi Peter,
 >
-> > form -> from in the subject?
+>
+> > I'm seeing warnings like this on 5.12.0-rc2 which I think were caused
+> > by your patch.
 > >
+> > [    4.898946][  T455] ------------[ cut here ]------------
+> > [    4.899434][  T455] RTNL: assertion failed at net/core/dev.c (10988)
 >
-> Seems like I only failed in the cover letter, right?
+> Yes, sorry about that. I clearly didn't audit that particular code path
+> (well enough, or at all) with the locking changes.
+>
+> Even worse, it probably deadlocks?
 
-Looks like.  I didn't even parse that this was the cover letter.
+Yes, it was deadlocking after a few minutes, although at that time I
+hadn't confirmed that the deadlock was being caused by the patch or by
+some other issue.
 
-Nothing to see here.
+> In any case, I fixed it here, I believe:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?id=77cbf790e5b482256662e14c8b6ef4fecb07d06d
+
+I cherry-picked that patch and tested it on my setup, and it fixed
+both the warnings and the deadlocks. So if you like you can add my:
+
+Tested-by: Peter Collingbourne <pcc@google.com>
+
+to that patch.
+
+Peter
