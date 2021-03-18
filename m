@@ -2,129 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60BEA341018
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 22:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A4B341030
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 23:10:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231388AbhCRV57 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Mar 2021 17:57:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39672 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231888AbhCRV5g (ORCPT
+        id S231869AbhCRWKU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Mar 2021 18:10:20 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:34864 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230297AbhCRWKO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Mar 2021 17:57:36 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA70C06174A
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 14:57:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=TP6KuCeVK8TNEtxfKrF+7v9fSMdANC12EI+U2jGs/Uw=; b=DvBw/zyuf6Lq6jozL5lIpDpwCw
-        VUj4VgtLLfNecj/zMs8Ik9kDVBpPrXmPbHtChqUNTy+4UdewxtUhKX/ddMYWiaib6AzhFCy/Il7Fj
-        LvMcVi2er9yG4r6bRt1WJZib/wWllb3hdSG+u1KX+Ji6T7D82d8HTn614rYLWMty0HtY=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lN0e3-0004B2-T3; Thu, 18 Mar 2021 22:57:31 +0100
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
-        linux-wireless@vger.kernel.org
-Cc:     make-wifi-fast@lists.bufferbloat.net,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kan Yan <kyan@google.com>, Yibo Zhao <yiboz@codeaurora.org>
-References: <20210318213142.138707-1-toke@redhat.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH mac80211-next v6] mac80211: Switch to a virtual time-based
- airtime scheduler
-Message-ID: <a6ca1ab9-29a0-18fe-8097-20abc5f253bd@nbd.name>
-Date:   Thu, 18 Mar 2021 22:57:31 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.1
-MIME-Version: 1.0
-In-Reply-To: <20210318213142.138707-1-toke@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        Thu, 18 Mar 2021 18:10:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1616105414; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=2e94WWpuQhIStbt/98uujAvCr6h9iC0w2H8LAevzWQQ=; b=X+uPv4IosfYKImgtrQFXHuePtVCwPnlo/s8FXnk94ffFwfuGFgtUXcp27/faXQ9ihZ3k36x2
+ Huz/IXOJFS/fL6YUOR/3qhkqVL6gOr1F97gMYgh0WZtsoPC/lh37f6ES3xvhNiv4tOXykPL4
+ Sgf5jlxP4MWaiBcjY7Hfm8V5nyg=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 6053cfbf4db3bb6801965dcb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Mar 2021 22:10:07
+ GMT
+Sender: pradeepc=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 399F6C433CA; Thu, 18 Mar 2021 22:10:06 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from pradeepc-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: pradeepc)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 77A9BC433C6;
+        Thu, 18 Mar 2021 22:10:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 77A9BC433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pradeepc@codeaurora.org
+From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Subject: [PATCH V8 0/3] ath11k: add HE radiotap header support
+Date:   Thu, 18 Mar 2021 15:09:54 -0700
+Message-Id: <1616105397-1482-1-git-send-email-pradeepc@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This series address review comments from previous revision:
+https://patchwork.kernel.org/project/linux-wireless/list/?series=328291&state=%2A&archive=both
 
-Hi Toke,
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01725-QCAHKSWPL_SILICONZ-1
 
-Thanks for continuing to work on this! I just did a quick reading of the
-code and haven't tested this yet - I might have some more comments in
-the next few days.
+changes in v8:
+ - move ieee80211_tx_status_ext out of spin lock
 
-On 2021-03-18 22:31, Toke Høiland-Jørgensen wrote:
-> This switches the airtime scheduler in mac80211 to use a virtual time-based
-> scheduler instead of the round-robin scheduler used before. This has a
-> couple of advantages:
-> 
-> - No need to sync up the round-robin scheduler in firmware/hardware with
->   the round-robin airtime scheduler.
-> 
-> - If several stations are eligible for transmission we can schedule both of
->   them; no need to hard-block the scheduling rotation until the head of the
->   queue has used up its quantum.
-> 
-> - The check of whether a station is eligible for transmission becomes
->   simpler (in ieee80211_txq_may_transmit()).
-> 
-> The drawback is that scheduling becomes slightly more expensive, as we need
-> to maintain an rbtree of TXQs sorted by virtual time. This means that
-> ieee80211_register_airtime() becomes O(logN) in the number of currently
-> scheduled TXQs because it can change the order of the scheduled stations.
-> We mitigate this overhead by only resorting when a station changes position
-> in the tree, and hopefully N rarely grows too big (it's only TXQs currently
-> backlogged, not all associated stations), so it shouldn't be too big of an
-> issue.
-> 
-> To prevent divisions in the fast path, we maintain both station sums and
-> pre-computed reciprocals of the sums. This turns the fast-path operation
-> into a multiplication, with divisions only happening as the number of
-> active stations change (to re-compute the current sum of all active station
-> weights). To prevent this re-computation of the reciprocal from happening
-> too frequently, we use a time-based notion of station activity, instead of
-> updating the weight every time a station gets scheduled or de-scheduled. As
-> queues can oscillate between empty and occupied quite frequently, this can
-> significantly cut down on the number of re-computations. It also has the
-> added benefit of making the station airtime calculation independent on
-> whether the queue happened to have drained at the time an airtime value was
-> accounted.
-> 
-> Co-developed-by: Yibo Zhao <yiboz@codeaurora.org>
-> Signed-off-by: Yibo Zhao <yiboz@codeaurora.org>
-> Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> ---
-> Respinning this has taken way too long, but assuming anyone actually remembers
-> the previous version from a bit over a year ago, here's the changelog:
-> 
-> Changes since v5:
->   Rebase on latest mac80211-next.
-> 
->   Fix issue with scheduling hanging because the schedule position was not
->   cleared when starting a new scheduling round.
-> 
->   Switch the reciprocal calculation to use u32 (split 19/13) for per-station
->   weights and a u64 only for the weight sum (to cut down on the number of 64-bit
->   operations performed)
-> 
->   Introduce the notion of time-based station activity when calculating weight
->   sums. This also gets rid of the need for a "grace time" when catching up
->   stations, since we now have a direct notion of when a station has been
->   inactive for a while.
-Not sure if I'm misunderstanding the code, but this does not seem enough
-to me. From what I can see, you consider a station active if it has been
-scheduled in the last 100ms. Let's say we keep sending a single small
-packet to a particular sta every 90ms (thus keeping it active) for a
-long period of time and then suddenly start a really huge transfer.
-What keeps it from then taking an unreasonably large share of the
-airtime for as long as it takes for the virtual time to catch up?
+changes in v7:
+ - use generic radiotap HE fields from
+	include/net/ieee80211_radiotap.h
+ - fix converting gi and ltf enums to match nl80211 enums when
+	updating radiotap headers.
+ - fix sparse warnings
 
-Am I missing something or should we maybe use the new notion of
-time-based activity *and* do a grace time catch up?
+Pradeep Kumar Chitrapu (3):
+  ath11k: switch to using ieee80211_tx_status_ext()
+  ath11k: decode HE status tlv
+  ath11k: translate HE status to radiotap format
 
-- Felix
+ drivers/net/wireless/ath/ath11k/dp_rx.c    | 114 ++++-
+ drivers/net/wireless/ath/ath11k/dp_tx.c    |  25 +-
+ drivers/net/wireless/ath/ath11k/hal_desc.h |   1 +
+ drivers/net/wireless/ath/ath11k/hal_rx.c   | 470 ++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/hal_rx.h   | 135 +++++-
+ 5 files changed, 663 insertions(+), 82 deletions(-)
+
+-- 
+2.17.1
+
