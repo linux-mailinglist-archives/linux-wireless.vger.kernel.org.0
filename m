@@ -2,117 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8DC33FB84
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Mar 2021 23:53:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5B233FCFF
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 03:02:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbhCQWwb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Mar 2021 18:52:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50922 "EHLO
+        id S230358AbhCRCB5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Mar 2021 22:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbhCQWwT (ORCPT
+        with ESMTP id S230308AbhCRCBh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Mar 2021 18:52:19 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC95CC06174A
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Mar 2021 15:52:18 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id v17so287608iot.6
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Mar 2021 15:52:18 -0700 (PDT)
+        Wed, 17 Mar 2021 22:01:37 -0400
+Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E5DC06174A
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Mar 2021 19:01:37 -0700 (PDT)
+Received: by mail-qt1-x849.google.com with SMTP id l11so4550347qtk.2
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Mar 2021 19:01:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=WXYhupZX2ErX4pBb43XWlz6FEpr8DfumfrBgRMgf4oc=;
-        b=P3V2kK+7GdN+ByajsL4nuy6OImCiG0lgUrScudL77h2Rq4Bb0bFNIz82GTqqZFzYwm
-         G6gIcFPY61Wm56biJKPNJFepLRo/5BwfRL1gLiaO0TNVVNhJFWFs7Oyd/LUGQNld58t/
-         ccOKHcEklI0qD3MEDjeaSbJTJ/BMxeYFXX403QI3QNCXn6uuYIDyVsoykheWYN2DSeZp
-         r4iLCko0sZOXWxeAms8d209h6ZOx/cP3k9qm5O7kfJAeaObNm6Qd2GaMF5rgqG11o/A5
-         4CNCBlODRs1VEzrGogoVlS/dcSV96bPaWBONZC96BDmsk2vLwvHvRx/SQ9aXwIPwjzFa
-         hrFg==
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=+UcgvFQcz7bzdmHaCkGqxDfp91gn2PcF3h4jni/C+fs=;
+        b=kNtaBLJTYFvgTlVVaoA04VJ6ywOzWQuO2muRupaZcvTW4I1hI7xN/px+EP5rNWViL7
+         nCL7w3k4zc446ZDvKTJMUx82ggdSWYv/UXRFBe7hSHxhbuh9W0IWYOgMmPAnCzPZfoiL
+         cZC007huGqWaH9MtViemlBaPmkcgnQJDmXXGoeSz9Z/cgQkw7wWTXJ1BbE3lK8KGphsJ
+         lXu6NPQd6+jCsoSGhGFKQQ7Gd73BILfNMzB1k/z7gU66gZXRP+foN2oi8GUZ1va1qA22
+         +Y29mOZiUh74Ch+FaIrK1qRctuIgfa2caz15G1np/I+Ux1VDPq7hZcdpzM1DussDvDFx
+         3kHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=WXYhupZX2ErX4pBb43XWlz6FEpr8DfumfrBgRMgf4oc=;
-        b=EWBSUiz3a6tFhX9RebhiD7O3qv43xFVl14JogIUo+urF9v5i52/lZgmjU200+LrWpy
-         nOhdJmJ1L+FaN0b+CC6xlCbvOHPsNu/cCeo+kGbaqasHSBRUCqN6xQt08DlsQf/4qowk
-         +A1nHdR8SYMvXLBbZixDPaLD4VDVAVEupTl8ZRf0B8nV9PDEptNmu+zoLQZJKoZxY9hD
-         2Usp6aO+Od7/5U8Kpx2cCqHP/C2HXY5BCVce7NZ1PTtmnDKS3NzdD/MaoOxJ8xoTc4lQ
-         MrS/R5icrgLrHSa/tFaDJ3QZA61+TwskcBCP+umiWIh620N3G5uzPWYrkmLN0LryLqp8
-         j3AA==
-X-Gm-Message-State: AOAM530M8ctJLLEKAfY61F37BhMfPWOOT3XgLhcYYec87WOs0m+gmcze
-        VKMU7ApT5EIals8sdgI3DAx1mWWBl4Q+H0VpxJHqn+9oMUes6g==
-X-Google-Smtp-Source: ABdhPJyfEF3n1rSUW9jL3T4A4f6g1HbLD3uM8AGIwhynHyzThu57D4ItfKvR8sXBMezKb292Wdy4CS7YhRLo6Sjhsqc=
-X-Received: by 2002:a5d:9285:: with SMTP id s5mr8392522iom.139.1616021538161;
- Wed, 17 Mar 2021 15:52:18 -0700 (PDT)
-MIME-Version: 1.0
-From:   Peter Collingbourne <pcc@google.com>
-Date:   Wed, 17 Mar 2021 15:52:07 -0700
-Message-ID: <CAMn1gO7evHe+pvcFwv1XE+y090CSWwXL=pRKjZwmnrZa3j4gtg@mail.gmail.com>
-Subject: Re: [PATCH v2] cfg80211: avoid holding the RTNL when calling the driver
-To:     johannes.berg@intel.com, linux-wireless@vger.kernel.org
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=+UcgvFQcz7bzdmHaCkGqxDfp91gn2PcF3h4jni/C+fs=;
+        b=GOKMh9fOEZGmYKB0J2g97sijZHTvODJPKh9B24ahtRInVEmKmRFjZ5G2HX/D7SO58D
+         t5lT0MP6/LRxEsjxXqhPgiUZGOpViVd1g8SoVV6QV8WPxye4ib8+WWF1qqfS9btiv8Is
+         DXSnNliQCXzcazbQPEBmP92fGqijhn3LVpBIRctK8lUpBmt1lUDl17s5MQh2/2gAlVci
+         Zz/qxNMPmg2uO3fOWCU43qMc7A2aRmY0sIYnUC7QmLF/nEmwHXqZBstDSFkGXVQrKRyQ
+         m5A7+ZdRd3UUrSFBjSncbkiUiHFfHXld2QfkAmowcEdxFfIE8oSLOSlQxUo4MJ9B7f2t
+         zv+w==
+X-Gm-Message-State: AOAM530vUkR3iViZ2pm0s8x2Y2tytgxLLjuZvjCrwqrkty/1Obz7X/ir
+        USfBPEtD5sK3PjVwq0DEyvUbbanYzn8IwAI2
+X-Google-Smtp-Source: ABdhPJxWWYR/FLCWVHR+lEvCbYG5F4OUwXVAr8mkfj4cbykFxkGkL28cV/KGajZxpyCcrFTnxJ+7LdT/w7CHSEPh
+X-Received: from schuffelen.mtv.corp.google.com ([2620:15c:211:200:49b9:40b4:cada:e298])
+ (user=schuffelen job=sendgmr) by 2002:a0c:a0c6:: with SMTP id
+ c64mr2196205qva.57.1616032896291; Wed, 17 Mar 2021 19:01:36 -0700 (PDT)
+Date:   Wed, 17 Mar 2021 19:01:10 -0700
+Message-Id: <20210318020110.778352-1-schuffelen@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.31.0.rc2.261.g7f71774620-goog
+Subject: [PATCH] virt_wifi: Return micros for BSS TSF values
+From:   "A. Cody Schuffelen" <schuffelen@google.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "A. Cody Schuffelen" <schuffelen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+cfg80211_inform_bss expects to receive a TSF value, but is given the
+time since boot in nanoseconds. TSF values are expected to be at
+microsecond scale rather than nanosecond scale.
 
-I'm seeing warnings like this on 5.12.0-rc2 which I think were caused
-by your patch.
+Signed-off-by: A. Cody Schuffelen <schuffelen@google.com>
+---
+ drivers/net/wireless/virt_wifi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[    4.898946][  T455] ------------[ cut here ]------------
-[    4.899434][  T455] RTNL: assertion failed at net/core/dev.c (10988)
-[    4.900191][  T455] WARNING: CPU: 1 PID: 455 at
-net/core/dev.c:10988 dev_change_net_namespace+0x680/0x730
-[    4.901042][  T455] Modules linked in: zram zsmalloc
-vmw_vsock_virtio_transport virtio_pmem virtio_pci
-virtio_pci_modern_dev virtio_net virtio_mmio virtio_input
-virtio_console virtio_blk virtio_rng virtio_gpu virtio_dma_buf
-vexpress_sysreg system_heap snd_hda_intel snd_intel_dspcfg
-snd_hda_codec_realtek snd_hda_codec_generic snd_hda_codec snd_hda_core
-rtc_test psmouse net_failover nd_virtio md_mod mac80211_hwsim
-ledtrig_audio hci_vhci goldfish_sync(O) goldfish_pipe(O)
-goldfish_battery(O) goldfish_address_space(O) failover dummy_hcd
-dummy_cpufreq clk_vexpress_osc vexpress_config armmmci ambakmi
-[    4.906291][  T455] CPU: 1 PID: 455 Comm: iw Tainted: G           O
-     5.12.0-rc2-mainline-08319-g19e2e1d25c10 #1
-[    4.907475][  T455] Hardware name: linux,ranchu (DT)
-[    4.907988][  T455] pstate: 60400005 (nZCv daif +PAN -UAO -TCO BTYPE=--)
-[    4.908627][  T455] pc : dev_change_net_namespace+0x680/0x730
-[    4.909168][  T455] lr : dev_change_net_namespace+0x680/0x730
-[    4.909725][  T455] sp : ffffffc012df3830
-[    4.910118][  T455] x29: ffffffc012df3870 x28: ffffff800dd8b240
-[    4.910693][  T455] x27: ffffff801ca76000 x26: 0000000000000008
-[    4.911212][  T455] x25: ffffff801cac3210 x24: ffffffc011b5ac40
-[    4.911848][  T455] x23: ffffff801ca768e0 x22: ffffffc011798506
-[    4.912382][  T455] x21: ffffffc011b5ac40 x20: ffffff800db0b240
-[    4.912793][  T455] x19: ffffff801cb00000 x18: ffffffc012549080
-[    4.913200][  T455] x17: 0000000000000006 x16: 000000000000b70d
-[    4.913612][  T455] x15: 0000000000000019 x14: 02a5000000000000
-[    4.914135][  T455] x13: 0000000000000000 x12: 000000005c961000
-[    4.914752][  T455] x11: ffffffc0119d6070 x10: 0000000000000000
-[    4.915238][  T455] x9 : a0858573fdaceb00 x8 : a0858573fdaceb00
-[    4.915836][  T455] x7 : ffffffc011715fa9 x6 : 0000000000000003
-[    4.916352][  T455] x5 : 0000000000000001 x4 : 0000000000000001
-[    4.916909][  T455] x3 : ffffff800dd8b240 x2 : ffffff807fbb5988
-[    4.917411][  T455] x1 : 0000000000000000 x0 : 0000000000000030
-[    4.918034][  T455] Call trace:
-[    4.918327][  T455]  dev_change_net_namespace+0x680/0x730
-[    4.918827][  T455]  cfg80211_switch_netns+0x90/0x1b8
-[    4.919305][  T455]  nl80211_wiphy_netns+0x6c/0xf0
-[    4.919772][  T455]  genl_rcv_msg+0x3c0/0x3ec
-[    4.920163][  T455]  netlink_rcv_skb+0x108/0x124
-[    4.920650][  T455]  genl_rcv+0x38/0x54
-[    4.920955][  T455]  netlink_unicast_kernel+0xa0/0x140
-[    4.921484][  T455]  netlink_unicast+0xfc/0x1a4
-[    4.921918][  T455]  netlink_sendmsg+0x28c/0x320
-[    4.922363][  T455]  ____sys_sendmsg+0x17c/0x234
-[    4.922786][  T455]  __sys_sendmsg+0x190/0x1e8
-[    4.923183][  T455]  __arm64_sys_sendmsg+0x28/0x38
-[    4.923557][  T455]  el0_svc_common+0x94/0x118
-[    4.923921][  T455]  do_el0_svc+0x28/0x88
-[    4.924223][  T455]  el0_svc+0x2c/0x90
-[    4.924582][  T455]  el0_sync_handler+0x88/0xec
-[    4.925113][  T455]  el0_sync+0x194/0x1c0
-[    4.925572][  T455] ---[ end trace 8f99239e8a4e6dad ]---
-[    4.926322][  T455] ------------[ cut here ]------------
+diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
+index c878097f0dda..07cefd0a86be 100644
+--- a/drivers/net/wireless/virt_wifi.c
++++ b/drivers/net/wireless/virt_wifi.c
+@@ -172,7 +172,7 @@ static void virt_wifi_scan_result(struct work_struct *work)
+ 	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
+ 					   CFG80211_BSS_FTYPE_PRESP,
+ 					   fake_router_bssid,
+-					   ktime_get_boottime_ns(),
++					   ktime_get_boottime_ns() / 1000,
+ 					   WLAN_CAPABILITY_ESS, 0,
+ 					   (void *)&ssid, sizeof(ssid),
+ 					   DBM_TO_MBM(-50), GFP_KERNEL);
+-- 
+2.31.0.rc2.261.g7f71774620-goog
 
-Peter
