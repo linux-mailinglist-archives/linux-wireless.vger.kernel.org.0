@@ -2,97 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C423340EC6
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 21:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3678340F3A
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Mar 2021 21:31:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232923AbhCRUEo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Mar 2021 16:04:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43274 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232654AbhCRUEd (ORCPT
+        id S233126AbhCRUao (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Mar 2021 16:30:44 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:26413 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233224AbhCRUaS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Mar 2021 16:04:33 -0400
-Received: from mail-qk1-x749.google.com (mail-qk1-x749.google.com [IPv6:2607:f8b0:4864:20::749])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A894C06175F
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 13:04:32 -0700 (PDT)
-Received: by mail-qk1-x749.google.com with SMTP id c1so32500462qke.8
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Mar 2021 13:04:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=Sy0ok4NDvEEWcKa8gZVauE+I24CZBWOlbwpSDaAczD4=;
-        b=OYvbaHL4Cw/2tEMKIpXymUrOdPxlDLE16i0tNA1k6PToqW2gxs01/TDyDN3xUy08IP
-         v0KqdzfxqSFwp+GFzYMiEoYQDVYtGNUeOvyucbUEsZUgzypqBTyUxk7p84IQoaWHHu7O
-         1SLxkNx03DABkLuTtoKDnvVMI94og1t00o+/DQ8QpPfcKq3kY2lXVfF3IKSM1Bu7hZ29
-         eLjJneJj+eKVLvf9uE+j+jEGEti8bhfZ1QSVaSA+OeenV3XoL9CSGVkt/HNDnhoTzXcW
-         ir0fo6+jjZ7Eyl1F5KaL7En9r523E3mw7LKatSL1ctsWuFKU6qYclSWa23US36YEww4x
-         rL5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=Sy0ok4NDvEEWcKa8gZVauE+I24CZBWOlbwpSDaAczD4=;
-        b=dI9gKTDI3tXkDEjq2foB0eNvSEe7L1buu1oUkIiFeO4wpl1m7WnVcum0UIuPazOwmP
-         LrYHW9C9FOgBz169Lnd/e1LGpTd/57A+piJiKHRSBSwngNjpVmES97k0mkmLg5YgnbnE
-         K2mEEeO0QF7h/6AfMVn0xZKiv8h4eEzbeQn+HhYle46Ds3UYrDeHyNOoZitiu//HpQF6
-         L+egkzxZ6OPHTsn93chrFPAnv+YmsZUZQpaDGQVUFfTgjLcHeOenr2Kcwrh4Rr0QSy18
-         gqktSWHV8J+Edv0ySuMgHl5YPZfBvI8Sq21WqwT0x2dLZQ7gBwVBV9vgQGLnmnpIbwAN
-         FF+A==
-X-Gm-Message-State: AOAM531sfk7h7TNwXhuZoVosfWtcD8/mNRpYDad/atcaqHABM0u79dd/
-        d9qe+qX6eES1xVO17PmtqMxSCs2wSuVnZ0mr
-X-Google-Smtp-Source: ABdhPJyQ78BMLMSkt/5hyJHt/m7uMl6vx5Xf4POCD7cNtWcNhm+B+Nmifj71WzlahW0x8X0CpISeWd9uPTkm4V6u
-X-Received: from schuffelen.mtv.corp.google.com ([2620:15c:211:200:49b9:40b4:cada:e298])
- (user=schuffelen job=sendgmr) by 2002:a05:6214:13b3:: with SMTP id
- h19mr6166044qvz.31.1616097871522; Thu, 18 Mar 2021 13:04:31 -0700 (PDT)
-Date:   Thu, 18 Mar 2021 13:04:19 -0700
-Message-Id: <20210318200419.1421034-1-schuffelen@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.31.0.rc2.261.g7f71774620-goog
-Subject: [PATCH v2] virt_wifi: Return micros for BSS TSF values
-From:   "A. Cody Schuffelen" <schuffelen@google.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "A. Cody Schuffelen" <schuffelen@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        Thu, 18 Mar 2021 16:30:18 -0400
+X-Greylist: delayed 304 seconds by postgrey-1.27 at vger.kernel.org; Thu, 18 Mar 2021 16:30:18 EDT
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1616099418; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=jnf5OevRfRzndK6VJ9m/LFXR55ww48JvW9oCoFKzSGM=;
+ b=sS/8ZqOAtt2fV6rv7y4rmoc93ReevswaB07uZ+qNqYI8eQv2uAUMGA2fo8wRxY887HCyVYxZ
+ kTem3mdWXSc1WxBjJMvFluG3FtIl04D7wb8hnEB/+e0V8SQpX2h7QqGpbisNYYM1fW4K3J3R
+ IztQSdRaGiGdGLGVz23fNAYGufc=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 6053b70de2200c0a0d0a8b3b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Mar 2021 20:24:45
+ GMT
+Sender: pradeepc=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5F1F0C433CA; Thu, 18 Mar 2021 20:24:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pradeepc)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B7227C433C6;
+        Thu, 18 Mar 2021 20:24:44 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 18 Mar 2021 13:24:44 -0700
+From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+To:     Karthikeyan periyasamy <periyasa@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Miles Hu <milehu@codeaurora.org>,
+        John Crispin <john@phrozen.org>,
+        pradeepc=codeaurora.org@codeaurora.org
+Subject: Re: [PATCH v7 1/3] ath11k: switch to using ieee80211_tx_status_ext()
+In-Reply-To: <65a8f70609a1758611c97205abd205f2@codeaurora.org>
+References: <20210305230337.23047-1-pradeepc@codeaurora.org>
+ <20210305230337.23047-2-pradeepc@codeaurora.org>
+ <65a8f70609a1758611c97205abd205f2@codeaurora.org>
+Message-ID: <dde25ece7fcbc6a0f268c98aa461d792@codeaurora.org>
+X-Sender: pradeepc@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-cfg80211_inform_bss expects to receive a TSF value, but is given the
-time since boot in nanoseconds. TSF values are expected to be at
-microsecond scale rather than nanosecond scale.
+>> +	spin_lock_bh(&ab->base_lock);
+>> +	peer = ath11k_peer_find_by_id(ab, ts->peer_id);
+>> +	if (peer) {
+>> +		arsta = (struct ath11k_sta *)peer->sta->drv_priv;
+>> +		status.sta = peer->sta;
+>> +		status.skb = msdu;
+>> +		status.info = info;
+>> +		status.rate = &arsta->last_txrate;
+>> +	}
+>> +	rcu_read_unlock();
+>> +	if (peer)
+>> +		ieee80211_tx_status_ext(ar->hw, &status);
+>> +	else
+>> +		dev_kfree_skb_any(msdu);
+>> +	spin_unlock_bh(&ab->base_lock);
+> 
+> Why ieee80211_tx_status_ext() kept under spin_lock?
+> 
+> Thanks,
+> Karthikeyan P
+Thanks Karthikeyan for the review..Yes, spin lock could be avoided for
+ieee80211_tx_status_ext(). I will address this in next revision.
 
-Signed-off-by: A. Cody Schuffelen <schuffelen@google.com>
----
- drivers/net/wireless/virt_wifi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
-index c878097f0dda..1df959532c7d 100644
---- a/drivers/net/wireless/virt_wifi.c
-+++ b/drivers/net/wireless/virt_wifi.c
-@@ -12,6 +12,7 @@
- #include <net/cfg80211.h>
- #include <net/rtnetlink.h>
- #include <linux/etherdevice.h>
-+#include <linux/math64.h>
- #include <linux/module.h>
- 
- static struct wiphy *common_wiphy;
-@@ -168,11 +169,11 @@ static void virt_wifi_scan_result(struct work_struct *work)
- 			     scan_result.work);
- 	struct wiphy *wiphy = priv_to_wiphy(priv);
- 	struct cfg80211_scan_info scan_info = { .aborted = false };
-+	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
- 
- 	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
- 					   CFG80211_BSS_FTYPE_PRESP,
--					   fake_router_bssid,
--					   ktime_get_boottime_ns(),
-+					   fake_router_bssid, tsf,
- 					   WLAN_CAPABILITY_ESS, 0,
- 					   (void *)&ssid, sizeof(ssid),
- 					   DBM_TO_MBM(-50), GFP_KERNEL);
--- 
-2.31.0.rc2.261.g7f71774620-goog
-
+Thanks
+pradeep
