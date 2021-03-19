@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 100B5341505
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 06:44:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38D203414FD
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 06:44:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233896AbhCSFna (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S233899AbhCSFna (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 19 Mar 2021 01:43:30 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39695 "EHLO
+Received: from rtits2.realtek.com ([211.75.126.72]:39704 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233829AbhCSFnE (ORCPT
+        with ESMTP id S233832AbhCSFnI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Mar 2021 01:43:04 -0400
+        Fri, 19 Mar 2021 01:43:08 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 12J5gwpA7007653, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 12J5h3hE5007687, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 12J5gwpA7007653
+        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 12J5h3hE5007687
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 19 Mar 2021 13:42:58 +0800
+        Fri, 19 Mar 2021 13:43:03 +0800
 Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 19 Mar
- 2021 13:42:58 +0800
+ 2021 13:43:03 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <ku920601@realtek.com>,
         <phhuang@realtek.com>, <shaofu@realtek.com>,
         <steventing@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH 1/7] rtw88: add flush hci support
-Date:   Fri, 19 Mar 2021 13:42:12 +0800
-Message-ID: <20210319054218.3319-2-pkshih@realtek.com>
+Subject: [PATCH 2/7] rtw88: follow the AP basic rates for tx mgmt frame
+Date:   Fri, 19 Mar 2021 13:42:13 +0800
+Message-ID: <20210319054218.3319-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20210319054218.3319-1-pkshih@realtek.com>
 References: <20210319054218.3319-1-pkshih@realtek.com>
@@ -37,173 +37,174 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS01.realtek.com.tw (172.21.6.94) To
+X-ClientProxiedBy: RTEXMBS03.realtek.com.tw (172.21.6.96) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Shao-Fu Cheng <shaofu@realtek.com>
 
-Though mac queue flushing has been supported, sometimes data may be waiting
-on interface from host to chip. If it occurs, there may still be data that
-flows into mac just after we do flush. To avoid that, we add the hci part
-of flushing.
+By default the driver uses the 1M and 6M rate for managemnt frames
+in 2G and 5G bands respectively. But when the basic rates is configured
+from the mac80211, we need to send the management frames according the
+basic rates.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+This commit makes the driver use the lowest basic rates to send
+the management frames and a debufs entry to enable/disable force to use
+the lowest rate 1M/6M for 2.4G/5G bands.
+
+obtain current setting
+cat /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
+
+force lowest rate:
+echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
+
+Signed-off-by: Shao-Fu Cheng <shaofu@realtek.com>
+Signed-off-by: Yu-Yen Ting <steventing@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/hci.h      | 16 +++++
- drivers/net/wireless/realtek/rtw88/mac80211.c |  2 +
- drivers/net/wireless/realtek/rtw88/pci.c      | 69 +++++++++++++++++++
- 3 files changed, 87 insertions(+)
+ drivers/net/wireless/realtek/rtw88/debug.c | 39 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/main.h  |  1 +
+ drivers/net/wireless/realtek/rtw88/tx.c    | 27 ++++++++++++---
+ 3 files changed, 62 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/hci.h b/drivers/net/wireless/realtek/rtw88/hci.h
-index 2cba327e6218..4c6fc6fb3f83 100644
---- a/drivers/net/wireless/realtek/rtw88/hci.h
-+++ b/drivers/net/wireless/realtek/rtw88/hci.h
-@@ -11,6 +11,7 @@ struct rtw_hci_ops {
- 			struct rtw_tx_pkt_info *pkt_info,
- 			struct sk_buff *skb);
- 	void (*tx_kick_off)(struct rtw_dev *rtwdev);
-+	void (*flush_queues)(struct rtw_dev *rtwdev, u32 queues, bool drop);
- 	int (*setup)(struct rtw_dev *rtwdev);
- 	int (*start)(struct rtw_dev *rtwdev);
- 	void (*stop)(struct rtw_dev *rtwdev);
-@@ -258,4 +259,19 @@ static inline enum rtw_hci_type rtw_hci_type(struct rtw_dev *rtwdev)
- 	return rtwdev->hci.type;
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index 4539b673f6fd..067ce361e4fb 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -853,6 +853,39 @@ static int rtw_debugfs_get_fw_crash(struct seq_file *m, void *v)
+ 	return 0;
  }
  
-+static inline void rtw_hci_flush_queues(struct rtw_dev *rtwdev, u32 queues,
-+					bool drop)
++static ssize_t rtw_debugfs_set_basic_rates(struct file *filp,
++					   const char __user *buffer,
++					   size_t count, loff_t *loff)
 +{
-+	if (rtwdev->hci.ops->flush_queues)
-+		rtwdev->hci.ops->flush_queues(rtwdev, queues, drop);
++	struct seq_file *seqpriv = (struct seq_file *)filp->private_data;
++	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
++	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
++	bool input;
++	int err;
++
++	err = kstrtobool_from_user(buffer, count, &input);
++	if (err)
++		return err;
++
++	if (input)
++		set_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
++	else
++		clear_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
++
++	return count;
 +}
 +
-+static inline void rtw_hci_flush_all_queues(struct rtw_dev *rtwdev, bool drop)
++static int rtw_debugfs_get_basic_rates(struct seq_file *m, void *v)
 +{
-+	if (rtwdev->hci.ops->flush_queues)
-+		rtwdev->hci.ops->flush_queues(rtwdev,
-+					      BIT(rtwdev->hw->queues) - 1,
-+					      drop);
++	struct rtw_debugfs_priv *debugfs_priv = m->private;
++	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
++
++	seq_printf(m, "use lowest: %d\n",
++		   test_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags));
++
++	return 0;
 +}
 +
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 2351dfb0d2e2..333df6b38113 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -520,6 +520,7 @@ static int rtw_ops_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 				  hw_key_type, hw_key_idx);
- 		break;
- 	case DISABLE_KEY:
-+		rtw_hci_flush_all_queues(rtwdev, false);
- 		rtw_mac_flush_all_queues(rtwdev, false);
- 		rtw_sec_clear_cam(rtwdev, sec, key->hw_key_idx);
- 		break;
-@@ -670,6 +671,7 @@ static void rtw_ops_flush(struct ieee80211_hw *hw,
- 	mutex_lock(&rtwdev->mutex);
- 	rtw_leave_lps_deep(rtwdev);
- 
-+	rtw_hci_flush_queues(rtwdev, queues, drop);
- 	rtw_mac_flush_queues(rtwdev, queues, drop);
- 	mutex_unlock(&rtwdev->mutex);
- }
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 786a48649946..b8115b31839e 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -671,6 +671,8 @@ static u8 ac_to_hwq[] = {
- 	[IEEE80211_AC_BK] = RTW_TX_QUEUE_BK,
+ #define rtw_debug_impl_mac(page, addr)				\
+ static struct rtw_debugfs_priv rtw_debug_priv_mac_ ##page = {	\
+ 	.cb_read = rtw_debug_get_mac_page,			\
+@@ -961,6 +994,11 @@ static struct rtw_debugfs_priv rtw_debug_priv_fw_crash = {
+ 	.cb_read = rtw_debugfs_get_fw_crash,
  };
  
-+static_assert(ARRAY_SIZE(ac_to_hwq) == IEEE80211_NUM_ACS);
++static struct rtw_debugfs_priv rtw_debug_priv_basic_rates = {
++	.cb_write = rtw_debugfs_set_basic_rates,
++	.cb_read = rtw_debugfs_get_basic_rates,
++};
 +
- static u8 rtw_hw_queue_mapping(struct sk_buff *skb)
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-@@ -727,6 +729,72 @@ static void rtw_pci_dma_check(struct rtw_dev *rtwdev,
- 	rtwpci->rx_tag = (rtwpci->rx_tag + 1) % RX_TAG_MAX;
+ #define rtw_debugfs_add_core(name, mode, fopname, parent)		\
+ 	do {								\
+ 		rtw_debug_priv_ ##name.rtwdev = rtwdev;			\
+@@ -1035,6 +1073,7 @@ void rtw_debugfs_init(struct rtw_dev *rtwdev)
+ 	rtw_debugfs_add_r(rf_dump);
+ 	rtw_debugfs_add_r(tx_pwr_tbl);
+ 	rtw_debugfs_add_rw(fw_crash);
++	rtw_debugfs_add_rw(basic_rates);
  }
  
-+static u32 __pci_get_hw_tx_ring_rp(struct rtw_dev *rtwdev, u8 pci_q)
+ #endif /* CONFIG_RTW88_DEBUGFS */
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index d185209ee3cc..e01eb7feed4e 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -362,6 +362,7 @@ enum rtw_flags {
+ 	RTW_FLAG_BUSY_TRAFFIC,
+ 	RTW_FLAG_WOWLAN,
+ 	RTW_FLAG_RESTARTING,
++	RTW_FLAG_USE_LOWEST_RATE,
+ 
+ 	NUM_OF_RTW_FLAGS,
+ };
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 0193708fc013..0aeed15736c8 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -233,17 +233,34 @@ void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb, int src)
+ 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+ }
+ 
++static u8 rtw_get_mgmt_rate(struct rtw_dev *rtwdev, struct sk_buff *skb,
++			    u8 lowest_rate, bool ignore_rate)
 +{
-+	u32 bd_idx_addr = rtw_pci_tx_queue_idx_addr[pci_q];
-+	u32 bd_idx = rtw_read16(rtwdev, bd_idx_addr + 2);
++	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_vif *vif = tx_info->control.vif;
++	bool use_lowest = test_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
 +
-+	return FIELD_GET(TRX_BD_IDX_MASK, bd_idx);
++	if (!vif || !vif->bss_conf.basic_rates || ignore_rate || use_lowest)
++		return lowest_rate;
++
++	return __ffs(vif->bss_conf.basic_rates) + lowest_rate;
 +}
 +
-+static void __pci_flush_queue(struct rtw_dev *rtwdev, u8 pci_q, bool drop)
-+{
-+	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-+	struct rtw_pci_tx_ring *ring = &rtwpci->tx_rings[pci_q];
-+	u32 cur_rp;
-+	u8 i;
-+
-+	/* Because the time taked by the I/O in __pci_get_hw_tx_ring_rp is a
-+	 * bit dynamic, it's hard to define a reasonable fixed total timeout to
-+	 * use read_poll_timeout* helper. Instead, we can ensure a reasonable
-+	 * polling times, so we just use for loop with udelay here.
-+	 */
-+	for (i = 0; i < 30; i++) {
-+		cur_rp = __pci_get_hw_tx_ring_rp(rtwdev, pci_q);
-+		if (cur_rp == ring->r.wp)
-+			return;
-+
-+		udelay(1);
-+	}
-+
-+	if (!drop)
-+		rtw_warn(rtwdev, "timed out to flush pci tx ring[%d]\n", pci_q);
-+}
-+
-+static void __rtw_pci_flush_queues(struct rtw_dev *rtwdev, u32 pci_queues,
-+				   bool drop)
-+{
-+	u8 q;
-+
-+	for (q = 0; q < RTK_MAX_TX_QUEUE_NUM; q++) {
-+		/* It may be not necessary to flush BCN and H2C tx queues. */
-+		if (q == RTW_TX_QUEUE_BCN || q == RTW_TX_QUEUE_H2C)
-+			continue;
-+
-+		if (pci_queues & BIT(q))
-+			__pci_flush_queue(rtwdev, q, drop);
-+	}
-+}
-+
-+static void rtw_pci_flush_queues(struct rtw_dev *rtwdev, u32 queues, bool drop)
-+{
-+	u32 pci_queues = 0;
-+	u8 i;
-+
-+	/* If all of the hardware queues are requested to flush,
-+	 * flush all of the pci queues.
-+	 */
-+	if (queues == BIT(rtwdev->hw->queues) - 1) {
-+		pci_queues = BIT(RTK_MAX_TX_QUEUE_NUM) - 1;
-+	} else {
-+		for (i = 0; i < rtwdev->hw->queues; i++)
-+			if (queues & BIT(i))
-+				pci_queues |= BIT(ac_to_hwq[i]);
-+	}
-+
-+	__rtw_pci_flush_queues(rtwdev, pci_queues, drop);
-+}
-+
- static void rtw_pci_tx_kick_off_queue(struct rtw_dev *rtwdev, u8 queue)
+ static void rtw_tx_pkt_info_update_rate(struct rtw_dev *rtwdev,
+ 					struct rtw_tx_pkt_info *pkt_info,
+-					struct sk_buff *skb)
++					struct sk_buff *skb,
++					bool ignore_rate)
  {
- 	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-@@ -1490,6 +1558,7 @@ static void rtw_pci_destroy(struct rtw_dev *rtwdev, struct pci_dev *pdev)
- static struct rtw_hci_ops rtw_pci_ops = {
- 	.tx_write = rtw_pci_tx_write,
- 	.tx_kick_off = rtw_pci_tx_kick_off,
-+	.flush_queues = rtw_pci_flush_queues,
- 	.setup = rtw_pci_setup,
- 	.start = rtw_pci_start,
- 	.stop = rtw_pci_stop,
+ 	if (rtwdev->hal.current_band_type == RTW_BAND_2G) {
+ 		pkt_info->rate_id = RTW_RATEID_B_20M;
+-		pkt_info->rate = DESC_RATE1M;
++		pkt_info->rate = rtw_get_mgmt_rate(rtwdev, skb, DESC_RATE1M,
++						   ignore_rate);
+ 	} else {
+ 		pkt_info->rate_id = RTW_RATEID_G;
+-		pkt_info->rate = DESC_RATE6M;
++		pkt_info->rate = rtw_get_mgmt_rate(rtwdev, skb, DESC_RATE6M,
++						   ignore_rate);
+ 	}
++
+ 	pkt_info->use_rate = true;
+ 	pkt_info->dis_rate_fallback = true;
+ }
+@@ -280,7 +297,7 @@ static void rtw_tx_mgmt_pkt_info_update(struct rtw_dev *rtwdev,
+ 					struct ieee80211_sta *sta,
+ 					struct sk_buff *skb)
+ {
+-	rtw_tx_pkt_info_update_rate(rtwdev, pkt_info, skb);
++	rtw_tx_pkt_info_update_rate(rtwdev, pkt_info, skb, false);
+ 	pkt_info->dis_qselseq = true;
+ 	pkt_info->en_hwseq = true;
+ 	pkt_info->hw_ssn_sel = 0;
+@@ -404,7 +421,7 @@ void rtw_tx_rsvd_page_pkt_info_update(struct rtw_dev *rtwdev,
+ 	if (type != RSVD_BEACON && type != RSVD_DUMMY)
+ 		pkt_info->qsel = TX_DESC_QSEL_MGMT;
+ 
+-	rtw_tx_pkt_info_update_rate(rtwdev, pkt_info, skb);
++	rtw_tx_pkt_info_update_rate(rtwdev, pkt_info, skb, true);
+ 
+ 	bmc = is_broadcast_ether_addr(hdr->addr1) ||
+ 	      is_multicast_ether_addr(hdr->addr1);
 -- 
 2.21.0
 
