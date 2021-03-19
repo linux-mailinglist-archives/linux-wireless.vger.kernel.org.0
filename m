@@ -2,111 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB42B341507
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 06:44:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98606341A48
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 11:44:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233762AbhCSFoC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Mar 2021 01:44:02 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39751 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233898AbhCSFna (ORCPT
+        id S229865AbhCSKnd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Mar 2021 06:43:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34744 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229524AbhCSKnO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Mar 2021 01:43:30 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 12J5hP3r9007767, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmbs04.realtek.com.tw[172.21.6.97])
-        by rtits2.realtek.com.tw (8.15.2/2.70/5.88) with ESMTPS id 12J5hP3r9007767
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 19 Mar 2021 13:43:25 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 19 Mar
- 2021 13:43:24 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <ku920601@realtek.com>,
-        <phhuang@realtek.com>, <shaofu@realtek.com>,
-        <steventing@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH 7/7] rtw88: coex: fix A2DP stutters while WL busy + WL scan
-Date:   Fri, 19 Mar 2021 13:42:18 +0800
-Message-ID: <20210319054218.3319-8-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20210319054218.3319-1-pkshih@realtek.com>
-References: <20210319054218.3319-1-pkshih@realtek.com>
+        Fri, 19 Mar 2021 06:43:14 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 611F4C06174A;
+        Fri, 19 Mar 2021 03:43:14 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id e18so8613701wrt.6;
+        Fri, 19 Mar 2021 03:43:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=8zTF3XjRrTXJesSju14px5T0UCOaTESdK/3HSU0rgLg=;
+        b=K05cQOofbFZIG0kbTpwTS+LznsRUxV2WO9QkPRdn764odDfSBRZK6j0Ke4srMHyHQc
+         qY0tqBPHodAgPe3F3HgiNvGIrul6OYJ7iSGyYmWdMFAdzBlnbagCUr/3Njar+f6QqQwz
+         RMNAXRZtnrQCl9zxXg+r2zmmgI93M92Aa1xAv70pYMFRa8UOr0lzUH3M0X3KSdmkb3H+
+         sEm5S9whGpPR0RYsWMbT1B4Lq/8/qvjcTHScP/Aq/VJiqS1SdRITUBB0CGYF/TVndcHm
+         2tGrseFdSgbBHdPAe31oLBqbKtI9t24RgCbTzGLX0QyZg4FSUrlEgRKBxxrGZ6RUr26l
+         YSHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=8zTF3XjRrTXJesSju14px5T0UCOaTESdK/3HSU0rgLg=;
+        b=S3uBNZPCbOAh6VbiYC/vJTtMbASRWJcb8vo72WMmyEzdo9P/vYeiot0uqC0MW0n08n
+         748NK6Cfdd7ufQGjndirFGKq9M9cmsG2Yjmi5b+aTtWYGKKLDG7OphvBqKE4W6xLg1VR
+         qQqdOB6fM+zJ3oBAJ6scbPPNobq8jee4sljdYtPiaegykYMd/8nTWh09Xs7fj7deuIzL
+         nEx5kSCLy7WIDAd7rH3DWGinDh3B9VUZU1BAZ5tZl7Pfct+3Qbp8HV9gpL7Cc8Yg/4rY
+         f1BcKRS9U1qrv4FSqGXtEn94JcpHnpx1XEbzEm/0GfcwgpfWLI3BVbcKYddZ5ztJ1PhS
+         u6GQ==
+X-Gm-Message-State: AOAM530KxLQ/lw0nCSkbbGFbohDsOD+6HubQgYUjNcQaS63sHC6mexog
+        BuBV/JrYnX6iHaBvEuNTenraM6SDGWUq1Q==
+X-Google-Smtp-Source: ABdhPJwZD4034lzcDKSxbKwA0wW2JjAkew3JLGDNYb/PWjf7aD0dITbpf7GzEoTN5e73IFdSvCFxKw==
+X-Received: by 2002:adf:fe8d:: with SMTP id l13mr3746264wrr.81.1616150592839;
+        Fri, 19 Mar 2021 03:43:12 -0700 (PDT)
+Received: from ?IPv6:2003:ea:8f1f:bb00:fd2c:a424:dc3d:ffa1? (p200300ea8f1fbb00fd2ca424dc3dffa1.dip0.t-ipconnect.de. [2003:ea:8f1f:bb00:fd2c:a424:dc3d:ffa1])
+        by smtp.googlemail.com with ESMTPSA id t23sm7536601wra.50.2021.03.19.03.43.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Mar 2021 03:43:12 -0700 (PDT)
+To:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-wireless@vger.kernel.org,
+        David Miller <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Problem in iwl_pcie_gen2_enqueue_hcmd if irqs are disabled
+Message-ID: <0af0ac51-1e13-8406-221e-db2c31b3695e@gmail.com>
+Date:   Fri, 19 Mar 2021 11:43:04 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS03.realtek.com.tw (172.21.6.96) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ching-Te Ku <ku920601@realtek.com>
+I get the following error on linux-next when bringing the device up.
+It's such an obvious error that I wonder how it could pass your QA.
 
-While WL scan, WL is more high priority than BT. The packets from AP
-will be a big interference to A2DP. It will lead to A2DP stutters. Stop
-answering CTS to AP to decrease AP's packets Tx while WL scan + WL busy.
-Enable BT AFH feature to make BT leave away from WL channel.
+led_trigger_event() disables interrupts, and spin_unlock_bh() complains
+about this. The following fixes the warning for me.
 
-Desired BT firmware BT-COEX version: 0x1c
-Desired WL firmware version: 9.9.x
+I'd say this means also commit "iwlwifi: pcie: don't disable interrupts
+for reg_lock" is wrong.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/coex.c     | 8 +++++---
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 2 +-
- 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index 7eee2c5ecb11..cedbf3825848 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -787,7 +787,6 @@ static void rtw_coex_update_wl_ch_info(struct rtw_dev *rtwdev, u8 type)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
- 	struct rtw_coex_dm *coex_dm = &rtwdev->coex.dm;
--	struct rtw_efuse *efuse = &rtwdev->efuse;
- 	u8 link = 0;
- 	u8 center_chan = 0;
- 	u8 bw;
-@@ -798,7 +797,7 @@ static void rtw_coex_update_wl_ch_info(struct rtw_dev *rtwdev, u8 type)
- 	if (type != COEX_MEDIA_DISCONNECT)
- 		center_chan = rtwdev->hal.current_channel;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index 4456abb9a..34bde8c87 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -40,6 +40,7 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
+ 	const u8 *cmddata[IWL_MAX_CMD_TBS_PER_TFD];
+ 	u16 cmdlen[IWL_MAX_CMD_TBS_PER_TFD];
+ 	struct iwl_tfh_tfd *tfd;
++	unsigned long flags;
  
--	if (center_chan == 0 || (efuse->share_ant && center_chan <= 14)) {
-+	if (center_chan == 0) {
- 		link = 0;
- 		center_chan = 0;
- 		bw = 0;
-@@ -2325,8 +2324,11 @@ static void rtw_coex_action_wl_linkscan(struct rtw_dev *rtwdev)
- 	if (efuse->share_ant) { /* Shared-Ant */
- 		if (coex_stat->bt_a2dp_exist) {
- 			slot_type = TDMA_4SLOT;
--			table_case = 9;
- 			tdma_case = 11;
-+			if (coex_stat->wl_gl_busy)
-+				table_case = 26;
-+			else
-+				table_case = 9;
- 		} else {
- 			table_case = 9;
- 			tdma_case = 7;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 8ed70f468cda..9f05c60c8a03 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -4520,7 +4520,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
- 	.wowlan_stub = &rtw_wowlan_stub_8822c,
- 	.max_sched_scan_ssids = 4,
- #endif
--	.coex_para_ver = 0x201029,
-+	.coex_para_ver = 0x2103181c,
- 	.bt_desired_ver = 0x1c,
- 	.scbd_support = true,
- 	.new_scbd10_def = true,
+ 	copy_size = sizeof(struct iwl_cmd_header_wide);
+ 	cmd_size = sizeof(struct iwl_cmd_header_wide);
+@@ -108,14 +109,14 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
+ 		goto free_dup_buf;
+ 	}
+ 
+-	spin_lock_bh(&txq->lock);
++	spin_lock_irqsave(&txq->lock, flags);
+ 
+ 	idx = iwl_txq_get_cmd_index(txq, txq->write_ptr);
+ 	tfd = iwl_txq_get_tfd(trans, txq, txq->write_ptr);
+ 	memset(tfd, 0, sizeof(*tfd));
+ 
+ 	if (iwl_txq_space(trans, txq) < ((cmd->flags & CMD_ASYNC) ? 2 : 1)) {
+-		spin_unlock_bh(&txq->lock);
++		spin_unlock_irqrestore(&txq->lock, flags);
+ 
+ 		IWL_ERR(trans, "No space in command queue\n");
+ 		iwl_op_mode_cmd_queue_full(trans->op_mode);
+@@ -250,7 +251,7 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
+ 	spin_unlock(&trans_pcie->reg_lock);
+ 
+ out:
+-	spin_unlock_bh(&txq->lock);
++	spin_unlock_irqrestore(&txq->lock, flags);
+ free_dup_buf:
+ 	if (idx < 0)
+ 		kfree(dup_buf);
 -- 
-2.21.0
+2.31.0
 
+
+
+
+
+
+
+[   19.783986] ------------[ cut here ]------------
+[   19.784096] WARNING: CPU: 1 PID: 2318 at kernel/softirq.c:178 __local_bh_enable_ip+0x85/0xc0
+[   19.784166] Modules linked in: snd_hda_codec_hdmi snd_hda_codec_realtek snd_hda_codec_generic ledtrig_audio cmac bnep iwlmvm led_class vfat fat mac80211 libarc4 x86_pkg_temp_thermal coretemp iwlwifi btusb btintel snd_hda_intel snd_intel_dspcfg bluetooth aesni_intel i915 snd_hda_codec crypto_simd snd_hda_core ecdh_generic cryptd ecc snd_pcm r8169 i2c_i801 intel_gtt realtek snd_timer i2c_algo_bit i2c_smbus snd mdio_devres drm_kms_helper cfg80211 syscopyarea sysfillrect libphy sysimgblt rfkill mei_me fb_sys_fops mei sch_fq_codel crypto_user drm efivarfs ext4 mbcache jbd2 ums_realtek crc32c_intel ahci libahci libata
+[   19.784646] CPU: 1 PID: 2318 Comm: ip Not tainted 5.12.0-rc3-next-20210315+ #1
+[   19.784699] Hardware name: NA ZBOX-CI327NANO-GS-01/ZBOX-CI327NANO-GS-01, BIOS 5.12 04/28/2020
+[   19.784759] RIP: 0010:__local_bh_enable_ip+0x85/0xc0
+[   19.784800] Code: 8b 05 7f c9 da 62 a9 00 ff ff 00 74 32 65 ff 0d 71 c9 da 62 e8 2c be 0e 00 fb 5b 41 5c 5d c3 65 8b 05 3b cf da 62 85 c0 75 ae <0f> 0b eb aa e8 42 bd 0e 00 eb ab 4c 89 e7 e8 b8 fa 05 00 eb b4 65
+[   19.784922] RSP: 0018:ffff9ef9c038f1b8 EFLAGS: 00010046
+[   19.784962] RAX: 0000000000000000 RBX: 0000000000000201 RCX: 0000000000000000
+[   19.785011] RDX: 0000000000000003 RSI: 0000000000000201 RDI: ffffffffc09488b4
+[   19.785062] RBP: ffff9ef9c038f1c8 R08: 0000000000000000 R09: 0000000000000001
+[   19.785111] R10: 0000000000000001 R11: 0000000000000000 R12: ffffffffc09488b4
+[   19.785159] R13: ffff8ed2c29f6b40 R14: 0000000000000000 R15: 000000000000000c
+[   19.785210] FS:  00007f5948d9b740(0000) GS:ffff8ed33bc80000(0000) knlGS:0000000000000000
+[   19.785267] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   19.785308] CR2: 0000559281ddfcc0 CR3: 000000010b378000 CR4: 00000000003506e0
+[   19.785361] Call Trace:
+[   19.785381]  _raw_spin_unlock_bh+0x2c/0x40
+[   19.785416]  iwl_pcie_gen2_enqueue_hcmd+0x504/0x870 [iwlwifi]
+[   19.785481]  iwl_trans_txq_send_hcmd+0x68/0x3b0 [iwlwifi]
+[   19.785539]  iwl_trans_send_cmd+0x7d/0x170 [iwlwifi]
+[   19.785593]  iwl_mvm_send_cmd+0x29/0x80 [iwlmvm]
+[   19.785649]  iwl_mvm_led_set+0xa5/0xd0 [iwlmvm]
+[   19.785704]  iwl_led_brightness_set+0x1a/0x20 [iwlmvm]
+[   19.785761]  led_set_brightness_nosleep+0x24/0x50
+[   19.785800]  led_set_brightness+0x41/0x50
+[   19.785832]  led_trigger_event+0x46/0x70
+[   19.785863]  ieee80211_led_radio+0x24/0x30 [mac80211]
+[   19.785980]  ieee80211_do_open+0x4c4/0x9a0 [mac80211]
+[   19.786074]  ieee80211_open+0x69/0x90 [mac80211]
+[   19.786165]  __dev_open+0xd6/0x190
