@@ -2,273 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EF36341EA8
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 14:45:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E31341F35
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 15:19:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbhCSNpR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Mar 2021 09:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45622 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbhCSNpC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Mar 2021 09:45:02 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 775A5C06174A
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 06:45:02 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id a1so12062948ljp.2
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 06:45:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BmPjIQub1KJPhMOrgHtiWUuKYsN7Yn6qt2C+dcAgWOM=;
-        b=vfIH/HsQlKQLUg4JfSfwODGwrxBn9e6tV8/LjWtg48YyMtI8n36pxEiG/pKMYLXeLQ
-         cd5AtquilU8pp8depjciRsp6FLyIS7P8mdq3r1VXa+RntKMRg3imFo/pCvzXTNlDL6PP
-         tnCKKTTAKwhsZ0It9mXw2IYAIX/mw/rIdk7El3Bet2SXEDH6dYYD85zz5tH0kNaKzT+8
-         irn5eW5ES8kuMGurkujyF6d7H6GxstVQNVRwCO0sJHVqvpDmofRXK0DkQWfBhwHP2vjL
-         XabX1+TLAsoPMy97BjtR6UDVCaIXeRpN4ZKVB1GQup0P868d1cTKg4XK4Ah+SmuF8Bac
-         YN0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BmPjIQub1KJPhMOrgHtiWUuKYsN7Yn6qt2C+dcAgWOM=;
-        b=VwXo1+nSBXeQ97K1AfZRvEf2crK4i4HWUbK0XJaApeaL/etyq/V5koVaAfs67slAPR
-         KlCj5ux4+gBlqQFB1lzsTrTK7+crqF9eOcQ7q/RnfRODiu7U+UZQX48Vy4OPy361wrwf
-         nYXLJ+gp4/HSuKH0ckPNRwpnYSzTbj4TWWmWdZZEAK/x4urRRlyjZoEdIrB0qp6wIqT5
-         xI+odUhwdas4OFiHQb5I6ukC5n3LiaPkgRVfugJ/mxXRsTrE3j/OAToiFlEWddu5RL6i
-         0glCj+yDV9dJxa7y6qd/q7SgPp8BOLh13LECpjZ339bP8q71sPlk7BrwGpErXNUdQCDe
-         UlLA==
-X-Gm-Message-State: AOAM531BMnhnB5EIvo8YoenoTO7FdXso76A23WULMhVKbqZ8qWyn7s06
-        oW3LDjM8LO3LliHpVEzgZAtDVO38PkFdcnczSwT1JA==
-X-Google-Smtp-Source: ABdhPJwwzI6hcNapOtQE1Dmao9QEyys5ESkG/Ik0HZrAEcOD504hhWIUOvHE4mZGUNvC+81lV05IcsSDVIGUxqBmVWM=
-X-Received: by 2002:a2e:988a:: with SMTP id b10mr995559ljj.341.1616161499767;
- Fri, 19 Mar 2021 06:44:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210315105911.138553-1-linus.walleij@linaro.org>
-In-Reply-To: <20210315105911.138553-1-linus.walleij@linaro.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 19 Mar 2021 14:44:23 +0100
-Message-ID: <CAPDyKFpGM5QeDztoDBEc1_xm8EHY3nCPCoZFavofMM=Tse4PsQ@mail.gmail.com>
-Subject: Re: [PATCH v2] dt-bindings: Convert the BCM4329 bindings to YAML and extend
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Julian Calaby <julian.calaby@gmail.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S229821AbhCSOTX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Mar 2021 10:19:23 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:31790 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229736AbhCSOTO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Mar 2021 10:19:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1616163554; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=WsOiJQjmC4fDw2hXy61yxxYyAHz+rEqV3lSkTR0Mc4c=; b=hY6VZREroaZozGOgg3++bl0Ac1Wb5Ia0MKC/kZ3LEkqujnKWa6uCtOHPmX0ERYuxru4ccwnU
+ khHXVCGa/luSqJr3Q4IZ7OxC19PB/uhOcEK9RXHMeHpVfqGw1SHLJwO7g73o4pm/2sPsdhwM
+ T74xZTn1zKTYwlVUFl02TEhNgBA=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 6054b2d921031618f681ea49 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 19 Mar 2021 14:19:05
+ GMT
+Sender: seevalam=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7CC1EC43461; Fri, 19 Mar 2021 14:19:05 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from seevalam-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: seevalam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 981C3C433CA;
+        Fri, 19 Mar 2021 14:19:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 981C3C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=seevalam@codeaurora.org
+From:   Seevalamuthu Mariappan <seevalam@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Seevalamuthu Mariappan <seevalam@codeaurora.org>
+Subject: [PATCH] mac80211: clear sta->fast_rx when STA removed from 4-addr VLAN
+Date:   Fri, 19 Mar 2021 19:48:52 +0530
+Message-Id: <1616163532-3881-1-git-send-email-seevalam@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 15 Mar 2021 at 12:00, Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> This converts the BCM4329 family bindings to YAML schema, and
-> extends and fixes the bindings like this:
->
-> - Name the bindings after the first chip (BCM4329) since
->   wildcards like 43xx are nowadays frowned upon by the DT
->   binding reviewers. We call this the "BCM4329 family"
-> - Add compatible strings for all the variants that seem to
->   exist in the wild. (Derived from firmware listings.)
-> - Support specific-to-generic compatible strings (as already
->   in use in DTS files).
-> - Add required reg property (SDIO function number)
-> - Add reset-gpios property (some systems wire this to a GPIO
->   line).
-> - I have only listed Arend as maintainer for now, volunteers
->   can be added.
->
-> Cc: Arend van Spriel <aspriel@gmail.com>
-> Cc: Franky Lin <franky.lin@broadcom.com>
-> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-> Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
-> Cc: Wright Feng <wright.feng@infineon.com>
-> Cc: Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-> Cc: Julian Calaby <julian.calaby@gmail.com>
-> Cc: brcm80211-dev-list.pdl@broadcom.com
-> Cc: SHA-cyfmac-dev-list@infineon.com
-> Cc: linux-mmc@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+In some race conditions, with more clients and traffic configuration,
+below crash is seen when making the interface down. sta->fast_rx wasn't
+cleared when STA gets removed from 4-addr AP_VLAN interface. The crash is
+due to try accessing 4-addr AP_VLAN interface's net_device (fast_rx->dev)
+which has been deleted already.
 
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Resolve this by clearing sta->fast_rx pointer when STA removes
+from a 4-addr VLAN.
 
-Kind regards
-Uffe
+[  239.449529] Unable to handle kernel NULL pointer dereference at virtual address 00000004
+[  239.449531] pgd = 80204000
+...
+[  239.481496] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 4.4.60 #227
+[  239.481591] Hardware name: Generic DT based system
+[  239.487665] task: be05b700 ti: be08e000 task.ti: be08e000
+[  239.492360] PC is at get_rps_cpu+0x2d4/0x31c
+[  239.497823] LR is at 0xbe08fc54
+...
+[  239.778574] [<80739740>] (get_rps_cpu) from [<8073cb10>] (netif_receive_skb_internal+0x8c/0xac)
+[  239.786722] [<8073cb10>] (netif_receive_skb_internal) from [<8073d578>] (napi_gro_receive+0x48/0xc4)
+[  239.795267] [<8073d578>] (napi_gro_receive) from [<c7b83e8c>] (ieee80211_mark_rx_ba_filtered_frames+0xbcc/0x12d4 [mac80211])
+[  239.804776] [<c7b83e8c>] (ieee80211_mark_rx_ba_filtered_frames [mac80211]) from [<c7b84d4c>] (ieee80211_rx_napi+0x7b8/0x8c8 [mac8
+            0211])
+[  239.815857] [<c7b84d4c>] (ieee80211_rx_napi [mac80211]) from [<c7f63d7c>] (ath11k_dp_process_rx+0x7bc/0x8c8 [ath11k])
+[  239.827757] [<c7f63d7c>] (ath11k_dp_process_rx [ath11k]) from [<c7f5b6c4>] (ath11k_dp_service_srng+0x2c0/0x2e0 [ath11k])
+[  239.838484] [<c7f5b6c4>] (ath11k_dp_service_srng [ath11k]) from [<7f55b7dc>] (ath11k_ahb_ext_grp_napi_poll+0x20/0x84 [ath11k_ahb]
+            )
+[  239.849419] [<7f55b7dc>] (ath11k_ahb_ext_grp_napi_poll [ath11k_ahb]) from [<8073ce1c>] (net_rx_action+0xe0/0x28c)
+[  239.860945] [<8073ce1c>] (net_rx_action) from [<80324868>] (__do_softirq+0xe4/0x228)
+[  239.871269] [<80324868>] (__do_softirq) from [<80324c48>] (irq_exit+0x98/0x108)
+[  239.879080] [<80324c48>] (irq_exit) from [<8035c59c>] (__handle_domain_irq+0x90/0xb4)
+[  239.886114] [<8035c59c>] (__handle_domain_irq) from [<8030137c>] (gic_handle_irq+0x50/0x94)
+[  239.894100] [<8030137c>] (gic_handle_irq) from [<803024c0>] (__irq_svc+0x40/0x74)
 
-> ---
-> ChangeLog v1->v2:
-> - Specify specific-to-generic compatible strings such as
->   "brcm,bcm4334-fmac", "brcm,bcm4329-fmac"
-> - Also allow just "brcm,bcm4329-fmac" for legacy platforms.
-> - Use this scheme in the example.
-> ---
->  .../net/wireless/brcm,bcm4329-fmac.yaml       | 101 ++++++++++++++++++
->  .../net/wireless/brcm,bcm43xx-fmac.txt        |  38 -------
->  2 files changed, 101 insertions(+), 38 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
->  delete mode 100644 Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
->
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> new file mode 100644
-> index 000000000000..b5fcc73ce6be
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> @@ -0,0 +1,101 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Broadcom BCM4329 family fullmac wireless SDIO devices
-> +
-> +maintainers:
-> +  - Arend van Spriel <arend@broadcom.com>
-> +
-> +description:
-> +  The Broadcom Single chip MAC part for the BCM4329 family and
-> +  later Cypress chips in the same family named CYW4373 and similar.
-> +  These chips also have a Bluetooth portion described in a separate
-> +  binding.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - brcm,bcm43143-fmac
-> +              - brcm,bcm4341b0-fmac
-> +              - brcm,bcm4341b4-fmac
-> +              - brcm,bcm4341b5-fmac
-> +              - brcm,bcm4329-fmac
-> +              - brcm,bcm4330-fmac
-> +              - brcm,bcm4334-fmac
-> +              - brcm,bcm43340-fmac
-> +              - brcm,bcm4335-fmac
-> +              - brcm,bcm43362-fmac
-> +              - brcm,bcm4339-fmac
-> +              - brcm,bcm43430a0-fmac
-> +              - brcm,bcm43430a1-fmac
-> +              - brcm,bcm43455-fmac
-> +              - brcm,bcm43456-fmac
-> +              - brcm,bcm4354-fmac
-> +              - brcm,bcm4356-fmac
-> +              - brcm,bcm4359-fmac
-> +              - cypress,cyw4373-fmac
-> +              - cypress,cyw43012-fmac
-> +          - const: brcm,bcm4329-fmac
-> +      - const: brcm,bcm4329-fmac
-> +
-> +  reg:
-> +    description: SDIO function number for the device, for most cases
-> +      this will be 1.
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +    description: Out-of-band (OOB) IRQ line for waking up the host
-> +      in response to WLAN activity. This corresponds to the HOST_WAKE
-> +      line into the chip.
-> +
-> +  interrupt-names:
-> +    description: Name for the OOB IRQ, this must be set to "host-wake".
-> +    const: host-wake
-> +
-> +  brcm,drive-strength:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Drive strength used for the SDIO pins on the device in mA.
-> +    minimum: 0
-> +    maximum: 32
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description: A GPIO line connected to the WL_RST line, if present
-> +      this shall be flagged as active low.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    mmc@80118000 {
-> +      compatible = "arm,pl18x", "arm,primecell";
-> +      reg = <0x80118000 0x1000>;
-> +      clocks = <&clk 0>, <&clk 1>;
-> +      clock-names = "mclk", "apb_pclk";
-> +      interrupts = <0 60 IRQ_TYPE_LEVEL_HIGH>;
-> +      bus-width = <4>;
-> +      non-removable;
-> +      vmmc-supply = <&wl_bt_reg>;
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      wifi@1 {
-> +        compatible = "brcm,bcm4334-fmac", "brcm,bcm4329-fmac";
-> +        reg = <1>;
-> +        interrupt-parent = <&gpio>;
-> +        interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
-> +        interrupt-names = "host-wake";
-> +        reset-gpios = <&gpio 23 GPIO_ACTIVE_LOW>;
-> +      };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
-> deleted file mode 100644
-> index cffb2d6876e3..000000000000
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
-> +++ /dev/null
-> @@ -1,38 +0,0 @@
-> -Broadcom BCM43xx Fullmac wireless SDIO devices
-> -
-> -This node provides properties for controlling the Broadcom wireless device. The
-> -node is expected to be specified as a child node to the SDIO controller that
-> -connects the device to the system.
-> -
-> -Required properties:
-> -
-> - - compatible : Should be "brcm,bcm4329-fmac".
-> -
-> -Optional properties:
-> - - brcm,drive-strength : drive strength used for SDIO pins on device in mA
-> -       (default = 6).
-> - - interrupts : specifies attributes for the out-of-band interrupt (host-wake).
-> -       When not specified the device will use in-band SDIO interrupts.
-> - - interrupt-names : name of the out-of-band interrupt, which must be set
-> -       to "host-wake".
-> -
-> -Example:
-> -
-> -mmc3: mmc@1c12000 {
-> -       #address-cells = <1>;
-> -       #size-cells = <0>;
-> -
-> -       pinctrl-names = "default";
-> -       pinctrl-0 = <&mmc3_pins_a>;
-> -       vmmc-supply = <&reg_vmmc3>;
-> -       bus-width = <4>;
-> -       non-removable;
-> -
-> -       brcmf: wifi@1 {
-> -               reg = <1>;
-> -               compatible = "brcm,bcm4329-fmac";
-> -               interrupt-parent = <&pio>;
-> -               interrupts = <10 8>; /* PH10 / EINT10 */
-> -               interrupt-names = "host-wake";
-> -       };
-> -};
-> --
-> 2.29.2
->
+Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+---
+ net/mac80211/cfg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index c4c70e3..8bf29c5 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1788,8 +1788,10 @@ static int ieee80211_change_station(struct wiphy *wiphy,
+ 		}
+ 
+ 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
+-		    sta->sdata->u.vlan.sta)
++		    sta->sdata->u.vlan.sta) {
++			ieee80211_clear_fast_rx(sta);
+ 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
++		}
+ 
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
+ 			ieee80211_vif_dec_num_mcast(sta->sdata);
+-- 
+2.7.4
+
