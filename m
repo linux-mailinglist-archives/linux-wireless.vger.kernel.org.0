@@ -2,143 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A32341FC6
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 15:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D06AE34201C
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 15:48:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbhCSOkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Mar 2021 10:40:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57440 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbhCSOj4 (ORCPT
+        id S230181AbhCSOsP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Mar 2021 10:48:15 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:51150 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229880AbhCSOrs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Mar 2021 10:39:56 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D55CC06174A
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 07:39:56 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id 61so9338707wrm.12
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 07:39:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZoqWXP/V3WLtx6b82eSZ18zEGdu+ELeHI92zYjQlVlw=;
-        b=hpoQFBQ/jhs/9wnYQgMd66znVviny9jd/FIw3gd79H2mp5bd77fm50waCtVzeDG7WQ
-         vUxVVWOXLJ0dmww0TAaDOo03QIQKMQs5CuTN0iVrXwrjTStdHJicBwojTt4xbljFIs9M
-         CFeyOy11oom0pOfMHcDGeNpCmgyzgEjYzuoUi/gtHlsb9sYLwG7KbgAQC8luqnnx6oG4
-         kBosQ3NpH2s2BUoVuCiG/FAz/ihpmBfha6bqeZer0RYZoa4pGbylA5LoHtRlz1kw+Yfw
-         XDTd8XhPNtnrIFMeojGFlZxW3AdzTijR3brK4M0gTTJruxSb7Jam0hAb4nuE+W/OWaip
-         /gqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZoqWXP/V3WLtx6b82eSZ18zEGdu+ELeHI92zYjQlVlw=;
-        b=Z1IyHDyykenq8xXgY2hV8YBtjBNz+fnI9nsMIrY67WRlTd/xrJPq/zde1DVFNtU34/
-         UKNUZv4LINCTFsu/D1Z8gnO1ocjJjcnmcyoumBXXmj8eRZ/ytCUR6no1s1zczga1k2MH
-         0dpATBKc7Tg9XtIUyH81+sxugAzfTd9kUAYeojgdYOiR21LllYQLWJFCBewsGMSM/l+x
-         ZlUHDIccCYMw3AMgT/NpMAlxycV/PRv6NtorUpuBSPb/pxJcswArT6OReQsxyH//fNMz
-         wC5+gcYK8j13cgetsqZGsIGcbp57nhR9dyaF6F7Y9ZVSjI/YbJ33VZot+M09JIL6pXMf
-         dxCw==
-X-Gm-Message-State: AOAM531IfWLGYGwegPKmrFDE3gU5xJu/j1eeSKKPGXNuwhV6yT/Got13
-        pFb4opSk99Zcj8EFtZxKDVVELg==
-X-Google-Smtp-Source: ABdhPJxHGCGcyu/t3eP25M8WuesResjre6x95sD6wnidHPAvYNpJEoTYYoJAqDtcI8DAOV2z4OtbOg==
-X-Received: by 2002:adf:b609:: with SMTP id f9mr4705658wre.223.1616164794956;
-        Fri, 19 Mar 2021 07:39:54 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id n6sm7700611wmd.27.2021.03.19.07.39.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Mar 2021 07:39:54 -0700 (PDT)
-Subject: Re: [PATCH 5/5] arm64: dts: qcom: msm8916: Enable modem and WiFi
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Fri, 19 Mar 2021 10:47:48 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12JEYTH8095508;
+        Fri, 19 Mar 2021 14:47:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=JChT7AsGvWINfn++T16VORoBC+JSYP8GYElETVZxNiw=;
+ b=uTwJRfvQ0o3697PJXr97tGM7g1nF0zu1Wjlhl248QGN7HP6htAcveldt0ZJ2Ienz0orG
+ 96mmCzodtKUD7r8fKswFGHXpawPqyPHlj9hCy4ZZdHSzl+i77uOlMLZ+DPpE4ByJL9+r
+ Ts9ojPoEOMLghrMSncUHoZlh9X4cAuXaFFFi7cY3ly3VacHBVtiS0og3rbaqT7gAhCgl
+ OFJpA9A3oG4CaxbizrRDKAQ2WnAX7SaosC1Bn6mrl4c3887HuuYP23AGu77nBgMgHbRY
+ EEgGEM6Cd8393nIM2hdWsBqIWplAAA2yIl9tsTnKR7PKgGbDRkez/ItEQzZPeGssfSl1 LA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 37a4em061a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Mar 2021 14:47:43 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12JEaEZK067300;
+        Fri, 19 Mar 2021 14:47:41 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 3797b4bk11-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Mar 2021 14:47:41 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 12JEldpZ022310;
+        Fri, 19 Mar 2021 14:47:40 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 19 Mar 2021 07:47:38 -0700
+Date:   Fri, 19 Mar 2021 17:47:31 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ajay Singh <ajay.kathat@microchip.com>
+Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
- <20210312003318.3273536-6-bjorn.andersson@linaro.org>
- <f03b639f-f95a-a31a-6615-23cd6154182d@linaro.org>
- <YFNozCCa4fdR5kSb@builder.lan>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Message-ID: <2da2ee91-f3f9-bab7-1d38-e01300fcdbc5@linaro.org>
-Date:   Fri, 19 Mar 2021 14:41:25 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        David Mosberger-Tang <davidm@egauge.net>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] wilc1000: fix a loop timeout condition
+Message-ID: <YFS5gx/gi70zlIaO@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <YFNozCCa4fdR5kSb@builder.lan>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9928 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103190106
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9928 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
+ impostorscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 adultscore=0 phishscore=0 suspectscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103190106
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 18/03/2021 14:50, Bjorn Andersson wrote:
-> On Mon 15 Mar 07:01 CDT 2021, Bryan O'Donoghue wrote:
-> 
->> On 12/03/2021 00:33, Bjorn Andersson wrote:
->>> Enable the modem and WiFi subsystems and specify msm8916 specific
->>> firmware path for these and the WCNSS control service.
->>>
->>> Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
->>> ---
->>>    arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi | 12 ++++++++++++
->>>    arch/arm64/boot/dts/qcom/msm8916.dtsi     |  2 +-
->>>    2 files changed, 13 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi b/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
->>> index 6aef0c2e4f0a..448e3561ef63 100644
->>> --- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
->>> +++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
->>> @@ -305,6 +305,12 @@ &mdss {
->>>    	status = "okay";
->>>    };
->>> +&mpss {
->>> +	status = "okay";
->>> +
->>> +	firmware-name = "qcom/msm8916/mba.mbn", "qcom/msm8916/modem.mbn";
->>> +};
->>> +
->>>    &pm8916_resin {
->>>    	status = "okay";
->>>    	linux,code = <KEY_VOLUMEDOWN>;
->>> @@ -312,6 +318,8 @@ &pm8916_resin {
->>>    &pronto {
->>>    	status = "okay";
->>> +
->>> +	firmware-name = "qcom/msm8916/wcnss.mbn";
->>>    };
->>
->> On Debian I have to do this
->>
->>
->> index 2a6a23cb14ca..597cdc8f51cc 100644
->> --- a/drivers/remoteproc/qcom_wcnss.c
->> +++ b/drivers/remoteproc/qcom_wcnss.c
->> @@ -33,7 +33,7 @@
->>   #include "qcom_wcnss.h"
->>
->>   #define WCNSS_CRASH_REASON_SMEM                422
->> -#define WCNSS_FIRMWARE_NAME            "wcnss.mdt"
->> +#define WCNSS_FIRMWARE_NAME            "qcom/msm8916/wcnss.mdt"
->>
->> so I guess wcnss_probe() -> rproc_alloc() wants this fix too.
->>
-> 
-> Can you confirm that you're saying that you want below patch, which I
-> just merged?
-> 
-> https://lore.kernel.org/linux-remoteproc/20210312002441.3273183-1-bjorn.andersson@linaro.org/
-> 
-> (Which makes it possible to specify firmware name per platform/board)
-> 
-> Regards,
-> Bjorn
-> 
+If the loop fails, the "while(trials--) {" loop will exit with "trials"
+set to -1.  The test for that expects it to end with "trials" set to 0
+so the warning message will not be printed.
 
-yep
+Fix this by changing from a post-op to a pre-op.  This does mean that
+we only make 99 attempts instead of 100 but that's okay.
 
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Fixes: f135a1571a05 ("wilc1000: Support chip sleep over SPI")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index d4a90c490084..2030fc7f53ca 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -575,7 +575,7 @@ void chip_allow_sleep(struct wilc *wilc)
+ 		to_host_from_fw_bit = WILC_SPI_FW_TO_HOST_BIT;
+ 	}
+ 
+-	while (trials--) {
++	while (--trials) {
+ 		ret = hif_func->hif_read_reg(wilc, to_host_from_fw_reg, &reg);
+ 		if (ret)
+ 			return;
+-- 
+2.30.2
+
