@@ -2,65 +2,224 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76FF1342894
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 23:15:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2AD73428A7
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 23:25:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230477AbhCSWP1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Mar 2021 18:15:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43252 "EHLO
+        id S230177AbhCSWZY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Mar 2021 18:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230285AbhCSWPV (ORCPT
+        with ESMTP id S230370AbhCSWZX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Mar 2021 18:15:21 -0400
+        Fri, 19 Mar 2021 18:25:23 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD81BC06175F;
-        Fri, 19 Mar 2021 15:15:20 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9042CC061760;
+        Fri, 19 Mar 2021 15:25:23 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1lNNOl-000kRz-12; Fri, 19 Mar 2021 23:15:15 +0100
-Message-ID: <14f7bbfea8a17dcd12e7d40641198063428d19b3.camel@sipsolutions.net>
-Subject: Re: systemd-rfkill regression on 5.11 and later kernels
+        id 1lNNYX-000kbM-9T; Fri, 19 Mar 2021 23:25:21 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 19 Mar 2021 23:15:14 +0100
-In-Reply-To: <9db9d9ae751a50c9fd1da1ee3bd4c564546ce1c5.camel@sipsolutions.net> (sfid-20210318_121746_242488_98446BA5)
-References: <s5ha6r0kgt5.wl-tiwai@suse.de>
-         <54859a03b8789a2800596067e06c8adb49a107f5.camel@sipsolutions.net>
-         <s5ho8fgixl9.wl-tiwai@suse.de>
-         <c196f9cb7ba2487fb5aceceedf860cc24c6843f2.camel@sipsolutions.net>
-         <s5hczvwiumf.wl-tiwai@suse.de>
-         <9db9d9ae751a50c9fd1da1ee3bd4c564546ce1c5.camel@sipsolutions.net>
-         (sfid-20210318_121746_242488_98446BA5)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH] rfkill: revert back to old userspace API by default
+Date:   Fri, 19 Mar 2021 23:25:11 +0100
+Message-Id: <20210319232510.f1a139cfdd9c.Ic5c7c9d1d28972059e132ea653a21a427c326678@changeid>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-03-18 at 12:16 +0100, Johannes Berg wrote:
-> > Yeah, that's a dilemma.  An oft-seen trick is to add more bytes for
-> > the future use, e.g. extend to 16 bytes and fill 0 for the remaining.
-> 
-> Yeah, I guess I could stick a reserved[15] there, it's small enough.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Actually, that doesn't really help anything either.
+Recompiling with the new extended version of struct rfkill_event
+broke systemd in *two* ways:
+ - It used "sizeof(struct rfkill_event)" to read the event, but
+   then complained if it actually got something != 8, this broke
+   it on new kernels (that include the updated API);
+ - It used sizeof(struct rfkill_event) to write a command, but
+   didn't implement the intended expansion protocol where the
+   kernel returns only how many bytes it accepted, and errored
+   out due to the unexpected smaller size on kernels that didn't
+   include the updated API.
 
-If today I require that the reserved bytes are sent as 0 by userspace,
-then any potential expansion that requires userspace to set it will
-break when userspace does it and runs on an old kernel.
+Even though systemd has now been fixed, that fix may not be always
+deployed, and other applications could potentially have similar
+issues.
 
-If I don't require the reserved bytes to be set to 0 then somebody will
-invariably get it wrong and send garbage, and then we again cannot
-extend it.
+As such, in the interest of avoiding regressions, revert the
+default API "struct rfkill_event" back to the original size.
 
-So ... that all seems pointless. I guess I'll send the patch as it is
-now.
+Instead, add a new "struct rfkill_event_ext" that extends it by
+the new field, and even more clearly document that applications
+should be prepared for extensions in two ways:
+ * write might only accept fewer bytes on older kernels, and
+   will return how many to let userspace know which data may
+   have been ignored;
+ * read might return anything between 8 (the original size) and
+   whatever size the application sized its buffer at, indicating
+   how much event data was supported by the kernel.
 
-johannes
+Perhaps that will help avoid such issues in the future and we
+won't have to come up with another version of the struct if we
+ever need to extend it again.
+
+Applications that want to take advantage of the new field will
+have to be modified to use struct rfkill_event_ext instead now,
+which comes with the danger of them having already been updated
+to use it from 'struct rfkill_event', but I found no evidence
+of that, and it's still relatively new.
+
+Cc: stable@vger.kernel.org # 5.11
+Reported-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/uapi/linux/rfkill.h | 80 +++++++++++++++++++++++++++++++------
+ net/rfkill/core.c           |  7 ++--
+ 2 files changed, 72 insertions(+), 15 deletions(-)
+
+diff --git a/include/uapi/linux/rfkill.h b/include/uapi/linux/rfkill.h
+index 03e8af87b364..9b77cfc42efa 100644
+--- a/include/uapi/linux/rfkill.h
++++ b/include/uapi/linux/rfkill.h
+@@ -86,34 +86,90 @@ enum rfkill_hard_block_reasons {
+  * @op: operation code
+  * @hard: hard state (0/1)
+  * @soft: soft state (0/1)
++ *
++ * Structure used for userspace communication on /dev/rfkill,
++ * used for events from the kernel and control to the kernel.
++ */
++struct rfkill_event {
++	__u32 idx;
++	__u8  type;
++	__u8  op;
++	__u8  soft;
++	__u8  hard;
++} __attribute__((packed));
++
++/**
++ * struct rfkill_event_ext - events for userspace on /dev/rfkill
++ * @idx: index of dev rfkill
++ * @type: type of the rfkill struct
++ * @op: operation code
++ * @hard: hard state (0/1)
++ * @soft: soft state (0/1)
+  * @hard_block_reasons: valid if hard is set. One or several reasons from
+  *	&enum rfkill_hard_block_reasons.
+  *
+  * Structure used for userspace communication on /dev/rfkill,
+  * used for events from the kernel and control to the kernel.
++ *
++ * See the extensibility docs below.
+  */
+-struct rfkill_event {
++struct rfkill_event_ext {
+ 	__u32 idx;
+ 	__u8  type;
+ 	__u8  op;
+ 	__u8  soft;
+ 	__u8  hard;
++
++	/*
++	 * older kernels will accept/send only up to this point,
++	 * and if extended further up to any chunk marked below
++	 */
++
+ 	__u8  hard_block_reasons;
+ } __attribute__((packed));
+ 
+-/*
+- * We are planning to be backward and forward compatible with changes
+- * to the event struct, by adding new, optional, members at the end.
+- * When reading an event (whether the kernel from userspace or vice
+- * versa) we need to accept anything that's at least as large as the
+- * version 1 event size, but might be able to accept other sizes in
+- * the future.
++/**
++ * DOC: Extensibility
++ *
++ * Originally, we had planned to allow backward and forward compatible
++ * changes by just adding fields at the end of the structure that are
++ * then not reported on older kernels on read(), and not written to by
++ * older kernels on write(), with the kernel reporting the size it did
++ * accept as the result.
++ *
++ * This would have allowed userspace to detect on read() and write()
++ * which kernel structure version it was dealing with, and if was just
++ * recompiled it would have gotten the new fields, but obviously not
++ * accessed them, but things should've continued to work.
++ *
++ * Unfortunately, while actually exercising this mechanism to add the
++ * hard block reasons field, we found that userspace (notably systemd)
++ * did all kinds of fun things not in line with this scheme:
++ *
++ * 1. treat the (expected) short writes as an error;
++ * 2. ask to read sizeof(struct rfkill_event) but then compare the
++ *    actual return value to RFKILL_EVENT_SIZE_V1 and treat any
++ *    mismatch as an error.
++ *
++ * As a consequence, just recompiling with a new struct version caused
++ * things to no longer work correctly on old and new kernels.
++ *
++ * Hence, we've rolled back &struct rfkill_event to the original version
++ * and added &struct rfkill_event_ext. This effectively reverts to the
++ * old behaviour for all userspace, unless it explicitly opts in to the
++ * rules outlined here by using the new &struct rfkill_event_ext.
++ *
++ * Userspace using &struct rfkill_event_ext must adhere to the following
++ * rules
+  *
+- * One exception is the kernel -- we already have two event sizes in
+- * that we've made the 'hard' member optional since our only option
+- * is to ignore it anyway.
++ * 1. accept short writes, optionally using them to detect that it's
++ *    running on an older kernel;
++ * 2. accept short reads, knowing that this means it's running on an
++ *    older kernel;
++ * 3. treat reads that are as long as requested as acceptable, not
++ *    checking against RFKILL_EVENT_SIZE_V1 or such.
+  */
+-#define RFKILL_EVENT_SIZE_V1	8
++#define RFKILL_EVENT_SIZE_V1	sizeof(struct rfkill_event)
+ 
+ /* ioctl for turning off rfkill-input (if present) */
+ #define RFKILL_IOC_MAGIC	'R'
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index 68d6ef9e59fc..ac15a944573f 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -69,7 +69,7 @@ struct rfkill {
+ 
+ struct rfkill_int_event {
+ 	struct list_head	list;
+-	struct rfkill_event	ev;
++	struct rfkill_event_ext	ev;
+ };
+ 
+ struct rfkill_data {
+@@ -253,7 +253,8 @@ static void rfkill_global_led_trigger_unregister(void)
+ }
+ #endif /* CONFIG_RFKILL_LEDS */
+ 
+-static void rfkill_fill_event(struct rfkill_event *ev, struct rfkill *rfkill,
++static void rfkill_fill_event(struct rfkill_event_ext *ev,
++			      struct rfkill *rfkill,
+ 			      enum rfkill_operation op)
+ {
+ 	unsigned long flags;
+@@ -1237,7 +1238,7 @@ static ssize_t rfkill_fop_write(struct file *file, const char __user *buf,
+ 				size_t count, loff_t *pos)
+ {
+ 	struct rfkill *rfkill;
+-	struct rfkill_event ev;
++	struct rfkill_event_ext ev;
+ 	int ret;
+ 
+ 	/* we don't need the 'hard' variable but accept it */
+-- 
+2.30.2
 
