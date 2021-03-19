@@ -2,61 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A162934218E
+	by mail.lfdr.de (Postfix) with ESMTP id 5630034218D
 	for <lists+linux-wireless@lfdr.de>; Fri, 19 Mar 2021 17:14:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230500AbhCSQO1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S230506AbhCSQO1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 19 Mar 2021 12:14:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49626 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230385AbhCSQOC (ORCPT
+        with ESMTP id S230379AbhCSQOD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Mar 2021 12:14:02 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10937C06174A
+        Fri, 19 Mar 2021 12:14:03 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11D68C06174A
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 09:14:03 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 12so5757163wmf.5
         for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 09:14:02 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id a132-20020a1c668a0000b029010f141fe7c2so5392339wmc.0
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 09:14:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=sWDQcCwP5xmFNCU8WV7XgYW43kOv4yOkxdnbhU++6lo=;
-        b=BHfvpxbcOPIY/A0xOGaovHN8XLjdEjtPVvjfCw85NHFstblJDe3eJ8MOegilC7+P4h
-         4he9nq6vWO1tlK/aGgwwBwraRm0vbFMeahI/LEgRnzT23BR8bULob53rhB9ivj2Heu3S
-         PNbGPC2IzTyigt1onr6CttfX+jFlB0w6T2IXlZLHkb1c5TwZvtRoppdjeuySlMjph+74
-         ImfZ36DZ+6BSG3b+c3muPfGvfGhDoBLnTE86+pW7qX2WqZlA2GZ9XyraTazX7bc+BjtW
-         DEy08F0Y8C035Uky0JyelJTs+rzGc/qropXcgc9YfgktTFm5JRhZrekKEF6/SX9S7HpH
-         SxTA==
+        bh=gigI+obh4OgQAHcvn4ct7jEpV5/6/PU9YOe1h8WyUL4=;
+        b=yVCuNnhGbRNZgUToUq8Y6pXPRQDfLgcKxQ87BQjtNvri+d363NoDhV0CLGWYBkDFWV
+         qgjZGJJ36ilzUw+VyWjEhLD5biIUzjf74QBHp173bn6Hj/6rgucsgiNwUo9PAsEKB1Fc
+         D5QfRR1G46EbW3PMbf4q4jBFSgE6uD3NeJej16mET3WOgkCtgqvH6+JgSidJ8cGwJve3
+         39iScW0RpBnFkjxcESbixqmctO1UGDk1Ub8xIM5Ti6VLZlHjccSsLbq5z9Kv79FhPWnP
+         ZbSHAjUXJtLNR+tKwqSz/hLLG05GI+G9dQcKIOexTvnhhxHFj3ap13MmbzHRZEpJxXwz
+         Q3mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=sWDQcCwP5xmFNCU8WV7XgYW43kOv4yOkxdnbhU++6lo=;
-        b=fX2SzPcltjE9FvMTWfZziNVeoMFfilPpDdvs0VkZzYi4mXLNBMgr5gJrVqPqkwI3j8
-         1ippyQ5jZlbS2+f5C+mc4zdNFhydeGVU/IkTkeIsypeZz7y+fw1+5fIjwNQQpmzWT2CV
-         cGQwEhV2q3hM6FwlBHw1e5rsicT+sfCQARN3NWGX8os0uitQm1J9b8pmLQASp7ASAbeu
-         0sXYM13m75a2f0gcFRy0BLSjX7+SeHMR2+NNdKAV+H0wQVRVAoKzPWQ/+XGkrWXLuFrB
-         xM+2wfcHnj32NKJN5Cu2LxVKUhjfKw0gUHT4qZkXrOAOuZUbxtvMKtWpBC/0n6eLwvia
-         zJ0w==
-X-Gm-Message-State: AOAM533Tw+bf6wJh0+HBl4WKKosmxUftexw4vv92sRg0HTHTziEb6GGa
-        9RgyFZkUPX0q28V8rIyzwn4A/A==
-X-Google-Smtp-Source: ABdhPJxRLXnR7X4ynrScSDeMLgq2oe+MiQn54uSyPEveTyLr7ZRy1+Xy5tL982RdCA+ISGBibNbp2Q==
-X-Received: by 2002:a05:600c:4844:: with SMTP id j4mr4401141wmo.179.1616170440786;
-        Fri, 19 Mar 2021 09:14:00 -0700 (PDT)
+        bh=gigI+obh4OgQAHcvn4ct7jEpV5/6/PU9YOe1h8WyUL4=;
+        b=mJNe/92N17Jp+RAX+Lo/RdLMKReDg05UmjBJrs3+IMUC4HSXdctsStzpCbaW5JEx5U
+         nQPOQ4HVMOBBEnvmoTEAogwe9zNLBTXC+1YOca8RCF0PTSYlQZPHM43TLA2odoGxWsHB
+         xWu4xP3MjS+tEbqcqBpiDvW0bsgsHuuxl10H6M2SomlpWMeFIfiBK+HW668kdTCqnWkd
+         Or1s0QG91+XH/XePia5+8GjJuwOuvdMI7G5xPyNgec1pH0shMGHQ4ymggsMyzqY/ac/b
+         JB79O4qTZF+G233UCxPKpQJl7ve+TmvUnZgFHeCYMl7VKGMaduHmVLNbEuGR57uTuqgm
+         niDQ==
+X-Gm-Message-State: AOAM531H4OFfLTnzyP69NkYba3wqmupX46oyoP7w5UGZM+p15DMDa9gX
+        v1Q8MrIOH7WAraxKn6QnEDzPUA==
+X-Google-Smtp-Source: ABdhPJwwTWMOyp9sCdSPi7XtacVkBHgtZI68V9E/LgsnYwQYUAH7WPKSJonCUntxfTIrTk9w3aRjZQ==
+X-Received: by 2002:a1c:43c5:: with SMTP id q188mr4337744wma.94.1616170441863;
+        Fri, 19 Mar 2021 09:14:01 -0700 (PDT)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id h8sm8432495wrt.94.2021.03.19.09.13.59
+        by smtp.gmail.com with ESMTPSA id h8sm8432495wrt.94.2021.03.19.09.14.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Mar 2021 09:14:00 -0700 (PDT)
+        Fri, 19 Mar 2021 09:14:01 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org
 Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
         benl@squareup.com, loic.poulain@linaro.org,
         bjorn.andersson@linaro.org
-Subject: [PATCH v3 09/12] wcn36xx: Add GTK offload info to WoWLAN resume
-Date:   Fri, 19 Mar 2021 16:15:17 +0000
-Message-Id: <20210319161520.3590510-10-bryan.odonoghue@linaro.org>
+Subject: [PATCH v3 10/12] wcn36xx: Add Host suspend indication support
+Date:   Fri, 19 Mar 2021 16:15:18 +0000
+Message-Id: <20210319161520.3590510-11-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210319161520.3590510-1-bryan.odonoghue@linaro.org>
 References: <20210319161520.3590510-1-bryan.odonoghue@linaro.org>
@@ -66,156 +66,73 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Having enabled GTK rekey in suspend, we need to extract the replay counter
-from the firmware on resume and perform a ieee80211_gtk_rekey_notify() so
-that the STA remains verified from the perspective of the AP.
+In order to activate ipv4 ARP offload, ipv6 NS offload and firmware GTK
+offload we need to send a unidirectional indication from host to wcn
+indicating a transition to suspend.
 
-In order to enable the SMD command and response we need to pack the
-existing command/response structures. Given these structures are currently
-unused, there's no need to backport this as a fix.
+Once done, firmware will respond to ARP broadcasts, ipv6 NS lookups and
+perform GTK rekeys without waking the host.
 
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/hal.h  |  4 +-
- drivers/net/wireless/ath/wcn36xx/main.c |  1 +
- drivers/net/wireless/ath/wcn36xx/smd.c  | 72 +++++++++++++++++++++++++
- drivers/net/wireless/ath/wcn36xx/smd.h  |  3 ++
- 4 files changed, 78 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/main.c |  3 +++
+ drivers/net/wireless/ath/wcn36xx/smd.c  | 19 +++++++++++++++++++
+ drivers/net/wireless/ath/wcn36xx/smd.h  |  2 ++
+ 3 files changed, 24 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
-index 1f3c2e840232..455143c4164e 100644
---- a/drivers/net/wireless/ath/wcn36xx/hal.h
-+++ b/drivers/net/wireless/ath/wcn36xx/hal.h
-@@ -4919,7 +4919,7 @@ struct wcn36xx_hal_gtk_offload_rsp_msg {
- struct wcn36xx_hal_gtk_offload_get_info_req_msg {
- 	struct wcn36xx_hal_msg_header header;
- 	u8 bss_index;
--};
-+} __packed;
- 
- struct wcn36xx_hal_gtk_offload_get_info_rsp_msg {
- 	struct wcn36xx_hal_msg_header header;
-@@ -4943,7 +4943,7 @@ struct wcn36xx_hal_gtk_offload_get_info_rsp_msg {
- 	u32 igtk_rekey_count;
- 
- 	u8 bss_index;
--};
-+} __packed;
- 
- struct dhcp_info {
- 	/* Indicates the device mode which indicates about the DHCP activity */
 diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index a138b84d0aec..a84128e04cc4 100644
+index a84128e04cc4..535e0d4245c3 100644
 --- a/drivers/net/wireless/ath/wcn36xx/main.c
 +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1149,6 +1149,7 @@ static int wcn36xx_resume(struct ieee80211_hw *hw)
+@@ -1127,6 +1127,9 @@ static int wcn36xx_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wow)
+ 		if (ret)
  			goto out;
- 
- 		wcn36xx_smd_set_power_params(wcn, false);
-+		wcn36xx_smd_gtk_offload_get_info(wcn, vif);
- 		wcn36xx_smd_gtk_offload(wcn, vif, false);
- 		wcn36xx_smd_ipv6_ns_offload(wcn, vif, false);
- 		wcn36xx_smd_arp_offload(wcn, vif, false);
+ 		ret = wcn36xx_smd_set_power_params(wcn, true);
++		if (ret)
++			goto out;
++		ret = wcn36xx_smd_wlan_host_suspend_ind(wcn);
+ 	}
+ out:
+ 	mutex_unlock(&wcn->conf_mutex);
 diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index f74cb16327d0..e249971c4ef7 100644
+index e249971c4ef7..302877d23ecf 100644
 --- a/drivers/net/wireless/ath/wcn36xx/smd.c
 +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -2893,6 +2893,77 @@ int wcn36xx_smd_gtk_offload(struct wcn36xx *wcn, struct ieee80211_vif *vif,
+@@ -2964,6 +2964,25 @@ int wcn36xx_smd_gtk_offload_get_info(struct wcn36xx *wcn,
  	return ret;
  }
  
-+static int wcn36xx_smd_gtk_offload_get_info_rsp(struct wcn36xx *wcn,
-+						struct ieee80211_vif *vif)
++int wcn36xx_smd_wlan_host_suspend_ind(struct wcn36xx *wcn)
 +{
-+	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
-+	struct wcn36xx_hal_gtk_offload_get_info_rsp_msg *rsp;
-+	__be64 replay_ctr;
-+
-+	if (wcn36xx_smd_rsp_status_check(wcn->hal_buf, wcn->hal_rsp_len))
-+		return -EIO;
-+
-+	rsp = (struct wcn36xx_hal_gtk_offload_get_info_rsp_msg *)wcn->hal_buf;
-+
-+	if (rsp->bss_index != vif_priv->bss_index) {
-+		wcn36xx_err("gtk_offload_info invalid response bss index %d\n",
-+			    rsp->bss_index);
-+		return -ENOENT;
-+	}
-+
-+	replay_ctr = cpu_to_be64(le64_to_cpu(rsp->key_replay_counter));
-+	if (vif_priv->rekey_data.replay_ctr != rsp->key_replay_counter) {
-+		vif_priv->rekey_data.replay_ctr = rsp->key_replay_counter;
-+		ieee80211_gtk_rekey_notify(vif, vif->bss_conf.bssid,
-+					   (void *)&replay_ctr, GFP_KERNEL);
-+		 wcn36xx_dbg(WCN36XX_DBG_HAL,
-+			     "GTK replay counter increment %llu\n",
-+			     rsp->key_replay_counter);
-+	}
-+
-+	wcn36xx_dbg(WCN36XX_DBG_HAL,
-+		    "gtk offload info status %d last_rekey_status %d "
-+		    "replay_counter %llu total_rekey_count %d gtk_rekey_count %d "
-+		    "igtk_rekey_count %d bss_index %d\n",
-+		    rsp->status, rsp->last_rekey_status,
-+		    rsp->key_replay_counter, rsp->total_rekey_count,
-+		    rsp->gtk_rekey_count, rsp->igtk_rekey_count,
-+		    rsp->bss_index);
-+
-+	return 0;
-+}
-+
-+int wcn36xx_smd_gtk_offload_get_info(struct wcn36xx *wcn,
-+				     struct ieee80211_vif *vif)
-+{
-+	struct wcn36xx_vif *vif_priv = wcn36xx_vif_to_priv(vif);
-+	struct wcn36xx_hal_gtk_offload_get_info_req_msg msg_body;
++	struct wcn36xx_hal_wlan_host_suspend_ind_msg msg_body;
 +	int ret;
 +
 +	mutex_lock(&wcn->hal_mutex);
 +
-+	INIT_HAL_MSG(msg_body, WCN36XX_HAL_GTK_OFFLOAD_GETINFO_REQ);
-+
-+	msg_body.bss_index = vif_priv->bss_index;
-+
++	INIT_HAL_MSG(msg_body, WCN36XX_HAL_HOST_SUSPEND_IND);
++	msg_body.configured_mcst_bcst_filter_setting = 0;
++	msg_body.active_session_count = 1;
 +	PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
 +
-+	ret = wcn36xx_smd_send_and_wait(wcn, msg_body.header.len);
-+	if (ret) {
-+		wcn36xx_err("Sending gtk_offload_get_info failed\n");
-+		goto out;
-+	}
-+	ret = wcn36xx_smd_rsp_status_check(wcn->hal_buf, wcn->hal_rsp_len);
-+	if (ret) {
-+		wcn36xx_err("gtk_offload_get_info failed err=%d\n", ret);
-+		goto out;
-+	}
-+	ret = wcn36xx_smd_gtk_offload_get_info_rsp(wcn, vif);
-+out:
++	ret = rpmsg_send(wcn->smd_channel, wcn->hal_buf, msg_body.header.len);
++
 +	mutex_unlock(&wcn->hal_mutex);
++
 +	return ret;
 +}
 +
  int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
  			    void *buf, int len, void *priv, u32 addr)
  {
-@@ -2943,6 +3014,7 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
- 	case WCN36XX_HAL_STOP_SCAN_OFFLOAD_RSP:
- 	case WCN36XX_HAL_HOST_OFFLOAD_RSP:
- 	case WCN36XX_HAL_GTK_OFFLOAD_RSP:
-+	case WCN36XX_HAL_GTK_OFFLOAD_GETINFO_RSP:
- 		memcpy(wcn->hal_buf, buf, len);
- 		wcn->hal_rsp_len = len;
- 		complete(&wcn->hal_rsp_compl);
 diff --git a/drivers/net/wireless/ath/wcn36xx/smd.h b/drivers/net/wireless/ath/wcn36xx/smd.h
-index cdf4231efe26..90c7faea0ef6 100644
+index 90c7faea0ef6..2909facdb100 100644
 --- a/drivers/net/wireless/ath/wcn36xx/smd.h
 +++ b/drivers/net/wireless/ath/wcn36xx/smd.h
-@@ -156,4 +156,7 @@ int wcn36xx_smd_ipv6_ns_offload(struct wcn36xx *wcn, struct ieee80211_vif *vif,
- int wcn36xx_smd_gtk_offload(struct wcn36xx *wcn, struct ieee80211_vif *vif,
- 			    bool enable);
+@@ -159,4 +159,6 @@ int wcn36xx_smd_gtk_offload(struct wcn36xx *wcn, struct ieee80211_vif *vif,
+ int wcn36xx_smd_gtk_offload_get_info(struct wcn36xx *wcn,
+ 				     struct ieee80211_vif *vif);
  
-+int wcn36xx_smd_gtk_offload_get_info(struct wcn36xx *wcn,
-+				     struct ieee80211_vif *vif);
++int wcn36xx_smd_wlan_host_suspend_ind(struct wcn36xx *wcn);
 +
  #endif	/* _SMD_H_ */
 -- 
