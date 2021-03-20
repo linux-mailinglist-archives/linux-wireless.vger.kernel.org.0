@@ -2,87 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D527342CCE
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Mar 2021 13:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAB86342F56
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Mar 2021 20:47:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229546AbhCTMj2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Mar 2021 08:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58048 "EHLO
+        id S229787AbhCTTq7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Mar 2021 15:46:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbhCTMjU (ORCPT
+        with ESMTP id S229618AbhCTTqu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Mar 2021 08:39:20 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE243C061762
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Mar 2021 05:39:19 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id 12so6851632wmf.5
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Mar 2021 05:39:19 -0700 (PDT)
+        Sat, 20 Mar 2021 15:46:50 -0400
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1773C061574;
+        Sat, 20 Mar 2021 12:46:49 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id q26so1324684qkm.6;
+        Sat, 20 Mar 2021 12:46:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=UbCSqTWpADea4Qpj64GSBd4Fyu7PfGfXvdh3FJ6m81M=;
-        b=SLAo1HNkq+G7xvLZSx9YVfEBh2kA541LzdZM3Wapa8ifqX0d5BOF+oMCwJEbUreWlr
-         E5AKIIOsZLoyoYDjFc3ROIkLd1aJf69iN8Zyb6gflpCT0znsCjiXlISGTga44ATHdYQH
-         wBrOhC7F1783OZMETmLSz361anPHumoyMRtPLpcGlEW/QH+DgzpT6jzjqOOJjAR1ah/m
-         csMU7OAbmsQr4ObXemTdOhUoA8FdWbWqVV2oACrnD1c6pZAtxN3JmsVev1ifP/lsUH4A
-         zPzKRdkHLj3XBH74Ih+3SDsZsYs3MAtfxwj8EF8fegicftMlgd0oR5iLrm0v+B0aWQpa
-         ZsVw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7Y5LE0OO9qwuhftBRmCY2moX1aD8xL03Bn6dwZGmc58=;
+        b=LbjvA82qhP8HdNBNp8M0yYPbSrvzvCxQeZ3aJtkBn/hlf+4E1jmsK8vN8ckt97Hhlz
+         gR90RYHe1EAjzvQODNRGGVgIWSiKqissLKOw3SO8GrTrrL/Gk9bVYDbGv6ehtjiZRT3A
+         LWHLNWhtZ6i5TN9Pf/UqZya1nZqSBTbtpB/rn++GAw/0UOIJdOf/D8PofBwUrs71fIO1
+         +A1GudNQz3XpofPR7nkeewbsXQP43m6XRRDsjPq9TwVhXgvviHX3VxuoALBMHoMKwooE
+         a00AuBDe2GFyHjIBGGbL7QeSHK8iRgpxCRbt5BgbNfhlyULHg3GMh8GmyqNzgaHqeYZy
+         zGCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=UbCSqTWpADea4Qpj64GSBd4Fyu7PfGfXvdh3FJ6m81M=;
-        b=ApUqeNezAvWEEp4/IKn7Cf/Ic33bst74Kj98oHOeZ6DFaTLVPxwWCPFcoLGwSQ0SWD
-         u/pW27xk+JBtPUkLe9ad9d10PLIPQt2XCrqcFyUIPZXknvvYSUWOQlEPTeoawzrhx4nb
-         VBOcrPv89aaUJmcB80mESTN6DzMuAEwwiaBgIiQ+EfgNlttc2kG1RCqaJGLhufmnGrji
-         LNmHiKkSgTD2cxA6NajXPGb+ZxJpgW3ZHrTOIMJxxRiwJoz1kwUaGC/0Q26re1N0S4vj
-         Hk7LDth+uzWE34k2IOQEK+mZuvLt+ZPYBgvl1HfoxLMFoCoUyh40hecYf5bW5r3dblL/
-         /78A==
-X-Gm-Message-State: AOAM5300psMZpWflkfwa9WBFpe9WjoBw5+nIaGwnHOuvPVhA11WHb4v4
-        ML/LBJsGzTFVjKfnS9ITGK/CoQ==
-X-Google-Smtp-Source: ABdhPJyyRNYCFe6xES40bgtcU52pCGTl+CgHBXrLZ1aCAvpeHfVublwbnryCJSne4nHXvjnJBAujZA==
-X-Received: by 2002:a1c:f305:: with SMTP id q5mr1429157wmq.96.1616243958434;
-        Sat, 20 Mar 2021 05:39:18 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id j9sm10334016wmi.24.2021.03.20.05.39.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 20 Mar 2021 05:39:17 -0700 (PDT)
-Subject: Re: [PATCH v3 02/12] wcn36xx: Run suspend for the first ieee80211_vif
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>,
-        Benjamin Li <benl@squareup.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-References: <20210319161520.3590510-1-bryan.odonoghue@linaro.org>
- <20210319161520.3590510-3-bryan.odonoghue@linaro.org>
- <CAMZdPi8ahq61qOxyjci4KyMANGxSt2oey2y1U=NNOKs1Mu+sPw@mail.gmail.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Message-ID: <db054d84-b1d3-090e-b15f-96cb1bc46fcb@linaro.org>
-Date:   Sat, 20 Mar 2021 12:40:49 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        bh=7Y5LE0OO9qwuhftBRmCY2moX1aD8xL03Bn6dwZGmc58=;
+        b=XcsmAFvmJruLrgr/x0IMV9Vs99omAANd+PRqT1sH8Fs+cU7NpcVSVVn7y63fOEFr5h
+         ar7ufVZtIK8+X98qvxwW1isSH463rLFHTNRcbWa7UYhMWqG5/ni+FmemdobjPAXAqXN1
+         /h11GglMJ/F1OrZzoiKxZebINudKRqkHQIoFmzKlz7dgXii/cVx5lprDJ1sjQV3KwVb3
+         1iu/mX5UfSrKApRud8Ve+oPWDUH4LpwQzacs+URTVKU83OXFBjBF62uVJmsqPSgelRW3
+         +fHEhjIXLG9a8OdZj9wasTQ2yYMExYhkG2Hu4KHdEjJBBOavitP+Zd+rhoQqjGMOOFQr
+         Pigg==
+X-Gm-Message-State: AOAM531k83X0Yx+o15blYmwD4Fd09ifwMe1Jykgc3LKpR+G+1In92sm+
+        lnUxdMygBaHily1QNxuylTLQDCl3S5BthLhd
+X-Google-Smtp-Source: ABdhPJzB6yxsVRtuUJpDBxLEwaAiG5ZDzQw1dK4XpA4/jJs4MXz0tMI7D0VscErKXJEE7n7EEn8Y6A==
+X-Received: by 2002:a37:a390:: with SMTP id m138mr4130645qke.59.1616269609105;
+        Sat, 20 Mar 2021 12:46:49 -0700 (PDT)
+Received: from localhost.localdomain ([138.199.13.205])
+        by smtp.gmail.com with ESMTPSA id d14sm7728568qkg.33.2021.03.20.12.46.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Mar 2021 12:46:48 -0700 (PDT)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Subject: [PATCH] rtlwifi: Few mundane typo fixes
+Date:   Sun, 21 Mar 2021 01:14:26 +0530
+Message-Id: <20210320194426.21621-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <CAMZdPi8ahq61qOxyjci4KyMANGxSt2oey2y1U=NNOKs1Mu+sPw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 19/03/2021 16:57, Loic Poulain wrote:
-> You mean connection can only be maintained (offloaded) in suspend for
-> only one vif? 
 
-Just the one ip.
+s/resovle/resolve/
+s/broadcase/broadcast/
+s/sytem/system/
 
-If so maybe what you want to retrieve is the first
-> client-associated vif and not the first vif.
-
-Hmm, yeah OK I can see how it might be the case you need to do that.
-
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 ---
-bod
+ drivers/net/wireless/realtek/rtlwifi/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
+index 965bd9589045..c9b6ee81dcb9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/core.c
++++ b/drivers/net/wireless/realtek/rtlwifi/core.c
+@@ -564,7 +564,7 @@ static int rtl_op_resume(struct ieee80211_hw *hw)
+ 	rtlhal->enter_pnp_sleep = false;
+ 	rtlhal->wake_from_pnp_sleep = true;
+
+-	/* to resovle s4 can not wake up*/
++	/* to resolve s4 can not wake up*/
+ 	now = ktime_get_real_seconds();
+ 	if (now - rtlhal->last_suspend_sec < 5)
+ 		return -1;
+@@ -806,7 +806,7 @@ static void rtl_op_configure_filter(struct ieee80211_hw *hw,
+ 	if (0 == changed_flags)
+ 		return;
+
+-	/*TODO: we disable broadcase now, so enable here */
++	/*TODO: we disable broadcast now, so enable here */
+ 	if (changed_flags & FIF_ALLMULTI) {
+ 		if (*new_flags & FIF_ALLMULTI) {
+ 			mac->rx_conf |= rtlpriv->cfg->maps[MAC_RCR_AM] |
+@@ -1796,7 +1796,7 @@ bool rtl_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
+ 				value |= (GET_PWR_CFG_VALUE(cfg_cmd) &
+ 					  GET_PWR_CFG_MASK(cfg_cmd));
+
+-				/*Write the value back to sytem register*/
++				/*Write the value back to system register*/
+ 				rtl_write_byte(rtlpriv, offset, value);
+ 				break;
+ 			case PWR_CMD_POLLING:
+--
+2.26.2
 
