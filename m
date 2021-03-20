@@ -2,249 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D608134292B
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Mar 2021 00:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE41434295E
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Mar 2021 01:14:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229791AbhCSXj0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Mar 2021 19:39:26 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:32874 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229805AbhCSXjB (ORCPT
+        id S229524AbhCTANy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Mar 2021 20:13:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30675 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229708AbhCTANk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Mar 2021 19:39:01 -0400
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id C156213C2B4;
-        Fri, 19 Mar 2021 16:38:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C156213C2B4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1616197139;
-        bh=W06k0Qa1pqRTvusUWkWmeXNgVbbmIJt8L6siWOzPPOk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E6dZUf1q5UXnS68R0EUUbDIApMU/Oxhs4WCU5TSnCZFy6gKM3mNSh+s3oIQGFTIq6
-         lfMR9HCSw3VBpiM9P5G2PS8aPUaWymP1sUGFcnm82+IRcvf6gP923jsGjDKesXtGrC
-         D6uLHCcKiCngf+/hvtJVmi7zqqkclZGH08IRJyZM=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 3/3] mac80211:  Provide detailed station rx stats.
-Date:   Fri, 19 Mar 2021 16:38:50 -0700
-Message-Id: <20210319233850.2238-3-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210319233850.2238-1-greearb@candelatech.com>
-References: <20210319233850.2238-1-greearb@candelatech.com>
+        Fri, 19 Mar 2021 20:13:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1616199220;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=e0in7Kz49NXHesq0ylu3p5N0bWWtmATp5ChZezZpRug=;
+        b=ONJW/Nf3RN2nahvHV4ocEsBFRjfGL6Dx/LL3suz+tDx73Nmo8AYWZdfkcUpLOLdKfctLMK
+        aVVu4ZqHbVn5khOV9Ub6gLI83rYLq9PKDxAUA8YU+09tBeJHC5g7JGduQcci8a+FuND+9r
+        ED41+4h2/JYFkjpma5EEAIEHmhvvlqc=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-405-Y6P2x6MRP9myqLAkFVvkBw-1; Fri, 19 Mar 2021 20:13:38 -0400
+X-MC-Unique: Y6P2x6MRP9myqLAkFVvkBw-1
+Received: by mail-ed1-f72.google.com with SMTP id i6so23814819edq.12
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 17:13:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=e0in7Kz49NXHesq0ylu3p5N0bWWtmATp5ChZezZpRug=;
+        b=GMvla+C5lQxlFZZU9VzxJSCUgJ/24xWNGZjojLwSGsMYcIK8eo4CIbvrn0rjw1NyzK
+         sEPNocnwFe0Zz3AywYiWBuf5zUIdZNxeFXZxxAkJKjgDQzyRuM5hjwsRPU0cNRmtg3Gr
+         symtcQ8JjdXzkJbFQPRxUCs6yLh6Q9g6lfkg1/S1VujftRiF4fVrweE8+vXWzlAnyKoZ
+         zNKjlo29aTVzBxCakkbIGX1oX4zhs7d9xbnkRBHFyKBWF0qoYEAiLgdMYqwWUDH++1d9
+         lCfI3CTAXeClqByOLeta517gHfmycSH1BWBWs9PMVDKmonHRnuyCEjuhRUHTjBjuJVGa
+         +8yA==
+X-Gm-Message-State: AOAM530divjo/NREH70cMTqeMIeboof2JV+KS06FaJvm2ymA8aucmxS5
+        kVFXSM5xMOtBQJwPboK3xQaGjVGf81MHHR9niP17Ztl2+T+eBkAuvFSbbQ6fUeFGV/7ns/XZ28Y
+        f4d6L8szgcBy31cNBI65OV1myUzQ=
+X-Received: by 2002:aa7:cc98:: with SMTP id p24mr12604587edt.187.1616199216417;
+        Fri, 19 Mar 2021 17:13:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzwKM++tpMsVik9quHkYPTMO5BhEs9CnCNVJ8lyFcmg7VK3B3Ks03pydsvY4PK2yK731HWnPQ==
+X-Received: by 2002:aa7:cc98:: with SMTP id p24mr12604565edt.187.1616199216077;
+        Fri, 19 Mar 2021 17:13:36 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id p19sm5034148edr.57.2021.03.19.17.13.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Mar 2021 17:13:35 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id D200D181F54; Sat, 20 Mar 2021 01:13:34 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH] mac80211: don't apply flow control on management frames
+In-Reply-To: <20210319232800.0e876c800866.Id2b66eb5a17f3869b776c39b5ca713272ea09d5d@changeid>
+References: <20210319232800.0e876c800866.Id2b66eb5a17f3869b776c39b5ca713272ea09d5d@changeid>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Sat, 20 Mar 2021 01:13:34 +0100
+Message-ID: <87h7l6adht.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-This provides histograms of different encoding types,
-nss, rate-idx, and some ofdma related stats.  The goal
-is general visibility into what is going on with rate
-control, ofdma, etc.
+> From: Johannes Berg <johannes.berg@intel.com>
+>
+> In some cases (depending on the driver, but it's true e.g. for
+> iwlwifi) we're using an internal TXQ for management packets,
+> mostly to simplify the code and to have a place to queue them.
+> However, it appears that in certain cases we can confuse the
+> code and management frames are dropped, which is certainly not
+> what we want.
+>
+> Short-circuit the processing of management frames. To keep the
+> impact minimal, only put them on the frags queue and check the
+> tid == management only for doing that and to skip the airtime
+> fairness checks, if applicable.
+>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+>  net/mac80211/tx.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> index 5d06de61047a..b2d09acb9fb0 100644
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -5,7 +5,7 @@
+>   * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+>   * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
+>   * Copyright 2013-2014  Intel Mobile Communications GmbH
+> - * Copyright (C) 2018-2020 Intel Corporation
+> + * Copyright (C) 2018-2021 Intel Corporation
+>   *
+>   * Transmit and frame generation functions.
+>   */
+> @@ -1388,8 +1388,17 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
+>  	ieee80211_set_skb_enqueue_time(skb);
+>  
+>  	spin_lock_bh(&fq->lock);
+> -	fq_tin_enqueue(fq, tin, flow_idx, skb,
+> -		       fq_skb_free_func);
+> +	/*
+> +	 * For management frames, don't really apply codel etc.,
+> +	 * we don't want to apply any shaping or anything we just
+> +	 * want to simplify the driver API by having them on the
+> +	 * txqi.
+> +	 */
+> +	if (unlikely(txqi->txq.tid == IEEE80211_NUM_TIDS))
+> +		__skb_queue_tail(&txqi->frags, skb);
+> +	else
+> +		fq_tin_enqueue(fq, tin, flow_idx, skb,
+> +			       fq_skb_free_func);
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- include/uapi/linux/nl80211.h |  1 +
- net/mac80211/Kconfig         | 11 +++++++++
- net/mac80211/debugfs_sta.c   | 31 ++++++++++++++++++++++++
- net/mac80211/rx.c            | 46 ++++++++++++++++++++++++++++++++++++
- net/mac80211/sta_info.c      | 17 +++++++++++++
- net/mac80211/sta_info.h      | 18 ++++++++++++++
- 6 files changed, 124 insertions(+)
+One consequence of this is that we create a strict priority queue for
+management frames. With all the possibilities for badness (such as the
+ability of starving all other queues) that carries with it. I guess
+that's probably fine for management frames, though, right? As in, there
+is some other mechanism that prevents abuse of this?
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 55e7be30a930..8f548a599134 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -3269,6 +3269,7 @@ enum nl80211_he_ru_alloc {
- 	NL80211_RATE_INFO_HE_RU_ALLOC_484,
- 	NL80211_RATE_INFO_HE_RU_ALLOC_996,
- 	NL80211_RATE_INFO_HE_RU_ALLOC_2x996,
-+	NL80211_RATE_INFO_HE_RU_ALLOC_LAST /* new entries before this */
- };
- 
- /**
-diff --git a/net/mac80211/Kconfig b/net/mac80211/Kconfig
-index 51ec8256b7fa..b0ebb64b3950 100644
---- a/net/mac80211/Kconfig
-+++ b/net/mac80211/Kconfig
-@@ -295,6 +295,17 @@ config MAC80211_DEBUG_COUNTERS
- 
- 	  If unsure, say N.
- 
-+config MAC80211_DEBUG_STA_COUNTERS
-+	bool "Extra Station TX/RX statistics"
-+	depends on MAC80211_DEBUG_MENU
-+	depends on MAC80211_DEBUGFS
-+	help
-+	  Selecting this option causes mac80211 to keep additional
-+	  and very verbose station-specific TX and RX statistics
-+	  These will be exposed in debugfs.
-+
-+	  If unsure, say N.
-+
- config MAC80211_STA_HASH_MAX_SIZE
- 	int "Station hash table maximum size" if MAC80211_DEBUG_MENU
- 	default 0
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 374db61527a9..b9f8670c2a28 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -181,6 +181,37 @@ static ssize_t sta_stats_read(struct file *file, char __user *userbuf,
- 		PRINT_MY_STATS(tmp, rx_stats.msdu[i]);
- 	}
- 
-+#ifdef CONFIG_MAC80211_DEBUG_STA_COUNTERS
-+	PRINT_MY_STATS("rx-bw-20", rx_stats.msdu_20);
-+	PRINT_MY_STATS("rx-bw-40", rx_stats.msdu_40);
-+	PRINT_MY_STATS("rx-bw-80", rx_stats.msdu_80);
-+	PRINT_MY_STATS("rx-bw-160", rx_stats.msdu_160);
-+
-+	PRINT_MY_STATS("rx-he-total", rx_stats.msdu_he_tot);
-+	PRINT_MY_STATS("rx-he-mu", rx_stats.msdu_he_mu);
-+	PRINT_MY_STATS("rx-vht", rx_stats.msdu_vht);
-+	PRINT_MY_STATS("rx-ht", rx_stats.msdu_ht);
-+	PRINT_MY_STATS("rx-legacy", rx_stats.msdu_legacy);
-+
-+	PRINT_MY_STATS("rx-he-ru-alloc[   26]", rx_stats.msdu_he_ru_alloc[NL80211_RATE_INFO_HE_RU_ALLOC_26]);
-+	PRINT_MY_STATS("rx-he-ru-alloc[   52]", rx_stats.msdu_he_ru_alloc[NL80211_RATE_INFO_HE_RU_ALLOC_52]);
-+	PRINT_MY_STATS("rx-he-ru-alloc[  106]", rx_stats.msdu_he_ru_alloc[NL80211_RATE_INFO_HE_RU_ALLOC_106]);
-+	PRINT_MY_STATS("rx-he-ru-alloc[  242]", rx_stats.msdu_he_ru_alloc[NL80211_RATE_INFO_HE_RU_ALLOC_242]);
-+	PRINT_MY_STATS("rx-he-ru-alloc[  484]", rx_stats.msdu_he_ru_alloc[NL80211_RATE_INFO_HE_RU_ALLOC_484]);
-+	PRINT_MY_STATS("rx-he-ru-alloc[  996]", rx_stats.msdu_he_ru_alloc[NL80211_RATE_INFO_HE_RU_ALLOC_996]);
-+	PRINT_MY_STATS("rx-he-ru-alloc[2x996]", rx_stats.msdu_he_ru_alloc[NL80211_RATE_INFO_HE_RU_ALLOC_2x996]);
-+
-+	for (i = 0; i<8; i++) {
-+		sprintf(tmp, "rx-msdu-nss[%i]", i);
-+		PRINT_MY_STATS(tmp, rx_stats.msdu_nss[i]);
-+	}
-+
-+	for (i = 0; i<32; i++) {
-+		sprintf(tmp, "rx-rate-idx[%3i]", i);
-+		PRINT_MY_STATS(tmp, rx_stats.msdu_rate_idx[i]);
-+	}
-+#endif
-+
- #undef PRINT_MY_STATS
- done:
- 	i = simple_read_from_buffer(userbuf, count, ppos, buf, strlen(buf));
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 4a64c2183a27..c3bed954e5f6 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1732,6 +1732,52 @@ static void ieee80211_update_data_rx_stats(struct ieee80211_rx_data *rx,
- 	stats->msdu[rx->seqno_idx]++;
- 	stats->bytes += skb_len;
- 	u64_stats_update_end(&stats->syncp);
-+
-+#ifdef CONFIG_MAC80211_DEBUG_STA_COUNTERS
-+	/* This code has a lot in common with ieee80211_add_rx_radiotap_header */
-+	switch (status->bw) {
-+	case RATE_INFO_BW_20:
-+		stats->msdu_20++;
-+		break;
-+	case RATE_INFO_BW_40:
-+		stats->msdu_40++;
-+		break;
-+	case RATE_INFO_BW_80:
-+		stats->msdu_80++;
-+		break;
-+	case RATE_INFO_BW_160:
-+		stats->msdu_160++;
-+		break;
-+	case RATE_INFO_BW_HE_RU:
-+		stats->msdu_he_ru_alloc[status->he_ru]++;
-+		break;
-+	};
-+
-+	if (status->encoding == RX_ENC_HE) {
-+		stats->msdu_he_tot++;
-+		if (status->flag & RX_FLAG_RADIOTAP_HE_MU)
-+			stats->msdu_he_mu++;
-+	}
-+	else if (status->encoding == RX_ENC_VHT) {
-+		stats->msdu_vht++;
-+	}
-+	else if (status->encoding == RX_ENC_HT) {
-+		stats->msdu_ht++;
-+	}
-+	else {
-+		stats->msdu_legacy++;
-+	}
-+
-+	if (status->nss >= 7)
-+		stats->msdu_nss[7]++;
-+	else
-+		stats->msdu_nss[status->nss]++;
-+
-+	if (status->rate_idx >= 31)
-+		stats->msdu_rate_idx[31]++;
-+	else
-+		stats->msdu_rate_idx[status->rate_idx]++;
-+#endif
- }
- 
- static ieee80211_rx_result debug_noinline
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index aa95db547465..cc2bbdcf2b6a 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -2680,6 +2680,23 @@ void sta_accum_rx_stats(struct sta_info *sta,
- 		for (i = 0; i<=IEEE80211_NUM_TIDS; i++) {
- 			rx_stats->msdu[i] += sta_get_tidstats_msdu(cpurxs, i);
- 		}
-+#ifdef CONFIG_MAC80211_DEBUG_STA_COUNTERS
-+		rx_stats->msdu_20 += cpurxs->msdu_20;
-+		rx_stats->msdu_40 += cpurxs->msdu_40;
-+		rx_stats->msdu_80 += cpurxs->msdu_80;
-+		rx_stats->msdu_160 += cpurxs->msdu_160;
-+		for (i = 0; i<NL80211_RATE_INFO_HE_RU_ALLOC_LAST; i++)
-+			rx_stats->msdu_he_ru_alloc[i] += cpurxs->msdu_he_ru_alloc[i];
-+		rx_stats->msdu_he_tot += cpurxs->msdu_he_tot;
-+		rx_stats->msdu_he_mu += cpurxs->msdu_he_mu;
-+		rx_stats->msdu_vht += cpurxs->msdu_vht;
-+		rx_stats->msdu_ht += cpurxs->msdu_ht;
-+		rx_stats->msdu_legacy += cpurxs->msdu_legacy;
-+		for (i = 0; i<8; i++)
-+			rx_stats->msdu_nss[i] += cpurxs->msdu_nss[i];
-+		for (i = 0; i<32; i++)
-+			rx_stats->msdu_rate_idx[i] += cpurxs->msdu_rate_idx[i];
-+#endif
- 	}
- }
- 
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index a6b13d749ffa..8c9866528a4c 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -436,6 +436,24 @@ struct ieee80211_sta_rx_stats {
- 	struct u64_stats_sync syncp;
- 	u64 bytes;
- 	u64 msdu[IEEE80211_NUM_TIDS + 1];
-+
-+#ifdef CONFIG_MAC80211_DEBUG_STA_COUNTERS
-+	/* these take liberty with how things are defined, and are
-+	 * designed to give a rough idea of how things are going.
-+	 */
-+	u32 msdu_20;
-+	u32 msdu_40;
-+	u32 msdu_80;
-+	u32 msdu_160;
-+	u32 msdu_he_ru_alloc[NL80211_RATE_INFO_HE_RU_ALLOC_LAST];
-+	u32 msdu_he_tot;
-+	u32 msdu_he_mu;
-+	u32 msdu_vht;
-+	u32 msdu_ht;
-+	u32 msdu_legacy;
-+	u32 msdu_nss[8];
-+	u32 msdu_rate_idx[32];
-+#endif
- };
- 
- /*
--- 
-2.20.1
+-Toke
 
