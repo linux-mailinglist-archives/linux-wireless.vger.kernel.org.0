@@ -2,129 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE41434295E
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Mar 2021 01:14:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D527342CCE
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Mar 2021 13:40:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbhCTANy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Mar 2021 20:13:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30675 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229708AbhCTANk (ORCPT
+        id S229546AbhCTMj2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Mar 2021 08:39:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58048 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229445AbhCTMjU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Mar 2021 20:13:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1616199220;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=e0in7Kz49NXHesq0ylu3p5N0bWWtmATp5ChZezZpRug=;
-        b=ONJW/Nf3RN2nahvHV4ocEsBFRjfGL6Dx/LL3suz+tDx73Nmo8AYWZdfkcUpLOLdKfctLMK
-        aVVu4ZqHbVn5khOV9Ub6gLI83rYLq9PKDxAUA8YU+09tBeJHC5g7JGduQcci8a+FuND+9r
-        ED41+4h2/JYFkjpma5EEAIEHmhvvlqc=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-405-Y6P2x6MRP9myqLAkFVvkBw-1; Fri, 19 Mar 2021 20:13:38 -0400
-X-MC-Unique: Y6P2x6MRP9myqLAkFVvkBw-1
-Received: by mail-ed1-f72.google.com with SMTP id i6so23814819edq.12
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Mar 2021 17:13:37 -0700 (PDT)
+        Sat, 20 Mar 2021 08:39:20 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE243C061762
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Mar 2021 05:39:19 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 12so6851632wmf.5
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Mar 2021 05:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=UbCSqTWpADea4Qpj64GSBd4Fyu7PfGfXvdh3FJ6m81M=;
+        b=SLAo1HNkq+G7xvLZSx9YVfEBh2kA541LzdZM3Wapa8ifqX0d5BOF+oMCwJEbUreWlr
+         E5AKIIOsZLoyoYDjFc3ROIkLd1aJf69iN8Zyb6gflpCT0znsCjiXlISGTga44ATHdYQH
+         wBrOhC7F1783OZMETmLSz361anPHumoyMRtPLpcGlEW/QH+DgzpT6jzjqOOJjAR1ah/m
+         csMU7OAbmsQr4ObXemTdOhUoA8FdWbWqVV2oACrnD1c6pZAtxN3JmsVev1ifP/lsUH4A
+         zPzKRdkHLj3XBH74Ih+3SDsZsYs3MAtfxwj8EF8fegicftMlgd0oR5iLrm0v+B0aWQpa
+         ZsVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=e0in7Kz49NXHesq0ylu3p5N0bWWtmATp5ChZezZpRug=;
-        b=GMvla+C5lQxlFZZU9VzxJSCUgJ/24xWNGZjojLwSGsMYcIK8eo4CIbvrn0rjw1NyzK
-         sEPNocnwFe0Zz3AywYiWBuf5zUIdZNxeFXZxxAkJKjgDQzyRuM5hjwsRPU0cNRmtg3Gr
-         symtcQ8JjdXzkJbFQPRxUCs6yLh6Q9g6lfkg1/S1VujftRiF4fVrweE8+vXWzlAnyKoZ
-         zNKjlo29aTVzBxCakkbIGX1oX4zhs7d9xbnkRBHFyKBWF0qoYEAiLgdMYqwWUDH++1d9
-         lCfI3CTAXeClqByOLeta517gHfmycSH1BWBWs9PMVDKmonHRnuyCEjuhRUHTjBjuJVGa
-         +8yA==
-X-Gm-Message-State: AOAM530divjo/NREH70cMTqeMIeboof2JV+KS06FaJvm2ymA8aucmxS5
-        kVFXSM5xMOtBQJwPboK3xQaGjVGf81MHHR9niP17Ztl2+T+eBkAuvFSbbQ6fUeFGV/7ns/XZ28Y
-        f4d6L8szgcBy31cNBI65OV1myUzQ=
-X-Received: by 2002:aa7:cc98:: with SMTP id p24mr12604587edt.187.1616199216417;
-        Fri, 19 Mar 2021 17:13:36 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzwKM++tpMsVik9quHkYPTMO5BhEs9CnCNVJ8lyFcmg7VK3B3Ks03pydsvY4PK2yK731HWnPQ==
-X-Received: by 2002:aa7:cc98:: with SMTP id p24mr12604565edt.187.1616199216077;
-        Fri, 19 Mar 2021 17:13:36 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id p19sm5034148edr.57.2021.03.19.17.13.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Mar 2021 17:13:35 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id D200D181F54; Sat, 20 Mar 2021 01:13:34 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH] mac80211: don't apply flow control on management frames
-In-Reply-To: <20210319232800.0e876c800866.Id2b66eb5a17f3869b776c39b5ca713272ea09d5d@changeid>
-References: <20210319232800.0e876c800866.Id2b66eb5a17f3869b776c39b5ca713272ea09d5d@changeid>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Sat, 20 Mar 2021 01:13:34 +0100
-Message-ID: <87h7l6adht.fsf@toke.dk>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=UbCSqTWpADea4Qpj64GSBd4Fyu7PfGfXvdh3FJ6m81M=;
+        b=ApUqeNezAvWEEp4/IKn7Cf/Ic33bst74Kj98oHOeZ6DFaTLVPxwWCPFcoLGwSQ0SWD
+         u/pW27xk+JBtPUkLe9ad9d10PLIPQt2XCrqcFyUIPZXknvvYSUWOQlEPTeoawzrhx4nb
+         VBOcrPv89aaUJmcB80mESTN6DzMuAEwwiaBgIiQ+EfgNlttc2kG1RCqaJGLhufmnGrji
+         LNmHiKkSgTD2cxA6NajXPGb+ZxJpgW3ZHrTOIMJxxRiwJoz1kwUaGC/0Q26re1N0S4vj
+         Hk7LDth+uzWE34k2IOQEK+mZuvLt+ZPYBgvl1HfoxLMFoCoUyh40hecYf5bW5r3dblL/
+         /78A==
+X-Gm-Message-State: AOAM5300psMZpWflkfwa9WBFpe9WjoBw5+nIaGwnHOuvPVhA11WHb4v4
+        ML/LBJsGzTFVjKfnS9ITGK/CoQ==
+X-Google-Smtp-Source: ABdhPJyyRNYCFe6xES40bgtcU52pCGTl+CgHBXrLZ1aCAvpeHfVublwbnryCJSne4nHXvjnJBAujZA==
+X-Received: by 2002:a1c:f305:: with SMTP id q5mr1429157wmq.96.1616243958434;
+        Sat, 20 Mar 2021 05:39:18 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id j9sm10334016wmi.24.2021.03.20.05.39.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 20 Mar 2021 05:39:17 -0700 (PDT)
+Subject: Re: [PATCH v3 02/12] wcn36xx: Run suspend for the first ieee80211_vif
+To:     Loic Poulain <loic.poulain@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>,
+        Benjamin Li <benl@squareup.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+References: <20210319161520.3590510-1-bryan.odonoghue@linaro.org>
+ <20210319161520.3590510-3-bryan.odonoghue@linaro.org>
+ <CAMZdPi8ahq61qOxyjci4KyMANGxSt2oey2y1U=NNOKs1Mu+sPw@mail.gmail.com>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Message-ID: <db054d84-b1d3-090e-b15f-96cb1bc46fcb@linaro.org>
+Date:   Sat, 20 Mar 2021 12:40:49 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <CAMZdPi8ahq61qOxyjci4KyMANGxSt2oey2y1U=NNOKs1Mu+sPw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+On 19/03/2021 16:57, Loic Poulain wrote:
+> You mean connection can only be maintained (offloaded) in suspend for
+> only one vif? 
 
-> From: Johannes Berg <johannes.berg@intel.com>
->
-> In some cases (depending on the driver, but it's true e.g. for
-> iwlwifi) we're using an internal TXQ for management packets,
-> mostly to simplify the code and to have a place to queue them.
-> However, it appears that in certain cases we can confuse the
-> code and management frames are dropped, which is certainly not
-> what we want.
->
-> Short-circuit the processing of management frames. To keep the
-> impact minimal, only put them on the frags queue and check the
-> tid == management only for doing that and to skip the airtime
-> fairness checks, if applicable.
->
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
->  net/mac80211/tx.c | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
->
-> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> index 5d06de61047a..b2d09acb9fb0 100644
-> --- a/net/mac80211/tx.c
-> +++ b/net/mac80211/tx.c
-> @@ -5,7 +5,7 @@
->   * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
->   * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
->   * Copyright 2013-2014  Intel Mobile Communications GmbH
-> - * Copyright (C) 2018-2020 Intel Corporation
-> + * Copyright (C) 2018-2021 Intel Corporation
->   *
->   * Transmit and frame generation functions.
->   */
-> @@ -1388,8 +1388,17 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
->  	ieee80211_set_skb_enqueue_time(skb);
->  
->  	spin_lock_bh(&fq->lock);
-> -	fq_tin_enqueue(fq, tin, flow_idx, skb,
-> -		       fq_skb_free_func);
-> +	/*
-> +	 * For management frames, don't really apply codel etc.,
-> +	 * we don't want to apply any shaping or anything we just
-> +	 * want to simplify the driver API by having them on the
-> +	 * txqi.
-> +	 */
-> +	if (unlikely(txqi->txq.tid == IEEE80211_NUM_TIDS))
-> +		__skb_queue_tail(&txqi->frags, skb);
-> +	else
-> +		fq_tin_enqueue(fq, tin, flow_idx, skb,
-> +			       fq_skb_free_func);
+Just the one ip.
 
-One consequence of this is that we create a strict priority queue for
-management frames. With all the possibilities for badness (such as the
-ability of starving all other queues) that carries with it. I guess
-that's probably fine for management frames, though, right? As in, there
-is some other mechanism that prevents abuse of this?
+If so maybe what you want to retrieve is the first
+> client-associated vif and not the first vif.
 
--Toke
+Hmm, yeah OK I can see how it might be the case you need to do that.
+
+---
+bod
 
