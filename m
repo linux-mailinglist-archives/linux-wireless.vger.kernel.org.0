@@ -2,115 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19535342FA0
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Mar 2021 22:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E970F3430B9
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Mar 2021 04:35:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbhCTVF7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Mar 2021 17:05:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbhCTVFh (ORCPT
+        id S229903AbhCUDSX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Mar 2021 23:18:23 -0400
+Received: from mail-ed1-f48.google.com ([209.85.208.48]:36549 "EHLO
+        mail-ed1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229840AbhCUDSP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Mar 2021 17:05:37 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E294C061574
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Mar 2021 14:05:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:Content-Type:MIME-Version:
-        References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=unEOJs7g8dhW9JIfGxFXXYni7VdACtVUH0Kopjl/EDs=; b=tPreKU2v7a6RrC/dWNNA1P41i7
-        8P0BNRy0JJR9Fej9w+5FJG9NbdxqQgLifsM/7Y9KsGXZ595vKnwPud791fOUUICxwPjLN0MTzLaLn
-        jSthX+OISLi9L68ZWtYqwFQ2FLmOZl3vHnt1MUOoiiSFM2F/OswVRS4vT2OC/qcf02LOaFYsEF1mj
-        XHm+7YDnlEHdvCMf4ka3V8N5EDdGNdHbqnnSiPJ7LS6ptFBpmGyUrWMwwg56hgR2lEKz56feyGLfH
-        btEMsxD2l/FCqcc7RtXt4lgkB65cG3fZzOgSOktChQ+pNGX7RJv8XG2XI15qWxKNLQiGdKZz2u3ge
-        +zLQdPaw==;
-Received: from rdunlap (helo=localhost)
-        by bombadil.infradead.org with local-esmtp (Exim 4.94 #2 (Red Hat Linux))
-        id 1lNhiK-0020s7-TF; Sat, 20 Mar 2021 19:56:50 +0000
-Date:   Sat, 20 Mar 2021 12:56:48 -0700 (PDT)
-From:   Randy Dunlap <rdunlap@bombadil.infradead.org>
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
-cc:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rtlwifi: Few mundane typo fixes
-In-Reply-To: <20210320194426.21621-1-unixbhaskar@gmail.com>
-Message-ID: <1b2d2cc5-5a6c-2552-65d8-9232240e16c@bombadil.infradead.org>
-References: <20210320194426.21621-1-unixbhaskar@gmail.com>
+        Sat, 20 Mar 2021 23:18:15 -0400
+Received: by mail-ed1-f48.google.com with SMTP id o19so15295133edc.3
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Mar 2021 20:18:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=Tv3nlcUgsvJP86JYHCdntI7+Xp5kconUxgGsFBvd8kM=;
+        b=DwtZ4UyaVnvIMwyzAbwF7nD0Fyxg9FhGoE7CtJr12jqYJu5UfjeBIhyGiY76zdwJAK
+         6NfhJm8nJA2BxgAzZs9+UgVCusqT0L/j0ZqZ8O1Pm8eS8MGN0mEJBI/Yiaw6flXHeSAv
+         +GFkxqSgc3o4v50YJSzYyICMcPx0878EdilpAMbZzaKLvASwOjYNx1sGI7emLre20EGJ
+         FWvBqW5KF0IR06TjWK1u+bLZ4a9ZL3eO/psTZrA6O8G0IWx5IHAnJWa+c4TGMB2z8KEa
+         q0CsCgXuT+ePsZfoLpEk1ipbojuqNl1c1q82xF7c3jG1tCBmuDgJzV7F9XtvxjAmBY8s
+         kjjQ==
+X-Gm-Message-State: AOAM530XCsA/0ZK9/e7i+rjAQ4PvkNMas6Y3T56F9DVuj4qUtipf5O8J
+        gnn+vFNUo3CL+aiDTAO7qBKfqclc3Q==
+X-Google-Smtp-Source: ABdhPJwX/ZlDxlHfk0QkqEYbKAPQE/RJhp0L+UZQ/g+iL0D5iBJcFQQHgjNnLn287BnqGthFbufCgg==
+X-Received: by 2002:a50:e80c:: with SMTP id e12mr18588664edn.229.1616296694463;
+        Sat, 20 Mar 2021 20:18:14 -0700 (PDT)
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
+        by smtp.gmail.com with ESMTPSA id k26sm6286539ejx.81.2021.03.20.20.18.14
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 20 Mar 2021 20:18:14 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id w18so15348884edc.0
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Mar 2021 20:18:14 -0700 (PDT)
+X-Received: by 2002:a05:6402:3595:: with SMTP id y21mr18162065edc.233.1616296694221;
+ Sat, 20 Mar 2021 20:18:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Sender: Randy Dunlap <rdunlap@infradead.org>
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210320_125648_968664_0136FA4B 
-X-CRM114-Status: GOOD (  12.50  )
-X-Spam-Score: -0.0 (/)
-X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
- has NOT identified this incoming email as spam.  The original
- message has been attached to this so you can view it or label
- similar future email.  If you have any questions, see
- the administrator of that system for details.
- Content preview:  On Sun, 21 Mar 2021, Bhaskar Chowdhury wrote: > > s/resovle/resolve/
-    > s/broadcase/broadcast/ > s/sytem/system/ > > Signed-off-by: Bhaskar Chowdhury
-    <unixbhaskar@gmail.com> Acked-by: Randy Dunlap <rdunlap@infradead.org> 
- Content analysis details:   (-0.0 points, 5.0 required)
-  pts rule name              description
- ---- ---------------------- --------------------------------------------------
- -0.0 NO_RELAYS              Informational: message was not relayed via SMTP
+From:   David Ross <daboross@daboross.net>
+Date:   Sat, 20 Mar 2021 20:18:03 -0700
+X-Gmail-Original-Message-ID: <CAJGcC5QF8ObDHshLRygLrPE0j4CnyC9cnAHXifau5oupKbmnuw@mail.gmail.com>
+Message-ID: <CAJGcC5QF8ObDHshLRygLrPE0j4CnyC9cnAHXifau5oupKbmnuw@mail.gmail.com>
+Subject: iwlwifi: Timeout waiting for PNVM load with AX210 chip
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
+As of kernel 5.11.3, iwlwifi no longer successfully initializes my
+AX210 wifi chip. It errors with
 
-On Sun, 21 Mar 2021, Bhaskar Chowdhury wrote:
+Timeout waiting for PNVM load!
+Failed to start RT ucode: -110
 
->
-> s/resovle/resolve/
-> s/broadcase/broadcast/
-> s/sytem/system/
->
-> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+This is with Intel Corporation Device 2725 (rev 1a), firmware version
+59.601f3a66.0.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+This also errors in 5.12.0-rc3. It works fine in 5.11.2.
 
+Bug contains complete dmesg attached:
+https://bugzilla.kernel.org/show_bug.cgi?id=212371
 
-> ---
-> drivers/net/wireless/realtek/rtlwifi/core.c | 6 +++---
-> 1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
-> index 965bd9589045..c9b6ee81dcb9 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/core.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/core.c
-> @@ -564,7 +564,7 @@ static int rtl_op_resume(struct ieee80211_hw *hw)
-> 	rtlhal->enter_pnp_sleep = false;
-> 	rtlhal->wake_from_pnp_sleep = true;
->
-> -	/* to resovle s4 can not wake up*/
-> +	/* to resolve s4 can not wake up*/
-> 	now = ktime_get_real_seconds();
-> 	if (now - rtlhal->last_suspend_sec < 5)
-> 		return -1;
-> @@ -806,7 +806,7 @@ static void rtl_op_configure_filter(struct ieee80211_hw *hw,
-> 	if (0 == changed_flags)
-> 		return;
->
-> -	/*TODO: we disable broadcase now, so enable here */
-> +	/*TODO: we disable broadcast now, so enable here */
-> 	if (changed_flags & FIF_ALLMULTI) {
-> 		if (*new_flags & FIF_ALLMULTI) {
-> 			mac->rx_conf |= rtlpriv->cfg->maps[MAC_RCR_AM] |
-> @@ -1796,7 +1796,7 @@ bool rtl_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
-> 				value |= (GET_PWR_CFG_VALUE(cfg_cmd) &
-> 					  GET_PWR_CFG_MASK(cfg_cmd));
->
-> -				/*Write the value back to sytem register*/
-> +				/*Write the value back to system register*/
-> 				rtl_write_byte(rtlpriv, offset, value);
-> 				break;
-> 			case PWR_CMD_POLLING:
-> --
-> 2.26.2
->
->
+Thanks,
+David Ross
