@@ -2,88 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B7A34484A
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 15:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24A70344A3C
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 17:04:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230353AbhCVOzo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Mar 2021 10:55:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229786AbhCVOzc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Mar 2021 10:55:32 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C896C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Mar 2021 07:55:32 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id d10so8315007ils.5
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Mar 2021 07:55:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=NkJHhEPuDaKXUGRD/9F779JBbJEyfcdNzitG5OgY/kk=;
-        b=H/BFoGrSo4BxXK/BMfwXxHdVzTgE+RX8T9zI6iBVtXwNDC1QmPE0xk+5R/e5kBqEsO
-         rajIc2LCemHx/8K4AS76ZTmKfr2DVXUwECtinUFm6k81LCuUKQZd4DzUbqeHdixgdBNQ
-         1IfcukXJVpVDNe6DqEau47u/ECxefy+DZYxb47t17iw0pS3p6fubMNmszAWzZCOQaTPV
-         TdLE5Zq3H0mD0lXsD9EU4xMbG5A5BogMZVsHa67b3LF4e0pakndi1rdV2/Upg16W2qiU
-         U86Nd4DLdB1kWT1IUyYX2B8ZPLlpIJnVhbu4/A/qczvsmpt2z9XFcXmnzP2os+bukMGd
-         gbOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=NkJHhEPuDaKXUGRD/9F779JBbJEyfcdNzitG5OgY/kk=;
-        b=PWAAsG55gH/aPf7s1FfRg7kcLn59rncaFAvzXEfYiVO8/6iXXM7kuuSf6F72ByL2FF
-         Cdqs6xUYlDCXZxoqbpc1o9W6JGsR+lEft8Nzk0vzwfeOMlWg1SfXa3eMzb7Wn1yjsxw5
-         +5bOVY/vsLbwXavBwn6IMP3qFTa/Eh/tjc8ku7OcBdaq//WbW5NxL9Qw/L7M5HRclhaS
-         Sub1yxdDdeESr9n0Dhe7M5mSVb76Le8JqLzHNB6mhnd8N4JCl5emJmiFpxixFODROB3H
-         OnvWAx7FuZBBQ00BsoZ2eiWRevojRqosYSmpSd8XIYeHoEffGa45eoDl4IIGW1kgOFQQ
-         InQA==
-X-Gm-Message-State: AOAM530vMYO52mCmtfpv0ullalfE6wLiMWI6emUHqm82WR7gqbidNujF
-        HCWITwdEGXhJWsFOp+oOVe+AfWMEhS+rc2WQnaY2ODdKMFg=
-X-Google-Smtp-Source: ABdhPJzY8VxLL2G1zWYYSm2CrhO/GnqNWuUDRAOTxlpsu+kJZgiTjj7p+JdHZw1VdL4jsQAiD0aI4ghVWUPp2JjZO/8=
-X-Received: by 2002:a05:6e02:1baf:: with SMTP id n15mr369554ili.190.1616424931581;
- Mon, 22 Mar 2021 07:55:31 -0700 (PDT)
-MIME-Version: 1.0
-From:   Benjamin Aschenbrenner <benjamin.aschenbrenner@gmail.com>
-Date:   Mon, 22 Mar 2021 15:55:20 +0100
-Message-ID: <CAASiZWagFdx+5Nfq383zgJkMcL_T_hqVeWTgPx2ej8J6U=DfLQ@mail.gmail.com>
-Subject: [PATCH 2/2] iw: fix ftm_request missing arguments segfault
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S231687AbhCVQDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Mar 2021 12:03:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51622 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231493AbhCVQDB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Mar 2021 12:03:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5B49F619A1;
+        Mon, 22 Mar 2021 16:02:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616428980;
+        bh=443r2a53XZrLPy3VFDNzKFCONnuuJaVZhGXWFTRxMGo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Wm1CETPpBfKZZ3lkNCemLWeIZGtbFVmw4nKK+xzlHh6SjshNPJfKJvKmWNXvf1K/F
+         5o2Ww58tt6oERHDBipAS4BwOz2CJOvMh/uBNklODZ0dsfVzZt5cj7OrnLB7U+iYnI+
+         V9LYQbKfb8Z/fsl+P+r2cUIk2R08rZtGx280ke6EJyn8vt+7YkwV0naEM1o/sQwiUN
+         Si9atqBgkFPNOL0NiRMLIEOjWWQ3UF2GIm92tB+iawDYiaDCLVZNub5gpWn3V4pP25
+         Ov3hZNHbzywOnT474a9kxX7y+Z8vSF7APRLbZu9IopXbelGoOeiLfQvjhYZz099ogD
+         8vEYHTLGBXuSg==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-kernel@vger.kernel.org, Martin Sebor <msebor@gcc.gnu.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+        Ning Sun <ning.sun@intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Simon Kelley <simon@thekelleys.org.uk>,
+        James Smart <james.smart@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Anders Larsen <al@alarsen.net>, Tejun Heo <tj@kernel.org>,
+        Serge Hallyn <serge@hallyn.com>,
+        Imre Deak <imre.deak@intel.com>,
+        linux-arm-kernel@lists.infradead.org,
+        tboot-devel@lists.sourceforge.net, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-scsi@vger.kernel.org, cgroups@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH 00/11] treewide: address gcc-11 -Wstringop-overread warnings
+Date:   Mon, 22 Mar 2021 17:02:38 +0100
+Message-Id: <20210322160253.4032422-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Benjamin Aschenbrenner <benjamin.aschenbrenner@gmail.com>
-Date: Mon, 22 Mar 2021 15:19:00 +0100
-Subject: [PATCH 2/2] iw: fix ftm_request missing arguments segfault
+From: Arnd Bergmann <arnd@arndb.de>
 
-When expected argument <config-file> is not passed to arguemts iw
-segfaults.
+The coming gcc release introduces a new warning for string operations
+reading beyond the end of a fixed-length object. After testing
+randconfig kernels for a while, think I have patches for any such
+warnings that came up on x86, arm and arm64.
 
-Example: iw wlp2s0 measurement ftm_request
+Most of these warnings are false-positive ones, either gcc warning
+about something that is entirely correct, or about something that
+looks suspicious but turns out to be correct after all.
 
-This fixes it.
+The two patches for the i915 driver look like something that might
+be actual bugs, but I am not sure about those either.
 
-Signed-off-by: Benjamin Aschenbrenner <benjamin.aschenbrenner@gmail.com>
----
- measurements.c | 3 +++
- 1 file changed, 3 insertions(+)
+We probably want some combination of workaround like the ones I
+post here and changes to gcc to have fewer false positives in the
+release. I'm posting the entire set of workaround that give me
+a cleanly building kernel for reference here.
 
-diff --git a/measurements.c b/measurements.c
-index 635d942..80fe785 100644
---- a/measurements.c
-+++ b/measurements.c
-@@ -282,6 +282,9 @@ static int handle_ftm_req_send(struct
-nl80211_state *state, struct nl_msg *msg,
-     const char *file;
-     int err;
+        Arnd
 
-+    if (argc < 1)
-+        return HANDLER_RET_USAGE;
-+
-     file = argv[0];
-     argc--;
-     argv++;
+Arnd Bergmann (11):
+  x86: compressed: avoid gcc-11 -Wstringop-overread warning
+  x86: tboot: avoid Wstringop-overread-warning
+  security: commoncap: fix -Wstringop-overread warning
+  ath11: Wstringop-overread warning
+  qnx: avoid -Wstringop-overread warning
+  cgroup: fix -Wzero-length-bounds warnings
+  ARM: sharpsl_param: work around -Wstringop-overread warning
+  atmel: avoid gcc -Wstringop-overflow warning
+  scsi: lpfc: fix gcc -Wstringop-overread warning
+  drm/i915: avoid stringop-overread warning on pri_latency
+  [RFC] drm/i915/dp: fix array overflow warning
+
+ arch/arm/common/sharpsl_param.c         |  4 ++-
+ arch/x86/boot/compressed/misc.c         |  2 --
+ arch/x86/kernel/tboot.c                 | 44 +++++++++++++++----------
+ drivers/gpu/drm/i915/display/intel_dp.c |  2 +-
+ drivers/gpu/drm/i915/i915_drv.h         |  6 ++--
+ drivers/net/wireless/ath/ath11k/mac.c   |  2 +-
+ drivers/net/wireless/atmel/atmel.c      | 25 ++++++++------
+ drivers/scsi/lpfc/lpfc_attr.c           |  6 ++--
+ fs/qnx4/dir.c                           | 11 +++----
+ kernel/cgroup/cgroup.c                  | 15 +++++++--
+ security/commoncap.c                    |  2 +-
+ 11 files changed, 69 insertions(+), 50 deletions(-)
+
+Cc: x86@kernel.org
+Cc: Ning Sun <ning.sun@intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: Simon Kelley <simon@thekelleys.org.uk>
+Cc: James Smart <james.smart@broadcom.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: Anders Larsen <al@alarsen.net>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Serge Hallyn <serge@hallyn.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: tboot-devel@lists.sourceforge.net
+Cc: intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-scsi@vger.kernel.org
+Cc: cgroups@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+
+
 -- 
-2.30.2
+2.29.2
+
