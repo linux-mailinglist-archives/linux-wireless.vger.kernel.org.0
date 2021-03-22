@@ -2,189 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA7773450C8
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 21:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24F04345101
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 21:43:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230341AbhCVUaP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Mar 2021 16:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231506AbhCVUaD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Mar 2021 16:30:03 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36B7DC061574;
-        Mon, 22 Mar 2021 13:30:03 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id j3so20927381edp.11;
-        Mon, 22 Mar 2021 13:30:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=7QH2qH8OXw7astC9J+hBZNIvd5jFa6HOZzbSlRf+8Ek=;
-        b=T8MfESZQxe3NObZ/7MqvvJi28NxxdFf3ab07gERPhzLT804c2DkkhJkBMdizuiX7N5
-         CHF46uFWWZ0cEHLJOYnXTiyTVv5tLvjO1lmS5Ohg2XPP88nZmWW9F5ARG6cD601rZ5/K
-         zoiBTqPm5H0nLHbAPcra7yZ3RbLdPm8oZKbWma9nQPHRlRk5CMs6B2AjWWGtpKPrvkGd
-         rL5fFWVmWmq+K/IWUKd2YrrT8XNdUQvFpqJ+tfEUQNjkhvUoBFoAG9jEiozLdABWs7F1
-         P6ZC1gmMny9VZsWnwgXXF/Dsydybb92YeAKNqz04oOvYAWJ3XKyrs6O1pidMSVkxvnmE
-         iM1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=7QH2qH8OXw7astC9J+hBZNIvd5jFa6HOZzbSlRf+8Ek=;
-        b=leNPY43U+GP3bVKZwkB+lJg2KyM9KE3J2BFaL8GyBbtK5FxkdvSf+O+fr0RWMe3JBd
-         J7pP+6GAbA+ttwYqzvfe5+RYYtWD1pM01ZARcqk0btY2WCJiNCPFuC0laaXjjVFH09Py
-         ubBTXmpqEEOMZ8KePXTQTSV3vAyBWlsigmNBoEOHhkFE2B8OFPKIE4dl6iUCSj8A8foG
-         G1eG3/aJkkn+TJlbpoZssdMKGsnjJcJTlO9zI2eELfmnhvJdvsKnaXzdbDm3d630n6/T
-         WldJsHY4wqV54f6O95BiFajQOa6pNIMMhqwGcg2vfF+wP8w/6cJxlS00s9lFIe/Eigpc
-         0hQQ==
-X-Gm-Message-State: AOAM532Pysb8L0q7VJmQYDTpgC9fAhOi7Ab3X/7FI4p5/vspOoI7oA7t
-        8M2UPdz24vWHYaXoLgOFcP4=
-X-Google-Smtp-Source: ABdhPJwU1mWLXQUCBk/cr2I4/KV5sNA0QBX6NdJBSPel6aICLgwoK3n4c4u3DzEAz75RN+WAzRwu0Q==
-X-Received: by 2002:aa7:c447:: with SMTP id n7mr1365222edr.171.1616445001869;
-        Mon, 22 Mar 2021 13:30:01 -0700 (PDT)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
-        by smtp.gmail.com with ESMTPSA id x1sm10321496eji.8.2021.03.22.13.30.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Mar 2021 13:30:01 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Mon, 22 Mar 2021 21:29:58 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, Martin Sebor <msebor@gcc.gnu.org>,
-        Ning Sun <ning.sun@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Simon Kelley <simon@thekelleys.org.uk>,
-        James Smart <james.smart@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Anders Larsen <al@alarsen.net>, Tejun Heo <tj@kernel.org>,
-        Serge Hallyn <serge@hallyn.com>,
-        Imre Deak <imre.deak@intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        tboot-devel@lists.sourceforge.net, intel-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-scsi@vger.kernel.org, cgroups@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 02/11] x86: tboot: avoid Wstringop-overread-warning
-Message-ID: <20210322202958.GA1955909@gmail.com>
-References: <20210322160253.4032422-1-arnd@kernel.org>
- <20210322160253.4032422-3-arnd@kernel.org>
+        id S229647AbhCVUmh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Mar 2021 16:42:37 -0400
+Received: from mga12.intel.com ([192.55.52.136]:48250 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229508AbhCVUmM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Mar 2021 16:42:12 -0400
+IronPort-SDR: akcaIaEEvYRM0Dlc6nvzbJRm6fY+xKJZ6R+Sw4wz//4sGaXxxvu2P/GXI3BShqSBVpxqheTdFk
+ XhbCJCXWSMYQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9931"; a="169675982"
+X-IronPort-AV: E=Sophos;i="5.81,269,1610438400"; 
+   d="scan'208";a="169675982"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2021 13:42:11 -0700
+IronPort-SDR: k3iMo1FwPLxJnXms+oHPU6ySxYxJfjQMSm5r7g68oyVezjVdpvDcscYqPtg4mnhOdZXDCIc0/g
+ 0OaljXJg7yVQ==
+X-IronPort-AV: E=Sophos;i="5.81,269,1610438400"; 
+   d="scan'208";a="407978305"
+Received: from isutskov-mobl.ger.corp.intel.com (HELO egrumbac-mobl1.lan) ([10.251.189.99])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2021 13:42:08 -0700
+From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To:     kvalo@codeaurora.org
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        luca@coelho.fi, Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 0/5] Add support for AMT over WLAN
+Date:   Mon, 22 Mar 2021 22:41:50 +0200
+Message-Id: <20210322204157.102078-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210322160253.4032422-3-arnd@kernel.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This patch series adds support for AMT over WLAN.
+Information about Intel Active Management Technology is
+available on the net, but in a nutshell, it is an application
+running on an embedded CPU in the chipset. This application
+can provide remote control to the system even when no OS is,
+present or not even installed. By control, we mean, KVM,
+the possibility to attach a remote driver, power up / down
+/ reset the machine and other options.
 
-* Arnd Bergmann <arnd@kernel.org> wrote:
+When the host uses wireless, the embedded CPU can't access
+the wireless device and hence, the traffic for AMT must be
+routed through the host. The AMT <-> WLAN driver interface
+is explained at lengh inside the patches. Basically, there
+is a memory region that is mapped to a PCI devices that can
+read / write to that memory and sends the data to the embedded
+CPU. The driver for this PCI device is mei. We needed to add
+code for that driver, those patches are in this series and
+need to be routed through wireless-drivers tree as requested
+by Greg KH.
+There is also a cfg80211 patch that I should have sent earlier
+to Johannes. I include this here. Hopefully, it'll not cause
+trouble.
 
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> gcc-11 warns about using string operations on pointers that are
-> defined at compile time as offsets from a NULL pointer. Unfortunately
-> that also happens on the result of fix_to_virt(), which is a
-> compile-time constant for a constantn input:
-> 
-> arch/x86/kernel/tboot.c: In function 'tboot_probe':
-> arch/x86/kernel/tboot.c:70:13: error: '__builtin_memcmp_eq' specified bound 16 exceeds source size 0 [-Werror=stringop-overread]
->    70 |         if (memcmp(&tboot_uuid, &tboot->uuid, sizeof(tboot->uuid))) {
->       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> I hope this can get addressed in gcc-11 before the release.
-> 
-> As a workaround, split up the tboot_probe() function in two halves
-> to separate the pointer generation from the usage. This is a bit
-> ugly, and hopefully gcc understands that the code is actually correct
-> before it learns to peek into the noinline function.
-> 
-> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99578
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/x86/kernel/tboot.c | 44 ++++++++++++++++++++++++-----------------
->  1 file changed, 26 insertions(+), 18 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/tboot.c b/arch/x86/kernel/tboot.c
-> index 4c09ba110204..f9af561c3cd4 100644
-> --- a/arch/x86/kernel/tboot.c
-> +++ b/arch/x86/kernel/tboot.c
-> @@ -49,6 +49,30 @@ bool tboot_enabled(void)
->  	return tboot != NULL;
->  }
->  
-> +/* noinline to prevent gcc from warning about dereferencing constant fixaddr */
-> +static noinline __init bool check_tboot_version(void)
-> +{
-> +	if (memcmp(&tboot_uuid, &tboot->uuid, sizeof(tboot->uuid))) {
-> +		pr_warn("tboot at 0x%llx is invalid\n", boot_params.tboot_addr);
-> +		return false;
-> +	}
-> +
-> +	if (tboot->version < 5) {
-> +		pr_warn("tboot version is invalid: %u\n", tboot->version);
-> +		return false;
-> +	}
-> +
-> +	pr_info("found shared page at phys addr 0x%llx:\n",
-> +		boot_params.tboot_addr);
-> +	pr_debug("version: %d\n", tboot->version);
-> +	pr_debug("log_addr: 0x%08x\n", tboot->log_addr);
-> +	pr_debug("shutdown_entry: 0x%x\n", tboot->shutdown_entry);
-> +	pr_debug("tboot_base: 0x%08x\n", tboot->tboot_base);
-> +	pr_debug("tboot_size: 0x%x\n", tboot->tboot_size);
-> +
-> +	return true;
-> +}
-> +
->  void __init tboot_probe(void)
->  {
->  	/* Look for valid page-aligned address for shared page. */
-> @@ -66,25 +90,9 @@ void __init tboot_probe(void)
->  
->  	/* Map and check for tboot UUID. */
->  	set_fixmap(FIX_TBOOT_BASE, boot_params.tboot_addr);
-> -	tboot = (struct tboot *)fix_to_virt(FIX_TBOOT_BASE);
-> -	if (memcmp(&tboot_uuid, &tboot->uuid, sizeof(tboot->uuid))) {
-> -		pr_warn("tboot at 0x%llx is invalid\n", boot_params.tboot_addr);
-> +	tboot = (void *)fix_to_virt(FIX_TBOOT_BASE);
-> +	if (!check_tboot_version())
->  		tboot = NULL;
-> -		return;
-> -	}
-> -	if (tboot->version < 5) {
-> -		pr_warn("tboot version is invalid: %u\n", tboot->version);
-> -		tboot = NULL;
-> -		return;
-> -	}
-> -
-> -	pr_info("found shared page at phys addr 0x%llx:\n",
-> -		boot_params.tboot_addr);
-> -	pr_debug("version: %d\n", tboot->version);
-> -	pr_debug("log_addr: 0x%08x\n", tboot->log_addr);
-> -	pr_debug("shutdown_entry: 0x%x\n", tboot->shutdown_entry);
-> -	pr_debug("tboot_base: 0x%08x\n", tboot->tboot_base);
-> -	pr_debug("tboot_size: 0x%x\n", tboot->tboot_size);
+Note about how to use this new feature:
+In order to fully use this new feature, we need to add a few
+vendor commands that are not included in this series. The
+upstream process for those commands will take some more time
+but it is definitely planned. The motivation to use vendor
+commands as opposed to regular nl80211 APIs is that we do not
+expect any other vendor to need similar APIs. We had no control
+on the AMT APIs and this is why we needed to add vendor commands
+for flows that differ just a tiny bit from the regular flow. For
+example, AMT needs to know when we are associated, but it
+requires to know whether we are associated in WPA or in WPA2.
+This is not known to the kernel, so we, unfortunately, had
+to add a vendor command for this. This is just an example.
 
-This is indeed rather ugly - and the other patch that removes a debug 
-check seems counterproductive as well.
+Integration with the connection manager is required to be able
+to use this new feature.
+In case the device is controlled by AMT and is actively used
+by AMT, AMT will not release the device. To properly reflect
+this state, we report hardware RF-Kill to the stack, but we
+add a reason saying that we do not own the device. The
+connection manager can then check what AP AMT is connected to
+and signal to AMT that it can ensure the connetion to that
+same AP can be kept. AMT will then release the device allowing
+the host to connect to that AP. Doing this transition fast
+enough will allow not to break the TCP connections that AMT
+maintains.
 
-Do we know how many genuine bugs -Wstringop-overread-warning has 
-caught or is about to catch?
+I worked with Ayala Beker on the iwlwifi part of this feature.
 
-I.e. the real workaround might be to turn off the -Wstringop-overread-warning,
-until GCC-11 gets fixed?
+Please do not apply those patches, they'll be part of a regular
+pull request from Luca.
 
-Thanks,
+Johannes, feel free to pick the cfg80211 patch although then, it
+will require to merge mac80211-next into wireless-drivers-next so
+maybe it's better to route it through Kalle as well?
 
-	Ingo
+Alexander Usyskin (1):
+  mei: bus: add client dma interface
+
+Emmanuel Grumbach (3):
+  cfg80211: allow to specifying a reason for hw_rfkill
+  iwlwifi: mei: add the driver to allow cooperation with CSME
+  iwlwifi: integrate with iwlmei
+
+Tomas Winkler (1):
+  mei: allow map and unmap of client dma buffer only for disconnected
+    client
+
+ drivers/misc/mei/bus.c                        |   67 +-
+ drivers/misc/mei/client.c                     |   20 +-
+ drivers/misc/mei/hw.h                         |    5 +
+ drivers/net/wireless/intel/iwlwifi/Kconfig    |   13 +
+ drivers/net/wireless/intel/iwlwifi/Makefile   |    2 +
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |   61 +
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.h    |   11 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |    2 +
+ .../net/wireless/intel/iwlwifi/mei/Makefile   |    8 +
+ .../net/wireless/intel/iwlwifi/mei/internal.h |   20 +
+ .../net/wireless/intel/iwlwifi/mei/iwl-mei.h  |  440 ++++
+ drivers/net/wireless/intel/iwlwifi/mei/main.c | 2026 +++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mei/net.c  |  409 ++++
+ drivers/net/wireless/intel/iwlwifi/mei/sap.h  |  736 ++++++
+ .../wireless/intel/iwlwifi/mei/trace-data.h   |   69 +
+ .../net/wireless/intel/iwlwifi/mei/trace.c    |   15 +
+ .../net/wireless/intel/iwlwifi/mei/trace.h    |   62 +
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |    3 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   42 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   70 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  208 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |    7 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |   25 +
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |   16 +-
+ include/linux/mei_cl_bus.h                    |    3 +
+ include/net/cfg80211.h                        |   11 +-
+ net/wireless/core.c                           |    7 +-
+ 27 files changed, 4322 insertions(+), 36 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/Makefile
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/internal.h
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/main.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/net.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/sap.h
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/trace-data.h
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/trace.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/trace.h
+
+-- 
+2.25.1
+
