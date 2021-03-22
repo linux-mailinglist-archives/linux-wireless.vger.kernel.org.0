@@ -2,103 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB0BA343E18
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 11:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 200BA343E3C
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 11:45:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbhCVKiE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Mar 2021 06:38:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:51609 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229870AbhCVKh6 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Mar 2021 06:37:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1616409478;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6G4g+Zzw9+IQi2i463gkQ927R/fhe4ocIM539Dt27bE=;
-        b=MvhnK9L38MWeItCLW18IXhKG7LihGgPuH6HMorerjktjRVXC0BzL+nl6XPhAM8MZt26Ho+
-        eRJR4wBxj7IsWKXDIvhrOHedFeh925M1NAdOkF4quWNYDW4XrsCTwtOAwMXRRhvFps3Xrj
-        wg7Getr78KJ42QDwpdUCvDBGcJkYmRY=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-374-vjDil1vzMdyPfoD4KubMgA-1; Mon, 22 Mar 2021 06:37:56 -0400
-X-MC-Unique: vjDil1vzMdyPfoD4KubMgA-1
-Received: by mail-ed1-f72.google.com with SMTP id i6so27327389edq.12
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Mar 2021 03:37:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=6G4g+Zzw9+IQi2i463gkQ927R/fhe4ocIM539Dt27bE=;
-        b=WTR8vyX1mjRUjH7imV93FrZkOuVKKP/8tTYmf1Uo3TqJ2+Eq6pI+RiZnu2VSH6YueW
-         vwdSObCFnl0Oi+f07LRJMXQ0tz4DPzqUg/IAUS+KBvP1oD0Lvt6WVo8B28lQBE+o64QA
-         SU6GxGmnC9GAbnbpqlBX0jSAWg/cZQFdgMEi/oWtmGdBjYVok/F7Xn+7cuavLAUG8E7F
-         nvTUCBI+4UbCgpOsbr6hyTn+/swNxn7Hs/JMWWaQgW+oXbCuvhqrp+rWPjvxGD59g9SS
-         nyAesVVcz8SIQzH0t8C4NujyekT9NwnaXUxDyFEzQArc3g8SL93vZpQL8ZzRzQ7oFzZ2
-         NvcQ==
-X-Gm-Message-State: AOAM532VVllREYTpM6sw0kTEFxA1s9Kv2gFQjSO198888NiW8VmbNnai
-        9cZnWdQF3J9lXPhA3z8Vor+wLwL9rCqJrGma3hj/OyKlitTgWus3tf+XTeG8dmfIu/Jqoa6TfcT
-        o2kC3zXxjrDqUjlHdSudHwEz5YYg=
-X-Received: by 2002:a05:6402:50ce:: with SMTP id h14mr24705682edb.279.1616409475050;
-        Mon, 22 Mar 2021 03:37:55 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJweWdswSYPWaqm/bGLt77H2MfgNKEDKFvr5bpbp+7pbBjqyq1gIImlMj2wQkGOHuSR8M2cW3w==
-X-Received: by 2002:a05:6402:50ce:: with SMTP id h14mr24705676edb.279.1616409474938;
-        Mon, 22 Mar 2021 03:37:54 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id p9sm10988833eds.66.2021.03.22.03.37.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Mar 2021 03:37:54 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id EC3B6181F54; Mon, 22 Mar 2021 11:37:53 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] mac80211: don't apply flow control on management frames
-In-Reply-To: <e0ca70f2241307c44489653d7074c5017ad93943.camel@sipsolutions.net>
-References: <20210319232800.0e876c800866.Id2b66eb5a17f3869b776c39b5ca713272ea09d5d@changeid>
- <87h7l6adht.fsf@toke.dk>
- <e0ca70f2241307c44489653d7074c5017ad93943.camel@sipsolutions.net>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 22 Mar 2021 11:37:53 +0100
-Message-ID: <87wntz8oe6.fsf@toke.dk>
+        id S230290AbhCVKpI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Mar 2021 06:45:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55294 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229526AbhCVKpD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Mar 2021 06:45:03 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DAE2761931;
+        Mon, 22 Mar 2021 10:45:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616409903;
+        bh=zSlzhTb9+O7YX45ZK09VbrHld90WpzlBFw4V1GQ4JBA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=M7J+pr2zXhZare1qLpPeu2g2PTWhQw5yYHBQ2W7k4u9qZK+C4eSmlGHD83+0rs12F
+         56shnLHZG9zERgEWRgLiGZI4E4HhfjSF1Q58zdo6nuimaUZLA3bTikyt/x3wNp1l5i
+         hg2uQ2Ixb6wFRArR8uHOS0ejrkEOCIKfhSNyKnyovh/1/lgkG9Y5AAN2LunlzwxYkV
+         MFEwGp+7uXBi29JGHdQnzNw35DIJ8hjh31NnJ87M+Ca8OyLBQplv8x9q+rHYa17uXh
+         YeHw7Ajir+/74iLpL0myyjR+dK5o/4grFXdanVXWeO44MktT3lisssE3+aVV/BaNFQ
+         GbPxKt0lWnLjQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     netdev@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee.jones@linaro.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 3/5] iwlegacy: avoid -Wempty-body warning
+Date:   Mon, 22 Mar 2021 11:43:33 +0100
+Message-Id: <20210322104343.948660-3-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210322104343.948660-1-arnd@kernel.org>
+References: <20210322104343.948660-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+From: Arnd Bergmann <arnd@arndb.de>
 
-> On Sat, 2021-03-20 at 01:13 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>=20
->> One consequence of this is that we create a strict priority queue for
->> management frames.
->
-> Yes, for iwlwifi that's actually a change. For everyone else (not
-> setting BUFF_MMPDU_TXQ or STA_MMPDU_TXQ) it already is since it goes
-> directly to ->tx() and from there to the hardware queue(s).
+There are a couple of warnings in this driver when building with W=1:
 
-Ah, right, of course; so not much change at all. Cool.
+drivers/net/wireless/intel/iwlegacy/common.c: In function 'il_power_set_mode':
+drivers/net/wireless/intel/iwlegacy/common.c:1195:60: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
+ 1195 |                                 il->chain_noise_data.state);
+      |                                                            ^
+drivers/net/wireless/intel/iwlegacy/common.c: In function 'il_do_scan_abort':
+drivers/net/wireless/intel/iwlegacy/common.c:1343:57: error: suggest braces around empty body in an 'else' statement [-Werror=empty-body]
 
->> With all the possibilities for badness (such as the
->> ability of starving all other queues) that carries with it. I guess
->> that's probably fine for management frames, though, right? As in, there
->> is some other mechanism that prevents abuse of this?
->
-> Well, there's just not that many management frames to start with? And
-> only wpa_supplicant (or root in general) can create them. So I don't
-> think we need to worry about that yet. With QoS-mgmt frames we might
-> eventually want to think about that, but even there I'd say we never
-> really want to drop them.
+Change the empty debug macros to no_printk(), which avoids the
+warnings and adds useful format string checks.
 
-Yup, that's what I meant with "some other mechanism to prevent abuse".
-Great.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/intel/iwlegacy/3945-mac.c | 2 --
+ drivers/net/wireless/intel/iwlegacy/common.c   | 2 --
+ drivers/net/wireless/intel/iwlegacy/common.h   | 2 +-
+ 3 files changed, 1 insertion(+), 5 deletions(-)
 
-Feel free to add my:
-
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+diff --git a/drivers/net/wireless/intel/iwlegacy/3945-mac.c b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
+index 4ca8212d4fa4..6ff2674f8466 100644
+--- a/drivers/net/wireless/intel/iwlegacy/3945-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
+@@ -751,9 +751,7 @@ il3945_hdl_alive(struct il_priv *il, struct il_rx_buf *rxb)
+ static void
+ il3945_hdl_add_sta(struct il_priv *il, struct il_rx_buf *rxb)
+ {
+-#ifdef CONFIG_IWLEGACY_DEBUG
+ 	struct il_rx_pkt *pkt = rxb_addr(rxb);
+-#endif
+ 
+ 	D_RX("Received C_ADD_STA: 0x%02X\n", pkt->u.status);
+ }
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
+index 0651a6a416d1..219fed91cac5 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.c
++++ b/drivers/net/wireless/intel/iwlegacy/common.c
+@@ -1430,10 +1430,8 @@ static void
+ il_hdl_scan_complete(struct il_priv *il, struct il_rx_buf *rxb)
+ {
+ 
+-#ifdef CONFIG_IWLEGACY_DEBUG
+ 	struct il_rx_pkt *pkt = rxb_addr(rxb);
+ 	struct il_scancomplete_notification *scan_notif = (void *)pkt->u.raw;
+-#endif
+ 
+ 	D_SCAN("Scan complete: %d channels (TSF 0x%08X:%08X) - %d\n",
+ 	       scan_notif->scanned_channels, scan_notif->tsf_low,
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
+index ea1b1bb7ddcb..40877ef1fbf2 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.h
++++ b/drivers/net/wireless/intel/iwlegacy/common.h
+@@ -2937,7 +2937,7 @@ do {									\
+ } while (0)
+ 
+ #else
+-#define IL_DBG(level, fmt, args...)
++#define IL_DBG(level, fmt, args...) no_printk(fmt, ##args)
+ static inline void
+ il_print_hex_dump(struct il_priv *il, int level, const void *p, u32 len)
+ {
+-- 
+2.29.2
 
