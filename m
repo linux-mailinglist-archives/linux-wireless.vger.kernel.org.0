@@ -2,28 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0833432FA
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Mar 2021 15:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5500B343A52
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 08:12:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229990AbhCUOYM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Mar 2021 10:24:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47882 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbhCUOXo (ORCPT
+        id S229930AbhCVHLx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Mar 2021 03:11:53 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33569 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229840AbhCVHLc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Mar 2021 10:23:44 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DB1BC061574
-        for <linux-wireless@vger.kernel.org>; Sun, 21 Mar 2021 07:23:44 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lNyzT-001N7J-9W; Sun, 21 Mar 2021 15:23:39 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org, bup-list@googlegroups.com
-Subject: [PATCH] bup: cat-file: fix error print
-Date:   Sun, 21 Mar 2021 15:23:33 +0100
-Message-Id: <20210321142333.16326-1-johannes@sipsolutions.net>
+        Mon, 22 Mar 2021 03:11:32 -0400
+Received: from 1.general.alexhung.us.vpn ([10.172.65.254] helo=canonical.com)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <alex.hung@canonical.com>)
+        id 1lOEij-0001hC-6j; Mon, 22 Mar 2021 07:11:25 +0000
+From:   Alex Hung <alex.hung@canonical.com>
+To:     luciano.coelho@intel.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, matti.gottlieb@intel.com,
+        ihab.zhaika@intel.com, johannes.berg@intel.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        alex.hung@canonical.com
+Cc:     stable@vger.kernel.org
+Subject: [PATCH] iwlwifi: add new pci id for 6235
+Date:   Mon, 22 Mar 2021 01:11:21 -0600
+Message-Id: <20210322071121.265584-1-alex.hung@canonical.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -31,27 +34,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some variable renaming and bytes issues, if a target cannot
-be found in cat-file.
+lspci output:
+Network controller [0280]: Intel Corporation Centrino Advanced-N6235
+ [8086:088f] (rev 24)
+ Subsystem: Intel Corporation Centrino Advanced-N 6235 [8086:526a]
 
-Signed-off-by: Johannes Berg <johannes@sipsolutions.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Hung <alex.hung@canonical.com>
 ---
- lib/cmd/cat-file-cmd.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/cmd/cat-file-cmd.py b/lib/cmd/cat-file-cmd.py
-index 388ca03abcbe..ebe27ce43a0a 100755
---- a/lib/cmd/cat-file-cmd.py
-+++ b/lib/cmd/cat-file-cmd.py
-@@ -56,7 +56,7 @@ resolved = vfs.resolve(repo, target, follow=False)
- leaf_name, leaf_item = resolved[-1]
- if not leaf_item:
-     log('error: cannot access %r in %r\n'
--        % ('/'.join(name for name, item in resolved), path))
-+        % (b'/'.join(name for name, item in resolved), target))
-     sys.exit(1)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index ffaf973..f85fe36 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -200,6 +200,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
+ 	{IWL_PCI_DEVICE(0x088E, 0x446A, iwl6035_2agn_sff_cfg)},
+ 	{IWL_PCI_DEVICE(0x088E, 0x4860, iwl6035_2agn_cfg)},
+ 	{IWL_PCI_DEVICE(0x088F, 0x5260, iwl6035_2agn_cfg)},
++	{IWL_PCI_DEVICE(0x088F, 0x526A, iwl6035_2agn_cfg)},
  
- mode = vfs.item_mode(leaf_item)
+ /* 105 Series */
+ 	{IWL_PCI_DEVICE(0x0894, 0x0022, iwl105_bgn_cfg)},
 -- 
-2.30.2
+2.7.4
 
