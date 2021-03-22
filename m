@@ -2,61 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5500B343A52
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 08:12:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26EAF343D3F
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 10:52:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbhCVHLx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Mar 2021 03:11:53 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33569 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbhCVHLc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Mar 2021 03:11:32 -0400
-Received: from 1.general.alexhung.us.vpn ([10.172.65.254] helo=canonical.com)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <alex.hung@canonical.com>)
-        id 1lOEij-0001hC-6j; Mon, 22 Mar 2021 07:11:25 +0000
-From:   Alex Hung <alex.hung@canonical.com>
-To:     luciano.coelho@intel.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, matti.gottlieb@intel.com,
-        ihab.zhaika@intel.com, johannes.berg@intel.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        alex.hung@canonical.com
-Cc:     stable@vger.kernel.org
-Subject: [PATCH] iwlwifi: add new pci id for 6235
-Date:   Mon, 22 Mar 2021 01:11:21 -0600
-Message-Id: <20210322071121.265584-1-alex.hung@canonical.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S229941AbhCVJwS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Mar 2021 05:52:18 -0400
+Received: from ns.iliad.fr ([212.27.33.1]:47810 "EHLO ns.iliad.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229508AbhCVJvp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Mar 2021 05:51:45 -0400
+X-Greylist: delayed 485 seconds by postgrey-1.27 at vger.kernel.org; Mon, 22 Mar 2021 05:51:45 EDT
+Received: from ns.iliad.fr (localhost [127.0.0.1])
+        by ns.iliad.fr (Postfix) with ESMTP id A589020E94;
+        Mon, 22 Mar 2021 10:43:39 +0100 (CET)
+Received: from sakura (freebox.vlq16.iliad.fr [213.36.7.13])
+        by ns.iliad.fr (Postfix) with ESMTP id 8F1E720971;
+        Mon, 22 Mar 2021 10:43:39 +0100 (CET)
+Message-ID: <5f037c3f8485a8c929548be6a153290ba9ae4f13.camel@freebox.fr>
+Subject: Re: [PATCH] mac80211: don't apply flow control on management frames
+From:   Maxime Bizon <mbizon@freebox.fr>
+Reply-To: mbizon@freebox.fr
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Date:   Mon, 22 Mar 2021 10:43:39 +0100
+In-Reply-To: <20210319232800.0e876c800866.Id2b66eb5a17f3869b776c39b5ca713272ea09d5d@changeid>
+References: <20210319232800.0e876c800866.Id2b66eb5a17f3869b776c39b5ca713272ea09d5d@changeid>
+Organization: Freebox
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Mon Mar 22 10:43:39 2021 +0100 (CET)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-lspci output:
-Network controller [0280]: Intel Corporation Centrino Advanced-N6235
- [8086:088f] (rev 24)
- Subsystem: Intel Corporation Centrino Advanced-N 6235 [8086:526a]
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Hung <alex.hung@canonical.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
- 1 file changed, 1 insertion(+)
+On Fri, 2021-03-19 at 23:28 +0100, Johannes Berg wrote:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index ffaf973..f85fe36 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -200,6 +200,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x088E, 0x446A, iwl6035_2agn_sff_cfg)},
- 	{IWL_PCI_DEVICE(0x088E, 0x4860, iwl6035_2agn_cfg)},
- 	{IWL_PCI_DEVICE(0x088F, 0x5260, iwl6035_2agn_cfg)},
-+	{IWL_PCI_DEVICE(0x088F, 0x526A, iwl6035_2agn_cfg)},
- 
- /* 105 Series */
- 	{IWL_PCI_DEVICE(0x0894, 0x0022, iwl105_bgn_cfg)},
+Hello Johannes,
+
+> 
+> Short-circuit the processing of management frames. To keep the
+> impact minimal, only put them on the frags queue and check the
+> tid == management only for doing that and to skip the airtime
+> fairness checks, if applicable.
+
+After your patch, what are the actual effects of HW_STA_MMPDU_TXQ and
+HW_BUFF_MMPDU_TXQ ?
+
+Thanks,
+
 -- 
-2.7.4
+Maxime
+
+
 
