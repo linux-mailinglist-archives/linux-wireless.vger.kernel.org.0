@@ -2,90 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 210BE34408C
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 13:13:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFAC13440C6
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 13:21:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbhCVMNS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Mar 2021 08:13:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48570 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230258AbhCVMMz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Mar 2021 08:12:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A62FF6196F;
-        Mon, 22 Mar 2021 12:12:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616415174;
-        bh=nJ6Y0t09uPWWuWf7AN+eLehX+a2M1PUYG+ikHrZ1keM=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=KcKOq3hnx1wa45MK4b7+gfmZU/FDeRoithsKVCA3AAH9xDis0Ns2cZ9gPb6Fq76IJ
-         M+QzWVsLqyrfw0kPho8eP1kYzSUgYk0Ji5w2KP4AfVmxy0b1tZMKDGzpsYK4XcxFD4
-         yt4EVuL4wnvRsNo7reD91k5GSHEpFMQ2VDlwmrZ7LdFVqKZnD9NEmWqubGWQhJxOne
-         dRmoL7Jw7ZzEEn/3RqCDkN7tRUllAy9yY8Ww9TH8WfzdfQgHJ2W8emNFZiWcNWKNyF
-         J8b3BdvbNl+K7/sqCwmTjNmRg2vHlOoA6epI4NAEkihFuPhTjOA9TaOGt1jFpCfPum
-         s1Qv0seAMiXUA==
-Date:   Mon, 22 Mar 2021 13:12:51 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Luca Coelho <luca@coelho.fi>
-cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iwlwifi: Fix softirq/hardirq disabling in
- iwl_pcie_enqueue_hcmd()
-In-Reply-To: <c1681fa49280189c48ecf9f86fe54b81d662dc07.camel@coelho.fi>
-Message-ID: <nycvar.YFH.7.76.2103221311560.12405@cbobk.fhfr.pm>
-References: <nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm>  <nycvar.YFH.7.76.2103080925230.12405@cbobk.fhfr.pm>  <nycvar.YFH.7.76.2103130242460.12405@cbobk.fhfr.pm>  <87h7lfbowr.fsf@tynnyri.adurom.net>  <nycvar.YFH.7.76.2103131642290.12405@cbobk.fhfr.pm>
-  <f103b4a29b7c1942f091bd7b90d7a927d72c20a2.camel@coelho.fi>  <87zgz7t246.fsf@codeaurora.org> <c1681fa49280189c48ecf9f86fe54b81d662dc07.camel@coelho.fi>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S230330AbhCVMVV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Mar 2021 08:21:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49690 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230338AbhCVMVO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Mar 2021 08:21:14 -0400
+Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B72C061763
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Mar 2021 05:21:13 -0700 (PDT)
+Received: by mail-vs1-xe2b.google.com with SMTP id l13so7314831vst.8
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Mar 2021 05:21:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=XGgimpglaRwteb/Bgl+pO/u/VHpnAlSvFxg2F0n2KCo=;
+        b=p6ePlsePjZxtZiq6dspm5RqfO23b/cRwiaAUzyGDHXFYH5sx1t4bJGWn0FOttl90Fl
+         9l+Pfmy1A5eZFy/TSoAvoVzQdfoD2qAan4ZvPA6wRfZWyReRLg4ebDoHO03QxuwMUSbG
+         Xw/8chYtadgBTlSZOweb9p+3rtNCRRcjugB/lnaBMco22zR1SkNQM6lzIQNj8EexBez6
+         v7JH/YONvbt8dLTbvqGS0sAH1lBuk1leff10dNlL9TDI1CpIRaVwIzuXwq2+NNyRsGqx
+         z1w0fgf4bGexsX5E3k40FkRmO1RTFVZAOD6tpBLRoVWKOKlZDiXK9Zj5nr2RvdtstoJq
+         nujA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=XGgimpglaRwteb/Bgl+pO/u/VHpnAlSvFxg2F0n2KCo=;
+        b=J/Q6i0P3LDt7aoSylvNn6YNCBO6pd7Js7GJCrEdovayT8ePCoktyDHBAl1KuI22MsS
+         LMW4XFCp7vfMxnSnQLvmLGfwGylZi1Vsfmjd4bZ9X8SFzgJ9fpY8STWixoyJ0gPpjRTS
+         Vy83iNmx8t2o5D5inYb1EudPRvtOE9AFQhkh96dej58m9VGJw77Ot0lHqde1if6fgmNC
+         VvNS7YQZb/T6dzINjOFlNEw9pELI/5ijt35g+o1dCSoM6Bt7XqtPV5rAGdrVbv2Sjlsf
+         IF9JVpL2WVMm7H8zdLZGP/MKGDeh832HYp06SCvgLUglEX7C/rQssLzj1CQOhqwQhe70
+         tePA==
+X-Gm-Message-State: AOAM532764+lmLn6/ZvjZY2zZxFlpm/GzV1JNEA1WkULkKQbMIbcRz6H
+        u413PYZRLQ3nRgVcFC9Pu82LEWduUIuwJ48kexctgw==
+X-Google-Smtp-Source: ABdhPJxi1HPq3PGcbuB9unHpIbKlJszyykT5Ik5ywDW/5koSttdd0dNdIDei/RcqxPZPwkzSrOy7RcSt9jXbJOzDcy4=
+X-Received: by 2002:a67:2a85:: with SMTP id q127mr8477457vsq.19.1616415672109;
+ Mon, 22 Mar 2021 05:21:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20210315132501.441681-1-Jerome.Pouiller@silabs.com> <20210315132501.441681-9-Jerome.Pouiller@silabs.com>
+In-Reply-To: <20210315132501.441681-9-Jerome.Pouiller@silabs.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 22 Mar 2021 13:20:35 +0100
+Message-ID: <CAPDyKFqJf=vUqpQg3suDCadKrFTkQWFTY_qp=+yDK=_Lu9gJGg@mail.gmail.com>
+Subject: Re: [PATCH v5 08/24] wfx: add bus_sdio.c
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        driverdevel <devel@driverdev.osuosl.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        DTML <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 13 Mar 2021, Luca Coelho wrote:
+On Mon, 15 Mar 2021 at 14:25, Jerome Pouiller
+<Jerome.Pouiller@silabs.com> wrote:
+>
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>
+> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  drivers/net/wireless/silabs/wfx/bus_sdio.c | 259 +++++++++++++++++++++
+>  1 file changed, 259 insertions(+)
+>  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.c
 
-> > > > > > > > It's possible for iwl_pcie_enqueue_hcmd() to be called with hard IRQs 
-> > > > > > > > disabled (e.g. from LED core). We can't enable BHs in such a situation.
-> > > > > > > > 
-> > > > > > > > Turn the unconditional BH-enable/BH-disable code into 
-> > > > > > > > hardirq-disable/conditional-enable.
-> > > > > > > > 
-> > > > > > > > This fixes the warning below.
-> > > > > > > 
-> > > > > > > Hi,
-> > > > > > > 
-> > > > > > > friendly ping on this one ... 
-> > > > > > 
-> > > > > > Luca,
-> > > > > > 
-> > > > > > Johannes is telling me that he merged this patch internally, but I have no 
-> > > > > > idea what is happening to it ... ?
-> > > > > > 
-> > > > > > The reported splat is a clear bug, so it should be fixed one way or the 
-> > > > > > other.
-> > > > > 
-> > > > > Should I take this to wireless-drivers?
-> > > > 
-> > > > I can't speak for the maintainers, but as far as I am concerned, it 
-> > > > definitely is a 5.12 material, as it fixes real scheduling bug.
-> > > 
-> > > Yes, please take this to w-d.  We have a similar patch internally, but
-> > > there's a backlog and it will take me some time to get to it.  I'll
-> > > resolve eventual conflicts when time comes.
-> > 
-> > Ok, can I have your ack for patchwork?
-> 
-> Sorry, forgot that.
-> 
-> Acked-by: Luca Coelho <luciano.coelho@intel.com>
+[...]
 
-Sorry for sounding like broken record :) but this fix is still not in any 
-tree as far as I can tell. And it's fixing real scheduling in atomic bug.
+> +static const struct sdio_device_id wfx_sdio_ids[] =3D {
+> +       { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_WF200)=
+ },
+> +       { },
+> +};
+> +MODULE_DEVICE_TABLE(sdio, wfx_sdio_ids);
+> +
+> +struct sdio_driver wfx_sdio_driver =3D {
+> +       .name =3D "wfx-sdio",
+> +       .id_table =3D wfx_sdio_ids,
+> +       .probe =3D wfx_sdio_probe,
+> +       .remove =3D wfx_sdio_remove,
+> +       .drv =3D {
+> +               .owner =3D THIS_MODULE,
+> +               .of_match_table =3D wfx_sdio_of_match,
 
-Thanks,
+It's not mandatory to support power management, like system
+suspend/resume. However, as this looks like this is a driver for an
+embedded SDIO device, you probably want this.
 
--- 
-Jiri Kosina
-SUSE Labs
+If that is the case, please assign the dev_pm_ops here and implement
+the ->suspend|resume() callbacks.
 
+[...]
+
+Kind regards
+Uffe
