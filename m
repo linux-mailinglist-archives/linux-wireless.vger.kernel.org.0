@@ -2,96 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF3AB3451E8
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 22:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F5EB34520D
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Mar 2021 22:52:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbhCVVkV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Mar 2021 17:40:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59434 "EHLO mail.kernel.org"
+        id S229913AbhCVVvm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Mar 2021 17:51:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41710 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229639AbhCVVkE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Mar 2021 17:40:04 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 28117619A9;
-        Mon, 22 Mar 2021 21:40:04 +0000 (UTC)
+        id S229467AbhCVVv3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Mar 2021 17:51:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D95426191D;
+        Mon, 22 Mar 2021 21:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616449204;
-        bh=ZjEe7Re0RKu002ndI22T8BlfDJ+aY+HHY+t9XvQS7Q8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bJZCpZ5EEGZerp3UrSyvokIM6nH3GPNLIsyJMJB5nyc4Sgnjtzn+OMtjUL2ZBSie+
-         Fi83eey5HsMSKc/9qaD2RuZEeUeUwoE2M6qwk7wrSCjkj4ws8OGv18z8EyYcukmWHT
-         jM35+ir6/srZfSH78DCRwpRXtTCanNR0ouNRk+r0zZqC9uicwbh5Vl6qVN2J0nC7fg
-         yAR8A/u0nDcj41ohiNdL688eDQ2opEHdctaDOmgytVvpFgfvzBz92vFYBp5Nn21+zL
-         vtNIUbcaOAFjelvCYqZ6uXvufN0DecSq4tETddYi+zxgAsQXGrS7YO4xRruhTqWyYj
-         CraMDT8xmXxbw==
-Received: by mail-ot1-f44.google.com with SMTP id g8-20020a9d6c480000b02901b65ca2432cso17476595otq.3;
-        Mon, 22 Mar 2021 14:40:04 -0700 (PDT)
-X-Gm-Message-State: AOAM533FUOhFfO7wq9f+GsWOzKkBqFJJDy1x14lvq359GYXwWaCk6hUk
-        iGNe8yk9vCXFksLX6c2bH7EqB0oZSmM8DFSdmWI=
-X-Google-Smtp-Source: ABdhPJzNzw6/c6SVRTMWeDvzQfOYlqmnHJ7XZUtZKGXGAyd4E2bODGHMqyepsXMnLh1hlMatZvPmNE5xJdhqw6/8ZCE=
-X-Received: by 2002:a9d:316:: with SMTP id 22mr1561463otv.210.1616449203436;
- Mon, 22 Mar 2021 14:40:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210322160253.4032422-1-arnd@kernel.org> <20210322160253.4032422-3-arnd@kernel.org>
- <20210322202958.GA1955909@gmail.com>
-In-Reply-To: <20210322202958.GA1955909@gmail.com>
+        s=k20201202; t=1616449888;
+        bh=vplW57jdS3sdwY5BYxTl7rROU7sS/6x0YoCPBkEaF7s=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NFCk5pszFaz6NRayADSr2fVS3LN+m6B5SW1UewBb2lqJngOvQ8go3ziYYlwSZ6/hW
+         wfcDgBrl64BQuCRy3cWqPldHbMqmanTm9YQeKuk0d/SAqB3E+Q2EbHtJ+Gitm6J44v
+         LeZRod5vnYzD4XMzDtVYeseG7IBxTOQOqq+xPRP1X/FtjaSpqSz+Mur+YFaWzQOlj4
+         eIps+pvMmz27xTm/XuIf6ODQI3kj0swcbV5jEh8xCBde/cVIdhNmuYJrMZmN8I2eMZ
+         1EnMYr0YWxEqT4eIzwd/4Eg1KmIKpczFSC7WDERFdR0bpfdlN76GSGt0p3qaMr3TbD
+         RipEFz6+4ptQA==
 From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Mon, 22 Mar 2021 22:39:47 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a10d8hgBiO5W=34oLqw8m22=Xi4C=MxVSY_fGnXZUJ3iA@mail.gmail.com>
-Message-ID: <CAK8P3a10d8hgBiO5W=34oLqw8m22=Xi4C=MxVSY_fGnXZUJ3iA@mail.gmail.com>
-Subject: Re: [PATCH 02/11] x86: tboot: avoid Wstringop-overread-warning
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Martin Sebor <msebor@gcc.gnu.org>,
-        Ning Sun <ning.sun@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
+To:     netdev@vger.kernel.org, Luca Coelho <luciano.coelho@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Simon Kelley <simon@thekelleys.org.uk>,
-        James Smart <james.smart@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Anders Larsen <al@alarsen.net>, Tejun Heo <tj@kernel.org>,
-        Serge Hallyn <serge@hallyn.com>,
-        Imre Deak <imre.deak@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        tboot-devel@lists.sourceforge.net,
-        Intel Graphics <intel-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        ath11k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        Cgroups <cgroups@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Gregory Greenman <gregory.greenman@intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] iwlwifi: fix old-style-declaration warning
+Date:   Mon, 22 Mar 2021 22:51:16 +0100
+Message-Id: <20210322215124.1078478-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Mar 22, 2021 at 9:29 PM Ingo Molnar <mingo@kernel.org> wrote:
-> * Arnd Bergmann <arnd@kernel.org> wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-> This is indeed rather ugly - and the other patch that removes a debug
-> check seems counterproductive as well.
->
-> Do we know how many genuine bugs -Wstringop-overread-warning has
-> caught or is about to catch?
->
-> I.e. the real workaround might be to turn off the -Wstringop-overread-warning,
-> until GCC-11 gets fixed?
+The correct order is 'static const', not 'const static', as seen from
+make W=1:
 
-See the [PATCH 0/11] message. The last two patches in the series are for
-code that I suspect may be broken, the others are basically all false positives.
+drivers/net/wireless/intel/iwlwifi/mvm/rfi.c:14:1: error: 'static' is not at beginning of declaration [-Werror=old-style-declaration]
 
-As gcc-11 is not released yet, I don't think we have to apply any of the
-patches or disable the warning at the moment, but I posted all the patches
-to get a better understanding on which of them should be addressed in
-the kernel vs gcc.
+Fixes: 21254908cbe9 ("iwlwifi: mvm: add RFI-M support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-       Arnd
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+index 873919048143..4d5a99cbcc9d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+@@ -11,7 +11,7 @@
+  * DDR needs frequency in units of 16.666MHz, so provide FW with the
+  * frequency values in the adjusted format.
+  */
+-const static struct iwl_rfi_lut_entry iwl_rfi_table[IWL_RFI_LUT_SIZE] = {
++static const struct iwl_rfi_lut_entry iwl_rfi_table[IWL_RFI_LUT_SIZE] = {
+ 	/* LPDDR4 */
+ 
+ 	/* frequency 3733MHz */
+-- 
+2.29.2
+
