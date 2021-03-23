@@ -2,189 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D52633468A7
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Mar 2021 20:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE46734692B
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Mar 2021 20:37:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233267AbhCWTNN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Mar 2021 15:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54232 "EHLO
+        id S230332AbhCWTge (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Mar 2021 15:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233029AbhCWTMo (ORCPT
+        with ESMTP id S230134AbhCWTg0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Mar 2021 15:12:44 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED199C061765
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Mar 2021 12:12:43 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id t71so2485768vst.3
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Mar 2021 12:12:43 -0700 (PDT)
+        Tue, 23 Mar 2021 15:36:26 -0400
+Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728CEC061763
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Mar 2021 12:36:25 -0700 (PDT)
+Received: by mail-qt1-x849.google.com with SMTP id s14so1863969qtw.20
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Mar 2021 12:36:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=NziR4wdTwbPmQRK5YhnnRmXhP9symav7D77le3H4K+M=;
-        b=PMVJrfgoW6IO/eykiWrjsd3M2rhVX4YPMZxActq4wpEAmRKoODLJqZ5eOI8hAd3Ui/
-         kSzrQ3FuaOzZIBiwn4SSeTiH56nva7fJ7jwJArxrKBI9I08bC2iOW/X4AFzNtLAsNXVw
-         fIdYVNCx+ySgZrYUG4o13ipFMssy5VH6uWnpKJyoinFpA+/8heYRsB9WTXd4ONt/Bv7O
-         +LCu9D9LBylKYOceGf33CRSQzA3Vf9iXuF4A9rSuewX9xMRvJ+rKmskixMa6u1701MFN
-         KAZ3CnQdmXTvVit/bpC9d7KazulRxJUeQ0HNNX5bneUJLaxYamCbK0WSNJFdJKmbm+5W
-         bGZQ==
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=56VTN0FUBRnVBARbqzGdkyXYNoI8u6ilkqebe9VyH9c=;
+        b=GUS+CWBcIQkh8I8fr5OKzOYFk+tloF8Q/GWf18p53CrTIht/js1LArNJNrcQ8JkxA2
+         F+Fp58EZl/Ce+EnQwG3oOgP1Wz6JuJyY/qt3LEQFqR2aBelPMOimhS4d6QVSmTM75gyw
+         +DSaAdwFwC8ec4GdBytwn1uygKvHoienPD4LcEnCF6AJ9YqeLQgWncKkLBuEbATBBfDq
+         nXIu73guCAynLC74XYx5iVB6y5nDoU6GIEaQqU9Gvw253sFgMdFnMeg+Jk9XD5srh1Gm
+         qV9si7k0wDds3Z/qnypWd2FFbj1rNb0ok+kK/JWkW0zgm0c207YF8MRhCbTViJJ3nLaP
+         MRgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=NziR4wdTwbPmQRK5YhnnRmXhP9symav7D77le3H4K+M=;
-        b=b6fzzed7UDHwkGHoYUxQDeaaGPNukshoqnPxIWKPFX2IfnPOM6f6N1mfOyMYJp9xMu
-         uU9RwEpRrTze/RgenJ9XDWvp33k28a+YWbo5RS7TK5zCH74SgSFpB1dPAPiumG4ste8j
-         CZUJ0vdSeBXBfu+n90fS6WYKWWTrZpbM5hr6eDPEVB9xOO8xFNV4a9EeRZBUs0748Bnf
-         ciL0+rzZm1lxTooqArwTEoht1ws++iZd92i+AeQbHsDKyhwGI5hC19Mvq2vCNweMw0WX
-         QWOpkUmF5MwCXzx4g/I6CUQngz5kCKvR4pFlurzNnzWNlvQ8KepntZRjr8p26IorvExm
-         Q55A==
-X-Gm-Message-State: AOAM532ZT73aA/gqw8tNlcGC64i8HGCfOko5te+qUkQhwuE5LwgH6MNC
-        bCdTTSUcDDE6jxseKnYfEQZ66dVgMYg8sGnG6kYnZA==
-X-Google-Smtp-Source: ABdhPJzXFydY5TcCz9J1Or2xn4GBkykV9ba3oKyGbccCBa4HxmuOl+Gv/PYBfFODfgfgi/kqTbKgrJDTOyQZhsuqwfY=
-X-Received: by 2002:a67:77c1:: with SMTP id s184mr4758525vsc.55.1616526762989;
- Tue, 23 Mar 2021 12:12:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210315132501.441681-1-Jerome.Pouiller@silabs.com>
- <4503971.bAhddQ8uqO@pc-42> <CAPDyKFoXgV3m-rMKfjqRj91PNjOGaWg6odWG-EGdFKkL+dGWoA@mail.gmail.com>
- <5713463.b6Cmjs1FeV@pc-42>
-In-Reply-To: <5713463.b6Cmjs1FeV@pc-42>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 23 Mar 2021 20:12:06 +0100
-Message-ID: <CAPDyKFrONrUvbVVVF9iy4P17jZ_Fq+1pGMmsqM6C1hOXOWQnBw@mail.gmail.com>
-Subject: Re: [PATCH v5 08/24] wfx: add bus_sdio.c
-To:     =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=56VTN0FUBRnVBARbqzGdkyXYNoI8u6ilkqebe9VyH9c=;
+        b=K8s1qhirGjJJ0awnhSLXtSsRMb5V4vZRggXr8UtPiezrZ1fRBGG0xfaljSDiqiEtHw
+         RHw161/E+4t0ssRfIBrgv9xVKwwmqXF7UFmTPm3ajMghnnA7tkIblflzDod+zyPfpFBZ
+         MYG7Fea4+ePZgqRO+X4BWxMqVfL//2Vuo634kwLt0p3zwb0H+apxuwf03LfrbH7+B7kC
+         YnLKcxqyKMPLkqrVqJc9CgtIas2SFxSJm05kQIngswm61WcMaHaGNaxS3PWMQEz/x9H6
+         AFRsNYnas5PPNyDOW16ep1iUyprQbshitA/Jmp6DQgx5vszEoFcQ9UXwRLZm3L1CJejQ
+         WrFA==
+X-Gm-Message-State: AOAM532DFJ6Wn3+pC5qnKA9hNELQLs2jhxnB3XY4jJaGD98hm0zSKaTq
+        cTlVQWgB0iQwG9svzDjNTKUpSoWuQVw5
+X-Google-Smtp-Source: ABdhPJwISvLmCwG0KFIeJLNbZT26tdkIL0Z/h5xkEggwPo8ZcgN7mlNpSLdcGWggyp+0rX/UMnwFoF3kwIqe
+X-Received: from coin.lon.corp.google.com ([2a00:79e0:d:204:cd66:be0a:5c1f:e5d4])
+ (user=pterjan job=sendgmr) by 2002:a0c:f505:: with SMTP id
+ j5mr6352108qvm.61.1616528184501; Tue, 23 Mar 2021 12:36:24 -0700 (PDT)
+Date:   Tue, 23 Mar 2021 19:36:17 +0000
+Message-Id: <20210323193617.3748164-1-pterjan@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.31.0.291.g576ba9dcdaf-goog
+Subject: [PATCH] rtl8xxxu: Fix device info for RTL8192EU devices
+From:   Pascal Terjan <pterjan@google.com>
+To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Pascal Terjan <pterjan@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 23 Mar 2021 at 18:53, J=C3=A9r=C3=B4me Pouiller
-<jerome.pouiller@silabs.com> wrote:
->
-> On Tuesday 23 March 2021 15:11:56 CET Ulf Hansson wrote:
-> > On Mon, 22 Mar 2021 at 18:14, J=C3=A9r=C3=B4me Pouiller <jerome.pouille=
-r@silabs.com> wrote:
-> > > On Monday 22 March 2021 13:20:35 CET Ulf Hansson wrote:
-> > > > On Mon, 15 Mar 2021 at 14:25, Jerome Pouiller <Jerome.Pouiller@sila=
-bs.com> wrote:
-> > > > >
-> > > > > From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
-> > > > >
-> > > > > Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.=
-com>
-> > > > > ---
-> > > > >  drivers/net/wireless/silabs/wfx/bus_sdio.c | 259 +++++++++++++++=
-++++++
-> > > > >  1 file changed, 259 insertions(+)
-> > > > >  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.c
-> > > >
-> > > > [...]
-> > > >
-> > > > > +static const struct sdio_device_id wfx_sdio_ids[] =3D {
-> > > > > +       { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILAB=
-S_WF200) },
-> > > > > +       { },
-> > > > > +};
-> > > > > +MODULE_DEVICE_TABLE(sdio, wfx_sdio_ids);
-> > > > > +
-> > > > > +struct sdio_driver wfx_sdio_driver =3D {
-> > > > > +       .name =3D "wfx-sdio",
-> > > > > +       .id_table =3D wfx_sdio_ids,
-> > > > > +       .probe =3D wfx_sdio_probe,
-> > > > > +       .remove =3D wfx_sdio_remove,
-> > > > > +       .drv =3D {
-> > > > > +               .owner =3D THIS_MODULE,
-> > > > > +               .of_match_table =3D wfx_sdio_of_match,
-> > > >
-> > > > It's not mandatory to support power management, like system
-> > > > suspend/resume. However, as this looks like this is a driver for an
-> > > > embedded SDIO device, you probably want this.
-> > > >
-> > > > If that is the case, please assign the dev_pm_ops here and implemen=
-t
-> > > > the ->suspend|resume() callbacks.
-> > >
-> > > I have no platform to test suspend/resume, so I have only a
-> > > theoretical understanding of this subject.
-> >
-> > I see.
-> >
-> > >
-> > > I understanding is that with the current implementation, the
-> > > device will be powered off on suspend and then totally reset
-> > > (including reloading of the firmware) on resume. I am wrong?
-> >
-> > You are correct, for a *removable* SDIO card. In this case, the
-> > mmc/sdio core will remove the corresponding SDIO card/device and its
-> > corresponding SDIO func devices at system suspend. It will then be
-> > redetected at system resume (and the SDIO func driver re-probed).
-> >
-> > Although, as this is an embedded SDIO device, per definition it's not
-> > a removable card (MMC_CAP_NONREMOVABLE should be set for the
-> > corresponding mmc host), the SDIO card will stick around and instead
-> > the ->suspend|resume() callback needs to be implemented for the SDIO
-> > func driver.
->
-> If I follow what has been done in other drivers I would write something
-> like:
->
->   static int wfx_sdio_suspend(struct device *dev)
->   {
->           struct sdio_func *func =3D dev_to_sdio_func(dev);
->           struct wfx_sdio_priv *bus =3D sdio_get_drvdata(func);
->
->           config_reg_write_bits(bus->core, CFG_IRQ_ENABLE_DATA, 0);
->           // Necessary to keep device firmware in RAM
->           return sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
+Based on 2001:3319 and 2357:0109 which I used to test the fix and
+0bda:818b and 2357:0108 for which I found efuse dumps online.
 
-This will tell the mmc/sdio core to keep the SDIO card powered on
-during system suspend. Thus, it doesn't need to re-initialize it at
-system resume - and the firmware should not need to be re-programmed.
+== 2357:0109 ==
+=== Before ===
+Vendor: Realtek
+Product: \x03802.11n NI
+Serial:
+=== After ===
+Vendor: Realtek
+Product: 802.11n NIC
+Serial not available.
 
-On the other hand, if you don't plan to support system wakeups, it
-would probably be better to power off the card, to avoid wasting
-energy while the system is suspended. I assume that means you need to
-re-program the firmware as well. Normally, it's these kinds of things
-that need to be managed from a ->resume() callback.
+== 2001:3319 ==
+=== Before ===
+Vendor: Realtek
+Product: Wireless N
+Serial: no USB Adap
+=== After ===
+Vendor: Realtek
+Product: Wireless N Nano USB Adapter
+Serial not available.
 
->   }
->
-> However, why not the implementation below?
->
->   static int wfx_sdio_suspend(struct device *dev)
->   {
->           struct sdio_func *func =3D dev_to_sdio_func(dev);
->
->           wfx_sdio_remove(func);
+Signed-off-by: Pascal Terjan <pterjan@google.com>
+---
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  | 11 ++--
+ .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         | 53 ++++++++++++++++---
+ 2 files changed, 50 insertions(+), 14 deletions(-)
 
-I don't know what wfx_sdio_remove() does, but for sure you would need
-a ->resume() callback to make it possible to restore power/firmware.
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index d6d1be4169e5..acb6b0cd3667 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -853,15 +853,10 @@ struct rtl8192eu_efuse {
+ 	u8 usb_optional_function;
+ 	u8 res9[2];
+ 	u8 mac_addr[ETH_ALEN];		/* 0xd7 */
+-	u8 res10[2];
+-	u8 vendor_name[7];
+-	u8 res11[2];
+-	u8 device_name[0x0b];		/* 0xe8 */
+-	u8 res12[2];
+-	u8 serial[0x0b];		/* 0xf5 */
+-	u8 res13[0x30];
++	u8 device_info[80];
++	u8 res11[3];
+ 	u8 unknown[0x0d];		/* 0x130 */
+-	u8 res14[0xc3];
++	u8 res12[0xc3];
+ };
+ 
+ struct rtl8xxxu_reg8val {
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+index cfe2dfdae928..9c5fad49ed2a 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -554,9 +554,39 @@ rtl8192e_set_tx_power(struct rtl8xxxu_priv *priv, int channel, bool ht40)
+ 	}
+ }
+ 
++static void rtl8192eu_log_device_info(struct rtl8xxxu_priv *priv,
++				      char *record_name,
++				      char **record)
++{
++	/* A record is [ total length | 0x03 | value ] */
++	unsigned char l = (*record)[0];
++
++	/* The whole section seems to be 80 characters so a record should not
++	 * be able to be that large.
++	 */
++	if (l > 80) {
++		dev_warn(&priv->udev->dev,
++			 "invalid record length %d while parsing \"%s\".\n",
++			 l, record_name);
++		return;
++	}
++
++	if (l >= 2) {
++		char value[80];
++
++		memcpy(value, &(*record)[2], l - 2);
++		value[l - 2] = '\0';
++		dev_info(&priv->udev->dev, "%s: %s\n", record_name, value);
++		*record = *record + l;
++	} else {
++		dev_info(&priv->udev->dev, "%s not available.\n", record_name);
++	}
++}
++
+ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
+ {
+ 	struct rtl8192eu_efuse *efuse = &priv->efuse_wifi.efuse8192eu;
++	char *record = efuse->device_info;
+ 	int i;
+ 
+ 	if (efuse->rtl_id != cpu_to_le16(0x8129))
+@@ -604,12 +634,23 @@ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
+ 	priv->has_xtalk = 1;
+ 	priv->xtalk = priv->efuse_wifi.efuse8192eu.xtal_k & 0x3f;
+ 
+-	dev_info(&priv->udev->dev, "Vendor: %.7s\n", efuse->vendor_name);
+-	dev_info(&priv->udev->dev, "Product: %.11s\n", efuse->device_name);
+-	if (memchr_inv(efuse->serial, 0xff, 11))
+-		dev_info(&priv->udev->dev, "Serial: %.11s\n", efuse->serial);
+-	else
+-		dev_info(&priv->udev->dev, "Serial not available.\n");
++	/* device_info section seems to be laid out as records
++	 * [ total length | 0x03 | value ] so:
++	 * - vendor length + 2
++	 * - 0x03
++	 * - vendor string (not null terminated)
++	 * - product length + 2
++	 * - 0x03
++	 * - product string (not null terminated)
++	 * Then there is one or 2 0x00 on all the 4 devices I own or found
++	 * dumped online.
++	 * As previous version of the code handled an optional serial
++	 * string, I now assume there may be a third record if the
++	 * length is not 0.
++	 */
++	rtl8192eu_log_device_info(priv, "Vendor", &record);
++	rtl8192eu_log_device_info(priv, "Product", &record);
++	rtl8192eu_log_device_info(priv, "Serial", &record);
+ 
+ 	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_EFUSE) {
+ 		unsigned char *raw = priv->efuse_wifi.raw;
+-- 
+2.30.2
 
->           return 0;
->   }
->
-> In both cases, I worry to provide these functions without being able to
-> test them.
-
-Alright, let's simply leave this driver without having the PM
-callbacks assigned. I guess we can revisit this at some later point.
-
-The mmc core will log a message about the missing callbacks, in case
-someone tries to execute system suspend/resume when the driver has
-been probed.
-
-Kind regards
-Uffe
