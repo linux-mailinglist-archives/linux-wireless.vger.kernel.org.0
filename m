@@ -2,101 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C278B345B04
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Mar 2021 10:38:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A884345EB1
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Mar 2021 13:58:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbhCWJiO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Mar 2021 05:38:14 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:31016 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbhCWJiE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Mar 2021 05:38:04 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1616492284; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=G+g1Iw4J55JufuntnDdtspIrkfkp6gY0+lxAdFuX1V4=;
- b=gjZukHewjojczFqLNllbDkS/6NodBDnOr56NC9j4Ll0awyMRUcWyQrWWGndVF9ppUxEzfiNj
- 1HjMQMZIzbTa3jO9TPYHVegJwFylInZxhV7tPgKdSSlZQqzy75GdzyeB8yTqkGyJjcP5Va3m
- vTp6pVNikSG6IGvsEMIxWta1uXw=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 6059b6f15d70193f88e07ae0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Mar 2021 09:37:53
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 34DE5C433CA; Tue, 23 Mar 2021 09:37:53 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DB7F2C433C6;
-        Tue, 23 Mar 2021 09:37:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DB7F2C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S231260AbhCWM5s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Mar 2021 08:57:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41446 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231475AbhCWM52 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Mar 2021 08:57:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 79F01619B9;
+        Tue, 23 Mar 2021 12:57:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616504247;
+        bh=KFyvKHQFlrz0ttTR9uhddPSigUqRv7aIt+l1vkmpXBk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KzngoMGoICqflWzvgtnmxdzBD0Ik6qmeV1Q45PSqrJA6jkO921Zxc7XC6RmKlaiN3
+         TuPEyhyZeFH6pAyRnaJF2z4lK/rxYrtvCX5+OvSipM7Vz8n8LpbLC9mxsz0V/GZCnp
+         j+Mc+g2p5CJnnC7/cePlpS3ocrOwuPWpwty3rKbi0vMkfldKx0D7ebgLB4HVe5dFWO
+         4MW4Oy2odfU4BX7f4qM05/ENEJ2HKODbPaY8VJ5VhcTbq+zv7uFALV3I09Dj4rlCMm
+         8yUdJt3zfdUuCHjvShh1F5v+wHjuo4Wjo38tpSvIRMvjWgcHTXQk0pHWjmk2bG19Xb
+         +OCkh9F580gtQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Luciano Coelho <coelho@ti.com>, Arik Nemtsov <arik@wizery.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee.jones@linaro.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] wlcore: fix overlapping snprintf arguments in debugfs
+Date:   Tue, 23 Mar 2021 13:57:14 +0100
+Message-Id: <20210323125723.1961432-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5.12 regression fix] brcmfmac: p2p: Fix recently
- introduced
- deadlock issue
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210313143635.109154-1-hdegoede@redhat.com>
-References: <20210313143635.109154-1-hdegoede@redhat.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        Johannes Berg <johannes.berg@intel.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210323093753.34DE5C433CA@smtp.codeaurora.org>
-Date:   Tue, 23 Mar 2021 09:37:53 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hans de Goede <hdegoede@redhat.com> wrote:
+From: Arnd Bergmann <arnd@arndb.de>
 
-> Commit a05829a7222e ("cfg80211: avoid holding the RTNL when calling the
-> driver") replaced the rtnl_lock parameter passed to various brcmf
-> functions with just lock, because since that commit it is not just
-> about the rtnl_lock but also about the wiphy_lock .
-> 
-> During this search/replace the "if (!rtnl_locked)" check in brcmfmac/p2p.c
-> was accidentally replaced with "if (locked)", dropping the inversion of
-> the check. This causes the code to now call rtnl_lock() while already
-> holding the lock, causing a deadlock.
-> 
-> Add back the "!" to the if-condition to fix this.
-> 
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+gcc complains about undefined behavior in calling snprintf()
+with the same buffer as input and output:
 
-Patch applied to wireless-drivers.git, thanks.
+drivers/net/wireless/ti/wl18xx/debugfs.c: In function 'diversity_num_of_packets_per_ant_read':
+drivers/net/wireless/ti/wl18xx/../wlcore/debugfs.h:86:3: error: 'snprintf' argument 4 overlaps destination object 'buf' [-Werror=restrict]
+   86 |   snprintf(buf, sizeof(buf), "%s[%d] = %d\n",  \
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   87 |     buf, i, stats->sub.name[i]);   \
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/ti/wl18xx/debugfs.c:24:2: note: in expansion of macro 'DEBUGFS_FWSTATS_FILE_ARRAY'
+   24 |  DEBUGFS_FWSTATS_FILE_ARRAY(a, b, c, wl18xx_acx_statistics)
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/ti/wl18xx/debugfs.c:159:1: note: in expansion of macro 'WL18XX_DEBUGFS_FWSTATS_FILE_ARRAY'
+  159 | WL18XX_DEBUGFS_FWSTATS_FILE_ARRAY(diversity, num_of_packets_per_ant,
 
-bd83a2fc05ed brcmfmac: p2p: Fix recently introduced deadlock issue
+There are probably other ways of handling the debugfs file, without
+using on-stack buffers, but a simple workaround here is to remember the
+current position in the buffer and just keep printing in there.
 
+Fixes: bcca1bbdd412 ("wlcore: add debugfs macro to help print fw statistics arrays")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/ti/wlcore/boot.c    | 13 ++++++++-----
+ drivers/net/wireless/ti/wlcore/debugfs.h |  7 ++++---
+ 2 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/wlcore/boot.c b/drivers/net/wireless/ti/wlcore/boot.c
+index e14d88e558f0..85abd0a2d1c9 100644
+--- a/drivers/net/wireless/ti/wlcore/boot.c
++++ b/drivers/net/wireless/ti/wlcore/boot.c
+@@ -72,6 +72,7 @@ static int wlcore_validate_fw_ver(struct wl1271 *wl)
+ 	unsigned int *min_ver = (wl->fw_type == WL12XX_FW_TYPE_MULTI) ?
+ 		wl->min_mr_fw_ver : wl->min_sr_fw_ver;
+ 	char min_fw_str[32] = "";
++	int off = 0;
+ 	int i;
+ 
+ 	/* the chip must be exactly equal */
+@@ -105,13 +106,15 @@ static int wlcore_validate_fw_ver(struct wl1271 *wl)
+ 	return 0;
+ 
+ fail:
+-	for (i = 0; i < NUM_FW_VER; i++)
++	for (i = 0; i < NUM_FW_VER && off < sizeof(min_fw_str); i++)
+ 		if (min_ver[i] == WLCORE_FW_VER_IGNORE)
+-			snprintf(min_fw_str, sizeof(min_fw_str),
+-				  "%s*.", min_fw_str);
++			off += snprintf(min_fw_str + off,
++					sizeof(min_fw_str) - off,
++					"*.");
+ 		else
+-			snprintf(min_fw_str, sizeof(min_fw_str),
+-				  "%s%u.", min_fw_str, min_ver[i]);
++			off += snprintf(min_fw_str + off,
++					sizeof(min_fw_str) - off,
++					"%u.", min_ver[i]);
+ 
+ 	wl1271_error("Your WiFi FW version (%u.%u.%u.%u.%u) is invalid.\n"
+ 		     "Please use at least FW %s\n"
+diff --git a/drivers/net/wireless/ti/wlcore/debugfs.h b/drivers/net/wireless/ti/wlcore/debugfs.h
+index b143293e694f..715edfa5f89f 100644
+--- a/drivers/net/wireless/ti/wlcore/debugfs.h
++++ b/drivers/net/wireless/ti/wlcore/debugfs.h
+@@ -78,13 +78,14 @@ static ssize_t sub## _ ##name## _read(struct file *file,		\
+ 	struct wl1271 *wl = file->private_data;				\
+ 	struct struct_type *stats = wl->stats.fw_stats;			\
+ 	char buf[DEBUGFS_FORMAT_BUFFER_SIZE] = "";			\
++	int pos = 0;							\
+ 	int i;								\
+ 									\
+ 	wl1271_debugfs_update_stats(wl);				\
+ 									\
+-	for (i = 0; i < len; i++)					\
+-		snprintf(buf, sizeof(buf), "%s[%d] = %d\n",		\
+-			 buf, i, stats->sub.name[i]);			\
++	for (i = 0; i < len && pos < sizeof(buf); i++)			\
++		pos += snprintf(buf + pos, sizeof(buf),			\
++			 "[%d] = %d\n", i, stats->sub.name[i]);		\
+ 									\
+ 	return wl1271_format_buffer(userbuf, count, ppos, "%s", buf);	\
+ }									\
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210313143635.109154-1-hdegoede@redhat.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.29.2
 
