@@ -2,110 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9BE3455DD
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Mar 2021 04:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A62BF3456E7
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Mar 2021 05:38:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbhCWDBh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Mar 2021 23:01:37 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:46352 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229545AbhCWDBc (ORCPT
+        id S229574AbhCWEhv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Mar 2021 00:37:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34208 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229464AbhCWEhQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Mar 2021 23:01:32 -0400
-Received: from [192.168.254.6] (unknown [50.34.172.155])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 1A1BB13C2B4;
-        Mon, 22 Mar 2021 20:01:26 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1A1BB13C2B4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1616468487;
-        bh=rQIz9Srsbox3KK9ITKyPEVOOf772HvkSawM6/pJCdiI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=PgLrrxDwb6/rrdkZpHooO/DJHyiKBUD10HUxwKQW+Zfr6JxuUtbr1EEmZscxShfD2
-         vTzeKS0R6Bbu4keJr0Sv/b1l80xRuO1ulLXGvlUw5VKB9nRZpugvys2jenD7RkKsbf
-         TnZeoQXOAIkiSdFdarsp02lGDrE3KL4KenmiBaYY=
-Subject: Re: [RFC 2/7] ath10k: Add support to process rx packet in thread
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Rakesh Pillai <pillair@codeaurora.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Doug Anderson <dianders@chromium.org>,
-        Evan Green <evgreen@chromium.org>
-References: <1595351666-28193-1-git-send-email-pillair@codeaurora.org>
- <1595351666-28193-3-git-send-email-pillair@codeaurora.org>
- <13573549c277b34d4c87c471ff1a7060@codeaurora.org>
- <d79ae05e-e75a-de2f-f2e3-bc73637e1501@nbd.name>
- <04d7301d5ad7555a0377c7df530ad8522fc00f77.camel@sipsolutions.net>
- <1f2726ff-8ba9-5278-0ec6-b80be475ea98@nbd.name>
- <06a4f84b-a0d4-3f90-40bb-f02f365460ec@candelatech.com>
- <CA+ASDXOotYHmtqOvSwBES6_95bnbAbEu6F7gQ5TjacJWUKdaPw@mail.gmail.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <47d8be60-14ce-0223-bdf3-c34dc2451945@candelatech.com>
-Date:   Mon, 22 Mar 2021 20:01:25 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        Tue, 23 Mar 2021 00:37:16 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86FBFC061574;
+        Mon, 22 Mar 2021 21:37:16 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id t16so9837801qvr.12;
+        Mon, 22 Mar 2021 21:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eUZjvbWhG8mpAJ9oWPfDqQmrZ+U1xI4KjNvkjd4vAQ8=;
+        b=LjdCpKKQcTWep3Uudz5wlBa4XTvLfZ99MIgawJQyuE3xD8KrfRmvaVMfwmiNlrQenB
+         7j9rvPpNAQPrLiCuwJUqwfN3dU5V7qNt2YW0MJqYZyIDlyEo+Nm4xGKKszbjsTRqUhQ7
+         3YIMZvI9nHlCrRo/2H4IvdCyhu8Kj8ckJIqkoPVDlGYTZp/PxzR3ykXB6NDTSQfYylfS
+         P+TFubmv9memx5a7kTxk365NOxpl2fGn0XVHADzY5x+1NgnuD06GWLnkyH5aKC5sdjzH
+         kv7Q3kpIuCTV+n0E4IKFLv3SGcWPFGRKq5UQvV9nZ/VKHdE1SMHkF0AVQZ+4/3BKe4K8
+         wYmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eUZjvbWhG8mpAJ9oWPfDqQmrZ+U1xI4KjNvkjd4vAQ8=;
+        b=gIDsorxrBq0BEMOuzBytX68CAg0j3p6gPfCtG6Zcm6U/XQp1nUS5rH2NGDxHrWW4O+
+         hqVzWYgGawjw6ZPh2xI09JTPLS/m5PSG94+1BtcGI4BfJYshevaArXtL6MZ42mwkMXwL
+         4uZAVie1u8IvTlery1QbkMBfbpvnD2iVvzC31ozMSOtkjTQirVAv/+RvlnsO/hG7X+/K
+         QCEsIRu0y+g/z3ooRu0FtdcJSwh0zlkzCmW/+GdePmefhA/U8AD+nJvZViQQ/DOALNA3
+         /AvJ1IHeG9XBroc8C9vzK0bBnHgVikPXpAMnaLam9HhSRJG5wb/slaT8cI5pjlPKNUNR
+         hXHQ==
+X-Gm-Message-State: AOAM532QuLViheX1/Y5iMoyMOC2CaocJVkP5KLqnQFHSS1yvaBI0gvzw
+        VC5g+YCcI9Eo+MLMj4tx/q4=
+X-Google-Smtp-Source: ABdhPJzpn/qLE7mquJkm8VyguR63pGY+0OA+1ULU+mdB5ZlBroS9tRh9kZb3B44sjkBcdw4ZujIyxQ==
+X-Received: by 2002:ad4:584d:: with SMTP id de13mr3046957qvb.17.1616474235825;
+        Mon, 22 Mar 2021 21:37:15 -0700 (PDT)
+Received: from localhost.localdomain ([156.146.54.208])
+        by smtp.gmail.com with ESMTPSA id b1sm12790054qkk.117.2021.03.22.21.37.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Mar 2021 21:37:15 -0700 (PDT)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
+        wright.feng@infineon.com, chung-hsien.hsu@infineon.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        unixbhaskar@gmail.com, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org
+Subject: [PATCH] brcmfmac: A typo fix
+Date:   Tue, 23 Mar 2021 10:06:57 +0530
+Message-Id: <20210323043657.1466296-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-In-Reply-To: <CA+ASDXOotYHmtqOvSwBES6_95bnbAbEu6F7gQ5TjacJWUKdaPw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/22/21 6:20 PM, Brian Norris wrote:
-> On Mon, Mar 22, 2021 at 4:58 PM Ben Greear <greearb@candelatech.com> wrote:
->> On 7/22/20 6:00 AM, Felix Fietkau wrote:
->>> On 2020-07-22 14:55, Johannes Berg wrote:
->>>> On Wed, 2020-07-22 at 14:27 +0200, Felix Fietkau wrote:
->>>>
->>>>> I'm considering testing a different approach (with mt76 initially):
->>>>> - Add a mac80211 rx function that puts processed skbs into a list
->>>>> instead of handing them to the network stack directly.
->>>>
->>>> Would this be *after* all the mac80211 processing, i.e. in place of the
->>>> rx-up-to-stack?
->>> Yes, it would run all the rx handlers normally and then put the
->>> resulting skbs into a list instead of calling netif_receive_skb or
->>> napi_gro_frags.
->>
->> Whatever came of this?  I realized I'm running Felix's patch since his mt76
->> driver needs it.  Any chance it will go upstream?
-> 
-> If you're asking about $subject (moving NAPI/RX to a thread), this
-> landed upstream recently:
-> http://git.kernel.org/linus/adbb4fb028452b1b0488a1a7b66ab856cdf20715
-> 
-> It needs a bit of coaxing to work on a WiFi driver (including: WiFi
-> drivers tend to have a different netdev for NAPI than they expose to
-> /sys/class/net/), but it's there.
-> 
-> I'm not sure if people had something else in mind in the stuff you're
-> quoting though.
 
-No, I got it confused with something Felix did:
+s/revsion/revision/
 
-https://github.com/greearb/mt76/blob/master/patches/0001-net-add-support-for-threaded-NAPI-polling.patch
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Maybe the NAPI/RX to a thread thing superceded Felix's patch?
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.h
+index ee273e3bb101..e000ef78928c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.h
+@@ -28,7 +28,7 @@ struct brcmf_usbdev {
+ 	int ntxq, nrxq, rxsize;
+ 	u32 bus_mtu;
+ 	int devid;
+-	int chiprev; /* chip revsion number */
++	int chiprev; /* chip revision number */
+ };
 
-Thanks,
-Ben
+ /* IO Request Block (IRB) */
+--
+2.31.0
 
-> 
-> Brian
-> 
-
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
