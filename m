@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E12345B01
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Mar 2021 10:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C278B345B04
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Mar 2021 10:38:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230187AbhCWJhL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Mar 2021 05:37:11 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:28444 "EHLO
+        id S229448AbhCWJiO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Mar 2021 05:38:14 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:31016 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230125AbhCWJg4 (ORCPT
+        with ESMTP id S229504AbhCWJiE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Mar 2021 05:36:56 -0400
+        Tue, 23 Mar 2021 05:38:04 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1616492216; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1616492284; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=dCdviXRjazHmRpoHm/NuapDWhm6l+3gwwKSyHdiffnE=;
- b=QyLPst4G8igsiSd6Ye6be9+DFbX+EriDlyjJGBDyoOtlVxUd13bmrtWUQTR69LMom+Ke2gmW
- 2nksnSATdkgehCHZx6ec15JnDfN4UvQvzzfsHHdljC/laJywNrT4PVzqFpHgVaPWFOwCQ84x
- nfm1UhiecrYbFjV1qD/4JszA6Po=
+ Content-Type: Sender; bh=G+g1Iw4J55JufuntnDdtspIrkfkp6gY0+lxAdFuX1V4=;
+ b=gjZukHewjojczFqLNllbDkS/6NodBDnOr56NC9j4Ll0awyMRUcWyQrWWGndVF9ppUxEzfiNj
+ 1HjMQMZIzbTa3jO9TPYHVegJwFylInZxhV7tPgKdSSlZQqzy75GdzyeB8yTqkGyJjcP5Va3m
+ vTp6pVNikSG6IGvsEMIxWta1uXw=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 6059b69fc32ceb3a91c03b6f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Mar 2021 09:36:31
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 6059b6f15d70193f88e07ae0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Mar 2021 09:37:53
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 333FBC433ED; Tue, 23 Mar 2021 09:36:31 +0000 (UTC)
+        id 34DE5C433CA; Tue, 23 Mar 2021 09:37:53 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,44 +40,63 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F10EDC433CA;
-        Tue, 23 Mar 2021 09:36:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F10EDC433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DB7F2C433C6;
+        Tue, 23 Mar 2021 09:37:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DB7F2C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless-drivers] mt76: mt7921: fix airtime reporting
+Subject: Re: [PATCH 5.12 regression fix] brcmfmac: p2p: Fix recently
+ introduced
+ deadlock issue
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <c05333be0e3e85a50a71bb2de81034fe425e3701.1615284335.git.lorenzo@kernel.org>
-References: <c05333be0e3e85a50a71bb2de81034fe425e3701.1615284335.git.lorenzo@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        nbd@nbd.name, sean.wang@mediatek.com, leon.yen@mediatek.com
+In-Reply-To: <20210313143635.109154-1-hdegoede@redhat.com>
+References: <20210313143635.109154-1-hdegoede@redhat.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com,
+        Johannes Berg <johannes.berg@intel.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210323093631.333FBC433ED@smtp.codeaurora.org>
-Date:   Tue, 23 Mar 2021 09:36:31 +0000 (UTC)
+Message-Id: <20210323093753.34DE5C433CA@smtp.codeaurora.org>
+Date:   Tue, 23 Mar 2021 09:37:53 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-> Fix {tx,rx}_airtime reporting for mt7921 driver. Wrong register definitions
-> trigger a tx hangs before resetting airtime stats.
+> Commit a05829a7222e ("cfg80211: avoid holding the RTNL when calling the
+> driver") replaced the rtnl_lock parameter passed to various brcmf
+> functions with just lock, because since that commit it is not just
+> about the rtnl_lock but also about the wiphy_lock .
 > 
-> Fixes: 163f4d22c118d ("mt76: mt7921: add MAC support")
-> Tested-by: Leon Yen <leon.yen@mediatek.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Acked-by: Felix Fietkau <nbd@nbd.name>
+> During this search/replace the "if (!rtnl_locked)" check in brcmfmac/p2p.c
+> was accidentally replaced with "if (locked)", dropping the inversion of
+> the check. This causes the code to now call rtnl_lock() while already
+> holding the lock, causing a deadlock.
+> 
+> Add back the "!" to the if-condition to fix this.
+> 
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
 Patch applied to wireless-drivers.git, thanks.
 
-8f6a70fd71a3 mt76: mt7921: fix airtime reporting
+bd83a2fc05ed brcmfmac: p2p: Fix recently introduced deadlock issue
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/c05333be0e3e85a50a71bb2de81034fe425e3701.1615284335.git.lorenzo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210313143635.109154-1-hdegoede@redhat.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
