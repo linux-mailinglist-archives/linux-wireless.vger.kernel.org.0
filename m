@@ -2,107 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BCA347FC2
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 18:48:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE611348029
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 19:15:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237266AbhCXRsF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Mar 2021 13:48:05 -0400
-Received: from mail-il1-f169.google.com ([209.85.166.169]:37880 "EHLO
-        mail-il1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237051AbhCXRrm (ORCPT
+        id S237324AbhCXSPC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Mar 2021 14:15:02 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:41034 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237297AbhCXSOr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Mar 2021 13:47:42 -0400
-Received: by mail-il1-f169.google.com with SMTP id z9so22140620ilb.4;
-        Wed, 24 Mar 2021 10:47:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=6sFpKFDAR45P8qdi3OXzURHMKJVWv82SmLUCIRQWPIM=;
-        b=tEUSalxjzLbJRqlkvRF/242P0N4t1rAcOV2uussJQGKuj1xX4JGERmuVPtva3qvWFv
-         KX3u6D6xnXW2dGY+SMNgbTT0N1pPoNtp0NvJhhg/wyNe38yVYSsA5q2ijQO0Zhs0uBm6
-         //gwe4syjZf1TJY8tHXNswJxS+se2RlUT3KVUrNmklFwo6rmjDmSOfiIcH76Pvlb/inE
-         JytSJOLhihD4qhQqmDGQW6BcDvH06tg2+yV21h6ZxzCUozcbywaWf0fCYALssCVY/SKY
-         L7nuNYet57NZZibiX0eV9aAN+5UmKKe6M4kW+eA0FC4WUJkjbYqjRPQ8znd+/HP0SPf8
-         Ig9A==
-X-Gm-Message-State: AOAM531dQ6lP35OWvGyschT9ipX+BHo3r+cgORY7neymIHFWJtoXUjEG
-        /GeCIkzVw768LXIASXfnlw==
-X-Google-Smtp-Source: ABdhPJyqrL3BcB/i265I4XT5qqsYGCd20UIfjpbAzrPNcmR+MMZccTtSqfNzzFe8IkqMWqfZzrbLyA==
-X-Received: by 2002:a05:6e02:1a68:: with SMTP id w8mr3731496ilv.129.1616608062252;
-        Wed, 24 Mar 2021 10:47:42 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id c18sm1429263ild.37.2021.03.24.10.47.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Mar 2021 10:47:40 -0700 (PDT)
-Received: (nullmailer pid 3319752 invoked by uid 1000);
-        Wed, 24 Mar 2021 17:47:37 -0000
-Date:   Wed, 24 Mar 2021 11:47:37 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Wright Feng <wright.feng@infineon.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Julian Calaby <julian.calaby@gmail.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Arend van Spriel <aspriel@gmail.com>,
-        devicetree@vger.kernel.org,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        Franky Lin <franky.lin@broadcom.com>
-Subject: Re: [PATCH v2] dt-bindings: Convert the BCM4329 bindings to YAML and
- extend
-Message-ID: <20210324174737.GA3319687@robh.at.kernel.org>
-References: <20210315105911.138553-1-linus.walleij@linaro.org>
+        Wed, 24 Mar 2021 14:14:47 -0400
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 0D2BD13C2B3;
+        Wed, 24 Mar 2021 11:14:46 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0D2BD13C2B3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1616609687;
+        bh=7xYNXoy1X5a0IYrGYAkYDEcWlSesYUujs0cRAS2jiyI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oAIBmnxOBFFmf1n4zAaRdCinnU+4NOVpfCzAmvIN6hYqnHHw3cKjmBzYB1HZ6xdne
+         eLYki8Ya4/SJEjBTXZ9CJTze748sqJmC30s8FOemVJ3i+jVAKacA7T3fs6lgkCtJGR
+         RlAi1NfCFX9uTjlVw+psw9duchZ2UEml8QgTWhMI=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH-v2 1/6] mac80211:  Fix station rx-packets counters.
+Date:   Wed, 24 Mar 2021 11:14:36 -0700
+Message-Id: <20210324181441.13755-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210315105911.138553-1-linus.walleij@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 15 Mar 2021 11:59:11 +0100, Linus Walleij wrote:
-> This converts the BCM4329 family bindings to YAML schema, and
-> extends and fixes the bindings like this:
-> 
-> - Name the bindings after the first chip (BCM4329) since
->   wildcards like 43xx are nowadays frowned upon by the DT
->   binding reviewers. We call this the "BCM4329 family"
-> - Add compatible strings for all the variants that seem to
->   exist in the wild. (Derived from firmware listings.)
-> - Support specific-to-generic compatible strings (as already
->   in use in DTS files).
-> - Add required reg property (SDIO function number)
-> - Add reset-gpios property (some systems wire this to a GPIO
->   line).
-> - I have only listed Arend as maintainer for now, volunteers
->   can be added.
-> 
-> Cc: Arend van Spriel <aspriel@gmail.com>
-> Cc: Franky Lin <franky.lin@broadcom.com>
-> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-> Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
-> Cc: Wright Feng <wright.feng@infineon.com>
-> Cc: Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-> Cc: Julian Calaby <julian.calaby@gmail.com>
-> Cc: brcm80211-dev-list.pdl@broadcom.com
-> Cc: SHA-cyfmac-dev-list@infineon.com
-> Cc: linux-mmc@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> ChangeLog v1->v2:
-> - Specify specific-to-generic compatible strings such as
->   "brcm,bcm4334-fmac", "brcm,bcm4329-fmac"
-> - Also allow just "brcm,bcm4329-fmac" for legacy platforms.
-> - Use this scheme in the example.
-> ---
->  .../net/wireless/brcm,bcm4329-fmac.yaml       | 101 ++++++++++++++++++
->  .../net/wireless/brcm,bcm43xx-fmac.txt        |  38 -------
->  2 files changed, 101 insertions(+), 38 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
->  delete mode 100644 Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
-> 
+From: Ben Greear <greearb@candelatech.com>
 
-Applied, thanks!
+I noticed 'iw dev wlan6 station dump' showed almost no rx-packets
+one one of my radios.  The rx-amsdu path did not appear to gather
+any stats, and after code inspection, neither did the rx-data
+handler.
+
+Add common method to deal with these stats.  Verified in AX
+and /a mode, stats look at least generally correct now.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ net/mac80211/rx.c | 54 ++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 17 deletions(-)
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index eb8225209005..4a64c2183a27 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -1713,6 +1713,27 @@ ieee80211_rx_h_uapsd_and_pspoll(struct ieee80211_rx_data *rx)
+ 	return RX_CONTINUE;
+ }
+ 
++static void ieee80211_update_data_rx_stats(struct ieee80211_rx_data *rx,
++					   struct ieee80211_sta_rx_stats *stats,
++					   struct ieee80211_rx_status *status,
++					   int skb_len)
++{
++	stats->fragments++;
++	stats->packets++;
++	stats->last_rx = jiffies;
++	stats->last_rate = sta_stats_encode_rate(status);
++
++	/* The seqno index has the same property as needed
++	 * for the rx_msdu field, i.e. it is IEEE80211_NUM_TIDS
++	 * for non-QoS-data frames. Here we know it's a data
++	 * frame, so count MSDUs.
++	 */
++	u64_stats_update_begin(&stats->syncp);
++	stats->msdu[rx->seqno_idx]++;
++	stats->bytes += skb_len;
++	u64_stats_update_end(&stats->syncp);
++}
++
+ static ieee80211_rx_result debug_noinline
+ ieee80211_rx_h_sta_process(struct ieee80211_rx_data *rx)
+ {
+@@ -2706,6 +2727,8 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	__le16 fc = hdr->frame_control;
++	ieee80211_rx_result rv;
++	int orig_len = skb->len;
+ 
+ 	if (!(status->rx_flags & IEEE80211_RX_AMSDU))
+ 		return RX_CONTINUE;
+@@ -2734,7 +2757,12 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
+ 	if (is_multicast_ether_addr(hdr->addr1))
+ 		return RX_DROP_UNUSABLE;
+ 
+-	return __ieee80211_rx_h_amsdu(rx, 0);
++	rv = __ieee80211_rx_h_amsdu(rx, 0);
++	if ((rv == RX_QUEUED) && (rx->sta)) {
++		struct ieee80211_sta_rx_stats *stats = &rx->sta->rx_stats;
++		ieee80211_update_data_rx_stats(rx, stats, status, orig_len);
++	}
++	return rv;
+ }
+ 
+ #ifdef CONFIG_MAC80211_MESH
+@@ -2958,6 +2986,13 @@ ieee80211_rx_h_data(struct ieee80211_rx_data *rx)
+ 		mod_timer(&local->dynamic_ps_timer, jiffies +
+ 			  msecs_to_jiffies(local->hw.conf.dynamic_ps_timeout));
+ 
++	
++	if (rx->sta) {
++		struct ieee80211_sta_rx_stats *stats = &rx->sta->rx_stats;
++		struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(rx->skb);
++		ieee80211_update_data_rx_stats(rx, stats, status, rx->skb->len);
++	}
++
+ 	ieee80211_deliver_skb(rx);
+ 
+ 	return RX_QUEUED;
+@@ -4400,12 +4435,6 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
+ 		return true;
+ 	}
+ 
+-	stats->last_rx = jiffies;
+-	stats->last_rate = sta_stats_encode_rate(status);
+-
+-	stats->fragments++;
+-	stats->packets++;
+-
+ 	/* do the header conversion - first grab the addresses */
+ 	ether_addr_copy(addrs.da, skb->data + fast_rx->da_offs);
+ 	ether_addr_copy(addrs.sa, skb->data + fast_rx->sa_offs);
+@@ -4416,18 +4445,9 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
+ 
+ 	skb->dev = fast_rx->dev;
+ 
++	ieee80211_update_data_rx_stats(rx, stats, status, orig_len);
+ 	dev_sw_netstats_rx_add(fast_rx->dev, skb->len);
+ 
+-	/* The seqno index has the same property as needed
+-	 * for the rx_msdu field, i.e. it is IEEE80211_NUM_TIDS
+-	 * for non-QoS-data frames. Here we know it's a data
+-	 * frame, so count MSDUs.
+-	 */
+-	u64_stats_update_begin(&stats->syncp);
+-	stats->msdu[rx->seqno_idx]++;
+-	stats->bytes += orig_len;
+-	u64_stats_update_end(&stats->syncp);
+-
+ 	if (fast_rx->internal_forward) {
+ 		struct sk_buff *xmit_skb = NULL;
+ 		if (is_multicast_ether_addr(addrs.da)) {
+-- 
+2.20.1
+
