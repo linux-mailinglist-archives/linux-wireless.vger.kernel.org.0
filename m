@@ -2,34 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE611348029
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 19:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE01734802E
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 19:15:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237324AbhCXSPC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Mar 2021 14:15:02 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:41034 "EHLO
+        id S237474AbhCXSPH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Mar 2021 14:15:07 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:41036 "EHLO
         mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237297AbhCXSOr (ORCPT
+        with ESMTP id S237457AbhCXSOr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 24 Mar 2021 14:14:47 -0400
 Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 0D2BD13C2B3;
-        Wed, 24 Mar 2021 11:14:46 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0D2BD13C2B3
+        by mail3.candelatech.com (Postfix) with ESMTP id 40F3B13C2B4;
+        Wed, 24 Mar 2021 11:14:47 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 40F3B13C2B4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
         s=default; t=1616609687;
-        bh=7xYNXoy1X5a0IYrGYAkYDEcWlSesYUujs0cRAS2jiyI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=oAIBmnxOBFFmf1n4zAaRdCinnU+4NOVpfCzAmvIN6hYqnHHw3cKjmBzYB1HZ6xdne
-         eLYki8Ya4/SJEjBTXZ9CJTze748sqJmC30s8FOemVJ3i+jVAKacA7T3fs6lgkCtJGR
-         RlAi1NfCFX9uTjlVw+psw9duchZ2UEml8QgTWhMI=
+        bh=H9/92mFXqYzGrgud6h8bpb3j19l3NYziPihWMRS93C0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=F+KE2NVVGNTuMlP8zbOUAsaI+vBqa8i9pmPtpxzy1VVO9QTVpoqPonKjHMM6pJSEx
+         hstO0OnUGBOSWQau4+uRvWzwq3CTg3IlBPQCsg5cOZT0uhxD/02676ITvhjS8uYsmH
+         vj9L1ybnuBVmXkAYhB3CXRGlkzbCZXt0lI9nxOoU=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH-v2 1/6] mac80211:  Fix station rx-packets counters.
-Date:   Wed, 24 Mar 2021 11:14:36 -0700
-Message-Id: <20210324181441.13755-1-greearb@candelatech.com>
+Subject: [PATCH-v2 2/6] mac80211:  Provide per-station stats in debugfs
+Date:   Wed, 24 Mar 2021 11:14:37 -0700
+Message-Id: <20210324181441.13755-2-greearb@candelatech.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210324181441.13755-1-greearb@candelatech.com>
+References: <20210324181441.13755-1-greearb@candelatech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -38,121 +40,187 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-I noticed 'iw dev wlan6 station dump' showed almost no rx-packets
-one one of my radios.  The rx-amsdu path did not appear to gather
-any stats, and after code inspection, neither did the rx-data
-handler.
+Including per tid and per acs stats.
 
-Add common method to deal with these stats.  Verified in AX
-and /a mode, stats look at least generally correct now.
+Nice for those who like to peer deep into the guts of a system.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- net/mac80211/rx.c | 54 ++++++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 17 deletions(-)
+ net/mac80211/debugfs_sta.c | 88 ++++++++++++++++++++++++++++++++++++++
+ net/mac80211/sta_info.c    | 33 ++++++++++++++
+ net/mac80211/sta_info.h    |  4 ++
+ 3 files changed, 125 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index eb8225209005..4a64c2183a27 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1713,6 +1713,27 @@ ieee80211_rx_h_uapsd_and_pspoll(struct ieee80211_rx_data *rx)
- 	return RX_CONTINUE;
+diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
+index 1deacce85177..374db61527a9 100644
+--- a/net/mac80211/debugfs_sta.c
++++ b/net/mac80211/debugfs_sta.c
+@@ -102,6 +102,93 @@ static ssize_t sta_flags_read(struct file *file, char __user *userbuf,
+ }
+ STA_OPS(flags);
+ 
++static ssize_t sta_stats_read(struct file *file, char __user *userbuf,
++			      size_t count, loff_t *ppos)
++{
++	struct sta_info *sta = file->private_data;
++	unsigned int len = 0;
++	const int buf_len = 8000;
++	char *buf = kzalloc(buf_len, GFP_KERNEL);
++	unsigned long sum;
++	char tmp[60];
++	int i;
++	struct ieee80211_sta_rx_stats rx_stats = {0};
++
++	if (!buf)
++		return -ENOMEM;
++
++	sta_accum_rx_stats(sta, &rx_stats);
++
++#define PRINT_MY_STATS(a, b) do {					\
++		len += scnprintf(buf + len, buf_len - len, "%30s %18lu\n", a, (unsigned long)(b)); \
++		if (len >= buf_len) {					\
++			goto done;					\
++		}							\
++	} while (0)
++
++#define PRINT_MY_STATS_S(a, b) do {					\
++		len += scnprintf(buf + len, buf_len - len, "%30s %18ld\n", a, (long)(b)); \
++		if (len >= buf_len) {					\
++			goto done;					\
++		}							\
++	} while (0)
++
++	PRINT_MY_STATS("rx-packets", rx_stats.packets);
++	PRINT_MY_STATS("rx-bytes", rx_stats.bytes);
++	PRINT_MY_STATS("rx-dup", rx_stats.num_duplicates);
++	PRINT_MY_STATS("rx-fragments", rx_stats.fragments);
++	PRINT_MY_STATS("rx-dropped", rx_stats.dropped);
++	PRINT_MY_STATS_S("rx-last-signal", rx_stats.last_signal);
++
++	for (i = 0; i<IEEE80211_MAX_CHAINS; i++) {
++		if (rx_stats.chains & (1<<i)) {
++			sprintf(tmp, "rx-last-signal-chain[%i]", i);
++			PRINT_MY_STATS_S(tmp, rx_stats.chain_signal_last[i]);
++		}
++	}
++	PRINT_MY_STATS("rx-last-rate-encoded", rx_stats.last_rate);
++
++	len += scnprintf(buf + len, buf_len - len, "\n");
++
++	sum = sta->tx_stats.packets[0] + sta->tx_stats.packets[1]
++		+ sta->tx_stats.packets[2] + sta->tx_stats.packets[3];
++	PRINT_MY_STATS("tx-packets", sum);
++
++		sum = sta->tx_stats.bytes[0] + sta->tx_stats.bytes[1]
++		+ sta->tx_stats.bytes[2] + sta->tx_stats.bytes[3];
++	PRINT_MY_STATS("tx-bytes", sum);
++
++	/* per txq stats */
++	PRINT_MY_STATS("tx-packets-acs[VO]", sta->tx_stats.packets[IEEE80211_AC_VO]);
++	PRINT_MY_STATS("tx-packets-acs[VI]", sta->tx_stats.packets[IEEE80211_AC_VI]);
++	PRINT_MY_STATS("tx-packets-acs[BE]", sta->tx_stats.packets[IEEE80211_AC_BE]);
++	PRINT_MY_STATS("tx-packets-acs[BK]", sta->tx_stats.packets[IEEE80211_AC_BK]);
++
++	PRINT_MY_STATS("tx-bytes-acs[VO]", sta->tx_stats.bytes[IEEE80211_AC_VO]);
++	PRINT_MY_STATS("tx-bytes-acs[VI]", sta->tx_stats.bytes[IEEE80211_AC_VI]);
++	PRINT_MY_STATS("tx-bytes-acs[BE]", sta->tx_stats.bytes[IEEE80211_AC_BE]);
++	PRINT_MY_STATS("tx-bytes-acs[BK]", sta->tx_stats.bytes[IEEE80211_AC_BK]);
++
++	len += scnprintf(buf + len, buf_len - len, "\n");
++	for (i = 0; i<=IEEE80211_NUM_TIDS; i++) {
++		sprintf(tmp, "tx-msdu-tid[%2i]", i);
++		PRINT_MY_STATS(tmp, sta->tx_stats.msdu[i]);
++	}
++
++	len += scnprintf(buf + len, buf_len - len, "\n");
++	for (i = 0; i<=IEEE80211_NUM_TIDS; i++) {
++		sprintf(tmp, "rx-msdu-tid[%2i]", i);
++		PRINT_MY_STATS(tmp, rx_stats.msdu[i]);
++	}
++
++#undef PRINT_MY_STATS
++done:
++	i = simple_read_from_buffer(userbuf, count, ppos, buf, strlen(buf));
++	kfree(buf);
++	return i;
++}
++STA_OPS(stats);
++
+ static ssize_t sta_num_ps_buf_frames_read(struct file *file,
+ 					  char __user *userbuf,
+ 					  size_t count, loff_t *ppos)
+@@ -1073,6 +1160,7 @@ void ieee80211_sta_debugfs_add(struct sta_info *sta)
+ 	sta->debugfs_dir = debugfs_create_dir(mac, stations_dir);
+ 
+ 	DEBUGFS_ADD(flags);
++	DEBUGFS_ADD(stats);
+ 	DEBUGFS_ADD(aid);
+ 	DEBUGFS_ADD(num_ps_buf_frames);
+ 	DEBUGFS_ADD(last_seq_ctrl);
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index b096370b45b1..aa95db547465 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2650,6 +2650,39 @@ static void sta_update_codel_params(struct sta_info *sta, u32 thr)
+ 	}
  }
  
-+static void ieee80211_update_data_rx_stats(struct ieee80211_rx_data *rx,
-+					   struct ieee80211_sta_rx_stats *stats,
-+					   struct ieee80211_rx_status *status,
-+					   int skb_len)
++void sta_accum_rx_stats(struct sta_info *sta,
++			struct ieee80211_sta_rx_stats *rx_stats)
 +{
-+	stats->fragments++;
-+	stats->packets++;
-+	stats->last_rx = jiffies;
-+	stats->last_rate = sta_stats_encode_rate(status);
++	int cpu;
++	int i;
 +
-+	/* The seqno index has the same property as needed
-+	 * for the rx_msdu field, i.e. it is IEEE80211_NUM_TIDS
-+	 * for non-QoS-data frames. Here we know it's a data
-+	 * frame, so count MSDUs.
-+	 */
-+	u64_stats_update_begin(&stats->syncp);
-+	stats->msdu[rx->seqno_idx]++;
-+	stats->bytes += skb_len;
-+	u64_stats_update_end(&stats->syncp);
++	memcpy(rx_stats, &sta->rx_stats, sizeof(*rx_stats));
++
++	if (!sta->pcpu_rx_stats)
++		return;
++
++	for_each_possible_cpu(cpu) {
++		struct ieee80211_sta_rx_stats *cpurxs;
++
++		cpurxs = per_cpu_ptr(sta->pcpu_rx_stats, cpu);
++		rx_stats->packets += cpurxs->packets;
++		if (time_after(cpurxs->last_rx, rx_stats->last_rx)) {
++			rx_stats->last_rx = cpurxs->last_rx;
++			rx_stats->last_signal = cpurxs->last_signal;
++			for (i = 0; i<IEEE80211_MAX_CHAINS; i++)
++				rx_stats->chain_signal_last[i] = cpurxs->chain_signal_last[i];
++			rx_stats->last_rate = cpurxs->last_rate;
++		}
++		rx_stats->num_duplicates += cpurxs->num_duplicates;
++		rx_stats->fragments += cpurxs->fragments;
++		rx_stats->dropped += cpurxs->dropped;
++		rx_stats->bytes += sta_get_stats_bytes(cpurxs);
++		for (i = 0; i<=IEEE80211_NUM_TIDS; i++) {
++			rx_stats->msdu[i] += sta_get_tidstats_msdu(cpurxs, i);
++		}
++	}
 +}
 +
- static ieee80211_rx_result debug_noinline
- ieee80211_rx_h_sta_process(struct ieee80211_rx_data *rx)
+ void ieee80211_sta_set_expected_throughput(struct ieee80211_sta *pubsta,
+ 					   u32 thr)
  {
-@@ -2706,6 +2727,8 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	__le16 fc = hdr->frame_control;
-+	ieee80211_rx_result rv;
-+	int orig_len = skb->len;
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 897b4d12103e..a6b13d749ffa 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -422,6 +422,7 @@ struct mesh_sta {
  
- 	if (!(status->rx_flags & IEEE80211_RX_AMSDU))
- 		return RX_CONTINUE;
-@@ -2734,7 +2757,12 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
- 	if (is_multicast_ether_addr(hdr->addr1))
- 		return RX_DROP_UNUSABLE;
+ DECLARE_EWMA(signal, 10, 8)
  
--	return __ieee80211_rx_h_amsdu(rx, 0);
-+	rv = __ieee80211_rx_h_amsdu(rx, 0);
-+	if ((rv == RX_QUEUED) && (rx->sta)) {
-+		struct ieee80211_sta_rx_stats *stats = &rx->sta->rx_stats;
-+		ieee80211_update_data_rx_stats(rx, stats, status, orig_len);
-+	}
-+	return rv;
++/* Update sta_accum_rx_stats if you change this structure. */
+ struct ieee80211_sta_rx_stats {
+ 	unsigned long packets;
+ 	unsigned long last_rx;
+@@ -907,4 +908,7 @@ static inline u32 sta_stats_encode_rate(struct ieee80211_rx_status *s)
+ 	return r;
  }
  
- #ifdef CONFIG_MAC80211_MESH
-@@ -2958,6 +2986,13 @@ ieee80211_rx_h_data(struct ieee80211_rx_data *rx)
- 		mod_timer(&local->dynamic_ps_timer, jiffies +
- 			  msecs_to_jiffies(local->hw.conf.dynamic_ps_timeout));
- 
-+	
-+	if (rx->sta) {
-+		struct ieee80211_sta_rx_stats *stats = &rx->sta->rx_stats;
-+		struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(rx->skb);
-+		ieee80211_update_data_rx_stats(rx, stats, status, rx->skb->len);
-+	}
++void sta_accum_rx_stats(struct sta_info *sta,
++			struct ieee80211_sta_rx_stats *rx_stats);
 +
- 	ieee80211_deliver_skb(rx);
- 
- 	return RX_QUEUED;
-@@ -4400,12 +4435,6 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
- 		return true;
- 	}
- 
--	stats->last_rx = jiffies;
--	stats->last_rate = sta_stats_encode_rate(status);
--
--	stats->fragments++;
--	stats->packets++;
--
- 	/* do the header conversion - first grab the addresses */
- 	ether_addr_copy(addrs.da, skb->data + fast_rx->da_offs);
- 	ether_addr_copy(addrs.sa, skb->data + fast_rx->sa_offs);
-@@ -4416,18 +4445,9 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
- 
- 	skb->dev = fast_rx->dev;
- 
-+	ieee80211_update_data_rx_stats(rx, stats, status, orig_len);
- 	dev_sw_netstats_rx_add(fast_rx->dev, skb->len);
- 
--	/* The seqno index has the same property as needed
--	 * for the rx_msdu field, i.e. it is IEEE80211_NUM_TIDS
--	 * for non-QoS-data frames. Here we know it's a data
--	 * frame, so count MSDUs.
--	 */
--	u64_stats_update_begin(&stats->syncp);
--	stats->msdu[rx->seqno_idx]++;
--	stats->bytes += orig_len;
--	u64_stats_update_end(&stats->syncp);
--
- 	if (fast_rx->internal_forward) {
- 		struct sk_buff *xmit_skb = NULL;
- 		if (is_multicast_ether_addr(addrs.da)) {
+ #endif /* STA_INFO_H */
 -- 
 2.20.1
 
