@@ -2,108 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E450347653
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 11:40:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1214B34784F
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 13:22:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235689AbhCXKkE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Mar 2021 06:40:04 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:54842 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233892AbhCXKkB (ORCPT
+        id S232439AbhCXMVc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Mar 2021 08:21:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50250 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231420AbhCXMVY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Mar 2021 06:40:01 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-129-cK_RaveBM8aprN2x6jOm4g-1; Wed, 24 Mar 2021 10:39:58 +0000
-X-MC-Unique: cK_RaveBM8aprN2x6jOm4g-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Wed, 24 Mar 2021 10:39:57 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.012; Wed, 24 Mar 2021 10:39:57 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     David Laight <David.Laight@ACULAB.COM>,
-        'Martin Sebor' <msebor@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Martin Sebor" <msebor@gcc.gnu.org>, Ning Sun <ning.sun@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "x86@kernel.org" <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Simon Kelley <simon@thekelleys.org.uk>,
-        James Smart <james.smart@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Anders Larsen <al@alarsen.net>, Tejun Heo <tj@kernel.org>,
-        Serge Hallyn <serge@hallyn.com>,
-        Imre Deak <imre.deak@intel.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "tboot-devel@lists.sourceforge.net" 
-        <tboot-devel@lists.sourceforge.net>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Will Deacon <will@kernel.org>
-Subject: RE: [PATCH 02/11] x86: tboot: avoid Wstringop-overread-warning
-Thread-Topic: [PATCH 02/11] x86: tboot: avoid Wstringop-overread-warning
-Thread-Index: AQHXH2fn7jNrPkUb50e9k3rL2a+D9qqS2/oQgAAX0+A=
-Date:   Wed, 24 Mar 2021 10:39:57 +0000
-Message-ID: <7e05de6cbb554b09ac532c073fab7386@AcuMS.aculab.com>
-References: <20210322160253.4032422-1-arnd@kernel.org>
- <20210322160253.4032422-3-arnd@kernel.org>
- <20210322202958.GA1955909@gmail.com>
- <b944a853-0e4b-b767-0175-cc2c1edba759@gmail.com>
- <0aa198a1dd904231bcc29454bf19a812@AcuMS.aculab.com>
-In-Reply-To: <0aa198a1dd904231bcc29454bf19a812@AcuMS.aculab.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Wed, 24 Mar 2021 08:21:24 -0400
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED92C061763
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Mar 2021 05:21:24 -0700 (PDT)
+Received: by mail-il1-x12f.google.com with SMTP id z9so21158971ilb.4
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Mar 2021 05:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=vGGmaol1ombXTxrs/kbVBpNzooqf1zOt+C67x453TRM=;
+        b=aDfIfDvAuEAL6JMmrCcU15igKhpl3jaEcO4xD7Rwtu9B+u2biKZDRWjVj+pRpC+THy
+         0Zipljo+33YApqLcXAG+apSdB0MW+iy/7OhS/gwJpBfT4RFZ/PKEkyqNcrHdoOVgr8NF
+         N7c2/gu/WL1xD+JrNLFxw+zx3YHQ8DAWN92TFrbWnP4X8emhfA7AVHzcOos6cX3OG1P2
+         7u2Ehc5Qw1kCIg7eKFrntsv/HRgoqguGIEAhSo/uP63s3V6tuI8YZyZD0NA0k/g/ljY1
+         VgzSX9sfuHks5WezpXpR50UFfmRXe+81TwzECB39JXGXdAwb2f/0xnAMVJQ55Z35PvUl
+         efQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=vGGmaol1ombXTxrs/kbVBpNzooqf1zOt+C67x453TRM=;
+        b=hjytAzABrzxEFOe6t7hm/zV/vGbK5XUP/dbLgKshzRtF99nRn5jTtbk42lKR9dLb0q
+         tdLTjTZBdAeEqVl4YrCv9appPItG0dEiIIzieizbyMUg1X/oVOyY8cuqAIs/FG6DSlco
+         P6xiCQ16/KgmvGx4+lq6+l+O6FavRW8xg7eqZlkk3Fsl6jtyWalHWVNiT2hH76Quc/KP
+         a49FYk5fG3JWSqRwYiV6alYG9Pi+CndH8Dp9yeIPaqd4CeRTHwLCI2aAbpui1YFVhxvy
+         bAhYfAWMqhZh62YCe29935lw7SLhWpInL1CaRCPhfnEp9hagsGrqBCEjz0k+/I/zdsSw
+         oBXQ==
+X-Gm-Message-State: AOAM530GqnLTEzHEcL5OtwyFbPgyCoJFoUqSBAffKKOtGC7NFwPFVWEZ
+        xXvCGrYK0cuU5B8XSFwM1Tmh3VVY/wJb8qC2Ln+rM1Wx+4f+jw==
+X-Google-Smtp-Source: ABdhPJxB8VLYeJtSzcXZsyEzkXEibScdgoBu+5Cf3SBuVH2EYUNVcqZXkpHn1+xUA4oAXVBi25VzhLXgfQ/DdtSoJYg=
+X-Received: by 2002:a05:6e02:1a09:: with SMTP id s9mr789230ild.60.1616588483828;
+ Wed, 24 Mar 2021 05:21:23 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+From:   Paulius Zaleckas <paulius.zaleckas@gmail.com>
+Date:   Wed, 24 Mar 2021 14:21:13 +0200
+Message-ID: <CAPiS6wC4BBANaY62sV8hxreDBsHXTHr=NKFLrOLc6SOYEiztmg@mail.gmail.com>
+Subject: Intel AX210 does not work on 5.11
+To:     linux-wireless@vger.kernel.org
+Cc:     luciano.coelho@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogRGF2aWQgTGFpZ2h0DQo+IFNlbnQ6IDI0IE1hcmNoIDIwMjEgMDk6MTINCj4gDQo+IEZy
-b206IE1hcnRpbiBTZWJvcg0KPiA+IFNlbnQ6IDIyIE1hcmNoIDIwMjEgMjI6MDgNCj4gLi4uDQo+
-ID4gSW4gR0NDIDExLCBhbGwgYWNjZXNzIHdhcm5pbmdzIGV4cGVjdCBvYmplY3RzIHRvIGJlIGVp
-dGhlciBkZWNsYXJlZA0KPiA+IG9yIGFsbG9jYXRlZC4gIFBvaW50ZXJzIHdpdGggY29uc3RhbnQg
-dmFsdWVzIGFyZSB0YWtlbiB0byBwb2ludCB0bw0KPiA+IG5vdGhpbmcgdmFsaWQgKGFzIEFybmQg
-bWVudGlvbmVkIGFib3ZlLCB0aGlzIGlzIHRvIGRldGVjdCBpbnZhbGlkDQo+ID4gYWNjZXNzZXMg
-dG8gbWVtYmVycyBvZiBzdHJ1Y3RzIGF0IGFkZHJlc3MgemVybykuDQo+ID4NCj4gPiBPbmUgcG9z
-c2libGUgc29sdXRpb24gdG8gdGhlIGtub3duIGFkZHJlc3MgcHJvYmxlbSBpcyB0byBleHRlbmQg
-R0NDDQo+ID4gYXR0cmlidXRlcyBhZGRyZXNzIGFuZCBpbyB0aGF0IHBpbiBhbiBvYmplY3QgdG8g
-YSBoYXJkd2lyZWQgYWRkcmVzcw0KPiA+IHRvIGFsbCB0YXJnZXRzIChhdCB0aGUgbW9tZW50IHRo
-ZXkncmUgc3VwcG9ydGVkIG9uIGp1c3Qgb25lIG9yIHR3bw0KPiA+IHRhcmdldHMpLiAgSSdtIG5v
-dCBzdXJlIHRoaXMgY2FuIHN0aWxsIGhhcHBlbiBiZWZvcmUgR0NDIDExIHJlbGVhc2VzDQo+ID4g
-c29tZXRpbWUgaW4gQXByaWwgb3IgTWF5Lg0KPiANCj4gQSBkaWZmZXJlbnQgc29sdXRpb24gaXMg
-dG8gZGVmaW5lIGEgbm9ybWFsIEMgZXh0ZXJuYWwgZGF0YSBpdGVtDQo+IGFuZCB0aGVuIGFzc2ln
-biBhIGZpeGVkIGFkZHJlc3Mgd2l0aCBhbiBhc20gc3RhdGVtZW50IG9yIGluDQo+IHRoZSBsaW5r
-ZXIgc2NyaXB0Lg0KDQpPciBzdG9wIGdjYyB0cmFja2luZyB0aGUgdmFsdWUgYnkgdXNpbmc6DQoJ
-c3RydWN0IGZvbyAqZm9vID0gKHZvaWQgKil4eHh4eDsNCglhc20gKCIiLCAiK3IiIChmb28pKTsN
-Cg0KSWYgdGhlIGFkZHJlc3MgaXMgdXNlZCBtb3JlIHRoYW4gb25jZSBmb3JjaW5nIGl0IGludG8N
-CmEgcmVnaXN0ZXIgaXMgYWxzbyBsaWtlbHkgdG8gZ2VuZXJhdGUgYmV0dGVyIGNvZGUuDQoNCglE
-YXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91
-bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5
-NzM4NiAoV2FsZXMpDQo=
+It was working on 5.10.16:
+[    4.274856] iwlwifi 0000:3c:00.0: enabling device (0000 -> 0002)
+[    4.279014] iwlwifi 0000:3c:00.0: api flags index 2 larger than
+supported by driver
+[    4.279031] iwlwifi 0000:3c:00.0: TLV_FW_FSEQ_VERSION: FSEQ
+Version: 93.8.63.28
+[    4.279401] iwlwifi 0000:3c:00.0: loaded firmware version
+59.601f3a66.0 ty-a0-gf-a0-59.ucode op_mode iwlmvm
+[    4.456228] iwlwifi 0000:3c:00.0: Detected Intel(R) Wi-Fi 6 AX210
+160MHz, REV=0x420
+[    4.607524] iwlwifi 0000:3c:00.0: invalid TLV len: 8/12
+[    4.673134] iwlwifi 0000:3c:00.0: base HW address: d8:f8:83:d9:35:87
+[    6.055731] iwlwifi 0000:3c:00.0: invalid TLV len: 8/12
+[    6.288461] iwlwifi 0000:3c:00.0: invalid TLV len: 8/12
+[   72.546602] iwlwifi 0000:3c:00.0 wlan0: disabling HT/VHT/HE as
+WMM/QoS is not supported by the AP
 
+And fails to start on 5.11.8:
+[    3.882744] iwlwifi 0000:3c:00.0: enabling device (0000 -> 0002)
+[    3.937708] iwlwifi 0000:3c:00.0: api flags index 2 larger than
+supported by driver
+[    3.937720] iwlwifi 0000:3c:00.0: TLV_FW_FSEQ_VERSION: FSEQ
+Version: 93.8.63.28
+[    3.937891] iwlwifi 0000:3c:00.0: loaded firmware version
+59.601f3a66.0 ty-a0-gf-a0-59.ucode op_mode iwlmvm
+[    4.341262] iwlwifi 0000:3c:00.0: Detected Intel(R) Wi-Fi 6 AX210
+160MHz, REV=0x420
+[    4.486405] iwlwifi 0000:3c:00.0: loaded PNVM version 0x324cd670
+[    4.588212] iwlwifi 0000:3c:00.0: Timeout waiting for PNVM load!
+[    4.588213] iwlwifi 0000:3c:00.0: Failed to start RT ucode: -110
+[    4.588215] iwlwifi 0000:3c:00.0: iwl_trans_send_cmd bad state = 1
+[    4.796206] iwlwifi 0000:3c:00.0: firmware didn't ACK the reset -
+continue anyway
+[    4.808321] iwlwifi 0000:3c:00.0: Failed to run INIT ucode: -110
+
+Please add me to Cc as I am not on the list.
