@@ -2,85 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81BBA348345
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 21:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7058B34835D
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 22:04:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233583AbhCXUx6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Mar 2021 16:53:58 -0400
-Received: from namei.org ([65.99.196.166]:51310 "EHLO mail.namei.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230336AbhCXUx3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Mar 2021 16:53:29 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.namei.org (Postfix) with ESMTPS id 507624E1;
-        Wed, 24 Mar 2021 20:50:33 +0000 (UTC)
-Date:   Thu, 25 Mar 2021 07:50:33 +1100 (AEDT)
-From:   James Morris <jmorris@namei.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-cc:     linux-kernel@vger.kernel.org, Martin Sebor <msebor@gcc.gnu.org>,
-        Serge Hallyn <serge@hallyn.com>, Arnd Bergmann <arnd@arndb.de>,
-        x86@kernel.org, Ning Sun <ning.sun@intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Simon Kelley <simon@thekelleys.org.uk>,
-        James Smart <james.smart@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Anders Larsen <al@alarsen.net>, Tejun Heo <tj@kernel.org>,
-        Imre Deak <imre.deak@intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        tboot-devel@lists.sourceforge.net, intel-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-scsi@vger.kernel.org, cgroups@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Kees Cook <keescook@chromium.org>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        Tycho Andersen <tycho@tycho.pizza>
-Subject: Re: [PATCH 03/11] security: commoncap: fix -Wstringop-overread
- warning
-In-Reply-To: <20210322160253.4032422-4-arnd@kernel.org>
-Message-ID: <b8ebab59-1cec-42d-6fb9-44aa1a464ae2@namei.org>
-References: <20210322160253.4032422-1-arnd@kernel.org> <20210322160253.4032422-4-arnd@kernel.org>
+        id S238188AbhCXVDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Mar 2021 17:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51090 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238209AbhCXVDR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Mar 2021 17:03:17 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D952BC06174A;
+        Wed, 24 Mar 2021 14:03:12 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lPAeg-002mf1-1d; Wed, 24 Mar 2021 22:03:06 +0100
+Message-ID: <dbde688c9525fa2b9c1386fc95828b1851531f13.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 1/2] dt-bindings:net:wireless:ieee80211: txt to yaml
+ conversion
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        robh@kernel.org, devicetree@vger.kernel.org,
+        sean.wang@mediatek.com, ryder.lee@mediatek.com
+Date:   Wed, 24 Mar 2021 22:03:05 +0100
+In-Reply-To: <3dca0518c14e3a8e563933c903de0d62429a3667.1615752835.git.lorenzo@kernel.org>
+References: <cover.1615752835.git.lorenzo@kernel.org>
+         <3dca0518c14e3a8e563933c903de0d62429a3667.1615752835.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="1665246916-699807841-1616619033=:3443171"
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---1665246916-699807841-1616619033=:3443171
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-
-On Mon, 22 Mar 2021, Arnd Bergmann wrote:
-
-> From: Arnd Bergmann <arnd@arndb.de>
+On Sun, 2021-03-14 at 21:21 +0100, Lorenzo Bianconi wrote:
 > 
-> gcc-11 introdces a harmless warning for cap_inode_getsecurity:
-> 
-> security/commoncap.c: In function ‘cap_inode_getsecurity’:
-> security/commoncap.c:440:33: error: ‘memcpy’ reading 16 bytes from a region of size 0 [-Werror=stringop-overread]
->   440 |                                 memcpy(&nscap->data, &cap->data, sizeof(__le32) * 2 * VFS_CAP_U32);
->       |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> The problem here is that tmpbuf is initialized to NULL, so gcc assumes
-> it is not accessible unless it gets set by vfs_getxattr_alloc().  This is
-> a legitimate warning as far as I can tell, but the code is correct since
-> it correctly handles the error when that function fails.
-> 
-> Add a separate NULL check to tell gcc about it as well.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> +++ b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
+> @@ -0,0 +1,41 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+> +
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/wireless/ieee80211.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Common IEEE 802.11 Binding
+> +
+> +maintainers:
+> +  - Johannes Berg <johannes@sipsolutions.net>
 
-Applied to
-git://git.kernel.org/pub/scm/linux/kernel/git/jmorris/linux-security.git fixes-v5.12
+Heh, now I realize why I got CC'ed on these patches.
 
--- 
-James Morris
-<jmorris@namei.org>
+I'm not sure that's really all that appropriate? I may be the wireless
+stack maintainer, but I really don't know much about DT, and so I'm not
+convinced that this entry helps anyone...
 
---1665246916-699807841-1616619033=:3443171--
+johannes
+
