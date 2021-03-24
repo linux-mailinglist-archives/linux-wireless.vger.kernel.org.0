@@ -2,190 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B943473C9
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 09:38:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B5B34743F
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Mar 2021 10:13:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233915AbhCXIiP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Mar 2021 04:38:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44310 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233925AbhCXIht (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Mar 2021 04:37:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D629D619F7;
-        Wed, 24 Mar 2021 08:37:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616575069;
-        bh=FoJ3JASuevSvihHq1cLghUlt7ByTsHn1gQE43yyrkuw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SapSjUApcFk1J+OMGfApXhu33gd275l0Qq5yDu3f8WPz8iBsLMRGdYUMe7dzeQ0wf
-         kK0ESUivQ9c69DbdaiGVkX8k9JR9niIDv3/lg+22XoiO7P6u3v1YAo5cUEbg3x7Dcg
-         Pxuc6equORVZua13Si4JECdWtMonLOUS4NqjBDLSF2pL3ro575qGwd0yYILBGJMWKK
-         RfNqxvaI+rdAE3ny9kVS44DZPQDBrpePPHcjgukswqPW610pLr2o3wrK6mTPnIMOCj
-         /70KVxZwYUYcnezrRorVakp6aYph+F/GYm9RtmDxLXrvvHwmyQeX6GdaswtxFK6n+Y
-         CJopt4YfFJHYg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, Jayden.Kuo@mediatek.com
-Subject: [PATCH 2/2] mt76: mt7921: properly configure rcpi adding a sta to the fw
-Date:   Wed, 24 Mar 2021 09:37:37 +0100
-Message-Id: <7d0dc013d0597ea4ae3c9bf03d16e732083a2d95.1616574803.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1616574803.git.lorenzo@kernel.org>
-References: <cover.1616574803.git.lorenzo@kernel.org>
+        id S234546AbhCXJNG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Mar 2021 05:13:06 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:60600 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231634AbhCXJNC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Mar 2021 05:13:02 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-70-F_iQyAaGNv6_r3BEezM2zQ-1; Wed, 24 Mar 2021 09:11:56 +0000
+X-MC-Unique: F_iQyAaGNv6_r3BEezM2zQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Wed, 24 Mar 2021 09:11:55 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.012; Wed, 24 Mar 2021 09:11:55 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Martin Sebor' <msebor@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        "Arnd Bergmann" <arnd@kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Martin Sebor" <msebor@gcc.gnu.org>, Ning Sun <ning.sun@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "x86@kernel.org" <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Simon Kelley <simon@thekelleys.org.uk>,
+        James Smart <james.smart@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Anders Larsen <al@alarsen.net>, Tejun Heo <tj@kernel.org>,
+        Serge Hallyn <serge@hallyn.com>,
+        Imre Deak <imre.deak@intel.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "tboot-devel@lists.sourceforge.net" 
+        <tboot-devel@lists.sourceforge.net>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Will Deacon <will@kernel.org>
+Subject: RE: [PATCH 02/11] x86: tboot: avoid Wstringop-overread-warning
+Thread-Topic: [PATCH 02/11] x86: tboot: avoid Wstringop-overread-warning
+Thread-Index: AQHXH2fn7jNrPkUb50e9k3rL2a+D9qqS2/oQ
+Date:   Wed, 24 Mar 2021 09:11:55 +0000
+Message-ID: <0aa198a1dd904231bcc29454bf19a812@AcuMS.aculab.com>
+References: <20210322160253.4032422-1-arnd@kernel.org>
+ <20210322160253.4032422-3-arnd@kernel.org>
+ <20210322202958.GA1955909@gmail.com>
+ <b944a853-0e4b-b767-0175-cc2c1edba759@gmail.com>
+In-Reply-To: <b944a853-0e4b-b767-0175-cc2c1edba759@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Properly configure rcpi based on association process rssi. rcpi is used
-by rate controller embedded into the fw to initialize amsdu size.
-
-Tested-by: Jayden.Kuo <jayden.kuo@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 35 +++++++++++++++++--
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 12 +++++--
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  7 ++++
- 3 files changed, 49 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 067cfa6dd8fb..3c755a90820f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -9,8 +9,6 @@
- #include "mac.h"
- #include "mcu.h"
- 
--#define to_rssi(field, rxv)	((FIELD_GET(field, rxv) - 220) / 2)
--
- #define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_HE_##f)
- #define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
- 						 IEEE80211_RADIOTAP_HE_##f)
-@@ -285,6 +283,37 @@ mt7921_get_status_freq_info(struct mt7921_dev *dev, struct mt76_phy *mphy,
- 	status->freq = ieee80211_channel_to_frequency(chfreq, status->band);
- }
- 
-+static void
-+mt7921_mac_rssi_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
-+{
-+	struct sk_buff *skb = priv;
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-+	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
-+	struct ieee80211_hdr *hdr = mt76_skb_get_hdr(skb);
-+
-+	if (status->signal > 0)
-+		return;
-+
-+	if (!ether_addr_equal(vif->addr, hdr->addr1))
-+		return;
-+
-+	ewma_rssi_add(&mvif->rssi, -status->signal);
-+}
-+
-+static void
-+mt7921_mac_assoc_rssi(struct mt7921_dev *dev, struct sk_buff *skb)
-+{
-+	struct ieee80211_hdr *hdr = mt76_skb_get_hdr(skb);
-+
-+	if (!ieee80211_is_assoc_resp(hdr->frame_control) &&
-+	    !ieee80211_is_auth(hdr->frame_control))
-+		return;
-+
-+	ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
-+		IEEE80211_IFACE_ITER_RESUME_ALL,
-+		mt7921_mac_rssi_iter, skb);
-+}
-+
- int mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- {
- 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-@@ -522,6 +551,8 @@ int mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 		mt76_insert_ccmp_hdr(skb, key_id);
- 	}
- 
-+	mt7921_mac_assoc_rssi(dev, skb);
-+
- 	if (rxv && status->flag & RX_FLAG_RADIOTAP_HE)
- 		mt7921_mac_decode_he_radiotap(skb, status, rxv, mode);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 9db2442fa11f..92775f98a80c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -328,6 +328,8 @@ static int mt7921_add_interface(struct ieee80211_hw *hw,
- 	mt7921_mac_wtbl_update(dev, idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 
-+	ewma_rssi_init(&mvif->rssi);
-+
- 	rcu_assign_pointer(dev->mt76.wcid[idx], &mvif->sta.wcid);
- 	if (vif->txq) {
- 		mtxq = (struct mt76_txq *)vif->txq->drv_priv;
-@@ -634,12 +636,14 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
- 	struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
- 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
-+	int rssi = -ewma_rssi_read(&mvif->rssi);
- 	struct mt76_sta_cmd_info info = {
- 		.sta = sta,
- 		.vif = vif,
- 		.enable = true,
- 		.cmd = MCU_UNI_CMD_STA_REC_UPDATE,
- 		.wcid = &msta->wcid,
-+		.rcpi = to_rcpi(rssi),
- 	};
- 	int ret, idx;
- 
-@@ -696,11 +700,13 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	mt7921_mac_wtbl_update(dev, msta->wcid.idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 
--	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
-+	if (vif->type == NL80211_IFTYPE_STATION) {
- 		struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
- 
--		mt76_connac_mcu_uni_add_bss(&dev->mphy, vif, &mvif->sta.wcid,
--					    false);
-+		ewma_rssi_init(&mvif->rssi);
-+		if (!sta->tdls)
-+			mt76_connac_mcu_uni_add_bss(&dev->mphy, vif,
-+						    &mvif->sta.wcid, false);
- 	}
- 
- 	spin_lock_bh(&dev->sta_poll_lock);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 943053355f6d..ed6f9a786b4a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -46,6 +46,9 @@
- #define MT7921_SKU_MAX_DELTA_IDX	MT7921_SKU_RATE_NUM
- #define MT7921_SKU_TABLE_SIZE		(MT7921_SKU_RATE_NUM + 1)
- 
-+#define to_rssi(field, rxv)		((FIELD_GET(field, rxv) - 220) / 2)
-+#define to_rcpi(rssi)			(2 * (rssi) + 220)
-+
- struct mt7921_vif;
- struct mt7921_sta;
- 
-@@ -92,12 +95,16 @@ struct mt7921_sta {
- 	struct mt7921_sta_key_conf bip;
- };
- 
-+DECLARE_EWMA(rssi, 10, 8);
-+
- struct mt7921_vif {
- 	struct mt76_vif mt76; /* must be first */
- 
- 	struct mt7921_sta sta;
- 	struct mt7921_phy *phy;
- 
-+	struct ewma_rssi rssi;
-+
- 	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
- };
- 
--- 
-2.30.2
+RnJvbTogTWFydGluIFNlYm9yDQo+IFNlbnQ6IDIyIE1hcmNoIDIwMjEgMjI6MDgNCi4uLg0KPiBJ
+biBHQ0MgMTEsIGFsbCBhY2Nlc3Mgd2FybmluZ3MgZXhwZWN0IG9iamVjdHMgdG8gYmUgZWl0aGVy
+IGRlY2xhcmVkDQo+IG9yIGFsbG9jYXRlZC4gIFBvaW50ZXJzIHdpdGggY29uc3RhbnQgdmFsdWVz
+IGFyZSB0YWtlbiB0byBwb2ludCB0bw0KPiBub3RoaW5nIHZhbGlkIChhcyBBcm5kIG1lbnRpb25l
+ZCBhYm92ZSwgdGhpcyBpcyB0byBkZXRlY3QgaW52YWxpZA0KPiBhY2Nlc3NlcyB0byBtZW1iZXJz
+IG9mIHN0cnVjdHMgYXQgYWRkcmVzcyB6ZXJvKS4NCj4gDQo+IE9uZSBwb3NzaWJsZSBzb2x1dGlv
+biB0byB0aGUga25vd24gYWRkcmVzcyBwcm9ibGVtIGlzIHRvIGV4dGVuZCBHQ0MNCj4gYXR0cmli
+dXRlcyBhZGRyZXNzIGFuZCBpbyB0aGF0IHBpbiBhbiBvYmplY3QgdG8gYSBoYXJkd2lyZWQgYWRk
+cmVzcw0KPiB0byBhbGwgdGFyZ2V0cyAoYXQgdGhlIG1vbWVudCB0aGV5J3JlIHN1cHBvcnRlZCBv
+biBqdXN0IG9uZSBvciB0d28NCj4gdGFyZ2V0cykuICBJJ20gbm90IHN1cmUgdGhpcyBjYW4gc3Rp
+bGwgaGFwcGVuIGJlZm9yZSBHQ0MgMTEgcmVsZWFzZXMNCj4gc29tZXRpbWUgaW4gQXByaWwgb3Ig
+TWF5Lg0KDQpBIGRpZmZlcmVudCBzb2x1dGlvbiBpcyB0byBkZWZpbmUgYSBub3JtYWwgQyBleHRl
+cm5hbCBkYXRhIGl0ZW0NCmFuZCB0aGVuIGFzc2lnbiBhIGZpeGVkIGFkZHJlc3Mgd2l0aCBhbiBh
+c20gc3RhdGVtZW50IG9yIGluDQp0aGUgbGlua2VyIHNjcmlwdC4NCg0KCURhdmlkDQoNCi0NClJl
+Z2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0
+b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykN
+Cg==
 
