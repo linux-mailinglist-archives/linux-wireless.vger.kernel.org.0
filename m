@@ -2,162 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79789348D6D
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Mar 2021 10:54:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89E52348E12
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Mar 2021 11:34:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229839AbhCYJxv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Mar 2021 05:53:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44182 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229576AbhCYJxc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Mar 2021 05:53:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 82A4E61A24;
-        Thu, 25 Mar 2021 09:53:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616666011;
-        bh=zDIkwCmITSxBLdjnUtP8aWuLpPIn7yP+onOPa2fWtIM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=aw+dq7xqFwszvQn+7YjwXW7/fxugShYPXJjaDJagcTuDAOuB8E9nNiKezq66fA/8m
-         hFuPlB/FQy5OaxdMAZxMHga0tzWzb7PQ6p+xNpG4X8bAN7OAf2G+Qkm0llEzqPMeL1
-         Kid4PdS5VCb6nVOuYhBFHH0Yau0kHvVybsDn9ffxag5/mdTWHzlRYsdW/dxayQNar3
-         KY8Ym1MijDJv/mTgzfTa/iwhfzr2YqelyjbMy1v1O0PJUB5A8eiQqK6LL68YF5Ta8p
-         SByPQKDJncOjrUNNBuwi03nuXQ11JZYKUdMwcj0KubiMCvSEyc/5dYjwzZVUc5ZcXd
-         6uORErooXgDMw==
-Received: by mail-oi1-f174.google.com with SMTP id n140so1511569oig.9;
-        Thu, 25 Mar 2021 02:53:31 -0700 (PDT)
-X-Gm-Message-State: AOAM531+Fc0vPk+snEmfO/sX6kulbyC9mLBlEz92JVW/lZGGQK++d02J
-        xEDrMZrr7OU5O4u3f59H+2m+hy9PpwOT9kGs664=
-X-Google-Smtp-Source: ABdhPJyt+33nuIsqD16dqkOAUJq8r6LTgDPW80yQCvhzID/3JW2uxW7CNu42WWpingJPnDTPb6eqRDMwNCcIjLZ5/jc=
-X-Received: by 2002:aca:5945:: with SMTP id n66mr5293345oib.11.1616666010658;
- Thu, 25 Mar 2021 02:53:30 -0700 (PDT)
+        id S229900AbhCYKeY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Mar 2021 06:34:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56338 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229631AbhCYKeF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Mar 2021 06:34:05 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DD0FC06174A;
+        Thu, 25 Mar 2021 03:34:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=zX4w/YCkqpoXy6bZV/Ut/Ci2wQiJmAv2JfLAPxQJFqE=; b=Ia8EkU18A2xNwsyK3OpzgjLKLN
+        5CoFQt5FqnnsFZdgK9ZQAHhiC//FyW9i1ap51uUVLdvmTahmQPtEpeO1O0QXweTu1njJ1rf/oomaz
+        bhhfmOoH9d118Fg1dbfcniJgUstgdh4CnwLGfZzXH6BAtG8O4ej9hHECFYAPeiA8J+Fg=;
+Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lPNJL-0003xC-IU; Thu, 25 Mar 2021 11:33:55 +0100
+To:     Rakesh Pillai <pillair@codeaurora.org>,
+        'Ben Greear' <greearb@candelatech.com>,
+        'Brian Norris' <briannorris@chromium.org>
+Cc:     'Johannes Berg' <johannes@sipsolutions.net>,
+        'Rajkumar Manoharan' <rmanohar@codeaurora.org>,
+        'ath10k' <ath10k@lists.infradead.org>,
+        'linux-wireless' <linux-wireless@vger.kernel.org>,
+        'Linux Kernel' <linux-kernel@vger.kernel.org>,
+        'Kalle Valo' <kvalo@codeaurora.org>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        'Jakub Kicinski' <kuba@kernel.org>, netdev@vger.kernel.org,
+        'Doug Anderson' <dianders@chromium.org>,
+        'Evan Green' <evgreen@chromium.org>
+References: <1595351666-28193-1-git-send-email-pillair@codeaurora.org>
+ <1595351666-28193-3-git-send-email-pillair@codeaurora.org>
+ <13573549c277b34d4c87c471ff1a7060@codeaurora.org>
+ <d79ae05e-e75a-de2f-f2e3-bc73637e1501@nbd.name>
+ <04d7301d5ad7555a0377c7df530ad8522fc00f77.camel@sipsolutions.net>
+ <1f2726ff-8ba9-5278-0ec6-b80be475ea98@nbd.name>
+ <06a4f84b-a0d4-3f90-40bb-f02f365460ec@candelatech.com>
+ <CA+ASDXOotYHmtqOvSwBES6_95bnbAbEu6F7gQ5TjacJWUKdaPw@mail.gmail.com>
+ <47d8be60-14ce-0223-bdf3-c34dc2451945@candelatech.com>
+ <633feaed-7f34-15d3-1899-81eb1d6ae14f@nbd.name>
+ <003701d7215b$a44ae030$ece0a090$@codeaurora.org>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: Re: [RFC 2/7] ath10k: Add support to process rx packet in thread
+Message-ID: <e7dc6d97-bab2-3bd4-685a-a8b5e25c18d9@nbd.name>
+Date:   Thu, 25 Mar 2021 11:33:53 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
+ Gecko/20100101 Thunderbird/78.7.1
 MIME-Version: 1.0
-References: <20210322160253.4032422-1-arnd@kernel.org> <20210322160253.4032422-12-arnd@kernel.org>
- <87wntv3bgt.fsf@intel.com>
-In-Reply-To: <87wntv3bgt.fsf@intel.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Thu, 25 Mar 2021 10:53:14 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0HGiPQ-k6t6roTgeUvVAMMY=fMnGV0+t48yJjz55XFAA@mail.gmail.com>
-Message-ID: <CAK8P3a0HGiPQ-k6t6roTgeUvVAMMY=fMnGV0+t48yJjz55XFAA@mail.gmail.com>
-Subject: Re: [PATCH 11/11] [RFC] drm/i915/dp: fix array overflow warning
-To:     Jani Nikula <jani.nikula@linux.intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Martin Sebor <msebor@gcc.gnu.org>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Ning Sun <ning.sun@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Simon Kelley <simon@thekelleys.org.uk>,
-        James Smart <james.smart@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Anders Larsen <al@alarsen.net>, Tejun Heo <tj@kernel.org>,
-        Serge Hallyn <serge@hallyn.com>,
-        Imre Deak <imre.deak@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        tboot-devel@lists.sourceforge.net,
-        Intel Graphics <intel-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        ath11k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        Cgroups <cgroups@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Manasi Navare <manasi.d.navare@intel.com>,
-        Uma Shankar <uma.shankar@intel.com>,
-        Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-        Animesh Manna <animesh.manna@intel.com>,
-        Sean Paul <seanpaul@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <003701d7215b$a44ae030$ece0a090$@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Mar 25, 2021 at 9:05 AM Jani Nikula <jani.nikula@linux.intel.com> wrote:
-> > Clearly something is wrong here, but I can't quite figure out what.
-> > Changing the array size to 16 bytes avoids the warning, but is
-> > probably the wrong solution here.
->
-> Ugh. drm_dp_channel_eq_ok() does not actually require more than
-> DP_LINK_STATUS_SIZE - 2 elements in the link_status. It's some other
-> related functions that do, and in most cases it's convenient to read all
-> those DP_LINK_STATUS_SIZE bytes.
->
-> However, here the case is slightly different for DP MST, and the change
-> causes reserved DPCD addresses to be read. Not sure it matters, but
-> really I think the problem is what drm_dp_channel_eq_ok() advertizes.
->
-> I also don't like the array notation with sizes in function parameters
-> in general, because I think it's misleading. Would gcc-11 warn if a
-> function actually accesses the memory out of bounds of the size?
 
-Yes, that is the point of the warning. Using an explicit length in an
-array argument type tells gcc that the function will never access
-beyond the end of that bound, and that passing a short array
-is a bug.
+On 2021-03-25 10:45, Rakesh Pillai wrote:
+> Hi Felix / Ben,
+> 
+> In case of ath10k (snoc based targets), we have a lot of processing in the NAPI context.
+> Even moving this to threaded NAPI is not helping much due to the load.
+> 
+> Breaking the tasks into multiple context (with the patch series I posted) is helping in improving the throughput.
+> With the current rx_thread based approach, the rx processing is broken into two parallel contexts
+> 1) reaping the packets from the HW
+> 2) processing these packets list and handing it over to mac80211 (and later to the network stack)
+> 
+> This is the primary reason for choosing the rx thread approach.
+Have you considered the possibility that maybe the problem is that the
+driver doing too much work?
+One example is that you could take advantage of the new 802.3 decap
+offload to simplify rx processing. Worked for me on mt76 where a
+dual-core 1.3 GHz A64 can easily handle >1.8 Gbps local TCP rx on a
+single card, without the rx NAPI thread being the biggest consumer of
+CPU cycles.
 
-I don't know if this /only/ means triggering a warning, or if gcc
-is also able to make optimizations after classifying this as undefined
-behavior that it would not make for an unspecified length.
+And if you can't do that and still consider all of the metric tons of
+processing work necessary, you could still do this:
+On interrupts, spawn a processing thread that traverses the ring and
+does the preparation work (instead of NAPI).
+From that thread you schedule the threaded NAPI handler that processes
+these packets further and hands them to mac80211.
+To keep the load somewhat balanced, you can limit the number of
+pre-processed packets in the ring.
 
-> Anyway. I don't think we're going to get rid of the array notation
-> anytime soon, if ever, no matter how much I dislike it, so I think the
-> right fix would be to at least state the correct required size in
-> drm_dp_channel_eq_ok().
-
-Ok. Just to confirm: Changing the declaration to an unspecified length
-avoids the warnings, as does the patch below:
-
-diff --git a/drivers/gpu/drm/drm_dp_helper.c b/drivers/gpu/drm/drm_dp_helper.c
-index eedbb48815b7..6ebeec3d88a7 100644
---- a/drivers/gpu/drm/drm_dp_helper.c
-+++ b/drivers/gpu/drm/drm_dp_helper.c
-@@ -46,12 +46,12 @@
-  */
-
- /* Helpers for DP link training */
--static u8 dp_link_status(const u8 link_status[DP_LINK_STATUS_SIZE], int r)
-+static u8 dp_link_status(const u8 link_status[DP_LINK_STATUS_SIZE - 2], int r)
- {
-        return link_status[r - DP_LANE0_1_STATUS];
- }
-
--static u8 dp_get_lane_status(const u8 link_status[DP_LINK_STATUS_SIZE],
-+static u8 dp_get_lane_status(const u8 link_status[DP_LINK_STATUS_SIZE - 2],
-                             int lane)
- {
-        int i = DP_LANE0_1_STATUS + (lane >> 1);
-@@ -61,7 +61,7 @@ static u8 dp_get_lane_status(const u8
-link_status[DP_LINK_STATUS_SIZE],
-        return (l >> s) & 0xf;
- }
-
--bool drm_dp_channel_eq_ok(const u8 link_status[DP_LINK_STATUS_SIZE],
-+bool drm_dp_channel_eq_ok(const u8 link_status[DP_LINK_STATUS_SIZE - 2],
-                          int lane_count)
- {
-        u8 lane_align;
-diff --git a/include/drm/drm_dp_helper.h b/include/drm/drm_dp_helper.h
-index edffd1dcca3e..160f7fd127b1 100644
---- a/include/drm/drm_dp_helper.h
-+++ b/include/drm/drm_dp_helper.h
-@@ -1456,7 +1456,7 @@ enum drm_dp_phy {
-
- #define DP_LINK_CONSTANT_N_VALUE 0x8000
- #define DP_LINK_STATUS_SIZE       6
--bool drm_dp_channel_eq_ok(const u8 link_status[DP_LINK_STATUS_SIZE],
-+bool drm_dp_channel_eq_ok(const u8 link_status[DP_LINK_STATUS_SIZE - 2],
-                          int lane_count);
- bool drm_dp_clock_recovery_ok(const u8 link_status[DP_LINK_STATUS_SIZE],
-                              int lane_count);
-
-
-This obviously needs a good explanation in the code and the changelog text,
-which I don't have, but if the above is what you had in mind, please take that
-and add Reported-by/Tested-by: Arnd Bergmann <arnd@arndb.de>.
-
-       Arnd
+- Felix
