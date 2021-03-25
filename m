@@ -2,64 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35EC5349C6F
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Mar 2021 23:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E1B349D09
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Mar 2021 00:53:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231214AbhCYWmM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Mar 2021 18:42:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44972 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230285AbhCYWls (ORCPT
+        id S229624AbhCYXvi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Mar 2021 19:51:38 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:55682 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231445AbhCYXvH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Mar 2021 18:41:48 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C615C06174A
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Mar 2021 15:41:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=VtXEnQZ9olnrM7GqKQU9RM4wafpJF+GH3/7KLt07cUU=; b=ZUvmrPBMEQDy9W+QUjc9igwsjV
-        HT4WRoWw7U3cglpsCDqbnsNnlE9AYG2P6hB9UFr8rOW/QQ+mjqmw0xpid52Jn7dv4w27biTJhozL7
-        dHkWl3eaTkrpCF3HqiJLBmmNz3hGW4N7Dgsd3aWAObnEfwgACEKxt6rqaOJBP3ieRFSE=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lPYfe-0004gJ-LN; Thu, 25 Mar 2021 23:41:42 +0100
+        Thu, 25 Mar 2021 19:51:07 -0400
+X-UUID: e25702d8a206443d82adc706dcd0e00e-20210326
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=A+r3ZCIBQxVHt9voIgiPko8MotKHzte07lmFGpXmOlI=;
+        b=ZID52VX0qU5jj8A74t8aIwwlP2VR22gtfIipC+dZSSeghQxl2ZPSVX9X+Psz5sFPLfDOKpmC31+vEH1nBwFb3e8NMH8HdQNLJsabPjluirHfuDiVurNBcYoUTXMPbT005mHQnA86guOpB7+cAwi4rOgaGi3igw3eYwke9sX5z7k=;
+X-UUID: e25702d8a206443d82adc706dcd0e00e-20210326
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 753296988; Fri, 26 Mar 2021 07:51:01 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 26 Mar 2021 07:51:00 +0800
+Received: from [172.21.77.33] (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 26 Mar 2021 07:51:00 +0800
+Message-ID: <1616716260.5392.4.camel@mtkswgap22>
 Subject: Re: [PATCH v2 1/2] mt76: mt7615: cleanup mcu tx queue in
  mt7615_dma_reset()
-To:     Ryder Lee <ryder.lee@mediatek.com>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Date:   Fri, 26 Mar 2021 07:51:00 +0800
+In-Reply-To: <750b96aa-f26a-5c2a-7040-4bb84a7aa6a7@nbd.name>
 References: <fdde0eb8c6dea0e81b5f5ae528085f1ccf53fef3.1616696376.git.ryder.lee@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <750b96aa-f26a-5c2a-7040-4bb84a7aa6a7@nbd.name>
-Date:   Thu, 25 Mar 2021 23:41:42 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.1
+         <750b96aa-f26a-5c2a-7040-4bb84a7aa6a7@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 MIME-Version: 1.0
-In-Reply-To: <fdde0eb8c6dea0e81b5f5ae528085f1ccf53fef3.1616696376.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+DQo+IE9uIDIwMjEtMDMtMjUgMTk6MjgsIFJ5ZGVyIExlZSB3cm90ZToNCj4gPiBDbGVhbnVwIGV4
+dF9waHkgYW5kIG1jdSB0eCBxdWV1ZSBzbyB0aGF0IG10NzYxNV9tYWNfcmVzZXRfd29yaygpIGNh
+bg0KPiA+IHJlY292ZXIgbXQ3NjE1IG5vcm1hbGx5Lg0KPiA+IA0KPiA+IEZpeGVzOiBtdDc2OiBl
+NjM3NzYzYjYwNiAoIm1vdmUgbWN1IHF1ZXVlcyB0byBtdDc2X2RldiBxX21jdSBhcnJheSIpDQo+
+ID4gU2lnbmVkLW9mZi1ieTogUnlkZXIgTGVlIDxyeWRlci5sZWVAbWVkaWF0ZWsuY29tPg0KPiA+
+IC0tLQ0KPiA+IGNoYW5nZSBzaW5jZSB2MiAtIGNsZWFudXAgbXBoeV9leHQtPnFfdHgNCj4gSSBs
+aWtlIHYxIGJldHRlciwgc2luY2UgZXh0LXBoeSB0eCBxdWV1ZXMgYXJlIHRoZSBzYW1lIGFzIHBy
+aW1hcnkgcGh5IHR4DQo+IHF1ZXVlcy4gT3IgYW0gSSBtaXNzaW5nIHNvbWV0aGluZz8NCj4gDQo+
+IC0gRmVsaXgNCnJpZ2h0LiBpIGRpZG4ndCBub3RpY2UgbXQ3NjE1IGV4dC1waHkgc2hhcmVzIHRo
+ZSBzYW1lIHR4IHF1ZXVlcyB3aXRoDQpwcmltYXJ5IHBoeS4gcGxlYXNlIGRyb3AgdGhpcyBvbmUu
+DQo=
 
-On 2021-03-25 19:28, Ryder Lee wrote:
-> Cleanup ext_phy and mcu tx queue so that mt7615_mac_reset_work() can
-> recover mt7615 normally.
-> 
-> Fixes: mt76: e637763b606 ("move mcu queues to mt76_dev q_mcu array")
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
-> change since v2 - cleanup mphy_ext->q_tx
-I like v1 better, since ext-phy tx queues are the same as primary phy tx
-queues. Or am I missing something?
-
-- Felix
