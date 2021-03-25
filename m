@@ -2,84 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E36E348B27
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Mar 2021 09:07:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06EB6348D4B
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Mar 2021 10:46:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbhCYIGa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Mar 2021 04:06:30 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:42742 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229944AbhCYIGP (ORCPT
+        id S229981AbhCYJqN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Mar 2021 05:46:13 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:28152 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230005AbhCYJqF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Mar 2021 04:06:15 -0400
-X-UUID: 915f937c9d124875b049511318f2d5d0-20210325
-X-UUID: 915f937c9d124875b049511318f2d5d0-20210325
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1144540723; Thu, 25 Mar 2021 16:06:12 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 25 Mar 2021 16:06:10 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 25 Mar 2021 16:06:10 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 5/5] mt76: mt7915: keep mcu_add_bss_info enabled till interface removal
-Date:   Thu, 25 Mar 2021 16:06:05 +0800
-Message-ID: <eb9851d4be7b9887d27efdd79c4cda7c54a66715.1616657048.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20744fae1cbe0dcc098b3112b0a5ccb0b6254587.1616657048.git.ryder.lee@mediatek.com>
-References: <20744fae1cbe0dcc098b3112b0a5ccb0b6254587.1616657048.git.ryder.lee@mediatek.com>
+        Thu, 25 Mar 2021 05:46:05 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1616665565; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Sender; bh=xLZMPOc+Bf0JSFPQICytoPaldsUvFtyL1tpTNNRZGmo=; b=fgEDhRe1Rsg9SJr4BWLHu0GCxHolNL4f4qNsTKjOwrffA2IXarxBHJl+AXPmB/CgdTiOx93U
+ lejPjg08n9x9VD/QWdlndiocjpA9L6C2B2UTc+mx2yKxZn2fpA+90cqQEfuw+9a92kGiChhU
+ MULi2KZtT8YwCGx3a8sdrbOHuOc=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 605c5bd12b0e10a0ba26d3f9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 25 Mar 2021 09:45:53
+ GMT
+Sender: pillair=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C9E29C433ED; Thu, 25 Mar 2021 09:45:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        PDS_BAD_THREAD_QP_64,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from Pillair (unknown [103.149.159.141])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 770E0C433CA;
+        Thu, 25 Mar 2021 09:45:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 770E0C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pillair@codeaurora.org
+From:   "Rakesh Pillai" <pillair@codeaurora.org>
+To:     "'Felix Fietkau'" <nbd@nbd.name>,
+        "'Ben Greear'" <greearb@candelatech.com>,
+        "'Brian Norris'" <briannorris@chromium.org>
+Cc:     "'Johannes Berg'" <johannes@sipsolutions.net>,
+        "'Rajkumar Manoharan'" <rmanohar@codeaurora.org>,
+        "'ath10k'" <ath10k@lists.infradead.org>,
+        "'linux-wireless'" <linux-wireless@vger.kernel.org>,
+        "'Linux Kernel'" <linux-kernel@vger.kernel.org>,
+        "'Kalle Valo'" <kvalo@codeaurora.org>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        "'Jakub Kicinski'" <kuba@kernel.org>, <netdev@vger.kernel.org>,
+        "'Doug Anderson'" <dianders@chromium.org>,
+        "'Evan Green'" <evgreen@chromium.org>
+References: <1595351666-28193-1-git-send-email-pillair@codeaurora.org> <1595351666-28193-3-git-send-email-pillair@codeaurora.org> <13573549c277b34d4c87c471ff1a7060@codeaurora.org> <d79ae05e-e75a-de2f-f2e3-bc73637e1501@nbd.name> <04d7301d5ad7555a0377c7df530ad8522fc00f77.camel@sipsolutions.net> <1f2726ff-8ba9-5278-0ec6-b80be475ea98@nbd.name> <06a4f84b-a0d4-3f90-40bb-f02f365460ec@candelatech.com> <CA+ASDXOotYHmtqOvSwBES6_95bnbAbEu6F7gQ5TjacJWUKdaPw@mail.gmail.com> <47d8be60-14ce-0223-bdf3-c34dc2451945@candelatech.com> <633feaed-7f34-15d3-1899-81eb1d6ae14f@nbd.name>
+In-Reply-To: <633feaed-7f34-15d3-1899-81eb1d6ae14f@nbd.name>
+Subject: RE: [RFC 2/7] ath10k: Add support to process rx packet in thread
+Date:   Thu, 25 Mar 2021 15:15:44 +0530
+Message-ID: <003701d7215b$a44ae030$ece0a090$@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: DF0AB339BFE85DC6CF47A159BA20BFA89C77DCB2135D7065C562ECA81C2610702000:8
-X-MTK:  N
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQG1Bu1FBYi7G1oVhHY/01uT1gSslwH2O/GCAtCmWRoBYxlAVQH0T8LwAZ17l3YBXZ7u8AIxJEyGAbYhhCACZ7wzuKpNZQxQ
+Content-Language: en-us
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The same as mt7615. Keep BSS_INFO_BASIC enabled throughout interfaces
-life cycle.
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index cde8c1ce3ae0..0f2a86b3aa9d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -256,7 +256,8 @@ static void mt7915_remove_interface(struct ieee80211_hw *hw,
- 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
- 	int idx = msta->wcid.idx;
- 
--	/* TODO: disable beacon for the bss */
-+	mt7915_mcu_add_bss_info(phy, vif, false);
-+	mt7915_mcu_add_sta(dev, vif, NULL, false);
- 
- 	mutex_lock(&dev->mt76.mutex);
- 	mt76_testmode_reset(phy->mt76, true);
-@@ -544,9 +545,9 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 		}
- 	}
- 
--	if (changed & BSS_CHANGED_BEACON_ENABLED) {
--		mt7915_mcu_add_bss_info(phy, vif, info->enable_beacon);
--		mt7915_mcu_add_sta(dev, vif, NULL, info->enable_beacon);
-+	if (changed & BSS_CHANGED_BEACON_ENABLED && info->enable_beacon) {
-+		mt7915_mcu_add_bss_info(phy, vif, true);
-+		mt7915_mcu_add_sta(dev, vif, NULL, true);
- 	}
- 
- 	/* ensure that enable txcmd_mode after bss_info */
--- 
-2.18.0
+> -----Original Message-----
+> From: Felix Fietkau <nbd@nbd.name>
+> Sent: Tuesday, March 23, 2021 1:16 PM
+> To: Ben Greear <greearb@candelatech.com>; Brian Norris
+> <briannorris@chromium.org>
+> Cc: Johannes Berg <johannes@sipsolutions.net>; Rajkumar Manoharan
+> <rmanohar@codeaurora.org>; Rakesh Pillai <pillair@codeaurora.org>; =
+ath10k
+> <ath10k@lists.infradead.org>; linux-wireless <linux-
+> wireless@vger.kernel.org>; Linux Kernel =
+<linux-kernel@vger.kernel.org>;
+> Kalle Valo <kvalo@codeaurora.org>; David S. Miller
+> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>;
+> netdev@vger.kernel.org; Doug Anderson <dianders@chromium.org>; Evan
+> Green <evgreen@chromium.org>
+> Subject: Re: [RFC 2/7] ath10k: Add support to process rx packet in =
+thread
+>=20
+>=20
+> On 2021-03-23 04:01, Ben Greear wrote:
+> > On 3/22/21 6:20 PM, Brian Norris wrote:
+> >> On Mon, Mar 22, 2021 at 4:58 PM Ben Greear
+> <greearb@candelatech.com> wrote:
+> >>> On 7/22/20 6:00 AM, Felix Fietkau wrote:
+> >>>> On 2020-07-22 14:55, Johannes Berg wrote:
+> >>>>> On Wed, 2020-07-22 at 14:27 +0200, Felix Fietkau wrote:
+> >>>>>
+> >>>>>> I'm considering testing a different approach (with mt76 =
+initially):
+> >>>>>> - Add a mac80211 rx function that puts processed skbs into a =
+list
+> >>>>>> instead of handing them to the network stack directly.
+> >>>>>
+> >>>>> Would this be *after* all the mac80211 processing, i.e. in place =
+of the
+> >>>>> rx-up-to-stack?
+> >>>> Yes, it would run all the rx handlers normally and then put the
+> >>>> resulting skbs into a list instead of calling netif_receive_skb =
+or
+> >>>> napi_gro_frags.
+> >>>
+> >>> Whatever came of this?  I realized I'm running Felix's patch since =
+his mt76
+> >>> driver needs it.  Any chance it will go upstream?
+> >>
+> >> If you're asking about $subject (moving NAPI/RX to a thread), this
+> >> landed upstream recently:
+> >> =
+http://git.kernel.org/linus/adbb4fb028452b1b0488a1a7b66ab856cdf20715
+> >>
+> >> It needs a bit of coaxing to work on a WiFi driver (including: WiFi
+> >> drivers tend to have a different netdev for NAPI than they expose =
+to
+> >> /sys/class/net/), but it's there.
+> >>
+> >> I'm not sure if people had something else in mind in the stuff =
+you're
+> >> quoting though.
+> >
+> > No, I got it confused with something Felix did:
+> >
+> > https://github.com/greearb/mt76/blob/master/patches/0001-net-add-
+> support-for-threaded-NAPI-polling.patch
+> >
+> > Maybe the NAPI/RX to a thread thing superceded Felix's patch?
+> Yes, it did and it's in linux-next already.
+> I sent the following change to make mt76 use it:
+> https://github.com/nbd168/wireless/commit/1d4ff31437e5aaa999bd7a
+
+Hi Felix / Ben,
+
+In case of ath10k (snoc based targets), we have a lot of processing in =
+the NAPI context.
+Even moving this to threaded NAPI is not helping much due to the load.
+
+Breaking the tasks into multiple context (with the patch series I =
+posted) is helping in improving the throughput.
+With the current rx_thread based approach, the rx processing is broken =
+into two parallel contexts
+1) reaping the packets from the HW
+2) processing these packets list and handing it over to mac80211 (and =
+later to the network stack)
+
+This is the primary reason for choosing the rx thread approach.
+
+Thanks,
+Rakesh.
+
+>=20
+> - Felix
 
