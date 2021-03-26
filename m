@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C2A234A5FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Mar 2021 11:58:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 026DD34A601
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Mar 2021 11:58:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230095AbhCZK5u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Mar 2021 06:57:50 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:43372 "EHLO
+        id S229986AbhCZK5y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Mar 2021 06:57:54 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:43378 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229528AbhCZK51 (ORCPT
+        with ESMTP id S229779AbhCZK52 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Mar 2021 06:57:27 -0400
+        Fri, 26 Mar 2021 06:57:28 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1lPk9c-0003Gc-Cb; Fri, 26 Mar 2021 12:57:25 +0200
+        id 1lPk9d-0003Gc-2S; Fri, 26 Mar 2021 12:57:26 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 26 Mar 2021 12:57:17 +0200
-Message-Id: <iwlwifi.20210326125611.6d28516b59cd.Id0248d5e4662695254f49ce37b0268834ed52918@changeid>
+Date:   Fri, 26 Mar 2021 12:57:18 +0200
+Message-Id: <iwlwifi.20210326125611.675486178ed1.Ib61463aba6920645059e366dcdca4c4c77f0ff58@changeid>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210326105723.211843-1-luca@coelho.fi>
 References: <20210326105723.211843-1-luca@coelho.fi>
@@ -32,39 +32,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH v2 for v5.12 1/7] iwlwifi: fix 11ax disabled bit in the regulatory capability flags
+Subject: [PATCH v2 for v5.12 2/7] iwlwifi: pcie: properly set LTR workarounds on 22000 devices
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-When version 2 of the regulatory capability flags API was implemented,
-the flag to disable 11ax was defined as bit 13, but this was later
-changed and the bit remained as bit 10, like in version 1.  This was
-never changed in the driver, so we were checking for the wrong bit in
-newer devices.  Fix it.
+As the context info gen3 code is only called for >=AX210 devices
+(from iwl_trans_pcie_gen2_start_fw()) the code there to set LTR
+on 22000 devices cannot actually do anything (22000 < AX210).
 
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Fixes: e27c506a985c ("iwlwifi: regulatory: regulatory capabilities api change")
+Fix this by moving the LTR code to iwl_trans_pcie_gen2_start_fw()
+where it can handle both devices. This then requires that we kick
+the firmware only after that rather than doing it from the context
+info code.
+
+Note that this again had a dead branch in gen3 code, which I've
+removed here.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: ed0022da8bd9 ("iwlwifi: pcie: set LTR on more devices")
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       | 31 +---------------
+ .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |  3 +-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  | 35 +++++++++++++++++++
+ 3 files changed, 37 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index af684f80b0cc..c5a1e84dc1ab 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -232,7 +232,7 @@ enum iwl_reg_capa_flags_v2 {
- 	REG_CAPA_V2_MCS_9_ALLOWED	= BIT(6),
- 	REG_CAPA_V2_WEATHER_DISABLED	= BIT(7),
- 	REG_CAPA_V2_40MHZ_ALLOWED	= BIT(8),
--	REG_CAPA_V2_11AX_DISABLED	= BIT(13),
-+	REG_CAPA_V2_11AX_DISABLED	= BIT(10),
- };
- 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+index 8fba190e84cf..cecc32e7dbe8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
+- * Copyright (C) 2018-2020 Intel Corporation
++ * Copyright (C) 2018-2021 Intel Corporation
+  */
+ #include "iwl-trans.h"
+ #include "iwl-fh.h"
+@@ -75,15 +75,6 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
+ 				 const struct fw_img *fw)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+-	u32 ltr_val = CSR_LTR_LONG_VAL_AD_NO_SNOOP_REQ |
+-		      u32_encode_bits(CSR_LTR_LONG_VAL_AD_SCALE_USEC,
+-				      CSR_LTR_LONG_VAL_AD_NO_SNOOP_SCALE) |
+-		      u32_encode_bits(250,
+-				      CSR_LTR_LONG_VAL_AD_NO_SNOOP_VAL) |
+-		      CSR_LTR_LONG_VAL_AD_SNOOP_REQ |
+-		      u32_encode_bits(CSR_LTR_LONG_VAL_AD_SCALE_USEC,
+-				      CSR_LTR_LONG_VAL_AD_SNOOP_SCALE) |
+-		      u32_encode_bits(250, CSR_LTR_LONG_VAL_AD_SNOOP_VAL);
+ 	struct iwl_context_info_gen3 *ctxt_info_gen3;
+ 	struct iwl_prph_scratch *prph_scratch;
+ 	struct iwl_prph_scratch_ctrl_cfg *prph_sc_ctrl;
+@@ -217,26 +208,6 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
+ 	iwl_set_bit(trans, CSR_CTXT_INFO_BOOT_CTRL,
+ 		    CSR_AUTO_FUNC_BOOT_ENA);
+ 
+-	/*
+-	 * To workaround hardware latency issues during the boot process,
+-	 * initialize the LTR to ~250 usec (see ltr_val above).
+-	 * The firmware initializes this again later (to a smaller value).
+-	 */
+-	if ((trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_AX210 ||
+-	     trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_22000) &&
+-	    !trans->trans_cfg->integrated) {
+-		iwl_write32(trans, CSR_LTR_LONG_VAL_AD, ltr_val);
+-	} else if (trans->trans_cfg->integrated &&
+-		   trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_22000) {
+-		iwl_write_prph(trans, HPM_MAC_LTR_CSR, HPM_MAC_LRT_ENABLE_ALL);
+-		iwl_write_prph(trans, HPM_UMAC_LTR, ltr_val);
+-	}
+-
+-	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
+-		iwl_write_umac_prph(trans, UREG_CPU_INIT_RUN, 1);
+-	else
+-		iwl_set_bit(trans, CSR_GP_CNTRL, CSR_AUTO_FUNC_INIT);
+-
+ 	return 0;
+ 
+ err_free_ctxt_info:
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+index d1bb273d6b6d..74ce31fdf45e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+  * Copyright (C) 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2020 Intel Corporation
++ * Copyright (C) 2018-2021 Intel Corporation
+  */
+ #include "iwl-trans.h"
+ #include "iwl-fh.h"
+@@ -240,7 +240,6 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+ 
+ 	/* kick FW self load */
+ 	iwl_write64(trans, CSR_CTXT_INFO_BA, trans_pcie->ctxt_info_dma_addr);
+-	iwl_write_prph(trans, UREG_CPU_INIT_RUN, 1);
+ 
+ 	/* Context info will be released upon alive or failure to get one */
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index 497ef3405da3..94ffc1ae484d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -266,6 +266,34 @@ void iwl_trans_pcie_gen2_fw_alive(struct iwl_trans *trans, u32 scd_addr)
+ 	mutex_unlock(&trans_pcie->mutex);
+ }
+ 
++static void iwl_pcie_set_ltr(struct iwl_trans *trans)
++{
++	u32 ltr_val = CSR_LTR_LONG_VAL_AD_NO_SNOOP_REQ |
++		      u32_encode_bits(CSR_LTR_LONG_VAL_AD_SCALE_USEC,
++				      CSR_LTR_LONG_VAL_AD_NO_SNOOP_SCALE) |
++		      u32_encode_bits(250,
++				      CSR_LTR_LONG_VAL_AD_NO_SNOOP_VAL) |
++		      CSR_LTR_LONG_VAL_AD_SNOOP_REQ |
++		      u32_encode_bits(CSR_LTR_LONG_VAL_AD_SCALE_USEC,
++				      CSR_LTR_LONG_VAL_AD_SNOOP_SCALE) |
++		      u32_encode_bits(250, CSR_LTR_LONG_VAL_AD_SNOOP_VAL);
++
++	/*
++	 * To workaround hardware latency issues during the boot process,
++	 * initialize the LTR to ~250 usec (see ltr_val above).
++	 * The firmware initializes this again later (to a smaller value).
++	 */
++	if ((trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_AX210 ||
++	     trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_22000) &&
++	    !trans->trans_cfg->integrated) {
++		iwl_write32(trans, CSR_LTR_LONG_VAL_AD, ltr_val);
++	} else if (trans->trans_cfg->integrated &&
++		   trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_22000) {
++		iwl_write_prph(trans, HPM_MAC_LTR_CSR, HPM_MAC_LRT_ENABLE_ALL);
++		iwl_write_prph(trans, HPM_UMAC_LTR, ltr_val);
++	}
++}
++
+ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
+ 				 const struct fw_img *fw, bool run_in_rfkill)
+ {
+@@ -332,6 +360,13 @@ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
+ 	if (ret)
+ 		goto out;
+ 
++	iwl_pcie_set_ltr(trans);
++
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
++		iwl_write_umac_prph(trans, UREG_CPU_INIT_RUN, 1);
++	else
++		iwl_write_prph(trans, UREG_CPU_INIT_RUN, 1);
++
+ 	/* re-check RF-Kill state since we may have missed the interrupt */
+ 	hw_rfkill = iwl_pcie_check_hw_rf_kill(trans);
+ 	if (hw_rfkill && !run_in_rfkill)
 -- 
 2.31.0
 
