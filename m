@@ -2,111 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0AC534A603
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Mar 2021 11:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CAF034AA8D
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Mar 2021 15:53:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230105AbhCZK55 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Mar 2021 06:57:57 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:43408 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230070AbhCZK5c (ORCPT
+        id S230174AbhCZOwf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Mar 2021 10:52:35 -0400
+Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]:60392 "EHLO
+        8.mo4.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230016AbhCZOwS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Mar 2021 06:57:32 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1lPk9h-0003Gc-9t; Fri, 26 Mar 2021 12:57:30 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 26 Mar 2021 12:57:23 +0200
-Message-Id: <iwlwifi.20210326125611.23c990843369.I09c262a8f6f9852cc8f513cdcb31a7f8f87dd8af@changeid>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20210326105723.211843-1-luca@coelho.fi>
-References: <20210326105723.211843-1-luca@coelho.fi>
+        Fri, 26 Mar 2021 10:52:18 -0400
+X-Greylist: delayed 8958 seconds by postgrey-1.27 at vger.kernel.org; Fri, 26 Mar 2021 10:52:17 EDT
+Received: from player687.ha.ovh.net (unknown [10.110.171.136])
+        by mo4.mail-out.ovh.net (Postfix) with ESMTP id 2937D26F94C
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Mar 2021 13:22:52 +0100 (CET)
+Received: from webmining-systems.com (lfbn-idf1-1-6-174.w82-124.abo.wanadoo.fr [82.124.102.174])
+        (Authenticated sender: info@webmining-systems.com)
+        by player687.ha.ovh.net (Postfix) with ESMTPSA id BB7061C6FE9AF
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Mar 2021 12:22:51 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-96R0011fb5e9c4-6d78-4f19-bbd9-dc0b98e190ea,
+                    AFE5C79B1FAA7D1EDF7C32D036EF214F06ADB4CD) smtp.auth=info@webmining-systems.com
+X-OVh-ClientIp: 82.124.102.174
+From:   Michal TOMA <michaltoma@sicoop.com>
+To:     linux-wireless@vger.kernel.org
+Subject: RTL8821CE 802.11ac PCIe Wireless Network Adapter - Not handled properly by the rtw_8821ce dirver on Kernel 5.11.6-1
+Date:   Fri, 26 Mar 2021 13:16:25 +0100
+Message-ID: <2846955.Y2WTrdj9rP@linux-9g0r.site>
+Organization: SICOOP
+User-Agent: KMail/4.10.5 (Linux/3.7.10-1.45-desktop; KDE/4.10.5; x86_64; ; )
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH v2 for v5.12 7/7] iwlwifi: mvm: fix beacon protection checks
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Ovh-Tracer-Id: 15139694574004615620
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrudehvddggeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefhvffufffkohgfggfgtgesthfuredttdeivdenucfhrhhomhepofhitghhrghlucfvqffotecuoehmihgthhgrlhhtohhmrgesshhitghoohhprdgtohhmqeenucggtffrrghtthgvrhhnpeegheefleeikeehhfelheekhfetjeffjeekuedvvddvveevffejueegfeekffekvdenucfkpheptddrtddrtddrtddpkedvrdduvdegrddutddvrddujeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrieekjedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehmihgthhgrlhhtohhmrgesshhitghoohhprdgtohhmpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+The RTL8821CE driver doesn't work on several recent kernels (probably since 
+5.9).
 
-Unfortunately, since beacon protection isn't fully available
-yet, we didn't notice that there are problems with it and
-that the replay detection isn't working correctly. We were
-relying only on mac80211, since iwl_mvm_rx_crypto() exits
-when !ieee80211_has_protected(), which is of course true for
-protected (but not encrypted) management frames.
 
-Fix this to properly detect protected (but not encrypted)
-management frames and handle them - we continue to only care
-about beacons since for others everything can and will be
-checked in mac80211.
+journalctl -b | grep 8821
+mars 19 22:49:13 localhost kernel: rtw_8821ce 0000:07:00.0: Firmware version 
+24.8.0, H2C version 12
+mars 19 22:49:13 localhost NetworkManager[639]: <info>  [1616190553.7766] 
+rfkill2: found Wi-Fi radio killswitch (at 
+/sys/devices/pci0000:00/0000:00:1d.4/0000:07:00.0/ieee80211/phy0/rfkill2) 
+(driver rtw_8821ce)
+mars 19 22:49:13 localhost kernel: rtw_8821ce 0000:07:00.0 wlp7s0: renamed 
+from wlan0
+mars 19 22:49:14 localhost kernel: rtw_8821ce 0000:07:00.0: start vif 
+28:39:26:ab:b4:5d on port 0
+mars 19 22:49:14 localhost kernel: rtw_8821ce 0000:07:00.0: stop vif 
+28:39:26:ab:b4:5d on port 0
+mars 19 22:49:14 localhost kernel: rtw_8821ce 0000:07:00.0: start vif 
+7a:36:c4:26:1d:f1 on port 0
+mars 19 22:56:07 linux.local kernel: rtw_8821ce 0000:07:00.0: stop vif 
+7a:36:c4:26:1d:f1 on port 0
+mars 19 22:56:07 linux.local kernel: rtw_8821ce 0000:07:00.0: start vif 
+c2:a0:c3:48:17:58 on port 0
+mars 19 23:03:00 linux.local kernel: rtw_8821ce 0000:07:00.0: stop vif 
+c2:a0:c3:48:17:58 on port 0
+mars 19 23:03:00 linux.local kernel: rtw_8821ce 0000:07:00.0: start vif 
+ae:92:06:47:50:83 on port 0
+mars 19 23:09:52 linux.local kernel: rtw_8821ce 0000:07:00.0: stop vif 
+ae:92:06:47:50:83 on port 0
+...
+And continues like this indefinitely
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Fixes: b1fdc2505abc ("iwlwifi: mvm: advertise BIGTK client support if available")
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+uname -a
+Linux linux.local 5.11.6-1-default #1 SMP Thu Mar 11 16:11:36 UTC 2021 
+(7358b30) x86_64 x86_64 x86_64 GNU/Linux
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index c21736f80c29..af5a6dd81c41 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -272,10 +272,10 @@ static void iwl_mvm_get_signal_strength(struct iwl_mvm *mvm,
- 	rx_status->chain_signal[2] = S8_MIN;
- }
- 
--static int iwl_mvm_rx_mgmt_crypto(struct ieee80211_sta *sta,
--				  struct ieee80211_hdr *hdr,
--				  struct iwl_rx_mpdu_desc *desc,
--				  u32 status)
-+static int iwl_mvm_rx_mgmt_prot(struct ieee80211_sta *sta,
-+				struct ieee80211_hdr *hdr,
-+				struct iwl_rx_mpdu_desc *desc,
-+				u32 status)
- {
- 	struct iwl_mvm_sta *mvmsta;
- 	struct iwl_mvm_vif *mvmvif;
-@@ -285,6 +285,9 @@ static int iwl_mvm_rx_mgmt_crypto(struct ieee80211_sta *sta,
- 	u32 len = le16_to_cpu(desc->mpdu_len);
- 	const u8 *frame = (void *)hdr;
- 
-+	if ((status & IWL_RX_MPDU_STATUS_SEC_MASK) == IWL_RX_MPDU_STATUS_SEC_NONE)
-+		return 0;
-+
- 	/*
- 	 * For non-beacon, we don't really care. But beacons may
- 	 * be filtered out, and we thus need the firmware's replay
-@@ -356,6 +359,10 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	    IWL_RX_MPDU_STATUS_SEC_UNKNOWN && !mvm->monitor_on)
- 		return -1;
- 
-+	if (unlikely(ieee80211_is_mgmt(hdr->frame_control) &&
-+		     !ieee80211_has_protected(hdr->frame_control)))
-+		return iwl_mvm_rx_mgmt_prot(sta, hdr, desc, status);
-+
- 	if (!ieee80211_has_protected(hdr->frame_control) ||
- 	    (status & IWL_RX_MPDU_STATUS_SEC_MASK) ==
- 	    IWL_RX_MPDU_STATUS_SEC_NONE)
-@@ -411,7 +418,7 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 		stats->flag |= RX_FLAG_DECRYPTED;
- 		return 0;
- 	case RX_MPDU_RES_STATUS_SEC_CMAC_GMAC_ENC:
--		return iwl_mvm_rx_mgmt_crypto(sta, hdr, desc, status);
-+		break;
- 	default:
- 		/*
- 		 * Sometimes we can get frames that were not decrypted
--- 
-2.31.0
+rfkill list 
+0: ideapad_wlan: Wireless LAN
+        Soft blocked: no
+        Hard blocked: no
+1: ideapad_bluetooth: Bluetooth
+        Soft blocked: no
+        Hard blocked: no
+2: phy0: Wireless LAN
+        Soft blocked: no
+        Hard blocked: no
 
