@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D91934A597
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Mar 2021 11:31:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75CED34A59A
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Mar 2021 11:31:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230141AbhCZKbQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Mar 2021 06:31:16 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:43322 "EHLO
+        id S230179AbhCZKbS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Mar 2021 06:31:18 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:43328 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230108AbhCZKam (ORCPT
+        with ESMTP id S229893AbhCZKan (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Mar 2021 06:30:42 -0400
+        Fri, 26 Mar 2021 06:30:43 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1lPjjj-0003EY-TD; Fri, 26 Mar 2021 12:30:41 +0200
+        id 1lPjjk-0003EY-Li; Fri, 26 Mar 2021 12:30:42 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 26 Mar 2021 12:30:33 +0200
-Message-Id: <20210326103035.206088-6-luca@coelho.fi>
+Date:   Fri, 26 Mar 2021 12:30:34 +0200
+Message-Id: <20210326103035.206088-7-luca@coelho.fi>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210326103035.206088-1-luca@coelho.fi>
 References: <20210326103035.206088-1-luca@coelho.fi>
@@ -32,73 +32,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH for v5.12 5/7] iwlwifi: pcie: add support for So-F devices
+Subject: [PATCH for v5.12 6/7] mvm: rfi: don't lock mvm->mutex when sending config command
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-We have a new type of device that has a different MAC ID, but is
-otherwise identical to So devices.  Add rules to match this new ID
-accordingly.
+The mutex is already locked in iwl_mvm_mac_start.
 
-Change-Id: I2b6ef794c2073a18779dd40fb53f8c942d1ab42d
+Change-Id: I82a0312389032d07c3b478bef3e938e06bfa7df6
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Fixes: 21254908cbe9 ("iwlwifi: mvm: add RFI-M support")
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  1 +
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 26 ++++++++++++++++++-
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 7 +++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c     | 6 +++---
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 75f99ff7f908..c4f5da76f1c0 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -414,6 +414,7 @@ struct iwl_cfg {
- #define IWL_CFG_MAC_TYPE_QNJ		0x36
- #define IWL_CFG_MAC_TYPE_SO		0x37
- #define IWL_CFG_MAC_TYPE_SNJ		0x42
-+#define IWL_CFG_MAC_TYPE_SOF		0x43
- #define IWL_CFG_MAC_TYPE_MA		0x44
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 130760572262..34ddef97b099 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1786,10 +1786,13 @@ static ssize_t iwl_dbgfs_rfi_freq_table_write(struct iwl_mvm *mvm, char *buf,
+ 		return -EINVAL;
  
- #define IWL_CFG_RF_TYPE_TH		0x105
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 4e2219b46db2..558a0b2ef0fc 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1041,7 +1041,31 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
- 		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
--		      iwl_cfg_so_a0_hr_a0, iwl_ax201_name)
-+		      iwl_cfg_so_a0_hr_a0, iwl_ax201_name),
-+
-+/* So-F with Hr */
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      iwl_cfg_so_a0_hr_a0, iwl_ax203_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      iwl_cfg_so_a0_hr_a0, iwl_ax101_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      iwl_cfg_so_a0_hr_a0, iwl_ax201_name),
-+
-+/* So-F with Gf */
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_name),
+ 	/* value zero triggers re-sending the default table to the device */
+-	if (!op_id)
++	if (!op_id) {
++		mutex_lock(&mvm->mutex);
+ 		ret = iwl_rfi_send_config_cmd(mvm, NULL);
+-	else
++		mutex_unlock(&mvm->mutex);
++	} else {
+ 		ret = -EOPNOTSUPP; /* in the future a new table will be added */
++	}
  
- #endif /* CONFIG_IWLMVM */
- };
+ 	return ret ?: count;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+index 873919048143..0b818067067c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2020 Intel Corporation
++ * Copyright (C) 2020 - 2021 Intel Corporation
+  */
+ 
+ #include "mvm.h"
+@@ -66,6 +66,8 @@ int iwl_rfi_send_config_cmd(struct iwl_mvm *mvm, struct iwl_rfi_lut_entry *rfi_t
+ 	if (!fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_RFIM_SUPPORT))
+ 		return -EOPNOTSUPP;
+ 
++	lockdep_assert_held(&mvm->mutex);
++
+ 	/* in case no table is passed, use the default one */
+ 	if (!rfi_table) {
+ 		memcpy(cmd.table, iwl_rfi_table, sizeof(cmd.table));
+@@ -75,9 +77,7 @@ int iwl_rfi_send_config_cmd(struct iwl_mvm *mvm, struct iwl_rfi_lut_entry *rfi_t
+ 		cmd.oem = 1;
+ 	}
+ 
+-	mutex_lock(&mvm->mutex);
+ 	ret = iwl_mvm_send_cmd(mvm, &hcmd);
+-	mutex_unlock(&mvm->mutex);
+ 
+ 	if (ret)
+ 		IWL_ERR(mvm, "Failed to send RFI config cmd %d\n", ret);
 -- 
 2.31.0
 
