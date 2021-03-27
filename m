@@ -2,295 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9F4034B7FA
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Mar 2021 16:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC5634B91C
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Mar 2021 20:29:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230247AbhC0P0o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 Mar 2021 11:26:44 -0400
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:38551 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbhC0P0b (ORCPT
+        id S230043AbhC0T2i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 27 Mar 2021 15:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56344 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230002AbhC0T21 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 Mar 2021 11:26:31 -0400
-Received: by mail-oi1-f182.google.com with SMTP id f9so8834127oiw.5;
-        Sat, 27 Mar 2021 08:26:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=I893goob5tyFPm294vsvQykX3BuSFmnVNehAgzju890=;
-        b=A6ASaOW57tMuOJIyh+YXG0i6QmUVzm2Aj9mX6iV5PLpB2z4jDVfX2Djh6Gbhg2rtND
-         o8Vty7nkuhCt70AM6UC/C1B7af4Z46Tr81rdSCMaIMqXxuq1a7ISfNd3i7QKBRrHhUgu
-         n9BXp1JnSo4URZN3gyXG0Af11xZ8VFS49UoNomoFjHeH3536o4T4Qv7cus9hZXRGar/U
-         vSW1oJtPuvGCzCN1zfFrG9fpJR1UkVMHGYFwZpVipOjtemZgot71l4HR+EiTd4D1Bf0A
-         h/N5QZtNUeW++0EHekp65+NrFzZIiFZL+QfazS4TquylUYlhPe7/rCwoLbQqBNN89fGE
-         cAfw==
-X-Gm-Message-State: AOAM530OPIb2wjGE8Cay6tx8Ej8DSXp2mCm8/jYpk8mEGL7dTMR6EOGo
-        hVItg/3piqhDcw6LL+ebJw==
-X-Google-Smtp-Source: ABdhPJzza96DSk99NTu0KO32DLmMvL27GelIvyg54zLrp08mra9FN88AsscFAUa5Rp+gACJsjPBkUw==
-X-Received: by 2002:a05:6808:8e4:: with SMTP id d4mr13926258oic.114.1616858790880;
-        Sat, 27 Mar 2021 08:26:30 -0700 (PDT)
-Received: from robh.at.kernel.org ([172.58.102.185])
-        by smtp.gmail.com with ESMTPSA id j72sm2436587oih.46.2021.03.27.08.26.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Mar 2021 08:26:29 -0700 (PDT)
-Received: (nullmailer pid 147646 invoked by uid 1000);
-        Sat, 27 Mar 2021 15:26:25 -0000
-Date:   Sat, 27 Mar 2021 09:26:25 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
-        ryder.lee@mediatek.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] dt-bindings:net:wireless:mediatek,mt76: txt to
- yaml conversion
-Message-ID: <20210327152625.GA140118@robh.at.kernel.org>
-References: <cover.1616621229.git.lorenzo@kernel.org>
- <ccfdfb7236cc12e7f78d89e640a6b02b8e9b7bfb.1616621229.git.lorenzo@kernel.org>
+        Sat, 27 Mar 2021 15:28:27 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9106DC0613B1
+        for <linux-wireless@vger.kernel.org>; Sat, 27 Mar 2021 12:28:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=uYnf1IKlMCYCPygSlBm3j96oJ03ojNQFUX944rUctNw=; b=IW12M+Cv33RD8bzqVwkwQIDqwz
+        PvPnwJ7Si+XyPxRZs5cEZpgA2iscMX3oYHhz2Axv5wu8onXGiN+KiXIfhzlWeQVGBvJnJTCOdILzV
+        LOCpKHal6HGiPjq+uZNIK4DqJIFoMJvy2FdZjNtfIOBa1zZyxNRYWOk3GroNY0+QdIUE=;
+Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lQEbd-0003V0-7C; Sat, 27 Mar 2021 20:28:21 +0100
+To:     Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <ae8caa3a01d527e464b09b4932d6cca14b1d49a2.1616831454.git.ryder.lee@mediatek.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH] mt76: report Rx timestamp
+Message-ID: <41727e36-e165-5b8e-4d76-be96f61bc83e@nbd.name>
+Date:   Sat, 27 Mar 2021 20:28:20 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
+ Gecko/20100101 Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ccfdfb7236cc12e7f78d89e640a6b02b8e9b7bfb.1616621229.git.lorenzo@kernel.org>
+In-Reply-To: <ae8caa3a01d527e464b09b4932d6cca14b1d49a2.1616831454.git.ryder.lee@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 24, 2021 at 10:50:00PM +0100, Lorenzo Bianconi wrote:
-> Convert mt76 dts bindings from .txt to .yaml
+
+On 2021-03-27 08:55, Ryder Lee wrote:
+> Frame reception timestamp (low 32-bits) that indicates the value of the
+> local TSF timer value at the time the first bit of the MAC header in the
+> received frame (PPDU unit) arriving at the MAC.
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 > ---
->  .../bindings/net/wireless/mediatek,mt76.txt   |  78 -----------
->  .../bindings/net/wireless/mediatek,mt76.yaml  | 122 ++++++++++++++++++
->  2 files changed, 122 insertions(+), 78 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+>  drivers/net/wireless/mediatek/mt76/agg-rx.c   |  2 +-
+>  drivers/net/wireless/mediatek/mt76/mac80211.c |  1 +
+>  drivers/net/wireless/mediatek/mt76/mt76.h     |  3 +-
+>  .../net/wireless/mediatek/mt76/mt7603/mac.c   | 31 ++++++++++--------
+>  .../wireless/mediatek/mt76/mt7603/mt7603.h    |  2 +-
+>  .../net/wireless/mediatek/mt76/mt7615/mac.c   | 32 ++++++++++---------
+>  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 +-
+>  .../net/wireless/mediatek/mt76/mt7915/mac.c   | 29 +++++++++--------
+>  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +-
+>  .../net/wireless/mediatek/mt76/mt7921/mac.c   | 29 +++++++++--------
+>  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 +-
+>  11 files changed, 74 insertions(+), 61 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
-> deleted file mode 100644
-> index ab7e7a00e534..000000000000
-> --- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt
-> +++ /dev/null
-> @@ -1,78 +0,0 @@
-> -* MediaTek mt76xx devices
-> -
-> -This node provides properties for configuring the MediaTek mt76xx wireless
-> -device. The node is expected to be specified as a child node of the PCI
-> -controller to which the wireless chip is connected.
-> -
-> -Alternatively, it can specify the wireless part of the MT7628/MT7688 or
-> -MT7622 SoC. For SoC, use the following compatible strings:
-> -
-> -compatible:
-> -- "mediatek,mt7628-wmac" for MT7628/MT7688
-> -- "mediatek,mt7622-wmac" for MT7622
-> -
-> -properties:
-> -- reg: Address and length of the register set for the device.
-> -- interrupts: Main device interrupt
-> -
-> -MT7622 specific properties:
-> -- power-domains: phandle to the power domain that the WMAC is part of
-> -- mediatek,infracfg: phandle to the infrastructure bus fabric syscon node
-> -
-> -Optional properties:
-> -
-> -- ieee80211-freq-limit: See ieee80211.txt
-> -- mediatek,mtd-eeprom: Specify a MTD partition + offset containing EEPROM data
-> -- big-endian: if the radio eeprom partition is written in big-endian, specify
-> -  this property
-> -- mediatek,eeprom-merge-otp: Merge EEPROM data with OTP data. Can be used on
-> -  boards where the flash calibration data is generic and specific calibration
-> -  data should be pulled from the OTP ROM
-> -
-> -The MAC address can as well be set with corresponding optional properties
-> -defined in net/ethernet.txt.
-> -
-> -Optional nodes:
-> -- led: Properties for a connected LED
-> -  Optional properties:
-> -    - led-sources: See Documentation/devicetree/bindings/leds/common.txt
-> -
-> -&pcie {
-> -	pcie0 {
-> -		wifi@0,0 {
-> -			compatible = "mediatek,mt76";
-> -			reg = <0x0000 0 0 0 0>;
-> -			ieee80211-freq-limit = <5000000 6000000>;
-> -			mediatek,mtd-eeprom = <&factory 0x8000>;
-> -			big-endian;
-> -
-> -			led {
-> -				led-sources = <2>;
-> -			};
-> -		};
-> -	};
-> -};
-> -
-> -MT7628 example:
-> -
-> -wmac: wmac@10300000 {
-> -	compatible = "mediatek,mt7628-wmac";
-> -	reg = <0x10300000 0x100000>;
-> -
-> -	interrupt-parent = <&cpuintc>;
-> -	interrupts = <6>;
-> -
-> -	mediatek,mtd-eeprom = <&factory 0x0000>;
-> -};
-> -
-> -MT7622 example:
-> -
-> -wmac: wmac@18000000 {
-> -	compatible = "mediatek,mt7622-wmac";
-> -	reg = <0 0x18000000 0 0x100000>;
-> -	interrupts = <GIC_SPI 211 IRQ_TYPE_LEVEL_LOW>;
-> -
-> -	mediatek,infracfg = <&infracfg>;
-> -
-> -	power-domains = <&scpsys MT7622_POWER_DOMAIN_WB>;
-> -};
-> diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-> new file mode 100644
-> index 000000000000..65b2d82caad4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-> @@ -0,0 +1,122 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-> +
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/wireless/mediatek,mt76.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: MediaTek mt76 wireless devices Generic Binding
-> +
-> +maintainers:
-> +  - Felix Fietkau <nbd@nbd.name>
-> +  - Lorenzo Bianconi <lorenzo@kernel.org>
-> +  - Ryder Lee <ryder.lee@mediatek.com>
-> +
-> +description: |
-> +  This node provides properties for configuring the MediaTek mt76xx
-> +  wireless device. The node is expected to be specified as a child
-> +  node of the PCI controller to which the wireless chip is connected.
-> +  Alternatively, it can specify the wireless part of the MT7628/MT7688
-> +  or MT7622 SoC.
-> +
-> +allOf:
-> +  - $ref: ieee80211.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - mediatek,mt76
-> +      - mediatek,mt7628-wmac
-> +      - mediatek,mt7622-wmac
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  mediatek,infracfg:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description:
-> +      Phandle to the infrastructure bus fabric syscon node.
-> +      This property is MT7622 specific
-> +
-> +  ieee80211-freq-limit:
-> +    $ref: ieee80211.yaml#
+> diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+> index 144e8a8910ba..a37b8db979c6 100644
+> --- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
+> +++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+> @@ -77,7 +77,7 @@ mt76_rx_aggr_check_release(struct mt76_rx_tid *tid, struct sk_buff_head *frames)
+>  		nframes--;
+>  		status = (struct mt76_rx_status *)skb->cb;
+>  		if (!time_after(jiffies,
+> -				status->reorder_time +
+> +				(unsigned long)status->reorder_time +
+>  				mt76_aggr_tid_to_timeo(tid->num)))
+>  			continue;
+This doesn't work, you need to replace the time_after with a function
+that takes u32 wraparound into account.
 
-Drop the $ref.
-
-Just 'ieee80211-freq-limit: true' unless there are some constraints you 
-can define like how many entries.
-
-> +
-> +  mediatek,mtd-eeprom:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    description:
-> +      Phandle to a MTD partition + offset containing EEPROM data
-> +
-> +  big-endian:
-> +    type: boolean
-> +    description:
-> +      Specify if the radio eeprom partition is written in big-endian
-
-That's not how this property is defined. It applied to how 'reg' is 
-accessed. But I guess it's already used...
-
-> +
-> +  mediatek,eeprom-merge-otp:
-> +    type: boolean
-> +    description:
-> +      Merge EEPROM data with OTP data. Can be used on boards where the flash
-> +      calibration data is generic and specific calibration data should be
-> +      pulled from the OTP ROM
-> +
-> +  led:
-> +    type: object
-> +    $ref: /schemas/leds/common.yaml#
-> +    additionalProperties: false
-> +    properties:
-> +      led-sources:
-> +        maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +unevaluatedProperties: false
-
-'additionalProperties: false' should work here and is a bit stricter.
-
-> +
-> +examples:
-> +  - |
-> +    pcie0 {
-> +      #address-cells = <3>;
-> +      #size-cells = <2>;
-> +      wifi@0,0 {
-> +        compatible = "mediatek,mt76";
-> +        reg = <0x0000 0 0 0 0>;
-> +        ieee80211-freq-limit = <5000000 6000000>;
-> +        mediatek,mtd-eeprom = <&factory 0x8000>;
-> +        big-endian;
-> +
-> +        led {
-> +          led-sources = <2>;
-> +        };
-> +      };
-> +    };
-> +
-> +  - |
-> +    wifi@10300000 {
-> +      compatible = "mediatek,mt7628-wmac";
-> +      reg = <0x10300000 0x100000>;
-> +
-> +      interrupt-parent = <&cpuintc>;
-> +      interrupts = <6>;
-> +
-> +      mediatek,mtd-eeprom = <&factory 0x0>;
-> +    };
-> +
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    wifi@18000000 {
-> +      compatible = "mediatek,mt7622-wmac";
-> +      reg = <0x10300000 0x100000>;
-> +      interrupts = <GIC_SPI 211 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +      mediatek,infracfg = <&infracfg>;
-> +
-> +      power-domains = <&scpsys 3>;
-> +    };
-> -- 
-> 2.30.2
-> 
+- Felix
