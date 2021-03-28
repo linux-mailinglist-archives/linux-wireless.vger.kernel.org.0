@@ -2,91 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C86B34BA3A
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Mar 2021 01:00:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A2F434BC53
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Mar 2021 14:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230516AbhC0X74 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 Mar 2021 19:59:56 -0400
-Received: from mail-out.m-online.net ([212.18.0.9]:58623 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230176AbhC0X74 (ORCPT
+        id S230144AbhC1Mbt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 Mar 2021 08:31:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229503AbhC1MbQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 Mar 2021 19:59:56 -0400
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4F7G6c6YR1z1qsZw;
-        Sun, 28 Mar 2021 00:59:52 +0100 (CET)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4F7G6c3r1Dz1qsXM;
-        Sun, 28 Mar 2021 00:59:52 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id YQEiKXlhb9gp; Sun, 28 Mar 2021 00:59:51 +0100 (CET)
-X-Auth-Info: 159iZLDHm8HXxgK/BQMih+LkW2l4iB+we4VHKoXqeIE=
-Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Sun, 28 Mar 2021 00:59:51 +0100 (CET)
-From:   Marek Vasut <marex@denx.de>
+        Sun, 28 Mar 2021 08:31:16 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD3BC0613B1
+        for <linux-wireless@vger.kernel.org>; Sun, 28 Mar 2021 05:31:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=LmOaA+qG3kp/Cd6KttDCu/vz2MQC2txR191H0I3M3KY=; b=fFOn/QNeu84Z868auMk7VZYabr
+        OZhA+kg5NzOMrgARgE4lQwXhqYWnB3x907GRmzpNrS5OMVUPdhfcoeCLympcl63JXFQnxM4bd+FL/
+        h9UlUCyrqJNfv4XxR4bx1X1/+x3wi7c7UCUpZD+nNKkNSDnmNcOLTff3k3E+2kLZldYo=;
+Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lQUZQ-0001Tv-Un
+        for linux-wireless@vger.kernel.org; Sun, 28 Mar 2021 14:31:09 +0200
+From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>,
-        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Karun Eagalapati <karun256@gmail.com>,
-        Martin Kepplinger <martink@posteo.de>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH] rsi: Use resume_noirq for SDIO
-Date:   Sun, 28 Mar 2021 00:59:32 +0100
-Message-Id: <20210327235932.175896-1-marex@denx.de>
-X-Mailer: git-send-email 2.30.2
+Subject: [PATCH 1/2] mt76: mt7615: limit firmware log message printk to buffer length
+Date:   Sun, 28 Mar 2021 14:31:06 +0200
+Message-Id: <20210328123107.74828-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The rsi_resume() does access the bus to enable interrupts on the RSI
-SDIO WiFi card, however when calling sdio_claim_host() in the resume
-path, it is possible the bus is already claimed and sdio_claim_host()
-spins indefinitelly. Enable the SDIO card interrupts in resume_noirq
-instead to prevent anything else from claiming the SDIO bus first.
+Avoid including garbage from previous rx data
 
-Fixes: 20db07332736 ("rsi: sdio suspend and resume support")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Cc: Amitkumar Karwar <amit.karwar@redpinesignals.com>
-Cc: Angus Ainslie <angus@akkea.ca>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Karun Eagalapati <karun256@gmail.com>
-Cc: Martin Kepplinger <martink@posteo.de>
-Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc: Siva Rebbagondla <siva8118@gmail.com>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index 122174fca672..8465a4ee9b61 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -1513,7 +1513,7 @@ static int rsi_restore(struct device *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 3855acbd4a5d..600c5366c099 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -424,7 +424,8 @@ mt7615_mcu_rx_log_message(struct mt7615_dev *dev, struct sk_buff *skb)
+ 		break;
+ 	}
+ 
+-	wiphy_info(mt76_hw(dev)->wiphy, "%s: %s", type, data);
++	wiphy_info(mt76_hw(dev)->wiphy, "%s: %*s", type,
++		   (int)(skb->len - sizeof(*rxd)), data);
  }
- static const struct dev_pm_ops rsi_pm_ops = {
- 	.suspend = rsi_suspend,
--	.resume = rsi_resume,
-+	.resume_noirq = rsi_resume,
- 	.freeze = rsi_freeze,
- 	.thaw = rsi_thaw,
- 	.restore = rsi_restore,
+ 
+ static void
 -- 
-2.30.2
+2.30.1
 
