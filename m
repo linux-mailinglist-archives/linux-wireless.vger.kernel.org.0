@@ -2,78 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 806DC34CC0F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Mar 2021 11:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1377734D530
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Mar 2021 18:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235803AbhC2IzU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Mar 2021 04:55:20 -0400
-Received: from spam.zju.edu.cn ([61.164.42.155]:19808 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S236382AbhC2Ix3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Mar 2021 04:53:29 -0400
-Received: from localhost.localdomain (unknown [10.192.140.4])
-        by mail-app3 (Coremail) with SMTP id cC_KCgA3P5dmlWFgxK5pAA--.51681S4;
-        Mon, 29 Mar 2021 16:53:00 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Jouni Malinen <j@w1.fi>, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Leon Romanovsky <leon@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] hostap: Fix memleak in prism2_config
-Date:   Mon, 29 Mar 2021 16:52:43 +0800
-Message-Id: <20210329085246.24586-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: cC_KCgA3P5dmlWFgxK5pAA--.51681S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7Jw1kCw4rZrW5AF15Cr18Grg_yoWfAFX_Cr
-        W2vFn5XrykA3409r1UCFsxZFyIyF1DZa48ZF1ktF95JryUXrZ7t34fZr1ay3s3Cw4q9ry3
-        Cr4qqF1Ikas0gjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbskFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26rxl6s0DM28EF7xvwVC2z280
-        aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07
-        x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18
-        McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
-        1lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
-        7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-        C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-        wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-        v20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2
-        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73Uj
-        IFyTuYvjfUoOJ5UUUUU
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAg4HBlZdtSzMkgBNsM
+        id S230475AbhC2Qdg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Mar 2021 12:33:36 -0400
+Received: from mail.avenirts.com ([202.53.11.28]:46002 "EHLO email.indiamr.com"
+        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S230434AbhC2QdO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Mar 2021 12:33:14 -0400
+X-Greylist: delayed 12545 seconds by postgrey-1.27 at vger.kernel.org; Mon, 29 Mar 2021 12:33:14 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by email.indiamr.com (Postfix) with ESMTP id BCCA63044CCED
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Mar 2021 16:48:14 +0530 (IST)
+Received: from email.indiamr.com ([127.0.0.1])
+        by localhost (email.indiamr.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id rZ4Q8SsE-V_F for <linux-wireless@vger.kernel.org>;
+        Mon, 29 Mar 2021 16:48:14 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by email.indiamr.com (Postfix) with ESMTP id 1F88130398E8B
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Mar 2021 16:48:14 +0530 (IST)
+X-Virus-Scanned: amavisd-new at indiamr.com
+Received: from email.indiamr.com ([127.0.0.1])
+        by localhost (email.indiamr.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id GBEit04u-FtD for <linux-wireless@vger.kernel.org>;
+        Mon, 29 Mar 2021 16:48:14 +0530 (IST)
+Received: from User (gateway [192.168.1.1])
+        by email.indiamr.com (Postfix) with SMTP id 1382A303CE18A
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Mar 2021 16:48:12 +0530 (IST)
+Reply-To: <j.t.elyseerene@gmail.com>
+From:   "Jacquet Thierry Elysee Rene" <aaa@nourmail.com.sa>
+To:     linux-wireless@vger.kernel.org
+Subject: Investment Offer
+Date:   Mon, 29 Mar 2021 02:17:39 -0700
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20210329111813.1382A303CE18A@email.indiamr.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When prism2_hw_config() fails, we just return an error code
-without any resource release, which may lead to memleak.
+Attention Sir,
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
- drivers/net/wireless/intersil/hostap/hostap_cs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+I represent an investor seeking to invest  in any lucrative investment in your country, If you have a solid background and the idea of making good profit in real estate or in any  business, Please write to me for possible business cooperation. My email is     j.t.elyseerene@gmail.com
 
-diff --git a/drivers/net/wireless/intersil/hostap/hostap_cs.c b/drivers/net/wireless/intersil/hostap/hostap_cs.c
-index ec7db2badc40..7dc16ab50ad6 100644
---- a/drivers/net/wireless/intersil/hostap/hostap_cs.c
-+++ b/drivers/net/wireless/intersil/hostap/hostap_cs.c
-@@ -536,10 +536,10 @@ static int prism2_config(struct pcmcia_device *link)
- 	sandisk_enable_wireless(dev);
- 
- 	ret = prism2_hw_config(dev, 1);
--	if (!ret)
--		ret = hostap_hw_ready(dev);
-+	if (ret)
-+		goto failed;
- 
--	return ret;
-+	return hostap_hw_ready(dev);;
- 
-  failed:
- 	kfree(hw_priv);
--- 
-2.17.1
+Regards,
+Jacquet Thierry Elysee Rene. 
 
