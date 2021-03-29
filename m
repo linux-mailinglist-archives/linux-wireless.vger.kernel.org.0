@@ -2,94 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 836F534CE61
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Mar 2021 13:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1D8F34CED5
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Mar 2021 13:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231653AbhC2LAu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Mar 2021 07:00:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55590 "EHLO
+        id S232688AbhC2LY7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Mar 2021 07:24:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232580AbhC2LAj (ORCPT
+        with ESMTP id S231716AbhC2LYv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Mar 2021 07:00:39 -0400
+        Mon, 29 Mar 2021 07:24:51 -0400
 Received: from ustc.edu.cn (email6.ustc.edu.cn [IPv6:2001:da8:d800::8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B287BC061574;
-        Mon, 29 Mar 2021 04:00:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9548CC061574;
+        Mon, 29 Mar 2021 04:24:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=mail.ustc.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-        Message-Id:MIME-Version:Content-Transfer-Encoding; bh=6WGqTp8LlJ
-        59ua+GVPvEnMczMwTS+/11WKeKOjgGhoM=; b=Shxtg7AXlGvy+aTBuQuhlIRvat
-        EmNogThRBfqgGDUw848aj+v8AtTHJJ58E88tQrIV7DF/Wy4nEU2yCYNJlH4czxse
-        2kiMDZqbP5EX/uZSMDWCg7rpKQGr/J1GKEkvHsdP2J6jvcArWSZvCehi1flnBkgz
-        nEYtfV+lt7azcc+mc=
+        Message-Id:MIME-Version:Content-Transfer-Encoding; bh=qxbP5+Kk9h
+        wkXbfb+CGZvxYCqM6EZhUj+fs9Awbi1jE=; b=DzdtN7Zo4pRvyQz9R3psxX4ID9
+        1LJvAQyZk0ZC7OgcaTGYj3YI8unBCsR+jKCoSrs4PxL1uU12/d9m1AcS/YshW/wc
+        tGUw72i6K9wq4RVchudFotPjlmxpAGnz2p6cwQ6ft9L3zSzM3VXRN6RFNITH6rIE
+        olI7NoGF6Y1JIhe7U=
 Received: from ubuntu.localdomain (unknown [202.38.69.14])
-        by newmailweb.ustc.edu.cn (Coremail) with SMTP id LkAmygD3_39Hs2Fgv+xmAA--.569S4;
-        Mon, 29 Mar 2021 19:00:23 +0800 (CST)
+        by newmailweb.ustc.edu.cn (Coremail) with SMTP id LkAmygAnLkL1uGFg_SFnAA--.609S4;
+        Mon, 29 Mar 2021 19:24:38 +0800 (CST)
 From:   Lv Yunlong <lyl2019@mail.ustc.edu.cn>
-To:     j@w1.fi, kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+To:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
+        huxinming820@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, Lv Yunlong <lyl2019@mail.ustc.edu.cn>
-Subject: [PATCH] wireless: hostap: Fix a use after free in hostap_80211_rx
-Date:   Mon, 29 Mar 2021 04:00:21 -0700
-Message-Id: <20210329110021.7497-1-lyl2019@mail.ustc.edu.cn>
+Subject: [PATCH] wireless/marvell/mwifiex: Fix a double free in mwifiex_send_tdls_action_frame
+Date:   Mon, 29 Mar 2021 04:24:35 -0700
+Message-Id: <20210329112435.7960-1-lyl2019@mail.ustc.edu.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: LkAmygD3_39Hs2Fgv+xmAA--.569S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7ur17Ww4UZry5ZrWDWrWrAFb_yoW8XFyfpF
-        Z5Cay3Krn8JF1UA34xXF1xCFyrXa1UJas3WFyUC3WF9Fn8XFn5K3sY9FyUKF15W39Yk3Wf
-        JFs8tw47AasxG37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID: LkAmygAnLkL1uGFg_SFnAA--.609S4
+X-Coremail-Antispam: 1UD129KBjvJXoWrKw4kZryfGrWxur47AF1fWFg_yoW8Jr13pw
+        sxC3s3urW8Ar1UCr1DCFWkGFWFgasxK34akrsrAw15WrZ3G34ftF12ga40kr15Xrs5Zr17
+        ZF4jqF15AFs3CrDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUB014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
         rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-        JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-        CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-        F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-        4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-        648v4I1lc2xSY4AK67AK6r4kMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-        4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-        67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-        x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Wr1j6rW3Jr1lIxAI
-        cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-        nxnUUI43ZEXa7VUbU5r5UUUUU==
+        1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+        6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+        Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+        0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+        rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY02Avz4vE14v_Gw4l42xK82IYc2Ij64vIr4
+        1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
+        67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
+        8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAv
+        wI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+        0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU5UDJDUUUU
 X-CM-SenderInfo: ho1ojiyrz6zt1loo32lwfovvfxof0/
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Function hostap_80211_rx() calls prism2_rx_80211(..,skb,..). In
-prism2_rx_80211, i found that the skb could be freed by dev_kfree_skb_any(skb)
-and return 0. Also could be freed by netif_rx(skb) when netif_rx return
-NET_RX_DROP.
+In mwifiex_send_tdls_action_frame, it calls mwifiex_construct_tdls_action_frame
+(..,skb). The skb will be freed in mwifiex_construct_tdls_action_frame() when
+it is failed. But when mwifiex_construct_tdls_action_frame() returns error,
+the skb will be freed in the second time by dev_kfree_skb_any(skb).
 
-But after called the prism2_rx_80211(..,skb,..), the skb is used by skb->len.
+My patch removes the redundant dev_kfree_skb_any(skb) when
+mwifiex_construct_tdls_action_frame() failed.
 
-As the new skb->len is returned by prism2_rx_80211(), my patch uses a variable
-len to repalce skb->len. According to another useage of prism2_rx_80211 in
-monitor_rx().
-
+Fixes: b23bce2965680 ("mwifiex: add tdls_mgmt handler support")
 Signed-off-by: Lv Yunlong <lyl2019@mail.ustc.edu.cn>
 ---
- drivers/net/wireless/intersil/hostap/hostap_80211_rx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/tdls.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intersil/hostap/hostap_80211_rx.c b/drivers/net/wireless/intersil/hostap/hostap_80211_rx.c
-index 61be822f90b5..a45ee7b35533 100644
---- a/drivers/net/wireless/intersil/hostap/hostap_80211_rx.c
-+++ b/drivers/net/wireless/intersil/hostap/hostap_80211_rx.c
-@@ -1016,10 +1016,10 @@ void hostap_80211_rx(struct net_device *dev, struct sk_buff *skb,
- 			if (local->hostapd && local->apdev) {
- 				/* Send IEEE 802.1X frames to the user
- 				 * space daemon for processing */
--				prism2_rx_80211(local->apdev, skb, rx_stats,
-+				int len = prism2_rx_80211(local->apdev, skb, rx_stats,
- 						PRISM2_RX_MGMT);
- 				local->apdevstats.rx_packets++;
--				local->apdevstats.rx_bytes += skb->len;
-+				local->apdevstats.rx_bytes += len;
- 				goto rx_exit;
- 			}
- 		} else if (!frame_authorized) {
+diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
+index 97bb87c3676b..8d4d0a9cf6ac 100644
+--- a/drivers/net/wireless/marvell/mwifiex/tdls.c
++++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+@@ -856,7 +856,6 @@ int mwifiex_send_tdls_action_frame(struct mwifiex_private *priv, const u8 *peer,
+ 	if (mwifiex_construct_tdls_action_frame(priv, peer, action_code,
+ 						dialog_token, status_code,
+ 						skb)) {
+-		dev_kfree_skb_any(skb);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.25.1
 
