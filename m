@@ -2,107 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1446234E35E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 10:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2276434E389
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 10:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbhC3Ilt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 04:41:49 -0400
-Received: from mx2.suse.de ([195.135.220.15]:55554 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230224AbhC3Ilj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 04:41:39 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1617093697; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=jiLzz+FDg8IDgOr7Ru1IW7IRXYaqlH8yrJkDxBSOd+M=;
-        b=SwyQOSqvaO5avOz2XsxkAeyYpWcAxuEpeTup5y2W/3hjoJIa9VL+ySLWFEDXOGMXYYzaNj
-        yfuPCkvCrHUDqDn4OiHjX+VW5qEwgFf/bjJtmVzQs0eem+tKxgSvbAVrRlz0EIt6ankmR8
-        9g4gU0a0vUOWreF+dSJDr1Ih1BW0A9I=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id F0DDEB1C1;
-        Tue, 30 Mar 2021 08:41:36 +0000 (UTC)
-Date:   Tue, 30 Mar 2021 10:41:34 +0200
-From:   Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, Martin Sebor <msebor@gcc.gnu.org>,
-        Tejun Heo <tj@kernel.org>, Zefan Li <lizefan.x@bytedance.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
-        Ning Sun <ning.sun@intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Simon Kelley <simon@thekelleys.org.uk>,
-        James Smart <james.smart@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Anders Larsen <al@alarsen.net>,
-        Serge Hallyn <serge@hallyn.com>,
-        Imre Deak <imre.deak@intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        tboot-devel@lists.sourceforge.net, intel-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-scsi@vger.kernel.org, cgroups@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Roman Gushchin <guro@fb.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andriin@fb.com>, Odin Ugedal <odin@uged.al>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: Re: [PATCH 06/11] cgroup: fix -Wzero-length-bounds warnings
-Message-ID: <YGLkPjSBdgpriC0E@blackbook>
-References: <20210322160253.4032422-1-arnd@kernel.org>
- <20210322160253.4032422-7-arnd@kernel.org>
+        id S230243AbhC3Iwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 04:52:40 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:56954 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231522AbhC3Iw3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Mar 2021 04:52:29 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12U8nimt113663;
+        Tue, 30 Mar 2021 08:52:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=CIdTUhxQ5sUljlJ3IEDY20xLXDmCvRKKNOWdV2vV90w=;
+ b=LkEwy7b3uhZKwhWN4JyIrsM/oK9yvj7J6OaxyZJoJoiaX/kJijRbkgpucuogoY82rj+K
+ AtbP/qHM/S2KWHIa9l67UlNz9ABKd7ygK998cJarzju43imw8xegJNYQhMgLBtgrufF8
+ dfJ54bGHNrIKjJuPVY+IKQZ9PEi6yr+v7YmB708wZ8stlU9Pqq1XxoJ/4R2WMqRcGfQw
+ UITM8vRjq8eHclRN1YREGPL03BqGzH3RV0zvm57fhUSsPchpZghRdXv8f71ubgt4L9HS
+ wpUFqO9UqSx7/AjvkkomSGJywV2xNAt9nDkqIwZd8g8Rcxsec2v1oBK1lcX//bH8tWoW Qw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 37hvnm6cwj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 30 Mar 2021 08:52:24 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12U8oZxR081352;
+        Tue, 30 Mar 2021 08:52:22 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 37jefrwnnc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 30 Mar 2021 08:52:22 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 12U8qKK3008311;
+        Tue, 30 Mar 2021 08:52:20 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 30 Mar 2021 01:52:19 -0700
+Date:   Tue, 30 Mar 2021 11:52:12 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     David Mosberger-Tang <davidm@egauge.net>
+Cc:     Ajay.Kathat@microchip.com, Claudiu.Beznea@microchip.com,
+        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] wilc1000: fix a loop timeout condition
+Message-ID: <20210330085212.GA2088@kadam>
+References: <YFS5gx/gi70zlIaO@mwanda>
+ <cd087f6b-5f99-3bce-0015-ccf1a82625f2@microchip.com>
+ <37239c87142346dcba616cc63c64294dc274983b.camel@egauge.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Gbn4BprmVLVWv2rO"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210322160253.4032422-7-arnd@kernel.org>
+In-Reply-To: <37239c87142346dcba616cc63c64294dc274983b.camel@egauge.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9938 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ adultscore=0 mlxscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2103250000 definitions=main-2103300062
+X-Proofpoint-GUID: o26FZd8PJUsmuay_1To0ZsU9p_6XOfKp
+X-Proofpoint-ORIG-GUID: o26FZd8PJUsmuay_1To0ZsU9p_6XOfKp
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9938 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 mlxlogscore=999
+ clxscore=1015 priorityscore=1501 phishscore=0 spamscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2103250000
+ definitions=main-2103300062
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Mon, Mar 29, 2021 at 12:47:15PM -0600, David Mosberger-Tang wrote:
+> On Fri, 2021-03-19 at 16:09 +0000, Ajay.Kathat@microchip.com wrote:
+> > On 19/03/21 8:17 pm, Dan Carpenter wrote:
+> > > If the loop fails, the "while(trials--) {" loop will exit with "trials"
+> > > set to -1.  The test for that expects it to end with "trials" set to 0
+> > > so the warning message will not be printed.
+> > > 
+> > > Fix this by changing from a post-op to a pre-op.  This does mean that
+> > > we only make 99 attempts instead of 100 but that's okay.
+> > > 
+> > > Fixes: f135a1571a05 ("wilc1000: Support chip sleep over SPI")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > 
+> > Thanks Dan.
+> 
+> Good catch, but wouldn't it be better to fix the time-out check
+> condition instead?  Something a long the lines of:
+> 
+> --- drivers/net/wireless/microchip/wilc1000/wlan.c~	2021-03-29 12:44:52.066039259 -0600
+> +++ drivers/net/wireless/microchip/wilc1000/wlan.c	2021-03-29 12:40:29.176365116 -0600
+> @@ -457,7 +457,7 @@
+>  	u32 wakeup_reg, wakeup_bit;
+>  	u32 to_host_from_fw_reg, to_host_from_fw_bit;
+>  	u32 from_host_to_fw_reg, from_host_to_fw_bit;
+> -	u32 trials = 100;
+> +	int trials = 100;
+>  	int ret;
+>  
+>  	if (wilc->io_type == WILC_HIF_SDIO) {
+> @@ -483,7 +483,7 @@
+>  		if ((reg & to_host_from_fw_bit) == 0)
+>  			break;
+>  	}
+> -	if (!trials)
+> +	if (trials < 0)
+>  		pr_warn("FW not responding\n");
+>  
+>  	/* Clear bit 1 */
+> 
+> 
+> This way, the loop could actually get executed the number of times
+> indicated by the initialization of "trial" before issuing a warning
+> message.
 
---Gbn4BprmVLVWv2rO
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Those numbers are just made up...  It doesn't matter either way.
 
-On Mon, Mar 22, 2021 at 05:02:44PM +0100, Arnd Bergmann <arnd@kernel.org> w=
-rote:
-> I'm not sure what is expected to happen for such a configuration,
-> presumably these functions are never calls in that case.
-Yes, the functions you patched would only be called from subsystems or
-there should be no way to obtain a struct cgroup_subsys reference
-anyway (hence it's ok to always branch as if ss=3D=3DNULL).
+regards,
+dan carpenter
 
-I'd prefer a variant that wouldn't compile the affected codepaths when
-there are no subsystems registered, however, I couldn't come up with a
-way how to do it without some preprocessor ugliness.
-
-Reviewed-by: Michal Koutn=FD <mkoutny@suse.com>
-
---Gbn4BprmVLVWv2rO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEEoQaUCWq8F2Id1tNia1+riC5qSgFAmBi5DcACgkQia1+riC5
-qSjuqxAAkm/zoS+xvdcQUERzkcuVxIruGtTqOse/NCPQQR9aGuJl6iybyjQw7D+r
-63+BYz7+BdP8zDg+NSTO354Yt0vsWFtCvuZBBabO91wCheLRPaZhHnGByJa0fXyM
-SKC2VSvFHKKiFuCG7mG7/WfDQxTGSaUL2jiFXlA5HAV5dKfkia/Jpuf+KtIy5nBR
-g8g4f44M2wW/TCoBzd5Elt5Cpx6fU2aKuJRCRCE04ts4CQy06/lLcc9H0N7bvgHj
-0oxkHbAjXeEnylnni4pfpmJpInUT2kOZuCjSF/WPw2XeLs00AnBnNB3lDP9Pe2qo
-ippcDc3AFqYMqewKnnxDWoTI3lyMTm8r0yzrDdwpb9Zv28bOCAYiwyoIsFV7+kdN
-C7DnhiL6d+UgKIzCqRuTPXnluthvSmHGzeblqF1vOAaWOFif4CcRmUtsR7v3EyZN
-5aiUTGqVtoKr/pcBNnRU1e2w7ulYpq5sbL/8f9HtnKsZ8MZlLdhdcDoSLjOkuohK
-OlQgS6p+2otxwk3xft0CdFPPHAFb5/WM6IyKdewFGuY0fohxczWJCRI92x94cfe9
-p0JSNLl19JjdM8loYpmBRcmlkoBH+MtkdZiR68b5yX5wcXypubmZPZ9o8ZzQqx1j
-ZX1/nhuyDl6KHuGW7gJXx8FhCLd6nPyKYVu4wbay23oLzdL/1sk=
-=nVTO
------END PGP SIGNATURE-----
-
---Gbn4BprmVLVWv2rO--
