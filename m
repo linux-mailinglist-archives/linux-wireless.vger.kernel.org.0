@@ -2,117 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DFC334EACE
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 16:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C15A934EDF8
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 18:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232226AbhC3OpN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 10:45:13 -0400
-Received: from mx2.suse.de ([195.135.220.15]:36728 "EHLO mx2.suse.de"
+        id S232032AbhC3QeQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 12:34:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55388 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231803AbhC3Oo5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 10:44:57 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1617115495; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=llTp9KMmNhLgpFrt/A/4gk0SgpNaUf1ZpYpNvho6oEk=;
-        b=iKbol1UC2cYC03I2rvUtoSu92j1pz2tv1L6/9iiw7cxLhRzh90EQvV5vkd5t59I4w79b5z
-        //6Ea77uYBp+fXZGWtXmCr26hrFxJVsTlICwAL4byi52zB9FKuPbHVzN1zqRgW2z3Slp3o
-        4tg7hayC693qItZd+Jni902Xu3F2GZQ=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id EC1C6B315;
-        Tue, 30 Mar 2021 14:44:54 +0000 (UTC)
-Date:   Tue, 30 Mar 2021 16:44:52 +0200
-From:   Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Martin Sebor <msebor@gcc.gnu.org>, Tejun Heo <tj@kernel.org>,
-        Zefan Li <lizefan.x@bytedance.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Ning Sun <ning.sun@intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Simon Kelley <simon@thekelleys.org.uk>,
-        James Smart <james.smart@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Anders Larsen <al@alarsen.net>,
-        Serge Hallyn <serge@hallyn.com>,
-        Imre Deak <imre.deak@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        tboot-devel@lists.sourceforge.net,
-        Intel Graphics <intel-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        ath11k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        Cgroups <cgroups@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Roman Gushchin <guro@fb.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andriin@fb.com>, Odin Ugedal <odin@uged.al>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: Re: [PATCH 06/11] cgroup: fix -Wzero-length-bounds warnings
-Message-ID: <YGM5ZJlK1V7ex9xR@blackbook>
-References: <20210322160253.4032422-1-arnd@kernel.org>
- <20210322160253.4032422-7-arnd@kernel.org>
- <YGLkPjSBdgpriC0E@blackbook>
- <CAK8P3a3nUCGwPpE+E820DniY8Haz1Xx72pA38P6s5MWsbi0iAQ@mail.gmail.com>
+        id S232134AbhC3Qdw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Mar 2021 12:33:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8B66861957;
+        Tue, 30 Mar 2021 16:33:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1617122032;
+        bh=4FgOS9K+15DNGaV+Wk/LS6dsKMwSObsl+CaQw/GLnF0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=W5OP4d/a4RWsT9ulv4YkXnawtC00KKtoRLzHXArvDeHWEGUOVyYIZuXdgKQyOjfLV
+         3WW3GRknjcveMKAJWByfq/17uV3mtl74rDhPGtEQnBlBwJeCzLyhaQlI1v1NY9aX8u
+         7h36RmGoRHcKbiO3utpafxyqB1Q2Hr/CjQ0mRTH8=
+Date:   Tue, 30 Mar 2021 18:33:49 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     =?utf-8?B?0JHQvtCz0LTQsNC9INCf0LjQu9C40L/QtdC90LrQvg==?= 
+        <bogdan.pylypenko107@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, Larry.Finger@lwfinger.net
+Subject: Re: rtw88 kernel module error report (UBSAN:
+ array-index-out-of-bounds in drivers/net/wireless/realtek/rtw88/phy.c)
+Message-ID: <YGNS7WKlBmLrM9/d@kroah.com>
+References: <CALw23pC5kFE23g8M97KJY5vK8-eP1dWPj3jze=j4Mi=NjHks0w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="9pRQkLwCQMovNrXD"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a3nUCGwPpE+E820DniY8Haz1Xx72pA38P6s5MWsbi0iAQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALw23pC5kFE23g8M97KJY5vK8-eP1dWPj3jze=j4Mi=NjHks0w@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Mar 30, 2021 at 07:26:15AM -0900, Богдан Пилипенко wrote:
+> Hi!
+> I finded your emails at:
+> - https://github.com/lwfinger/rtw88
+> - https://wireless.wiki.kernel.org/en/users/drivers/rtl819x
+> 
+> I have an error in dmesg:
+> *dmesg | grep rtw88*
+> 
+> > [   26.518691] UBSAN: array-index-out-of-bounds in
+> > drivers/net/wireless/realtek/rtw88/phy.c:1661:35
+> > [   26.518804]  rtw_get_tx_power_params+0xc66/0xd80 [rtw88_core]
+> > [   26.518822]  ? check_hw_ready+0x4f/0xa0 [rtw88_core]
+> > [   26.518836]  rtw_phy_get_tx_power_index+0x4d/0x1e0 [rtw88_core]
+> > [   26.518850]  rtw_phy_set_tx_power_level+0xcc/0x1a0 [rtw88_core]
+> > [   26.518864]  rtw_set_channel+0xc1/0x120 [rtw88_core]
+> > [   26.518878]  rtw_ops_config+0x87/0xc0 [rtw88_core]
+> 
+> 
+> And many-many cyclic errors like (size 224 & size 512):
+> *cat /sys/kernel/debug/kmemleak*
 
---9pRQkLwCQMovNrXD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Can you submit a patch for this to resolve the issue as you can
+reproduce it easily?
 
-On Tue, Mar 30, 2021 at 11:00:36AM +0200, Arnd Bergmann <arnd@kernel.org> wrote:
-> Would it be possible to enclose most or all of kernel/cgroup/cgroup.c
-> in an #ifdef CGROUP_SUBSYS_COUNT block?
-Even without any controllers, there can still be named hierarchies (v1)
-or the default hierarchy (v2) (for instance) for process tracking
-purposes. So only parts of kernel/cgroup/cgroup.c could be ifdef'd.
+thanks,
 
-Beware that CGROUP_SUBSYS_COUNT is not known at preprocessing stage (you
-could have a macro alternative though).
-
-> I didn't try that myself, but this might be a way to guarantee that
-> there cannot be any callers (it would cause a link error).
-Such a guarantee would be nicer, I agree. I tried a bit but anandoned it
-when I saw macros proliferate (which I found less readable than your
-current variant). But YMMV.
-
-Michal
-
---9pRQkLwCQMovNrXD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEEoQaUCWq8F2Id1tNia1+riC5qSgFAmBjOV4ACgkQia1+riC5
-qSgZNQ/9FFBZs5QQqEUHmbWyF9O2R2bGF8WCBz56zh+F2OZf+/GK7z4OGhkKUlEa
-1lPOUoibt4aZZhWD30RcfB3i3qJ8VqY3wqwnS6W9uN9+sU22sgsx/elCqiua3EnM
-4tGDRcLBfSuktgPo1T0oNvGGbFnFJ0kUenLZ6mVkWlSTzx8kp/B8h4S5LkYmRIov
-fVmHURht22FPiA8wwlUb9LAp8ONF+68t6BtMWNmZbqmJ17qHSnLyQQUiHIHytASt
-xgaQCJU8/nrtv2xPfp66aCQLO12b6OxpjPoRxo1hj9IP5HZPukzNDat/VaWyh0iE
-t9GO85K0PVqcuvJpymes0yRT6RvEwlqEna0T+qbh+qih4S3+xRm/Js5IV5m8KfIc
-wWUve4llNT1jq6zzgn28FkXe9coH7ybpwBaWeAdwEM3Wl9GvXimKwIQqg+3ZDnm4
-CbDVh6scYVu3kFYHVy6ld5+fG2GWEKvNL+9AVH+wsXUb6OXtyOtxD3FWyiVVYBkl
-Q4N0KWETd67BNb2NklxTkeC4hYusuHeFvxa9Ki6K6zbdxDxVwdcTWpWFVkTDs45S
-sEVkmsPU9pLu5vm5o9kBCmr6q1lW6yzudcxBvcvcHXGQnkfcmDCo+C3OEwKzKUeh
-8+BhDV9zMpKBpJfuPiI8UNIt8sI7YeTpjdk14YjWYQTgZCHc7WU=
-=iFNx
------END PGP SIGNATURE-----
-
---9pRQkLwCQMovNrXD--
+greg k-h
