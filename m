@@ -2,72 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 854E034F4DB
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Mar 2021 01:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F6F034F4FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Mar 2021 01:24:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233083AbhC3XII (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 19:08:08 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:51494 "EHLO
+        id S233026AbhC3XYB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 19:24:01 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:51908 "EHLO
         mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231951AbhC3XHy (ORCPT
+        with ESMTP id S232883AbhC3XXr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 19:07:54 -0400
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 6686113C2B0;
-        Tue, 30 Mar 2021 16:07:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 6686113C2B0
+        Tue, 30 Mar 2021 19:23:47 -0400
+Received: from [192.168.254.6] (unknown [50.34.172.155])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 0312E13C2B0;
+        Tue, 30 Mar 2021 16:23:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0312E13C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1617145674;
-        bh=4hCnNB6cX64vrsPj5W538P5FZ2xNJ40RSORE2NgDsIU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=mwlnlFzwt56vz77lCO5RdLAcb71NzYFNPZnlo8EPlJIuMVsHTgm7deC8GTjRocT7n
-         i4lgp2b3y6wB4okITbJRtkxm8cqeHGUzUbBwMxHV65ifGJozj8Kdww1D9MiAS4dEgs
-         3zgdLMkg0NSMM15tnpN8aQnoQQy2mAB/R11pvowQ=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org, nbd@nbd.name
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] mac80211:  fix time-is-after bug in mlme.
-Date:   Tue, 30 Mar 2021 16:07:49 -0700
-Message-Id: <20210330230749.14097-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
+        s=default; t=1617146627;
+        bh=K2CmXysb17d8HTR4njnzZrLvXIMta7ith6EHODbM24Q=;
+        h=To:From:Subject:Date:From;
+        b=hQoSy4KHcBqtu8W2MumAkJVrj/p6gt/6TBeUe5QAafJU3OK/oglvVttGSrFSjeGVC
+         5utsc9IP51e7O4lyXJwmYxQnQQj0PD4c8Cp953MDL+sFAlbimYQnV4EJD8Fi3+F141
+         S8Iq0beHg/Rakzivs6WnaRPXoOAoYcTOZK15NjLo=
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        shay.bar@celeno.com
+From:   Ben Greear <greearb@candelatech.com>
+Subject: Question on "mac80211: HE STA disassoc due to QOS NULL not sent"
+Organization: Candela Technologies
+Message-ID: <3c89f6f5-f094-4d1a-f254-6ca7483b54e5@candelatech.com>
+Date:   Tue, 30 Mar 2021 16:23:33 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+While debugging a station polling issue.  Should it maybe send
+a probe request instead of just not probing at all?
 
-This fixes commit:  mac80211: optimize station connection monitor
-which came in in the 5.10 kernel.
+commit f39b07fdfb688724fedabf5507e15eaf398f2500
+Author: Shay Bar <shay.bar@celeno.com>
+Date:   Wed Jul 3 16:18:48 2019 +0300
 
-This incorrect timeout check caused probing to happen when it did
-not need to happen.  This in turn caused tx performance drop
-for around 5 seconds in ath10k-ct driver.  Possibly that tx drop
-is due to a secondary issue, but fixing the probe to not happen
-when traffic is running fixes the symptom.
+     mac80211: HE STA disassoc due to QOS NULL not sent
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- net/mac80211/mlme.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+     In case of HE AP-STA link, ieee80211_send_nullfunc() will not
+     send the QOS NULL packet to check if AP is still associated.
+
+     In this case, probe_send_count will be non-zero and
+     ieee80211_sta_work() will later disassociate the AP, even
+     though no packet was ever sent.
+
+     Fix this by decrementing probe_send_count and not calling
+     ieee80211_send_nullfunc() in case of HE link, so that we
+     still wait for some time for the AP beacon to reappear and
+     don't disconnect right away.
+
+     Signed-off-by: Shay Bar <shay.bar@celeno.com>
+     Link: https://lore.kernel.org/r/20190703131848.22879-1-shay.bar@celeno.com
+     [clarify commit message]
+     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index c137a8b5d8e1..b06c76116d86 100644
+index 225633d9e2d4bd..e89ed800f01259 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -4729,7 +4729,10 @@ static void ieee80211_sta_conn_mon_timer(struct timer_list *t)
- 		timeout = sta->rx_stats.last_rx;
- 	timeout += IEEE80211_CONNECTION_IDLE_TIME;
- 
--	if (time_is_before_jiffies(timeout)) {
-+	/* If timeout is after now, then update timer to fire at
-+	 * the later date, but do not actually probe at this time.
-+	 */
-+	if (time_is_after_jiffies(timeout)) {
- 		mod_timer(&ifmgd->conn_mon_timer, round_jiffies_up(timeout));
- 		return;
- 	}
--- 
-2.20.1
+@@ -2512,7 +2512,10 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
 
+         if (ieee80211_hw_check(&sdata->local->hw, REPORTS_TX_ACK_STATUS)) {
+                 ifmgd->nullfunc_failed = false;
+-               ieee80211_send_nullfunc(sdata->local, sdata, false);
++               if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
++                       ifmgd->probe_send_count--;
++               else
++                       ieee80211_send_nullfunc(sdata->local, sdata, false);
+         } else {
+                 int ssid_len;
+
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
