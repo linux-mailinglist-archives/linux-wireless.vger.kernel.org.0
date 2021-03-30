@@ -2,94 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DA5934EF4E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 19:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4273E34F068
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 20:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231979AbhC3RXZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 13:23:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55332 "EHLO
+        id S232584AbhC3SBt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 14:01:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232048AbhC3RW7 (ORCPT
+        with ESMTP id S232558AbhC3SBk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 13:22:59 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B07C061574;
-        Tue, 30 Mar 2021 10:22:59 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id n11-20020a05600c4f8bb029010e5cf86347so1347619wmq.1;
-        Tue, 30 Mar 2021 10:22:59 -0700 (PDT)
+        Tue, 30 Mar 2021 14:01:40 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A01EC061574
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Mar 2021 11:01:40 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id s11-20020a056830124bb029021bb3524ebeso16454305otp.0
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Mar 2021 11:01:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=etdLuWb8OudHnTGScju4iFuelQF1D5YN0QKx+VliIUg=;
-        b=Xd/xg1PUdNrHQgAV0iG1BsXmo6MHEfKOtyM/zrAeSrqnvNFH3Amirs5v5Qy/X+wcq6
-         QMmpmZyTR/J9eHkK9A6hsHjHW8HrDD6VGgCWog+rJ+MDhxV+kiDfj6LuY7smoCboQEUt
-         gk7EEpQtKNYMBQHhZpsderUpMNtImTzRzjupUj92xxWYPRpr2TKqKxaUoccXC97/fXrH
-         cAOQcS43mO6yKvAGFWgUWTyM5e+dPSafoziDhTZgpfjDLBfpe9tH+/pEE2gwJHKMS6IK
-         Z6IK1bvm7+rf1vcpOAzCxgq0ab2gVKRz4Kq6IwwG+THY33tu4lVTmqs0T8H3mHa3eLHP
-         8dcA==
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=tSLAahLIOIxfIc20PVC4oH4Vi8wQuCml+mNUoRjJhcM=;
+        b=T2WMRD9w5Y1QNTw5ELLKECWIc2tAFvxZo0FZ+Lec+YODyWFBXZJm+Pz9DM7qB12HYw
+         pNmbXvrrzEPJfnhlwcEyecIBRwkfJ3xAxy9XAWXGFMbSFwSkZRxmTEaNL2iYrIuGRHZK
+         GzgOFZBhbOzFZbhlfijFcb4MW94vH3NyfI4SdFZLMmFS/GL/rN5IEJ2wTIbCEzKEsXLY
+         hWz2v6UMED/VDgDIm/cJYCtGOexNzUYxQmxcKXOwQos7ax5xuv9SMbYByKHR58hedgay
+         th/Gn7uDY5YoDSWTwYncCYmrSH0zBP1qL2jiddkM3Vh3z2nIf9L9FsDW0J4pOG/08Oqv
+         TZ6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=etdLuWb8OudHnTGScju4iFuelQF1D5YN0QKx+VliIUg=;
-        b=TP3guc2QQ50LKBBkuAgjq4+1YmYw9oK0yuY5FTHxPMKjIzSjKwfFVg+dcB89dBBA+9
-         myngFRkdxUeGGtsENKqMUy86ZntO3iHVDMXzxxK5NrV/HE+40RAPW05Owjxm0J1QYzvM
-         5iqt4pEvvUEZAtOeoQwtI7BA63VSJAFoq5MtGSQrBiJKJnidfNenkjJda4wP0wSV9Pv+
-         tHLMlH9ZDkp6ltYtwjECXllhKrz0Aq2knvhVWGG8hjs35xkpzi9BV0/TbNHh/0GkpXU/
-         YrWn9+Nagd9QDFK5dIKn7Dvq3EV/AkNPdzJPyXK1t3ciPyASkh3LpX6s4kHrfRsaIqJ6
-         3Brg==
-X-Gm-Message-State: AOAM530RCNths2tycjXbrLNmz65ZHn/84L60zOrKbJw59db3kNEjmufW
-        XyRCvNI2D7zObxb0JxuoggpXslDQs+m0ivtK
-X-Google-Smtp-Source: ABdhPJyu62dTbhj0ksMQOMovJWP1dMVyEA74m15yTC1Qeu8adpzxfy9VYpKVwkm8mvWpniEkULD67A==
-X-Received: by 2002:a1c:3b43:: with SMTP id i64mr5076868wma.43.1617124977945;
-        Tue, 30 Mar 2021 10:22:57 -0700 (PDT)
-Received: from alaa ([197.57.128.221])
-        by smtp.gmail.com with ESMTPSA id 1sm6772095wmj.0.2021.03.30.10.22.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Mar 2021 10:22:57 -0700 (PDT)
-From:   Alaa Emad <alaaemadhossney.ae@gmail.com>
-To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller@googlegroups.com,
-        Alaa Emad <alaaemadhossney.ae@gmail.com>,
-        syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
-Subject: [PATCH v2] wireless/nl80211.c: fix uninitialized variable
-Date:   Tue, 30 Mar 2021 19:22:53 +0200
-Message-Id: <20210330172253.10076-1-alaaemadhossney.ae@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        bh=tSLAahLIOIxfIc20PVC4oH4Vi8wQuCml+mNUoRjJhcM=;
+        b=fi6cAUZtYjYO72kRh1dAeYkSTSaS9e2NtuBokm3YCRwunaI4/x3AJ6BVYzSaus9MXr
+         hRhovmYX1/Dc+Pgy+2OzFeHuFpGbnaD346l1F68o372iZCMcj61FWVb8sMRmVIywLpFh
+         WxZ7zpvdo6qsg4C9Qtur0tgz8M0BYrJTcpNaHUP3VjlHuPIlSqUvmaVNL/q01fXnC9uJ
+         wRd+EQ3qRqTcvB6CGI7aszLHhj7gsve9vuYkpRKO2zQw02ABy5umqcBEoxQMJ7Cwz9Lp
+         93uzHEjeFkjT+MxH7jceZwvlftvxGrTwCLutzy+/Afo8ETcMwGQWMt6qoG3SDy/vg32i
+         BXKQ==
+X-Gm-Message-State: AOAM5301p/5858y1YFTBr+Pm8InezlsTYh6U71xpUCvsNoNyRQjXEAxi
+        kB9oYpj+PVQqAZUUMDoNtoQpmcC1uO0=
+X-Google-Smtp-Source: ABdhPJxgmlcG6u6AmnMrS9tXmb4+iUaMv2FMgRfa7M1JO2flznPPPTqFvhmYJzkKlJrdf9k++0NN8w==
+X-Received: by 2002:a9d:3b36:: with SMTP id z51mr2326612otb.317.1617127299598;
+        Tue, 30 Mar 2021 11:01:39 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id f197sm4849386oob.38.2021.03.30.11.01.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Mar 2021 11:01:38 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: rtw88 kernel module error report (UBSAN:
+ array-index-out-of-bounds in drivers/net/wireless/realtek/rtw88/phy.c)
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        =?UTF-8?B?0JHQvtCz0LTQsNC9INCf0LjQu9C40L/QtdC90LrQvg==?= 
+        <bogdan.pylypenko107@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <CALw23pC5kFE23g8M97KJY5vK8-eP1dWPj3jze=j4Mi=NjHks0w@mail.gmail.com>
+ <YGNS7WKlBmLrM9/d@kroah.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <040befa9-c88f-539a-f158-0c75d8789e47@lwfinger.net>
+Date:   Tue, 30 Mar 2021 13:01:37 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <YGNS7WKlBmLrM9/d@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This change fix  KMSAN uninit-value in net/wireless/nl80211.c:225 , That
-because of `fixedlen` variable uninitialized,So I initialized it by zero.
+On 3/30/21 11:33 AM, Greg KH wrote:
+> On Tue, Mar 30, 2021 at 07:26:15AM -0900, Богдан Пилипенко wrote:
+>> Hi!
+>> I finded your emails at:
+>> - https://github.com/lwfinger/rtw88
+>> - https://wireless.wiki.kernel.org/en/users/drivers/rtl819x
+>>
+>> I have an error in dmesg:
+>> *dmesg | grep rtw88*
+>>
+>>> [   26.518691] UBSAN: array-index-out-of-bounds in
+>>> drivers/net/wireless/realtek/rtw88/phy.c:1661:35
+>>> [   26.518804]  rtw_get_tx_power_params+0xc66/0xd80 [rtw88_core]
+>>> [   26.518822]  ? check_hw_ready+0x4f/0xa0 [rtw88_core]
+>>> [   26.518836]  rtw_phy_get_tx_power_index+0x4d/0x1e0 [rtw88_core]
+>>> [   26.518850]  rtw_phy_set_tx_power_level+0xcc/0x1a0 [rtw88_core]
+>>> [   26.518864]  rtw_set_channel+0xc1/0x120 [rtw88_core]
+>>> [   26.518878]  rtw_ops_config+0x87/0xc0 [rtw88_core]
+>>
+>>
+>> And many-many cyclic errors like (size 224 & size 512):
+>> *cat /sys/kernel/debug/kmemleak*
+> 
+> Can you submit a patch for this to resolve the issue as you can
+> reproduce it easily?
 
-Reported-by: syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
-Signed-off-by: Alaa Emad <alaaemadhossney.ae@gmail.com>
----
-Changes in v2:
-  - Make the commit message more clearer.
----
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Greg and Богдан,
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 775d0c4d86c3..b87ab67ad33d 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -210,7 +210,7 @@ static int validate_beacon_head(const struct nlattr *attr,
- 	const struct element *elem;
- 	const struct ieee80211_mgmt *mgmt = (void *)data;
- 	bool s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
--	unsigned int fixedlen, hdrlen;
-+	unsigned int fixedlen = 0, hdrlen;
- 
- 	if (s1g_bcn) {
- 		fixedlen = offsetof(struct ieee80211_ext,
--- 
-2.25.1
+I had previously reported the memory leak at 
+https://marc.info/?l=linux-wireless&m=161677626908838&w=2. Unfortunately, it is 
+not obvious how to fix it. When the routine exits, the skb in question belongs 
+to mac80211. It is not clear why it does not free it. I also have an Intel 
+device that uses iwlmvm. Although the calling sequence to ieee80211_rx_napi() 
+looks the same, it does not leak the skb. Unfortunately, none of the mac8800211 
+experts have responded to my E-mail.
 
+@Богдан: What kernel version are you using? With kernel HEAD, line 1661 of 
+drivers/net/wireless/realtek/rtw88/phy.c is a case statement, which should not 
+generate an array overflow.
+
+Larry
