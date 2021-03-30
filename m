@@ -2,136 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6209D34E7D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 14:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 157E534E905
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 15:26:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231992AbhC3Msh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 08:48:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51686 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231919AbhC3Msa (ORCPT
+        id S232169AbhC3NZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 09:25:47 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:43582 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231968AbhC3NZI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 08:48:30 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A84C061574;
-        Tue, 30 Mar 2021 05:48:29 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id s17so19735738ljc.5;
-        Tue, 30 Mar 2021 05:48:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=C/SEHAMdttQjA7hTIweXyWliIsCysW2EFbhutxpfmc8=;
-        b=TWscK29HM7I/ddYkmtOgngIPWJTO1qpM0RVwB79bRr9h/HZtVMEDWtNB7g+t5nHJnw
-         1eKHgE05+y4tqg4uEM/JQ6/Lf2LOR1F7EfqPbDjp2oOgAEDRdg0SBZ0AhYLWCv8DyUZK
-         0vs1q9JCtsw2D+2yQkYayxcofjRTmOtraV86dndLMm86Hl5v45xIuuD6EKVEDcBwREPr
-         UL8fwSaDMOlk4sytfubMIV5iStzNgJ3YA4MqDWZQau0mcgayOizgl6TYEWiFXl+FsY8x
-         uUOjNo4TrrNov1jnPfF2RfVnwhOjTCs4vrYsXbKUSWWOv4hbmA2xKaxWZcbBL1GXMhCm
-         gXfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=C/SEHAMdttQjA7hTIweXyWliIsCysW2EFbhutxpfmc8=;
-        b=eLjYofkWaUcjp3KdLZemqWEf3A42aevrHYVWKoN6yvVjYhoi4bxbAYx3schhmfbKJy
-         aFpkwoE8sHsbozGc9/7pmlo8PHkhL7mXobUXgrCVYb3LP14+hzen20ClADBMT5qrk2Hu
-         zYf7Une1YBWLRNI9DRuNaer9Kp2RK2FnsC/a6PF8wny/39CIvVuMRuoSdT5Ti5gmm0qF
-         9HieYaZE5Or8cg4E8rXtXg1RDbiTjc1KYX2BUZBfScW1BX/o/Ine93nvRBoKUXjmxEg/
-         ta+IHhWYMDINbyJkoSoOVxkN2JiLrVYykXFcPd38IC93K3eDPJfujJiqDYZ3WfQ1qoKa
-         qFHw==
-X-Gm-Message-State: AOAM5317NSV+5LU6YCEPAbb+s3TYR9fOWL1fhu8NV0IJaB7lZLI+KZaV
-        EBFfKrKnaRz0RarqqjuY7EA=
-X-Google-Smtp-Source: ABdhPJyX9Npm/QMJKR4GWGM6FPXPKELHcT0PzZlOHr7Xeb4lumVtKBsLPYD35g2ae2eWqtXumI9xSw==
-X-Received: by 2002:a2e:b5cd:: with SMTP id g13mr20825946ljn.372.1617108508345;
-        Tue, 30 Mar 2021 05:48:28 -0700 (PDT)
-Received: from [192.168.1.11] ([94.103.229.149])
-        by smtp.gmail.com with ESMTPSA id x29sm2267266lfn.60.2021.03.30.05.48.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Mar 2021 05:48:27 -0700 (PDT)
-Message-ID: <302c485c2209d54b88b54daa189589c76b4a66d0.camel@gmail.com>
-Subject: Re: [PATCH] wireless/nl80211.c: fix uninitialized variable
-From:   Pavel Skripkin <paskripkin@gmail.com>
-To:     Alaa Emad <alaaemadhossney.ae@gmail.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        syzkaller <syzkaller@googlegroups.com>,
-        syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
-Date:   Tue, 30 Mar 2021 15:48:24 +0300
-In-Reply-To: <CAM1DhOjWgN_0GVBeX+pf+9mk_ysaN9pF4agAFUNEkzhxpFR4=w@mail.gmail.com>
-References: <20210329163036.135761-1-alaaemadhossney.ae@gmail.com>
-         <YGIaaezqxNmhVcmn@kroah.com>
-         <CAM1DhOgA9DDaGSGFxKgXBONopoo4rLJZheK2jzW_BK-mJrNZKQ@mail.gmail.com>
-         <YGIjOZauy9kPwINV@kroah.com>
-         <CAM1DhOjWgN_0GVBeX+pf+9mk_ysaN9pF4agAFUNEkzhxpFR4=w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 
+        Tue, 30 Mar 2021 09:25:08 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1lREMe-0007fg-3a; Tue, 30 Mar 2021 16:25:01 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 30 Mar 2021 16:24:48 +0300
+Message-Id: <20210330132500.468321-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.13 2021-03-30
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi!
+From: Luca Coelho <luciano.coelho@intel.com>
 
-On Tue, 2021-03-30 at 14:42 +0200, Alaa Emad wrote:
-> 
-> 
-> On Mon, 29 Mar 2021 at 20:58, Greg KH <gregkh@linuxfoundation.org>
-> wrote:
-> > On Mon, Mar 29, 2021 at 08:41:38PM +0200, Alaa Emad wrote:
-> > > On Mon, 29 Mar 2021 at 20:20, Greg KH <gregkh@linuxfoundation.org>
-> > wrote:
-> > > 
-> > > > On Mon, Mar 29, 2021 at 06:30:36PM +0200, Alaa Emad wrote:
-> > > > > Reported-by:
-> > syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
-> > > > > Signed-off-by: Alaa Emad <alaaemadhossney.ae@gmail.com>
-> > > > 
-> > > > You need to provide some changelog text here, I know I can not
-> > take
-> > > > patches without that, maybe the wireless maintainer is more
-> > flexible :)
-> > > > 
-> > >   you mean explain what i did , right?
-> > 
-> > Yes, explain why this change is needed.
-> > 
-> 
-> 
->   
->   This change fix  KMSAN uninit-value in net/wireless/nl80211.c:225 ,
-> That because of `fixedlen` variable uninitialized. 
->    So I initialized it by zero because the code assigned value to it
-> after that and doesn't depend on any stored value in it . 
+Hi,
 
-You should add this message to the patch, not just write it to
-maintainer.
+Here's the first set of patches intended for v5.13.  It's the usual
+development, new features, cleanups and bugfixes.
 
-I think, this link might be
-useful https://www.kernel.org/doc/html/v4.17/process/submitting-patches.html
+The changes are:
 
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-> 
-> 
-> 
-> Thanks ,
-> Alaa
-> -- 
-> You received this message because you are subscribed to the Google
-> Groups "syzkaller" group.
-> To unsubscribe from this group and stop receiving emails from it, send
-> an email to syzkaller+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit
-> https://groups.google.com/d/msgid/syzkaller/CAM1DhOjWgN_0GVBeX%2Bpf%2B9mk_ysaN9pF4agAFUNEkzhxpFR4%3Dw%40mail.gmail.com
-> .
+* Add support for new FTM FW APIs;
+* Some CSA fixes;
+* Support for new HW family and other HW detection fixes;
+* Robustness improvement in the HW detection code;
+* Some other small fixes, clean-ups and improvements.
 
-With regards,
-Pavel Skripkin
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
 
+Please review.
+
+Cheers,
+Luca.
+
+
+Avraham Stern (2):
+  iwlwifi: mvm: support range request command version 12
+  iwlwifi: mvm: responder: support responder config command version 8
+
+Emmanuel Grumbach (1):
+  iwlwifi: mvm: don't allow CSA if we haven't been fully associated
+
+Johannes Berg (3):
+  iwlwifi: pcie: avoid unnecessarily taking spinlock
+  iwlwifi: pcie: normally grab NIC access for inflight-hcmd
+  iwlwifi: pcie: make cfg vs. trans_cfg more robust
+
+Matti Gottlieb (1):
+  iwlwifi: pcie: Add support for Bz Family
+
+Mordechay Goodstein (1):
+  iwlwifi: pcie: clear only FH bits handle in the interrupt
+
+Sara Sharon (1):
+  iwlwifi: mvm: enable TX on new CSA channel before disconnecting
+
+ybaruch (3):
+  iwlwifi: change step in so-gf struct
+  iwlwifi: change name to AX 211 and 411 family
+  iwlwifi: add 160Mhz to killer 1550 name
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  64 ++++++-
+ drivers/net/wireless/intel/iwlwifi/cfg/9000.c |   2 +-
+ .../wireless/intel/iwlwifi/fw/api/location.h  | 173 +++++++++++++++++-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |   8 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |   3 +
+ .../wireless/intel/iwlwifi/mvm/constants.h    |   9 +
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |  76 +++++++-
+ .../intel/iwlwifi/mvm/ftm-responder.c         |  27 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  10 +
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |  10 +
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  63 ++++++-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |   9 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  69 +++----
+ 13 files changed, 456 insertions(+), 67 deletions(-)
+
+-- 
+2.31.0
 
