@@ -2,95 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A960434F184
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 21:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA34234F18D
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 21:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233085AbhC3TTd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 15:19:33 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:46404 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232975AbhC3TTR (ORCPT
+        id S233134AbhC3T0y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 15:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53788 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233092AbhC3T0h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 15:19:17 -0400
-Received: from [192.168.254.6] (unknown [50.34.172.155])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B1A1513C2B0;
-        Tue, 30 Mar 2021 12:19:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B1A1513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1617131956;
-        bh=Vp4Toja8m/3uoXvkiN44tZkYFJEmp5cP+xZxQQXVFDQ=;
-        h=Subject:From:To:References:Date:In-Reply-To:From;
-        b=Xaaqpj4ND4wnAuT8wCyrGV8BLbRdhBJlIeOpOqFEeOEtmLoW3B67+kSpg0v0UCpjw
-         MnJbHUsL9gcHxbhT3p6iO6okmfz94zTI8JCg8lA59UIOBRwvhcsHu10e9j/4R14f+d
-         X4PH57PJg0PKFkuALxKs/1N1IKY5rIQv+RkhnQx8=
-Subject: Re: mac80211 mlme connection probing woes (bisected)
-From:   Ben Greear <greearb@candelatech.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Felix Fietkau <nbd@nbd.name>
-References: <312fa32e-21f7-fcc0-fef4-55633db53f65@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <af486fdb-5ac4-8d89-5d5e-554b828435bf@candelatech.com>
-Date:   Tue, 30 Mar 2021 12:19:14 -0700
+        Tue, 30 Mar 2021 15:26:37 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF31DC061574;
+        Tue, 30 Mar 2021 12:26:36 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id b2-20020a7bc2420000b029010be1081172so9000694wmj.1;
+        Tue, 30 Mar 2021 12:26:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=yd9mIYSfyYtaQ80AUfAIBHd3tWlCfBll0IGCKZB64Oc=;
+        b=YCdl8xJEp0RU9QNsOSE26OgGlCt+i8taJwzEYkC1y5oSsGOXeZN2atlsRwCHe0ytff
+         hKk6pyRicoL7mCRuxyTQXBScfU26IGwmsL9EnkUx0HRLMKHtDEeD2D0821qHHULS07BL
+         kv6GjdyF7qy1FmH37PmOIy9JcwVyE+5uCfgjCk3R2Z/pqZX6NJpmLTzo5lIxz9bNrJri
+         eRSnS3qB0FqkWnB6hvxTDfnflE16RSTt1MIAlpdB0CZHEek+gsF1vXCUe+2Tzcu0BoDE
+         +Ooa31Lolc6nwzdQcOkjRdmgcGj8fT6kUcGrNhlM8WymKr0QUd/zi7LgDs1amoqytzVY
+         e7Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=yd9mIYSfyYtaQ80AUfAIBHd3tWlCfBll0IGCKZB64Oc=;
+        b=BL1bIxw0BY00qxb+c/ONLnsN3gxuWpRR1O9RNrwdfRsp86sIQ4629tI6bCwOWVKD+t
+         LqMnyI7XkLnJx+Qe4jOkbNR9HI/qZ9lLx0wqNJcguw2J4pE4WBrebLtsn7D5RIB0bhAL
+         C6UCpiKKtSLGX59Chmr+9BfXw+/eQI7CGQXIICXiAMkS8pFzbzyS4wBg5aM3fB2UJRIT
+         Ff0GWW629rFbwSmvX9LPqk95WvFIH4ezPxrcZG1qJGUgOIjk4vBxb6oNH/fHsDeHC4gT
+         RFraYL8ACITP04pximwnMYbrgytNr+wmPIVanWd1AP0ZBWmfjw/xqlayrqorFnuFUEqv
+         3fNA==
+X-Gm-Message-State: AOAM532ixLyywmxTmHWXs+iY3PSnfPZv4gmozQ3G50svo0EQuSzWoA74
+        zglW1Ub+FLp9TKgZdhh+nVE=
+X-Google-Smtp-Source: ABdhPJxNg7obrbrHiuPSlKBwL1YEzcuLxfZuWmxhPzkaN2kGHrfZwcuFF69iqkAFdbWkYFoL9+KHAA==
+X-Received: by 2002:a05:600c:4fcb:: with SMTP id o11mr5548754wmq.117.1617132395546;
+        Tue, 30 Mar 2021 12:26:35 -0700 (PDT)
+Received: from [192.168.1.101] ([37.167.251.74])
+        by smtp.gmail.com with ESMTPSA id j16sm7944070wmi.2.2021.03.30.12.26.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Mar 2021 12:26:34 -0700 (PDT)
+Subject: Re: [PATCH v2] wireless/nl80211.c: fix uninitialized variable
+To:     Alaa Emad <alaaemadhossney.ae@gmail.com>,
+        johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
+Cc:     gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzkaller@googlegroups.com,
+        syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
+References: <20210330172253.10076-1-alaaemadhossney.ae@gmail.com>
+From:   Eric Dumazet <eric.dumazet@gmail.com>
+Message-ID: <b287e62c-c72e-c12a-c48a-8dad4a48dd49@gmail.com>
+Date:   Tue, 30 Mar 2021 21:26:32 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <312fa32e-21f7-fcc0-fef4-55633db53f65@candelatech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210330172253.10076-1-alaaemadhossney.ae@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/26/21 5:18 PM, Ben Greear wrote:
-> I've been digging into a bug where our ath10k driver shows periodic
-> throughput drops on regular intervals.  We've bisected this down to a patch
-> where we disable the firmware connection monitor, and so ask mac80211 to
-> do the connection monitor.
+
+
+On 3/30/21 7:22 PM, Alaa Emad wrote:
+> This change fix  KMSAN uninit-value in net/wireless/nl80211.c:225 , That
+> because of `fixedlen` variable uninitialized,So I initialized it by zero.
 > 
-> This works fine in 5.4 kernel, but in 5.11, it does not work well.
+> Reported-by: syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
+> Signed-off-by: Alaa Emad <alaaemadhossney.ae@gmail.com>
+> ---
+> Changes in v2:
+>   - Make the commit message more clearer.
+> ---
+>  net/wireless/nl80211.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> First, if anyone has an idea what change might have caused this,
-> please let me know.  We will try with ath9k, assuming it uses
-> the mac80211 connection monitor to see if it has the same issue.
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index 775d0c4d86c3..b87ab67ad33d 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -210,7 +210,7 @@ static int validate_beacon_head(const struct nlattr *attr,
+>  	const struct element *elem;
+>  	const struct ieee80211_mgmt *mgmt = (void *)data;
+>  	bool s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
+> -	unsigned int fixedlen, hdrlen;
+> +	unsigned int fixedlen = 0, hdrlen;
+>  
+>  	if (s1g_bcn) {
+>  		fixedlen = offsetof(struct ieee80211_ext,
+> 
 
-Ok, it took a while, but I bisected to this:
+What was the report exactly ?
 
-commit 9abf4e49830d606f18a05111cfa96b8f0b724c7d (HEAD, refs/bisect/good-9abf4e49830d606f18a05111cfa96b8f0b724c7d)
-Author: Felix Fietkau <nbd@nbd.name>
-Date:   Tue Sep 8 14:36:56 2020 +0200
+Current code does :
 
-     mac80211: optimize station connection monitor
+unsigned int fixedlen;
 
-     Calling mod_timer for every rx/tx packet can be quite expensive.
-     Instead of constantly updating the timer, we can simply let it run out
-     and check the timestamp of the last ACK or rx packet to re-arm it.
+if (s1g_bcn) {
+    fixedlen = something1;
+    ...
+else {
+    fixedlen = something2;
+    ...
+}
 
-     Signed-off-by: Felix Fietkau <nbd@nbd.name>
-     Link: https://lore.kernel.org/r/20200908123702.88454-9-nbd@nbd.name
-     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+So your patch does nothing.
 
-To do the bisect, I copied my ath10k-ct driver from the 5.4 kernel (well tested driver)
-over whatever ath10k code was in the particular kernel commit I was testing.  I tweaked
-the driver slightly to compile and work against stock kernel.
+Initial value of @fixedlen is not relevant.
 
-The failure case is that when in station mode, and transmitting UDP in upload direction
-(with a few packets per second of download traffic too),
-the traffic periodically goes to zero throughput every 30 seconds, and stays quiesced
-for about 5 seconds, and then resumes.  The station stays connected.
+Reading this code (without access to KMSAN report) I suspect the issue
+is more like the following :
 
-In previous debugging, I noticed this only happens when my driver enables mac80211
-connection monitoring.  In a different bisect attempt, my driver hit the issue when
-changing how tx-descriptor count was configured, but I am not fully confident that
-is a root cause, and changing things a bit made that problem go away.
-
-The problem is not seen with ath9k, nor stock ath10k.  Stock ath10k uses in-firmware
-connection monitoring.
-
-Felix, if you have any ideas of likely failure points, please let me know.
-
-Thanks,
-Ben
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 775d0c4d86c3..d815261917ff 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -209,9 +209,12 @@ static int validate_beacon_head(const struct nlattr *attr,
+        unsigned int len = nla_len(attr);
+        const struct element *elem;
+        const struct ieee80211_mgmt *mgmt = (void *)data;
+-       bool s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
+        unsigned int fixedlen, hdrlen;
++       bool s1g_bcn;
+ 
++       if (len < offsetofend(typeof(*mgmt), frame_control))
++               goto err;
++       s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
+        if (s1g_bcn) {
+                fixedlen = offsetof(struct ieee80211_ext,
+                                    u.s1g_beacon.variable);
 
