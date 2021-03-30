@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5B4234E909
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 15:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2AA34E90C
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 15:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232209AbhC3NZt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 09:25:49 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:43636 "EHLO
+        id S232230AbhC3NZv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 09:25:51 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:43654 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231966AbhC3NZL (ORCPT
+        with ESMTP id S231853AbhC3NZV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 09:25:11 -0400
+        Tue, 30 Mar 2021 09:25:21 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1lREMl-0007fg-HY; Tue, 30 Mar 2021 16:25:09 +0300
+        id 1lREMm-0007fg-Ca; Tue, 30 Mar 2021 16:25:10 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 30 Mar 2021 16:24:57 +0300
-Message-Id: <iwlwifi.20210330162204.a1cdda2fa270.I02a82312679f4541f30bb8db8747a797dbb70ee7@changeid>
+Date:   Tue, 30 Mar 2021 16:24:58 +0300
+Message-Id: <iwlwifi.20210330162204.6f69fe6e4128.I921d4ae20ef5276716baeeeda0b001cf25b9b968@changeid>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210330132500.468321-1-luca@coelho.fi>
 References: <20210330132500.468321-1-luca@coelho.fi>
@@ -32,107 +32,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 09/12] iwlwifi: pcie: clear only FH bits handle in the interrupt
+Subject: [PATCH 10/12] iwlwifi: pcie: make cfg vs. trans_cfg more robust
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-For simplicity we assume that msix has 2 IRQ lines one used for rx data
-called msix_non_share, and another used for one bit flags messages
-(alive, hw error, sw error, rx data flag) called msix_share.
+If we (for example) have a trans_cfg entry in the PCI IDs table,
+but then don't find a full cfg entry for it in the info table,
+we fall through to the code that treats the PCI ID table entry
+as a full cfg entry. This obviously causes crashes later, e.g.
+when trying to build the firmware name string.
 
-Every time the FW has data to send it puts it on the RX queue and HW
-turns on the flags in msix_share (inta_fw) indicating about rx data,
-and HW sends an interrupt a bit later to the msix_non_share _unless_
-the msix_shared RX data bit was cleared.
+Avoid such crashes by using the low bit of the pointer as a tag
+for trans_cfg entries (automatically using a macro that checks
+the type when assigning) and then checking that before trying to
+use the data as a full entry - if it's just a partial entry at
+that point, fail.
 
-Currently in the code every time we get an msix_shared we clear all bits
-including rx data queue bits.
+Since we're adding some macro magic, also check that the type is
+in fact either struct iwl_cfg_trans_params or struct iwl_cfg,
+failing compilation ("initializer element is not constant") if
+it isn't.
 
-So we can have a race
-
-----------------------------------------------------
-DRIVER		       |   HW          	     |   FW
-----------------------------------------------------
-- send host cmd to FW  |		     |
-		       |		     | - handle message
-		       |		     |   and put a response
-		       |		     |   on the RX queue
-		       | - RX flag on        |
-		       |	     	     | - send alive msix
-		       | - alive flag on     |
-		       | - interrupt         |
-		       |   msix_share driver |
-- handle msix_shared   |		     |
-  and clear all flags  |		     |
-  bits		       |		     |
-		       | - don't send an     |
-		       |   interrupt on	     |
-		       |   msix_non_shared   |
-		       |   (driver cleared)  |
-- driver timeout on    |		     |
-  waiting for host cmd |		     |
-  respond	       |		     |
-		       |		     |
-----------------------------------------------------
-
-The change is to clear only the msi_shared flags that are handled in
-the msix_shared flow, which will cause the hardware to send an interrupt
-on the msix_non_share line as well, when it has data.
-
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h | 3 +++
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 9 ++++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 35 +++++++++++++++----
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
-index 6ccde7e30211..db312abd2e09 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
-@@ -578,6 +578,9 @@ enum msix_fh_int_causes {
- 	MSIX_FH_INT_CAUSES_FH_ERR		= BIT(21),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index f4a36ebfa0ee..15561a14a098 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -17,10 +17,20 @@
+ #include "iwl-prph.h"
+ #include "internal.h"
  
-+/* The low 16 bits are for rx data queue indication */
-+#define MSIX_FH_INT_CAUSES_DATA_QUEUE 0xffff
++#define TRANS_CFG_MARKER BIT(0)
++#define _IS_A(cfg, _struct) __builtin_types_compatible_p(typeof(cfg),	\
++							 struct _struct)
++extern int _invalid_type;
++#define _TRANS_CFG_MARKER(cfg)						\
++	(__builtin_choose_expr(_IS_A(cfg, iwl_cfg_trans_params),	\
++			       TRANS_CFG_MARKER,			\
++	 __builtin_choose_expr(_IS_A(cfg, iwl_cfg), 0, _invalid_type)))
++#define _ASSIGN_CFG(cfg) (_TRANS_CFG_MARKER(cfg) + (kernel_ulong_t)&(cfg))
 +
- /*
-  * Causes for the HW register interrupts
-  */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 2bec97133119..0cbc79949982 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -2194,9 +2194,16 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
- 	struct iwl_trans_pcie *trans_pcie = iwl_pcie_get_trans_pcie(entry);
- 	struct iwl_trans *trans = trans_pcie->trans;
- 	struct isr_statistics *isr_stats = &trans_pcie->isr_stats;
-+	u32 inta_fh_msk = ~MSIX_FH_INT_CAUSES_DATA_QUEUE;
- 	u32 inta_fh, inta_hw;
- 	bool polling = false;
+ #define IWL_PCI_DEVICE(dev, subdev, cfg) \
+ 	.vendor = PCI_VENDOR_ID_INTEL,  .device = (dev), \
+ 	.subvendor = PCI_ANY_ID, .subdevice = (subdev), \
+-	.driver_data = (kernel_ulong_t)&(cfg)
++	.driver_data = _ASSIGN_CFG(cfg)
  
-+	if (trans_pcie->shared_vec_mask & IWL_SHARED_IRQ_NON_RX)
-+		inta_fh_msk |= MSIX_FH_INT_CAUSES_Q0;
-+
-+	if (trans_pcie->shared_vec_mask & IWL_SHARED_IRQ_FIRST_RSS)
-+		inta_fh_msk |= MSIX_FH_INT_CAUSES_Q1;
-+
- 	lock_map_acquire(&trans->sync_cmd_lockdep_map);
+ /* Hardware specific file defines the PCI IDs table for that hardware module */
+ static const struct pci_device_id iwl_hw_card_ids[] = {
+@@ -1074,19 +1084,22 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
  
- 	spin_lock_bh(&trans_pcie->irq_lock);
-@@ -2205,7 +2212,7 @@ irqreturn_t iwl_pcie_irq_msix_handler(int irq, void *dev_id)
+ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+-	const struct iwl_cfg_trans_params *trans =
+-		(struct iwl_cfg_trans_params *)(ent->driver_data);
++	const struct iwl_cfg_trans_params *trans;
+ 	const struct iwl_cfg *cfg_7265d __maybe_unused = NULL;
+ 	struct iwl_trans *iwl_trans;
+ 	struct iwl_trans_pcie *trans_pcie;
+ 	int i, ret;
++	const struct iwl_cfg *cfg;
++
++	trans = (void *)(ent->driver_data & ~TRANS_CFG_MARKER);
++
  	/*
- 	 * Clear causes registers to avoid being handling the same cause.
+ 	 * This is needed for backwards compatibility with the old
+ 	 * tables, so we don't need to change all the config structs
+ 	 * at the same time.  The cfg is used to compare with the old
+ 	 * full cfg structs.
  	 */
--	iwl_write32(trans, CSR_MSIX_FH_INT_CAUSES_AD, inta_fh);
-+	iwl_write32(trans, CSR_MSIX_FH_INT_CAUSES_AD, inta_fh & inta_fh_msk);
- 	iwl_write32(trans, CSR_MSIX_HW_INT_CAUSES_AD, inta_hw);
- 	spin_unlock_bh(&trans_pcie->irq_lock);
+-	const struct iwl_cfg *cfg = (struct iwl_cfg *)(ent->driver_data);
++	cfg = (void *)(ent->driver_data & ~TRANS_CFG_MARKER);
  
+ 	/* make sure trans is the first element in iwl_cfg */
+ 	BUILD_BUG_ON(offsetof(struct iwl_cfg, trans));
+@@ -1201,11 +1214,19 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ #endif
+ 	/*
+-	 * If we didn't set the cfg yet, assume the trans is actually
+-	 * a full cfg from the old tables.
++	 * If we didn't set the cfg yet, the PCI ID table entry should have
++	 * been a full config - if yes, use it, otherwise fail.
+ 	 */
+-	if (!iwl_trans->cfg)
++	if (!iwl_trans->cfg) {
++		if (ent->driver_data & TRANS_CFG_MARKER) {
++			pr_err("No config found for PCI dev %04x/%04x, rev=0x%x, rfid=0x%x\n",
++			       pdev->device, pdev->subsystem_device,
++			       iwl_trans->hw_rev, iwl_trans->hw_rf_id);
++			ret = -EINVAL;
++			goto out_free_trans;
++		}
+ 		iwl_trans->cfg = cfg;
++	}
+ 
+ 	/* if we don't have a name yet, copy name from the old cfg */
+ 	if (!iwl_trans->name)
 -- 
 2.31.0
 
