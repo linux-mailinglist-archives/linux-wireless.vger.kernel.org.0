@@ -2,142 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA34234F18D
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 21:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 084E434F1B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Mar 2021 21:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233134AbhC3T0y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 15:26:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53788 "EHLO
+        id S233170AbhC3Thl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 15:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233092AbhC3T0h (ORCPT
+        with ESMTP id S233239AbhC3ThO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 15:26:37 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF31DC061574;
-        Tue, 30 Mar 2021 12:26:36 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id b2-20020a7bc2420000b029010be1081172so9000694wmj.1;
-        Tue, 30 Mar 2021 12:26:36 -0700 (PDT)
+        Tue, 30 Mar 2021 15:37:14 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00D65C061574;
+        Tue, 30 Mar 2021 12:37:11 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id o126so25567484lfa.0;
+        Tue, 30 Mar 2021 12:37:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yd9mIYSfyYtaQ80AUfAIBHd3tWlCfBll0IGCKZB64Oc=;
-        b=YCdl8xJEp0RU9QNsOSE26OgGlCt+i8taJwzEYkC1y5oSsGOXeZN2atlsRwCHe0ytff
-         hKk6pyRicoL7mCRuxyTQXBScfU26IGwmsL9EnkUx0HRLMKHtDEeD2D0821qHHULS07BL
-         kv6GjdyF7qy1FmH37PmOIy9JcwVyE+5uCfgjCk3R2Z/pqZX6NJpmLTzo5lIxz9bNrJri
-         eRSnS3qB0FqkWnB6hvxTDfnflE16RSTt1MIAlpdB0CZHEek+gsF1vXCUe+2Tzcu0BoDE
-         +Ooa31Lolc6nwzdQcOkjRdmgcGj8fT6kUcGrNhlM8WymKr0QUd/zi7LgDs1amoqytzVY
-         e7Pw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=PN0ITuLODcXOPSsvYDbIM9ZgkLNmjUqrMgzEkKmqNA8=;
+        b=I0hqyVhDr2W/Cq0rmUE+jk/bVDpm13OVD80OiiII00BO6s4TyYtSHltc4eYtGQJo5I
+         XUeCCpJJ1AKPDXh9lUJhdONebDnP7AnYG+FlNS0TkHEyV332/Bqe56ASpLinWnkpt9D2
+         bZW7BVrGWDE5W2tV2x+Xa+ha884BImdN/+jyy7LH5m8KfYW77WKpXsFc89bEIVvFrKUM
+         f7QymocxB4GN7+OgsvCdnPO9DJ4lyRM6qaPfX3EmJQ+YZadmVLfJzOH6k2OeW5kJ2dTL
+         f20/w5lRmWSMWQQbHkJ0fjyWZCI5HEAWZlzE40o267MOqZ1MkNdfhPtu/6bqQFJG7XHI
+         lV4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=yd9mIYSfyYtaQ80AUfAIBHd3tWlCfBll0IGCKZB64Oc=;
-        b=BL1bIxw0BY00qxb+c/ONLnsN3gxuWpRR1O9RNrwdfRsp86sIQ4629tI6bCwOWVKD+t
-         LqMnyI7XkLnJx+Qe4jOkbNR9HI/qZ9lLx0wqNJcguw2J4pE4WBrebLtsn7D5RIB0bhAL
-         C6UCpiKKtSLGX59Chmr+9BfXw+/eQI7CGQXIICXiAMkS8pFzbzyS4wBg5aM3fB2UJRIT
-         Ff0GWW629rFbwSmvX9LPqk95WvFIH4ezPxrcZG1qJGUgOIjk4vBxb6oNH/fHsDeHC4gT
-         RFraYL8ACITP04pximwnMYbrgytNr+wmPIVanWd1AP0ZBWmfjw/xqlayrqorFnuFUEqv
-         3fNA==
-X-Gm-Message-State: AOAM532ixLyywmxTmHWXs+iY3PSnfPZv4gmozQ3G50svo0EQuSzWoA74
-        zglW1Ub+FLp9TKgZdhh+nVE=
-X-Google-Smtp-Source: ABdhPJxNg7obrbrHiuPSlKBwL1YEzcuLxfZuWmxhPzkaN2kGHrfZwcuFF69iqkAFdbWkYFoL9+KHAA==
-X-Received: by 2002:a05:600c:4fcb:: with SMTP id o11mr5548754wmq.117.1617132395546;
-        Tue, 30 Mar 2021 12:26:35 -0700 (PDT)
-Received: from [192.168.1.101] ([37.167.251.74])
-        by smtp.gmail.com with ESMTPSA id j16sm7944070wmi.2.2021.03.30.12.26.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Mar 2021 12:26:34 -0700 (PDT)
-Subject: Re: [PATCH v2] wireless/nl80211.c: fix uninitialized variable
-To:     Alaa Emad <alaaemadhossney.ae@gmail.com>,
-        johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller@googlegroups.com,
-        syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
-References: <20210330172253.10076-1-alaaemadhossney.ae@gmail.com>
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <b287e62c-c72e-c12a-c48a-8dad4a48dd49@gmail.com>
-Date:   Tue, 30 Mar 2021 21:26:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=PN0ITuLODcXOPSsvYDbIM9ZgkLNmjUqrMgzEkKmqNA8=;
+        b=sC6wnafoCiZVaaQ48mJ1E4YS+v5/ab4xVfEg4EHavQkIxzbnmtI/HTUPf2f/LAYJp5
+         jZuBQmxwsJ/MsIBEMhuBic3Pnrw7FK3oG1tsblR/QPk+oZCdmw5jJ7H8UdnX5uMd8Ms0
+         Pg7+1H+YHO2ugvfCtIZTu/RQ53h6VWAhhyrqAj1Ux2kWt4ZsR470pgDKOXjGFpqMkZsO
+         0vfPRLsWd1MVParc2uSYGYxk3dWNXKlMYokaWx1u7+Q/kpv8RzaqY6/RQkimNSHbZRly
+         vdQZLIY5LGQ6a5BTr5apzZUNYXQgWAIv2y2bFMpF4D7XLBs5/zKzK6I2leXRPnJ8dd3i
+         CSnw==
+X-Gm-Message-State: AOAM531LiEcnjYIuhK3oOaJKxXHvV+9OE16gqdbn1nGe7vCpLN/zVGBl
+        yrrrIMr+fiC9u1PEGK0V8o0=
+X-Google-Smtp-Source: ABdhPJzlfKQMRYBdDzeA9TViH3CRCWgl19d2bVnUryIG9g1eerIdUBPcordYYE2ws6wCPCi8xxb6iw==
+X-Received: by 2002:ac2:58fc:: with SMTP id v28mr19680340lfo.201.1617133029525;
+        Tue, 30 Mar 2021 12:37:09 -0700 (PDT)
+Received: from localhost.localdomain ([94.103.229.149])
+        by smtp.gmail.com with ESMTPSA id p22sm2270457lfh.113.2021.03.30.12.37.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Mar 2021 12:37:09 -0700 (PDT)
+From:   Pavel Skripkin <paskripkin@gmail.com>
+To:     brookebasile@gmail.com
+Cc:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
+        gregkh@linuxfoundation.org, kuba@kernel.org, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com,
+        syzkaller-bugs@googlegroups.com
+Subject: Memory leak in ath9k_hif_usb_dealloc_tx_urbs()
+Date:   Tue, 30 Mar 2021 22:36:52 +0300
+Message-Id: <20210330193652.10642-1-paskripkin@gmail.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20200911071427.32354-1-brookebasile@gmail.com>
+References: <20200911071427.32354-1-brookebasile@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20210330172253.10076-1-alaaemadhossney.ae@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi!
 
+I did some debugging on this
+https://syzkaller.appspot.com/bug?id=3ea507fb3c47426497b52bd82b8ef0dd5b6cc7ee
+and, I believe, I recognized the problem. The problem appears in case of
+ath9k_htc_hw_init() fail. In case of this fail all tx_buf->urb krefs will be
+initialized to 1, but in free function:
 
-On 3/30/21 7:22 PM, Alaa Emad wrote:
-> This change fix  KMSAN uninit-value in net/wireless/nl80211.c:225 , That
-> because of `fixedlen` variable uninitialized,So I initialized it by zero.
-> 
-> Reported-by: syzbot+72b99dcf4607e8c770f3@syzkaller.appspotmail.com
-> Signed-off-by: Alaa Emad <alaaemadhossney.ae@gmail.com>
-> ---
-> Changes in v2:
->   - Make the commit message more clearer.
-> ---
->  net/wireless/nl80211.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index 775d0c4d86c3..b87ab67ad33d 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -210,7 +210,7 @@ static int validate_beacon_head(const struct nlattr *attr,
->  	const struct element *elem;
->  	const struct ieee80211_mgmt *mgmt = (void *)data;
->  	bool s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
-> -	unsigned int fixedlen, hdrlen;
-> +	unsigned int fixedlen = 0, hdrlen;
->  
->  	if (s1g_bcn) {
->  		fixedlen = offsetof(struct ieee80211_ext,
-> 
+static void ath9k_hif_usb_dealloc_tx_urbs(struct hif_device_usb *hif_dev)
 
-What was the report exactly ?
+....
 
-Current code does :
-
-unsigned int fixedlen;
-
-if (s1g_bcn) {
-    fixedlen = something1;
+static void ath9k_hif_usb_dealloc_tx_urbs(struct hif_device_usb *hif_dev)
+{
     ...
-else {
-    fixedlen = something2;
-    ...
-}
+	list_for_each_entry_safe(tx_buf, tx_buf_tmp,
+				 &hif_dev->tx.tx_buf, list) {
+		usb_get_urb(tx_buf->urb);
+		...
+		usb_free_urb(tx_buf->urb);
+		...
+		}
 
-So your patch does nothing.
+Krefs are incremented and then decremented, that means urbs won't be freed.
+I found your patch and I can't properly understand why You added usb_get_urb(tx_buf->urb).
+Can You explain please, I believe this will help me or somebody to fix this ussue :)
 
-Initial value of @fixedlen is not relevant.
-
-Reading this code (without access to KMSAN report) I suspect the issue
-is more like the following :
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 775d0c4d86c3..d815261917ff 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -209,9 +209,12 @@ static int validate_beacon_head(const struct nlattr *attr,
-        unsigned int len = nla_len(attr);
-        const struct element *elem;
-        const struct ieee80211_mgmt *mgmt = (void *)data;
--       bool s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
-        unsigned int fixedlen, hdrlen;
-+       bool s1g_bcn;
- 
-+       if (len < offsetofend(typeof(*mgmt), frame_control))
-+               goto err;
-+       s1g_bcn = ieee80211_is_s1g_beacon(mgmt->frame_control);
-        if (s1g_bcn) {
-                fixedlen = offsetof(struct ieee80211_ext,
-                                    u.s1g_beacon.variable);
-
+With regards,
+Pavel Skripkin
