@@ -2,88 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C40F34F5B1
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Mar 2021 03:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61DE334F6D7
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Mar 2021 04:39:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232809AbhCaBFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 21:05:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232515AbhCaBE1 (ORCPT
+        id S230145AbhCaCjO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 22:39:14 -0400
+Received: from mail-m17637.qiye.163.com ([59.111.176.37]:50630 "EHLO
+        mail-m17637.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230284AbhCaCi6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 21:04:27 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2913C061762;
-        Tue, 30 Mar 2021 18:04:26 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id q10so1784041pgj.2;
-        Tue, 30 Mar 2021 18:04:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Cw+n4U/6CuqjVQ7Ah/i4LdMbvq6CKAxMhOesJ1eXa5k=;
-        b=UYzqeKaG4A+MhdUDxCOwpipIB6gP5lcD6dPIXWrk7LR4yiFz0The2AqPJ5zn0yc4IG
-         o6KLa+dyUJxSIWCw5z0NoVx5CFZT/pux23pHMeydNVuf24K6XE+Eft31MYuuURvvpdoV
-         leYnCnqZO1nXef9gKCqc+K++vgl3wChTmkA80x+ZzwKnMdnit2AcCi4PQVZYfdofrvtL
-         6PYq61kmLMg9wraYUSnmYe75WmdhVrwG1NqrM6AX8VAS4kbB3S60N7IoXTAZglaGlPRL
-         b64X8jKVib7KhFVQxk78LunsYbey36FCF7kYoUNn6FCliHDgQVNMbf0FbgzjSUrgZBvD
-         q2HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Cw+n4U/6CuqjVQ7Ah/i4LdMbvq6CKAxMhOesJ1eXa5k=;
-        b=gzXCU+vmBMRGy8ec5qWRx9kBUwkk4iui6CJZhkc5Tsy9BHrJcxVLczwrfCRGt1IT2Q
-         JZVKmwDmsuyLH6bn9jb+slWyH8DQ/BxZvccZ9m8e98bL5KLjum804sfUxtzZ/s8fR/RW
-         Ah5dQnhYrGrgLsWVw6yvoijB7zVIKQJxPVh6FiDpkI794zEagusD/0OSTHnepDjzbd61
-         49YQ4YgolxYk2YY79lBK0Ihry0qqpylLtn3M5BiNg2TogLX/Tdh5K1q5nPUg0yBHRswJ
-         Xy9f7OQOADnkO0WcQo6mWfE54adyiSg7dsXxnd7uGAg2BB0GS508NvEOMLBw203y5QJC
-         gIWw==
-X-Gm-Message-State: AOAM5316uueowXlNlnzfoU5WHqL7tBIqTmqNOmY7e+QSGwe+66/FyW6K
-        n0Gw/+sy8vfPfgh2/jJ5BJM04wk3tg1z9tKZ
-X-Google-Smtp-Source: ABdhPJxPs8THNo3ImdsxQ3hb/RVgq3PlJoRet+ebdmrNfiMhr7e7NpvjPEVXwXfEiSkqChSeL3QzMQ==
-X-Received: by 2002:a63:4f56:: with SMTP id p22mr802790pgl.224.1617152666341;
-        Tue, 30 Mar 2021 18:04:26 -0700 (PDT)
-Received: from localhost.localdomain (123-192-91-35.dynamic.kbronet.com.tw. [123.192.91.35])
-        by smtp.gmail.com with ESMTPSA id q19sm215070pff.91.2021.03.30.18.04.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Mar 2021 18:04:25 -0700 (PDT)
-From:   Eric Lin <dslin1010@gmail.com>
-To:     romieu@fr.zoreil.com, davem@davemloft.net, kuba@kernel.org,
-        kvalo@codeaurora.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Cc:     gustavoars@kernel.org
-Subject: [PATCH 2/2] net: wireless: Fix typo of 'Networks' in comment
-Date:   Wed, 31 Mar 2021 09:04:18 +0800
-Message-Id: <20210331010418.1632816-2-dslin1010@gmail.com>
+        Tue, 30 Mar 2021 22:38:58 -0400
+Received: from wanjb-virtual-machine.localdomain (unknown [36.152.145.182])
+        by mail-m17637.qiye.163.com (Hmail) with ESMTPA id A781C980275;
+        Wed, 31 Mar 2021 10:38:53 +0800 (CST)
+From:   Wan Jiabing <wanjiabing@vivo.com>
+To:     Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Wan Jiabing <wanjiabing@vivo.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Cc:     kael_w@yeah.net
+Subject: [PATCH 0/4] net: Remove duplicate struct declaration
+Date:   Wed, 31 Mar 2021 10:35:49 +0800
+Message-Id: <20210331023557.2804128-1-wanjiabing@vivo.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210331010418.1632816-1-dslin1010@gmail.com>
-References: <20210331010418.1632816-1-dslin1010@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+        oVCBIfWUFZGExPGk5JH08YQk5KVkpNSkxKTkNISE9IQ01VEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
+        FZT0tIVUpKS0hKTFVLWQY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NRw6Txw*LD8VCjYSMT8BDz5K
+        UU0aCw1VSlVKTUpMSk5DSEhPTE9DVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlI
+        TVVKTklVSk9OVUpDSVlXWQgBWUFISktCNwY+
+X-HM-Tid: 0a788625e766d992kuwsa781c980275
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Eric Lin <dslin1010@gmail.com>
-Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/wl3501.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This patch series tried to remove duplicate struct declaration.
 
-diff --git a/drivers/net/wireless/wl3501.h b/drivers/net/wireless/wl3501.h
-index e98e04ee9a2c..5779ffbe5d0f 100644
---- a/drivers/net/wireless/wl3501.h
-+++ b/drivers/net/wireless/wl3501.h
-@@ -240,7 +240,7 @@ struct iw_mgmt_essid_pset {
- } __packed;
- 
- /*
-- * According to 802.11 Wireless Netowors, the definitive guide - O'Reilly
-+ * According to 802.11 Wireless Networks, the definitive guide - O'Reilly
-  * Pg 75
-  */ 
- #define IW_DATA_RATE_MAX_LABELS 8
+Wan Jiabing (4):
+  net: wireless: broadcom: Remove duplicate struct declaration
+  net: wireless: microchip: Remove duplicate struct declaration
+  net: wireless: marvell: Remove duplicate struct declaration
+  net: ethernet: stmicro: Remove duplicate struct declaration
+
+ drivers/net/ethernet/stmicro/stmmac/hwif.h               | 1 -
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.h | 1 -
+ drivers/net/wireless/marvell/libertas_tf/libertas_tf.h   | 1 -
+ drivers/net/wireless/microchip/wilc1000/wlan.h           | 1 -
+ 4 files changed, 4 deletions(-)
+
 -- 
 2.25.1
 
