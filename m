@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5FAF34FC5B
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Mar 2021 11:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C58934FC5C
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Mar 2021 11:16:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234644AbhCaJPK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 31 Mar 2021 05:15:10 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:43760 "EHLO
+        id S234647AbhCaJPg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 31 Mar 2021 05:15:36 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:43764 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234699AbhCaJPA (ORCPT
+        with ESMTP id S234501AbhCaJPD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 31 Mar 2021 05:15:00 -0400
+        Wed, 31 Mar 2021 05:15:03 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1lRWwD-00087q-I4; Wed, 31 Mar 2021 12:14:59 +0300
+        id 1lRWwE-00087q-Nh; Wed, 31 Mar 2021 12:15:00 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 31 Mar 2021 12:14:46 +0300
-Message-Id: <iwlwifi.20210331121101.7c7bd00e0aeb.Ib226ad57e416b43a710c36a78a617d4243458b99@changeid>
+Date:   Wed, 31 Mar 2021 12:14:47 +0300
+Message-Id: <iwlwifi.20210331121101.69af388d0dce.I8cfddf9e6837bf394b00390181b4b774ded19acd@changeid>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210331091452.543321-1-luca@coelho.fi>
 References: <20210331091452.543321-1-luca@coelho.fi>
@@ -31,326 +31,323 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
         farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.5-pre1
-Subject: [PATCH 06/12] iwlwifi: mvm: Add support for 6GHz passive scan
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: [PATCH 07/12] iwlwifi: mvm: enable PPAG in China
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-When doing scan while 6GHz channels are not enabled, the 6GHz band
-is not scanned. Thus, if there are no APs on the 2GHz and 5GHz bands
-(that will allow discovery of geographic location etc. that would
-allow enabling the 6GHz channels) but there are non collocated APs
-on 6GHz PSC channels these would never be discovered.
+Add support for ppag in China by reading revision 2 of the ppag table
+from ACPI, and passing the data to the FW.
+This is needed to enable OEMs to control ppag enablement
+in China.
 
-To overcome this, FW added support for performing passive UHB scan
-in case no APs were discovered during scan on the 2GHz and 5GHz
-channels.
-
-Add support for enabling such scan when the following conditions are
-met:
-
-- 6GHz channels are supported but not enabled by regulatory.
-- Station interface is not associated or less than a defined time
-  interval passed from the last resume or HW reset flows.
-- At least 4 channels are included in the scan request
-- The scan request includes the widlcard SSID.
-- At least 50 minutes passed from the last 6GHz passive scan.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  |   8 ++
- drivers/net/wireless/intel/iwlwifi/fw/file.h  |   3 +
- .../wireless/intel/iwlwifi/mvm/constants.h    |   2 +
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |   2 +
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   2 +
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   3 +
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 128 ++++++++++++++++++
- 7 files changed, 148 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  9 +--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  4 +-
+ .../net/wireless/intel/iwlwifi/fw/api/power.h | 22 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 76 ++++++++++++-------
+ 4 files changed, 65 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-index 6b8ca35cec1a..b2605aefc290 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-@@ -634,6 +634,12 @@ enum iwl_umac_scan_general_flags2 {
-  * @IWL_UMAC_SCAN_GEN_FLAGS_V2_TRIGGER_UHB_SCAN: at the end of 2.4GHz and
-  *		5.2Ghz bands scan, trigger scan on 6GHz band to discover
-  *		the reported collocated APs
-+ * @IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN: at the end of 2.4GHz and 5GHz
-+ *      bands scan, if not APs were discovered, allow scan to conitnue and scan
-+ *      6GHz PSC channels in order to discover country information.
-+ * @IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN_FILTER_IN: in case
-+ *      &IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN is enabled and scan is
-+ *      activated over 6GHz PSC channels, filter in beacons and probe responses.
-  */
- enum iwl_umac_scan_general_flags_v2 {
- 	IWL_UMAC_SCAN_GEN_FLAGS_V2_PERIODIC             = BIT(0),
-@@ -649,6 +655,8 @@ enum iwl_umac_scan_general_flags_v2 {
- 	IWL_UMAC_SCAN_GEN_FLAGS_V2_MULTI_SSID           = BIT(10),
- 	IWL_UMAC_SCAN_GEN_FLAGS_V2_FORCE_PASSIVE        = BIT(11),
- 	IWL_UMAC_SCAN_GEN_FLAGS_V2_TRIGGER_UHB_SCAN     = BIT(12),
-+	IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN    = BIT(13),
-+	IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN_FILTER_IN = BIT(14),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 82a4f7e8ba54..56c4d05c9cc2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -181,14 +181,13 @@ union acpi_object *iwl_acpi_get_wifi_pkg(struct device *dev,
+ 	/*
+ 	 * We need at least two packages, one for the revision and one
+ 	 * for the data itself.  Also check that the revision is valid
+-	 * (i.e. it is an integer smaller than 2, as we currently support only
+-	 * 2 revisions).
++	 * (i.e. it is an integer (each caller has to check by itself
++	 * if the returned revision is supported)).
+ 	 */
+ 	if (data->type != ACPI_TYPE_PACKAGE ||
+ 	    data->package.count < 2 ||
+-	    data->package.elements[0].type != ACPI_TYPE_INTEGER ||
+-	    data->package.elements[0].integer.value > 1) {
+-		IWL_DEBUG_DEV_RADIO(dev, "Unsupported packages structure\n");
++	    data->package.elements[0].type != ACPI_TYPE_INTEGER) {
++		IWL_DEBUG_DEV_RADIO(dev, "Invalid packages structure\n");
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+index 030c50082568..f8ea588e4fbb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+@@ -53,8 +53,8 @@
+ 
+ #define ACPI_WGDS_TABLE_SIZE		3
+ 
+-#define ACPI_PPAG_WIFI_DATA_SIZE	((IWL_NUM_CHAIN_LIMITS * \
+-					  IWL_NUM_SUB_BANDS) + 2)
++#define ACPI_PPAG_WIFI_DATA_SIZE_V1	((IWL_NUM_CHAIN_LIMITS * \
++					  IWL_NUM_SUB_BANDS_V1) + 2)
+ #define ACPI_PPAG_WIFI_DATA_SIZE_V2	((IWL_NUM_CHAIN_LIMITS * \
+ 					  IWL_NUM_SUB_BANDS_V2) + 2)
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+index 798417182d54..86445385f072 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+@@ -274,7 +274,7 @@ enum iwl_dev_tx_power_cmd_mode {
+ #define IWL_NUM_CHAIN_TABLES	1
+ #define IWL_NUM_CHAIN_TABLES_V2	2
+ #define IWL_NUM_CHAIN_LIMITS	2
+-#define IWL_NUM_SUB_BANDS	5
++#define IWL_NUM_SUB_BANDS_V1	5
+ #define IWL_NUM_SUB_BANDS_V2	11
  
  /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index 35dffcaf5aba..f9c5cf538ad1 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -362,6 +362,8 @@ typedef unsigned int __bitwise iwl_ucode_tlv_capa_t;
-  * @IWL_UCODE_TLV_CAPA_PROTECTED_TWT: Supports protection of TWT action frames
-  * @IWL_UCODE_TLV_CAPA_FW_RESET_HANDSHAKE: Supports the firmware handshake in
-  *	reset flow
-+ * @IWL_UCODE_TLV_CAPA_PASSIVE_6GHZ_SCAN: Support for passive scan on 6GHz PSC
-+ *      channels even when these are not enabled.
-  *
-  * @NUM_IWL_UCODE_TLV_CAPA: number of bits used
+@@ -300,7 +300,7 @@ struct iwl_dev_tx_power_common {
+  * @per_chain: per chain restrictions
   */
-@@ -408,6 +410,7 @@ enum iwl_ucode_tlv_capa {
- 	IWL_UCODE_TLV_CAPA_SESSION_PROT_CMD		= (__force iwl_ucode_tlv_capa_t)54,
- 	IWL_UCODE_TLV_CAPA_PROTECTED_TWT		= (__force iwl_ucode_tlv_capa_t)56,
- 	IWL_UCODE_TLV_CAPA_FW_RESET_HANDSHAKE		= (__force iwl_ucode_tlv_capa_t)57,
-+	IWL_UCODE_TLV_CAPA_PASSIVE_6GHZ_SCAN		= (__force iwl_ucode_tlv_capa_t)58,
+ struct iwl_dev_tx_power_cmd_v3 {
+-	__le16 per_chain[IWL_NUM_CHAIN_TABLES][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS];
++	__le16 per_chain[IWL_NUM_CHAIN_TABLES][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V1];
+ } __packed; /* TX_REDUCED_POWER_API_S_VER_3 */
  
- 	/* set 2 */
- 	IWL_UCODE_TLV_CAPA_EXTENDED_DTS_MEASURE		= (__force iwl_ucode_tlv_capa_t)64,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-index 45634302801f..1343f25f1090 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-@@ -117,5 +117,7 @@
- #define IWL_MVM_FTM_INITIATOR_SMOOTH_OVERSHOOT  20016
- #define IWL_MVM_FTM_INITIATOR_SMOOTH_AGE_SEC    2
- #define IWL_MVM_DISABLE_AP_FILS			false
-+#define IWL_MVM_6GHZ_PASSIVE_SCAN_TIMEOUT       3000 /* in seconds */
-+#define IWL_MVM_6GHZ_PASSIVE_SCAN_ASSOC_TIMEOUT 60   /* in seconds */
+ #define IWL_DEV_MAX_TX_POWER 0x7FFF
+@@ -313,7 +313,7 @@ struct iwl_dev_tx_power_cmd_v3 {
+  * @reserved: reserved (padding)
+  */
+ struct iwl_dev_tx_power_cmd_v4 {
+-	__le16 per_chain[IWL_NUM_CHAIN_TABLES][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS];
++	__le16 per_chain[IWL_NUM_CHAIN_TABLES][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V1];
+ 	u8 enable_ack_reduction;
+ 	u8 reserved[3];
+ } __packed; /* TX_REDUCED_POWER_API_S_VER_4 */
+@@ -332,7 +332,7 @@ struct iwl_dev_tx_power_cmd_v4 {
+  *	BIOS values. relevant if setMode is IWL_TX_POWER_MODE_SET_SAR_TIMER
+  */
+ struct iwl_dev_tx_power_cmd_v5 {
+-	__le16 per_chain[IWL_NUM_CHAIN_TABLES][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS];
++	__le16 per_chain[IWL_NUM_CHAIN_TABLES][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V1];
+ 	u8 enable_ack_reduction;
+ 	u8 per_chain_restriction_changed;
+ 	u8 reserved[2];
+@@ -454,21 +454,23 @@ struct iwl_geo_tx_power_profiles_resp {
  
- #endif /* __MVM_CONSTANTS_H */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index a7dc85c704a9..2e28cf299ef4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2028,6 +2028,8 @@ static int __iwl_mvm_resume(struct iwl_mvm *mvm, bool test)
+ /**
+  * union iwl_ppag_table_cmd - union for all versions of PPAG command
+- * @v1: version 1, table revision = 0
+- * @v2: version 2, table revision = 1
++ * @v1: version 1
++ * @v2: version 2
+  *
+- * @enabled: 1 if PPAG is enabled, 0 otherwise
++ * @flags: bit 0 - indicates enablement of PPAG for ETSI
++ *         bit 1 - indicates enablement of PPAG for CHINA BIOS
++ *         bit 1 can be used only in v3 (identical to v2)
+  * @gain: table of antenna gain values per chain and sub-band
+  * @reserved: reserved
+  */
+ union iwl_ppag_table_cmd {
+ 	struct {
+-		__le32 enabled;
+-		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS];
++		__le32 flags;
++		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V1];
+ 		s8 reserved[2];
+ 	} v1;
+ 	struct {
+-		__le32 enabled;
++		__le32 flags;
+ 		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
+ 		s8 reserved[2];
+ 	} v2;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 5ee64f7f3c85..4f297edd8e18 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -29,6 +29,9 @@
  
- 	mutex_lock(&mvm->mutex);
+ #define UCODE_VALID_OK	cpu_to_le32(0x1)
  
-+	mvm->last_reset_or_resume_time_jiffies = jiffies;
++#define IWL_PPAG_MASK 3
++#define IWL_PPAG_ETSI_MASK BIT(0)
 +
- 	/* get the BSS vif pointer again */
- 	vif = iwl_mvm_get_bss_vif(mvm);
- 	if (IS_ERR_OR_NULL(vif))
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index fd35dd31613e..607d5d564928 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1099,6 +1099,8 @@ int __iwl_mvm_mac_start(struct iwl_mvm *mvm)
- 	iwl_dbg_tlv_time_point(&mvm->fwrt, IWL_FW_INI_TIME_POINT_PERIODIC,
- 			       NULL);
+ struct iwl_mvm_alive_data {
+ 	bool valid;
+ 	u32 scd_base_addr;
+@@ -773,16 +776,16 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
+ 	} else if (fw_has_api(&mvm->fw->ucode_capa,
+ 			      IWL_UCODE_TLV_API_REDUCE_TX_POWER)) {
+ 		len = sizeof(cmd.v5);
+-		n_subbands = IWL_NUM_SUB_BANDS;
++		n_subbands = IWL_NUM_SUB_BANDS_V1;
+ 		per_chain = cmd.v5.per_chain[0][0];
+ 	} else if (fw_has_capa(&mvm->fw->ucode_capa,
+ 			       IWL_UCODE_TLV_CAPA_TX_POWER_ACK)) {
+ 		len = sizeof(cmd.v4);
+-		n_subbands = IWL_NUM_SUB_BANDS;
++		n_subbands = IWL_NUM_SUB_BANDS_V1;
+ 		per_chain = cmd.v4.per_chain[0][0];
+ 	} else {
+ 		len = sizeof(cmd.v3);
+-		n_subbands = IWL_NUM_SUB_BANDS;
++		n_subbands = IWL_NUM_SUB_BANDS_V1;
+ 		per_chain = cmd.v3.per_chain[0][0];
+ 	}
  
-+	mvm->last_reset_or_resume_time_jiffies = jiffies;
-+
- 	if (ret && test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status)) {
- 		/* Something went wrong - we need to finish some cleanup
- 		 * that normally iwl_mvm_mac_restart_complete() below
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index e607ad713f88..e2a37ac7c4b1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1096,6 +1096,9 @@ struct iwl_mvm {
- 	/* sniffer data to include in radiotap */
- 	__le16 cur_aid;
- 	u8 cur_bssid[ETH_ALEN];
-+
-+	unsigned long last_6ghz_passive_scan_jiffies;
-+	unsigned long last_reset_or_resume_time_jiffies;
- };
+@@ -909,46 +912,50 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
  
- /* Extract MVM priv from op_mode and _hw */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index caf87f320094..5a0696c44f6d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -43,6 +43,9 @@
- /* adaptive dwell number of APs override for social channels */
- #define IWL_SCAN_ADWELL_N_APS_SOCIAL_CHS 2
+ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
+ {
+-	union acpi_object *wifi_pkg, *data, *enabled;
++	union acpi_object *wifi_pkg, *data, *flags;
+ 	int i, j, ret, tbl_rev, num_sub_bands;
+ 	int idx = 2;
+ 	s8 *gain;
  
-+/* minimal number of 2GHz and 5GHz channels in the regular scan request */
-+#define IWL_MVM_6GHZ_PASSIVE_SCAN_MIN_CHANS 4
+ 	/*
+-	 * The 'enabled' field is the same in v1 and v2 so we can just
++	 * The 'flags' field is the same in v1 and in v2 so we can just
+ 	 * use v1 to access it.
+ 	 */
+-	mvm->fwrt.ppag_table.v1.enabled = cpu_to_le32(0);
++	mvm->fwrt.ppag_table.v1.flags = cpu_to_le32(0);
 +
- struct iwl_mvm_scan_timing_params {
- 	u32 suspend_time;
- 	u32 max_out_time;
-@@ -94,6 +97,7 @@ struct iwl_mvm_scan_params {
- 	struct cfg80211_scan_6ghz_params *scan_6ghz_params;
- 	u32 n_6ghz_params;
- 	bool scan_6ghz;
-+	bool enable_6ghz_passive;
- };
+ 	data = iwl_acpi_get_object(mvm->dev, ACPI_PPAG_METHOD);
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
  
- static inline void *iwl_mvm_get_scan_req_umac_data(struct iwl_mvm *mvm)
-@@ -1873,6 +1877,98 @@ static u8 iwl_mvm_scan_umac_chan_flags_v2(struct iwl_mvm *mvm,
- 	return flags;
- }
+-	/* try to read ppag table revision 1 */
++	/* try to read ppag table rev 2 or 1 (both have the same data size) */
+ 	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
+ 					 ACPI_PPAG_WIFI_DATA_SIZE_V2, &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+-		if (tbl_rev != 1) {
++		if (tbl_rev == 1 || tbl_rev == 2) {
++			num_sub_bands = IWL_NUM_SUB_BANDS_V2;
++			gain = mvm->fwrt.ppag_table.v2.gain[0];
++			mvm->fwrt.ppag_ver = tbl_rev;
++			IWL_DEBUG_RADIO(mvm,
++					"Reading PPAG table v2 (tbl_rev=%d)\n",
++					tbl_rev);
++			goto read_table;
++		} else {
+ 			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+-		num_sub_bands = IWL_NUM_SUB_BANDS_V2;
+-		gain = mvm->fwrt.ppag_table.v2.gain[0];
+-		mvm->fwrt.ppag_ver = 2;
+-		IWL_DEBUG_RADIO(mvm, "Reading PPAG table v2 (tbl_rev=1)\n");
+-		goto read_table;
+ 	}
  
-+static void iwl_mvm_scan_6ghz_passive_scan(struct iwl_mvm *mvm,
-+					   struct iwl_mvm_scan_params *params,
-+					   struct ieee80211_vif *vif)
-+{
-+	struct ieee80211_supported_band *sband =
-+		&mvm->nvm_data->bands[NL80211_BAND_6GHZ];
-+	u32 n_disabled, i;
-+
-+	params->enable_6ghz_passive = false;
-+
-+	if (params->scan_6ghz)
-+		return;
-+
-+	if (!fw_has_capa(&mvm->fw->ucode_capa,
-+			 IWL_UCODE_TLV_CAPA_PASSIVE_6GHZ_SCAN)) {
-+		IWL_DEBUG_SCAN(mvm,
-+			       "6GHz passive scan: Not supported by FW\n");
-+		return;
-+	}
-+
-+	/* 6GHz passive scan allowed only on station interface  */
-+	if (vif->type != NL80211_IFTYPE_STATION) {
-+		IWL_DEBUG_SCAN(mvm,
-+			       "6GHz passive scan: not station interface\n");
-+		return;
-+	}
-+
-+	/*
-+	 * 6GHz passive scan is allowed while associated in a defined time
-+	 * interval following HW reset or resume flow
-+	 */
-+	if (vif->bss_conf.assoc &&
-+	    (time_before(mvm->last_reset_or_resume_time_jiffies +
-+			 (IWL_MVM_6GHZ_PASSIVE_SCAN_ASSOC_TIMEOUT * HZ),
-+			 jiffies))) {
-+		IWL_DEBUG_SCAN(mvm, "6GHz passive scan: associated\n");
-+		return;
-+	}
-+
-+	/* No need for 6GHz passive scan if not enough time elapsed */
-+	if (time_after(mvm->last_6ghz_passive_scan_jiffies +
-+		       (IWL_MVM_6GHZ_PASSIVE_SCAN_TIMEOUT * HZ), jiffies)) {
-+		IWL_DEBUG_SCAN(mvm,
-+			       "6GHz passive scan: timeout did not expire\n");
-+		return;
-+	}
-+
-+	/* not enough channels in the regular scan request */
-+	if (params->n_channels < IWL_MVM_6GHZ_PASSIVE_SCAN_MIN_CHANS) {
-+		IWL_DEBUG_SCAN(mvm,
-+			       "6GHz passive scan: not enough channels\n");
-+		return;
-+	}
-+
-+	for (i = 0; i < params->n_ssids; i++) {
-+		if (!params->ssids[i].ssid_len)
-+			break;
-+	}
-+
-+	/* not a wildcard scan, so cannot enable passive 6GHz scan */
-+	if (i == params->n_ssids) {
-+		IWL_DEBUG_SCAN(mvm,
-+			       "6GHz passive scan: no wildcard SSID\n");
-+		return;
-+	}
-+
-+	if (!sband || !sband->n_channels) {
-+		IWL_DEBUG_SCAN(mvm,
-+			       "6GHz passive scan: no 6GHz channels\n");
-+		return;
-+	}
-+
-+	for (i = 0, n_disabled = 0; i < sband->n_channels; i++) {
-+		if (sband->channels[i].flags & (IEEE80211_CHAN_DISABLED))
-+			n_disabled++;
-+	}
-+
-+	/*
-+	 * Not all the 6GHz channels are disabled, so no need for 6GHz passive
-+	 * scan
-+	 */
-+	if (n_disabled != sband->n_channels) {
-+		IWL_DEBUG_SCAN(mvm,
-+			       "6GHz passive scan: 6GHz channels enabled\n");
-+		return;
-+	}
-+
-+	/* all conditions to enable 6ghz passive scan are satisfied */
-+	IWL_DEBUG_SCAN(mvm, "6GHz passive scan: can be enabled\n");
-+	params->enable_6ghz_passive = true;
-+}
-+
- static u16 iwl_mvm_scan_umac_flags_v2(struct iwl_mvm *mvm,
- 				      struct iwl_mvm_scan_params *params,
- 				      struct ieee80211_vif *vif,
-@@ -1911,6 +2007,9 @@ static u16 iwl_mvm_scan_umac_flags_v2(struct iwl_mvm *mvm,
- 	    params->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ)
- 		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_TRIGGER_UHB_SCAN;
+ 	/* try to read ppag table revision 0 */
+ 	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
+-					 ACPI_PPAG_WIFI_DATA_SIZE, &tbl_rev);
++					 ACPI_PPAG_WIFI_DATA_SIZE_V1, &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 0) {
+ 			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+-		num_sub_bands = IWL_NUM_SUB_BANDS;
++		num_sub_bands = IWL_NUM_SUB_BANDS_V1;
+ 		gain = mvm->fwrt.ppag_table.v1.gain[0];
+-		mvm->fwrt.ppag_ver = 1;
++		mvm->fwrt.ppag_ver = 0;
+ 		IWL_DEBUG_RADIO(mvm, "Reading PPAG table v1 (tbl_rev=0)\n");
+ 		goto read_table;
+ 	}
+@@ -956,15 +963,17 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
+ 	goto out_free;
  
-+	if (params->enable_6ghz_passive)
-+		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN;
+ read_table:
+-	enabled = &wifi_pkg->package.elements[1];
+-	if (enabled->type != ACPI_TYPE_INTEGER ||
+-	    (enabled->integer.value != 0 && enabled->integer.value != 1)) {
++	flags = &wifi_pkg->package.elements[1];
 +
- 	return flags;
- }
++	if (flags->type != ACPI_TYPE_INTEGER) {
+ 		ret = -EINVAL;
+ 		goto out_free;
+ 	}
  
-@@ -2183,6 +2282,30 @@ iwl_mvm_scan_umac_fill_ch_p_v6(struct iwl_mvm *mvm,
- 					  params->n_channels,
- 					  channel_cfg_flags,
- 					  vif->type);
+-	mvm->fwrt.ppag_table.v1.enabled = cpu_to_le32(enabled->integer.value);
+-	if (!mvm->fwrt.ppag_table.v1.enabled) {
++	mvm->fwrt.ppag_table.v1.flags = cpu_to_le32(flags->integer.value &
++						    IWL_PPAG_MASK);
 +
-+	if (params->enable_6ghz_passive) {
-+		struct ieee80211_supported_band *sband =
-+			&mvm->nvm_data->bands[NL80211_BAND_6GHZ];
-+		u32 i;
++	if (!mvm->fwrt.ppag_table.v1.flags) {
+ 		ret = 0;
+ 		goto out_free;
+ 	}
+@@ -992,12 +1001,13 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
+ 			    (j != 0 &&
+ 			     (gain[i * num_sub_bands + j] > ACPI_PPAG_MAX_HB ||
+ 			      gain[i * num_sub_bands + j] < ACPI_PPAG_MIN_HB))) {
+-				mvm->fwrt.ppag_table.v1.enabled = cpu_to_le32(0);
++				mvm->fwrt.ppag_table.v1.flags = cpu_to_le32(0);
+ 				ret = -EINVAL;
+ 				goto out_free;
+ 			}
+ 		}
+ 	}
 +
-+		for (i = 0; i < sband->n_channels; i++) {
-+			struct ieee80211_channel *channel =
-+				&sband->channels[i];
-+
-+			struct iwl_scan_channel_cfg_umac *cfg =
-+				&cp->channel_config[cp->count];
-+
-+			if (!cfg80211_channel_is_psc(channel))
-+				continue;
-+
-+			cfg->flags = 0;
-+			cfg->v2.channel_num = channel->hw_value;
-+			cfg->v2.band = PHY_BAND_6;
-+			cfg->v2.iter_count = 1;
-+			cfg->v2.iter_interval = 0;
-+			cp->count++;
-+		}
-+	}
- }
- 
- static int iwl_mvm_scan_umac_v12(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-@@ -2500,6 +2623,8 @@ int iwl_mvm_reg_scan_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 
- 	iwl_mvm_build_scan_probe(mvm, vif, ies, &params);
- 
-+	iwl_mvm_scan_6ghz_passive_scan(mvm, &params, vif);
-+
- 	uid = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params,
- 				     IWL_MVM_SCAN_REGULAR);
- 
-@@ -2524,6 +2649,9 @@ int iwl_mvm_reg_scan_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	mvm->scan_status |= IWL_MVM_SCAN_REGULAR;
- 	mvm->scan_vif = iwl_mvm_vif_from_mac80211(vif);
- 
-+	if (params.enable_6ghz_passive)
-+		mvm->last_6ghz_passive_scan_jiffies = jiffies;
-+
- 	schedule_delayed_work(&mvm->scan_timeout_dwork,
- 			      msecs_to_jiffies(SCAN_TIMEOUT));
+ 	ret = 0;
+ out_free:
+ 	kfree(data);
+@@ -1015,7 +1025,7 @@ int iwl_mvm_ppag_send_cmd(struct iwl_mvm *mvm)
+ 				"PPAG capability not supported by FW, command not sent.\n");
+ 		return 0;
+ 	}
+-	if (!mvm->fwrt.ppag_table.v1.enabled) {
++	if (!mvm->fwrt.ppag_table.v1.flags) {
+ 		IWL_DEBUG_RADIO(mvm, "PPAG not enabled, command not sent.\n");
+ 		return 0;
+ 	}
+@@ -1024,20 +1034,28 @@ int iwl_mvm_ppag_send_cmd(struct iwl_mvm *mvm)
+ 					PER_PLATFORM_ANT_GAIN_CMD,
+ 					IWL_FW_CMD_VER_UNKNOWN);
+ 	if (cmd_ver == 1) {
+-		num_sub_bands = IWL_NUM_SUB_BANDS;
++		num_sub_bands = IWL_NUM_SUB_BANDS_V1;
+ 		gain = mvm->fwrt.ppag_table.v1.gain[0];
+ 		cmd_size = sizeof(mvm->fwrt.ppag_table.v1);
+-		if (mvm->fwrt.ppag_ver == 2) {
++		if (mvm->fwrt.ppag_ver == 1 || mvm->fwrt.ppag_ver == 2) {
+ 			IWL_DEBUG_RADIO(mvm,
+-					"PPAG table is v2 but FW supports v1, sending truncated table\n");
++					"PPAG table rev is %d but FW supports v1, sending truncated table\n",
++					mvm->fwrt.ppag_ver);
++			mvm->fwrt.ppag_table.v1.flags &=
++				cpu_to_le32(IWL_PPAG_ETSI_MASK);
+ 		}
+-	} else if (cmd_ver == 2) {
++	} else if (cmd_ver == 2 || cmd_ver == 3) {
+ 		num_sub_bands = IWL_NUM_SUB_BANDS_V2;
+ 		gain = mvm->fwrt.ppag_table.v2.gain[0];
+ 		cmd_size = sizeof(mvm->fwrt.ppag_table.v2);
+-		if (mvm->fwrt.ppag_ver == 1) {
++		if (mvm->fwrt.ppag_ver == 0) {
+ 			IWL_DEBUG_RADIO(mvm,
+ 					"PPAG table is v1 but FW supports v2, sending padded table\n");
++		} else if (cmd_ver == 2 && mvm->fwrt.ppag_ver == 2) {
++			IWL_DEBUG_RADIO(mvm,
++					"PPAG table is v3 but FW supports v2, sending partial bitmap.\n");
++			mvm->fwrt.ppag_table.v1.flags &=
++				cpu_to_le32(IWL_PPAG_ETSI_MASK);
+ 		}
+ 	} else {
+ 		IWL_DEBUG_RADIO(mvm, "Unsupported PPAG command version\n");
+@@ -1102,7 +1120,7 @@ static int iwl_mvm_ppag_init(struct iwl_mvm *mvm)
+ 		IWL_DEBUG_RADIO(mvm,
+ 				"System vendor '%s' is not in the approved list, disabling PPAG.\n",
+ 				dmi_get_system_info(DMI_SYS_VENDOR));
+-		mvm->fwrt.ppag_table.v1.enabled = cpu_to_le32(0);
++		mvm->fwrt.ppag_table.v1.flags = cpu_to_le32(0);
+ 		return 0;
+ 	}
  
 -- 
 2.31.0
