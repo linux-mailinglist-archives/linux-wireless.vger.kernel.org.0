@@ -2,92 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6F034F4FB
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Mar 2021 01:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD6434F5AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Mar 2021 03:05:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233026AbhC3XYB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Mar 2021 19:24:01 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:51908 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232883AbhC3XXr (ORCPT
+        id S232589AbhCaBE1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Mar 2021 21:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41538 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232467AbhCaBEZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Mar 2021 19:23:47 -0400
-Received: from [192.168.254.6] (unknown [50.34.172.155])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 0312E13C2B0;
-        Tue, 30 Mar 2021 16:23:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0312E13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1617146627;
-        bh=K2CmXysb17d8HTR4njnzZrLvXIMta7ith6EHODbM24Q=;
-        h=To:From:Subject:Date:From;
-        b=hQoSy4KHcBqtu8W2MumAkJVrj/p6gt/6TBeUe5QAafJU3OK/oglvVttGSrFSjeGVC
-         5utsc9IP51e7O4lyXJwmYxQnQQj0PD4c8Cp953MDL+sFAlbimYQnV4EJD8Fi3+F141
-         S8Iq0beHg/Rakzivs6WnaRPXoOAoYcTOZK15NjLo=
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        shay.bar@celeno.com
-From:   Ben Greear <greearb@candelatech.com>
-Subject: Question on "mac80211: HE STA disassoc due to QOS NULL not sent"
-Organization: Candela Technologies
-Message-ID: <3c89f6f5-f094-4d1a-f254-6ca7483b54e5@candelatech.com>
-Date:   Tue, 30 Mar 2021 16:23:33 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        Tue, 30 Mar 2021 21:04:25 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685CFC061574;
+        Tue, 30 Mar 2021 18:04:24 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id y2so7053101plg.5;
+        Tue, 30 Mar 2021 18:04:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FG5gZ0ulUfG0IDpu0Of939TdFlC1gbz7SPQvo9HF6Rs=;
+        b=WcR3+uVZC00pEsGjkzjMlB1ZPvieucyTAx6HYFK3n5Eq3VgdwY1jrm5W+ctXcwKvXn
+         imQa4hDrLauxeLX7RKJAtkTABkjzHOJtOVDNjMIGl3qxmq0eRlAv5o3EPgpKpOaePOql
+         QY13uSinoXSl/T8KNIjXRpMleFytFwv7qZhuB7zm/uuXOX41pWOeOqtsxx1yDVikkTTM
+         kDQXCRsrMK93CIzGY6SxYBBr8kjP1PtwSCOkNSo4NBA9F9yBzUDp9dgpW3z2XSlaNa55
+         9TeY585Fu1dxrhZqRbynbgkIj094HsR6jRMW6hogZY7BrXupSBS79cqIe7rIJSvJ8EMR
+         2PJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FG5gZ0ulUfG0IDpu0Of939TdFlC1gbz7SPQvo9HF6Rs=;
+        b=TJx8DwT91o7MNHPAwP/rzaxgMqnHZLspzmGO/yZLcSCwG31GjUfGwF9Bdenxa13Mdb
+         xS3KX8HxiALuuXNHVb3/WOLbV8QdNLcWKmNzC0UswmySwRW+hlLsZ48ZQnHPBnabhwmH
+         8YjlcVILa/2ZePi6nspmzJJx8HGWg7G05fpiBxrkL6Msfa2A1mWNNfeZ3XGkUp0xiCve
+         0R0wLRoiD3SSQIlKFFFQ22Fq2g9Cq785TG5yWS2lNFNRWZ2n2cvdh+lqJUoGpRg3nDnl
+         KQBatjqFqT5QQ/3yx+0/MipfmpO60C/nJqGaxVA8rNGS+S47vpr02LpNjzUR4BRYgNBM
+         BE0g==
+X-Gm-Message-State: AOAM531H6Ffv+fCvxCabSfqvyOK3cdCTuTVr2WlsJ/OaNKsuY1F8kiOz
+        YQc3WR8iARfSxz+JuUXtQFKQZQm60lVWD91p
+X-Google-Smtp-Source: ABdhPJyJdQX8ZFty6U12ktbNUWY59WHUrO+KyD9bluoctMuMAboVJ64mYQBwo6XBM2MTPtL0jbsuYA==
+X-Received: by 2002:a17:903:230d:b029:e7:1052:a94d with SMTP id d13-20020a170903230db02900e71052a94dmr958353plh.0.1617152663809;
+        Tue, 30 Mar 2021 18:04:23 -0700 (PDT)
+Received: from localhost.localdomain (123-192-91-35.dynamic.kbronet.com.tw. [123.192.91.35])
+        by smtp.gmail.com with ESMTPSA id q19sm215070pff.91.2021.03.30.18.04.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Mar 2021 18:04:23 -0700 (PDT)
+From:   Eric Lin <dslin1010@gmail.com>
+To:     romieu@fr.zoreil.com, davem@davemloft.net, kuba@kernel.org,
+        kvalo@codeaurora.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Cc:     gustavoars@kernel.org
+Subject: [PATCH 1/2] net: ethernet: Fix typo of 'network' in comment
+Date:   Wed, 31 Mar 2021 09:04:17 +0800
+Message-Id: <20210331010418.1632816-1-dslin1010@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-While debugging a station polling issue.  Should it maybe send
-a probe request instead of just not probing at all?
+Signed-off-by: Eric Lin <dslin1010@gmail.com>
+Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/net/ethernet/via/via-velocity.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-commit f39b07fdfb688724fedabf5507e15eaf398f2500
-Author: Shay Bar <shay.bar@celeno.com>
-Date:   Wed Jul 3 16:18:48 2019 +0300
-
-     mac80211: HE STA disassoc due to QOS NULL not sent
-
-     In case of HE AP-STA link, ieee80211_send_nullfunc() will not
-     send the QOS NULL packet to check if AP is still associated.
-
-     In this case, probe_send_count will be non-zero and
-     ieee80211_sta_work() will later disassociate the AP, even
-     though no packet was ever sent.
-
-     Fix this by decrementing probe_send_count and not calling
-     ieee80211_send_nullfunc() in case of HE link, so that we
-     still wait for some time for the AP beacon to reappear and
-     don't disconnect right away.
-
-     Signed-off-by: Shay Bar <shay.bar@celeno.com>
-     Link: https://lore.kernel.org/r/20190703131848.22879-1-shay.bar@celeno.com
-     [clarify commit message]
-     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 225633d9e2d4bd..e89ed800f01259 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2512,7 +2512,10 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
-
-         if (ieee80211_hw_check(&sdata->local->hw, REPORTS_TX_ACK_STATUS)) {
-                 ifmgd->nullfunc_failed = false;
--               ieee80211_send_nullfunc(sdata->local, sdata, false);
-+               if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
-+                       ifmgd->probe_send_count--;
-+               else
-+                       ieee80211_send_nullfunc(sdata->local, sdata, false);
-         } else {
-                 int ssid_len;
-
-
-Thanks,
-Ben
-
+diff --git a/drivers/net/ethernet/via/via-velocity.c b/drivers/net/ethernet/via/via-velocity.c
+index b65767f9e499..fecc4d7b00b0 100644
+--- a/drivers/net/ethernet/via/via-velocity.c
++++ b/drivers/net/ethernet/via/via-velocity.c
+@@ -2525,7 +2525,7 @@ static int velocity_close(struct net_device *dev)
+  *	@skb: buffer to transmit
+  *	@dev: network device
+  *
+- *	Called by the networ layer to request a packet is queued to
++ *	Called by the network layer to request a packet is queued to
+  *	the velocity. Returns zero on success.
+  */
+ static netdev_tx_t velocity_xmit(struct sk_buff *skb,
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.25.1
+
