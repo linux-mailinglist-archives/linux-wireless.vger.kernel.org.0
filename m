@@ -2,95 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8428C350E12
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Apr 2021 06:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2590B351864
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Apr 2021 19:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232310AbhDAE1T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Apr 2021 00:27:19 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:38384 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbhDAE0Y (ORCPT
+        id S234601AbhDARpr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Apr 2021 13:45:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57174 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234577AbhDARiI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Apr 2021 00:26:24 -0400
-Received: from [192.168.254.6] (unknown [50.34.172.155])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 7EA9A13C2B0
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Mar 2021 21:26:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7EA9A13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1617251175;
-        bh=ywatSzwVb4ZDryZeQ/2mLyNDdILr9YfwkSG/IXBfFMU=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=sdrP4y36HbWCdXObgpILJ8qtKvJqkRKSiIXvQfr+e/sgMF99uoBiYXQx98ggrtRx2
-         9DSyZpIP1MtthXRbnzNv2rKNz9uGPHmIiS/Be+Wv6rY6oic+AF3EnKNasMPSOXCR+z
-         iiHN1terZq7tmEUHwM47Z4uqf/AoQa3LlIG1wFSw=
-Subject: Re: [PATCH-v2 1/6] mac80211: Fix station rx-packets counters.
-To:     linux-wireless@vger.kernel.org
-References: <20210324181441.13755-1-greearb@candelatech.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <e6efe308-6359-a715-7766-b1bcc992d828@candelatech.com>
-Date:   Wed, 31 Mar 2021 21:26:15 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        Thu, 1 Apr 2021 13:38:08 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817E1C031152
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Apr 2021 09:46:41 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id jy13so3865698ejc.2
+        for <linux-wireless@vger.kernel.org>; Thu, 01 Apr 2021 09:46:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=anyfinetworks-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IegQPSAk9oXFRXPOMIzk5UhKPfT0chufZFUCPfQ5Ikg=;
+        b=StKCmrhSP+pX054Ch5yGPgTvfNy10V3G2dl/UH983jHlql2LKdrw5WHKWLrjxDOF9p
+         97mBATT+6eInLf7AKxVORLnPsfnfsh+hoefHHQp/KE6MIGNLenaMNFeNye/o0KWATA6w
+         2im8udd0aB9Qlhb2EKHudPOy3+69Gu3xVza7StG9KRu2AVgE9N4tmHNglgWxYJsw/xw+
+         q5lnZpT386KPXeZFH1sZwbXfNtR6ZarjSxGcAI4IxGOUg3A4diHzwQnttdFdH1TQoiqM
+         pK1H7gkW8ngKDE8sw6Yvdkg7O1t/Nwdz8QFcGMdSkYvSlspy26ofV+NgXM+Df8I29XxG
+         /V+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IegQPSAk9oXFRXPOMIzk5UhKPfT0chufZFUCPfQ5Ikg=;
+        b=NMKWA5yv0wQJOUukqfgsOfTCVBXNp0RrnQkA6l/LRUFAjjuA6+2YyB59XFAULpB3/Z
+         fCZ9OpAJW6RyNB2JWCp0Kz5hDn78WwfXXRqGntBw1TMyNovO9HNaYm7o/p8ODIXTf37j
+         5a+KDKz2uCNB2biMvMIRCuhs6Ccb8VoA8qR2IK4/mo/0trEfIgV5ltwWH00p/nBuW6jC
+         bpbofrXle7oGGQQy9NppPYNJXkjE/g+CXbj8GEJfmt19Yw3Gg9Ub7log/0j+fDjfNZiC
+         kHsZ8LWdG9UXc99fH5koKdT5Rl0Anz9cMui0GnkBRUNNeQN3HElYEkeuzyWYfc4Gxcsh
+         2amg==
+X-Gm-Message-State: AOAM531WKQhLI8k8BplIbylwKuz7VSLgflq5Ndn1jOKPQoJz/cJTujeo
+        Aa6wju4KqL0gI4+sCPMzEYBdRQ==
+X-Google-Smtp-Source: ABdhPJyX9sFjoRIFEqUfHvfvUBdnAVzvWz7HT189amWnbM5kx11wuiuSFOSxUaYTCoAXBMkyBS2M6w==
+X-Received: by 2002:a17:906:f953:: with SMTP id ld19mr9695049ejb.164.1617295600276;
+        Thu, 01 Apr 2021 09:46:40 -0700 (PDT)
+Received: from anpc2.lan (static-213-115-136-2.sme.telenor.se. [213.115.136.2])
+        by smtp.gmail.com with ESMTPSA id hy13sm2973116ejc.32.2021.04.01.09.46.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Apr 2021 09:46:39 -0700 (PDT)
+From:   Johan Almbladh <johan.almbladh@anyfinetworks.com>
+To:     johannes@sipsolutions.net
+Cc:     Mathy.Vanhoef@kuleuven.be, fredrik.olofsson@anyfinetworks.com,
+        linux-wireless@vger.kernel.org,
+        Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Subject: [PATCH] mac80211: Set priority and queue mapping for injected frames
+Date:   Thu,  1 Apr 2021 18:44:55 +0200
+Message-Id: <20210401164455.978245-1-johan.almbladh@anyfinetworks.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210324181441.13755-1-greearb@candelatech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/24/21 11:14 AM, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
-> 
-> I noticed 'iw dev wlan6 station dump' showed almost no rx-packets
-> one one of my radios.  The rx-amsdu path did not appear to gather
-> any stats, and after code inspection, neither did the rx-data
-> handler.
-> 
-> Add common method to deal with these stats.  Verified in AX
-> and /a mode, stats look at least generally correct now.
-> 
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
+Some drivers, for example mt76, use the skb priority field, and
+expects that to be consistent with the skb queue mapping. On some
+frame injection code paths that was not true, and it broke frame
+injection. Now the skb queue mapping is set according to the skb
+priority value when the frame is injected. The skb priority value
+is also derived from the frame data for all frame types, as it
+was done prior to dbd50a851c50bb95e457 (only allocate one queue
+when using iTXQs). Fixes frame injection with the mt76 driver on
+MT7610E chipset.
 
-> @@ -2706,6 +2727,8 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
->   	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
->   	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
->   	__le16 fc = hdr->frame_control;
-> +	ieee80211_rx_result rv;
-> +	int orig_len = skb->len;
->   
->   	if (!(status->rx_flags & IEEE80211_RX_AMSDU))
->   		return RX_CONTINUE;
-> @@ -2734,7 +2757,12 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
->   	if (is_multicast_ether_addr(hdr->addr1))
->   		return RX_DROP_UNUSABLE;
->   
-> -	return __ieee80211_rx_h_amsdu(rx, 0);
-> +	rv = __ieee80211_rx_h_amsdu(rx, 0);
-> +	if ((rv == RX_QUEUED) && (rx->sta)) {
-> +		struct ieee80211_sta_rx_stats *stats = &rx->sta->rx_stats;
-> +		ieee80211_update_data_rx_stats(rx, stats, status, orig_len);
-> +	}
-> +	return rv;
->   }
+Signed-off-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
+---
+ net/mac80211/tx.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-I noticed this is buggy in several ways (potential use-after-free, bogus
-status field).
-
-I noticed too that upcoming changes changed some API that made later patches
-in this series not apply cleanly..needed a bit of re-work.
-
-Maybe best if I wait and rebase it against 5.13 when it is ready, unless
-someone is actually interested enough in this to want to apply it earlier?
-
-Thanks,
-Ben
-
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 5d06de61047a..3b0ac4952cdf 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2267,17 +2267,6 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 						    payload[7]);
+ 	}
+ 
+-	/* Initialize skb->priority for QoS frames. If the DONT_REORDER flag
+-	 * is set, stick to the default value for skb->priority to assure
+-	 * frames injected with this flag are not reordered relative to each
+-	 * other.
+-	 */
+-	if (ieee80211_is_data_qos(hdr->frame_control) &&
+-	    !(info->control.flags & IEEE80211_TX_CTRL_DONT_REORDER)) {
+-		u8 *p = ieee80211_get_qos_ctl(hdr);
+-		skb->priority = *p & IEEE80211_QOS_CTL_TAG1D_MASK;
+-	}
+-
+ 	rcu_read_lock();
+ 
+ 	/*
+@@ -2341,6 +2330,15 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 
+ 	info->band = chandef->chan->band;
+ 
++	/* Initialize skb->priority according to frame type and TID class,
++	 * with respect to the sub interface that the frame will actually
++	 * be transmitted on. If the DONT_REORDER flag is set, the original
++	 * skb-priority is preserved to assure frames injected with this
++	 * flag are not reordered relative to each other.
++	 */
++	ieee80211_select_queue_80211(sdata, skb, hdr);
++	skb_set_queue_mapping(skb, ieee80211_ac_from_tid(skb->priority));
++
+ 	/* remove the injection radiotap header */
+ 	skb_pull(skb, len_rthdr);
+ 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.25.1
+
