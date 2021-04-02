@@ -2,64 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0EB351FD7
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Apr 2021 21:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6606F352AA3
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Apr 2021 14:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235290AbhDAT3n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Apr 2021 15:29:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53650 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234606AbhDAT3V (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Apr 2021 15:29:21 -0400
-Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 304A8C061794;
-        Thu,  1 Apr 2021 12:27:39 -0700 (PDT)
-Received: by mail-oo1-xc34.google.com with SMTP id n12-20020a4ad12c0000b02901b63e7bc1b4so808911oor.5;
-        Thu, 01 Apr 2021 12:27:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wjPjc+8FIq2AYvHo2qH4COY12GYN3E777K47Jzp6c34=;
-        b=VExv72LV857S/Uy1xIU8MAdpJFOhQYJbN5qUaHDO/2kNla1Eai3j+umg2DPw/0X7m9
-         NZ8J+09EZod3rcvaFChyCh0laQk0DzwyeUVUbKRSJ6DppjlZVZbpy8OIFr8zj1l2Nm/v
-         TP7q0AUaB5VMMDf4dqWRg0mOs4JqkvY7Q5QJeI+XVRxKNTYhuvugcrLYPTdOTLr9jwIx
-         SIH8O68qUIxf+yc2DpBXy/kCC9HheUpa9SECw+CxtXstRj9wcX8JxSgeNuCYNxLn7H0m
-         7YlTmddx7RE2RkTxIRGgL6nek+4jWazf7ddxbwAIszoDh/4KlvL9DLO0opsfl8SHTMgs
-         poSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=wjPjc+8FIq2AYvHo2qH4COY12GYN3E777K47Jzp6c34=;
-        b=S9bf8zuotX0NAQy7cFBua6hVcsul8lt4JktydqdmcZTZ4lbGhiLZL8vvCUmVVwRyP7
-         IH94w4pSF3QpFeRhPxjt82FK4pWnwCDG5ZRlEQmv5ayFp4D3SEdPS1zvFnvcSqSV80Ic
-         17bsgHpXXw/44TD0NQzowJNI1AsEdzDM6vVrlbVqgbb9Z2W3uJTqcuSWuproaLq7PwmC
-         idCihoPXyI0bGVuWLcCDQf0K61Qz0H4NMeKcvJ+B2ecS0kljuVHMEOyWa6mwxXFozaFh
-         f8rhrEr2rWusVt8ex5kdyXJxkGuLheLb8Y1DriVNtLZGESMl3NQyeejJqwDM/0/2j6Id
-         Ocxg==
-X-Gm-Message-State: AOAM531xsqnINwky1+NHDhSQEwh0AeWQy7o94ASfIXqYjmQJNyJNdtGw
-        Z+/Q4jzg6Kc8YzxaTUdNuoz3OO82GtM=
-X-Google-Smtp-Source: ABdhPJxas3D3FDsqR3ov8vKXX3UgCJZLSKFyEwFVKiBEYOgk8tvCj8v+xopL0sBPwoRLNE9x4Nl85Q==
-X-Received: by 2002:a4a:e058:: with SMTP id v24mr8532572oos.83.1617305258480;
-        Thu, 01 Apr 2021 12:27:38 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id y194sm1274683ooa.19.2021.04.01.12.27.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Apr 2021 12:27:37 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        =?UTF-8?q?=D0=91=D0=BE=D0=B3=D0=B4=D0=B0=D0=BD=20=D0=9F=D0=B8=D0=BB=D0=B8=D0=BF=D0=B5=D0=BD=D0=BA=D0=BE?= 
-        <bogdan.pylypenko107@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Stable <stable@vger.kernel.org>
-Subject: [PATCH] rtw88: Fix array overrun in rtw_get_tx_power_params()
-Date:   Thu,  1 Apr 2021 14:27:17 -0500
-Message-Id: <20210401192717.28927-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.30.2
+        id S234628AbhDBM1g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Apr 2021 08:27:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49360 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229599AbhDBM1f (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 2 Apr 2021 08:27:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 184BD61158;
+        Fri,  2 Apr 2021 12:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617366454;
+        bh=idDTKzoCPAbQsNqWyYOiujZSln6yo9RWoeQ82hvVNpc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CBRsc9Z626kNMmpXAaBUyLCFT0F4HMn9KGxh227eSJ8a8vkGHhlND13KW25wlkQkq
+         tqFoLpK+sxXY1RcFp8rAamn7AtLWa6fNBRq4Ldbnka4dMgqpbC+EYvVs/zBB404mG4
+         qITvYaBkUD0UoPgXX07cB735PxuxVIhJVHWHjiZVtLANagQGepcCCcz9+xQiRnxBE1
+         ErmRSqCugMv5nf+zdu3WoGbUU2K+QxbqgV4ac1mRwnz6qto0BxSQ/edHP7nha1II7i
+         iYNP0VEpAq2YW7q0C8/2+7B9ljMzkfqxVbSEd++qE8x1ro0r3m+AkPfqppOJ/pUYKe
+         xA3uH1qHMR2CA==
+Received: by pali.im (Postfix)
+        id 5000A810; Fri,  2 Apr 2021 14:27:31 +0200 (CEST)
+From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath9k-devel@qca.qualcomm.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ath9k: Fix kernel NULL pointer dereference during ath_reset_internal()
+Date:   Fri,  2 Apr 2021 14:26:53 +0200
+Message-Id: <20210402122653.24014-1-pali@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -67,103 +42,92 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+Function ath9k_hw_reset() is dereferencing chan structure pointer, so it
+needs to be non-NULL pointer.
 
-Using a kernel with the Undefined Behaviour Sanity Checker (UBSAN) enabled, the
-following array overrun is logged:
+Function ath9k_stop() already contains code which sets ah->curchan to valid
+non-NULL pointer prior calling ath9k_hw_reset() function.
 
-================================================================================
-UBSAN: array-index-out-of-bounds in /home/finger/wireless-drivers-next/drivers/net/wireless/realtek/rtw88/phy.c:1789:34
-index 5 is out of range for type 'u8 [5]'
-CPU: 2 PID: 84 Comm: kworker/u16:3 Tainted: G           O      5.12.0-rc5-00086-gd88bba47038e-dirty #651
-Hardware name: TOSHIBA TECRA A50-A/TECRA A50-A, BIOS Version 4.50   09/29/2014
-Workqueue: phy0 ieee80211_scan_work [mac80211]
-Call Trace:
- dump_stack+0x64/0x7c
- ubsan_epilogue+0x5/0x40
- __ubsan_handle_out_of_bounds.cold+0x43/0x48
- rtw_get_tx_power_params+0x83a/drivers/net/wireless/realtek/rtw88/0xad0 [rtw_core]
- ? rtw_pci_read16+0x20/0x20 [rtw_pci]
- ? check_hw_ready+0x50/0x90 [rtw_core]
- rtw_phy_get_tx_power_index+0x4d/0xd0 [rtw_core]
- rtw_phy_set_tx_power_level+0xee/0x1b0 [rtw_core]
- rtw_set_channel+0xab/0x110 [rtw_core]
- rtw_ops_config+0x87/0xc0 [rtw_core]
- ieee80211_hw_config+0x9d/0x130 [mac80211]
- ieee80211_scan_state_set_channel+0x81/0x170 [mac80211]
- ieee80211_scan_work+0x19f/0x2a0 [mac80211]
- process_one_work+0x1dd/0x3a0
- worker_thread+0x49/0x330
- ? rescuer_thread+0x3a0/0x3a0
- kthread+0x134/0x150
- ? kthread_create_worker_on_cpu+0x70/0x70
- ret_from_fork+0x22/0x30
-================================================================================
+Add same code pattern also into ath_reset_internal() function to prevent
+kernel NULL pointer dereference in ath9k_hw_reset() function.
 
-The statement where an array is being overrun is shown in the following snippet:
+This change fixes kernel NULL pointer dereference in ath9k_hw_reset() which
+is caused by calling ath9k_hw_reset() from ath_reset_internal() with NULL
+chan structure.
 
-	if (rate <= DESC_RATE11M)
-		tx_power = pwr_idx_2g->cck_base[group];
-	else
-====>		tx_power = pwr_idx_2g->bw40_base[group];
+    [   45.334305] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+    [   45.344417] Mem abort info:
+    [   45.347301]   ESR = 0x96000005
+    [   45.350448]   EC = 0x25: DABT (current EL), IL = 32 bits
+    [   45.356166]   SET = 0, FnV = 0
+    [   45.359350]   EA = 0, S1PTW = 0
+    [   45.362596] Data abort info:
+    [   45.365756]   ISV = 0, ISS = 0x00000005
+    [   45.369735]   CM = 0, WnR = 0
+    [   45.372814] user pgtable: 4k pages, 39-bit VAs, pgdp=000000000685d000
+    [   45.379663] [0000000000000008] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+    [   45.388856] Internal error: Oops: 96000005 [#1] SMP
+    [   45.393897] Modules linked in: ath9k ath9k_common ath9k_hw
+    [   45.399574] CPU: 1 PID: 309 Comm: kworker/u4:2 Not tainted 5.12.0-rc2-dirty #785
+    [   45.414746] Workqueue: phy0 ath_reset_work [ath9k]
+    [   45.419713] pstate: 40000005 (nZcv daif -PAN -UAO -TCO BTYPE=--)
+    [   45.425910] pc : ath9k_hw_reset+0xc4/0x1c48 [ath9k_hw]
+    [   45.431234] lr : ath9k_hw_reset+0xc0/0x1c48 [ath9k_hw]
+    [   45.436548] sp : ffffffc0118dbca0
+    [   45.439961] x29: ffffffc0118dbca0 x28: 0000000000000000
+    [   45.445442] x27: ffffff800dee4080 x26: 0000000000000000
+    [   45.450923] x25: ffffff800df9b9d8 x24: 0000000000000000
+    [   45.456404] x23: ffffffc0115f6000 x22: ffffffc008d0d408
+    [   45.461885] x21: ffffff800dee5080 x20: ffffff800df9b9d8
+    [   45.467366] x19: 0000000000000000 x18: 0000000000000000
+    [   45.472846] x17: 0000000000000000 x16: 0000000000000000
+    [   45.478326] x15: 0000000000000010 x14: ffffffffffffffff
+    [   45.483807] x13: ffffffc0918db94f x12: ffffffc011498720
+    [   45.489289] x11: 0000000000000003 x10: ffffffc0114806e0
+    [   45.494770] x9 : ffffffc01014b2ec x8 : 0000000000017fe8
+    [   45.500251] x7 : c0000000ffffefff x6 : 0000000000000001
+    [   45.505733] x5 : 0000000000000000 x4 : 0000000000000000
+    [   45.511213] x3 : 0000000000000000 x2 : ffffff801fece870
+    [   45.516693] x1 : ffffffc00eded000 x0 : 000000000000003f
+    [   45.522174] Call trace:
+    [   45.524695]  ath9k_hw_reset+0xc4/0x1c48 [ath9k_hw]
+    [   45.529653]  ath_reset_internal+0x1a8/0x2b8 [ath9k]
+    [   45.534696]  ath_reset_work+0x2c/0x40 [ath9k]
+    [   45.539198]  process_one_work+0x210/0x480
+    [   45.543339]  worker_thread+0x5c/0x510
+    [   45.547115]  kthread+0x12c/0x130
+    [   45.550445]  ret_from_fork+0x10/0x1c
+    [   45.554138] Code: 910922c2 9117e021 95ff0398 b4000294 (b9400a61)
+    [   45.560430] ---[ end trace 566410ba90b50e8b ]---
+    [   45.565193] Kernel panic - not syncing: Oops: Fatal exception in interrupt
+    [   45.572282] SMP: stopping secondary CPUs
+    [   45.576331] Kernel Offset: disabled
+    [   45.579924] CPU features: 0x00040002,0000200c
+    [   45.584416] Memory Limit: none
+    [   45.587564] Rebooting in 3 seconds..
 
-The associated arrays are defined in main.h as follows:
-
-struct rtw_2g_txpwr_idx {
-	u8 cck_base[6];
-	u8 bw40_base[5];
-	struct rtw_2g_1s_pwr_idx_diff ht_1s_diff;
-	struct rtw_2g_ns_pwr_idx_diff ht_2s_diff;
-	struct rtw_2g_ns_pwr_idx_diff ht_3s_diff;
-	struct rtw_2g_ns_pwr_idx_diff ht_4s_diff;
-};
-
-The problem arises because the value of group is 5 for channel 14. The trivial
-increase in the dimension of bw40_base fails as this struct must match the layout of
-efuse. The fix is to add the rate as an argument to rtw_get_channel_group() and set
-the group for channel 14 to 4 if rate <= DESC_RATE11M.
-
-This patch fixes commit fa6dfe6bff24 ("rtw88: resolve order of tx power setting routines")
-
-Fixes: fa6dfe6bff24 ("rtw88: resolve order of tx power setting routines")
-Reported-by: Богдан Пилипенко <bogdan.pylypenko107@gmail.com>
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Stable <stable@vger.kernel.org>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Cc: stable@vger.kernel.org
 ---
- drivers/net/wireless/realtek/rtw88/phy.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index e114ddecac09..0b3da5bef703 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -1584,7 +1584,7 @@ void rtw_phy_load_tables(struct rtw_dev *rtwdev)
- }
- EXPORT_SYMBOL(rtw_phy_load_tables);
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 45f6402478b5..97c3a53f9cef 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -307,6 +307,11 @@ static int ath_reset_internal(struct ath_softc *sc, struct ath9k_channel *hchan)
+ 		hchan = ah->curchan;
+ 	}
  
--static u8 rtw_get_channel_group(u8 channel)
-+static u8 rtw_get_channel_group(u8 channel, u8 rate)
- {
- 	switch (channel) {
- 	default:
-@@ -1628,6 +1628,7 @@ static u8 rtw_get_channel_group(u8 channel)
- 	case 106:
- 		return 4;
- 	case 14:
-+		return rate <= DESC_RATE11M ? 5 : 4;
- 	case 108:
- 	case 110:
- 	case 112:
-@@ -1879,7 +1880,7 @@ void rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path, u8 rate, u8 bw,
- 	s8 *remnant = &pwr_param->pwr_remnant;
++	if (!hchan) {
++		fastcc = false;
++		hchan = ath9k_cmn_get_channel(sc->hw, ah, &sc->cur_chan->chandef);
++	}
++
+ 	if (!ath_prepare_reset(sc))
+ 		fastcc = false;
  
- 	pwr_idx = &rtwdev->efuse.txpwr_idx_table[path];
--	group = rtw_get_channel_group(ch);
-+	group = rtw_get_channel_group(ch, rate);
- 
- 	/* base power index for 2.4G/5G */
- 	if (IS_CH_2G_BAND(ch)) {
 -- 
-2.30.2
+2.20.1
 
