@@ -2,31 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E6035381B
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Apr 2021 14:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35CC735381C
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Apr 2021 14:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230210AbhDDMws (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Apr 2021 08:52:48 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:46249 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229918AbhDDMws (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 4 Apr 2021 08:52:48 -0400
+        id S229983AbhDDMw7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Apr 2021 08:52:59 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:17051 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229483AbhDDMw6 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 4 Apr 2021 08:52:58 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1617540763; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=NaRqf3XrCBEz23u1+TzxxvWRJTKesb8d2wYZUZNP3aU=; b=g1/C8vlofLiMRbKU8gjtE/Q24GQU6E9i0tGlIKXb7azzc1OdBE1971Pk0wpbHx0MwHNwt/8M
- Vurg/h1hd5xNjm3qcF2guXY9BhCy7ZrdbId3gzzi2HuBAePz4tuo8MQS3Bk35W6J7nx9Caei
- F8JhzNuBkrFj7MnMgJrhjIehwPQ=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1617540774; h=References: In-Reply-To: Message-Id: Date:
+ Subject: Cc: To: From: Sender;
+ bh=/GXnwqptt6p6CF8Ju3RWi0Vi/H9CAhjNh6c9swux4qw=; b=tGeZoN0fcpg6Yz7zhTvx3F8v6K2l45+2zEn+LVCMOnofEU6UylvRzwgYQscWV2SyAdcdXAJl
+ YXfiqu86NFyKeSOy0HwUljtRSv5W0TsrnwrhcTPepD+mqig74O7HV9ApkX70bWbxQ5SFsEcs
+ Q8AizUlCnS3Z8p8yj23M+tyFRtg=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
  smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6069b69bf34440a9d4cbfa0b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 04 Apr 2021 12:52:43
+ 6069b69cf34440a9d4cbfce8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 04 Apr 2021 12:52:44
  GMT
 Sender: pradeepc=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0804EC43462; Sun,  4 Apr 2021 12:52:43 +0000 (UTC)
+        id 26F3CC43462; Sun,  4 Apr 2021 12:52:44 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,53 +38,90 @@ Received: from pradeepc2-linux.qualcomm.com (i-global254.qualcomm.com [199.106.1
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: pradeepc)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2720EC433CA;
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B5E48C433C6;
         Sun,  4 Apr 2021 12:52:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2720EC433CA
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B5E48C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pradeepc@codeaurora.org
 From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Subject: [PATCH v9 0/3] ath11k: add HE radiotap header support
-Date:   Sun,  4 Apr 2021 05:52:32 -0700
-Message-Id: <20210404125235.5589-1-pradeepc@codeaurora.org>
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Miles Hu <milehu@codeaurora.org>,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH v9 1/3] ath11k: switch to using ieee80211_tx_status_ext()
+Date:   Sun,  4 Apr 2021 05:52:33 -0700
+Message-Id: <20210404125235.5589-2-pradeepc@codeaurora.org>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210404125235.5589-1-pradeepc@codeaurora.org>
+References: <20210404125235.5589-1-pradeepc@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This series address review comments from previous revision:
-https://patchwork.kernel.org/project/linux-wireless/list/?series=328291&state=%2A&archive=both
+This allows us to pass HE rates down into the stack.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01725-QCAHKSWPL_SILICONZ-1
+Co-developed-by: Miles Hu <milehu@codeaurora.org>
+Signed-off-by: Miles Hu <milehu@codeaurora.org>
+Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/dp_tx.c | 31 ++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 6 deletions(-)
 
-changes in v9:
- - maintain rate_info in local
-
-changes in v8:
- - move ieee80211_tx_status_ext out of spin lock
-
-changes in v7:
- - use generic radiotap HE fields from
-	include/net/ieee80211_radiotap.h
- - fix converting gi and ltf enums to match nl80211 enums when
-	updating radiotap headers.
- - fix sparse warnings
-
-Pradeep Kumar Chitrapu (3):
-  ath11k: switch to using ieee80211_tx_status_ext()
-  ath11k: decode HE status tlv
-  ath11k: translate HE status to radiotap format
-
- drivers/net/wireless/ath/ath11k/dp_rx.c    | 114 ++++-
- drivers/net/wireless/ath/ath11k/dp_tx.c    |  31 +-
- drivers/net/wireless/ath/ath11k/hal_desc.h |   1 +
- drivers/net/wireless/ath/ath11k/hal_rx.c   | 470 ++++++++++++++++++---
- drivers/net/wireless/ath/ath11k/hal_rx.h   | 135 +++++-
- 5 files changed, 669 insertions(+), 82 deletions(-)
-
+diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
+index 8bba5234f81f..f0a2e87b2454 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+@@ -417,9 +417,13 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
+ 				       struct sk_buff *msdu,
+ 				       struct hal_tx_status *ts)
+ {
++	struct ieee80211_tx_status status = { 0 };
+ 	struct ath11k_base *ab = ar->ab;
+ 	struct ieee80211_tx_info *info;
+ 	struct ath11k_skb_cb *skb_cb;
++	struct ath11k_peer *peer;
++	struct ath11k_sta *arsta;
++	struct rate_info rate;
+ 
+ 	if (WARN_ON_ONCE(ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)) {
+ 		/* Must not happen */
+@@ -483,13 +487,28 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
+ 		ath11k_dp_tx_cache_peer_stats(ar, msdu, ts);
+ 	}
+ 
+-	/* NOTE: Tx rate status reporting. Tx completion status does not have
+-	 * necessary information (for example nss) to build the tx rate.
+-	 * Might end up reporting it out-of-band from HTT stats.
+-	 */
+-
+-	ieee80211_tx_status(ar->hw, msdu);
++	spin_lock_bh(&ab->base_lock);
++	peer = ath11k_peer_find_by_id(ab, ts->peer_id);
++	if (!peer || !peer->sta) {
++		ath11k_dbg(ab, ATH11K_DBG_DATA,
++			   "dp_tx: failed to find the peer with peer_id %d\n",
++			    ts->peer_id);
++		spin_unlock_bh(&ab->base_lock);
++		dev_kfree_skb_any(msdu);
++		goto exit;
++	}
++	arsta = (struct ath11k_sta *)peer->sta->drv_priv;
++	status.sta = peer->sta;
++	status.skb = msdu;
++	status.info = info;
++	rate = arsta->last_txrate;
++	status.rate = &rate;
++
++	spin_unlock_bh(&ab->base_lock);
++	rcu_read_unlock();
+ 
++	ieee80211_tx_status_ext(ar->hw, &status);
++	return;
+ exit:
+ 	rcu_read_unlock();
+ }
 -- 
 2.17.1
 
