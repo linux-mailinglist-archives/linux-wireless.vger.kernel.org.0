@@ -2,80 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07FCD354211
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Apr 2021 14:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4E7354213
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Apr 2021 14:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235539AbhDEMks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Apr 2021 08:40:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43640 "EHLO mail.kernel.org"
+        id S235468AbhDEMkv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Apr 2021 08:40:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43682 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235289AbhDEMkr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Apr 2021 08:40:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 430126138A;
-        Mon,  5 Apr 2021 12:40:40 +0000 (UTC)
+        id S235289AbhDEMkv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 5 Apr 2021 08:40:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 90CAA613A7;
+        Mon,  5 Apr 2021 12:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617626441;
-        bh=VGwKEMRXscHQF4KuqMR3R4gFsUkrKP1ak8FE4OoKZUc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=fDbYnkoepUhsjxGFvpnTC1Nhxna+OSSNCiNNXnJ+dnGvz9r5JnuakqUSOOjeA0MUk
-         HomfxNi/fMPnioWbMruHCHTJMvZHzyn7ZaYLErvKr8cZc17XhXXzzjOHytMXWje7rT
-         /uRoQalwYUXDNS3ElMt3U48IFBsCQmbfxBdEsdiUT5dhhH0YRN9+5EyIjQsjHooT6+
-         vt/O6FVWbvwbMs//A8Ns47Fpbh+R4GQha/HHOP/+NpNaMP793TPcHBKVWZCBVFPhCc
-         Muhwfljm1A/8dYIc6Kq/rObMhNs4d1wIH1VekAxSjRWpICGKR1snHHzWTbgU1t0uMU
-         FhjUksjvjjvTw==
+        s=k20201202; t=1617626445;
+        bh=gH8Vg05NoIbo+2nK3Pz6VTvJppFutEeqZ+HhOdzn4IY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=pKIazAPdeadBu3sFSydRk5i53GGpo55p+Qgkk7H6/oSZeDMyVpJXW+SfOzTMwg7S4
+         nT+TQMgNEfpf+pp6vrAne/vzAYyWLdMOpbtB7xYgw4P0ge+EaXZRrYaxixXN8qRZ0s
+         mkO4UrptlA6ziMIPsKkXu+MbwxAAn6n1hMwXPE3ctPEhzoGB8hpW1E3ewZ82tQQfTs
+         K0mt+GLLAUdVDG1DLEbO95gX8bSLwa5m32qVtp8ej5PtJKCr8lseoVvxB/eZJFulAP
+         8ID5H6k1nGW9Ubpbj4ajMfGRaoGCHIUZ7NVc6P5ZpPiidoQCW7A+NWgAnee7DT8eL+
+         aodo5hidBEafg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, ryder.lee@mediatek.com,
         shayne.chen@mediatek.com, devicetree@vger.kernel.org,
         robh@kernel.org
-Subject: [PATCH 0/8] introduce single-sku support for mt7663/mt7921 drivers
-Date:   Mon,  5 Apr 2021 14:40:24 +0200
-Message-Id: <cover.1617625912.git.lorenzo@kernel.org>
+Subject: [PATCH 1/8] dt-bindings:net:wireless:ieee80211: introduce regdomain property
+Date:   Mon,  5 Apr 2021 14:40:25 +0200
+Message-Id: <1ff764d84e1fb83768c2e9d233c27b0ed1ef4294.1617625912.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <cover.1617625912.git.lorenzo@kernel.org>
+References: <cover.1617625912.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add per-rate power limitations for 802.11n/802.11ac/802.11ax rates to
-mt7663/mt7921 drivers.
-Introduce per-rate power limit dts parsing/binding.
+Add regdomain property to ieee80211 binding
 
-Felix Fietkau (2):
-  mt76: add functions for parsing rate power limits from DT
-  mt76: mt7615: implement support for using DT rate power limits
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../devicetree/bindings/net/wireless/ieee80211.yaml      | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Lorenzo Bianconi (4):
-  dt-bindings:net:wireless:ieee80211: introduce regdomain property
-  dt-bindings:net:wireless:mediatek,mt76: introduce power-limits node
-  mt76: mt7615: do not use mt7615 single-sku values for mt7663
-  mt76: introduce single-sku support for mt7663/mt7921
-
-Sean Wang (1):
-  mt76: mt7921: add dumping Tx power table
-
-Shayne Chen (1):
-  mt76: extend DT rate power limits to support 11ax devices
-
- .../bindings/net/wireless/ieee80211.yaml      |   9 +
- .../bindings/net/wireless/mediatek,mt76.yaml  |  79 +++++++
- drivers/net/wireless/mediatek/mt76/eeprom.c   | 219 ++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h     |  13 ++
- .../net/wireless/mediatek/mt76/mt7615/init.c  |  15 +-
- .../net/wireless/mediatek/mt76/mt7615/main.c  |   4 +
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  66 +++++-
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 133 +++++++++++
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  24 ++
- .../wireless/mediatek/mt76/mt7921/debugfs.c   |  79 +++++++
- .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 +
- .../net/wireless/mediatek/mt76/mt7921/main.c  |   4 +
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  23 ++
- .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  17 ++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  31 +++
- 15 files changed, 715 insertions(+), 3 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
+index d58e1571df9b..6557c6348cac 100644
+--- a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
+@@ -30,6 +30,15 @@ properties:
+       different 5 GHz subbands. Using them incorrectly could not work or
+       decrease performance noticeably
+ 
++  regdomain:
++    minItems: 1
++    maxItems: 1
++    contains:
++      enum:
++        - FCC
++        - ETSI
++        - JP
++
+ additionalProperties: true
+ 
+ examples:
 -- 
 2.30.2
 
