@@ -2,279 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAB8A354222
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Apr 2021 14:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A48C35453C
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Apr 2021 18:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240168AbhDEMlK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Apr 2021 08:41:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43988 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235651AbhDEMlJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Apr 2021 08:41:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9362C613A9;
-        Mon,  5 Apr 2021 12:41:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617626463;
-        bh=sAzbDRGBF0P9UO61PnCIiMh4UYURzBH4AHMv2rDgbys=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UmoYZ9rWWZPL4eQuMQ6YNji1FJ2AxJv6x/VVYAN49zB9Z/4bLSP+m8FE4pFHJJ2mW
-         8YdMv8MFdaLSTR+MBeB/THJgudMDLx58vrhK6RojJtuqR8F9pOVgfkYU95G3n+F4Op
-         aksxGWaI5zeZPX0rva52zwBBa2ehwSVUeFPfwVazahnHV1jLHm9drtPAO/Mewwlpl/
-         wWUkb6JGI2s0OlMAsVzwFw3v69XlQ9xNCKrJelD/vomFEGIscK1pw9yqqxZpp2GqB5
-         zVakfQ/nwza/smJA5RBjkhUjAfb61KKGZAqmsQQ32ndfC49El/TMfK4EXD+f/W3Ygn
-         vZXXrhgFVQ/YQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, devicetree@vger.kernel.org,
-        robh@kernel.org
-Subject: [PATCH 8/8] mt76: mt7921: add dumping Tx power table
-Date:   Mon,  5 Apr 2021 14:40:32 +0200
-Message-Id: <7046f040d5ba6410820b12e2ef9a6e8d514d6d7e.1617625912.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1617625912.git.lorenzo@kernel.org>
-References: <cover.1617625912.git.lorenzo@kernel.org>
+        id S242422AbhDEQea (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Apr 2021 12:34:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39490 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242379AbhDEQe3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 5 Apr 2021 12:34:29 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B27AAC061756;
+        Mon,  5 Apr 2021 09:34:23 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id k25so12147135oic.4;
+        Mon, 05 Apr 2021 09:34:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=/D8xKPfaEk5h0IUuj0ZaKonPQzq7GWKMhfUBYdKGhFY=;
+        b=alKMcIHbxfce8Bp2XsRlXcRRzuQyRU5D+8Gb96q/hUTSa2PsIVfEUjC5a6rsBvKXUS
+         9hr/XEx8oa59FuICO8FIR5vPE627pbhML2PoobZ6Nf6Gxd7f6vTEQZK5HWa4mCfkXkXX
+         kxqMSkkR42M+StrKw0HXnwF/gVgAXS+BX1Y70dLbvnO7tewRo/aRhqSeGyZA/KLqXFJe
+         HhVXk5aQx31CmUWzcmf2B0gBTyilTvG6Wp8HWvcrpbiiocNLZvHEGCT2d2XOyVCNtnAq
+         vli1MY7NSazM7bBwrWAUPf5STDvRRHQRyq1ggrqf3dk5qXiAtmxxBvY0MvND8KOKmVhT
+         3Rog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=/D8xKPfaEk5h0IUuj0ZaKonPQzq7GWKMhfUBYdKGhFY=;
+        b=JCyO8yWF45Z4+9zCEZHCB2PCkg5uIJ0+OrV5li7iZHysrnfeNH1WxVGk4h9P8ltAZu
+         fwlxRfvrUHW4reRljInPNK9zplEgEOpZxpMtYjFKk0quP7nLDkXjxBYaEtZl7I39IsTL
+         54Ll66KfLMw/ESLnZO6ATVS2xJd55frAtiWU6GP5T+IhhqL9RcxHyrVt4cwPiSdyLdnh
+         guNxxSpT7jIqTrNkjgApsG2C+03VEQCKd3IsBO7ub6bpZPscJqHmMe51B8GeB4G/fh1M
+         rUDXHNs9GGwrjFYyZS4w2s69Lp7vcpQj27v63Qrl5O5fHL9Qz3t4gmnmhWafEYR0E5p2
+         SxJQ==
+X-Gm-Message-State: AOAM532wKBfocJy6VUmGLYna7m4HUqPiwhhvkWuPWY9wI22MbGl9QFM3
+        usuoOMClt5BqD4bjXed9UYfpCscuW3E=
+X-Google-Smtp-Source: ABdhPJz775aKrzmAMTvdvoCEk0uvv3EkH6Z4Qr3r0mdYyHuPsAKP+Aw2EmI/KM4wW466cbKB7sO6Og==
+X-Received: by 2002:aca:ea06:: with SMTP id i6mr6816oih.82.1617640462797;
+        Mon, 05 Apr 2021 09:34:22 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id n13sm3993405otk.61.2021.04.05.09.34.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Apr 2021 09:34:22 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: [PATCH] rtlwifi: Simplify locking of a skb list accesses
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <99cf8894fd52202cb7ce2ec6e3200eef400bc071.1617609346.git.christophe.jaillet@wanadoo.fr>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <347e6042-2964-7037-b57f-5dd84aa4bf14@lwfinger.net>
+Date:   Mon, 5 Apr 2021 11:34:21 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <99cf8894fd52202cb7ce2ec6e3200eef400bc071.1617609346.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On 4/5/21 2:57 AM, Christophe JAILLET wrote:
+> The 'c2hcmd_lock' spinlock is only used to protect some __skb_queue_tail()
+> and __skb_dequeue() calls.
+> Use the lock provided in the skb itself and call skb_queue_tail() and
+> skb_dequeue(). These functions already include the correct locking.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>   drivers/net/wireless/realtek/rtlwifi/base.c | 15 ++-------------
+>   drivers/net/wireless/realtek/rtlwifi/wifi.h |  1 -
+>   2 files changed, 2 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
+> index 6e8bd99e8911..2a7ee90a3f54 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/base.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/base.c
+> @@ -551,7 +551,6 @@ int rtl_init_core(struct ieee80211_hw *hw)
+>   	spin_lock_init(&rtlpriv->locks.rf_lock);
+>   	spin_lock_init(&rtlpriv->locks.waitq_lock);
+>   	spin_lock_init(&rtlpriv->locks.entry_list_lock);
+> -	spin_lock_init(&rtlpriv->locks.c2hcmd_lock);
+>   	spin_lock_init(&rtlpriv->locks.scan_list_lock);
+>   	spin_lock_init(&rtlpriv->locks.cck_and_rw_pagea_lock);
+>   	spin_lock_init(&rtlpriv->locks.fw_ps_lock);
+> @@ -2269,7 +2268,6 @@ static bool rtl_c2h_fast_cmd(struct ieee80211_hw *hw, struct sk_buff *skb)
+>   void rtl_c2hcmd_enqueue(struct ieee80211_hw *hw, struct sk_buff *skb)
+>   {
+>   	struct rtl_priv *rtlpriv = rtl_priv(hw);
+> -	unsigned long flags;
+>   
+>   	if (rtl_c2h_fast_cmd(hw, skb)) {
+>   		rtl_c2h_content_parsing(hw, skb);
+> @@ -2278,11 +2276,7 @@ void rtl_c2hcmd_enqueue(struct ieee80211_hw *hw, struct sk_buff *skb)
+>   	}
+>   
+>   	/* enqueue */
+> -	spin_lock_irqsave(&rtlpriv->locks.c2hcmd_lock, flags);
+> -
+> -	__skb_queue_tail(&rtlpriv->c2hcmd_queue, skb);
+> -
+> -	spin_unlock_irqrestore(&rtlpriv->locks.c2hcmd_lock, flags);
+> +	skb_queue_tail(&rtlpriv->c2hcmd_queue, skb);
+>   
+>   	/* wake up wq */
+>   	queue_delayed_work(rtlpriv->works.rtl_wq, &rtlpriv->works.c2hcmd_wq, 0);
+> @@ -2340,16 +2334,11 @@ void rtl_c2hcmd_launcher(struct ieee80211_hw *hw, int exec)
+>   {
+>   	struct rtl_priv *rtlpriv = rtl_priv(hw);
+>   	struct sk_buff *skb;
+> -	unsigned long flags;
+>   	int i;
+>   
+>   	for (i = 0; i < 200; i++) {
+>   		/* dequeue a task */
+> -		spin_lock_irqsave(&rtlpriv->locks.c2hcmd_lock, flags);
+> -
+> -		skb = __skb_dequeue(&rtlpriv->c2hcmd_queue);
+> -
+> -		spin_unlock_irqrestore(&rtlpriv->locks.c2hcmd_lock, flags);
+> +		skb = skb_dequeue(&rtlpriv->c2hcmd_queue);
+>   
+>   		/* do it */
+>   		if (!skb)
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+> index 9119144bb5a3..877ed6a1589f 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
+> +++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+> @@ -2450,7 +2450,6 @@ struct rtl_locks {
+>   	spinlock_t waitq_lock;
+>   	spinlock_t entry_list_lock;
+>   	spinlock_t usb_lock;
+> -	spinlock_t c2hcmd_lock;
+>   	spinlock_t scan_list_lock; /* lock for the scan list */
+>   
+>   	/*FW clock change */
+> 
 
-Dump the tx power table saved in offload firmware.
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../wireless/mediatek/mt76/mt7921/debugfs.c   | 79 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 23 ++++++
- .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 17 ++++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    | 31 ++++++++
- 5 files changed, 151 insertions(+)
+Thanks,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index c397adb817f2..11bee1972534 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -561,6 +561,7 @@ enum {
- 	MCU_CMD_CHIP_CONFIG = MCU_CE_PREFIX | 0xca,
- 	MCU_CMD_FWLOG_2_HOST = MCU_CE_PREFIX | 0xc5,
- 	MCU_CMD_GET_WTBL = MCU_CE_PREFIX | 0xcd,
-+	MCU_CMD_GET_TXPWR = MCU_CE_PREFIX | 0xd0,
- };
- 
- enum {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-index b2e8d698e019..024524173115 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-@@ -158,6 +158,83 @@ mt7921_queues_read(struct seq_file *s, void *data)
- 	return 0;
- }
- 
-+static void
-+mt7921_seq_puts_array(struct seq_file *file, const char *str,
-+		      s8 *val, int len)
-+{
-+	int i;
-+
-+	seq_printf(file, "%-16s:", str);
-+	for (i = 0; i < len; i++)
-+		if (val[i] == 127)
-+			seq_printf(file, " %6s", "N.A");
-+		else
-+			seq_printf(file, " %6d", val[i]);
-+	seq_puts(file, "\n");
-+}
-+
-+#define mt7921_print_txpwr_entry(prefix, rate)				\
-+({									\
-+	mt7921_seq_puts_array(s, #prefix " (user)",			\
-+			      txpwr.data[TXPWR_USER].rate,		\
-+			      ARRAY_SIZE(txpwr.data[TXPWR_USER].rate)); \
-+	mt7921_seq_puts_array(s, #prefix " (eeprom)",			\
-+			      txpwr.data[TXPWR_EEPROM].rate,		\
-+			      ARRAY_SIZE(txpwr.data[TXPWR_EEPROM].rate)); \
-+	mt7921_seq_puts_array(s, #prefix " (tmac)",			\
-+			      txpwr.data[TXPWR_MAC].rate,		\
-+			      ARRAY_SIZE(txpwr.data[TXPWR_MAC].rate));	\
-+})
-+
-+static int
-+mt7921_txpwr(struct seq_file *s, void *data)
-+{
-+	struct mt7921_dev *dev = dev_get_drvdata(s->private);
-+	struct mt7921_txpwr txpwr;
-+	int ret;
-+
-+	ret = mt7921_get_txpwr_info(dev, &txpwr);
-+	if (ret)
-+		return ret;
-+
-+	seq_printf(s, "Tx power table (channel %d)\n", txpwr.ch);
-+	seq_printf(s, "%-16s  %6s %6s %6s %6s\n",
-+		   " ", "1m", "2m", "5m", "11m");
-+	mt7921_print_txpwr_entry(CCK, cck);
-+
-+	seq_printf(s, "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+		   " ", "6m", "9m", "12m", "18m", "24m", "36m",
-+		   "48m", "54m");
-+	mt7921_print_txpwr_entry(OFDM, ofdm);
-+
-+	seq_printf(s, "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+		   " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4", "mcs5",
-+		   "mcs6", "mcs7");
-+	mt7921_print_txpwr_entry(HT20, ht20);
-+
-+	seq_printf(s, "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+		   " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4", "mcs5",
-+		   "mcs6", "mcs7", "mcs32");
-+	mt7921_print_txpwr_entry(HT40, ht40);
-+
-+	seq_printf(s, "%-16s  %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s %6s\n",
-+		   " ", "mcs0", "mcs1", "mcs2", "mcs3", "mcs4", "mcs5",
-+		   "mcs6", "mcs7", "mcs8", "mcs9", "mcs10", "mcs11");
-+	mt7921_print_txpwr_entry(VHT20, vht20);
-+	mt7921_print_txpwr_entry(VHT40, vht40);
-+	mt7921_print_txpwr_entry(VHT80, vht80);
-+	mt7921_print_txpwr_entry(VHT160, vht160);
-+	mt7921_print_txpwr_entry(HE26, he26);
-+	mt7921_print_txpwr_entry(HE52, he52);
-+	mt7921_print_txpwr_entry(HE106, he106);
-+	mt7921_print_txpwr_entry(HE242, he242);
-+	mt7921_print_txpwr_entry(HE484, he484);
-+	mt7921_print_txpwr_entry(HE996, he996);
-+	mt7921_print_txpwr_entry(HE996x2, he996x2);
-+
-+	return 0;
-+}
-+
- static int
- mt7921_pm_set(void *data, u64 val)
- {
-@@ -237,6 +314,8 @@ int mt7921_init_debugfs(struct mt7921_dev *dev)
- 				    mt7921_queues_read);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "acq", dir,
- 				    mt7921_queues_acq);
-+	debugfs_create_devm_seqfile(dev->mt76.dev, "txpower_sku", dir,
-+				    mt7921_txpwr);
- 	debugfs_create_file("tx_stats", 0400, dir, dev, &fops_tx_stats);
- 	debugfs_create_file("fw_debug", 0600, dir, dev, &fops_fw_debug);
- 	debugfs_create_file("runtime-pm", 0600, dir, dev, &fops_pm);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 9283f9865ad5..0ae0a22ca966 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1325,3 +1325,26 @@ mt7921_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
- 		mt76_clear(dev, MT_WF_RFCR(0), MT_WF_RFCR_DROP_OTHER_BEACON);
- 	}
- }
-+
-+int mt7921_get_txpwr_info(struct mt7921_dev *dev, struct mt7921_txpwr *txpwr)
-+{
-+	struct mt7921_txpwr_event *event;
-+	struct mt7921_txpwr_req req = {
-+		.dbdc_idx = 0,
-+	};
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CMD_GET_TXPWR,
-+					&req, sizeof(req), true, &skb);
-+	if (ret)
-+		return ret;
-+
-+	event = (struct mt7921_txpwr_event *)skb->data;
-+	WARN_ON(skb->len != le16_to_cpu(event->len));
-+	memcpy(txpwr, &event->txpwr, sizeof(event->txpwr));
-+
-+	dev_kfree_skb(skb);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-index af8b42983a00..d980e92028ba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-@@ -85,6 +85,7 @@ enum {
- 	MCU_EVENT_CH_PRIVILEGE = 0x18,
- 	MCU_EVENT_SCHED_SCAN_DONE = 0x23,
- 	MCU_EVENT_DBG_MSG = 0x27,
-+	MCU_EVENT_TXPWR = 0xd0,
- 	MCU_EVENT_COREDUMP = 0xf0,
- };
- 
-@@ -389,4 +390,20 @@ struct mt7921_mcu_wlan_info {
- 	__le32 wlan_idx;
- 	struct mt7921_mcu_wlan_info_event event;
- } __packed;
-+
-+struct mt7921_txpwr_req {
-+	u8 ver;
-+	u8 action;
-+	__le16 len;
-+	u8 dbdc_idx;
-+	u8 rsv[3];
-+} __packed;
-+
-+struct mt7921_txpwr_event {
-+	u8 ver;
-+	u8 action;
-+	__le16 len;
-+	struct mt7921_txpwr txpwr;
-+} __packed;
-+
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 5cedefc41416..ad5c5f51ee19 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -172,6 +172,36 @@ struct mt7921_dev {
- 	struct mt76_connac_coredump coredump;
- };
- 
-+enum {
-+	TXPWR_USER,
-+	TXPWR_EEPROM,
-+	TXPWR_MAC,
-+	TXPWR_MAX_NUM,
-+};
-+
-+struct mt7921_txpwr {
-+	u8 ch;
-+	u8 rsv[3];
-+	struct {
-+		u8 ch;
-+		u8 cck[4];
-+		u8 ofdm[8];
-+		u8 ht20[8];
-+		u8 ht40[9];
-+		u8 vht20[12];
-+		u8 vht40[12];
-+		u8 vht80[12];
-+		u8 vht160[12];
-+		u8 he26[12];
-+		u8 he52[12];
-+		u8 he106[12];
-+		u8 he242[12];
-+		u8 he484[12];
-+		u8 he996[12];
-+		u8 he996x2[12];
-+	} data[TXPWR_MAX_NUM];
-+};
-+
- enum {
- 	MT_LMAC_AC00,
- 	MT_LMAC_AC01,
-@@ -348,4 +378,5 @@ int mt7921_mac_set_beacon_filter(struct mt7921_phy *phy,
- 				 bool enable);
- void mt7921_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif);
- void mt7921_coredump_work(struct work_struct *work);
-+int mt7921_get_txpwr_info(struct mt7921_dev *dev, struct mt7921_txpwr *txpwr);
- #endif
--- 
-2.30.2
-
+Larry
