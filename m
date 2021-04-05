@@ -2,154 +2,245 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A48C35453C
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Apr 2021 18:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A7ED354596
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Apr 2021 18:47:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242422AbhDEQea (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Apr 2021 12:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39490 "EHLO
+        id S231700AbhDEQro (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Apr 2021 12:47:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242379AbhDEQe3 (ORCPT
+        with ESMTP id S229735AbhDEQrn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Apr 2021 12:34:29 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B27AAC061756;
-        Mon,  5 Apr 2021 09:34:23 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id k25so12147135oic.4;
-        Mon, 05 Apr 2021 09:34:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=/D8xKPfaEk5h0IUuj0ZaKonPQzq7GWKMhfUBYdKGhFY=;
-        b=alKMcIHbxfce8Bp2XsRlXcRRzuQyRU5D+8Gb96q/hUTSa2PsIVfEUjC5a6rsBvKXUS
-         9hr/XEx8oa59FuICO8FIR5vPE627pbhML2PoobZ6Nf6Gxd7f6vTEQZK5HWa4mCfkXkXX
-         kxqMSkkR42M+StrKw0HXnwF/gVgAXS+BX1Y70dLbvnO7tewRo/aRhqSeGyZA/KLqXFJe
-         HhVXk5aQx31CmUWzcmf2B0gBTyilTvG6Wp8HWvcrpbiiocNLZvHEGCT2d2XOyVCNtnAq
-         vli1MY7NSazM7bBwrWAUPf5STDvRRHQRyq1ggrqf3dk5qXiAtmxxBvY0MvND8KOKmVhT
-         3Rog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=/D8xKPfaEk5h0IUuj0ZaKonPQzq7GWKMhfUBYdKGhFY=;
-        b=JCyO8yWF45Z4+9zCEZHCB2PCkg5uIJ0+OrV5li7iZHysrnfeNH1WxVGk4h9P8ltAZu
-         fwlxRfvrUHW4reRljInPNK9zplEgEOpZxpMtYjFKk0quP7nLDkXjxBYaEtZl7I39IsTL
-         54Ll66KfLMw/ESLnZO6ATVS2xJd55frAtiWU6GP5T+IhhqL9RcxHyrVt4cwPiSdyLdnh
-         guNxxSpT7jIqTrNkjgApsG2C+03VEQCKd3IsBO7ub6bpZPscJqHmMe51B8GeB4G/fh1M
-         rUDXHNs9GGwrjFYyZS4w2s69Lp7vcpQj27v63Qrl5O5fHL9Qz3t4gmnmhWafEYR0E5p2
-         SxJQ==
-X-Gm-Message-State: AOAM532wKBfocJy6VUmGLYna7m4HUqPiwhhvkWuPWY9wI22MbGl9QFM3
-        usuoOMClt5BqD4bjXed9UYfpCscuW3E=
-X-Google-Smtp-Source: ABdhPJz775aKrzmAMTvdvoCEk0uvv3EkH6Z4Qr3r0mdYyHuPsAKP+Aw2EmI/KM4wW466cbKB7sO6Og==
-X-Received: by 2002:aca:ea06:: with SMTP id i6mr6816oih.82.1617640462797;
-        Mon, 05 Apr 2021 09:34:22 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id n13sm3993405otk.61.2021.04.05.09.34.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Apr 2021 09:34:22 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: [PATCH] rtlwifi: Simplify locking of a skb list accesses
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <99cf8894fd52202cb7ce2ec6e3200eef400bc071.1617609346.git.christophe.jaillet@wanadoo.fr>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <347e6042-2964-7037-b57f-5dd84aa4bf14@lwfinger.net>
-Date:   Mon, 5 Apr 2021 11:34:21 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        Mon, 5 Apr 2021 12:47:43 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF31C061756;
+        Mon,  5 Apr 2021 09:47:37 -0700 (PDT)
+Received: from mwalle01.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:fa59:71ff:fe9b:b851])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id EEDE322205;
+        Mon,  5 Apr 2021 18:47:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1617641254;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=AMvNsnRAyp9ImqdIaqAKnobrExuCp8y4rK+qdkmyL+A=;
+        b=XxUNcLxeArzooNnp2oQnhkNloV0eL0Wl4hRCQXgbzXFxZg2oBZE/l9yuNFFuuO+Sstl5Ng
+        iHSiQXnR1qjkZ7IO1d7WGGZF3jjuuEKfeS44IyJsY2eBeSFHsmEdxBv0JvZu9qlAfvDhHC
+        hEcotvvIgfaSYTfiYVVvKXoKVQUZDno=
+From:   Michael Walle <michael@walle.cc>
+To:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
+        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Andreas Larsson <andreas@gaisler.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Joyce Ooi <joyce.ooi@intel.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Fugang Duan <fugang.duan@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Mark Lee <Mark-MC.Lee@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        Byungho An <bh74.an@samsung.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Wingman Kwok <w-kwok2@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Michael Walle <michael@walle.cc>
+Subject: [PATCH 0/2] of: net: support non-platform devices in of_get_mac_address()
+Date:   Mon,  5 Apr 2021 18:46:41 +0200
+Message-Id: <20210405164643.21130-1-michael@walle.cc>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <99cf8894fd52202cb7ce2ec6e3200eef400bc071.1617609346.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/5/21 2:57 AM, Christophe JAILLET wrote:
-> The 'c2hcmd_lock' spinlock is only used to protect some __skb_queue_tail()
-> and __skb_dequeue() calls.
-> Use the lock provided in the skb itself and call skb_queue_tail() and
-> skb_dequeue(). These functions already include the correct locking.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->   drivers/net/wireless/realtek/rtlwifi/base.c | 15 ++-------------
->   drivers/net/wireless/realtek/rtlwifi/wifi.h |  1 -
->   2 files changed, 2 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
-> index 6e8bd99e8911..2a7ee90a3f54 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/base.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/base.c
-> @@ -551,7 +551,6 @@ int rtl_init_core(struct ieee80211_hw *hw)
->   	spin_lock_init(&rtlpriv->locks.rf_lock);
->   	spin_lock_init(&rtlpriv->locks.waitq_lock);
->   	spin_lock_init(&rtlpriv->locks.entry_list_lock);
-> -	spin_lock_init(&rtlpriv->locks.c2hcmd_lock);
->   	spin_lock_init(&rtlpriv->locks.scan_list_lock);
->   	spin_lock_init(&rtlpriv->locks.cck_and_rw_pagea_lock);
->   	spin_lock_init(&rtlpriv->locks.fw_ps_lock);
-> @@ -2269,7 +2268,6 @@ static bool rtl_c2h_fast_cmd(struct ieee80211_hw *hw, struct sk_buff *skb)
->   void rtl_c2hcmd_enqueue(struct ieee80211_hw *hw, struct sk_buff *skb)
->   {
->   	struct rtl_priv *rtlpriv = rtl_priv(hw);
-> -	unsigned long flags;
->   
->   	if (rtl_c2h_fast_cmd(hw, skb)) {
->   		rtl_c2h_content_parsing(hw, skb);
-> @@ -2278,11 +2276,7 @@ void rtl_c2hcmd_enqueue(struct ieee80211_hw *hw, struct sk_buff *skb)
->   	}
->   
->   	/* enqueue */
-> -	spin_lock_irqsave(&rtlpriv->locks.c2hcmd_lock, flags);
-> -
-> -	__skb_queue_tail(&rtlpriv->c2hcmd_queue, skb);
-> -
-> -	spin_unlock_irqrestore(&rtlpriv->locks.c2hcmd_lock, flags);
-> +	skb_queue_tail(&rtlpriv->c2hcmd_queue, skb);
->   
->   	/* wake up wq */
->   	queue_delayed_work(rtlpriv->works.rtl_wq, &rtlpriv->works.c2hcmd_wq, 0);
-> @@ -2340,16 +2334,11 @@ void rtl_c2hcmd_launcher(struct ieee80211_hw *hw, int exec)
->   {
->   	struct rtl_priv *rtlpriv = rtl_priv(hw);
->   	struct sk_buff *skb;
-> -	unsigned long flags;
->   	int i;
->   
->   	for (i = 0; i < 200; i++) {
->   		/* dequeue a task */
-> -		spin_lock_irqsave(&rtlpriv->locks.c2hcmd_lock, flags);
-> -
-> -		skb = __skb_dequeue(&rtlpriv->c2hcmd_queue);
-> -
-> -		spin_unlock_irqrestore(&rtlpriv->locks.c2hcmd_lock, flags);
-> +		skb = skb_dequeue(&rtlpriv->c2hcmd_queue);
->   
->   		/* do it */
->   		if (!skb)
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> index 9119144bb5a3..877ed6a1589f 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> @@ -2450,7 +2450,6 @@ struct rtl_locks {
->   	spinlock_t waitq_lock;
->   	spinlock_t entry_list_lock;
->   	spinlock_t usb_lock;
-> -	spinlock_t c2hcmd_lock;
->   	spinlock_t scan_list_lock; /* lock for the scan list */
->   
->   	/*FW clock change */
-> 
+of_get_mac_address() is commonly used to fetch the MAC address
+from the device tree. It also supports reading it from a NVMEM
+provider. But the latter is only possible for platform devices,
+because only platform devices are searched for a matching device
+node.
 
-Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+Add a second method to fetch the NVMEM cell by a device tree node
+instead of a "struct device".
 
-Thanks,
+Moreover, the NVMEM subsystem will return dynamically allocated
+data which has to be freed after use. Currently, this is handled
+by allocating a device resource manged buffer to store the MAC
+address. of_get_mac_address() then returns a pointer to this
+buffer. Without a device, this trick is not possible anymore.
+Thus, change the of_get_mac_address() API to have the caller
+supply a buffer.
 
-Larry
+It was considered to use the network device to attach the buffer
+to, but then the order matters and netdev_register() has to be
+called before of_get_mac_address(). No driver does it this way.
+
+
+Michael Walle (2):
+  of: of_net: pass the dst buffer to of_get_mac_address()
+  of: net: fix of_get_mac_address_nvmem() for PCI and DSA nodes
+
+ arch/arm/mach-mvebu/kirkwood.c                |  3 +-
+ arch/powerpc/sysdev/tsi108_dev.c              |  5 +-
+ drivers/net/ethernet/aeroflex/greth.c         |  6 +-
+ drivers/net/ethernet/allwinner/sun4i-emac.c   | 10 +--
+ drivers/net/ethernet/altera/altera_tse_main.c |  7 +-
+ drivers/net/ethernet/arc/emac_main.c          |  8 +-
+ drivers/net/ethernet/atheros/ag71xx.c         |  7 +-
+ drivers/net/ethernet/broadcom/bcm4908_enet.c  |  7 +-
+ drivers/net/ethernet/broadcom/bcmsysport.c    |  7 +-
+ drivers/net/ethernet/broadcom/bgmac-bcma.c    | 10 +--
+ .../net/ethernet/broadcom/bgmac-platform.c    | 11 ++-
+ drivers/net/ethernet/cadence/macb_main.c      | 11 +--
+ .../net/ethernet/cavium/octeon/octeon_mgmt.c  |  8 +-
+ .../net/ethernet/cavium/thunder/thunder_bgx.c |  5 +-
+ drivers/net/ethernet/davicom/dm9000.c         | 10 +--
+ drivers/net/ethernet/ethoc.c                  |  6 +-
+ drivers/net/ethernet/ezchip/nps_enet.c        |  7 +-
+ drivers/net/ethernet/freescale/fec_main.c     |  7 +-
+ drivers/net/ethernet/freescale/fec_mpc52xx.c  |  7 +-
+ drivers/net/ethernet/freescale/fman/mac.c     |  9 +-
+ .../ethernet/freescale/fs_enet/fs_enet-main.c |  5 +-
+ drivers/net/ethernet/freescale/gianfar.c      |  8 +-
+ drivers/net/ethernet/freescale/ucc_geth.c     |  5 +-
+ drivers/net/ethernet/hisilicon/hisi_femac.c   |  7 +-
+ drivers/net/ethernet/hisilicon/hix5hd2_gmac.c |  7 +-
+ drivers/net/ethernet/lantiq_xrx200.c          |  7 +-
+ drivers/net/ethernet/marvell/mv643xx_eth.c    |  5 +-
+ drivers/net/ethernet/marvell/mvneta.c         |  6 +-
+ .../ethernet/marvell/prestera/prestera_main.c | 11 +--
+ drivers/net/ethernet/marvell/pxa168_eth.c     |  9 +-
+ drivers/net/ethernet/marvell/sky2.c           |  8 +-
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c   | 11 +--
+ drivers/net/ethernet/micrel/ks8851_common.c   |  7 +-
+ drivers/net/ethernet/microchip/lan743x_main.c |  5 +-
+ drivers/net/ethernet/nxp/lpc_eth.c            |  4 +-
+ drivers/net/ethernet/qualcomm/qca_spi.c       | 10 +--
+ drivers/net/ethernet/qualcomm/qca_uart.c      |  9 +-
+ drivers/net/ethernet/renesas/ravb_main.c      | 12 +--
+ drivers/net/ethernet/renesas/sh_eth.c         |  5 +-
+ .../ethernet/samsung/sxgbe/sxgbe_platform.c   | 13 +--
+ drivers/net/ethernet/socionext/sni_ave.c      | 10 +--
+ .../ethernet/stmicro/stmmac/dwmac-anarion.c   |  2 +-
+ .../stmicro/stmmac/dwmac-dwc-qos-eth.c        |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-generic.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-imx.c   |  2 +-
+ .../stmicro/stmmac/dwmac-intel-plat.c         |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-ipq806x.c   |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-lpc18xx.c   |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-mediatek.c  |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-meson.c |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-meson8b.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-oxnas.c |  2 +-
+ .../stmicro/stmmac/dwmac-qcom-ethqos.c        |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-rk.c    |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-sti.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-stm32.c |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-sun8i.c |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-sunxi.c |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-visconti.c  |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  2 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |  4 +-
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 12 +--
+ .../ethernet/stmicro/stmmac/stmmac_platform.h |  2 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      | 19 ++---
+ drivers/net/ethernet/ti/cpsw.c                |  7 +-
+ drivers/net/ethernet/ti/cpsw_new.c            |  7 +-
+ drivers/net/ethernet/ti/davinci_emac.c        |  8 +-
+ drivers/net/ethernet/ti/netcp_core.c          |  7 +-
+ drivers/net/ethernet/wiznet/w5100-spi.c       |  8 +-
+ drivers/net/ethernet/wiznet/w5100.c           |  2 +-
+ drivers/net/ethernet/xilinx/ll_temac_main.c   |  6 +-
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 11 +--
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c |  8 +-
+ drivers/net/wireless/ath/ath9k/init.c         |  5 +-
+ drivers/net/wireless/mediatek/mt76/eeprom.c   |  9 +-
+ .../net/wireless/ralink/rt2x00/rt2x00dev.c    |  6 +-
+ drivers/of/of_net.c                           | 85 ++++++++++++-------
+ drivers/staging/octeon/ethernet.c             | 10 +--
+ drivers/staging/wfx/main.c                    |  7 +-
+ include/linux/of_net.h                        |  6 +-
+ include/net/dsa.h                             |  2 +-
+ net/dsa/dsa2.c                                |  2 +-
+ net/dsa/slave.c                               |  2 +-
+ net/ethernet/eth.c                            | 11 +--
+ 85 files changed, 240 insertions(+), 361 deletions(-)
+
+-- 
+2.20.1
+
