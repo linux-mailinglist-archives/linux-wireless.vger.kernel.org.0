@@ -2,65 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF1F354090
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Apr 2021 12:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07FCD354211
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Apr 2021 14:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240003AbhDEJSs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Apr 2021 05:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57306 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240035AbhDEJSm (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Apr 2021 05:18:42 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A901C061756
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Apr 2021 02:18:35 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id j20-20020a05600c1914b029010f31e15a7fso7302874wmq.1
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Apr 2021 02:18:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=pMypp3o4LwB+mMvRBduoMhnK61ZSB1TC1StcGZ0nOSg=;
-        b=RcHbQa2oG4OjTyxg9RgpjEptisE6W0cE45yB3d3CG5u5j/veJ5KfFJv6kvi8xBLQhC
-         fzMY6yll9vZMfq476Ld1F+LUGMjZC86J7ypfEjjHqTdUYTHV2vEM3wIGmRskfpmRCSYC
-         X+HZEn/7F9FYKHyfdNapYuOd6O242904OlxZA1k6wrZbvGSM6QdC0Zn+i8fQ9R3NAf3O
-         oxwH88JhP6VXwXTEOswwM/uNyoNq5uAqIjhQkW1BA3T676ReqIRl0ki0WHl7hw/QoC20
-         62c/02kmGAl31FFNt3Qfnwn4ESQzKOzVLiAIrKt5Ys5OOleFw47Q2yUMlPTXrOx+ZPsb
-         hIwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=pMypp3o4LwB+mMvRBduoMhnK61ZSB1TC1StcGZ0nOSg=;
-        b=WtGZ8CmLsI2U6SLs9Qo8K8ToRLSVZAjcESnVlnPNYmwxDLvBsAyvNDMFRYqUdvN9C1
-         u/6Maw71UM5cXD2eyTnohlhu8XfllMG4ZgbuBJEDkb29lHLbDosI8eo+tn5cKZMGJRtB
-         NmmOwgR1TGzQ64qsBKdDUjXpvjbspURJxLABotF4shFXvvmzv5CabzrJQUywrjAGk5pi
-         atYqiQSZqt5mV1bT8xLNnB5CNYV0cnBEwhyuS/rBikbpVJTq6VxJCcjkp3YbLxxqEbiq
-         szsbByC1YI6rRDJItQ5mHFowGwieXHt2TXiL1+bRHspBLiBvmrkeuDEY4u64XDp7B/gJ
-         vZHQ==
-X-Gm-Message-State: AOAM5304tMWCqC/SOn+vOckIJMGN11XcXZrK95txLOVpIghAeqpuqAvB
-        HUvHMgnHgM/TZunbQvLT7P7utP+0eveiBmXANVg=
-X-Google-Smtp-Source: ABdhPJw6SZ8mzyEsTc/ZcphG4gFCPioOLIpq8gi1sjJZCQG8B7aqOmLfWiuYHVF534/i9j1tuzWhv0LqQyliPILKwv4=
-X-Received: by 2002:a05:600c:33a5:: with SMTP id o37mr14227313wmp.113.1617614313835;
- Mon, 05 Apr 2021 02:18:33 -0700 (PDT)
+        id S235539AbhDEMks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Apr 2021 08:40:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43640 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235289AbhDEMkr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 5 Apr 2021 08:40:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 430126138A;
+        Mon,  5 Apr 2021 12:40:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617626441;
+        bh=VGwKEMRXscHQF4KuqMR3R4gFsUkrKP1ak8FE4OoKZUc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fDbYnkoepUhsjxGFvpnTC1Nhxna+OSSNCiNNXnJ+dnGvz9r5JnuakqUSOOjeA0MUk
+         HomfxNi/fMPnioWbMruHCHTJMvZHzyn7ZaYLErvKr8cZc17XhXXzzjOHytMXWje7rT
+         /uRoQalwYUXDNS3ElMt3U48IFBsCQmbfxBdEsdiUT5dhhH0YRN9+5EyIjQsjHooT6+
+         vt/O6FVWbvwbMs//A8Ns47Fpbh+R4GQha/HHOP/+NpNaMP793TPcHBKVWZCBVFPhCc
+         Muhwfljm1A/8dYIc6Kq/rObMhNs4d1wIH1VekAxSjRWpICGKR1snHHzWTbgU1t0uMU
+         FhjUksjvjjvTw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, ryder.lee@mediatek.com,
+        shayne.chen@mediatek.com, devicetree@vger.kernel.org,
+        robh@kernel.org
+Subject: [PATCH 0/8] introduce single-sku support for mt7663/mt7921 drivers
+Date:   Mon,  5 Apr 2021 14:40:24 +0200
+Message-Id: <cover.1617625912.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Received: by 2002:a5d:52c9:0:0:0:0:0 with HTTP; Mon, 5 Apr 2021 02:18:33 -0700 (PDT)
-Reply-To: barristerdinkarim09@gmail.com
-From:   Din Karim <djibosafiyoulaye@gmail.com>
-Date:   Mon, 5 Apr 2021 09:18:33 +0000
-Message-ID: <CANAWr_gVNFrKydrhAj+VR-z=7LVm8TutDwvMfdu5iWbWBZSHFQ@mail.gmail.com>
-Subject: Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Add per-rate power limitations for 802.11n/802.11ac/802.11ax rates to
+mt7663/mt7921 drivers.
+Introduce per-rate power limit dts parsing/binding.
 
-I am still waiting for your Email response, you did receive my first
-email to you????
+Felix Fietkau (2):
+  mt76: add functions for parsing rate power limits from DT
+  mt76: mt7615: implement support for using DT rate power limits
 
-Respectfully Yours,
+Lorenzo Bianconi (4):
+  dt-bindings:net:wireless:ieee80211: introduce regdomain property
+  dt-bindings:net:wireless:mediatek,mt76: introduce power-limits node
+  mt76: mt7615: do not use mt7615 single-sku values for mt7663
+  mt76: introduce single-sku support for mt7663/mt7921
 
-Barr Din Karim(Esq)
+Sean Wang (1):
+  mt76: mt7921: add dumping Tx power table
+
+Shayne Chen (1):
+  mt76: extend DT rate power limits to support 11ax devices
+
+ .../bindings/net/wireless/ieee80211.yaml      |   9 +
+ .../bindings/net/wireless/mediatek,mt76.yaml  |  79 +++++++
+ drivers/net/wireless/mediatek/mt76/eeprom.c   | 219 ++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  13 ++
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |  15 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |   4 +
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  66 +++++-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 133 +++++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  24 ++
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  79 +++++++
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 +
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |   4 +
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  23 ++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  17 ++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  31 +++
+ 15 files changed, 715 insertions(+), 3 deletions(-)
+
+-- 
+2.30.2
+
