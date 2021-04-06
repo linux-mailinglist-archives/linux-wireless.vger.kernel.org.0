@@ -2,205 +2,249 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50464355D08
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 22:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0202355E7F
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 00:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245525AbhDFUmS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 16:42:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37712 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235692AbhDFUmR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 16:42:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7F4B4613D5;
-        Tue,  6 Apr 2021 20:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617741729;
-        bh=x2IDkvYzPt7iRCYOSqejx+ek2TphX4rDcDIZfN48YeM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=eraLe5d5MmbXTVwaaHzxZIY+0kJiS+Hq2iUIbIXkMCrhcKexy4lIqgThd+VeBr7Ty
-         Ci6PaE7XqUzQp1CZcZXIHdsxhhj6NCFyThB37MWp9mmAnwr28KsC8S7eKn1R6z8ehZ
-         jFMUCfBJLfjMQPsMe5fkaScMb2+jdo3bfeQXZC6IFe06Qoc2DJhNVn9MTihgsWvvtK
-         NicsEi7DUT+kbaTEZEC32fVKebmRRFaTDHiQL/QKxGljEikcK4EDslF1dDsLn+hpiX
-         GqW4BH4HtHZRJGb7lMa5ah39u96zluQL+3ufNuYyxq20GLn4AYLQtHQC7AZHc9rvUu
-         ob0M/BQ/zxVJw==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7921: introduce MCU_EVENT_LP_INFO event parsing
-Date:   Tue,  6 Apr 2021 22:41:53 +0200
-Message-Id: <f17948943246ca01a7c112af9829f113ce92546e.1617741607.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S233984AbhDFWJz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 18:09:55 -0400
+Received: from ssl.serverraum.org ([176.9.125.105]:57467 "EHLO
+        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229958AbhDFWJy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Apr 2021 18:09:54 -0400
+Received: from mwalle01.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:fa59:71ff:fe9b:b851])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 1A8F622235;
+        Wed,  7 Apr 2021 00:09:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1617746983;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=nxEW2PujxHUk6M1X/+HLIMOdJBR/2jMAcclop6BOCK8=;
+        b=rY4ENVKmPeKKZzNKjl8i/SpA+m0c7PNBaggO3LmY75nxL9Jd+3TGuhNz6P4taqSouNt5Fl
+        baSwlWDEBseKj83xhDukmdOEu8uyypEhWVZeLhcuaT/4rg9AdNTWMpa8BMM0U33Os2tPCN
+        YXtdhJDpQhxH6LvrgU2KMyfKTIgrHiM=
+From:   Michael Walle <michael@walle.cc>
+To:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
+        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Andreas Larsson <andreas@gaisler.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Joyce Ooi <joyce.ooi@intel.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Fugang Duan <fugang.duan@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Mark Lee <Mark-MC.Lee@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        Byungho An <bh74.an@samsung.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Wingman Kwok <w-kwok2@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Michael Walle <michael@walle.cc>
+Subject: [PATCH net-next v3 0/2] of: net: support non-platform devices in of_get_mac_address()
+Date:   Wed,  7 Apr 2021 00:09:19 +0200
+Message-Id: <20210406220921.24313-1-michael@walle.cc>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Report trace event related to MCU_EVENT_LP_INFO that is sent by the mcu
-when it is ready to enter in deep sleep state
+of_get_mac_address() is commonly used to fetch the MAC address
+from the device tree. It also supports reading it from a NVMEM
+provider. But the latter is only possible for platform devices,
+because only platform devices are searched for a matching device
+node.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../wireless/mediatek/mt76/mt7921/Makefile    |  4 +-
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 19 +++++++
- .../mediatek/mt76/mt7921/mt7921_trace.h       | 51 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/trace.c | 12 +++++
- 5 files changed, 86 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/trace.c
+Add a second method to fetch the NVMEM cell by a device tree node
+instead of a "struct device".
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index b209a76c1bac..d3c25f0984fd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -572,6 +572,7 @@ enum {
- 	MCU_EVENT_ACCESS_REG = 0x02,
- 	MCU_EVENT_MT_PATCH_SEM = 0x04,
- 	MCU_EVENT_REG_ACCESS = 0x05,
-+	MCU_EVENT_LP_INFO = 0x07,
- 	MCU_EVENT_SCAN_DONE = 0x0d,
- 	MCU_EVENT_ROC = 0x10,
- 	MCU_EVENT_BSS_ABSENCE  = 0x11,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-index 09d1446ad933..e531666f9fb4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-@@ -2,4 +2,6 @@
- 
- obj-$(CONFIG_MT7921E) += mt7921e.o
- 
--mt7921e-y := pci.o mac.o mcu.o dma.o eeprom.o main.o init.o debugfs.o
-+CFLAGS_trace.o := -I$(src)
-+
-+mt7921e-y := pci.o mac.o mcu.o dma.o eeprom.o main.o init.o debugfs.o trace.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index e44ce9bdfa9d..c8e24ffa3f03 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -4,6 +4,7 @@
- #include <linux/firmware.h>
- #include <linux/fs.h>
- #include "mt7921.h"
-+#include "mt7921_trace.h"
- #include "mcu.h"
- #include "mac.h"
- 
-@@ -509,6 +510,20 @@ mt7921_mcu_debug_msg_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 	}
- }
- 
-+static void
-+mt7921_mcu_low_power_event(struct mt7921_dev *dev, struct sk_buff *skb)
-+{
-+	struct mt7921_mcu_lp_event {
-+		u8 state;
-+		u8 reserved[3];
-+	} __packed * event;
-+
-+	skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
-+	event = (struct mt7921_mcu_lp_event *)skb->data;
-+
-+	trace_lp_event(dev, event->state);
-+}
-+
- static void
- mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
- {
-@@ -535,6 +550,9 @@ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 		mt76_connac_mcu_coredump_event(&dev->mt76, skb,
- 					       &dev->coredump);
- 		return;
-+	case MCU_EVENT_LP_INFO:
-+		mt7921_mcu_low_power_event(dev, skb);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -557,6 +575,7 @@ void mt7921_mcu_rx_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 	    rxd->eid == MCU_EVENT_SCAN_DONE ||
- 	    rxd->eid == MCU_EVENT_DBG_MSG ||
- 	    rxd->eid == MCU_EVENT_COREDUMP ||
-+	    rxd->eid == MCU_EVENT_LP_INFO ||
- 	    rxd->eid == MCU_EVENT_ROC ||
- 	    !rxd->seq)
- 		mt7921_mcu_rx_unsolicited_event(dev, skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
-new file mode 100644
-index 000000000000..9bc4db67f352
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
-@@ -0,0 +1,51 @@
-+/* SPDX-License-Identifier: ISC */
-+/*
-+ * Copyright (C) 2021 Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+
-+#if !defined(__MT7921_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define __MT7921_TRACE_H
-+
-+#include <linux/tracepoint.h>
-+#include "mt7921.h"
-+
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM mt7921
-+
-+#define MAXNAME		32
-+#define DEV_ENTRY	__array(char, wiphy_name, 32)
-+#define DEV_ASSIGN	strlcpy(__entry->wiphy_name,	\
-+				wiphy_name(mt76_hw(dev)->wiphy), MAXNAME)
-+#define DEV_PR_FMT	"%s"
-+#define DEV_PR_ARG	__entry->wiphy_name
-+#define LP_STATE_PR_ARG	__entry->lp_state ? "lp ready" : "lp not ready"
-+
-+TRACE_EVENT(lp_event,
-+	TP_PROTO(struct mt7921_dev *dev, u8 lp_state),
-+
-+	TP_ARGS(dev, lp_state),
-+
-+	TP_STRUCT__entry(
-+		DEV_ENTRY
-+		__field(u8, lp_state)
-+	),
-+
-+	TP_fast_assign(
-+		DEV_ASSIGN;
-+		__entry->lp_state = lp_state;
-+	),
-+
-+	TP_printk(
-+		DEV_PR_FMT " %s",
-+		DEV_PR_ARG, LP_STATE_PR_ARG
-+	)
-+);
-+
-+#endif
-+
-+#undef TRACE_INCLUDE_PATH
-+#define TRACE_INCLUDE_PATH .
-+#undef TRACE_INCLUDE_FILE
-+#define TRACE_INCLUDE_FILE mt7921_trace
-+
-+#include <trace/define_trace.h>
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/trace.c b/drivers/net/wireless/mediatek/mt76/mt7921/trace.c
-new file mode 100644
-index 000000000000..4dc3c7b89ebd
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/trace.c
-@@ -0,0 +1,12 @@
-+// SPDX-License-Identifier: ISC
-+/*
-+ * Copyright (C) 2021 Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+
-+#include <linux/module.h>
-+
-+#ifndef __CHECKER__
-+#define CREATE_TRACE_POINTS
-+#include "mt7921_trace.h"
-+
-+#endif
+Moreover, the NVMEM subsystem will return dynamically allocated
+data which has to be freed after use. Currently, this is handled
+by allocating a device resource manged buffer to store the MAC
+address. of_get_mac_address() then returns a pointer to this
+buffer. Without a device, this trick is not possible anymore.
+Thus, change the of_get_mac_address() API to have the caller
+supply a buffer.
+
+It was considered to use the network device to attach the buffer
+to, but then the order matters and netdev_register() has to be
+called before of_get_mac_address(). No driver does it this way.
+
+changes since v2:
+ - fixed of_get_mac_addr_nvmem() signature, which was accidentially
+   fixed in patch 2/2 again
+
+changes since v1:
+ - fixed stmmac_probe_config_dt() for !CONFIG_OF
+ - added missing queue in patch subject
+
+Michael Walle (2):
+  of: net: pass the dst buffer to of_get_mac_address()
+  of: net: fix of_get_mac_addr_nvmem() for PCI and DSA nodes
+
+ arch/arm/mach-mvebu/kirkwood.c                |  3 +-
+ arch/powerpc/sysdev/tsi108_dev.c              |  5 +-
+ drivers/net/ethernet/aeroflex/greth.c         |  6 +-
+ drivers/net/ethernet/allwinner/sun4i-emac.c   | 10 +--
+ drivers/net/ethernet/altera/altera_tse_main.c |  7 +-
+ drivers/net/ethernet/arc/emac_main.c          |  8 +-
+ drivers/net/ethernet/atheros/ag71xx.c         |  7 +-
+ drivers/net/ethernet/broadcom/bcm4908_enet.c  |  7 +-
+ drivers/net/ethernet/broadcom/bcmsysport.c    |  7 +-
+ drivers/net/ethernet/broadcom/bgmac-bcma.c    | 10 +--
+ .../net/ethernet/broadcom/bgmac-platform.c    | 11 ++-
+ drivers/net/ethernet/cadence/macb_main.c      | 11 +--
+ .../net/ethernet/cavium/octeon/octeon_mgmt.c  |  8 +-
+ .../net/ethernet/cavium/thunder/thunder_bgx.c |  5 +-
+ drivers/net/ethernet/davicom/dm9000.c         | 10 +--
+ drivers/net/ethernet/ethoc.c                  |  6 +-
+ drivers/net/ethernet/ezchip/nps_enet.c        |  7 +-
+ drivers/net/ethernet/freescale/fec_main.c     |  7 +-
+ drivers/net/ethernet/freescale/fec_mpc52xx.c  |  7 +-
+ drivers/net/ethernet/freescale/fman/mac.c     |  9 +-
+ .../ethernet/freescale/fs_enet/fs_enet-main.c |  5 +-
+ drivers/net/ethernet/freescale/gianfar.c      |  8 +-
+ drivers/net/ethernet/freescale/ucc_geth.c     |  5 +-
+ drivers/net/ethernet/hisilicon/hisi_femac.c   |  7 +-
+ drivers/net/ethernet/hisilicon/hix5hd2_gmac.c |  7 +-
+ drivers/net/ethernet/lantiq_xrx200.c          |  7 +-
+ drivers/net/ethernet/marvell/mv643xx_eth.c    |  5 +-
+ drivers/net/ethernet/marvell/mvneta.c         |  6 +-
+ .../ethernet/marvell/prestera/prestera_main.c | 11 +--
+ drivers/net/ethernet/marvell/pxa168_eth.c     |  9 +-
+ drivers/net/ethernet/marvell/sky2.c           |  8 +-
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c   | 11 +--
+ drivers/net/ethernet/micrel/ks8851_common.c   |  7 +-
+ drivers/net/ethernet/microchip/lan743x_main.c |  5 +-
+ drivers/net/ethernet/nxp/lpc_eth.c            |  4 +-
+ drivers/net/ethernet/qualcomm/qca_spi.c       | 10 +--
+ drivers/net/ethernet/qualcomm/qca_uart.c      |  9 +-
+ drivers/net/ethernet/renesas/ravb_main.c      | 12 +--
+ drivers/net/ethernet/renesas/sh_eth.c         |  5 +-
+ .../ethernet/samsung/sxgbe/sxgbe_platform.c   | 13 +--
+ drivers/net/ethernet/socionext/sni_ave.c      | 10 +--
+ .../ethernet/stmicro/stmmac/dwmac-anarion.c   |  2 +-
+ .../stmicro/stmmac/dwmac-dwc-qos-eth.c        |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-generic.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-imx.c   |  2 +-
+ .../stmicro/stmmac/dwmac-intel-plat.c         |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-ipq806x.c   |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-lpc18xx.c   |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-mediatek.c  |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-meson.c |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-meson8b.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-oxnas.c |  2 +-
+ .../stmicro/stmmac/dwmac-qcom-ethqos.c        |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-rk.c    |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-sti.c   |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-stm32.c |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-sun8i.c |  2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-sunxi.c |  2 +-
+ .../ethernet/stmicro/stmmac/dwmac-visconti.c  |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  2 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |  4 +-
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 14 +--
+ .../ethernet/stmicro/stmmac/stmmac_platform.h |  2 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      | 19 ++---
+ drivers/net/ethernet/ti/cpsw.c                |  7 +-
+ drivers/net/ethernet/ti/cpsw_new.c            |  7 +-
+ drivers/net/ethernet/ti/davinci_emac.c        |  8 +-
+ drivers/net/ethernet/ti/netcp_core.c          |  7 +-
+ drivers/net/ethernet/wiznet/w5100-spi.c       |  8 +-
+ drivers/net/ethernet/wiznet/w5100.c           |  2 +-
+ drivers/net/ethernet/xilinx/ll_temac_main.c   |  6 +-
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 11 +--
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c |  8 +-
+ drivers/net/wireless/ath/ath9k/init.c         |  5 +-
+ drivers/net/wireless/mediatek/mt76/eeprom.c   |  9 +-
+ .../net/wireless/ralink/rt2x00/rt2x00dev.c    |  6 +-
+ drivers/of/of_net.c                           | 85 ++++++++++++-------
+ drivers/staging/octeon/ethernet.c             | 10 +--
+ drivers/staging/wfx/main.c                    |  7 +-
+ include/linux/of_net.h                        |  6 +-
+ include/net/dsa.h                             |  2 +-
+ net/dsa/dsa2.c                                |  2 +-
+ net/dsa/slave.c                               |  2 +-
+ net/ethernet/eth.c                            | 11 +--
+ 85 files changed, 241 insertions(+), 362 deletions(-)
+
 -- 
-2.30.2
+2.20.1
 
