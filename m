@@ -2,122 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B1C635508F
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 12:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E0A3550A9
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 12:17:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234034AbhDFKLB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 06:11:01 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:51574 "EHLO
+        id S242678AbhDFKRf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 06:17:35 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:24585 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233987AbhDFKLA (ORCPT
+        with ESMTP id S237663AbhDFKRe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 06:11:00 -0400
+        Tue, 6 Apr 2021 06:17:34 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1617703853; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=CT4MUQeP09vQ/eL36nG57ptiWDfKZQ2azktOH/Iyv14=; b=OKKDylgTDYTqIVbSIgKuXHlGlvfr7i0Q2X1D0dkcsk5V+ahI8gpR2zTLzduJ7WvJKdMQ8vmC
- DWqL0JLCG7sySXCvDxR9ZYx1/2L3O5rBNXRGoxytfb7pOoVnEEHeLjGgAIfgi7GNNPyVG1N+
- jUky+2Dh1n5hGZh2RGZBC7b2wL4=
+ s=smtp; t=1617704247; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=/78AVRM4b7OSKvTf03z7HAJfWU0Qy6FbRlrGsgHAe8A=;
+ b=v1fis361ZJJlj9/uhp4GJzMWukReYNuoqVaIZmft+XSfF0SlkJNlne1fPQ/qz8slLLI+IcdQ
+ tcM1Zv6qyfJfM7MC2wFCoK1JzfUmOxcFtSJSNbtBF478C8Gn+1aDdqjLtzEMqbg2kvQ6v9Oq
+ hUYD28y+8lLhOBKcIRyASugKBJU=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 606c33ac8166b7eff70eeabd (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 06 Apr 2021 10:10:52
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 606c3521f34440a9d4c32fc5 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 06 Apr 2021 10:17:05
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EF622C43461; Tue,  6 Apr 2021 10:10:51 +0000 (UTC)
+        id 28C72C43461; Tue,  6 Apr 2021 10:17:05 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 45149C433CA;
-        Tue,  6 Apr 2021 10:10:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 45149C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 27DD2C433CA;
+        Tue,  6 Apr 2021 10:17:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 27DD2C433CA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2021-03-15
-References: <6c132956-ef8d-6175-4a1d-bc3d4aa2e816@nbd.name>
-Date:   Tue, 06 Apr 2021 13:10:48 +0300
-In-Reply-To: <6c132956-ef8d-6175-4a1d-bc3d4aa2e816@nbd.name> (Felix Fietkau's
-        message of "Mon, 15 Mar 2021 14:55:02 +0100")
-Message-ID: <87mtuboh93.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 5.12 regression fix resend 1/1] brcmfmac: p2p: Fix
+ recently
+ introduced deadlock issue
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210405205429.19304-2-hdegoede@redhat.com>
+References: <20210405205429.19304-2-hdegoede@redhat.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210406101705.28C72C43461@smtp.codeaurora.org>
+Date:   Tue,  6 Apr 2021 10:17:05 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-> Hi Kalle,
->
-> here's my first pull request for 5.13.
->
-> The following changes since commit 05a59d79793d482f628a31753c671f2e92178a21:
->
->   Merge git://git.kernel.org:/pub/scm/linux/kernel/git/netdev/net (2021-03-09 17:15:56 -0800)
->
-> are available in the Git repository at:
->
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-03-15
->
-> for you to fetch changes up to 8ffdcfcd7f111f3b89975f26da11fb43a0a37eb6:
->
->   mt76: mt7921: remove redundant check on type (2021-03-15 00:07:18 +0100)
->
-> ----------------------------------------------------------------
-> mt76 patches for 5.13
->
-> * code cleanup
-> * mt7915/mt7615 decap offload support
-> * driver fixes
-> * mt7613 eeprom support
-> * MCU code unification
-> * threaded NAPI support
-> * new device IDs
-> * mt7921 device reset support
->
-> ----------------------------------------------------------------
+> Commit a05829a7222e ("cfg80211: avoid holding the RTNL when calling the
+> driver") replaced the rtnl_lock parameter passed to various brcmf
+> functions with just lock, because since that commit it is not just
+> about the rtnl_lock but also about the wiphy_lock .
+> 
+> During this search/replace the "if (!rtnl_locked)" check in brcmfmac/p2p.c
+> was accidentally replaced with "if (locked)", dropping the inversion of
+> the check. This causes the code to now call rtnl_lock() while already
+> holding the lock, causing a deadlock.
+> 
+> Add back the "!" to the if-condition to fix this.
+> 
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-There are some issues, please fix and resend.
+This is already applied:
 
-In commit
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git/commit/?id=bd83a2fc05ed323d7ae38443a6d2e253ef1c4237
 
-  baa4eda1eb50 ("mt76: mt7915: fix mib stats counter reporting to mac80211")
-
-Fixes tag
-
-  Fixes: c6b002bcdfa6 ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
-
-has these problem(s):
-
-  - Target SHA1 does not exist
-
-In commit
-
-  858ec6661022 ("mt76: mt7615: fix TSF configuration")
-
-Fixes tag
-
-  Fixes: cd795267612d ("mt76: mt7615: support 16 interfaces")
-
-has these problem(s):
-
-  - Target SHA1 does not exist
+Patch set to Superseded.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210405205429.19304-2-hdegoede@redhat.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
