@@ -2,213 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21616355837
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 17:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDAFA35591E
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 18:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345865AbhDFPiB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 11:38:01 -0400
-Received: from ssl.serverraum.org ([176.9.125.105]:58707 "EHLO
-        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243939AbhDFPhy (ORCPT
+        id S238384AbhDFQZO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 12:25:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40754 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233255AbhDFQZM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 11:37:54 -0400
-Received: from mwalle01.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:fa59:71ff:fe9b:b851])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 1165E22253;
-        Tue,  6 Apr 2021 17:37:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1617723464;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=lACUh6+pO6Mh+0/uWp/aTCFDfW7S2kCGechEIv6LxiY=;
-        b=BzCGx5SN0jEHC8+qmmZDOwoUgfLCkVr2Bh3VdVahuCWxROBxMtqgptKfIa6bJEmq/EtSNw
-        xbTAmCcHgGRkO6HOTDaNFGM66muyr5PV40PdpKWguXRFitmNaJGctJFf2VWVACHE8N7ZeX
-        sP/zgBXVPofopSD6ybGoDe+vesSQZOk=
-From:   Michael Walle <michael@walle.cc>
-To:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Michael Walle <michael@walle.cc>
-Subject: [PATCH net-next v2 2/2] of: net: fix of_get_mac_addr_nvmem() for PCI and DSA nodes
-Date:   Tue,  6 Apr 2021 17:37:25 +0200
-Message-Id: <20210406153725.10059-3-michael@walle.cc>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210406153725.10059-1-michael@walle.cc>
-References: <20210406153725.10059-1-michael@walle.cc>
+        Tue, 6 Apr 2021 12:25:12 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D39AC06174A;
+        Tue,  6 Apr 2021 09:25:04 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id x207so15722220oif.1;
+        Tue, 06 Apr 2021 09:25:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=dU5G8PR6W8uwjypO4WoRqS/gPC9d2EbpFn+extiOH5A=;
+        b=K7li2xaJli2tU6J3EoTCPkOSjcNLai2eFffxsqMT51/zC0fG+xkgj35fihSo5uKUWy
+         2wyO7epnZ1qFUqpnw4I3Jst7g1ksEkZi9Sbpx+W2AFic5JGmvsN9XaOxZiNKrrdAt9rG
+         stmWUc0Wd0zwJD8NLna8lRLn+X2hfZpSp0bfVKR7Zt32DdPIBye2kA/j1OEMpCr1RheK
+         M9cSOy8Thom7ar8g6O9u2DbkydeOieutnadyCEBDdqNO7Qvb0uz95o3T8jgEWXR/PIcE
+         FdIp4rUDvwfsnupOMkEJcT7Mree78hDxVXEVv/AvxqEVkGN2gCWwfGYURO6pucdhDxhN
+         GNBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=dU5G8PR6W8uwjypO4WoRqS/gPC9d2EbpFn+extiOH5A=;
+        b=j0dXrhhSGHEJBbSncCZUSw1s6KP9orufMk3tZcMTyyJP/CBsALBE0Jdskzh67igYwz
+         BYg++T0FSV9R8QUE4gxCpUz+bSMAyu3urjZlf+byrAv/lq2I9k7slT3gYo49/et/d+zW
+         064TUwUZJpiTGa7g4UhDVgcvvRn5ninwj81sUCoYkftRaZXc5JnYIKlw73kHXJixaTFy
+         5WYdOujwO+5+dqex6Ppah86E+lq0r4WXySngxcrPbsenH5c2J3jRCHJTDDIHYUXG6T67
+         WWQ9lQrWUb7A0rsN021BMEfbW6k85UocPAEK7ScrCnASWT68qhM/9bkT0kfyxwRcym8g
+         h1uw==
+X-Gm-Message-State: AOAM532z2xm/ZIp1rihrGCDaqrIVjFHDPA606KtbbPFpRT4kI3EIlb9U
+        UXlMfHTUC0KcBY2UfzDkDn/REw8UbBw=
+X-Google-Smtp-Source: ABdhPJxIZcKqVl6qsfqf153ZSz4wmxMrNch0ghjvbnQr6V10BiULwl6KUSifLOtMm291fPLpcrJ20w==
+X-Received: by 2002:aca:aa41:: with SMTP id t62mr3897152oie.84.1617726303398;
+        Tue, 06 Apr 2021 09:25:03 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id z199sm4245543ooa.39.2021.04.06.09.25.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Apr 2021 09:25:02 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: rtlwifi/rtl8192cu AP mode broken with PS STA
+To:     "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <e2924d81-0e30-2dd0-292b-428fea199484@maciej.szmigiero.name>
+ <846f6166-c570-01fc-6bbc-3e3b44e51327@maciej.szmigiero.name>
+ <87r1jnohq6.fsf@codeaurora.org>
+ <8e0434eb-d15f-065d-2ba7-b50c67877112@maciej.szmigiero.name>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <a2003668-5108-27b9-95cd-9e1d5d1aa94d@lwfinger.net>
+Date:   Tue, 6 Apr 2021 11:25:01 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <8e0434eb-d15f-065d-2ba7-b50c67877112@maciej.szmigiero.name>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-of_get_mac_address() already supports fetching the MAC address by an
-nvmem provider. But until now, it was just working for platform devices.
-Esp. it was not working for DSA ports and PCI devices. It gets more
-common that PCI devices have a device tree binding since SoCs contain
-integrated root complexes.
+On 4/6/21 7:06 AM, Maciej S. Szmigiero wrote:
+> On 06.04.2021 12:00, Kalle Valo wrote:
+>> "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
+>>
+>>> On 29.03.2021 00:54, Maciej S. Szmigiero wrote:
+>>>> Hi,
+>>>>
+>>>> It looks like rtlwifi/rtl8192cu AP mode is broken when a STA is using PS,
+>>>> since the driver does not update its beacon to account for TIM changes,
+>>>> so a station that is sleeping will never learn that it has packets
+>>>> buffered at the AP.
+>>>>
+>>>> Looking at the code, the rtl8192cu driver implements neither the set_tim()
+>>>> callback, nor does it explicitly update beacon data periodically, so it
+>>>> has no way to learn that it had changed.
+>>>>
+>>>> This results in the AP mode being virtually unusable with STAs that do
+>>>> PS and don't allow for it to be disabled (IoT devices, mobile phones,
+>>>> etc.).
+>>>>
+>>>> I think the easiest fix here would be to implement set_tim() for example
+>>>> the way rt2x00 driver does: queue a work or schedule a tasklet to update
+>>>> the beacon data on the device.
+>>>
+>>> Are there any plans to fix this?
+>>> The driver is listed as maintained by Ping-Ke.
+>>
+>> Yeah, power save is hard and I'm not surprised that there are drivers
+>> with broken power save mode support. If there's no fix available we
+>> should stop supporting AP mode in the driver.
+>>
+> 
+> https://wireless.wiki.kernel.org/en/developers/documentation/mac80211/api
+> clearly documents that "For AP mode, it must (...) react to the set_tim()
+> callback or fetch each beacon from mac80211".
+> 
+> The driver isn't doing either so no wonder the beacon it is sending
+> isn't getting updated.
+> 
+> As I have said above, it seems to me that all that needs to be done here
+> is to queue a work in a set_tim() callback, then call
+> send_beacon_frame() from rtlwifi/core.c from this work.
+> 
+> But I don't know the exact device semantics, maybe it needs some other
+> notification that the beacon has changed, too, or even tries to
+> manage the TIM bitmap by itself.
+> 
+> It would be a shame to lose the AP mode for such minor thing, though.
+> 
+> I would play with this myself, but unfortunately I don't have time
+> to work on this right now.
+> 
+> That's where my question to Realtek comes: are there plans to actually
+> fix this?
 
-Use the nvmem of_* binding to fetch the nvmem cells by a struct
-device_node. We still have to try to read the cell by device first
-because there might be a nvmem_cell_lookup associated with that device.
+Yes, I am working on this. My only question is "if you are such an expert on the 
+problem, why do you not fix it?"
 
-Signed-off-by: Michael Walle <michael@walle.cc>
----
-Please note, that I've kept the nvmem_get_mac_address() which operates
-on a device. The new of_get_mac_addr_nvmem() is almost identical and
-there are no users of the former function right now, but it seems to be
-the "newer" version to get the MAC address for a "struct device". Thus
-I've kept it. Please advise, if I should kill it though.
+The example in rx200 is not particularly useful, and I have not found any other 
+examples.
 
- drivers/of/of_net.c | 37 +++++++++++++++++++++++++++++++------
- 1 file changed, 31 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
-index 2344ad7fff5e..2323c6063eaf 100644
---- a/drivers/of/of_net.c
-+++ b/drivers/of/of_net.c
-@@ -11,6 +11,7 @@
- #include <linux/phy.h>
- #include <linux/export.h>
- #include <linux/device.h>
-+#include <linux/nvmem-consumer.h>
- 
- /**
-  * of_get_phy_mode - Get phy mode for given device_node
-@@ -56,18 +57,42 @@ static int of_get_mac_addr(struct device_node *np, const char *name, u8 *addr)
- 	return -ENODEV;
- }
- 
--static int of_get_mac_addr_nvmem(struct device_node *np, u8 addr)
-+static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
- {
- 	struct platform_device *pdev = of_find_device_by_node(np);
-+	struct nvmem_cell *cell;
-+	const void *mac;
-+	size_t len;
- 	int ret;
- 
--	if (!pdev)
--		return -ENODEV;
-+	/* Try lookup by device first, there might be a nvmem_cell_lookup
-+	 * associated with a given device.
-+	 */
-+	if (pdev) {
-+		ret = nvmem_get_mac_address(&pdev->dev, addr);
-+		put_device(&pdev->dev);
-+		return ret;
-+	}
-+
-+	cell = of_nvmem_cell_get(np, "mac-address");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
-+
-+	mac = nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
-+
-+	if (IS_ERR(mac))
-+		return PTR_ERR(mac);
-+
-+	if (len != ETH_ALEN || !is_valid_ether_addr(mac)) {
-+		kfree(mac);
-+		return -EINVAL;
-+	}
- 
--	ret = nvmem_get_mac_address(&pdev->dev, addr);
--	put_device(&pdev->dev);
-+	ether_addr_copy(addr, mac);
-+	kfree(mac);
- 
--	return ret;
-+	return 0;
- }
- 
- /**
--- 
-2.20.1
+Larry
 
