@@ -2,92 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D71E3550D4
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 12:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 662CB3550DD
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 12:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242901AbhDFK2l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 06:28:41 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:46142 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242853AbhDFK2h (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 06:28:37 -0400
+        id S242470AbhDFK3g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 06:29:36 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:55619 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245117AbhDFK3M (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Apr 2021 06:29:12 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1617704910; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=K6EhGe1V+iV/Jx8e5vtPsFsEFj1CoOb4lphM0O1+pQg=;
- b=K7VdotVqDKbWbIsdR4qE7tUN1g86jPb+o+E9VKH4Jq/LJeiAyvF04M/ioiPscyIBJ71A9MMz
- upwIbd3utSHCyYi5kJ99AP+52xzb6S7VfQ4xee2/7NlnEB4iEd4/T6Tu1U+OqEJOOMvrI6fS
- KvIGnYmz5sd0TtK648S8hIRimus=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1617704944; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=J7orDIS84Fhl5iLzBY56ve+IpWWZFsF/yhfnYMTenVY=; b=Zg72F/Z51QkdXjaSxy8DwjcBKjMed8J5M5ulwazT3xMlJSzyZPgWVJVZa1eAS1LEJJ3327mS
+ 8wlhG+KIHV3SvHJY1epHAZAds0i8uy90K7NvEW8P+by1ZDmAkL/4DA+7sxKzO/HFtTvuMZgn
+ zDbcipdhN/QlT54iYTDVvVmsw5E=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 606c37a2f34440a9d4c8a6a2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 06 Apr 2021 10:27:46
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 606c37e32cc44d3aea67666c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 06 Apr 2021 10:28:51
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E8E4DC43461; Tue,  6 Apr 2021 10:27:45 +0000 (UTC)
+        id 4C5BFC43468; Tue,  6 Apr 2021 10:28:51 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C0BBBC433C6;
-        Tue,  6 Apr 2021 10:27:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C0BBBC433C6
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 27FD5C43464;
+        Tue,  6 Apr 2021 10:28:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 27FD5C43464
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 for v5.12 1/7] iwlwifi: fix 11ax disabled bit in the
- regulatory capability flags
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <iwlwifi.20210326125611.6d28516b59cd.Id0248d5e4662695254f49ce37b0268834ed52918@changeid>
-References: <iwlwifi.20210326125611.6d28516b59cd.Id0248d5e4662695254f49ce37b0268834ed52918@changeid>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210406102745.E8E4DC43461@smtp.codeaurora.org>
-Date:   Tue,  6 Apr 2021 10:27:45 +0000 (UTC)
+To:     Qiheng Lin <linqiheng@huawei.com>
+Cc:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
+        <ryder.lee@mediatek.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <matthias.bgg@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next] mt76: mt7921: remove unneeded semicolon
+References: <20210406032051.7750-1-linqiheng@huawei.com>
+Date:   Tue, 06 Apr 2021 13:28:44 +0300
+In-Reply-To: <20210406032051.7750-1-linqiheng@huawei.com> (Qiheng Lin's
+        message of "Tue, 6 Apr 2021 11:20:51 +0800")
+Message-ID: <87eefnogf7.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
+Qiheng Lin <linqiheng@huawei.com> writes:
 
-> From: Luca Coelho <luciano.coelho@intel.com>
-> 
-> When version 2 of the regulatory capability flags API was implemented,
-> the flag to disable 11ax was defined as bit 13, but this was later
-> changed and the bit remained as bit 10, like in version 1.  This was
-> never changed in the driver, so we were checking for the wrong bit in
-> newer devices.  Fix it.
-> 
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> Fixes: e27c506a985c ("iwlwifi: regulatory: regulatory capabilities api change")
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> Eliminate the following coccicheck warning:
+>  drivers/net/wireless/mediatek/mt76/mt7921/mac.c:1402:2-3: Unneeded semicolon
+>
+> Signed-off-by: Qiheng Lin <linqiheng@huawei.com>
 
-7 patches applied to wireless-drivers.git, thanks.
-
-07cc40fec9a8 iwlwifi: fix 11ax disabled bit in the regulatory capability flags
-25628bc08d45 iwlwifi: pcie: properly set LTR workarounds on 22000 devices
-97195d3cad85 iwlwifi: add support for Qu with AX201 device
-9c04fd95fa83 iwlwifi: fw: fix notification wait locking
-08f4b0b1c07b iwlwifi: pcie: add support for So-F devices
-39fb06f79142 iwlwifi: mvm: rfi: don't lock mvm->mutex when sending config command
-65db391dd874 iwlwifi: mvm: fix beacon protection checks
+mt76 patches go to the mt76 tree maintained by Felix, not to net-next.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/iwlwifi.20210326125611.6d28516b59cd.Id0248d5e4662695254f49ce37b0268834ed52918@changeid/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
