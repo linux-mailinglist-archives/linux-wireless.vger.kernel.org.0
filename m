@@ -2,101 +2,205 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F261C355B65
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 20:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50464355D08
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 22:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238509AbhDFSaA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 14:30:00 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:48396 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230406AbhDFS34 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 14:29:56 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1617733787; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=/Tpk/i5gAFjFHype6+eHyN/1UENfXc8j0unCtXTFneU=;
- b=FIj3qHv+nA8KSo6m+1DmnW6S3GVkiDypoSv7zhem1lUVsCRojMv4TeWrnW9eskncrDEjCyhy
- j1cYKgPZfKqmNjkbAyy/SsQeSgZHaKKGgyVqNYpsrg1aZQn0lrvk1i3THoeyJXKz37TORNrJ
- RfboF3Up5o8zUkesKEgeBGjnTwI=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 606ca89bc06dd10a2d3cf308 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 06 Apr 2021 18:29:47
- GMT
-Sender: gsamin=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C7BACC43464; Tue,  6 Apr 2021 18:29:46 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: gsamin)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3DE70C43461;
-        Tue,  6 Apr 2021 18:29:46 +0000 (UTC)
+        id S245525AbhDFUmS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 16:42:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37712 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235692AbhDFUmR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Apr 2021 16:42:17 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7F4B4613D5;
+        Tue,  6 Apr 2021 20:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617741729;
+        bh=x2IDkvYzPt7iRCYOSqejx+ek2TphX4rDcDIZfN48YeM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=eraLe5d5MmbXTVwaaHzxZIY+0kJiS+Hq2iUIbIXkMCrhcKexy4lIqgThd+VeBr7Ty
+         Ci6PaE7XqUzQp1CZcZXIHdsxhhj6NCFyThB37MWp9mmAnwr28KsC8S7eKn1R6z8ehZ
+         jFMUCfBJLfjMQPsMe5fkaScMb2+jdo3bfeQXZC6IFe06Qoc2DJhNVn9MTihgsWvvtK
+         NicsEi7DUT+kbaTEZEC32fVKebmRRFaTDHiQL/QKxGljEikcK4EDslF1dDsLn+hpiX
+         GqW4BH4HtHZRJGb7lMa5ah39u96zluQL+3ufNuYyxq20GLn4AYLQtHQC7AZHc9rvUu
+         ob0M/BQ/zxVJw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7921: introduce MCU_EVENT_LP_INFO event parsing
+Date:   Tue,  6 Apr 2021 22:41:53 +0200
+Message-Id: <f17948943246ca01a7c112af9829f113ce92546e.1617741607.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-Date:   Tue, 06 Apr 2021 23:59:46 +0530
-From:   Govindaraj Saminathan <gsamin@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH] mac80211: fix low throughput due to invalid addba
- extension
-In-Reply-To: <631e58cbfc146db2a6ca70ffc8b90648@codeaurora.org>
-References: <1615909674-13412-1-git-send-email-gsamin@codeaurora.org>
- <e38a1ff5efbe5532a97310c053b50c6ce5ef027e.camel@sipsolutions.net>
- <631e58cbfc146db2a6ca70ffc8b90648@codeaurora.org>
-Message-ID: <68a9d6b4eb7b77295f538f4aec3d8f84@codeaurora.org>
-X-Sender: gsamin@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-03-16 23:15, Govindaraj Saminathan wrote:
-> On 2021-03-16 21:21, Johannes Berg wrote:
->> On Tue, 2021-03-16 at 21:17 +0530, Govindaraj wrote:
->>> Addba request action frame received with the extension element from
->>> certain 11ac stations,
->>> 
->> 
->> Please indicate which so we have a record of who's shipping broken 
->> junk.
-The below log i taken with pixel3 client device
->> 
->>> but the cmd id and length not matching to addba
->>> extension and it failing in element parsing.
->> 
->>> Due to this, addba request
->>> not acknowledged and aggregation not started which is causing low
->>> throughput. Hence validating the cmd id before processing addba 
->>> extension.
->> 
->>>  	ies_len = len - offsetof(struct ieee80211_mgmt,
->>>  				 u.action.u.addba_req.variable);
->>> -	if (ies_len) {
->>> +	if (ies_len &&
->>> +	    mgmt->u.action.u.addba_req.variable[0] == WLAN_EID_ADDBA_EXT) {
->>>  		ieee802_11_parse_elems(mgmt->u.action.u.addba_req.variable,
->>>                                  ies_len, true, &elems, mgmt->bssid, 
->>> NULL);
->>>  		if (elems.parse_error)
->> 
->> So we get into parse_error without this?
-> yes, we getting parse error.
->> 
->> What are they putting there instead?
-> first 9 bytes are addba request action frame and remaining 7 bytes
-> extension causing for parse error.
-> 03 00 01 02 10 00 00 e0 0a cf 08 06 11a 46 09 fe
->> 
->> johannes
+Report trace event related to MCU_EVENT_LP_INFO that is sent by the mcu
+when it is ready to enter in deep sleep state
+
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |  4 +-
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 19 +++++++
+ .../mediatek/mt76/mt7921/mt7921_trace.h       | 51 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/trace.c | 12 +++++
+ 5 files changed, 86 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/trace.c
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index b209a76c1bac..d3c25f0984fd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -572,6 +572,7 @@ enum {
+ 	MCU_EVENT_ACCESS_REG = 0x02,
+ 	MCU_EVENT_MT_PATCH_SEM = 0x04,
+ 	MCU_EVENT_REG_ACCESS = 0x05,
++	MCU_EVENT_LP_INFO = 0x07,
+ 	MCU_EVENT_SCAN_DONE = 0x0d,
+ 	MCU_EVENT_ROC = 0x10,
+ 	MCU_EVENT_BSS_ABSENCE  = 0x11,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+index 09d1446ad933..e531666f9fb4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+@@ -2,4 +2,6 @@
+ 
+ obj-$(CONFIG_MT7921E) += mt7921e.o
+ 
+-mt7921e-y := pci.o mac.o mcu.o dma.o eeprom.o main.o init.o debugfs.o
++CFLAGS_trace.o := -I$(src)
++
++mt7921e-y := pci.o mac.o mcu.o dma.o eeprom.o main.o init.o debugfs.o trace.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index e44ce9bdfa9d..c8e24ffa3f03 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -4,6 +4,7 @@
+ #include <linux/firmware.h>
+ #include <linux/fs.h>
+ #include "mt7921.h"
++#include "mt7921_trace.h"
+ #include "mcu.h"
+ #include "mac.h"
+ 
+@@ -509,6 +510,20 @@ mt7921_mcu_debug_msg_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	}
+ }
+ 
++static void
++mt7921_mcu_low_power_event(struct mt7921_dev *dev, struct sk_buff *skb)
++{
++	struct mt7921_mcu_lp_event {
++		u8 state;
++		u8 reserved[3];
++	} __packed * event;
++
++	skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
++	event = (struct mt7921_mcu_lp_event *)skb->data;
++
++	trace_lp_event(dev, event->state);
++}
++
+ static void
+ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ {
+@@ -535,6 +550,9 @@ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ 		mt76_connac_mcu_coredump_event(&dev->mt76, skb,
+ 					       &dev->coredump);
+ 		return;
++	case MCU_EVENT_LP_INFO:
++		mt7921_mcu_low_power_event(dev, skb);
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -557,6 +575,7 @@ void mt7921_mcu_rx_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	    rxd->eid == MCU_EVENT_SCAN_DONE ||
+ 	    rxd->eid == MCU_EVENT_DBG_MSG ||
+ 	    rxd->eid == MCU_EVENT_COREDUMP ||
++	    rxd->eid == MCU_EVENT_LP_INFO ||
+ 	    rxd->eid == MCU_EVENT_ROC ||
+ 	    !rxd->seq)
+ 		mt7921_mcu_rx_unsolicited_event(dev, skb);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
+new file mode 100644
+index 000000000000..9bc4db67f352
+--- /dev/null
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
+@@ -0,0 +1,51 @@
++/* SPDX-License-Identifier: ISC */
++/*
++ * Copyright (C) 2021 Lorenzo Bianconi <lorenzo@kernel.org>
++ */
++
++#if !defined(__MT7921_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#define __MT7921_TRACE_H
++
++#include <linux/tracepoint.h>
++#include "mt7921.h"
++
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM mt7921
++
++#define MAXNAME		32
++#define DEV_ENTRY	__array(char, wiphy_name, 32)
++#define DEV_ASSIGN	strlcpy(__entry->wiphy_name,	\
++				wiphy_name(mt76_hw(dev)->wiphy), MAXNAME)
++#define DEV_PR_FMT	"%s"
++#define DEV_PR_ARG	__entry->wiphy_name
++#define LP_STATE_PR_ARG	__entry->lp_state ? "lp ready" : "lp not ready"
++
++TRACE_EVENT(lp_event,
++	TP_PROTO(struct mt7921_dev *dev, u8 lp_state),
++
++	TP_ARGS(dev, lp_state),
++
++	TP_STRUCT__entry(
++		DEV_ENTRY
++		__field(u8, lp_state)
++	),
++
++	TP_fast_assign(
++		DEV_ASSIGN;
++		__entry->lp_state = lp_state;
++	),
++
++	TP_printk(
++		DEV_PR_FMT " %s",
++		DEV_PR_ARG, LP_STATE_PR_ARG
++	)
++);
++
++#endif
++
++#undef TRACE_INCLUDE_PATH
++#define TRACE_INCLUDE_PATH .
++#undef TRACE_INCLUDE_FILE
++#define TRACE_INCLUDE_FILE mt7921_trace
++
++#include <trace/define_trace.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/trace.c b/drivers/net/wireless/mediatek/mt76/mt7921/trace.c
+new file mode 100644
+index 000000000000..4dc3c7b89ebd
+--- /dev/null
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/trace.c
+@@ -0,0 +1,12 @@
++// SPDX-License-Identifier: ISC
++/*
++ * Copyright (C) 2021 Lorenzo Bianconi <lorenzo@kernel.org>
++ */
++
++#include <linux/module.h>
++
++#ifndef __CHECKER__
++#define CREATE_TRACE_POINTS
++#include "mt7921_trace.h"
++
++#endif
+-- 
+2.30.2
+
