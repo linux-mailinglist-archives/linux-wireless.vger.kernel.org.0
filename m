@@ -2,184 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DECFF355ED2
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 00:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04302355F31
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 01:02:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236057AbhDFWbh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 18:31:37 -0400
-Received: from mga06.intel.com ([134.134.136.31]:25089 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230160AbhDFWbh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 18:31:37 -0400
-IronPort-SDR: ZYBBWGAEJTb4O6vDUcYZLkGcR3jFH7yzC5bVJokJQX+/D0165xcNKtYyPPuKssbEhDtMNZcVS5
- tAnAqqmsBYsg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9946"; a="254505171"
-X-IronPort-AV: E=Sophos;i="5.82,201,1613462400"; 
-   d="scan'208";a="254505171"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2021 15:31:25 -0700
-IronPort-SDR: Da9QGXuBA1TugupxeAN1S89gC0yqp4WqR5ULMauvzLzPEl/nPFdC9uGshWhfzk8wc0UC/QR/3f
- iOiSJCGa7rkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,201,1613462400"; 
-   d="scan'208";a="381083508"
-Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 06 Apr 2021 15:31:24 -0700
-Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lTuEF-000CQa-U3; Tue, 06 Apr 2021 22:31:23 +0000
-Date:   Wed, 07 Apr 2021 06:30:40 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:pending] BUILD SUCCESS
- a0398c302f9eb5519e5c5e1567b9077c7785d67f
-Message-ID: <606ce110.7CWbhWyQvJ7fMlZ9%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S236561AbhDFXCk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 19:02:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233379AbhDFXCk (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Apr 2021 19:02:40 -0400
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3B5C06175F
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Apr 2021 16:02:32 -0700 (PDT)
+Received: by mail-io1-xd2e.google.com with SMTP id x17so17329031iog.2
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Apr 2021 16:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Rj2YYKWiwju3STdIjVvck7gwFTWKqKlbS/8vOJQzblA=;
+        b=LjPAMgX4jEAvs46Pjf+qHRP61100oZ9gBFh8LuXJOqZ/+4s8Zd7eKgheo4sK3oKHxp
+         sERChtROH5w8X7WVNvCbc9ajll7IY7lboMEg6i3jClONPUzB2iYndamvcV+rGEXvyM0V
+         /w8r4v1KClZJ774YmtCVlMsESIJiTR57hldq8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Rj2YYKWiwju3STdIjVvck7gwFTWKqKlbS/8vOJQzblA=;
+        b=m9Gj/nBAXr6NqMh5IAbNYv+FCNpNBz0SVANwl26XOGRQG0LtOYXItaAG6fcvT7ppU8
+         FkozCmKSfElBtT8Z+vyJR+u22s15i7VqXc2LDrvMPsnHI2jK/MJWlSq/FctX6lf0EdUU
+         AJhwlC9+9YWjakrqRyLiO2C45AFhFhA5218STGTuja3YSN9hGbsGPdqnZaxT/niUUBDv
+         5jv1JJ/ChEtPJ6PvieqQ3cbZroZ7kToqUPnTeZLrgtkfJ5wkYN1hJHXW0kE6KjosPTyZ
+         zwWiMdaKMmVGAkUSWQRHmOUQaFyEd5/rZyNT/XiZAH3YpYoyeD+0Y2nbI4lDYDLDNYK4
+         f7Tw==
+X-Gm-Message-State: AOAM530BD+7m9SIIPL/gXTWFTk9KVcODZL7KHd12FTmYfvrKINgeg4Rt
+        sQFvMYbpm+qmn+KKZWZl8f4m+g==
+X-Google-Smtp-Source: ABdhPJyIpJDK8H7I6Uevy94NM3CzpZpJax71iCAYlQWB3ZvcOLnBm9cU/gL+ZTjIV0swPVXh0JIGew==
+X-Received: by 2002:a05:6638:343:: with SMTP id x3mr522607jap.44.1617750151432;
+        Tue, 06 Apr 2021 16:02:31 -0700 (PDT)
+Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id z10sm13186097ilq.38.2021.04.06.16.02.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Apr 2021 16:02:30 -0700 (PDT)
+From:   Shuah Khan <skhan@linuxfoundation.org>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     Shuah Khan <skhan@linuxfoundation.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, pavel@ucw.cz
+Subject: [PATCH] ath10k: Fix ath10k_wmi_tlv_op_pull_peer_stats_info() unlock without lock
+Date:   Tue,  6 Apr 2021 17:02:28 -0600
+Message-Id: <20210406230228.31301-1-skhan@linuxfoundation.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
-branch HEAD: a0398c302f9eb5519e5c5e1567b9077c7785d67f  Merge tag 'mt76-for-kvalo-2021-03-15' of https://github.com/nbd168/wireless into pending
+ath10k_wmi_tlv_op_pull_peer_stats_info() could try to unlock RCU lock
+winthout locking it first when peer reason doesn't match the valid
+cases for this function.
 
-elapsed time: 728m
+Add a default case to return without unlocking.
 
-configs tested: 122
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-m68k                            q40_defconfig
-powerpc                    mvme5100_defconfig
-mips                          ath25_defconfig
-powerpc                     tqm8540_defconfig
-sh                           se7619_defconfig
-sh                        sh7785lcr_defconfig
-sh                               alldefconfig
-arm                          pcm027_defconfig
-m68k                           sun3_defconfig
-arm                         shannon_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                      ppc6xx_defconfig
-powerpc                     tqm8541_defconfig
-sh                 kfr2r09-romimage_defconfig
-sh                          sdk7780_defconfig
-sh                        edosk7760_defconfig
-h8300                            alldefconfig
-mips                        bcm47xx_defconfig
-mips                           ip32_defconfig
-arm                          pxa168_defconfig
-arm                         lpc18xx_defconfig
-mips                  maltasmvp_eva_defconfig
-mips                           mtx1_defconfig
-powerpc                mpc7448_hpc2_defconfig
-s390                       zfcpdump_defconfig
-sh                         microdev_defconfig
-mips                        qi_lb60_defconfig
-arm                        vexpress_defconfig
-um                               alldefconfig
-arc                        nsimosci_defconfig
-arm                       aspeed_g5_defconfig
-sparc                            alldefconfig
-ia64                      gensparse_defconfig
-arm                           viper_defconfig
-mips                 decstation_r4k_defconfig
-powerpc                      tqm8xx_defconfig
-arm                       aspeed_g4_defconfig
-m68k                         apollo_defconfig
-sparc                       sparc32_defconfig
-arm                     davinci_all_defconfig
-arc                        vdk_hs38_defconfig
-sh                          rsk7203_defconfig
-sh                          sdk7786_defconfig
-sparc                       sparc64_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a006-20210406
-i386                 randconfig-a003-20210406
-i386                 randconfig-a001-20210406
-i386                 randconfig-a004-20210406
-i386                 randconfig-a005-20210406
-i386                 randconfig-a002-20210406
-i386                 randconfig-a014-20210406
-i386                 randconfig-a016-20210406
-i386                 randconfig-a011-20210406
-i386                 randconfig-a012-20210406
-i386                 randconfig-a015-20210406
-i386                 randconfig-a013-20210406
-x86_64               randconfig-a004-20210406
-x86_64               randconfig-a003-20210406
-x86_64               randconfig-a005-20210406
-x86_64               randconfig-a001-20210406
-x86_64               randconfig-a002-20210406
-x86_64               randconfig-a006-20210406
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a014-20210406
-x86_64               randconfig-a015-20210406
-x86_64               randconfig-a013-20210406
-x86_64               randconfig-a011-20210406
-x86_64               randconfig-a012-20210406
-x86_64               randconfig-a016-20210406
-
+Fixes: 09078368d516 ("ath10k: hold RCU lock when calling ieee80211_find_sta_by_ifaddr()")
+Reported-by: Pavel Machek <pavel@ucw.cz>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/net/wireless/ath/ath10k/wmi-tlv.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+index d97b33f789e4..7efbe03fbca8 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
++++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+@@ -592,6 +592,9 @@ static void ath10k_wmi_event_tdls_peer(struct ath10k *ar, struct sk_buff *skb)
+ 					GFP_ATOMIC
+ 					);
+ 		break;
++	default:
++		kfree(tb);
++		return;
+ 	}
+ 
+ exit:
+-- 
+2.27.0
+
