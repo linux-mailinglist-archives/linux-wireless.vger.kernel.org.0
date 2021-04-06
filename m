@@ -2,76 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD29E355375
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 14:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D83B73557BE
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 17:27:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343866AbhDFMRQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 08:17:16 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:15558 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233385AbhDFMRO (ORCPT
+        id S1345660AbhDFP2E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 11:28:04 -0400
+Received: from www62.your-server.de ([213.133.104.62]:55622 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230366AbhDFP2C (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 08:17:14 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FF5zr3xnZzPnpW;
-        Tue,  6 Apr 2021 20:14:16 +0800 (CST)
-Received: from mdc.localdomain (10.175.104.57) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 6 Apr 2021 20:16:51 +0800
-From:   Huang Guobin <huangguobin4@huawei.com>
-To:     <huangguobin4@huawei.com>, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] rtlwifi: rtl8192de: Use DEFINE_SPINLOCK() for spinlock
-Date:   Tue, 6 Apr 2021 20:16:46 +0800
-Message-ID: <1617711406-49649-1-git-send-email-huangguobin4@huawei.com>
-X-Mailer: git-send-email 2.7.4
+        Tue, 6 Apr 2021 11:28:02 -0400
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1lTncN-0003uh-8U; Tue, 06 Apr 2021 17:27:51 +0200
+Received: from [85.7.101.30] (helo=pc-6.home)
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1lTncN-00050d-1N; Tue, 06 Apr 2021 17:27:51 +0200
+To:     netdev@vger.kernel.org, bpf@vger.kernel.org
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Subject: LPC 2021 Networking and BPF Track CFP
+Cc:     xdp-newbies@vger.kernel.org, iovisor-dev@lists.iovisor.org,
+        linux-wireless@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        lwn@lwn.net
+Message-ID: <6d225920-9ecc-ef24-2bf8-848ca86c7fb0@iogearbox.net>
+Date:   Tue, 6 Apr 2021 17:27:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.175.104.57]
-X-CFilter-Loop: Reflected
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.102.4/26132/Tue Apr  6 13:06:05 2021)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Guobin Huang <huangguobin4@huawei.com>
+We are pleased to announce the Call for Proposals (CFP) for the Networking and
+BPF track at the 2021 edition of the Linux Plumbers Conference (LPC), which is
+planned to be held in Dublin, Ireland, on September 27th - 29th, 2021.
 
-spinlock can be initialized automatically with DEFINE_SPINLOCK()
-rather than explicitly calling spin_lock_init().
+Note that if an in-person conference should prove to be impossible due to the
+circumstances at that time, Linux Plumbers will switch to a virtual-only
+conference. CFP submitters should ideally be able to give their presentation
+in person, if circumstances permit, although presenting remotely will always
+be possible.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Guobin Huang <huangguobin4@huawei.com>
----
- .../realtek/rtlwifi/rtl8192de/sw.c         | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+This year's Networking and BPF track technical committee is comprised of:
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c
-index 1dbdddce0823..a74724c971b9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c
-@@ -372,18 +372,14 @@ static struct pci_driver rtl92de_driver = {
- 
- /* add global spin lock to solve the problem that
-  * Dul mac register operation on the same time */
--spinlock_t globalmutex_power;
--spinlock_t globalmutex_for_fwdownload;
--spinlock_t globalmutex_for_power_and_efuse;
-+DEFINE_SPINLOCK(globalmutex_power);
-+DEFINE_SPINLOCK(globalmutex_for_fwdownload);
-+DEFINE_SPINLOCK(globalmutex_for_power_and_efuse);
- 
- static int __init rtl92de_module_init(void)
- {
- 	int ret = 0;
- 
--	spin_lock_init(&globalmutex_power);
--	spin_lock_init(&globalmutex_for_fwdownload);
--	spin_lock_init(&globalmutex_for_power_and_efuse);
--
- 	ret = pci_register_driver(&rtl92de_driver);
- 	if (ret)
- 		WARN_ONCE(true, "rtl8192de: No device found\n");
+   David S. Miller <davem@davemloft.net>
+   Jakub Kicinski <kuba@kernel.org>
+   Eric Dumazet <edumazet@google.com>
+   Alexei Starovoitov <ast@kernel.org>
+   Daniel Borkmann <daniel@iogearbox.net>
+   Andrii Nakryiko <andrii@kernel.org>
 
+We are seeking proposals of 40 minutes in length (including Q&A discussion),
+optionally accompanied by papers of 2 to 10 pages in length.
+
+Any kind of advanced Linux networking and/or BPF related topic will be considered.
+
+Please submit your proposals through the official LPC website at:
+
+   https://linuxplumbersconf.org/event/11/abstracts/
+
+Make sure to select "Networking & BPF Summit" in the Track pull-down menu.
+
+Proposals must be submitted by August 13th, and submitters will be notified of
+acceptance by August 16th.
+
+Final slides and papers (as PDF) are due on the first day of the conference.
