@@ -2,127 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6D59355B62
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 20:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F261C355B65
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Apr 2021 20:29:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239444AbhDFS3w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 14:29:52 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113]:38006 "EHLO vps-vb.mhejs.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238613AbhDFS32 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 14:29:28 -0400
-Received: from MUA
-        by vps-vb.mhejs.net with esmtps (TLS1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.93.0.4)
-        (envelope-from <mail@maciej.szmigiero.name>)
-        id 1lTqRr-0003Ku-8U; Tue, 06 Apr 2021 20:29:11 +0200
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-References: <e2924d81-0e30-2dd0-292b-428fea199484@maciej.szmigiero.name>
- <846f6166-c570-01fc-6bbc-3e3b44e51327@maciej.szmigiero.name>
- <87r1jnohq6.fsf@codeaurora.org>
- <8e0434eb-d15f-065d-2ba7-b50c67877112@maciej.szmigiero.name>
- <a2003668-5108-27b9-95cd-9e1d5d1aa94d@lwfinger.net>
-From:   "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: rtlwifi/rtl8192cu AP mode broken with PS STA
-Message-ID: <1cec013f-1f30-ec40-ed73-1dea2dc74d5f@maciej.szmigiero.name>
-Date:   Tue, 6 Apr 2021 20:29:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S238509AbhDFSaA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 14:30:00 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:48396 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230406AbhDFS34 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Apr 2021 14:29:56 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1617733787; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=/Tpk/i5gAFjFHype6+eHyN/1UENfXc8j0unCtXTFneU=;
+ b=FIj3qHv+nA8KSo6m+1DmnW6S3GVkiDypoSv7zhem1lUVsCRojMv4TeWrnW9eskncrDEjCyhy
+ j1cYKgPZfKqmNjkbAyy/SsQeSgZHaKKGgyVqNYpsrg1aZQn0lrvk1i3THoeyJXKz37TORNrJ
+ RfboF3Up5o8zUkesKEgeBGjnTwI=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 606ca89bc06dd10a2d3cf308 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 06 Apr 2021 18:29:47
+ GMT
+Sender: gsamin=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C7BACC43464; Tue,  6 Apr 2021 18:29:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: gsamin)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3DE70C43461;
+        Tue,  6 Apr 2021 18:29:46 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <a2003668-5108-27b9-95cd-9e1d5d1aa94d@lwfinger.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
+Date:   Tue, 06 Apr 2021 23:59:46 +0530
+From:   Govindaraj Saminathan <gsamin@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH] mac80211: fix low throughput due to invalid addba
+ extension
+In-Reply-To: <631e58cbfc146db2a6ca70ffc8b90648@codeaurora.org>
+References: <1615909674-13412-1-git-send-email-gsamin@codeaurora.org>
+ <e38a1ff5efbe5532a97310c053b50c6ce5ef027e.camel@sipsolutions.net>
+ <631e58cbfc146db2a6ca70ffc8b90648@codeaurora.org>
+Message-ID: <68a9d6b4eb7b77295f538f4aec3d8f84@codeaurora.org>
+X-Sender: gsamin@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 06.04.2021 18:25, Larry Finger wrote:
-> On 4/6/21 7:06 AM, Maciej S. Szmigiero wrote:
->> On 06.04.2021 12:00, Kalle Valo wrote:
->>> "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
->>>
->>>> On 29.03.2021 00:54, Maciej S. Szmigiero wrote:
->>>>> Hi,
->>>>>
->>>>> It looks like rtlwifi/rtl8192cu AP mode is broken when a STA is using PS,
->>>>> since the driver does not update its beacon to account for TIM changes,
->>>>> so a station that is sleeping will never learn that it has packets
->>>>> buffered at the AP.
->>>>>
->>>>> Looking at the code, the rtl8192cu driver implements neither the set_tim()
->>>>> callback, nor does it explicitly update beacon data periodically, so it
->>>>> has no way to learn that it had changed.
->>>>>
->>>>> This results in the AP mode being virtually unusable with STAs that do
->>>>> PS and don't allow for it to be disabled (IoT devices, mobile phones,
->>>>> etc.).
->>>>>
->>>>> I think the easiest fix here would be to implement set_tim() for example
->>>>> the way rt2x00 driver does: queue a work or schedule a tasklet to update
->>>>> the beacon data on the device.
->>>>
->>>> Are there any plans to fix this?
->>>> The driver is listed as maintained by Ping-Ke.
->>>
->>> Yeah, power save is hard and I'm not surprised that there are drivers
->>> with broken power save mode support. If there's no fix available we
->>> should stop supporting AP mode in the driver.
->>>
->>
->> https://wireless.wiki.kernel.org/en/developers/documentation/mac80211/api
->> clearly documents that "For AP mode, it must (...) react to the set_tim()
->> callback or fetch each beacon from mac80211".
->>
->> The driver isn't doing either so no wonder the beacon it is sending
->> isn't getting updated.
->>
->> As I have said above, it seems to me that all that needs to be done here
->> is to queue a work in a set_tim() callback, then call
->> send_beacon_frame() from rtlwifi/core.c from this work.
->>
->> But I don't know the exact device semantics, maybe it needs some other
->> notification that the beacon has changed, too, or even tries to
->> manage the TIM bitmap by itself.
->>
->> It would be a shame to lose the AP mode for such minor thing, though.
->>
->> I would play with this myself, but unfortunately I don't have time
->> to work on this right now.
->>
->> That's where my question to Realtek comes: are there plans to actually
->> fix this?
-> 
-> Yes, I am working on this. My only question is "if you are such an expert on the problem, why do you not fix it?"
-
-I don't think I am an expert here - I've tried to use a rtl8192cu USB
-dongle in AP mode but its STAs would become unreachable or disconnect
-after a short while, so I have started investigating the reason for such
-problems.
-Ultimately, I have traced it to DTIM in beacons not indicating there are
-frames buffered for connected stations.
-
-Then I've looked how the beacon that is broadcast is supposed to get
-updated when it changes and seen there seems to be no existing mechanism
-for this in rtl8192cu driver.
-However, I had to stop at this point and post my findings as I could not
-commit more time to this issue due to other workload.
-
-> The example in rx200 is not particularly useful, and I have not found any other examples.
-
-That's why I thought it would be best if somebody from Realtek, with
-deep knowledge of both the driver and the hardware, could voice their
-opinion here.
-
-As I have stated earlier, just uploading new beacon to the hardware
-might not be enough for it to be (safely) updated.
-
-> Larry
-> 
-
-Thanks,
-Maciej
+On 2021-03-16 23:15, Govindaraj Saminathan wrote:
+> On 2021-03-16 21:21, Johannes Berg wrote:
+>> On Tue, 2021-03-16 at 21:17 +0530, Govindaraj wrote:
+>>> Addba request action frame received with the extension element from
+>>> certain 11ac stations,
+>>> 
+>> 
+>> Please indicate which so we have a record of who's shipping broken 
+>> junk.
+The below log i taken with pixel3 client device
+>> 
+>>> but the cmd id and length not matching to addba
+>>> extension and it failing in element parsing.
+>> 
+>>> Due to this, addba request
+>>> not acknowledged and aggregation not started which is causing low
+>>> throughput. Hence validating the cmd id before processing addba 
+>>> extension.
+>> 
+>>>  	ies_len = len - offsetof(struct ieee80211_mgmt,
+>>>  				 u.action.u.addba_req.variable);
+>>> -	if (ies_len) {
+>>> +	if (ies_len &&
+>>> +	    mgmt->u.action.u.addba_req.variable[0] == WLAN_EID_ADDBA_EXT) {
+>>>  		ieee802_11_parse_elems(mgmt->u.action.u.addba_req.variable,
+>>>                                  ies_len, true, &elems, mgmt->bssid, 
+>>> NULL);
+>>>  		if (elems.parse_error)
+>> 
+>> So we get into parse_error without this?
+> yes, we getting parse error.
+>> 
+>> What are they putting there instead?
+> first 9 bytes are addba request action frame and remaining 7 bytes
+> extension causing for parse error.
+> 03 00 01 02 10 00 00 e0 0a cf 08 06 11a 46 09 fe
+>> 
+>> johannes
