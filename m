@@ -2,224 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3F9C3574BA
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 21:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2016F35765A
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 22:53:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345184AbhDGTCN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Apr 2021 15:02:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51896 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239544AbhDGTCM (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Apr 2021 15:02:12 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F047DC061762
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Apr 2021 12:02:02 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id kk2-20020a17090b4a02b02900c777aa746fso1843559pjb.3
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Apr 2021 12:02:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=8q0QHq9l4LF9PHx0etSU7nJSKEAb9gzaAE8xuzl5E8k=;
-        b=Vg46FhLEi9cn5jYSsZNA7SRRcJq634l6s+jrMmkoqB8xEbtmmZ3wO0+i1v/Jo9fjn3
-         oG4viB354PfuNOXJ8vqJe/WHaqlQzkM0LicWuKOMjK4f91/1AhJt4dYFNN/BS0308Fod
-         5wfSG+iCSyUKclk/Z05Y4mSX2SkUtUPcPReto=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=8q0QHq9l4LF9PHx0etSU7nJSKEAb9gzaAE8xuzl5E8k=;
-        b=fQZe3sChiSbnV3cfFiuT4AGKg7h4PG/S+Le7DlsDcoTzqudEenkpEcgLio6y4Mj0SW
-         0grA4297rnrQ5Ui1s0TrPjLau5sVTcI27UMJen16H8ILGWY4bSs8/5FbzLvP8ioyz3Br
-         Lo9iR00d5tWMY8nPzFttCOh0cfe9yPdi9nxfzmp3xvEURz+PygFRSO4nhy906hmTSS71
-         2ElJ8vBLYwNBdInl3msYljtzgf0Itqh8Q6o1ZiZyTT2OW9yGgpUazQ/wvyioWQ2rvWrR
-         7QN1l5BTCX1B47xUa3t7TSObqHSSQEJOOGAcf0U8EsSzs62MWlAcfneNJaA6ezv6AeL1
-         HQzA==
-X-Gm-Message-State: AOAM532dZ9wg5UJkfxaPLC4hZg7J006Rw1IXtCOdkwkVGph1P4UiyT+G
-        GSRHbJ6duXEOxh7gIseabkX8pw==
-X-Google-Smtp-Source: ABdhPJz4ys47YHIOPJKyCBVOUB1raDUBV8qm1x+U7bt/dMyiob+58CCl5Yya5TA7z1nvNhyYeF4uKg==
-X-Received: by 2002:a17:902:c411:b029:e9:3d37:afc with SMTP id k17-20020a170902c411b02900e93d370afcmr4402507plk.17.1617822122466;
-        Wed, 07 Apr 2021 12:02:02 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id t8sm5840623pjj.0.2021.04.07.12.02.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Apr 2021 12:02:01 -0700 (PDT)
-Date:   Wed, 7 Apr 2021 12:02:00 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 2/2][next] wl3501_cs: Fix out-of-bounds warning in
- wl3501_mgmt_join
-Message-ID: <202104071158.B4FA1956@keescook>
-References: <cover.1617226663.git.gustavoars@kernel.org>
- <83b0388403a61c01fad8d638db40b4245666ff53.1617226664.git.gustavoars@kernel.org>
+        id S231589AbhDGUxb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Apr 2021 16:53:31 -0400
+Received: from vps-vb.mhejs.net ([37.28.154.113]:40426 "EHLO vps-vb.mhejs.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231520AbhDGUxa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Apr 2021 16:53:30 -0400
+Received: from MUA
+        by vps-vb.mhejs.net with esmtps (TLS1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.93.0.4)
+        (envelope-from <mail@maciej.szmigiero.name>)
+        id 1lUFAn-0007gx-8c; Wed, 07 Apr 2021 22:53:13 +0200
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+References: <e2924d81-0e30-2dd0-292b-428fea199484@maciej.szmigiero.name>
+ <846f6166-c570-01fc-6bbc-3e3b44e51327@maciej.szmigiero.name>
+ <87r1jnohq6.fsf@codeaurora.org>
+ <8e0434eb-d15f-065d-2ba7-b50c67877112@maciej.szmigiero.name>
+ <a2003668-5108-27b9-95cd-9e1d5d1aa94d@lwfinger.net>
+ <1617763692.9857.7.camel@realtek.com>
+ <1dc7e487-b97b-8584-47f7-37f3385c7bf9@lwfinger.net>
+From:   "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Subject: Re: rtlwifi/rtl8192cu AP mode broken with PS STA
+Message-ID: <15737dcf-95ac-1ce6-a681-94ff5db968e4@maciej.szmigiero.name>
+Date:   Wed, 7 Apr 2021 22:53:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <83b0388403a61c01fad8d638db40b4245666ff53.1617226664.git.gustavoars@kernel.org>
+In-Reply-To: <1dc7e487-b97b-8584-47f7-37f3385c7bf9@lwfinger.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 31, 2021 at 04:45:34PM -0500, Gustavo A. R. Silva wrote:
-> Fix the following out-of-bounds warning by enclosing
-> some structure members into new struct req:
-> 
-> arch/x86/include/asm/string_32.h:182:25: warning: '__builtin_memcpy' offset [39, 108] from the object at 'sig' is out of the bounds of referenced subobject 'beacon_period' with type 'short unsigned int' at offset 36 [-Warray-bounds]
-> 
-> Refactor the code, accordingly:
-> 
-> $ pahole -C wl3501_join_req drivers/net/wireless/wl3501_cs.o
-> struct wl3501_join_req {
-> 	u16                        next_blk;             /*     0     2 */
-> 	u8                         sig_id;               /*     2     1 */
-> 	u8                         reserved;             /*     3     1 */
-> 	struct iw_mgmt_data_rset   operational_rset;     /*     4    10 */
-> 	u16                        reserved2;            /*    14     2 */
-> 	u16                        timeout;              /*    16     2 */
-> 	u16                        probe_delay;          /*    18     2 */
-> 	u8                         timestamp[8];         /*    20     8 */
-> 	u8                         local_time[8];        /*    28     8 */
-> 	struct {
-> 		u16                beacon_period;        /*    36     2 */
-> 		u16                dtim_period;          /*    38     2 */
-> 		u16                cap_info;             /*    40     2 */
-> 		u8                 bss_type;             /*    42     1 */
-> 		u8                 bssid[6];             /*    43     6 */
-> 		struct iw_mgmt_essid_pset ssid;          /*    49    34 */
-> 		/* --- cacheline 1 boundary (64 bytes) was 19 bytes ago --- */
-> 		struct iw_mgmt_ds_pset ds_pset;          /*    83     3 */
-> 		struct iw_mgmt_cf_pset cf_pset;          /*    86     8 */
-> 		struct iw_mgmt_ibss_pset ibss_pset;      /*    94     4 */
-> 		struct iw_mgmt_data_rset bss_basic_rset; /*    98    10 */
-> 	} req;                                           /*    36    72 */
+On 07.04.2021 06:21, Larry Finger wrote:
+> On 4/6/21 9:48 PM, Pkshih wrote:
+>> On Tue, 2021-04-06 at 11:25 -0500, Larry Finger wrote:
+>>> On 4/6/21 7:06 AM, Maciej S. Szmigiero wrote:
+>>>> On 06.04.2021 12:00, Kalle Valo wrote:
+>>>>> "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
+>>>>>
+>>>>>> On 29.03.2021 00:54, Maciej S. Szmigiero wrote:
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> It looks like rtlwifi/rtl8192cu AP mode is broken when a STA is using PS,
+>>>>>>> since the driver does not update its beacon to account for TIM changes,
+>>>>>>> so a station that is sleeping will never learn that it has packets
+>>>>>>> buffered at the AP.
+>>>>>>>
+>>>>>>> Looking at the code, the rtl8192cu driver implements neither the set_tim()
+>>>>>>> callback, nor does it explicitly update beacon data periodically, so it
+>>>>>>> has no way to learn that it had changed.
+>>>>>>>
+>>>>>>> This results in the AP mode being virtually unusable with STAs that do
+>>>>>>> PS and don't allow for it to be disabled (IoT devices, mobile phones,
+>>>>>>> etc.).
+>>>>>>>
+>>>>>>> I think the easiest fix here would be to implement set_tim() for example
+>>>>>>> the way rt2x00 driver does: queue a work or schedule a tasklet to update
+>>>>>>> the beacon data on the device.
+>>>>>>
+>>>>>> Are there any plans to fix this?
+>>>>>> The driver is listed as maintained by Ping-Ke.
+>>>>>
+>>>>> Yeah, power save is hard and I'm not surprised that there are drivers
+>>>>> with broken power save mode support. If there's no fix available we
+>>>>> should stop supporting AP mode in the driver.
+>>>>>
+>>>> https://wireless.wiki.kernel.org/en/developers/documentation/mac80211/api
+>>>> clearly documents that "For AP mode, it must (...) react to the set_tim()
+>>>> callback or fetch each beacon from mac80211".
+>>>> The driver isn't doing either so no wonder the beacon it is sending
+>>>> isn't getting updated.
+>>>> As I have said above, it seems to me that all that needs to be done here
+>>>> is to queue a work in a set_tim() callback, then call
+>>>> send_beacon_frame() from rtlwifi/core.c from this work.
+>>>> But I don't know the exact device semantics, maybe it needs some other
+>>>> notification that the beacon has changed, too, or even tries to
+>>>> manage the TIM bitmap by itself.
+>>>> It would be a shame to lose the AP mode for such minor thing, though.
+>>>> I would play with this myself, but unfortunately I don't have time
+>>>> to work on this right now.
+>>>> That's where my question to Realtek comes: are there plans to actually
+>>>> fix this?
+>>>
+>>> Yes, I am working on this. My only question is "if you are such an expert on the
+>>> problem, why do you not fix it?"
+>>>
+>>> The example in rx200 is not particularly useful, and I have not found any other
+>>> examples.
+>>>
+>>
+>> Hi Larry,
+>>
+>> I have a draft patch that forks a work to do send_beacon_frame(), whose
+>> behavior like Maciej mentioned.
 
-This section is the same as a large portion of struct wl3501_scan_confirm:
+That's great, thanks!
 
-struct wl3501_scan_confirm {
-        u16                         next_blk;
-        u8                          sig_id;
-        u8                          reserved;
-        u16                         status;
-        char                        timestamp[8];
-        char                        localtime[8];
+>> I did test on RTL8821AE; it works well. But, it seems already work well even
+>> I don't apply this patch, and I'm still digging why.
 
-from here
-        u16                         beacon_period;
-        u16                         dtim_period;
-        u16                         cap_info;
-        u8                          bss_type;
-        u8                          bssid[ETH_ALEN];
-        struct iw_mgmt_essid_pset   ssid;
-        struct iw_mgmt_ds_pset      ds_pset;
-        struct iw_mgmt_cf_pset      cf_pset;
-        struct iw_mgmt_ibss_pset    ibss_pset;
-        struct iw_mgmt_data_rset    bss_basic_rset;
-through here
+It looks like PCI rtlwifi hardware uses a tasklet (specifically,
+_rtl_pci_prepare_bcn_tasklet() in pci.c) to periodically transfer the
+current beacon to the NIC.
 
-        u8                          rssi;
-};
+This tasklet is scheduled on a RTL_IMR_BCNINT interrupt, which sounds
+like a beacon interval interrupt.
 
-It seems like maybe extracting that and using it in both structures
-would make more sense?
-
+>> I don't have a rtl8192cu dongle on hand, but I'll try to find one.
 > 
-> 	/* size: 108, cachelines: 2, members: 10 */
-> 	/* last cacheline: 44 bytes */
-> };
+> Maceij,
 > 
-> The problem is that the original code is trying to copy data into a
-> bunch of struct members adjacent to each other in a single call to
-> memcpy(). Now that a new struct _req_ enclosing all those adjacent
-> members is introduced, memcpy() doesn't overrun the length of
-> &sig.beacon_period, because the address of the new struct object
-> _req_ is used as the destination, instead.
-> 
-> Also, this helps with the ongoing efforts to enable -Warray-bounds and
-> avoid confusing the compiler.
-> 
-> Link: https://github.com/KSPP/linux/issues/109
-> Reported-by: kernel test robot <lkp@intel.com>
-> Build-tested-by: kernel test robot <lkp@intel.com>
-> Link: https://lore.kernel.org/lkml/60641d9b.2eNLedOGSdcSoAV2%25lkp@intel.com/
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> ---
-> Changes in v2:
->  - None.
-> 
->  drivers/net/wireless/wl3501.h    | 22 ++++++++++++----------
->  drivers/net/wireless/wl3501_cs.c |  4 ++--
->  2 files changed, 14 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/wl3501.h b/drivers/net/wireless/wl3501.h
-> index ef9d605d8c88..774d8cac046d 100644
-> --- a/drivers/net/wireless/wl3501.h
-> +++ b/drivers/net/wireless/wl3501.h
-> @@ -389,16 +389,18 @@ struct wl3501_join_req {
->  	u16			    probe_delay;
->  	u8			    timestamp[8];
->  	u8			    local_time[8];
-> -	u16			    beacon_period;
-> -	u16			    dtim_period;
-> -	u16			    cap_info;
-> -	u8			    bss_type;
-> -	u8			    bssid[ETH_ALEN];
-> -	struct iw_mgmt_essid_pset   ssid;
-> -	struct iw_mgmt_ds_pset	    ds_pset;
-> -	struct iw_mgmt_cf_pset	    cf_pset;
-> -	struct iw_mgmt_ibss_pset    ibss_pset;
-> -	struct iw_mgmt_data_rset    bss_basic_rset;
-> +	struct {
-> +		u16			    beacon_period;
-> +		u16			    dtim_period;
-> +		u16			    cap_info;
-> +		u8			    bss_type;
-> +		u8			    bssid[ETH_ALEN];
-> +		struct iw_mgmt_essid_pset   ssid;
-> +		struct iw_mgmt_ds_pset	    ds_pset;
-> +		struct iw_mgmt_cf_pset	    cf_pset;
-> +		struct iw_mgmt_ibss_pset    ibss_pset;
-> +		struct iw_mgmt_data_rset    bss_basic_rset;
-> +	} req;
->  };
->  
->  struct wl3501_join_confirm {
-> diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
-> index e149ef81d6cc..399d3bd2ae76 100644
-> --- a/drivers/net/wireless/wl3501_cs.c
-> +++ b/drivers/net/wireless/wl3501_cs.c
-> @@ -590,7 +590,7 @@ static int wl3501_mgmt_join(struct wl3501_card *this, u16 stas)
->  	struct wl3501_join_req sig = {
->  		.sig_id		  = WL3501_SIG_JOIN_REQ,
->  		.timeout	  = 10,
-> -		.ds_pset = {
-> +		.req.ds_pset = {
->  			.el = {
->  				.id  = IW_MGMT_INFO_ELEMENT_DS_PARAMETER_SET,
->  				.len = 1,
-> @@ -599,7 +599,7 @@ static int wl3501_mgmt_join(struct wl3501_card *this, u16 stas)
->  		},
->  	};
->  
-> -	memcpy(&sig.beacon_period, &this->bss_set[stas].beacon_period, 72);
-> +	memcpy(&sig.req, &this->bss_set[stas].beacon_period, sizeof(sig.req));
+> Does this patch fix the problem?
 
-If not, then probably something like this should be added to make sure
-nothing unexpected happens to change structure sizes:
+The beacon seems to be updating now and STAs no longer get stuck in PS
+mode.
+Although sometimes (every 2-3 minutes with continuous 1s interval pings)
+there is around 5s delay in updating the transmitted beacon - don't know
+why, maybe the NIC hardware still has the old version in queue?
 
-BUILD_BUG_ON(sizeof(sig.req) != 72);
+I doubt, however that this set_tim() callback should be added for every
+rtlwifi device type.
 
->  	return wl3501_esbq_exec(this, &sig, sizeof(sig));
->  }
->  
-> -- 
-> 2.27.0
-> 
+As I have said above, PCI devices seem to already have a mechanism in
+place to update their beacon each beacon interval.
+Your test that RTL8821AE works without this patch confirms that (at
+least for the rtl8821ae driver).
 
--- 
-Kees Cook
+It seems this callback is only necessarily for USB rtlwifi devices.
+Which currently means rtl8192cu only.
+
+Thanks,
+Maciej
