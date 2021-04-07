@@ -2,91 +2,228 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04302355F31
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 01:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66411356097
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 03:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236561AbhDFXCk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 19:02:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233379AbhDFXCk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 19:02:40 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3B5C06175F
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Apr 2021 16:02:32 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id x17so17329031iog.2
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Apr 2021 16:02:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Rj2YYKWiwju3STdIjVvck7gwFTWKqKlbS/8vOJQzblA=;
-        b=LjPAMgX4jEAvs46Pjf+qHRP61100oZ9gBFh8LuXJOqZ/+4s8Zd7eKgheo4sK3oKHxp
-         sERChtROH5w8X7WVNvCbc9ajll7IY7lboMEg6i3jClONPUzB2iYndamvcV+rGEXvyM0V
-         /w8r4v1KClZJ774YmtCVlMsESIJiTR57hldq8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Rj2YYKWiwju3STdIjVvck7gwFTWKqKlbS/8vOJQzblA=;
-        b=m9Gj/nBAXr6NqMh5IAbNYv+FCNpNBz0SVANwl26XOGRQG0LtOYXItaAG6fcvT7ppU8
-         FkozCmKSfElBtT8Z+vyJR+u22s15i7VqXc2LDrvMPsnHI2jK/MJWlSq/FctX6lf0EdUU
-         AJhwlC9+9YWjakrqRyLiO2C45AFhFhA5218STGTuja3YSN9hGbsGPdqnZaxT/niUUBDv
-         5jv1JJ/ChEtPJ6PvieqQ3cbZroZ7kToqUPnTeZLrgtkfJ5wkYN1hJHXW0kE6KjosPTyZ
-         zwWiMdaKMmVGAkUSWQRHmOUQaFyEd5/rZyNT/XiZAH3YpYoyeD+0Y2nbI4lDYDLDNYK4
-         f7Tw==
-X-Gm-Message-State: AOAM530BD+7m9SIIPL/gXTWFTk9KVcODZL7KHd12FTmYfvrKINgeg4Rt
-        sQFvMYbpm+qmn+KKZWZl8f4m+g==
-X-Google-Smtp-Source: ABdhPJyIpJDK8H7I6Uevy94NM3CzpZpJax71iCAYlQWB3ZvcOLnBm9cU/gL+ZTjIV0swPVXh0JIGew==
-X-Received: by 2002:a05:6638:343:: with SMTP id x3mr522607jap.44.1617750151432;
-        Tue, 06 Apr 2021 16:02:31 -0700 (PDT)
-Received: from shuah-t480s.internal (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
-        by smtp.gmail.com with ESMTPSA id z10sm13186097ilq.38.2021.04.06.16.02.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Apr 2021 16:02:30 -0700 (PDT)
-From:   Shuah Khan <skhan@linuxfoundation.org>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     Shuah Khan <skhan@linuxfoundation.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, pavel@ucw.cz
-Subject: [PATCH] ath10k: Fix ath10k_wmi_tlv_op_pull_peer_stats_info() unlock without lock
-Date:   Tue,  6 Apr 2021 17:02:28 -0600
-Message-Id: <20210406230228.31301-1-skhan@linuxfoundation.org>
-X-Mailer: git-send-email 2.27.0
+        id S234745AbhDGBNi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 21:13:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51522 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229612AbhDGBNh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Apr 2021 21:13:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 96BD5613C4;
+        Wed,  7 Apr 2021 01:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617758008;
+        bh=4wmgtd3m+Ta1X4jkV88q8R8S6J8R9xiITuF0Yr6xVvE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=pRLlQVTSNNqQq6FWgIz2B7IVJb0WD4DcmH/q1OoNuEMrYaWQrNUQZE+TGHQqvO7uZ
+         0sbEWPuyB8HyaAmOyOmuJUzxCmp1p115y8GLeeHMULg8c7AuvfXjx5Z564IDbK8lJq
+         gmbN4+vm5P6n1CiJ0TfpP9EWDKvzUd31Ix6pvdON87LVzboxcqirc6EFlZYA+M4j8G
+         jHfCtKJ3iJFDoh1b09Poyvm8SAkLWUaz66KIw278EYEG9sTTsgo5EgmZQ4PmQnu3Wd
+         /7t4s6bK6dnu7hbZeox3JOJGIH6WZmQ5XIo2AS7KlPr83ACsPhjvDPLHQqqdmOaGvc
+         LBaAPBKO1awEA==
+Received: by mail-ej1-f52.google.com with SMTP id n2so18613159ejy.7;
+        Tue, 06 Apr 2021 18:13:28 -0700 (PDT)
+X-Gm-Message-State: AOAM533YnDaot013beTdGHT2EJJKb9olBZ/IgK/ViKzJymm5cml8JSmO
+        J/yoS2/ORwvBWB7zWBhZRT8+yg7Pu5adv2GpWA==
+X-Google-Smtp-Source: ABdhPJzl6RD27BOpLC9b+ksVgecIqSPzz04cn67QiZn3u6NF8pL8OvwlE6sLhJddWpFdEonXi5GuOvvWMqx7AYRmDLw=
+X-Received: by 2002:a17:906:1984:: with SMTP id g4mr847605ejd.525.1617758006930;
+ Tue, 06 Apr 2021 18:13:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210405164643.21130-1-michael@walle.cc> <20210405164643.21130-3-michael@walle.cc>
+In-Reply-To: <20210405164643.21130-3-michael@walle.cc>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 6 Apr 2021 20:13:15 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKbxY5sCJ_8F7iF0hFr52cwRsSc2bu48H7cqcNeWytDpA@mail.gmail.com>
+Message-ID: <CAL_JsqKbxY5sCJ_8F7iF0hFr52cwRsSc2bu48H7cqcNeWytDpA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] of: net: fix of_get_mac_addr_nvmem() for PCI and DSA nodes
+To:     Michael Walle <michael@walle.cc>
+Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        netdev <netdev@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        "open list:MEDIA DRIVERS FOR RENESAS - FCP" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "moderated list:ARM/STM32 ARCHITECTURE" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        linux-oxnas@groups.io, linux-omap <linux-omap@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Andreas Larsson <andreas@gaisler.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Joyce Ooi <joyce.ooi@intel.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Fugang Duan <fugang.duan@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Mark Lee <Mark-MC.Lee@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        Byungho An <bh74.an@samsung.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Wingman Kwok <w-kwok2@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath10k_wmi_tlv_op_pull_peer_stats_info() could try to unlock RCU lock
-winthout locking it first when peer reason doesn't match the valid
-cases for this function.
+On Mon, Apr 5, 2021 at 11:47 AM Michael Walle <michael@walle.cc> wrote:
+>
+> of_get_mac_address() already supports fetching the MAC address by an
+> nvmem provider. But until now, it was just working for platform devices.
+> Esp. it was not working for DSA ports and PCI devices. It gets more
+> common that PCI devices have a device tree binding since SoCs contain
+> integrated root complexes.
+>
+> Use the nvmem of_* binding to fetch the nvmem cells by a struct
+> device_node. We still have to try to read the cell by device first
+> because there might be a nvmem_cell_lookup associated with that device.
+>
+> Signed-off-by: Michael Walle <michael@walle.cc>
+> ---
+> Please note, that I've kept the nvmem_get_mac_address() which operates
+> on a device. The new of_get_mac_addr_nvmem() is almost identical and
+> there are no users of the former function right now, but it seems to be
+> the "newer" version to get the MAC address for a "struct device". Thus
+> I've kept it. Please advise, if I should kill it though.
 
-Add a default case to return without unlocking.
+It seems kind of backwards from how we normally design this type of
+API where the API with a struct device will call a firmware specific
+version if there's a firmware handle. But certainly, I don't think we
+should be operating on platform device if we can help it.
 
-Fixes: 09078368d516 ("ath10k: hold RCU lock when calling ieee80211_find_sta_by_ifaddr()")
-Reported-by: Pavel Machek <pavel@ucw.cz>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
----
- drivers/net/wireless/ath/ath10k/wmi-tlv.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index d97b33f789e4..7efbe03fbca8 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -592,6 +592,9 @@ static void ath10k_wmi_event_tdls_peer(struct ath10k *ar, struct sk_buff *skb)
- 					GFP_ATOMIC
- 					);
- 		break;
-+	default:
-+		kfree(tb);
-+		return;
- 	}
- 
- exit:
--- 
-2.27.0
-
+>  drivers/of/of_net.c | 37 +++++++++++++++++++++++++++++++------
+>  1 file changed, 31 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
+> index 2344ad7fff5e..2323c6063eaf 100644
+> --- a/drivers/of/of_net.c
+> +++ b/drivers/of/of_net.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/phy.h>
+>  #include <linux/export.h>
+>  #include <linux/device.h>
+> +#include <linux/nvmem-consumer.h>
+>
+>  /**
+>   * of_get_phy_mode - Get phy mode for given device_node
+> @@ -56,18 +57,42 @@ static int of_get_mac_addr(struct device_node *np, const char *name, u8 *addr)
+>         return -ENODEV;
+>  }
+>
+> -static int of_get_mac_addr_nvmem(struct device_node *np, u8 addr)
+> +static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
+>  {
+>         struct platform_device *pdev = of_find_device_by_node(np);
+> +       struct nvmem_cell *cell;
+> +       const void *mac;
+> +       size_t len;
+>         int ret;
+>
+> -       if (!pdev)
+> -               return -ENODEV;
+> +       /* Try lookup by device first, there might be a nvmem_cell_lookup
+> +        * associated with a given device.
+> +        */
+> +       if (pdev) {
+> +               ret = nvmem_get_mac_address(&pdev->dev, addr);
+> +               put_device(&pdev->dev);
+> +               return ret;
+> +       }
+> +
+> +       cell = of_nvmem_cell_get(np, "mac-address");
+> +       if (IS_ERR(cell))
+> +               return PTR_ERR(cell);
+> +
+> +       mac = nvmem_cell_read(cell, &len);
+> +       nvmem_cell_put(cell);
+> +
+> +       if (IS_ERR(mac))
+> +               return PTR_ERR(mac);
+> +
+> +       if (len != ETH_ALEN || !is_valid_ether_addr(mac)) {
+> +               kfree(mac);
+> +               return -EINVAL;
+> +       }
+>
+> -       ret = nvmem_get_mac_address(&pdev->dev, addr);
+> -       put_device(&pdev->dev);
+> +       ether_addr_copy(addr, mac);
+> +       kfree(mac);
+>
+> -       return ret;
+> +       return 0;
+>  }
+>
+>  /**
+> --
+> 2.20.1
+>
