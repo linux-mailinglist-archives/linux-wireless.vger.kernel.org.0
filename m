@@ -2,178 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FAA33560EA
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 03:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0196535615D
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 04:19:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347792AbhDGBpp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Apr 2021 21:45:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49826 "EHLO
+        id S1344381AbhDGCT1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Apr 2021 22:19:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235801AbhDGBpo (ORCPT
+        with ESMTP id S234067AbhDGCTY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Apr 2021 21:45:44 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 112F9C06174A;
-        Tue,  6 Apr 2021 18:45:36 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id s11so11767572pfm.1;
-        Tue, 06 Apr 2021 18:45:36 -0700 (PDT)
+        Tue, 6 Apr 2021 22:19:24 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67B9FC06174A
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Apr 2021 19:19:15 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id k23-20020a17090a5917b02901043e35ad4aso445510pji.3
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Apr 2021 19:19:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=w25lwMo3bZrfNfXLpALA+4I29YoJZak3FyajA6HeC94=;
-        b=CIChkHRrI3lQGQaVgR3g6LW6mtE7yO24xnIbA3eBb2OBsSB2LpEOsEMe8qhA6ppB4/
-         GFg8WBsRxrdBL+opf48EhryRN/JKtLSyUf8TtU4rVTRQa0D+2XsyLYjF95V4ZrkFFl1U
-         5mLtoliRkEQSihgjqgixl9vUQ0ZABFHT2oc60rmHwJ60bV8gTNkz1J4AlAZwO+5B+DuQ
-         +5lul+5kAwz6HwmSJjNChHm4+EocR2sBxC3baPIbPs036zqFQh7Ew01atfiMB7d3C/Ow
-         PUNTNMFbHGoK1bfa8ixotxlbsKJ3STRzqpF8jldPfQ8ke/3eiY6H4rtWu1h0K8XYB2Vv
-         rgqQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=R5ftgXbb+KVQyjP80P099SNuu0mSDE7rKZztUK1dnRA=;
+        b=UyeUjla4ieFbQqjOxbSY05+00qAZd85yaru96bjvYehszGSV+0hFYr60pGvTsDwAN0
+         JSZmQumxkyZKRLOWjk6BYnJ3aZvPXth3VJe658MniHOi/6/udyciSv0pMK079YUvNNbJ
+         OpgQmtoZS7zgDCXVcmmUKH0cN06BzzfAZFIDWU7FWq9ZBpB/DHAtfknCbiGK6V5im9nv
+         EFYuTT0QQNBm5xVtPrsxlkluCnN0TKJu84xJ7OSFHIK0jZr3OklG/Gj7Ur0C0xoO2lzn
+         KnnvWJ43xV9eTApjkz1ZirszypMkJSXeE/jbNxeal5+2rPAA5Poz3MxbuTJDE+vrEXIE
+         RGHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=w25lwMo3bZrfNfXLpALA+4I29YoJZak3FyajA6HeC94=;
-        b=ZU0MW/s3N/7mB5Ayf5VDrKVTUrik4K9iobD9tc/ZWORPPvbn/zH+/D4i+SJVqSFM4a
-         dwN/VELsTEWH8S99XU9n9Yj2VFouj19HAsdMa0SPpkZvtDNCoaSR4tXxIag3RLCEXhXQ
-         AL6QraKB6px6+xtll74L2QnJyf0DhnOvpVXUanllljPyhQmqFahJosEnamEa5w24Pyn7
-         P5emqEaCFH/IlrMxpkVQg8jK0RcfanJcBmldzB/h//HyFZ287Spbewo5ljK/FeBp4rwu
-         dTuUKgPAj6D6xFMe1FEzgXC+V6aeJ33tj7/34h9YEYhqSgd766l4OLL9g2nhFQB5zG75
-         WgnQ==
-X-Gm-Message-State: AOAM53078O9EpPUub+LZpigFibuCj7s8bqxtFeANemtsfgOj+cUJk9DF
-        TUSVnc1h//NUruXFJ+T/o1g=
-X-Google-Smtp-Source: ABdhPJyjkdVdAMZsiQs6PYIHXwhXVO+uLzcp0Xe8vbkVPgJP52Fozx3Xafo1rzDkv0TO669OyIEiUA==
-X-Received: by 2002:a63:fb12:: with SMTP id o18mr948658pgh.438.1617759935548;
-        Tue, 06 Apr 2021 18:45:35 -0700 (PDT)
-Received: from [10.230.29.202] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id o13sm20193959pgv.40.2021.04.06.18.45.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Apr 2021 18:45:34 -0700 (PDT)
-Subject: Re: [PATCH net-next v3 2/2] of: net: fix of_get_mac_addr_nvmem() for
- PCI and DSA nodes
-To:     Michael Walle <michael@walle.cc>, ath9k-devel@qca.qualcomm.com,
-        UNGLinuxDriver@microchip.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
+        bh=R5ftgXbb+KVQyjP80P099SNuu0mSDE7rKZztUK1dnRA=;
+        b=TVwWoH7P6V7VVJDvQV8zdRalrzLVggatGQidD04U+Y+KWdeDnzmeoyEENBKiIDE3F/
+         hsCcCZmyzZRHNxBwh5SbQ3AKrat3GKYKCt79LWlsZ1cS/hKu0BW2t1RH2Cb5IY7ApUxn
+         Fw7IbnRiZDRRkjhmKXHM2iZLVE/FExqy5Ewi3j2HOJbzRyX/9Xd0/prMDsa6iLk6mlOb
+         RvEcwKNhWSiidJyeRrZqwzwRXr9z/5bJ/t0Myvjzqwzi6F+4qdgmORsADNRKsWtdcxJj
+         jE3YUfVjupT16HM/kq1jnhbvG0GfOUsbMK6A2jYcbH9o43xVivRfLtUBe1cY5blj6ybL
+         63jQ==
+X-Gm-Message-State: AOAM532NeZx5cZ0eO2bTgy2uR/ltRxIHDevAxaUSefSbnhsPJFeoOt+7
+        2vnfIXRwDpEKffFf3Qg/fCc=
+X-Google-Smtp-Source: ABdhPJx2jqHEyz6IEgoskIPB+kMbJaFUfBG6g33ZoBchF8Omyk/zAHFGJQ85ZA5VuHuHKce0LKPv9A==
+X-Received: by 2002:a17:902:bc89:b029:e9:2cd7:382e with SMTP id bb9-20020a170902bc89b02900e92cd7382emr1061664plb.68.1617761954814;
+        Tue, 06 Apr 2021 19:19:14 -0700 (PDT)
+Received: from nuc.c.rabbit-hole-integration-007.internal ([202.133.196.154])
+        by smtp.gmail.com with ESMTPSA id x19sm19646288pfc.152.2021.04.06.19.19.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Apr 2021 19:19:13 -0700 (PDT)
+From:   Du Cheng <ducheng2@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-References: <20210406220921.24313-1-michael@walle.cc>
- <20210406220921.24313-3-michael@walle.cc>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <70b649a4-4b1f-3e95-a6b9-23a00bbaf122@gmail.com>
-Date:   Tue, 6 Apr 2021 18:45:26 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.9.0
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Du Cheng <ducheng2@gmail.com>,
+        syzbot+5f9392825de654244975@syzkaller.appspotmail.com
+Subject: [PATCH] net: wireless: convert WARN_ON() to pr_warn() in cfg80211_sme_connect
+Date:   Wed,  7 Apr 2021 10:19:03 +0800
+Message-Id: <20210407021903.384158-1-ducheng2@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20210406220921.24313-3-michael@walle.cc>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+A WARN_ON(wdev->conn) would trigger in cfg80211_sme_connect(), if
+multiple send_msg() system calls are made from the userland, which
+should be anticipated and handled by the wireless driver. Convert this
+WARN() to pr_warn to prevent a kernel panic if kernel is configured to
+"panic on warn".
 
+Bug reported by syzbot.
 
-On 4/6/2021 3:09 PM, Michael Walle wrote:
-> of_get_mac_address() already supports fetching the MAC address by an
-> nvmem provider. But until now, it was just working for platform devices.
-> Esp. it was not working for DSA ports and PCI devices. It gets more
-> common that PCI devices have a device tree binding since SoCs contain
-> integrated root complexes.
-> 
-> Use the nvmem of_* binding to fetch the nvmem cells by a struct
-> device_node. We still have to try to read the cell by device first
-> because there might be a nvmem_cell_lookup associated with that device.
-> 
-> Signed-off-by: Michael Walle <michael@walle.cc>
-> ---
-> Please note, that I've kept the nvmem_get_mac_address() which operates
-> on a device. The new of_get_mac_addr_nvmem() is almost identical and
-> there are no users of the former function right now, but it seems to be
-> the "newer" version to get the MAC address for a "struct device". Thus
-> I've kept it. Please advise, if I should kill it though.
+Reported-by: syzbot+5f9392825de654244975@syzkaller.appspotmail.com
+Signed-off-by: Du Cheng <ducheng2@gmail.com>
+---
+link to syzkaller:
+https://syzkaller.appspot.com/bug?extid=5f9392825de654244975
+this patch has passed syzbot test.
+ net/wireless/sme.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Nit: if you need to resubmit you could rephrase the subject such that
-the limitation of of_get_mac_addr_nvmem() is lifted to include all kinds
-of devices, and no longer just platform_device instances as before.
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 07756ca5e3b5..87a65a4c40ae 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -529,8 +529,10 @@ static int cfg80211_sme_connect(struct wireless_dev *wdev,
+ 		cfg80211_sme_free(wdev);
+ 	}
+ 
+-	if (WARN_ON(wdev->conn))
++	if (wdev->conn) {
++		pr_warn("%s: wdev->conn != NULL, sme connect in progress", __func__);
+ 		return -EINPROGRESS;
++	}
+ 
+ 	wdev->conn = kzalloc(sizeof(*wdev->conn), GFP_KERNEL);
+ 	if (!wdev->conn)
 -- 
-Florian
+2.30.2
+
