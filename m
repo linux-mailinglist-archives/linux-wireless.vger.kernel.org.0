@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32E04356B75
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 13:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 025E3356B90
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 13:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244490AbhDGLnT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Apr 2021 07:43:19 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:36368 "EHLO
+        id S237801AbhDGLxt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Apr 2021 07:53:49 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:51747 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234817AbhDGLnS (ORCPT
+        with ESMTP id S238069AbhDGLxl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Apr 2021 07:43:18 -0400
+        Wed, 7 Apr 2021 07:53:41 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1617795789; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1617796412; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=6cE0lXvR26TFWenvq0+ejblQkOsFdPGRTeYd7qIvVUw=; b=kSV354WqJk7G7szj9bZbb5/Zbh7DeR1SfhCnVx7GmgJipxFDnNh5uSpxoi3neFYceWfli5uI
- +17YlM+cvYlfUwViTriYLNXqE6gaLVkKaG2YWH4TucrzeZacR+G9lCQltPG2GMZtCW5PU1nc
- lir5SswPP5nhZ3ObHkmmix64FgE=
+ bh=ftOQviE1FSzzRGWmikfFzO6yxTTkoqf8WYw+BHbHQdY=; b=xBN4vUrabMc9cTlEyGWRhE8Q5XKyYRY70P1Ks0CD7j8P7QZ2j/ZxhWWUcr/yFtrUFJU+YARu
+ n79jA21eEjUolDtDSCfalt3nYwTQay4xtD1dOgRf4hjZNp/2M1HtZ/0Ral3ssTA27BVQ1Xrs
+ whj5AUPiBpME4m95MEe9eeJ5Hq8=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 606d9acb8166b7eff7f6e450 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 07 Apr 2021 11:43:07
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 606d9d3187ce1fbb56dc0490 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 07 Apr 2021 11:53:21
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 25F39C433CA; Wed,  7 Apr 2021 11:43:07 +0000 (UTC)
+        id EB861C43465; Wed,  7 Apr 2021 11:53:20 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,24 +38,25 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6AA2FC433ED;
-        Wed,  7 Apr 2021 11:43:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6AA2FC433ED
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 12D51C433C6;
+        Wed,  7 Apr 2021 11:53:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 12D51C433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wan Jiabing <wanjiabing@vivo.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc:     kjlu@umn.edu, Jouni Malinen <j@w1.fi>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kael_w@yeah.net
-Subject: Re: [PATCH] drivers: net: wireless: struct lbs_private is declared duplicately
-References: <20210325064154.854245-1-wanjiabing@vivo.com>
-Date:   Wed, 07 Apr 2021 14:43:02 +0300
-In-Reply-To: <20210325064154.854245-1-wanjiabing@vivo.com> (Wan Jiabing's
-        message of "Thu, 25 Mar 2021 14:41:51 +0800")
-Message-ID: <87y2dumibd.fsf@codeaurora.org>
+        Leon Romanovsky <leon@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hostap: Fix memleak in prism2_config
+References: <20210329085246.24586-1-dinghao.liu@zju.edu.cn>
+Date:   Wed, 07 Apr 2021 14:53:15 +0300
+In-Reply-To: <20210329085246.24586-1-dinghao.liu@zju.edu.cn> (Dinghao Liu's
+        message of "Mon, 29 Mar 2021 16:52:43 +0800")
+Message-ID: <87tuoimhuc.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,17 +64,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wan Jiabing <wanjiabing@vivo.com> writes:
+Dinghao Liu <dinghao.liu@zju.edu.cn> writes:
 
-> struct lbs_private has been declared at 22nd line.
-> Remove the duplicate.
+> When prism2_hw_config() fails, we just return an error code
+> without any resource release, which may lead to memleak.
 >
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
 > ---
->  drivers/net/wireless/marvell/libertas/decl.h | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/net/wireless/intersil/hostap/hostap_cs.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/intersil/hostap/hostap_cs.c b/drivers/net/wireless/intersil/hostap/hostap_cs.c
+> index ec7db2badc40..7dc16ab50ad6 100644
+> --- a/drivers/net/wireless/intersil/hostap/hostap_cs.c
+> +++ b/drivers/net/wireless/intersil/hostap/hostap_cs.c
+> @@ -536,10 +536,10 @@ static int prism2_config(struct pcmcia_device *link)
+>  	sandisk_enable_wireless(dev);
+>  
+>  	ret = prism2_hw_config(dev, 1);
+> -	if (!ret)
+> -		ret = hostap_hw_ready(dev);
+> +	if (ret)
+> +		goto failed;
+>  
+> -	return ret;
+> +	return hostap_hw_ready(dev);;
 
-The prefix should be "libertas:", I can fix that during commit.
+Two semicolons.
+
+But I'm not sure about this, can someone provide a Reviewed-by tag?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
