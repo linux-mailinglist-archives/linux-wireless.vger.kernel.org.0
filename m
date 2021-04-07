@@ -2,111 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97876356A74
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 12:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7114B356B66
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 13:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235002AbhDGKyD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Apr 2021 06:54:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56942 "EHLO mail.kernel.org"
+        id S1351869AbhDGLi0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Apr 2021 07:38:26 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:32868 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237153AbhDGKx4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Apr 2021 06:53:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5D5406139C;
-        Wed,  7 Apr 2021 10:53:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617792826;
-        bh=hFN/o0QEdMOAnnNIDsz27FSmPvKA2meADcDNCydIOFM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E3YcruaOFxI5PmqU+yUxbRtAoCq7Yf9QOU7f44t8NaRa0ANudAM8Zehh3xguPSIJi
-         m9RxWKY2ZY67yh4lv9rwyVn+8XmLR67+VCJE+5N2x3N1RXwga8uG8Du3hcJwrqMDX8
-         I4Q0IVbVGd8f0+OWYz8gLEDCqPkpAVlqP3D6xqzujBxmmccKESLV8pGhnnvahJnH1k
-         KC0F4jwph888RmDH2B/jMgvEjPbflxaL4TXoqeOIzBoBgOPpdf+gNq73lDrobu+cpT
-         w6oOB0KO3uBkuqlwivs3iXsbjShGKghz883dv5iFNqaUhvuyJ8KWHjGgL2Zx07R13G
-         okKYB82oNL78g==
-Date:   Wed, 7 Apr 2021 12:53:42 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] mt76: fix rx amsdu subframe processing
-Message-ID: <YG2PNuope0XR1RPK@lore-desk>
-References: <20210406182235.14377-1-nbd@nbd.name>
+        id S244383AbhDGLiY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Apr 2021 07:38:24 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1617795495; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=BlfJ7ChYdm5fsjVC9Gacn3nxjSF5AqDGwGm8a4pwp7c=; b=jqi286auzZFqhxx1p4YlqOJ8ZDRO2WHVCR8xplXKn+Yy+UA1p0wFlmetEyslpTt/ma8ieN5t
+ ioaCvpblAlhwE+kUVLW6B1TB7WQcYnrZi+EfCq8g6o8iAGAQt/8I2rtei4cw1eJf7VT1uyl2
+ 74CqgNnFKVwDJaJrfwCVqdM13WY=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 606d999c03cfff3452ebcb7a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 07 Apr 2021 11:38:04
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 69158C43461; Wed,  7 Apr 2021 11:38:03 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AC1ECC433CA;
+        Wed,  7 Apr 2021 11:37:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AC1ECC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] brcmsmac: fix shift on 4 bit masked value
+References: <20210318164513.19600-1-colin.king@canonical.com>
+Date:   Wed, 07 Apr 2021 14:37:56 +0300
+In-Reply-To: <20210318164513.19600-1-colin.king@canonical.com> (Colin King's
+        message of "Thu, 18 Mar 2021 16:45:13 +0000")
+Message-ID: <877dlenx4b.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="KL28bWGfPXz2IigD"
-Content-Disposition: inline
-In-Reply-To: <20210406182235.14377-1-nbd@nbd.name>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Colin King <colin.king@canonical.com> writes:
 
---KL28bWGfPXz2IigD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The calculation of offtune_val seems incorrect, the u16 value in
+> pi->tx_rx_cal_radio_saveregs[2] is being masked with 0xf0 and then
+> shifted 8 places right so that always ends up as a zero result. I
+> believe the intended shift was 4 bits to the right. Fix this.
+>
+> [Note: not tested, I don't have the H/W]
+>
+> Addresses-Coverity: ("Operands don't affect result")
+> Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-> When receiving an A-MSDU containing only a single subframe, status->last_=
-amsdu
-> is set, but no previous head is present in the rx A-MSDU queue.
-> In this case, the A-MSDU subframe will be held until the next one is rece=
-ived,
-> potentially causing significant extra latency.
-> Fix this by releasing the frame instead of creating a new queue head if
-> last_amsdu is set.
+Can someone ack this?
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
->=20
-> Fixes: c7fd4a5d3f75 ("mt76: mt7915: enable hw rx-amsdu de-aggregation")
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->  drivers/net/wireless/mediatek/mt76/mac80211.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/=
-wireless/mediatek/mt76/mac80211.c
-> index 7684a8cf00fb..0d92b658b6a6 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-> @@ -517,10 +517,14 @@ static void mt76_rx_release_burst(struct mt76_phy *=
-phy, enum mt76_rxq_id q,
-> =20
->  	/* first amsdu subframe */
->  	if (status->amsdu && !phy->rx_amsdu[q].head) {
-> +		if (status->last_amsdu) {
-> +			nskb =3D skb;
-> +			goto reset_burst;
-> +		}
->  		phy->rx_amsdu[q].tail =3D &skb_shinfo(skb)->frag_list;
->  		phy->rx_amsdu[q].seqno =3D status->seqno;
->  		phy->rx_amsdu[q].head =3D skb;
-> -		goto enqueue;
-> +		return;
->  	}
-> =20
->  	/* ampdu or out-of-order amsdu subframes */
-> @@ -543,7 +547,6 @@ static void mt76_rx_release_burst(struct mt76_phy *ph=
-y, enum mt76_rxq_id q,
->  reset_burst:
->  	phy->rx_amsdu[q].head =3D NULL;
->  	phy->rx_amsdu[q].tail =3D NULL;
-> -enqueue:
->  	if (nskb)
->  		__skb_queue_tail(&dev->rx_skb[q], nskb);
->  }
-> --=20
-> 2.30.1
->=20
-
---KL28bWGfPXz2IigD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYG2PMwAKCRA6cBh0uS2t
-rFGHAQCGUOIRxcCL58cKnO0hR5DPQZFpakvGcVzHrjB8UHtIyAEAmyJMjfkYz3B6
-ED6Yj2PxzFWuwj5GSy0hNfP26lO9LQ8=
-=JTLo
------END PGP SIGNATURE-----
-
---KL28bWGfPXz2IigD--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
