@@ -2,97 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D9C335774A
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Apr 2021 00:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CA1D357757
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Apr 2021 00:10:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234399AbhDGWBO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Apr 2021 18:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34662 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231845AbhDGWBN (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Apr 2021 18:01:13 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA0EC061760
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Apr 2021 15:01:03 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id x7so19510205wrw.10
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Apr 2021 15:01:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=YO+Luw6+NxVvRkcrJgxuPRq03WcH9gZGARw02gdsBak=;
-        b=Oeix9diGFjjdj63SNKEfk54iKoS4V89riVBANyDi1RhIC7/pv5pBZKm3PrVY0muvCX
-         eTpGX4bYLlAVgtOUBEknDmAdHO1AHQN/Tby13yV/KqI3L0EW5y3/XFMSAbmGC49hQmp4
-         lPZgns1Ba2CmeipJsmXVPEwiuJhQmQs12fNyH1NE24Gl5jDrzGb9A3Mc2p+fIV7BoGjF
-         uBqPYWKe3W/HqiTZnLV4TCn9+tTtmHITd9XisPqh9vB8Il9INNP1AuFK3fKc7p1SZff7
-         Jw10GzLIjPQPeqtdC76g7kLQm841oD9n2IbRX1gcXr2xIlropsr1VpK4IrbrjX/jHEH0
-         aM0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=YO+Luw6+NxVvRkcrJgxuPRq03WcH9gZGARw02gdsBak=;
-        b=Uamu+4u/s6SEnVKYivSWf1S7JWXfqiOeXnkch9y0mEB6mV+uSmTbeB1RMy0r8QBsmZ
-         4mAQJVcsO/D2p3RgqT9usAr68dJEWpRb6pFAOKUOhEFjez3OENmOwfFMSTuK8mdN6sdR
-         A9z2NSS+f7hPtoCRqWXUrpUD7awe/yC69HEjDvIvrrx5nhXNJDcybKMIIOTaWV8mqQaW
-         rUuVoBmqOORbWfDkZDdJmik4DloR5bblHWtV4uqohzdqxs+J9CsM5Wq6B6Zg+C0eWimD
-         +UETwzSYa9G3oIEcWhYPDp5h6nlyLum0BcDeBH/nm/kNTNIENrm/oucp3SpTUP93tvXX
-         8cQQ==
-X-Gm-Message-State: AOAM530k2j1RSDDkeYs1X5zg3gFDsnKxEO/NNQBmGDl/+ze/hvh4j/WK
-        giIlIPCX1GvmEO7bb+ayCw==
-X-Google-Smtp-Source: ABdhPJzN0BPmZDeTAg02rl591GKqEE0EuUxmGJlExzyDYeNo3gTo3sIA+tAAiV5ZuFH79g+OV2sIaQ==
-X-Received: by 2002:adf:fb0e:: with SMTP id c14mr6977685wrr.140.1617832862141;
-        Wed, 07 Apr 2021 15:01:02 -0700 (PDT)
-Received: from localhost ([84.39.178.7])
-        by smtp.gmail.com with ESMTPSA id p27sm11048539wmi.12.2021.04.07.15.01.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Apr 2021 15:01:01 -0700 (PDT)
-From:   Xose Vazquez Perez <xose.vazquez@gmail.com>
-Cc:     Xose Vazquez Perez <xose.vazquez@gmail.com>,
-        =?UTF-8?q?Jos=C3=A9=20Daniel=20Rodr=C3=ADguez?= 
-        <josedanielr@yandex.com>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        WIRELESS ML <linux-wireless@vger.kernel.org>,
-        REGDB ML <wireless-regdb@lists.infradead.org>
-Subject: [PATCH] wireless-regdb: re-add source url and info for CU
-Date:   Thu,  8 Apr 2021 00:00:54 +0200
-Message-Id: <20210407220054.9347-1-xose.vazquez@gmail.com>
-X-Mailer: git-send-email 2.31.1
+        id S229690AbhDGWKW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Apr 2021 18:10:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50792 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229488AbhDGWKU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Apr 2021 18:10:20 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id E04CA61205;
+        Wed,  7 Apr 2021 22:10:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617833409;
+        bh=RQ2q7kAefRPdB8LiMZYUtksepVWgo6ZDBMHqa9htQB8=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=MNDjPQuEs4PESwxPhIdamlpnYYajUgbfcNVyMQH6DQdUqby2BB/tSUsJ0xddGhKiS
+         VTHTSWolw0iag0+VT04vA3xlPq6EqD5CCfgwdzGUFIP/wvXKhYwWCGiszD/PfRXGu3
+         lbhEusJGHjUlQwYkg00D9xiA5023Jr5ZWLe9Cql6M1D8ja+IRAfwC0SrmHjEy1QVIw
+         IRO2vvKlLynbfe362KcN2VAwrjuax26GDzY/c2aIzhppnPRcdWERBq3tGAxGd1E4yB
+         2771Uy/7kFNODqH66LAmzMvRon5ViD0EMQAzObh9BUyCa2Glz6mLhT7R6Ngk6cOI2P
+         NyauCXUD1kA0g==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D5BFE60ACA;
+        Wed,  7 Apr 2021 22:10:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Subject: Re: pull-request: wireless-drivers-2021-04-07
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161783340987.5631.5210409702215121000.git-patchwork-notify@kernel.org>
+Date:   Wed, 07 Apr 2021 22:10:09 +0000
+References: <20210407122204.E507BC433ED@smtp.codeaurora.org>
+In-Reply-To: <20210407122204.E507BC433ED@smtp.codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Handy to find modifications or new rules.
+Hello:
 
-Cc: José Daniel Rodríguez <josedanielr@yandex.com>
-Cc: Seth Forshee <seth.forshee@canonical.com>
-Cc: WIRELESS ML <linux-wireless@vger.kernel.org>
-Cc: REGDB ML <wireless-regdb@lists.infradead.org>
-Signed-off-by: Xose Vazquez Perez <xose.vazquez@gmail.com>
----
- db.txt | 3 +++
- 1 file changed, 3 insertions(+)
+This pull request was applied to netdev/net.git (refs/heads/master):
 
-diff --git a/db.txt b/db.txt
-index b0d6689..5e72469 100644
---- a/db.txt
-+++ b/db.txt
-@@ -372,6 +372,9 @@ country CR: DFS-FCC
- 	(5735 - 5835 @ 20), (30)
- 
- # Source:
-+# https://www.mincom.gob.cu/es/marco-legal
-+# - Redes Informáticas
-+#    Resolución 98- 2019 Reglamento de Redes Inalámbricas:
- # https://www.mincom.gob.cu/sites/default/files/marcoregulatorio/r_98-19_reglamento_redes_inalambricas.pdf
- country CU: DFS-FCC
- 	(2400 - 2483.5 @ 40), (200 mW)
--- 
-2.31.1
+On Wed,  7 Apr 2021 12:22:04 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net tree, more info below. Please let me know if there
+> are any problems.
+> 
+> Kalle
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-drivers-2021-04-07
+    https://git.kernel.org/netdev/net/c/107adc694558
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
