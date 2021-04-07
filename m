@@ -2,99 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEB8D357220
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 18:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDFD33574A1
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 20:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344209AbhDGQ2K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Apr 2021 12:28:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46232 "EHLO
+        id S1355473AbhDGS4T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Apr 2021 14:56:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237178AbhDGQ2K (ORCPT
+        with ESMTP id S235874AbhDGS4S (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Apr 2021 12:28:10 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9249C061756
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Apr 2021 09:28:00 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id s11so13276904pfm.1
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Apr 2021 09:28:00 -0700 (PDT)
+        Wed, 7 Apr 2021 14:56:18 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C519C061761
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Apr 2021 11:56:08 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id v8so9804670plz.10
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Apr 2021 11:56:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rZ+xiZOpRc4/cuZiE69tk9aJLUf4L6Cl6hXfMv3w5kc=;
-        b=PP/KjVVwcDXI7CFYm4MiGqZ8jTR8t+2FCE4Ss6uukwV7LhonoZSpXdyRmoX+4luWhD
-         1hRb8wsJ33zOfiByvj8WlSYbD/fVb4QRfcKLr7SEgJESYbemsjcOj3/5F28/tt1EF4gL
-         hzbZIK6VXs2pjCj+dh3RhkVq6dYLrf0m1aCmVGsN1ghd5HGMmFRXMMWJoanz3qeUpmY/
-         QdD/w5PaSSXXsHMmAhcg53FeH+CYT0cW34pWNPIKFuCgpHrOfwStFiqkcCmDzWvSD0ZF
-         2PkhvL19+mkdFkI3koETUTe0osFLTrGT9cuE4UFLV4j8s3UdZTcNkTnnoy9e8c5vVira
-         NJTA==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=bUFX8OZjFldaYb/6zcLiSui0pTc7lp3Q3DWh7esaF8g=;
+        b=a1xRCOqlDFc7fMaWuNejJHG4Uwf7By9zy2OKAtPQ27xGklMzMvChcENop0/v+mOMEx
+         MW6+86rti2fEGc6b+oX4cnfwPSqf7GbCQ41o+BKscycaOnSgArho8f9BO6FrTo4gYnow
+         aM5rfU2N378Fjx1Amj6OkdpP5/Dtb0+r7QDOA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=rZ+xiZOpRc4/cuZiE69tk9aJLUf4L6Cl6hXfMv3w5kc=;
-        b=uDTGojH+aMZeL5xbJvqQT02ErNvh5PRtzYP1qBUr6XLkB9CdYpUh2NhiE99bITCmUe
-         3Nqc4IJcEiIwaTIdhWpUxu09KwCyNBqdzjFDjaQ3eJcjIyhH0xGMBKglxqrB0X6+orBQ
-         Soh4uAD8nry5WjFXb/SPT77ata/ybEdSDy1z+yBHQu0GT1KNpJVOioyTZRwunmsHSPJ/
-         Y3dTmVD54cg3R0yOez9xqDIWhUoX1PoFsXpDrgEgMAjxs/m1Jcp7wpqjCnXcdJrYbtta
-         nVJJZC5F6tnrt3IYXli/xcTB59KQvXXj5oH9jRhytEqzSsAou1H1NlmUH9m29xaWKN16
-         SQwg==
-X-Gm-Message-State: AOAM532nmrf8wkhQmeI4tbyxT16Fc57KdbWustPECVy+yegJmtAHwqh5
-        QylvzhvhRchQbbMHPV8skKI=
-X-Google-Smtp-Source: ABdhPJxe4+9cHRK9bziPh4t2NQtWqUVT83B00l6nmQOK7/cduqDHEUYKHBZuAUO0MTE8Ofb/RL2cMw==
-X-Received: by 2002:a63:6a84:: with SMTP id f126mr3994000pgc.352.1617812880450;
-        Wed, 07 Apr 2021 09:28:00 -0700 (PDT)
-Received: from nuc.wg.ducheng.me ([202.133.196.154])
-        by smtp.gmail.com with ESMTPSA id g8sm5138969pjb.25.2021.04.07.09.27.58
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=bUFX8OZjFldaYb/6zcLiSui0pTc7lp3Q3DWh7esaF8g=;
+        b=f7K2vGHFXJJQgE9ptz5KRnHqfjsJgPUSpiPA4LoLO7ToMTpQpfhRdWnmzWrEioUCgs
+         CNtYTkxUfkNMrtPKRHBzrJ9wyU8WMgFmgBewPSXDvwvyIDY2VG4uNVCEDFQdrIGhlHV7
+         eUZRWm3vhKbFNQsCwbhAFlQlRGJcX2JnNwUjRdTA90TFVMSF3yrduRVRsUSSlPfoLWfr
+         o9yaqUKlPYa8B1rvjX7I8CHPGAJJgPzPdhSSx1aqLpyonOCqMww472eCSEq+tC9gLVjx
+         lCbA5NmenKg90saz5APjWTXNYNT5LR+Z8KkJ22eHbqvz9eT7zkUtJB+PqG7MP0E9LfBo
+         Uafw==
+X-Gm-Message-State: AOAM5339fDOAVlgEB2GZDRAmENkT7ze/BN+0O1tiq5UOLqgDES13Lz7P
+        NfYfSRitrgo9IUpLJhpgn4SmCdvHC+bvgA==
+X-Google-Smtp-Source: ABdhPJyqOjE2YRcwObcLLiGu2bq48+Q2tF9rRkC6ywJ1L+rDrieu6AYwkNRmg39F3ypuOEZU45TvvA==
+X-Received: by 2002:a17:90a:a389:: with SMTP id x9mr3803993pjp.232.1617821767869;
+        Wed, 07 Apr 2021 11:56:07 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id h19sm22438097pfc.172.2021.04.07.11.56.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Apr 2021 09:28:00 -0700 (PDT)
-From:   Du Cheng <ducheng2@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Du Cheng <ducheng2@gmail.com>,
-        syzbot+5f9392825de654244975@syzkaller.appspotmail.com
-Subject: [PATCH v2] net: wireless: remove WARN_ON() in cfg80211_sme_connect
-Date:   Thu,  8 Apr 2021 00:27:56 +0800
-Message-Id: <20210407162756.6101-1-ducheng2@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Wed, 07 Apr 2021 11:56:07 -0700 (PDT)
+Date:   Wed, 7 Apr 2021 11:56:06 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 1/2][next] wl3501_cs: Fix out-of-bounds warning in
+ wl3501_send_pkt
+Message-ID: <202104071154.49B15A3AB4@keescook>
+References: <cover.1617226663.git.gustavoars@kernel.org>
+ <e03d36114bcbcf814ad13deb7812b0b5c196dadb.1617226663.git.gustavoars@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e03d36114bcbcf814ad13deb7812b0b5c196dadb.1617226663.git.gustavoars@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A WARN_ON(wdev->conn) would trigger in cfg80211_sme_connect(), if multiple
-send_msg(NL80211_CMD_CONNECT) system calls are made from the userland, which
-should be anticipated and handled by the wireless driver. Remove this WARN_ON()
-to prevent kernel panic if kernel is configured to "panic_on_warn".
+On Wed, Mar 31, 2021 at 04:44:29PM -0500, Gustavo A. R. Silva wrote:
+> Fix the following out-of-bounds warning by enclosing
+> structure members daddr and saddr into new struct addr:
+> 
+> arch/x86/include/asm/string_32.h:182:25: warning: '__builtin_memcpy' offset [18, 23] from the object at 'sig' is out of the bounds of referenced subobject 'daddr' with type 'u8[6]' {aka 'unsigned char[6]'} at offset 11 [-Warray-bounds]
+> 
+> Refactor the code, accordingly:
+> 
+> $ pahole -C wl3501_md_req drivers/net/wireless/wl3501_cs.o
+> struct wl3501_md_req {
+> 	u16                        next_blk;             /*     0     2 */
+> 	u8                         sig_id;               /*     2     1 */
+> 	u8                         routing;              /*     3     1 */
+> 	u16                        data;                 /*     4     2 */
+> 	u16                        size;                 /*     6     2 */
+> 	u8                         pri;                  /*     8     1 */
+> 	u8                         service_class;        /*     9     1 */
+> 	struct {
+> 		u8                 daddr[6];             /*    10     6 */
+> 		u8                 saddr[6];             /*    16     6 */
+> 	} addr;                                          /*    10    12 */
+> 
+> 	/* size: 22, cachelines: 1, members: 8 */
+> 	/* last cacheline: 22 bytes */
+> };
+> 
+> The problem is that the original code is trying to copy data into a
+> couple of arrays adjacent to each other in a single call to memcpy().
+> Now that a new struct _addr_ enclosing those two adjacent arrays
+> is introduced, memcpy() doesn't overrun the length of &sig.daddr[0],
+> because the address of the new struct object _addr_ is used as
+> destination, instead.
+> 
+> Also, this helps with the ongoing efforts to enable -Warray-bounds and
+> avoid confusing the compiler.
+> 
+> Link: https://github.com/KSPP/linux/issues/109
+> Reported-by: kernel test robot <lkp@intel.com>
+> Build-tested-by: kernel test robot <lkp@intel.com>
+> Link: https://lore.kernel.org/lkml/60641d9b.2eNLedOGSdcSoAV2%25lkp@intel.com/
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Bug reported by syzbot.
+Thanks, this makes the code much easier for the compiler to validate
+at compile time. These cross-field memcpy()s are weird. I like the
+solution here.
 
-Reported-by: syzbot+5f9392825de654244975@syzkaller.appspotmail.com
-Signed-off-by: Du Cheng <ducheng2@gmail.com>
----
-change log
-v1: convert WARN_ON() to pr_warn()
-https://lore.kernel.org/linux-wireless/YG3bYPSB7Guv%2FKEe@carbon/T/#t
-v2: just drop the WARN_ON()
- net/wireless/sme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 07756ca5e3b5..08a70b4f090c 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -529,7 +529,7 @@ static int cfg80211_sme_connect(struct wireless_dev *wdev,
- 		cfg80211_sme_free(wdev);
- 	}
- 
--	if (WARN_ON(wdev->conn))
-+	if (wdev->conn)
- 		return -EINPROGRESS;
- 
- 	wdev->conn = kzalloc(sizeof(*wdev->conn), GFP_KERNEL);
 -- 
-2.30.2
-
+Kees Cook
