@@ -2,62 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8393C3565DA
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 09:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0B6C35662C
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Apr 2021 10:13:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234276AbhDGH5N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Apr 2021 03:57:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45718 "EHLO
+        id S244678AbhDGINV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Apr 2021 04:13:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbhDGH5L (ORCPT
+        with ESMTP id S233700AbhDGINV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Apr 2021 03:57:11 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25EEFC06174A
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Apr 2021 00:56:56 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lU33S-008Ty0-PO; Wed, 07 Apr 2021 09:56:50 +0200
-Message-ID: <5c35de6e8e73fedb58e81919f465fe4038dacbbb.camel@sipsolutions.net>
-Subject: Re: [PATCH] iwlwifi: Fix softirq/hardirq disabling in
- iwl_pcie_gen2_enqueue_hcmd()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Wed, 07 Apr 2021 09:56:49 +0200
-In-Reply-To: <95b6c4b34da1173faf226246ea25b47a8fd395b7.camel@sipsolutions.net> (sfid-20210407_095601_284772_0EEA2A3A)
-References: <b71f7f03-fa87-74ab-4f10-5cebe3e70b60@gmail.com>
-         <nycvar.YFH.7.76.2104070918090.12405@cbobk.fhfr.pm>
-         (sfid-20210407_095129_306913_82B5BB2F) <95b6c4b34da1173faf226246ea25b47a8fd395b7.camel@sipsolutions.net>
-         (sfid-20210407_095601_284772_0EEA2A3A)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Wed, 7 Apr 2021 04:13:21 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DBBCC06174A
+        for <linux-wireless@vger.kernel.org>; Wed,  7 Apr 2021 01:13:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=bV6kxVVTqjRAhD5Hf0TFvesDFNLy5ggRKT+CWxVJ1rU=; b=felGIiJUJ8JElkgpGpxxAYmykK
+        9IjoEqXIr6e/qnIdCmQMG60+thLkFDugQi2VuXLhDHvfS/WDdvufMogso+YWDqmxRc4/ejfxgOnDE
+        6KQvLp3Q+DxJu8QiZmG29I+jpAuiw5sjPPx6lp3dAWE74vQc+hZ7PlQSdO6ESzyyGmVs=;
+Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lU3JG-0002NN-3G
+        for linux-wireless@vger.kernel.org; Wed, 07 Apr 2021 10:13:10 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH v2] mt76: fix rx amsdu subframe processing
+Date:   Wed,  7 Apr 2021 10:13:03 +0200
+Message-Id: <20210407081303.59647-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-04-07 at 09:55 +0200, Johannes Berg wrote:
-> On Wed, 2021-04-07 at 09:51 +0200, Jiri Kosina wrote:
-> > On Wed, 7 Apr 2021, Heiner Kallweit wrote:
-> > 
-> > > Same fix as in 2800aadc18a6 ("iwlwifi: Fix softirq/hardirq disabling in
-> > > iwl_pcie_enqueue_hcmd()") is needed for iwl_pcie_gen2_enqueue_hcmd.
-> > > I get the same lockdep warning on AX210.
-> > 
-> > Makes sense, it's being called from exactly the same contexts.
-> 
-> I'm guessing nobody saw this before because the LEDs stuff is not
-> supported/used on newer devices :)
+When receiving an A-MSDU containing only a single subframe, status->last_amsdu
+is set, but no previous head is present in the rx A-MSDU queue.
+In this case, the A-MSDU subframe will be held until the next one is received,
+potentially causing significant extra latency.
+Rework the code to make it easier to read and less convoluted, and release the
+newly created head if status->last_amsdu is set.
 
-Eh, wait, Heiner said he sees the same warning? With LEDs? I was pretty
-sure that's not supported by the later firmware, but maybe some other
-path? Anyway this fix seems right.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 47 ++++++++-----------
+ 1 file changed, 20 insertions(+), 27 deletions(-)
 
-johannes
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 7684a8cf00fb..ef31026ac9d7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -508,44 +508,37 @@ void mt76_free_device(struct mt76_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt76_free_device);
+ 
++static void mt76_rx_release_amsdu(struct mt76_phy *phy, enum mt76_rxq_id q)
++{
++	struct sk_buff *skb = phy->rx_amsdu[q].head;
++	struct mt76_dev *dev = phy->dev;
++
++	phy->rx_amsdu[q].head = NULL;
++	phy->rx_amsdu[q].tail = NULL;
++	__skb_queue_tail(&dev->rx_skb[q], skb);
++}
++
+ static void mt76_rx_release_burst(struct mt76_phy *phy, enum mt76_rxq_id q,
+ 				  struct sk_buff *skb)
+ {
+ 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
+-	struct sk_buff *nskb = phy->rx_amsdu[q].head;
+-	struct mt76_dev *dev = phy->dev;
+ 
+-	/* first amsdu subframe */
+-	if (status->amsdu && !phy->rx_amsdu[q].head) {
++	if (phy->rx_amsdu[q].head &&
++	    (!status->amsdu || status->first_amsdu ||
++	     status->seqno != phy->rx_amsdu[q].seqno))
++		mt76_rx_release_amsdu(phy, q);
++
++	if (!phy->rx_amsdu[q].head) {
+ 		phy->rx_amsdu[q].tail = &skb_shinfo(skb)->frag_list;
+ 		phy->rx_amsdu[q].seqno = status->seqno;
+ 		phy->rx_amsdu[q].head = skb;
+-		goto enqueue;
+-	}
+-
+-	/* ampdu or out-of-order amsdu subframes */
+-	if (!status->amsdu || status->seqno != phy->rx_amsdu[q].seqno) {
+-		/* release pending frames */
+-		if (phy->rx_amsdu[q].head)
+-			__skb_queue_tail(&dev->rx_skb[q],
+-					 phy->rx_amsdu[q].head);
+-		nskb = skb;
+-		goto reset_burst;
+-	}
+-
+-	/* trailing amsdu subframes */
+-	*phy->rx_amsdu[q].tail = skb;
+-	if (!status->last_amsdu) {
++	} else {
++		*phy->rx_amsdu[q].tail = skb;
+ 		phy->rx_amsdu[q].tail = &skb->next;
+-		return;
+ 	}
+ 
+-reset_burst:
+-	phy->rx_amsdu[q].head = NULL;
+-	phy->rx_amsdu[q].tail = NULL;
+-enqueue:
+-	if (nskb)
+-		__skb_queue_tail(&dev->rx_skb[q], nskb);
++	if (!status->amsdu || status->last_amsdu)
++		mt76_rx_release_amsdu(phy, q);
+ }
+ 
+ void mt76_rx(struct mt76_dev *dev, enum mt76_rxq_id q, struct sk_buff *skb)
+-- 
+2.30.1
 
