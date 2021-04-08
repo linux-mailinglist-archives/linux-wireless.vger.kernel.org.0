@@ -2,109 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E0D358D39
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Apr 2021 21:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24B9E359016
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 01:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232988AbhDHTFT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Apr 2021 15:05:19 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113]:50524 "EHLO vps-vb.mhejs.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232885AbhDHTFT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Apr 2021 15:05:19 -0400
-Received: from MUA
-        by vps-vb.mhejs.net with esmtps (TLS1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.93.0.4)
-        (envelope-from <mail@maciej.szmigiero.name>)
-        id 1lUZxY-0002jj-L9; Thu, 08 Apr 2021 21:04:56 +0200
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-References: <e2924d81-0e30-2dd0-292b-428fea199484@maciej.szmigiero.name>
- <846f6166-c570-01fc-6bbc-3e3b44e51327@maciej.szmigiero.name>
- <87r1jnohq6.fsf@codeaurora.org>
- <8e0434eb-d15f-065d-2ba7-b50c67877112@maciej.szmigiero.name>
- <a2003668-5108-27b9-95cd-9e1d5d1aa94d@lwfinger.net>
- <1617763692.9857.7.camel@realtek.com>
- <1dc7e487-b97b-8584-47f7-37f3385c7bf9@lwfinger.net>
- <15737dcf-95ac-1ce6-a681-94ff5db968e4@maciej.szmigiero.name>
- <c5556a207c5c40ac849c6a0e1919baca@realtek.com>
-From:   "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: rtlwifi/rtl8192cu AP mode broken with PS STA
-Message-ID: <220c4fe4-c9e1-347a-8cef-cd91d31c56df@maciej.szmigiero.name>
-Date:   Thu, 8 Apr 2021 21:04:51 +0200
+        id S232816AbhDHXAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Apr 2021 19:00:47 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:51994 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232404AbhDHXAp (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Apr 2021 19:00:45 -0400
+Received: from [192.168.254.6] (unknown [50.34.172.155])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 6FB2B13C2B3;
+        Thu,  8 Apr 2021 16:00:32 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 6FB2B13C2B3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1617922832;
+        bh=GhkpKjH1TAl+8ec4Wv++8P2uy3TcIovSuGEk1LPj06k=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=UBLz2AAUm+6cdGl43y18Z3K11MD6NXYYQihJZZboB4uSSUq8PM14xcO64GEbur+Yw
+         hDQdDw81s54uYIwuvnlVEVzcIEO1RVAp8WNYnvLHJSDXf4fPsTy6EHWyO8rZPj2GpT
+         g8EaJIxGqB+pHZS05QcYyjVs9kna1Mmu7LE56isA=
+Subject: Re: [PATCH] wireless: Allow disabling TWT
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20210306162010.16706-1-greearb@candelatech.com>
+ <0b89f56b37073b633b343a71a098247a53ec89f9.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <3ce23e62-a9f7-013f-9eb7-578f5ca5c9dd@candelatech.com>
+Date:   Thu, 8 Apr 2021 16:00:32 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-In-Reply-To: <c5556a207c5c40ac849c6a0e1919baca@realtek.com>
+In-Reply-To: <0b89f56b37073b633b343a71a098247a53ec89f9.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Language: en-MW
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 08.04.2021 06:42, Pkshih wrote:
->> -----Original Message-----
->> From: Maciej S. Szmigiero [mailto:mail@maciej.szmigiero.name]
->> Sent: Thursday, April 08, 2021 4:53 AM
->> To: Larry Finger; Pkshih
->> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
->> johannes@sipsolutions.net; kvalo@codeaurora.org
->> Subject: Re: rtlwifi/rtl8192cu AP mode broken with PS STA
+On 4/8/21 6:25 AM, Johannes Berg wrote:
+> On Sat, 2021-03-06 at 08:20 -0800, greearb@candelatech.com wrote:
 >>
-(...)
->>> Maceij,
->>>
->>> Does this patch fix the problem?
->>
->> The beacon seems to be updating now and STAs no longer get stuck in PS
->> mode.
->> Although sometimes (every 2-3 minutes with continuous 1s interval pings)
->> there is around 5s delay in updating the transmitted beacon - don't know
->> why, maybe the NIC hardware still has the old version in queue?
+>> +	/* Apply overrides as needed. */
+>> +	if (ifmgd->flags & IEEE80211_STA_DISABLE_TWT) {
+>> +		if (ext_capa) {
+>> +			if (ext_capa && ext_capa->datalen > 10) {
+>> +				ext_capa->data[9] &= ~(WLAN_EXT_CAPA10_TWT_RESPONDER_SUPPORT);
 > 
-> Since USB device doesn't update every beacon, dtim_count isn't updated neither.
-> It leads STA doesn't awake properly. Please try to fix dtim_period=1 in
-> hostapd.conf, which tells STA awakes every beacon interval.
+> So apart from the useless code (checking "ext_capa" twice, unnecessary
+> nested ifs, unnecessary parentheses), this can already be done entirely
+> by userspace, since it controls the ext capa we send.
 
-The situation is the same with dtim_period=1.
+So we don't even need HE overrides in this case?
 
-When I look at a packet trace (captured from a different NIC running in
-monitor mode) it's obvious that the pinged STA wakes up almost
-immediately once it sees its DTIM bit set in a beacon.
+>>
+>> -static bool ieee80211_twt_req_supported(const struct sta_info *sta,
+>> +static bool ieee80211_twt_req_supported(struct ieee80211_sub_if_data *sdata,
+>> +					const struct sta_info *sta,
+>>   					const struct ieee802_11_elems *elems)
+>>
+> 
+> This code here seems possibly wrong anyway since it doesn't take local
+> capabilities into account, maybe it should, and then these changes
+> wouldn't be necessary? >
+>> +	/* Apply overrides as needed. */
+>> +	if (ifmgd->flags & IEEE80211_STA_DISABLE_TWT) {
+>> +		struct ieee80211_he_cap_elem *hec;
+>> +		hec = (struct ieee80211_he_cap_elem *)(pos);
+>> +		hec->mac_cap_info[0] &= ~(IEEE80211_HE_MAC_CAP0_TWT_REQ);
+>> +		hec->mac_cap_info[0] &= ~(IEEE80211_HE_MAC_CAP0_TWT_RES);
+>> +	}
+> 
+> Wait, we actually have TWT capability *twice*, once in HE and once in
+> extended capabilities?! Fun.
 
-But many beacons pass (the network has beacon interval of 0.1s) between
-where a ping request (ICMP echo request) is buffered on the AP and where
-the transmitted beacon actually starts to have DTIM bit set.
+Evidently, like maybe the spec was planning to add TWT to VHT or
+something like that?
 
-I am observing delays up to 9 seconds, which means a delay up to 90
-beacons between when DTIM bit should be set and when it actually gets
-set.
+> 
+> But for this shouldn't we have the more general "HE capability override"
+> stuff that we have also for HT and VHT?
 
-As I said above, this happens only sometimes (every 2-3 minutes with
-continuous 1s interval pings) but there is definitely something wrong
-here.
+Maybe this can be done, but since TWT is in several different places, it
+is going to be a pain to code up that way.
 
-My wild guess would be that if the NIC is prevented from sending a beacon
-due to, for example, its radio channel being busy it keeps that beacon
-in queue for the next transmission attempt and only then sends it and
-removes from that queue.
-Even thought there might be newer beacon data already available for
-transmission.
+The way I see it, if we do go with overrides, the API is going to be pretty
+tricky, basically passing a bunch of u8 around to represent different sets of IE
+contents and their mask.  So I think it is cleaner to pass in specific flags such as 'disable-twt'.
+Now, maybe those types of flags can be passed in as part of a nested netlink attribute
+or a 'override-flags-1' u32 so that each time we add a new one it doesn't need to grow
+the main netlink enum...
 
-And then these "unsent" beacons pile up in queue and the delays I am
-observing are simply old queued beacons (that don't have the DTIM bit
-set yet) being transmitted.
-
-But that's just my hypothesis - I don't know how rtl8192cu hardware
-actually works.
-
-> --
-> Ping-Ke
+And, I'd still like to see a way to set station config
+while it is still admin down, so that we have all of the desired local config overrides set
+before we ever even start scanning...  That would be a better way to do overrides in
+general in my opinion.
 
 Thanks,
-Maciej
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
