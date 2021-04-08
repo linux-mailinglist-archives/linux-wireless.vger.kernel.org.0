@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B22358354
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Apr 2021 14:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BDC53583E0
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Apr 2021 14:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230322AbhDHMcn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Apr 2021 08:32:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54302 "EHLO
+        id S231424AbhDHMyB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Apr 2021 08:54:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229837AbhDHMcj (ORCPT
+        with ESMTP id S229741AbhDHMyB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Apr 2021 08:32:39 -0400
+        Thu, 8 Apr 2021 08:54:01 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED09C061760
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Apr 2021 05:32:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CB72C061760;
+        Thu,  8 Apr 2021 05:53:50 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1lUTpi-008zyV-Bq; Thu, 08 Apr 2021 14:32:26 +0200
+        id 1lUUAO-0090Mn-LO; Thu, 08 Apr 2021 14:53:48 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH] cfg80211: Remove wrong RNR IE validation check
-Date:   Thu,  8 Apr 2021 14:32:24 +0200
-Message-Id: <20210408143224.c7eeaf1a5270.Iead7762982e941a1cbff93f68bf8b5139447ff0c@changeid>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211 2021-04-08
+Date:   Thu,  8 Apr 2021 14:53:43 +0200
+Message-Id: <20210408125344.50279-1-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,30 +32,73 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+Hi,
 
-Remove a wrong length check for RNR information element as it
-can have arbitrary length.
+Yes, I'm late with this, sorry about that. I've mostly restricted this
+to the most necessary fixes, though the virt_wifi one isn't but since
+that's not used a lot, it's harmless and included since it's obvious.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The only thing that's bigger is the rfkill thing, but that's just since
+it adds a new version of the struct for userspace to use, since the
+change to the existing struct caused various breakage all around.
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 019952d4fc7d..c3b51efff5c6 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -589,7 +589,7 @@ static int cfg80211_parse_colocated_ap(const struct cfg80211_bss_ies *ies,
- 
- 	elem = cfg80211_find_elem(WLAN_EID_REDUCED_NEIGHBOR_REPORT, ies->data,
- 				  ies->len);
--	if (!elem || elem->datalen > IEEE80211_MAX_SSID_LEN)
-+	if (!elem)
- 		return 0;
- 
- 	pos = elem->data;
--- 
-2.30.2
+Please pull and let me know if there's any problem.
+
+Thanks,
+johannes
+
+
+
+The following changes since commit 8a12f8836145ffe37e9c8733dce18c22fb668b66:
+
+  net: hso: fix null-ptr-deref during tty device unregistration (2021-04-07 15:18:15 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-04-08
+
+for you to fetch changes up to abaf94ecc9c356d0b885a84edef4905cdd89cfdd:
+
+  nl80211: fix potential leak of ACL params (2021-04-08 14:44:56 +0200)
+
+----------------------------------------------------------------
+Various small fixes:
+ * S1G beacon validation
+ * potential leak in nl80211
+ * fast-RX confusion with 4-addr mode
+ * erroneous WARN_ON that userspace can trigger
+ * wrong time units in virt_wifi
+ * rfkill userspace API breakage
+ * TXQ AC confusing that led to traffic stopped forever
+ * connection monitoring time after/before confusion
+
+----------------------------------------------------------------
+A. Cody Schuffelen (1):
+      virt_wifi: Return micros for BSS TSF values
+
+Ben Greear (1):
+      mac80211: fix time-is-after bug in mlme
+
+Du Cheng (1):
+      cfg80211: remove WARN_ON() in cfg80211_sme_connect
+
+Johannes Berg (4):
+      rfkill: revert back to old userspace API by default
+      mac80211: fix TXQ AC confusion
+      cfg80211: check S1G beacon compat element length
+      nl80211: fix potential leak of ACL params
+
+Seevalamuthu Mariappan (1):
+      mac80211: clear sta->fast_rx when STA removed from 4-addr VLAN
+
+ drivers/net/wireless/virt_wifi.c |  5 ++-
+ include/uapi/linux/rfkill.h      | 80 ++++++++++++++++++++++++++++++++++------
+ net/mac80211/cfg.c               |  4 +-
+ net/mac80211/mlme.c              |  5 ++-
+ net/mac80211/tx.c                |  2 +-
+ net/rfkill/core.c                |  7 ++--
+ net/wireless/nl80211.c           |  4 +-
+ net/wireless/scan.c              | 14 ++++---
+ net/wireless/sme.c               |  2 +-
+ 9 files changed, 94 insertions(+), 29 deletions(-)
 
