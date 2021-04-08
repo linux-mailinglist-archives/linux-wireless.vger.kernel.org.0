@@ -2,66 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CA1D357757
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Apr 2021 00:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83CAE35795F
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Apr 2021 03:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229690AbhDGWKW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Apr 2021 18:10:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50792 "EHLO mail.kernel.org"
+        id S229884AbhDHBM7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Apr 2021 21:12:59 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:21469 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229488AbhDGWKU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Apr 2021 18:10:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id E04CA61205;
-        Wed,  7 Apr 2021 22:10:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617833409;
-        bh=RQ2q7kAefRPdB8LiMZYUtksepVWgo6ZDBMHqa9htQB8=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=MNDjPQuEs4PESwxPhIdamlpnYYajUgbfcNVyMQH6DQdUqby2BB/tSUsJ0xddGhKiS
-         VTHTSWolw0iag0+VT04vA3xlPq6EqD5CCfgwdzGUFIP/wvXKhYwWCGiszD/PfRXGu3
-         lbhEusJGHjUlQwYkg00D9xiA5023Jr5ZWLe9Cql6M1D8ja+IRAfwC0SrmHjEy1QVIw
-         IRO2vvKlLynbfe362KcN2VAwrjuax26GDzY/c2aIzhppnPRcdWERBq3tGAxGd1E4yB
-         2771Uy/7kFNODqH66LAmzMvRon5ViD0EMQAzObh9BUyCa2Glz6mLhT7R6Ngk6cOI2P
-         NyauCXUD1kA0g==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D5BFE60ACA;
-        Wed,  7 Apr 2021 22:10:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S229497AbhDHBM7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Apr 2021 21:12:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1617844369; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=/ryLYc5AIShsRk8hMrIqltLYag4JM6pSKotZcptS1wI=; b=xLxR5QLPcVBVXLLWHV1agiKeBEU1ow41jvMysAgAtyheNW0qzaEd88WsZaV6lDydlrDxgWZ4
+ qvjmk1+V8YJyYh9O8RRlE+jyE7GquUFLKBRrgpBwJBHumV4RzSm1Sh1Sh7Eq4dRqlUxTybpa
+ mndkKHvw725+h6H11HDbvL2gKTI=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 606e58808166b7eff7f75131 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 08 Apr 2021 01:12:32
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1D783C433ED; Thu,  8 Apr 2021 01:12:32 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 46578C433C6;
+        Thu,  8 Apr 2021 01:12:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 46578C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=alokad@codeaurora.org
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Aloka Dixit <alokad@codeaurora.org>
+Subject: [PATCH V6 0/2] WMI and debugfs calls for TWT dialogs
+Date:   Wed,  7 Apr 2021 18:12:23 -0700
+Message-Id: <20210408011225.1989-1-alokad@codeaurora.org>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-drivers-2021-04-07
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161783340987.5631.5210409702215121000.git-patchwork-notify@kernel.org>
-Date:   Wed, 07 Apr 2021 22:10:09 +0000
-References: <20210407122204.E507BC433ED@smtp.codeaurora.org>
-In-Reply-To: <20210407122204.E507BC433ED@smtp.codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+This patchset adds support for TWT dialogs using debugfs.
+Patch files show changes in V6 compared to V5.
 
-This pull request was applied to netdev/net.git (refs/heads/master):
+John Crispin (2):
+  ath11k: add WMI calls to manually add/del/pause/resume TWT dialogs
+  ath11k: add debugfs for TWT debug calls
 
-On Wed,  7 Apr 2021 12:22:04 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
-> 
-> Kalle
-> 
-> [...]
+ drivers/net/wireless/ath/ath11k/core.h    |   4 +
+ drivers/net/wireless/ath/ath11k/debugfs.c | 222 +++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/debugfs.h |  14 +-
+ drivers/net/wireless/ath/ath11k/mac.c     |   6 +
+ drivers/net/wireless/ath/ath11k/wmi.c     | 247 +++++++++++++++++++++-
+ drivers/net/wireless/ath/ath11k/wmi.h     | 114 ++++++++++
+ 6 files changed, 602 insertions(+), 5 deletions(-)
 
-Here is the summary with links:
-  - pull-request: wireless-drivers-2021-04-07
-    https://git.kernel.org/netdev/net/c/107adc694558
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+base-commit: 1924a31a1d7c49a87dad0c6df7a3bff3d68cc462
+-- 
+2.25.0
 
