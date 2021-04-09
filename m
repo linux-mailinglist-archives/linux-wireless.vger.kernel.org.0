@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AE00359B0D
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 12:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73EF1359B5D
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 12:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233129AbhDIKHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Apr 2021 06:07:19 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:44308 "EHLO
+        id S234150AbhDIKJq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Apr 2021 06:09:46 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:44312 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234541AbhDIKGv (ORCPT
+        with ESMTP id S234438AbhDIKIC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Apr 2021 06:06:51 -0400
+        Fri, 9 Apr 2021 06:08:02 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1lUncz-000ELR-Pc; Fri, 09 Apr 2021 12:40:39 +0300
+        id 1lUnd0-000ELR-Kp; Fri, 09 Apr 2021 12:40:40 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri,  9 Apr 2021 12:40:24 +0300
-Message-Id: <iwlwifi.20210409123755.9e6ff1af1181.If6868bc6902ccd9a95c74c78f716c4b41473ef14@changeid>
+Date:   Fri,  9 Apr 2021 12:40:25 +0300
+Message-Id: <iwlwifi.20210409123755.eff546283504.I2606161e700ac24d94d0b50c8edcdedd4c0395c2@changeid>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20210409094028.356611-1-luca@coelho.fi>
 References: <20210409094028.356611-1-luca@coelho.fi>
@@ -32,102 +32,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 11/15] wireless: fix spelling of A-MSDU in HE capabilities
+Subject: [PATCH 12/15] nl80211/cfg80211: add a flag to negotiate for LMR feedback in NDP ranging
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-In the HE capabilities, spell A-MSDU correctly, not "A-MDSU".
+Add a flag that indicates that the ISTA shall indicate support for
+LMR feedback in NDP ranging negotiation.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 2 +-
- drivers/net/wireless/mac80211_hwsim.c              | 8 ++++----
- include/linux/ieee80211.h                          | 2 +-
- net/mac80211/debugfs_sta.c                         | 2 +-
- 4 files changed, 7 insertions(+), 7 deletions(-)
+ include/net/cfg80211.h       |  5 ++++-
+ include/uapi/linux/nl80211.h |  4 ++++
+ net/wireless/nl80211.c       |  1 +
+ net/wireless/pmsr.c          | 12 +++++++++++-
+ 4 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index d2058cdcb0d8..c7ea5b35f9f9 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -552,7 +552,7 @@ static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
- 					IEEE80211_HE_MAC_CAP3_OMI_CONTROL |
- 					IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_2,
- 				.mac_cap_info[4] =
--					IEEE80211_HE_MAC_CAP4_AMDSU_IN_AMPDU |
-+					IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU |
- 					IEEE80211_HE_MAC_CAP4_MULTI_TID_AGG_TX_QOS_B39,
- 				.mac_cap_info[5] =
- 					IEEE80211_HE_MAC_CAP5_MULTI_TID_AGG_TX_QOS_B40 |
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 3039baa43f4c..f85a879d738b 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2796,7 +2796,7 @@ static const struct ieee80211_sband_iftype_data he_capa_2ghz[] = {
- 				.mac_cap_info[3] =
- 					IEEE80211_HE_MAC_CAP3_OMI_CONTROL |
- 					IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3,
--				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMDSU_IN_AMPDU,
-+				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU,
- 				.phy_cap_info[1] =
- 					IEEE80211_HE_PHY_CAP1_PREAMBLE_PUNC_RX_MASK |
- 					IEEE80211_HE_PHY_CAP1_DEVICE_CLASS_A |
-@@ -2840,7 +2840,7 @@ static const struct ieee80211_sband_iftype_data he_capa_2ghz[] = {
- 				.mac_cap_info[3] =
- 					IEEE80211_HE_MAC_CAP3_OMI_CONTROL |
- 					IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3,
--				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMDSU_IN_AMPDU,
-+				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU,
- 				.phy_cap_info[1] =
- 					IEEE80211_HE_PHY_CAP1_PREAMBLE_PUNC_RX_MASK |
- 					IEEE80211_HE_PHY_CAP1_DEVICE_CLASS_A |
-@@ -2886,7 +2886,7 @@ static const struct ieee80211_sband_iftype_data he_capa_5ghz[] = {
- 				.mac_cap_info[3] =
- 					IEEE80211_HE_MAC_CAP3_OMI_CONTROL |
- 					IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3,
--				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMDSU_IN_AMPDU,
-+				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU,
- 				.phy_cap_info[0] =
- 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
- 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
-@@ -2934,7 +2934,7 @@ static const struct ieee80211_sband_iftype_data he_capa_5ghz[] = {
- 				.mac_cap_info[3] =
- 					IEEE80211_HE_MAC_CAP3_OMI_CONTROL |
- 					IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3,
--				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMDSU_IN_AMPDU,
-+				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU,
- 				.phy_cap_info[0] =
- 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
- 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 9aa6a6c02100..63252fba3f90 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -2021,7 +2021,7 @@ int ieee80211_get_vht_max_nss(struct ieee80211_vht_cap *cap,
- #define IEEE80211_HE_MAC_CAP4_PSR_RESP				0x08
- #define IEEE80211_HE_MAC_CAP4_NDP_FB_REP			0x10
- #define IEEE80211_HE_MAC_CAP4_OPS				0x20
--#define IEEE80211_HE_MAC_CAP4_AMDSU_IN_AMPDU			0x40
-+#define IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU			0x40
- /* Multi TID agg TX is split between byte #4 and #5
-  * The value is a combination of B39,B40,B41
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 955a4f711fdd..78aeeefe77b6 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -3521,6 +3521,8 @@ struct cfg80211_pmsr_result {
+  * @non_trigger_based: use non trigger based ranging for the measurement
+  *		 If neither @trigger_based nor @non_trigger_based is set,
+  *		 EDCA based ranging will be used.
++ * @lmr_feedback: negotiate for I2R LMR feedback. Only valid if either
++ *		 @trigger_based or @non_trigger_based is set.
+  *
+  * See also nl80211 for the respective attribute documentation.
   */
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 25b3d4822aed..936c9dfa86c8 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -735,7 +735,7 @@ static ssize_t sta_he_capa_read(struct file *file, char __user *userbuf,
- 	PFLAG(MAC, 4, PSR_RESP, "PSR-RESP");
- 	PFLAG(MAC, 4, NDP_FB_REP, "NDP-FB-REP");
- 	PFLAG(MAC, 4, OPS, "OPS");
--	PFLAG(MAC, 4, AMDSU_IN_AMPDU, "AMSDU-IN-AMPDU");
-+	PFLAG(MAC, 4, AMSDU_IN_AMPDU, "AMSDU-IN-AMPDU");
+@@ -3532,7 +3534,8 @@ struct cfg80211_pmsr_ftm_request_peer {
+ 	   request_lci:1,
+ 	   request_civicloc:1,
+ 	   trigger_based:1,
+-	   non_trigger_based:1;
++	   non_trigger_based:1,
++	   lmr_feedback:1;
+ 	u8 num_bursts_exp;
+ 	u8 burst_duration;
+ 	u8 ftms_per_burst;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 325f2c621840..bc41cea9f2fa 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -6904,6 +6904,9 @@ enum nl80211_peer_measurement_ftm_capa {
+  *      if neither %NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED nor
+  *	%NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED is set, EDCA based
+  *	ranging will be used.
++ * @NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK: negotiate for LMR feedback. Only
++ *	valid if either %NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED or
++ *	%NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED is set.
+  *
+  * @NUM_NL80211_PMSR_FTM_REQ_ATTR: internal
+  * @NL80211_PMSR_FTM_REQ_ATTR_MAX: highest attribute number
+@@ -6922,6 +6925,7 @@ enum nl80211_peer_measurement_ftm_req {
+ 	NL80211_PMSR_FTM_REQ_ATTR_REQUEST_CIVICLOC,
+ 	NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED,
+ 	NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED,
++	NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK,
  
- 	PRINT("MULTI-TID-AGG-TX-QOS-%d", ((cap[5] << 1) | (cap[4] >> 7)) & 0x7);
+ 	/* keep last */
+ 	NUM_NL80211_PMSR_FTM_REQ_ATTR,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index f56307185b8a..c5d1c93ddfae 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -309,6 +309,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+ 	[NL80211_PMSR_FTM_REQ_ATTR_REQUEST_CIVICLOC] = { .type = NLA_FLAG },
+ 	[NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
+ 	[NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
++	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
+ };
+ 
+ static const struct nla_policy
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index a95c79d18349..d570453b6dad 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /*
+- * Copyright (C) 2018 - 2019 Intel Corporation
++ * Copyright (C) 2018 - 2020 Intel Corporation
+  */
+ #ifndef __PMSR_H
+ #define __PMSR_H
+@@ -158,6 +158,16 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 		return -EINVAL;
+ 	}
+ 
++	out->ftm.lmr_feedback =
++		!!tb[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK];
++	if (!out->ftm.trigger_based && !out->ftm.non_trigger_based &&
++	    out->ftm.lmr_feedback) {
++		NL_SET_ERR_MSG_ATTR(info->extack,
++				    tb[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK],
++				    "FTM: LMR feedback set for EDCA based ranging");
++		return -EINVAL;
++	}
++
+ 	return 0;
+ }
  
 -- 
 2.31.0
