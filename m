@@ -2,129 +2,234 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0715F35917B
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 03:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 282A9359303
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 05:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232951AbhDIBci (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Apr 2021 21:32:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55830 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232426AbhDIBci (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Apr 2021 21:32:38 -0400
-Received: from mail-qv1-xf62.google.com (mail-qv1-xf62.google.com [IPv6:2607:f8b0:4864:20::f62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F36BDC061760
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Apr 2021 18:32:25 -0700 (PDT)
-Received: by mail-qv1-xf62.google.com with SMTP id bs7so1420775qvb.12
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Apr 2021 18:32:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=5tMkEaIx1BRtRrp8ezLQPqg1hZvgFv5MMyk2qNjviBo=;
-        b=IOOHn+wrUT9pYG/aetruqaFSSF+EU92KFhczZD31idONVQAVMgJqnrz076zeNRLB6o
-         uFZq/Yso0oEAp78eW0BymB1Ejzr6JQHw6osVq9KBrtQW6wDwZPe+DjOzeDAwFJrAHX7y
-         DlMeqAyq0xdxTbMf4yeXqTuXmSLDjuOPHlB+vZufvLDPa2yBMWqurT5/fzjXlEfzjymL
-         jco5bQA93/Nsar2WsmD5k33eZR4XlVyg+7TFac79NDdfg8YqorqEQ1vnM9N874edu6sQ
-         iI6w1Ru79DN9Hr56WHc7p7obu+g0Na06Q0UAukgw/ajeimOgG5lrJLcl7H2+qn+OqznF
-         AHIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=5tMkEaIx1BRtRrp8ezLQPqg1hZvgFv5MMyk2qNjviBo=;
-        b=cMW3R46/vi4jJ8dLFupUljR6Gga509sHxIkce+XMMwDn0fvKKZcyIw+nLRvlTd+oMn
-         HyGukL9Os0ZWQdUnC/mIou7jdvoAxp9PKtj/LLPD+XS56aKtrcMDvrSzNbJXM08+OqRE
-         xdbrlcV25r515VNadIb2LN64bhAtPKkv3TCAgJX3+1VJ1z4RcKY3xeswoVeP9se0RQ1p
-         dzS2J1LfuEVyISdUTqGLFHXwBg0G8yuhBRGQPN/d0YCLCjDWvU44NGwka2rWph6CcxrO
-         5uBWLjcV8uq47oo/4bbVZi2nmJwTG85//XPNXMzWbkbLC68ECNBmlZB3K2tm2mAEjIYB
-         KpiQ==
-X-Gm-Message-State: AOAM532aUit4FTreCSGsABwQeb5jzNXrxK2K4RemefQ2BtiNgT3Y9/4H
-        ztnFtqHM0ytuMWCg9DzGZApSyK+B4Tc7i1gp8yvDoOESNTetkQ==
-X-Google-Smtp-Source: ABdhPJy26WIYOrz+2S0nhJWKBP26qIsNKn0oXs7SRySZU11Cmd5KGQErVndwg1DNvO/HPLdZKwc0+8WpCUIL
-X-Received: by 2002:a05:6214:134a:: with SMTP id b10mr4980366qvw.62.1617931945101;
-        Thu, 08 Apr 2021 18:32:25 -0700 (PDT)
-Received: from bdawood (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp-relay.gmail.com with ESMTPS id r15sm507151qkp.8.2021.04.08.18.32.23
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 08 Apr 2021 18:32:25 -0700 (PDT)
-X-Relaying-Domain: morsemicro.com
-Date:   Fri, 9 Apr 2021 11:32:19 +1000
-From:   Bassem Dawood <bassem@morsemicro.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
+        id S232937AbhDID3D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Apr 2021 23:29:03 -0400
+Received: from mga17.intel.com ([192.55.52.151]:37829 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232918AbhDID3C (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Apr 2021 23:29:02 -0400
+IronPort-SDR: CkHU13yqgtku0QZJ76j3/Dzhm8hCvM2Uc++D2rDoWAXK6r+BtrbYKuHR29SWEdGbQP5+TIIuzv
+ ExtjrYPX7zKg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9948"; a="173765012"
+X-IronPort-AV: E=Sophos;i="5.82,208,1613462400"; 
+   d="scan'208";a="173765012"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2021 20:28:47 -0700
+IronPort-SDR: uNJXPwp5mbGVFXXXJBbAySevuNtyCSXXxco8Bt7eZAfucytgkn9aSu1mtsnUTclEXQyzRwb8Zb
+ 1c4Ni3eOqtUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,208,1613462400"; 
+   d="scan'208";a="397336957"
+Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 08 Apr 2021 20:28:45 -0700
+Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lUhp6-000G9j-Ag; Fri, 09 Apr 2021 03:28:44 +0000
+Date:   Fri, 09 Apr 2021 11:27:58 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
 Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] mac80211: Enable power save after receiving NULL packet
- ACK
-Message-ID: <20210409013218.GE9075@bdawood>
-References: <20210227055815.14838-1-bassem@morsemicro.com>
- <9282f2d2c6c8302de0c53dfb90743bd97e5a5a32.camel@sipsolutions.net>
+Subject: [mac80211:master] BUILD SUCCESS
+ 9a6847ba1747858ccac53c5aba3e25c54fbdf846
+Message-ID: <606fc9be.SBU62KDNZhPYL5yc%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9282f2d2c6c8302de0c53dfb90743bd97e5a5a32.camel@sipsolutions.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Apr 08, 2021 at 03:26:06PM +0200, Johannes Berg wrote:
-> On Sat, 2021-02-27 at 16:58 +1100, Bassem Dawood wrote:
-> > Trigger dynamic_ps_timer to re-evaluate power saving once a null function
-> > packet (with PM = 1) is ACKed.
-> 
-> Can you please say what this fixes/why the change is needed?
-> 
-> johannes
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
+branch HEAD: 9a6847ba1747858ccac53c5aba3e25c54fbdf846  nl80211: fix beacon head validation
 
-Sure.
+elapsed time: 726m
 
-For drivers that declare PS_NULLFUNC_STACK, when sleeping, mac80211 would send a nullfunc (with PS bit set). It won't notify the driver yet (waiting for the NULLFUNC ACK).
+configs tested: 172
+configs skipped: 2
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-a/net/mac80211/mlme.c: void ieee80211_dynamic_ps_enable_work(struct work_struct *work) 
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+mips                         rt305x_defconfig
+um                                allnoconfig
+sh                          urquell_defconfig
+sh                            titan_defconfig
+arm                             ezx_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                     akebono_defconfig
+arm                     eseries_pxa_defconfig
+arm                            pleb_defconfig
+m68k                         amcore_defconfig
+sparc                       sparc32_defconfig
+powerpc                     ppa8548_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                 linkstation_defconfig
+sh                            migor_defconfig
+mips                       lemote2f_defconfig
+m68k                        m5407c3_defconfig
+arm                            lart_defconfig
+arm                           spitz_defconfig
+arm                         palmz72_defconfig
+arm                         lpc32xx_defconfig
+ia64                             alldefconfig
+powerpc                 mpc832x_mds_defconfig
+powerpc                      ppc6xx_defconfig
+sh                   sh7770_generic_defconfig
+sh                           sh2007_defconfig
+xtensa                  cadence_csp_defconfig
+arm                        clps711x_defconfig
+xtensa                    xip_kc705_defconfig
+m68k                       bvme6000_defconfig
+h8300                            alldefconfig
+arc                     nsimosci_hs_defconfig
+powerpc                 mpc836x_rdk_defconfig
+powerpc                  storcenter_defconfig
+arm                         s5pv210_defconfig
+ia64                         bigsur_defconfig
+arm                         orion5x_defconfig
+m68k                        stmark2_defconfig
+mips                     loongson1b_defconfig
+arm                        multi_v5_defconfig
+mips                  decstation_64_defconfig
+powerpc                      ppc64e_defconfig
+mips                          rb532_defconfig
+powerpc                     kmeter1_defconfig
+powerpc                 mpc834x_mds_defconfig
+sh                          landisk_defconfig
+powerpc                      arches_defconfig
+riscv                               defconfig
+parisc                           allyesconfig
+m68k                          hp300_defconfig
+s390                          debug_defconfig
+sh                 kfr2r09-romimage_defconfig
+arm                             mxs_defconfig
+mips                          malta_defconfig
+arm                           u8500_defconfig
+um                           x86_64_defconfig
+arc                    vdk_hs38_smp_defconfig
+arm                          ixp4xx_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                           se7722_defconfig
+mips                  maltasmvp_eva_defconfig
+sh                             shx3_defconfig
+sh                   rts7751r2dplus_defconfig
+arm                          pxa3xx_defconfig
+powerpc                           allnoconfig
+arm                            zeus_defconfig
+arm                      footbridge_defconfig
+powerpc                        warp_defconfig
+mips                           ip22_defconfig
+m68k                          multi_defconfig
+sh                          lboxre2_defconfig
+arm64                            alldefconfig
+arc                        vdk_hs38_defconfig
+sh                           se7751_defconfig
+mips                      pic32mzda_defconfig
+arm                   milbeaut_m10v_defconfig
+arm                           h5000_defconfig
+powerpc                     mpc5200_defconfig
+powerpc                      ep88xc_defconfig
+m68k                          amiga_defconfig
+arm                  colibri_pxa270_defconfig
+arm                            xcep_defconfig
+ia64                            zx1_defconfig
+sh                          r7780mp_defconfig
+mips                    maltaup_xpa_defconfig
+powerpc                     mpc83xx_defconfig
+arm                            dove_defconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                         shannon_defconfig
+powerpc                 xes_mpc85xx_defconfig
+arm                         at91_dt_defconfig
+alpha                            allyesconfig
+arm                        realview_defconfig
+x86_64                           alldefconfig
+arm                        mvebu_v7_defconfig
+arm                          collie_defconfig
+powerpc                         ps3_defconfig
+arm                          gemini_defconfig
+arm                          iop32x_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a005-20210408
+x86_64               randconfig-a003-20210408
+x86_64               randconfig-a001-20210408
+x86_64               randconfig-a004-20210408
+x86_64               randconfig-a002-20210408
+x86_64               randconfig-a006-20210408
+i386                 randconfig-a006-20210408
+i386                 randconfig-a003-20210408
+i386                 randconfig-a001-20210408
+i386                 randconfig-a004-20210408
+i386                 randconfig-a005-20210408
+i386                 randconfig-a002-20210408
+i386                 randconfig-a014-20210408
+i386                 randconfig-a016-20210408
+i386                 randconfig-a011-20210408
+i386                 randconfig-a012-20210408
+i386                 randconfig-a013-20210408
+i386                 randconfig-a015-20210408
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+um                               allmodconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-	if (ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK) &&
-	    !(ifmgd->flags & IEEE80211_STA_NULLFUNC_ACKED)) {
-		if (drv_tx_frames_pending(local)) {
-			mod_timer(&local->dynamic_ps_timer, jiffies +
-				  msecs_to_jiffies(
-				  local->hw.conf.dynamic_ps_timeout));
-		} else {
-			ieee80211_send_nullfunc(local, sdata, true);
-			/* Flush to get the tx status of nullfunc frame */
-			ieee80211_flush_queues(local, sdata, false);
-		}
-	}
+clang tested configs:
+x86_64               randconfig-a014-20210408
+x86_64               randconfig-a015-20210408
+x86_64               randconfig-a012-20210408
+x86_64               randconfig-a011-20210408
+x86_64               randconfig-a013-20210408
+x86_64               randconfig-a016-20210408
 
-	if (!(ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS) &&
-	      ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK)) ||
-	    (ifmgd->flags & IEEE80211_STA_NULLFUNC_ACKED)) {
-		ifmgd->flags &= ~IEEE80211_STA_NULLFUNC_ACKED;
-		local->hw.conf.flags |= IEEE80211_CONF_PS;
-		ieee80211_hw_config(local, IEEE80211_CONF_CHANGE_PS);
-	}
-
-On reception of the ACK, mac80211 will set the  IEEE80211_STA_NULLFUNC_ACKED flag, but won't re-evaluate dynamic_ps_enable_work. So drivers won't get notified to sleep (until ieee80211_dynamic_ps_enable_work is re-evaluated through any other path).
-
-a/net/mac80211/status.c:static void __ieee80211_tx_status(struct ieee80211_hw *hw,
-				  struct ieee80211_tx_status *status,
-				  int rates_idx, int retry_count) 
-
-	if (ieee80211_is_any_nullfunc(fc) &&
-	    ieee80211_has_pm(fc) &&
-	    ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS) &&
-	    !(info->flags & IEEE80211_TX_CTL_INJECTED) &&
-	    local->ps_sdata && !(local->scanning)) {
-		if (info->flags & IEEE80211_TX_STAT_ACK) {
-			local->ps_sdata->u.mgd.flags |=
-					IEEE80211_STA_NULLFUNC_ACKED;
-		} else
-			mod_timer(&local->dynamic_ps_timer, jiffies +
-					msecs_to_jiffies(10));
-	}
-
-This change makes sure  ieee80211_dynamic_ps_enable_work is evaluated once a NULLFUNC is ACKED for a more conssitent notification of the driver.
-
-Regards,
-Bassem
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
