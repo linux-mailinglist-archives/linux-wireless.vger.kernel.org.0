@@ -2,92 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 706DD35A5CB
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 20:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6170835A605
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 20:46:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234273AbhDISb1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Apr 2021 14:31:27 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:48699 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234049AbhDISb0 (ORCPT
+        id S234394AbhDISqX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Apr 2021 14:46:23 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:36563 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233332AbhDISqW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Apr 2021 14:31:26 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1617993074; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=l7DuZBcH6S8G0I8co4o9/uDuuMSudE7sOrUgkCoEiTg=;
- b=i1VTCdokJmGCDqW8KFiauplJP3jc427Jnh7NAuGhPkhsBhtK4yviduZTLGQPtfr1cnezeEwD
- Wmi/kOEeOb6L+p0FIFsjFK0VZnvrh7ptV+F/WNky5reran9AdW2KS/XkJ6+gjtCuxgV7QHqS
- OQkzCn9cwolPhxH7ijxIkAWQEqY=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 60709d6a8807bcde1d16e942 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 09 Apr 2021 18:31:06
- GMT
-Sender: alokad=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 18EB3C433C6; Fri,  9 Apr 2021 18:31:06 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66837C433CA;
-        Fri,  9 Apr 2021 18:31:04 +0000 (UTC)
+        Fri, 9 Apr 2021 14:46:22 -0400
+Received: by mail-ot1-f44.google.com with SMTP id g8-20020a9d6c480000b02901b65ca2432cso6632386otq.3;
+        Fri, 09 Apr 2021 11:46:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=z6eFqLMY5P4m+a9liLyXugoPHOz8+XlR7w752+mzNUo=;
+        b=bxJbcnhAkgEEUf2DSVJHsNFZ7sKiC68JEW8NsY9CEj/6UjRQQkdIb7/VVdWKOgYWE8
+         SU9rQxSn6wQYewRG55C/caUdAcURxY6FK8oRZkFInS8+pNa6Xl1uFbZFv3BQwUk27YEO
+         6ao6OdV3Jm48MtMFLx7aZNmKw3SK75cAQfzV8wdv4k3hc6xe74clW9+N+7VQIJuZluAK
+         j9IdsVYm09+LUWO63QYSyaKNVolG+ABhMie21HyQEuGHpFJDwqFRXMUw9PuOn2bWZFFx
+         2MX2/jyY0unAGECLqMIWAfAaGanmQ/8HoRY+2GUu1jTuikh02sOSE872RdiNjLcD3j1R
+         AppQ==
+X-Gm-Message-State: AOAM533zuxaLMliA62GpycPcayokt4QtmOIlJD89bA5i56Z3SsMj0Y/Y
+        kqYaPi8jNaoA046OPdZUwA==
+X-Google-Smtp-Source: ABdhPJzC3gLQPb72Xi9Q9xBqOy7Spb8r25dVX5tVkbGh2PuyEEwC+CaphV3fhpD/E82uO+mZ1P2RTw==
+X-Received: by 2002:a05:6830:3115:: with SMTP id b21mr13166754ots.318.1617993969010;
+        Fri, 09 Apr 2021 11:46:09 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id t14sm762150otj.50.2021.04.09.11.46.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Apr 2021 11:46:08 -0700 (PDT)
+Received: (nullmailer pid 3943480 invoked by uid 1000);
+        Fri, 09 Apr 2021 18:46:06 -0000
+Date:   Fri, 9 Apr 2021 13:46:06 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: Re: [PATCH 1/2] dt-binding: bcm43xx-fmac: add optional brcm,ccode-map
+Message-ID: <20210409184606.GA3937918@robh.at.kernel.org>
+References: <20210408113022.18180-1-shawn.guo@linaro.org>
+ <20210408113022.18180-2-shawn.guo@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Fri, 09 Apr 2021 11:31:04 -0700
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v9 0/4] Multiple BSSID support
-In-Reply-To: <cb1325ad538c3bf385b5bdadf03cfbf9f4afa390.camel@sipsolutions.net>
-References: <20210310182604.8858-1-alokad@codeaurora.org>
- (sfid-20210310_192727_681722_4BC25758)
- <cb1325ad538c3bf385b5bdadf03cfbf9f4afa390.camel@sipsolutions.net>
-Message-ID: <2427e22bdd9e34aec0667a78dd8d6537@codeaurora.org>
-X-Sender: alokad@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210408113022.18180-2-shawn.guo@linaro.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-04-08 05:17, Johannes Berg wrote:
-> On Wed, 2021-03-10 at 10:26 -0800, Aloka Dixit wrote:
->> This patchset adds support for multiple BSSID and
->> enhanced multi-BSSID advertisements.
->> 
->> This version modifies only nl80211 patch (1/4) which describes
->> the difference.
->> 
->> John Crispin (4):
->>   nl80211: add basic multiple bssid support
->>   mac80211: add multiple bssid support to interface handling
->>   mac80211: add multiple bssid/EMA support to beacon handling
->>   mac80211: CSA on non-transmitting interfaces
+On Thu, Apr 08, 2021 at 07:30:21PM +0800, Shawn Guo wrote:
+> Add optional brcm,ccode-map property to support translation from ISO3166
+> country code to brcmfmac firmware country code and revision.
 > 
-> Also, can we have hwsim support for proper testing? Seems with all the
-> logic in mac80211 to give you the right beacons etc. that should be
-> really simple?
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> ---
+>  .../devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt | 7 +++++++
+>  1 file changed, 7 insertions(+)
+
+Can you convert this to schema first.
+
 > 
-> johannes
+> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> index cffb2d6876e3..a65ac4384c04 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> @@ -15,6 +15,12 @@ Optional properties:
+>  	When not specified the device will use in-band SDIO interrupts.
+>   - interrupt-names : name of the out-of-band interrupt, which must be set
+>  	to "host-wake".
+> + - brcm,ccode-map : multiple strings for translating ISO3166 country code to
+> +	brcmfmac firmware country code and revision.  Each string must be in
+> +	format "AA-BB-num" where:
+> +	  AA is the ISO3166 country code which must be 2 characters.
+> +	  BB is the firmware country code which must be 2 characters.
+> +	  num is the revision number which must fit into signed integer.
 
-Sure, will add hwsim tests.
+Signed? So "AA-BB--num"?
 
-BTW, do you see value in replacing all occurrences
-of *_multiple_bssid_* with *_mbssid_* (also in new
-nl80211 attributes).
-Most lines needed to be split because of 80 character
-boundary, so this replacement will make that code
-look cleaner. I have avoided it till now to reduce
-number of changes between versions.
-Thanks.
+You should be able to do something like:
+
+items:
+  pattern: '^[A-Z][A-Z]-[A-Z][A-Z]-[0-9]+$'
+
+>  
+>  Example:
+>  
+> @@ -34,5 +40,6 @@ mmc3: mmc@1c12000 {
+>  		interrupt-parent = <&pio>;
+>  		interrupts = <10 8>; /* PH10 / EINT10 */
+>  		interrupt-names = "host-wake";
+> +		brcm,ccode-map = "JP-JP-78", "US-Q2-86";
+>  	};
+>  };
+> -- 
+> 2.17.1
+> 
