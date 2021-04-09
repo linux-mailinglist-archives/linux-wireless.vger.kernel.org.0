@@ -2,50 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B810359E8A
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 14:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3EB135A011
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 15:40:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231946AbhDIMYi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Apr 2021 08:24:38 -0400
-Received: from mga05.intel.com ([192.55.52.43]:61680 "EHLO mga05.intel.com"
+        id S233288AbhDINkr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Apr 2021 09:40:47 -0400
+Received: from mga01.intel.com ([192.55.52.88]:58538 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231402AbhDIMYh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Apr 2021 08:24:37 -0400
-IronPort-SDR: p1JwKshjKpOBXdli53zt5nyoROzyij6pXJwrS5lyJbg2M+lQTQgbIdcKODKpmDMyouOPzvNJ61
- 35i/92MdstrQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9948"; a="279027283"
+        id S231638AbhDINkq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Apr 2021 09:40:46 -0400
+IronPort-SDR: s37KGMRifYU14hXTl9G3AVRH3O94bH9ZFV8Q5RugMAIw7qtH98U3KdLX+lBOeq0QOx+rvT51Ph
+ DUJUWmlxBKPA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9949"; a="214195908"
 X-IronPort-AV: E=Sophos;i="5.82,209,1613462400"; 
-   d="gz'50?scan'50,208,50";a="279027283"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2021 05:24:20 -0700
-IronPort-SDR: KXMaUrhE4fBpKwb7pgWKXsUAGvP3w6lQwuaolkFDwHC7vqmnZXwZOWATB6lYwKp1WvVUOhzT3u
- 3H9DHPxr8lHg==
+   d="gz'50?scan'50,208,50";a="214195908"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2021 06:40:33 -0700
+IronPort-SDR: 7wp5BtphMM2YMZJDuFT7+FZcFoSI3T4w03DvFxcngVq/KeJhzNChrrZeDf8/pOf9ltPpSokFYx
+ eswMHYnDoNBA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,209,1613462400"; 
-   d="gz'50?scan'50,208,50";a="397466496"
+   d="gz'50?scan'50,208,50";a="387788440"
 Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 09 Apr 2021 05:24:18 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 09 Apr 2021 06:40:30 -0700
 Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1lUqBN-000GoX-PV; Fri, 09 Apr 2021 12:24:17 +0000
-Date:   Fri, 9 Apr 2021 20:24:09 +0800
+        id 1lUrN7-000GvA-VM; Fri, 09 Apr 2021 13:40:29 +0000
+Date:   Fri, 9 Apr 2021 21:39:45 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Luca Coelho <luca@coelho.fi>, johannes@sipsolutions.net
 Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 04/15] wireless: align some HE capabilities with the spec
-Message-ID: <202104092013.Xc1rvDDs-lkp@intel.com>
-References: <iwlwifi.20210409123755.b1e5fbab0d8c.I3eb6076cb0714ec6aec6b8f9dee613ce4a05d825@changeid>
+Subject: Re: [PATCH 07/15] wireless: align HE capabilities A-MPDU Length
+ Exponent Extension
+Message-ID: <202104092153.Mlq1sCRE-lkp@intel.com>
+References: <iwlwifi.20210409123755.c2a257d3e2df.I3455245d388c52c61dace7e7958dbed7e807cfb6@changeid>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="IJpNTDwzlM2Ie8A6"
+Content-Type: multipart/mixed; boundary="0F1p//8PRICkK4MW"
 Content-Disposition: inline
-In-Reply-To: <iwlwifi.20210409123755.b1e5fbab0d8c.I3eb6076cb0714ec6aec6b8f9dee613ce4a05d825@changeid>
+In-Reply-To: <iwlwifi.20210409123755.c2a257d3e2df.I3455245d388c52c61dace7e7958dbed7e807cfb6@changeid>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---IJpNTDwzlM2Ie8A6
+--0F1p//8PRICkK4MW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -66,10 +67,10 @@ compiler: m68k-linux-gcc (GCC) 9.3.0
 reproduce (this is a W=1 build):
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/13582e33bee8630eb3f2d4299b14e989bc06d297
+        # https://github.com/0day-ci/linux/commit/14d0d9bb385498f53ad9d73ebac33c6ef919be7c
         git remote add linux-review https://github.com/0day-ci/linux
         git fetch --no-tags linux-review Luca-Coelho/cfg80211-mac80211-patches-from-our-internal-tree-2021-04-09/20210409-181210
-        git checkout 13582e33bee8630eb3f2d4299b14e989bc06d297
+        git checkout 14d0d9bb385498f53ad9d73ebac33c6ef919be7c
         # save the attached .config to linux build tree
         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=m68k 
 
@@ -78,114 +79,164 @@ Reported-by: kernel test robot <lkp@intel.com>
 
 All errors (new ones prefixed by >>):
 
+   drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_peer_assoc_h_he':
+>> drivers/net/wireless/ath/ath11k/mac.c:1270:4: error: 'IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_SHIFT' undeclared (first use in this function); did you mean 'IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3'?
+    1270 |    IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_SHIFT;
+         |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |    IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3
+   drivers/net/wireless/ath/ath11k/mac.c:1270:4: note: each undeclared identifier is reported only once for each function it appears in
    drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_mac_filter_he_cap_mesh':
->> drivers/net/wireless/ath/ath11k/mac.c:3810:6: error: 'IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECVITE_TRANSMISSION' undeclared (first use in this function); did you mean 'IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECTIVE_TRANSMISSION'?
+   drivers/net/wireless/ath/ath11k/mac.c:3810:6: error: 'IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECVITE_TRANSMISSION' undeclared (first use in this function); did you mean 'IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECTIVE_TRANSMISSION'?
     3810 |  m = IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECVITE_TRANSMISSION |
          |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
          |      IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECTIVE_TRANSMISSION
-   drivers/net/wireless/ath/ath11k/mac.c:3810:6: note: each undeclared identifier is reported only once for each function it appears in
->> drivers/net/wireless/ath/ath11k/mac.c:3820:6: error: 'IEEE80211_HE_PHY_CAP3_RX_HE_MU_PPDU_FROM_NON_AP_STA' undeclared (first use in this function)
+   drivers/net/wireless/ath/ath11k/mac.c:3820:6: error: 'IEEE80211_HE_PHY_CAP3_RX_HE_MU_PPDU_FROM_NON_AP_STA' undeclared (first use in this function)
     3820 |  m = IEEE80211_HE_PHY_CAP3_RX_HE_MU_PPDU_FROM_NON_AP_STA |
          |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> drivers/net/wireless/ath/ath11k/mac.c:3832:6: error: 'IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB' undeclared (first use in this function); did you mean 'IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB'?
+   drivers/net/wireless/ath/ath11k/mac.c:3832:6: error: 'IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB' undeclared (first use in this function); did you mean 'IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB'?
     3832 |      IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB |
          |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
          |      IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB
->> drivers/net/wireless/ath/ath11k/mac.c:3837:6: error: 'IEEE80211_HE_PHY_CAP7_SRP_BASED_SR' undeclared (first use in this function); did you mean 'IEEE80211_HE_PHY_CAP7_PSR_BASED_SR'?
+   drivers/net/wireless/ath/ath11k/mac.c:3837:6: error: 'IEEE80211_HE_PHY_CAP7_SRP_BASED_SR' undeclared (first use in this function); did you mean 'IEEE80211_HE_PHY_CAP7_PSR_BASED_SR'?
     3837 |  m = IEEE80211_HE_PHY_CAP7_SRP_BASED_SR |
          |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
          |      IEEE80211_HE_PHY_CAP7_PSR_BASED_SR
->> drivers/net/wireless/ath/ath11k/mac.c:3838:6: error: 'IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR' undeclared (first use in this function); did you mean 'IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_SUPP'?
+   drivers/net/wireless/ath/ath11k/mac.c:3838:6: error: 'IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR' undeclared (first use in this function); did you mean 'IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_SUPP'?
     3838 |      IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR |
          |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
          |      IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_SUPP
 
 
-vim +3810 drivers/net/wireless/ath/ath11k/mac.c
+vim +1270 drivers/net/wireless/ath/ath11k/mac.c
 
-9f056ed8ee01ad John Crispin   2019-11-25  3786  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3787  static void
-13591a1c3899cf Sven Eckelmann 2019-12-10  3788  ath11k_mac_filter_he_cap_mesh(struct ieee80211_he_cap_elem *he_cap_elem)
-13591a1c3899cf Sven Eckelmann 2019-12-10  3789  {
-13591a1c3899cf Sven Eckelmann 2019-12-10  3790  	u8 m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3791  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3792  	m = IEEE80211_HE_MAC_CAP0_TWT_RES |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3793  	    IEEE80211_HE_MAC_CAP0_TWT_REQ;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3794  	he_cap_elem->mac_cap_info[0] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3795  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3796  	m = IEEE80211_HE_MAC_CAP2_TRS |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3797  	    IEEE80211_HE_MAC_CAP2_BCAST_TWT |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3798  	    IEEE80211_HE_MAC_CAP2_MU_CASCADING;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3799  	he_cap_elem->mac_cap_info[2] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3800  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3801  	m = IEEE80211_HE_MAC_CAP3_FLEX_TWT_SCHED |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3802  	    IEEE80211_HE_MAC_CAP2_BCAST_TWT |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3803  	    IEEE80211_HE_MAC_CAP2_MU_CASCADING;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3804  	he_cap_elem->mac_cap_info[3] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3805  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3806  	m = IEEE80211_HE_MAC_CAP4_BSRP_BQRP_A_MPDU_AGG |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3807  	    IEEE80211_HE_MAC_CAP4_BQR;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3808  	he_cap_elem->mac_cap_info[4] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3809  
-13591a1c3899cf Sven Eckelmann 2019-12-10 @3810  	m = IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECVITE_TRANSMISSION |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3811  	    IEEE80211_HE_MAC_CAP5_UL_2x996_TONE_RU |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3812  	    IEEE80211_HE_MAC_CAP5_PUNCTURED_SOUNDING |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3813  	    IEEE80211_HE_MAC_CAP5_HT_VHT_TRIG_FRAME_RX;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3814  	he_cap_elem->mac_cap_info[5] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3815  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3816  	m = IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3817  	    IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3818  	he_cap_elem->phy_cap_info[2] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3819  
-13591a1c3899cf Sven Eckelmann 2019-12-10 @3820  	m = IEEE80211_HE_PHY_CAP3_RX_HE_MU_PPDU_FROM_NON_AP_STA |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3821  	    IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_TX_MASK |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3822  	    IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3823  	he_cap_elem->phy_cap_info[3] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3824  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3825  	m = IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3826  	he_cap_elem->phy_cap_info[4] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3827  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3828  	m = IEEE80211_HE_PHY_CAP5_NG16_MU_FEEDBACK;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3829  	he_cap_elem->phy_cap_info[5] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3830  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3831  	m = IEEE80211_HE_PHY_CAP6_CODEBOOK_SIZE_75_MU |
-13591a1c3899cf Sven Eckelmann 2019-12-10 @3832  	    IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3833  	    IEEE80211_HE_PHY_CAP6_TRIG_CQI_FB |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3834  	    IEEE80211_HE_PHY_CAP6_PARTIAL_BANDWIDTH_DL_MUMIMO;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3835  	he_cap_elem->phy_cap_info[6] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3836  
-13591a1c3899cf Sven Eckelmann 2019-12-10 @3837  	m = IEEE80211_HE_PHY_CAP7_SRP_BASED_SR |
-13591a1c3899cf Sven Eckelmann 2019-12-10 @3838  	    IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3839  	    IEEE80211_HE_PHY_CAP7_STBC_TX_ABOVE_80MHZ |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3840  	    IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3841  	he_cap_elem->phy_cap_info[7] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3842  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3843  	m = IEEE80211_HE_PHY_CAP8_HE_ER_SU_PPDU_4XLTF_AND_08_US_GI |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3844  	    IEEE80211_HE_PHY_CAP8_20MHZ_IN_40MHZ_HE_PPDU_IN_2G |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3845  	    IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3846  	    IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3847  	he_cap_elem->phy_cap_info[8] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3848  
-13591a1c3899cf Sven Eckelmann 2019-12-10  3849  	m = IEEE80211_HE_PHY_CAP9_LONGER_THAN_16_SIGB_OFDM_SYM |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3850  	    IEEE80211_HE_PHY_CAP9_NON_TRIGGERED_CQI_FEEDBACK |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3851  	    IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3852  	    IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3853  	    IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
-13591a1c3899cf Sven Eckelmann 2019-12-10  3854  	    IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3855  	he_cap_elem->phy_cap_info[9] &= ~m;
-13591a1c3899cf Sven Eckelmann 2019-12-10  3856  }
-13591a1c3899cf Sven Eckelmann 2019-12-10  3857  
+d5c65159f28953 Kalle Valo          2019-11-23  1233  
+d5c65159f28953 Kalle Valo          2019-11-23  1234  static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+d5c65159f28953 Kalle Valo          2019-11-23  1235  				   struct ieee80211_vif *vif,
+d5c65159f28953 Kalle Valo          2019-11-23  1236  				   struct ieee80211_sta *sta,
+d5c65159f28953 Kalle Valo          2019-11-23  1237  				   struct peer_assoc_params *arg)
+d5c65159f28953 Kalle Valo          2019-11-23  1238  {
+9f056ed8ee01ad John Crispin        2019-11-25  1239  	const struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1240  	u8 ampdu_factor;
+9f056ed8ee01ad John Crispin        2019-11-25  1241  	u16 v;
+9f056ed8ee01ad John Crispin        2019-11-25  1242  
+9f056ed8ee01ad John Crispin        2019-11-25  1243  	if (!he_cap->has_he)
+9f056ed8ee01ad John Crispin        2019-11-25  1244  		return;
+9f056ed8ee01ad John Crispin        2019-11-25  1245  
+9f056ed8ee01ad John Crispin        2019-11-25  1246  	arg->he_flag = true;
+9f056ed8ee01ad John Crispin        2019-11-25  1247  
+9f056ed8ee01ad John Crispin        2019-11-25  1248  	memcpy(&arg->peer_he_cap_macinfo, he_cap->he_cap_elem.mac_cap_info,
+9f056ed8ee01ad John Crispin        2019-11-25  1249  	       sizeof(arg->peer_he_cap_macinfo));
+9f056ed8ee01ad John Crispin        2019-11-25  1250  	memcpy(&arg->peer_he_cap_phyinfo, he_cap->he_cap_elem.phy_cap_info,
+9f056ed8ee01ad John Crispin        2019-11-25  1251  	       sizeof(arg->peer_he_cap_phyinfo));
+60689de46c7f6a Rajkumar Manoharan  2020-04-24  1252  	arg->peer_he_ops = vif->bss_conf.he_oper.params;
+9f056ed8ee01ad John Crispin        2019-11-25  1253  
+9f056ed8ee01ad John Crispin        2019-11-25  1254  	/* the top most byte is used to indicate BSS color info */
+9f056ed8ee01ad John Crispin        2019-11-25  1255  	arg->peer_he_ops &= 0xffffff;
+9f056ed8ee01ad John Crispin        2019-11-25  1256  
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1257  	/* As per section 26.6.1 11ax Draft5.0, if the Max AMPDU Exponent Extension
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1258  	 * in HE cap is zero, use the arg->peer_max_mpdu as calculated while parsing
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1259  	 * VHT caps(if VHT caps is present) or HT caps (if VHT caps is not present).
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1260  	 *
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1261  	 * For non-zero value of Max AMPDU Extponent Extension in HE MAC caps,
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1262  	 * if a HE STA sends VHT cap and HE cap IE in assoc request then, use
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1263  	 * MAX_AMPDU_LEN_FACTOR as 20 to calculate max_ampdu length.
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1264  	 * If a HE STA that does not send VHT cap, but HE and HT cap in assoc
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1265  	 * request, then use MAX_AMPDU_LEN_FACTOR as 16 to calculate max_ampdu
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1266  	 * length.
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1267  	 */
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1268  	ampdu_factor = (he_cap->he_cap_elem.mac_cap_info[3] &
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1269  			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK) >>
+af6d39db1b046a Tamizh Chelvam      2020-09-08 @1270  			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_SHIFT;
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1271  
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1272  	if (ampdu_factor) {
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1273  		if (sta->vht_cap.vht_supported)
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1274  			arg->peer_max_mpdu = (1 << (IEEE80211_HE_VHT_MAX_AMPDU_FACTOR +
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1275  						    ampdu_factor)) - 1;
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1276  		else if (sta->ht_cap.ht_supported)
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1277  			arg->peer_max_mpdu = (1 << (IEEE80211_HE_HT_MAX_AMPDU_FACTOR +
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1278  						    ampdu_factor)) - 1;
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1279  	}
+af6d39db1b046a Tamizh Chelvam      2020-09-08  1280  
+9f056ed8ee01ad John Crispin        2019-11-25  1281  	if (he_cap->he_cap_elem.phy_cap_info[6] &
+9f056ed8ee01ad John Crispin        2019-11-25  1282  	    IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT) {
+9f056ed8ee01ad John Crispin        2019-11-25  1283  		int bit = 7;
+9f056ed8ee01ad John Crispin        2019-11-25  1284  		int nss, ru;
+9f056ed8ee01ad John Crispin        2019-11-25  1285  
+9f056ed8ee01ad John Crispin        2019-11-25  1286  		arg->peer_ppet.numss_m1 = he_cap->ppe_thres[0] &
+9f056ed8ee01ad John Crispin        2019-11-25  1287  					  IEEE80211_PPE_THRES_NSS_MASK;
+9f056ed8ee01ad John Crispin        2019-11-25  1288  		arg->peer_ppet.ru_bit_mask =
+9f056ed8ee01ad John Crispin        2019-11-25  1289  			(he_cap->ppe_thres[0] &
+9f056ed8ee01ad John Crispin        2019-11-25  1290  			 IEEE80211_PPE_THRES_RU_INDEX_BITMASK_MASK) >>
+9f056ed8ee01ad John Crispin        2019-11-25  1291  			IEEE80211_PPE_THRES_RU_INDEX_BITMASK_POS;
+9f056ed8ee01ad John Crispin        2019-11-25  1292  
+9f056ed8ee01ad John Crispin        2019-11-25  1293  		for (nss = 0; nss <= arg->peer_ppet.numss_m1; nss++) {
+9f056ed8ee01ad John Crispin        2019-11-25  1294  			for (ru = 0; ru < 4; ru++) {
+9f056ed8ee01ad John Crispin        2019-11-25  1295  				u32 val = 0;
+9f056ed8ee01ad John Crispin        2019-11-25  1296  				int i;
+9f056ed8ee01ad John Crispin        2019-11-25  1297  
+9f056ed8ee01ad John Crispin        2019-11-25  1298  				if ((arg->peer_ppet.ru_bit_mask & BIT(ru)) == 0)
+9f056ed8ee01ad John Crispin        2019-11-25  1299  					continue;
+9f056ed8ee01ad John Crispin        2019-11-25  1300  				for (i = 0; i < 6; i++) {
+9f056ed8ee01ad John Crispin        2019-11-25  1301  					val >>= 1;
+9f056ed8ee01ad John Crispin        2019-11-25  1302  					val |= ((he_cap->ppe_thres[bit / 8] >>
+9f056ed8ee01ad John Crispin        2019-11-25  1303  						 (bit % 8)) & 0x1) << 5;
+9f056ed8ee01ad John Crispin        2019-11-25  1304  					bit++;
+9f056ed8ee01ad John Crispin        2019-11-25  1305  				}
+9f056ed8ee01ad John Crispin        2019-11-25  1306  				arg->peer_ppet.ppet16_ppet8_ru3_ru0[nss] |=
+9f056ed8ee01ad John Crispin        2019-11-25  1307  								val << (ru * 6);
+9f056ed8ee01ad John Crispin        2019-11-25  1308  			}
+9f056ed8ee01ad John Crispin        2019-11-25  1309  		}
+9f056ed8ee01ad John Crispin        2019-11-25  1310  	}
+9f056ed8ee01ad John Crispin        2019-11-25  1311  
+6d293d447670da John Crispin        2019-11-25  1312  	if (he_cap->he_cap_elem.mac_cap_info[0] & IEEE80211_HE_MAC_CAP0_TWT_RES)
+6d293d447670da John Crispin        2019-11-25  1313  		arg->twt_responder = true;
+6d293d447670da John Crispin        2019-11-25  1314  	if (he_cap->he_cap_elem.mac_cap_info[0] & IEEE80211_HE_MAC_CAP0_TWT_REQ)
+6d293d447670da John Crispin        2019-11-25  1315  		arg->twt_requester = true;
+6d293d447670da John Crispin        2019-11-25  1316  
+9f056ed8ee01ad John Crispin        2019-11-25  1317  	switch (sta->bandwidth) {
+9f056ed8ee01ad John Crispin        2019-11-25  1318  	case IEEE80211_STA_RX_BW_160:
+9f056ed8ee01ad John Crispin        2019-11-25  1319  		if (he_cap->he_cap_elem.phy_cap_info[0] &
+9f056ed8ee01ad John Crispin        2019-11-25  1320  		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G) {
+9f056ed8ee01ad John Crispin        2019-11-25  1321  			v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80p80);
+9f056ed8ee01ad John Crispin        2019-11-25  1322  			arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80_80] = v;
+9f056ed8ee01ad John Crispin        2019-11-25  1323  
+9f056ed8ee01ad John Crispin        2019-11-25  1324  			v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80p80);
+9f056ed8ee01ad John Crispin        2019-11-25  1325  			arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80_80] = v;
+9f056ed8ee01ad John Crispin        2019-11-25  1326  
+9f056ed8ee01ad John Crispin        2019-11-25  1327  			arg->peer_he_mcs_count++;
+9f056ed8ee01ad John Crispin        2019-11-25  1328  		}
+9f056ed8ee01ad John Crispin        2019-11-25  1329  		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
+9f056ed8ee01ad John Crispin        2019-11-25  1330  		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
+9f056ed8ee01ad John Crispin        2019-11-25  1331  
+9f056ed8ee01ad John Crispin        2019-11-25  1332  		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_160);
+9f056ed8ee01ad John Crispin        2019-11-25  1333  		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
+9f056ed8ee01ad John Crispin        2019-11-25  1334  
+9f056ed8ee01ad John Crispin        2019-11-25  1335  		arg->peer_he_mcs_count++;
+0b294aebb6a00b Gustavo A. R. Silva 2020-07-27  1336  		fallthrough;
+9f056ed8ee01ad John Crispin        2019-11-25  1337  
+9f056ed8ee01ad John Crispin        2019-11-25  1338  	default:
+9f056ed8ee01ad John Crispin        2019-11-25  1339  		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
+9f056ed8ee01ad John Crispin        2019-11-25  1340  		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
+9f056ed8ee01ad John Crispin        2019-11-25  1341  
+9f056ed8ee01ad John Crispin        2019-11-25  1342  		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
+9f056ed8ee01ad John Crispin        2019-11-25  1343  		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
+9f056ed8ee01ad John Crispin        2019-11-25  1344  
+9f056ed8ee01ad John Crispin        2019-11-25  1345  		arg->peer_he_mcs_count++;
+9f056ed8ee01ad John Crispin        2019-11-25  1346  		break;
+9f056ed8ee01ad John Crispin        2019-11-25  1347  	}
+d5c65159f28953 Kalle Valo          2019-11-23  1348  }
+d5c65159f28953 Kalle Valo          2019-11-23  1349  
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---IJpNTDwzlM2Ie8A6
+--0F1p//8PRICkK4MW
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICAk5cGAAAy5jb25maWcAlFxLd9s4st7Pr9BJb2YW3eNXNOl7jxcgCUoYkQQNgJLtDY/i
+H4sICC1KcGAAAy5jb25maWcAlFxLd9s4st7Pr9BJb2YW3eNXNOl7jxcgCUoYkQQNgJLtDY/i
 KIlP+5FjO3078+tvFfgqgCCV2cThVwUQj3oD1C9/+2XBvr89P+7f7u/2Dw8/Fl8OT4eX/dvh
 0+Lz/cPhfxeJXBTSLHgizG/AnN0/ff/rn4/LD38s3v92evbbya8vdxeLzeHl6fCwiJ+fPt9/
 +Q7N75+f/vbL32JZpGJVx3G95UoLWdSGX5vLd9j81wfs6dcvd3eLv6/i+B+L3387/+3kHWkj
@@ -1296,4 +1347,4 @@ frCxMhHoXOLOZOIkGUMEJ4Hc+cvnI2mowy+40qFjAtfI3JhTTzn2tL8H7vLDjL80l+MHH3j5
 0LlyBIkj5jZj1Jhja/JHqQPVr9u0s4ojAThlmMpTixJTdnVcB3zelAcb9AtoKcOL2Ah85ci+
 Per+PwPQqHOOyAMA
 
---IJpNTDwzlM2Ie8A6--
+--0F1p//8PRICkK4MW--
