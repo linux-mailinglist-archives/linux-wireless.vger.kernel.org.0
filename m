@@ -2,92 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C0A135A1CB
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 17:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DD4035A1E5
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Apr 2021 17:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233915AbhDIPNl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Apr 2021 11:13:41 -0400
-Received: from mail-ot1-f46.google.com ([209.85.210.46]:38736 "EHLO
-        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234132AbhDIPNk (ORCPT
+        id S234136AbhDIPWw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Apr 2021 11:22:52 -0400
+Received: from mail-oi1-f170.google.com ([209.85.167.170]:34352 "EHLO
+        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234065AbhDIPWv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Apr 2021 11:13:40 -0400
-Received: by mail-ot1-f46.google.com with SMTP id w21-20020a9d63950000b02901ce7b8c45b4so5990496otk.5;
-        Fri, 09 Apr 2021 08:13:26 -0700 (PDT)
+        Fri, 9 Apr 2021 11:22:51 -0400
+Received: by mail-oi1-f170.google.com with SMTP id k18so1212776oik.1;
+        Fri, 09 Apr 2021 08:22:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=mqW1a5d7rFu6UosMT0283wsYzx5UvTYigPBJh3XYCyc=;
-        b=QEdMWu7we174+Fz5MrLJbhrQTog6ztG6nmGrxSSTEgu2H73N0wr4rIibUg0ZfXJgnA
-         ELOV6FKIVbTsqjE9ArukIaatmqTyjngAwPsAObi1ntF9gVfilViVqjuSH+Ge2nWqEIpo
-         O5lFvMCNwk53BqcOztD1jMyTkyIppxivOx5yjoNZ5fW9qZ5nOk7rJxxIRWQXU1gGCY+3
-         MvoPj2vDQ+r0SEe8STsN48UFCRVsBu7BH6VJlJev/4vhdPgDfWzgdtwj7F/fFxsHNfvI
-         4WYSF7rYjjoM2vG9rISJV6i5ZnLSuS07tGjxJWqTYOpToFaqk4K2S0Jjfsaj4+1td/ve
-         7pMQ==
-X-Gm-Message-State: AOAM530Plc1A850vlgQHzfBzZ5Wyj17z6V3fERFKZB9jUxtVajJg6An/
-        LZ1YwtibgmnWe8XM99AEOw==
-X-Google-Smtp-Source: ABdhPJzK/s2s6omuVhlWR+swr/+lGq8vgQ3CRIdBD9rkXjpyR9G/oz56dzNtu+RIiUSgsBEGGqvBcA==
-X-Received: by 2002:a05:6830:18db:: with SMTP id v27mr12640961ote.253.1617981206188;
-        Fri, 09 Apr 2021 08:13:26 -0700 (PDT)
+        bh=vCodsZZIoTvQzkpJnTU8BlxA64HJCCTzMZq32HqgNnM=;
+        b=V/ArUs1E2gYegL8gdxJMgQt+HGYX5+Z1vRPwKo6TXTzFZj9kUgsI0g2yMtvJCb1HGH
+         wJk/Dq3bvPaCFqrIZ0Ei69cuGTECSmpVM0srQGCz02rZDRDDk7M4kZDBt3KIlFJplPMp
+         q84H9PFgImkxAVHwDDpyCtI81MOCOBy+w0BP2LeXzOYK2OgWHcUoOEWmXzxHJY0DOZhH
+         4RFcBVXr4CfAL5dciPbb9MIsw0DGV0AY7CBPvokjd1LKG1l/VLoV2m39k///j4bVhqSW
+         9Ea+/8eV3+F4Y0kz/py6Dsm81MC0z/FWZhpN083ncjBoo0q1yfGnzJ5BIbb/2gSeQF1k
+         KPnw==
+X-Gm-Message-State: AOAM530/+UyF4W07KIZv4dEds2MGYdLg3U0anHkzS0YALXvF/KsqSYdJ
+        jYRSrLuueEAJavJtNe83EA==
+X-Google-Smtp-Source: ABdhPJwAdAuiAVjQviaVDOPFU6EiLZKnX28uUKM5/wWTRkOUDlDIYcj9X/fksUxBrOZPWmKqf/RjTA==
+X-Received: by 2002:a05:6808:14c8:: with SMTP id f8mr10681880oiw.55.1617981758249;
+        Fri, 09 Apr 2021 08:22:38 -0700 (PDT)
 Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id j11sm574756ooo.45.2021.04.09.08.13.24
+        by smtp.gmail.com with ESMTPSA id g84sm574029oia.45.2021.04.09.08.22.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Apr 2021 08:13:25 -0700 (PDT)
-Received: (nullmailer pid 3664310 invoked by uid 1000);
-        Fri, 09 Apr 2021 15:13:24 -0000
-Date:   Fri, 9 Apr 2021 10:13:24 -0500
+        Fri, 09 Apr 2021 08:22:37 -0700 (PDT)
+Received: (nullmailer pid 3676380 invoked by uid 1000);
+        Fri, 09 Apr 2021 15:22:36 -0000
+Date:   Fri, 9 Apr 2021 10:22:36 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     Lorenzo Bianconi <lorenzo@kernel.org>
 Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
         lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
         ryder.lee@mediatek.com, shayne.chen@mediatek.com,
         devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/8] dt-bindings:net:wireless:ieee80211: introduce
- regdomain property
-Message-ID: <20210409151324.GA3662358@robh.at.kernel.org>
+Subject: Re: [PATCH 2/8] dt-bindings:net:wireless:mediatek,mt76: introduce
+ power-limits node
+Message-ID: <20210409152236.GB3662358@robh.at.kernel.org>
 References: <cover.1617625912.git.lorenzo@kernel.org>
- <1ff764d84e1fb83768c2e9d233c27b0ed1ef4294.1617625912.git.lorenzo@kernel.org>
+ <eb6998d12c7f60a28c7f3eab455d4339656f76e2.1617625912.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1ff764d84e1fb83768c2e9d233c27b0ed1ef4294.1617625912.git.lorenzo@kernel.org>
+In-Reply-To: <eb6998d12c7f60a28c7f3eab455d4339656f76e2.1617625912.git.lorenzo@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Apr 05, 2021 at 02:40:25PM +0200, Lorenzo Bianconi wrote:
-> Add regdomain property to ieee80211 binding
+On Mon, Apr 05, 2021 at 02:40:26PM +0200, Lorenzo Bianconi wrote:
+> Introduce power-limits node in mt76 binding in order to specify
+> per-rate power limit values for each 802.11n/802.11ac rate
 > 
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > ---
->  .../devicetree/bindings/net/wireless/ieee80211.yaml      | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  .../bindings/net/wireless/mediatek,mt76.yaml  | 79 +++++++++++++++++++
+>  1 file changed, 79 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
-> index d58e1571df9b..6557c6348cac 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
-> @@ -30,6 +30,15 @@ properties:
->        different 5 GHz subbands. Using them incorrectly could not work or
->        decrease performance noticeably
+> diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> index d6f835d17d66..6ede331e3e52 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> @@ -72,6 +72,62 @@ properties:
+>        led-sources:
+>          maxItems: 1
 >  
-> +  regdomain:
-> +    minItems: 1
-> +    maxItems: 1
-> +    contains:
+> +  power-limits:
+> +    type: object
+> +    properties:
+> +      regdomain: true
 
-If only 1 entry, then 'contains' is pointless. Just 'enum' is enough. 
-You also need a 'description'.
+This shouldn't really be in ieee80211.yaml if it belongs under 
+'power-limits' node. You may need a 2nd power limits schema if this 
+something that should/can be common.
 
-> +      enum:
-> +        - FCC
-> +        - ETSI
-> +        - JP
 > +
->  additionalProperties: true
+> +    patternProperties:
+> +      "^r[0-9]+":
+> +        type: object
+> +        patternProperties:
+> +          "^txpower-[256]g$":
+> +            type: object
+> +            patternProperties:
+> +              "^b[0-9]+$":
+> +                type: object
+> +                properties:
+> +                  channels:
+> +                    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +                    minItems: 2
+> +                    maxItems: 2
+> +                    description:
+> +                      Pairs of first and last channel number of the selected
+> +                      band
+> +
+> +                  cck:
+> +                    $ref: /schemas/types.yaml#/definitions/uint32-array
+
+What's the range of values? Could be 8-bit?
+
+> +                    minItems: 4
+> +                    maxItems: 4
+> +                    description:
+> +                      4 half-dBm per-rate power limit values
+> +
+> +                  mcs:
+> +                    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +                    description:
+> +                      Sets of per-rate power limit values for 802.11n/802.11ac
+> +                      rates for multiple channel bandwidth settings.
+> +                      Each set starts with the number of channel bandwidth
+> +                      settings for which the rate set applies, followed by
+> +                      either 8 or 10 power limit values. The order of the
+> +                      channel bandwidth settings is 20, 40, 80 and 160 MHz.
+> +
+> +                  ru:
+> +                    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +                    description:
+> +                      Sets of per-rate power limit values for 802.11ax rates
+> +                      for multiple channel bandwidth or resource unit settings.
+> +                      Each set starts with the number of channel bandwidth or
+> +                      resource unit settings for which the rate set applies,
+> +                      followed by 12 power limit values. The order of the
+> +                      channel resource unit settings is RU26, RU52, RU106,
+> +                      RU242/SU20, RU484/SU40, RU996/SU80 and RU2x996/SU160.
+
+These short property names bother me because we don't want 2 property 
+names with different meanings. A 2-3 letter name seems more likely to 
+collide. Also, the names aren't really self describing either.
+
+> +
+> +                  txs-delta:
+> +                    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +                    description:
+> +                      Half-dBm power delta for different numbers of antennas
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -93,6 +149,29 @@ examples:
+>          led {
+>            led-sources = <2>;
+>          };
+> +
+> +        power-limits {
+> +          r0 {
+> +            txpower-5g {
+> +               regdomain = "FCC";
+
+Not the right location for what you've defined.
+
+> +               b0 {
+> +                   channels = <36 48>;
+> +                   ofdm = <23 23 23 23 23 23 23 23>;
+> +                   mcs = <1 23 23 23 23 23 23 23 23 23 23>,
+> +                         <3 22 22 22 22 22 22 22 22 22 22>;
+> +                   ru = <3 22 22 22 22 22 22 22 22 22 22 22 22>,
+> +                        <4 20 20 20 20 20 20 20 20 20 20 20 20>;
+> +               };
+> +               b1 {
+> +                   channels = <100 181>;
+> +                   ofdm = <14 14 14 14 14 14 14 14>;
+> +                   mcs = <4 14 14 14 14 14 14 14 14 14 14>;
+> +                   txs-delta = <12 9 6>;
+> +                   ru = <7 14 14 14 14 14 14 14 14 14 14 14 14>;
+> +               };
+> +             };
+> +          };
+> +        };
+>        };
+>      };
 >  
->  examples:
 > -- 
 > 2.30.2
 > 
