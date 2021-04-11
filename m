@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1192E35B713
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 23:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F229B35B714
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 23:48:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235366AbhDKVsE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Apr 2021 17:48:04 -0400
-Received: from mga03.intel.com ([134.134.136.65]:61996 "EHLO mga03.intel.com"
+        id S235530AbhDKVtG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Apr 2021 17:49:06 -0400
+Received: from mga01.intel.com ([192.55.52.88]:28302 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231405AbhDKVsE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Apr 2021 17:48:04 -0400
-IronPort-SDR: 6f/XDEXXXGAVaersf4Hlf0PuMV5tPhpBmeKF95h6DyJQbjII0gAymqwdLfGjFBe4nczxqwifNn
- chMPhXYQgcHg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9951"; a="194102771"
+        id S231405AbhDKVtG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 11 Apr 2021 17:49:06 -0400
+IronPort-SDR: ORGtL3YD2Z18lfxa3uWnQJa5+hiquBpO4RHTuIDR+NMEqyas6PYNOsrB+04bo6zdOz4wJ9BBsb
+ r+DxbNmwRe5Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9951"; a="214530762"
 X-IronPort-AV: E=Sophos;i="5.82,214,1613462400"; 
-   d="scan'208";a="194102771"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2021 14:47:47 -0700
-IronPort-SDR: fBszKqItA8zmvhsn8x8k84XPlkiSl/C8BT7WAn1HLKxNYmqXoGZtLGoSXKA/ttVBek3uJgZRkh
- vPoO0gSjQv+Q==
+   d="scan'208";a="214530762"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2021 14:48:47 -0700
+IronPort-SDR: FSHw0ZI1M1YQTh+c2cuTWgLKTqtTUbN15TuJZHiVIApAL36O7yDdGG3xs7I+l+qEriNEugKdui
+ 57jgYb0cRm2A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,214,1613462400"; 
-   d="scan'208";a="398143548"
+   d="scan'208";a="599763442"
 Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 11 Apr 2021 14:47:46 -0700
+  by orsmga005.jf.intel.com with ESMTP; 11 Apr 2021 14:48:46 -0700
 Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1lVhvl-000J7k-EQ; Sun, 11 Apr 2021 21:47:45 +0000
-Date:   Mon, 12 Apr 2021 05:47:41 +0800
+        id 1lVhwj-000J7p-GT; Sun, 11 Apr 2021 21:48:45 +0000
+Date:   Mon, 12 Apr 2021 05:47:49 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:pending] BUILD SUCCESS
- d876da976e5b015b0ea3f997f18517341fa3cd12
-Message-ID: <60736e7d.KkGnrkcNr+RrF0Xo%lkp@intel.com>
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ fa9f5d0e0b45a06802f7cb3afed237be6066821e
+Message-ID: <60736e85.1Qx4hd6H4bRlmqwa%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -43,8 +43,8 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
-branch HEAD: d876da976e5b015b0ea3f997f18517341fa3cd12  Merge tag 'mt76-for-kvalo-2021-03-18' of https://github.com/nbd168/wireless into pending
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+branch HEAD: fa9f5d0e0b45a06802f7cb3afed237be6066821e  iwlegacy: avoid -Wempty-body warning
 
 elapsed time: 724m
 
