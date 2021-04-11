@@ -2,93 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 470B135ACE9
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Apr 2021 13:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5913D35B250
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 09:58:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234674AbhDJLUX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 10 Apr 2021 07:20:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44178 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234647AbhDJLUW (ORCPT
+        id S233612AbhDKH6T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Apr 2021 03:58:19 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:18361 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229804AbhDKH6R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 10 Apr 2021 07:20:22 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6373C061762
-        for <linux-wireless@vger.kernel.org>; Sat, 10 Apr 2021 04:20:07 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id e12so8050177wro.11
-        for <linux-wireless@vger.kernel.org>; Sat, 10 Apr 2021 04:20:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=NNk4SAcoFIrAv/6JBtW/nm47KG5kv09NGIDqM5Ffj2o=;
-        b=C1eddsIoHRarSTa0/4YP7UJVFW4tFw/CooKAyxaG8cC+tO5Ay6+sBCKGwGiV8btTcR
-         pz5CBXGzNNSetzE7BIeQhaFa6pJ9ot8mVblGkm/9yUnMdd68iF+Eb3YjRsckAo8NVOEs
-         Drb2/8PqU8sg4TbqMQd969VnYM/5YOmkbdH2YFtra4QFovyuaSxFOcUcxOyEZjKKIOk1
-         XIg4q8pZK1EFUGWFxVS7JqV/EbZsmmdarr4SSJr+FTbjDGu39P4APUS3FaL2TNGzdqJF
-         EVM+4sok9OpIbjwLzsXx9SaaYFvG4LyEo01z9RcjQ4An/bofBKKTlxbm24LAebYptETz
-         Vc2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=NNk4SAcoFIrAv/6JBtW/nm47KG5kv09NGIDqM5Ffj2o=;
-        b=smF8CDegQo2lUwmCchwD+FMkth9F++z4x++YEE/vpxRrS4fHRatPl1CY0PcO0visp5
-         9mRpT9a2RBttYuf17CwJyojqoedAgGuZtlW/V/J2paAEszW2LNNcLLg2BHrIucXgLiOC
-         lIfeE2CYcmVoX62A2yO74bOVAqRxiN4PxeOgCZ2gjVSfB4YZSTjqSi6Gg7V+Qz7/500+
-         RlZofE3FJpzXRDyG4igxo4LEHOyFkbP8AchYZ2cc9ZaAb6Np9/BDU1KfOl8Uz5zNTYbr
-         rT9XUbKh3rvwCwrzlOUrxcOubniRmuDoSpiecQHteS1ryyw5ubKxwVaqUU/bYiGt+RQQ
-         u7Rg==
-X-Gm-Message-State: AOAM530kJU9Xa9Vnl69jQNVsMfbD0FxNEnM7kVzzBNuBnuFIfyzE6DGc
-        ivJRYnkboabWPy7FgA7aXto=
-X-Google-Smtp-Source: ABdhPJxGJRnNR265Hb0n9mTCdrmDoyWqystZxk3bKnFpMQCAkMRTqUc/pvU0mtUNUQJsPH9PgXnp4g==
-X-Received: by 2002:a05:6000:1187:: with SMTP id g7mr22053565wrx.306.1618053606741;
-        Sat, 10 Apr 2021 04:20:06 -0700 (PDT)
-Received: from paula-ultrabook.fritz.box (dynamic-2a01-0c22-a41a-e200-35a1-ce2e-1cf4-ff60.c22.pool.telefonica.de. [2a01:c22:a41a:e200:35a1:ce2e:1cf4:ff60])
-        by smtp.gmail.com with ESMTPSA id j123sm7545118wmb.1.2021.04.10.04.20.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Apr 2021 04:20:06 -0700 (PDT)
-From:   Benjamin Aschenbrenner <benjamin.aschenbrenner@gmail.com>
-To:     johannes@sipsolutions.net
-Cc:     benjamin.aschenbrenner@gmail.com, linux-wireless@vger.kernel.org
-Subject: [PATCH v2 2/2] iw: fix ftm_request missing arguments segfault
-Date:   Sat, 10 Apr 2021 13:19:37 +0200
-Message-Id: <20210410111937.32813-2-benjamin.aschenbrenner@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210410111937.32813-1-benjamin.aschenbrenner@gmail.com>
-References: <20210410111937.32813-1-benjamin.aschenbrenner@gmail.com>
+        Sun, 11 Apr 2021 03:58:17 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618127881; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=FO7OT8tHpj9776EAErHbdSOjVc4fZtr9in7MuapDRcc=; b=RS1OXBBixhuQ8p6yhwBEetgNealqHgDBjghgxRsf8UygoKe8ECRgJO4lKyR9xQwMZAxTyoki
+ TgG4LAgSDc4YN+VDZWYvbfnA+qRkkT832hHopeTl75vq8Y3Yq/PWjS3WvNKX5Ureb01KKp29
+ DJ7JRxJRoB77zGaCp3YiBdrvUCg=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 6072ac092cc44d3aea6856a2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 11 Apr 2021 07:58:01
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 05771C43465; Sun, 11 Apr 2021 07:58:00 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 99A0FC433CA;
+        Sun, 11 Apr 2021 07:57:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 99A0FC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: Re: [PATCH 1/2] dt-binding: bcm43xx-fmac: add optional brcm,ccode-map
+References: <20210408113022.18180-1-shawn.guo@linaro.org>
+        <20210408113022.18180-2-shawn.guo@linaro.org>
+Date:   Sun, 11 Apr 2021 10:57:54 +0300
+In-Reply-To: <20210408113022.18180-2-shawn.guo@linaro.org> (Shawn Guo's
+        message of "Thu, 8 Apr 2021 19:30:21 +0800")
+Message-ID: <87k0p9mewt.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When expected argument <config-file> is not passed to arguemts iw
-segfaults.
+Shawn Guo <shawn.guo@linaro.org> writes:
 
-Example: iw wlp2s0 measurement ftm_request
+> Add optional brcm,ccode-map property to support translation from ISO3166
+> country code to brcmfmac firmware country code and revision.
+>
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> ---
+>  .../devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> index cffb2d6876e3..a65ac4384c04 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> @@ -15,6 +15,12 @@ Optional properties:
+>  	When not specified the device will use in-band SDIO interrupts.
+>   - interrupt-names : name of the out-of-band interrupt, which must be set
+>  	to "host-wake".
+> + - brcm,ccode-map : multiple strings for translating ISO3166 country code to
+> +	brcmfmac firmware country code and revision.  Each string must be in
+> +	format "AA-BB-num" where:
+> +	  AA is the ISO3166 country code which must be 2 characters.
+> +	  BB is the firmware country code which must be 2 characters.
+> +	  num is the revision number which must fit into signed integer.
+>  
+>  Example:
+>  
+> @@ -34,5 +40,6 @@ mmc3: mmc@1c12000 {
+>  		interrupt-parent = <&pio>;
+>  		interrupts = <10 8>; /* PH10 / EINT10 */
+>  		interrupt-names = "host-wake";
+> +		brcm,ccode-map = "JP-JP-78", "US-Q2-86";
 
-This fixes it.
+The commit log does not answer "Why?". Why this needs to be in device
+tree and, for example, not hard coded in the driver?
 
-Signed-off-by: Benjamin Aschenbrenner <benjamin.aschenbrenner@gmail.com>
----
- measurements.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/measurements.c b/measurements.c
-index 635d942..80fe785 100644
---- a/measurements.c
-+++ b/measurements.c
-@@ -282,6 +282,9 @@ static int handle_ftm_req_send(struct nl80211_state *state, struct nl_msg *msg,
- 	const char *file;
- 	int err;
- 
-+	if (argc < 1)
-+		return HANDLER_RET_USAGE;
-+
- 	file = argv[0];
- 	argc--;
- 	argv++;
 -- 
-2.30.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
