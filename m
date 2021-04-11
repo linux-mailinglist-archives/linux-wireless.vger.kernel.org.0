@@ -2,85 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F93A35B26A
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 10:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C028635B27A
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 10:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233696AbhDKIYy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Apr 2021 04:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59966 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbhDKIYx (ORCPT
+        id S233514AbhDKIsI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Apr 2021 04:48:08 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:39600 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229804AbhDKIsH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Apr 2021 04:24:53 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18839C061574
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 01:24:32 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id hq27so15177191ejc.9
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 01:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-transfer-encoding:content-language;
-        bh=+HPLZx6r8w/SKgUvUa5HzbaNtmtw6B6RH/vhDMqbVac=;
-        b=L2R2ooPTcNOxmC+MgLW17Kk4maMC41Ao7bogzHP6/CSuBAutVwkXL7qt5QgN0u27uH
-         HyWnnubdj0V4l1ys/iOY9mf9DvHieDh/q34k5UQvAGWTnpw44f68MvClJ/45CJLAwKRQ
-         i78j9m0EWFgHzVJkP3eP3GDJGag4m86fYHkQNQpUJ4URLejsFGbHRYXZ1R0PspsCQVfB
-         S2F4QePRO/L9ImOx1GRroITBwKr+IYkXYVvzinzcTxJ+Qy/+L4LFf6mcqWquzx1pQ7zI
-         Fv3o/sy1JT3v+zWPC0zL2Z/slXnPlwxKenPTTy02D922DHRnj9TfdN3jIQkiCvGD4jmW
-         P0ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-transfer-encoding:content-language;
-        bh=+HPLZx6r8w/SKgUvUa5HzbaNtmtw6B6RH/vhDMqbVac=;
-        b=O7l92BXycwPn2epwld6fK1IDNZQI4tP6J5Aiy07SD8l24OZN3oUx+e8Y5D2iZZeBC0
-         5ik8e6Uyy2STgDSZBk1jqbZG4kUweKGx1N0IXTpz/lq2sdYd+PjkvWKVsLFH0zOJ7Dgs
-         u70A3MQSayb42G82ZeFUS9A0nbfNJ37OjcxEkgWTNgrUMlRcBgXJXPWXgyACBOUJgiWw
-         +4+bjeA2cvVV8C/X4D5N+NbQRXUx4NCzqbeCZ9f3zfkZ/u2UNH/4Rd/O7mb4AB27XvBu
-         xjZk3enT/6FQXg8UYu+3dTbNNh1d8gV1ExaXH0Zegi6Uup9ZHSpCx3CCS8iKNqiM0VhH
-         gBlA==
-X-Gm-Message-State: AOAM533phrfZIOJuOMSj9HBeGb7kY9jM79KqBH0sOcqCUM2NGZ9LKbo2
-        zj5kY+Pq6wSdhbvuOmwo1aQcppB1IbTuWg==
-X-Google-Smtp-Source: ABdhPJw7Ghge34kxzbp1CJ4FL2gi7adKKD1XNgI0qMgNjtKir6sMSLBqbtba9MOBxdGsF3DWh9FSzg==
-X-Received: by 2002:a17:906:c0c8:: with SMTP id bn8mr22335815ejb.445.1618129470409;
-        Sun, 11 Apr 2021 01:24:30 -0700 (PDT)
-Received: from [10.0.0.2] (94-210-190-100.cable.dynamic.v4.ziggo.nl. [94.210.190.100])
-        by smtp.gmail.com with ESMTPSA id l9sm4322153edw.68.2021.04.11.01.24.29
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Apr 2021 01:24:30 -0700 (PDT)
-To:     linux-wireless@vger.kernel.org
-From:   Friso Smit <fw.smit01@gmail.com>
-Subject: iwlwifi: failed to load firmware chunk
-Message-ID: <40bb3a55-a872-414d-ed7f-6548beecd236@gmail.com>
-Date:   Sun, 11 Apr 2021 10:24:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        Sun, 11 Apr 2021 04:48:07 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618130872; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=a2G7vTFDh+Q+9V1OXanbd//eBGo5z3KYcHHK6KjCCtA=;
+ b=MW5ypptELoWOdUw/6VZxH3fWfWLumF18e2P6Ufw8Rv/JiWwS2nobURZpYUkbhqsV+hsRtBjf
+ fl01OhMWBsKPZGSj8/6EFBRfQc7KPapZs5Evrt4/zffSJdnmfBlBLG0fnd737Pzr6UUR7mzu
+ YIHGgrrEuqwo/lX9reJy+HXPCfs=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6072b7b6febcffa80fe7ed3d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 11 Apr 2021 08:47:50
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D976AC43461; Sun, 11 Apr 2021 08:47:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3C805C433C6;
+        Sun, 11 Apr 2021 08:47:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3C805C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Subject: Re: [PATCH 5.12] mt76: fix potential DMA mapping leak
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210323214737.53254-1-nbd@nbd.name>
+References: <20210323214737.53254-1-nbd@nbd.name>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org, greearb@candelatech.com
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210411084750.D976AC43461@smtp.codeaurora.org>
+Date:   Sun, 11 Apr 2021 08:47:50 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Felix Fietkau <nbd@nbd.name> wrote:
 
-After upgrading to linux 5.11.12.arch1-1 I suddenly had no wifi 
-connection. I immediately tried downgrading again, but to no avail. Even 
-trying to boot into windows didn't seem to help. The windows 
-troubleshooter tried a reset of the wireless chip and that may have 
-solved the issue. Currently it's working again (on linux 
-5.11.10.arch.1-1), but I'm hesitant to upgrade right now.
+> With buf uninitialized in mt76_dma_tx_queue_skb_raw, its field skip_unmap
+> could potentially inherit a non-zero value from stack garbage.
+> If this happens, it will cause DMA mappings for MCU command frames to not be
+> unmapped after completion
+> 
+> Fixes: 27d5c528a7ca ("mt76: fix double DMA unmap of the first buffer on 7615/7915")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-I don't have a dmesg log unfortunatly, but journalctl provides the same 
-error I saw in dmesg, namely that iwlwifi failed to load the firmware.
+Sorry, I missed this and I suspect it's now too late for v5.12. Felix, can you
+instead take this to your tree so that we can get this to v5.13? I assigned
+this to you on patchwork.
 
-journalctl output (from 5.11.10 weirdly enough): 
-https://pastebin.com/yrqNgih0
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210323214737.53254-1-nbd@nbd.name/
 
-Best regards,
-
-Friso
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
