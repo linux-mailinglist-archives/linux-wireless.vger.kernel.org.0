@@ -2,208 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE3835B383
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 13:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5979F35B388
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 13:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235234AbhDKLRC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Apr 2021 07:17:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59692 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235095AbhDKLRA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Apr 2021 07:17:00 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8E5B460FE6;
-        Sun, 11 Apr 2021 11:16:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618139804;
-        bh=tkf12RfKAqIBV4S4W4SMHgIhXewzpDDmMsjI0+YDGNY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Z59JfyA4pX2aY47+wZNWmih8iW54ZsGR1oJpisNdAOWAG+k6dp/7oOL4zAvcArHY8
-         K46UbG3pFJA+LuAJl1hOJq2qgYeqbE0Hx9q8RR8gIxMiD8gNsqG7IauSArPh8qdal9
-         AEBHw8wqwH1BrQmPqdfamUI+t/4lFniwwfQZrsJlgBinDH5JmHcCGnJlOv2kqUgwX3
-         cU2X/69slG9zbscItQE/LjV0DMAg6HLokw4e5vXpK5MynHa2dxUbbKuezOyg4pdOr7
-         wsGuCTBswxCAi48QKEQroe1QKxmr7rH8mhaeL++NmfLynBNczMKzSuS0TwREW+eSdD
-         MCtuKoLZaSqzQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH v2] mt76: mt7921: introduce MCU_EVENT_LP_INFO event parsing
-Date:   Sun, 11 Apr 2021 13:16:33 +0200
-Message-Id: <46515032b1f9447854a52a4378a5d2d233aff1e5.1618139664.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S235366AbhDKL1F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Apr 2021 07:27:05 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:52176 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233696AbhDKL1E (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 11 Apr 2021 07:27:04 -0400
+X-Greylist: delayed 587 seconds by postgrey-1.27 at vger.kernel.org; Sun, 11 Apr 2021 07:27:04 EDT
+Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 772B9227EA0
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 11:17:01 +0000 (UTC)
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.81])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 2F0106005F;
+        Sun, 11 Apr 2021 11:17:01 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (cache2.dclocal [10.7.64.219])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 2428F1A005E;
+        Sun, 11 Apr 2021 11:17:00 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B7AC8780068;
+        Sun, 11 Apr 2021 11:16:59 +0000 (UTC)
+Received: from [192.168.254.6] (unknown [50.34.172.155])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 8A10413C2B3;
+        Sun, 11 Apr 2021 04:16:58 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8A10413C2B3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1618139819;
+        bh=4Il3VsbAY3QKC6UEhsF2QOTodNnxO3lqbT5oWJGX6dU=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=P7ShuHQrVtJV4zBbMWH7q2z/jq0uxvSV68Uwjc8TaL5EJdsCna5kPBy1+AI2x65DG
+         c7GJ5Z5plAe3J+GfUn4PM8L5GKBoDtkJumfC6m/qg1aNNwo0VuvEZpm4CKdeLG4ECR
+         HoT1s3Dt83aZLeJamb/yEOKemK4fOUu4QmxWMIaE=
+Subject: Re: [PATCH 06/12] iwlwifi: mvm: Add support for 6GHz passive scan
+To:     "Peer, Ilan" <ilan.peer@intel.com>, Luca Coelho <luca@coelho.fi>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20210331091452.543321-1-luca@coelho.fi>
+ <iwlwifi.20210331121101.7c7bd00e0aeb.Ib226ad57e416b43a710c36a78a617d4243458b99@changeid>
+ <aa0dae40-1565-2bb0-b33f-0da82a8de137@candelatech.com>
+ <BN7PR11MB2610D9C80C698F837C3A2A55E9719@BN7PR11MB2610.namprd11.prod.outlook.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <eb60c152-81ac-2977-87fc-f724d4d6ccf0@candelatech.com>
+Date:   Sun, 11 Apr 2021 04:16:58 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <BN7PR11MB2610D9C80C698F837C3A2A55E9719@BN7PR11MB2610.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-MDID: 1618139820-6v4eKNU07ua6
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Report trace event related to MCU_EVENT_LP_INFO that is sent by the mcu
-when it is ready to enter in deep sleep state
+On 4/11/21 3:14 AM, Peer, Ilan wrote:
+> Hi Ben,
+> 
+>> -----Original Message-----
+>> From: Ben Greear <greearb@candelatech.com>
+>> Sent: Wednesday, March 31, 2021 15:04
+>> To: Luca Coelho <luca@coelho.fi>; kvalo@codeaurora.org
+>> Cc: linux-wireless@vger.kernel.org
+>> Subject: Re: [PATCH 06/12] iwlwifi: mvm: Add support for 6GHz passive scan
+>>
+>> On 3/31/21 2:14 AM, Luca Coelho wrote:
+>>> From: Ilan Peer <ilan.peer@intel.com>
+>>>
+>>> When doing scan while 6GHz channels are not enabled, the 6GHz band is
+>>> not scanned. Thus, if there are no APs on the 2GHz and 5GHz bands
+>>> (that will allow discovery of geographic location etc. that would
+>>> allow enabling the 6GHz channels) but there are non collocated APs on
+>>> 6GHz PSC channels these would never be discovered.
+>>>
+>>> To overcome this, FW added support for performing passive UHB scan in
+>>> case no APs were discovered during scan on the 2GHz and 5GHz channels.
+>>>
+>>> Add support for enabling such scan when the following conditions are
+>>> met:
+>>>
+>>> - 6GHz channels are supported but not enabled by regulatory.
+>>> - Station interface is not associated or less than a defined time
+>>>     interval passed from the last resume or HW reset flows.
+>>> - At least 4 channels are included in the scan request
+>>> - The scan request includes the widlcard SSID.
+>>> - At least 50 minutes passed from the last 6GHz passive scan.
+>>
+>> Why are you trying so hard to not do passive scans?  This seems like it is set
+>> up for all sorts of frustration.
+>>
+> 
+> This logic enables a special 'passive' scan which is not directly intended for discovery of APs for connection etc. but
+> for discovery of APs with country information in the beacons/probe responses, so the fw could use this information
+> as an input that might allow it to enable 6GHz channels (which are supported but are disabled). This special scan
+> is intended for cases that the device does not have any other regulatory information that allows it to enable the 6GHz channels.
+> Once these channels are enabled, we use passive scan as needed.
+> 
+> We generally try to avoid passive scan on all the 6GHz channels as this is a long flow that takes at least 6 seconds (as there are
+> such 64 channels) and with the discovery mechanisms defined for the 6GHz is not really needed.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes since v1:
-- rebase on top of mt76 master branch
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../wireless/mediatek/mt76/mt7921/Makefile    |  4 +-
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 19 +++++++
- .../mediatek/mt76/mt7921/mt7921_trace.h       | 51 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/trace.c | 12 +++++
- 5 files changed, 86 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/trace.c
+If the station comes up and does a 6E passive scan and does not find any AP, perhaps because 6Ghz AP was turned on 1 minute after the station
+tried to initially scan, this means that it will take 50 minutes before it can have a chance to scan
+the AP and connect to the Internet?  If station cannot connect after a relatively short time,
+then I think it should scan as widely as it can in order find some possible way to connect.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 54e6c15f276b..13b1ed545f94 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -575,6 +575,7 @@ enum {
- 	MCU_EVENT_ACCESS_REG = 0x02,
- 	MCU_EVENT_MT_PATCH_SEM = 0x04,
- 	MCU_EVENT_REG_ACCESS = 0x05,
-+	MCU_EVENT_LP_INFO = 0x07,
- 	MCU_EVENT_SCAN_DONE = 0x0d,
- 	MCU_EVENT_ROC = 0x10,
- 	MCU_EVENT_BSS_ABSENCE  = 0x11,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-index 09d1446ad933..e531666f9fb4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-@@ -2,4 +2,6 @@
- 
- obj-$(CONFIG_MT7921E) += mt7921e.o
- 
--mt7921e-y := pci.o mac.o mcu.o dma.o eeprom.o main.o init.o debugfs.o
-+CFLAGS_trace.o := -I$(src)
-+
-+mt7921e-y := pci.o mac.o mcu.o dma.o eeprom.o main.o init.o debugfs.o trace.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index ca8f7430e7aa..868cd854e379 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -4,6 +4,7 @@
- #include <linux/firmware.h>
- #include <linux/fs.h>
- #include "mt7921.h"
-+#include "mt7921_trace.h"
- #include "mcu.h"
- #include "mac.h"
- 
-@@ -509,6 +510,20 @@ mt7921_mcu_debug_msg_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 	}
- }
- 
-+static void
-+mt7921_mcu_low_power_event(struct mt7921_dev *dev, struct sk_buff *skb)
-+{
-+	struct mt7921_mcu_lp_event {
-+		u8 state;
-+		u8 reserved[3];
-+	} __packed * event;
-+
-+	skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
-+	event = (struct mt7921_mcu_lp_event *)skb->data;
-+
-+	trace_lp_event(dev, event->state);
-+}
-+
- static void
- mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
- {
-@@ -535,6 +550,9 @@ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 		mt76_connac_mcu_coredump_event(&dev->mt76, skb,
- 					       &dev->coredump);
- 		return;
-+	case MCU_EVENT_LP_INFO:
-+		mt7921_mcu_low_power_event(dev, skb);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -557,6 +575,7 @@ void mt7921_mcu_rx_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 	    rxd->eid == MCU_EVENT_SCAN_DONE ||
- 	    rxd->eid == MCU_EVENT_DBG_MSG ||
- 	    rxd->eid == MCU_EVENT_COREDUMP ||
-+	    rxd->eid == MCU_EVENT_LP_INFO ||
- 	    rxd->eid == MCU_EVENT_ROC ||
- 	    !rxd->seq)
- 		mt7921_mcu_rx_unsolicited_event(dev, skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
-new file mode 100644
-index 000000000000..9bc4db67f352
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921_trace.h
-@@ -0,0 +1,51 @@
-+/* SPDX-License-Identifier: ISC */
-+/*
-+ * Copyright (C) 2021 Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+
-+#if !defined(__MT7921_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define __MT7921_TRACE_H
-+
-+#include <linux/tracepoint.h>
-+#include "mt7921.h"
-+
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM mt7921
-+
-+#define MAXNAME		32
-+#define DEV_ENTRY	__array(char, wiphy_name, 32)
-+#define DEV_ASSIGN	strlcpy(__entry->wiphy_name,	\
-+				wiphy_name(mt76_hw(dev)->wiphy), MAXNAME)
-+#define DEV_PR_FMT	"%s"
-+#define DEV_PR_ARG	__entry->wiphy_name
-+#define LP_STATE_PR_ARG	__entry->lp_state ? "lp ready" : "lp not ready"
-+
-+TRACE_EVENT(lp_event,
-+	TP_PROTO(struct mt7921_dev *dev, u8 lp_state),
-+
-+	TP_ARGS(dev, lp_state),
-+
-+	TP_STRUCT__entry(
-+		DEV_ENTRY
-+		__field(u8, lp_state)
-+	),
-+
-+	TP_fast_assign(
-+		DEV_ASSIGN;
-+		__entry->lp_state = lp_state;
-+	),
-+
-+	TP_printk(
-+		DEV_PR_FMT " %s",
-+		DEV_PR_ARG, LP_STATE_PR_ARG
-+	)
-+);
-+
-+#endif
-+
-+#undef TRACE_INCLUDE_PATH
-+#define TRACE_INCLUDE_PATH .
-+#undef TRACE_INCLUDE_FILE
-+#define TRACE_INCLUDE_FILE mt7921_trace
-+
-+#include <trace/define_trace.h>
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/trace.c b/drivers/net/wireless/mediatek/mt76/mt7921/trace.c
-new file mode 100644
-index 000000000000..4dc3c7b89ebd
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/trace.c
-@@ -0,0 +1,12 @@
-+// SPDX-License-Identifier: ISC
-+/*
-+ * Copyright (C) 2021 Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+
-+#include <linux/module.h>
-+
-+#ifndef __CHECKER__
-+#define CREATE_TRACE_POINTS
-+#include "mt7921_trace.h"
-+
-+#endif
+And why care about 'at least 4 channels'.  If we know the AP channel, and can scan exactly there, then your
+concern about taking a long time is resolved.
+
+How else can we tell the radio that 6E is allowed?  I previously tried all sorts of things
+to enable 6E channels so that I could more easily set the radio to sniff one of those channels
+in monitor mode, and I had no luck.
+
+If all of the 6E channels are marked as passive, what harm is it to enable the channels
+in the regdom from the beginning?
+
+Thanks,
+Ben
+
+> 
+> Hope this clarifies things.
+> 
+> Regards,
+> 
+> Ilan.
+> 
+
+
 -- 
-2.30.2
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
