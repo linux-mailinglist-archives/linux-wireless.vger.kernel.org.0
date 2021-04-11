@@ -2,112 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5913D35B250
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 09:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F93A35B26A
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 10:24:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233612AbhDKH6T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Apr 2021 03:58:19 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:18361 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbhDKH6R (ORCPT
+        id S233696AbhDKIYy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Apr 2021 04:24:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59966 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229804AbhDKIYx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Apr 2021 03:58:17 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618127881; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=FO7OT8tHpj9776EAErHbdSOjVc4fZtr9in7MuapDRcc=; b=RS1OXBBixhuQ8p6yhwBEetgNealqHgDBjghgxRsf8UygoKe8ECRgJO4lKyR9xQwMZAxTyoki
- TgG4LAgSDc4YN+VDZWYvbfnA+qRkkT832hHopeTl75vq8Y3Yq/PWjS3WvNKX5Ureb01KKp29
- DJ7JRxJRoB77zGaCp3YiBdrvUCg=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 6072ac092cc44d3aea6856a2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 11 Apr 2021 07:58:01
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 05771C43465; Sun, 11 Apr 2021 07:58:00 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 99A0FC433CA;
-        Sun, 11 Apr 2021 07:57:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 99A0FC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Shawn Guo <shawn.guo@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Subject: Re: [PATCH 1/2] dt-binding: bcm43xx-fmac: add optional brcm,ccode-map
-References: <20210408113022.18180-1-shawn.guo@linaro.org>
-        <20210408113022.18180-2-shawn.guo@linaro.org>
-Date:   Sun, 11 Apr 2021 10:57:54 +0300
-In-Reply-To: <20210408113022.18180-2-shawn.guo@linaro.org> (Shawn Guo's
-        message of "Thu, 8 Apr 2021 19:30:21 +0800")
-Message-ID: <87k0p9mewt.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Sun, 11 Apr 2021 04:24:53 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18839C061574
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 01:24:32 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id hq27so15177191ejc.9
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 01:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=+HPLZx6r8w/SKgUvUa5HzbaNtmtw6B6RH/vhDMqbVac=;
+        b=L2R2ooPTcNOxmC+MgLW17Kk4maMC41Ao7bogzHP6/CSuBAutVwkXL7qt5QgN0u27uH
+         HyWnnubdj0V4l1ys/iOY9mf9DvHieDh/q34k5UQvAGWTnpw44f68MvClJ/45CJLAwKRQ
+         i78j9m0EWFgHzVJkP3eP3GDJGag4m86fYHkQNQpUJ4URLejsFGbHRYXZ1R0PspsCQVfB
+         S2F4QePRO/L9ImOx1GRroITBwKr+IYkXYVvzinzcTxJ+Qy/+L4LFf6mcqWquzx1pQ7zI
+         Fv3o/sy1JT3v+zWPC0zL2Z/slXnPlwxKenPTTy02D922DHRnj9TfdN3jIQkiCvGD4jmW
+         P0ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=+HPLZx6r8w/SKgUvUa5HzbaNtmtw6B6RH/vhDMqbVac=;
+        b=O7l92BXycwPn2epwld6fK1IDNZQI4tP6J5Aiy07SD8l24OZN3oUx+e8Y5D2iZZeBC0
+         5ik8e6Uyy2STgDSZBk1jqbZG4kUweKGx1N0IXTpz/lq2sdYd+PjkvWKVsLFH0zOJ7Dgs
+         u70A3MQSayb42G82ZeFUS9A0nbfNJ37OjcxEkgWTNgrUMlRcBgXJXPWXgyACBOUJgiWw
+         +4+bjeA2cvVV8C/X4D5N+NbQRXUx4NCzqbeCZ9f3zfkZ/u2UNH/4Rd/O7mb4AB27XvBu
+         xjZk3enT/6FQXg8UYu+3dTbNNh1d8gV1ExaXH0Zegi6Uup9ZHSpCx3CCS8iKNqiM0VhH
+         gBlA==
+X-Gm-Message-State: AOAM533phrfZIOJuOMSj9HBeGb7kY9jM79KqBH0sOcqCUM2NGZ9LKbo2
+        zj5kY+Pq6wSdhbvuOmwo1aQcppB1IbTuWg==
+X-Google-Smtp-Source: ABdhPJw7Ghge34kxzbp1CJ4FL2gi7adKKD1XNgI0qMgNjtKir6sMSLBqbtba9MOBxdGsF3DWh9FSzg==
+X-Received: by 2002:a17:906:c0c8:: with SMTP id bn8mr22335815ejb.445.1618129470409;
+        Sun, 11 Apr 2021 01:24:30 -0700 (PDT)
+Received: from [10.0.0.2] (94-210-190-100.cable.dynamic.v4.ziggo.nl. [94.210.190.100])
+        by smtp.gmail.com with ESMTPSA id l9sm4322153edw.68.2021.04.11.01.24.29
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 11 Apr 2021 01:24:30 -0700 (PDT)
+To:     linux-wireless@vger.kernel.org
+From:   Friso Smit <fw.smit01@gmail.com>
+Subject: iwlwifi: failed to load firmware chunk
+Message-ID: <40bb3a55-a872-414d-ed7f-6548beecd236@gmail.com>
+Date:   Sun, 11 Apr 2021 10:24:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Shawn Guo <shawn.guo@linaro.org> writes:
+Hi,
 
-> Add optional brcm,ccode-map property to support translation from ISO3166
-> country code to brcmfmac firmware country code and revision.
->
-> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
-> ---
->  .../devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
-> index cffb2d6876e3..a65ac4384c04 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
-> @@ -15,6 +15,12 @@ Optional properties:
->  	When not specified the device will use in-band SDIO interrupts.
->   - interrupt-names : name of the out-of-band interrupt, which must be set
->  	to "host-wake".
-> + - brcm,ccode-map : multiple strings for translating ISO3166 country code to
-> +	brcmfmac firmware country code and revision.  Each string must be in
-> +	format "AA-BB-num" where:
-> +	  AA is the ISO3166 country code which must be 2 characters.
-> +	  BB is the firmware country code which must be 2 characters.
-> +	  num is the revision number which must fit into signed integer.
->  
->  Example:
->  
-> @@ -34,5 +40,6 @@ mmc3: mmc@1c12000 {
->  		interrupt-parent = <&pio>;
->  		interrupts = <10 8>; /* PH10 / EINT10 */
->  		interrupt-names = "host-wake";
-> +		brcm,ccode-map = "JP-JP-78", "US-Q2-86";
+After upgrading to linux 5.11.12.arch1-1 I suddenly had no wifi 
+connection. I immediately tried downgrading again, but to no avail. Even 
+trying to boot into windows didn't seem to help. The windows 
+troubleshooter tried a reset of the wireless chip and that may have 
+solved the issue. Currently it's working again (on linux 
+5.11.10.arch.1-1), but I'm hesitant to upgrade right now.
 
-The commit log does not answer "Why?". Why this needs to be in device
-tree and, for example, not hard coded in the driver?
+I don't have a dmesg log unfortunatly, but journalctl provides the same 
+error I saw in dmesg, namely that iwlwifi failed to load the firmware.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+journalctl output (from 5.11.10 weirdly enough): 
+https://pastebin.com/yrqNgih0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Best regards,
+
+Friso
+
+
