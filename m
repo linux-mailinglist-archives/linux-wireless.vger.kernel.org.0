@@ -2,128 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A8035B6F0
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 22:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 141A235B70C
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 23:37:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235739AbhDKU4u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Apr 2021 16:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51836 "EHLO
+        id S235530AbhDKVhi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Apr 2021 17:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235530AbhDKU4u (ORCPT
+        with ESMTP id S235366AbhDKVhi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Apr 2021 16:56:50 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4469AC061574
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 13:56:33 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id e14so16902414ejz.11
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 13:56:33 -0700 (PDT)
+        Sun, 11 Apr 2021 17:37:38 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D602C061574
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 14:37:21 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id w186so1156510wmg.3
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 14:37:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=GK6PVM/x1pIWKelmjFCf91DuPlaiX5HQKHPiDCCrZnc=;
-        b=XvCF9CkIkos75VRaZLKnGbL/OXV+jPFE75s3M+sjYIuNqlI2FYGtzYu2t6IcFhjLhx
-         MAC9B2BGmd+nmRk+KWspPEZeFj0Vi30BNkyePrjpy52wnoJbJXA9SQRH7RXedPMSUEjF
-         jjDhD9GPkC61twUATQE21awxAbRwKKnjDPhaGLt+0qzAXrgeThppzMJaRZOT14ncG78D
-         0EJOmnayPprNfifnnFW40yOTrKou7VDwUpo031/wwVvd0mZKip+eZeUeOcDmN+hy4kSX
-         k70CuX9kP1KAae4A7AjBJJofOq26CfhjKxCBypSK+PyIhaK1ApD2/M9n0B0w5iTEmDDn
-         PzWQ==
+        d=colorremedies-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F2N8ppbdTIHJd96OP32NRT/xio0kXQc9r97vw4I6brw=;
+        b=GOqQtpeRfLyV8pwDr1hf588uGcPU1BwgNjUAWigXkK2UCVs89BeAwbeXDLhdX0CYlc
+         4cMS6eurgNmMLcc4DbTbib7XNz/n+PMRtIgYB5Tw/pgXnKMbf1hJHWzSVr+pl9niVorm
+         c4yrOpv6JfgaPjwdzrtOGhNhaWk0D2i1Aj+8Sj9vlj0FCsL7TJttcQwPQDcypZ3nxTX4
+         tfCnuDluAr8k0Aw55hOemioy5jcSG/E2KKXM5nsfcX25z7z4lWRhVgVBmc1djNJPR15F
+         bw7OuNohFMbzL+cRdG2qBRGlasUBVda/H3WOIn2jaPQDondNXpXLLFyMuoQ9mDKcpNMF
+         1t3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=GK6PVM/x1pIWKelmjFCf91DuPlaiX5HQKHPiDCCrZnc=;
-        b=uOMBAbppnObYTSdoWr+w31p6xjYzIag3C/vwG5Cpt7wo/quYYUnIc/foUgRLDdzPaW
-         fCSw219gTd8WwfxN8UGDACf/wNzFNXueqhwxNC95MP8ZAvXwJtLe2I134A20C3P75IGV
-         H8VCrIKUY8HqZ/BmNi5ASFi152yYeqL41wk+934U715m5DgRmxazAiKHzVwCTT5/zDLx
-         lE/iYL2aMquEMJu49FDTtOQDVI9FySg96jM9aifcz7wIFFLGqsRB8Uc80IrKQCViw3lR
-         cz0IOId6rZVnjDPB18FSmuo5KrICAWVYI2p8fvi4XmLx2dx7WS0qme7oQlZc7zineHX1
-         kH/Q==
-X-Gm-Message-State: AOAM531AoGgje5ZSN4zoLGRC+iEekkHKla5d2oQnYJhL+7nkJm6eN7Wl
-        rlTlleXJxOaBTW6MKBlMDz3XqmjweNLu0w==
-X-Google-Smtp-Source: ABdhPJwM8gMzP7+QwgrNw8x5Zv7Kn4TLopn9yYGVLup5hGPUZvs635FvwJbfUaMxAVC9VloykE16vg==
-X-Received: by 2002:a17:906:1519:: with SMTP id b25mr24559980ejd.254.1618174591830;
-        Sun, 11 Apr 2021 13:56:31 -0700 (PDT)
-Received: from [10.0.0.2] (94-210-190-100.cable.dynamic.v4.ziggo.nl. [94.210.190.100])
-        by smtp.gmail.com with ESMTPSA id f21sm5286559edq.55.2021.04.11.13.56.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Apr 2021 13:56:31 -0700 (PDT)
-Subject: Re: iwlwifi: failed to load firmware chunk
-To:     Chris Murphy <lists@colorremedies.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <40bb3a55-a872-414d-ed7f-6548beecd236@gmail.com>
- <CAJCQCtTxroboAeQgByCG0zfNK=Rda=2cOGW4i2_kqxu2Saqqsg@mail.gmail.com>
-From:   Friso Smit <fw.smit01@gmail.com>
-Message-ID: <b606a193-3e4d-cdd7-a2e4-c5b801e2f8fc@gmail.com>
-Date:   Sun, 11 Apr 2021 22:56:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F2N8ppbdTIHJd96OP32NRT/xio0kXQc9r97vw4I6brw=;
+        b=H9AqEpJMMkwK+HdOdtNLkXMtiJFuA5ffxWfweHrBPaQSkJnJBciN7KWq8mBIu2G1cC
+         RVBAqp0rvazkcfB5HFmvR0GalcAmXnAhuHgQHm/1RbEJzjVdebiuY7omo2P8b+GzLGOI
+         NSNhKpqHoe006e5FqxnbWqRNwFoFyy1Re01dR9ObrT41VQ5qSNKuJW/R8BmLz67F9NAP
+         VByUpyjdVcJ7ridd553AcEEPtF+oGFCcRmS27tmZAH/8P3E9I96eraFwqNf2fk6RETMw
+         AtKiwGXP5BsSCsUCmhzX8sn3xx9i3U9oP2P1jukSUmr19AKt5xBqrJMd+M8bU9CZr7I3
+         A3tg==
+X-Gm-Message-State: AOAM531qQa9kg49k8BGvnHjHaM9Y4ZfOPYe2au30Az9sIZBbgBs7MNBz
+        TD5L/MLBssSWI78bO7mfviuQG6als8OQprYfpE3SMg==
+X-Google-Smtp-Source: ABdhPJxAX6KlShGYKaO/wmfvWA1RA1lsklk1Mt7qFTV7rlGgHBsTTE6KGGgX9iNqqWCfD6qt252RyoGrsbM+l61EAA8=
+X-Received: by 2002:a7b:c1cf:: with SMTP id a15mr16419600wmj.168.1618177040051;
+ Sun, 11 Apr 2021 14:37:20 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAJCQCtTxroboAeQgByCG0zfNK=Rda=2cOGW4i2_kqxu2Saqqsg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <CAJCQCtRuZ0hACdwH1N23OZrxEVyM2W9gn_O4wZRcFSq_74Gkqg@mail.gmail.com>
+ <CA+icZUW-Ja4dDr8huyiwZrgCxf8vdxkYmP=tiueciJq5TAZsow@mail.gmail.com>
+In-Reply-To: <CA+icZUW-Ja4dDr8huyiwZrgCxf8vdxkYmP=tiueciJq5TAZsow@mail.gmail.com>
+From:   Chris Murphy <lists@colorremedies.com>
+Date:   Sun, 11 Apr 2021 15:37:03 -0600
+Message-ID: <CAJCQCtQTq4ddWnMpu0ZasZ=jxG8uTKAFK=Pz1YwtfZxvCYtH_Q@mail.gmail.com>
+Subject: Re: iwlwifi, WARNING at kernel/softirq.c:178 __local_bh_enable_ip
+To:     sedat.dilek@gmail.com
+Cc:     Chris Murphy <lists@colorremedies.com>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/11/21 10:11 PM, Chris Murphy wrote:
-> On Sun, Apr 11, 2021 at 2:24 AM Friso Smit <fw.smit01@gmail.com> wrote:
->> Hi,
->>
->> After upgrading to linux 5.11.12.arch1-1 I suddenly had no wifi
->> connection. I immediately tried downgrading again, but to no avail.
-> Did only kernel version change? 5.11.12 has one iwlwifi related commit:
+On Tue, Mar 16, 2021 at 8:13 AM Sedat Dilek <sedat.dilek@gmail.com> wrote:
 >
-> commit 6159f947fb047fd8ecbfbcbcc86a8337e801bd10
->      iwlwifi: pcie: don't disable interrupts for reg_lock
+> On Tue, Mar 16, 2021 at 2:50 AM Chris Murphy <lists@colorremedies.com> wrote:
+> >
+> > Hi,
+> >
+> > I'm getting a warning, new with kernel 5.12-rc3
+> >
+> > [   14.156547] WARNING: CPU: 0 PID: 766 at kernel/softirq.c:178
+> > __local_bh_enable_ip+0x97/0xd0
+> >
+> > This is with Intel Corporation Wireless 8260, and firmware version
+> > 36.ad812ee0.0 8000C-36.ucode
+> >
+> > Bug contains complete dmesg attached;
+> > https://bugzilla.kernel.org/show_bug.cgi?id=212297
+> >
+> > Thanks,
+> >
 >
-It's not the only thing that changed, but this one stood out to me as 
-the possible cause. Some other things to note are that I sometimes have 
-to force shutdown my laptop, because of a long time issue in nouveau. I 
-don't know if this can cause these kinds of issues. And I want to stress 
-as well that the issue persisted even on another operating system, so 
-something must have been thoroughly messed up somehow.
+> Hi Chris,
+>
+> can you try "[PATCH] iwlwifi: Fix softirq/hardirq disabling in
+> iwl_pcie_enqueue_hcmd()" from [1]?
+>
+> Thanks.
+>
+> Regards,
+> - Sedat -
+>
+> [1] https://lore.kernel.org/linux-wireless/nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm/
 
-Here's a full list of (Arch) packages that were upgraded:
 
-expat (2.2.10-2 -> 2.3.0-1)
-glib2 (2.68.0-5 -> 2.68.1-1)
-libcups (1:2.3.3op2-1 -> 1:2.3.3op2-2)
-cups (1:2.3.3op2-1 -> 1:2.3.3op2-2)
-dleyna-core (0.6.0+2+g1c6853f-2 -> 0.7.0-1)
-dleyna-connector-dbus (0.3.0-3 -> 0.4.0-1)
-libdrm (2.4.104-1 -> 2.4.105-1)
-mesa (21.0.1-1 -> 21.0.2-1)
-dleyna-renderer (0.6.0-4 -> 0.7.0-1)
-dleyna-server (0.6.0+2+geb895ae-2 -> 0.7.0-1)
-gdk-pixbuf2 (2.42.4-1 -> 2.42.6-1)
-geoclue (2.5.7-2 -> 2.5.7-3)
-glib2-docs (2.68.0-5 -> 2.68.1-1)
-gtk-update-icon-cache (1:4.2.0-2 -> 1:4.2.0-3)
-gtk3 (1:3.24.28-1 -> 1:3.24.28-2)
-lib32-expat (2.2.10-1 -> 2.3.0-2)
-lib32-glib2 (2.68.0-5 -> 2.68.1-1)
-lib32-gdk-pixbuf2 (2.42.4-1 -> 2.42.6-1)
-lib32-libva-mesa-driver (21.0.1-2 -> 21.0.2-1)
-lib32-mesa (21.0.1-2 -> 21.0.2-1)
-lib32-vulkan-intel (21.0.1-2 -> 21.0.2-1)
-libmwaw (0.3.17-1 -> 0.3.18-1)
-libva-mesa-driver (21.0.1-1 -> 21.0.2-1)
-linux (5.11.11.arch1-1 -> 5.11.12.arch1-1)
-linux-headers (5.11.11.arch1-1 -> 5.11.12.arch1-1)
-lua (5.4.2-1 -> 5.4.3-1)
-mesa-vdpau (21.0.1-1 -> 21.0.2-1)
-meson (0.57.1-1 -> 0.57.2-1)
-npm (7.8.0-1 -> 7.9.0-1)
-opera-ffmpeg-codecs (88.0.4324.192-1 -> 89.0.4389.90-1)
-proj (6.3.2-1 -> 8.0.0-1)
-qt5-base (5.15.2+kde+r171-2 -> 5.15.2+kde+r171-3)
-wlroots (0.12.0-1 -> 0.13.0-1)
-sway (1:1.5.1-2 -> 1:1.6-1)
-vulkan-headers (1:1.2.173-1 -> 1:1.2.174-1)
-vulkan-intel (21.0.1-1 -> 21.0.2-1)
-wine (6.5-2 -> 6.6-1)
-wine-mono (6.0.0-1 -> 6.1.1-1)
+This appears to fix the problem.
 
+
+-- 
+Chris Murphy
