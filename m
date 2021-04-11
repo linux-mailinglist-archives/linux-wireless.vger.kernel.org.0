@@ -2,119 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D4CE35B5C2
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 17:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AD8935B60C
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Apr 2021 18:21:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235878AbhDKPDO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Apr 2021 11:03:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233822AbhDKPDO (ORCPT
+        id S236405AbhDKQWJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Apr 2021 12:22:09 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.183]:56056 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235756AbhDKQWI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Apr 2021 11:03:14 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C5FC061574
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 08:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=EVFNlqwbFUI2iwHRuS4SVBBse8+jODOsGmpvhoxHXno=; b=mSINvmO5TQHSAUYn9jJQuRTFSv
-        NFFUbHoi27YbQPDNkFso1MZNAYgFzauxJiErllgxdEGseihnBiFSHmpY37YM1i7EQhzVpQMFtQq6P
-        xXLzadS6ivQbWGuMAZ/E6RlOWjUJeOhavzkkSB9otf161AD23S06IjiDyGVPhVMn7U/o=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lVbc0-0000R9-4d
-        for linux-wireless@vger.kernel.org; Sun, 11 Apr 2021 17:02:56 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: always add rx header translation tlv when adding stations
-Date:   Sun, 11 Apr 2021 17:02:54 +0200
-Message-Id: <20210411150254.9348-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.30.1
+        Sun, 11 Apr 2021 12:22:08 -0400
+X-Greylist: delayed 400 seconds by postgrey-1.27 at vger.kernel.org; Sun, 11 Apr 2021 12:22:08 EDT
+Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B16EF24F322
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Apr 2021 16:15:12 +0000 (UTC)
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.129])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 0F0D320061;
+        Sun, 11 Apr 2021 16:15:12 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.25])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 4C70AA0061;
+        Sun, 11 Apr 2021 16:15:11 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id CAA6AB0006A;
+        Sun, 11 Apr 2021 16:15:10 +0000 (UTC)
+Received: from [192.168.254.6] (unknown [50.34.172.155])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id E326E13C2B3;
+        Sun, 11 Apr 2021 09:15:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com E326E13C2B3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1618157710;
+        bh=ycS2NdssvmfDMnIxk0K8SpStyNymk7wTurqcARd+v7M=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=r89SIxldXp11E5cSyId1bLaLktYvRUYFSvTLBvTjSxIc7q6v11km9MmZVIuO78i0H
+         zay+qwcD9RwvtZtW6Dzen92KcH3qBDozQxWGM4+bNfTw9RtzOOtGWW6PxHoZ7hJH2/
+         NkUAISJ5jZD85NrQgXfkZHGx5VBOcWK9QJcDbYio=
+Subject: Re: [PATCH 06/12] iwlwifi: mvm: Add support for 6GHz passive scan
+To:     "Peer, Ilan" <ilan.peer@intel.com>, Luca Coelho <luca@coelho.fi>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20210331091452.543321-1-luca@coelho.fi>
+ <iwlwifi.20210331121101.7c7bd00e0aeb.Ib226ad57e416b43a710c36a78a617d4243458b99@changeid>
+ <aa0dae40-1565-2bb0-b33f-0da82a8de137@candelatech.com>
+ <BN7PR11MB2610D9C80C698F837C3A2A55E9719@BN7PR11MB2610.namprd11.prod.outlook.com>
+ <eb60c152-81ac-2977-87fc-f724d4d6ccf0@candelatech.com>
+ <BN7PR11MB2610CE4FAF07FFB017E19AB0E9719@BN7PR11MB2610.namprd11.prod.outlook.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <8dfae5c0-1900-a1fc-ee36-8ceaa9ec0dbe@candelatech.com>
+Date:   Sun, 11 Apr 2021 09:15:09 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <BN7PR11MB2610CE4FAF07FFB017E19AB0E9719@BN7PR11MB2610.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-MDID: 1618157711-JGU2YnKANRn5
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ensures that header translation is disabled for interfaces that do not support
-it.
+On 4/11/21 5:14 AM, Peer, Ilan wrote:
+> Hi,
+> 
+>>> This logic enables a special 'passive' scan which is not directly
+>>> intended for discovery of APs for connection etc. but for discovery of
+>>> APs with country information in the beacons/probe responses, so the fw
+>>> could use this information as an input that might allow it to enable 6GHz
+>> channels (which are supported but are disabled). This special scan is intended
+>> for cases that the device does not have any other regulatory information that
+>> allows it to enable the 6GHz channels.
+>>> Once these channels are enabled, we use passive scan as needed.
+>>>
+>>> We generally try to avoid passive scan on all the 6GHz channels as
+>>> this is a long flow that takes at least 6 seconds (as there are such 64
+>> channels) and with the discovery mechanisms defined for the 6GHz is not
+>> really needed.
+>>
+>> If the station comes up and does a 6E passive scan and does not find any AP,
+>> perhaps because 6Ghz AP was turned on 1 minute after the station tried to
+>> initially scan, this means that it will take 50 minutes before it can have a
+>> chance to scan the AP and connect to the Internet?  If station cannot connect
+>> after a relatively short time, then I think it should scan as widely as it can in
+>> order find some possible way to connect.
+>>
+> 
+> The purpose of this heuristic was to handle a very specific corner case where there are
+> no APs on the 2GHz/5GHz bands and there are only one or more non-collocated APs
+> on the 6GHz band. Based on our understanding, this is not a very likely situation and thus,
+> due to other consideration e.g., power KPIs etc., the above conditions were defined. However,
+> as you can see in the patch, there are options to tune the heuristic to be more aggressive,
+> and if it would indeed be needed we can change the behavior such cases.
 
-Fixes: bb1262e7199b ("mt76: mt7615: add support for rx decapsulation offload")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 6 +-----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 3 +--
- 3 files changed, 5 insertions(+), 8 deletions(-)
+Yes, and I can tweak the code myself if needed.  But better if upstream driver
+is already nice as possible.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 6ca9e9840399..9b9f8d88e9bb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1008,6 +1008,8 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		if (sta)
- 			mt76_connac_mcu_wtbl_ht_tlv(&dev->mt76, wskb, sta,
- 						    NULL, wtbl_hdr);
-+		mt76_connac_mcu_wtbl_hdr_trans_tlv(wskb, &msta->wcid, NULL,
-+						   wtbl_hdr);
- 	}
- 
- 	cmd = enable ? MCU_EXT_CMD_WTBL_UPDATE : MCU_EXT_CMD_STA_REC_UPDATE;
-@@ -1136,7 +1138,7 @@ int mt7615_mcu_sta_update_hdr_trans(struct mt7615_dev *dev,
- 	if (IS_ERR(wtbl_hdr))
- 		return PTR_ERR(wtbl_hdr);
- 
--	mt76_connac_mcu_wtbl_hdr_trans_tlv(skb, vif, sta, NULL, wtbl_hdr);
-+	mt76_connac_mcu_wtbl_hdr_trans_tlv(skb, &msta->wcid, NULL, wtbl_hdr);
- 
- 	return mt76_mcu_skb_send_msg(&dev->mt76, skb, MCU_EXT_CMD_WTBL_UPDATE,
- 				     true);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 4892728ad9bb..443ec0a8bb7d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -393,11 +393,9 @@ mt76_connac_mcu_sta_uapsd(struct sk_buff *skb, struct ieee80211_vif *vif,
- }
- 
- void mt76_connac_mcu_wtbl_hdr_trans_tlv(struct sk_buff *skb,
--					struct ieee80211_vif *vif,
--					struct ieee80211_sta *sta,
-+					struct mt76_wcid *wcid,
- 					void *sta_wtbl, void *wtbl_tlv)
- {
--	struct mt76_wcid *wcid;
- 	struct wtbl_hdr_trans *htr;
- 	struct tlv *tlv;
- 
-@@ -405,8 +403,6 @@ void mt76_connac_mcu_wtbl_hdr_trans_tlv(struct sk_buff *skb,
- 					     sizeof(*htr),
- 					     wtbl_tlv, sta_wtbl);
- 	htr = (struct wtbl_hdr_trans *)tlv;
--
--	wcid = (struct mt76_wcid *)sta->drv_priv;
- 	htr->no_rx_trans = !test_bit(MT_WCID_FLAG_HDR_TRANS, &wcid->flags);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_wtbl_hdr_trans_tlv);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 6f9b7807305a..587097450416 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -937,8 +937,7 @@ void mt76_connac_mcu_wtbl_generic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				      struct ieee80211_sta *sta, void *sta_wtbl,
- 				      void *wtbl_tlv);
- void mt76_connac_mcu_wtbl_hdr_trans_tlv(struct sk_buff *skb,
--					struct ieee80211_vif *vif,
--					struct ieee80211_sta *sta,
-+					struct mt76_wcid *wcid,
- 					void *sta_wtbl, void *wtbl_tlv);
- void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
- 			     struct ieee80211_sta *sta,
+>> And why care about 'at least 4 channels'.  If we know the AP channel, and can
+>> scan exactly there, then your concern about taking a long time is resolved.
+>>
+> 
+> The assumption was that while a connection was not established a full scan
+> is expected, so that's why the above condition was set. However, I'll take this
+> with my colleagues and see if this condition can be removed or defined
+> differently.
+
+The complexity of the restrictions are going to silently break certain configs that
+a user can reasonable expect to work I think.
+
+> 
+>> How else can we tell the radio that 6E is allowed?  I previously tried all sorts of
+>> things to enable 6E channels so that I could more easily set the radio to sniff
+>> one of those channels in monitor mode, and I had no luck.
+>>
+> 
+> Are you asking specifically for iwlwifi devices? I'm not familiar with a simple
+> way to do so other the one described here, but I can check if you need it.
+
+Yes.  ax210 in particular.
+
+> 
+>> If all of the 6E channels are marked as passive, what harm is it to enable the
+>> channels in the regdom from the beginning?
+>>
+> 
+> AFAIK, as the 6GHz regulatory is still evolving, we are not yet allowed to do so. But once again,
+> If you are interested I can further check this our regulatory team.
+
+Your patch enables passive scan of 6Ghz when no regulatory specifically allows it.
+I think just enabling the band as passive is the same thing, but significantly
+simplifies things.  If there are regulatory reasons to not allow even passsive scanning on 6E,
+then your patch breaks that.  If not, then just always allow 6E channels to be available in
+passive mode.
+
+The logic to optimize scanning time and channels belongs up in the supplicant
+and other higher level code that can take user input/config and make decisions using info
+that the driver will never have.
+
+Thanks,
+Ben
+
+> 
+> Regards,
+> 
+> Ilan.
+> 
+
+
 -- 
-2.30.1
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
