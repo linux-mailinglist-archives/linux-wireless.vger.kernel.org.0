@@ -2,78 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8078C35BC4A
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 10:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80C3135C36E
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 12:12:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237361AbhDLIhW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 04:37:22 -0400
-Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:47822 "EHLO
-        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237270AbhDLIhV (ORCPT
+        id S237523AbhDLKME (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 06:12:04 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:44582 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S238630AbhDLKKV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 04:37:21 -0400
-Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 79FDFE5;
-        Mon, 12 Apr 2021 01:37:03 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 79FDFE5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1618216623;
-        bh=jBfh6npb0yL/ex1Q8+Ymfh38WXrBk7BsfPIs8dfyMI8=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=OWkDQ8M8bmCw5yEVCEj1CMx4mweMsTgxJvhbSK+24d6oG8rb9n6rRs9txz5ynlb5b
-         BB8Hd+unvW3RMzpW3dKEvZ+/CiveypsiUhVRVV9t6rzs3/02lTwPU2AOt25jHBmWyu
-         s4+NXyiiF4dfFPfHIAqlUtHoMbjUd63dq24X+/lE=
-Received: from [10.230.42.155] (unknown [10.230.42.155])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 1A58E1874BD;
-        Mon, 12 Apr 2021 01:36:55 -0700 (PDT)
-Subject: Re: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210307113550.7720-1-konrad.dybcio@somainline.org>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <5e7b575a-7820-3d10-8617-36911d49f4a9@broadcom.com>
-Date:   Mon, 12 Apr 2021 10:36:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        Mon, 12 Apr 2021 06:10:21 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1lVtW2-000KvW-KU; Mon, 12 Apr 2021 13:10:00 +0300
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20210307113550.7720-1-konrad.dybcio@somainline.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+From:   Luca Coelho <luca@coelho.fi>
+In-Reply-To: <iwlwifi.20210330162204.eb4f2ff1b863.Ib16238106b33d58b2b7688dc6297018b915ecef4@changeid>
+References: <iwlwifi.20210330162204.eb4f2ff1b863.Ib16238106b33d58b2b7688dc6297018b915ecef4@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.9.2
+Message-Id: <E1lVtW2-000KvW-KU@farmhouse.coelho.fi>
+Date:   Mon, 12 Apr 2021 13:09:59 +0300
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: Re: [PATCH 01/12] iwlwifi: mvm: enable TX on new CSA channel before
+ disconnecting
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 07-03-2021 12:35, Konrad Dybcio wrote:
-> Add support for BCM43596 dual-band AC chip, found in
-> SONY Xperia X Performance, XZ and XZs smartphones (and
-> *possibly* other devices from other manufacturers).
-> The chip doesn't require any special handling and seems to work
-> just fine OOTB.
+Luca Coelho <luca@coelho.fi> wrote:
+
+> From: Sara Sharon <sara.sharon@intel.com>
 > 
-> PCIe IDs taken from: https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch
+> When moving to the new channel, we block TX until we hear the
+> first beacon. if it is not heard, we proceed to disconnect.
+> Since TX is blocked (without mac80211 being aware of it) the frame
+> is stuck, resulting with queue hang.
+> 
+> Instead, reenable TX before reporting on the connection loss.
+> As we are on the new channel, there is no problem with that,
+> even if the original CSA had quiet mode.
+> 
+> Signed-off-by: Sara Sharon <sara.sharon@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-I don't see 4359 firmware in linux-firmware repo so what are you using?
+12 patches applied to iwlwifi-next.git, thanks.
 
-Regards,
-Arend
+89155fd1be13 iwlwifi: mvm: enable TX on new CSA channel before disconnecting
+9c1d5a542af4 iwlwifi: pcie: avoid unnecessarily taking spinlock
+15067411ad2f iwlwifi: pcie: normally grab NIC access for inflight-hcmd
+b060bcc81557 iwlwifi: mvm: don't allow CSA if we haven't been fully associated
+0c845f9c9584 iwlwifi: pcie: Add support for Bz Family
+2d23d815f958 iwlwifi: change step in so-gf struct
+cb10926a0a13 iwlwifi: change name to AX 211 and 411 family
+b1d5eb429c8d iwlwifi: add 160Mhz to killer 1550 name
+8b06b7eda055 iwlwifi: pcie: clear only FH bits handle in the interrupt
+77c07024bd4c iwlwifi: pcie: make cfg vs. trans_cfg more robust
+0c5de88265be iwlwifi: mvm: support range request command version 12
+1d558311f67a iwlwifi: mvm: responder: support responder config command version 8
+
