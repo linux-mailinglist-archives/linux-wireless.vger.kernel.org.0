@@ -2,77 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9274135C5B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 13:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A4035C5BA
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 13:53:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238482AbhDLLxY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 07:53:24 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:44632 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S237792AbhDLLxX (ORCPT
+        id S239932AbhDLLyE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 07:54:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48700 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237792AbhDLLyD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 07:53:23 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        Mon, 12 Apr 2021 07:54:03 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD85C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Apr 2021 04:53:45 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1lVv7l-000Kze-8E; Mon, 12 Apr 2021 14:53:03 +0300
-Message-ID: <fce2a3554e227bc9116948e36477f4b657e9ebff.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Date:   Mon, 12 Apr 2021 14:53:00 +0300
-In-Reply-To: <87v98rlod8.fsf@codeaurora.org>
-References: <ee6d5faebc25c8fa447cf870cbc80b4236178756.camel@coelho.fi>
-         <87v98rlod8.fsf@codeaurora.org>
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lVv8Q-00AgH5-WF; Mon, 12 Apr 2021 13:53:43 +0200
+Message-ID: <ce98174f1513d8a7fb9b89915f58717562dbe8ed.camel@sipsolutions.net>
+Subject: Re: Memory leak in ieee80211_rx_napi()
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Pkshih <pkshih@realtek.com>
+Date:   Mon, 12 Apr 2021 13:53:42 +0200
+In-Reply-To: <32687519-1c0e-1e6c-dbc3-1e9fd027fc8a@lwfinger.net> (sfid-20210411_211744_139894_B68237C3)
+References: <ad9bee4f-ef24-1fe0-5e63-e2e840ac0449@lwfinger.net>
+         <82a7c6c9bcbe923906276e8aa26a9a783598a0d7.camel@sipsolutions.net>
+         <32687519-1c0e-1e6c-dbc3-1e9fd027fc8a@lwfinger.net>
+         (sfid-20210411_211744_139894_B68237C3)
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: Re: pull-request: iwlwifi-next 2021-04-12
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2021-04-12 at 14:43 +0300, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
+Hi Larry,
+
+Sorry I didn't respond to your other email on Friday - it was close to
+midnight here and I couldn't pay much attention over the weekend.
+
+> There were two bugs in rtw88. The first, suggested by PK, was that the sequence 
+> between start/stop of NAPI and the enable/disable of interrupts were reversed. 
+> The second bug was in NAPI polling as you suggested. The poll routine was 
+> calling napi_schedule() rather than napi_reschedule().
 > 
-> > Here's the first batch of patches intended for v5.13.  This includes
-> > the four last patchsets I sent out for v5.13 with the usual development
-> > work.  It also includes Emmanuel's series for adding the iwlmei driver,
-> > including one patch by Alexander Usyskin in the misc drivers directory.
-> > (which Greg asked us to push via our tree).
-> 
-> But no Acked-by from Greg? I would like to have that in the commit log.
+> With these two changes, my RTL8822CE handled 12 hours of flood ping with my 
+> router without leaking a single buffer.
 
-Ugh, sorry, I thought Emmanuel had taken care of this and didn't check.
-I'll check with him what's the situation with Ack'ing this.
+Glad you found the issues, and thanks for following up!
 
+I do wonder where the SKBs were actually leaked, that's a bit strange,
+but I guess it doesn't matter much now.
 
-> >  include/net/cfg80211.h                                 |   11 +-
-> >  net/wireless/core.c                                    |    7 +-
-> 
-> Why are you changing cfg80211? Has this been checked with Johannes, at
-> least I don't see any acks from him? I prefer making cfg80211 changes
-> via Johannes' tree, smaller risk of conflicts that way.
-
-Hmmm, this is a patch that I already sent to Johannes too, but I had a
-mistake in it (some backport stuff slipped through).  I guess I'll send
-him a v2 and then we need to wait with this pull-req until mac80211-
-next reaches wireless-drivers-next... :(
-
-
-> Also every commit seems to have Change-Id tag.
-
-Argh.  Sorry about that.  Another of my hooks that was not installed on
-my new machine.
-
---
-Luca.
+johannes
 
