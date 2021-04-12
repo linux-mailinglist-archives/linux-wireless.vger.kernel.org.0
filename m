@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3EE435CC70
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 18:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E43F035CCE1
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 18:33:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244560AbhDLQ2w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 12:28:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57016 "EHLO mail.kernel.org"
+        id S245259AbhDLQb7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 12:31:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35658 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244562AbhDLQ0c (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 12:26:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7F80A6137F;
-        Mon, 12 Apr 2021 16:24:58 +0000 (UTC)
+        id S245167AbhDLQ3y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Apr 2021 12:29:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9ADA961398;
+        Mon, 12 Apr 2021 16:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618244699;
-        bh=gauwxOII5IhILsHkyZ5M5yDxGcZpvTc8saNGZFsgaoQ=;
+        s=k20201202; t=1618244749;
+        bh=wYqo+7IanwF0AhFOfpTbp9pDhnhpGsfNZrxKBkPwnFE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nDASX2d+iJ830NbSSN0wPOgJD7CLHT2iyq3wWUfzT99SDHOPI/iFdrLR9GE/J/Ly7
-         yGr3SHxHw9UtLju9ttcRlT1RhggdZS8z68sLvxupwQ+FFRTkYIM0c0VAV4/OnonMEb
-         NnUMdPs4k/mZLK7yDzuoEIDNDFjJJ6vrIoDOoWpdMkOCHfAAXCojf54UGoYNO5TIIf
-         fvZ/umkfbY9PEknfXBwJV+Z3fihPAxiECSUYjE7VlEFH7UHv98y3HylH7YN+xyfnli
-         G+SnqnCUUhpBNcHmnU/I8NfR1H/TeacNzTCIL1s3Plet7LVuvYicN0aWVuJCABMt4h
-         wY0Tgq/eao71A==
+        b=dHP/n2JYRWnHx+Bqlj8hRnQWOlRB9w3FUHrxlk9PDkBvmgtksDp8io5ktLaTCWYRQ
+         oajmNTCJ9irrHvO/FudH9CL0nyAx96zcWgLpbqyqCnWLvewROIK3obuRpJgiue0bYE
+         HB0foK5IT9xf58vJ2wxg9LhbXSLzOHU8ZhLJOv9/EdSzkfmofIOic1M/8AX+AwT5dx
+         DBjhMVaKYZrq5iYAWmQWQzrh/4IPNO06MGv4ljq9rAkwfS6HzBlpjGzP31ES9kssGM
+         BB5e4pr9BDeKtHpnVy0ZWsrPICsAEosu5cbBgWGY6Cm+T/RRMeUKS0zvjI+uIn54Uy
+         kLyOn2CWoXWcQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "A. Cody Schuffelen" <schuffelen@google.com>,
+Cc:     Seevalamuthu Mariappan <seevalam@codeaurora.org>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 45/46] virt_wifi: Return micros for BSS TSF values
-Date:   Mon, 12 Apr 2021 12:24:00 -0400
-Message-Id: <20210412162401.314035-45-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 37/39] mac80211: clear sta->fast_rx when STA removed from 4-addr VLAN
+Date:   Mon, 12 Apr 2021 12:24:59 -0400
+Message-Id: <20210412162502.314854-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210412162401.314035-1-sashal@kernel.org>
-References: <20210412162401.314035-1-sashal@kernel.org>
+In-Reply-To: <20210412162502.314854-1-sashal@kernel.org>
+References: <20210412162502.314854-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -43,48 +43,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: "A. Cody Schuffelen" <schuffelen@google.com>
+From: Seevalamuthu Mariappan <seevalam@codeaurora.org>
 
-[ Upstream commit b57aa17f07c9270e576ef7df09f142978b5a75f0 ]
+[ Upstream commit dd0b45538146cb6a54d6da7663b8c3afd16ebcfd ]
 
-cfg80211_inform_bss expects to receive a TSF value, but is given the
-time since boot in nanoseconds. TSF values are expected to be at
-microsecond scale rather than nanosecond scale.
+In some race conditions, with more clients and traffic configuration,
+below crash is seen when making the interface down. sta->fast_rx wasn't
+cleared when STA gets removed from 4-addr AP_VLAN interface. The crash is
+due to try accessing 4-addr AP_VLAN interface's net_device (fast_rx->dev)
+which has been deleted already.
 
-Signed-off-by: A. Cody Schuffelen <schuffelen@google.com>
-Link: https://lore.kernel.org/r/20210318200419.1421034-1-schuffelen@google.com
+Resolve this by clearing sta->fast_rx pointer when STA removes
+from a 4-addr VLAN.
+
+[  239.449529] Unable to handle kernel NULL pointer dereference at virtual address 00000004
+[  239.449531] pgd = 80204000
+...
+[  239.481496] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 4.4.60 #227
+[  239.481591] Hardware name: Generic DT based system
+[  239.487665] task: be05b700 ti: be08e000 task.ti: be08e000
+[  239.492360] PC is at get_rps_cpu+0x2d4/0x31c
+[  239.497823] LR is at 0xbe08fc54
+...
+[  239.778574] [<80739740>] (get_rps_cpu) from [<8073cb10>] (netif_receive_skb_internal+0x8c/0xac)
+[  239.786722] [<8073cb10>] (netif_receive_skb_internal) from [<8073d578>] (napi_gro_receive+0x48/0xc4)
+[  239.795267] [<8073d578>] (napi_gro_receive) from [<c7b83e8c>] (ieee80211_mark_rx_ba_filtered_frames+0xbcc/0x12d4 [mac80211])
+[  239.804776] [<c7b83e8c>] (ieee80211_mark_rx_ba_filtered_frames [mac80211]) from [<c7b84d4c>] (ieee80211_rx_napi+0x7b8/0x8c8 [mac8
+            0211])
+[  239.815857] [<c7b84d4c>] (ieee80211_rx_napi [mac80211]) from [<c7f63d7c>] (ath11k_dp_process_rx+0x7bc/0x8c8 [ath11k])
+[  239.827757] [<c7f63d7c>] (ath11k_dp_process_rx [ath11k]) from [<c7f5b6c4>] (ath11k_dp_service_srng+0x2c0/0x2e0 [ath11k])
+[  239.838484] [<c7f5b6c4>] (ath11k_dp_service_srng [ath11k]) from [<7f55b7dc>] (ath11k_ahb_ext_grp_napi_poll+0x20/0x84 [ath11k_ahb]
+            )
+[  239.849419] [<7f55b7dc>] (ath11k_ahb_ext_grp_napi_poll [ath11k_ahb]) from [<8073ce1c>] (net_rx_action+0xe0/0x28c)
+[  239.860945] [<8073ce1c>] (net_rx_action) from [<80324868>] (__do_softirq+0xe4/0x228)
+[  239.871269] [<80324868>] (__do_softirq) from [<80324c48>] (irq_exit+0x98/0x108)
+[  239.879080] [<80324c48>] (irq_exit) from [<8035c59c>] (__handle_domain_irq+0x90/0xb4)
+[  239.886114] [<8035c59c>] (__handle_domain_irq) from [<8030137c>] (gic_handle_irq+0x50/0x94)
+[  239.894100] [<8030137c>] (gic_handle_irq) from [<803024c0>] (__irq_svc+0x40/0x74)
+
+Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+Link: https://lore.kernel.org/r/1616163532-3881-1-git-send-email-seevalam@codeaurora.org
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virt_wifi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
-index c878097f0dda..1df959532c7d 100644
---- a/drivers/net/wireless/virt_wifi.c
-+++ b/drivers/net/wireless/virt_wifi.c
-@@ -12,6 +12,7 @@
- #include <net/cfg80211.h>
- #include <net/rtnetlink.h>
- #include <linux/etherdevice.h>
-+#include <linux/math64.h>
- #include <linux/module.h>
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 677928bf13d1..1b50bbf030ed 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1670,8 +1670,10 @@ static int ieee80211_change_station(struct wiphy *wiphy,
+ 		}
  
- static struct wiphy *common_wiphy;
-@@ -168,11 +169,11 @@ static void virt_wifi_scan_result(struct work_struct *work)
- 			     scan_result.work);
- 	struct wiphy *wiphy = priv_to_wiphy(priv);
- 	struct cfg80211_scan_info scan_info = { .aborted = false };
-+	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
+ 		if (sta->sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
+-		    sta->sdata->u.vlan.sta)
++		    sta->sdata->u.vlan.sta) {
++			ieee80211_clear_fast_rx(sta);
+ 			RCU_INIT_POINTER(sta->sdata->u.vlan.sta, NULL);
++		}
  
- 	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
- 					   CFG80211_BSS_FTYPE_PRESP,
--					   fake_router_bssid,
--					   ktime_get_boottime_ns(),
-+					   fake_router_bssid, tsf,
- 					   WLAN_CAPABILITY_ESS, 0,
- 					   (void *)&ssid, sizeof(ssid),
- 					   DBM_TO_MBM(-50), GFP_KERNEL);
+ 		if (test_sta_flag(sta, WLAN_STA_AUTHORIZED))
+ 			ieee80211_vif_dec_num_mcast(sta->sdata);
 -- 
 2.30.2
 
