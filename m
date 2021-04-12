@@ -2,125 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B06A35C972
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 17:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24B6435CB1C
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 18:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242639AbhDLPJ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 11:09:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38512 "EHLO mail.kernel.org"
+        id S243388AbhDLQXd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 12:23:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55004 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238789AbhDLPJ6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 11:09:58 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 021D360C3E;
-        Mon, 12 Apr 2021 15:09:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1618240180;
-        bh=OGR65Ysb1boNRc1FvyA0qHgepPCXKOh2glD5vDmHs98=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=y4RBA8XCCfKWfqqbg2RxozU2cZE1GnOIMBBtmB2tCF2M7pA4CyhUqqm8xx3emkRY0
-         izSz7PA5BrLrj8MJwhWYbLReESotxnzGOtb7SOsZUZr2iTrCsthON2/kLOQ8IF9+Lr
-         KgHTe6719+uIb8iMWGzzue965rfOU04aDhtn/tEY=
-Date:   Mon, 12 Apr 2021 17:09:37 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "luca@coelho.fi" <luca@coelho.fi>,
-        "Beker, Ayala" <ayala.beker@intel.com>,
-        "Coelho, Luciano" <luciano.coelho@intel.com>
-Subject: Re: [PATCH RESEND 2/3] iwlwifi: mei: add the driver to allow
- cooperation with CSME
-Message-ID: <YHRisW9++pJ7Sv3C@kroah.com>
-References: <20210412124328.24472-1-emmanuel.grumbach@intel.com>
- <20210412124328.24472-2-emmanuel.grumbach@intel.com>
- <YHRFy3aq/gB7Vde6@kroah.com>
- <SA0PR11MB475215678ADCCE657C6574D6F2709@SA0PR11MB4752.namprd11.prod.outlook.com>
- <YHRWtJqbuFGmR2Sw@kroah.com>
- <SA0PR11MB475228709B9B0B6D74CE07A2F2709@SA0PR11MB4752.namprd11.prod.outlook.com>
- <YHRat4egd/LM8DNJ@kroah.com>
- <SA0PR11MB47522D6E66CAD30CF0A63651F2709@SA0PR11MB4752.namprd11.prod.outlook.com>
+        id S243343AbhDLQX3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Apr 2021 12:23:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 011AB6121F;
+        Mon, 12 Apr 2021 16:23:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1618244591;
+        bh=IuB2Kl+DZatEU/eJqTuosM0lRnAg+0ID5CkICPArq10=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=L58uIUdNSLc1LOOB8Xucu0iq/8ZUjLTNxseauIgA7cSP9NiXf07nv5Egzxu6gm265
+         qFYCPvssJzpB2fCzd/lwHgvoKkCtEZ1ibG8lNbe7Yfg/j366G4J+tIMR6he9JKhvxo
+         r13XNnr2rBEQqQesw8RZi63Mqp4+SMpv2mMc8B8J2TX7VeLnjjHblen//HU8L+8uI9
+         Qr0w+Y1q9R3iLE/C1MuhTJgGNzK9t3YJE2qvbxOL9TWQZ6unIQjWlOUs0wXelqVnbH
+         cwWBmxvbJz46luK79SAeu2dj0AWqumbAZ9aEfMQXPXWzmLAX/OkROAso8jmqsRsAlk
+         6wgLQEn3FIjyg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jiri Kosina <jkosina@suse.cz>, Sedat Dilek <sedat.dilek@gmail.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Subject: [PATCH AUTOSEL 5.11 11/51] iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_enqueue_hcmd()
+Date:   Mon, 12 Apr 2021 12:22:16 -0400
+Message-Id: <20210412162256.313524-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210412162256.313524-1-sashal@kernel.org>
+References: <20210412162256.313524-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA0PR11MB47522D6E66CAD30CF0A63651F2709@SA0PR11MB4752.namprd11.prod.outlook.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Apr 12, 2021 at 02:46:53PM +0000, Grumbach, Emmanuel wrote:
-> > On Mon, Apr 12, 2021 at 02:29:45PM +0000, Grumbach, Emmanuel wrote:
-> > > >
-> > > > On Mon, Apr 12, 2021 at 01:44:58PM +0000, Grumbach, Emmanuel wrote:
-> > > > > > > +#define IWL_MEI_DEBUG(c, f, a...)		\
-> > > > > > > +	do {					\
-> > > > > > > +		CHECK_FOR_NEWLINE(f);		\
-> > > > > >
-> > > > > > Huh?
-> > > > > >
-> > > > > > > +		dev_dbg(&(c)->dev, f, ## a);	\
-> > > > > >
-> > > > > > Just use dev_dbg(), don't be special for a single driver, it
-> > > > > > hurts when trying to read different drivers.
-> > > > >
-> > > > > I took this from iwlwifi. I can change if needed, not a big deal.
-> > > >
-> > > > Please do.
-> > > >
-> > > > > > > +module_param_named(defer_start_message,
-> > defer_start_message,
-> > > > > > bool,
-> > > > > > > +0644); MODULE_PARM_DESC(defer_start_message,
-> > > > > > > +		 "Defer the start message Tx to CSME (default
-> > false)");
-> > > > > >
-> > > > > > Why do you need this?  Who is going to set it to anything else,
-> > > > > > and why would they?  This isn't the 1990's anymore, please do
-> > > > > > not add new module parameters.
-> > > > >
-> > > > > For testing. I need this to be able to force a certain order of
-> > > > > initialization
-> > > > which is possible (and hence must be tested) but not likely to happen.
-> > > > > Another point is tracing. This allows me to load the module but
-> > > > > prevent any
-> > > > real operation. Then, start tracing. This way, I can see the whole
-> > > > flow in tracing, even the very beginning.
-> > > >
-> > > > Then call this something obvious,
-> > > >
-> > "kernel_hacker_debuging_testing_only_use_if_you_know_what_you_are_
-> > > > doing".
-> > > >
-> > > > Or better yet, just put it in debugfs to turn it on/off and no
-> > > > module parameter is needed at all.
-> > > >
-> > >
-> > > Debugfs is not a replacement for module parameters. Debugfs can be
-> > > used only after the driver already ran quite a bit of its
-> > > initialization code path. Here I want to be able to catch the very
-> > > first messages with tracing.
-> > 
-> > Then use the proper trace functionality of the kernel, which is not module
-> > parameters :(
-> 
-> I am sorry if I drive you nuts but I don't know any "proper trace
-> functionality" in the kernel that the user could enable / disable and
-> that would be available immediately at init.
+From: Jiri Kosina <jkosina@suse.cz>
 
-The in-kernel trace facilities do not work for boot code?
-Documentation/tracing/boottime-trace.rst seems to disagree :)
+[ Upstream commit 2800aadc18a64c96b051bcb7da8a7df7d505db3f ]
 
-> The user needs to
-> "activate" the trace points using trace-cmd or whatever other tool. By
-> the time the user does so, the driver has already run the code path I
-> wish to debug. I can use debug prints, but you didn't seem happy about
-> it. So I am happy to use tracing, but then we need to make sure it
-> cover all the cases. The way I make it cover all the cases is with
-> this module parameter. If you know a better way, I'll be happy to use
-> it.
+It's possible for iwl_pcie_enqueue_hcmd() to be called with hard IRQs
+disabled (e.g. from LED core). We can't enable BHs in such a situation.
 
-See the above document, there's nothing "special" about a single kernel
-driver that should warrant a one-off user/kernel api like this.
+Turn the unconditional BH-enable/BH-disable code into
+hardirq-disable/conditional-enable.
 
-thanks,
+This fixes the warning below.
 
-greg k-h
+ WARNING: CPU: 1 PID: 1139 at kernel/softirq.c:178 __local_bh_enable_ip+0xa5/0xf0
+ CPU: 1 PID: 1139 Comm: NetworkManager Not tainted 5.12.0-rc1-00004-gb4ded168af79 #7
+ Hardware name: LENOVO 20K5S22R00/20K5S22R00, BIOS R0IET38W (1.16 ) 05/31/2017
+ RIP: 0010:__local_bh_enable_ip+0xa5/0xf0
+ Code: f7 69 e8 ee 23 14 00 fb 66 0f 1f 44 00 00 65 8b 05 f0 f4 f7 69 85 c0 74 3f 48 83 c4 08 5b c3 65 8b 05 9b fe f7 69 85 c0 75 8e <0f> 0b eb 8a 48 89 3c 24 e8 4e 20 14 00 48 8b 3c 24 eb 91 e8 13 4e
+ RSP: 0018:ffffafd580b13298 EFLAGS: 00010046
+ RAX: 0000000000000000 RBX: 0000000000000201 RCX: 0000000000000000
+ RDX: 0000000000000003 RSI: 0000000000000201 RDI: ffffffffc1272389
+ RBP: ffff96517ae4c018 R08: 0000000000000001 R09: 0000000000000000
+ R10: ffffafd580b13178 R11: 0000000000000001 R12: ffff96517b060000
+ R13: 0000000000000000 R14: ffffffff80000000 R15: 0000000000000001
+ FS:  00007fc604ebefc0(0000) GS:ffff965267480000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055fb3fef13b2 CR3: 0000000109112004 CR4: 00000000003706e0
+ Call Trace:
+  ? _raw_spin_unlock_bh+0x1f/0x30
+  iwl_pcie_enqueue_hcmd+0x5d9/0xa00 [iwlwifi]
+  iwl_trans_txq_send_hcmd+0x6c/0x430 [iwlwifi]
+  iwl_trans_send_cmd+0x88/0x170 [iwlwifi]
+  ? lock_acquire+0x277/0x3d0
+  iwl_mvm_send_cmd+0x32/0x80 [iwlmvm]
+  iwl_mvm_led_set+0xc2/0xe0 [iwlmvm]
+  ? led_trigger_event+0x46/0x70
+  led_trigger_event+0x46/0x70
+  ieee80211_do_open+0x5c5/0xa20 [mac80211]
+  ieee80211_open+0x67/0x90 [mac80211]
+  __dev_open+0xd4/0x150
+  __dev_change_flags+0x19e/0x1f0
+  dev_change_flags+0x23/0x60
+  do_setlink+0x30d/0x1230
+  ? lock_is_held_type+0xb4/0x120
+  ? __nla_validate_parse.part.7+0x57/0xcb0
+  ? __lock_acquire+0x2e1/0x1a50
+  __rtnl_newlink+0x560/0x910
+  ? __lock_acquire+0x2e1/0x1a50
+  ? __lock_acquire+0x2e1/0x1a50
+  ? lock_acquire+0x277/0x3d0
+  ? sock_def_readable+0x5/0x290
+  ? lock_is_held_type+0xb4/0x120
+  ? find_held_lock+0x2d/0x90
+  ? sock_def_readable+0xb3/0x290
+  ? lock_release+0x166/0x2a0
+  ? lock_is_held_type+0x90/0x120
+  rtnl_newlink+0x47/0x70
+  rtnetlink_rcv_msg+0x25c/0x470
+  ? netlink_deliver_tap+0x97/0x3e0
+  ? validate_linkmsg+0x350/0x350
+  netlink_rcv_skb+0x50/0x100
+  netlink_unicast+0x1b2/0x280
+  netlink_sendmsg+0x336/0x450
+  sock_sendmsg+0x5b/0x60
+  ____sys_sendmsg+0x1ed/0x250
+  ? copy_msghdr_from_user+0x5c/0x90
+  ___sys_sendmsg+0x88/0xd0
+  ? lock_is_held_type+0xb4/0x120
+  ? find_held_lock+0x2d/0x90
+  ? lock_release+0x166/0x2a0
+  ? __fget_files+0xfe/0x1d0
+  ? __sys_sendmsg+0x5e/0xa0
+  __sys_sendmsg+0x5e/0xa0
+  ? lockdep_hardirqs_on_prepare+0xd9/0x170
+  do_syscall_64+0x33/0x80
+  entry_SYSCALL_64_after_hwframe+0x44/0xae
+ RIP: 0033:0x7fc605c9572d
+ Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 da ee ff ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 44 24 08 e8 2e ef ff ff 48
+ RSP: 002b:00007fffc83789f0 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 000055ef468570c0 RCX: 00007fc605c9572d
+ RDX: 0000000000000000 RSI: 00007fffc8378a30 RDI: 000000000000000c
+ RBP: 0000000000000010 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000000
+ R13: 00007fffc8378b80 R14: 00007fffc8378b7c R15: 0000000000000000
+ irq event stamp: 170785
+ hardirqs last  enabled at (170783): [<ffffffff9609a8c2>] __local_bh_enable_ip+0x82/0xf0
+ hardirqs last disabled at (170784): [<ffffffff96a8613d>] _raw_read_lock_irqsave+0x8d/0x90
+ softirqs last  enabled at (170782): [<ffffffffc1272389>] iwl_pcie_enqueue_hcmd+0x5d9/0xa00 [iwlwifi]
+ softirqs last disabled at (170785): [<ffffffffc1271ec6>] iwl_pcie_enqueue_hcmd+0x116/0xa00 [iwlwifi]
+
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com> # LLVM/Clang v12.0.0-rc3
+Acked-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 689f51968049..2280f05fbc18 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -929,6 +929,7 @@ static int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
+ 	u32 cmd_pos;
+ 	const u8 *cmddata[IWL_MAX_CMD_TBS_PER_TFD];
+ 	u16 cmdlen[IWL_MAX_CMD_TBS_PER_TFD];
++	unsigned long flags;
+ 
+ 	if (WARN(!trans->wide_cmd_header &&
+ 		 group_id > IWL_ALWAYS_LONG_GROUP,
+@@ -1012,10 +1013,10 @@ static int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
+ 		goto free_dup_buf;
+ 	}
+ 
+-	spin_lock_bh(&txq->lock);
++	spin_lock_irqsave(&txq->lock, flags);
+ 
+ 	if (iwl_txq_space(trans, txq) < ((cmd->flags & CMD_ASYNC) ? 2 : 1)) {
+-		spin_unlock_bh(&txq->lock);
++		spin_unlock_irqrestore(&txq->lock, flags);
+ 
+ 		IWL_ERR(trans, "No space in command queue\n");
+ 		iwl_op_mode_cmd_queue_full(trans->op_mode);
+@@ -1175,7 +1176,7 @@ static int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
+  unlock_reg:
+ 	spin_unlock(&trans_pcie->reg_lock);
+  out:
+-	spin_unlock_bh(&txq->lock);
++	spin_unlock_irqrestore(&txq->lock, flags);
+  free_dup_buf:
+ 	if (idx < 0)
+ 		kfree(dup_buf);
+-- 
+2.30.2
+
