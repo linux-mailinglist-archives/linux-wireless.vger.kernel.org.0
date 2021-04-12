@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B5835CE0E
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 18:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C20735CE10
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 18:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245702AbhDLQlj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 12:41:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38886 "EHLO mail.kernel.org"
+        id S245717AbhDLQll (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 12:41:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37292 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343653AbhDLQfl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 12:35:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A9A22613D9;
-        Mon, 12 Apr 2021 16:27:02 +0000 (UTC)
+        id S1344005AbhDLQgd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Apr 2021 12:36:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F18C9613DE;
+        Mon, 12 Apr 2021 16:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618244823;
-        bh=iSCjhrH7qXR9SQ2svIa8dIQK+hhdiCawt2RDAuaR1As=;
+        s=k20201202; t=1618244855;
+        bh=4u0gIvAIKWkmw2kLOdF7s51DMYsy3RRLt1cDi6yw1hE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WJsYjGaQMV92kfmwp+veHpbPZnAYQlqC5CqDlpgZZvBpAZx06TGdoYcxnPKQLnjmT
-         pYDbAnXSMw38+Lgmt6iLGJ86An90iqHD+AvbpzFCGjLHyDwriIYjhJt+7UPKnCskKj
-         Sd0+HCXl7L9mmMVJ5HKCTsHk0nlT3r1+Wkh2/JQx0JypwLJoBaerFVYZdM0ww2JetR
-         UWb+6TiLb7096CJBh+6d6S0Fg/OICBGRmGSoYjSrsf4FXnpmIYCR0tZfNx7a3dgAj6
-         CejwTWsUXzPa2+07bORng7XgSHifxnWrhu7bnGsfQmJksCHs0JDvR9vXQl9b2VoZAq
-         /tPQkPO2TtEaQ==
+        b=DRIJAR/XF9Q6O0dHkMAVSHR8UHaR59njMvBlL12o8EwHrudMNnMX8LfyTqRNO2BsJ
+         cTjYGuHsfESejyhwS2g6lqVl/Gig46+OLGkME39UlDm+267f6g1KjuYp31iS/9AFSk
+         R4zFXNbEjdKTk1GgMNIIXIxK1UfbxT5ygggFRZJCcv4bvtci603vRM+MPw5wOLLCoh
+         ZU4f9aCd/tgFKy9rzayUHT/JiDiZ2w0i8SVBtNouUMpKIKc+zMrgg4LpzEaa+8i1zJ
+         Pz8xh11jz44Cf0GVNiW2pCcyZVC6w9lmVDsLlD0evMj7zIvZZwFCqWM+o5ApcoIEzL
+         NW3h3BvsXNJ0w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Du Cheng <ducheng2@gmail.com>,
@@ -30,12 +30,12 @@ Cc:     Du Cheng <ducheng2@gmail.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 25/25] cfg80211: remove WARN_ON() in cfg80211_sme_connect
-Date:   Mon, 12 Apr 2021 12:26:30 -0400
-Message-Id: <20210412162630.315526-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 23/23] cfg80211: remove WARN_ON() in cfg80211_sme_connect
+Date:   Mon, 12 Apr 2021 12:27:04 -0400
+Message-Id: <20210412162704.315783-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210412162630.315526-1-sashal@kernel.org>
-References: <20210412162630.315526-1-sashal@kernel.org>
+In-Reply-To: <20210412162704.315783-1-sashal@kernel.org>
+References: <20210412162704.315783-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 8344153800e2..c9158360154a 100644
+index 6fd24f6435c3..ce6823646f63 100644
 --- a/net/wireless/sme.c
 +++ b/net/wireless/sme.c
-@@ -530,7 +530,7 @@ static int cfg80211_sme_connect(struct wireless_dev *wdev,
+@@ -512,7 +512,7 @@ static int cfg80211_sme_connect(struct wireless_dev *wdev,
  		cfg80211_sme_free(wdev);
  	}
  
