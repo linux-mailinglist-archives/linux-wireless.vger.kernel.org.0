@@ -2,276 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 210FC35C461
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 12:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCE1035C55C
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 13:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238119AbhDLKw0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 06:52:26 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:44614 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S237944AbhDLKw0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 06:52:26 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1lVuAn-000Kxz-H5; Mon, 12 Apr 2021 13:52:07 +0300
-Message-ID: <ee6d5faebc25c8fa447cf870cbc80b4236178756.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Date:   Mon, 12 Apr 2021 13:52:05 +0300
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-ZszUkfg70f8AuAKrM7QR"
-User-Agent: Evolution 3.38.3-1 
-MIME-Version: 1.0
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
+        id S240606AbhDLLf7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 07:35:59 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:22468 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240584AbhDLLf6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Apr 2021 07:35:58 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618227341; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=GRKqjyIZZGHudyXi5NZdkY5+iSijHqxJ00muCi8rgaM=; b=PrV5OOzx+9nGMUs5HNVce3XS9FzH3CZWbGj/uJ0q6zX8+Xxp7RVkOxD7ktASvMrlCCKcLwZ2
+ eJHVGdwEWfJ8Ey9XsKWL5t3vf/rdOqbIfaNhyJTWIkgawVZnF6lRK5ljWhr6vCBX3X0UxKdr
+ cLhvrQHJCdmAAmTjTVIER05ARQE=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 607430848166b7eff7432df8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 12 Apr 2021 11:35:32
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id F169BC43464; Mon, 12 Apr 2021 11:35:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: pull-request: iwlwifi-next 2021-04-12
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 153E8C433ED;
+        Mon, 12 Apr 2021 11:35:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 153E8C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: pull request: mt76 2021-04-12
+References: <b5b4820b-f0be-3e9c-25f7-b45c60b66c3c@nbd.name>
+Date:   Mon, 12 Apr 2021 14:35:27 +0300
+In-Reply-To: <b5b4820b-f0be-3e9c-25f7-b45c60b66c3c@nbd.name> (Felix Fietkau's
+        message of "Mon, 12 Apr 2021 00:08:25 +0200")
+Message-ID: <87zgy3loqo.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Felix Fietkau <nbd@nbd.name> writes:
 
---=-ZszUkfg70f8AuAKrM7QR
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> Hi Kalle,
+>
+> here's my my updated pull request for 5.13.
+> It replaces the previous ones and fixes a few more regressions.
+>
+> - Felix
+>
+> The following changes since commit fa9f5d0e0b45a06802f7cb3afed237be6066821e:
+>
+>   iwlegacy: avoid -Wempty-body warning (2021-04-11 12:31:01 +0300)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-04-12
+>
+> for you to fetch changes up to 0751f8b9394c8d957b269c41ee278ebd8074f015:
+>
+>   mt76: mt7921: introduce MCU_EVENT_LP_INFO event parsing (2021-04-12 00:04:23 +0200)
+>
+> ----------------------------------------------------------------
+> mt76 patches for 5.13
+>
+> * code cleanup
+> * mt7915/mt7615 decap offload support
+> * driver fixes
+> * mt7613 eeprom support
+> * MCU code unification
+> * threaded NAPI support
+> * new device IDs
+> * mt7921 device reset support
+> * rx timestamp support
+>
+> ----------------------------------------------------------------
 
-Hi Kalle,
+Still problems:
 
-Here's the first batch of patches intended for v5.13.  This includes
-the four last patchsets I sent out for v5.13 with the usual development
-work.  It also includes Emmanuel's series for adding the iwlmei driver,
-including one patch by Alexander Usyskin in the misc drivers directory.
-(which Greg asked us to push via our tree).  More details about the
-contents in the tag description.
+In commit
 
-Please let me know if there are any issues.
+  68b49712c107 ("mt76: mt7921: fix kernel crash when the firmware fails to download")
 
-Cheers,
-Luca.
+Fixes tag
 
+  Fixes: 5c14a5f944b (""mt76: mt7921: introduce mt7921e support)
 
-The following changes since commit fa9f5d0e0b45a06802f7cb3afed237be6066821e=
-:
+has these problem(s):
 
-  iwlegacy: avoid -Wempty-body warning (2021-04-11 12:31:01 +0300)
+  - SHA1 should be at least 12 digits long
+    Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
+    or later) just making sure it is not set (or set to "auto").
+  - Subject has leading but no trailing quotes
+  - Subject does not match target commit subject
+    Just use
+        git log -1 --format='Fixes: %h ("%s")'
 
-are available in the Git repository at:
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
-gs/iwlwifi-next-for-kalle-2021-04-12
-
-for you to fetch changes up to 1a9674efd5364f875a04d4ae2f499dfc4bf22e3b:
-
-  iwlwifi: dbg: disable ini debug in 9000 family and below (2021-04-12 13:2=
-7:04 +0300)
-
-----------------------------------------------------------------
-iwlwifi patches for v5.13
-
-* Add support for new FTM FW APIs;
-* Add new iwlmei driver;
-* Some CSA fixes;
-* Support for new HW family and other HW detection fixes;
-* Robustness improvement in the HW detection code;
-* One fix in PMF;
-* Some new regulatory features;
-* Support for passive scan in 6GHz;
-* Some improvements in the sync queue implementation;
-* Support for new devices;
-* Support for a new FW API command version;
-* Some locking fixes;
-* Bump the FW API version support for AX devices;
-* Some other small fixes, clean-ups and improvements.
-
-----------------------------------------------------------------
-Alexander Usyskin (1):
-      mei: bus: add client dma interface
-
-Avraham Stern (3):
-      iwlwifi: mvm: support range request command version 12
-      iwlwifi: mvm: responder: support responder config command version 8
-      iwlwifi: mvm: when associated with PMF, use protected NDP ranging neg=
-otiation
-
-Emmanuel Grumbach (8):
-      cfg80211: allow to specifying a reason for hw_rfkill
-      iwlwifi: mei: add the driver to allow cooperation with CSME
-      iwlwifi: integrate with iwlmei
-      iwlwifi: mvm: don't allow CSA if we haven't been fully associated
-      iwlwifi: remove TCM events
-      iwlwifi: don't warn if we can't wait for empty tx queues
-      iwlwifi: mvm: don't disconnect immediately if we don't hear beacons a=
-fter CSA
-      iwlwifi: mvm: don't WARN if we can't remove a time event
-
-Harish Mitty (1):
-      iwlwifi: mvm: refactor ACPI DSM evaluation function
-
-Ilan Peer (1):
-      iwlwifi: mvm: Add support for 6GHz passive scan
-
-Johannes Berg (10):
-      iwlwifi: pcie: avoid unnecessarily taking spinlock
-      iwlwifi: pcie: normally grab NIC access for inflight-hcmd
-      iwlwifi: pcie: make cfg vs. trans_cfg more robust
-      iwlwifi: mvm: write queue_sync_state only for sync
-      iwlwifi: mvm: clean up queue sync implementation
-      iwlwifi: remove remaining software checksum code
-      iwlwifi: mvm: don't lock mutex in RCU critical section
-      iwlwifi: warn on SKB free w/o op-mode
-      iwlwifi: trans/pcie: defer transport initialisation
-      iwlwifi: fw: print out trigger delay when collecting data
-
-Luca Coelho (1):
-      iwlwifi: bump FW API to 63 for AX devices
-
-Matti Gottlieb (2):
-      iwlwifi: pcie: Add support for Bz Family
-      iwlwifi: pcie: Change ma product string name
-
-Miri Korenblit (3):
-      iwlwifi: mvm: enable PPAG in China
-      iwlwifi: mvm: support BIOS enable/disable for 11ax in Ukraine
-      iwlwifi: mvm: add support for version 3 of LARI_CONFIG_CHANGE command=
-.
-
-Mordechay Goodstein (7):
-      iwlwifi: pcie: clear only FH bits handle in the interrupt
-      iwlwifi: move iwl_configure_rxq to be used by other op_modes
-      iwlwifi: queue: avoid memory leak in reset flow
-      iwlwifi: mvm: remove PS from lower rates.
-      iwlwifi: pcie: merge napi_poll_msix functions
-      iwlwifi: pcie: add ISR debug info for msix debug
-      iwlwifi: rs-fw: don't support stbc for HE 160
-
-Mukesh Sisodiya (1):
-      iwlwifi: dbg: disable ini debug in 9000 family and below
-
-Ravi Darsi (1):
-      iwlwifi: mvm: Use IWL_INFO in fw_reset_handshake()
-
-Roee Goldfiner (1):
-      iwlwifi: mvm: umac error table mismatch
-
-Sara Sharon (1):
-      iwlwifi: mvm: enable TX on new CSA channel before disconnecting
-
-ybaruch (5):
-      iwlwifi: change step in so-gf struct
-      iwlwifi: change name to AX 211 and 411 family
-      iwlwifi: add 160Mhz to killer 1550 name
-      iwlwifi: add ax201 killer device
-      iwlwifi: add new so-gf device
-
- drivers/misc/mei/bus.c                                 |   67 +++-
- drivers/misc/mei/client.c                              |    3 +
- drivers/misc/mei/hw.h                                  |    5 +
- drivers/net/wireless/intel/iwlwifi/Kconfig             |   13 +
- drivers/net/wireless/intel/iwlwifi/Makefile            |    2 +
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c         |   72 +++-
- drivers/net/wireless/intel/iwlwifi/cfg/9000.c          |    2 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c           |   78 +++-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h           |   13 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/location.h   |  173 +++++++-
- drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h    |   20 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/power.h      |   22 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/rx.h         |   30 --
- drivers/net/wireless/intel/iwlwifi/fw/api/scan.h       |    8 +
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c            |    4 +-
- drivers/net/wireless/intel/iwlwifi/fw/file.h           |    3 +
- drivers/net/wireless/intel/iwlwifi/fw/img.h            |    5 +-
- drivers/net/wireless/intel/iwlwifi/fw/init.c           |   59 +++
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h        |    1 +
- drivers/net/wireless/intel/iwlwifi/iwl-config.h        |   12 +-
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h           |    3 +
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c       |    5 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c           |    4 +-
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c     |   61 +++
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h     |   11 +-
- drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h       |    4 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c         |   91 +++--
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h         |    8 +-
- drivers/net/wireless/intel/iwlwifi/mei/Makefile        |    8 +
- drivers/net/wireless/intel/iwlwifi/mei/internal.h      |   20 +
- drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h       |  440 ++++++++++++=
-++++++++
- drivers/net/wireless/intel/iwlwifi/mei/main.c          | 2026 ++++++++++++=
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
- drivers/net/wireless/intel/iwlwifi/mei/net.c           |  409 ++++++++++++=
-+++++++
- drivers/net/wireless/intel/iwlwifi/mei/sap.h           |  736 ++++++++++++=
-++++++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mei/trace-data.h    |   69 ++++
- drivers/net/wireless/intel/iwlwifi/mei/trace.c         |   15 +
- drivers/net/wireless/intel/iwlwifi/mei/trace.h         |   62 +++
- drivers/net/wireless/intel/iwlwifi/mvm/constants.h     |   11 +
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c            |    2 +
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c       |   10 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c |   85 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c |   27 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c            |  235 ++++-------
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c      |  101 ++++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h           |   82 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c           |  205 +++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c         |   20 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c            |    6 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c          |   58 +--
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c          |  128 ++++++
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c           |   10 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h           |   38 +-
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c    |   27 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c            |    7 +-
- drivers/net/wireless/intel/iwlwifi/mvm/utils.c         |   18 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c          |  107 ++++-
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c           |   68 ++--
- drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c   |    8 +-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c        |   21 +-
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c           |   80 ++--
- drivers/net/wireless/intel/iwlwifi/queue/tx.c          |   41 +-
- drivers/net/wireless/intel/iwlwifi/queue/tx.h          |    3 +-
- include/linux/mei_cl_bus.h                             |    3 +
- include/net/cfg80211.h                                 |   11 +-
- net/wireless/core.c                                    |    7 +-
- 65 files changed, 5415 insertions(+), 568 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/Makefile
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/internal.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/main.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/net.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/sap.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/trace-data.h
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/trace.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mei/trace.h
-
---=-ZszUkfg70f8AuAKrM7QR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmB0JlUACgkQoUecoho8
-xfpGlw//VEjEdIPK7NIsLvy3WYfD5/UJCxUw113tqnHb5HeW79hvS0Kt8jYvyQ6N
-Ih8BbT53Lnp3Z3BbhGV+H9N18AnTMsxCJjx7HfVza3wWfViFVVnQ85VYY8QiVxfK
-ORWwrJlR0LbRUZwQPez4+EB74fij3SGKLFy9vq+/Gh1mCoSrYRXYScQ020sG/xXV
-Ir1fvhYvVXBrvvFoUi7bix2MIPdkuJvvT3EwMaoVzHAeWFvozRFvcgM0uC0mjC8K
-b3JazcwbVF1ASwcNPwYPBqCts8NceWlcBKpC7BCLM4mZzGZi4Ny7DNuvrYZ0oh2Y
-2vnyGX9FAug2Rp1FChWxFjyRuuA6dQVZhKtIc+Q/B7c9xtw+18/qacB8gOpfxFFY
-FqGtSplIET6xMCSQsFHTzDhV4WBpnBAj68xRL+zK+lBTYCFDB+iiLwUcMChogWdY
-d3f/IxZoi8BLAuv0XQ7wc6oj1vaEZ/pJaPqXBfcn0mzMyCdKAg845vCsA6L9cezX
-2396CqYNFftG7dSbZTqVAsSn4IMnCXxIyKxEWo8YnS+XUtvmvKNPgiFLjL1q/d78
-LSkdBQas/zcw1F27d9F5raM4OyVqDTVRMoqI7d4ijXryEOHtKNJ7dpWVSBhqDNMs
-jnikD8isctMQuBc7s2XttIF+C8etpS/xoPA6AyhwTZ2UcBRfvwM=
-=qNPF
------END PGP SIGNATURE-----
-
---=-ZszUkfg70f8AuAKrM7QR--
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
