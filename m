@@ -2,61 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C44435C5A7
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 13:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9274135C5B9
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 13:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238780AbhDLLvM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 07:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48072 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238057AbhDLLvL (ORCPT
+        id S238482AbhDLLxY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 07:53:24 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:44632 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S237792AbhDLLxX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 07:51:11 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6BFAC061574
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Apr 2021 04:50:53 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Mon, 12 Apr 2021 07:53:23 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lVv5Z-00AgEG-SA; Mon, 12 Apr 2021 13:50:46 +0200
-Message-ID: <7a2cec50e39aa7d33220a9248f9de53cff4b963d.camel@sipsolutions.net>
-Subject: Re: pull-request: iwlwifi-next 2021-04-12
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@codeaurora.org>, Luca Coelho <luca@coelho.fi>
+        (envelope-from <luca@coelho.fi>)
+        id 1lVv7l-000Kze-8E; Mon, 12 Apr 2021 14:53:03 +0300
+Message-ID: <fce2a3554e227bc9116948e36477f4b657e9ebff.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Date:   Mon, 12 Apr 2021 13:50:44 +0200
-In-Reply-To: <4cef9f24f371506df01b8afbdc1e0d47afa8e3e0.camel@sipsolutions.net> (sfid-20210412_134950_435631_8D1F22F1)
+Date:   Mon, 12 Apr 2021 14:53:00 +0300
+In-Reply-To: <87v98rlod8.fsf@codeaurora.org>
 References: <ee6d5faebc25c8fa447cf870cbc80b4236178756.camel@coelho.fi>
          <87v98rlod8.fsf@codeaurora.org>
-         (sfid-20210412_134346_942971_4D7B456F) <4cef9f24f371506df01b8afbdc1e0d47afa8e3e0.camel@sipsolutions.net>
-         (sfid-20210412_134950_435631_8D1F22F1)
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: Re: pull-request: iwlwifi-next 2021-04-12
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2021-04-12 at 13:49 +0200, Johannes Berg wrote:
-> On Mon, 2021-04-12 at 14:43 +0300, Kalle Valo wrote:
-> > 
-> > >  include/net/cfg80211.h                                 |   11 +-
-> > >  net/wireless/core.c                                    |    7 +-
-> > 
-> > Why are you changing cfg80211? Has this been checked with Johannes, at
-> > least I don't see any acks from him? I prefer making cfg80211 changes
-> > via Johannes' tree, smaller risk of conflicts that way.
+On Mon, 2021-04-12 at 14:43 +0300, Kalle Valo wrote:
+> Luca Coelho <luca@coelho.fi> writes:
 > 
-> Hm. I believe I even have that commit already in my tree. Maybe we
-> talked about it and said you could include it and I forgot? But in any
-> case, it's in my tree now, so probably shouldn't go through iwlwifi as
-> well.
+> > Here's the first batch of patches intended for v5.13.  This includes
+> > the four last patchsets I sent out for v5.13 with the usual development
+> > work.  It also includes Emmanuel's series for adding the iwlmei driver,
+> > including one patch by Alexander Usyskin in the misc drivers directory.
+> > (which Greg asked us to push via our tree).
+> 
+> But no Acked-by from Greg? I would like to have that in the commit log.
 
-commit 6f779a66dc84 ("cfg80211: allow specifying a reason for
-hw_rfkill")
+Ugh, sorry, I thought Emmanuel had taken care of this and didn't check.
+I'll check with him what's the situation with Ack'ing this.
 
-johannes
+
+> >  include/net/cfg80211.h                                 |   11 +-
+> >  net/wireless/core.c                                    |    7 +-
+> 
+> Why are you changing cfg80211? Has this been checked with Johannes, at
+> least I don't see any acks from him? I prefer making cfg80211 changes
+> via Johannes' tree, smaller risk of conflicts that way.
+
+Hmmm, this is a patch that I already sent to Johannes too, but I had a
+mistake in it (some backport stuff slipped through).  I guess I'll send
+him a v2 and then we need to wait with this pull-req until mac80211-
+next reaches wireless-drivers-next... :(
+
+
+> Also every commit seems to have Change-Id tag.
+
+Argh.  Sorry about that.  Another of my hooks that was not installed on
+my new machine.
+
+--
+Luca.
 
