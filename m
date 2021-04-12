@@ -2,104 +2,207 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 112D235C62C
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 14:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F40A35C646
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 14:32:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240902AbhDLM0W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 08:26:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52154 "EHLO mail.kernel.org"
+        id S238780AbhDLMcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 08:32:17 -0400
+Received: from mga11.intel.com ([192.55.52.93]:54751 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240788AbhDLM0V (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 08:26:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C477F6128A;
-        Mon, 12 Apr 2021 12:26:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618230363;
-        bh=JpKFcxPTaq41/kFgj0Nl+OiJyfDAvcprwV4PIKH7lL4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ASpInl3EuRuEwksxP/++yx/iiy0AOZ6rUAgxfQ2HX/ciczG6tGjFJh0fDSNXBpAww
-         4stq3Vf5Qoci/9NL7ifHDmQBUysmjM0L5qe2YDJ1joIhXb6HrImfK8jxxsJafXCSsX
-         9QeynNkABtpRS3v1nZ5DyWOdUmAK/zu9TKd1Z5/DSWHviGUb5NDOr+DWAoJ2YHkaWG
-         j3L13g0k9VGqpW44C1pTdrZreL5gxQcxBXUR6ZvdwV6UjP7eB866ZO7g+hWiFPtp9T
-         8gwaYMR/cLpbQmM8LM/uVVLMRQJtizlGlPL6a/WqdEE0qvHJh+z2PrRmvSGcc9HK9U
-         H/g1XKiLJcORw==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7921: add rcu section in mt7921_mcu_tx_rate_report
-Date:   Mon, 12 Apr 2021 14:25:54 +0200
-Message-Id: <476fdb99788304f96b2a7e5ecf5da1e78c2d5022.1618230139.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S238015AbhDLMcQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Apr 2021 08:32:16 -0400
+IronPort-SDR: 0qwEe5OpZOBhYVLqWubvbuRoMHRjSgtCDViHSpBU230xhywvJvP67nvTrN/T8QmOVBUIO9MuY0
+ TRPfVoBxyQow==
+X-IronPort-AV: E=McAfee;i="6000,8403,9951"; a="190990732"
+X-IronPort-AV: E=Sophos;i="5.82,216,1613462400"; 
+   d="scan'208";a="190990732"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2021 05:31:59 -0700
+IronPort-SDR: ybsC7GEM4c4XHCi6L84+9Tq1KB6M2zSS78opucqtYm7yWb8yFxb7BjrSqBw3xMXAUD0+9wbs8x
+ ZPfwz3JFBhxA==
+X-IronPort-AV: E=Sophos;i="5.82,216,1613462400"; 
+   d="scan'208";a="521166664"
+Received: from hnativx-mobl2.ger.corp.intel.com (HELO egrumbac-mobl1.lan) ([10.214.255.238])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2021 05:31:56 -0700
+From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To:     gregkh@linuxfoundation.org, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, luca@coelho.fi,
+        Alexander Usyskin <alexander.usyskin@intel.com>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>
+Subject: [PATCH RESEND] mei: bus: add client dma interface
+Date:   Mon, 12 Apr 2021 15:31:49 +0300
+Message-Id: <20210412123149.23601-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce rcu section in mt7921_mcu_tx_rate_report before dereferencing
-wcid pointer otherwise loockdep will report the following issue:
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[  115.245740] =============================
-[  115.245754] WARNING: suspicious RCU usage
-[  115.245771] 5.10.20 #0 Not tainted
-[  115.245784] -----------------------------
-[  115.245816] other info that might help us debug this:
-[  115.245830] rcu_scheduler_active = 2, debug_locks = 1
-[  115.245845] 3 locks held by kworker/u4:1/20:
-[  115.245858]  #0: ffffff80065ab138 ((wq_completion)phy0){+.+.}-{0:0}, at: process_one_work+0x1f8/0x6b8
-[  115.245948]  #1: ffffffc01198bdd8 ((work_completion)(&(&dev->mphy.mac_work)->work)){+.+.}-{0:0}, at: process_one_8
-[  115.246027]  #2: ffffff8006543ce8 (&dev->mutex#2){+.+.}-{3:3}, at: mt7921_mac_work+0x60/0x2b0 [mt7921e]
-[  115.246125]
-[  115.246125] stack backtrace:
-[  115.246142] CPU: 1 PID: 20 Comm: kworker/u4:1 Not tainted 5.10.20 #0
-[  115.246152] Hardware name: MediaTek MT7622 RFB1 board (DT)
-[  115.246168] Workqueue: phy0 mt7921_mac_work [mt7921e]
-[  115.246188] Call trace:
-[  115.246201]  dump_backtrace+0x0/0x1a8
-[  115.246213]  show_stack+0x14/0x30
-[  115.246228]  dump_stack+0xec/0x134
-[  115.246240]  lockdep_rcu_suspicious+0xcc/0xdc
-[  115.246255]  mt7921_get_wtbl_info+0x2a4/0x310 [mt7921e]
-[  115.246269]  mt7921_mac_work+0x284/0x2b0 [mt7921e]
-[  115.246281]  process_one_work+0x2a0/0x6b8
-[  115.246293]  worker_thread+0x40/0x440
-[  115.246305]  kthread+0x144/0x148
-[  115.246317]  ret_from_fork+0x10/0x18
+Expose the client dma mapping via mei client bus interface.
+The client dma has to be mapped before the device is enabled,
+therefore we need to create device linking already during mapping
+and we need to unmap after the client is disable hence we need to
+postpone the unlink and flush till unmapping or when
+destroying the device.
 
-Fixes: 1c099ab44727c ("mt76: mt7921: add MCU support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Co-developed-by: Tomas Winkler <tomas.winkler@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+This is a another version of the patch:
+https://lore.kernel.org/lkml/20210206144325.25682-6-tomas.winkler@intel.com/
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 7d45e8795e15..aa55667b6ed7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -413,9 +413,12 @@ mt7921_mcu_tx_rate_report(struct mt7921_dev *dev, struct sk_buff *skb,
- 
- 	if (wlan_idx >= MT76_N_WCIDS)
- 		return;
-+
-+	rcu_read_lock();
-+
- 	wcid = rcu_dereference(dev->mt76.wcid[wlan_idx]);
- 	if (!wcid)
--		return;
-+		goto out;
- 
- 	msta = container_of(wcid, struct mt7921_sta, wcid);
- 	stats = &msta->stats;
-@@ -423,6 +426,8 @@ mt7921_mcu_tx_rate_report(struct mt7921_dev *dev, struct sk_buff *skb,
- 	/* current rate */
- 	mt7921_mcu_tx_rate_parse(mphy, &peer, &rate, curr);
- 	stats->tx_rate = rate;
-+out:
-+	rcu_read_unlock();
+Greg asked to route this patch through the wireless drivers tree:
+https://lore.kernel.org/lkml/YB6sIi61X5p6Dq6y@kroah.com/
+So here it is.
+
+ drivers/misc/mei/bus.c     | 67 ++++++++++++++++++++++++++++++++++++--
+ drivers/misc/mei/client.c  |  3 ++
+ drivers/misc/mei/hw.h      |  5 +++
+ include/linux/mei_cl_bus.h |  3 ++
+ 4 files changed, 75 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/misc/mei/bus.c b/drivers/misc/mei/bus.c
+index 935acc6bbf3c..7a325572ad1d 100644
+--- a/drivers/misc/mei/bus.c
++++ b/drivers/misc/mei/bus.c
+@@ -643,6 +643,64 @@ static void mei_cl_bus_vtag_free(struct mei_cl_device *cldev)
+ 	kfree(cl_vtag);
  }
  
- static void
++void *mei_cldev_dma_map(struct mei_cl_device *cldev, u8 buffer_id, size_t size)
++{
++	struct mei_device *bus;
++	struct mei_cl *cl;
++	int ret;
++
++	if (!cldev || !buffer_id || !size)
++		return ERR_PTR(-EINVAL);
++
++	if (!IS_ALIGNED(size, MEI_FW_PAGE_SIZE)) {
++		dev_err(&cldev->dev, "Map size should be aligned to %lu\n",
++			MEI_FW_PAGE_SIZE);
++		return ERR_PTR(-EINVAL);
++	}
++
++	cl = cldev->cl;
++	bus = cldev->bus;
++
++	mutex_lock(&bus->device_lock);
++	if (cl->state == MEI_FILE_UNINITIALIZED) {
++		ret = mei_cl_link(cl);
++		if (ret)
++			goto out;
++		/* update pointers */
++		cl->cldev = cldev;
++	}
++
++	ret = mei_cl_dma_alloc_and_map(cl, NULL, buffer_id, size);
++out:
++	mutex_unlock(&bus->device_lock);
++	if (ret)
++		return ERR_PTR(ret);
++	return cl->dma.vaddr;
++}
++EXPORT_SYMBOL_GPL(mei_cldev_dma_map);
++
++int mei_cldev_dma_unmap(struct mei_cl_device *cldev)
++{
++	struct mei_device *bus;
++	struct mei_cl *cl;
++	int ret;
++
++	if (!cldev)
++		return -EINVAL;
++
++	cl = cldev->cl;
++	bus = cldev->bus;
++
++	mutex_lock(&bus->device_lock);
++	ret = mei_cl_dma_unmap(cl, NULL);
++
++	mei_cl_flush_queues(cl, NULL);
++	mei_cl_unlink(cl);
++	mutex_unlock(&bus->device_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mei_cldev_dma_unmap);
++
+ /**
+  * mei_cldev_enable - enable me client device
+  *     create connection with me client
+@@ -753,9 +811,11 @@ int mei_cldev_disable(struct mei_cl_device *cldev)
+ 		dev_err(bus->dev, "Could not disconnect from the ME client\n");
+ 
+ out:
+-	/* Flush queues and remove any pending read */
+-	mei_cl_flush_queues(cl, NULL);
+-	mei_cl_unlink(cl);
++	/* Flush queues and remove any pending read unless we have mapped DMA */
++	if (!cl->dma_mapped) {
++		mei_cl_flush_queues(cl, NULL);
++		mei_cl_unlink(cl);
++	}
+ 
+ 	mutex_unlock(&bus->device_lock);
+ 	return err;
+@@ -1054,6 +1114,7 @@ static void mei_cl_bus_dev_release(struct device *dev)
+ 	if (!cldev)
+ 		return;
+ 
++	mei_cl_flush_queues(cldev->cl, NULL);
+ 	mei_me_cl_put(cldev->me_cl);
+ 	mei_dev_bus_put(cldev->bus);
+ 	mei_cl_unlink(cldev->cl);
+diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+index 4378a9b25848..ac41bdcd190c 100644
+--- a/drivers/misc/mei/client.c
++++ b/drivers/misc/mei/client.c
+@@ -700,6 +700,9 @@ int mei_cl_unlink(struct mei_cl *cl)
+ 
+ 	cl_dbg(dev, cl, "unlink client");
+ 
++	if (cl->state == MEI_FILE_UNINITIALIZED)
++		return 0;
++
+ 	if (dev->open_handle_count > 0)
+ 		dev->open_handle_count--;
+ 
+diff --git a/drivers/misc/mei/hw.h b/drivers/misc/mei/hw.h
+index b10606550613..bc240b88abf1 100644
+--- a/drivers/misc/mei/hw.h
++++ b/drivers/misc/mei/hw.h
+@@ -22,6 +22,11 @@
+ #define MEI_D0I3_TIMEOUT            5  /* D0i3 set/unset max response time */
+ #define MEI_HBM_TIMEOUT             1  /* 1 second */
+ 
++/*
++ * FW page size for DMA allocations
++ */
++#define MEI_FW_PAGE_SIZE 4096UL
++
+ /*
+  * MEI Version
+  */
+diff --git a/include/linux/mei_cl_bus.h b/include/linux/mei_cl_bus.h
+index 07f5ef8fc456..8c8d46ba33bf 100644
+--- a/include/linux/mei_cl_bus.h
++++ b/include/linux/mei_cl_bus.h
+@@ -116,4 +116,7 @@ int mei_cldev_enable(struct mei_cl_device *cldev);
+ int mei_cldev_disable(struct mei_cl_device *cldev);
+ bool mei_cldev_enabled(struct mei_cl_device *cldev);
+ 
++void *mei_cldev_dma_map(struct mei_cl_device *cldev, u8 buffer_id, size_t size);
++int mei_cldev_dma_unmap(struct mei_cl_device *cldev);
++
+ #endif /* _LINUX_MEI_CL_BUS_H */
 -- 
-2.30.2
+2.25.1
 
