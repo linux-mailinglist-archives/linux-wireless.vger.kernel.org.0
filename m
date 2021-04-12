@@ -2,72 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F43535C5D0
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 13:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C404835C5F7
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 14:14:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240794AbhDLL6p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 07:58:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49738 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240790AbhDLL6o (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 07:58:44 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E4F2C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Apr 2021 04:58:26 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lVvCu-00AgOd-S7; Mon, 12 Apr 2021 13:58:21 +0200
-Message-ID: <9b98d8c441d2ef26edc716d8c49c13a01c7c9bea.camel@sipsolutions.net>
+        id S237720AbhDLMPD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 08:15:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48374 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237283AbhDLMPC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Apr 2021 08:15:02 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 35097601FF;
+        Mon, 12 Apr 2021 12:14:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1618229684;
+        bh=uPV2cOtYV9HM5o2hvAwEahnks5Y2YTkpzzKReqkeHv4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=u2xjuNsuHdaY7hKkGzNoTE7N+EVPANhqvlvoDjvFrTDJ9da3NExJocX6DrJ+3XS+b
+         6qZ80FeuSOZK24lye8EWHnudbPCnMDr3ZsIFq0gu3noIYYfQd3z1+m8d1nWWuHbDCA
+         p6qxp7ulYTwPMWYhImkFsNmln1MphPAU/XpvI02U=
+Date:   Mon, 12 Apr 2021 14:14:42 +0200
+From:   "'Greg KH (gregkh@linuxfoundation.org)'" <gregkh@linuxfoundation.org>
+To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, Luca Coelho <luca@coelho.fi>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Winkler, Tomas" <tomas.winkler@intel.com>,
+        "Usyskin, Alexander" <alexander.usyskin@intel.com>
 Subject: Re: pull-request: iwlwifi-next 2021-04-12
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Luca Coelho <luca@coelho.fi>, Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Date:   Mon, 12 Apr 2021 13:58:20 +0200
-In-Reply-To: <4c0f9851ad0f7b74843d800de9b35844ce463bac.camel@coelho.fi>
+Message-ID: <YHQ5sjnH2tj8Jvrg@kroah.com>
 References: <ee6d5faebc25c8fa447cf870cbc80b4236178756.camel@coelho.fi>
-         <87v98rlod8.fsf@codeaurora.org>
-         (sfid-20210412_134346_942971_4D7B456F) <4cef9f24f371506df01b8afbdc1e0d47afa8e3e0.camel@sipsolutions.net>
-         (sfid-20210412_134950_435631_8D1F22F1) <7a2cec50e39aa7d33220a9248f9de53cff4b963d.camel@sipsolutions.net>
-         <4c0f9851ad0f7b74843d800de9b35844ce463bac.camel@coelho.fi>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ <87v98rlod8.fsf@codeaurora.org>
+ <SA0PR11MB47522E7EC6ECE33A9D1068BDF2709@SA0PR11MB4752.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SA0PR11MB47522E7EC6ECE33A9D1068BDF2709@SA0PR11MB4752.namprd11.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2021-04-12 at 14:56 +0300, Luca Coelho wrote:
-> On Mon, 2021-04-12 at 13:50 +0200, Johannes Berg wrote:
-> > On Mon, 2021-04-12 at 13:49 +0200, Johannes Berg wrote:
-> > > On Mon, 2021-04-12 at 14:43 +0300, Kalle Valo wrote:
-> > > > 
-> > > > >  include/net/cfg80211.h                                 |   11 +-
-> > > > >  net/wireless/core.c                                    |    7 +-
-> > > > 
-> > > > Why are you changing cfg80211? Has this been checked with Johannes, at
-> > > > least I don't see any acks from him? I prefer making cfg80211 changes
-> > > > via Johannes' tree, smaller risk of conflicts that way.
-> > > 
-> > > Hm. I believe I even have that commit already in my tree. Maybe we
-> > > talked about it and said you could include it and I forgot? But in any
-> > > case, it's in my tree now, so probably shouldn't go through iwlwifi as
-> > > well.
-> > 
-> > commit 6f779a66dc84 ("cfg80211: allow specifying a reason for
-> > hw_rfkill")
+On Mon, Apr 12, 2021 at 11:55:23AM +0000, Grumbach, Emmanuel wrote:
+> + Greg
 > 
-> Ah, so you applied it without the backport stuff I left there.  Thanks!
+> Hi Greg,
 > 
-> But this is not in net-next yet, right? So we still need to wait till
-> that reaches net-next and Kalle pulls from there...
+> >
+> > Luca Coelho <luca@coelho.fi> writes:
+> >
+> > > Here's the first batch of patches intended for v5.13.  This includes
+> > > the four last patchsets I sent out for v5.13 with the usual
+> > > development work.  It also includes Emmanuel's series for adding the
+> > > iwlmei driver, including one patch by Alexander Usyskin in the misc drivers
+> > directory.
+> > > (which Greg asked us to push via our tree).
+> >
+> > But no Acked-by from Greg? I would like to have that in the commit log.
+> 
+> Not sure if you remember, but Tomas sent a patch to you and then asked to route the patch through the user's tree. So here it is :)
+> Kalle would like to get an ACK from you. This is the latest version of the patch:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git/commit/?id=1b1910e2c82ed5392b90470885d91f3abc1619e2
 
-Yeah, apparently I got side-tracked after doing mac80211 and forgot
-mac80211-next ...
+I do not remember anything like this, do you have a pointer to the
+lore.kernel.org thread?  Remember I get about 1000 emails a day to do
+something with (usually ignore...)
 
-johannes
+And I can't review a random commit on a random webpage, that's not how
+any of this works, you know better.
 
+greg k-h
