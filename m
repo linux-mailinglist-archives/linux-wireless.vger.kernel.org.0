@@ -2,129 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 814CD35BBCB
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 10:11:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF3B35BC03
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 10:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237256AbhDLILe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 04:11:34 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39439 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237081AbhDLILe (ORCPT
+        id S237283AbhDLIXO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 04:23:14 -0400
+Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:45832 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237091AbhDLIXN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 04:11:34 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13C8BAP60024916, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13C8BAP60024916
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 12 Apr 2021 16:11:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 12 Apr 2021 16:11:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 12 Apr 2021 16:11:09 +0800
-Received: from RTEXMBS04.realtek.com.tw ([::1]) by RTEXMBS04.realtek.com.tw
- ([fe80::6c03:c55:df50:5209%5]) with mapi id 15.01.2106.013; Mon, 12 Apr 2021
- 16:11:09 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        DeanKu <ku920601@realtek.com>,
-        Bernie Huang <phhuang@realtek.com>,
-        Shaofu <shaofu@realtek.com>,
-        Steven Ting <steventing@realtek.com>,
-        Kevin Yang <kevin_yang@realtek.com>
-Subject: RE: [PATCH 6/7] rtw88: 8822c: add CFO tracking
-Thread-Topic: [PATCH 6/7] rtw88: 8822c: add CFO tracking
-Thread-Index: AQHXHILi0rb6HTLCKkSAH1awbttUrqquqISAgAGc+iA=
-Date:   Mon, 12 Apr 2021 08:11:09 +0000
-Message-ID: <6ea1eb17f2a64fd0954b9d4060da12f0@realtek.com>
-References: <20210319054218.3319-7-pkshih@realtek.com>
- <20210411091951.2B01AC433CA@smtp.codeaurora.org>
-In-Reply-To: <20210411091951.2B01AC433CA@smtp.codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMTIg5LiK5Y2IIDAxOjEyOjAw?=
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 12 Apr 2021 04:23:13 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id D126DE5;
+        Mon, 12 Apr 2021 01:22:55 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com D126DE5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1618215775;
+        bh=HJdBJDNgUONeECqTexzrkugjzVR76e6uToFT5Qmyats=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=arrfH05ETUVzgHvXgnMIjDle7PSxIocQoHQw66vyuxvK84vhdHKWPaCkHGXCOINvc
+         e2blUERQA1nBfM02P5m0A8t93nHXBprUG0bvCOBktVZg/6LW1kTZ0Zw1WbtrgVCXoD
+         h3dta9rT/imQVCF/lceEzulpLLYGy4aW902VyPrQ=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 2B6EF1874BD;
+        Mon, 12 Apr 2021 01:22:49 -0700 (PDT)
+Subject: Re: [PATCH 2/2] brcmfmac: support parse country code map from DT
+To:     Shawn Guo <shawn.guo@linaro.org>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20210408113022.18180-1-shawn.guo@linaro.org>
+ <20210408113022.18180-3-shawn.guo@linaro.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <82182ad8-c728-d313-047c-79478c9ee85f@broadcom.com>
+Date:   Mon, 12 Apr 2021 10:22:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/12/2021 07:24:49
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 163016 [Apr 11 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/12/2021 07:28:00
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/12/2021 07:46:58
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 163018 [Apr 12 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/12/2021 07:50:00
+In-Reply-To: <20210408113022.18180-3-shawn.guo@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGt2YWxvPWNvZGVhdXJvcmEu
-b3JnQG1nLmNvZGVhdXJvcmEub3JnIFttYWlsdG86a3ZhbG89Y29kZWF1cm9yYS5vcmdAbWcuY29k
-ZWF1cm9yYS5vcmddIE9uDQo+IEJlaGFsZiBPZiBLYWxsZSBWYWxvDQo+IFNlbnQ6IFN1bmRheSwg
-QXByaWwgMTEsIDIwMjEgNToyMCBQTQ0KPiBUbzogUGtzaGloDQo+IENjOiB0b255MDYyMGVtbWFA
-Z21haWwuY29tOyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IERlYW5LdTsgQmVybmll
-IEh1YW5nOyBTaGFvZnU7IFN0ZXZlbiBUaW5nOw0KPiBLZXZpbiBZYW5nDQo+IFN1YmplY3Q6IFJl
-OiBbUEFUQ0ggNi83XSBydHc4ODogODgyMmM6IGFkZCBDRk8gdHJhY2tpbmcNCj4gDQo+IFBpbmct
-S2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3cm90ZToNCj4gDQo+ID4gRnJvbTogUG8tSGFv
-IEh1YW5nIDxwaGh1YW5nQHJlYWx0ZWsuY29tPg0KPiA+DQo+ID4gQWRkIENGTyB0cmFja2luZyBt
-ZWNoYW5pc20gdG8gbWl0aWdhdGUgdGhlIGVmZmVjdCBvZiBvc2NpbGxhdG9yDQo+ID4gZnJlcXVl
-bmN5IGRpc2NyZXBhbmN5Lg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogUG8tSGFvIEh1YW5nIDxw
-aGh1YW5nQHJlYWx0ZWsuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFBpbmctS2UgU2hpaCA8cGtz
-aGloQHJlYWx0ZWsuY29tPg0KPiANCj4gV2hhdCdzIENGTz8gSSBuZWVkIHRvIHVuZGVyc3RhbmQg
-dGhlIGNvbW1pdCBsb2csIHNvIHBsZWFzZSB3cml0ZSBpdCBzbyB0aGF0IGFueQ0KPiBlbmdpbmVl
-ciB3b3JraW5nIHdpdGggd2lyZWxlc3MgdW5kZXJzdGFuZHMgaXQuDQo+IA0KDQpDRk8gdHJhY2tp
-bmcsIHdoaWNoIHN0YW5kcyBmb3IgY2VudHJhbCBmcmVxdWVuY3kgb2Zmc2V0IHRyYWNraW5nLCBp
-cyB1c2VkIHRvDQphZGp1c3Qgb3NjaWxsYXRvciB0byBhbGlnbiBjZW50cmFsIGZyZXF1ZW5jeSBv
-ZiBjb25uZWN0ZWQgQVAuIFRoZW4sIHdlIGNhbg0KaGF2ZSBiZXR0ZXIgcGVyZm9ybWFuY2UuDQoN
-ClNob3VsZCBJIHJlc2VuZCB0aGlzIHBhdGNoIHRvIGV4cGxhaW4gQ0ZPPw0KDQotLQ0KUGluZy1L
-ZQ0KDQoNCg==
+On 08-04-2021 13:30, Shawn Guo wrote:
+> With any regulatory domain requests coming from either user space or
+> 802.11 IE (Information Element), the country is coded in ISO3166
+> standard.  It needs to be translated to firmware country code and
+> revision with the mapping info in settings->country_codes table.
+> Support populate country_codes table by parsing the mapping from DT.
+
+one more thing though...
+
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> ---
+>   .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53 +++++++++++++++++++
+>   1 file changed, 53 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> index a7554265f95f..ea5c7f434c2c 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> @@ -12,12 +12,61 @@
+>   #include "common.h"
+>   #include "of.h"
+>   
+> +static int brcmf_of_get_country_codes(struct device *dev,
+> +				      struct brcmf_mp_device *settings)
+> +{
+
+[...]
+
+> +		/* String format e.g. US-Q2-86 */
+> +		strncpy(cce->iso3166, map, 2);
+> +		strncpy(cce->cc, map + 3, 2);
+> +
+> +		ret = kstrtos32(map + 6, 10, &cce->rev);
+> +		if (ret < 0)
+> +			dev_warn(dev, "failed to read rev of map %s: %d",
+> +				 cce->iso3166, ret);
+
+Do we need a stronger validation of the string format, eg. use sscanf or 
+strstr. Would also be nice to have brcmf_dbg(INFO, ...) here to print 
+the entry.
+
+Regards,
+Arend
