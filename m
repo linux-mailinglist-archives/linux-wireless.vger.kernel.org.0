@@ -2,71 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C3135C36E
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 12:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0D9435C3B9
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 12:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237523AbhDLKME (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 06:12:04 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:44582 "EHLO
+        id S239072AbhDLKXB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 06:23:01 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:44588 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S238630AbhDLKKV (ORCPT
+        with ESMTP id S238845AbhDLKWy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 06:10:21 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
+        Mon, 12 Apr 2021 06:22:54 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1lVtW2-000KvW-KU; Mon, 12 Apr 2021 13:10:00 +0300
-Content-Type: text/plain; charset="utf-8"
+        id 1lVtiD-000Kw4-2V; Mon, 12 Apr 2021 13:22:34 +0300
+Message-ID: <f190363d8432f2b0bfbba38a32fe3b455c34c7f6.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon, 12 Apr 2021 13:22:32 +0300
+In-Reply-To: <iwlwifi.20210331121101.5b807533b0c0.I07b58a5c9238f75413a91198452ba1268ee79425@changeid>
+References: <20210331091452.543321-1-luca@coelho.fi>
+         <iwlwifi.20210331121101.5b807533b0c0.I07b58a5c9238f75413a91198452ba1268ee79425@changeid>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-From:   Luca Coelho <luca@coelho.fi>
-In-Reply-To: <iwlwifi.20210330162204.eb4f2ff1b863.Ib16238106b33d58b2b7688dc6297018b915ecef4@changeid>
-References: <iwlwifi.20210330162204.eb4f2ff1b863.Ib16238106b33d58b2b7688dc6297018b915ecef4@changeid>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.9.2
-Message-Id: <E1lVtW2-000KvW-KU@farmhouse.coelho.fi>
-Date:   Mon, 12 Apr 2021 13:09:59 +0300
 X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
         farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: Re: [PATCH 01/12] iwlwifi: mvm: enable TX on new CSA channel before
- disconnecting
+Subject: Re: [PATCH 05/12] iwlwifi: pcie: try to grab NIC access early
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
-
-> From: Sara Sharon <sara.sharon@intel.com>
+On Wed, 2021-03-31 at 12:14 +0300, Luca Coelho wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> When moving to the new channel, we block TX until we hear the
-> first beacon. if it is not heard, we proceed to disconnect.
-> Since TX is blocked (without mac80211 being aware of it) the frame
-> is stuck, resulting with queue hang.
+> Sometimes some NICs may fail to initialize, but if we have
+> such a scenario we may only see an alive timeout (i.e. the
+> firmware doesn't send us the alive message), and that will
+> only cause us to fail the interface up.
 > 
-> Instead, reenable TX before reporting on the connection loss.
-> As we are on the new channel, there is no problem with that,
-> even if the original CSA had quiet mode.
+> Try to once grab NIC access during device probe to ensure
+> we can properly talk to the hardware at all, and to do all
+> the potential workarounds in that function.
 > 
-> Signed-off-by: Sara Sharon <sara.sharon@intel.com>
+> Since we now finish NIC init here, we can remove it from
+> the later potential read of the RF ID.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> ---
 
-12 patches applied to iwlwifi-next.git, thanks.
+This patch is included in Emmanuel's iwlmei series, so I'll drop it
+from this series.
 
-89155fd1be13 iwlwifi: mvm: enable TX on new CSA channel before disconnecting
-9c1d5a542af4 iwlwifi: pcie: avoid unnecessarily taking spinlock
-15067411ad2f iwlwifi: pcie: normally grab NIC access for inflight-hcmd
-b060bcc81557 iwlwifi: mvm: don't allow CSA if we haven't been fully associated
-0c845f9c9584 iwlwifi: pcie: Add support for Bz Family
-2d23d815f958 iwlwifi: change step in so-gf struct
-cb10926a0a13 iwlwifi: change name to AX 211 and 411 family
-b1d5eb429c8d iwlwifi: add 160Mhz to killer 1550 name
-8b06b7eda055 iwlwifi: pcie: clear only FH bits handle in the interrupt
-77c07024bd4c iwlwifi: pcie: make cfg vs. trans_cfg more robust
-0c5de88265be iwlwifi: mvm: support range request command version 12
-1d558311f67a iwlwifi: mvm: responder: support responder config command version 8
+--
+Cheers,
+Luca.
 
