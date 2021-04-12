@@ -2,61 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A4035C5BA
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 13:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89D5B35C5C0
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 13:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239932AbhDLLyE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 07:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48700 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237792AbhDLLyD (ORCPT
+        id S240641AbhDLLzT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 07:55:19 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:61437 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240472AbhDLLzS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 07:54:03 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD85C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Apr 2021 04:53:45 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lVv8Q-00AgH5-WF; Mon, 12 Apr 2021 13:53:43 +0200
-Message-ID: <ce98174f1513d8a7fb9b89915f58717562dbe8ed.camel@sipsolutions.net>
-Subject: Re: Memory leak in ieee80211_rx_napi()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Pkshih <pkshih@realtek.com>
-Date:   Mon, 12 Apr 2021 13:53:42 +0200
-In-Reply-To: <32687519-1c0e-1e6c-dbc3-1e9fd027fc8a@lwfinger.net> (sfid-20210411_211744_139894_B68237C3)
-References: <ad9bee4f-ef24-1fe0-5e63-e2e840ac0449@lwfinger.net>
-         <82a7c6c9bcbe923906276e8aa26a9a783598a0d7.camel@sipsolutions.net>
-         <32687519-1c0e-1e6c-dbc3-1e9fd027fc8a@lwfinger.net>
-         (sfid-20210411_211744_139894_B68237C3)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Mon, 12 Apr 2021 07:55:18 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618228500; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=vdPB/4mlyh2rNRzqrJP2XjppQ3JehxA6cUhYVRcwhQc=; b=KZdUbUW2AdG3ThJtCGMa+3Hhd5VuVtXwp2ygEBvtHPlGQZQhI5yxursUoHBc7gvXfPu50hrX
+ JTD4zl7yt1QzzFTQ8jJ75F8hfp8L72DjrjUA3Xv70hUl9xMo2WLVc5MPUmUP6I4lIGx5DcOE
+ 0+7RySAZtOiiyKDuJKwueyiWdeQ=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 6074350d03cfff34528bdc3f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 12 Apr 2021 11:54:53
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 29BEEC43463; Mon, 12 Apr 2021 11:54:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D3890C433C6;
+        Mon, 12 Apr 2021 11:54:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D3890C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: Re: [PATCH 1/2] dt-binding: bcm43xx-fmac: add optional brcm,ccode-map
+References: <20210408113022.18180-1-shawn.guo@linaro.org>
+        <20210408113022.18180-2-shawn.guo@linaro.org>
+        <87k0p9mewt.fsf@codeaurora.org> <20210412012528.GB15093@dragon>
+Date:   Mon, 12 Apr 2021 14:54:46 +0300
+In-Reply-To: <20210412012528.GB15093@dragon> (Shawn Guo's message of "Mon, 12
+        Apr 2021 09:25:29 +0800")
+Message-ID: <87im4rlnuh.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Larry,
+Shawn Guo <shawn.guo@linaro.org> writes:
 
-Sorry I didn't respond to your other email on Friday - it was close to
-midnight here and I couldn't pay much attention over the weekend.
+> On Sun, Apr 11, 2021 at 10:57:54AM +0300, Kalle Valo wrote:
+>> Shawn Guo <shawn.guo@linaro.org> writes:
+>> 
+>> > Add optional brcm,ccode-map property to support translation from ISO3166
+>> > country code to brcmfmac firmware country code and revision.
+>> >
+>> > Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+>> > ---
+>> >  .../devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt | 7 +++++++
+>> >  1 file changed, 7 insertions(+)
+>> >
+>> > diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+>> > index cffb2d6876e3..a65ac4384c04 100644
+>> > --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+>> > +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+>> > @@ -15,6 +15,12 @@ Optional properties:
+>> >  	When not specified the device will use in-band SDIO interrupts.
+>> >   - interrupt-names : name of the out-of-band interrupt, which must be set
+>> >  	to "host-wake".
+>> > + - brcm,ccode-map : multiple strings for translating ISO3166 country code to
+>> > +	brcmfmac firmware country code and revision.  Each string must be in
+>> > +	format "AA-BB-num" where:
+>> > +	  AA is the ISO3166 country code which must be 2 characters.
+>> > +	  BB is the firmware country code which must be 2 characters.
+>> > +	  num is the revision number which must fit into signed integer.
+>> >  
+>> >  Example:
+>> >  
+>> > @@ -34,5 +40,6 @@ mmc3: mmc@1c12000 {
+>> >  		interrupt-parent = <&pio>;
+>> >  		interrupts = <10 8>; /* PH10 / EINT10 */
+>> >  		interrupt-names = "host-wake";
+>> > +		brcm,ccode-map = "JP-JP-78", "US-Q2-86";
+>> 
+>> The commit log does not answer "Why?". Why this needs to be in device
+>> tree and, for example, not hard coded in the driver?
+>
+> Thanks for the comment, Kalle.  Actually, this is something I need some
+> input from driver maintainers.  I can see this country code mapping
+> table is chipset specific, and can be hard coded in driver per chip id
+> and revision.  But on the other hand, it makes some sense to have this
+> table in device tree, as the country code that need to be supported
+> could be a device specific configuration.
 
-> There were two bugs in rtw88. The first, suggested by PK, was that the sequence 
-> between start/stop of NAPI and the enable/disable of interrupts were reversed. 
-> The second bug was in NAPI polling as you suggested. The poll routine was 
-> calling napi_schedule() rather than napi_reschedule().
-> 
-> With these two changes, my RTL8822CE handled 12 hours of flood ping with my 
-> router without leaking a single buffer.
+Could be? Does such a use case exist at the moment or are just guessing
+future needs?
 
-Glad you found the issues, and thanks for following up!
+From what I have learned so far I think this kind of data should be in
+the driver, but of course I might be missing something.
 
-I do wonder where the SKBs were actually leaked, that's a bit strange,
-but I guess it doesn't matter much now.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-johannes
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
