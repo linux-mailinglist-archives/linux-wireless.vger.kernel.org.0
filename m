@@ -2,118 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF2835B9E3
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 07:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EC6C35BB2E
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Apr 2021 09:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230270AbhDLFk6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 01:40:58 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:55412 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229581AbhDLFk5 (ORCPT
+        id S237036AbhDLHss (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 03:48:48 -0400
+Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:38254 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237029AbhDLHsr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 01:40:57 -0400
-X-UUID: f61b0618225044268ea27c21d35cfd5a-20210412
-X-UUID: f61b0618225044268ea27c21d35cfd5a-20210412
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 526371402; Mon, 12 Apr 2021 13:40:35 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 12 Apr 2021 13:40:34 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 12 Apr 2021 13:40:33 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 3/3] mt76: mt7915: fix rate setting of tx descriptor in testmode
-Date:   Mon, 12 Apr 2021 13:39:54 +0800
-Message-ID: <20210412053954.23544-3-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20210412053954.23544-1-shayne.chen@mediatek.com>
-References: <20210412053954.23544-1-shayne.chen@mediatek.com>
+        Mon, 12 Apr 2021 03:48:47 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 69C53E5;
+        Mon, 12 Apr 2021 00:48:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 69C53E5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1618213709;
+        bh=iqIiEL+G5T2ttG3Yck3N7LMMb3tzSKgX1h9tbMIl1ig=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=nxx9Il9U5HCUo9FiWXYyfBDVcx4VXA4f1ghwIBfhf4yFKZvg+QCtDtxlhbX9cZhvi
+         ZEW8AAkl0Gft/TSbMujBg8eLB0EHp//WzIlgiFap3R5nWz7T+p4YId2I+mvd5BmX6N
+         kFERZ062aZ+HI4JB9S+LXSUHuLtzV0occjMal/ic=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 6F7B21874BD;
+        Mon, 12 Apr 2021 00:48:24 -0700 (PDT)
+Subject: Re: [PATCH 1/2] dt-binding: bcm43xx-fmac: add optional brcm,ccode-map
+To:     Shawn Guo <shawn.guo@linaro.org>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20210408113022.18180-1-shawn.guo@linaro.org>
+ <20210408113022.18180-2-shawn.guo@linaro.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <da449bc1-0155-5019-dede-cd6c8405b059@broadcom.com>
+Date:   Mon, 12 Apr 2021 09:48:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <20210408113022.18180-2-shawn.guo@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix ofdm rate index and ldpc setting in rate setting field of tx
-descriptor.
+On 08-04-2021 13:30, Shawn Guo wrote:
+> Add optional brcm,ccode-map property to support translation from ISO3166
+> country code to brcmfmac firmware country code and revision.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 25 ++++++++++++++-----
- 1 file changed, 19 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 3f3bfea..f99c269 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -661,19 +661,18 @@ mt7915_mac_write_txwi_tm(struct mt7915_phy *phy, __le32 *txwi,
- {
- #ifdef CONFIG_NL80211_TESTMODE
- 	struct mt76_testmode_data *td = &phy->mt76->test;
-+	const struct ieee80211_rate *r;
-+	u8 bw, mode, nss = td->tx_rate_nss;
- 	u8 rate_idx = td->tx_rate_idx;
--	u8 nss = td->tx_rate_nss;
--	u8 bw, mode;
- 	u16 rateval = 0;
- 	u32 val;
-+	bool cck = false;
-+	int band;
- 
- 	if (skb != phy->mt76->test.tx_skb)
- 		return;
- 
- 	switch (td->tx_rate_mode) {
--	case MT76_TM_TX_MODE_CCK:
--		mode = MT_PHY_TYPE_CCK;
--		break;
- 	case MT76_TM_TX_MODE_HT:
- 		nss = 1 + (rate_idx >> 3);
- 		mode = MT_PHY_TYPE_HT;
-@@ -693,7 +692,20 @@ mt7915_mac_write_txwi_tm(struct mt7915_phy *phy, __le32 *txwi,
- 	case MT76_TM_TX_MODE_HE_MU:
- 		mode = MT_PHY_TYPE_HE_MU;
- 		break;
-+	case MT76_TM_TX_MODE_CCK:
-+		cck = true;
-+		fallthrough;
- 	case MT76_TM_TX_MODE_OFDM:
-+		band = phy->mt76->chandef.chan->band;
-+		if (band == NL80211_BAND_2GHZ && !cck)
-+			rate_idx += 4;
-+
-+		r = &phy->mt76->hw->wiphy->bands[band]->bitrates[rate_idx];
-+		val = cck ? r->hw_value_short : r->hw_value;
-+
-+		mode = val >> 8;
-+		rate_idx = val & 0xff;
-+		break;
- 	default:
- 		mode = MT_PHY_TYPE_OFDM;
- 		break;
-@@ -748,9 +760,10 @@ mt7915_mac_write_txwi_tm(struct mt7915_phy *phy, __le32 *txwi,
- 	if (mode >= MT_PHY_TYPE_HE_SU)
- 		val |= FIELD_PREP(MT_TXD6_HELTF, td->tx_ltf);
- 
--	if (td->tx_rate_ldpc || bw > 0)
-+	if (td->tx_rate_ldpc || (bw > 0 && mode >= MT_PHY_TYPE_HE_SU))
- 		val |= MT_TXD6_LDPC;
- 
-+	txwi[3] &= ~cpu_to_le32(MT_TXD3_SN_VALID);
- 	txwi[6] |= cpu_to_le32(val);
- 	txwi[7] |= cpu_to_le32(FIELD_PREP(MT_TXD7_SPE_IDX,
- 					  phy->test.spe_idx));
--- 
-2.18.0
-
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> ---
+>   .../devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt | 7 +++++++
+>   1 file changed, 7 insertions(+)
