@@ -2,173 +2,209 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3441D35D434
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 01:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B7635D48F
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 02:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239062AbhDLX5U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 19:57:20 -0400
-Received: from mga05.intel.com ([192.55.52.43]:16748 "EHLO mga05.intel.com"
+        id S239395AbhDMA4v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Apr 2021 20:56:51 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:47030 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237748AbhDLX5T (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 19:57:19 -0400
-IronPort-SDR: FGdIkEQ1VJLEb+t6WyMJgoMpsHEUHkaeaP6VX1qQJMCHSK4odycURWl768OrIeIkBwtiypjQg8
- VgnyQA54Lw0w==
-X-IronPort-AV: E=McAfee;i="6200,9189,9952"; a="279605686"
-X-IronPort-AV: E=Sophos;i="5.82,216,1613462400"; 
-   d="scan'208";a="279605686"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2021 16:57:00 -0700
-IronPort-SDR: NfeDhcn8fz/0SNRIX1lkGiXx8vx6rPRtqMsK2fyMOXek/1SH965wamPOl0B2RdQKeQoAoVr4bL
- Z384jm0+ydiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,216,1613462400"; 
-   d="scan'208";a="611548669"
-Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 12 Apr 2021 16:56:59 -0700
-Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lW6QM-0000hj-G0; Mon, 12 Apr 2021 23:56:58 +0000
-Date:   Tue, 13 Apr 2021 07:56:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:master] BUILD SUCCESS
- 8a16ffdc4cf37c1e6204054b0fb44052c8a48f0d
-Message-ID: <6074de26.w7O7SdEcAG3AxPMb%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S238450AbhDMA4u (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 12 Apr 2021 20:56:50 -0400
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
+        (envelope-from <andrew@lunn.ch>)
+        id 1lW7LN-00GOEl-SK; Tue, 13 Apr 2021 02:55:53 +0200
+Date:   Tue, 13 Apr 2021 02:55:53 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Michael Walle <michael@walle.cc>
+Cc:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
+        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Andreas Larsson <andreas@gaisler.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Joyce Ooi <joyce.ooi@intel.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Fugang Duan <fugang.duan@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Mark Lee <Mark-MC.Lee@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        Byungho An <bh74.an@samsung.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Wingman Kwok <w-kwok2@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH net-next v4 1/2] of: net: pass the dst buffer to
+ of_get_mac_address()
+Message-ID: <YHTsGXbbr8mkifDo@lunn.ch>
+References: <20210412174718.17382-1-michael@walle.cc>
+ <20210412174718.17382-2-michael@walle.cc>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210412174718.17382-2-michael@walle.cc>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
-branch HEAD: 8a16ffdc4cf37c1e6204054b0fb44052c8a48f0d  cfg80211: Remove wrong RNR IE validation check
+On Mon, Apr 12, 2021 at 07:47:17PM +0200, Michael Walle wrote:
+> of_get_mac_address() returns a "const void*" pointer to a MAC address.
+> Lately, support to fetch the MAC address by an NVMEM provider was added.
+> But this will only work with platform devices. It will not work with
+> PCI devices (e.g. of an integrated root complex) and esp. not with DSA
+> ports.
+> 
+> There is an of_* variant of the nvmem binding which works without
+> devices. The returned data of a nvmem_cell_read() has to be freed after
+> use. On the other hand the return of_get_mac_address() points to some
+> static data without a lifetime. The trick for now, was to allocate a
+> device resource managed buffer which is then returned. This will only
+> work if we have an actual device.
+> 
+> Change it, so that the caller of of_get_mac_address() has to supply a
+> buffer where the MAC address is written to. Unfortunately, this will
+> touch all drivers which use the of_get_mac_address().
+> 
+> Usually the code looks like:
+> 
+>   const char *addr;
+>   addr = of_get_mac_address(np);
+>   if (!IS_ERR(addr))
+>     ether_addr_copy(ndev->dev_addr, addr);
+> 
+> This can then be simply rewritten as:
+> 
+>   of_get_mac_address(np, ndev->dev_addr);
+> 
+> Sometimes is_valid_ether_addr() is used to test the MAC address.
+> of_get_mac_address() already makes sure, it just returns a valid MAC
+> address. Thus we can just test its return code. But we have to be
+> careful if there are still other sources for the MAC address before the
+> of_get_mac_address(). In this case we have to keep the
+> is_valid_ether_addr() call.
+> 
+> The following coccinelle patch was used to convert common cases to the
+> new style. Afterwards, I've manually gone over the drivers and fixed the
+> return code variable: either used a new one or if one was already
+> available use that. Mansour Moufid, thanks for that coccinelle patch!
+> 
+> <spml>
+> @a@
+> identifier x;
+> expression y, z;
+> @@
+> - x = of_get_mac_address(y);
+> + x = of_get_mac_address(y, z);
+>   <...
+> - ether_addr_copy(z, x);
+>   ...>
+> 
+> @@
+> identifier a.x;
+> @@
+> - if (<+... x ...+>) {}
+> 
+> @@
+> identifier a.x;
+> @@
+>   if (<+... x ...+>) {
+>       ...
+>   }
+> - else {}
+> 
+> @@
+> identifier a.x;
+> expression e;
+> @@
+> - if (<+... x ...+>@e)
+> -     {}
+> - else
+> + if (!(e))
+>       {...}
+> 
+> @@
+> expression x, y, z;
+> @@
+> - x = of_get_mac_address(y, z);
+> + of_get_mac_address(y, z);
+>   ... when != x
+> </spml>
+> 
+> All drivers, except drivers/net/ethernet/aeroflex/greth.c, were
+> compile-time tested.
+> 
+> Suggested-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Michael Walle <michael@walle.cc>
 
-elapsed time: 721m
+I cannot say i looked at all the changes, but the ones i did exam
+seemed O.K.
 
-configs tested: 111
-configs skipped: 2
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-i386                             allyesconfig
-nds32                            alldefconfig
-powerpc                 mpc834x_itx_defconfig
-arc                                 defconfig
-sh                         apsh4a3a_defconfig
-arm                   milbeaut_m10v_defconfig
-arm                         nhk8815_defconfig
-arc                          axs101_defconfig
-powerpc                     tqm8541_defconfig
-arm64                            alldefconfig
-m68k                          sun3x_defconfig
-arm                          iop32x_defconfig
-arm                       aspeed_g4_defconfig
-arc                 nsimosci_hs_smp_defconfig
-sh                ecovec24-romimage_defconfig
-arm                            mmp2_defconfig
-arc                        nsim_700_defconfig
-sh                          urquell_defconfig
-powerpc                 linkstation_defconfig
-mips                      malta_kvm_defconfig
-arm                             rpc_defconfig
-powerpc                      ppc64e_defconfig
-arm                        oxnas_v6_defconfig
-powerpc                          g5_defconfig
-arm                          ixp4xx_defconfig
-xtensa                              defconfig
-sh                         ecovec24_defconfig
-arm                          collie_defconfig
-sh                           se7751_defconfig
-powerpc                      cm5200_defconfig
-x86_64                           alldefconfig
-arm                             ezx_defconfig
-powerpc                     kmeter1_defconfig
-arc                     haps_hs_smp_defconfig
-sh                           se7712_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a003-20210412
-i386                 randconfig-a001-20210412
-i386                 randconfig-a006-20210412
-i386                 randconfig-a005-20210412
-i386                 randconfig-a004-20210412
-i386                 randconfig-a002-20210412
-x86_64               randconfig-a014-20210412
-x86_64               randconfig-a015-20210412
-x86_64               randconfig-a011-20210412
-x86_64               randconfig-a013-20210412
-x86_64               randconfig-a012-20210412
-x86_64               randconfig-a016-20210412
-i386                 randconfig-a015-20210412
-i386                 randconfig-a014-20210412
-i386                 randconfig-a013-20210412
-i386                 randconfig-a012-20210412
-i386                 randconfig-a016-20210412
-i386                 randconfig-a011-20210412
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a003-20210412
-x86_64               randconfig-a002-20210412
-x86_64               randconfig-a001-20210412
-x86_64               randconfig-a005-20210412
-x86_64               randconfig-a006-20210412
-x86_64               randconfig-a004-20210412
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+    Andrew
