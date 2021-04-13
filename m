@@ -2,111 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E0C35E86F
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 23:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6C6335E875
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 23:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345583AbhDMVke (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Apr 2021 17:40:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43730 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232542AbhDMVkd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Apr 2021 17:40:33 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id B20D2613B6;
-        Tue, 13 Apr 2021 21:40:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618350012;
-        bh=toVub+slEHyxpan1zl2EKjAs+n9L+DqJjmVyXdpSda8=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=pRV3XRV88aPlnwLClx5LDM21mdefxIbRGFcsOMAWKDGAPSf1o7HWMcUJArQ3XXTo2
-         omQ7Z2UBYmJ/4VEgdmDWMtz3nLyeoWfPZMbM/epzVuNn/dfLkNcaqGX/sQ3OpMjUBS
-         bAKgZugFWBnTeaINp8LqtfjdEpx90+cwvi+asWJoSAi80GbrFagrnhafBEMs9d/q64
-         V1GuK22jWWyeImHuDUYrsXisI7HOHaVrq3GZpA1n6OF84dCG4EQ57enrHgZGDRNpgk
-         +wx2yJOLG9rxC5gEKrr9mBBot2pLRQqzLRJSzYPRKCwgwQuIOp0m7AJtIXo8z3kOIr
-         TcOoK6hf+PaXg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 9A519609B9;
-        Tue, 13 Apr 2021 21:40:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S1345155AbhDMVm6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Apr 2021 17:42:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40858 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232453AbhDMVm5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 13 Apr 2021 17:42:57 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF76DC061574
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 14:42:36 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id p6so11138412wrn.9
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 14:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=colorremedies-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=asPeWeAMicCNLTo4UoLiANMALEWnXXwF6JKij7XY6Go=;
+        b=HQYWlwiMVOeGuq3qFYF7GpcoJeRfKPGcYkqefnT4WsarWPt9nz6QmC2gsaSCll4uU5
+         ekBQPRPiIpAxuzBPwLG4966QO0YJgkMJCB6uR0X3KrwkvXdx43/f6XdJjL+wZysrhDJC
+         q+f8CqR75yjdSSyuFtZUNBcJRnVJJbngIor6y5TPiahSOZHmCv/pAs1Wb/xHChkWG2WZ
+         XYuLlXnXIS5YWHnsYDNle4scGofNOjrRyoM8+ti+YehdJtG+4WSrNpPLOgvzS26arRau
+         YaTMmF5DOnRX7xzEg6Q4do9A7lTvkzYljbjtvt3kCzD26teJ7hnnYpYqcfZfdhViuGA7
+         Mfng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=asPeWeAMicCNLTo4UoLiANMALEWnXXwF6JKij7XY6Go=;
+        b=FaafykLhi8XPa2zc2mawp3cgIj9Ct2OaFe/HVlPZrMckkLbeYKO5ed+g5W7wG+bpaT
+         M2g5buo1zsJ2ShaWLOZet+FtlFjvIdsRosDKlv0KTfGkQyljBIlGZqHuVofeHzSddBGR
+         B7w11u/FJIFTyfjzMJOXJqMPBav/tWWOtQ0IjbL45U2UTkP2wen6FoGgJ9mqqQSuG68f
+         9Hh9GMhJQ2u6Np7wCrXBAYs64hX5ogveuRRWpIfvQMbYABlegkFdGxn+V4d0vywBY7OV
+         oQab2LK6xHxiHKh17r5OB8/FyV/0o5ElpJftVIcBkaWlZGe4LmrMXv6Uv8neECZNDF4D
+         WC7g==
+X-Gm-Message-State: AOAM531hoykApX3+K2rJpoyND5EDYPxjcDtB8dZnXx2VjwSB0R+IyIdI
+        1ta3ry++wlI5iQhgYwEOsRtysLIoQmr6xxi3OJxyFUcQyWE827fN
+X-Google-Smtp-Source: ABdhPJw1Y74XekXg7DjCVCWGtzk8acj8NzmYcGz76OnYfiFVdoOozeXZfbD2SFFCb9Ik3UOstYueh7x+L+wQjQNsOMY=
+X-Received: by 2002:adf:bbd2:: with SMTP id z18mr14779243wrg.274.1618350155438;
+ Tue, 13 Apr 2021 14:42:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/2] of: net: support non-platform devices in
- of_get_mac_address()
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161835001262.18297.4500601910911096840.git-patchwork-notify@kernel.org>
-Date:   Tue, 13 Apr 2021 21:40:12 +0000
-References: <20210412174718.17382-1-michael@walle.cc>
-In-Reply-To: <20210412174718.17382-1-michael@walle.cc>
-To:     Michael Walle <michael@walle.cc>
-Cc:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
-        andrew@lunn.ch, gregory.clement@bootlin.com,
-        sebastian.hesselbarth@gmail.com, linux@armlinux.org.uk,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        andreas@gaisler.com, davem@davemloft.net, kuba@kernel.org,
-        mripard@kernel.org, wens@csie.org, jernej.skrabec@siol.net,
-        joyce.ooi@intel.com, chris.snook@gmail.com, rafal@milecki.pl,
-        bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
-        nicolas.ferre@microchip.com, claudiu.beznea@microchip.com,
-        sgoutham@marvell.com, fugang.duan@nxp.com, madalin.bucur@nxp.com,
-        pantelis.antoniou@gmail.com, claudiu.manoil@nxp.com,
-        leoyang.li@nxp.com, yisen.zhuang@huawei.com,
-        salil.mehta@huawei.com, hauke@hauke-m.de,
-        thomas.petazzoni@bootlin.com, vkochan@marvell.com,
-        tchornyi@marvell.com, mlindner@marvell.com,
-        stephen@networkplumber.org, nbd@nbd.name, john@phrozen.org,
-        sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
-        matthias.bgg@gmail.com, bryan.whitehead@microchip.com,
-        vz@mleia.com, sergei.shtylyov@gmail.com, bh74.an@samsung.com,
-        hayashi.kunihiko@socionext.com, peppe.cavallaro@st.com,
-        alexandre.torgue@st.com, joabreu@synopsys.com,
-        mcoquelin.stm32@gmail.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        vkoul@kernel.org, nobuhiro1.iwamatsu@toshiba.co.jp,
-        grygorii.strashko@ti.com, w-kwok2@ti.com, m-karicheri2@ti.com,
-        michal.simek@xilinx.com, radhey.shyam.pandey@xilinx.com,
-        kvalo@codeaurora.org, lorenzo.bianconi83@gmail.com,
-        ryder.lee@mediatek.com, stf_xl@wp.pl, helmut.schaa@googlemail.com,
-        hkallweit1@gmail.com, robh+dt@kernel.org, frowand.list@gmail.com,
-        gregkh@linuxfoundation.org, jerome.pouiller@silabs.com,
-        vivien.didelot@gmail.com, olteanv@gmail.com
+References: <9fafe866-6ff6-d1c4-0a04-493d863bc9db@redhat.com> <CAJCQCtRFqmioneenXeNEoBXnjGCrOeU-SthZKT60bQoMD84K2w@mail.gmail.com>
+In-Reply-To: <CAJCQCtRFqmioneenXeNEoBXnjGCrOeU-SthZKT60bQoMD84K2w@mail.gmail.com>
+From:   Chris Murphy <lists@colorremedies.com>
+Date:   Tue, 13 Apr 2021 15:42:19 -0600
+Message-ID: <CAJCQCtSX4Laxr5pLbG-drBkb4bU+pTrZ+r00A5a1NceZfkH1PQ@mail.gmail.com>
+Subject: Re: iwlwifi Lockdep warning with 5.12-rc4 on 8086:02f0 (Comet Lake
+ PCH-LP CNVi WiFi)
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Luca Coelho <luciano.coelho@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+On Tue, Apr 13, 2021 at 3:38 PM Chris Murphy <lists@colorremedies.com> wrote:
+>
+> Looks like this:
+> https://lore.kernel.org/linux-wireless/nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm/
+>
+> I tested that patch on rc6 and it worked so far.
 
-This series was applied to netdev/net-next.git (refs/heads/master):
-
-On Mon, 12 Apr 2021 19:47:16 +0200 you wrote:
-> of_get_mac_address() is commonly used to fetch the MAC address
-> from the device tree. It also supports reading it from a NVMEM
-> provider. But the latter is only possible for platform devices,
-> because only platform devices are searched for a matching device
-> node.
-> 
-> Add a second method to fetch the NVMEM cell by a device tree node
-> instead of a "struct device".
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v4,1/2] of: net: pass the dst buffer to of_get_mac_address()
-    https://git.kernel.org/netdev/net-next/c/83216e3988cd
-  - [net-next,v4,2/2] of: net: fix of_get_mac_addr_nvmem() for non-platform devices
-    https://git.kernel.org/netdev/net-next/c/f10843e04a07
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+My original report here:
+https://lore.kernel.org/linux-wireless/CAJCQCtRuZ0hACdwH1N23OZrxEVyM2W9gn_O4wZRcFSq_74Gkqg@mail.gmail.com/
 
 
+-- 
+Chris Murphy
