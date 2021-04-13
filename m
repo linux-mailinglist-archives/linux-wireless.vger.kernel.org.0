@@ -2,70 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5120535D7AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 08:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC9A35D8CC
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 09:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243954AbhDMGCJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Apr 2021 02:02:09 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:44720 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S243829AbhDMGCJ (ORCPT
+        id S238935AbhDMH1B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Apr 2021 03:27:01 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:49603 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230252AbhDMH0w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Apr 2021 02:02:09 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1lWC7P-000LPJ-5p; Tue, 13 Apr 2021 09:01:48 +0300
-Content-Type: text/plain; charset="utf-8"
+        Tue, 13 Apr 2021 03:26:52 -0400
+X-UUID: 75d284721cbd4963bacac58db4f67a12-20210413
+X-UUID: 75d284721cbd4963bacac58db4f67a12-20210413
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 796767578; Tue, 13 Apr 2021 15:26:26 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 13 Apr 2021 15:26:24 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 13 Apr 2021 15:26:24 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7615: only free skbs after mt7615_dma_reset() when reset happens
+Date:   Tue, 13 Apr 2021 15:26:19 +0800
+Message-ID: <1fc26bda42fcd85b4bcebc8520601c70b882aa34.1618297567.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Luca Coelho <luca@coelho.fi>
-In-Reply-To: <iwlwifi.20210411124417.b6560a5de0cd.I5dac9c60faed7f48b06d352aa2d65bcf8142c2dc@changeid>
-References: <iwlwifi.20210411124417.b6560a5de0cd.I5dac9c60faed7f48b06d352aa2d65bcf8142c2dc@changeid>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.9.2
-Message-Id: <E1lWC7P-000LPJ-5p@farmhouse.coelho.fi>
-Date:   Tue, 13 Apr 2021 09:01:48 +0300
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: Re: [PATCH 01/12] iwlwifi: remove TCM events
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
+In mt7615_mac_reset_work(), make sure freeing skbs  after mt7615_dma_reset()
+and use ieee80211_free_txskb() in stead of to dev_kfree_skb_any() to report
+proper status.
 
-> From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> 
-> Nobody uses that in the user space.
-> 
-> Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c     | 8 ++++++--
+ drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c | 3 +++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-19 patches applied to iwlwifi-next.git, thanks.
-
-e0dd86f0bd69 iwlwifi: remove TCM events
-3b3f8821c4c9 iwlwifi: remove remaining software checksum code
-026551c60e8e iwlwifi: don't warn if we can't wait for empty tx queues
-223ebf2ebf6a iwlwifi: queue: avoid memory leak in reset flow
-9bda8492febf iwlwifi: mvm: umac error table mismatch
-3e34b44d849d iwlwifi: mvm: remove PS from lower rates.
-06c0cf9da5f2 iwlwifi: mvm: don't lock mutex in RCU critical section
-9ff251354ce9 iwlwifi: pcie: merge napi_poll_msix functions
-00b553eb054c iwlwifi: pcie: add ISR debug info for msix debug
-f3e8147496ce iwlwifi: mvm: add support for version 3 of LARI_CONFIG_CHANGE command.
-ad68eb03d7af iwlwifi: warn on SKB free w/o op-mode
-f133d1cf5a79 iwlwifi: rs-fw: don't support stbc for HE 160
-79470344e77d iwlwifi: mvm: don't disconnect immediately if we don't hear beacons after CSA
-9c6e322ff5ff iwlwifi: mvm: don't WARN if we can't remove a time event
-0fc56a04f96b iwlwifi: bump FW API to 63 for AX devices
-6cd6b59b4af3 iwlwifi: trans/pcie: defer transport initialisation
-2684e13a1069 iwlwifi: fw: print out trigger delay when collecting data
-e8b94b7ede60 iwlwifi: pcie: Change ma product string name
-daa13ebd0481 iwlwifi: dbg: disable ini debug in 9000 family and below
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 60aadf8a09cc..ce71e2c5a8d3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -2037,8 +2037,12 @@ void mt7615_tx_token_put(struct mt7615_dev *dev)
+ 	spin_lock_bh(&dev->token_lock);
+ 	idr_for_each_entry(&dev->token, txwi, id) {
+ 		mt7615_txp_skb_unmap(&dev->mt76, txwi);
+-		if (txwi->skb)
+-			dev_kfree_skb_any(txwi->skb);
++		if (txwi->skb) {
++			struct ieee80211_hw *hw;
++
++			hw = mt76_tx_status_get_hw(&dev->mt76, txwi->skb);
++			ieee80211_free_txskb(hw, txwi->skb);
++		}
+ 		mt76_put_txwi(&dev->mt76, txwi);
+ 	}
+ 	spin_unlock_bh(&dev->token_lock);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+index 7694391603dd..bcc4344bbfc3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+@@ -310,6 +310,9 @@ void mt7615_mac_reset_work(struct work_struct *work)
+ 	if (mt7615_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
+ 		mt7615_dma_reset(dev);
+ 
++		mt7615_tx_token_put(dev);
++		idr_init(&dev->token);
++
+ 		mt76_wr(dev, MT_WPDMA_MEM_RNG_ERR, 0);
+ 
+ 		mt7615_hif_int_event_trigger(dev, MT_MCU_INT_EVENT_PDMA_INIT);
+-- 
+2.18.0
 
