@@ -2,76 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A9B35D98A
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 10:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F34D935D9AB
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 10:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238045AbhDMIAk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Apr 2021 04:00:40 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:44754 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S237910AbhDMIAf (ORCPT
+        id S230237AbhDMIKb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Apr 2021 04:10:31 -0400
+Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:47654 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229660AbhDMIKa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Apr 2021 04:00:35 -0400
-X-UUID: 7bd0954bab934350b01f5778b6da6092-20210413
-X-UUID: 7bd0954bab934350b01f5778b6da6092-20210413
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 824413820; Tue, 13 Apr 2021 16:00:12 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 13 Apr 2021 16:00:10 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 13 Apr 2021 16:00:09 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 2/2] mt76: mt7615: use ieee80211_free_txskb() in mt7615_tx_token_put()
-Date:   Tue, 13 Apr 2021 16:00:07 +0800
-Message-ID: <8fb069c7b6ceb980eb3507db65e4c29fd0aa502a.1618300405.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <f5e1b4bf7a66f4e3705bfd673e82b9dd21d41e9a.1618300405.git.ryder.lee@mediatek.com>
-References: <f5e1b4bf7a66f4e3705bfd673e82b9dd21d41e9a.1618300405.git.ryder.lee@mediatek.com>
+        Tue, 13 Apr 2021 04:10:30 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 81B1FEA;
+        Tue, 13 Apr 2021 01:10:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 81B1FEA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1618301410;
+        bh=uCji7ZHwBsHQai89pTi9GBVvZ1MCQ70Q2BC0rXU52jM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=gTaLiZWymu31q+wirurSln9KiNUVBFpz0wHI5STJwq15q9y4niPHEeboFkcjC3FiA
+         2+txDYEv3BWOCb+yDsuR1z6DJLvHJnO1qITVdZo5J7QfD4MOll5gzx5yBl2CzYnMnm
+         ijjpk/mUwKmma5vZJbVwu6lHXmyNrSXtKTnZe1/0=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 45A4D1874BD;
+        Tue, 13 Apr 2021 01:10:04 -0700 (PDT)
+Subject: Re: [PATCH 2/2] brcmfmac: support parse country code map from DT
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20210408113022.18180-1-shawn.guo@linaro.org>
+ <20210408113022.18180-3-shawn.guo@linaro.org>
+ <b2e07b41-a83e-5b5d-be1d-7a3e8493abd6@broadcom.com>
+ <20210413074509.GD15093@dragon>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <5c3f2328-87bc-3103-70bd-d7add0bf464f@broadcom.com>
+Date:   Tue, 13 Apr 2021 10:10:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 6DCE9685DFB0582C41650AD57142A7B045E2BC8EA23BAA34EC97A8422B0FFDA72000:8
-X-MTK:  N
+In-Reply-To: <20210413074509.GD15093@dragon>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We should use ieee80211_free_txskb() to report skb status avoid wrong
-aql accounting after reset.
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 60aadf8a09cc..ce71e2c5a8d3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -2037,8 +2037,12 @@ void mt7615_tx_token_put(struct mt7615_dev *dev)
- 	spin_lock_bh(&dev->token_lock);
- 	idr_for_each_entry(&dev->token, txwi, id) {
- 		mt7615_txp_skb_unmap(&dev->mt76, txwi);
--		if (txwi->skb)
--			dev_kfree_skb_any(txwi->skb);
-+		if (txwi->skb) {
-+			struct ieee80211_hw *hw;
-+
-+			hw = mt76_tx_status_get_hw(&dev->mt76, txwi->skb);
-+			ieee80211_free_txskb(hw, txwi->skb);
-+		}
- 		mt76_put_txwi(&dev->mt76, txwi);
- 	}
- 	spin_unlock_bh(&dev->token_lock);
--- 
-2.18.0
+On 13-04-2021 09:45, Shawn Guo wrote:
+> On Mon, Apr 12, 2021 at 10:09:38AM +0200, Arend van Spriel wrote:
+>> On 08-04-2021 13:30, Shawn Guo wrote:
+>>> With any regulatory domain requests coming from either user space or
+>>> 802.11 IE (Information Element), the country is coded in ISO3166
+>>> standard.  It needs to be translated to firmware country code and
+>>> revision with the mapping info in settings->country_codes table.
+>>> Support populate country_codes table by parsing the mapping from DT.
+>>
+>> comment below, but you may add...
+>>
+>> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> 
+> Thanks for reviewing, Arend.
+> 
+>>> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+>>> ---
+>>>    .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53 +++++++++++++++++++
+>>>    1 file changed, 53 insertions(+)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+>>> index a7554265f95f..ea5c7f434c2c 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+>>
+>> [...]
+>>
+>>> @@ -47,6 +96,10 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>>>    	    !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+>>>    		return;
+>>> +	ret = brcmf_of_get_country_codes(dev, settings);
+>>> +	if (ret)
+>>> +		dev_warn(dev, "failed to get OF country code map\n");
+>>
+>> First of all I prefer to use brcmf_err and add ret value to the print
+>> message " (err=%d)\n".
+> 
+> Okay.
+> 
+>> Another thing is that this mapping is not only
+>> applicable for SDIO devices so you may consider doing this for other bus
+>> types as well which requires a bit more rework here.
+> 
+> Right. I will take care of it, if we can convince Kalle that having
+> this data in DT is not such a bad idea.
 
+Sure. So let me explain a bit how our internal regulatory data is 
+organized. The country revision is needed because the rf parameters that 
+provide regulatory compliance are tweaked per platform/customer so 
+depending on the rf path tight to the chip we need to use a certain 
+country revision. As such they could be seen as device specific 
+calibration data which is something that is already supported in the 
+devicetree bindings.
+
+Regards,
+Arend
