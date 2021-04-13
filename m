@@ -2,139 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B95035D4A3
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 03:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 373AB35D63B
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 06:11:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240253AbhDMBGo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Apr 2021 21:06:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53384 "EHLO
+        id S229590AbhDMEKi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Apr 2021 00:10:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239318AbhDMBGn (ORCPT
+        with ESMTP id S229528AbhDMEKi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Apr 2021 21:06:43 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A1F0C061574;
-        Mon, 12 Apr 2021 18:06:25 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id 130so2141595qkm.4;
-        Mon, 12 Apr 2021 18:06:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hVwLckcTsoZ6HK6udwyuD9YVZ7bzQLTeObf78Se6sgk=;
-        b=QCzp8x7GFjs4FxDPNwWSJjU6yK4DbyvES3MDI167L9chvXvhp0yLhZQD2fiXsnGKGM
-         3i0gsu9rjaEavamxbBBEOlLWQCsnc2xI6rlhSILcsv6asO79PWHNegqkxKzm7He6K1ah
-         N+5t9nrIoGNBt5cXvHFyRB0qIgSmiSKeyE9SnVbpzEPa8f6SxUnvnOY3JmWW4Pr3KsiA
-         R4EeqpkN+mSkjsmq6DeTpkvjCQ1Mm150tWKaW3zmDyI7yKZ68HIvQO2rbBC/9D0itfhi
-         IBX5P1I/5n57m4wKLDLGkOzVZk8zRM4FZk7jKDNigPWhk0DdI88qLFTF5dEG+IrOJb+Y
-         r0Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hVwLckcTsoZ6HK6udwyuD9YVZ7bzQLTeObf78Se6sgk=;
-        b=m0qyG7vlPMxfHpR36kGdEVBHsbe+dzWT6/osF623pJZ6btpfkv/PsL/p+YATZBgNFt
-         KQ+lrHhoql7gc4g6jGUK3bcZLz0FFZUoFVSyXp1ZAV9ED+3e+7Crh0GXtWv0THHklpt9
-         kEOVq3U7zzM1zmdKsBZdVMMl8edNm4ylIrZX6jeeQyuaN825/5rLyL7LYX/uuepNbDLV
-         u8bqzK8HNpxnusavprHvZvIIb4lcUSOMn72dfDh3WrNOd7pQighmVicJC6Xck88xnaYQ
-         jOGL/Q7X3NSgs+xISFcKCm7SvZnDKZmRMdOXvksRTERh+s05nFOeBskOeFCBux3NwjEz
-         Fpqw==
-X-Gm-Message-State: AOAM533Ilf2fhbhJlrt99R8bYhfZS9J0PRU8eG1QRmZcjDAAPzbUN37S
-        oAG0uJ+4KHdjio6FuE7Ljef+bpTR1mF5Yw==
-X-Google-Smtp-Source: ABdhPJyuHutyJv2S2u4Q7vlQKIykhN/IxnoF1RdSKx+5d8R0WbEyc3A5hF7OurTjocDwEx8ldFs8PA==
-X-Received: by 2002:a05:620a:20db:: with SMTP id f27mr30565654qka.51.1618275983861;
-        Mon, 12 Apr 2021 18:06:23 -0700 (PDT)
-Received: from localhost.localdomain ([177.89.232.75])
-        by smtp.gmail.com with ESMTPSA id q67sm7104459qkb.89.2021.04.12.18.06.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Apr 2021 18:06:23 -0700 (PDT)
-From:   Ramon Fontes <ramonreisfontes@gmail.com>
-To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net, kvalo@codeaurora.org,
-        davem@davemloft.net, Ramon Fontes <ramonreisfontes@gmail.com>
-Subject: [PATCH] mac80211_hwsim: indicate support for 60GHz channels
-Date:   Mon, 12 Apr 2021 22:06:13 -0300
-Message-Id: <20210413010613.50128-1-ramonreisfontes@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 13 Apr 2021 00:10:38 -0400
+Received: from mout1.freenet.de (mout1.freenet.de [IPv6:2001:748:100:40::2:3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE06C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Apr 2021 21:10:19 -0700 (PDT)
+Received: from [195.4.92.126] (helo=sub7.freenet.de)
+        by mout1.freenet.de with esmtpa (ID andihartmann@freenet.de) (port 25) (Exim 4.92 #3)
+        id 1lWANO-0001ow-3u; Tue, 13 Apr 2021 06:10:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=justmail.de
+        ; s=mjaymdexmjqk; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Hbm9gsTjzfiyohpbJnuRO8X6wYngutyM5A4KsxpX7RE=; b=goKiLxNHeoCPAqhfUh8FM4FH8S
+        xxju8vZg83La3f1NvgtqO362DDglatjdmXVdFVOInjPNi17YcjAAouN2N9zYjRptB8QHgKAbUWSdA
+        kavMz07wPbQ7g5CIZkXdhr9GtVLdNxAT6KuyIQ5U2c/Wj5PID4cW80mlQzODh1UH4z6O2OZdrGJti
+        dZYDHvx+TvTHhe5hpa9M94TigOMEq4sl0j1jj/H7gZjcTYOx/p/54kNDwF4QSgNMazS6+9JLUmTY8
+        JEh9GNczYuFVMF8w+vg5ebNlqvsxV7pdZNLShA6ljLQZNE66kaQVENbeKbWJk/4JLdKQYNOaAxNTK
+        K/1WaPnA==;
+Received: from p200300de57147b00505400fffe15ac42.dip0.t-ipconnect.de ([2003:de:5714:7b00:5054:ff:fe15:ac42]:59456 helo=mail.maya.org)
+        by sub7.freenet.de with esmtpsa (ID andihartmann@freenet.de) (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128) (port 465) (Exim 4.92 #3)
+        id 1lWANN-0005tZ-W6; Tue, 13 Apr 2021 06:10:10 +0200
+Received: internal info suppressed
+Subject: Re: Memory leak in rtw88-pci
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+References: <83a9aeff-ce2c-3442-90fa-7e190acf3dfe@lwfinger.net>
+ <1af1e1f4-caa4-323e-0a2a-b3fdf1cac6b8@justmail.de>
+ <92a3ff23-2763-44e2-a20e-25190d46d4bd@lwfinger.net>
+From:   =?UTF-8?Q?Klaus_M=c3=bcller?= <kmueller@justmail.de>
+Message-ID: <034ac9b5-ecc7-7b56-a447-306774cb5e54@justmail.de>
+Date:   Tue, 13 Apr 2021 06:10:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
+In-Reply-To: <92a3ff23-2763-44e2-a20e-25190d46d4bd@lwfinger.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-Originated-At: 2003:de:5714:7b00:5054:ff:fe15:ac42!59456
+X-FNSign: v=2 s=D99D65E57264A1D1B6E748355F4F5F1C69C56DB17848C33DBFE8046C5C64D5BD
+X-Scan-TS: Tue, 13 Apr 2021 06:10:10 +0200
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Advertise 60GHz channels to mac80211.
----
- drivers/net/wireless/mac80211_hwsim.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index fa7d4c20d..70d0af475 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -159,6 +159,8 @@ static const struct ieee80211_regdomain hwsim_world_regdom_custom_01 = {
- 		REG_RULE(5150-10, 5240+10, 40, 0, 30, 0),
- 		REG_RULE(5745-10, 5825+10, 40, 0, 30, 0),
- 		REG_RULE(5855-10, 5925+10, 40, 0, 33, 0),
-+		/* IEEE 802.11ad (60GHz), channels 1..3 */
-+		REG_RULE(56160+2160*1-1080, 56160+2160*3+1080, 2160, 0, 0, 0),
- 	}
- };
- 
-@@ -317,6 +319,12 @@ static struct net_device *hwsim_mon; /* global monitor netdev */
- 	.hw_value = (_freq), \
- }
- 
-+#define CHAN60G(_freq) { \
-+        .band = NL80211_BAND_60GHZ, \
-+        .center_freq = (_freq), \
-+        .hw_value = (_freq), \
-+}
-+
- static const struct ieee80211_channel hwsim_channels_2ghz[] = {
- 	CHAN2G(2412), /* Channel 1 */
- 	CHAN2G(2417), /* Channel 2 */
-@@ -445,6 +453,13 @@ static const struct ieee80211_channel hwsim_channels_6ghz[] = {
- 	CHAN6G(7115), /* Channel 233 */
- };
- 
-+static const struct ieee80211_channel hwsim_channels_60ghz[] = {
-+	CHAN60G(58320), /* Channel 1 */
-+	CHAN60G(60480), /* Channel 2 */
-+	CHAN60G(62640), /* Channel 3 */
-+	CHAN60G(64800), /* Channel 4 */
-+};
-+
- #define NUM_S1G_CHANS_US 51
- static struct ieee80211_channel hwsim_channels_s1g[NUM_S1G_CHANS_US];
- 
-@@ -617,6 +632,7 @@ struct mac80211_hwsim_data {
- 	struct ieee80211_channel channels_2ghz[ARRAY_SIZE(hwsim_channels_2ghz)];
- 	struct ieee80211_channel channels_5ghz[ARRAY_SIZE(hwsim_channels_5ghz)];
- 	struct ieee80211_channel channels_6ghz[ARRAY_SIZE(hwsim_channels_6ghz)];
-+	struct ieee80211_channel channels_60ghz[ARRAY_SIZE(hwsim_channels_60ghz)];
- 	struct ieee80211_channel channels_s1g[ARRAY_SIZE(hwsim_channels_s1g)];
- 	struct ieee80211_rate rates[ARRAY_SIZE(hwsim_rates)];
- 	struct ieee80211_iface_combination if_combination;
-@@ -648,7 +664,8 @@ struct mac80211_hwsim_data {
- 		unsigned long next_start, start, end;
- 	} survey_data[ARRAY_SIZE(hwsim_channels_2ghz) +
- 		      ARRAY_SIZE(hwsim_channels_5ghz) +
--		      ARRAY_SIZE(hwsim_channels_6ghz)];
-+		      ARRAY_SIZE(hwsim_channels_6ghz) +
-+		      ARRAY_SIZE(hwsim_channels_60ghz)];
- 
- 	struct ieee80211_channel *channel;
- 	u64 beacon_int	/* beacon interval in us */;
-@@ -3221,6 +3238,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 		sizeof(hwsim_channels_5ghz));
- 	memcpy(data->channels_6ghz, hwsim_channels_6ghz,
- 		sizeof(hwsim_channels_6ghz));
-+	memcpy(data->channels_60ghz, hwsim_channels_60ghz,
-+		sizeof(hwsim_channels_60ghz));
- 	memcpy(data->channels_s1g, hwsim_channels_s1g,
- 	       sizeof(hwsim_channels_s1g));
- 	memcpy(data->rates, hwsim_rates, sizeof(hwsim_rates));
--- 
-2.25.1
+On 11.04.21 at 21:35 Larry Finger wrote:
+> On 4/8/21 11:12 PM, Klaus Müller wrote:
+>> May I kindly bring up this reported problem again? Is there anybody working on this problem? Or did I miss the already existing fix?
+> 
+> A fix has been found. The patched code is available at https://GitHub.com/lwfinger/rtw88.git. Patches are being prepared for wireless-next. From there, they will propagate into the Linux distributions.
 
+Thanks Larry for doing QA and fixing the problem! I'm additionally very thankful for your rtw88 git repository, which provides the possibility to use actual drivers independent of the kernel version.
+The actual version works fine for me.
+
+
+Kind regards
+Klaus
