@@ -2,199 +2,253 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3E6C35E7D8
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 22:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBDBD35E883
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 23:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231173AbhDMUzw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Apr 2021 16:55:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57930 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230373AbhDMUzv (ORCPT
+        id S1346829AbhDMVud (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Apr 2021 17:50:33 -0400
+Received: from gateway32.websitewelcome.com ([192.185.145.119]:14130 "EHLO
+        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230491AbhDMVuc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Apr 2021 16:55:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1618347331;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=0nQR8hBxDiYu6SuSaHFor3P+PM7Sv/mwgakJo4vQ6xg=;
-        b=M810WxCujl/V17h+7hpid5xtYPfIx6zfhsnhZu0b5iTJnmmuGBRfWGmp7V98iVM0Bdm/NH
-        CbYGZ9PLBVzVmSuigncjucBdg32hh1DGsCKZs7NpwCLpbcqHV5tXqedSYWJqYSV61LRyEK
-        Sxr6Zt9GODRsawan4L4yIxgV11cRBNI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-295-TDSkw9JiMDmtkkIdnxR8HQ-1; Tue, 13 Apr 2021 16:55:29 -0400
-X-MC-Unique: TDSkw9JiMDmtkkIdnxR8HQ-1
-Received: by mail-ej1-f72.google.com with SMTP id gj5so4822911ejb.19
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 13:55:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=0nQR8hBxDiYu6SuSaHFor3P+PM7Sv/mwgakJo4vQ6xg=;
-        b=p3SiEA7GnJmOcuuN2R1uVvftX8wPz2ewXGc8N/tA6VIkm9OfzWxKf6lPieaBaGyDLh
-         xNPI+PCp7gCPG9so2YaRAikZbd2uM3L7OsOaS6shRxfTmMAK1A4i0cMnrgEtule1UJfx
-         YydattNPTRL/8z5JZeT1Qve/9sCUyKM2SB3wHUSvjrh3juCyDuWhErNqpnqX/iztZhP1
-         fzJxUNc4Ou5FbuL26+919ybuE3rx/s2YjkqLuZt0HcjKBilf4ioE7BIsZHxr2OdRWGfw
-         72FD7ehLMSGdSuJpQTrXOHquoZiHNiiT6YbY2eUfi1i+69npj1Rh+7q4RV9HxjhysRE4
-         kJHQ==
-X-Gm-Message-State: AOAM533oppSKx5Jhl6c3TMrpzhARdozKxvWoODikpGVCPOIgWbFNlKs0
-        qJUzttckXseOryepMIPIcWWn+u0I7cqGCHOAHiBHp+Ux5WPVU20q4azCV/IWseyZnb6V47Gv5Nr
-        h4Nfkbqjsl3/mc60lusS7U4hODNk50B9+ckHgsdu94+T7AF4VvuYJcMeIXSHjS6qBYWsgS4Xwcd
-        cARYs=
-X-Received: by 2002:a05:6402:1857:: with SMTP id v23mr36475405edy.362.1618347328494;
-        Tue, 13 Apr 2021 13:55:28 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxZtu714YWalGOfGfWgiCNkVrth5/c08tzusOoJZrIKemxKGmFpwFzjVy8YnrOkj4IgvgqBZg==
-X-Received: by 2002:a05:6402:1857:: with SMTP id v23mr36475391edy.362.1618347328307;
-        Tue, 13 Apr 2021 13:55:28 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id e12sm10178507edv.11.2021.04.13.13.55.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Apr 2021 13:55:27 -0700 (PDT)
-To:     Luca Coelho <luciano.coelho@intel.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Subject: iwlwifi Lockdep warning with 5.12-rc4 on 8086:02f0 (Comet Lake PCH-LP
- CNVi WiFi)
-Message-ID: <9fafe866-6ff6-d1c4-0a04-493d863bc9db@redhat.com>
-Date:   Tue, 13 Apr 2021 22:55:27 +0200
+        Tue, 13 Apr 2021 17:50:32 -0400
+X-Greylist: delayed 1469 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Apr 2021 17:50:32 EDT
+Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
+        by gateway32.websitewelcome.com (Postfix) with ESMTP id 79EA11B90C
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 16:25:41 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id WQXVlBLFcb8LyWQXVlKASO; Tue, 13 Apr 2021 16:25:41 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=BeO8GkAjgrMdjfp0UoCjCPgX7wT/SJDYDrx5yHmB4jM=; b=GURnayccnGmttggv8tWi7/B6eW
+        cqI+AksMy4q8I8vZQHVTFoVIWyJEa0g5sakcJY1HlLOjz/5dEGBnzbGWe6J4NaE5WslpTIU3y2sui
+        7IKI/0vWhjrn2tmd3QLPxAIMcyRLklDUg/FBgidzssAYZrLQqKWzCIMQj/m9r1o04lWM1DF1UWc4c
+        /XwX2HMYIxHi9T2EjU4ak73eT4nF2ozmT7Qe6yO5D5G/cs1DlLKy5m+rrl7GDulOIWca0QlFJmp4B
+        +FSMOTZ6rVqhkVVA92rPLCEwGgnhgrQTDfeJ1jnRgQ5iwXuijapm1BG4Lmxi5gc/IQfoT3tarC5jU
+        6kT0+1Pw==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:50198 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1lWQXS-003IaF-0m; Tue, 13 Apr 2021 16:25:38 -0500
+Subject: Re: [PATCH v2 2/2][next] wl3501_cs: Fix out-of-bounds warning in
+ wl3501_mgmt_join
+To:     Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+References: <cover.1617226663.git.gustavoars@kernel.org>
+ <83b0388403a61c01fad8d638db40b4245666ff53.1617226664.git.gustavoars@kernel.org>
+ <202104071158.B4FA1956@keescook>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <2bc27d10-efa2-3ab7-fb58-556cfd252927@embeddedor.com>
+Date:   Tue, 13 Apr 2021 16:25:47 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ Thunderbird/78.7.1
 MIME-Version: 1.0
+In-Reply-To: <202104071158.B4FA1956@keescook>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1lWQXS-003IaF-0m
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:50198
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 7
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgQWxsLA0KDQpJJ20gc2VlaW5nIHRoZSBmb2xsb3dpbmcgbG9ja2RlcCB3YXJuaW5nIHdp
-dGggNS4xMi1yYzQgb24gODA4NjowMmYwIChDb21ldCBMYWtlIFBDSC1MUCBDTlZpIFdpRmkp
-Og0KDQpbICAgMjkuOTIzODExXSBCbHVldG9vdGg6IGhjaTA6IFdhaXRpbmcgZm9yIGZpcm13
-YXJlIGRvd25sb2FkIHRvIGNvbXBsZXRlDQpbICAgMjkuOTI1MDY4XSBCbHVldG9vdGg6IGhj
-aTA6IEZpcm13YXJlIGxvYWRlZCBpbiAxOTEyNjEzIHVzZWNzDQpbICAgMjkuOTI1MzI2XSBC
-bHVldG9vdGg6IGhjaTA6IFdhaXRpbmcgZm9yIGRldmljZSB0byBib290DQpbICAgMjkuOTQw
-Njk4XSBCbHVldG9vdGg6IGhjaTA6IERldmljZSBib290ZWQgaW4gMTUyNTggdXNlY3MNClsg
-ICAyOS45NDM1MTddIEJsdWV0b290aDogaGNpMDogRm91bmQgSW50ZWwgRERDIHBhcmFtZXRl
-cnM6IGludGVsL2lidC0xOS0wLTQuZGRjDQpbICAgMjkuOTQ1NjgxXSBCbHVldG9vdGg6IGhj
-aTA6IEFwcGx5aW5nIEludGVsIEREQyBwYXJhbWV0ZXJzIGNvbXBsZXRlZA0KWyAgIDI5Ljk0
-ODY4NF0gQmx1ZXRvb3RoOiBoY2kwOiBGaXJtd2FyZSByZXZpc2lvbiAwLjAgYnVpbGQgMTIx
-IHdlZWsgNyAyMDIxDQpbICAgMzAuMDA4NjQwXSBCbHVldG9vdGg6IGhjaTA6IE1TRlQgZmls
-dGVyX2VuYWJsZSBpcyBhbHJlYWR5IG9uDQpbICAgMzAuMDg3MzM4XSAtLS0tLS0tLS0tLS1b
-IGN1dCBoZXJlIF0tLS0tLS0tLS0tLS0NClsgICAzMC4wODczNTZdIFdBUk5JTkc6IENQVTog
-NSBQSUQ6IDE0ODEgYXQga2VybmVsL3NvZnRpcnEuYzoxNzggX19sb2NhbF9iaF9lbmFibGVf
-aXArMHg5Ny8weGQwDQpbICAgMzAuMDg3MzYwXSBNb2R1bGVzIGxpbmtlZCBpbjogY21hYyBi
-bmVwIHNuZF9jdGxfbGVkIHNuZF9zb2Nfc2tsX2hkYV9kc3AoRSkgc25kX3NvY19oZGFjX2hk
-bWkoRSkgc25kX3NvY19kbWljKEUpIHNuZF9oZGFfY29kZWNfaGRtaSBzbmRfaGRhX2NvZGVj
-X3JlYWx0ZWsgc25kX2hkYV9jb2RlY19nZW5lcmljIHNuZF9zb2ZfcGNpX2ludGVsX2NubCBz
-bmRfc29mX2ludGVsX2hkYV9jb21tb24gdmZhdCBmYXQgaVRDT193ZHQgbWVpX3dkdCBzbmRf
-c29jX2hkYWNfaGRhKEUpIG1laV9oZGNwIGludGVsX3BtY19ieHQgc291bmR3aXJlX2ludGVs
-IGlUQ09fdmVuZG9yX3N1cHBvcnQgc291bmR3aXJlX2dlbmVyaWNfYWxsb2NhdGlvbiBzb3Vu
-ZHdpcmVfY2FkZW5jZSBzbmRfc29mX2ludGVsX2hkYSBzbmRfc29mX3BjaSBzbmRfc29mIGlu
-dGVsX3JhcGxfbXNyIHg4Nl9wa2dfdGVtcF90aGVybWFsIGludGVsX3Bvd2VyY2xhbXAgY29y
-ZXRlbXAgc25kX3NvZl94dGVuc2FfZHNwIHNuZF9zb2Nfc2tsIGt2bV9pbnRlbCBzbmRfc29j
-X3NzdF9pcGMoRSkgc25kX3NvY19zc3RfZHNwKEUpIHNuZF9oZGFfZXh0X2NvcmUoRSkgc25k
-X3NvY19hY3BpX2ludGVsX21hdGNoKEUpIHNuZF9zb2NfYWNwaSBrdm0gc25kX3NvY19jb3Jl
-IGNkY19ldGhlciBpcnFieXBhc3MgdXNibmV0IHNuZF9jb21wcmVzcyByYXBsIHI4MTUyIGFj
-OTdfYnVzIGludGVsX2NzdGF0ZSBzbmRfcGNtX2RtYWVuZ2luZSBtaWkgc25kX2hkYV9pbnRl
-bCBpbnRlbF91bmNvcmUgc25kX2ludGVsX2RzcGNmZyhFKSBzbmRfaW50ZWxfc2R3X2FjcGko
-RSkgc25kX2hkYV9jb2RlYyBzbmRfdXNiX2F1ZGlvIHNuZF9oZGFfY29yZShFKSBzbmRfdXNi
-bWlkaV9saWIgc25kX2h3ZGVwIGl3bG12bSBzbmRfcmF3bWlkaSBzbmRfc2VxIHBjc3BrciBz
-bmRfc2VxX2RldmljZSBtYWM4MDIxMSBzbmRfcGNtIHdtaV9ibW9mIGkyY19pODAxIHV2Y3Zp
-ZGVvIGludGVsX3dtaV90aHVuZGVyYm9sdCBlMTAwMGUgaTJjX3NtYnVzDQpbICAgMzAuMDg3
-NDM2XSAgYnR1c2Igc25kX3RpbWVyIHZpZGVvYnVmMl92bWFsbG9jIGJ0cnRsIHRodW5kZXJi
-b2x0IHZpZGVvYnVmMl9tZW1vcHMgbGliYXJjNCBidGJjbSBidGludGVsIHZpZGVvYnVmMl92
-NGwyIGJsdWV0b290aCB2aWRlb2J1ZjJfY29tbW9uIGl3bHdpZmkgdmlkZW9kZXYgbWVpX21l
-IHByb2Nlc3Nvcl90aGVybWFsX2RldmljZSBwcm9jZXNzb3JfdGhlcm1hbF9yZmltIGVjZGhf
-Z2VuZXJpYyBqb3lkZXYgbWMgbWVpIHByb2Nlc3Nvcl90aGVybWFsX21ib3ggZWNjIHByb2Nl
-c3Nvcl90aGVybWFsX3JhcGwgY2ZnODAyMTEgaWRtYTY0IGludGVsX3JhcGxfY29tbW9uIHVj
-c2lfYWNwaSBpbnRlbF9wY2hfdGhlcm1hbCBpbnRlbF9zb2NfZHRzX2lvc2YgbnhwX25jaV9p
-MmMgdHlwZWNfdWNzaSBueHBfbmNpIG5jaSByb2xlcyB0eXBlYyBuZmMgaW50MzQwM190aGVy
-bWFsIGludDM0MHhfdGhlcm1hbF96b25lIHNvY19idXR0b25fYXJyYXkgaW50ZWxfaGlkIGlu
-dDM0MDBfdGhlcm1hbCBhY3BpX3RoZXJtYWxfcmVsIHNwYXJzZV9rZXltYXAgYWNwaV9wYWQg
-YmluZm10X21pc2MgenJhbSBpcF90YWJsZXMgZG1fY3J5cHQgdHJ1c3RlZCBoaWRfbG9naXRl
-Y2hfaGlkcHAgaGlkX2xvZ2l0ZWNoX2RqIHVhcyB1c2Jfc3RvcmFnZSBjcmN0MTBkaWZfcGNs
-bXVsIGNyYzMyX3BjbG11bCBjcmMzMmNfaW50ZWwgZ2hhc2hfY2xtdWxuaV9pbnRlbCBpOTE1
-IHNlcmlvX3JhdyBudm1lIGkyY19hbGdvX2JpdCBudm1lX2NvcmUgZHJtX2ttc19oZWxwZXIg
-Y2VjIGhpZF9tdWx0aXRvdWNoIGRybSB3bWkgaTJjX2hpZF9hY3BpIGkyY19oaWQgdGhpbmtw
-YWRfYWNwaSBsZWR0cmlnX2F1ZGlvIHBsYXRmb3JtX3Byb2ZpbGUgc25kIHNvdW5kY29yZSBy
-ZmtpbGwgZHJtX3ByaXZhY3lfc2NyZWVuX2hlbHBlciB2aWRlbyBwaW5jdHJsX2Nhbm5vbmxh
-a2UgaTJjX2RldiBmdXNlDQpbICAgMzAuMDg3NTA5XSBDUFU6IDUgUElEOiAxNDgxIENvbW06
-IE5ldHdvcmtNYW5hZ2VyIFRhaW50ZWQ6IEcgICAgICAgICAgICBFICAgICA1LjEyLjAtcmM0
-KyAjMjcyDQpbICAgMzAuMDg3NTExXSBIYXJkd2FyZSBuYW1lOiBMRU5PVk8gMjBVOTBTSVQx
-OS8yMFU5MFNJVDE5LCBCSU9TIE4yV0VUMjRXICgxLjE0ICkgMTAvMTUvMjAyMA0KWyAgIDMw
-LjA4NzUxMl0gUklQOiAwMDEwOl9fbG9jYWxfYmhfZW5hYmxlX2lwKzB4OTcvMHhkMA0KWyAg
-IDMwLjA4NzUxNF0gQ29kZTogZjIgNDUgYTkgMDAgZmYgZmYgMDAgNzQgMzYgNjUgZmYgMGQg
-MzMgZDcgZjIgNDUgZTggMmUgMmMgMTMgMDAgZmIgNjYgMGYgMWYgNDQgMDAgMDAgNWIgNWQg
-YzMgNjUgOGIgMDUgNTkgZGYgZjIgNDUgODUgYzAgNzUgOWMgPDBmPiAwYiBlYiA5OCBlOCA1
-MCAyYiAxMyAwMCBlYiBhNyA0OCA4OSBlZiBlOCA3NiAyOCAwNyAwMCBlYiBiMCA2NQ0KWyAg
-IDMwLjA4NzUxNl0gUlNQOiAwMDE4OmZmZmZiYzEyNDBlNDcxYjAgRUZMQUdTOiAwMDAxMDA0
-Ng0KWyAgIDMwLjA4NzUxOF0gUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJCWDogMDAwMDAwMDAw
-MDAwMDIwMSBSQ1g6IDAwMDAwMDAwMDAwMDAwMDANClsgICAzMC4wODc1MjBdIFJEWDogMDAw
-MDAwMDAwMDAwMDAwMyBSU0k6IDAwMDAwMDAwMDAwMDAyMDEgUkRJOiBmZmZmZmZmZmMwYmQ1
-NGRiDQpbICAgMzAuMDg3NTIxXSBSQlA6IGZmZmZmZmZmYzBiZDU0ZGIgUjA4OiAwMDAwMDAw
-MDAwMDAwMDAwIFIwOTogMDAwMDAwMDAwMDAwMDAwMQ0KWyAgIDMwLjA4NzUyMl0gUjEwOiBm
-ZmZmYmMxMjQwZTQ3MGEwIFIxMTogMDAwMDAwMDAwMDAwMDAwMSBSMTI6IGZmZmY5ODE3YzU3
-OGFjMTANClsgICAzMC4wODc1MjNdIFIxMzogMDAwMDAwMDAwMDAwMDAwMCBSMTQ6IDAwMDAw
-MDAwODAwMDAwMDAgUjE1OiAwMDAwMDAwMDAwMDAwMDAwDQpbICAgMzAuMDg3NTI1XSBGUzog
-IDAwMDA3ZjMwOGRiYmRiYzAoMDAwMCkgR1M6ZmZmZjk4MWIxYTU0MDAwMCgwMDAwKSBrbmxH
-UzowMDAwMDAwMDAwMDAwMDAwDQpbICAgMzAuMDg3NTI2XSBDUzogIDAwMTAgRFM6IDAwMDAg
-RVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzDQpbICAgMzAuMDg3NTI4XSBDUjI6IDAw
-MDA3ZjY1OWMwMTMwMzggQ1IzOiAwMDAwMDAwMTQyMGJjMDAyIENSNDogMDAwMDAwMDAwMDM3
-MDZlMA0KWyAgIDMwLjA4NzUyOV0gRFIwOiAwMDAwMDAwMDAwMDAwMDAwIERSMTogMDAwMDAw
-MDAwMDAwMDAwMCBEUjI6IDAwMDAwMDAwMDAwMDAwMDANClsgICAzMC4wODc1MzBdIERSMzog
-MDAwMDAwMDAwMDAwMDAwMCBEUjY6IDAwMDAwMDAwZmZmZTBmZjAgRFI3OiAwMDAwMDAwMDAw
-MDAwNDAwDQpbICAgMzAuMDg3NTMxXSBDYWxsIFRyYWNlOg0KWyAgIDMwLjA4NzUzNF0gIGl3
-bF9wY2llX2dlbjJfZW5xdWV1ZV9oY21kKzB4NTZiLzB4OGMwIFtpd2x3aWZpXQ0KWyAgIDMw
-LjA4NzU1MV0gIGl3bF90cmFuc190eHFfc2VuZF9oY21kKzB4NTkvMHg0NzAgW2l3bHdpZmld
-DQpbICAgMzAuMDg3NTY0XSAgaXdsX3RyYW5zX3NlbmRfY21kKzB4ODEvMHgxODAgW2l3bHdp
-ZmldDQpbICAgMzAuMDg3NTcyXSAgPyBsb2NrX2FjcXVpcmUrMHhlMi8weDNiMA0KWyAgIDMw
-LjA4NzU3Nl0gIGl3bF9tdm1fc2VuZF9jbWQrMHgyOC8weDgwIFtpd2xtdm1dDQpbICAgMzAu
-MDg3NTg3XSAgaXdsX212bV9sZWRfc2V0KzB4OWMvMHhjMCBbaXdsbXZtXQ0KWyAgIDMwLjA4
-NzYwMF0gID8gX3Jhd19yZWFkX2xvY2tfaXJxc2F2ZSsweDdmLzB4YTANClsgICAzMC4wODc2
-MDJdICA/IF9yYXdfcmVhZF9sb2NrX2lycXNhdmUrMHg4OC8weGEwDQpbICAgMzAuMDg3NjA1
-XSAgbGVkX3RyaWdnZXJfZXZlbnQrMHg0Ni8weDcwDQpbICAgMzAuMDg3NjA5XSAgaWVlZTgw
-MjExX2RvX29wZW4rMHg0YzIvMHhhNzAgW21hYzgwMjExXQ0KWyAgIDMwLjA4NzY0Ml0gIGll
-ZWU4MDIxMV9vcGVuKzB4NjkvMHg5MCBbbWFjODAyMTFdDQpbICAgMzAuMDg3NjY2XSAgX19k
-ZXZfb3BlbisweGU1LzB4MWIwDQpbICAgMzAuMDg3NjcwXSAgX19kZXZfY2hhbmdlX2ZsYWdz
-KzB4MWM4LzB4MjQwDQpbICAgMzAuMDg3Njc2XSAgZGV2X2NoYW5nZV9mbGFncysweDIxLzB4
-NjANClsgICAzMC4wODc2ODJdICBkb19zZXRsaW5rKzB4MmE5LzB4MTI5MA0KWyAgIDMwLjA4
-NzY5MF0gID8gX19sb2NrX2FjcXVpcmUrMHgzODkvMHgxZTEwDQpbICAgMzAuMDg3NzA3XSAg
-PyBsb2NrX2lzX2hlbGRfdHlwZSsweGE1LzB4MTIwDQpbICAgMzAuMDg3NzEzXSAgX19ydG5s
-X25ld2xpbmsrMHg2NmQvMHhhMjANClsgICAzMC4wODc3NTNdICBydG5sX25ld2xpbmsrMHg0
-NC8weDcwDQpbICAgMzAuMDg3NzU2XSAgcnRuZXRsaW5rX3Jjdl9tc2crMHgxODEvMHg0YjAN
-ClsgICAzMC4wODc3NjFdICA/IHJ0bmV0bGlua19wdXRfbWV0cmljcysweDFlMC8weDFlMA0K
-WyAgIDMwLjA4Nzc2M10gIG5ldGxpbmtfcmN2X3NrYisweDViLzB4MTAwDQpbICAgMzAuMDg3
-NzY5XSAgbmV0bGlua191bmljYXN0KzB4MTc1LzB4MjQwDQpbICAgMzAuMDg3NzczXSAgbmV0
-bGlua19zZW5kbXNnKzB4MjRkLzB4NDgwDQpbICAgMzAuMDg3Nzc5XSAgc29ja19zZW5kbXNn
-KzB4NWUvMHg2MA0KWyAgIDMwLjA4Nzc4Ml0gIF9fX19zeXNfc2VuZG1zZysweDI1Yi8weDJh
-MA0KWyAgIDMwLjA4Nzc4NF0gID8gaW1wb3J0X2lvdmVjKzB4MTcvMHgyMA0KWyAgIDMwLjA4
-Nzc5MF0gIF9fX3N5c19zZW5kbXNnKzB4YTMvMHhmMA0KWyAgIDMwLjA4NzgwNF0gIF9fc3lz
-X3NlbmRtc2crMHg3My8weGIwDQpbICAgMzAuMDg3ODExXSAgZG9fc3lzY2FsbF82NCsweDMz
-LzB4NDANClsgICAzMC4wODc4MTVdICBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUr
-MHg0NC8weGFlDQpbICAgMzAuMDg3ODE3XSBSSVA6IDAwMzM6MHg3ZjMwOGVjYTk2ZmQNClsg
-ICAzMC4wODc4MTldIENvZGU6IDI4IDg5IDU0IDI0IDFjIDQ4IDg5IDc0IDI0IDEwIDg5IDdj
-IDI0IDA4IGU4IGZhIGVlIGZmIGZmIDhiIDU0IDI0IDFjIDQ4IDhiIDc0IDI0IDEwIDQxIDg5
-IGMwIDhiIDdjIDI0IDA4IGI4IDJlIDAwIDAwIDAwIDBmIDA1IDw0OD4gM2QgMDAgZjAgZmYg
-ZmYgNzcgMzMgNDQgODkgYzcgNDggODkgNDQgMjQgMDggZTggNGUgZWYgZmYgZmYgNDgNClsg
-ICAzMC4wODc4MjBdIFJTUDogMDAyYjowMDAwN2ZmZjcwYjRhZjQwIEVGTEFHUzogMDAwMDAy
-OTMgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAwMmUNClsgICAzMC4wODc4MjNdIFJBWDogZmZm
-ZmZmZmZmZmZmZmZkYSBSQlg6IDAwMDAwMDAwMDAwMDAwMTQgUkNYOiAwMDAwN2YzMDhlY2E5
-NmZkDQpbICAgMzAuMDg3ODI0XSBSRFg6IDAwMDAwMDAwMDAwMDAwMDAgUlNJOiAwMDAwN2Zm
-ZjcwYjRhZjgwIFJESTogMDAwMDAwMDAwMDAwMDAwYw0KWyAgIDMwLjA4NzgyNV0gUkJQOiAw
-MDAwNTY1NTM1YWZlMDMwIFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6IDAwMDAwMDAwMDAw
-MDAwMDANClsgICAzMC4wODc4MjZdIFIxMDogMDAwMDAwMDAwMDAwMDAwMCBSMTE6IDAwMDAw
-MDAwMDAwMDAyOTMgUjEyOiAwMDAwMDAwMDAwMDAwMDAwDQpbICAgMzAuMDg3ODI3XSBSMTM6
-IDAwMDA3ZmZmNzBiNGIwZTAgUjE0OiAwMDAwN2ZmZjcwYjRiMGRjIFIxNTogMDAwMDAwMDAw
-MDAwMDAwMA0KWyAgIDMwLjA4NzgzNV0gaXJxIGV2ZW50IHN0YW1wOiAyNDIxNTMNClsgICAz
-MC4wODc4MzZdIGhhcmRpcnFzIGxhc3QgIGVuYWJsZWQgYXQgKDI0MjE1MSk6IFs8ZmZmZmZm
-ZmZiYTBlYTY5Mj5dIF9fbG9jYWxfYmhfZW5hYmxlX2lwKzB4ODIvMHhkMA0KWyAgIDMwLjA4
-NzgzOF0gaGFyZGlycXMgbGFzdCBkaXNhYmxlZCBhdCAoMjQyMTUyKTogWzxmZmZmZmZmZmJh
-ZDNmNzk0Pl0gX3Jhd19yZWFkX2xvY2tfaXJxc2F2ZSsweDk0LzB4YTANClsgICAzMC4wODc4
-NDBdIHNvZnRpcnFzIGxhc3QgIGVuYWJsZWQgYXQgKDI0MjE1MCk6IFs8ZmZmZmZmZmZjMGJk
-NTRkYj5dIGl3bF9wY2llX2dlbjJfZW5xdWV1ZV9oY21kKzB4NTZiLzB4OGMwIFtpd2x3aWZp
-XQ0KWyAgIDMwLjA4Nzg1MF0gc29mdGlycXMgbGFzdCBkaXNhYmxlZCBhdCAoMjQyMTUzKTog
-WzxmZmZmZmZmZmMwYmQ1MDViPl0gaXdsX3BjaWVfZ2VuMl9lbnF1ZXVlX2hjbWQrMHhlYi8w
-eDhjMCBbaXdsd2lmaV0NClsgICAzMC4wODc4NTddIC0tLVsgZW5kIHRyYWNlIGFhMGIxNzFi
-NDQxNWExZmUgXS0tLQ0KDQpSZWdhcmRzLA0KDQpIYW5zDQo=
+Hi all!
 
+On 4/7/21 14:02, Kees Cook wrote:
+> On Wed, Mar 31, 2021 at 04:45:34PM -0500, Gustavo A. R. Silva wrote:
+>> Fix the following out-of-bounds warning by enclosing
+>> some structure members into new struct req:
+>>
+>> arch/x86/include/asm/string_32.h:182:25: warning: '__builtin_memcpy' offset [39, 108] from the object at 'sig' is out of the bounds of referenced subobject 'beacon_period' with type 'short unsigned int' at offset 36 [-Warray-bounds]
+>>
+>> Refactor the code, accordingly:
+>>
+>> $ pahole -C wl3501_join_req drivers/net/wireless/wl3501_cs.o
+>> struct wl3501_join_req {
+>> 	u16                        next_blk;             /*     0     2 */
+>> 	u8                         sig_id;               /*     2     1 */
+>> 	u8                         reserved;             /*     3     1 */
+>> 	struct iw_mgmt_data_rset   operational_rset;     /*     4    10 */
+>> 	u16                        reserved2;            /*    14     2 */
+>> 	u16                        timeout;              /*    16     2 */
+>> 	u16                        probe_delay;          /*    18     2 */
+>> 	u8                         timestamp[8];         /*    20     8 */
+>> 	u8                         local_time[8];        /*    28     8 */
+>> 	struct {
+>> 		u16                beacon_period;        /*    36     2 */
+>> 		u16                dtim_period;          /*    38     2 */
+>> 		u16                cap_info;             /*    40     2 */
+>> 		u8                 bss_type;             /*    42     1 */
+>> 		u8                 bssid[6];             /*    43     6 */
+>> 		struct iw_mgmt_essid_pset ssid;          /*    49    34 */
+>> 		/* --- cacheline 1 boundary (64 bytes) was 19 bytes ago --- */
+>> 		struct iw_mgmt_ds_pset ds_pset;          /*    83     3 */
+>> 		struct iw_mgmt_cf_pset cf_pset;          /*    86     8 */
+>> 		struct iw_mgmt_ibss_pset ibss_pset;      /*    94     4 */
+>> 		struct iw_mgmt_data_rset bss_basic_rset; /*    98    10 */
+>> 	} req;                                           /*    36    72 */
+> 
+> This section is the same as a large portion of struct wl3501_scan_confirm:
+> 
+> struct wl3501_scan_confirm {
+>         u16                         next_blk;
+>         u8                          sig_id;
+>         u8                          reserved;
+>         u16                         status;
+>         char                        timestamp[8];
+>         char                        localtime[8];
+> 
+> from here
+>         u16                         beacon_period;
+>         u16                         dtim_period;
+>         u16                         cap_info;
+>         u8                          bss_type;
+>         u8                          bssid[ETH_ALEN];
+>         struct iw_mgmt_essid_pset   ssid;
+>         struct iw_mgmt_ds_pset      ds_pset;
+>         struct iw_mgmt_cf_pset      cf_pset;
+>         struct iw_mgmt_ibss_pset    ibss_pset;
+>         struct iw_mgmt_data_rset    bss_basic_rset;
+> through here
+> 
+>         u8                          rssi;
+> };
+> 
+> It seems like maybe extracting that and using it in both structures
+> would make more sense?
+
+If I do this, I would therefore have to make a bunch of other changes,
+accordingly. I'm OK with that but I'd like to have the opinion of the
+maintainers on all this. So, I will go and ping them from the cover
+letter of this series with the hope that we can get some feedback from
+them. :) They have been silent for a couple of weeks now.
+
+> 
+>>
+>> 	/* size: 108, cachelines: 2, members: 10 */
+>> 	/* last cacheline: 44 bytes */
+>> };
+>>
+>> The problem is that the original code is trying to copy data into a
+>> bunch of struct members adjacent to each other in a single call to
+>> memcpy(). Now that a new struct _req_ enclosing all those adjacent
+>> members is introduced, memcpy() doesn't overrun the length of
+>> &sig.beacon_period, because the address of the new struct object
+>> _req_ is used as the destination, instead.
+>>
+>> Also, this helps with the ongoing efforts to enable -Warray-bounds and
+>> avoid confusing the compiler.
+>>
+>> Link: https://github.com/KSPP/linux/issues/109
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Build-tested-by: kernel test robot <lkp@intel.com>
+>> Link: https://lore.kernel.org/lkml/60641d9b.2eNLedOGSdcSoAV2%25lkp@intel.com/
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> ---
+>> Changes in v2:
+>>  - None.
+>>
+>>  drivers/net/wireless/wl3501.h    | 22 ++++++++++++----------
+>>  drivers/net/wireless/wl3501_cs.c |  4 ++--
+>>  2 files changed, 14 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/wl3501.h b/drivers/net/wireless/wl3501.h
+>> index ef9d605d8c88..774d8cac046d 100644
+>> --- a/drivers/net/wireless/wl3501.h
+>> +++ b/drivers/net/wireless/wl3501.h
+>> @@ -389,16 +389,18 @@ struct wl3501_join_req {
+>>  	u16			    probe_delay;
+>>  	u8			    timestamp[8];
+>>  	u8			    local_time[8];
+>> -	u16			    beacon_period;
+>> -	u16			    dtim_period;
+>> -	u16			    cap_info;
+>> -	u8			    bss_type;
+>> -	u8			    bssid[ETH_ALEN];
+>> -	struct iw_mgmt_essid_pset   ssid;
+>> -	struct iw_mgmt_ds_pset	    ds_pset;
+>> -	struct iw_mgmt_cf_pset	    cf_pset;
+>> -	struct iw_mgmt_ibss_pset    ibss_pset;
+>> -	struct iw_mgmt_data_rset    bss_basic_rset;
+>> +	struct {
+>> +		u16			    beacon_period;
+>> +		u16			    dtim_period;
+>> +		u16			    cap_info;
+>> +		u8			    bss_type;
+>> +		u8			    bssid[ETH_ALEN];
+>> +		struct iw_mgmt_essid_pset   ssid;
+>> +		struct iw_mgmt_ds_pset	    ds_pset;
+>> +		struct iw_mgmt_cf_pset	    cf_pset;
+>> +		struct iw_mgmt_ibss_pset    ibss_pset;
+>> +		struct iw_mgmt_data_rset    bss_basic_rset;
+>> +	} req;
+>>  };
+>>  
+>>  struct wl3501_join_confirm {
+>> diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
+>> index e149ef81d6cc..399d3bd2ae76 100644
+>> --- a/drivers/net/wireless/wl3501_cs.c
+>> +++ b/drivers/net/wireless/wl3501_cs.c
+>> @@ -590,7 +590,7 @@ static int wl3501_mgmt_join(struct wl3501_card *this, u16 stas)
+>>  	struct wl3501_join_req sig = {
+>>  		.sig_id		  = WL3501_SIG_JOIN_REQ,
+>>  		.timeout	  = 10,
+>> -		.ds_pset = {
+>> +		.req.ds_pset = {
+>>  			.el = {
+>>  				.id  = IW_MGMT_INFO_ELEMENT_DS_PARAMETER_SET,
+>>  				.len = 1,
+>> @@ -599,7 +599,7 @@ static int wl3501_mgmt_join(struct wl3501_card *this, u16 stas)
+>>  		},
+>>  	};
+>>  
+>> -	memcpy(&sig.beacon_period, &this->bss_set[stas].beacon_period, 72);
+>> +	memcpy(&sig.req, &this->bss_set[stas].beacon_period, sizeof(sig.req));
+> 
+> If not, then probably something like this should be added to make sure
+> nothing unexpected happens to change structure sizes:
+> 
+> BUILD_BUG_ON(sizeof(sig.req) != 72);
+
+Yep, this is sensible.
+
+Thanks for the feedback!
+--
+Gustavo
+
+> 
+>>  	return wl3501_esbq_exec(this, &sig, sizeof(sig));
+>>  }
+>>  
+>> -- 
+>> 2.27.0
+>>
+> 
