@@ -2,76 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B61EF35D8CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 09:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6455435D8D8
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 09:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238878AbhDMH07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Apr 2021 03:26:59 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:49424 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230446AbhDMH0x (ORCPT
+        id S239454AbhDMH24 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Apr 2021 03:28:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51106 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239274AbhDMH2s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Apr 2021 03:26:53 -0400
-X-UUID: dc8304c882da4c8ba8b66eb16e0725ad-20210413
-X-UUID: dc8304c882da4c8ba8b66eb16e0725ad-20210413
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1425415315; Tue, 13 Apr 2021 15:26:27 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 13 Apr 2021 15:26:25 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 13 Apr 2021 15:26:25 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] mt76: mt7915: only free skbs after mt7915_dma_reset() when reset happens
-Date:   Tue, 13 Apr 2021 15:26:20 +0800
-Message-ID: <6f531ab347f2c95ccc979b905e1882811dbf88fe.1618297567.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <1fc26bda42fcd85b4bcebc8520601c70b882aa34.1618297567.git.ryder.lee@mediatek.com>
-References: <1fc26bda42fcd85b4bcebc8520601c70b882aa34.1618297567.git.ryder.lee@mediatek.com>
+        Tue, 13 Apr 2021 03:28:48 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 434BCC06175F
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 00:28:28 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id b17so11306088pgh.7
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 00:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=Th8DLSdO2vvzDGZNvM1EiNQqBiiC+GmcxeXMizucGzE=;
+        b=a02KKelz8nmBQ6Q/ZySI9iRYnHg4uPjz1jdtG/Xp+FCAd23bAAOpqIp/6DgFkPlhSq
+         prNDwyKTQfxM9SP/k28AdVMDlpz1zCuHF64xyWZpCb1qlH0pRWLZrz4wgLrdnj0u1Sl1
+         1/m4Zqc4kZwgo5mBNlyWn0kd67R5A4DCAnTZpYCMbM00aKQLKeafXAF2yY0VDAMv2NkU
+         2AHbc1lJ4xvZkmUtGyF5viQAdrork6huoW8zmSwQDUcCJYzFBlwKv3caoaggI71n05Wq
+         gB4+e8UxMaJ8sgylOh7jcfe10qmm1SNTE7bizE1n+I8WY5q2wQcgZUQhjIy0+urvRmwP
+         5IEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=Th8DLSdO2vvzDGZNvM1EiNQqBiiC+GmcxeXMizucGzE=;
+        b=BJCwF2MgCaEQZv2s9OS1P7REjB7x4EwNILMBrayAH6IzsR6gztsHR8IjUneBzZqvBk
+         3mpaoahyEhMqVZDSSKFiCW+wr+/AycVqqpENEK/j1dPQLaioOyAe0mYIe4qBwjyVIllg
+         JM9xd87PBNtpevQu2hsFoCOHgcOsbRvGvvRmduADpprMuqT/auY+LZD8l1xujBdjXX4g
+         8Vj6KaGCYJkXiW0wysai/sSQUYaLGm/Hxn24TysVV4WCaaknYt23x+e89Wc9Lf2iCi7Y
+         ahBEEHwKD9mkPa6bWiFB/n431ZPshD/SNTcnDpFbe82g3Mle7sgshHXiAVselJ3ngPks
+         pOgQ==
+X-Gm-Message-State: AOAM530FpDl1wmF7s9V53fKBk7JVNBkCKb/PfvFar6uW1bdzv94RRvsT
+        G74NaO6jIwoRODYrGyxfuSHoPw==
+X-Google-Smtp-Source: ABdhPJyemRNGKQj8Nqb3ZOMz+T1cHVd7ePowMYtFCGLiIg9aIdqYrYZQUwiIkhN0ojT1b9rbJkH2+w==
+X-Received: by 2002:a63:2507:: with SMTP id l7mr30951603pgl.198.1618298907404;
+        Tue, 13 Apr 2021 00:28:27 -0700 (PDT)
+Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id n21sm1422205pjo.25.2021.04.13.00.28.23
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 13 Apr 2021 00:28:26 -0700 (PDT)
+Date:   Tue, 13 Apr 2021 15:28:19 +0800
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: Re: [PATCH 1/2] dt-binding: bcm43xx-fmac: add optional brcm,ccode-map
+Message-ID: <20210413072818.GC15093@dragon>
+References: <20210408113022.18180-1-shawn.guo@linaro.org>
+ <20210408113022.18180-2-shawn.guo@linaro.org>
+ <87k0p9mewt.fsf@codeaurora.org>
+ <20210412012528.GB15093@dragon>
+ <87im4rlnuh.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 0FBF8B1C5867ACE187B03BCE64CBA3125AD649F31450D63B2D80902F88F920552000:8
-X-MTK:  N
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87im4rlnuh.fsf@codeaurora.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In mt7915_mac_reset_work(), make sure freeing skbs after mt7915_dma_reset().
+On Mon, Apr 12, 2021 at 02:54:46PM +0300, Kalle Valo wrote:
+> Shawn Guo <shawn.guo@linaro.org> writes:
+> 
+> > On Sun, Apr 11, 2021 at 10:57:54AM +0300, Kalle Valo wrote:
+> >> Shawn Guo <shawn.guo@linaro.org> writes:
+> >> 
+> >> > Add optional brcm,ccode-map property to support translation from ISO3166
+> >> > country code to brcmfmac firmware country code and revision.
+> >> >
+> >> > Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> >> > ---
+> >> >  .../devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt | 7 +++++++
+> >> >  1 file changed, 7 insertions(+)
+> >> >
+> >> > diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> >> > index cffb2d6876e3..a65ac4384c04 100644
+> >> > --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> >> > +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43xx-fmac.txt
+> >> > @@ -15,6 +15,12 @@ Optional properties:
+> >> >  	When not specified the device will use in-band SDIO interrupts.
+> >> >   - interrupt-names : name of the out-of-band interrupt, which must be set
+> >> >  	to "host-wake".
+> >> > + - brcm,ccode-map : multiple strings for translating ISO3166 country code to
+> >> > +	brcmfmac firmware country code and revision.  Each string must be in
+> >> > +	format "AA-BB-num" where:
+> >> > +	  AA is the ISO3166 country code which must be 2 characters.
+> >> > +	  BB is the firmware country code which must be 2 characters.
+> >> > +	  num is the revision number which must fit into signed integer.
+> >> >  
+> >> >  Example:
+> >> >  
+> >> > @@ -34,5 +40,6 @@ mmc3: mmc@1c12000 {
+> >> >  		interrupt-parent = <&pio>;
+> >> >  		interrupts = <10 8>; /* PH10 / EINT10 */
+> >> >  		interrupt-names = "host-wake";
+> >> > +		brcm,ccode-map = "JP-JP-78", "US-Q2-86";
+> >> 
+> >> The commit log does not answer "Why?". Why this needs to be in device
+> >> tree and, for example, not hard coded in the driver?
+> >
+> > Thanks for the comment, Kalle.  Actually, this is something I need some
+> > input from driver maintainers.  I can see this country code mapping
+> > table is chipset specific, and can be hard coded in driver per chip id
+> > and revision.  But on the other hand, it makes some sense to have this
+> > table in device tree, as the country code that need to be supported
+> > could be a device specific configuration.
+> 
+> Could be? Does such a use case exist at the moment or are just guessing
+> future needs?
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+I hope that the patch [1] from Rafał (copied) is one use case.  And
+also, the device I'm working on only needs to support some of the
+countries in the mapping table. 
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index e61dfe966f0a..423f1b9202ce 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1627,12 +1627,12 @@ void mt7915_mac_reset_work(struct work_struct *work)
- 
- 	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_DMA_STOPPED);
- 
--	mt7915_tx_token_put(dev);
--	idr_init(&dev->token);
--
- 	if (mt7915_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
- 		mt7915_dma_reset(dev);
- 
-+		mt7915_tx_token_put(dev);
-+		idr_init(&dev->token);
-+
- 		mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_DMA_INIT);
- 		mt7915_wait_reset_state(dev, MT_MCU_CMD_RECOVERY_DONE);
- 	}
--- 
-2.18.0
+> 
+> From what I have learned so far I think this kind of data should be in
+> the driver, but of course I might be missing something.
 
+I agree with you that such data are chipset specific and should ideally
+be in the driver.  However, the brcmfmac driver implementation has been
+taking the mapping table from platform_data [2][3], which is a logical
+equivalent of DT data in case of booting with device tree.
+
+Shawn
+
+[1] https://gitlab.dai-labor.de/nadim/powquty-coap/-/blob/563b2bd658822375dcfa8e87707304b94de9901c/kernel/mac80211/patches/863-brcmfmac-add-in-driver-tables-with-country-codes.patch
+[2] https://elixir.bootlin.com/linux/v5.12-rc7/source/include/linux/platform_data/brcmfmac.h#L154
+[3] https://elixir.bootlin.com/linux/v5.12-rc7/source/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c#L433
