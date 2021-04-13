@@ -2,123 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5698635E6E9
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 21:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91B0F35E79B
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 22:31:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231210AbhDMTHH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Apr 2021 15:07:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35284 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230123AbhDMTHG (ORCPT
+        id S230209AbhDMUbe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Apr 2021 16:31:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:31757 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229589AbhDMUbd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Apr 2021 15:07:06 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748D8C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 12:06:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=3Ek1Or5gYq6auk/n55uXL3TA8UKIpfxVBA3Yj9gk6w8=; b=AsgNogS2ThUjoZUoVzn850Kzfs
-        Rc8pAFmR5lXTfWC/RyaEEgAkbp8ndYXxjAjD/OglBrhs2am90zAcMyOytVSEyi/YjSPsHnKY+fd5e
-        +yeuwL9+SRuSRll1wptR68J1thW0sFf+KfaOFc7PtfjEq0ULp9uxsUIPv3becbkLoOks=;
-Received: from p4ff13c8d.dip0.t-ipconnect.de ([79.241.60.141] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lWON2-0005m3-B9
-        for linux-wireless@vger.kernel.org; Tue, 13 Apr 2021 21:06:44 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: flush tx status queue on DMA reset
-Date:   Tue, 13 Apr 2021 21:06:41 +0200
-Message-Id: <20210413190641.88320-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.30.1
+        Tue, 13 Apr 2021 16:31:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1618345872;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=wdSnhmRpBp/yc7lmQIEv18dixZ4BRwZjOm1rh9PuvKk=;
+        b=VBWJ3m3acwpzCmWrgTH21gTtDaLdZ3lN4CjgdcF+UtAbs3NPm8cKj2aShaAxul2ri5VuL/
+        /XMCEHV8Jr6995NIaqgy3ADjAJzJnqid0WhHvl5TSqK4j4F0nj/2jMCRpy8dKtZsOCUNps
+        PrJC7kUBgwdXq+cmT7dTC2B+FrWO8Bk=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-320-XNiiHlS6PYa2I94Y54Toaw-1; Tue, 13 Apr 2021 16:31:10 -0400
+X-MC-Unique: XNiiHlS6PYa2I94Y54Toaw-1
+Received: by mail-ed1-f72.google.com with SMTP id a1-20020aa7d7410000b0290378239baa9fso1895153eds.14
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 13:31:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:cc:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=wdSnhmRpBp/yc7lmQIEv18dixZ4BRwZjOm1rh9PuvKk=;
+        b=F2jNpl61vnh8XoCimV8KAedeN6tjJvjHhymx5TfKX4T6nEZ4emwhccoP6Y0aISzLLD
+         ijy8drq2x4I11ejOO8O/d1EoOF3su+2Z/8ghaRqgd6qXHNgkr7tvFgMobgIwJu2TQcsC
+         k3KMGThzBG7kOmkwE6YvA41ytiI3UWRSEh5yOG4A8lWmfGNTzfYim8iUcnqqm93qxK6a
+         zEuw4nVItB5iOd8EoQPdLSkAFde1cmPI7965/6coEIPnButAgHkTqEDpgc3+/ChI+2XJ
+         21qovEeqfnuK23NW3u02SrOhUyiZM+bcSTs+/sEN9pkPIxAowHY2z++Y+dL2W1x7Imwj
+         2kSQ==
+X-Gm-Message-State: AOAM531P+FqzD/xVtkv4En3S2N9NTQXKimoSOlG9NZx8VPw3fMgzlsct
+        7nR5vHsIYl3tO1cnR6jZHl2COmt6bainA1FjBi9V9WfogdhAazRVwWlgZE0j+3dkwUFr65g6jAc
+        bk226uKqpzyBVTHPm6sMpzLMM6bj6a7ETxMlJ7oAGCx91TgrBjI4MCrspbaEiN3ZDxKr8/qRKVZ
+        opI6I=
+X-Received: by 2002:a17:906:dbd5:: with SMTP id yc21mr15690638ejb.29.1618345869090;
+        Tue, 13 Apr 2021 13:31:09 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzq4A7VqeRx/Kmgau+laUFhrn0P1G1uQOXAbKe2g3J/QFIzW4hTJgFEU2dS+WW6Xc/MUttQxg==
+X-Received: by 2002:a17:906:dbd5:: with SMTP id yc21mr15690613ejb.29.1618345868774;
+        Tue, 13 Apr 2021 13:31:08 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id g11sm10216801edt.35.2021.04.13.13.31.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Apr 2021 13:31:08 -0700 (PDT)
+To:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: "rfkill: add a reason to the HW rfkill state" breaks userspace
+Message-ID: <efafa85c-c021-14ff-619c-fdd0db53ddbb@redhat.com>
+Date:   Tue, 13 Apr 2021 22:31:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-After DMA reset, tx status information for queued frames will never arrive.
-Flush the queue to free skbs immediately instead of waiting for a timeout
+Hi,
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c     | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c | 2 ++
- drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c   | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c     | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c     | 2 ++
- 5 files changed, 10 insertions(+)
+I've been debugging a userspace rfkill issue today which boils down
+to the "rfkill: add a reason to the HW rfkill state" patch:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=14486c82612a177cb910980c70ba900827ca0894
+breaking userspace.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index e3a9dd6fbd87..fbceb07c5f37 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -1445,6 +1445,8 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
- 		mt76_queue_rx_reset(dev, i);
- 	}
- 
-+	mt76_tx_status_check(&dev->mt76, NULL, true);
-+
- 	mt7603_dma_sched_reset(dev);
- 
- 	mt7603_mac_dma_start(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-index 9ac4bdabc0ef..8cd79e849045 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-@@ -201,6 +201,8 @@ void mt7615_dma_reset(struct mt7615_dev *dev)
- 	mt76_for_each_q_rx(&dev->mt76, i)
- 		mt76_queue_rx_reset(dev, i);
- 
-+	mt76_tx_status_check(&dev->mt76, NULL, true);
-+
- 	mt7615_dma_start(dev);
- }
- EXPORT_SYMBOL_GPL(mt7615_dma_reset);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-index fc12824ab74e..ce1e9ad23fec 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-@@ -472,6 +472,8 @@ static void mt76x02_watchdog_reset(struct mt76x02_dev *dev)
- 		mt76_queue_rx_reset(dev, i);
- 	}
- 
-+	mt76_tx_status_check(&dev->mt76, NULL, true);
-+
- 	mt76x02_mac_start(dev);
- 
- 	if (dev->ed_monitor)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 35ab4bf011eb..6a4b57509751 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1564,6 +1564,8 @@ mt7915_dma_reset(struct mt7915_dev *dev)
- 	mt76_for_each_q_rx(&dev->mt76, i)
- 		mt76_queue_rx_reset(dev, i);
- 
-+	mt76_tx_status_check(&dev->mt76, NULL, true);
-+
- 	/* re-init prefetch settings after reset */
- 	mt7915_dma_prefetch(dev);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index b507f3917830..572bab82315a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1254,6 +1254,8 @@ mt7921_dma_reset(struct mt7921_dev *dev)
- 	mt76_for_each_q_rx(&dev->mt76, i)
- 		mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
- 
-+	mt76_tx_status_check(&dev->mt76, NULL, true);
-+
- 	/* configure perfetch settings */
- 	mt7921_dma_prefetch(dev);
- 
--- 
-2.30.1
+It is too late to fix this now since we likely also have new
+userspace depending on the new API, but I still thought I
+should report this.
+
+I've submitted a fix for the problematic userspace bits here:
+https://gitlab.gnome.org/GNOME/gnome-settings-daemon/-/merge_requests/232
+
+Let me quote the commit msg which explains the problem:
+
+"""
+Access to a /dev/foo device should never use buffered mode.
+
+While debugging a gsd-rfkill issue I noticed in the g_debug output
+that the rfkill-glib.c code now seems to be receiving bogus events.
+Doing a strace I noticed some read(dev_rfkill_fd, buf, 8) calls,
+even though we call:
+g_io_channel_read_chars(..., sizeof(struct rfkill_event, ...)
+Which requests 9 bytes.
+
+The problem is the kernel expects us to read 1 event per read() system-call
+and it will throw away excess data. The idea is here that the rfkill_event
+struct can be extended by adding new fields at the end and then userspace
+code compiled against older kernel headers will still work since it
+will only read the fields it knows in a single call and the
+extra fields are thrown away.
+
+Since the rfkill-glib.c code was using buffered-io and asking
+g_io_channel_read_chars for 9 bytes when compiled against recent
+kernel headers, what would happen is that 2 events would be consumed
+in 2 read(fd, buf, 8) syscalls and then the first byte of the
+second event read would be appended to the previous event and
+the remaining 7 bytes would be used as the first 7 bytes for the
+next event (and eventually completed with the first 2 bytes of
+the next event, etc.). Leading to completely bogus events.
+
+Enabling unbuffered mode fixes this.
+
+(before the kernel change the rfkill_event struct was 8 bytes large
+which allowed us to get away with using buffered io here.)
+"""
+
+Note this is new userspace on a new kernel actually being broken.
+
+I believe that the new userspace (expecting 9 bytes) on old kernel
+will also be broken, since a naive userspace implementation will do:
+
+	if (read(fd, buf, sizeof(struct rfkill_event)) != sizeof(struct rfkill_event))
+		/* Do error */
+
+Which means that after a recompile on a new kernel it will expect 9
+bytes from a read call an if it gets only 8 then it will consider
+that an error (or worse it could try to do a second read to make-up
+for the missing byte). Note that gnome-settings-daemon still has
+the new-userspace on old-kernel issue even after my fix...
+
+I believe that all that we can do now is fix userspace where necessary :|
+but this is something to keep in mind for future fixes.
+
+Regards,
+
+Hans
 
