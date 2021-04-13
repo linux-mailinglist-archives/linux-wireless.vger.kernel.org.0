@@ -2,136 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A4C35E556
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 19:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8D5335E5D6
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Apr 2021 20:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347337AbhDMRtk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Apr 2021 13:49:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46420 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347323AbhDMRtk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Apr 2021 13:49:40 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3C8C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 10:49:19 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id w8so8440768pfn.9
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Apr 2021 10:49:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=VRKzVsLuoCq+mTv2DRLYTgFxh/UyG4WyL0V7P1rrJx4=;
-        b=ofzm0sYr+RisYzXQntOWQzdqfyAmX26Soc4HmwK3NunE9W3LMIwTDSwofu0JR27whi
-         7IM3wU2/yrlvfy7yedKAb8ETXq1BkRNbxe6Tb+k3+R+9IPcEpOjj8TmSsOYj8Hifj3uM
-         SVeOz+e7zBUgWXQ2HRC2BcEfuL+FBnuXwb6cs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=VRKzVsLuoCq+mTv2DRLYTgFxh/UyG4WyL0V7P1rrJx4=;
-        b=PaRvG49E65NHxattOxlRi9qHB5hR7/kDRP162I/RtiON4S8hNXoQZSHy8kRpiGCPo1
-         lqGvm+p2F1gnM9cFPYx4h0WDwaF8NrVzIVlhpr9zZSa55nifCDd+vnGb9s3RHTUNg+o+
-         N8VANWQpVus49X5MK5xFTMoMemBVZGB4Yifxmlfe07K/IPi3MQMgfR97YvoQe495kW40
-         eNKrDqPXxk+Hb9E1nB/YK+xfSssWghVttePTH1YhygxCZ6wrY9nVdqHeGNp6HMPBd9yU
-         /gzkC66792E84fZvXNXXMdXWsDWw2EpuaLezTr16488ikQoQnpaGsYJM9Py64LUd3l3u
-         JHlA==
-X-Gm-Message-State: AOAM530VQUFLI4ypP9/xLGjfO84WsL/ZrOKKeM+uEnxs0l10ICKONT7C
-        BQDh0hNpqEQBmW87RoyPZcsSLw==
-X-Google-Smtp-Source: ABdhPJwWFim9PDHSAz9q4v3f6mcv2/noXThrFw+AQ6CqPfX4x/vYPgnelO4ACjrC2YHCwBP6VA3UkQ==
-X-Received: by 2002:a63:4763:: with SMTP id w35mr33275195pgk.226.1618336141156;
-        Tue, 13 Apr 2021 10:49:01 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:2f60:18d6:1566:ee50])
-        by smtp.gmail.com with ESMTPSA id i9sm2976981pji.41.2021.04.13.10.48.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Apr 2021 10:48:59 -0700 (PDT)
-Date:   Tue, 13 Apr 2021 10:48:57 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     lyl2019@mail.ustc.edu.cn
-Cc:     amitkarwar@gmail.com, ganapathi.bhat@nxp.com,
-        huxinming820@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wireless/marvell/mwifiex: Fix a double free in
- mwifiex_send_tdls_action_frame
-Message-ID: <YHXZibYWEc6715KO@google.com>
-References: <20210329112435.7960-1-lyl2019@mail.ustc.edu.cn>
- <4cb8138.42c74.178cbfdd339.Coremail.lyl2019@mail.ustc.edu.cn>
+        id S242578AbhDMSEQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Apr 2021 14:04:16 -0400
+Received: from mga09.intel.com ([134.134.136.24]:10030 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1344210AbhDMSEM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 13 Apr 2021 14:04:12 -0400
+IronPort-SDR: 1/Qge8sV5RbYXlHc64Cz01P82JEqoSURfGBu27pV68yYC5yx3by9UMi1BVn5saeupapSrAvWAK
+ 0o7pmLW6+hPg==
+X-IronPort-AV: E=McAfee;i="6200,9189,9953"; a="194582545"
+X-IronPort-AV: E=Sophos;i="5.82,219,1613462400"; 
+   d="scan'208";a="194582545"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2021 11:02:24 -0700
+IronPort-SDR: rs78gE6kLUW9oWkoOjpy7qNgTV/+X/zFmWvwIff24q9IGTc2W6CAjTY9gdDpSZ/CgJZ3tjMTuS
+ 5TOcMLp3tWrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,219,1613462400"; 
+   d="scan'208";a="452068436"
+Received: from lkp-server01.sh.intel.com (HELO 69d8fcc516b7) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 13 Apr 2021 11:02:21 -0700
+Received: from kbuild by 69d8fcc516b7 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lWNMj-0001Bk-0H; Tue, 13 Apr 2021 18:02:21 +0000
+Date:   Wed, 14 Apr 2021 02:01:27 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:pending] BUILD SUCCESS
+ 2e968e5426d088facf247a8fff76a941f226384b
+Message-ID: <6075dc77.9LJVe7gtsSmS8iuZ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4cb8138.42c74.178cbfdd339.Coremail.lyl2019@mail.ustc.edu.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
+branch HEAD: 2e968e5426d088facf247a8fff76a941f226384b  Merge tag 'mt76-for-kvalo-2021-04-12' of https://github.com/nbd168/wireless into pending
 
-On Wed, Apr 14, 2021 at 12:08:32AM +0800, lyl2019@mail.ustc.edu.cn wrote:
-> 
-> Hi,
->   maintianers.
-> 
->   Sorry to disturb you, but this patch seems to be missed more than two weeks.
->   Could you help to review this patch? I am sure it won't take you much time.
+elapsed time: 721m
 
-You might take a look here:
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#checking_state_of_patches_from_patchwork
-https://patchwork.kernel.org/project/linux-wireless/list/
+configs tested: 131
+configs skipped: 2
 
-Two weeks is not unheard of for waiting.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Anyway, you *did* succeed in catching my attention today, so I'll give
-you a review, below:
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+i386                             allyesconfig
+sh                         microdev_defconfig
+sh                             espt_defconfig
+riscv             nommu_k210_sdcard_defconfig
+mips                           ip32_defconfig
+arm                        oxnas_v6_defconfig
+h8300                       h8s-sim_defconfig
+mips                       bmips_be_defconfig
+powerpc                 canyonlands_defconfig
+mips                  decstation_64_defconfig
+arm                              alldefconfig
+sh                          rsk7269_defconfig
+arm                       cns3420vb_defconfig
+ia64                          tiger_defconfig
+arc                        nsim_700_defconfig
+openrisc                 simple_smp_defconfig
+m68k                          hp300_defconfig
+powerpc                  storcenter_defconfig
+sh                            shmin_defconfig
+mips                            gpr_defconfig
+ia64                             alldefconfig
+powerpc                 mpc832x_rdb_defconfig
+arm                           h3600_defconfig
+powerpc                   lite5200b_defconfig
+arm                       netwinder_defconfig
+arm                           corgi_defconfig
+arm                        magician_defconfig
+um                                  defconfig
+arm                            zeus_defconfig
+openrisc                         alldefconfig
+m68k                          atari_defconfig
+powerpc                    gamecube_defconfig
+powerpc                     mpc5200_defconfig
+h8300                     edosk2674_defconfig
+powerpc                      bamboo_defconfig
+xtensa                  nommu_kc705_defconfig
+sh                           se7780_defconfig
+arm                         hackkit_defconfig
+m68k                       m5208evb_defconfig
+arm                            xcep_defconfig
+arm                             ezx_defconfig
+arm                            qcom_defconfig
+mips                        omega2p_defconfig
+mips                         mpc30x_defconfig
+mips                          ath79_defconfig
+um                               allmodconfig
+arm                        clps711x_defconfig
+xtensa                generic_kc705_defconfig
+arm                      footbridge_defconfig
+sparc64                          alldefconfig
+arm                      jornada720_defconfig
+sh                          landisk_defconfig
+x86_64                           alldefconfig
+sh                           sh2007_defconfig
+openrisc                    or1ksim_defconfig
+m68k                          multi_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a003-20210413
+x86_64               randconfig-a002-20210413
+x86_64               randconfig-a001-20210413
+x86_64               randconfig-a005-20210413
+x86_64               randconfig-a006-20210413
+x86_64               randconfig-a004-20210413
+i386                 randconfig-a003-20210413
+i386                 randconfig-a001-20210413
+i386                 randconfig-a006-20210413
+i386                 randconfig-a005-20210413
+i386                 randconfig-a004-20210413
+i386                 randconfig-a002-20210413
+i386                 randconfig-a015-20210413
+i386                 randconfig-a014-20210413
+i386                 randconfig-a013-20210413
+i386                 randconfig-a012-20210413
+i386                 randconfig-a016-20210413
+i386                 randconfig-a011-20210413
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                                allnoconfig
+um                               allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-> > -----原始邮件-----
-> > 发件人: "Lv Yunlong" <lyl2019@mail.ustc.edu.cn>
-> > 发送时间: 2021-03-29 19:24:35 (星期一)
-> > 收件人: amitkarwar@gmail.com, ganapathi.bhat@nxp.com, huxinming820@gmail.com, kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-> > 抄送: linux-wireless@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, "Lv Yunlong" <lyl2019@mail.ustc.edu.cn>
-> > 主题: [PATCH] wireless/marvell/mwifiex: Fix a double free in mwifiex_send_tdls_action_frame
-> > 
-> > In mwifiex_send_tdls_action_frame, it calls mwifiex_construct_tdls_action_frame
-> > (..,skb). The skb will be freed in mwifiex_construct_tdls_action_frame() when
-> > it is failed. But when mwifiex_construct_tdls_action_frame() returns error,
-> > the skb will be freed in the second time by dev_kfree_skb_any(skb).
-> > 
-> > My patch removes the redundant dev_kfree_skb_any(skb) when
-> > mwifiex_construct_tdls_action_frame() failed.
-> > 
-> > Fixes: b23bce2965680 ("mwifiex: add tdls_mgmt handler support")
-> > Signed-off-by: Lv Yunlong <lyl2019@mail.ustc.edu.cn>
-> > ---
-> >  drivers/net/wireless/marvell/mwifiex/tdls.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> > index 97bb87c3676b..8d4d0a9cf6ac 100644
-> > --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-> > +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> > @@ -856,7 +856,6 @@ int mwifiex_send_tdls_action_frame(struct mwifiex_private *priv, const u8 *peer,
-> >  	if (mwifiex_construct_tdls_action_frame(priv, peer, action_code,
-> >  						dialog_token, status_code,
-> >  						skb)) {
-> > -		dev_kfree_skb_any(skb);
+clang tested configs:
+x86_64               randconfig-a014-20210413
+x86_64               randconfig-a015-20210413
+x86_64               randconfig-a011-20210413
+x86_64               randconfig-a013-20210413
+x86_64               randconfig-a012-20210413
+x86_64               randconfig-a016-20210413
 
-Good catch, and this looks correct for most cases, but I'll note that
-you missed one issue: mwifiex_construct_tdls_action_frame() has a
-default/error case ("Unknown TDLS action frame type") which does *not*
-free this SKB, so you should patch that up at the same time. Otherwise,
-you're trading a double-free for a potential memory leak.
-
-With that fixed:
-
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-
-Thanks.
-
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > -- 
-> > 2.25.1
-> > 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
