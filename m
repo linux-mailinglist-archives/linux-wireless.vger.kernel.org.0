@@ -2,185 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F1D35EF62
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 10:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D198435EFA4
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 10:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350043AbhDNIRa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Apr 2021 04:17:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:51662 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1350031AbhDNIRa (ORCPT
+        id S1350064AbhDNIag (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Apr 2021 04:30:36 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:54598 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348357AbhDNIad (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Apr 2021 04:17:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1618388229;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=t4mcakpl6D33+OTsO/RIezYbFLVYR/NnP+hj8syw1UQ=;
-        b=igBRAKRrzAUrWPKxj4nJbHfDzjnFZ+M8p3CfDxXM0zeSKQRgqou4mo8S/qc38lqDgjG8U+
-        WiLNA/Ng7Pa0G897fhFi8p4YLfqrmrr+BLAod0BNHFjvDs6POmWrBaqdEecZzKqDGEEc0G
-        l2sokU+1GwpDtn9IG8zOCgkfjqV+ttM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-147-Z-d7kQeHOxea08UkP11WTQ-1; Wed, 14 Apr 2021 04:17:06 -0400
-X-MC-Unique: Z-d7kQeHOxea08UkP11WTQ-1
-Received: by mail-ed1-f70.google.com with SMTP id m2-20020aa7c4820000b0290382b0bad9e7so2881948edq.9
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Apr 2021 01:17:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=t4mcakpl6D33+OTsO/RIezYbFLVYR/NnP+hj8syw1UQ=;
-        b=l0wz2TLIb7AzoGfG8MdNBDdQ5E8vuwPiIo784lx3xxNeEez4zpmizzb8Z3FK6QzXeX
-         eKnv9K1NOdKfZ8bpkH5bvJLeJYIQXFnWQ7nGeNsl2aocrt+iRM3sq87N6HdLjCVHAivM
-         DMv5gpdins0y1u4FWQR/2xlYeAyiiVzmXwQINZzVrMolM5iwTxljdl9buDCBQvyttIbl
-         5rV44T8DX7MQhgCBRad1p5xxcsj4oLocAYmaCjSPHKxxdsipZNFg0uZcKUATbCL4aAbx
-         NpJKpYp3wIxq66imT0fl1lnSezZmZcYPmuYJ/aQBrtfxH9Q/eiuKtIkwXZbCNt39bWWq
-         VYYw==
-X-Gm-Message-State: AOAM533CtTqJ/LIGEYqHK2iO64bDrFEoVgrhhAhD7aqpJxaBtGn4cL5C
-        84riY2HSNki3Y8Vk3ImWT4toewnes9uRzAlBMxcebEibpPxlU2iZvMghp8mLydeb2ZO03+GRWTW
-        2J7Ew0+WIG1rmn+Q7UJvr9OO0n8DUZBA0mEUgsidvO3o7kY+Mh+48sntnua7RQpYoOHTdTfJ/d7
-        1bQdI=
-X-Received: by 2002:a17:906:3684:: with SMTP id a4mr34954463ejc.316.1618388225167;
-        Wed, 14 Apr 2021 01:17:05 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwzRwKB6/U8JW5/FMXWWnS+9bBBn9hvhDMnfNjvaCqlalAGYg8sPswFdLJaZhFAURfGApcZGA==
-X-Received: by 2002:a17:906:3684:: with SMTP id a4mr34954436ejc.316.1618388224809;
-        Wed, 14 Apr 2021 01:17:04 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id dh27sm11055431edb.28.2021.04.14.01.17.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Apr 2021 01:17:04 -0700 (PDT)
-Subject: Re: "rfkill: add a reason to the HW rfkill state" breaks userspace
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
-        Benjamin Berg <bberg@redhat.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <efafa85c-c021-14ff-619c-fdd0db53ddbb@redhat.com>
- <SA0PR11MB4752FEE472EC18B6A4F376FAF24E9@SA0PR11MB4752.namprd11.prod.outlook.com>
- <2db76f5161be090f9fec2bc4fcb8973533e32564.camel@sipsolutions.net>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <e06b4ca8-6f1f-1c49-5454-b96af9fdd7df@redhat.com>
-Date:   Wed, 14 Apr 2021 10:17:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        Wed, 14 Apr 2021 04:30:33 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13E8TJSg028328;
+        Wed, 14 Apr 2021 08:30:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=G1fYSfuXOphxN5Fqq4MLcXUEV47D2LMEy9TBOwWoUWs=;
+ b=DQ1FBhK6c0FG7yG+fiVSJJx3UvNBWAUmfSnZIKI10i3viOzdQzniVbLzYYzYP3+dmATo
+ 728xi1nzgMcTu68HXgb2NqjDjFRS3dTrX6By35K5kZeq0qW7jjluULCDcU8/Zl8IDEqN
+ mhbWrByZTZzAVnX7KESc79AX7f7hAKdYYY3W1WtT3aTAJBUO6tUiLxCukqmb+bgO5hBR
+ McnnSVIuSWK0mgJrFEypcTi6w8wmoTKqdTkxcTBLZlPROEndSBRhn9ttHm1YxfE9Gpop
+ 3SUgEvZNGQ8rFieeWMz58+cPPVMCJkd6Hi2Bp7tXkea2loCgDfS2VDowlMIWM+ooTx5s HQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 37u4nnhhca-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 14 Apr 2021 08:30:05 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 13E8KOD5080821;
+        Wed, 14 Apr 2021 08:30:03 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 37unxy2e37-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 14 Apr 2021 08:30:03 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13E8U1Nx029437;
+        Wed, 14 Apr 2021 08:30:01 GMT
+Received: from mwanda (/10.175.166.128)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 14 Apr 2021 01:30:01 -0700
+Date:   Wed, 14 Apr 2021 11:29:55 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        James Ketrenos <jketreno@linux.intel.com>,
+        Jeff Garzik <jgarzik@pobox.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] ipw2x00: potential buffer overflow in
+ libipw_wx_set_encodeext()
+Message-ID: <YHaoA1i+8uT4ir4h@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <2db76f5161be090f9fec2bc4fcb8973533e32564.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-IMR: 1
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9953 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 adultscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104140058
+X-Proofpoint-ORIG-GUID: BEsJqhmg-tg6YZjzmZFU3zGiwmifh5Tr
+X-Proofpoint-GUID: BEsJqhmg-tg6YZjzmZFU3zGiwmifh5Tr
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9953 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0
+ phishscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
+ clxscore=1015 lowpriorityscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104140059
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+The "ext->key_len" is a u16 that comes from the user.  If it's over
+SCM_KEY_LEN (32) that could lead to memory corruption.
 
-Adding Benjamin Berg who is one of the gnome-settings-daemon
-maintainers to the Cc.
+Fixes: e0d369d1d969 ("[PATCH] ieee82011: Added WE-18 support to default wireless extension handler")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: use clamp_val() instead of min_t()
 
-On 4/14/21 9:07 AM, Johannes Berg wrote:
-> On Wed, 2021-04-14 at 05:12 +0000, Grumbach, Emmanuel wrote:
->>>
->>> Hi,
->>>
->>> I've been debugging a userspace rfkill issue today which boils down
->>> to the
->>> "rfkill: add a reason to the HW rfkill state" patch:
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?i
->>> d=14486c82612a177cb910980c70ba900827ca0894
->>> breaking userspace.
->>
->> This has been rolled back by:
->> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?id=71826654ce40112f0651b6f4e94c422354f4adb6
->> Other userspace broke (systemd) so Johannes rolled this back by
->> default.
+ drivers/net/wireless/intel/ipw2x00/libipw_wx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-I see, but this change is not in:
-
-kernel-headers-5.11.11-300.fc34.x86_64
-
-Meaning that basically all of Fedora 34 has been built with the "bad"
-headers.
-
->> Userspace that is interested in the new byte will read 9 bytes.
-> 
-> Which, unfortunately, doesn't address *this* particular case, because it
-> uses gio and that will fill the buffer with arbitrary size?
-> 
-> When you (Hans) say you saw in strace a read of size 8, did you mean the
-> size passed to it, or the return size? I guess it must be the return
-> size, and the size passed to it was way larger.
-
-No for some reason, for some later read calls gio was actually passing
-8 as size to the read() syscall. And g-s-d was compiled with headers
-where sizeof(struct rfkill_event) was 9. This is/was the issue, g-s-d
-would do 2 read(fd, buf, 8) calls and then take the first 9 bytes read
-out of the 16 bytes it got to fill a single rfkill_event which is fine,
-except that it uses the remaining 7 bytes as the first 7 bytes of the
-next rfkill_event which it processes making that next event be completely
-bogus.
-
-I do believe this really is a g-s-d bug though, it should not have
-been using a "buffered" gio-channel on a /dev/foo node; and so far it
-only got away with this by the rfkill_event size being a nice power of 2
-value.
-
-As I mentioned in an email to Benjamin, g-s-d should really switch
-to making direct read() calls on the fd circumventing the gio-channel
-read code all together:
-
-"Right, notice I just realized that even after my fix there still is an issue,
-when running code compiled against new kernel headers gsd-rfkill will now
-always expect 9 bytes per event. But when running on an older kernel that
-will not be true.
-
-To fix this the code should probably just directly call read() itself
-on the fd (only using g_io_channel for the polling) and then accept anything
-between 8 bytes and sizeof(struct rfkill_event) as valid return value from the
-read() call..."
-
-Notice that the problem which I described there will go away when compiled
-against even newer kernel-headers where sizeof(struct rfkill_event) is
-back to 8 again.
-
-So question, for code like g-s-d, which does not care about the new
-hard_block_reasons field. What would be the preferred / max compatibility
-way to do the reads. Also keeping in mind that there are "bad" kernel
-headers out there where sizeof(struct rfkill_event) == 9 ?
-
-I think that this would be best:
-
-	ret = read(fd, &event, RFKILL_EVENT_SIZE_V1);
-	if (ret == RFKILL_EVENT_SIZE_V1) {
-		/* Valid event process it */
-	}
-
-This should produce the same code regardless of the kernel-headers version
-and should work on both old and new kernels, correct ?
-
-> The commit Emmanuel linked to fixes cases such as systemd that were just
-> completely garbage (reading with one size, and then checking they got
-> another), but it wouldn't fix this case.
-> 
-> Unfortunately, as you also said, it does seem a bit late now - it's been
-> released in various kernels since 5.10, and while the default rollback
-> will improve the situation somewhat, read(..., size>8) will still return
-> 9 bytes rather than 8 as it used to. Switching that *also* back *should*
-> be safe, but who knows what other bugs were introduced in the meantime?
-> 
-> I certainly don't really have a major objection to rolling that also
-> back, but would it really help that much at this point? I guess it could
-> be going into 5.10/5.11 stable kernels though.
-
-I don't think that rolling back the new extended-event support altogether
-will help. Since this has been out there for 2 released kernel versions
-now, I believe the best way to fix this is to fix userspace; and to fix
-userspace in such a way (at least g-s-d) that this problem cannot
-happen again.
-
-Regards,
-
-Hans
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_wx.c b/drivers/net/wireless/intel/ipw2x00/libipw_wx.c
+index a0cf78c418ac..903de34028ef 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_wx.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_wx.c
+@@ -633,8 +633,10 @@ int libipw_wx_set_encodeext(struct libipw_device *ieee,
+ 	}
+ 
+ 	if (ext->alg != IW_ENCODE_ALG_NONE) {
+-		memcpy(sec.keys[idx], ext->key, ext->key_len);
+-		sec.key_sizes[idx] = ext->key_len;
++		int key_len = clamp_val(ext->key_len, 0, SCM_KEY_LEN);
++
++		memcpy(sec.keys[idx], ext->key, key_len);
++		sec.key_sizes[idx] = key_len;
+ 		sec.flags |= (1 << idx);
+ 		if (ext->alg == IW_ENCODE_ALG_WEP) {
+ 			sec.encode_alg[idx] = SEC_ALG_WEP;
+-- 
+2.30.2
 
