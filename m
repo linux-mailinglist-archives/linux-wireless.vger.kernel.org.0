@@ -2,91 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C175435F29C
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 13:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDC2035F733
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 17:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350678AbhDNLey (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Apr 2021 07:34:54 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:14626 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350677AbhDNLex (ORCPT
+        id S232096AbhDNPHf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Apr 2021 11:07:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42574 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229914AbhDNPHe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Apr 2021 07:34:53 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618400072; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=w32R03vxsYBHaH8nDRiohY6eWnAL9bUdNfYcKWw7Lto=; b=O/PniIs0Um6WWjmLP3hiNmBkZJRVZQSX3GdL0NdtBXzUTiQaVCiFyHgf1N2Y9NGKcMwfPnBq
- oVMIa9kMCCe2+sM4xYTpsaLfL1copG3XFahrenjMvx31NUNZY2CjrBvYw4KhzvuwpefXjjU0
- KBVGpgrXM9piJFqi4OG/S+4BpKI=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 6076d335c06dd10a2d722b2f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 14 Apr 2021 11:34:13
- GMT
-Sender: akalaise=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BF3EEC433ED; Wed, 14 Apr 2021 11:34:12 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from akalaise-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: akalaise)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 23B31C433CA;
-        Wed, 14 Apr 2021 11:34:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 23B31C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=akalaise@codeaurora.org
-From:   Abinaya Kalaiselvan <akalaise@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Abinaya Kalaiselvan <akalaise@codeaurora.org>
-Subject: [PATCH] mac80211: fix NULL ptr dereference during mesh peer connection for non HE devices
-Date:   Wed, 14 Apr 2021 17:03:32 +0530
-Message-Id: <1618400012-30541-1-git-send-email-akalaise@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Wed, 14 Apr 2021 11:07:34 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BD8C061574;
+        Wed, 14 Apr 2021 08:07:12 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id j18so33808169lfg.5;
+        Wed, 14 Apr 2021 08:07:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=sYsWUNBHZnufKSJLy44/uQhBEGPJ9cRby3hv9S4qytU=;
+        b=ooBS3WEIlFW/KhJ4U7FI68zulAfBoy5QR3sQ9Lyir6yHMV2n/SNVJMn1nXJw13LEEv
+         1CuI88d0QQcoTJtPDVfdxgaf26VIURmEuCCeVBthoYAC9y3izNqscIYhT8RTOHqFBBmA
+         76uvxiGThrlX8mQ+TamEPxHQ3sgwwOTc57nBzs+gx3DvyOOvb5t3B1BQj+QNQTuPrEb9
+         j1m4/vWyKr9d8nPSZI6/+RpyzeqIw4cm7ccX9mHom5q2tlZbkIvIFw9lZE9j5Cx6z01V
+         LDbPHu3ZuSpLWufWiH5cMp6f/4LhNAWCpSY0h3w19istsT6CHbRbxsunw8qtnHUOL9qu
+         wTSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sYsWUNBHZnufKSJLy44/uQhBEGPJ9cRby3hv9S4qytU=;
+        b=FIDO/vay4SAm0aaqNRVBH/OgGFenlt6/3hIgtoBlkfjB88B/N+tk9pgkPHcGAULzZC
+         8n4D/z6M6yhstxLS3QURwXKH/MD9qA444Mkde6N5bov4/KJ24Ibx0enU9p4vPTSVJL7z
+         SGK5spM0xnrmuwtI/BjUQlIOqpzYAUyS2r563VrVvdaju/++99aXzyq3z+nAtOsxCr2p
+         oU+CJnH5ep2ytbQDOMcXWyv0DHYwkPsmAXCuEzxh7dMiA3eUYdZOq7KVNF7zbMUQo4d0
+         NejD0aqwqGB/H1ribkx/r0NZXjHk13/7I1rJODRUVbHaMpRFd7vQtEjd+JAAs14OYEur
+         maiw==
+X-Gm-Message-State: AOAM531EFZ8frVk9NVg5gNZqH6IhK4DkJeqEXAT6cmHMXLWgE2HAXU5t
+        bBA5SPwNaOiJjagnaH0C1N9OFQqf0pG+NiCD4dRDm5SsTSXOTw==
+X-Google-Smtp-Source: ABdhPJxs7ltwZyyjMz7MrRegyOPp0Ytvlu5DeEMinCXqhI0wmO9IT16r7PxNxN3aHgj2aj4S0NeB3QEb4lQio2SJbMk=
+X-Received: by 2002:a05:6512:3c88:: with SMTP id h8mr26678155lfv.169.1618412830890;
+ Wed, 14 Apr 2021 08:07:10 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210413010613.50128-1-ramonreisfontes@gmail.com> <4d0a27c465522ddd8d6ae1e552221c707ec05b22.camel@sipsolutions.net>
+In-Reply-To: <4d0a27c465522ddd8d6ae1e552221c707ec05b22.camel@sipsolutions.net>
+From:   Ramon Fontes <ramonreisfontes@gmail.com>
+Date:   Wed, 14 Apr 2021 12:06:59 -0300
+Message-ID: <CAK8U23ZXs1LYFXaXKmNfT3M4yXPGhoGoFNh4r4G45YaMHtU-Xg@mail.gmail.com>
+Subject: Re: [PATCH] mac80211_hwsim: indicate support for 60GHz channels
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        kvalo@codeaurora.org, davem@davemloft.net
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"sband->iftype_data" is not assigned with any value for non HE supported
-devices, which causes NULL pointer access during mesh peer connection
-in those devices. Fix this by accessing the pointer after HE
-capabilities condition check.
+> Advertise 60GHz channels to mac80211.
+Oh.. That was a mistake. Sorry for that.
 
-Fixes: 7f7aa94bcaf0 (mac80211: reduce peer HE MCS/NSS to own capabilities)
-Signed-off-by: Abinaya Kalaiselvan <akalaise@codeaurora.org>
----
- net/mac80211/he.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/mac80211/he.c b/net/mac80211/he.c
-index 0c0b970..543c2cb 100644
---- a/net/mac80211/he.c
-+++ b/net/mac80211/he.c
-@@ -111,7 +111,7 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 				  struct sta_info *sta)
- {
- 	struct ieee80211_sta_he_cap *he_cap = &sta->sta.he_cap;
--	struct ieee80211_sta_he_cap own_he_cap = sband->iftype_data->he_cap;
-+	struct ieee80211_sta_he_cap own_he_cap;
- 	struct ieee80211_he_cap_elem *he_cap_ie_elem = (void *)he_cap_ie;
- 	u8 he_ppe_size;
- 	u8 mcs_nss_size;
-@@ -123,6 +123,8 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 	if (!he_cap_ie || !ieee80211_get_he_sta_cap(sband))
- 		return;
- 
-+	 own_he_cap = sband->iftype_data->he_cap;
-+
- 	/* Make sure size is OK */
- 	mcs_nss_size = ieee80211_he_mcs_nss_size(he_cap_ie_elem);
- 	he_ppe_size =
--- 
-2.7.4
-
+Anyway, can we indicate 60GHz support even though it is not being
+supported by mac80211 yet?
