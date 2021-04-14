@@ -2,115 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C36A335F217
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 13:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C175435F29C
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 13:40:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348850AbhDNLSA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Apr 2021 07:18:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:20973 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229886AbhDNLR7 (ORCPT
+        id S1350678AbhDNLey (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Apr 2021 07:34:54 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:14626 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350677AbhDNLex (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Apr 2021 07:17:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1618399058;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1ATAMsRpLHlB8fK2azocZ6Fl83mzfd2zov1aeD5yZ5w=;
-        b=dEltqNwFdsPcScpTGISeMtzYsvhRuSzckI5GuWlxfEZJ14rQnvatMzC4u5ajpLIZt+kG6b
-        NMwdon8sItgV46qbIQ8g+WfiTIsJ661JrKxF9d7D2DS15Lx03oaL4gKt/HO1uYhxPO8TBH
-        A3X+8cP542CiME26Qak/S25BeoDyUj4=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-290-GRVxyLSHNi-2EYccqz0KjQ-1; Wed, 14 Apr 2021 07:17:36 -0400
-X-MC-Unique: GRVxyLSHNi-2EYccqz0KjQ-1
-Received: by mail-ed1-f69.google.com with SMTP id l2-20020a50e8c20000b02903825413b3e0so3122906edn.10
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Apr 2021 04:17:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=1ATAMsRpLHlB8fK2azocZ6Fl83mzfd2zov1aeD5yZ5w=;
-        b=pmDgSFHkwzVCXSZREjFxM7Qmro5fcfNIUUqHBzErEmnGAdEjEUOojnsb/7zPi7wn2n
-         XA4VlcX6TnV2lWEMmClISc1pKU1TdtnKYw85JZch++KYZcxjPZvD5zDEkoSo0wAmaAZK
-         lQvdyEVebgvt/z+mveaP/wEMk6wOZ3GbCCqsz9fP+LkvI1iRXntufA7BdKV+u9y+vavz
-         A1aGPip9C28afn3iK/E/OVkiYPfVu+E/W8mvIvN3X5OAf9S3u9TuztjF0yjAgL+jfIvZ
-         h6EtOfLhrGf3elc/74mCr4WmOAzUGpPhXHp82jFcH4ePqzZDPi+vPZgm1NRCh9z0ZaYi
-         MXLA==
-X-Gm-Message-State: AOAM5305iTOYmrIui58mqFZTTOI5ra/2C9dogbwG8YQTwptpb+8z1dmn
-        v0j0BOuFhT3pEXjSZySeemfTuTmfY8bWPGN6TaUQBWeNEyJypCsL8Si0bL4CqX2YwTNaMfrh6VT
-        XNsrC9D17EoFdClXCBoTuUdXQa9KYqKHm++NHOIB3NDIuR1hhegfC/j65JnaCyik62jKirhHqPT
-        Akv50=
-X-Received: by 2002:aa7:dcc7:: with SMTP id w7mr39734869edu.255.1618399055074;
-        Wed, 14 Apr 2021 04:17:35 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwoTu9Z2o/0yu/KSv0ENGQe2jM4doWSVCRbI8X8i7fm4gZJr/efOXDcgsUe2V6BuHCP4Aih2Q==
-X-Received: by 2002:aa7:dcc7:: with SMTP id w7mr39734856edu.255.1618399054947;
-        Wed, 14 Apr 2021 04:17:34 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id dh27sm11415347edb.28.2021.04.14.04.17.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Apr 2021 04:17:34 -0700 (PDT)
-Subject: Re: "rfkill: add a reason to the HW rfkill state" breaks userspace
-To:     Benjamin Berg <bberg@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <efafa85c-c021-14ff-619c-fdd0db53ddbb@redhat.com>
- <SA0PR11MB4752FEE472EC18B6A4F376FAF24E9@SA0PR11MB4752.namprd11.prod.outlook.com>
- <2db76f5161be090f9fec2bc4fcb8973533e32564.camel@sipsolutions.net>
- <e06b4ca8-6f1f-1c49-5454-b96af9fdd7df@redhat.com>
- <bb6eece123644f32e861456f9aa1056a9db78066.camel@redhat.com>
- <b3273466-7978-241f-9773-56cd87490a9b@redhat.com>
- <e9e7425cf7bbbf20f0dac74e222d28f747216804.camel@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <5064e714-1e1e-237a-b2e4-00123f95e8bf@redhat.com>
-Date:   Wed, 14 Apr 2021 13:17:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-MIME-Version: 1.0
-In-Reply-To: <e9e7425cf7bbbf20f0dac74e222d28f747216804.camel@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Wed, 14 Apr 2021 07:34:53 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618400072; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=w32R03vxsYBHaH8nDRiohY6eWnAL9bUdNfYcKWw7Lto=; b=O/PniIs0Um6WWjmLP3hiNmBkZJRVZQSX3GdL0NdtBXzUTiQaVCiFyHgf1N2Y9NGKcMwfPnBq
+ oVMIa9kMCCe2+sM4xYTpsaLfL1copG3XFahrenjMvx31NUNZY2CjrBvYw4KhzvuwpefXjjU0
+ KBVGpgrXM9piJFqi4OG/S+4BpKI=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 6076d335c06dd10a2d722b2f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 14 Apr 2021 11:34:13
+ GMT
+Sender: akalaise=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BF3EEC433ED; Wed, 14 Apr 2021 11:34:12 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from akalaise-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: akalaise)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 23B31C433CA;
+        Wed, 14 Apr 2021 11:34:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 23B31C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=akalaise@codeaurora.org
+From:   Abinaya Kalaiselvan <akalaise@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Abinaya Kalaiselvan <akalaise@codeaurora.org>
+Subject: [PATCH] mac80211: fix NULL ptr dereference during mesh peer connection for non HE devices
+Date:   Wed, 14 Apr 2021 17:03:32 +0530
+Message-Id: <1618400012-30541-1-git-send-email-akalaise@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+"sband->iftype_data" is not assigned with any value for non HE supported
+devices, which causes NULL pointer access during mesh peer connection
+in those devices. Fix this by accessing the pointer after HE
+capabilities condition check.
 
-On 4/14/21 12:46 PM, Benjamin Berg wrote:
-> Hi,
-> 
-> On Wed, 2021-04-14 at 12:29 +0200, Hans de Goede wrote:
->> On 4/14/21 11:52 AM, Benjamin Berg wrote:
->>> [SNIP]
->>>
->>> That said, the g-s-d event handler is checking the size of the read
->>> against the struct size. This is obviously wrong, it should only
->>> check
->>> that the read was successful (or check for >= V1 size).
->>
->> Right this is what I was referring to a g-s-d compiled against the
->> new headers with a struct size of 9 will read 8 bytes on an old
->> kernel
->> and that will fail the len check, so it won't work.
->>
->> But this will actually never happen as I just noticed that g-s-d
->> uses a private rfkill.h copy with the old 8 bytes struct definition.
->>
->> So with the buffered-io disabled everything should work fine,
->> see my other email in this thread.
-> 
-> OK, so at least that part of the fix should be backported to older
-> release branches.
+Fixes: 7f7aa94bcaf0 (mac80211: reduce peer HE MCS/NSS to own capabilities)
+Signed-off-by: Abinaya Kalaiselvan <akalaise@codeaurora.org>
+---
+ net/mac80211/he.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Ack, that fix should be backported to fix issues with newer
-kernels and then everything should work fine.
-
-Regards,
-
-Hans
+diff --git a/net/mac80211/he.c b/net/mac80211/he.c
+index 0c0b970..543c2cb 100644
+--- a/net/mac80211/he.c
++++ b/net/mac80211/he.c
+@@ -111,7 +111,7 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
+ 				  struct sta_info *sta)
+ {
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->sta.he_cap;
+-	struct ieee80211_sta_he_cap own_he_cap = sband->iftype_data->he_cap;
++	struct ieee80211_sta_he_cap own_he_cap;
+ 	struct ieee80211_he_cap_elem *he_cap_ie_elem = (void *)he_cap_ie;
+ 	u8 he_ppe_size;
+ 	u8 mcs_nss_size;
+@@ -123,6 +123,8 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
+ 	if (!he_cap_ie || !ieee80211_get_he_sta_cap(sband))
+ 		return;
+ 
++	 own_he_cap = sband->iftype_data->he_cap;
++
+ 	/* Make sure size is OK */
+ 	mcs_nss_size = ieee80211_he_mcs_nss_size(he_cap_ie_elem);
+ 	he_ppe_size =
+-- 
+2.7.4
 
