@@ -2,434 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99D3235F931
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 18:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2D5A35FA2E
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 20:01:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351840AbhDNQrf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Apr 2021 12:47:35 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:43850 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1351865AbhDNQqs (ORCPT
+        id S1351654AbhDNSCO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Apr 2021 14:02:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52690 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1351651AbhDNSCN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Apr 2021 12:46:48 -0400
-X-UUID: d5400b2eae034d6abb108b04d17354ea-20210415
-X-UUID: d5400b2eae034d6abb108b04d17354ea-20210415
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1708257320; Thu, 15 Apr 2021 00:45:52 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 15 Apr 2021 00:45:50 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 15 Apr 2021 00:45:50 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2] mt76: mt7915: add support for applying pre-calibraion data
-Date:   Thu, 15 Apr 2021 00:45:49 +0800
-Message-ID: <a0b463543e418e03c0a749be027b991f1ca8ecaa.1618418328.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 14 Apr 2021 14:02:13 -0400
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F70C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Apr 2021 11:01:52 -0700 (PDT)
+Received: by mail-ot1-x334.google.com with SMTP id w31-20020a9d36220000b02901f2cbfc9743so20138453otb.7
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Apr 2021 11:01:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=yn/PbffScubEYwUJk+Nb2pelGj/oy4tLnjEEtcAklfg=;
+        b=fbbfkg8gaGFUs0z/a3QGhhjsdNwuUbtOZEOKMh4tSvc0ZTyFNPTEq0ABdYRUybXbPr
+         4GNQ0n2fEfD8B0OpD6lBEi9OLL3Ymult40Dll88lXLZ3tN/ESoRikYiIZvuk59A0Rtjl
+         LqnwS6fg/iPBIHEJD2MPalDAhIZzhNi81g1DAfeoXIlGpXH2MU1Z6feNSOS13D/19wpq
+         E4Yc4/M7AVYwFVhe7K/gA9KkuEBh7fCtbe/6o3GTL77RAPNsiqfm1dQYp7SIC8tVd6Im
+         r+wP7QjYqbGXRROWGt57rn2qQADHEeveGcQYcyGIxpVg7RsY3NVdztwg8nLkTYWEseJE
+         YsyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=yn/PbffScubEYwUJk+Nb2pelGj/oy4tLnjEEtcAklfg=;
+        b=batawTfB3D9BzfcdZtb0NO9o1fFJFhYA5OytHSRB1qyM9qGZKDgQ4uB39kTKa3SHPL
+         367+HRXgVdrsOh+1qr1SSCBTEN+/G6FXLQcJyv43HmrlTx4v7SPlIQTgah5zO7SfkFhX
+         jEyvTgyKsaajX8HbjPizzuH3dpnemqjA+r4a4xWXvXupaYcugiAsbZ1etxhZdJmSsRJm
+         4v9wQs5h9e59cjtW0PH/4hWzUe+vlzXA17ulJzpudRfEuLdxQsFjm8xu/9tbsTJmgdwA
+         FVcbbOw6P6BIZKSW+RyFARPUXTFBnsphQ3bccY6NqTKKKR52HQqNVLy2WIdAXSHzk4QL
+         gCzg==
+X-Gm-Message-State: AOAM5306H8UDKZgy5kR6zlH+RoQc+Uy0YupOWM5JC8go8Fvycad32/mv
+        oaYhLcka8sjjUOJ4iHu6ZQzEQlxAzgE=
+X-Google-Smtp-Source: ABdhPJxYd0vF+Fo9d2uwi4QxJtcaVC5RUGDPDRPOoQDZcU1+cUjhgFFX9KWBM63fSRLOBLFijmIxRw==
+X-Received: by 2002:a9d:590e:: with SMTP id t14mr33017877oth.1.1618423311168;
+        Wed, 14 Apr 2021 11:01:51 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id a11sm70905otf.18.2021.04.14.11.01.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Apr 2021 11:01:50 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: [Bug report] - RTL8821CE 802.11ac PCIe Wireless Network Adapter -
+ Not handled properly by the rtw_8821ce dirver on Kernel 5.11.11
+To:     Michal TOMA <michaltoma@sicoop.com>, linux-wireless@vger.kernel.org
+References: <2562248.KvEgbkE9EU@linux-9g0r.site>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <c0afc587-b8f8-8bae-5589-92ebac536c9e@lwfinger.net>
+Date:   Wed, 14 Apr 2021 13:01:49 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <2562248.KvEgbkE9EU@linux-9g0r.site>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When the EEPROM data is read from flash, it can contain pre-calibration
-data, which can save calibration time.
+On 4/14/21 4:12 AM, Michal TOMA wrote:
+> The RTL8821CE driver doesn't work on several recent kernels (probably since
+> 5.9).
+> 
+> 
+> journalctl -b | grep rtw
+> avril 10 14:18:41 localhost kernel: rtw_8821ce 0000:07:00.0: Firmware version 24.8.0, H2C version 12
+> avril 10 14:18:41 localhost NetworkManager[682]: <info>  [1618057121.6199] rfkill2: found Wi-Fi radio killswitch (at /sys/devices/pci0000:00/0000:00:1d.4/0000:07:00.0/ieee80211/phy0/rfkill2) (driver rtw_8821ce)
+> avril 10 14:18:41 localhost kernel: rtw_8821ce 0000:07:00.0 wlp7s0: renamed from wlan0
+> avril 10 14:18:42 localhost kernel: rtw_8821ce 0000:07:00.0: start vif 28:39:26:ab:b4:5d on port 0
+> avril 10 14:18:42 localhost kernel: rtw_8821ce 0000:07:00.0: stop vif 28:39:26:ab:b4:5d on port 0
+> avril 10 14:18:42 localhost kernel: rtw_8821ce 0000:07:00.0: start vif 5a:f0:11:63:85:65 on port 0
+> avril 10 14:25:35 Host-001 kernel: rtw_8821ce 0000:07:00.0: stop vif 5a:f0:11:63:85:65 on port 0
+> avril 10 14:25:35 Host-001 kernel: rtw_8821ce 0000:07:00.0: start vif 32:45:38:02:34:09 on port 0
+> avril 10 14:32:28 Host-001 kernel: rtw_8821ce 0000:07:00.0: stop vif 32:45:38:02:34:09 on port 0
+> avril 10 14:32:28 Host-001 kernel: rtw_8821ce 0000:07:00.0: start vif c2:5c:03:32:bc:19 on port 0
+> avril 10 14:39:21 Host-001 kernel: rtw_8821ce 0000:07:00.0: stop vif c2:5c:03:32:bc:19 on port 0
+> avril 10 14:39:21 Host-001 kernel: rtw_8821ce 0000:07:00.0: start vif de:9c:ac:b2:58:ae on port 0
+> avril 10 14:46:14 Host-001 kernel: rtw_8821ce 0000:07:00.0: stop vif de:9c:ac:b2:58:ae on port 0
+> avril 10 14:46:14 Host-001 kernel: rtw_8821ce 0000:07:00.0: start vif 46:5c:c2:91:f8:7f on port 0
+> ...
+> And continues like this indefinitely
+> 
+> uname -a
+> Linux Host-001 5.11.11-1-default #1 SMP Tue Mar 30 17:57:52 UTC 2021 (dbc4a02) x86_64 x86_64 x86_64 GNU/Linux
+> 
+> 
+> rfkill list
+> 0: ideapad_wlan: Wireless LAN
+>          Soft blocked: no
+>          Hard blocked: no
+> 1: ideapad_bluetooth: Bluetooth
+>          Soft blocked: no
+>          Hard blocked: no
+> 2: phy0: Wireless LAN
+>          Soft blocked: no
+>          Hard blocked: no
+> 
 
-Note that group_cal can save 30% bootup calibration time, and dpd_cal can
-save 75% channel switching time.
+Please copy file dmesg.txt from 'dmesg > dmesg.txt' to some pastebin that I can 
+access. The sending of only lines with rtw in them may miss some valid information.
 
-Tested-by: Bo Jiao <bo.jiao@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-change since v2 - use min_t instead.
----
- drivers/net/wireless/mediatek/mt76/eeprom.c   |  11 +-
- drivers/net/wireless/mediatek/mt76/mt76.h     |   1 +
- .../wireless/mediatek/mt76/mt7915/eeprom.c    |  25 ++-
- .../wireless/mediatek/mt76/mt7915/eeprom.h    |  11 +-
- .../net/wireless/mediatek/mt76/mt7915/init.c  |   7 +
- .../net/wireless/mediatek/mt76/mt7915/main.c  |   6 +
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 142 ++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |   2 +
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |   4 +
- 9 files changed, 199 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 665b54c5c8ae..3f7a5a508605 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -9,8 +9,7 @@
- #include <linux/etherdevice.h>
- #include "mt76.h"
- 
--static int
--mt76_get_of_eeprom(struct mt76_dev *dev, int len)
-+int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int offset, int len)
- {
- #if defined(CONFIG_OF) && defined(CONFIG_MTD)
- 	struct device_node *np = dev->dev->of_node;
-@@ -18,7 +17,6 @@ mt76_get_of_eeprom(struct mt76_dev *dev, int len)
- 	const __be32 *list;
- 	const char *part;
- 	phandle phandle;
--	int offset = 0;
- 	int size;
- 	size_t retlen;
- 	int ret;
-@@ -54,7 +52,7 @@ mt76_get_of_eeprom(struct mt76_dev *dev, int len)
- 	}
- 
- 	offset = be32_to_cpup(list);
--	ret = mtd_read(mtd, offset, len, &retlen, dev->eeprom.data);
-+	ret = mtd_read(mtd, offset, len, &retlen, eep);
- 	put_mtd_device(mtd);
- 	if (ret)
- 		goto out_put_node;
-@@ -65,7 +63,7 @@ mt76_get_of_eeprom(struct mt76_dev *dev, int len)
- 	}
- 
- 	if (of_property_read_bool(dev->dev->of_node, "big-endian")) {
--		u8 *data = (u8 *)dev->eeprom.data;
-+		u8 *data = (u8 *)eep;
- 		int i;
- 
- 		/* convert eeprom data in Little Endian */
-@@ -86,6 +84,7 @@ mt76_get_of_eeprom(struct mt76_dev *dev, int len)
- 	return -ENOENT;
- #endif
- }
-+EXPORT_SYMBOL_GPL(mt76_get_of_eeprom);
- 
- void
- mt76_eeprom_override(struct mt76_phy *phy)
-@@ -119,6 +118,6 @@ mt76_eeprom_init(struct mt76_dev *dev, int len)
- 	if (!dev->eeprom.data)
- 		return -ENOMEM;
- 
--	return !mt76_get_of_eeprom(dev, len);
-+	return !mt76_get_of_eeprom(dev, dev->eeprom.data, 0, len);
- }
- EXPORT_SYMBOL_GPL(mt76_eeprom_init);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index b09b0f5ffd6d..1b290d3bd7aa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -828,6 +828,7 @@ void mt76_seq_puts_array(struct seq_file *file, const char *str,
- 
- int mt76_eeprom_init(struct mt76_dev *dev, int len);
- void mt76_eeprom_override(struct mt76_phy *phy);
-+int mt76_get_of_eeprom(struct mt76_dev *dev, void *data, int offset, int len);
- 
- struct mt76_queue *
- mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-index 738ecf8f4fa2..353f8d8497d5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
-@@ -14,6 +14,23 @@ static u32 mt7915_eeprom_read(struct mt7915_dev *dev, u32 offset)
- 	return data[offset];
- }
- 
-+static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
-+{
-+	struct mt76_dev *mdev = &dev->mt76;
-+	u32 val;
-+
-+	val = mt7915_eeprom_read(dev, MT_EE_DO_PRE_CAL);
-+	if (val != (MT_EE_WIFI_CAL_DPD | MT_EE_WIFI_CAL_GROUP))
-+		return 0;
-+
-+	val = MT_EE_CAL_GROUP_SIZE + MT_EE_CAL_DPD_SIZE;
-+	dev->cal = devm_kzalloc(mdev->dev, val, GFP_KERNEL);
-+	if (!dev->cal)
-+		return -ENOMEM;
-+
-+	return mt76_get_of_eeprom(mdev, dev->cal, MT_EE_PRECAL, val);
-+}
-+
- static int mt7915_eeprom_load(struct mt7915_dev *dev)
- {
- 	int ret;
-@@ -22,12 +39,14 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
- 	if (ret < 0)
- 		return ret;
- 
--	if (ret)
-+	if (ret) {
- 		dev->flash_mode = true;
--	else
-+		ret = mt7915_eeprom_load_precal(dev);
-+	} else {
- 		memset(dev->mt76.eeprom.data, -1, MT7915_EEPROM_SIZE);
-+	}
- 
--	return 0;
-+	return ret;
- }
- 
- static int mt7915_check_eeprom(struct mt7915_dev *dev)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-index 3ee8c27bb61b..8ef5ebfad706 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-@@ -17,14 +17,23 @@ enum mt7915_eeprom_field {
- 	MT_EE_MAC_ADDR =	0x004,
- 	MT_EE_MAC_ADDR2 =	0x00a,
- 	MT_EE_DDIE_FT_VERSION =	0x050,
-+	MT_EE_DO_PRE_CAL =	0x062,
- 	MT_EE_WIFI_CONF =	0x190,
- 	MT_EE_TX0_POWER_2G =	0x2fc,
- 	MT_EE_TX0_POWER_5G =	0x34b,
- 	MT_EE_ADIE_FT_VERSION =	0x9a0,
- 
--	__MT_EE_MAX =		0xe00
-+	__MT_EE_MAX =		0xe00,
-+	/* 0xe10 ~ 0x5780 used to save group cal data */
-+	MT_EE_PRECAL =		0xe10
- };
- 
-+#define MT_EE_WIFI_CAL_GROUP			BIT(0)
-+#define MT_EE_WIFI_CAL_DPD			GENMASK(2, 1)
-+#define MT_EE_CAL_UNIT				1024
-+#define MT_EE_CAL_GROUP_SIZE			(44 * MT_EE_CAL_UNIT)
-+#define MT_EE_CAL_DPD_SIZE			(54 * MT_EE_CAL_UNIT)
-+
- #define MT_EE_WIFI_CONF0_TX_PATH		GENMASK(2, 0)
- #define MT_EE_WIFI_CONF0_BAND_SEL		GENMASK(7, 6)
- #define MT_EE_WIFI_CONF1_BAND_SEL		GENMASK(7, 6)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 1b688bd5c52c..3f9f74aa8399 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -378,6 +378,13 @@ static int mt7915_init_hardware(struct mt7915_dev *dev)
- 	if (ret < 0)
- 		return ret;
- 
-+
-+	if (dev->flash_mode) {
-+		ret = mt7915_mcu_apply_group_cal(dev);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Beacon and mgmt frames should occupy wcid 0 */
- 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA - 1);
- 	if (idx)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 2fd87987312e..413abbca3246 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -313,6 +313,12 @@ int mt7915_set_channel(struct mt7915_phy *phy)
- 	mt7915_init_dfs_state(phy);
- 	mt76_set_channel(phy->mt76);
- 
-+	if (dev->flash_mode) {
-+		ret = mt7915_mcu_apply_tx_dpd(phy);
-+		if (ret)
-+			goto out;
-+	}
-+
- 	ret = mt7915_mcu_set_chan_info(phy, MCU_EXT_CMD(CHANNEL_SWITCH));
- 	if (ret)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 0b739ed8ce33..bf5ea461d585 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3327,6 +3327,148 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
- 	return 0;
- }
- 
-+static int mt7915_mcu_set_pre_cal(struct mt7915_dev *dev, u8 idx,
-+				  u8 *data, u32 len, int cmd)
-+{
-+	struct {
-+		u8 dir;
-+		u8 valid;
-+		__le16 bitmap;
-+		s8 precal;
-+		u8 action;
-+		u8 band;
-+		u8 idx;
-+		u8 rsv[4];
-+		__le32 len;
-+	} req;
-+	struct sk_buff *skb;
-+
-+	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL, sizeof(req) + len);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	req.idx = idx;
-+	req.len = cpu_to_le32(len);
-+	skb_put_data(skb, &req, sizeof(req));
-+	skb_put_data(skb, data, len);
-+
-+	return mt76_mcu_skb_send_msg(&dev->mt76, skb, cmd, false);
-+}
-+
-+int mt7915_mcu_apply_group_cal(struct mt7915_dev *dev)
-+{
-+	u8 idx = 0, *cal = dev->cal, *eep = dev->mt76.eeprom.data;
-+	u32 total = MT_EE_CAL_GROUP_SIZE;
-+
-+	if (!(eep[MT_EE_DO_PRE_CAL] & MT_EE_WIFI_CAL_GROUP))
-+		return 0;
-+
-+	/*
-+	 * Items: Rx DCOC, RSSI DCOC, Tx TSSI DCOC, Tx LPFG
-+	 * Tx FDIQ, Tx DCIQ, Rx FDIQ, Rx FIIQ, ADCDCOC
-+	 */
-+	while (total > 0) {
-+		int ret, len;
-+
-+		len = min_t(u32, total, MT_EE_CAL_UNIT);
-+
-+		ret = mt7915_mcu_set_pre_cal(dev, idx, cal, len,
-+					     MCU_EXT_CMD(GROUP_PRE_CAL_INFO));
-+		if (ret)
-+			return ret;
-+
-+		total -= len;
-+		cal += len;
-+		idx++;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mt7915_find_freq_idx(const u16 *freqs, int n_freqs, u16 cur)
-+{
-+	int i;
-+
-+	for (i = 0; i < n_freqs; i++)
-+		if (cur == freqs[i])
-+			return i;
-+
-+	return -1;
-+}
-+
-+static int mt7915_dpd_freq_idx(u16 freq, u8 bw)
-+{
-+	static const u16 freq_list[] = {
-+		5180, 5200, 5220, 5240,
-+		5260, 5280, 5300, 5320,
-+		5500, 5520, 5540, 5560,
-+		5580, 5600, 5620, 5640,
-+		5660, 5680, 5700, 5745,
-+		5765, 5785, 5805, 5825
-+	};
-+	int offset_2g = ARRAY_SIZE(freq_list);
-+	int idx;
-+
-+	if (freq < 4000) {
-+		if (freq < 2432)
-+			return offset_2g;
-+		if (freq < 2457)
-+			return offset_2g + 1;
-+
-+		return offset_2g + 2;
-+	}
-+
-+	if (bw == NL80211_CHAN_WIDTH_80P80 || bw == NL80211_CHAN_WIDTH_160)
-+		return -1;
-+
-+	if (bw != NL80211_CHAN_WIDTH_20) {
-+		idx = mt7915_find_freq_idx(freq_list, ARRAY_SIZE(freq_list),
-+					   freq + 10);
-+		if (idx >= 0)
-+			return idx;
-+
-+		idx = mt7915_find_freq_idx(freq_list, ARRAY_SIZE(freq_list),
-+					   freq - 10);
-+		if (idx >= 0)
-+			return idx;
-+	}
-+
-+	return mt7915_find_freq_idx(freq_list, ARRAY_SIZE(freq_list), freq);
-+}
-+
-+int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
-+{
-+	struct mt7915_dev *dev = phy->dev;
-+	struct cfg80211_chan_def *chandef = &phy->mt76->chandef;
-+	u16 total = 2, idx, center_freq = chandef->center_freq1;
-+	u8 *cal = dev->cal, *eep = dev->mt76.eeprom.data;
-+
-+	if (!(eep[MT_EE_DO_PRE_CAL] & MT_EE_WIFI_CAL_DPD))
-+		return 0;
-+
-+	idx = mt7915_dpd_freq_idx(center_freq, chandef->width);
-+	if (idx < 0)
-+		return -EINVAL;
-+
-+	/* Items: Tx DPD, Tx Flatness */
-+	idx = idx * 2;
-+	cal += MT_EE_CAL_GROUP_SIZE;
-+
-+	while (total--) {
-+		int ret;
-+
-+		cal += (idx * MT_EE_CAL_UNIT);
-+		ret = mt7915_mcu_set_pre_cal(dev, idx, cal, MT_EE_CAL_UNIT,
-+					     MCU_EXT_CMD(DPD_PRE_CAL_INFO));
-+		if (ret)
-+			return ret;
-+
-+		idx++;
-+	}
-+
-+	return 0;
-+}
-+
- int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index)
- {
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 4a932140a7c3..42582a66e42d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -284,6 +284,8 @@ enum {
- 	MCU_EXT_CMD_FW_DBG_CTRL = 0x95,
- 	MCU_EXT_CMD_SET_RDD_TH = 0x9d,
- 	MCU_EXT_CMD_SET_SPR = 0xa8,
-+	MCU_EXT_CMD_GROUP_PRE_CAL_INFO = 0xab,
-+	MCU_EXT_CMD_DPD_PRE_CAL_INFO = 0xac,
- 	MCU_EXT_CMD_PHY_STAT_INFO = 0xad,
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 3df1d3e95b25..15e88179ab62 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -201,6 +201,8 @@ struct mt7915_dev {
- 	bool flash_mode;
- 	bool fw_debug;
- 	bool ibf;
-+
-+	void *cal;
- };
- 
- enum {
-@@ -359,6 +361,8 @@ int mt7915_mcu_set_pulse_th(struct mt7915_dev *dev,
- 			    const struct mt7915_dfs_pulse *pulse);
- int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, int index,
- 			    const struct mt7915_dfs_pattern *pattern);
-+int mt7915_mcu_apply_group_cal(struct mt7915_dev *dev);
-+int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy);
- int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index);
- int mt7915_mcu_get_tx_rate(struct mt7915_dev *dev, u32 cmd, u16 wlan_idx);
- int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
--- 
-2.18.0
-
+Larry
