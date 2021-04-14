@@ -2,73 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C695035EDE5
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 08:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBCCA35EE27
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Apr 2021 09:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243063AbhDNG4I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Apr 2021 02:56:08 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:61397 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1346593AbhDNGzi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Apr 2021 02:55:38 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618383317; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=O/9JmR/lSUgD4+YDVIxo/BnPhDCdjgMq/e3zKbchFDs=; b=nHTtu+8Wfi74ydSJEDwCDnFepvCIAPY2JY8gCrdqjkEHp9/UYwJmR4XxWOC9IOBzgYtfIdbW
- 8QLjuEdlXlPutGJpYgWoZFyVYL4gRrHX1Q56cvX2JJ/5D8w+c59CpkgBNgvCNSfQY2y1Eg1F
- WqK3PpHTuqWprzWrPuNNCpUih3Q=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 607691c09a9ff96d956d1761 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 14 Apr 2021 06:54:56
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 92246C43463; Wed, 14 Apr 2021 06:54:56 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7B75AC43461;
-        Wed, 14 Apr 2021 06:54:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7B75AC43461
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ramon Fontes <ramonreisfontes@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, johannes@sipsolutions.net,
-        davem@davemloft.net
-Subject: Re: [PATCH] mac80211_hwsim: indicate support for 60GHz channels
-References: <20210413010613.50128-1-ramonreisfontes@gmail.com>
-Date:   Wed, 14 Apr 2021 09:54:52 +0300
-In-Reply-To: <20210413010613.50128-1-ramonreisfontes@gmail.com> (Ramon
-        Fontes's message of "Mon, 12 Apr 2021 22:06:13 -0300")
-Message-ID: <87a6q1l5j7.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1348470AbhDNHIR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Apr 2021 03:08:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49706 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232428AbhDNHIQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 14 Apr 2021 03:08:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 635C6C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Apr 2021 00:07:55 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lWZcr-00BVIO-Ky; Wed, 14 Apr 2021 09:07:49 +0200
+Message-ID: <2db76f5161be090f9fec2bc4fcb8973533e32564.camel@sipsolutions.net>
+Subject: Re: "rfkill: add a reason to the HW rfkill state" breaks userspace
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Wed, 14 Apr 2021 09:07:48 +0200
+In-Reply-To: <SA0PR11MB4752FEE472EC18B6A4F376FAF24E9@SA0PR11MB4752.namprd11.prod.outlook.com> (sfid-20210414_071301_651335_B1FA5905)
+References: <efafa85c-c021-14ff-619c-fdd0db53ddbb@redhat.com>
+         <SA0PR11MB4752FEE472EC18B6A4F376FAF24E9@SA0PR11MB4752.namprd11.prod.outlook.com>
+         (sfid-20210414_071301_651335_B1FA5905)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ramon Fontes <ramonreisfontes@gmail.com> writes:
+On Wed, 2021-04-14 at 05:12 +0000, Grumbach, Emmanuel wrote:
+> > 
+> > Hi,
+> > 
+> > I've been debugging a userspace rfkill issue today which boils down
+> > to the
+> > "rfkill: add a reason to the HW rfkill state" patch:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?i
+> > d=14486c82612a177cb910980c70ba900827ca0894
+> > breaking userspace.
+> 
+> This has been rolled back by:
+> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?id=71826654ce40112f0651b6f4e94c422354f4adb6
+> Other userspace broke (systemd) so Johannes rolled this back by
+> default.
+> Userspace that is interested in the new byte will read 9 bytes.
 
-> Advertise 60GHz channels to mac80211.
+Which, unfortunately, doesn't address *this* particular case, because it
+uses gio and that will fill the buffer with arbitrary size?
 
-SoB missing:
+When you (Hans) say you saw in strace a read of size 8, did you mean the
+size passed to it, or the return size? I guess it must be the return
+size, and the size passed to it was way larger.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#signed-off-by_missing
+The commit Emmanuel linked to fixes cases such as systemd that were just
+completely garbage (reading with one size, and then checking they got
+another), but it wouldn't fix this case.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Unfortunately, as you also said, it does seem a bit late now - it's been
+released in various kernels since 5.10, and while the default rollback
+will improve the situation somewhat, read(..., size>8) will still return
+9 bytes rather than 8 as it used to. Switching that *also* back *should*
+be safe, but who knows what other bugs were introduced in the meantime?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I certainly don't really have a major objection to rolling that also
+back, but would it really help that much at this point? I guess it could
+be going into 5.10/5.11 stable kernels though.
+
+johannes
+
