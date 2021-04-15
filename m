@@ -2,164 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD1FB360146
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 07:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A3253604C4
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 10:47:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbhDOFCo convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Apr 2021 01:02:44 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:35125 "EHLO
+        id S231398AbhDOIrs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Apr 2021 04:47:48 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:52856 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbhDOFCl (ORCPT
+        with ESMTP id S231143AbhDOIrr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Apr 2021 01:02:41 -0400
+        Thu, 15 Apr 2021 04:47:47 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13F52Db14003421, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13F8lGafD022663, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13F52Db14003421
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13F8lGafD022663
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 15 Apr 2021 13:02:13 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+        Thu, 15 Apr 2021 16:47:16 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 15 Apr 2021 13:02:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 15 Apr 2021 13:02:12 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74]) by
- RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74%5]) with mapi id
- 15.01.2106.013; Thu, 15 Apr 2021 13:02:12 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        DeanKu <ku920601@realtek.com>,
-        Bernie Huang <phhuang@realtek.com>,
-        Shaofu <shaofu@realtek.com>,
-        Steven Ting <steventing@realtek.com>,
-        Kevin Yang <kevin_yang@realtek.com>
-Subject: RE: [PATCH 6/7] rtw88: 8822c: add CFO tracking
-Thread-Topic: [PATCH 6/7] rtw88: 8822c: add CFO tracking
-Thread-Index: AQHXHILi0rb6HTLCKkSAH1awbttUrqquqISAgAF/I4CAAMLRsIAERSFg
-Date:   Thu, 15 Apr 2021 05:02:12 +0000
-Message-ID: <49d0f6a9ac4441b7bad71467ce502d01@realtek.com>
-References: <20210319054218.3319-7-pkshih@realtek.com>
-        <20210411091951.2B01AC433CA@smtp.codeaurora.org>
-        <6ea1eb17f2a64fd0954b9d4060da12f0@realtek.com>
- <87mtu3lo62.fsf@codeaurora.org>
-In-Reply-To: <87mtu3lo62.fsf@codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/4/14_=3F=3F_10:00:00?=
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ 15.1.2106.2; Thu, 15 Apr 2021 16:47:15 +0800
+Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 15 Apr
+ 2021 16:47:15 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <vincent_fann@realtek.com>,
+        <phhuang@realtek.com>, <steventing@realtek.com>,
+        <briannorris@chromium.org>
+Subject: [PATCH 0/3] rtw88: fix some TX/RX bugs
+Date:   Thu, 15 Apr 2021 16:47:00 +0800
+Message-ID: <20210415084703.27255-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/15/2021 00:46:16
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 163123 [Apr 14 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/15/2021 00:48:00
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.146]
+X-ClientProxiedBy: RTEXMBS03.realtek.com.tw (172.21.6.96) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMTUgpFekyCAwNjowMDowMA==?=
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/15/2021 00:46:16
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/15/2021 08:05:31
 X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
 X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 163123 [Apr 14 2021]
+X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Info: Lua profiles 163124 [Apr 15 2021]
 X-KSE-AntiSpam-Info: Version: 5.9.20.0
 X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
 X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
 X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
+X-KSE-AntiSpam-Info: Rate: 10
 X-KSE-AntiSpam-Info: Status: not_detected
 X-KSE-AntiSpam-Info: Method: none
 X-KSE-AntiSpam-Info: Auth:dkim=none
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Heuristic
 X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/15/2021 00:48:00
+X-KSE-Antiphishing-Bases: 04/15/2021 08:07:00
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMTUgpFekyCAwNzoxMDowMA==?=
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/15/2021 08:09:32
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Info: Lua profiles 163124 [Apr 15 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
+X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
+X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 04/15/2021 08:12:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This patchset fix bugs happened during TX/RX performance test.
+First is 88221c doesn't set proper RX_FLAG_DECRYPTED. Second is to fix
+count of available TX queue, and then it can wake ieee80211 queue
+correctly; otherwise, it can't tx anymore. Third patch is to refine
+NAPI deinit flow to safely stop PCI; without this fix, system spin while
+it is going to down. 
 
-> -----Original Message-----
-> From: kvalo=codeaurora.org@mg.codeaurora.org [mailto:kvalo=codeaurora.org@mg.codeaurora.org] On
-> Behalf Of Kalle Valo
-> Sent: Monday, April 12, 2021 7:48 PM
-> To: Pkshih
-> Cc: tony0620emma@gmail.com; linux-wireless@vger.kernel.org; DeanKu; Bernie Huang; Shaofu; Steven Ting;
-> Kevin Yang
-> Subject: Re: [PATCH 6/7] rtw88: 8822c: add CFO tracking
-> 
-> Pkshih <pkshih@realtek.com> writes:
-> 
-> >> -----Original Message-----
-> >> From: kvalo=codeaurora.org@mg.codeaurora.org
-> >> [mailto:kvalo=codeaurora.org@mg.codeaurora.org] On
-> >> Behalf Of Kalle Valo
-> >> Sent: Sunday, April 11, 2021 5:20 PM
-> >> To: Pkshih
-> >> Cc: tony0620emma@gmail.com; linux-wireless@vger.kernel.org; DeanKu;
-> >> Bernie Huang; Shaofu; Steven Ting;
-> >> Kevin Yang
-> >> Subject: Re: [PATCH 6/7] rtw88: 8822c: add CFO tracking
-> >>
-> >> Ping-Ke Shih <pkshih@realtek.com> wrote:
-> >>
-> >> > From: Po-Hao Huang <phhuang@realtek.com>
-> >> >
-> >> > Add CFO tracking mechanism to mitigate the effect of oscillator
-> >> > frequency discrepancy.
-> >> >
-> >> > Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> >> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> >>
-> >> What's CFO? I need to understand the commit log, so please write it so that any
-> >> engineer working with wireless understands it.
-> >>
-> >
-> > CFO tracking, which stands for central frequency offset tracking, is used to
-> > adjust oscillator to align central frequency of connected AP. Then, we can
-> > have better performance.
-> >
-> > Should I resend this patch to explain CFO?
-> 
-> Yes, please send a new version with an updated commit log.
-> 
+Guo-Feng Fan (1):
+  rtw88: 8821c: Don't set RX_FLAG_DECRYPTED if packet has no encryption
 
-A single patch is sent:
+Po-Hao Huang (1):
+  rtw88: refine napi deinit flow
 
-https://lore.kernel.org/linux-wireless/20210415045913.16097-1-pkshih@realtek.com/T/#u
+Yu-Yen Ting (1):
+  rtw88: Fix potential unrecoverable tx queue stop
 
---
-Ping-Ke
+ drivers/net/wireless/realtek/rtw88/pci.c      | 29 ++++++++++++++-----
+ drivers/net/wireless/realtek/rtw88/pci.h      |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  3 +-
+ 3 files changed, 25 insertions(+), 8 deletions(-)
 
+-- 
+2.21.0
 
