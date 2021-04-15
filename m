@@ -2,93 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF13360773
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 12:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C313536077F
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 12:47:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232342AbhDOKru (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Apr 2021 06:47:50 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:50637 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230056AbhDOKru (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Apr 2021 06:47:50 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618483647; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=mQQJUPxZs7yfFkf2/bSTHoSyrWyZL7nJGUBXycQz390=; b=FkaYfJPyw8x+QuT3bn49jFQ0P1cjod8anPIoIjx6sKOEQxBApKcsSy/yFveU5mIlfBmg5Zw9
- wUoXONAbrhH7EjrgfuVOhbOauksZQQKhhXPYO0GfaRZsG4GdGYR6DQfIbvlMq1UBxir8bT7k
- f/O1bOL4BTHMrkHpPoAfbnSFvZk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 607819b68166b7eff7da9af8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 15 Apr 2021 10:47:18
- GMT
-Sender: akalaise=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E891AC433ED; Thu, 15 Apr 2021 10:47:17 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from akalaise-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: akalaise)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2C60CC433CA;
-        Thu, 15 Apr 2021 10:47:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2C60CC433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=akalaise@codeaurora.org
-From:   Abinaya Kalaiselvan <akalaise@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Abinaya Kalaiselvan <akalaise@codeaurora.org>
-Subject: [PATCHv2] mac80211: fix NULL ptr dereference during mesh peer connection for non HE devices
-Date:   Thu, 15 Apr 2021 16:17:05 +0530
-Message-Id: <1618483625-31097-1-git-send-email-akalaise@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S232499AbhDOKsJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Apr 2021 06:48:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45972 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232488AbhDOKsF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 15 Apr 2021 06:48:05 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA838C061756
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Apr 2021 03:47:38 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id p2so1164191pgh.4
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Apr 2021 03:47:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=aYENDE1t3vElmJ+PTLiR0xCgqit2MOoeiKicHtSG8Bs=;
+        b=PxyIgr/Mywj7RVveOC/cFCkXKnAYFqvlIiPMWzp+9rSYGGFx/O7W5gMoFdPRAMccD4
+         nRuOD6God6oDhE/YzsA3UlC+nN0jUYn1lp3aw73GT6v3rjpjRRGU4jMNG9SFfUR4L3C+
+         T2BIc8Wtbgo3F8+c1AB9jrbrLcBdSEYbhhvnuTfQ+O0/rxA4yqrh5pMy24Q34YldZEge
+         q/L1z3o+Djcp94kZCanF9zP8V36wyFDldbg/LJB0LPzNtXKFAOeAyaswjaQsLMrcczIb
+         CDH1bsiK4OcnhNRsARQhg1vKj3uePvZIiYKONgE0NURqgf5+ssbpi7AzYPuONlnVBuzg
+         3HnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=aYENDE1t3vElmJ+PTLiR0xCgqit2MOoeiKicHtSG8Bs=;
+        b=Vq/yTTlcj9KWzT54ejq+VWHkK+PGKFhpJnHJmicWYbI7CmD0wZ6BfHWGUa/qeJ9OT9
+         j7GiPU3q81wO5qSVnJ4tQWbkT9s3chiG3vxj2OAGOqryt4DRelmPrqWL2XR732oitOFi
+         vmZvhMZrlZNsX/S2q0mCBuSvEPktWjoJ24PQ/7zvULmDgJDC8EmlY+GgejCYYczQSNZC
+         obBLClNV0c5HMSxdE0VH5z0WM7xaFbRKOK6FfYn+7s7trmNmsQP3G1J/uHIxiZcudL3S
+         LTmBs1le2RqDJ+YzcoZ3nrAqzk2GdqMo4M/kTLXOmR3LKTYoOPzjoBzMasZU9+lqpaOW
+         bpcA==
+X-Gm-Message-State: AOAM5336pHMH3yxOLIIqcU64zNAHW0/9XcdOwaqtFJbAaiYsJQipl0wu
+        ffFKvq6hbSs607NwXdfq12bXtw==
+X-Google-Smtp-Source: ABdhPJwuv08rkzaEhZc4gHfd8sBnVXQ3KjUdGTmlkrCE2Rz7X2rSfsUXRl85QBxh4keGRCx1g0MlAQ==
+X-Received: by 2002:a63:f317:: with SMTP id l23mr2823553pgh.173.1618483658409;
+        Thu, 15 Apr 2021 03:47:38 -0700 (PDT)
+Received: from localhost.localdomain (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id f65sm2130672pgc.19.2021.04.15.03.47.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Apr 2021 03:47:37 -0700 (PDT)
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, Shawn Guo <shawn.guo@linaro.org>
+Subject: [PATCH v2 0/2] brcmfmac: support parse country code map from DT
+Date:   Thu, 15 Apr 2021 18:47:26 +0800
+Message-Id: <20210415104728.8471-1-shawn.guo@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"sband->iftype_data" is not assigned with any value for non HE supported
-devices, which causes NULL pointer access during mesh peer connection
-in those devices. Fix this by accessing the pointer after HE
-capabilities condition check.
+This is a couple of patches adding optional brcm,ccode-map bindings for
+brcmfmac driver to parse country code map from DT.
 
-Fixes: 7f7aa94bcaf0 (mac80211: reduce peer HE MCS/NSS to own capabilities)
-Signed-off-by: Abinaya Kalaiselvan <akalaise@codeaurora.org>
----
-v2:
-* ieee80211_sta_he_cap structure instance is initialized.
+Changes for v2:
+ - Rebase bindings patch on top of yaml conversion patch [1].
+ - Improve commit log with Arend's explanation on why this data could
+   be put in device tree.
+ - Use pattern to define mapping string as suggested by Rob.
+ - Use brcmf_err() instead of dev_warn() and print error code.
+ - Use sscanf() to validate mapping string.
+ - Use brcmf_dbg(INFO, ...) to print country code entry.
+ - Separate BRCMF_BUSTYPE_SDIO bus_type check from general DT validation.
 
- net/mac80211/he.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+[1] https://patchwork.kernel.org/project/linux-wireless/patch/20210315105911.138553-1-linus.walleij@linaro.org/
 
-diff --git a/net/mac80211/he.c b/net/mac80211/he.c
-index 0c0b970..96a47b0 100644
---- a/net/mac80211/he.c
-+++ b/net/mac80211/he.c
-@@ -111,7 +111,7 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 				  struct sta_info *sta)
- {
- 	struct ieee80211_sta_he_cap *he_cap = &sta->sta.he_cap;
--	struct ieee80211_sta_he_cap own_he_cap = sband->iftype_data->he_cap;
-+	struct ieee80211_sta_he_cap own_he_cap = {0};
- 	struct ieee80211_he_cap_elem *he_cap_ie_elem = (void *)he_cap_ie;
- 	u8 he_ppe_size;
- 	u8 mcs_nss_size;
-@@ -123,6 +123,8 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 	if (!he_cap_ie || !ieee80211_get_he_sta_cap(sband))
- 		return;
- 
-+	 own_he_cap = sband->iftype_data->he_cap;
-+
- 	/* Make sure size is OK */
- 	mcs_nss_size = ieee80211_he_mcs_nss_size(he_cap_ie_elem);
- 	he_ppe_size =
+
+Shawn Guo (2):
+  dt-bindings: bcm4329-fmac: add optional brcm,ccode-map
+  brcmfmac: support parse country code map from DT
+
+ .../net/wireless/brcm,bcm4329-fmac.yaml       |  8 +++
+ .../wireless/broadcom/brcm80211/brcmfmac/of.c | 57 ++++++++++++++++++-
+ 2 files changed, 63 insertions(+), 2 deletions(-)
+
 -- 
-2.7.4
+2.17.1
 
