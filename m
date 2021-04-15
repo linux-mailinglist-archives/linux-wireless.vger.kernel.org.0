@@ -2,124 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0F7F360F5F
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 17:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF2F4360FC8
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 18:04:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233061AbhDOPuc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Apr 2021 11:50:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36432 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231137AbhDOPub (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Apr 2021 11:50:31 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0C38B610CE;
-        Thu, 15 Apr 2021 15:50:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618501808;
-        bh=NisZBAhrB8qRrjarKe0ZbpObJNgvhZhbw1RM+83/XNc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=iZhCcPmh+kgajJA5QE0VEUtq7Icot1rBqcXPmoADS1RXpSkx3n2BPhG0w3nigFbSr
-         o1mMmiF4J1lBB7KgwJ7GYJPaD9OKCg6WhA7e+0UsKD05kAnUxjyRGFCz32FWP1ASM2
-         Vx3Llq2VgJLZR25RcY9u51Fz4gle2ouKwwn7QHRrwvfH8Jbi54H7yeJVWzqeeIq08A
-         YfI7i4Y0TScgwzX/2DL77A1Iko8gkyWVOuQNGmxf6JIRfl6dxVcwuQr8GAwculWDII
-         kuO6dC87I5PCbjxEwW+39uR79AlilITucM8wb8qAvefrSYOMhY7zU5Hf5xq2TU3w3C
-         jzgGfqQeyS+dg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: improve mcu error logging
-Date:   Thu, 15 Apr 2021 17:50:02 +0200
-Message-Id: <a93ba78fc7ed4577c7a4dfac73a842ba32ca23a4.1618501534.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S234218AbhDOQFJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Apr 2021 12:05:09 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:20408 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233734AbhDOQFI (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 15 Apr 2021 12:05:08 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618502685; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=4E2s8oryTBXf1UCWo/s+gPkmUGJYu7btSYm+HkBY2Jc=; b=ORPx9cOC4vIGz1iLGHGK9NcMrDvqA9Tz+WyURjicXGEMZuBQzre1yHMHg5cDf3k9vm5md+lX
+ IpYKHoKajTvVuo2Fb3lA/7+kWZ47vJVT8z4E7U9HU3TtUSwgzQBF81AP88aVJGdZ2Y2zDjye
+ 4IxUBWZYxeWsQN+qMWJ9hBtAr2M=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 607864149a9ff96d95892d0f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 15 Apr 2021 16:04:36
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4B7A3C43463; Thu, 15 Apr 2021 16:04:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A568C433ED;
+        Thu, 15 Apr 2021 16:04:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A568C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     jikos@kernel.org, hdegoede@redhat.com, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH for -next] iwlwifi: pcie: don't enable BHs with IRQs disabled
+References: <iwlwifi.20210415164821.d0f2edda1651.I75f762e0bed38914d1300ea198b86dd449b4b206@changeid>
+        <bab37babea4f2972ef222e1dcaff7ab966ab15a8.camel@coelho.fi>
+Date:   Thu, 15 Apr 2021 19:04:32 +0300
+In-Reply-To: <bab37babea4f2972ef222e1dcaff7ab966ab15a8.camel@coelho.fi> (Luca
+        Coelho's message of "Thu, 15 Apr 2021 16:52:35 +0300")
+Message-ID: <875z0nlejz.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dump mcu command code in hex and related prefix to help debugging
+Luca Coelho <luca@coelho.fi> writes:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7603/mcu.c  | 5 ++---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c | 5 ++---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c  | 2 +-
- 5 files changed, 8 insertions(+), 10 deletions(-)
+> On Thu, 2021-04-15 at 16:48 +0300, Luca Coelho wrote:
+>> From: Johannes Berg <johannes.berg@intel.com>
+>> 
+>> After the fix from Jiri that disabled local IRQs instead of
+>> just BHs (necessary to fix an issue with submitting a command
+>> with IRQs already disabled), there was still a situation in
+>> which we could deep in there enable BHs, if the device config
+>> sets the apmg_wake_up_wa configuration, which is true on all
+>> 7000 series devices.
+>> 
+>> To fix that, but not require reverting commit 1ed08f6fb5ae
+>> ("iwlwifi: remove flags argument for nic_access"), split up
+>> nic access into a version with BH manipulation to use most
+>> of the time, and without it for this specific case where the
+>> local IRQs are already disabled.
+>> 
+>> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+>> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+>> ---
+>
+> Kalle, I'm going to assign this one to you too, but this time for -next
+> and not for -fixes.
+>
+> This is related to the fix Jiri made, but to avoid some conflicts and a
+> broken v5.13-rc, we want to get it into v5.13 if still possible.
+>
+> So can you please take this on top of my latest pull request?
+> Additionally, can you tag it for stable?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
-index 96b6c8916730..6abfe6b19afa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
-@@ -21,9 +21,8 @@ mt7603_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	struct mt7603_mcu_rxd *rxd;
- 
- 	if (!skb) {
--		dev_err(mdev->dev,
--			"MCU message %d (seq %d) timed out\n",
--			cmd, seq);
-+		dev_err(mdev->dev, "MCU message %02x (seq %d) timed out\n",
-+			abs(cmd), seq);
- 		dev->mcu_hang = MT7603_WATCHDOG_TIMEOUT;
- 		return -ETIMEDOUT;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index eab490d07255..6f6d33494b33 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -175,8 +175,8 @@ int mt7615_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	int ret = 0;
- 
- 	if (!skb) {
--		dev_err(mdev->dev, "Message %ld (seq %d) timeout\n",
--			cmd & MCU_CMD_MASK, seq);
-+		dev_err(mdev->dev, "Message %08x (seq %d) timeout\n",
-+			cmd, seq);
- 		return -ETIMEDOUT;
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
-index 4aa5c36afeaf..75978820a260 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
-@@ -17,9 +17,8 @@ int mt76x02_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	u32 *rxfce;
- 
- 	if (!skb) {
--		dev_err(mdev->dev,
--			"MCU message %d (seq %d) timed out\n", cmd,
--			seq);
-+		dev_err(mdev->dev, "MCU message %02x (seq %d) timed out\n",
-+			abs(cmd), seq);
- 		dev->mcu_timeout = 1;
- 		return -ETIMEDOUT;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 0b739ed8ce33..5d992740e076 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -217,7 +217,7 @@ mt7915_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	int ret = 0;
- 
- 	if (!skb) {
--		dev_err(mdev->dev, "Message %d (seq %d) timeout\n",
-+		dev_err(mdev->dev, "Message %08x (seq %d) timeout\n",
- 			cmd, seq);
- 		return -ETIMEDOUT;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 1f231088f287..a360929983ea 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -160,7 +160,7 @@ mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	int ret = 0;
- 
- 	if (!skb) {
--		dev_err(mdev->dev, "Message %d (seq %d) timeout\n",
-+		dev_err(mdev->dev, "Message %08x (seq %d) timeout\n",
- 			cmd, seq);
- 		return -ETIMEDOUT;
- 	}
+Will do.
+
 -- 
-2.30.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
