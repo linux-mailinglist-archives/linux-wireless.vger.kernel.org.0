@@ -2,116 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0647E360531
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 11:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DF13360773
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 12:47:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231969AbhDOJEa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Apr 2021 05:04:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41422 "EHLO mail.kernel.org"
+        id S232342AbhDOKru (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Apr 2021 06:47:50 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:50637 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231842AbhDOJEa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Apr 2021 05:04:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3D1DC61073;
-        Thu, 15 Apr 2021 09:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618477447;
-        bh=mX00MpGyDvBmSUErvltMQ84mOAb+jkfVbdedpKHU0SE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=cZV2qiMGn6wFHBEkAlW+EU1Tsu8lMc40zPRKiaPPSMR055xhLhOMKT6HECkESTEW8
-         VT6FyP4qDNC6kr2dzi38bpvt8pCY3JaM/dfQvQ68w9mfya63gAsLCsR0QcnxsQYFZ2
-         5a66Ld+JvUzy2e7qccEQqDWcJUgMIbd1r1BJEgbuxlDbJ+0PcbGv6gDMcQuJycRLRu
-         q1UFGfl/a7/0GTjqkajaewCXvDcHc70DiqM8s57gCviuYp1WZuRXfl8x9KYLw76K1G
-         R+NEbs/pK/hq0bw3r+P0HmKwpgY0xemRPkTydhoXmAGqXALJbQhdlz9PjrBfEkmp5i
-         VPlLtIqxd+4nA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7921: move hw configuration in mt7921_register_device
-Date:   Thu, 15 Apr 2021 11:03:58 +0200
-Message-Id: <40649f5e9ce9ab2a96ff4eb0587f82f300988280.1618477272.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S230056AbhDOKru (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 15 Apr 2021 06:47:50 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618483647; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=mQQJUPxZs7yfFkf2/bSTHoSyrWyZL7nJGUBXycQz390=; b=FkaYfJPyw8x+QuT3bn49jFQ0P1cjod8anPIoIjx6sKOEQxBApKcsSy/yFveU5mIlfBmg5Zw9
+ wUoXONAbrhH7EjrgfuVOhbOauksZQQKhhXPYO0GfaRZsG4GdGYR6DQfIbvlMq1UBxir8bT7k
+ f/O1bOL4BTHMrkHpPoAfbnSFvZk=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 607819b68166b7eff7da9af8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 15 Apr 2021 10:47:18
+ GMT
+Sender: akalaise=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E891AC433ED; Thu, 15 Apr 2021 10:47:17 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from akalaise-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: akalaise)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2C60CC433CA;
+        Thu, 15 Apr 2021 10:47:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2C60CC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=akalaise@codeaurora.org
+From:   Abinaya Kalaiselvan <akalaise@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Abinaya Kalaiselvan <akalaise@codeaurora.org>
+Subject: [PATCHv2] mac80211: fix NULL ptr dereference during mesh peer connection for non HE devices
+Date:   Thu, 15 Apr 2021 16:17:05 +0530
+Message-Id: <1618483625-31097-1-git-send-email-akalaise@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Get rid of init work since firmware loading is already performed in
-mt7921_init_hardware
+"sband->iftype_data" is not assigned with any value for non HE supported
+devices, which causes NULL pointer access during mesh peer connection
+in those devices. Fix this by accessing the pointer after HE
+capabilities condition check.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Fixes: 7f7aa94bcaf0 (mac80211: reduce peer HE MCS/NSS to own capabilities)
+Signed-off-by: Abinaya Kalaiselvan <akalaise@codeaurora.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/init.c   | 18 ++++++------------
- .../net/wireless/mediatek/mt76/mt7921/mt7921.h |  1 -
- 2 files changed, 6 insertions(+), 13 deletions(-)
+v2:
+* ieee80211_sta_he_cap structure instance is initialized.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 0aedddb90858..eab6e2dcdb96 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -166,20 +166,10 @@ void mt7921_mac_init(struct mt7921_dev *dev)
- 	mt76_connac_mcu_set_rts_thresh(&dev->mt76, 0x92b, 0);
- }
- 
--static void mt7921_init_work(struct work_struct *work)
--{
--	struct mt7921_dev *dev = container_of(work, struct mt7921_dev,
--				 init_work);
--
--	mt7921_mcu_set_eeprom(dev);
--	mt7921_mac_init(dev);
--}
--
- static int mt7921_init_hardware(struct mt7921_dev *dev)
+ net/mac80211/he.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/he.c b/net/mac80211/he.c
+index 0c0b970..96a47b0 100644
+--- a/net/mac80211/he.c
++++ b/net/mac80211/he.c
+@@ -111,7 +111,7 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
+ 				  struct sta_info *sta)
  {
- 	int ret, idx;
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->sta.he_cap;
+-	struct ieee80211_sta_he_cap own_he_cap = sband->iftype_data->he_cap;
++	struct ieee80211_sta_he_cap own_he_cap = {0};
+ 	struct ieee80211_he_cap_elem *he_cap_ie_elem = (void *)he_cap_ie;
+ 	u8 he_ppe_size;
+ 	u8 mcs_nss_size;
+@@ -123,6 +123,8 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
+ 	if (!he_cap_ie || !ieee80211_get_he_sta_cap(sband))
+ 		return;
  
--	INIT_WORK(&dev->init_work, mt7921_init_work);
- 	spin_lock_init(&dev->token_lock);
- 	idr_init(&dev->token);
- 
-@@ -202,6 +192,10 @@ static int mt7921_init_hardware(struct mt7921_dev *dev)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = mt7921_mcu_set_eeprom(dev);
-+	if (ret)
-+		return ret;
++	 own_he_cap = sband->iftype_data->he_cap;
 +
- 	/* Beacon and mgmt frames should occupy wcid 0 */
- 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7921_WTBL_STA - 1);
- 	if (idx)
-@@ -212,6 +206,8 @@ static int mt7921_init_hardware(struct mt7921_dev *dev)
- 	dev->mt76.global_wcid.tx_info |= MT_WCID_TX_INFO_SET;
- 	rcu_assign_pointer(dev->mt76.wcid[idx], &dev->mt76.global_wcid);
- 
-+	mt7921_mac_init(dev);
-+
- 	return 0;
- }
- 
-@@ -266,8 +262,6 @@ int mt7921_register_device(struct mt7921_dev *dev)
- 	if (ret)
- 		return ret;
- 
--	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
--
- 	return mt7921_init_debugfs(dev);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 5cc01efee989..c34cf3e3a26b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -156,7 +156,6 @@ struct mt7921_dev {
- 
- 	u16 chainmask;
- 
--	struct work_struct init_work;
- 	struct work_struct reset_work;
- 
- 	struct list_head sta_poll_list;
+ 	/* Make sure size is OK */
+ 	mcs_nss_size = ieee80211_he_mcs_nss_size(he_cap_ie_elem);
+ 	he_ppe_size =
 -- 
-2.30.2
+2.7.4
 
