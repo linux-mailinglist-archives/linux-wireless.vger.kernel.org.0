@@ -2,24 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66F1C360AA8
+	by mail.lfdr.de (Postfix) with ESMTP id B39F5360AA9
 	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 15:41:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233131AbhDONmO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Apr 2021 09:42:14 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:52656 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230056AbhDONmO (ORCPT
+        id S233136AbhDONmP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Apr 2021 09:42:15 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:58835 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232795AbhDONmO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 15 Apr 2021 09:42:14 -0400
-X-UUID: b339edd9d613403088ff2945570b7691-20210415
-X-UUID: b339edd9d613403088ff2945570b7691-20210415
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+X-UUID: ce74301250ce4b03b59d43ad9619cc96-20210415
+X-UUID: ce74301250ce4b03b59d43ad9619cc96-20210415
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 189267769; Thu, 15 Apr 2021 21:41:48 +0800
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1957360891; Thu, 15 Apr 2021 21:41:49 +0800
 Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
  15.0.1497.2; Thu, 15 Apr 2021 21:41:46 +0800
 Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
@@ -32,12 +32,15 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 1/2] mt76: mt7921: add debugfs knob for performing wifi reset
-Date:   Thu, 15 Apr 2021 21:41:44 +0800
-Message-ID: <1618494105-5462-1-git-send-email-sean.wang@mediatek.com>
+Subject: [PATCH 2/2] mt76: mt7921: abort uncompleted scan by wifi reset
+Date:   Thu, 15 Apr 2021 21:41:45 +0800
+Message-ID: <1618494105-5462-2-git-send-email-sean.wang@mediatek.com>
 X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1618494105-5462-1-git-send-email-sean.wang@mediatek.com>
+References: <1618494105-5462-1-git-send-email-sean.wang@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
+X-TM-SNTS-SMTP: 1BE1986FC84855AB1F926A97F52A7D3E2F4FF6FC6031C2B8B5F8008F5C18C4212000:8
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -45,43 +48,36 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Introduce chip_reset knob in mt7921 debugfs to export a way to users
-able to trigger wifi reset.
+Scan abort should be required for the uncompleted hardware scan
+interrupted by wifi reset. Otherwise, it is possible that the scan
+request after wifi reset gets error code -EBUSY from mac80211 and
+then blocks the reconnectting to the access point.
 
+Fixes: 215bb6737bef ("mt76: mt7921: add wifi reset support")
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-index 024524173115..1342a0b645e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-@@ -302,6 +302,16 @@ static int mt7921_config(void *data, u64 val)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 572bab82315a..3145880df6e7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1413,6 +1413,14 @@ void mt7921_mac_reset_work(struct work_struct *work)
+ 	if (i == 10)
+ 		dev_err(dev->mt76.dev, "chip reset failed\n");
  
- DEFINE_DEBUGFS_ATTRIBUTE(fops_config, NULL, mt7921_config, "%lld\n");
- 
-+static int mt7921_chip_reset(void *data, u64 val)
-+{
-+	struct mt7921_dev *dev = data;
++	if (test_and_clear_bit(MT76_HW_SCANNING, &dev->mphy.state)) {
++		struct cfg80211_scan_info info = {
++			.aborted = true,
++		};
 +
-+	mt7921_reset(&dev->mt76);
++		ieee80211_scan_completed(dev->mphy.hw, &info);
++	}
 +
-+	return 0;
-+}
-+DEFINE_DEBUGFS_ATTRIBUTE(fops_reset, NULL, mt7921_chip_reset, "%lld\n");
-+
- int mt7921_init_debugfs(struct mt7921_dev *dev)
- {
- 	struct dentry *dir;
-@@ -322,6 +332,7 @@ int mt7921_init_debugfs(struct mt7921_dev *dev)
- 	debugfs_create_file("idle-timeout", 0600, dir, dev,
- 			    &fops_pm_idle_timeout);
- 	debugfs_create_file("chip_config", 0600, dir, dev, &fops_config);
-+	debugfs_create_file("chip_reset", 0600, dir, dev, &fops_reset);
- 
- 	return 0;
- }
+ 	ieee80211_wake_queues(hw);
+ 	ieee80211_iterate_active_interfaces(hw,
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
 -- 
 2.25.1
 
