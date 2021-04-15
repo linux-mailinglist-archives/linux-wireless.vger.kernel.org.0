@@ -2,223 +2,246 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A29883608DF
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 14:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 300B53608E2
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 14:06:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231919AbhDOMFJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Apr 2021 08:05:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:26170 "EHLO
+        id S232675AbhDOMFT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Apr 2021 08:05:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:22280 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231482AbhDOMFI (ORCPT
+        by vger.kernel.org with ESMTP id S232276AbhDOMFS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Apr 2021 08:05:08 -0400
+        Thu, 15 Apr 2021 08:05:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1618488285;
+        s=mimecast20190719; t=1618488295;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WiJDLtuWEhljaM6qFqiEuL71JWqIuH0Mbs/EmBPhHlE=;
-        b=Uo2giEvxwvBl/E9JHhbDGZxlWtJKYqLNTlE8JE27qO3vXXCCxJPDHp7WRCzl7Z47auUGI+
-        MBVNxVwU2eVg5h9CVnggBWnw8WBho4MXRgkId0xcJOu/QDklqUuQvkj3MtSbZA4+8h+oud
-        2BnVDjr7b/DiRM6vX9WItza4A6aRXLE=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-539-HYIW4SOzORCkMAQeGBWpKQ-1; Thu, 15 Apr 2021 08:04:43 -0400
-X-MC-Unique: HYIW4SOzORCkMAQeGBWpKQ-1
-Received: by mail-ej1-f71.google.com with SMTP id i10-20020a1709067a4ab029037c5dba8400so844188ejo.8
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Apr 2021 05:04:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=WiJDLtuWEhljaM6qFqiEuL71JWqIuH0Mbs/EmBPhHlE=;
-        b=SCBCzQuZLtZPUHgTu31jigs2D7aAgZpCPaSRoo9DIvqoM2w7BRLaVeTKpy6ZF0sM7v
-         w8f8/dCUoASUPSZQh8QiGcG06g395Wb7YBc4jHVtupiun8oYFzyYPRelrbyLx+oq+/ZL
-         ykN5RmTCe2NSO8p/z04KxO4xv22Tj4818Lf5eZ0Y+zrVdQ+dKaDF6gLWGVP6V4dYVthc
-         D4veidQz4E0uOQc4QzPboaZqmzlz5GoRTaK6misN3bN3+GjtXU7RuXeRtZFaYQVwyw68
-         OHGd7eluUQjTjqo562moVMLJ/G3UPkzZopsjaNGHd4U8RzLtSwmw9lyj+8jbDyq2Gdo9
-         dO5w==
-X-Gm-Message-State: AOAM532PeSXzNTRWXV4T7U9+RBjuQxTglS0p0yyBkZAM7zbZ2ZQtU08E
-        hZdD2nAjNlns77f4TCAWtnyWQtlbihceuVima0rHQ9KBj9r+/nySHw4q3ZEnAQEdFRosyRvYYJL
-        zCzD2MHYwnCzK3+5jlD9jQ5PzAM4xKXscLa8gSJpgUxuEd9kOh/RBQwuWcNxy1ZkwOogPyqAHrK
-        AWnJc=
-X-Received: by 2002:a17:907:d15:: with SMTP id gn21mr2959500ejc.337.1618488282264;
-        Thu, 15 Apr 2021 05:04:42 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzCze+Zoj7FFbKgreUmCFl/bpYsBmUdBB8lI2dtsQgxJn5YI7x2cbytnhdmKtB54Kq2FuhUDw==
-X-Received: by 2002:a17:907:d15:: with SMTP id gn21mr2959471ejc.337.1618488282011;
-        Thu, 15 Apr 2021 05:04:42 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id l1sm2340457edt.59.2021.04.15.05.04.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Apr 2021 05:04:41 -0700 (PDT)
-Subject: Re: iwlwifi Lockdep warning with 5.12-rc4 on 8086:02f0 (Comet Lake
- PCH-LP CNVi WiFi)
-To:     Chris Murphy <lists@colorremedies.com>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-References: <9fafe866-6ff6-d1c4-0a04-493d863bc9db@redhat.com>
- <CAJCQCtRFqmioneenXeNEoBXnjGCrOeU-SthZKT60bQoMD84K2w@mail.gmail.com>
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=5GzKOpk/VYyhi0tDElT89P5ldwyD0jEwAct65Jsrfw0=;
+        b=c4qLhwofNI7y0YK64c55KxClrPb6ylGu8RqNiQJ/YXmVmJL0C4arMRV46obcL7e10LySzN
+        louyFJVn1Bhq5SCRUDfk+yeiJl3glsn/+ceI1sa9WV8wspe8C591X31OQQ5eJEsdw7qXY+
+        0bK9MaUwq9tBUyQQQDGsYBM1xoWqAYA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-264-i6eIvzQ0PYWC0DvgvACGLw-1; Thu, 15 Apr 2021 08:04:51 -0400
+X-MC-Unique: i6eIvzQ0PYWC0DvgvACGLw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8E5541007B30;
+        Thu, 15 Apr 2021 12:04:50 +0000 (UTC)
+Received: from x1.localdomain (ovpn-112-187.ams2.redhat.com [10.36.112.187])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A08DD6086F;
+        Thu, 15 Apr 2021 12:04:48 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <10faeb84-1232-f179-a687-35a148fb7a0d@redhat.com>
-Date:   Thu, 15 Apr 2021 14:04:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+To:     Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, Jiri Kosina <jkosina@suse.cz>,
+        Chris Murphy <lists@colorremedies.com>
+Subject: [PATCH] iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_gen2_enqueue_hcmd()
+Date:   Thu, 15 Apr 2021 14:04:47 +0200
+Message-Id: <20210415120447.4424-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <CAJCQCtRFqmioneenXeNEoBXnjGCrOeU-SthZKT60bQoMD84K2w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgQ2hyaXMsDQoNCk9uIDQvMTMvMjEgMTE6MzggUE0sIENocmlzIE11cnBoeSB3cm90ZToN
-Cj4gT24gVHVlLCBBcHIgMTMsIDIwMjEgYXQgMjo1NSBQTSBIYW5zIGRlIEdvZWRlIDxoZGVn
-b2VkZUByZWRoYXQuY29tPiB3cm90ZToNCj4+DQo+PiBIaSBBbGwsDQo+Pg0KPj4gSSdtIHNl
-ZWluZyB0aGUgZm9sbG93aW5nIGxvY2tkZXAgd2FybmluZyB3aXRoIDUuMTItcmM0IG9uIDgw
-ODY6MDJmMCAoQ29tZXQgTGFrZSBQQ0gtTFAgQ05WaSBXaUZpKToNCj4+DQo+PiBbICAgMjku
-OTIzODExXSBCbHVldG9vdGg6IGhjaTA6IFdhaXRpbmcgZm9yIGZpcm13YXJlIGRvd25sb2Fk
-IHRvIGNvbXBsZXRlDQo+PiBbICAgMjkuOTI1MDY4XSBCbHVldG9vdGg6IGhjaTA6IEZpcm13
-YXJlIGxvYWRlZCBpbiAxOTEyNjEzIHVzZWNzDQo+PiBbICAgMjkuOTI1MzI2XSBCbHVldG9v
-dGg6IGhjaTA6IFdhaXRpbmcgZm9yIGRldmljZSB0byBib290DQo+PiBbICAgMjkuOTQwNjk4
-XSBCbHVldG9vdGg6IGhjaTA6IERldmljZSBib290ZWQgaW4gMTUyNTggdXNlY3MNCj4+IFsg
-ICAyOS45NDM1MTddIEJsdWV0b290aDogaGNpMDogRm91bmQgSW50ZWwgRERDIHBhcmFtZXRl
-cnM6IGludGVsL2lidC0xOS0wLTQuZGRjDQo+PiBbICAgMjkuOTQ1NjgxXSBCbHVldG9vdGg6
-IGhjaTA6IEFwcGx5aW5nIEludGVsIEREQyBwYXJhbWV0ZXJzIGNvbXBsZXRlZA0KPj4gWyAg
-IDI5Ljk0ODY4NF0gQmx1ZXRvb3RoOiBoY2kwOiBGaXJtd2FyZSByZXZpc2lvbiAwLjAgYnVp
-bGQgMTIxIHdlZWsgNyAyMDIxDQo+PiBbICAgMzAuMDA4NjQwXSBCbHVldG9vdGg6IGhjaTA6
-IE1TRlQgZmlsdGVyX2VuYWJsZSBpcyBhbHJlYWR5IG9uDQo+PiBbICAgMzAuMDg3MzM4XSAt
-LS0tLS0tLS0tLS1bIGN1dCBoZXJlIF0tLS0tLS0tLS0tLS0NCj4+IFsgICAzMC4wODczNTZd
-IFdBUk5JTkc6IENQVTogNSBQSUQ6IDE0ODEgYXQga2VybmVsL3NvZnRpcnEuYzoxNzggX19s
-b2NhbF9iaF9lbmFibGVfaXArMHg5Ny8weGQwDQo+PiBbICAgMzAuMDg3MzYwXSBNb2R1bGVz
-IGxpbmtlZCBpbjogY21hYyBibmVwIHNuZF9jdGxfbGVkIHNuZF9zb2Nfc2tsX2hkYV9kc3Ao
-RSkgc25kX3NvY19oZGFjX2hkbWkoRSkgc25kX3NvY19kbWljKEUpIHNuZF9oZGFfY29kZWNf
-aGRtaSBzbmRfaGRhX2NvZGVjX3JlYWx0ZWsgc25kX2hkYV9jb2RlY19nZW5lcmljIHNuZF9z
-b2ZfcGNpX2ludGVsX2NubCBzbmRfc29mX2ludGVsX2hkYV9jb21tb24gdmZhdCBmYXQgaVRD
-T193ZHQgbWVpX3dkdCBzbmRfc29jX2hkYWNfaGRhKEUpIG1laV9oZGNwIGludGVsX3BtY19i
-eHQgc291bmR3aXJlX2ludGVsIGlUQ09fdmVuZG9yX3N1cHBvcnQgc291bmR3aXJlX2dlbmVy
-aWNfYWxsb2NhdGlvbiBzb3VuZHdpcmVfY2FkZW5jZSBzbmRfc29mX2ludGVsX2hkYSBzbmRf
-c29mX3BjaSBzbmRfc29mIGludGVsX3JhcGxfbXNyIHg4Nl9wa2dfdGVtcF90aGVybWFsIGlu
-dGVsX3Bvd2VyY2xhbXAgY29yZXRlbXAgc25kX3NvZl94dGVuc2FfZHNwIHNuZF9zb2Nfc2ts
-IGt2bV9pbnRlbCBzbmRfc29jX3NzdF9pcGMoRSkgc25kX3NvY19zc3RfZHNwKEUpIHNuZF9o
-ZGFfZXh0X2NvcmUoRSkgc25kX3NvY19hY3BpX2ludGVsX21hdGNoKEUpIHNuZF9zb2NfYWNw
-aSBrdm0gc25kX3NvY19jb3JlIGNkY19ldGhlciBpcnFieXBhc3MgdXNibmV0IHNuZF9jb21w
-cmVzcyByYXBsIHI4MTUyIGFjOTdfYnVzIGludGVsX2NzdGF0ZSBzbmRfcGNtX2RtYWVuZ2lu
-ZSBtaWkgc25kX2hkYV9pbnRlbCBpbnRlbF91bmNvcmUgc25kX2ludGVsX2RzcGNmZyhFKSBz
-bmRfaW50ZWxfc2R3X2FjcGkoRSkgc25kX2hkYV9jb2RlYyBzbmRfdXNiX2F1ZGlvIHNuZF9o
-ZGFfY29yZShFKSBzbmRfdXNibWlkaV9saWIgc25kX2h3ZGVwIGl3bG12bSBzbmRfcmF3bWlk
-aSBzbmRfc2VxIHBjc3BrciBzbmRfc2VxX2RldmljZSBtYWM4MDIxMSBzbmRfcGNtIHdtaV9i
-bW9mIGkyY19pODAxIHV2Y3ZpZGVvIGludGVsX3dtaV90aHVuZGVyYm9sdCBlMTAwMGUgaTJj
-X3NtYnVzDQo+PiBbICAgMzAuMDg3NDM2XSAgYnR1c2Igc25kX3RpbWVyIHZpZGVvYnVmMl92
-bWFsbG9jIGJ0cnRsIHRodW5kZXJib2x0IHZpZGVvYnVmMl9tZW1vcHMgbGliYXJjNCBidGJj
-bSBidGludGVsIHZpZGVvYnVmMl92NGwyIGJsdWV0b290aCB2aWRlb2J1ZjJfY29tbW9uIGl3
-bHdpZmkgdmlkZW9kZXYgbWVpX21lIHByb2Nlc3Nvcl90aGVybWFsX2RldmljZSBwcm9jZXNz
-b3JfdGhlcm1hbF9yZmltIGVjZGhfZ2VuZXJpYyBqb3lkZXYgbWMgbWVpIHByb2Nlc3Nvcl90
-aGVybWFsX21ib3ggZWNjIHByb2Nlc3Nvcl90aGVybWFsX3JhcGwgY2ZnODAyMTEgaWRtYTY0
-IGludGVsX3JhcGxfY29tbW9uIHVjc2lfYWNwaSBpbnRlbF9wY2hfdGhlcm1hbCBpbnRlbF9z
-b2NfZHRzX2lvc2YgbnhwX25jaV9pMmMgdHlwZWNfdWNzaSBueHBfbmNpIG5jaSByb2xlcyB0
-eXBlYyBuZmMgaW50MzQwM190aGVybWFsIGludDM0MHhfdGhlcm1hbF96b25lIHNvY19idXR0
-b25fYXJyYXkgaW50ZWxfaGlkIGludDM0MDBfdGhlcm1hbCBhY3BpX3RoZXJtYWxfcmVsIHNw
-YXJzZV9rZXltYXAgYWNwaV9wYWQgYmluZm10X21pc2MgenJhbSBpcF90YWJsZXMgZG1fY3J5
-cHQgdHJ1c3RlZCBoaWRfbG9naXRlY2hfaGlkcHAgaGlkX2xvZ2l0ZWNoX2RqIHVhcyB1c2Jf
-c3RvcmFnZSBjcmN0MTBkaWZfcGNsbXVsIGNyYzMyX3BjbG11bCBjcmMzMmNfaW50ZWwgZ2hh
-c2hfY2xtdWxuaV9pbnRlbCBpOTE1IHNlcmlvX3JhdyBudm1lIGkyY19hbGdvX2JpdCBudm1l
-X2NvcmUgZHJtX2ttc19oZWxwZXIgY2VjIGhpZF9tdWx0aXRvdWNoIGRybSB3bWkgaTJjX2hp
-ZF9hY3BpIGkyY19oaWQgdGhpbmtwYWRfYWNwaSBsZWR0cmlnX2F1ZGlvIHBsYXRmb3JtX3By
-b2ZpbGUgc25kIHNvdW5kY29yZSByZmtpbGwgZHJtX3ByaXZhY3lfc2NyZWVuX2hlbHBlciB2
-aWRlbyBwaW5jdHJsX2Nhbm5vbmxha2UgaTJjX2RldiBmdXNlDQo+PiBbICAgMzAuMDg3NTA5
-XSBDUFU6IDUgUElEOiAxNDgxIENvbW06IE5ldHdvcmtNYW5hZ2VyIFRhaW50ZWQ6IEcgICAg
-ICAgICAgICBFICAgICA1LjEyLjAtcmM0KyAjMjcyDQo+PiBbICAgMzAuMDg3NTExXSBIYXJk
-d2FyZSBuYW1lOiBMRU5PVk8gMjBVOTBTSVQxOS8yMFU5MFNJVDE5LCBCSU9TIE4yV0VUMjRX
-ICgxLjE0ICkgMTAvMTUvMjAyMA0KPj4gWyAgIDMwLjA4NzUxMl0gUklQOiAwMDEwOl9fbG9j
-YWxfYmhfZW5hYmxlX2lwKzB4OTcvMHhkMA0KPj4gWyAgIDMwLjA4NzUxNF0gQ29kZTogZjIg
-NDUgYTkgMDAgZmYgZmYgMDAgNzQgMzYgNjUgZmYgMGQgMzMgZDcgZjIgNDUgZTggMmUgMmMg
-MTMgMDAgZmIgNjYgMGYgMWYgNDQgMDAgMDAgNWIgNWQgYzMgNjUgOGIgMDUgNTkgZGYgZjIg
-NDUgODUgYzAgNzUgOWMgPDBmPiAwYiBlYiA5OCBlOCA1MCAyYiAxMyAwMCBlYiBhNyA0OCA4
-OSBlZiBlOCA3NiAyOCAwNyAwMCBlYiBiMCA2NQ0KPj4gWyAgIDMwLjA4NzUxNl0gUlNQOiAw
-MDE4OmZmZmZiYzEyNDBlNDcxYjAgRUZMQUdTOiAwMDAxMDA0Ng0KPj4gWyAgIDMwLjA4NzUx
-OF0gUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJCWDogMDAwMDAwMDAwMDAwMDIwMSBSQ1g6IDAw
-MDAwMDAwMDAwMDAwMDANCj4+IFsgICAzMC4wODc1MjBdIFJEWDogMDAwMDAwMDAwMDAwMDAw
-MyBSU0k6IDAwMDAwMDAwMDAwMDAyMDEgUkRJOiBmZmZmZmZmZmMwYmQ1NGRiDQo+PiBbICAg
-MzAuMDg3NTIxXSBSQlA6IGZmZmZmZmZmYzBiZDU0ZGIgUjA4OiAwMDAwMDAwMDAwMDAwMDAw
-IFIwOTogMDAwMDAwMDAwMDAwMDAwMQ0KPj4gWyAgIDMwLjA4NzUyMl0gUjEwOiBmZmZmYmMx
-MjQwZTQ3MGEwIFIxMTogMDAwMDAwMDAwMDAwMDAwMSBSMTI6IGZmZmY5ODE3YzU3OGFjMTAN
-Cj4+IFsgICAzMC4wODc1MjNdIFIxMzogMDAwMDAwMDAwMDAwMDAwMCBSMTQ6IDAwMDAwMDAw
-ODAwMDAwMDAgUjE1OiAwMDAwMDAwMDAwMDAwMDAwDQo+PiBbICAgMzAuMDg3NTI1XSBGUzog
-IDAwMDA3ZjMwOGRiYmRiYzAoMDAwMCkgR1M6ZmZmZjk4MWIxYTU0MDAwMCgwMDAwKSBrbmxH
-UzowMDAwMDAwMDAwMDAwMDAwDQo+PiBbICAgMzAuMDg3NTI2XSBDUzogIDAwMTAgRFM6IDAw
-MDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzDQo+PiBbICAgMzAuMDg3NTI4XSBD
-UjI6IDAwMDA3ZjY1OWMwMTMwMzggQ1IzOiAwMDAwMDAwMTQyMGJjMDAyIENSNDogMDAwMDAw
-MDAwMDM3MDZlMA0KPj4gWyAgIDMwLjA4NzUyOV0gRFIwOiAwMDAwMDAwMDAwMDAwMDAwIERS
-MTogMDAwMDAwMDAwMDAwMDAwMCBEUjI6IDAwMDAwMDAwMDAwMDAwMDANCj4+IFsgICAzMC4w
-ODc1MzBdIERSMzogMDAwMDAwMDAwMDAwMDAwMCBEUjY6IDAwMDAwMDAwZmZmZTBmZjAgRFI3
-OiAwMDAwMDAwMDAwMDAwNDAwDQo+PiBbICAgMzAuMDg3NTMxXSBDYWxsIFRyYWNlOg0KPj4g
-WyAgIDMwLjA4NzUzNF0gIGl3bF9wY2llX2dlbjJfZW5xdWV1ZV9oY21kKzB4NTZiLzB4OGMw
-IFtpd2x3aWZpXQ0KPj4gWyAgIDMwLjA4NzU1MV0gIGl3bF90cmFuc190eHFfc2VuZF9oY21k
-KzB4NTkvMHg0NzAgW2l3bHdpZmldDQo+PiBbICAgMzAuMDg3NTY0XSAgaXdsX3RyYW5zX3Nl
-bmRfY21kKzB4ODEvMHgxODAgW2l3bHdpZmldDQo+PiBbICAgMzAuMDg3NTcyXSAgPyBsb2Nr
-X2FjcXVpcmUrMHhlMi8weDNiMA0KPj4gWyAgIDMwLjA4NzU3Nl0gIGl3bF9tdm1fc2VuZF9j
-bWQrMHgyOC8weDgwIFtpd2xtdm1dDQo+PiBbICAgMzAuMDg3NTg3XSAgaXdsX212bV9sZWRf
-c2V0KzB4OWMvMHhjMCBbaXdsbXZtXQ0KPj4gWyAgIDMwLjA4NzYwMF0gID8gX3Jhd19yZWFk
-X2xvY2tfaXJxc2F2ZSsweDdmLzB4YTANCj4+IFsgICAzMC4wODc2MDJdICA/IF9yYXdfcmVh
-ZF9sb2NrX2lycXNhdmUrMHg4OC8weGEwDQo+PiBbICAgMzAuMDg3NjA1XSAgbGVkX3RyaWdn
-ZXJfZXZlbnQrMHg0Ni8weDcwDQo+PiBbICAgMzAuMDg3NjA5XSAgaWVlZTgwMjExX2RvX29w
-ZW4rMHg0YzIvMHhhNzAgW21hYzgwMjExXQ0KPj4gWyAgIDMwLjA4NzY0Ml0gIGllZWU4MDIx
-MV9vcGVuKzB4NjkvMHg5MCBbbWFjODAyMTFdDQo+PiBbICAgMzAuMDg3NjY2XSAgX19kZXZf
-b3BlbisweGU1LzB4MWIwDQo+PiBbICAgMzAuMDg3NjcwXSAgX19kZXZfY2hhbmdlX2ZsYWdz
-KzB4MWM4LzB4MjQwDQo+PiBbICAgMzAuMDg3Njc2XSAgZGV2X2NoYW5nZV9mbGFncysweDIx
-LzB4NjANCj4+IFsgICAzMC4wODc2ODJdICBkb19zZXRsaW5rKzB4MmE5LzB4MTI5MA0KPj4g
-WyAgIDMwLjA4NzY5MF0gID8gX19sb2NrX2FjcXVpcmUrMHgzODkvMHgxZTEwDQo+PiBbICAg
-MzAuMDg3NzA3XSAgPyBsb2NrX2lzX2hlbGRfdHlwZSsweGE1LzB4MTIwDQo+PiBbICAgMzAu
-MDg3NzEzXSAgX19ydG5sX25ld2xpbmsrMHg2NmQvMHhhMjANCj4+IFsgICAzMC4wODc3NTNd
-ICBydG5sX25ld2xpbmsrMHg0NC8weDcwDQo+PiBbICAgMzAuMDg3NzU2XSAgcnRuZXRsaW5r
-X3Jjdl9tc2crMHgxODEvMHg0YjANCj4+IFsgICAzMC4wODc3NjFdICA/IHJ0bmV0bGlua19w
-dXRfbWV0cmljcysweDFlMC8weDFlMA0KPj4gWyAgIDMwLjA4Nzc2M10gIG5ldGxpbmtfcmN2
-X3NrYisweDViLzB4MTAwDQo+PiBbICAgMzAuMDg3NzY5XSAgbmV0bGlua191bmljYXN0KzB4
-MTc1LzB4MjQwDQo+PiBbICAgMzAuMDg3NzczXSAgbmV0bGlua19zZW5kbXNnKzB4MjRkLzB4
-NDgwDQo+PiBbICAgMzAuMDg3Nzc5XSAgc29ja19zZW5kbXNnKzB4NWUvMHg2MA0KPj4gWyAg
-IDMwLjA4Nzc4Ml0gIF9fX19zeXNfc2VuZG1zZysweDI1Yi8weDJhMA0KPj4gWyAgIDMwLjA4
-Nzc4NF0gID8gaW1wb3J0X2lvdmVjKzB4MTcvMHgyMA0KPj4gWyAgIDMwLjA4Nzc5MF0gIF9f
-X3N5c19zZW5kbXNnKzB4YTMvMHhmMA0KPj4gWyAgIDMwLjA4NzgwNF0gIF9fc3lzX3NlbmRt
-c2crMHg3My8weGIwDQo+PiBbICAgMzAuMDg3ODExXSAgZG9fc3lzY2FsbF82NCsweDMzLzB4
-NDANCj4+IFsgICAzMC4wODc4MTVdICBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUr
-MHg0NC8weGFlDQo+PiBbICAgMzAuMDg3ODE3XSBSSVA6IDAwMzM6MHg3ZjMwOGVjYTk2ZmQN
-Cj4+IFsgICAzMC4wODc4MTldIENvZGU6IDI4IDg5IDU0IDI0IDFjIDQ4IDg5IDc0IDI0IDEw
-IDg5IDdjIDI0IDA4IGU4IGZhIGVlIGZmIGZmIDhiIDU0IDI0IDFjIDQ4IDhiIDc0IDI0IDEw
-IDQxIDg5IGMwIDhiIDdjIDI0IDA4IGI4IDJlIDAwIDAwIDAwIDBmIDA1IDw0OD4gM2QgMDAg
-ZjAgZmYgZmYgNzcgMzMgNDQgODkgYzcgNDggODkgNDQgMjQgMDggZTggNGUgZWYgZmYgZmYg
-NDgNCj4+IFsgICAzMC4wODc4MjBdIFJTUDogMDAyYjowMDAwN2ZmZjcwYjRhZjQwIEVGTEFH
-UzogMDAwMDAyOTMgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAwMmUNCj4+IFsgICAzMC4wODc4
-MjNdIFJBWDogZmZmZmZmZmZmZmZmZmZkYSBSQlg6IDAwMDAwMDAwMDAwMDAwMTQgUkNYOiAw
-MDAwN2YzMDhlY2E5NmZkDQo+PiBbICAgMzAuMDg3ODI0XSBSRFg6IDAwMDAwMDAwMDAwMDAw
-MDAgUlNJOiAwMDAwN2ZmZjcwYjRhZjgwIFJESTogMDAwMDAwMDAwMDAwMDAwYw0KPj4gWyAg
-IDMwLjA4NzgyNV0gUkJQOiAwMDAwNTY1NTM1YWZlMDMwIFIwODogMDAwMDAwMDAwMDAwMDAw
-MCBSMDk6IDAwMDAwMDAwMDAwMDAwMDANCj4+IFsgICAzMC4wODc4MjZdIFIxMDogMDAwMDAw
-MDAwMDAwMDAwMCBSMTE6IDAwMDAwMDAwMDAwMDAyOTMgUjEyOiAwMDAwMDAwMDAwMDAwMDAw
-DQo+PiBbICAgMzAuMDg3ODI3XSBSMTM6IDAwMDA3ZmZmNzBiNGIwZTAgUjE0OiAwMDAwN2Zm
-ZjcwYjRiMGRjIFIxNTogMDAwMDAwMDAwMDAwMDAwMA0KPj4gWyAgIDMwLjA4NzgzNV0gaXJx
-IGV2ZW50IHN0YW1wOiAyNDIxNTMNCj4+IFsgICAzMC4wODc4MzZdIGhhcmRpcnFzIGxhc3Qg
-IGVuYWJsZWQgYXQgKDI0MjE1MSk6IFs8ZmZmZmZmZmZiYTBlYTY5Mj5dIF9fbG9jYWxfYmhf
-ZW5hYmxlX2lwKzB4ODIvMHhkMA0KPj4gWyAgIDMwLjA4NzgzOF0gaGFyZGlycXMgbGFzdCBk
-aXNhYmxlZCBhdCAoMjQyMTUyKTogWzxmZmZmZmZmZmJhZDNmNzk0Pl0gX3Jhd19yZWFkX2xv
-Y2tfaXJxc2F2ZSsweDk0LzB4YTANCj4+IFsgICAzMC4wODc4NDBdIHNvZnRpcnFzIGxhc3Qg
-IGVuYWJsZWQgYXQgKDI0MjE1MCk6IFs8ZmZmZmZmZmZjMGJkNTRkYj5dIGl3bF9wY2llX2dl
-bjJfZW5xdWV1ZV9oY21kKzB4NTZiLzB4OGMwIFtpd2x3aWZpXQ0KPj4gWyAgIDMwLjA4Nzg1
-MF0gc29mdGlycXMgbGFzdCBkaXNhYmxlZCBhdCAoMjQyMTUzKTogWzxmZmZmZmZmZmMwYmQ1
-MDViPl0gaXdsX3BjaWVfZ2VuMl9lbnF1ZXVlX2hjbWQrMHhlYi8weDhjMCBbaXdsd2lmaV0N
-Cj4+IFsgICAzMC4wODc4NTddIC0tLVsgZW5kIHRyYWNlIGFhMGIxNzFiNDQxNWExZmUgXS0t
-LQ0KPj4NCj4gDQo+IA0KPiBMb29rcyBsaWtlIHRoaXM6DQo+IGh0dHBzOi8vbG9yZS5rZXJu
-ZWwub3JnL2xpbnV4LXdpcmVsZXNzL255Y3Zhci5ZRkguNy43Ni4yMTAzMDIxMTI1NDMwLjEy
-NDA1QGNib2JrLmZoZnIucG0vDQo+IA0KPiBJIHRlc3RlZCB0aGF0IHBhdGNoIG9uIHJjNiBh
-bmQgaXQgd29ya2VkIHNvIGZhci4NCg0KVGhhdCBwYXRjaCBoYXMgYmVlbiBhZGRlZCB0byBy
-YzcsIHNvIEkgdGVzdGVkIHJjNyBhbmQgcmM3IHN0aWxsIGhhcyB0aGUgbG9ja2RlcCBzcGxh
-dCBpbiBkbWVzZy4NCg0KQnV0IGdvb2QgbmV3cywgdGhlIGlzc3VlIGlzIG15IHdpZmkgY2Fy
-ZCB1c2VzIGl3bF9wY2llX2dlbjJfZW5xdWV1ZV9oY21kIHdoZXJlIGFzIHRoZQ0KcGF0Y2gg
-eW91IGxpbmtlZCB0byBmaXhlcyBpd2xfcGNpZV9lbnF1ZXVlX2hjbWQgLiBBcHBseWluZyB0
-aGUgc2FtZSBjaGFuZ2VzIHRvIHRoZQ0KaXdsX3BjaWVfZ2VuMl9lbnF1ZXVlX2hjbWQgZnVu
-Y3Rpb24gYWxzbyBmaXhlcyBsb2NrZGVwIGNvbXBsYWluaW5nIGZvciBtZS4NCg0KSSdsbCBz
-dWJtaXQgYSBwYXRjaCBmb3IgdGhpcyB1cHN0cmVhbSByaWdodCBhd2F5Lg0KDQpSZWdhcmRz
-LA0KDQpIYW5zDQo=
+This fixes the same locking problem fixed by commit 2800aadc18a6 ("iwlwifi:
+Fix softirq/hardirq disabling in iwl_pcie_enqueue_hcmd()") but then for
+the gen2 variant of enqueue_hcmd().
+
+It's possible for iwl_pcie_enqueue_hcmd() to be called with hard IRQs
+disabled (e.g. from LED core). We can't enable BHs in such a situation.
+
+Turn the unconditional BH-enable/BH-disable code into
+hardirq-disable/conditional-enable.
+
+This fixes the warning below.
+
+[   36.763543] WARNING: CPU: 6 PID: 1582 at kernel/softirq.c:178 __local_bh=
+_enable_ip+0x97/0xd0
+[   36.763550] Modules linked in: cmac bnep vfat fat snd_ctl_led snd_soc_sk=
+l_hda_dsp snd_soc_hdac_hdmi snd_soc_dmic snd_hda_codec_hdmi snd_hda_codec_r=
+ealtek snd_hda_codec_generic snd_sof_pci_intel_cnl snd_sof_intel_hda_common=
+ soundwire_intel soundwire_generic_allocation soundwire_cadence snd_sof_int=
+el_hda iTCO_wdt mei_wdt snd_sof_pci mei_hdcp intel_pmc_bxt iTCO_vendor_supp=
+ort snd_sof snd_sof_xtensa_dsp snd_soc_skl intel_rapl_msr snd_soc_hdac_hda =
+snd_hda_ext_core snd_soc_sst_ipc x86_pkg_temp_thermal snd_soc_sst_dsp snd_s=
+oc_acpi_intel_match intel_powerclamp snd_soc_acpi coretemp snd_soc_core snd=
+_compress ac97_bus cdc_ether kvm_intel usbnet snd_pcm_dmaengine r8152 snd_h=
+da_intel mii snd_intel_dspcfg snd_usb_audio snd_intel_sdw_acpi snd_usbmidi_=
+lib kvm snd_rawmidi snd_hda_codec irqbypass snd_hda_core snd_hwdep rapl int=
+el_cstate snd_seq intel_uncore iwlmvm snd_seq_device pcspkr snd_pcm wmi_bmo=
+f intel_wmi_thunderbolt e1000e mac80211 uvcvideo btusb i2c_i801 videobuf2_v=
+malloc videobuf2_memops btrtl
+[   36.763661]  snd_timer i2c_smbus videobuf2_v4l2 btbcm btintel libarc4 th=
+underbolt videobuf2_common bluetooth videodev mei_me iwlwifi mei ecdh_gener=
+ic mc ecc nxp_nci_i2c nxp_nci joydev processor_thermal_device ucsi_acpi nci=
+ processor_thermal_rfim processor_thermal_mbox cfg80211 typec_ucsi processo=
+r_thermal_rapl intel_pch_thermal intel_rapl_common idma64 intel_soc_dts_ios=
+f typec nfc int3403_thermal int340x_thermal_zone soc_button_array intel_hid=
+ sparse_keymap acpi_pad int3400_thermal acpi_thermal_rel binfmt_misc zram i=
+p_tables dm_crypt trusted hid_logitech_hidpp hid_logitech_dj uas usb_storag=
+e crct10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel i915 serio=
+_raw nvme nvme_core i2c_algo_bit drm_kms_helper cec hid_multitouch drm wmi =
+i2c_hid_acpi i2c_hid thinkpad_acpi ledtrig_audio platform_profile snd sound=
+core rfkill drm_privacy_screen_helper video pinctrl_cannonlake i2c_dev fuse
+[   36.763775] CPU: 6 PID: 1582 Comm: NetworkManager Not tainted 5.12.0-rc7=
++ #303
+[   36.763778] Hardware name: LENOVO 20U90SIT19/20U90SIT19, BIOS N2WET24W (=
+1.14 ) 10/15/2020
+[   36.763780] RIP: 0010:__local_bh_enable_ip+0x97/0xd0
+[   36.763783] Code: f3 48 a9 00 ff ff 00 74 36 65 ff 0d b3 02 f3 48 e8 de =
+ee 12 00 fb 66 0f 1f 44 00 00 5b 5d c3 65 8b 05 d9 0a f3 48 85 c0 75 9c <0f=
+> 0b eb 98 e8 00 ee 12 00 eb a7 48 89 ef e8 16 14 07 00 eb b0 65
+[   36.763786] RSP: 0018:ffffbc2e016b72d0 EFLAGS: 00010046
+[   36.763790] RAX: 0000000000000000 RBX: 0000000000000201 RCX: 00000000000=
+00000
+[   36.763792] RDX: 0000000000000003 RSI: 0000000000000201 RDI: ffffffffc0a=
+8527b
+[   36.763794] RBP: ffffffffc0a8527b R08: 0000000000000000 R09: 00000000000=
+00001
+[   36.763796] R10: ffffbc2e016b71c0 R11: 0000000000000001 R12: ffffa0570c9=
+02c10
+[   36.763798] R13: 0000000000000000 R14: 0000000080000000 R15: 00000000000=
+00000
+[   36.763801] FS:  00007f44b889bbc0(0000) GS:ffffa05a5a580000(0000) knlGS:=
+0000000000000000
+[   36.763803] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   36.763805] CR2: 00007fde6d88b8f0 CR3: 0000000142b08005 CR4: 00000000003=
+706e0
+[   36.763808] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
+00000
+[   36.763810] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
+00400
+[   36.763812] Call Trace:
+[   36.763815]  iwl_pcie_gen2_enqueue_hcmd+0x56b/0x8c0 [iwlwifi]
+[   36.763848]  iwl_trans_txq_send_hcmd+0x59/0x440 [iwlwifi]
+[   36.763872]  iwl_trans_send_cmd+0x81/0x180 [iwlwifi]
+[   36.763890]  iwl_mvm_send_cmd+0x28/0x80 [iwlmvm]
+[   36.763910]  iwl_mvm_led_set+0x9c/0xc0 [iwlmvm]
+[   36.763933]  ? _raw_read_lock_irqsave+0x88/0xa0
+[   36.763938]  led_trigger_event+0x46/0x70
+[   36.763945]  ieee80211_do_open+0x4c2/0xa70 [mac80211]
+[   36.764006]  ieee80211_open+0x69/0x90 [mac80211]
+[   36.764057]  __dev_open+0xd4/0x1a0
+[   36.764063]  __dev_change_flags+0x1c8/0x240
+[   36.764072]  dev_change_flags+0x21/0x60
+[   36.764077]  do_setlink+0x238/0x1110
+[   36.764084]  ? cpumask_next+0x17/0x20
+[   36.764087]  ? __snmp6_fill_stats64.constprop.0+0x53/0xe0
+[   36.764093]  ? __nla_validate_parse+0x4f/0xbf0
+[   36.764109]  __rtnl_newlink+0x601/0x9b0
+[   36.764116]  ? __lock_acquire+0x389/0x1e10
+[   36.764130]  ? lock_acquire+0xb5/0x380
+[   36.764134]  ? sock_def_readable+0x5/0x2a0
+[   36.764136]  ? lock_is_held_type+0xa5/0x120
+[   36.764141]  ? find_held_lock+0x2b/0x80
+[   36.764146]  ? sock_def_readable+0xb0/0x2a0
+[   36.764148]  ? lock_release+0xba/0x2a0
+[   36.764156]  ? netlink_unicast+0x1f7/0x230
+[   36.764163]  ? rtnl_getlink+0x364/0x3e0
+[   36.764207]  ? rcu_read_lock_sched_held+0x3f/0x80
+[   36.764211]  ? kmem_cache_alloc_trace+0x29a/0x2c0
+[   36.764220]  rtnl_newlink+0x44/0x70
+[   36.764225]  rtnetlink_rcv_msg+0x16e/0x480
+[   36.764229]  ? netlink_deliver_tap+0x95/0x3d0
+[   36.764236]  ? rtnetlink_put_metrics+0x1c0/0x1c0
+[   36.764241]  netlink_rcv_skb+0x50/0xf0
+[   36.764251]  netlink_unicast+0x16d/0x230
+[   36.764258]  netlink_sendmsg+0x24d/0x480
+[   36.764270]  sock_sendmsg+0x5e/0x60
+[   36.764274]  ____sys_sendmsg+0x22f/0x270
+[   36.764278]  ? import_iovec+0x17/0x20
+[   36.764282]  ? sendmsg_copy_msghdr+0x59/0x90
+[   36.764290]  ___sys_sendmsg+0x81/0xc0
+[   36.764303]  ? lock_is_held_type+0xa5/0x120
+[   36.764307]  ? find_held_lock+0x2b/0x80
+[   36.764313]  ? __fget_files+0xd0/0x1a0
+[   36.764316]  ? lock_release+0xba/0x2a0
+[   36.764324]  ? __fget_files+0xef/0x1a0
+[   36.764333]  __sys_sendmsg+0x49/0x80
+[   36.764342]  ? syscall_enter_from_user_mode+0x27/0x80
+[   36.764348]  do_syscall_64+0x33/0x40
+[   36.764352]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[   36.764355] RIP: 0033:0x7f44b99876fd
+[   36.764359] Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 fa ee ff =
+ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48=
+> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 44 24 08 e8 4e ef ff ff 48
+[   36.764361] RSP: 002b:00007ffca4a55940 EFLAGS: 00000293 ORIG_RAX: 000000=
+000000002e
+[   36.764365] RAX: ffffffffffffffda RBX: 0000000000000014 RCX: 00007f44b99=
+876fd
+[   36.764368] RDX: 0000000000000000 RSI: 00007ffca4a55980 RDI: 00000000000=
+0000c
+[   36.764370] RBP: 0000560f3b81d030 R08: 0000000000000000 R09: 00000000000=
+00000
+[   36.764372] R10: 0000000000000000 R11: 0000000000000293 R12: 00000000000=
+00000
+[   36.764374] R13: 00007ffca4a55ae0 R14: 00007ffca4a55adc R15: 00000000000=
+00000
+[   36.764390] irq event stamp: 246365
+[   36.764391] hardirqs last  enabled at (246363): [<ffffffffb70e7b12>] __l=
+ocal_bh_enable_ip+0x82/0xd0
+[   36.764395] hardirqs last disabled at (246364): [<ffffffffb7d111c4>] _ra=
+w_read_lock_irqsave+0x94/0xa0
+[   36.764398] softirqs last  enabled at (246362): [<ffffffffc0a8527b>] iwl=
+_pcie_gen2_enqueue_hcmd+0x56b/0x8c0 [iwlwifi]
+[   36.764414] softirqs last disabled at (246365): [<ffffffffc0a84dfb>] iwl=
+_pcie_gen2_enqueue_hcmd+0xeb/0x8c0 [iwlwifi]
+
+Cc: Jiri Kosina <jkosina@suse.cz>
+Cc: Chris Murphy <lists@colorremedies.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/ne=
+t/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index 4456abb9a074..34bde8c87324 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -40,6 +40,7 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
+ 	const u8 *cmddata[IWL_MAX_CMD_TBS_PER_TFD];
+ 	u16 cmdlen[IWL_MAX_CMD_TBS_PER_TFD];
+ 	struct iwl_tfh_tfd *tfd;
++	unsigned long flags;
+=20
+ 	copy_size =3D sizeof(struct iwl_cmd_header_wide);
+ 	cmd_size =3D sizeof(struct iwl_cmd_header_wide);
+@@ -108,14 +109,14 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *tran=
+s,
+ 		goto free_dup_buf;
+ 	}
+=20
+-	spin_lock_bh(&txq->lock);
++	spin_lock_irqsave(&txq->lock, flags);
+=20
+ 	idx =3D iwl_txq_get_cmd_index(txq, txq->write_ptr);
+ 	tfd =3D iwl_txq_get_tfd(trans, txq, txq->write_ptr);
+ 	memset(tfd, 0, sizeof(*tfd));
+=20
+ 	if (iwl_txq_space(trans, txq) < ((cmd->flags & CMD_ASYNC) ? 2 : 1)) {
+-		spin_unlock_bh(&txq->lock);
++		spin_unlock_irqrestore(&txq->lock, flags);
+=20
+ 		IWL_ERR(trans, "No space in command queue\n");
+ 		iwl_op_mode_cmd_queue_full(trans->op_mode);
+@@ -250,7 +251,7 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
+ 	spin_unlock(&trans_pcie->reg_lock);
+=20
+ out:
+-	spin_unlock_bh(&txq->lock);
++	spin_unlock_irqrestore(&txq->lock, flags);
+ free_dup_buf:
+ 	if (idx < 0)
+ 		kfree(dup_buf);
+--=20
+2.31.1
 
