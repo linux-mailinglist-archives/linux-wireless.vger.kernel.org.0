@@ -2,196 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A7AF3604D2
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 10:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0647E360531
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 11:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231809AbhDOIsC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Apr 2021 04:48:02 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:52869 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbhDOIrz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Apr 2021 04:47:55 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13F8lPxM5022679, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13F8lPxM5022679
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 15 Apr 2021 16:47:25 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 15 Apr 2021 16:47:25 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 15 Apr
- 2021 16:47:24 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <vincent_fann@realtek.com>,
-        <phhuang@realtek.com>, <steventing@realtek.com>,
-        <briannorris@chromium.org>
-Subject: [PATCH 3/3] rtw88: refine napi deinit flow
-Date:   Thu, 15 Apr 2021 16:47:03 +0800
-Message-ID: <20210415084703.27255-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20210415084703.27255-1-pkshih@realtek.com>
-References: <20210415084703.27255-1-pkshih@realtek.com>
+        id S231969AbhDOJEa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Apr 2021 05:04:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41422 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231842AbhDOJEa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 15 Apr 2021 05:04:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3D1DC61073;
+        Thu, 15 Apr 2021 09:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1618477447;
+        bh=mX00MpGyDvBmSUErvltMQ84mOAb+jkfVbdedpKHU0SE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=cZV2qiMGn6wFHBEkAlW+EU1Tsu8lMc40zPRKiaPPSMR055xhLhOMKT6HECkESTEW8
+         VT6FyP4qDNC6kr2dzi38bpvt8pCY3JaM/dfQvQ68w9mfya63gAsLCsR0QcnxsQYFZ2
+         5a66Ld+JvUzy2e7qccEQqDWcJUgMIbd1r1BJEgbuxlDbJ+0PcbGv6gDMcQuJycRLRu
+         q1UFGfl/a7/0GTjqkajaewCXvDcHc70DiqM8s57gCviuYp1WZuRXfl8x9KYLw76K1G
+         R+NEbs/pK/hq0bw3r+P0HmKwpgY0xemRPkTydhoXmAGqXALJbQhdlz9PjrBfEkmp5i
+         VPlLtIqxd+4nA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7921: move hw configuration in mt7921_register_device
+Date:   Thu, 15 Apr 2021 11:03:58 +0200
+Message-Id: <40649f5e9ce9ab2a96ff4eb0587f82f300988280.1618477272.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS03.realtek.com.tw (172.21.6.96) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMTUgpFekyCAwNjowMDowMA==?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/15/2021 08:05:31
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163124 [Apr 15 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/15/2021 08:07:00
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMTUgpFekyCAwNzoxMDowMA==?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/15/2021 08:09:32
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163124 [Apr 15 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/15/2021 08:12:00
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+Get rid of init work since firmware loading is already performed in
+mt7921_init_hardware
 
-We used to stop napi before disabling irqs. And it turns out
-to cause some problem when we try to stop device while interrupt arrives.
-
-To safely stop pci, we do three steps:
-1. disable interrupt
-2. synchronize_irq
-3. stop_napi
-Since step 2 and 3 may not finish as expected when interrupt is enabled,
-use rtwpci->running to decide whether interrupt should be re-enabled at
-the time.
-
-Fixes: 9e2fd29864c5 ("rtw88: add napi support")
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/pci.c | 19 ++++++++++++++-----
- drivers/net/wireless/realtek/rtw88/pci.h |  1 +
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/init.c   | 18 ++++++------------
+ .../net/wireless/mediatek/mt76/mt7921/mt7921.h |  1 -
+ 2 files changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index adea3c7551ab..f59a4c462e3b 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -581,23 +581,30 @@ static int rtw_pci_start(struct rtw_dev *rtwdev)
- {
- 	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 0aedddb90858..eab6e2dcdb96 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -166,20 +166,10 @@ void mt7921_mac_init(struct mt7921_dev *dev)
+ 	mt76_connac_mcu_set_rts_thresh(&dev->mt76, 0x92b, 0);
+ }
  
-+	rtw_pci_napi_start(rtwdev);
-+
- 	spin_lock_bh(&rtwpci->irq_lock);
-+	rtwpci->running = true;
- 	rtw_pci_enable_interrupt(rtwdev, rtwpci, false);
- 	spin_unlock_bh(&rtwpci->irq_lock);
- 
--	rtw_pci_napi_start(rtwdev);
+-static void mt7921_init_work(struct work_struct *work)
+-{
+-	struct mt7921_dev *dev = container_of(work, struct mt7921_dev,
+-				 init_work);
 -
+-	mt7921_mcu_set_eeprom(dev);
+-	mt7921_mac_init(dev);
+-}
+-
+ static int mt7921_init_hardware(struct mt7921_dev *dev)
+ {
+ 	int ret, idx;
+ 
+-	INIT_WORK(&dev->init_work, mt7921_init_work);
+ 	spin_lock_init(&dev->token_lock);
+ 	idr_init(&dev->token);
+ 
+@@ -202,6 +192,10 @@ static int mt7921_init_hardware(struct mt7921_dev *dev)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = mt7921_mcu_set_eeprom(dev);
++	if (ret)
++		return ret;
++
+ 	/* Beacon and mgmt frames should occupy wcid 0 */
+ 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7921_WTBL_STA - 1);
+ 	if (idx)
+@@ -212,6 +206,8 @@ static int mt7921_init_hardware(struct mt7921_dev *dev)
+ 	dev->mt76.global_wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 	rcu_assign_pointer(dev->mt76.wcid[idx], &dev->mt76.global_wcid);
+ 
++	mt7921_mac_init(dev);
++
  	return 0;
  }
  
- static void rtw_pci_stop(struct rtw_dev *rtwdev)
- {
- 	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-+	struct pci_dev *pdev = rtwpci->pdev;
+@@ -266,8 +262,6 @@ int mt7921_register_device(struct mt7921_dev *dev)
+ 	if (ret)
+ 		return ret;
  
-+	spin_lock_bh(&rtwpci->irq_lock);
-+	rtwpci->running = false;
-+	rtw_pci_disable_interrupt(rtwdev, rtwpci);
-+	spin_unlock_bh(&rtwpci->irq_lock);
-+
-+	synchronize_irq(pdev->irq);
- 	rtw_pci_napi_stop(rtwdev);
- 
- 	spin_lock_bh(&rtwpci->irq_lock);
--	rtw_pci_disable_interrupt(rtwdev, rtwpci);
- 	rtw_pci_dma_release(rtwdev, rtwpci);
- 	spin_unlock_bh(&rtwpci->irq_lock);
+-	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+-
+ 	return mt7921_init_debugfs(dev);
  }
-@@ -1212,7 +1219,8 @@ static irqreturn_t rtw_pci_interrupt_threadfn(int irq, void *dev)
- 		rtw_fw_c2h_cmd_isr(rtwdev);
  
- 	/* all of the jobs for this interrupt have been done */
--	rtw_pci_enable_interrupt(rtwdev, rtwpci, rx);
-+	if (rtwpci->running)
-+		rtw_pci_enable_interrupt(rtwdev, rtwpci, rx);
- 	spin_unlock_bh(&rtwpci->irq_lock);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 5cc01efee989..c34cf3e3a26b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -156,7 +156,6 @@ struct mt7921_dev {
  
- 	return IRQ_HANDLED;
-@@ -1633,7 +1641,8 @@ static int rtw_pci_napi_poll(struct napi_struct *napi, int budget)
- 	if (work_done < budget) {
- 		napi_complete_done(napi, work_done);
- 		spin_lock_bh(&rtwpci->irq_lock);
--		rtw_pci_enable_interrupt(rtwdev, rtwpci, false);
-+		if (rtwpci->running)
-+			rtw_pci_enable_interrupt(rtwdev, rtwpci, false);
- 		spin_unlock_bh(&rtwpci->irq_lock);
- 		/* When ISR happens during polling and before napi_complete
- 		 * while no further data is received. Data on the dma_ring will
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.h b/drivers/net/wireless/realtek/rtw88/pci.h
-index e76fc549a788..0ffae887527a 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.h
-+++ b/drivers/net/wireless/realtek/rtw88/pci.h
-@@ -211,6 +211,7 @@ struct rtw_pci {
- 	spinlock_t irq_lock;
- 	u32 irq_mask[4];
- 	bool irq_enabled;
-+	bool running;
+ 	u16 chainmask;
  
- 	/* napi structure */
- 	struct net_device netdev;
+-	struct work_struct init_work;
+ 	struct work_struct reset_work;
+ 
+ 	struct list_head sta_poll_list;
 -- 
-2.21.0
+2.30.2
 
