@@ -2,99 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF2F4360FC8
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 18:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E138361034
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Apr 2021 18:31:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234218AbhDOQFJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Apr 2021 12:05:09 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:20408 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233734AbhDOQFI (ORCPT
+        id S232993AbhDOQb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Apr 2021 12:31:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37376 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231137AbhDOQbx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Apr 2021 12:05:08 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618502685; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=4E2s8oryTBXf1UCWo/s+gPkmUGJYu7btSYm+HkBY2Jc=; b=ORPx9cOC4vIGz1iLGHGK9NcMrDvqA9Tz+WyURjicXGEMZuBQzre1yHMHg5cDf3k9vm5md+lX
- IpYKHoKajTvVuo2Fb3lA/7+kWZ47vJVT8z4E7U9HU3TtUSwgzQBF81AP88aVJGdZ2Y2zDjye
- 4IxUBWZYxeWsQN+qMWJ9hBtAr2M=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 607864149a9ff96d95892d0f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 15 Apr 2021 16:04:36
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4B7A3C43463; Thu, 15 Apr 2021 16:04:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A568C433ED;
-        Thu, 15 Apr 2021 16:04:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A568C433ED
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     jikos@kernel.org, hdegoede@redhat.com, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH for -next] iwlwifi: pcie: don't enable BHs with IRQs disabled
-References: <iwlwifi.20210415164821.d0f2edda1651.I75f762e0bed38914d1300ea198b86dd449b4b206@changeid>
-        <bab37babea4f2972ef222e1dcaff7ab966ab15a8.camel@coelho.fi>
-Date:   Thu, 15 Apr 2021 19:04:32 +0300
-In-Reply-To: <bab37babea4f2972ef222e1dcaff7ab966ab15a8.camel@coelho.fi> (Luca
-        Coelho's message of "Thu, 15 Apr 2021 16:52:35 +0300")
-Message-ID: <875z0nlejz.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 15 Apr 2021 12:31:53 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74EA8C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Apr 2021 09:31:30 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id y20-20020a1c4b140000b029011f294095d3so14945010wma.3
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Apr 2021 09:31:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=colorremedies-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dTZ2La04M2sh5ZKGnn2vZEtRsqLZJonoYjzxF0RLs2o=;
+        b=ZcgtVQ6lOI0Cqag3hElZuKl9WbV5bWaB7IX17W9RXy/hmCgzdcDaRB0eMEYrs67MqO
+         8SKR2wQpB0KohIyeyQh6uwUwimydmbIxRm6uzTMexY9zIZp9WtokrtXHZU5SmYooqlLE
+         /9V1Dp+ezBNIB9T4VX36oyprn2+BHqT78zJHy5ovI849L+YnUM5/JmXnb+D0YRm0KtD/
+         lsKhw1+FhwLUNyWtjpyZLh586HZQ1jA7VprNLbwLN22Mqok7vgNWoJGbb9JsdqlN0SCU
+         nKOrOV7gU3t00UJXy77hKCm4L/EiZLuCMewB4U0SjJYtvHp3hSxO53XGFY6qFGUf2jxu
+         v0aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dTZ2La04M2sh5ZKGnn2vZEtRsqLZJonoYjzxF0RLs2o=;
+        b=kk5tS3zOrFDyvx1eOrm4bk1aK5riO+wLpsfvmL/DgJUvjndL96c9VEN2LXZCE/FXL0
+         xlew8fPxYIuFxObqJmTo0VTxpPLEhGPcnMn4EuXfHt/Q3gJc6LVD+liyQZSQVa95ydqX
+         Fok7lriBL0c7BVnU1wL/YHsB8Bb6ok0wjAT647NfTGRH8OQSEYtZy0++4IhdONkpLHFC
+         a9YCoQZ9iqNIiJdqvRLuWRiQNIOuM4FnYQoHux7olOsyII4vcdxEJEoqTLrueIsQYeWi
+         3nJgDWgodTkQBTxU6WkqpFoLL08lsLb7xVwhSxyQDmPlJfLVMyWU7HKj1d7T8R59ohF0
+         IfBQ==
+X-Gm-Message-State: AOAM531IEVhenWvDBK7q03jATIVosCaSAaSgts3+DkmB6bFyHB0Z03Da
+        naBIN9CeDT6jyTa2/KAROJjGWFeKk3spjxuN2NxfN0EhSJt+r+dJ
+X-Google-Smtp-Source: ABdhPJyTgub2WvfDBiYROzE0KFerept1jIa+hEPoRI5D5SLJh68s0P8NRr9EQ41SzkgVf9VphD+x9HWYzwLaQwmnHp8=
+X-Received: by 2002:a7b:c30e:: with SMTP id k14mr4059596wmj.128.1618504289224;
+ Thu, 15 Apr 2021 09:31:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <9fafe866-6ff6-d1c4-0a04-493d863bc9db@redhat.com>
+ <CAJCQCtRFqmioneenXeNEoBXnjGCrOeU-SthZKT60bQoMD84K2w@mail.gmail.com> <10faeb84-1232-f179-a687-35a148fb7a0d@redhat.com>
+In-Reply-To: <10faeb84-1232-f179-a687-35a148fb7a0d@redhat.com>
+From:   Chris Murphy <lists@colorremedies.com>
+Date:   Thu, 15 Apr 2021 10:31:12 -0600
+Message-ID: <CAJCQCtQosH3Pc2O4yc7n8eTdAcF=7AiJYxh+y1tuEE2kxMGfrg@mail.gmail.com>
+Subject: Re: iwlwifi Lockdep warning with 5.12-rc4 on 8086:02f0 (Comet Lake
+ PCH-LP CNVi WiFi)
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Chris Murphy <lists@colorremedies.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+On Thu, Apr 15, 2021 at 6:04 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi Chris,
+>
+> On 4/13/21 11:38 PM, Chris Murphy wrote:
 
-> On Thu, 2021-04-15 at 16:48 +0300, Luca Coelho wrote:
->> From: Johannes Berg <johannes.berg@intel.com>
->> 
->> After the fix from Jiri that disabled local IRQs instead of
->> just BHs (necessary to fix an issue with submitting a command
->> with IRQs already disabled), there was still a situation in
->> which we could deep in there enable BHs, if the device config
->> sets the apmg_wake_up_wa configuration, which is true on all
->> 7000 series devices.
->> 
->> To fix that, but not require reverting commit 1ed08f6fb5ae
->> ("iwlwifi: remove flags argument for nic_access"), split up
->> nic access into a version with BH manipulation to use most
->> of the time, and without it for this specific case where the
->> local IRQs are already disabled.
->> 
->> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
->> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
->> ---
+> > Looks like this:
+> > https://lore.kernel.org/linux-wireless/nycvar.YFH.7.76.2103021125430.12405@cbobk.fhfr.pm/
+> >
+> > I tested that patch on rc6 and it worked so far.
 >
-> Kalle, I'm going to assign this one to you too, but this time for -next
-> and not for -fixes.
->
-> This is related to the fix Jiri made, but to avoid some conflicts and a
-> broken v5.13-rc, we want to get it into v5.13 if still possible.
->
-> So can you please take this on top of my latest pull request?
-> Additionally, can you tag it for stable?
+> That patch has been added to rc7, so I tested rc7 and rc7 still has the lockdep splat in dmesg.
 
-Will do.
+I'm running 5.12.0-0.rc7.189.fc35.x86_64+debug and don't have the lockdep splat.
+
+[   12.502108] iwlwifi 0000:6c:00.0: Detected Intel(R) Dual Band
+Wireless AC 8260, REV=0x204
+
+> But good news, the issue is my wifi card uses iwl_pcie_gen2_enqueue_hcmd where as the
+> patch you linked to fixes iwl_pcie_enqueue_hcmd . Applying the same changes to the
+> iwl_pcie_gen2_enqueue_hcmd function also fixes lockdep complaining for me.
+
+OK super.
+
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Chris Murphy
