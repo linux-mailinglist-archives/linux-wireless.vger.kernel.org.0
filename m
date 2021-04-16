@@ -2,122 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E354C362A62
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Apr 2021 23:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C728A362AE6
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 00:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242841AbhDPVgF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Apr 2021 17:36:05 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:35219 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235540AbhDPVgE (ORCPT
+        id S233995AbhDPWQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Apr 2021 18:16:55 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:54640 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232618AbhDPWQy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Apr 2021 17:36:04 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618608939; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=VuuXgRVi2I9t45HaEUdXxLnuHFSkVUfzl+EjC/badf4=;
- b=RGUuiVXkDsA5N/dyFo995qGCxy/odwtFX+Z4kCTLFol+KPf3dvVETsccatdJqvhh4UJEulzr
- cHpOnzUl1HVOJridNe+VQYuz5P9xsU3xJlP9S0ab81BFPFIik4zhFJ6Uyr44LUGlA3xJAvFM
- exgsPq7Pqo2a311yHRG2KwALdvA=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 607a032a2cc44d3aea87a4c0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 16 Apr 2021 21:35:38
- GMT
-Sender: alokad=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CB947C43461; Fri, 16 Apr 2021 21:35:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1602FC433CA;
-        Fri, 16 Apr 2021 21:35:38 +0000 (UTC)
+        Fri, 16 Apr 2021 18:16:54 -0400
+X-UUID: ade985bdd85a4db6b7b8d4138b5efac2-20210417
+X-UUID: ade985bdd85a4db6b7b8d4138b5efac2-20210417
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1445916421; Sat, 17 Apr 2021 06:16:22 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 17 Apr 2021 06:16:20 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 17 Apr 2021 06:16:20 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/3] mt76: mt7915: add support for DT rate power limits
+Date:   Sat, 17 Apr 2021 06:16:17 +0800
+Message-ID: <6c1be8713dfd1154b5ec61b2b094eb156d9fb659.1618609024.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Fri, 16 Apr 2021 14:35:38 -0700
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>
-Subject: Re: [PATCH v9 2/4] mac80211: add multiple bssid support to interface
- handling
-In-Reply-To: <7f6f0a8c151746e8bb44ad50daf75259a0fac829.camel@sipsolutions.net>
-References: <20210310182604.8858-1-alokad@codeaurora.org>
- <20210310182604.8858-3-alokad@codeaurora.org>
- (sfid-20210310_192729_241525_2DF37B20)
- <7f6f0a8c151746e8bb44ad50daf75259a0fac829.camel@sipsolutions.net>
-Message-ID: <494efc64a803693324dee5b7a03cfda0@codeaurora.org>
-X-Sender: alokad@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-04-08 05:06, Johannes Berg wrote:
-> On Wed, 2021-03-10 at 10:26 -0800, Aloka Dixit wrote:
->> From: John Crispin <john@phrozen.org>
->> 
->> Add a new helper ieee80211_set_multiple_bssid_options() takes 
->> propagating
->> the cfg80211 data down the stack.
->> 
->> The patch also makes sure that all members of the bss set will get 
->> closed
->> when either of them is shutdown.
-> 
-> s/either/any/
->> 
->>  static int ieee80211_del_iface(struct wiphy *wiphy, struct 
->> wireless_dev *wdev)
->>  {
->> +	struct ieee80211_sub_if_data *sdata;
->> +
->> +	sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
-> 
-> can be one line
-> 
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-Okay
+Enable to limit per-rate max txpower from DT.
 
->> +	if (sdata && sdata->vif.type == NL80211_IFTYPE_AP) {
->> +		if (sdata->vif.multiple_bssid.flags & 
->> IEEE80211_VIF_MBSS_TRANSMITTING) {
->> +			struct ieee80211_sub_if_data *child;
->> +
->> +			rcu_read_lock();
->> +			list_for_each_entry_rcu(child, &sdata->local->interfaces, list)
->> +				if (child->vif.multiple_bssid.parent == &sdata->vif)
->> +					dev_close(child->wdev.netdev);
->> +			rcu_read_unlock();
-> 
-> You never tested this properly, this is wrong.
-> 
-> johannes
+Tested-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 44 ++++++++++++++++---
+ 1 file changed, 38 insertions(+), 6 deletions(-)
 
-This was added for graceful shutdown of non-transmitting interfaces 
-whenever the transmitting one is being brought down. But I see that 
-dev_close() is happening twice now.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 0b739ed8ce33..3d88a05aad5d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3375,15 +3375,47 @@ int mt7915_mcu_set_sku(struct mt7915_phy *phy)
+ 		.format_id = 4,
+ 		.dbdc_idx = phy != &dev->phy,
+ 	};
+-	int i;
+-	s8 *delta;
++	struct mt76_power_limits limits_array;
++	s8 *delta, *la = (s8 *)&limits_array;
++	int i, idx, n_chains = hweight8(mphy->antenna_mask);
++	int tx_power;
+ 
+ 	delta = dev->rate_power[mphy->chandef.chan->band];
+-	mphy->txpower_cur = hw->conf.power_level * 2 +
+-			    delta[MT7915_SKU_MAX_DELTA_IDX];
++	tx_power = hw->conf.power_level * 2 -
++		   mt76_tx_power_nss_delta(n_chains);
++
++	tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
++					      &limits_array, tx_power);
++	mphy->txpower_cur = tx_power;
++
++	for (i = 0, idx = 0; i < MAX_SKU_RATE_GROUP_NUM; i++) {
++		const struct sku_group *sku = &mt7915_sku_groups[i];
++		u32 offset = sku->offset[mphy->chandef.chan->band];
++		u8 mcs_num = sku->len;
++		int j;
++
++		if (i >= SKU_HT_BW20 && i <= SKU_VHT_BW160) {
++			mcs_num = 10;
++
++			if (i == SKU_HT_BW20 || i == SKU_VHT_BW20)
++				la = (s8 *)&limits_array + 12;
++		}
+ 
+-	for (i = 0; i < MT7915_SKU_RATE_NUM; i++)
+-		req.val[i] = hw->conf.power_level * 2 + delta[i];
++		if (!offset) {
++			idx += sku->len;
++			la += mcs_num;
++			continue;
++		}
++
++		for (j = 0; j < min_t(u8, mcs_num, sku->len); j++) {
++			s8 rate_power;
++
++			rate_power = hw->conf.power_level * 2 + delta[idx + j];
++			req.val[idx + j] = min_t(s8, la[j], rate_power);
++		}
++		la += mcs_num;
++		idx += sku->len;
++	}
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76,
+ 				 MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), &req,
+-- 
+2.18.0
 
-Inclining towards removing this and just return error to application if 
-it tries to remove transmitting before all non-transmitting are deleted.
-However, currently the "parent" pointer to indicate the transmitting 
-interface is maintained in mac80211, nothing in cfg80211.
-
-Which option would be better,
-(1) Add new function to mac80211_config_ops to return yes/no to whether 
-cfg80211 can delete a particular interface when MBSSID is in use.
-(2) Add a new pointer in struct wireless_dev to track the transmitting 
-interface of the set. Then the yes/no decision can be taken in cfg80211 
-itself.
-
-Thanks.
