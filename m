@@ -2,244 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E20E3623C2
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Apr 2021 17:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9843623F5
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Apr 2021 17:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245530AbhDPPVm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Apr 2021 11:21:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45386 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240740AbhDPPUS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Apr 2021 11:20:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 126B76124B;
-        Fri, 16 Apr 2021 15:19:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618586393;
-        bh=pSsgz6SFE9awjWhpCd9doKdNFULnoUddJE0eDHwlPEw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=UxAqG9OtRb+QQxIjEDiDCQjDyuQCAA2d4ZFOE0N0q01hfecceetNP30Wn2cpoOVE9
-         WzIl3RlQROaX8eslzhr1HB02OC63p5qRAgAuwInnYgmiv5fbcBC9TWTmYo232GGxlq
-         zl187zQg298hyuS7vBp9IbYu6DRnXQnCKamPIPA4bmh5K0mikLKCBT6to2dCP1x8ty
-         zZx9ADxRCSv4iMzbDba1VKhTd/WRazgU+F/ual3PjLXwH8R3NcS540TNXA2d3csxLQ
-         52sEoFTMSZBaj5Io5xR7NND2H/FGQQX/xOraxhVAgnOADPCX7A2gJRiZJ6UQi8EIca
-         qbHUW/1etaTZw==
-Received: by mail-qv1-f50.google.com with SMTP id dp18so8964626qvb.5;
-        Fri, 16 Apr 2021 08:19:53 -0700 (PDT)
-X-Gm-Message-State: AOAM532l1zBWHnAq4t2Jj5dnVbng16I/pUevkfmsOrp4a9gX2OyAZlsE
-        nsvKvN+kzewR/ABkKCT91eKm6uDkXmC8UEFLuQ==
-X-Google-Smtp-Source: ABdhPJwFV5j0PpR0OOvbKTHrtQGM0/UHlnjLPz7IjIHFauq3IAwfsuj1+lSbzphYfDXiggRtdMYLzMTYnQvOIyCHQj8=
-X-Received: by 2002:ad4:5a07:: with SMTP id ei7mr8951384qvb.50.1618586391992;
- Fri, 16 Apr 2021 08:19:51 -0700 (PDT)
+        id S1343674AbhDPPbJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Apr 2021 11:31:09 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:35315 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1343694AbhDPPbH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Apr 2021 11:31:07 -0400
+X-UUID: d859b297ecc5411b96d00c906075a929-20210416
+X-UUID: d859b297ecc5411b96d00c906075a929-20210416
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 2110974663; Fri, 16 Apr 2021 23:30:40 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs01n2.mediatek.inc (172.21.101.79) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 16 Apr 2021 23:30:37 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 16 Apr 2021 23:30:37 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2 1/2] mt76: mt7921: add wifisys reset support in debugfs
+Date:   Fri, 16 Apr 2021 23:30:35 +0800
+Message-ID: <1618587036-17143-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-References: <20210412174718.17382-1-michael@walle.cc> <20210412174718.17382-3-michael@walle.cc>
- <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org> <8157eba9317609294da80472622deb28@walle.cc>
-In-Reply-To: <8157eba9317609294da80472622deb28@walle.cc>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 16 Apr 2021 10:19:40 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-Message-ID: <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
- non-platform devices
-To:     Michael Walle <michael@walle.cc>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        netdev <netdev@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        "open list:MEDIA DRIVERS FOR RENESAS - FCP" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "moderated list:ARM/STM32 ARCHITECTURE" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        linux-oxnas@groups.io, linux-omap <linux-omap@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 84D286E04426F2F02A4F9A502085D6E3F0D8BF0ABEFDFD84E245B3A78CAD577F2000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Apr 16, 2021 at 2:30 AM Michael Walle <michael@walle.cc> wrote:
->
-> Am 2021-04-16 05:24, schrieb Benjamin Herrenschmidt:
-> > On Mon, 2021-04-12 at 19:47 +0200, Michael Walle wrote:
-> >>
-> >>  /**
-> >>   * of_get_phy_mode - Get phy mode for given device_node
-> >> @@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np,
-> >> const char *name, u8 *addr)
-> >>  static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
-> >>  {
-> >>         struct platform_device *pdev = of_find_device_by_node(np);
-> >> +       struct nvmem_cell *cell;
-> >> +       const void *mac;
-> >> +       size_t len;
-> >>         int ret;
-> >>
-> >> -       if (!pdev)
-> >> -               return -ENODEV;
-> >> +       /* Try lookup by device first, there might be a
-> >> nvmem_cell_lookup
-> >> +        * associated with a given device.
-> >> +        */
-> >> +       if (pdev) {
-> >> +               ret = nvmem_get_mac_address(&pdev->dev, addr);
-> >> +               put_device(&pdev->dev);
-> >> +               return ret;
-> >> +       }
-> >> +
-> >
-> > This smells like the wrong band aid :)
-> >
-> > Any struct device can contain an OF node pointer these days.
->
-> But not all nodes might have an associated device, see DSA for example.
+From: Sean Wang <sean.wang@mediatek.com>
 
-I believe what Ben is saying and what I said earlier is going from dev
--> OF node is right and OF node -> dev is wrong. If you only have an
-OF node, then use an of_* function.
+Introduce chip_reset knob in mt7921 debugfs to export a way to users
+able to trigger wifi reset, and group the similar operations
+previously defined in chip_config in the same knob.
 
-> And as the name suggests of_get_mac_address() operates on a node. So
-> if a driver calls of_get_mac_address() it should work on the node. What
-> is wrong IMHO, is that the ethernet drivers where the corresponding
-> board
-> has a nvmem_cell_lookup registered is calling of_get_mac_address(node).
-> It should rather call eth_get_mac_address(dev) in the first place.
->
-> One would need to figure out if there is an actual device (with an
-> assiciated of_node), then call eth_get_mac_address(dev) and if there
-> isn't a device call of_get_mac_address(node).
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+v2: reuse the same knob previously defined in chip_config
+---
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   | 25 +++++++++++++------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-Yes, I think we're all in agreement.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index 024524173115..7ced843b30b0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -288,19 +288,28 @@ mt7921_pm_idle_timeout_get(void *data, u64 *val)
+ DEFINE_DEBUGFS_ATTRIBUTE(fops_pm_idle_timeout, mt7921_pm_idle_timeout_get,
+ 			 mt7921_pm_idle_timeout_set, "%lld\n");
+ 
+-static int mt7921_config(void *data, u64 val)
++static int mt7921_chip_reset(void *data, u64 val)
+ {
+ 	struct mt7921_dev *dev = data;
+-	int ret;
+-
+-	mt7921_mutex_acquire(dev);
+-	ret = mt76_connac_mcu_chip_config(&dev->mt76);
+-	mt7921_mutex_release(dev);
++	int ret = 0;
++
++	switch (val) {
++	case 1:
++		/* Reset wifisys directly. */
++		mt7921_reset(&dev->mt76);
++		break;
++	default:
++		/* Collect the core dump before reset wifisys. */
++		mt7921_mutex_acquire(dev);
++		ret = mt76_connac_mcu_chip_config(&dev->mt76);
++		mt7921_mutex_release(dev);
++		break;
++	}
+ 
+ 	return ret;
+ }
+ 
+-DEFINE_DEBUGFS_ATTRIBUTE(fops_config, NULL, mt7921_config, "%lld\n");
++DEFINE_DEBUGFS_ATTRIBUTE(fops_reset, NULL, mt7921_chip_reset, "%lld\n");
+ 
+ int mt7921_init_debugfs(struct mt7921_dev *dev)
+ {
+@@ -321,7 +330,7 @@ int mt7921_init_debugfs(struct mt7921_dev *dev)
+ 	debugfs_create_file("runtime-pm", 0600, dir, dev, &fops_pm);
+ 	debugfs_create_file("idle-timeout", 0600, dir, dev,
+ 			    &fops_pm_idle_timeout);
+-	debugfs_create_file("chip_config", 0600, dir, dev, &fops_config);
++	debugfs_create_file("chip_reset", 0600, dir, dev, &fops_reset);
+ 
+ 	return 0;
+ }
+-- 
+2.25.1
 
-> But I don't know if that is easy to figure out. Well, one could start
-> with just the device where nvmem_cell_lookup is used. Then we could
-> drop the workaround above.
-
-Start with the ones just passing dev.of_node directly:
-
-$ git grep 'of_get_mac_address(.*of_node)'
-drivers/net/ethernet/aeroflex/greth.c:          addr =
-of_get_mac_address(ofdev->dev.of_node);
-drivers/net/ethernet/altera/altera_tse_main.c:  macaddr =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/arc/emac_main.c:   mac_addr =
-of_get_mac_address(dev->of_node);
-drivers/net/ethernet/broadcom/bgmac-bcma.c:             mac =
-of_get_mac_address(bgmac->dev->of_node);
-drivers/net/ethernet/cavium/octeon/octeon_mgmt.c:       mac =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/ethoc.c:           mac =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/ezchip/nps_enet.c: mac_addr =
-of_get_mac_address(dev->of_node);
-drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c:  mac_addr =
-of_get_mac_address(ofdev->dev.of_node);
-drivers/net/ethernet/marvell/pxa168_eth.c:              mac_addr =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/marvell/sky2.c:    iap =
-of_get_mac_address(hw->pdev->dev.of_node);
-drivers/net/ethernet/mediatek/mtk_eth_soc.c:    mac_addr =
-of_get_mac_address(mac->of_node);
-drivers/net/ethernet/microchip/lan743x_main.c:  mac_addr =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/qualcomm/qca_spi.c:        mac =
-of_get_mac_address(spi->dev.of_node);
-drivers/net/ethernet/qualcomm/qca_uart.c:       mac =
-of_get_mac_address(serdev->dev.of_node);
-drivers/net/ethernet/wiznet/w5100-spi.c:        const void *mac =
-of_get_mac_address(spi->dev.of_node);
-drivers/net/ethernet/xilinx/xilinx_axienet_main.c:      mac_addr =
-of_get_mac_address(pdev->dev.of_node);
-drivers/net/ethernet/xilinx/xilinx_emaclite.c:  mac_address =
-of_get_mac_address(ofdev->dev.of_node);
-drivers/net/wireless/ralink/rt2x00/rt2x00dev.c: mac_addr =
-of_get_mac_address(rt2x00dev->dev->of_node);
-drivers/staging/octeon/ethernet.c:              mac =
-of_get_mac_address(priv->of_node);
-drivers/staging/wfx/main.c:             macaddr =
-of_get_mac_address(wdev->dev->of_node);
-net/ethernet/eth.c:             addr = of_get_mac_address(dev->of_node);
-
-Then this will find most of the rest:
-git grep -W 'of_get_mac_address([a-z]*)'| grep -E '(node|np)'
-
-Rob
