@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 716693631AC
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 19:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0F703631B9
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 20:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236887AbhDQR4J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Apr 2021 13:56:09 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:30719 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236759AbhDQR4I (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Apr 2021 13:56:08 -0400
+        id S236948AbhDQSCN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Apr 2021 14:02:13 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:21521 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236759AbhDQSCM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 17 Apr 2021 14:02:12 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618682142; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1618682505; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=6QrwTzf39SIEDg4ZzpC44kNc2ctf71NHN7DHe9aDuy4=;
- b=d4u5srCCb751gIg+utz/ZPf+mmgmBD7fdl9LjX0dBvsokC//Lh52X9FBC3IvzJDWVltmWwA+
- /Fubj6U7bCRWSe43Arp81YlF4m0Iw1lnIdLvuMMgCNOupc4hLUqtJrB7yL0Yfp+sz1yECJBt
- BQTf/+7/b3mVNY7j20hOjNL2D6M=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=oGRlOSXczuP0DJCaBHzbDqORGAinXBLa+Yc9c3vGhJg=;
+ b=FRAEoB15KbbLgVaRgmZU2/iu6XdvF/cGI7C35+7GpJ9vzeMZ1N/Zx+5LVal03yoyRYoaxo/I
+ NGx8guKclNbe3LCXKvCQqy93OgIc12b64t/u8YdB2nVhQwppDzepCuGGP9Kl0Ht6O+VQt+Os
+ fig96A9LOHmSTy1esQC2JwiiKZY=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 607b211ca817abd39a2b054e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 17 Apr 2021 17:55:40
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 607b2285c39407c327a875d2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 17 Apr 2021 18:01:41
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 18F9DC4323A; Sat, 17 Apr 2021 17:55:40 +0000 (UTC)
+        id F29E0C43460; Sat, 17 Apr 2021 18:01:40 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,45 +40,54 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7F2F7C433D3;
-        Sat, 17 Apr 2021 17:55:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7F2F7C433D3
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BA67CC433F1;
+        Sat, 17 Apr 2021 18:01:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BA67CC433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtl8xxxu: Simplify locking of a skb list accesses
+Subject: Re: [PATCH net-next 4/5] libertas: avoid -Wempty-body warning
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <8bcec6429615aeb498482dc7e1955ce09b456585.1617613700.git.christophe.jaillet@wanadoo.fr>
-References: <8bcec6429615aeb498482dc7e1955ce09b456585.1617613700.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Jes.Sorensen@gmail.com, davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20210322104343.948660-4-arnd@kernel.org>
+References: <20210322104343.948660-4-arnd@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Jason Yan <yanaijie@huawei.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210417175540.18F9DC4323A@smtp.codeaurora.org>
-Date:   Sat, 17 Apr 2021 17:55:40 +0000 (UTC)
+Message-Id: <20210417180140.F29E0C43460@smtp.codeaurora.org>
+Date:   Sat, 17 Apr 2021 18:01:40 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+Arnd Bergmann <arnd@kernel.org> wrote:
 
-> The 'c2hcmd_lock' spinlock is only used to protect some __skb_queue_tail()
-> and __skb_dequeue() calls.
-> Use the lock provided in the skb itself and call skb_queue_tail() and
-> skb_dequeue(). These functions already include the correct locking.
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Building without mesh supports shows a couple of warnings with
+> 'make W=1':
+> 
+> drivers/net/wireless/marvell/libertas/main.c: In function 'lbs_start_card':
+> drivers/net/wireless/marvell/libertas/main.c:1068:37: error: suggest braces around empty body in an 'if' statement [-Werror=empty-body]
+>  1068 |                 lbs_start_mesh(priv);
+> 
+> Change the macros to use the usual "do { } while (0)" instead to shut up
+> the warnings and make the code a litte more robust.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-431eb49e87ed rtl8xxxu: Simplify locking of a skb list accesses
+01414f8882f9 libertas: avoid -Wempty-body warning
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/8bcec6429615aeb498482dc7e1955ce09b456585.1617613700.git.christophe.jaillet@wanadoo.fr/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210322104343.948660-4-arnd@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
