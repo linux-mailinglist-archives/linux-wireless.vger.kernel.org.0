@@ -2,60 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C01C4363143
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 18:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E162363162
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 19:24:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236677AbhDQQwL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Apr 2021 12:52:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54402 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236537AbhDQQwL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Apr 2021 12:52:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 77E7160FE6;
-        Sat, 17 Apr 2021 16:51:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618678304;
-        bh=EtdOWBik4y0FsPt+7ZiltKUS8Hkfa1gChdsULRHg9wk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Fha1XojN1BBkp0Ewr7zXPiyS11WJ1P8sIeVNk6sx5F02IAHVaUgeTTC9efZCkQHY0
-         v/5RdqT2bg/2z+Dxlx9Xt10vywnblRscBfSG5ikcSlzt+d670Bxl5W8wP2jnOyhGuG
-         50Tvx0kB10Z5hZGHhrCfOgfcwzjVZmsH7Gu6aH+5It85YilKi3UbVcpx810FXA0pVx
-         Hcl0Ya2UAQDfLO7DW+LQI4k6gVnYoFON7IPSCHKuqOo+NaXc+R4+I8OA1swHIw7JMp
-         O/ogMUs7WSILP7eh3rsxqgRRdeOhpduLviK03b/dlSXcGWU6wVrtD3Idd9B/VZDbB3
-         3qk1wDe2eK5nw==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: mt7921: remove leftover function declaration
-Date:   Sat, 17 Apr 2021 18:51:37 +0200
-Message-Id: <7caae4078c8cb2759d06bd96b6798f697816d866.1618678223.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S236769AbhDQRYx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Apr 2021 13:24:53 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:16427 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236692AbhDQRYv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 17 Apr 2021 13:24:51 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618680265; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=1tfWMulYA+1iJVKuBHoeOHcKhvEi/SWMkXLaNEN2q/8=;
+ b=Z2VBjIB20y8gtFGpTvInhradhcJTJwmFS+ehD0Jt4uPO3rOjQTqSjQxGU7yHdphcKMyUQvKj
+ P2c75P6Jb8Ey/bpJSbNRnI0DkJ+o0EAp4v5mJkQk2O9ZEtwRI0F6knq0POGyO3QGl4XYZ6ab
+ 06BoTTZyM/oMmWHbyxEtwHPwe3o=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 607b19c0febcffa80f265020 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 17 Apr 2021 17:24:16
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 29509C433D3; Sat, 17 Apr 2021 17:24:16 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A59ACC433D3;
+        Sat, 17 Apr 2021 17:24:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A59ACC433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] qtnfmac: Fix possible buffer overflow in
+ qtnf_event_handle_external_auth
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210317121706.389058-1-leegib@gmail.com>
+References: <20210317121706.389058-1-leegib@gmail.com>
+To:     Lee Gibson <leegib@gmail.com>
+Cc:     imitsyanko@quantenna.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Lee Gibson <leegib@gmail.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210417172416.29509C433D3@smtp.codeaurora.org>
+Date:   Sat, 17 Apr 2021 17:24:16 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Get rid of leftover mt7921_mcu_add_bss_info routine declaration
+Lee Gibson <leegib@gmail.com> wrote:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 2 --
- 1 file changed, 2 deletions(-)
+> Function qtnf_event_handle_external_auth calls memcpy without
+> checking the length.
+> A user could control that length and trigger a buffer overflow.
+> Fix by checking the length is within the maximum allowed size.
+> 
+> Signed-off-by: Lee Gibson <leegib@gmail.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 3982e074ff50..3780a7f4cb16 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -257,8 +257,6 @@ void mt7921_dma_prefetch(struct mt7921_dev *dev);
- void mt7921_dma_cleanup(struct mt7921_dev *dev);
- int mt7921_run_firmware(struct mt7921_dev *dev);
- int mt7921_mcu_init(struct mt7921_dev *dev);
--int mt7921_mcu_add_bss_info(struct mt7921_phy *phy,
--			    struct ieee80211_vif *vif, int enable);
- int mt7921_mcu_add_key(struct mt7921_dev *dev, struct ieee80211_vif *vif,
- 		       struct mt7921_sta *msta, struct ieee80211_key_conf *key,
- 		       enum set_key_cmd cmd);
+Please use clamp_val() instead, that's preferred over min_t().
+
+Patch set to Changes Requested.
+
 -- 
-2.30.2
+https://patchwork.kernel.org/project/linux-wireless/patch/20210317121706.389058-1-leegib@gmail.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
