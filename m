@@ -2,62 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24ADF362E68
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 09:54:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67FE8362E6B
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 09:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235844AbhDQHv1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Apr 2021 03:51:27 -0400
-Received: from mail.ovgu.de ([141.44.1.66]:57276 "EHLO mail.ovgu.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235685AbhDQHv0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Apr 2021 03:51:26 -0400
-Received: from [192.168.0.198] (wh5-67.st.uni-magdeburg.de [141.44.165.67])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.ovgu.de (Postfix) with ESMTPSA id 16964A020E;
-        Sat, 17 Apr 2021 09:51:00 +0200 (CEST)
-Subject: Re: Adding a fifth edca tx queue
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <fae3f300-8e04-d9ec-8e22-a401aaa6f70a@st.ovgu.de>
- <CAHNKnsSrQvGwhm6q3xjw41xMx7LaYzg0eaOZ2OVaDMdpUfO9gg@mail.gmail.com>
-From:   Johannes Behrens <johannes.behrens@st.ovgu.de>
-Message-ID: <ef799d04-fb23-e74a-0dbf-da60f9dfb0d7@st.ovgu.de>
-Date:   Sat, 17 Apr 2021 09:51:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
-MIME-Version: 1.0
-In-Reply-To: <CAHNKnsSrQvGwhm6q3xjw41xMx7LaYzg0eaOZ2OVaDMdpUfO9gg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+        id S235984AbhDQHzL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Apr 2021 03:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46640 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235821AbhDQHzK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 17 Apr 2021 03:55:10 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABB62C06175F
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Apr 2021 00:54:44 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id cu16so13208697pjb.4
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Apr 2021 00:54:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=kyDOfNlO5v5BNocRUhW3soIeQiOs29dwPp3e5LBPghA=;
+        b=ZpSz0nHBHKx6SCNZijL6Y+WXj9cWQ4MoEeV3tf+u0cLeL3es/YPptsX/GJzjPfEdwJ
+         zOtUqAXSKu4afgcZx79N08Iw0CxTQmubHheJdCzYUhBhTN3u/Ol1F03/0CznvmbfS+hM
+         rPSdfIMM+/HrizcMi9p7aI6+1Lo/K4u0vTENzexJOtyt8JgE0B5Wz1ipZp1r2NaYnqIv
+         iViO1gBP1AWenpyRCC6jTJYj7qyHLQjfxKpfWf83YKOlPloY4/SLWLyEwkkduXH68u2K
+         SSJtIqCtkhiqq3jT3Q9v0fQACscFnP4VAiMTF+nh9WX5a3LvtqV/htu6vmTeH94LxeDu
+         Qgcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=kyDOfNlO5v5BNocRUhW3soIeQiOs29dwPp3e5LBPghA=;
+        b=KewWHmlm/bD6uH/56tVXgpiaaL6Wp6Awbu6WcVWV/xizDxy4Y6e3ZLpoTDHWxkt0ke
+         7dbz3Zlbp8mJDbhkR93Cn/4fEk6gXiYy6ywPR8nyuDNjS3xfJHlJjgK/hLBHO2Esi4T5
+         3xQwzqQbDr3n2Rxcds96SZLWkCDbbLxf09HrkgK2Wwk56gn8cg19sWleBOUwn/2uuW8b
+         1MOgK8cgZM6wO58UdrvdWiGYTqRm84IfCxKc0NsoRryTkUAO8kioj0a60rOB5eIW6WaD
+         7Ku0rhfJN2zE8VQp743Xo9BRGkScUCOThtYWu2ERdWBuy3LgsjY6iIJ5Dzk0Bxt/ckdG
+         ZhNw==
+X-Gm-Message-State: AOAM532t6Tb/wKwsOJyp10ThZIshsEIPsGy/oT5pWmLU1EOLQU3cl6ob
+        6zmkOP1/nQ3cQACsw0dSOUwsCw==
+X-Google-Smtp-Source: ABdhPJzUjKIBSGFaO3HxivB8L2xHV1ZXaT7Q/92d2bWn57qZ+nOrC+gStN/ipU/dzn0BTCIRGFS9Zw==
+X-Received: by 2002:a17:90a:6385:: with SMTP id f5mr13821314pjj.212.1618646084083;
+        Sat, 17 Apr 2021 00:54:44 -0700 (PDT)
+Received: from localhost.localdomain (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id w75sm7087179pfc.135.2021.04.17.00.54.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Apr 2021 00:54:43 -0700 (PDT)
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, Shawn Guo <shawn.guo@linaro.org>
+Subject: [PATCH v3] brcmfmac: support parse country code map from DT
+Date:   Sat, 17 Apr 2021 15:54:28 +0800
+Message-Id: <20210417075428.2671-1-shawn.guo@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 16.04.21 12:34, Sergey Ryazanov wrote:
-> Hello Johannes,
->
-> On Thu, Apr 15, 2021 at 5:19 PM Johannes Behrens
-> <johannes.behrens@st.ovgu.de> wrote:
->> currently I am planning to implement a fifth edca tx-queue in the kernel
->> for research purposes for special requirements on the tactile internet.
->>
->> Now I am facing the challenge that I cannot find any actual hardware on
->> which I can implement another queue. Do you have any tips for me there?
->>
->> I have already dug through the code of some drivers of Linux, but
->> usually it fails because of the firmware of the WIFI chipsets, which
->> does not support this.
-> Did you look at the ath9k driver for Atheros AR9xxx chipsets? These
-> chips support only .11a/b/g/n, but they are still a great choice for
-> MAC research due to the possibility to reprogram many aspects of
-> channel access.
->
-Thank you for pointing this out. I have already looked at the ath9k and
-ath5k drivers. Theoretically, it should be possible to freely configure
-and use up to 10 (ath9k) tx queues there. However, my hope is to find
-more modern chipsets (.11ac).
+With any regulatory domain requests coming from either user space or
+802.11 IE (Information Element), the country is coded in ISO3166
+standard.  It needs to be translated to firmware country code and
+revision with the mapping info in settings->country_codes table.
+Support populate country_codes table by parsing the mapping from DT.
 
-Regards Johannes
+The BRCMF_BUSTYPE_SDIO bus_type check gets separated from general DT
+validation, so that country code can be handled as general part rather
+than SDIO bus specific one.
+
+Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+---
+Changes for v3:
+ - Add missing terminating '\n' in brcmf_dbg(INFO, ...) format string.
+
+ .../wireless/broadcom/brcm80211/brcmfmac/of.c | 57 ++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+index a7554265f95f..2f7bc3a70c65 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -12,12 +12,59 @@
+ #include "common.h"
+ #include "of.h"
+ 
++static int brcmf_of_get_country_codes(struct device *dev,
++				      struct brcmf_mp_device *settings)
++{
++	struct device_node *np = dev->of_node;
++	struct brcmfmac_pd_cc_entry *cce;
++	struct brcmfmac_pd_cc *cc;
++	int count;
++	int i;
++
++	count = of_property_count_strings(np, "brcm,ccode-map");
++	if (count < 0) {
++		/* The property is optional, so return success if it doesn't
++		 * exist. Otherwise propagate the error code.
++		 */
++		return (count == -EINVAL) ? 0 : count;
++	}
++
++	cc = devm_kzalloc(dev, sizeof(*cc) + count * sizeof(*cce), GFP_KERNEL);
++	if (!cc)
++		return -ENOMEM;
++
++	cc->table_size = count;
++
++	for (i = 0; i < count; i++) {
++		const char *map;
++
++		cce = &cc->table[i];
++
++		if (of_property_read_string_index(np, "brcm,ccode-map",
++						  i, &map))
++			continue;
++
++		/* String format e.g. US-Q2-86 */
++		if (sscanf(map, "%2c-%2c-%d", cce->iso3166, cce->cc,
++			   &cce->rev) != 3)
++			brcmf_err("failed to read country map %s\n", map);
++		else
++			brcmf_dbg(INFO, "%s-%s-%d\n", cce->iso3166, cce->cc,
++				  cce->rev);
++	}
++
++	settings->country_codes = cc;
++
++	return 0;
++}
++
+ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 		    struct brcmf_mp_device *settings)
+ {
+ 	struct brcmfmac_sdio_pd *sdio = &settings->bus.sdio;
+ 	struct device_node *root, *np = dev->of_node;
+ 	int irq;
++	int err;
+ 	u32 irqf;
+ 	u32 val;
+ 
+@@ -43,8 +90,14 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 		of_node_put(root);
+ 	}
+ 
+-	if (!np || bus_type != BRCMF_BUSTYPE_SDIO ||
+-	    !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
++	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
++		return;
++
++	err = brcmf_of_get_country_codes(dev, settings);
++	if (err)
++		brcmf_err("failed to get OF country code map (err=%d)\n", err);
++
++	if (bus_type != BRCMF_BUSTYPE_SDIO)
+ 		return;
+ 
+ 	if (of_property_read_u32(np, "brcm,drive-strength", &val) == 0)
+-- 
+2.17.1
 
