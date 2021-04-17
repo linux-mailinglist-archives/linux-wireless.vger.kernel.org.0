@@ -2,151 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3AB36320D
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 21:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8186363242
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 22:42:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237054AbhDQTrx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Apr 2021 15:47:53 -0400
-Received: from gateway24.websitewelcome.com ([192.185.51.122]:35090 "EHLO
-        gateway24.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236779AbhDQTrw (ORCPT
+        id S236977AbhDQUnA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Apr 2021 16:43:00 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:55722 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S237080AbhDQUm7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Apr 2021 15:47:52 -0400
-X-Greylist: delayed 1357 seconds by postgrey-1.27 at vger.kernel.org; Sat, 17 Apr 2021 15:47:52 EDT
-Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
-        by gateway24.websitewelcome.com (Postfix) with ESMTP id 3441A219A
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Apr 2021 14:24:46 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id XqYglafIK1cHeXqYgllZui; Sat, 17 Apr 2021 14:24:46 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=nLSkpOd3XZR5r0muN1xJlaF3Fg92tAYTugf+ZrPQVoY=; b=Z5epnxU9ICDFvitytMG2lKf3Y4
-        p+b/tVrNwo1UlSAunOo78zK+k4Vdf7JadbNPgxps+8hrhLYjbeNBalWprQ2OMp6tpmtjpmQOYhh96
-        9y/9YjzjLPbHCZ/e/CMrAQvGh+SffkRvZTbKkob00i+JaEyeUZMPmjHfFVsshxhcc1pTQx1727enL
-        o1OChDoxsaDDSV3r7N6wrC/vT9M3nLL7ClD6PFBzY8dZ67tb/gbp9x1IfxZSG/8AG4SuTza4gEkrb
-        mS45FCNO4iLpvvIWgYRibk1CeYMgGVW1QU0VJNprPEW6T0EZiTApHCL1jWvWuy1lt8lU8Ncsi7eG5
-        K9Qen0+A==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:49852 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1lXqYc-000FWD-Ll; Sat, 17 Apr 2021 14:24:42 -0500
-Subject: Re: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for
- Clang
-To:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Kees Cook <keescook@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20210305094850.GA141221@embeddedor>
- <871rct67n2.fsf@codeaurora.org> <202103101107.BE8B6AF2@keescook>
- <2e425bd8-2722-b8a8-3745-4a3f77771906@gmail.com>
- <202103101141.92165AE@keescook>
- <90baba5d-53a1-c7b1-495d-5902e9b04a72@gmail.com>
- <202103101254.1DBEE1082@keescook>
- <4eb49b08-09bb-d1d2-d2bc-efcd5f7406fe@gmail.com>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <dc53ec8c-76e1-e487-26ae-6b34afde9ca2@embeddedor.com>
-Date:   Sat, 17 Apr 2021 14:24:31 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        Sat, 17 Apr 2021 16:42:59 -0400
+X-UUID: 0ae8cd9f29fe4d3eb8feff4e5b4d8b0d-20210418
+X-UUID: 0ae8cd9f29fe4d3eb8feff4e5b4d8b0d-20210418
+Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 838474654; Sun, 18 Apr 2021 04:42:28 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sun, 18 Apr 2021 04:42:26 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sun, 18 Apr 2021 04:42:26 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: add thermal sensor device support
+Date:   Sun, 18 Apr 2021 04:42:23 +0800
+Message-ID: <b51d79d257e150a09d51029e3465e2ce925d6cfe.1618691395.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-In-Reply-To: <4eb49b08-09bb-d1d2-d2bc-efcd5f7406fe@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1lXqYc-000FWD-Ll
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:49852
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 7
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Type: text/plain
+X-TM-SNTS-SMTP: D59C00394B710C6E8C283C631551D662974E6C55E0B5C683F1D4B8843299E1E52000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This provides userspace with a unified interface, hwmon sysfs, to monitor
+temperature in the hardware and can be adaped to system monitoring tools.
 
+For reading temperature, cat /sys/class/ieee80211/phy*/hwmon*/temp1_input
 
-On 4/17/21 13:29, Jes Sorensen wrote:
-> On 3/10/21 3:59 PM, Kees Cook wrote:
->> On Wed, Mar 10, 2021 at 02:51:24PM -0500, Jes Sorensen wrote:
->>> On 3/10/21 2:45 PM, Kees Cook wrote:
->>>> On Wed, Mar 10, 2021 at 02:31:57PM -0500, Jes Sorensen wrote:
->>>>> On 3/10/21 2:14 PM, Kees Cook wrote:
->>>>>> Hm, this conversation looks like a miscommunication, mainly? I see
->>>>>> Gustavo, as requested by many others[1], replacing the fallthrough
->>>>>> comments with the "fallthrough" statement. (This is more than just a
->>>>>> "Clang doesn't parse comments" issue.)
->>>>>>
->>>>>> This could be a tree-wide patch and not bother you, but Greg KH has
->>>>>> generally advised us to send these changes broken out. Anyway, this
->>>>>> change still needs to land, so what would be the preferred path? I think
->>>>>> Gustavo could just carry it for Linus to merge without bothering you if
->>>>>> that'd be preferred?
->>>>>
->>>>> I'll respond with the same I did last time, fallthrough is not C and
->>>>> it's ugly.
->>>>
->>>> I understand your point of view, but this is not the consensus[1] of
->>>> the community. "fallthrough" is a macro, using the GCC fallthrough
->>>> attribute, with the expectation that we can move to the C17/C18
->>>> "[[fallthrough]]" statement once it is finalized by the C standards
->>>> body.
->>>
->>> I don't know who decided on that, but I still disagree. It's an ugly and
->>> pointless change that serves little purpose. We shouldn't have allowed
->>> the ugly /* fall-through */ comments in either, but at least they didn't
->>> mess with the code. I guess when you give someone an inch, they take a mile.
->>>
->>> Last time this came up, the discussion was that clang refused to fix
->>> their brokenness and therefore this nonsense was being pushed into the
->>> kernel. It's still a pointless argument, if clang can't fix it's crap,
->>> then stop using it.
->>>
->>> As Kalle correctly pointed out, none of the previous comments to this
->>> were addressed, the patches were just reposted as fact. Not exactly a
->>> nice way to go about it either.
->>
->> Do you mean changing the commit log to re-justify these changes? I
->> guess that could be done, but based on the thread, it didn't seem to
->> be needed. The change is happening to match the coding style consensus
->> reached to give the kernel the flexibility to move from a gcc extension
->> to the final C standards committee results without having to do treewide
->> commits again (i.e. via the macro).
-> 
-> No, I am questioning why Gustavo continues to push this nonsense that
-> serves no purpose whatsoever. In addition he has consistently ignored
-> comments and just keep reposting it. But I guess that is how it works,
-> ignore feedback, repost junk, repeat.
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 14 -----
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 56 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  7 ++-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +-
+ 4 files changed, 61 insertions(+), 18 deletions(-)
 
-I was asking for feedback here[1] and here[2] after people (you and Kalle)
-commented on this patch. How is that ignoring people? And -again- why
-people ignored my requests for feedback in this conversation? It's a mystery
-to me, honestly.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 6a8ddeeecbe9..f1e8b076d54c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -224,18 +224,6 @@ mt7915_tx_stats_show(struct seq_file *file, void *data)
+ 
+ DEFINE_SHOW_ATTRIBUTE(mt7915_tx_stats);
+ 
+-static int mt7915_read_temperature(struct seq_file *s, void *data)
+-{
+-	struct mt7915_dev *dev = dev_get_drvdata(s->private);
+-	int temp;
+-
+-	/* cpu */
+-	temp = mt7915_mcu_get_temperature(dev, 0);
+-	seq_printf(s, "Temperature: %d\n", temp);
+-
+-	return 0;
+-}
+-
+ static int
+ mt7915_queues_acq(struct seq_file *s, void *data)
+ {
+@@ -390,8 +378,6 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
+ 	debugfs_create_file("radar_trigger", 0200, dir, dev,
+ 			    &fops_radar_trigger);
+ 	debugfs_create_file("ser_trigger", 0200, dir, dev, &fops_ser_trigger);
+-	debugfs_create_devm_seqfile(dev->mt76.dev, "temperature", dir,
+-				    mt7915_read_temperature);
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "txpower_sku", dir,
+ 				    mt7915_read_rate_txpower);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index c13b932b0a44..cccb3df339de 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -2,6 +2,8 @@
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
++#include <linux/hwmon.h>
++#include <linux/hwmon-sysfs.h>
+ #include "mt7915.h"
+ #include "mac.h"
+ #include "mcu.h"
+@@ -67,6 +69,52 @@ static const struct ieee80211_iface_combination if_comb[] = {
+ 	}
+ };
+ 
++static ssize_t mt7915_thermal_show_temp(struct device *dev,
++					struct device_attribute *attr,
++					char *buf)
++{
++	struct mt7915_phy *phy = dev_get_drvdata(dev);
++	int temperature;
++
++	mutex_lock(&phy->dev->mt76.mutex);
++	temperature = mt7915_mcu_get_temperature(phy);
++	mutex_unlock(&phy->dev->mt76.mutex);
++
++	if (temperature < 0)
++		return temperature;
++
++	/* display in millidegree celcius */
++	return sprintf(buf, "%u\n", temperature * 1000);
++}
++
++static SENSOR_DEVICE_ATTR(temp1_input, 0444, mt7915_thermal_show_temp,
++			  NULL, 0);
++
++static struct attribute *mt7915_hwmon_attrs[] = {
++	&sensor_dev_attr_temp1_input.dev_attr.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(mt7915_hwmon);
++
++static int mt7915_thermal_init(struct mt7915_phy *phy)
++{
++	struct wiphy *wiphy = phy->mt76->hw->wiphy;
++	struct device *hwmon;
++
++	/* TODO: add cooling device for throttling */
++
++	if (!IS_REACHABLE(CONFIG_HWMON))
++		return 0;
++
++	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev,
++						       wiphy_name(wiphy), phy,
++						       mt7915_hwmon_groups);
++	if (IS_ERR(hwmon))
++		return PTR_ERR(hwmon);
++
++	return 0;
++}
++
+ static void
+ mt7915_init_txpower(struct mt7915_dev *dev,
+ 		    struct ieee80211_supported_band *sband)
+@@ -286,6 +334,10 @@ static int mt7915_register_ext_phy(struct mt7915_dev *dev)
+ 	if (ret)
+ 		goto error;
+ 
++	ret = mt7915_thermal_init(phy);
++	if (ret)
++		goto error;
++
+ 	return 0;
+ 
+ error:
+@@ -739,6 +791,10 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = mt7915_thermal_init(&dev->phy);
++	if (ret)
++		return ret;
++
+ 	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+ 
+ 	ret = mt7915_register_ext_phy(dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 559ad230eabe..17a617df6dba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3469,16 +3469,17 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
+ 	return 0;
+ }
+ 
+-int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index)
++int mt7915_mcu_get_temperature(struct mt7915_phy *phy)
+ {
++	struct mt7915_dev *dev = phy->dev;
+ 	struct {
+ 		u8 ctrl_id;
+ 		u8 action;
+-		u8 band;
++		u8 dbdc_idx;
+ 		u8 rsv[5];
+ 	} req = {
+ 		.ctrl_id = THERMAL_SENSOR_TEMP_QUERY,
+-		.action = index,
++		.dbdc_idx = phy != &dev->phy,
+ 	};
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(THERMAL_CTRL), &req,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 80eb35231a1a..d5296e2d481b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -357,7 +357,7 @@ int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, int index,
+ 			    const struct mt7915_dfs_pattern *pattern);
+ int mt7915_mcu_apply_group_cal(struct mt7915_dev *dev);
+ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy);
+-int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index);
++int mt7915_mcu_get_temperature(struct mt7915_phy *phy);
+ int mt7915_mcu_get_tx_rate(struct mt7915_dev *dev, u32 cmd, u16 wlan_idx);
+ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+-- 
+2.18.0
 
-Thanks
---
-Gustavo
-
-[1] https://lore.kernel.org/lkml/20201124160906.GB17735@embeddedor/
-[2] https://lore.kernel.org/lkml/e10b2a6a-d91a-9783-ddbe-ea2c10a1539a@embeddedor.com/
