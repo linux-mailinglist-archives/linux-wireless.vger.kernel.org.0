@@ -2,97 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07BC93631D4
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 20:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3AB36320D
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 21:47:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236957AbhDQSbS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Apr 2021 14:31:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43004 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236950AbhDQSbP (ORCPT
+        id S237054AbhDQTrx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Apr 2021 15:47:53 -0400
+Received: from gateway24.websitewelcome.com ([192.185.51.122]:35090 "EHLO
+        gateway24.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236779AbhDQTrw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Apr 2021 14:31:15 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9526BC061574;
-        Sat, 17 Apr 2021 11:30:48 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id e13so22354648qkl.6;
-        Sat, 17 Apr 2021 11:30:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=KoE1viHyQhpnKshhGJt4Df5OO9irbP+1SYRgawksjyw=;
-        b=J+7rvjIXCkgWGNnHDhGy8D9rsyuu8L1ZSNBX8r44mLL+4IpRZBQH96I1wmSfqRoKlR
-         bTMWmBdvJts363ifSXWneDEZoApw8agoRMjyVSJFEL5uj4TybBei3+PB59gLGbqGtteG
-         IBIn8TSYzb0j5n9LSq8ViOMzpNFRoUvHTY4PxpqEImgsPU/le/BlXBVfGkKVaPIjNYE4
-         C1fsbso30WUPBsMpUches44sdcwizadMwi469e7xLLNxmHuehrcEJBp+6/1/o4I6Vngp
-         3LwZjYGP97zIuRyiOw//najt9hJfQzSJ27GOG2K6dCwx3M5T+X/hwc+PhfnZ2CODQIR5
-         gPvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=KoE1viHyQhpnKshhGJt4Df5OO9irbP+1SYRgawksjyw=;
-        b=p9WLbvU1FQy6ihjU/jBeLwNR5BfwqPywldkcoru70Xvfnh7TDkuG5o8bFeHrhUjNNd
-         Dq1oddEEEhW70HJUf0jRGNJ4CNX/az6aFDZbY2xfeTXtXb43BIhRnal1X+m++9zZPbLk
-         2IpWVu1jNHCrZO87eUkaa+m+C02VVYmlJLXBTxMROgNQPztBM+knYJUh3aAcwcdC8hsi
-         sCtNFXOhGd13zwrWrZfkQWTtJ5Nob3Jl6nlruJpueegl+Endp6PKmWe8RsQG2ymEelHX
-         qA+UGtiLkBkCPZrHZiA1Eozjm7P4I9f94HupHg3fWNICA3sGI+ae7ehWlqRxmyzAKn7d
-         Ilmw==
-X-Gm-Message-State: AOAM531PDl+QNlEksf/DjNAs8rOTNZ0OtaY204QZroBbY3yBCCs1kquY
-        ZfDdinbf5qnkxt/IbBfSO4uliBkVkqA=
-X-Google-Smtp-Source: ABdhPJzjsc6t+zqz9n9bMWc5KMZIZhf5PzBums2eRbuF8N5buSrs/LIoQ9u8q3ceYhSpUOL/6Yc8yQ==
-X-Received: by 2002:a37:7d84:: with SMTP id y126mr4855073qkc.155.1618684247897;
-        Sat, 17 Apr 2021 11:30:47 -0700 (PDT)
-Received: from ?IPv6:2620:10d:c0a8:1102::1844? ([2620:10d:c091:480::1:1b53])
-        by smtp.gmail.com with ESMTPSA id v192sm6522349qkb.83.2021.04.17.11.30.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Apr 2021 11:30:47 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
+        Sat, 17 Apr 2021 15:47:52 -0400
+X-Greylist: delayed 1357 seconds by postgrey-1.27 at vger.kernel.org; Sat, 17 Apr 2021 15:47:52 EDT
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+        by gateway24.websitewelcome.com (Postfix) with ESMTP id 3441A219A
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Apr 2021 14:24:46 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id XqYglafIK1cHeXqYgllZui; Sat, 17 Apr 2021 14:24:46 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=nLSkpOd3XZR5r0muN1xJlaF3Fg92tAYTugf+ZrPQVoY=; b=Z5epnxU9ICDFvitytMG2lKf3Y4
+        p+b/tVrNwo1UlSAunOo78zK+k4Vdf7JadbNPgxps+8hrhLYjbeNBalWprQ2OMp6tpmtjpmQOYhh96
+        9y/9YjzjLPbHCZ/e/CMrAQvGh+SffkRvZTbKkob00i+JaEyeUZMPmjHfFVsshxhcc1pTQx1727enL
+        o1OChDoxsaDDSV3r7N6wrC/vT9M3nLL7ClD6PFBzY8dZ67tb/gbp9x1IfxZSG/8AG4SuTza4gEkrb
+        mS45FCNO4iLpvvIWgYRibk1CeYMgGVW1QU0VJNprPEW6T0EZiTApHCL1jWvWuy1lt8lU8Ncsi7eG5
+        K9Qen0+A==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:49852 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1lXqYc-000FWD-Ll; Sat, 17 Apr 2021 14:24:42 -0500
 Subject: Re: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for
  Clang
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+To:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Kees Cook <keescook@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 References: <20210305094850.GA141221@embeddedor>
- <20210417175201.2D5A7C433F1@smtp.codeaurora.org>
-Message-ID: <6bcce753-ceca-8731-ec66-6f467a3199fd@gmail.com>
-Date:   Sat, 17 Apr 2021 14:30:46 -0400
+ <871rct67n2.fsf@codeaurora.org> <202103101107.BE8B6AF2@keescook>
+ <2e425bd8-2722-b8a8-3745-4a3f77771906@gmail.com>
+ <202103101141.92165AE@keescook>
+ <90baba5d-53a1-c7b1-495d-5902e9b04a72@gmail.com>
+ <202103101254.1DBEE1082@keescook>
+ <4eb49b08-09bb-d1d2-d2bc-efcd5f7406fe@gmail.com>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <dc53ec8c-76e1-e487-26ae-6b34afde9ca2@embeddedor.com>
+Date:   Sat, 17 Apr 2021 14:24:31 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210417175201.2D5A7C433F1@smtp.codeaurora.org>
+In-Reply-To: <4eb49b08-09bb-d1d2-d2bc-efcd5f7406fe@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1lXqYc-000FWD-Ll
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:49852
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 7
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/17/21 1:52 PM, Kalle Valo wrote:
-> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
-> 
->> In preparation to enable -Wimplicit-fallthrough for Clang, fix
->> multiple warnings by replacing /* fall through */ comments with
->> the new pseudo-keyword macro fallthrough; instead of letting the
->> code fall through to the next case.
->>
->> Notice that Clang doesn't recognize /* fall through */ comments as
->> implicit fall-through markings.
->>
->> Link: https://github.com/KSPP/linux/issues/115
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> 
-> Patch applied to wireless-drivers-next.git, thanks.
-> 
-> bf3365a856a1 rtl8xxxu: Fix fall-through warnings for Clang
-> 
 
-Sorry this junk patch should not have been applied.
 
-Jes
+On 4/17/21 13:29, Jes Sorensen wrote:
+> On 3/10/21 3:59 PM, Kees Cook wrote:
+>> On Wed, Mar 10, 2021 at 02:51:24PM -0500, Jes Sorensen wrote:
+>>> On 3/10/21 2:45 PM, Kees Cook wrote:
+>>>> On Wed, Mar 10, 2021 at 02:31:57PM -0500, Jes Sorensen wrote:
+>>>>> On 3/10/21 2:14 PM, Kees Cook wrote:
+>>>>>> Hm, this conversation looks like a miscommunication, mainly? I see
+>>>>>> Gustavo, as requested by many others[1], replacing the fallthrough
+>>>>>> comments with the "fallthrough" statement. (This is more than just a
+>>>>>> "Clang doesn't parse comments" issue.)
+>>>>>>
+>>>>>> This could be a tree-wide patch and not bother you, but Greg KH has
+>>>>>> generally advised us to send these changes broken out. Anyway, this
+>>>>>> change still needs to land, so what would be the preferred path? I think
+>>>>>> Gustavo could just carry it for Linus to merge without bothering you if
+>>>>>> that'd be preferred?
+>>>>>
+>>>>> I'll respond with the same I did last time, fallthrough is not C and
+>>>>> it's ugly.
+>>>>
+>>>> I understand your point of view, but this is not the consensus[1] of
+>>>> the community. "fallthrough" is a macro, using the GCC fallthrough
+>>>> attribute, with the expectation that we can move to the C17/C18
+>>>> "[[fallthrough]]" statement once it is finalized by the C standards
+>>>> body.
+>>>
+>>> I don't know who decided on that, but I still disagree. It's an ugly and
+>>> pointless change that serves little purpose. We shouldn't have allowed
+>>> the ugly /* fall-through */ comments in either, but at least they didn't
+>>> mess with the code. I guess when you give someone an inch, they take a mile.
+>>>
+>>> Last time this came up, the discussion was that clang refused to fix
+>>> their brokenness and therefore this nonsense was being pushed into the
+>>> kernel. It's still a pointless argument, if clang can't fix it's crap,
+>>> then stop using it.
+>>>
+>>> As Kalle correctly pointed out, none of the previous comments to this
+>>> were addressed, the patches were just reposted as fact. Not exactly a
+>>> nice way to go about it either.
+>>
+>> Do you mean changing the commit log to re-justify these changes? I
+>> guess that could be done, but based on the thread, it didn't seem to
+>> be needed. The change is happening to match the coding style consensus
+>> reached to give the kernel the flexibility to move from a gcc extension
+>> to the final C standards committee results without having to do treewide
+>> commits again (i.e. via the macro).
+> 
+> No, I am questioning why Gustavo continues to push this nonsense that
+> serves no purpose whatsoever. In addition he has consistently ignored
+> comments and just keep reposting it. But I guess that is how it works,
+> ignore feedback, repost junk, repeat.
+
+I was asking for feedback here[1] and here[2] after people (you and Kalle)
+commented on this patch. How is that ignoring people? And -again- why
+people ignored my requests for feedback in this conversation? It's a mystery
+to me, honestly.
+
+Thanks
+--
+Gustavo
+
+[1] https://lore.kernel.org/lkml/20201124160906.GB17735@embeddedor/
+[2] https://lore.kernel.org/lkml/e10b2a6a-d91a-9783-ddbe-ea2c10a1539a@embeddedor.com/
