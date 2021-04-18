@@ -2,205 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57F473636D3
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 18:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C7BD3637D5
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 23:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231966AbhDRQs5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 12:48:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50488 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229446AbhDRQs4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 12:48:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0B66E61245;
-        Sun, 18 Apr 2021 16:48:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618764508;
-        bh=hGK/bKp5Rc2fWGkeOakaqJlW7ekqkPbHFVW5k9rfNss=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pkwhqnwj0EnmZo/2nGY1yHlc60munrbGIyicCBgB6ITJEt8tWOVn5I+PitFgSN0pF
-         y6DAwOmRjAzQ4aJZ5fLrA/xi9l4ZR3ZcnvzWYg+Skc36vL8HYajzQSeo2tsygZX2fx
-         ge+19jEQ+8v2ZWXR8bkX4oPrMGjNDQ+Cmr40sY6clGUxNJZ4kmuHm1I6gRoFX6NKNn
-         5LpDBs+MwAovEttBOPjWZHa8MFZ3W+IwNVmSLL0Xqt/nQWZhaCCU41maKYP1tVDAA0
-         mUzh4oaMZpwcHKJwdkiA83r7KherA5q6naYkn9guqGzGwrm1BOA/DwREgyUE6AuMUZ
-         4m8DYrRz6TJyw==
-Date:   Sun, 18 Apr 2021 18:48:23 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     sean.wang@mediatek.com
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
-        YN.Chen@mediatek.com, Leon.Yen@mediatek.com, Deren.Wu@mediatek.com,
-        km.lin@mediatek.com, robin.chiu@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, Eric.Liang@mediatek.com,
-        Stella.Chang@mediatek.com, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 4/6] mt76: mt7921: introduce mt7921_wpdma_reinit_cond
- utility routine
-Message-ID: <YHxi1+jRHIfAuKJa@lore-desk>
-References: <1618763767-1292-1-git-send-email-sean.wang@mediatek.com>
- <1618763767-1292-5-git-send-email-sean.wang@mediatek.com>
+        id S233525AbhDRV0u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 17:26:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:38972 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232480AbhDRV0t (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Apr 2021 17:26:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1618781179;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=TPcs5TB0ONhcFVAEw0E0MCP+R2+YREZ08wBbXd6m+0c=;
+        b=g9zj+ZYlbXEFv6SnC6bV0n2uTv8/uUDyI5a33HORnYPU8mhP1VFhtwer6IrZLU010MTVmv
+        5WNb2+2FaYhPFyXdhkOu0WHljT+xmDL9T1I9yO0NQvtpvTt5+K/BdsN0FX8bUjUMj+TkGk
+        Y0uJBj5mqsMjLOvWsc7Wuo0Ki+3tIOE=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-53-IQzulNDvNT24AxU4rPgW5g-1; Sun, 18 Apr 2021 17:26:17 -0400
+X-MC-Unique: IQzulNDvNT24AxU4rPgW5g-1
+Received: by mail-ed1-f72.google.com with SMTP id f1-20020a0564021941b02903850806bb32so4101580edz.9
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Apr 2021 14:26:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=TPcs5TB0ONhcFVAEw0E0MCP+R2+YREZ08wBbXd6m+0c=;
+        b=ZtThR7Y45zeSXEed8gHzRFbhinhqyXDiQ5qfC4jr4tRPQCjbrFDjg7M8FVJbXagp9i
+         eUFn3wk+bTTm76YCy2OzOLnHbaZlAMJfLEy+pV94D7c+jPxF/eSL4qKRtauir0CBzUkk
+         1shQ+9QYmmhOYbaUnTETULUQ8j7gTsCgrkLNCXqQ2nHmprsv8ejXRDrwyNQD3nrIONOf
+         ylZdn1tAZyeFGyGSY7SleJEJg+p3d6SyIMZz3dpx/MXGZ1OFCYMETnKdNku+E9wrJtqr
+         oIaopA+D1sKJpBFtX+phC9vGPKZNZJMapc3ELoNT+wzsfDqh5rb4Fyvsi4ZBhgPv9SdH
+         75yQ==
+X-Gm-Message-State: AOAM530v0jLEVK0NjulTexjWbRM9hhJUQ1wuLK/aOCR97qgywPryKPOA
+        ixuB9OurWFhBVvWRra8GIAf4IDkzMu0yIP0NAlX6fIoHNzHhfIdPNdZ6dBC0Ku/6bczx/x5cY4B
+        nA9W5cakVWGkamnW5ujENV3OwWEA=
+X-Received: by 2002:a17:906:3e54:: with SMTP id t20mr18905027eji.53.1618781176568;
+        Sun, 18 Apr 2021 14:26:16 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzBKJZIgQlc9hQywL+WtI+KLt35fb6/JZtjFfLmtl/EiX87D0fiTdVmmH6NDI4Gb6cbNDZ6cQ==
+X-Received: by 2002:a17:906:3e54:: with SMTP id t20mr18905020eji.53.1618781176413;
+        Sun, 18 Apr 2021 14:26:16 -0700 (PDT)
+Received: from localhost ([151.66.28.185])
+        by smtp.gmail.com with ESMTPSA id s20sm11194233edu.93.2021.04.18.14.26.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Apr 2021 14:26:15 -0700 (PDT)
+Date:   Sun, 18 Apr 2021 23:26:12 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 1/2] mt76: mt7915: add thermal sensor device support
+Message-ID: <YHyj9H52zgoDXWbN@lore-desk>
+References: <b51d79d257e150a09d51029e3465e2ce925d6cfe.1618691395.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="P/CfuldqDC55MrOp"
+        protocol="application/pgp-signature"; boundary="TFPJU7dGCv8470U4"
 Content-Disposition: inline
-In-Reply-To: <1618763767-1292-5-git-send-email-sean.wang@mediatek.com>
+In-Reply-To: <b51d79d257e150a09d51029e3465e2ce925d6cfe.1618691395.git.ryder.lee@mediatek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---P/CfuldqDC55MrOp
+--TFPJU7dGCv8470U4
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> From: Sean Wang <sean.wang@mediatek.com>
+[...]
+> =20
+> +static ssize_t mt7915_thermal_show_temp(struct device *dev,
+> +					struct device_attribute *attr,
+> +					char *buf)
+> +{
+> +	struct mt7915_phy *phy =3D dev_get_drvdata(dev);
+> +	int temperature;
+> +
+> +	mutex_lock(&phy->dev->mt76.mutex);
+> +	temperature =3D mt7915_mcu_get_temperature(phy);
+> +	mutex_unlock(&phy->dev->mt76.mutex);
 
-I guess here we should use my 'From' tag
+I guess we do not need this lock here since mcu already has its own lock (m=
+cu
+mutex) and mt7915 does not support runtime-pm.
 
 Regards,
 Lorenzo
 
->=20
-> Add mt7921_wpdma_reinit_cond to check dummy reg if driver needs to
-> reinitialized WPDMA after driver_own operation
->=20
-> Co-developed-by: Leon Yen <leon.yen@mediatek.com>
-> Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> ---
->  .../net/wireless/mediatek/mt76/mt76_connac.h  |  4 +++
->  .../wireless/mediatek/mt76/mt7921/debugfs.c   | 13 ++++++++++
->  .../net/wireless/mediatek/mt76/mt7921/dma.c   | 25 +++++++++++++++++++
->  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  6 +++++
->  4 files changed, 48 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/n=
-et/wireless/mediatek/mt76/mt76_connac.h
-> index b811f3c410a1..3b5bff80a462 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> @@ -58,6 +58,10 @@ struct mt76_connac_pm {
->  	struct delayed_work ps_work;
->  	unsigned long last_activity;
->  	unsigned long idle_timeout;
 > +
-> +	struct {
-> +		unsigned int lp_wake;
-> +	} stats;
->  };
+> +	if (temperature < 0)
+> +		return temperature;
+> +
+> +	/* display in millidegree celcius */
+> +	return sprintf(buf, "%u\n", temperature * 1000);
+> +}
+> +
+> +static SENSOR_DEVICE_ATTR(temp1_input, 0444, mt7915_thermal_show_temp,
+> +			  NULL, 0);
+> +
+> +static struct attribute *mt7915_hwmon_attrs[] =3D {
+> +	&sensor_dev_attr_temp1_input.dev_attr.attr,
+> +	NULL,
+> +};
+> +ATTRIBUTE_GROUPS(mt7915_hwmon);
+> +
+> +static int mt7915_thermal_init(struct mt7915_phy *phy)
+> +{
+> +	struct wiphy *wiphy =3D phy->mt76->hw->wiphy;
+> +	struct device *hwmon;
+> +
+> +	/* TODO: add cooling device for throttling */
+> +
+> +	if (!IS_REACHABLE(CONFIG_HWMON))
+> +		return 0;
+> +
+> +	hwmon =3D devm_hwmon_device_register_with_groups(&wiphy->dev,
+> +						       wiphy_name(wiphy), phy,
+> +						       mt7915_hwmon_groups);
+> +	if (IS_ERR(hwmon))
+> +		return PTR_ERR(hwmon);
+> +
+> +	return 0;
+> +}
+> +
+>  static void
+>  mt7915_init_txpower(struct mt7915_dev *dev,
+>  		    struct ieee80211_supported_band *sband)
+> @@ -286,6 +334,10 @@ static int mt7915_register_ext_phy(struct mt7915_dev=
+ *dev)
+>  	if (ret)
+>  		goto error;
 > =20
->  struct mt76_connac_coredump {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/driver=
-s/net/wireless/mediatek/mt76/mt7921/debugfs.c
-> index 5a54cd8d2ce4..bd2aca654767 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-> @@ -256,6 +256,17 @@ mt7921_pm_get(void *data, u64 *val)
+> +	ret =3D mt7915_thermal_init(phy);
+> +	if (ret)
+> +		goto error;
+> +
+>  	return 0;
 > =20
->  DEFINE_DEBUGFS_ATTRIBUTE(fops_pm, mt7921_pm_get, mt7921_pm_set, "%lld\n"=
+>  error:
+> @@ -739,6 +791,10 @@ int mt7915_register_device(struct mt7915_dev *dev)
+>  	if (ret)
+>  		return ret;
+> =20
+> +	ret =3D mt7915_thermal_init(&dev->phy);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+> =20
+>  	ret =3D mt7915_register_ext_phy(dev);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7915/mcu.c
+> index 559ad230eabe..17a617df6dba 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> @@ -3469,16 +3469,17 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *ph=
+y)
+>  	return 0;
+>  }
+> =20
+> -int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index)
+> +int mt7915_mcu_get_temperature(struct mt7915_phy *phy)
+>  {
+> +	struct mt7915_dev *dev =3D phy->dev;
+>  	struct {
+>  		u8 ctrl_id;
+>  		u8 action;
+> -		u8 band;
+> +		u8 dbdc_idx;
+>  		u8 rsv[5];
+>  	} req =3D {
+>  		.ctrl_id =3D THERMAL_SENSOR_TEMP_QUERY,
+> -		.action =3D index,
+> +		.dbdc_idx =3D phy !=3D &dev->phy,
+>  	};
+> =20
+>  	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(THERMAL_CTRL), &req,
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers=
+/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> index 80eb35231a1a..d5296e2d481b 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> @@ -357,7 +357,7 @@ int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, i=
+nt index,
+>  			    const struct mt7915_dfs_pattern *pattern);
+>  int mt7915_mcu_apply_group_cal(struct mt7915_dev *dev);
+>  int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy);
+> -int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index);
+> +int mt7915_mcu_get_temperature(struct mt7915_phy *phy);
+>  int mt7915_mcu_get_tx_rate(struct mt7915_dev *dev, u32 cmd, u16 wlan_idx=
 );
-> =20
-> +static int
-> +mt7921_pm_stats(struct seq_file *s, void *data)
-> +{
-> +	struct mt7921_dev *dev =3D dev_get_drvdata(s->private);
-> +	struct mt76_connac_pm *pm =3D &dev->pm;
-> +
-> +	seq_printf(s, "low power wakes: %9d\n", pm->stats.lp_wake);
-> +
-> +	return 0;
-> +}
-> +
->  static int
->  mt7921_pm_idle_timeout_set(void *data, u64 val)
->  {
-> @@ -322,6 +333,8 @@ int mt7921_init_debugfs(struct mt7921_dev *dev)
->  	debugfs_create_file("idle-timeout", 0600, dir, dev,
->  			    &fops_pm_idle_timeout);
->  	debugfs_create_file("chip_reset", 0600, dir, dev, &fops_reset);
-> +	debugfs_create_devm_seqfile(dev->mt76.dev, "runtime_pm_stats", dir,
-> +				    mt7921_pm_stats);
-> =20
->  	return 0;
->  }
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/dma.c
-> index 8c556ff3ae93..72f5704f8f11 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-> @@ -329,6 +329,31 @@ int mt7921_wpdma_reset(struct mt7921_dev *dev, bool =
-force)
->  	return 0;
->  }
-> =20
-> +int mt7921_wpdma_reinit_cond(struct mt7921_dev *dev)
-> +{
-> +	struct mt76_connac_pm *pm =3D &dev->pm;
-> +	int err;
-> +
-> +	/* check if the wpdma must be reinitialized */
-> +	if (mt7921_dma_need_reinit(dev)) {
-> +		/* disable interrutpts */
-> +		mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
-> +		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
-> +
-> +		err =3D mt7921_wpdma_reset(dev, false);
-> +		if (err) {
-> +			dev_err(dev->mt76.dev, "wpdma reset failed\n");
-> +			return err;
-> +		}
-> +
-> +		/* enable interrutpts */
-> +		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
-> +		pm->stats.lp_wake++;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  int mt7921_dma_init(struct mt7921_dev *dev)
->  {
->  	/* Increase buffer size to receive large VHT/HE MPDUs */
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers=
-/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> index 06a85d2d1c6f..bb4961d3969a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> @@ -254,6 +254,7 @@ int mt7921_eeprom_get_target_power(struct mt7921_dev =
-*dev,
->  void mt7921_eeprom_init_sku(struct mt7921_dev *dev);
->  int mt7921_dma_init(struct mt7921_dev *dev);
->  int mt7921_wpdma_reset(struct mt7921_dev *dev, bool force);
-> +int mt7921_wpdma_reinit_cond(struct mt7921_dev *dev);
->  void mt7921_dma_cleanup(struct mt7921_dev *dev);
->  int mt7921_run_firmware(struct mt7921_dev *dev);
->  int mt7921_mcu_init(struct mt7921_dev *dev);
-> @@ -317,6 +318,11 @@ mt7921_l1_rmw(struct mt7921_dev *dev, u32 addr, u32 =
-mask, u32 val)
->  #define mt7921_l1_set(dev, addr, val)	mt7921_l1_rmw(dev, addr, 0, val)
->  #define mt7921_l1_clear(dev, addr, val)	mt7921_l1_rmw(dev, addr, val, 0)
-> =20
-> +static inline bool mt7921_dma_need_reinit(struct mt7921_dev *dev)
-> +{
-> +	return !mt76_get_field(dev, MT_WFDMA_DUMMY_CR, MT_WFDMA_NEED_REINIT);
-> +}
-> +
->  void mt7921_mac_init(struct mt7921_dev *dev);
->  bool mt7921_mac_wtbl_update(struct mt7921_dev *dev, int idx, u32 mask);
->  void mt7921_mac_reset_counters(struct mt7921_phy *phy);
+>  int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif =
+*vif,
+>  			   struct ieee80211_sta *sta, struct rate_info *rate);
 > --=20
-> 2.25.1
+> 2.18.0
 >=20
 
---P/CfuldqDC55MrOp
+--TFPJU7dGCv8470U4
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYHxi0wAKCRA6cBh0uS2t
-rIccAP9f22Fh/Hgkh5U4dHrEZ1CL0QW1qBlhR5ixaZEb8dVmewD+LiyFwP0xi52s
-3M//eDzUTLAdcWShx9DQl/5SHJN/dAs=
-=NgMi
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYHyj8gAKCRA6cBh0uS2t
+rFc1AP0TzFM9UeSoGdkc3dw0YHYpaI+eTfh5nH0oLez6fUqLYgEAmuffVpsIXLN9
+vSsV+rGBbRwtmHzZoNXIQqCWZRrHdg8=
+=5nH8
 -----END PGP SIGNATURE-----
 
---P/CfuldqDC55MrOp--
+--TFPJU7dGCv8470U4--
+
