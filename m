@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DAD2363419
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 08:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69C7236341B
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 08:35:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229993AbhDRGfb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 02:35:31 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:38273 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbhDRGfb (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 02:35:31 -0400
+        id S234535AbhDRGgD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 02:36:03 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:44858 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232237AbhDRGgC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Apr 2021 02:36:02 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618727704; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1618727734; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=uQERvfmFkZO+Sw0ATrJt+sXpIvuGslbipMcOPO/kLbI=;
- b=HJqhVHhIuUghpZ8Y/Tf7hmQCPMJaboorRkMuPXk1OEimV77l0jiqAyx2CYNmHiUnXA8zCRaG
- xRb/Dc6OKJIL+rzyvnm1Nmh4xBXFPtKH1n0R/WkuLNtO8f1txlSkV3trNYfHKMNmOLFe0p55
- yiObdUwmQvi68GqmETrF524ZO2k=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ Content-Type: Sender; bh=7p/hcsE0piwa8MU9XQk6YnVr8yYhp1/bkJY9iJlzboY=;
+ b=XT87JE9c3zAIqM/iutXGJbJEvYpv5s8VKMix/aRacIDaZTIM4O0rp4VXDAhIi0qhHf/BnuMZ
+ 01CUCv1XpLOTLIuOBL4+z0qKNB36nmpwuj7Gbd/7lL2TpMH7ZUneah9OQtbkqc7+nQbDoqlG
+ joL3hk57FlS4WhJPQDNFlYC5gOA=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 607bd311f34440a9d436374e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 18 Apr 2021 06:34:57
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 607bd32ea817abd39ad4d69a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 18 Apr 2021 06:35:26
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B02ACC433D3; Sun, 18 Apr 2021 06:34:57 +0000 (UTC)
+        id CE763C4338A; Sun, 18 Apr 2021 06:35:25 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,103 +39,51 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 46CCAC433F1;
-        Sun, 18 Apr 2021 06:34:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 46CCAC433F1
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6B2F3C433D3;
+        Sun, 18 Apr 2021 06:35:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6B2F3C433D3
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: rtw88: Fix array overrun in rtw_get_tx_power_params()
+Content-Transfer-Encoding: 7bit
+Subject: Re: mwl8k: Fix a double Free in mwl8k_probe_hw
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210401192717.28927-1-Larry.Finger@lwfinger.net>
-References: <20210401192717.28927-1-Larry.Finger@lwfinger.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        =?utf-8?b?0JHQvtCz0LTQsNC9INCf0LjQu9C40L/QtdC90LrQvg==?= 
-        <bogdan.pylypenko107@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Stable <stable@vger.kernel.org>
+In-Reply-To: <20210402182627.4256-1-lyl2019@mail.ustc.edu.cn>
+References: <20210402182627.4256-1-lyl2019@mail.ustc.edu.cn>
+To:     Lv Yunlong <lyl2019@mail.ustc.edu.cn>
+Cc:     buytenh@wantstofly.org, davem@davemloft.net, kuba@kernel.org,
+        gustavoars@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lv Yunlong <lyl2019@mail.ustc.edu.cn>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210418063457.B02ACC433D3@smtp.codeaurora.org>
-Date:   Sun, 18 Apr 2021 06:34:57 +0000 (UTC)
+Message-Id: <20210418063525.CE763C4338A@smtp.codeaurora.org>
+Date:   Sun, 18 Apr 2021 06:35:25 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> wrote:
+Lv Yunlong <lyl2019@mail.ustc.edu.cn> wrote:
 
-> From: Ping-Ke Shih <pkshih@realtek.com>
+> In mwl8k_probe_hw, hw->priv->txq is freed at the first time by
+> dma_free_coherent() in the call chain:
+> if(!priv->ap_fw)->mwl8k_init_txqs(hw)->mwl8k_txq_init(hw, i).
 > 
-> Using a kernel with the Undefined Behaviour Sanity Checker (UBSAN) enabled, the
-> following array overrun is logged:
+> Then in err_free_queues of mwl8k_probe_hw, hw->priv->txq is freed
+> at the second time by mwl8k_txq_deinit(hw, i)->dma_free_coherent().
 > 
-> ================================================================================
-> UBSAN: array-index-out-of-bounds in /home/finger/wireless-drivers-next/drivers/net/wireless/realtek/rtw88/phy.c:1789:34
-> index 5 is out of range for type 'u8 [5]'
-> CPU: 2 PID: 84 Comm: kworker/u16:3 Tainted: G           O      5.12.0-rc5-00086-gd88bba47038e-dirty #651
-> Hardware name: TOSHIBA TECRA A50-A/TECRA A50-A, BIOS Version 4.50   09/29/2014
-> Workqueue: phy0 ieee80211_scan_work [mac80211]
-> Call Trace:
->  dump_stack+0x64/0x7c
->  ubsan_epilogue+0x5/0x40
->  __ubsan_handle_out_of_bounds.cold+0x43/0x48
->  rtw_get_tx_power_params+0x83a/drivers/net/wireless/realtek/rtw88/0xad0 [rtw_core]
->  ? rtw_pci_read16+0x20/0x20 [rtw_pci]
->  ? check_hw_ready+0x50/0x90 [rtw_core]
->  rtw_phy_get_tx_power_index+0x4d/0xd0 [rtw_core]
->  rtw_phy_set_tx_power_level+0xee/0x1b0 [rtw_core]
->  rtw_set_channel+0xab/0x110 [rtw_core]
->  rtw_ops_config+0x87/0xc0 [rtw_core]
->  ieee80211_hw_config+0x9d/0x130 [mac80211]
->  ieee80211_scan_state_set_channel+0x81/0x170 [mac80211]
->  ieee80211_scan_work+0x19f/0x2a0 [mac80211]
->  process_one_work+0x1dd/0x3a0
->  worker_thread+0x49/0x330
->  ? rescuer_thread+0x3a0/0x3a0
->  kthread+0x134/0x150
->  ? kthread_create_worker_on_cpu+0x70/0x70
->  ret_from_fork+0x22/0x30
-> ================================================================================
+> My patch set txq->txd to NULL after the first free to avoid the
+> double free.
 > 
-> The statement where an array is being overrun is shown in the following snippet:
-> 
-> 	if (rate <= DESC_RATE11M)
-> 		tx_power = pwr_idx_2g->cck_base[group];
-> 	else
-> ====>		tx_power = pwr_idx_2g->bw40_base[group];
-> 
-> The associated arrays are defined in main.h as follows:
-> 
-> struct rtw_2g_txpwr_idx {
-> 	u8 cck_base[6];
-> 	u8 bw40_base[5];
-> 	struct rtw_2g_1s_pwr_idx_diff ht_1s_diff;
-> 	struct rtw_2g_ns_pwr_idx_diff ht_2s_diff;
-> 	struct rtw_2g_ns_pwr_idx_diff ht_3s_diff;
-> 	struct rtw_2g_ns_pwr_idx_diff ht_4s_diff;
-> };
-> 
-> The problem arises because the value of group is 5 for channel 14. The trivial
-> increase in the dimension of bw40_base fails as this struct must match the layout of
-> efuse. The fix is to add the rate as an argument to rtw_get_channel_group() and set
-> the group for channel 14 to 4 if rate <= DESC_RATE11M.
-> 
-> This patch fixes commit fa6dfe6bff24 ("rtw88: resolve order of tx power setting routines")
-> 
-> Fixes: fa6dfe6bff24 ("rtw88: resolve order of tx power setting routines")
-> Reported-by: Богдан Пилипенко <bogdan.pylypenko107@gmail.com>
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Stable <stable@vger.kernel.org>
+> Fixes: a66098daacee2 ("mwl8k: Marvell TOPDOG wireless driver")
+> Signed-off-by: Lv Yunlong <lyl2019@mail.ustc.edu.cn>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-2ff25985ea9c rtw88: Fix array overrun in rtw_get_tx_power_params()
+a8e083ee8e2a mwl8k: Fix a double Free in mwl8k_probe_hw
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210401192717.28927-1-Larry.Finger@lwfinger.net/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210402182627.4256-1-lyl2019@mail.ustc.edu.cn/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
