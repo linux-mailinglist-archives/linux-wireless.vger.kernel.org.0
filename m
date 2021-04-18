@@ -2,90 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2E63632CB
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 02:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743243633D1
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 07:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235087AbhDRARD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Apr 2021 20:17:03 -0400
-Received: from smtprelay0167.hostedemail.com ([216.40.44.167]:49906 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S230339AbhDRARC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Apr 2021 20:17:02 -0400
-X-Greylist: delayed 442 seconds by postgrey-1.27 at vger.kernel.org; Sat, 17 Apr 2021 20:17:02 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave06.hostedemail.com (Postfix) with ESMTP id 070EC81236AC;
-        Sun, 18 Apr 2021 00:09:14 +0000 (UTC)
-Received: from omf02.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id A877318011AD6;
-        Sun, 18 Apr 2021 00:09:12 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf02.hostedemail.com (Postfix) with ESMTPA id 426A21D42F4;
-        Sun, 18 Apr 2021 00:09:11 +0000 (UTC)
-Message-ID: <e256ba8bf66ec4baa5267b4a2f64b2a215817d16.camel@perches.com>
-Subject: Re: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for
- Clang
-From:   Joe Perches <joe@perches.com>
-To:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Date:   Sat, 17 Apr 2021 17:09:09 -0700
-In-Reply-To: <6bcce753-ceca-8731-ec66-6f467a3199fd@gmail.com>
-References: <20210305094850.GA141221@embeddedor>
-         <20210417175201.2D5A7C433F1@smtp.codeaurora.org>
-         <6bcce753-ceca-8731-ec66-6f467a3199fd@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        id S229945AbhDRFWN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 01:22:13 -0400
+Received: from mga14.intel.com ([192.55.52.115]:64652 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229671AbhDRFWM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Apr 2021 01:22:12 -0400
+IronPort-SDR: m/6dJBq5PknBI4yuWscxETWzBJ+fHQ8+Zm7yTbE67LYzT05V/mT2rcHWk6gWfykLuKgVqscQMw
+ +hmWHFdjdSjQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9957"; a="194758629"
+X-IronPort-AV: E=Sophos;i="5.82,231,1613462400"; 
+   d="scan'208";a="194758629"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2021 22:21:45 -0700
+IronPort-SDR: cFAlJq0FgfRBXPt61a4m0zdKzrprIDerLRFuNPTjvdu2SBLyK7Y8P3Eox99fCc+8qC94DJmpZw
+ Zt79CD7QUc9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,231,1613462400"; 
+   d="scan'208";a="383415520"
+Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 17 Apr 2021 22:21:43 -0700
+Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lXzsM-00019L-Rv; Sun, 18 Apr 2021 05:21:42 +0000
+Date:   Sun, 18 Apr 2021 13:21:06 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:pending] BUILD SUCCESS
+ ef2c0c3ce050ced96206de8c1e43359a44d1090b
+Message-ID: <607bc1c2.++bK7QmW2Uo6u6OV%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 426A21D42F4
-X-Spam-Status: No, score=1.60
-X-Stat-Signature: hgnmhy4119fdik7mx4bit7j8p7jbgjp3
-X-Rspamd-Server: rspamout01
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1/LdIaJsZonw8iNo1xt8+C1+emAnnvBTaA=
-X-HE-Tag: 1618704551-717195
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2021-04-17 at 14:30 -0400, Jes Sorensen wrote:
-> On 4/17/21 1:52 PM, Kalle Valo wrote:
-> > "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
-> > 
-> > > In preparation to enable -Wimplicit-fallthrough for Clang, fix
-> > > multiple warnings by replacing /* fall through */ comments with
-> > > the new pseudo-keyword macro fallthrough; instead of letting the
-> > > code fall through to the next case.
-> > > 
-> > > Notice that Clang doesn't recognize /* fall through */ comments as
-> > > implicit fall-through markings.
-> > > 
-> > > Link: https://github.com/KSPP/linux/issues/115
-> > > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> > 
-> > Patch applied to wireless-drivers-next.git, thanks.
-> > 
-> > bf3365a856a1 rtl8xxxu: Fix fall-through warnings for Clang
-> > 
-> 
-> Sorry this junk patch should not have been applied.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
+branch HEAD: ef2c0c3ce050ced96206de8c1e43359a44d1090b  Merge tag 'mt76-for-kvalo-2021-04-17' of https://github.com/nbd168/wireless into pending
 
-I don't believe it's a junk patch.
-I believe your characterization of it as such is flawed.
+elapsed time: 723m
 
-You don't like the style, that's fine, but:
+configs tested: 108
+configs skipped: 2
 
-Any code in the kernel should not be a unique style of your own choosing
-when it could cause various compilers to emit unnecessary warnings.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Please remember the kernel code base is a formed by a community with a
-nominally generally accepted style.  There is a real desire in that
-community to both enable compiler warnings that might show defects and
-simultaneously avoid unnecessary compiler warnings.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                             allyesconfig
+h8300                            allyesconfig
+arm                        clps711x_defconfig
+sparc                       sparc32_defconfig
+arm                       multi_v4t_defconfig
+m68k                                defconfig
+arm                        realview_defconfig
+xtensa                              defconfig
+ia64                      gensparse_defconfig
+sh                        sh7757lcr_defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                      obs600_defconfig
+mips                           xway_defconfig
+mips                        qi_lb60_defconfig
+arm                       netwinder_defconfig
+m68k                        mvme147_defconfig
+mips                           ci20_defconfig
+arm                         s5pv210_defconfig
+mips                       bmips_be_defconfig
+powerpc                     stx_gp3_defconfig
+arm                      integrator_defconfig
+arm                          lpd270_defconfig
+m68k                          multi_defconfig
+arm                    vt8500_v6_v7_defconfig
+arm                       aspeed_g4_defconfig
+h8300                     edosk2674_defconfig
+openrisc                            defconfig
+sh                          sdk7786_defconfig
+mips                         bigsur_defconfig
+powerpc                      ppc6xx_defconfig
+sh                              ul2_defconfig
+arm                       spear13xx_defconfig
+arm                          collie_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20210418
+i386                 randconfig-a001-20210418
+i386                 randconfig-a006-20210418
+i386                 randconfig-a005-20210418
+i386                 randconfig-a004-20210418
+i386                 randconfig-a002-20210418
+x86_64               randconfig-a014-20210418
+x86_64               randconfig-a015-20210418
+x86_64               randconfig-a013-20210418
+x86_64               randconfig-a011-20210418
+x86_64               randconfig-a012-20210418
+x86_64               randconfig-a016-20210418
+i386                 randconfig-a015-20210418
+i386                 randconfig-a013-20210418
+i386                 randconfig-a014-20210418
+i386                 randconfig-a016-20210418
+i386                 randconfig-a012-20210418
+i386                 randconfig-a011-20210418
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-This particular change just avoids a possible compiler warning.
+clang tested configs:
+x86_64               randconfig-a003-20210418
+x86_64               randconfig-a001-20210418
+x86_64               randconfig-a005-20210418
+x86_64               randconfig-a002-20210418
+x86_64               randconfig-a006-20210418
+x86_64               randconfig-a004-20210418
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
