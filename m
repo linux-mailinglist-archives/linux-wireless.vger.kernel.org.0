@@ -2,96 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4773633F8
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 08:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A3F3633FA
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 08:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236765AbhDRGLD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 02:11:03 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:55278 "EHLO m43-7.mailgun.net"
+        id S236809AbhDRGM1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 02:12:27 -0400
+Received: from mga04.intel.com ([192.55.52.120]:9135 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235986AbhDRGLC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 02:11:02 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618726235; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=ypVoKjPH+9m+B6mFc4YokwEv6kqniBKcP4p0b5RWi0I=;
- b=MalWqY1B1hDumFy4sgTYTTWYEi5bZ6m+v5GKcITyWxjqefQwbN2KHY2/Jh2PkSOdyfXtT2Qm
- u5rVjt598vXIDAZWIq7jE94eXY2rR9Cxn5bBWhNCQaw2vL/MArfkQHch+DmcpjtwcKhWwgkq
- dfexT2SL/N4Nuo3ODVQsLXpsK2g=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 607bcd4e853c0a2c460b612a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 18 Apr 2021 06:10:22
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AB25CC43217; Sun, 18 Apr 2021 06:10:21 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7A0C5C433D3;
-        Sun, 18 Apr 2021 06:10:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7A0C5C433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S235958AbhDRGMX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Apr 2021 02:12:23 -0400
+IronPort-SDR: 0e4iTazG6SpxeMgNDHvgVb+h5S88MMzQ/q9SKCgT7/MTVnbrFRL1gL/bgbvsx/d8z251oSVdcY
+ EFgiqiUuHWsQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9957"; a="193079258"
+X-IronPort-AV: E=Sophos;i="5.82,231,1613462400"; 
+   d="scan'208";a="193079258"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2021 23:11:45 -0700
+IronPort-SDR: tg0RDIl5MZOCEVhuSjHtN7uetWVvPMt8R5hK4VY39UjZOyhFkx9Mr66w9RRYbNopxB7rPOSs/P
+ fjoXGfMlGXtQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,231,1613462400"; 
+   d="scan'208";a="426111012"
+Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 17 Apr 2021 23:11:44 -0700
+Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lY0el-00019q-EF; Sun, 18 Apr 2021 06:11:43 +0000
+Date:   Sun, 18 Apr 2021 14:11:03 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ 7909a590eba6d021f104958857cbc4f0089daceb
+Message-ID: <607bcd77.KZMGUWdMhznh5vSw%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] brcmsmac: fix shift on 4 bit masked value
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210318164513.19600-1-colin.king@canonical.com>
-References: <20210318164513.19600-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210418061021.AB25CC43217@smtp.codeaurora.org>
-Date:   Sun, 18 Apr 2021 06:10:21 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+branch HEAD: 7909a590eba6d021f104958857cbc4f0089daceb  airo: work around stack usage warning
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The calculation of offtune_val seems incorrect, the u16 value in
-> pi->tx_rx_cal_radio_saveregs[2] is being masked with 0xf0 and then
-> shifted 8 places right so that always ends up as a zero result. I
-> believe the intended shift was 4 bits to the right. Fix this.
-> 
-> [Note: not tested, I don't have the H/W]
-> 
-> Addresses-Coverity: ("Operands don't affect result")
-> Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+elapsed time: 724m
 
-I think this needs review from someone familiar with the hardware.
+configs tested: 102
+configs skipped: 2
 
-Patch set to Changes Requested.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210318164513.19600-1-colin.king@canonical.com/
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+arm                        realview_defconfig
+arm                       multi_v4t_defconfig
+xtensa                              defconfig
+ia64                      gensparse_defconfig
+sh                        sh7757lcr_defconfig
+powerpc                 mpc836x_mds_defconfig
+arm                         s5pv210_defconfig
+mips                       bmips_be_defconfig
+powerpc                     stx_gp3_defconfig
+arm                      integrator_defconfig
+arm                          lpd270_defconfig
+m68k                          multi_defconfig
+i386                             alldefconfig
+nios2                         10m50_defconfig
+sh                            titan_defconfig
+mips                     loongson1c_defconfig
+powerpc                     pseries_defconfig
+mips                         mpc30x_defconfig
+arm                        clps711x_defconfig
+mips                         bigsur_defconfig
+powerpc                      ppc6xx_defconfig
+sh                              ul2_defconfig
+arm                       spear13xx_defconfig
+arm                          collie_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20210418
+i386                 randconfig-a001-20210418
+i386                 randconfig-a006-20210418
+i386                 randconfig-a005-20210418
+i386                 randconfig-a004-20210418
+i386                 randconfig-a002-20210418
+x86_64               randconfig-a014-20210418
+x86_64               randconfig-a015-20210418
+x86_64               randconfig-a013-20210418
+x86_64               randconfig-a011-20210418
+x86_64               randconfig-a012-20210418
+x86_64               randconfig-a016-20210418
+i386                 randconfig-a015-20210418
+i386                 randconfig-a013-20210418
+i386                 randconfig-a014-20210418
+i386                 randconfig-a016-20210418
+i386                 randconfig-a012-20210418
+i386                 randconfig-a011-20210418
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allyesconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+clang tested configs:
+x86_64               randconfig-a003-20210418
+x86_64               randconfig-a001-20210418
+x86_64               randconfig-a005-20210418
+x86_64               randconfig-a002-20210418
+x86_64               randconfig-a006-20210418
+x86_64               randconfig-a004-20210418
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
