@@ -2,119 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AE5D36342B
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 08:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9275A363430
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 08:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbhDRGsj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 02:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59002 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbhDRGsi (ORCPT
+        id S230036AbhDRGzi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 02:55:38 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:19698 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229478AbhDRGzi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 02:48:38 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0B3C06174A
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Apr 2021 23:48:09 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id x16so31792853iob.1
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Apr 2021 23:48:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=bNFvm387H14VR4uDavzDa2gVIhxhpAltHVFqJbI0CrI=;
-        b=Mceru6Wmh9LP0QdUGO3tGz2+5PXX1/HIDxYeP32HfadxTOVhB4TtyXr/HEg9JwJMA3
-         /PEqBARl7dEDUuyDxV5ImayCiq5PiBbbO6kOiUE11g69TF5ke1e4hWyDHQuNwXhbEIag
-         N48OFBthBXutNK5eccYmH3dlgGRybYwQzfJ9j0j8EeBLKFNDzszRx56bYRHCW1BCqWIk
-         BAbyVFBndhueB9fQIMVIPq2CYCbJKf3HDaQg6rOIgMjQxadhwWhxEiDOWpHkfuk5nVjJ
-         gmMPGackfbW7qBq/iPFt0pdJ2ckFXtg34tbZHAD6lMJpbTeQ4BsG73KoVZKhf0Pw048H
-         Ycmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=bNFvm387H14VR4uDavzDa2gVIhxhpAltHVFqJbI0CrI=;
-        b=GCS/atQw2tPlQZlqm8xrPi439uwEMCXYUV23mvqJGCpQk/+OHdTbn+YoV1oQE+K571
-         Ir6ALZMiVHg4P+95vp+1DIAAi2pFzKjS3bhOEyHsQj14y6lE+I3FoQgpJmszmRSYErzs
-         9yEaH+vkknJj0r41QyGVkWAHmvAyRJEk+Yqb+N0TPLK61NxlVV9kwwevElOKBRJXHwHC
-         /RvRjuuDb1feeiDUo3lpZR8KW7YdEgyqACG119R4AM2w003Gpp/2PbOwH+FIg/spsEaZ
-         IF0o6xs4gNaEDjUkf+UvBr+/W6jyFyzXjSG5/vS720lR/f9Tzazr6glx1iX4QRu7uQ1T
-         muWQ==
-X-Gm-Message-State: AOAM531D4pB5/3P+aCIzEwtJpNbWx1gUo73hJS2kAY23YIlgwNMod81x
-        Bmb5k4rXEREwkL87Z21t9cRoLEmHyfSY/6yt2Uk=
-X-Google-Smtp-Source: ABdhPJxg7JjeaOTZ45YpoCIYKQlJT25uttirt1GZpkDMIGAsY+mqPobPZ/Q14/JPZIhz5Jj7GARhrrxokOtE/BagcWI=
-X-Received: by 2002:a02:9586:: with SMTP id b6mr2945172jai.97.1618728488488;
- Sat, 17 Apr 2021 23:48:08 -0700 (PDT)
+        Sun, 18 Apr 2021 02:55:38 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618728910; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=Utc3RPK8eY1uRcKm9lChhTtO6d9Pq8zc08SGUU+2IoQ=; b=H2oGeeftZPZVufuFFf0frEGlwgu3blQQVkzIeoUQQWCyxhLSHoEGXy7C2wBICmjZJV+Z0cOd
+ DY0F7X/HwUC1VkI9VhY72Q4gFEGm4B/9SQsfPHKdBL76c3ac+5V4F6fAmBNRlTwgRoqAm5L7
+ aCkf7G6/AYNUVHVSMXLzrj2aW9c=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 607bd7c5f34440a9d43beced (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 18 Apr 2021 06:55:01
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 883ACC4323A; Sun, 18 Apr 2021 06:55:01 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 40CE2C433D3;
+        Sun, 18 Apr 2021 06:54:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 40CE2C433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lee Gibson <leegib@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wl1251: Fix possible buffer overflow in wl1251_cmd_scan
+References: <20210317121807.389169-1-leegib@gmail.com>
+Date:   Sun, 18 Apr 2021 09:54:57 +0300
+In-Reply-To: <20210317121807.389169-1-leegib@gmail.com> (Lee Gibson's message
+        of "Wed, 17 Mar 2021 12:18:07 +0000")
+Message-ID: <87wnt0jd4u.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <nycvar.YFH.7.76.2104070918090.12405@cbobk.fhfr.pm>
- <20210417085010.58522C433C6@smtp.codeaurora.org> <nycvar.YFH.7.76.2104171105580.18270@cbobk.fhfr.pm>
- <nycvar.YFH.7.76.2104171124280.18270@cbobk.fhfr.pm> <CA+icZUUmEGP=DRqna7sNJ=1WZhzEVRiMSwwCt2hEQr-TkT18aw@mail.gmail.com>
-In-Reply-To: <CA+icZUUmEGP=DRqna7sNJ=1WZhzEVRiMSwwCt2hEQr-TkT18aw@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Sun, 18 Apr 2021 08:47:32 +0200
-Message-ID: <CA+icZUXmNG6TOhtni6Rrs7NZVOg1H8NhYuDsDiyVASF5+VtUAQ@mail.gmail.com>
-Subject: Re: [PATCH] iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_gen2_enqueue_hcmd()
-To:     Jiri Kosina <jikos@kernel.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Apr 17, 2021 at 2:06 PM Sedat Dilek <sedat.dilek@gmail.com> wrote:
->
-> On Sat, Apr 17, 2021 at 11:25 AM Jiri Kosina <jikos@kernel.org> wrote:
-> >
-> > On Sat, 17 Apr 2021, Jiri Kosina wrote:
-> >
-> > > > This is malformed in patchwork, check the link below. Please resend, and
-> > > > I strongly recommend to use git send-email to avoid any format issues.
-> > >
-> > > Honestly I have no idea what you are talking about, there is no whitespace
-> > > damage nor anything else that I'd see to be broken. I just took the patch
-> > > from the mail I sent, applied with git-am, and it worked flawlessly.
-> > >
-> > > Anyway, I'll send a patch as a followup to this mail so that it could
-> > > hopefully be picked up by your tooling.
-> >
-> > And it seems to have appeared here:
-> >
-> > https://patchwork.kernel.org/project/linux-wireless/patch/nycvar.YFH.7.76.2104171112390.18270@cbobk.fhfr.pm/
-> >
-> > --
-> > Jiri Kosina
-> > SUSE Labs
-> >
->
-> Thanks for the patch Jiri.
->
-> This is on top of Linux v5.12-rc7+...
->
-> link="https://lore.kernel.org/linux-wireless/nycvar.YFH.7.76.2104171112390.18270@cbobk.fhfr.pm"
->
-> $ b4 -d am $link
->
-> $ LC_ALL=C git apply --check --verbose
-> ../v2_20210417_jikos_iwlwifi_fix_softirq_hardirq_disabling_in_iwl_pcie_gen2_enqueue_hcmd.mbx
-> Checking patch drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c...
->
-> $ LC_ALL=C git apply --verbose
-> ../v2_20210417_jikos_iwlwifi_fix_softirq_hardirq_disabling_in_iwl_pcie_gen2_enqueue_hcmd.mbx
-> Checking patch drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c...
-> Applied patch drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c cleanly.
->
+Lee Gibson <leegib@gmail.com> writes:
 
+> Function wl1251_cmd_scan calls memcpy without checking the length.
+> A user could control that length and trigger a buffer overflow.
+> Fix by checking the length is within the maximum allowed size.
+>
+> Signed-off-by: Lee Gibson <leegib@gmail.com>
 
-Small nit:
+Please fix the commit log, the user cannot control this length as
+cfg80211 checks it before handling it to wl1251. Unless I'm missing
+something.
 
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com
+> ---
+>  drivers/net/wireless/ti/wl1251/cmd.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ti/wl1251/cmd.c b/drivers/net/wireless/ti/wl1251/cmd.c
+> index 498c8db2eb48..e4d028a53d91 100644
+> --- a/drivers/net/wireless/ti/wl1251/cmd.c
+> +++ b/drivers/net/wireless/ti/wl1251/cmd.c
+> @@ -455,8 +455,11 @@ int wl1251_cmd_scan(struct wl1251 *wl, u8 *ssid, size_t ssid_len,
+>  	}
+>  
+>  	cmd->params.ssid_len = ssid_len;
 
-Here misses closing ">" in the email-address of Heiner.
+If you are checking the length, you should also check ssid_len here.
 
-Feel free to add my:
+> -	if (ssid)
+> -		memcpy(cmd->params.ssid, ssid, ssid_len);
+> +	if (ssid) {
+> +		int len = min_t(int, ssid_len, IEEE80211_MAX_SSID_LEN);
+> +
+> +		memcpy(cmd->params.ssid, ssid, len);
+> +	}
 
-Tested-by: Sedat Dilek <sedat.dilek@gmail.com> # LLVM/Clang v12.0.0 (x86-64)
+Please use clamp_val().
 
-- Sedat -
+Also another (and IMHO better) way to cleanup this is to provide a
+pointer to struct cfg80211_ssid, which makes it clear that the length
+can be trusted and not length checking is not needed. So something like
+this:
+
+int wl1251_cmd_scan(struct wl1251 *wl, const struct cfg80211_ssid *ssid,
+		    struct ieee80211_channel *channels[],
+		    unsigned int n_channels, unsigned int n_probes)
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
