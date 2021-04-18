@@ -2,83 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02E93363428
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 08:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5389036342A
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 08:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229622AbhDRGjv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 02:39:51 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:19334 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbhDRGjs (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 02:39:48 -0400
+        id S229671AbhDRGre (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 02:47:34 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:20739 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229478AbhDRGrd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Apr 2021 02:47:33 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618727961; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=wZx68NKrba7H67NHXWPI1/v3yRlaGYKjabr2CR+QgaE=;
- b=IV0LJbdJ5dMfaU6zB1XnKvJyFcTZBgG/VHRX8Pa1VsXpx2cE5C1pv04CL8lGKe0+rNAeG3Kb
- F4S2bIJT30y1mPMAYFlLMWSEDacDPvGZLNKGqcgoA2SMJAjAt9y9VVhijrvY7rMbaCewpHbE
- /NGeOC/sf8fPRz6zLD5YpVqkLc0=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1618728426; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=oNr22xusNiJrAIdIJDLO5qmuHHcDtLjxcA/5so6lgPw=; b=Vsr3LrurGd8FwlyPJJsnFFbkzTR97zKdVQhZEgDSzINxeP+CmerKEz1ZQr5+nhnTuV8Ksmgq
+ NZmyVZKSI75Uwti79moMWXUobapN23+DbSAkmJwm7h/Hfq+Q0uI96Wo7GRU0Rzrtd481dULJ
+ Ez8cYsCKo8zWr32EVxocUDvjEwE=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 607bd40fc39407c327b504f1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 18 Apr 2021 06:39:11
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 607bd5e2e0e9c9a6b6009abc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 18 Apr 2021 06:46:58
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BA158C43460; Sun, 18 Apr 2021 06:39:10 +0000 (UTC)
+        id 96224C43460; Sun, 18 Apr 2021 06:46:58 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0769EC433D3;
-        Sun, 18 Apr 2021 06:39:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0769EC433D3
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0D5F0C433F1;
+        Sun, 18 Apr 2021 06:46:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0D5F0C433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] rtw88: 8822c: add CFO tracking
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210416030901.7099-1-pkshih@realtek.com>
-References: <20210416030901.7099-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <phhuang@realtek.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210418063910.BA158C43460@smtp.codeaurora.org>
-Date:   Sun, 18 Apr 2021 06:39:10 +0000 (UTC)
+To:     Jiri Kosina <jikos@kernel.org>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_gen2_enqueue_hcmd()
+References: <nycvar.YFH.7.76.2104070918090.12405@cbobk.fhfr.pm>
+        <20210417085010.58522C433C6@smtp.codeaurora.org>
+        <nycvar.YFH.7.76.2104171105580.18270@cbobk.fhfr.pm>
+Date:   Sun, 18 Apr 2021 09:46:55 +0300
+In-Reply-To: <nycvar.YFH.7.76.2104171105580.18270@cbobk.fhfr.pm> (Jiri
+        Kosina's message of "Sat, 17 Apr 2021 11:12:33 +0200 (CEST)")
+Message-ID: <871rb8ks2o.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Jiri Kosina <jikos@kernel.org> writes:
 
-> From: Po-Hao Huang <phhuang@realtek.com>
-> 
-> Add CFO tracking, which stands for central frequency offset tracking, to
-> adjust oscillator to align central frequency of connected AP. Then, it can
-> yield better performance.
-> 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> On Sat, 17 Apr 2021, Kalle Valo wrote:
+>
+>> This is malformed in patchwork, check the link below. Please resend, and
+>> I strongly recommend to use git send-email to avoid any format issues.
+>
+> Honestly I have no idea what you are talking about, there is no whitespace 
+> damage nor anything else that I'd see to be broken. I just took the patch 
+> from the mail I sent, applied with git-am, and it worked flawlessly.
 
-Patch applied to wireless-drivers-next.git, thanks.
+Compare these two links:
 
-fb8517f4fade rtw88: 8822c: add CFO tracking
+https://patchwork.kernel.org/project/linux-wireless/patch/nycvar.YFH.7.76.2104070918090.12405@cbobk.fhfr.pm/
+
+https://patchwork.kernel.org/project/linux-wireless/patch/nycvar.YFH.7.76.2104171112390.18270@cbobk.fhfr.pm/
+
+In v1 there's email discussion in the commit log which shouldn't be
+there.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210416030901.7099-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
