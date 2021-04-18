@@ -2,221 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 576D6363243
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Apr 2021 22:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2E63632CB
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 02:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237080AbhDQUnS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Apr 2021 16:43:18 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:55882 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S237079AbhDQUnS (ORCPT
+        id S235087AbhDRARD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Apr 2021 20:17:03 -0400
+Received: from smtprelay0167.hostedemail.com ([216.40.44.167]:49906 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S230339AbhDRARC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Apr 2021 16:43:18 -0400
-X-UUID: e068079556994d4d8c915e4f33c0d835-20210418
-X-UUID: e068079556994d4d8c915e4f33c0d835-20210418
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 925129573; Sun, 18 Apr 2021 04:42:49 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sun, 18 Apr 2021 04:42:26 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 18 Apr 2021 04:42:26 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] mt76: mt7615: add thermal sensor device support
-Date:   Sun, 18 Apr 2021 04:42:24 +0800
-Message-ID: <d9d9214cbd4444b861cdc8b88f17e8580b1025f6.1618691395.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <b51d79d257e150a09d51029e3465e2ce925d6cfe.1618691395.git.ryder.lee@mediatek.com>
-References: <b51d79d257e150a09d51029e3465e2ce925d6cfe.1618691395.git.ryder.lee@mediatek.com>
+        Sat, 17 Apr 2021 20:17:02 -0400
+X-Greylist: delayed 442 seconds by postgrey-1.27 at vger.kernel.org; Sat, 17 Apr 2021 20:17:02 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave06.hostedemail.com (Postfix) with ESMTP id 070EC81236AC;
+        Sun, 18 Apr 2021 00:09:14 +0000 (UTC)
+Received: from omf02.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id A877318011AD6;
+        Sun, 18 Apr 2021 00:09:12 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf02.hostedemail.com (Postfix) with ESMTPA id 426A21D42F4;
+        Sun, 18 Apr 2021 00:09:11 +0000 (UTC)
+Message-ID: <e256ba8bf66ec4baa5267b4a2f64b2a215817d16.camel@perches.com>
+Subject: Re: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for
+ Clang
+From:   Joe Perches <joe@perches.com>
+To:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Date:   Sat, 17 Apr 2021 17:09:09 -0700
+In-Reply-To: <6bcce753-ceca-8731-ec66-6f467a3199fd@gmail.com>
+References: <20210305094850.GA141221@embeddedor>
+         <20210417175201.2D5A7C433F1@smtp.codeaurora.org>
+         <6bcce753-ceca-8731-ec66-6f467a3199fd@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 426A21D42F4
+X-Spam-Status: No, score=1.60
+X-Stat-Signature: hgnmhy4119fdik7mx4bit7j8p7jbgjp3
+X-Rspamd-Server: rspamout01
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1/LdIaJsZonw8iNo1xt8+C1+emAnnvBTaA=
+X-HE-Tag: 1618704551-717195
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to mt7915, switching to use standard hwmon sysfs.
-For reading temperature, cat /sys/class/ieee80211/phy*/hwmon*/temp1_input
+On Sat, 2021-04-17 at 14:30 -0400, Jes Sorensen wrote:
+> On 4/17/21 1:52 PM, Kalle Valo wrote:
+> > "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+> > 
+> > > In preparation to enable -Wimplicit-fallthrough for Clang, fix
+> > > multiple warnings by replacing /* fall through */ comments with
+> > > the new pseudo-keyword macro fallthrough; instead of letting the
+> > > code fall through to the next case.
+> > > 
+> > > Notice that Clang doesn't recognize /* fall through */ comments as
+> > > implicit fall-through markings.
+> > > 
+> > > Link: https://github.com/KSPP/linux/issues/115
+> > > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> > 
+> > Patch applied to wireless-drivers-next.git, thanks.
+> > 
+> > bf3365a856a1 rtl8xxxu: Fix fall-through warnings for Clang
+> > 
+> 
+> Sorry this junk patch should not have been applied.
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../wireless/mediatek/mt76/mt7615/debugfs.c   | 20 --------
- .../net/wireless/mediatek/mt76/mt7615/init.c  | 50 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  6 +--
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 +-
- .../wireless/mediatek/mt76/mt7615/pci_init.c  |  4 ++
- 5 files changed, 58 insertions(+), 25 deletions(-)
+I don't believe it's a junk patch.
+I believe your characterization of it as such is flawed.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-index 1b414220521a..96b75f316071 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-@@ -291,24 +291,6 @@ mt7615_radio_read(struct seq_file *s, void *data)
- 	return 0;
- }
- 
--static int mt7615_read_temperature(struct seq_file *s, void *data)
--{
--	struct mt7615_dev *dev = dev_get_drvdata(s->private);
--	int temp;
--
--	if (!mt7615_wait_for_mcu_init(dev))
--		return 0;
--
--	/* cpu */
--	mt7615_mutex_acquire(dev);
--	temp = mt7615_mcu_get_temperature(dev, 0);
--	mt7615_mutex_release(dev);
--
--	seq_printf(s, "Temperature: %d\n", temp);
--
--	return 0;
--}
--
- static int
- mt7615_queues_acq(struct seq_file *s, void *data)
- {
-@@ -536,8 +518,6 @@ int mt7615_init_debugfs(struct mt7615_dev *dev)
- 
- 	debugfs_create_file("reset_test", 0200, dir, dev,
- 			    &fops_reset_test);
--	debugfs_create_devm_seqfile(dev->mt76.dev, "temperature", dir,
--				    mt7615_read_temperature);
- 	debugfs_create_file("ext_mac_addr", 0600, dir, dev, &fops_ext_mac_addr);
- 
- 	debugfs_create_u32("rf_wfidx", 0600, dir, &dev->debugfs_rf_wf);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index d84662fb0304..22ccad43a13e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -8,11 +8,61 @@
-  */
- 
- #include <linux/etherdevice.h>
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
- #include "mt7615.h"
- #include "mac.h"
- #include "mcu.h"
- #include "eeprom.h"
- 
-+static ssize_t mt7615_thermal_show_temp(struct device *dev,
-+					struct device_attribute *attr,
-+					char *buf)
-+{
-+	struct mt7615_dev *mdev = dev_get_drvdata(dev);
-+	int temperature;
-+
-+	if (!mt7615_wait_for_mcu_init(mdev))
-+		return 0;
-+
-+	mt7615_mutex_acquire(mdev);
-+	temperature = mt7615_mcu_get_temperature(mdev);
-+	mt7615_mutex_release(mdev);
-+
-+	if (temperature < 0)
-+		return temperature;
-+
-+	/* display in millidegree celcius */
-+	return sprintf(buf, "%u\n", temperature * 1000);
-+}
-+
-+static SENSOR_DEVICE_ATTR(temp1_input, 0444, mt7615_thermal_show_temp,
-+			  NULL, 0);
-+
-+static struct attribute *mt7615_hwmon_attrs[] = {
-+	&sensor_dev_attr_temp1_input.dev_attr.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(mt7615_hwmon);
-+
-+int mt7615_thermal_init(struct mt7615_dev *dev)
-+{
-+	struct wiphy *wiphy = mt76_hw(dev)->wiphy;
-+	struct device *hwmon;
-+
-+	if (!IS_REACHABLE(CONFIG_HWMON))
-+		return 0;
-+
-+	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev,
-+						       wiphy_name(wiphy), phy,
-+						       mt7615_hwmon_groups);
-+	if (IS_ERR(hwmon))
-+		return PTR_ERR(hwmon);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mt7615_thermal_init);
-+
- static void
- mt7615_phy_init(struct mt7615_dev *dev)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index be976fe97290..67af2e2d4779 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -2301,14 +2301,12 @@ int mt7615_mcu_set_chan_info(struct mt7615_phy *phy, int cmd)
- 	return mt76_mcu_send_msg(&dev->mt76, cmd, &req, sizeof(req), true);
- }
- 
--int mt7615_mcu_get_temperature(struct mt7615_dev *dev, int index)
-+int mt7615_mcu_get_temperature(struct mt7615_dev *dev)
- {
- 	struct {
- 		u8 action;
- 		u8 rsv[3];
--	} req = {
--		.action = index,
--	};
-+	} req = {};
- 
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_GET_TEMP, &req,
- 				 sizeof(req), true);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 6a50338ec9f5..68c844527f65 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -359,6 +359,7 @@ static inline int mt7622_wmac_init(struct mt7615_dev *dev)
- }
- #endif
- 
-+int mt7615_thermal_init(struct mt7615_dev *dev);
- int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base,
- 		      int irq, const u32 *map);
- u32 mt7615_reg_map(struct mt7615_dev *dev, u32 addr);
-@@ -497,7 +498,7 @@ u32 mt7615_rf_rr(struct mt7615_dev *dev, u32 wf, u32 reg);
- int mt7615_rf_wr(struct mt7615_dev *dev, u32 wf, u32 reg, u32 val);
- int mt7615_mcu_set_dbdc(struct mt7615_dev *dev);
- int mt7615_mcu_set_eeprom(struct mt7615_dev *dev);
--int mt7615_mcu_get_temperature(struct mt7615_dev *dev, int index);
-+int mt7615_mcu_get_temperature(struct mt7615_dev *dev);
- int mt7615_mcu_set_tx_power(struct mt7615_phy *phy);
- void mt7615_mcu_exit(struct mt7615_dev *dev);
- void mt7615_mcu_fill_msg(struct mt7615_dev *dev, struct sk_buff *skb,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-index 49540b00519d..10bd2c2bbf1c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-@@ -153,6 +153,10 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 	if (ret)
- 		return ret;
- 
-+	ret = mt7615_thermal_init(dev);
-+	if (ret)
-+		return ret;
-+
- 	ieee80211_queue_work(mt76_hw(dev), &dev->mcu_work);
- 	mt7615_init_txpower(dev, &dev->mphy.sband_2g.sband);
- 	mt7615_init_txpower(dev, &dev->mphy.sband_5g.sband);
--- 
-2.18.0
+You don't like the style, that's fine, but:
+
+Any code in the kernel should not be a unique style of your own choosing
+when it could cause various compilers to emit unnecessary warnings.
+
+Please remember the kernel code base is a formed by a community with a
+nominally generally accepted style.  There is a real desire in that
+community to both enable compiler warnings that might show defects and
+simultaneously avoid unnecessary compiler warnings.
+
+This particular change just avoids a possible compiler warning.
 
