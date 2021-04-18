@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 616A13636C3
+	by mail.lfdr.de (Postfix) with ESMTP id D31F33636C4
 	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 18:46:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232200AbhDRQqg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 12:46:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49814 "EHLO mail.kernel.org"
+        id S232179AbhDRQqh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 12:46:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49822 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232095AbhDRQqg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 12:46:36 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EDD0C6135D;
-        Sun, 18 Apr 2021 16:46:06 +0000 (UTC)
+        id S232095AbhDRQqh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Apr 2021 12:46:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4577961359;
+        Sun, 18 Apr 2021 16:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618764367;
-        bh=LCzANB/MXiKU/3fnjO0RYiby0QCBO5lTsoUBIJoPlTk=;
+        s=k20201202; t=1618764369;
+        bh=QW/N+KulcNzOg7fnGEiWu0qI3VA43sk7aMpeDzAyo3s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lPgGC+e2GuqFaGjdmMWQeroo/Oq5zK/nGw/eeKUsfV8/9MmY4yfjE9Al3vBXCXj39
-         ri2Fpi1QqIz9Y/dvlbuXGGaFbQ1Nu8Oz58Pz4lkd97Uo9x6mPmlx7KoVzqh84zZFAm
-         FIaOA+CRLwxcAVvS47vS+2QKGIN2mpwxLGlSUzGLsnodxRa8+smyoqgsRXCqHwNmgC
-         1chZ8sa+BMiDiDmkekxXt0xsMGbSqA6qxXbvWi9e1gopqGGASDztEZ4W1rYCbskN45
-         kKZOEBSkITMQKiy9jUrFpfJWB1uBMtbbJ+buq5TGTQBEOxELP5YpR9+DbhLVZ03y5d
-         TtfkDxngyueNg==
+        b=RfB2snVLm6+LAHBQaIvRXq7unHKlIqMIgXYbZs5IHbxV6Pz3JHPliHtfeakmdzImD
+         IdlieLU0AcnO47/6CWuBJZ0anzOJTAqP8bYWAQkWnvrwEH5V0VGtxW3dQUas0b1b+N
+         dMcP631pBeJfh1rUhr40GZPdW6veMbZPfD7fpuuDcbyoS4+Aqm42SMhVd7KpBeaUwV
+         z7K47iyo/NR4pl7Euccb6SS98uVETiguJWhvKjZgV47gg7zXT0R0LkrXEhKVCiLSZS
+         GmHP5x94JkooOJRAEyWfXkCeror2IpCkrE4qYk3nAnILWUrUup6GoZga9ADBoDrPFp
+         HYtIn0IcMDa8g==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com
-Subject: [PATCH 09/19] mt76: connac: unschedule ps_work in mt76_connac_pm_wake
-Date:   Sun, 18 Apr 2021 18:45:35 +0200
-Message-Id: <da190226104f56203436a3d4c4a021505cfddef1.1618763001.git.lorenzo@kernel.org>
+Subject: [PATCH 10/19] mt76: connac: check wake refcount in mcu_fw_pmctrl
+Date:   Sun, 18 Apr 2021 18:45:36 +0200
+Message-Id: <79586a8114bf0831b78181a41fbf2994c4010da2.1618763001.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <cover.1618763000.git.lorenzo@kernel.org>
 References: <cover.1618763000.git.lorenzo@kernel.org>
@@ -39,52 +39,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to avoid synchronization issues between wake and ps works,
-cancel ps_work in mt76_connac_pm_wake routine
+In order to avoid synchronization races between tx and rx path, rely on
+mt76_connac_skip_fw_pmctrl putting the chip in sleep mode for mt7921 and
+mt7663 devices
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      | 1 -
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 1 +
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      | 1 -
- 3 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac.h | 12 ++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c  |  2 +-
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 7081bb4a28bd..5890fee98d97 100644
+index 5890fee98d97..45c6fb5832b8 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -345,7 +345,6 @@ static int mt7615_mcu_lp_drv_pmctrl(struct mt7615_dev *dev)
- 	clear_bit(MT76_STATE_PM, &mphy->state);
+@@ -358,7 +358,7 @@ static int mt7615_mcu_fw_pmctrl(struct mt7615_dev *dev)
  
- out:
--	dev->pm.last_activity = jiffies;
- 	mutex_unlock(&dev->pm.mutex);
+ 	mutex_lock(&dev->pm.mutex);
  
- 	return err;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index c5f5037f5757..32d664ac1e35 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -13,6 +13,7 @@ int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm)
- 	if (!mt76_is_mmio(dev))
- 		return 0;
+-	if (test_and_set_bit(MT76_STATE_PM, &mphy->state))
++	if (mt76_connac_skip_fw_pmctrl(mphy, &dev->pm))
+ 		goto out;
  
-+	cancel_delayed_work_sync(&pm->ps_work);
- 	if (!test_bit(MT76_STATE_PM, &phy->state))
- 		return 0;
+ 	mt7622_trigger_hif_int(dev, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index 85846eab8d7d..116d800c9f9d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -116,6 +116,18 @@ mt76_connac_pm_unref(struct mt76_connac_pm *pm)
+ 	spin_unlock_bh(&pm->wake.lock);
+ }
  
++static inline bool
++mt76_connac_skip_fw_pmctrl(struct mt76_phy *phy, struct mt76_connac_pm *pm)
++{
++	bool ret;
++
++	spin_lock_bh(&pm->wake.lock);
++	ret = pm->wake.count || test_and_set_bit(MT76_STATE_PM, &phy->state);
++	spin_unlock_bh(&pm->wake.lock);
++
++	return ret;
++}
++
+ static inline void
+ mt76_connac_mutex_acquire(struct mt76_dev *dev, struct mt76_connac_pm *pm)
+ 	__acquires(&dev->mutex)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index ea00f6b6af56..44f02cbf9cc7 100644
+index 44f02cbf9cc7..1204f5d324f8 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1289,7 +1289,6 @@ int mt7921_mcu_drv_pmctrl(struct mt7921_dev *dev)
- 	clear_bit(MT76_STATE_PM, &mphy->state);
+@@ -1304,7 +1304,7 @@ int mt7921_mcu_fw_pmctrl(struct mt7921_dev *dev)
  
- out:
--	dev->pm.last_activity = jiffies;
- 	mutex_unlock(&dev->pm.mutex);
+ 	mutex_lock(&dev->pm.mutex);
  
- 	if (err)
+-	if (test_and_set_bit(MT76_STATE_PM, &mphy->state))
++	if (mt76_connac_skip_fw_pmctrl(mphy, &dev->pm))
+ 		goto out;
+ 
+ 	for (i = 0; i < MT7921_DRV_OWN_RETRY_COUNT; i++) {
 -- 
 2.30.2
 
