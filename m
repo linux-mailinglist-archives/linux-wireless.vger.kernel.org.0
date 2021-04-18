@@ -2,109 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB70036345B
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 10:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E393636A8
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 18:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230036AbhDRIkY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 04:40:24 -0400
-Received: from smtprelay0049.hostedemail.com ([216.40.44.49]:42172 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229811AbhDRIkY (ORCPT
+        id S231953AbhDRQgr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 12:36:47 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:58373 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230028AbhDRQgm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 04:40:24 -0400
-Received: from omf04.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 089F4181D337B;
-        Sun, 18 Apr 2021 08:39:56 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf04.hostedemail.com (Postfix) with ESMTPA id 9FD9ED1513;
-        Sun, 18 Apr 2021 08:39:54 +0000 (UTC)
-Message-ID: <8b210b5f5972e39eded269b35a1297cf824c4181.camel@perches.com>
-Subject: [PATCH] net/wireless/bcom: constify ieee80211_get_response_rate
- return
-From:   Joe Perches <joe@perches.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Date:   Sun, 18 Apr 2021 01:39:53 -0700
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        Sun, 18 Apr 2021 12:36:42 -0400
+X-UUID: 7474f6eb89814d71925ab1ebdb8f1324-20210419
+X-UUID: 7474f6eb89814d71925ab1ebdb8f1324-20210419
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 2090682969; Mon, 19 Apr 2021 00:36:11 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 19 Apr 2021 00:36:08 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 19 Apr 2021 00:36:08 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 0/6] enable deep sleep mode when mt7921e suspends
+Date:   Mon, 19 Apr 2021 00:36:01 +0800
+Message-ID: <1618763767-1292-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9FD9ED1513
-X-Spam-Status: No, score=0.10
-X-Stat-Signature: wxh44ewt85uwut8m4fac3o6ad4fbuo6w
-X-Rspamd-Server: rspamout01
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+G5UYbcY9U2RzhD4ADj2YOG2tye+AZKYQ=
-X-HE-Tag: 1618735194-176317
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 7D5F2C5E062484233DDB16F9FAC75FFDAE0388D0C83E5CA575D7753A9C2DBD612000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It's not modified so make it const with the eventual goal of moving
-data to text for various static struct ieee80211_rate arrays.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- drivers/net/wireless/broadcom/b43/main.c       | 2 +-
- drivers/net/wireless/broadcom/b43legacy/main.c | 2 +-
- include/net/cfg80211.h                         | 2 +-
- net/wireless/util.c                            | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+Enable the deep sleep mode in suspend handler which is able to reduce the
+power consumption further.
 
-diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
-index 150a366e8f62..17bcec5f3ff7 100644
---- a/drivers/net/wireless/broadcom/b43/main.c
-+++ b/drivers/net/wireless/broadcom/b43/main.c
-@@ -4053,7 +4053,7 @@ static void b43_update_basic_rates(struct b43_wldev *dev, u32 brates)
- {
- 	struct ieee80211_supported_band *sband =
- 		dev->wl->hw->wiphy->bands[b43_current_band(dev->wl)];
--	struct ieee80211_rate *rate;
-+	const struct ieee80211_rate *rate;
- 	int i;
- 	u16 basic, direct, offset, basic_offset, rateptr;
- 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net/wireless/broadcom/b43legacy/main.c
-index 7692a2618c97..f64ebff68308 100644
---- a/drivers/net/wireless/broadcom/b43legacy/main.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/main.c
-@@ -2762,7 +2762,7 @@ static void b43legacy_update_basic_rates(struct b43legacy_wldev *dev, u32 brates
- {
- 	struct ieee80211_supported_band *sband =
- 		dev->wl->hw->wiphy->bands[NL80211_BAND_2GHZ];
--	struct ieee80211_rate *rate;
-+	const struct ieee80211_rate *rate;
- 	int i;
- 	u16 basic, direct, offset, basic_offset, rateptr;
- 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 911fae42b0c0..ed07590bc72d 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -5606,7 +5606,7 @@ static inline bool cfg80211_channel_is_psc(struct ieee80211_channel *chan)
-  * which is, for this function, given as a bitmap of indices of
-  * rates in the band's bitrate table.
-  */
--struct ieee80211_rate *
-+const struct ieee80211_rate *
- ieee80211_get_response_rate(struct ieee80211_supported_band *sband,
- 			    u32 basic_rates, int bitrate);
- 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 1bf0200f562a..382c5262d997 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -24,7 +24,7 @@
- #include "rdev-ops.h"
- 
- 
--struct ieee80211_rate *
-+const struct ieee80211_rate *
- ieee80211_get_response_rate(struct ieee80211_supported_band *sband,
- 			    u32 basic_rates, int bitrate)
- {
+Lorenzo Bianconi (3):
+  mt76: mt7921: move mt7921_dma_reset in dma.c
+  mt76: mt7921: introduce mt7921_wpdma_reset utility routine
+  mt76: mt7921: introduce mt7921_dma_{enable,disable} utilities
+
+Sean Wang (3):
+  mt76: mt7921: introduce mt7921_wpdma_reinit_cond utility routine
+  mt76: connac: introduce mt76_connac_mcu_set_deep_sleep utility
+  mt76: mt7921: enable deep sleep when the device suspends
+
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |   4 +
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  22 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  10 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  13 ++
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   | 204 +++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  93 +-------
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |   8 +-
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  12 ++
+ 8 files changed, 215 insertions(+), 151 deletions(-)
+
+--
+2.25.1
 
