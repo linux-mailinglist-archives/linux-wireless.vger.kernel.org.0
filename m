@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E92363636C7
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 18:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66AC13636C8
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Apr 2021 18:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235024AbhDRQqm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 12:46:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49916 "EHLO mail.kernel.org"
+        id S234846AbhDRQqn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 12:46:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49934 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232212AbhDRQql (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 12:46:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3EBFE613AC;
-        Sun, 18 Apr 2021 16:46:12 +0000 (UTC)
+        id S232212AbhDRQqm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Apr 2021 12:46:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8CCD761359;
+        Sun, 18 Apr 2021 16:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618764373;
-        bh=Vd5R9A1ry2HAhGFDCr1riu0i8AWKuhyQDpw6Tx7ChJk=;
+        s=k20201202; t=1618764374;
+        bh=Qcyjit270av8s5rkw1lAptBR1FzoPr89sm1FbOGdEZc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ri4jM2NAduqYFGr1XwvvHHQGPpDjNNHeuORvsVNQG4JqfneNLaWBccrc32xYJM4hN
-         UxbDbZGYwnhT+GYS2dy6EBrPCBPuz27Aj1Nk/kSECigNTffhABNlsFM34jdk9IbcgV
-         LY8USTreFLjHBjITdRjaoIRpRz4w3AxqISVrmZCjX8l68rRX5XYGO/MhHkF4gxam2L
-         HN5UaVT2ebdEdAYCC9/JXdOK/WD3fBz7JihsdTHBdtwlh6LfL2fMsRFWo4/mI20Dgy
-         QnNrJO42obQWeZrwR2yM7X7XCj9HX2AE1HVLIqD7RSl2s3/U7jRSy0XaCA2CgG0upR
-         m+MXc2LHUXJ0w==
+        b=PFAjWJi24YKxW9eep46oZYAKtiesEfN/ITqORsA+RdCxK/37th8EB1osAoXjSezQs
+         nYj921GRXdt9xfzGFpSNby81/9+aZpv9oWijPf4AwvWHEm8sMwDnSaoC7DKyJMTw6j
+         nUX3thO+7Vm6fDw9226DHWhEEUtjxJha0k/GususjCdI/oVJcX7aP0ENsaLKbPBR8W
+         sQOhX9dcZ2qLic5I+P/+KdAy0tDxACz0Kk6nblW/nHEZvdgjHwbiaDG6isBcoy+iHP
+         EmvzUgClrCcbEBJg8q3npG+h6ZsgV9tqF93zp0L3OzMWp4hIEa+ottLMBS7voagbF/
+         5QPnv/JT4IHFg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com
-Subject: [PATCH 13/19] mt76: connac: alaways wake the device before scanning
-Date:   Sun, 18 Apr 2021 18:45:39 +0200
-Message-Id: <02bf17b1a3a753a84bfad1662469e7647ee03d64.1618763001.git.lorenzo@kernel.org>
+Subject: [PATCH 14/19] mt76: mt7615: rely on pm refcounting in mt7615_led_set_config
+Date:   Sun, 18 Apr 2021 18:45:40 +0200
+Message-Id: <8ca5f4f25fbf630bc6ab23852d2f76b710c47c21.1618763001.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <cover.1618763000.git.lorenzo@kernel.org>
 References: <cover.1618763000.git.lorenzo@kernel.org>
@@ -39,72 +39,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-move scanning check from mt76_connac_power_save_sched routine
-to mt7921_pm_power_save_work/mt7615_pm_power_save_work ones
+Rely on mt76_connac_pm_ref/mt76_connac_pm_unref utility routines in
+mt7615_led_set_config
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c      | 4 ++++
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 8 --------
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 4 ++++
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index ad1e236727cb..adbc726149a9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1931,6 +1931,10 @@ void mt7615_pm_power_save_work(struct work_struct *work)
- 						pm.ps_work.work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+index 49540b00519d..736d19699a03 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+@@ -82,7 +82,7 @@ mt7615_led_set_config(struct led_classdev *led_cdev,
+ 	mt76 = container_of(led_cdev, struct mt76_dev, led_cdev);
+ 	dev = container_of(mt76, struct mt7615_dev, mt76);
  
- 	delta = dev->pm.idle_timeout;
-+	if (test_bit(MT76_HW_SCANNING, &dev->mphy.state) ||
-+	    test_bit(MT76_HW_SCHED_SCANNING, &dev->mphy.state))
-+		goto out;
+-	if (test_bit(MT76_STATE_PM, &mt76->phy.state))
++	if (!mt76_connac_pm_ref(&dev->mphy, &dev->pm))
+ 		return;
+ 
+ 	val = FIELD_PREP(MT_LED_STATUS_DURATION, 0xffff) |
+@@ -100,6 +100,8 @@ mt7615_led_set_config(struct led_classdev *led_cdev,
+ 		val |= MT_LED_CTRL_POLARITY(mt76->led_pin);
+ 	addr = mt7615_reg_map(dev, MT_LED_CTRL);
+ 	mt76_wr(dev, addr, val);
 +
- 	if (time_is_after_jiffies(dev->pm.last_activity + delta)) {
- 		delta = dev->pm.last_activity + delta - jiffies;
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 32d664ac1e35..a263921d9f42 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -17,10 +17,6 @@ int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm)
- 	if (!test_bit(MT76_STATE_PM, &phy->state))
- 		return 0;
- 
--	if (test_bit(MT76_HW_SCANNING, &phy->state) ||
--	    test_bit(MT76_HW_SCHED_SCANNING, &phy->state))
--		return 0;
--
- 	if (queue_work(dev->wq, &pm->wake_work))
- 		reinit_completion(&pm->wake_cmpl);
- 
-@@ -46,10 +42,6 @@ void mt76_connac_power_save_sched(struct mt76_phy *phy,
- 
- 	pm->last_activity = jiffies;
- 
--	if (test_bit(MT76_HW_SCANNING, &phy->state) ||
--	    test_bit(MT76_HW_SCHED_SCANNING, &phy->state))
--		return;
--
- 	if (!test_bit(MT76_STATE_PM, &phy->state))
- 		queue_delayed_work(dev->wq, &pm->ps_work, pm->idle_timeout);
++	mt76_connac_pm_unref(&dev->pm);
  }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 5dcb574a2768..90ede75cfba8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1542,6 +1542,10 @@ void mt7921_pm_power_save_work(struct work_struct *work)
- 						pm.ps_work.work);
  
- 	delta = dev->pm.idle_timeout;
-+	if (test_bit(MT76_HW_SCANNING, &dev->mphy.state) ||
-+	    test_bit(MT76_HW_SCHED_SCANNING, &dev->mphy.state))
-+		goto out;
-+
- 	if (time_is_after_jiffies(dev->pm.last_activity + delta)) {
- 		delta = dev->pm.last_activity + delta - jiffies;
- 		goto out;
+ static int
 -- 
 2.30.2
 
