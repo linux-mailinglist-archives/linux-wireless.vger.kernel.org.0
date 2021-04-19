@@ -2,71 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 231173645B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 16:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 111503645E3
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 16:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240166AbhDSOOk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Apr 2021 10:14:40 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33547 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240246AbhDSOOi (ORCPT
+        id S233529AbhDSOVh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Apr 2021 10:21:37 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:49028 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S238649AbhDSOVf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Apr 2021 10:14:38 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lYUf7-00071L-Kc; Mon, 19 Apr 2021 14:14:05 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] wlcore: Fix buffer overrun by snprintf due to incorrect buffer size
-Date:   Mon, 19 Apr 2021 15:14:05 +0100
-Message-Id: <20210419141405.180582-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.30.2
+        Mon, 19 Apr 2021 10:21:35 -0400
+X-UUID: 69ab0b1cc62c4e5db436c666f62db3cf-20210419
+X-UUID: 69ab0b1cc62c4e5db436c666f62db3cf-20210419
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 2147034633; Mon, 19 Apr 2021 22:21:01 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 19 Apr 2021 22:21:00 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 19 Apr 2021 22:20:59 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, Sean Wang <objelf@gmail.com>
+Subject: [PATCH v2 0/6] enable deep sleep mode when mt7921e suspends
+Date:   Mon, 19 Apr 2021 22:20:53 +0800
+Message-ID: <1618842059-8192-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Sean Wang <objelf@gmail.com>
 
-The size of the buffer than can be written to is currently incorrect, it is
-always the size of the entire buffer even though the snprintf is writing
-as position pos into the buffer. Fix this by setting the buffer size to be
-the number of bytes left in the buffer, namely sizeof(buf) - pos.
+Enable the deep sleep mode in suspend handler which is able to reduce the
+power consumption further.
 
-Addresses-Coverity: ("Out-of-bounds access")
-Fixes: 7b0e2c4f6be3 ("wlcore: fix overlapping snprintf arguments in debugfs")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
----
+v2:
+- rebase onto [PATCH 00/19] mt76: improve runtime-pm support
+- change the 'From' tag in 4/6 patch
 
-V2: Fix patch subject
+Lorenzo Bianconi (4):
+  mt76: mt7921: move mt7921_dma_reset in dma.c
+  mt76: mt7921: introduce mt7921_wpdma_reset utility routine
+  mt76: mt7921: introduce mt7921_dma_{enable,disable} utilities
+  mt76: mt7921: introduce mt7921_wpdma_reinit_cond utility routine
 
----
- drivers/net/wireless/ti/wlcore/debugfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sean Wang (2):
+  mt76: connac: introduce mt76_connac_mcu_set_deep_sleep utility
+  mt76: mt7921: enable deep sleep when the device suspends
 
-diff --git a/drivers/net/wireless/ti/wlcore/debugfs.h b/drivers/net/wireless/ti/wlcore/debugfs.h
-index 715edfa5f89f..a9e13e6d65c5 100644
---- a/drivers/net/wireless/ti/wlcore/debugfs.h
-+++ b/drivers/net/wireless/ti/wlcore/debugfs.h
-@@ -84,7 +84,7 @@ static ssize_t sub## _ ##name## _read(struct file *file,		\
- 	wl1271_debugfs_update_stats(wl);				\
- 									\
- 	for (i = 0; i < len && pos < sizeof(buf); i++)			\
--		pos += snprintf(buf + pos, sizeof(buf),			\
-+		pos += snprintf(buf + pos, sizeof(buf) - pos,		\
- 			 "[%d] = %d\n", i, stats->sub.name[i]);		\
- 									\
- 	return wl1271_format_buffer(userbuf, count, ppos, "%s", buf);	\
--- 
-2.30.2
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |   2 +
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  22 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  10 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |   3 +
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   | 208 +++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  94 +-------
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |   8 +-
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  12 +
+ 8 files changed, 205 insertions(+), 154 deletions(-)
+
+--
+2.25.1
 
