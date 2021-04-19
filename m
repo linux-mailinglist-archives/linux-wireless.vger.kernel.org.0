@@ -2,115 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AA91364795
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 17:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95EB736491C
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 19:36:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241029AbhDSP6u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Apr 2021 11:58:50 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:48650 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S239800AbhDSP6q (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Apr 2021 11:58:46 -0400
-X-UUID: 134ea7d3511f43a1b7248903a18b444b-20210419
-X-UUID: 134ea7d3511f43a1b7248903a18b444b-20210419
-Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 585444657; Mon, 19 Apr 2021 23:58:14 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 19 Apr 2021 23:58:07 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 19 Apr 2021 23:58:07 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7921: fix possible invalid register access
-Date:   Mon, 19 Apr 2021 23:58:05 +0800
-Message-ID: <1618847885-10680-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
+        id S239478AbhDSRgz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Apr 2021 13:36:55 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:62755 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233228AbhDSRgx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Apr 2021 13:36:53 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618853783; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=KLekV0lBsS5OL+sq91tRrjErtiBFo8EvmBiEgRjWfDY=;
+ b=YsinDKit17uWkEL5CRF3khXtF0mg9CSQ4Q36tvTDzfJ85ttyyy+0wvBSucLoT8yCCAaFmjZo
+ hZXYNvpZ41HW3Tip86TuTQEn9tAey3boZDvaHvpsTqIhl8YVKqKW1CFaa2/d1xJgsA1W/bS+
+ pmtdWYc94CbtpY13xJ2xTPJMgzQ=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 607dbf9387ce1fbb5656a82b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 19 Apr 2021 17:36:19
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A015CC4338A; Mon, 19 Apr 2021 17:36:18 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 508CBC433F1;
+        Mon, 19 Apr 2021 17:36:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 508CBC433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] iwlwifi: Fix softirq/hardirq disabling in
+ iwl_pcie_gen2_enqueue_hcmd()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <nycvar.YFH.7.76.2104171112390.18270@cbobk.fhfr.pm>
+References: <nycvar.YFH.7.76.2104171112390.18270@cbobk.fhfr.pm>
+To:     Jiri Kosina <jikos@kernel.org>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210419173618.A015CC4338A@smtp.codeaurora.org>
+Date:   Mon, 19 Apr 2021 17:36:18 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Jiri Kosina <jikos@kernel.org> wrote:
 
-Disable the interrupt and synchronze for the pending irq handlers to ensure
-the irq tasklet is not being scheduled after the suspend to avoid the
-possible invalid register access acts when the host pcie controller is
-suspended.
+> From: Jiri Kosina <jkosina@suse.cz>
+> 
+> Analogically to what we did in 2800aadc18a6 ("iwlwifi: Fix softirq/hardirq 
+> disabling in iwl_pcie_enqueue_hcmd()"), we must apply the same fix to 
+> iwl_pcie_gen2_enqueue_hcmd(), as it's being called from exactly the same 
+> contexts.
+> 
+> Reported-by: Heiner Kallweit <hkallweit1@gmail.com
+> Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+> index 4456abb9a074..34bde8c87324 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+> @@ -40,6 +40,7 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
+>  	const u8 *cmddata[IWL_MAX_CMD_TBS_PER_TFD];
+>  	u16 cmdlen[IWL_MAX_CMD_TBS_PER_TFD];
+>  	struct iwl_tfh_tfd *tfd;
+> +	unsigned long flags;
+>  
+>  	copy_size = sizeof(struct iwl_cmd_header_wide);
+>  	cmd_size = sizeof(struct iwl_cmd_header_wide);
+> @@ -108,14 +109,14 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
+>  		goto free_dup_buf;
+>  	}
+>  
+> -	spin_lock_bh(&txq->lock);
+> +	spin_lock_irqsave(&txq->lock, flags);
+>  
+>  	idx = iwl_txq_get_cmd_index(txq, txq->write_ptr);
+>  	tfd = iwl_txq_get_tfd(trans, txq, txq->write_ptr);
+>  	memset(tfd, 0, sizeof(*tfd));
+>  
+>  	if (iwl_txq_space(trans, txq) < ((cmd->flags & CMD_ASYNC) ? 2 : 1)) {
+> -		spin_unlock_bh(&txq->lock);
+> +		spin_unlock_irqrestore(&txq->lock, flags);
+>  
+>  		IWL_ERR(trans, "No space in command queue\n");
+>  		iwl_op_mode_cmd_queue_full(trans->op_mode);
+> @@ -250,7 +251,7 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
+>  	spin_unlock(&trans_pcie->reg_lock);
+>  
+>  out:
+> -	spin_unlock_bh(&txq->lock);
+> +	spin_unlock_irqrestore(&txq->lock, flags);
+>  free_dup_buf:
+>  	if (idx < 0)
+>  		kfree(dup_buf);
 
-[17932.910534] mt7921e 0000:01:00.0: pci_pm_suspend+0x0/0x22c returned 0 after 21375 usecs
-[17932.910590] pcieport 0000:00:00.0: calling pci_pm_suspend+0x0/0x22c @ 18565, parent: pci0000:00
-[17932.910602] pcieport 0000:00:00.0: pci_pm_suspend+0x0/0x22c returned 0 after 8 usecs
-[17932.910671] mtk-pcie 11230000.pcie: calling platform_pm_suspend+0x0/0x60 @ 22783, parent: soc
-[17932.910674] mtk-pcie 11230000.pcie: platform_pm_suspend+0x0/0x60 returned 0 after 0 usecs
+Patch applied to wireless-drivers.git, thanks.
 
-...
+e7020bb068d8 iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_gen2_enqueue_hcmd()
 
-17933.615352] x1 : 00000000000d4200 x0 : ffffff8269ca2300
-[17933.620666] Call trace:
-[17933.623127]  mt76_mmio_rr+0x28/0xf0 [mt76]
-[17933.627234]  mt7921_rr+0x38/0x44 [mt7921e]
-[17933.631339]  mt7921_irq_tasklet+0x54/0x1d8 [mt7921e]
-[17933.636309]  tasklet_action_common+0x12c/0x16c
-[17933.640754]  tasklet_action+0x24/0x2c
-[17933.644418]  __do_softirq+0x16c/0x344
-[17933.648082]  irq_exit+0xa8/0xac
-[17933.651224]  scheduler_ipi+0xd4/0x148
-[17933.654890]  handle_IPI+0x164/0x2d4
-[17933.658379]  gic_handle_irq+0x140/0x178
-[17933.662216]  el1_irq+0xb8/0x180
-[17933.665361]  cpuidle_enter_state+0xf8/0x204
-[17933.669544]  cpuidle_enter+0x38/0x4c
-[17933.673122]  do_idle+0x1a4/0x2a8
-[17933.676352]  cpu_startup_entry+0x24/0x28
-[17933.680276]  rest_init+0xd4/0xe0
-[17933.683508]  arch_call_rest_init+0x10/0x18
-[17933.687606]  start_kernel+0x340/0x3b4
-[17933.691279] Code: aa0003f5 d503201f f953eaa8 8b344108 (b9400113)
-[17933.697373] ---[ end trace a24b8e26ffbda3c5 ]---
-[17933.767846] Kernel panic - not syncing: Fatal exception in interrupt
-
-Fixes: ffa1bf97425b ("mt76: mt7921: introduce PM support")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 40e2086d075c..c2c8ff979e6e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -195,7 +195,6 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
- 	mt76_for_each_q_rx(mdev, i) {
- 		napi_disable(&mdev->napi[i]);
- 	}
--	tasklet_kill(&dev->irq_tasklet);
- 
- 	pci_enable_wake(pdev, pci_choose_state(pdev, state), true);
- 
-@@ -210,6 +209,9 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
- 
- 	/* disable interrupt */
- 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
-+	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
-+	synchronize_irq(pdev->irq);
-+	tasklet_kill(&dev->irq_tasklet);
- 
- 	err = mt7921_mcu_fw_pmctrl(dev);
- 	if (err)
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/nycvar.YFH.7.76.2104171112390.18270@cbobk.fhfr.pm/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
