@@ -2,39 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E323D3643F9
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 15:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F3D2364590
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 16:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241476AbhDSNXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Apr 2021 09:23:36 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59920 "EHLO
+        id S239999AbhDSOC1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Apr 2021 10:02:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:32953 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240580AbhDSNVL (ORCPT
+        with ESMTP id S230021AbhDSOC0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Apr 2021 09:21:11 -0400
+        Mon, 19 Apr 2021 10:02:26 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1lYTpI-0003Uj-N6; Mon, 19 Apr 2021 13:20:32 +0000
+        id 1lYUTJ-0006Ax-1e; Mon, 19 Apr 2021 14:01:53 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+To:     Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
+        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] mt76: mt7615: Fix a dereference of pointer sta before it is null checked
-Date:   Mon, 19 Apr 2021 14:20:32 +0100
-Message-Id: <20210419132032.177788-1-colin.king@canonical.com>
+Subject: [PATCH][next] wlcore: Fix buffer overrun by snprintf due to incorrect buffer size Content-Type: text/plain; charset="utf-8"
+Date:   Mon, 19 Apr 2021 15:01:52 +0100
+Message-Id: <20210419140152.180361-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -42,39 +36,31 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the assignment of idx dereferences pointer sta before
-sta is null checked, leading to a potential null pointer dereference.
-Fix this by assigning idx when it is required after the null check on
-pointer sta.
+The size of the buffer than can be written to is currently incorrect, it is
+always the size of the entire buffer even though the snprintf is writing
+as position pos into the buffer. Fix this by setting the buffer size to be
+the number of bytes left in the buffer, namely sizeof(buf) - pos.
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: a4a5a430b076 ("mt76: mt7615: fix TSF configuration")
+Addresses-Coverity: ("Out-of-bounds access")
+Fixes: 7b0e2c4f6be3 ("wlcore: fix overlapping snprintf arguments in debugfs")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ti/wlcore/debugfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-index 4a370b9f7a17..f8d3673c2cae 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-@@ -67,7 +67,7 @@ static int mt7663_usb_sdio_set_rates(struct mt7615_dev *dev,
- 	struct mt7615_rate_desc *rate = &wrd->rate;
- 	struct mt7615_sta *sta = wrd->sta;
- 	u32 w5, w27, addr, val;
--	u16 idx = sta->vif->mt76.omac_idx;
-+	u16 idx;
- 
- 	lockdep_assert_held(&dev->mt76.mutex);
- 
-@@ -119,6 +119,7 @@ static int mt7663_usb_sdio_set_rates(struct mt7615_dev *dev,
- 
- 	sta->rate_probe = sta->rateset[rate->rateset].probe_rate.idx != -1;
- 
-+	idx = sta->vif->mt76.omac_idx;
- 	idx = idx > HW_BSSID_MAX ? HW_BSSID_0 : idx;
- 	addr = idx > 1 ? MT_LPON_TCR2(idx): MT_LPON_TCR0(idx);
- 
+diff --git a/drivers/net/wireless/ti/wlcore/debugfs.h b/drivers/net/wireless/ti/wlcore/debugfs.h
+index 715edfa5f89f..a9e13e6d65c5 100644
+--- a/drivers/net/wireless/ti/wlcore/debugfs.h
++++ b/drivers/net/wireless/ti/wlcore/debugfs.h
+@@ -84,7 +84,7 @@ static ssize_t sub## _ ##name## _read(struct file *file,		\
+ 	wl1271_debugfs_update_stats(wl);				\
+ 									\
+ 	for (i = 0; i < len && pos < sizeof(buf); i++)			\
+-		pos += snprintf(buf + pos, sizeof(buf),			\
++		pos += snprintf(buf + pos, sizeof(buf) - pos,		\
+ 			 "[%d] = %d\n", i, stats->sub.name[i]);		\
+ 									\
+ 	return wl1271_format_buffer(userbuf, count, ppos, "%s", buf);	\
 -- 
 2.30.2
 
