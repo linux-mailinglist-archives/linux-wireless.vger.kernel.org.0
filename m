@@ -2,161 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EADD3638FB
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 03:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CFAB36390D
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 03:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235730AbhDSBHY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Apr 2021 21:07:24 -0400
-Received: from mga12.intel.com ([192.55.52.136]:58895 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233117AbhDSBHY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Apr 2021 21:07:24 -0400
-IronPort-SDR: af4OPANitOKCxWP+DhP6DnCxgbzRBdfadFUkmAkk5AG8fc3NtmY181u7B/YBK1SeUVnw31JszP
- fFL8m2envYWQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9958"; a="174741167"
-X-IronPort-AV: E=Sophos;i="5.82,232,1613462400"; 
-   d="scan'208";a="174741167"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2021 18:06:55 -0700
-IronPort-SDR: 4o/hUlVuygSQaZv0Fy3ojo/IiqwYZMz+7t55mJW0MHmSqM7qgRr++sGDAMkccosE5HGYQNx4K2
- xh1LYuISQokQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,232,1613462400"; 
-   d="scan'208";a="613241256"
-Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 18 Apr 2021 18:06:54 -0700
-Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lYINJ-0001T6-Ri; Mon, 19 Apr 2021 01:06:53 +0000
-Date:   Mon, 19 Apr 2021 09:06:10 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [wireless-drivers-next:master] BUILD SUCCESS
- fb8517f4fade44fa5e42e29ca4d6e4a7ed50b512
-Message-ID: <607cd782.ngcov6zh3J6dZHzh%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S237054AbhDSBXf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Apr 2021 21:23:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43214 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235958AbhDSBXe (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Apr 2021 21:23:34 -0400
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52781C06174A;
+        Sun, 18 Apr 2021 18:23:05 -0700 (PDT)
+Received: by mail-oi1-x232.google.com with SMTP id k25so33967770oic.4;
+        Sun, 18 Apr 2021 18:23:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=LC1unaHSXRoqGKgvVKA19fS5y935zmftweCmhzGJtC4=;
+        b=bzQcR5l8T1JQnjP/fCAwd7W7tmzGH+NM7+8YmTPz3W9E7Yt/AuLJQuK4z2nb5x3q+V
+         Nvn/1oFV7gDTw3d2FA7XV+fdepwMVS0Y9Q/sb0ym0PsRjNzygFuCL73XV8co3vOIO291
+         p7MH2l7pfjTtS81A2mjVs9Fm4uH+LP+35frujQiXzdjjbz+4x+fSayQWC9re8b1VqUyg
+         FO+/J5nniPGM8LNY8Bjt2Wlf4LiPctyWgbowfg65cCcCyw5PlI8gAkxOMAcqs4oVQIDS
+         3V0A2BTSvcILCxTS/KW6zHP4E95qSI3NvlHqgE77eg7CCc9mkJUpLwqZl6ZhaN6PBQyI
+         M8UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=LC1unaHSXRoqGKgvVKA19fS5y935zmftweCmhzGJtC4=;
+        b=R9uRTT8Xdwp7tcBg8v5iUKmuoS0rwjjVpQwcIAI0MUoFuADNd68P0C+X/GOBcheLfK
+         1RrZ5TrpajUL4SSAbhmvSanszx1veqDZbnyauJAp+bcwu8iCLjgy4js/J0UVtuo5Efbe
+         K+vTROCNsU0VQwa2kADPM1xxEtEs9Jt3OFfzLxeWPmTjhxkBzjrmsvJewOHt6Uzzj6Jq
+         QX0AlGqT+5pStk83Lo/fmHyuzCbyaTPm55Bgl9bXIrfBsMqvQ601uKOvd22G9jB0g9+V
+         NhFRb6QcFm4XyEo1f/IvrSnICXXnKw4twaVsuefROLGz7sOLCFJIycK4S8yEBSGD/pFo
+         KM2w==
+X-Gm-Message-State: AOAM531DAMHRzF7yhAP2v3uH0/ACRvD96sIGICeeMkN/n2K4W1yLvd5T
+        bUZ6rRlB5FDeDfmXEvxkq0U=
+X-Google-Smtp-Source: ABdhPJyRS7uIZU6aE923TIad+hYN2PcOzAMtl0Qwj/qW1D49aJOR4w3oefkJPzhLgg1pzi01Xa5oGg==
+X-Received: by 2002:aca:c487:: with SMTP id u129mr5867810oif.67.1618795384601;
+        Sun, 18 Apr 2021 18:23:04 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id j8sm3160731otr.28.2021.04.18.18.23.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Apr 2021 18:23:03 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: rtlwifi/rtl8192cu AP mode broken with PS STA
+To:     Pkshih <pkshih@realtek.com>,
+        "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+References: <e2924d81-0e30-2dd0-292b-428fea199484@maciej.szmigiero.name>
+ <846f6166-c570-01fc-6bbc-3e3b44e51327@maciej.szmigiero.name>
+ <87r1jnohq6.fsf@codeaurora.org>
+ <8e0434eb-d15f-065d-2ba7-b50c67877112@maciej.szmigiero.name>
+ <a2003668-5108-27b9-95cd-9e1d5d1aa94d@lwfinger.net>
+ <1617763692.9857.7.camel@realtek.com>
+ <1dc7e487-b97b-8584-47f7-37f3385c7bf9@lwfinger.net>
+ <15737dcf-95ac-1ce6-a681-94ff5db968e4@maciej.szmigiero.name>
+ <c5556a207c5c40ac849c6a0e1919baca@realtek.com>
+ <220c4fe4-c9e1-347a-8cef-cd91d31c56df@maciej.szmigiero.name>
+ <cfcc2988-3f20-3588-2f76-f04d09043811@maciej.szmigiero.name>
+ <35249c6028f645a79c4186c9689ba8aa@realtek.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <52f89f4f-568e-f04e-5c3e-e31f4a9e0910@lwfinger.net>
+Date:   Sun, 18 Apr 2021 20:23:02 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <35249c6028f645a79c4186c9689ba8aa@realtek.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-branch HEAD: fb8517f4fade44fa5e42e29ca4d6e4a7ed50b512  rtw88: 8822c: add CFO tracking
+On 4/18/21 7:32 PM, Pkshih wrote:
+> 
+>> -----Original Message-----
+>> From: Maciej S. Szmigiero [mailto:mail@maciej.szmigiero.name]
+>> Sent: Sunday, April 18, 2021 2:08 AM
+>> To: Pkshih
+>> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
+>> johannes@sipsolutions.net; kvalo@codeaurora.org; Larry Finger
+>> Subject: Re: rtlwifi/rtl8192cu AP mode broken with PS STA
+>>
+>> On 08.04.2021 21:04, Maciej S. Szmigiero wrote:
+>>> On 08.04.2021 06:42, Pkshih wrote:
+>>>>> -----Original Message-----
+>>>>> From: Maciej S. Szmigiero [mailto:mail@maciej.szmigiero.name]
+>>>>> Sent: Thursday, April 08, 2021 4:53 AM
+>>>>> To: Larry Finger; Pkshih
+>>>>> Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
+>>>>> johannes@sipsolutions.net; kvalo@codeaurora.org
+>>>>> Subject: Re: rtlwifi/rtl8192cu AP mode broken with PS STA
+>>>>>
+>>> (...)
+>>>>>> Maceij,
+>>>>>>
+>>>>>> Does this patch fix the problem?
+>>>>>
+>>>>> The beacon seems to be updating now and STAs no longer get stuck in PS
+>>>>> mode.
+>>>>> Although sometimes (every 2-3 minutes with continuous 1s interval pings)
+>>>>> there is around 5s delay in updating the transmitted beacon - don't know
+>>>>> why, maybe the NIC hardware still has the old version in queue?
+>>>>
+>>>> Since USB device doesn't update every beacon, dtim_count isn't updated neither.
+>>>> It leads STA doesn't awake properly. Please try to fix dtim_period=1 in
+>>>> hostapd.conf, which tells STA awakes every beacon interval.
+>>>
+>>> The situation is the same with dtim_period=1.
+>>>
+>> (...)
+>>
+>> Ping-Ke,
+>> are you going to submit your set_tim() patch so at least the AP mode is
+>> usable with PS STAs or are you waiting for a solution to the delayed
+>> beacon update issue?
+>>
+> 
+> I'm still trying to get a 8192cu, and then I can reproduce the symptom you
+> met. However, I'm busy now; maybe I have free time two weeks later.
+> 
+> Do you think I submit the set_tim() patch with your Reported-by and Tested-by first?
 
-elapsed time: 724m
+PK,
 
-configs tested: 99
-configs skipped: 2
+I would say yes. Get the fix in as soon as possible.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Larry
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-x86_64                           allyesconfig
-i386                             allyesconfig
-arm                         cm_x300_defconfig
-powerpc                    ge_imp3a_defconfig
-m68k                          amiga_defconfig
-openrisc                            defconfig
-sh                          sdk7786_defconfig
-mips                       lemote2f_defconfig
-mips                         bigsur_defconfig
-powerpc                    klondike_defconfig
-ia64                        generic_defconfig
-sparc64                             defconfig
-powerpc                      pmac32_defconfig
-mips                          rm200_defconfig
-arc                            hsdk_defconfig
-m68k                        m5272c3_defconfig
-xtensa                              defconfig
-powerpc                     stx_gp3_defconfig
-sh                           se7750_defconfig
-sh                         microdev_defconfig
-powerpc                 mpc832x_mds_defconfig
-xtensa                  audio_kc705_defconfig
-powerpc                 mpc85xx_cds_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a003-20210418
-i386                 randconfig-a001-20210418
-i386                 randconfig-a006-20210418
-i386                 randconfig-a005-20210418
-i386                 randconfig-a004-20210418
-i386                 randconfig-a002-20210418
-x86_64               randconfig-a014-20210418
-x86_64               randconfig-a015-20210418
-x86_64               randconfig-a013-20210418
-x86_64               randconfig-a011-20210418
-x86_64               randconfig-a012-20210418
-x86_64               randconfig-a016-20210418
-i386                 randconfig-a015-20210418
-i386                 randconfig-a013-20210418
-i386                 randconfig-a014-20210418
-i386                 randconfig-a016-20210418
-i386                 randconfig-a012-20210418
-i386                 randconfig-a011-20210418
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a003-20210418
-x86_64               randconfig-a001-20210418
-x86_64               randconfig-a005-20210418
-x86_64               randconfig-a002-20210418
-x86_64               randconfig-a006-20210418
-x86_64               randconfig-a004-20210418
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
