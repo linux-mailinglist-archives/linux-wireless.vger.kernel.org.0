@@ -2,24 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6AB3645E7
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 16:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A83C73645E6
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 16:21:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239080AbhDSOVl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S239157AbhDSOVl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Mon, 19 Apr 2021 10:21:41 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:54674 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S239050AbhDSOVj (ORCPT
+Received: from mailgw01.mediatek.com ([210.61.82.183]:49028 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S238604AbhDSOVh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Apr 2021 10:21:39 -0400
-X-UUID: 927164bb07034f22b162b68cc5a75d08-20210419
-X-UUID: 927164bb07034f22b162b68cc5a75d08-20210419
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        Mon, 19 Apr 2021 10:21:37 -0400
+X-UUID: 3970f636acf443b3867fcd2d47c393e6-20210419
+X-UUID: 3970f636acf443b3867fcd2d47c393e6-20210419
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1902725450; Mon, 19 Apr 2021 22:21:06 +0800
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 894135357; Mon, 19 Apr 2021 22:21:02 +0800
 Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ mtkmbs01n2.mediatek.inc (172.21.101.79) with Microsoft SMTP Server (TLS) id
  15.0.1497.2; Mon, 19 Apr 2021 22:21:00 +0800
 Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
@@ -33,16 +33,17 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
         <Stella.Chang@mediatek.com>, <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH v2 3/6] mt76: mt7921: introduce mt7921_dma_{enable,disable} utilities
-Date:   Mon, 19 Apr 2021 22:20:56 +0800
-Message-ID: <1618842059-8192-4-git-send-email-sean.wang@mediatek.com>
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Leon Yen <leon.yen@mediatek.com>
+Subject: [PATCH v2 4/6] mt76: mt7921: introduce mt7921_wpdma_reinit_cond utility routine
+Date:   Mon, 19 Apr 2021 22:20:57 +0800
+Message-ID: <1618842059-8192-5-git-send-email-sean.wang@mediatek.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1618842059-8192-1-git-send-email-sean.wang@mediatek.com>
 References: <1618842059-8192-1-git-send-email-sean.wang@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-SNTS-SMTP: D313CF67F8EEFB128D56CE4EEE4ECAE5CBE9FEB55ED205ACA51F34D28659EEE02000:8
+X-TM-SNTS-SMTP: FAD8A403A11F7897794284DAA6677DC5ECB4C422DCC3A0B248AEECEBD0CF588A2000:8
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -50,176 +51,120 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Introduce mt7921_dma_enable and mt7921_dma_disable utilities routine in
-order for code reusing between mt7921_dma_reset and mt7921_dma_init.
-This is a preliminary patch to reset dma during device driver_own
-request.
+Add mt7921_wpdma_reinit_cond to check dummy reg if driver needs to
+reinitialized WPDMA after driver_own operation
 
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Co-developed-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/dma.c   | 108 ++++++------------
- 1 file changed, 35 insertions(+), 73 deletions(-)
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |  2 ++
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  3 +++
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   | 25 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  6 +++++
+ 4 files changed, 36 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index af4b6cf38929..fb7f98d92377 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -221,18 +221,8 @@ static u32 mt7921_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
- 	return dev->bus_ops->rmw(mdev, addr, mask, val);
- }
- 
--static int mt7921_dmashdl_disabled(struct mt7921_dev *dev)
-+static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
- {
--	mt76_clear(dev, MT_WFDMA0_GLO_CFG_EXT0, MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
--	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
--
--	return 0;
--}
--
--static int mt7921_dma_reset(struct mt7921_dev *dev, bool force)
--{
--	int i;
--
- 	if (force) {
- 		/* reset */
- 		mt76_clear(dev, MT_WFDMA0_RST,
-@@ -244,6 +234,11 @@ static int mt7921_dma_reset(struct mt7921_dev *dev, bool force)
- 			 MT_WFDMA0_RST_LOGIC_RST);
- 	}
- 
-+	/* disable dmashdl */
-+	mt76_clear(dev, MT_WFDMA0_GLO_CFG_EXT0,
-+		   MT_WFDMA0_CSR_TX_DMASHDL_ENABLE);
-+	mt76_set(dev, MT_DMASHDL_SW_CONTROL, MT_DMASHDL_DMASHDL_BYPASS);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index 9e61c107c640..6c889b90fd12 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -64,11 +64,13 @@ struct mt76_connac_pm {
+ 	struct delayed_work ps_work;
+ 	unsigned long last_activity;
+ 	unsigned long idle_timeout;
 +
- 	/* disable WFDMA0 */
- 	mt76_clear(dev, MT_WFDMA0_GLO_CFG,
- 		   MT_WFDMA0_GLO_CFG_TX_DMA_EN | MT_WFDMA0_GLO_CFG_RX_DMA_EN |
-@@ -257,18 +252,11 @@ static int mt7921_dma_reset(struct mt7921_dev *dev, bool force)
- 		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000))
- 		return -ETIMEDOUT;
+ 	struct {
+ 		unsigned long last_wake_event;
+ 		unsigned long awake_time;
+ 		unsigned long last_doze_event;
+ 		unsigned long doze_time;
++		unsigned int lp_wake;
+ 	} stats;
+ };
  
--	/* reset hw queues */
--	for (i = 0; i < __MT_TXQ_MAX; i++)
--		mt76_queue_reset(dev, dev->mphy.q_tx[i]);
--
--	for (i = 0; i < __MT_MCUQ_MAX; i++)
--		mt76_queue_reset(dev, dev->mt76.q_mcu[i]);
--
--	mt76_for_each_q_rx(&dev->mt76, i)
--		mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
--
--	mt76_tx_status_check(&dev->mt76, NULL, true);
-+	return 0;
-+}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index f3982578cc56..6ee423dd4027 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -269,6 +269,7 @@ mt7921_pm_stats(struct seq_file *s, void *data)
+ {
+ 	struct mt7921_dev *dev = dev_get_drvdata(s->private);
+ 	struct mt76_connac_pm *pm = &dev->pm;
++
+ 	unsigned long awake_time = pm->stats.awake_time;
+ 	unsigned long doze_time = pm->stats.doze_time;
  
-+static int mt7921_dma_enable(struct mt7921_dev *dev)
-+{
- 	/* configure perfetch settings */
- 	mt7921_dma_prefetch(dev);
+@@ -281,6 +282,8 @@ mt7921_pm_stats(struct seq_file *s, void *data)
+ 		   jiffies_to_msecs(awake_time),
+ 		   jiffies_to_msecs(doze_time));
  
-@@ -300,6 +288,29 @@ static int mt7921_dma_reset(struct mt7921_dev *dev, bool force)
++	seq_printf(s, "low power wakes: %9d\n", pm->stats.lp_wake);
++
  	return 0;
  }
  
-+static int mt7921_dma_reset(struct mt7921_dev *dev, bool force)
-+{
-+	int i, err;
-+
-+	err = mt7921_dma_disable(dev, force);
-+	if (err)
-+		return err;
-+
-+	/* reset hw queues */
-+	for (i = 0; i < __MT_TXQ_MAX; i++)
-+		mt76_queue_reset(dev, dev->mphy.q_tx[i]);
-+
-+	for (i = 0; i < __MT_MCUQ_MAX; i++)
-+		mt76_queue_reset(dev, dev->mt76.q_mcu[i]);
-+
-+	mt76_for_each_q_rx(&dev->mt76, i)
-+		mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
-+
-+	mt76_tx_status_check(&dev->mt76, NULL, true);
-+
-+	return mt7921_dma_enable(dev);
-+}
-+
- int mt7921_wfsys_reset(struct mt7921_dev *dev)
- {
- 	mt76_set(dev, 0x70002600, BIT(0));
-@@ -362,32 +373,10 @@ int mt7921_dma_init(struct mt7921_dev *dev)
- 
- 	mt76_dma_attach(&dev->mt76);
- 
--	/* reset */
--	mt76_clear(dev, MT_WFDMA0_RST,
--		   MT_WFDMA0_RST_DMASHDL_ALL_RST |
--		   MT_WFDMA0_RST_LOGIC_RST);
--
--	mt76_set(dev, MT_WFDMA0_RST,
--		 MT_WFDMA0_RST_DMASHDL_ALL_RST |
--		 MT_WFDMA0_RST_LOGIC_RST);
--
--	ret = mt7921_dmashdl_disabled(dev);
-+	ret = mt7921_dma_disable(dev, true);
- 	if (ret)
- 		return ret;
- 
--	/* disable WFDMA0 */
--	mt76_clear(dev, MT_WFDMA0_GLO_CFG,
--		   MT_WFDMA0_GLO_CFG_TX_DMA_EN |
--		   MT_WFDMA0_GLO_CFG_RX_DMA_EN |
--		   MT_WFDMA0_GLO_CFG_CSR_DISP_BASE_PTR_CHAIN_EN |
--		   MT_WFDMA0_GLO_CFG_OMIT_TX_INFO |
--		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO |
--		   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
--
--	mt76_poll(dev, MT_WFDMA0_GLO_CFG,
--		  MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
--		  MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000);
--
- 	/* init tx queue */
- 	ret = mt7921_init_tx_queues(&dev->phy, MT7921_TXQ_BAND0,
- 				    MT7921_TX_RING_SIZE);
-@@ -439,34 +428,7 @@ int mt7921_dma_init(struct mt7921_dev *dev)
- 			  mt7921_poll_tx, NAPI_POLL_WEIGHT);
- 	napi_enable(&dev->mt76.tx_napi);
- 
--	/* configure perfetch settings */
--	mt7921_dma_prefetch(dev);
--
--	/* reset dma idx */
--	mt76_wr(dev, MT_WFDMA0_RST_DTX_PTR, ~0);
--
--	/* configure delay interrupt */
--	mt76_wr(dev, MT_WFDMA0_PRI_DLY_INT_CFG0, 0);
--
--	mt76_set(dev, MT_WFDMA0_GLO_CFG,
--		 MT_WFDMA0_GLO_CFG_TX_WB_DDONE |
--		 MT_WFDMA0_GLO_CFG_FIFO_LITTLE_ENDIAN |
--		 MT_WFDMA0_GLO_CFG_CLK_GAT_DIS |
--		 MT_WFDMA0_GLO_CFG_OMIT_TX_INFO |
--		 MT_WFDMA0_GLO_CFG_CSR_DISP_BASE_PTR_CHAIN_EN |
--		 MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
--
--	mt76_set(dev, MT_WFDMA0_GLO_CFG,
--		 MT_WFDMA0_GLO_CFG_TX_DMA_EN | MT_WFDMA0_GLO_CFG_RX_DMA_EN);
--
--	mt76_set(dev, MT_WFDMA_DUMMY_CR, MT_WFDMA_NEED_REINIT);
--
--	/* enable interrupts for TX/RX rings */
--	mt7921_irq_enable(dev, MT_INT_RX_DONE_ALL | MT_INT_TX_DONE_ALL |
--			  MT_INT_MCU_CMD);
--	mt76_set(dev, MT_MCU2HOST_SW_INT_ENA, MT_MCU_CMD_WAKE_RX_PCIE);
--
--	return 0;
-+	return mt7921_dma_enable(dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+index fb7f98d92377..71e664ee7652 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+@@ -353,6 +353,31 @@ int mt7921_wpdma_reset(struct mt7921_dev *dev, bool force)
+ 	return 0;
  }
  
- void mt7921_dma_cleanup(struct mt7921_dev *dev)
++int mt7921_wpdma_reinit_cond(struct mt7921_dev *dev)
++{
++	struct mt76_connac_pm *pm = &dev->pm;
++	int err;
++
++	/* check if the wpdma must be reinitialized */
++	if (mt7921_dma_need_reinit(dev)) {
++		/* disable interrutpts */
++		mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
++		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
++
++		err = mt7921_wpdma_reset(dev, false);
++		if (err) {
++			dev_err(dev->mt76.dev, "wpdma reset failed\n");
++			return err;
++		}
++
++		/* enable interrutpts */
++		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
++		pm->stats.lp_wake++;
++	}
++
++	return 0;
++}
++
+ int mt7921_dma_init(struct mt7921_dev *dev)
+ {
+ 	/* Increase buffer size to receive large VHT/HE MPDUs */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 67cb0a647066..efc3ba791342 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -254,6 +254,7 @@ int mt7921_eeprom_get_target_power(struct mt7921_dev *dev,
+ void mt7921_eeprom_init_sku(struct mt7921_dev *dev);
+ int mt7921_dma_init(struct mt7921_dev *dev);
+ int mt7921_wpdma_reset(struct mt7921_dev *dev, bool force);
++int mt7921_wpdma_reinit_cond(struct mt7921_dev *dev);
+ void mt7921_dma_cleanup(struct mt7921_dev *dev);
+ int mt7921_run_firmware(struct mt7921_dev *dev);
+ int mt7921_mcu_init(struct mt7921_dev *dev);
+@@ -317,6 +318,11 @@ mt7921_l1_rmw(struct mt7921_dev *dev, u32 addr, u32 mask, u32 val)
+ #define mt7921_l1_set(dev, addr, val)	mt7921_l1_rmw(dev, addr, 0, val)
+ #define mt7921_l1_clear(dev, addr, val)	mt7921_l1_rmw(dev, addr, val, 0)
+ 
++static inline bool mt7921_dma_need_reinit(struct mt7921_dev *dev)
++{
++	return !mt76_get_field(dev, MT_WFDMA_DUMMY_CR, MT_WFDMA_NEED_REINIT);
++}
++
+ void mt7921_mac_init(struct mt7921_dev *dev);
+ bool mt7921_mac_wtbl_update(struct mt7921_dev *dev, int idx, u32 mask);
+ void mt7921_mac_reset_counters(struct mt7921_phy *phy);
 -- 
 2.25.1
 
