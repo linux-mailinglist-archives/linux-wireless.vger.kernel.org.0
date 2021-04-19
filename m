@@ -2,24 +2,24 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE7C13645E5
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 16:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60ED83645E4
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 16:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239026AbhDSOVj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Apr 2021 10:21:39 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:49050 "EHLO
+        id S239012AbhDSOVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Apr 2021 10:21:38 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:49028 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S238824AbhDSOVg (ORCPT
+        with ESMTP id S239017AbhDSOVg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 19 Apr 2021 10:21:36 -0400
-X-UUID: 57623078f01347449ff384b6144e4834-20210419
-X-UUID: 57623078f01347449ff384b6144e4834-20210419
+X-UUID: 51f6da4e1bdd47d3839114c6aaad239f-20210419
+X-UUID: 51f6da4e1bdd47d3839114c6aaad239f-20210419
 Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
         (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 927500230; Mon, 19 Apr 2021 22:21:02 +0800
+        with ESMTP id 1282442656; Mon, 19 Apr 2021 22:21:01 +0800
 Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
+ mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
  15.0.1497.2; Mon, 19 Apr 2021 22:21:00 +0800
 Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
@@ -32,17 +32,15 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
         <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
         <Stella.Chang@mediatek.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Leon Yen <leon.yen@mediatek.com>
-Subject: [PATCH v2 5/6] mt76: connac: introduce mt76_connac_mcu_set_deep_sleep utility
-Date:   Mon, 19 Apr 2021 22:20:58 +0800
-Message-ID: <1618842059-8192-6-git-send-email-sean.wang@mediatek.com>
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2 6/6] mt76: mt7921: enable deep sleep when the device suspends
+Date:   Mon, 19 Apr 2021 22:20:59 +0800
+Message-ID: <1618842059-8192-7-git-send-email-sean.wang@mediatek.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1618842059-8192-1-git-send-email-sean.wang@mediatek.com>
 References: <1618842059-8192-1-git-send-email-sean.wang@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-SNTS-SMTP: 787FEFBEDAE633D96533E843CEEB0C3CA9AD4A22DE488F0CBAA1BA686BADE5292000:8
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -50,88 +48,58 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Introduce mt76_connac_mcu_set_deep_sleep to enable deep sleep mode
-and will be activated immediately when the host returns the ownership
-to the device.
+Enable the deep sleep mode in suspend handler to reduce the power
+consumption further.
 
-Co-developed-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Co-developed-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: YN Chen <YN.Chen@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 22 ++++++++++++-------
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 10 +++++++++
- 2 files changed, 24 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 860406a53cb6..7578855099e6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1528,14 +1528,7 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_sched_scan_enable);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index d5da98d36f63..25f27e9d379b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -201,6 +201,9 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 			return err;
+ 	}
  
- int mt76_connac_mcu_chip_config(struct mt76_dev *dev)
- {
--	struct {
--		__le16 id;
--		u8 type;
--		u8 resp_type;
--		__le16 data_size;
--		__le16 resv;
--		u8 data[320];
--	} req = {
-+	struct mt76_connac_config req = {
- 		.resp_type = 0,
- 	};
- 
-@@ -1546,6 +1539,19 @@ int mt76_connac_mcu_chip_config(struct mt76_dev *dev)
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_chip_config);
- 
-+int mt76_connac_mcu_set_deep_sleep(struct mt76_dev *dev, bool enable)
-+{
-+	struct mt76_connac_config req = {
-+		.resp_type = 0,
-+	};
++	if (!dev->pm.enable)
++		mt76_connac_mcu_set_deep_sleep(&dev->mt76, true);
 +
-+	snprintf(req.data, sizeof(req.data), "KeepFullPwr %d", !enable);
-+
-+	return mt76_mcu_send_msg(dev, MCU_CMD_CHIP_CONFIG, &req, sizeof(req),
-+				 false);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_deep_sleep);
-+
- void mt76_connac_mcu_coredump_event(struct mt76_dev *dev, struct sk_buff *skb,
- 				    struct mt76_connac_coredump *coredump)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index ff9fca52f344..e943b89fda75 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -918,6 +918,15 @@ struct mt76_connac_tx_power_limit_tlv {
- 	u8 pad2[32];
- } __packed;
+ 	napi_disable(&mdev->tx_napi);
+ 	mt76_worker_disable(&mdev->tx_worker);
  
-+struct mt76_connac_config {
-+	__le16 id;
-+	u8 type;
-+	u8 resp_type;
-+	__le16 data_size;
-+	__le16 resv;
-+	u8 data[320];
-+} __packed;
+@@ -239,6 +242,10 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 		napi_enable(&mdev->napi[i]);
+ 	}
+ 	napi_enable(&mdev->tx_napi);
 +
- #define to_wcid_lo(id)		FIELD_GET(GENMASK(7, 0), (u16)id)
- #define to_wcid_hi(id)		FIELD_GET(GENMASK(9, 8), (u16)id)
++	if (!dev->pm.enable)
++		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
++
+ 	if (hif_suspend)
+ 		mt76_connac_mcu_set_hif_suspend(mdev, false);
  
-@@ -1017,6 +1026,7 @@ int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend);
- void mt76_connac_mcu_set_suspend_iter(void *priv, u8 *mac,
- 				      struct ieee80211_vif *vif);
- int mt76_connac_mcu_chip_config(struct mt76_dev *dev);
-+int mt76_connac_mcu_set_deep_sleep(struct mt76_dev *dev, bool enable);
- void mt76_connac_mcu_coredump_event(struct mt76_dev *dev, struct sk_buff *skb,
- 				    struct mt76_connac_coredump *coredump);
- int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy);
+@@ -261,6 +268,8 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
+ 	if (err < 0)
+ 		return err;
+ 
++	mt7921_wpdma_reinit_cond(dev);
++
+ 	/* enable interrupt */
+ 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
+ 	mt7921_irq_enable(dev, MT_INT_RX_DONE_ALL | MT_INT_TX_DONE_ALL |
+@@ -279,6 +288,9 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
+ 	napi_enable(&mdev->tx_napi);
+ 	napi_schedule(&mdev->tx_napi);
+ 
++	if (!dev->pm.enable)
++		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
++
+ 	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state))
+ 		err = mt76_connac_mcu_set_hif_suspend(mdev, false);
+ 
 -- 
 2.25.1
 
