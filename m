@@ -2,215 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7390D364788
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 17:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AA91364795
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 17:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240820AbhDSPzy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Apr 2021 11:55:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240142AbhDSPzx (ORCPT
+        id S241029AbhDSP6u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Apr 2021 11:58:50 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:48650 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S239800AbhDSP6q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Apr 2021 11:55:53 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EE1DC06174A
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Apr 2021 08:55:22 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id g16so1097599plq.3
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Apr 2021 08:55:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=72VX1h+QEmBOLraT/ylsWP0LF7nl48k7IxZYtxGUkOw=;
-        b=FwCkhIJ0qob2Eoe2paokYJQBiKrWnWC+w6OWtv+oAkUZR8g6/Rs9zCHwXlM6EVglfk
-         GKrQBzbsMWdzCxstQXKp8pEvvstFb6IQPyvHiQ4+Q5Q0VzL1TM3bgEuxHwfjfy6na3IK
-         lN185osi7KA+y4gQJw86JOPMQ0fQpxbUgGlhWoYaMz4w3W0rPOxim+Q88+0OoHEpIRik
-         mfAKFwT8HeWF/Ig2KMFSKihqy/gdG6r9wS/Haq61+qyXg2U02Of619PWiH4kDoSHWbzU
-         jBKbzwDkJdFx9dB1fnPMOv96DVZIsOTW3UybAaAm03sJhCNNRdJGJkymfjXuN8KI8Inc
-         occw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=72VX1h+QEmBOLraT/ylsWP0LF7nl48k7IxZYtxGUkOw=;
-        b=GmZ0co+z6ZUD9Wunau2fVU6ACrNLrXhlHYTDjgkn5Sj2CxzbpIzQsj5GqepDeXWadq
-         eJaMIXfW08vzH5lCsXCjo+chjBKBINdMLo1zt10EJ1BI4LFXkWG0lTVmeqFi67D4KiJp
-         PqP/pe5GMmBkplgWSfICO91zKmMwv46MREDwhAeiN9ILv5Zl3kqtzSE4jtt9XkthZMh9
-         Ahv7ymX8R/HxPdQ5qLRf2X0qMZxXJh06UJU6PFBXHZxOw5FdaR3C0gNRpO3mXwa5bNdx
-         lZKhmuzO8SZ7rGoaQOmr/CvGcUtG5WUcbmKKdyptHq5fk54k3cnDduijqStUMnYpTqtr
-         Ofog==
-X-Gm-Message-State: AOAM533Kskow8IW8EUVjTJt+IgpBipYA9oYf9jg45uAfR8ACsQA/MiFD
-        KxYkgJh/AF5z96F7ikv7LinjI7SiiNNNYpX0aSlmxQ==
-X-Google-Smtp-Source: ABdhPJzmeTptVoP68cKZXRAF9F04F/oDNMnUpynJ4aIXeFbEU5DMi8YbekyUkGe2RvPstoofS/JtQ5HlERX7SS1o2x0=
-X-Received: by 2002:a17:90a:c091:: with SMTP id o17mr25161444pjs.185.1618847721881;
- Mon, 19 Apr 2021 08:55:21 -0700 (PDT)
+        Mon, 19 Apr 2021 11:58:46 -0400
+X-UUID: 134ea7d3511f43a1b7248903a18b444b-20210419
+X-UUID: 134ea7d3511f43a1b7248903a18b444b-20210419
+Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 585444657; Mon, 19 Apr 2021 23:58:14 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 19 Apr 2021 23:58:07 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 19 Apr 2021 23:58:07 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] mt76: mt7921: fix possible invalid register access
+Date:   Mon, 19 Apr 2021 23:58:05 +0800
+Message-ID: <1618847885-10680-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-References: <20210323193617.3748164-1-pterjan@google.com> <a69a3d60-71a0-3153-b248-dacc8b95bea8@gmail.com>
-In-Reply-To: <a69a3d60-71a0-3153-b248-dacc8b95bea8@gmail.com>
-From:   Pascal Terjan <pterjan@google.com>
-Date:   Mon, 19 Apr 2021 16:55:05 +0100
-Message-ID: <CAANdO=Kn+VeC3ucyOZdctdVoVH5Oc3drLAaipzz4ShL24e3ckg@mail.gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: Fix device info for RTL8192EU devices
-To:     Jes Sorensen <jes.sorensen@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 19 Apr 2021 at 12:53, Jes Sorensen <jes.sorensen@gmail.com> wrote:
->
-> On 3/23/21 3:36 PM, Pascal Terjan wrote:
-> > Based on 2001:3319 and 2357:0109 which I used to test the fix and
-> > 0bda:818b and 2357:0108 for which I found efuse dumps online.
-> >
-> > == 2357:0109 ==
-> > === Before ===
-> > Vendor: Realtek
-> > Product: \x03802.11n NI
-> > Serial:
-> > === After ===
-> > Vendor: Realtek
-> > Product: 802.11n NIC
-> > Serial not available.
-> >
-> > == 2001:3319 ==
-> > === Before ===
-> > Vendor: Realtek
-> > Product: Wireless N
-> > Serial: no USB Adap
-> > === After ===
-> > Vendor: Realtek
-> > Product: Wireless N Nano USB Adapter
-> > Serial not available.
-> >
-> > Signed-off-by: Pascal Terjan <pterjan@google.com>
-> > ---
-> >  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  | 11 ++--
-> >  .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         | 53 ++++++++++++++++---
-> >  2 files changed, 50 insertions(+), 14 deletions(-)
->
-> This makes sense, you may want to account for the total length of the
-> record though, see below.
->
-> Some cosmetic nits too.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Thanks for the review, I'll send a v2
+Disable the interrupt and synchronze for the pending irq handlers to ensure
+the irq tasklet is not being scheduled after the suspend to avoid the
+possible invalid register access acts when the host pcie controller is
+suspended.
 
-> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> > index d6d1be4169e5..acb6b0cd3667 100644
-> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> > @@ -853,15 +853,10 @@ struct rtl8192eu_efuse {
-> >       u8 usb_optional_function;
-> >       u8 res9[2];
-> >       u8 mac_addr[ETH_ALEN];          /* 0xd7 */
-> > -     u8 res10[2];
-> > -     u8 vendor_name[7];
-> > -     u8 res11[2];
-> > -     u8 device_name[0x0b];           /* 0xe8 */
-> > -     u8 res12[2];
-> > -     u8 serial[0x0b];                /* 0xf5 */
-> > -     u8 res13[0x30];
-> > +     u8 device_info[80];
-> > +     u8 res11[3];
-> >       u8 unknown[0x0d];               /* 0x130 */
-> > -     u8 res14[0xc3];
-> > +     u8 res12[0xc3];
-> >  };
-> >
-> >  struct rtl8xxxu_reg8val {
-> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-> > index cfe2dfdae928..9c5fad49ed2a 100644
-> > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-> > @@ -554,9 +554,39 @@ rtl8192e_set_tx_power(struct rtl8xxxu_priv *priv, int channel, bool ht40)
-> >       }
-> >  }
-> >
-> > +static void rtl8192eu_log_device_info(struct rtl8xxxu_priv *priv,
-> > +                                   char *record_name,
-> > +                                   char **record)
-> > +{
-> > +     /* A record is [ total length | 0x03 | value ] */
-> > +     unsigned char l = (*record)[0];
->
-> These parenthesis make no sense.
->
-> > +
-> > +     /* The whole section seems to be 80 characters so a record should not
-> > +      * be able to be that large.
-> > +      */
->
-> Please respect the comment formatting of the driver, ie
-> /*
->  * Foo
->  */
+[17932.910534] mt7921e 0000:01:00.0: pci_pm_suspend+0x0/0x22c returned 0 after 21375 usecs
+[17932.910590] pcieport 0000:00:00.0: calling pci_pm_suspend+0x0/0x22c @ 18565, parent: pci0000:00
+[17932.910602] pcieport 0000:00:00.0: pci_pm_suspend+0x0/0x22c returned 0 after 8 usecs
+[17932.910671] mtk-pcie 11230000.pcie: calling platform_pm_suspend+0x0/0x60 @ 22783, parent: soc
+[17932.910674] mtk-pcie 11230000.pcie: platform_pm_suspend+0x0/0x60 returned 0 after 0 usecs
 
-I blame checkpatch telling me "WARNING: networking block comments
-don't use an empty /* line, use /* Comment..." (and myself for not
-checking the driver again when fixing it :) )
+...
 
-> > +     if (l > 80) {
-> > +             dev_warn(&priv->udev->dev,
-> > +                      "invalid record length %d while parsing \"%s\".\n",
-> > +                      l, record_name);
-> > +             return;
-> > +     }
->
-> The 80 check is only valid for the first entry, consecutive entries are
-> already advanced. Maybe switch it over to use an index to address into
-> the record keep an index and just pass in efuse->device_info instead.
->
-> > +
-> > +     if (l >= 2) {
-> > +             char value[80];
-> > +
-> > +             memcpy(value, &(*record)[2], l - 2);
-> > +             value[l - 2] = '\0';
-> > +             dev_info(&priv->udev->dev, "%s: %s\n", record_name, value);
-> > +             *record = *record + l;
-> > +     } else {
-> > +             dev_info(&priv->udev->dev, "%s not available.\n", record_name);
-> > +     }
-> > +}
-> > +
-> >  static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
-> >  {
-> >       struct rtl8192eu_efuse *efuse = &priv->efuse_wifi.efuse8192eu;
-> > +     char *record = efuse->device_info;
-> >       int i;
-> >
-> >       if (efuse->rtl_id != cpu_to_le16(0x8129))
-> > @@ -604,12 +634,23 @@ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
-> >       priv->has_xtalk = 1;
-> >       priv->xtalk = priv->efuse_wifi.efuse8192eu.xtal_k & 0x3f;
-> >
-> > -     dev_info(&priv->udev->dev, "Vendor: %.7s\n", efuse->vendor_name);
-> > -     dev_info(&priv->udev->dev, "Product: %.11s\n", efuse->device_name);
-> > -     if (memchr_inv(efuse->serial, 0xff, 11))
-> > -             dev_info(&priv->udev->dev, "Serial: %.11s\n", efuse->serial);
-> > -     else
-> > -             dev_info(&priv->udev->dev, "Serial not available.\n");
-> > +     /* device_info section seems to be laid out as records
-> > +      * [ total length | 0x03 | value ] so:
-> > +      * - vendor length + 2
-> > +      * - 0x03
-> > +      * - vendor string (not null terminated)
-> > +      * - product length + 2
-> > +      * - 0x03
-> > +      * - product string (not null terminated)
-> > +      * Then there is one or 2 0x00 on all the 4 devices I own or found
-> > +      * dumped online.
-> > +      * As previous version of the code handled an optional serial
-> > +      * string, I now assume there may be a third record if the
-> > +      * length is not 0.
-> > +      */
-> > +     rtl8192eu_log_device_info(priv, "Vendor", &record);
-> > +     rtl8192eu_log_device_info(priv, "Product", &record);
-> > +     rtl8192eu_log_device_info(priv, "Serial", &record);
-> >
-> >       if (rtl8xxxu_debug & RTL8XXXU_DEBUG_EFUSE) {
-> >               unsigned char *raw = priv->efuse_wifi.raw;
-> >
->
+17933.615352] x1 : 00000000000d4200 x0 : ffffff8269ca2300
+[17933.620666] Call trace:
+[17933.623127]  mt76_mmio_rr+0x28/0xf0 [mt76]
+[17933.627234]  mt7921_rr+0x38/0x44 [mt7921e]
+[17933.631339]  mt7921_irq_tasklet+0x54/0x1d8 [mt7921e]
+[17933.636309]  tasklet_action_common+0x12c/0x16c
+[17933.640754]  tasklet_action+0x24/0x2c
+[17933.644418]  __do_softirq+0x16c/0x344
+[17933.648082]  irq_exit+0xa8/0xac
+[17933.651224]  scheduler_ipi+0xd4/0x148
+[17933.654890]  handle_IPI+0x164/0x2d4
+[17933.658379]  gic_handle_irq+0x140/0x178
+[17933.662216]  el1_irq+0xb8/0x180
+[17933.665361]  cpuidle_enter_state+0xf8/0x204
+[17933.669544]  cpuidle_enter+0x38/0x4c
+[17933.673122]  do_idle+0x1a4/0x2a8
+[17933.676352]  cpu_startup_entry+0x24/0x28
+[17933.680276]  rest_init+0xd4/0xe0
+[17933.683508]  arch_call_rest_init+0x10/0x18
+[17933.687606]  start_kernel+0x340/0x3b4
+[17933.691279] Code: aa0003f5 d503201f f953eaa8 8b344108 (b9400113)
+[17933.697373] ---[ end trace a24b8e26ffbda3c5 ]---
+[17933.767846] Kernel panic - not syncing: Fatal exception in interrupt
+
+Fixes: ffa1bf97425b ("mt76: mt7921: introduce PM support")
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 40e2086d075c..c2c8ff979e6e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -195,7 +195,6 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	mt76_for_each_q_rx(mdev, i) {
+ 		napi_disable(&mdev->napi[i]);
+ 	}
+-	tasklet_kill(&dev->irq_tasklet);
+ 
+ 	pci_enable_wake(pdev, pci_choose_state(pdev, state), true);
+ 
+@@ -210,6 +209,9 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 
+ 	/* disable interrupt */
+ 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
++	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
++	synchronize_irq(pdev->irq);
++	tasklet_kill(&dev->irq_tasklet);
+ 
+ 	err = mt7921_mcu_fw_pmctrl(dev);
+ 	if (err)
+-- 
+2.25.1
+
