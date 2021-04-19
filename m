@@ -2,145 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95382364110
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 13:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3B84364114
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Apr 2021 13:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238912AbhDSLxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Apr 2021 07:53:18 -0400
-Received: from mail-eopbgr110095.outbound.protection.outlook.com ([40.107.11.95]:8472
-        "EHLO GBR01-CWL-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233990AbhDSLxR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Apr 2021 07:53:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=elVNSfUpFrR8hT+pKeS5H3Lc9Ug5VYrkojgogOlqPwyQ46ia7iVu6rctvyAKwpj1F0JDpMvmtSaHOUUO2D++RTdW0lW0kpHdBuUbjre7c4CUewoF4fbhsLRMvw5xFDAmON1WgVn/GikW45ObUEMThHtoGzSFW+QubZt2PLI5w6x9DR2990p8H7XMScEY6cXjZ4jWujmcyA8vEYlHhT2yO/qwWVvcoU9mG8nBC1etvz24XzLOHz8HODr8pnNFWy6wrHdE+2oxHvEiStdFBZRuTQzrYY3GS7IiD+qtoK6G/UDuaxko1tNWPj525ZOXdw1QAMj7WwglfYAuvZmI99sKzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f7NYwEyrThm4laGKy9WOxQIhgdXMM/y2xtTjN15/dZA=;
- b=PTA8+WQ/sEN6EBNBYG7HWK6FH8Fvalj+enY4LWOHIpbMyL5/acSMBs/tlSePhwY8wvORePbZD1aJMyKWXDMFpEIFBR2VRDrsHzkGUn74xl06Yr5Fhigcry9NfI55sMityzJW1z6SXj+g7L27HCGM1x7zfmG3qXOQ/apZYQk1edq9QLnu3tWkcc7C+lcJbUB8NLO+RoGtf7oDB5LF4jSFXaUc7nsbXAd4es6pu0PyV4pWo+nerSbCTR7jTTnSv0emjMGMmPXQ29cgfuptCWTbOF099jB+AEHcR6p3ch5I0iH/rM8zwm6qYJu9Js6kGeX/incNwnV6T7zmaKWqcDx8ZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=purelifi.com; dmarc=pass action=none header.from=purelifi.com;
- dkim=pass header.d=purelifi.com; arc=none
+        id S237685AbhDSLya (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Apr 2021 07:54:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39656 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233586AbhDSLy3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Apr 2021 07:54:29 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFA3C06174A;
+        Mon, 19 Apr 2021 04:53:59 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id a18so2026975qtj.10;
+        Mon, 19 Apr 2021 04:53:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=purevlc.onmicrosoft.com; s=selector2-purevlc-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f7NYwEyrThm4laGKy9WOxQIhgdXMM/y2xtTjN15/dZA=;
- b=wYcQcT57P/Sc5u4+3hw9ONfuHl3yzsIYotLc0RScO67MDpwJaeDDevd5/8HWH0x0hoxkaI/HEM4rdNH0/2P5LmBnBIC923lGlMUMYfvile9QFi5dRGYikVClTb2vKNWTb3el6B5VpD0CXvzWzxjQphfD4/kwfRCMEhWvrqX4T7I=
-Received: from CWLP265MB1794.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:5b::8) by
- CWXP265MB2232.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:85::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4042.23; Mon, 19 Apr 2021 11:52:46 +0000
-Received: from CWLP265MB1794.GBRP265.PROD.OUTLOOK.COM
- ([fe80::fc7f:716:28ee:ee85]) by CWLP265MB1794.GBRP265.PROD.OUTLOOK.COM
- ([fe80::fc7f:716:28ee:ee85%8]) with mapi id 15.20.4042.024; Mon, 19 Apr 2021
- 11:52:46 +0000
-From:   Srinivasan Raju <srini.raju@purelifi.com>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-CC:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
-Subject: RE: [PATCH] [v14] wireless: Initial driver submission for pureLiFi
- STA devices
-Thread-Topic: [PATCH] [v14] wireless: Initial driver submission for pureLiFi
- STA devices
-Thread-Index: AQHXDECYN+cbMaQkH0qr/5BknxpUK6q8C0kQ
-Date:   Mon, 19 Apr 2021 11:52:46 +0000
-Message-ID: <CWLP265MB17945FD418D1D242756B2AC4E0499@CWLP265MB1794.GBRP265.PROD.OUTLOOK.COM>
-References: <20200928102008.32568-1-srini.raju@purelifi.com>
- <20210226130810.119216-1-srini.raju@purelifi.com>
-In-Reply-To: <20210226130810.119216-1-srini.raju@purelifi.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: purelifi.com; dkim=none (message not signed)
- header.d=none;purelifi.com; dmarc=none action=none header.from=purelifi.com;
-x-originating-ip: [103.213.193.255]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8e025ddd-e42e-4911-870b-08d90329a61b
-x-ms-traffictypediagnostic: CWXP265MB2232:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CWXP265MB223209E96D6FBADB8A1B95BAE0499@CWXP265MB2232.GBRP265.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: tTZyIc4FcCKEwwyHSlZ1J8iexO8yh/h7qotcG7/4RFDPTpgNOJNdaB0xomXQmghDpd+ScOtqTQzgpR8A+9oykB2e8d4d6fd+tN8FS4d449rZTEhuZVo7N1qO5lG/MWA+uVY7kTPoAVrpV8cUXz3OxORm5x2YCF5ychICKurqQZreDPOe1q+1KR1uvawqb14oxN5+4jFEyi79mxHe3YWNWcrYh3CbYKmQ6Dy7E9gGgb6jmAXNuJuWJBka3iUKcMLzQFrzf+xAc5gj12SVCsyBh349s/83BgwlRn7+EEGs8Nc4yVOYKddURaPosCpM8h+7ZemeVdFk5BoCnbqxaqzg9vIzw1S/Di+k14+pqzcvDolIC59zTqXiNs9MByzHwEoG+2eOVXVrSXujI1h7iw+RIO7YLTZQiNeNnZ0t11LzFS/74PDI7spE5oAM5zjYhLQfOeoDGWnaeypk+ONRIdvZRrg1F9cFO0lOfwGJpzjmvPaQFecrCmvaLf4zR3l3RAYQZ3WYArW36HAgAc5+XVlShrlGsI5g7XYZHR/Fheo/ZP9IJo7gvMntonJXC7GdajV+V1IMTCP5PPWZdSrP1IKtXwO36ULFfsmTKi/v4HjCvRc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB1794.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(6029001)(4636009)(346002)(136003)(366004)(376002)(396003)(39830400003)(8676002)(5660300002)(52536014)(186003)(6506007)(6200100001)(54906003)(55016002)(6862004)(316002)(86362001)(83380400001)(26005)(33656002)(122000001)(38100700002)(2906002)(66476007)(9686003)(4326008)(76116006)(8936002)(71200400001)(478600001)(7696005)(66446008)(66946007)(66556008)(64756008)(4744005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?MDARW2d2qIUMKcgq79/GXder1NKQfeoN6xg79BJIN55C8R9C4J8513SPHGaC?=
- =?us-ascii?Q?Kj7I02KYc7ABOauCdpCtBSjd9lDb2KZFZtKx924RlACN2sqtwX2TAIcduqHU?=
- =?us-ascii?Q?BcRj6DWs++G/AAhSYm/3QRyS/HCvXWwJjwsMJGvRB2a9LXOIx1ODbYD5QdLj?=
- =?us-ascii?Q?Cov3FYdSO9kGSgi2mx2Ro3c6w5EmjqG1W9C7Yrjx+yM98cSUg8d9X59QkrT5?=
- =?us-ascii?Q?CMcKVgpsgKGdf7IT2dfppyh4kM/S4Eo64AFHMjV73CAiBwJd+6F4un6zW3i+?=
- =?us-ascii?Q?hoIN2np7Fm2MgnJX8z22FhX1ORprKpm6U2bDTzjVnmOfvKu1lVrColG9aReX?=
- =?us-ascii?Q?xw+005xKIYaJOIFfuWC22ajrAHENs8RL4NGeHuAG3NtDOV+ZxZXtGXuJ4S3j?=
- =?us-ascii?Q?i8Xor8ucmicaM19Ltqsi1HnNiczR5u07l9jBeva3aTffXdDH0CH2k0BVKnqu?=
- =?us-ascii?Q?UkRrF7w+sGQEwrnMRnF3d4JnA08f19j+SUfApRHoEQZsVoY9XTGv5L0y88oD?=
- =?us-ascii?Q?phfMZeLDvVzpGFaF9jwuWokUQdTRU9iDxI0HyYcyg4ZpwjPfucE/31DaS09M?=
- =?us-ascii?Q?1MbED7RJ9M9yv4Y1Y+VWy8MYuFp/shYEYSDvRbulrO380euPKShFw3muKUqP?=
- =?us-ascii?Q?8M77k+/dnNdnKxyxSsCdCFGFwIbZ9iSh0dPBtAXk677hbnRG6y+3sEQ4ROna?=
- =?us-ascii?Q?+xnX3oNu/z/vD0/LdP6PWMrA1yavKUXxdHxpRqtaaIF6PIJ0Gsy78asSQU94?=
- =?us-ascii?Q?pGa2ARNqdzOCWrL0Zbh8hd9B4FNl/mPzl1xbJr42fQutsJZpk663YQ6fery7?=
- =?us-ascii?Q?9yGtbJqyOC+jb7ihU7fH6C92XBfi8zLFbNM44r94g8Qo5F5b+nFhnm2aTS7b?=
- =?us-ascii?Q?ULaO5sX5moSNRIXFtMMK0mItKL8s9R8TwJHdYV0hM86YzrLr3eLpwpnZ7ev6?=
- =?us-ascii?Q?IEhLtrsHIe+VkG4b0TD5hA7tUI5bqVH+Y+PrnCxvcnb157qidEOrcceUMYB6?=
- =?us-ascii?Q?TPAjcf1rxUEoNyT0ezgndNRItB1vOFl9JXAwsq5Szlw1QPV9IQOjj7T7b8zv?=
- =?us-ascii?Q?u8Mha6xMQbM3ixU8xYwslnLxig02F3Sm6RPjoz+E1K2Z1Q4KWmiLcj7iJHdy?=
- =?us-ascii?Q?cMhsWjw5S0/j9cZkKmBrnyHyPbWxVNYBFm5bVDtgoJIorPpdyVZYWz8rKUQD?=
- =?us-ascii?Q?DumU83OidGvYD0yREGqZz1t+yjG9y3T0bjFacbghSFB4IokGmH27UC/S6xp1?=
- =?us-ascii?Q?CpQJFF4871AlHn3MmBqX8eMpmi8xonCjRkWKcYQVwGjEwCci4f0LXe+QLYRY?=
- =?us-ascii?Q?jcNc4+aZFjbDF8rnUhwAxo5L?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=from:subject:to:references:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=Og9hc16KBzSKSswGbkMPhuX1y41NHyqdSV5Z1AeF8CY=;
+        b=OtccHCfL2OmpKSlJZsoLHOOFs2nEXrhaZoP9RKTTpt6h9u3D5k6y1nSUNhlI7Oruy/
+         V1D5DTSVxOvCJzpqE5uoNFBOt38yHCoQaRvtpfuVIwliE2oSGuc2/tkf6+pTzUVXAMjc
+         EyT4SVHPbypj/zFHsVaskBeD+EVH9a0KzAhuUeekI5qEeuCgXcYTtjkiHKZd2SGiFDTb
+         l06Cqwqh3DfBVC69rO0+REnamPUJhSiNDkT9V5m0dCjttTiKq7o9g/AL9yrz2R6QytmZ
+         V72KC8SclNY0R3+t9ejKQYtjA086cSv6qP73I+75MZ0GkQnrPnmw0opvUhnAApy8ZKHk
+         DTRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Og9hc16KBzSKSswGbkMPhuX1y41NHyqdSV5Z1AeF8CY=;
+        b=T5dfHzWXnLLRI1TQqqxeUzL1QR/dtqYsGVY4itoZ3lEaCLSG8n+oqAI1dIq/Fd3+Ku
+         g/GlR4oRkc37/TzTLWgoCfXkPtJxv8vjHduhBMCif48b1KT6A0WsdKJO1fE29uDvgnF7
+         THt4YgrcligaHaGOKPfUnx7MZKHJDEZgaBDB+/OsZU/4K5IAk36YJ2h6ZHLSz4NZ31+v
+         ys0uVLFjkFGGZS4tcpPQhTD1TLVr4JDPJFUGy7dRtvWUTF/+fkRFtlYJS4UJaNNhHgw3
+         80b29qMA6omYUvhGb1bBAGoX6tJIkxm+sfR/lg0wa49zyPVeQOHMw46ipvOY+9S7/D2Y
+         u3iA==
+X-Gm-Message-State: AOAM531bSSp8RDylYeZNr5/4hdbAQOWZ/8Q1rdKGpaVAhlvR6Pi5levj
+        eywXJMpbb3s/XGBuaEYU59CYoykPA8s=
+X-Google-Smtp-Source: ABdhPJxOfnndsz+YKpAytAFfNtNYoLzkzBuMjhkJkyO3HJ7eXpc9IbGee7MGAoOsKSPi5NlGL1e/xQ==
+X-Received: by 2002:ac8:41ce:: with SMTP id o14mr11314082qtm.96.1618833238903;
+        Mon, 19 Apr 2021 04:53:58 -0700 (PDT)
+Received: from ?IPv6:2620:10d:c0a8:1102::1844? ([2620:10d:c091:480::1:1b53])
+        by smtp.gmail.com with ESMTPSA id 205sm9725165qke.8.2021.04.19.04.53.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Apr 2021 04:53:58 -0700 (PDT)
+From:   Jes Sorensen <jes.sorensen@gmail.com>
+X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
+Subject: Re: [PATCH] rtl8xxxu: Fix device info for RTL8192EU devices
+To:     Pascal Terjan <pterjan@google.com>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210323193617.3748164-1-pterjan@google.com>
+Message-ID: <a69a3d60-71a0-3153-b248-dacc8b95bea8@gmail.com>
+Date:   Mon, 19 Apr 2021 07:53:57 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-X-OriginatorOrg: purelifi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB1794.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e025ddd-e42e-4911-870b-08d90329a61b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Apr 2021 11:52:46.4392
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5cf4eba2-7b8f-4236-bed4-a2ac41f1a6dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pr5ucYjSe4CLX0qv6cbw3SrnzTjOPx7NNlSE6g7R1m5VcCCh2JJfUDu1NunBAv+aTcVPjH+pbntcl0OuFOY2Yg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2232
+In-Reply-To: <20210323193617.3748164-1-pterjan@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> From: Srinivasan Raju <srini.raju@purelifi.com>=20
-> Sent: 26 February 2021 13:09
-> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
-> and LiFi-XL USB devices.
->=20
-> This driver implementation has been based on the zd1211rw driver.
->=20
-> Driver is based on 802.11 softMAC Architecture and uses
-> native 802.11 for configuration and management.
->=20
-> The driver is compiled and tested in ARM, x86 architectures and
-> compiled in powerpc architecture.
->
-> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
->
+On 3/23/21 3:36 PM, Pascal Terjan wrote:
+> Based on 2001:3319 and 2357:0109 which I used to test the fix and
+> 0bda:818b and 2357:0108 for which I found efuse dumps online.
+> 
+> == 2357:0109 ==
+> === Before ===
+> Vendor: Realtek
+> Product: \x03802.11n NI
+> Serial:
+> === After ===
+> Vendor: Realtek
+> Product: 802.11n NIC
+> Serial not available.
+> 
+> == 2001:3319 ==
+> === Before ===
+> Vendor: Realtek
+> Product: Wireless N
+> Serial: no USB Adap
+> === After ===
+> Vendor: Realtek
+> Product: Wireless N Nano USB Adapter
+> Serial not available.
+> 
+> Signed-off-by: Pascal Terjan <pterjan@google.com>
 > ---
-> v14:
- > - Endianess comments addressed
- > - Sparse checked and fixed warnings
- > - Firmware files renamed to lowercase
- > - All other review comments in v13 addressed
+>  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  | 11 ++--
+>  .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         | 53 ++++++++++++++++---
+>  2 files changed, 50 insertions(+), 14 deletions(-)
 
-Hi,
+This makes sense, you may want to account for the total length of the
+record though, see below.
 
-Could you please review this patch and let us know if there are any comment=
-s.
-And please let us know if any changes has to be made to the driver for gett=
-ing into wireless-next.=20
+Some cosmetic nits too.
 
-Thanks
-Srini
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> index d6d1be4169e5..acb6b0cd3667 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> @@ -853,15 +853,10 @@ struct rtl8192eu_efuse {
+>  	u8 usb_optional_function;
+>  	u8 res9[2];
+>  	u8 mac_addr[ETH_ALEN];		/* 0xd7 */
+> -	u8 res10[2];
+> -	u8 vendor_name[7];
+> -	u8 res11[2];
+> -	u8 device_name[0x0b];		/* 0xe8 */
+> -	u8 res12[2];
+> -	u8 serial[0x0b];		/* 0xf5 */
+> -	u8 res13[0x30];
+> +	u8 device_info[80];
+> +	u8 res11[3];
+>  	u8 unknown[0x0d];		/* 0x130 */
+> -	u8 res14[0xc3];
+> +	u8 res12[0xc3];
+>  };
+>  
+>  struct rtl8xxxu_reg8val {
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+> index cfe2dfdae928..9c5fad49ed2a 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+> @@ -554,9 +554,39 @@ rtl8192e_set_tx_power(struct rtl8xxxu_priv *priv, int channel, bool ht40)
+>  	}
+>  }
+>  
+> +static void rtl8192eu_log_device_info(struct rtl8xxxu_priv *priv,
+> +				      char *record_name,
+> +				      char **record)
+> +{
+> +	/* A record is [ total length | 0x03 | value ] */
+> +	unsigned char l = (*record)[0];
+
+These parenthesis make no sense.
+
+> +
+> +	/* The whole section seems to be 80 characters so a record should not
+> +	 * be able to be that large.
+> +	 */
+
+Please respect the comment formatting of the driver, ie
+/*
+ * Foo
+ */
+
+
+> +	if (l > 80) {
+> +		dev_warn(&priv->udev->dev,
+> +			 "invalid record length %d while parsing \"%s\".\n",
+> +			 l, record_name);
+> +		return;
+> +	}
+
+The 80 check is only valid for the first entry, consecutive entries are
+already advanced. Maybe switch it over to use an index to address into
+the record keep an index and just pass in efuse->device_info instead.
+
+> +
+> +	if (l >= 2) {
+> +		char value[80];
+> +
+> +		memcpy(value, &(*record)[2], l - 2);
+> +		value[l - 2] = '\0';
+> +		dev_info(&priv->udev->dev, "%s: %s\n", record_name, value);
+> +		*record = *record + l;
+> +	} else {
+> +		dev_info(&priv->udev->dev, "%s not available.\n", record_name);
+> +	}
+> +}
+> +
+>  static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
+>  {
+>  	struct rtl8192eu_efuse *efuse = &priv->efuse_wifi.efuse8192eu;
+> +	char *record = efuse->device_info;
+>  	int i;
+>  
+>  	if (efuse->rtl_id != cpu_to_le16(0x8129))
+> @@ -604,12 +634,23 @@ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
+>  	priv->has_xtalk = 1;
+>  	priv->xtalk = priv->efuse_wifi.efuse8192eu.xtal_k & 0x3f;
+>  
+> -	dev_info(&priv->udev->dev, "Vendor: %.7s\n", efuse->vendor_name);
+> -	dev_info(&priv->udev->dev, "Product: %.11s\n", efuse->device_name);
+> -	if (memchr_inv(efuse->serial, 0xff, 11))
+> -		dev_info(&priv->udev->dev, "Serial: %.11s\n", efuse->serial);
+> -	else
+> -		dev_info(&priv->udev->dev, "Serial not available.\n");
+> +	/* device_info section seems to be laid out as records
+> +	 * [ total length | 0x03 | value ] so:
+> +	 * - vendor length + 2
+> +	 * - 0x03
+> +	 * - vendor string (not null terminated)
+> +	 * - product length + 2
+> +	 * - 0x03
+> +	 * - product string (not null terminated)
+> +	 * Then there is one or 2 0x00 on all the 4 devices I own or found
+> +	 * dumped online.
+> +	 * As previous version of the code handled an optional serial
+> +	 * string, I now assume there may be a third record if the
+> +	 * length is not 0.
+> +	 */
+> +	rtl8192eu_log_device_info(priv, "Vendor", &record);
+> +	rtl8192eu_log_device_info(priv, "Product", &record);
+> +	rtl8192eu_log_device_info(priv, "Serial", &record);
+>  
+>  	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_EFUSE) {
+>  		unsigned char *raw = priv->efuse_wifi.raw;
+> 
+
