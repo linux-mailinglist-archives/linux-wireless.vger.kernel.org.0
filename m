@@ -2,138 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE6B3651B0
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Apr 2021 06:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BADDD36540A
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Apr 2021 10:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbhDTE7R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Apr 2021 00:59:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38736 "EHLO
+        id S229593AbhDTI0F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Apr 2021 04:26:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbhDTE7Q (ORCPT
+        with ESMTP id S229543AbhDTI0E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Apr 2021 00:59:16 -0400
-Received: from mail-ot1-x363.google.com (mail-ot1-x363.google.com [IPv6:2607:f8b0:4864:20::363])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0BFEC06174A
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Apr 2021 21:58:45 -0700 (PDT)
-Received: by mail-ot1-x363.google.com with SMTP id o13-20020a9d404d0000b029028e0a0ae6b4so15713972oti.10
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Apr 2021 21:58:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=pWpKHX8THAEOIdZg5NCOkyWurVXXxftkOCrq63r1kyM=;
-        b=1vFxwjTetw3A9qVsiI81Jog6fj2UelymU7Z4lyFqHFeJ3lzqE+clBPo29MuZ8Hw1oL
-         nUeM+jjocT3c/S0CFcY7Cw/Vl/wjTjQWb7cidLUqswNsHXgdJAMWMnaLKNIzTW08i9vU
-         XCD39g9M7+zP7nr0nXY3O8MhkJRPgLIlS0s3ZHU05ASakaJ7+HHwesBftOLPuFt93ig5
-         NtQ2MfKrEJ1CpGRFwlWQGwSlqFEUKB8e3GaCE1SfiBTbaSG6cFlWyFAw++b4dJPgtafU
-         JH9u+LwwdkYmdUHDl58hQA0h7nfmAfoLJzzR/Oq3kT+WlsmNFDbtZ8ayS4xMZ6eox5W9
-         aBMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=pWpKHX8THAEOIdZg5NCOkyWurVXXxftkOCrq63r1kyM=;
-        b=mcwW5MARTyKZ2RcwKdseAtSRFcIzg54SCoB5dD4tFL9I3diZEV27885paPLJzzFZxh
-         RlP+lRo3wyPiGlZuIG/mhoZYcyf8FsJkF5CxsTQt5tDksMt+j0w68G/klDziBDZS88f5
-         1GVinMm+GRGjHWSBe9IG4boCH1i+Mueg6vvABn/8z4rZVv9eIX0XjomrKrLWT0nCJ0bt
-         54tzCZCnxSykOiMZDUuPI039MRUk9cHv7H11SlksfjjwGHB6NplUkzvxvBb8j+BCXCRg
-         ZaWiI9A7UyPsf+5tXW3FRKYbOIuvkCtv4lWSiYRehHbWBLxixp8A8kEsP6s/EMcoPD56
-         iK1Q==
-X-Gm-Message-State: AOAM532ysyurvXvyen5ptHRDhXAfUnFz3A2piGgGCZ8Gmr+GPXtlJoVM
-        pGK4MEGtzzCP1Hq9mVD9mhaaLkYUqLu6K/kKC/MNwzuHMkLEoA==
-X-Google-Smtp-Source: ABdhPJz+C2El2srtJunZs33C+WE8ak/fnONFnt0QqqDskzAP8rGbLMAq+8qcFSXzrnTfcQT1H0O8e4unXJKJ
-X-Received: by 2002:a9d:d05:: with SMTP id 5mr18024877oti.312.1618894724923;
-        Mon, 19 Apr 2021 21:58:44 -0700 (PDT)
-Received: from bdawood (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp-relay.gmail.com with ESMTPS id v12sm380462otj.13.2021.04.19.21.58.43
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 19 Apr 2021 21:58:44 -0700 (PDT)
-X-Relaying-Domain: morsemicro.com
-Date:   Tue, 20 Apr 2021 14:58:39 +1000
-From:   Bassem Dawood <bassem@morsemicro.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] mac80211: Enable power save after receiving NULL packet
- ACK
-Message-ID: <20210420045838.GA16360@bdawood>
-References: <20210227055815.14838-1-bassem@morsemicro.com>
- <9282f2d2c6c8302de0c53dfb90743bd97e5a5a32.camel@sipsolutions.net>
- <20210409013218.GE9075@bdawood>
+        Tue, 20 Apr 2021 04:26:04 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E30C06174A
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Apr 2021 01:25:33 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lYlhK-00EBzy-L8; Tue, 20 Apr 2021 10:25:30 +0200
+Message-ID: <8f68ffae49cebca084658b810add0e6020002838.camel@sipsolutions.net>
+Subject: Re: [PATCH v9 2/4] mac80211: add multiple bssid support to
+ interface handling
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aloka Dixit <alokad@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>
+Date:   Tue, 20 Apr 2021 10:25:29 +0200
+In-Reply-To: <865a59c2dd3a07c4ee88716f51759e88@codeaurora.org>
+References: <20210310182604.8858-1-alokad@codeaurora.org>
+         <20210310182604.8858-3-alokad@codeaurora.org>
+         (sfid-20210310_192729_241525_2DF37B20) <7f6f0a8c151746e8bb44ad50daf75259a0fac829.camel@sipsolutions.net>
+         <494efc64a803693324dee5b7a03cfda0@codeaurora.org>
+         <9ce462d7c0dc707259d8bb50ec27a189ec89ef61.camel@sipsolutions.net>
+         <865a59c2dd3a07c4ee88716f51759e88@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210409013218.GE9075@bdawood>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Apr 09, 2021 at 11:32:19AM +1000, Bassem Fahmy wrote:
-> On Thu, Apr 08, 2021 at 03:26:06PM +0200, Johannes Berg wrote:
-> > On Sat, 2021-02-27 at 16:58 +1100, Bassem Dawood wrote:
-> > > Trigger dynamic_ps_timer to re-evaluate power saving once a null function
-> > > packet (with PM = 1) is ACKed.
-> > 
-> > Can you please say what this fixes/why the change is needed?
-> > 
-> > johannes
-> > 
+Hi Aloka,
 > 
-> Sure.
-> 
-> For drivers that declare PS_NULLFUNC_STACK, when sleeping, mac80211 would send a nullfunc (with PS bit set). It won't notify the driver yet (waiting for the NULLFUNC ACK).
-> 
-> 
-> a/net/mac80211/mlme.c: void ieee80211_dynamic_ps_enable_work(struct work_struct *work) 
-> 
-> 	if (ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK) &&
-> 	    !(ifmgd->flags & IEEE80211_STA_NULLFUNC_ACKED)) {
-> 		if (drv_tx_frames_pending(local)) {
-> 			mod_timer(&local->dynamic_ps_timer, jiffies +
-> 				  msecs_to_jiffies(
-> 				  local->hw.conf.dynamic_ps_timeout));
-> 		} else {
-> 			ieee80211_send_nullfunc(local, sdata, true);
-> 			/* Flush to get the tx status of nullfunc frame */
-> 			ieee80211_flush_queues(local, sdata, false);
-> 		}
-> 	}
-> 
-> 	if (!(ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS) &&
-> 	      ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK)) ||
-> 	    (ifmgd->flags & IEEE80211_STA_NULLFUNC_ACKED)) {
-> 		ifmgd->flags &= ~IEEE80211_STA_NULLFUNC_ACKED;
-> 		local->hw.conf.flags |= IEEE80211_CONF_PS;
-> 		ieee80211_hw_config(local, IEEE80211_CONF_CHANGE_PS);
-> 	}
-> 
-> On reception of the ACK, mac80211 will set the  IEEE80211_STA_NULLFUNC_ACKED flag, but won't re-evaluate dynamic_ps_enable_work. So drivers won't get notified to sleep (until ieee80211_dynamic_ps_enable_work is re-evaluated through any other path).
-> 
-> a/net/mac80211/status.c:static void __ieee80211_tx_status(struct ieee80211_hw *hw,
-> 				  struct ieee80211_tx_status *status,
-> 				  int rates_idx, int retry_count) 
-> 
-> 	if (ieee80211_is_any_nullfunc(fc) &&
-> 	    ieee80211_has_pm(fc) &&
-> 	    ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS) &&
-> 	    !(info->flags & IEEE80211_TX_CTL_INJECTED) &&
-> 	    local->ps_sdata && !(local->scanning)) {
-> 		if (info->flags & IEEE80211_TX_STAT_ACK) {
-> 			local->ps_sdata->u.mgd.flags |=
-> 					IEEE80211_STA_NULLFUNC_ACKED;
-> 		} else
-> 			mod_timer(&local->dynamic_ps_timer, jiffies +
-> 					msecs_to_jiffies(10));
-> 	}
-> 
-> This change makes sure  ieee80211_dynamic_ps_enable_work is evaluated once a NULLFUNC is ACKED for a more conssitent notification of the driver.
-> 
-> Regards,
-> Bassem
+> Is rcu_read_lock is not allowed around dev_close() because it might 
+> block or *ANY* lock?
 
-Hi Johannes,
+Well, I guess it's more nuanced than that.
 
-Following up on this. Is the explaination clear or you need more description?
+rcu_read_lock() is not allowed because it enters an atomic context.
+Similarly not allowed would be spinlocks, or local_bh_disable, or any
+similar thing that makes the context atomic.
 
-Regareds,
-Bassem
+From a locking perspective, normal mutexes *would* be allowed.
+
+However, you'd have to be extremely careful to not allow recursion,
+since dev_close() will call back into cfg80211/mac80211.
+
+> Because both functions with new dev_close() themselves are called with 
+> locks held,
+> (1) ieee80211_do_stop() happens inside 
+> wiphy_lock(sdata->local->hw.wiphy)
+
+This is probably already problematic.
+
+> (2) ieee80211_del_iface() happens inside mutex_lock(&rdev->wiphy.mtx).
+
+As you discovered, that's the same lock.
+
+> Should these be unlocked temporarily too before calling dev_close()?
+
+I don't think temporarily dropping locks is ever a good idea, it makes
+it really hard to reason about the code.
+
+But we already do this for AP-VLAN interfaces, so not sure why this is
+so different?
+> 
+> Also, in cfg.c, list_for_each_entry(sdata, &local->interfaces, list) is 
+> called with two different murexes: (1) local->iflist_mtx
+> (2) local->mtx
+
+
+> 
+> Which is the correct one for this purpose among above two and 
+> rcu_read_lock()?
+> Once that decided, would following be sufficient -
+>      lock()
+>      list_for_each_entry(sdata, &local->interfaces, list) {
+>          get_child_pointer
+>          unlock()
+>          dev_close()
+
+What guarantees you don't lose the device after the unlock()? I think
+you'd risk list corruption here this way...
+
+Look at the other instance of dev_close() here - as long as you can
+guarantee there won't be recursion (and you do, because non-transmitting
+interfaces don't have other non-transmitting below them, though they may
+actually have AP-VLANs!), we should be fine just doing it like that
+code?
+
+johannes
+
+
