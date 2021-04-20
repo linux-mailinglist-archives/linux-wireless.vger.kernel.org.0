@@ -2,222 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2068364F66
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Apr 2021 02:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F16CE364F9B
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Apr 2021 02:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230334AbhDTAUI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Apr 2021 20:20:08 -0400
-Received: from mga06.intel.com ([134.134.136.31]:39276 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230042AbhDTAUI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Apr 2021 20:20:08 -0400
-IronPort-SDR: oQJbyC3VI8HhqVMqyGa2G6NQDPVctirrTwTop8DH6YFaWKmMQnQ1XI62A8lPlEnYuJI3Uzrvno
- rEBkSVYZzVfQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9959"; a="256730430"
-X-IronPort-AV: E=Sophos;i="5.82,235,1613462400"; 
-   d="scan'208";a="256730430"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2021 17:19:36 -0700
-IronPort-SDR: bhb18dkjvywh9U31JhkSA/8s9eTHZUTMg84itWTsk1+Pv5/PdudAGgh+p8OmQvfXDfboZpzSDO
- JwHvpIayCdwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,235,1613462400"; 
-   d="scan'208";a="426705018"
-Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 19 Apr 2021 17:19:34 -0700
-Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lYe74-0001zR-7C; Tue, 20 Apr 2021 00:19:34 +0000
-Date:   Tue, 20 Apr 2021 08:19:11 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:master] BUILD SUCCESS
- 010bfbe768f7ecc876ffba92db30432de4997e2a
-Message-ID: <607e1dff.sdxLYQjh+hF28z7P%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S229936AbhDTApN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Apr 2021 20:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40446 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229758AbhDTApN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Apr 2021 20:45:13 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 026EBC06174A
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Apr 2021 17:44:42 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id v6so9533557oiv.3
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Apr 2021 17:44:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=y54RADQAKI43+F0kjEjItfFUgFjZ9l8crER7HbuVKME=;
+        b=Zvshwxk2NogsO98MdHezysI6F8M46p55xwsDByciFJEauSvphivDRRJIt1vWzvfhmv
+         c5Jq6corBFrZ3JV88c6VO93VfvU9XSHRTHgnBlPyzv3Ebn4WbDTD/s96PqD4hS7WmS7D
+         vGBJ+i2yzxx4f3AJZc4ekIjnWi6f+7H/WfZ+pIyuBIiXdNKQBQdRIDXkRbdcb6jlPp/w
+         CUAGNvCN1j6QvpadxD2hdXdzHkO8qDJOc4SxuZEwDAZPIhTAsfN8+Lwrk0V/CfCRaHsM
+         YwHZX+OROWBSSHr1RJ7O1y2SMGD4qSGY/1H1OnTFK2n4mw+fcbgRvlfzjikoEpEuZrJ2
+         etNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=y54RADQAKI43+F0kjEjItfFUgFjZ9l8crER7HbuVKME=;
+        b=IAupBwsBQEPFpMkCcs0PPr592robzlUk6dr+CnvjOWp2L1Da7N2T9HEIzoOfnx7dsX
+         dxsLMXXrf1BxolUHcsc7FjBogEc3/dKRruw6o57H30A0mM07Q0F/snqBObcgfnXajLOt
+         5oLY7fLh+eXM1/kFTdmTVRQzNwm4cy/HWgIB5RM3lknK1J5QEDbxmbYLF4RW2ukY+5ia
+         F25/U/cfRfIh6l+94ERqv0IfPSvJEv49Gv3tDQES+CE77fE98uRfLaowXeiiDlog5ndh
+         6Nz6qPcovIK/gS2myQ6uEOMNceF6AQAgAlYbeqRgs3V4tL6UGcOThI7UyaJanSAh44GJ
+         Acyg==
+X-Gm-Message-State: AOAM531IxEMkRoWU4chScrmY21cxUYj5ShJw7uPOQQCiiyvkjNvrszaF
+        QVrwkZkYYTlAeqVsi0MQ9YrpnGHOxu0=
+X-Google-Smtp-Source: ABdhPJw2lfXxnHGmCQ+eaaWlAQOC767lUoMqW2Z2njVawQwseYqE2kVeseF65Lx8kirGirYoiq2TKA==
+X-Received: by 2002:aca:df44:: with SMTP id w65mr1208016oig.36.1618879482007;
+        Mon, 19 Apr 2021 17:44:42 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id 68sm3795435otc.54.2021.04.19.17.44.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Apr 2021 17:44:41 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: [Bug report] - RTL8821CE 802.11ac PCIe Wireless Network Adapter -
+ Not handled properly by the rtw_8821ce dirver on Kernel 5.11.11
+To:     michaltoma <michaltoma@sicoop.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <2562248.KvEgbkE9EU@linux-9g0r.site>
+ <c0afc587-b8f8-8bae-5589-92ebac536c9e@lwfinger.net>
+ <fdab8de052c14b0ea1ed746bed9fcb8b@sicoop.com>
+ <50708085-c669-a8c1-62ad-60a66da4ad9d@lwfinger.net>
+ <9001d5aa093c4dc08cf0aba62056df4c@sicoop.com>
+ <8fd98fb4-f289-65a7-964f-4f29cfad50a6@lwfinger.net>
+ <0562d6c8e7fb4a1797d82294fa9af59e@sicoop.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <7580c121-e486-9283-b1e7-50c3a3c0433f@lwfinger.net>
+Date:   Mon, 19 Apr 2021 19:44:40 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <0562d6c8e7fb4a1797d82294fa9af59e@sicoop.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
-branch HEAD: 010bfbe768f7ecc876ffba92db30432de4997e2a  cfg80211: scan: drop entry from hidden_list on overflow
+On 4/19/21 2:50 PM, michaltoma wrote:
+> 
+> *> De :* Larry Finger <larry.finger@gmail.com> de la part de Larry Finger 
+> <Larry.Finger@lwfinger.net>
+> *> Envoyé :* lundi 19 avril 2021 19:38
+> *> À :* michaltoma; linux-wireless@vger.kernel.org
+> *> Objet :* Re: [Bug report] - RTL8821CE 802.11ac PCIe Wireless Network Adapter 
+> - Not handled properly by the rtw_8821ce dirver on Kernel 5.11.11
+>  >
+>  > On 4/19/21 4:56 AM, michaltoma wrote:
+>  > >
+>  > >  >*De :*Larry Finger <larry.finger@gmail.com> de la part de Larry Finger
+>  > > <Larry.Finger@lwfinger.net>
+>  > >  >*Envoyé :*jeudi 15 avril 2021 19:57
+>  > >  >*À :*michaltoma; linux-wireless@vger.kernel.org
+>  > >  >*Objet :*Re: [Bug report] - RTL8821CE 802.11ac PCIe Wireless Network 
+> Adapter -
+>  > > Not handled properly by the rtw_8821ce dirver on Kernel 5.11.11
+>  > >  >
+>  > >> > On 4/15/21 5:09 AM, michaltoma wrote:
+>  > >> > Hello Larry,
+>  > >> >
+>  > >> >
+>  > >> > Here is the full dmesg:
+>  > >> >
+>  > >> > https://pastebin.com/ZUXQeKAt <https://pastebin.com/ZUXQeKAt> 
+> <https://pastebin.com/ZUXQeKAt <https://pastebin.com/ZUXQeKAt>>
+>  > > <https://pastebin.com/ZUXQeKAt <https://pastebin.com/ZUXQeKAt 
+> <https://pastebin.com/ZUXQeKAt>>>
+>  > >>
+>  > >> On this list, please do not top post.
+>  > >>
+>  > >> Thanks for the upload. Those 80 BIOS Errors do not lend much confidence in 
+> the
+>  >>> quality of your BIOS! Have you checked for updates?
+>  >>>
+>  >>> Have you tried when setting the options disable_msi=y and disable_aspm=y for
+>  >>> module rtw88_pci if you use the kernel driver, or module rtw_pci if you use my
+>  >>> GitHub repo. That fixes a lot of strange errors.
+>  >>>
+>  >>> Larry
+>  >>
+>  >> Hello Larry,
+>  >>
+>  >> I tried to update the BIOS (without success so far as Lenovo doesn't provide
+>  >> anything else than a windows 32 bit exe file).
+>  >> But this led me to boot a windows 10 on my laptop. Surprisingly this somehow
+>  >> "unlocked" the Wifi.
+>  >> Seems the issue is somehow related to the chip deep sleep mode (I remember
+>  >> reading something about this a while back), from which the driver is unable to
+>  >> wake it up but the windows driver manages to do so.
+>  >> Not sure if this might help in diagnosing the problem but just reporting back.
+>  >
+>  > If you boot Windows and Linux, it is absolutely imperative that you disable
+>  > "quick boot" in Windows. That mode sometimes leaves devices disables for other
+>  > OS's. I think this is what happened here.
+>  >
+>  > Larry
+> 
+> Unfortunately no. I'm only booting Linux since day 0 of the laptop. This was 
+> only required to try to flash the bios so I installed a copy of windows on an 
+> external drive. __
 
-elapsed time: 725m
+Someone (the Factory) may have had Windows on it and did a quick-boot shutdown. 
+I do not know any other way the iface could have been left in the wrong state.
 
-configs tested: 160
-configs skipped: 4
+Larry
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-x86_64                           allyesconfig
-riscv                            allmodconfig
-i386                             allyesconfig
-riscv                            allyesconfig
-powerpc                      chrp32_defconfig
-arm                        mvebu_v5_defconfig
-powerpc                      ppc6xx_defconfig
-powerpc                     mpc5200_defconfig
-m68k                          atari_defconfig
-arc                    vdk_hs38_smp_defconfig
-powerpc                     kmeter1_defconfig
-openrisc                 simple_smp_defconfig
-m68k                        mvme16x_defconfig
-powerpc                 mpc832x_mds_defconfig
-mips                           xway_defconfig
-sh                             espt_defconfig
-sparc64                          alldefconfig
-arm                        realview_defconfig
-powerpc                     pseries_defconfig
-arm                      pxa255-idp_defconfig
-arm                       versatile_defconfig
-arm                       multi_v4t_defconfig
-powerpc                   motionpro_defconfig
-sh                         ap325rxa_defconfig
-nds32                             allnoconfig
-mips                      pic32mzda_defconfig
-xtensa                           allyesconfig
-sh                          urquell_defconfig
-arc                     haps_hs_smp_defconfig
-sh                      rts7751r2d1_defconfig
-xtensa                         virt_defconfig
-arm                            mmp2_defconfig
-arm                           omap1_defconfig
-arm                        multi_v5_defconfig
-powerpc                     tqm8540_defconfig
-powerpc                 mpc836x_rdk_defconfig
-arm                     davinci_all_defconfig
-h8300                     edosk2674_defconfig
-mips                          ath79_defconfig
-sh                         ecovec24_defconfig
-powerpc                 mpc834x_itx_defconfig
-xtensa                    smp_lx200_defconfig
-arm                        mini2440_defconfig
-arm                        neponset_defconfig
-mips                        bcm63xx_defconfig
-powerpc                 mpc837x_rdb_defconfig
-sh                           se7750_defconfig
-sh                         apsh4a3a_defconfig
-sparc                       sparc32_defconfig
-um                               alldefconfig
-m68k                        m5272c3_defconfig
-powerpc                         ps3_defconfig
-powerpc                 mpc832x_rdb_defconfig
-sparc                       sparc64_defconfig
-riscv             nommu_k210_sdcard_defconfig
-sh                            hp6xx_defconfig
-alpha                            alldefconfig
-arm                            lart_defconfig
-powerpc                          g5_defconfig
-powerpc                      bamboo_defconfig
-mips                        nlm_xlr_defconfig
-nds32                               defconfig
-arm                           h3600_defconfig
-arm                         lubbock_defconfig
-arm                          ep93xx_defconfig
-powerpc                     kilauea_defconfig
-sparc                               defconfig
-powerpc                      ppc64e_defconfig
-powerpc                         wii_defconfig
-mips                            e55_defconfig
-arm                         hackkit_defconfig
-powerpc                      ep88xc_defconfig
-powerpc                     ep8248e_defconfig
-xtensa                       common_defconfig
-h8300                               defconfig
-mips                         tb0287_defconfig
-powerpc                     powernv_defconfig
-m68k                        m5407c3_defconfig
-powerpc                       ppc64_defconfig
-ia64                             allmodconfig
-powerpc                 xes_mpc85xx_defconfig
-ia64                                defconfig
-powerpc                      katmai_defconfig
-sh                          rsk7201_defconfig
-mips                         mpc30x_defconfig
-riscv                    nommu_virt_defconfig
-mips                      maltaaprp_defconfig
-arm                        spear3xx_defconfig
-powerpc                      pcm030_defconfig
-powerpc                    klondike_defconfig
-powerpc                      arches_defconfig
-m68k                         amcore_defconfig
-arc                              alldefconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-i386                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20210419
-x86_64               randconfig-a001-20210419
-x86_64               randconfig-a005-20210419
-x86_64               randconfig-a002-20210419
-x86_64               randconfig-a006-20210419
-x86_64               randconfig-a004-20210419
-i386                 randconfig-a003-20210419
-i386                 randconfig-a001-20210419
-i386                 randconfig-a006-20210419
-i386                 randconfig-a005-20210419
-i386                 randconfig-a004-20210419
-i386                 randconfig-a002-20210419
-i386                 randconfig-a015-20210419
-i386                 randconfig-a013-20210419
-i386                 randconfig-a014-20210419
-i386                 randconfig-a016-20210419
-i386                 randconfig-a012-20210419
-i386                 randconfig-a011-20210419
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a014-20210419
-x86_64               randconfig-a015-20210419
-x86_64               randconfig-a013-20210419
-x86_64               randconfig-a011-20210419
-x86_64               randconfig-a012-20210419
-x86_64               randconfig-a016-20210419
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
