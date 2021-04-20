@@ -2,111 +2,222 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82F23364ED9
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Apr 2021 01:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2068364F66
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Apr 2021 02:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbhDSXsK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Apr 2021 19:48:10 -0400
-Received: from gateway21.websitewelcome.com ([192.185.46.113]:38257 "EHLO
-        gateway21.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229664AbhDSXsJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Apr 2021 19:48:09 -0400
-X-Greylist: delayed 1497 seconds by postgrey-1.27 at vger.kernel.org; Mon, 19 Apr 2021 19:48:09 EDT
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-        by gateway21.websitewelcome.com (Postfix) with ESMTP id 44B47400CCC9A
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Apr 2021 17:58:33 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id Ycqfl3IyRmJLsYcqflRl9Z; Mon, 19 Apr 2021 17:58:33 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=HSwcUpoOJnXwy9FUWCUDqISxnv3zkq1DVf8wvqzFEr0=; b=BvljQjnbdpu8RmeO4AFnQNsFrG
-        NidTTAVI57LZ/J2KDjmbAu7FNej4A6OqWy0McVvbePr1On80nZDp5d6dSdFLLtoXvfqalwR/mtox5
-        vfu7kaWx0KLLVyZ/PosuE8v8JjIOtytLvU7MbVb5zSrPu91Ph1caCNssqaZp9zcJJQj2y/er+2PFS
-        hX+Y47e2dakcdxmAf8/3vpInY9DiLqH+HVOPB5utF++XyeO8IPnAuFGdjfvZAxGS8gP2O8LTQzmc1
-        kr6oXcd1YuK5Wf82wKLg29FuGD2Y5sVty7f79O2n+sZseztgxiE2hoN7uym6RNvrUTRrccEHd11ge
-        jChUgS+g==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:48156 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1lYcqb-0044Xd-ON; Mon, 19 Apr 2021 17:58:29 -0500
-Subject: Re: [PATCH RESEND][next] rtl8xxxu: Fix fall-through warnings for
- Clang
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>
-References: <20210305094850.GA141221@embeddedor>
- <20210417175201.280F9C4338A@smtp.codeaurora.org>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <0b096033-7daf-fae7-9ea9-37038b979616@embeddedor.com>
-Date:   Mon, 19 Apr 2021 17:58:42 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S230334AbhDTAUI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Apr 2021 20:20:08 -0400
+Received: from mga06.intel.com ([134.134.136.31]:39276 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230042AbhDTAUI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 19 Apr 2021 20:20:08 -0400
+IronPort-SDR: oQJbyC3VI8HhqVMqyGa2G6NQDPVctirrTwTop8DH6YFaWKmMQnQ1XI62A8lPlEnYuJI3Uzrvno
+ rEBkSVYZzVfQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9959"; a="256730430"
+X-IronPort-AV: E=Sophos;i="5.82,235,1613462400"; 
+   d="scan'208";a="256730430"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2021 17:19:36 -0700
+IronPort-SDR: bhb18dkjvywh9U31JhkSA/8s9eTHZUTMg84itWTsk1+Pv5/PdudAGgh+p8OmQvfXDfboZpzSDO
+ JwHvpIayCdwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,235,1613462400"; 
+   d="scan'208";a="426705018"
+Received: from lkp-server01.sh.intel.com (HELO a48ff7ddd223) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 19 Apr 2021 17:19:34 -0700
+Received: from kbuild by a48ff7ddd223 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lYe74-0001zR-7C; Tue, 20 Apr 2021 00:19:34 +0000
+Date:   Tue, 20 Apr 2021 08:19:11 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS
+ 010bfbe768f7ecc876ffba92db30432de4997e2a
+Message-ID: <607e1dff.sdxLYQjh+hF28z7P%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20210417175201.280F9C4338A@smtp.codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1lYcqb-0044Xd-ON
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:48156
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 18
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
+branch HEAD: 010bfbe768f7ecc876ffba92db30432de4997e2a  cfg80211: scan: drop entry from hidden_list on overflow
 
+elapsed time: 725m
 
-On 4/17/21 12:52, Kalle Valo wrote:
-> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
-> 
->> In preparation to enable -Wimplicit-fallthrough for Clang, fix
->> multiple warnings by replacing /* fall through */ comments with
->> the new pseudo-keyword macro fallthrough; instead of letting the
->> code fall through to the next case.
->>
->> Notice that Clang doesn't recognize /* fall through */ comments as
->> implicit fall-through markings.
->>
->> Link: https://github.com/KSPP/linux/issues/115
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> 
-> Patch applied to wireless-drivers-next.git, thanks.
-> 
-> bf3365a856a1 rtl8xxxu: Fix fall-through warnings for Clang
+configs tested: 160
+configs skipped: 4
 
-Thanks for this, Kalle.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Could you take this series too, please?
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+x86_64                           allyesconfig
+riscv                            allmodconfig
+i386                             allyesconfig
+riscv                            allyesconfig
+powerpc                      chrp32_defconfig
+arm                        mvebu_v5_defconfig
+powerpc                      ppc6xx_defconfig
+powerpc                     mpc5200_defconfig
+m68k                          atari_defconfig
+arc                    vdk_hs38_smp_defconfig
+powerpc                     kmeter1_defconfig
+openrisc                 simple_smp_defconfig
+m68k                        mvme16x_defconfig
+powerpc                 mpc832x_mds_defconfig
+mips                           xway_defconfig
+sh                             espt_defconfig
+sparc64                          alldefconfig
+arm                        realview_defconfig
+powerpc                     pseries_defconfig
+arm                      pxa255-idp_defconfig
+arm                       versatile_defconfig
+arm                       multi_v4t_defconfig
+powerpc                   motionpro_defconfig
+sh                         ap325rxa_defconfig
+nds32                             allnoconfig
+mips                      pic32mzda_defconfig
+xtensa                           allyesconfig
+sh                          urquell_defconfig
+arc                     haps_hs_smp_defconfig
+sh                      rts7751r2d1_defconfig
+xtensa                         virt_defconfig
+arm                            mmp2_defconfig
+arm                           omap1_defconfig
+arm                        multi_v5_defconfig
+powerpc                     tqm8540_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                     davinci_all_defconfig
+h8300                     edosk2674_defconfig
+mips                          ath79_defconfig
+sh                         ecovec24_defconfig
+powerpc                 mpc834x_itx_defconfig
+xtensa                    smp_lx200_defconfig
+arm                        mini2440_defconfig
+arm                        neponset_defconfig
+mips                        bcm63xx_defconfig
+powerpc                 mpc837x_rdb_defconfig
+sh                           se7750_defconfig
+sh                         apsh4a3a_defconfig
+sparc                       sparc32_defconfig
+um                               alldefconfig
+m68k                        m5272c3_defconfig
+powerpc                         ps3_defconfig
+powerpc                 mpc832x_rdb_defconfig
+sparc                       sparc64_defconfig
+riscv             nommu_k210_sdcard_defconfig
+sh                            hp6xx_defconfig
+alpha                            alldefconfig
+arm                            lart_defconfig
+powerpc                          g5_defconfig
+powerpc                      bamboo_defconfig
+mips                        nlm_xlr_defconfig
+nds32                               defconfig
+arm                           h3600_defconfig
+arm                         lubbock_defconfig
+arm                          ep93xx_defconfig
+powerpc                     kilauea_defconfig
+sparc                               defconfig
+powerpc                      ppc64e_defconfig
+powerpc                         wii_defconfig
+mips                            e55_defconfig
+arm                         hackkit_defconfig
+powerpc                      ep88xc_defconfig
+powerpc                     ep8248e_defconfig
+xtensa                       common_defconfig
+h8300                               defconfig
+mips                         tb0287_defconfig
+powerpc                     powernv_defconfig
+m68k                        m5407c3_defconfig
+powerpc                       ppc64_defconfig
+ia64                             allmodconfig
+powerpc                 xes_mpc85xx_defconfig
+ia64                                defconfig
+powerpc                      katmai_defconfig
+sh                          rsk7201_defconfig
+mips                         mpc30x_defconfig
+riscv                    nommu_virt_defconfig
+mips                      maltaaprp_defconfig
+arm                        spear3xx_defconfig
+powerpc                      pcm030_defconfig
+powerpc                    klondike_defconfig
+powerpc                      arches_defconfig
+m68k                         amcore_defconfig
+arc                              alldefconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a003-20210419
+x86_64               randconfig-a001-20210419
+x86_64               randconfig-a005-20210419
+x86_64               randconfig-a002-20210419
+x86_64               randconfig-a006-20210419
+x86_64               randconfig-a004-20210419
+i386                 randconfig-a003-20210419
+i386                 randconfig-a001-20210419
+i386                 randconfig-a006-20210419
+i386                 randconfig-a005-20210419
+i386                 randconfig-a004-20210419
+i386                 randconfig-a002-20210419
+i386                 randconfig-a015-20210419
+i386                 randconfig-a013-20210419
+i386                 randconfig-a014-20210419
+i386                 randconfig-a016-20210419
+i386                 randconfig-a012-20210419
+i386                 randconfig-a011-20210419
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-https://lore.kernel.org/lkml/cover.1618442265.git.gustavoars@kernel.org/
+clang tested configs:
+x86_64               randconfig-a014-20210419
+x86_64               randconfig-a015-20210419
+x86_64               randconfig-a013-20210419
+x86_64               randconfig-a011-20210419
+x86_64               randconfig-a012-20210419
+x86_64               randconfig-a016-20210419
 
-Thanks
---
-Gustavo
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
