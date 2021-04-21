@@ -2,67 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 933FA366964
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 12:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 177C3366CC7
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 15:27:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235133AbhDUKoj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 06:44:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42416 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235065AbhDUKoj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 06:44:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3EBA56144F;
-        Wed, 21 Apr 2021 10:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619001846;
-        bh=3i8i+YuxFykd/N2sZYPpwKkoKgZ1UmdF2KcGhGOEZHQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K9yaMuGBb8bHT78iMcOvDMhSiFJ26K/uDKsr2oKVgLPBLY164TwXXzEc1j5ZoJhDW
-         FQb2LglLQqwTU/9Gn+kcKeIT/jIlRFieUORBPrBn4PT5p3jIu3xSZsAjtMeTtZ2Rev
-         UrKKIEbIIRI+AYJ7fHVByQ6H/7fksP1GXbMEzo5j4h39drAztBR6v+dBLdYKt96v/Y
-         mLiOg9+DQVrtlBm8fQyAuHGid9yzRkcEUXqXLg2UP7M7Y82gUx4VOYguSp0wOeO1Fz
-         CpzO4PGmVTIPwuM7OqUoIoKOdmEr8i+fdb4yEsJlr1jOQJkY7r0G1tHGbkZf++E7hX
-         iHCrrsU8z2rIA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH 4/4] mt76: mt7921: mt7921_stop should put device in fw_own state
-Date:   Wed, 21 Apr 2021 12:43:51 +0200
-Message-Id: <ee77bffb4abf0c84b2e04c9c76c484acd2622c61.1619001617.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1619001617.git.lorenzo@kernel.org>
-References: <cover.1619001617.git.lorenzo@kernel.org>
+        id S241443AbhDUN1u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 09:27:50 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:54476 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238455AbhDUN1t (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Apr 2021 09:27:49 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13LDCEw9005847;
+        Wed, 21 Apr 2021 13:15:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=FlzphcOCSgX+2k3rUk5ygmbE2dHWikxsYFYPqUAoI5A=;
+ b=vDAk9jhA93QJm/tDNOkTo9apIGr5dShybhB+BrCKFXqBJL86F6Gl+N9stG+JyVEMDCOi
+ sKmqXkx9QnkYcWXMLJ/5sBCOCoOU6FVdx8tKPOUuXDH1M/vnd/S4r3NmRIexi6SVpqwL
+ XYbwAucWPfh66eyIPDbZz//gmFF6pJdVIoYWBiToKA4IleZ+tthQwPDOStg6pGgJ75Mg
+ E2eA6tCy010xvN3MwyvfZ7nFXPtEtgL+Bd+SmKGD9mPx1wUdfkf6oejeBODEbYU/4tOB
+ +hWTurCU2xa6xeDdRachcbvTmWhU5r+h5Ll03v8SlyCU/NSXaTjO9/dq68lqd5Pb83nK gw== 
+Received: from oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 381bjn8pra-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 13:15:02 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 13LDF26f098309;
+        Wed, 21 Apr 2021 13:15:02 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 38098rqhhq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 13:15:02 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 13LDF1uk098159;
+        Wed, 21 Apr 2021 13:15:01 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 38098rqhdt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 21 Apr 2021 13:15:01 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 13LDEqlP015391;
+        Wed, 21 Apr 2021 13:14:52 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 21 Apr 2021 06:14:52 -0700
+Date:   Wed, 21 Apr 2021 16:14:40 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sean Wang <objelf@gmail.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/3] mt76: mt7615: fix a precision vs width bug in printk
+Message-ID: <YIAlQKR3IpfKW5Sx@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-GUID: IN-xhjViv_z8hvaYiIkNq2YIg1Cs348v
+X-Proofpoint-ORIG-GUID: IN-xhjViv_z8hvaYiIkNq2YIg1Cs348v
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Precision "%.*s" was intended instead of width "%*s".  The original code
+will print garbage from beyond the end of the skb->data.
 
-mt7921_stop should put device in fw_own state to reduce
-power consumption.
-
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Fixes: d76d6c3ba2b0 ("mt76: mt7615: limit firmware log message printk to buffer length")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index b32f26c1f8b3..6f180c92d413 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -37,7 +37,7 @@ void mt76_connac_power_save_sched(struct mt76_phy *phy,
- 	if (!mt76_is_mmio(dev))
- 		return;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 9b9f8d88e9bb..00b1b657cb21 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -424,7 +424,7 @@ mt7615_mcu_rx_log_message(struct mt7615_dev *dev, struct sk_buff *skb)
+ 		break;
+ 	}
  
--	if (!pm->enable || !test_bit(MT76_STATE_RUNNING, &phy->state))
-+	if (!pm->enable)
- 		return;
+-	wiphy_info(mt76_hw(dev)->wiphy, "%s: %*s", type,
++	wiphy_info(mt76_hw(dev)->wiphy, "%s: %.*s", type,
+ 		   (int)(skb->len - sizeof(*rxd)), data);
+ }
  
- 	pm->last_activity = jiffies;
 -- 
 2.30.2
 
