@@ -2,71 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7FFF367519
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 00:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D227C3675DE
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 01:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235102AbhDUWU4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 18:20:56 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:36004 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S236017AbhDUWUp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 18:20:45 -0400
-X-UUID: d65d2aacff7c4cfa8c29179c825740bf-20210422
-X-UUID: d65d2aacff7c4cfa8c29179c825740bf-20210422
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1699413348; Thu, 22 Apr 2021 06:20:07 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 22 Apr 2021 06:20:04 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 22 Apr 2021 06:20:04 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7615: fix potential overflow on large shift
-Date:   Thu, 22 Apr 2021 06:20:03 +0800
-Message-ID: <7fdbfede8bdc09d8099d1a812c2434e0511980ce.1619043422.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S1343753AbhDUXnw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 19:43:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38932 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237964AbhDUXnu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Apr 2021 19:43:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 63266613DC;
+        Wed, 21 Apr 2021 23:43:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1619048597;
+        bh=RBahKrZRpdTopHgPiuzI27MUkFSEAGAZ67SmGWh+3DA=;
+        h=Date:From:To:Cc:Subject:From;
+        b=HawRR0EyA/J/BBKRnMqHS/rwp9157ZqRy672M3zIdn6osTREHRUTyUsOztuIeNBwv
+         18dVY+LiqGuiI6AqZST9T6JOZ7QQu/uhWVN0fsYdgJO2pWLVcDloFfyxSzEBJrlYyZ
+         jg8IWKZAbPuzuRKpPOlw3fjom97UiZcNZgbg88dvWMSt7qlwJGgiaPUCQjW6SeTcs3
+         s8yHOCIAwbIEGIwRWAoMKsfM0u4tIqC5+CS5tJyONUWL9MfSlcDsr2LMX4J7Kon4fx
+         SCPzStU6jeK88OIqA9fZRKIV1RXlpoLO8bjDGVReUYM5FhP0X7eo6oJbvili+iYrIZ
+         Ue5CLedEeWV5Q==
+Date:   Wed, 21 Apr 2021 18:43:37 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Subject: [PATCH][next] wireless: wext-spy: Fix out-of-bounds warning
+Message-ID: <20210421234337.GA127225@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 59C17390707C3BCEA47A9E4F24D76A34F835DABB65E660C50F48AA7E63AF3A442000:8
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following static checker warning:
-error: undefined (user controlled) shift '(((1))) << (c->omac_idx)'
+Fix the following out-of-bounds warning:
 
-Fixes: 402a695b1ae6 ("mt76: mt7615: fix CSA notification for DBDC")
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+net/wireless/wext-spy.c:178:2: warning: 'memcpy' offset [25, 28] from the object at 'threshold' is out of the bounds of referenced subobject 'low' with type 'struct iw_quality' at offset 20 [-Warray-bounds]
+
+The problem is that the original code is trying to copy data into a
+couple of struct members adjacent to each other in a single call to
+memcpy(). This causes a legitimate compiler warning because memcpy()
+overruns the length of &threshold.low and &spydata->spy_thr_low. As
+these are just a couple of members, fix this by copying each one of
+them in separate calls to memcpy().
+
+Also, while there, use sizeof(threshold.qual) instead of
+sizeof(struct iw_quality)) in another call to memcpy()
+above.
+
+This helps with the ongoing efforts to globally enable -Warray-bounds
+and get us closer to being able to tighten the FORTIFY_SOURCE routines
+on memcpy().
+
+Link: https://github.com/KSPP/linux/issues/109
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/wext-spy.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 67af2e2d4779..93d938d56166 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -390,6 +390,9 @@ mt7615_mcu_rx_csa_notify(struct mt7615_dev *dev, struct sk_buff *skb)
+diff --git a/net/wireless/wext-spy.c b/net/wireless/wext-spy.c
+index 33bef22e44e9..bb2de7c6bee4 100644
+--- a/net/wireless/wext-spy.c
++++ b/net/wireless/wext-spy.c
+@@ -120,8 +120,8 @@ int iw_handler_set_thrspy(struct net_device *	dev,
+ 		return -EOPNOTSUPP;
  
- 	c = (struct mt7615_mcu_csa_notify *)skb->data;
+ 	/* Just do it */
+-	memcpy(&(spydata->spy_thr_low), &(threshold->low),
+-	       2 * sizeof(struct iw_quality));
++	memcpy(&spydata->spy_thr_low, &threshold->low, sizeof(threshold->low));
++	memcpy(&spydata->spy_thr_high, &threshold->high, sizeof(threshold->high));
  
-+	if (c->omac_idx > EXT_BSSID_MAX)
-+		return;
-+
- 	if (ext_phy && ext_phy->omac_mask & BIT_ULL(c->omac_idx))
- 		mphy = dev->mt76.phy2;
+ 	/* Clear flag */
+ 	memset(spydata->spy_thr_under, '\0', sizeof(spydata->spy_thr_under));
+@@ -173,10 +173,10 @@ static void iw_send_thrspy_event(struct net_device *	dev,
+ 	memcpy(threshold.addr.sa_data, address, ETH_ALEN);
+ 	threshold.addr.sa_family = ARPHRD_ETHER;
+ 	/* Copy stats */
+-	memcpy(&(threshold.qual), wstats, sizeof(struct iw_quality));
++	memcpy(&threshold.qual, wstats, sizeof(threshold.qual));
+ 	/* Copy also thresholds */
+-	memcpy(&(threshold.low), &(spydata->spy_thr_low),
+-	       2 * sizeof(struct iw_quality));
++	memcpy(&threshold.low, &spydata->spy_thr_low, sizeof(threshold.low));
++	memcpy(&threshold.high, &spydata->spy_thr_high, sizeof(threshold.high));
  
+ 	/* Send event to user space */
+ 	wireless_send_event(dev, SIOCGIWTHRSPY, &wrqu, (char *) &threshold);
 -- 
-2.18.0
+2.27.0
 
