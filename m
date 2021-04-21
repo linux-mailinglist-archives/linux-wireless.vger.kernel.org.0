@@ -2,99 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30EB9366934
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 12:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E83CC366941
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 12:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231463AbhDUK3Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 06:29:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33586 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239508AbhDUK3L (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 06:29:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6D2736144A;
-        Wed, 21 Apr 2021 10:28:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619000918;
-        bh=AU5dJtwmc78YFxyQMs8aPuZmCwMUZmdVABTged1cg8Y=;
-        h=From:To:Cc:Subject:Date:From;
-        b=QJVFec+f1l+20KGOXAH+8dB0dvPvMbVjdAOWrQr2JuC6/pKLMEQITC8rRPZwC78HT
-         c54VUKObNF7PVQ1qS76A4MWujzmw1mh0W0keIs6apBcdUXao7zsUilOgzu6PfkUXuf
-         8UxTHdQMDYP76ZMXukk4/FoE98VMqG+0YfKX5bGDwPBX4PyUxoPQqp2mHAUyn2I5S4
-         jRab5t60Er9j5ZUYqCdO2yS3uQcH/PUpI3XWFcoX2CI9O9GgRHbPp8OVX+Zr5cJZCw
-         PSx6viXtvYUNmsIjqEUW5nnUjV5OvI3+jlKp3ZIIn11M1JlMchXM1veC7s6l83gofr
-         Ifeb7C3t0jjwg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7921: get rid of mcu_reset function pointer
-Date:   Wed, 21 Apr 2021 12:28:33 +0200
-Message-Id: <364293ec8609dd254067d8173c1599526ffd662c.1619000828.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S235185AbhDUKcy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 06:32:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33086 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235335AbhDUKcv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Apr 2021 06:32:51 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 987B9C061342
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Apr 2021 03:32:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=mapYpz4d6B2un+rQqE+/GsrGdYsL1RzUyIJiwD8K17I=; b=Qis7ukCntEWog18vRSVMyepPzN
+        aaxMyq1XSdkt6P0FPGyVkk0lYaZvgmOJOnTaFCD3tiH5BuungameU89mMzPsdAB2HADCLm4OTjcOq
+        3PfCyjAVIL0VpD6JDcms+nn+gqrM+vIp9B9M7ReqgacxQH19F9QUzoqwy9bnJPDkQtpk=;
+Received: from p4ff13bc6.dip0.t-ipconnect.de ([79.241.59.198] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lZA9U-0002VE-AG; Wed, 21 Apr 2021 12:32:12 +0200
+Subject: Re: [PATCH 2/2] mt76: mt7615: add thermal sensor device support
+To:     Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <b51d79d257e150a09d51029e3465e2ce925d6cfe.1618691395.git.ryder.lee@mediatek.com>
+ <d9d9214cbd4444b861cdc8b88f17e8580b1025f6.1618691395.git.ryder.lee@mediatek.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Message-ID: <57888c9e-f66c-3922-9979-9d24e3e7d07f@nbd.name>
+Date:   Wed, 21 Apr 2021 12:32:11 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.9.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <d9d9214cbd4444b861cdc8b88f17e8580b1025f6.1618691395.git.ryder.lee@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-since mcu_reset it used only by mt7921, move the reset callback to
-mt7921_mcu_parse_response routine and get rid of the function pointer.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mcu.c        | 4 ----
- drivers/net/wireless/mediatek/mt76/mt76.h       | 1 -
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 3 ++-
- 3 files changed, 2 insertions(+), 6 deletions(-)
+On 2021-04-17 22:42, Ryder Lee wrote:
+> Similar to mt7915, switching to use standard hwmon sysfs.
+> For reading temperature, cat /sys/class/ieee80211/phy*/hwmon*/temp1_input
+> 
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+> ---
+>  .../wireless/mediatek/mt76/mt7615/debugfs.c   | 20 --------
+>  .../net/wireless/mediatek/mt76/mt7615/init.c  | 50 +++++++++++++++++++
+>  .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  6 +--
+>  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 +-
+>  .../wireless/mediatek/mt76/mt7615/pci_init.c  |  4 ++
+>  5 files changed, 58 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> index d84662fb0304..22ccad43a13e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> @@ -8,11 +8,61 @@
+>   */
+>  
+>  #include <linux/etherdevice.h>
+> +#include <linux/hwmon.h>
+> +#include <linux/hwmon-sysfs.h>
+>  #include "mt7615.h"
+>  #include "mac.h"
+>  #include "mcu.h"
+>  #include "eeprom.h"
+>  
+> +static ssize_t mt7615_thermal_show_temp(struct device *dev,
+> +					struct device_attribute *attr,
+> +					char *buf)
+> +{
+> +	struct mt7615_dev *mdev = dev_get_drvdata(dev);
+> +	int temperature;
+> +
+> +	if (!mt7615_wait_for_mcu_init(mdev))
+> +		return 0;
+> +
+> +	mt7615_mutex_acquire(mdev);
+> +	temperature = mt7615_mcu_get_temperature(mdev);
+> +	mt7615_mutex_release(mdev);
+> +
+> +	if (temperature < 0)
+> +		return temperature;
+> +
+> +	/* display in millidegree celcius */
+> +	return sprintf(buf, "%u\n", temperature * 1000);
+> +}
+> +
+> +static SENSOR_DEVICE_ATTR(temp1_input, 0444, mt7615_thermal_show_temp,
+> +			  NULL, 0);
+> +
+> +static struct attribute *mt7615_hwmon_attrs[] = {
+> +	&sensor_dev_attr_temp1_input.dev_attr.attr,
+> +	NULL,
+> +};
+> +ATTRIBUTE_GROUPS(mt7615_hwmon);
+> +
+> +int mt7615_thermal_init(struct mt7615_dev *dev)
+> +{
+> +	struct wiphy *wiphy = mt76_hw(dev)->wiphy;
+> +	struct device *hwmon;
+> +
+> +	if (!IS_REACHABLE(CONFIG_HWMON))
+> +		return 0;
+> +
+> +	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev,
+> +						       wiphy_name(wiphy), phy,
+This does not compile (wrong variable name).
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wireless/mediatek/mt76/mcu.c
-index 70624cd07449..d3a5e2c4f12a 100644
---- a/drivers/net/wireless/mediatek/mt76/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mcu.c
-@@ -99,10 +99,6 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *dev, struct sk_buff *skb,
- 			dev_kfree_skb(skb);
- 	} while (ret == -EAGAIN);
- 
--	/* notify driver code to reset the mcu */
--	if (ret == -ETIMEDOUT && dev->mcu_ops->mcu_reset)
--		dev->mcu_ops->mcu_reset(dev);
--
- out:
- 	mutex_unlock(&dev->mcu.mutex);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index cc5d95aeebbd..3b09ea8176a3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -168,7 +168,6 @@ struct mt76_mcu_ops {
- 	int (*mcu_rd_rp)(struct mt76_dev *dev, u32 base,
- 			 struct mt76_reg_pair *rp, int len);
- 	int (*mcu_restart)(struct mt76_dev *dev);
--	void (*mcu_reset)(struct mt76_dev *dev);
- };
- 
- struct mt76_queue_ops {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 5bdb9914ead8..43e3bf895b60 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -162,6 +162,8 @@ mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 	if (!skb) {
- 		dev_err(mdev->dev, "Message %08x (seq %d) timeout\n",
- 			cmd, seq);
-+		mt7921_reset(mdev);
-+
- 		return -ETIMEDOUT;
- 	}
- 
-@@ -974,7 +976,6 @@ int mt7921_mcu_init(struct mt7921_dev *dev)
- 		.mcu_skb_send_msg = mt7921_mcu_send_message,
- 		.mcu_parse_response = mt7921_mcu_parse_response,
- 		.mcu_restart = mt7921_mcu_restart,
--		.mcu_reset = mt7921_reset,
- 	};
- 
- 	dev->mt76.mcu_ops = &mt7921_mcu_ops;
--- 
-2.30.2
-
+- Felix
