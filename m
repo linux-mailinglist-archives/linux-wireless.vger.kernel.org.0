@@ -2,75 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53B0E3666AA
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 10:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73DBD36671B
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 10:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234258AbhDUIEJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 04:04:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57004 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234126AbhDUIEF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 04:04:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 44BD761434;
-        Wed, 21 Apr 2021 08:03:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618992213;
-        bh=jXiT4IH+777BS2DeQ/xUqpZtNLaaRzu1D7DxC43qKBs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RFJnJhqY4M12LSI6+rmgmiCZoXMlDKHi0awbHq0gVR76VlmbROpUPGMIFqXMNb/rf
-         wgHPOuiPvmbd08vUthZNQfhou12lvPDpm6gh2PAZgY3AEJ/5ORz5zPRvJCeZcbuGKn
-         jxPH86BUUdJXlRjfNXyTvzsXtaQ8MVRbMP6/hYi3hnXvoY3BENvXZ+0MwTizR5u5CL
-         Q/APIhZWVKYCEGT4sKt7l30sYU0gMlKKeSj//sK+3bOEn2ur/Zjha3wz2uQv8uzO4E
-         +Cqr/CDklXxnPdAAP6dNcp8nuFSm6wJQXtpZvpNJHakQdmfcylQNQYmZRBLyh250sB
-         yhqPTSawHzbTA==
-Date:   Wed, 21 Apr 2021 11:03:28 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     M Chetan Kumar <m.chetan.kumar@intel.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, krishna.c.sudi@intel.com,
-        linuxwwan@intel.com
-Subject: Re: [PATCH V2 01/16] net: iosm: entry point
-Message-ID: <YH/cUKYPLQryUjSJ@unreal>
-References: <20210420161310.16189-1-m.chetan.kumar@intel.com>
- <20210420161310.16189-2-m.chetan.kumar@intel.com>
- <YH+71wFykp/fWcCe@unreal>
- <494b1d770d7730b5a865b077cdd72ba6d17c7d38.camel@sipsolutions.net>
+        id S236149AbhDUIk6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 04:40:58 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:41456 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231354AbhDUIk6 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Apr 2021 04:40:58 -0400
+X-UUID: 2fadfe9f4ef04bb49288ae9e3bd9ed95-20210421
+X-UUID: 2fadfe9f4ef04bb49288ae9e3bd9ed95-20210421
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 714931352; Wed, 21 Apr 2021 16:40:21 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 21 Apr 2021 16:40:18 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 21 Apr 2021 16:40:18 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH] mt76: mt7915: do not read rf value from efuse in flash mode
+Date:   Wed, 21 Apr 2021 16:39:45 +0800
+Message-ID: <20210421083945.10337-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <494b1d770d7730b5a865b077cdd72ba6d17c7d38.camel@sipsolutions.net>
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 9CB6740FDC6112994172C00188E65583B1497F58073ABDC406148BBFC99349012000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 21, 2021 at 08:51:44AM +0200, Johannes Berg wrote:
-> On Wed, 2021-04-21 at 08:44 +0300, Leon Romanovsky wrote:
-> > 
-> > > +#define DRV_AUTHOR "Intel Corporation <linuxwwan@intel.com>"
-> > 
-> > Driver author can't be a company. It needs to be a person.
-> 
-> Most of
-> 
-> 	git grep MODULE_AUTHOR|grep Inc
-> 
-> disagrees.
+Do not read rf value from efuse when driver is configured to
+use flash mode.
 
-Did you actually look on the output of that grep?
+Tested-by: Bruce Chuang <bruce-ss.chuang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We have three types of MODULE_AUTHOR(..) there
-1. Really old code with non-existent companies
-2. People who added their names together with the company name
-3. Heavy copy/pasted code
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index 738ecf8..e004e51 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -8,7 +8,7 @@ static u32 mt7915_eeprom_read(struct mt7915_dev *dev, u32 offset)
+ {
+ 	u8 *data = dev->mt76.eeprom.data;
+ 
+-	if (data[offset] == 0xff)
++	if (data[offset] == 0xff && !dev->flash_mode)
+ 		mt7915_mcu_get_eeprom(dev, offset);
+ 
+ 	return data[offset];
+-- 
+2.18.0
 
-MODULE_AUTHOR is not copyright which (usually) goes to the company that
-sponsored the work, but can be seen as git commit author in pre-historic
-days.
-
-So no, old doesn't mean correct.
-
-Thanks
-
-> 
-> johannes
-> 
