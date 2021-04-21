@@ -2,86 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3456366849
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 11:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E4B33668C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 12:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238350AbhDUJlX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 05:41:23 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:64486 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238266AbhDUJlW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 05:41:22 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618998050; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=83TxWCLKD6lFDzpoyeLqoddy/amLuZE5/WldNfLsbfM=;
- b=evssq7sGcXLS83ug4g3E4OCVFd1MsaIcpcM1JesA/sV0OapEoj8xyeE86b2Hrhm0ddidVzpY
- 5sSBI57rA6mVVa3hltnIl/+olrUGPzl8FwQ62GvBoGuZx0PkeAjwk1QPC+X97Mhbzdxf4VVa
- UkbVbwmtbcHa/8IqVWwFatGvUy8=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 607ff320a817abd39aaa0ce2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 21 Apr 2021 09:40:48
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 10D46C43460; Wed, 21 Apr 2021 09:40:48 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 71466C433F1;
-        Wed, 21 Apr 2021 09:40:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 71466C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S237696AbhDUKEC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 06:04:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36722 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232442AbhDUKEA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Apr 2021 06:04:00 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B4F8B61430;
+        Wed, 21 Apr 2021 10:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1618999407;
+        bh=Kt6k64ofavrYNWx4jU3WxDs8uhFd3PclCOGGizTdj1I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ce//A4tiFaI7Ck8Z5tk7esCjAtfZN+p8Z5uVoUyZ+1NGHAdqW9rWJbJ0YJc4MKYSg
+         Os/G/CTg10niMl8uUd2UQiFJJZPEGJXcsoflMmAkPW7QlrrnfaoJDY11lKr+ECnNVS
+         TO5Yy3R5FGNRpDbiGAFpiqB2ehzJoECr2pqW80ciDkWbN3MnfU77zYgY6EmM0GlWrQ
+         CQESq755+t8ojAf/ltu4Fqx4X/WEk5zdAYZTPPKFzQ2eXeUJkFwoN5UcPNZZBDnPEX
+         QkwYI2VBXu3XWociCYboXFMR5o5ui9RQWrxkfN4ROQG2W4I0PqUM2bOz2PUuF4zGZP
+         yWJBmeNtGXarg==
+Date:   Wed, 21 Apr 2021 12:03:22 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] ath9k: Fix error check in ath9k_hw_read_revisions() for
+ PCI devices
+Message-ID: <YH/4aqmfV1sJKjgY@lore-desk>
+References: <20210326180819.142480-1-toke@redhat.com>
+ <87a6puimgu.fsf@toke.dk>
+ <87lf9cj969.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtlwifi: implement set_tim by update beacon content
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210419065956.6085-1-pkshih@realtek.com>
-References: <20210419065956.6085-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <mail@maciej.szmigiero.name>,
-        <Larry.Finger@lwfinger.net>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210421094048.10D46C43460@smtp.codeaurora.org>
-Date:   Wed, 21 Apr 2021 09:40:48 +0000 (UTC)
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="L8QW3+bAb9+wFMA0"
+Content-Disposition: inline
+In-Reply-To: <87lf9cj969.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Once beacon content is changed, we update the content to wifi card by
-> send_beacon_frame(). Then, STA with PS can wake up properly to receive its
-> packets.
-> 
-> Since we update beacon content to PCI wifi devices every beacon interval,
-> the only one usb device, 8192CU, needs to update beacon content when
-> mac80211 calling set_tim.
-> 
-> Reported-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> Tested-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+--L8QW3+bAb9+wFMA0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Patch applied to wireless-drivers-next.git, thanks.
+> Toke H=F8iland-J=F8rgensen <toke@redhat.com> writes:
+>=20
+> >> When the error check in ath9k_hw_read_revisions() was added, it checke=
+d for
+> >> -EIO which is what ath9k_regread() in the ath9k_htc driver uses. Howev=
+er,
+> >> for plain ath9k, the register read function uses ioread32(), which just
+> >> returns -1 on error. So if such a read fails, it still gets passed thr=
+ough
+> >> and ends up as a weird mac revision in the log output.
+> >>
+> >> Fix this by changing ath9k_regread() to return -1 on error like ioread=
+32()
+> >> does, and fix the error check to look for that instead of -EIO.
+> >>
+> >> Fixes: 2f90c7e5d094 ("ath9k: Check for errors when reading SREV regist=
+er")
+> >> Signed-off-by: Toke H=F8iland-J=F8rgensen <toke@redhat.com>
+> >
+> > Hi Kalle
+> >
+> > This patch is merged as "deferred" in patchwork - what's up with that?
+>=20
+> Just lack of time on my part. Reviewed-by tags would help a lot :)
 
-afda33499bea rtlwifi: implement set_tim by update beacon content
+Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210419065956.6085-1-pkshih@realtek.com/
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--L8QW3+bAb9+wFMA0
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYH/4aAAKCRA6cBh0uS2t
+rJVtAQCdL4nnW9Jd8W/hZLlBn/eidn3rZ2E4asRPcdamMTjeegD/R6nl07Ih7ZW7
+2+GjbkHsfdROXCqBcOJ1FSatJ1/rGAQ=
+=aVsC
+-----END PGP SIGNATURE-----
+
+--L8QW3+bAb9+wFMA0--
