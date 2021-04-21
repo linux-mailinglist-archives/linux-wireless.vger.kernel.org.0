@@ -2,63 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13D2F366960
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 12:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91207366961
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 12:44:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbhDUKob (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 06:44:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42302 "EHLO mail.kernel.org"
+        id S234927AbhDUKoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 06:44:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42342 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234175AbhDUKoa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 06:44:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D007A61440;
-        Wed, 21 Apr 2021 10:43:56 +0000 (UTC)
+        id S234175AbhDUKoe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Apr 2021 06:44:34 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8AD616144D;
+        Wed, 21 Apr 2021 10:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619001837;
-        bh=NexHP4miQbFJEgMAFGGCvdMLJK3x+JD4kXUlmDt1o+Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=lH46GEYFLnM/coevyIADoWgrRY5ZMHtpeBujMvdyiAeEgGb2pPH/p7oXSnf7jNWxW
-         8J0olVOZvkK8lY7JwoTBLOXAd/ux2ocPZcIPLgjPqGeYt7e99a7bnSs7NX0B1vTJuz
-         eEwMat8/RPE/4YzM9cLB3EBQQur+ZObVSqC4d657zasD2ZY6v2cgA1VFPqYM34y6Rx
-         oSg8ZoiQIYOEZn+G3IIc/toOOd2Dl/YIw2bbHfai5rB8XvWqnMvESPl3QBZ24j9O0W
-         5KBErbgflUrKLsYnb4sDwfy6qUWrGfJw5EO8NPzVgte0CUlKBphHAkKSMllRyAkQe2
-         MQ8FB8ORX7McA==
+        s=k20201202; t=1619001840;
+        bh=2QYi1iu7sq/QBDrVawnEK6+7Hw1UaxORFE3L6tcR5cI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=YMEvvI7pdeFyqX8kZzSSYFN+tZccN1bxOcJnhD03sPvDLy6mEeQr6PLtO+R7K95tX
+         NBPXjru4hXq4C/pUfk2stwCqlqwG+7iCvcTiEmwHuWRE9QHRn9jeBLPD7JzKFvvfw8
+         prGFhuCw1ciqk6lySwaySRcq/rBURn9V+mfEo2hKf8id+rS9JjOUFntoaItcWSVpCC
+         wMCTe+GYzdKFXwa0fCxvYyu0DhcE74WlAuHB0RxXd4tOuW0RVYgiAWuIVBZ4DHpZs9
+         VB3bFjY/zfrA+goPdJpjbkE+6+nAohwYqfUZBfVqyVdCfV6W0iekZkfgqC2T/C7f7P
+         F7Htd2XHD/Sew==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com
-Subject: [PATCH 0/4] improve runtime-pm support for mt7663/mt7921
-Date:   Wed, 21 Apr 2021 12:43:47 +0200
-Message-Id: <cover.1619001617.git.lorenzo@kernel.org>
+Subject: [PATCH 1/4] mt76: mt7921: improve doze opportunity
+Date:   Wed, 21 Apr 2021 12:43:48 +0200
+Message-Id: <799cbf719cd5418237afa413e097388a3b00d3ad.1619001617.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <cover.1619001617.git.lorenzo@kernel.org>
+References: <cover.1619001617.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is the second series to fix/improve runtime-pm support for mt7663/mt7921
-chipsets.
-This series is based on the series below:
-https://patchwork.kernel.org/project/linux-wireless/list/?series=469235
+Increase mt7921 mac work timeout in oder to have move sleep
+opportunities
 
-Lorenzo Bianconi (3):
-  mt76: mt7921: improve doze opportunity
-  mt76: mt7663: add awake and doze time accounting
-  mt76: connac: unschedule mac_work before going to sleep
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c    | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Sean Wang (1):
-  mt76: mt7921: mt7921_stop should put device in fw_own state
-
- .../wireless/mediatek/mt76/mt7615/debugfs.c   | 32 ++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7615/init.c  |  2 ++
- .../net/wireless/mediatek/mt76/mt7615/mac.c   |  2 ++
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 24 +++++++++++---
- .../wireless/mediatek/mt76/mt76_connac_mac.c  |  6 ++--
- .../net/wireless/mediatek/mt76/mt7921/mac.c   |  6 ++--
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 +-
- 7 files changed, 63 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 1233e5410ee7..72d04b229e6b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1461,12 +1461,12 @@ void mt7921_mac_work(struct work_struct *work)
+ 	mt7921_mutex_acquire(phy->dev);
+ 
+ 	mt76_update_survey(mphy->dev);
+-	if (++mphy->mac_work_count == 5) {
++	if (++mphy->mac_work_count == 2) {
+ 		mphy->mac_work_count = 0;
+ 
+ 		mt7921_mac_update_mib_stats(phy);
+ 	}
+-	if (++phy->sta_work_count == 10) {
++	if (++phy->sta_work_count == 4) {
+ 		phy->sta_work_count = 0;
+ 		mt7921_mac_sta_stats_work(phy);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index c6e112e47cfd..e72397c6e2ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -18,7 +18,7 @@
+ 
+ #define MT7921_PM_TIMEOUT		(HZ / 12)
+ #define MT7921_HW_SCAN_TIMEOUT		(HZ / 10)
+-#define MT7921_WATCHDOG_TIME		(HZ / 10)
++#define MT7921_WATCHDOG_TIME		(HZ / 4)
+ #define MT7921_RESET_TIMEOUT		(30 * HZ)
+ 
+ #define MT7921_TX_RING_SIZE		2048
 -- 
 2.30.2
 
