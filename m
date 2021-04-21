@@ -2,103 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDF3B366833
+	by mail.lfdr.de (Postfix) with ESMTP id 6CA3B366832
 	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 11:37:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238420AbhDUJiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 05:38:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53384 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238481AbhDUJhx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
+        id S238412AbhDUJh7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 05:37:59 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:13225 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238469AbhDUJhx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 21 Apr 2021 05:37:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1618997840;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QQ/oN78pwE6YFm8TpVb2QhRE5dd8heRRoUH8QeszxhE=;
-        b=F1D5vec2r7ty1LC4OUfRpl6k7cABsV3l/iOEKUBAwb2YvXi675g/F1Oox8PcwIBVzA19Zi
-        NRymuGRkG0yETy7xupc7H0N3y+vWm/pv5V9Aj66CA9vwczzpPhUbeufuJdvnkyqeGuQjqg
-        KHBhyQ2WV8fXw0AV0GgHYVgg7vg1Gcw=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-397-RrETDCchOpGUNomIvGFIdw-1; Wed, 21 Apr 2021 05:36:55 -0400
-X-MC-Unique: RrETDCchOpGUNomIvGFIdw-1
-Received: by mail-ed1-f69.google.com with SMTP id l7-20020aa7c3070000b029038502ffe9f2so8933167edq.16
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Apr 2021 02:36:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=QQ/oN78pwE6YFm8TpVb2QhRE5dd8heRRoUH8QeszxhE=;
-        b=lkpvGPoDKwS1+D+IYlOkluG3gQMbVtV+UODJhZDU03Z70kE3e/9XLC5paA1k50ItZf
-         cSIOoETFn3+KCFFEMWhLyy2sPz1yTDG6Cr6DB2nZHuhFfWlbmqECDP7XssrpqZ0V7f8F
-         vk+Ly5VAfPOBYNx4Vm9y31OF+RZJimCgGcrBILDSpOIUd8/JcmZkqNanH1c5sbKBRI/C
-         pP6sL2bHdaGBCfd7lYLjfqX/5TH++Sp+zeuCaP/fzBI+94ntnuojPLDWu0UlnoLtIThQ
-         s2bT0Z3qcj09ER+iOIELHPB0GzOSAcakgLWt57rwiwcKXTYNWxkAEhg5y5Dd1rP9TrOc
-         dlew==
-X-Gm-Message-State: AOAM531GfCcT5bgGwCjdn0RqIl5EMC/NPwbzsE4P/4rUjbAxb7LnGkjN
-        GmTlfbugSgrRzbzL1Avg7bWO83mWHqbwyI8bwBq67d4aw23ujme/UYjHUBZc9VsHzIVbPBm9SQj
-        mHfC79G8M2Tmnv5UOCd62XQwHthc=
-X-Received: by 2002:a50:e702:: with SMTP id a2mr38245794edn.3.1618997813770;
-        Wed, 21 Apr 2021 02:36:53 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwvhCejG1DrIwnRgxc1FZStgBq5K53/nGMs5fkxMS5fB3JQ8m8hB/NJersw6m4gvBiuSHafog==
-X-Received: by 2002:a50:e702:: with SMTP id a2mr38245780edn.3.1618997813596;
-        Wed, 21 Apr 2021 02:36:53 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id v1sm2518872eds.17.2021.04.21.02.36.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Apr 2021 02:36:53 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 719BC1804E5; Wed, 21 Apr 2021 11:36:52 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath9k: Fix error check in ath9k_hw_read_revisions() for
- PCI devices
-In-Reply-To: <87lf9cj969.fsf@codeaurora.org>
-References: <20210326180819.142480-1-toke@redhat.com>
- <87a6puimgu.fsf@toke.dk> <87lf9cj969.fsf@codeaurora.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Wed, 21 Apr 2021 11:36:52 +0200
-Message-ID: <87lf9cdlmz.fsf@toke.dk>
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618997840; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=ix5TtwVNcHy3bJnAto8WQSd4og4vuYPoYet5xWGjvXE=;
+ b=OwYdhNkk9SkM9/z5X/eix7daikLdKohn38FuA7+UKIHDlB7/O2RKuj4ibdIdcCuQtxmqoneb
+ 8ip2TVYXTMz6GNOLIa43TSSpUesPIBZYsSkXSX4F72IOPrnD1uTPHE+kfhLtaselAF9alsRs
+ 0L2R7Na0ZObodhJBcX+Rdi/xyuY=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 607ff250a817abd39aa83434 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 21 Apr 2021 09:37:20
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 63D12C433F1; Wed, 21 Apr 2021 09:37:19 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 73A6BC433F1;
+        Wed, 21 Apr 2021 09:37:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 73A6BC433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/3] rtw88: 8822c: reorder macro position according to
+ the
+ register number
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210419003748.3224-2-pkshih@realtek.com>
+References: <20210419003748.3224-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <vincent_fann@realtek.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210421093719.63D12C433F1@smtp.codeaurora.org>
+Date:   Wed, 21 Apr 2021 09:37:19 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
->
->>> When the error check in ath9k_hw_read_revisions() was added, it checked=
- for
->>> -EIO which is what ath9k_regread() in the ath9k_htc driver uses. Howeve=
-r,
->>> for plain ath9k, the register read function uses ioread32(), which just
->>> returns -1 on error. So if such a read fails, it still gets passed thro=
-ugh
->>> and ends up as a weird mac revision in the log output.
->>>
->>> Fix this by changing ath9k_regread() to return -1 on error like ioread3=
-2()
->>> does, and fix the error check to look for that instead of -EIO.
->>>
->>> Fixes: 2f90c7e5d094 ("ath9k: Check for errors when reading SREV registe=
-r")
->>> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->>
->> Hi Kalle
->>
->> This patch is merged as "deferred" in patchwork - what's up with that?
->
-> Just lack of time on my part. Reviewed-by tags would help a lot :)
+> From: Guo-Feng Fan <vincent_fann@realtek.com>
+> 
+> This patch doesn't change logic at all, just a refactor patch.
+> 
+> 1. Move BIT MASK and BIT definition along with the register definition
+> 2. Remove redundant definition
+> 3. Align macros with Tab key
+> 
+> Signed-off-by: Guo-Feng Fan <vincent_fann@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Right, gotcha - will see if I can find someone to review :)
+3 patches applied to wireless-drivers-next.git, thanks.
 
--Toke
+f98bf9ee6312 rtw88: 8822c: reorder macro position according to the register number
+056b239f8672 rtw88: 8822c: Add gap-k calibration to improve long range performance
+3b25bac89353 rtw88: 8822c: debug: allow debugfs to enable/disable TXGAPK
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210419003748.3224-2-pkshih@realtek.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
