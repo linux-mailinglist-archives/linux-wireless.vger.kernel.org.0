@@ -2,66 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F11ED367153
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 19:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C1E83671B1
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Apr 2021 19:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242501AbhDURam (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 13:30:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49206 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239320AbhDURam (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 13:30:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id E44FC61459;
-        Wed, 21 Apr 2021 17:30:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619026208;
-        bh=qyLLDcGhPFeBmxu3AtwJwPJ0LplI1y7ufowgb7Go+7E=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=vEEvvqUyT/pUiFoWpWyiOfXgUVxIAf3QKXb0NJ7L7aciGK0Hpy1ftJ07+j3ruw6LS
-         HsIsRoWnC3Wq+zt/AkR7weKhw5Nehu4f2KGwGV5SHK3SfT6VfvTl5e65IEgCMhSqef
-         I8fKGuNPVmPiZKqdHWT2LlXY0cp4iUg6yAsE1R6VZ2oTacVbk5lSvSHnv3q+30tbRK
-         +ScQie79wJrevC0NNyfM7a8Er6OcLNxSEn9JGYoO8jlo8AGWjqgpR5CR6N9Sf+FkcK
-         SZfza2ncUMy/H67PZ+h/xMYjn64+3Ie+j/F1zCskM4aiU7y3rbGikIdYKk8p4T16AJ
-         WzRYceiWjCVMg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D84C560A39;
-        Wed, 21 Apr 2021 17:30:08 +0000 (UTC)
+        id S244824AbhDURqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 13:46:49 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:28496 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243383AbhDURqr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Apr 2021 13:46:47 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1619027174; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=mIoGwTFNFlNcqe2snL+bh4loHX2D9cEh/9+/MXFcrK8=;
+ b=J12HClH0OWnroY8BvS12NOZ6h4Tz5/QcFjiMn77Oc+o2raztMeFuziEGsoZjTJxfVUVCDWfE
+ QVKXT/GS9tMXYcKOCQLSXEhMjbikvygWY0PK8iVtAqookHFtSUCPoydOMZmWqPKPdqYE66qD
+ Z0u4aE88i/kbZHSQp7/iAbeh1Bg=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 608064e32cbba88980e64841 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 21 Apr 2021 17:46:11
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B4FD1C433F1; Wed, 21 Apr 2021 17:46:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2C943C43460;
+        Wed, 21 Apr 2021 17:46:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2C943C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-drivers-2021-04-21
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161902620888.9844.8449355059297880345.git-patchwork-notify@kernel.org>
-Date:   Wed, 21 Apr 2021 17:30:08 +0000
-References: <20210421090335.7A50CC4338A@smtp.codeaurora.org>
-In-Reply-To: <20210421090335.7A50CC4338A@smtp.codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath9k:remove unneeded variable in
+ ath9k_dump_legacy_btcoex
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210224130356.51444-1-zhangkun4jr@163.com>
+References: <20210224130356.51444-1-zhangkun4jr@163.com>
+To:     zhangkun4jr@163.com
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath9k-devel@qca.qualcomm.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zhang Kun <zhangkun@cdjrlc.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210421174610.B4FD1C433F1@smtp.codeaurora.org>
+Date:   Wed, 21 Apr 2021 17:46:10 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+zhangkun4jr@163.com wrote:
 
-This pull request was applied to netdev/net.git (refs/heads/master):
-
-On Wed, 21 Apr 2021 09:03:35 +0000 (UTC) you wrote:
-> Hi,
+> From: Zhang Kun <zhangkun@cdjrlc.com>
 > 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
+> Remove unneeded variable 'len' in ath9k_dump_legacy_btcoex.
 > 
-> Kalle
-> 
-> [...]
+> Signed-off-by: Zhang Kun <zhangkun@cdjrlc.com>
 
-Here is the summary with links:
-  - pull-request: wireless-drivers-2021-04-21
-    https://git.kernel.org/netdev/net/c/542c40957c05
+This fails to compile. Always build check your patches!
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+In file included from drivers/net/wireless/ath/ath9k/gpio.c:17:
+drivers/net/wireless/ath/ath9k/gpio.c: In function 'ath9k_dump_legacy_btcoex':
+drivers/net/wireless/ath/ath9k/ath9k.h:763:3: error: 'len' undeclared (first use in this function)
+  763 |   len += scnprintf(buf + len, size - len,  \
+      |   ^~~
+drivers/net/wireless/ath/ath9k/gpio.c:501:2: note: in expansion of macro 'ATH_DUMP_BTCOEX'
+  501 |  ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+      |  ^~~~~~~~~~~~~~~
+drivers/net/wireless/ath/ath9k/ath9k.h:763:3: note: each undeclared identifier is reported only once for each function it appears in
+  763 |   len += scnprintf(buf + len, size - len,  \
+      |   ^~~
+drivers/net/wireless/ath/ath9k/gpio.c:501:2: note: in expansion of macro 'ATH_DUMP_BTCOEX'
+  501 |  ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+      |  ^~~~~~~~~~~~~~~
+make[5]: *** [drivers/net/wireless/ath/ath9k/gpio.o] Error 1
+make[4]: *** [drivers/net/wireless/ath/ath9k] Error 2
+make[3]: *** [drivers/net/wireless/ath] Error 2
+make[2]: *** [drivers/net/wireless] Error 2
+make[1]: *** [drivers/net] Error 2
+make: *** [drivers] Error 2
 
+Patch set to Changes Requested.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210224130356.51444-1-zhangkun4jr@163.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
