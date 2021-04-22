@@ -2,95 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3AB436868C
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 20:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A59D63686C6
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 20:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236941AbhDVS0Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 14:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60800 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236668AbhDVS0Z (ORCPT
+        id S236796AbhDVSwo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 14:52:44 -0400
+Received: from gateway30.websitewelcome.com ([192.185.152.11]:11716 "EHLO
+        gateway30.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236058AbhDVSwo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 14:26:25 -0400
-Received: from mail-qt1-x84a.google.com (mail-qt1-x84a.google.com [IPv6:2607:f8b0:4864:20::84a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B3DC061756
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Apr 2021 11:25:50 -0700 (PDT)
-Received: by mail-qt1-x84a.google.com with SMTP id a15-20020a05622a02cfb02901b5e54ac2e5so12817684qtx.4
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Apr 2021 11:25:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:message-id:mime-version:subject:from:to:cc;
-        bh=cdFFfBwj6y+ldLJWT4RH/UCRgZud/iyFWxuR5ipQoVI=;
-        b=kPtqx4n7It6L+YNDdsYxD+Agp+bgfqLUbKTTCN5iRtHehOYyZij9HjCUfBDwHkYrfV
-         Ewm4+4uKAQl7/7POfPGXqztoHtuKSLgyBiOl8yYtveYKRoXBoX462R7bgYU9g63iaYmz
-         ZBJPzyhqbxNqrBg98+elt4eQDtJ1anUEuieGz2CH5sa53K3vAfTL+9nCDquPIsv9fBr7
-         cRM26SgqxG/c+pwkRUb2l3NDeXp+hwGi4vZzm2RQ/5CMKsCr1k/BBI7w20bg/7FGSzFs
-         0xRjA5OosaIy3YABLGlVhyd0CQqowaNKhHb+L1HDPBKI/LXq0zabapLS5JSiqRlsDsKU
-         FQNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
-        bh=cdFFfBwj6y+ldLJWT4RH/UCRgZud/iyFWxuR5ipQoVI=;
-        b=jXHbd7BsH3NSd63nsdFNPs4E/bAYMez8jxNogWixiYZU7+51jKpbh1LUUavciMT1FP
-         iyLEZhpyLYoAMT4VNl4BVMRWd/Bz0Un+IdawDdRzofWfc6+AmAgw7H6OslVuHd+vkIio
-         qhZMLzBJr+9rzZF+YlnVnfoCmetBS4Djt1uPia8uzK/sjFfCChg2cPQ60qcIjpdv39O6
-         yJ6+5AE/jNDb9u1j54xb+Em+V0hZyAHYDRoZJ2QCb1aS3M54IuKos8eM+ZTyt+fP2Cej
-         1OY1PgBFgvWboASy6uo7qNljqK9qQyjd7t9gg4QjflUyMEiy+t5WAfT0vuyNumwjdv91
-         f7cw==
-X-Gm-Message-State: AOAM5328Vux3gdgp7Of4lzpS1Gy3bGxm7+6097hH8lyNQaqS0J6Xo7G5
-        mbuxdNpBTc64QQ3U3mwVfCtG7XUG9hRb03Hc
-X-Google-Smtp-Source: ABdhPJxHDiOKvw7MbVPkxJtBsTTRLWxDYith8HTo++LxCspdOO5u1CM0L1TAxMlZXcj0DObKKM0ej9QNERvGplzw
-X-Received: from manoj.svl.corp.google.com ([2620:15c:2ce:0:f9bc:2c5f:7aa9:b2])
- (user=manojgupta job=sendgmr) by 2002:a05:6214:13c2:: with SMTP id
- cg2mr228706qvb.4.1619115949274; Thu, 22 Apr 2021 11:25:49 -0700 (PDT)
-Date:   Thu, 22 Apr 2021 11:25:45 -0700
-Message-Id: <20210422182545.726897-1-manojgupta@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.31.1.498.g6c1eba8ee3d-goog
-Subject: [PATCH] iw: set retain atrribute on sections
-From:   Manoj Gupta <manojgupta@google.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     stable@vger.kernel.org, maskray@google.com, llozano@google.com,
-        manojgupta@google.com, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Thu, 22 Apr 2021 14:52:44 -0400
+X-Greylist: delayed 1314 seconds by postgrey-1.27 at vger.kernel.org; Thu, 22 Apr 2021 14:52:43 EDT
+Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
+        by gateway30.websitewelcome.com (Postfix) with ESMTP id 8101D1545A
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Apr 2021 13:30:13 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id Ze5dlSUx9b8LyZe5dlSOHy; Thu, 22 Apr 2021 13:30:13 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Gj4ZzlY1opy7V2GETXx3MyvWl67CzzjHj9tWMTMO6zc=; b=MEpJteWQLmz2N2caWwYhuetppY
+        8mI9RWs7QeTbds9avFafYF5jaaoNj1g2xEPqyBWIn7ik7FxdR5/ah6neRNInuoUEB8qjvaoH69VDT
+        1bsOKe7fv/hV7x0aSxvL4Il6FQ4FKMlykaGgeaPcBeM5++zkC4z5jO13leZKf0fYFFlhaWqhKASeh
+        m7PnmDco9IvjDq6UXXxn0mQ4v3zgo0T7JhBzEsqplAcWS1rA6g6c9HPuATRn0AvIbrnaN9b5t6lRc
+        9XZSgK+xdZSZqAeLlfLVxjazVmHFQeUhr8znCTPPlTIS+4ba8EuxALHZ1Io7/fkhb4MXNNx56Ru9V
+        D9GybQaw==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:57122 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1lZe5Z-001KxQ-Rm; Thu, 22 Apr 2021 13:30:09 -0500
+Subject: Re: [PATCH v3 1/2] wl3501_cs: Fix out-of-bounds warnings in
+ wl3501_send_pkt
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>
+References: <d260fe56aed7112bff2be5b4d152d03ad7b78e78.1618442265.git.gustavoars@kernel.org>
+ <20210422143910.C8B5CC4338A@smtp.codeaurora.org>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <83e2efc6-2bdf-ddfb-8322-3b9536fc1644@embeddedor.com>
+Date:   Thu, 22 Apr 2021 13:30:28 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
+MIME-Version: 1.0
+In-Reply-To: <20210422143910.C8B5CC4338A@smtp.codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1lZe5Z-001KxQ-Rm
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:57122
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 6
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-LLD 13 and GNU ld 2.37 support -z start-stop-gc which allows garbage
-collection of C identifier name sections despite the __start_/__stop_
-references.  Simply set the retain attribute so that GCC 11 (if
-configure-time binutils is 2.36 or newer)/Clang 13 will set the
-SHF_GNU_RETAIN section attribute to prevent garbage collection.
 
-Without the patch, there are linker errors like the following with -z
-start-stop-gc:
-ld.lld: error: undefined symbol: __stop___cmd
->>> referenced by iw.c:418
->>>               iw.o:(__handle_cmd)
 
-Suggested-by: Fangrui Song <maskray@google.com>
+On 4/22/21 09:39, Kalle Valo wrote:
+> 2 patches applied to wireless-drivers-next.git, thanks.
+> 
+> 820aa37638a2 wl3501_cs: Fix out-of-bounds warnings in wl3501_send_pkt
+> bb43e5718d8f wl3501_cs: Fix out-of-bounds warnings in wl3501_mgmt_join
 
-Signed-off-by: Manoj Gupta <manojgupta@google.com>
----
- iw.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Thanks, Kalle.
 
-diff --git a/iw.h b/iw.h
-index 7f7f4fc..67aa00c 100644
---- a/iw.h
-+++ b/iw.h
-@@ -118,8 +118,9 @@ struct chandef {
- 		.parent = _section,					\
- 		.selector = (_sel),					\
- 	};								\
-+	_Pragma("GCC diagnostic ignored \"-Wattributes\"") 		\
- 	static struct cmd *__cmd ## _ ## _symname ## _ ## _handler ## _ ## _nlcmd ## _ ## _idby ## _ ## _hidden ## _p \
--	__attribute__((used,section("__cmd"))) =			\
-+	__attribute__((used,retain,section("__cmd"))) =			\
- 	&__cmd ## _ ## _symname ## _ ## _handler ## _ ## _nlcmd ## _ ## _idby ## _ ## _hidden
- #define __ACMD(_section, _symname, _name, _args, _nlcmd, _flags, _hidden, _idby, _handler, _help, _sel, _alias)\
- 	__COMMAND(_section, _symname, _name, _args, _nlcmd, _flags, _hidden, _idby, _handler, _help, _sel);\
--- 
-2.31.1.498.g6c1eba8ee3d-goog
-
+--
+Gustavo
