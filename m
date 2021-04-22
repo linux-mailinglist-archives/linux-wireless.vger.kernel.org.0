@@ -2,212 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8148C3677AA
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 05:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FCB13677E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 05:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234384AbhDVDFS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 23:05:18 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:45296 "EHLO
+        id S234471AbhDVD20 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 23:28:26 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:48960 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232796AbhDVDFO (ORCPT
+        with ESMTP id S233061AbhDVD2Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 23:05:14 -0400
+        Wed, 21 Apr 2021 23:28:25 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13M34XMB0021051, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13M3RjwI6030964, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13M34XMB0021051
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13M3RjwI6030964
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 22 Apr 2021 11:04:33 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+        Thu, 22 Apr 2021 11:27:45 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 22 Apr 2021 11:04:32 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 22 Apr
- 2021 11:04:31 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <steventing@realtek.com>
-Subject: [PATCH v2 2/2] rtw88: add debugfs to force lowest basic rate
-Date:   Thu, 22 Apr 2021 11:04:13 +0800
-Message-ID: <20210422030413.9738-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20210422030413.9738-1-pkshih@realtek.com>
-References: <20210422030413.9738-1-pkshih@realtek.com>
+ 15.1.2106.2; Thu, 22 Apr 2021 11:27:43 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 22 Apr 2021 11:27:42 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74%5]) with mapi id
+ 15.01.2106.013; Thu, 22 Apr 2021 11:27:42 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Pkshih <pkshih@realtek.com>, Kalle Valo <kvalo@codeaurora.org>
+CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        DeanKu <ku920601@realtek.com>,
+        Bernie Huang <phhuang@realtek.com>,
+        Shaofu <shaofu@realtek.com>,
+        Steven Ting <steventing@realtek.com>,
+        Kevin Yang <kevin_yang@realtek.com>
+Subject: RE: [PATCH 2/7] rtw88: follow the AP basic rates for tx mgmt frame
+Thread-Topic: [PATCH 2/7] rtw88: follow the AP basic rates for tx mgmt frame
+Thread-Index: AQHXHILhha+rxT9tC0u1Umog2SASfaquqNkAgAGcrsCAD6BXQA==
+Date:   Thu, 22 Apr 2021 03:27:42 +0000
+Message-ID: <b7814d48ad3740a0a29439c81cf5b1bf@realtek.com>
+References: <20210319054218.3319-3-pkshih@realtek.com>
+ <20210411092102.40EE7C43461@smtp.codeaurora.org>
+ <632d2ab7679145eab8e1f498b9b12ceb@realtek.com>
+In-Reply-To: <632d2ab7679145eab8e1f498b9b12ceb@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMjEg5LiL5Y2IIDExOjIzOjAw?=
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXH36502.realtek.com.tw (172.21.6.25) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMjEgpFWkyCAxMToyMzowMA==?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/22/2021 02:42:46
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/22/2021 03:12:59
 X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
 X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Rate: 0
 X-KSE-AntiSpam-Info: Lua profiles 163276 [Apr 21 2021]
 X-KSE-AntiSpam-Info: Version: 5.9.20.0
 X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
 X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
-X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
 X-KSE-AntiSpam-Info: Status: not_detected
 X-KSE-AntiSpam-Info: Method: none
 X-KSE-AntiSpam-Info: Auth:dkim=none
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Heuristic
 X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/22/2021 02:45:00
+X-KSE-Antiphishing-Bases: 04/22/2021 03:16:00
 X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/22/2021 02:46:47
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/22/2021 03:12:59
 X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
 X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Rate: 0
 X-KSE-AntiSpam-Info: Lua profiles 163276 [Apr 21 2021]
 X-KSE-AntiSpam-Info: Version: 5.9.20.0
 X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
 X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1;lore.kernel.org:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
 X-KSE-AntiSpam-Info: Status: not_detected
 X-KSE-AntiSpam-Info: Method: none
 X-KSE-AntiSpam-Info: Auth:dkim=none
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Heuristic
 X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/22/2021 02:50:00
+X-KSE-Antiphishing-Bases: 04/22/2021 03:16:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yu-Yen Ting <steventing@realtek.com>
-
-The management frame with high rate e.g. 24M may not be transmitted
-smoothly in long range environment.
-Add a debugfs to force to use the lowest basic rate
-in order to debug the reachability of transmitting management frame.
-
-obtain current setting
-cat /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
-
-force lowest rate:
-echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
-
-Signed-off-by: Yu-Yen Ting <steventing@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/debug.c | 39 ++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/main.h  |  1 +
- drivers/net/wireless/realtek/rtw88/tx.c    |  3 +-
- 3 files changed, 42 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index 18ab472ea46c..a99a3dc6f9f9 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -861,6 +861,39 @@ static int rtw_debugfs_get_fw_crash(struct seq_file *m, void *v)
- 	return 0;
- }
- 
-+static ssize_t rtw_debugfs_set_basic_rates(struct file *filp,
-+					   const char __user *buffer,
-+					   size_t count, loff_t *loff)
-+{
-+	struct seq_file *seqpriv = (struct seq_file *)filp->private_data;
-+	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
-+	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
-+	bool input;
-+	int err;
-+
-+	err = kstrtobool_from_user(buffer, count, &input);
-+	if (err)
-+		return err;
-+
-+	if (input)
-+		set_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
-+	else
-+		clear_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
-+
-+	return count;
-+}
-+
-+static int rtw_debugfs_get_basic_rates(struct seq_file *m, void *v)
-+{
-+	struct rtw_debugfs_priv *debugfs_priv = m->private;
-+	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
-+
-+	seq_printf(m, "use lowest: %d\n",
-+		   test_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags));
-+
-+	return 0;
-+}
-+
- static ssize_t rtw_debugfs_set_dm_cap(struct file *filp,
- 				      const char __user *buffer,
- 				      size_t count, loff_t *loff)
-@@ -1046,6 +1079,11 @@ static struct rtw_debugfs_priv rtw_debug_priv_fw_crash = {
- 	.cb_read = rtw_debugfs_get_fw_crash,
- };
- 
-+static struct rtw_debugfs_priv rtw_debug_priv_basic_rates = {
-+	.cb_write = rtw_debugfs_set_basic_rates,
-+	.cb_read = rtw_debugfs_get_basic_rates,
-+};
-+
- static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
- 	.cb_write = rtw_debugfs_set_dm_cap,
- 	.cb_read = rtw_debugfs_get_dm_cap,
-@@ -1125,6 +1163,7 @@ void rtw_debugfs_init(struct rtw_dev *rtwdev)
- 	rtw_debugfs_add_r(rf_dump);
- 	rtw_debugfs_add_r(tx_pwr_tbl);
- 	rtw_debugfs_add_rw(fw_crash);
-+	rtw_debugfs_add_rw(basic_rates);
- 	rtw_debugfs_add_rw(dm_cap);
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index dc3744847ba9..0df5df3a62ab 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -362,6 +362,7 @@ enum rtw_flags {
- 	RTW_FLAG_BUSY_TRAFFIC,
- 	RTW_FLAG_WOWLAN,
- 	RTW_FLAG_RESTARTING,
-+	RTW_FLAG_USE_LOWEST_RATE,
- 
- 	NUM_OF_RTW_FLAGS,
- };
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index e5949a775283..0aeed15736c8 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -238,8 +238,9 @@ static u8 rtw_get_mgmt_rate(struct rtw_dev *rtwdev, struct sk_buff *skb,
- {
- 	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
- 	struct ieee80211_vif *vif = tx_info->control.vif;
-+	bool use_lowest = test_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
- 
--	if (!vif || !vif->bss_conf.basic_rates || ignore_rate)
-+	if (!vif || !vif->bss_conf.basic_rates || ignore_rate || use_lowest)
- 		return lowest_rate;
- 
- 	return __ffs(vif->bss_conf.basic_rates) + lowest_rate;
--- 
-2.21.0
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFBrc2hpaCBbbWFpbHRvOnBr
+c2hpaEByZWFsdGVrLmNvbV0NCj4gU2VudDogTW9uZGF5LCBBcHJpbCAxMiwgMjAyMSA0OjExIFBN
+DQo+IFRvOiBLYWxsZSBWYWxvDQo+IENjOiB0b255MDYyMGVtbWFAZ21haWwuY29tOyBsaW51eC13
+aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IERlYW5LdTsgQmVybmllIEh1YW5nOyBTaGFvZnU7IFN0
+ZXZlbiBUaW5nOw0KPiBLZXZpbiBZYW5nDQo+IFN1YmplY3Q6IFJFOiBbUEFUQ0ggMi83XSBydHc4
+ODogZm9sbG93IHRoZSBBUCBiYXNpYyByYXRlcyBmb3IgdHggbWdtdCBmcmFtZQ0KPiANCj4gDQo+
+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBrdmFsbz1jb2RlYXVyb3Jh
+Lm9yZ0BtZy5jb2RlYXVyb3JhLm9yZyBbbWFpbHRvOmt2YWxvPWNvZGVhdXJvcmEub3JnQG1nLmNv
+ZGVhdXJvcmEub3JnXSBPbg0KPiA+IEJlaGFsZiBPZiBLYWxsZSBWYWxvDQo+ID4gU2VudDogU3Vu
+ZGF5LCBBcHJpbCAxMSwgMjAyMSA1OjIxIFBNDQo+ID4gVG86IFBrc2hpaA0KPiA+IENjOiB0b255
+MDYyMGVtbWFAZ21haWwuY29tOyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IERlYW5L
+dTsgQmVybmllIEh1YW5nOyBTaGFvZnU7IFN0ZXZlbg0KPiBUaW5nOw0KPiA+IEtldmluIFlhbmcN
+Cj4gPiBTdWJqZWN0OiBSZTogW1BBVENIIDIvN10gcnR3ODg6IGZvbGxvdyB0aGUgQVAgYmFzaWMg
+cmF0ZXMgZm9yIHR4IG1nbXQgZnJhbWUNCj4gPg0KPiA+IFBpbmctS2UgU2hpaCA8cGtzaGloQHJl
+YWx0ZWsuY29tPiB3cm90ZToNCj4gPg0KPiA+ID4gRnJvbTogU2hhby1GdSBDaGVuZyA8c2hhb2Z1
+QHJlYWx0ZWsuY29tPg0KPiA+ID4NCj4gPiA+IEJ5IGRlZmF1bHQgdGhlIGRyaXZlciB1c2VzIHRo
+ZSAxTSBhbmQgNk0gcmF0ZSBmb3IgbWFuYWdlbW50IGZyYW1lcw0KPiA+ID4gaW4gMkcgYW5kIDVH
+IGJhbmRzIHJlc3BlY3RpdmVseS4gQnV0IHdoZW4gdGhlIGJhc2ljIHJhdGVzIGlzIGNvbmZpZ3Vy
+ZWQNCj4gPiA+IGZyb20gdGhlIG1hYzgwMjExLCB3ZSBuZWVkIHRvIHNlbmQgdGhlIG1hbmFnZW1l
+bnQgZnJhbWVzIGFjY29yZGluZyB0aGUNCj4gPiA+IGJhc2ljIHJhdGVzLg0KPiA+ID4NCj4gPiA+
+IFRoaXMgY29tbWl0IG1ha2VzIHRoZSBkcml2ZXIgdXNlIHRoZSBsb3dlc3QgYmFzaWMgcmF0ZXMg
+dG8gc2VuZA0KPiA+ID4gdGhlIG1hbmFnZW1lbnQgZnJhbWVzIGFuZCBhIGRlYnVmcyBlbnRyeSB0
+byBlbmFibGUvZGlzYWJsZSBmb3JjZSB0byB1c2UNCj4gPiA+IHRoZSBsb3dlc3QgcmF0ZSAxTS82
+TSBmb3IgMi40Ry81RyBiYW5kcy4NCj4gPiA+DQo+ID4gPiBvYnRhaW4gY3VycmVudCBzZXR0aW5n
+DQo+ID4gPiBjYXQgL3N5cy9rZXJuZWwvZGVidWcvaWVlZTgwMjExL3BoeVgvcnR3ODgvYmFzaWNf
+cmF0ZXMNCj4gPiA+DQo+ID4gPiBmb3JjZSBsb3dlc3QgcmF0ZToNCj4gPiA+IGVjaG8gMSA+IC9z
+eXMva2VybmVsL2RlYnVnL2llZWU4MDIxMS9waHlYL3J0dzg4L2Jhc2ljX3JhdGVzDQo+ID4gPg0K
+PiA+ID4gU2lnbmVkLW9mZi1ieTogU2hhby1GdSBDaGVuZyA8c2hhb2Z1QHJlYWx0ZWsuY29tPg0K
+PiA+ID4gU2lnbmVkLW9mZi1ieTogWXUtWWVuIFRpbmcgPHN0ZXZlbnRpbmdAcmVhbHRlay5jb20+
+DQo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4N
+Cj4gPg0KPiA+IFdoeSBpcyBhIGRlYnVnZnMgaW50ZXJmYWNlIG5lZWRlZD8NCj4gPg0KPiANCj4g
+QnkgZGVmYXVsdCwgZHJpdmVyIGZvbGxvd3MgQVAncyBiYXNpYyByYXRlcyB0aGF0IG1heSBiZSAy
+NE0gYW5kIGFib3ZlLCBhbmQNCj4gZG9lcyBhc3NvY2lhdGlvbiB3aXRoIDI0TSByYXRlLiBJZiBB
+UCBpcyBmYXIgYXdheSwgaXQgbWF5IGJlIGhhcmQgdG8gY29tbXVuaWNhdGUNCj4gd2l0aCAyNE0g
+cmF0ZS4gVGhlcmVmb3JlLCB3ZSBhZGQgYSBkZWJ1Z2ZzIHRvIGFsbG93IGRyaXZlciB0byBzZW5k
+IG1hbmFnZW1lbnQNCj4gZnJhbWVzIHdpdGggbG93IHJhdGUgNk0gb3IgMU0uDQo+IA0KDQpJZiBh
+biBBUCBpcyBjb25maWd1cmVkIGJhc2ljIHJhdGUgMjRNIG9yIGFib3ZlLCBJIHRoaW5rIHRoZSBJ
+VCB3YW50cyBTVEEgZm9sbG93cw0KdGhlIHJhdGVzLiBJZiB3ZSBoYXZlIGFuIGludGVyZmFjZSBm
+b3Igbm9ybWFsIHVzZXJzLCBpdCB3aWxsIGJyZWFrIHRoZSBJVCdzIGRlc2lyZS4NClNvLCB3ZSB1
+c2UgYSBkZWJ1Z2ZzIHRvIGhlbHAgcmVtb3RlIGRlYnVnIG9ubHksIGluIGNhc2UgdXNlciByZXBv
+cnRzIGhlIGNhbid0DQpjb25uZWN0IHRvIGFuIEFQIHdpdGggbG93IFJTU0kuDQoNCkkgdGhpbmsg
+aXQncyB3b3J0aCB0aGF0IGRyaXZlciBjYW4gZm9sbG93IEFQJ3MgYmFzaWMgcmF0ZSwgc28gSSBt
+YWtlIGl0IGFzIGFuDQppbmRpdmlkdWFsIHBhdGNoOyBkZWJ1Z2ZzIGFzIHNlY29uZCBvbmUuIElm
+IHlvdSBuZWVkIHRvIHRoaW5rIGlmIGRlYnVnZnMgaXMgbmVjZXNzYXJ5LA0KSSBob3BlIHdlIGNh
+biBsYW5kIHRoZSBmaXJzdCBwYXRjaCBmaXJzdC4NCg0KVGhlIHBhdGNoc2V0IGlzIHNlbnQNCmh0
+dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXdpcmVsZXNzLzIwMjEwNDIyMDMwNDEzLjk3Mzgt
+MS1wa3NoaWhAcmVhbHRlay5jb20vVC8jdA0KDQotLQ0KUGluZy1LZQ0KDQoNCg==
