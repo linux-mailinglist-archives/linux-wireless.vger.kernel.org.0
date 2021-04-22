@@ -2,62 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 455BA367FFC
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 14:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB8C368195
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 15:38:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236160AbhDVMEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 08:04:41 -0400
-Received: from relay.smtp-ext.broadcom.com ([192.19.11.229]:60400 "EHLO
-        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235957AbhDVMEk (ORCPT
+        id S236365AbhDVNjA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 09:39:00 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:11284 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236226AbhDVNjA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 08:04:40 -0400
-X-Greylist: delayed 518 seconds by postgrey-1.27 at vger.kernel.org; Thu, 22 Apr 2021 08:04:39 EDT
-Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 4DCEF40247;
-        Thu, 22 Apr 2021 04:55:26 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 4DCEF40247
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1619092526;
-        bh=MJmqiV41U2U+lf1iaOAaPzOCORxFhqxk4vA0mywDQtQ=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=KdYxDWdEoeaJus0kWM1LfP5vphdVFNFOSHN4P+Cra42bgPbRoGlq3z6Inlg4Y8Z1j
-         7R+ZIN+zYgQ5Jb/78V4RMEzPiDy5CDS9smGwZZXuVGIvvUjaZkjZW6KjqB/DTXYsdu
-         eqg8ZIAdTFJng/9e+DDjFdPZOktgP8AGCxucN7Y8=
-Received: from [10.230.42.155] (unknown [10.230.42.155])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 9DF831874BD;
-        Thu, 22 Apr 2021 04:55:20 -0700 (PDT)
-Subject: Re: [PATCH] brcmfmac: Avoid GFP_ATOMIC when GFP_KERNEL is enough
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
-        wright.feng@infineon.com, chung-hsien.hsu@infineon.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <b6e619415db4ee5de95389280d7195bb56e45f77.1618860716.git.christophe.jaillet@wanadoo.fr>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <e6f6acff-8ae8-f098-db91-8ebba9726ebc@broadcom.com>
-Date:   Thu, 22 Apr 2021 13:55:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        Thu, 22 Apr 2021 09:39:00 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1619098705; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=ijTwzAYvPRtSmBlbgnXvl1Cy4ekcewnzng7Vy6iRf7w=;
+ b=W//HmjY/ngUojlMdFtxEOC+bdh/k5C7mmZanBuDJNrWy5aSXbIyPaPejauvc891GosqvVs5n
+ Bn36NkVkkyOeALeYwKL3dCfhAO0PQuO6iqGZqzC2/4QSFlsUih9XQiGsAtXIcFRvendMLCFt
+ 3gWFGDkZQpV0LyKTlKLi59u4PLw=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 60817c5187ce1fbb5651ca1f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 22 Apr 2021 13:38:25
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 65F7DC4338A; Thu, 22 Apr 2021 13:38:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 17E76C433D3;
+        Thu, 22 Apr 2021 13:38:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 17E76C433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <b6e619415db4ee5de95389280d7195bb56e45f77.1618860716.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] ath9k: Fix error check in ath9k_hw_read_revisions() for
+ PCI
+ devices
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210326180819.142480-1-toke@redhat.com>
+References: <20210326180819.142480-1-toke@redhat.com>
+To:     =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc:     linux-wireless@vger.kernel.org,
+        =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210422133824.65F7DC4338A@smtp.codeaurora.org>
+Date:   Thu, 22 Apr 2021 13:38:24 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 19-04-2021 21:35, Christophe JAILLET wrote:
-> A workqueue is not atomic, so constraints can be relaxed here.
-> GFP_KERNEL can be used instead of GFP_ATOMIC.
+Toke Høiland-Jørgensen <toke@redhat.com> wrote:
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> When the error check in ath9k_hw_read_revisions() was added, it checked for
+> -EIO which is what ath9k_regread() in the ath9k_htc driver uses. However,
+> for plain ath9k, the register read function uses ioread32(), which just
+> returns -1 on error. So if such a read fails, it still gets passed through
+> and ends up as a weird mac revision in the log output.
+> 
+> Fix this by changing ath9k_regread() to return -1 on error like ioread32()
+> does, and fix the error check to look for that instead of -EIO.
+> 
+> Fixes: 2f90c7e5d094 ("ath9k: Check for errors when reading SREV register")
+> Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+> Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+
+Patch applied to ath-next branch of ath.git, thanks.
+
+7dd9a40fd6e0 ath9k: Fix error check in ath9k_hw_read_revisions() for PCI devices
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210326180819.142480-1-toke@redhat.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
