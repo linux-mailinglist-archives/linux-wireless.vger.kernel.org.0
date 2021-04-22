@@ -2,115 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08DC7368785
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 22:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 495CE3687E1
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 22:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239066AbhDVUAq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 16:00:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53544 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236058AbhDVUAp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 16:00:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 12E126100B;
-        Thu, 22 Apr 2021 20:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619121609;
-        bh=f/P+1/0wMQTXhtxadIAI7KmLHWPPdlXhjk/DweX0UbQ=;
-        h=Date:From:To:Cc:Subject:From;
-        b=rfEbGF7maHCbOROn8ePxnwH8t94xIoe2A4oyzoJbeH0JXeGokZScZ8S757OVSfzSh
-         PXMRAoY9tvwBe1iYHxaSJ7q3Djs0dQcg9jZXZJXRnSwSUvJ/QVru7y2CfIIRxN8htR
-         SXpT1GUtxaq12aPNUFqCSW8Ir75dGE0GRatucZpYP97bhAQX1LlInV7bs04O/+9ipT
-         p7U0caxepGRb7pZTJJqdXEDii5FuVrYRX75WC+Rvqlm0KAb2WIrWt+dgz2jg7VCgRM
-         4DG+88NKuFqQ9w3ssbrBh1vu6Cu5ksApx44vHTzq4juYvV2WmuuOj9ds14di6ipf9S
-         DpfU9PLAiluqQ==
-Date:   Thu, 22 Apr 2021 15:00:32 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+        id S236877AbhDVU21 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 16:28:27 -0400
+Received: from gateway24.websitewelcome.com ([192.185.51.196]:37946 "EHLO
+        gateway24.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236058AbhDVU21 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 22 Apr 2021 16:28:27 -0400
+Received: from cm13.websitewelcome.com (unknown [100.42.49.6])
+        by gateway24.websitewelcome.com (Postfix) with ESMTP id D5C50D52F
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Apr 2021 15:03:00 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id ZfXQlCUTZmJLsZfXQlXldw; Thu, 22 Apr 2021 15:03:00 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=d/5pgn0pMDu8YtsMnk0jcfxUVg079cO2Qvp35naLjTM=; b=FqjaVKwRkgTWGoIjNppT5PAzvz
+        Faf5IKuEfZOR5uDeV/Ct+uMF24hXv9ZDUe04YCBYOVAkoTV2/n1gBVWGLN23NQI3rMbKcRV4A/7fg
+        G6hwB/0pyXGloe+gpEHQMr25zU7gN1DJ65PALPBQZAELVhb76HXUtateby7iMEu7TbePLjFK0nkr/
+        tuZnwpc0VQOcAhxkBuf7XaApXe9S5g02Y/jcBoz/FGhoFHiiXsCdqbz9a6q/cEP6iqu1cANZWYJL3
+        m222t0x3R7YXQX75o9IgYB4lspRzmocEx5CHEBVub2P8u+B8JeWihB45Uv7nQJn25a8XszI2TdFGa
+        UuoQqKgw==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:58614 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1lZfXN-003qnV-A4; Thu, 22 Apr 2021 15:02:57 -0500
+Subject: Re: [PATCH][next] wireless: wext-spy: Fix out-of-bounds warning
 To:     Johannes Berg <johannes@sipsolutions.net>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>
-Subject: [PATCH v2][next] wireless: wext-spy: Fix out-of-bounds warning
-Message-ID: <20210422200032.GA168995@embeddedor>
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>
+References: <20210421234337.GA127225@embeddedor>
+ <317099c78edb9fdde3db3f1e7c9a4f77529b281a.camel@sipsolutions.net>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <07fc2c3a-ffba-8dad-1ddf-d4da7482c65a@embeddedor.com>
+Date:   Thu, 22 Apr 2021 15:03:17 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <317099c78edb9fdde3db3f1e7c9a4f77529b281a.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1lZfXN-003qnV-A4
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:58614
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 5
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following out-of-bounds warning:
 
-net/wireless/wext-spy.c:178:2: warning: 'memcpy' offset [25, 28] from the object at 'threshold' is out of the bounds of referenced subobject 'low' with type 'struct iw_quality' at offset 20 [-Warray-bounds]
 
-The problem is that the original code is trying to copy data into a
-couple of struct members adjacent to each other in a single call to
-memcpy(). This causes a legitimate compiler warning because memcpy()
-overruns the length of &threshold.low and &spydata->spy_thr_low. As
-these are just a couple of struct members, fix this by using direct
-assignments, instead of memcpy().
+On 4/22/21 02:04, Johannes Berg wrote:
+> On Wed, 2021-04-21 at 18:43 -0500, Gustavo A. R. Silva wrote:
+>>
+>>  	/* Just do it */
+>> -	memcpy(&(spydata->spy_thr_low), &(threshold->low),
+>> -	       2 * sizeof(struct iw_quality));
+>> +	memcpy(&spydata->spy_thr_low, &threshold->low, sizeof(threshold->low));
+>> +	memcpy(&spydata->spy_thr_high, &threshold->high, sizeof(threshold->high));
+>>
+> 
+> It would've been really simple to stick to 80 columns here (and
+> everywhere in the patch), please do that.
+> 
+> Also, why not just use struct assigments?
+> 
+> 	spydata->spy_thr_low = threshold->low;
+> 
+> etc.
+> Done: https://lore.kernel.org/lkml/20210422200032.GA168995@embeddedor/
+> Seems far simpler (and shorter lines).
 
-This helps with the ongoing efforts to globally enable -Warray-bounds
-and get us closer to being able to tighten the FORTIFY_SOURCE routines
-on memcpy().
+Done:
+	https://lore.kernel.org/lkml/20210422200032.GA168995@embeddedor/
 
-Link: https://github.com/KSPP/linux/issues/109
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
-Changes in v2:
- - Use direct struct assignments instead of memcpy().
- - Fix one more instance of this same issue in function
-   iw_handler_get_thrspy().
- - Update changelog text.
- - Add Kees' RB tag. 
-
- net/wireless/wext-spy.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/net/wireless/wext-spy.c b/net/wireless/wext-spy.c
-index 33bef22e44e9..b379a0371653 100644
---- a/net/wireless/wext-spy.c
-+++ b/net/wireless/wext-spy.c
-@@ -120,8 +120,8 @@ int iw_handler_set_thrspy(struct net_device *	dev,
- 		return -EOPNOTSUPP;
- 
- 	/* Just do it */
--	memcpy(&(spydata->spy_thr_low), &(threshold->low),
--	       2 * sizeof(struct iw_quality));
-+	spydata->spy_thr_low = threshold->low;
-+	spydata->spy_thr_high = threshold->high;
- 
- 	/* Clear flag */
- 	memset(spydata->spy_thr_under, '\0', sizeof(spydata->spy_thr_under));
-@@ -147,8 +147,8 @@ int iw_handler_get_thrspy(struct net_device *	dev,
- 		return -EOPNOTSUPP;
- 
- 	/* Just do it */
--	memcpy(&(threshold->low), &(spydata->spy_thr_low),
--	       2 * sizeof(struct iw_quality));
-+	threshold->low = spydata->spy_thr_low;
-+	threshold->high = spydata->spy_thr_high;
- 
- 	return 0;
- }
-@@ -173,10 +173,10 @@ static void iw_send_thrspy_event(struct net_device *	dev,
- 	memcpy(threshold.addr.sa_data, address, ETH_ALEN);
- 	threshold.addr.sa_family = ARPHRD_ETHER;
- 	/* Copy stats */
--	memcpy(&(threshold.qual), wstats, sizeof(struct iw_quality));
-+	threshold.qual = *wstats;
- 	/* Copy also thresholds */
--	memcpy(&(threshold.low), &(spydata->spy_thr_low),
--	       2 * sizeof(struct iw_quality));
-+	threshold.low = spydata->spy_thr_low;
-+	threshold.high = spydata->spy_thr_high;
- 
- 	/* Send event to user space */
- 	wireless_send_event(dev, SIOCGIWTHRSPY, &wrqu, (char *) &threshold);
--- 
-2.27.0
-
+Thanks for the feedback.
+--
+Gustavo
