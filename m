@@ -2,104 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9136C368815
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 22:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2E5D368836
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 22:48:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239273AbhDVUex (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 16:34:53 -0400
-Received: from gateway30.websitewelcome.com ([192.185.184.48]:12160 "EHLO
-        gateway30.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239286AbhDVUew (ORCPT
+        id S236915AbhDVUtX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 16:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236851AbhDVUtX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 16:34:52 -0400
-X-Greylist: delayed 1467 seconds by postgrey-1.27 at vger.kernel.org; Thu, 22 Apr 2021 16:34:52 EDT
-Received: from cm14.websitewelcome.com (cm14.websitewelcome.com [100.42.49.7])
-        by gateway30.websitewelcome.com (Postfix) with ESMTP id 4DDBCEFDE
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Apr 2021 15:09:47 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id Zfdzl1QT9w11MZfdzlTBt5; Thu, 22 Apr 2021 15:09:47 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Hgh1FXBMqBCT4Or8zowpdaOw66ShiVWVKkStIsljJiM=; b=SPLZ64d1CCen8kqEK8Y2tgAnLv
-        135FUtq9ECH5iHcBbinL4I00bnz4z60XUeOaSGZqCmbVpE4H1RQ7AouIUlZeJGqzKUDJZSKe/uDKu
-        l4TJ8EvERTYfCPNwxW9nUzHJJhhhQLGz6gfsXNoeMA7Vsb1mXtoTw2YcYobigZf1Ti3YmGcidBZUq
-        tw/Ok51Ca4F+csLpKFEI3rl0PYDLEHp8p3ijCcodgLtukGKdRY5QnbXBOkEU8tdF2Cn8EBZiFqd25
-        5gCMOGzMZAhF9brQ1HnnHZmpIRVO9UKHy+VknJjuWt1zMlmL11qgsg4sb0ztE33mBOpmHY6JRZTKP
-        Hr5k6JHg==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:58642 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1lZfdv-0043C0-Pk; Thu, 22 Apr 2021 15:09:43 -0500
-Subject: Re: [PATCH v2][next] wireless: wext-spy: Fix out-of-bounds warning
-To:     Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Thu, 22 Apr 2021 16:49:23 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34B55C06138B
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Apr 2021 13:48:48 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id e9so7188001plj.2
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Apr 2021 13:48:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=QnNd3C1c0U8Cy6rEZLpzrN98hcS02ETdlv0eBYCDY9I=;
+        b=GeoZA0yJ0n988purgUs0PCMCU17Bu+L8wQlG66Vo/hzcqPi6v5+YgkLNa1GJuwhePr
+         y/Clgwwj3/BJ80VEMHSyciTh4mVzur7v+sbdC+05atTrU0ipVDv+XqNBValvPRGRXklL
+         YZtB/1PqwHwRZxThMxEFL2y8s8V9z6isoUmsw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=QnNd3C1c0U8Cy6rEZLpzrN98hcS02ETdlv0eBYCDY9I=;
+        b=VcYQjr8g4K8+GiMZivLSYz3BwSvqJn8RQahXSU66N8qhuEFhzZb/xcev4OBRgNM7HE
+         7zd3Mz9H7adq3yKkdgrx3cydo1ZVTSFyBUSNoygaHXRZ/Vu3UGocDA61Qwa0Oekj2onY
+         ifae0ymX0P8DFAm8zufPDW8XlCl2FGnE3BZfzcQPojoZNrHtngfWvjcOmj/HU0wj+d+a
+         UsVwSFcZodHJYneXhEbgQ4wTG3osOmHGKguxBnYKXVKry79nk+g8T6VRi6IjgeaVJRme
+         bfwpkh8DJ1eWfXOxRvZXAJCFIqZ63+Ap7hmnvnH1X++j2QW+UhGVpqeEP5JjOQM+m1e0
+         39cQ==
+X-Gm-Message-State: AOAM532NUqUU7Poog2+CD4Gu1Sf8r4GH3r3P7A1Gopxmuu/hVKFmeQcc
+        Nh66Yfo3rP1XLhzE21Cc/d9TJQ==
+X-Google-Smtp-Source: ABdhPJzMvMOnaFySxstgcJPTR3rLDcb88LTqN6KyPWa+y2YnPhestqVSrc7MYSMJhsj+VL0/EcuDzA==
+X-Received: by 2002:a17:90b:34c:: with SMTP id fh12mr631757pjb.114.1619124527729;
+        Thu, 22 Apr 2021 13:48:47 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id d1sm5486640pjs.12.2021.04.22.13.48.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Apr 2021 13:48:47 -0700 (PDT)
+Date:   Thu, 22 Apr 2021 13:48:46 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2][next] wireless: wext-spy: Fix out-of-bounds warning
+Message-ID: <202104221346.4FE32C5@keescook>
 References: <20210422200032.GA168995@embeddedor>
  <120f5db6566b583cc7050f13e947016f3cb82412.camel@sipsolutions.net>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <20dbd7cd-8001-0dcc-cfe6-f731f65d0a35@embeddedor.com>
-Date:   Thu, 22 Apr 2021 15:10:04 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <120f5db6566b583cc7050f13e947016f3cb82412.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1lZfdv-0043C0-Pk
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:58642
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 15
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+In-Reply-To: <120f5db6566b583cc7050f13e947016f3cb82412.camel@sipsolutions.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 4/22/21 15:04, Johannes Berg wrote:
+On Thu, Apr 22, 2021 at 10:04:29PM +0200, Johannes Berg wrote:
 > On Thu, 2021-04-22 at 15:00 -0500, Gustavo A. R. Silva wrote:
->>
->> Changes in v2:
->> Â - Use direct struct assignments instead of memcpy().
->> Â - Fix one more instance of this same issue in function
->> Â Â Â iw_handler_get_thrspy().
->> Â - Update changelog text.
+> > 
+> > Changes in v2:
+> >  - Use direct struct assignments instead of memcpy().
+> >  - Fix one more instance of this same issue in function
+> >    iw_handler_get_thrspy().
+> >  - Update changelog text.
 > 
 > Thanks.
 > 
->> Â - Add Kees' RB tag. 
+> >  - Add Kees' RB tag. 
 > 
 > He probably won't mind in this case, but you did some pretty substantial
 > changes to the patch, so I really wouldn't recommend keeping it there.
 
-Right.
+Thanks for double-checking! Yeah, I'm fine with it; Gustavo and I had
+talked in the past about similar solutions in other places, so he
+forwarded the intent from those conversations. (Not that you had any
+visibility into that!) But, yes, still:
 
-Kees, could you please confirm you RB tag in this new version?
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Thanks
---
-Gustavo
+Thanks!
+
+-- 
+Kees Cook
