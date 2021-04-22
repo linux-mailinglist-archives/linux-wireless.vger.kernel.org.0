@@ -2,169 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E06E367908
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 06:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5C7E367A82
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 09:04:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231783AbhDVE6C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 00:58:02 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:54261 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231631AbhDVE57 (ORCPT
+        id S230341AbhDVHFG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 03:05:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229629AbhDVHFE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 00:57:59 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13M4vJp65014439, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13M4vJp65014439
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 22 Apr 2021 12:57:20 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 22 Apr 2021 12:57:19 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 22 Apr
- 2021 12:57:18 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
-Subject: [PATCH 3/3] rtw88: 8822c: fix lc calibration timing
-Date:   Thu, 22 Apr 2021 12:56:51 +0800
-Message-ID: <20210422045651.13691-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20210422045651.13691-1-pkshih@realtek.com>
-References: <20210422045651.13691-1-pkshih@realtek.com>
+        Thu, 22 Apr 2021 03:05:04 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 510A8C06174A;
+        Thu, 22 Apr 2021 00:04:29 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lZTNs-00F4p1-N9; Thu, 22 Apr 2021 09:04:20 +0200
+Message-ID: <317099c78edb9fdde3db3f1e7c9a4f77529b281a.camel@sipsolutions.net>
+Subject: Re: [PATCH][next] wireless: wext-spy: Fix out-of-bounds warning
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>
+Date:   Thu, 22 Apr 2021 09:04:19 +0200
+In-Reply-To: <20210421234337.GA127225@embeddedor>
+References: <20210421234337.GA127225@embeddedor>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS01.realtek.com.tw (172.21.6.94) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMjEgpFWkyCAxMToyMzowMA==?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/22/2021 04:37:38
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163276 [Apr 21 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/22/2021 04:41:00
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/22/2021 04:37:38
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163276 [Apr 21 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 442 442 b985cb57763b61d2a20abb585d5d4cc10c315b09
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/22/2021 04:41:00
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+On Wed, 2021-04-21 at 18:43 -0500, Gustavo A. R. Silva wrote:
+> 
+>  	/* Just do it */
+> -	memcpy(&(spydata->spy_thr_low), &(threshold->low),
+> -	       2 * sizeof(struct iw_quality));
+> +	memcpy(&spydata->spy_thr_low, &threshold->low, sizeof(threshold->low));
+> +	memcpy(&spydata->spy_thr_high, &threshold->high, sizeof(threshold->high));
+> 
 
-Before this patch, we use value from 2 seconds ago to decide
-whether we should do lc calibration.
-Although this don't happen frequently, fix flow to the way it should be.
+It would've been really simple to stick to 80 columns here (and
+everywhere in the patch), please do that.
 
-Fixes: 7ae7784ec2a8 ("rtw88: 8822c: add LC calibration for RTL8822C")
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 22 ++++++++++---------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+Also, why not just use struct assigments?
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index ef385dd54c54..5e3f7f8f4f56 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -4395,26 +4395,28 @@ static void rtw8822c_pwrtrack_set(struct rtw_dev *rtwdev, u8 rf_path)
- 	}
- }
- 
--static void rtw8822c_pwr_track_path(struct rtw_dev *rtwdev,
--				    struct rtw_swing_table *swing_table,
--				    u8 path)
-+static void rtw8822c_pwr_track_stats(struct rtw_dev *rtwdev, u8 path)
- {
--	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
--	u8 thermal_value, delta;
-+	u8 thermal_value;
- 
- 	if (rtwdev->efuse.thermal_meter[path] == 0xff)
- 		return;
- 
- 	thermal_value = rtw_read_rf(rtwdev, path, RF_T_METER, 0x7e);
--
- 	rtw_phy_pwrtrack_avg(rtwdev, thermal_value, path);
-+}
- 
--	delta = rtw_phy_pwrtrack_get_delta(rtwdev, path);
-+static void rtw8822c_pwr_track_path(struct rtw_dev *rtwdev,
-+				    struct rtw_swing_table *swing_table,
-+				    u8 path)
-+{
-+	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
-+	u8 delta;
- 
-+	delta = rtw_phy_pwrtrack_get_delta(rtwdev, path);
- 	dm_info->delta_power_index[path] =
- 		rtw_phy_pwrtrack_get_pwridx(rtwdev, swing_table, path, path,
- 					    delta);
--
- 	rtw8822c_pwrtrack_set(rtwdev, path);
- }
- 
-@@ -4425,12 +4427,12 @@ static void __rtw8822c_pwr_track(struct rtw_dev *rtwdev)
- 
- 	rtw_phy_config_swing_table(rtwdev, &swing_table);
- 
-+	for (i = 0; i < rtwdev->hal.rf_path_num; i++)
-+		rtw8822c_pwr_track_stats(rtwdev, i);
- 	if (rtw_phy_pwrtrack_need_lck(rtwdev))
- 		rtw8822c_do_lck(rtwdev);
--
- 	for (i = 0; i < rtwdev->hal.rf_path_num; i++)
- 		rtw8822c_pwr_track_path(rtwdev, &swing_table, i);
--
- }
- 
- static void rtw8822c_pwr_track(struct rtw_dev *rtwdev)
--- 
-2.21.0
+	spydata->spy_thr_low = threshold->low;
+
+etc.
+
+Seems far simpler (and shorter lines).
+
+johannes
+
 
