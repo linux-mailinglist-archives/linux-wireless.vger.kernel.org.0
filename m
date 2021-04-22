@@ -2,117 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ED3F367CD8
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 10:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 455BA367FFC
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 14:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235580AbhDVIsx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 04:48:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235485AbhDVIsw (ORCPT
+        id S236160AbhDVMEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 08:04:41 -0400
+Received: from relay.smtp-ext.broadcom.com ([192.19.11.229]:60400 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235957AbhDVMEk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 04:48:52 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72098C06174A;
-        Thu, 22 Apr 2021 01:48:18 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id a11so1632031ioo.0;
-        Thu, 22 Apr 2021 01:48:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=DlZ2S3yfolBkgSZWfUNZ5efqdDYy/a5hk5lKfg0x/8I=;
-        b=iIfgaliebSblJdZgWZ9DXFfQj94qQb2X/vNvUONGRpJRG7cyQABiDLAfUcCv6Zaizl
-         +LaoFbMNLad7k9SthvZXl2A/ZdnM4OxwFr9201kg8KUK/oK9vg6pw94D9RwV6mkMqhbT
-         YbPRCYJcjXnrqY153JZVitjpq/rT3hhfpHFGn0BSmCJXYn7TZ2GC0Y2TBms4ddt61RUd
-         sLTpVFZkSoB7goWE9gN7RftkvZhNR6sap2aePEsuy8Kd57GjKrdYKWnCdSTdMbzCGMYd
-         6x6G9BArMoZxTkDsDh8GB8FWH/3O6pmNPbyhFEqkQ25JiPr8yJOt86yFmdCz3CTtwIY8
-         7pQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=DlZ2S3yfolBkgSZWfUNZ5efqdDYy/a5hk5lKfg0x/8I=;
-        b=cFdvZ5nWf1w2KMVyc0j0QIxsajFbytwPMTaxuhM8bgvdBs5OutWP2eZAuKjnbMkQ2O
-         /OhPlumaAuiBRMFyaTfbyICd5TUOGkCgeGDh6ITKgHawfrPF0HwXDwmdI6jBFTkDGWEJ
-         3Yt6yTvwdh7Q81Y96dwsIC2t2x82ffNXJYDB1pplcvNrQ/vJAQRowUdwG94z/AAbwlX6
-         sDH9ObtNaUDD0O1LL2dzhavItkzCi8g9hbIZpHV6viT9eGyUmMvLLzpJL3cMilbP1Pd/
-         QFKH/YVjPLFqG2nXCWcKHSqASLSbiUPXfgzZpTmowI378XY9j7Y0d42Ed+O2qikgp8uG
-         JLBQ==
-X-Gm-Message-State: AOAM533xzh8LcqkjYVj6cnBwFAZ7w9UOptaWiMqUH8lOvgViK4WbA3z3
-        xm6oBUNnTcDHKaBni8r1yKy6IefeSXbPMwcbesTy184a70D4xA==
-X-Google-Smtp-Source: ABdhPJzk/73+6IgSzJIzkW+vei2AXilHp5Wt8OA6VRrjBrhcFR8UjFvOv7hxhU66ZIxEDnjKWhwBUyQslQM8jV+75bk=
-X-Received: by 2002:a02:331b:: with SMTP id c27mr2208013jae.30.1619081297835;
- Thu, 22 Apr 2021 01:48:17 -0700 (PDT)
+        Thu, 22 Apr 2021 08:04:40 -0400
+X-Greylist: delayed 518 seconds by postgrey-1.27 at vger.kernel.org; Thu, 22 Apr 2021 08:04:39 EDT
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 4DCEF40247;
+        Thu, 22 Apr 2021 04:55:26 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 4DCEF40247
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1619092526;
+        bh=MJmqiV41U2U+lf1iaOAaPzOCORxFhqxk4vA0mywDQtQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=KdYxDWdEoeaJus0kWM1LfP5vphdVFNFOSHN4P+Cra42bgPbRoGlq3z6Inlg4Y8Z1j
+         7R+ZIN+zYgQ5Jb/78V4RMEzPiDy5CDS9smGwZZXuVGIvvUjaZkjZW6KjqB/DTXYsdu
+         eqg8ZIAdTFJng/9e+DDjFdPZOktgP8AGCxucN7Y8=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 9DF831874BD;
+        Thu, 22 Apr 2021 04:55:20 -0700 (PDT)
+Subject: Re: [PATCH] brcmfmac: Avoid GFP_ATOMIC when GFP_KERNEL is enough
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
+        wright.feng@infineon.com, chung-hsien.hsu@infineon.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <b6e619415db4ee5de95389280d7195bb56e45f77.1618860716.git.christophe.jaillet@wanadoo.fr>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <e6f6acff-8ae8-f098-db91-8ebba9726ebc@broadcom.com>
+Date:   Thu, 22 Apr 2021 13:55:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-References: <20210421090335.7A50CC4338A@smtp.codeaurora.org>
-In-Reply-To: <20210421090335.7A50CC4338A@smtp.codeaurora.org>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Thu, 22 Apr 2021 10:47:41 +0200
-Message-ID: <CA+icZUV079dCCKJTU6e40bJYcaVT+ofK5S=9xFwxB3Sc+QPrXw@mail.gmail.com>
-Subject: Re: pull-request: wireless-drivers-2021-04-21
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <b6e619415db4ee5de95389280d7195bb56e45f77.1618860716.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 21, 2021 at 11:04 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Hi,
->
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
->
-> Kalle
->
-> The following changes since commit d434405aaab7d0ebc516b68a8fc4100922d7f5ef:
->
->   Linux 5.12-rc7 (2021-04-11 15:16:13 -0700)
->
-> are available in the git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-04-21
->
-> for you to fetch changes up to e7020bb068d8be50a92f48e36b236a1a1ef9282e:
->
->   iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_gen2_enqueue_hcmd() (2021-04-19 20:35:10 +0300)
->
+On 19-04-2021 21:35, Christophe JAILLET wrote:
+> A workqueue is not atomic, so constraints can be relaxed here.
+> GFP_KERNEL can be used instead of GFP_ATOMIC.
 
-[ CC Joe Perches ]
-
-That patch misses the closing ">" in the Reported-by of Heiner.
-My Tested-by seems also to be ignored.
-See [1] and [2].
-
-Has checkpatch.pl script an option to check if an email-address for
-"credits" tags like
-Signed-of-by/Reviewed-by/Tested-by/Reported-by/etc. is correct such as
-open/closing "<...>" is not missing?
-
-Thanks.
-
-- Sedat -
-
-[1] https://lore.kernel.org/linux-wireless/CA+icZUWVVRz-=09vowj5gLJ9-OaKpBkkejBXzqSpk-wZ-mDm-Q@mail.gmail.com/
-[2] https://lore.kernel.org/linux-wireless/CA+icZUXmNG6TOhtni6Rrs7NZVOg1H8NhYuDsDiyVASF5+VtUAQ@mail.gmail.com/
-
-
-> ----------------------------------------------------------------
-> wireless-drivers fixes for v5.12
->
-> As there was -rc8 release, one more important fix for v5.12.
->
-> iwlwifi
->
-> * fix spinlock warning in gen2 devices
->
-> ----------------------------------------------------------------
-> Jiri Kosina (1):
->       iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_gen2_enqueue_hcmd()
->
->  drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
