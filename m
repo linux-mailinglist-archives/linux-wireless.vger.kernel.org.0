@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B76D367907
+	by mail.lfdr.de (Postfix) with ESMTP id 4E06E367908
 	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 06:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231656AbhDVE57 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 00:57:59 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:54260 "EHLO
+        id S231783AbhDVE6C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 00:58:02 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:54261 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230319AbhDVE56 (ORCPT
+        with ESMTP id S231631AbhDVE57 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 00:57:58 -0400
+        Thu, 22 Apr 2021 00:57:59 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13M4vI271014435, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13M4vJp65014439, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13M4vI271014435
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13M4vJp65014439
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 22 Apr 2021 12:57:18 +0800
+        Thu, 22 Apr 2021 12:57:20 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 22 Apr 2021 12:57:17 +0800
+ 15.1.2106.2; Thu, 22 Apr 2021 12:57:19 +0800
 Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 22 Apr
- 2021 12:57:16 +0800
+ 2021 12:57:18 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
-Subject: [PATCH 2/3] rtw88: add path diversity
-Date:   Thu, 22 Apr 2021 12:56:50 +0800
-Message-ID: <20210422045651.13691-2-pkshih@realtek.com>
+Subject: [PATCH 3/3] rtw88: 8822c: fix lc calibration timing
+Date:   Thu, 22 Apr 2021 12:56:51 +0800
+Message-ID: <20210422045651.13691-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20210422045651.13691-1-pkshih@realtek.com>
 References: <20210422045651.13691-1-pkshih@realtek.com>
@@ -39,7 +39,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXH36502.realtek.com.tw (172.21.6.25) To
+X-ClientProxiedBy: RTEXMBS01.realtek.com.tw (172.21.6.94) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-Antivirus-Interceptor-Info: scan successful
@@ -98,319 +98,73 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Po-Hao Huang <phhuang@realtek.com>
 
-This feature chooses to transmit with antenna that has better signal
-strength periodically under 1ss rate.
+Before this patch, we use value from 2 seconds ago to decide
+whether we should do lc calibration.
+Although this don't happen frequently, fix flow to the way it should be.
 
-It can benefit connection quality in the following cases:
-1. User is far away from the AP.
-2. The far-field pattern of the antenna showed significant signal
-strength difference.
-
+Fixes: 7ae7784ec2a8 ("rtw88: 8822c: add LC calibration for RTL8822C")
 Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/debug.h    |  1 +
- drivers/net/wireless/realtek/rtw88/main.h     | 15 ++++
- drivers/net/wireless/realtek/rtw88/phy.c      | 81 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/phy.h      |  1 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 39 +++++++--
- 5 files changed, 131 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 22 ++++++++++---------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.h b/drivers/net/wireless/realtek/rtw88/debug.h
-index c8efd1900a34..0dd3f9a88c8d 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.h
-+++ b/drivers/net/wireless/realtek/rtw88/debug.h
-@@ -20,6 +20,7 @@ enum rtw_debug_mask {
- 	RTW_DBG_BF		= 0x00000800,
- 	RTW_DBG_WOW		= 0x00001000,
- 	RTW_DBG_CFO		= 0x00002000,
-+	RTW_DBG_PATH_DIV	= 0x00004000,
- 
- 	RTW_DBG_ALL		= 0xffffffff
- };
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 321667c03b16..02ad175055cb 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -841,6 +841,10 @@ struct rtw_chip_ops {
- 			     u8 fixrate_en, u8 *new_rate);
- 	void (*cfo_init)(struct rtw_dev *rtwdev);
- 	void (*cfo_track)(struct rtw_dev *rtwdev);
-+	void (*config_tx_path)(struct rtw_dev *rtwdev, u8 tx_path,
-+			       enum rtw_bb_path tx_path_1ss,
-+			       enum rtw_bb_path tx_path_cck,
-+			       bool is_tx2_path);
- 
- 	/* for coex */
- 	void (*coex_set_init)(struct rtw_dev *rtwdev);
-@@ -1136,7 +1140,9 @@ struct rtw_chip_info {
- 	u8 max_power_index;
- 
- 	u16 fw_fifo_addr[RTW_FW_FIFO_MAX];
-+	u8 default_1ss_tx_path;
- 
-+	bool path_div_supported;
- 	bool ht_supported;
- 	bool vht_supported;
- 	u8 lps_deep_mode_supported;
-@@ -1781,6 +1787,14 @@ struct rtw_hal {
- 		     [DESC_RATE_MAX];
- };
- 
-+struct rtw_path_div {
-+	enum rtw_bb_path current_tx_path;
-+	u32 path_a_sum;
-+	u32 path_b_sum;
-+	u16 path_a_cnt;
-+	u16 path_b_cnt;
-+};
-+
- struct rtw_dev {
- 	struct ieee80211_hw *hw;
- 	struct device *dev;
-@@ -1849,6 +1863,7 @@ struct rtw_dev {
- 	DECLARE_BITMAP(flags, NUM_OF_RTW_FLAGS);
- 
- 	u8 mp_mode;
-+	struct rtw_path_div dm_path_div;
- 
- 	struct rtw_fw_state wow_fw;
- 	struct rtw_wow_param wow;
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 8146acaf1893..569dd3cfde35 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -127,6 +127,17 @@ static void rtw_phy_cfo_init(struct rtw_dev *rtwdev)
- 		chip->ops->cfo_init(rtwdev);
- }
- 
-+static void rtw_phy_tx_path_div_init(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_path_div *path_div = &rtwdev->dm_path_div;
-+
-+	path_div->current_tx_path = rtwdev->chip->default_1ss_tx_path;
-+	path_div->path_a_cnt = 0;
-+	path_div->path_a_sum = 0;
-+	path_div->path_b_cnt = 0;
-+	path_div->path_b_sum = 0;
-+}
-+
- void rtw_phy_init(struct rtw_dev *rtwdev)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
-@@ -149,6 +160,7 @@ void rtw_phy_init(struct rtw_dev *rtwdev)
- 
- 	dm_info->iqk.done = false;
- 	rtw_phy_cfo_init(rtwdev);
-+	rtw_phy_tx_path_div_init(rtwdev);
- }
- EXPORT_SYMBOL(rtw_phy_init);
- 
-@@ -695,6 +707,7 @@ void rtw_phy_dynamic_mechanism(struct rtw_dev *rtwdev)
- 	rtw_phy_dig(rtwdev);
- 	rtw_phy_cck_pd(rtwdev);
- 	rtw_phy_ra_track(rtwdev);
-+	rtw_phy_tx_path_diversity(rtwdev);
- 	rtw_phy_cfo_track(rtwdev);
- 	rtw_phy_dpk_track(rtwdev);
- 	rtw_phy_pwr_track(rtwdev);
-@@ -2315,3 +2328,71 @@ bool rtw_phy_pwrtrack_need_iqk(struct rtw_dev *rtwdev)
- 	return false;
- }
- EXPORT_SYMBOL(rtw_phy_pwrtrack_need_iqk);
-+
-+static void rtw_phy_set_tx_path_by_reg(struct rtw_dev *rtwdev,
-+				       enum rtw_bb_path tx_path_sel_1ss)
-+{
-+	struct rtw_path_div *path_div = &rtwdev->dm_path_div;
-+	enum rtw_bb_path tx_path_sel_cck = tx_path_sel_1ss;
-+	struct rtw_chip_info *chip = rtwdev->chip;
-+
-+	if (tx_path_sel_1ss == path_div->current_tx_path)
-+		return;
-+
-+	path_div->current_tx_path = tx_path_sel_1ss;
-+	rtw_dbg(rtwdev, RTW_DBG_PATH_DIV, "Switch TX path=%s\n",
-+		tx_path_sel_1ss == BB_PATH_A ? "A" : "B");
-+	chip->ops->config_tx_path(rtwdev, rtwdev->hal.antenna_tx,
-+				  tx_path_sel_1ss, tx_path_sel_cck, false);
-+}
-+
-+static void rtw_phy_tx_path_div_select(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_path_div *path_div = &rtwdev->dm_path_div;
-+	enum rtw_bb_path path = path_div->current_tx_path;
-+	s32 rssi_a = 0, rssi_b = 0;
-+
-+	if (path_div->path_a_cnt)
-+		rssi_a = path_div->path_a_sum / path_div->path_a_cnt;
-+	else
-+		rssi_a = 0;
-+	if (path_div->path_b_cnt)
-+		rssi_b = path_div->path_b_sum / path_div->path_b_cnt;
-+	else
-+		rssi_b = 0;
-+
-+	if (rssi_a != rssi_b)
-+		path = (rssi_a > rssi_b) ? BB_PATH_A : BB_PATH_B;
-+
-+	path_div->path_a_cnt = 0;
-+	path_div->path_a_sum = 0;
-+	path_div->path_b_cnt = 0;
-+	path_div->path_b_sum = 0;
-+	rtw_phy_set_tx_path_by_reg(rtwdev, path);
-+}
-+
-+static void rtw_phy_tx_path_diversity_2ss(struct rtw_dev *rtwdev)
-+{
-+	if (rtwdev->hal.antenna_rx != BB_PATH_AB) {
-+		rtw_dbg(rtwdev, RTW_DBG_PATH_DIV,
-+			"[Return] tx_Path_en=%d, rx_Path_en=%d\n",
-+			rtwdev->hal.antenna_tx, rtwdev->hal.antenna_rx);
-+		return;
-+	}
-+	if (rtwdev->sta_cnt == 0) {
-+		rtw_dbg(rtwdev, RTW_DBG_PATH_DIV, "No Link\n");
-+		return;
-+	}
-+
-+	rtw_phy_tx_path_div_select(rtwdev);
-+}
-+
-+void rtw_phy_tx_path_diversity(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_chip_info *chip = rtwdev->chip;
-+
-+	if (!chip->path_div_supported)
-+		return;
-+
-+	rtw_phy_tx_path_diversity_2ss(rtwdev);
-+}
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.h b/drivers/net/wireless/realtek/rtw88/phy.h
-index 0b6f2fc8193c..112ed125970a 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.h
-+++ b/drivers/net/wireless/realtek/rtw88/phy.h
-@@ -61,6 +61,7 @@ void rtw_phy_config_swing_table(struct rtw_dev *rtwdev,
- 				struct rtw_swing_table *swing_table);
- void rtw_phy_parsing_cfo(struct rtw_dev *rtwdev,
- 			 struct rtw_rx_pkt_stat *pkt_stat);
-+void rtw_phy_tx_path_diversity(struct rtw_dev *rtwdev);
- 
- struct rtw_txpwr_lmt_cfg_pair {
- 	u8 regd;
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 6cb593cc33c2..ef385dd54c54 100644
+index ef385dd54c54..5e3f7f8f4f56 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -80,6 +80,13 @@ static void rtw8822c_header_file_init(struct rtw_dev *rtwdev, bool pre)
- 		rtw_write32_set(rtwdev, REG_ENCCK, BIT_CCK_OFDM_BLK_EN);
+@@ -4395,26 +4395,28 @@ static void rtw8822c_pwrtrack_set(struct rtw_dev *rtwdev, u8 rf_path)
+ 	}
  }
  
-+static void rtw8822c_bb_reset(struct rtw_dev *rtwdev)
-+{
-+	rtw_write32_mask(rtwdev, REG_SYS_FUNC_EN, BIT_FEN_BB_RSTB, 1);
-+	rtw_write32_mask(rtwdev, REG_SYS_FUNC_EN, BIT_FEN_BB_RSTB, 0);
-+	rtw_write32_mask(rtwdev, REG_SYS_FUNC_EN, BIT_FEN_BB_RSTB, 1);
+-static void rtw8822c_pwr_track_path(struct rtw_dev *rtwdev,
+-				    struct rtw_swing_table *swing_table,
+-				    u8 path)
++static void rtw8822c_pwr_track_stats(struct rtw_dev *rtwdev, u8 path)
+ {
+-	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
+-	u8 thermal_value, delta;
++	u8 thermal_value;
+ 
+ 	if (rtwdev->efuse.thermal_meter[path] == 0xff)
+ 		return;
+ 
+ 	thermal_value = rtw_read_rf(rtwdev, path, RF_T_METER, 0x7e);
+-
+ 	rtw_phy_pwrtrack_avg(rtwdev, thermal_value, path);
 +}
-+
- static void rtw8822c_dac_backup_reg(struct rtw_dev *rtwdev,
- 				    struct rtw_backup_info *backup,
- 				    struct rtw_backup_info *backup_rf)
-@@ -2424,10 +2431,11 @@ static void rtw8822c_config_cck_tx_path(struct rtw_dev *rtwdev, u8 tx_path,
- 		else
- 			rtw_write32_mask(rtwdev, REG_RXCCKSEL, 0xf0000000, 0x8);
- 	}
-+	rtw8822c_bb_reset(rtwdev);
+ 
+-	delta = rtw_phy_pwrtrack_get_delta(rtwdev, path);
++static void rtw8822c_pwr_track_path(struct rtw_dev *rtwdev,
++				    struct rtw_swing_table *swing_table,
++				    u8 path)
++{
++	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
++	u8 delta;
+ 
++	delta = rtw_phy_pwrtrack_get_delta(rtwdev, path);
+ 	dm_info->delta_power_index[path] =
+ 		rtw_phy_pwrtrack_get_pwridx(rtwdev, swing_table, path, path,
+ 					    delta);
+-
+ 	rtw8822c_pwrtrack_set(rtwdev, path);
  }
  
- static void rtw8822c_config_ofdm_tx_path(struct rtw_dev *rtwdev, u8 tx_path,
--					 bool is_tx2_path)
-+					 enum rtw_bb_path tx_path_sel_1ss)
- {
- 	if (tx_path == BB_PATH_A) {
- 		rtw_write32_mask(rtwdev, REG_ANTMAP0, 0xff, 0x11);
-@@ -2436,21 +2444,28 @@ static void rtw8822c_config_ofdm_tx_path(struct rtw_dev *rtwdev, u8 tx_path,
- 		rtw_write32_mask(rtwdev, REG_ANTMAP0, 0xff, 0x12);
- 		rtw_write32_mask(rtwdev, REG_TXLGMAP, 0xff, 0x0);
- 	} else {
--		if (is_tx2_path) {
-+		if (tx_path_sel_1ss == BB_PATH_AB) {
- 			rtw_write32_mask(rtwdev, REG_ANTMAP0, 0xff, 0x33);
- 			rtw_write32_mask(rtwdev, REG_TXLGMAP, 0xffff, 0x0404);
--		} else {
-+		} else if (tx_path_sel_1ss == BB_PATH_B) {
-+			rtw_write32_mask(rtwdev, REG_ANTMAP0, 0xff, 0x32);
-+			rtw_write32_mask(rtwdev, REG_TXLGMAP, 0xffff, 0x0400);
-+		} else if (tx_path_sel_1ss == BB_PATH_A) {
- 			rtw_write32_mask(rtwdev, REG_ANTMAP0, 0xff, 0x31);
- 			rtw_write32_mask(rtwdev, REG_TXLGMAP, 0xffff, 0x0400);
- 		}
- 	}
-+	rtw8822c_bb_reset(rtwdev);
+@@ -4425,12 +4427,12 @@ static void __rtw8822c_pwr_track(struct rtw_dev *rtwdev)
+ 
+ 	rtw_phy_config_swing_table(rtwdev, &swing_table);
+ 
++	for (i = 0; i < rtwdev->hal.rf_path_num; i++)
++		rtw8822c_pwr_track_stats(rtwdev, i);
+ 	if (rtw_phy_pwrtrack_need_lck(rtwdev))
+ 		rtw8822c_do_lck(rtwdev);
+-
+ 	for (i = 0; i < rtwdev->hal.rf_path_num; i++)
+ 		rtw8822c_pwr_track_path(rtwdev, &swing_table, i);
+-
  }
  
- static void rtw8822c_config_tx_path(struct rtw_dev *rtwdev, u8 tx_path,
-+				    enum rtw_bb_path tx_path_sel_1ss,
-+				    enum rtw_bb_path tx_path_cck,
- 				    bool is_tx2_path)
- {
--	rtw8822c_config_cck_tx_path(rtwdev, tx_path, is_tx2_path);
--	rtw8822c_config_ofdm_tx_path(rtwdev, tx_path, is_tx2_path);
-+	rtw8822c_config_cck_tx_path(rtwdev, tx_path_cck, is_tx2_path);
-+	rtw8822c_config_ofdm_tx_path(rtwdev, tx_path, tx_path_sel_1ss);
-+	rtw8822c_bb_reset(rtwdev);
- }
- 
- static void rtw8822c_config_trx_mode(struct rtw_dev *rtwdev, u8 tx_path,
-@@ -2466,7 +2481,8 @@ static void rtw8822c_config_trx_mode(struct rtw_dev *rtwdev, u8 tx_path,
- 		rtw_write32_mask(rtwdev, REG_ORITXCODE2, MASK20BITS, 0x11111);
- 
- 	rtw8822c_config_rx_path(rtwdev, rx_path);
--	rtw8822c_config_tx_path(rtwdev, tx_path, is_tx2_path);
-+	rtw8822c_config_tx_path(rtwdev, tx_path, BB_PATH_A, BB_PATH_A,
-+				is_tx2_path);
- 
- 	rtw8822c_toggle_igi(rtwdev);
- }
-@@ -2517,6 +2533,7 @@ static void query_phy_status_page0(struct rtw_dev *rtwdev, u8 *phy_status,
- static void query_phy_status_page1(struct rtw_dev *rtwdev, u8 *phy_status,
- 				   struct rtw_rx_pkt_stat *pkt_stat)
- {
-+	struct rtw_path_div *p_div = &rtwdev->dm_path_div;
- 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
- 	u8 rxsc, bw;
- 	s8 min_rx_power = -120;
-@@ -2559,6 +2576,13 @@ static void query_phy_status_page1(struct rtw_dev *rtwdev, u8 *phy_status,
- 	for (path = 0; path <= rtwdev->hal.rf_path_num; path++) {
- 		rssi = rtw_phy_rf_power_2_rssi(&pkt_stat->rx_power[path], 1);
- 		dm_info->rssi[path] = rssi;
-+		if (path == RF_PATH_A) {
-+			p_div->path_a_sum += rssi;
-+			p_div->path_a_cnt++;
-+		} else if (path == RF_PATH_B) {
-+			p_div->path_b_sum += rssi;
-+			p_div->path_b_cnt++;
-+		}
- 		dm_info->rx_snr[path] = pkt_stat->rx_snr[path] >> 1;
- 		dm_info->cfo_tail[path] = (pkt_stat->cfo_tail[path] * 5) >> 1;
- 
-@@ -4851,6 +4875,7 @@ static struct rtw_chip_ops rtw8822c_ops = {
- 	.cfg_csi_rate		= rtw_bf_cfg_csi_rate,
- 	.cfo_init		= rtw8822c_cfo_init,
- 	.cfo_track		= rtw8822c_cfo_track,
-+	.config_tx_path		= rtw8822c_config_tx_path,
- 
- 	.coex_set_init		= rtw8822c_coex_cfg_init,
- 	.coex_set_ant_switch	= NULL,
-@@ -5192,6 +5217,8 @@ struct rtw_chip_info rtw8822c_hw_spec = {
- 	.band = RTW_BAND_2G | RTW_BAND_5G,
- 	.page_size = 128,
- 	.dig_min = 0x20,
-+	.default_1ss_tx_path = BB_PATH_A,
-+	.path_div_supported = true,
- 	.ht_supported = true,
- 	.vht_supported = true,
- 	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK) | BIT(LPS_DEEP_MODE_PG),
+ static void rtw8822c_pwr_track(struct rtw_dev *rtwdev)
 -- 
 2.21.0
 
