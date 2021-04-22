@@ -2,42 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D633677A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 05:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8148C3677AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 05:04:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233061AbhDVDFM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Apr 2021 23:05:12 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:45289 "EHLO
+        id S234384AbhDVDFS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Apr 2021 23:05:18 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:45296 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232796AbhDVDFM (ORCPT
+        with ESMTP id S232796AbhDVDFO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Apr 2021 23:05:12 -0400
+        Wed, 21 Apr 2021 23:05:14 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13M34UJQ0021047, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13M34XMB0021051, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13M34UJQ0021047
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13M34XMB0021051
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 22 Apr 2021 11:04:30 +0800
+        Thu, 22 Apr 2021 11:04:33 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 22 Apr 2021 11:04:30 +0800
+ 15.1.2106.2; Thu, 22 Apr 2021 11:04:32 +0800
 Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 22 Apr
- 2021 11:04:29 +0800
+ 2021 11:04:31 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <steventing@realtek.com>
-Subject: [PATCH v2 1/2] rtw88: follow the AP basic rates for tx mgmt frame
-Date:   Thu, 22 Apr 2021 11:04:12 +0800
-Message-ID: <20210422030413.9738-1-pkshih@realtek.com>
+Subject: [PATCH v2 2/2] rtw88: add debugfs to force lowest basic rate
+Date:   Thu, 22 Apr 2021 11:04:13 +0800
+Message-ID: <20210422030413.9738-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20210422030413.9738-1-pkshih@realtek.com>
+References: <20210422030413.9738-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS01.realtek.com.tw (172.21.6.94) To
+X-ClientProxiedBy: RTEXH36502.realtek.com.tw (172.21.6.25) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-Antivirus-Interceptor-Info: scan successful
@@ -96,82 +98,116 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Yu-Yen Ting <steventing@realtek.com>
 
-By default the driver uses the 1M and 6M rate for managemnt frames
-in 2G and 5G bands respectively. But when the basic rates is
-configured from the mac80211, we need to send the management frames
-according to the basic rates.
+The management frame with high rate e.g. 24M may not be transmitted
+smoothly in long range environment.
+Add a debugfs to force to use the lowest basic rate
+in order to debug the reachability of transmitting management frame.
 
-This commit makes the driver use the lowest basic rates to send
-the management frames.
+obtain current setting
+cat /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
+
+force lowest rate:
+echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
 
 Signed-off-by: Yu-Yen Ting <steventing@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-v2: move debugfs as a separated patch
-v1: the original patch is "[PATCH 2/7] rtw88: follow the AP basic rates for tx mgmt frame"
----
- drivers/net/wireless/realtek/rtw88/tx.c | 26 ++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw88/debug.c | 39 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/main.h  |  1 +
+ drivers/net/wireless/realtek/rtw88/tx.c    |  3 +-
+ 3 files changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index 0193708fc013..e5949a775283 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -233,17 +233,33 @@ void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb, int src)
- 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index 18ab472ea46c..a99a3dc6f9f9 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -861,6 +861,39 @@ static int rtw_debugfs_get_fw_crash(struct seq_file *m, void *v)
+ 	return 0;
  }
  
-+static u8 rtw_get_mgmt_rate(struct rtw_dev *rtwdev, struct sk_buff *skb,
-+			    u8 lowest_rate, bool ignore_rate)
++static ssize_t rtw_debugfs_set_basic_rates(struct file *filp,
++					   const char __user *buffer,
++					   size_t count, loff_t *loff)
 +{
-+	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
-+	struct ieee80211_vif *vif = tx_info->control.vif;
++	struct seq_file *seqpriv = (struct seq_file *)filp->private_data;
++	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
++	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
++	bool input;
++	int err;
 +
-+	if (!vif || !vif->bss_conf.basic_rates || ignore_rate)
-+		return lowest_rate;
++	err = kstrtobool_from_user(buffer, count, &input);
++	if (err)
++		return err;
 +
-+	return __ffs(vif->bss_conf.basic_rates) + lowest_rate;
++	if (input)
++		set_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
++	else
++		clear_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
++
++	return count;
 +}
 +
- static void rtw_tx_pkt_info_update_rate(struct rtw_dev *rtwdev,
- 					struct rtw_tx_pkt_info *pkt_info,
--					struct sk_buff *skb)
-+					struct sk_buff *skb,
-+					bool ignore_rate)
- {
- 	if (rtwdev->hal.current_band_type == RTW_BAND_2G) {
- 		pkt_info->rate_id = RTW_RATEID_B_20M;
--		pkt_info->rate = DESC_RATE1M;
-+		pkt_info->rate = rtw_get_mgmt_rate(rtwdev, skb, DESC_RATE1M,
-+						   ignore_rate);
- 	} else {
- 		pkt_info->rate_id = RTW_RATEID_G;
--		pkt_info->rate = DESC_RATE6M;
-+		pkt_info->rate = rtw_get_mgmt_rate(rtwdev, skb, DESC_RATE6M,
-+						   ignore_rate);
- 	}
++static int rtw_debugfs_get_basic_rates(struct seq_file *m, void *v)
++{
++	struct rtw_debugfs_priv *debugfs_priv = m->private;
++	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
 +
- 	pkt_info->use_rate = true;
- 	pkt_info->dis_rate_fallback = true;
++	seq_printf(m, "use lowest: %d\n",
++		   test_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags));
++
++	return 0;
++}
++
+ static ssize_t rtw_debugfs_set_dm_cap(struct file *filp,
+ 				      const char __user *buffer,
+ 				      size_t count, loff_t *loff)
+@@ -1046,6 +1079,11 @@ static struct rtw_debugfs_priv rtw_debug_priv_fw_crash = {
+ 	.cb_read = rtw_debugfs_get_fw_crash,
+ };
+ 
++static struct rtw_debugfs_priv rtw_debug_priv_basic_rates = {
++	.cb_write = rtw_debugfs_set_basic_rates,
++	.cb_read = rtw_debugfs_get_basic_rates,
++};
++
+ static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
+ 	.cb_write = rtw_debugfs_set_dm_cap,
+ 	.cb_read = rtw_debugfs_get_dm_cap,
+@@ -1125,6 +1163,7 @@ void rtw_debugfs_init(struct rtw_dev *rtwdev)
+ 	rtw_debugfs_add_r(rf_dump);
+ 	rtw_debugfs_add_r(tx_pwr_tbl);
+ 	rtw_debugfs_add_rw(fw_crash);
++	rtw_debugfs_add_rw(basic_rates);
+ 	rtw_debugfs_add_rw(dm_cap);
  }
-@@ -280,7 +296,7 @@ static void rtw_tx_mgmt_pkt_info_update(struct rtw_dev *rtwdev,
- 					struct ieee80211_sta *sta,
- 					struct sk_buff *skb)
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index dc3744847ba9..0df5df3a62ab 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -362,6 +362,7 @@ enum rtw_flags {
+ 	RTW_FLAG_BUSY_TRAFFIC,
+ 	RTW_FLAG_WOWLAN,
+ 	RTW_FLAG_RESTARTING,
++	RTW_FLAG_USE_LOWEST_RATE,
+ 
+ 	NUM_OF_RTW_FLAGS,
+ };
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index e5949a775283..0aeed15736c8 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -238,8 +238,9 @@ static u8 rtw_get_mgmt_rate(struct rtw_dev *rtwdev, struct sk_buff *skb,
  {
--	rtw_tx_pkt_info_update_rate(rtwdev, pkt_info, skb);
-+	rtw_tx_pkt_info_update_rate(rtwdev, pkt_info, skb, false);
- 	pkt_info->dis_qselseq = true;
- 	pkt_info->en_hwseq = true;
- 	pkt_info->hw_ssn_sel = 0;
-@@ -404,7 +420,7 @@ void rtw_tx_rsvd_page_pkt_info_update(struct rtw_dev *rtwdev,
- 	if (type != RSVD_BEACON && type != RSVD_DUMMY)
- 		pkt_info->qsel = TX_DESC_QSEL_MGMT;
+ 	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_vif *vif = tx_info->control.vif;
++	bool use_lowest = test_bit(RTW_FLAG_USE_LOWEST_RATE, rtwdev->flags);
  
--	rtw_tx_pkt_info_update_rate(rtwdev, pkt_info, skb);
-+	rtw_tx_pkt_info_update_rate(rtwdev, pkt_info, skb, true);
+-	if (!vif || !vif->bss_conf.basic_rates || ignore_rate)
++	if (!vif || !vif->bss_conf.basic_rates || ignore_rate || use_lowest)
+ 		return lowest_rate;
  
- 	bmc = is_broadcast_ether_addr(hdr->addr1) ||
- 	      is_multicast_ether_addr(hdr->addr1);
+ 	return __ffs(vif->bss_conf.basic_rates) + lowest_rate;
 -- 
 2.21.0
 
