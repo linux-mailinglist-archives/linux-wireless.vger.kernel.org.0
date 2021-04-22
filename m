@@ -2,64 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5C7E367A82
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 09:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED3F367CD8
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 10:48:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230341AbhDVHFG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 03:05:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
+        id S235580AbhDVIsx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 04:48:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbhDVHFE (ORCPT
+        with ESMTP id S235485AbhDVIsw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 03:05:04 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 510A8C06174A;
-        Thu, 22 Apr 2021 00:04:29 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lZTNs-00F4p1-N9; Thu, 22 Apr 2021 09:04:20 +0200
-Message-ID: <317099c78edb9fdde3db3f1e7c9a4f77529b281a.camel@sipsolutions.net>
-Subject: Re: [PATCH][next] wireless: wext-spy: Fix out-of-bounds warning
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>
-Date:   Thu, 22 Apr 2021 09:04:19 +0200
-In-Reply-To: <20210421234337.GA127225@embeddedor>
-References: <20210421234337.GA127225@embeddedor>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Thu, 22 Apr 2021 04:48:52 -0400
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72098C06174A;
+        Thu, 22 Apr 2021 01:48:18 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id a11so1632031ioo.0;
+        Thu, 22 Apr 2021 01:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=DlZ2S3yfolBkgSZWfUNZ5efqdDYy/a5hk5lKfg0x/8I=;
+        b=iIfgaliebSblJdZgWZ9DXFfQj94qQb2X/vNvUONGRpJRG7cyQABiDLAfUcCv6Zaizl
+         +LaoFbMNLad7k9SthvZXl2A/ZdnM4OxwFr9201kg8KUK/oK9vg6pw94D9RwV6mkMqhbT
+         YbPRCYJcjXnrqY153JZVitjpq/rT3hhfpHFGn0BSmCJXYn7TZ2GC0Y2TBms4ddt61RUd
+         sLTpVFZkSoB7goWE9gN7RftkvZhNR6sap2aePEsuy8Kd57GjKrdYKWnCdSTdMbzCGMYd
+         6x6G9BArMoZxTkDsDh8GB8FWH/3O6pmNPbyhFEqkQ25JiPr8yJOt86yFmdCz3CTtwIY8
+         7pQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=DlZ2S3yfolBkgSZWfUNZ5efqdDYy/a5hk5lKfg0x/8I=;
+        b=cFdvZ5nWf1w2KMVyc0j0QIxsajFbytwPMTaxuhM8bgvdBs5OutWP2eZAuKjnbMkQ2O
+         /OhPlumaAuiBRMFyaTfbyICd5TUOGkCgeGDh6ITKgHawfrPF0HwXDwmdI6jBFTkDGWEJ
+         3Yt6yTvwdh7Q81Y96dwsIC2t2x82ffNXJYDB1pplcvNrQ/vJAQRowUdwG94z/AAbwlX6
+         sDH9ObtNaUDD0O1LL2dzhavItkzCi8g9hbIZpHV6viT9eGyUmMvLLzpJL3cMilbP1Pd/
+         QFKH/YVjPLFqG2nXCWcKHSqASLSbiUPXfgzZpTmowI378XY9j7Y0d42Ed+O2qikgp8uG
+         JLBQ==
+X-Gm-Message-State: AOAM533xzh8LcqkjYVj6cnBwFAZ7w9UOptaWiMqUH8lOvgViK4WbA3z3
+        xm6oBUNnTcDHKaBni8r1yKy6IefeSXbPMwcbesTy184a70D4xA==
+X-Google-Smtp-Source: ABdhPJzk/73+6IgSzJIzkW+vei2AXilHp5Wt8OA6VRrjBrhcFR8UjFvOv7hxhU66ZIxEDnjKWhwBUyQslQM8jV+75bk=
+X-Received: by 2002:a02:331b:: with SMTP id c27mr2208013jae.30.1619081297835;
+ Thu, 22 Apr 2021 01:48:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+References: <20210421090335.7A50CC4338A@smtp.codeaurora.org>
+In-Reply-To: <20210421090335.7A50CC4338A@smtp.codeaurora.org>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Thu, 22 Apr 2021 10:47:41 +0200
+Message-ID: <CA+icZUV079dCCKJTU6e40bJYcaVT+ofK5S=9xFwxB3Sc+QPrXw@mail.gmail.com>
+Subject: Re: pull-request: wireless-drivers-2021-04-21
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Joe Perches <joe@perches.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-04-21 at 18:43 -0500, Gustavo A. R. Silva wrote:
-> 
->  	/* Just do it */
-> -	memcpy(&(spydata->spy_thr_low), &(threshold->low),
-> -	       2 * sizeof(struct iw_quality));
-> +	memcpy(&spydata->spy_thr_low, &threshold->low, sizeof(threshold->low));
-> +	memcpy(&spydata->spy_thr_high, &threshold->high, sizeof(threshold->high));
-> 
+On Wed, Apr 21, 2021 at 11:04 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Hi,
+>
+> here's a pull request to net tree, more info below. Please let me know if there
+> are any problems.
+>
+> Kalle
+>
+> The following changes since commit d434405aaab7d0ebc516b68a8fc4100922d7f5ef:
+>
+>   Linux 5.12-rc7 (2021-04-11 15:16:13 -0700)
+>
+> are available in the git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-04-21
+>
+> for you to fetch changes up to e7020bb068d8be50a92f48e36b236a1a1ef9282e:
+>
+>   iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_gen2_enqueue_hcmd() (2021-04-19 20:35:10 +0300)
+>
 
-It would've been really simple to stick to 80 columns here (and
-everywhere in the patch), please do that.
+[ CC Joe Perches ]
 
-Also, why not just use struct assigments?
+That patch misses the closing ">" in the Reported-by of Heiner.
+My Tested-by seems also to be ignored.
+See [1] and [2].
 
-	spydata->spy_thr_low = threshold->low;
+Has checkpatch.pl script an option to check if an email-address for
+"credits" tags like
+Signed-of-by/Reviewed-by/Tested-by/Reported-by/etc. is correct such as
+open/closing "<...>" is not missing?
 
-etc.
+Thanks.
 
-Seems far simpler (and shorter lines).
+- Sedat -
 
-johannes
+[1] https://lore.kernel.org/linux-wireless/CA+icZUWVVRz-=09vowj5gLJ9-OaKpBkkejBXzqSpk-wZ-mDm-Q@mail.gmail.com/
+[2] https://lore.kernel.org/linux-wireless/CA+icZUXmNG6TOhtni6Rrs7NZVOg1H8NhYuDsDiyVASF5+VtUAQ@mail.gmail.com/
 
 
+> ----------------------------------------------------------------
+> wireless-drivers fixes for v5.12
+>
+> As there was -rc8 release, one more important fix for v5.12.
+>
+> iwlwifi
+>
+> * fix spinlock warning in gen2 devices
+>
+> ----------------------------------------------------------------
+> Jiri Kosina (1):
+>       iwlwifi: Fix softirq/hardirq disabling in iwl_pcie_gen2_enqueue_hcmd()
+>
+>  drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
