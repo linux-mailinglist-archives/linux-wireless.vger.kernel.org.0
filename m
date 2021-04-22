@@ -2,104 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA0B636827A
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 16:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3585036828B
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Apr 2021 16:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236780AbhDVObS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Apr 2021 10:31:18 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:59619 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236459AbhDVObS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Apr 2021 10:31:18 -0400
+        id S236975AbhDVOkG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Apr 2021 10:40:06 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:19757 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236464AbhDVOkE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 22 Apr 2021 10:40:04 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1619101843; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=chL4BkCvm+bquexbpqzupJJrJnve98d4abqXXixbou8=; b=MJJsPuUPKLQI/SBL7WiWbOM9XMqD6ykz4R4Fp+q0eEhOgINZY2UOYZ38A3WfoGuZV/Aw7ZAt
- 9XfFVSmiA+HgzmsZy/wav92ciSQfaN3KJPYvLQMPgCO/10Fu/4lzJxDGpjk7XoG2+kmHn3Pl
- odOr8btJr8uhV5AGRs6TcPSIEF0=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1619102369; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=RMf3EFzLqxN1uAcl/snGb/NnTMeGSO6NhHpgmnX57QQ=;
+ b=NYpTLVj13p9HE70GBt/+qAZ0TEIU5xY0EZMDs6soaZFEm+GAHCrvorZ9R0PJYXwHWXxN1s7Z
+ LqMuR83xhJbDdTAZW9EwCOGfaYrx9P9E9YWMoGs/0tkTfA+Yn/1FXic9fP9L0vxvQ3VbXsWb
+ Nc6Po+lVhrlPRHU6pHFbi551Uus=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 6081887b2cc44d3aea9ea916 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 22 Apr 2021 14:30:19
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 60818a8f2cbba8898039bc18 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 22 Apr 2021 14:39:11
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A86C0C43460; Thu, 22 Apr 2021 14:30:19 +0000 (UTC)
+        id DCAC0C433F1; Thu, 22 Apr 2021 14:39:10 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A78B3C433F1;
-        Thu, 22 Apr 2021 14:30:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A78B3C433F1
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DDE4FC433F1;
+        Thu, 22 Apr 2021 14:39:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DDE4FC433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Sedat Dilek <sedat.dilek@gmail.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Joe Perches <joe@perches.com>
-Subject: Re: pull-request: wireless-drivers-2021-04-21
-References: <20210421090335.7A50CC4338A@smtp.codeaurora.org>
-        <CA+icZUV079dCCKJTU6e40bJYcaVT+ofK5S=9xFwxB3Sc+QPrXw@mail.gmail.com>
-Date:   Thu, 22 Apr 2021 17:30:15 +0300
-In-Reply-To: <CA+icZUV079dCCKJTU6e40bJYcaVT+ofK5S=9xFwxB3Sc+QPrXw@mail.gmail.com>
-        (Sedat Dilek's message of "Thu, 22 Apr 2021 10:47:41 +0200")
-Message-ID: <87a6pqjsso.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 1/2] wl3501_cs: Fix out-of-bounds warnings in
+ wl3501_send_pkt
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <d260fe56aed7112bff2be5b4d152d03ad7b78e78.1618442265.git.gustavoars@kernel.org>
+References: <d260fe56aed7112bff2be5b4d152d03ad7b78e78.1618442265.git.gustavoars@kernel.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kees Cook <keescook@chromium.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210422143910.DCAC0C433F1@smtp.codeaurora.org>
+Date:   Thu, 22 Apr 2021 14:39:10 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sedat Dilek <sedat.dilek@gmail.com> writes:
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-> On Wed, Apr 21, 2021 at 11:04 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->>
->> Hi,
->>
->> here's a pull request to net tree, more info below. Please let me know if there
->> are any problems.
->>
->> Kalle
->>
->> The following changes since commit d434405aaab7d0ebc516b68a8fc4100922d7f5ef:
->>
->>   Linux 5.12-rc7 (2021-04-11 15:16:13 -0700)
->>
->> are available in the git repository at:
->>
->>   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git
->> tags/wireless-drivers-2021-04-21
->>
->> for you to fetch changes up to e7020bb068d8be50a92f48e36b236a1a1ef9282e:
->>
->>   iwlwifi: Fix softirq/hardirq disabling in
->> iwl_pcie_gen2_enqueue_hcmd() (2021-04-19 20:35:10 +0300)
->>
->
-> [ CC Joe Perches ]
->
-> That patch misses the closing ">" in the Reported-by of Heiner.
-> My Tested-by seems also to be ignored.
-> See [1] and [2].
+> Fix the following out-of-bounds warnings by enclosing structure members
+> daddr and saddr into new struct addr, in structures wl3501_md_req and
+> wl3501_md_ind:
+> 
+> arch/x86/include/asm/string_32.h:182:25: warning: '__builtin_memcpy' offset [18, 23] from the object at 'sig' is out of the bounds of referenced subobject 'daddr' with type 'u8[6]' {aka 'unsigned char[6]'} at offset 11 [-Warray-bounds]
+> arch/x86/include/asm/string_32.h:182:25: warning: '__builtin_memcpy' offset [18, 23] from the object at 'sig' is out of the bounds of referenced subobject 'daddr' with type 'u8[6]' {aka 'unsigned char[6]'} at offset 11 [-Warray-bounds]
+> 
+> Refactor the code, accordingly:
+> 
+> $ pahole -C wl3501_md_req drivers/net/wireless/wl3501_cs.o
+> struct wl3501_md_req {
+> 	u16                        next_blk;             /*     0     2 */
+> 	u8                         sig_id;               /*     2     1 */
+> 	u8                         routing;              /*     3     1 */
+> 	u16                        data;                 /*     4     2 */
+> 	u16                        size;                 /*     6     2 */
+> 	u8                         pri;                  /*     8     1 */
+> 	u8                         service_class;        /*     9     1 */
+> 	struct {
+> 		u8                 daddr[6];             /*    10     6 */
+> 		u8                 saddr[6];             /*    16     6 */
+> 	} addr;                                          /*    10    12 */
+> 
+> 	/* size: 22, cachelines: 1, members: 8 */
+> 	/* last cacheline: 22 bytes */
+> };
+> 
+> $ pahole -C wl3501_md_ind drivers/net/wireless/wl3501_cs.o
+> struct wl3501_md_ind {
+> 	u16                        next_blk;             /*     0     2 */
+> 	u8                         sig_id;               /*     2     1 */
+> 	u8                         routing;              /*     3     1 */
+> 	u16                        data;                 /*     4     2 */
+> 	u16                        size;                 /*     6     2 */
+> 	u8                         reception;            /*     8     1 */
+> 	u8                         pri;                  /*     9     1 */
+> 	u8                         service_class;        /*    10     1 */
+> 	struct {
+> 		u8                 daddr[6];             /*    11     6 */
+> 		u8                 saddr[6];             /*    17     6 */
+> 	} addr;                                          /*    11    12 */
+> 
+> 	/* size: 24, cachelines: 1, members: 9 */
+> 	/* padding: 1 */
+> 	/* last cacheline: 24 bytes */
+> };
+> 
+> The problem is that the original code is trying to copy data into a
+> couple of arrays adjacent to each other in a single call to memcpy().
+> Now that a new struct _addr_ enclosing those two adjacent arrays
+> is introduced, memcpy() doesn't overrun the length of &sig.daddr[0]
+> and &sig.daddr, because the address of the new struct object _addr_
+> is used, instead.
+> 
+> This helps with the ongoing efforts to globally enable -Warray-bounds
+> and get us closer to being able to tighten the FORTIFY_SOURCE routines
+> on memcpy().
+> 
+> Link: https://github.com/KSPP/linux/issues/109
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-You commented on v1, I missed those as I only check the latest version
-(v2 in this case). I recommend giving comments to the latest version to
-make sure I see them.
+2 patches applied to wireless-drivers-next.git, thanks.
 
-Also patchwork automatically picks up Tested-by if you provide it to the
-latest version.
+820aa37638a2 wl3501_cs: Fix out-of-bounds warnings in wl3501_send_pkt
+bb43e5718d8f wl3501_cs: Fix out-of-bounds warnings in wl3501_mgmt_join
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/d260fe56aed7112bff2be5b4d152d03ad7b78e78.1618442265.git.gustavoars@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
