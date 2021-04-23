@@ -2,78 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D84F5369281
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Apr 2021 14:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BFD3369288
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Apr 2021 14:57:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231283AbhDWMy4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Apr 2021 08:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49332 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230305AbhDWMy4 (ORCPT
+        id S231283AbhDWM5i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Apr 2021 08:57:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:48307 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230305AbhDWM5h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Apr 2021 08:54:56 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95E4C061574;
-        Fri, 23 Apr 2021 05:54:19 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lZvJs-00Fh3U-Nc; Fri, 23 Apr 2021 14:54:04 +0200
-Message-ID: <17adb27af76820813c035874fad7e468681bfe04.camel@sipsolutions.net>
-Subject: Re: [PATCH] brcmfmac: fix a loop exit condition
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Hans deGoede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        kernel-janitors@vger.kernel.org
-Date:   Fri, 23 Apr 2021 14:54:03 +0200
-In-Reply-To: <bda7ae6b-00f9-ae0e-66d3-413049bc543d@wanadoo.fr>
-References: <YIKzmoMiTdToaIyP@mwanda>
-         <427e33af49758c61bc23cf1eedb6dd6964c40296.camel@sipsolutions.net>
-         <20210423121110.GO1981@kadam>
-         <bda7ae6b-00f9-ae0e-66d3-413049bc543d@wanadoo.fr>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Fri, 23 Apr 2021 08:57:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1619182620;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=JL37Xr5A7RxA1jk5xSyloErvW66a1R8MiXMyGHc3JD8=;
+        b=UnDuX0ZREXlNu5EWyjfKFjCyfXO/LIbrn2E8K/gB5IJ2MlGV39F4JnSbkzRXv4a+4IF2DH
+        sY2QLR4v/BJuc+UGZ7EnQmZD58XdaPdm+ydgBVT4TPcjA8DmfvyTQvZ4pXsbGiv5eRPmxh
+        liNMtXsN0UnM71EMwEq9XKu8CGM9UGQ=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-441-UvfGiHIfNJy6nTt1qypKKQ-1; Fri, 23 Apr 2021 08:56:59 -0400
+X-MC-Unique: UvfGiHIfNJy6nTt1qypKKQ-1
+Received: by mail-io1-f72.google.com with SMTP id v18-20020a5ed7120000b02903f36dccaebcso9275009iom.15
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Apr 2021 05:56:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=JL37Xr5A7RxA1jk5xSyloErvW66a1R8MiXMyGHc3JD8=;
+        b=Dc+LvBWwT5t4s+sahjrGW58Kp1IVXIMByfo5ckmk4RRRq/IYIo2N0KtlecFlXvYylr
+         tQCr8+f3XpAcCTkWvqo3w9JuaqwvPHgfCh2DbUpPidUNuUP+F9Xrjpod1f7xElFoiQVs
+         ab0vfCwcMJElDYV6jejcbUlZYt8cbMpf2B5hCGHf0FfUDQenKdV10LKAHjZXSHGuep3p
+         DY8PDtxupmsjo7fDyiQnzL7TAbUYG2lHNgh0uVDNIEg7YXNCb26Pr1irXJU2h71bm42/
+         xpKEBRlZL1ohEYLdsaOnd7ww7JCNLsSdS48cdMW/Ad3nZXbiTei/7qAI6OB6P4RsnRom
+         GjyA==
+X-Gm-Message-State: AOAM5336jByTJmBrFxxv1HQr0iADTsS3Y1RYK+9x0xnLv9Y6qBAvHXmJ
+        EZOxIulCNf4+LV7ujLoqhwEAXSHYxCc9spI0qGfmEt3LcXwbE/9tsacuWcn8vabevrEWpazrgVJ
+        VdafzrD5ylI9i28e7zaMUiu1K/x8WZQuLhIcvEB72KL4=
+X-Received: by 2002:a5d:8c89:: with SMTP id g9mr3265690ion.27.1619182618279;
+        Fri, 23 Apr 2021 05:56:58 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwBFc1NkjWCXqFw5X50mrGWpq853ky+GGVkfFBXTZmGOJrFpWadfV+Hkz5pB1nr1VCvC9zS3W7nIf/o0xcqBtI=
+X-Received: by 2002:a5d:8c89:: with SMTP id g9mr3265676ion.27.1619182618040;
+ Fri, 23 Apr 2021 05:56:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+From:   Inigo Huguet <ihuguet@redhat.com>
+Date:   Fri, 23 Apr 2021 14:56:47 +0200
+Message-ID: <CACT4ouecdXk3SQrgUNKnr4u2WAaiBUjgou5u_H1bEubTcrGtFQ@mail.gmail.com>
+Subject: rtlwifi: potential bugs
+To:     pkshih@realtek.com, linux-wireless@vger.kernel.org
+Cc:     Ivan Vecera <ivecera@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-04-23 at 14:20 +0200, Christophe JAILLET wrote:
-> 
-> > > > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> > > > @@ -34,7 +34,7 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-> > > >   		len = strlen(tmp) + 1;
-> > > >   		board_type = devm_kzalloc(dev, len, GFP_KERNEL);
-> > > >   		strscpy(board_type, tmp, len);
-> > > > -		for (i = 0; i < board_type[i]; i++) {
-> > > > +		for (i = 0; i < len; i++) {
-> > > >   			if (board_type[i] == '/')
-> > > >   				board_type[i] = '-';
-> > > >   		}
-> > > 
-> > > It should probably just use strreplace() though :)
-> > 
-> > Good point.  I'll send a v2.
-> > 
-> 
-> and the 2 lines above look like a devm_kstrdup.
-> 
-> The (unlikely) malloc failure test is also missing.
+Hello,
 
-How many issues can you have in 6 lines of code ;-)
+Executing some static analysis on the kernel, we've got this results
+affecting rtlwifi drivers:
 
-johannes
+Error: IDENTICAL_BRANCHES (CWE-398): [#def212]
+kernel-5.11.0-0.rc7.151/linux-5.11.0-0.rc7.151.el9.x86_64/drivers/net/wirel=
+ess/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c:2813:
+identical_branches: The same code is executed regardless of whether
+"bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH || bt_rssi_state =3D=3D
+BTC_RSSI_STATE_STAY_HIGH" is true, because the 'then' and 'else'
+branches are identical. Should one of the branches be modified, or the
+entire 'if' statement replaced?
+# 2811|   }
+# 2812|
+# 2813|-> if ((bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH) ||
+# 2814|      (bt_rssi_state =3D=3D BTC_RSSI_STATE_STAY_HIGH)) {
+# 2815|   btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 23);
+
+Error: IDENTICAL_BRANCHES (CWE-398): [#def213]
+kernel-5.11.0-0.rc7.151/linux-5.11.0-0.rc7.151.el9.x86_64/drivers/net/wirel=
+ess/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c:2947:
+identical_branches: The same code is executed regardless of whether
+"bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH || bt_rssi_state =3D=3D
+BTC_RSSI_STATE_STAY_HIGH" is true, because the 'then' and 'else'
+branches are identical. Should one of the branches be modified, or the
+entire 'if' statement replaced?
+# 2945|   }
+# 2946|
+# 2947|-> if ((bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH) ||
+# 2948|      (bt_rssi_state =3D=3D BTC_RSSI_STATE_STAY_HIGH))
+# 2949|   btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 26);
+
+Error: IDENTICAL_BRANCHES (CWE-398): [#def214]
+kernel-5.11.0-0.rc7.151/linux-5.11.0-0.rc7.151.el9.x86_64/drivers/net/wirel=
+ess/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c:3135:
+identical_branches: The same code is executed regardless of whether
+"wifi_bw =3D=3D BTC_WIFI_BW_LEGACY" is true, because the 'then' and 'else'
+branches are identical. Should one of the branches be modified, or the
+entire 'if' statement replaced?
+# 3133|   btcoexist->btc_get(btcoexist, BTC_GET_U4_WIFI_BW, &wifi_bw);
+# 3134|
+# 3135|-> if (wifi_bw =3D=3D BTC_WIFI_BW_LEGACY) {
+# 3136|   /* for HID at 11b/g mode */
+# 3137|   btc8821a2ant_coex_table(btcoexist, NORMAL_EXEC, 0x55ff55ff,
+
+Error: IDENTICAL_BRANCHES (CWE-398): [#def215]
+kernel-5.11.0-0.rc7.151/linux-5.11.0-0.rc7.151.el9.x86_64/drivers/net/wirel=
+ess/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c:3324:
+identical_branches: The same code is executed regardless of whether
+"bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH || bt_rssi_state =3D=3D
+BTC_RSSI_STATE_STAY_HIGH" is true, because the 'then' and 'else'
+branches are identical. Should one of the branches be modified, or the
+entire 'if' statement replaced?
+# 3322|   }
+# 3323|
+# 3324|-> if ((bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH) ||
+# 3325|      (bt_rssi_state =3D=3D BTC_RSSI_STATE_STAY_HIGH)) {
+# 3326|   btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 23);
+
+
+In my opinion, they seem to be real bugs. However, it's very difficult
+to imagine what actions must be taken on each branch of the if-else
+because they strongly depend on magic numbers, which are different
+configurations for the hw, I guess.
+
+Can the maintainers confirm if these are real bugs and see how to fix them?
+
+Regards
+--=20
+=C3=8D=C3=B1igo Huguet
 
