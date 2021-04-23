@@ -2,66 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E71E9369BE6
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Apr 2021 23:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 288DA369C5D
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Apr 2021 00:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244078AbhDWVK4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Apr 2021 17:10:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58962 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244030AbhDWVKx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Apr 2021 17:10:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 37BC761464;
-        Fri, 23 Apr 2021 21:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619212216;
-        bh=cvVrYMjQ+u2hLU8HErCSOSZDV/fIdKBk9pf4BZIwwPc=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=PPrcTdE7O7zDMHXHVBKcR+j7N/oYuDwq76YpCQLRejW7zmu3cK/k41a+AzyP/gAb+
-         YjuxFyShXk8/3QbpHW63IgFbWFbRVXwgdcbXGm1ZrjFUFXkPy5H4hpnB7QNremKXT0
-         ZQ5h4x5ePZrl+1vPsBZK6xe10LQbDDaT/+o8WMZ791Y2ZI5upMRxDOBzNP2R25nICS
-         bN+0caScIGhZU6l+6bnEd8bDLa+LFPilCaFcjmJ4QQ50jASOFqb1p/n7zpRZZvLfTl
-         nQ58xNVP7291S6wat2FcFNqUQNQKMh284pGv2MR8Mqb1s+J7VApIWQ+n2edezlMrw2
-         hm8vuUH/f/6kA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 3078E608FB;
-        Fri, 23 Apr 2021 21:10:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S232686AbhDWWDF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Apr 2021 18:03:05 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:59527 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232657AbhDWWCw (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 23 Apr 2021 18:02:52 -0400
+X-UUID: 857e9e202d2146b1b74a0810c5eb1d8f-20210424
+X-UUID: 857e9e202d2146b1b74a0810c5eb1d8f-20210424
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 643678239; Sat, 24 Apr 2021 06:02:08 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 24 Apr 2021 06:02:07 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 24 Apr 2021 06:02:07 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v3 1/3] mt76: mt7915: add thermal sensor device support
+Date:   Sat, 24 Apr 2021 06:02:04 +0800
+Message-ID: <202e3d430a232592c1194d4fdec1adb1b3703588.1619214926.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-drivers-next-2021-04-23
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161921221619.24005.15107300126619560416.git-patchwork-notify@kernel.org>
-Date:   Fri, 23 Apr 2021 21:10:16 +0000
-References: <20210423120248.248EBC4338A@smtp.codeaurora.org>
-In-Reply-To: <20210423120248.248EBC4338A@smtp.codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain
+X-TM-SNTS-SMTP: CAA27CE2FFD9A62DD4FE03E90B9CDCD29B5ACCADBCD2FB7CDFFD8C88975A8DE32000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+This provides userspace with a unified interface, hwmon sysfs, to monitor
+temperature in the hardware and can be adapted to system monitoring tools.
 
-This pull request was applied to netdev/net-next.git (refs/heads/master):
+For reading temperature, cat /sys/class/ieee80211/phy*/hwmon*/temp1_input
 
-On Fri, 23 Apr 2021 12:02:48 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
-> 
-> Kalle
-> 
-> [...]
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+changes since v3 - none
+changes since v2 - drop mutex
+---
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 14 -----
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 51 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  7 +--
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +-
+ 4 files changed, 56 insertions(+), 18 deletions(-)
 
-Here is the summary with links:
-  - pull-request: wireless-drivers-next-2021-04-23
-    https://git.kernel.org/netdev/net-next/c/e40fa65c79b5
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 6a8ddeeecbe9..f1e8b076d54c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -224,18 +224,6 @@ mt7915_tx_stats_show(struct seq_file *file, void *data)
+ 
+ DEFINE_SHOW_ATTRIBUTE(mt7915_tx_stats);
+ 
+-static int mt7915_read_temperature(struct seq_file *s, void *data)
+-{
+-	struct mt7915_dev *dev = dev_get_drvdata(s->private);
+-	int temp;
+-
+-	/* cpu */
+-	temp = mt7915_mcu_get_temperature(dev, 0);
+-	seq_printf(s, "Temperature: %d\n", temp);
+-
+-	return 0;
+-}
+-
+ static int
+ mt7915_queues_acq(struct seq_file *s, void *data)
+ {
+@@ -390,8 +378,6 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
+ 	debugfs_create_file("radar_trigger", 0200, dir, dev,
+ 			    &fops_radar_trigger);
+ 	debugfs_create_file("ser_trigger", 0200, dir, dev, &fops_ser_trigger);
+-	debugfs_create_devm_seqfile(dev->mt76.dev, "temperature", dir,
+-				    mt7915_read_temperature);
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "txpower_sku", dir,
+ 				    mt7915_read_rate_txpower);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index c13b932b0a44..b1c4dbad837c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -2,6 +2,8 @@
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
++#include <linux/hwmon.h>
++#include <linux/hwmon-sysfs.h>
+ #include "mt7915.h"
+ #include "mac.h"
+ #include "mcu.h"
+@@ -67,6 +69,47 @@ static const struct ieee80211_iface_combination if_comb[] = {
+ 	}
+ };
+ 
++static ssize_t mt7915_thermal_show_temp(struct device *dev,
++					struct device_attribute *attr,
++					char *buf)
++{
++	struct mt7915_phy *phy = dev_get_drvdata(dev);
++	int temperature;
++
++	temperature = mt7915_mcu_get_temperature(phy);
++	if (temperature < 0)
++		return temperature;
++
++	/* display in millidegree celcius */
++	return sprintf(buf, "%u\n", temperature * 1000);
++}
++
++static SENSOR_DEVICE_ATTR(temp1_input, 0444, mt7915_thermal_show_temp,
++			  NULL, 0);
++
++static struct attribute *mt7915_hwmon_attrs[] = {
++	&sensor_dev_attr_temp1_input.dev_attr.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(mt7915_hwmon);
++
++static int mt7915_thermal_init(struct mt7915_phy *phy)
++{
++	struct wiphy *wiphy = phy->mt76->hw->wiphy;
++	struct device *hwmon;
++
++	if (!IS_REACHABLE(CONFIG_HWMON))
++		return 0;
++
++	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev,
++						       wiphy_name(wiphy), phy,
++						       mt7915_hwmon_groups);
++	if (IS_ERR(hwmon))
++		return PTR_ERR(hwmon);
++
++	return 0;
++}
++
+ static void
+ mt7915_init_txpower(struct mt7915_dev *dev,
+ 		    struct ieee80211_supported_band *sband)
+@@ -286,6 +329,10 @@ static int mt7915_register_ext_phy(struct mt7915_dev *dev)
+ 	if (ret)
+ 		goto error;
+ 
++	ret = mt7915_thermal_init(phy);
++	if (ret)
++		goto error;
++
+ 	return 0;
+ 
+ error:
+@@ -739,6 +786,10 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = mt7915_thermal_init(&dev->phy);
++	if (ret)
++		return ret;
++
+ 	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+ 
+ 	ret = mt7915_register_ext_phy(dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 559ad230eabe..17a617df6dba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3469,16 +3469,17 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
+ 	return 0;
+ }
+ 
+-int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index)
++int mt7915_mcu_get_temperature(struct mt7915_phy *phy)
+ {
++	struct mt7915_dev *dev = phy->dev;
+ 	struct {
+ 		u8 ctrl_id;
+ 		u8 action;
+-		u8 band;
++		u8 dbdc_idx;
+ 		u8 rsv[5];
+ 	} req = {
+ 		.ctrl_id = THERMAL_SENSOR_TEMP_QUERY,
+-		.action = index,
++		.dbdc_idx = phy != &dev->phy,
+ 	};
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(THERMAL_CTRL), &req,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 80eb35231a1a..d5296e2d481b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -357,7 +357,7 @@ int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, int index,
+ 			    const struct mt7915_dfs_pattern *pattern);
+ int mt7915_mcu_apply_group_cal(struct mt7915_dev *dev);
+ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy);
+-int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index);
++int mt7915_mcu_get_temperature(struct mt7915_phy *phy);
+ int mt7915_mcu_get_tx_rate(struct mt7915_dev *dev, u32 cmd, u16 wlan_idx);
+ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+-- 
+2.18.0
 
