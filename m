@@ -2,84 +2,201 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B7E336A034
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Apr 2021 10:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB62C36A264
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Apr 2021 19:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234468AbhDXIh1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 24 Apr 2021 04:37:27 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:61641 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233677AbhDXIhX (ORCPT
+        id S232051AbhDXRbG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 24 Apr 2021 13:31:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54222 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231307AbhDXRbF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 24 Apr 2021 04:37:23 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1619253397; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=0YpOJ0nbALKSDDgtlfinFrWB8Fco5Pa1+7Ify9meDKw=; b=ous05QKfWwvuryf9hWNF+N8JUxqgF9d8ig18uUq7amXsmqUecD4rmwLNpW+tIy8G8laiUabo
- vqdDz/f3yKWf4TUQvSuYwm34dfiWt+yrf1uINWAG/TlNZ3PFe2rb99QX7RlRgv6mD3aF6Q9L
- qi8xD/JJduV6WGiWvCXunl9ccb4=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 6083d86603cfff345236f099 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 24 Apr 2021 08:35:50
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 96EAAC43460; Sat, 24 Apr 2021 08:35:49 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AFB9AC433D3;
-        Sat, 24 Apr 2021 08:35:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AFB9AC433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: Re: [PATCH 0/3] mt7921 runtime-pm fixes
-References: <cover.1619187875.git.lorenzo@kernel.org>
-        <af4e6186-9c40-26c4-42bf-4b247d1befaa@nbd.name>
-Date:   Sat, 24 Apr 2021 11:35:44 +0300
-In-Reply-To: <af4e6186-9c40-26c4-42bf-4b247d1befaa@nbd.name> (Felix Fietkau's
-        message of "Fri, 23 Apr 2021 16:43:43 +0200")
-Message-ID: <8735vgjd0f.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        Sat, 24 Apr 2021 13:31:05 -0400
+Received: from mail-qk1-x74a.google.com (mail-qk1-x74a.google.com [IPv6:2607:f8b0:4864:20::74a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9631C061574
+        for <linux-wireless@vger.kernel.org>; Sat, 24 Apr 2021 10:30:26 -0700 (PDT)
+Received: by mail-qk1-x74a.google.com with SMTP id r123-20020a378f810000b029028244d5f023so17120176qkd.2
+        for <linux-wireless@vger.kernel.org>; Sat, 24 Apr 2021 10:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+         :cc;
+        bh=b94yWJQ2p+2VWUhlgS+VEXjeZZgECOmKGd3boNqA2Uw=;
+        b=WNuboMNUD51JnzaBdj4NZHg20r4lnFheTcHbP1pS7lZNUCk5sOhHJya5uoy4pV+j0B
+         96Sed+M3fIZ5lTN4shPNdquZ03boFlnapWSn5tZXL4DdwrPJW5+4g+KedgZd4/3ctV8Q
+         tElb/rNhZKoplcYQSbTzeZ2msHdcuATRi/C3OOnURv8uH8PEgmL9CjpMhjz6/PzbDDyo
+         PBYKWz2IFnrRGW4EWeufiYW4d9aaWHIkMxq8nAyJiGS5YvyFrzqierFKI7x+Dv3jkiDg
+         SUIlM9ArZYq66s3bbQ5542bURaPQS1q8/5L506UD7B6lNP0m5gWGO+hD/WI01HHt70J2
+         a7EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=b94yWJQ2p+2VWUhlgS+VEXjeZZgECOmKGd3boNqA2Uw=;
+        b=dJDxCeNVmqvQm8LKpqG55DuI7BlthZTKbPd94z51IKzjgzd/NORqec3arkxh5w8GAP
+         uDl6CiosX80Bdf2fsd93uf+Wr+nzjsjlrEdgmQ20GCYYcABVcPVpAdyBGjVop5+AqBhj
+         PfIpfGad+LBelg9dMIAa+1jMKzO7++2JhyV9PVYVe/eHS0b6s/Z+lsX8jMJengTXQpj5
+         KsDm+cgnq3aKrOmxpu/3dYlMBrWR+Z2FFrbU9ahANv29vQH6TNb5hYDad6hUWHd2KD+8
+         d5419LPs+tul+A1CjJQnnjGZI4DPvPghZluQtXitWrtxm14JOMyimTs8n2ubygCNJJ21
+         Yxwg==
+X-Gm-Message-State: AOAM531tih5kUUedazHdvYc1xkIAeuUhK/kZOc/+5VD3FwWSBNySyh8T
+        WAxKVkzy6W/tI95jhzaXmMPvpBjDxIMpHlCHR7iStgCdZgCZWF8Hgr1d0iUcNu3EAPhq86ABocv
+        /cgZge4+z27Q0qB9k3CukAy3CLi3MkBcU+aZYjKMs+htwh/VpUDkMjP5i154az7nOEd70QwZHO+
+        Y=
+X-Google-Smtp-Source: ABdhPJz4v0nSKmWITKUE58jphS03wm2NakSlLefntC0c3E4PJ4I328ExZJkDxRPohNBCDIPx4vqRnslnHIlj
+X-Received: from coin.lon.corp.google.com ([2a00:79e0:d:204:fb12:87ba:efda:3935])
+ (user=pterjan job=sendgmr) by 2002:ad4:42cf:: with SMTP id
+ f15mr9977179qvr.50.1619285425897; Sat, 24 Apr 2021 10:30:25 -0700 (PDT)
+Date:   Sat, 24 Apr 2021 18:29:59 +0100
+In-Reply-To: <a69a3d60-71a0-3153-b248-dacc8b95bea8@gmail.com>
+Message-Id: <20210424172959.1559890-1-pterjan@google.com>
+Mime-Version: 1.0
+References: <a69a3d60-71a0-3153-b248-dacc8b95bea8@gmail.com>
+X-Mailer: git-send-email 2.31.1.498.g6c1eba8ee3d-goog
+Subject: [PATCH v2] rtl8xxxu: Fix device info for RTL8192EU devices
+From:   Pascal Terjan <pterjan@google.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
+        Pascal Terjan <pterjan@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Based on 2001:3319 and 2357:0109 which I used to test the fix and
+0bda:818b and 2357:0108 for which I found efuse dumps online.
 
-> On 2021-04-23 16:27, Lorenzo Bianconi wrote:
->> This series contains three mt7921 fixes introduce with new runtime-pm rework
->> 
->> Lorenzo Bianconi (3):
->>   mt76: mt7921: fix possible AOOB issue in mt7921_mcu_tx_rate_report
->>   mt76: connac: do not schedule wake_work if the runtime-pm is disabled
->>   mt76: connac: do not schedule mac_work if the device is not running
-> For the series:
-> Reviewed-by: Felix Fietkau <nbd@nbd.name>
->
-> Kalle, could you please take these patches directly, they're all
-> regression fixes.
+== 2357:0109 ==
+=== Before ===
+Vendor: Realtek
+Product: \x03802.11n NI
+Serial:
+=== After ===
+Vendor: Realtek
+Product: 802.11n NIC
+Serial not available.
 
-Ok, I assigned this series to me on patchwork.
+== 2001:3319 ==
+=== Before ===
+Vendor: Realtek
+Product: Wireless N
+Serial: no USB Adap
+=== After ===
+Vendor: Realtek
+Product: Wireless N Nano USB Adapter
+Serial not available.
 
+Signed-off-by: Pascal Terjan <pterjan@google.com>
+---
+v2: properly check we don't get out of the 80 bytes section and cosmetic fixes
+
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  | 11 +---
+ .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         | 59 +++++++++++++++++--
+ 2 files changed, 56 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index d6d1be4169e5..acb6b0cd3667 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -853,15 +853,10 @@ struct rtl8192eu_efuse {
+ 	u8 usb_optional_function;
+ 	u8 res9[2];
+ 	u8 mac_addr[ETH_ALEN];		/* 0xd7 */
+-	u8 res10[2];
+-	u8 vendor_name[7];
+-	u8 res11[2];
+-	u8 device_name[0x0b];		/* 0xe8 */
+-	u8 res12[2];
+-	u8 serial[0x0b];		/* 0xf5 */
+-	u8 res13[0x30];
++	u8 device_info[80];
++	u8 res11[3];
+ 	u8 unknown[0x0d];		/* 0x130 */
+-	u8 res14[0xc3];
++	u8 res12[0xc3];
+ };
+ 
+ struct rtl8xxxu_reg8val {
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+index cfe2dfdae928..b06508d0cdf8 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -554,9 +554,43 @@ rtl8192e_set_tx_power(struct rtl8xxxu_priv *priv, int channel, bool ht40)
+ 	}
+ }
+ 
++static void rtl8192eu_log_next_device_info(struct rtl8xxxu_priv *priv,
++					   char *record_name,
++					   char *device_info,
++					   unsigned int *record_offset)
++{
++	char *record = device_info + *record_offset;
++
++	/* A record is [ total length | 0x03 | value ] */
++	unsigned char l = record[0];
++
++	/*
++	 * The whole device info section seems to be 80 characters, make sure
++	 * we don't read further.
++	 */
++	if (*record_offset + l > 80) {
++		dev_warn(&priv->udev->dev,
++			 "invalid record length %d while parsing \"%s\" at offset %u.\n",
++			 l, record_name, *record_offset);
++		return;
++	}
++
++	if (l >= 2) {
++		char value[80];
++
++		memcpy(value, &record[2], l - 2);
++		value[l - 2] = '\0';
++		dev_info(&priv->udev->dev, "%s: %s\n", record_name, value);
++		*record_offset = *record_offset + l;
++	} else {
++		dev_info(&priv->udev->dev, "%s not available.\n", record_name);
++	}
++}
++
+ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
+ {
+ 	struct rtl8192eu_efuse *efuse = &priv->efuse_wifi.efuse8192eu;
++	unsigned int record_offset;
+ 	int i;
+ 
+ 	if (efuse->rtl_id != cpu_to_le16(0x8129))
+@@ -604,12 +638,25 @@ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
+ 	priv->has_xtalk = 1;
+ 	priv->xtalk = priv->efuse_wifi.efuse8192eu.xtal_k & 0x3f;
+ 
+-	dev_info(&priv->udev->dev, "Vendor: %.7s\n", efuse->vendor_name);
+-	dev_info(&priv->udev->dev, "Product: %.11s\n", efuse->device_name);
+-	if (memchr_inv(efuse->serial, 0xff, 11))
+-		dev_info(&priv->udev->dev, "Serial: %.11s\n", efuse->serial);
+-	else
+-		dev_info(&priv->udev->dev, "Serial not available.\n");
++	/*
++	 * device_info section seems to be laid out as records
++	 * [ total length | 0x03 | value ] so:
++	 * - vendor length + 2
++	 * - 0x03
++	 * - vendor string (not null terminated)
++	 * - product length + 2
++	 * - 0x03
++	 * - product string (not null terminated)
++	 * Then there is one or 2 0x00 on all the 4 devices I own or found
++	 * dumped online.
++	 * As previous version of the code handled an optional serial
++	 * string, I now assume there may be a third record if the
++	 * length is not 0.
++	 */
++	record_offset = 0;
++	rtl8192eu_log_next_device_info(priv, "Vendor", efuse->device_info, &record_offset);
++	rtl8192eu_log_next_device_info(priv, "Product", efuse->device_info, &record_offset);
++	rtl8192eu_log_next_device_info(priv, "Serial", efuse->device_info, &record_offset);
+ 
+ 	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_EFUSE) {
+ 		unsigned char *raw = priv->efuse_wifi.raw;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.30.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
