@@ -2,102 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C18F6369DD9
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Apr 2021 02:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B7E336A034
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Apr 2021 10:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235990AbhDXAcq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Apr 2021 20:32:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33520 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232742AbhDXAcp (ORCPT
+        id S234468AbhDXIh1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 24 Apr 2021 04:37:27 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:61641 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233677AbhDXIhX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Apr 2021 20:32:45 -0400
-Received: from mail-qv1-xf49.google.com (mail-qv1-xf49.google.com [IPv6:2607:f8b0:4864:20::f49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0B2C061574
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Apr 2021 17:32:07 -0700 (PDT)
-Received: by mail-qv1-xf49.google.com with SMTP id i2-20020ad44cc20000b029019a3866abf5so19527080qvz.8
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Apr 2021 17:32:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=RFejzidZs9WShC54Po/eQzucWBdnznAwGFTqW1GHtRA=;
-        b=m5Pzy1/XJ+loDk6eFxYjHiBLEWRQYL0J4X0ksUJl1NZbABjbPj5VDQS+kCVOxB6Ov5
-         KF6kAt7LUZO2Oa7QDzOg/W2udelkzdNvyTneZmeVhXe6Sq02vgeyURI+guxG1Yow6wcC
-         bIJskRi1Ua9X7jR/L2IrYbPZPvVa9U1MNknIttWKNfpbQK8fpDweUp9v5rDyaruQ23lG
-         mCKVasoKPdjHyi20Msa8NY/P+9RTPQBLWQBMFy90k6rP/cLi5+y8dHNpvrIGGDs8gG7p
-         3FQ+YLVIHJk8UyhE7QUuWviylIhyxc4CucNrU+IzHFOQVloCkAFs3NshmX08FrjJ3CYv
-         LcDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=RFejzidZs9WShC54Po/eQzucWBdnznAwGFTqW1GHtRA=;
-        b=Wkih+Ro2HyuCfcPTtz3rsiVlXahRtwD9HqF2NM8BvVN/mIaBQbcfXYsOj2DlrcyI0C
-         hRk0XoRxk1FfnUUsNOZL3hSZInZde2dbHTkiEsL4eis6pla4x+FkzyLefAW+mvR/tH5r
-         VIkEEyT08XwFXwstAgV7KzjN9dNmGR1Ty28g0wRZfvHCFIv6aZZ1FSB3SqPsyN960AX5
-         8NSqx/Kr5JKBJ599Ky1RLd4aI2qRNYMv26WvascL9ID1yiFTxRMaC3nwd78yT4yhPUT6
-         oj6aRH9dBgvWPX1AaeHaFodkwdQinlw94Np5/jRahshpYDvoWKtkgHAd8qwPV7s+HqeA
-         pagQ==
-X-Gm-Message-State: AOAM530hFfmJ3H7jp8h6jBHXOrspUcbJnEVWtdZ2WybwhW1XxobXkcEK
-        zKz5WrzqUl3cJm7d56WPFhVbr5EfjJIbqtNL
-X-Google-Smtp-Source: ABdhPJxQMJnyA85XBhuZy+o/vPEW0Obv4Fc6bJsnFW7BBf5sWNUsHo6zFmCeTWWldeb6Nd2py7jKrhPWh/BcDPb0
-X-Received: from manoj.svl.corp.google.com ([2620:15c:2ce:0:fca2:d161:2d88:e606])
- (user=manojgupta job=sendgmr) by 2002:a05:6214:1d0c:: with SMTP id
- e12mr7247304qvd.0.1619224326605; Fri, 23 Apr 2021 17:32:06 -0700 (PDT)
-Date:   Fri, 23 Apr 2021 17:31:31 -0700
-In-Reply-To: <20210422182545.726897-1-manojgupta@google.com>
-Message-Id: <20210424003131.2165866-1-manojgupta@google.com>
-Mime-Version: 1.0
-References: <20210422182545.726897-1-manojgupta@google.com>
-X-Mailer: git-send-email 2.31.1.498.g6c1eba8ee3d-goog
-Subject: [PATCH] iw: set retain atrribute on sections
-From:   Manoj Gupta <manojgupta@google.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     llozano@google.com, manojgupta@google.com,
-        linux-wireless@vger.kernel.org, Fangrui Song <maskray@google.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Sat, 24 Apr 2021 04:37:23 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1619253397; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=0YpOJ0nbALKSDDgtlfinFrWB8Fco5Pa1+7Ify9meDKw=; b=ous05QKfWwvuryf9hWNF+N8JUxqgF9d8ig18uUq7amXsmqUecD4rmwLNpW+tIy8G8laiUabo
+ vqdDz/f3yKWf4TUQvSuYwm34dfiWt+yrf1uINWAG/TlNZ3PFe2rb99QX7RlRgv6mD3aF6Q9L
+ qi8xD/JJduV6WGiWvCXunl9ccb4=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 6083d86603cfff345236f099 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 24 Apr 2021 08:35:50
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 96EAAC43460; Sat, 24 Apr 2021 08:35:49 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AFB9AC433D3;
+        Sat, 24 Apr 2021 08:35:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AFB9AC433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: Re: [PATCH 0/3] mt7921 runtime-pm fixes
+References: <cover.1619187875.git.lorenzo@kernel.org>
+        <af4e6186-9c40-26c4-42bf-4b247d1befaa@nbd.name>
+Date:   Sat, 24 Apr 2021 11:35:44 +0300
+In-Reply-To: <af4e6186-9c40-26c4-42bf-4b247d1befaa@nbd.name> (Felix Fietkau's
+        message of "Fri, 23 Apr 2021 16:43:43 +0200")
+Message-ID: <8735vgjd0f.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-LLD 13 and GNU ld 2.37 support -z start-stop-gc which allows garbage
-collection of C identifier name sections despite the __start_/__stop_
-references.  Simply set the retain attribute so that GCC 11 (if
-configure-time binutils is 2.36 or newer)/Clang 13 will set the
-SHF_GNU_RETAIN section attribute to prevent garbage collection.
+Felix Fietkau <nbd@nbd.name> writes:
 
-Without the patch, there are linker errors like the following with -z
-start-stop-gc:
-ld.lld: error: undefined symbol: __stop___cmd
->>> referenced by iw.c:418
->>>               iw.o:(__handle_cmd)
+> On 2021-04-23 16:27, Lorenzo Bianconi wrote:
+>> This series contains three mt7921 fixes introduce with new runtime-pm rework
+>> 
+>> Lorenzo Bianconi (3):
+>>   mt76: mt7921: fix possible AOOB issue in mt7921_mcu_tx_rate_report
+>>   mt76: connac: do not schedule wake_work if the runtime-pm is disabled
+>>   mt76: connac: do not schedule mac_work if the device is not running
+> For the series:
+> Reviewed-by: Felix Fietkau <nbd@nbd.name>
+>
+> Kalle, could you please take these patches directly, they're all
+> regression fixes.
 
-Suggested-by: Fangrui Song <maskray@google.com>
+Ok, I assigned this series to me on patchwork.
 
-Cc: stable@vger.kernel.org
-
-Signed-off-by: Manoj Gupta <manojgupta@google.com>
----
- iw.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/iw.h b/iw.h
-index 7f7f4fc..67aa00c 100644
---- a/iw.h
-+++ b/iw.h
-@@ -118,8 +118,9 @@ struct chandef {
- 		.parent = _section,					\
- 		.selector = (_sel),					\
- 	};								\
-+	_Pragma("GCC diagnostic ignored \"-Wattributes\"") 		\
- 	static struct cmd *__cmd ## _ ## _symname ## _ ## _handler ## _ ## _nlcmd ## _ ## _idby ## _ ## _hidden ## _p \
--	__attribute__((used,section("__cmd"))) =			\
-+	__attribute__((used,retain,section("__cmd"))) =			\
- 	&__cmd ## _ ## _symname ## _ ## _handler ## _ ## _nlcmd ## _ ## _idby ## _ ## _hidden
- #define __ACMD(_section, _symname, _name, _args, _nlcmd, _flags, _hidden, _idby, _handler, _help, _sel, _alias)\
- 	__COMMAND(_section, _symname, _name, _args, _nlcmd, _flags, _hidden, _idby, _handler, _help, _sel);\
 -- 
-2.31.1.498.g6c1eba8ee3d-goog
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
