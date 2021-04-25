@@ -2,115 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 689E036A6D7
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Apr 2021 13:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F014B36A798
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Apr 2021 15:51:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229997AbhDYLC4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 25 Apr 2021 07:02:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53744 "EHLO
+        id S230242AbhDYNwP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 25 Apr 2021 09:52:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229659AbhDYLC4 (ORCPT
+        with ESMTP id S229837AbhDYNwN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 25 Apr 2021 07:02:56 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2F0C061574
-        for <linux-wireless@vger.kernel.org>; Sun, 25 Apr 2021 04:02:12 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id y22-20020a17090a8b16b0290150ae1a6d2bso3674121pjn.0
-        for <linux-wireless@vger.kernel.org>; Sun, 25 Apr 2021 04:02:12 -0700 (PDT)
+        Sun, 25 Apr 2021 09:52:13 -0400
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F710C061574
+        for <linux-wireless@vger.kernel.org>; Sun, 25 Apr 2021 06:51:34 -0700 (PDT)
+Received: by mail-il1-x135.google.com with SMTP id l9so1961726ilh.10
+        for <linux-wireless@vger.kernel.org>; Sun, 25 Apr 2021 06:51:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=RZKR8ck1KX2HeGx+2oK1RAn3RiTZ1YTGQyJAx9GZEnI=;
-        b=eI1slnRP0b9nAS71fudHoITMbsdH1FtZrqWcIhDw6ZVScwWGRNxt9YyeDiOwmQSKuF
-         5Y+dGzWIwONOXZtjhBgQD4rbyDvAgBW2AmKBThruM+CDMdKMwQOwnW6i452H5dFZrYqb
-         IKX+KkxIwfaTxrAKHfUjvgNjm2bfoPg1I/EAwr0yvvy2ZZ/coWmjjwvSyd5AH+GG+Oz8
-         AFkO44xZWNIOb4FdmuuaK1S4dfe3ZCQip6QqYj5R3DyFwmAJ7nGx45iEZYXXEGHjYhP4
-         aT27nykRGvTfIVRJj0M0160hjBrmMXOSZmhrp1O/nBLh/nixDbzD3tWiRASJTrtH67ct
-         4G/w==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=l0+KhPuA998Z8V+8ORBIdhooETDag/KsWAI/Yqiy3Zo=;
+        b=n1S6aDwdIg1waGSFFfhdYuA3AS+mDdvchgz6JmWvLyqCopiQDxpOUTk85ZXt9eDFlK
+         UiWGJyjDPlq+G3DH5DjmMqjU04pIk1rzzWhPJRHkO7ELoAQbWmJ3RY+Q12nJoFdDedEF
+         UPSI2ZDv3lt9sys76HFYUIiUfZ+tHuNK6ebeWMFLIbq4idjVH0UGfzSd8OPjIrJpiwff
+         u6Au7U3eMrb90+OiX9Ev2vgCT0/yL9KIdk1DLTQ4dLHdSXd8BabWGSuLejkZXBUqe8s+
+         B8BsM4yyuRJprGiKOkkibyxjPHx+crnB0MupnIOpF5BRr5dX1UHX/baMLIzoSiDgu6pa
+         5jcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=RZKR8ck1KX2HeGx+2oK1RAn3RiTZ1YTGQyJAx9GZEnI=;
-        b=RNL4xEjDz0il+sHDWdAVAJJG60I9gJPHDplLHJTQU7wk3wEgeBorISETua5D3zVvI3
-         xWx02cXTgGqXIaqQ6NDJ6FkJjDguQW76zV6ErkRwG1jXXMorxvrJbp0MSMlHWXwpMHOk
-         2CmrR6AovvWYIPT6Km9PRIGmXeSBsSMvZgb+ujlm1I+LYulEumsQvLwFiwc3Yie/sgIN
-         E414kyK5FcoqCY5EVr7DH1Mvv8HquYGwiU/7UK7l+E9Q7otprRBSlGG3TT9GKuxOWJKT
-         UgdAEAZhDYH0TuzVNgtBv5VILOZZ/E+yoWJVAhNoEUagihyD//S4PxM9pqh+RamQcWNH
-         BtyQ==
-X-Gm-Message-State: AOAM533OGaSn/L9k1Be13JwUgwO4B6rTtSysEqRm6nK1jniI7vmGCOUD
-        ljpwXp83K7kj9qzkIC6STsrLcA==
-X-Google-Smtp-Source: ABdhPJxwsmKYfTpwBg5m/3CapXl2HSdzZPvK9p8vUYBYwfw64aWilPMIw33q9Hrr+GqWWWtNWywnkg==
-X-Received: by 2002:a17:90b:1bc1:: with SMTP id oa1mr13972865pjb.46.1619348532126;
-        Sun, 25 Apr 2021 04:02:12 -0700 (PDT)
-Received: from localhost.localdomain (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id o5sm8728629pgq.58.2021.04.25.04.02.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Apr 2021 04:02:11 -0700 (PDT)
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, Shawn Guo <shawn.guo@linaro.org>
-Subject: [PATCH] brcmfmac: use ISO3166 country code and 0 rev as fallback
-Date:   Sun, 25 Apr 2021 19:02:00 +0800
-Message-Id: <20210425110200.3050-1-shawn.guo@linaro.org>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=l0+KhPuA998Z8V+8ORBIdhooETDag/KsWAI/Yqiy3Zo=;
+        b=C2fVAjyIOI35lnJjbZw8ixQCbpStHcwmCHD5s7d+PLB0yy8HaXSYElcIt/Kqq9b7OC
+         YKWZBBiBj0Cl1jS7yL96Ji79p4Youb2uT8AP4ZIpyRopLMJkkeEyT7JdLCBuU36zyxnR
+         +ArhovMeT7Lb9a5FJ2J+isMBErwoOxmUJwk7nlooQM1ThgOqCQ1NVKFoxWkeGWiaIkdL
+         G+AJI5a78sA422bKkKSsyE92IEbU4GeBKtV5dQ0ipt+KxtgD7sIlVdWlWuYxXttSG+5l
+         /FGYcxlS7M3EZjsU0rGNebuKhOXRE8gKL9npyP4eAi88Mb7+ZZgDqsIYy6TQwqInbTyN
+         wqmw==
+X-Gm-Message-State: AOAM533xzOtf5FyFJ11e5BbIQZLwsrI5KhvIJLgBThP9vLm1xuH02sA7
+        5rn+D1lAQf1mITb6dLG/0rESaWH12ucbL/Ryc1w=
+X-Google-Smtp-Source: ABdhPJysOI+qki/wpAznM97NNfpR+d0dvEvbSm8vdGa4/Ec8W/JDnWNJJRWfeSKAkiHoYP/2McBjapa2LvL1IXRkazI=
+X-Received: by 2002:a05:6e02:4d0:: with SMTP id f16mr10036714ils.80.1619358693474;
+ Sun, 25 Apr 2021 06:51:33 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a02:638b:0:0:0:0:0 with HTTP; Sun, 25 Apr 2021 06:51:33
+ -0700 (PDT)
+Reply-To: marvinphillip002@gmail.com
+From:   marvin phillip <barristermu0@gmail.com>
+Date:   Sun, 25 Apr 2021 13:51:33 +0000
+Message-ID: <CAL8vDK-uP3vaOaL6kzmvd3V8gnbHwqw4+cWYuUGC9OLhqLZxgA@mail.gmail.com>
+Subject: Hej
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Instead of aborting country code setup in firmware, use ISO3166 country
-code and 0 rev as fallback, when country_codes mapping table is not
-configured.  This fallback saves the country_codes table setup for recent
-brcmfmac chipsets/firmwares, which just use ISO3166 code and require no
-revision number.
-
-Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
----
- .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index f4405d7861b6..6cb09c7c37b6 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -7442,18 +7442,23 @@ static s32 brcmf_translate_country_code(struct brcmf_pub *drvr, char alpha2[2],
- 	s32 found_index;
- 	int i;
- 
--	country_codes = drvr->settings->country_codes;
--	if (!country_codes) {
--		brcmf_dbg(TRACE, "No country codes configured for device\n");
--		return -EINVAL;
--	}
--
- 	if ((alpha2[0] == ccreq->country_abbrev[0]) &&
- 	    (alpha2[1] == ccreq->country_abbrev[1])) {
- 		brcmf_dbg(TRACE, "Country code already set\n");
- 		return -EAGAIN;
- 	}
- 
-+	country_codes = drvr->settings->country_codes;
-+	if (!country_codes) {
-+		brcmf_dbg(TRACE, "No country codes configured for device, using ISO3166 code and 0 rev\n");
-+		memset(ccreq, 0, sizeof(*ccreq));
-+		ccreq->country_abbrev[0] = alpha2[0];
-+		ccreq->country_abbrev[1] = alpha2[1];
-+		ccreq->ccode[0] = alpha2[0];
-+		ccreq->ccode[1] = alpha2[1];
-+		return 0;
-+	}
-+
- 	found_index = -1;
- 	for (i = 0; i < country_codes->table_size; i++) {
- 		cc = &country_codes->table[i];
--- 
-2.17.1
-
+Hej, v=C3=A4nligen informeras om att det h=C3=A4r e-postmeddelandet som kom=
+ till
+din brevl=C3=A5da inte =C3=A4r ett fel utan riktades specifikt till dig f=
+=C3=B6r ditt
+=C3=B6verv=C3=A4gande. Jag har ett f=C3=B6rslag p=C3=A5 ($ 7.500.000,00) kv=
+ar av min
+avlidne klient Ingenj=C3=B6r Carlos som b=C3=A4r samma namn med dig, som br=
+ukade
+arbeta och bodde h=C3=A4r i Lome Togo. Min sena klient och familj var
+inblandade i en bilolycka som tog deras liv . Jag kontaktar dig som
+anh=C3=B6rig till den avlidne s=C3=A5 att du kan f=C3=A5 pengarna p=C3=A5 f=
+ordringar. Vid
+ditt snabba svar kommer jag att informera dig om hur detta f=C3=B6rbund
+genomf=C3=B6rs. Kontakta mig p=C3=A5 de h=C3=A4r e-postmeddelandena
+(marvinphillip002@gmail.com)
