@@ -2,201 +2,288 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB62C36A264
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Apr 2021 19:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 571FF36A40C
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Apr 2021 04:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232051AbhDXRbG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 24 Apr 2021 13:31:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54222 "EHLO
+        id S229586AbhDYCBQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 24 Apr 2021 22:01:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231307AbhDXRbF (ORCPT
+        with ESMTP id S229615AbhDYCBP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 24 Apr 2021 13:31:05 -0400
-Received: from mail-qk1-x74a.google.com (mail-qk1-x74a.google.com [IPv6:2607:f8b0:4864:20::74a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9631C061574
-        for <linux-wireless@vger.kernel.org>; Sat, 24 Apr 2021 10:30:26 -0700 (PDT)
-Received: by mail-qk1-x74a.google.com with SMTP id r123-20020a378f810000b029028244d5f023so17120176qkd.2
-        for <linux-wireless@vger.kernel.org>; Sat, 24 Apr 2021 10:30:26 -0700 (PDT)
+        Sat, 24 Apr 2021 22:01:15 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0394AC06175F
+        for <linux-wireless@vger.kernel.org>; Sat, 24 Apr 2021 19:00:34 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id y18so61529plb.1
+        for <linux-wireless@vger.kernel.org>; Sat, 24 Apr 2021 19:00:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=b94yWJQ2p+2VWUhlgS+VEXjeZZgECOmKGd3boNqA2Uw=;
-        b=WNuboMNUD51JnzaBdj4NZHg20r4lnFheTcHbP1pS7lZNUCk5sOhHJya5uoy4pV+j0B
-         96Sed+M3fIZ5lTN4shPNdquZ03boFlnapWSn5tZXL4DdwrPJW5+4g+KedgZd4/3ctV8Q
-         tElb/rNhZKoplcYQSbTzeZ2msHdcuATRi/C3OOnURv8uH8PEgmL9CjpMhjz6/PzbDDyo
-         PBYKWz2IFnrRGW4EWeufiYW4d9aaWHIkMxq8nAyJiGS5YvyFrzqierFKI7x+Dv3jkiDg
-         SUIlM9ArZYq66s3bbQ5542bURaPQS1q8/5L506UD7B6lNP0m5gWGO+hD/WI01HHt70J2
-         a7EA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=pfKEWUq+7HdZXyLv9uBgLMyTjIFIuvFO3U3TOTycvWs=;
+        b=TXA4W+j6ZPgZcjznEbUBFH/sa2ePdug4fG/3ZZgIQUHaMBbgAikBel4x05+lMn6TKx
+         BTwGfiEIE9CMhmw3LRHRD7MM9nRcl0CsiU9SSZX0YKUfe6+BEKugvq73PaQH/bBRG5+q
+         W/QelVx/yeaSJIR+xD04abdDjKSAvPtDLHZ0MWC0jt3NkSsWIpdOTAJpkC7pAiMjLMyM
+         1DH3XT6SSzdI7tZxo0adlAJuQKWcFq9jP545WOxsj2PMN3mm9NTTn6mE3dyLg0M5TUu6
+         ZoX8q8epntw7ynIcY0m1xWUQrVaaettt42UkUiU2qf+x4aEzd0EkXNrTprx/s8BhT9fN
+         kvVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=b94yWJQ2p+2VWUhlgS+VEXjeZZgECOmKGd3boNqA2Uw=;
-        b=dJDxCeNVmqvQm8LKpqG55DuI7BlthZTKbPd94z51IKzjgzd/NORqec3arkxh5w8GAP
-         uDl6CiosX80Bdf2fsd93uf+Wr+nzjsjlrEdgmQ20GCYYcABVcPVpAdyBGjVop5+AqBhj
-         PfIpfGad+LBelg9dMIAa+1jMKzO7++2JhyV9PVYVe/eHS0b6s/Z+lsX8jMJengTXQpj5
-         KsDm+cgnq3aKrOmxpu/3dYlMBrWR+Z2FFrbU9ahANv29vQH6TNb5hYDad6hUWHd2KD+8
-         d5419LPs+tul+A1CjJQnnjGZI4DPvPghZluQtXitWrtxm14JOMyimTs8n2ubygCNJJ21
-         Yxwg==
-X-Gm-Message-State: AOAM531tih5kUUedazHdvYc1xkIAeuUhK/kZOc/+5VD3FwWSBNySyh8T
-        WAxKVkzy6W/tI95jhzaXmMPvpBjDxIMpHlCHR7iStgCdZgCZWF8Hgr1d0iUcNu3EAPhq86ABocv
-        /cgZge4+z27Q0qB9k3CukAy3CLi3MkBcU+aZYjKMs+htwh/VpUDkMjP5i154az7nOEd70QwZHO+
-        Y=
-X-Google-Smtp-Source: ABdhPJz4v0nSKmWITKUE58jphS03wm2NakSlLefntC0c3E4PJ4I328ExZJkDxRPohNBCDIPx4vqRnslnHIlj
-X-Received: from coin.lon.corp.google.com ([2a00:79e0:d:204:fb12:87ba:efda:3935])
- (user=pterjan job=sendgmr) by 2002:ad4:42cf:: with SMTP id
- f15mr9977179qvr.50.1619285425897; Sat, 24 Apr 2021 10:30:25 -0700 (PDT)
-Date:   Sat, 24 Apr 2021 18:29:59 +0100
-In-Reply-To: <a69a3d60-71a0-3153-b248-dacc8b95bea8@gmail.com>
-Message-Id: <20210424172959.1559890-1-pterjan@google.com>
-Mime-Version: 1.0
-References: <a69a3d60-71a0-3153-b248-dacc8b95bea8@gmail.com>
-X-Mailer: git-send-email 2.31.1.498.g6c1eba8ee3d-goog
-Subject: [PATCH v2] rtl8xxxu: Fix device info for RTL8192EU devices
-From:   Pascal Terjan <pterjan@google.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Jes Sorensen <jes.sorensen@gmail.com>,
-        Pascal Terjan <pterjan@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=pfKEWUq+7HdZXyLv9uBgLMyTjIFIuvFO3U3TOTycvWs=;
+        b=XPC5y9oME22tjtBlKvkKhmr0SGpLCMW8YiDnCVIiMxZDuiTi/xE5csgwRvVD2PyDS5
+         Pn0KDiT6bbZ04eH4ypFOORb9FEtqTxrOF6/vl5W+YgePxch9mF6nAnoaQxMo6e2fkXZw
+         4zTJ98vwFMro7xWxj+7HHMd0uNtKjBHppCZqu6/hZfn/jrMXAHu/dOcWrSJq2/3zVMVR
+         LoUX1I4sWA8EdeM6aDJwhL/zrFhSA4kU5m7PsHc4iJLBEESBEoVDZ1v7pEaxyuWmNCEU
+         mgMX7Lcq/3yLjY97WRinSbdz207hJh1f4K/UokfT1dUQVsGBtb3bu3o7j4TgynzHSFTG
+         6wKw==
+X-Gm-Message-State: AOAM531GvvK0EPkS/UPjArpLQrylC9/Wha7h6DXoqhmZEyGIx7tPVR1x
+        balKq8y7drXoT9qV8bccaU45vA==
+X-Google-Smtp-Source: ABdhPJyLTHM+AeR2NF5iMsqOHSN/wM4K9/TwkZNXzXYcU1XACN4MG5MKrwnhNLEYGlAWcX8nSTQu3A==
+X-Received: by 2002:a17:902:9b96:b029:ec:b399:8389 with SMTP id y22-20020a1709029b96b02900ecb3998389mr11387230plp.1.1619316034219;
+        Sat, 24 Apr 2021 19:00:34 -0700 (PDT)
+Received: from localhost.localdomain (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id f20sm8101273pgb.47.2021.04.24.19.00.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Apr 2021 19:00:33 -0700 (PDT)
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Vinod Koul <vkoul@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stuart Hayes <stuart.w.hayes@gmail.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        Timur Tabi <timur@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, dmaengine@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
+        alsa-devel@alsa-project.org, Shawn Guo <shawn.guo@linaro.org>
+Subject: [PATCH] firmware: replace HOTPLUG with UEVENT in FW_ACTION defines
+Date:   Sun, 25 Apr 2021 10:00:24 +0800
+Message-Id: <20210425020024.28057-1-shawn.guo@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Based on 2001:3319 and 2357:0109 which I used to test the fix and
-0bda:818b and 2357:0108 for which I found efuse dumps online.
+With commit 312c004d36ce ("[PATCH] driver core: replace "hotplug" by
+"uevent"") already in the tree over a decade, update the name of
+FW_ACTION defines to follow semantics, and reflect what the defines are
+really meant for, i.e. whether or not generate user space event.
 
-== 2357:0109 ==
-=== Before ===
-Vendor: Realtek
-Product: \x03802.11n NI
-Serial:
-=== After ===
-Vendor: Realtek
-Product: 802.11n NIC
-Serial not available.
-
-== 2001:3319 ==
-=== Before ===
-Vendor: Realtek
-Product: Wireless N
-Serial: no USB Adap
-=== After ===
-Vendor: Realtek
-Product: Wireless N Nano USB Adapter
-Serial not available.
-
-Signed-off-by: Pascal Terjan <pterjan@google.com>
+Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
 ---
-v2: properly check we don't get out of the 80 bytes section and cosmetic fixes
+ drivers/dma/imx-sdma.c                      |  2 +-
+ drivers/media/platform/exynos4-is/fimc-is.c |  2 +-
+ drivers/mfd/iqs62x.c                        |  2 +-
+ drivers/misc/lattice-ecp3-config.c          |  2 +-
+ drivers/net/wireless/ti/wlcore/main.c       |  2 +-
+ drivers/platform/x86/dell/dell_rbu.c        |  2 +-
+ drivers/remoteproc/remoteproc_core.c        |  2 +-
+ drivers/scsi/lpfc/lpfc_init.c               |  2 +-
+ drivers/tty/serial/ucc_uart.c               |  2 +-
+ include/linux/firmware.h                    |  4 ++--
+ lib/test_firmware.c                         | 10 +++++-----
+ sound/soc/codecs/wm8958-dsp2.c              |  6 +++---
+ 12 files changed, 19 insertions(+), 19 deletions(-)
 
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  | 11 +---
- .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         | 59 +++++++++++++++++--
- 2 files changed, 56 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index d6d1be4169e5..acb6b0cd3667 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -853,15 +853,10 @@ struct rtl8192eu_efuse {
- 	u8 usb_optional_function;
- 	u8 res9[2];
- 	u8 mac_addr[ETH_ALEN];		/* 0xd7 */
--	u8 res10[2];
--	u8 vendor_name[7];
--	u8 res11[2];
--	u8 device_name[0x0b];		/* 0xe8 */
--	u8 res12[2];
--	u8 serial[0x0b];		/* 0xf5 */
--	u8 res13[0x30];
-+	u8 device_info[80];
-+	u8 res11[3];
- 	u8 unknown[0x0d];		/* 0x130 */
--	u8 res14[0xc3];
-+	u8 res12[0xc3];
- };
+diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+index d5590c08db51..e2b559945c11 100644
+--- a/drivers/dma/imx-sdma.c
++++ b/drivers/dma/imx-sdma.c
+@@ -1829,7 +1829,7 @@ static int sdma_get_firmware(struct sdma_engine *sdma,
+ 	int ret;
  
- struct rtl8xxxu_reg8val {
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-index cfe2dfdae928..b06508d0cdf8 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-@@ -554,9 +554,43 @@ rtl8192e_set_tx_power(struct rtl8xxxu_priv *priv, int channel, bool ht40)
- 	}
+ 	ret = request_firmware_nowait(THIS_MODULE,
+-			FW_ACTION_HOTPLUG, fw_name, sdma->dev,
++			FW_ACTION_UEVENT, fw_name, sdma->dev,
+ 			GFP_KERNEL, sdma, sdma_load_firmware);
+ 
+ 	return ret;
+diff --git a/drivers/media/platform/exynos4-is/fimc-is.c b/drivers/media/platform/exynos4-is/fimc-is.c
+index 972d9601d236..8f3ba74f19f2 100644
+--- a/drivers/media/platform/exynos4-is/fimc-is.c
++++ b/drivers/media/platform/exynos4-is/fimc-is.c
+@@ -436,7 +436,7 @@ static void fimc_is_load_firmware(const struct firmware *fw, void *context)
+ static int fimc_is_request_firmware(struct fimc_is *is, const char *fw_name)
+ {
+ 	return request_firmware_nowait(THIS_MODULE,
+-				FW_ACTION_HOTPLUG, fw_name, &is->pdev->dev,
++				FW_ACTION_UEVENT, fw_name, &is->pdev->dev,
+ 				GFP_KERNEL, is, fimc_is_load_firmware);
  }
  
-+static void rtl8192eu_log_next_device_info(struct rtl8xxxu_priv *priv,
-+					   char *record_name,
-+					   char *device_info,
-+					   unsigned int *record_offset)
-+{
-+	char *record = device_info + *record_offset;
-+
-+	/* A record is [ total length | 0x03 | value ] */
-+	unsigned char l = record[0];
-+
-+	/*
-+	 * The whole device info section seems to be 80 characters, make sure
-+	 * we don't read further.
-+	 */
-+	if (*record_offset + l > 80) {
-+		dev_warn(&priv->udev->dev,
-+			 "invalid record length %d while parsing \"%s\" at offset %u.\n",
-+			 l, record_name, *record_offset);
-+		return;
-+	}
-+
-+	if (l >= 2) {
-+		char value[80];
-+
-+		memcpy(value, &record[2], l - 2);
-+		value[l - 2] = '\0';
-+		dev_info(&priv->udev->dev, "%s: %s\n", record_name, value);
-+		*record_offset = *record_offset + l;
-+	} else {
-+		dev_info(&priv->udev->dev, "%s not available.\n", record_name);
-+	}
-+}
-+
- static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
- {
- 	struct rtl8192eu_efuse *efuse = &priv->efuse_wifi.efuse8192eu;
-+	unsigned int record_offset;
- 	int i;
+diff --git a/drivers/mfd/iqs62x.c b/drivers/mfd/iqs62x.c
+index d1fc38a78acb..9805cf191245 100644
+--- a/drivers/mfd/iqs62x.c
++++ b/drivers/mfd/iqs62x.c
+@@ -998,7 +998,7 @@ static int iqs62x_probe(struct i2c_client *client)
  
- 	if (efuse->rtl_id != cpu_to_le16(0x8129))
-@@ -604,12 +638,25 @@ static int rtl8192eu_parse_efuse(struct rtl8xxxu_priv *priv)
- 	priv->has_xtalk = 1;
- 	priv->xtalk = priv->efuse_wifi.efuse8192eu.xtal_k & 0x3f;
+ 	device_property_read_string(&client->dev, "firmware-name", &fw_name);
  
--	dev_info(&priv->udev->dev, "Vendor: %.7s\n", efuse->vendor_name);
--	dev_info(&priv->udev->dev, "Product: %.11s\n", efuse->device_name);
--	if (memchr_inv(efuse->serial, 0xff, 11))
--		dev_info(&priv->udev->dev, "Serial: %.11s\n", efuse->serial);
--	else
--		dev_info(&priv->udev->dev, "Serial not available.\n");
-+	/*
-+	 * device_info section seems to be laid out as records
-+	 * [ total length | 0x03 | value ] so:
-+	 * - vendor length + 2
-+	 * - 0x03
-+	 * - vendor string (not null terminated)
-+	 * - product length + 2
-+	 * - 0x03
-+	 * - product string (not null terminated)
-+	 * Then there is one or 2 0x00 on all the 4 devices I own or found
-+	 * dumped online.
-+	 * As previous version of the code handled an optional serial
-+	 * string, I now assume there may be a third record if the
-+	 * length is not 0.
-+	 */
-+	record_offset = 0;
-+	rtl8192eu_log_next_device_info(priv, "Vendor", efuse->device_info, &record_offset);
-+	rtl8192eu_log_next_device_info(priv, "Product", efuse->device_info, &record_offset);
-+	rtl8192eu_log_next_device_info(priv, "Serial", efuse->device_info, &record_offset);
+-	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
++	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+ 				      fw_name ? : iqs62x->dev_desc->fw_name,
+ 				      &client->dev, GFP_KERNEL, iqs62x,
+ 				      iqs62x_firmware_load);
+diff --git a/drivers/misc/lattice-ecp3-config.c b/drivers/misc/lattice-ecp3-config.c
+index 5eaf74447ca1..0f54730c7ed5 100644
+--- a/drivers/misc/lattice-ecp3-config.c
++++ b/drivers/misc/lattice-ecp3-config.c
+@@ -198,7 +198,7 @@ static int lattice_ecp3_probe(struct spi_device *spi)
+ 	spi_set_drvdata(spi, data);
  
- 	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_EFUSE) {
- 		unsigned char *raw = priv->efuse_wifi.raw;
+ 	init_completion(&data->fw_loaded);
+-	err = request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
++	err = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+ 				      FIRMWARE_NAME, &spi->dev,
+ 				      GFP_KERNEL, spi, firmware_load);
+ 	if (err) {
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index 8509b989940c..5bf15355c2b3 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -6784,7 +6784,7 @@ int wlcore_probe(struct wl1271 *wl, struct platform_device *pdev)
+ 
+ 	if (pdev_data->family && pdev_data->family->nvs_name) {
+ 		nvs_name = pdev_data->family->nvs_name;
+-		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
++		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+ 					      nvs_name, &pdev->dev, GFP_KERNEL,
+ 					      wl, wlcore_nvs_cb);
+ 		if (ret < 0) {
+diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
+index 03c3ff34bcf5..8758d717ae5c 100644
+--- a/drivers/platform/x86/dell/dell_rbu.c
++++ b/drivers/platform/x86/dell/dell_rbu.c
+@@ -573,7 +573,7 @@ static ssize_t image_type_write(struct file *filp, struct kobject *kobj,
+ 		if (!rbu_data.entry_created) {
+ 			spin_unlock(&rbu_data.lock);
+ 			req_firm_rc = request_firmware_nowait(THIS_MODULE,
+-				FW_ACTION_NOHOTPLUG, "dell_rbu",
++				FW_ACTION_NOUEVENT, "dell_rbu",
+ 				&rbu_device->dev, GFP_KERNEL, &context,
+ 				callbackfn_rbu);
+ 			if (req_firm_rc) {
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index ab150765d124..c3e01e95c0d2 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1628,7 +1628,7 @@ static int rproc_trigger_auto_boot(struct rproc *rproc)
+ 	 * We're initiating an asynchronous firmware loading, so we can
+ 	 * be built-in kernel code, without hanging the boot process.
+ 	 */
+-	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
++	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+ 				      rproc->firmware, &rproc->dev, GFP_KERNEL,
+ 				      rproc, rproc_auto_boot_callback);
+ 	if (ret < 0)
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 71f340dd4fbd..53546b079553 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -13159,7 +13159,7 @@ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
+ 	snprintf(file_name, ELX_MODEL_NAME_SIZE, "%s.grp", phba->ModelName);
+ 
+ 	if (fw_upgrade == INT_FW_UPGRADE) {
+-		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
++		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+ 					file_name, &phba->pcidev->dev,
+ 					GFP_KERNEL, (void *)phba,
+ 					lpfc_write_firmware);
+diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
+index d6a8604157ab..e651c9aafdd0 100644
+--- a/drivers/tty/serial/ucc_uart.c
++++ b/drivers/tty/serial/ucc_uart.c
+@@ -1227,7 +1227,7 @@ static int soft_uart_init(struct platform_device *ofdev)
+ 		 * kernel, then we use it.
+ 		 */
+ 		ret = request_firmware_nowait(THIS_MODULE,
+-					      FW_ACTION_HOTPLUG, filename, &ofdev->dev,
++					      FW_ACTION_UEVENT, filename, &ofdev->dev,
+ 					      GFP_KERNEL, &ofdev->dev, uart_firmware_cont);
+ 		if (ret) {
+ 			dev_err(&ofdev->dev,
+diff --git a/include/linux/firmware.h b/include/linux/firmware.h
+index 84e346ae766e..25109192cebe 100644
+--- a/include/linux/firmware.h
++++ b/include/linux/firmware.h
+@@ -6,8 +6,8 @@
+ #include <linux/compiler.h>
+ #include <linux/gfp.h>
+ 
+-#define FW_ACTION_NOHOTPLUG 0
+-#define FW_ACTION_HOTPLUG 1
++#define FW_ACTION_NOUEVENT 0
++#define FW_ACTION_UEVENT 1
+ 
+ struct firmware {
+ 	size_t size;
+diff --git a/lib/test_firmware.c b/lib/test_firmware.c
+index b6fe89add9fe..1bccd6cd5f48 100644
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -260,8 +260,8 @@ static ssize_t config_show(struct device *dev,
+ 	len += scnprintf(buf + len, PAGE_SIZE - len,
+ 			"send_uevent:\t\t%s\n",
+ 			test_fw_config->send_uevent ?
+-			"FW_ACTION_HOTPLUG" :
+-			"FW_ACTION_NOHOTPLUG");
++			"FW_ACTION_UEVENT" :
++			"FW_ACTION_NOUEVENT");
+ 	len += scnprintf(buf + len, PAGE_SIZE - len,
+ 			"into_buf:\t\t%s\n",
+ 			test_fw_config->into_buf ? "true" : "false");
+@@ -729,7 +729,7 @@ static ssize_t trigger_custom_fallback_store(struct device *dev,
+ 	mutex_lock(&test_fw_mutex);
+ 	release_firmware(test_firmware);
+ 	test_firmware = NULL;
+-	rc = request_firmware_nowait(THIS_MODULE, FW_ACTION_NOHOTPLUG, name,
++	rc = request_firmware_nowait(THIS_MODULE, FW_ACTION_NOUEVENT, name,
+ 				     dev, GFP_KERNEL, NULL,
+ 				     trigger_async_request_cb);
+ 	if (rc) {
+@@ -938,8 +938,8 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
+ 	pr_info("batched loading '%s' custom fallback mechanism %u times\n",
+ 		test_fw_config->name, test_fw_config->num_requests);
+ 
+-	send_uevent = test_fw_config->send_uevent ? FW_ACTION_HOTPLUG :
+-		FW_ACTION_NOHOTPLUG;
++	send_uevent = test_fw_config->send_uevent ? FW_ACTION_UEVENT :
++		FW_ACTION_NOUEVENT;
+ 
+ 	for (i = 0; i < test_fw_config->num_requests; i++) {
+ 		req = &test_fw_config->reqs[i];
+diff --git a/sound/soc/codecs/wm8958-dsp2.c b/sound/soc/codecs/wm8958-dsp2.c
+index 3bce9a14f0f3..a5ea1645993b 100644
+--- a/sound/soc/codecs/wm8958-dsp2.c
++++ b/sound/soc/codecs/wm8958-dsp2.c
+@@ -912,13 +912,13 @@ void wm8958_dsp2_init(struct snd_soc_component *component)
+ 
+ 
+ 	/* We don't *require* firmware and don't want to delay boot */
+-	request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
++	request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+ 				"wm8958_mbc.wfw", component->dev, GFP_KERNEL,
+ 				component, wm8958_mbc_loaded);
+-	request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
++	request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+ 				"wm8958_mbc_vss.wfw", component->dev, GFP_KERNEL,
+ 				component, wm8958_mbc_vss_loaded);
+-	request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
++	request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+ 				"wm8958_enh_eq.wfw", component->dev, GFP_KERNEL,
+ 				component, wm8958_enh_eq_loaded);
+ 
 -- 
-2.30.2
+2.17.1
 
