@@ -2,96 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EB3036A6CD
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Apr 2021 12:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 689E036A6D7
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Apr 2021 13:02:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbhDYKzp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 25 Apr 2021 06:55:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52214 "EHLO
+        id S229997AbhDYLC4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 25 Apr 2021 07:02:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbhDYKzp (ORCPT
+        with ESMTP id S229659AbhDYLC4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 25 Apr 2021 06:55:45 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A39CC061574;
-        Sun, 25 Apr 2021 03:55:05 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id y1so11777982plg.11;
-        Sun, 25 Apr 2021 03:55:05 -0700 (PDT)
+        Sun, 25 Apr 2021 07:02:56 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2F0C061574
+        for <linux-wireless@vger.kernel.org>; Sun, 25 Apr 2021 04:02:12 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id y22-20020a17090a8b16b0290150ae1a6d2bso3674121pjn.0
+        for <linux-wireless@vger.kernel.org>; Sun, 25 Apr 2021 04:02:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id;
-        bh=8uNST6BHrCaJJiddSQkuIrWwpsSi7XWHQYiRIVP23V8=;
-        b=c2Uv6NWpPeQoa8IZLobkE6CbRlY7DEvRTtZscWBoNsiytcyOjko5F8V7L4JwcKlvWO
-         JueCkgOwXwXiqGtsKUoWZtXXcta8RPjrWi7RuOWdSpiCtpsJN2lcDmhuC9lX6KqMptiG
-         8oBzBXOGzVPVDCm6AcSncG8255thxWAM90ZIMA5HnoxsSw4/qqK6rXlEIXa0c3nv3MLR
-         H3bwn3MQlso+Tzj5mfvK1ST72RQGPRnkpPE2bxtf4/2+Ug6ezPsusOOqQ2ShIocMh61I
-         ndiioqs830wK3bk+VnZr8d5b/aXQzONOg/Mg6wqTayofHIqN9DEfI59A5EEVg8rUVsbo
-         kcaw==
+        bh=RZKR8ck1KX2HeGx+2oK1RAn3RiTZ1YTGQyJAx9GZEnI=;
+        b=eI1slnRP0b9nAS71fudHoITMbsdH1FtZrqWcIhDw6ZVScwWGRNxt9YyeDiOwmQSKuF
+         5Y+dGzWIwONOXZtjhBgQD4rbyDvAgBW2AmKBThruM+CDMdKMwQOwnW6i452H5dFZrYqb
+         IKX+KkxIwfaTxrAKHfUjvgNjm2bfoPg1I/EAwr0yvvy2ZZ/coWmjjwvSyd5AH+GG+Oz8
+         AFkO44xZWNIOb4FdmuuaK1S4dfe3ZCQip6QqYj5R3DyFwmAJ7nGx45iEZYXXEGHjYhP4
+         aT27nykRGvTfIVRJj0M0160hjBrmMXOSZmhrp1O/nBLh/nixDbzD3tWiRASJTrtH67ct
+         4G/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=8uNST6BHrCaJJiddSQkuIrWwpsSi7XWHQYiRIVP23V8=;
-        b=IrKDFmZ8QGsv4K+47nwa0QKNDb9E3G5vaH4sgDFK8SuFjmL/2PAHr8P3oYV7mmDPRY
-         4pMjblkD7OyrTOZo7GzGvbOtQUUh18YpqlHC9uZcK54Kdcjft8cJjzShe5fvRu6ODDI0
-         +IUNtp1ilK86WE6Af1JaRW+BHZfnhOZTq+669lw069btYXoMNvtAlBVCDdwFXRxifTc6
-         TCcyTXEcZfs1KXj+J0G6dHkbkXEieD0p5KFCQRzHEAKpTVSRlzsw0Y8uEx17c0SCiBpa
-         5vs94a7j1kFJQCJD5uB5wpokjmTH2i2NjRe1wtfkP495aspGQUi6hskk43gIAD8g2CJu
-         tUeA==
-X-Gm-Message-State: AOAM533WXASz2e48gg7Vfrhe6j2VztZK5QzvYT/FEYWxH9G2EvQQ5wgY
-        ekc5XOdsp7LDQOpUzrTFTLo=
-X-Google-Smtp-Source: ABdhPJyaw/z/hF428nIwctpnEi8Odqy/Hv19Oh8WaD8PPzgC/f4QsKNN7dI/472ryyPc5i42N7C2ng==
-X-Received: by 2002:a17:90b:1bd0:: with SMTP id oa16mr14578554pjb.49.1619348104965;
-        Sun, 25 Apr 2021 03:55:04 -0700 (PDT)
-Received: from localhost.localdomain ([49.37.83.82])
-        by smtp.gmail.com with ESMTPSA id o9sm9402821pfh.217.2021.04.25.03.55.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 25 Apr 2021 03:55:04 -0700 (PDT)
-From:   Souptick Joarder <jrdr.linux@gmail.com>
-To:     stas.yakovlev@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Souptick Joarder <jrdr.linux@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v2] ipw2x00: Minor documentation update
-Date:   Sun, 25 Apr 2021 16:24:48 +0530
-Message-Id: <1619348088-6887-1-git-send-email-jrdr.linux@gmail.com>
-X-Mailer: git-send-email 1.9.1
+        bh=RZKR8ck1KX2HeGx+2oK1RAn3RiTZ1YTGQyJAx9GZEnI=;
+        b=RNL4xEjDz0il+sHDWdAVAJJG60I9gJPHDplLHJTQU7wk3wEgeBorISETua5D3zVvI3
+         xWx02cXTgGqXIaqQ6NDJ6FkJjDguQW76zV6ErkRwG1jXXMorxvrJbp0MSMlHWXwpMHOk
+         2CmrR6AovvWYIPT6Km9PRIGmXeSBsSMvZgb+ujlm1I+LYulEumsQvLwFiwc3Yie/sgIN
+         E414kyK5FcoqCY5EVr7DH1Mvv8HquYGwiU/7UK7l+E9Q7otprRBSlGG3TT9GKuxOWJKT
+         UgdAEAZhDYH0TuzVNgtBv5VILOZZ/E+yoWJVAhNoEUagihyD//S4PxM9pqh+RamQcWNH
+         BtyQ==
+X-Gm-Message-State: AOAM533OGaSn/L9k1Be13JwUgwO4B6rTtSysEqRm6nK1jniI7vmGCOUD
+        ljpwXp83K7kj9qzkIC6STsrLcA==
+X-Google-Smtp-Source: ABdhPJxwsmKYfTpwBg5m/3CapXl2HSdzZPvK9p8vUYBYwfw64aWilPMIw33q9Hrr+GqWWWtNWywnkg==
+X-Received: by 2002:a17:90b:1bc1:: with SMTP id oa1mr13972865pjb.46.1619348532126;
+        Sun, 25 Apr 2021 04:02:12 -0700 (PDT)
+Received: from localhost.localdomain (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id o5sm8728629pgq.58.2021.04.25.04.02.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Apr 2021 04:02:11 -0700 (PDT)
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, Shawn Guo <shawn.guo@linaro.org>
+Subject: [PATCH] brcmfmac: use ISO3166 country code and 0 rev as fallback
+Date:   Sun, 25 Apr 2021 19:02:00 +0800
+Message-Id: <20210425110200.3050-1-shawn.guo@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kernel test robot throws below warning ->
+Instead of aborting country code setup in firmware, use ISO3166 country
+code and 0 rev as fallback, when country_codes mapping table is not
+configured.  This fallback saves the country_codes table setup for recent
+brcmfmac chipsets/firmwares, which just use ISO3166 code and require no
+revision number.
 
-drivers/net/wireless/intel/ipw2x00/ipw2100.c:5359: warning: This comment
-starts with '/**', but isn't a kernel-doc comment. Refer
-Documentation/doc-guide/kernel-doc.rst
-
-Minor update in documentation.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
 ---
-v2:
-	Updated docs.
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
- drivers/net/wireless/intel/ipw2x00/ipw2100.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-index 23fbddd..eeac9e3 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-@@ -5356,7 +5356,7 @@ struct ipw2100_wep_key {
- #define WEP_STR_128(x) x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7],x[8],x[9],x[10]
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index f4405d7861b6..6cb09c7c37b6 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -7442,18 +7442,23 @@ static s32 brcmf_translate_country_code(struct brcmf_pub *drvr, char alpha2[2],
+ 	s32 found_index;
+ 	int i;
  
- /**
-- * Set a the wep key
-+ * ipw2100_set_key() - Set the wep key
-  *
-  * @priv: struct to work on
-  * @idx: index of the key we want to set
+-	country_codes = drvr->settings->country_codes;
+-	if (!country_codes) {
+-		brcmf_dbg(TRACE, "No country codes configured for device\n");
+-		return -EINVAL;
+-	}
+-
+ 	if ((alpha2[0] == ccreq->country_abbrev[0]) &&
+ 	    (alpha2[1] == ccreq->country_abbrev[1])) {
+ 		brcmf_dbg(TRACE, "Country code already set\n");
+ 		return -EAGAIN;
+ 	}
+ 
++	country_codes = drvr->settings->country_codes;
++	if (!country_codes) {
++		brcmf_dbg(TRACE, "No country codes configured for device, using ISO3166 code and 0 rev\n");
++		memset(ccreq, 0, sizeof(*ccreq));
++		ccreq->country_abbrev[0] = alpha2[0];
++		ccreq->country_abbrev[1] = alpha2[1];
++		ccreq->ccode[0] = alpha2[0];
++		ccreq->ccode[1] = alpha2[1];
++		return 0;
++	}
++
+ 	found_index = -1;
+ 	for (i = 0; i < country_codes->table_size; i++) {
+ 		cc = &country_codes->table[i];
 -- 
-1.9.1
+2.17.1
 
