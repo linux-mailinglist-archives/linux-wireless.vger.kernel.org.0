@@ -2,62 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F6D36BA04
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 21:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F4636BAA9
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 22:23:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240365AbhDZTaV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Apr 2021 15:30:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57902 "EHLO
+        id S241865AbhDZUYA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Apr 2021 16:24:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240340AbhDZTaR (ORCPT
+        with ESMTP id S241600AbhDZUX7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Apr 2021 15:30:17 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303A5C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Apr 2021 12:29:34 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lb6vE-000MXn-GP; Mon, 26 Apr 2021 21:29:32 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Harald Arnesen <harald@skogtun.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wil6210: remove erroneous wiphy locking
-Date:   Mon, 26 Apr 2021 21:29:30 +0200
-Message-Id: <20210426212929.83f1de07c2cd.I630a2a00eff185ba0452324b3d3f645e01128a95@changeid>
-X-Mailer: git-send-email 2.30.2
+        Mon, 26 Apr 2021 16:23:59 -0400
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC04C061574;
+        Mon, 26 Apr 2021 13:23:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=skogtun.org
+        ; s=ds202012; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=pECq693NLfz1M+nZ7gy7VWyiFp04Gu/D/8GHShtkwfw=; b=QMVmYBRm7X7IX2MnfSJzbVoGoq
+        RM9xtvzDrFlxMkQ3aN5pd7ZVbbWhb66jovqRuVj0UOZW+hXG+SOwxQzuKOcDy/Pk/pHto22iKAGB5
+        qtVleC79W7taE+VT7zau5WRcKzURt7J2L61ATZF3Bbuk8y7aEWPGaZ7Ywanot8Gr2wdvuHO/CbzOA
+        ABxdgG4bJSLPxgrKeBBfNj34lJuXJ7ZZ/Dw7LIuonMvQsv1lFLgHMHSyGX4aQK0oBApqxjK9QcEwY
+        znW36xVuuwsWT2fwqVEQ181aQHbF/w1owgGYKhG5P6uZbBVVxJu2eMOwLWhHjo1xmI162U/GXGjdY
+        uW3DGsTw==;
+Received: from [2a01:79c:cebf:7fb0::17] (port=39832)
+        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <harald@skogtun.org>)
+        id 1lb7lB-0002St-Cq; Mon, 26 Apr 2021 22:23:13 +0200
+Subject: Re: [BISECTED] 5.12 hangs at reboot
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+References: <09464e67-f3de-ac09-28a3-e27b7914ee7d@skogtun.org>
+ <CAHk-=wgA1Ma6e5qZO1EP9oMveLPJFbj=SC1R0ZewCmC-u0_r=A@mail.gmail.com>
+ <6e1052a5506acb0c5ba3b4954f199ee0c494c1c3.camel@sipsolutions.net>
+From:   Harald Arnesen <harald@skogtun.org>
+Message-ID: <1bacfbe4-12ac-7ee2-59d1-7490d6cfe0f0@skogtun.org>
+Date:   Mon, 26 Apr 2021 22:23:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <6e1052a5506acb0c5ba3b4954f199ee0c494c1c3.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Johannes Berg [26.04.2021 21:19]:
 
-We already hold the wiphy lock in all cases when we get
-here, so this would deadlock, remove the erroneous locking.
+> Probably hardware (well, driver), cfg80211_destroy_ifaces() calls into
+> the driver.
+> 
+> Which wireless driver are you using? 
 
-Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/ath/wil6210/cfg80211.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-index 6746fd206d2a..1ff2679963f0 100644
---- a/drivers/net/wireless/ath/wil6210/cfg80211.c
-+++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-@@ -2842,9 +2842,7 @@ void wil_p2p_wdev_free(struct wil6210_priv *wil)
- 	wil->radio_wdev = wil->main_ndev->ieee80211_ptr;
- 	mutex_unlock(&wil->vif_mutex);
- 	if (p2p_wdev) {
--		wiphy_lock(wil->wiphy);
- 		cfg80211_unregister_wdev(p2p_wdev);
--		wiphy_unlock(wil->wiphy);
- 		kfree(p2p_wdev);
- 	}
- }
+ath9k
 -- 
-2.30.2
-
+Hilsen Harald
