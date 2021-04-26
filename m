@@ -2,66 +2,232 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1F4636BAA9
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 22:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7105436BBFC
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 01:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241865AbhDZUYA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Apr 2021 16:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241600AbhDZUX7 (ORCPT
+        id S232235AbhDZXPT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Apr 2021 19:15:19 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:41925 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232022AbhDZXPR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Apr 2021 16:23:59 -0400
-Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC04C061574;
-        Mon, 26 Apr 2021 13:23:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=skogtun.org
-        ; s=ds202012; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=pECq693NLfz1M+nZ7gy7VWyiFp04Gu/D/8GHShtkwfw=; b=QMVmYBRm7X7IX2MnfSJzbVoGoq
-        RM9xtvzDrFlxMkQ3aN5pd7ZVbbWhb66jovqRuVj0UOZW+hXG+SOwxQzuKOcDy/Pk/pHto22iKAGB5
-        qtVleC79W7taE+VT7zau5WRcKzURt7J2L61ATZF3Bbuk8y7aEWPGaZ7Ywanot8Gr2wdvuHO/CbzOA
-        ABxdgG4bJSLPxgrKeBBfNj34lJuXJ7ZZ/Dw7LIuonMvQsv1lFLgHMHSyGX4aQK0oBApqxjK9QcEwY
-        znW36xVuuwsWT2fwqVEQ181aQHbF/w1owgGYKhG5P6uZbBVVxJu2eMOwLWhHjo1xmI162U/GXGjdY
-        uW3DGsTw==;
-Received: from [2a01:79c:cebf:7fb0::17] (port=39832)
-        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <harald@skogtun.org>)
-        id 1lb7lB-0002St-Cq; Mon, 26 Apr 2021 22:23:13 +0200
-Subject: Re: [BISECTED] 5.12 hangs at reboot
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-References: <09464e67-f3de-ac09-28a3-e27b7914ee7d@skogtun.org>
- <CAHk-=wgA1Ma6e5qZO1EP9oMveLPJFbj=SC1R0ZewCmC-u0_r=A@mail.gmail.com>
- <6e1052a5506acb0c5ba3b4954f199ee0c494c1c3.camel@sipsolutions.net>
-From:   Harald Arnesen <harald@skogtun.org>
-Message-ID: <1bacfbe4-12ac-7ee2-59d1-7490d6cfe0f0@skogtun.org>
-Date:   Mon, 26 Apr 2021 22:23:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        Mon, 26 Apr 2021 19:15:17 -0400
+X-UUID: a2abffb01a264c19b828d7f496758d34-20210427
+X-UUID: a2abffb01a264c19b828d7f496758d34-20210427
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 323784278; Tue, 27 Apr 2021 07:14:30 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 27 Apr 2021 07:14:28 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 27 Apr 2021 07:14:28 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2 1/2] mt76: mt7915: cleanup mt7915_mcu_sta_rate_ctrl_tlv()
+Date:   Tue, 27 Apr 2021 07:14:26 +0800
+Message-ID: <03a1bc7eaea3e5818ca8268f72077a10f85a8bc9.1619473996.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-In-Reply-To: <6e1052a5506acb0c5ba3b4954f199ee0c494c1c3.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg [26.04.2021 21:19]:
+Remove obsoleted codes. This is the preparation for .set_bitrate_mask().
 
-> Probably hardware (well, driver), cfg80211_destroy_ifaces() calls into
-> the driver.
-> 
-> Which wireless driver are you using? 
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+changes since v2 - keep ra->phy.bw = sta->bandwidth 
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 74 +++++--------------
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  2 +-
+ 2 files changed, 21 insertions(+), 55 deletions(-)
 
-ath9k
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index e4f5f72fff29..90bca50be099 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -147,10 +147,10 @@ mt7915_get_he_phy_cap(struct mt7915_phy *phy, struct ieee80211_vif *vif)
+ }
+ 
+ static u8
+-mt7915_get_phy_mode(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+-		    struct ieee80211_sta *sta)
++mt7915_get_phy_mode(struct ieee80211_vif *vif, struct ieee80211_sta *sta)
+ {
+-	enum nl80211_band band = mphy->chandef.chan->band;
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	enum nl80211_band band = mvif->phy->mt76->chandef.chan->band;
+ 	struct ieee80211_sta_ht_cap *ht_cap;
+ 	struct ieee80211_sta_vht_cap *vht_cap;
+ 	const struct ieee80211_sta_he_cap *he_cap;
+@@ -163,7 +163,7 @@ mt7915_get_phy_mode(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 	} else {
+ 		struct ieee80211_supported_band *sband;
+ 
+-		sband = mphy->hw->wiphy->bands[band];
++		sband = mvif->phy->mt76->hw->wiphy->bands[band];
+ 
+ 		ht_cap = &sband->ht_cap;
+ 		vht_cap = &sband->vht_cap;
+@@ -754,7 +754,7 @@ mt7915_mcu_bss_basic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 		memcpy(bss->bssid, vif->bss_conf.bssid, ETH_ALEN);
+ 		bss->bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int);
+ 		bss->dtim_period = vif->bss_conf.dtim_period;
+-		bss->phy_mode = mt7915_get_phy_mode(phy->mt76, vif, NULL);
++		bss->phy_mode = mt7915_get_phy_mode(vif, NULL);
+ 	} else {
+ 		memcpy(bss->bssid, phy->mt76->macaddr, ETH_ALEN);
+ 	}
+@@ -2100,47 +2100,39 @@ static void
+ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			     struct ieee80211_vif *vif, struct ieee80211_sta *sta)
+ {
+-	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+-	struct mt76_phy *mphy = &dev->mphy;
+-	enum nl80211_band band;
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	struct cfg80211_chan_def *chandef = &mvif->phy->mt76->chandef;
++	enum nl80211_band band = chandef->chan->band;
+ 	struct sta_rec_ra *ra;
+ 	struct tlv *tlv;
+-	u32 supp_rate, n_rates, cap = sta->wme ? STA_CAP_WMM : 0;
+-	u8 i, nss = sta->rx_nss, mcs = 0;
++	u32 supp_rate = sta->supp_rates[band];
++	u32 cap = sta->wme ? STA_CAP_WMM : 0;
++	u8 i, nss = sta->rx_nss;
+ 
+ 	tlv = mt7915_mcu_add_tlv(skb, STA_REC_RA, sizeof(*ra));
+ 	ra = (struct sta_rec_ra *)tlv;
+ 
+-	if (msta->wcid.ext_phy && dev->mt76.phy2)
+-		mphy = dev->mt76.phy2;
+-
+-	band = mphy->chandef.chan->band;
+-	supp_rate = sta->supp_rates[band];
+-	n_rates = hweight32(supp_rate);
+-
+ 	ra->valid = true;
+ 	ra->auto_rate = true;
+-	ra->phy_mode = mt7915_get_phy_mode(mphy, vif, sta);
+-	ra->channel = mphy->chandef.chan->hw_value;
++	ra->phy_mode = mt7915_get_phy_mode(vif, sta);
++	ra->channel = chandef->chan->hw_value;
+ 	ra->bw = sta->bandwidth;
+-	ra->rate_len = n_rates;
+ 	ra->phy.bw = sta->bandwidth;
+ 
+-	if (n_rates) {
++	if (supp_rate) {
++		ra->rate_len = hweight32(supp_rate);
++
+ 		if (band == NL80211_BAND_2GHZ) {
+ 			ra->supp_mode = MODE_CCK;
+ 			ra->supp_cck_rate = supp_rate & GENMASK(3, 0);
+-			ra->phy.type = MT_PHY_TYPE_CCK;
+ 
+-			if (n_rates > 4) {
++			if (ra->rate_len > 4) {
+ 				ra->supp_mode |= MODE_OFDM;
+ 				ra->supp_ofdm_rate = supp_rate >> 4;
+-				ra->phy.type = MT_PHY_TYPE_OFDM;
+ 			}
+ 		} else {
+ 			ra->supp_mode = MODE_OFDM;
+ 			ra->supp_ofdm_rate = supp_rate;
+-			ra->phy.type = MT_PHY_TYPE_OFDM;
+ 		}
+ 	}
+ 
+@@ -2150,7 +2142,6 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 
+ 		ra->supp_ht_mcs = *(__le32 *)ra->ht_mcs;
+ 		ra->supp_mode |= MODE_HT;
+-		mcs = hweight32(le32_to_cpu(ra->supp_ht_mcs)) - 1;
+ 		ra->af = sta->ht_cap.ampdu_factor;
+ 		ra->ht_gf = !!(sta->ht_cap.cap & IEEE80211_HT_CAP_GRN_FLD);
+ 
+@@ -2170,7 +2161,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 	if (sta->vht_cap.vht_supported) {
+ 		u16 mcs_map = le16_to_cpu(sta->vht_cap.vht_mcs.rx_mcs_map);
+ 		u16 vht_mcs;
+-		u8 af, mcs_prev;
++		u8 af;
+ 
+ 		af = FIELD_GET(IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
+ 			       sta->vht_cap.cap);
+@@ -2189,7 +2180,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			cap |= STA_CAP_VHT_LDPC;
+ 
+ 		ra->supp_mode |= MODE_VHT;
+-		for (mcs = 0, i = 0; i < nss; i++, mcs_map >>= 2) {
++		for (i = 0; i < nss; i++, mcs_map >>= 2) {
+ 			switch (mcs_map & 0x3) {
+ 			case IEEE80211_VHT_MCS_SUPPORT_0_9:
+ 				vht_mcs = GENMASK(9, 0);
+@@ -2206,10 +2197,6 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 
+ 			ra->supp_vht_mcs[i] = cpu_to_le16(vht_mcs);
+ 
+-			mcs_prev = hweight16(vht_mcs) - 1;
+-			if (mcs_prev > mcs)
+-				mcs = mcs_prev;
+-
+ 			/* only support 2ss on 160MHz */
+ 			if (i > 1 && (ra->bw == CMD_CBW_160MHZ ||
+ 				      ra->bw == CMD_CBW_8080MHZ))
+@@ -2222,28 +2209,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 		cap |= STA_CAP_HE;
+ 	}
+ 
+-	ra->sta_status = cpu_to_le32(cap);
+-
+-	switch (BIT(fls(ra->supp_mode) - 1)) {
+-	case MODE_VHT:
+-		ra->phy.type = MT_PHY_TYPE_VHT;
+-		ra->phy.mcs = mcs;
+-		ra->phy.nss = nss;
+-		ra->phy.stbc = !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_TXSTBC);
+-		ra->phy.ldpc = !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC);
+-		ra->phy.sgi =
+-			!!(sta->vht_cap.cap & IEEE80211_VHT_CAP_SHORT_GI_80);
+-		break;
+-	case MODE_HT:
+-		ra->phy.type = MT_PHY_TYPE_HT;
+-		ra->phy.mcs = mcs;
+-		ra->phy.ldpc = sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING;
+-		ra->phy.stbc = !!(sta->ht_cap.cap & IEEE80211_HT_CAP_TX_STBC);
+-		ra->phy.sgi = !!(sta->ht_cap.cap & IEEE80211_HT_CAP_SGI_20);
+-		break;
+-	default:
+-		break;
+-	}
++	ra->sta_cap = cpu_to_le32(cap);
+ }
+ 
+ int mt7915_mcu_add_rate_ctrl(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index 453e34754c86..7e3432384633 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -943,7 +943,7 @@ struct sta_rec_ra {
+ 	u8 op_vht_rx_nss;
+ 	u8 op_vht_rx_nss_type;
+ 
+-	__le32 sta_status;
++	__le32 sta_cap;
+ 
+ 	struct ra_phy phy;
+ } __packed;
 -- 
-Hilsen Harald
+2.18.0
+
