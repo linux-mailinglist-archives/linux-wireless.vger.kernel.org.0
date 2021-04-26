@@ -2,117 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D48836B947
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 20:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A81836B985
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 20:58:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238608AbhDZSpt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Apr 2021 14:45:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:46666 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238542AbhDZSn7 (ORCPT
+        id S239818AbhDZS7B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Apr 2021 14:59:01 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:45004 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239449AbhDZS67 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Apr 2021 14:43:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1619462595;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vpl+KXiHDK1EJ+33Ee24302pVNahtFcpm54ZwUGrx7A=;
-        b=DMwYROtgLrNyWbyyP/6EvjyxTfgiG0AzsatNtZEywOqaBYeoY/oNIIW++ck8R4m1xSeF7b
-        4Zqh9erDg9LM4Sz4XhL4+BQLqAFOxBtE9iPH+m4t4xeLD88brJb4E5QyW1lt5CsCfrWaC4
-        GSrC+jq1f+nO4sbuBXzWYCsCJKN5irI=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-184-f6xasQm8OiaecvKLglEQqQ-1; Mon, 26 Apr 2021 14:43:12 -0400
-X-MC-Unique: f6xasQm8OiaecvKLglEQqQ-1
-Received: by mail-ed1-f70.google.com with SMTP id bf25-20020a0564021a59b0290385169cebf8so16202955edb.8
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Apr 2021 11:43:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vpl+KXiHDK1EJ+33Ee24302pVNahtFcpm54ZwUGrx7A=;
-        b=JvlkG8uOeslTTcmyr/ZtoYwOkKz9k3viQ6KiH9GNFL6u7P9WBLfIcf1YZPeaPZrmGO
-         ZzxA2PF+l5o3Bjm5J9OH39dAL892g1ikNnZh96bwoKHKSek5QxaYojp4e24hKiRcThhG
-         xc6qLlDoSsY1dSLAYUHOwBJIW28h13jPusLh6cK23kr7d2chd/ECysNMOoPGEUsNHkNG
-         ME7XRVduwdm+ET8JO55IyEdyIqKOTy5ni4bN2Tf7rtN3sPow3bVED0JXVGKqi2+8EXBu
-         /xI+6fCI5sT36ZYyMf6IrDom/5wt7vNilj2URSl97WW90D184wU1/uLwOcLSiD1zgRHV
-         dMuw==
-X-Gm-Message-State: AOAM530H7Xucj6UkdOivVbop4v8FGuNwkG4xSTAdzugyMxt403y6dsZ4
-        0+FyJrKjtNecuo0wNTmm60IftY5Af0IiUjeHr81IeJsdKyC1vHp+Qqzwmy+EiUXS5uldis3V+W0
-        QCXRRjtq1jmHYoOcDkg6cBgwm6yE=
-X-Received: by 2002:a17:906:9342:: with SMTP id p2mr12932872ejw.311.1619462591218;
-        Mon, 26 Apr 2021 11:43:11 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzxnw+gVLGW0SwTs5ulyQam8MiKyXti4sUFy/7n9hakQKeb+GEg83FWuQ5Kyobmu3AVDJmIKw==
-X-Received: by 2002:a17:906:9342:: with SMTP id p2mr12932866ejw.311.1619462591082;
-        Mon, 26 Apr 2021 11:43:11 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id bu8sm485055edb.77.2021.04.26.11.43.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Apr 2021 11:43:10 -0700 (PDT)
-Subject: Re: [PATCH 1/1] staging: rtl8723bs: Move wiphy setup to after reading
- the regulatory settings from the chip
-To:     youling257 <youling257@gmail.com>
-Cc:     gregkh@linuxfoundation.org, johannes.berg@intel.com,
-        linux-wireless@vger.kernel.org, ross.schm.dev@gmail.com
-References: <20210201152956.370186-2-hdegoede@redhat.com>
- <20210426183406.13055-1-youling257@gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <6dd2cb8b-5540-a410-92d8-f329be98327b@redhat.com>
-Date:   Mon, 26 Apr 2021 20:43:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        Mon, 26 Apr 2021 14:58:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1619463498; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=po3JegB5oV8/BkdGAbdIR3FQ6uZYc7pFcgvulhI+rWM=; b=FDs/NCUygos0e53BQx5tUkz/q/VA0Aavqo74HpjMdvkswH5Tmck/Gm6uuJ2OT1wa7wn8xdk2
+ eR3FFICohkeWpKhpJhAOkrF+8GFPib83Y7ZRoVWEG8D4009+BQXWxA4CwHKOyk7c3VOM1oc8
+ 1lS3R64PXRinoXAE0BPbg/PJ3Bk=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 60870d40853c0a2c462ddd7b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 26 Apr 2021 18:58:08
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 550FCC433F1; Mon, 26 Apr 2021 18:58:07 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B221BC433D3;
+        Mon, 26 Apr 2021 18:58:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B221BC433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=alokad@codeaurora.org
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
+Subject: [PATCH 0/4] multiple bssid and EMA support in AP mode
+Date:   Mon, 26 Apr 2021 11:57:52 -0700
+Message-Id: <20210426185756.10924-1-alokad@codeaurora.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <20210426183406.13055-1-youling257@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Youling,
+This patchset adds support for multiple BSSID and
+enhanced multi-BSSID advertisements for AP mode.
 
-On 4/26/21 8:34 PM, youling257 wrote:
-> Hello, "cfg80211: Save the regulatory domain when setting custom
-> regulatory" "cfg80211: Save the regulatory domain with a lock" cause
-> rtl8723bs not work problem.
-> I see upstream rtl8723bs driver "staging: rtl8723bs: Move wiphy setup
-> to after reading the regulatory" "staging: rtl8723bs: fix wireless
-> regulatory API misuse" fix problem.
-> 
-> I use rtl8723bs v5.2.17.1_26955.20180307_COEX20180201-6f52 driver, no
-> the "rtw_wdev_alloc(padapter, dvobj_to_dev(dvobj));"
-> 
-> https://github.com/youling257/rockchip_wlan/blob/v5.2.17.1/rtl8723bs/os_dep/linux/ioctl_cfg80211.h#L234
-> int rtw_wdev_alloc(_adapter *padapter, struct wiphy *wiphy);
-> 
-> https://github.com/torvalds/linux/blob/master/drivers/staging/rtl8723bs/include/ioctl_cfg80211.h#L91
-> int rtw_wdev_alloc(struct adapter *padapter, struct device *dev);
-> 
-> https://github.com/torvalds/linux/blob/master/drivers/staging/rtl8723bs/os_dep/sdio_intf.c#L333
-> https://github.com/youling257/rockchip_wlan/blob/v5.2.17.1/rtl8723bs/os_dep/linux/sdio_intf.c#L645
-> 
-> I want to fix rtl8723bs v5.2.17 not work problem, can you help me?
+HWSIM support will be added in a separate patchset.
 
-I'm not sure what your problem exactly is. If your kernel contains the
+John Crispin (4):
+  nl80211: multiple bssid and EMA support in AP mode
+  mac80211: multiple bssid support in interface handling
+  mac80211: MBSSID and EMA support in beacon handling
+  mac80211: CSA on non-transmitting interfaces
 
-51d62f2f2c50 ("cfg80211: Save the regulatory domain with a lock")
+ include/net/cfg80211.h       |  51 +++++++
+ include/net/mac80211.h       | 123 ++++++++++++++-
+ include/uapi/linux/nl80211.h | 101 ++++++++++++-
+ net/mac80211/cfg.c           | 198 +++++++++++++++++++++++--
+ net/mac80211/debugfs.c       |   2 +
+ net/mac80211/ieee80211_i.h   |   2 +
+ net/mac80211/iface.c         |  12 ++
+ net/mac80211/tx.c            | 189 ++++++++++++++++++++---
+ net/wireless/nl80211.c       | 280 ++++++++++++++++++++++++++++++-----
+ 9 files changed, 883 insertions(+), 75 deletions(-)
 
-Commit then you also need to backport (in the listed order):
 
-81f153faacd0 ("staging: rtl8723bs: fix wireless regulatory API misuse")
-50af06d43eab ("taging: rtl8723bs: Move wiphy setup to after reading the regulatory settings from the chip")
-
-Which you seem to have already figured out ?
-
-To keep the rtk8723bs driver working your kernel should either contain all 3 mentioned commits,
-or it should contain none of them.
-
-Regards,
-
-Hans
-
+base-commit: 5d869070569a23aa909c6e7e9d010fc438a492ef
+-- 
+2.31.1
 
