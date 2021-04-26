@@ -2,73 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D613336B926
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 20:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D48836B947
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 20:45:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239178AbhDZSmh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Apr 2021 14:42:37 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.164]:49754 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239148AbhDZSm2 (ORCPT
+        id S238608AbhDZSpt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Apr 2021 14:45:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:46666 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238542AbhDZSn7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Apr 2021 14:42:28 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.26])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 6355820064;
-        Mon, 26 Apr 2021 18:41:45 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B88E694007E;
-        Mon, 26 Apr 2021 18:41:44 +0000 (UTC)
-Received: from [192.168.223.32] (75-149-161-6-Washington.hfc.comcastbusiness.net [75.149.161.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B034513C2B3;
-        Mon, 26 Apr 2021 11:41:35 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B034513C2B3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1619462496;
-        bh=yzDerBNFZC8MxvrfMVvZ8ayoxqDt0c427d/6l0xHWmE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=LLf2+Ugq97v90q9WKP8YCPVkqwwUZRDfvAbXR6gOdbhaMOA0YlZYQY+eRkveZz7HC
-         5C+QEKnjwqUay+3Yq85tIWeSPjnYo1n830YFDLmlHosK/5gVTLWWLPhw2ervyZ2bpJ
-         j7Ua2JNHU8rK0vCAbO4rEWPgddVGSkLzE/uMaWbE=
-Subject: Re: [PATCH 2/2] mt76: mt7915: add .set_bitrate_mask() callback
-To:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <22e4a169831b6b54661b6eb4ef4f3a4a18dceb19.1619453772.git.ryder.lee@mediatek.com>
- <d422f0c844c5da1ee027250820b67f615a8b50e5.1619453772.git.ryder.lee@mediatek.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <7776c0d1-0578-5922-1003-f8498cc0357a@candelatech.com>
-Date:   Mon, 26 Apr 2021 11:41:35 -0700
+        Mon, 26 Apr 2021 14:43:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1619462595;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vpl+KXiHDK1EJ+33Ee24302pVNahtFcpm54ZwUGrx7A=;
+        b=DMwYROtgLrNyWbyyP/6EvjyxTfgiG0AzsatNtZEywOqaBYeoY/oNIIW++ck8R4m1xSeF7b
+        4Zqh9erDg9LM4Sz4XhL4+BQLqAFOxBtE9iPH+m4t4xeLD88brJb4E5QyW1lt5CsCfrWaC4
+        GSrC+jq1f+nO4sbuBXzWYCsCJKN5irI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-184-f6xasQm8OiaecvKLglEQqQ-1; Mon, 26 Apr 2021 14:43:12 -0400
+X-MC-Unique: f6xasQm8OiaecvKLglEQqQ-1
+Received: by mail-ed1-f70.google.com with SMTP id bf25-20020a0564021a59b0290385169cebf8so16202955edb.8
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Apr 2021 11:43:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=vpl+KXiHDK1EJ+33Ee24302pVNahtFcpm54ZwUGrx7A=;
+        b=JvlkG8uOeslTTcmyr/ZtoYwOkKz9k3viQ6KiH9GNFL6u7P9WBLfIcf1YZPeaPZrmGO
+         ZzxA2PF+l5o3Bjm5J9OH39dAL892g1ikNnZh96bwoKHKSek5QxaYojp4e24hKiRcThhG
+         xc6qLlDoSsY1dSLAYUHOwBJIW28h13jPusLh6cK23kr7d2chd/ECysNMOoPGEUsNHkNG
+         ME7XRVduwdm+ET8JO55IyEdyIqKOTy5ni4bN2Tf7rtN3sPow3bVED0JXVGKqi2+8EXBu
+         /xI+6fCI5sT36ZYyMf6IrDom/5wt7vNilj2URSl97WW90D184wU1/uLwOcLSiD1zgRHV
+         dMuw==
+X-Gm-Message-State: AOAM530H7Xucj6UkdOivVbop4v8FGuNwkG4xSTAdzugyMxt403y6dsZ4
+        0+FyJrKjtNecuo0wNTmm60IftY5Af0IiUjeHr81IeJsdKyC1vHp+Qqzwmy+EiUXS5uldis3V+W0
+        QCXRRjtq1jmHYoOcDkg6cBgwm6yE=
+X-Received: by 2002:a17:906:9342:: with SMTP id p2mr12932872ejw.311.1619462591218;
+        Mon, 26 Apr 2021 11:43:11 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzxnw+gVLGW0SwTs5ulyQam8MiKyXti4sUFy/7n9hakQKeb+GEg83FWuQ5Kyobmu3AVDJmIKw==
+X-Received: by 2002:a17:906:9342:: with SMTP id p2mr12932866ejw.311.1619462591082;
+        Mon, 26 Apr 2021 11:43:11 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id bu8sm485055edb.77.2021.04.26.11.43.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Apr 2021 11:43:10 -0700 (PDT)
+Subject: Re: [PATCH 1/1] staging: rtl8723bs: Move wiphy setup to after reading
+ the regulatory settings from the chip
+To:     youling257 <youling257@gmail.com>
+Cc:     gregkh@linuxfoundation.org, johannes.berg@intel.com,
+        linux-wireless@vger.kernel.org, ross.schm.dev@gmail.com
+References: <20210201152956.370186-2-hdegoede@redhat.com>
+ <20210426183406.13055-1-youling257@gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <6dd2cb8b-5540-a410-92d8-f329be98327b@redhat.com>
+Date:   Mon, 26 Apr 2021 20:43:10 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <d422f0c844c5da1ee027250820b67f615a8b50e5.1619453772.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
+In-Reply-To: <20210426183406.13055-1-youling257@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-MDID: 1619462505-CLonuDwr1f-K
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/26/21 9:29 AM, Ryder Lee wrote:
-> Add runtime configuration for bitrate mask. Note that GI cannot be setup.
+Hi Youling,
+
+On 4/26/21 8:34 PM, youling257 wrote:
+> Hello, "cfg80211: Save the regulatory domain when setting custom
+> regulatory" "cfg80211: Save the regulatory domain with a lock" cause
+> rtl8723bs not work problem.
+> I see upstream rtl8723bs driver "staging: rtl8723bs: Move wiphy setup
+> to after reading the regulatory" "staging: rtl8723bs: fix wireless
+> regulatory API misuse" fix problem.
 > 
-> Example:
-> iw dev wlan0 set bitrates vht-mcs-5 1:9 he-mcs-5 2:7
-> iw dev wlan0 set bitrates legacy-5 6 he-mcs-5 2:0-11
+> I use rtl8723bs v5.2.17.1_26955.20180307_COEX20180201-6f52 driver, no
+> the "rtw_wdev_alloc(padapter, dvobj_to_dev(dvobj));"
+> 
+> https://github.com/youling257/rockchip_wlan/blob/v5.2.17.1/rtl8723bs/os_dep/linux/ioctl_cfg80211.h#L234
+> int rtw_wdev_alloc(_adapter *padapter, struct wiphy *wiphy);
+> 
+> https://github.com/torvalds/linux/blob/master/drivers/staging/rtl8723bs/include/ioctl_cfg80211.h#L91
+> int rtw_wdev_alloc(struct adapter *padapter, struct device *dev);
+> 
+> https://github.com/torvalds/linux/blob/master/drivers/staging/rtl8723bs/os_dep/sdio_intf.c#L333
+> https://github.com/youling257/rockchip_wlan/blob/v5.2.17.1/rtl8723bs/os_dep/linux/sdio_intf.c#L645
+> 
+> I want to fix rtl8723bs v5.2.17 not work problem, can you help me?
 
-Is this only for data frames?  In other words, is it OK to
-set exactly one HE/VHT MCS rate and let mgt, bcast, mcast, still
-work OK at legacy rates?
+I'm not sure what your problem exactly is. If your kernel contains the
 
-Thanks,
-Ben
+51d62f2f2c50 ("cfg80211: Save the regulatory domain with a lock")
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Commit then you also need to backport (in the listed order):
+
+81f153faacd0 ("staging: rtl8723bs: fix wireless regulatory API misuse")
+50af06d43eab ("taging: rtl8723bs: Move wiphy setup to after reading the regulatory settings from the chip")
+
+Which you seem to have already figured out ?
+
+To keep the rtk8723bs driver working your kernel should either contain all 3 mentioned commits,
+or it should contain none of them.
+
+Regards,
+
+Hans
+
+
