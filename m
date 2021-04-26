@@ -2,228 +2,232 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D556C36B1EF
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 12:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD53A36B6CA
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 18:29:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232955AbhDZKzM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Apr 2021 06:55:12 -0400
-Received: from ssl.serverraum.org ([176.9.125.105]:41077 "EHLO
-        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbhDZKzK (ORCPT
+        id S234310AbhDZQaT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Apr 2021 12:30:19 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:37963 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233934AbhDZQaS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Apr 2021 06:55:10 -0400
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id C353C22236;
-        Mon, 26 Apr 2021 12:54:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1619434464;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Wk++B/L7nejW/Tu85IzTL8HKq5haXmWBuSRGMq5G9Vc=;
-        b=aBLItzwTpMLhnbBUfRwBioPVMyZiTU0Pj1H6UNIlRFQlCvrRQC9+sCwg7Wn5J+XsvHZln5
-        Tw13ybstx1ba3ts9pwi2ty81rvOdnoEZ8zIsZqSHZ7psnqzBT46f85vFqJlTddaAXCPvqK
-        P1t1rcsQHgB7iSTeBLTyQ5gE26gcAtQ=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 26 Apr 2021 12:54:08 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        netdev <netdev@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
+        Mon, 26 Apr 2021 12:30:18 -0400
+X-UUID: 29b5ef8ca32c4a7685bab4b227585b43-20210427
+X-UUID: 29b5ef8ca32c4a7685bab4b227585b43-20210427
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 616502870; Tue, 27 Apr 2021 00:29:34 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 27 Apr 2021 00:29:32 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 27 Apr 2021 00:29:32 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
-        "open list:MEDIA DRIVERS FOR RENESAS - FCP" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "moderated list:ARM/STM32 ARCHITECTURE" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        linux-oxnas@groups.io, linux-omap <linux-omap@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
-        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?J=C3=A9r=C3=B4me_Pouiller?= <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
- non-platform devices
-In-Reply-To: <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-References: <20210412174718.17382-1-michael@walle.cc>
- <20210412174718.17382-3-michael@walle.cc>
- <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
- <8157eba9317609294da80472622deb28@walle.cc>
- <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.4.11
-Message-ID: <108f268a35843368466004f7fe5f9f88@walle.cc>
-X-Sender: michael@walle.cc
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: cleanup mt7915_mcu_sta_rate_ctrl_tlv()
+Date:   Tue, 27 Apr 2021 00:29:28 +0800
+Message-ID: <22e4a169831b6b54661b6eb4ef4f3a4a18dceb19.1619453772.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-SNTS-SMTP: A59D6560AB4527EB7EB7E8A8F15E5BA29B3DA0A8F6B9F8E5B2339CB75BA24CD02000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 2021-04-16 17:19, schrieb Rob Herring:
-> On Fri, Apr 16, 2021 at 2:30 AM Michael Walle <michael@walle.cc> wrote:
->> 
->> Am 2021-04-16 05:24, schrieb Benjamin Herrenschmidt:
->> > On Mon, 2021-04-12 at 19:47 +0200, Michael Walle wrote:
->> >>
->> >>  /**
->> >>   * of_get_phy_mode - Get phy mode for given device_node
->> >> @@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np,
->> >> const char *name, u8 *addr)
->> >>  static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
->> >>  {
->> >>         struct platform_device *pdev = of_find_device_by_node(np);
->> >> +       struct nvmem_cell *cell;
->> >> +       const void *mac;
->> >> +       size_t len;
->> >>         int ret;
->> >>
->> >> -       if (!pdev)
->> >> -               return -ENODEV;
->> >> +       /* Try lookup by device first, there might be a
->> >> nvmem_cell_lookup
->> >> +        * associated with a given device.
->> >> +        */
->> >> +       if (pdev) {
->> >> +               ret = nvmem_get_mac_address(&pdev->dev, addr);
->> >> +               put_device(&pdev->dev);
->> >> +               return ret;
->> >> +       }
->> >> +
->> >
->> > This smells like the wrong band aid :)
->> >
->> > Any struct device can contain an OF node pointer these days.
->> 
->> But not all nodes might have an associated device, see DSA for 
->> example.
-> 
-> I believe what Ben is saying and what I said earlier is going from dev
-> -> OF node is right and OF node -> dev is wrong. If you only have an
-> OF node, then use an of_* function.
-> 
->> And as the name suggests of_get_mac_address() operates on a node. So
->> if a driver calls of_get_mac_address() it should work on the node. 
->> What
->> is wrong IMHO, is that the ethernet drivers where the corresponding
->> board
->> has a nvmem_cell_lookup registered is calling 
->> of_get_mac_address(node).
->> It should rather call eth_get_mac_address(dev) in the first place.
->> 
->> One would need to figure out if there is an actual device (with an
->> assiciated of_node), then call eth_get_mac_address(dev) and if there
->> isn't a device call of_get_mac_address(node).
-> 
-> Yes, I think we're all in agreement.
-> 
->> But I don't know if that is easy to figure out. Well, one could start
->> with just the device where nvmem_cell_lookup is used. Then we could
->> drop the workaround above.
-> 
-> Start with the ones just passing dev.of_node directly:
-> 
-> $ git grep 'of_get_mac_address(.*of_node)'
+Remove obsoleted codes. This is the preparation for .set_bitrate_mask().
 
-[..]
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 76 +++++--------------
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  2 +-
+ 2 files changed, 22 insertions(+), 56 deletions(-)
 
-Before I'll try to come up with a patch for this, I'd like to get
-your opinion on it.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index e4f5f72fff29..ed36eaf047b4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -147,10 +147,10 @@ mt7915_get_he_phy_cap(struct mt7915_phy *phy, struct ieee80211_vif *vif)
+ }
+ 
+ static u8
+-mt7915_get_phy_mode(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+-		    struct ieee80211_sta *sta)
++mt7915_get_phy_mode(struct ieee80211_vif *vif, struct ieee80211_sta *sta)
+ {
+-	enum nl80211_band band = mphy->chandef.chan->band;
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	enum nl80211_band band = mvif->phy->mt76->chandef.chan->band;
+ 	struct ieee80211_sta_ht_cap *ht_cap;
+ 	struct ieee80211_sta_vht_cap *vht_cap;
+ 	const struct ieee80211_sta_he_cap *he_cap;
+@@ -163,7 +163,7 @@ mt7915_get_phy_mode(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 	} else {
+ 		struct ieee80211_supported_band *sband;
+ 
+-		sband = mphy->hw->wiphy->bands[band];
++		sband = mvif->phy->mt76->hw->wiphy->bands[band];
+ 
+ 		ht_cap = &sband->ht_cap;
+ 		vht_cap = &sband->vht_cap;
+@@ -754,7 +754,7 @@ mt7915_mcu_bss_basic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 		memcpy(bss->bssid, vif->bss_conf.bssid, ETH_ALEN);
+ 		bss->bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int);
+ 		bss->dtim_period = vif->bss_conf.dtim_period;
+-		bss->phy_mode = mt7915_get_phy_mode(phy->mt76, vif, NULL);
++		bss->phy_mode = mt7915_get_phy_mode(vif, NULL);
+ 	} else {
+ 		memcpy(bss->bssid, phy->mt76->macaddr, ETH_ALEN);
+ 	}
+@@ -2100,47 +2100,39 @@ static void
+ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			     struct ieee80211_vif *vif, struct ieee80211_sta *sta)
+ {
+-	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+-	struct mt76_phy *mphy = &dev->mphy;
+-	enum nl80211_band band;
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	struct cfg80211_chan_def *chandef = &mvif->phy->mt76->chandef;
++	enum nl80211_band band = chandef->chan->band;
+ 	struct sta_rec_ra *ra;
+ 	struct tlv *tlv;
+-	u32 supp_rate, n_rates, cap = sta->wme ? STA_CAP_WMM : 0;
+-	u8 i, nss = sta->rx_nss, mcs = 0;
++	u32 supp_rate = sta->supp_rates[band];
++	u32 cap = sta->wme ? STA_CAP_WMM : 0;
++	u8 i, nss = sta->rx_nss;
+ 
+ 	tlv = mt7915_mcu_add_tlv(skb, STA_REC_RA, sizeof(*ra));
+ 	ra = (struct sta_rec_ra *)tlv;
+ 
+-	if (msta->wcid.ext_phy && dev->mt76.phy2)
+-		mphy = dev->mt76.phy2;
+-
+-	band = mphy->chandef.chan->band;
+-	supp_rate = sta->supp_rates[band];
+-	n_rates = hweight32(supp_rate);
+-
+ 	ra->valid = true;
+ 	ra->auto_rate = true;
+-	ra->phy_mode = mt7915_get_phy_mode(mphy, vif, sta);
+-	ra->channel = mphy->chandef.chan->hw_value;
++	ra->phy_mode = mt7915_get_phy_mode(vif, sta);
++	ra->channel = chandef->chan->hw_value;
+ 	ra->bw = sta->bandwidth;
+-	ra->rate_len = n_rates;
+-	ra->phy.bw = sta->bandwidth;
++	ra->phy.bw = mt7915_mcu_chan_bw(chandef);
++
++	if (supp_rate) {
++		ra->rate_len = hweight32(supp_rate);
+ 
+-	if (n_rates) {
+ 		if (band == NL80211_BAND_2GHZ) {
+ 			ra->supp_mode = MODE_CCK;
+ 			ra->supp_cck_rate = supp_rate & GENMASK(3, 0);
+-			ra->phy.type = MT_PHY_TYPE_CCK;
+ 
+-			if (n_rates > 4) {
++			if (ra->rate_len > 4) {
+ 				ra->supp_mode |= MODE_OFDM;
+ 				ra->supp_ofdm_rate = supp_rate >> 4;
+-				ra->phy.type = MT_PHY_TYPE_OFDM;
+ 			}
+ 		} else {
+ 			ra->supp_mode = MODE_OFDM;
+ 			ra->supp_ofdm_rate = supp_rate;
+-			ra->phy.type = MT_PHY_TYPE_OFDM;
+ 		}
+ 	}
+ 
+@@ -2150,7 +2142,6 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 
+ 		ra->supp_ht_mcs = *(__le32 *)ra->ht_mcs;
+ 		ra->supp_mode |= MODE_HT;
+-		mcs = hweight32(le32_to_cpu(ra->supp_ht_mcs)) - 1;
+ 		ra->af = sta->ht_cap.ampdu_factor;
+ 		ra->ht_gf = !!(sta->ht_cap.cap & IEEE80211_HT_CAP_GRN_FLD);
+ 
+@@ -2170,7 +2161,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 	if (sta->vht_cap.vht_supported) {
+ 		u16 mcs_map = le16_to_cpu(sta->vht_cap.vht_mcs.rx_mcs_map);
+ 		u16 vht_mcs;
+-		u8 af, mcs_prev;
++		u8 af;
+ 
+ 		af = FIELD_GET(IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
+ 			       sta->vht_cap.cap);
+@@ -2189,7 +2180,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			cap |= STA_CAP_VHT_LDPC;
+ 
+ 		ra->supp_mode |= MODE_VHT;
+-		for (mcs = 0, i = 0; i < nss; i++, mcs_map >>= 2) {
++		for (i = 0; i < nss; i++, mcs_map >>= 2) {
+ 			switch (mcs_map & 0x3) {
+ 			case IEEE80211_VHT_MCS_SUPPORT_0_9:
+ 				vht_mcs = GENMASK(9, 0);
+@@ -2206,10 +2197,6 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 
+ 			ra->supp_vht_mcs[i] = cpu_to_le16(vht_mcs);
+ 
+-			mcs_prev = hweight16(vht_mcs) - 1;
+-			if (mcs_prev > mcs)
+-				mcs = mcs_prev;
+-
+ 			/* only support 2ss on 160MHz */
+ 			if (i > 1 && (ra->bw == CMD_CBW_160MHZ ||
+ 				      ra->bw == CMD_CBW_8080MHZ))
+@@ -2222,28 +2209,7 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 		cap |= STA_CAP_HE;
+ 	}
+ 
+-	ra->sta_status = cpu_to_le32(cap);
+-
+-	switch (BIT(fls(ra->supp_mode) - 1)) {
+-	case MODE_VHT:
+-		ra->phy.type = MT_PHY_TYPE_VHT;
+-		ra->phy.mcs = mcs;
+-		ra->phy.nss = nss;
+-		ra->phy.stbc = !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_TXSTBC);
+-		ra->phy.ldpc = !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC);
+-		ra->phy.sgi =
+-			!!(sta->vht_cap.cap & IEEE80211_VHT_CAP_SHORT_GI_80);
+-		break;
+-	case MODE_HT:
+-		ra->phy.type = MT_PHY_TYPE_HT;
+-		ra->phy.mcs = mcs;
+-		ra->phy.ldpc = sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING;
+-		ra->phy.stbc = !!(sta->ht_cap.cap & IEEE80211_HT_CAP_TX_STBC);
+-		ra->phy.sgi = !!(sta->ht_cap.cap & IEEE80211_HT_CAP_SGI_20);
+-		break;
+-	default:
+-		break;
+-	}
++	ra->sta_cap = cpu_to_le32(cap);
+ }
+ 
+ int mt7915_mcu_add_rate_ctrl(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index 453e34754c86..7e3432384633 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -943,7 +943,7 @@ struct sta_rec_ra {
+ 	u8 op_vht_rx_nss;
+ 	u8 op_vht_rx_nss_type;
+ 
+-	__le32 sta_status;
++	__le32 sta_cap;
+ 
+ 	struct ra_phy phy;
+ } __packed;
+-- 
+2.18.0
 
-(1) replacing of_get_mac_address(node) with eth_get_mac_address(dev)
-     might sometimes lead to confusing comments like in
-     drivers/net/ethernet/allwinner/sun4i-emac.c:
-
-     /* Read MAC-address from DT */
-     ret = of_get_mac_address(np, ndev->dev_addr);
-
-     Do we live with that or should the new name somehow reflect that
-     it is taken from the device tree.
-
-(2) What do you think of eth_get_mac_address(ndev). That is, the
-     second argument is missing and ndev->dev_addr is used.
-     I'm unsure about it. We'd still need a second function for drivers
-     which don't write ndev->dev_addr directly, but have some custom
-     logic in between. OTOH it would be like eth_hw_addr_random(ndev).
-
--michael
