@@ -2,173 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED16336AA67
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 03:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 068D736ACA3
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Apr 2021 09:06:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231645AbhDZBeL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 25 Apr 2021 21:34:11 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:42854 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231502AbhDZBeK (ORCPT
+        id S232068AbhDZHGy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Apr 2021 03:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60638 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232018AbhDZHGx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 25 Apr 2021 21:34:10 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13Q1XOA00010468, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13Q1XOA00010468
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 26 Apr 2021 09:33:24 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 26 Apr 2021 09:33:24 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 26 Apr
- 2021 09:33:23 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
-Subject: [PATCH v4 3/3] rtw88: 8822c: fix lc calibration timing
-Date:   Mon, 26 Apr 2021 09:32:52 +0800
-Message-ID: <20210426013252.5665-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20210426013252.5665-1-pkshih@realtek.com>
-References: <20210426013252.5665-1-pkshih@realtek.com>
+        Mon, 26 Apr 2021 03:06:53 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B94FCC061761
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Apr 2021 00:06:11 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id c4so15671370wrt.8
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Apr 2021 00:06:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=5RuHvbrZHVloxRo7eENq0ZIryQnDTJP0ete42G83Dm0=;
+        b=rIb8+v2FAdA/HfhwuFQ6R8dphR1T0XKcem+hDmiyp8QJyiWsUG/VegWao1LxxolHOc
+         ctEIXLn6mFraIjAcGx8exbmzWC852dgXWwKnm3td7C06aBOHnlsNlS160CFJsN2ch7Vj
+         HWWjhQbqWx0x6IG9wItFTZ7CFHUw87oc7fyqNSc+/s7ZHgo7JuV9fKzCZn674JYEsCX6
+         +JY2w1OdFXrf2gQXf6S9eNPX7nVE/EMMHAlAlr+3OXLCHkZjMdIqHV0Zr7RTiOc+GI+a
+         gWafVirCtDjutoLU7lw5+fWllx0HFwPneUNauWgJcEPM4s8PQEDUE5Fz8Ws+QQ5hE5Rh
+         LJag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=5RuHvbrZHVloxRo7eENq0ZIryQnDTJP0ete42G83Dm0=;
+        b=kgj8r8n2/sV6eHdweVoXegToRgwaTqL0hNupsBHjZC4OLzj91SBetNdWmyj2NnniM3
+         owzBW6ET6s5+Xyc5fCnkpl2xwK0ZUcBX5YnSlDropDpuSTsi1JJL2motSEhluER3Ta1F
+         +RnaIZbHn7fBZ+IKFMKEZ4ZU3PfFZC5brBhpp1WiRum70pvkrqt6odH8TrlMQC4rUuBf
+         qCKTwQ8IMcnDVnXtNJlLRo8Of9PJBXtbGhsuWtFq8/oyT3qW67kpj/p9QaHP8rXCkTLh
+         OnJWq1d4TMfhB/FG7BXlBZ7qTGCWeVrXPWZl4Kn3z9/NKI08tz2uVCTG6oAywW6zuqLt
+         h67w==
+X-Gm-Message-State: AOAM533XXnHuTkDDjP8vmssX5m3T9K12NpPOqokOaPT1r+L44WgZ29Z9
+        6/IY5Emik5xvlynRep9yLb1W9g==
+X-Google-Smtp-Source: ABdhPJxQA11AMLyg/X551pHlVu8f4n+OUBOFc1FV8/qEkPz+6JKC49mgf31rgbpUC8pVKrxLOFj9Lw==
+X-Received: by 2002:a5d:4402:: with SMTP id z2mr20396301wrq.179.1619420770263;
+        Mon, 26 Apr 2021 00:06:10 -0700 (PDT)
+Received: from dell ([91.110.221.215])
+        by smtp.gmail.com with ESMTPSA id 200sm16751584wmb.1.2021.04.26.00.06.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Apr 2021 00:06:09 -0700 (PDT)
+Date:   Mon, 26 Apr 2021 08:06:07 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Shawn Guo <shawn.guo@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stuart Hayes <stuart.w.hayes@gmail.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        Timur Tabi <timur@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, dmaengine@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH] firmware: replace HOTPLUG with UEVENT in FW_ACTION
+ defines
+Message-ID: <20210426070607.GG6446@dell>
+References: <20210425020024.28057-1-shawn.guo@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXH36502.realtek.com.tw (172.21.6.25) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMjUgpFWkyCAwODozOTowMA==?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/26/2021 01:10:40
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163317 [Apr 25 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 443 443 d64ad0ad6f66abd85f8fb55fe5d831fdcc4c44a0
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/26/2021 01:12:00
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/26/2021 01:20:45
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163317 [Apr 25 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 443 443 d64ad0ad6f66abd85f8fb55fe5d831fdcc4c44a0
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/26/2021 01:23:00
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210425020024.28057-1-shawn.guo@linaro.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+On Sun, 25 Apr 2021, Shawn Guo wrote:
 
-Before this patch, we use value from 2 seconds ago to decide
-whether we should do lc calibration.
-Although this don't happen frequently, fix flow to the way it should be.
+> With commit 312c004d36ce ("[PATCH] driver core: replace "hotplug" by
+> "uevent"") already in the tree over a decade, update the name of
+> FW_ACTION defines to follow semantics, and reflect what the defines are
+> really meant for, i.e. whether or not generate user space event.
+> 
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> ---
+>  drivers/dma/imx-sdma.c                      |  2 +-
+>  drivers/media/platform/exynos4-is/fimc-is.c |  2 +-
 
-Fixes: 7ae7784ec2a8 ("rtw88: 8822c: add LC calibration for RTL8822C")
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v4: no change
-v3: no change
-v2: no change
----
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 22 ++++++++++---------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+>  drivers/mfd/iqs62x.c                        |  2 +-
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index b6b43654e5c6..436347f3b60f 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -4395,26 +4395,28 @@ static void rtw8822c_pwrtrack_set(struct rtw_dev *rtwdev, u8 rf_path)
- 	}
- }
- 
--static void rtw8822c_pwr_track_path(struct rtw_dev *rtwdev,
--				    struct rtw_swing_table *swing_table,
--				    u8 path)
-+static void rtw8822c_pwr_track_stats(struct rtw_dev *rtwdev, u8 path)
- {
--	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
--	u8 thermal_value, delta;
-+	u8 thermal_value;
- 
- 	if (rtwdev->efuse.thermal_meter[path] == 0xff)
- 		return;
- 
- 	thermal_value = rtw_read_rf(rtwdev, path, RF_T_METER, 0x7e);
--
- 	rtw_phy_pwrtrack_avg(rtwdev, thermal_value, path);
-+}
- 
--	delta = rtw_phy_pwrtrack_get_delta(rtwdev, path);
-+static void rtw8822c_pwr_track_path(struct rtw_dev *rtwdev,
-+				    struct rtw_swing_table *swing_table,
-+				    u8 path)
-+{
-+	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
-+	u8 delta;
- 
-+	delta = rtw_phy_pwrtrack_get_delta(rtwdev, path);
- 	dm_info->delta_power_index[path] =
- 		rtw_phy_pwrtrack_get_pwridx(rtwdev, swing_table, path, path,
- 					    delta);
--
- 	rtw8822c_pwrtrack_set(rtwdev, path);
- }
- 
-@@ -4425,12 +4427,12 @@ static void __rtw8822c_pwr_track(struct rtw_dev *rtwdev)
- 
- 	rtw_phy_config_swing_table(rtwdev, &swing_table);
- 
-+	for (i = 0; i < rtwdev->hal.rf_path_num; i++)
-+		rtw8822c_pwr_track_stats(rtwdev, i);
- 	if (rtw_phy_pwrtrack_need_lck(rtwdev))
- 		rtw8822c_do_lck(rtwdev);
--
- 	for (i = 0; i < rtwdev->hal.rf_path_num; i++)
- 		rtw8822c_pwr_track_path(rtwdev, &swing_table, i);
--
- }
- 
- static void rtw8822c_pwr_track(struct rtw_dev *rtwdev)
+Acked-by: Lee Jones <lee.jones@linaro.org>
+
+>  drivers/misc/lattice-ecp3-config.c          |  2 +-
+>  drivers/net/wireless/ti/wlcore/main.c       |  2 +-
+>  drivers/platform/x86/dell/dell_rbu.c        |  2 +-
+>  drivers/remoteproc/remoteproc_core.c        |  2 +-
+>  drivers/scsi/lpfc/lpfc_init.c               |  2 +-
+>  drivers/tty/serial/ucc_uart.c               |  2 +-
+>  include/linux/firmware.h                    |  4 ++--
+>  lib/test_firmware.c                         | 10 +++++-----
+>  sound/soc/codecs/wm8958-dsp2.c              |  6 +++---
+>  12 files changed, 19 insertions(+), 19 deletions(-)
+
 -- 
-2.21.0
-
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
