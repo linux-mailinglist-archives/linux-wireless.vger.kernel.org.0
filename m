@@ -2,82 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81DED36C0A7
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 10:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D3736C0AC
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 10:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234561AbhD0ILt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Apr 2021 04:11:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55560 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbhD0ILr (ORCPT
+        id S230325AbhD0INj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Apr 2021 04:13:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:50948 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229487AbhD0INi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Apr 2021 04:11:47 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46E92C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Apr 2021 01:11:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=07RKmapJWTopIz2gVmzJzG36kGAwBXId0uiyJDLJlZA=; b=QKE+33mVv6Ype/XoL1Jfx2uShW
-        a9pMlZl9eLxgXzOwVuCNBwGkznYSA5xN7xmlMd5uS7w5qcUyFvPmbacYwWc5znKHp9DvduMz9qHUk
-        a2KOwH+x39ms+yA9LMxPTiNoh8T4fqgYQe732OM/6R1cMYsXPRSQIawxsJi0fBRm5mSg=;
-Received: from p4ff13bc6.dip0.t-ipconnect.de ([79.241.59.198] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lbIo7-00077p-VZ; Tue, 27 Apr 2021 10:11:00 +0200
-Subject: Re: [PATCH] mac80211: minstrel_ht: fix minstrel_aggr_check for encap
- offload
+        Tue, 27 Apr 2021 04:13:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1619511174;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SiYctwTe5i2KDXxaksxLTUtLgydwhlO+q4SO9irAoxA=;
+        b=DpGb1kGN2yuBRD3FhQEfwj/LrJhis3iJqUt87cwRUje8szTdIn3V3cTJVWMcZ7Le0xBnIA
+        sOZKtmaeH0UQrc0RFSf9FmYMuf8BHXsL03ujB4VKQi//9EOUV7qSwPUt/2ZJHy3qvHs3iF
+        RBrLzEsIGVOXUvzpJGh80ETVT83/2I8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-390-aplaVs8rPV-vd2djDuP08A-1; Tue, 27 Apr 2021 04:12:51 -0400
+X-MC-Unique: aplaVs8rPV-vd2djDuP08A-1
+Received: by mail-ej1-f70.google.com with SMTP id n13-20020a170906b30db029038ec026319aso1561213ejz.1
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Apr 2021 01:12:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=SiYctwTe5i2KDXxaksxLTUtLgydwhlO+q4SO9irAoxA=;
+        b=SP01C4UeEXLEy+9ncOzCeKykftRKI+/Ku+s4qk/NQoCeR4fuzzA6bft425mHT+d2ZE
+         hv3c5VWcRZAp5E/L+NpOIABUIo4CfOjd1cuiz7safeGzdrD2lPACyj1AzG8rXQ+4HpP4
+         gUHrhxFEd1YgorGNHJV0WD/JcpMrnw5Ht06Ox9rJsfOvRwt0xzjyj929dT9h/pkMrPgu
+         5r/YaBVNO1S02b9pzNJ9/2mpql/bXwXIkZKd67D7aGEKtt/BFKvAQKk7S6m4NJRPbYcu
+         KHdfv/L744K+qeTTL9zBLf4nBubRf+QMsN8fPcKnm/Tc/tl/TleKArAjN9mHETSZMXJT
+         7/VQ==
+X-Gm-Message-State: AOAM5311/UoEQyl5ghd/NXQmtQXZ0immijusaKCnKFba322ROars5Pym
+        OgluLzZ7LOlq2uRtQbrcTKVzg5+Kt8C5QLzbT7Lcf8rod8szG+XQgeY81bnl+SZU8M5nv3ELL8v
+        t2D6ChU3BATlijeMSARCCeR8T6J8=
+X-Received: by 2002:a17:906:a017:: with SMTP id p23mr22649645ejy.460.1619511170464;
+        Tue, 27 Apr 2021 01:12:50 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxZlfwMstp/CiemD9GPBlDqRtHbbZ+zfzP5hC6bxcB2k6kTlac1UNxQ4XfJLVC58lCcHrhavg==
+X-Received: by 2002:a17:906:a017:: with SMTP id p23mr22649633ejy.460.1619511170289;
+        Tue, 27 Apr 2021 01:12:50 -0700 (PDT)
+Received: from localhost ([151.66.28.185])
+        by smtp.gmail.com with ESMTPSA id f3sm12601516eje.45.2021.04.27.01.12.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Apr 2021 01:12:49 -0700 (PDT)
+Date:   Tue, 27 Apr 2021 10:12:43 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 To:     Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>,
         Shayne Chen <shayne.chen@mediatek.com>,
         linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] mac80211: minstrel_ht: fix minstrel_aggr_check for encap
+ offload
+Message-ID: <YIfHe6d5IskhogTX@lore-desk>
 References: <d5303cd9935a9a2f44b76070d191e753895da516.1619489753.git.ryder.lee@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <6d94a83a-c807-13a5-a2aa-d5adb780ba80@nbd.name>
-Date:   Tue, 27 Apr 2021 10:10:58 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.0
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="83y9azwuOsjwp1b/"
+Content-Disposition: inline
 In-Reply-To: <d5303cd9935a9a2f44b76070d191e753895da516.1619489753.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 2021-04-27 04:20, Ryder Lee wrote:
+--83y9azwuOsjwp1b/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 > Avoid checking ieee80211_hdr to support encap offload.
-> 
+>=20
 > Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 > ---
 >  net/mac80211/rc80211_minstrel_ht.c | 5 ++---
 >  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+>=20
+> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_mi=
+nstrel_ht.c
 > index ecad9b10984f..02a6648aba54 100644
 > --- a/net/mac80211/rc80211_minstrel_ht.c
 > +++ b/net/mac80211/rc80211_minstrel_ht.c
-> @@ -1180,20 +1180,19 @@ minstrel_downgrade_rate(struct minstrel_ht_sta *mi, u16 *idx, bool primary)
+> @@ -1180,20 +1180,19 @@ minstrel_downgrade_rate(struct minstrel_ht_sta *m=
+i, u16 *idx, bool primary)
 >  static void
 >  minstrel_aggr_check(struct ieee80211_sta *pubsta, struct sk_buff *skb)
 >  {
-> -	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
->  	struct sta_info *sta = container_of(pubsta, struct sta_info, sta);
+> -	struct ieee80211_hdr *hdr =3D (struct ieee80211_hdr *) skb->data;
+>  	struct sta_info *sta =3D container_of(pubsta, struct sta_info, sta);
 >  	u16 tid;
->  
->  	if (skb_get_queue_mapping(skb) == IEEE80211_AC_VO)
+> =20
+>  	if (skb_get_queue_mapping(skb) =3D=3D IEEE80211_AC_VO)
 >  		return;
->  
+> =20
 > -	if (unlikely(!ieee80211_is_data_qos(hdr->frame_control)))
 > +	if (unlikely(!pubsta->wme))
-The ieee80211_is_data_qos check should still be performed for
-non-offloaded packets to avoid triggering on management frames.
 
-- Felix
+I guess we are changing the behaviour here since the check is done per-pack=
+et
+and non per-sta
+
+Regards,
+Lorenzo
+
+>  		return;
+> =20
+>  	if (unlikely(skb->protocol =3D=3D cpu_to_be16(ETH_P_PAE)))
+>  		return;
+> =20
+> -	tid =3D ieee80211_get_tid(hdr);
+> +	tid =3D skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+>  	if (likely(sta->ampdu_mlme.tid_tx[tid]))
+>  		return;
+> =20
+> --=20
+> 2.18.0
+>=20
+
+--83y9azwuOsjwp1b/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYIfHeAAKCRA6cBh0uS2t
+rJ40AP9s6SLk4IcjrZzQrwyK7qXNgfz7YsCNihD0/e/z6jszdgD8CnpJET02ahT0
+lLNlUKno+70LFeDa4y8N6vJVnne3YQ4=
+=So7w
+-----END PGP SIGNATURE-----
+
+--83y9azwuOsjwp1b/--
+
