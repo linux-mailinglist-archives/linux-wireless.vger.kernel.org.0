@@ -2,149 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E59D336BC74
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 02:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4450B36BCF1
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 03:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234743AbhD0AFf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Apr 2021 20:05:35 -0400
-Received: from gate.crashing.org ([63.228.1.57]:52976 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233919AbhD0AFe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Apr 2021 20:05:34 -0400
-Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 13QNi8nL025548;
-        Mon, 26 Apr 2021 18:44:08 -0500
-Message-ID: <3677398ebb77f334abb4899770db633d9658fe82.camel@kernel.crashing.org>
-Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem()
- for non-platform devices
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Michael Walle <michael@walle.cc>, Rob Herring <robh+dt@kernel.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        netdev <netdev@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        "open list:MEDIA DRIVERS FOR RENESAS - FCP" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "moderated list:ARM/STM32 ARCHITECTURE" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        linux-oxnas@groups.io, linux-omap <linux-omap@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
-        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Date:   Tue, 27 Apr 2021 09:44:07 +1000
-In-Reply-To: <108f268a35843368466004f7fe5f9f88@walle.cc>
-References: <20210412174718.17382-1-michael@walle.cc>
-         <20210412174718.17382-3-michael@walle.cc>
-         <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
-         <8157eba9317609294da80472622deb28@walle.cc>
-         <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
-         <108f268a35843368466004f7fe5f9f88@walle.cc>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        id S234469AbhD0BfV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Apr 2021 21:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53462 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233916AbhD0BfU (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 26 Apr 2021 21:35:20 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D794C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Apr 2021 18:34:38 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id m13so58281572oiw.13
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Apr 2021 18:34:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=b5IHUMMA8YyX+EDMB8DL8yA0hxc+/1tZzUdJKwabg14=;
+        b=LGaEdfibwrkNJo9L6qIupDl2n7do470E2jt3+ZSmMIwga3LoGS1VFpHOEWCMU1bqyO
+         nlEorzcPgZO1x1rt5PIkQkGonjx5g0BRNc8k8M77Poh5yBge6isAq+JAB1c5g5tgRZ/u
+         WKb2qUSKWkBj3oO0TFsrqrKXQZUDcgk9v4k6DExczXLKEgXORnuvHYrRXx/DB0p7h76+
+         xiWUL9+UUn6Fd1ez9ruGRshRIXce8C37p1oDtA3A7Xvxn98lwJKsRIFrb8DxtUoA2gag
+         /Tf0boDs9FZ387MFIp3xBPscVHy8tjBvluje38bMjAnta6M2lQWNLnpomLGhrvQ4crSO
+         c1KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=b5IHUMMA8YyX+EDMB8DL8yA0hxc+/1tZzUdJKwabg14=;
+        b=IqsWKVXKGaP0RgqmqFyaO9oXLhqtrXillkSh1d2Nz9JUjx4YHZaEnQHcsNnJAQ+CTW
+         tufyfvj4w6MifUY5dwF25mwARDmEnuepdmQja7xwOqEdkiYh8n+PwBjar0+5BVEyniN6
+         G44VKH34NRfw6sxwFgC9XfbUpyzhxPpCq+gyN/GY+Ixq+vTths/RDjeCf5suWzhlqU6X
+         TouqVT2IF7mAK3ASCDmuw1JTzYpj2N01ekU4qd5AJcHBO4XSvHq3vops2fQ2cQiSVmdM
+         oYXczI2FI8TPzXDlIZ/61npJmhcMcVaz4HtKIDRIr1dRO7JYWLGs/ZV6BDhKaswcW0zg
+         aPpw==
+X-Gm-Message-State: AOAM533Gw4uIbNRzOVoILgJiJEc7+gdcSPoTT8dO91GZypGzk6PM86xL
+        lbMf4uVSZJDlKh4UkyHMMj1ye9dDs+xJLZLvkDg=
+X-Google-Smtp-Source: ABdhPJywlrNN/QnbdC5H5R+qVxiBU+4WBVHt3n6UclS4aKgbvC642jFPeT3c98gR1cGp4Rqx9oBwT82TVaoSfz8kYAM=
+X-Received: by 2002:a05:6808:b3b:: with SMTP id t27mr1410624oij.50.1619487277095;
+ Mon, 26 Apr 2021 18:34:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6830:2103:0:0:0:0 with HTTP; Mon, 26 Apr 2021 18:34:36
+ -0700 (PDT)
+In-Reply-To: <6dd2cb8b-5540-a410-92d8-f329be98327b@redhat.com>
+References: <20210201152956.370186-2-hdegoede@redhat.com> <20210426183406.13055-1-youling257@gmail.com>
+ <6dd2cb8b-5540-a410-92d8-f329be98327b@redhat.com>
+From:   youling 257 <youling257@gmail.com>
+Date:   Tue, 27 Apr 2021 09:34:36 +0800
+Message-ID: <CAOzgRdZF2WyRmGRv=+PehmSbfKDhPp-WYPcLbsuRR92qxmq+bw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] staging: rtl8723bs: Move wiphy setup to after reading
+ the regulatory settings from the chip
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     gregkh@linuxfoundation.org, johannes.berg@intel.com,
+        linux-wireless@vger.kernel.org, ross.schm.dev@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2021-04-26 at 12:54 +0200, Michael Walle wrote:
-> Before I'll try to come up with a patch for this, I'd like to get
-> your opinion on it.
-> 
-> (1) replacing of_get_mac_address(node) with eth_get_mac_address(dev)
->      might sometimes lead to confusing comments like in
->      drivers/net/ethernet/allwinner/sun4i-emac.c:
-> 
->      /* Read MAC-address from DT */
->      ret = of_get_mac_address(np, ndev->dev_addr);
+rtl8723bs v5.2.17 is a external module, i not use staging/rtl8723bs
+driver, rtl8723bs v5.2.17 support build with linux kernel 5.12.
+How to porting "staging: rtl8723bs: Move wiphy setup to after reading
+the regulatory =E2=80=A6" to my rtl8723bs v5.2.17 ?
+my rtl8723bs v5.2.17, there are no such codes.
 
-You could leave it or turn it into "from platform", doesn't matter...
+	/* 3 1. init network device data */
+	pnetdev =3D rtw_init_netdev(padapter);
+	if (!pnetdev)
+		goto free_adapter;
 
-> (2) What do you think of eth_get_mac_address(ndev). That is, the
+	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
 
-Not sure what you mean, eth_platform_get_mac_address() takes the
-address as an argument. I think what you want is a consolidated
-nvmem_get_mac_address + eth_platform_get_mac_address that takes a
-device, which would have no requirement of the bus_type at all.
+	padapter =3D rtw_netdev_priv(pnetdev);
 
-Cheers,
-Ben.
+	rtw_wdev_alloc(padapter, dvobj_to_dev(dvobj));
 
+2021-04-27 2:43 GMT+08:00, Hans de Goede <hdegoede@redhat.com>:
+> Hi Youling,
+>
+> On 4/26/21 8:34 PM, youling257 wrote:
+>> Hello, "cfg80211: Save the regulatory domain when setting custom
+>> regulatory" "cfg80211: Save the regulatory domain with a lock" cause
+>> rtl8723bs not work problem.
+>> I see upstream rtl8723bs driver "staging: rtl8723bs: Move wiphy setup
+>> to after reading the regulatory" "staging: rtl8723bs: fix wireless
+>> regulatory API misuse" fix problem.
+>>
+>> I use rtl8723bs v5.2.17.1_26955.20180307_COEX20180201-6f52 driver, no
+>> the "rtw_wdev_alloc(padapter, dvobj_to_dev(dvobj));"
+>>
+>> https://github.com/youling257/rockchip_wlan/blob/v5.2.17.1/rtl8723bs/os_=
+dep/linux/ioctl_cfg80211.h#L234
+>> int rtw_wdev_alloc(_adapter *padapter, struct wiphy *wiphy);
+>>
+>> https://github.com/torvalds/linux/blob/master/drivers/staging/rtl8723bs/=
+include/ioctl_cfg80211.h#L91
+>> int rtw_wdev_alloc(struct adapter *padapter, struct device *dev);
+>>
+>> https://github.com/torvalds/linux/blob/master/drivers/staging/rtl8723bs/=
+os_dep/sdio_intf.c#L333
+>> https://github.com/youling257/rockchip_wlan/blob/v5.2.17.1/rtl8723bs/os_=
+dep/linux/sdio_intf.c#L645
+>>
+>> I want to fix rtl8723bs v5.2.17 not work problem, can you help me?
+>
+> I'm not sure what your problem exactly is. If your kernel contains the
+>
+> 51d62f2f2c50 ("cfg80211: Save the regulatory domain with a lock")
+>
+> Commit then you also need to backport (in the listed order):
+>
+> 81f153faacd0 ("staging: rtl8723bs: fix wireless regulatory API misuse")
+> 50af06d43eab ("taging: rtl8723bs: Move wiphy setup to after reading the
+> regulatory settings from the chip")
+>
+> Which you seem to have already figured out ?
+>
+> To keep the rtk8723bs driver working your kernel should either contain al=
+l 3
+> mentioned commits,
+> or it should contain none of them.
+>
+> Regards,
+>
+> Hans
+>
+>
+>
