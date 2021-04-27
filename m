@@ -2,150 +2,233 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA8936C5B8
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 14:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C168536C5C9
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 14:07:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235489AbhD0MFR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Apr 2021 08:05:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50838 "EHLO
+        id S236113AbhD0MIO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Apr 2021 08:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235391AbhD0MFR (ORCPT
+        with ESMTP id S235501AbhD0MIN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Apr 2021 08:05:17 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA04EC061574;
-        Tue, 27 Apr 2021 05:04:32 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id j10so159822lfb.12;
-        Tue, 27 Apr 2021 05:04:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=PJPfUcrmI/ts1nrgT6EFm2T8l/O8vjn/wh3TdE9UtZ4=;
-        b=jiKYXeQ77fGOYkuNW6ywk5fToVFsW3SzTelDCgkfW9PHEj+g5l+vdX2hLLuVP+3tCf
-         6Cx2FPjUutw2Fpzqd/93T12/iIrCUHVt0Xco/tppVQSaEpXknC+GTJy/eUUZHuzb2v2f
-         375iTGIGvgTWPpoT+qYOxnTU3Jlx4bPmkwgTofM736OvWiVk47h8szupuJDJgfF2XYrT
-         WKocVhEjdrTLUcQeC1ZoT181WtYff7FibA5e//Sj2wSt8Qnr6ldUVIXOzBxQjCRVyKlU
-         DaaU3vBdUTY0+Q02blMZ5lVfsOff2D7zhqpJfNEu8C3mGyiOkazzguqhIQXyT0RDmGuO
-         0wMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=PJPfUcrmI/ts1nrgT6EFm2T8l/O8vjn/wh3TdE9UtZ4=;
-        b=EKMkVM8aB9vLTB3SsEPR3fDXo5prt/CI0UTAIcoC61rkjkzS3FuBO9+iH04fI2jkPB
-         ATLYblYNDfl5IoI1YyZ7ekq4Ufq5uS22UnJQnlOVBxS6vBLkbVfsCXGI/7Pcp8RNJq7c
-         XuNt0pu19hGQiIL5bDd3xptRykeS1zN9ZuTCzqkYyeHeq8ERs+NDpoEV7B4jjKS/4IX9
-         zNwiJenlLEmdNoZBTUIpykF/cG70UiL5GcsHY7c0wJSfhQuNGATR50v3aJPcQfVdMhvD
-         SveJ6re5mAsI9eslQvJ7KyCaKAzU6NH+EOhpbnqtfcHESb1nUVkIEu1oybPiI119Vpmi
-         kG2A==
-X-Gm-Message-State: AOAM530G/k38Gp8mRR3UNQyUmIiJiI85QQaOxJ39hXjmwwEuLkYHYG77
-        yDu6wUlZ+xt4iiaxejZn1Tw=
-X-Google-Smtp-Source: ABdhPJxntEVZ2nlHDjJT+44NaVUAOYyfyd8/S14A+UrAcHDjuZa3SPsVvcWzfWoZod3dc9pBb6OJdA==
-X-Received: by 2002:a19:c510:: with SMTP id w16mr85405lfe.433.1619525071270;
-        Tue, 27 Apr 2021 05:04:31 -0700 (PDT)
-Received: from [192.168.1.11] ([94.103.229.147])
-        by smtp.gmail.com with ESMTPSA id u10sm1767128lfl.185.2021.04.27.05.04.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Apr 2021 05:04:30 -0700 (PDT)
-Message-ID: <ec48c7d118a3093289907dc43f8dfb79d4879f7d.camel@gmail.com>
-Subject: Re: Memory leak in ath9k_hif_usb_dealloc_tx_urbs()
-From:   Pavel Skripkin <paskripkin@gmail.com>
-To:     Atul Gopinathan <atulgopinathan@gmail.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     brookebasile@gmail.com, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com,
-        syzkaller-bugs@googlegroups.com
-Date:   Tue, 27 Apr 2021 15:04:29 +0300
-In-Reply-To: <20210427113559.GA7527@atulu-nitro>
-References: <20200911071427.32354-1-brookebasile@gmail.com>
-         <20210330193652.10642-1-paskripkin@gmail.com> <YGQWf1lP4ZOUFiG5@kroah.com>
-         <20210427113559.GA7527@atulu-nitro>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.0 
+        Tue, 27 Apr 2021 08:08:13 -0400
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3735C061756;
+        Tue, 27 Apr 2021 05:07:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=skogtun.org
+        ; s=ds202012; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=yNQKTiaSX9YkEw5rvnmDnAQkpI15JsyRTEcsnXXwEEg=; b=XvpfghEsS3gej5oU+L7gQHaTa2
+        11pJcImwautxN3ZRA+GAariMvsYFtY/LpTQdOutSo8KeOiaPL07jLLZ1aEg5CC05pSI7Js1F+OjMr
+        P93SBTC8MKbVwGw45xmRGdGwBKla4L+zFtyvSkuIRcau1yiSSGqqurRse4gorjj6ACLbnXXCHuOgA
+        5DSHAbXpbvkaErpY5bj1+NkOSSQ11xKuf7YtuEUnFVzs/9GkPiZvE+Hj/KsGVc34Z83vnDvpWqETJ
+        zjol43RQXANlxETBvrD8Cskk3jfySgLfZF3oWKsoaEVxgX4LAZaWaBZpji9DgOuvhWV3xs2QGJhQK
+        y9NFYmfw==;
+Received: from [2001:4643:10eb:0:200:5e10:0:6] (port=48594)
+        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <harald@skogtun.org>)
+        id 1lbMUy-0000M8-EV; Tue, 27 Apr 2021 14:07:28 +0200
+Subject: Re: [PATCH] cfg80211: fix locking in netlink owner interface
+ destruction
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
+References: <20210427114946.aa0879857e8f.I846942fa5fc6ec92cda98f663df323240c49893a@changeid>
+From:   Harald Arnesen <harald@skogtun.org>
+Message-ID: <07e5bcb9-7de3-2e0a-cdeb-adc0dd4f1fd4@skogtun.org>
+Date:   Tue, 27 Apr 2021 14:07:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210427114946.aa0879857e8f.I846942fa5fc6ec92cda98f663df323240c49893a@changeid>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi!
+I can confirm that the machine reboots with this patch applied.
+Harald Arnesen
 
-On Tue, 2021-04-27 at 17:05 +0530, Atul Gopinathan wrote:
-> On Wed, Mar 31, 2021 at 08:28:15AM +0200, Greg KH wrote:
-> > On Tue, Mar 30, 2021 at 10:36:52PM +0300, Pavel Skripkin wrote:
-> > > Hi!
-> > > 
-> > > I did some debugging on this
-> > > https://syzkaller.appspot.com/bug?id=3ea507fb3c47426497b52bd82b8ef0dd5b6cc7ee
-> > > and, I believe, I recognized the problem. The problem appears in
-> > > case of
-> > > ath9k_htc_hw_init() fail. In case of this fail all tx_buf->urb
-> > > krefs will be
-> > > initialized to 1, but in free function:
-> > > 
-> > > static void ath9k_hif_usb_dealloc_tx_urbs(struct hif_device_usb
-> > > *hif_dev)
-> > > 
-> > > ....
-> > > 
-> > > static void ath9k_hif_usb_dealloc_tx_urbs(struct hif_device_usb
-> > > *hif_dev)
-> > > {
-> > >     ...
-> > >         list_for_each_entry_safe(tx_buf, tx_buf_tmp,
-> > >                                  &hif_dev->tx.tx_buf, list) {
-> > >                 usb_get_urb(tx_buf->urb);
-> > >                 ...
-> > >                 usb_free_urb(tx_buf->urb);
-> > >                 ...
-> > >                 }
-> > > 
-> > > Krefs are incremented and then decremented, that means urbs won't
-> > > be freed.
-> > > I found your patch and I can't properly understand why You added
-> > > usb_get_urb(tx_buf->urb).
-> > > Can You explain please, I believe this will help me or somebody
-> > > to fix this ussue :)
-> > 
-> > I think almost everyone who has looked into this has given up due
-> > to the
-> > mess of twisty-passages here with almost no real-world benefits for
-> > unwinding them :)
+
+Johannes Berg [27.04.2021 11:49]:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> Just wanted to confirm, what is the status of this bug then, as in is
-> it
-> invalid (not sure if that's the correct word)? I happened to stumble
-> across the same syzkaller bug report Pavel posted above, in the
-> morning.
-> Saw that there has been no patch tests/fixes on this yet according to
-> syzkaller. Spent a couple of hours going through it before sending a
-> test patch to syzbot which returned an "OK" (and the patch is exactly
-> what Pavel pointed out, I simply removed the `usb_get_urb()`). Before
-> sending anything to the mailing list, I made sure to search all the
-> relavant networking lists to see if this topic had been brought up
-> (learnt
-> to do this from my preious mistakes of sending already accepted
-> patches) and
-> luckily I found this.
+> Harald Arnesen reported [1] a deadlock at reboot time, and after
+> he captured a stack trace a picture developed of what's going on:
 > 
-> Syzbot has had 380 crashes caused by this bug, with the latest being
-> today. So I wanted to confirm what should be done be about this bug. 
+> The distribution he's using is using iwd (not wpa_supplicant) to
+> manage wireless. iwd will usually use the "socket owner" option
+> when it creates new interfaces, so that they're automatically
+> destroyed when it quits (unexpectedly or otherwise). This is also
+> done by wpa_supplicant, but it doesn't do it for the normal one,
+> only for additional ones, which is different with iwd.
+> 
+> Anyway, during shutdown, iwd quits while the netdev is still UP,
+> i.e. IFF_UP is set. This causes the stack trace that Linus so
+> nicely transcribed from the pictures:
+> 
+> cfg80211_destroy_iface_wk() takes wiphy_lock
+>  -> cfg80211_destroy_ifaces()
+>   ->ieee80211_del_iface
+>     ->ieeee80211_if_remove
+>       ->cfg80211_unregister_wdev
+>         ->unregister_netdevice_queue
+>           ->dev_close_many
+>             ->__dev_close_many
+>               ->raw_notifier_call_chain
+>                 ->cfg80211_netdev_notifier_call
+> and that last call tries to take wiphy_lock again.
+> 
+> In commit a05829a7222e ("cfg80211: avoid holding the RTNL when
+> calling the driver") I had taken into account the possibility of
+> recursing from cfg80211 into cfg80211_netdev_notifier_call() via
+> the network stack, but only for NETDEV_UNREGISTER, not for what
+> happens here, NETDEV_GOING_DOWN and NETDEV_DOWN notifications.
+> 
+> Additionally, while this worked still back in commit 78f22b6a3a92
+> ("cfg80211: allow userspace to take ownership of interfaces"), it
+> missed another corner case: unregistering a netdev will cause
+> dev_close() to be called, and thus stop wireless operations (e.g.
+> disconnecting), but there are some types of virtual interfaces in
+> wifi that don't have a netdev - for that we need an additional
+> call to cfg80211_leave().
+> 
+> So, to fix this mess, change cfg80211_destroy_ifaces() to not
+> require the wiphy_lock(), but instead make it acquire it, but
+> only after it has actually closed all the netdevs on the list,
+> and then call cfg80211_leave() as well before removing them
+> from the driver, to fix the second issue. The locking change in
+> this requires modifying the nl80211 call to not get the wiphy
+> lock passed in, but acquire it by itself after flushing any
+> potentially pending destruction requests.
+> 
+> [1] https://lore.kernel.org/r/09464e67-f3de-ac09-28a3-e27b7914ee7d@skogtun.org
+> 
+> Cc: stable@vger.kernel.org # 5.12
+> Reported-by: Harald Arnesen <harald@skogtun.org>
+> Fixes: 776a39b8196d ("cfg80211: call cfg80211_destroy_ifaces() with wiphy lock held")
+> Fixes: 78f22b6a3a92 ("cfg80211: allow userspace to take ownership of interfaces")
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+> Linus, I'll send this the regular way, just CC'ing you since
+> you were involved in the debug.
+> ---
+>  net/wireless/core.c    | 21 +++++++++++++++++----
+>  net/wireless/nl80211.c | 24 +++++++++++++++++++-----
+>  2 files changed, 36 insertions(+), 9 deletions(-)
+> 
+> diff --git a/net/wireless/core.c b/net/wireless/core.c
+> index a2785379df6e..589ee5a69a2e 100644
+> --- a/net/wireless/core.c
+> +++ b/net/wireless/core.c
+> @@ -332,14 +332,29 @@ static void cfg80211_event_work(struct work_struct *work)
+>  void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev)
+>  {
+>  	struct wireless_dev *wdev, *tmp;
+> +	bool found = false;
+>  
+>  	ASSERT_RTNL();
+> -	lockdep_assert_wiphy(&rdev->wiphy);
+>  
+> +	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
+> +		if (wdev->nl_owner_dead) {
+> +			if (wdev->netdev)
+> +				dev_close(wdev->netdev);
+> +			found = true;
+> +		}
+> +	}
+> +
+> +	if (!found)
+> +		return;
+> +
+> +	wiphy_lock(&rdev->wiphy);
+>  	list_for_each_entry_safe(wdev, tmp, &rdev->wiphy.wdev_list, list) {
+> -		if (wdev->nl_owner_dead)
+> +		if (wdev->nl_owner_dead) {
+> +			cfg80211_leave(rdev, wdev);
+>  			rdev_del_virtual_intf(rdev, wdev);
+> +		}
+>  	}
+> +	wiphy_unlock(&rdev->wiphy);
+>  }
+>  
+>  static void cfg80211_destroy_iface_wk(struct work_struct *work)
+> @@ -350,9 +365,7 @@ static void cfg80211_destroy_iface_wk(struct work_struct *work)
+>  			    destroy_work);
+>  
+>  	rtnl_lock();
+> -	wiphy_lock(&rdev->wiphy);
+>  	cfg80211_destroy_ifaces(rdev);
+> -	wiphy_unlock(&rdev->wiphy);
+>  	rtnl_unlock();
+>  }
+>  
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index b1df42e4f1eb..a5224da63832 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -3929,7 +3929,7 @@ static int nl80211_set_interface(struct sk_buff *skb, struct genl_info *info)
+>  	return err;
+>  }
+>  
+> -static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+> +static int _nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+>  {
+>  	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+>  	struct vif_params params;
+> @@ -3938,9 +3938,6 @@ static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+>  	int err;
+>  	enum nl80211_iftype type = NL80211_IFTYPE_UNSPECIFIED;
+>  
+> -	/* to avoid failing a new interface creation due to pending removal */
+> -	cfg80211_destroy_ifaces(rdev);
+> -
+>  	memset(&params, 0, sizeof(params));
+>  
+>  	if (!info->attrs[NL80211_ATTR_IFNAME])
+> @@ -4028,6 +4025,21 @@ static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+>  	return genlmsg_reply(msg, info);
+>  }
+>  
+> +static int nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+> +{
+> +	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+> +	int ret;
+> +
+> +	/* to avoid failing a new interface creation due to pending removal */
+> +	cfg80211_destroy_ifaces(rdev);
+> +
+> +	wiphy_lock(&rdev->wiphy);
+> +	ret = _nl80211_new_interface(skb, info);
+> +	wiphy_unlock(&rdev->wiphy);
+> +
+> +	return ret;
+> +}
+> +
+>  static int nl80211_del_interface(struct sk_buff *skb, struct genl_info *info)
+>  {
+>  	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+> @@ -15040,7 +15052,9 @@ static const struct genl_small_ops nl80211_small_ops[] = {
+>  		.doit = nl80211_new_interface,
+>  		.flags = GENL_UNS_ADMIN_PERM,
+>  		.internal_flags = NL80211_FLAG_NEED_WIPHY |
+> -				  NL80211_FLAG_NEED_RTNL,
+> +				  NL80211_FLAG_NEED_RTNL |
+> +				  /* we take the wiphy mutex later ourselves */
+> +				  NL80211_FLAG_NO_WIPHY_MTX,
+>  	},
+>  	{
+>  		.cmd = NL80211_CMD_DEL_INTERFACE,
 > 
 
-I saw on dashboard, that Dmitry tested latest upstream commit and
-syzbot returned "OK", but usb_get_urb(tx_buf->urb); is still there.
 
-I think, this usb_get_urb prevents race condition, but I'm not sure
-about it, that's why I sent an email to patch author. As You can see,
-he has not responded yet :)
-
-> Thank you!
-> Atul
-
-With regards,
-Pavel Skripkin
-
-
+-- 
+Hilsen Harald
