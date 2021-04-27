@@ -2,255 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ABEA36C47E
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 12:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32FDD36C532
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Apr 2021 13:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235809AbhD0K4t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Apr 2021 06:56:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46856 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235803AbhD0K4t (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Apr 2021 06:56:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A1C19613B0;
-        Tue, 27 Apr 2021 10:56:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619520966;
-        bh=P3sk/jdvdGbo8a4NLyXLQdNK5bliTYyVm9EmJOM7/24=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P0GiYa98NeCaeYsF0ydEe3dQhBgPRtgLHlolscO/xEhE49EQ2kv2PdJ8mHsfBRdTO
-         6N0FFeHx4cfei6d7+taD1dW04B2Y/ywNRhbiSp6UY75t2djMTFQaIpRQHjZekmt99m
-         vqsFPpYGO+1bjiaaXN6BRNsjio9pBIa52KVSdkcP/+ED2rux4NCyvm+NtWqdCwKve0
-         9WFE5WqGe0O+1ZavAWrnvquqkRI67G4zadr63rYt7u5PCBsoRvm3OELGOph/7RPpQ4
-         8SWXoSpRiseMimkHG2Rm/Sm02X3ELfzY3TfLbEjPSCAbdbnLMyVahsvUXsUrE8hKz0
-         Jk5Fw/Ec50GbA==
-Received: by pali.im (Postfix)
-        id D2C3B791; Tue, 27 Apr 2021 12:56:00 +0200 (CEST)
-From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To:     Bjorn Helgaas <bhelgaas@google.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
-Cc:     vtolkm@gmail.com, Rob Herring <robh@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-pci@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] PCI: Disallow retraining link for Atheros chips on non-Gen1 PCIe bridges
-Date:   Tue, 27 Apr 2021 12:55:25 +0200
-Message-Id: <20210427105525.23277-1-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210326124326.21163-1-pali@kernel.org>
-References: <20210326124326.21163-1-pali@kernel.org>
+        id S235949AbhD0Lgy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Apr 2021 07:36:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235353AbhD0Lgx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 27 Apr 2021 07:36:53 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C36C061574;
+        Tue, 27 Apr 2021 04:36:09 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id h11so1513874pfn.0;
+        Tue, 27 Apr 2021 04:36:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=IUY3136rBJHpdsy9gPF9r8TyfY75qqRWpCu4OCSUOq8=;
+        b=bG/0/0eul04k7Doe4nJU88gQzunUd9A7KmdMfs0AhebThhMuiODFaYVfGwDMhH0pa8
+         WZzQj1mQBTkC+0SAZok5cEUaUhYuPL7qo/5zk1o4DoEzLxpIR4vREk+R0GHBqenhzfnV
+         L8i1MC9XqjVaqSyxI9k7sZQ6fTVw40/HgnjW9k5IQUnc0LprXZ3GOHMzEQXSi/zy4HLC
+         jXl+nglVnNwTQ8NbdZU1cbsLdbYOvaBPKnx5God93EaIPi0FY3rgjCcGeqjbugmCoD2/
+         3dRRAu6lGMSNk4zwHXNHbjC/JM2+x/StNXgcbwzUfJ5oqJjZ1+BeFZ3uMAiBjphsuejr
+         X/Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IUY3136rBJHpdsy9gPF9r8TyfY75qqRWpCu4OCSUOq8=;
+        b=ZscWcNW2PPik5eEACBWZsNf6ROMzZVGNPbPedHXpJf7JvLSRsOsRvHMjW1bWfQMvxJ
+         ABKcn6JPwQPyE06MEer1ppivYCTRqb/f39uB9JXuweGgwNU4mQBY+cQ2GnKK2ZzPoNXn
+         US4DLycqJPwwJFMb/mMWtijthNmwcOQjtbhuVs1OnwQBQcP4rNxOsdQs6Wn/PRy8nhA4
+         dy+zhcXrLdXCVVwKuqJ679bYpJizQpc9llvsBpsuGuH82Gy0zzhxB95FFvon4meHcN1n
+         czWT6PH64TYfJofq7cd2bP/B0MnDzfIAveEY49o05lkyhKXOMAQdHhKlChXuvZjY9QxP
+         WigA==
+X-Gm-Message-State: AOAM532aGiGR9XO9m1QbLrwLIpjHEwkQlWh1/xqSHiXr4SrnYHxl7Hmn
+        NNSh1kvmcP8Y2FbB/258JYI=
+X-Google-Smtp-Source: ABdhPJxhLOOyz8sHhOudu4oWpIBS9v6uWoB1Y11kfFa0J1ct2QY3nMIGqEORflL0FNyuCiMwlqowyA==
+X-Received: by 2002:a63:be08:: with SMTP id l8mr10314932pgf.438.1619523369049;
+        Tue, 27 Apr 2021 04:36:09 -0700 (PDT)
+Received: from atulu-nitro ([2401:4900:2328:eaea:1419:503d:c39f:5ab1])
+        by smtp.gmail.com with ESMTPSA id mr3sm2100856pjb.20.2021.04.27.04.36.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Apr 2021 04:36:08 -0700 (PDT)
+Date:   Tue, 27 Apr 2021 17:05:59 +0530
+From:   Atul Gopinathan <atulgopinathan@gmail.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Pavel Skripkin <paskripkin@gmail.com>, brookebasile@gmail.com,
+        ath9k-devel@qca.qualcomm.com, davem@davemloft.net, kuba@kernel.org,
+        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com,
+        syzkaller-bugs@googlegroups.com
+Subject: Re: Memory leak in ath9k_hif_usb_dealloc_tx_urbs()
+Message-ID: <20210427113559.GA7527@atulu-nitro>
+References: <20200911071427.32354-1-brookebasile@gmail.com>
+ <20210330193652.10642-1-paskripkin@gmail.com>
+ <YGQWf1lP4ZOUFiG5@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YGQWf1lP4ZOUFiG5@kroah.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Atheros AR9xxx and QCA98xx chips do not behave not only after a bus reset
-but also after doing retrain link when PCIe bridge is not in GEN1 mode at
-2.5 GT/s speed.
+On Wed, Mar 31, 2021 at 08:28:15AM +0200, Greg KH wrote:
+> On Tue, Mar 30, 2021 at 10:36:52PM +0300, Pavel Skripkin wrote:
+> > Hi!
+> > 
+> > I did some debugging on this
+> > https://syzkaller.appspot.com/bug?id=3ea507fb3c47426497b52bd82b8ef0dd5b6cc7ee
+> > and, I believe, I recognized the problem. The problem appears in case of
+> > ath9k_htc_hw_init() fail. In case of this fail all tx_buf->urb krefs will be
+> > initialized to 1, but in free function:
+> > 
+> > static void ath9k_hif_usb_dealloc_tx_urbs(struct hif_device_usb *hif_dev)
+> > 
+> > ....
+> > 
+> > static void ath9k_hif_usb_dealloc_tx_urbs(struct hif_device_usb *hif_dev)
+> > {
+> >     ...
+> > 	list_for_each_entry_safe(tx_buf, tx_buf_tmp,
+> > 				 &hif_dev->tx.tx_buf, list) {
+> > 		usb_get_urb(tx_buf->urb);
+> > 		...
+> > 		usb_free_urb(tx_buf->urb);
+> > 		...
+> > 		}
+> > 
+> > Krefs are incremented and then decremented, that means urbs won't be freed.
+> > I found your patch and I can't properly understand why You added usb_get_urb(tx_buf->urb).
+> > Can You explain please, I believe this will help me or somebody to fix this ussue :)
+> 
+> I think almost everyone who has looked into this has given up due to the
+> mess of twisty-passages here with almost no real-world benefits for
+> unwinding them :)
 
-QCA9880 and QCA9890 chips throw a Link Down event and completely disappear
-from the bus and their config space is not accessible again.
+Just wanted to confirm, what is the status of this bug then, as in is it
+invalid (not sure if that's the correct word)? I happened to stumble
+across the same syzkaller bug report Pavel posted above, in the morning.
+Saw that there has been no patch tests/fixes on this yet according to
+syzkaller. Spent a couple of hours going through it before sending a
+test patch to syzbot which returned an "OK" (and the patch is exactly
+what Pavel pointed out, I simply removed the `usb_get_urb()`). Before
+sending anything to the mailing list, I made sure to search all the
+relavant networking lists to see if this topic had been brought up (learnt
+to do this from my preious mistakes of sending already accepted patches) and
+luckily I found this.
 
-AR9390 chip throws a Link Down event followed by Link Up event, config
-space is accessible again, but contains nonsense values. PCI device ID is
-0xABCD which indicates HW bug that chip itself was not able to read values
-from internal EEPROM/OTP.
+Syzbot has had 380 crashes caused by this bug, with the latest being
+today. So I wanted to confirm what should be done be about this bug. 
 
-AR9287 chip throws also Link Down and Link Up events, also has accessible
-config space and moreover its config space contains correct values. But
-ath9k driver cannot initialize card from this state as it is unable to
-access HW registers. This also indicates that chip iself was not able to
-read values from internal EEPROM/OTP.
-
-This issue related to PCI device ID 0xABCD and reading internal EEPROM/OTP
-was previously discussed at ath9k-devel mailing list in following thread:
-
-https://www.mail-archive.com/ath9k-devel@lists.ath9k.org/msg07529.html
-
-After experiments we come up with workaround that Retrain link can be
-called only when using GEN1 PCIe bridge or when PCIe bridge has forced link
-speed to 2.5 GT/s via PCI_EXP_LNKCTL2 register.
-
-This issue was reproduced with more cards: Compex WLE900VX (QCA9880 based /
-device ID 0x003c), Compex WLE200NX (AR9287 based / device ID 0x002e),
-"noname" card (QCA9890 based / device ID 0x003c) and Wistron NKR-DNXAH1
-(AR9390 based / device ID 0x0030) on Armada 385 with pci-mvebu.c driver and
-also on Armada 3720 with pci-aardvark.c driver.
-
-To workaround this issue, this change introduces a new PCI quirk called
-PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1 which is enabled for all
-Atheros chips with PCI_DEV_FLAGS_NO_BUS_RESET quirk, plus also for Atheros
-chip AR9287.
-
-When this quirk is set then kernel disallows triggering PCI_EXP_LNKCTL_RL
-bit in config space of PCIe Bridge in case PCIe Bridge is capable of higher
-speed than 2.5 GT/s and higher speed is already allowed. When PCIe Bridge
-has accessible LNKCTL2 register then kernel tries to force target link
-speed via PCI_EXP_LNKCTL2_TLS* bits to 2.5 GT/s. After this change it is
-possible to trigger PCI_EXP_LNKCTL_RL bit without causing issues on
-problematic Atheros cards.
-
-Currently only PCIe ASPM kernel code triggers this PCI_EXP_LNKCTL_RL bit,
-so quirk check is added only into pcie/aspm.c file.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Reported-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Tested-by: Marek Behún <kabel@kernel.org>
-BugLink: https://lore.kernel.org/linux-pci/87h7l8axqp.fsf@toke.dk/
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=84821
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=192441
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=209833
-Cc: stable@vger.kernel.org # c80851f6ce63a ("PCI: Add PCI_EXP_LNKCTL2_TLS* macros")
-
----
-Changes since v1:
-* Move whole quirk code into pcie_downgrade_link_to_gen1() function
-* Reformat to 80 chars per line where possible
-* Add quirk also for cards with AR9287 chip (PCI ID 0x002e)
-* Extend commit message description and add information about 0xABCD
----
- drivers/pci/pcie/aspm.c | 44 +++++++++++++++++++++++++++++++++++++++++
- drivers/pci/quirks.c    | 37 ++++++++++++++++++++++++++--------
- include/linux/pci.h     |  2 ++
- 3 files changed, 75 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index ac0557a305af..729b0389562b 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -192,12 +192,56 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
- 	link->clkpm_disable = blacklist ? 1 : 0;
- }
- 
-+static int pcie_downgrade_link_to_gen1(struct pci_dev *parent)
-+{
-+	u16 reg16;
-+	u32 reg32;
-+	int ret;
-+
-+	/* Check if link is capable of higher speed than 2.5 GT/s */
-+	pcie_capability_read_dword(parent, PCI_EXP_LNKCAP, &reg32);
-+	if ((reg32 & PCI_EXP_LNKCAP_SLS) <= PCI_EXP_LNKCAP_SLS_2_5GB)
-+		return 0;
-+
-+	/* Check if link speed can be downgraded to 2.5 GT/s */
-+	pcie_capability_read_dword(parent, PCI_EXP_LNKCAP2, &reg32);
-+	if (!(reg32 & PCI_EXP_LNKCAP2_SLS_2_5GB)) {
-+		pci_err(parent, "ASPM: Bridge does not support changing Link Speed to 2.5 GT/s\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	/* Force link speed to 2.5 GT/s */
-+	ret = pcie_capability_clear_and_set_word(parent, PCI_EXP_LNKCTL2,
-+						 PCI_EXP_LNKCTL2_TLS,
-+						 PCI_EXP_LNKCTL2_TLS_2_5GT);
-+	if (!ret) {
-+		/* Verify that new value was really set */
-+		pcie_capability_read_word(parent, PCI_EXP_LNKCTL2, &reg16);
-+		if ((reg16 & PCI_EXP_LNKCTL2_TLS) != PCI_EXP_LNKCTL2_TLS_2_5GT)
-+			ret = -EINVAL;
-+	}
-+
-+	if (ret) {
-+		pci_err(parent, "ASPM: Changing Target Link Speed to 2.5 GT/s failed: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pci_info(parent, "ASPM: Target Link Speed changed to 2.5 GT/s due to quirk\n");
-+	return 0;
-+}
-+
- static bool pcie_retrain_link(struct pcie_link_state *link)
- {
- 	struct pci_dev *parent = link->pdev;
- 	unsigned long end_jiffies;
- 	u16 reg16;
- 
-+	if ((link->downstream->dev_flags & PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1) &&
-+	    pcie_downgrade_link_to_gen1(parent)) {
-+		pci_err(parent, "ASPM: Retrain Link at higher speed is disallowed by quirk\n");
-+		return false;
-+	}
-+
- 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
- 	reg16 |= PCI_EXP_LNKCTL_RL;
- 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 653660e3ba9e..68c5e8f4ff8c 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3553,23 +3553,44 @@ static void mellanox_check_broken_intx_masking(struct pci_dev *pdev)
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_MELLANOX, PCI_ANY_ID,
- 			mellanox_check_broken_intx_masking);
- 
--static void quirk_no_bus_reset(struct pci_dev *dev)
-+static void quirk_no_bus_reset_and_no_retrain_link(struct pci_dev *dev)
- {
--	dev->dev_flags |= PCI_DEV_FLAGS_NO_BUS_RESET;
-+	dev->dev_flags |= PCI_DEV_FLAGS_NO_BUS_RESET |
-+			  PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1;
- }
- 
- /*
-- * Some Atheros AR9xxx and QCA988x chips do not behave after a bus reset.
-+ * Atheros AR9xxx and QCA98xx chips do not behave after a bus reset and also
-+ * after retrain link when PCIe bridge is not in GEN1 mode at 2.5 GT/s speed.
-  * The device will throw a Link Down error on AER-capable systems and
-  * regardless of AER, config space of the device is never accessible again
-  * and typically causes the system to hang or reset when access is attempted.
-+ * Or if config space is accessible again then it contains only dummy values
-+ * like fixed PCI device ID 0xABCD or values not initialized at all.
-+ * Retrain link can be called only when using GEN1 PCIe bridge or when
-+ * PCIe bridge has forced link speed to 2.5 GT/s via PCI_EXP_LNKCTL2 register.
-+ * To reset these cards it is required to do PCIe Warm Reset via PERST# pin.
-  * https://lore.kernel.org/r/20140923210318.498dacbd@dualc.maya.org/
-+ * https://lore.kernel.org/r/87h7l8axqp.fsf@toke.dk/
-+ * https://www.mail-archive.com/ath9k-devel@lists.ath9k.org/msg07529.html
-  */
--DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0030, quirk_no_bus_reset);
--DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0032, quirk_no_bus_reset);
--DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x003c, quirk_no_bus_reset);
--DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0033, quirk_no_bus_reset);
--DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0034, quirk_no_bus_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x002e,
-+			 quirk_no_bus_reset_and_no_retrain_link);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0030,
-+			 quirk_no_bus_reset_and_no_retrain_link);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0032,
-+			 quirk_no_bus_reset_and_no_retrain_link);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0033,
-+			 quirk_no_bus_reset_and_no_retrain_link);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0034,
-+			 quirk_no_bus_reset_and_no_retrain_link);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x003c,
-+			 quirk_no_bus_reset_and_no_retrain_link);
-+
-+static void quirk_no_bus_reset(struct pci_dev *dev)
-+{
-+	dev->dev_flags |= PCI_DEV_FLAGS_NO_BUS_RESET;
-+}
- 
- /*
-  * Root port on some Cavium CN8xxx chips do not successfully complete a bus
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 86c799c97b77..fdbf7254e4ab 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -227,6 +227,8 @@ enum pci_dev_flags {
- 	PCI_DEV_FLAGS_NO_FLR_RESET = (__force pci_dev_flags_t) (1 << 10),
- 	/* Don't use Relaxed Ordering for TLPs directed at this device */
- 	PCI_DEV_FLAGS_NO_RELAXED_ORDERING = (__force pci_dev_flags_t) (1 << 11),
-+	/* Don't Retrain Link for device when bridge is not in GEN1 mode */
-+	PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1 = (__force pci_dev_flags_t) (1 << 12),
- };
- 
- enum pci_irq_reroute_variant {
--- 
-2.20.1
-
+Thank you!
+Atul
