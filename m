@@ -2,134 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F34F936D35F
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 09:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 611A036D3AF
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 10:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233399AbhD1Hp0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Apr 2021 03:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56366 "EHLO
+        id S237162AbhD1IKU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Apr 2021 04:10:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbhD1Hp0 (ORCPT
+        with ESMTP id S236805AbhD1IKT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Apr 2021 03:45:26 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A689DC061574;
-        Wed, 28 Apr 2021 00:44:40 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id h14-20020a17090aea8eb02901553e1cc649so6441517pjz.0;
-        Wed, 28 Apr 2021 00:44:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=hgRf+WY3My77y9MGaOayXQDhKbTAR0DxBOTc0y4LwQ4=;
-        b=KqwWZkWiWZv2dJz+SYjb6uB0Fbq3FKHWMaN5zanPYFIHQ+qo1m4K9xbzCyffMLC3W/
-         lTPRexHGNaBpThWC/VQXupVpLUMQGPBZ8DZfV5QEhWv7tRQ0KCgv+xqq5SmceWhyrCuO
-         q7AkvOgKKTGauJuqTO1IrzoPBgIOmoOCsTDFrzaXY3Wvk37l+E/StJJJ2n+TtselAiB4
-         ZhssSI6/dIUFxP8gweob9dPilbGhXGVotBRuU9igkiOo2tH0dH3v2Ds/Rqa8fXlOoHVX
-         Sc9p/tWZ82/IKSm8KBrcgbDzSd3TPCszG+f7pULzoLLlmfadqhinl0PXmIfaYA2MpujC
-         xk7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=hgRf+WY3My77y9MGaOayXQDhKbTAR0DxBOTc0y4LwQ4=;
-        b=qhmaETH30SRcpJ550xmIEOWk9zIbjOmA1i1ZRR7uG3ZR06x/jx7gAajxtF8CUrcnIr
-         8DjGgnZ9WNLaDt6X5GIDEwyYq9nS3Fa06i5XgKW+VN7jth7QfKvt/eOp8/pxlulMaLwn
-         PtbxYvWbu8lfRRqLqfQfyMMAiOPVKWwjl5+6nL7iVnPRb5cl+scV6gR56voLr2SyuAgm
-         l24ucpTrTAt8YzEBvvOTgsktL5rVbWyEUNk9OXDBqSPeugqg2Mch5bU8K0o7W5eLrth3
-         jOdDH3yCqIA+iWCu3TL99nCTmD4XVRgHmQSuc5xy4xm5NrElQ8iSoj7bp4xEfSzllT1j
-         KEXg==
-X-Gm-Message-State: AOAM533WA09QXYz3309UbscIEja/9ce0mT0qVzbOOkGmx674AgDubjZb
-        UQNYkjDus6T55rEtfpGJ9kc=
-X-Google-Smtp-Source: ABdhPJxQivr8przk/O7Nfn1Rhgo7tH9OnYpCvEnkYw1vXmfxseWl5v/8b84jdkSgjxWbGQwMbovLhg==
-X-Received: by 2002:a17:90a:e649:: with SMTP id ep9mr742579pjb.8.1619595880059;
-        Wed, 28 Apr 2021 00:44:40 -0700 (PDT)
-Received: from localhost ([157.45.190.127])
-        by smtp.gmail.com with ESMTPSA id w1sm4133269pfu.153.2021.04.28.00.44.39
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 28 Apr 2021 00:44:39 -0700 (PDT)
-Date:   Wed, 28 Apr 2021 13:14:32 +0530
-From:   Shubhankar Kuranagatti <shubhankarvk@gmail.com>
-To:     m@bues.ch
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drivers: ssb: driver_pcicore.c: Fix indentation of comment
-Message-ID: <20210428074432.rhw4zq2vbdemglbr@kewl-virtual-machine>
+        Wed, 28 Apr 2021 04:10:19 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03C7C061574;
+        Wed, 28 Apr 2021 01:09:34 -0700 (PDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 3392E2224F;
+        Wed, 28 Apr 2021 10:09:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1619597371;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=M9NlOCpW1MZNsl/vA/TRzY5PiytDAsgS7p11KntpwDc=;
+        b=TeuOHOIozerVUFBEq+kXl+E4fsEw1MWqgROl2oA8Sc/xKOT0oXpynCQIkw1papfFwz22RM
+        ZqopdTbGj/RRv3+sDFrM+3v84W6DRuM04o8XbE5Tyx09iWpSYtyaTodlAwmk1PVwQpm/hS
+        zB6aEh6Z4dXpMFJB4kyQVt3Zk/Jvibs=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: NeoMutt/20171215
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 28 Apr 2021 10:09:17 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        netdev <netdev@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        "open list:MEDIA DRIVERS FOR RENESAS - FCP" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "moderated list:ARM/STM32 ARCHITECTURE" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        linux-oxnas@groups.io, linux-omap <linux-omap@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Andreas Larsson <andreas@gaisler.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Joyce Ooi <joyce.ooi@intel.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
+        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Fugang Duan <fugang.duan@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Mark Lee <Mark-MC.Lee@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        Byungho An <bh74.an@samsung.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Wingman Kwok <w-kwok2@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?J=C3=A9r=C3=B4me_Pouiller?= <jerome.pouiller@silabs.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
+ non-platform devices
+In-Reply-To: <3677398ebb77f334abb4899770db633d9658fe82.camel@kernel.crashing.org>
+References: <20210412174718.17382-1-michael@walle.cc>
+ <20210412174718.17382-3-michael@walle.cc>
+ <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
+ <8157eba9317609294da80472622deb28@walle.cc>
+ <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
+ <108f268a35843368466004f7fe5f9f88@walle.cc>
+ <3677398ebb77f334abb4899770db633d9658fe82.camel@kernel.crashing.org>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <452795c5254b65cfba6e52cfc94d92bd@walle.cc>
+X-Sender: michael@walle.cc
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Shifted the closing */ to the next line
-This is done to maintain code uniformity.
+Am 2021-04-27 01:44, schrieb Benjamin Herrenschmidt:
+> On Mon, 2021-04-26 at 12:54 +0200, Michael Walle wrote:
+>> (2) What do you think of eth_get_mac_address(ndev). That is, the
+> 
+> Not sure what you mean, eth_platform_get_mac_address() takes the
+> address as an argument. I think what you want is a consolidated
+> nvmem_get_mac_address + eth_platform_get_mac_address that takes a
+> device, which would have no requirement of the bus_type at all.
 
-Signed-off-by: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
----
- drivers/ssb/driver_pcicore.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+Sure. What I meant was the following:
 
-diff --git a/drivers/ssb/driver_pcicore.c b/drivers/ssb/driver_pcicore.c
-index c1186415896b..d11b4242b6d2 100644
---- a/drivers/ssb/driver_pcicore.c
-+++ b/drivers/ssb/driver_pcicore.c
-@@ -55,7 +55,8 @@ void pcicore_write16(struct ssb_pcicore *pc, u16 offset, u16 value)
- #include <asm/paccess.h>
- /* Probe a 32bit value on the bus and catch bus exceptions.
-  * Returns nonzero on a bus exception.
-- * This is MIPS specific */
-+ * This is MIPS specific
-+ */
- #define mips_busprobe32(val, addr)	get_dbe((val), ((u32 *)(addr)))
- 
- /* Assume one-hot slot wiring */
-@@ -255,7 +256,8 @@ static struct pci_controller ssb_pcicore_controller = {
- };
- 
- /* This function is called when doing a pci_enable_device().
-- * We must first check if the device is a device on the PCI-core bridge. */
-+ * We must first check if the device is a device on the PCI-core bridge.
-+ */
- int ssb_pcicore_plat_dev_init(struct pci_dev *d)
- {
- 	if (d->bus->ops != &ssb_pcicore_pciops) {
-@@ -381,11 +383,13 @@ static void ssb_pcicore_init_hostmode(struct ssb_pcicore *pc)
- 
- 	/* Ok, ready to run, register it to the system.
- 	 * The following needs change, if we want to port hostmode
--	 * to non-MIPS platform. */
-+	 * to non-MIPS platform.
-+	 */
- 	ssb_pcicore_controller.io_map_base = (unsigned long)ioremap(SSB_PCI_MEM, 0x04000000);
- 	set_io_port_base(ssb_pcicore_controller.io_map_base);
- 	/* Give some time to the PCI controller to configure itself with the new
--	 * values. Not waiting at this point causes crashes of the machine. */
-+	 * values. Not waiting at this point causes crashes of the machine.
-+	 */
- 	mdelay(10);
- 	register_pci_controller(&ssb_pcicore_controller);
- }
-@@ -405,7 +409,8 @@ static int pcicore_is_in_hostmode(struct ssb_pcicore *pc)
- 		return 0;
- 
- 	/* The 200-pin BCM4712 package does not bond out PCI. Even when
--	 * PCI is bonded out, some boards may leave the pins floating. */
-+	 * PCI is bonded out, some boards may leave the pins floating.
-+	 */
- 	if (bus->chip_id == 0x4712) {
- 		if (bus->chip_package == SSB_CHIPPACK_BCM4712S)
- 			return 0;
-@@ -685,7 +690,8 @@ int ssb_pcicore_dev_irqvecs_enable(struct ssb_pcicore *pc,
- 	if (dev->bus->bustype != SSB_BUSTYPE_PCI) {
- 		/* This SSB device is not on a PCI host-bus. So the IRQs are
- 		 * not routed through the PCI core.
--		 * So we must not enable routing through the PCI core. */
-+		 * So we must not enable routing through the PCI core.
-+		 */
- 		goto out;
- 	}
- 
--- 
-2.17.1
+  eth_get_mac_address(struct net_device *ndev)
+vs.
+  eth_get_mac_address(struct device *dev, u8 *mac_buf)
 
+The first would assume the destination is ndev->dev_addr (which
+is true for most of the calls, but not all).
+
+-michael
