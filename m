@@ -2,88 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C858F36D0B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 04:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7AFD36D24F
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 08:39:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239618AbhD1Czi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Apr 2021 22:55:38 -0400
-Received: from esa.microchip.iphmx.com ([68.232.154.123]:21372 "EHLO
-        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235839AbhD1Czi (ORCPT
+        id S232966AbhD1Gka (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Apr 2021 02:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41672 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229643AbhD1Gk3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Apr 2021 22:55:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1619578494; x=1651114494;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Qm69ilb/2OLsvcUyTJlJCdSEa03dMaGEPAv4ELfj+wU=;
-  b=ErnlgHMyC5Cgq/PIJaY46Ktd7Vjoe6H8WiAmma8zIAPpwdF3ZH6iDUK6
-   Sltt+UGzFYohRvDUoN37UAV3tJYw3VZdZKLQ7Kpw6gYvycpIANyplSzly
-   k/yo98GgePpo7Vys1wn8KMbVYW6jS8l44z0woEI7mKxVb2lH5m0G6uQNh
-   I642QlRkiTuAJohtU+pqVnFgz17dVvgv7YM+5W/esoc0rlnc1nZ9LK3XS
-   SUXbZC9IL91QHvrW+sXovADs7lk+ytDETPIXk2hL4lFSPbkadaltda/dq
-   E9LT9GCayt5q+0DKsJqvAlC1m5C4FYjWwz6imUMEoPE/EPyAvHb45UwIr
-   A==;
-IronPort-SDR: F8nYNWeESzLu4UYkCxr2umiyUhpxwTihLqk+DJJlbJLuTExlQBTCVG3jFaQpCe4WLb5bTRUylv
- YpxVOGqhGlCYS0t8LscDF7JkVLI4WbkZKbuf1qhfC8equG0EMISimPqbwZMDxpkPGvAHiut4kN
- D9gHOghPipZ872SLRh0cpO2HocizPeQgzRRpj0i9NFq8lzKMqO8910XRpcIm2voKwLqFBPyc0O
- 6zNg2tluy6lVZ0j8XOimsA9uFxIoVaI7kvjsh5s9n3Gu+tj5gaqYmyV41Y8eyzyKo8hRMj/lJ9
- 2x0=
-X-IronPort-AV: E=Sophos;i="5.82,257,1613458800"; 
-   d="scan'208";a="115143623"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 27 Apr 2021 19:54:53 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 27 Apr 2021 19:54:53 -0700
-Received: from ROB-ULT-M18064N.mchp-main.com (10.10.115.15) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2176.2 via Frontend Transport; Tue, 27 Apr 2021 19:54:47 -0700
-From:   Tudor Ambarus <tudor.ambarus@microchip.com>
-To:     <ajay.kathat@microchip.com>, <claudiu.beznea@microchip.com>,
-        <kvalo@codeaurora.org>
-CC:     <davem@davemloft.net>, <kuba@kernel.org>,
-        <gregkh@linuxfoundation.org>, <adham.abozaeid@microchip.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <cristian.birsan@microchip.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>
-Subject: [PATCH] wilc1000: Fix clock name binding
-Date:   Wed, 28 Apr 2021 05:54:45 +0300
-Message-ID: <20210428025445.81953-1-tudor.ambarus@microchip.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 28 Apr 2021 02:40:29 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2C0C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Apr 2021 23:39:45 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id lr7so14087359pjb.2
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Apr 2021 23:39:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LmdASNNRTCEdKqj3maPO6og7+EkKXvrD9dkHaNwbiQ4=;
+        b=p9PxkY4z6D3TctxFJ3CqJVTAPNhwpcWwwOndG4Ho+zYwrovS06m1p9aaIXmbQqd9wZ
+         DysGKjP3M9coC/TIBisofC5M/K1+K8GCv+spnjZFcFV5o3IH8KwSqMBKzfXkZ0s7zdmH
+         pHOE3OZsVl/QcCTBJR2ufOVN89yZ3xY1tg57crRjxvy+UXgNH8JnDdNLN91hBxHB+uEj
+         +M0wDSmmWlDv/NOitl2oifkGyVo6+3SV9nfNm9xmJ+E31j14PC8ulip/DIv8Oe8detTa
+         PosxQqz54ZxWC3cnq7NZRzBNaNuhv+x0+2yJlwdTaIg+mAvSxXirm2q1mxu1qHiVikkA
+         h3pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LmdASNNRTCEdKqj3maPO6og7+EkKXvrD9dkHaNwbiQ4=;
+        b=lGK3gleg4ZALMa0tKU+dmuXaIdPskKA5q9GwAypt16Bo2Xg5X+fhDZa9n8R8BJ0rLn
+         GLyuX4nPKlEy8A9JBQ/pzvvkc8MNWbLsMLDOKK+18mYwvic9CWp67Ns7PE53nr71QC6q
+         8iaeCQei343OCHRauLhK5S3VCyRk0bCRZr7zy0YRkUK0e8jBl3TcCktemaxt0N1kU3a7
+         FOr24qHJSm97jl9Gz7X0kY6PlVrqq2SbdN5hCC1474zuEZrZX+AcY0DKyGPp/vzGd52i
+         +/SNXwIhdteD1unuh8M1qZHW3bC7JzB+c3WtAntYFeD4aXotZPnRHFjAkqzGYQoiZGmd
+         yPAQ==
+X-Gm-Message-State: AOAM533r8IjS1VDhE2iXiuvvyhKK0N9PMjVkPrW1M4qEpj0FhNSmGQck
+        p0Fa9/gpSWKlhucmhETIZmk=
+X-Google-Smtp-Source: ABdhPJxuhE+s8RxEL1g3QT1wsyE6d/4KZD2bkh5ujka4j+K9oRByF7B56c6M5bNaZKK6khJcvjAz5Q==
+X-Received: by 2002:a17:90a:7147:: with SMTP id g7mr30930311pjs.225.1619591985259;
+        Tue, 27 Apr 2021 23:39:45 -0700 (PDT)
+Received: from nuc.wg.ducheng.me ([202.133.196.154])
+        by smtp.gmail.com with ESMTPSA id w9sm4043910pfn.213.2021.04.27.23.39.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Apr 2021 23:39:44 -0700 (PDT)
+From:   Du Cheng <ducheng2@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Du Cheng <ducheng2@gmail.com>,
+        syzbot+105896fac213f26056f9@syzkaller.appspotmail.com
+Subject: [PATCH] net:wireless: call cfg80211_leave_ocb when switching between ADHOC and OCB
+Date:   Wed, 28 Apr 2021 14:39:41 +0800
+Message-Id: <20210428063941.105161-1-ducheng2@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-requires an "rtc" clock name.
-drivers/net/wireless/microchip/wilc1000/sdio.c is using "rtc" clock name
-as well. Comply with the binding in wilc1000/spi.c too.
+If the userland switches back-and-forth between NL80211_IFTYPE_OCB and
+NL80211_IFTYPE_ADHOC via send_msg(NL80211_CMD_SET_INTERFACE), there is a
+chance where the cleanup cfg80211_leave_ocb() is not called. This leads
+to initialization of in-use memory (e.g. init u.ibss while in-use by
+u.ocb) due to a shared struct/union within ieee80211_sub_if_data:
 
-Fixes: 854d66df74ae ("staging: wilc1000: look for rtc_clk clock in spi mode")
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+struct ieee80211_sub_if_data {
+    ...
+    union {
+        struct ieee80211_if_ap ap;
+        struct ieee80211_if_vlan vlan;
+        struct ieee80211_if_managed mgd;
+        struct ieee80211_if_ibss ibss; // <- shares address
+        struct ieee80211_if_mesh mesh;
+        struct ieee80211_if_ocb ocb; // <- shares address
+        struct ieee80211_if_mntr mntr;
+        struct ieee80211_if_nan nan;
+    } u;
+    ...
+}
+
+Therefore add handling of otype == NL80211_IFTYPE_OCB, during
+cfg80211_change_iface() to perform cleanup when leaving OCB mode.
+
+link to syzkaller bug:
+https://syzkaller.appspot.com/bug?id=0612dbfa595bf4b9b680ff7b4948257b8e3732d5
+
+Reported-by: syzbot+105896fac213f26056f9@syzkaller.appspotmail.com
+Signed-off-by: Du Cheng <ducheng2@gmail.com>
 ---
- drivers/net/wireless/microchip/wilc1000/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reproducible steps:
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index be732929322c..05c2986923a5 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -112,7 +112,7 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	wilc->bus_data = spi_priv;
- 	wilc->dev_irq_num = spi->irq;
- 
--	wilc->rtc_clk = devm_clk_get(&spi->dev, "rtc_clk");
-+	wilc->rtc_clk = devm_clk_get(&spi->dev, "rtc");
- 	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) == -EPROBE_DEFER) {
- 		kfree(spi_priv);
- 		return -EPROBE_DEFER;
+1. NL80211_CMD_SET_INTERFACE: NL80211_IFTYPE_ADHOC
+// set IBSS mode
+
+2. NL80211_CMD_SET_INTERFACE: NL80211_IFTYPE_OCB 
+// switch to OCB mode, calls ieee80211_ocb_setup_sdata, init u.ocb.housekeeping_timer
+
+3. NL80211_CMD_JOIN_OCB
+
+4. NL80211_CMD_SET_INTERFACE: NL80211_IFTYPE_ADHOC
+// swtich to IBSS mode without calling NL80211_CMD_LEAVE_OCB,
+// leaving u.ocb.housekeeping_timer NOT destroyed
+
+5. entering IBSS mode, kernel panic while initializing u.ibss.timer, an active
+debug_object as &u.ibss.timer == &u.ocb.housekeeping_timer
+
+
+ net/wireless/util.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 1bf0200f562a..f424ac7633bb 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1056,6 +1056,9 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+ 		case NL80211_IFTYPE_MESH_POINT:
+ 			/* mesh should be handled? */
+ 			break;
++		case NL80211_IFTYPE_OCB:
++			cfg80211_leave_ocb(rdev, dev);
++			break;
+ 		default:
+ 			break;
+ 		}
 -- 
-2.25.1
+2.30.2
 
