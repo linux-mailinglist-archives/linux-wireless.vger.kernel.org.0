@@ -2,92 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA11B36D923
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 16:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61FFF36DB73
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 17:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240136AbhD1OAs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Apr 2021 10:00:48 -0400
-Received: from foss.arm.com ([217.140.110.172]:43014 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240119AbhD1OAr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Apr 2021 10:00:47 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5961211B3;
-        Wed, 28 Apr 2021 07:00:02 -0700 (PDT)
-Received: from entos-ampere-02.shanghai.arm.com (entos-ampere-02.shanghai.arm.com [10.169.214.110])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 65F353F694;
-        Wed, 28 Apr 2021 06:59:56 -0700 (PDT)
-From:   Jia He <justin.he@arm.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, Jia He <justin.he@arm.com>
-Subject: [PATCH 4/4] lib/test_printf: Explicitly add components number to %pD and %pd
-Date:   Wed, 28 Apr 2021 21:59:29 +0800
-Message-Id: <20210428135929.27011-4-justin.he@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210428135929.27011-1-justin.he@arm.com>
-References: <20210428135929.27011-1-justin.he@arm.com>
+        id S229805AbhD1PUk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Apr 2021 11:20:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45112 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239851AbhD1PUj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 28 Apr 2021 11:20:39 -0400
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19C92C061573;
+        Wed, 28 Apr 2021 08:19:53 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1lblTS-0007jW-4c; Wed, 28 Apr 2021 16:47:34 +0200
+Date:   Wed, 28 Apr 2021 16:41:17 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Shubhankar Kuranagatti <shubhankarvk@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sanjanasrinidhi1810@gmail.com, shubhankar.vk@gmail.com
+Subject: Re: [PATCH] drivers: ssb: main.c: Fix indentation of comment
+Message-ID: <20210428164117.5d9d36a2@wiggum>
+In-Reply-To: <20210428072453.obrjwxus3u2ytpgn@kewl-virtual-machine>
+References: <20210428072453.obrjwxus3u2ytpgn@kewl-virtual-machine>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/9dv.WcsY/Y+AIANTyP1/i6v";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-After changing the default components number from 1 to 4 for %pD
-and %pd, it would be better to explicitly add the number in test_printf
-cases.
+--Sig_/9dv.WcsY/Y+AIANTyP1/i6v
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Add a test case of %pd5 to verify if it can be capped by 4 components.
+On Wed, 28 Apr 2021 12:54:53 +0530
+Shubhankar Kuranagatti <shubhankarvk@gmail.com> wrote:
 
-Signed-off-by: Jia He <justin.he@arm.com>
----
- lib/test_printf.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+> Shifted the closing */ to the next line
+> This is done to maintain code uniformity.
+>=20
+> Signed-off-by: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
 
-diff --git a/lib/test_printf.c b/lib/test_printf.c
-index 27b964ec723d..899cd55d1c90 100644
---- a/lib/test_printf.c
-+++ b/lib/test_printf.c
-@@ -478,18 +478,20 @@ static struct dentry test_dentry[4] __initdata = {
- static void __init
- dentry(void)
- {
--	test("foo", "%pd", &test_dentry[0]);
-+	test("foo", "%pd1", &test_dentry[0]);
- 	test("foo", "%pd2", &test_dentry[0]);
- 
--	test("(null)", "%pd", NULL);
--	test("(efault)", "%pd", PTR_INVALID);
--	test("(null)", "%pD", NULL);
--	test("(efault)", "%pD", PTR_INVALID);
-+	test("(null)", "%pd1", NULL);
-+	test("(efault)", "%pd1", PTR_INVALID);
-+	test("(null)", "%pD1", NULL);
-+	test("(efault)", "%pD1", PTR_INVALID);
- 
--	test("romeo", "%pd", &test_dentry[3]);
-+	test("romeo", "%pd1", &test_dentry[3]);
- 	test("alfa/romeo", "%pd2", &test_dentry[3]);
- 	test("bravo/alfa/romeo", "%pd3", &test_dentry[3]);
- 	test("/bravo/alfa/romeo", "%pd4", &test_dentry[3]);
-+	test("/bravo/alfa/romeo", "%pd", &test_dentry[3]);
-+	test("/bravo/alfa/romeo", "%pd5", &test_dentry[3]);
- 	test("/bravo/alfa", "%pd4", &test_dentry[2]);
- 
- 	test("bravo/alfa  |bravo/alfa  ", "%-12pd2|%*pd2", &test_dentry[2], -12, &test_dentry[2]);
--- 
-2.17.1
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
+
+--=20
+Michael
+
+--Sig_/9dv.WcsY/Y+AIANTyP1/i6v
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmCJdA4ACgkQ9TK+HZCN
+iw5vWhAAoy9hIBG2YSeiEhBk+OEJHlwSDVbVM7+GRAQyyzJEDFYoyXYXGCtnGbw6
+mmsbsH4NkAdmIzuq/ab4ZHKiodpXLg7/0d4sPO5UjdGR9yi07D+pgJMfE/6//0eH
+WFjvuJrXikJP38lBVCwGR9rEkuikXUwbI+wIxC3Onj6lxwHT5yzMypGI7nLaJ9iC
+ibo455+PbSgXZOGfyBD1UO1auns5OFfIJI46TiyzfVs8Pls461K/rqP1UEp7eUa6
+IAUj9IQ18Wtx/y3a8YYa/nSdm75fySg2PF9k9lxaVjZ7LihpbXs8NoeUlx1F1ckb
+VbXS6xMb/ON43KplqYUzOXzxt9jC5TXV1ZWPdeMV9Dc7JqqooXT6+ulxhSHte76R
+Z/byw3znRnv261ZPc2M2SWj3McCrxNcgBmO7LvfPnSIp4uvQXigDgMfdzzblE7PG
+fvt2UMWO2m/hQFpkTBU2dgAUtYI/M0NjsTd9lJod8s7GrrjzrS/1jKiv5z3AwrQm
+YYeyuuBSP/SGGOSafdTDTNBursIg4FLMSWNuj16YWOLDwvedH7NVeyP9XuoEomol
+8gQtyo3h8RqfPydZKubZhACDHDT1ppWHXAudWPzrowxwIFd2qnwK0wUgc/4WK/LF
+gnHCO/VlFf95lBlxuQiB9IAefNtR0VG6cySMe3/ticfmSPWTMU4=
+=4JUh
+-----END PGP SIGNATURE-----
+
+--Sig_/9dv.WcsY/Y+AIANTyP1/i6v--
