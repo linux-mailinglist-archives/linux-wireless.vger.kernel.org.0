@@ -2,134 +2,179 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7AFD36D24F
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 08:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B12B736D310
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 09:25:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232966AbhD1Gka (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Apr 2021 02:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41672 "EHLO
+        id S236666AbhD1HZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Apr 2021 03:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbhD1Gk3 (ORCPT
+        with ESMTP id S230145AbhD1HZp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Apr 2021 02:40:29 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2C0C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Apr 2021 23:39:45 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id lr7so14087359pjb.2
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Apr 2021 23:39:45 -0700 (PDT)
+        Wed, 28 Apr 2021 03:25:45 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2A0C061574;
+        Wed, 28 Apr 2021 00:25:01 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id p17so6401385plf.12;
+        Wed, 28 Apr 2021 00:25:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LmdASNNRTCEdKqj3maPO6og7+EkKXvrD9dkHaNwbiQ4=;
-        b=p9PxkY4z6D3TctxFJ3CqJVTAPNhwpcWwwOndG4Ho+zYwrovS06m1p9aaIXmbQqd9wZ
-         DysGKjP3M9coC/TIBisofC5M/K1+K8GCv+spnjZFcFV5o3IH8KwSqMBKzfXkZ0s7zdmH
-         pHOE3OZsVl/QcCTBJR2ufOVN89yZ3xY1tg57crRjxvy+UXgNH8JnDdNLN91hBxHB+uEj
-         +M0wDSmmWlDv/NOitl2oifkGyVo6+3SV9nfNm9xmJ+E31j14PC8ulip/DIv8Oe8detTa
-         PosxQqz54ZxWC3cnq7NZRzBNaNuhv+x0+2yJlwdTaIg+mAvSxXirm2q1mxu1qHiVikkA
-         h3pQ==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=xQY7nvOaiG9v/WUqozQwxPw+zWAFowJJ3OP9IATo7gs=;
+        b=Eg6nmcnI/wnQ3WwW9sQ08P/ECUinji/qPkNhavXMmXA3879sS/wcxKAOXpRslPp8e2
+         HefZ52KeP4jefvtruI8bMHwkTgxUHqqnldYf9qaB5pR/Q39gnWKLKr8B6fkbfCl3nDp2
+         0Xijh/43gqvZAGZJAxecMluL+xzQ95XP+fwQnvSf9IuezTsmkxUqubOOLB9Nv0zMMC8k
+         haJnNLAiboRwK5RN+c3/HewmCuA0StIEEjKD+o+BvADCagzK5nU9cdxAtsHC3Rw54CNK
+         iUoLfxauZR8PUPUVgOGt4LKoq6sAwvB+rtzoAdKcUl6RUUP0zhHNlzkzDvo+HGViY/XL
+         3xUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LmdASNNRTCEdKqj3maPO6og7+EkKXvrD9dkHaNwbiQ4=;
-        b=lGK3gleg4ZALMa0tKU+dmuXaIdPskKA5q9GwAypt16Bo2Xg5X+fhDZa9n8R8BJ0rLn
-         GLyuX4nPKlEy8A9JBQ/pzvvkc8MNWbLsMLDOKK+18mYwvic9CWp67Ns7PE53nr71QC6q
-         8iaeCQei343OCHRauLhK5S3VCyRk0bCRZr7zy0YRkUK0e8jBl3TcCktemaxt0N1kU3a7
-         FOr24qHJSm97jl9Gz7X0kY6PlVrqq2SbdN5hCC1474zuEZrZX+AcY0DKyGPp/vzGd52i
-         +/SNXwIhdteD1unuh8M1qZHW3bC7JzB+c3WtAntYFeD4aXotZPnRHFjAkqzGYQoiZGmd
-         yPAQ==
-X-Gm-Message-State: AOAM533r8IjS1VDhE2iXiuvvyhKK0N9PMjVkPrW1M4qEpj0FhNSmGQck
-        p0Fa9/gpSWKlhucmhETIZmk=
-X-Google-Smtp-Source: ABdhPJxuhE+s8RxEL1g3QT1wsyE6d/4KZD2bkh5ujka4j+K9oRByF7B56c6M5bNaZKK6khJcvjAz5Q==
-X-Received: by 2002:a17:90a:7147:: with SMTP id g7mr30930311pjs.225.1619591985259;
-        Tue, 27 Apr 2021 23:39:45 -0700 (PDT)
-Received: from nuc.wg.ducheng.me ([202.133.196.154])
-        by smtp.gmail.com with ESMTPSA id w9sm4043910pfn.213.2021.04.27.23.39.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Apr 2021 23:39:44 -0700 (PDT)
-From:   Du Cheng <ducheng2@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Du Cheng <ducheng2@gmail.com>,
-        syzbot+105896fac213f26056f9@syzkaller.appspotmail.com
-Subject: [PATCH] net:wireless: call cfg80211_leave_ocb when switching between ADHOC and OCB
-Date:   Wed, 28 Apr 2021 14:39:41 +0800
-Message-Id: <20210428063941.105161-1-ducheng2@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=xQY7nvOaiG9v/WUqozQwxPw+zWAFowJJ3OP9IATo7gs=;
+        b=gWBn+2q3QKIJVvKIePB+16rXPRIqEZPtVenQc9r7EJQa2Ap43QyNj4x88PHxQQXQWb
+         vQX/KjGiVN9Dy4elDZX0GdxBZwZtZ2irDGDYDlbu+N/+NXgq7pbVKK9Tm3IbF9brFRWx
+         FvFbEWOE2i8bRwQwL3q8+mQd+AkcdczRagBTfHQwAoChZGNdSIJpAQk96V8xGwMAC2qu
+         pSuYZwtmYickPiZR1/qmMRZOz9b0Oj+h0EJFpUe3SSHNDf8CjZLvI7r/b7C0yKy9ttPV
+         tep3cE0AVooFlACH8MkaS1llpS++EGzKqJWzv4UlO+vMvjpaGNncTsoqlCp2rdhYuXEu
+         +UIw==
+X-Gm-Message-State: AOAM533qXtaqFbqfOwcdvhSBMY9S0KsV+3RXzfzcs4ZX4PAMwggzPk2E
+        rHhUKtmTxZwcVXdu+sU7Npk=
+X-Google-Smtp-Source: ABdhPJz0HUnvgQ6xALDLF8dqETWfykTHExSQkMKbJatqMLIDKRjkpNAspveM6kF4ZAuHdRDut/p7GA==
+X-Received: by 2002:a17:902:da8c:b029:ec:f02d:fcce with SMTP id j12-20020a170902da8cb02900ecf02dfccemr22899747plx.0.1619594701029;
+        Wed, 28 Apr 2021 00:25:01 -0700 (PDT)
+Received: from localhost ([157.45.190.127])
+        by smtp.gmail.com with ESMTPSA id h9sm4265298pfv.14.2021.04.28.00.25.00
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 28 Apr 2021 00:25:00 -0700 (PDT)
+Date:   Wed, 28 Apr 2021 12:54:53 +0530
+From:   Shubhankar Kuranagatti <shubhankarvk@gmail.com>
+To:     m@bues.ch
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sanjanasrinidhi1810@gmail.com, shubhankar.vk@gmail.com
+Subject: [PATCH] drivers: ssb: main.c: Fix indentation of comment
+Message-ID: <20210428072453.obrjwxus3u2ytpgn@kewl-virtual-machine>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20171215
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If the userland switches back-and-forth between NL80211_IFTYPE_OCB and
-NL80211_IFTYPE_ADHOC via send_msg(NL80211_CMD_SET_INTERFACE), there is a
-chance where the cleanup cfg80211_leave_ocb() is not called. This leads
-to initialization of in-use memory (e.g. init u.ibss while in-use by
-u.ocb) due to a shared struct/union within ieee80211_sub_if_data:
+Shifted the closing */ to the next line
+This is done to maintain code uniformity.
 
-struct ieee80211_sub_if_data {
-    ...
-    union {
-        struct ieee80211_if_ap ap;
-        struct ieee80211_if_vlan vlan;
-        struct ieee80211_if_managed mgd;
-        struct ieee80211_if_ibss ibss; // <- shares address
-        struct ieee80211_if_mesh mesh;
-        struct ieee80211_if_ocb ocb; // <- shares address
-        struct ieee80211_if_mntr mntr;
-        struct ieee80211_if_nan nan;
-    } u;
-    ...
-}
-
-Therefore add handling of otype == NL80211_IFTYPE_OCB, during
-cfg80211_change_iface() to perform cleanup when leaving OCB mode.
-
-link to syzkaller bug:
-https://syzkaller.appspot.com/bug?id=0612dbfa595bf4b9b680ff7b4948257b8e3732d5
-
-Reported-by: syzbot+105896fac213f26056f9@syzkaller.appspotmail.com
-Signed-off-by: Du Cheng <ducheng2@gmail.com>
+Signed-off-by: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
 ---
-Reproducible steps:
+ drivers/ssb/main.c | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
-1. NL80211_CMD_SET_INTERFACE: NL80211_IFTYPE_ADHOC
-// set IBSS mode
-
-2. NL80211_CMD_SET_INTERFACE: NL80211_IFTYPE_OCB 
-// switch to OCB mode, calls ieee80211_ocb_setup_sdata, init u.ocb.housekeeping_timer
-
-3. NL80211_CMD_JOIN_OCB
-
-4. NL80211_CMD_SET_INTERFACE: NL80211_IFTYPE_ADHOC
-// swtich to IBSS mode without calling NL80211_CMD_LEAVE_OCB,
-// leaving u.ocb.housekeeping_timer NOT destroyed
-
-5. entering IBSS mode, kernel panic while initializing u.ibss.timer, an active
-debug_object as &u.ibss.timer == &u.ocb.housekeeping_timer
-
-
- net/wireless/util.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 1bf0200f562a..f424ac7633bb 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1056,6 +1056,9 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 		case NL80211_IFTYPE_MESH_POINT:
- 			/* mesh should be handled? */
- 			break;
-+		case NL80211_IFTYPE_OCB:
-+			cfg80211_leave_ocb(rdev, dev);
-+			break;
- 		default:
- 			break;
- 		}
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 0a26984acb2c..0e180c36daa4 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -37,7 +37,8 @@ static LIST_HEAD(buses);
+ /* Software ID counter */
+ static unsigned int next_busnumber;
+ /* buses_mutes locks the two buslists and the next_busnumber.
+- * Don't lock this directly, but use ssb_buses_[un]lock() below. */
++ * Don't lock this directly, but use ssb_buses_[un]lock() below.
++ */
+ static DEFINE_MUTEX(buses_mutex);
+ 
+ /* There are differences in the codeflow, if the bus is
+@@ -45,7 +46,8 @@ static DEFINE_MUTEX(buses_mutex);
+  * are not available early. This is a mechanism to delay
+  * these initializations to after early boot has finished.
+  * It's also used to avoid mutex locking, as that's not
+- * available and needed early. */
++ * available and needed early.
++ */
+ static bool ssb_is_early_boot = 1;
+ 
+ static void ssb_buses_lock(void);
+@@ -161,7 +163,8 @@ int ssb_bus_resume(struct ssb_bus *bus)
+ 	int err;
+ 
+ 	/* Reset HW state information in memory, so that HW is
+-	 * completely reinitialized. */
++	 * completely reinitialized.
++	 */
+ 	bus->mapped_device = NULL;
+ #ifdef CONFIG_SSB_DRIVER_PCICORE
+ 	bus->pcicore.setup_done = 0;
+@@ -467,7 +470,8 @@ static int ssb_devices_register(struct ssb_bus *bus)
+ 		sdev = &(bus->devices[i]);
+ 
+ 		/* We don't register SSB-system devices to the kernel,
+-		 * as the drivers for them are built into SSB. */
++		 * as the drivers for them are built into SSB.
++		 */
+ 		switch (sdev->id.coreid) {
+ 		case SSB_DEV_CHIPCOMMON:
+ 		case SSB_DEV_PCI:
+@@ -521,7 +525,8 @@ static int ssb_devices_register(struct ssb_bus *bus)
+ 		if (err) {
+ 			pr_err("Could not register %s\n", dev_name(dev));
+ 			/* Set dev to NULL to not unregister
+-			 * dev on error unwinding. */
++			 * dev on error unwinding.
++			 */
+ 			sdev->dev = NULL;
+ 			put_device(dev);
+ 			goto error;
+@@ -667,7 +672,8 @@ ssb_bus_register(struct ssb_bus *bus,
+ 	ssb_bus_may_powerdown(bus);
+ 
+ 	/* Queue it for attach.
+-	 * See the comment at the ssb_is_early_boot definition. */
++	 * See the comment at the ssb_is_early_boot definition.
++	 */
+ 	list_add_tail(&bus->list, &attach_queue);
+ 	if (!ssb_is_early_boot) {
+ 		/* This is not early boot, so we must attach the bus now */
+@@ -1007,7 +1013,8 @@ static void ssb_flush_tmslow(struct ssb_device *dev)
+ 	 * a machine check exception otherwise.
+ 	 * Do this by reading the register back to commit the
+ 	 * PCI write and delay an additional usec for the device
+-	 * to react to the change. */
++	 * to react to the change.
++	 */
+ 	ssb_read32(dev, SSB_TMSLOW);
+ 	udelay(1);
+ }
+@@ -1044,7 +1051,8 @@ void ssb_device_enable(struct ssb_device *dev, u32 core_specific_flags)
+ EXPORT_SYMBOL(ssb_device_enable);
+ 
+ /* Wait for bitmask in a register to get set or cleared.
+- * timeout is in units of ten-microseconds */
++ * timeout is in units of ten-microseconds
++ */
+ static int ssb_wait_bits(struct ssb_device *dev, u16 reg, u32 bitmask,
+ 			 int timeout, int set)
+ {
+@@ -1153,7 +1161,8 @@ int ssb_bus_may_powerdown(struct ssb_bus *bus)
+ 
+ 	/* On buses where more than one core may be working
+ 	 * at a time, we must not powerdown stuff if there are
+-	 * still cores that may want to run. */
++	 * still cores that may want to run.
++	 */
+ 	if (bus->bustype == SSB_BUSTYPE_SSB)
+ 		goto out;
+ 
+@@ -1322,7 +1331,8 @@ static int __init ssb_modinit(void)
+ }
+ /* ssb must be initialized after PCI but before the ssb drivers.
+  * That means we must use some initcall between subsys_initcall
+- * and device_initcall. */
++ * and device_initcall.
++ */
+ fs_initcall(ssb_modinit);
+ 
+ static void __exit ssb_modexit(void)
 -- 
-2.30.2
+2.17.1
 
