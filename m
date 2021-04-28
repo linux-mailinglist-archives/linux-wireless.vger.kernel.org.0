@@ -2,99 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F24E636D3FB
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 10:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A9736D408
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 10:37:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237398AbhD1IbW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Apr 2021 04:31:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38398 "EHLO
+        id S237167AbhD1Iho (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Apr 2021 04:37:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237389AbhD1IbQ (ORCPT
+        with ESMTP id S229643AbhD1Ihn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Apr 2021 04:31:16 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF8B1C061574;
-        Wed, 28 Apr 2021 01:30:28 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d124so449233pfa.13;
-        Wed, 28 Apr 2021 01:30:28 -0700 (PDT)
+        Wed, 28 Apr 2021 04:37:43 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E538AC061574
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Apr 2021 01:36:58 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id a11so1517894plh.3
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Apr 2021 01:36:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=v7m0D7rx0mHGeruDjxwKiC0tRb8Flpj4t02w67RLk04=;
-        b=YuY9LSU10AzRV8q3HxrvO4+ECbK7HSr7PjVy68MTkqZSnLLZjD7QIfobR90b5UzeT9
-         Xwtu+BYL7dO+uwKJGtFYjZHxF4J5ND2ILXcLch5gcgPTYcMu/B36cwc00PdvkEdd++Oe
-         KeOAXjY0sDeWO+mRIkZJZuo2DWaK2hTmAxqT3WpanmHSrL/tyHT5elyIlhZ0dMDz5llR
-         6kHTiKHqC5BqofCr3nhb6VIjPdoQfQXrYjLJPrPbdYsZrntABBm05AwS0BwJFTiw7+jX
-         VHMqwJ10GL1yWv3j2M8CRW9OZeWsiAp0Y+UpGmCBVAt78EJVEn8aDWLlMo7kDj4qsPlX
-         BQxQ==
+        d=endlessos.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fjUF9BpvK4r1iz57hM3EhPDHjFmt6yk1iQHfr+k3qbM=;
+        b=OvLuvuwpiN9oVC4fXH86kG3mjF1qXle7T+jN//aJrJPmJtvAtZsgd3itGUvr7V5H+z
+         Q7gBgtKmYFwNRu9lVApPHSbXPD0Md2l0xKeKMS7KTzDsPmw9C4kk9+GX3jVPdGZAUJDQ
+         AvFoRvJjmf5vBYK2fbgFNUTRR0XIoRA4+VjYYUPEkYMMDhRyVSRnYSu4xhAZ5nsJYUW7
+         sy2qeWQxhJJP6jPAi+9yYhILRg4mBErAQyuXVKUnxBqVTSDU99g78cjh5iyQCX9yzni2
+         mPlLZv3nSANzvNYqKpP+tdJAUWKkQVhP6mEzNlBOEShDF/FIvOOefM1dY628B3nN9XPP
+         AQ6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=v7m0D7rx0mHGeruDjxwKiC0tRb8Flpj4t02w67RLk04=;
-        b=muX7TpU/YWQZnTKfEfzrz8PUHVOxuEdo+XL7rhjX4QD5jI3a8J5mZxItwv8KqB/TSV
-         Cu1q64VZy0GVRuuMgtc5fyRU0YkNfq5P80o8h+5jiIrCIvCkWdCq6PdD5mE75SorSasK
-         CsanHzWk1NTADGnrHW/c1tyLoFTXFu3YmUEkVkMbLaPPKnvROQVHoavrsjd18Z+ZrOAi
-         kyUFYjsbMxhwPP2e+cklo10not4Qg4jhyUA4jJwFabomqk/hikEeIdbxZgSf34wQGzbU
-         /TWUtpkbLsA1nJipKYpCCsI3JW56N0W9ZNH6vrVsCvR4e1ev/C3xLXbNWUzxELsWFnus
-         UaxQ==
-X-Gm-Message-State: AOAM532cGN+ubiQdRPQchv61wvDwtPGwmCFvBrOUjJ0Ws3Rtao3O2OsW
-        nQxy6Nx3HG9uidK+TWoLqa8=
-X-Google-Smtp-Source: ABdhPJxImi7e1CDSgVORCSBBjuxGkT4tEH9F2seAxYefktDE8vlf5hbPfe0l8ExYvsmXd7n14a9ocg==
-X-Received: by 2002:aa7:8c47:0:b029:25c:8bbd:908 with SMTP id e7-20020aa78c470000b029025c8bbd0908mr26727892pfd.54.1619598627997;
-        Wed, 28 Apr 2021 01:30:27 -0700 (PDT)
-Received: from localhost ([157.45.46.0])
-        by smtp.gmail.com with ESMTPSA id e9sm1784514pgk.69.2021.04.28.01.30.27
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 28 Apr 2021 01:30:27 -0700 (PDT)
-Date:   Wed, 28 Apr 2021 14:00:20 +0530
-From:   Shubhankar Kuranagatti <shubhankarvk@gmail.com>
-To:     m@bues.ch
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sanjanasrinidhi1810@gmail.com
-Subject: [PATCH] drivers: ssb: driver_gpio.c: Fix alignment of comment
-Message-ID: <20210428083020.gt6ea2guhfp75pan@kewl-virtual-machine>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fjUF9BpvK4r1iz57hM3EhPDHjFmt6yk1iQHfr+k3qbM=;
+        b=scJ5K7urLgSrK5nuX2MGJA9lIo/EUZERUaD4/pqY/TZtTmM1kWXGEg+Tktye9dvN8y
+         aUxccdnDPxPWhSxvB4sBG0nIgpZoroPIenfOZEriYjqV/xB+T2QcaMAt3/nP+XGJ1i7U
+         NE1fwAfOyfg6VQY95+f/a2NwZaeGYgWBzY2nMQvH4m0Ak9/LPtQVvYiKpEjw90DTL/ud
+         6pdRXxMWcQnj87IFI0oQ4RCUXf6pP5p8j0JcWCBBQdmT/TMxlBJaQUALpEbTUixTm9TR
+         rk648E7RBxvsB5IIfanQtk2qPdZpepq5BtAi6iwrQJMNrO92sgmIpiw9JZ76WEYD4MSZ
+         rEsg==
+X-Gm-Message-State: AOAM533JQSBryug4dBOgWfw+CUDAIAnuPEZpusLPPQA9DGW9+LtpSHX6
+        pE6iXm3uCFItVAOe3ezkfPGusQ==
+X-Google-Smtp-Source: ABdhPJw+pSzP+7mqH91TiZSleK8DJBgT6+VeuQSagoS0iZQRgwYUticLT6u5Zvx8pHT8CCv8f+oPMQ==
+X-Received: by 2002:a17:90a:af8b:: with SMTP id w11mr31564179pjq.149.1619599018459;
+        Wed, 28 Apr 2021 01:36:58 -0700 (PDT)
+Received: from starnight.endlessm-sf.com (123-204-46-122.static.seed.net.tw. [123.204.46.122])
+        by smtp.googlemail.com with ESMTPSA id f18sm4498493pfe.49.2021.04.28.01.36.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Apr 2021 01:36:58 -0700 (PDT)
+From:   Jian-Hong Pan <jhp@endlessos.org>
+To:     linux-firmware@kernel.org
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessos.org,
+        Jian-Hong Pan <jhp@endlessos.org>
+Subject: [PATCH] brcm: Add a link to enable khadas VIM2's WiFi
+Date:   Wed, 28 Apr 2021 16:32:31 +0800
+Message-Id: <20210428083230.8137-1-jhp@endlessos.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: NeoMutt/20171215
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The closing */ has been shifted to a new line
-This is done to maintain code uniformity.
+According to kernel message on khadas VIM2 board equipped with BCM4356:
 
-Signed-off-by: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
+brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac4356-sdio for chip BCM4356/2
+usbcore: registered new interface driver brcmfmac
+brcmfmac mmc0:0001:1: Direct firmware load for brcm/brcmfmac4356-sdio.khadas,vim2.txt failed with error -2
+brcmfmac mmc0:0001:1: Direct firmware load for brcm/brcmfmac4356-sdio.txt failed with error -2
+
+System needs the NVRAM file "brcmfmac4356-sdio.khadas,vim2.txt" to enable
+the WiFi. After test, found it can share with the same file
+"brcmfmac4356-sdio.vamrs,rock960.txt".
+
+This patch adds the link to brcmfmac4356-sdio.vamrs,rock960.txt for it.
+
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
 ---
- drivers/ssb/driver_gpio.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ WHENCE | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ssb/driver_gpio.c b/drivers/ssb/driver_gpio.c
-index 66a76fd83248..2de3896489c8 100644
---- a/drivers/ssb/driver_gpio.c
-+++ b/drivers/ssb/driver_gpio.c
-@@ -231,7 +231,8 @@ static int ssb_gpio_chipco_init(struct ssb_bus *bus)
- 	chip->ngpio		= 16;
- 	/* There is just one SoC in one device and its GPIO addresses should be
- 	 * deterministic to address them more easily. The other buses could get
--	 * a random base number. */
-+	 * a random base number.
-+	 */
- 	if (bus->bustype == SSB_BUSTYPE_SSB)
- 		chip->base		= 0;
- 	else
-@@ -424,7 +425,8 @@ static int ssb_gpio_extif_init(struct ssb_bus *bus)
- 	chip->ngpio		= 5;
- 	/* There is just one SoC in one device and its GPIO addresses should be
- 	 * deterministic to address them more easily. The other buses could get
--	 * a random base number. */
-+	 * a random base number.
-+	 */
- 	if (bus->bustype == SSB_BUSTYPE_SSB)
- 		chip->base		= 0;
- 	else
+diff --git a/WHENCE b/WHENCE
+index 3c29304..5773020 100644
+--- a/WHENCE
++++ b/WHENCE
+@@ -2780,6 +2780,7 @@ Link: brcm/brcmfmac43455-sdio.Raspberry\ Pi\ Foundation-Raspberry\ Pi\ Compute\
+ File: "brcm/brcmfmac43455-sdio.MINIX-NEO Z83-4.txt"
+ File: "brcm/brcmfmac4356-pcie.gpd-win-pocket.txt"
+ File: brcm/brcmfmac4356-sdio.vamrs,rock960.txt
++Link: brcm/brcmfmac4356-sdio.khadas,vim2.txt -> brcmfmac4356-sdio.vamrs,rock960.txt
+ 
+ Licence: GPLv2. See GPL-2 for details.
+ 
 -- 
-2.17.1
+2.31.1
 
