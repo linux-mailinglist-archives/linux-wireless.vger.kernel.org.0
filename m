@@ -2,59 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B12B736D310
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 09:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F34F936D35F
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 09:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236666AbhD1HZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Apr 2021 03:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51880 "EHLO
+        id S233399AbhD1Hp0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Apr 2021 03:45:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230145AbhD1HZp (ORCPT
+        with ESMTP id S229643AbhD1Hp0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Apr 2021 03:25:45 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2A0C061574;
-        Wed, 28 Apr 2021 00:25:01 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id p17so6401385plf.12;
-        Wed, 28 Apr 2021 00:25:01 -0700 (PDT)
+        Wed, 28 Apr 2021 03:45:26 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A689DC061574;
+        Wed, 28 Apr 2021 00:44:40 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id h14-20020a17090aea8eb02901553e1cc649so6441517pjz.0;
+        Wed, 28 Apr 2021 00:44:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:mime-version:content-disposition
          :user-agent;
-        bh=xQY7nvOaiG9v/WUqozQwxPw+zWAFowJJ3OP9IATo7gs=;
-        b=Eg6nmcnI/wnQ3WwW9sQ08P/ECUinji/qPkNhavXMmXA3879sS/wcxKAOXpRslPp8e2
-         HefZ52KeP4jefvtruI8bMHwkTgxUHqqnldYf9qaB5pR/Q39gnWKLKr8B6fkbfCl3nDp2
-         0Xijh/43gqvZAGZJAxecMluL+xzQ95XP+fwQnvSf9IuezTsmkxUqubOOLB9Nv0zMMC8k
-         haJnNLAiboRwK5RN+c3/HewmCuA0StIEEjKD+o+BvADCagzK5nU9cdxAtsHC3Rw54CNK
-         iUoLfxauZR8PUPUVgOGt4LKoq6sAwvB+rtzoAdKcUl6RUUP0zhHNlzkzDvo+HGViY/XL
-         3xUA==
+        bh=hgRf+WY3My77y9MGaOayXQDhKbTAR0DxBOTc0y4LwQ4=;
+        b=KqwWZkWiWZv2dJz+SYjb6uB0Fbq3FKHWMaN5zanPYFIHQ+qo1m4K9xbzCyffMLC3W/
+         lTPRexHGNaBpThWC/VQXupVpLUMQGPBZ8DZfV5QEhWv7tRQ0KCgv+xqq5SmceWhyrCuO
+         q7AkvOgKKTGauJuqTO1IrzoPBgIOmoOCsTDFrzaXY3Wvk37l+E/StJJJ2n+TtselAiB4
+         ZhssSI6/dIUFxP8gweob9dPilbGhXGVotBRuU9igkiOo2tH0dH3v2Ds/Rqa8fXlOoHVX
+         Sc9p/tWZ82/IKSm8KBrcgbDzSd3TPCszG+f7pULzoLLlmfadqhinl0PXmIfaYA2MpujC
+         xk7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
          :content-disposition:user-agent;
-        bh=xQY7nvOaiG9v/WUqozQwxPw+zWAFowJJ3OP9IATo7gs=;
-        b=gWBn+2q3QKIJVvKIePB+16rXPRIqEZPtVenQc9r7EJQa2Ap43QyNj4x88PHxQQXQWb
-         vQX/KjGiVN9Dy4elDZX0GdxBZwZtZ2irDGDYDlbu+N/+NXgq7pbVKK9Tm3IbF9brFRWx
-         FvFbEWOE2i8bRwQwL3q8+mQd+AkcdczRagBTfHQwAoChZGNdSIJpAQk96V8xGwMAC2qu
-         pSuYZwtmYickPiZR1/qmMRZOz9b0Oj+h0EJFpUe3SSHNDf8CjZLvI7r/b7C0yKy9ttPV
-         tep3cE0AVooFlACH8MkaS1llpS++EGzKqJWzv4UlO+vMvjpaGNncTsoqlCp2rdhYuXEu
-         +UIw==
-X-Gm-Message-State: AOAM533qXtaqFbqfOwcdvhSBMY9S0KsV+3RXzfzcs4ZX4PAMwggzPk2E
-        rHhUKtmTxZwcVXdu+sU7Npk=
-X-Google-Smtp-Source: ABdhPJz0HUnvgQ6xALDLF8dqETWfykTHExSQkMKbJatqMLIDKRjkpNAspveM6kF4ZAuHdRDut/p7GA==
-X-Received: by 2002:a17:902:da8c:b029:ec:f02d:fcce with SMTP id j12-20020a170902da8cb02900ecf02dfccemr22899747plx.0.1619594701029;
-        Wed, 28 Apr 2021 00:25:01 -0700 (PDT)
+        bh=hgRf+WY3My77y9MGaOayXQDhKbTAR0DxBOTc0y4LwQ4=;
+        b=qhmaETH30SRcpJ550xmIEOWk9zIbjOmA1i1ZRR7uG3ZR06x/jx7gAajxtF8CUrcnIr
+         8DjGgnZ9WNLaDt6X5GIDEwyYq9nS3Fa06i5XgKW+VN7jth7QfKvt/eOp8/pxlulMaLwn
+         PtbxYvWbu8lfRRqLqfQfyMMAiOPVKWwjl5+6nL7iVnPRb5cl+scV6gR56voLr2SyuAgm
+         l24ucpTrTAt8YzEBvvOTgsktL5rVbWyEUNk9OXDBqSPeugqg2Mch5bU8K0o7W5eLrth3
+         jOdDH3yCqIA+iWCu3TL99nCTmD4XVRgHmQSuc5xy4xm5NrElQ8iSoj7bp4xEfSzllT1j
+         KEXg==
+X-Gm-Message-State: AOAM533WA09QXYz3309UbscIEja/9ce0mT0qVzbOOkGmx674AgDubjZb
+        UQNYkjDus6T55rEtfpGJ9kc=
+X-Google-Smtp-Source: ABdhPJxQivr8przk/O7Nfn1Rhgo7tH9OnYpCvEnkYw1vXmfxseWl5v/8b84jdkSgjxWbGQwMbovLhg==
+X-Received: by 2002:a17:90a:e649:: with SMTP id ep9mr742579pjb.8.1619595880059;
+        Wed, 28 Apr 2021 00:44:40 -0700 (PDT)
 Received: from localhost ([157.45.190.127])
-        by smtp.gmail.com with ESMTPSA id h9sm4265298pfv.14.2021.04.28.00.25.00
+        by smtp.gmail.com with ESMTPSA id w1sm4133269pfu.153.2021.04.28.00.44.39
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 28 Apr 2021 00:25:00 -0700 (PDT)
-Date:   Wed, 28 Apr 2021 12:54:53 +0530
+        Wed, 28 Apr 2021 00:44:39 -0700 (PDT)
+Date:   Wed, 28 Apr 2021 13:14:32 +0530
 From:   Shubhankar Kuranagatti <shubhankarvk@gmail.com>
 To:     m@bues.ch
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sanjanasrinidhi1810@gmail.com, shubhankar.vk@gmail.com
-Subject: [PATCH] drivers: ssb: main.c: Fix indentation of comment
-Message-ID: <20210428072453.obrjwxus3u2ytpgn@kewl-virtual-machine>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drivers: ssb: driver_pcicore.c: Fix indentation of comment
+Message-ID: <20210428074432.rhw4zq2vbdemglbr@kewl-virtual-machine>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -68,113 +67,69 @@ This is done to maintain code uniformity.
 
 Signed-off-by: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
 ---
- drivers/ssb/main.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/ssb/driver_pcicore.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index 0a26984acb2c..0e180c36daa4 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -37,7 +37,8 @@ static LIST_HEAD(buses);
- /* Software ID counter */
- static unsigned int next_busnumber;
- /* buses_mutes locks the two buslists and the next_busnumber.
-- * Don't lock this directly, but use ssb_buses_[un]lock() below. */
-+ * Don't lock this directly, but use ssb_buses_[un]lock() below.
+diff --git a/drivers/ssb/driver_pcicore.c b/drivers/ssb/driver_pcicore.c
+index c1186415896b..d11b4242b6d2 100644
+--- a/drivers/ssb/driver_pcicore.c
++++ b/drivers/ssb/driver_pcicore.c
+@@ -55,7 +55,8 @@ void pcicore_write16(struct ssb_pcicore *pc, u16 offset, u16 value)
+ #include <asm/paccess.h>
+ /* Probe a 32bit value on the bus and catch bus exceptions.
+  * Returns nonzero on a bus exception.
+- * This is MIPS specific */
++ * This is MIPS specific
 + */
- static DEFINE_MUTEX(buses_mutex);
+ #define mips_busprobe32(val, addr)	get_dbe((val), ((u32 *)(addr)))
  
- /* There are differences in the codeflow, if the bus is
-@@ -45,7 +46,8 @@ static DEFINE_MUTEX(buses_mutex);
-  * are not available early. This is a mechanism to delay
-  * these initializations to after early boot has finished.
-  * It's also used to avoid mutex locking, as that's not
-- * available and needed early. */
-+ * available and needed early.
+ /* Assume one-hot slot wiring */
+@@ -255,7 +256,8 @@ static struct pci_controller ssb_pcicore_controller = {
+ };
+ 
+ /* This function is called when doing a pci_enable_device().
+- * We must first check if the device is a device on the PCI-core bridge. */
++ * We must first check if the device is a device on the PCI-core bridge.
 + */
- static bool ssb_is_early_boot = 1;
- 
- static void ssb_buses_lock(void);
-@@ -161,7 +163,8 @@ int ssb_bus_resume(struct ssb_bus *bus)
- 	int err;
- 
- 	/* Reset HW state information in memory, so that HW is
--	 * completely reinitialized. */
-+	 * completely reinitialized.
-+	 */
- 	bus->mapped_device = NULL;
- #ifdef CONFIG_SSB_DRIVER_PCICORE
- 	bus->pcicore.setup_done = 0;
-@@ -467,7 +470,8 @@ static int ssb_devices_register(struct ssb_bus *bus)
- 		sdev = &(bus->devices[i]);
- 
- 		/* We don't register SSB-system devices to the kernel,
--		 * as the drivers for them are built into SSB. */
-+		 * as the drivers for them are built into SSB.
-+		 */
- 		switch (sdev->id.coreid) {
- 		case SSB_DEV_CHIPCOMMON:
- 		case SSB_DEV_PCI:
-@@ -521,7 +525,8 @@ static int ssb_devices_register(struct ssb_bus *bus)
- 		if (err) {
- 			pr_err("Could not register %s\n", dev_name(dev));
- 			/* Set dev to NULL to not unregister
--			 * dev on error unwinding. */
-+			 * dev on error unwinding.
-+			 */
- 			sdev->dev = NULL;
- 			put_device(dev);
- 			goto error;
-@@ -667,7 +672,8 @@ ssb_bus_register(struct ssb_bus *bus,
- 	ssb_bus_may_powerdown(bus);
- 
- 	/* Queue it for attach.
--	 * See the comment at the ssb_is_early_boot definition. */
-+	 * See the comment at the ssb_is_early_boot definition.
-+	 */
- 	list_add_tail(&bus->list, &attach_queue);
- 	if (!ssb_is_early_boot) {
- 		/* This is not early boot, so we must attach the bus now */
-@@ -1007,7 +1013,8 @@ static void ssb_flush_tmslow(struct ssb_device *dev)
- 	 * a machine check exception otherwise.
- 	 * Do this by reading the register back to commit the
- 	 * PCI write and delay an additional usec for the device
--	 * to react to the change. */
-+	 * to react to the change.
-+	 */
- 	ssb_read32(dev, SSB_TMSLOW);
- 	udelay(1);
- }
-@@ -1044,7 +1051,8 @@ void ssb_device_enable(struct ssb_device *dev, u32 core_specific_flags)
- EXPORT_SYMBOL(ssb_device_enable);
- 
- /* Wait for bitmask in a register to get set or cleared.
-- * timeout is in units of ten-microseconds */
-+ * timeout is in units of ten-microseconds
-+ */
- static int ssb_wait_bits(struct ssb_device *dev, u16 reg, u32 bitmask,
- 			 int timeout, int set)
+ int ssb_pcicore_plat_dev_init(struct pci_dev *d)
  {
-@@ -1153,7 +1161,8 @@ int ssb_bus_may_powerdown(struct ssb_bus *bus)
+ 	if (d->bus->ops != &ssb_pcicore_pciops) {
+@@ -381,11 +383,13 @@ static void ssb_pcicore_init_hostmode(struct ssb_pcicore *pc)
  
- 	/* On buses where more than one core may be working
- 	 * at a time, we must not powerdown stuff if there are
--	 * still cores that may want to run. */
-+	 * still cores that may want to run.
+ 	/* Ok, ready to run, register it to the system.
+ 	 * The following needs change, if we want to port hostmode
+-	 * to non-MIPS platform. */
++	 * to non-MIPS platform.
 +	 */
- 	if (bus->bustype == SSB_BUSTYPE_SSB)
- 		goto out;
- 
-@@ -1322,7 +1331,8 @@ static int __init ssb_modinit(void)
+ 	ssb_pcicore_controller.io_map_base = (unsigned long)ioremap(SSB_PCI_MEM, 0x04000000);
+ 	set_io_port_base(ssb_pcicore_controller.io_map_base);
+ 	/* Give some time to the PCI controller to configure itself with the new
+-	 * values. Not waiting at this point causes crashes of the machine. */
++	 * values. Not waiting at this point causes crashes of the machine.
++	 */
+ 	mdelay(10);
+ 	register_pci_controller(&ssb_pcicore_controller);
  }
- /* ssb must be initialized after PCI but before the ssb drivers.
-  * That means we must use some initcall between subsys_initcall
-- * and device_initcall. */
-+ * and device_initcall.
-+ */
- fs_initcall(ssb_modinit);
+@@ -405,7 +409,8 @@ static int pcicore_is_in_hostmode(struct ssb_pcicore *pc)
+ 		return 0;
  
- static void __exit ssb_modexit(void)
+ 	/* The 200-pin BCM4712 package does not bond out PCI. Even when
+-	 * PCI is bonded out, some boards may leave the pins floating. */
++	 * PCI is bonded out, some boards may leave the pins floating.
++	 */
+ 	if (bus->chip_id == 0x4712) {
+ 		if (bus->chip_package == SSB_CHIPPACK_BCM4712S)
+ 			return 0;
+@@ -685,7 +690,8 @@ int ssb_pcicore_dev_irqvecs_enable(struct ssb_pcicore *pc,
+ 	if (dev->bus->bustype != SSB_BUSTYPE_PCI) {
+ 		/* This SSB device is not on a PCI host-bus. So the IRQs are
+ 		 * not routed through the PCI core.
+-		 * So we must not enable routing through the PCI core. */
++		 * So we must not enable routing through the PCI core.
++		 */
+ 		goto out;
+ 	}
+ 
 -- 
 2.17.1
 
