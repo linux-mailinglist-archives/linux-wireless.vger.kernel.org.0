@@ -2,104 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0370F36DB42
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 17:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF19F36DCAC
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 18:07:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236059AbhD1PLS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Apr 2021 11:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42984 "EHLO
+        id S236545AbhD1QIm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Apr 2021 12:08:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbhD1PLR (ORCPT
+        with ESMTP id S229891AbhD1QIl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Apr 2021 11:11:17 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7BAEC061573;
-        Wed, 28 Apr 2021 08:10:30 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id x7so63410142wrw.10;
-        Wed, 28 Apr 2021 08:10:30 -0700 (PDT)
+        Wed, 28 Apr 2021 12:08:41 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36C1C061573;
+        Wed, 28 Apr 2021 09:07:56 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id o16so19501969plg.5;
+        Wed, 28 Apr 2021 09:07:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=caPcWX0HvCbUGxoKUybXsnQMiEeBgCwT/cgikCWDkpc=;
-        b=ZTYFlakBWBp2Opq/jD01M4nUgx0ti9JQ4aFD9Q+GvDNrPY6zj6++mTcAniLmsOC6p3
-         n3ZxHDzViQ1KclzV2l64XWnJooQN+CqlOSot0SwWzQwkczNOg4ujcabw/Y/Q7exfiHYy
-         IUcm65kebe92ZvH4PLQ9tukBAmZSrm52uEUoiAVyHlEDKf90TSlDbMFGrQRVCEomxUdN
-         0+0HgeOrajuXqr/Xbda3LkvUKjm/9/OT2jdoRtNoMCCEBUx4YgN/HzUeFztmUnWiRtsr
-         gPmTeMAB2S6A0aiJvtoOipgwQK7TFt7Ow9i8l6crZLd4fBdshk4uQzOVN+b8xpRuujrC
-         bHrg==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :content-transfer-encoding:user-agent;
+        bh=HFXMnyauVEAn7M4sEEG2ql95kFRnwgv0LYPISmLeMIQ=;
+        b=K504PjKmWI9dQz5TyfEUaWlNmdqNgk25AgjqYh7sFnol//BfQoc3xa1TS9JhWSbpbR
+         ruk/QqTRQW/Ueq/m5K6udn0SN4rVgAbssqPqJwd5Bb/HvlJCWOjeZIcvmZiY5K0rjt9C
+         b7QYikIu8HC6h0uGaw9m9nWqlb4GhSaeU7soyIbQxRZyd4+yYcdYWEkoifLzRvF98OQZ
+         V6N2S6Tx5BCIzHSwiRPkfAHSFOAyhwKC/CQU1WP4aFXZlVQNNFspSj8/vD7Isj+lXhzV
+         9+MeyzXU0dM4kyNCqTSLNhT582xgMyIsxHTHFJJ1gZMf4Nb7zzrp4Ae6xYT+JJmIG5Nz
+         drhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=caPcWX0HvCbUGxoKUybXsnQMiEeBgCwT/cgikCWDkpc=;
-        b=lgF4p3uKfwq03VeWVWlDowtUFin0K8fQd0ATxlHUSBdR8Lt+BUu2LsBrvzGuzi8xVO
-         hll+d4oBsxT/bSgoz2cQbCSzFMZA4TsyjuWSiDFfdpZoDUy73FBUu2jTpta7oesDs5EQ
-         FWBZcGCE4PRoJX40JhjCj1d23oCS0u4xys/U79jx+8MayL9MiVnwq/idhootZlIa44t2
-         9K4bfUIt0rTBN7T6PRSBq38bDM3b5iOcsx3IDoWAo2mt14EtyvB4N1AJFDSYwVdGlPuj
-         DUSPvLsnkrPVApEsZsgoG0S2sLQkpG3Dby8K93j2ST7I4ercpau1TKN1URsdCEQ5Q4kE
-         xvyg==
-X-Gm-Message-State: AOAM532KAgodls0egq8jcAtOWmEiQVOPNxJjGqG9Nkf3m2WSr2bVyzEh
-        lT7BcVpLWKFFKkq124HXlKmsDL60t0SqGJEEmvY=
-X-Google-Smtp-Source: ABdhPJxVN5btpbhyyFI3SSpFSYUJhcM6me5+lef8qqcMI92e90PN00NzDC1AMx2HcHRG/qI8ZSgbTRstZBP73rH4vZs=
-X-Received: by 2002:adf:f190:: with SMTP id h16mr22688829wro.393.1619622629615;
- Wed, 28 Apr 2021 08:10:29 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding:user-agent;
+        bh=HFXMnyauVEAn7M4sEEG2ql95kFRnwgv0LYPISmLeMIQ=;
+        b=T3a4FKT3H3OQ1AkJlplYj8ayQ7olJKLGR5HT+AeDSMJC9LQz8kCQRXs73ipfH/jtZy
+         l4J37MctUIHX9cbTuziz1qB0VZejNhXml/M/TswiyqdplJuaVFAsFhAzA61pZoiGp/q4
+         19NXwJ1F2eWQ+ufhBwJXwhtrnVPOL3I8QWctnkCJ9lVUdJhKMm30WvZnmVHjdT0I+PAv
+         lkVqoOB4ZIRNLCPUmnRHt3wabMVucI6a/XHbFWe0wkCuElKXUcswUH0xrQUXYKn+7qo0
+         rGrx0BFlwZ2xoRCYTIzg5w3Z9zUT0pD1MOyUZTn4BM30ymrKhgBnkbjLMrhV8IgUbSQQ
+         wycg==
+X-Gm-Message-State: AOAM530BwzPuYmQAaXryavdbCTPgC7aYrOyOtwX8zFHj+n3jaycZbhpY
+        TsoI/33oIdAnv/tm9ZRonyeH5Sj5ftdatpe6
+X-Google-Smtp-Source: ABdhPJxK8iAKQjmySacunUI8P7OPRQO3Mkmk/U7+oDY6Qup5Ug1bCtU9b6SYTDInbrMYO+buir8LZg==
+X-Received: by 2002:a17:90a:b78d:: with SMTP id m13mr4944520pjr.47.1619626076248;
+        Wed, 28 Apr 2021 09:07:56 -0700 (PDT)
+Received: from localhost ([157.45.42.123])
+        by smtp.gmail.com with ESMTPSA id s3sm159651pgs.62.2021.04.28.09.07.55
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 28 Apr 2021 09:07:55 -0700 (PDT)
+Date:   Wed, 28 Apr 2021 21:37:47 +0530
+From:   Shubhankar Kuranagatti <shubhankarvk@gmail.com>
+To:     m@bues.ch
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] drivers: ssb: driver_gpio.c: Fix alignment of comment
+Message-ID: <20210428160747.qy23g6zpmheiacpl@kewl-virtual-machine>
 MIME-Version: 1.0
-References: <20210428135929.27011-1-justin.he@arm.com> <20210428135929.27011-2-justin.he@arm.com>
-In-Reply-To: <20210428135929.27011-2-justin.he@arm.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 28 Apr 2021 18:10:13 +0300
-Message-ID: <CAHp75Vfx8aGQGJR58o49t2bOtu5adkrSRfWW9bb63OBoePcj1g@mail.gmail.com>
-Subject: Re: [PATCH 2/4] lib/vsprintf.c: Make %p{D,d} mean as much components
- as possible
-To:     Jia He <justin.he@arm.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: NeoMutt/20171215
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 28, 2021 at 5:56 PM Jia He <justin.he@arm.com> wrote:
->
-> From: Linus Torvalds <torvalds@linux-foundation.org>
+The closing */ has been shifted to a new line
+This is done to maintain code uniformity.
 
-Hmm... Okay.
+Acked-by: Michael Büsch <m@bues.ch>
+Signed-off-by: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
+---
+ drivers/ssb/driver_gpio.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> We have '%pD'(no digit following) for printing a filename. It may not be
-> perfect (by default it only prints one component.
->
-> %pD4 should be more than good enough, but we should make plain "%pD" mean
-> "as much of the path that is reasonable" rather than "as few components as
-> possible" (ie 1).
-
-Sorry, but from above I didn't get why.
-
-The commit message tells only about %pD, but patch changes behaviour
-of the ~100 or so users of "%pd" without any explanation.
-
-Besides that the patch is prepended only by one change (which is also
-not related to %pD), while we have ~30 users which behaviour got
-changed.
-
-
+diff --git a/drivers/ssb/driver_gpio.c b/drivers/ssb/driver_gpio.c
+index 66a76fd83248..2de3896489c8 100644
+--- a/drivers/ssb/driver_gpio.c
++++ b/drivers/ssb/driver_gpio.c
+@@ -231,7 +231,8 @@ static int ssb_gpio_chipco_init(struct ssb_bus *bus)
+ 	chip->ngpio		= 16;
+ 	/* There is just one SoC in one device and its GPIO addresses should be
+ 	 * deterministic to address them more easily. The other buses could get
+-	 * a random base number. */
++	 * a random base number.
++	 */
+ 	if (bus->bustype == SSB_BUSTYPE_SSB)
+ 		chip->base		= 0;
+ 	else
+@@ -424,7 +425,8 @@ static int ssb_gpio_extif_init(struct ssb_bus *bus)
+ 	chip->ngpio		= 5;
+ 	/* There is just one SoC in one device and its GPIO addresses should be
+ 	 * deterministic to address them more easily. The other buses could get
+-	 * a random base number. */
++	 * a random base number.
++	 */
+ 	if (bus->bustype == SSB_BUSTYPE_SSB)
+ 		chip->base		= 0;
+ 	else
 -- 
-With Best Regards,
-Andy Shevchenko
+2.17.1
+
