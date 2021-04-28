@@ -2,99 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FD4936D6D5
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 13:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B1BF36D6EF
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Apr 2021 14:03:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229907AbhD1L4I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Apr 2021 07:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55740 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbhD1L4H (ORCPT
+        id S231157AbhD1MD5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Apr 2021 08:03:57 -0400
+Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:33132 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229645AbhD1MD5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Apr 2021 07:56:07 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B2CC061574;
-        Wed, 28 Apr 2021 04:55:20 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id e5so34071780wrg.7;
-        Wed, 28 Apr 2021 04:55:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=wFVlZsZ+heSlhDiUDM4jdsWEkeRvPBP/0Wu0oaYtrFc=;
-        b=hdH6GYWdfmHqxZz/sXPZXlHlyWXrxY3Qp1PlYjPmRYXfyT+TPE5zVwsEP1N5E9hayN
-         bz+Y2ohnj+urGYHpcsJqHVCdLm0sEX0bqpM50uzK09EtLBKC1uzWGtPwJqo3vyV0uXu3
-         iFCzJe6+kFO3pFVQ2Ns8Ix25yW2/80IkCwDZrviKqwXQE0IvyO0/RP5hiSbIwDcHr7VG
-         T5JlmibjhcLRhPbGTIpcRLEG8TI3BQs8AMD9QKqtoEKxUT47RtF9qFz8VEY4vetWj+z+
-         bNtAuR24nw4aJt1ZAHyjikiVgvfFcNFMfnaIinVw79KGSUAAVnPQ/VWN9NOc+C243xRY
-         ug4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=wFVlZsZ+heSlhDiUDM4jdsWEkeRvPBP/0Wu0oaYtrFc=;
-        b=jfakcI9P14fT/dZYBQR3r/G5xRy0ZBorBc8EtSZXGtANCc49dh4ZP3G4HmVC+BcVmy
-         XsBfFk8ZA1f6cK0Dhxw2/W+STtVMGbpEw/lowUAR3yqQCQMoLVG66Ioul8+j4USTlug5
-         bQUxTqRmjGd7vJQkt9h/i01g83IFN+8Q1lkqow90yvpSm3yfcEm6Rbw2kugvokje3TIa
-         42/zd93mC37w82qgN0mlGdtaFItoO0c3I6jtrMfNkqWUxeB02pwOeEvefKh+D4dIkyCE
-         PA9YtFvmqb9pxgyq+bpqwBNMxIfzVYtEU109u7PfvtbVV4vJMSE0RnXSu4V01hUMIJpE
-         pd4Q==
-X-Gm-Message-State: AOAM530ImlJ7CAlndYKE5oUmTJru0qgbE3ku0Y8vTosDcWFG1mWuCwve
-        p6/tsZetwLWXXUpN5FAEceLVsPmKWBWDnZRH
-X-Google-Smtp-Source: ABdhPJyc4U4H2WokTiue7gy0nKH8mHu+ubb+IDt/e+SUp9eiqkUU4zQNZlUv3pYA7+h8y2FKXlzSYQ==
-X-Received: by 2002:adf:9d88:: with SMTP id p8mr35435030wre.138.1619610919503;
-        Wed, 28 Apr 2021 04:55:19 -0700 (PDT)
-Received: from ubuntudesktop.lan (210.53.7.51.dyn.plus.net. [51.7.53.210])
-        by smtp.gmail.com with ESMTPSA id c2sm3493626wmr.22.2021.04.28.04.55.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Apr 2021 04:55:18 -0700 (PDT)
-From:   Lee Gibson <leegib@gmail.com>
-To:     kvalo@codeaurora.org
-Cc:     davem@davemloft.net, kuba@kernel.org,
+        Wed, 28 Apr 2021 08:03:57 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 1F0217A21;
+        Wed, 28 Apr 2021 05:03:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 1F0217A21
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1619611392;
+        bh=sqPprGDrxRqE813qXyK+XiwtTWISQ3rJhLBDakpzkSk=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=HRpYGSHCqxNp7Nx007mpVQ8NfSTtGYjv/vdVYC/fGnrWPKwOyhEO4+4TvrFjgg02x
+         Uw091ENOQIZ5OByL3iWK6KvsF6DOfviY4otN6rI+2S958oYysaO2ymUaOmhr1cLnFQ
+         qt+PRh/HT81IpC2c0u6ny0tnwIe2Xeqfor3grLhM=
+Received: from [10.230.32.233] (unknown [10.230.32.233])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 9EDBB1874BE;
+        Wed, 28 Apr 2021 05:03:09 -0700 (PDT)
+Subject: Re: [PATCH] brcmfmac: use ISO3166 country code and 0 rev as fallback
+To:     Shawn Guo <shawn.guo@linaro.org>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Lee Gibson <leegib@gmail.com>
-Subject: [PATCH v2] wl1251: Fix possible buffer overflow in wl1251_cmd_scan
-Date:   Wed, 28 Apr 2021 12:55:08 +0100
-Message-Id: <20210428115508.25624-1-leegib@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210317121807.389169-1-leegib@gmail.com>
-References: <20210317121807.389169-1-leegib@gmail.com>
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20210425110200.3050-1-shawn.guo@linaro.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <b6c5713f-ebf0-9eaf-e871-d5690a6b7c10@broadcom.com>
+Date:   Wed, 28 Apr 2021 14:03:07 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210425110200.3050-1-shawn.guo@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Function wl1251_cmd_scan calls memcpy without checking the length.
-Harden by checking the length is within the maximum allowed size.
+On 4/25/2021 1:02 PM, Shawn Guo wrote:
+> Instead of aborting country code setup in firmware, use ISO3166 country
+> code and 0 rev as fallback, when country_codes mapping table is not
+> configured.  This fallback saves the country_codes table setup for recent
+> brcmfmac chipsets/firmwares, which just use ISO3166 code and require no
+> revision number.
 
-Signed-off-by: Lee Gibson <leegib@gmail.com>
----
-v2: use clamp_val() instead of min_t()
+I am somewhat surprised, but with the brcm-spinoffs (cypress/infineon 
+and synaptics) my understanding may have been surpassed by reality. 
+Would you happen to know which chipsets/firmwares require only ISO3166 
+code and no rev?
 
- drivers/net/wireless/ti/wl1251/cmd.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wl1251/cmd.c b/drivers/net/wireless/ti/wl1251/cmd.c
-index 498c8db2eb48..d7a869106782 100644
---- a/drivers/net/wireless/ti/wl1251/cmd.c
-+++ b/drivers/net/wireless/ti/wl1251/cmd.c
-@@ -454,9 +454,12 @@ int wl1251_cmd_scan(struct wl1251 *wl, u8 *ssid, size_t ssid_len,
- 		cmd->channels[i].channel = channels[i]->hw_value;
- 	}
- 
--	cmd->params.ssid_len = ssid_len;
--	if (ssid)
--		memcpy(cmd->params.ssid, ssid, ssid_len);
-+	if (ssid) {
-+		int len = clamp_val(ssid_len, 0, IEEE80211_MAX_SSID_LEN);
-+
-+		cmd->params.ssid_len = len;
-+		memcpy(cmd->params.ssid, ssid, len);
-+	}
- 
- 	ret = wl1251_cmd_send(wl, CMD_SCAN, cmd, sizeof(*cmd));
- 	if (ret < 0) {
--- 
-2.25.1
-
+Regards,
+Arend
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 +++++++++++------
+>   1 file changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index f4405d7861b6..6cb09c7c37b6 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> @@ -7442,18 +7442,23 @@ static s32 brcmf_translate_country_code(struct brcmf_pub *drvr, char alpha2[2],
+>   	s32 found_index;
+>   	int i;
+>   
+> -	country_codes = drvr->settings->country_codes;
+> -	if (!country_codes) {
+> -		brcmf_dbg(TRACE, "No country codes configured for device\n");
+> -		return -EINVAL;
+> -	}
+> -
+>   	if ((alpha2[0] == ccreq->country_abbrev[0]) &&
+>   	    (alpha2[1] == ccreq->country_abbrev[1])) {
+>   		brcmf_dbg(TRACE, "Country code already set\n");
+>   		return -EAGAIN;
+>   	}
+>   
+> +	country_codes = drvr->settings->country_codes;
+> +	if (!country_codes) {
+> +		brcmf_dbg(TRACE, "No country codes configured for device, using ISO3166 code and 0 rev\n");
+> +		memset(ccreq, 0, sizeof(*ccreq));
+> +		ccreq->country_abbrev[0] = alpha2[0];
+> +		ccreq->country_abbrev[1] = alpha2[1];
+> +		ccreq->ccode[0] = alpha2[0];
+> +		ccreq->ccode[1] = alpha2[1];
+> +		return 0;
+> +	}
+> +
+>   	found_index = -1;
+>   	for (i = 0; i < country_codes->table_size; i++) {
+>   		cc = &country_codes->table[i];
+> 
