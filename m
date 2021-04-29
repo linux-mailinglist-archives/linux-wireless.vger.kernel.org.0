@@ -2,69 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C0D536E905
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Apr 2021 12:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90B8C36E9C5
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Apr 2021 13:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240529AbhD2KsD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Apr 2021 06:48:03 -0400
-Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:56116 "EHLO
-        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S240486AbhD2KsC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Apr 2021 06:48:02 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0UX9hZFR_1619693232;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UX9hZFR_1619693232)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 29 Apr 2021 18:47:13 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     m@bues.ch
-Cc:     nathan@kernel.org, ndesaulniers@google.com,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH] ssb: Remove redundant assignment to err
-Date:   Thu, 29 Apr 2021 18:47:10 +0800
-Message-Id: <1619693230-108804-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S233011AbhD2LtD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Apr 2021 07:49:03 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:13808 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230148AbhD2LtD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Apr 2021 07:49:03 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1619696897; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=tnDMDN6qNXhD1CwrqsYIr3FMBVUHvEv3BXuDsvwxIWI=; b=NV4Nvj5WIRct1M0/k33nGoIKHsjaTiV4Z+J2Fg+3nbG0J5/SfbG6HZahg9k+pVfB5uY+j9mt
+ 8YSZK6DgJWYlGp2Zs8siK7NA2j0e0qn5R2RIMFAPDp/DnbPlgT37r6HZtud0RHZ47yKurPnC
+ RQfCZqTYkyGcdcBu3rcIJRVz1K4=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 608a9d00f34440a9d413473e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 29 Apr 2021 11:48:16
+ GMT
+Sender: mkenna=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 43717C4338A; Thu, 29 Apr 2021 11:48:16 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from ppranees-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: mkenna)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 781B4C433F1;
+        Thu, 29 Apr 2021 11:48:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 781B4C433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=mkenna@codeaurora.org
+From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
+To:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Cc:     Maharaja Kennadyrajan <mkenna@codeaurora.org>
+Subject: [PATCH v2 0/3] Add support to configure beacon tx mode
+Date:   Thu, 29 Apr 2021 17:17:51 +0530
+Message-Id: <1619696874-30072-1-git-send-email-mkenna@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Variable 'err' is set to zero but this value is never read as it is
-overwritten with a new value later on, hence it is a redundant
-assignment and can be removed.
+Add support to configure the beacon tx mode as STAGGERED
+or BURST mode via hostapd configuration during the AP
+bring-up or via wpa_suppplicant configuration during MESH
+bring-up.
 
-Clean up the following clang-analyzer warning:
+Beacons can be sent out in burst(continuously in a single shot
+one after another) or staggered (equally spread out over beacon
+interval) mode.
 
-drivers/ssb/main.c:1306:3: warning: Value stored to 'err' is never read
-[clang-analyzer-deadcode.DeadStores]
-drivers/ssb/main.c:1312:3: warning: Value stored to 'err' is never read
-[clang-analyzer-deadcode.DeadStores]
+V2:
+	Addressed Johannes's comment on v1 patch.
+	Updated the commit log.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/ssb/main.c | 2 --
- 1 file changed, 2 deletions(-)
+Maharaja Kennadyrajan (3):
+  nl80211: Add support for beacon tx mode
+  mac80211: Add support for beacon tx mode
+  ath11k: Add support for beacon tx mode
 
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index 0a26984..ab23554 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -1303,13 +1303,11 @@ static int __init ssb_modinit(void)
- 	if (err) {
- 		pr_err("Broadcom 43xx PCI-SSB-bridge initialization failed\n");
- 		/* don't fail SSB init because of this */
--		err = 0;
- 	}
- 	err = ssb_host_pcmcia_init();
- 	if (err) {
- 		pr_err("PCMCIA host initialization failed\n");
- 		/* don't fail SSB init because of this */
--		err = 0;
- 	}
- 	err = ssb_gige_init();
- 	if (err) {
+ drivers/net/wireless/ath/ath11k/mac.c | 10 +++++++---
+ include/net/cfg80211.h                |  4 ++++
+ include/net/mac80211.h                |  2 ++
+ include/uapi/linux/nl80211.h          | 15 +++++++++++++++
+ net/mac80211/cfg.c                    |  2 ++
+ net/wireless/nl80211.c                |  9 +++++++++
+ 6 files changed, 39 insertions(+), 3 deletions(-)
+
 -- 
-1.8.3.1
+2.7.4
 
