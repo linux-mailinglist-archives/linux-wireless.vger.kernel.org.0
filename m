@@ -2,98 +2,359 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3147836E6F6
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Apr 2021 10:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB05636E712
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Apr 2021 10:35:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232455AbhD2ISg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Apr 2021 04:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42828 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230071AbhD2ISg (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Apr 2021 04:18:36 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1128EC06138B
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Apr 2021 01:17:50 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id z16so5681066pga.1
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Apr 2021 01:17:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=user-agent:from:to:subject:date:message-id:mime-version;
-        bh=YDrZhDTorDYr8K6DyNqJ1O/LB9Vtp40eiSoUA9mZRhc=;
-        b=PO/fnKldpJmtkYwBjW9Gh/aPckWci/Uy0wSV8dad3ccuC+k2dgyzuKnX16BNe7ukPQ
-         1DfyhQ+80KzTzFe98Yvgswuqwdc2EuWjQLvDVPVXBGBdTQ+Mjl99LzV4KSISqivmxUuI
-         CRa/HTOhFLZbiCjHtE8L7Qr8ga2EO/cnt38wUWij2JHkYV5O6d4+1bL/wVbPCBr9brst
-         UCSur9TQX1G6lA3WqglaFFHph8zERAcNnPxZObEIzL9W3AMRT2Cya8PNXVI0xdB3qusD
-         RZBMUKxmats7z7ekHPTCT+WcfRI6J/6mzqm7bk4hbD2ooWRpQ9Mro0hoLpjXiMFdE0Dg
-         XoYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:user-agent:from:to:subject:date:message-id
-         :mime-version;
-        bh=YDrZhDTorDYr8K6DyNqJ1O/LB9Vtp40eiSoUA9mZRhc=;
-        b=RbEDiVIPUvNobn96xXH1PrJpW/fqFQgSyIRdMCAPWGC3ICpAalUsRmJ1sFJUBypjGa
-         zt97afuDgrEfSTCPUBICcPj3JhguB5jda+7UplFi9lhNwp1eY6upcrrMgjUvyxpJmChE
-         Esx0FBfxw/mz1aQM/Hpn2eI1CxHOVuYcUL9+iaSFvHH8vz0eUA28ZK5gky13xYtH+/fx
-         x9q9iNGFj4YtRs9wrw/PsERB9jx5yQEHYmQuOVeKtXtye6yom4Z+w2GFqxKg4iuxfDiE
-         awnQRc5TOZ8z+g2u2yG2sslwYqx3Tn1QmeLmnBt/U3eMxgcyIN3jcbIMBfEDabfSkp7S
-         d4MA==
-X-Gm-Message-State: AOAM5330sdLC9Fh/nlmX17tSGcyMVYCdF2EjdlSUPCguZNLJxN9KV9az
-        vm6YKf2CYvqUJOTb9VlPqWhCiJWLXpA=
-X-Google-Smtp-Source: ABdhPJxwi+p55wIB7gdilBBHMIjdyCsTky1gFTIX3Jr0BGvCzuBM+gd11iOSCVcqB7MEDI47rLWRqQ==
-X-Received: by 2002:a05:6a00:781:b029:27c:d3f6:d019 with SMTP id g1-20020a056a000781b029027cd3f6d019mr7541821pfu.42.1619684269431;
-        Thu, 29 Apr 2021 01:17:49 -0700 (PDT)
-Received: from localhost (14-202-110-190.static.tpgi.com.au. [14.202.110.190])
-        by smtp.gmail.com with ESMTPSA id bf3sm1615044pjb.16.2021.04.29.01.17.48
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Apr 2021 01:17:49 -0700 (PDT)
-User-agent: mu4e 1.4.15; emacs 27.1
-From:   Alexis <flexibeast@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Subject: rtw_8821ce: "rfe 4 isn't supported". Asus D509DA laptop.
-Date:   Thu, 29 Apr 2021 18:17:45 +1000
-Message-ID: <8735v9sdw6.fsf@ada>
+        id S233264AbhD2Id1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Apr 2021 04:33:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47334 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229963AbhD2Id0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Apr 2021 04:33:26 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5B09361185;
+        Thu, 29 Apr 2021 08:32:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1619685160;
+        bh=4x0n6tElxUEy88zSNLhwWTsuVxFHuswrY51b/xU7j5g=;
+        h=From:To:Cc:Subject:Date:From;
+        b=P7JU+iLM3ioRYArrpf+R5pOFRqa22fK+P3G9rJuPBES7aExunWCVkYv15JCmYl/I5
+         UBVNIfVXIs/Wp+/UekyT/0U/CHF9QG8XO1RwOfATCn9pEY1W37+T9Bwjx59r0zBeAk
+         L2gPPH8/TUPxfSHleABtGIS6Bru+NBim2iTBxqLaK05S6NOKyuPV5s2j9uGJRCe4tm
+         uyFozJnHLABigYEJE1JXZ1YOdW6GNpFv3CkGv5E3FWyIUz6agxGyIhTq6stRkSKc1s
+         hkQzx3/sXPNYAy9NDpPLpTsYyAN0DFWOew6mf5uOK+WxDhZc+48j8JveSbWr3yoy5o
+         MJtSG0XUln5cA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: move mt76_rates in mt76 module
+Date:   Thu, 29 Apr 2021 10:32:34 +0200
+Message-Id: <a8da66822d9dbfd7afbebcd915f1c4e1bb59d41f.1619685085.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Move mt76_rates array in mt76 module and remove duplicated code since it
+is shared by all drivers
 
-Hi all,
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 16 +++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     | 15 ++++++++
+ .../net/wireless/mediatek/mt76/mt7603/init.c  | 13 -------
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 33 ++---------------
+ .../wireless/mediatek/mt76/mt7615/pci_init.c  |  4 +--
+ .../wireless/mediatek/mt76/mt7615/usb_sdio.c  |  4 +--
+ .../net/wireless/mediatek/mt76/mt76x02_util.c | 16 +++------
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 36 +++----------------
+ .../net/wireless/mediatek/mt76/mt7921/init.c  | 32 ++---------------
+ 9 files changed, 48 insertions(+), 121 deletions(-)
 
-i've just acquired an Asus D509DA, and wifi isn't working:
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 977acab0360a..fa9f80686272 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -83,6 +83,22 @@ static const struct ieee80211_tpt_blink mt76_tpt_blink[] = {
+ 	{ .throughput = 300 * 1024, .blink_time =  50 },
+ };
+ 
++struct ieee80211_rate mt76_rates[] = {
++	CCK_RATE(0, 10),
++	CCK_RATE(1, 20),
++	CCK_RATE(2, 55),
++	CCK_RATE(3, 110),
++	OFDM_RATE(11, 60),
++	OFDM_RATE(15, 90),
++	OFDM_RATE(10, 120),
++	OFDM_RATE(14, 180),
++	OFDM_RATE(9,  240),
++	OFDM_RATE(13, 360),
++	OFDM_RATE(8,  480),
++	OFDM_RATE(12, 540),
++};
++EXPORT_SYMBOL_GPL(mt76_rates);
++
+ static int mt76_led_init(struct mt76_dev *dev)
+ {
+ 	struct device_node *np = dev->dev->of_node;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 36ede65919f8..2e6a277b91d5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -738,6 +738,21 @@ enum mt76_phy_type {
+ 	MT_PHY_TYPE_HE_MU,
+ };
+ 
++#define CCK_RATE(_idx, _rate) {					\
++	.bitrate = _rate,					\
++	.flags = IEEE80211_RATE_SHORT_PREAMBLE,			\
++	.hw_value = (MT_PHY_TYPE_CCK << 8) | (_idx),		\
++	.hw_value_short = (MT_PHY_TYPE_CCK << 8) | (4 + _idx),	\
++}
++
++#define OFDM_RATE(_idx, _rate) {				\
++	.bitrate = _rate,					\
++	.hw_value = (MT_PHY_TYPE_OFDM << 8) | (_idx),		\
++	.hw_value_short = (MT_PHY_TYPE_OFDM << 8) | (_idx),	\
++}
++
++extern struct ieee80211_rate mt76_rates[12];
++
+ #define __mt76_rr(dev, ...)	(dev)->bus->rr((dev), __VA_ARGS__)
+ #define __mt76_wr(dev, ...)	(dev)->bus->wr((dev), __VA_ARGS__)
+ #define __mt76_rmw(dev, ...)	(dev)->bus->rmw((dev), __VA_ARGS__)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index e1b2cfa56074..b46097ea334a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -304,19 +304,6 @@ mt7603_init_hardware(struct mt7603_dev *dev)
+ 	return 0;
+ }
+ 
+-#define CCK_RATE(_idx, _rate) {					\
+-	.bitrate = _rate,					\
+-	.flags = IEEE80211_RATE_SHORT_PREAMBLE,			\
+-	.hw_value = (MT_PHY_TYPE_CCK << 8) | (_idx),		\
+-	.hw_value_short = (MT_PHY_TYPE_CCK << 8) | (4 + _idx),	\
+-}
+-
+-#define OFDM_RATE(_idx, _rate) {				\
+-	.bitrate = _rate,					\
+-	.hw_value = (MT_PHY_TYPE_OFDM << 8) | (_idx),		\
+-	.hw_value_short = (MT_PHY_TYPE_OFDM << 8) | (_idx),	\
+-}
+-
+ static struct ieee80211_rate mt7603_rates[] = {
+ 	CCK_RATE(0, 10),
+ 	CCK_RATE(1, 20),
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index d20f05a7717d..ecc3ca9eb658 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -174,35 +174,6 @@ bool mt7615_wait_for_mcu_init(struct mt7615_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt7615_wait_for_mcu_init);
+ 
+-#define CCK_RATE(_idx, _rate) {						\
+-	.bitrate = _rate,						\
+-	.flags = IEEE80211_RATE_SHORT_PREAMBLE,				\
+-	.hw_value = (MT_PHY_TYPE_CCK << 8) | (_idx),			\
+-	.hw_value_short = (MT_PHY_TYPE_CCK << 8) | (4 + (_idx)),	\
+-}
+-
+-#define OFDM_RATE(_idx, _rate) {					\
+-	.bitrate = _rate,						\
+-	.hw_value = (MT_PHY_TYPE_OFDM << 8) | (_idx),			\
+-	.hw_value_short = (MT_PHY_TYPE_OFDM << 8) | (_idx),		\
+-}
+-
+-struct ieee80211_rate mt7615_rates[] = {
+-	CCK_RATE(0, 10),
+-	CCK_RATE(1, 20),
+-	CCK_RATE(2, 55),
+-	CCK_RATE(3, 110),
+-	OFDM_RATE(11, 60),
+-	OFDM_RATE(15, 90),
+-	OFDM_RATE(10, 120),
+-	OFDM_RATE(14, 180),
+-	OFDM_RATE(9,  240),
+-	OFDM_RATE(13, 360),
+-	OFDM_RATE(8,  480),
+-	OFDM_RATE(12, 540),
+-};
+-EXPORT_SYMBOL_GPL(mt7615_rates);
+-
+ static const struct ieee80211_iface_limit if_limits[] = {
+ 	{
+ 		.max = 1,
+@@ -472,8 +443,8 @@ int mt7615_register_ext_phy(struct mt7615_dev *dev)
+ 	for (i = 0; i <= MT_TXQ_PSD ; i++)
+ 		mphy->q_tx[i] = dev->mphy.q_tx[i];
+ 
+-	ret = mt76_register_phy(mphy, true, mt7615_rates,
+-				ARRAY_SIZE(mt7615_rates));
++	ret = mt76_register_phy(mphy, true, mt76_rates,
++				ARRAY_SIZE(mt76_rates));
+ 	if (ret)
+ 		ieee80211_free_hw(mphy->hw);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+index ec8ec1a2033f..273fda08bfa2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+@@ -147,8 +147,8 @@ int mt7615_register_device(struct mt7615_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
+-				   ARRAY_SIZE(mt7615_rates));
++	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
++				   ARRAY_SIZE(mt76_rates));
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+index 7010101f6b14..75a05f8dd7e7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+@@ -324,8 +324,8 @@ int mt7663_usb_sdio_register_device(struct mt7615_dev *dev)
+ 			hw->max_tx_fragments = 1;
+ 	}
+ 
+-	err = mt76_register_device(&dev->mt76, true, mt7615_rates,
+-				   ARRAY_SIZE(mt7615_rates));
++	err = mt76_register_device(&dev->mt76, true, mt76_rates,
++				   ARRAY_SIZE(mt76_rates));
+ 	if (err < 0)
+ 		return err;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index 02db5d66735d..ccdbab341271 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -7,24 +7,18 @@
+ #include <linux/module.h>
+ #include "mt76x02.h"
+ 
+-#define CCK_RATE(_idx, _rate) {					\
++#define MT76x02_CCK_RATE(_idx, _rate) {					\
+ 	.bitrate = _rate,					\
+ 	.flags = IEEE80211_RATE_SHORT_PREAMBLE,			\
+ 	.hw_value = (MT_PHY_TYPE_CCK << 8) | (_idx),		\
+ 	.hw_value_short = (MT_PHY_TYPE_CCK << 8) | (8 + (_idx)),	\
+ }
+ 
+-#define OFDM_RATE(_idx, _rate) {				\
+-	.bitrate = _rate,					\
+-	.hw_value = (MT_PHY_TYPE_OFDM << 8) | (_idx),		\
+-	.hw_value_short = (MT_PHY_TYPE_OFDM << 8) | (_idx),	\
+-}
+-
+ struct ieee80211_rate mt76x02_rates[] = {
+-	CCK_RATE(0, 10),
+-	CCK_RATE(1, 20),
+-	CCK_RATE(2, 55),
+-	CCK_RATE(3, 110),
++	MT76x02_CCK_RATE(0, 10),
++	MT76x02_CCK_RATE(1, 20),
++	MT76x02_CCK_RATE(2, 55),
++	MT76x02_CCK_RATE(3, 110),
+ 	OFDM_RATE(0, 60),
+ 	OFDM_RATE(1, 90),
+ 	OFDM_RATE(2, 120),
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 822f3aa6bb8b..8b5546c32a41 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -7,34 +7,6 @@
+ #include "mcu.h"
+ #include "eeprom.h"
+ 
+-#define CCK_RATE(_idx, _rate) {						\
+-	.bitrate = _rate,						\
+-	.flags = IEEE80211_RATE_SHORT_PREAMBLE,				\
+-	.hw_value = (MT_PHY_TYPE_CCK << 8) | (_idx),			\
+-	.hw_value_short = (MT_PHY_TYPE_CCK << 8) | (4 + (_idx)),	\
+-}
+-
+-#define OFDM_RATE(_idx, _rate) {					\
+-	.bitrate = _rate,						\
+-	.hw_value = (MT_PHY_TYPE_OFDM << 8) | (_idx),			\
+-	.hw_value_short = (MT_PHY_TYPE_OFDM << 8) | (_idx),		\
+-}
+-
+-static struct ieee80211_rate mt7915_rates[] = {
+-	CCK_RATE(0, 10),
+-	CCK_RATE(1, 20),
+-	CCK_RATE(2, 55),
+-	CCK_RATE(3, 110),
+-	OFDM_RATE(11, 60),
+-	OFDM_RATE(15, 90),
+-	OFDM_RATE(10, 120),
+-	OFDM_RATE(14, 180),
+-	OFDM_RATE(9,  240),
+-	OFDM_RATE(13, 360),
+-	OFDM_RATE(8,  480),
+-	OFDM_RATE(12, 540),
+-};
+-
+ static const struct ieee80211_iface_limit if_limits[] = {
+ 	{
+ 		.max = 1,
+@@ -281,8 +253,8 @@ static int mt7915_register_ext_phy(struct mt7915_dev *dev)
+ 	if (ret)
+ 		goto error;
+ 
+-	ret = mt76_register_phy(mphy, true, mt7915_rates,
+-				ARRAY_SIZE(mt7915_rates));
++	ret = mt76_register_phy(mphy, true, mt76_rates,
++				ARRAY_SIZE(mt76_rates));
+ 	if (ret)
+ 		goto error;
+ 
+@@ -731,8 +703,8 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 	dev->mt76.test_ops = &mt7915_testmode_ops;
+ #endif
+ 
+-	ret = mt76_register_device(&dev->mt76, true, mt7915_rates,
+-				   ARRAY_SIZE(mt7915_rates));
++	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
++				   ARRAY_SIZE(mt76_rates));
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index fe28bf4050c4..225f4d327a4e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -7,34 +7,6 @@
+ #include "mcu.h"
+ #include "eeprom.h"
+ 
+-#define CCK_RATE(_idx, _rate) {						\
+-	.bitrate = _rate,						\
+-	.flags = IEEE80211_RATE_SHORT_PREAMBLE,				\
+-	.hw_value = (MT_PHY_TYPE_CCK << 8) | (_idx),			\
+-	.hw_value_short = (MT_PHY_TYPE_CCK << 8) | (4 + (_idx)),	\
+-}
+-
+-#define OFDM_RATE(_idx, _rate) {					\
+-	.bitrate = _rate,						\
+-	.hw_value = (MT_PHY_TYPE_OFDM << 8) | (_idx),			\
+-	.hw_value_short = (MT_PHY_TYPE_OFDM << 8) | (_idx),		\
+-}
+-
+-static struct ieee80211_rate mt7921_rates[] = {
+-	CCK_RATE(0, 10),
+-	CCK_RATE(1, 20),
+-	CCK_RATE(2, 55),
+-	CCK_RATE(3, 110),
+-	OFDM_RATE(11, 60),
+-	OFDM_RATE(15, 90),
+-	OFDM_RATE(10, 120),
+-	OFDM_RATE(14, 180),
+-	OFDM_RATE(9,  240),
+-	OFDM_RATE(13, 360),
+-	OFDM_RATE(8,  480),
+-	OFDM_RATE(12, 540),
+-};
+-
+ static const struct ieee80211_iface_limit if_limits[] = {
+ 	{
+ 		.max = MT7921_MAX_INTERFACES,
+@@ -260,8 +232,8 @@ int mt7921_register_device(struct mt7921_dev *dev)
+ 	mt76_set_stream_caps(&dev->mphy, true);
+ 	mt7921_set_stream_he_caps(&dev->phy);
+ 
+-	ret = mt76_register_device(&dev->mt76, true, mt7921_rates,
+-				   ARRAY_SIZE(mt7921_rates));
++	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
++				   ARRAY_SIZE(mt76_rates));
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.30.2
 
-    rtw_8821ce 0000:01:00.0: enabling device (0000 -> 0003)
-    rtw_8821ce 0000:01:00.0: Firmware version 24.8.0, H2C version 
-    12
-    rtw_8821ce 0000:01:00.0: rfe 4 isn't supported
-    rtw_8821ce 0000:01:00.0: failed to setup chip efuse info
-    rtw_8821ce 0000:01:00.0: failed to setup chip information
-
-`uname -a`:
-
-    Linux voidlinux 5.11.16_1 #1 SMP 1619045101 x86_64 GNU/Linux
-
-Void firmware package:
-
-    linux-firmware-network-20210315_2
-
-Some previous mentions of this issue on this list:
-
-    https://marc.info/?l=linux-wireless&m=159981742905028
-    https://www.spinics.net/lists/linux-wireless/msg206075.html
-
-Some other mentions elsewhere:
-
-    https://bugzilla.kernel.org/show_bug.cgi?id=212435
-    https://github.com/tomaspinho/rtl8821ce/issues/142
-
-Please let me know if there's any further information i can 
-provide. i'm not subscribed to the list.
-
-Thanks!
-
-
-Alexis.
