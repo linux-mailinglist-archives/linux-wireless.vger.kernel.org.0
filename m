@@ -2,31 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C86CE36E74F
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Apr 2021 10:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2F4536E76C
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Apr 2021 10:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240038AbhD2IrX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Apr 2021 04:47:23 -0400
-Received: from mx2.suse.de ([195.135.220.15]:38342 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229963AbhD2IrT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Apr 2021 04:47:19 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1619685991; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=S3QDYnjvvBLgh2dAPtQ9pkVbfHfZNetkQxLpUjGW754=;
-        b=OtSF5u7L+L2LBMnAeCxzUjy4YNgAOoo0IsOcErHs3J8qzcRne5SXyyjiiQ88GBNySNydXZ
-        1n6ud3MbJ7JFIP3WhvO+1/xNL/zKyFgiNX4p6E/fDMPqj4Fux+z8ohPY7CpyFnk4PYh3r6
-        LANFD0TnI07HbOF7nmtvJ/3Vc5z0/MM=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 1F1F3AE56;
-        Thu, 29 Apr 2021 08:46:31 +0000 (UTC)
-Date:   Thu, 29 Apr 2021 10:46:30 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Jia He <justin.he@arm.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        id S240148AbhD2Ixy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Apr 2021 04:53:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50670 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232400AbhD2Ixx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Apr 2021 04:53:53 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D5C3C06138B;
+        Thu, 29 Apr 2021 01:53:05 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id p17so6366020pjz.3;
+        Thu, 29 Apr 2021 01:53:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JOu/qK5HN825dhzv2XzFqxUs2XZc9mrKG/c5JbhDry8=;
+        b=GDYQ8++4fQq+mZaPkX6MdGs+654lMgCs5gVpuu1KCHnr9edys1E+gvB0jO/KuV14Rk
+         7z6GTwu0hzUIjiNhKS2oBwGJY8tBcMaXotpz9Zfc4JN/JNPqXuQjK9Li6JDPP7qOFIlZ
+         0ZHXxVYkQX5Vrjn5IwDStA4fOhm6llxPmUQ23Zs4MbJgO4kSfqdefcmO0d0V7re2QtGM
+         Z9hYke/bKghRTEMdGUYW6SiF/iEzkaC45EcmeBhoe5KIMjN7wq0BiXUQxps5jzVPohZD
+         3/vVoVKcHYqbTXEyYHE3IIVpHNKF/+qdAaRu6q96dmb2fdzduf892qUUccsC46hXgicq
+         cJ8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JOu/qK5HN825dhzv2XzFqxUs2XZc9mrKG/c5JbhDry8=;
+        b=lld7Pzna4CE7GDY7XQYmgQ58SeUQg6P0ciSUaVJVZJ4WSR266IVgl4cDfDZ0JX+LBc
+         Oy6+ZF6sEyuA8kzZXeHZU/XnBG0xPMDrlES2zTn3r4SY2BQU+OV1Xct/tP3wc+w2imAp
+         jO7T8kjgsnVOz/dkjKQ14Od9jlP5TUDIjQu7JvbPrrC6tnvpP6JilYsw/CEe9NThxfKw
+         uuApXfKIznOUZmIjGgvoCwuobe+KbjbMy/xomgdpb73IPwVjoupI6syLOeqz+9Kc47aY
+         qhddHX4UbA/GICjTO27CdRqES8DMEMdEWfAhujsQzJzE549IQ9PpTLhBkW9L04HyByUN
+         OOQg==
+X-Gm-Message-State: AOAM532vkkxmGrFAlsI92NBzNSy2gCLJ7fX1qhHk9JgA8r9Wk9A11kLw
+        yI6ldRw2KwEraA38/WFMioNXa9f8qfSaFy8VP50=
+X-Google-Smtp-Source: ABdhPJympxDsG2Ngi8NPlgJljS6eDQicsW6y9AwP+1/Y3H3kM1jS2J4gWlxALFAcZCZM7OBGOqUI7U6lRHPGArijjTI=
+X-Received: by 2002:a17:90b:1184:: with SMTP id gk4mr8719543pjb.129.1619686385054;
+ Thu, 29 Apr 2021 01:53:05 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210428135929.27011-1-justin.he@arm.com> <20210428135929.27011-2-justin.he@arm.com>
+ <YIpyZmi1Reh7iXeI@alley>
+In-Reply-To: <YIpyZmi1Reh7iXeI@alley>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 29 Apr 2021 11:52:49 +0300
+Message-ID: <CAHp75Vfa3ATc+-Luka9vJTwoCLAPVm38cciYyBYnWxzNQ1DPrg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] lib/vsprintf.c: Make %p{D,d} mean as much components
+ as possible
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Jia He <justin.he@arm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         Sergey Senozhatsky <senozhatsky@chromium.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -40,88 +69,32 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Vasily Gorbik <gor@linux.ibm.com>,
         Christian Borntraeger <borntraeger@de.ibm.com>,
         Johannes Berg <johannes.berg@intel.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH 2/4] lib/vsprintf.c: Make %p{D,d} mean as much components
- as possible
-Message-ID: <YIpyZmi1Reh7iXeI@alley>
-References: <20210428135929.27011-1-justin.he@arm.com>
- <20210428135929.27011-2-justin.he@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210428135929.27011-2-justin.he@arm.com>
+        Linux Documentation List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed 2021-04-28 21:59:27, Jia He wrote:
-> From: Linus Torvalds <torvalds@linux-foundation.org>
-> 
-> We have '%pD'(no digit following) for printing a filename. It may not be
-> perfect (by default it only prints one component.
-> 
-> %pD4 should be more than good enough, but we should make plain "%pD" mean
-> "as much of the path that is reasonable" rather than "as few components as
-> possible" (ie 1).
+On Thu, Apr 29, 2021 at 11:47 AM Petr Mladek <pmladek@suse.com> wrote:
+>
+> On Wed 2021-04-28 21:59:27, Jia He wrote:
+> > From: Linus Torvalds <torvalds@linux-foundation.org>
+> >
+> > We have '%pD'(no digit following) for printing a filename. It may not be
+> > perfect (by default it only prints one component.
+> >
+> > %pD4 should be more than good enough, but we should make plain "%pD" mean
+> > "as much of the path that is reasonable" rather than "as few components as
+> > possible" (ie 1).
+>
+> Could you please provide link to the discussion where this idea was
+> came from?
 
-Could you please provide link to the discussion where this idea was
-came from?
+https://lore.kernel.org/lkml/20210427025805.GD3122264@magnolia/
 
-It would be great to add and example into the commit message how
-it improved the output.
-
-Also please explain why it is useful/safe to change the behavior
-for all existing users. It seems that you checked them and prevented
-any regression by the other patches in this patchset.
-
-Anyway, some regressions are fixed by the followup patches.
-It would break bisection.
-
-We either need to prevent the regression before this patch.
-Or the changes have to be done in this patch. For example,
-it would be perfectly fine to update test_printf.c in
-this patch.
-
-> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-
-If you want to keep Linus as the author and do more changes, you might
-describe here changes done by you, for example:
-
-[justin.he@arm.com: update documentation and test_printf]
-Signed-off-by: Jia He <justin.he@arm.com>
-
-Or you might make you the author and add
-
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-
-> ---
->  Documentation/core-api/printk-formats.rst | 3 ++-
->  lib/vsprintf.c                            | 4 ++--
->  2 files changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/core-api/printk-formats.rst b/Documentation/core-api/printk-formats.rst
-> index 9be6de402cb9..aa76cbec0dae 100644
-> --- a/Documentation/core-api/printk-formats.rst
-> +++ b/Documentation/core-api/printk-formats.rst
-
-Plese, update also the pattern:
-
--	%pd{,2,3,4}
--	%pD{,2,3,4}
-+	%pd{1,2,3,4}
-+	%pD{1,2,3,4}
-
-> @@ -413,7 +413,8 @@ dentry names
->  For printing dentry name; if we race with :c:func:`d_move`, the name might
->  be a mix of old and new ones, but it won't oops.  %pd dentry is a safer
->  equivalent of %s dentry->d_name.name we used to use, %pd<n> prints ``n``
-> -last components.  %pD does the same thing for struct file.
-> +last components.  %pD does the same thing for struct file. By default, %p{D,d}
-> +is equal to %p{D,d}4.
->  
->  Passed by reference.
-
-Best Regards,
-Petr
+-- 
+With Best Regards,
+Andy Shevchenko
