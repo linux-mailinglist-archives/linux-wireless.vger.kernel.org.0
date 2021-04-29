@@ -2,222 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9BC036E687
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Apr 2021 10:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE59636E695
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Apr 2021 10:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239881AbhD2IFK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Apr 2021 04:05:10 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:43590 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239921AbhD2IFF (ORCPT
+        id S231701AbhD2IKA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Apr 2021 04:10:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230071AbhD2IJ7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Apr 2021 04:05:05 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 13T84FvG4025821, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 13T84FvG4025821
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 29 Apr 2021 16:04:15 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 29 Apr 2021 16:04:15 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 29 Apr
- 2021 16:04:14 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v4 19/19] rtw89: add Kconfig and Makefile
-Date:   Thu, 29 Apr 2021 16:01:49 +0800
-Message-ID: <20210429080149.7068-20-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20210429080149.7068-1-pkshih@realtek.com>
-References: <20210429080149.7068-1-pkshih@realtek.com>
+        Thu, 29 Apr 2021 04:09:59 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB15C06138B
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Apr 2021 01:09:11 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id a13so21553282ljp.2
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Apr 2021 01:09:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=0YES3i5rR9IvrlmNt7fWjVIh10LoLA3BABPNFdWQ0P4=;
+        b=k4HA9N33+5UcPmt1vEGBQFOECTFlA2RmuKRF8v6ImL/bBXiQkuE2hCnQNQnWpgWAVg
+         y9YxuxQQyBuFjVC2i+UDA0MJmO7uEoiSdYKytaWGV9OczBbBRD+JzuUQATIHjs1OznRX
+         QOOUYht03GJmfBB+tS7SjaCZf+Fju5ENS6oLAupzg5xtdZslj6JRfHlGu5UbPrzwLR/p
+         1gjKrQTC0YFbKSfbASQasoya3vc5RehXgXKKC7eQXqOdElSyX+4dthPfL2oqUrv8h9mr
+         E4cLpQ/JKqN+EuzhDcRD+6iVkbp9nc2QVIs2mTTcMPO30Q/lbb8aWhv8PhvqcI4VfyX7
+         4Hpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=0YES3i5rR9IvrlmNt7fWjVIh10LoLA3BABPNFdWQ0P4=;
+        b=mLLQECEUb2hxCAVlOkn0oI0+Gyd/tniSJBT0AB10SV7NBNxVO4aVLjNBGRkOGJSnjm
+         ZVTl1skeCrRO4u4CVpYz7xWlV6EYFHGPW/E90MZYpuvFBuA6aEtbQX1RHmbHmYEw93us
+         3/klFYu0LrgxS5MRkqakF/sSlo+KT6wMTC9aX1K+oHpKQ5w4k1dQ3VKVxEA/1AObHybs
+         3vcKh9ieOBkesOkH69ii/7OQrlRxZiGWxLzroOAJbKg/IJOoD/UoN9F+x/FVxhJCmKPD
+         Z+j+9GRJBoKhZyxczX0MjuqwhgTwoR6oxtzUG++/mzlwLQDuvsbtXML1XJbQFnRXAy1c
+         Fgng==
+X-Gm-Message-State: AOAM531cqhuPQP2YLbe/7++r2iOQkTcYIfDdBlIgb9LXYSwR7oQ3NJne
+        IvP0CHsS7SVmVxs4IyIPpKPq1S7sSVUz2y+h41s=
+X-Google-Smtp-Source: ABdhPJwadAP92MHyQZU3Ryzt/3fNROjW3NSs5zD2cD+WCBvzDSGkpWkVC4R4dDU+orkcBzZhTyuBJz9Ygo/smLClVD0=
+X-Received: by 2002:a2e:8006:: with SMTP id j6mr22546482ljg.417.1619683750142;
+ Thu, 29 Apr 2021 01:09:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS01.realtek.com.tw (172.21.6.94) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMjkgpFekyCAwMjo0NTowMA==?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/29/2021 07:29:45
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163401 [Apr 29 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/29/2021 07:33:00
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzQvMjkgpFekyCAwNzoyMDowMA==?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 04/29/2021 07:51:53
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163403 [Apr 29 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/29/2021 07:54:00
+Received: by 2002:ab3:1d0d:0:0:0:0:0 with HTTP; Thu, 29 Apr 2021 01:09:09
+ -0700 (PDT)
+Reply-To: drmattbroobbey@gmail.com
+From:   Matthew Brobbey <raymondheinrichendurance5@gmail.com>
+Date:   Thu, 29 Apr 2021 09:09:09 +0100
+Message-ID: <CABzNRhhSfgYz5FpBN070BwraqHRYE1vMWY6+qCgt4udH3i7fyw@mail.gmail.com>
+Subject: I AM EXPECTING YOUR REPLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With Kconfig and Makefile, we can build rtw89 and support 8852AE chip.
+Greeting again
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/Kconfig        |  1 +
- drivers/net/wireless/realtek/Makefile       |  1 +
- drivers/net/wireless/realtek/rtw89/Kconfig  | 50 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/Makefile | 24 ++++++++++
- 4 files changed, 76 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/Kconfig
- create mode 100644 drivers/net/wireless/realtek/rtw89/Makefile
+I am writing for the second time as I did not receive any reply from
+you to my previous message.
 
-diff --git a/drivers/net/wireless/realtek/Kconfig b/drivers/net/wireless/realtek/Kconfig
-index 474843277fa1..4a1f0e64df03 100644
---- a/drivers/net/wireless/realtek/Kconfig
-+++ b/drivers/net/wireless/realtek/Kconfig
-@@ -16,5 +16,6 @@ source "drivers/net/wireless/realtek/rtl818x/Kconfig"
- source "drivers/net/wireless/realtek/rtlwifi/Kconfig"
- source "drivers/net/wireless/realtek/rtl8xxxu/Kconfig"
- source "drivers/net/wireless/realtek/rtw88/Kconfig"
-+source "drivers/net/wireless/realtek/rtw89/Kconfig"
- 
- endif # WLAN_VENDOR_REALTEK
-diff --git a/drivers/net/wireless/realtek/Makefile b/drivers/net/wireless/realtek/Makefile
-index 888b5d594e79..ab25419f56c6 100644
---- a/drivers/net/wireless/realtek/Makefile
-+++ b/drivers/net/wireless/realtek/Makefile
-@@ -8,4 +8,5 @@ obj-$(CONFIG_RTL8187)		+= rtl818x/
- obj-$(CONFIG_RTLWIFI)		+= rtlwifi/
- obj-$(CONFIG_RTL8XXXU)		+= rtl8xxxu/
- obj-$(CONFIG_RTW88)		+= rtw88/
-+obj-$(CONFIG_RTW89)		+= rtw89/
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-new file mode 100644
-index 000000000000..055d45103a4b
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+menuconfig RTW89
-+	tristate "Realtek 802.11ax wireless chips support"
-+	depends on MAC80211
-+	help
-+	  This module adds support for mac80211-based wireless drivers that
-+	  enables Realtek IEEE 802.11ax wireless chipsets.
-+
-+	  If you choose to build a module, it'll be called rtw89.
-+
-+if RTW89
-+
-+config RTW89_CORE
-+	tristate
-+
-+config RTW89_PCI
-+	tristate
-+
-+config RTW89_8852AE
-+	tristate "Realtek 8852AE PCI wireless network adapter"
-+	depends on PCI
-+	select RTW89_CORE
-+	select RTW89_PCI
-+	help
-+	  Select this option will enable support for 8852AE chipset
-+
-+	  802.11ax PCIe wireless network adapter
-+
-+config RTW89_DEBUG
-+	bool
-+
-+config RTW89_DEBUGMSG
-+	bool "Realtek rtw89 debug message support"
-+	depends on RTW89_CORE
-+	select RTW89_DEBUG
-+	help
-+	  Enable debug message support
-+
-+	  If unsure, say Y to simplify debug problems
-+
-+config RTW89_DEBUGFS
-+	bool "Realtek rtw89 debugfs support"
-+	depends on RTW89_CORE
-+	select RTW89_DEBUG
-+	help
-+	  Enable debugfs support
-+
-+	  If unsure, say Y to simplify debug problems
-+
-+endif
-diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
-new file mode 100644
-index 000000000000..5d4365dcc4d5
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/Makefile
-@@ -0,0 +1,24 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+
-+obj-$(CONFIG_RTW89_CORE) += rtw89_core.o
-+rtw89_core-y += core.o \
-+		mac80211.o \
-+		mac.o \
-+		phy.o \
-+		fw.o \
-+		rtw8852a.o \
-+		rtw8852a_table.o \
-+		rtw8852a_rfk.o \
-+		rtw8852a_rfk_table.o \
-+		cam.o \
-+		efuse.o \
-+		regd.o \
-+		coex.o \
-+		ps.o \
-+		ser.o
-+
-+rtw89_core-$(CONFIG_RTW89_DEBUG) += debug.o
-+
-+obj-$(CONFIG_RTW89_PCI) += rtw89_pci.o
-+rtw89_pci-y := pci.o
-+
--- 
-2.21.0
+Kindly reply so we can discuss the subject as soon as possible on my
+private email address which is ( drmattbroobbey@gmail.com )
 
+Sincerely,
+
+Matthew Brobbey
