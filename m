@@ -2,62 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE77936F7B4
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Apr 2021 11:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52B1F36F964
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Apr 2021 13:36:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231451AbhD3JWS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Apr 2021 05:22:18 -0400
-Received: from out30-57.freemail.mail.aliyun.com ([115.124.30.57]:60044 "EHLO
-        out30-57.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229507AbhD3JWQ (ORCPT
+        id S231805AbhD3Lh3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Apr 2021 07:37:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36522 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229911AbhD3Lh3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Apr 2021 05:22:16 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R491e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0UXFfJog_1619774485;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UXFfJog_1619774485)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 30 Apr 2021 17:21:26 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     johannes@sipsolutions.net
+        Fri, 30 Apr 2021 07:37:29 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 366AFC06174A;
+        Fri, 30 Apr 2021 04:36:41 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lcRRg-0023WH-DF; Fri, 30 Apr 2021 13:36:32 +0200
+Message-ID: <3a0671bd6a9650fdcdf5cb8414526f6204518774.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: Remove redundant assignment to ret
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Yang Li <yang.lee@linux.alibaba.com>
 Cc:     davem@davemloft.net, kuba@kernel.org, nathan@kernel.org,
         ndesaulniers@google.com, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH] mac80211: Remove redundant assignment to ret
-Date:   Fri, 30 Apr 2021 17:21:23 +0800
-Message-Id: <1619774483-116805-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        clang-built-linux@googlegroups.com
+Date:   Fri, 30 Apr 2021 13:36:31 +0200
+In-Reply-To: <1619774483-116805-1-git-send-email-yang.lee@linux.alibaba.com>
+References: <1619774483-116805-1-git-send-email-yang.lee@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Variable 'ret' is set to -ENODEV but this value is never read as it
-is overwritten with a new value later on, hence it is a redundant
-assignment and can be removed.
+On Fri, 2021-04-30 at 17:21 +0800, Yang Li wrote:
+> Variable 'ret' is set to -ENODEV but this value is never read as it
+> is overwritten with a new value later on, hence it is a redundant
+> assignment and can be removed.
+> 
+> Clean up the following clang-analyzer warning:
+> 
+> net/mac80211/debugfs_netdev.c:60:2: warning: Value stored to 'ret' is
+> never read [clang-analyzer-deadcode.DeadStores]
 
-Clean up the following clang-analyzer warning:
+Can you just turn that warning off?
 
-net/mac80211/debugfs_netdev.c:60:2: warning: Value stored to 'ret' is
-never read [clang-analyzer-deadcode.DeadStores]
+It's really quite pointless to churn the tree for effectively nothing.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- net/mac80211/debugfs_netdev.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index 0ad3860..f7aac89 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -57,7 +57,6 @@ static ssize_t ieee80211_if_write(
- 		return -EFAULT;
- 	buf[count] = '\0';
- 
--	ret = -ENODEV;
- 	rtnl_lock();
- 	ret = (*write)(sdata, buf, count);
- 	rtnl_unlock();
--- 
-1.8.3.1
+johannes
 
