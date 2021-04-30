@@ -2,66 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B597836F42D
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Apr 2021 04:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C168836F65A
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Apr 2021 09:22:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbhD3C6h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Apr 2021 22:58:37 -0400
-Received: from mail-m176218.qiye.163.com ([59.111.176.218]:33240 "EHLO
-        mail-m176218.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbhD3C6h (ORCPT
+        id S229752AbhD3HXN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Apr 2021 03:23:13 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:39864 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229590AbhD3HXK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Apr 2021 22:58:37 -0400
-X-Greylist: delayed 424 seconds by postgrey-1.27 at vger.kernel.org; Thu, 29 Apr 2021 22:58:36 EDT
-Received: from wanjb-virtual-machine.localdomain (unknown [36.152.145.182])
-        by mail-m176218.qiye.163.com (Hmail) with ESMTPA id BADDB32009B;
-        Fri, 30 Apr 2021 10:50:42 +0800 (CST)
-From:   Wan Jiabing <wanjiabing@vivo.com>
-To:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     kael_w@yeah.net, Wan Jiabing <wanjiabing@vivo.com>
-Subject: [PATCH] rtw88: Remove duplicate include of coex.h
-Date:   Fri, 30 Apr 2021 10:49:50 +0800
-Message-Id: <20210430024951.33406-1-wanjiabing@vivo.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 30 Apr 2021 03:23:10 -0400
+X-Greylist: delayed 424 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Apr 2021 03:23:10 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1619766913;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4N87R8hHeys4zB3iQZJH55+DFPxABQ/mPIh4s0AtOjo=;
+        b=QngDDYWITFFfYseCFsKv9KDVtQxqFca7OMmPNeqUlTee4MqVz3KaH3RmJUnRfX3c2dpkXw
+        i4VR1MIWagUjITrHmajDkksU0N/e+ociWRjINqYCvx5gbthzCA3WhXvGsTqG1X8GtlYILx
+        reyYjazUVHYxDK7A+mJysEYFZblamGY=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Cc:     Maharaja Kennadyrajan <mkenna@codeaurora.org>
+Subject: Re: [PATCH v2 0/3] Add support to configure beacon tx mode
+Date:   Fri, 30 Apr 2021 09:15:06 +0200
+Message-ID: <4581459.tLtf2NohVe@ripper>
+In-Reply-To: <1619696874-30072-1-git-send-email-mkenna@codeaurora.org>
+References: <1619696874-30072-1-git-send-email-mkenna@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
-        oVCBIfWUFZQ0xJGlYZS0NLGkIeGUkZS09VEwETFhoSFyQUDg9ZV1kWGg8SFR0UWUFZT0tIVUpKS0
-        9ISFVLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Mio6Hjo*Cz8SQ0gzNjRWMjow
-        Ew4KFDhVSlVKTUpCTE5KS09ITktMVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlI
-        TVVKTklVSk9OVUpDSVlXWQgBWUFKTExDNwY+
-X-HM-Tid: 0a7920af7fadd978kuwsbaddb32009b
+Content-Type: multipart/signed; boundary="nextPart1712661.e4ZrjNOSLu"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In commit fb8517f4fade4 ("rtw88: 8822c: add CFO tracking"),
-"coex.h" was added here which caused the duplicate include.
-Remove the later duplicate include.
+--nextPart1712661.e4ZrjNOSLu
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Cc: Maharaja Kennadyrajan <mkenna@codeaurora.org>
+Subject: Re: [PATCH v2 0/3] Add support to configure beacon tx mode
+Date: Fri, 30 Apr 2021 09:15:06 +0200
+Message-ID: <4581459.tLtf2NohVe@ripper>
+In-Reply-To: <1619696874-30072-1-git-send-email-mkenna@codeaurora.org>
+References: <1619696874-30072-1-git-send-email-mkenna@codeaurora.org>
 
-Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 -
- 1 file changed, 1 deletion(-)
+On Thursday, 29 April 2021 13:47:51 CEST Maharaja Kennadyrajan wrote:
+[...]
+> Beacons can be sent out in burst(continuously in a single shot
+> one after another) or staggered (equally spread out over beacon
+> interval) mode.
+> 
+> V2:
+> 	Addressed Johannes's comment on v1 patch.
+> 	Updated the commit log.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 6cb593cc33c2..1cb7059e06d9 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -17,7 +17,6 @@
- #include "util.h"
- #include "bf.h"
- #include "efuse.h"
--#include "coex.h"
- 
- #define IQK_DONE_8822C 0xaa
- 
--- 
-2.25.1
+Still it is advertised as vif setting but the code itself shows that it is a 
+phy setting (as you would expect). Or is it a potential feature for a device 
+to send some beacons staggered and some beacons as burst?
+
+Kind regards,
+	Sven
+--nextPart1712661.e4ZrjNOSLu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmCLrnoACgkQXYcKB8Em
+e0aEFQ//VpQqXvuo31Uos4tq0mqLv4uulNB+pHArrJ9LhKhtZHCIfckWRFaX/aXJ
+VuzXcnCulu2JZ3iWnUpA64nhyL2y0wisEjMOqZxMZiOtcn4IGE8PyjTGZjavoAmg
+UXkgdsIic4Lib5Tg1+Zw86ekAfKbTr9I9GYu1AA/LCTpYqZHzpQw/ABsbDvwYYsW
+QHO43K7SLf1um3Rh9CYu21j9tZm8l/nU+8exb4X2LkZttcXihM89m7LbpxW7CaOi
+lx89eR5rZ7/ZTFeBieD61EFJNNQbnAwVeNknNaJPoqYKEqVvskh6WfxPXKUywQ4m
+I4EfEdX1RUXs80Lnynxp1DN/KC47ZX72bAxETYdqLyKtHdxUys6K9ThCr6kJ7E2B
+fWPNAqExDL34mL2DCAEWTj4HZ981aUi1FEVCB5m+iMRM0ntgbZZvrBsiNpPu6R5o
+BpBtf4J0yGWykjY10TymjFmUF/UJDGJ/hH9tkBoxHXF+M0J3WEEV086mdKN6zm7s
+MKxIzeRCX43KN9FvKMvPIEOvAOH8+8YiyoO92t+QeNzG8jYd7FDfrbX7HniCdcFQ
+408DMnA3cthWy23v69LdtU+3G27cm/lPUO8NO+7dXkM1a4swgiVuGaGSEQXORn76
+gqbtYnOZYhNowx2EXnAUq3qm3Yu1LXNZSSrD2oHqhT0JeKb9MvE=
+=v8x9
+-----END PGP SIGNATURE-----
+
+--nextPart1712661.e4ZrjNOSLu--
+
+
 
