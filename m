@@ -2,201 +2,319 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67F4F3709BB
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 May 2021 05:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F569370B6E
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 May 2021 14:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231593AbhEBDVM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 1 May 2021 23:21:12 -0400
-Received: from dispatchb-us1.ppe-hosted.com ([148.163.129.53]:58490 "EHLO
-        dispatchb-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230409AbhEBDVL (ORCPT
+        id S230354AbhEBMPC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 May 2021 08:15:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45984 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230222AbhEBMPC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 1 May 2021 23:21:11 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.122])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id E775F1A0062
-        for <linux-wireless@vger.kernel.org>; Sun,  2 May 2021 03:20:19 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id BA55040061
-        for <linux-wireless@vger.kernel.org>; Sun,  2 May 2021 03:20:19 +0000 (UTC)
-Received: from [192.168.254.6] (unknown [50.34.172.155])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id F26F413C2B1
-        for <linux-wireless@vger.kernel.org>; Sat,  1 May 2021 20:20:18 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F26F413C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1619925619;
-        bh=JLJjUXPXi86w7lS9fn4V/siXWNj1TESROaU0QrNAyJI=;
-        h=To:From:Subject:Date:From;
-        b=C8d/WysibX3Nsi6kWqOU5QXDxPK1lAwhuiDXkfOYQlMnDA6Y5Ti4JLXSBElsGfhkF
-         8XWeptZMYb5uWaL4tJtZD3bIAnBVREvyM1yRffwjP+sGnkS0CxZYjkYQC1vYT9tapC
-         Tf3A4h2GvhRDGC0yGsXvZot+sdBAoVtGBacAgFZE=
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Subject: iwlwifi firmware crash and kernel crash.
-Organization: Candela Technologies
-Message-ID: <e6885c76-3853-4472-a8b4-18cde518adf4@candelatech.com>
-Date:   Sat, 1 May 2021 20:20:18 -0700
+        Sun, 2 May 2021 08:15:02 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B753BC06174A
+        for <linux-wireless@vger.kernel.org>; Sun,  2 May 2021 05:14:08 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id bf4so3167117edb.11
+        for <linux-wireless@vger.kernel.org>; Sun, 02 May 2021 05:14:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=JqtWh+P8Z7fl+qjNuuQYpmDZCZRz4myXEoN7V5UQgU8=;
+        b=kanXCHQBM2jQ6rJh+/wSN8CXIh7hdWWKP41VZm2rKhGs9VlNjUf5kFv/QH4kz6UzXf
+         PXrePTdntnJTP14KiQxiDLK747IbT+HA+Tn2G5LMfBzYqyqhLbjhfypUBKvcEURNrJnv
+         Y94A/uq0m3v1S9dmrFvNZTFPbE5yDII9i4Ufrs4R66j6qyy48d56HoBxcemVz2ARNOPN
+         Yu6uq3GuY1qd93zTYEBuS+RE5Yk6tLXM2ago6ya7FPX3TCA9ajHN3NHzmLlH9bcqBu6+
+         190nK9LRyXjB5JosUqXWS4e9K5UDWTAhEFqPtXIg7RAB9GedjVe79eSReDRe0glE1xrk
+         hENA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=JqtWh+P8Z7fl+qjNuuQYpmDZCZRz4myXEoN7V5UQgU8=;
+        b=ah1BzV5Lt29H06e2oFA+gEPHU+UpEk3SOMWzUd757XR0niaY6yjuAqUI/f5waiZboU
+         q53v4MWJ17VvwC9WFyqVUdLL/zRu6zCP+azFy5EhTmX3y3yQhncJ3F1YQc6zpI6RZ1Az
+         EW2g3wriceK/DxuygQixjzb6IB+zGaGNWpt90VUwvIWQzma5qoSYqKgS4dt5zBFWW/r7
+         SdU7yyVdTBRpFUs+xfHbrjO6XLUwcaXfeki7b703dY2V3GeQdh8JPrF7PcDvnvbU4eXz
+         JAut2KxUFW18N9UJK8nUDVLJz+vxt1U757hvHKcz7FI5bXmZdl/b5Pz75R72GtvYVJac
+         y2hw==
+X-Gm-Message-State: AOAM533ZTojoJ3Ctfg7mudsxLBAmmE9sDhGJAnz2lmGmcLs6KQU0nSSL
+        WjPdRLPseo6K9Yz9Sepk3Z+7WePi9XM=
+X-Google-Smtp-Source: ABdhPJzlKbCajYuI3blSdxNoUIoGHlSX/nJ0WXlFTbt9I3+a/VdBUHsZhRMCh3cYr3DoxpXz50+98Q==
+X-Received: by 2002:a05:6402:cb0:: with SMTP id cn16mr5767009edb.15.1619957646961;
+        Sun, 02 May 2021 05:14:06 -0700 (PDT)
+Received: from [10.0.0.2] (94-210-190-100.cable.dynamic.v4.ziggo.nl. [94.210.190.100])
+        by smtp.gmail.com with ESMTPSA id b5sm8818937edz.88.2021.05.02.05.14.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 May 2021 05:14:06 -0700 (PDT)
+From:   Friso Smit <fw.smit01@gmail.com>
+Subject: Re: iwlwifi: failed to load firmware chunk
+To:     Chris Murphy <lists@colorremedies.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <40bb3a55-a872-414d-ed7f-6548beecd236@gmail.com>
+ <CAJCQCtTxroboAeQgByCG0zfNK=Rda=2cOGW4i2_kqxu2Saqqsg@mail.gmail.com>
+ <b606a193-3e4d-cdd7-a2e4-c5b801e2f8fc@gmail.com>
+ <aef9af7e-9a5b-4eb4-e130-e5ee11d76891@gmail.com>
+Message-ID: <36bb34d7-07de-9e13-d3e9-d1f9f2c8e9ba@gmail.com>
+Date:   Sun, 2 May 2021 14:14:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ Thunderbird/78.10.0
 MIME-Version: 1.0
+In-Reply-To: <aef9af7e-9a5b-4eb4-e130-e5ee11d76891@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-MDID: 1619925620-CzMQdI98I_no
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a 5.11-ish kernel, with a lot of 5.12-ish iwlwifi backported, and lots of hacks
-of my own...
+On 4/13/21 6:05 PM, Friso Smit wrote:
+> Okay, this is weird. Right now it's still messed up in Windows, but 
+> not anymore in Linux (even though it started while running linux). 
+> Dmesg currently doesn't show any errors for iwlwifi. Does anyone have 
+> an idea what part of the wifi chip could be broken here (driver, 
+> firmware, etc.)?
+>
+> On 4/11/21 10:56 PM, Friso Smit wrote:
+>> On 4/11/21 10:11 PM, Chris Murphy wrote:
+>>> On Sun, Apr 11, 2021 at 2:24 AM Friso Smit <fw.smit01@gmail.com> wrote:
+>>>> Hi,
+>>>>
+>>>> After upgrading to linux 5.11.12.arch1-1 I suddenly had no wifi
+>>>> connection. I immediately tried downgrading again, but to no avail.
+>>> Did only kernel version change? 5.11.12 has one iwlwifi related commit:
+>>>
+>>> commit 6159f947fb047fd8ecbfbcbcc86a8337e801bd10
+>>>      iwlwifi: pcie: don't disable interrupts for reg_lock
+>>>
+>> It's not the only thing that changed, but this one stood out to me as 
+>> the possible cause. Some other things to note are that I sometimes 
+>> have to force shutdown my laptop, because of a long time issue in 
+>> nouveau. I don't know if this can cause these kinds of issues. And I 
+>> want to stress as well that the issue persisted even on another 
+>> operating system, so something must have been thoroughly messed up 
+>> somehow.
+>>
+>> Here's a full list of (Arch) packages that were upgraded:
+>>
+>> expat (2.2.10-2 -> 2.3.0-1)
+>> glib2 (2.68.0-5 -> 2.68.1-1)
+>> libcups (1:2.3.3op2-1 -> 1:2.3.3op2-2)
+>> cups (1:2.3.3op2-1 -> 1:2.3.3op2-2)
+>> dleyna-core (0.6.0+2+g1c6853f-2 -> 0.7.0-1)
+>> dleyna-connector-dbus (0.3.0-3 -> 0.4.0-1)
+>> libdrm (2.4.104-1 -> 2.4.105-1)
+>> mesa (21.0.1-1 -> 21.0.2-1)
+>> dleyna-renderer (0.6.0-4 -> 0.7.0-1)
+>> dleyna-server (0.6.0+2+geb895ae-2 -> 0.7.0-1)
+>> gdk-pixbuf2 (2.42.4-1 -> 2.42.6-1)
+>> geoclue (2.5.7-2 -> 2.5.7-3)
+>> glib2-docs (2.68.0-5 -> 2.68.1-1)
+>> gtk-update-icon-cache (1:4.2.0-2 -> 1:4.2.0-3)
+>> gtk3 (1:3.24.28-1 -> 1:3.24.28-2)
+>> lib32-expat (2.2.10-1 -> 2.3.0-2)
+>> lib32-glib2 (2.68.0-5 -> 2.68.1-1)
+>> lib32-gdk-pixbuf2 (2.42.4-1 -> 2.42.6-1)
+>> lib32-libva-mesa-driver (21.0.1-2 -> 21.0.2-1)
+>> lib32-mesa (21.0.1-2 -> 21.0.2-1)
+>> lib32-vulkan-intel (21.0.1-2 -> 21.0.2-1)
+>> libmwaw (0.3.17-1 -> 0.3.18-1)
+>> libva-mesa-driver (21.0.1-1 -> 21.0.2-1)
+>> linux (5.11.11.arch1-1 -> 5.11.12.arch1-1)
+>> linux-headers (5.11.11.arch1-1 -> 5.11.12.arch1-1)
+>> lua (5.4.2-1 -> 5.4.3-1)
+>> mesa-vdpau (21.0.1-1 -> 21.0.2-1)
+>> meson (0.57.1-1 -> 0.57.2-1)
+>> npm (7.8.0-1 -> 7.9.0-1)
+>> opera-ffmpeg-codecs (88.0.4324.192-1 -> 89.0.4389.90-1)
+>> proj (6.3.2-1 -> 8.0.0-1)
+>> qt5-base (5.15.2+kde+r171-2 -> 5.15.2+kde+r171-3)
+>> wlroots (0.12.0-1 -> 0.13.0-1)
+>> sway (1:1.5.1-2 -> 1:1.6-1)
+>> vulkan-headers (1:1.2.173-1 -> 1:1.2.174-1)
+>> vulkan-intel (21.0.1-1 -> 21.0.2-1)
+>> wine (6.5-2 -> 6.6-1)
+>> wine-mono (6.0.0-1 -> 6.1.1-1)
+>>
+Hi all,
 
-Curious if anyone has seen similar problems or have suggestions to try?
+This issue happened again for me. This time I know exactly how it 
+happened. I was connected to the upstairs wifi network and I wanted to 
+connect to the other network. I tried doing that by pressing disconnect 
+in nm-tui (tui interface from networkmanager). After that it hasn't been 
+able to scan for wifi networks again. I haven't checked if I could send 
+packets over the upstairs network, but it at least showed up as a 
+connected network. Not in Linux and neither in Windows. The last time I 
+somehow fixed it by uninstalling the wifi device in the Windows device 
+manager, but that didn't fix it this time. Below is the journalctl log 
+from when it happened. As you can see, it's again a failure to load a 
+firmware chunk.
 
-I'll build a KASAN kernel and see if I can reproduce under that...
+System info:
 
-iwlwifi 0000:0c:00.0: Microcode SW error detected. Restarting 0x0.
-iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
-iwlwifi 0000:0c:00.0: Status: 0x00000040, count: 6
-iwlwifi 0000:0c:00.0: Loaded firmware version: 62.49eeb572.0 ty-a0-gf-a0-62.ucode
-iwlwifi 0000:0c:00.0: 0x00000942 | ADVANCED_SYSASSERT
-iwlwifi 0000:0c:00.0: 0x000002F0 | trm_hw_status0
-iwlwifi 0000:0c:00.0: 0x00000000 | trm_hw_status1
-iwlwifi 0000:0c:00.0: 0x004DA02C | branchlink2
-iwlwifi 0000:0c:00.0: 0x00001592 | interruptlink1
-iwlwifi 0000:0c:00.0: 0x00001592 | interruptlink2
-iwlwifi 0000:0c:00.0: 0x0004FFF5 | data1
-iwlwifi 0000:0c:00.0: 0x2A010200 | data2
-iwlwifi 0000:0c:00.0: 0x020C0606 | data3
-iwlwifi 0000:0c:00.0: 0x098131BA | beacon time
-iwlwifi 0000:0c:00.0: 0x9A39FE56 | tsf low
-iwlwifi 0000:0c:00.0: 0x00000013 | tsf hi
-iwlwifi 0000:0c:00.0: 0x00000000 | time gp1
-iwlwifi 0000:0c:00.0: 0x06ADA48B | time gp2
-iwlwifi 0000:0c:00.0: 0x00000001 | uCode revision type
-iwlwifi 0000:0c:00.0: 0x0000003E | uCode version major
-iwlwifi 0000:0c:00.0: 0x49EEB572 | uCode version minor
-iwlwifi 0000:0c:00.0: 0x00000420 | hw version
-iwlwifi 0000:0c:00.0: 0x00C89002 | board version
-iwlwifi 0000:0c:00.0: 0x8062FD27 | hcmd
-iwlwifi 0000:0c:00.0: 0x80121010 | isr0
-iwlwifi 0000:0c:00.0: 0x00400000 | isr1
-iwlwifi 0000:0c:00.0: 0x48F0000A | isr2
-iwlwifi 0000:0c:00.0: 0x04C315DC | isr3
-iwlwifi 0000:0c:00.0: 0x00200000 | isr4
-iwlwifi 0000:0c:00.0: 0x02F3001C | last cmd Id
-iwlwifi 0000:0c:00.0: 0x004D6718 | wait_event
-iwlwifi 0000:0c:00.0: 0x00000024 | l2p_control
-iwlwifi 0000:0c:00.0: 0x00000000 | l2p_duration
-iwlwifi 0000:0c:00.0: 0x0000000F | l2p_mhvalid
-iwlwifi 0000:0c:00.0: 0x08001888 | l2p_addr_match
-iwlwifi 0000:0c:00.0: 0x00000009 | lmpm_pmg_sel
-iwlwifi 0000:0c:00.0: 0x00000000 | timestamp
-iwlwifi 0000:0c:00.0: 0x00000808 | flow_handler
-iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
-iwlwifi 0000:0c:00.0: Status: 0x00000040, count: 7
-iwlwifi 0000:0c:00.0: 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
-iwlwifi 0000:0c:00.0: 0x00000000 | umac branchlink1
-iwlwifi 0000:0c:00.0: 0x8045C7E4 | umac branchlink2
-iwlwifi 0000:0c:00.0: 0x8047E400 | umac interruptlink1
-iwlwifi 0000:0c:00.0: 0x8047E400 | umac interruptlink2
-iwlwifi 0000:0c:00.0: 0x00000002 | umac data1
-iwlwifi 0000:0c:00.0: 0x8047E400 | umac data2
-iwlwifi 0000:0c:00.0: 0x00000000 | umac data3
-iwlwifi 0000:0c:00.0: 0x0000003E | umac major
-iwlwifi 0000:0c:00.0: 0x49EEB572 | umac minor
-iwlwifi 0000:0c:00.0: 0x06ADA9BB | frame pointer
-iwlwifi 0000:0c:00.0: 0xC0886264 | stack pointer
-iwlwifi 0000:0c:00.0: 0x0043010C | last host cmd
-iwlwifi 0000:0c:00.0: 0x00000000 | isr status reg
-iwlwifi 0000:0c:00.0: IML/ROM dump:
-iwlwifi 0000:0c:00.0: 0x00000B03 | IML/ROM error/state
-iwlwifi 0000:0c:00.0: 0x00007EE9 | IML/ROM data1
-iwlwifi 0000:0c:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
-iwlwifi 0000:0c:00.0: Fseq Registers:
-iwlwifi 0000:0c:00.0: 0x60000000 | FSEQ_ERROR_CODE
-iwlwifi 0000:0c:00.0: 0x80440002 | FSEQ_TOP_INIT_VERSION
-iwlwifi 0000:0c:00.0: 0x00070008 | FSEQ_CNVIO_INIT_VERSION
-iwlwifi 0000:0c:00.0: 0x0000A652 | FSEQ_OTP_VERSION
-iwlwifi 0000:0c:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
-iwlwifi 0000:0c:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
-iwlwifi 0000:0c:00.0: 0x00400410 | FSEQ_CNVI_ID
-iwlwifi 0000:0c:00.0: 0x00400410 | FSEQ_CNVR_ID
-iwlwifi 0000:0c:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
-iwlwifi 0000:0c:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
-iwlwifi 0000:0c:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
-iwlwifi 0000:0c:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
-BUG: kernel NULL pointer dereference, address: 0000000000000084
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP
-CPU: 6 PID: 1142 Comm: irq/236-iwlwifi Not tainted 5.11.10+ #29
-Hardware name: Default string Default string/SKYBAY, BIOS 5.12 08/04/2020
-RIP: 0010:rb_next+0x1d/0x50
-Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 8b 0f 48 39 cf 74 39 48 8b 47 08 48 85 c0 74 22 48 8b 50 10 48 85 d2 74 0c 48 89 d0 <48> 8b 50 10 48 85 d2 75 f4 
-c3 48 3b 79 08 75 17
-RSP: 0018:ffffc9000021cde0 EFLAGS: 00010206
-RAX: 0000000000000074 RBX: ffff88811d5388c0 RCX: ffff8881124ae200
-RDX: 0000000000000074 RSI: ffff888117f0c600 RDI: ffff888117f0c600
-RBP: 0000000000000000 R08: 000000000000df88 R09: 0000000000000023
-R10: ffffc9000021cf28 R11: 00000000000065d0 R12: ffffffff8280aec0
-R13: ffff888117f0c600 R14: ffff888157475600 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88846dd80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000084 CR3: 000000000260f001 CR4: 00000000003706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  <IRQ>
-  tcp_enter_loss+0xbf/0x350
-  tcp_retransmit_timer+0x35a/0x970
-  ? netif_receive_skb_list_internal+0x1a6/0x2a0
-  tcp_write_timer_handler+0x87/0x1d0
-  tcp_write_timer+0x91/0xd0
-  ? tcp_write_timer_handler+0x1d0/0x1d0
-  ? tcp_write_timer_handler+0x1d0/0x1d0
-  call_timer_fn+0x22/0x120
-  run_timer_softirq+0x1e2/0x410
-  ? net_rx_action+0x224/0x2a0
-  __do_softirq+0xc6/0x2bb
-  ? irq_finalize_oneshot.part.49+0xd0/0xd0
-  asm_call_irq_on_stack+0xf/0x20
-  </IRQ>
+- HP Zbook Studio G5
 
-(gdb) l *(tcp_enter_loss+0xbf)
-0xffffffff81a3862f is in tcp_enter_loss (/home2/greearb/git/linux-5.11.dev.y/net/ipv4/tcp_input.c:2081).
-2076		} else if (tcp_is_reno(tp)) {
-2077			tcp_reset_reno_sack(tp);
-2078		}
-2079	
-2080		skb = head;
-2081		skb_rbtree_walk_from(skb) {
-2082			if (is_reneg)
-2083				TCP_SKB_CB(skb)->sacked &= ~TCPCB_SACKED_ACKED;
-2084			else if (tcp_is_rack(sk) && skb != head &&
-2085				 tcp_rack_skb_timeout(tp, skb, 0) > 0)
-(gdb)
+- Network controller: Intel Corporation Wireless-AC 9560 [Jefferson 
+Peak] (rev 10)
 
-(gdb) l *(rb_next+0x1d)
-0xffffffff815d16bd is in rb_next (/home2/greearb/git/linux-5.11.dev.y/lib/rbtree.c:503).
-498	
-499		/*
-500		 * If we have a right-hand child, go down and then left as far
-501		 * as we can.
-502		 */
-503		if (node->rb_right) {
-504			node = node->rb_right;
-505			while (node->rb_left)
-506				node = node->rb_left;
-507			return (struct rb_node *)node;
-(gdb)
+- Linux 5.11.16-arch1-1
+
+May 02 10:44:41 user NetworkManager[383]: <info> [1619945081.2042] 
+manager: NetworkManager state is now DISCONNECTED
+May 02 10:44:41 user NetworkManager[383]: <info> [1619945081.2089] 
+device (wlp0s20f3): supplicant interface state: disconnected -> 
+interface_disabled
+May 02 10:44:41 user NetworkManager[383]: <info> [1619945081.2089] 
+device (p2p-dev-wlp0s20f3): supplicant management interface state: 
+disconnected -> interface_disabled
+May 02 10:44:41 user NetworkManager[383]: <info> [1619945081.2372] 
+device (wlp0s20f3): supplicant interface state: interface_disabled -> 
+disconnected
+May 02 10:44:41 user NetworkManager[383]: <info> [1619945081.2372] 
+device (p2p-dev-wlp0s20f3): supplicant management interface state: 
+interface_disabled -> disconnected
+May 02 10:44:42 user ntpd[439]: Deleting interface #12 wlp0s20f3, 
+192.168.178.24#123, interface stats: received=0, sent=0, dropped=0, 
+active_time=581 secs
+May 02 10:44:42 user ntpd[439]: Deleting interface #14 wlp0s20f3, 
+2001:1c00:41c:2600:52a0:a336:852c:cfe4#123, interface stats: received=0, 
+sent=0, dropped=0, active_time=577 secs
+May 02 10:44:42 user ntpd[439]: Deleting interface #15 wlp0s20f3, 
+fe80::68cb:c2f2:cfb3:3575%2#123, interface stats: received=0, sent=0, 
+dropped=0, active_time=577 secs
+May 02 10:44:44 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=COUNTRY alpha2=EU
+May 02 10:44:44 user NetworkManager[383]: <info> [1619945084.5618] 
+policy: auto-activating connection 'Network' (*redacted*)
+May 02 10:44:44 user NetworkManager[383]: <info> [1619945084.5622] 
+device (wlp0s20f3): Activation: starting connection 'Network' (*redacted*)
+May 02 10:44:44 user NetworkManager[383]: <info> [1619945084.5624] 
+device (wlp0s20f3): state change: disconnected -> prepare (reason 
+'none', sys-iface-state: 'managed')
+May 02 10:44:44 user NetworkManager[383]: <info> [1619945084.5627] 
+manager: NetworkManager state is now CONNECTING
+May 02 10:44:44 user NetworkManager[383]: <info> [1619945084.5848] 
+device (wlp0s20f3): set-hw-addr: reset MAC address to *redacted* (preserve)
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: Failed to load 
+firmware chunk!
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: iwlwifi transaction 
+failed, dumping registers
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: iwlwifi device config 
+registers:
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000000: a3708086 
+00100406 02800010 00800000 ea290004 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000020: 00000000 
+00000000 00000000 00348086 00000000 000000c8 00000000 000001ff
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000040: 00928010 
+10000ec0 00100c10 00000000 00000000 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000060: 00000000 
+00080812 00000405 00000000 00000000 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000080: 800f0011 
+00002000 00003000 00000000 00000000 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 000000a0: 00000000 
+00000000 00000000 00000000 00000000 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 000000c0: 00000000 
+00000000 c823d001 0d000008 00804005 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 000000e0: 00000000 
+00000000 00000000 00000000 00000000 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000100: 14c00000 
+ff000000 000000ff 00462031 00000000 00002000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000120: 00000000 
+00000000 00000000 00000000 00000000 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000140: 00000000 
+00000000 00000000 16410018 00000000 0001001e 00481e1f 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: iwlwifi device memory 
+mapped registers:
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000000: 00c89008 
+00000040 00000000 00000000 00000000 00000000 00000000 00000000
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: 00000020: 00000010 
+0c000005 00000312 d55555d5 d55555d5 d55555d5 80008040 001f0042
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: Could not load the 
+[0] uCode section
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: Failed to start INIT 
+ucode: -110
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: Failed to run INIT 
+ucode: -110
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: Failed to start RT 
+ucode: -110
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: iwl_trans_send_cmd 
+bad state = 0
+May 02 10:44:49 user kernel: iwlwifi 0000:00:14.3: Master Disable Timed 
+Out, 100 usec
+May 02 10:44:49 user NetworkManager[383]: <warn> [1619945089.7832] 
+platform-linux: do-change-link[2]: failure changing link: failure 110 
+(Connection timed out)
+May 02 10:44:49 user NetworkManager[383]: <info> [1619945089.7832] 
+device (wlp0s20f3): state change: prepare -> failed (reason 
+'config-failed', sys-iface-state: 'managed')
+May 02 10:44:49 user NetworkManager[383]: <info> [1619945089.7836] 
+manager: NetworkManager state is now DISCONNECTED
+May 02 10:44:49 user NetworkManager[383]: <info> [1619945089.7841] 
+device (wlp0s20f3): set-hw-addr: set MAC address to *redacted* (scanning)
+May 02 10:44:51 user systemd[1]: NetworkManager-dispatcher.service: 
+Deactivated successfully.
+May 02 10:44:51 user audit[1]: SERVICE_STOP pid=1 uid=0 auid=4294967295 
+ses=4294967295 msg='unit=NetworkManager-dispatcher comm="systemd" 
+exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+May 02 10:44:51 user kernel: audit: type=1131 audit(1619945091.579:198): 
+pid=1 uid=0 auid=4294967295 ses=4294967295 
+msg='unit=NetworkManager-dispatcher comm="systemd" 
+exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+May 02 10:44:54 user kernel: iwlwifi 0000:00:14.3: Failed to load 
+firmware chunk!
+May 02 10:44:54 user kernel: iwlwifi 0000:00:14.3: Could not load the 
+[0] uCode section
+May 02 10:44:54 user kernel: iwlwifi 0000:00:14.3: Failed to start INIT 
+ucode: -110
+May 02 10:44:54 user kernel: iwlwifi 0000:00:14.3: Failed to run INIT 
+ucode: -110
+May 02 10:44:54 user kernel: iwlwifi 0000:00:14.3: Failed to start RT 
+ucode: -110
+May 02 10:44:54 user kernel: iwlwifi 0000:00:14.3: iwl_trans_send_cmd 
+bad state = 0
+May 02 10:44:54 user kernel: iwlwifi 0000:00:14.3: Master Disable Timed 
+Out, 100 usec
+May 02 10:44:54 user NetworkManager[383]: <warn> [1619945094.9015] 
+platform-linux: do-change-link[2]: failure changing link: failure 110 
+(Connection timed out)
+May 02 10:44:54 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:44:54 user NetworkManager[383]: <warn> [1619945094.9023] 
+device (wlp0s20f3): Activation: failed for connection 'Network'
+May 02 10:44:54 user NetworkManager[383]: <info> [1619945094.9045] 
+device (wlp0s20f3): supplicant interface state: disconnected -> 
+interface_disabled
+May 02 10:44:54 user NetworkManager[383]: <info> [1619945094.9045] 
+device (p2p-dev-wlp0s20f3): supplicant management interface state: 
+disconnected -> interface_disabled
+May 02 10:44:54 user NetworkManager[383]: <info> [1619945094.9056] 
+device (wlp0s20f3): state change: failed -> disconnected (reason 'none', 
+sys-iface-state: 'managed')
+May 02 10:44:54 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:44:58 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:45:03 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:45:10 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:45:10 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:45:20 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:45:34 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:45:54 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:46:21 user rtkit-daemon[5045]: Supervising 1 threads of 1 
+processes of 1 users.
+May 02 10:46:21 user rtkit-daemon[5045]: Supervising 1 threads of 1 
+processes of 1 users.
+May 02 10:46:23 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
+May 02 10:47:06 user wpa_supplicant[385]: wlp0s20f3: 
+CTRL-EVENT-SCAN-FAILED ret=-100
 
 
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
