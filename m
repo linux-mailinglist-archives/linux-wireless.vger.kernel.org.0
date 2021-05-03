@@ -2,91 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 729123713E8
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 May 2021 12:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71D79371724
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 May 2021 16:54:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233390AbhECK7x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 May 2021 06:59:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59140 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233342AbhECK7w (ORCPT
+        id S229726AbhECOzX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 May 2021 10:55:23 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:49064 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229596AbhECOzW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 May 2021 06:59:52 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BCDC06174A
-        for <linux-wireless@vger.kernel.org>; Mon,  3 May 2021 03:58:59 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ldWHx-003Lpz-6k; Mon, 03 May 2021 12:58:57 +0200
-Message-ID: <1a8fac9fc130813aa7987284d4a25a71ba7f615d.camel@sipsolutions.net>
-Subject: Re: iwlwifi firmware crash and kernel crash.
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ben Greear <greearb@candelatech.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Mon, 03 May 2021 12:58:56 +0200
-In-Reply-To: <e6885c76-3853-4472-a8b4-18cde518adf4@candelatech.com> (sfid-20210502_052027_241432_75ADD3BB)
-References: <e6885c76-3853-4472-a8b4-18cde518adf4@candelatech.com>
-         (sfid-20210502_052027_241432_75ADD3BB)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Mon, 3 May 2021 10:55:22 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 143EoL7m007643;
+        Mon, 3 May 2021 14:54:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=cdNlMntfr+Dhz5UmiQP55qbEYXLGg/UgqsiwzzTuLEw=;
+ b=OaoFUQGde/t1Ha4HqhHpTUfutzrJ1njdrv/J5Vt97HV65Z5Qe9CzCqKvE397j8fgauN/
+ MUASNG9r4NkT/pBdADinfbozMoKdq1HBRrd3KZyyjKgfqei/Ch1Xkqb4/ALtJZrNZ5PE
+ OSeP4kNo38VQV4IbbBIOjwP4OrA0wKkhPHJ3bYkuIITtqcW7hPKd6VRZk3VoeGrP9LdZ
+ huF0YLREmBI1QO/1Ud0RhC0fNNnthVVMVFDKuAG2J+aCRq5gLJiolQswtL07CbbKXbj2
+ M1LCsVwYuj/Pr5+w0x5AmPKg+uN1b7jbG1s1U1WFioJly22hga+QUY1wlRbfhYj0Olig Nw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 389h13ts84-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 May 2021 14:54:09 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 143EpFkd192498;
+        Mon, 3 May 2021 14:54:09 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3020.oracle.com with ESMTP id 389grqthgq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 May 2021 14:54:09 +0000
+Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 143Es9qr016517;
+        Mon, 3 May 2021 14:54:09 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 389grqthge-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 May 2021 14:54:09 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 143Es7Xr002774;
+        Mon, 3 May 2021 14:54:07 GMT
+Received: from mwanda (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 03 May 2021 14:54:06 +0000
+Date:   Mon, 3 May 2021 17:53:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] mt76: mt7915: fix a signedness bug in
+ mt7915_mcu_apply_tx_dpd()
+Message-ID: <YJAOhzs1XQQIB1Kw@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-ORIG-GUID: GU7Nq_ShP-nsk1V-MiVG_Nndt6qHvgsH
+X-Proofpoint-GUID: GU7Nq_ShP-nsk1V-MiVG_Nndt6qHvgsH
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9973 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 spamscore=0 mlxscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=999 malwarescore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2105030103
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2021-05-01 at 20:20 -0700, Ben Greear wrote:
-> This is a 5.11-ish kernel, with a lot of 5.12-ish iwlwifi backported, and lots of hacks
-> of my own...
-> 
-> Curious if anyone has seen similar problems or have suggestions to try?
-> 
-> I'll build a KASAN kernel and see if I can reproduce under that...
-> 
-> iwlwifi 0000:0c:00.0: Microcode SW error detected. Restarting 0x0.
-> iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
-> iwlwifi 0000:0c:00.0: Status: 0x00000040, count: 6
-> iwlwifi 0000:0c:00.0: Loaded firmware version: 62.49eeb572.0 ty-a0-gf-a0-62.ucode
-> iwlwifi 0000:0c:00.0: 0x00000942 | ADVANCED_SYSASSERT
+"idx" needs to be signed for the error handling to work.
 
-That's a calibration error, but I don't know anything beyond that.
+Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> BUG: kernel NULL pointer dereference, address: 0000000000000084
-
-And I guess that's the driver not dealing with it well ...
-
-> #PF: supervisor read access in kernel mode
-> #PF: error_code(0x0000) - not-present page
-> PGD 0 P4D 0
-> Oops: 0000 [#1] PREEMPT SMP
-> CPU: 6 PID: 1142 Comm: irq/236-iwlwifi Not tainted 5.11.10+ #29
-> Hardware name: Default string Default string/SKYBAY, BIOS 5.12 08/04/2020
-> RIP: 0010:rb_next+0x1d/0x50
-> Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 8b 0f 48 39 cf 74 39 48 8b 47 08 48 85 c0 74 22 48 8b 50 10 48 85 d2 74 0c 48 89 d0 <48> 8b 50 10 48 85 d2 75 f4 
-> c3 48 3b 79 08 75 17
-> RSP: 0018:ffffc9000021cde0 EFLAGS: 00010206
-> RAX: 0000000000000074 RBX: ffff88811d5388c0 RCX: ffff8881124ae200
-> RDX: 0000000000000074 RSI: ffff888117f0c600 RDI: ffff888117f0c600
-> RBP: 0000000000000000 R08: 000000000000df88 R09: 0000000000000023
-> R10: ffffc9000021cf28 R11: 00000000000065d0 R12: ffffffff8280aec0
-> R13: ffff888117f0c600 R14: ffff888157475600 R15: 0000000000000000
-> FS:  0000000000000000(0000) GS:ffff88846dd80000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000000084 CR3: 000000000260f001 CR4: 00000000003706e0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> Call Trace:
->   <IRQ>
->   tcp_enter_loss+0xbf/0x350
->   tcp_retransmit_timer+0x35a/0x970
->   ? netif_receive_skb_list_internal+0x1a6/0x2a0
->   tcp_write_timer_handler+0x87/0x1d0
->   tcp_write_timer+0x91/0xd0
-
-although it's TCP? Probably trying to retransmit a frame that was freed,
-or so?
-
-johannes
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index b3f14ff67c5a..764f25a828fa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3440,8 +3440,9 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
+ 	struct cfg80211_chan_def *chandef = &phy->mt76->chandef;
+-	u16 total = 2, idx, center_freq = chandef->center_freq1;
++	u16 total = 2, center_freq = chandef->center_freq1;
+ 	u8 *cal = dev->cal, *eep = dev->mt76.eeprom.data;
++	int idx;
+ 
+ 	if (!(eep[MT_EE_DO_PRE_CAL] & MT_EE_WIFI_CAL_DPD))
+ 		return 0;
+-- 
+2.30.2
 
