@@ -2,96 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8424B371E84
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 May 2021 19:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6150372343
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 May 2021 00:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231393AbhECRZt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 May 2021 13:25:49 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:60751 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231337AbhECRZt (ORCPT
+        id S229497AbhECW4o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 May 2021 18:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50332 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229499AbhECW4n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 May 2021 13:25:49 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1620062696; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=hsB8N+8JBY8AgfW7y30YN7AnS9xI7/dZQ0oNn0aKAKY=;
- b=F0OJSp5SOUmfqxFDTxJ3atfluuGfhuJ/NiIUz7fNjWVSNGLZ3Xl4gLC7a26aNQfGA2SOIWXA
- d6vx4tuwFr7bjtRUPmZrZZ9FoUvD06XzOHrmXcMjM7U+q+BEjJb3I/OqWXysAAKcCbyfaeIX
- lXVFL9fg6oaUC4QA97S5rY7uIAw=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 609031e82cbba889807a676e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 03 May 2021 17:24:56
- GMT
-Sender: jjohnson=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5143AC43460; Mon,  3 May 2021 17:24:55 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: jjohnson)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 13C97C4338A;
-        Mon,  3 May 2021 17:24:54 +0000 (UTC)
+        Mon, 3 May 2021 18:56:43 -0400
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D12C061574
+        for <linux-wireless@vger.kernel.org>; Mon,  3 May 2021 15:55:49 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id 103-20020a9d0d700000b02902a5baf33f37so6143023oti.9
+        for <linux-wireless@vger.kernel.org>; Mon, 03 May 2021 15:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=iT5x1as+DLwE/KguiyzaXbBWSEHmVP8LZcgrJns3rms=;
+        b=LzhWsYynIXFFNZ2wVzM+CsUFTOBLsXQou5L9NF8AYzP1E4dtyOq0nx2taIhTIFSuUO
+         pIaFaKSKxL+aZ6cghoZSA3wfPX3GjbuyIYjwP93o7uaIC3LSJz3nhnPkMgr+JwWxkf/v
+         Vi6uxiDHOIVJBnl+XWOpmNUp9gIm/2jB4Mlz4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iT5x1as+DLwE/KguiyzaXbBWSEHmVP8LZcgrJns3rms=;
+        b=UFUdQPqm5E62Qp4x9y2L5M//LPr3p8eHU7b4987ipJsNeaOLjcQRY4NqO29qvfw8n5
+         YXluTpYJGoSlNk2F3AGB0jgqGIG9F+E2bKghmcwKS3eG+i5V9Im0/mfPQKLLwamh4SmF
+         mGI9rqik2M4X2RuDngZJ/FF8KJpLqd7O3zbMyKpHhZAQdGDgpkNoR58K28zTytbqQ2/8
+         54V/AuAkU80eQJ568T2Coe/XHQCx81N/cLFZ0wpg1eXASrYm0bO2o2s46qlTfxg2fP9j
+         L95vcbh2iyn4x9W0bmu9AmXYyTR91fxfAH9dhuq2Acb7M6LqTGtRT36WeO7EZkrGQIer
+         etWg==
+X-Gm-Message-State: AOAM533AT3bB2lzgccjpinzYo0+cPOU/YTloZ59BtvPcSVp4O5gtjQr7
+        R+GB3iHENX4/SB07cTx22DWy4oscq78rPg==
+X-Google-Smtp-Source: ABdhPJwYh0lotNcs/MxJ0DaEzxa4uCqhyrDMwxqkWIkrnhN2hxlZSXtwXNOLbhzNxD6i+uYERiGTjQ==
+X-Received: by 2002:a05:6830:2336:: with SMTP id q22mr17062492otg.346.1620082547816;
+        Mon, 03 May 2021 15:55:47 -0700 (PDT)
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com. [209.85.210.45])
+        by smtp.gmail.com with ESMTPSA id 21sm317185otg.4.2021.05.03.15.55.46
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 May 2021 15:55:46 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 65-20020a9d03470000b02902808b4aec6dso6607867otv.6
+        for <linux-wireless@vger.kernel.org>; Mon, 03 May 2021 15:55:46 -0700 (PDT)
+X-Received: by 2002:a05:6830:1bd8:: with SMTP id v24mr5731199ota.203.1620082546348;
+ Mon, 03 May 2021 15:55:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 03 May 2021 10:24:54 -0700
-From:   jjohnson@codeaurora.org
-To:     Maharaja Kennadyrajan <mkenna@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        ath11k <ath11k-bounces@lists.infradead.org>
-Subject: Re: [PATCH v2 1/3] nl80211: Add support for beacon tx mode
-In-Reply-To: <1619696874-30072-2-git-send-email-mkenna@codeaurora.org>
-References: <1619696874-30072-1-git-send-email-mkenna@codeaurora.org>
- <1619696874-30072-2-git-send-email-mkenna@codeaurora.org>
-Message-ID: <445ba573b519b9434d0e009eb9ff6f45@codeaurora.org>
-X-Sender: jjohnson@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <20210309060121.9099-1-pkshih@realtek.com>
+In-Reply-To: <20210309060121.9099-1-pkshih@realtek.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 3 May 2021 15:55:36 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXO1Eh0D3k4ssCqgymgbonNf0RVNy=AxpnzLO6+Ch5=hWQ@mail.gmail.com>
+Message-ID: <CA+ASDXO1Eh0D3k4ssCqgymgbonNf0RVNy=AxpnzLO6+Ch5=hWQ@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: 8822c: support FW crash dump when FW crash
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        kevin_yang@realtek.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-04-29 04:47, Maharaja Kennadyrajan wrote:
-[..snip..]
-> +/**
-> + * enum nl80211_beacon_tx_mode - Beacon Tx Mode enum.
-> + *      Used to configure beacon staggered mode or beacon burst mode.
-> + */
-> +enum nl80211_beacon_tx_mode {
-> +	NL80211_BEACON_STAGGERED_MODE = 1,
-> +	NL80211_BEACON_BURST_MODE = 2,
-> +};
-> +
-[..snip..]
-> @@ -5330,6 +5331,10 @@ static int nl80211_start_ap(struct sk_buff *skb,
-> struct genl_info *info)
->  	params.dtim_period =
->  		nla_get_u32(info->attrs[NL80211_ATTR_DTIM_PERIOD]);
-> 
-> +	if (info->attrs[NL80211_ATTR_BEACON_TX_MODE])
-> +		params.beacon_tx_mode =
-> +
-> nla_get_u32(info->attrs[NL80211_ATTR_BEACON_TX_MODE]);
-> +
+Hi,
 
-Note that in the case where NL80211_ATTR_BEACON_TX_MODE is not specified 
-that
-beacon_tx_mode will be zero, which is not a valid nl80211_beacon_tx_mode 
-enumeration.
+On Mon, Mar 8, 2021 at 10:02 PM Ping-Ke Shih <pkshih@realtek.com> wrote:
+> Although FW crash logs are already supported for dumping in driver, the
+> logs may not be sufficient to analyze field issues. To improve this part,
+> we add a support to dump FW memory.
+>
+> When driver receives FW crash notifications, driver uses DDMA, which is a
+> HW ability, to copy specified FW memory to FW fifo. Driver can then dump
+> these information from FW fifo. With this support, not only FW crash log
+> but also specified FW memory will be dumped while FW crash. Besides,
+> specified registers are also dumped.
+>
+> This feature is implemeted on 8822C first due to difference of FW layouts
+> between ICs. In addition, we add a debugfs to trigger FW crash. It can
+> simulate the process of crash, dump and reset. Through it, we can also
+> check if a reset is ongoing.
+>
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+...
+> +int rtw_dump_fw(struct rtw_dev *rtwdev, const u32 ocp_src, u32 size,
+> +               const char *prefix_str)
+> +{
+...
+> +       print_hex_dump(KERN_ERR, prefix_str, DUMP_PREFIX_OFFSET, 16, 1,
+> +                      buf, done_size, true);
+> +
+> +exit:
+> +       vfree(buf);
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL(rtw_dump_fw);
+> +
+> +int rtw_dump_reg(struct rtw_dev *rtwdev, const u32 addr, const u32 size,
+> +                const char *prefix_str)
+> +{
+....
+> +       print_hex_dump(KERN_ERR, prefix_str, DUMP_PREFIX_OFFSET, 16, 4, buf,
+> +                      size, true);
+> +
+> +       vfree(buf);
+> +       return 0;
+> +}
 
-Should you renumber the nl80211_beacon_tx_mode enumerations so that the 
-default
-mode has a value of 0? Or add NL80211_BEACON_DEFAULT_MODE = 0 and allow 
-the driver
-to select a default mode?
 
+For the record, all this print_hex_dump() stuff should just be using
+devcoredump instead. There are numerous problems with dumping this
+much unreadable (and opaque to anyone but Realtek) garbage directly
+into the kernel logs.
+
+My bad for not reviewing this earlier. With luck, Realtek will add
+devcoredump themselves, although I suppose it wouldn't be too hard for
+a drive-by contributor (e.g., me) to fix, given the time...
+
+Brian
