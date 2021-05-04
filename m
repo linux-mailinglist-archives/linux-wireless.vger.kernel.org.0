@@ -2,73 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DED037270F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 May 2021 10:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE301372A80
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 May 2021 14:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229953AbhEDIT6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 May 2021 04:19:58 -0400
-Received: from mx4.wp.pl ([212.77.101.12]:21348 "EHLO mx4.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229848AbhEDIT5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 May 2021 04:19:57 -0400
-X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Tue, 04 May 2021 04:19:57 EDT
-Received: (wp-smtpd smtp.wp.pl 6116 invoked from network); 4 May 2021 10:12:21 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1620115941; bh=KM8k3aF21vDfk36cHg5eft3SZzJ7dB3wKJ13fSZgBcA=;
-          h=From:To:Cc:Subject;
-          b=o8mEAU7A3onYouElQ58xA8TEauGcY04KjxtPJAtq6ipgdutfiCguaFuiKlXAYTYau
-           mQLfMUfgu/p2WGXWQl5TYHeIxwh7cX/GFaNye3JmsqxC1J3nbHS+vIz+HHvgHQG9it
-           eRvkG5p4q/LI53cnOvXb9DB2szNhI9LPkh+aSyyE=
-Received: from 89-64-4-144.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.4.144])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <linux-wireless@vger.kernel.org>; 4 May 2021 10:12:21 +0200
-From:   stf_xl@wp.pl
-To:     linux-wireless@vger.kernel.org
-Cc:     n0w1re <n0w1re@protonmail.ch>, ZeroBeat <ZeroBeat@gmx.de>
-Subject: [PATCH] rt2x00: do not set timestamp for injected frames
-Date:   Tue,  4 May 2021 10:12:20 +0200
-Message-Id: <20210504081220.666939-1-stf_xl@wp.pl>
-X-Mailer: git-send-email 2.25.4
+        id S230385AbhEDM7M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 May 2021 08:59:12 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:55874 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230187AbhEDM7K (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 4 May 2021 08:59:10 -0400
+X-UUID: 0a11770fe8b64f6f82ae09cf97a11a9c-20210504
+X-UUID: 0a11770fe8b64f6f82ae09cf97a11a9c-20210504
+Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 834467344; Tue, 04 May 2021 20:52:33 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 4 May 2021 20:52:32 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 4 May 2021 20:52:31 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH] mt76: mt7915: add debugfs knob to read efuse value from FW
+Date:   Tue, 4 May 2021 20:52:25 +0800
+Message-ID: <20210504125225.2536-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: 633a30985c8e0ddeee1c069b095cacbc
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [UYME]                               
+Content-Type: text/plain
+X-TM-SNTS-SMTP: BC4AA88CC25A608AA38ABC03DA3762F8B883086173EF8A88791D8397AACCCE642000:8
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Stanislaw Gruszka <stf_xl@wp.pl>
+In efuse mode, mt7915 only reads efuse values from FW which driver need.
+Add a debugfs knob to read addtional efuse values from a specific field,
+which is useful in some cases such as checking if rf values in efuse
+are properly burned.
 
-We setup hardware to insert TSF timestamp for beacon and probe response
-frames. This is undesired for injected frames, which might want to
-set their own timestamp values, so disable this setting for injected
-frames.
+An example of usage:
+echo 0x400 > efuse_idx
+hexdump -C eeprom
 
-Tested-by: ZeroBeat <ZeroBeat@gmx.de>
-Tested-by: n0w1re <n0w1re@protonmail.ch>
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00queue.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/debugfs.c  | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
-index d4d389e8f1b4..fb1d31b2d52a 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
-@@ -446,8 +446,9 @@ static void rt2x00queue_create_tx_descriptor(struct rt2x00_dev *rt2x00dev,
- 	 * Beacons and probe responses require the tsf timestamp
- 	 * to be inserted into the frame.
- 	 */
--	if (ieee80211_is_beacon(hdr->frame_control) ||
--	    ieee80211_is_probe_resp(hdr->frame_control))
-+	if ((ieee80211_is_beacon(hdr->frame_control) ||
-+	     ieee80211_is_probe_resp(hdr->frame_control)) &&
-+	    !(tx_info->flags & IEEE80211_TX_CTL_INJECTED))
- 		__set_bit(ENTRY_TXD_REQ_TIMESTAMP, &txdesc->flags);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 6a8ddee..0526459 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -73,6 +73,21 @@ mt7915_radar_trigger(void *data, u64 val)
+ DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
+ 			 mt7915_radar_trigger, "%lld\n");
  
- 	if ((tx_info->flags & IEEE80211_TX_CTL_FIRST_FRAGMENT) &&
++static int
++mt7915_efuse_idx_set(void *data, u64 val)
++{
++	struct mt7915_dev *dev = data;
++	u8 *eep = dev->mt76.eeprom.data;
++
++	if (eep[val] == 0xff && !dev->flash_mode)
++		mt7915_mcu_get_eeprom(dev, val);
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_efuse_idx, NULL,
++			 mt7915_efuse_idx_set, "0x%llx\n");
++
+ static int
+ mt7915_fw_debug_set(void *data, u64 val)
+ {
+@@ -390,6 +405,7 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
+ 	debugfs_create_file("radar_trigger", 0200, dir, dev,
+ 			    &fops_radar_trigger);
+ 	debugfs_create_file("ser_trigger", 0200, dir, dev, &fops_ser_trigger);
++	debugfs_create_file("efuse_idx", 0200, dir, dev, &fops_efuse_idx);
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "temperature", dir,
+ 				    mt7915_read_temperature);
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "txpower_sku", dir,
 -- 
-2.25.4
+2.18.0
 
