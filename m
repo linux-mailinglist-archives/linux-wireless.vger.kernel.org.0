@@ -2,95 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE301372A80
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 May 2021 14:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48788372ED6
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 May 2021 19:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbhEDM7M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 May 2021 08:59:12 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:55874 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230187AbhEDM7K (ORCPT
+        id S231168AbhEDRXZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 May 2021 13:23:25 -0400
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:32672 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230285AbhEDRXY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 May 2021 08:59:10 -0400
-X-UUID: 0a11770fe8b64f6f82ae09cf97a11a9c-20210504
-X-UUID: 0a11770fe8b64f6f82ae09cf97a11a9c-20210504
-Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw01.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 834467344; Tue, 04 May 2021 20:52:33 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 4 May 2021 20:52:32 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 4 May 2021 20:52:31 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH] mt76: mt7915: add debugfs knob to read efuse value from FW
-Date:   Tue, 4 May 2021 20:52:25 +0800
-Message-ID: <20210504125225.2536-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 4 May 2021 13:23:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1620148950; x=1651684950;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=ssj0HmLsFhXdKgRKpNyTTL8WYgWUKhN0JFV+gJMwx80=;
+  b=A2mLppbz75bcLILmVHWirLq2CaiKR0AzwDGKIA4F95aXgFgVSNbKgH4S
+   HxjBdyuM5UKeYPdV8cWKUsazQh9fwJ0pnk7x4a09FG3HCMA6RQuqPiX9L
+   Z2PYhORglP/N4ePD4cEi/rdl24ChErvWH27m6VGKEIuNfJuFD9DOpRvyl
+   E=;
+Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 04 May 2021 10:22:29 -0700
+X-QCInternal: smtphost
+Received: from nasanexm03e.na.qualcomm.com ([10.85.0.48])
+  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/AES256-SHA; 04 May 2021 10:22:29 -0700
+Received: from [10.226.59.216] (10.80.80.8) by nasanexm03e.na.qualcomm.com
+ (10.85.0.48) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 4 May 2021
+ 10:22:29 -0700
+Subject: Re: [PATCH v1 1/6] bus: mhi: core: Set BHI/BHIe offsets on power up
+ preparation
+To:     Bhaumik Bhatt <bbhatt@codeaurora.org>,
+        <manivannan.sadhasivam@linaro.org>
+CC:     <linux-arm-msm@vger.kernel.org>, <hemantk@codeaurora.org>,
+        <linux-kernel@vger.kernel.org>, <loic.poulain@linaro.org>,
+        <linux-wireless@vger.kernel.org>, <kvalo@codeaurora.org>,
+        <ath11k@lists.infradead.org>
+References: <1618598825-18629-1-git-send-email-bbhatt@codeaurora.org>
+ <1618598825-18629-2-git-send-email-bbhatt@codeaurora.org>
+From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
+Message-ID: <5f0001da-bc1a-5649-ef72-1fbadd5b44ec@quicinc.com>
+Date:   Tue, 4 May 2021 11:22:28 -0600
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: BC4AA88CC25A608AA38ABC03DA3762F8B883086173EF8A88791D8397AACCCE642000:8
-X-MTK:  N
+In-Reply-To: <1618598825-18629-2-git-send-email-bbhatt@codeaurora.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanexm03h.na.qualcomm.com (10.85.0.50) To
+ nasanexm03e.na.qualcomm.com (10.85.0.48)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In efuse mode, mt7915 only reads efuse values from FW which driver need.
-Add a debugfs knob to read addtional efuse values from a specific field,
-which is useful in some cases such as checking if rf values in efuse
-are properly burned.
+On 4/16/2021 12:47 PM, Bhaumik Bhatt wrote:
+> Set the BHI and/or BHIe offsets in mhi_prepare_for_power_up(),
+> rearrange the function, and remove the equivalent from
+> mhi_async_power_up(). This helps consolidate multiple checks
+> in different parts of the driver and can help MHI fail early on
+> before power up begins if the offsets are not read correctly.
+> 
+> Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+> ---
 
-An example of usage:
-echo 0x400 > efuse_idx
-hexdump -C eeprom
-
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/debugfs.c  | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 6a8ddee..0526459 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -73,6 +73,21 @@ mt7915_radar_trigger(void *data, u64 val)
- DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
- 			 mt7915_radar_trigger, "%lld\n");
- 
-+static int
-+mt7915_efuse_idx_set(void *data, u64 val)
-+{
-+	struct mt7915_dev *dev = data;
-+	u8 *eep = dev->mt76.eeprom.data;
-+
-+	if (eep[val] == 0xff && !dev->flash_mode)
-+		mt7915_mcu_get_eeprom(dev, val);
-+
-+	return 0;
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(fops_efuse_idx, NULL,
-+			 mt7915_efuse_idx_set, "0x%llx\n");
-+
- static int
- mt7915_fw_debug_set(void *data, u64 val)
- {
-@@ -390,6 +405,7 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
- 	debugfs_create_file("radar_trigger", 0200, dir, dev,
- 			    &fops_radar_trigger);
- 	debugfs_create_file("ser_trigger", 0200, dir, dev, &fops_ser_trigger);
-+	debugfs_create_file("efuse_idx", 0200, dir, dev, &fops_efuse_idx);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "temperature", dir,
- 				    mt7915_read_temperature);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "txpower_sku", dir,
--- 
-2.18.0
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
