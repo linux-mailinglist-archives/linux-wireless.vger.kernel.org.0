@@ -2,123 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60FD737347A
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 06:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA3E2373575
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 09:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231636AbhEEEvo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 00:51:44 -0400
-Received: from mx3.wp.pl ([212.77.101.10]:38029 "EHLO mx3.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229895AbhEEEvo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 00:51:44 -0400
-Received: (wp-smtpd smtp.wp.pl 12743 invoked from network); 5 May 2021 06:50:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1620190245; bh=eea2FzFifVuQf4y/aTsiEfdYXepf4D9/qCcKFc4XwQ8=;
-          h=From:To:Cc:Subject;
-          b=p3dqO3QsqJjHwEVMW1seUCAGZmIzu3gUb+w2P3pr8uTDzNzvTxJ1RFAxBGBAVfrSo
-           K4kaAk1SA4vOPep0RulrA4knDZJZTzaumtNJ+0AqD8d29dH3pfc7Fy76+Fr6Rzb6Wf
-           gbytcRsFa1mQ8esuqzdzYIh9Un1jWzYR9vCI8Xew=
-Received: from 89-64-4-144.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.4.144])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <rsalvaterra@gmail.com>; 5 May 2021 06:50:45 +0200
-Date:   Wed, 5 May 2021 06:50:44 +0200
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Rui Salvaterra <rsalvaterra@gmail.com>
-Cc:     lorenzo@kernel.org, kuba@kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [RFC PATCH] mt7601u: make the driver work again
-Message-ID: <20210505045044.GA735251@wp.pl>
-References: <20210504212828.815-1-rsalvaterra@gmail.com>
+        id S231459AbhEEHTE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 03:19:04 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:40578 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231607AbhEEHTE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 03:19:04 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1620199088; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=OpInw1Tew815TdwcqGzqmtmjFZ/n9U86KvmoBeOdH2U=;
+ b=w1Ghn0YR8KU4rn/xQHDk/88jN/9m1UTWG22glxA40R8NKnm8F6QzrmHMlB0Ei5wPl5g7GeA9
+ pmq+Y311YOt3WhqVazMnTi/fhsbC2Kk3NM+gunZ75eGEHXR5idkY8wDi0G6P84vWbA3IpvDD
+ Ek7W8J1Awk3dXPG6K4PZ3ccg8WA=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 609246acf34440a9d4140827 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 05 May 2021 07:18:04
+ GMT
+Sender: mkenna=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1F58AC433D3; Wed,  5 May 2021 07:18:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: mkenna)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9BDB3C4338A;
+        Wed,  5 May 2021 07:18:03 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210504212828.815-1-rsalvaterra@gmail.com>
-X-WP-MailID: 5a53c093045847177a7d3f42443eb4b1
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000002 [cSGx]                               
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 05 May 2021 12:48:03 +0530
+From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
+To:     jjohnson@codeaurora.org
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        ath11k <ath11k-bounces@lists.infradead.org>
+Subject: Re: [PATCH v2 1/3] nl80211: Add support for beacon tx mode
+In-Reply-To: <445ba573b519b9434d0e009eb9ff6f45@codeaurora.org>
+References: <1619696874-30072-1-git-send-email-mkenna@codeaurora.org>
+ <1619696874-30072-2-git-send-email-mkenna@codeaurora.org>
+ <445ba573b519b9434d0e009eb9ff6f45@codeaurora.org>
+Message-ID: <cc2182041c5fc8f1c168a262e3a3263c@codeaurora.org>
+X-Sender: mkenna@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 04, 2021 at 10:28:28PM +0100, Rui Salvaterra wrote:
-> This is a tentative fix for a long-standing issue [1] with MT7601U devices. In
-> my case, this is what I see in the dmesg when I plug the device in:
+On 2021-05-03 22:54, jjohnson@codeaurora.org wrote:
+> On 2021-04-29 04:47, Maharaja Kennadyrajan wrote:
+> [..snip..]
+>> +/**
+>> + * enum nl80211_beacon_tx_mode - Beacon Tx Mode enum.
+>> + *      Used to configure beacon staggered mode or beacon burst mode.
+>> + */
+>> +enum nl80211_beacon_tx_mode {
+>> +	NL80211_BEACON_STAGGERED_MODE = 1,
+>> +	NL80211_BEACON_BURST_MODE = 2,
+>> +};
+>> +
+> [..snip..]
+>> @@ -5330,6 +5331,10 @@ static int nl80211_start_ap(struct sk_buff 
+>> *skb,
+>> struct genl_info *info)
+>>  	params.dtim_period =
+>>  		nla_get_u32(info->attrs[NL80211_ATTR_DTIM_PERIOD]);
+>> 
+>> +	if (info->attrs[NL80211_ATTR_BEACON_TX_MODE])
+>> +		params.beacon_tx_mode =
+>> +
+>> nla_get_u32(info->attrs[NL80211_ATTR_BEACON_TX_MODE]);
+>> +
 > 
-> [  660.810386] usb 1-7: new high-speed USB device number 119 using ehci-pci
-> [  661.031390] usb 1-7: New USB device found, idVendor=148f,
-> idProduct=7601, bcdDevice= 0.00
-> [  661.031400] usb 1-7: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-> [  661.031404] usb 1-7: Product: 802.11 n WLAN
-> [  661.031408] usb 1-7: Manufacturer: MediaTek
-> [  661.031411] usb 1-7: SerialNumber: 1.0
-> [  661.200379] usb 1-7: reset high-speed USB device number 119 using ehci-pci
-> [  661.403137] mt7601u 1-7:1.0: ASIC revision: 76010001 MAC revision: 76010500
-> [  661.404566] mt7601u 1-7:1.0: Firmware Version: 0.1.00 Build: 7640
-> Build time: 201302052146____
-> [  661.828765] mt7601u 1-7:1.0: EEPROM ver:0d fae:00
-> [  662.005518] mt7601u 1-7:1.0: Error: MCU resp urb failed:-71
-> [  662.005525] mt7601u 1-7:1.0: Error: MCU resp evt:0 seq:5-4!
-> [  662.010015] mt7601u 1-7:1.0: Error: MCU resp urb failed:-71
-> [  662.010020] mt7601u 1-7:1.0: Error: MCU resp evt:0 seq:5-4!
-> [  662.014269] mt7601u 1-7:1.0: Error: MCU resp urb failed:-71
-> [  662.014275] mt7601u 1-7:1.0: Error: MCU resp evt:0 seq:5-4!
-> [  662.018516] mt7601u 1-7:1.0: Error: MCU resp urb failed:-71
-> [  662.018521] mt7601u 1-7:1.0: Error: MCU resp evt:0 seq:5-4!
-> [  662.022768] mt7601u 1-7:1.0: Error: MCU resp urb failed:-71
-> [  662.022775] mt7601u 1-7:1.0: Error: MCU resp evt:0 seq:5-4!
-> [  662.022779] mt7601u 1-7:1.0: Error: mt7601u_mcu_wait_resp timed out
-> [  662.350350] mt7601u 1-7:1.0: Vendor request req:07 off:0080 failed:-71
-> [  662.650344] mt7601u 1-7:1.0: Vendor request req:02 off:0080 failed:-71
-> [  662.950339] mt7601u 1-7:1.0: Vendor request req:02 off:0080 failed:-71
-> [  662.950389] mt7601u: probe of 1-7:1.0 failed with error -110
-> [  662.950850] usb 1-7: USB disconnect, device number 119
-
+> Note that in the case where NL80211_ATTR_BEACON_TX_MODE is not 
+> specified that
+> beacon_tx_mode will be zero, which is not a valid
+> nl80211_beacon_tx_mode enumeration.
 > 
-> This loops continuously. The device never comes up.
-> Turns out, this issue has been narrowed down to a possible calibration
-> problem [2]. Stanislaw repeatedly asked if disabling DPD calibration only
-> (keeping the RXIQ calibration) would fix the problem, but nobody seems to have
-> paid attention. :) Additionally, he asked for contents of
-> /sys/kernel/debug/ieee80211/phy0/mt7601u/eeprom_param, so here they are:
-> 
-> RF freq offset: 5f
-> RSSI offset: 0 0
-> Reference temp: f9
-> LNA gain: 0
-> Reg channels: 1-14
-> Per rate power:
-> 	 raw:05 bw20:05 bw40:05
-> 	 raw:05 bw20:05 bw40:05
-> 	 raw:03 bw20:03 bw40:03
-> 	 raw:03 bw20:03 bw40:03
-> 	 raw:04 bw20:04 bw40:04
-> 	 raw:00 bw20:00 bw40:00
-> 	 raw:00 bw20:00 bw40:00
-> 	 raw:00 bw20:00 bw40:00
-> 	 raw:02 bw20:02 bw40:02
-> 	 raw:00 bw20:00 bw40:00
-> Per channel power:
-> 	 tx_power  ch1:0c ch2:0c
-> 	 tx_power  ch3:0b ch4:0b
-> 	 tx_power  ch5:0a ch6:0a
-> 	 tx_power  ch7:0a ch8:0a
-> 	 tx_power  ch9:0a ch10:0a
-> 	 tx_power  ch11:0a ch12:0a
-> 	 tx_power  ch13:0a ch14:0a
-> 
-> The attached patch fixes the driver for me. Sending as RFC because this will
-> probably warrant some kind of quirk to be fixed correctly. Besides, there's an
-> additional DPD calibration in mt7601u_temp_comp, which I haven't touched, since
-> it seems a bit more convoluted. The driver works for me regardless (I've sent
-> this email through one of my MT7601U adapters).
+> Should you renumber the nl80211_beacon_tx_mode enumerations so that the 
+> default
+> mode has a value of 0? Or add NL80211_BEACON_DEFAULT_MODE = 0 and
+> allow the driver
+> to select a default mode?
 
-I'm not sure if DPD calibration is needed. Maybe is ok to disable it for
-all MT7601U devices. However safer fix would be doing it only for
-devices that know to need it for work. For example: add dev->no_dpd_cal
-variable, set it based on USB ID (using usb_device_id->driver_info) and
-do not perfrom calibration when it's set.
+[Maha]: Yes, it will select the default mode as STAGGERED mode when the 
+user set
+beacon_tx_mode as 0 in the hostapd conf file.
+Also, it will select the default mode as STAGGERED mode when the user 
+didn't add
+beacon_tx_mode config in the hostapd conf file.
+This is how it is handled here already.
 
-Also please clarify "work again" in the topic. Have your device ever
-worked with mt7601u driver in some older kernel version? 
-
-Stanislaw
+Regards,
+Maha
