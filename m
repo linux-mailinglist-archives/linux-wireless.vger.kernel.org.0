@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09E063742BC
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 18:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 878C83742C0
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 18:48:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236221AbhEEQrz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 12:47:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49594 "EHLO mail.kernel.org"
+        id S234631AbhEEQsB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 12:48:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49344 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235802AbhEEQpC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 12:45:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E66226192C;
-        Wed,  5 May 2021 16:35:43 +0000 (UTC)
+        id S235971AbhEEQpW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 12:45:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D4D9B61930;
+        Wed,  5 May 2021 16:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620232544;
-        bh=d0xUgckLeRh1pHbhhDdZ7uq11et2IR+/sjFS+Pl7Ngo=;
+        s=k20201202; t=1620232567;
+        bh=6r56QBO1lUI0eIJMbOcrck/Kl+oNsMP1657xqdG6OBA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e82pt23uvp1dE4fzSqR/C2XbJcfXV66DXCE+V3SyiGvT9x384r2uPw7zhAizs2TbX
-         IOnZFrTTbl4bsHTxauYoAyfuhFb/owaUZw7Kkgd9QnXWiontZwr/R77K/qJ6NppVvw
-         26NxOQSVML4PIe4w+ksNMZFtbH2nRCe4JjnU3spkWMa/pcuJzcyR/7A490HbK3GYkW
-         PdK0QgEk0xYvcHXhlWOcxmqrdUZrjWQ0cbuxqUrKhZzJHdcfei0mgHWSh3E/olwcCP
-         RsQ8yUpr4dftqedqk9Asw6aIyRIqiY7zXliD6Etp/SOnCYHijNH64wWGWwG14Swl+k
-         sTtX297WD/2TQ==
+        b=t6UhR/9j1gwQAoeZQcEC2Ux3qkHDlzjcgtIDOyuX5sRyMWIYdGcXk5+PX1B2QBxfp
+         pZN+mC+hEKe2nDgjm5pGD5I+WDTo5fDKJlUtZpzHPixve2Kqgrf0i5WR4tGtWqYamJ
+         LizQCmo51VO0CpsYod5aZtlPwoTlEQJpyTP+IFC5U9wAOVdYIUVeC1L8rpfaoX+U17
+         0T+WHRlcgIyTxrh1AZiwavQQA5rL35AKDprBS3Sp+vyZlRdUbYdGhIUs9OZrqfI6+W
+         r245yAoRK2NjIDvUtPJi/auvkP6UYN2v2qdNiuvMgQY82yk3+QV7hZl1pbhIxJSmDL
+         DcqOaIc+tPP5Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     David Mosberger-Tang <davidm@egauge.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.11 063/104] iwlwifi: queue: avoid memory leak in reset flow
-Date:   Wed,  5 May 2021 12:33:32 -0400
-Message-Id: <20210505163413.3461611-63-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.11 078/104] wilc1000: Bring MAC address setting in line with typical Linux behavior
+Date:   Wed,  5 May 2021 12:33:47 -0400
+Message-Id: <20210505163413.3461611-78-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210505163413.3461611-1-sashal@kernel.org>
 References: <20210505163413.3461611-1-sashal@kernel.org>
@@ -43,119 +43,91 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: David Mosberger-Tang <davidm@egauge.net>
 
-[ Upstream commit 4cf2f5904d971a461f67825434ae3c31900ff84b ]
+[ Upstream commit a381b78a1598dde34a6e40dae2842024308a6ef2 ]
 
-In case the device is stopped any usage of hw queues needs to be
-reallocated in fw due to fw reset after device stop, so all driver
-internal queue should also be freed, and if we don't free the next usage
-would leak the old memory and get in recover flows
-"iwlwifi 0000:00:03.0: dma_pool_destroy iwlwifi:bc" warning.
+Linux network drivers normally disallow changing the MAC address when
+the interface is up.  This driver has been different in that it allows
+to change the MAC address *only* when it's up.  This patch brings
+wilc1000 behavior more in line with other network drivers.  We could
+have replaced wilc_set_mac_addr() with eth_mac_addr() but that would
+break existing documentation on how to change the MAC address.
+Likewise, return -EADDRNOTAVAIL (not -EINVAL) when the specified MAC
+address is invalid or unavailable.
 
-Also warn about trying to reuse an internal allocated queue.
-
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20210411124417.c72d2f0355c4.Ia3baff633b9b9109f88ab379ef0303aa152c16bf@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20210303194846.1823596-1-davidm@egauge.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  4 +--
- drivers/net/wireless/intel/iwlwifi/queue/tx.c | 30 ++++---------------
- drivers/net/wireless/intel/iwlwifi/queue/tx.h |  3 +-
- 3 files changed, 9 insertions(+), 28 deletions(-)
+ .../net/wireless/microchip/wilc1000/netdev.c  | 25 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-index 08788bc90683..fd7398daaf65 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-  * Copyright (C) 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2020 Intel Corporation
-+ * Copyright (C) 2018-2021 Intel Corporation
-  */
- #include "iwl-trans.h"
- #include "iwl-prph.h"
-@@ -141,7 +141,7 @@ void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
- 	if (test_and_clear_bit(STATUS_DEVICE_ENABLED, &trans->status)) {
- 		IWL_DEBUG_INFO(trans,
- 			       "DEVICE_ENABLED bit was set and is now cleared\n");
--		iwl_txq_gen2_tx_stop(trans);
-+		iwl_txq_gen2_tx_free(trans);
- 		iwl_pcie_rx_stop(trans);
- 	}
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
+index 0c188310919e..acf7ed4bfe57 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -575,7 +575,6 @@ static int wilc_mac_open(struct net_device *ndev)
+ {
+ 	struct wilc_vif *vif = netdev_priv(ndev);
+ 	struct wilc *wl = vif->wilc;
+-	unsigned char mac_add[ETH_ALEN] = {0};
+ 	int ret = 0;
+ 	struct mgmt_frame_regs mgmt_regs = {};
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-index 7ff1bb0ccc9c..cd5b06ce3e9c 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-@@ -13,30 +13,6 @@
- #include "iwl-scd.h"
- #include <linux/dmapool.h>
+@@ -598,9 +597,12 @@ static int wilc_mac_open(struct net_device *ndev)
  
--/*
-- * iwl_txq_gen2_tx_stop - Stop all Tx DMA channels
-- */
--void iwl_txq_gen2_tx_stop(struct iwl_trans *trans)
--{
--	int txq_id;
--
--	/*
--	 * This function can be called before the op_mode disabled the
--	 * queues. This happens when we have an rfkill interrupt.
--	 * Since we stop Tx altogether - mark the queues as stopped.
--	 */
--	memset(trans->txqs.queue_stopped, 0,
--	       sizeof(trans->txqs.queue_stopped));
--	memset(trans->txqs.queue_used, 0, sizeof(trans->txqs.queue_used));
--
--	/* Unmap DMA from host system and free skb's */
--	for (txq_id = 0; txq_id < ARRAY_SIZE(trans->txqs.txq); txq_id++) {
--		if (!trans->txqs.txq[txq_id])
--			continue;
--		iwl_txq_gen2_unmap(trans, txq_id);
--	}
--}
--
- /*
-  * iwl_txq_update_byte_tbl - Set up entry in Tx byte-count array
-  */
-@@ -1189,6 +1165,12 @@ static int iwl_txq_alloc_response(struct iwl_trans *trans, struct iwl_txq *txq,
- 		goto error_free_resp;
- 	}
+ 	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
+ 				vif->idx);
+-	wilc_get_mac_address(vif, mac_add);
+-	netdev_dbg(ndev, "Mac address: %pM\n", mac_add);
+-	ether_addr_copy(ndev->dev_addr, mac_add);
++
++	if (is_valid_ether_addr(ndev->dev_addr))
++		wilc_set_mac_address(vif, ndev->dev_addr);
++	else
++		wilc_get_mac_address(vif, ndev->dev_addr);
++	netdev_dbg(ndev, "Mac address: %pM\n", ndev->dev_addr);
  
-+	if (WARN_ONCE(trans->txqs.txq[qid],
-+		      "queue %d already allocated\n", qid)) {
-+		ret = -EIO;
-+		goto error_free_resp;
+ 	if (!is_valid_ether_addr(ndev->dev_addr)) {
+ 		netdev_err(ndev, "Wrong MAC address\n");
+@@ -639,7 +641,14 @@ static int wilc_set_mac_addr(struct net_device *dev, void *p)
+ 	int srcu_idx;
+ 
+ 	if (!is_valid_ether_addr(addr->sa_data))
+-		return -EINVAL;
++		return -EADDRNOTAVAIL;
++
++	if (!vif->mac_opened) {
++		eth_commit_mac_addr_change(dev, p);
++		return 0;
 +	}
 +
- 	txq->id = qid;
- 	trans->txqs.txq[qid] = txq;
- 	wr_ptr &= (trans->trans_cfg->base_params->max_tfd_queue_size - 1);
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.h b/drivers/net/wireless/intel/iwlwifi/queue/tx.h
-index cff694c25ccc..d32256d78917 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.h
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2020 Intel Corporation
-+ * Copyright (C) 2020-2021 Intel Corporation
-  */
- #ifndef __iwl_trans_queue_tx_h__
- #define __iwl_trans_queue_tx_h__
-@@ -123,7 +123,6 @@ int iwl_txq_gen2_tx(struct iwl_trans *trans, struct sk_buff *skb,
- void iwl_txq_dyn_free(struct iwl_trans *trans, int queue);
- void iwl_txq_gen2_free_tfd(struct iwl_trans *trans, struct iwl_txq *txq);
- void iwl_txq_inc_wr_ptr(struct iwl_trans *trans, struct iwl_txq *txq);
--void iwl_txq_gen2_tx_stop(struct iwl_trans *trans);
- void iwl_txq_gen2_tx_free(struct iwl_trans *trans);
- int iwl_txq_init(struct iwl_trans *trans, struct iwl_txq *txq, int slots_num,
- 		 bool cmd_queue);
++	/* Verify MAC Address is not already in use: */
+ 
+ 	srcu_idx = srcu_read_lock(&wilc->srcu);
+ 	list_for_each_entry_rcu(tmp_vif, &wilc->vif_list, list) {
+@@ -647,7 +656,7 @@ static int wilc_set_mac_addr(struct net_device *dev, void *p)
+ 		if (ether_addr_equal(addr->sa_data, mac_addr)) {
+ 			if (vif != tmp_vif) {
+ 				srcu_read_unlock(&wilc->srcu, srcu_idx);
+-				return -EINVAL;
++				return -EADDRNOTAVAIL;
+ 			}
+ 			srcu_read_unlock(&wilc->srcu, srcu_idx);
+ 			return 0;
+@@ -659,9 +668,7 @@ static int wilc_set_mac_addr(struct net_device *dev, void *p)
+ 	if (result)
+ 		return result;
+ 
+-	ether_addr_copy(vif->bssid, addr->sa_data);
+-	ether_addr_copy(vif->ndev->dev_addr, addr->sa_data);
+-
++	eth_commit_mac_addr_change(dev, p);
+ 	return result;
+ }
+ 
 -- 
 2.30.2
 
