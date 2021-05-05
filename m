@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33BA33741AC
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 18:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C469B3741B0
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 18:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234832AbhEEQkX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 12:40:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54830 "EHLO mail.kernel.org"
+        id S234893AbhEEQkf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 12:40:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38090 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234843AbhEEQhW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 12:37:22 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 495786144C;
-        Wed,  5 May 2021 16:33:30 +0000 (UTC)
+        id S234858AbhEEQid (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 12:38:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E196061412;
+        Wed,  5 May 2021 16:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620232411;
-        bh=9yRxJ3VaWxPObwoymsEDUnFiROCK5q5GXBmdx7K/05M=;
+        s=k20201202; t=1620232423;
+        bh=WxiO4EXeA5EqQoSx5olH+tfFxfI2Xf4bWODHUl7UKeY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZaIL0seYU2tiDBqSRe6b2nU9slvlen+xFM90w8rRiqL2+jcFlKfVvG4b0dnsZgRIo
-         invzlDpucHPyv4zqD/VhRsPduw6u6He9l79C6+oFX+nxIbKKujQ7/x4QWNPSQGgVj9
-         S+Eu0uvyZuSUodpQTLv+LteBL7bKjVFY+LMmUX2GpcWFqKBvVDbAAWJihAsFm4V1oQ
-         0dSDl0hQS8MSLcidHZ5y7tQKukLNIFkEwWWPw7ilcXOiQpEWIGw10DfK742vnWTp/8
-         fmo9ySy4qY9TbkJn4MmD76MTHyHanlNI05ddpegc1zdN6muPYrms05cuyCjGkXb4Zm
-         IggP0MxBvUKRA==
+        b=HHcs2TG1XPUtV17b9vYGSigKgsjRSwdQ9OdmwzOrB1HcMkM5c3KrR9lRo7BDuErGV
+         gOP0bGl7nkL07KfOLJxAKILIiM9SonDMHPquwVZnIX7muJtzoZ7g9lrVWw994OOk/I
+         nMyxKfgRBFSyACZrIKzgPkoNJurILC3GDgC7Rb9JS+CxfKZTv0CjqOQzWVOgwxF4T6
+         A6HCYZ16gsVUK8+h+8VRAovOb8CytRgvVmZVWV2Pb1qQq5DDQ+gp1i74Q8vUR2wSRu
+         MnEOk0+cdqf+ngdSt4VPzmw6V9Qv+288eTUmj8LUgjVaxczXouDvvmfqdgqfh4xNJr
+         mHavanr7uNeiA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 089/116] mac80211: properly drop the connection in case of invalid CSA IE
-Date:   Wed,  5 May 2021 12:30:57 -0400
-Message-Id: <20210505163125.3460440-89-sashal@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.12 098/116] mt76: mt7615: fix entering driver-own state on mt7663
+Date:   Wed,  5 May 2021 12:31:06 -0400
+Message-Id: <20210505163125.3460440-98-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210505163125.3460440-1-sashal@kernel.org>
 References: <20210505163125.3460440-1-sashal@kernel.org>
@@ -44,44 +43,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 253907ab8bc0818639af382f6398810fa1f022b3 ]
+[ Upstream commit 5c7d374444afdeb9dd534a37c4f6c13af032da0c ]
 
-In case the frequency is invalid, ieee80211_parse_ch_switch_ie
-will fail and we may not even reach the check in
-ieee80211_sta_process_chanswitch. Drop the connection
-in case ieee80211_parse_ch_switch_ie failed, but still
-take into account the CSA mode to remember not to send
-a deauth frame in case if it is forbidden to.
+Fixes hardware wakeup issues
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20210409123755.34712ef96a0a.I75d7ad7f1d654e8b0aa01cd7189ff00a510512b3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 4a8f1b8ce768..0fe91dc9817e 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1405,11 +1405,8 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
- 		ch_switch.delay = csa_ie.max_switch_time;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 4ecbd5406e2a..198e9025b681 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -291,12 +291,20 @@ static int mt7615_mcu_drv_pmctrl(struct mt7615_dev *dev)
+ 	u32 addr;
+ 	int err;
  
--	if (res < 0) {
--		ieee80211_queue_work(&local->hw,
--				     &ifmgd->csa_connection_drop_work);
--		return;
--	}
-+	if (res < 0)
-+		goto lock_and_drop_connection;
+-	addr = is_mt7663(mdev) ? MT_PCIE_DOORBELL_PUSH : MT_CFG_LPCR_HOST;
++	if (is_mt7663(mdev)) {
++		/* Clear firmware own via N9 eint */
++		mt76_wr(dev, MT_PCIE_DOORBELL_PUSH, MT_CFG_LPCR_HOST_DRV_OWN);
++		mt76_poll(dev, MT_CONN_ON_MISC, MT_CFG_LPCR_HOST_FW_OWN, 0, 3000);
++
++		addr = MT_CONN_HIF_ON_LPCTL;
++	} else {
++		addr = MT_CFG_LPCR_HOST;
++	}
++
+ 	mt76_wr(dev, addr, MT_CFG_LPCR_HOST_DRV_OWN);
  
- 	if (beacon && sdata->vif.csa_active && !ifmgd->csa_waiting_bcn) {
- 		if (res)
+ 	mt7622_trigger_hif_int(dev, true);
+ 
+-	addr = is_mt7663(mdev) ? MT_CONN_HIF_ON_LPCTL : MT_CFG_LPCR_HOST;
+ 	err = !mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN, 0, 3000);
+ 
+ 	mt7622_trigger_hif_int(dev, false);
 -- 
 2.30.2
 
