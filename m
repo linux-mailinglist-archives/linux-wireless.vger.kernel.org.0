@@ -2,37 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A21E93741DB
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 18:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3364374295
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 18:47:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235409AbhEEQls (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 12:41:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37334 "EHLO mail.kernel.org"
+        id S235941AbhEEQrM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 12:47:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49994 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235493AbhEEQjq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 12:39:46 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 772376141A;
-        Wed,  5 May 2021 16:34:15 +0000 (UTC)
+        id S235485AbhEEQoH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 12:44:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 15F57617C9;
+        Wed,  5 May 2021 16:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620232456;
-        bh=MIGhcVuFyhDQV5HW6JdZ0Zgnso/m5yGYVlOolxU2Ig8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=a57t1/S9loT8tYgacGoRe9Y/qh6xZYN70eHcdrw6YSwo9bmRdSPF3z4pREmgofFi7
-         T6w+n9WTfRFTpAfXU/t00NqDQjUG8OE6t1kDw+hvheP2m3C7lZWqQ497hS6dM41Yn3
-         J63jLKf41IwBrAVODdBG7WmN+ErfiJDtfT3W7DGV2eefPqMScYwWIz5V9k+QdvSn8x
-         AE3vqqF6CZ53vEl8OoyPhnXC2ksM6ExL1wi4ydfUjcyvaJnOuTY+XRqCRqi2/6xhjy
-         QuolnBbD9WdfjkLlb1mtoJ8UckXYvoQeb+3opf5peGOp0kuK4b7xN7TRwp7pWWhfdp
-         Z8IqcGxgvLJaQ==
+        s=k20201202; t=1620232520;
+        bh=BVWlPA/KL4xZMewJbjfvM8i8Zx/VWdWhlC9t6J9uyzs=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=naA0mf822zF0jt+BmfxGO3CQlnvSKkUC+yMexZ7BHu1jy6v0XfmaEBwwEfQ/EG/w0
+         DgigfkPPnx6wt8DxPHS655QLit2SomhbKbjvgA7yWrTSFx3ou9/iNeLTUD+rTYBLrw
+         iBZhvTVQsM2wfeB37PW7eZ/rnLknaD9h1APsY5Kgf1IqV3gh2ZXPlY7fxKh6ZnmJ7/
+         rT2snT9qikwYM3CdhfNiJBBKngbhJYhdR3qwu1qZL4od3R6DxQ4isTvcA7eVWJC0C2
+         ZxWM2xvBP9i+ala8vTJ3TEk6CR2ux5oV11dOW/0Vic/VGPfgD8uKqji/u6BYYM7Z7d
+         mvwWBvCeZR67w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath11k@lists.infradead.org,
+Cc:     Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.11 001/104] ath11k: fix thermal temperature read
-Date:   Wed,  5 May 2021 12:32:30 -0400
-Message-Id: <20210505163413.3461611-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.11 046/104] mac80211: Set priority and queue mapping for injected frames
+Date:   Wed,  5 May 2021 12:33:15 -0400
+Message-Id: <20210505163413.3461611-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210505163413.3461611-1-sashal@kernel.org>
+References: <20210505163413.3461611-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -41,104 +43,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+From: Johan Almbladh <johan.almbladh@anyfinetworks.com>
 
-[ Upstream commit e3de5bb7ac1a4cb262f8768924fd3ef6182b10bb ]
+[ Upstream commit 96a7109a16665255b65d021e24141c2edae0e202 ]
 
-Fix dangling pointer in thermal temperature event which causes
-incorrect temperature read.
+Some drivers, for example mt76, use the skb priority field, and
+expects that to be consistent with the skb queue mapping. On some
+frame injection code paths that was not true, and it broke frame
+injection. Now the skb queue mapping is set according to the skb
+priority value when the frame is injected. The skb priority value
+is also derived from the frame data for all frame types, as it
+was done prior to commit dbd50a851c50 (only allocate one queue
+when using iTXQs). Fixes frame injection with the mt76 driver on
+MT7610E chipset.
 
-Tested-on: IPQ8074 AHB WLAN.HK.2.4.0.1-00041-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210218182708.8844-1-pradeepc@codeaurora.org
+Signed-off-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Link: https://lore.kernel.org/r/20210401164455.978245-1-johan.almbladh@anyfinetworks.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 53 +++++++++++----------------
- 1 file changed, 21 insertions(+), 32 deletions(-)
+ net/mac80211/tx.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 73869d445c5b..f457a089b63c 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -5190,31 +5190,6 @@ int ath11k_wmi_pull_fw_stats(struct ath11k_base *ab, struct sk_buff *skb,
- 	return 0;
- }
- 
--static int
--ath11k_pull_pdev_temp_ev(struct ath11k_base *ab, u8 *evt_buf,
--			 u32 len, const struct wmi_pdev_temperature_event *ev)
--{
--	const void **tb;
--	int ret;
--
--	tb = ath11k_wmi_tlv_parse_alloc(ab, evt_buf, len, GFP_ATOMIC);
--	if (IS_ERR(tb)) {
--		ret = PTR_ERR(tb);
--		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
--		return ret;
--	}
--
--	ev = tb[WMI_TAG_PDEV_TEMPERATURE_EVENT];
--	if (!ev) {
--		ath11k_warn(ab, "failed to fetch pdev temp ev");
--		kfree(tb);
--		return -EPROTO;
--	}
--
--	kfree(tb);
--	return 0;
--}
--
- size_t ath11k_wmi_fw_stats_num_vdevs(struct list_head *head)
- {
- 	struct ath11k_fw_stats_vdev *i;
-@@ -6622,23 +6597,37 @@ ath11k_wmi_pdev_temperature_event(struct ath11k_base *ab,
- 				  struct sk_buff *skb)
- {
- 	struct ath11k *ar;
--	struct wmi_pdev_temperature_event ev = {0};
-+	const void **tb;
-+	const struct wmi_pdev_temperature_event *ev;
-+	int ret;
-+
-+	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-+		return;
-+	}
- 
--	if (ath11k_pull_pdev_temp_ev(ab, skb->data, skb->len, &ev) != 0) {
--		ath11k_warn(ab, "failed to extract pdev temperature event");
-+	ev = tb[WMI_TAG_PDEV_TEMPERATURE_EVENT];
-+	if (!ev) {
-+		ath11k_warn(ab, "failed to fetch pdev temp ev");
-+		kfree(tb);
- 		return;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 64fae4f645f5..f6bfa0ce262c 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2269,17 +2269,6 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 						    payload[7]);
  	}
  
- 	ath11k_dbg(ab, ATH11K_DBG_WMI,
--		   "pdev temperature ev temp %d pdev_id %d\n", ev.temp, ev.pdev_id);
-+		   "pdev temperature ev temp %d pdev_id %d\n", ev->temp, ev->pdev_id);
+-	/* Initialize skb->priority for QoS frames. If the DONT_REORDER flag
+-	 * is set, stick to the default value for skb->priority to assure
+-	 * frames injected with this flag are not reordered relative to each
+-	 * other.
+-	 */
+-	if (ieee80211_is_data_qos(hdr->frame_control) &&
+-	    !(info->control.flags & IEEE80211_TX_CTRL_DONT_REORDER)) {
+-		u8 *p = ieee80211_get_qos_ctl(hdr);
+-		skb->priority = *p & IEEE80211_QOS_CTL_TAG1D_MASK;
+-	}
+-
+ 	rcu_read_lock();
  
--	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev.pdev_id);
-+	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
- 	if (!ar) {
--		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev.pdev_id);
-+		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
-+		kfree(tb);
- 		return;
- 	}
+ 	/*
+@@ -2343,6 +2332,15 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
  
--	ath11k_thermal_event_temperature(ar, ev.temp);
-+	ath11k_thermal_event_temperature(ar, ev->temp);
+ 	info->band = chandef->chan->band;
+ 
++	/* Initialize skb->priority according to frame type and TID class,
++	 * with respect to the sub interface that the frame will actually
++	 * be transmitted on. If the DONT_REORDER flag is set, the original
++	 * skb-priority is preserved to assure frames injected with this
++	 * flag are not reordered relative to each other.
++	 */
++	ieee80211_select_queue_80211(sdata, skb, hdr);
++	skb_set_queue_mapping(skb, ieee80211_ac_from_tid(skb->priority));
 +
-+	kfree(tb);
- }
+ 	/* remove the injection radiotap header */
+ 	skb_pull(skb, len_rthdr);
  
- static void ath11k_fils_discovery_event(struct ath11k_base *ab,
 -- 
 2.30.2
 
