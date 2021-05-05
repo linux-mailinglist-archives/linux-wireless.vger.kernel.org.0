@@ -2,94 +2,185 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 380CF373B6F
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 14:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8E3373BE2
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 15:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233259AbhEEMiF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 08:38:05 -0400
-Received: from mail1.protonmail.ch ([185.70.40.18]:36455 "EHLO
-        mail1.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbhEEMh5 (ORCPT
+        id S233153AbhEEND0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 09:03:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:43814 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233225AbhEENCp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 08:37:57 -0400
-Date:   Wed, 05 May 2021 12:36:46 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1620218219;
-        bh=OqGOD3RMzm56+NArYxcQNbJWPMm+m2K65zTYVUe++Fc=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=WrIgwXQaLYuGx8S8cqAEIJU61aVe8N7rpFZvP3D807YwQa5WlNULX/ZYj9AphrEz/
-         3q+PpqosGQkSWzbHgRdAB/RZuLMloIaisVLJH8MnKzRg+EseKSrS6b1AjC1MqYWznL
-         r+E572qBFoCFt2UBRW0/NMW8Kke62l4Jedx0rwy4=
-To:     Johannes Berg <johannes@sipsolutions.net>
-From:   Michael Yartys <michael.yartys@protonmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Reply-To: Michael Yartys <michael.yartys@protonmail.com>
-Subject: Re: Possible bug in iwlwifi
-Message-ID: <E3bg7aVzJHQEHxAd21kjOlTrLqG0U3Jt7iBCDDTVCI4FYSdGROu-UKmRuM05cl8pxTBlo4pjeoYkTtKFFFYiezrdXVybrKs-6qBCAkZJ-sU=@protonmail.com>
-In-Reply-To: <_p2InUu49ZKWc_249MDFWW8bre6iNHIJDvsoV6Rsb3oLyWj7wat48aLpnqIDVeKZKwSq-uZ1Fy_wlDwHMYJ5-JacdxF75NL5fLvpWrNCUO8=@protonmail.com>
-References: <qnvkj7tfHuYKasegaKViuXD0K4KlchNwXkLn4NUZu_KWsp7nEBa4LyQm7SNRm27eQLALJTyi1-xIYXMChMeuZAKS5F_q-rhb0DVVGqv0oUc=@protonmail.com> <7a5d0173cbfdef24b1e74c0bfc8f7410ff044817.camel@sipsolutions.net> <_p2InUu49ZKWc_249MDFWW8bre6iNHIJDvsoV6Rsb3oLyWj7wat48aLpnqIDVeKZKwSq-uZ1Fy_wlDwHMYJ5-JacdxF75NL5fLvpWrNCUO8=@protonmail.com>
+        Wed, 5 May 2021 09:02:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1620219706;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=kOqgZ3ZRMy0tlrHsf7RCrYq/TwiHxXEEQjJHOD1CnYQ=;
+        b=QSDVus1b6RwlswwKrDGUhDxg+7Pp84SlY1RR6S7kVXBdyfumLOMOjCIaYdARlR5Qdzs4Fu
+        eWzytig6XjnWzxrohxnyggJBGegpN9YhOpLoNWSA107AZOsCCt0IHsFMaY8FDsIqgV+uLp
+        ol3zU2mJaBlmYEL3ztj1gDxQOQCoP2A=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-400-sCvcxL_AO3mnw9xr6v544Q-1; Wed, 05 May 2021 09:01:40 -0400
+X-MC-Unique: sCvcxL_AO3mnw9xr6v544Q-1
+Received: by mail-pl1-f199.google.com with SMTP id l18-20020a170902e2d2b02900eefb0acd12so203852plc.18
+        for <linux-wireless@vger.kernel.org>; Wed, 05 May 2021 06:01:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=kOqgZ3ZRMy0tlrHsf7RCrYq/TwiHxXEEQjJHOD1CnYQ=;
+        b=gJ1C0O6VR37ThS5U3n27o1dPiweVHrcMcNWwLc4SyscJ3QyVVgBi2tlBOmhB7TWBco
+         k6zfrf40IFL3s6xOrI97qfM2+MlDEay3nnWEtctiEVG13mRy/ehiiPWxk43FhQmvdht7
+         alvgsm0op+R8ZX1V6TDNE9KrXL2i99kC3DdnAA4tPVFJT+Ifjf2NprCmbWYRuWRQTeEv
+         Y4MhU7vQYGTyDPNxNanolbrGouawQzLxcRq7fpEt2ZnDUkT8Fxnfkv3VbvxVHYM89yoT
+         6MK+tr7n+es11gJgNu+TSRsbbUCmMcrn21Uim4t+LapXzDDYBtsO0iYS191Fq7pOP4k+
+         QQFw==
+X-Gm-Message-State: AOAM531B+3OM5snP2YUsS2MqizP14KoOanO/AFTjpALpBuAXSMFale/k
+        hvUzMNeEaX459dHtyEfKbLsfmmITHJa2Y0BpkAtcXpQBL1IoqaQvLh4hpH2ETQMb9JsoCK/+LBU
+        J2ad2a9t9xMNHtfCjn8FeZufne7b/zJMX/SSdw4Oh3jE=
+X-Received: by 2002:a62:808b:0:b029:252:eddc:afb0 with SMTP id j133-20020a62808b0000b0290252eddcafb0mr29611017pfd.41.1620219699389;
+        Wed, 05 May 2021 06:01:39 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJykNVQSUbbgzjSyiAzxtUjklMFEtkuofikzhL41kVG95qwx8WVmC1IlDZPAyKmtUdigxs8/KxG0pKZLhzoBX+0=
+X-Received: by 2002:a62:808b:0:b029:252:eddc:afb0 with SMTP id
+ j133-20020a62808b0000b0290252eddcafb0mr29610979pfd.41.1620219699037; Wed, 05
+ May 2021 06:01:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <CACT4ouecdXk3SQrgUNKnr4u2WAaiBUjgou5u_H1bEubTcrGtFQ@mail.gmail.com>
+ <CACT4oudp9Je55zjg7N8QFDWi5h3kmzMj6syfdi3KgAqQOVgPMA@mail.gmail.com> <1620216779.15370.10.camel@realtek.com>
+In-Reply-To: <1620216779.15370.10.camel@realtek.com>
+From:   Inigo Huguet <ihuguet@redhat.com>
+Date:   Wed, 5 May 2021 15:01:27 +0200
+Message-ID: <CACT4ouehaQsGr1UGqncvAFgay0v40Zv=O=oz5f8W=E+YmV=SYg@mail.gmail.com>
+Subject: Re: rtlwifi: potential bugs
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "ivecera@redhat.com" <ivecera@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
-ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
+Hi,
 
-On Wednesday, May 5th, 2021 at 2:25 PM, Michael Yartys <michael.yartys@prot=
-onmail.com> wrote:
+Thanks for the info. Maybe we should consider adding some comments to
+clarify this? Other people might also think these are bugs...
 
-> =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original =
-Message =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
->
-> On Wednesday, May 5th, 2021 at 2:09 PM, Johannes Berg johannes@sipsolutio=
-ns.net wrote:
->
-> > On Wed, 2021-05-05 at 12:05 +0000, Michael Yartys wrote:
-> >
-> > > Hello
-> > >
-> > > I've been testing out WPA3/WPA2-mixed networks on my OpenWrt router,
-> > >
-> > > and I noticed whenever I enable 802.11r the network doesn't show up i=
-n
-> > >
-> > > the list of Wi-Fi networks in NetworkManager. I initially thought thi=
-s
-> > >
-> > > was due to some bug with wpa_supplicant, but running "iw dev wlp18s0
-> > >
-> > > scan" also fails to list the network. If I'm not mistaken, iw doesn't
-> > >
-> > > use wpa_supplicant to scan for networks, so that rules out
-> > >
-> > > wpa_supplicant. That means something deeper in the stack is causing
-> > >
-> > > this, and my guess falls on iwlwifi.
-> >
-> > Indeed, that's super strange.
-> >
-> > Are you able to see the network from another linux machine, and could
-> >
-> > maybe do a packet capture there? Or maybe just do
-> >
-> > iw wlan0 scan dump -u
-> >
-> > on another system that can see it?
->
-> Unfortunately my other laptop also has a Intel 7260 card and can't see th=
-e network. My iPad and Android phone are both able to see the network, but =
-they're unable to connect to it.
+Regards,
 
-I don't know if it's of any help, but here's what WiFiAnalyzer reports abou=
-t the network on my Android 11 phone: https://imgur.com/a/dn0HwhG
-
+On Wed, May 5, 2021 at 2:13 PM Pkshih <pkshih@realtek.com> wrote:
 >
-> > johannes
+> On Wed, 2021-05-05 at 11:23 +0000, Inigo Huguet wrote:
+> > On Fri, Apr 23, 2021 at 2:56 PM Inigo Huguet <ihuguet@redhat.com> wrote=
+:
+> > >
+> > > Hello,
+> > >
+> > > Executing some static analysis on the kernel, we've got this results
+> > > affecting rtlwifi drivers:
+> > >
+> > > Error: IDENTICAL_BRANCHES (CWE-398): [#def212]
+> > > kernel-5.11.0-0.rc7.151/linux-5.11.0-0.rc7.151.el9.x86_64/drivers/net=
+/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c:2813:
+> > > identical_branches: The same code is executed regardless of whether
+> > > "bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH || bt_rssi_state =3D=3D
+> > > BTC_RSSI_STATE_STAY_HIGH" is true, because the 'then' and 'else'
+> > > branches are identical. Should one of the branches be modified, or th=
+e
+> > > entire 'if' statement replaced?
+> > > # 2811|   }
+> > > # 2812|
+> > > # 2813|-> if ((bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH) ||
+> > > # 2814|      (bt_rssi_state =3D=3D BTC_RSSI_STATE_STAY_HIGH)) {
+> > > # 2815|   btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 23);
+> > >
+> > > Error: IDENTICAL_BRANCHES (CWE-398): [#def213]
+> > > kernel-5.11.0-0.rc7.151/linux-5.11.0-0.rc7.151.el9.x86_64/drivers/net=
+/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c:2947:
+> > > identical_branches: The same code is executed regardless of whether
+> > > "bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH || bt_rssi_state =3D=3D
+> > > BTC_RSSI_STATE_STAY_HIGH" is true, because the 'then' and 'else'
+> > > branches are identical. Should one of the branches be modified, or th=
+e
+> > > entire 'if' statement replaced?
+> > > # 2945|   }
+> > > # 2946|
+> > > # 2947|-> if ((bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH) ||
+> > > # 2948|      (bt_rssi_state =3D=3D BTC_RSSI_STATE_STAY_HIGH))
+> > > # 2949|   btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 26);
+> > >
+> > > Error: IDENTICAL_BRANCHES (CWE-398): [#def214]
+> > > kernel-5.11.0-0.rc7.151/linux-5.11.0-0.rc7.151.el9.x86_64/drivers/net=
+/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c:3135:
+> > > identical_branches: The same code is executed regardless of whether
+> > > "wifi_bw =3D=3D BTC_WIFI_BW_LEGACY" is true, because the 'then' and '=
+else'
+> > > branches are identical. Should one of the branches be modified, or th=
+e
+> > > entire 'if' statement replaced?
+> > > # 3133|   btcoexist->btc_get(btcoexist, BTC_GET_U4_WIFI_BW, &wifi_bw)=
+;
+> > > # 3134|
+> > > # 3135|-> if (wifi_bw =3D=3D BTC_WIFI_BW_LEGACY) {
+> > > # 3136|   /* for HID at 11b/g mode */
+> > > # 3137|   btc8821a2ant_coex_table(btcoexist, NORMAL_EXEC, 0x55ff55ff,
+> > >
+> > > Error: IDENTICAL_BRANCHES (CWE-398): [#def215]
+> > > kernel-5.11.0-0.rc7.151/linux-5.11.0-0.rc7.151.el9.x86_64/drivers/net=
+/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c:3324:
+> > > identical_branches: The same code is executed regardless of whether
+> > > "bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH || bt_rssi_state =3D=3D
+> > > BTC_RSSI_STATE_STAY_HIGH" is true, because the 'then' and 'else'
+> > > branches are identical. Should one of the branches be modified, or th=
+e
+> > > entire 'if' statement replaced?
+> > > # 3322|   }
+> > > # 3323|
+> > > # 3324|-> if ((bt_rssi_state =3D=3D BTC_RSSI_STATE_HIGH) ||
+> > > # 3325|      (bt_rssi_state =3D=3D BTC_RSSI_STATE_STAY_HIGH)) {
+> > > # 3326|   btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 23);
+> > >
+> > >
+> > > In my opinion, they seem to be real bugs. However, it's very difficul=
+t
+> > > to imagine what actions must be taken on each branch of the if-else
+> > > because they strongly depend on magic numbers, which are different
+> > > configurations for the hw, I guess.
+> > >
+> > > Can the maintainers confirm if these are real bugs and see how to fix=
+ them?
+> > >
+> > > Regards
+> > > --
+> > > =C3=8D=C3=B1igo Huguet
+> >
+> > Hello,
+> >
+> > A few weeks ago I sent the message above notifying a potential bug in
+> > rtlwifi module. I just wanted to be sure that it has been received.
+> > Can the maintainers acknowledge whether they have seen it?
+> >
+>
+> Hi,
+>
+> Not real bugs. The coexistence programmers preserve the same code of
+> branches intentionally to fine tune performance easier, because bandwidth=
+ and
+> RSSI strength are highly related to coexistence performance.
+> The basic rule of performance tuning is to assign most time slot to BT
+> for realtime application, and WiFi uses remaining time slot but don't low=
+er
+> than low bound.
+>
+> --
+> Ping-Ke
+
+
+
+--=20
+=C3=8D=C3=B1igo Huguet
+
