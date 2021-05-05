@@ -2,38 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A147C374460
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 19:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3854A374621
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 19:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237084AbhEEQ5C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 12:57:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60436 "EHLO mail.kernel.org"
+        id S237246AbhEERMF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 13:12:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44946 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236510AbhEEQyU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 12:54:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A44476143E;
-        Wed,  5 May 2021 16:38:35 +0000 (UTC)
+        id S237115AbhEEQ5T (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 12:57:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 705FA619A0;
+        Wed,  5 May 2021 16:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620232716;
-        bh=lmCl/8+UbLLfBdAII2ABQDwTMsu3Sc1/051k2dkBo2w=;
+        s=k20201202; t=1620232764;
+        bh=wm62CXnlQlROjrFU1xBW5vxum5weK+uKY4uM6pJh2/I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cVPw82pjtGaIXGdygZYHFS/0sD+jQuuovVe1Be1cRphgIHK8GjVqvjXjp/Xx3CaaA
-         uSKv7cijR0UwoIWmRDDsKenabiuOg7wNuWXMniyLdPmQqe1M4ozDti5ZjELVCqm1uh
-         9Cgr/Dnm/ZhtRF/0S/5VYwZ681pDTg2QCEnSk2/Zmu6DNZifQjcM4aStXNvnj45b0f
-         Csaoo5m/1WsP+aaK3ujz+KE5zfOAMiM8QLV8OS1588GGNuxs2v2javdUzrn4PYQXy0
-         lPq7igiUJGDqrQoqJhvRJOc0lt1pNuUdKn0A6Ak4Wt8L3z4gNva47DMP+co2SG/haE
-         059Bzg2nOxcwA==
+        b=H5o21YDAU6QursZASpxVnB9g91EyXQC9hkih0XkIinJyA6JumS367l7yo44Dw8Pg8
+         sG4fKBIIy2GBtvN5IRbUe/VGznQLN6KqP9JNaEWRApF9/xIQZLu9aYlB2DptSkUnCx
+         Xh1q7AxWdfuWKyd9GWg/381WJRJP4TNlSL0EWrBW1eOnWlwr66OQz9pvWpWe3rmpOi
+         6se1deD73sPNaUGf8eRmwuaygIkGDJwskJ5dgoAZ7Zo3SNX8y2jfKjnx2xSQBV2D+l
+         wUgPYusV0pIHmUMkAk6YOEalHjMYQihDeQt4PuqdnFIzVMO9pPzaorMhu9LhDrMwz6
+         DOCTV5mQI+GgA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lee Gibson <leegib@gmail.com>, Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 73/85] qtnfmac: Fix possible buffer overflow in qtnf_event_handle_external_auth
-Date:   Wed,  5 May 2021 12:36:36 -0400
-Message-Id: <20210505163648.3462507-73-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 19/46] mac80211: clear the beacon's CRC after channel switch
+Date:   Wed,  5 May 2021 12:38:29 -0400
+Message-Id: <20210505163856.3463279-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210505163648.3462507-1-sashal@kernel.org>
-References: <20210505163648.3462507-1-sashal@kernel.org>
+In-Reply-To: <20210505163856.3463279-1-sashal@kernel.org>
+References: <20210505163856.3463279-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -42,40 +43,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lee Gibson <leegib@gmail.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 130f634da1af649205f4a3dd86cbe5c126b57914 ]
+[ Upstream commit d6843d1ee283137723b4a8c76244607ce6db1951 ]
 
-Function qtnf_event_handle_external_auth calls memcpy without
-checking the length.
-A user could control that length and trigger a buffer overflow.
-Fix by checking the length is within the maximum allowed size.
+After channel switch, we should consider any beacon with a
+CSA IE as a new switch. If the CSA IE is a leftover from
+before the switch that the AP forgot to remove, we'll get
+a CSA-to-Self.
 
-Signed-off-by: Lee Gibson <leegib@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210419145842.345787-1-leegib@gmail.com
+This caused issues in iwlwifi where the firmware saw a beacon
+with a CSA-to-Self with mode = 1 on the new channel after a
+switch. The firmware considered this a new switch and closed
+its queues. Since the beacon didn't change between before and
+after the switch, we wouldn't handle it (the CRC is the same)
+and we wouldn't let the firmware open its queues again or
+disconnect if the CSA IE stays for too long.
+
+Clear the CRC valid state after we switch to make sure that
+we handle the beacon and handle the CSA IE as required.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Link: https://lore.kernel.org/r/20210408143124.b9e68aa98304.I465afb55ca2c7d59f7bf610c6046a1fd732b4c28@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/quantenna/qtnfmac/event.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/mac80211/mlme.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/event.c b/drivers/net/wireless/quantenna/qtnfmac/event.c
-index c775c177933b..8dc80574d08d 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/event.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/event.c
-@@ -570,8 +570,10 @@ qtnf_event_handle_external_auth(struct qtnf_vif *vif,
- 		return 0;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 17a3a1c938be..44fd922cc32a 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1215,6 +1215,11 @@ static void ieee80211_chswitch_post_beacon(struct ieee80211_sub_if_data *sdata)
  
- 	if (ev->ssid_len) {
--		memcpy(auth.ssid.ssid, ev->ssid, ev->ssid_len);
--		auth.ssid.ssid_len = ev->ssid_len;
-+		int len = clamp_val(ev->ssid_len, 0, IEEE80211_MAX_SSID_LEN);
-+
-+		memcpy(auth.ssid.ssid, ev->ssid, len);
-+		auth.ssid.ssid_len = len;
- 	}
+ 	sdata->vif.csa_active = false;
+ 	ifmgd->csa_waiting_bcn = false;
++	/*
++	 * If the CSA IE is still present on the beacon after the switch,
++	 * we need to consider it as a new CSA (possibly to self).
++	 */
++	ifmgd->beacon_crc_valid = false;
  
- 	auth.key_mgmt_suite = le32_to_cpu(ev->akm_suite);
+ 	ret = drv_post_channel_switch(sdata);
+ 	if (ret) {
 -- 
 2.30.2
 
