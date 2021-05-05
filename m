@@ -2,78 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BAF3373772
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 11:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 323843737B4
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 11:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231947AbhEEJ0s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 05:26:48 -0400
-Received: from mx3.wp.pl ([212.77.101.9]:9263 "EHLO mx3.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231265AbhEEJ0s (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 05:26:48 -0400
-Received: (wp-smtpd smtp.wp.pl 10517 invoked from network); 5 May 2021 11:25:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1620206743; bh=0DHFPVUStvLSlb57dCHneQ09yY+fjSTyKhaClJA57BM=;
-          h=From:To:Cc:Subject;
-          b=F0xjsOHrhGl1LRY851fHhuQ7K0uLH7aA8YInAlqSteBEm3UhZPTYDlZP0rSnTJ1at
-           sKW82AmAauMTeQp7X590vyzmJR65wicqyryD9ctDnHNt/qxC7gUKVMi6devUWc2HWE
-           gf6WvuCWHhZMmdF3xflP7Xo4xTPSyNvk/igUwkzI=
-Received: from 89-64-4-144.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.4.144])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <rsalvaterra@gmail.com>; 5 May 2021 11:25:43 +0200
-Date:   Wed, 5 May 2021 11:25:42 +0200
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Rui Salvaterra <rsalvaterra@gmail.com>
-Cc:     lorenzo@kernel.org, kuba@kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [RFC PATCH] mt7601u: make the driver work again
-Message-ID: <20210505092542.GA757514@wp.pl>
-References: <20210504212828.815-1-rsalvaterra@gmail.com>
- <20210505045044.GA735251@wp.pl>
- <CALjTZvYZ8Rr-UFyqFststt+vG+Ei1avUvPVxQwHe72QU0NEeKA@mail.gmail.com>
+        id S232402AbhEEJkI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 05:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232412AbhEEJkI (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 05:40:08 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A7E3C061574
+        for <linux-wireless@vger.kernel.org>; Wed,  5 May 2021 02:39:10 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a4so1845409ejk.1
+        for <linux-wireless@vger.kernel.org>; Wed, 05 May 2021 02:39:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kGsxxcLWIt9rn4XQtZ2d26Fl3RzCKqpR2PfknQIsGp0=;
+        b=CHVgsJxsZrBTjOnAPO9k0MZNcdWBtFmR5bnzPFix4LOFSKMqdEaQax221Zp6kRMhZS
+         W98BZBtgtYbbyepr5wbQINPpNaNWhTdp/r8WXBw/3D54ZiVbec8nVk08xW1h/4Ew2Qsu
+         3n+i59YlO7QN8+j3wVqtdKs2hchriDBmNiDI4DA8uZZgfC0jGwSp6eJnAmGJbYv+lnoJ
+         A1meY8ZCNh3qn0D/Tjg6vEQrElq2lQgxZtbOZuIZI35N+sZgFHTu6fo/v+7DUd5cuQbU
+         ZLWLLAQPmFa1gD4xHHK1DVkgCPXn4l+M/jPkJu9WwSFWmSrG2Qzv+P4G1D0o1xhFMwN3
+         ye9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kGsxxcLWIt9rn4XQtZ2d26Fl3RzCKqpR2PfknQIsGp0=;
+        b=PehLoEuTCui8xw6YZeUOlHPkzixG+VkP80Xsn/QRYLmyW+tM+1Oju0Gl3fZbLaDTDW
+         2zAO/6qt9byj+VWBWFPmRqMRV6Qks39ZghgbH2TnkYAw5YlbMSCdVnjf6pkczRQucilx
+         9oGokNlyKUk+z8zYtsR8xh3GaSYiOCed6j4mD47dfLKtBhPUqvIk+8aRS7CZ+50UqiPo
+         BLWowF9GhsBxcKkm8/p1x70nxWqrN+gOC5NihRYgn+kUSqxV/aDtHq2ZVrZ39kDapQ8g
+         RZCH/DbYqydG6s0OCOwsy6CBM45G04Likl87wY8nhO4B9v5aon7Sqn7qhAeEKvPb0/Zc
+         KHSQ==
+X-Gm-Message-State: AOAM531Wfo7ozrG2URgBbgo+GZ8Z8AMF5MGhucsF7kY700UXKs4ni9zB
+        UZzot3hmQsdok1jMc5iZ2Tzmr5ujjK1/B1RgvA==
+X-Google-Smtp-Source: ABdhPJzC+A8pCOvW6EaWHld07TPyhTIbwP0GTfz+XMJ6ZjKMwEM+ll4LTDUgNUioRa/yYERKDOZJNrL3UfwzmXJBdhw=
+X-Received: by 2002:a17:907:3f99:: with SMTP id hr25mr23725902ejc.231.1620207549287;
+ Wed, 05 May 2021 02:39:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALjTZvYZ8Rr-UFyqFststt+vG+Ei1avUvPVxQwHe72QU0NEeKA@mail.gmail.com>
-X-WP-MailID: 31bd9950263e1bacc3489e19d628ed48
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000002 [cTGx]                               
+References: <20210504212828.815-1-rsalvaterra@gmail.com> <20210505045044.GA735251@wp.pl>
+ <CALjTZvYZ8Rr-UFyqFststt+vG+Ei1avUvPVxQwHe72QU0NEeKA@mail.gmail.com> <20210505092542.GA757514@wp.pl>
+In-Reply-To: <20210505092542.GA757514@wp.pl>
+From:   Rui Salvaterra <rsalvaterra@gmail.com>
+Date:   Wed, 5 May 2021 10:38:58 +0100
+Message-ID: <CALjTZvausPmK+AubwcV71b1Vi+JxN23fM-AfUr1+jRD+NbnW1g@mail.gmail.com>
+Subject: Re: [RFC PATCH] mt7601u: make the driver work again
+To:     Stanislaw Gruszka <stf_xl@wp.pl>
+Cc:     lorenzo@kernel.org, kuba@kernel.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+Hi again, Stanislaw,
 
-On Wed, May 05, 2021 at 09:01:52AM +0100, Rui Salvaterra wrote:
-> On Wed, 5 May 2021 at 05:50, Stanislaw Gruszka <stf_xl@wp.pl> wrote:
-> >
-> > I'm not sure if DPD calibration is needed. Maybe is ok to disable it for
-> > all MT7601U devices. However safer fix would be doing it only for
-> > devices that know to need it for work. For example: add dev->no_dpd_cal
-> > variable, set it based on USB ID (using usb_device_id->driver_info) and
-> > do not perfrom calibration when it's set.
-> 
-> Hm… the struct usb_device already contains a u32 quirks. Shouldn't it
-> be used instead, or is it used for an entirely different set of
-> quirks?
+I was meanwhile wondering if we could try and unconditionally drop the
+DPD calibration from the driver, and see if anyone complains. You said
+it yourself [1] the vendor driver has DPD calibration under
+conditional compilation (I don't know which conditions, though, I
+haven't looked at it). As far as testing is concerned, all my devices
+are 148f:7601, so it would be nice for people with other USB IDs to
+test them.
 
-Yes, those u32 quirks are used to change behaviour of usb-core module
-and we should not interfere with them. We need quirk for mt7601u driver.
+[1] https://github.com/kuba-moo/mt7601u/issues/64#issuecomment-479801642
 
-> > Also please clarify "work again" in the topic. Have your device ever
-> > worked with mt7601u driver in some older kernel version?
-> 
-> Personally, my devices never worked. I ordered a bunch of them
-> dirt-cheap from AliExpress, in early 2019. I needed one for my RPi,
-> running OpenWrt 19.07 (Linux 4.19), but it failed the same way. I
-> thought it might be a problem with the driver on ARM, I replaced it
-> with a Ralink adapter and it worked fine. I hadn't used the devices
-> until a couple of days ago, when I needed to connect a x86 machine and
-> saw the exact same error I had seen on the Pi.
+On Wed, 5 May 2021 at 10:25, Stanislaw Gruszka <stf_xl@wp.pl> wrote:
+>
+> Yes, those u32 quirks are used to change behaviour of usb-core module
+> and we should not interfere with them. We need quirk for mt7601u driver.
 
-Ok, please correct the topic of the patch when you'll be posting next
-version. 
+Right, thanks for clarifying.
 
-Thanks
-Stanislaw
+> Ok, please correct the topic of the patch when you'll be posting next
+> version.
+
+Will do.
+
+Thanks,
+Rui
