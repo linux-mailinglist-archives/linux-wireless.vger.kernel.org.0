@@ -2,143 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43FA7373BFB
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 15:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CEDB373C51
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 15:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233087AbhEENH4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 09:07:56 -0400
-Received: from mail-40133.protonmail.ch ([185.70.40.133]:59156 "EHLO
-        mail-40133.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232395AbhEENHz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 09:07:55 -0400
-Date:   Wed, 05 May 2021 13:06:44 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1620220017;
-        bh=Ksv5hc0zLM8WPCwZOTk+3YocqmO6w9TcnQh09Nl+3gI=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=o+sfvF93T3b4VO5Et1IhZoxrLfBAqbjeSsWENRQoFM1xKdxKjT5zp5asa0BUUsj6X
-         0LrudC3XnDHVB0wglu/AxU2/ZAnWOrfoqBecWHrfFJ5J5+7EnzoYEZZhWH3RHCIHVv
-         vFizzin7oTAqpcavU5yi8uXCwdv3pH43C2yBBESA=
-To:     Johannes Berg <johannes@sipsolutions.net>
-From:   Michael Yartys <michael.yartys@protonmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Reply-To: Michael Yartys <michael.yartys@protonmail.com>
-Subject: Re: Possible bug in iwlwifi
-Message-ID: <0IuWBg5tqXtBE836_CvCmwVzEXWDOGZ4dyETg5_WBWUC8bMDR9vFORGkgY6_WBqSi61GYW07WwH6aVzkc2-zhqWYp5JugyjWU_Bg1leD0vk=@protonmail.com>
-In-Reply-To: <E3bg7aVzJHQEHxAd21kjOlTrLqG0U3Jt7iBCDDTVCI4FYSdGROu-UKmRuM05cl8pxTBlo4pjeoYkTtKFFFYiezrdXVybrKs-6qBCAkZJ-sU=@protonmail.com>
-References: <qnvkj7tfHuYKasegaKViuXD0K4KlchNwXkLn4NUZu_KWsp7nEBa4LyQm7SNRm27eQLALJTyi1-xIYXMChMeuZAKS5F_q-rhb0DVVGqv0oUc=@protonmail.com> <7a5d0173cbfdef24b1e74c0bfc8f7410ff044817.camel@sipsolutions.net> <_p2InUu49ZKWc_249MDFWW8bre6iNHIJDvsoV6Rsb3oLyWj7wat48aLpnqIDVeKZKwSq-uZ1Fy_wlDwHMYJ5-JacdxF75NL5fLvpWrNCUO8=@protonmail.com> <E3bg7aVzJHQEHxAd21kjOlTrLqG0U3Jt7iBCDDTVCI4FYSdGROu-UKmRuM05cl8pxTBlo4pjeoYkTtKFFFYiezrdXVybrKs-6qBCAkZJ-sU=@protonmail.com>
+        id S233483AbhEEN0O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 09:26:14 -0400
+Received: from mx3.wp.pl ([212.77.101.9]:29324 "EHLO mx3.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231774AbhEEN0N (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 09:26:13 -0400
+Received: (wp-smtpd smtp.wp.pl 4388 invoked from network); 5 May 2021 15:25:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1620221113; bh=gERp2+BNAjE1SfvsMM8qb78FlZtlMsKZEIy8j3LL/Gw=;
+          h=From:To:Cc:Subject;
+          b=UqqUShU3Lry1OsOsO/hV2yypIzQ8FEQ8DS2H3/v6IcKCAVycOzSs7vY58C3ztUegU
+           kLNvkGdFZn5Pauv9UPSUBCMwRPHnv7wNDn/BlGTfK/RyOb29iw/1ecyYyb99Nli2RB
+           TVDded5paDF5zjMHBHRbrQvlwAMEekJuloYltNjI=
+Received: from 89-64-4-144.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.4.144])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <rsalvaterra@gmail.com>; 5 May 2021 15:25:13 +0200
+Date:   Wed, 5 May 2021 15:25:13 +0200
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     Rui Salvaterra <rsalvaterra@gmail.com>
+Cc:     lorenzo@kernel.org, kuba@kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [RFC PATCH] mt7601u: make the driver work again
+Message-ID: <20210505132513.GA759295@wp.pl>
+References: <20210504212828.815-1-rsalvaterra@gmail.com>
+ <20210505045044.GA735251@wp.pl>
+ <CALjTZvYZ8Rr-UFyqFststt+vG+Ei1avUvPVxQwHe72QU0NEeKA@mail.gmail.com>
+ <20210505092542.GA757514@wp.pl>
+ <CALjTZvausPmK+AubwcV71b1Vi+JxN23fM-AfUr1+jRD+NbnW1g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALjTZvausPmK+AubwcV71b1Vi+JxN23fM-AfUr1+jRD+NbnW1g@mail.gmail.com>
+X-WP-MailID: 28fe733e498a21b4c4762ab40731350c
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000002 [sfHx]                               
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sorry for being a bit spammy here, but I forgot that I could simply run "iw=
- scan" on one of my two routers to see how it sees the network on the other=
- router:
+Hi
 
-$ iw dev wlan1 scan -u
-BSS redacted(on wlan1)
-=09TSF: 0 usec (0d, 00:00:00)
-=09freq: 2412
-=09beacon interval: 100 TUs
-=09capability: ESS (0x0431)
-=09signal: -65.00 dBm
-=09last seen: 1930 ms ago
-=09Information elements from Probe Response frame:
-=09SSID: OpenWrt_
-=09RSN:=09 * Version: 1
-=09=09 * Group cipher: CCMP
-=09=09 * Pairwise ciphers: CCMP
-=09=09 * Authentication suites: PSK FT/PSK PSK/SHA-256 SAE FT/SAE
-=09=09 * Capabilities: 16-PTKSA-RC 1-GTKSA-RC MFP-capable (0x008c)
-=09HT capabilities:
-=09=09Capabilities: 0x19ed
-=09=09=09RX LDPC
-=09=09=09HT20
-=09=09=09SM Power Save disabled
-=09=09=09RX HT20 SGI
-=09=09=09RX HT40 SGI
-=09=09=09TX STBC
-=09=09=09RX STBC 1-stream
-=09=09=09Max AMSDU length: 7935 bytes
-=09=09=09DSSS/CCK HT40
-=09=09Maximum RX AMPDU length 65535 bytes (exponent: 0x003)
-=09=09Minimum RX AMPDU time spacing: 8 usec (0x06)
-=09=09HT TX/RX MCS rate indexes supported: 0-31
-=09HT operation:
-=09=09 * primary channel: 1
-=09=09 * secondary channel offset: no secondary
-=09=09 * STA channel width: 20 MHz
+On Wed, May 05, 2021 at 10:38:58AM +0100, Rui Salvaterra wrote:
+> Hi again, Stanislaw,
+> 
+> I was meanwhile wondering if we could try and unconditionally drop the
+> DPD calibration from the driver, and see if anyone complains. You said
+> it yourself [1] the vendor driver has DPD calibration under
+> conditional compilation (I don't know which conditions, though, I
+> haven't looked at it). As far as testing is concerned, all my devices
+> are 148f:7601, so it would be nice for people with other USB IDs to
+> test them.
+> 
+> [1] https://github.com/kuba-moo/mt7601u/issues/64#issuecomment-479801642
 
-Michael Yartys
+I don't know if it's safe to remove DPD calibration in mt7601u driver
+for all supported devices. Possibly it is. I don't have my device any
+longer, but as far I remember removing DPD was harmless for my device.
+But can not assure that this does not break support for some other
+devices or cause not easy to notice issue like performance drop on
+some specific conditions.
 
-=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
-ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
-
-On Wednesday, May 5th, 2021 at 2:37 PM, Michael Yartys <michael.yartys@prot=
-onmail.com> wrote:
-
-> =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original =
-Message =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
->
-> On Wednesday, May 5th, 2021 at 2:25 PM, Michael Yartys michael.yartys@pro=
-tonmail.com wrote:
->
-> > =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Origina=
-l Message =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=
-=90
-> >
-> > On Wednesday, May 5th, 2021 at 2:09 PM, Johannes Berg johannes@sipsolut=
-ions.net wrote:
-> >
-> > > On Wed, 2021-05-05 at 12:05 +0000, Michael Yartys wrote:
-> > >
-> > > > Hello
-> > > >
-> > > > I've been testing out WPA3/WPA2-mixed networks on my OpenWrt router=
-,
-> > > >
-> > > > and I noticed whenever I enable 802.11r the network doesn't show up=
- in
-> > > >
-> > > > the list of Wi-Fi networks in NetworkManager. I initially thought t=
-his
-> > > >
-> > > > was due to some bug with wpa_supplicant, but running "iw dev wlp18s=
-0
-> > > >
-> > > > scan" also fails to list the network. If I'm not mistaken, iw doesn=
-'t
-> > > >
-> > > > use wpa_supplicant to scan for networks, so that rules out
-> > > >
-> > > > wpa_supplicant. That means something deeper in the stack is causing
-> > > >
-> > > > this, and my guess falls on iwlwifi.
-> > >
-> > > Indeed, that's super strange.
-> > >
-> > > Are you able to see the network from another linux machine, and could
-> > >
-> > > maybe do a packet capture there? Or maybe just do
-> > >
-> > > iw wlan0 scan dump -u
-> > >
-> > > on another system that can see it?
-> >
-> > Unfortunately my other laptop also has a Intel 7260 card and can't see =
-the network. My iPad and Android phone are both able to see the network, bu=
-t they're unable to connect to it.
->
-> I don't know if it's of any help, but here's what WiFiAnalyzer reports ab=
-out the network on my Android 11 phone: https://imgur.com/a/dn0HwhG
->
-> > > johannes
+Regards
+Stanislaw
