@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C783A374453
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 19:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED0537445E
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 19:48:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236126AbhEEQ4g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 12:56:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36278 "EHLO mail.kernel.org"
+        id S236581AbhEEQ4w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 12:56:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60392 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235336AbhEEQvt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 12:51:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 82C5661978;
-        Wed,  5 May 2021 16:37:56 +0000 (UTC)
+        id S236415AbhEEQyM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 12:54:12 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6DB8D61461;
+        Wed,  5 May 2021 16:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620232677;
-        bh=oXOp+bGdugSKtD/RSmqGci0envmsKva3cXEibDMONN0=;
+        s=k20201202; t=1620232710;
+        bh=VWFWm5cUN1jSxsItT/U9HhoMnGvxh07KV69SrLyK5ns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kX1AeV48534Cegl3NYH7FmtbXLyxTgwn4nAQLJZcE4xzlDxSYCQFTTTwLSjhjSSVe
-         az2UJylXMaiAnaD6zFn4h/xinVGUeGDIiYW0NQbqAwpaEt1n1J7xVGuN83Y1dlrKX2
-         rMkOu9FvtkBRHLQ4s9eyOk8VHZkr+RuCTrnj3gE54mpQ69T968re2tNth4NX7Kf+ZU
-         i7GoUIgGWsjFvTciBmWtRoHoR4Tahd1LJtKZab4Q9X5hPAyG0owk1ocbtJojowHTfm
-         PbiVrr3OJ3wQpEWe7BqPSe/s2z4KMUfDDq/S8Dr5uE0mztIsV9bPHYcrbN9t9NANUI
-         4mW3Ignk8t7Sw==
+        b=f8LuGWZ0CFj/j9LrHALciQam79aHAsxzB46F5Zd+SozCbu61OLfawa3NqI4nGC9vc
+         uO/fjc3WFz8z1p/ui/kiXc1LIWmlvdXUkDsAGCHSEFVQTCN9wYZgJw0dLThgsmOFpB
+         HRNIo5MXFVNX8Z+bfkcQc0yRfYpWYBWmI9tvLkJx6358qnA8G+sYmDWG11db2pViYQ
+         1/GQc/1UkMp9nTwhVGwbmDIiIMkpOXk11UOQ7m55Iofw4vPCe+MiqkLeUex2CP+qkb
+         Lc26wgxXCzxoXUN1FzXA/mzNwBU8i64JP0DxAHgmyds6GrNT+/RlHLKZfJKmSO/ern
+         VpobiP70NR+hg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 47/85] iwlwifi: pcie: make cfg vs. trans_cfg more robust
-Date:   Wed,  5 May 2021 12:36:10 -0400
-Message-Id: <20210505163648.3462507-47-sashal@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 69/85] mt76: mt7615: fix entering driver-own state on mt7663
+Date:   Wed,  5 May 2021 12:36:32 -0400
+Message-Id: <20210505163648.3462507-69-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210505163648.3462507-1-sashal@kernel.org>
 References: <20210505163648.3462507-1-sashal@kernel.org>
@@ -43,112 +43,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 48a5494d6a4cb5812f0640d9515f1876ffc7a013 ]
+[ Upstream commit 5c7d374444afdeb9dd534a37c4f6c13af032da0c ]
 
-If we (for example) have a trans_cfg entry in the PCI IDs table,
-but then don't find a full cfg entry for it in the info table,
-we fall through to the code that treats the PCI ID table entry
-as a full cfg entry. This obviously causes crashes later, e.g.
-when trying to build the firmware name string.
+Fixes hardware wakeup issues
 
-Avoid such crashes by using the low bit of the pointer as a tag
-for trans_cfg entries (automatically using a macro that checks
-the type when assigning) and then checking that before trying to
-use the data as a full entry - if it's just a partial entry at
-that point, fail.
-
-Since we're adding some macro magic, also check that the type is
-in fact either struct iwl_cfg_trans_params or struct iwl_cfg,
-failing compilation ("initializer element is not constant") if
-it isn't.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20210330162204.6f69fe6e4128.I921d4ae20ef5276716baeeeda0b001cf25b9b968@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 35 +++++++++++++++----
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 500fdb0b6c42..eeb70560b746 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -73,10 +73,20 @@
- #include "iwl-prph.h"
- #include "internal.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index c31036f57aef..62a971660da7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -341,12 +341,20 @@ static int mt7615_mcu_drv_pmctrl(struct mt7615_dev *dev)
+ 	u32 addr;
+ 	int err;
  
-+#define TRANS_CFG_MARKER BIT(0)
-+#define _IS_A(cfg, _struct) __builtin_types_compatible_p(typeof(cfg),	\
-+							 struct _struct)
-+extern int _invalid_type;
-+#define _TRANS_CFG_MARKER(cfg)						\
-+	(__builtin_choose_expr(_IS_A(cfg, iwl_cfg_trans_params),	\
-+			       TRANS_CFG_MARKER,			\
-+	 __builtin_choose_expr(_IS_A(cfg, iwl_cfg), 0, _invalid_type)))
-+#define _ASSIGN_CFG(cfg) (_TRANS_CFG_MARKER(cfg) + (kernel_ulong_t)&(cfg))
+-	addr = is_mt7663(mdev) ? MT_PCIE_DOORBELL_PUSH : MT_CFG_LPCR_HOST;
++	if (is_mt7663(mdev)) {
++		/* Clear firmware own via N9 eint */
++		mt76_wr(dev, MT_PCIE_DOORBELL_PUSH, MT_CFG_LPCR_HOST_DRV_OWN);
++		mt76_poll(dev, MT_CONN_ON_MISC, MT_CFG_LPCR_HOST_FW_OWN, 0, 3000);
 +
- #define IWL_PCI_DEVICE(dev, subdev, cfg) \
- 	.vendor = PCI_VENDOR_ID_INTEL,  .device = (dev), \
- 	.subvendor = PCI_ANY_ID, .subdevice = (subdev), \
--	.driver_data = (kernel_ulong_t)&(cfg)
-+	.driver_data = _ASSIGN_CFG(cfg)
- 
- /* Hardware specific file defines the PCI IDs table for that hardware module */
- static const struct pci_device_id iwl_hw_card_ids[] = {
-@@ -1018,20 +1028,23 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 
- static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- {
--	const struct iwl_cfg_trans_params *trans =
--		(struct iwl_cfg_trans_params *)(ent->driver_data);
-+	const struct iwl_cfg_trans_params *trans;
- 	const struct iwl_cfg *cfg_7265d __maybe_unused = NULL;
- 	struct iwl_trans *iwl_trans;
- 	struct iwl_trans_pcie *trans_pcie;
- 	unsigned long flags;
- 	int i, ret;
-+	const struct iwl_cfg *cfg;
-+
-+	trans = (void *)(ent->driver_data & ~TRANS_CFG_MARKER);
-+
- 	/*
- 	 * This is needed for backwards compatibility with the old
- 	 * tables, so we don't need to change all the config structs
- 	 * at the same time.  The cfg is used to compare with the old
- 	 * full cfg structs.
- 	 */
--	const struct iwl_cfg *cfg = (struct iwl_cfg *)(ent->driver_data);
-+	cfg = (void *)(ent->driver_data & ~TRANS_CFG_MARKER);
- 
- 	/* make sure trans is the first element in iwl_cfg */
- 	BUILD_BUG_ON(offsetof(struct iwl_cfg, trans));
-@@ -1133,11 +1146,19 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- #endif
- 	/*
--	 * If we didn't set the cfg yet, assume the trans is actually
--	 * a full cfg from the old tables.
-+	 * If we didn't set the cfg yet, the PCI ID table entry should have
-+	 * been a full config - if yes, use it, otherwise fail.
- 	 */
--	if (!iwl_trans->cfg)
-+	if (!iwl_trans->cfg) {
-+		if (ent->driver_data & TRANS_CFG_MARKER) {
-+			pr_err("No config found for PCI dev %04x/%04x, rev=0x%x, rfid=0x%x\n",
-+			       pdev->device, pdev->subsystem_device,
-+			       iwl_trans->hw_rev, iwl_trans->hw_rf_id);
-+			ret = -EINVAL;
-+			goto out_free_trans;
-+		}
- 		iwl_trans->cfg = cfg;
++		addr = MT_CONN_HIF_ON_LPCTL;
++	} else {
++		addr = MT_CFG_LPCR_HOST;
 +	}
++
+ 	mt76_wr(dev, addr, MT_CFG_LPCR_HOST_DRV_OWN);
  
- 	/* if we don't have a name yet, copy name from the old cfg */
- 	if (!iwl_trans->name)
+ 	mt7622_trigger_hif_int(dev, true);
+ 
+-	addr = is_mt7663(mdev) ? MT_CONN_HIF_ON_LPCTL : MT_CFG_LPCR_HOST;
+ 	err = !mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN, 0, 3000);
+ 
+ 	mt7622_trigger_hif_int(dev, false);
 -- 
 2.30.2
 
