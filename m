@@ -2,106 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 227C8373E35
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 17:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50F68373FDF
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 May 2021 18:31:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233085AbhEEPNl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 11:13:41 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57274 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233396AbhEEPNk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 11:13:40 -0400
-Received: from mail-qv1-f70.google.com ([209.85.219.70])
-        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <krzysztof.kozlowski@canonical.com>)
-        id 1leJCc-0007Wi-SZ
-        for linux-wireless@vger.kernel.org; Wed, 05 May 2021 15:12:42 +0000
-Received: by mail-qv1-f70.google.com with SMTP id l61-20020a0c84430000b02901a9a7e363edso1874148qva.16
-        for <linux-wireless@vger.kernel.org>; Wed, 05 May 2021 08:12:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=X1HjWqOR+kfUR215smWPLY/7TlLhGL8ruSlCNeozRBc=;
-        b=BgtcuamOPrKgJcXlTzl6myyWHiBotZQYiBlWeL0rviKpBMZNpamHsxoBOvFK31N6Ig
-         05d1wWTq82JuAEB/6jsGQVjYsGbtXBKb+9FO64RcfSewv2dhXTNikNK6nk6wtCT4aE1M
-         Jq5JAPbhcNvAgNVPW0neYgI15GqtpYinuZBAjQyHSdtAb35S7HWa9Wul27R9dHh16ZKW
-         2kKtZ3CqK4Syz35N8SxW4jXiOnX/9gvYoE4sh4R+OFEHtCyf7Rf7AJIf4+D91isatanN
-         DLXC2k4KX7OSFfwj09jcke+jZbiNYz8eDzmAUJMSCGzisDPOIiOBDGsG9f8LmBmzY9IH
-         6dLA==
-X-Gm-Message-State: AOAM5324jYBJeV5KInsaBajN19v8Axp/h+/alJ7Cc90IAY8l1QGGMfYT
-        670iEOrGPChvbh10C/ZOUSh+B6LwAZRCSPQQ8AhxbJqNHTdSkammTmimm03Yvwy6TqLhrT2Bawg
-        8u5pmOH5/9lnGaJGDnNVoVIVwDe6qUSmrSdazoJU5z4xt
-X-Received: by 2002:a0c:9bda:: with SMTP id g26mr30907131qvf.44.1620227561610;
-        Wed, 05 May 2021 08:12:41 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJx888ZMZ2K4AqB7bcWuqoT4Huw9eBa+D13SKEI7rYs4cB9pvENk2aQl8ZFUbt8vW8QNRbmQnw==
-X-Received: by 2002:a0c:9bda:: with SMTP id g26mr30907112qvf.44.1620227561401;
-        Wed, 05 May 2021 08:12:41 -0700 (PDT)
-Received: from [192.168.1.4] ([45.237.49.1])
-        by smtp.gmail.com with ESMTPSA id g25sm3061117qtu.93.2021.05.05.08.12.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 May 2021 08:12:40 -0700 (PDT)
-Subject: Re: [PATCH] ARM: dts: am5729-beagleboneai: drop unused Broadcom WiFi
- properties
-To:     Robert Nelson <robertcnelson@gmail.com>
-Cc:     alexey.roslyakov@gmail.com, Drew Fustini <drew@beagleboard.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux kernel <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-References: <20210505140015.60013-1-krzysztof.kozlowski@canonical.com>
- <CAOCHtYiicw5bqaZU5g2QGJHG3DZKRQUwAr08NZHw81S9=hmrgw@mail.gmail.com>
- <7ced6d2f-7107-e612-6787-63e38e5e3edd@canonical.com>
- <CAOCHtYhPGiEX1-iBDr2SzktBZ8a_8TqYQu0NLrsqjkz48rfSaw@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Message-ID: <11b32033-0ba8-5cea-9552-60d83f1fe660@canonical.com>
-Date:   Wed, 5 May 2021 11:12:39 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S234132AbhEEQc3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 12:32:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51860 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234119AbhEEQcY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 12:32:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9AD9061176;
+        Wed,  5 May 2021 16:31:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620232287;
+        bh=GC0JSQP6TWY1b0lfwONIKL+869Qk61wRxyZRS4vVIz8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=b0Sw1VTBifF255lbkOLmJaO5Tt+/31rE0B7vguzYdVrcW3p1Gt5Wf8gFNSXLR1Aza
+         FuhxhWAAWKmc5BbDth5eWD9yQQaEvi/wJbHzytWljJG80A/gtZVXY6JMsNA0J88Cop
+         5D7TcQg7TjVDS6auIt5uESbJE7ubUa1vDVNRktKqwwkmSDFMweg2+r/3qfmn+LGOUq
+         mJD6PxT/4Zp3y9eIMlpALYLDaX8L3QfpY8SsmQld2mlMeMkBSswnDrPXlLjWvd6xG/
+         1Gr8w9HitkGy458yAeDQyOrLS0z+6NFaILVSYyMDaz7smVmShOgIswIqZz64bn+why
+         toCXgwTisQUHg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.12 001/116] ath11k: fix thermal temperature read
+Date:   Wed,  5 May 2021 12:29:29 -0400
+Message-Id: <20210505163125.3460440-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <CAOCHtYhPGiEX1-iBDr2SzktBZ8a_8TqYQu0NLrsqjkz48rfSaw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 05/05/2021 11:10, Robert Nelson wrote:
->>> I don't see the brcmfmac developers actually fixing it, as "out of
->>> tree" work for brcmfmac is 100+ patches long:
->>
->>
->> Thanks for explanation. I understand these are actually used by
->> out-of-tree driver? That's a valid reason to add them to the binding then...
->>
->>>
->>> https://www.cypress.com/documentation/software-and-drivers-archive/wifi-bt-linux-archive?source=search&cat=other
->>
->> Requires login - I am not able to get the sources.
-> 
-> Sorry Krzysztof,
-> 
-> I forgot that a login is required, here is a quick mirror (with a
-> screenshot of the page.)
-> 
-> https://rcn-ee.net/workshops/cypress-fmac/
-> 
-> Screenshot: https://rcn-ee.net/workshops/cypress-fmac/brcm.png
-> 
-> There patch with that binding:
-> 
-> https://rcn-ee.net/workshops/cypress-fmac/cypress-fmac-v5.4.18-2021_0114/cypress-patch-v5.4.18-2021_0114/cypress-patch/0002-non-upstream-add-sg-parameters-dts-parsing.patch
+From: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
 
-Thanks, I see it now!
+[ Upstream commit e3de5bb7ac1a4cb262f8768924fd3ef6182b10bb ]
 
+Fix dangling pointer in thermal temperature event which causes
+incorrect temperature read.
 
-Best regards,
-Krzysztof
+Tested-on: IPQ8074 AHB WLAN.HK.2.4.0.1-00041-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20210218182708.8844-1-pradeepc@codeaurora.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 53 +++++++++++----------------
+ 1 file changed, 21 insertions(+), 32 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index cccfd3bd4d27..ca5cda890d58 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -5417,31 +5417,6 @@ int ath11k_wmi_pull_fw_stats(struct ath11k_base *ab, struct sk_buff *skb,
+ 	return 0;
+ }
+ 
+-static int
+-ath11k_pull_pdev_temp_ev(struct ath11k_base *ab, u8 *evt_buf,
+-			 u32 len, const struct wmi_pdev_temperature_event *ev)
+-{
+-	const void **tb;
+-	int ret;
+-
+-	tb = ath11k_wmi_tlv_parse_alloc(ab, evt_buf, len, GFP_ATOMIC);
+-	if (IS_ERR(tb)) {
+-		ret = PTR_ERR(tb);
+-		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
+-		return ret;
+-	}
+-
+-	ev = tb[WMI_TAG_PDEV_TEMPERATURE_EVENT];
+-	if (!ev) {
+-		ath11k_warn(ab, "failed to fetch pdev temp ev");
+-		kfree(tb);
+-		return -EPROTO;
+-	}
+-
+-	kfree(tb);
+-	return 0;
+-}
+-
+ size_t ath11k_wmi_fw_stats_num_vdevs(struct list_head *head)
+ {
+ 	struct ath11k_fw_stats_vdev *i;
+@@ -6849,23 +6824,37 @@ ath11k_wmi_pdev_temperature_event(struct ath11k_base *ab,
+ 				  struct sk_buff *skb)
+ {
+ 	struct ath11k *ar;
+-	struct wmi_pdev_temperature_event ev = {0};
++	const void **tb;
++	const struct wmi_pdev_temperature_event *ev;
++	int ret;
++
++	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
++	if (IS_ERR(tb)) {
++		ret = PTR_ERR(tb);
++		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
++		return;
++	}
+ 
+-	if (ath11k_pull_pdev_temp_ev(ab, skb->data, skb->len, &ev) != 0) {
+-		ath11k_warn(ab, "failed to extract pdev temperature event");
++	ev = tb[WMI_TAG_PDEV_TEMPERATURE_EVENT];
++	if (!ev) {
++		ath11k_warn(ab, "failed to fetch pdev temp ev");
++		kfree(tb);
+ 		return;
+ 	}
+ 
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI,
+-		   "pdev temperature ev temp %d pdev_id %d\n", ev.temp, ev.pdev_id);
++		   "pdev temperature ev temp %d pdev_id %d\n", ev->temp, ev->pdev_id);
+ 
+-	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev.pdev_id);
++	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+ 	if (!ar) {
+-		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev.pdev_id);
++		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
++		kfree(tb);
+ 		return;
+ 	}
+ 
+-	ath11k_thermal_event_temperature(ar, ev.temp);
++	ath11k_thermal_event_temperature(ar, ev->temp);
++
++	kfree(tb);
+ }
+ 
+ static void ath11k_fils_discovery_event(struct ath11k_base *ab,
+-- 
+2.30.2
+
