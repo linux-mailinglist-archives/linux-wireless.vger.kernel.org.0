@@ -2,121 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99C8B375C0A
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 May 2021 21:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2FA1375C1B
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 May 2021 22:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234244AbhEFTx2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 May 2021 15:53:28 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:20808 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233878AbhEFTxT (ORCPT
+        id S233074AbhEFUNG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 May 2021 16:13:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231270AbhEFUNF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 May 2021 15:53:19 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1620330741; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=1iSZ9gN2YEKR2pGwgdA9DmUP9kIp4ATUhfPWsp4bGhk=; b=OL3+C2IbvEjI/ITl3TvxFSZQPGx5soLY2oEu+kvH+EYCUrEjdlFE0f3mekkUo+xspfacZU2v
- s+m3KwhToiHZ89npHvevIV90bYQ3+lQC9PsZqMxjpt1Z9jUxfgJeb+0h3PbgKYt++x+1fHH7
- Z5ShqyJIuAopzkVkv8D2cbwJF0A=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 609448df853c0a2c463228f2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 06 May 2021 19:51:59
- GMT
-Sender: bbhatt=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 57B53C43143; Thu,  6 May 2021 19:51:58 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from malabar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: bbhatt)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 10B64C433D3;
-        Thu,  6 May 2021 19:51:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 10B64C433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=bbhatt@codeaurora.org
-From:   Bhaumik Bhatt <bbhatt@codeaurora.org>
-To:     manivannan.sadhasivam@linaro.org
-Cc:     linux-arm-msm@vger.kernel.org, hemantk@codeaurora.org,
-        jhugo@codeaurora.org, linux-kernel@vger.kernel.org,
-        loic.poulain@linaro.org, linux-wireless@vger.kernel.org,
-        kvalo@codeaurora.org, ath11k@lists.infradead.org,
-        Bhaumik Bhatt <bbhatt@codeaurora.org>
-Subject: [PATCH v4 6/6] bus: mhi: core: Add range checks for BHI and BHIe
-Date:   Thu,  6 May 2021 12:51:45 -0700
-Message-Id: <1620330705-40192-7-git-send-email-bbhatt@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1620330705-40192-1-git-send-email-bbhatt@codeaurora.org>
-References: <1620330705-40192-1-git-send-email-bbhatt@codeaurora.org>
+        Thu, 6 May 2021 16:13:05 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0F15C061574
+        for <linux-wireless@vger.kernel.org>; Thu,  6 May 2021 13:12:06 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lekLr-0058f3-JY; Thu, 06 May 2021 22:12:03 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] cfg80211: remove CFG80211_MAX_NUM_DIFFERENT_CHANNELS
+Date:   Thu,  6 May 2021 22:12:00 +0200
+Message-Id: <20210506221159.d1d61db1d31c.Iac4da68d54b9f1fdc18a03586bbe06aeb9515425@changeid>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When obtaining the BHI or BHIe offsets during the power up
-preparation phase, range checks are missing. These can help
-controller drivers avoid accessing any address outside of the
-MMIO region. Ensure that mhi_cntrl->reg_len is set before MHI
-registration as it is a required field and range checks will
-fail without it.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+We no longer need to put any limits here, hardware will and
+mac80211-hwsim can do whatever it likes. The reason we had
+this was some accounting code (still mentioned in the comment)
+but that code was deleted in commit c781944b71f8 ("cfg80211:
+Remove unused cfg80211_can_use_iftype_chan()").
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/bus/mhi/core/init.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mac80211_hwsim.c | 5 -----
+ include/net/cfg80211.h                | 2 --
+ net/wireless/core.c                   | 8 --------
+ 3 files changed, 15 deletions(-)
 
-diff --git a/drivers/bus/mhi/core/init.c b/drivers/bus/mhi/core/init.c
-index 1cc2f22..aeb1e3c 100644
---- a/drivers/bus/mhi/core/init.c
-+++ b/drivers/bus/mhi/core/init.c
-@@ -885,7 +885,8 @@ int mhi_register_controller(struct mhi_controller *mhi_cntrl,
- 	if (!mhi_cntrl || !mhi_cntrl->cntrl_dev || !mhi_cntrl->regs ||
- 	    !mhi_cntrl->runtime_get || !mhi_cntrl->runtime_put ||
- 	    !mhi_cntrl->status_cb || !mhi_cntrl->read_reg ||
--	    !mhi_cntrl->write_reg || !mhi_cntrl->nr_irqs || !mhi_cntrl->irq)
-+	    !mhi_cntrl->write_reg || !mhi_cntrl->nr_irqs ||
-+	    !mhi_cntrl->irq || !mhi_cntrl->reg_len)
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index fa7d4c20dc13..8fe42114d8d6 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -3791,11 +3791,6 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
  		return -EINVAL;
- 
- 	ret = parse_config(mhi_cntrl, config);
-@@ -1077,6 +1078,13 @@ int mhi_prepare_for_power_up(struct mhi_controller *mhi_cntrl)
- 		dev_err(dev, "Error getting BHI offset\n");
- 		goto error_reg_offset;
- 	}
-+
-+	if (bhi_off >= mhi_cntrl->reg_len) {
-+		dev_err(dev, "BHI offset: 0x%x is out of range: 0x%zx\n",
-+			bhi_off, mhi_cntrl->reg_len);
-+		ret = -EINVAL;
-+		goto error_reg_offset;
-+	}
- 	mhi_cntrl->bhi = mhi_cntrl->regs + bhi_off;
- 
- 	if (mhi_cntrl->fbc_download || mhi_cntrl->rddm_size) {
-@@ -1086,6 +1094,14 @@ int mhi_prepare_for_power_up(struct mhi_controller *mhi_cntrl)
- 			dev_err(dev, "Error getting BHIE offset\n");
- 			goto error_reg_offset;
- 		}
-+
-+		if (bhie_off >= mhi_cntrl->reg_len) {
-+			dev_err(dev,
-+				"BHIe offset: 0x%x is out of range: 0x%zx\n",
-+				bhie_off, mhi_cntrl->reg_len);
-+			ret = -EINVAL;
-+			goto error_reg_offset;
-+		}
- 		mhi_cntrl->bhie = mhi_cntrl->regs + bhie_off;
  	}
  
+-	if (param.channels > CFG80211_MAX_NUM_DIFFERENT_CHANNELS) {
+-		GENL_SET_ERR_MSG(info, "too many channels specified");
+-		return -EINVAL;
+-	}
+-
+ 	if (info->attrs[HWSIM_ATTR_NO_VIF])
+ 		param.no_vif = true;
+ 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 394c4269901c..473d291b9017 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1244,8 +1244,6 @@ struct cfg80211_csa_settings {
+ 	u8 count;
+ };
+ 
+-#define CFG80211_MAX_NUM_DIFFERENT_CHANNELS 10
+-
+ /**
+  * struct iface_combination_params - input parameters for interface combinations
+  *
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index a2785379df6e..04b8fbae3943 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -576,14 +576,6 @@ static int wiphy_verify_combinations(struct wiphy *wiphy)
+ 		if (WARN_ON(!c->num_different_channels))
+ 			return -EINVAL;
+ 
+-		/*
+-		 * Put a sane limit on maximum number of different
+-		 * channels to simplify channel accounting code.
+-		 */
+-		if (WARN_ON(c->num_different_channels >
+-				CFG80211_MAX_NUM_DIFFERENT_CHANNELS))
+-			return -EINVAL;
+-
+ 		/* DFS only works on one channel. */
+ 		if (WARN_ON(c->radar_detect_widths &&
+ 			    (c->num_different_channels > 1)))
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.30.2
 
