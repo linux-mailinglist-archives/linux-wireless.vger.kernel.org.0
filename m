@@ -2,93 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABE0375566
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 May 2021 16:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A65643759AB
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 May 2021 19:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234539AbhEFOK0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 May 2021 10:10:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:23161 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234490AbhEFOKY (ORCPT
+        id S236310AbhEFRuM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 May 2021 13:50:12 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:44408 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236042AbhEFRuL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 May 2021 10:10:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1620310166;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Q9h6o9ctEHc8iY8TpOG1bBkRBecU/A/rUbR2Rl7sVlc=;
-        b=hJ5w5FJoRpa8otNMNgA5Lw4lue63jvCrA7Y9ha8vucYh/9G0rbMYq9QstjUfCZXoJ1xHb+
-        HtPJhqkbwpI7Cr5oDZC+lZOlyrKf7TGD6EZb/7aCXI7c9JvcIZ0Y21EGHHPm1xneqerRJK
-        wcqvBx8BPEbbvWFU0bNkU2GE7XDZwJ8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-150-lKQauTevPp6sFzeJ1LyBoA-1; Thu, 06 May 2021 10:09:21 -0400
-X-MC-Unique: lKQauTevPp6sFzeJ1LyBoA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Thu, 6 May 2021 13:50:11 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1620323353; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=ft7TUtBEdfOrFnaq7PjoD6JGt/OipKZ96jhb7jcLtCg=;
+ b=PwdDiG95yUGm4CRPLoUfM+cqLDhAuArzU97WbKN2o7DhWSfJIiTSY7GEB2GNjfaLv3Mjz/wK
+ iAfgiiemGB0/lWIgo8zLg6Qn1mUYFaEq1j8oib4AkjK9xFXQRFHlxnLNgytbCko7p/wW+9SV
+ IKdj3oOWDcWRthKlHysekh+f+v8=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 60942c129a9ff96d95b77c64 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 06 May 2021 17:49:06
+ GMT
+Sender: tmariyap=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CD206C4338A; Thu,  6 May 2021 17:49:06 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4B388C73A3;
-        Thu,  6 May 2021 14:09:20 +0000 (UTC)
-Received: from [10.10.110.34] (unknown [10.10.110.34])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id EC71610016FD;
-        Thu,  6 May 2021 14:09:18 +0000 (UTC)
-Message-ID: <24356aa7737d5d0bbf9481bbba89b4248811ebce.camel@gapps.redhat.com>
-Subject: Re: [PATCH V2 07/16] net: iosm: mbim control device
-From:   Dan Williams <dcbw@gapps.redhat.com>
-To:     "Kumar, M Chetan" <m.chetan.kumar@intel.com>,
-        Loic Poulain <loic.poulain@linaro.org>
-Cc:     Network Development <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "Sudi, Krishna C" <krishna.c.sudi@intel.com>,
-        linuxwwan <linuxwwan@intel.com>
-Date:   Thu, 06 May 2021 09:09:18 -0500
-In-Reply-To: <fd6b57f1e3b1444383ad5387de36e1cc@intel.com>
-References: <20210420161310.16189-1-m.chetan.kumar@intel.com>
-         <20210420161310.16189-8-m.chetan.kumar@intel.com>
-         <CAMZdPi8h7ubOvUBaF2wh87UBwzJz3GpQ3gZwSXy0miV7Aw2NXw@mail.gmail.com>
-         <fd6b57f1e3b1444383ad5387de36e1cc@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        (Authenticated sender: tmariyap)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7EE1BC433D3;
+        Thu,  6 May 2021 17:49:06 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Thu, 06 May 2021 23:19:06 +0530
+From:   Thiraviyam Mariyappan <tmariyap@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCHv2] mac80211: increment rx stats according to USES_RSS flag
+In-Reply-To: <ec30381c062e3eb87abb724641a15331cfc3d11c.camel@sipsolutions.net>
+References: <1613563010-1489-1-git-send-email-tmariyap@codeaurora.org>
+ (sfid-20210217_125904_154301_738B3086)
+ <c0aef41d2ecf09188de372fe4f7d6b1954e54e07.camel@sipsolutions.net>
+ <1ee8d562986128767c037d20aedb96a5@codeaurora.org>
+ <ec30381c062e3eb87abb724641a15331cfc3d11c.camel@sipsolutions.net>
+Message-ID: <df6e33fe198e179f1c1f31ca6d55e995@codeaurora.org>
+X-Sender: tmariyap@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-05-06 at 10:44 +0000, Kumar, M Chetan wrote:
-> Hi Loic,
+On 2021-04-23 13:28, Johannes Berg wrote:
+> On Wed, 2021-04-21 at 22:18 +0530, Thiraviyam Mariyappan wrote:
+>> In case of Mesh fast_rx is not applicable, but still USES_RSS can be
+>> enabled from driver when parallel RX is supported by HW/Driver,
+>> right? 
 > 
-> > > 
-> > > Implements a char device for MBIM protocol communication &
-> > > provides a
-> > > simple IOCTL for max transfer buffer size configuration.
-> > > 
-> > > Signed-off-by: M Chetan Kumar <m.chetan.kumar@intel.com>
-> > 
-> > Now that the initial wwan framework support landed, could you
-> > migrate to it
-> > for creating the MBIM 'WWAN port' instead of creating yet another
-> > char
-> > driver? I see you introduced an IOCTL for packet size, I see no
-> > objection to
-> > add that in the wwan core.
-> > 
+> Yes, I guess that's true.
 > 
-> Sure, we have started the migration to MBIM 'WWAN port'. The next
-> version of patch
-> would contain these adaptations.
+>> Hence checked for USES_RSS support to update per cpu stats.Please
+>> correct me if the meaning of USES_RSS is misunderstood and it applies
+>> only when fast_rx for a STA is enabled.
+>> 
 > 
-> If wwan core supports IOCTL for packet size, then we shall remove
-> that piece of
-> implementation in driver code.
-
-There has got to be a better way to do that than an ioctl. ioctls are
-not looked on favorably these days. Usually it's sysfs files or netlink
-config instead.
-
-Dan
-
+> Well, actually using multi-queue is pointless or even 
+> counter-productive
+> when you don't have fast-RX, since then you'll run into a common lock,
+> and doing much processing on multiple CPUs but under a common lock 
+> might
+> well be worse than doing it on a single CPU in the first place, since
+> you'll bounce the lock around all the time.
+> 
+> However, you're right that the driver might generally advertise
+> USES_RSS, but then not do it for mesh, but that throws off some
+> statistics.
+> 
+> Something like this might then be a much better fix though?
+Below fix good to me and working fine.
+> 
+> 
+> diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+> index ec6973ee88ef..f87e883862d9 100644
+> --- a/net/mac80211/sta_info.c
+> +++ b/net/mac80211/sta_info.c
+> @@ -2092,7 +2092,7 @@ sta_get_last_rx_stats(struct sta_info *sta)
+>  	struct ieee80211_local *local = sta->local;
+>  	int cpu;
+> 
+> -	if (!ieee80211_hw_check(&local->hw, USES_RSS))
+> +	if (!sta->pcpu_rx_stats)
+>  		return stats;
+> 
+>  	for_each_possible_cpu(cpu) {
+> @@ -2192,9 +2192,7 @@ static void sta_set_tidstats(struct sta_info 
+> *sta,
+>  	int cpu;
+> 
+>  	if (!(tidstats->filled & BIT(NL80211_TID_STATS_RX_MSDU))) {
+> -		if (!ieee80211_hw_check(&local->hw, USES_RSS))
+> -			tidstats->rx_msdu +=
+> -				sta_get_tidstats_msdu(&sta->rx_stats, tid);
+> +		tidstats->rx_msdu += sta_get_tidstats_msdu(&sta->rx_stats, tid);
+> 
+>  		if (sta->pcpu_rx_stats) {
+>  			for_each_possible_cpu(cpu) {
+> @@ -2308,8 +2306,7 @@ void sta_set_sinfo(struct sta_info *sta, struct
+> station_info *sinfo,
+> 
+>  	if (!(sinfo->filled & (BIT_ULL(NL80211_STA_INFO_RX_BYTES64) |
+>  			       BIT_ULL(NL80211_STA_INFO_RX_BYTES)))) {
+> -		if (!ieee80211_hw_check(&local->hw, USES_RSS))
+> -			sinfo->rx_bytes += sta_get_stats_bytes(&sta->rx_stats);
+> +		sinfo->rx_bytes += sta_get_stats_bytes(&sta->rx_stats);
+> 
+>  		if (sta->pcpu_rx_stats) {
+>  			for_each_possible_cpu(cpu) {
+> 
+> 
+> johannes
