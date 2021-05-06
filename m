@@ -2,149 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C61B374CE9
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 May 2021 03:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 835D4374E4A
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 May 2021 06:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229752AbhEFBi5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 21:38:57 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:53276 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229465AbhEFBi4 (ORCPT
+        id S229872AbhEFESJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 May 2021 00:18:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52348 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229622AbhEFESI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 21:38:56 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1461bjL33029975, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1461bjL33029975
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 6 May 2021 09:37:45 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 6 May 2021 09:37:44 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 6 May 2021
- 09:37:44 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <ihuguet@redhat.com>
-Subject: [PATCH] rtlwifi: 8821a: btcoexist: add comments to explain why if-else branches are identical
-Date:   Thu, 6 May 2021 09:37:38 +0800
-Message-ID: <20210506013738.5943-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.21.0
+        Thu, 6 May 2021 00:18:08 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F4AC061574;
+        Wed,  5 May 2021 21:17:11 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id k19so4189240pfu.5;
+        Wed, 05 May 2021 21:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=cUcH8PCyuKxxWH0B21SELBwroBtwWU2e6ZCH9Q1x7rE=;
+        b=rp9odEzzlhnx82O9YcW7k9uR9NfXdvb8wb3fXQaAUW/G7/OCn0xVyOc+rSHAWTCy0x
+         L8wkrb3OuMMIuFtrNFY6YqiGj+w31uHljZ22HNp6nADLSBPoDdCb0fjFBQrig2DRGNNR
+         z650tScq37rJkRw5OB7QjC02w+qHh2nSCYD8gt12iXvTXS9DApBoJ2xMQPtovv3Hll1/
+         oHDnc1/zjNvo7Ea3VI/3lm2PR1BCzlBIhoEUbWU4a0nBqSZxap8U0kMwu+b/x3iu5TIu
+         D1r85ZZ5jEUFuDWTElSv4mOvLs5b7oAHNpfBkt/2KJDlvsThNFHHIZo/UsPnJhF57+At
+         xjww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=cUcH8PCyuKxxWH0B21SELBwroBtwWU2e6ZCH9Q1x7rE=;
+        b=dXoMVZyN0dBi2TeoJmXsvmb99WlvWxL/UBkQxOfFJoyILfKVvqKk+dHo4IsUjk8kN4
+         CMWWZALYId6dwiBVT1k1erw4Ci8thtu3AYFQQ9beg8K1ROHe1tsAC+G2cj+lqw93wNDI
+         ko489SndFiVSz6XJBPEFe6BfpQupFnFFrvTxGdAv80UB9Y9Cue4b7CTQjCtrvF6TuSRH
+         43TBk7Nl3eEHpbwSi42qS4bv3T3NxowIBV+0sHaoRaagl//HpmVmOZS+iWdUHJ8GKYP3
+         YtZkLMtp8rKAnzl0aSDF0JNppDQsXgZ8RhPqlQI+qyGjceAMqObZnpKfOA4b56PJMSXm
+         TZLQ==
+X-Gm-Message-State: AOAM531H4N9XWR4+9oV36S7fr1680Cpzb8HSvdnFTIC1OAVfalosZgpY
+        eLIyu58Vp4TKN4o13bIjk0O5mCapNA8=
+X-Google-Smtp-Source: ABdhPJxWiCMxR3OdZ8ocwtGr+7peeUVDXrYe/IuxOxB3UAgxPnUzqRhQM1QGrXneL5YZIbXVcbAd9g==
+X-Received: by 2002:a62:ee09:0:b029:211:1113:2e7c with SMTP id e9-20020a62ee090000b029021111132e7cmr2262101pfi.49.1620274630665;
+        Wed, 05 May 2021 21:17:10 -0700 (PDT)
+Received: from user ([2001:4490:4409:27b0:f9dc:322b:84de:6680])
+        by smtp.gmail.com with ESMTPSA id m188sm672343pfm.167.2021.05.05.21.17.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 May 2021 21:17:09 -0700 (PDT)
+Date:   Thu, 6 May 2021 09:47:03 +0530
+From:   Saurav Girepunje <saurav.girepunje@gmail.com>
+To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     saurav.girepunje@hotmail.com
+Subject: [PATCH] net: mac80211: remove unused local variable
+Message-ID: <20210506041703.GA5681@user>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzUvNSCkVaTIIDEwOjU1OjAw?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/06/2021 01:13:53
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163502 [May 05 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_all_Bitcoin, bb}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 05/06/2021 01:17:00
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/06/2021 01:23:55
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 10
-X-KSE-AntiSpam-Info: Lua profiles 163502 [May 05 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
-X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
-X-KSE-AntiSpam-Info: {Tracking_all_Bitcoin, bb}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 10
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 05/06/2021 01:27:00
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The coexistence programmers preserve the same code of branches
-intentionally to fine tune performance easier, because bandwidth and RSSI
-strength are highly related to coexistence performance. The basic rule of
-performance tuning is to assign most time slot to BT for realtime
-application, and WiFi uses remaining time slot but don't lower than low
-bound.
+In ieee80211_process_addba_request() first argument is never
+used.
 
-Reported-by: Inigo Huguet <ihuguet@redhat.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
 ---
- .../net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c  | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/mac80211/agg-rx.c      | 3 +--
+ net/mac80211/ieee80211_i.h | 3 +--
+ net/mac80211/iface.c       | 4 ++--
+ 3 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
-index 447caa4aad32..b998a0eb5f09 100644
---- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
-@@ -2810,6 +2810,7 @@ static void btc8821a2ant_action_a2dp(struct btc_coexist *btcoexist)
- 					      0x4);
- 	}
- 
-+	/* preserve identical branches for further fine-tuning */
- 	if ((bt_rssi_state == BTC_RSSI_STATE_HIGH) ||
- 	    (bt_rssi_state == BTC_RSSI_STATE_STAY_HIGH)) {
- 		btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 23);
-@@ -2944,6 +2945,7 @@ static void btc8821a2ant_action_pan_edr(struct btc_coexist *btcoexist)
- 					      0x4);
- 	}
- 
-+	/* preserve identical branches for further fine-tuning */
- 	if ((bt_rssi_state == BTC_RSSI_STATE_HIGH) ||
- 	    (bt_rssi_state == BTC_RSSI_STATE_STAY_HIGH))
- 		btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 26);
-@@ -3132,6 +3134,7 @@ static void btc8821a2ant_action_pan_edr_hid(struct btc_coexist *btcoexist)
- 
- 	btcoexist->btc_get(btcoexist, BTC_GET_U4_WIFI_BW, &wifi_bw);
- 
-+	/* preserve identical branches for further fine-tuning */
- 	if (wifi_bw == BTC_WIFI_BW_LEGACY) {
- 		/* for HID at 11b/g mode */
- 		btc8821a2ant_coex_table(btcoexist, NORMAL_EXEC, 0x55ff55ff,
-@@ -3321,6 +3324,7 @@ static void btc8821a2ant_action_hid_a2dp(struct btc_coexist *btcoexist)
- 					      0x4);
- 	}
- 
-+	/* preserve identical branches for further fine-tuning */
- 	if ((bt_rssi_state == BTC_RSSI_STATE_HIGH) ||
- 	    (bt_rssi_state == BTC_RSSI_STATE_STAY_HIGH)) {
- 		btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 23);
--- 
-2.21.0
+diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+index cce28e3b2232..3075570e7968 100644
+--- a/net/mac80211/agg-rx.c
++++ b/net/mac80211/agg-rx.c
+@@ -471,8 +471,7 @@ static void __ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 	mutex_unlock(&sta->ampdu_mlme.mtx);
+ }
+
+-void ieee80211_process_addba_request(struct ieee80211_local *local,
+-				     struct sta_info *sta,
++void ieee80211_process_addba_request(struct sta_info *sta,
+ 				     struct ieee80211_mgmt *mgmt,
+ 				     size_t len)
+ {
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 8fcbaa1eedf3..9e3e5aaddaf6 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1859,8 +1859,7 @@ void ieee80211_process_addba_resp(struct ieee80211_local *local,
+ 				  struct sta_info *sta,
+ 				  struct ieee80211_mgmt *mgmt,
+ 				  size_t len);
+-void ieee80211_process_addba_request(struct ieee80211_local *local,
+-				     struct sta_info *sta,
++void ieee80211_process_addba_request(struct sta_info *sta,
+ 				     struct ieee80211_mgmt *mgmt,
+ 				     size_t len);
+
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 7032a2b59249..4fe599bf9f9c 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1351,8 +1351,8 @@ static void ieee80211_iface_work(struct work_struct *work)
+ 			if (sta) {
+ 				switch (mgmt->u.action.u.addba_req.action_code) {
+ 				case WLAN_ACTION_ADDBA_REQ:
+-					ieee80211_process_addba_request(
+-							local, sta, mgmt, len);
++					ieee80211_process_addba_request(sta,
++									mgmt, len);
+ 					break;
+ 				case WLAN_ACTION_ADDBA_RESP:
+ 					ieee80211_process_addba_resp(local, sta,
+--
+2.25.1
 
