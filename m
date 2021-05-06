@@ -2,84 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19084374C4F
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 May 2021 02:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C61B374CE9
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 May 2021 03:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229801AbhEFA0j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 May 2021 20:26:39 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:19120 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229497AbhEFA0i (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 May 2021 20:26:38 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1620260741; h=Content-Transfer-Encoding: Content-Type:
- In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
- Subject: Sender; bh=t86AX5J1LPQ0F9dkoMI/7zO/SFpx4ZgWBgEKui4KQrU=; b=glhR/5UBvDtBDTrEfT2VCWKqQRd67a+dQr29CWrN4oK7OCPBrnvB21QvfDAhHZi4FuMyTzMy
- Frl62HfVYe/e+o2NXEb7uEPig7Qmg+lm3PTri04/i4kxcSa+kRGK+VBgv7QIApQAF1A8vjOP
- bZSuu38NULmsiOHmVfaKuvryL0U=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 6093377879b6f9e57bf7b07f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 06 May 2021 00:25:28
- GMT
-Sender: hemantk=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 40F48C43460; Thu,  6 May 2021 00:25:28 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        NICE_REPLY_A,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from [10.46.162.249] (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: hemantk)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 27A70C433F1;
-        Thu,  6 May 2021 00:25:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 27A70C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=hemantk@codeaurora.org
-Subject: Re: [PATCH v3 1/6] bus: mhi: core: Set BHI/BHIe offsets on power up
- preparation
-To:     Bhaumik Bhatt <bbhatt@codeaurora.org>,
-        manivannan.sadhasivam@linaro.org
-Cc:     linux-arm-msm@vger.kernel.org, jhugo@codeaurora.org,
-        linux-kernel@vger.kernel.org, loic.poulain@linaro.org,
-        linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
-        ath11k@lists.infradead.org
-References: <1620234501-30461-1-git-send-email-bbhatt@codeaurora.org>
- <1620234501-30461-2-git-send-email-bbhatt@codeaurora.org>
-From:   Hemant Kumar <hemantk@codeaurora.org>
-Message-ID: <d4371467-f9ea-a143-a1a0-3ce4bc86c6ed@codeaurora.org>
-Date:   Wed, 5 May 2021 17:25:26 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S229752AbhEFBi5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 May 2021 21:38:57 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:53276 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229465AbhEFBi4 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 May 2021 21:38:56 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1461bjL33029975, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1461bjL33029975
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 6 May 2021 09:37:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 6 May 2021 09:37:44 +0800
+Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 6 May 2021
+ 09:37:44 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <ihuguet@redhat.com>
+Subject: [PATCH] rtlwifi: 8821a: btcoexist: add comments to explain why if-else branches are identical
+Date:   Thu, 6 May 2021 09:37:38 +0800
+Message-ID: <20210506013738.5943-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <1620234501-30461-2-git-send-email-bbhatt@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.146]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzUvNSCkVaTIIDEwOjU1OjAw?=
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/06/2021 01:13:53
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Info: Lua profiles 163502 [May 05 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
+X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
+X-KSE-AntiSpam-Info: {Tracking_all_Bitcoin, bb}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
+X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/06/2021 01:17:00
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/06/2021 01:23:55
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Info: Lua profiles 163502 [May 05 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
+X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
+X-KSE-AntiSpam-Info: {Tracking_all_Bitcoin, bb}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/06/2021 01:27:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The coexistence programmers preserve the same code of branches
+intentionally to fine tune performance easier, because bandwidth and RSSI
+strength are highly related to coexistence performance. The basic rule of
+performance tuning is to assign most time slot to BT for realtime
+application, and WiFi uses remaining time slot but don't lower than low
+bound.
 
+Reported-by: Inigo Huguet <ihuguet@redhat.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ .../net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c  | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-On 5/5/21 10:08 AM, Bhaumik Bhatt wrote:
-> Set the BHI and/or BHIe offsets in mhi_prepare_for_power_up(),
-> rearrange the function, and remove the equivalent from
-> mhi_async_power_up(). This helps consolidate multiple checks
-> in different parts of the driver and can help MHI fail early on
-> before power up begins if the offsets are not read correctly.
-> 
-> Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
-> Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-
-Reviewed-by: Hemant Kumar <hemantk@codeaurora.org>
-
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
+index 447caa4aad32..b998a0eb5f09 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
+@@ -2810,6 +2810,7 @@ static void btc8821a2ant_action_a2dp(struct btc_coexist *btcoexist)
+ 					      0x4);
+ 	}
+ 
++	/* preserve identical branches for further fine-tuning */
+ 	if ((bt_rssi_state == BTC_RSSI_STATE_HIGH) ||
+ 	    (bt_rssi_state == BTC_RSSI_STATE_STAY_HIGH)) {
+ 		btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 23);
+@@ -2944,6 +2945,7 @@ static void btc8821a2ant_action_pan_edr(struct btc_coexist *btcoexist)
+ 					      0x4);
+ 	}
+ 
++	/* preserve identical branches for further fine-tuning */
+ 	if ((bt_rssi_state == BTC_RSSI_STATE_HIGH) ||
+ 	    (bt_rssi_state == BTC_RSSI_STATE_STAY_HIGH))
+ 		btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 26);
+@@ -3132,6 +3134,7 @@ static void btc8821a2ant_action_pan_edr_hid(struct btc_coexist *btcoexist)
+ 
+ 	btcoexist->btc_get(btcoexist, BTC_GET_U4_WIFI_BW, &wifi_bw);
+ 
++	/* preserve identical branches for further fine-tuning */
+ 	if (wifi_bw == BTC_WIFI_BW_LEGACY) {
+ 		/* for HID at 11b/g mode */
+ 		btc8821a2ant_coex_table(btcoexist, NORMAL_EXEC, 0x55ff55ff,
+@@ -3321,6 +3324,7 @@ static void btc8821a2ant_action_hid_a2dp(struct btc_coexist *btcoexist)
+ 					      0x4);
+ 	}
+ 
++	/* preserve identical branches for further fine-tuning */
+ 	if ((bt_rssi_state == BTC_RSSI_STATE_HIGH) ||
+ 	    (bt_rssi_state == BTC_RSSI_STATE_STAY_HIGH)) {
+ 		btc8821a2ant_ps_tdma(btcoexist, NORMAL_EXEC, true, 23);
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.21.0
+
