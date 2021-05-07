@@ -2,69 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB65F3769D9
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 May 2021 20:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5239C376BC4
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 May 2021 23:31:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbhEGSOO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 May 2021 14:14:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49752 "EHLO
+        id S229760AbhEGVcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 May 2021 17:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbhEGSOM (ORCPT
+        with ESMTP id S229696AbhEGVcb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 May 2021 14:14:12 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3533C061761
-        for <linux-wireless@vger.kernel.org>; Fri,  7 May 2021 11:13:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=Tk6vZF4201Rap7RaOcrF0PDjB5oEwR4lv0xdhdEPs30=; b=lvfBeYQjlI8BhBoesRq24vANOA
-        Rbil3s4pDuDNk8C9K7qgN/+B0PFlZo9EpfG7ewOc0ypkqCW1pSN8gAltTQO0/P0hdnRZtXsYZxDWD
-        fhk5VOj8eK2cYkS/vePWzYZJF57mXg4hVarQHtroBp1iuJBNBvL4mIORQROGEBr3sVEg=;
-Received: from p4ff13bc6.dip0.t-ipconnect.de ([79.241.59.198] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lf4yM-0001Yq-Ff
-        for linux-wireless@vger.kernel.org; Fri, 07 May 2021 20:13:10 +0200
-From:   Felix Fietkau <nbd@nbd.name>
+        Fri, 7 May 2021 17:32:31 -0400
+Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C82DC0613ED;
+        Fri,  7 May 2021 14:31:31 -0700 (PDT)
+Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id F2F4182E47;
+        Fri,  7 May 2021 23:31:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1620423084;
+        bh=o4/gHmXu58eNBuIOxxGt66kzOFcAYTx++O+I5qwK17s=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iBdNCaACtLdoOnLiCyqHIfxkaEt/A7E34W/t8RtkKklLoqicVA7kkIYOwx+4V7jAm
+         hQu4btPU5xzzmQ4ZrW2lU7LheYFJpNNnC6f0UvurLPD2ZV5dzU00NZx3hvs/uvFcO/
+         shEsE9TFV+AVnR735rCI/YoCS/85rIYvLzWHLaoJAzF2sJU5+q5XCqKGDopn/p6/BZ
+         IdAO3Fya+4kJPR8Gmo98byWBtiP+MlD4/izqWXRPYViGcJ8uIR//JRBr55YSbNxlJc
+         7/zaoTPg/KuPhfCvDUFgdN8kcJ3GRuKAryfnrFQueIMTnqLIloIDEpXSF/1sCdkGGd
+         +ozUBr5BnwzIg==
+From:   Marek Vasut <marex@denx.de>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2 2/2] mt76: mt7915: disable ASPM
-Date:   Fri,  7 May 2021 20:11:08 +0200
-Message-Id: <20210507181108.55095-2-nbd@nbd.name>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210507181108.55095-1-nbd@nbd.name>
-References: <20210507181108.55095-1-nbd@nbd.name>
+Cc:     Marek Vasut <marex@denx.de>,
+        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Karun Eagalapati <karun256@gmail.com>,
+        Martin Kepplinger <martink@posteo.de>,
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH] rsi: Assign beacon rate settings to the correct rate_info descriptor field
+Date:   Fri,  7 May 2021 23:31:05 +0200
+Message-Id: <20210507213105.140138-1-marex@denx.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.102.4 at phobos.denx.de
+X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The same is done on the other chips already, so it is very likely needed
-on MT7915 as well
+The RSI_RATE_x bits must be assigned to struct rsi_data_desc rate_info
+field. The rest of the driver does it correctly, except this one place,
+so fix it. This is also aligned with the RSI downstream vendor driver.
+Without this patch, an AP operating at 5 GHz does not transmit any
+beacons at all, this patch fixes that.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: d26a9559403c ("rsi: add beacon changes for AP mode")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Amitkumar Karwar <amit.karwar@redpinesignals.com>
+Cc: Angus Ainslie <angus@akkea.ca>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: Karun Eagalapati <karun256@gmail.com>
+Cc: Martin Kepplinger <martink@posteo.de>
+Cc: Prameela Rani Garnepudi <prameela.j04cs@gmail.com>
+Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Cc: Siva Rebbagondla <siva8118@gmail.com>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/rsi/rsi_91x_hal.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-index aae2fb3ccad1..340b364da5f0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-@@ -255,6 +255,8 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/net/wireless/rsi/rsi_91x_hal.c b/drivers/net/wireless/rsi/rsi_91x_hal.c
+index ce9892152f4d..ab837921d9a4 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_hal.c
++++ b/drivers/net/wireless/rsi/rsi_91x_hal.c
+@@ -470,9 +470,9 @@ int rsi_prepare_beacon(struct rsi_common *common, struct sk_buff *skb)
+ 	}
  
-+	mt76_pci_disable_aspm(pdev);
-+
- 	if (id->device == 0x7916)
- 		return mt7915_pci_hif2_probe(pdev);
+ 	if (common->band == NL80211_BAND_2GHZ)
+-		bcn_frm->bbp_info |= cpu_to_le16(RSI_RATE_1);
++		bcn_frm->rate_info |= cpu_to_le16(RSI_RATE_1);
+ 	else
+-		bcn_frm->bbp_info |= cpu_to_le16(RSI_RATE_6);
++		bcn_frm->rate_info |= cpu_to_le16(RSI_RATE_6);
  
+ 	if (mac_bcn->data[tim_offset + 2] == 0)
+ 		bcn_frm->frame_info |= cpu_to_le16(RSI_DATA_DESC_DTIM_BEACON);
 -- 
-2.30.1
+2.30.2
 
