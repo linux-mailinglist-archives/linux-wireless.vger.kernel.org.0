@@ -2,178 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83E5B37690E
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 May 2021 18:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 722BF3769D8
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 May 2021 20:13:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238418AbhEGQv3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 May 2021 12:51:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46264 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233797AbhEGQv2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 May 2021 12:51:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8BF8E61008;
-        Fri,  7 May 2021 16:50:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620406228;
-        bh=h0NjiP6huaR2fcV3rn43tyHR6+TzHz9fGQ6UL5P0nbU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=KClsT50XtT9AAjyi3PmB3wTbD61MU20Q9H0oMZgggzxh8ST3plKdPDEIoDndntBoz
-         USsMYTS8G3oqR4Cu2yqt5kXaIokDRneMF0e9w7iNmFhNJQxDV/ed7gA3Tmy6nm628x
-         Liwbo2Y+RYNqsGKHWBrJTZ0kmpTha64lFrkaKrwzWJAT4HjGhaUijE0Vlb8h+9LYof
-         8LxK1zrQH49ZlgYT4XvIdwInZxIgjFfZ2pMLdvUgcd0RFgRwjbCVTkQBQpqMBHDTwW
-         +MtiJj3TA7EW83WsWixUiXxRb4+rQ6CGMOHrmmdT+QsphuJU/X3KI3RArGtTJx+c2C
-         9YHIk6+UV1SpA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        luca.trombin@gmail.com, stf_xl@wp.pl
-Subject: [PATCH 5.13] mt76: mt76x0e: fix device hang during suspend/resume
-Date:   Fri,  7 May 2021 18:50:19 +0200
-Message-Id: <4812f9611624b34053c1592fd9c175b67d4ffcb4.1620406022.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S229575AbhEGSON (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 May 2021 14:14:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229470AbhEGSOM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 7 May 2021 14:14:12 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C330DC061574
+        for <linux-wireless@vger.kernel.org>; Fri,  7 May 2021 11:13:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=3rYj+NIBAQaTk9MPHmM9qe04NoDNsuWO1WCUw+J91vc=; b=GZRG+WDPyYMPETjj4I9n7eVuXr
+        EEX9P2JGxARb1CJYQXVpGJpwog4+3B2h0cNbN06KNBz2E5sjdrWoiD5gz/XAZQlX1Pu5kDsrFbb2d
+        gl0jA9uRmg/D6O3BamrLPcvSYverwJs2fHPI5NZMBUH6IEwAuPuWbxhc2MFbJy+rhVzo=;
+Received: from p4ff13bc6.dip0.t-ipconnect.de ([79.241.59.198] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lf4yM-0001Yq-9u
+        for linux-wireless@vger.kernel.org; Fri, 07 May 2021 20:13:10 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH v2 1/2] mt76: mt7915: add MSI support
+Date:   Fri,  7 May 2021 20:11:07 +0200
+Message-Id: <20210507181108.55095-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to usb device, re-initialize mt76x0e device after resume in order
-to fix mt7630e hang during suspend/resume
+Move IRQ processing to a tasklet, similar to MT7615/MT7663
 
-Reported-by: Luca Trombin <luca.trombin@gmail.com>
-Fixes: c2a4d9fbabfb9 ("mt76x0: inital split between pci and usb")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../net/wireless/mediatek/mt76/mt76x0/pci.c   | 81 ++++++++++++++++++-
- 1 file changed, 77 insertions(+), 4 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |  1 +
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  7 +++-
+ .../net/wireless/mediatek/mt76/mt7915/pci.c   | 39 ++++++++++++++++---
+ 3 files changed, 39 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-index 5847f943e8da..b795e7245c07 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-@@ -87,7 +87,7 @@ static const struct ieee80211_ops mt76x0e_ops = {
- 	.reconfig_complete = mt76x02_reconfig_complete,
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 822f3aa6bb8b..a8fd822cc46e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -752,6 +752,7 @@ void mt7915_unregister_device(struct mt7915_dev *dev)
+ 	mt7915_mcu_exit(dev);
+ 	mt7915_tx_token_put(dev);
+ 	mt7915_dma_cleanup(dev);
++	tasklet_disable(&dev->irq_tasklet);
  
--static int mt76x0e_register_device(struct mt76x02_dev *dev)
-+static int mt76x0e_init_hardware(struct mt76x02_dev *dev, bool resume)
+ 	mt76_free_device(&dev->mt76);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 4ea8972d4e2f..7a3c172afc98 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -169,6 +169,7 @@ struct mt7915_dev {
+ 	struct mt7915_hif *hif2;
+ 
+ 	const struct mt76_bus_ops *bus_ops;
++	struct tasklet_struct irq_tasklet;
+ 	struct mt7915_phy phy;
+ 
+ 	u16 chainmask;
+@@ -374,9 +375,11 @@ void mt7915_dual_hif_set_irq_mask(struct mt7915_dev *dev, bool write_reg,
+ static inline void mt7915_irq_enable(struct mt7915_dev *dev, u32 mask)
  {
- 	int err;
- 
-@@ -100,9 +100,11 @@ static int mt76x0e_register_device(struct mt76x02_dev *dev)
- 	if (err < 0)
- 		return err;
- 
--	err = mt76x02_dma_init(dev);
--	if (err < 0)
--		return err;
-+	if (!resume) {
-+		err = mt76x02_dma_init(dev);
-+		if (err < 0)
-+			return err;
-+	}
- 
- 	err = mt76x0_init_hardware(dev);
- 	if (err < 0)
-@@ -123,6 +125,17 @@ static int mt76x0e_register_device(struct mt76x02_dev *dev)
- 	mt76_clear(dev, 0x110, BIT(9));
- 	mt76_set(dev, MT_MAX_LEN_CFG, BIT(13));
- 
-+	return 0;
-+}
+ 	if (dev->hif2)
+-		mt7915_dual_hif_set_irq_mask(dev, true, 0, mask);
++		mt7915_dual_hif_set_irq_mask(dev, false, 0, mask);
+ 	else
+-		mt76_set_irq_mask(&dev->mt76, MT_INT_MASK_CSR, 0, mask);
++		mt76_set_irq_mask(&dev->mt76, 0, 0, mask);
 +
-+static int mt76x0e_register_device(struct mt76x02_dev *dev)
-+{
-+	int err;
-+
-+	err = mt76x0e_init_hardware(dev, false);
-+	if (err < 0)
-+		return err;
-+
- 	err = mt76x0_register_device(dev);
- 	if (err < 0)
- 		return err;
-@@ -167,6 +180,8 @@ mt76x0e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (ret)
- 		return ret;
- 
-+	mt76_pci_disable_aspm(pdev);
-+
- 	mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), &mt76x0e_ops,
- 				 &drv_ops);
- 	if (!mdev)
-@@ -220,6 +235,60 @@ mt76x0e_remove(struct pci_dev *pdev)
- 	mt76_free_device(mdev);
++	tasklet_schedule(&dev->irq_tasklet);
  }
  
-+#ifdef CONFIG_PM
-+static int mt76x0e_suspend(struct pci_dev *pdev, pm_message_t state)
-+{
-+	struct mt76_dev *mdev = pci_get_drvdata(pdev);
-+	struct mt76x02_dev *dev = container_of(mdev, struct mt76x02_dev, mt76);
-+	int i;
-+
-+	mt76_worker_disable(&mdev->tx_worker);
-+	for (i = 0; i < ARRAY_SIZE(mdev->phy.q_tx); i++)
-+		mt76_queue_tx_cleanup(dev, mdev->phy.q_tx[i], true);
-+	for (i = 0; i < ARRAY_SIZE(mdev->q_mcu); i++)
-+		mt76_queue_tx_cleanup(dev, mdev->q_mcu[i], true);
-+	napi_disable(&mdev->tx_napi);
-+
-+	mt76_for_each_q_rx(mdev, i)
-+		napi_disable(&mdev->napi[i]);
-+
-+	mt76x02_dma_disable(dev);
-+	mt76x02_mcu_cleanup(dev);
-+	mt76x0_chip_onoff(dev, false, false);
-+
-+	pci_enable_wake(pdev, pci_choose_state(pdev, state), true);
-+	pci_save_state(pdev);
-+
-+	return pci_set_power_state(pdev, pci_choose_state(pdev, state));
-+}
-+
-+static int mt76x0e_resume(struct pci_dev *pdev)
-+{
-+	struct mt76_dev *mdev = pci_get_drvdata(pdev);
-+	struct mt76x02_dev *dev = container_of(mdev, struct mt76x02_dev, mt76);
-+	int err, i;
-+
-+	err = pci_set_power_state(pdev, PCI_D0);
-+	if (err)
-+		return err;
-+
-+	pci_restore_state(pdev);
-+
-+	mt76_worker_enable(&mdev->tx_worker);
-+
-+	mt76_for_each_q_rx(mdev, i) {
-+		mt76_queue_rx_reset(dev, i);
-+		napi_enable(&mdev->napi[i]);
-+		napi_schedule(&mdev->napi[i]);
-+	}
-+
-+	napi_enable(&mdev->tx_napi);
-+	napi_schedule(&mdev->tx_napi);
-+
-+	return mt76x0e_init_hardware(dev, true);
-+}
-+#endif /* CONFIG_PM */
-+
- static const struct pci_device_id mt76x0e_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7610) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7630) },
-@@ -237,6 +306,10 @@ static struct pci_driver mt76x0e_driver = {
- 	.id_table	= mt76x0e_device_table,
- 	.probe		= mt76x0e_probe,
- 	.remove		= mt76x0e_remove,
-+#ifdef CONFIG_PM
-+	.suspend	= mt76x0e_suspend,
-+	.resume		= mt76x0e_resume,
-+#endif /* CONFIG_PM */
- };
+ static inline void mt7915_irq_disable(struct mt7915_dev *dev, u32 mask)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+index 643f171884cf..aae2fb3ccad1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+@@ -94,11 +94,15 @@ mt7915_rx_poll_complete(struct mt76_dev *mdev, enum mt76_rxq_id q)
+ }
  
- module_pci_driver(mt76x0e_driver);
+ /* TODO: support 2/4/6/8 MSI-X vectors */
+-static irqreturn_t mt7915_irq_handler(int irq, void *dev_instance)
++static void mt7915_irq_tasklet(struct tasklet_struct *t)
+ {
+-	struct mt7915_dev *dev = dev_instance;
++	struct mt7915_dev *dev = from_tasklet(dev, t, irq_tasklet);
+ 	u32 intr, intr1, mask;
+ 
++	mt76_wr(dev, MT_INT_MASK_CSR, 0);
++	if (dev->hif2)
++		mt76_wr(dev, MT_INT1_MASK_CSR, 0);
++
+ 	intr = mt76_rr(dev, MT_INT_SOURCE_CSR);
+ 	intr &= dev->mt76.mmio.irqmask;
+ 	mt76_wr(dev, MT_INT_SOURCE_CSR, intr);
+@@ -111,9 +115,6 @@ static irqreturn_t mt7915_irq_handler(int irq, void *dev_instance)
+ 		intr |= intr1;
+ 	}
+ 
+-	if (!test_bit(MT76_STATE_INITIALIZED, &dev->mphy.state))
+-		return IRQ_NONE;
+-
+ 	trace_dev_irq(&dev->mt76, intr, dev->mt76.mmio.irqmask);
+ 
+ 	mask = intr & MT_INT_RX_DONE_ALL;
+@@ -150,6 +151,20 @@ static irqreturn_t mt7915_irq_handler(int irq, void *dev_instance)
+ 			wake_up(&dev->reset_wait);
+ 		}
+ 	}
++}
++
++static irqreturn_t mt7915_irq_handler(int irq, void *dev_instance)
++{
++	struct mt7915_dev *dev = dev_instance;
++
++	mt76_wr(dev, MT_INT_MASK_CSR, 0);
++	if (dev->hif2)
++		mt76_wr(dev, MT_INT1_MASK_CSR, 0);
++
++	if (!test_bit(MT76_STATE_INITIALIZED, &dev->mphy.state))
++		return IRQ_NONE;
++
++	tasklet_schedule(&dev->irq_tasklet);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -250,10 +265,18 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
+ 
+ 	dev = container_of(mdev, struct mt7915_dev, mt76);
+ 
++	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0)
++		goto free;
++
+ 	ret = mt7915_mmio_init(mdev, pcim_iomap_table(pdev)[0], pdev->irq);
+ 	if (ret)
+ 		goto error;
+ 
++	tasklet_setup(&dev->irq_tasklet, mt7915_irq_tasklet);
++
++	mt76_wr(dev, MT_INT_MASK_CSR, 0);
++
+ 	/* master switch of PCIe tnterrupt enable */
+ 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
+ 
+@@ -266,10 +289,14 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
+ 
+ 	ret = mt7915_register_device(dev);
+ 	if (ret)
+-		goto error;
++		goto free_irq;
+ 
+ 	return 0;
++free_irq:
++	devm_free_irq(mdev->dev, pdev->irq, dev);
+ error:
++	pci_free_irq_vectors(pdev);
++free:
+ 	mt76_free_device(&dev->mt76);
+ 
+ 	return ret;
 -- 
-2.30.2
+2.30.1
 
