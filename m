@@ -2,99 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4C18375D46
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 May 2021 00:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F067D375ED7
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 May 2021 04:33:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231300AbhEFW6O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 May 2021 18:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47902 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230283AbhEFW6N (ORCPT
+        id S229909AbhEGCeX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 May 2021 22:34:23 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:36434 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233748AbhEGCeV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 May 2021 18:58:13 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4E89C061574
-        for <linux-wireless@vger.kernel.org>; Thu,  6 May 2021 15:57:14 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id u21so10638936ejo.13
-        for <linux-wireless@vger.kernel.org>; Thu, 06 May 2021 15:57:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uLdKGXmtZv4WOuhm8GJ7l80lpB4+OjgqxObqMF2doJs=;
-        b=olQg5p0yjDBdujSQAJeptHdz7B978JcsgXB9UIBSNoFK5KCqy+qN+4Gt+hKbnHJwK7
-         GQfwYyNIi+Uz3YrbHHF+nj3Dc3XdPffsmjkoXLl1kkaeV7EzetPFMjTizg05TSYSzviW
-         s47efjQQhDT3RVUekS5jUEIQc35IBuFDtzc/gfDS5ohqqYZ3uSeMvQGKsdnK1MIdH/Tm
-         NFFKYdsLhUflgltsCMpTX/lDAFz+3Y+N1sQW4axEkG5HTyEVhuOh8goZ6/WXevnPsXsx
-         Sgy5PpKo2vSWRC559RcC0O8QgK7UXvUvTtQn1/hUaEMWBnyXkOIyXIsXuAtw6F+vQmOe
-         H61w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uLdKGXmtZv4WOuhm8GJ7l80lpB4+OjgqxObqMF2doJs=;
-        b=OF5VsmIZl5JUugLOiitDVDZBSkCDvu+Mw9ap+/2ir2VjhGeclLE22PzO42b1AKTpd7
-         fr0tRTbbtkyXuLXd65St3bDAfwx/RuqKN+JxiecnuWODALXTcbvh++C7X/Ue+8pl6Hm1
-         qJonAgUO+hDToi4UUiW1eQcXTdpM/Ba0Dn3+8vlvco61wgv6R9MIiFob4Jm1HIwgFHZ/
-         ZmiiBEpTjcf1FanDQrm1C7Qd/3fpmrfpuRkbse6gsHjQgSlnBPyzwoRsSz2dNBYn2NVd
-         upjidBBsS4uIDTLpm0y8ITmEOhQ1oyZYuq/u0CChxazogxGMbJ/9S0VAm9O6BF1gI1bl
-         CoNw==
-X-Gm-Message-State: AOAM530OLxXFzq/oyhZY+dllKfZcs4R75ujXRY7KGpZ/yBBgWdcl+elZ
-        fKno5RYt8dh5XT8lc4NZYNdDJBMTd1UjLHuWKRwrjg==
-X-Google-Smtp-Source: ABdhPJx6sMOvb6H5iHbspfXj0fUHVG8/SxmDU8i4ZBrPKGpv38LFo9MPmmLJUfQXrmER+EiMNK2dVF1dMoWrHOgOKTs=
-X-Received: by 2002:a17:906:4a55:: with SMTP id a21mr6616986ejv.215.1620341833273;
- Thu, 06 May 2021 15:57:13 -0700 (PDT)
+        Thu, 6 May 2021 22:34:21 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1620354803; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=8laHLxpGeb7o6Scw5WGknuXL88+X8velIbUvuC+eLbs=; b=NIuCncq92KrkmQWbYB+qpHwB8WYioIpBlFwbP3Nm6KMrdu40S+cyjluxqg6eiAPSYk+tJHq+
+ LkrV0aWUnAwC2JebNGO5ir3z4dbt3sHlZnVJx9ljqFJTHxkIiW9hNE5ICYTt/sw+jG+MKJOu
+ eUK8UwFN8HO1ntWB2Kung3jRi8w=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6094a6f1e0e9c9a6b601e82e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 07 May 2021 02:33:21
+ GMT
+Sender: hemantk=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 3EA25C433D3; Fri,  7 May 2021 02:33:21 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        NICE_REPLY_A,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from [10.46.162.249] (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: hemantk)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0EEFEC433D3;
+        Fri,  7 May 2021 02:33:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0EEFEC433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=hemantk@codeaurora.org
+Subject: Re: [PATCH v4 6/6] bus: mhi: core: Add range checks for BHI and BHIe
+To:     Bhaumik Bhatt <bbhatt@codeaurora.org>,
+        manivannan.sadhasivam@linaro.org
+Cc:     linux-arm-msm@vger.kernel.org, jhugo@codeaurora.org,
+        linux-kernel@vger.kernel.org, loic.poulain@linaro.org,
+        linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
+        ath11k@lists.infradead.org
+References: <1620330705-40192-1-git-send-email-bbhatt@codeaurora.org>
+ <1620330705-40192-7-git-send-email-bbhatt@codeaurora.org>
+From:   Hemant Kumar <hemantk@codeaurora.org>
+Message-ID: <860e3d9d-91dc-7fd6-68f6-e8f099cc4555@codeaurora.org>
+Date:   Thu, 6 May 2021 19:33:19 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210506180530.3418576-1-wdu@google.com> <cc2f068d6c82d12de920b19270c6f42dfcabfd11.camel@sipsolutions.net>
- <CAD-gUuCt5ugOyo-9Ge5omTgNJu26OORZFEZ2tSnQEiNLZN9ZyA@mail.gmail.com> <285a8ab279d5ac6caa6e44d808ec2b0ae134bc1e.camel@sipsolutions.net>
-In-Reply-To: <285a8ab279d5ac6caa6e44d808ec2b0ae134bc1e.camel@sipsolutions.net>
-From:   Weilun Du <wdu@google.com>
-Date:   Thu, 6 May 2021 15:57:02 -0700
-Message-ID: <CAD-gUuAbgons-j_q5TiqjP5ekRtk5cStfi7eLvH8D94WoC4zCQ@mail.gmail.com>
-Subject: Re: [PATCH v1] mac80211_hwsim: add concurrent channels scanning
- support over virtio
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, kernel-team@android.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1620330705-40192-7-git-send-email-bbhatt@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 6, 2021 at 2:13 PM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Thu, 2021-05-06 at 14:11 -0700, Weilun Du wrote:
-> > On Thu, May 6, 2021 at 11:19 AM Johannes Berg <johannes@sipsolutions.net> wrote:
-> > >
-> > > On Thu, 2021-05-06 at 11:05 -0700, Weilun Du wrote:
-> > > > This fixed the crash when setting channels to 2 or more when
-> > > > communicating over virtio.
-> > >
-> > > Interesting, I thought I was probably the only user of virtio? :)
-> > >
-> > > johannes
-> > >
-> > Hi Johannes,
-> > Actually, Android Emulator uses mac80211_hwsim for wifi simulation
-> > over virtio and it's working. This patch fixed the crash when we set
-> > channels=2 to speed up scanning. I am trying to see if it makes sense
-> > to upstream this patch since it's not Android-specific. Thanks!
-> >
-> Oh sure, I'll take a look and will probably apply it for the next cycle,
-> haven't done an in-depth review. I was just surprised somebody actually
-> *used* the virtio thing :-)
->
-> Does that mean virt_wifi isn't used anymore by the Android emulator?
-> Maybe then we should remove that again, it had some obscure bugs that
-> syzkaller found? Not that I mind it being around much, but ...
->
-> johannes
->
 
-Thanks for looking into it. Actually, virt_wifi is still in use. There
-are two different emulators that target different use cases. Android
-emulator (goldfish) is mainly for third-party app developers. But yes
-eventually, we are going to converge the Wi-Fi solution.
+
+On 5/6/21 12:51 PM, Bhaumik Bhatt wrote:
+> When obtaining the BHI or BHIe offsets during the power up
+> preparation phase, range checks are missing. These can help
+> controller drivers avoid accessing any address outside of the
+> MMIO region. Ensure that mhi_cntrl->reg_len is set before MHI
+> registration as it is a required field and range checks will
+> fail without it.
+> 
+> Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+> Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+
+Reviewed-by: Hemant Kumar <hemantk@codeaurora.org>
+
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
