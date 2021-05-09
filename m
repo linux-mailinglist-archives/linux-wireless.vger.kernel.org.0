@@ -2,132 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE23437790F
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 00:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE2C377913
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 00:47:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbhEIWnk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 May 2021 18:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52224 "EHLO
+        id S229976AbhEIWs5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 May 2021 18:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229950AbhEIWnk (ORCPT
+        with ESMTP id S229840AbhEIWsz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 May 2021 18:43:40 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 049C3C061573
-        for <linux-wireless@vger.kernel.org>; Sun,  9 May 2021 15:42:35 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id y9so18488366ljn.6
-        for <linux-wireless@vger.kernel.org>; Sun, 09 May 2021 15:42:35 -0700 (PDT)
+        Sun, 9 May 2021 18:48:55 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17E9DC061573
+        for <linux-wireless@vger.kernel.org>; Sun,  9 May 2021 15:47:52 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id j75so14133763oih.10
+        for <linux-wireless@vger.kernel.org>; Sun, 09 May 2021 15:47:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=IwL6My/mFtFWZcll0pHCPGHD51NxptuT9Qe2aLO/Puw=;
-        b=P8X64JDSbpUd8wi/1Vd54I0r8iVpNHHtaTIrS2pE4KNTuLS00TWmMLQ9Z5IL+2R3h/
-         T67p/PyTqdSujKl51ZCkSfCjS0/zYdwxLqzmtNhJTFLvpisnqGe6eD62esuHkgMcj+Ls
-         qTdOeyoCwbQKRSYVUjz8H8jSiomGZ3N+8izGhg27UdkCj/ffZRlt7gI1PEf6vNDkXa0i
-         SOp7AuGHAzsap6ZJ0CQ8k8TgODb5JcRlxZbbvMkzevIG46KYE0wyd+29sodpyvoPka2i
-         59kOHktnRWhZZDb/+xOuzqkinhB6Mh/rhy9BEsMHQRpVymMadhFxsUanuOtw9ZSbiRtO
-         eFww==
+        bh=7NacvmmuQOHw5zoGwZ7lj20sJBc+L1ultFqpD9YShWk=;
+        b=D3+DDGPpw9nV41wFnsTtTxgfS6QpM59FCl/fRoAbQz9O8V0oGwluEP0+qSgRD/i7mZ
+         Zl7hno907ffP18XOoCex7xCiFlnTJrCcowdBffC52bnTXOrm6FS5YrcqKgz/DaI/Gaeb
+         YY4/x/Kp4kat/QFG2xfMoBIhuLK93n9QsjnzQ3JawWs3tTgvhhoINXwn3FlYJHRLqb0H
+         1sQknX/IKgoPYbJObM6b2VcTbafXekpXnGZ98l7iQyN/qFjZdjiVMZHHhlR/KDThUTqL
+         e8S1qEsiKwbWehNotvOWUAy6b1tafpIR+XY0Zyo/78xLDVXHfQyxtIqfwr7b7wqAOwVV
+         Nihg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IwL6My/mFtFWZcll0pHCPGHD51NxptuT9Qe2aLO/Puw=;
-        b=XWsM52F5IFdGLiO5A4J7XZawLRXb5yIsivr3oBcQc0W+Lnc66H7MeipnCF8OmMDoAX
-         E2Dz37vCPKLzdsp7O4Bx3u3wkmFJYhH5hHYzEcryyNH/FKcegIXsVpD+vij/mxv+WlpY
-         crWcRC22PlT2t9x6vk4VBvSOZsheHa6apW7C3jhUoPzHWRkUm0BoXMK5vpcMkbahTdTe
-         jnr5b4Qw5Z2WpyZjvNa1WRJbxkWgjVawpH8UbJJHR/KC0qxEyyC+sUDuPFND3HfzMndh
-         K3/QJIkvU84pFwP3LJPO5h6jQ5sUS9SeITkQEuJo34co1gSELGwbzmK6YuBwo5LCI+4l
-         XwAQ==
-X-Gm-Message-State: AOAM5331yh4aBB0+vwsotnRM0+U9jJ85qHPa3TDw3eIBYElwkL7o5IQs
-        33Dk8oxsJIP78+kfJyHY9Wk7gGvxenPSKg==
-X-Google-Smtp-Source: ABdhPJxTxXTg8Eki1uL2q4mdBYFgj92AR6YJCSx39RsPUD+Q7QoXRJ1DFUI9FDmTHI3YrpIZjjbEYg==
-X-Received: by 2002:a2e:814d:: with SMTP id t13mr17117957ljg.467.1620600154364;
-        Sun, 09 May 2021 15:42:34 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id r25sm2018545lfm.145.2021.05.09.15.42.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 May 2021 15:42:34 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH] brcmfmac: Obtain reset GPIO
-Date:   Mon, 10 May 2021 00:42:26 +0200
-Message-Id: <20210509224226.348127-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.30.2
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=7NacvmmuQOHw5zoGwZ7lj20sJBc+L1ultFqpD9YShWk=;
+        b=ktLWytQOf2w925UsBEhpZZsjBLkulzvi1yCf25/2IpSsHn6+3gK9w73fScFBmE7lMl
+         mKJOl7PjWsUVRDnhzrpJ35nQ0j/8WBamikrN9PjSOoczWvYgQVMa+36rvCb4d8R9PqSk
+         IOfJgC/RCCvXyYRPZUHtu5LV6A/Zo+USXuC7VBKlznm4YB+RHo5xM9F2cqd3aks09VSe
+         3SUxlhJ4DVe/eAVvaYgaXlpxu/KNYtAR8GNXH6s50iwkKsK9gc4Ijgl6jCQsbaIaisCI
+         N5HdZPe5rUqk/3neNXM+3syAWghmEgq8vVp1bpCmR0XDYxHo5a+03w4yuywsY5HoUd1V
+         03oA==
+X-Gm-Message-State: AOAM531S+18XnC8uVKC0J4YCfIguPnBMDqGeG02Yutrp4gNBHOa0DLIb
+        Ex0L6oo5ZdibNhCqwcPPtdJRWkrx7VJkBmUs2l8=
+X-Google-Smtp-Source: ABdhPJxXvc0WAJp6oVk1AUpIDv1e/t4y7T6Bip9pYN2gmkCYvFy/ZaKJjT0gHce9AWULARMnpyN1ZhtjIC0K8RjVSvI=
+X-Received: by 2002:aca:da04:: with SMTP id r4mr23126372oig.123.1620600471525;
+ Sun, 09 May 2021 15:47:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Reply-To: bisma.abdulmagidbreish@gmail.com
+Sender: lindalaboso2@gmail.com
+Received: by 2002:a9d:c43:0:0:0:0:0 with HTTP; Sun, 9 May 2021 15:47:51 -0700 (PDT)
+From:   Bisma Abdul magidbreish <bisma.abdulmagidbreish@gmail.com>
+Date:   Mon, 10 May 2021 00:47:51 +0200
+X-Google-Sender-Auth: VAwBwPUK7MkJRmPcg6OyRh6M_FY
+Message-ID: <CAAG+hxMBkFN_BhE5vGV4iQgO9dH67W7wpA_J3P6+94SityV9MQ@mail.gmail.com>
+Subject: Greetings
+To:     lfelipemontoya@hotmail.com, liammacgibbon@hotmail.com,
+        lianniser82@yahoo.com, librarian@sau.edu.bd,
+        lic_borquez@hotmail.com, lic_ramirezrobles@hotmail.com,
+        licitacaopmmachado@hotmail.com, lilliemarck@hotmail.com,
+        lim.felix@gmail.com, limberthmv@hotmail.com,
+        Lina.meijer@hotmail.com, linafootrdc@gmail.com,
+        linelangeroed@hotmail.com, linux-wireless@vger.kernel.org,
+        Lizscott48@hotmail.com, llomb89363@aol.com, llzolikll@gmail.com,
+        locust_jeddah@yahoo.com, lokarchiv@mail.bg, loomepalmik@gmail.com,
+        lorova32@hotmail.com, losttalentghana@gmail.com,
+        louisarthur.felix@gmail.com, loveandquality@aol.com, lrfdg@aol.com,
+        lu.souza.machado@gmail.com, luc.ag.dubois@hotmail.fr,
+        lucampiglia@aol.com, lucdibog@yahoo.com,
+        lucianaschoeps@yahoo.com.br, lucy-machado@hotmail.com,
+        lucy.prop@hotmail.com, Lucy13_marseille@hotmail.com,
+        ludyfranky@hotmail.com, luis.ca.machado@gmail.com,
+        luis.s.machado@tecnico.ulisboa.pt, Luis32789@aol.com,
+        luismachadodirector@gmail.com, luma.machado@yahoo.com.br,
+        Luziene-felix@hotmail.com, lycee.paulpoiret@yahoo.fr,
+        m-nii1984@clin.medic.mie-u.ac.jp, m.elizabethpinto@ig.com.br,
+        m.lavoie@aiic.net, mab.roosendaal@gmail.com, MACHADO@aol.com,
+        machado@gmail.com, machado@hotmail.com, machado@yahoo.com,
+        machado@yahoo.com.br, machado.aeill@gmail.com,
+        machado.avocat@gmail.com, Machado.elise@hotmail.fr,
+        machado.humberto2010@gmail.com, machado617@gmail.com,
+        machado_1000@hotmail.com, machadoallan@aol.com,
+        machadojose117@yahoo.fr, machadoleiloeiro@hotmail.com,
+        machadoluis75@gmail.com, machmas@free.fr, madda.felix@gmail.com,
+        maddie.machado@yahoo.com, madracing1@hotmail.com,
+        mafle.asbl@hotmail.com, maggimachado@gmail.com,
+        magno100@hotmail.com, mahmaoudahmed104@hotmail.com,
+        mail2me.sumith@yahoo.com, mailrich2012@aol.com,
+        mairiee.cussac@gmail.com, majahaals@hotmail.com,
+        malikab.photographe@gmail.com, malmodockteater@gmail.com,
+        mandemi2000@yahoo.com, manish7march1972@yahoo.com,
+        marbrerie.guivarch29@gmail.com, marc_carole@hotmail.com,
+        marcelino.de.faveri@hotmail.com, marcelo.felix@yahoo.com,
+        marciamachadoimoveis@yahoo.com.br, marco.daniel.machado@gmail.com,
+        marcomachado1@aol.com, marcos_demelo@hotmail.com,
+        marcosdiegomarrero@hotmail.com, maria.weinert@hotmail.com,
+        mariaaraujon@sec.pb.gov.br, mariachiponi@hotmail.com,
+        mariainesmachado@hotmail.com, marianatorreglosa@hotmail.com,
+        mariaveronicagarcia@yahoo.com.ar, marilyn.machado@yahoo.com,
+        marimm@aol.com, marina.felix@gmail.com, marina_lavoie@hotmail.com,
+        marine.rayo@gmail.com, mariocovas.machado@gmail.com,
+        marionchevaux@hotmail.com, marisanewbold@aol.com,
+        marize-machado@hotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This grabs the reset GPIO and holds it de-asserted, if available.
-Asserting this signal will make the SDIO card re-enumerate.
+MUTUAL UNDERSTANDING !!!
 
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- .../net/wireless/broadcom/brcm80211/brcmfmac/common.c  | 10 ++++++++++
- .../net/wireless/broadcom/brcm80211/brcmfmac/common.h  |  4 ++++
- 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-index e3758bd86acf..40e18ebfe1ea 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-@@ -446,6 +446,16 @@ struct brcmf_mp_device *brcmf_get_module_param(struct device *dev,
- 		brcmf_dmi_probe(settings, chip, chiprev);
- 		brcmf_of_probe(dev, bus_type, settings);
- 	}
-+	/* Fetch WL_RESET GPIO and de-assert it, if available */
-+	settings->reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
-+	if (settings->reset) {
-+		/*
-+		 * If we found a reset GPIO, we may have just de-asserted it
-+		 * so wait some 8 ms for PLLs to lock, se figure 32, WLAN
-+		 * boot-up sequence in the manual.
-+		 */
-+		usleep_range(8000, 10000);
-+	}
- 	return settings;
- }
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-index 8b5f49997c8b..4209e71ebcdd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-@@ -7,6 +7,7 @@
- 
- #include <linux/platform_device.h>
- #include <linux/platform_data/brcmfmac.h>
-+#include <linux/gpio/consumer.h>
- #include "fwil_types.h"
- 
- #define BRCMF_FW_ALTPATH_LEN			256
-@@ -39,6 +40,8 @@ extern struct brcmf_mp_global_t brcmf_mp_global;
-  * @roamoff: Firmware roaming off?
-  * @ignore_probe_fail: Ignore probe failure.
-  * @country_codes: If available, pointer to struct for translating country codes
-+ * @board_type: String with the board type name
-+ * @reset: GPIO descriptor for the RESET line
-  * @bus: Bus specific platform data. Only SDIO at the mmoment.
-  */
- struct brcmf_mp_device {
-@@ -50,6 +53,7 @@ struct brcmf_mp_device {
- 	bool		ignore_probe_fail;
- 	struct brcmfmac_pd_cc *country_codes;
- 	const char	*board_type;
-+	struct gpio_desc *reset;
- 	union {
- 		struct brcmfmac_sdio_pd sdio;
- 	} bus;
--- 
-2.30.2
+Please forgive me for stressing you with my predicaments as I know
+that this letter may come to you as big surprise. Actually, I came
+across your E-mail from my personal search afterward I decided to
+email you directly believing that you will be honest to fulfill my
+final wish before I die. Mean while, I am bisma.abdulmagidbreish, from
+paric france
+childless and I am suffering from a long-time cancer and from
+all indication my condition is really deteriorating as my doctors have
+confirmed and courageously advised me that I may not live beyond two
+months from now for the reason that my tumor has reached a critical
+stage which has defiled all forms of medical treatment.
 
+Since my days are numbered, I=E2=80=99ve decided willingly to fulfill my
+long-time promise to donate the sum of six million eight hundred
+thousand dollars $6.800, 000 remaining in my foreign bank account over
+9 years due to my health problem. This fund was obtained by me when I
+was dealing on Gold. My promise is to help the widows, handicapped,
+orphans, underprivileged, to build technical school and hospital for
+their well-being. If you will be obedient to assist me fulfill my
+promise as I said here kindly show me your first obedience by
+providing me your personal details to enable me introduce you to my
+lawyer as the person that will help you to procure any document if
+requested possible to transfer or deliver my fund to you.
+
+I have been trying to handle this project for the past 4 years by
+myself when I will get better, but I have seen that it won=E2=80=99t be
+possible anymore due to my condition. Please get back to me if you can
+handle the project for more details
+Thank you
+God bless you.
