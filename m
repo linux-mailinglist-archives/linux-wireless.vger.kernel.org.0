@@ -2,140 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AE2C377913
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 00:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 034EB377944
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 01:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229976AbhEIWs5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 May 2021 18:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53360 "EHLO
+        id S230014AbhEIXbX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 May 2021 19:31:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbhEIWsz (ORCPT
+        with ESMTP id S229882AbhEIXbV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 May 2021 18:48:55 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17E9DC061573
-        for <linux-wireless@vger.kernel.org>; Sun,  9 May 2021 15:47:52 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id j75so14133763oih.10
-        for <linux-wireless@vger.kernel.org>; Sun, 09 May 2021 15:47:52 -0700 (PDT)
+        Sun, 9 May 2021 19:31:21 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA850C061573;
+        Sun,  9 May 2021 16:30:17 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id p12so18591304ljg.1;
+        Sun, 09 May 2021 16:30:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=7NacvmmuQOHw5zoGwZ7lj20sJBc+L1ultFqpD9YShWk=;
-        b=D3+DDGPpw9nV41wFnsTtTxgfS6QpM59FCl/fRoAbQz9O8V0oGwluEP0+qSgRD/i7mZ
-         Zl7hno907ffP18XOoCex7xCiFlnTJrCcowdBffC52bnTXOrm6FS5YrcqKgz/DaI/Gaeb
-         YY4/x/Kp4kat/QFG2xfMoBIhuLK93n9QsjnzQ3JawWs3tTgvhhoINXwn3FlYJHRLqb0H
-         1sQknX/IKgoPYbJObM6b2VcTbafXekpXnGZ98l7iQyN/qFjZdjiVMZHHhlR/KDThUTqL
-         e8S1qEsiKwbWehNotvOWUAy6b1tafpIR+XY0Zyo/78xLDVXHfQyxtIqfwr7b7wqAOwVV
-         Nihg==
+        bh=RedzcwQXnK2JFK7yvp/MkYUU1m35sxE8mjp3sZ0+O08=;
+        b=bf2wa3vSWP5/spJ155BDp7+NNLyEm3nLBuGGZ8UXInKbvzavBx6VswOFlTQ+igmYiH
+         S2npdP3+4cf3fbhpZBBwopAu6R1rZ+dDXvEL2837vqDSSSTCtbPBPiKbTreqh7B7Drdl
+         ma0n2qjrat8zDonEXBMOHDJORfVg7HdlTYj93Aq0wdYleZGQSokIH5NoLtCOT9kZhDp2
+         mhMQMY7wgtK1IRhtGCfNzE0+USfBjY40M2syIpUl/yeO/GIqLivPceFbhBqp84DKDj6B
+         1a0f199+NyIR06RQCXgTreHTHYoaAW8EmUmCys/rt3MpFGeVIxMQOV/DuZlQG+6oJtFH
+         T+Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=7NacvmmuQOHw5zoGwZ7lj20sJBc+L1ultFqpD9YShWk=;
-        b=ktLWytQOf2w925UsBEhpZZsjBLkulzvi1yCf25/2IpSsHn6+3gK9w73fScFBmE7lMl
-         mKJOl7PjWsUVRDnhzrpJ35nQ0j/8WBamikrN9PjSOoczWvYgQVMa+36rvCb4d8R9PqSk
-         IOfJgC/RCCvXyYRPZUHtu5LV6A/Zo+USXuC7VBKlznm4YB+RHo5xM9F2cqd3aks09VSe
-         3SUxlhJ4DVe/eAVvaYgaXlpxu/KNYtAR8GNXH6s50iwkKsK9gc4Ijgl6jCQsbaIaisCI
-         N5HdZPe5rUqk/3neNXM+3syAWghmEgq8vVp1bpCmR0XDYxHo5a+03w4yuywsY5HoUd1V
-         03oA==
-X-Gm-Message-State: AOAM531S+18XnC8uVKC0J4YCfIguPnBMDqGeG02Yutrp4gNBHOa0DLIb
-        Ex0L6oo5ZdibNhCqwcPPtdJRWkrx7VJkBmUs2l8=
-X-Google-Smtp-Source: ABdhPJxXvc0WAJp6oVk1AUpIDv1e/t4y7T6Bip9pYN2gmkCYvFy/ZaKJjT0gHce9AWULARMnpyN1ZhtjIC0K8RjVSvI=
-X-Received: by 2002:aca:da04:: with SMTP id r4mr23126372oig.123.1620600471525;
- Sun, 09 May 2021 15:47:51 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RedzcwQXnK2JFK7yvp/MkYUU1m35sxE8mjp3sZ0+O08=;
+        b=gGC5+oEyudYTsi0O+1PebYek4JTGOhsjjlKaf1sR1+K3dY15Wb2JbbN4ds6RVCIurG
+         3HiaHEViQxWMBSIsefx6T6GLzExCoMGEEWkpG8B8FZTyC9XONV0y7SGSWAj29/A3SFKz
+         jq5V2KjInMgh9iZUbZUYCrtjx6BmQpwr0cd195St/DLQEWCi2PAvuPZLUBP38JNZMjH8
+         IsKiUoHwMKrf1v9W8elp+BqumsePrb/pfWg/CgKrcNvhdRWLJh8p+D/9JewaoI6qxr7g
+         l3lk5yChVb37sQrxwGaPyVvBRQ3JqYZRaBWID9n4/Kq33IJN2MiQGVay28WMp9WJ32fY
+         cR/A==
+X-Gm-Message-State: AOAM5310Ji9/VkjBKHlsThF+7hFgggPP973k25QWo4rzLVYSq7SZd6e5
+        pLwPpt2lrw3ENF7ob4DnjFs=
+X-Google-Smtp-Source: ABdhPJxeBOTcgVB8iviTLkqcQ6LzrND82y+6Q7o6gwzKv1TOGNGqjhBu0nzNbflGPrx9KowMoXxTVg==
+X-Received: by 2002:a2e:a593:: with SMTP id m19mr869291ljp.103.1620603016249;
+        Sun, 09 May 2021 16:30:16 -0700 (PDT)
+Received: from localhost ([85.249.34.38])
+        by smtp.gmail.com with ESMTPSA id q127sm3015291ljq.88.2021.05.09.16.30.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 May 2021 16:30:16 -0700 (PDT)
+From:   Mikhail Rudenko <mike.rudenko@gmail.com>
+Cc:     Mikhail Rudenko <mike.rudenko@gmail.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Double Lo <double.lo@cypress.com>,
+        Remi Depommier <rde@setrix.com>,
+        Amar Shankar <amsr@cypress.com>,
+        Saravanan Shanmugham <saravanan.shanmugham@cypress.com>,
+        Frank Kao <frank.kao@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] brcmfmac: use separate firmware for 43430 revision 2
+Date:   Mon, 10 May 2021 02:30:08 +0300
+Message-Id: <20210509233010.2477973-1-mike.rudenko@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Reply-To: bisma.abdulmagidbreish@gmail.com
-Sender: lindalaboso2@gmail.com
-Received: by 2002:a9d:c43:0:0:0:0:0 with HTTP; Sun, 9 May 2021 15:47:51 -0700 (PDT)
-From:   Bisma Abdul magidbreish <bisma.abdulmagidbreish@gmail.com>
-Date:   Mon, 10 May 2021 00:47:51 +0200
-X-Google-Sender-Auth: VAwBwPUK7MkJRmPcg6OyRh6M_FY
-Message-ID: <CAAG+hxMBkFN_BhE5vGV4iQgO9dH67W7wpA_J3P6+94SityV9MQ@mail.gmail.com>
-Subject: Greetings
-To:     lfelipemontoya@hotmail.com, liammacgibbon@hotmail.com,
-        lianniser82@yahoo.com, librarian@sau.edu.bd,
-        lic_borquez@hotmail.com, lic_ramirezrobles@hotmail.com,
-        licitacaopmmachado@hotmail.com, lilliemarck@hotmail.com,
-        lim.felix@gmail.com, limberthmv@hotmail.com,
-        Lina.meijer@hotmail.com, linafootrdc@gmail.com,
-        linelangeroed@hotmail.com, linux-wireless@vger.kernel.org,
-        Lizscott48@hotmail.com, llomb89363@aol.com, llzolikll@gmail.com,
-        locust_jeddah@yahoo.com, lokarchiv@mail.bg, loomepalmik@gmail.com,
-        lorova32@hotmail.com, losttalentghana@gmail.com,
-        louisarthur.felix@gmail.com, loveandquality@aol.com, lrfdg@aol.com,
-        lu.souza.machado@gmail.com, luc.ag.dubois@hotmail.fr,
-        lucampiglia@aol.com, lucdibog@yahoo.com,
-        lucianaschoeps@yahoo.com.br, lucy-machado@hotmail.com,
-        lucy.prop@hotmail.com, Lucy13_marseille@hotmail.com,
-        ludyfranky@hotmail.com, luis.ca.machado@gmail.com,
-        luis.s.machado@tecnico.ulisboa.pt, Luis32789@aol.com,
-        luismachadodirector@gmail.com, luma.machado@yahoo.com.br,
-        Luziene-felix@hotmail.com, lycee.paulpoiret@yahoo.fr,
-        m-nii1984@clin.medic.mie-u.ac.jp, m.elizabethpinto@ig.com.br,
-        m.lavoie@aiic.net, mab.roosendaal@gmail.com, MACHADO@aol.com,
-        machado@gmail.com, machado@hotmail.com, machado@yahoo.com,
-        machado@yahoo.com.br, machado.aeill@gmail.com,
-        machado.avocat@gmail.com, Machado.elise@hotmail.fr,
-        machado.humberto2010@gmail.com, machado617@gmail.com,
-        machado_1000@hotmail.com, machadoallan@aol.com,
-        machadojose117@yahoo.fr, machadoleiloeiro@hotmail.com,
-        machadoluis75@gmail.com, machmas@free.fr, madda.felix@gmail.com,
-        maddie.machado@yahoo.com, madracing1@hotmail.com,
-        mafle.asbl@hotmail.com, maggimachado@gmail.com,
-        magno100@hotmail.com, mahmaoudahmed104@hotmail.com,
-        mail2me.sumith@yahoo.com, mailrich2012@aol.com,
-        mairiee.cussac@gmail.com, majahaals@hotmail.com,
-        malikab.photographe@gmail.com, malmodockteater@gmail.com,
-        mandemi2000@yahoo.com, manish7march1972@yahoo.com,
-        marbrerie.guivarch29@gmail.com, marc_carole@hotmail.com,
-        marcelino.de.faveri@hotmail.com, marcelo.felix@yahoo.com,
-        marciamachadoimoveis@yahoo.com.br, marco.daniel.machado@gmail.com,
-        marcomachado1@aol.com, marcos_demelo@hotmail.com,
-        marcosdiegomarrero@hotmail.com, maria.weinert@hotmail.com,
-        mariaaraujon@sec.pb.gov.br, mariachiponi@hotmail.com,
-        mariainesmachado@hotmail.com, marianatorreglosa@hotmail.com,
-        mariaveronicagarcia@yahoo.com.ar, marilyn.machado@yahoo.com,
-        marimm@aol.com, marina.felix@gmail.com, marina_lavoie@hotmail.com,
-        marine.rayo@gmail.com, mariocovas.machado@gmail.com,
-        marionchevaux@hotmail.com, marisanewbold@aol.com,
-        marize-machado@hotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MUTUAL UNDERSTANDING !!!
+A separate firmware is needed for Broadcom 43430 revision 2.  This
+chip can be found in e.g. certain revisions of Ampak AP6212 wireless
+IC. Original firmware file from IC vendor is named
+'fw_bcm43436b0.bin', but brcmfmac and also btbcm drivers report chip
+id 43430, so requested firmware file name is
+'brcmfmac43430b0-sdio.bin' in line with other 43430 revisions.
 
+Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as big surprise. Actually, I came
-across your E-mail from my personal search afterward I decided to
-email you directly believing that you will be honest to fulfill my
-final wish before I die. Mean while, I am bisma.abdulmagidbreish, from
-paric france
-childless and I am suffering from a long-time cancer and from
-all indication my condition is really deteriorating as my doctors have
-confirmed and courageously advised me that I may not live beyond two
-months from now for the reason that my tumor has reached a critical
-stage which has defiled all forms of medical treatment.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 16ed325795a8..f0c22b5bb57c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -617,6 +617,7 @@ BRCMF_FW_DEF(4339, "brcmfmac4339-sdio");
+ BRCMF_FW_DEF(43430A0, "brcmfmac43430a0-sdio");
+ /* Note the names are not postfixed with a1 for backward compatibility */
+ BRCMF_FW_DEF(43430A1, "brcmfmac43430-sdio");
++BRCMF_FW_DEF(43430B0, "brcmfmac43430b0-sdio");
+ BRCMF_FW_DEF(43455, "brcmfmac43455-sdio");
+ BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
+ BRCMF_FW_DEF(4354, "brcmfmac4354-sdio");
+@@ -643,7 +644,8 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
+ 	BRCMF_FW_ENTRY(BRCM_CC_43362_CHIP_ID, 0xFFFFFFFE, 43362),
+ 	BRCMF_FW_ENTRY(BRCM_CC_4339_CHIP_ID, 0xFFFFFFFF, 4339),
+ 	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000001, 43430A0),
+-	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0xFFFFFFFE, 43430A1),
++	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000002, 43430A1),
++	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000004, 43430B0),
+ 	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0x00000200, 43456),
+ 	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0xFFFFFDC0, 43455),
+ 	BRCMF_FW_ENTRY(BRCM_CC_4354_CHIP_ID, 0xFFFFFFFF, 4354),
+-- 
+2.31.1
 
-Since my days are numbered, I=E2=80=99ve decided willingly to fulfill my
-long-time promise to donate the sum of six million eight hundred
-thousand dollars $6.800, 000 remaining in my foreign bank account over
-9 years due to my health problem. This fund was obtained by me when I
-was dealing on Gold. My promise is to help the widows, handicapped,
-orphans, underprivileged, to build technical school and hospital for
-their well-being. If you will be obedient to assist me fulfill my
-promise as I said here kindly show me your first obedience by
-providing me your personal details to enable me introduce you to my
-lawyer as the person that will help you to procure any document if
-requested possible to transfer or deliver my fund to you.
-
-I have been trying to handle this project for the past 4 years by
-myself when I will get better, but I have seen that it won=E2=80=99t be
-possible anymore due to my condition. Please get back to me if you can
-handle the project for more details
-Thank you
-God bless you.
