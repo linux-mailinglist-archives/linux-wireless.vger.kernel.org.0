@@ -2,122 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74F5B379237
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 17:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D19E379252
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 17:16:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241347AbhEJPQ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 11:16:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240554AbhEJPOf (ORCPT
+        id S237657AbhEJPRJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 11:17:09 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:56330 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233876AbhEJPQJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 11:14:35 -0400
-X-Greylist: delayed 2626 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 10 May 2021 07:34:10 PDT
-Received: from mxout012.mail.hostpoint.ch (mxout012.mail.hostpoint.ch [IPv6:2a00:d70:0:e::312])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F7CC056757
-        for <linux-wireless@vger.kernel.org>; Mon, 10 May 2021 07:34:10 -0700 (PDT)
-Received: from [10.0.2.44] (helo=asmtp014.mail.hostpoint.ch)
-        by mxout012.mail.hostpoint.ch with esmtp (Exim 4.94.2 (FreeBSD))
-        (envelope-from <code@reto-schneider.ch>)
-        id 1lg6IQ-000MKY-5m; Mon, 10 May 2021 15:50:06 +0200
-Received: from [2a02:168:6182:1:606a:a23b:6802:7f10]
-        by asmtp014.mail.hostpoint.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2 (FreeBSD))
-        (envelope-from <code@reto-schneider.ch>)
-        id 1lg6IP-0004Ia-2b; Mon, 10 May 2021 15:50:06 +0200
-X-Authenticated-Sender-Id: reto-schneider@reto-schneider.ch
-To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        linux-wireless@vger.kernel.org
-From:   Reto Schneider <code@reto-schneider.ch>
-Cc:     =?UTF-8?B?6YKx5ZCN56KpIChDaHJpcyBDaGl1KQ==?= <ccchiu77@gmail.com>,
-        yhchuang@realtek.com, pkshih@realtek.com, tehuang@realtek.com,
-        Larry Finger <Larry.Finger@lwfinger.net>, kuba@kernel.org,
-        kvalo@codeaurora.org, davem@davemloft.net,
-        Reto Schneider <reto.schneider@husqvarnagroup.com>
-Subject: rtl8xxxu: Wi-Fi Alliance Certification on Realtek RTL8188CUS
-Message-ID: <a31d9500-73a3-f890-bebd-d0a4014f87da@reto-schneider.ch>
-Date:   Mon, 10 May 2021 15:50:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        Mon, 10 May 2021 11:16:09 -0400
+X-UUID: f26825eed5384c7f9c2de49528c790da-20210510
+X-UUID: f26825eed5384c7f9c2de49528c790da-20210510
+Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1665037848; Mon, 10 May 2021 23:14:59 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 10 May 2021 23:14:58 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 10 May 2021 23:14:58 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 1/9] mt76: mt7921: fix mt7921_wfsys_reset sequence
+Date:   Mon, 10 May 2021 23:14:49 +0800
+Message-ID: <1620659697-12048-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jes,
-Hi all,
+From: Sean Wang <sean.wang@mediatek.com>
 
-Chris (writing code, testing) and me (testing) are working [1] on 
-re-newing the Wi-Fi Alliance certification of an IoT gateway (STA) which 
-uses the Realtek RTL8188CUS chip, and is (now) running Linux 5.10+ with 
-the rtl8xxxu driver, firmware version 88.2 [2]. The existing 
-certification [3] has been done using the RealTek-provided 8192cu driver 
-[4] and and Linux 3.19.
+WiFi subsytem reset should control MT_WFSYS_SW_RST_B and then poll the
+same register until the bit WFSYS_SW_INIT_DONE bit is set.
 
-While the rtl8xxxu in upstream is *very* stable, it lacks some features 
-which are needed for the certification. I tried to summarize this in the 
-wiki [1].
+Fixes: 0c1ce9884607 ("mt76: mt7921: add wifi reset support")
+Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/dma.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-The following has been implemented by Chris (on top of mainline):
-  - STBC Receive
-  - TX power configuration (using the iw command, not regdb)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+index 71e664ee7652..bd9143dc865f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+@@ -313,9 +313,9 @@ static int mt7921_dma_reset(struct mt7921_dev *dev, bool force)
+ 
+ int mt7921_wfsys_reset(struct mt7921_dev *dev)
+ {
+-	mt76_set(dev, 0x70002600, BIT(0));
+-	msleep(200);
+-	mt76_clear(dev, 0x70002600, BIT(0));
++	mt76_clear(dev, MT_WFSYS_SW_RST_B, WFSYS_SW_RST_B);
++	msleep(50);
++	mt76_set(dev, MT_WFSYS_SW_RST_B, WFSYS_SW_RST_B);
+ 
+ 	if (!__mt76_poll_msec(&dev->mt76, MT_WFSYS_SW_RST_B,
+ 			      WFSYS_SW_INIT_DONE, WFSYS_SW_INIT_DONE, 500))
+-- 
+2.25.1
 
-Still missing:
-  - WMM support
-  - A-MSDU RX support
-  - TX power by rate
-
-WIP (See also Chris' mail from earlier today):
-  - A-MPDU
-  - Rate adaption
-  - TX descriptors
-
-The motivation for writing this mail is that we we are currently blocked 
-by an issue which we can not resolve already for some months: The 
-re-transmission percentage of the rtl8xxxu is too high (rtl8192cu is the 
-same) - way higher than what 8192cu achieves. According to Wireshark, 
-the retransmission rate is always between 15-65% for the rtl8xxxu, while 
-the realtek-provided 8192cu stays below 5%, often averaging at less than 
-1% in my setup.
-
-Examples with an Linksys WRT3200ACM AP (RA/TA: 24:f5:a2:c0:4e:b1, DA/SA: 
-00:60:6e:00:07:7d, SSID customer-testwifi) and the DUT 
-(00:1d:43:c0:19:8a) running iperf3 (TCP, TX):
-
-rtl8xxxu:
-  - 65% retries, many addresses reported which do not actually exists
-  - Code: [5]
-  - Captures: [7]
-
-891cu:
-  - 0.9% retries, no ghost addresses captured
-  - Code:  [6]
-  - Captures: [8]
-
-I'd be really grateful for any kind of ideas, pointers, help.
-
-Kind regards,
-Reto
-
-[1] Wiki entry (slightly outdated): 
-https://wireless.wiki.kernel.org/en/users/wi-fi-alliance-certification
-[2] rtl8912cu firmware v88.2, part of linux-firmware 20201118: 
-https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/rtlwifi/rtl8192cufw_TMSC.bin?id=2ea86675db1349235e9af0a9d0372b72da4db259
-[3] Existing certification: 
-https://api.cert.wi-fi.org/api/certificate/download/public?variantId=14856
-[4] https://github.com/husqvarnagroup/smart-garden-gateway-seluxit-8192cu
-[5] Most recent rtl8xxxu development: 
-https://github.com/husqvarnagroup/linux/commit/909f13c8fd45260a622d148882030624d492c54f
-[6] 8192cu for Linux 5.10+: 
-https://github.com/husqvarnagroup/realtek-8192cu_rtl8188cus
-[7] pcap: 
-https://files.reto-schneider.ch/diesunddas/rtl8xxxu/2021-05-10/rtl8xxxu-65%25-retries.pcapng.gz
-     shell: 
-https://files.reto-schneider.ch/diesunddas/rtl8xxxu/2021-05-10/rtl8xxxu-65%25-retries-shell.log
-[8] pcap: 
-https://files.reto-schneider.ch/diesunddas/rtl8xxxu/2021-05-10/8192cu-0.9%25-retries.pcapng.gz
-     shell: 
-https://files.reto-schneider.ch/diesunddas/rtl8xxxu/2021-05-10/8192cu-0.9%25-retries-shell.log
