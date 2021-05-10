@@ -2,98 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 894983779AF
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 03:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 698F7377AF3
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 06:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230047AbhEJBSD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 May 2021 21:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57368 "EHLO
+        id S229876AbhEJER6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 00:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbhEJBSD (ORCPT
+        with ESMTP id S229568AbhEJER6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 May 2021 21:18:03 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9765EC061573
-        for <linux-wireless@vger.kernel.org>; Sun,  9 May 2021 18:16:58 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id t4-20020a05683014c4b02902ed26dd7a60so2869462otq.7
-        for <linux-wireless@vger.kernel.org>; Sun, 09 May 2021 18:16:58 -0700 (PDT)
+        Mon, 10 May 2021 00:17:58 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AEF7C061573
+        for <linux-wireless@vger.kernel.org>; Sun,  9 May 2021 21:16:54 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id c17so12732948pfn.6
+        for <linux-wireless@vger.kernel.org>; Sun, 09 May 2021 21:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=qsNERhZgjuPkdaoU4D9L9ugofC2+WkakTAJu65zjTpI=;
-        b=A+tfmaSxdtS4BNMa8FulOkGDq5BGq8qO+NoTVyfI4Ez0U0gy08x0OkBUgRx38jhhQ7
-         sLTw06d9iNe2z3GeMbrM+hOGSKansNGRAe9QVjfL662XFyJKignj7FEH9/k+ou1lgo/E
-         4knU/6FnQ+DjiBqK0z/tROeq0p8kxmZqAfLnmAGEd3UvbOHMB7IUTH3VFFqMXc/eYOP/
-         SypJ0PZyE8TXVUsaMzymqIye08X5q1zvWpPkHLMHRn8rb16VFqT4g+oawIadRn7bxBMA
-         Z719rkEqreLX3Ub2B2Q3v1gr2JWhdpmckjIGeWw/qML7tjJxXt1pKo14prbYiixq7tb1
-         SFow==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sTerZRGKeQCfH6TL4AouuTqXMWKe0PPg8qnOakbVp7s=;
+        b=RDgggXQPCF1gm3g6z3puQaCoINBUWbN4UUJJIRcTkfDR72eLFz3ff3FHC9OZLhxSVw
+         fCf9hfSrTrYRak4xXonLFiFvJ9/PoR5uTJ4NBMaIXiL+MpmmIeZ/wuW5M4vupYh1lraf
+         3YpVMV72QQl1KZckUsBG4e7fL6ma94aMyH9rbD5lrcPUA04JHK13qpyS4w2DuwYo2JZ0
+         1na7OzEAgjYrNlKDOhs7jacNAnGsisvMpb/QOhorhIkS7rmjOKWinKFsq3zm3+mnYhjn
+         oZEgW1OAo1ni9c4MCvwJ+SNT+5IvmZHqVrLSFzNY5BUqRt+iExAde+jyToqn9/MWiLKY
+         Dwhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=qsNERhZgjuPkdaoU4D9L9ugofC2+WkakTAJu65zjTpI=;
-        b=ISpi0YDo7L0P0HGnWQOaO2jU+mLtLjyiq1tRhlZDkHSvwRGoi224lMX2gU9cyMo1EK
-         EBIaPtlQ0UYVHaXrFkRoPG4REm0/f/w2WY0jjzEoSPL79LLmt7t5HoHSGwDa3rtl6WTT
-         vLhymhPBex2nkrGhh8vGrWtBz0Bu0FdrymlvhHsx5Ofz2NlH9UeyJuvQtWj1wGzJsu95
-         PY8PKweyUap/N+RcA7YIqHGOoOscRHseIVGODnBRme4SPLWJbDUpLQVTUkHMf0TjqhCI
-         EFPsdt2d3lbpthAvaHVKz25aG4UwDGHVuA5geYzUSUrvHM4B5Ww2sj+NJgNvCiUm5che
-         gQyA==
-X-Gm-Message-State: AOAM532/sY8Z+z0BfS0QDPtN6n949haanTV9Pox3ZzBWCRMMJ/1aB8ch
-        bcRYrsj+OLq5LwJE4NNHBYMNJ00LSto=
-X-Google-Smtp-Source: ABdhPJxJGq+SI92ZJk900WkyFhaTFMAiT6w8sNrKEqotBwHSguHxs8nuoc8GK306Vne+dUO0kOzM8A==
-X-Received: by 2002:a9d:6d88:: with SMTP id x8mr2663902otp.35.1620609417601;
-        Sun, 09 May 2021 18:16:57 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id l186sm2315452oih.55.2021.05.09.18.16.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 May 2021 18:16:56 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: rtw88: Guaranteed system freeze with RTL8821CE with RFE 2 type
-To:     rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <vWuRjLpNOkVGXHNeCL6phN5YDcd6Oljm1WgEMO4vA9aufK8MxzN5itvDnRjPBWHZN0geAbRLAzgIj36kAiNtdHh5vg2RjUH_TzuqZ7WSYeE=@protonmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <65c86fe7-f1f1-445f-40c2-25ceaa4e4fb6@lwfinger.net>
-Date:   Sun, 9 May 2021 20:16:55 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        bh=sTerZRGKeQCfH6TL4AouuTqXMWKe0PPg8qnOakbVp7s=;
+        b=cI5TUtGwwZfRwdEE1YmM0NtQEZdhglShcs5ozjbEeSO3bny1sMQtuQgJkcmjLXKXCs
+         4+LkUG3lxu/aivoWBHScNR/SyEZKBXrqB27PEPlWBgH7Nd67zHGyVUm1z3Av7WD4JuNo
+         IV1S2HY+HKDXBtVxHOclIvHvJJWeDOMFoKCO83C4w3sJPeVFv/Z2A6vrJDhJbJPtx4c7
+         Y/nnuXewefTG63Llphf1hH1WKJZSpL8HdW14cFWzt0u/2Gfx2S2S6LbvYeqMc8+MbFZS
+         1/tt7ztnNY5TBMrVbEuzZ4bOq+Halprp5ZpNe05GhMffgiK8OHV9e8kxf9LODRlFbKtS
+         dG/Q==
+X-Gm-Message-State: AOAM530mK873NERzcKf7LJSQ+s9mFViU2JRLb5xi4D0Cvs5VCGvS7r7p
+        ZLpenIE2US/eyYwRsmQqQ+w=
+X-Google-Smtp-Source: ABdhPJz2KU4qrrcMjwDUPyCQzfS6SGdHpW3tZhtLQ+HeoivHMuwyqphUkt2Y6ObwQ+aAlwGoSfn62Q==
+X-Received: by 2002:a62:79c3:0:b029:28e:a874:4e1e with SMTP id u186-20020a6279c30000b029028ea8744e1emr23161892pfc.3.1620620213625;
+        Sun, 09 May 2021 21:16:53 -0700 (PDT)
+Received: from nuc.. ([202.133.196.154])
+        by smtp.gmail.com with ESMTPSA id g84sm10003510pfb.198.2021.05.09.21.16.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 May 2021 21:16:53 -0700 (PDT)
+From:   Du Cheng <ducheng2@gmail.com>
+To:     Thomas Pedersen <thomas@adapt-ip.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Du Cheng <ducheng2@gmail.com>,
+        syzbot+405843667e93b9790fc1@syzkaller.appspotmail.com
+Subject: [PATCH] net: mac80211: fix hard-coding of length check on skb->len in ieee80211_scan_rx()
+Date:   Mon, 10 May 2021 12:16:49 +0800
+Message-Id: <20210510041649.589754-1-ducheng2@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <vWuRjLpNOkVGXHNeCL6phN5YDcd6Oljm1WgEMO4vA9aufK8MxzN5itvDnRjPBWHZN0geAbRLAzgIj36kAiNtdHh5vg2RjUH_TzuqZ7WSYeE=@protonmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/9/21 2:35 PM, rtl8821cerfe2 wrote:
-> Hi!
-> 
-> My system freezes if I use this driver. My laptop's wifi card is RTL8821CE, type RFE 2. My laptop is HP 250 G7, model 6MQ29EA.
-> 
-> It happens within a few minutes after booting if I don't do anything out of the ordinary. If I do a speed test at speedtest.net, the system usually freezes during the test. I have to hold the power button to shut it down.
-> 
-> This happens with the 5.12/5.12.1 kernel provided by Arch Linux, but it also happens with the latest rtw88 code from https://github.com/lwfinger/rtw88, revision 22f319b11d6d3c4a3ac9e1f90e3433ed9f5ecf11.
-> 
-> I have been using the driver from https://github.com/tomaspinho/rtl8821ce since late 2019 with no problems, even with Linux 5.12/5.12.1.
-> 
-> I tested all combinations of rtw_pci parameters "disable_msi" and "disable_aspm". Nothing helped.
-> 
-> I set up netconsole and added the parameter "loglevel=7" to the kernel command line. Unfortunately all the messages that came through netconsole also appear in journalctl, so I got no new information that way. I used the driver from the stock Arch Linux kernel for this test.
-> 
-> I'm attaching the file "journalctl-nono.txt", which contains the output of "sudo journalctl _TRANSPORT=kernel" from the time I tested the code from lwfinger/rtw88.
-> 
-> I'm also attaching the file "journalctl-senorsnor.txt", which comes from another user who has the same problem. Their wifi card is also RFE 2. Maybe there is something relevant, I don't know.
-> 
-> I'm happy to provide more information, test possible fixes, etc.
-> 
+Replace hard-coding with compile-time constants for header length
+check on skb->len. This skb->len will be checked again further down the
+callstack in cfg80211_inform_bss_frame_data() in net/wireless/scan.c
+(which has a proper length check with WARN_ON()). If the kernel is
+configure to panic_on_warn(), the insuffient check of skb->len in
+ieee80211_scan_rx() causes kernel crash in
+cfg80211_inform_bss_frame_data().
 
-The only splat that shows in either attachment is due to you not installing the 
-regulatory database that sets the channels etc. for your domain. I do not know 
-what it is called for your distro - it is wireless-regdb on mine. It is unlikely 
-that this is the cause of your problem, but who knows?
+Bug reported by syzbot:
+https://syzkaller.appspot.com/bug?id=183869c2f25b1c8692e381d8fcd69771a99221cc
 
-Larry
+Reported-by: syzbot+405843667e93b9790fc1@syzkaller.appspotmail.com
+Signed-off-by: Du Cheng <ducheng2@gmail.com>
+---
+
+This patch has passed syzbot testing.
+
+ net/mac80211/scan.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index d4cc9ac2d703..562eda13e802 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -251,13 +251,21 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
+ 	struct ieee80211_mgmt *mgmt = (void *)skb->data;
+ 	struct ieee80211_bss *bss;
+ 	struct ieee80211_channel *channel;
++	size_t min_hdr_len = offsetof(struct ieee80211_mgmt, u.probe_resp.variable);
++
++	if (!ieee80211_is_probe_resp(mgmt->frame_control) &&
++			!ieee80211_is_beacon(mgmt->frame_control) &&
++			!ieee80211_is_s1g_beacon(mgmt->frame_control))
++		return;
+ 
+ 	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
+-		if (skb->len < 15)
+-			return;
+-	} else if (skb->len < 24 ||
+-		 (!ieee80211_is_probe_resp(mgmt->frame_control) &&
+-		  !ieee80211_is_beacon(mgmt->frame_control)))
++		if (ieee80211_is_s1g_short_beacon(mgmt->frame_control))
++			min_hdr_len = offsetof(struct ieee80211_ext, u.s1g_short_beacon.variable);
++		else
++			min_hdr_len = offsetof(struct ieee80211_ext, u.s1g_beacon);
++	}
++
++	if (skb->len < min_hdr_len)
+ 		return;
+ 
+ 	sdata1 = rcu_dereference(local->scan_sdata);
+-- 
+2.30.2
 
