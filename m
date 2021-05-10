@@ -2,45 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA9C6378EF8
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 15:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90A62378EFF
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 15:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237011AbhEJNck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 09:32:40 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:33636 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344815AbhEJMUZ (ORCPT
+        id S237084AbhEJNcu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 09:32:50 -0400
+Received: from mail-il1-f197.google.com ([209.85.166.197]:44730 "EHLO
+        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345072AbhEJMVZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 08:20:25 -0400
-Received: by mail-io1-f71.google.com with SMTP id d13-20020a6b7d4d0000b029043969826f55so2280868ioq.0
-        for <linux-wireless@vger.kernel.org>; Mon, 10 May 2021 05:19:18 -0700 (PDT)
+        Mon, 10 May 2021 08:21:25 -0400
+Received: by mail-il1-f197.google.com with SMTP id t1-20020a92c0c10000b02901b677eb4d37so7329629ilf.11
+        for <linux-wireless@vger.kernel.org>; Mon, 10 May 2021 05:20:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=eYJwuDZ+XsqRKCRKIvwFZzV5wcwkB59FcbGmaKLVifw=;
-        b=cCWXqTtPulritLM1VgTSzrIRQSYQD+o5j0RLsvBjo/dCZmgonJaG1D33eVb+bo6IH6
-         HSNazGAvwKXHTv++0aoJyt72x8r7COalhyAbWDDasZnWzM11t9tOQDbbxpefO/3YyQgp
-         CAPzpT2JMZ7GkTg/ygCwUTZxqN8AOTib3vSHZxNJt1jRaKjHHLGzXlrCh9JCnXXNoP+D
-         0pm3IlujQs9fvZUKBzR57RqtVwD3ovtSNSfHosWVamgaiu3hjw6xjtQXiAc/uOpbZQil
-         TUEuhjcJfWWEi4K6q4qZMyoDVKj7pXl/Mmo+C8Mv5cqdKPE7Kg2U3y7Nbb/AjQbfPgTj
-         4WJQ==
-X-Gm-Message-State: AOAM533f/qrfN8cgYGuvNAbSO/mCPElRhOPI/xwkNojPSDgMOtiDTpRW
-        Hr8yvEl9iaGXQk+j03Vr3TJeG60UJ/hqov5hoGx1feoZsaZB
-X-Google-Smtp-Source: ABdhPJyFK7D1jwvXUWQ6WVwkji1paIyU97HyrhX4bG6k0z3W/BkrqxebK0x1iuSYmhw44Dkty51TcsDtORPoQdIK2afFatUJ5DMg
+        bh=yGybm/OKMYW9dTFg1+VqjuNHMpHtONIEX8ofI4uC37E=;
+        b=QdVNpb79aB+H7hqODtb55wvz62+GGe90XBMkVv/pQywXQBxIFOUHy6RCiFflvCVujJ
+         ysRHmt6y1mNibb8kAaw1npsoRmhG4o+6pYVvN5rsrM7P40WRu/GZahw6ulTRXOy5ZMAp
+         pNX4y6T6SI8743FZF3Zm+oDGXA9wZIC+jGStOEAGsEENv+tOPeoHiRESDwsBXmsOdCZb
+         7ofo0QR/ifnU+k8XHvpyoWusGnhGyw9lRoLRuOxP8RqLGUoOvDnX8tj1MOzyNz3OtSb3
+         QlyhXw53dgwPlUVY94fT58kgqn0zG2FZGxB0HWheOSWEK6CupcCQ7m8GFWqK7mkHv1JG
+         G2GQ==
+X-Gm-Message-State: AOAM5330KuPPuF2yiXtv3rQv4qZDmvf9Tl0OeURWoLNinmCQFo30vDCO
+        mwtAMb059RjNgeqeWRs+8nlCym1/dE03XUwjmcwnTOX5bd6n
+X-Google-Smtp-Source: ABdhPJyyQw3dEbRyRW4VS0DoprZBL+QwBz/A3ubXiEuokZ79wk2MeZ/DpST/4kh+m5PHrFl5BaIjFixw3WvNAt6t09iWSmhKnhRo
 MIME-Version: 1.0
-X-Received: by 2002:a92:cd85:: with SMTP id r5mr21276631ilb.169.1620649158349;
- Mon, 10 May 2021 05:19:18 -0700 (PDT)
-Date:   Mon, 10 May 2021 05:19:18 -0700
+X-Received: by 2002:a02:a81a:: with SMTP id f26mr17370052jaj.110.1620649219813;
+ Mon, 10 May 2021 05:20:19 -0700 (PDT)
+Date:   Mon, 10 May 2021 05:20:19 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000063a4b605c1f8c94b@google.com>
-Subject: [syzbot] UBSAN: shift-out-of-bounds in do_mpage_readpage
-From:   syzbot <syzbot+cf89d662483d6a1a0790@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes.berg@intel.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+Message-ID: <0000000000000d772e05c1f8cd1f@google.com>
+Subject: [syzbot] possible deadlock in cfg80211_netdev_notifier_call (2)
+From:   syzbot <syzbot+452ea4fbbef700ff0a56@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -50,61 +48,94 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    d2b6f8a1 Merge tag 'xfs-5.13-merge-3' of git://git.kernel...
+HEAD commit:    b7415964 Merge tag 'riscv-for-linus-5.13-mw1' of git://git..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11dfac0dd00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d360b81e47df40ea
-dashboard link: https://syzkaller.appspot.com/bug?extid=cf89d662483d6a1a0790
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17051fc3d00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=163ab395d00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1240ba0dd00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b072be26137971e1
+dashboard link: https://syzkaller.appspot.com/bug?extid=452ea4fbbef700ff0a56
 
-The issue was bisected to:
-
-commit dcd479e10a0510522a5d88b29b8f79ea3467d501
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Fri Oct 9 12:17:11 2020 +0000
-
-    mac80211: always wind down STA state
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10795f2dd00000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=12795f2dd00000
-console output: https://syzkaller.appspot.com/x/log.txt?x=14795f2dd00000
+Unfortunately, I don't have any reproducer for this issue yet.
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+cf89d662483d6a1a0790@syzkaller.appspotmail.com
-Fixes: dcd479e10a05 ("mac80211: always wind down STA state")
+Reported-by: syzbot+452ea4fbbef700ff0a56@syzkaller.appspotmail.com
 
-================================================================================
-UBSAN: shift-out-of-bounds in fs/mpage.c:189:40
-shift exponent 4294967279 is too large for 64-bit type 'long long unsigned int'
-CPU: 1 PID: 8457 Comm: systemd-udevd Not tainted 5.12.0-syzkaller #0
+============================================
+WARNING: possible recursive locking detected
+5.12.0-syzkaller #0 Not tainted
+--------------------------------------------
+syz-executor.1/16085 is trying to acquire lock:
+ffff88804f3b05e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5273 [inline]
+ffff88804f3b05e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: cfg80211_netdev_notifier_call+0x704/0x11d0 net/wireless/core.c:1429
+
+but task is already holding lock:
+ffff88804f3b05e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5273 [inline]
+ffff88804f3b05e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: ieee80211_stop+0x6a/0xf0 net/mac80211/iface.c:644
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&rdev->wiphy.mtx);
+  lock(&rdev->wiphy.mtx);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+2 locks held by syz-executor.1/16085:
+ #0: ffffffff8d6a4968 (rtnl_mutex){+.+.}-{3:3}, at: dev_ioctl+0x19f/0xb70 net/core/dev_ioctl.c:504
+ #1: ffff88804f3b05e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5273 [inline]
+ #1: ffff88804f3b05e8 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: ieee80211_stop+0x6a/0xf0 net/mac80211/iface.c:644
+
+stack backtrace:
+CPU: 0 PID: 16085 Comm: syz-executor.1 Not tainted 5.12.0-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
 Call Trace:
  __dump_stack lib/dump_stack.c:79 [inline]
  dump_stack+0x141/0x1d7 lib/dump_stack.c:120
- ubsan_epilogue+0xb/0x5a lib/ubsan.c:148
- __ubsan_handle_shift_out_of_bounds.cold+0xb1/0x181 lib/ubsan.c:327
- do_mpage_readpage.cold+0x226/0x2bb fs/mpage.c:189
- mpage_readahead+0x3a3/0x880 fs/mpage.c:389
- read_pages+0x1df/0x8d0 mm/readahead.c:130
- page_cache_ra_unbounded+0x61f/0x920 mm/readahead.c:238
- do_page_cache_ra mm/readahead.c:267 [inline]
- force_page_cache_ra+0x3ba/0x5b0 mm/readahead.c:299
- page_cache_sync_ra+0x107/0x200 mm/readahead.c:573
- page_cache_sync_readahead include/linux/pagemap.h:864 [inline]
- filemap_get_pages+0x29f/0x1920 mm/filemap.c:2442
- filemap_read+0x2ca/0xe40 mm/filemap.c:2525
- generic_file_read_iter+0x397/0x4f0 mm/filemap.c:2676
- blkdev_read_iter+0x11b/0x180 fs/block_dev.c:1720
- call_read_iter include/linux/fs.h:2110 [inline]
- new_sync_read+0x41e/0x6e0 fs/read_write.c:415
- vfs_read+0x35c/0x570 fs/read_write.c:496
- ksys_read+0x12d/0x250 fs/read_write.c:634
+ print_deadlock_bug kernel/locking/lockdep.c:2831 [inline]
+ check_deadlock kernel/locking/lockdep.c:2874 [inline]
+ validate_chain kernel/locking/lockdep.c:3663 [inline]
+ __lock_acquire.cold+0x22f/0x3b4 kernel/locking/lockdep.c:4902
+ lock_acquire kernel/locking/lockdep.c:5512 [inline]
+ lock_acquire+0x1ab/0x740 kernel/locking/lockdep.c:5477
+ __mutex_lock_common kernel/locking/mutex.c:949 [inline]
+ __mutex_lock+0x139/0x1120 kernel/locking/mutex.c:1096
+ wiphy_lock include/net/cfg80211.h:5273 [inline]
+ cfg80211_netdev_notifier_call+0x704/0x11d0 net/wireless/core.c:1429
+ notifier_call_chain+0xb5/0x200 kernel/notifier.c:83
+ call_netdevice_notifiers_info+0xb5/0x130 net/core/dev.c:2121
+ call_netdevice_notifiers_extack net/core/dev.c:2133 [inline]
+ call_netdevice_notifiers net/core/dev.c:2147 [inline]
+ __dev_close_many+0xf3/0x2f0 net/core/dev.c:1667
+ dev_close_many+0x22c/0x620 net/core/dev.c:1718
+ dev_close net/core/dev.c:1744 [inline]
+ dev_close+0x16d/0x210 net/core/dev.c:1738
+ ieee80211_do_stop+0x1276/0x20e0 net/mac80211/iface.c:486
+ ieee80211_stop+0x77/0xf0 net/mac80211/iface.c:645
+ __dev_close_many+0x1b8/0x2f0 net/core/dev.c:1693
+ __dev_close net/core/dev.c:1705 [inline]
+ __dev_change_flags+0x2ca/0x750 net/core/dev.c:8739
+ dev_change_flags+0x93/0x170 net/core/dev.c:8812
+ dev_ifsioc+0x210/0xa60 net/core/dev_ioctl.c:254
+ dev_ioctl+0x1ad/0xb70 net/core/dev_ioctl.c:505
+ sock_do_ioctl+0x148/0x2d0 net/socket.c:1062
+ sock_ioctl+0x477/0x6a0 net/socket.c:1179
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:1069 [inline]
+ __se_sys_ioctl fs/ioctl.c:1055 [inline]
+ __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:1055
  do_syscall_64+0x3a/0xb0 arch/x86/entry/common.c:47
  entry_SYSCALL_64_after_hwframe+0x44/0xae
-RIP: 0033:0x7fdc7280d210
-Code: 73 01 c3 48 8b 0d 98 7d 20 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d b9 c1 20 00 00 75 10 b8 00 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 4e fc ff ff 48 89 04 24
-RSP: 002
+RIP: 0033:0x4665f9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 bc ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f59aeea3188 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 000000000056bf60 RCX: 00000000004665f9
+RDX: 00000000200005c0 RSI: 0000000000008914 RDI: 0000000000000003
+RBP: 00000000004bfce1 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000056bf60
+R13: 0000000000a9fb1f R14: 00007f59aeea3300 R15: 0000000000022000
 
 
 ---
@@ -114,6 +145,3 @@ syzbot engineers can be reached at syzkaller@googlegroups.com.
 
 syzbot will keep track of this issue. See:
 https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
