@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CD45379A16
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 00:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42665379A17
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 00:29:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231220AbhEJWau (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 18:30:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43030 "EHLO mail.kernel.org"
+        id S231244AbhEJWaw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 18:30:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43110 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231193AbhEJWat (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 18:30:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 86B1761585;
-        Mon, 10 May 2021 22:29:43 +0000 (UTC)
+        id S231193AbhEJWav (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 May 2021 18:30:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7CE2B615FF;
+        Mon, 10 May 2021 22:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620685784;
-        bh=5m/m5BwE75d62QOSZjVWOwUzfdymMUFXVA64u9PbNG0=;
+        s=k20201202; t=1620685786;
+        bh=l59rbff3HU5lg49fk40Vg6jVpFZOnN6XZwXaWnhQqvo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WveoK09gVSGAg+Ws80zxE/g8kMTlcq6/15PrP89hIfr/cuEpwmHad0K+4oyxD4zMq
-         tIeOrmgzJLkw/puUoi88t3/KFCSKkHlsr4bp6jEH936DTW2MNhfvHRdJjxeX2ai8FQ
-         rWXbcNx+2nnOaYsrsG2bKkIBxKfO2J6El7eyqA6+KFL2lT6KG47FdfWiadKOysd32a
-         7GVTvG5TQfmsKazw1/3hK9UoDhRkg4EHg2DImsxtIoZPztr6kPU4gd+K1AMwALOK+I
-         L2oslWA/i5gWvm54wbOegJqR52yMSSZQBVasK6oA0v375Raa5ZZUtNLoYfzflGYnRZ
-         752Rk81M8sGEA==
+        b=NywHb5LPpDbaTBiYZaukFZM9dhb7ZCXVL0jrQ/6Qmg0m2jjBIKw8EuYtKacXwZ2Bm
+         Bv1ybG8Nn3XkHrmHyqOVpKZ2TBWDlO2hG/nfLOXy3EkwqPFS5mU6dKtgbbVEY+I0us
+         7DftUz6GycoAEw+UbZe6kJ27iaT1T9CsMoRRYh6nwFgn4zpPUlyostRaQesJGgQflq
+         PseTdXHotpk6nfhwnYdhsv3KbOXzvO+7rTrHFMXdO9TJpQYY40pbSygREGosXjO9QV
+         h2oCYWD/l0ew2utZyQZkCyG/+FkIkjfA6w/nYUa9Y9ZA7DlXEUK9W/F4RN7ru3pENV
+         5ONbHZk2zRNJQ==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com
-Subject: [PATCH 3/5] mt76: mt7663s: rely on mt76_connac_pm_ref/mt76_connac_pm_unref in tx path
-Date:   Tue, 11 May 2021 00:29:22 +0200
-Message-Id: <06131b057e47b3bdcd933bc9caed787f2007d84c.1620685619.git.lorenzo@kernel.org>
+Subject: [PATCH 4/5] mt76: mt7663s: enable runtime-pm
+Date:   Tue, 11 May 2021 00:29:23 +0200
+Message-Id: <953f164989390c11a541b46b454765f6dc52c26c.1620685619.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1620685619.git.lorenzo@kernel.org>
 References: <cover.1620685619.git.lorenzo@kernel.org>
@@ -39,92 +39,85 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to mt7663e, rely on mt76_connac_pm_ref/mt76_connac_pm_unref to
-check PM state and increment/decrement wake counter
+Allow the user to enable runtime-pm for mt7663s driver
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c  | 14 ++++++++++----
- .../wireless/mediatek/mt76/mt7615/sdio_txrx.c    | 16 ++++++++++++----
- 2 files changed, 22 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c |  2 +-
+ .../net/wireless/mediatek/mt76/mt7615/sdio_mcu.c    | 13 ++++++++++---
+ .../net/wireless/mediatek/mt76/mt76_connac_mac.c    |  4 ++--
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index e2dcfee6be81..12c628bb200e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1906,12 +1906,18 @@ void mt7615_pm_wake_work(struct work_struct *work)
- 	mphy = dev->phy.mt76;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+index 676bb22726d6..eb33d2baee06 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -75,7 +75,7 @@ mt7615_pm_set(void *data, u64 val)
+ 	if (!mt7615_wait_for_mcu_init(dev))
+ 		return 0;
  
- 	if (!mt7615_mcu_set_drv_ctrl(dev)) {
-+		struct mt76_dev *mdev = &dev->mt76;
- 		int i;
+-	if (!mt7615_firmware_offload(dev) || !mt76_is_mmio(&dev->mt76))
++	if (!mt7615_firmware_offload(dev) || mt76_is_usb(&dev->mt76))
+ 		return -EOPNOTSUPP;
  
--		mt76_for_each_q_rx(&dev->mt76, i)
--			napi_schedule(&dev->mt76.napi[i]);
--		mt76_connac_pm_dequeue_skbs(mphy, &dev->pm);
--		mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[MT_MCUQ_WM], false);
-+		if (mt76_is_sdio(mdev)) {
-+			mt76_worker_schedule(&mdev->sdio.txrx_worker);
-+		} else {
-+			mt76_for_each_q_rx(mdev, i)
-+				napi_schedule(&mdev->napi[i]);
-+			mt76_connac_pm_dequeue_skbs(mphy, &dev->pm);
-+			mt76_queue_tx_cleanup(dev, mdev->q_mcu[MT_MCUQ_WM],
-+					      false);
-+		}
- 		if (test_bit(MT76_STATE_RUNNING, &mphy->state))
- 			ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
- 						     MT7615_WATCHDOG_TIME);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-index 4393dd21ebbb..5eb3cc409b04 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_txrx.c
-@@ -283,9 +283,15 @@ void mt7663s_txrx_worker(struct mt76_worker *w)
- {
- 	struct mt76_sdio *sdio = container_of(w, struct mt76_sdio,
- 					      txrx_worker);
--	struct mt76_dev *dev = container_of(sdio, struct mt76_dev, sdio);
-+	struct mt76_dev *mdev = container_of(sdio, struct mt76_dev, sdio);
-+	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
- 	int i, nframes, ret;
+ 	if (val == pm->enable)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+index 6c23c6dbf1c6..45c1cd3b9f49 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+@@ -65,13 +65,16 @@ static int __mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
  
-+	if (!mt76_connac_pm_ref(&dev->mphy, &dev->pm)) {
-+		queue_work(mdev->wq, &dev->pm.wake_work);
-+		return;
+ 	ret = readx_poll_timeout(mt7663s_read_pcr, dev, status,
+ 				 status & WHLPCR_IS_DRIVER_OWN, 2000, 1000000);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		dev_err(dev->mt76.dev, "Cannot get ownership from device");
+-	else
++	} else {
+ 		clear_bit(MT76_STATE_PM, &mphy->state);
+ 
++		pm->stats.last_wake_event = jiffies;
++		pm->stats.doze_time += pm->stats.last_wake_event -
++				       pm->stats.last_doze_event;
 +	}
-+
- 	/* disable interrupt */
- 	sdio_claim_host(sdio->func);
- 	sdio_writel(sdio->func, WHLPCR_INT_EN_CLR, MCR_WHLPCR, NULL);
-@@ -295,16 +301,16 @@ void mt7663s_txrx_worker(struct mt76_worker *w)
+ 	sdio_release_host(func);
+-	pm->last_activity = jiffies;
  
- 		/* tx */
- 		for (i = 0; i <= MT_TXQ_PSD; i++) {
--			ret = mt7663s_tx_run_queue(dev, dev->phy.q_tx[i]);
-+			ret = mt7663s_tx_run_queue(mdev, mdev->phy.q_tx[i]);
- 			if (ret > 0)
- 				nframes += ret;
- 		}
--		ret = mt7663s_tx_run_queue(dev, dev->q_mcu[MT_MCUQ_WM]);
-+		ret = mt7663s_tx_run_queue(mdev, mdev->q_mcu[MT_MCUQ_WM]);
- 		if (ret > 0)
- 			nframes += ret;
- 
- 		/* rx */
--		ret = mt7663s_rx_handler(dev);
-+		ret = mt7663s_rx_handler(mdev);
- 		if (ret > 0)
- 			nframes += ret;
- 	} while (nframes > 0);
-@@ -312,6 +318,8 @@ void mt7663s_txrx_worker(struct mt76_worker *w)
- 	/* enable interrupt */
- 	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
- 	sdio_release_host(sdio->func);
-+
-+	mt76_connac_pm_unref(&dev->pm);
+ 	return ret;
  }
+@@ -113,6 +116,10 @@ static int mt7663s_mcu_fw_pmctrl(struct mt7615_dev *dev)
+ 	if (ret < 0) {
+ 		dev_err(dev->mt76.dev, "Cannot set ownership to device");
+ 		clear_bit(MT76_STATE_PM, &mphy->state);
++	} else {
++		pm->stats.last_doze_event = jiffies;
++		pm->stats.awake_time += pm->stats.last_doze_event -
++					pm->stats.last_wake_event;
+ 	}
  
- void mt7663s_sdio_irq(struct sdio_func *func)
+ 	sdio_release_host(func);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index 6f180c92d413..7880b41b16d2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -10,7 +10,7 @@ int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm)
+ 	if (!pm->enable)
+ 		return 0;
+ 
+-	if (!mt76_is_mmio(dev))
++	if (mt76_is_usb(dev))
+ 		return 0;
+ 
+ 	cancel_delayed_work_sync(&pm->ps_work);
+@@ -34,7 +34,7 @@ void mt76_connac_power_save_sched(struct mt76_phy *phy,
+ {
+ 	struct mt76_dev *dev = phy->dev;
+ 
+-	if (!mt76_is_mmio(dev))
++	if (mt76_is_usb(dev))
+ 		return;
+ 
+ 	if (!pm->enable)
 -- 
 2.31.1
 
