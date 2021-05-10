@@ -2,130 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EC8B3799C2
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 00:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C84433799FF
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 00:24:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230229AbhEJWNT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 18:13:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55262 "EHLO
+        id S231162AbhEJWZn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 18:25:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230109AbhEJWNS (ORCPT
+        with ESMTP id S231159AbhEJWZf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 18:13:18 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28DABC061574;
-        Mon, 10 May 2021 15:12:13 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id x19so25692545lfa.2;
-        Mon, 10 May 2021 15:12:13 -0700 (PDT)
+        Mon, 10 May 2021 18:25:35 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 187D0C061574;
+        Mon, 10 May 2021 15:24:26 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id z13so25733203lft.1;
+        Mon, 10 May 2021 15:24:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hIXUVbTGBsLSYyOC432iVfvE9K0Kn0F0wM8I/jCX+dM=;
-        b=G8/tgKBs0wUPtnjeYUMm1ZLUsZzMD+aREtvDqlxGY3IrwPDsoJ3WUTl9pQiBp2vLpr
-         +6Sqv7yTyoOfhRSdVRjKKRVMm1QcnaBFyzk6Sft7iUo+DmVA1CPgt+zle519SXvYEKOJ
-         B0zP6HGclbnE70U4APRGN8ML36INiQE2klG4F5rm/VvKkxprPSbyGnxcsS5TccNk+JcW
-         zeLiQL7d6Bk1j3+WWYT3lahrKomqxvfgTpHApx+fZSvBuaGkWuEZAr3QJTRWCJAw4gLf
-         1BqKMNF4qzOAYWjlbmQyF4xR+jhWmm2cAyTmx+Nemy4gxFFrM81ub6fTXeV6Qx0cwbgk
-         UJcw==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=UB7STX+2BxkjlcmPswGdadDbZZquPtBCCQkaCzIDE+k=;
+        b=tPKvon4TXZcQUmVNIMXsbJNJJfRhE8yBGDSSU1l2CObWZ6JvokUJMkr4Y0pG4jnU0m
+         pJHdDDxlftKQbdiIkBsrQHk+9in+js7ZwPOK3T/OtTlhT9rMuXbRwBzSw1ZCgg4uLWve
+         bphsC/Abi4M3nkWnXGopGbLCiPU+omE+YKixVjfPBs67M5TcLZuVluRyEsT9GJgP4vH7
+         BOb3tWDFEYYHmu9aBSCR9SUQcOeQ8DDpqiMYh5Q8ZDQYsWcwA4PM/e6xHwkAepVD9pF3
+         sUPbAc84hitbwheGjhtRZwTj3P3bFgcHM/wwnBYUdsKxP4iLQE2/uZjP6MIQj0byMB2c
+         xkAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=hIXUVbTGBsLSYyOC432iVfvE9K0Kn0F0wM8I/jCX+dM=;
-        b=blB39PlHjCeJBjEBWA/ExLbdG3TiOhg/gzOJtdERdUmETCcwXgEsiuYh+YmedD9JyR
-         56g43JCTgSTqVHkh6Vwldlb9UzbeKwV6ruNlPp0izYtkWFR9H0dNM6NEvAWUXFKzEllH
-         i5kk8/1U92/3dCbscqPSdsMKCp4AsmjRoYi5dwtCyggTwYZah/R73eslbl/iy9/CogpH
-         M3SGgDWPLeprVEiv9yyo84CMgk7XgP29mwNlQgYBhk5rTjzOmP53v+5OcaB8BeIftz3i
-         j7v+a6pm18ZcpNgsg1B8nlOwLi7n2wWdSzdWEsX1fbEv1TwyvVacxHwXVXN9W1moxV/d
-         0wGw==
-X-Gm-Message-State: AOAM5306Xk2BGKMnMgTVsaIJZW6TV4XuQlPfMlrCKzkHtZRjRXvazU3N
-        S8IHcXIKzZmNgETgRqLpLzU=
-X-Google-Smtp-Source: ABdhPJyMJuyhbehfG/EEX3hGQVVKfIPElG9J2Bb8xaeKtQwlVw2sR0Z4SGoUpqIe2j0sX0cBj4DLcQ==
-X-Received: by 2002:a05:6512:5c5:: with SMTP id o5mr19241511lfo.168.1620684731689;
-        Mon, 10 May 2021 15:12:11 -0700 (PDT)
-Received: from localhost.localdomain (109-252-193-91.dynamic.spd-mgts.ru. [109.252.193.91])
-        by smtp.gmail.com with ESMTPSA id o11sm2397900lfr.64.2021.05.10.15.12.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 May 2021 15:12:11 -0700 (PDT)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        bh=UB7STX+2BxkjlcmPswGdadDbZZquPtBCCQkaCzIDE+k=;
+        b=m8eM26pp6vLvhKMBnpl7MPrFu5TdPXj/FEr5cTGxGiYTyd5q/0gm1ZkIiAM+Wbwv4r
+         RAkFyyZeEUWjBQNp8cxHsRo4aGsRB1cArtULPRP3qXij2fwf73B1WbIuOiwcNPaxIiHh
+         QJxWC/hIYGOKK5zyHaHWWPuDlLEVO9N2p+i9yaqjgL4oF+FCC20CfcIFfvxkVBs/UgEo
+         otzyuWqifQ7x6Jk2+G7judDB7BnLXRh1q0IF0C9a2jjMvpPv/QIuAqCKaFzvHBIPsaQu
+         Yx080i6AfDlbHRU4c7Rew2wXDJfqfeB27QHRnBrSiE2zvnBM5uinB3RHNJg6IZVgwCJ7
+         SXmA==
+X-Gm-Message-State: AOAM532RmJWgWZnCLQWLRpLBMr4RGBbWl42YtoB3qybgEsITxOjAu4ni
+        /PxiPqO+qHTIRbi2LAex7PdWqrYAw0k=
+X-Google-Smtp-Source: ABdhPJwz1nXqStPCyV4kW/r7tJbrKbNs1e+uZx5KRX66nTHku4J3LhN5phbEJ2JfUGc2GVv6Ww1p5Q==
+X-Received: by 2002:a19:6a07:: with SMTP id u7mr18725829lfu.579.1620685464366;
+        Mon, 10 May 2021 15:24:24 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-193-91.dynamic.spd-mgts.ru. [109.252.193.91])
+        by smtp.googlemail.com with ESMTPSA id x62sm2388400lff.295.2021.05.10.15.24.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 May 2021 15:24:24 -0700 (PDT)
+Subject: Re: [PATCH v1] brcmfmac: Silence error messages about unsupported
+ firmware features
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
         Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v1] brcmfmac: Silence error messages about unsupported firmware features
-Date:   Tue, 11 May 2021 01:11:48 +0300
-Message-Id: <20210510221148.12134-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Kalle Valo <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "brcm80211-dev-list@cypress.com" <brcm80211-dev-list@cypress.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20210510221148.12134-1-digetx@gmail.com>
+ <CAHp75VdbFDxQy6vxDheTzcQhYEoodwbjD_LTOCyoiuLUoj4DXQ@mail.gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <34330b8c-1c9d-de77-8f7f-4400855777fb@gmail.com>
+Date:   Tue, 11 May 2021 01:24:23 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <CAHp75VdbFDxQy6vxDheTzcQhYEoodwbjD_LTOCyoiuLUoj4DXQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-KMSG is flooded with error messages about unsupported firmware
-features on BCM4329 chip. The GET_ASSOCLIST error became especially
-noisy with a newer NetworkManager version of Ubuntu 21.04. Let's print
-the noisy error messages only once.
+11.05.2021 01:18, Andy Shevchenko пишет:
+> On Tuesday, May 11, 2021, Dmitry Osipenko <digetx@gmail.com
+> <mailto:digetx@gmail.com>> wrote:
+> 
+>     KMSG is flooded with error messages about unsupported firmware
+>     features on BCM4329 chip. The GET_ASSOCLIST error became especially
+>     noisy with a newer NetworkManager version of Ubuntu 21.04. Let's print
+>     the noisy error messages only once.
+> 
+> 
+> Seems like you are reinventing *_once() printing methods. Please use
+> them instead
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 11 +++++++++--
- .../net/wireless/broadcom/brcm80211/brcmfmac/core.c | 13 ++++++++++---
- 2 files changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index f4405d7861b6..631536d8abb4 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -2892,8 +2892,15 @@ brcmf_cfg80211_dump_station(struct wiphy *wiphy, struct net_device *ndev,
- 					     &cfg->assoclist,
- 					     sizeof(cfg->assoclist));
- 		if (err) {
--			bphy_err(drvr, "BRCMF_C_GET_ASSOCLIST unsupported, err=%d\n",
--				 err);
-+			static bool error_printed = false;
-+
-+			/* GET_ASSOCLIST unsupported by firmware of older chips */
-+			if (!error_printed || err != -EBADE) {
-+				bphy_err(drvr, "BRCMF_C_GET_ASSOCLIST unsupported, err=%d\n",
-+					 err);
-+				error_printed = true;
-+			}
-+
- 			cfg->assoclist.count = 0;
- 			return -EOPNOTSUPP;
- 		}
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-index 838b09b23abf..7f1a6234fd27 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -188,9 +188,16 @@ static void _brcmf_set_multicast_list(struct work_struct *work)
- 	/*Finally, pick up the PROMISC flag */
- 	cmd_value = (ndev->flags & IFF_PROMISC) ? true : false;
- 	err = brcmf_fil_cmd_int_set(ifp, BRCMF_C_SET_PROMISC, cmd_value);
--	if (err < 0)
--		bphy_err(drvr, "Setting BRCMF_C_SET_PROMISC failed, %d\n",
--			 err);
-+	if (err < 0) {
-+		static bool error_printed = false;
-+
-+		/* PROMISC unsupported by firmware of older chips */
-+		if (!error_printed || err != -EBADE) {
-+			bphy_err(drvr, "Setting BRCMF_C_SET_PROMISC unsupported, err=%d\n",
-+				 err);
-+			error_printed = true;
-+		}
-+	}
- 	brcmf_configure_arp_nd_offload(ifp, !cmd_value);
- }
- 
--- 
-2.30.2
-
+Indeed, I see now that it won't be difficult to add the new
+wiphy_err_once() helper that will use the generic dev_err_once(). I'll
+make a v2, thank you for taking a look at the patch.
