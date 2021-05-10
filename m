@@ -2,58 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E36F378EF0
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 15:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA9C6378EF8
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 15:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232192AbhEJNc1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 09:32:27 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:58793 "EHLO
-        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S233966AbhEJMHn (ORCPT
+        id S237011AbhEJNck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 09:32:40 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:33636 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344815AbhEJMUZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 08:07:43 -0400
-Date:   Mon, 10 May 2021 12:06:18 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1620648387;
-        bh=Ei22Qdqy0/xxKHttj6zeuzsoK4OdLUs5FIjKuDVEnYY=;
-        h=Date:To:From:Reply-To:Subject:In-Reply-To:References:From;
-        b=eP2+SPZCKVXrHoYIBCGX6OMIO82BZGcoVW8Ql1DDlioB+nF26aA/qrPaKmrlQjNi+
-         esVhA8w+ocR66D3A0W4BEQdUn+Gdg2m6bBnRwcwa5ml4hVPZn3QkwmFeysckfOHSpD
-         MsmU5tizAYiCPh7rQpdZW/gQpepmuTaLYswCbyBI=
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Reply-To: rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Subject: Re: rtw88: Guaranteed system freeze with RTL8821CE with RFE 2 type
-Message-ID: <1jmF9EMZn2ywrHSGrNCzOUSAzllw9ox-Da2zfbSTnTULlX8Ha8F211TfKuxITBBtkfxiU_R0w7zUeFLdtDj4ejp6qPnCIhFj2U-rsCVNlMg=@protonmail.com>
-In-Reply-To: <65c86fe7-f1f1-445f-40c2-25ceaa4e4fb6@lwfinger.net>
-References: <vWuRjLpNOkVGXHNeCL6phN5YDcd6Oljm1WgEMO4vA9aufK8MxzN5itvDnRjPBWHZN0geAbRLAzgIj36kAiNtdHh5vg2RjUH_TzuqZ7WSYeE=@protonmail.com> <65c86fe7-f1f1-445f-40c2-25ceaa4e4fb6@lwfinger.net>
+        Mon, 10 May 2021 08:20:25 -0400
+Received: by mail-io1-f71.google.com with SMTP id d13-20020a6b7d4d0000b029043969826f55so2280868ioq.0
+        for <linux-wireless@vger.kernel.org>; Mon, 10 May 2021 05:19:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=eYJwuDZ+XsqRKCRKIvwFZzV5wcwkB59FcbGmaKLVifw=;
+        b=cCWXqTtPulritLM1VgTSzrIRQSYQD+o5j0RLsvBjo/dCZmgonJaG1D33eVb+bo6IH6
+         HSNazGAvwKXHTv++0aoJyt72x8r7COalhyAbWDDasZnWzM11t9tOQDbbxpefO/3YyQgp
+         CAPzpT2JMZ7GkTg/ygCwUTZxqN8AOTib3vSHZxNJt1jRaKjHHLGzXlrCh9JCnXXNoP+D
+         0pm3IlujQs9fvZUKBzR57RqtVwD3ovtSNSfHosWVamgaiu3hjw6xjtQXiAc/uOpbZQil
+         TUEuhjcJfWWEi4K6q4qZMyoDVKj7pXl/Mmo+C8Mv5cqdKPE7Kg2U3y7Nbb/AjQbfPgTj
+         4WJQ==
+X-Gm-Message-State: AOAM533f/qrfN8cgYGuvNAbSO/mCPElRhOPI/xwkNojPSDgMOtiDTpRW
+        Hr8yvEl9iaGXQk+j03Vr3TJeG60UJ/hqov5hoGx1feoZsaZB
+X-Google-Smtp-Source: ABdhPJyFK7D1jwvXUWQ6WVwkji1paIyU97HyrhX4bG6k0z3W/BkrqxebK0x1iuSYmhw44Dkty51TcsDtORPoQdIK2afFatUJ5DMg
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.7 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+X-Received: by 2002:a92:cd85:: with SMTP id r5mr21276631ilb.169.1620649158349;
+ Mon, 10 May 2021 05:19:18 -0700 (PDT)
+Date:   Mon, 10 May 2021 05:19:18 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000063a4b605c1f8c94b@google.com>
+Subject: [syzbot] UBSAN: shift-out-of-bounds in do_mpage_readpage
+From:   syzbot <syzbot+cf89d662483d6a1a0790@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes.berg@intel.com,
+        johannes@sipsolutions.net, kuba@kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Monday, May 10, 2021 4:16 AM, Larry Finger <Larry.Finger@lwfinger.net> w=
-rote:
-> The only splat that shows in either attachment is due to you not installi=
-ng the
-> regulatory database that sets the channels etc. for your domain. I do not=
- know
-> what it is called for your distro - it is wireless-regdb on mine. It is u=
-nlikely
-> that this is the cause of your problem, but who knows?
->
-> Larry
+Hello,
 
-I installed the wireless-regdb package. The error message about
-regulatory.db went away, but the system still froze.
+syzbot found the following issue on:
 
-I'll try the rtw_core parameter disable_lps_deep=3D1 now.
+HEAD commit:    d2b6f8a1 Merge tag 'xfs-5.13-merge-3' of git://git.kernel...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11dfac0dd00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d360b81e47df40ea
+dashboard link: https://syzkaller.appspot.com/bug?extid=cf89d662483d6a1a0790
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17051fc3d00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=163ab395d00000
+
+The issue was bisected to:
+
+commit dcd479e10a0510522a5d88b29b8f79ea3467d501
+Author: Johannes Berg <johannes.berg@intel.com>
+Date:   Fri Oct 9 12:17:11 2020 +0000
+
+    mac80211: always wind down STA state
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10795f2dd00000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=12795f2dd00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=14795f2dd00000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+cf89d662483d6a1a0790@syzkaller.appspotmail.com
+Fixes: dcd479e10a05 ("mac80211: always wind down STA state")
+
+================================================================================
+UBSAN: shift-out-of-bounds in fs/mpage.c:189:40
+shift exponent 4294967279 is too large for 64-bit type 'long long unsigned int'
+CPU: 1 PID: 8457 Comm: systemd-udevd Not tainted 5.12.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ __dump_stack lib/dump_stack.c:79 [inline]
+ dump_stack+0x141/0x1d7 lib/dump_stack.c:120
+ ubsan_epilogue+0xb/0x5a lib/ubsan.c:148
+ __ubsan_handle_shift_out_of_bounds.cold+0xb1/0x181 lib/ubsan.c:327
+ do_mpage_readpage.cold+0x226/0x2bb fs/mpage.c:189
+ mpage_readahead+0x3a3/0x880 fs/mpage.c:389
+ read_pages+0x1df/0x8d0 mm/readahead.c:130
+ page_cache_ra_unbounded+0x61f/0x920 mm/readahead.c:238
+ do_page_cache_ra mm/readahead.c:267 [inline]
+ force_page_cache_ra+0x3ba/0x5b0 mm/readahead.c:299
+ page_cache_sync_ra+0x107/0x200 mm/readahead.c:573
+ page_cache_sync_readahead include/linux/pagemap.h:864 [inline]
+ filemap_get_pages+0x29f/0x1920 mm/filemap.c:2442
+ filemap_read+0x2ca/0xe40 mm/filemap.c:2525
+ generic_file_read_iter+0x397/0x4f0 mm/filemap.c:2676
+ blkdev_read_iter+0x11b/0x180 fs/block_dev.c:1720
+ call_read_iter include/linux/fs.h:2110 [inline]
+ new_sync_read+0x41e/0x6e0 fs/read_write.c:415
+ vfs_read+0x35c/0x570 fs/read_write.c:496
+ ksys_read+0x12d/0x250 fs/read_write.c:634
+ do_syscall_64+0x3a/0xb0 arch/x86/entry/common.c:47
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7fdc7280d210
+Code: 73 01 c3 48 8b 0d 98 7d 20 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d b9 c1 20 00 00 75 10 b8 00 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 4e fc ff ff 48 89 04 24
+RSP: 002
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
