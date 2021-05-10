@@ -2,58 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7784379816
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 22:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EC8B3799C2
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 00:12:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231180AbhEJUDx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 16:03:53 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:33640 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230170AbhEJUDw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 16:03:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=bJVPp8Oq76w+IrO5IiCTQeRbtmZHcczJWi97wQoWyQs=; b=adcZzuq65bieyZdrPS+QJAGZE1
-        2edNmy2XxL+twllMKz2Yvm1g+7WDvevFz4h/sXNDn5VQjz8CSw5qeSFVCsW6UfcyXUh9cmHK1TpVd
-        wkoWn3EPNx1sxUuQ1GcAJBQSfy8mpX9c/xAPNCYjjzmlhLHKaZKNIczdjOajMT1FsWFw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1lgC6j-003d4I-Rb; Mon, 10 May 2021 22:02:25 +0200
-Date:   Mon, 10 May 2021 22:02:25 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Zhen Lei <thunder.leizhen@huawei.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        b43-dev <b43-dev@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>
-Subject: Re: [PATCH 1/1] b43: phy_n: Delete some useless empty code
-Message-ID: <YJmRUQwPPDE+hWiN@lunn.ch>
-References: <20210510145117.4066-1-thunder.leizhen@huawei.com>
+        id S230229AbhEJWNT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 18:13:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55262 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230109AbhEJWNS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 10 May 2021 18:13:18 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28DABC061574;
+        Mon, 10 May 2021 15:12:13 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id x19so25692545lfa.2;
+        Mon, 10 May 2021 15:12:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hIXUVbTGBsLSYyOC432iVfvE9K0Kn0F0wM8I/jCX+dM=;
+        b=G8/tgKBs0wUPtnjeYUMm1ZLUsZzMD+aREtvDqlxGY3IrwPDsoJ3WUTl9pQiBp2vLpr
+         +6Sqv7yTyoOfhRSdVRjKKRVMm1QcnaBFyzk6Sft7iUo+DmVA1CPgt+zle519SXvYEKOJ
+         B0zP6HGclbnE70U4APRGN8ML36INiQE2klG4F5rm/VvKkxprPSbyGnxcsS5TccNk+JcW
+         zeLiQL7d6Bk1j3+WWYT3lahrKomqxvfgTpHApx+fZSvBuaGkWuEZAr3QJTRWCJAw4gLf
+         1BqKMNF4qzOAYWjlbmQyF4xR+jhWmm2cAyTmx+Nemy4gxFFrM81ub6fTXeV6Qx0cwbgk
+         UJcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hIXUVbTGBsLSYyOC432iVfvE9K0Kn0F0wM8I/jCX+dM=;
+        b=blB39PlHjCeJBjEBWA/ExLbdG3TiOhg/gzOJtdERdUmETCcwXgEsiuYh+YmedD9JyR
+         56g43JCTgSTqVHkh6Vwldlb9UzbeKwV6ruNlPp0izYtkWFR9H0dNM6NEvAWUXFKzEllH
+         i5kk8/1U92/3dCbscqPSdsMKCp4AsmjRoYi5dwtCyggTwYZah/R73eslbl/iy9/CogpH
+         M3SGgDWPLeprVEiv9yyo84CMgk7XgP29mwNlQgYBhk5rTjzOmP53v+5OcaB8BeIftz3i
+         j7v+a6pm18ZcpNgsg1B8nlOwLi7n2wWdSzdWEsX1fbEv1TwyvVacxHwXVXN9W1moxV/d
+         0wGw==
+X-Gm-Message-State: AOAM5306Xk2BGKMnMgTVsaIJZW6TV4XuQlPfMlrCKzkHtZRjRXvazU3N
+        S8IHcXIKzZmNgETgRqLpLzU=
+X-Google-Smtp-Source: ABdhPJyMJuyhbehfG/EEX3hGQVVKfIPElG9J2Bb8xaeKtQwlVw2sR0Z4SGoUpqIe2j0sX0cBj4DLcQ==
+X-Received: by 2002:a05:6512:5c5:: with SMTP id o5mr19241511lfo.168.1620684731689;
+        Mon, 10 May 2021 15:12:11 -0700 (PDT)
+Received: from localhost.localdomain (109-252-193-91.dynamic.spd-mgts.ru. [109.252.193.91])
+        by smtp.gmail.com with ESMTPSA id o11sm2397900lfr.64.2021.05.10.15.12.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 May 2021 15:12:11 -0700 (PDT)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1] brcmfmac: Silence error messages about unsupported firmware features
+Date:   Tue, 11 May 2021 01:11:48 +0300
+Message-Id: <20210510221148.12134-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210510145117.4066-1-thunder.leizhen@huawei.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 10, 2021 at 10:51:17PM +0800, Zhen Lei wrote:
-> These TODO empty code are added by
-> commit 9442e5b58edb ("b43: N-PHY: partly implement SPUR workaround"). It's
-> been more than a decade now. I don't think anyone who wants to perfect
-> this workaround can follow this TODO tip exactly. Instead, it limits them
-> to new thinking. Remove it will be better.
-> 
-> No functional change.
+KMSG is flooded with error messages about unsupported firmware
+features on BCM4329 chip. The GET_ASSOCLIST error became especially
+noisy with a newer NetworkManager version of Ubuntu 21.04. Let's print
+the noisy error messages only once.
 
-No function change, apart from the new warning?
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+---
+ .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 11 +++++++++--
+ .../net/wireless/broadcom/brcm80211/brcmfmac/core.c | 13 ++++++++++---
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
-Does your bot to compile the change and look for new warnings/errors?
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index f4405d7861b6..631536d8abb4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -2892,8 +2892,15 @@ brcmf_cfg80211_dump_station(struct wiphy *wiphy, struct net_device *ndev,
+ 					     &cfg->assoclist,
+ 					     sizeof(cfg->assoclist));
+ 		if (err) {
+-			bphy_err(drvr, "BRCMF_C_GET_ASSOCLIST unsupported, err=%d\n",
+-				 err);
++			static bool error_printed = false;
++
++			/* GET_ASSOCLIST unsupported by firmware of older chips */
++			if (!error_printed || err != -EBADE) {
++				bphy_err(drvr, "BRCMF_C_GET_ASSOCLIST unsupported, err=%d\n",
++					 err);
++				error_printed = true;
++			}
++
+ 			cfg->assoclist.count = 0;
+ 			return -EOPNOTSUPP;
+ 		}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+index 838b09b23abf..7f1a6234fd27 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -188,9 +188,16 @@ static void _brcmf_set_multicast_list(struct work_struct *work)
+ 	/*Finally, pick up the PROMISC flag */
+ 	cmd_value = (ndev->flags & IFF_PROMISC) ? true : false;
+ 	err = brcmf_fil_cmd_int_set(ifp, BRCMF_C_SET_PROMISC, cmd_value);
+-	if (err < 0)
+-		bphy_err(drvr, "Setting BRCMF_C_SET_PROMISC failed, %d\n",
+-			 err);
++	if (err < 0) {
++		static bool error_printed = false;
++
++		/* PROMISC unsupported by firmware of older chips */
++		if (!error_printed || err != -EBADE) {
++			bphy_err(drvr, "Setting BRCMF_C_SET_PROMISC unsupported, err=%d\n",
++				 err);
++			error_printed = true;
++		}
++	}
+ 	brcmf_configure_arp_nd_offload(ifp, !cmd_value);
+ }
+ 
+-- 
+2.30.2
 
-     Andrew
