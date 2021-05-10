@@ -2,63 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03526378FBD
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 15:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97DB6379173
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 16:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242867AbhEJNxn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 09:53:43 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:54389 "EHLO
-        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S242865AbhEJNvD (ORCPT
+        id S232417AbhEJOzR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 10:55:17 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:2618 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236670AbhEJOxG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 09:51:03 -0400
-Date:   Mon, 10 May 2021 13:49:51 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1620654593;
-        bh=f8V6lvyFY3NbBsc7SyXmMsmmJVbewp46epdPuh+GPRw=;
-        h=Date:To:From:Reply-To:Subject:In-Reply-To:References:From;
-        b=Qb+WB8r8+2W1aALu4VxU5m/PW9N9YyscOJC9HZDzc0xB4N4BoRzhq0eGDjUfuzzSI
-         p6teXo4zpefNrpLOtt29CJ5bgUMgASNFB9CsvjQi/S7I+s5cGNGrYpwrJpD3olwqBM
-         gNnA2A59R9MpxSk2J9D1PZvc25XHPd+s+Pn/C/PE=
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Reply-To: rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-Subject: Re: rtw88: Guaranteed system freeze with RTL8821CE with RFE 2 type
-Message-ID: <Qg7Ae-IznoeEC_X2m_4XXKRlM-yT3O7dzdbZ0egHTsdEaA0uILKZ0uBymFMrN7aI38rz-ZTKSxTDUAU4tKJPIntXELdx9Rd0MIU5sSG_VCI=@protonmail.com>
-In-Reply-To: <1jmF9EMZn2ywrHSGrNCzOUSAzllw9ox-Da2zfbSTnTULlX8Ha8F211TfKuxITBBtkfxiU_R0w7zUeFLdtDj4ejp6qPnCIhFj2U-rsCVNlMg=@protonmail.com>
-References: <vWuRjLpNOkVGXHNeCL6phN5YDcd6Oljm1WgEMO4vA9aufK8MxzN5itvDnRjPBWHZN0geAbRLAzgIj36kAiNtdHh5vg2RjUH_TzuqZ7WSYeE=@protonmail.com> <65c86fe7-f1f1-445f-40c2-25ceaa4e4fb6@lwfinger.net> <1jmF9EMZn2ywrHSGrNCzOUSAzllw9ox-Da2zfbSTnTULlX8Ha8F211TfKuxITBBtkfxiU_R0w7zUeFLdtDj4ejp6qPnCIhFj2U-rsCVNlMg=@protonmail.com>
+        Mon, 10 May 2021 10:53:06 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Ff3qZ58kQzmVRp;
+        Mon, 10 May 2021 22:49:46 +0800 (CST)
+Received: from thunder-town.china.huawei.com (10.174.177.72) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.498.0; Mon, 10 May 2021 22:51:49 +0800
+From:   Zhen Lei <thunder.leizhen@huawei.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        b43-dev <b43-dev@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>
+CC:     Zhen Lei <thunder.leizhen@huawei.com>
+Subject: [PATCH 1/1] b43: phy_n: Delete some useless empty code
+Date:   Mon, 10 May 2021 22:51:17 +0800
+Message-ID: <20210510145117.4066-1-thunder.leizhen@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.7 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.174.177.72]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Monday, May 10, 2021 3:06 PM, rtl8821cerfe2 <rtl8821cerfe2@protonmail.co=
-m> wrote:
+These TODO empty code are added by
+commit 9442e5b58edb ("b43: N-PHY: partly implement SPUR workaround"). It's
+been more than a decade now. I don't think anyone who wants to perfect
+this workaround can follow this TODO tip exactly. Instead, it limits them
+to new thinking. Remove it will be better.
 
-> On Monday, May 10, 2021 4:16 AM, Larry Finger Larry.Finger@lwfinger.net w=
-rote:
->
-> > The only splat that shows in either attachment is due to you not instal=
-ling the
-> > regulatory database that sets the channels etc. for your domain. I do n=
-ot know
-> > what it is called for your distro - it is wireless-regdb on mine. It is=
- unlikely
-> > that this is the cause of your problem, but who knows?
-> > Larry
->
-> I installed the wireless-regdb package. The error message about
-> regulatory.db went away, but the system still froze.
->
-> I'll try the rtw_core parameter disable_lps_deep=3D1 now.
+No functional change.
 
-disable_lps_deep=3D1 did not help.
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+---
+ drivers/net/wireless/broadcom/b43/phy_n.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+index 665b737fbb0d820..13cc62695f4cc93 100644
+--- a/drivers/net/wireless/broadcom/b43/phy_n.c
++++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+@@ -4601,16 +4601,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
+ 	if (nphy->hang_avoid)
+ 		b43_nphy_stay_in_carrier_search(dev, 1);
+ 
+-	if (nphy->gband_spurwar_en) {
+-		/* TODO: N PHY Adjust Analog Pfbw (7) */
+-		if (channel == 11 && b43_is_40mhz(dev)) {
+-			; /* TODO: N PHY Adjust Min Noise Var(2, tone, noise)*/
+-		} else {
+-			; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
+-		}
+-		/* TODO: N PHY Adjust CRS Min Power (0x1E) */
+-	}
+-
+ 	if (nphy->aband_spurwar_en) {
+ 		if (channel == 54) {
+ 			tone[0] = 0x20;
+@@ -4636,12 +4626,6 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
+ 			tone[0] = 0;
+ 			noise[0] = 0;
+ 		}
+-
+-		if (!tone[0] && !noise[0]) {
+-			; /* TODO: N PHY Adjust Min Noise Var(1, tone, noise)*/
+-		} else {
+-			; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
+-		}
+ 	}
+ 
+ 	if (nphy->hang_avoid)
+-- 
+2.26.0.106.g9fadedd
+
+
