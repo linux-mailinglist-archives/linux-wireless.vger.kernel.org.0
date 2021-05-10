@@ -2,102 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A988377E13
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 10:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C06DE377E48
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 May 2021 10:35:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbhEJIYu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 04:24:50 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2606 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230103AbhEJIYt (ORCPT
+        id S230118AbhEJIgv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 May 2021 04:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40944 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230049AbhEJIgv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 04:24:49 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FdvBG6VfDzQlZj;
-        Mon, 10 May 2021 16:20:22 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.177.72) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 10 May 2021 16:23:36 +0800
-From:   Zhen Lei <thunder.leizhen@huawei.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>
-CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH 1/1] rtlwifi: btcoex: 21a 2ant: Delete several duplicate condition branch codes
-Date:   Mon, 10 May 2021 16:22:37 +0800
-Message-ID: <20210510082237.3315-1-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+        Mon, 10 May 2021 04:36:51 -0400
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06B1C061573;
+        Mon, 10 May 2021 01:35:46 -0700 (PDT)
+Received: by mail-qk1-x729.google.com with SMTP id q127so14608717qkb.1;
+        Mon, 10 May 2021 01:35:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=Dv5HZ1iIO9k5TBKjdbjTq8arFFrPhJ667CSCrAmKd5Q=;
+        b=pm7b0jYqffnMRJ14/JvwQpPuM2LyZDzPuTGnxM8fBagtpnFcHTXR9yQFI7nXJ+1RZf
+         gsnooT1/ja5vG3mmtk50gmTMkFxftv68hrJr5JfI3YdphAunE0puYIfVvuXcwJXxUlHj
+         CDodkEYrWjPwhxgtzJO0htCHn6MDn4FjrxXqA7oieZUyiPWKus/Bbif5kNSoBLHcc/ZM
+         6ldFQ+UL7nRrbsOT74hBgCDdanSS6khUfCOAznLV0C/mKLwCc4UgTkvMeNzH6PmhmgHH
+         VSJB7Cg9xsggsosY3uI8rWFx4KvUfLmbKrf4ef3EzTRpjJIzLRQX+mgt+IuCvPG0GfFn
+         gCAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=Dv5HZ1iIO9k5TBKjdbjTq8arFFrPhJ667CSCrAmKd5Q=;
+        b=QbRVl1naJ/NYV0Fh6/bkdMyG5MuFhhUMhxi9tZj0GxyXH7iGph6xOdJOz/XBcsv6IS
+         3aEzWO7Cstf0KxzVkBW4s/E50bkIq4Z79m2DIAa7ZZscqf/iHj4nWIikLLOjK7xZSxlz
+         rsjFX6IzQr+KgY8UNPvRCQGeHL14zWQ+q8U8mPuMWFyPbnhNCGYFcNVyd913H97z/f67
+         ipfooh30O6p2KIQUvxfRkzsOQJp/P7O0Tc4c/cJrifokCgz6d/+T/GIPoaX1UNRZ4fdJ
+         gUmjvV8r99bwnGP1OGxh8ft28Prh5G2Nx8TZu6helwV2wX7hW17ai6hgn1OwKBrP1LYD
+         HOYQ==
+X-Gm-Message-State: AOAM533K9FQukAFw0DKlxWZFjoUiv+PF7ZhqiM1zFFJMwrkkJg92UJ2D
+        vhARGUbSOhwEWd7J4VAS+DPDoziHmHak32TZHLQ=
+X-Google-Smtp-Source: ABdhPJxIxEHt8pfSZ2Lb+aPIyCea3bUMDdddxPoi8T3diGXSoKu21U29wwHHaNb2iTJg0AIzBuQM6SzzQ2J0oe8IP1g=
+X-Received: by 2002:a37:9e44:: with SMTP id h65mr21954031qke.297.1620635746055;
+ Mon, 10 May 2021 01:35:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.177.72]
-X-CFilter-Loop: Reflected
+From:   =?UTF-8?B?6YKx5ZCN56Kp?= <ccchiu77@gmail.com>
+Date:   Mon, 10 May 2021 16:35:35 +0800
+Message-ID: <CANgQ54dicgKSZFm3w9sbAYztFw9xBHZnt8aQMNCEfMn_twBbWQ@mail.gmail.com>
+Subject: How does the rate adaptive mask work on Realtek WiFi driver
+To:     Pkshih <pkshih@realtek.com>, Andy Huang <tehuang@realtek.com>,
+        Larry.Finger@lwfinger.net, kuba@kernel.org, kvalo@codeaurora.org,
+        Reto Schneider <reto.schneider@husqvarnagroup.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The statements of the "if (max_interval == 3)" branch are the same as
-those of the "else" branch. Delete them to simplify the code.
+Hi guys,
+    I had a problem while verifying the ampdu tx throughput with the
+rtl8xxxu driver on RTL8188CUS module. The throughput number is
+relatively good, 39~42Mbps  TCP on 2.4GHz channel. However, the
+retransmission rate is high, it's 15% ~ 21% with rtl8xxxu driver and
+It's almost the same result with the rtl8192cu driver. I can get
+averagely 7~10% retransmission rate in the same test bed with Realtek
+vendor driver.
 
-No functional change.
+    From the air capture, I can see the rtl8xxxu driver keep sending
+the aggregated frames in MCS7 and doesn't even fall back to lower MCS
+index in the subsequent retries. I can only see very few retried
+packets been sent with MCS0 or 6Mbps grate. On the vendor driver, I'll
+see the retried ampdu packets with MCS4 after 3 retries w/o ack from
+the receiver.
 
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
- .../realtek/rtlwifi/btcoexist/halbtc8821a2ant.c  | 16 ----------------
- 1 file changed, 16 deletions(-)
+    From the rate mask command issued by the h2c command, I force both
+the rtl8xxxu driver and vendor driver to use the same ratemask 0xfffff
+(MCS 0-7 and b/g rate included) and leave the arg0 as-is (mostly 0xa0)
+and I expect both drivers can do the rate adaptive thing in the same
+way, but it seems to make no difference. The rtl8xxxu driver still
+sends the packets with highest MCS.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
-index 447caa4aad325bf..0990b4e84b2538f 100644
---- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c
-@@ -1721,10 +1721,6 @@ static void btc8821a2ant_tdma_duration_adjust(struct btc_coexist *btcoexist,
- 					btc8821a2ant_ps_tdma(btcoexist,
- 							NORMAL_EXEC, true, 14);
- 					coex_dm->ps_tdma_du_adj_type = 14;
--				} else if (max_interval == 3) {
--					btc8821a2ant_ps_tdma(btcoexist,
--							NORMAL_EXEC, true, 15);
--					coex_dm->ps_tdma_du_adj_type = 15;
- 				} else {
- 					btc8821a2ant_ps_tdma(btcoexist,
- 							NORMAL_EXEC, true, 15);
-@@ -1739,10 +1735,6 @@ static void btc8821a2ant_tdma_duration_adjust(struct btc_coexist *btcoexist,
- 					btc8821a2ant_ps_tdma(btcoexist,
- 							NORMAL_EXEC, true, 10);
- 					coex_dm->ps_tdma_du_adj_type = 10;
--				} else if (max_interval == 3) {
--					btc8821a2ant_ps_tdma(btcoexist,
--							NORMAL_EXEC, true, 11);
--					coex_dm->ps_tdma_du_adj_type = 11;
- 				} else {
- 					btc8821a2ant_ps_tdma(btcoexist,
- 							NORMAL_EXEC, true, 11);
-@@ -1759,10 +1751,6 @@ static void btc8821a2ant_tdma_duration_adjust(struct btc_coexist *btcoexist,
- 					btc8821a2ant_ps_tdma(btcoexist,
- 							NORMAL_EXEC, true, 6);
- 					coex_dm->ps_tdma_du_adj_type = 6;
--				} else if (max_interval == 3) {
--					btc8821a2ant_ps_tdma(btcoexist,
--							NORMAL_EXEC, true, 7);
--					coex_dm->ps_tdma_du_adj_type = 7;
- 				} else {
- 					btc8821a2ant_ps_tdma(btcoexist,
- 							NORMAL_EXEC, true, 7);
-@@ -1777,10 +1765,6 @@ static void btc8821a2ant_tdma_duration_adjust(struct btc_coexist *btcoexist,
- 					btc8821a2ant_ps_tdma(btcoexist,
- 							NORMAL_EXEC, true, 2);
- 					coex_dm->ps_tdma_du_adj_type = 2;
--				} else if (max_interval == 3) {
--					btc8821a2ant_ps_tdma(btcoexist,
--							NORMAL_EXEC, true, 3);
--					coex_dm->ps_tdma_du_adj_type = 3;
- 				} else {
- 					btc8821a2ant_ps_tdma(btcoexist,
- 							NORMAL_EXEC, true, 3);
--- 
-2.26.0.106.g9fadedd
+    Can anyone tell me what should I expect the rate adaptive to work
+with the rate mask 0xfffff and 0xf0000? Does the 0xf0000 means that it
+will pick up a tx rate only between nrate MCS4 to MCS7? I need a base
+line so that I can judge it's simply a rate mask problem or maybe the
+h2c command is not written correctly. Please kindly suggest what I
+should do next. Thanks
 
+The rtl8188cus vendor driver I tested is here (It can be compiled with
+kernel 5.12+)
+https://github.com/mschiu77/rtl8188cus_vendor/
 
+Chris
