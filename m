@@ -2,94 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 255AF37AD95
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 20:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0A1537AD8E
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 20:03:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231908AbhEKSEY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 May 2021 14:04:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41158 "EHLO
+        id S231825AbhEKSEW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 May 2021 14:04:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231551AbhEKSEV (ORCPT
+        with ESMTP id S231454AbhEKSEV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 11 May 2021 14:04:21 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D61DFC061760
-        for <linux-wireless@vger.kernel.org>; Tue, 11 May 2021 11:03:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA198C06174A;
+        Tue, 11 May 2021 11:03:10 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94.2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1lgWiq-007aAS-FA
-        for linux-wireless@vger.kernel.org; Tue, 11 May 2021 20:03:08 +0200
+        id 1lgWiq-007aAS-OQ; Tue, 11 May 2021 20:03:08 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 00/18] mac80211/driver security fixes
-Date:   Tue, 11 May 2021 20:02:41 +0200
-Message-Id: <20210511180259.159598-1-johannes@sipsolutions.net>
+Cc:     Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>, stable@vger.kernel.org
+Subject: [PATCH 01/18] mac80211: assure all fragments are encrypted
+Date:   Tue, 11 May 2021 20:02:42 +0200
+Message-Id: <20210511200110.30c4394bb835.I5acfdb552cc1d20c339c262315950b3eac491397@changeid>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210511180259.159598-1-johannes@sipsolutions.net>
+References: <20210511180259.159598-1-johannes@sipsolutions.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Several security issues in the 802.11 implementations were found by
-Mathy Vanhoef (New York University Abu Dhabi), who has published all
-the details at
+From: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
 
-	https://papers.mathyvanhoef.com/usenix2021.pdf
+Do not mix plaintext and encrypted fragments in protected Wi-Fi
+networks. This fixes CVE-2020-26147.
 
+Previously, an attacker was able to first forward a legitimate encrypted
+fragment towards a victim, followed by a plaintext fragment. The
+encrypted and plaintext fragment would then be reassembled. For further
+details see Section 6.3 and Appendix D in the paper "Fragment and Forge:
+Breaking Wi-Fi Through Frame Aggregation and Fragmentation".
 
-Specifically, the following CVEs were assigned:
+Because of this change there are now two equivalent conditions in the
+code to determine if a received fragment requires sequential PNs, so we
+also move this test to a separate function to make the code easier to
+maintain.
 
- * CVE-2020-24586 - Fragmentation cache not cleared on reconnection
- * CVE-2020-24587 - Reassembling fragments encrypted under different
-                    keys
- * CVE-2020-24588 - Accepting non-SPP A-MSDU frames, which leads to
-                    payload being parsed as an L2 frame under an
-                    A-MSDU bit toggling attack
- * CVE-2020-26139 - Forwarding EAPOL from unauthenticated sender
- * CVE-2020-26140 - Accepting plaintext data frames in protected
-                    networks
- * CVE-2020-26141 - Not verifying TKIP MIC of fragmented frames
- * CVE-2020-26142 - Processing fragmented frames as full frames
- * CVE-2020-26143 - Accepting fragmented plaintext frames in
-                    protected networks
- * CVE-2020-26144 - Always accepting unencrypted A-MSDU frames that
-                    start with RFC1042 header with EAPOL ethertype
- * CVE-2020-26145 - Accepting plaintext broadcast fragments as full
-                    frames
- * CVE-2020-26146 - Reassembling encrypted fragments with non-consecutive
-                    packet numbers
- * CVE-2020-26147 - Reassembling mixed encrypted/plaintext fragments
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/rx.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-
-In general, the scope of these attacks is that they may allow an
-attacker to
- * inject L2 frames that they can more or less control (depending on the
-   vulnerability and attack method) into an otherwise protected network;
- * exfiltrate (some) network data under certain conditions, this is
-   specific to the fragmentation issues.
-
-
-A subset of these issues is known to apply to the Linux IEEE 802.11
-implementation (mac80211). Where it is affected, the attached patches
-fix the issues, even if not all of them reference the exact CVE IDs.
-
-In addition, driver and/or firmware updates may be necessary, as well
-as potentially more fixes to mac80211, depending on how drivers are
-using it.
-
-Specifically, for Intel devices, firmware needs to be updated to the
-most recently released versions (which was done without any reference
-to the security issues) to address some of the vulnerabilities.
-
-To have a single set of patches, I'm also including patches for the
-ath10k and ath11k drivers here.
-
-We currently don't have information about how other drivers are, if
-at all, affected.
-
-johannes
-
-
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 62047e93e217..65fc674e27cc 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2194,6 +2194,16 @@ ieee80211_reassemble_find(struct ieee80211_sub_if_data *sdata,
+ 	return NULL;
+ }
+ 
++static bool requires_sequential_pn(struct ieee80211_rx_data *rx, __le16 fc)
++{
++	return rx->key &&
++		(rx->key->conf.cipher == WLAN_CIPHER_SUITE_CCMP ||
++		 rx->key->conf.cipher == WLAN_CIPHER_SUITE_CCMP_256 ||
++		 rx->key->conf.cipher == WLAN_CIPHER_SUITE_GCMP ||
++		 rx->key->conf.cipher == WLAN_CIPHER_SUITE_GCMP_256) &&
++		ieee80211_has_protected(fc);
++}
++
+ static ieee80211_rx_result debug_noinline
+ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ {
+@@ -2238,12 +2248,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 		/* This is the first fragment of a new frame. */
+ 		entry = ieee80211_reassemble_add(rx->sdata, frag, seq,
+ 						 rx->seqno_idx, &(rx->skb));
+-		if (rx->key &&
+-		    (rx->key->conf.cipher == WLAN_CIPHER_SUITE_CCMP ||
+-		     rx->key->conf.cipher == WLAN_CIPHER_SUITE_CCMP_256 ||
+-		     rx->key->conf.cipher == WLAN_CIPHER_SUITE_GCMP ||
+-		     rx->key->conf.cipher == WLAN_CIPHER_SUITE_GCMP_256) &&
+-		    ieee80211_has_protected(fc)) {
++		if (requires_sequential_pn(rx, fc)) {
+ 			int queue = rx->security_idx;
+ 
+ 			/* Store CCMP/GCMP PN so that we can verify that the
+@@ -2285,11 +2290,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 		u8 pn[IEEE80211_CCMP_PN_LEN], *rpn;
+ 		int queue;
+ 
+-		if (!rx->key ||
+-		    (rx->key->conf.cipher != WLAN_CIPHER_SUITE_CCMP &&
+-		     rx->key->conf.cipher != WLAN_CIPHER_SUITE_CCMP_256 &&
+-		     rx->key->conf.cipher != WLAN_CIPHER_SUITE_GCMP &&
+-		     rx->key->conf.cipher != WLAN_CIPHER_SUITE_GCMP_256))
++		if (!requires_sequential_pn(rx, fc))
+ 			return RX_DROP_UNUSABLE;
+ 		memcpy(pn, entry->last_pn, IEEE80211_CCMP_PN_LEN);
+ 		for (i = IEEE80211_CCMP_PN_LEN - 1; i >= 0; i--) {
+-- 
+2.30.2
 
