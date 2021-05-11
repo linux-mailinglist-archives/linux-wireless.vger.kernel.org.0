@@ -2,91 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E3037AE1C
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 20:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 780B937AE9B
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 20:45:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231587AbhEKSMm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 May 2021 14:12:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43178 "EHLO
+        id S231825AbhEKSqK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 May 2021 14:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231454AbhEKSMl (ORCPT
+        with ESMTP id S231824AbhEKSqJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 May 2021 14:12:41 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4130C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 11 May 2021 11:11:33 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id v22so14969187oic.2
-        for <linux-wireless@vger.kernel.org>; Tue, 11 May 2021 11:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=aH9kVAJXkwaxX/GNZLKBuR2D6QcV31ThYLhoCIM17dI=;
-        b=Lj+pLY/hmdeKwz69ucMn663n+aZR6c0D3Tew84HZPwtor7Ok7xQxvGEMSI9GKEq3hx
-         xSFIXXWY50Wy0EcfoxY8fHdgg/Q4Otef3DgcHfNML9NMKdpDq1xoYLfOs+3Fgc487yV+
-         3/7mSLmdXVZqasvtn8DYfk54e/9MyB1je+mRvcf2wCDSBli+B0cg5pln8LeOGis+u+kv
-         tKix0gF09jHe3lwIsK8Kf+RXlaYaL0gMAbu4oo6xjOE8pwtmtGLGrNMHRps35XOZ6NUO
-         wTO7uzF5TuxWcNfqIr5qcVB/bjRuVL+DdWQQGJ7qTtCuzSvoX0mKe3mZaxd7i9VXcQNL
-         PS/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=aH9kVAJXkwaxX/GNZLKBuR2D6QcV31ThYLhoCIM17dI=;
-        b=VDMAuz59sVCpS2+g4UmX0xymtleHGeMqFjT1ez30/hoHlsn0p35e0mdbi3b33WJjm0
-         8hkVXq4aTVKwqg6jYnLfEMSTp6Uyc4QCzirPQ/BC9NOKrrHW8TyRaozoVcF7nasZFrto
-         KKdjRB3Z6RrnVgdaTTtfu9nsuTkehTLXguMemJ21J0Bwu01G8LKOOztUVLU8IdZhmbKT
-         Ju3ItYRXKTqrA0is8gq7uocGkHEt+1pgzzJ9rI8WgJq66ze+zaVfrz+w3uZz/WmEYgvs
-         MVn1n8ajf9Wv9VF+n02JggN7cQuP/TfhYkjsVB/Kr5kBdzccd5O2r+emrxw9EWfyIsBJ
-         wu0g==
-X-Gm-Message-State: AOAM533gQ21yZPujwAwD5cNh7FSpFymZVo2vtYEyq9qrweXsWqeyYt9O
-        fsEz0AqbL/CTq4y9T5L0fjyxQN4sPMg=
-X-Google-Smtp-Source: ABdhPJwDadO/X3zIcmZEydh5nIHC+UOJSyhMElTtSDmHMzOrR4a1wYl1Pr1TFKMeGDNV6fAs5WomBQ==
-X-Received: by 2002:aca:d90a:: with SMTP id q10mr4510125oig.63.1620756693041;
-        Tue, 11 May 2021 11:11:33 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id z6sm2440595oiz.39.2021.05.11.11.11.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 May 2021 11:11:32 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: RFE4 support for rtw88_8821ce
-To:     Luis Ortega Pinillos <lupaorpi22@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <db18a90633e0c7149f25f591251df55f0f292a4a.camel@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <3dbc8525-5ebd-ba4f-d57a-7d46f5cd1ca6@lwfinger.net>
-Date:   Tue, 11 May 2021 13:11:31 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        Tue, 11 May 2021 14:46:09 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0C0C061574;
+        Tue, 11 May 2021 11:45:02 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lgXNM-007b3L-VM; Tue, 11 May 2021 20:45:01 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211 2021-05-11
+Date:   Tue, 11 May 2021 20:44:53 +0200
+Message-Id: <20210511184454.164893-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <db18a90633e0c7149f25f591251df55f0f292a4a.camel@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/1/20 2:15 PM, Luis Ortega Pinillos wrote:
-> Hello!
-> The rtw88_8821ce driver doesn't support the rfe4 variant of this wifi
-> chip.
-> 
-> [   29.951453] rtw_8821ce 0000:01:00.0: enabling device (0000 -> 0003)
-> [   30.131013] rtw_8821ce 0000:01:00.0: Firmware version 24.5.0, H2C
-> version 12
-> [   30.149773] rtw_8821ce 0000:01:00.0: rfe 4 isn't supported
-> [   30.149872] rtw_8821ce 0000:01:00.0: failed to setup chip efuse info
-> [   30.149873] rtw_8821ce 0000:01:00.0: failed to setup chip
-> information
-> 
-> My laptop is an Asus M509DA.
+Hi,
 
-My contact at Realtek just sent me the following:
-"I'd like to let you know that I don't forget this thing, and my colleague is
-working on this. If there's any update, I'll let you know. Please wait a while."
+So exciting times, for the first pull request for fixes I
+have a bunch of security things that have been under embargo
+for a while - see more details in the tag below, and at the
+patch posting message I linked to.
 
-Larry
+I organized with Kalle to just have a single set of fixes
+for mac80211 and ath10k/ath11k, we don't know about any of
+the other vendors (the mac80211 + already released firmware
+is sufficient to fix iwlwifi.)
 
+Please pull and let me know if there's any problem.
+
+Thanks,
+johannes
+
+
+
+The following changes since commit 297c4de6f780b63b6d2af75a730720483bf1904a:
+
+  net: dsa: felix: re-enable TAS guard band mode (2021-05-10 14:48:55 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-05-11
+
+for you to fetch changes up to 210f563b097997ce917e82feab356b298bfd12b0:
+
+  ath11k: Drop multicast fragments (2021-05-11 20:16:30 +0200)
+
+----------------------------------------------------------------
+Several security issues in the 802.11 implementations were found by
+Mathy Vanhoef (New York University Abu Dhabi), and this contains the
+fixes developed for mac80211 and specifically Qualcomm drivers, I'm
+sending this together (as agreed with Kalle) to have just a single
+set of patches for now. We don't know about other vendors though.
+
+More details in the patch posting:
+https://lore.kernel.org/r/20210511180259.159598-1-johannes@sipsolutions.net
+
+----------------------------------------------------------------
+Johannes Berg (5):
+      mac80211: drop A-MSDUs on old ciphers
+      mac80211: add fragment cache to sta_info
+      mac80211: check defrag PN against current frame
+      mac80211: prevent attacks on TKIP/WEP as well
+      mac80211: do not accept/forward invalid EAPOL frames
+
+Mathy Vanhoef (4):
+      mac80211: assure all fragments are encrypted
+      mac80211: prevent mixed key and fragment cache attacks
+      mac80211: properly handle A-MSDUs that start with an RFC 1042 header
+      cfg80211: mitigate A-MSDU aggregation attacks
+
+Sriram R (3):
+      ath10k: Validate first subframe of A-MSDU before processing the list
+      ath11k: Clear the fragment cache during key install
+      ath11k: Drop multicast fragments
+
+Wen Gong (6):
+      mac80211: extend protection against mixed key and fragment cache attacks
+      ath10k: add CCMP PN replay protection for fragmented frames for PCIe
+      ath10k: drop fragments with multicast DA for PCIe
+      ath10k: drop fragments with multicast DA for SDIO
+      ath10k: drop MPDU which has discard flag set by firmware for SDIO
+      ath10k: Fix TKIP Michael MIC verification for PCIe
+
+ drivers/net/wireless/ath/ath10k/htt.h     |   1 +
+ drivers/net/wireless/ath/ath10k/htt_rx.c  | 201 ++++++++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath10k/rx_desc.h |  14 ++-
+ drivers/net/wireless/ath/ath11k/dp_rx.c   |  34 +++++
+ drivers/net/wireless/ath/ath11k/dp_rx.h   |   1 +
+ drivers/net/wireless/ath/ath11k/mac.c     |   6 +
+ include/net/cfg80211.h                    |   4 +-
+ net/mac80211/ieee80211_i.h                |  36 ++----
+ net/mac80211/iface.c                      |  11 +-
+ net/mac80211/key.c                        |   7 ++
+ net/mac80211/key.h                        |   2 +
+ net/mac80211/rx.c                         | 150 +++++++++++++++++-----
+ net/mac80211/sta_info.c                   |   6 +-
+ net/mac80211/sta_info.h                   |  33 ++++-
+ net/mac80211/wpa.c                        |  13 +-
+ net/wireless/util.c                       |   7 +-
+ 16 files changed, 441 insertions(+), 85 deletions(-)
 
