@@ -2,116 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FDD837A279
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 10:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 490BC37A461
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 12:13:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230406AbhEKIto (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 May 2021 04:49:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56170 "EHLO
+        id S231245AbhEKKO2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 May 2021 06:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230316AbhEKIto (ORCPT
+        with ESMTP id S231177AbhEKKO1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 May 2021 04:49:44 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AFEAC061574
-        for <linux-wireless@vger.kernel.org>; Tue, 11 May 2021 01:48:38 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id 66so9812099vsk.9
-        for <linux-wireless@vger.kernel.org>; Tue, 11 May 2021 01:48:38 -0700 (PDT)
+        Tue, 11 May 2021 06:14:27 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C825C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 11 May 2021 03:13:18 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id l4so28911405ejc.10
+        for <linux-wireless@vger.kernel.org>; Tue, 11 May 2021 03:13:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=c+OybVOZDjffV9fCxk6L7StkiAEN+2vDpamJv6n/cXQ=;
-        b=YEw3177WZxZnAdlDc+pzXzwD6r4iIZjk/XFlRNuCv5A1n8xmP010LLb4xQkMNWjUc3
-         BLd9Aa2u6lAkCJReuymYpcvMbCotOvCzz7tFMXlvtWHo+KyIoxLUBerduPEUUZsTbvEF
-         7Pp0mH50SAyceyfXgVUWhQvcq+vudHJHdZL3cn1qCQufGd/8knLSJWSfm0eQ2Kfvqe+n
-         FgH8QJrbRKsCZkmgRUSmH02B2Szv4T4tSSposmlu3HyQk93po91J8t4xQK/pXj+vtkM8
-         w38Q1NSw4hMLYVvPg5pqKdrAq0tm/0U88uyvbunfCvYaEFXtn3sngU6mzI8qSOM+nDCH
-         hWoQ==
+         :cc:content-transfer-encoding;
+        bh=mHSBQXCOCzoWDoIGp6giREC+3XoMpZFoY0SSULtjYsQ=;
+        b=O3gOeCPQ61uxJreFnSz2K6rj8r8NcXEeJU2gkM6fOxdy4qRUFmo/zCWLW6xtr+YKAD
+         iujfjlhvHvRou8/x0GdnlR8FFMp2xU865qNADM/55ZHuXw3KLGbZ4ViCW+2yO06jwBei
+         qHA9E8nnLZe8dVj7yU3ne2leQJdcfY4OVW6bjvXvdyVxJgRC91FtOMxWAwOh18a7YRUA
+         XR9DKokbmlDXK4o91Vpffy5vQ5uc/GuRNVsUbDj6FIwSLKOnRT+Ej5n84/HYzMj5SzXV
+         tBCIpl/+IBwkT8dZuwF/F6sYaL5+QW/AlhBhBQ7Ue/o/KPljmZwPyLI4wxxFWVENh071
+         zeBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c+OybVOZDjffV9fCxk6L7StkiAEN+2vDpamJv6n/cXQ=;
-        b=ojLTjCIsjmB81xespSBedGG2TMJAtHHisPBdSPV7SYvUec5k0P3b/P2VdA8XnxRtyw
-         TVeEmUzL52UTVg+80MQG7DyO8HIQ52cQ/CBOL2nGfj0Zn8dJG7tsnABpZir5y4yB9S4R
-         SH3FHvDoawSTvfLR97sJG6hHWYxsp4ueIDAXSo+tE+OqAh8YEycr0TkbsDJ0Zaxr+tV7
-         pWcgUed8aGfTmNbFsiQZOEY8mkzLtbbENjQiKzhEPFY30NzWSjrdSJFWZaVG3lgdvuuM
-         J+qGfkMbkTbULO9ZPcOOM09/NXYaCYApiY92y0YB3jF0t9Eh++5NGGAyd8069hEGXX4s
-         WeDQ==
-X-Gm-Message-State: AOAM532s9k/Oqc75eck1MbpGpw0xav4hgBlFbyRg6X7ayLPOxgb/Q36l
-        9a+9ZQEUbw9KeT9ZORHoruiZx+R/w/0srkhrydvLvg==
-X-Google-Smtp-Source: ABdhPJz/daDUyKRo8v+4rlpOBElnUxqML9fx1ysbvbpsXoLdmYoqtA8SaUYenO5opWEvoXPYc0ne0/f0wOXxzd0MPgg=
-X-Received: by 2002:a05:6102:505:: with SMTP id l5mr20057935vsa.55.1620722917369;
- Tue, 11 May 2021 01:48:37 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=mHSBQXCOCzoWDoIGp6giREC+3XoMpZFoY0SSULtjYsQ=;
+        b=svs8h45klj61Kx/IWvHQ//na6DTAxYV/6YC8NiWm96Vvix/o6LcSYlI7UGyipORmff
+         D4DJHgSsj57q3X3rC27f8eHKAaxrjgeFPcqNunY7y42kfUgfCH7nnaavuNkqAo/vLn5m
+         w58yBdT5/oq3jWGNi18KseAFepy5TlFJof59IAdXHrmfzZVv4jPaRLz48rAFkQGLpGhE
+         rip8lCifoDw6Xi1Lv5+CTmXZ/Ycp4+TBk6GGEI/sS6Smr5cKCwFIgatsouFQwA7f9M8y
+         krNw+UQ9T0czLmLQi7EZN6+0a+WPNybs0YmiR2CSOWmsao5PlUk7iYzDHTV5lut95K6+
+         E3Nw==
+X-Gm-Message-State: AOAM530sodsxrXSOgFh2NvPytsFGVl6KGcJXzXnpylBx+K0JVrYvYgPZ
+        w4px7YakrDbVsuQnpRhjqvbIy5a/vDkQADlCYw==
+X-Google-Smtp-Source: ABdhPJx3QYC47hJhqjR3NEn35hBN/fPX7EdIYAZe1Xn0KxJggrzdc5D9Gp1pTYXFeFKR0VNn98dNeasDoeWrWVawiGw=
+X-Received: by 2002:a17:906:2746:: with SMTP id a6mr30505161ejd.265.1620727997292;
+ Tue, 11 May 2021 03:13:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210509224226.348127-1-linus.walleij@linaro.org>
- <c5370b69-eac2-815e-27cb-f865a7885830@broadcom.com> <CAPDyKFq6PEx9YNF5VDjEy2giLOe=NJPxM2KCAWOOQxeGR_3jMw@mail.gmail.com>
- <30a7bbeb-d588-4780-bd6c-d99f72898138@broadcom.com>
-In-Reply-To: <30a7bbeb-d588-4780-bd6c-d99f72898138@broadcom.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 11 May 2021 10:48:00 +0200
-Message-ID: <CAPDyKFpiXWygrBBHzGXBU2dC3SuxC3Uj868BAgagbv8FMmyGeQ@mail.gmail.com>
-Subject: Re: [PATCH] brcmfmac: Obtain reset GPIO
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
+References: <20210504212828.815-1-rsalvaterra@gmail.com> <20210505045044.GA735251@wp.pl>
+ <CALjTZvYZ8Rr-UFyqFststt+vG+Ei1avUvPVxQwHe72QU0NEeKA@mail.gmail.com>
+ <20210505092542.GA757514@wp.pl> <CALjTZvausPmK+AubwcV71b1Vi+JxN23fM-AfUr1+jRD+NbnW1g@mail.gmail.com>
+ <20210505132513.GA759295@wp.pl>
+In-Reply-To: <20210505132513.GA759295@wp.pl>
+From:   Rui Salvaterra <rsalvaterra@gmail.com>
+Date:   Tue, 11 May 2021 11:13:06 +0100
+Message-ID: <CALjTZvaQjGDc2iO7gLvTzXp1xWs78UqFVFxdGVD9ta971bRYSQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mt7601u: make the driver work again
+To:     Stanislaw Gruszka <stf_xl@wp.pl>
+Cc:     lorenzo@kernel.org, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, colin.king@canonical.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 10 May 2021 at 11:27, Arend van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
->
->
-> On 5/10/2021 11:14 AM, Ulf Hansson wrote:
-> > On Mon, 10 May 2021 at 09:37, Arend Van Spriel
-> > <arend.vanspriel@broadcom.com> wrote:
-> >>
-> >> + Uffe
-> >>
-> >> On 5/10/2021 12:42 AM, Linus Walleij wrote:
-> >>> This grabs the reset GPIO and holds it de-asserted, if available.
-> >>> Asserting this signal will make the SDIO card re-enumerate.
-> >>
-> >> looks ok to me, but could this also be done through SDIO power sequence
-> >> stuff?
-> >
-> > Yes, it certainly looks like that to me. It should be the mmc
-> > host/core that manages the power on/off thingy for the SDIO card.
->
-> Thanks, Uffe
->
-> This is not directly power on/off, but a separate "reset" GPIO. However,
-> checking in pwrseq_simple.c I see:
->
-> struct mmc_pwrseq_simple {
->         struct mmc_pwrseq pwrseq;
->         bool clk_enabled;
->         u32 post_power_on_delay_ms;
->         u32 power_off_delay_us;
->         struct clk *ext_clk;
->         struct gpio_descs *reset_gpios;
-> };
->
-> So the term 'reset_gpios' is also used in pwrseq context.
+Hi, again,
 
-I think this boils down to that to allow the mmc core to detect and
-initialize the SDIO card, it needs to manage potential reset pins as
-well.
+Well, this was "fun"=E2=80=A6 I rebased my patch on top of 5.13-rc1 and now=
+ my
+MT7601U adapters are broken again. I tried different combinations of
+mine and the the last two upstream patches [1][2], but the result is
+the same, so now I have no idea of what's going on.
 
-In cases when the SDIO func driver may need to execute a reset, the
-mmc core provides two APIs, mmc_hw|sw_reset().
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/drivers/net/wireless/mediatek/mt7601u?h=3Dv5.13-rc1&id=3D87fce88658ba047=
+ae62e83497d3f3c5dc22fa6f9
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/drivers/net/wireless/mediatek/mt7601u?h=3Dv5.13-rc1&id=3D670d9e53886c942=
+b7f29c475b2b494278e586921
 
-Does this make sense to you?
-
-Kind regards
-Uffe
+Thanks,
+Rui
