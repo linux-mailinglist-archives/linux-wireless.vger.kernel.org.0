@@ -2,131 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60A86379DE8
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 05:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F91A37A046
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 May 2021 09:04:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230096AbhEKDnZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 May 2021 23:43:25 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2688 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229465AbhEKDnY (ORCPT
+        id S230361AbhEKHFS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 May 2021 03:05:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:39673 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230353AbhEKHFR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 May 2021 23:43:24 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FfNvt56gkz1BKbl;
-        Tue, 11 May 2021 11:39:38 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.177.72) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 11 May 2021 11:42:07 +0800
-From:   Zhen Lei <thunder.leizhen@huawei.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        b43-dev <b43-dev@lists.infradead.org>,
-        netdev <netdev@vger.kernel.org>
-CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH v2 1/1] b43: phy_n: Delete some useless TODO code
-Date:   Tue, 11 May 2021 11:42:03 +0800
-Message-ID: <20210511034203.4122-2-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
-In-Reply-To: <20210511034203.4122-1-thunder.leizhen@huawei.com>
-References: <20210511034203.4122-1-thunder.leizhen@huawei.com>
+        Tue, 11 May 2021 03:05:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1620716648;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=M5SLMtOJ4pPAk2pyPXgLUn5MH1X0rZ/S6qlMjU3TY40=;
+        b=b1IB5KG7vt8NuU+2wrC4o2ldady72GuYPoCwinegdqX/vkigaJl3j5M36XglUAKMKorcJm
+        681cHM7GcLyAajKu7tEk0Cz04RwlmWDpi/3SGRwObjoXoDF2s3Kl/6ESIyp4PvTouak9uI
+        ycJRqpx2XCbU3YjK7wERtlmcuJaQEgY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-22-P0i_Ied0NtyPIO4VyNkndg-1; Tue, 11 May 2021 03:04:05 -0400
+X-MC-Unique: P0i_Ied0NtyPIO4VyNkndg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 086716D504;
+        Tue, 11 May 2021 07:04:04 +0000 (UTC)
+Received: from localhost.localdomain (ovpn-112-191.ams2.redhat.com [10.36.112.191])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E3DCD2E175;
+        Tue, 11 May 2021 07:04:00 +0000 (UTC)
+From:   =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@redhat.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] BRCM80211: improve readability on addresses copy
+Date:   Tue, 11 May 2021 09:02:58 +0200
+Message-Id: <20210511070257.7843-1-ihuguet@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.177.72]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-These TODO empty code are added by
-commit 9442e5b58edb ("b43: N-PHY: partly implement SPUR workaround"). It's
-been more than a decade now. I don't think anyone who wants to perfect
-this workaround can follow this TODO tip exactly. Instead, it limits them
-to new thinking. Remove it will be better.
+A static analyzer identified as a potential bug the copy of
+12 bytes from a 6 bytes array to a 6 bytes array. Both
+arrays are 6 bytes addresses.
 
-No functional change.
+Although not being a real bug, it is not immediately clear
+why is done this way: next 6 bytes address, contiguous to
+the first one, must also be copied to next contiguous 6 bytes
+address of the destination.
 
-By the way, this helps reduce some binary code size.
-Before:
-text    data    bss     dec     hex
-74472   9967    0       84439   149d7
+Copying each one separately will make both static analyzers
+and reviewers happier.
 
-After:
-text    data    bss     dec     hex
-74408   9919    0       84327   14967
-
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Signed-off-by: Íñigo Huguet <ihuguet@redhat.com>
 ---
- drivers/net/wireless/broadcom/b43/phy_n.c | 47 -----------------------
- 1 file changed, 47 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
-index 665b737fbb0d820..cf3ccf4ddfe7230 100644
---- a/drivers/net/wireless/broadcom/b43/phy_n.c
-+++ b/drivers/net/wireless/broadcom/b43/phy_n.c
-@@ -4592,58 +4592,11 @@ static void b43_nphy_spur_workaround(struct b43_wldev *dev)
- {
- 	struct b43_phy_n *nphy = dev->phy.n;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+index 763e0ec583d7..26de1bd7fee9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+@@ -6607,7 +6607,8 @@ brcms_c_d11hdrs_mac80211(struct brcms_c_info *wlc, struct ieee80211_hw *hw,
+ 			rts->frame_control = cpu_to_le16(IEEE80211_FTYPE_CTL |
+ 							 IEEE80211_STYPE_RTS);
  
--	u8 channel = dev->phy.channel;
--	int tone[2] = { 57, 58 };
--	u32 noise[2] = { 0x3FF, 0x3FF };
--
- 	B43_WARN_ON(dev->phy.rev < 3);
+-			memcpy(&rts->ra, &h->addr1, 2 * ETH_ALEN);
++			memcpy(&rts->ra, &h->addr1, ETH_ALEN);
++			memcpy(&rts->ta, &h->addr2, ETH_ALEN);
+ 		}
  
- 	if (nphy->hang_avoid)
- 		b43_nphy_stay_in_carrier_search(dev, 1);
- 
--	if (nphy->gband_spurwar_en) {
--		/* TODO: N PHY Adjust Analog Pfbw (7) */
--		if (channel == 11 && b43_is_40mhz(dev)) {
--			; /* TODO: N PHY Adjust Min Noise Var(2, tone, noise)*/
--		} else {
--			; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
--		}
--		/* TODO: N PHY Adjust CRS Min Power (0x1E) */
--	}
--
--	if (nphy->aband_spurwar_en) {
--		if (channel == 54) {
--			tone[0] = 0x20;
--			noise[0] = 0x25F;
--		} else if (channel == 38 || channel == 102 || channel == 118) {
--			if (0 /* FIXME */) {
--				tone[0] = 0x20;
--				noise[0] = 0x21F;
--			} else {
--				tone[0] = 0;
--				noise[0] = 0;
--			}
--		} else if (channel == 134) {
--			tone[0] = 0x20;
--			noise[0] = 0x21F;
--		} else if (channel == 151) {
--			tone[0] = 0x10;
--			noise[0] = 0x23F;
--		} else if (channel == 153 || channel == 161) {
--			tone[0] = 0x30;
--			noise[0] = 0x23F;
--		} else {
--			tone[0] = 0;
--			noise[0] = 0;
--		}
--
--		if (!tone[0] && !noise[0]) {
--			; /* TODO: N PHY Adjust Min Noise Var(1, tone, noise)*/
--		} else {
--			; /* TODO: N PHY Adjust Min Noise Var(0, NULL, NULL)*/
--		}
--	}
--
- 	if (nphy->hang_avoid)
- 		b43_nphy_stay_in_carrier_search(dev, 0);
- }
+ 		/* mainrate
 -- 
-2.26.0.106.g9fadedd
-
+2.31.1
 
