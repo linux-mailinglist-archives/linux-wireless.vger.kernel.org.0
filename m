@@ -2,107 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 299C337B706
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 May 2021 09:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63C1837B754
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 May 2021 10:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbhELHoJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 May 2021 03:44:09 -0400
-Received: from relay.smtp-ext.broadcom.com ([192.19.11.229]:37330 "EHLO
-        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229627AbhELHoJ (ORCPT
+        id S230037AbhELIBx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 May 2021 04:01:53 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:46012 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229994AbhELIBw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 May 2021 03:44:09 -0400
-Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id BEA727DAE;
-        Wed, 12 May 2021 00:43:00 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com BEA727DAE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1620805380;
-        bh=9SE0dT91kgD5j8uvnhdwRHCQewZhC/i1wftrkfsm05A=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=vb2Js1EUuos9SeJ6ogtnd4FLOOXlyLvFYRKmxNAubmBvvCAeTPAzr55kCqKOwtsVZ
-         YKbEk7JHkPZKWXqWbQ6lfPeaQbjUMMnQln0pjnfgGCYr6806apjj3ehlTvME657CG1
-         Zwkp0iTjCcUFxV1IY9RAI8lrxt5PCUGYC/uEJfRg=
-Received: from [10.230.41.88] (unknown [10.230.41.88])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 7BF001874BE;
-        Wed, 12 May 2021 00:42:58 -0700 (PDT)
-Subject: Re: [PATCH] brcmfmac: Obtain reset GPIO
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-References: <20210509224226.348127-1-linus.walleij@linaro.org>
- <c5370b69-eac2-815e-27cb-f865a7885830@broadcom.com>
- <CAPDyKFq6PEx9YNF5VDjEy2giLOe=NJPxM2KCAWOOQxeGR_3jMw@mail.gmail.com>
- <30a7bbeb-d588-4780-bd6c-d99f72898138@broadcom.com>
- <CAPDyKFpiXWygrBBHzGXBU2dC3SuxC3Uj868BAgagbv8FMmyGeQ@mail.gmail.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <4e2f8e28-8b4c-fb80-6a41-7d71e33a6d1c@broadcom.com>
-Date:   Wed, 12 May 2021 09:42:56 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Wed, 12 May 2021 04:01:52 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1lgjnJ-0013j7-2P; Wed, 12 May 2021 11:00:39 +0300
+Message-ID: <c4d8c2f040b368225b72a91e74ee282d9ceab4d5.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>, tmb@tmb.nu
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>,
+        golan.ben.ami@intel.com
+Date:   Wed, 12 May 2021 11:00:35 +0300
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-ghLC+rynZWXdwNcnb0BC"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFpiXWygrBBHzGXBU2dC3SuxC3Uj868BAgagbv8FMmyGeQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: pull request: iwlwifi firmware updates 2021-05-12
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/11/2021 10:48 AM, Ulf Hansson wrote:
-> On Mon, 10 May 2021 at 11:27, Arend van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
->>
->>
->>
->> On 5/10/2021 11:14 AM, Ulf Hansson wrote:
->>> On Mon, 10 May 2021 at 09:37, Arend Van Spriel
->>> <arend.vanspriel@broadcom.com> wrote:
->>>>
->>>> + Uffe
->>>>
->>>> On 5/10/2021 12:42 AM, Linus Walleij wrote:
->>>>> This grabs the reset GPIO and holds it de-asserted, if available.
->>>>> Asserting this signal will make the SDIO card re-enumerate.
->>>>
->>>> looks ok to me, but could this also be done through SDIO power sequence
->>>> stuff?
->>>
->>> Yes, it certainly looks like that to me. It should be the mmc
->>> host/core that manages the power on/off thingy for the SDIO card.
->>
->> Thanks, Uffe
->>
->> This is not directly power on/off, but a separate "reset" GPIO. However,
->> checking in pwrseq_simple.c I see:
->>
->> struct mmc_pwrseq_simple {
->>          struct mmc_pwrseq pwrseq;
->>          bool clk_enabled;
->>          u32 post_power_on_delay_ms;
->>          u32 power_off_delay_us;
->>          struct clk *ext_clk;
->>          struct gpio_descs *reset_gpios;
->> };
->>
->> So the term 'reset_gpios' is also used in pwrseq context.
-> 
-> I think this boils down to that to allow the mmc core to detect and
-> initialize the SDIO card, it needs to manage potential reset pins as
-> well.
-> 
-> In cases when the SDIO func driver may need to execute a reset, the
-> mmc core provides two APIs, mmc_hw|sw_reset().
-> 
-> Does this make sense to you?
 
-It does to me.
+--=-ghLC+rynZWXdwNcnb0BC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Arend
+Hi,
+
+This contains some new and updated firmwares for all our currently
+maintained FW binaries.
+
+Please pull or let me know if there are any issues.
+
+--
+Cheers,
+Luca.
+
+
+The following changes since commit 7685cf49917b281b8799ba822e97595eeecb26b5=
+:
+
+  nvidia: Update Tegra194 XUSB firmware to v60.09 (2021-05-11 07:48:10 -040=
+0)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
+tags/iwlwifi-fw-2021-05-12
+
+for you to fetch changes up to 56115b259807e0417f30ef84bc6d2093572e6901:
+
+  iwlwifi: update 8000 family firmwares (2021-05-12 10:53:38 +0300)
+
+----------------------------------------------------------------
+Update iwllwifi firmwaresto Core60-51
+
+----------------------------------------------------------------
+Luca Coelho (3):
+      iwlwifi: add new FWs from core60-51 release
+      iwlwifi: update 9000-family firmwares to core60-51
+      iwlwifi: update 8000 family firmwares
+
+ WHENCE                            |  32 ++++++++++++++++++++++++++++----
+ iwlwifi-8000C-36.ucode            | Bin 2428004 -> 2428004 bytes
+ iwlwifi-8265-36.ucode             | Bin 2436632 -> 2436632 bytes
+ iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1514240 -> 1514876 bytes
+ iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1485556 -> 1485620 bytes
+ iwlwifi-Qu-b0-hr-b0-63.ucode      | Bin 0 -> 1334856 bytes
+ iwlwifi-Qu-b0-jf-b0-63.ucode      | Bin 0 -> 1252748 bytes
+ iwlwifi-Qu-c0-hr-b0-63.ucode      | Bin 0 -> 1334872 bytes
+ iwlwifi-Qu-c0-jf-b0-63.ucode      | Bin 0 -> 1252764 bytes
+ iwlwifi-QuZ-a0-hr-b0-63.ucode     | Bin 0 -> 1334804 bytes
+ iwlwifi-QuZ-a0-jf-b0-63.ucode     | Bin 0 -> 1252744 bytes
+ iwlwifi-cc-a0-63.ucode            | Bin 0 -> 1298688 bytes
+ iwlwifi-ty-a0-gf-a0-63.ucode      | Bin 0 -> 1460012 bytes
+ iwlwifi-ty-a0-gf-a0.pnvm          | Bin 27456 -> 27456 bytes
+ 14 files changed, 28 insertions(+), 4 deletions(-)
+ create mode 100644 iwlwifi-Qu-b0-hr-b0-63.ucode
+ create mode 100644 iwlwifi-Qu-b0-jf-b0-63.ucode
+ create mode 100644 iwlwifi-Qu-c0-hr-b0-63.ucode
+ create mode 100644 iwlwifi-Qu-c0-jf-b0-63.ucode
+ create mode 100644 iwlwifi-QuZ-a0-hr-b0-63.ucode
+ create mode 100644 iwlwifi-QuZ-a0-jf-b0-63.ucode
+ create mode 100644 iwlwifi-cc-a0-63.ucode
+ create mode 100644 iwlwifi-ty-a0-gf-a0-63.ucode
+
+
+--=-ghLC+rynZWXdwNcnb0BC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmCbiyMACgkQoUecoho8
+xfqtpxAAlsiKcQ3GBDuB5L1JXrNbtdjuo1IxGzSbqE0vCv89VZcxa2uucd+vf913
+/vl1caCeniCdO7Q24YjAb9IpCgC3XlpOPdPba96X2FWWliVU3s+o/zqFX4N8N8Hh
+JdXsAawhiyd3/s5WilUIOsEmyYA/oYVN7OHeFMDEoj1Y8l8J5UedrSMoxo+PslfN
+gg3Gr/B7RKznhOX9SQmTQXP86iOxHWPngFsvCWS73OEhpw2BFkSv//8LflRvKQDB
+W4yTs0I4dpwb9oDqztAxz7NcKYQQKeTShAl5C1GyAnHKjoRfp4zmTjO3MVLZfFaF
+B6IVGFfG4ltTI2+t4CIqBfD1hcN7mfVmih6NLlWRdILnuXMHlKDF2/snm3/OiTJM
+6AJxfqw3s5eKLJzo9T0HcBiwqrCWnLEqso6FUfGu1LMvn86gdSmKRj3Km94ZeEvj
+8CEE4b90ERHFUjB9u1WwKwEAswwElaI1v4WmjROMfJsf7qXtfeR9X04lKpsQ7J2P
+Lf7yEv3q9IiPcZHnQ+7z/bI45aYgehVnzHWC+pDz8MQNglmYNU8XwEjS90bLVQaQ
+DnwThvAizvAYMXLWW5k/Fbe9vPvIeGJWElsNPUv9qQiC4wvFAmaT9vpSVr9s98mZ
+p6QeOTJhvno1Gv55mngUBeFj9LOZhG9DkMsSNNNj/PSwJTqfrD8=
+=K7/m
+-----END PGP SIGNATURE-----
+
+--=-ghLC+rynZWXdwNcnb0BC--
+
