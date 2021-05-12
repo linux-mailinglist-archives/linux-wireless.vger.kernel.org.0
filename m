@@ -2,131 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63C1837B754
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 May 2021 10:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 702F237EDFD
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 May 2021 00:54:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230037AbhELIBx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 May 2021 04:01:53 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:46012 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229994AbhELIBw (ORCPT
+        id S242682AbhELU6V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 May 2021 16:58:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1357329AbhELSiZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 May 2021 04:01:52 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1lgjnJ-0013j7-2P; Wed, 12 May 2021 11:00:39 +0300
-Message-ID: <c4d8c2f040b368225b72a91e74ee282d9ceab4d5.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>, tmb@tmb.nu
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kyle@infradead.org" <kyle@infradead.org>,
-        "jwboyer@kernel.org" <jwboyer@kernel.org>,
-        "ben@decadent.org.uk" <ben@decadent.org.uk>,
-        golan.ben.ami@intel.com
-Date:   Wed, 12 May 2021 11:00:35 +0300
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-ghLC+rynZWXdwNcnb0BC"
-User-Agent: Evolution 3.38.3-1 
+        Wed, 12 May 2021 14:38:25 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA5EDC06135C
+        for <linux-wireless@vger.kernel.org>; Wed, 12 May 2021 11:35:36 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id k25so23168266oic.4
+        for <linux-wireless@vger.kernel.org>; Wed, 12 May 2021 11:35:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nZFOyyXBKCVxmTHei8WqaYqRSiqzWm2DLlZyJ5bNF0M=;
+        b=UGFmHWnZd5QjL4xBwBlac6osWkLaUHtX6929sOkYWN73jejloRBbtOgHAcLmZJWOQP
+         cwP5MKsrrkXojeQ9jJ4ocYHkwCvzNPRq8YshRqBrJUMGkW0tqpMiZxUQLCjCHsxIT6Cv
+         xoYjNIDazEhOTfurUtlAK4l2Eb2GBhbUODSHE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nZFOyyXBKCVxmTHei8WqaYqRSiqzWm2DLlZyJ5bNF0M=;
+        b=qh1YaK5rMyXJy/EKVzGjgDS1sLLkfY4gMvU7dqt3GVDgxon2tTfvNgzflcyQPoDb/F
+         B+4N5z0lxG53ixRkWNWX6Cl1XisXTpkQ3G7Ee0RAmljQB34nUj6UcJITvH//vmhvjpYz
+         Vyx3t/owCLLJWpur03LrQL8W7JHJqTOhMWl9JGiNutOx/4pHVuxwje4rptaFCSRu6MNA
+         iWD0mxftkF9vSmk5DwqH1bf4rkiix8uCMCl3+c4hJX9l4ymV+oWcyv9tgSjd86LTCGa3
+         LLgbFm1Vwq3e/KA6PRJnqLAiu495I037MIFePOdZ1SeQItZuvij98iLFrtkUD016PzHP
+         PkJA==
+X-Gm-Message-State: AOAM530hdjX4fb7D6FLRhFBMRHXpoy6lVJDn2Im2MsLyhWgoOlZ2Ey8u
+        TksJN4CGus+Q6g8oO/oIbgaFvOOhHtfOIQ==
+X-Google-Smtp-Source: ABdhPJx0vjPpDnTix9X4YapDemErOsJHMvi4+9YZ62f8+rpuNzgCrvrCBzfxoJ9yQvTX8NSGGkJw9A==
+X-Received: by 2002:a05:6808:193:: with SMTP id w19mr10590276oic.152.1620844536021;
+        Wed, 12 May 2021 11:35:36 -0700 (PDT)
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com. [209.85.167.182])
+        by smtp.gmail.com with ESMTPSA id h2sm167298oop.47.2021.05.12.11.35.35
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 May 2021 11:35:35 -0700 (PDT)
+Received: by mail-oi1-f182.google.com with SMTP id i81so23155666oif.6
+        for <linux-wireless@vger.kernel.org>; Wed, 12 May 2021 11:35:35 -0700 (PDT)
+X-Received: by 2002:aca:f144:: with SMTP id p65mr8428701oih.117.1620844534896;
+ Wed, 12 May 2021 11:35:34 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: pull request: iwlwifi firmware updates 2021-05-12
+References: <20210511180259.159598-1-johannes@sipsolutions.net> <20210511200110.11968c725b5c.Idd166365ebea2771c0c0a38c78b5060750f90e17@changeid>
+In-Reply-To: <20210511200110.11968c725b5c.Idd166365ebea2771c0c0a38c78b5060750f90e17@changeid>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 12 May 2021 11:35:23 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPwAWEEvWBdiLpMrm-PTcSH7QQHwx_T5nxN+faQt=Wi_g@mail.gmail.com>
+Message-ID: <CA+ASDXPwAWEEvWBdiLpMrm-PTcSH7QQHwx_T5nxN+faQt=Wi_g@mail.gmail.com>
+Subject: Re: [PATCH 14/18] ath10k: drop MPDU which has discard flag set by
+ firmware for SDIO
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Wen Gong <wgong@codeaurora.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, May 11, 2021 at 11:03 AM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+> --- a/drivers/net/wireless/ath/ath10k/htt_rx.c
+> +++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+> @@ -2312,6 +2312,11 @@ static bool ath10k_htt_rx_proc_rx_ind_hl(struct ath10k_htt *htt,
+>         fw_desc = &rx->fw_desc;
+>         rx_desc_len = fw_desc->len;
+>
+> +       if (fw_desc->u.bits.discard) {
+> +               ath10k_dbg(ar, ATH10K_DBG_HTT, "htt discard mpdu\n");
+> +               goto err;
+> +       }
+> +
+>         /* I have not yet seen any case where num_mpdu_ranges > 1.
+>          * qcacld does not seem handle that case either, so we introduce the
+>          * same limitiation here as well.
+> diff --git a/drivers/net/wireless/ath/ath10k/rx_desc.h b/drivers/net/wireless/ath/ath10k/rx_desc.h
+> index f2b6bf8f0d60..705b6295e466 100644
+> --- a/drivers/net/wireless/ath/ath10k/rx_desc.h
+> +++ b/drivers/net/wireless/ath/ath10k/rx_desc.h
+> @@ -1282,7 +1282,19 @@ struct fw_rx_desc_base {
+>  #define FW_RX_DESC_UDP              (1 << 6)
+>
+>  struct fw_rx_desc_hl {
+> -       u8 info0;
+> +       union {
+> +               struct {
+> +               u8 discard:1,
+> +                  forward:1,
+> +                  any_err:1,
+> +                  dup_err:1,
+> +                  reserved:1,
+> +                  inspect:1,
+> +                  extension:2;
+> +               } bits;
+> +               u8 info0;
+> +       } u;
 
---=-ghLC+rynZWXdwNcnb0BC
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Am I misled here, or are you introducing endianness issues here? From C99:
 
-Hi,
+"The order of allocation of bit-fields within a unit (high-order to
+low-order or low-order to high-order) is implementation-defined."
 
-This contains some new and updated firmwares for all our currently
-maintained FW binaries.
+Now, we're pretty well attuned to two implementations (big and little
+endian), and this should work for the most common one (little endian),
+but it's not wise to assume everyone is little endian.
 
-Please pull or let me know if there are any issues.
-
---
-Cheers,
-Luca.
-
-
-The following changes since commit 7685cf49917b281b8799ba822e97595eeecb26b5=
-:
-
-  nvidia: Update Tegra194 XUSB firmware to v60.09 (2021-05-11 07:48:10 -040=
-0)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
-tags/iwlwifi-fw-2021-05-12
-
-for you to fetch changes up to 56115b259807e0417f30ef84bc6d2093572e6901:
-
-  iwlwifi: update 8000 family firmwares (2021-05-12 10:53:38 +0300)
-
-----------------------------------------------------------------
-Update iwllwifi firmwaresto Core60-51
-
-----------------------------------------------------------------
-Luca Coelho (3):
-      iwlwifi: add new FWs from core60-51 release
-      iwlwifi: update 9000-family firmwares to core60-51
-      iwlwifi: update 8000 family firmwares
-
- WHENCE                            |  32 ++++++++++++++++++++++++++++----
- iwlwifi-8000C-36.ucode            | Bin 2428004 -> 2428004 bytes
- iwlwifi-8265-36.ucode             | Bin 2436632 -> 2436632 bytes
- iwlwifi-9000-pu-b0-jf-b0-46.ucode | Bin 1514240 -> 1514876 bytes
- iwlwifi-9260-th-b0-jf-b0-46.ucode | Bin 1485556 -> 1485620 bytes
- iwlwifi-Qu-b0-hr-b0-63.ucode      | Bin 0 -> 1334856 bytes
- iwlwifi-Qu-b0-jf-b0-63.ucode      | Bin 0 -> 1252748 bytes
- iwlwifi-Qu-c0-hr-b0-63.ucode      | Bin 0 -> 1334872 bytes
- iwlwifi-Qu-c0-jf-b0-63.ucode      | Bin 0 -> 1252764 bytes
- iwlwifi-QuZ-a0-hr-b0-63.ucode     | Bin 0 -> 1334804 bytes
- iwlwifi-QuZ-a0-jf-b0-63.ucode     | Bin 0 -> 1252744 bytes
- iwlwifi-cc-a0-63.ucode            | Bin 0 -> 1298688 bytes
- iwlwifi-ty-a0-gf-a0-63.ucode      | Bin 0 -> 1460012 bytes
- iwlwifi-ty-a0-gf-a0.pnvm          | Bin 27456 -> 27456 bytes
- 14 files changed, 28 insertions(+), 4 deletions(-)
- create mode 100644 iwlwifi-Qu-b0-hr-b0-63.ucode
- create mode 100644 iwlwifi-Qu-b0-jf-b0-63.ucode
- create mode 100644 iwlwifi-Qu-c0-hr-b0-63.ucode
- create mode 100644 iwlwifi-Qu-c0-jf-b0-63.ucode
- create mode 100644 iwlwifi-QuZ-a0-hr-b0-63.ucode
- create mode 100644 iwlwifi-QuZ-a0-jf-b0-63.ucode
- create mode 100644 iwlwifi-cc-a0-63.ucode
- create mode 100644 iwlwifi-ty-a0-gf-a0-63.ucode
-
-
---=-ghLC+rynZWXdwNcnb0BC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmCbiyMACgkQoUecoho8
-xfqtpxAAlsiKcQ3GBDuB5L1JXrNbtdjuo1IxGzSbqE0vCv89VZcxa2uucd+vf913
-/vl1caCeniCdO7Q24YjAb9IpCgC3XlpOPdPba96X2FWWliVU3s+o/zqFX4N8N8Hh
-JdXsAawhiyd3/s5WilUIOsEmyYA/oYVN7OHeFMDEoj1Y8l8J5UedrSMoxo+PslfN
-gg3Gr/B7RKznhOX9SQmTQXP86iOxHWPngFsvCWS73OEhpw2BFkSv//8LflRvKQDB
-W4yTs0I4dpwb9oDqztAxz7NcKYQQKeTShAl5C1GyAnHKjoRfp4zmTjO3MVLZfFaF
-B6IVGFfG4ltTI2+t4CIqBfD1hcN7mfVmih6NLlWRdILnuXMHlKDF2/snm3/OiTJM
-6AJxfqw3s5eKLJzo9T0HcBiwqrCWnLEqso6FUfGu1LMvn86gdSmKRj3Km94ZeEvj
-8CEE4b90ERHFUjB9u1WwKwEAswwElaI1v4WmjROMfJsf7qXtfeR9X04lKpsQ7J2P
-Lf7yEv3q9IiPcZHnQ+7z/bI45aYgehVnzHWC+pDz8MQNglmYNU8XwEjS90bLVQaQ
-DnwThvAizvAYMXLWW5k/Fbe9vPvIeGJWElsNPUv9qQiC4wvFAmaT9vpSVr9s98mZ
-p6QeOTJhvno1Gv55mngUBeFj9LOZhG9DkMsSNNNj/PSwJTqfrD8=
-=K7/m
------END PGP SIGNATURE-----
-
---=-ghLC+rynZWXdwNcnb0BC--
-
+Brian
