@@ -2,142 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B6037F4CC
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 May 2021 11:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4451637F4E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 May 2021 11:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232588AbhEMJ02 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 May 2021 05:26:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60004 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231251AbhEMJ00 (ORCPT
+        id S232719AbhEMJjb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 May 2021 05:39:31 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:34817 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232762AbhEMJj0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 May 2021 05:26:26 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249E9C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 13 May 2021 02:25:17 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id 36-20020a9d0ba70000b02902e0a0a8fe36so16776730oth.8
-        for <linux-wireless@vger.kernel.org>; Thu, 13 May 2021 02:25:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=s8vDi8IacwsAjoxAt+TwpipYivdLvkNuOuJDoPMgoHM=;
-        b=e0gD7iMHV/4937xoUWGoUVE4hUm/xAjCMOWqm+tTF8oEuHL4gSyAELGCKVJmI6P75o
-         eDt3gOozIwylyDj/+PMVgAGA3iNKJI9kUMRLlfZTaYJe7yT9DB5o5a+h1qdvBIiS0Rgw
-         KPkXEu5/JhVrUlzpYQJUO2ZVU1MMZPQlMZusG2LZi24XmqeZp1/FSjQDaQZns9vMfZVz
-         S4szZWI9joUsQCJvxvAH6uGdpk8CdgnEYVa5dD30bjqSp79MzxFec3zzscVKO/zpykq+
-         8JENh2NiOHmlhRqk1TXKGvcjHpTcAcxGbvVkuso3Q434o6VCQA1Z//1ZjVfpB/500iUp
-         d4PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=s8vDi8IacwsAjoxAt+TwpipYivdLvkNuOuJDoPMgoHM=;
-        b=iu5vSNQCCavqoKoJjpmQCBoycoRXrJ4UYGDW6u4eOlzg49mltkA1OLLnZk6j5w8c3C
-         pze1kt7XLBUK0TplfSYI5qsReoEHlvXgsIi34yGX6FUllSGeRju2AVwAv14sGTS+d7aR
-         lYCwjLHCpf1+ywSJCff9Vxr1s5WF6NYV3HuMM4o8Cw/GzlPs99jz/AacKlTkUo4nVikz
-         PVfvr9uzxbL8ZPMQdF7025MqjZx1WPDwEbDxenfsg4Y5NfY+WRaA2JsZ/zR1iEsuVV+W
-         Z+p22e6hyxvgSnYBnpgMvDwmidTpXgDF/KNbqMYzV0QAsPoJrQ3Vgmpv8MsUj1b7c4iF
-         hJMA==
-X-Gm-Message-State: AOAM53269P8OU9vnvnL7ht/qz2pfPMDG1Cg5vRNphN9lpV56Qdwar1Gx
-        iuwTHNCUaTBRaEwqhbWGgK2onU9hy0LfD//vgeUNupniEaU=
-X-Google-Smtp-Source: ABdhPJxjCG6lvyuGZKH9LVu6ZjKKtuMsJMc2GJZn0yKG3ROVDInCm14RPTGeOMrV0P4YwaA4jvmK67K/veH/unj26eg=
-X-Received: by 2002:a9d:674e:: with SMTP id w14mr20403417otm.309.1620897916511;
- Thu, 13 May 2021 02:25:16 -0700 (PDT)
+        Thu, 13 May 2021 05:39:26 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14D9c5a45003386, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14D9c5a45003386
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 13 May 2021 17:38:05 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 13 May 2021 17:38:03 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 13 May 2021 17:38:02 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74%5]) with mapi id
+ 15.01.2106.013; Thu, 13 May 2021 17:38:02 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Brian Norris <briannorris@chromium.org>
+CC:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Request to update 8852a firmware of rtw89 to v0.13.8.0
+Thread-Topic: Request to update 8852a firmware of rtw89 to v0.13.8.0
+Thread-Index: Adc81c783/PxktaiQ9eK+o93SJZNPgJuqFZ///+LvoCAAtB+Yf//xshA
+Date:   Thu, 13 May 2021 09:38:01 +0000
+Message-ID: <876c29841fcf4d21ab2440cbb5879de2@realtek.com>
+References: <57e9f582340545c79a9ab3433e2a4a7d@realtek.com>
+        <87cztx87tr.fsf@tynnyri.adurom.net>
+        <CA+ASDXM9YmhMWmttkrCxB0_tf6Kf6Sz=7Yc26CmjZmMUxyxAfw@mail.gmail.com>
+ <87tun7i2rn.fsf@codeaurora.org>
+In-Reply-To: <87tun7i2rn.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/5/13_=3F=3F_07:08:00?=
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Reply-To: bisma.abdulmagidbreish@gmail.com
-Sender: lindalaboso2@gmail.com
-Received: by 2002:a9d:c43:0:0:0:0:0 with HTTP; Thu, 13 May 2021 02:25:16 -0700 (PDT)
-From:   Bisma Abdul magidbreish <bisma.abdulmagidbreish@gmail.com>
-Date:   Thu, 13 May 2021 11:25:16 +0200
-X-Google-Sender-Auth: 0rdJblx6skZjjuqeFVPZx1d9Lg0
-Message-ID: <CAAG+hxOMb+79FO0YaedOQwdrDiqmpMb1BGWtuOngM8TqwpE6Qg@mail.gmail.com>
-Subject: Greetings
-To:     lauceulibre@gmail.com, laudeney@hotmail.com, laumach@hotmail.com,
-        laure.prat@hotmail.com, lauren.machado@hotmail.com,
-        laurentnobili@yahoo.fr, laurie.isacco@uca.fr,
-        lck.machado@gmail.com, le.folhago@gmail.com,
-        leesmemorialservice@gmail.com, lekanoye@hotmai.com,
-        lembostache.felix@gmail.com, lenalmmachado@hotmail.com,
-        lennart_weiss@hotmail.com, leonardobaremleite@hotmail.com,
-        leonardoccon@gmail.com, leonardomachado.adv@hotmail.com,
-        leonardopfuita@hotmail.com, leonel.machado@hotmail.com,
-        leroyedozien@yahoo.com, lesmielsdhelene@gmail.com,
-        lewis.machado@hotmail.com, lezor_aco@hotmail.com,
-        lfelipemontoya@hotmail.com, liammacgibbon@hotmail.com,
-        lianniser82@yahoo.com, librarian@sau.edu.bd,
-        lic_borquez@hotmail.com, lic_ramirezrobles@hotmail.com,
-        licitacaopmmachado@hotmail.com, lilliemarck@hotmail.com,
-        lim.felix@gmail.com, limberthmv@hotmail.com,
-        Lina.meijer@hotmail.com, linafootrdc@gmail.com,
-        linelangeroed@hotmail.com, linux-wireless@vger.kernel.org,
-        Lizscott48@hotmail.com, llomb89363@aol.com, llzolikll@gmail.com,
-        locust_jeddah@yahoo.com, lokarchiv@mail.bg, loomepalmik@gmail.com,
-        lorova32@hotmail.com, losttalentghana@gmail.com,
-        louisarthur.felix@gmail.com, loveandquality@aol.com, lrfdg@aol.com,
-        lu.souza.machado@gmail.com, luc.ag.dubois@hotmail.fr,
-        lucampiglia@aol.com, lucdibog@yahoo.com,
-        lucianaschoeps@yahoo.com.br, lucy-machado@hotmail.com,
-        lucy.prop@hotmail.com, Lucy13_marseille@hotmail.com,
-        ludyfranky@hotmail.com, luis.ca.machado@gmail.com,
-        luis.s.machado@tecnico.ulisboa.pt, Luis32789@aol.com,
-        luismachadodirector@gmail.com, luma.machado@yahoo.com.br,
-        Luziene-felix@hotmail.com, lycee.paulpoiret@yahoo.fr,
-        m-nii1984@clin.medic.mie-u.ac.jp, m.elizabethpinto@ig.com.br,
-        m.lavoie@aiic.net, mab.roosendaal@gmail.com, MACHADO@aol.com,
-        machado@gmail.com, machado@hotmail.com, machado@yahoo.com,
-        machado@yahoo.com.br, machado.aeill@gmail.com,
-        machado.avocat@gmail.com, Machado.elise@hotmail.fr,
-        machado.humberto2010@gmail.com, machado617@gmail.com,
-        machado_1000@hotmail.com, machadoallan@aol.com,
-        machadojose117@yahoo.fr, machadoleiloeiro@hotmail.com,
-        machadoluis75@gmail.com, machmas@free.fr, madda.felix@gmail.com,
-        maddie.machado@yahoo.com, madracing1@hotmail.com,
-        mafle.asbl@hotmail.com, maggimachado@gmail.com,
-        magno100@hotmail.com, mahmaoudahmed104@hotmail.com,
-        mail2me.sumith@yahoo.com, mailrich2012@aol.com,
-        mairiee.cussac@gmail.com, majahaals@hotmail.com,
-        malikab.photographe@gmail.com, malmodockteater@gmail.com,
-        mandemi2000@yahoo.com, manish7march1972@yahoo.com,
-        marbrerie.guivarch29@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/13/2021 09:21:46
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Info: Lua profiles 163627 [May 13 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
+X-KSE-AntiSpam-Info: {Prob_Subject_IP_found}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/13/2021 09:24:00
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/13/2021 09:21:46
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Info: Lua profiles 163627 [May 13 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
+X-KSE-AntiSpam-Info: {Prob_Subject_IP_found}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/13/2021 09:24:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-MUTUAL UNDERSTANDING !!!
 
-I am Mrs.Bisma Abdul magidbreish
 
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as big surprise. Actually, I came
-across your E-mail from my personal search afterward I decided to
-email you directly believing that you will be honest to fulfill my
-final wish before I die. Mean while, I am bisma.abdulmagidbreish, from
-paric france
-childless and I am suffering from a long-time cancer and from
-all indication my condition is really deteriorating as my doctors have
-confirmed and courageously advised me that I may not live beyond two
-months from now for the reason that my tumor has reached a critical
-stage which has defiled all forms of medical treatment.
+> -----Original Message-----
+> From: kvalo=codeaurora.org@mg.codeaurora.org [mailto:kvalo=codeaurora.org@mg.codeaurora.org] On
+> Behalf Of Kalle Valo
+> Sent: Thursday, May 13, 2021 2:09 PM
+> To: Brian Norris
+> Cc: Pkshih; linux-firmware@kernel.org; linux-wireless@vger.kernel.org
+> Subject: Re: Request to update 8852a firmware of rtw89 to v0.13.8.0
+> 
+> Brian Norris <briannorris@chromium.org> writes:
+> 
+> > On Tue, May 11, 2021 at 11:05 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+> >>
+> >> Pkshih <pkshih@realtek.com> writes:
+> >>
+> >> > Please help to update 8852a firmware.
+> >> > This is first time I send a pull request. If anything is wrong,
+> >> > please let me know.
+> >>
+> >> rtw89 driver is not in upstream yet, and it has not been reviewed
+> >> either. I recommend holding off pulling the firmware until the driver is
+> >> reviewed.
+> >
+> > FWIW, preliminary rtw89 firmware was already merged. This is just an update.
+> >
+> > I also wonder, what's the harm? People like me are actively testing
+> > the early versions, and I've done a very barebones amount of review (I
+> > hope to do more). It really helps me to have up-to-date firmware
+> > published somewhere central -- I guess I can take GitHub instead, but
+> > again, why not kernel.org? If anyone else is looking at testing, they
+> > know where to get the pieces too, and we can compare results.
+> 
+> It can create confusion to the users if during review we make changes
+> how firmware files are handled. Some drivers have windows style .ini
+> files which are not ok in an upstream driver, there could be changes in
+> the file format etc.
+> 
+> But I have no strong opinion here, my main motivation is just to try to
+> keep things simple for maintaining the "interface" between
+> linux-firmware and kernel wireless drivers. My preference is that the
+> firmware files are ready for submission when a new driver is submitted
+> for review, but the firmware files are submitted only after the driver
+> is accepted.
+> 
 
-Since my days are numbered, I=E2=80=99ve decided willingly to fulfill my
-long-time promise to donate the sum of six million eight hundred
-thousand dollars $6.800, 000 remaining in my foreign bank account over
-9 years due to my health problem. This fund was obtained by me when I
-was dealing on Gold. My promise is to help the widows, handicapped,
-orphans, underprivileged, to build technical school and hospital for
-their well-being. If you will be obedient to assist me fulfill my
-promise as I said here kindly show me your first obedience by
-providing me your personal details to enable me introduce you to my
-lawyer as the person that will help you to procure any document if
-requested possible to transfer or deliver my fund to you.
+I think I can maintain the firmware in GitHub before driver is accepted,
+and add some information about firmware version and link in the cover of
+patchset. Then, people can take proper firmware.
 
-I have been trying to handle this project for the past 4 years by
-myself when I will get better, but I have seen that it won=E2=80=99t be
-possible anymore due to my condition. Please get back to me if you can
-handle the project for more details
-Thank you
-God bless you.
+--
+Ping-Ke
+
+
