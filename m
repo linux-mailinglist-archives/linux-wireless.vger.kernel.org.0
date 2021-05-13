@@ -2,80 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E341537F97A
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 May 2021 16:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA7B37FC65
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 May 2021 19:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234303AbhEMOPK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 May 2021 10:15:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46164 "EHLO mail.kernel.org"
+        id S231208AbhEMRUW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 May 2021 13:20:22 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:26342 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234284AbhEMOPD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 May 2021 10:15:03 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3DA7B613C3;
-        Thu, 13 May 2021 14:13:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620915234;
-        bh=CIPayx8+X1M7N/pFYBH3+YrQvRUJbPaHpfs53S6tnpM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qRnwGQzVoY72zzH+/wG/4AHf/uY/K8JS0MYDxrLGLbtKi0lzm3TprnoGAsa+ZnejG
-         nMHhvxE7yqskj8P3LO1YmkUG2wgfyQQ6sy6BMUcwiMKhWfa7oBNC8PBJRmVjD49Ixf
-         YTGyHZpHV1IsKmtEnc/4WH80LcSu9f+H7BngmsrXGnKcpwy+1Z72M5ljG1LAG2mihy
-         PUL8vS7TZmHRXgHUahvORelNCpzGaZjINmkUpry/PkLjN1lKrSxEipj0SMr9oyqwGV
-         rmLdjH0F0+ldim0bsoL7HCv5D68vnXOT8HSeD83C/IQEo9R3yXY+HI4dfPGJox/c3s
-         pRVwdnCVIEBIg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7921: set MT76_RESET during mac reset
-Date:   Thu, 13 May 2021 16:13:49 +0200
-Message-Id: <3bdd3cada045a2d31c18c80cc40da97b0cec1af9.1620914781.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S231277AbhEMRTs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 13 May 2021 13:19:48 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1620926317; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=iM3ko5L1PPEvD7mpUvwhSW4LYEMmmMA1RfYovsAbYmk=;
+ b=Tl+KboUUaf20pV4lPjo1CP/2HUeoChgvgVun8YXBsxY3+MAESreoO9ykNPkGsy3hfquESOuw
+ ovC5EPWBj2XrWgDUKhrwerHqbZ6FUL1viMyza97PjoQ2SlT/94hF0URKAQy6ziF5FLGM85Qs
+ JL+kKyXz1Fp6Yor1h1hF/6TPhRs=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 609d5f62ff1bb9beecb323b2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 13 May 2021 17:18:26
+ GMT
+Sender: jjohnson=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EF3C1C433F1; Thu, 13 May 2021 17:18:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: jjohnson)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 83412C4338A;
+        Thu, 13 May 2021 17:18:22 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 13 May 2021 10:18:22 -0700
+From:   Jeff Johnson <jjohnson@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Wen Gong <wgong@codeaurora.org>,
+        stable <stable@vger.kernel.org>
+Subject: Re: [PATCH 14/18] ath10k: drop MPDU which has discard flag set by
+ firmware for SDIO
+In-Reply-To: <CA+ASDXPwAWEEvWBdiLpMrm-PTcSH7QQHwx_T5nxN+faQt=Wi_g@mail.gmail.com>
+References: <20210511180259.159598-1-johannes@sipsolutions.net>
+ <20210511200110.11968c725b5c.Idd166365ebea2771c0c0a38c78b5060750f90e17@changeid>
+ <CA+ASDXPwAWEEvWBdiLpMrm-PTcSH7QQHwx_T5nxN+faQt=Wi_g@mail.gmail.com>
+Message-ID: <e417165a0f952b030a195dde4979058f@codeaurora.org>
+X-Sender: jjohnson@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Set MT76_RESET during mt7921_mac_reset in order to avoid packet
-transmissions
+On 2021-05-12 11:35, Brian Norris wrote:
+> On Tue, May 11, 2021 at 11:03 AM Johannes Berg
+> <johannes@sipsolutions.net> wrote:
+>> --- a/drivers/net/wireless/ath/ath10k/htt_rx.c
+>> +++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+>> @@ -2312,6 +2312,11 @@ static bool ath10k_htt_rx_proc_rx_ind_hl(struct
+>> ath10k_htt *htt,
+>>         fw_desc = &rx->fw_desc;
+>>         rx_desc_len = fw_desc->len;
+>> 
+>> +       if (fw_desc->u.bits.discard) {
+>> +               ath10k_dbg(ar, ATH10K_DBG_HTT, "htt discard mpdu\n");
+>> +               goto err;
+>> +       }
+>> +
+>>         /* I have not yet seen any case where num_mpdu_ranges > 1.
+>>          * qcacld does not seem handle that case either, so we 
+>> introduce
+>> the
+>>          * same limitiation here as well.
+>> diff --git a/drivers/net/wireless/ath/ath10k/rx_desc.h
+>> b/drivers/net/wireless/ath/ath10k/rx_desc.h
+>> index f2b6bf8f0d60..705b6295e466 100644
+>> --- a/drivers/net/wireless/ath/ath10k/rx_desc.h
+>> +++ b/drivers/net/wireless/ath/ath10k/rx_desc.h
+>> @@ -1282,7 +1282,19 @@ struct fw_rx_desc_base {
+>>  #define FW_RX_DESC_UDP              (1 << 6)
+>> 
+>>  struct fw_rx_desc_hl {
+>> -       u8 info0;
+>> +       union {
+>> +               struct {
+>> +               u8 discard:1,
+>> +                  forward:1,
+>> +                  any_err:1,
+>> +                  dup_err:1,
+>> +                  reserved:1,
+>> +                  inspect:1,
+>> +                  extension:2;
+>> +               } bits;
+>> +               u8 info0;
+>> +       } u;
+> 
+> Am I misled here, or are you introducing endianness issues here? From 
+> C99:
+> 
+> "The order of allocation of bit-fields within a unit (high-order to
+> low-order or low-order to high-order) is implementation-defined."
+> 
+> Now, we're pretty well attuned to two implementations (big and little
+> endian), and this should work for the most common one (little endian),
+> but it's not wise to assume everyone is little endian.
+> 
+> Brian
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+This issue was identified in internal review, but due to the embargo 
+expiring
+we sent it out as-is since that is what had been tested. The author will 
+have
+a follow-up change to replace this.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index b0b59d5a1011..d8df2b9b94af 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1255,6 +1255,7 @@ mt7921_mac_reset(struct mt7921_dev *dev)
- 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
- 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
- 
-+	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -1274,6 +1275,9 @@ mt7921_mac_reset(struct mt7921_dev *dev)
- 	if (err)
- 		return err;
- 
-+	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
-+	clear_bit(MT76_RESET, &dev->mphy.state);
-+
- 	mt76_for_each_q_rx(&dev->mt76, i) {
- 		napi_enable(&dev->mt76.napi[i]);
- 		napi_schedule(&dev->mt76.napi[i]);
-@@ -1283,8 +1287,6 @@ mt7921_mac_reset(struct mt7921_dev *dev)
- 	napi_schedule(&dev->mt76.tx_napi);
- 	mt76_worker_enable(&dev->mt76.tx_worker);
- 
--	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
--
- 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA,
- 		MT_INT_RX_DONE_ALL | MT_INT_TX_DONE_ALL |
- 		MT_INT_MCU_CMD);
 -- 
-2.31.1
-
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
+Forum,
+a Linux Foundation Collaborative Project
