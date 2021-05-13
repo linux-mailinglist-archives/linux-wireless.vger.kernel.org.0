@@ -2,70 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8959337F51B
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 May 2021 11:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED13437F7DB
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 May 2021 14:24:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231678AbhEMJ43 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 May 2021 05:56:29 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:46376 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231261AbhEMJ42 (ORCPT
+        id S233821AbhEMMZe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 May 2021 08:25:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34054 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233800AbhEMMZ1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 May 2021 05:56:28 -0400
-X-UUID: 56211f3a84e74f0ea03de903bf80b6ea-20210513
-X-UUID: 56211f3a84e74f0ea03de903bf80b6ea-20210513
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 98008978; Thu, 13 May 2021 17:55:17 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 13 May 2021 17:55:16 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 13 May 2021 17:55:15 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <jemele@google.com>,
-        <yenlinlai@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 9/9] mt76: mt7921: add back connection monitor support
-Date:   Thu, 13 May 2021 17:55:15 +0800
-Message-ID: <1620899715-4351-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <79633d77-a326-fb46-6356-65dddea9da44@nbd.name--annotate>
-References: <79633d77-a326-fb46-6356-65dddea9da44@nbd.name--annotate>
+        Thu, 13 May 2021 08:25:27 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lhANu-0003dX-6U; Thu, 13 May 2021 12:24:10 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rtlwifi: rtl8723ae: remove redundant initialization of variable rtstatus
+Date:   Thu, 13 May 2021 13:24:09 +0100
+Message-Id: <20210513122410.59204-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Colin Ian King <colin.king@canonical.com>
 
->On 2021-05-10 17:14, sean.wang@mediatek.com wrote:
->> From: Sean Wang <sean.wang@mediatek.com>
->>
->> Hw beacon cmd to the mt7921 firmware doesn't only filter out the
->> beacon, but also performs its own connection monitoring, including
->> periodic keep-alives to the AP and probing the AP on beacon loss. Will
->> indicate the host with the event when the firmware detects the connection is lost.
->>
->> Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
->> Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
->> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
->> Signed-off-by: YN Chen <yn.chen@mediatek.com>
->> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
->What happened to Patch 8?
->I don't see it on the list or patchwork.
+The variable rtstatus is being initialized with a value that is never
+read, it is being updated later on. The assignment is redundant and
+can be removed.
 
-I've sent again the patch 8. Please help take a look.
->
->
->- Felix
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
+index f8a1de6e9849..c98f2216734f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
+@@ -915,7 +915,7 @@ int rtl8723e_hw_init(struct ieee80211_hw *hw)
+ 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+ 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+-	bool rtstatus = true;
++	bool rtstatus;
+ 	int err;
+ 	u8 tmp_u1b;
+ 	unsigned long flags;
+-- 
+2.30.2
+
