@@ -2,174 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BF273808B2
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 13:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D76B03809EB
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 14:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231981AbhENLmM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 May 2021 07:42:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42758 "EHLO
+        id S233825AbhENMyM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 May 2021 08:54:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230213AbhENLmM (ORCPT
+        with ESMTP id S233814AbhENMyL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 May 2021 07:42:12 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0164FC061574;
-        Fri, 14 May 2021 04:41:00 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id b11-20020a7bc24b0000b0290148da0694ffso1290916wmj.2;
-        Fri, 14 May 2021 04:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=tT6jKLZNQNfFr1GIuQvLHWEimMB6bE2z6imkro1v2a8=;
-        b=GVNO3CokxQ8SOTfZEfWxNhJl0fvGM1xPU3k3KDXx9mLTCP6rYJriNTmwvnLIoCpoBa
-         JdcErrs5j60EdlS1hTt7ate9LCNPsXryDn3uUCrCgxoOz3b3Q6iqc0NyRs2+gclx9k+c
-         I6buShHdjfVbW8GY9gAxaJ6USaWSPcK/ugll8PGmX0dK22hCIdA21HCAH7RrO/dMkuaW
-         mIyWcsEI73b2vvxsHN6jvPkPNehKA4iRyZ1NYCPgwek4aYeib3pg6WH8rkJIQLPvb/gF
-         0koTJYXnzxslXP9OycK2YjDnz6jRqgS31fyS69N5ihnU8RxxbLtUNl62qMh0SHCuXSVF
-         sFEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=tT6jKLZNQNfFr1GIuQvLHWEimMB6bE2z6imkro1v2a8=;
-        b=SPGuGFP0iOoimIZclc1mvcjmh7AdR6zx0WAdX0ybGpHqxQIoggt925XmnIMZxE4suU
-         tz8PzmtXK8AdZI4QGglRTQMMdit5bg/+6fvKUCG6P39nREEBIumxGvrmKvqbPFYwNfgu
-         5jHG1+IGzd5nBk5a4qwBWkATlj5pbLG8G1AsylLHiQlpoWSugUMg2F+RtA26Fj4Qvl5Y
-         zsVMgUsGZgJPmxrhVwiokxcUgFTlM97Uk/Ith28Iqt5OMqPYMXgIO8cHG8dc0wcfLcO5
-         kwlJmfRPd3txfjcLmT7mDUqVm1tKyMN5VebO/JVAumJNHKE7KDwDFi2mqEekPt6G1EiP
-         5M8A==
-X-Gm-Message-State: AOAM531hd/4FOYHGudnnTHoX5nFdRvTtjHDm38qOeR4E/VQPpdsF5jex
-        ADfnqm1z7bciXtUVzIctGbk=
-X-Google-Smtp-Source: ABdhPJxlBZ6eXp05NMP11e+cgbIDlzJuQ/ORHGVZUsg5IxZwf9+GcRDJAxqgu28sch2iYpqtwU++gQ==
-X-Received: by 2002:a05:600c:4a22:: with SMTP id c34mr49233188wmp.160.1620992458669;
-        Fri, 14 May 2021 04:40:58 -0700 (PDT)
-Received: from [192.168.2.202] (pd9e5a369.dip0.t-ipconnect.de. [217.229.163.105])
-        by smtp.gmail.com with ESMTPSA id x10sm4051041wrt.65.2021.05.14.04.40.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 May 2021 04:40:58 -0700 (PDT)
-Subject: Re: [BUG] Deadlock in _cfg80211_unregister_wdev()
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        Fri, 14 May 2021 08:54:11 -0400
+X-Greylist: delayed 459 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 14 May 2021 05:53:00 PDT
+Received: from outbound5.mail.transip.nl (outbound5.mail.transip.nl [IPv6:2a01:7c8:7c9:ca11:136:144:136:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E2B7C061574;
+        Fri, 14 May 2021 05:53:00 -0700 (PDT)
+Received: from submission4.mail.transip.nl (unknown [10.103.8.155])
+        by outbound5.mail.transip.nl (Postfix) with ESMTP id 4FhSt62j4JzHCtB;
+        Fri, 14 May 2021 14:45:18 +0200 (CEST)
+Received: from transip.email (unknown [10.103.8.118])
+        by submission4.mail.transip.nl (Postfix) with ESMTPA id 4FhSt30ljYznTYs;
+        Fri, 14 May 2021 14:45:10 +0200 (CEST)
+MIME-Version: 1.0
+Date:   Fri, 14 May 2021 14:45:10 +0200
+From:   dave@bewaar.me
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        anapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>
-References: <98392296-40ee-6300-369c-32e16cff3725@gmail.com>
- <57d41364f14ea660915b7afeebaa5912c4300541.camel@sipsolutions.net>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-Message-ID: <522833b9-08c1-f470-a328-0e7419e86617@gmail.com>
-Date:   Fri, 14 May 2021 13:40:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <57d41364f14ea660915b7afeebaa5912c4300541.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [BUG] recursive lock in mwifiex_uninit_sw
+Message-ID: <ab4d00ce52f32bd8e45ad0448a44737e@bewaar.me>
+X-Sender: dave@bewaar.me
+User-Agent: Webmail
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: ClueGetter at submission4.mail.transip.nl
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=transip-a; d=bewaar.me; t=1620996315; h=from:subject:to:cc:date:
+ mime-version:content-type;
+ bh=Daxo7C8BJ0xC7g75uEADc0HoTfZJdqRTKuWOYREQ42k=;
+ b=Qk0HpLX1u+qkvPHuVsDr8wxvuF2hho6/VXE7YgqrcSM6GgtxquAL4/SdAKFvSXArvcLOaZ
+ SV1I6zl5AWd0BQttT2gNs/EQg5TfK6mxKWBF7Kemuxuw2s894NUQXOw4WPL50SBp8NOsGG
+ uD3T84qyviMlEu2Uc+iMRTlhr769hyycHhgDjtphPwhuB4VjwbbvQJW5Mhgw9hRmL/v6FE
+ J3nFo4GEkonhQi6qtgO/JRz/lbwW/iW+EkJxY2FWmHUZeW7hyV6IzTWrgUIOAIg0W9Ff6G
+ 3HYM29RSQY+oaAdyaVeR/MhKoYFTrdrqrZe8JAXMT1S5nv2M9orpmjTJsbextA==
+X-Report-Abuse-To: abuse@transip.nl
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/14/21 10:26 AM, Johannes Berg wrote:
-> On Fri, 2021-05-14 at 01:07 +0200, Maximilian Luz wrote:
->> Following commit a05829a7222e ("cfg80211: avoid holding the RTNL when
->> calling the driver"), the mwifiex_pcie module fails to unload. This also
->> prevents the device from rebooting / shutting down.
->>
->> Attempting to unload the module
->>
-> 
-> I'm *guessing* that you're attempting to unload the module while the
-> interface is still up, i.e. you didn't "ip link set wlan0 down" first?
+A firmware crash of the Marvell 88W8897, which are spurious on Microsoft
+Surface devices, will unload/reset the device. However this can also 
+fail
+in more recent kernels, which can cause more problems since the driver
+does not unload. This causes programs trying to reach the network or
+networking devices to hang which in turn causes a reboot/poweroff to 
+hang.
 
-I did not. Doing so indeed allows unloading of the module.
+This can happen on the following fedora rawhide kernels:
+- 5.12.0-0.rc8.20210423git7af08140979a.193.fc35.x86_64 [1]
+- 5.13.0-0.rc1.20210512git88b06399c9c7.15.fc35.x86_64 [2]
 
-> If so, that is likely fixed by this commit as well:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ea6b2098dd02789f68770fd3d5a373732207be2f
+The latter seems to be more consistent in triggering this behaviour
+(and crashing the firmware). If someone can give me some pointers
+I would gladly help and debug this.
 
-Thanks for pointing this out. That's backported to 5.12.2, right?
-Unfortunately the error still persists there (as on all other post 5.12
-kernels, as mentioned below).
-
-> However, your log says:
-> 
->> [  245.504764]       Tainted: G         C OE     5.11.0-1-surface-dev #2
-> 
-> so I have no idea what kernel you're using, because 5.11 did *not*
-> contain commit a05829a7222e ("cfg80211: avoid holding the RTNL when
-> calling the driver"). If you backported the bug you get to be
-> responsible for backporting the fixes too?
-
-This is a log from a05829a7222e checked out, which was pre 5.12-rc1, so the
-last tag is still 5.11 which sets the package version in my packaging scripts
-to that as well. It's not an actual 5.11 kernel, sorry for the confusion.
-There is no backporting going on, just bisecting.
-
-> If that's all not solving the issue then please try to resolve with gdb
-> what line of code "cfg80211_netdev_notifier_call+0x12a" is, and please
-> also clarify exactly what (upstream!) kernel you're using.
-
-The issue exists on 5.12 through 5.12.4, as well as 5.13-rc1 (which is
-why I didn't bother specifying a version, sorry again).
-
-If you really want me to, I'll try to find some time to learn GDB kernel
-debugging (never done that before, so might take a bit) however, I think
-it's fairly clear what's going wrong and why the fix you've linked below
-doesn't apply in this case:
-
-Your fix is fixing
-
-     cfg80211_destroy_iface_wk() takes wiphy_lock
-      -> cfg80211_destroy_ifaces()
-       -> ieee80211_del_iface
-        -> ieeee80211_if_remove
-         -> cfg80211_unregister_wdev
-          -> unregister_netdevice_queue
-           -> dev_close_many
-            -> __dev_close_many
-             -> raw_notifier_call_chain
-              -> cfg80211_netdev_notifier_call
-
-by addressing this in cfg80211_destroy_iface{s,_wk}(). The trace from my
-log shows
-
-     mwifiex_uninit_sw() takes wiphy_lock
-      -> mwifiex_del_virtual_intf
-       -> cfg80211_unregister_netdevice()
-        -> cfg80211_unregister_wdev()
-         -> _cfg80211_unregister_wdev() has lockdep_assert_held(&rdev->wiphy.mtx)
-          -> unregister_netdevice_queue
-           -> dev_close_many
-            -> __dev_close_many
-             -> raw_notifier_call_chain
-              -> cfg80211_netdev_notifier_call attempts to take wiphy_lock again
-
-So your fix does not address this particular issue. It doesn't even
-touch any of the affected code path. I believe it is instead fixing one
-symptom of the same underlying problem.
-
-While the last parts of the trace are the same (specifically following
-cfg80211_unregister_wdev()), the lock is initially taken in different
-functions. Your fix addresses this by changing cfg80211_destroy_ifaces(),
-and cfg80211_destroy_iface_wk() which, however, were never called on the
-path that's causing _this_ issue.
-
-Furthermore, if you go through that trace, there's only one notifier
-call in __dev_close_many(), which is
-
-   call_netdevice_notifiers(NETDEV_GOING_DOWN, dev)
-
-which I believe I have linked in my previous mail. Since the state value
-is NETDEV_GOING_DOWN, this has to be case [3] (unless I'm missing
-something).
+I know there is a set of patches for surface devices which address
+these firmware crashes [3], however they have not made it upstream
+yet and are not in the before mentioned kernels with this issue.
 
 Regards,
-Max
+Dave
 
-[3]: https://elixir.bootlin.com/linux/v5.13-rc1/source/net/wireless/core.c#L1428
+[1]: 
+https://gitlab.com/cki-project/kernel-ark/-/commit/bfe9c6281b1e9a08ad94ff76629279326a8483c1
+[2]: 
+https://gitlab.com/cki-project/kernel-ark/-/commit/b996c16ff61d147d9a02c74d600b4c576aea9f3a
+[3]: 
+https://github.com/linux-surface/linux-surface/blob/master/patches/5.12/0002-mwifiex.patch
+
+[  440.345579] ============================================
+[  440.345583] WARNING: possible recursive locking detected
+[  440.345587] 5.13.0-0.rc1.20210512git88b06399c9c7.15.fc35.x86_64 #1 
+Not tainted
+[  440.345592] --------------------------------------------
+[  440.345595] kworker/0:2/121 is trying to acquire lock:
+[  440.345599] ffff9bbbc6792670 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: 
+cfg80211_netdev_notifier_call+0xf8/0x5c0 [cfg80211]
+[  440.345734]
+                but task is already holding lock:
+[  440.345737] ffff9bbbc6792670 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: 
+mwifiex_uninit_sw+0x151/0x1f0 [mwifiex]
+[  440.345783]
+                other info that might help us debug this:
+[  440.345786]  Possible unsafe locking scenario:
+
+[  440.345788]        CPU0
+[  440.345790]        ----
+[  440.345792]   lock(&rdev->wiphy.mtx);
+[  440.345797]   lock(&rdev->wiphy.mtx);
+[  440.345801]
+                 *** DEADLOCK ***
+
+[  440.345804]  May be due to missing lock nesting notation
+
+[  440.345806] 5 locks held by kworker/0:2/121:
+[  440.345810]  #0: ffff9bbb80055148 
+((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x21a/0x5e0
+[  440.345825]  #1: ffffba12814b3e70 
+((work_completion)(&card->work)){+.+.}-{0:0}, at: 
+process_one_work+0x21a/0x5e0
+[  440.345837]  #2: ffff9bbb82263258 (&dev->mutex){....}-{3:3}, at: 
+pci_try_reset_function+0x3d/0x90
+[  440.345852]  #3: ffffffffa11e7f90 (rtnl_mutex){+.+.}-{3:3}, at: 
+mwifiex_uninit_sw+0x146/0x1f0 [mwifiex]
+[  440.345879]  #4: ffff9bbbc6792670 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: 
+mwifiex_uninit_sw+0x151/0x1f0 [mwifiex]
+[  440.345906]
+                stack backtrace:
+[  440.345909] CPU: 0 PID: 121 Comm: kworker/0:2 Not tainted 
+5.13.0-0.rc1.20210512git88b06399c9c7.15.fc35.x86_64 #1
+[  440.345915] Hardware name: Microsoft Corporation Surface Pro/Surface 
+Pro, BIOS 235.3440.768 11.16.2020
+[  440.345919] Workqueue: events mwifiex_pcie_work [mwifiex_pcie]
+[  440.345928] Call Trace:
+[  440.345935]  dump_stack+0x7f/0xa1
+[  440.345943]  __lock_acquire.cold+0x17d/0x2bf
+[  440.345953]  ? lock_is_held_type+0xa7/0x120
+[  440.345961]  lock_acquire+0xc4/0x3a0
+[  440.345967]  ? cfg80211_netdev_notifier_call+0xf8/0x5c0 [cfg80211]
+[  440.346062]  ? __bfs+0xf5/0x230
+[  440.346069]  ? lock_is_held_type+0xa7/0x120
+[  440.346077]  __mutex_lock+0x91/0x830
+[  440.346082]  ? cfg80211_netdev_notifier_call+0xf8/0x5c0 [cfg80211]
+[  440.346175]  ? __bfs+0xf5/0x230
+[  440.346181]  ? cfg80211_netdev_notifier_call+0xf8/0x5c0 [cfg80211]
+[  440.346270]  ? check_path.constprop.0+0x24/0x50
+[  440.346278]  ? check_noncircular+0x70/0x100
+[  440.346286]  ? cfg80211_netdev_notifier_call+0xf8/0x5c0 [cfg80211]
+[  440.346375]  cfg80211_netdev_notifier_call+0xf8/0x5c0 [cfg80211]
+[  440.346471]  ? __lock_acquire+0x3ac/0x1e10
+[  440.346481]  ? lock_acquire+0xc4/0x3a0
+[  440.346486]  ? lock_is_held_type+0xa7/0x120
+[  440.346492]  ? find_held_lock+0x32/0x90
+[  440.346499]  ? sched_clock_cpu+0xc/0xb0
+[  440.346505]  ? lock_is_held_type+0xa7/0x120
+[  440.346510]  ? cfg80211_register_netdevice+0x130/0x130 [cfg80211]
+[  440.346604]  ? rcu_read_lock_sched_held+0x3f/0x80
+[  440.346615]  notifier_call_chain+0x42/0xb0
+[  440.346624]  __dev_close_many+0x62/0x100
+[  440.346634]  dev_close_many+0x7b/0x110
+[  440.346641]  unregister_netdevice_many+0x14b/0x760
+[  440.346650]  unregister_netdevice_queue+0xab/0xf0
+[  440.346658]  _cfg80211_unregister_wdev+0x170/0x210 [cfg80211]
+[  440.346752]  mwifiex_del_virtual_intf+0x178/0x1a0 [mwifiex]
+[  440.346778]  mwifiex_uninit_sw+0x1d5/0x1f0 [mwifiex]
+[  440.346801]  mwifiex_shutdown_sw+0x5c/0x90 [mwifiex]
+[  440.346822]  mwifiex_pcie_reset_prepare+0x4d/0x90 [mwifiex_pcie]
+[  440.346829]  pci_dev_save_and_disable+0x29/0x50
+[  440.346835]  pci_try_reset_function+0x49/0x90
+[  440.346840]  process_one_work+0x2b0/0x5e0
+[  440.346849]  worker_thread+0x55/0x3c0
+[  440.346854]  ? process_one_work+0x5e0/0x5e0
+[  440.346860]  kthread+0x13a/0x150
+[  440.346865]  ? __kthread_bind_mask+0x60/0x60
+[  440.346871]  ret_from_fork+0x22/0x30
