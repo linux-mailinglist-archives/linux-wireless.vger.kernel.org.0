@@ -2,127 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43CDB3811C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 22:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA509381384
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 00:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231175AbhENU0i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 May 2021 16:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47706 "EHLO
+        id S233614AbhENWLF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 May 2021 18:11:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbhENU0h (ORCPT
+        with ESMTP id S233435AbhENWLE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 May 2021 16:26:37 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B35A6C061574
-        for <linux-wireless@vger.kernel.org>; Fri, 14 May 2021 13:25:25 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id m11so147623lfg.3
-        for <linux-wireless@vger.kernel.org>; Fri, 14 May 2021 13:25:25 -0700 (PDT)
+        Fri, 14 May 2021 18:11:04 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98B0C06174A
+        for <linux-wireless@vger.kernel.org>; Fri, 14 May 2021 15:09:51 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id c17so708547pfn.6
+        for <linux-wireless@vger.kernel.org>; Fri, 14 May 2021 15:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zj/dlxgrTFi/afXdqvpoKnC0fO1FIFdLyxVrDXldBSs=;
-        b=YFKY9Xahh+37BAr6aWqyWYu1Mb7APXH6ODm/OL23XmTx5cHPfE5nvsgH3V9cI44nS0
-         EW6HUNU9PMYQx+djBq7ws8ietkyGay3lY9V3u/1Wuw/v3Pr2ScmDgx0fOcF6ZkLkBuPr
-         cN3FjgtrPRUQDfA1h2PJ+U+sspjArlX7AElF0=
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EVEwKEdVLlVVJVxedoNBc4BWAXFfR9V6+rvEkmkqNqo=;
+        b=lf/df1n6657u4+dZTrwF6xxCFyjzE5ovnQgCJaDGuK17YTXI0MQoYgqn2DBtrXTM9y
+         6qmBCVv4NMVI9HnQMblrhm2Y8iWZpF12WPu40pq/Vru87pc9BbgDit95m2cv8C4RmXY5
+         i6IBr1nP44ztPdfmUclXOAZkOG/tjzQ5koJ1E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zj/dlxgrTFi/afXdqvpoKnC0fO1FIFdLyxVrDXldBSs=;
-        b=tepDAYdgFCv73yIdlRJ1dda7s46NWhSs7hddpe+tfp/TFZQQqGBoYoZ8bsnokBYgNe
-         nlqGoRWdYZkhAM0gCvOsLK+CwbriI8WT+Uv9MWdrYlPbVbuZF6CausV8/OubK/t9qrdl
-         msjQAyZoormn8AtH3AqTSO5W+UMr7c1RCtT0KcTyKvaruCTycwiUO5ReEUpqUMG4FhBl
-         G3fMyWwExOQSIVg5wukt/WITc+NXsBV3CRxpItfv2LmfkmPEMP7Dwz8V40N4eY5d7Ju8
-         GgF4Z1uyfQcC7yW/MUNexlLHx7KyUaZk0+50rxwVpKmHG8ETJXSxgcxQnowyOX20WYWe
-         1Xxw==
-X-Gm-Message-State: AOAM533axljqzWucZfFCiKphUYK6v4+QjNa1tl6bKbQLDxrA4K075TwD
-        XX2dweu92qBJ3yScLtcjJDD5zobwfF2HIeS6q3I=
-X-Google-Smtp-Source: ABdhPJxycy1jB5p9+/SqXLwTBetNrLltihj+n/WmRLWbXDYDm+JppvVhRKz5IzFfn5srhScTdI6efg==
-X-Received: by 2002:ac2:50d8:: with SMTP id h24mr63081lfm.240.1621023924015;
-        Fri, 14 May 2021 13:25:24 -0700 (PDT)
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
-        by smtp.gmail.com with ESMTPSA id n20sm929458lfq.186.2021.05.14.13.25.23
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 May 2021 13:25:23 -0700 (PDT)
-Received: by mail-lj1-f177.google.com with SMTP id p12so39299451ljg.1
-        for <linux-wireless@vger.kernel.org>; Fri, 14 May 2021 13:25:23 -0700 (PDT)
-X-Received: by 2002:a05:6512:374b:: with SMTP id a11mr32730248lfs.377.1621023609037;
- Fri, 14 May 2021 13:20:09 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EVEwKEdVLlVVJVxedoNBc4BWAXFfR9V6+rvEkmkqNqo=;
+        b=tgpb1ffFVlbZOiMLrQjMfiTM4SLcdIzPoMMmIj7lg5D0VKSlcfoxyerzGVqgS9g+5G
+         pemRiMfYXvOCS2uDp/p4O3cX1/YtWiMMCBzN40r7ANLTzat0rZl+T3dhebvdhI+TNysG
+         a2Naw9WEyRJa48AeGrNL/OD3knXOPahi9/8gWukHrVOQYFYSyFV9TWS9uXirgMg1SCmh
+         +5mPirV4uZhS+qwFWSKCweXV+h/ySP07v/u7L7Odg3QFccKf3sT7qcd6zh1huYYgLjQz
+         JWKvTMyOa/fDS7l94SbiCGQ1jmjSlBb/L+FM26elBtvxPyzm6pqBNim1utn0vJ85ZMfL
+         2bmw==
+X-Gm-Message-State: AOAM531axcyG/M47DjsZnOIFdOBeK5lArwczUel0fXYZTbxoNsK0Txl3
+        S6ddGs4/G3AK0DuTcIr+yyEutw==
+X-Google-Smtp-Source: ABdhPJwq18GMShSHikNPymoScSOxvtF7YXVCscqGBVyyUnLW5CUGpxUPQ8en98R5qUf4KEmP5j2zxw==
+X-Received: by 2002:a63:d64f:: with SMTP id d15mr48686658pgj.137.1621030191378;
+        Fri, 14 May 2021 15:09:51 -0700 (PDT)
+Received: from kuabhs-cdev.c.googlers.com.com (254.80.82.34.bc.googleusercontent.com. [34.82.80.254])
+        by smtp.gmail.com with ESMTPSA id j4sm6446156pjm.10.2021.05.14.15.09.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 May 2021 15:09:51 -0700 (PDT)
+From:   Abhishek Kumar <kuabhs@chromium.org>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     briannorris@chromium.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Jouni Malinen <jouni@codeaurora.org>,
+        Wen Gong <wgong@codeaurora.org>, kuabhs@chromium.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH] ath10k: remove unused variable in ath10k_htt_rx_h_frag_pn_check
+Date:   Fri, 14 May 2021 22:07:42 +0000
+Message-Id: <20210514220644.1.Iad576de95836b74aba80a5fc28d7131940eca190@changeid>
+X-Mailer: git-send-email 2.31.1.751.gd2f1c929bd-goog
 MIME-Version: 1.0
-References: <20210514100106.3404011-1-arnd@kernel.org> <CAHk-=whGObOKruA_bU3aPGZfoDqZM1_9wBkwREp0H0FgR-90uQ@mail.gmail.com>
- <2408c893-4ae7-4f53-f58c-497c91f5b034@synopsys.com> <CAHk-=wih8UHDwJ8x6m-p0PQ7o4S4gOBwGNs=w=q10GNY7A-70w@mail.gmail.com>
- <14016937-b9c3-c131-db18-f97081806c7f@synopsys.com>
-In-Reply-To: <14016937-b9c3-c131-db18-f97081806c7f@synopsys.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 14 May 2021 13:19:53 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whdR4OLJjwaU_nJhmS4n6ruGK4XFuLxA7zEOoCV7U=QLA@mail.gmail.com>
-Message-ID: <CAHk-=whdR4OLJjwaU_nJhmS4n6ruGK4XFuLxA7zEOoCV7U=QLA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/13] Unify asm/unaligned.h around struct helper
-To:     Vineet Gupta <Vineet.Gupta1@synopsys.com>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Eric Dumazet <edumazet@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        James Morris <jmorris@namei.org>, Jens Axboe <axboe@kernel.dk>,
-        John Johansen <john.johansen@canonical.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Rich Felker <dalias@libc.org>,
-        "Richard Russon (FlatCap)" <ldm@flatcap.org>,
-        Russell King <linux@armlinux.org.uk>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        linux-sparc <sparclinux@vger.kernel.org>,
-        "linux-ntfs-dev@lists.sourceforge.net" 
-        <linux-ntfs-dev@lists.sourceforge.net>,
-        linux-block <linux-block@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 14, 2021 at 12:45 PM Vineet Gupta
-<Vineet.Gupta1@synopsys.com> wrote:
->
-> Well, not really, the issue manifested in ARC O3 testing, but I showed
-> the problem existed for arm64 gcc too.
+The local variable more_frags in ath10k_htt_rx_h_frag_pn_check is not
+used. This patch is to remove that.
 
-.. but not with a supported kernel configuration.
+Fixes: a1166b2653db ("ath10k: add CCMP PN replay protection for fragmented
+frames for PCIe")
+Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+---
 
-> > So in fact it's not even queued up for 5.14 due to this all, I just dropped it.
->
-> But Why.
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-I just didn't have time to deal with it during the merge window. If
-you keep it alive, that's all fine and good.
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 7ffb5d5b2a70..adbaeb67eedf 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -1787,7 +1787,6 @@ static bool ath10k_htt_rx_h_frag_pn_check(struct ath10k *ar,
+ 	struct ath10k_peer *peer;
+ 	union htt_rx_pn_t *last_pn, new_pn = {0};
+ 	struct ieee80211_hdr *hdr;
+-	bool more_frags;
+ 	u8 tid, frag_number;
+ 	u32 seq;
+ 
+@@ -1805,7 +1804,6 @@ static bool ath10k_htt_rx_h_frag_pn_check(struct ath10k *ar,
+ 
+ 	last_pn = &peer->frag_tids_last_pn[tid];
+ 	new_pn.pn48 = ath10k_htt_rx_h_get_pn(ar, skb, offset, enctype);
+-	more_frags = ieee80211_has_morefrags(hdr->frame_control);
+ 	frag_number = le16_to_cpu(hdr->seq_ctrl) & IEEE80211_SCTL_FRAG;
+ 	seq = (__le16_to_cpu(hdr->seq_ctrl) & IEEE80211_SCTL_SEQ) >> 4;
+ 
+-- 
+2.31.1.751.gd2f1c929bd-goog
 
-                Linus
