@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 571A43804BB
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 09:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 752403804BC
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 09:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233327AbhENH4v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 May 2021 03:56:51 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:42831 "EHLO
+        id S233326AbhENH4x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 May 2021 03:56:53 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:42835 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232903AbhENH4u (ORCPT
+        with ESMTP id S232903AbhENH4w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 May 2021 03:56:50 -0400
+        Fri, 14 May 2021 03:56:52 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14E7tYPf9027710, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14E7tanI7027727, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14E7tYPf9027710
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14E7tanI7027727
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 14 May 2021 15:55:34 +0800
+        Fri, 14 May 2021 15:55:36 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 14 May 2021 15:55:33 +0800
+ 15.1.2106.2; Fri, 14 May 2021 15:55:35 +0800
 Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 14 May
- 2021 15:55:32 +0800
+ 2021 15:55:34 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>
-Subject: [PATCH 1/2] rtw88: add rtw_fw_feature_check api
-Date:   Fri, 14 May 2021 15:55:16 +0800
-Message-ID: <20210514075517.14216-2-pkshih@realtek.com>
+Subject: [PATCH 2/2] rtw88: notify fw when driver in scan-period to avoid potential problem
+Date:   Fri, 14 May 2021 15:55:17 +0800
+Message-ID: <20210514075517.14216-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20210514075517.14216-1-pkshih@realtek.com>
 References: <20210514075517.14216-1-pkshih@realtek.com>
@@ -39,7 +39,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXH36501.realtek.com.tw (172.21.6.27) To
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-Antivirus-Interceptor-Info: scan successful
@@ -98,110 +98,207 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Chin-Yen Lee <timlee@realtek.com>
 
-add api to check if a certain feature is supported.
+It is found that driver scan could be affected by dynamic mechanism
+of firmware, so we notify firmware to stop it in the scan period.
+Another, firmware will detect the background noise and report to
+driver for further use.
 
 Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c       | 3 +--
- drivers/net/wireless/realtek/rtw88/fw.h       | 6 ++++++
- drivers/net/wireless/realtek/rtw88/mac80211.c | 3 +--
- drivers/net/wireless/realtek/rtw88/main.c     | 4 ++--
- drivers/net/wireless/realtek/rtw88/ps.c       | 4 ++--
- 5 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw88/fw.c       | 25 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/fw.h       | 10 +++++++-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  3 +++
+ drivers/net/wireless/realtek/rtw88/main.c     | 17 +++++++++++++
+ drivers/net/wireless/realtek/rtw88/main.h     |  4 +++
+ 5 files changed, 58 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 797b08b2a494..00c56ab6306b 100644
+index 00c56ab6306b..58f4e47aa96a 100644
 --- a/drivers/net/wireless/realtek/rtw88/fw.c
 +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -584,10 +584,9 @@ void rtw_fw_beacon_filter_config(struct rtw_dev *rtwdev, bool connect,
- 	struct rtw_sta_info *si =
- 		sta ? (struct rtw_sta_info *)sta->drv_priv : NULL;
- 	s32 threshold = bss_conf->cqm_rssi_thold + rssi_offset;
--	struct rtw_fw_state *fw = &rtwdev->fw;
- 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
- 
--	if (!(fw->feature & FW_FEATURE_BCN_FILTER))
-+	if (!rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_BCN_FILTER))
- 		return;
- 
- 	if (!connect) {
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index 3bfee27b1e1a..832ef2bfe5f9 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -591,6 +591,12 @@ static inline struct rtw_c2h_cmd *get_c2h_from_skb(struct sk_buff *skb)
- 	return (struct rtw_c2h_cmd *)(skb->data + pkt_offset);
+@@ -172,6 +172,17 @@ static void rtw_fw_bcn_filter_notify(struct rtw_dev *rtwdev, u8 *payload,
+ 			 &dev_iter_data);
  }
  
-+static inline bool rtw_fw_feature_check(struct rtw_fw_state *fw,
-+					enum rtw_fw_feature feature)
++static void rtw_fw_scan_result(struct rtw_dev *rtwdev, u8 *payload,
++			       u8 length)
 +{
-+	return !!(fw->feature & feature);
++	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
++
++	dm_info->scan_density = payload[0];
++
++	rtw_dbg(rtwdev, RTW_DBG_FW, "scan.density = %x\n",
++		dm_info->scan_density);
 +}
 +
- void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
- 			       struct sk_buff *skb);
- void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb);
+ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
+ {
+ 	struct rtw_c2h_cmd *c2h;
+@@ -235,6 +246,10 @@ void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
+ 	case C2H_WLAN_RFON:
+ 		complete(&rtwdev->lps_leave_check);
+ 		break;
++	case C2H_SCAN_RESULT:
++		complete(&rtwdev->fw_scan_density);
++		rtw_fw_scan_result(rtwdev, c2h->payload, len);
++		break;
+ 	default:
+ 		/* pass offset for further operation */
+ 		*((u32 *)skb->cb) = pkt_offset;
+@@ -1703,3 +1718,13 @@ void rtw_fw_channel_switch(struct rtw_dev *rtwdev, bool enable)
+ 
+ 	rtw_fw_send_h2c_packet(rtwdev, h2c_pkt);
+ }
++
++void rtw_fw_scan_notify(struct rtw_dev *rtwdev, bool start)
++{
++	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
++
++	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_SCAN);
++	SET_SCAN_START(h2c_pkt, start);
++
++	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
++}
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
+index 832ef2bfe5f9..a8a7162fbe64 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.h
++++ b/drivers/net/wireless/realtek/rtw88/fw.h
+@@ -30,6 +30,8 @@
+ #define BCN_FILTER_CONNECTED		2
+ #define BCN_FILTER_NOTIFY_BEACON_LOSS	3
+ 
++#define SCAN_NOTIFY_TIMEOUT  msecs_to_jiffies(10)
++
+ enum rtw_c2h_cmd_id {
+ 	C2H_CCX_TX_RPT = 0x03,
+ 	C2H_BT_INFO = 0x09,
+@@ -39,6 +41,7 @@ enum rtw_c2h_cmd_id {
+ 	C2H_WLAN_INFO = 0x27,
+ 	C2H_WLAN_RFON = 0x32,
+ 	C2H_BCN_FILTER_NOTIFY = 0x36,
++	C2H_SCAN_RESULT = 0x38,
+ 	C2H_HW_FEATURE_DUMP = 0xfd,
+ 	C2H_HALMAC = 0xff,
+ };
+@@ -86,6 +89,7 @@ enum rtw_fw_feature {
+ 	FW_FEATURE_LCLK = BIT(2),
+ 	FW_FEATURE_PG = BIT(3),
+ 	FW_FEATURE_BCN_FILTER = BIT(5),
++	FW_FEATURE_NOTIFY_SCAN = BIT(6),
+ 	FW_FEATURE_MAX = BIT(31),
+ };
+ 
+@@ -369,6 +373,7 @@ static inline void rtw_h2c_pkt_set_header(u8 *h2c_pkt, u8 sub_id)
+ #define H2C_CMD_BCN_FILTER_OFFLOAD_P0	0x56
+ #define H2C_CMD_BCN_FILTER_OFFLOAD_P1	0x57
+ #define H2C_CMD_WL_PHY_INFO		0x58
++#define H2C_CMD_SCAN			0x59
+ 
+ #define H2C_CMD_COEX_TDMA_TYPE		0x60
+ #define H2C_CMD_QUERY_BT_INFO		0x61
+@@ -419,6 +424,9 @@ static inline void rtw_h2c_pkt_set_header(u8 *h2c_pkt, u8 sub_id)
+ #define SET_BCN_FILTER_OFFLOAD_P1_BCN_INTERVAL(h2c_pkt, value)		       \
+ 	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x01, value, GENMASK(13, 4))
+ 
++#define SET_SCAN_START(h2c_pkt, value)					       \
++	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, BIT(8))
++
+ #define SET_PWR_MODE_SET_MODE(h2c_pkt, value)                                  \
+ 	le32p_replace_bits((__le32 *)(h2c_pkt) + 0x00, value, GENMASK(14, 8))
+ #define SET_PWR_MODE_SET_RLBM(h2c_pkt, value)                                  \
+@@ -652,5 +660,5 @@ void rtw_fw_h2c_cmd_dbg(struct rtw_dev *rtwdev, u8 *h2c);
+ void rtw_fw_c2h_cmd_isr(struct rtw_dev *rtwdev);
+ int rtw_fw_dump_fifo(struct rtw_dev *rtwdev, u8 fifo_sel, u32 addr, u32 size,
+ 		     u32 *buffer);
+-
++void rtw_fw_scan_notify(struct rtw_dev *rtwdev, bool start);
+ #endif
 diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 9087c5b1ea80..8f46b16c8d5d 100644
+index 8f46b16c8d5d..8a180c95e7e6 100644
 --- a/drivers/net/wireless/realtek/rtw88/mac80211.c
 +++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -148,13 +148,12 @@ static int rtw_ops_add_interface(struct ieee80211_hw *hw,
- {
- 	struct rtw_dev *rtwdev = hw->priv;
- 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
--	struct rtw_fw_state *fw = &rtwdev->fw;
- 	enum rtw_net_type net_type;
- 	u32 config = 0;
- 	u8 port = 0;
- 	u8 bcn_ctrl = 0;
+@@ -605,6 +605,7 @@ static void rtw_ops_sw_scan_start(struct ieee80211_hw *hw,
+ 	rtw_vif_port_config(rtwdev, rtwvif, config);
  
--	if (fw->feature & FW_FEATURE_BCN_FILTER)
-+	if (rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_BCN_FILTER))
- 		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER |
- 				     IEEE80211_VIF_SUPPORTS_CQM_RSSI;
- 	rtwvif->port = port;
+ 	rtw_coex_scan_notify(rtwdev, COEX_SCAN_START);
++	rtw_core_fw_scan_notify(rtwdev, true);
+ 
+ 	set_bit(RTW_FLAG_DIG_DISABLE, rtwdev->flags);
+ 	set_bit(RTW_FLAG_SCANNING, rtwdev->flags);
+@@ -624,6 +625,8 @@ static void rtw_ops_sw_scan_complete(struct ieee80211_hw *hw,
+ 	clear_bit(RTW_FLAG_SCANNING, rtwdev->flags);
+ 	clear_bit(RTW_FLAG_DIG_DISABLE, rtwdev->flags);
+ 
++	rtw_core_fw_scan_notify(rtwdev, false);
++
+ 	ether_addr_copy(rtwvif->mac_addr, vif->addr);
+ 	config |= PORT_SET_MAC_ADDR;
+ 	rtw_vif_port_config(rtwdev, rtwvif, config);
 diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 94fadef5c131..df115bb7fdf7 100644
+index df115bb7fdf7..47f4838d0c58 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.c
 +++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1111,11 +1111,11 @@ static enum rtw_lps_deep_mode rtw_update_lps_deep_mode(struct rtw_dev *rtwdev,
- 		return LPS_DEEP_MODE_NONE;
- 
- 	if ((chip->lps_deep_mode_supported & BIT(LPS_DEEP_MODE_PG)) &&
--	    (fw->feature & FW_FEATURE_PG))
-+	    rtw_fw_feature_check(fw, FW_FEATURE_PG))
- 		return LPS_DEEP_MODE_PG;
- 
- 	if ((chip->lps_deep_mode_supported & BIT(LPS_DEEP_MODE_LCLK)) &&
--	    (fw->feature & FW_FEATURE_LCLK))
-+	    rtw_fw_feature_check(fw, FW_FEATURE_LCLK))
- 		return LPS_DEEP_MODE_LCLK;
- 
- 	return LPS_DEEP_MODE_NONE;
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index 3bead34c3d10..3f0ac33156d6 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.c
-+++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -152,7 +152,7 @@ static void rtw_fw_leave_lps_check(struct rtw_dev *rtwdev)
- 	else
- 		fw = &rtwdev->fw;
- 
--	if (fw->feature & FW_FEATURE_LPS_C2H)
-+	if (rtw_fw_feature_check(fw, FW_FEATURE_LPS_C2H))
- 		ret = __rtw_fw_leave_lps_check_c2h(rtwdev);
- 	else
- 		ret = __rtw_fw_leave_lps_check_reg(rtwdev);
-@@ -172,7 +172,7 @@ static void rtw_fw_leave_lps_check_prepare(struct rtw_dev *rtwdev)
- 	else
- 		fw = &rtwdev->fw;
- 
--	if (fw->feature & FW_FEATURE_LPS_C2H)
-+	if (rtw_fw_feature_check(fw, FW_FEATURE_LPS_C2H))
- 		reinit_completion(&rtwdev->lps_leave_check);
+@@ -1185,6 +1185,22 @@ static int rtw_power_on(struct rtw_dev *rtwdev)
+ 	return ret;
  }
  
++void rtw_core_fw_scan_notify(struct rtw_dev *rtwdev, bool start)
++{
++	if (!rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_NOTIFY_SCAN))
++		return;
++
++	if (start) {
++		rtw_fw_scan_notify(rtwdev, true);
++	} else {
++		reinit_completion(&rtwdev->fw_scan_density);
++		rtw_fw_scan_notify(rtwdev, false);
++		if (!wait_for_completion_timeout(&rtwdev->fw_scan_density,
++						 SCAN_NOTIFY_TIMEOUT))
++			rtw_warn(rtwdev, "firmware failed to report density after scan\n");
++	}
++}
++
+ int rtw_core_start(struct rtw_dev *rtwdev)
+ {
+ 	int ret;
+@@ -1763,6 +1779,7 @@ int rtw_core_init(struct rtw_dev *rtwdev)
+ 
+ 	init_waitqueue_head(&rtwdev->coex.wait);
+ 	init_completion(&rtwdev->lps_leave_check);
++	init_completion(&rtwdev->fw_scan_density);
+ 
+ 	rtwdev->sec.total_cam_num = 32;
+ 	rtwdev->hal.current_channel = 1;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 02ad175055cb..20b20a6db9cc 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1620,6 +1620,8 @@ struct rtw_dm_info {
+ 	struct rtw_iqk_info iqk;
+ 	struct rtw_gapk_info gapk;
+ 	bool is_bt_iqk_timeout;
++
++	u8 scan_density;
+ };
+ 
+ struct rtw_efuse {
+@@ -1869,6 +1871,7 @@ struct rtw_dev {
+ 	struct rtw_wow_param wow;
+ 
+ 	bool need_rfk;
++	struct completion fw_scan_density;
+ 
+ 	/* hci related data, must be last */
+ 	u8 priv[] __aligned(sizeof(void *));
+@@ -1974,6 +1977,7 @@ int rtw_sta_add(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ void rtw_sta_remove(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 		    bool fw_exist);
+ void rtw_fw_recovery(struct rtw_dev *rtwdev);
++void rtw_core_fw_scan_notify(struct rtw_dev *rtwdev, bool start);
+ int rtw_dump_fw(struct rtw_dev *rtwdev, const u32 ocp_src, u32 size,
+ 		const char *prefix_str);
+ int rtw_dump_reg(struct rtw_dev *rtwdev, const u32 addr, const u32 size,
 -- 
 2.21.0
 
