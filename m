@@ -2,158 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4BC38038A
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 08:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19A0A38039C
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 08:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232136AbhENGKC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 May 2021 02:10:02 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:60146 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230175AbhENGKA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 May 2021 02:10:00 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14E68SMB0025574, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14E68SMB0025574
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 14 May 2021 14:08:28 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 14 May 2021 14:08:27 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 14 May 2021 14:08:26 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74]) by
- RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74%5]) with mapi id
- 15.01.2106.013; Fri, 14 May 2021 14:08:26 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     =?utf-8?B?6YKx5ZCN56Kp?= <ccchiu77@gmail.com>,
-        Andy Huang <tehuang@realtek.com>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        Reto Schneider <reto.schneider@husqvarnagroup.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: How does the rate adaptive mask work on Realtek WiFi driver
-Thread-Topic: How does the rate adaptive mask work on Realtek WiFi driver
-Thread-Index: AQHXRXeJ96JiGH6RoUuehd+sRUk43arifRnQ
-Date:   Fri, 14 May 2021 06:08:26 +0000
-Message-ID: <89da58fc162b46558d60495110fcf75f@realtek.com>
-References: <CANgQ54dicgKSZFm3w9sbAYztFw9xBHZnt8aQMNCEfMn_twBbWQ@mail.gmail.com>
-In-Reply-To: <CANgQ54dicgKSZFm3w9sbAYztFw9xBHZnt8aQMNCEfMn_twBbWQ@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzUvMTQg5LiK5Y2IIDAxOjM1OjAw?=
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S232195AbhENGXi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 May 2021 02:23:38 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:21272 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232301AbhENGXh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 May 2021 02:23:37 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1620973346; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=D3qOaq3w+lp/P83ZscLwR5pSp+K26+/ZdEw8eZKcRek=; b=e/o/Zfsds+PTcI+2EbiBpyupnOSp5JsZpFb/OutbL9fVeLYjuFTCGsbGzHbrtqG2m0VS6UI7
+ k1MrBlDmgyPeRV61Td0uN2kEaANhpw+TOx/um3y7UBMMMfeqMeduB/qsK5zRlgVpecrh8GkI
+ 5ssHXeQEcKRhae30EEg/gURLm5E=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 609e1721e0211609c46f1b59 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 May 2021 06:22:25
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7A4A9C43460; Fri, 14 May 2021 06:22:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E93FC4338A;
+        Fri, 14 May 2021 06:22:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E93FC4338A
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Pkshih <pkshih@realtek.com>,
+        "linux-firmware\@kernel.org" <linux-firmware@kernel.org>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: Request to update 8852a firmware of rtw89 to v0.13.8.0
+References: <57e9f582340545c79a9ab3433e2a4a7d@realtek.com>
+        <87cztx87tr.fsf@tynnyri.adurom.net>
+        <CA+ASDXM9YmhMWmttkrCxB0_tf6Kf6Sz=7Yc26CmjZmMUxyxAfw@mail.gmail.com>
+        <87tun7i2rn.fsf@codeaurora.org>
+        <876c29841fcf4d21ab2440cbb5879de2@realtek.com>
+        <CA+ASDXMN__j0x5hN5t98C4k+upOcs+T1=MrivCbxRYa_-ENt_A@mail.gmail.com>
+Date:   Fri, 14 May 2021 09:22:21 +0300
+In-Reply-To: <CA+ASDXMN__j0x5hN5t98C4k+upOcs+T1=MrivCbxRYa_-ENt_A@mail.gmail.com>
+        (Brian Norris's message of "Thu, 13 May 2021 14:08:53 -0700")
+Message-ID: <87pmxtj0ma.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/14/2021 05:52:47
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 163650 [May 14 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, text}
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 05/14/2021 05:56:00
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/14/2021 05:52:47
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 163650 [May 14 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, text}
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 05/14/2021 06:00:00
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IOmCseWQjeeiqSBbbWFpbHRv
-OmNjY2hpdTc3QGdtYWlsLmNvbV0NCj4gU2VudDogTW9uZGF5LCBNYXkgMTAsIDIwMjEgNDozNiBQ
-TQ0KPiBUbzogUGtzaGloOyBBbmR5IEh1YW5nOyBMYXJyeS5GaW5nZXJAbHdmaW5nZXIubmV0OyBr
-dWJhQGtlcm5lbC5vcmc7IGt2YWxvQGNvZGVhdXJvcmEub3JnOyBSZXRvDQo+IFNjaG5laWRlcjsg
-bGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
-b3JnDQo+IFN1YmplY3Q6IEhvdyBkb2VzIHRoZSByYXRlIGFkYXB0aXZlIG1hc2sgd29yayBvbiBS
-ZWFsdGVrIFdpRmkgZHJpdmVyDQo+IA0KPiBIaSBndXlzLA0KPiAgICAgSSBoYWQgYSBwcm9ibGVt
-IHdoaWxlIHZlcmlmeWluZyB0aGUgYW1wZHUgdHggdGhyb3VnaHB1dCB3aXRoIHRoZQ0KPiBydGw4
-eHh4dSBkcml2ZXIgb24gUlRMODE4OENVUyBtb2R1bGUuIFRoZSB0aHJvdWdocHV0IG51bWJlciBp
-cw0KPiByZWxhdGl2ZWx5IGdvb2QsIDM5fjQyTWJwcyAgVENQIG9uIDIuNEdIeiBjaGFubmVsLiBI
-b3dldmVyLCB0aGUNCj4gcmV0cmFuc21pc3Npb24gcmF0ZSBpcyBoaWdoLCBpdCdzIDE1JSB+IDIx
-JSB3aXRoIHJ0bDh4eHh1IGRyaXZlciBhbmQNCj4gSXQncyBhbG1vc3QgdGhlIHNhbWUgcmVzdWx0
-IHdpdGggdGhlIHJ0bDgxOTJjdSBkcml2ZXIuIEkgY2FuIGdldA0KPiBhdmVyYWdlbHkgN34xMCUg
-cmV0cmFuc21pc3Npb24gcmF0ZSBpbiB0aGUgc2FtZSB0ZXN0IGJlZCB3aXRoIFJlYWx0ZWsNCj4g
-dmVuZG9yIGRyaXZlci4NCj4gDQo+ICAgICBGcm9tIHRoZSBhaXIgY2FwdHVyZSwgSSBjYW4gc2Vl
-IHRoZSBydGw4eHh4dSBkcml2ZXIga2VlcCBzZW5kaW5nDQo+IHRoZSBhZ2dyZWdhdGVkIGZyYW1l
-cyBpbiBNQ1M3IGFuZCBkb2Vzbid0IGV2ZW4gZmFsbCBiYWNrIHRvIGxvd2VyIE1DUw0KPiBpbmRl
-eCBpbiB0aGUgc3Vic2VxdWVudCByZXRyaWVzLiBJIGNhbiBvbmx5IHNlZSB2ZXJ5IGZldyByZXRy
-aWVkDQo+IHBhY2tldHMgYmVlbiBzZW50IHdpdGggTUNTMCBvciA2TWJwcyBncmF0ZS4gT24gdGhl
-IHZlbmRvciBkcml2ZXIsIEknbGwNCj4gc2VlIHRoZSByZXRyaWVkIGFtcGR1IHBhY2tldHMgd2l0
-aCBNQ1M0IGFmdGVyIDMgcmV0cmllcyB3L28gYWNrIGZyb20NCj4gdGhlIHJlY2VpdmVyLg0KPiAN
-Cj4gICAgIEZyb20gdGhlIHJhdGUgbWFzayBjb21tYW5kIGlzc3VlZCBieSB0aGUgaDJjIGNvbW1h
-bmQsIEkgZm9yY2UgYm90aA0KPiB0aGUgcnRsOHh4eHUgZHJpdmVyIGFuZCB2ZW5kb3IgZHJpdmVy
-IHRvIHVzZSB0aGUgc2FtZSByYXRlbWFzayAweGZmZmZmDQo+IChNQ1MgMC03IGFuZCBiL2cgcmF0
-ZSBpbmNsdWRlZCkgYW5kIGxlYXZlIHRoZSBhcmcwIGFzLWlzIChtb3N0bHkgMHhhMCkNCj4gYW5k
-IEkgZXhwZWN0IGJvdGggZHJpdmVycyBjYW4gZG8gdGhlIHJhdGUgYWRhcHRpdmUgdGhpbmcgaW4g
-dGhlIHNhbWUNCj4gd2F5LCBidXQgaXQgc2VlbXMgdG8gbWFrZSBubyBkaWZmZXJlbmNlLiBUaGUg
-cnRsOHh4eHUgZHJpdmVyIHN0aWxsDQo+IHNlbmRzIHRoZSBwYWNrZXRzIHdpdGggaGlnaGVzdCBN
-Q1MuDQo+IA0KPiAgICAgQ2FuIGFueW9uZSB0ZWxsIG1lIHdoYXQgc2hvdWxkIEkgZXhwZWN0IHRo
-ZSByYXRlIGFkYXB0aXZlIHRvIHdvcmsNCj4gd2l0aCB0aGUgcmF0ZSBtYXNrIDB4ZmZmZmYgYW5k
-IDB4ZjAwMDA/IERvZXMgdGhlIDB4ZjAwMDAgbWVhbnMgdGhhdCBpdA0KPiB3aWxsIHBpY2sgdXAg
-YSB0eCByYXRlIG9ubHkgYmV0d2VlbiBucmF0ZSBNQ1M0IHRvIE1DUzc/IEkgbmVlZCBhIGJhc2UN
-Cj4gbGluZSBzbyB0aGF0IEkgY2FuIGp1ZGdlIGl0J3Mgc2ltcGx5IGEgcmF0ZSBtYXNrIHByb2Js
-ZW0gb3IgbWF5YmUgdGhlDQo+IGgyYyBjb21tYW5kIGlzIG5vdCB3cml0dGVuIGNvcnJlY3RseS4g
-UGxlYXNlIGtpbmRseSBzdWdnZXN0IHdoYXQgSQ0KPiBzaG91bGQgZG8gbmV4dC4gVGhhbmtzDQo+
-IA0KDQpUaGUgcmF0ZSBtYXNrIGluZGljYXRlcyB3aGljaCByYXRlcyB3aWxsIGJlIHVzZWQgYnkg
-cmF0ZSBhZGFwdGl2ZSBtZWNoYW5pc20uDQpJJ20gbm90IHN1cmUgdGhlIGV4YWN0IGJpdCBhbGxv
-Y2F0aW9uIGZvciBDQ0svT0ZETS9NQ1MsIG1heWJlDQoweDAwMDBmLzB4MDBmZjAvMHhmZjAwMDAg
-Zm9yIENDSy9PRkRNL01DUyByZXNwZWN0aXZlbHksIGJ1dCB5b3UgY2FuIHRyYWNlDQp2ZW5kb3Ig
-ZHJpdmVyIHRvIGtub3cgdGhlIGRldGFpbC4NCg0KSSBzdWdnZXN0IHlvdSBjYW4gdHJ5IHRvIHNl
-bmQgb25seSBPRkRNIHJhdGUgbWFzaywgYW5kIGV4cGVjdCB0byBzZWUgT0ZETQ0KcmF0ZSBvbmx5
-IGJ5IHlvdXIgc25pZmZlci4gSWYgaXQncyBzdGlsbCBrZWVwIG9uIE1DUzcsIHJhdGUgYWRhcHRp
-dmUgbWF5DQpub3Qgd29yayBwcm9wZXJseS4NCg0KQWxzbywgeW91IGNhbiBjb21wYXJlIHRoZSBj
-b250ZW50IG9mIHJhdGUgYWRhcHRpdmUgSDJDIHdpdGggdmVuZG9yIGRyaXZlciB0bw0Kc2VlIGlm
-IHRoZSBmb3JtYXQgaXMgY29ycmVjdC4NCg0KQW5vdGhlciB0aGluZyBpcyB0byB0cnkgJ2ZpeF9y
-YXRlJyBpbiB0eF9kZXNjLiBDaGVjayB0aGUgdmVuZG9yIGRyaXZlciB0bw0Ka25vdyB0aGUgdXNl
-X3JhdGUvcmF0ZS9idyBmaWVsZHMgb2YgdHhfZGVzYy4gVGhlbiwgdHJ5IHRvIGZpeCB0aGUgcmF0
-ZSB5b3UNCndhbnQuDQoNCi0tDQpQaW5nLUtlDQoNCg==
+Brian Norris <briannorris@chromium.org> writes:
+
+> On Thu, May 13, 2021 at 2:38 AM Pkshih <pkshih@realtek.com> wrote:
+>> > -----Original Message-----
+>> > From: kvalo=codeaurora.org@mg.codeaurora.org
+>> > [mailto:kvalo=codeaurora.org@mg.codeaurora.org] On
+>> > Behalf Of Kalle Valo
+>
+>> > It can create confusion to the users if during review we make changes
+>> > how firmware files are handled. Some drivers have windows style .ini
+>> > files which are not ok in an upstream driver, there could be changes in
+>> > the file format etc.
+>
+> Sure, good point. I figured if there's no driver merged anywhere
+> upstream, people (e.g., me) are taking their own life in their hands
+> trying to utilize arbitrary versions from the mailing list. But I
+> could see why you still don't want the potential mismatch.
+>
+>> > But I have no strong opinion here, my main motivation is just to try to
+>> > keep things simple for maintaining the "interface" between
+>> > linux-firmware and kernel wireless drivers. My preference is that the
+>> > firmware files are ready for submission when a new driver is submitted
+>> > for review, but the firmware files are submitted only after the driver
+>> > is accepted.
+>
+> Ack, that's definitely important to me. The first versions had no
+> publicly posted firmware, and at least one person (not me at the time)
+> asked for it. My extension of that is that I don't want to
+> _discourage_ vendors posting their firmware to public repos :)
+
+Yeah, I don't want to discourage posting either. It's just that we don't
+want to do it too early nor too late, which doesn't make it easy for
+submitters :)
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
