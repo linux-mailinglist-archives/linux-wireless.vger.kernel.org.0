@@ -2,104 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19A0A38039C
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 08:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E7D13804BA
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 May 2021 09:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232195AbhENGXi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 May 2021 02:23:38 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:21272 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232301AbhENGXh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 May 2021 02:23:37 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1620973346; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=D3qOaq3w+lp/P83ZscLwR5pSp+K26+/ZdEw8eZKcRek=; b=e/o/Zfsds+PTcI+2EbiBpyupnOSp5JsZpFb/OutbL9fVeLYjuFTCGsbGzHbrtqG2m0VS6UI7
- k1MrBlDmgyPeRV61Td0uN2kEaANhpw+TOx/um3y7UBMMMfeqMeduB/qsK5zRlgVpecrh8GkI
- 5ssHXeQEcKRhae30EEg/gURLm5E=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 609e1721e0211609c46f1b59 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 14 May 2021 06:22:25
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7A4A9C43460; Fri, 14 May 2021 06:22:25 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E93FC4338A;
-        Fri, 14 May 2021 06:22:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E93FC4338A
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Pkshih <pkshih@realtek.com>,
-        "linux-firmware\@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: Request to update 8852a firmware of rtw89 to v0.13.8.0
-References: <57e9f582340545c79a9ab3433e2a4a7d@realtek.com>
-        <87cztx87tr.fsf@tynnyri.adurom.net>
-        <CA+ASDXM9YmhMWmttkrCxB0_tf6Kf6Sz=7Yc26CmjZmMUxyxAfw@mail.gmail.com>
-        <87tun7i2rn.fsf@codeaurora.org>
-        <876c29841fcf4d21ab2440cbb5879de2@realtek.com>
-        <CA+ASDXMN__j0x5hN5t98C4k+upOcs+T1=MrivCbxRYa_-ENt_A@mail.gmail.com>
-Date:   Fri, 14 May 2021 09:22:21 +0300
-In-Reply-To: <CA+ASDXMN__j0x5hN5t98C4k+upOcs+T1=MrivCbxRYa_-ENt_A@mail.gmail.com>
-        (Brian Norris's message of "Thu, 13 May 2021 14:08:53 -0700")
-Message-ID: <87pmxtj0ma.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S233221AbhENH4u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 May 2021 03:56:50 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:42830 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229491AbhENH4u (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 May 2021 03:56:50 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14E7tXXK1027694, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14E7tXXK1027694
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 14 May 2021 15:55:33 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 14 May 2021 15:55:31 +0800
+Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 14 May
+ 2021 15:55:30 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>
+Subject: [PATCH 0/2] rtw88: add scan notify to firmware and refine fw_feature check
+Date:   Fri, 14 May 2021 15:55:15 +0800
+Message-ID: <20210514075517.14216-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.146]
+X-ClientProxiedBy: RTEXH36501.realtek.com.tw (172.21.6.27) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzUvMTQgpFekyCAwNjowMDowMA==?=
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/14/2021 07:33:30
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Info: Lua profiles 163650 [May 14 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
+X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, headers_charset}
+X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/14/2021 07:36:00
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/14/2021 07:43:34
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 10
+X-KSE-AntiSpam-Info: Lua profiles 163650 [May 14 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 445 445 d5f7ae5578b0f01c45f955a2a751ac25953290c9
+X-KSE-AntiSpam-Info: {Prob_from_in_msgid}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 10
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/14/2021 07:46:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> writes:
+First patch, doesn't change logic at all, makes code become concise. This
+refine depends on "[PATCH v4 1/3] rtw88: add beacon filter support" that
+check firmware feature as well. Second patch adds notify to firmware to
+avoid potential problem.
 
-> On Thu, May 13, 2021 at 2:38 AM Pkshih <pkshih@realtek.com> wrote:
->> > -----Original Message-----
->> > From: kvalo=codeaurora.org@mg.codeaurora.org
->> > [mailto:kvalo=codeaurora.org@mg.codeaurora.org] On
->> > Behalf Of Kalle Valo
->
->> > It can create confusion to the users if during review we make changes
->> > how firmware files are handled. Some drivers have windows style .ini
->> > files which are not ok in an upstream driver, there could be changes in
->> > the file format etc.
->
-> Sure, good point. I figured if there's no driver merged anywhere
-> upstream, people (e.g., me) are taking their own life in their hands
-> trying to utilize arbitrary versions from the mailing list. But I
-> could see why you still don't want the potential mismatch.
->
->> > But I have no strong opinion here, my main motivation is just to try to
->> > keep things simple for maintaining the "interface" between
->> > linux-firmware and kernel wireless drivers. My preference is that the
->> > firmware files are ready for submission when a new driver is submitted
->> > for review, but the firmware files are submitted only after the driver
->> > is accepted.
->
-> Ack, that's definitely important to me. The first versions had no
-> publicly posted firmware, and at least one person (not me at the time)
-> asked for it. My extension of that is that I don't want to
-> _discourage_ vendors posting their firmware to public repos :)
+Chin-Yen Lee (2):
+  rtw88: add rtw_fw_feature_check api
+  rtw88: notify fw when driver in scan-period to avoid potential problem
 
-Yeah, I don't want to discourage posting either. It's just that we don't
-want to do it too early nor too late, which doesn't make it easy for
-submitters :)
+ drivers/net/wireless/realtek/rtw88/fw.c       | 28 +++++++++++++++++--
+ drivers/net/wireless/realtek/rtw88/fw.h       | 16 ++++++++++-
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  6 ++--
+ drivers/net/wireless/realtek/rtw88/main.c     | 21 ++++++++++++--
+ drivers/net/wireless/realtek/rtw88/main.h     |  4 +++
+ drivers/net/wireless/realtek/rtw88/ps.c       |  4 +--
+ 6 files changed, 70 insertions(+), 9 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.21.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
