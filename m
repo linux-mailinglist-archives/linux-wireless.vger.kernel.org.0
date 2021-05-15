@@ -2,325 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51D623815B2
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 06:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71305381646
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 08:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231249AbhEOESx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 May 2021 00:18:53 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:43086 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229441AbhEOESx (ORCPT
+        id S230384AbhEOGYf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 May 2021 02:24:35 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:49213 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229980AbhEOGY3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 May 2021 00:18:53 -0400
-X-UUID: 78f1531a17784f6ca4c35f6766356356-20210515
-X-UUID: 78f1531a17784f6ca4c35f6766356356-20210515
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 841513972; Sat, 15 May 2021 12:17:36 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 15 May 2021 12:17:31 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 15 May 2021 12:17:31 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <bo.jiao@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: use mt7915_mcu_get_mib_info() to get survey data
-Date:   Sat, 15 May 2021 12:17:29 +0800
-Message-ID: <ef62ca7747c88194539c9e567acb53c9c9cd729f.1621052118.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Sat, 15 May 2021 02:24:29 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1621059797; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=J4/UV+VBlg6J8gPLAtNX47KgtZ3wzwsbV6BDKY/gyAA=; b=wjWQsnW8zAW8Z8S+5F9eTaaQOLgNGfVyOASvDCCb6ljydVUky9WHFL3oNs5XUclD9vUiDL9y
+ RydmJjbgtiV3NA0P4VMnF+3hl90Qwp4HEd0Ccf29/faMoOIkmbQ9lDWfMIU+eZGc3B9PgJj0
+ HqXmm0qwUDeNCVkNHhYQ0onbLaA=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 609f68cb7b5af81b5c17b37e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 15 May 2021 06:23:07
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CAB54C4338A; Sat, 15 May 2021 06:23:06 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A4786C433D3;
+        Sat, 15 May 2021 06:23:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A4786C433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     linux-arch@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Devidas Puranik <devidas@marvell.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 10/13] mwifiex: re-fix for unaligned accesses
+References: <20210514100106.3404011-1-arnd@kernel.org>
+        <20210514100106.3404011-11-arnd@kernel.org>
+Date:   Sat, 15 May 2021 09:22:58 +0300
+In-Reply-To: <20210514100106.3404011-11-arnd@kernel.org> (Arnd Bergmann's
+        message of "Fri, 14 May 2021 12:00:58 +0200")
+Message-ID: <87lf8gikhp.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Firmware functions (SCS, MU ...) also require read-clear phy counters,
-hence firmware prepares a global task to read shared fields out to a
-shared pool to avoid concurrency. Switch to event format accordingly.
+Arnd Bergmann <arnd@kernel.org> writes:
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/init.c  |  1 -
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 38 +++------------
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 46 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   | 14 ++++++
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +
- .../net/wireless/mediatek/mt76/mt7915/regs.h  | 20 +-------
- 6 files changed, 69 insertions(+), 52 deletions(-)
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> A patch from 2017 changed some accesses to DMA memory to use
+> get_unaligned_le32() and similar interfaces, to avoid problems
+> with doing unaligned accesson uncached memory.
+>
+> However, the change in the mwifiex_pcie_alloc_sleep_cookie_buf()
+> function ended up changing the size of the access instead,
+> as it operates on a pointer to u8.
+>
+> Change this function back to actually access the entire 32 bits.
+> Note that the pointer is aligned by definition because it came
+> from dma_alloc_coherent().
+>
+> Fixes: 92c70a958b0b ("mwifiex: fix for unaligned reads")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index d8cc65231146..0887e165d5e4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -201,7 +201,6 @@ mt7915_mac_init_band(struct mt7915_dev *dev, u8 band)
- 	      FIELD_PREP(MT_MDP_RCFR1_RX_DROPPED_MCAST, MT_MDP_TO_HIF);
- 	mt76_rmw(dev, MT_MDP_BNRCFR1(band), mask, set);
- 
--	mt76_set(dev, MT_WF_RMAC_MIB_TIME0(band), MT_WF_RMAC_MIB_RXTIME_EN);
- 	mt76_set(dev, MT_WF_RMAC_MIB_AIRTIME0(band), MT_WF_RMAC_MIB_RXTIME_EN);
- 
- 	mt76_rmw_field(dev, MT_DMA_DCR0(band), MT_DMA_DCR0_MAX_RX_LEN, 1536);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 45f9b16b7d21..92fac8383976 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1316,14 +1316,10 @@ void mt7915_mac_reset_counters(struct mt7915_phy *phy)
- 	memset(&dev->mt76.aggr_stats[i], 0, sizeof(dev->mt76.aggr_stats) / 2);
- 
- 	/* reset airtime counters */
--	mt76_rr(dev, MT_MIB_SDR9(ext_phy));
--	mt76_rr(dev, MT_MIB_SDR36(ext_phy));
--	mt76_rr(dev, MT_MIB_SDR37(ext_phy));
--
--	mt76_set(dev, MT_WF_RMAC_MIB_TIME0(ext_phy),
--		 MT_WF_RMAC_MIB_RXTIME_CLR);
- 	mt76_set(dev, MT_WF_RMAC_MIB_AIRTIME0(ext_phy),
- 		 MT_WF_RMAC_MIB_RXTIME_CLR);
-+
-+	mt7915_mcu_get_chan_mib_info(phy, true);
- }
- 
- void mt7915_mac_set_timing(struct mt7915_phy *phy)
-@@ -1420,20 +1416,11 @@ mt7915_phy_get_nf(struct mt7915_phy *phy, int idx)
- static void
- mt7915_phy_update_channel(struct mt76_phy *mphy, int idx)
- {
--	struct mt7915_dev *dev = container_of(mphy->dev, struct mt7915_dev, mt76);
- 	struct mt7915_phy *phy = (struct mt7915_phy *)mphy->priv;
--	struct mt76_channel_state *state;
--	u64 busy_time, tx_time, rx_time, obss_time;
-+	struct mt76_channel_state *state = mphy->chan_state;
- 	int nf;
- 
--	busy_time = mt76_get_field(dev, MT_MIB_SDR9(idx),
--				   MT_MIB_SDR9_BUSY_MASK);
--	tx_time = mt76_get_field(dev, MT_MIB_SDR36(idx),
--				 MT_MIB_SDR36_TXTIME_MASK);
--	rx_time = mt76_get_field(dev, MT_MIB_SDR37(idx),
--				 MT_MIB_SDR37_RXTIME_MASK);
--	obss_time = mt76_get_field(dev, MT_WF_RMAC_MIB_AIRTIME14(idx),
--				   MT_MIB_OBSSTIME_MASK);
-+	mt7915_mcu_get_chan_mib_info(phy, false);
- 
- 	nf = mt7915_phy_get_nf(phy, idx);
- 	if (!phy->noise)
-@@ -1441,27 +1428,14 @@ mt7915_phy_update_channel(struct mt76_phy *mphy, int idx)
- 	else if (nf)
- 		phy->noise += nf - (phy->noise >> 4);
- 
--	state = mphy->chan_state;
--	state->cc_busy += busy_time;
--	state->cc_tx += tx_time;
--	state->cc_rx += rx_time + obss_time;
--	state->cc_bss_rx += rx_time;
- 	state->noise = -(phy->noise >> 4);
- }
- 
- void mt7915_update_channel(struct mt76_dev *mdev)
- {
--	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
--
- 	mt7915_phy_update_channel(&mdev->phy, 0);
- 	if (mdev->phy2)
- 		mt7915_phy_update_channel(mdev->phy2, 1);
--
--	/* reset obss airtime */
--	mt76_set(dev, MT_WF_RMAC_MIB_TIME0(0), MT_WF_RMAC_MIB_RXTIME_CLR);
--	if (mdev->phy2)
--		mt76_set(dev, MT_WF_RMAC_MIB_TIME0(1),
--			 MT_WF_RMAC_MIB_RXTIME_CLR);
- }
- 
- static bool
-@@ -1671,7 +1645,7 @@ void mt7915_mac_reset_work(struct work_struct *work)
- }
- 
- static void
--mt7915_mac_update_mib_stats(struct mt7915_phy *phy)
-+mt7915_mac_update_stats(struct mt7915_phy *phy)
- {
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mib_stats *mib = &phy->mib;
-@@ -1780,7 +1754,7 @@ void mt7915_mac_work(struct work_struct *work)
- 	if (++mphy->mac_work_count == 5) {
- 		mphy->mac_work_count = 0;
- 
--		mt7915_mac_update_mib_stats(phy);
-+		mt7915_mac_update_stats(phy);
- 	}
- 
- 	if (++phy->sta_work_count == 10) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index b3f14ff67c5a..85e399550ee4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3469,6 +3469,52 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
- 	return 0;
- }
- 
-+int mt7915_mcu_get_chan_mib_info(struct mt7915_phy *phy, bool chan_switch)
-+{
-+	/* strict order */
-+	static const enum mt7915_chan_mib_offs offs[] = {
-+		MIB_BUSY_TIME, MIB_TX_TIME, MIB_RX_TIME, MIB_OBSS_AIRTIME
-+	};
-+	struct mt76_channel_state *state = phy->mt76->chan_state;
-+	struct mt76_channel_state *state_ts = &phy->state_ts;
-+	struct mt7915_dev *dev = phy->dev;
-+	struct mt7915_mcu_mib *res, req[4];
-+	struct sk_buff *skb;
-+	int i, ret;
-+
-+	for (i = 0; i < 4; i++) {
-+		req[i].band = cpu_to_le32(phy != &dev->phy);
-+		req[i].offs = cpu_to_le32(offs[i]);
-+	}
-+
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_CMD(GET_MIB_INFO),
-+					req, sizeof(req), true, &skb);
-+	if (ret)
-+		return ret;
-+
-+	res = (struct mt7915_mcu_mib *)(skb->data + 20);
-+
-+	if (chan_switch)
-+		goto out;
-+
-+#define __res_u64(s) le64_to_cpu(res[s].data)
-+	state->cc_busy += __res_u64(0) - state_ts->cc_busy;
-+	state->cc_tx += __res_u64(1) - state_ts->cc_tx;
-+	state->cc_bss_rx += __res_u64(2) - state_ts->cc_bss_rx;
-+	state->cc_rx += __res_u64(2) + __res_u64(3) - state_ts->cc_rx;
-+
-+out:
-+	state_ts->cc_busy = __res_u64(0);
-+	state_ts->cc_tx = __res_u64(1);
-+	state_ts->cc_bss_rx = __res_u64(2);
-+	state_ts->cc_rx = __res_u64(2) + __res_u64(3);
-+#undef __res_u64
-+
-+	dev_kfree_skb(skb);
-+
-+	return 0;
-+}
-+
- int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index)
- {
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 42582a66e42d..04ae9ce3315c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -193,6 +193,19 @@ struct mt7915_mcu_phy_rx_info {
- #define MT_RA_RATE_DCM_EN		BIT(4)
- #define MT_RA_RATE_BW			GENMASK(14, 13)
- 
-+struct mt7915_mcu_mib {
-+	__le32 band;
-+	__le32 offs;
-+	__le64 data;
-+} __packed;
-+
-+enum mt7915_chan_mib_offs {
-+	MIB_BUSY_TIME = 14,
-+	MIB_TX_TIME = 81,
-+	MIB_RX_TIME,
-+	MIB_OBSS_AIRTIME = 86
-+};
-+
- struct edca {
- 	u8 queue;
- 	u8 set;
-@@ -277,6 +290,7 @@ enum {
- 	MCU_EXT_CMD_MUAR_UPDATE = 0x48,
- 	MCU_EXT_CMD_SET_RX_PATH = 0x4e,
- 	MCU_EXT_CMD_TX_POWER_FEATURE_CTRL = 0x58,
-+	MCU_EXT_CMD_GET_MIB_INFO = 0x5a,
- 	MCU_EXT_CMD_MWDS_SUPPORT = 0x80,
- 	MCU_EXT_CMD_SET_SER_TRIGGER = 0x81,
- 	MCU_EXT_CMD_SCS_CTRL = 0x82,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 4ea8972d4e2f..d41a344575b9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -141,6 +141,7 @@ struct mt7915_phy {
- 	u32 ampdu_ref;
- 
- 	struct mib_stats mib;
-+	struct mt76_channel_state state_ts;
- 	struct list_head stats_list;
- 
- 	u8 sta_work_count;
-@@ -352,6 +353,7 @@ int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, int index,
- 			    const struct mt7915_dfs_pattern *pattern);
- int mt7915_mcu_apply_group_cal(struct mt7915_dev *dev);
- int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy);
-+int mt7915_mcu_get_chan_mib_info(struct mt7915_phy *phy, bool chan_switch);
- int mt7915_mcu_get_temperature(struct mt7915_dev *dev, int index);
- int mt7915_mcu_get_tx_rate(struct mt7915_dev *dev, u32 cmd, u16 wlan_idx);
- int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index f039806f9d9b..4436b98196be 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -132,20 +132,9 @@
- #define MT_MIB_SDR3(_band)		MT_WF_MIB(_band, 0x014)
- #define MT_MIB_SDR3_FCS_ERR_MASK	GENMASK(15, 0)
- 
--#define MT_MIB_SDR9(_band)		MT_WF_MIB(_band, 0x02c)
--#define MT_MIB_SDR9_BUSY_MASK		GENMASK(23, 0)
--
--#define MT_MIB_SDR16(_band)		MT_WF_MIB(_band, 0x048)
--#define MT_MIB_SDR16_BUSY_MASK		GENMASK(23, 0)
--
- #define MT_MIB_SDR34(_band)		MT_WF_MIB(_band, 0x090)
- #define MT_MIB_MU_BF_TX_CNT		GENMASK(15, 0)
- 
--#define MT_MIB_SDR36(_band)		MT_WF_MIB(_band, 0x098)
--#define MT_MIB_SDR36_TXTIME_MASK	GENMASK(23, 0)
--#define MT_MIB_SDR37(_band)		MT_WF_MIB(_band, 0x09c)
--#define MT_MIB_SDR37_RXTIME_MASK	GENMASK(23, 0)
--
- #define MT_MIB_DR8(_band)		MT_WF_MIB(_band, 0x0c0)
- #define MT_MIB_DR9(_band)		MT_WF_MIB(_band, 0x0c4)
- #define MT_MIB_DR11(_band)		MT_WF_MIB(_band, 0x0cc)
-@@ -158,9 +147,6 @@
- #define MT_MIB_BA_MISS_COUNT_MASK	GENMASK(15, 0)
- #define MT_MIB_ACK_FAIL_COUNT_MASK	GENMASK(31, 16)
- 
--#define MT_MIB_MB_SDR2(_band, n)	MT_WF_MIB(_band, 0x108 + ((n) << 4))
--#define MT_MIB_FRAME_RETRIES_COUNT_MASK	GENMASK(15, 0)
--
- #define MT_TX_AGG_CNT(_band, n)		MT_WF_MIB(_band, 0x0a8 + ((n) << 2))
- #define MT_TX_AGG_CNT2(_band, n)	MT_WF_MIB(_band, 0x164 + ((n) << 2))
- #define MT_MIB_ARNG(_band, n)		MT_WF_MIB(_band, 0x4b8 + ((n) << 2))
-@@ -263,14 +249,10 @@
- #define MT_WF_RFCR1_DROP_CFEND		BIT(7)
- #define MT_WF_RFCR1_DROP_CFACK		BIT(8)
- 
--#define MT_WF_RMAC_MIB_TIME0(_band)	MT_WF_RMAC(_band, 0x03c4)
-+#define MT_WF_RMAC_MIB_AIRTIME0(_band)	MT_WF_RMAC(_band, 0x0380)
- #define MT_WF_RMAC_MIB_RXTIME_CLR	BIT(31)
- #define MT_WF_RMAC_MIB_RXTIME_EN	BIT(30)
- 
--#define MT_WF_RMAC_MIB_AIRTIME14(_band)	MT_WF_RMAC(_band, 0x03b8)
--#define MT_MIB_OBSSTIME_MASK		GENMASK(23, 0)
--#define MT_WF_RMAC_MIB_AIRTIME0(_band)	MT_WF_RMAC(_band, 0x0380)
--
- /* WFDMA0 */
- #define MT_WFDMA0_BASE			0xd4000
- #define MT_WFDMA0(ofs)			(MT_WFDMA0_BASE + (ofs))
+Via which tree should this go? I assume it will go via some other tree
+so:
+
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
+
 -- 
-2.18.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
