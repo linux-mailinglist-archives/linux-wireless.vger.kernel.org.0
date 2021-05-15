@@ -2,89 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1EDA38187F
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 13:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B083F381914
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 15:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230446AbhEOLte (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 May 2021 07:49:34 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:22028 "EHLO m43-7.mailgun.net"
+        id S230467AbhEON1i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 May 2021 09:27:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36012 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229516AbhEOLtd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 May 2021 07:49:33 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1621079300; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=y5Y5e3HYszgKCGVdgrxV+YR7CHd9EXpWhkEnLQTR2/g=;
- b=cHbBSOysJpBlpkXrbffKfext8+rlM4GjchtwEychv6XGq9ekd+gCmpdf2kaDNXwm97ieITYi
- JGa1d4KLwvEIuhWggdUYqfVvAIbO+clD7o6qDa5Oh2bX3h/RFF1DqY/vCkhhF/HgSqfTPWr9
- bSehhRNb/m9cl0nf72vkSWOFAXI=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 609fb4fe5f788b52a51e5865 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 15 May 2021 11:48:14
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6599FC4338A; Sat, 15 May 2021 11:48:14 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AF0EAC433F1;
-        Sat, 15 May 2021 11:48:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AF0EAC433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S230433AbhEON1h (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 15 May 2021 09:27:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6EBB9613C1;
+        Sat, 15 May 2021 13:26:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621085184;
+        bh=dI6waNOadGf/d6YLh2UWTDNiypfhv0PQEkvJqsQwvWU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NVs9gBB9w2DJxqAWyJvEearNwikn+pdhaTFQdF/RcbPtsqnQeqA32aWbyVDfiE8EM
+         DwK7mJq6uJeQrGTr6kOJmfU+qV7fAsFae8eYWyO0sPnTUafFrSGFr4+0s/xi/LJni/
+         QHQNQ8HUFUzFc3qkW0V2ZfBNUz25kqx/nw3KhndxBcfVuBpneKhY3tNIOMovRSBg6k
+         tNA3Yj2RLu2grTiDUrY4alMhpodbBmlNUAn0/j0Fk07/d8xwt3xRZuTtdVFEBIOSjP
+         MmMWtd7gjffyRUY9Z/IMvJMeIdGMWDXvciwyc1faSL+NRZzOXC2cvZqPR/fbYXCyAl
+         8LhiXzTM8dSfA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@codeaurora.org
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com
+Subject: [PATCH v2 5.13] mt76: mt7615: do not set MT76_STATE_PM at bootstrap
+Date:   Sat, 15 May 2021 15:26:12 +0200
+Message-Id: <e5a2618574007113d844874420f7855891abf167.1621085028.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5.13] mt76: validate rx A-MSDU subframes
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210513070303.20253-1-nbd@nbd.name>
-References: <20210513070303.20253-1-nbd@nbd.name>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20210515114814.6599FC4338A@smtp.codeaurora.org>
-Date:   Sat, 15 May 2021 11:48:14 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> wrote:
+Remove MT76_STATE_PM in mt7615_init_device() and introduce
+__mt7663s_mcu_drv_pmctrl for fw loading in mt7663s.
+This patch fixes a crash at bootstrap for device (e.g. mt7622) that do
+not support runtime-pm
 
-> Mitigate A-MSDU injection attacks (CVE-2020-24588) by detecting if the
-> destination address of a subframe equals an RFC1042 (i.e., LLC/SNAP)
-> header, and if so dropping the complete A-MSDU frame. This mitigates
-> known attacks, although new (unknown) aggregation-based attacks may
-> remain possible.
-> 
-> This defense works because in A-MSDU aggregation injection attacks, a
-> normal encrypted Wi-Fi frame is turned into an A-MSDU frame. This means
-> the first 6 bytes of the first A-MSDU subframe correspond to an RFC1042
-> header. In other words, the destination MAC address of the first A-MSDU
-> subframe contains the start of an RFC1042 header during an aggregation
-> attack. We can detect this and thereby prevent this specific attack.
-> For details, see Section 7.2 of "Fragment and Forge: Breaking Wi-Fi
-> Through Frame Aggregation and Fragmentation".
-> 
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 7f2bc8ba11a0 ("mt76: connac: introduce wake counter for fw_pmctrl synchronization")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- use proper Fixes commit hash
+---
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |  1 -
+ .../wireless/mediatek/mt76/mt7615/sdio_mcu.c  | 19 ++++++++++++-------
+ .../wireless/mediatek/mt76/mt7615/usb_mcu.c   |  3 ---
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
-Patch applied to wireless-drivers.git, thanks.
-
-2c2bdd2372af mt76: validate rx A-MSDU subframes
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 86341d1f82f3..d20f05a7717d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -510,7 +510,6 @@ void mt7615_init_device(struct mt7615_dev *dev)
+ 	mutex_init(&dev->pm.mutex);
+ 	init_waitqueue_head(&dev->pm.wait);
+ 	spin_lock_init(&dev->pm.txq_lock);
+-	set_bit(MT76_STATE_PM, &dev->mphy.state);
+ 	INIT_DELAYED_WORK(&dev->mphy.mac_work, mt7615_mac_work);
+ 	INIT_DELAYED_WORK(&dev->phy.scan_work, mt7615_scan_work);
+ 	INIT_DELAYED_WORK(&dev->coredump.work, mt7615_coredump_work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+index 17fe4187d1de..d1be78b0711c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+@@ -51,16 +51,13 @@ mt7663s_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 	return ret;
+ }
+ 
+-static int mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
++static int __mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
+ {
+ 	struct sdio_func *func = dev->mt76.sdio.func;
+ 	struct mt76_phy *mphy = &dev->mt76.phy;
+ 	u32 status;
+ 	int ret;
+ 
+-	if (!test_and_clear_bit(MT76_STATE_PM, &mphy->state))
+-		goto out;
+-
+ 	sdio_claim_host(func);
+ 
+ 	sdio_writel(func, WHLPCR_FW_OWN_REQ_CLR, MCR_WHLPCR, NULL);
+@@ -76,13 +73,21 @@ static int mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
+ 	}
+ 
+ 	sdio_release_host(func);
+-
+-out:
+ 	dev->pm.last_activity = jiffies;
+ 
+ 	return 0;
+ }
+ 
++static int mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
++{
++	struct mt76_phy *mphy = &dev->mt76.phy;
++
++	if (test_and_clear_bit(MT76_STATE_PM, &mphy->state))
++		return __mt7663s_mcu_drv_pmctrl(dev);
++
++	return 0;
++}
++
+ static int mt7663s_mcu_fw_pmctrl(struct mt7615_dev *dev)
+ {
+ 	struct sdio_func *func = dev->mt76.sdio.func;
+@@ -123,7 +128,7 @@ int mt7663s_mcu_init(struct mt7615_dev *dev)
+ 	struct mt7615_mcu_ops *mcu_ops;
+ 	int ret;
+ 
+-	ret = mt7663s_mcu_drv_pmctrl(dev);
++	ret = __mt7663s_mcu_drv_pmctrl(dev);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+index c55698f9c49a..028ff432d811 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+@@ -55,10 +55,7 @@ int mt7663u_mcu_init(struct mt7615_dev *dev)
+ 
+ 	dev->mt76.mcu_ops = &mt7663u_mcu_ops,
+ 
+-	/* usb does not support runtime-pm */
+-	clear_bit(MT76_STATE_PM, &dev->mphy.state);
+ 	mt76_set(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
+-
+ 	if (test_and_clear_bit(MT76_STATE_POWER_OFF, &dev->mphy.state)) {
+ 		mt7615_mcu_restart(&dev->mt76);
+ 		if (!mt76_poll_msec(dev, MT_CONN_ON_MISC,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210513070303.20253-1-nbd@nbd.name/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.31.1
 
