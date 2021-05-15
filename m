@@ -2,90 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C02DA38170D
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 11:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBA2E381846
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 13:25:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234520AbhEOJDV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 May 2021 05:03:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39138 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229819AbhEOJDT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 May 2021 05:03:19 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A92416135D;
-        Sat, 15 May 2021 09:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621069326;
-        bh=JbkgiqKo05fRNbDZSt9CFHvFX6bz61XsTpTkCFIs3zs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=IOBd8yMa4rv0vsCxa1k4BW/oZzG3MFSbxqmKM2UJ3Ro3tUehP++GOxRHaur97iPPA
-         VHumfaThH6c6jZf02shZ3S0ph21UmmDMl5GsNCHPfejtczRHHghMrjJxC4fgWqX2Dj
-         fqz2hq0zOCb3XiqlS3OpQwX+Q+BhCcCvKWit+K548+3faVfsPCWvTUkbRVo92QK1NY
-         tZW4IcFXI//tPqKeKfJHoXED2++YYgZAkIuRzPoOojRqv+rpoeJOayTAC+o/9Xa32H
-         q9P6IO/H3K1IvgpIcEj1EYDA58BMaG27BAj/UjF1awLqWWXMmHCi/8Z+Z+h3u2OwjF
-         uygYlZ0AuO9Lg==
-Received: by mail-wr1-f49.google.com with SMTP id z17so1420758wrq.7;
-        Sat, 15 May 2021 02:02:06 -0700 (PDT)
-X-Gm-Message-State: AOAM532d2AL1CNA/qB2+veLPyWxTpr+CCYi9+zPe6j532Vg+lwDJNR1g
-        vwNAHRVYFJAFBfN487/UyQJ1sTsFLYLyzpPSq0Y=
-X-Google-Smtp-Source: ABdhPJzg2d2S00U4zNlU7vNMN0rVhw0grxjbritw0q/6FeyQwXwNPaFL0Cc+zGzRUDeO1MI0sHNEjvR97BCff3g/boA=
-X-Received: by 2002:adf:fe04:: with SMTP id n4mr6617537wrr.361.1621069325292;
- Sat, 15 May 2021 02:02:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210514100106.3404011-1-arnd@kernel.org> <20210514100106.3404011-11-arnd@kernel.org>
- <87lf8gikhp.fsf@codeaurora.org>
-In-Reply-To: <87lf8gikhp.fsf@codeaurora.org>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Sat, 15 May 2021 11:01:02 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0zc7GGEjPzYsAi=EPxs+3PL0PuhiRF2DfAfR1OHAn+gg@mail.gmail.com>
-Message-ID: <CAK8P3a0zc7GGEjPzYsAi=EPxs+3PL0PuhiRF2DfAfR1OHAn+gg@mail.gmail.com>
-Subject: Re: [PATCH v2 10/13] mwifiex: re-fix for unaligned accesses
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-arch <linux-arch@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
+        id S231659AbhEOL0R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 May 2021 07:26:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231720AbhEOLZ7 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 15 May 2021 07:25:59 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56725C061573;
+        Sat, 15 May 2021 04:24:44 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 82-20020a1c01550000b0290142562ff7c9so951550wmb.3;
+        Sat, 15 May 2021 04:24:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=bU14fHIHUnQmqbfvV5/2/woszMKX/5IFYRur3lrpgBY=;
+        b=DOqW1hs+I5pjLJsWTiaNu1nMAot4V4H/nQbV9ZpRWM2QtQwzah8trqCKxZDnZre+qx
+         +c4AY7EdZhSr2dRCJbpZBtVLA5vp+6bqN5um91YJfK5ifas1rX85++cgSG2Oa9a1atg3
+         Zeb3r55kzbRHzY+H4XXeMxP6VxNiQyZ2kAeq3d57mNpYRVQ7ngU2uqpcaSCAjQX53hid
+         XjqQYAsdMZMNlxBGhafKCeYMb9QXyraOoLxBH6Hnev0p3BTE6QoKBPPt31Mna0CvW95T
+         aRF+9b4RNljQyslNo+7W1XC88WjWpPg2V2iwUfbXMszjYIGeMDyj65Qoyi1y2RDKnPc8
+         I+GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=bU14fHIHUnQmqbfvV5/2/woszMKX/5IFYRur3lrpgBY=;
+        b=acNWNuERrow4hYzs90X0R4xwQVJMOBD8c9hFuEGFRYmNE5vn2hfolMwg5jjTZbpDnH
+         l9dDnk0LtdscHr6Of59ik5f5M5qpTv6QPyAqmsCJdvhBPT+f1AdIlRRz6qHcVfjYfAK3
+         BzzlpqVNrPwq0wRyFpHaROujMJl+Cvw0swOGi7sdReJbYbIQHWWM+xTlwGvG+yKys6XE
+         +GrmTHc1607FIDqS8wM12Bh9WDOLUNfawrEC/mUxTkRduBUq2GWeGLH0+VsgNgHGbxCV
+         LizcvfVT0sknF2eFdhJQTq5fzh27sEmtFte6eVSt6QQV9vK79EWKilx66d2LGBrg+9zA
+         DtsQ==
+X-Gm-Message-State: AOAM533/jppHROoywMC0m0O+7eGo7LyR7Woz8D1jTdwqZUP9w8b0PSNM
+        xD7rDsfUCh9uyKKhXKe/kqs=
+X-Google-Smtp-Source: ABdhPJx3TtOTxvnVKvShiGwxOu2lbL+8U/JNi9JV3BbgtgteS+WzXroswMvXOLrEpO1q/AYibd9SAw==
+X-Received: by 2002:a1c:2645:: with SMTP id m66mr5078970wmm.145.1621077883146;
+        Sat, 15 May 2021 04:24:43 -0700 (PDT)
+Received: from [192.168.2.202] (p5487bcad.dip0.t-ipconnect.de. [84.135.188.173])
+        by smtp.gmail.com with ESMTPSA id p2sm3570181wrj.10.2021.05.15.04.24.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 May 2021 04:24:42 -0700 (PDT)
+Subject: Re: [BUG] Deadlock in _cfg80211_unregister_wdev()
+To:     Brian Norris <briannorris@chromium.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Devidas Puranik <devidas@marvell.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devidas.puranik@nxp.com
-Content-Type: text/plain; charset="UTF-8"
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>
+References: <98392296-40ee-6300-369c-32e16cff3725@gmail.com>
+ <57d41364f14ea660915b7afeebaa5912c4300541.camel@sipsolutions.net>
+ <YJ81llg7EKFXUaIo@google.com>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <2dfd6cc1-c69e-c643-f2e9-5d95787b09b2@gmail.com>
+Date:   Sat, 15 May 2021 13:24:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+MIME-Version: 1.0
+In-Reply-To: <YJ81llg7EKFXUaIo@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, May 15, 2021 at 8:22 AM Kalle Valo <kvalo@codeaurora.org> wrote:
-> Arnd Bergmann <arnd@kernel.org> writes:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > A patch from 2017 changed some accesses to DMA memory to use
-> > get_unaligned_le32() and similar interfaces, to avoid problems
-> > with doing unaligned accesson uncached memory.
-> >
-> > However, the change in the mwifiex_pcie_alloc_sleep_cookie_buf()
-> > function ended up changing the size of the access instead,
-> > as it operates on a pointer to u8.
-> >
-> > Change this function back to actually access the entire 32 bits.
-> > Note that the pointer is aligned by definition because it came
-> > from dma_alloc_coherent().
-> >
-> > Fixes: 92c70a958b0b ("mwifiex: fix for unaligned reads")
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> Via which tree should this go? I assume it will go via some other tree
-> so:
->
-> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+On 5/15/21 4:44 AM, Brian Norris wrote:
+> It would seem like _anyone_ that calls cfg80211_unregister_wdev() with
+> an interface up will hit this -- not unique to mwifiex. In fact, apart
+> from the fact that all his line numbers are wrong, Maximilian's original
+> email points out exactly where the deadlock is.
+> cfg80211_unregister_wdev() holds the wiphy lock, and the GOING_DOWN
+> notification also tries to grab it.
+> 
+> It does happen that in many other paths, you've already ensured that you
+> bring the interface down, so e.g., mac80211 drivers don't tend to hit
+> this. But I wouldn't be surprised if a few other cfg80211 drivers hit
+> this too.
+> 
+> The best solution I could figure was to do a similar lock dance done in
+> nl80211_del_interface() -- close the netdev without holding the wiphy
+> lock. I'll send out a patch shortly.
 
-I have queued the series in the asm-generic tree for 5.14, as the patches
-that depend on this one are a little too invasive for 5.13 at this point.
+I believe that if we're going to fix that in the individual drivers,
+there should be at least some sort of warning/documentation on
+cfg80211_unregister_wdev().
 
-If you think this fix should be in 5.13, please take it through your tree.
+Also someone might want to look at other WiFi drivers calling
+cfg80211_unregister_wdev(). For example, I can see a locked call in the
+brcm80211 driver, but no previous dev_close() call (see [1]). Haven't
+looked in detail though, so I might just be wrong.
 
-        Arnd
+I can't help but think that this should maybe be addressed in that
+common part instead. I know too little of that subsystem to tell if that
+might be infeasible though.
+
+Regards,
+Max
+
+[1]: https://elixir.bootlin.com/linux/v5.13-rc1/source/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c#L2445
