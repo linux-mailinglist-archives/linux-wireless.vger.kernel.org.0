@@ -2,114 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2902381A79
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 20:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD70381AA6
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 21:06:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234418AbhEOSZT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 May 2021 14:25:19 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:32980 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230394AbhEOSZS (ORCPT
+        id S234600AbhEOTIH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 May 2021 15:08:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34094 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234608AbhEOTIE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 May 2021 14:25:18 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1621103044; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=ch3A0RldTQj2BJift1c1BerWB0aD14nIhxK4TmHg/Ss=; b=QALDiFbNPl1YAGPOqtIykNphKq95oSpHkjiBb27yZdHT90fgQHy3L2OzSCE/qm2vCaVm+GFz
- CJ08OpfyhJ3tRVKXdqP/jIA+6gLMKMTvzdo4Hlr8t5LrBUn5XKu5BniXfwx9nsPtojbzAqvM
- UbU9hvgHLHkQqwaqlld0sNmk3w4=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 60a011bd7b5af81b5c419f5f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 15 May 2021 18:23:57
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C0EF0C4323A; Sat, 15 May 2021 18:23:57 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 86F7AC433D3;
-        Sat, 15 May 2021 18:23:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 86F7AC433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-arch <linux-arch@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Devidas Puranik <devidas@marvell.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devidas.puranik@nxp.com
-Subject: Re: [PATCH v2 10/13] mwifiex: re-fix for unaligned accesses
-References: <20210514100106.3404011-1-arnd@kernel.org>
-        <20210514100106.3404011-11-arnd@kernel.org>
-        <87lf8gikhp.fsf@codeaurora.org>
-        <CAK8P3a0zc7GGEjPzYsAi=EPxs+3PL0PuhiRF2DfAfR1OHAn+gg@mail.gmail.com>
-Date:   Sat, 15 May 2021 21:23:51 +0300
-In-Reply-To: <CAK8P3a0zc7GGEjPzYsAi=EPxs+3PL0PuhiRF2DfAfR1OHAn+gg@mail.gmail.com>
-        (Arnd Bergmann's message of "Sat, 15 May 2021 11:01:02 +0200")
-Message-ID: <878s4fj1oo.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Sat, 15 May 2021 15:08:04 -0400
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90046C06174A
+        for <linux-wireless@vger.kernel.org>; Sat, 15 May 2021 12:06:49 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1lhzcd-0004VQ-7m; Sat, 15 May 2021 21:06:47 +0200
+Date:   Sat, 15 May 2021 21:02:52 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Albert Herranz <albert_herranz@yahoo.es>
+Subject: [PATCH] drivers/ssb/sdio: Don't overwrite const buffer if
+ block_write fails
+Message-ID: <20210515210252.318be2ba@wiggum>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/Y6ZcHqRV_gAh0=B3sN6C5LL";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> writes:
+--Sig_/Y6ZcHqRV_gAh0=B3sN6C5LL
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> On Sat, May 15, 2021 at 8:22 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->> Arnd Bergmann <arnd@kernel.org> writes:
->> > From: Arnd Bergmann <arnd@arndb.de>
->> >
->> > A patch from 2017 changed some accesses to DMA memory to use
->> > get_unaligned_le32() and similar interfaces, to avoid problems
->> > with doing unaligned accesson uncached memory.
->> >
->> > However, the change in the mwifiex_pcie_alloc_sleep_cookie_buf()
->> > function ended up changing the size of the access instead,
->> > as it operates on a pointer to u8.
->> >
->> > Change this function back to actually access the entire 32 bits.
->> > Note that the pointer is aligned by definition because it came
->> > from dma_alloc_coherent().
->> >
->> > Fixes: 92c70a958b0b ("mwifiex: fix for unaligned reads")
->> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->>
->> Via which tree should this go? I assume it will go via some other tree
->> so:
->>
->> Acked-by: Kalle Valo <kvalo@codeaurora.org>
->
-> I have queued the series in the asm-generic tree for 5.14, as the patches
-> that depend on this one are a little too invasive for 5.13 at this point.
->
-> If you think this fix should be in 5.13, please take it through your tree.
+It doesn't make sense to clobber the const driver-side buffer, if a
+write-to-device attempt failed. All other SSB variants (PCI, PCMCIA and SoC)
+also don't corrupt the buffer on any failure in block_write.
+Therefore, remove this memset from the SDIO variant.
 
-I think v5.14 is more approriate, so please take this via your tree.
-Thanks.
+Signed-off-by: Michael B=C3=BCsch <m@bues.ch>
+Cc: stable@vger.kernel.org
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+---
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+This memset has been introduced by the original patch that added SDIO suppo=
+rt to SSB:
+24ea602e183ca
+Better late than never.
+
+This change is only build tested, because I don't own the hardware.
+But to me this change looks reasonable.
+
+
+diff --git a/drivers/ssb/sdio.c b/drivers/ssb/sdio.c
+index 7fe0afb42234..66c5c2169704 100644
+--- a/drivers/ssb/sdio.c
++++ b/drivers/ssb/sdio.c
+@@ -411,7 +411,6 @@ static void ssb_sdio_block_write(struct ssb_device *dev=
+, const void *buffer,
+ 	sdio_claim_host(bus->host_sdio);
+ 	if (unlikely(ssb_sdio_switch_core(bus, dev))) {
+ 		error =3D -EIO;
+-		memset((void *)buffer, 0xff, count);
+ 		goto err_out;
+ 	}
+ 	offset |=3D bus->sdio_sbaddr & 0xffff;
+
+
+--=20
+Michael
+
+--Sig_/Y6ZcHqRV_gAh0=B3sN6C5LL
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmCgGtwACgkQ9TK+HZCN
+iw6GFBAAvwpJgpOa92RaQ5DJO9Em5nqPv0WHnbGTrmj07TgDkHhWMNCrPux0gVpE
+Xj2eXv1C8foZYktFlk7eJXWsxIFuYuJDPagpuAgVCpCQUMrY9kHjZoJO3Tk5nxHX
+4Dk4+i2yZ8GjyXX2oWG0wdROvhonHEp4/lHg4gxY1YUAyg+saB+No618tVnHGHj8
+YHU6DWb+F70FW6L42UDoEe6IeCGFiay2felWO8yhHmX81PZ2wynCDrm9GDV66PtR
+Cki2gHXTIr2r6Z9wKqMrxpV1LyaKwGn48MFm2f85w48JIMy5uqFxJo0omA1y6rxT
+Ke30Zp0ojdGA9Ortzhb8khLkgPzR2c5sfvkWvuZDgroNSmAHpYvHZ+TZ08qUIemg
+gNP62CkDjVOsZxH2tPtCTTsvgDf0DyN5aPUp1GnPqtne3IuqcF7AAMa9F5F7+uHK
+4ZpwvPTM26EtinQz8vXjSw/4OZechKhSAj5ZeNjPB7vO6QecAUeXrCNojKDxj9A8
+xQBAxz9wfaxqsk6lqRh64r9dBwIK3vtrhDPqzj2O1XiPsYbC7tzWa+6SpNfLM5c5
+GXLE6jjbtIC7DjlF0azTJLRyi+BJ+EfJ+OIEG41778QZtejCz+LAZzrFRVHTTzMY
+Vs/Gc3tXxLRwgF1WQG4Rlc4EwtMJ/naeKDaiwNPf2rthh7lYm7s=
+=6acF
+-----END PGP SIGNATURE-----
+
+--Sig_/Y6ZcHqRV_gAh0=B3sN6C5LL--
