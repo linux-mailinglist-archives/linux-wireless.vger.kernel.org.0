@@ -2,64 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7C05381694
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 09:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C02DA38170D
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 11:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232263AbhEOHbP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 May 2021 03:31:15 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:2988 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbhEOHbO (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 May 2021 03:31:14 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FhxnG6MdjzmVnP;
-        Sat, 15 May 2021 15:27:46 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.177.72) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.498.0; Sat, 15 May 2021 15:29:54 +0800
-From:   Zhen Lei <thunder.leizhen@huawei.com>
-To:     Michael Buesch <m@bues.ch>,
-        "John W . Linville" <linville@tuxdriver.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH 1/1] ssb: Fix error return code in ssb_bus_scan()
-Date:   Sat, 15 May 2021 15:29:49 +0800
-Message-ID: <20210515072949.7151-1-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+        id S234520AbhEOJDV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 May 2021 05:03:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39138 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229819AbhEOJDT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 15 May 2021 05:03:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A92416135D;
+        Sat, 15 May 2021 09:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621069326;
+        bh=JbkgiqKo05fRNbDZSt9CFHvFX6bz61XsTpTkCFIs3zs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=IOBd8yMa4rv0vsCxa1k4BW/oZzG3MFSbxqmKM2UJ3Ro3tUehP++GOxRHaur97iPPA
+         VHumfaThH6c6jZf02shZ3S0ph21UmmDMl5GsNCHPfejtczRHHghMrjJxC4fgWqX2Dj
+         fqz2hq0zOCb3XiqlS3OpQwX+Q+BhCcCvKWit+K548+3faVfsPCWvTUkbRVo92QK1NY
+         tZW4IcFXI//tPqKeKfJHoXED2++YYgZAkIuRzPoOojRqv+rpoeJOayTAC+o/9Xa32H
+         q9P6IO/H3K1IvgpIcEj1EYDA58BMaG27BAj/UjF1awLqWWXMmHCi/8Z+Z+h3u2OwjF
+         uygYlZ0AuO9Lg==
+Received: by mail-wr1-f49.google.com with SMTP id z17so1420758wrq.7;
+        Sat, 15 May 2021 02:02:06 -0700 (PDT)
+X-Gm-Message-State: AOAM532d2AL1CNA/qB2+veLPyWxTpr+CCYi9+zPe6j532Vg+lwDJNR1g
+        vwNAHRVYFJAFBfN487/UyQJ1sTsFLYLyzpPSq0Y=
+X-Google-Smtp-Source: ABdhPJzg2d2S00U4zNlU7vNMN0rVhw0grxjbritw0q/6FeyQwXwNPaFL0Cc+zGzRUDeO1MI0sHNEjvR97BCff3g/boA=
+X-Received: by 2002:adf:fe04:: with SMTP id n4mr6617537wrr.361.1621069325292;
+ Sat, 15 May 2021 02:02:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.177.72]
-X-CFilter-Loop: Reflected
+References: <20210514100106.3404011-1-arnd@kernel.org> <20210514100106.3404011-11-arnd@kernel.org>
+ <87lf8gikhp.fsf@codeaurora.org>
+In-Reply-To: <87lf8gikhp.fsf@codeaurora.org>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Sat, 15 May 2021 11:01:02 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0zc7GGEjPzYsAi=EPxs+3PL0PuhiRF2DfAfR1OHAn+gg@mail.gmail.com>
+Message-ID: <CAK8P3a0zc7GGEjPzYsAi=EPxs+3PL0PuhiRF2DfAfR1OHAn+gg@mail.gmail.com>
+Subject: Re: [PATCH v2 10/13] mwifiex: re-fix for unaligned accesses
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-arch <linux-arch@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Devidas Puranik <devidas@marvell.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devidas.puranik@nxp.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix to return -EINVAL from the error handling case instead of 0, as done
-elsewhere in this function.
+On Sat, May 15, 2021 at 8:22 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+> Arnd Bergmann <arnd@kernel.org> writes:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > A patch from 2017 changed some accesses to DMA memory to use
+> > get_unaligned_le32() and similar interfaces, to avoid problems
+> > with doing unaligned accesson uncached memory.
+> >
+> > However, the change in the mwifiex_pcie_alloc_sleep_cookie_buf()
+> > function ended up changing the size of the access instead,
+> > as it operates on a pointer to u8.
+> >
+> > Change this function back to actually access the entire 32 bits.
+> > Note that the pointer is aligned by definition because it came
+> > from dma_alloc_coherent().
+> >
+> > Fixes: 92c70a958b0b ("mwifiex: fix for unaligned reads")
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Via which tree should this go? I assume it will go via some other tree
+> so:
+>
+> Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
-Fixes: 61e115a56d1a ("[SSB]: add Sonics Silicon Backplane bus support")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
- drivers/ssb/scan.c | 1 +
- 1 file changed, 1 insertion(+)
+I have queued the series in the asm-generic tree for 5.14, as the patches
+that depend on this one are a little too invasive for 5.13 at this point.
 
-diff --git a/drivers/ssb/scan.c b/drivers/ssb/scan.c
-index f49ab1aa2149ab2..4161e5d1f276e11 100644
---- a/drivers/ssb/scan.c
-+++ b/drivers/ssb/scan.c
-@@ -325,6 +325,7 @@ int ssb_bus_scan(struct ssb_bus *bus,
- 	if (bus->nr_devices > ARRAY_SIZE(bus->devices)) {
- 		pr_err("More than %d ssb cores found (%d)\n",
- 		       SSB_MAX_NR_CORES, bus->nr_devices);
-+		err = -EINVAL;
- 		goto err_unmap;
- 	}
- 	if (bus->bustype == SSB_BUSTYPE_SSB) {
--- 
-2.26.0.106.g9fadedd
+If you think this fix should be in 5.13, please take it through your tree.
 
-
+        Arnd
