@@ -2,96 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7DFE381916
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 15:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADEEE38197B
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 16:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230102AbhEON2d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 May 2021 09:28:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36260 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229681AbhEON2b (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 May 2021 09:28:31 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8822D613C5;
-        Sat, 15 May 2021 13:27:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621085238;
-        bh=QURrrz5COVC1de/qkQQKAKghh77NujeEw+aCUpanUnM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iO+RTPhaXq79mQRT0kXi6XABMHse1HtWP3nfmmrkz8yqLaNkSdA7oAF95T2zqsKA3
-         9DeZ8dPjQJmu98ktytJvhnQSrMVvnHjWoHH1o6mXn0qxM4buBiN11wlJYWKaACD/Lk
-         9EBYMTfps25ZJLk4y/PN+Xn8UyLvLiKeojnf1kCKllZiPxBYiMNVnPXf2GDhfFXLQO
-         pqY1LFQMIMQLZSFEqH3EGEL6rjrFQ/HcxxkpiFlnfB0UyoR3SnqvuasoOBJL61FBu4
-         /4UdCebrqECbVl6FRWUzAYFyFB/K3DFDNE1ejnsSSLDOZG3NsEuQ6V9AfpTcgxBClX
-         KlqBLyBp34D1g==
-Date:   Sat, 15 May 2021 15:27:13 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com
-Subject: Re: [PATCH] mt76: mt7615: do not set MT76_STATE_PM at bootstrap
-Message-ID: <YJ/MMVp5lRSMpsy2@lore-desk>
-References: <3ff8e1901f38a943c4ca487a93d036ed368b46e1.1619543861.git.lorenzo@kernel.org>
- <20210515064632.E5146C433F1@smtp.codeaurora.org>
+        id S232402AbhEOO4S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 May 2021 10:56:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35514 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232277AbhEOO4C (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 15 May 2021 10:56:02 -0400
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55796C06174A
+        for <linux-wireless@vger.kernel.org>; Sat, 15 May 2021 07:54:46 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1lhvgL-0003tZ-2m; Sat, 15 May 2021 16:54:21 +0200
+Date:   Sat, 15 May 2021 16:52:54 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Zhen Lei <thunder.leizhen@huawei.com>
+Cc:     "John W . Linville" <linville@tuxdriver.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 1/1] ssb: Fix error return code in ssb_bus_scan()
+Message-ID: <20210515165254.248647d0@wiggum>
+In-Reply-To: <20210515072949.7151-1-thunder.leizhen@huawei.com>
+References: <20210515072949.7151-1-thunder.leizhen@huawei.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+Tvjm1DBeWv6qCjF"
-Content-Disposition: inline
-In-Reply-To: <20210515064632.E5146C433F1@smtp.codeaurora.org>
+Content-Type: multipart/signed; boundary="Sig_/VHxs5xiuuPF0B6tDQDbV9Gg";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---+Tvjm1DBeWv6qCjF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--Sig_/VHxs5xiuuPF0B6tDQDbV9Gg
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->=20
-> > Remove MT76_STATE_PM in mt7615_init_device() and introduce
-> > __mt7663s_mcu_drv_pmctrl for fw loading in mt7663s.
-> > This patch fixes a crash at bootstrap for device (e.g. mt7622) that do
-> > not support runtime-pm
-> >=20
-> > Fixes: 129fac01ffe85 ("mt76: connac: introduce wake counter for fw_pmct=
-rl synchronization")
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->=20
-> Lorenzo, you wanted to have this to v5.13, right?
->=20
+On Sat, 15 May 2021 15:29:49 +0800
+Zhen Lei <thunder.leizhen@huawei.com> wrote:
 
-yes, right
+> Fix to return -EINVAL from the error handling case instead of 0, as done
+> elsewhere in this function.
 
-> Fixes tag is wrong:
+> @@ -325,6 +325,7 @@ int ssb_bus_scan(struct ssb_bus *bus,
+>  	if (bus->nr_devices > ARRAY_SIZE(bus->devices)) {
+>  		pr_err("More than %d ssb cores found (%d)\n",
+>  		       SSB_MAX_NR_CORES, bus->nr_devices);
+> +		err =3D -EINVAL;
+>  		goto err_unmap;
+>  	}
+>  	if (bus->bustype =3D=3D SSB_BUSTYPE_SSB) {
 
-ops, sorry. Fixed in v2
 
-Regards,
-Lorenzo
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
->=20
-> Git commit not found or invalid id: 129fac01ffe85
->=20
-> Please provide me the correct commit id and I can fix it during commit.
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/patch/3ff8e1901f38a94=
-3c4ca487a93d036ed368b46e1.1619543861.git.lorenzo@kernel.org/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
->=20
+--=20
+Michael
 
---+Tvjm1DBeWv6qCjF
-Content-Type: application/pgp-signature; name="signature.asc"
+--Sig_/VHxs5xiuuPF0B6tDQDbV9Gg
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYJ/MLgAKCRA6cBh0uS2t
-rLx5AQCnCk5CeGJSZmE+uIRDYqX4lnBpf/sAPiClExaT5Q90xwEAsN1pgpPkmolH
-fJtvY5T1W4beIK+ojRB8LiHtC+hVego=
-=SYIx
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmCf4EYACgkQ9TK+HZCN
+iw4NRRAA3wLGilSNBbRnorgEI3MkycTCUTOxSB3btZDByoiT0LxHgIbb6rG2Uvny
+wPpM/Up5O/nUHu7xZf4Rw5Zme4YFUQjQqKXPzPDHlAjsLhwqDiZnl4srE7YFMzTr
+IS1ebXLU4FULDhrJNN2FywRIWfa4lJO3D3Gj26v4ORD3nPURfF6Vz9iO8POctLCV
+tQ1Zoi4CVrJRF+sELRQvSf9gPDr/P24+ddrijHPQCE+T96GMeu1RrTkRrYFqu/AW
+0ZrdHwewATcOC9GoksOOB7lbjk71NlzebRBQHL/slN/NhqN62CMM40GByATQMnpN
+QUnGY4fiIRL7Or20EmLFxjIygtHQh/TKv6p2IGevEWjt89k9QA2PTcSEJI2G5ij2
+BhH/ThDf8utCdwp5c2ao0j1qPvHq6O+zL1jQSNU5CnsuCRtCBHXpk5GnBnRVMfCF
+IcYtqFuiZ0kF8YV189pN02wuN/5inPpCX7/qrruvr66P2E9dYUC2Ub15u5Dq6zOW
+vfmXaU2Ewcgfz0fbqaV2BjQD7RLRF4VKt7SRYETXP0YDpzyAtZ60KD9+PXn+oitV
+L5PYEwlYAgJ/E7ROMQhpDyn/PweCtvIDlWNtDfbISXIZLYpNLafQwjhkzl/hLox4
+AmxX75V3AAEqGQViPe9fQdMwZp34xWFNd4IN/4a0g45NJJSJEBM=
+=GIQ2
 -----END PGP SIGNATURE-----
 
---+Tvjm1DBeWv6qCjF--
+--Sig_/VHxs5xiuuPF0B6tDQDbV9Gg--
