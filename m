@@ -2,89 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBFF1382677
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 10:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AEB4382A13
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 12:45:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235500AbhEQIQJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 04:16:09 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:2946 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235308AbhEQIQF (ORCPT
+        id S236485AbhEQKqv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 06:46:51 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:44865 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236461AbhEQKqt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 May 2021 04:16:05 -0400
-Received: from dggems703-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FkBgQ6frdzCtZ2;
-        Mon, 17 May 2021 16:12:02 +0800 (CST)
-Received: from dggema704-chm.china.huawei.com (10.3.20.68) by
- dggems703-chm.china.huawei.com (10.3.19.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Mon, 17 May 2021 16:14:47 +0800
-Received: from localhost.localdomain (10.67.165.2) by
- dggema704-chm.china.huawei.com (10.3.20.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 17 May 2021 16:14:47 +0800
-From:   Yang Shen <shenyang39@huawei.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Yang Shen" <shenyang39@huawei.com>
-Subject: [PATCH 11/11] net: ti: wlcore: Fix missing function name in comments
-Date:   Mon, 17 May 2021 13:01:41 +0800
-Message-ID: <20210517050141.61488-12-shenyang39@huawei.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210517050141.61488-1-shenyang39@huawei.com>
-References: <20210517050141.61488-1-shenyang39@huawei.com>
+        Mon, 17 May 2021 06:46:49 -0400
+Received: by mail-io1-f71.google.com with SMTP id z25-20020a05660200d9b02903de90ff885fso3013873ioe.11
+        for <linux-wireless@vger.kernel.org>; Mon, 17 May 2021 03:45:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=ci9TNO3sk6ZfPoN7cYBZhsWewxbiJdSRX4/qNKu6FyQ=;
+        b=f4VvmmzfufdNq1pOQYwA92T1ydtjkUUbBxt+atXdLs+5/Cu9wzd3n/YSn3B8MasG2K
+         uIJYTeVe0jP408gpIW/y9mr0/bJVgsnvbLtWUyvLGSJw/2KJLCiS5bY7aFmFTVjTonkD
+         asl45UXh3XFYbAcwUjrr8SSbmEAyXwDDP3kK2usP9Erq1ZPNhr8G3beXKZSS4CTUanIM
+         APxi38sX4eSgnsvB6gyBXUBZXRmjSqURpkl+V2aXvmFje2qFrN/2JuAsG45EIP5eHnvm
+         uVDQCrLLS/O9qaeF4Y+3GoU1GQOnmAOlheFyanCa34Zzzfz+93c0RF9d9DjeMX18ZbxO
+         7AOw==
+X-Gm-Message-State: AOAM5303y3xwZV/dq1AaEBYGBcePGPTFgIPUr+0Fa1p3Yn0Snk445/oH
+        hTcjadaI08CZ27m383JO7J75MJ07yElU5x01P4MF2jmmwam0
+X-Google-Smtp-Source: ABdhPJzGZdNrHY27D8Ccic4m6oHTkXOBLFT3ziSZSJ+0pFK6P5g3sHVT6X5Ib+mNx5Hf89jWMj7N0U+WDtRjOUVhjimr7OVFM1eJ
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.165.2]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggema704-chm.china.huawei.com (10.3.20.68)
-X-CFilter-Loop: Reflected
+X-Received: by 2002:a6b:6c0b:: with SMTP id a11mr7074611ioh.37.1621248333000;
+ Mon, 17 May 2021 03:45:33 -0700 (PDT)
+Date:   Mon, 17 May 2021 03:45:32 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000fb328005c2844acc@google.com>
+Subject: [syzbot] divide error in mac80211_hwsim_bss_info_changed
+From:   syzbot <syzbot+26727b5e00947e02242c@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
+Hello,
 
- drivers/net/wireless/ti/wlcore/cmd.c:824: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- drivers/net/wireless/ti/wlcore/cmd.c:853: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- drivers/net/wireless/ti/wlcore/cmd.c:882: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+syzbot found the following issue on:
 
-Signed-off-by: Yang Shen <shenyang39@huawei.com>
+HEAD commit:    eebe426d Merge tag 'fixes-for-5.12-rc7' of git://git.kerne..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15e73ceed00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9c3d8981d2bdb103
+dashboard link: https://syzkaller.appspot.com/bug?extid=26727b5e00947e02242c
+compiler:       Debian clang version 11.0.1-2
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+26727b5e00947e02242c@syzkaller.appspotmail.com
+
+divide error: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 13049 Comm: kworker/u4:16 Not tainted 5.12.0-rc7-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: phy10 ieee80211_roc_work
+RIP: 0010:mac80211_hwsim_bss_info_changed+0x514/0xf90 drivers/net/wireless/mac80211_hwsim.c:2024
+Code: 48 b8 00 00 00 00 00 fc ff df 80 7c 05 00 00 74 0a 48 8b 7c 24 08 e8 9b a6 68 fc 48 8b 44 24 08 48 8b 08 89 ce 48 89 d8 31 d2 <48> f7 f6 29 d1 48 69 f1 e8 03 00 00 48 8b 7c 24 10 31 d2 b9 05 00
+RSP: 0018:ffffc900023bfb88 EFLAGS: 00010246
+RAX: 0005bfe4b761f015 RBX: 0005bfe4b761f015 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000040
+RBP: 1ffff11004556dcf R08: ffffffff81698b49 R09: fffffbfff1f272bd
+R10: fffffbfff1f272bd R11: 0000000000000000 R12: ffff888022ab0d50
+R13: 0000000000000200 R14: ffff888022ab6fd8 R15: 1ffff110045561aa
+FS:  0000000000000000(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000543038 CR3: 000000007746b000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ drv_bss_info_changed net/mac80211/driver-ops.h:177 [inline]
+ ieee80211_bss_info_change_notify+0x27c/0x3a0 net/mac80211/main.c:210
+ ieee80211_offchannel_return+0x33b/0x470 net/mac80211/offchannel.c:158
+ __ieee80211_roc_work+0x282/0x340 net/mac80211/offchannel.c:444
+ ieee80211_roc_work+0x2b/0x40 net/mac80211/offchannel.c:458
+ process_one_work+0x789/0xfd0 kernel/workqueue.c:2275
+ worker_thread+0xac1/0x1300 kernel/workqueue.c:2421
+ kthread+0x39a/0x3c0 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:294
+Modules linked in:
+---[ end trace 2380ddc5fa748069 ]---
+RIP: 0010:mac80211_hwsim_bss_info_changed+0x514/0xf90 drivers/net/wireless/mac80211_hwsim.c:2024
+Code: 48 b8 00 00 00 00 00 fc ff df 80 7c 05 00 00 74 0a 48 8b 7c 24 08 e8 9b a6 68 fc 48 8b 44 24 08 48 8b 08 89 ce 48 89 d8 31 d2 <48> f7 f6 29 d1 48 69 f1 e8 03 00 00 48 8b 7c 24 10 31 d2 b9 05 00
+RSP: 0018:ffffc900023bfb88 EFLAGS: 00010246
+RAX: 0005bfe4b761f015 RBX: 0005bfe4b761f015 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000040
+RBP: 1ffff11004556dcf R08: ffffffff81698b49 R09: fffffbfff1f272bd
+R10: fffffbfff1f272bd R11: 0000000000000000 R12: ffff888022ab0d50
+R13: 0000000000000200 R14: ffff888022ab6fd8 R15: 1ffff110045561aa
+FS:  0000000000000000(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000219a708 CR3: 000000007746b000 CR4: 00000000001506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
 ---
- drivers/net/wireless/ti/wlcore/cmd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/ti/wlcore/cmd.c b/drivers/net/wireless/ti/wlcore/cmd.c
-index 32a2e27cc561..8b798b5fcaf5 100644
---- a/drivers/net/wireless/ti/wlcore/cmd.c
-+++ b/drivers/net/wireless/ti/wlcore/cmd.c
-@@ -821,7 +821,7 @@ int wl12xx_cmd_role_start_ibss(struct wl1271 *wl, struct wl12xx_vif *wlvif)
-
-
- /**
-- * send test command to firmware
-+ * wl1271_cmd_test - send test command to firmware
-  *
-  * @wl: wl struct
-  * @buf: buffer containing the command, with all headers, must work with dma
-@@ -850,7 +850,7 @@ int wl1271_cmd_test(struct wl1271 *wl, void *buf, size_t buf_len, u8 answer)
- EXPORT_SYMBOL_GPL(wl1271_cmd_test);
-
- /**
-- * read acx from firmware
-+ * wl1271_cmd_interrogate - read acx from firmware
-  *
-  * @wl: wl struct
-  * @id: acx id
-@@ -879,7 +879,7 @@ int wl1271_cmd_interrogate(struct wl1271 *wl, u16 id, void *buf,
- }
-
- /**
-- * write acx value to firmware
-+ * wlcore_cmd_configure_failsafe - write acx value to firmware
-  *
-  * @wl: wl struct
-  * @id: acx id
---
-2.17.1
-
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
