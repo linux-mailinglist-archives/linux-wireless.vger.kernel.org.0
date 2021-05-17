@@ -2,21 +2,21 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9203C382680
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 10:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B58738267B
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 10:15:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235607AbhEQIQQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 04:16:16 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:2947 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232431AbhEQIQJ (ORCPT
+        id S235531AbhEQIQK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 04:16:10 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3780 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235173AbhEQIQE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 May 2021 04:16:09 -0400
-Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.60])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FkBgW0CMLzCtcG;
-        Mon, 17 May 2021 16:12:07 +0800 (CST)
+        Mon, 17 May 2021 04:16:04 -0400
+Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FkBfb3Hjtzmhnl;
+        Mon, 17 May 2021 16:11:19 +0800 (CST)
 Received: from dggema704-chm.china.huawei.com (10.3.20.68) by
- dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
+ dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
  15.1.2176.2; Mon, 17 May 2021 16:14:46 +0800
 Received: from localhost.localdomain (10.67.165.2) by
@@ -28,14 +28,15 @@ To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         "Yang Shen" <shenyang39@huawei.com>,
         Stanislav Yakovlev <stas.yakovlev@gmail.com>
-Subject: [PATCH 05/11] net: intel: ipw2x00: Fix wrong function name in comments
-Date:   Mon, 17 May 2021 13:01:35 +0800
-Message-ID: <20210517050141.61488-6-shenyang39@huawei.com>
+Subject: [PATCH 06/11] net: intel: iwlwifi: Demote non-compliant kernel-doc headers
+Date:   Mon, 17 May 2021 13:01:36 +0800
+Message-ID: <20210517050141.61488-7-shenyang39@huawei.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210517050141.61488-1-shenyang39@huawei.com>
 References: <20210517050141.61488-1-shenyang39@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.67.165.2]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  dggema704-chm.china.huawei.com (10.3.20.68)
@@ -46,56 +47,33 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/net/wireless/intel/ipw2x00/ipw2100.c:5359: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- drivers/net/wireless/intel/ipw2x00/ipw2100.c:6533: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- drivers/net/wireless/intel/ipw2x00/ipw2100.c:6565: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c:11: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c:14:1: warning: ‘static’ is not at beginning of declaration [-Wold-style-declaration]
 
 Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
 Signed-off-by: Yang Shen <shenyang39@huawei.com>
 ---
- drivers/net/wireless/intel/ipw2x00/ipw2100.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-index 23fbddd0c1f8..a1c7b04930f5 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-@@ -5356,7 +5356,7 @@ struct ipw2100_wep_key {
- #define WEP_STR_128(x) x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7],x[8],x[9],x[10]
- 
- /**
-- * Set a the wep key
-+ * ipw2100_set_key - Set a the wep key
-  *
-  * @priv: struct to work on
-  * @idx: index of the key we want to set
-@@ -6530,7 +6530,7 @@ static struct pci_driver ipw2100_pci_driver = {
- };
- 
- /**
-- * Initialize the ipw2100 driver/module
-+ * ipw2100_init - Initialize the ipw2100 driver/module
-  *
-  * @returns 0 if ok, < 0 errno node con error.
-  *
-@@ -6562,7 +6562,7 @@ static int __init ipw2100_init(void)
- }
- 
- /**
-- * Cleanup ipw2100 driver registration
-+ * ipw2100_exit - Cleanup ipw2100 driver registration
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+index 0b818067067c..f1ed73c9f3dd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+@@ -7,11 +7,11 @@
+ #include "fw/api/commands.h"
+ #include "fw/api/phy-ctxt.h"
+
+-/**
++/*
+  * DDR needs frequency in units of 16.666MHz, so provide FW with the
+  * frequency values in the adjusted format.
   */
- static void __exit ipw2100_exit(void)
- {
-@@ -7197,7 +7197,7 @@ static int ipw2100_wx_set_txpow(struct net_device *dev,
- {
- 	struct ipw2100_priv *priv = libipw_priv(dev);
- 	int err = 0, value;
--	
-+
- 	if (ipw_radio_kill_sw(priv, wrqu->txpower.disabled))
- 		return -EINPROGRESS;
- 
--- 
+-const static struct iwl_rfi_lut_entry iwl_rfi_table[IWL_RFI_LUT_SIZE] = {
++static const struct iwl_rfi_lut_entry iwl_rfi_table[IWL_RFI_LUT_SIZE] = {
+ 	/* LPDDR4 */
+
+ 	/* frequency 3733MHz */
+--
 2.17.1
 
