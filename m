@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25122386B3C
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 22:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04F2E386B31
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 22:20:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239511AbhEQUVq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 16:21:46 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:37502 "EHLO
+        id S238835AbhEQUV0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 16:21:26 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:50949 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238834AbhEQUVl (ORCPT
+        with ESMTP id S237197AbhEQUVY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 May 2021 16:21:41 -0400
+        Mon, 17 May 2021 16:21:24 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1621282825; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=r4C048Cyt1NAQETCpOJSuLki6BUx/oLBHbbMepKinxY=; b=atZ6J8j09UZYwQxSOzWioCz4o4PQ05LdeXfwdhppu6Lm8s3hOM3zcY27OJ9lYX0q47mOu8+3
- A/47fL5J+HS2HgPcnJZcitokh6D2vOohcgajrrA61O4J8TQs78m+TVTwZpRXMjW+RHyWkBqE
- F03yYY4yswrOHqtY8uK1x3ewVgo=
+ s=smtp; t=1621282808; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: References: In-Reply-To: Message-Id: Date: Subject: Cc:
+ To: From: Sender; bh=ku7yAvD5M3SMfIgtuSth8sXJbT35O3EqpZxbNrqYVOU=; b=ggRY8CEQtmrHs9lDsfdWwYtAFaQtxIQq5RSO7N3w91efNAKy0NSNRau+B18/uZAQXAVaFHCa
+ 57amOSbUqPpf9Ejwnb9EkyktaprBUicNSAm6SpOwrnut+SSJLHKRcPFnc3EG6sLglSrqw3Tf
+ lK/f/n69RQxgYlEbtx1MBUCvv04=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 60a2cff65f788b52a542f777 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 May 2021 20:20:06
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 60a2cff7b15734c8f971a7e1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 May 2021 20:20:07
  GMT
 Sender: wgong=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2D60EC43460; Mon, 17 May 2021 20:20:06 +0000 (UTC)
+        id C2637C4338A; Mon, 17 May 2021 20:20:06 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,99 +38,57 @@ Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9D1D7C4338A;
-        Mon, 17 May 2021 20:20:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9D1D7C4338A
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 43B19C433D3;
+        Mon, 17 May 2021 20:20:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 43B19C433D3
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=wgong@codeaurora.org
 From:   Wen Gong <wgong@codeaurora.org>
 To:     ath11k@lists.infradead.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH 1/9] cfg80211: add power type definition for 6G Hz
-Date:   Mon, 17 May 2021 16:19:24 -0400
-Message-Id: <20210517201932.8860-2-wgong@codeaurora.org>
+Subject: [PATCH 2/9] mac80211: add definition of regulatory info in 6G Hz operation information
+Date:   Mon, 17 May 2021 16:19:25 -0400
+Message-Id: <20210517201932.8860-3-wgong@codeaurora.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210517201932.8860-1-wgong@codeaurora.org>
 References: <20210517201932.8860-1-wgong@codeaurora.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-6GHz regulatory domains introduces different modes for 6GHz AP
-operations Low Power Indoor(LPI), Standard Power(SP) and Very Low
-Power(VLP). 6GHz STAs could be operated as either Regular or
-Subordinate clients. This patch is define the flags for power type
-of AP and STATION mode.
+IEEE P802.11ax™/D8.0 added regulatory info subfield in HE operation
+element, this patch is to add it in mac80211 definition.
 
 Signed-off-by: Wen Gong <wgong@codeaurora.org>
 ---
- include/net/cfg80211.h       |  2 ++
- include/uapi/linux/nl80211.h | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ include/linux/ieee80211.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 911fae42b0c0..13d92c643794 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -675,6 +675,7 @@ struct key_params {
-  *	chan will define the primary channel and all other
-  *	parameters are ignored.
-  * @freq1_offset: offset from @center_freq1, in KHz
-+ * @power_type: power type of BSS for 6G
-  */
- struct cfg80211_chan_def {
- 	struct ieee80211_channel *chan;
-@@ -683,6 +684,7 @@ struct cfg80211_chan_def {
- 	u32 center_freq2;
- 	struct ieee80211_edmg edmg;
- 	u16 freq1_offset;
-+	enum nl80211_ap_reg_power power_type;
- };
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 3d8cf579745d..894a2c4d7cb7 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2266,6 +2266,9 @@ ieee80211_he_ppe_size(u8 ppe_thres_hdr, const u8 *phy_cap_info)
+ #define IEEE80211_HE_OPERATION_PARTIAL_BSS_COLOR		0x40000000
+ #define IEEE80211_HE_OPERATION_BSS_COLOR_DISABLED		0x80000000
  
- /*
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index ac78da99fccd..9f8e9e49a16a 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4085,6 +4085,36 @@ enum nl80211_dfs_regions {
- 	NL80211_DFS_JP		= 3,
- };
- 
-+/**
-+ * enum nl80211_ap_reg_power - regulatory power for a Access Point
-+ *
-+ * @NL80211_REG_UNSET_AP: Access Point has no regulatory power mode
-+ * @NL80211_REG_LPI: Indoor Access Point
-+ * @NL80211_REG_SP: Standard power Access Point
-+ * @NL80211_REG_VLP: Very low power Access Point
-+ */
-+enum nl80211_ap_reg_power {
-+	NL80211_REG_UNSET_AP,
-+	NL80211_REG_LPI_AP,
-+	NL80211_REG_SP_AP,
-+	NL80211_REG_VLP_AP,
-+	NL80211_REG_MAX_AP_TYPE = 3,
-+};
-+
-+/**
-+ * enum nl80211_client_reg_power - regulatory power for a client
-+ *
-+ * @NL80211_REG_UNSET_CLIENT: Client has no regulatory power mode
-+ * @NL80211_REG_DEFAULT_CLIENT: Default Client
-+ * @NL80211_REG_SUBORDINATE_CLIENT: Subordinate Client
-+ */
-+enum nl80211_client_reg_power {
-+	NL80211_REG_UNSET_CLIENT,
-+	NL80211_REG_DEFAULT_CLIENT,
-+	NL80211_REG_SUBORDINATE_CLIENT,
-+	NL80211_REG_MAX_CLIENT_TYPE = 2,
-+};
++#define IEEE80211_6GHZ_CTRL_REG_LPI_AP	0
++#define IEEE80211_6GHZ_CTRL_REG_SP_AP	1
 +
  /**
-  * enum nl80211_user_reg_hint_type - type of user regulatory hint
-  *
+  * ieee80211_he_6ghz_oper - HE 6 GHz operation Information field
+  * @primary: primary channel
+@@ -2282,6 +2285,7 @@ struct ieee80211_he_6ghz_oper {
+ #define		IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_80MHZ	2
+ #define		IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ	3
+ #define IEEE80211_HE_6GHZ_OPER_CTRL_DUP_BEACON	0x4
++#define IEEE80211_HE_6GHZ_OPER_CTRL_REG_INFO	0x38
+ 	u8 control;
+ 	u8 ccfs0;
+ 	u8 ccfs1;
 -- 
 2.31.1
 
