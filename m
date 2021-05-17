@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D46D1382E36
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 16:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B6FB383841
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 17:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237733AbhEQOFB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 10:05:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35272 "EHLO
+        id S244424AbhEQPu7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 11:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237696AbhEQOEy (ORCPT
+        with ESMTP id S245388AbhEQPsc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 May 2021 10:04:54 -0400
+        Mon, 17 May 2021 11:48:32 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9E6AC06138D;
-        Mon, 17 May 2021 07:03:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6086CC07E5F8;
+        Mon, 17 May 2021 07:38:14 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94.2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1lidqA-00AMO0-Ln; Mon, 17 May 2021 16:03:26 +0200
+        id 1lieNn-00AMzf-Us; Mon, 17 May 2021 16:38:12 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org,
-        syzbot+452ea4fbbef700ff0a56@syzkaller.appspotmail.com
-Subject: [PATCH] mac80211: fix deadlock in AP/VLAN handling
-Date:   Mon, 17 May 2021 16:03:23 +0200
-Message-Id: <20210517160322.9b8f356c0222.I392cb0e2fa5a1a94cf2e637555d702c7e512c1ff@changeid>
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        syzbot+69ff9dff50dcfe14ddd4@syzkaller.appspotmail.com
+Subject: [PATCH net] netlink: disable IRQs for netlink_lock_table()
+Date:   Mon, 17 May 2021 16:38:09 +0200
+Message-Id: <20210517163807.4d305e53c177.Ic19a47c0690e366ee84e3957b73ec6baddffad8a@changeid>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,74 +35,67 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Syzbot reports that when you have AP_VLAN interfaces that are up
-and close the AP interface they belong to, we get a deadlock. No
-surprise - since we dev_close() them with the wiphy mutex held,
-which goes back into the netdev notifier in cfg80211 and tries to
-acquire the wiphy mutex there.
+Syzbot reports that in mac80211 we have a potential deadlock
+between our "local->stop_queue_reasons_lock" (spinlock) and
+netlink's nl_table_lock (rwlock). This is because there's at
+least one situation in which we might try to send a netlink
+message with this spinlock held while it is also possible to
+take the spinlock from a hardirq context, resulting in the
+following deadlock scenario reported by lockdep:
 
-To fix this, we need to do two things:
- 1) prevent changing iftype while AP_VLANs are up, we can't
-    easily fix this case since cfg80211 already calls us with
-    the wiphy mutex held, but change_interface() is relatively
-    rare in drivers anyway, so changing iftype isn't used much
-    (and userspace has to fall back to down/change/up anyway)
- 2) pull the dev_close() loop over VLANs out of the wiphy mutex
-    section in the normal stop case
+       CPU0                    CPU1
+       ----                    ----
+  lock(nl_table_lock);
+                               local_irq_disable();
+                               lock(&local->queue_stop_reason_lock);
+                               lock(nl_table_lock);
+  <Interrupt>
+    lock(&local->queue_stop_reason_lock);
 
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+452ea4fbbef700ff0a56@syzkaller.appspotmail.com
-Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+This seems valid, we can take the queue_stop_reason_lock in
+any kind of context ("CPU0"), and call ieee80211_report_ack_skb()
+with the spinlock held and IRQs disabled ("CPU1") in some
+code path (ieee80211_do_stop() via ieee80211_free_txskb()).
+
+Short of disallowing netlink use in scenarios like these
+(which would be rather complex in mac80211's case due to
+the deep callchain), it seems the only fix for this is to
+disable IRQs while nl_table_lock is held to avoid hitting
+this scenario, this disallows the "CPU0" portion of the
+reported deadlock.
+
+Note that the writer side (netlink_table_grab()) already
+disables IRQs for this lock.
+
+Unfortunately though, this seems like a huge hammer, and
+maybe the whole netlink table locking should be reworked.
+
+Reported-by: syzbot+69ff9dff50dcfe14ddd4@syzkaller.appspotmail.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/iface.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ net/netlink/af_netlink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 2e2f73a4aa73..137fa4c50e07 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -476,14 +476,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 				   GFP_KERNEL);
- 	}
- 
--	/* APs need special treatment */
- 	if (sdata->vif.type == NL80211_IFTYPE_AP) {
--		struct ieee80211_sub_if_data *vlan, *tmpsdata;
--
--		/* down all dependent devices, that is VLANs */
--		list_for_each_entry_safe(vlan, tmpsdata, &sdata->u.ap.vlans,
--					 u.vlan.list)
--			dev_close(vlan->dev);
- 		WARN_ON(!list_empty(&sdata->u.ap.vlans));
- 	} else if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
- 		/* remove all packets in parent bc_buf pointing to this dev */
-@@ -641,6 +634,15 @@ static int ieee80211_stop(struct net_device *dev)
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 3a62f97acf39..6133e412b948 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -461,11 +461,13 @@ void netlink_table_ungrab(void)
+ static inline void
+ netlink_lock_table(void)
  {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
- 
-+	/* close all dependent VLAN interfaces before locking wiphy */
-+	if (sdata->vif.type == NL80211_IFTYPE_AP) {
-+		struct ieee80211_sub_if_data *vlan, *tmpsdata;
++	unsigned long flags;
 +
-+		list_for_each_entry_safe(vlan, tmpsdata, &sdata->u.ap.vlans,
-+					 u.vlan.list)
-+			dev_close(vlan->dev);
-+	}
-+
- 	wiphy_lock(sdata->local->hw.wiphy);
- 	ieee80211_do_stop(sdata, true);
- 	wiphy_unlock(sdata->local->hw.wiphy);
-@@ -1591,6 +1593,9 @@ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
+ 	/* read_lock() synchronizes us to netlink_table_grab */
  
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_AP:
-+		if (!list_empty(&sdata->u.ap.vlans))
-+			return -EBUSY;
-+		break;
- 	case NL80211_IFTYPE_STATION:
- 	case NL80211_IFTYPE_ADHOC:
- 	case NL80211_IFTYPE_OCB:
+-	read_lock(&nl_table_lock);
++	read_lock_irqsave(&nl_table_lock, flags);
+ 	atomic_inc(&nl_table_users);
+-	read_unlock(&nl_table_lock);
++	read_unlock_irqrestore(&nl_table_lock, flags);
+ }
+ 
+ static inline void
 -- 
 2.31.1
 
