@@ -2,72 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EA3738238A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 06:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B03038266F
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 10:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229808AbhEQErh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 00:47:37 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:41051 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230144AbhEQErg (ORCPT
+        id S235268AbhEQIQE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 04:16:04 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:3003 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230507AbhEQIQD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 May 2021 00:47:36 -0400
-X-UUID: 2b67079de89f4c9da34125aa8be43013-20210517
-X-UUID: 2b67079de89f4c9da34125aa8be43013-20210517
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2135576648; Mon, 17 May 2021 12:46:04 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 17 May 2021 12:46:01 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 17 May 2021 12:46:01 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <bo.jiao@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix MT_EE_CAL_GROUP_SIZE
-Date:   Mon, 17 May 2021 12:45:58 +0800
-Message-ID: <66c4bb0c6f4b1abcd0e17680ad42f742e2c1a528.1621198865.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <1da08f158e6784da6727779550f96f7a9c958b19.1621198865.git.ryder.lee@mediatek.com>
-References: <1da08f158e6784da6727779550f96f7a9c958b19.1621198865.git.ryder.lee@mediatek.com>
+        Mon, 17 May 2021 04:16:03 -0400
+Received: from dggems702-chm.china.huawei.com (unknown [172.30.72.59])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FkBgz272MzmVxd;
+        Mon, 17 May 2021 16:12:31 +0800 (CST)
+Received: from dggema704-chm.china.huawei.com (10.3.20.68) by
+ dggems702-chm.china.huawei.com (10.3.19.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Mon, 17 May 2021 16:14:45 +0800
+Received: from localhost.localdomain (10.67.165.2) by
+ dggema704-chm.china.huawei.com (10.3.20.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Mon, 17 May 2021 16:14:45 +0800
+From:   Yang Shen <shenyang39@huawei.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Yang Shen" <shenyang39@huawei.com>
+Subject: [PATCH 00/11] Rid W=1 warnings in wireless
+Date:   Mon, 17 May 2021 13:01:30 +0800
+Message-ID: <20210517050141.61488-1-shenyang39@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK:  N
+X-Originating-IP: [10.67.165.2]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggema704-chm.china.huawei.com (10.3.20.68)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix wrong offset for pre-calibration data.
+This is a set to fully clean drivers/net/wireless.
 
-Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yang Shen (11):
+  net: ath: ath5k: Fix wrong function name in comments
+  net: ath: Fix wrong function name in comments
+  net: ath: wil6210: Fix wrong function name in comments
+  net: broadcom: brcmfmac: Demote non-compliant kernel-doc headers
+  net: intel: ipw2x00: Fix wrong function name in comments
+  net: intel: iwlwifi: Demote non-compliant kernel-doc headers
+  net: marvell: libertas_tf: Fix wrong function name in comments
+  net: realtek: rtlwifi: Fix wrong function name in comments
+  net: rsi: Fix missing function name in comments
+  net: ti: wl1251: Fix missing function name in comments
+  net: ti: wlcore: Fix missing function name in comments
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-index 033fb592bdf0..30bf41b8ed15 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-@@ -33,7 +33,7 @@ enum mt7915_eeprom_field {
- #define MT_EE_WIFI_CAL_GROUP			BIT(0)
- #define MT_EE_WIFI_CAL_DPD			GENMASK(2, 1)
- #define MT_EE_CAL_UNIT				1024
--#define MT_EE_CAL_GROUP_SIZE			(44 * MT_EE_CAL_UNIT)
-+#define MT_EE_CAL_GROUP_SIZE			(49 * MT_EE_CAL_UNIT + 16)
- #define MT_EE_CAL_DPD_SIZE			(54 * MT_EE_CAL_UNIT)
- 
- #define MT_EE_WIFI_CONF0_TX_PATH		GENMASK(2, 0)
--- 
-2.18.0
+ drivers/net/wireless/ath/ath5k/pcu.c                    | 2 +-
+ drivers/net/wireless/ath/hw.c                           | 2 +-
+ drivers/net/wireless/ath/wil6210/interrupt.c            | 2 +-
+ drivers/net/wireless/ath/wil6210/wmi.c                  | 6 +++---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c  | 2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 2 +-
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c            | 8 ++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c            | 4 ++--
+ drivers/net/wireless/marvell/libertas_tf/if_usb.c       | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.c    | 4 ++--
+ drivers/net/wireless/rsi/rsi_91x_mgmt.c                 | 4 ++--
+ drivers/net/wireless/ti/wl1251/cmd.c                    | 8 ++++----
+ drivers/net/wireless/ti/wlcore/cmd.c                    | 6 +++---
+ 13 files changed, 26 insertions(+), 26 deletions(-)
+
+--
+2.17.1
 
