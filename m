@@ -2,79 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5FA5383A65
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 18:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B3EC383B34
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 19:24:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238848AbhEQQtf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 12:49:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42744 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242050AbhEQQt3 (ORCPT
+        id S236357AbhEQR0B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 13:26:01 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:32949 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231681AbhEQR0B (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 May 2021 12:49:29 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796C6C0560D7;
-        Mon, 17 May 2021 09:29:35 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id e14so6574278ils.12;
-        Mon, 17 May 2021 09:29:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5f8prtgombTmd78g0v9dgtzdTUlZdr2SiZd0lMWRSNk=;
-        b=ukBthsuaQauYuLXuTbaKTuOd3/K0xb/RF2whWm03lx9qUFwgjF69EcWdgKcJH0ypyY
-         dYfY5lfsJMHh7kHwXyUSduta5aWMKhHc3XCdHWcTt17x8tIEcH+DfN4RJ2DU6YNql8FZ
-         n5SvtCqXGSQCf3FB9AIY9DVOAWYMRLyVmtOS9CkegUC0NsmX+sFDm6uzPgvpl5xA0NnI
-         2iYnq+f56ZFU0IodwxKUIxrjM1QFh61KUjsq5pk+chzSXxqv4IGtTIe0eQsrrfrnppIC
-         k15xJyrCs/4dNGqxauP0RiFuhE9/+xoiGtXhFsUrDWYI+pT/SZE94z3R5l3mwv0JV0cU
-         x5Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5f8prtgombTmd78g0v9dgtzdTUlZdr2SiZd0lMWRSNk=;
-        b=Vm1GDySHwA3C6ANT1D8sRX5sI+3v6+yLDqWFSwqwSdXeE35lMNYUT8fnzflfVOALAt
-         ca6IdB6T+3iDVar0qU3+vJLeh5CNgCBUpkssWFsB2ZWb2+0Nd6tgmScfZAgDoPpDE/2x
-         mezLwAruXUPf/OdoP3tp8qVMDF7G7LAmDkfK4sDYikTZNklJ6fDxBBXR/BaqoYdYLnpC
-         YV5jPvbI9WGy84e+4jYeGPkfvYN/V9gGVr/u4hkiXhlBiLbZxWvGt+Hit+Y2/OtZnv1R
-         +1iIXLV7su31R+9aeZFcnGcN3Jj0x9+pUy1jPUJ8CVNPpWXc2j/CgWFhYk4n0txU1/0x
-         aoRA==
-X-Gm-Message-State: AOAM533uSr8AIpQ+rBAqydxFy9YiZ6890Qxg8JTsq2rb6x2uQnGWod0k
-        GQ5HbtFNJS7kvIecViV7ckRYn6k7ygDPexikTwI=
-X-Google-Smtp-Source: ABdhPJwJQDl+CfRLFQy5xJz/dMwfNIgt4CM+w5JCvOUJiH2Giug8UZIZ179NbBcdHpPOEXBgIuiW/MTdOzM6SzjnN8E=
-X-Received: by 2002:a05:6e02:92f:: with SMTP id o15mr449775ilt.127.1621268975011;
- Mon, 17 May 2021 09:29:35 -0700 (PDT)
+        Mon, 17 May 2021 13:26:01 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <pborgers@zedat.fu-berlin.de>)
+          id 1ligyx-003AEb-P4; Mon, 17 May 2021 19:24:43 +0200
+Received: from a36t-ffs1.berlin.freifunk.net ([77.87.51.11] helo=mi.fu-berlin.de)
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <borgers@mi.fu-berlin.de>)
+          id 1ligyw-003amJ-J6; Mon, 17 May 2021 19:24:43 +0200
+Received: by mi.fu-berlin.de (sSMTP sendmail emulation); Mon, 17 May 2021 19:24:42 +0200
+From:   Philipp Borgers <borgers@mi.fu-berlin.de>
+To:     ath9k-devel@qca.qualcomm.com
+Cc:     linux-wireless@vger.kernel.org,
+        Philipp Borgers <borgers@mi.fu-berlin.de>
+Subject: [PATCH] ath9k: ar9003_mac: read STBC indicator from rx descriptor
+Date:   Mon, 17 May 2021 19:24:26 +0200
+Message-Id: <20210517172426.15919-1-borgers@mi.fu-berlin.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20210517050141.61488-1-shenyang39@huawei.com> <20210517050141.61488-6-shenyang39@huawei.com>
-In-Reply-To: <20210517050141.61488-6-shenyang39@huawei.com>
-From:   Stanislav Yakovlev <stas.yakovlev@gmail.com>
-Date:   Mon, 17 May 2021 20:30:49 +0400
-Message-ID: <CA++WF2PDC9cXoZ3-C=Y+aeDK-qPTk4rc6VKwH3iQBr7Hu8cDTQ@mail.gmail.com>
-Subject: Re: [PATCH 05/11] net: intel: ipw2x00: Fix wrong function name in comments
-To:     Yang Shen <shenyang39@huawei.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        wireless <linux-wireless@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Original-Sender: borgers@mi.fu-berlin.de
+X-Originating-IP: 77.87.51.11
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 17 May 2021 at 12:14, Yang Shen <shenyang39@huawei.com> wrote:
->
-> Fixes the following W=1 kernel build warning(s):
->
->  drivers/net/wireless/intel/ipw2x00/ipw2100.c:5359: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
->  drivers/net/wireless/intel/ipw2x00/ipw2100.c:6533: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
->  drivers/net/wireless/intel/ipw2x00/ipw2100.c:6565: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
->
-> Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
-> Signed-off-by: Yang Shen <shenyang39@huawei.com>
-> ---
->  drivers/net/wireless/intel/ipw2x00/ipw2100.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
+The rx descriptor contains a STBC indicator. If the indicator is set the
+frame was received with STBC.
 
-Looks fine, thanks!
+Signed-off-by: Philipp Borgers <borgers@mi.fu-berlin.de>
+---
+ drivers/net/wireless/ath/ath9k/ar9003_mac.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Stanislav.
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mac.c b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
+index 76b538942a79..5184a0aacfe2 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_mac.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
+@@ -522,6 +522,8 @@ int ath9k_hw_process_rxdesc_edma(struct ath_hw *ah, struct ath_rx_status *rxs,
+ 	rxs->rs_moreaggr = (rxsp->status11 & AR_RxMoreAggr) ? 1 : 0;
+ 	rxs->rs_antenna = (MS(rxsp->status4, AR_RxAntenna) & 0x7);
+ 	rxs->enc_flags |= (rxsp->status4 & AR_GI) ? RX_ENC_FLAG_SHORT_GI : 0;
++	rxs->enc_flags |=
++		(rxsp->status4 & AR_STBC) ? (1 << RX_ENC_FLAG_STBC_SHIFT) : 0;
+ 	rxs->bw = (rxsp->status4 & AR_2040) ? RATE_INFO_BW_40 : RATE_INFO_BW_20;
+ 
+ 	rxs->evm0 = rxsp->status6;
+-- 
+2.31.1
+
