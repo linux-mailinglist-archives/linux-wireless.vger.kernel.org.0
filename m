@@ -2,99 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DD70381AA6
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 May 2021 21:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EA3738238A
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 06:46:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234600AbhEOTIH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 May 2021 15:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34094 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234608AbhEOTIE (ORCPT
+        id S229808AbhEQErh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 00:47:37 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:41051 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230144AbhEQErg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 May 2021 15:08:04 -0400
-Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90046C06174A
-        for <linux-wireless@vger.kernel.org>; Sat, 15 May 2021 12:06:49 -0700 (PDT)
-Received: by bues.ch with esmtpsa (Exim 4.92)
-        (envelope-from <m@bues.ch>)
-        id 1lhzcd-0004VQ-7m; Sat, 15 May 2021 21:06:47 +0200
-Date:   Sat, 15 May 2021 21:02:52 +0200
-From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Albert Herranz <albert_herranz@yahoo.es>
-Subject: [PATCH] drivers/ssb/sdio: Don't overwrite const buffer if
- block_write fails
-Message-ID: <20210515210252.318be2ba@wiggum>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Mon, 17 May 2021 00:47:36 -0400
+X-UUID: 2b67079de89f4c9da34125aa8be43013-20210517
+X-UUID: 2b67079de89f4c9da34125aa8be43013-20210517
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 2135576648; Mon, 17 May 2021 12:46:04 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 17 May 2021 12:46:01 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 17 May 2021 12:46:01 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Bo Jiao <bo.jiao@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix MT_EE_CAL_GROUP_SIZE
+Date:   Mon, 17 May 2021 12:45:58 +0800
+Message-ID: <66c4bb0c6f4b1abcd0e17680ad42f742e2c1a528.1621198865.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <1da08f158e6784da6727779550f96f7a9c958b19.1621198865.git.ryder.lee@mediatek.com>
+References: <1da08f158e6784da6727779550f96f7a9c958b19.1621198865.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Y6ZcHqRV_gAh0=B3sN6C5LL";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/Y6ZcHqRV_gAh0=B3sN6C5LL
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Fix wrong offset for pre-calibration data.
 
-It doesn't make sense to clobber the const driver-side buffer, if a
-write-to-device attempt failed. All other SSB variants (PCI, PCMCIA and SoC)
-also don't corrupt the buffer on any failure in block_write.
-Therefore, remove this memset from the SDIO variant.
-
-Signed-off-by: Michael B=C3=BCsch <m@bues.ch>
-Cc: stable@vger.kernel.org
-
+Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+index 033fb592bdf0..30bf41b8ed15 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+@@ -33,7 +33,7 @@ enum mt7915_eeprom_field {
+ #define MT_EE_WIFI_CAL_GROUP			BIT(0)
+ #define MT_EE_WIFI_CAL_DPD			GENMASK(2, 1)
+ #define MT_EE_CAL_UNIT				1024
+-#define MT_EE_CAL_GROUP_SIZE			(44 * MT_EE_CAL_UNIT)
++#define MT_EE_CAL_GROUP_SIZE			(49 * MT_EE_CAL_UNIT + 16)
+ #define MT_EE_CAL_DPD_SIZE			(54 * MT_EE_CAL_UNIT)
+ 
+ #define MT_EE_WIFI_CONF0_TX_PATH		GENMASK(2, 0)
+-- 
+2.18.0
 
-This memset has been introduced by the original patch that added SDIO suppo=
-rt to SSB:
-24ea602e183ca
-Better late than never.
-
-This change is only build tested, because I don't own the hardware.
-But to me this change looks reasonable.
-
-
-diff --git a/drivers/ssb/sdio.c b/drivers/ssb/sdio.c
-index 7fe0afb42234..66c5c2169704 100644
---- a/drivers/ssb/sdio.c
-+++ b/drivers/ssb/sdio.c
-@@ -411,7 +411,6 @@ static void ssb_sdio_block_write(struct ssb_device *dev=
-, const void *buffer,
- 	sdio_claim_host(bus->host_sdio);
- 	if (unlikely(ssb_sdio_switch_core(bus, dev))) {
- 		error =3D -EIO;
--		memset((void *)buffer, 0xff, count);
- 		goto err_out;
- 	}
- 	offset |=3D bus->sdio_sbaddr & 0xffff;
-
-
---=20
-Michael
-
---Sig_/Y6ZcHqRV_gAh0=B3sN6C5LL
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmCgGtwACgkQ9TK+HZCN
-iw6GFBAAvwpJgpOa92RaQ5DJO9Em5nqPv0WHnbGTrmj07TgDkHhWMNCrPux0gVpE
-Xj2eXv1C8foZYktFlk7eJXWsxIFuYuJDPagpuAgVCpCQUMrY9kHjZoJO3Tk5nxHX
-4Dk4+i2yZ8GjyXX2oWG0wdROvhonHEp4/lHg4gxY1YUAyg+saB+No618tVnHGHj8
-YHU6DWb+F70FW6L42UDoEe6IeCGFiay2felWO8yhHmX81PZ2wynCDrm9GDV66PtR
-Cki2gHXTIr2r6Z9wKqMrxpV1LyaKwGn48MFm2f85w48JIMy5uqFxJo0omA1y6rxT
-Ke30Zp0ojdGA9Ortzhb8khLkgPzR2c5sfvkWvuZDgroNSmAHpYvHZ+TZ08qUIemg
-gNP62CkDjVOsZxH2tPtCTTsvgDf0DyN5aPUp1GnPqtne3IuqcF7AAMa9F5F7+uHK
-4ZpwvPTM26EtinQz8vXjSw/4OZechKhSAj5ZeNjPB7vO6QecAUeXrCNojKDxj9A8
-xQBAxz9wfaxqsk6lqRh64r9dBwIK3vtrhDPqzj2O1XiPsYbC7tzWa+6SpNfLM5c5
-GXLE6jjbtIC7DjlF0azTJLRyi+BJ+EfJ+OIEG41778QZtejCz+LAZzrFRVHTTzMY
-Vs/Gc3tXxLRwgF1WQG4Rlc4EwtMJ/naeKDaiwNPf2rthh7lYm7s=
-=6acF
------END PGP SIGNATURE-----
-
---Sig_/Y6ZcHqRV_gAh0=B3sN6C5LL--
