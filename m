@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7374E386BF6
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 23:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 502E5386BF2
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 23:08:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237651AbhEQVJ2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 17:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46154 "EHLO
+        id S237474AbhEQVJ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 17:09:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237551AbhEQVJU (ORCPT
+        with ESMTP id S234755AbhEQVJU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 17 May 2021 17:09:20 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57114C061573
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A23C061760
         for <linux-wireless@vger.kernel.org>; Mon, 17 May 2021 14:08:03 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94.2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1likT1-00AVFx-PB; Mon, 17 May 2021 23:08:00 +0200
+        id 1likT2-00AVFx-Gm; Mon, 17 May 2021 23:08:00 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 2/4] mac80211: refactor SKB queue processing a bit
-Date:   Mon, 17 May 2021 23:07:55 +0200
-Message-Id: <20210517230754.6bc6cdd68570.I28a86ebdb19601ca1965c4dc654cc49fc1064efa@changeid>
+Subject: [PATCH 3/4] mac80211: use sdata->skb_queue for TDLS
+Date:   Mon, 17 May 2021 23:07:56 +0200
+Message-Id: <20210517230754.17034990abef.I5342f2183c0d246b18d36c511eb3b6be298a6572@changeid>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210517230754.113b65febd5a.Ie0e1d58a2885e75f242cb6e06f3b9660117fef93@changeid>
 References: <20210517230754.113b65febd5a.Ie0e1d58a2885e75f242cb6e06f3b9660117fef93@changeid>
@@ -36,269 +36,197 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This is a very long loop body, move it into its own function
-instead, keeping only the kcov and free outside in the loop
-body.
+We need to differentiate these frames since the ones we
+currently put on the skb_queue_tdls_chsw have already
+been converted to ethernet format, but now that we've
+got a single place to enqueue to the sdata->skb_queue
+this isn't hard. Just differentiate based on protocol
+and adjust the code to queue the SKBs appropriately.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/iface.c | 228 ++++++++++++++++++++++---------------------
- 1 file changed, 119 insertions(+), 109 deletions(-)
+ net/mac80211/ieee80211_i.h | 10 +++++-----
+ net/mac80211/iface.c       |  5 ++++-
+ net/mac80211/main.c        |  5 -----
+ net/mac80211/rx.c          | 21 +++++++++++++--------
+ net/mac80211/tdls.c        | 28 +---------------------------
+ 5 files changed, 23 insertions(+), 46 deletions(-)
 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 8fcbaa1eedf3..a27225be1a1e 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1427,10 +1427,6 @@ struct ieee80211_local {
+ 
+ 	/* extended capabilities provided by mac80211 */
+ 	u8 ext_capa[8];
+-
+-	/* TDLS channel switch */
+-	struct work_struct tdls_chsw_work;
+-	struct sk_buff_head skb_queue_tdls_chsw;
+ };
+ 
+ static inline struct ieee80211_sub_if_data *
+@@ -2300,9 +2296,13 @@ void ieee80211_tdls_cancel_channel_switch(struct wiphy *wiphy,
+ 					  struct net_device *dev,
+ 					  const u8 *addr);
+ void ieee80211_teardown_tdls_peers(struct ieee80211_sub_if_data *sdata);
+-void ieee80211_tdls_chsw_work(struct work_struct *wk);
+ void ieee80211_tdls_handle_disconnect(struct ieee80211_sub_if_data *sdata,
+ 				      const u8 *peer, u16 reason);
++void
++ieee80211_process_tdls_channel_switch(struct ieee80211_sub_if_data *sdata,
++				      struct sk_buff *skb);
++
++
+ const char *ieee80211_get_reason_code_string(u16 reason_code);
+ u16 ieee80211_encode_usf(int val);
+ u8 *ieee80211_get_bssid(struct ieee80211_hdr *hdr, size_t len,
 diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 7032a2b59249..3a998ae50429 100644
+index 3a998ae50429..8625f19a2547 100644
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -1320,13 +1320,130 @@ static void ieee80211_if_setup_no_queue(struct net_device *dev)
- 	dev->priv_flags |= IFF_NO_QUEUE;
- }
- 
-+static void ieee80211_iface_process_skb(struct ieee80211_local *local,
-+					struct ieee80211_sub_if_data *sdata,
-+					struct sk_buff *skb)
-+{
-+	struct ieee80211_mgmt *mgmt = (void *)skb->data;
-+
-+	if (ieee80211_is_action(mgmt->frame_control) &&
-+	    mgmt->u.action.category == WLAN_CATEGORY_BACK) {
-+		struct sta_info *sta;
-+		int len = skb->len;
-+
-+		mutex_lock(&local->sta_mtx);
-+		sta = sta_info_get_bss(sdata, mgmt->sa);
-+		if (sta) {
-+			switch (mgmt->u.action.u.addba_req.action_code) {
-+			case WLAN_ACTION_ADDBA_REQ:
-+				ieee80211_process_addba_request(local, sta,
-+								mgmt, len);
-+				break;
-+			case WLAN_ACTION_ADDBA_RESP:
-+				ieee80211_process_addba_resp(local, sta,
-+							     mgmt, len);
-+				break;
-+			case WLAN_ACTION_DELBA:
-+				ieee80211_process_delba(sdata, sta,
-+							mgmt, len);
-+				break;
-+			default:
-+				WARN_ON(1);
-+				break;
-+			}
-+		}
-+		mutex_unlock(&local->sta_mtx);
-+	} else if (ieee80211_is_action(mgmt->frame_control) &&
-+		   mgmt->u.action.category == WLAN_CATEGORY_VHT) {
-+		switch (mgmt->u.action.u.vht_group_notif.action_code) {
-+		case WLAN_VHT_ACTION_OPMODE_NOTIF: {
-+			struct ieee80211_rx_status *status;
-+			enum nl80211_band band;
-+			struct sta_info *sta;
-+			u8 opmode;
-+
-+			status = IEEE80211_SKB_RXCB(skb);
-+			band = status->band;
-+			opmode = mgmt->u.action.u.vht_opmode_notif.operating_mode;
-+
-+			mutex_lock(&local->sta_mtx);
-+			sta = sta_info_get_bss(sdata, mgmt->sa);
-+
-+			if (sta)
-+				ieee80211_vht_handle_opmode(sdata, sta, opmode,
-+							    band);
-+
-+			mutex_unlock(&local->sta_mtx);
-+			break;
-+		}
-+		case WLAN_VHT_ACTION_GROUPID_MGMT:
-+			ieee80211_process_mu_groups(sdata, mgmt);
-+			break;
-+		default:
-+			WARN_ON(1);
-+			break;
-+		}
-+	} else if (ieee80211_is_ext(mgmt->frame_control)) {
-+		if (sdata->vif.type == NL80211_IFTYPE_STATION)
-+			ieee80211_sta_rx_queued_ext(sdata, skb);
-+		else
-+			WARN_ON(1);
-+	} else if (ieee80211_is_data_qos(mgmt->frame_control)) {
-+		struct ieee80211_hdr *hdr = (void *)mgmt;
-+		struct sta_info *sta;
-+
-+		/*
-+		 * So the frame isn't mgmt, but frame_control
-+		 * is at the right place anyway, of course, so
-+		 * the if statement is correct.
-+		 *
-+		 * Warn if we have other data frame types here,
-+		 * they must not get here.
-+		 */
-+		WARN_ON(hdr->frame_control &
-+				cpu_to_le16(IEEE80211_STYPE_NULLFUNC));
-+		WARN_ON(!(hdr->seq_ctrl &
-+				cpu_to_le16(IEEE80211_SCTL_FRAG)));
-+		/*
-+		 * This was a fragment of a frame, received while
-+		 * a block-ack session was active. That cannot be
-+		 * right, so terminate the session.
-+		 */
-+		mutex_lock(&local->sta_mtx);
-+		sta = sta_info_get_bss(sdata, mgmt->sa);
-+		if (sta) {
-+			u16 tid = ieee80211_get_tid(hdr);
-+
-+			__ieee80211_stop_rx_ba_session(
-+				sta, tid, WLAN_BACK_RECIPIENT,
-+				WLAN_REASON_QSTA_REQUIRE_SETUP,
-+				true);
-+		}
-+		mutex_unlock(&local->sta_mtx);
-+	} else switch (sdata->vif.type) {
-+	case NL80211_IFTYPE_STATION:
-+		ieee80211_sta_rx_queued_mgmt(sdata, skb);
-+		break;
-+	case NL80211_IFTYPE_ADHOC:
-+		ieee80211_ibss_rx_queued_mgmt(sdata, skb);
-+		break;
-+	case NL80211_IFTYPE_MESH_POINT:
-+		if (!ieee80211_vif_is_mesh(&sdata->vif))
-+			break;
-+		ieee80211_mesh_rx_queued_mgmt(sdata, skb);
-+		break;
-+	default:
-+		WARN(1, "frame for unexpected interface type");
-+		break;
-+	}
-+}
-+
- static void ieee80211_iface_work(struct work_struct *work)
- {
- 	struct ieee80211_sub_if_data *sdata =
- 		container_of(work, struct ieee80211_sub_if_data, work);
- 	struct ieee80211_local *local = sdata->local;
- 	struct sk_buff *skb;
--	struct sta_info *sta;
- 
- 	if (!ieee80211_sdata_running(sdata))
- 		return;
-@@ -1339,116 +1456,9 @@ static void ieee80211_iface_work(struct work_struct *work)
- 
- 	/* first process frames */
+@@ -1458,7 +1458,10 @@ static void ieee80211_iface_work(struct work_struct *work)
  	while ((skb = skb_dequeue(&sdata->skb_queue))) {
--		struct ieee80211_mgmt *mgmt = (void *)skb->data;
--
  		kcov_remote_start_common(skb_get_kcov_handle(skb));
--		if (ieee80211_is_action(mgmt->frame_control) &&
--		    mgmt->u.action.category == WLAN_CATEGORY_BACK) {
--			int len = skb->len;
--
--			mutex_lock(&local->sta_mtx);
--			sta = sta_info_get_bss(sdata, mgmt->sa);
--			if (sta) {
--				switch (mgmt->u.action.u.addba_req.action_code) {
--				case WLAN_ACTION_ADDBA_REQ:
--					ieee80211_process_addba_request(
--							local, sta, mgmt, len);
--					break;
--				case WLAN_ACTION_ADDBA_RESP:
--					ieee80211_process_addba_resp(local, sta,
--								     mgmt, len);
--					break;
--				case WLAN_ACTION_DELBA:
--					ieee80211_process_delba(sdata, sta,
--								mgmt, len);
--					break;
--				default:
--					WARN_ON(1);
--					break;
--				}
--			}
--			mutex_unlock(&local->sta_mtx);
--		} else if (ieee80211_is_action(mgmt->frame_control) &&
--			   mgmt->u.action.category == WLAN_CATEGORY_VHT) {
--			switch (mgmt->u.action.u.vht_group_notif.action_code) {
--			case WLAN_VHT_ACTION_OPMODE_NOTIF: {
--				struct ieee80211_rx_status *status;
--				enum nl80211_band band;
--				u8 opmode;
--
--				status = IEEE80211_SKB_RXCB(skb);
--				band = status->band;
--				opmode = mgmt->u.action.u.vht_opmode_notif.operating_mode;
--
--				mutex_lock(&local->sta_mtx);
--				sta = sta_info_get_bss(sdata, mgmt->sa);
--
--				if (sta)
--					ieee80211_vht_handle_opmode(sdata, sta,
--								    opmode,
--								    band);
--
--				mutex_unlock(&local->sta_mtx);
--				break;
--			}
--			case WLAN_VHT_ACTION_GROUPID_MGMT:
--				ieee80211_process_mu_groups(sdata, mgmt);
--				break;
--			default:
--				WARN_ON(1);
--				break;
--			}
--		} else if (ieee80211_is_ext(mgmt->frame_control)) {
--			if (sdata->vif.type == NL80211_IFTYPE_STATION)
--				ieee80211_sta_rx_queued_ext(sdata, skb);
--			else
--				WARN_ON(1);
--		} else if (ieee80211_is_data_qos(mgmt->frame_control)) {
--			struct ieee80211_hdr *hdr = (void *)mgmt;
--			/*
--			 * So the frame isn't mgmt, but frame_control
--			 * is at the right place anyway, of course, so
--			 * the if statement is correct.
--			 *
--			 * Warn if we have other data frame types here,
--			 * they must not get here.
--			 */
--			WARN_ON(hdr->frame_control &
--					cpu_to_le16(IEEE80211_STYPE_NULLFUNC));
--			WARN_ON(!(hdr->seq_ctrl &
--					cpu_to_le16(IEEE80211_SCTL_FRAG)));
--			/*
--			 * This was a fragment of a frame, received while
--			 * a block-ack session was active. That cannot be
--			 * right, so terminate the session.
--			 */
--			mutex_lock(&local->sta_mtx);
--			sta = sta_info_get_bss(sdata, mgmt->sa);
--			if (sta) {
--				u16 tid = ieee80211_get_tid(hdr);
  
--				__ieee80211_stop_rx_ba_session(
--					sta, tid, WLAN_BACK_RECIPIENT,
--					WLAN_REASON_QSTA_REQUIRE_SETUP,
--					true);
--			}
--			mutex_unlock(&local->sta_mtx);
--		} else switch (sdata->vif.type) {
--		case NL80211_IFTYPE_STATION:
--			ieee80211_sta_rx_queued_mgmt(sdata, skb);
--			break;
--		case NL80211_IFTYPE_ADHOC:
--			ieee80211_ibss_rx_queued_mgmt(sdata, skb);
--			break;
--		case NL80211_IFTYPE_MESH_POINT:
--			if (!ieee80211_vif_is_mesh(&sdata->vif))
--				break;
--			ieee80211_mesh_rx_queued_mgmt(sdata, skb);
--			break;
--		default:
--			WARN(1, "frame for unexpected interface type");
--			break;
--		}
-+		ieee80211_iface_process_skb(local, sdata, skb);
+-		ieee80211_iface_process_skb(local, sdata, skb);
++		if (skb->protocol == cpu_to_be16(ETH_P_TDLS))
++			ieee80211_process_tdls_channel_switch(sdata, skb);
++		else
++			ieee80211_iface_process_skb(local, sdata, skb);
  
  		kfree_skb(skb);
  		kcov_remote_stop();
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 62145e5f9628..9a12db51fdb6 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -734,8 +734,6 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+ 	INIT_WORK(&local->sched_scan_stopped_work,
+ 		  ieee80211_sched_scan_stopped_work);
+ 
+-	INIT_WORK(&local->tdls_chsw_work, ieee80211_tdls_chsw_work);
+-
+ 	spin_lock_init(&local->ack_status_lock);
+ 	idr_init(&local->ack_status_frames);
+ 
+@@ -752,7 +750,6 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+ 
+ 	skb_queue_head_init(&local->skb_queue);
+ 	skb_queue_head_init(&local->skb_queue_unreliable);
+-	skb_queue_head_init(&local->skb_queue_tdls_chsw);
+ 
+ 	ieee80211_alloc_led_names(local);
+ 
+@@ -1384,7 +1381,6 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
+ 	cancel_delayed_work_sync(&local->roc_work);
+ 	cancel_work_sync(&local->restart_work);
+ 	cancel_work_sync(&local->reconfig_filter);
+-	cancel_work_sync(&local->tdls_chsw_work);
+ 	flush_work(&local->sched_scan_stopped_work);
+ 	flush_work(&local->radar_detected_work);
+ 
+@@ -1396,7 +1392,6 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
+ 		wiphy_warn(local->hw.wiphy, "skb_queue not empty\n");
+ 	skb_queue_purge(&local->skb_queue);
+ 	skb_queue_purge(&local->skb_queue_unreliable);
+-	skb_queue_purge(&local->skb_queue_tdls_chsw);
+ 
+ 	wiphy_unregister(local->hw.wiphy);
+ 	destroy_workqueue(local->workqueue);
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 06ea259bb385..69acca2cfe88 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -214,9 +214,9 @@ ieee80211_rx_radiotap_hdrlen(struct ieee80211_local *local,
+ 	return len;
+ }
+ 
+-static void ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
+-					 struct sta_info *sta,
+-					 struct sk_buff *skb)
++static void __ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
++					   struct sta_info *sta,
++					   struct sk_buff *skb)
+ {
+ 	skb_queue_tail(&sdata->skb_queue, skb);
+ 	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
+@@ -224,6 +224,14 @@ static void ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
+ 		sta->rx_stats.packets++;
+ }
+ 
++static void ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
++					 struct sta_info *sta,
++					 struct sk_buff *skb)
++{
++	skb->protocol = 0;
++	__ieee80211_queue_skb_to_iface(sdata, sta, skb);
++}
++
+ static void ieee80211_handle_mu_mimo_mon(struct ieee80211_sub_if_data *sdata,
+ 					 struct sk_buff *skb,
+ 					 int rtap_space)
+@@ -2935,11 +2943,8 @@ ieee80211_rx_h_data(struct ieee80211_rx_data *rx)
+ 		    tf->category == WLAN_CATEGORY_TDLS &&
+ 		    (tf->action_code == WLAN_TDLS_CHANNEL_SWITCH_REQUEST ||
+ 		     tf->action_code == WLAN_TDLS_CHANNEL_SWITCH_RESPONSE)) {
+-			skb_queue_tail(&local->skb_queue_tdls_chsw, rx->skb);
+-			schedule_work(&local->tdls_chsw_work);
+-			if (rx->sta)
+-				rx->sta->rx_stats.packets++;
+-
++			rx->skb->protocol = cpu_to_be16(ETH_P_TDLS);
++			__ieee80211_queue_skb_to_iface(sdata, rx->sta, rx->skb);
+ 			return RX_QUEUED;
+ 		}
+ 	}
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index f91d02b81b92..45e532ad1215 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1920,7 +1920,7 @@ ieee80211_process_tdls_channel_switch_req(struct ieee80211_sub_if_data *sdata,
+ 	return ret;
+ }
+ 
+-static void
++void
+ ieee80211_process_tdls_channel_switch(struct ieee80211_sub_if_data *sdata,
+ 				      struct sk_buff *skb)
+ {
+@@ -1971,32 +1971,6 @@ void ieee80211_teardown_tdls_peers(struct ieee80211_sub_if_data *sdata)
+ 	rcu_read_unlock();
+ }
+ 
+-void ieee80211_tdls_chsw_work(struct work_struct *wk)
+-{
+-	struct ieee80211_local *local =
+-		container_of(wk, struct ieee80211_local, tdls_chsw_work);
+-	struct ieee80211_sub_if_data *sdata;
+-	struct sk_buff *skb;
+-	struct ieee80211_tdls_data *tf;
+-
+-	wiphy_lock(local->hw.wiphy);
+-	while ((skb = skb_dequeue(&local->skb_queue_tdls_chsw))) {
+-		tf = (struct ieee80211_tdls_data *)skb->data;
+-		list_for_each_entry(sdata, &local->interfaces, list) {
+-			if (!ieee80211_sdata_running(sdata) ||
+-			    sdata->vif.type != NL80211_IFTYPE_STATION ||
+-			    !ether_addr_equal(tf->da, sdata->vif.addr))
+-				continue;
+-
+-			ieee80211_process_tdls_channel_switch(sdata, skb);
+-			break;
+-		}
+-
+-		kfree_skb(skb);
+-	}
+-	wiphy_unlock(local->hw.wiphy);
+-}
+-
+ void ieee80211_tdls_handle_disconnect(struct ieee80211_sub_if_data *sdata,
+ 				      const u8 *peer, u16 reason)
+ {
 -- 
 2.31.1
 
