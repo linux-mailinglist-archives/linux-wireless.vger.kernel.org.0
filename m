@@ -2,101 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F87386B3B
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 22:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AA60386BF5
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 May 2021 23:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237410AbhEQUVp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 16:21:45 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:52579 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239261AbhEQUVg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 May 2021 16:21:36 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1621282819; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=VK4UK5kSffOJbSxn2oczi2SPdI/m1A68RieCMNy/ETY=; b=TBfft33oicrDrY7JcmuisYWZye60Emy80Biy+eE+h5cfMg3ZWDDVQjfulv8zh4fs3XFVGD3T
- pznfwgnxP3uqIWqAud/4Atnhb04G3zR+J5QxjOR1NIhT1mqtAGBSWtB+caJwYWbTc5ykImj9
- 9T879klLDg3EbQXidVgmhitPZ0I=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 60a2d002b15734c8f971cc9c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 17 May 2021 20:20:18
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 04423C4338A; Mon, 17 May 2021 20:20:18 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 72C77C43217;
-        Mon, 17 May 2021 20:20:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 72C77C43217
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath11k@lists.infradead.org, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH 9/9] mac80211: save transmit power envelope element and power constraint
-Date:   Mon, 17 May 2021 16:19:32 -0400
-Message-Id: <20210517201932.8860-10-wgong@codeaurora.org>
+        id S237550AbhEQVJ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 17:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46156 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237492AbhEQVJU (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 May 2021 17:09:20 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5719EC061756
+        for <linux-wireless@vger.kernel.org>; Mon, 17 May 2021 14:08:03 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1likT1-00AVFx-Hp; Mon, 17 May 2021 23:07:59 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 1/4] mac80211: unify queueing SKB to iface
+Date:   Mon, 17 May 2021 23:07:54 +0200
+Message-Id: <20210517230754.113b65febd5a.Ie0e1d58a2885e75f242cb6e06f3b9660117fef93@changeid>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210517201932.8860-1-wgong@codeaurora.org>
-References: <20210517201932.8860-1-wgong@codeaurora.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch is to save the transmit power envelope element and power
-constraint in struct ieee80211_bss_conf for 6GHz.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
+We have a bunch of places that open-code the same to queue
+an SKB to an interface, unify that.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/mlme.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ net/mac80211/rx.c | 33 +++++++++++++++------------------
+ 1 file changed, 15 insertions(+), 18 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 2e33a1263518..5b02d78bd934 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -5076,6 +5076,27 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
- 		else
- 			he_oper = NULL;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 62047e93e217..06ea259bb385 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -214,6 +214,16 @@ ieee80211_rx_radiotap_hdrlen(struct ieee80211_local *local,
+ 	return len;
+ }
  
-+		if (is_6ghz) {
-+			struct ieee802_11_elems elems;
-+			struct ieee80211_bss_conf *bss_conf;
-+			u8 i, n;
++static void ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
++					 struct sta_info *sta,
++					 struct sk_buff *skb)
++{
++	skb_queue_tail(&sdata->skb_queue, skb);
++	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	if (sta)
++		sta->rx_stats.packets++;
++}
 +
-+			ieee802_11_parse_elems(ies->data, ies->len, false, &elems,
-+					       NULL, NULL);
-+			bss_conf = &sdata->vif.bss_conf;
-+			bss_conf->pwr_reduction = 0;
-+			if (elems.pwr_constr_elem)
-+				bss_conf->pwr_reduction = *elems.pwr_constr_elem;
-+
-+			memset(bss_conf->tx_pwr_env, 0, sizeof(bss_conf->tx_pwr_env));
-+			bss_conf->tx_pwr_env_num = elems.tx_pwr_env_num;
-+			n = min_t(u8, elems.tx_pwr_env_num,
-+				  ARRAY_SIZE(elems.tx_pwr_env));
-+			for (i = 0; i < n; i++)
-+				memcpy(&bss_conf->tx_pwr_env[i], elems.tx_pwr_env[i],
-+				       elems.tx_pwr_env_len[i]);
-+		}
-+
- 		if (!ieee80211_verify_sta_he_mcs_support(sband, he_oper))
- 			ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
+ static void ieee80211_handle_mu_mimo_mon(struct ieee80211_sub_if_data *sdata,
+ 					 struct sk_buff *skb,
+ 					 int rtap_space)
+@@ -254,8 +264,7 @@ static void ieee80211_handle_mu_mimo_mon(struct ieee80211_sub_if_data *sdata,
+ 	if (!skb)
+ 		return;
+ 
+-	skb_queue_tail(&sdata->skb_queue, skb);
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	ieee80211_queue_skb_to_iface(sdata, NULL, skb);
+ }
+ 
+ /*
+@@ -1339,7 +1348,6 @@ static void ieee80211_rx_reorder_ampdu(struct ieee80211_rx_data *rx,
+ 				       struct sk_buff_head *frames)
+ {
+ 	struct sk_buff *skb = rx->skb;
+-	struct ieee80211_local *local = rx->local;
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
+ 	struct sta_info *sta = rx->sta;
+ 	struct tid_ampdu_rx *tid_agg_rx;
+@@ -1391,8 +1399,7 @@ static void ieee80211_rx_reorder_ampdu(struct ieee80211_rx_data *rx,
+ 	/* if this mpdu is fragmented - terminate rx aggregation session */
+ 	sc = le16_to_cpu(hdr->seq_ctrl);
+ 	if (sc & IEEE80211_SCTL_FRAG) {
+-		skb_queue_tail(&rx->sdata->skb_queue, skb);
+-		ieee80211_queue_work(&local->hw, &rx->sdata->work);
++		ieee80211_queue_skb_to_iface(rx->sdata, NULL, skb);
+ 		return;
  	}
+ 
+@@ -3412,10 +3419,7 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 	return RX_QUEUED;
+ 
+  queue:
+-	skb_queue_tail(&sdata->skb_queue, rx->skb);
+-	ieee80211_queue_work(&local->hw, &sdata->work);
+-	if (rx->sta)
+-		rx->sta->rx_stats.packets++;
++	ieee80211_queue_skb_to_iface(sdata, rx->sta, rx->skb);
+ 	return RX_QUEUED;
+ }
+ 
+@@ -3563,10 +3567,7 @@ ieee80211_rx_h_ext(struct ieee80211_rx_data *rx)
+ 		return RX_DROP_MONITOR;
+ 
+ 	/* for now only beacons are ext, so queue them */
+-	skb_queue_tail(&sdata->skb_queue, rx->skb);
+-	ieee80211_queue_work(&rx->local->hw, &sdata->work);
+-	if (rx->sta)
+-		rx->sta->rx_stats.packets++;
++	ieee80211_queue_skb_to_iface(sdata, rx->sta, rx->skb);
+ 
+ 	return RX_QUEUED;
+ }
+@@ -3623,11 +3624,7 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
+ 		return RX_DROP_MONITOR;
+ 	}
+ 
+-	/* queue up frame and kick off work to process it */
+-	skb_queue_tail(&sdata->skb_queue, rx->skb);
+-	ieee80211_queue_work(&rx->local->hw, &sdata->work);
+-	if (rx->sta)
+-		rx->sta->rx_stats.packets++;
++	ieee80211_queue_skb_to_iface(sdata, rx->sta, rx->skb);
+ 
+ 	return RX_QUEUED;
+ }
 -- 
 2.31.1
 
