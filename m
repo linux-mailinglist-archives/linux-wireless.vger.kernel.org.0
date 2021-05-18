@@ -2,65 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79596386FBB
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 May 2021 04:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFCC038700C
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 May 2021 04:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238661AbhERCBX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 May 2021 22:01:23 -0400
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:54091 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235741AbhERCBW (ORCPT
+        id S239396AbhERCx6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 May 2021 22:53:58 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:3013 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237572AbhERCx5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 May 2021 22:01:22 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0UZGJFVz_1621303201;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UZGJFVz_1621303201)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 18 May 2021 10:00:02 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     pkshih@realtek.com
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        nathan@kernel.org, ndesaulniers@google.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH] rtlwifi: Remove redundant assignments to ul_enc_algo
-Date:   Tue, 18 May 2021 09:59:59 +0800
-Message-Id: <1621303199-1542-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        Mon, 17 May 2021 22:53:57 -0400
+Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.58])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FkgTq6qlszlfZG
+        for <linux-wireless@vger.kernel.org>; Tue, 18 May 2021 10:50:23 +0800 (CST)
+Received: from dggeme759-chm.china.huawei.com (10.3.19.105) by
+ dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Tue, 18 May 2021 10:52:39 +0800
+Received: from localhost.localdomain (10.69.192.56) by
+ dggeme759-chm.china.huawei.com (10.3.19.105) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Tue, 18 May 2021 10:52:38 +0800
+From:   Tian Tao <tiantao6@hisilicon.com>
+To:     <m@bues.ch>
+CC:     <linux-wireless@vger.kernel.org>, Tian Tao <tiantao6@hisilicon.com>
+Subject: [PATCH] ssb: remove unreachable code
+Date:   Tue, 18 May 2021 10:52:32 +0800
+Message-ID: <1621306352-3632-1-git-send-email-tiantao6@hisilicon.com>
+X-Mailer: git-send-email 2.7.4
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.56]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggeme759-chm.china.huawei.com (10.3.19.105)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Variable ul_enc_algo is being initialized with a value that is never
-read, it is being set again in the following switch statements in
-all of the case and default paths. Hence the unitialization is
-redundant and can be removed.
+The return value of ssb_bus_unregister can only be 0 or 1, so this
+condition if (err == -EBUSY) will not hold, so delete it.
 
-Clean up clang warning:
-
-drivers/net/wireless/realtek/rtlwifi/cam.c:170:6: warning: Value stored
-to 'ul_enc_algo' during its initialization is never read
-[clang-analyzer-deadcode.DeadStores]
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
 ---
- drivers/net/wireless/realtek/rtlwifi/cam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ssb/main.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/cam.c b/drivers/net/wireless/realtek/rtlwifi/cam.c
-index 7aa28da..7a0355d 100644
---- a/drivers/net/wireless/realtek/rtlwifi/cam.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/cam.c
-@@ -167,7 +167,7 @@ void rtl_cam_mark_invalid(struct ieee80211_hw *hw, u8 uc_index)
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 0a26984..8fcf53c 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -431,9 +431,7 @@ void ssb_bus_unregister(struct ssb_bus *bus)
+ 	int err;
  
- 	u32 ul_command;
- 	u32 ul_content;
--	u32 ul_enc_algo = rtlpriv->cfg->maps[SEC_CAM_AES];
-+	u32 ul_enc_algo;
+ 	err = ssb_gpio_unregister(bus);
+-	if (err == -EBUSY)
+-		pr_debug("Some GPIOs are still in use\n");
+-	else if (err)
++	if (err)
+ 		pr_debug("Can not unregister GPIO driver: %i\n", err);
  
- 	switch (rtlpriv->sec.pairwise_enc_algorithm) {
- 	case WEP40_ENCRYPTION:
+ 	ssb_buses_lock();
 -- 
-1.8.3.1
+2.7.4
 
