@@ -2,153 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03335387DA3
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 May 2021 18:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C69DD387E94
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 May 2021 19:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343535AbhERQeh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 May 2021 12:34:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37042 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350796AbhERQea (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 May 2021 12:34:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B6EBB61209;
-        Tue, 18 May 2021 16:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1621355592;
-        bh=uLxstjwHGlGzQAupdULmHBYdEHkS2cwNy6g10sCE/XM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=CuDW/JXBccT6hsVONjPpKXTTU9r0iqsMGcH/NI1in4AMYyYK1POpM+Zh/jLtB/6Lu
-         ueStEtBLnfWOjfsW/ZgrBsKA5voAG601ZGl43WGxvTS93WzICZRIveWW8so8ruAqRu
-         HCWOslYmr1OKcu8hEB7PmBzPiC/EHZM1rK/n559A=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, b43-dev@lists.infradead.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] b43legacy: don't save dentries for debugfs
-Date:   Tue, 18 May 2021 18:33:09 +0200
-Message-Id: <20210518163309.3702100-1-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.31.1
+        id S244414AbhERRib (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 May 2021 13:38:31 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:21129 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343605AbhERRia (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 18 May 2021 13:38:30 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1621359432; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=0sMCIsYCMuorGJpaxp925zcBGFQ6EwtE91d4LNKlVtQ=; b=DX21xh9dasPLuAFV9flWHigE420uJMRT2GBBWGnZpw8Vv6s8ufr/pnVGaZkpR7P/tz4RkqwJ
+ 4+clKyHNrl6pd6DKYiLkeL8+3x3XeB4aemUvmHxpwlAFqwZO64a9qLPJrb+7I9TayMl1FFIb
+ HtIUDsbFzlzyl/VmTvz0FXxATVo=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 60a3fb3f7b9a7a2b6cf93626 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 18 May 2021 17:37:03
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A6FADC43460; Tue, 18 May 2021 17:37:03 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 11E34C4338A;
+        Tue, 18 May 2021 17:37:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 11E34C4338A
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Philipp Borgers <borgers@mi.fu-berlin.de>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/2] mac80211: refactor rc_no_data_or_no_ack_use_min function
+References: <20210518110755.43077-1-borgers@mi.fu-berlin.de>
+        <20210518110755.43077-2-borgers@mi.fu-berlin.de>
+Date:   Tue, 18 May 2021 20:37:00 +0300
+In-Reply-To: <20210518110755.43077-2-borgers@mi.fu-berlin.de> (Philipp
+        Borgers's message of "Tue, 18 May 2021 13:07:55 +0200")
+Message-ID: <87eee46j0j.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is no need to keep around the dentry pointers for the debugfs
-files as they will all be automatically removed when the subdir is
-removed.  So save the space and logic involved in keeping them around by
-just getting rid of them entirely.
+Philipp Borgers <borgers@mi.fu-berlin.de> writes:
 
-By doing this change, we remove one of the last in-kernel user that was
-storing the result of debugfs_create_bool(), so that api can be cleaned
-up.
+> Signed-off-by: Philipp Borgers <borgers@mi.fu-berlin.de>
 
-Cc: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: b43-dev@lists.infradead.org
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- .../net/wireless/broadcom/b43legacy/debugfs.c | 29 ++++---------------
- .../net/wireless/broadcom/b43legacy/debugfs.h |  3 --
- 2 files changed, 5 insertions(+), 27 deletions(-)
+Why? Empty commit logs is a bad idea, even if the reason is trivial to
+you it might not be for others.
 
-Note, I can take this through my debugfs tree if wanted, that way I can
-clean up the debugfs_create_bool() api at the same time.  Otherwise it's
-fine, I can wait until next -rc1 for that to happen.
-
-v2: remove X/N from subject, it is a stand-alone patch.
-
-
-diff --git a/drivers/net/wireless/broadcom/b43legacy/debugfs.c b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-index e7e4293c01f2..6b0e8d117061 100644
---- a/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-@@ -336,24 +336,14 @@ int b43legacy_debug(struct b43legacy_wldev *dev, enum b43legacy_dyndbg feature)
- 	return !!(dev->dfsentry && dev->dfsentry->dyn_debug[feature]);
- }
- 
--static void b43legacy_remove_dynamic_debug(struct b43legacy_wldev *dev)
--{
--	struct b43legacy_dfsentry *e = dev->dfsentry;
--	int i;
--
--	for (i = 0; i < __B43legacy_NR_DYNDBG; i++)
--		debugfs_remove(e->dyn_debug_dentries[i]);
--}
--
- static void b43legacy_add_dynamic_debug(struct b43legacy_wldev *dev)
- {
- 	struct b43legacy_dfsentry *e = dev->dfsentry;
- 
- #define add_dyn_dbg(name, id, initstate) do {			\
- 	e->dyn_debug[id] = (initstate);				\
--	e->dyn_debug_dentries[id] =				\
--		debugfs_create_bool(name, 0600, e->subdir,	\
--				&(e->dyn_debug[id]));		\
-+	debugfs_create_bool(name, 0600, e->subdir,		\
-+			    &(e->dyn_debug[id]));		\
- 	} while (0)
- 
- 	add_dyn_dbg("debug_xmitpower", B43legacy_DBG_XMITPOWER, false);
-@@ -396,11 +386,9 @@ void b43legacy_debugfs_add_device(struct b43legacy_wldev *dev)
- 
- #define ADD_FILE(name, mode)	\
- 	do {							\
--		e->file_##name.dentry =				\
--			debugfs_create_file(__stringify(name),	\
--					mode, e->subdir, dev,	\
--					&fops_##name.fops);	\
--		e->file_##name.dentry = NULL;			\
-+		debugfs_create_file(__stringify(name), mode,	\
-+				    e->subdir, dev,		\
-+				    &fops_##name.fops);		\
- 	} while (0)
- 
- 
-@@ -424,13 +412,6 @@ void b43legacy_debugfs_remove_device(struct b43legacy_wldev *dev)
- 	e = dev->dfsentry;
- 	if (!e)
- 		return;
--	b43legacy_remove_dynamic_debug(dev);
--
--	debugfs_remove(e->file_tsf.dentry);
--	debugfs_remove(e->file_ucode_regs.dentry);
--	debugfs_remove(e->file_shm.dentry);
--	debugfs_remove(e->file_txstat.dentry);
--	debugfs_remove(e->file_restart.dentry);
- 
- 	debugfs_remove(e->subdir);
- 	kfree(e->txstatlog.log);
-diff --git a/drivers/net/wireless/broadcom/b43legacy/debugfs.h b/drivers/net/wireless/broadcom/b43legacy/debugfs.h
-index 7a37764406b1..924130880dfe 100644
---- a/drivers/net/wireless/broadcom/b43legacy/debugfs.h
-+++ b/drivers/net/wireless/broadcom/b43legacy/debugfs.h
-@@ -28,7 +28,6 @@ struct b43legacy_txstatus_log {
- };
- 
- struct b43legacy_dfs_file {
--	struct dentry *dentry;
- 	char *buffer;
- 	size_t data_len;
- };
-@@ -49,8 +48,6 @@ struct b43legacy_dfsentry {
- 
- 	/* Enabled/Disabled list for the dynamic debugging features. */
- 	bool dyn_debug[__B43legacy_NR_DYNDBG];
--	/* Dentries for the dynamic debugging entries. */
--	struct dentry *dyn_debug_dentries[__B43legacy_NR_DYNDBG];
- };
- 
- int b43legacy_debug(struct b43legacy_wldev *dev,
 -- 
-2.31.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
