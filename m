@@ -2,98 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A95538A29C
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 11:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E24338A357
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 11:50:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233417AbhETJn3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 May 2021 05:43:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233460AbhETJl2 (ORCPT
+        id S234285AbhETJvX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 May 2021 05:51:23 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:33059 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234359AbhETJtU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 May 2021 05:41:28 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEB4C0611CB;
-        Thu, 20 May 2021 02:29:53 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id u5-20020a7bc0450000b02901480e40338bso4686211wmc.1;
-        Thu, 20 May 2021 02:29:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=0cGf1aBFrVZ9AWx/JMeJaEcovPhb2SGzpzNb2QM+Nk0=;
-        b=uHOB9zSLOzNOqCaCdv3tAd2rduYeX+Y6HLl91ACEXI0mAiipvTrz62XOO2SaIgoVty
-         Pf+RMtbo6f9V42RwSERPXTfjWo95E9cFtuWO9WKA3FnlyXzYA2sixDVebOmpsiGxbbrs
-         9H75RMmiqXRnaSuCiHDHAfG1oZEYV+e0kFKI3et7gI5qVSablXEgzMq74sy11W+OVSBg
-         fv7UHDUKttjvUQS8McyFbz5R9rRxXKz5CWcwkYd/YNSYTQwhvZ8bx4KdaLHqPOOdvH9T
-         sB+YUNNslLh91vbqAYFcpIySpJbri7dhqbJjx3hah4/GEvkwzv8dQ2huIVBDg0fLwNfN
-         LmAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=0cGf1aBFrVZ9AWx/JMeJaEcovPhb2SGzpzNb2QM+Nk0=;
-        b=b241yx4hf56L3tEHKBQhrGCfw5ivFN1cjGHJyZbq0u25yRJ45G588C23bUBsHe4/Tr
-         To5G0q1Yh/rS0KVsRK4ujsrJmcwnKrd4UI1NMmipIxHuiiGnz7rpkFDmJg52F0+QNqn7
-         +Oc8VkiDcmWpsXHaa9jlBKja/Ige0pioOntrjCVS3SPruE1R0gVgwREswpTUoCtf/9va
-         MMZK7I2l7JHcuD/q/IXd/03nPxWnadsAuYko+CixmXvw/LZhDbTc8ZX44G4XTaERhGwP
-         pvUzV/NrcL80fNn0j4AmGX5rbQoaLj9Jr+8E0TiOaBljnJBcycE8K9sHD1Bz2oI6I/PP
-         k+Vw==
-X-Gm-Message-State: AOAM533utA1yRr3PAzH1zVJ+8yjKg9Ut4UcV7j9XSyEYvG5h5QFbyBod
-        PB45V9Om1zDF3VeN4VMutHM=
-X-Google-Smtp-Source: ABdhPJyzQVEd0/LMaL/vCBhQFOWm/v6djjo0ZDbNWBjNqUGvVSd07eOXBWJMelsuPcjU1JJMY/FRXA==
-X-Received: by 2002:a7b:ce0f:: with SMTP id m15mr3040219wmc.55.1621502991917;
-        Thu, 20 May 2021 02:29:51 -0700 (PDT)
-Received: from agape.jhs ([5.171.80.207])
-        by smtp.gmail.com with ESMTPSA id x2sm2018708wmj.3.2021.05.20.02.29.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 May 2021 02:29:51 -0700 (PDT)
-Date:   Thu, 20 May 2021 11:29:49 +0200
-From:   Fabio Aiuto <fabioaiuto83@gmail.com>
-To:     hdegoede@redhat.com, Larry.Finger@lwfinger.net
-Cc:     gregkh@linuxfoundation.org, johannes@sipsolutions.net,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: staging: rtl8723bs: removal of 5G code
-Message-ID: <20210520092946.GA1404@agape.jhs>
+        Thu, 20 May 2021 05:49:20 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1621504079; h=Content-Type: MIME-Version: Message-ID: Date:
+ Subject: Cc: To: From: Sender;
+ bh=H49bGQOtTMgeuENHMnla+QC4zWMuF1l90hEt5XsQN8U=; b=xlMXzF+qdy9BioKscokx7W2dFYUFkT0mE5STqex+t65P3JLRhLAvsFYdfydEscZlLHxLYF6F
+ rj/SiNsZhBUIasu15BFzu6D/hlF9IIIl/XVaOZVf9HMtEZrgAzXBXCicCppF7DxrdRG61r7N
+ 5ijCjfjWzbmQATv+u0aEX/pE5uk=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 60a6304fc4456bc0f1c49d87 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 20 May 2021 09:47:59
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AF2B0C43146; Thu, 20 May 2021 09:47:58 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B86B1C43460;
+        Thu, 20 May 2021 09:47:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B86B1C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Bhaumik Bhatt <bbhatt@codeaurora.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        regressions@lists.linux.dev, stable@vger.kernel.org
+Subject: [regressions] ath11k: v5.12.3 mhi regression
+Date:   Thu, 20 May 2021 12:47:53 +0300
+Message-ID: <87v97dhh2u.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi all,
+Hi,
 
-I'm stick with removal of 5Ghz code from rtl8723bs wireless card driver
-(in staging subsystem).
+I got several reports that this mhi commit broke ath11k in v5.12.3:
 
-I think that this task comprehend deletion of all code managing
-80Mhz bandwidth and upper bandwidth (160 and 80+80). For the latter
-it's simple, there's quite no code (unused enums and obsolete comments).
+commit 29b9829718c5e9bd68fc1c652f5e0ba9b9a64fed
+Author: Bhaumik Bhatt <bbhatt@codeaurora.org>
+Date:   Wed Feb 24 15:23:04 2021 -0800
 
-The former seems to be trickier, there are handlers like this:
+    bus: mhi: core: Process execution environment changes serially
+    
+    [ Upstream commit ef2126c4e2ea2b92f543fae00a2a0332e4573c48 ]
 
-        /* 3 Set Reg483 */
-        SubChnlNum = phy_GetSecondaryChnl_8723B(Adapter);
-        rtw_write8(Adapter, REG_DATA_SC_8723B, SubChnlNum);
+Here are the reports:
 
-phy_GetSecondaryChnl_8723B() contains code like:
+https://bugzilla.kernel.org/show_bug.cgi?id=213055
 
-        } else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40) {
-                if (pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
-                        SCSettingOf20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
-                else if (pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
-                        SCSettingOf20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
-        }
+https://bugzilla.kernel.org/show_bug.cgi?id=212187
 
-so if we are on a 40M channel some settings involving 80M are made and
-the whole is then written on card registers.
+https://bugs.archlinux.org/task/70849?project=1&string=linux
 
-May I get rid of the whole? Are there some implications I should be aware of?
-Is secondary channel needed if we are on 40M bandwidth?
+Interestingly v5.13-rc1 seems to work fine, at least for me, though I
+have not tested v5.12.3 myself. Can someone revert this commit in the
+stable release so that people get their wifi working again, please?
 
-Thank you in advance,
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-fabio
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
