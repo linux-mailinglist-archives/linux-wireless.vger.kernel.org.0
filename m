@@ -2,141 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E1DE389AE8
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 03:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD45389B26
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 04:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbhETBaU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 May 2021 21:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50014 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbhETBaT (ORCPT
+        id S230148AbhETCJW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 May 2021 22:09:22 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:37700 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229808AbhETCJV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 May 2021 21:30:19 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D69C061574;
-        Wed, 19 May 2021 18:28:58 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id s12so2481986qta.3;
-        Wed, 19 May 2021 18:28:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=KepwKSoYma0dg9U0/mBOP8MmCRfubuuYSK9aM8Nmlh0=;
-        b=FWd23Em3TRRJerAxlCpbjkxiSjpxTGbiO/sKBokUK9I4NbtBXCSAi8aDcNndCmYouo
-         /NEkcTCH0g3bzKhccq8fFq0zypIXxk0NX9qhJxDe9mSPnzIMU8mHyOyuNLIvQIrF2pYc
-         ImMI7ZLyBO6GnLsExVPiblAPPZZIvsYY460UVB6wqiWydFcSLpC4LoHmxKfQYi1JcTOa
-         mAq1GjOgd40AXR3C4evz2nc0guZWCanKnKqugo7GyHAZ9By3OUujAi+nb+mntOulO+fD
-         R3SMSWNnJ1G6v2y7S1kWHpGSeL40vVL1p0EuuY5zrav0F4Dt1U9D2odExfTas4NpjkDP
-         inOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=KepwKSoYma0dg9U0/mBOP8MmCRfubuuYSK9aM8Nmlh0=;
-        b=K/rsYIMlMPSWZ95VgYyMSyD33drsWyBC4hJkMP5cu7siNHhaGQR+SPswzgRcS1MAvm
-         4FftHo8e01bqD/Toqb+J5KmUYX0a94YwIXewSxdVNUhCN+1a0ggwG+KCWhbr/DeS09Af
-         wNQYByq32NqA3mbbaqCShmtrWEFdtF3+yT3wFwIiyxpH4cKpE7ahW+NKskWyWgH0oDhs
-         Bzabkb9t3d1bBTzsjzN98wUVbyjxNbcu/1P2hMnDdkFgubXdjD0HaBbMNn4zeiNXREQR
-         C0R0gvM0ngsFZHM8+dTpScuOfFTUEAMGNQZMDVvVcivdA0aOnfhWLSV+kxHj/4tGf4Yg
-         Yuxg==
-X-Gm-Message-State: AOAM530+3K4ofF3IL7F9GAh8p6m8PHSzcmcHvsymxzgGDq8b6/7UgWln
-        qY93pgjWk8lH0tpLbwvfVEARhfmNGQkaj1mgqBq9BgW8481A8A==
-X-Google-Smtp-Source: ABdhPJxRu1lCzqPxh1XA/RSLS/eQz16qc1M2MC1nRj8K/zwf6TzAegxlzm+m0Jl5X4ko1ioF+FRx7jbbRYTwfDVcieQ=
-X-Received: by 2002:a05:622a:341:: with SMTP id r1mr2634942qtw.307.1621474137387;
- Wed, 19 May 2021 18:28:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <CANgQ54dicgKSZFm3w9sbAYztFw9xBHZnt8aQMNCEfMn_twBbWQ@mail.gmail.com>
- <89da58fc162b46558d60495110fcf75f@realtek.com>
-In-Reply-To: <89da58fc162b46558d60495110fcf75f@realtek.com>
-From:   =?UTF-8?B?6YKx5ZCN56Kp?= <ccchiu77@gmail.com>
-Date:   Thu, 20 May 2021 09:28:46 +0800
-Message-ID: <CANgQ54cKA5N1h1kMgS52N1acrp+pJzV3e+8vd61miSS0_VVD7Q@mail.gmail.com>
-Subject: Re: How does the rate adaptive mask work on Realtek WiFi driver
-To:     Pkshih <pkshih@realtek.com>
-Cc:     Andy Huang <tehuang@realtek.com>,
+        Wed, 19 May 2021 22:09:21 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14K27bpW6007653, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14K27bpW6007653
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 20 May 2021 10:07:37 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 20 May 2021 10:07:37 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 20 May 2021 10:07:36 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74%5]) with mapi id
+ 15.01.2106.013; Thu, 20 May 2021 10:07:36 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "ccchiu77@gmail.com" <ccchiu77@gmail.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "tehuang@realtek.com" <tehuang@realtek.com>,
         "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "reto.schneider@husqvarnagroup.com" 
+        <reto.schneider@husqvarnagroup.com>,
         "kuba@kernel.org" <kuba@kernel.org>,
         "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        Reto Schneider <reto.schneider@husqvarnagroup.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: How does the rate adaptive mask work on Realtek WiFi driver
+Thread-Topic: How does the rate adaptive mask work on Realtek WiFi driver
+Thread-Index: AQHXRXeJ96JiGH6RoUuehd+sRUk43arifRnQgAigzwCAAAi9AA==
+Date:   Thu, 20 May 2021 02:07:36 +0000
+Message-ID: <89395bf88c4cee3986928440bb934093457a85a9.camel@realtek.com>
+References: <CANgQ54dicgKSZFm3w9sbAYztFw9xBHZnt8aQMNCEfMn_twBbWQ@mail.gmail.com>
+         <89da58fc162b46558d60495110fcf75f@realtek.com>
+         <CANgQ54cKA5N1h1kMgS52N1acrp+pJzV3e+8vd61miSS0_VVD7Q@mail.gmail.com>
+In-Reply-To: <CANgQ54cKA5N1h1kMgS52N1acrp+pJzV3e+8vd61miSS0_VVD7Q@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.16.17.72]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzUvMjAg5LiK5Y2IIDEyOjA1OjAw?=
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D8B4F2F5C3B55349AD3E64257B9A073C@realtek.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 05/20/2021 01:56:50
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 163775 [May 19 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 446 446 0309aa129ce7cd9d810f87a68320917ac2eba541
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {Track_Chinese_Simplified, text}
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/20/2021 01:59:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> =E6=96=BC 2021=E5=B9=B45=E6=9C=8814=E6=97=A5 =
-=E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=882:08=E5=AF=AB=E9=81=93=EF=BC=9A
->
->
-> > -----Original Message-----
-> > From: =E9=82=B1=E5=90=8D=E7=A2=A9 [mailto:ccchiu77@gmail.com]
-> > Sent: Monday, May 10, 2021 4:36 PM
-> > To: Pkshih; Andy Huang; Larry.Finger@lwfinger.net; kuba@kernel.org; kva=
-lo@codeaurora.org; Reto
-> > Schneider; linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org
-> > Subject: How does the rate adaptive mask work on Realtek WiFi driver
-> >
-> > Hi guys,
-> >     I had a problem while verifying the ampdu tx throughput with the
-> > rtl8xxxu driver on RTL8188CUS module. The throughput number is
-> > relatively good, 39~42Mbps  TCP on 2.4GHz channel. However, the
-> > retransmission rate is high, it's 15% ~ 21% with rtl8xxxu driver and
-> > It's almost the same result with the rtl8192cu driver. I can get
-> > averagely 7~10% retransmission rate in the same test bed with Realtek
-> > vendor driver.
-> >
-> >     From the air capture, I can see the rtl8xxxu driver keep sending
-> > the aggregated frames in MCS7 and doesn't even fall back to lower MCS
-> > index in the subsequent retries. I can only see very few retried
-> > packets been sent with MCS0 or 6Mbps grate. On the vendor driver, I'll
-> > see the retried ampdu packets with MCS4 after 3 retries w/o ack from
-> > the receiver.
-> >
-> >     From the rate mask command issued by the h2c command, I force both
-> > the rtl8xxxu driver and vendor driver to use the same ratemask 0xfffff
-> > (MCS 0-7 and b/g rate included) and leave the arg0 as-is (mostly 0xa0)
-> > and I expect both drivers can do the rate adaptive thing in the same
-> > way, but it seems to make no difference. The rtl8xxxu driver still
-> > sends the packets with highest MCS.
-> >
-> >     Can anyone tell me what should I expect the rate adaptive to work
-> > with the rate mask 0xfffff and 0xf0000? Does the 0xf0000 means that it
-> > will pick up a tx rate only between nrate MCS4 to MCS7? I need a base
-> > line so that I can judge it's simply a rate mask problem or maybe the
-> > h2c command is not written correctly. Please kindly suggest what I
-> > should do next. Thanks
-> >
->
-> The rate mask indicates which rates will be used by rate adaptive mechani=
-sm.
-> I'm not sure the exact bit allocation for CCK/OFDM/MCS, maybe
-> 0x0000f/0x00ff0/0xff0000 for CCK/OFDM/MCS respectively, but you can trace
-> vendor driver to know the detail.
->
-> I suggest you can try to send only OFDM rate mask, and expect to see OFDM
-> rate only by your sniffer. If it's still keep on MCS7, rate adaptive may
-> not work properly.
->
-Thanks. That's my expectation and I'll try to verify it on vendor
-driver and upstream rtl8192cu driver.
-
-> Also, you can compare the content of rate adaptive H2C with vendor driver=
- to
-> see if the format is correct.
->
-> Another thing is to try 'fix_rate' in tx_desc. Check the vendor driver to
-> know the use_rate/rate/bw fields of tx_desc. Then, try to fix the rate yo=
-u
-> want.
->
-If I set the fix_rate in tx_desc, will the rate mask in H2C command be
-ignored? Or the underlying firmware will do the tx rate fallback for
-the retry packets?
-
-Chris
-
-> --
-> Ping-Ke
->
+T24gVGh1LCAyMDIxLTA1LTIwIGF0IDA5OjI4ICswODAwLCDpgrHlkI3noqkgd3JvdGU6DQo+IFBr
+c2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiDmlrwgMjAyMeW5tDXmnIgxNOaXpSDpgLHkupQg5LiL
+5Y2IMjowOOWvq+mBk++8mg0KPiA+IA0KPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0N
+Cj4gPiA+IEZyb206IOmCseWQjeeiqSBbbWFpbHRvOmNjY2hpdTc3QGdtYWlsLmNvbV0NCj4gPiA+
+IFNlbnQ6IE1vbmRheSwgTWF5IDEwLCAyMDIxIDQ6MzYgUE0NCj4gPiA+IFRvOiBQa3NoaWg7IEFu
+ZHkgSHVhbmc7IExhcnJ5LkZpbmdlckBsd2Zpbmdlci5uZXQ7IA0KPiA+ID4ga3ViYUBrZXJuZWwu
+b3JnOyBrdmFsb0Bjb2RlYXVyb3JhLm9yZzsgUmV0bw0KPiA+ID4gU2NobmVpZGVyOyBsaW51eC13
+aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IA0KPiA+ID4gbGludXgta2VybmVsQHZnZXIua2VybmVs
+Lm9yZw0KPiA+ID4gU3ViamVjdDogSG93IGRvZXMgdGhlIHJhdGUgYWRhcHRpdmUgbWFzayB3b3Jr
+IG9uIFJlYWx0ZWsgV2lGaQ0KPiA+ID4gZHJpdmVyDQo+ID4gPiANCj4gPiA+IEhpIGd1eXMsDQo+
+ID4gPiAgICAgSSBoYWQgYSBwcm9ibGVtIHdoaWxlIHZlcmlmeWluZyB0aGUgYW1wZHUgdHggdGhy
+b3VnaHB1dCB3aXRoDQo+ID4gPiB0aGUNCj4gPiA+IHJ0bDh4eHh1IGRyaXZlciBvbiBSVEw4MTg4
+Q1VTIG1vZHVsZS4gVGhlIHRocm91Z2hwdXQgbnVtYmVyIGlzDQo+ID4gPiByZWxhdGl2ZWx5IGdv
+b2QsIDM5fjQyTWJwcyAgVENQIG9uIDIuNEdIeiBjaGFubmVsLiBIb3dldmVyLCB0aGUNCj4gPiA+
+IHJldHJhbnNtaXNzaW9uIHJhdGUgaXMgaGlnaCwgaXQncyAxNSUgfiAyMSUgd2l0aCBydGw4eHh4
+dSBkcml2ZXINCj4gPiA+IGFuZA0KPiA+ID4gSXQncyBhbG1vc3QgdGhlIHNhbWUgcmVzdWx0IHdp
+dGggdGhlIHJ0bDgxOTJjdSBkcml2ZXIuIEkgY2FuIGdldA0KPiA+ID4gYXZlcmFnZWx5IDd+MTAl
+IHJldHJhbnNtaXNzaW9uIHJhdGUgaW4gdGhlIHNhbWUgdGVzdCBiZWQgd2l0aA0KPiA+ID4gUmVh
+bHRlaw0KPiA+ID4gdmVuZG9yIGRyaXZlci4NCj4gPiA+IA0KPiA+ID4gICAgIEZyb20gdGhlIGFp
+ciBjYXB0dXJlLCBJIGNhbiBzZWUgdGhlIHJ0bDh4eHh1IGRyaXZlciBrZWVwDQo+ID4gPiBzZW5k
+aW5nDQo+ID4gPiB0aGUgYWdncmVnYXRlZCBmcmFtZXMgaW4gTUNTNyBhbmQgZG9lc24ndCBldmVu
+IGZhbGwgYmFjayB0byBsb3dlcg0KPiA+ID4gTUNTDQo+ID4gPiBpbmRleCBpbiB0aGUgc3Vic2Vx
+dWVudCByZXRyaWVzLiBJIGNhbiBvbmx5IHNlZSB2ZXJ5IGZldyByZXRyaWVkDQo+ID4gPiBwYWNr
+ZXRzIGJlZW4gc2VudCB3aXRoIE1DUzAgb3IgNk1icHMgZ3JhdGUuIE9uIHRoZSB2ZW5kb3IgZHJp
+dmVyLA0KPiA+ID4gSSdsbA0KPiA+ID4gc2VlIHRoZSByZXRyaWVkIGFtcGR1IHBhY2tldHMgd2l0
+aCBNQ1M0IGFmdGVyIDMgcmV0cmllcyB3L28gYWNrDQo+ID4gPiBmcm9tDQo+ID4gPiB0aGUgcmVj
+ZWl2ZXIuDQo+ID4gPiANCj4gPiA+ICAgICBGcm9tIHRoZSByYXRlIG1hc2sgY29tbWFuZCBpc3N1
+ZWQgYnkgdGhlIGgyYyBjb21tYW5kLCBJIGZvcmNlDQo+ID4gPiBib3RoDQo+ID4gPiB0aGUgcnRs
+OHh4eHUgZHJpdmVyIGFuZCB2ZW5kb3IgZHJpdmVyIHRvIHVzZSB0aGUgc2FtZSByYXRlbWFzaw0K
+PiA+ID4gMHhmZmZmZg0KPiA+ID4gKE1DUyAwLTcgYW5kIGIvZyByYXRlIGluY2x1ZGVkKSBhbmQg
+bGVhdmUgdGhlIGFyZzAgYXMtaXMgKG1vc3RseQ0KPiA+ID4gMHhhMCkNCj4gPiA+IGFuZCBJIGV4
+cGVjdCBib3RoIGRyaXZlcnMgY2FuIGRvIHRoZSByYXRlIGFkYXB0aXZlIHRoaW5nIGluIHRoZQ0K
+PiA+ID4gc2FtZQ0KPiA+ID4gd2F5LCBidXQgaXQgc2VlbXMgdG8gbWFrZSBubyBkaWZmZXJlbmNl
+LiBUaGUgcnRsOHh4eHUgZHJpdmVyDQo+ID4gPiBzdGlsbA0KPiA+ID4gc2VuZHMgdGhlIHBhY2tl
+dHMgd2l0aCBoaWdoZXN0IE1DUy4NCj4gPiA+IA0KPiA+ID4gICAgIENhbiBhbnlvbmUgdGVsbCBt
+ZSB3aGF0IHNob3VsZCBJIGV4cGVjdCB0aGUgcmF0ZSBhZGFwdGl2ZSB0bw0KPiA+ID4gd29yaw0K
+PiA+ID4gd2l0aCB0aGUgcmF0ZSBtYXNrIDB4ZmZmZmYgYW5kIDB4ZjAwMDA/IERvZXMgdGhlIDB4
+ZjAwMDAgbWVhbnMNCj4gPiA+IHRoYXQgaXQNCj4gPiA+IHdpbGwgcGljayB1cCBhIHR4IHJhdGUg
+b25seSBiZXR3ZWVuIG5yYXRlIE1DUzQgdG8gTUNTNz8gSSBuZWVkIGENCj4gPiA+IGJhc2UNCj4g
+PiA+IGxpbmUgc28gdGhhdCBJIGNhbiBqdWRnZSBpdCdzIHNpbXBseSBhIHJhdGUgbWFzayBwcm9i
+bGVtIG9yIG1heWJlDQo+ID4gPiB0aGUNCj4gPiA+IGgyYyBjb21tYW5kIGlzIG5vdCB3cml0dGVu
+IGNvcnJlY3RseS4gUGxlYXNlIGtpbmRseSBzdWdnZXN0IHdoYXQNCj4gPiA+IEkNCj4gPiA+IHNo
+b3VsZCBkbyBuZXh0LiBUaGFua3MNCj4gPiA+IA0KPiA+IA0KPiA+IFRoZSByYXRlIG1hc2sgaW5k
+aWNhdGVzIHdoaWNoIHJhdGVzIHdpbGwgYmUgdXNlZCBieSByYXRlIGFkYXB0aXZlDQo+ID4gbWVj
+aGFuaXNtLg0KPiA+IEknbSBub3Qgc3VyZSB0aGUgZXhhY3QgYml0IGFsbG9jYXRpb24gZm9yIEND
+Sy9PRkRNL01DUywgbWF5YmUNCj4gPiAweDAwMDBmLzB4MDBmZjAvMHhmZjAwMDAgZm9yIENDSy9P
+RkRNL01DUyByZXNwZWN0aXZlbHksIGJ1dCB5b3UgY2FuDQo+ID4gdHJhY2UNCj4gPiB2ZW5kb3Ig
+ZHJpdmVyIHRvIGtub3cgdGhlIGRldGFpbC4NCj4gPiANCj4gPiBJIHN1Z2dlc3QgeW91IGNhbiB0
+cnkgdG8gc2VuZCBvbmx5IE9GRE0gcmF0ZSBtYXNrLCBhbmQgZXhwZWN0IHRvDQo+ID4gc2VlIE9G
+RE0NCj4gPiByYXRlIG9ubHkgYnkgeW91ciBzbmlmZmVyLiBJZiBpdCdzIHN0aWxsIGtlZXAgb24g
+TUNTNywgcmF0ZQ0KPiA+IGFkYXB0aXZlIG1heQ0KPiA+IG5vdCB3b3JrIHByb3Blcmx5Lg0KPiA+
+IA0KPiBUaGFua3MuIFRoYXQncyBteSBleHBlY3RhdGlvbiBhbmQgSSdsbCB0cnkgdG8gdmVyaWZ5
+IGl0IG9uIHZlbmRvcg0KPiBkcml2ZXIgYW5kIHVwc3RyZWFtIHJ0bDgxOTJjdSBkcml2ZXIuDQo+
+IA0KPiA+IEFsc28sIHlvdSBjYW4gY29tcGFyZSB0aGUgY29udGVudCBvZiByYXRlIGFkYXB0aXZl
+IEgyQyB3aXRoIHZlbmRvcg0KPiA+IGRyaXZlciB0bw0KPiA+IHNlZSBpZiB0aGUgZm9ybWF0IGlz
+IGNvcnJlY3QuDQo+ID4gDQo+ID4gQW5vdGhlciB0aGluZyBpcyB0byB0cnkgJ2ZpeF9yYXRlJyBp
+biB0eF9kZXNjLiBDaGVjayB0aGUgdmVuZG9yDQo+ID4gZHJpdmVyIHRvDQo+ID4ga25vdyB0aGUg
+dXNlX3JhdGUvcmF0ZS9idyBmaWVsZHMgb2YgdHhfZGVzYy4gVGhlbiwgdHJ5IHRvIGZpeCB0aGUN
+Cj4gPiByYXRlIHlvdQ0KPiA+IHdhbnQuDQo+ID4gDQo+IElmIEkgc2V0IHRoZSBmaXhfcmF0ZSBp
+biB0eF9kZXNjLCB3aWxsIHRoZSByYXRlIG1hc2sgaW4gSDJDIGNvbW1hbmQNCj4gYmUNCj4gaWdu
+b3JlZD8gT3IgdGhlIHVuZGVybHlpbmcgZmlybXdhcmUgd2lsbCBkbyB0aGUgdHggcmF0ZSBmYWxs
+YmFjayBmb3INCj4gdGhlIHJldHJ5IHBhY2tldHM/DQo+IA0KDQpUaGUgcHJpb3JpdHkgb2YgZml4
+IHJhdGUgaW4gdHhfZGVzYyBpcyBoaWdoZXIgdGhhbiByYXRlIG1hc2sgaW4gSDJDDQpjb21tYW5k
+OyB5ZXMsIEgyQyBpcyBpZ25vcmVkLiBCdXQgaXQgc3RpbGwgZG9lcyByZXRyeSByYXRlIGZhbGxi
+YWNrDQp1bmxlc3MgeW91IGRpc2FibGUgaXQgaW4gdHhfZGVzYy4NCg0KSSB0aGluayB5b3UgY2Fu
+IGNsYXJpZnkgd2hldGhlciB0aGUgcmF0ZSBpcyBjb250cm9sbGVkIGJ5IGZpcm13YXJlDQpyYXRl
+IGFkYXB0aXZlIG1lY2hhbmlzbSBmaXJzdC4NCg0KLS0NClBpbmctS2UNCg0KDQo=
