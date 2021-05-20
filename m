@@ -2,88 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E24338A357
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 11:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9357338ABBD
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 13:26:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234285AbhETJvX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 May 2021 05:51:23 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:33059 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234359AbhETJtU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 May 2021 05:49:20 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1621504079; h=Content-Type: MIME-Version: Message-ID: Date:
- Subject: Cc: To: From: Sender;
- bh=H49bGQOtTMgeuENHMnla+QC4zWMuF1l90hEt5XsQN8U=; b=xlMXzF+qdy9BioKscokx7W2dFYUFkT0mE5STqex+t65P3JLRhLAvsFYdfydEscZlLHxLYF6F
- rj/SiNsZhBUIasu15BFzu6D/hlF9IIIl/XVaOZVf9HMtEZrgAzXBXCicCppF7DxrdRG61r7N
- 5ijCjfjWzbmQATv+u0aEX/pE5uk=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 60a6304fc4456bc0f1c49d87 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 20 May 2021 09:47:59
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AF2B0C43146; Thu, 20 May 2021 09:47:58 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B86B1C43460;
-        Thu, 20 May 2021 09:47:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B86B1C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bhaumik Bhatt <bbhatt@codeaurora.org>,
+        id S241501AbhETL1a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 May 2021 07:27:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45834 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241734AbhETLZZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 May 2021 07:25:25 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 11C606109F;
+        Thu, 20 May 2021 10:23:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1621506191;
+        bh=Ne8XWBjCjC7wMEdXnGePN5BGuqE/9UQF0eMVmwjZmgc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HtYjcM9VChqKKpPfgLDpUZn56MOoNCY1C3QUQdtMNbLH22/6n+YCYMPx/ZL5MgbCX
+         zKFTBcw5DfH5Kdw0pP9Ces1FmRO8A9XdQ88MxPm8ipZGgNd6AGy6QPat4jS6JYVp4S
+         zbMVw6yN9c9vrB+H89nqbDNyi9adLX1rVGzeAvaE=
+Date:   Thu, 20 May 2021 12:02:40 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Bhaumik Bhatt <bbhatt@codeaurora.org>,
         Loic Poulain <loic.poulain@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: [regressions] ath11k: v5.12.3 mhi regression
-Date:   Thu, 20 May 2021 12:47:53 +0300
-Message-ID: <87v97dhh2u.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Subject: Re: [regressions] ath11k: v5.12.3 mhi regression
+Message-ID: <YKYzwBJNTy4Czd1A@kroah.com>
+References: <87v97dhh2u.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v97dhh2u.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Thu, May 20, 2021 at 12:47:53PM +0300, Kalle Valo wrote:
+> Hi,
+> 
+> I got several reports that this mhi commit broke ath11k in v5.12.3:
+> 
+> commit 29b9829718c5e9bd68fc1c652f5e0ba9b9a64fed
+> Author: Bhaumik Bhatt <bbhatt@codeaurora.org>
+> Date:   Wed Feb 24 15:23:04 2021 -0800
+> 
+>     bus: mhi: core: Process execution environment changes serially
+>     
+>     [ Upstream commit ef2126c4e2ea2b92f543fae00a2a0332e4573c48 ]
+> 
+> Here are the reports:
+> 
+> https://bugzilla.kernel.org/show_bug.cgi?id=213055
+> 
+> https://bugzilla.kernel.org/show_bug.cgi?id=212187
+> 
+> https://bugs.archlinux.org/task/70849?project=1&string=linux
+> 
+> Interestingly v5.13-rc1 seems to work fine, at least for me, though I
+> have not tested v5.12.3 myself. Can someone revert this commit in the
+> stable release so that people get their wifi working again, please?
 
-I got several reports that this mhi commit broke ath11k in v5.12.3:
+How does the mhi bus code relate to a ath11k driver?  What bus is that
+on?
 
-commit 29b9829718c5e9bd68fc1c652f5e0ba9b9a64fed
-Author: Bhaumik Bhatt <bbhatt@codeaurora.org>
-Date:   Wed Feb 24 15:23:04 2021 -0800
+This seems odd...
 
-    bus: mhi: core: Process execution environment changes serially
-    
-    [ Upstream commit ef2126c4e2ea2b92f543fae00a2a0332e4573c48 ]
-
-Here are the reports:
-
-https://bugzilla.kernel.org/show_bug.cgi?id=213055
-
-https://bugzilla.kernel.org/show_bug.cgi?id=212187
-
-https://bugs.archlinux.org/task/70849?project=1&string=linux
-
-Interestingly v5.13-rc1 seems to work fine, at least for me, though I
-have not tested v5.12.3 myself. Can someone revert this commit in the
-stable release so that people get their wifi working again, please?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+greg k-h
