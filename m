@@ -2,113 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0B3389BF9
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 05:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E9DF389C02
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 05:46:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229955AbhETDmN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 May 2021 23:42:13 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:29641 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbhETDmN (ORCPT
+        id S230298AbhETDsM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 May 2021 23:48:12 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:44331 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229554AbhETDsL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 May 2021 23:42:13 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1621482052; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=Dm0UeqvKp5/7TvMPXjTUVVNafJUynQkZ6bgIdN/L1SI=; b=KB4o+dVEAaR7bmKQt0+QLucpmuf6WsWuddl3t5LDp4Rh79wUCBXE9cew2BMCizVY9nn1VO1L
- 6ZY3IEj0vhMdhk1RyEprVfDVRHLGqwiFXEELw6oATr1dnZmRFAPQnpHodfRVcKE/OZUXG5Md
- ijxKDtCMxU6X1PU+rLb2aQ54nPE=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 60a5da2db15734c8f98fadd2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 20 May 2021 03:40:29
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 02C01C433D3; Thu, 20 May 2021 03:40:29 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 30118C433D3;
-        Thu, 20 May 2021 03:40:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 30118C433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     johannes@sipsolutions.net, ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH] wireless: add check of field VHT Extended NSS BW Capable for 160/80+80 MHz setting
-Date:   Wed, 19 May 2021 23:40:21 -0400
-Message-Id: <20210520034021.14690-1-wgong@codeaurora.org>
-X-Mailer: git-send-email 2.31.1
+        Wed, 19 May 2021 23:48:11 -0400
+X-UUID: 646cb2251ae7492298d48e1015fafb46-20210520
+X-UUID: 646cb2251ae7492298d48e1015fafb46-20210520
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 103525911; Thu, 20 May 2021 11:46:47 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 20 May 2021 11:46:46 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 20 May 2021 11:46:46 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Leon Yen <leon.yen@mediatek.com>,
+        YN Chen <yn.chen@mediatek.com>
+Subject: [PATCH 2/7] mt76: connac: update BA win size in Rx direction
+Date:   Thu, 20 May 2021 11:46:36 +0800
+Message-ID: <1621482401-29025-2-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1621482401-29025-1-git-send-email-sean.wang@mediatek.com>
+References: <1621482401-29025-1-git-send-email-sean.wang@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Table 9-251—Supported VHT-MCS and NSS Set subfields, it has subfield VHT Extended
-NSS BW Capable, its definition is:
-Indicates whether the STA is capable of interpreting the Extended NSS BW
-Support subfield of the VHT Capabilities Information field.
+From: Deren Wu <deren.wu@mediatek.com>
 
-This patch is to add check for the subfield.
+Update BA size used data transimission in the Rx direction to improve Rx
+throughput.
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
+Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: YN Chen <yn.chen@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- net/wireless/chan.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 285b8076054b..f7f86bd75cc0 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -942,7 +942,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 	struct ieee80211_sta_vht_cap *vht_cap;
- 	struct ieee80211_edmg *edmg_cap;
- 	u32 width, control_freq, cap;
--	bool support_80_80 = false;
-+	bool ext_nss_cap, support_80_80 = false;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index e0d6bdadf5b1..73359defa176 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -931,8 +931,10 @@ void mt76_connac_mcu_wtbl_ba_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 		ba->rst_ba_sb = 1;
+ 	}
  
- 	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
- 		return false;
-@@ -950,6 +950,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 	ht_cap = &wiphy->bands[chandef->chan->band]->ht_cap;
- 	vht_cap = &wiphy->bands[chandef->chan->band]->vht_cap;
- 	edmg_cap = &wiphy->bands[chandef->chan->band]->edmg_cap;
-+	ext_nss_cap = vht_cap->vht_mcs.tx_highest & IEEE80211_VHT_EXT_NSS_BW_CAPABLE;
+-	if (is_mt7921(dev))
++	if (is_mt7921(dev)) {
++		ba->ba_winsize = enable ? cpu_to_le16(params->buf_size) : 0;
+ 		return;
++	}
  
- 	if (edmg_cap->channels &&
- 	    !cfg80211_edmg_usable(wiphy,
-@@ -1015,7 +1016,8 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 			(cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ) ||
- 			(cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
- 			 cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) ||
--			u32_get_bits(cap, IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) > 1;
-+			(ext_nss_cap &&
-+			 u32_get_bits(cap, IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) > 1);
- 		if (chandef->chan->band != NL80211_BAND_6GHZ && !support_80_80)
- 			return false;
- 		fallthrough;
-@@ -1037,7 +1039,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 		cap = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
- 		if (cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
- 		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ &&
--		    !(vht_cap->cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))
-+		    !(ext_nss_cap && vht_cap->cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))
- 			return false;
- 		break;
- 	default:
+ 	if (enable && tx) {
+ 		u8 ba_range[] = { 4, 8, 12, 24, 36, 48, 54, 64 };
 -- 
-2.31.1
+2.25.1
 
