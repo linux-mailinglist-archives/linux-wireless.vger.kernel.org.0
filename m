@@ -2,176 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D32E938AE66
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 14:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C96038AE71
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 14:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237218AbhETMhW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 May 2021 08:37:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237423AbhETMg7 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 May 2021 08:36:59 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8886FC034632
-        for <linux-wireless@vger.kernel.org>; Thu, 20 May 2021 04:48:28 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id n83so11527011ybg.0
-        for <linux-wireless@vger.kernel.org>; Thu, 20 May 2021 04:48:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IzY+SQkfmVarzVl12JOqpF+g+vofysWXcmcw1n0tXyk=;
-        b=kFilxWChMBWOdh2BWmPwnl879OJWmL6mRV0fowtUhReTcUISE9afvvX+wH6Ym1fUS7
-         BLpnEhNoYQuICVNMrTE/deWTQWDk8AGcGb5m/IoZWqWNx0SwH7B3L8ix/kywgRiJB8Fw
-         DzWxuoapRNUPDjyXr6XRyV61FxdZjdaLj7JQsJf31LGat88dgZfcVjtwylhl/MgWys6q
-         M6oyzcam4xHmzJE8TpKjZ3asbQjLXjQLEmBQcF+zGO68XLR3Qerq0wy3MC0xdS84V9yK
-         a3r2xkxRDjXZ9AMnjnpiAWTFvK5P6QRSJDQTuaQ2dBVR/RLRtewY48J8od0baEPPXpVW
-         itmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IzY+SQkfmVarzVl12JOqpF+g+vofysWXcmcw1n0tXyk=;
-        b=ULAO9f0f+llmhlzHk0kp7/LmiLAkjXnP07tPhuX5Gj80gGSYajtsi9vlC7UKcir2HO
-         RSCqGvsLL5QI5iUEtVu98UP89u+mMBfgeg+wPoQVlHob/SewK5CyRxMkSU4ZKxu++Ga/
-         hBMV+r15rMUi92HFBXOv7p/PVgbXdkSr+39dem751b0xqVV0aEfXy5opfWoB57jmUP3Y
-         XIR6xVmrBNg/6FHe1l5XRMvTgpH02NIMaTj92Y87AUIjcwdQqlztMfCKd8gc431rqczL
-         XnQ54u1Gs/P9X2jYf1Nh5x1FQmBMRBx1o9VMQt5bkLk3r4q0LjYa56ux7wfTrch4TpDl
-         nifQ==
-X-Gm-Message-State: AOAM531hLKvtuTotDQT8Zl1m1f4yiw5lf5e0gLfH9Wxf7sVBa3sgUcb/
-        VI7A1Ohf3a9SpUvIANx9J3+IuO3owBPt65GutIHpNw==
-X-Google-Smtp-Source: ABdhPJxLuyht98R9stDoeFxuz2RFWAB9bkdIq1ZZUcGkIlI+Ijs7qG26c8Uabkt9z7GuoUfJyb8UNAFfGKL38ajpVTs=
-X-Received: by 2002:a25:1fc2:: with SMTP id f185mr6327358ybf.258.1621511307687;
- Thu, 20 May 2021 04:48:27 -0700 (PDT)
+        id S240099AbhETMh5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 May 2021 08:37:57 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:58805 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236785AbhETMhd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 May 2021 08:37:33 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1621514172; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=TpLmLahd2h7hQJJWsFxm53pPM8fVoixMAUaW1DdjRfU=; b=OrjARsGpS9kpOf/7j+DRTq3cTrbsfNGnKgQm+MK8+gy/CIpAXXH6CAqiv8EsM02Q4+eElwCI
+ ByKO0ecA/xoOTLvwa613U2oUb3QV92XB5PwAODdwT+BMg1eprzuLi4rWyqLGn0j7uSorQ7aB
+ pNicC9K8G/LD6hBpnV5b93nWf5c=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 60a657b6d1aee7698da9f54f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 20 May 2021 12:36:06
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C7E16C43217; Thu, 20 May 2021 12:36:05 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D7A4AC433F1;
+        Thu, 20 May 2021 12:36:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D7A4AC433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Bhaumik Bhatt <bbhatt@codeaurora.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        regressions@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [regressions] ath11k: v5.12.3 mhi regression
+References: <87v97dhh2u.fsf@codeaurora.org> <YKYzwBJNTy4Czd1A@kroah.com>
+        <20210520104313.GA128703@thinkpad>
+Date:   Thu, 20 May 2021 15:36:00 +0300
+In-Reply-To: <20210520104313.GA128703@thinkpad> (Manivannan Sadhasivam's
+        message of "Thu, 20 May 2021 16:13:13 +0530")
+Message-ID: <87r1i1h9an.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <1601058581-19461-1-git-send-email-amit.pundir@linaro.org>
- <20200929190817.GA968845@bogus> <20201029134017.GA807@yoga>
- <CAMi1Hd20UpNhZm6z5t5Kcy8eTABiAj7X_Gm66QnJspZWSio0Ew@mail.gmail.com>
- <20201124175146.GG185852@builder.lan> <87sg8heeta.fsf@codeaurora.org>
- <CAMi1Hd2FN6QQzbKHooVyqQfH1NFTNLt4RwxyVXRf+5DwTc9ojg@mail.gmail.com>
- <87czxa4grv.fsf@codeaurora.org> <YCF5ZC/WMRefTRcQ@builder.lan> <87blctveyj.fsf@codeaurora.org>
-In-Reply-To: <87blctveyj.fsf@codeaurora.org>
-From:   Amit Pundir <amit.pundir@linaro.org>
-Date:   Thu, 20 May 2021 17:17:52 +0530
-Message-ID: <CAMi1Hd2g68U8LVng2+RmhD+zFLqW8vcHS54FvaKxNF+BMs_tZg@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: Introduce a devicetree quirk to skip host cap QMI requests
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh@kernel.org>
-Cc:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        Konrad Dybcio <konradybcio@gmail.com>,
-        dt <devicetree@vger.kernel.org>,
-        David S Miller <davem@davemloft.net>,
-        John Stultz <john.stultz@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
 
-Reviving this old thread again, to check if there are still any hopes
-of landing this patch upstream.
+> On Thu, May 20, 2021 at 12:02:40PM +0200, Greg KH wrote:
+>> On Thu, May 20, 2021 at 12:47:53PM +0300, Kalle Valo wrote:
+>> > Hi,
+>> > 
+>> > I got several reports that this mhi commit broke ath11k in v5.12.3:
+>> > 
+>> > commit 29b9829718c5e9bd68fc1c652f5e0ba9b9a64fed
+>> > Author: Bhaumik Bhatt <bbhatt@codeaurora.org>
+>> > Date:   Wed Feb 24 15:23:04 2021 -0800
+>> > 
+>> >     bus: mhi: core: Process execution environment changes serially
+>> >     
+>> >     [ Upstream commit ef2126c4e2ea2b92f543fae00a2a0332e4573c48 ]
+>> > 
+>> > Here are the reports:
+>> > 
+>> > https://bugzilla.kernel.org/show_bug.cgi?id=213055
+>> > 
+>> > https://bugzilla.kernel.org/show_bug.cgi?id=212187
+>> > 
+>> > https://bugs.archlinux.org/task/70849?project=1&string=linux
+>> > 
+>> > Interestingly v5.13-rc1 seems to work fine, at least for me, though I
+>> > have not tested v5.12.3 myself. Can someone revert this commit in the
+>> > stable release so that people get their wifi working again, please?
+>> 
+>> How does the mhi bus code relate to a ath11k driver?  What bus is that
+>> on?
+>> 
+>
+> MHI is the transport used by the ath11k driver to work with the WLAN devices
+> over PCIe.
+>
+> Regarding the bug, I'd suggest to wait for Bhaumik (the author of 29b9829718c5)
+> to comment on the possible commit which needs backporting from mainline.
 
-Based on the feedback I have got so far, there are no easy way to skip
-this part of the initialization at runtime. Bjorn and Kalle discussed
-the possibility of creating device specific firmware-N.bin firmware
-file but that would mean firmware-N.bin has to be loaded from the
-device-specific directory along with wlanmdsp.bin. And ideally making
-ath10k/ath11k in-charge of firmware loading, but there doesn't seem to
-be a consensus on this either(?)
+Ok, but if a quick fix is not available I think we should just revert
+this in the stable releases. I also got a report that v5.11.21 is
+broken:
 
-Regards,
-Amit Pundir
+https://bugzilla.kernel.org/show_bug.cgi?id=213055#c11
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-On Tue, 9 Feb 2021 at 13:41, Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Bjorn Andersson <bjorn.andersson@linaro.org> writes:
->
-> > On Mon 08 Feb 11:21 CST 2021, Kalle Valo wrote:
-> >
-> >> Amit Pundir <amit.pundir@linaro.org> writes:
-> >>
-> >> > Hi Kalle,
-> >> >
-> >> > On Mon, 7 Dec 2020 at 22:25, Kalle Valo <kvalo@codeaurora.org> wrote:
-> >> >>
-> >> >> This is firmware version specific, right? There's also enum
-> >> >> ath10k_fw_features which is embedded within firmware-N.bin, we could add
-> >> >> a new flag there. But that means that a correct firmware-N.bin is needed
-> >> >> for each firmware version, not sure if that would work out. Just
-> >> >> throwing out ideas here.
-> >> >
-> >> > Apologies for this late reply. I was out for a while.
-> >>
-> >> No worries.
-> >>
-> >> > If by that (the firmware version) you mean "QC_IMAGE_VERSION_STRING",
-> >> > then that may be a bit tricky. Pocophone F1 use the same firmware
-> >> > family version (WLAN.HL.2.0.XXX), used by Dragonboard 845c (which has
-> >> > Wi-Fi working upstream).
-> >>
-> >> I'm meaning the ath10k firmware meta data we have in firmware-N.bin
-> >> (N=2,3,4...) file. A quick summary:
-> >>
-> >> Every ath10k firmware release should have firmware-N.bin. The file is
-> >> created with this tool:
-> >>
-> >> https://github.com/qca/qca-swiss-army-knife/blob/master/tools/scripts/ath10k/ath10k-fwencoder
-> >>
-> >> firmware-N.bin contains various metadata, one of those being firmware
-> >> feature flags:
-> >>
-> >> enum ath10k_fw_features {
-> >>      /* wmi_mgmt_rx_hdr contains extra RSSI information */
-> >>      ATH10K_FW_FEATURE_EXT_WMI_MGMT_RX = 0,
-> >>
-> >>      /* Firmware from 10X branch. Deprecated, don't use in new code. */
-> >>      ATH10K_FW_FEATURE_WMI_10X = 1,
-> >>
-> >>         [...]
-> >>
-> >> So what you could is add a new flag enum ath10k_fw_features, create a
-> >> new firmware-N.bin for your device and enable the flag on the firmware
-> >> releases for your device only.
-> >>
-> >> I don't know if this is usable, but one solution which came to my mind.
-> >
-> > It sounds quite reasonable to pass this using firmawre-N.bin instead of
-> > DT, however that would imply that we need to find firmware-N.bin in the
-> > device-specific directory, where we keep the wlanmdsp.mbn as well - and
-> > not under /lib/firmware/ath10k
-> >
-> > For other devices (e.g. ADSP, modem or wlanmdsp.mbn) we're putting these
-> > in e.g. /lib/firmware/qcom/LENOVO/81JL/ and specifies the location using
-> > a firmware-name property in DT.
->
-> Ah, I didn't realise that.
->
-> Actually I would like to have ath10k in control[1] of QMI/rproc firmware
-> loading as the firmware releases have different constraints, like the
-> issue we are now discussing. Ideally firmware-N.bin would contain all
-> firmware files, for example wlanmdsp.mbn, and from the meta data
-> ath10k/ath11k would know what version of the firmware interface should
-> be used.
->
-> I remember we discussed this briefly a year or two ago and there was no
-> easy solution, but I really wish we could find one. More these kind of
-> firmware interface incompatibilities will most likely pop up, also in
-> ath11k, so it would be great to find a clean and easily maneagable
-> solution.
->
-> [1] With control I mean that ath10k/ath11k can choose which firmware
-> should be loaded
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
