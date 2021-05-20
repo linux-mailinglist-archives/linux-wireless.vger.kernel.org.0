@@ -2,72 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 846EF38B798
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 21:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B9C38B761
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 21:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239757AbhETTaY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 May 2021 15:30:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39684 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239506AbhETTaW (ORCPT
+        id S239866AbhETTWj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 May 2021 15:22:39 -0400
+Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:43496 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236838AbhETTWi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 May 2021 15:30:22 -0400
-X-Greylist: delayed 481 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 May 2021 12:29:01 PDT
-Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D69C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 20 May 2021 12:29:01 -0700 (PDT)
-Received: from [192.168.1.101] (83.6.168.18.neoplus.adsl.tpnet.pl [83.6.168.18])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id D60D01FF04;
-        Thu, 20 May 2021 21:20:54 +0200 (CEST)
-Subject: Re: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
-        marijn.suijten@somainline.org,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210307113550.7720-1-konrad.dybcio@somainline.org>
- <5e7b575a-7820-3d10-8617-36911d49f4a9@broadcom.com>
- <754923af-407e-05f8-148e-4c2a3faf42ab@somainline.org>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-Message-ID: <bfe3d2d5-6ee6-678f-644f-e5448480d94e@somainline.org>
-Date:   Thu, 20 May 2021 21:20:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+        Thu, 20 May 2021 15:22:38 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 1719A7A48;
+        Thu, 20 May 2021 12:21:16 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 1719A7A48
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1621538476;
+        bh=RFqdOk4DSTtGRGbSs3c5rcpwvzKFhaZflNSssSjb0UI=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=YKGlUr34zYFZA3mU6Jz57c6xjkzHSVZ39vyC0e/xT+rggTzyHTm6rGfBFVLjilW7+
+         nBOkHK3wQCjpfF7iMSNpo196MPe1iDI/9F0yzOK0D5xtiC831r2pMiBCY6im1HLcVu
+         +m3vqh83mlBVK+JLl4dJwyvpT3rBRdOP2w9HSw6k=
+Received: from [10.230.41.88] (unknown [10.230.41.88])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 2D6B91874BE;
+        Thu, 20 May 2021 12:21:15 -0700 (PDT)
+Subject: Re: [PATCH] wireless: add check of field VHT Extended NSS BW Capable
+ for 160/80+80 MHz setting
+To:     Wen Gong <wgong@codeaurora.org>, johannes@sipsolutions.net,
+        ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+References: <20210520034021.14690-1-wgong@codeaurora.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <fe1b7675-23ba-a86e-90db-de5803231e21@broadcom.com>
+Date:   Thu, 20 May 2021 21:21:13 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <754923af-407e-05f8-148e-4c2a3faf42ab@somainline.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20210520034021.14690-1-wgong@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 5/20/2021 5:40 AM, Wen Gong wrote:
+> Table 9-251—Supported VHT-MCS and NSS Set subfields, it has subfield VHT Extended
+> NSS BW Capable, its definition is:
+> Indicates whether the STA is capable of interpreting the Extended NSS BW
+> Support subfield of the VHT Capabilities Information field.
+> 
+> This patch is to add check for the subfield.
 
+Almost looks good to me, but...
 
-sorry for the lack of answer from me (I've had a lot going on..), but the one Angelo has given you is right. We have to use the files that SONY ships with their stock Android firmware. Could you look into this patch once again?
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> ---
+>   net/wireless/chan.c | 8 +++++---
+>   1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+> index 285b8076054b..f7f86bd75cc0 100644
+> --- a/net/wireless/chan.c
+> +++ b/net/wireless/chan.c
 
+[...]
 
-Konrad
+> @@ -1037,7 +1039,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+>   		cap = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
+>   		if (cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
+>   		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ &&
+> -		    !(vht_cap->cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))
+> +		    !(ext_nss_cap && vht_cap->cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))
 
+you should not mix logical and binary operators so add braces around the 
+binary operation here.
+
+Regards,
+Arend
+
+>   			return false;
+>   		break;
+>   	default:
+> 
