@@ -2,112 +2,275 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C96038AE71
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 14:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C1338B0E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 May 2021 16:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240099AbhETMh5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 May 2021 08:37:57 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:58805 "EHLO m43-7.mailgun.net"
+        id S242896AbhETOFC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 May 2021 10:05:02 -0400
+Received: from mga09.intel.com ([134.134.136.24]:14342 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236785AbhETMhd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 May 2021 08:37:33 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1621514172; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=TpLmLahd2h7hQJJWsFxm53pPM8fVoixMAUaW1DdjRfU=; b=OrjARsGpS9kpOf/7j+DRTq3cTrbsfNGnKgQm+MK8+gy/CIpAXXH6CAqiv8EsM02Q4+eElwCI
- ByKO0ecA/xoOTLvwa613U2oUb3QV92XB5PwAODdwT+BMg1eprzuLi4rWyqLGn0j7uSorQ7aB
- pNicC9K8G/LD6hBpnV5b93nWf5c=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60a657b6d1aee7698da9f54f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 20 May 2021 12:36:06
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C7E16C43217; Thu, 20 May 2021 12:36:05 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D7A4AC433F1;
-        Thu, 20 May 2021 12:36:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D7A4AC433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Bhaumik Bhatt <bbhatt@codeaurora.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [regressions] ath11k: v5.12.3 mhi regression
-References: <87v97dhh2u.fsf@codeaurora.org> <YKYzwBJNTy4Czd1A@kroah.com>
-        <20210520104313.GA128703@thinkpad>
-Date:   Thu, 20 May 2021 15:36:00 +0300
-In-Reply-To: <20210520104313.GA128703@thinkpad> (Manivannan Sadhasivam's
-        message of "Thu, 20 May 2021 16:13:13 +0530")
-Message-ID: <87r1i1h9an.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        id S242132AbhETOEB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 May 2021 10:04:01 -0400
+IronPort-SDR: Riu7IutMt/kfBv30Hr4om3qVycG0N0yW9ANgRsctNyl7Q4yFg5tLrW8ZV59CC4pTw1mWXaWmZV
+ SEC0tjFEA8rQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9989"; a="201273438"
+X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
+   d="scan'208";a="201273438"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2021 07:02:16 -0700
+IronPort-SDR: SM/pDV21hjTcyF8qNVMTHVEqh4s4K5CGYjYrIbqCvtDItKp0cRE7D+NdidhIoO6pCgAzaK3iYn
+ 108ncVQuESEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
+   d="scan'208";a="631407349"
+Received: from bgsxx0031.iind.intel.com ([10.106.222.40])
+  by fmsmga005.fm.intel.com with ESMTP; 20 May 2021 07:02:13 -0700
+From:   M Chetan Kumar <m.chetan.kumar@intel.com>
+To:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, krishna.c.sudi@intel.com,
+        linuxwwan@intel.com
+Subject: [PATCH V3 00/16] net: iosm: PCIe Driver for Intel M.2 Modem
+Date:   Thu, 20 May 2021 19:31:42 +0530
+Message-Id: <20210520140158.10132-1-m.chetan.kumar@intel.com>
+X-Mailer: git-send-email 2.12.3
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+The IOSM (IPC over Shared Memory) driver is a PCIe host driver implemented
+for linux or chrome platform for data exchange over PCIe interface between
+Host platform & Intel M.2 Modem. The driver exposes interface conforming to
+the MBIM protocol. Any front end application ( eg: Modem Manager) could
+easily manage the MBIM interface to enable data communication towards WWAN.
 
-> On Thu, May 20, 2021 at 12:02:40PM +0200, Greg KH wrote:
->> On Thu, May 20, 2021 at 12:47:53PM +0300, Kalle Valo wrote:
->> > Hi,
->> > 
->> > I got several reports that this mhi commit broke ath11k in v5.12.3:
->> > 
->> > commit 29b9829718c5e9bd68fc1c652f5e0ba9b9a64fed
->> > Author: Bhaumik Bhatt <bbhatt@codeaurora.org>
->> > Date:   Wed Feb 24 15:23:04 2021 -0800
->> > 
->> >     bus: mhi: core: Process execution environment changes serially
->> >     
->> >     [ Upstream commit ef2126c4e2ea2b92f543fae00a2a0332e4573c48 ]
->> > 
->> > Here are the reports:
->> > 
->> > https://bugzilla.kernel.org/show_bug.cgi?id=213055
->> > 
->> > https://bugzilla.kernel.org/show_bug.cgi?id=212187
->> > 
->> > https://bugs.archlinux.org/task/70849?project=1&string=linux
->> > 
->> > Interestingly v5.13-rc1 seems to work fine, at least for me, though I
->> > have not tested v5.12.3 myself. Can someone revert this commit in the
->> > stable release so that people get their wifi working again, please?
->> 
->> How does the mhi bus code relate to a ath11k driver?  What bus is that
->> on?
->> 
->
-> MHI is the transport used by the ath11k driver to work with the WLAN devices
-> over PCIe.
->
-> Regarding the bug, I'd suggest to wait for Bhaumik (the author of 29b9829718c5)
-> to comment on the possible commit which needs backporting from mainline.
+Intel M.2 modem uses 2 BAR regions. The first region is dedicated to Doorbell
+register for IRQs and the second region is used as scratchpad area for book
+keeping modem execution stage details along with host system shared memory
+region context details. The upper edge of the driver exposes the control and
+data channels for user space application interaction. At lower edge these data
+and control channels are associated to pipes. The pipes are lowest level
+interfaces used over PCIe as a logical channel for message exchange. A single
+channel maps to UL and DL pipe and are initialized on device open.
 
-Ok, but if a quick fix is not available I think we should just revert
-this in the stable releases. I also got a report that v5.11.21 is
-broken:
+On UL path, driver copies application sent data to SKBs associate it with
+transfer descriptor and puts it on to ring buffer for DMA transfer. Once
+information has been updated in shared memory region, host gives a Doorbell
+to modem to perform DMA and modem uses MSI to communicate back to host.
+For receiving data in DL path, SKBs are pre-allocated during pipe open and
+transfer descriptors are given to modem for DMA transfer.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=213055#c11
+The driver exposes two types of ports, namely "wwanctrl", a char device node
+which is used for MBIM control operation and "INMx",(x = 0,1,2..7) network
+interfaces for IP data communication.
+1) MBIM Control Interface:
+This node exposes an interface between modem and application using char device
+exposed by "IOSM" driver to establish and manage the MBIM data communication
+with PCIe based Intel M.2 Modems.
+
+2) MBIM Data Interface:
+The IOSM driver exposes IP link interface "inmX" of type "IOSM" for IP traffic.
+Iproute network utility is used for creating "inmX" network interface and for
+associating it with MBIM IP session. The Driver supports upto 8 IP sessions for
+simultaneous IP communication.
+
+Changes since v2:
+  * WWAN port adaptation.
+  * Removed inline keyword in .c files.
+  * Aligned ipc_ prefix for function name to be consistent across files.
+  
+* PATCH1:
+  * Removed Module Author define.
+  * Aligned ipc_ prefix for function name to be consistent across file.
+* PATCH2:
+  * Removed inline keyword in .c file.
+  * Aligned ipc_ prefix for function name to be consistent across file.
+* PATCH4:
+  * WWAN port adaptation.
+  * Removed inline keyword in .c file.
+  * Aligned ipc_ prefix for function name to be consistent across file.
+* PATCH5:
+  * WWAN port adaptation.
+  * Aligned ipc_ prefix for function name to be consistent across file.
+* PATCH6:
+  * WWAN port adaptation.
+* PATCH7:
+  * Renamed file to iosm_ipc_port.c
+  * WWAN port adaptation for AT & MBIM protocol communication.
+* PATCH9:
+  * Aligned ipc_ prefix for function name to be consistent across file.
+* PATCH10:
+  * Aligned ipc_ prefix for function name to be consistent across file.
+* PATCH11:
+  * Aligned ipc_ prefix for function name to be consistent across file.
+* PATCH13:
+  * Endianness type correction for transfer descriptor structure.
+* PATCH15:
+  * Clean-up DSS channel implementation.
+  * Aligned ipc_ prefix for function name to be consistent across file.
+* PATCH16:
+  * Clean-up wwan Kconfig & Makefile (Changes available as part of
+    wwan subsystem).
+  * Removed NET dependency key word from iosm Kconfig.
+  * Removed IOCTL section from documentation.
+
+Changes since v1:
+  * Removed Ethernet header & VLAN tag handling from wwan net driver.
+  * Implement rtnet_link interface for IP traffic handling.
+  * Strip off Modem FW flashing & CD collection code changes.
+  * Moved driver documentation to RsT file.
+  * Change copyright year.
+
+* PATCH1:
+  * Implement module_init() & exit() callbacks for rtnl_link.
+  * Documentation correction for function signature.
+  * Fix coverity warnings.
+* PATCH2:
+  * Streamline multiple returns using goto.
+* PATCH3:
+  * Removed space around the : for the bitfields.
+  * Return proper error code instead of returning -1.
+* PATCH4:
+  * Clean-up vlan tag ids & removed FW flashing logic.
+  * Function return type correction.
+  * Return proper error code instead of returning -1.
+* PATCH5:
+  * Change vlan_id to ip link if_id & document correction.
+  * Define new enums for IP & DSS session mapping.
+  * Return proper error code instead of returning -1.
+  * Clean-up vlan tag id & removed FW flashing logic.
+* PATCH6:
+  * Return proper error code instead of returning -1.
+  * Define IPC channels in serial order.
+* PATCH7:
+  * Renamed iosm_sio struct to iosm_cdev.
+  * Added memory barriers around atomic operations.
+* PATCH8:
+  * Moved task queue struct to header file.
+  * Streamline multiple returns using goto.
+* PATCH9:
+  * Endianness type correction for Host-Device protocol structure.
+  * Removed space around the : for the bitfields.
+  * Change session from dynamic to static.
+  * Streamline multiple returns using goto.
+* PATCH10:
+  * Endianness type correction for Host-Device protocol structure.
+  * Function signature documentation correction.
+  * Streamline multiple returns using goto.
+  * Removed vlan tag id & replace it with ip link interface id.
+* PATCH11:
+  * Removed space around the : for the bitfields.
+  * Moved pm module under static allocation.
+  * Added memory barriers around atomic operations.
+* PATCH12:
+  * Endianness type correction for Host-Device protocol structure.
+  * Function signature documentation correction.
+  * Streamline multiple returns using goto.
+* PATCH13:
+  * Endianness type correction for Host-Device protocol structure.
+  * Function signature documentation correction.
+  * Streamline multiple returns using goto.
+* PATCH14:
+  * Removed no related header file inclusion.
+* PATCH15:
+  * Removed Ethernet header & VLAN tag handling from wwan net driver.
+  * Implement rtnet_link interface for IP traffic handling.
+* PATCH16:
+  * Moved driver documentation to RsT file.
+  * Modified if_link.h file to support link type iosm.
+
+--
+M Chetan Kumar (16):
+  net: iosm: entry point
+  net: iosm: irq handling
+  net: iosm: mmio scratchpad
+  net: iosm: shared memory IPC interface
+  net: iosm: shared memory I/O operations
+  net: iosm: channel configuration
+  net: iosm: wwan port control device
+  net: iosm: bottom half
+  net: iosm: multiplex IP sessions
+  net: iosm: encode or decode datagram
+  net: iosm: power management
+  net: iosm: shared memory protocol
+  net: iosm: protocol operations
+  net: iosm: uevent support
+  net: iosm: net driver
+  net: iosm: infrastructure
+
+ .../networking/device_drivers/index.rst       |    1 +
+ .../networking/device_drivers/wwan/index.rst  |   18 +
+ .../networking/device_drivers/wwan/iosm.rst   |   95 ++
+ MAINTAINERS                                   |    7 +
+ drivers/net/wwan/Kconfig                      |   12 +
+ drivers/net/wwan/Makefile                     |    1 +
+ drivers/net/wwan/iosm/Makefile                |   26 +
+ drivers/net/wwan/iosm/iosm_ipc_chnl_cfg.c     |   88 ++
+ drivers/net/wwan/iosm/iosm_ipc_chnl_cfg.h     |   59 +
+ drivers/net/wwan/iosm/iosm_ipc_imem.c         | 1372 +++++++++++++++++
+ drivers/net/wwan/iosm/iosm_ipc_imem.h         |  579 +++++++
+ drivers/net/wwan/iosm/iosm_ipc_imem_ops.c     |  346 +++++
+ drivers/net/wwan/iosm/iosm_ipc_imem_ops.h     |   99 ++
+ drivers/net/wwan/iosm/iosm_ipc_irq.c          |   90 ++
+ drivers/net/wwan/iosm/iosm_ipc_irq.h          |   33 +
+ drivers/net/wwan/iosm/iosm_ipc_mmio.c         |  223 +++
+ drivers/net/wwan/iosm/iosm_ipc_mmio.h         |  193 +++
+ drivers/net/wwan/iosm/iosm_ipc_mux.c          |  455 ++++++
+ drivers/net/wwan/iosm/iosm_ipc_mux.h          |  343 +++++
+ drivers/net/wwan/iosm/iosm_ipc_mux_codec.c    |  910 +++++++++++
+ drivers/net/wwan/iosm/iosm_ipc_mux_codec.h    |  193 +++
+ drivers/net/wwan/iosm/iosm_ipc_pcie.c         |  586 +++++++
+ drivers/net/wwan/iosm/iosm_ipc_pcie.h         |  211 +++
+ drivers/net/wwan/iosm/iosm_ipc_pm.c           |  333 ++++
+ drivers/net/wwan/iosm/iosm_ipc_pm.h           |  207 +++
+ drivers/net/wwan/iosm/iosm_ipc_port.c         |   85 +
+ drivers/net/wwan/iosm/iosm_ipc_port.h         |   50 +
+ drivers/net/wwan/iosm/iosm_ipc_protocol.c     |  283 ++++
+ drivers/net/wwan/iosm/iosm_ipc_protocol.h     |  237 +++
+ drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c |  552 +++++++
+ drivers/net/wwan/iosm/iosm_ipc_protocol_ops.h |  444 ++++++
+ drivers/net/wwan/iosm/iosm_ipc_task_queue.c   |  202 +++
+ drivers/net/wwan/iosm/iosm_ipc_task_queue.h   |   97 ++
+ drivers/net/wwan/iosm/iosm_ipc_uevent.c       |   44 +
+ drivers/net/wwan/iosm/iosm_ipc_uevent.h       |   41 +
+ drivers/net/wwan/iosm/iosm_ipc_wwan.c         |  439 ++++++
+ drivers/net/wwan/iosm/iosm_ipc_wwan.h         |   55 +
+ include/uapi/linux/if_link.h                  |   10 +
+ tools/include/uapi/linux/if_link.h            |   10 +
+ 39 files changed, 9029 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/wwan/index.rst
+ create mode 100755 Documentation/networking/device_drivers/wwan/iosm.rst
+ create mode 100644 drivers/net/wwan/iosm/Makefile
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_chnl_cfg.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_chnl_cfg.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_imem.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_imem.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_imem_ops.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_imem_ops.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_irq.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_irq.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mmio.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mmio.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mux.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mux.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_mux_codec.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_pcie.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_pcie.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_pm.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_pm.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_port.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_port.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_protocol.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_protocol.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_protocol_ops.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_task_queue.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_task_queue.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_uevent.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_uevent.h
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_wwan.c
+ create mode 100644 drivers/net/wwan/iosm/iosm_ipc_wwan.h
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
