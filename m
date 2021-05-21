@@ -2,94 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0546238BCFF
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 May 2021 05:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A015538BDC8
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 May 2021 07:12:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238507AbhEUDh7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 May 2021 23:37:59 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:27834 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236995AbhEUDh7 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 May 2021 23:37:59 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1621568197; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=aGkK2gfptAXaHXflFcMtO/KvXDuAdLxK1/6CMuARijk=; b=H/dqIPsOmKrH4K96L24/KrUs3GbF3UfsZCLd0ZZDFW1GcGmfdu9P/GnHBzpDYQGPTwbgWSU9
- IRWex+3vwvzmebp0locMQg+R0YgA97u/X2soojspCJmlNPvO+N48K2wvLLafsas9rte9IWXt
- x1TklMERzhQGozABNaVVUIsc3hs=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60a72aafd1aee7698d749a40 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 21 May 2021 03:36:15
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CDA07C433D3; Fri, 21 May 2021 03:36:14 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7E80BC433D3;
-        Fri, 21 May 2021 03:36:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7E80BC433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "tiantao \(H\)" <tiantao6@huawei.com>
-Cc:     Michael =?utf-8?Q?B=C3=BCsch?= <m@bues.ch>,
-        Tian Tao <tiantao6@hisilicon.com>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] ssb: remove unreachable code
-References: <1621306352-3632-1-git-send-email-tiantao6@hisilicon.com>
-        <20210520185136.2cc3b32b@wiggum>
-        <0a40049b-691c-c75f-ece2-a669842bedaf@huawei.com>
-Date:   Fri, 21 May 2021 06:36:07 +0300
-In-Reply-To: <0a40049b-691c-c75f-ece2-a669842bedaf@huawei.com> (tiantao's
-        message of "Fri, 21 May 2021 08:49:42 +0800")
-Message-ID: <87mtsohi6w.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S230246AbhEUFNg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 May 2021 01:13:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45138 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230176AbhEUFNf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 21 May 2021 01:13:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CF625611AB;
+        Fri, 21 May 2021 05:12:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1621573932;
+        bh=nDpPIcqQ7tMYokIoZEH1bwudVSb8GzAQ6uewYkXjeYQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WxDQgUlC2Rp5mlqnkYJA6djdfSNQA7S11Zmi9Y6dzNSa3plE8YrC7+vhwYdsDZfHm
+         4ik08XmAb4RB4dDIdIzUR0xy+VA16c56OODn6+27bil2zm0WeBmfy6/o7rZ1xLkofM
+         98JJbRXPM0XIHsYx3yX44dU2Ej4z9H25QGdNOXJA=
+Date:   Fri, 21 May 2021 07:12:07 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Jeff Johnson <jjohnson@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Chao Yu <chao@kernel.org>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: Re: [PATCH v2] b43: don't save dentries for debugfs
+Message-ID: <YKdBJxWSXPM161hg@kroah.com>
+References: <20210518163304.3702015-1-gregkh@linuxfoundation.org>
+ <891f28e4c1f3c24ed1b257de83cbb3a0@codeaurora.org>
+ <f539277054c06e1719832b9e99cbf7f1@codeaurora.org>
+ <YKScfFKhxtVqfRkt@kroah.com>
+ <2eb3af43025436c0832c8f61fbf519ad@codeaurora.org>
+ <YKUyAoBq/cepglmk@kroah.com>
+ <48aea7ae33faaafab388e24c3b8eb199@codeaurora.org>
+ <YKU2vMoDO0Ch1Lyg@kroah.com>
+ <36d75173b785819a4792ccceb5bf26b8@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <36d75173b785819a4792ccceb5bf26b8@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"tiantao (H)" <tiantao6@huawei.com> writes:
+On Thu, May 20, 2021 at 03:16:35PM -0700, Jeff Johnson wrote:
+> On 2021-05-19 09:03, Greg Kroah-Hartman wrote:
+> > On Wed, May 19, 2021 at 08:57:00AM -0700, Jeff Johnson wrote:
+> > > Unless debugfs is disabled, like on Android, which is the real
+> > > problem I'm
+> > > trying to solve.
+> > 
+> > Then use some other filesystem to place your relay file in.  A relay
+> > file is not a file that userspace should rely on for normal operation,
+> > so why do you need it at all?
+> > 
+> > What tools/operation requires access to this file that systems without
+> > debugfs support is causing problems on?
+> 
+> (trimmed some lists)
+> 
+> For the ath drivers (as well as the out-of-tree Android driver) it is being
+> used for RF spectral scan which produces a large amount of data that is
+> processed by a userspace analysis application.
 
-> =E5=9C=A8 2021/5/21 0:51, Michael B=C3=BCsch =E5=86=99=E9=81=93:
->> On Tue, 18 May 2021 10:52:32 +0800
->> Tian Tao <tiantao6@hisilicon.com> wrote:
->>
->>> The return value of ssb_bus_unregister can only be 0 or 1, so this
->>> condition if (err =3D=3D -EBUSY) will not hold, so delete it.
->>> @@ -431,9 +431,7 @@ void ssb_bus_unregister(struct ssb_bus *bus)
->>>   	int err;
->>>     	err =3D ssb_gpio_unregister(bus);
->>> -	if (err =3D=3D -EBUSY)
->>> -		pr_debug("Some GPIOs are still in use\n");
->>> -	else if (err)
->>> +	if (err)
->>>   		pr_debug("Can not unregister GPIO driver: %i\n", err);
->>>     	ssb_buses_lock();
->> Good catch.
->> Minor correction: The return value can be 0 or -1.
->
-> yes, you are right. thanks again.:-)
+And that application requires root access in order to be able to read
+from the debugfs file today?  That feels risky.  And doesn't work for
+Android systems today, right?
 
-I'll fix the commit log to match that.
+So what's wrong with just leaving it as-is, debugfs isn't going away on
+debug Android kernels, which is when you need to run this type of thing,
+only on the "user builds".
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+And if it's really an issue, take that up with Google, it's their
+security policy that is driving this, not the community's requirements :)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+And note, moving files out of debugfs to elsewhere in the system
+circumvents the reasons that Google is not allowing debugfs anymore,
+which defeats the purpose entirely of that decision.  Are you _sure_
+that's a good idea for your users?
+
+> I've been looking for an alternate filesystem to use, but am not finding
+> anything where it appears easy to get a parent dentry, so any clues for the
+> clueless (me) would be appreciated.
+
+I'm not going to tell you how to abuse other filesystems in the kernel,
+but it shouldn't be all that hard if you really want to do it...
+
+good luck!
+
+greg k-h
