@@ -2,65 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD03238D4EB
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 May 2021 11:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5A638D552
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 May 2021 12:54:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230255AbhEVJw0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 May 2021 05:52:26 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:52503 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbhEVJw0 (ORCPT
+        id S230318AbhEVKzU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 May 2021 06:55:20 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5666 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230186AbhEVKzU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 May 2021 05:52:26 -0400
-Received: from localhost.localdomain ([86.243.172.93])
-        by mwinf5d40 with ME
-        id 7lqu2500J21Fzsu03lqumV; Sat, 22 May 2021 11:51:00 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 22 May 2021 11:51:00 +0200
-X-ME-IP: 86.243.172.93
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        bperumal@codeaurora.org, akolli@codeaurora.org,
-        milehu@codeaurora.org, lkp@intel.com
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ath11k: Fix an error handling path in 'ath11k_core_fetch_board_data_api_n()'
-Date:   Sat, 22 May 2021 11:50:54 +0200
-Message-Id: <e959eb544f3cb04258507d8e25a6f12eab126bde.1621676864.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+        Sat, 22 May 2021 06:55:20 -0400
+Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FnKyd3Ngmz1BPjC;
+        Sat, 22 May 2021 18:51:05 +0800 (CST)
+Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
+ dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Sat, 22 May 2021 18:53:53 +0800
+Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
+ (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Sat, 22 May
+ 2021 18:53:53 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>
+CC:     <kvalo@codeaurora.org>
+Subject: [PATCH -next 0/2] fix missing error code on path err_unsupported
+Date:   Sat, 22 May 2021 18:58:20 +0800
+Message-ID: <20210522105822.1091848-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500017.china.huawei.com (7.185.36.243)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-All error paths but this one 'goto err' in order to release some
-resources.
-Fix this.
+Yang Yingliang (2):
+  ath10k: go to path err_unsupported when chip id is not supported
+  ath10k: add missing error return code in ath10k_pci_probe()
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/net/wireless/ath/ath11k/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/pci.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 77ce3347ab86..595e83fe0990 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -488,7 +488,8 @@ static int ath11k_core_fetch_board_data_api_n(struct ath11k_base *ab,
- 		if (len < ALIGN(ie_len, 4)) {
- 			ath11k_err(ab, "invalid length for board ie_id %d ie_len %zu len %zu\n",
- 				   ie_id, ie_len, len);
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto err;
- 		}
- 
- 		switch (ie_id) {
 -- 
-2.30.2
+2.25.1
 
