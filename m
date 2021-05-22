@@ -2,97 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CA7D38D555
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 May 2021 12:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 900F738D600
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 May 2021 15:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230472AbhEVKzY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 May 2021 06:55:24 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5740 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbhEVKzU (ORCPT
+        id S231152AbhEVNV4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 May 2021 09:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34854 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230470AbhEVNVz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 May 2021 06:55:20 -0400
-Received: from dggems703-chm.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FnKxn682HzqV7g;
-        Sat, 22 May 2021 18:50:21 +0800 (CST)
-Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggems703-chm.china.huawei.com (10.3.19.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Sat, 22 May 2021 18:53:54 +0800
-Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
- (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Sat, 22 May
- 2021 18:53:54 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>
-CC:     <kvalo@codeaurora.org>
-Subject: [PATCH -next 2/2] ath10k: add missing error return code in ath10k_pci_probe()
-Date:   Sat, 22 May 2021 18:58:22 +0800
-Message-ID: <20210522105822.1091848-3-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210522105822.1091848-1-yangyingliang@huawei.com>
-References: <20210522105822.1091848-1-yangyingliang@huawei.com>
+        Sat, 22 May 2021 09:21:55 -0400
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89FFAC061574;
+        Sat, 22 May 2021 06:20:30 -0700 (PDT)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4FnPGy2yvJzQjmk;
+        Sat, 22 May 2021 15:20:26 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de [80.241.56.117]) (amavisd-new, port 10030)
+        with ESMTP id 21ryPJUcxS0H; Sat, 22 May 2021 15:20:21 +0200 (CEST)
+From:   =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [RFC PATCH 0/3] mwifiex: Add quirks for MS Surface devices
+Date:   Sat, 22 May 2021 15:18:24 +0200
+Message-Id: <20210522131827.67551-1-verdre@v0yd.nl>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500017.china.huawei.com (7.185.36.243)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-MBO-SPAM-Probability: ***
+X-Rspamd-Score: 3.22 / 15.00 / 15.00
+X-Rspamd-Queue-Id: C6B3D17FF
+X-Rspamd-UID: d74d50
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When chip_id is not supported, the resources will be freed
-on path err_unsupported, these resources will also be freed
-when calling ath10k_pci_remove(), it will cause double free,
-so return -ENODEV when it doesn't support the device with wrong
-chip_id.
 
-Fixes: c0c378f9907c ("ath10k: remove target soc ps code")
-Fixes: 7505f7c3ec1d ("ath10k: create a chip revision whitelist")
-Fixes: f8914a14623a ("ath10k: restore QCA9880-AR1A (v1) detection")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/net/wireless/ath/ath10k/pci.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+This series is based on the patches from Tsuchiya Yuto which have been
+submitted previously already, where it was suggested to cc linux-pci and
+Bjorn to ask if there's a better way of doing those quirks.
 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index 463cf3f8f8a5..71878ab35b93 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -3685,8 +3685,10 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
- 			ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
- 		if (bus_params.chip_id != 0xffffffff) {
- 			if (!ath10k_pci_chip_is_supported(pdev->device,
--							  bus_params.chip_id))
-+							  bus_params.chip_id)) {
-+				ret = -ENODEV;
- 				goto err_unsupported;
-+			}
- 		}
- 	}
- 
-@@ -3697,11 +3699,15 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
- 	}
- 
- 	bus_params.chip_id = ath10k_pci_soc_read32(ar, SOC_CHIP_ID_ADDRESS);
--	if (bus_params.chip_id == 0xffffffff)
-+	if (bus_params.chip_id == 0xffffffff) {
-+		ret = -ENODEV;
- 		goto err_unsupported;
-+	}
- 
--	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id))
-+	if (!ath10k_pci_chip_is_supported(pdev->device, bus_params.chip_id)) {
-+		ret = -ENODEV;
- 		goto err_unsupported;
-+	}
- 
- 	ret = ath10k_core_register(ar, &bus_params);
- 	if (ret) {
+Original series sent in by Tsuchiya: https://lore.kernel.org/linux-wireless/20201028142753.18855-1-kitakar@gmail.com/
+
+Here's the summary written by Tsuchiya:
+
+This series adds firmware reset quirks for Microsoft Surface devices
+(PCIe-88W8897). Surface devices somehow requires quirks to reset the
+firmware. Otherwise, current mwifiex driver can reset only software level.
+This is not enough to recover from a bad state.
+
+To do so, in the first patch, I added a DMI-based quirk implementation
+for Surface devices that use mwifiex chip.
+
+The required quirk is different by generation. Surface gen3 devices
+(Surface 3 and Surface Pro 3) require a quirk that calls _DSM method
+(the third patch).
+Note that Surface Pro 3 is not yet supported because of the difference
+between Surface 3. On Surface 3, the wifi card will be immediately
+removed/reprobed after the _DSM call. On the other hand, Surface Pro 3
+doesn't. Need to remove/reprobe wifi card ourselves. This behavior makes
+the support difficult.
+
+Surface gen4+ devices (Surface Pro 4 and later) require a quirk that
+puts wifi into D3cold before FLR.
+
+While here, created new files for quirks (mwifiex/pcie_quirks.c and
+mwifiex/pcie_quirks.h) because the changes are a little bit too big to
+add into pcie.c.
+
+Jonas Dreßler (1):
+  mwifiex: pcie: add DMI-based quirk implementation for Surface devices
+
+Tsuchiya Yuto (2):
+  mwifiex: pcie: add reset_d3cold quirk for Surface gen4+ devices
+  mwifiex: pcie: add reset_wsid quirk for Surface 3
+
+ drivers/net/wireless/marvell/mwifiex/Makefile |   1 +
+ drivers/net/wireless/marvell/mwifiex/pcie.c   |  21 ++
+ drivers/net/wireless/marvell/mwifiex/pcie.h   |   1 +
+ .../wireless/marvell/mwifiex/pcie_quirks.c    | 246 ++++++++++++++++++
+ .../wireless/marvell/mwifiex/pcie_quirks.h    |  17 ++
+ 5 files changed, 286 insertions(+)
+ create mode 100644 drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
+ create mode 100644 drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
+
 -- 
-2.25.1
+2.31.1
 
