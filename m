@@ -2,75 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5901438D82D
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 May 2021 03:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B78EA38D890
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 May 2021 05:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231550AbhEWCAz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 May 2021 22:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58862 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231552AbhEWCAy (ORCPT
+        id S231573AbhEWDhg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 May 2021 23:37:36 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5667 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231528AbhEWDhd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 May 2021 22:00:54 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0C4C06138A
-        for <linux-wireless@vger.kernel.org>; Sat, 22 May 2021 18:59:27 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id g7so15634515edm.4
-        for <linux-wireless@vger.kernel.org>; Sat, 22 May 2021 18:59:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=vm1z87T8NcYVooJmHOjRmG6VWMAapRII9OZlNSdy//8=;
-        b=J/uGRb/igQD3Jvuw4fGwROY7LK7dHi2m41eRwSeZ4J5jZqygmvtv8RrmFWiCPRlJHd
-         TwCssk6IPIqji32+ANFnasRWwdDAyFgWOPez/rfwcxt7asd27Cdo1wkuExw+SnIYR0Am
-         tlPNHPhmMvQ1KZAPtN2Szq4avLpNVkCkF4hJGF49+AeYdN2LMofIOwKcQ5KAyg7RWMlc
-         CZXtmUyTwZcAKPOs9kFhjbxcDxVXWQ6nwvE2jE0MgcOBrPm3/iFi4Zbgs+ewKx19hPyi
-         r6hFXxX7JWRqpBfORvK0/iOaKWtuysH3dJLWLGZQZRqtS+hdsqskXh0gNyTMFkZA4y/A
-         QzBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=vm1z87T8NcYVooJmHOjRmG6VWMAapRII9OZlNSdy//8=;
-        b=WCoIjZNEmoSXZ6i/gAktDpZuPA0/WWUae9A1+G8dFJKPEMBgOqilt46QBXeDsbv2sv
-         usXL/kqALbMqBgOGyiGY5Quiow+Y89mlebvlJJmxbI6nbqv+affCAShUVki6jqhMxKHq
-         D6KzbSnuTnrv/H280IezGe7PpJRI1k2fq5KvchL2B6Rl+tkXG6SwiSMjIQAsebMcWZXu
-         9MpntPvDfIGerflissSL2Yl39oVBpVG6AP5vuK8wJrgtU27iVruRf5+nkSGAnWeyUbzV
-         PI5h7xGxZRqc9CH+vE4jcq0w/fsRkKyTINPQO85VU4i4bo437eEsk1FWOeBoKP9TJqAZ
-         DuAQ==
-X-Gm-Message-State: AOAM533Lc8Xhd8uBeEYO+vs3Mz5+QLtTta0+51xM6TvEcXm4RcZ2+qWX
-        BVbfkRkvlZvO5tX8mgVg4/um62wKhuHp6KXKgUg=
-X-Google-Smtp-Source: ABdhPJyQOTuHOQ9PkWyHZziwHzyH5ChJlg1zQaShX9JHDhaV+drLQSYiHDnWnNqqc96LXmzVd9SKagzD+QTl91sNhEE=
-X-Received: by 2002:aa7:c0c4:: with SMTP id j4mr18508041edp.168.1621735165993;
- Sat, 22 May 2021 18:59:25 -0700 (PDT)
+        Sat, 22 May 2021 23:37:33 -0400
+Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FnmC01Zmqz1BQ9W;
+        Sun, 23 May 2021 11:33:16 +0800 (CST)
+Received: from dggema769-chm.china.huawei.com (10.1.198.211) by
+ dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Sun, 23 May 2021 11:36:05 +0800
+Received: from localhost (10.174.179.215) by dggema769-chm.china.huawei.com
+ (10.1.198.211) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Sun, 23
+ May 2021 11:36:04 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <yuehaibing@huawei.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] wlcore: use DEVICE_ATTR_<RW|RO> macro
+Date:   Sun, 23 May 2021 11:35:38 +0800
+Message-ID: <20210523033538.25568-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Received: by 2002:a55:981a:0:b029:e6:823:573a with HTTP; Sat, 22 May 2021
- 18:59:25 -0700 (PDT)
-Reply-To: smithkenechambers@gmail.com
-From:   Smith Kene <hamzab.lawchambersllc@gmail.com>
-Date:   Sat, 22 May 2021 17:59:25 -0800
-Message-ID: <CABZTcMKshUH6nqTHDQSbL1evXDGfv6vGprxGSA9=4eEvgjvbNw@mail.gmail.com>
-Subject: Hello Dearest One,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggema769-chm.china.huawei.com (10.1.198.211)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Respectfully,
+Use DEVICE_ATTR_<RW|RO> helper instead of plain DEVICE_ATTR,
+which makes the code a bit shorter and easier to read.
 
-I sent you a mail few days ago I don't know if you receive it, I am
-still waiting for your reply in regards to my mail.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/wireless/ti/wlcore/sysfs.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-Sincerely
+diff --git a/drivers/net/wireless/ti/wlcore/sysfs.c b/drivers/net/wireless/ti/wlcore/sysfs.c
+index 5cf0379b88b6..35b535c125b6 100644
+--- a/drivers/net/wireless/ti/wlcore/sysfs.c
++++ b/drivers/net/wireless/ti/wlcore/sysfs.c
+@@ -12,9 +12,9 @@
+ #include "debug.h"
+ #include "sysfs.h"
+ 
+-static ssize_t wl1271_sysfs_show_bt_coex_state(struct device *dev,
+-					       struct device_attribute *attr,
+-					       char *buf)
++static ssize_t bt_coex_state_show(struct device *dev,
++				  struct device_attribute *attr,
++				  char *buf)
+ {
+ 	struct wl1271 *wl = dev_get_drvdata(dev);
+ 	ssize_t len;
+@@ -30,9 +30,9 @@ static ssize_t wl1271_sysfs_show_bt_coex_state(struct device *dev,
+ 
+ }
+ 
+-static ssize_t wl1271_sysfs_store_bt_coex_state(struct device *dev,
+-						struct device_attribute *attr,
+-						const char *buf, size_t count)
++static ssize_t bt_coex_state_store(struct device *dev,
++				   struct device_attribute *attr,
++				   const char *buf, size_t count)
+ {
+ 	struct wl1271 *wl = dev_get_drvdata(dev);
+ 	unsigned long res;
+@@ -71,13 +71,11 @@ static ssize_t wl1271_sysfs_store_bt_coex_state(struct device *dev,
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR(bt_coex_state, 0644,
+-		   wl1271_sysfs_show_bt_coex_state,
+-		   wl1271_sysfs_store_bt_coex_state);
++static DEVICE_ATTR_RW(bt_coex_state);
+ 
+-static ssize_t wl1271_sysfs_show_hw_pg_ver(struct device *dev,
+-					   struct device_attribute *attr,
+-					   char *buf)
++static ssize_t hw_pg_ver_show(struct device *dev,
++			      struct device_attribute *attr,
++			      char *buf)
+ {
+ 	struct wl1271 *wl = dev_get_drvdata(dev);
+ 	ssize_t len;
+@@ -94,7 +92,7 @@ static ssize_t wl1271_sysfs_show_hw_pg_ver(struct device *dev,
+ 	return len;
+ }
+ 
+-static DEVICE_ATTR(hw_pg_ver, 0444, wl1271_sysfs_show_hw_pg_ver, NULL);
++static DEVICE_ATTR_RO(hw_pg_ver);
+ 
+ static ssize_t wl1271_sysfs_read_fwlog(struct file *filp, struct kobject *kobj,
+ 				       struct bin_attribute *bin_attr,
+-- 
+2.17.1
 
-Smith Kene Hamzab
-
-Pozdrav, poslao sam vam po=C5=A1tom prije nekoliko dana i ne znam je li ga
-primite, jo=C5=A1 uvijek cekam va=C5=A1 odgovor u
-
-vezi s mojom po=C5=A1tom
-
-Smith Kene Hamzab
