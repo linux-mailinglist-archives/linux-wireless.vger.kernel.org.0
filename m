@@ -2,461 +2,188 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E20EB38D8A0
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 May 2021 06:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A321E38D93D
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 May 2021 08:06:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230064AbhEWEGi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 May 2021 00:06:38 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4588 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbhEWEGg (ORCPT
+        id S231591AbhEWGII (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 May 2021 02:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56368 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231551AbhEWGIH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 May 2021 00:06:36 -0400
-Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FnmrW1DVJzkY2T;
-        Sun, 23 May 2021 12:02:19 +0800 (CST)
-Received: from dggema769-chm.china.huawei.com (10.1.198.211) by
- dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Sun, 23 May 2021 12:05:02 +0800
-Received: from localhost (10.174.179.215) by dggema769-chm.china.huawei.com
- (10.1.198.211) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Sun, 23
- May 2021 12:05:01 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <yuehaibing@huawei.com>
-CC:     <libertas-dev@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] libertas: use DEVICE_ATTR_RW macro
-Date:   Sun, 23 May 2021 12:03:39 +0800
-Message-ID: <20210523040339.2724-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        Sun, 23 May 2021 02:08:07 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D46DC06138B
+        for <linux-wireless@vger.kernel.org>; Sat, 22 May 2021 23:06:42 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id b15-20020a17090a550fb029015dad75163dso9359981pji.0
+        for <linux-wireless@vger.kernel.org>; Sat, 22 May 2021 23:06:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=bbVkNXXuvs00kg1wmTW0NePOJ70agDM+7kVTDiM2Rwk=;
+        b=EKhN/IEEn8ucPc2kMoCtJMvTI7FFyrCH7TGPMxFYn8KnblpCdKYH3iZ24Bk5AA7g93
+         oMKKY7iFhGENTLKCrc1NfV6HbkIk2Ap7gaq5uxaX9xYO+bl69c87lAy8NlvRld+KqXjF
+         TF2Eg/S37ZvAV000stQ/oIgFg6b6yy/7YZp3VIe196TqEFTMm8ECF+B/Etl2FAdt0ZM1
+         vabwnNsF58zji8ADC99oTEbA/yxZY8HQwh7IdmOuDssyeutxJS0cWzk0uVt2lDE7/E7+
+         Cf3unbnsy1Bzq9GDTSMaInhhlEMuXmYUSK05kS2NR9WEUjU5bMApmaGjCgPPZHA957mm
+         fQdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bbVkNXXuvs00kg1wmTW0NePOJ70agDM+7kVTDiM2Rwk=;
+        b=Mkf/Sb5BfxtH6pL6wbpVnxFmx79owd9Hb90p4/x1su6dGRnpsl72CqM1gekq+A2PU6
+         ivxxpCkrcQAw9sRQHd+7n76m+cXp5IZ/AsU9IhmUlOUv9dDU6Tio6JuJS0RV49j68XsW
+         MDUvzEtSy0WndJfbnW3TyYVOO1gbuLFGW11DDIV6iLL0dEMWtOIh39rpkNntR0g+/BN7
+         biL7p0O2PVoaxswTOZ8NaH/PRnLNxqc8FSFtYaGS+qGhVjbRsV0i1wFA9Ncka37EXDhn
+         5gNdkw0kHelwhynDWFuKISkNpNADtF6/T9ziXX3bETpnZYFHajIit1NQjJSP6Pj9KcDP
+         GKlQ==
+X-Gm-Message-State: AOAM533aoH1X9VCWI4ePwhJp3ueo/gbfxW4GdZt5cHu65F3PMOzqZC4R
+        0DX+92AFopRgFReFqza/cdlc7A==
+X-Google-Smtp-Source: ABdhPJxh6WeuHEv6gwxD9/kjJ2L0haPbr+6jWPGSMs++xnAQGZrM7RPHx8y37vVl06rkgkzX4CpMBA==
+X-Received: by 2002:a17:90a:5309:: with SMTP id x9mr8657357pjh.111.1621750001434;
+        Sat, 22 May 2021 23:06:41 -0700 (PDT)
+Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id m191sm8367175pga.88.2021.05.22.23.06.38
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 22 May 2021 23:06:41 -0700 (PDT)
+Date:   Sun, 23 May 2021 14:06:34 +0800
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: Re: [PATCH v3] brcmfmac: support parse country code map from DT
+Message-ID: <20210523060633.GC29015@dragon>
+References: <20210417075428.2671-1-shawn.guo@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggema769-chm.china.huawei.com (10.1.198.211)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210417075428.2671-1-shawn.guo@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use DEVICE_ATTR_RW helper instead of plain DEVICE_ATTR,
-which makes the code a bit shorter and easier to read.
+On Sat, Apr 17, 2021 at 03:54:28PM +0800, Shawn Guo wrote:
+> With any regulatory domain requests coming from either user space or
+> 802.11 IE (Information Element), the country is coded in ISO3166
+> standard.  It needs to be translated to firmware country code and
+> revision with the mapping info in settings->country_codes table.
+> Support populate country_codes table by parsing the mapping from DT.
+> 
+> The BRCMF_BUSTYPE_SDIO bus_type check gets separated from general DT
+> validation, so that country code can be handled as general part rather
+> than SDIO bus specific one.
+> 
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> ---
+> Changes for v3:
+>  - Add missing terminating '\n' in brcmf_dbg(INFO, ...) format string.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/marvell/libertas/mesh.c | 149 ++++++++++---------
- 1 file changed, 78 insertions(+), 71 deletions(-)
+Hi Kalle,
 
-diff --git a/drivers/net/wireless/marvell/libertas/mesh.c b/drivers/net/wireless/marvell/libertas/mesh.c
-index c68814841583..6cbba84989b8 100644
---- a/drivers/net/wireless/marvell/libertas/mesh.c
-+++ b/drivers/net/wireless/marvell/libertas/mesh.c
-@@ -151,13 +151,13 @@ static uint16_t lbs_mesh_get_channel(struct lbs_private *priv)
-  */
- 
- /**
-- * lbs_anycast_get - Get function for sysfs attribute anycast_mask
-+ * anycast_mask_show - Get function for sysfs attribute anycast_mask
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t lbs_anycast_get(struct device *dev,
--		struct device_attribute *attr, char * buf)
-+static ssize_t anycast_mask_show(struct device *dev,
-+				 struct device_attribute *attr, char *buf)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	struct cmd_ds_mesh_access mesh_access;
-@@ -173,14 +173,15 @@ static ssize_t lbs_anycast_get(struct device *dev,
- }
- 
- /**
-- * lbs_anycast_set - Set function for sysfs attribute anycast_mask
-+ * anycast_mask_store - Set function for sysfs attribute anycast_mask
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t lbs_anycast_set(struct device *dev,
--		struct device_attribute *attr, const char * buf, size_t count)
-+static ssize_t anycast_mask_store(struct device *dev,
-+				  struct device_attribute *attr,
-+				  const char *buf, size_t count)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	struct cmd_ds_mesh_access mesh_access;
-@@ -199,13 +200,13 @@ static ssize_t lbs_anycast_set(struct device *dev,
- }
- 
- /**
-- * lbs_prb_rsp_limit_get - Get function for sysfs attribute prb_rsp_limit
-+ * prb_rsp_limit_show - Get function for sysfs attribute prb_rsp_limit
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t lbs_prb_rsp_limit_get(struct device *dev,
--		struct device_attribute *attr, char *buf)
-+static ssize_t prb_rsp_limit_show(struct device *dev,
-+				  struct device_attribute *attr, char *buf)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	struct cmd_ds_mesh_access mesh_access;
-@@ -225,14 +226,15 @@ static ssize_t lbs_prb_rsp_limit_get(struct device *dev,
- }
- 
- /**
-- * lbs_prb_rsp_limit_set - Set function for sysfs attribute prb_rsp_limit
-+ * prb_rsp_limit_store - Set function for sysfs attribute prb_rsp_limit
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t lbs_prb_rsp_limit_set(struct device *dev,
--		struct device_attribute *attr, const char *buf, size_t count)
-+static ssize_t prb_rsp_limit_store(struct device *dev,
-+				   struct device_attribute *attr,
-+				   const char *buf, size_t count)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	struct cmd_ds_mesh_access mesh_access;
-@@ -259,27 +261,28 @@ static ssize_t lbs_prb_rsp_limit_set(struct device *dev,
- }
- 
- /**
-- * lbs_mesh_get - Get function for sysfs attribute mesh
-+ * lbs_mesh_show - Get function for sysfs attribute mesh
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t lbs_mesh_get(struct device *dev,
--		struct device_attribute *attr, char * buf)
-+static ssize_t lbs_mesh_show(struct device *dev,
-+			     struct device_attribute *attr, char *buf)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	return snprintf(buf, 5, "0x%X\n", !!priv->mesh_dev);
- }
- 
- /**
-- * lbs_mesh_set - Set function for sysfs attribute mesh
-+ * lbs_mesh_store - Set function for sysfs attribute mesh
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t lbs_mesh_set(struct device *dev,
--		struct device_attribute *attr, const char * buf, size_t count)
-+static ssize_t lbs_mesh_store(struct device *dev,
-+			      struct device_attribute *attr,
-+			      const char *buf, size_t count)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	int enable;
-@@ -301,20 +304,19 @@ static ssize_t lbs_mesh_set(struct device *dev,
-  * lbs_mesh attribute to be exported per ethX interface
-  * through sysfs (/sys/class/net/ethX/lbs_mesh)
-  */
--static DEVICE_ATTR(lbs_mesh, 0644, lbs_mesh_get, lbs_mesh_set);
-+static DEVICE_ATTR_RW(lbs_mesh);
- 
- /*
-  * anycast_mask attribute to be exported per mshX interface
-  * through sysfs (/sys/class/net/mshX/anycast_mask)
-  */
--static DEVICE_ATTR(anycast_mask, 0644, lbs_anycast_get, lbs_anycast_set);
-+static DEVICE_ATTR_RW(anycast_mask);
- 
- /*
-  * prb_rsp_limit attribute to be exported per mshX interface
-  * through sysfs (/sys/class/net/mshX/prb_rsp_limit)
-  */
--static DEVICE_ATTR(prb_rsp_limit, 0644, lbs_prb_rsp_limit_get,
--		lbs_prb_rsp_limit_set);
-+static DEVICE_ATTR_RW(prb_rsp_limit);
- 
- static struct attribute *lbs_mesh_sysfs_entries[] = {
- 	&dev_attr_anycast_mask.attr,
-@@ -351,13 +353,13 @@ static int mesh_get_default_parameters(struct device *dev,
- }
- 
- /**
-- * bootflag_get - Get function for sysfs attribute bootflag
-+ * bootflag_show - Get function for sysfs attribute bootflag
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t bootflag_get(struct device *dev,
--			    struct device_attribute *attr, char *buf)
-+static ssize_t bootflag_show(struct device *dev,
-+			     struct device_attribute *attr, char *buf)
- {
- 	struct mrvl_mesh_defaults defs;
- 	int ret;
-@@ -371,14 +373,14 @@ static ssize_t bootflag_get(struct device *dev,
- }
- 
- /**
-- * bootflag_set - Set function for sysfs attribute bootflag
-+ * bootflag_store - Set function for sysfs attribute bootflag
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t bootflag_set(struct device *dev, struct device_attribute *attr,
--			    const char *buf, size_t count)
-+static ssize_t bootflag_store(struct device *dev, struct device_attribute *attr,
-+			      const char *buf, size_t count)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	struct cmd_ds_mesh_config cmd;
-@@ -401,13 +403,13 @@ static ssize_t bootflag_set(struct device *dev, struct device_attribute *attr,
- }
- 
- /**
-- * boottime_get - Get function for sysfs attribute boottime
-+ * boottime_show - Get function for sysfs attribute boottime
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t boottime_get(struct device *dev,
--			    struct device_attribute *attr, char *buf)
-+static ssize_t boottime_show(struct device *dev,
-+			     struct device_attribute *attr, char *buf)
- {
- 	struct mrvl_mesh_defaults defs;
- 	int ret;
-@@ -421,14 +423,15 @@ static ssize_t boottime_get(struct device *dev,
- }
- 
- /**
-- * boottime_set - Set function for sysfs attribute boottime
-+ * boottime_store - Set function for sysfs attribute boottime
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t boottime_set(struct device *dev,
--		struct device_attribute *attr, const char *buf, size_t count)
-+static ssize_t boottime_store(struct device *dev,
-+			      struct device_attribute *attr,
-+			      const char *buf, size_t count)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	struct cmd_ds_mesh_config cmd;
-@@ -460,13 +463,13 @@ static ssize_t boottime_set(struct device *dev,
- }
- 
- /**
-- * channel_get - Get function for sysfs attribute channel
-+ * channel_show - Get function for sysfs attribute channel
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t channel_get(struct device *dev,
--			   struct device_attribute *attr, char *buf)
-+static ssize_t channel_show(struct device *dev,
-+			    struct device_attribute *attr, char *buf)
- {
- 	struct mrvl_mesh_defaults defs;
- 	int ret;
-@@ -480,14 +483,14 @@ static ssize_t channel_get(struct device *dev,
- }
- 
- /**
-- * channel_set - Set function for sysfs attribute channel
-+ * channel_store - Set function for sysfs attribute channel
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t channel_set(struct device *dev, struct device_attribute *attr,
--			   const char *buf, size_t count)
-+static ssize_t channel_store(struct device *dev, struct device_attribute *attr,
-+			     const char *buf, size_t count)
- {
- 	struct lbs_private *priv = to_net_dev(dev)->ml_priv;
- 	struct cmd_ds_mesh_config cmd;
-@@ -510,13 +513,13 @@ static ssize_t channel_set(struct device *dev, struct device_attribute *attr,
- }
- 
- /**
-- * mesh_id_get - Get function for sysfs attribute mesh_id
-+ * mesh_id_show - Get function for sysfs attribute mesh_id
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t mesh_id_get(struct device *dev, struct device_attribute *attr,
--			   char *buf)
-+static ssize_t mesh_id_show(struct device *dev, struct device_attribute *attr,
-+			    char *buf)
- {
- 	struct mrvl_mesh_defaults defs;
- 	int ret;
-@@ -539,14 +542,14 @@ static ssize_t mesh_id_get(struct device *dev, struct device_attribute *attr,
- }
- 
- /**
-- * mesh_id_set - Set function for sysfs attribute mesh_id
-+ * mesh_id_store - Set function for sysfs attribute mesh_id
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t mesh_id_set(struct device *dev, struct device_attribute *attr,
--			   const char *buf, size_t count)
-+static ssize_t mesh_id_store(struct device *dev, struct device_attribute *attr,
-+			     const char *buf, size_t count)
- {
- 	struct cmd_ds_mesh_config cmd;
- 	struct mrvl_mesh_defaults defs;
-@@ -585,13 +588,14 @@ static ssize_t mesh_id_set(struct device *dev, struct device_attribute *attr,
- }
- 
- /**
-- * protocol_id_get - Get function for sysfs attribute protocol_id
-+ * protocol_id_show - Get function for sysfs attribute protocol_id
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t protocol_id_get(struct device *dev,
--			       struct device_attribute *attr, char *buf)
-+static ssize_t protocol_id_show(struct device *dev,
-+				struct device_attribute *attr,
-+				char *buf)
- {
- 	struct mrvl_mesh_defaults defs;
- 	int ret;
-@@ -605,14 +609,15 @@ static ssize_t protocol_id_get(struct device *dev,
- }
- 
- /**
-- * protocol_id_set - Set function for sysfs attribute protocol_id
-+ * protocol_id_store - Set function for sysfs attribute protocol_id
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t protocol_id_set(struct device *dev,
--		struct device_attribute *attr, const char *buf, size_t count)
-+static ssize_t protocol_id_store(struct device *dev,
-+				 struct device_attribute *attr,
-+				 const char *buf, size_t count)
- {
- 	struct cmd_ds_mesh_config cmd;
- 	struct mrvl_mesh_defaults defs;
-@@ -646,13 +651,13 @@ static ssize_t protocol_id_set(struct device *dev,
- }
- 
- /**
-- * metric_id_get - Get function for sysfs attribute metric_id
-+ * metric_id_show - Get function for sysfs attribute metric_id
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t metric_id_get(struct device *dev,
--		struct device_attribute *attr, char *buf)
-+static ssize_t metric_id_show(struct device *dev,
-+			      struct device_attribute *attr, char *buf)
- {
- 	struct mrvl_mesh_defaults defs;
- 	int ret;
-@@ -666,14 +671,15 @@ static ssize_t metric_id_get(struct device *dev,
- }
- 
- /**
-- * metric_id_set - Set function for sysfs attribute metric_id
-+ * metric_id_store - Set function for sysfs attribute metric_id
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t metric_id_set(struct device *dev, struct device_attribute *attr,
--			     const char *buf, size_t count)
-+static ssize_t metric_id_store(struct device *dev,
-+			       struct device_attribute *attr,
-+			       const char *buf, size_t count)
- {
- 	struct cmd_ds_mesh_config cmd;
- 	struct mrvl_mesh_defaults defs;
-@@ -707,13 +713,13 @@ static ssize_t metric_id_set(struct device *dev, struct device_attribute *attr,
- }
- 
- /**
-- * capability_get - Get function for sysfs attribute capability
-+ * capability_show - Get function for sysfs attribute capability
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer where data will be returned
-  */
--static ssize_t capability_get(struct device *dev,
--		struct device_attribute *attr, char *buf)
-+static ssize_t capability_show(struct device *dev,
-+			       struct device_attribute *attr, char *buf)
- {
- 	struct mrvl_mesh_defaults defs;
- 	int ret;
-@@ -727,14 +733,15 @@ static ssize_t capability_get(struct device *dev,
- }
- 
- /**
-- * capability_set - Set function for sysfs attribute capability
-+ * capability_store - Set function for sysfs attribute capability
-  * @dev: the &struct device
-  * @attr: device attributes
-  * @buf: buffer that contains new attribute value
-  * @count: size of buffer
-  */
--static ssize_t capability_set(struct device *dev, struct device_attribute *attr,
--			      const char *buf, size_t count)
-+static ssize_t capability_store(struct device *dev,
-+				struct device_attribute *attr,
-+				const char *buf, size_t count)
- {
- 	struct cmd_ds_mesh_config cmd;
- 	struct mrvl_mesh_defaults defs;
-@@ -768,13 +775,13 @@ static ssize_t capability_set(struct device *dev, struct device_attribute *attr,
- }
- 
- 
--static DEVICE_ATTR(bootflag, 0644, bootflag_get, bootflag_set);
--static DEVICE_ATTR(boottime, 0644, boottime_get, boottime_set);
--static DEVICE_ATTR(channel, 0644, channel_get, channel_set);
--static DEVICE_ATTR(mesh_id, 0644, mesh_id_get, mesh_id_set);
--static DEVICE_ATTR(protocol_id, 0644, protocol_id_get, protocol_id_set);
--static DEVICE_ATTR(metric_id, 0644, metric_id_get, metric_id_set);
--static DEVICE_ATTR(capability, 0644, capability_get, capability_set);
-+static DEVICE_ATTR_RW(bootflag);
-+static DEVICE_ATTR_RW(boottime);
-+static DEVICE_ATTR_RW(channel);
-+static DEVICE_ATTR_RW(mesh_id);
-+static DEVICE_ATTR_RW(protocol_id);
-+static DEVICE_ATTR_RW(metric_id);
-+static DEVICE_ATTR_RW(capability);
- 
- static struct attribute *boot_opts_attrs[] = {
- 	&dev_attr_bootflag.attr,
--- 
-2.17.1
+Any comments on this version?
 
+Shawn
+
+
+> 
+>  .../wireless/broadcom/brcm80211/brcmfmac/of.c | 57 ++++++++++++++++++-
+>  1 file changed, 55 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> index a7554265f95f..2f7bc3a70c65 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> @@ -12,12 +12,59 @@
+>  #include "common.h"
+>  #include "of.h"
+>  
+> +static int brcmf_of_get_country_codes(struct device *dev,
+> +				      struct brcmf_mp_device *settings)
+> +{
+> +	struct device_node *np = dev->of_node;
+> +	struct brcmfmac_pd_cc_entry *cce;
+> +	struct brcmfmac_pd_cc *cc;
+> +	int count;
+> +	int i;
+> +
+> +	count = of_property_count_strings(np, "brcm,ccode-map");
+> +	if (count < 0) {
+> +		/* The property is optional, so return success if it doesn't
+> +		 * exist. Otherwise propagate the error code.
+> +		 */
+> +		return (count == -EINVAL) ? 0 : count;
+> +	}
+> +
+> +	cc = devm_kzalloc(dev, sizeof(*cc) + count * sizeof(*cce), GFP_KERNEL);
+> +	if (!cc)
+> +		return -ENOMEM;
+> +
+> +	cc->table_size = count;
+> +
+> +	for (i = 0; i < count; i++) {
+> +		const char *map;
+> +
+> +		cce = &cc->table[i];
+> +
+> +		if (of_property_read_string_index(np, "brcm,ccode-map",
+> +						  i, &map))
+> +			continue;
+> +
+> +		/* String format e.g. US-Q2-86 */
+> +		if (sscanf(map, "%2c-%2c-%d", cce->iso3166, cce->cc,
+> +			   &cce->rev) != 3)
+> +			brcmf_err("failed to read country map %s\n", map);
+> +		else
+> +			brcmf_dbg(INFO, "%s-%s-%d\n", cce->iso3166, cce->cc,
+> +				  cce->rev);
+> +	}
+> +
+> +	settings->country_codes = cc;
+> +
+> +	return 0;
+> +}
+> +
+>  void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>  		    struct brcmf_mp_device *settings)
+>  {
+>  	struct brcmfmac_sdio_pd *sdio = &settings->bus.sdio;
+>  	struct device_node *root, *np = dev->of_node;
+>  	int irq;
+> +	int err;
+>  	u32 irqf;
+>  	u32 val;
+>  
+> @@ -43,8 +90,14 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>  		of_node_put(root);
+>  	}
+>  
+> -	if (!np || bus_type != BRCMF_BUSTYPE_SDIO ||
+> -	    !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+> +	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+> +		return;
+> +
+> +	err = brcmf_of_get_country_codes(dev, settings);
+> +	if (err)
+> +		brcmf_err("failed to get OF country code map (err=%d)\n", err);
+> +
+> +	if (bus_type != BRCMF_BUSTYPE_SDIO)
+>  		return;
+>  
+>  	if (of_property_read_u32(np, "brcm,drive-strength", &val) == 0)
+> -- 
+> 2.17.1
+> 
