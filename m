@@ -2,133 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 171DA38EC17
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 May 2021 17:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 551CC38F298
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 May 2021 19:53:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233555AbhEXPL6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 May 2021 11:11:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40698 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234725AbhEXPIo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 May 2021 11:08:44 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 317E761933;
-        Mon, 24 May 2021 14:51:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621867901;
-        bh=Q4jNrlVbkxKBFuZfG5hlrOND6dyo+WOQlu/GAgl3Uec=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P3BI6ci3TU4iKDgLZn+6OHg2sJ1Qb/CbfYGjBojO6tzFPekf72xagA4FVPwuRNXdC
-         IqbLSAEkp76y9oOhAa1+sVn3lm9EoF1yufaRSir9aXmrDYF7dkcO756ZYeLQ9MbhuH
-         UlNKZBVtqKGztk86Y0cYE4icUGbMLIbbBDZbJhSCAbVAoqhIr3RYQ4I15b6UyFZPw1
-         tEFZ0QG7eNT67Pr2Aozg/hIE1xJI5XJwhX20r+0eAeoyTTpCjA9LEJsepN3pv2t8mJ
-         UQKzWcIlpYie6pmDCFY3Li68IDcIRglSAXdsO05IOqfyRUpjVFSxpPJYZGAA557S2j
-         9TcWEosxwEJvw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 08/16] libertas: register sysfs groups properly
-Date:   Mon, 24 May 2021 10:51:22 -0400
-Message-Id: <20210524145130.2499829-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210524145130.2499829-1-sashal@kernel.org>
-References: <20210524145130.2499829-1-sashal@kernel.org>
+        id S233582AbhEXRyc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 May 2021 13:54:32 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:51912 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233000AbhEXRyb (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 24 May 2021 13:54:31 -0400
+X-UUID: e7ae3cc0adae48d08ea840d6a94b4d7e-20210525
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=HCbB9ajOnGws9PENigdtqscCoyYeufv/mBXqD1vfrgU=;
+        b=fCfhnbenNv6eBndgiQfznCbgYjk4LrxgTFPsO6qWrOrNBujdfPksr7M349IHiXUIX2mJ4mY714lfDDBeV8tFSfhb8jSy8pYEvS5sEdrQy4eKU9efIB00TtZTLAlym7gLXr1E3SmyklRhbNCsUnb8JW/lJF/rfP9K90Sls0kf7dw=;
+X-UUID: e7ae3cc0adae48d08ea840d6a94b4d7e-20210525
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1295830885; Tue, 25 May 2021 01:53:00 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 25 May 2021 01:52:58 +0800
+Received: from [172.21.77.33] (172.21.77.33) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 25 May 2021 01:52:58 +0800
+Message-ID: <1621878778.21477.1.camel@mtkswgap22>
+Subject: Re: [PATCH] mt76: mt7921: fix UC entry is being overwritten
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     <sean.wang@mediatek.com>, <nbd@nbd.name>,
+        <lorenzo.bianconi@redhat.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Date:   Tue, 25 May 2021 01:52:58 +0800
+In-Reply-To: <YKrGretiq7wo+pzv@lore-desk>
+References: <1621495354-4130-1-git-send-email-sean.wang@mediatek.com>
+         <YKrGretiq7wo+pzv@lore-desk>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-[ Upstream commit 7e79b38fe9a403b065ac5915465f620a8fb3de84 ]
-
-The libertas driver was trying to register sysfs groups "by hand" which
-causes them to be created _after_ the device is initialized and
-announced to userspace, which causes races and can prevent userspace
-tools from seeing the sysfs files correctly.
-
-Fix this up by using the built-in sysfs_groups pointers in struct
-net_device which were created for this very reason, fixing the race
-condition, and properly allowing for any error that might have occured
-to be handled properly.
-
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210503115736.2104747-54-gregkh@linuxfoundation.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/libertas/mesh.c | 28 ++++------------------------
- 1 file changed, 4 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/net/wireless/libertas/mesh.c b/drivers/net/wireless/libertas/mesh.c
-index d0c881dd5846..f1e9cbcfdc16 100644
---- a/drivers/net/wireless/libertas/mesh.c
-+++ b/drivers/net/wireless/libertas/mesh.c
-@@ -797,19 +797,6 @@ static const struct attribute_group mesh_ie_group = {
- 	.attrs = mesh_ie_attrs,
- };
- 
--static void lbs_persist_config_init(struct net_device *dev)
--{
--	int ret;
--	ret = sysfs_create_group(&(dev->dev.kobj), &boot_opts_group);
--	ret = sysfs_create_group(&(dev->dev.kobj), &mesh_ie_group);
--}
--
--static void lbs_persist_config_remove(struct net_device *dev)
--{
--	sysfs_remove_group(&(dev->dev.kobj), &boot_opts_group);
--	sysfs_remove_group(&(dev->dev.kobj), &mesh_ie_group);
--}
--
- 
- /***************************************************************************
-  * Initializing and starting, stopping mesh
-@@ -1021,6 +1008,10 @@ static int lbs_add_mesh(struct lbs_private *priv)
- 	SET_NETDEV_DEV(priv->mesh_dev, priv->dev->dev.parent);
- 
- 	mesh_dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
-+	mesh_dev->sysfs_groups[0] = &lbs_mesh_attr_group;
-+	mesh_dev->sysfs_groups[1] = &boot_opts_group;
-+	mesh_dev->sysfs_groups[2] = &mesh_ie_group;
-+
- 	/* Register virtual mesh interface */
- 	ret = register_netdev(mesh_dev);
- 	if (ret) {
-@@ -1028,19 +1019,10 @@ static int lbs_add_mesh(struct lbs_private *priv)
- 		goto err_free_netdev;
- 	}
- 
--	ret = sysfs_create_group(&(mesh_dev->dev.kobj), &lbs_mesh_attr_group);
--	if (ret)
--		goto err_unregister;
--
--	lbs_persist_config_init(mesh_dev);
--
- 	/* Everything successful */
- 	ret = 0;
- 	goto done;
- 
--err_unregister:
--	unregister_netdev(mesh_dev);
--
- err_free_netdev:
- 	free_netdev(mesh_dev);
- 
-@@ -1063,8 +1045,6 @@ void lbs_remove_mesh(struct lbs_private *priv)
- 	lbs_deb_enter(LBS_DEB_MESH);
- 	netif_stop_queue(mesh_dev);
- 	netif_carrier_off(mesh_dev);
--	sysfs_remove_group(&(mesh_dev->dev.kobj), &lbs_mesh_attr_group);
--	lbs_persist_config_remove(mesh_dev);
- 	unregister_netdev(mesh_dev);
- 	priv->mesh_dev = NULL;
- 	kfree(mesh_dev->ieee80211_ptr);
--- 
-2.30.2
+T24gU3VuLCAyMDIxLTA1LTIzIGF0IDIzOjE4ICswMjAwLCBMb3JlbnpvIEJpYW5jb25pIHdyb3Rl
+Og0KPiA+IEZyb206IERlcmVuIFd1IDxkZXJlbi53dUBtZWRpYXRlay5jb20+DQo+ID4gDQo+ID4g
+Rml4IFVDIGVudHJ5IGlzIGJlaW5nIG92ZXJ3cml0dGVuIGJ5IEJDIGVudHJ5DQo+ID4gDQo+ID4g
+Rml4ZXM6IDM2ZmNjOGNmZjU5MiAoIm10NzY6IG10NzkyMTogaW50cm9kdWNlIG10NzkyMV9tY3Vf
+c3RhX2FkZCByb3V0aW5lIikNCj4gPiBTaWduZWQtb2ZmLWJ5OiBEZXJlbiBXdSA8ZGVyZW4ud3VA
+bWVkaWF0ZWsuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFlOIENoZW4gPHluLmNoZW5AbWVkaWF0
+ZWsuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFNlYW4gV2FuZyA8c2Vhbi53YW5nQG1lZGlhdGVr
+LmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
+dDc2X2Nvbm5hY19tY3UuYyB8IDExICsrKysrKystLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA3
+IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Nl9jb25uYWNfbWN1LmMgYi9kcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZfY29ubmFjX21jdS5jDQo+ID4gaW5k
+ZXggNzMzNTlkZWZhMTc2Li5mM2RlY2M1OWE2ZmUgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hY19tY3UuYw0KPiA+ICsrKyBiL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Nl9jb25uYWNfbWN1LmMNCj4gPiBA
+QCAtODc1LDEwICs4NzUsMTMgQEAgaW50IG10NzZfY29ubmFjX21jdV9hZGRfc3RhX2NtZChzdHJ1
+Y3QgbXQ3Nl9waHkgKnBoeSwNCj4gPiAgCWlmIChJU19FUlIoc2tiKSkNCj4gPiAgCQlyZXR1cm4g
+UFRSX0VSUihza2IpOw0KPiA+ICANCj4gPiAtCW10NzZfY29ubmFjX21jdV9zdGFfYmFzaWNfdGx2
+KHNrYiwgaW5mby0+dmlmLCBpbmZvLT5zdGEsIGluZm8tPmVuYWJsZSk7DQo+ID4gLQlpZiAoaW5m
+by0+ZW5hYmxlICYmIGluZm8tPnN0YSkNCj4gPiAtCQltdDc2X2Nvbm5hY19tY3Vfc3RhX3Rsdihw
+aHksIHNrYiwgaW5mby0+c3RhLCBpbmZvLT52aWYsDQo+ID4gLQkJCQkJaW5mby0+cmNwaSk7DQo+
+ID4gKwlpZiAoaW5mby0+c3RhKSB7DQo+ID4gKwkJbXQ3Nl9jb25uYWNfbWN1X3N0YV9iYXNpY190
+bHYoc2tiLCBpbmZvLT52aWYsIGluZm8tPnN0YSwNCj4gPiArCQkJCQkgICAgICBpbmZvLT5lbmFi
+bGUpOw0KPiA+ICsJCWlmIChpbmZvLT5lbmFibGUpDQo+ID4gKwkJCW10NzZfY29ubmFjX21jdV9z
+dGFfdGx2KHBoeSwgc2tiLCBpbmZvLT5zdGEsDQo+ID4gKwkJCQkJCWluZm8tPnZpZiwgaW5mby0+
+cmNwaSk7DQo+ID4gKwl9DQo+IA0KPiB3aXRoIHRoaXMgcGF0Y2ggd2UgYXJlIGNoYW5naW5nIHRo
+ZSBtdDc2NjMgYmVoYXZpb3VyIHNpbmNlIHdlIHJ1bg0KPiBtdDc2X2Nvbm5hY19tY3VfYWRkX3N0
+YV9jbWQoKSBpbiBtdDc2MTVfcmVtb3ZlX2ludGVyZmFjZSgpIHdpdGgNCj4gZW5hYmxlID0gZmFs
+c2UgYW5kIHN0YSA9IE5VTEwuIENhbiB5b3UgcGxlYXNlIGNvbmZpcm0geW91IGFyZQ0KPiBub3Qg
+aW50cm9kdWNpbmcgYW55IHJlZ3Jlc3Npb24gaW4gbXQ3NjYzPw0KDQpJIHRoaW5rIHRoaXMgYWxz
+byBicmVha3MgbXQ3NjIyLCBzbyBwbGVhc2UgZG91YmxlIGNoZWNrLg0KDQo+IFJlZ2FyZHMsDQo+
+IExvcmVuem8NCj4gDQo+ID4gIA0KPiA+ICAJc3RhX3d0YmwgPSBtdDc2X2Nvbm5hY19tY3VfYWRk
+X3Rsdihza2IsIFNUQV9SRUNfV1RCTCwNCj4gPiAgCQkJCQkgICBzaXplb2Yoc3RydWN0IHRsdikp
+Ow0KPiA+IC0tIA0KPiA+IDIuMjUuMQ0KPiA+IA0KPiBfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXw0KPiBMaW51eC1tZWRpYXRlayBtYWlsaW5nIGxpc3QNCj4g
+TGludXgtbWVkaWF0ZWtAbGlzdHMuaW5mcmFkZWFkLm9yZw0KPiBodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW1lZGlhdGVrDQoNCg==
 
