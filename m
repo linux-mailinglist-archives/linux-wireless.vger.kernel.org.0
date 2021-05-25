@@ -2,157 +2,178 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B942438FDB4
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 11:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 051B038FE22
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 11:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232479AbhEYJYZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 May 2021 05:24:25 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:45158 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232504AbhEYJYY (ORCPT
+        id S232736AbhEYJt6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 May 2021 05:49:58 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:59474 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232772AbhEYJtl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 May 2021 05:24:24 -0400
-X-UUID: df90bbf044104379a39f9e811da3080c-20210525
-X-UUID: df90bbf044104379a39f9e811da3080c-20210525
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 27936580; Tue, 25 May 2021 17:22:52 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+        Tue, 25 May 2021 05:49:41 -0400
+X-UUID: a6d50cec296e45968515aa25d08846e3-20210525
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=optp7ax8XGfwcqqvoGJdWVHm+C4ylyYYlL0qfS8eNQE=;
+        b=NFeUBxSUe2yXNYhjsLPZsNOTI7zXIoFW7YiVOdYfyvCwnmHmunTrogSaOQxbzBOiktJW82rCnQb0BuIXMS24OLYkPDC5vzXiZeat5SClD4frmy0jgvN0OnlTNfb0BHxuIr6U39c7f35FKClXChjn5+MVQK+/n4D9cFrPfrX1Wu0=;
+X-UUID: a6d50cec296e45968515aa25d08846e3-20210525
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1005430690; Tue, 25 May 2021 17:47:55 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
  mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 25 May 2021 17:22:35 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ 15.0.1497.2; Tue, 25 May 2021 17:47:38 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas07.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 25 May 2021 17:22:29 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2] mt76: mt7615: add .offset_tsf callback
-Date:   Tue, 25 May 2021 17:22:24 +0800
-Message-ID: <b9527ceb21b93ad948ebfed07867e75f8168e065.1621933933.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+ Transport; Tue, 25 May 2021 17:47:38 +0800
+Message-ID: <7d1c5ae4af5d68867c1b9e00e61efdf208eec509.camel@mediatek.com>
+Subject: Re: [PATCH] mt76: mt7915: use mt7915_mcu_get_txpower_sku() to get
+ per-rate txpower
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+Date:   Tue, 25 May 2021 17:47:38 +0800
+In-Reply-To: <YKylnox6YrOLgo7M@lore-desk>
+References: <20210525043312.12623-1-shayne.chen@mediatek.com>
+         <YKylnox6YrOLgo7M@lore-desk>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain
 X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It's much more accurate than .get_tsf + .set_tsf and switch to use
-mt76_rmw to operate tsf registers.
-
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-change since v2: fix mutex
----
- .../net/wireless/mediatek/mt76/mt7615/mac.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 32 +++++++++++++++++--
- .../net/wireless/mediatek/mt76/mt7615/regs.h  |  2 ++
- .../wireless/mediatek/mt76/mt7615/usb_sdio.c  |  2 +-
- 4 files changed, 34 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 71af122a0b38..2ac7d0b0eff4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1125,7 +1125,7 @@ void mt7615_mac_set_rates(struct mt7615_phy *phy, struct mt7615_sta *sta,
- 	idx = idx > HW_BSSID_MAX ? HW_BSSID_0 : idx;
- 	addr = idx > 1 ? MT_LPON_TCR2(idx): MT_LPON_TCR0(idx);
- 
--	mt76_set(dev, addr, MT_LPON_TCR_MODE); /* TSF read */
-+	mt76_rmw(dev, addr, MT_LPON_TCR_MODE, MT_LPON_TCR_READ); /* TSF read */
- 	sta->rate_set_tsf = mt76_rr(dev, MT_LPON_UTTR0) & ~BIT(0);
- 	sta->rate_set_tsf |= rd.rateset;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index e36c52290985..2164f736dd72 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -891,7 +891,8 @@ mt7615_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 
- 	mt7615_mutex_acquire(dev);
- 
--	mt76_set(dev, reg, MT_LPON_TCR_MODE); /* TSF read */
-+	/* TSF read */
-+	mt76_rmw(dev, reg, MT_LPON_TCR_MODE, MT_LPON_TCR_READ);
- 	tsf.t32[0] = mt76_rr(dev, MT_LPON_UTTR0);
- 	tsf.t32[1] = mt76_rr(dev, MT_LPON_UTTR1);
- 
-@@ -921,7 +922,33 @@ mt7615_set_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	mt76_wr(dev, MT_LPON_UTTR0, tsf.t32[0]);
- 	mt76_wr(dev, MT_LPON_UTTR1, tsf.t32[1]);
- 	/* TSF software overwrite */
--	mt76_set(dev, reg, MT_LPON_TCR_WRITE);
-+	mt76_rmw(dev, reg, MT_LPON_TCR_MODE, MT_LPON_TCR_WRITE);
-+
-+	mt7615_mutex_release(dev);
-+}
-+
-+static void
-+mt7615_offset_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+		  s64 timestamp)
-+{
-+	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct mt7615_dev *dev = mt7615_hw_dev(hw);
-+	union {
-+		u64 t64;
-+		u32 t32[2];
-+	} tsf = { .t64 = timestamp, };
-+	u16 idx = mvif->mt76.omac_idx;
-+	u32 reg;
-+
-+	idx = idx > HW_BSSID_MAX ? HW_BSSID_0 : idx;
-+	reg = idx > 1 ? MT_LPON_TCR2(idx): MT_LPON_TCR0(idx);
-+
-+	mt7615_mutex_acquire(dev);
-+
-+	mt76_wr(dev, MT_LPON_UTTR0, tsf.t32[0]);
-+	mt76_wr(dev, MT_LPON_UTTR1, tsf.t32[1]);
-+	/* TSF software adjust*/
-+	mt76_rmw(dev, reg, MT_LPON_TCR_MODE, MT_LPON_TCR_ADJUST);
- 
- 	mt7615_mutex_release(dev);
- }
-@@ -1308,6 +1335,7 @@ const struct ieee80211_ops mt7615_ops = {
- 	.get_stats = mt7615_get_stats,
- 	.get_tsf = mt7615_get_tsf,
- 	.set_tsf = mt7615_set_tsf,
-+	.offset_tsf = mt7615_offset_tsf,
- 	.get_survey = mt76_get_survey,
- 	.get_antenna = mt76_get_antenna,
- 	.set_antenna = mt7615_set_antenna,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-index 63c081bb04d0..6712ad9faeaa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-@@ -463,7 +463,9 @@ enum mt7615_reg_base {
- #define MT_LPON_TCR0(_n)		MT_LPON(0x010 + ((_n) * 4))
- #define MT_LPON_TCR2(_n)		MT_LPON(0x0f8 + ((_n) - 2) * 4)
- #define MT_LPON_TCR_MODE		GENMASK(1, 0)
-+#define MT_LPON_TCR_READ		GENMASK(1, 0)
- #define MT_LPON_TCR_WRITE		BIT(0)
-+#define MT_LPON_TCR_ADJUST		BIT(1)
- 
- #define MT_LPON_UTTR0			MT_LPON(0x018)
- #define MT_LPON_UTTR1			MT_LPON(0x01c)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-index 75a05f8dd7e7..996d48cca18a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-@@ -123,7 +123,7 @@ static int mt7663_usb_sdio_set_rates(struct mt7615_dev *dev,
- 	idx = idx > HW_BSSID_MAX ? HW_BSSID_0 : idx;
- 	addr = idx > 1 ? MT_LPON_TCR2(idx): MT_LPON_TCR0(idx);
- 
--	mt76_set(dev, addr, MT_LPON_TCR_MODE); /* TSF read */
-+	mt76_rmw(dev, addr, MT_LPON_TCR_MODE, MT_LPON_TCR_READ); /* TSF read */
- 	val = mt76_rr(dev, MT_LPON_UTTR0);
- 	sta->rate_set_tsf = (val & ~BIT(0)) | rate->rateset;
- 
--- 
-2.18.0
+T24gVHVlLCAyMDIxLTA1LTI1IGF0IDA5OjIyICswMjAwLCBMb3JlbnpvIEJpYW5jb25pIHdyb3Rl
+Og0KPiA+IEdldCBwZXItcmF0ZSB0eHBvd2VyIHdpdGggbWN1IGNvbW1hbmQgaW5zdGVhZCBvZiBm
+cmVxdWVudGx5IGFjY2Vzcw0KPiA+IHRtYWMNCj4gPiBwb3dlciByZWdpc3RlcnMgZnJvbSBkcml2
+ZXIuDQo+IA0KPiBIaSBTaGF5bmUsDQo+IA0KPiBqdXN0IG91dCBvZiBjdXJpb3NpdHksIHdoYXQg
+aXMgdGhlIGFkdmFudGFnZSBvZiBkb2luZyBzbz8NCj4gDQo+IFJlZ2FyZHMsDQo+IExvcmVuem8N
+Cg0KSGkgTG9yZSwNCg0KSSB0aGluayBJIG1pc3VuZGVyc3Rvb2Qgc29tZXRoaW5nLCBmcmVxdWVu
+dGx5IHJlYWRpbmcgb2YgdGhlc2UNCnJlZ2lzdGVycyBieSBkcml2ZXIgc2hvdWxkbid0IG1hdHRl
+ci4gU28gcGxlYXNlIGlnbm9yZSB0aGUgY29tbWl0DQptZXNzYWdlIGFib3ZlLg0KDQpUaGUgb3Ro
+ZXIgcmVhc29uIEkgZm9yZ2V0IHRvIG1lbnRpb24gaXMgdG8gcHJlcGFyZSBjby1kcml2ZXIgZm9y
+IHRoZQ0KbmV4dCBjaGlwc2V0LiBJdCBoYXMgZGlmZmVyZW50IG9mZnNldCBvZiB0bWFjIHBvd2Vy
+IHJlZ2lzdGVycywgYnV0IGNhbg0Kc2hhcmUgdGhpcyBzYW1lIGNvbW1hbmQuDQpJJ2xsIHJldmlz
+ZSB0aGVzZSBpbiB2Mi4NCg0KVGhhbmtzLA0KU2hheW5lDQoNCj4gPiANCj4gPiBTaWduZWQtb2Zm
+LWJ5OiBTaGF5bmUgQ2hlbiA8c2hheW5lLmNoZW5AbWVkaWF0ZWsuY29tPg0KPiA+IC0tLQ0KPiA+
+ICAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jICAgfCA0OCArKysr
+LS0tLS0tLS0tLS0NCj4gPiAtLS0tDQo+ID4gIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
+Ni9tdDc5MTUvbWN1LmMgICB8IDM1ICsrKysrKysrKysrKystDQo+ID4gIC4uLi93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaCAgICB8ICAzICsrDQo+ID4gIC4uLi9uZXQvd2ly
+ZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oICB8ICA1IC0tDQo+ID4gIDQgZmlsZXMg
+Y2hhbmdlZCwgNDYgaW5zZXJ0aW9ucygrKSwgNDUgZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4gZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RlYnVn
+ZnMuYw0KPiA+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVi
+dWdmcy5jDQo+ID4gaW5kZXggNmE4ZGRlZS4uNDJhODI5ZCAxMDA2NDQNCj4gPiAtLS0gYS9kcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kZWJ1Z2ZzLmMNCj4gPiArKysg
+Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kZWJ1Z2ZzLmMNCj4g
+PiBAQCAtMzA4LDUzICszMDgsMjMgQEAgbXQ3OTE1X3B1dHNfcmF0ZV90eHBvd2VyKHN0cnVjdCBz
+ZXFfZmlsZSAqcywNCj4gPiBzdHJ1Y3QgbXQ3OTE1X3BoeSAqcGh5KQ0KPiA+ICAJCSJSVTQ4NC9T
+VTQwIiwgIlJVOTk2L1NVODAiLCAiUlUyeDk5Ni9TVTE2MCINCj4gPiAgCX07DQo+ID4gIAlzdHJ1
+Y3QgbXQ3OTE1X2RldiAqZGV2ID0gZGV2X2dldF9kcnZkYXRhKHMtPnByaXZhdGUpOw0KPiA+IC0J
+Ym9vbCBleHRfcGh5ID0gcGh5ICE9ICZkZXYtPnBoeTsNCj4gPiAtCXUzMiByZWdfYmFzZTsNCj4g
+PiAtCWludCBpLCBpZHggPSAwOw0KPiA+ICsJczggdHhwb3dlcltNVDc5MTVfU0tVX1JBVEVfTlVN
+XSwgKmJ1ZjsNCj4gPiArCWludCBpOw0KPiA+ICANCj4gPiAgCWlmICghcGh5KQ0KPiA+ICAJCXJl
+dHVybjsNCj4gPiAgDQo+ID4gLQlyZWdfYmFzZSA9IE1UX1RNQUNfRlAwUjAoZXh0X3BoeSk7DQo+
+ID4gLQlzZXFfcHJpbnRmKHMsICJcbkJhbmQgJWRcbiIsIGV4dF9waHkpOw0KPiA+ICsJc2VxX3By
+aW50ZihzLCAiXG5CYW5kICVkXG4iLCBwaHkgIT0gJmRldi0+cGh5KTsNCj4gPiAgDQo+ID4gLQlm
+b3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShtdDc5MTVfc2t1X2dyb3VwX2xlbik7IGkrKykgew0K
+PiA+IC0JCXU4IGNudCwgbWNzX251bSA9IG10NzkxNV9za3VfZ3JvdXBfbGVuW2ldOw0KPiA+IC0J
+CXM4IHR4cG93ZXJbMTJdOw0KPiA+IC0JCWludCBqOw0KPiA+ICsJbXQ3OTE1X21jdV9nZXRfdHhw
+b3dlcl9za3UocGh5LCB0eHBvd2VyLCBzaXplb2YodHhwb3dlcikpOw0KPiA+ICsJZm9yIChpID0g
+MCwgYnVmID0gdHhwb3dlcjsgaSA8DQo+ID4gQVJSQVlfU0laRShtdDc5MTVfc2t1X2dyb3VwX2xl
+bik7IGkrKykgew0KPiA+ICsJCXU4IG1jc19udW0gPSBtdDc5MTVfc2t1X2dyb3VwX2xlbltpXTsN
+Cj4gPiAgDQo+ID4gLQkJaWYgKGkgPT0gU0tVX0hUX0JXMjAgfHwgaSA9PSBTS1VfSFRfQlc0MCkg
+ew0KPiA+IC0JCQltY3NfbnVtID0gODsNCj4gPiAtCQl9IGVsc2UgaWYgKGkgPj0gU0tVX1ZIVF9C
+VzIwICYmIGkgPD0gU0tVX1ZIVF9CVzE2MCkgew0KPiA+ICsJCWlmIChpID49IFNLVV9WSFRfQlcy
+MCAmJiBpIDw9IFNLVV9WSFRfQlcxNjApDQo+ID4gIAkJCW1jc19udW0gPSAxMDsNCj4gPiAtCQl9
+IGVsc2UgaWYgKGkgPT0gU0tVX0hFX1JVMjYpIHsNCj4gPiAtCQkJcmVnX2Jhc2UgPSBNVF9UTUFD
+X0ZQMFIxOChleHRfcGh5KTsNCj4gPiAtCQkJaWR4ID0gMDsNCj4gPiAtCQl9DQo+ID4gLQ0KPiA+
+IC0JCWZvciAoaiA9IDAsIGNudCA9IDA7IGogPCBESVZfUk9VTkRfVVAobWNzX251bSwgNCk7IGor
+KykNCj4gPiB7DQo+ID4gLQkJCXUzMiB2YWw7DQo+ID4gLQ0KPiA+IC0JCQlpZiAoaSA9PSBTS1Vf
+VkhUX0JXMTYwICYmIGlkeCA9PSA2MCkgew0KPiA+IC0JCQkJcmVnX2Jhc2UgPSBNVF9UTUFDX0ZQ
+MFIxNShleHRfcGh5KTsNCj4gPiAtCQkJCWlkeCA9IDA7DQo+ID4gLQkJCX0NCj4gPiAtDQo+ID4g
+LQkJCXZhbCA9IG10NzZfcnIoZGV2LCByZWdfYmFzZSArIChpZHggLyA0KSAqIDQpOw0KPiA+IC0N
+Cj4gPiAtCQkJaWYgKGlkeCAmJiBpZHggJSA0KQ0KPiA+IC0JCQkJdmFsID4+PSAoaWR4ICUgNCkg
+KiA4Ow0KPiA+IC0NCj4gPiAtCQkJd2hpbGUgKHZhbCA+IDAgJiYgY250IDwgbWNzX251bSkgew0K
+PiA+IC0JCQkJczggcHdyID0gRklFTERfR0VUKE1UX1RNQUNfRlBfTUFTSywNCj4gPiB2YWwpOw0K
+PiA+IC0NCj4gPiAtCQkJCXR4cG93ZXJbY250KytdID0gcHdyOw0KPiA+IC0JCQkJdmFsID4+PSA4
+Ow0KPiA+IC0JCQkJaWR4Kys7DQo+ID4gLQkJCX0NCj4gPiAtCQl9DQo+ID4gIA0KPiA+IC0JCW10
+NzZfc2VxX3B1dHNfYXJyYXkocywgc2t1X2dyb3VwX25hbWVbaV0sIHR4cG93ZXIsDQo+ID4gbWNz
+X251bSk7DQo+ID4gKwkJbXQ3Nl9zZXFfcHV0c19hcnJheShzLCBza3VfZ3JvdXBfbmFtZVtpXSwg
+YnVmLA0KPiA+IG1jc19udW0pOw0KPiA+ICsJCWJ1ZiArPSBtdDc5MTVfc2t1X2dyb3VwX2xlbltp
+XTsNCj4gPiAgCX0NCj4gPiAgfQ0KPiA+ICANCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMNCj4gPiBiL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jDQo+ID4gaW5kZXggZGNmMmQ0ZC4uNTI2
+NzFjYyAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
+L210NzkxNS9tY3UuYw0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L21jdS5jDQo+ID4gQEAgLTM1MTQsNyArMzUxNCw2IEBAIGludCBtdDc5MTVfbWN1
+X2dldF90eF9yYXRlKHN0cnVjdCBtdDc5MTVfZGV2DQo+ID4gKmRldiwgdTMyIGNtZCwgdTE2IHds
+YW5faWR4KQ0KPiA+ICANCj4gPiAgaW50IG10NzkxNV9tY3Vfc2V0X3R4cG93ZXJfc2t1KHN0cnVj
+dCBtdDc5MTVfcGh5ICpwaHkpDQo+ID4gIHsNCj4gPiAtI2RlZmluZSBNVDc5MTVfU0tVX1JBVEVf
+TlVNCQkxNjENCj4gPiAgCXN0cnVjdCBtdDc5MTVfZGV2ICpkZXYgPSBwaHktPmRldjsNCj4gPiAg
+CXN0cnVjdCBtdDc2X3BoeSAqbXBoeSA9IHBoeS0+bXQ3NjsNCj4gPiAgCXN0cnVjdCBpZWVlODAy
+MTFfaHcgKmh3ID0gbXBoeS0+aHc7DQo+ID4gQEAgLTM1NjQsNiArMzU2Myw0MCBAQCBpbnQgbXQ3
+OTE1X21jdV9zZXRfdHhwb3dlcl9za3Uoc3RydWN0DQo+ID4gbXQ3OTE1X3BoeSAqcGh5KQ0KPiA+
+ICAJCQkJIHNpemVvZihyZXEpLCB0cnVlKTsNCj4gPiAgfQ0KPiA+ICANCj4gPiAraW50IG10Nzkx
+NV9tY3VfZ2V0X3R4cG93ZXJfc2t1KHN0cnVjdCBtdDc5MTVfcGh5ICpwaHksIHM4DQo+ID4gKnR4
+cG93ZXIsIGludCBsZW4pDQo+ID4gK3sNCj4gPiArI2RlZmluZSBSQVRFX1BPV0VSX0lORk8JMg0K
+PiA+ICsJc3RydWN0IG10NzkxNV9kZXYgKmRldiA9IHBoeS0+ZGV2Ow0KPiA+ICsJYm9vbCBleHRf
+cGh5ID0gcGh5ICE9ICZkZXYtPnBoeTsNCj4gPiArCXN0cnVjdCB7DQo+ID4gKwkJdTggZm9ybWF0
+X2lkOw0KPiA+ICsJCXU4IGNhdGVnb3J5Ow0KPiA+ICsJCXU4IGJhbmQ7DQo+ID4gKwkJdTggX3Jz
+djsNCj4gPiArCX0gX19wYWNrZWQgcmVxID0gew0KPiA+ICsJCS5mb3JtYXRfaWQgPSA3LA0KPiA+
+ICsJCS5jYXRlZ29yeSA9IFJBVEVfUE9XRVJfSU5GTywNCj4gPiArCQkuYmFuZCA9IGV4dF9waHks
+DQo+ID4gKwl9Ow0KPiA+ICsJczggcmVzW01UNzkxNV9TS1VfUkFURV9OVU1dWzJdOw0KPiA+ICsJ
+c3RydWN0IHNrX2J1ZmYgKnNrYjsNCj4gPiArCWludCByZXQsIGk7DQo+ID4gKw0KPiA+ICsJcmV0
+ID0gbXQ3Nl9tY3Vfc2VuZF9hbmRfZ2V0X21zZygmZGV2LT5tdDc2LA0KPiA+ICsJCQkJCU1DVV9F
+WFRfQ01EKFRYX1BPV0VSX0ZFQVRVUkVfQ1QNCj4gPiBSTCksDQo+ID4gKwkJCQkJJnJlcSwgc2l6
+ZW9mKHJlcSksIHRydWUsICZza2IpOw0KPiA+ICsJaWYgKHJldCkNCj4gPiArCQlyZXR1cm4gcmV0
+Ow0KPiA+ICsNCj4gPiArCW1lbWNweShyZXMsIHNrYi0+ZGF0YSArIDQsIHNpemVvZihyZXMpKTsN
+Cj4gPiArCWZvciAoaSA9IDA7IGkgPCBsZW47IGkrKykNCj4gPiArCQl0eHBvd2VyW2ldID0gcmVz
+W2ldW2V4dF9waHldOw0KPiA+ICsNCj4gPiArCWRldl9rZnJlZV9za2Ioc2tiKTsNCj4gPiArDQo+
+ID4gKwlyZXR1cm4gMDsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgaW50IG10NzkxNV9tY3Vfc2V0X3Rl
+c3RfcGFyYW0oc3RydWN0IG10NzkxNV9kZXYgKmRldiwgdTggcGFyYW0sDQo+ID4gYm9vbCB0ZXN0
+X21vZGUsDQo+ID4gIAkJCSAgICAgIHU4IGVuKQ0KPiA+ICB7DQo+ID4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oDQo+ID4gYi9k
+cml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaA0KPiA+IGlu
+ZGV4IGM0YmY4ZWQuLjFmN2U1N2QgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxl
+c3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCj4gPiArKysgYi9kcml2ZXJzL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaA0KPiA+IEBAIC0zOCw2ICszOCw4
+IEBADQo+ID4gICNkZWZpbmUgTVQ3OTE1XzVHX1JBVEVfREVGQVVMVAkJMHg0YgkvKiBPRkRNIDZN
+DQo+ID4gKi8NCj4gPiAgI2RlZmluZSBNVDc5MTVfMkdfUkFURV9ERUZBVUxUCQkweDAJLyogQ0NL
+IDFNICovDQo+ID4gIA0KPiA+ICsjZGVmaW5lIE1UNzkxNV9TS1VfUkFURV9OVU0JCTE2MQ0KPiA+
+ICsNCj4gPiAgc3RydWN0IG10NzkxNV92aWY7DQo+ID4gIHN0cnVjdCBtdDc5MTVfc3RhOw0KPiA+
+ICBzdHJ1Y3QgbXQ3OTE1X2Rmc19wdWxzZTsNCj4gPiBAQCAtMzQzLDYgKzM0NSw3IEBAIGludCBt
+dDc5MTVfbWN1X3NldF9ydHNfdGhyZXNoKHN0cnVjdCBtdDc5MTVfcGh5DQo+ID4gKnBoeSwgdTMy
+IHZhbCk7DQo+ID4gIGludCBtdDc5MTVfbWN1X3NldF9wbShzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2
+LCBpbnQgYmFuZCwgaW50DQo+ID4gZW50ZXIpOw0KPiA+ICBpbnQgbXQ3OTE1X21jdV9zZXRfc2t1
+X2VuKHN0cnVjdCBtdDc5MTVfcGh5ICpwaHksIGJvb2wgZW5hYmxlKTsNCj4gPiAgaW50IG10Nzkx
+NV9tY3Vfc2V0X3R4cG93ZXJfc2t1KHN0cnVjdCBtdDc5MTVfcGh5ICpwaHkpOw0KPiA+ICtpbnQg
+bXQ3OTE1X21jdV9nZXRfdHhwb3dlcl9za3Uoc3RydWN0IG10NzkxNV9waHkgKnBoeSwgczgNCj4g
+PiAqdHhwb3dlciwgaW50IGxlbik7DQo+ID4gIGludCBtdDc5MTVfbWN1X3NldF90eGJmX3R5cGUo
+c3RydWN0IG10NzkxNV9kZXYgKmRldik7DQo+ID4gIGludCBtdDc5MTVfbWN1X3NldF90eGJmX21v
+ZHVsZShzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2KTsNCj4gPiAgaW50IG10NzkxNV9tY3Vfc2V0X3R4
+YmZfc291bmRpbmcoc3RydWN0IG10NzkxNV9kZXYgKmRldik7DQo+ID4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3MuaA0KPiA+IGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oDQo+ID4gaW5kZXgg
+NDhlNGIyMi4uZWU1MjVlNyAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkxNS9yZWdzLmgNCj4gPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2L210NzkxNS9yZWdzLmgNCj4gPiBAQCAtODIsMTEgKzgyLDYgQEANCj4g
+PiAgI2RlZmluZSBNVF9UTUFDX0NUQ1IwX0lOU19ERExNVF9FTgkJQklUKDE3KQ0KPiA+ICAjZGVm
+aW5lIE1UX1RNQUNfQ1RDUjBfSU5TX0RETE1UX1ZIVF9TTVBEVV9FTglCSVQoMTgpDQo+ID4gIA0K
+PiA+IC0jZGVmaW5lIE1UX1RNQUNfRlAwUjAoX2JhbmQpCQlNVF9XRl9UTUFDKF9iYW5kLA0KPiA+
+IDB4MDIwKQ0KPiA+IC0jZGVmaW5lIE1UX1RNQUNfRlAwUjE1KF9iYW5kKQkJTVRfV0ZfVE1BQyhf
+YmFuZCwNCj4gPiAweDA4MCkNCj4gPiAtI2RlZmluZSBNVF9UTUFDX0ZQMFIxOChfYmFuZCkJCU1U
+X1dGX1RNQUMoX2JhbmQsDQo+ID4gMHgyNzApDQo+ID4gLSNkZWZpbmUgTVRfVE1BQ19GUF9NQVNL
+CQkJR0VOTUFTSyg3LCAwKQ0KPiA+IC0NCj4gPiAgI2RlZmluZSBNVF9UTUFDX1RGQ1IwKF9iYW5k
+KQkJTVRfV0ZfVE1BQyhfYmFuZCwNCj4gPiAweDFlMCkNCj4gPiAgDQo+ID4gICNkZWZpbmUgTVRf
+V0ZfRE1BX0JBU0UoX2JhbmQpCQkoKF9iYW5kKSA/IDB4YTFlMDAgOg0KPiA+IDB4MjFlMDApDQo+
+ID4gLS0gDQo+ID4gMi4xOC4wDQo+ID4gDQo=
 
