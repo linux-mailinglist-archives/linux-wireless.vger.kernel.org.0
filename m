@@ -2,138 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE70438FBE9
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 09:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7352338FC77
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 10:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231693AbhEYHmZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 May 2021 03:42:25 -0400
-Received: from saphodev.broadcom.com ([192.19.11.229]:55556 "EHLO
-        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231689AbhEYHmX (ORCPT
+        id S232093AbhEYIRN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 May 2021 04:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46740 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232000AbhEYIRM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 May 2021 03:42:23 -0400
-Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 927253CB60;
-        Tue, 25 May 2021 00:40:53 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 927253CB60
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1621928453;
-        bh=7xm/RkE6Ce5AbMaS15J3ThCuCwbe8vxsawPWO2gXNn0=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=QUmQ9sBDcOzf+JmXN7XEgl0Ohe23IKCsAt8rrSlthrzQogmRfkE5TF4yqRGv9DSLF
-         fM4xqPEVHvZ0ni/MOqfuSBaF6r7HuZ+Iq9SOkHiO2MomEZXShmExOKBfVmO/Gonwbf
-         /u6PNniPuGQQ6uQNu2SHi5Gvm7tHzKSCLgO/LcVU=
-Received: from [10.230.41.88] (unknown [10.230.41.88])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 6223A1874BE;
-        Tue, 25 May 2021 00:40:52 -0700 (PDT)
-Subject: Re: [PATCH AUTOSEL 5.4 39/52] brcmfmac: properly check for bus
- register errors
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>
-References: <20210524144903.2498518-1-sashal@kernel.org>
- <20210524144903.2498518-39-sashal@kernel.org>
- <437445ee-a360-597f-f058-3b913984e064@broadcom.com>
- <YKycgrI+zh4seh7U@kroah.com>
- <81b5dc11-4dfe-76d6-f822-0adcfb3a9e30@broadcom.com>
- <b074fa60-f184-ff21-e3e1-c64d7b848c27@broadcom.com>
- <YKymp3lo1XcIJYGB@kroah.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <41690617-ea4f-f6d1-977c-dc995c0773dc@broadcom.com>
-Date:   Tue, 25 May 2021 09:40:50 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Tue, 25 May 2021 04:17:12 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142EFC061574
+        for <linux-wireless@vger.kernel.org>; Tue, 25 May 2021 01:15:43 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id t11so16389711pjm.0
+        for <linux-wireless@vger.kernel.org>; Tue, 25 May 2021 01:15:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=VSOmN8vpjaX/z35OXF1bxLuubUtd57bZng4619wbR0Y=;
+        b=n90pA4TW89iTjszb8q6zIjsQNno5vsrxL/do39F4V/WNx0CzxJ6IDk3RPyZm8c5S3V
+         wkBA0bxJcVucO2W81dm9Dv8/op/nwlscQSLM+NeDvtq7qlhUyWmyfkjqXo0j06kWNC/y
+         bz7Sh4EumGlen9e2EG/59JaP/Ih2NgaRVSQKtwqrKxoy2PO8rk3k8XRJSx+q09+B2Sk2
+         Dc9Vx5wg3PP0erOS9xSx/6DX7OujoCx4/xozXCcIE2wWjIdOj5MXPfSyKv78nnYwjmbq
+         gKq51jynmh8yKFcwA7fovJNWMsCexTnt5hiyZO4RPXxi7jzKQrtrFtf64L4dkzAh/T+c
+         kWIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=VSOmN8vpjaX/z35OXF1bxLuubUtd57bZng4619wbR0Y=;
+        b=iAkdGX+DS186YlqaG1DWcY2mjL6DC4I269VbwPKnEznzk6Tk8BhLRF8jqGhSqK/DUM
+         5xS/JZyop6bfp8GfPv0VmSluDhgj24shJemkBiJppSPQKZUl//B97WZBn/Iz2E9uSh2i
+         XM6rEj6DFckzt+JGXoBq7ylg/yLWRtr8odNu6zjN0VpflP6RRyzotddRe7mMJdQmL5Hq
+         JiE3A0A7k/+Y2EVSHFiSphHFrHscYuv6AeapP6uGq4AppQkru6YA3bNqmM5JbxvyI1EN
+         oXUH0FqSx90+5rz656MyKyxIuFlTPTkTcDDycGp3MV/wWscpiWVM4OQanBibQi0GoVZR
+         1cRA==
+X-Gm-Message-State: AOAM5306aVReeOV5hVMqnYYzZ0vFsLe6jXc5B/YKusw67Rz3anHX6dbA
+        h/nizbiobpRjaBf+f4630ln3phqw/l45jwrCkRRf6g==
+X-Google-Smtp-Source: ABdhPJwp5uQJT1a070FBhP7oXJdr2zrGdRBSQQ/8mDUrvvqUpBD0jItxzDcGgIR7K2cLQpQL6JLeEXnM0yDnv99Ufds=
+X-Received: by 2002:a17:90a:c096:: with SMTP id o22mr3603930pjs.231.1621930542472;
+ Tue, 25 May 2021 01:15:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YKymp3lo1XcIJYGB@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20210520140158.10132-1-m.chetan.kumar@intel.com>
+ <20210520140158.10132-16-m.chetan.kumar@intel.com> <CAMZdPi-Xs00vMq-im_wHnNE5XkhXU1-mOgrNbGnExPbHYAL-rw@mail.gmail.com>
+ <90f93c17164a4d8299d17a02b1f15bfa@intel.com>
+In-Reply-To: <90f93c17164a4d8299d17a02b1f15bfa@intel.com>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Tue, 25 May 2021 10:24:00 +0200
+Message-ID: <CAMZdPi_VbLcbVA34Bb3uBGDsDCkN0GjP4HmHUbX95PF9skwe2Q@mail.gmail.com>
+Subject: Re: [PATCH V3 15/16] net: iosm: net driver
+To:     "Kumar, M Chetan" <m.chetan.kumar@intel.com>
+Cc:     Network Development <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "Sudi, Krishna C" <krishna.c.sudi@intel.com>,
+        linuxwwan <linuxwwan@intel.com>, Dan Williams <dcbw@redhat.com>,
+        =?UTF-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>,
+        Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/25/2021 9:26 AM, Greg Kroah-Hartman wrote:
-> On Tue, May 25, 2021 at 09:23:41AM +0200, Arend van Spriel wrote:
->> Resending without disclaimer
->>
->> On 5/25/2021 9:04 AM, Arend Van Spriel wrote:
->>>
->>>
->>> On 5/25/2021 8:43 AM, Greg Kroah-Hartman wrote:
->>>> On Tue, May 25, 2021 at 08:38:34AM +0200, Arend van Spriel wrote:
->>>>> On 5/24/2021 4:48 PM, Sasha Levin wrote:
->>>>>> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>>>>
->>>>>> [ Upstream commit 419b4a142a7ece36cebcd434f8ce2af59ef94b85 ]
->>>>>>
->>>>>> The brcmfmac driver ignores any errors on initialization with the
->>>>>> different busses by deferring the initialization to a workqueue and
->>>>>> ignoring all possible errors that might happen.  Fix up all of this by
->>>>>> only allowing the module to load if all bus registering
->>>>>> worked properly.
->>>>>
->>>>> Hi Greg,
->>>>>
->>>>> Saw this one flying by for stable kernel. Actually the first
->>>>> time I saw this
->>>>> patch, because I don't follow LKML as much as linux-wireless.
->>>>> The patch is
->>>>> fine, but wanted to give some context on the workqueue approach. It was
->>>>> there for historic reasons. Back then we had the UMH to provide firmware
->>>>> loading and because we request firmware during driver probe we
->>>>> could cause
->>>>> kernel boot to show significant delay when driver was built-in.
->>>>> Hence the
->>>>> workqueue which allowed kernel boot to proceed and driver probe
->>>>> was running
->>>>> in another thread context. These days we have direct firmware
->>>>> loading from
->>>>> the kernel and brcmfmac uses the asynchronous firmware loading
->>>>> API so there
->>>>> is indeed no longer a need for the workqueue.
->>>>>
->>>>> Just for my understanding could you explain the motivation behind this
->>>>> change. In the preceding revert patch I saw this remark:
->>>>>
->>>>> """
->>>>> The original commit here did nothing to actually help if usb_register()
->>>>> failed, so it gives a "false sense of security" when there is none.  The
->>>>> correct solution is to correctly unwind from this error.
->>>>> """
->>>>>
->>>>> Does this mean the patch is addressing some security issue. Before your
->>>>> patch the module would remain loaded despite a bus register
->>>>> failure. I guess
->>>>> there is a story behind this that I am curious about.
->>>>
->>>> The module would remain loaded, yes, but nothing would work, and so no
->>>> one would have any idea that something went wrong.  The original commit
->>>> was wrong, it did not actually solve anything.
->>>
->>> Agree.
->>>
->>>> This commit properly propagates any error that happens back to the user,
->>>> like any other module being loaded.
->>>
->>> I understand, but this might cause a regression for the user. For
->>> instance if the usb_register() fails, but the other driver registrations
->>> succeed and the user has a wireless PCIe device. Before this change the
->>> user would have a functioning wifi device, but with this change it does
->>> not?
-> 
-> If registering one of those other busses fails, you have major system
-> problems that need to be resolved and lots of other things will also
-> break.
+Hi Chetan,
 
-Right.
+On Mon, 24 May 2021 at 12:36, Kumar, M Chetan <m.chetan.kumar@intel.com> wr=
+ote:
+>
+> Hi Loic,
+>
+> > > +static void ipc_netdev_setup(struct net_device *dev) {}
+> > > +
+> > > +struct iosm_wwan *ipc_wwan_init(struct iosm_imem *ipc_imem, struct
+> > > +device *dev) {
+> > > +       static const struct net_device_ops iosm_wwandev_ops =3D {};
+> > > +       struct iosm_wwan *ipc_wwan;
+> > > +       struct net_device *netdev;
+> > > +
+> > > +       netdev =3D alloc_netdev(sizeof(*ipc_wwan), "wwan%d",
+> > NET_NAME_ENUM,
+> > > +                             ipc_netdev_setup);
+> > > +
+> > > +       if (!netdev)
+> > > +               return NULL;
+> > > +
+> > > +       ipc_wwan =3D netdev_priv(netdev);
+> > > +
+> > > +       ipc_wwan->dev =3D dev;
+> > > +       ipc_wwan->netdev =3D netdev;
+> > > +       ipc_wwan->is_registered =3D false;
+> > > +
+> > > +       ipc_wwan->ipc_imem =3D ipc_imem;
+> > > +
+> > > +       mutex_init(&ipc_wwan->if_mutex);
+> > > +
+> > > +       /* allocate random ethernet address */
+> > > +       eth_random_addr(netdev->dev_addr);
+> > > +       netdev->addr_assign_type =3D NET_ADDR_RANDOM;
+> > > +
+> > > +       netdev->netdev_ops =3D &iosm_wwandev_ops;
+> > > +       netdev->flags |=3D IFF_NOARP;
+> > > +
+> > > +       SET_NETDEV_DEVTYPE(netdev, &wwan_type);
+> > > +
+> > > +       if (register_netdev(netdev)) {
+> > > +               dev_err(ipc_wwan->dev, "register_netdev failed");
+> > > +               goto reg_fail;
+> > > +       }
+> >
+> > So you register a no-op netdev which is only used to represent the mode=
+m
+> > instance, and to be referenced for link creation over IOSM rtnetlinks?
+>
+> That=E2=80=99s correct driver creates wwan0 (no-op netdev) to represent t=
+he
+> modem instance and is referenced for link creation over IOSM rtnetlinks.
+>
+> > The new WWAN framework creates a logical WWAN device instance (e.g;
+> > /sys/class/wwan0), I think it would make sense to use its index as para=
+meter
+> > when creating the new links, instead of relying on this dummy netdev. N=
+ote
+> > that for now the wwan_device is private to wwan_core and created implic=
+itly
+> > on the WWAN control port registration.
+>
+> In order to use WWAN device instance any additional changes required insi=
+de
+> wwan_core ?  Or simply passing /sys/class/wwan0 device to ip link add is =
+enough.
 
-> You shouldn't just "eat error messages" and ignore them, as that's what
-> is what was happening here, you could have had errors and never knew it.
+So basically the rtnetlink ops would be implemented and define in
+wwan_core, as "wwan" link  type.
+Allowing users to create a new WWAN link/context whatever the
+underlying hardware is. We could therefore pass the WWAN device name
+or index to e.g:
+ip link add wwan0.1 type wwan hw wwan0 session 1
 
-As said earlier I agree with the patch. I just thought I might learn 
-something today, because there was more to it than I could find in the 
-commit message. :-p
+> Can you please share us more details on wwan_core changes(if any)/how we =
+should
+> use /sys/class/wwan0 for link creation ?
+
+Well, move rtnetlink ops to wwan_core (or wwan_rtnetlink), and parse
+netlink parameters into the wwan core. Add support for registering
+`wwan_ops`, something like:
+wwan_register_ops(wwan_ops *ops, struct device *wwan_root_device)
+
+The ops could be basically:
+struct wwan_ops {
+    int (*add_intf)(struct device *wwan_root_device, const char *name,
+struct wwan_intf_params *params);
+    int (*del_intf) ...
+}
+
+Then you could implement your own ops in iosm, with ios_add_intf()
+allocating and registering the netdev as you already do.
+struct wwan_intf_params would contain parameters of the interface,
+like the session_id (and possibly extended later with others, like
+checksum offload, etc...).
+
+What do you think?
+
+>
+> > Moreover I wonder if it could also be possible to create a generic WWAN=
+ link
+> > type instead of creating yet-another hw specific one, that could benefi=
+t
+> > future WWAN drivers, and simplify user side integration, with a common
+> > interface to create links and multiplex PDN (a bit like wlan vif).
+>
+> Common interface could benefit both wwan drivers and user side integratio=
+n.
+> WWAN framework generalizes WWAN device control port, would it also consid=
+er
+> WWAN netdev part ? Is there a plan to support such implementation inside
+> wwan_core.
+
+I also plan to submit a change to add a wwan_register_netdevice()
+function (similarly to WiFi cfg80211_register_netdevice), that could
+be used instead of register_netdevice(), basically factorizing wwan
+netdev registration (add "wwan" dev_type, add sysfs link to the 'wwan'
+device...).
 
 Regards,
-Arend
+Loic
