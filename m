@@ -2,190 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7352338FC77
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 10:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 011F538FD13
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 10:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232093AbhEYIRN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 May 2021 04:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46740 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232000AbhEYIRM (ORCPT
+        id S231437AbhEYIqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 May 2021 04:46:49 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:38471 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230108AbhEYIqs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 May 2021 04:17:12 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142EFC061574
-        for <linux-wireless@vger.kernel.org>; Tue, 25 May 2021 01:15:43 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id t11so16389711pjm.0
-        for <linux-wireless@vger.kernel.org>; Tue, 25 May 2021 01:15:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=VSOmN8vpjaX/z35OXF1bxLuubUtd57bZng4619wbR0Y=;
-        b=n90pA4TW89iTjszb8q6zIjsQNno5vsrxL/do39F4V/WNx0CzxJ6IDk3RPyZm8c5S3V
-         wkBA0bxJcVucO2W81dm9Dv8/op/nwlscQSLM+NeDvtq7qlhUyWmyfkjqXo0j06kWNC/y
-         bz7Sh4EumGlen9e2EG/59JaP/Ih2NgaRVSQKtwqrKxoy2PO8rk3k8XRJSx+q09+B2Sk2
-         Dc9Vx5wg3PP0erOS9xSx/6DX7OujoCx4/xozXCcIE2wWjIdOj5MXPfSyKv78nnYwjmbq
-         gKq51jynmh8yKFcwA7fovJNWMsCexTnt5hiyZO4RPXxi7jzKQrtrFtf64L4dkzAh/T+c
-         kWIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=VSOmN8vpjaX/z35OXF1bxLuubUtd57bZng4619wbR0Y=;
-        b=iAkdGX+DS186YlqaG1DWcY2mjL6DC4I269VbwPKnEznzk6Tk8BhLRF8jqGhSqK/DUM
-         5xS/JZyop6bfp8GfPv0VmSluDhgj24shJemkBiJppSPQKZUl//B97WZBn/Iz2E9uSh2i
-         XM6rEj6DFckzt+JGXoBq7ylg/yLWRtr8odNu6zjN0VpflP6RRyzotddRe7mMJdQmL5Hq
-         JiE3A0A7k/+Y2EVSHFiSphHFrHscYuv6AeapP6uGq4AppQkru6YA3bNqmM5JbxvyI1EN
-         oXUH0FqSx90+5rz656MyKyxIuFlTPTkTcDDycGp3MV/wWscpiWVM4OQanBibQi0GoVZR
-         1cRA==
-X-Gm-Message-State: AOAM5306aVReeOV5hVMqnYYzZ0vFsLe6jXc5B/YKusw67Rz3anHX6dbA
-        h/nizbiobpRjaBf+f4630ln3phqw/l45jwrCkRRf6g==
-X-Google-Smtp-Source: ABdhPJwp5uQJT1a070FBhP7oXJdr2zrGdRBSQQ/8mDUrvvqUpBD0jItxzDcGgIR7K2cLQpQL6JLeEXnM0yDnv99Ufds=
-X-Received: by 2002:a17:90a:c096:: with SMTP id o22mr3603930pjs.231.1621930542472;
- Tue, 25 May 2021 01:15:42 -0700 (PDT)
+        Tue, 25 May 2021 04:46:48 -0400
+X-UUID: 0215012bb09d418fa5b42e62e1c6f38d-20210525
+X-UUID: 0215012bb09d418fa5b42e62e1c6f38d-20210525
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1972369058; Tue, 25 May 2021 16:45:18 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 25 May 2021 16:45:16 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 25 May 2021 16:45:16 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: add .offset_tsf callback
+Date:   Tue, 25 May 2021 16:45:14 +0800
+Message-ID: <324aa6af6a191a1f929fd3054148b001acd0bd13.1621931743.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <20210520140158.10132-1-m.chetan.kumar@intel.com>
- <20210520140158.10132-16-m.chetan.kumar@intel.com> <CAMZdPi-Xs00vMq-im_wHnNE5XkhXU1-mOgrNbGnExPbHYAL-rw@mail.gmail.com>
- <90f93c17164a4d8299d17a02b1f15bfa@intel.com>
-In-Reply-To: <90f93c17164a4d8299d17a02b1f15bfa@intel.com>
-From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Tue, 25 May 2021 10:24:00 +0200
-Message-ID: <CAMZdPi_VbLcbVA34Bb3uBGDsDCkN0GjP4HmHUbX95PF9skwe2Q@mail.gmail.com>
-Subject: Re: [PATCH V3 15/16] net: iosm: net driver
-To:     "Kumar, M Chetan" <m.chetan.kumar@intel.com>
-Cc:     Network Development <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "Sudi, Krishna C" <krishna.c.sudi@intel.com>,
-        linuxwwan <linuxwwan@intel.com>, Dan Williams <dcbw@redhat.com>,
-        =?UTF-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>,
-        Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Chetan,
+It's much more accurate than .get_tsf + .set_tsf, and switch to use
+mt76_rmw to operate tsf registers.
 
-On Mon, 24 May 2021 at 12:36, Kumar, M Chetan <m.chetan.kumar@intel.com> wr=
-ote:
->
-> Hi Loic,
->
-> > > +static void ipc_netdev_setup(struct net_device *dev) {}
-> > > +
-> > > +struct iosm_wwan *ipc_wwan_init(struct iosm_imem *ipc_imem, struct
-> > > +device *dev) {
-> > > +       static const struct net_device_ops iosm_wwandev_ops =3D {};
-> > > +       struct iosm_wwan *ipc_wwan;
-> > > +       struct net_device *netdev;
-> > > +
-> > > +       netdev =3D alloc_netdev(sizeof(*ipc_wwan), "wwan%d",
-> > NET_NAME_ENUM,
-> > > +                             ipc_netdev_setup);
-> > > +
-> > > +       if (!netdev)
-> > > +               return NULL;
-> > > +
-> > > +       ipc_wwan =3D netdev_priv(netdev);
-> > > +
-> > > +       ipc_wwan->dev =3D dev;
-> > > +       ipc_wwan->netdev =3D netdev;
-> > > +       ipc_wwan->is_registered =3D false;
-> > > +
-> > > +       ipc_wwan->ipc_imem =3D ipc_imem;
-> > > +
-> > > +       mutex_init(&ipc_wwan->if_mutex);
-> > > +
-> > > +       /* allocate random ethernet address */
-> > > +       eth_random_addr(netdev->dev_addr);
-> > > +       netdev->addr_assign_type =3D NET_ADDR_RANDOM;
-> > > +
-> > > +       netdev->netdev_ops =3D &iosm_wwandev_ops;
-> > > +       netdev->flags |=3D IFF_NOARP;
-> > > +
-> > > +       SET_NETDEV_DEVTYPE(netdev, &wwan_type);
-> > > +
-> > > +       if (register_netdev(netdev)) {
-> > > +               dev_err(ipc_wwan->dev, "register_netdev failed");
-> > > +               goto reg_fail;
-> > > +       }
-> >
-> > So you register a no-op netdev which is only used to represent the mode=
-m
-> > instance, and to be referenced for link creation over IOSM rtnetlinks?
->
-> That=E2=80=99s correct driver creates wwan0 (no-op netdev) to represent t=
-he
-> modem instance and is referenced for link creation over IOSM rtnetlinks.
->
-> > The new WWAN framework creates a logical WWAN device instance (e.g;
-> > /sys/class/wwan0), I think it would make sense to use its index as para=
-meter
-> > when creating the new links, instead of relying on this dummy netdev. N=
-ote
-> > that for now the wwan_device is private to wwan_core and created implic=
-itly
-> > on the WWAN control port registration.
->
-> In order to use WWAN device instance any additional changes required insi=
-de
-> wwan_core ?  Or simply passing /sys/class/wwan0 device to ip link add is =
-enough.
+Tested-by: Xing Song <xing.song@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 33 +++++++++++++++++--
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  |  2 ++
+ 2 files changed, 33 insertions(+), 2 deletions(-)
 
-So basically the rtnetlink ops would be implemented and define in
-wwan_core, as "wwan" link  type.
-Allowing users to create a new WWAN link/context whatever the
-underlying hardware is. We could therefore pass the WWAN device name
-or index to e.g:
-ip link add wwan0.1 type wwan hw wwan0 session 1
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 64f9ebe4424a..2485f65766e7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -816,7 +816,8 @@ mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 
+ 	n = mvif->omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->omac_idx;
+ 	/* TSF software read */
+-	mt76_set(dev, MT_LPON_TCR(band, n), MT_LPON_TCR_SW_MODE);
++	mt76_rmw(dev, MT_LPON_TCR(band, n), MT_LPON_TCR_SW_MODE,
++		 MT_LPON_TCR_SW_READ);
+ 	tsf.t32[0] = mt76_rr(dev, MT_LPON_UTTR0(band));
+ 	tsf.t32[1] = mt76_rr(dev, MT_LPON_UTTR1(band));
+ 
+@@ -845,7 +846,34 @@ mt7915_set_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	mt76_wr(dev, MT_LPON_UTTR0(band), tsf.t32[0]);
+ 	mt76_wr(dev, MT_LPON_UTTR1(band), tsf.t32[1]);
+ 	/* TSF software overwrite */
+-	mt76_set(dev, MT_LPON_TCR(band, n), MT_LPON_TCR_SW_WRITE);
++	mt76_rmw(dev, MT_LPON_TCR(band, n), MT_LPON_TCR_SW_MODE,
++		 MT_LPON_TCR_SW_WRITE);
++
++	mutex_unlock(&dev->mt76.mutex);
++}
++
++static void
++mt7915_offset_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++		  s64 timestamp)
++{
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	struct mt7915_dev *dev = mt7915_hw_dev(hw);
++	struct mt7915_phy *phy = mt7915_hw_phy(hw);
++	bool band = phy != &dev->phy;
++	union {
++		u64 t64;
++		u32 t32[2];
++	} tsf = { .t64 = timestamp, };
++	u16 n;
++
++	mutex_lock(&dev->mt76.mutex);
++
++	n = mvif->omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->omac_idx;
++	mt76_wr(dev, MT_LPON_UTTR0(band), tsf.t32[0]);
++	mt76_wr(dev, MT_LPON_UTTR1(band), tsf.t32[1]);
++	/* TSF software adjust*/
++	mt76_rmw(dev, MT_LPON_TCR(band, n), MT_LPON_TCR_SW_MODE,
++		 MT_LPON_TCR_SW_ADJUST);
+ 
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+@@ -1036,6 +1064,7 @@ const struct ieee80211_ops mt7915_ops = {
+ 	.get_stats = mt7915_get_stats,
+ 	.get_tsf = mt7915_get_tsf,
+ 	.set_tsf = mt7915_set_tsf,
++	.offset_tsf = mt7915_offset_tsf,
+ 	.get_survey = mt76_get_survey,
+ 	.get_antenna = mt76_get_antenna,
+ 	.set_antenna = mt7915_set_antenna,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index efe0f2904c66..e36b30d84f07 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -124,6 +124,8 @@
+ #define MT_LPON_TCR(_band, n)		MT_WF_LPON(_band, 0x0a8 + (n) * 4)
+ #define MT_LPON_TCR_SW_MODE		GENMASK(1, 0)
+ #define MT_LPON_TCR_SW_WRITE		BIT(0)
++#define MT_LPON_TCR_SW_ADJUST		BIT(1)
++#define MT_LPON_TCR_SW_READ		GENMASK(1, 0)
+ 
+ /* MIB: band 0(0x24800), band 1(0xa4800) */
+ #define MT_WF_MIB_BASE(_band)		((_band) ? 0xa4800 : 0x24800)
+-- 
+2.18.0
 
-> Can you please share us more details on wwan_core changes(if any)/how we =
-should
-> use /sys/class/wwan0 for link creation ?
-
-Well, move rtnetlink ops to wwan_core (or wwan_rtnetlink), and parse
-netlink parameters into the wwan core. Add support for registering
-`wwan_ops`, something like:
-wwan_register_ops(wwan_ops *ops, struct device *wwan_root_device)
-
-The ops could be basically:
-struct wwan_ops {
-    int (*add_intf)(struct device *wwan_root_device, const char *name,
-struct wwan_intf_params *params);
-    int (*del_intf) ...
-}
-
-Then you could implement your own ops in iosm, with ios_add_intf()
-allocating and registering the netdev as you already do.
-struct wwan_intf_params would contain parameters of the interface,
-like the session_id (and possibly extended later with others, like
-checksum offload, etc...).
-
-What do you think?
-
->
-> > Moreover I wonder if it could also be possible to create a generic WWAN=
- link
-> > type instead of creating yet-another hw specific one, that could benefi=
-t
-> > future WWAN drivers, and simplify user side integration, with a common
-> > interface to create links and multiplex PDN (a bit like wlan vif).
->
-> Common interface could benefit both wwan drivers and user side integratio=
-n.
-> WWAN framework generalizes WWAN device control port, would it also consid=
-er
-> WWAN netdev part ? Is there a plan to support such implementation inside
-> wwan_core.
-
-I also plan to submit a change to add a wwan_register_netdevice()
-function (similarly to WiFi cfg80211_register_netdevice), that could
-be used instead of register_netdevice(), basically factorizing wwan
-netdev registration (add "wwan" dev_type, add sysfs link to the 'wwan'
-device...).
-
-Regards,
-Loic
