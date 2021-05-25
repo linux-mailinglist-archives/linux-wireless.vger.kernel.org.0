@@ -2,58 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 624A538FF9A
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 12:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A949438FFCC
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 13:13:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbhEYK64 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 May 2021 06:58:56 -0400
-Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:47541 "EHLO
-        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229581AbhEYK64 (ORCPT
+        id S230071AbhEYLOk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 May 2021 07:14:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58996 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229919AbhEYLOj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 May 2021 06:58:56 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0Ua4GhRl_1621940235;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0Ua4GhRl_1621940235)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 25 May 2021 18:57:25 +0800
-From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To:     kvalo@codeaurora.org
+        Tue, 25 May 2021 07:14:39 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3577AC061574;
+        Tue, 25 May 2021 04:13:00 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1llUzO-00EMeA-63; Tue, 25 May 2021 13:12:46 +0200
+Message-ID: <8d0cc8941fdefa19e59651202443f1d50f2542a2.camel@sipsolutions.net>
+Subject: Re: [PATCH] cfg80211: Fix inconsistent indenting
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        kvalo@codeaurora.org
 Cc:     davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Subject: [PATCH] cfg80211: Fix inconsistent indenting
-Date:   Tue, 25 May 2021 18:57:13 +0800
-Message-Id: <1621940233-70879-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        linux-kernel@vger.kernel.org
+Date:   Tue, 25 May 2021 13:12:45 +0200
+In-Reply-To: <1621940233-70879-1-git-send-email-jiapeng.chong@linux.alibaba.com> (sfid-20210525_125729_917249_DCBAF50D)
+References: <1621940233-70879-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+         (sfid-20210525_125729_917249_DCBAF50D)
+Content-Type: text/plain
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Eliminate the follow smatch warning:
+Wrong subject - this isn't related to cfg80211, it's ath6kl.
 
-drivers/net/wireless/ath/ath6kl/cfg80211.c:3308
-ath6kl_cfg80211_sscan_start() warn: inconsistent indenting.
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
- drivers/net/wireless/ath/ath6kl/cfg80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath6kl/cfg80211.c b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-index 29527e8..b722104 100644
---- a/drivers/net/wireless/ath/ath6kl/cfg80211.c
-+++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-@@ -3303,7 +3303,7 @@ static int ath6kl_cfg80211_sscan_start(struct wiphy *wiphy,
- 		if (ret < 0)
- 			return ret;
- 	} else {
--		 ret = ath6kl_wmi_bssfilter_cmd(ar->wmi, vif->fw_vif_idx,
-+		ret = ath6kl_wmi_bssfilter_cmd(ar->wmi, vif->fw_vif_idx,
- 						MATCHED_SSID_FILTER, 0);
- 		if (ret < 0)
- 			return ret;
--- 
-1.8.3.1
+johannes
 
