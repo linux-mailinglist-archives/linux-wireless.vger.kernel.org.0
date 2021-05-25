@@ -2,214 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE39038F9A4
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 06:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF0F038FB0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 May 2021 08:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230132AbhEYEe4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 May 2021 00:34:56 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:34049 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229671AbhEYEez (ORCPT
+        id S231357AbhEYGkJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 May 2021 02:40:09 -0400
+Received: from lpdvacalvio01.broadcom.com ([192.19.229.182]:51074 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231346AbhEYGkH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 May 2021 00:34:55 -0400
-X-UUID: bfe41b745e444d2a9aecad526ea61199-20210525
-X-UUID: bfe41b745e444d2a9aecad526ea61199-20210525
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1123299710; Tue, 25 May 2021 12:33:21 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 25 May 2021 12:33:20 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 25 May 2021 12:33:20 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH] mt76: mt7915: use mt7915_mcu_get_txpower_sku() to get per-rate txpower
-Date:   Tue, 25 May 2021 12:33:12 +0800
-Message-ID: <20210525043312.12623-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 25 May 2021 02:40:07 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 8467D80CC;
+        Mon, 24 May 2021 23:38:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 8467D80CC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1621924717;
+        bh=9ReqCI5p1XC/LQvadcWaVcnKjPwThCMssaKZwL+1rFk=;
+        h=Subject:To:References:From:Cc:Date:In-Reply-To:From;
+        b=WUIf5kokbdFml3MMrTeYAvyt7XW1y3DilgX6A2cdTfF+wG3ST0TRuy9Rn22wUgbAP
+         rq8jwEzXrTrUSLI58W+AfGQIRwN+WeOgrRPGBOA1+CpeTWsGl7ECLKvRaKw3itaYrc
+         jH31yjNnpek8xInMI6tj2j204qnkBWzHiP7nXmhw=
+Received: from [10.230.41.88] (unknown [10.230.41.88])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 9F1241874BE;
+        Mon, 24 May 2021 23:38:36 -0700 (PDT)
+Subject: Re: [PATCH AUTOSEL 5.4 39/52] brcmfmac: properly check for bus
+ register errors
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20210524144903.2498518-1-sashal@kernel.org>
+ <20210524144903.2498518-39-sashal@kernel.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>
+Message-ID: <437445ee-a360-597f-f058-3b913984e064@broadcom.com>
+Date:   Tue, 25 May 2021 08:38:34 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <20210524144903.2498518-39-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Get per-rate txpower with mcu command instead of frequently access tmac
-power registers from driver.
+On 5/24/2021 4:48 PM, Sasha Levin wrote:
+> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> [ Upstream commit 419b4a142a7ece36cebcd434f8ce2af59ef94b85 ]
+> 
+> The brcmfmac driver ignores any errors on initialization with the
+> different busses by deferring the initialization to a workqueue and
+> ignoring all possible errors that might happen.  Fix up all of this by
+> only allowing the module to load if all bus registering worked properly.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 48 ++++---------------
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 35 +++++++++++++-
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  3 ++
- .../net/wireless/mediatek/mt76/mt7915/regs.h  |  5 --
- 4 files changed, 46 insertions(+), 45 deletions(-)
+Hi Greg,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 6a8ddee..42a829d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -308,53 +308,23 @@ mt7915_puts_rate_txpower(struct seq_file *s, struct mt7915_phy *phy)
- 		"RU484/SU40", "RU996/SU80", "RU2x996/SU160"
- 	};
- 	struct mt7915_dev *dev = dev_get_drvdata(s->private);
--	bool ext_phy = phy != &dev->phy;
--	u32 reg_base;
--	int i, idx = 0;
-+	s8 txpower[MT7915_SKU_RATE_NUM], *buf;
-+	int i;
- 
- 	if (!phy)
- 		return;
- 
--	reg_base = MT_TMAC_FP0R0(ext_phy);
--	seq_printf(s, "\nBand %d\n", ext_phy);
-+	seq_printf(s, "\nBand %d\n", phy != &dev->phy);
- 
--	for (i = 0; i < ARRAY_SIZE(mt7915_sku_group_len); i++) {
--		u8 cnt, mcs_num = mt7915_sku_group_len[i];
--		s8 txpower[12];
--		int j;
-+	mt7915_mcu_get_txpower_sku(phy, txpower, sizeof(txpower));
-+	for (i = 0, buf = txpower; i < ARRAY_SIZE(mt7915_sku_group_len); i++) {
-+		u8 mcs_num = mt7915_sku_group_len[i];
- 
--		if (i == SKU_HT_BW20 || i == SKU_HT_BW40) {
--			mcs_num = 8;
--		} else if (i >= SKU_VHT_BW20 && i <= SKU_VHT_BW160) {
-+		if (i >= SKU_VHT_BW20 && i <= SKU_VHT_BW160)
- 			mcs_num = 10;
--		} else if (i == SKU_HE_RU26) {
--			reg_base = MT_TMAC_FP0R18(ext_phy);
--			idx = 0;
--		}
--
--		for (j = 0, cnt = 0; j < DIV_ROUND_UP(mcs_num, 4); j++) {
--			u32 val;
--
--			if (i == SKU_VHT_BW160 && idx == 60) {
--				reg_base = MT_TMAC_FP0R15(ext_phy);
--				idx = 0;
--			}
--
--			val = mt76_rr(dev, reg_base + (idx / 4) * 4);
--
--			if (idx && idx % 4)
--				val >>= (idx % 4) * 8;
--
--			while (val > 0 && cnt < mcs_num) {
--				s8 pwr = FIELD_GET(MT_TMAC_FP_MASK, val);
--
--				txpower[cnt++] = pwr;
--				val >>= 8;
--				idx++;
--			}
--		}
- 
--		mt76_seq_puts_array(s, sku_group_name[i], txpower, mcs_num);
-+		mt76_seq_puts_array(s, sku_group_name[i], buf, mcs_num);
-+		buf += mt7915_sku_group_len[i];
- 	}
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index dcf2d4d..52671cc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3514,7 +3514,6 @@ int mt7915_mcu_get_tx_rate(struct mt7915_dev *dev, u32 cmd, u16 wlan_idx)
- 
- int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy)
- {
--#define MT7915_SKU_RATE_NUM		161
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt76_phy *mphy = phy->mt76;
- 	struct ieee80211_hw *hw = mphy->hw;
-@@ -3564,6 +3563,40 @@ int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy)
- 				 sizeof(req), true);
- }
- 
-+int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len)
-+{
-+#define RATE_POWER_INFO	2
-+	struct mt7915_dev *dev = phy->dev;
-+	bool ext_phy = phy != &dev->phy;
-+	struct {
-+		u8 format_id;
-+		u8 category;
-+		u8 band;
-+		u8 _rsv;
-+	} __packed req = {
-+		.format_id = 7,
-+		.category = RATE_POWER_INFO,
-+		.band = ext_phy,
-+	};
-+	s8 res[MT7915_SKU_RATE_NUM][2];
-+	struct sk_buff *skb;
-+	int ret, i;
-+
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
-+					MCU_EXT_CMD(TX_POWER_FEATURE_CTRL),
-+					&req, sizeof(req), true, &skb);
-+	if (ret)
-+		return ret;
-+
-+	memcpy(res, skb->data + 4, sizeof(res));
-+	for (i = 0; i < len; i++)
-+		txpower[i] = res[i][ext_phy];
-+
-+	dev_kfree_skb(skb);
-+
-+	return 0;
-+}
-+
- int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
- 			      u8 en)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index c4bf8ed..1f7e57d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -38,6 +38,8 @@
- #define MT7915_5G_RATE_DEFAULT		0x4b	/* OFDM 6M */
- #define MT7915_2G_RATE_DEFAULT		0x0	/* CCK 1M */
- 
-+#define MT7915_SKU_RATE_NUM		161
-+
- struct mt7915_vif;
- struct mt7915_sta;
- struct mt7915_dfs_pulse;
-@@ -343,6 +345,7 @@ int mt7915_mcu_set_rts_thresh(struct mt7915_phy *phy, u32 val);
- int mt7915_mcu_set_pm(struct mt7915_dev *dev, int band, int enter);
- int mt7915_mcu_set_sku_en(struct mt7915_phy *phy, bool enable);
- int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy);
-+int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len);
- int mt7915_mcu_set_txbf_type(struct mt7915_dev *dev);
- int mt7915_mcu_set_txbf_module(struct mt7915_dev *dev);
- int mt7915_mcu_set_txbf_sounding(struct mt7915_dev *dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 48e4b22..ee525e7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -82,11 +82,6 @@
- #define MT_TMAC_CTCR0_INS_DDLMT_EN		BIT(17)
- #define MT_TMAC_CTCR0_INS_DDLMT_VHT_SMPDU_EN	BIT(18)
- 
--#define MT_TMAC_FP0R0(_band)		MT_WF_TMAC(_band, 0x020)
--#define MT_TMAC_FP0R15(_band)		MT_WF_TMAC(_band, 0x080)
--#define MT_TMAC_FP0R18(_band)		MT_WF_TMAC(_band, 0x270)
--#define MT_TMAC_FP_MASK			GENMASK(7, 0)
--
- #define MT_TMAC_TFCR0(_band)		MT_WF_TMAC(_band, 0x1e0)
- 
- #define MT_WF_DMA_BASE(_band)		((_band) ? 0xa1e00 : 0x21e00)
--- 
-2.18.0
+Saw this one flying by for stable kernel. Actually the first time I saw 
+this patch, because I don't follow LKML as much as linux-wireless. The 
+patch is fine, but wanted to give some context on the workqueue 
+approach. It was there for historic reasons. Back then we had the UMH to 
+provide firmware loading and because we request firmware during driver 
+probe we could cause kernel boot to show significant delay when driver 
+was built-in. Hence the workqueue which allowed kernel boot to proceed 
+and driver probe was running in another thread context. These days we 
+have direct firmware loading from the kernel and brcmfmac uses the 
+asynchronous firmware loading API so there is indeed no longer a need 
+for the workqueue.
 
+Just for my understanding could you explain the motivation behind this 
+change. In the preceding revert patch I saw this remark:
+
+"""
+The original commit here did nothing to actually help if usb_register()
+failed, so it gives a "false sense of security" when there is none.  The
+correct solution is to correctly unwind from this error.
+"""
+
+Does this mean the patch is addressing some security issue. Before your 
+patch the module would remain loaded despite a bus register failure. I 
+guess there is a story behind this that I am curious about.
+
+Regards,
+Arend
+
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Link: https://lore.kernel.org/r/20210503115736.2104747-70-gregkh@linuxfoundation.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  8 +---
+>   .../broadcom/brcm80211/brcmfmac/bus.h         | 19 ++++++++-
+>   .../broadcom/brcm80211/brcmfmac/core.c        | 42 ++++++++-----------
+>   .../broadcom/brcm80211/brcmfmac/pcie.c        |  9 +---
+>   .../broadcom/brcm80211/brcmfmac/pcie.h        |  5 ---
+>   .../broadcom/brcm80211/brcmfmac/usb.c         |  4 +-
+>   6 files changed, 41 insertions(+), 46 deletions(-)
