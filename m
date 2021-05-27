@@ -2,97 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74226393487
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 May 2021 19:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3B77393489
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 May 2021 19:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236849AbhE0RHe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 May 2021 13:07:34 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:39210 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S235298AbhE0RHe (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 May 2021 13:07:34 -0400
-X-UUID: fb85061c1c9f471981337b2fa898d6e4-20210528
-X-UUID: fb85061c1c9f471981337b2fa898d6e4-20210528
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2021564134; Fri, 28 May 2021 01:05:58 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 28 May 2021 01:05:57 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 28 May 2021 01:05:56 +0800
-From:   <Deren.Wu@mediatek.com>
-To:     <Deren.Wu@mediatek.com>, <nbd@nbd.name>,
-        <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <jemele@google.com>,
-        <yenlinlai@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] mt76: mt7921: update statistic in active mode only
-Date:   Fri, 28 May 2021 01:05:33 +0800
-Message-ID: <9337f7947e1f0921ffb6b4af541d29af9a0a9394.1622112237.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S236815AbhE0RIm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 May 2021 13:08:42 -0400
+Received: from phobos.denx.de ([85.214.62.61]:38450 "EHLO phobos.denx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235279AbhE0RIl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 27 May 2021 13:08:41 -0400
+Received: from [IPv6:::1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id 91EE182A8D;
+        Thu, 27 May 2021 19:07:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1622135226;
+        bh=+E8QvEVlUcPn0+wkeL13KnnBaduvv01SOpA+5jCMOEw=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=FjV+jqOhx0Pg/7AhNTXgVsOOsJyPA2M0DxpFfDDnSJzQ0JSmzjZUnVvRa7uNei+6F
+         Tj8++aprBzx1JQZbpK18SBI6aNi/cUHzGkdiTJepUBKvksHJkh0Zo3P78NWKKkrGzU
+         hDwmcGVoOsd6ocum7G+O4e7aqaRVGIF4V1ngXqKN2Xmr51/UaZ5CJDOtpx4a5dqh8Y
+         5mTFlgHMK2noy4dqN8AfB5Xy0Ob7a6buVO/LVMpqPXcu6crE5Ji+gCnPthrrwr4gyG
+         gXS5o3zOVPqKTy8PpqeBbG+vB/jvx35uWUQY8By6NrPZEWewsftUs9+qnO/PyWw42s
+         ha4PmuHmSjE2w==
+Subject: Re: [PATCH] rsi: Fix TX EAPOL packet handling against iwlwifi AP
+To:     Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        netdev@vger.kernel.org
+Cc:     Angus Ainslie <angus@akkea.ca>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Martin Kepplinger <martink@posteo.de>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        linux-wireless@vger.kernel.org
+References: <20201015111616.429220-1-marex@denx.de>
+ <ba9013a8-38e4-f1ee-05a7-c3cf668bf449@flowbird.group>
+From:   Marek Vasut <marex@denx.de>
+Message-ID: <2550c80c-471b-4723-4061-a488b8b85fd8@denx.de>
+Date:   Thu, 27 May 2021 19:07:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <ba9013a8-38e4-f1ee-05a7-c3cf668bf449@flowbird.group>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.102.4 at phobos.denx.de
+X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+On 5/27/21 6:52 PM, Martin Fuzzey wrote:
+> Hi Marek,
 
-wakeup chip every 250ms may cause huge power consumption
+Hi,
 
-try to update statistic counter only if in active status only,
-and it would lead fewer power cost
+> I've just run into the same problem (on -5.4) and found your (now 
+> merged) patch
 
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+The patch should already be part of 5.4.y, no ?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index e29d4fdab572..212832b34674 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1459,13 +1459,15 @@ void mt7921_pm_power_save_work(struct work_struct *work)
- {
- 	struct mt7921_dev *dev;
- 	unsigned long delta;
-+	struct mt76_phy *mphy;
- 
- 	dev = (struct mt7921_dev *)container_of(work, struct mt7921_dev,
- 						pm.ps_work.work);
-+	mphy = dev->phy.mt76;
- 
- 	delta = dev->pm.idle_timeout;
--	if (test_bit(MT76_HW_SCANNING, &dev->mphy.state) ||
--	    test_bit(MT76_HW_SCHED_SCANNING, &dev->mphy.state))
-+	if (test_bit(MT76_HW_SCANNING, &mphy->state) ||
-+	    test_bit(MT76_HW_SCHED_SCANNING, &mphy->state))
- 		goto out;
- 
- 	if (time_is_after_jiffies(dev->pm.last_activity + delta)) {
-@@ -1473,8 +1475,10 @@ void mt7921_pm_power_save_work(struct work_struct *work)
- 		goto out;
- 	}
- 
--	if (!mt7921_mcu_fw_pmctrl(dev))
-+	if (!mt7921_mcu_fw_pmctrl(dev)) {
-+		cancel_delayed_work_sync(&mphy->mac_work);
- 		return;
-+	}
- out:
- 	queue_delayed_work(dev->mt76.wq, &dev->pm.ps_work, delta);
- }
--- 
-2.18.0
+> On 15/10/2020 13:16, Marek Vasut wrote:
+>> In case RSI9116 SDIO WiFi operates in STA mode against Intel 9260 in 
+>> AP mode,
+>> the association fails. The former is using wpa_supplicant during 
+>> association,
+>> the later is set up using hostapd:
+>>
+>> iwl$ cat hostapd.conf
+>> interface=wlp1s0
+>> ssid=test
+>> country_code=DE
+>> hw_mode=g
+>> channel=1
+>> wpa=2
+>> wpa_passphrase=test
+>> wpa_key_mgmt=WPA-PSK
+>> iwl$ hostapd -d hostapd.conf
+>>
+>> rsi$ wpa_supplicant -i wlan0 -c <(wpa_passphrase test test)
+>>
+>> The problem is that the TX EAPOL data descriptor 
+>> RSI_DESC_REQUIRE_CFM_TO_HOST
+>> flag and extended descriptor EAPOL4_CONFIRM frame type are not set in 
+>> case the
+>> AP is iwlwifi, because in that case the TX EAPOL packet is 2 bytes 
+>> shorter.
+>>
+>> The downstream vendor driver has this change in place already [1], 
+>> however
+>> there is no explanation for it, neither is there any commit history 
+>> from which
+>> such explanation could be obtained.
+>>
+> 
+> I get this using 2 RSI9116 s, for both AP and STA using hostapd.
 
+Do I understand it correctly that two RSI9116 did not even work against 
+one another as STA and AP respectively ? Sigh ...
+
+> Comparing packet captures in the working and non working (without your 
+> patch) case shows that
+> the working case has a 802.11 QOS header whereas the non working case 
+> does not, hence the 2 byte difference.
+> The size of the EAPOL data is the same, it's the previous header that 
+> causes the problem...
+> 
+> This whole use the message size to determine the messages to ACK seems 
+> very fragile...
+
+I'm not surprised, the quality of this driver is low and the 
+documentation is lacking. Thanks for clarifying.
+
+Do you think you can write and submit a patch which would fix this in a 
+better way?
