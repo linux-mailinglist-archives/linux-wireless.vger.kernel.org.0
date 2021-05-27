@@ -2,28 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB6E392469
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 May 2021 03:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB89F3924A8
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 May 2021 04:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233054AbhE0Bld (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 May 2021 21:41:33 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5562 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232262AbhE0Blc (ORCPT
+        id S234099AbhE0CCZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 May 2021 22:02:25 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6644 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233825AbhE0CCU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 May 2021 21:41:32 -0400
-Received: from dggems705-chm.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Fr9R60ypkzjX8v;
-        Thu, 27 May 2021 09:37:06 +0800 (CST)
+        Wed, 26 May 2021 22:02:20 -0400
+Received: from dggems705-chm.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Fr9v52czhz1CF0C;
+        Thu, 27 May 2021 09:57:53 +0800 (CST)
 Received: from dggpemm500006.china.huawei.com (7.185.36.236) by
  dggems705-chm.china.huawei.com (10.3.19.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 27 May 2021 09:39:58 +0800
+ 15.1.2176.2; Thu, 27 May 2021 10:00:45 +0800
 Received: from [127.0.0.1] (10.69.26.252) by dggpemm500006.china.huawei.com
  (7.185.36.236) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Thu, 27 May
- 2021 09:39:58 +0800
-Subject: Re: [RFC net-next 1/4] ethtool: extend coalesce API
+ 2021 10:00:45 +0800
+Subject: Re: [RFC net-next 2/4] ethtool: extend coalesce setting uAPI with CQE
+ mode
 To:     Jakub Kicinski <kuba@kernel.org>
 CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
         <salil.mehta@huawei.com>, <yisen.zhuang@huawei.com>,
@@ -37,22 +38,22 @@ CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
         <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
         <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
         <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>, <mkubecek@suse.cz>
+        <linux-wireless@vger.kernel.org>
 References: <1622021262-8881-1-git-send-email-tanhuazhong@huawei.com>
- <1622021262-8881-2-git-send-email-tanhuazhong@huawei.com>
- <20210526165633.3f7982c9@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <1622021262-8881-3-git-send-email-tanhuazhong@huawei.com>
+ <20210526170033.62c8e6eb@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 From:   Huazhong Tan <tanhuazhong@huawei.com>
-Message-ID: <87bc57e0-1c37-1867-d958-fcfdda9ac743@huawei.com>
-Date:   Thu, 27 May 2021 09:39:57 +0800
+Message-ID: <b29f05f8-3c57-ec6a-78bb-3a22f743f7f1@huawei.com>
+Date:   Thu, 27 May 2021 10:00:44 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.5.1
 MIME-Version: 1.0
-In-Reply-To: <20210526165633.3f7982c9@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20210526170033.62c8e6eb@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 X-Originating-IP: [10.69.26.252]
-X-ClientProxiedBy: dggeme720-chm.china.huawei.com (10.1.199.116) To
+X-ClientProxiedBy: dggeme709-chm.china.huawei.com (10.1.199.105) To
  dggpemm500006.china.huawei.com (7.185.36.236)
 X-CFilter-Loop: Reflected
 Precedence: bulk
@@ -60,97 +61,86 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 2021/5/27 7:56, Jakub Kicinski wrote:
-> On Wed, 26 May 2021 17:27:39 +0800 Huazhong Tan wrote:
->> @@ -606,8 +611,12 @@ struct ethtool_ops {
->>   			      struct ethtool_eeprom *, u8 *);
->>   	int	(*set_eeprom)(struct net_device *,
->>   			      struct ethtool_eeprom *, u8 *);
->> -	int	(*get_coalesce)(struct net_device *, struct ethtool_coalesce *);
->> -	int	(*set_coalesce)(struct net_device *, struct ethtool_coalesce *);
->> +	int	(*get_coalesce)(struct net_device *,
->> +				struct netlink_ext_ack *,
-> ext_ack is commonly the last argument AFAIR.
+On 2021/5/27 8:00, Jakub Kicinski wrote:
+> On Wed, 26 May 2021 17:27:40 +0800 Huazhong Tan wrote:
+>> Currently, there many drivers who support CQE mode configuration,
+>> some configure it as a fixed when initialized, some provide an
+>> interface to change it by ethtool private flags. In order make it
+>> more generic, add 'ETHTOOL_A_COALESCE_USE_CQE_TX' and
+>> 'ETHTOOL_A_COALESCE_USE_CQE_RX' attribute and expand struct
+>> kernel_ethtool_coalesce with use_cqe_mode_tx and use_cqe_mode_rx,
+>> then these parameters can be accessed by ethtool netlink coalesce
+>> uAPI.
+>>
+>> Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
+>> diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+>> index 25131df..975394e 100644
+>> --- a/Documentation/networking/ethtool-netlink.rst
+>> +++ b/Documentation/networking/ethtool-netlink.rst
+>> @@ -937,6 +937,8 @@ Kernel response contents:
+>>     ``ETHTOOL_A_COALESCE_TX_USECS_HIGH``         u32     delay (us), high Tx
+>>     ``ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH``    u32     max packets, high Tx
+>>     ``ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL``  u32     rate sampling interval
+>> +  ``ETHTOOL_A_COALESCE_USE_CQE_TX``	       bool    Tx CQE mode
+>> +  ``ETHTOOL_A_COALESCE_USE_CQE_RX``	       bool    Rx CQE mode
+>>     ===========================================  ======  =======================
+>>   
+>>   Attributes are only included in reply if their value is not zero or the
+>> @@ -975,6 +977,8 @@ Request contents:
+>>     ``ETHTOOL_A_COALESCE_TX_USECS_HIGH``         u32     delay (us), high Tx
+>>     ``ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH``    u32     max packets, high Tx
+>>     ``ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL``  u32     rate sampling interval
+>> +  ``ETHTOOL_A_COALESCE_USE_CQE_TX``	       bool    Tx CQE mode
+>> +  ``ETHTOOL_A_COALESCE_USE_CQE_RX``	       bool    Rx CQE mode
+>>     ===========================================  ======  =======================
+>>   
+>>   Request is rejected if it attributes declared as unsupported by driver (i.e.
+> You need to thoroughly document the semantics. Can you point us to
+> which drivers/devices implement similar modes of operation (if they
+> exist we need to make sure semantics match)?
 
 
-yes, will fix it.
+Ok, will complement the semantics.
 
 
->> +				struct kernel_ethtool_coalesce *);
-> Seeing all the driver changes I can't say I'm a huge fan of
-> the encapsulation. We end up with a local variable for the "base"
-> structure, e.g.:
+Currently, only mlx5 provides a interface to update
+this mode through ethtool priv-flag. other drivers like
+broadcom and ice just use a fixed EQE and do not have
+update interface.
+
+
+
+>> diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+>> index 1030540..9d0a386 100644
+>> --- a/include/linux/ethtool.h
+>> +++ b/include/linux/ethtool.h
+>> @@ -179,6 +179,8 @@ __ethtool_get_link_ksettings(struct net_device *dev,
+>>   
+>>   struct kernel_ethtool_coalesce {
+>>   	struct ethtool_coalesce	base;
+>> +	__u32	use_cqe_mode_tx;
+>> +	__u32	use_cqe_mode_rx;
+> No __ in front, this is not a user space structure.
+> Why not bool or a bitfield?
+
+
+bool is enough, __u32 is used here to be consistent with
+
+fields in struct ethtool_coalesce.
+
+This seems unnecessary?
+
+
+>>   };
+>>   
+>>   /**
+>> @@ -216,6 +223,8 @@ const struct nla_policy ethnl_coalesce_set_policy[] = {
+>>   	[ETHTOOL_A_COALESCE_TX_USECS_HIGH]	= { .type = NLA_U32 },
+>>   	[ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH]	= { .type = NLA_U32 },
+>>   	[ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL] = { .type = NLA_U32 },
+>> +	[ETHTOOL_A_COALESCE_USE_CQE_MODE_TX]	= { .type = NLA_U8 },
+>> +	[ETHTOOL_A_COALESCE_USE_CQE_MODE_RX]	= { .type = NLA_U8 },
+> This needs a policy to make sure values are <= 1.
 >
->   static int wil_ethtoolops_set_coalesce(struct net_device *ndev,
-> -				       struct ethtool_coalesce *cp)
-> +				       struct netlink_ext_ack *extack,
-> +				       struct kernel_ethtool_coalesce *cp)
->   {
-> +	struct ethtool_coalesce *coal_base = &cp->base;
->   	struct wil6210_priv *wil = ndev_to_wil(ndev);
->   	struct wireless_dev *wdev = ndev->ieee80211_ptr;
->
-> so why not leave the base alone and pass the new members in a separate
-> structure?
-
-
-This is a similar approach as struct ethtool_link_ksettings
-suggested by Michal in last year's discussion.
-https://lore.kernel.org/lkml/20201119220203.fv2uluoeekyoyxrv@lion.mk-sys.cz/
-
-add a new separate structure can make less change. like below
-what we have to do is just add a new parameter.
-static int wil_ethtoolops_set_coalesce(struct net_device *ndev,
--                       struct ethtool_coalesce *cp)
-+                       struct ethtool_coalesce *cp,
-+                       struct ethtool_ext_coalesce *ext_cp,
-+                       struct netlink_ext_ack *extack)
-{
-      struct wil6210_priv *wil = ndev_to_wil(ndev);
-      struct wireless_dev *wdev = ndev->ieee80211_ptr;
-
-If this is ok, i will send a V2 for it.
-
-
->> +	int	(*set_coalesce)(struct net_device *,
->> +				struct netlink_ext_ack *,
->> +				struct kernel_ethtool_coalesce *);
->>   	void	(*get_ringparam)(struct net_device *,
->>   				 struct ethtool_ringparam *);
->>   	int	(*set_ringparam)(struct net_device *,
->>   static noinline_for_stack int ethtool_set_coalesce(struct net_device *dev,
->>   						   void __user *useraddr)
->>   {
->> -	struct ethtool_coalesce coalesce;
->> +	struct kernel_ethtool_coalesce coalesce;
->>   	int ret;
->>   
->>   	if (!dev->ethtool_ops->set_coalesce)
->>   		return -EOPNOTSUPP;
->>   
->> -	if (copy_from_user(&coalesce, useraddr, sizeof(coalesce)))
->> +	if (copy_from_user(&coalesce.base, useraddr, sizeof(coalesce.base)))
->>   		return -EFAULT;
->>   
->>   	if (!ethtool_set_coalesce_supported(dev, &coalesce))
->>   		return -EOPNOTSUPP;
->>   
->> -	ret = dev->ethtool_ops->set_coalesce(dev, &coalesce);
->> +	ret = dev->ethtool_ops->set_coalesce(dev, NULL, &coalesce);
->>   	if (!ret)
->>   		ethtool_notify(dev, ETHTOOL_MSG_COALESCE_NTF, NULL);
->>   	return ret;
-> Should IOCTL overwrite the settings it doesn't know about with 0
-> or preserve the existing values?
-
-
-IOCTL will overwrite the setting with random value,
-will a get_coalesce before copy_from_user() to fix it.
-
-
-Thanks.
-
-Huazhong.
-
 > .
 
