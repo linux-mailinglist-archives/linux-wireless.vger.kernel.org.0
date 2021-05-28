@@ -2,214 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBFD439447D
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 16:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE05394483
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 16:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235714AbhE1Owf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 May 2021 10:52:35 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:34021 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S235068AbhE1Owe (ORCPT
+        id S235997AbhE1OzJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 May 2021 10:55:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38624 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235415AbhE1OzI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 May 2021 10:52:34 -0400
-X-UUID: e710a1eec9c54aafac3d0b1c5dd30050-20210528
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=IqFXEixS/9LteybwUZNLlQSCVOoMC8Vc8923EpKqJrk=;
-        b=Z4oB9VwB0aOlVhUhIjHR1fbs5+mU2apz58qWTysrl2Tp413Ffwj970eV2mrtXT8cNe4TM3MxX8p0gLwPfUwhUC5RiPpKcq5StaA75nVUq+ejCtv3RH4WazKNWY0HBClMw2mruf1HdPqf4hI63MTFfSDx4Pxz+K+CoBnEuauVAzM=;
-X-UUID: e710a1eec9c54aafac3d0b1c5dd30050-20210528
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 350661377; Fri, 28 May 2021 22:50:55 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 28 May 2021 22:50:53 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 28 May 2021 22:50:53 +0800
-Message-ID: <409f8f2687aa9cfed58023c83bd18a47088eddc5.camel@mediatek.com>
-Subject: Re: [PATCH v2] mt76: mt7921: introduce mac tx done handling
-From:   Deren Wu <deren.wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>, <jemele@google.com>,
-        <yenlinlai@google.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Date:   Fri, 28 May 2021 22:50:53 +0800
-In-Reply-To: <b43e8c650aa75383c90d8272c719d4d8653f2cb8.1622210871.git.deren.wu@mediatek.com>
-References: <b43e8c650aa75383c90d8272c719d4d8653f2cb8.1622210871.git.deren.wu@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Fri, 28 May 2021 10:55:08 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C92C061574;
+        Fri, 28 May 2021 07:53:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=eYPDj+LfIhrv+LaA3M9K/3pjJ6DaX5CeFYMC/mFkVBE=; b=gQ1U2K3Xo+QlISz1KdFvyYrZPb
+        2mqImu2CRR6ObYKJPMvmMOg/7qtwA9DlvVtyqKYsUFY+L3x3eJ4NpTZG66ztCfFhlim23uBIxdXDZ
+        VoxIcoucNkIsQLnwbk8AHiOx4l0MGYhHcjgyhFR6tXvkoO2mPqN1pSeIIyvDT9EfOibSwfoyEhuC5
+        MISE/nlH1O+MJaoECgujjrTSwn14YwX3+mzTqtXMu3j3Iq1YPbeMdYizz12fUbsh/NiH4TqEMw8SS
+        lfQzgxngIwHJmBqY4CA+Lcd/WAsbCFNn4A1An8SH2nrtg+P24dR+b303UHZOr8EG5ggdyScucqrDQ
+        6AmUmNYA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1lmdqz-006iup-0i; Fri, 28 May 2021 14:52:49 +0000
+Date:   Fri, 28 May 2021 15:52:48 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Justin He <Justin.He@arm.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>
+Subject: Re: [PATCH RFCv2 2/3] lib/vsprintf.c: make %pD print full path for
+ file
+Message-ID: <YLEDwFCPcFx+qeul@casper.infradead.org>
+References: <20210528113951.6225-1-justin.he@arm.com>
+ <20210528113951.6225-3-justin.he@arm.com>
+ <YLDpSnV9XBUJq5RU@casper.infradead.org>
+ <AM6PR08MB437691E7314C6B774EFED4BDF7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM6PR08MB437691E7314C6B774EFED4BDF7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgYWxsLA0KDQpUaGUgcGF0Y2ggd2FzIGRvbmUgd2l0aCB2MSBhbHJlYWR5LiBQbGVhc2UgaWdu
-b3JlIHRoaXMgdmVyc2lvbi4NCg0KSSB3aWxsIGNyZWF0ZSBhbm90aGVyIHBhdGNoIGZvciBjb2Rp
-bmcgaXNzdWUuDQoNCg0KUmVnYXJkcywNCkRlcmVuDQoNCg0KT24gRnJpLCAyMDIxLTA1LTI4IGF0
-IDIyOjEzICswODAwLCBEZXJlbiBXdSB3cm90ZToNCj4gRnJvbTogRGVyZW4gV3UgPGRlcmVuLnd1
-QG1lZGlhdGVrLmNvbT4NCj4gDQo+IEluc3RlYWQgb2YgcmVhZCB0eCBzdGF0dXMgZnJvbSBtYWMg
-dGFibGUsIGFkZCBuZXcgbWVjaGFuaXNhbSB0bw0KPiBoYW5lbGUNCj4gdHggZG9uZSBldmVudCBm
-b3IgZGF0YSBmcmFtZSwgZXZlcnkgMjUwbXMNCj4gDQo+IFRoaXMgZXZlbnQgaW5kaWNhdGUgdGhl
-IHJlYWwgdHggc3RhdHVzIG9mIHRoaXMgcGt0IGluIG1hYyBsYXllciBhbmQNCj4gd291bGQgaGVs
-cCBtYWM4MDIxMSBjb3JyZWN0IHN0YXR1cyBtb3JlIGZyZXF1ZW50bHkNCj4gDQo+IFNpZ25lZC1v
-ZmYtYnk6IERlcmVuIFd1IDxkZXJlbi53dUBtZWRpYXRlay5jb20+DQo+IC0tLQ0KPiBjaGFuZ2Ug
-c2luY2UgdjI6IGZpeCBjb2Rpbmcgc3R5bGUNCj4gLS0tDQo+ICAuLi4vbmV0L3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbXQ3OTIxL21hYy5jICAgfCA2NyArKysrKysrKysrKy0tLS0NCj4gLS0tLQ0K
-PiAgLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9tY3UuYyAgIHwgNDcgKysr
-KysrKysrKysrKw0KPiAgLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9tY3Uu
-aCAgIHwgMjggKysrKysrKysNCj4gIC4uLi93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9t
-dDc5MjEuaCAgICB8ICAyICsNCj4gIDQgZmlsZXMgY2hhbmdlZCwgMTE1IGluc2VydGlvbnMoKyks
-IDI5IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L21lZGlhdGVrL210NzYvbXQ3OTIxL21hYy5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
-aWF0ZWsvbXQ3Ni9tdDc5MjEvbWFjLmMNCj4gaW5kZXggMjEyODMyYjM0Njc0Li5lYzg3MDk3MTQ2
-ZWUgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-OTIxL21hYy5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-OTIxL21hYy5jDQo+IEBAIC0xMyw2ICsxMywzNCBAQA0KPiAgI2RlZmluZSBIRV9QUkVQKGYsIG0s
-IHYpCWxlMTZfZW5jb2RlX2JpdHMobGUzMl9nZXRfYml0cyh2LA0KPiBNVF9DUlhWX0hFXyMjbSks
-XA0KPiAgCQkJCQkJIElFRUU4MDIxMV9SQURJT1RBUF9IRV8NCj4gIyNmKQ0KPiAgDQo+ICtzdGF0
-aWMgdTggbXQ3OTIxX25leHRfcGlkKHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYsIHN0cnVjdCBtdDc2
-X3djaWQNCj4gKndjaWQpDQo+ICt7DQo+ICsJd2NpZC0+cGFja2V0X2lkID0gKHdjaWQtPnBhY2tl
-dF9pZCArIDEpICYgTVRfUEFDS0VUX0lEX01BU0s7DQo+ICsJaWYgKHdjaWQtPnBhY2tldF9pZCA9
-PSBNVF9QQUNLRVRfSURfTk9fQUNLIHx8DQo+ICsJICAgIHdjaWQtPnBhY2tldF9pZCA9PSBNVF9Q
-QUNLRVRfSURfTk9fU0tCKQ0KPiArCQl3Y2lkLT5wYWNrZXRfaWQgPSBNVF9QQUNLRVRfSURfRklS
-U1Q7DQo+ICsJcmV0dXJuIHdjaWQtPnBhY2tldF9pZDsNCj4gK30NCj4gKw0KPiArdW5zaWduZWQg
-bG9uZyBtdDc5MjFfbmV4dF90eHNfc2V0KHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYsDQo+ICsJCQkJ
-ICBzdHJ1Y3QgbXQ3Nl93Y2lkICp3Y2lkLA0KPiArCQkJCSAgdTMyIHRpbWVvdXQpDQo+ICt7DQo+
-ICsJc3RydWN0IG10NzkyMV9zdGEgKm1zdGE7DQo+ICsNCj4gKwltc3RhID0gY29udGFpbmVyX29m
-KHdjaWQsIHN0cnVjdCBtdDc5MjFfc3RhLCB3Y2lkKTsNCj4gKwltc3RhLT5uZXh0X3R4c190cyA9
-IGppZmZpZXMgKyBtc2Vjc190b19qaWZmaWVzKHRpbWVvdXQpOw0KPiArCXJldHVybiBtc3RhLT5u
-ZXh0X3R4c190czsNCj4gK30NCj4gKw0KPiArYm9vbCBtdDc5MjFfbmV4dF90eHNfdGltZW91dChz
-dHJ1Y3QgbXQ3OTIxX2RldiAqZGV2LCBzdHJ1Y3QNCj4gbXQ3Nl93Y2lkICp3Y2lkKQ0KPiArew0K
-PiArCXN0cnVjdCBtdDc5MjFfc3RhICptc3RhOw0KPiArDQo+ICsJbXN0YSA9IGNvbnRhaW5lcl9v
-Zih3Y2lkLCBzdHJ1Y3QgbXQ3OTIxX3N0YSwgd2NpZCk7DQo+ICsJcmV0dXJuIHRpbWVfaXNfYmVm
-b3JlX2ppZmZpZXMobXN0YS0+bmV4dF90eHNfdHMpOw0KPiArfQ0KPiArDQo+ICBzdGF0aWMgc3Ry
-dWN0IG10NzZfd2NpZCAqbXQ3OTIxX3J4X2dldF93Y2lkKHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYs
-DQo+ICAJCQkJCSAgICB1MTYgaWR4LCBib29sIHVuaWNhc3QpDQo+ICB7DQo+IEBAIC03MjYsNyAr
-NzU0LDcgQEAgdm9pZCBtdDc5MjFfbWFjX3dyaXRlX3R4d2koc3RydWN0IG10NzkyMV9kZXYNCj4g
-KmRldiwgX19sZTMyICp0eHdpLA0KPiAgCXN0cnVjdCBpZWVlODAyMTFfdHhfaW5mbyAqaW5mbyA9
-IElFRUU4MDIxMV9TS0JfQ0Ioc2tiKTsNCj4gIAlzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmID0g
-aW5mby0+Y29udHJvbC52aWY7DQo+ICAJc3RydWN0IG10NzZfcGh5ICptcGh5ID0gJmRldi0+bXBo
-eTsNCj4gLQl1OCBwX2ZtdCwgcV9pZHgsIG9tYWNfaWR4ID0gMCwgd21tX2lkeCA9IDA7DQo+ICsJ
-dTggcGlkLCBwX2ZtdCwgcV9pZHgsIG9tYWNfaWR4ID0gMCwgd21tX2lkeCA9IDA7DQo+ICAJYm9v
-bCBpc184MDIzID0gaW5mby0+ZmxhZ3MgJiBJRUVFODAyMTFfVFhfQ1RMX0hXXzgwMjExX0VOQ0FQ
-Ow0KPiAgCXUxNiB0eF9jb3VudCA9IDE1Ow0KPiAgCXUzMiB2YWw7DQo+IEBAIC03OTUsNiArODIz
-LDE1IEBAIHZvaWQgbXQ3OTIxX21hY193cml0ZV90eHdpKHN0cnVjdCBtdDc5MjFfZGV2DQo+ICpk
-ZXYsIF9fbGUzMiAqdHh3aSwNCj4gIAkJdHh3aVs2XSB8PSBjcHVfdG9fbGUzMih2YWwpOw0KPiAg
-CQl0eHdpWzNdIHw9IGNwdV90b19sZTMyKE1UX1RYRDNfQkFfRElTQUJMRSk7DQo+ICAJfQ0KPiAr
-DQo+ICsJaWYgKChGSUVMRF9HRVQoTVRfVFhEMl9GUkFNRV9UWVBFLCB0eHdpWzJdKSAmDQo+ICsJ
-CShJRUVFODAyMTFfRlRZUEVfREFUQSA+PiAyKSkgJiYNCj4gKwkJbXQ3OTIxX25leHRfdHhzX3Rp
-bWVvdXQoZGV2LCB3Y2lkKSkgew0KPiArCQltdDc5MjFfbmV4dF90eHNfc2V0KGRldiwgd2NpZCwg
-MjUwKTsNCj4gKwkJcGlkID0gbXQ3OTIxX25leHRfcGlkKGRldiwgd2NpZCk7DQo+ICsJCXZhbCA9
-IE1UX1RYRDVfVFhfU1RBVFVTX01DVSB8IEZJRUxEX1BSRVAoTVRfVFhENV9QSUQsDQo+IHBpZCk7
-DQo+ICsJCXR4d2lbNV0gfD0gY3B1X3RvX2xlMzIodmFsKTsNCj4gKwl9DQo+ICB9DQo+ICANCj4g
-IHN0YXRpYyB2b2lkDQo+IEBAIC0xMzgwLDMwICsxNDE3LDYgQEAgbXQ3OTIxX21hY191cGRhdGVf
-bWliX3N0YXRzKHN0cnVjdCBtdDc5MjFfcGh5DQo+ICpwaHkpDQo+ICAJfQ0KPiAgfQ0KPiAgDQo+
-IC1zdGF0aWMgdm9pZA0KPiAtbXQ3OTIxX21hY19zdGFfc3RhdHNfd29yayhzdHJ1Y3QgbXQ3OTIx
-X3BoeSAqcGh5KQ0KPiAtew0KPiAtCXN0cnVjdCBtdDc5MjFfZGV2ICpkZXYgPSBwaHktPmRldjsN
-Cj4gLQlzdHJ1Y3QgbXQ3OTIxX3N0YSAqbXN0YTsNCj4gLQlMSVNUX0hFQUQobGlzdCk7DQo+IC0N
-Cj4gLQlzcGluX2xvY2tfYmgoJmRldi0+c3RhX3BvbGxfbG9jayk7DQo+IC0JbGlzdF9zcGxpY2Vf
-aW5pdCgmcGh5LT5zdGF0c19saXN0LCAmbGlzdCk7DQo+IC0NCj4gLQl3aGlsZSAoIWxpc3RfZW1w
-dHkoJmxpc3QpKSB7DQo+IC0JCW1zdGEgPSBsaXN0X2ZpcnN0X2VudHJ5KCZsaXN0LCBzdHJ1Y3Qg
-bXQ3OTIxX3N0YSwNCj4gc3RhdHNfbGlzdCk7DQo+IC0JCWxpc3RfZGVsX2luaXQoJm1zdGEtPnN0
-YXRzX2xpc3QpOw0KPiAtCQlzcGluX3VubG9ja19iaCgmZGV2LT5zdGFfcG9sbF9sb2NrKTsNCj4g
-LQ0KPiAtCQkvKiBxdWVyeSB3dGJsIGluZm8gdG8gcmVwb3J0IHR4IHJhdGUgZm9yIGZ1cnRoZXIN
-Cj4gZGV2aWNlcyAqLw0KPiAtCQltdDc5MjFfZ2V0X3d0YmxfaW5mbyhkZXYsIG1zdGEtPndjaWQu
-aWR4KTsNCj4gLQ0KPiAtCQlzcGluX2xvY2tfYmgoJmRldi0+c3RhX3BvbGxfbG9jayk7DQo+IC0J
-fQ0KPiAtDQo+IC0Jc3Bpbl91bmxvY2tfYmgoJmRldi0+c3RhX3BvbGxfbG9jayk7DQo+IC19DQo+
-IC0NCj4gIHZvaWQgbXQ3OTIxX21hY193b3JrKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yaykNCj4g
-IHsNCj4gIAlzdHJ1Y3QgbXQ3OTIxX3BoeSAqcGh5Ow0KPiBAQCAtMTQyMSwxMCArMTQzNCw2IEBA
-IHZvaWQgbXQ3OTIxX21hY193b3JrKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yaykNCj4gIA0KPiAg
-CQltdDc5MjFfbWFjX3VwZGF0ZV9taWJfc3RhdHMocGh5KTsNCj4gIAl9DQo+IC0JaWYgKCsrcGh5
-LT5zdGFfd29ya19jb3VudCA9PSA0KSB7DQo+IC0JCXBoeS0+c3RhX3dvcmtfY291bnQgPSAwOw0K
-PiAtCQltdDc5MjFfbWFjX3N0YV9zdGF0c193b3JrKHBoeSk7DQo+IC0JfQ0KPiAgDQo+ICAJbXQ3
-OTIxX211dGV4X3JlbGVhc2UocGh5LT5kZXYpOw0KPiAgCWllZWU4MDIxMV9xdWV1ZV9kZWxheWVk
-X3dvcmsocGh5LT5tdDc2LT5odywgJm1waHktPm1hY193b3JrLA0KPiBkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MjEvbWN1LmMNCj4gYi9kcml2ZXJz
-L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9tY3UuYw0KPiBpbmRleCA1YTRjNjk1
-ZjczYzkuLmU4Y2Q3NjdlYTQ3NSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MjEvbWN1LmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MjEvbWN1LmMNCj4gQEAgLTUzMSw2ICs1MzEsNDkgQEAgbXQ3OTIx
-X21jdV9sb3dfcG93ZXJfZXZlbnQoc3RydWN0IG10NzkyMV9kZXYNCj4gKmRldiwgc3RydWN0IHNr
-X2J1ZmYgKnNrYikNCj4gIAl0cmFjZV9scF9ldmVudChkZXYsIGV2ZW50LT5zdGF0ZSk7DQo+ICB9
-DQo+ICANCj4gK3N0YXRpYyB2b2lkDQo+ICttdDc5MjFfbWN1X3R4X2RvbmVfZXZlbnQoc3RydWN0
-IG10NzkyMV9kZXYgKmRldiwgc3RydWN0IHNrX2J1ZmYNCj4gKnNrYikNCj4gK3sNCj4gKwlzdHJ1
-Y3QgbXQ3OTIxX21jdV90eF9kb25lX2V2ZW50ICpldmVudDsNCj4gKwlzdHJ1Y3QgbXQ3OTIxX3N0
-YSAqbXN0YTsNCj4gKwlzdHJ1Y3QgbXQ3OTIxX3BoeSAqbXBoeSA9ICZkZXYtPnBoeTsNCj4gKwlz
-dHJ1Y3QgbXQ3OTIxX21jdV9wZWVyX2NhcCBwZWVyOw0KPiArCXN0cnVjdCBpZWVlODAyMTFfc3Rh
-ICpzdGE7DQo+ICsJTElTVF9IRUFEKGxpc3QpOw0KPiArDQo+ICsJc2tiX3B1bGwoc2tiLCBzaXpl
-b2Yoc3RydWN0IG10NzkyMV9tY3VfcnhkKSk7DQo+ICsJZXZlbnQgPSAoc3RydWN0IG10NzkyMV9t
-Y3VfdHhfZG9uZV9ldmVudCAqKXNrYi0+ZGF0YTsNCj4gKw0KPiArCXNwaW5fbG9ja19iaCgmZGV2
-LT5zdGFfcG9sbF9sb2NrKTsNCj4gKwlsaXN0X3NwbGljZV9pbml0KCZtcGh5LT5zdGF0c19saXN0
-LCAmbGlzdCk7DQo+ICsNCj4gKwl3aGlsZSAoIWxpc3RfZW1wdHkoJmxpc3QpKSB7DQo+ICsJCW1z
-dGEgPSBsaXN0X2ZpcnN0X2VudHJ5KCZsaXN0LCBzdHJ1Y3QgbXQ3OTIxX3N0YSwNCj4gc3RhdHNf
-bGlzdCk7DQo+ICsJCWxpc3RfZGVsX2luaXQoJm1zdGEtPnN0YXRzX2xpc3QpOw0KPiArDQo+ICsJ
-CWlmIChtc3RhLT53Y2lkLmlkeCAhPSBldmVudC0+d2xhbl9pZHgpDQo+ICsJCQljb250aW51ZTsN
-Cj4gKw0KPiArCQlzcGluX3VubG9ja19iaCgmZGV2LT5zdGFfcG9sbF9sb2NrKTsNCj4gKw0KPiAr
-CQlzdGEgPSB3Y2lkX3RvX3N0YSgmbXN0YS0+d2NpZCk7DQo+ICsNCj4gKwkJLyogcGVlciBjb25m
-aWcgYmFzZWQgb24gSUVFRSBTUEVDICovDQo+ICsJCW1lbXNldCgmcGVlciwgMHgwLCBzaXplb2Yo
-cGVlcikpOw0KPiArCQlwZWVyLmJ3ID0gZXZlbnQtPmJ3Ow0KPiArCQlwZWVyLmcyID0gISEoc3Rh
-LT5odF9jYXAuY2FwICYNCj4gSUVFRTgwMjExX0hUX0NBUF9TR0lfMjApOw0KPiArCQlwZWVyLmc0
-ID0gISEoc3RhLT5odF9jYXAuY2FwICYNCj4gSUVFRTgwMjExX0hUX0NBUF9TR0lfNDApOw0KPiAr
-CQlwZWVyLmc4ID0gISEoc3RhLT52aHRfY2FwLmNhcCAmDQo+IElFRUU4MDIxMV9WSFRfQ0FQX1NI
-T1JUX0dJXzgwKTsNCj4gKwkJcGVlci5nMTYgPSAhIShzdGEtPnZodF9jYXAuY2FwICYNCj4gSUVF
-RTgwMjExX1ZIVF9DQVBfU0hPUlRfR0lfMTYwKTsNCj4gKwkJbXQ3OTIxX21jdV90eF9yYXRlX3Bh
-cnNlKG1waHktPm10NzYsICZwZWVyLA0KPiArCQkJCQkgJm1zdGEtPnN0YXRzLnR4X3JhdGUsIGV2
-ZW50LQ0KPiA+dHhfcmF0ZSk7DQo+ICsNCj4gKwkJc3Bpbl9sb2NrX2JoKCZkZXYtPnN0YV9wb2xs
-X2xvY2spOw0KPiArCQlicmVhazsNCj4gKwl9DQo+ICsJc3Bpbl91bmxvY2tfYmgoJmRldi0+c3Rh
-X3BvbGxfbG9jayk7DQo+ICt9DQo+ICsNCj4gIHN0YXRpYyB2b2lkDQo+ICBtdDc5MjFfbWN1X3J4
-X3Vuc29saWNpdGVkX2V2ZW50KHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYsIHN0cnVjdA0KPiBza19i
-dWZmICpza2IpDQo+ICB7DQo+IEBAIC01NTcsNiArNjAwLDkgQEAgbXQ3OTIxX21jdV9yeF91bnNv
-bGljaXRlZF9ldmVudChzdHJ1Y3QgbXQ3OTIxX2Rldg0KPiAqZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAq
-c2tiKQ0KPiAgCWNhc2UgTUNVX0VWRU5UX0xQX0lORk86DQo+ICAJCW10NzkyMV9tY3VfbG93X3Bv
-d2VyX2V2ZW50KGRldiwgc2tiKTsNCj4gIAkJYnJlYWs7DQo+ICsJY2FzZSBNQ1VfRVZFTlRfVFhf
-RE9ORToNCj4gKwkJbXQ3OTIxX21jdV90eF9kb25lX2V2ZW50KGRldiwgc2tiKTsNCj4gKwkJYnJl
-YWs7DQo+ICAJZGVmYXVsdDoNCj4gIAkJYnJlYWs7DQo+ICAJfQ0KPiBAQCAtNTc3LDYgKzYyMyw3
-IEBAIHZvaWQgbXQ3OTIxX21jdV9yeF9ldmVudChzdHJ1Y3QgbXQ3OTIxX2RldiAqZGV2LA0KPiBz
-dHJ1Y3Qgc2tfYnVmZiAqc2tiKQ0KPiAgCSAgICByeGQtPmVpZCA9PSBNQ1VfRVZFTlRfU0NIRURf
-U0NBTl9ET05FIHx8DQo+ICAJICAgIHJ4ZC0+ZWlkID09IE1DVV9FVkVOVF9CU1NfQUJTRU5DRSB8
-fA0KPiAgCSAgICByeGQtPmVpZCA9PSBNQ1VfRVZFTlRfU0NBTl9ET05FIHx8DQo+ICsJICAgIHJ4
-ZC0+ZWlkID09IE1DVV9FVkVOVF9UWF9ET05FIHx8DQo+ICAJICAgIHJ4ZC0+ZWlkID09IE1DVV9F
-VkVOVF9EQkdfTVNHIHx8DQo+ICAJICAgIHJ4ZC0+ZWlkID09IE1DVV9FVkVOVF9DT1JFRFVNUCB8
-fA0KPiAgCSAgICByeGQtPmVpZCA9PSBNQ1VfRVZFTlRfTFBfSU5GTyB8fA0KPiBkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MjEvbWN1LmgNCj4gYi9k
-cml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyMS9tY3UuaA0KPiBpbmRleCA0
-OTgyM2QwYTNkMGEuLjIyZWJlZjRhZGQwMCAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MjEvbWN1LmgNCj4gKysrIGIvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MjEvbWN1LmgNCj4gQEAgLTgxLDYgKzgxLDcgQEAgZW51
-bSB7DQo+ICAJTUNVX0VWRU5UX1JFR19BQ0NFU1MgPSAweDA1LA0KPiAgCU1DVV9FVkVOVF9MUF9J
-TkZPID0gMHgwNywNCj4gIAlNQ1VfRVZFTlRfU0NBTl9ET05FID0gMHgwZCwNCj4gKwlNQ1VfRVZF
-TlRfVFhfRE9ORSA9IDB4MGYsDQo+ICAJTUNVX0VWRU5UX0JTU19BQlNFTkNFICA9IDB4MTEsDQo+
-ICAJTUNVX0VWRU5UX0JTU19CRUFDT05fTE9TUyA9IDB4MTMsDQo+ICAJTUNVX0VWRU5UX0NIX1BS
-SVZJTEVHRSA9IDB4MTgsDQo+IEBAIC00MDcsNCArNDA4LDMxIEBAIHN0cnVjdCBtdDc5MjFfdHhw
-d3JfZXZlbnQgew0KPiAgCXN0cnVjdCBtdDc5MjFfdHhwd3IgdHhwd3I7DQo+ICB9IF9fcGFja2Vk
-Ow0KPiAgDQo+ICtzdHJ1Y3QgbXQ3OTIxX21jdV90eF9kb25lX2V2ZW50IHsNCj4gKwl1OCBwaWQ7
-DQo+ICsJdTggc3RhdHVzOw0KPiArCXUxNiBzZXE7DQo+ICsNCj4gKwl1OCB3bGFuX2lkeDsNCj4g
-Kwl1OCB0eF9jbnQ7DQo+ICsJdTE2IHR4X3JhdGU7DQo+ICsNCj4gKwl1OCBmbGFnOw0KPiArCXU4
-IHRpZDsNCj4gKwl1OCByc3BfcmF0ZTsNCj4gKwl1OCBtY3M7DQo+ICsNCj4gKwl1OCBidzsNCj4g
-Kwl1OCB0eF9wd3I7DQo+ICsJdTggcmVhc29uOw0KPiArCXU4IHJzdjBbMV07DQo+ICsNCj4gKwl1
-MzIgZGVsYXk7DQo+ICsJdTMyIHRpbWVzdGFtcDsNCj4gKwl1MzIgYXBwbGllZF9mbGFnOw0KPiAr
-DQo+ICsJdTggdHhzWzI4XTsNCj4gKw0KPiArCXU4IHJzdjFbMzJdOw0KPiArfSBfX3BhY2tlZDsN
-Cj4gICNlbmRpZg0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
-bXQ3Ni9tdDc5MjEvbXQ3OTIxLmgNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
-dDc2L210NzkyMS9tdDc5MjEuaA0KPiBpbmRleCA1OTg2MmVhNDk1MWMuLmExZTQyNzYyNzNkOCAx
-MDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MjEv
-bXQ3OTIxLmgNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5
-MjEvbXQ3OTIxLmgNCj4gQEAgLTkyLDYgKzkyLDggQEAgc3RydWN0IG10NzkyMV9zdGEgew0KPiAg
-CXVuc2lnbmVkIGxvbmcgYW1wZHVfc3RhdGU7DQo+ICANCj4gIAlzdHJ1Y3QgbXQ3OTIxX3N0YV9r
-ZXlfY29uZiBiaXA7DQo+ICsNCj4gKwl1bnNpZ25lZCBsb25nIG5leHRfdHhzX3RzOw0KPiAgfTsN
-Cj4gIA0KPiAgREVDTEFSRV9FV01BKHJzc2ksIDEwLCA4KTsNCg==
+On Fri, May 28, 2021 at 02:22:01PM +0000, Justin He wrote:
+> > On Fri, May 28, 2021 at 07:39:50PM +0800, Jia He wrote:
+> > > We have '%pD' for printing a filename. It may not be perfect (by
+> > > default it only prints one component.)
+> > >
+> > > As suggested by Linus at [1]:
+> > > A dentry has a parent, but at the same time, a dentry really does
+> > > inherently have "one name" (and given just the dentry pointers, you
+> > > can't show mount-related parenthood, so in many ways the "show just
+> > > one name" makes sense for "%pd" in ways it doesn't necessarily for
+> > > "%pD"). But while a dentry arguably has that "one primary component",
+> > > a _file_ is certainly not exclusively about that last component.
+> > >
+> > > Hence "file_dentry_name()" simply shouldn't use "dentry_name()" at all.
+> > > Despite that shared code origin, and despite that similar letter
+> > > choice (lower-vs-upper case), a dentry and a file really are very
+> > > different from a name standpoint.
+> > >
+> > > Here stack space is preferred for file_d_path_name() because it is
+> > > much safer. The stack size 256 is a compromise between stack overflow
+> > > and too short full path.
+> >
+> > How is it "safer"?  You already have a buffer passed from the caller.
+> > Are you saying that d_path_fast() might overrun a really small buffer
+> > but won't overrun a 256 byte buffer?
+> No, it won't overrun a 256 byte buf. When the full path size is larger than 256, the p->len is < 0 in prepend_name, and this overrun will be
+> dectected in extract_string() with "-ENAMETOOLONG".
+> 
+> Each printk contains 2 vsnprintf. vsnprintf() returns the required size after formatting the string.
+> 1. vprintk_store() will invoke 1st vsnprintf() will 8 bytes space to get the reserve_size. In this case, the _buf_ could be less than _end_ by design.
+> 2. Then it invokes 2nd printk_sprint()->vscnprintf()->vsnprintf() to really fill the space.
 
+I think you need to explain _that_ in the commit log, not make some
+nebulous claim of "safer".
+
+> If we choose the stack space, it can meet above 2 cases.
+> 
+> If we pass the parameter like:
+> p = d_path_fast(path, buf, end - buf);
+> We need to handle the complicated logic in prepend_name()
+> I have tried this way in local test, the code logic is very complicated
+> and not so graceful.
+> e.g. I need to firstly go through the loop and get the full path size of
+> that file. And then return reserved_size for that 1st vsnprintf
+
+I'm not sure why it's so complicated.  p->len records how many bytes
+are needed for the entire path; can't you just return -p->len ?
