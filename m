@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F01F3942FA
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 14:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3307C394321
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 15:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234334AbhE1Myc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 May 2021 08:54:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39832 "EHLO
+        id S235662AbhE1NCk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 May 2021 09:02:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbhE1Myc (ORCPT
+        with ESMTP id S230080AbhE1NCi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 May 2021 08:54:32 -0400
+        Fri, 28 May 2021 09:02:38 -0400
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E397C061574;
-        Fri, 28 May 2021 05:52:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A74C061574;
+        Fri, 28 May 2021 06:01:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=wHOvG1vDEULjx9dh7AJNtG0WjNHcmlGHIun6OjtdMM0=; b=fGrPFSQdJb65SToPvKgOHyY0AR
-        It3eAVUf9rZxrA+8xkck2GzCBktNCbZjNOm7ndxfNU1GUir6kJX0YQ2nD666Yw647m9FwwPOW7JXy
-        lZvveL35XRpp9n4lvPBqT5z20rN2G08+8sp7iTO00vXryVZF3vRCiRyJRLvCg66O9WB8++72SCybP
-        uhburtlL4UgsYqTeYOjCCx9k077b4fWoCHyvKNPMA1mbnweCFC2J7F7PMwj8nQ+IOqTqBbCLxyeBQ
-        Ti3EKSXsIvYXSf/UswH+VdEX/LKqxewEPIaxzdNNDU+WYK9xgaMBuuw8/RgeERMvdC5fQtpz147lA
-        bVO5YeQA==;
+        bh=ZUYH3Mi14wG7kdhKEHxhtXEvN0lUYTCSCOFLNtrHy8U=; b=ApeMuFTFAmYrhq5vjgQD8SK9L/
+        3Jr36omDQW+jP9z71Yj9q4mcFfIz/QvWcbW3MCmXI72eJdE1Y5CazcfgIM1KZlUU0nj8C/g9CsVzw
+        JKe4dEZD2Sixv0LFh+4vEfEAGlUJLVI+4zFcx3bk1VkKcBWsJrhdhAS1cELocq0ONIO/futC6J2Aq
+        HGOB9N/6/r+hJ0EseI9fOa1ZvYakcOj6SqqytcT2I2IAB4wjRGFqVs5x0EFt7375ZAMJCnZjchi1y
+        Q7rzBYzdSQoBv+iMBZ8WNrVbZOtW5VIuygblyl3g40Gqxjo83YwPPspTP3s1kczXA3S3m/uzVwy9l
+        7IyoDrsQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1lmby1-006cNL-1Y; Fri, 28 May 2021 12:51:59 +0000
-Date:   Fri, 28 May 2021 13:51:57 +0100
+        id 1lmc5i-006clg-A9; Fri, 28 May 2021 12:59:59 +0000
+Date:   Fri, 28 May 2021 13:59:54 +0100
 From:   Matthew Wilcox <willy@infradead.org>
 To:     Jia He <justin.he@arm.com>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -49,42 +49,69 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-s390@vger.kernel.org
-Subject: Re: [PATCH RFCv2 1/3] fs: introduce helper d_path_fast()
-Message-ID: <YLDnbafc6mEXENfy@casper.infradead.org>
+Subject: Re: [PATCH RFCv2 2/3] lib/vsprintf.c: make %pD print full path for
+ file
+Message-ID: <YLDpSnV9XBUJq5RU@casper.infradead.org>
 References: <20210528113951.6225-1-justin.he@arm.com>
- <20210528113951.6225-2-justin.he@arm.com>
+ <20210528113951.6225-3-justin.he@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210528113951.6225-2-justin.he@arm.com>
+In-Reply-To: <20210528113951.6225-3-justin.he@arm.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 28, 2021 at 07:39:49PM +0800, Jia He wrote:
-> +/**
-> + * d_path_fast - fast return the full path of a dentry without taking
-> + * any seqlock/spinlock. This helper is typical for debugging purpose
-> + */
-> +char *d_path_fast(const struct path *path, char *buf, int buflen)
+On Fri, May 28, 2021 at 07:39:50PM +0800, Jia He wrote:
+> We have '%pD' for printing a filename. It may not be perfect (by
+> default it only prints one component.)
+> 
+> As suggested by Linus at [1]:
+> A dentry has a parent, but at the same time, a dentry really does
+> inherently have "one name" (and given just the dentry pointers, you
+> can't show mount-related parenthood, so in many ways the "show just
+> one name" makes sense for "%pd" in ways it doesn't necessarily for
+> "%pD"). But while a dentry arguably has that "one primary component",
+> a _file_ is certainly not exclusively about that last component.
+> 
+> Hence "file_dentry_name()" simply shouldn't use "dentry_name()" at all.
+> Despite that shared code origin, and despite that similar letter
+> choice (lower-vs-upper case), a dentry and a file really are very
+> different from a name standpoint.
+> 
+> Here stack space is preferred for file_d_path_name() because it is
+> much safer. The stack size 256 is a compromise between stack overflow
+> and too short full path.
 
-I'd suggest calling it d_path_unsafe().  Otherwise people will call it
-instead of d_path because who doesn't like fast?
+How is it "safer"?  You already have a buffer passed from the caller.
+Are you saying that d_path_fast() might overrun a really small buffer
+but won't overrun a 256 byte buffer?
 
-> +{
-> +	struct path root;
-> +	struct mount *mnt = real_mount(path->mnt);
-> +	DECLARE_BUFFER(b, buf, buflen);
+> @@ -920,13 +921,25 @@ char *dentry_name(char *buf, char *end, const struct dentry *d, struct printf_sp
+>  }
+>  
+>  static noinline_for_stack
+> -char *file_dentry_name(char *buf, char *end, const struct file *f,
+> +char *file_d_path_name(char *buf, char *end, const struct file *f,
+>  			struct printf_spec spec, const char *fmt)
+>  {
+> +	const struct path *path;
+> +	char *p;
+> +	char full_path[256];
 > +
-> +	rcu_read_lock();
-> +	get_fs_root_rcu(current->fs, &root);
+>  	if (check_pointer(&buf, end, f, spec))
+>  		return buf;
+>  
+> -	return dentry_name(buf, end, f->f_path.dentry, spec, fmt);
+> +	path = &f->f_path;
+> +	if (check_pointer(&buf, end, path, spec))
+> +		return buf;
 > +
-> +	prepend(&b, "", 1);
-> +	__prepend_path(path->dentry, mnt, &root, &b);
-> +	rcu_read_unlock();
+> +	p = d_path_fast(path, full_path, sizeof(full_path));
+> +	if (IS_ERR(p))
+> +		return err_ptr(buf, end, p, spec);
 > +
-> +	return extract_string(&b);
-> +}
-> +EXPORT_SYMBOL(d_path_fast);
-
-Why export it?  What module needs this?
+> +	return string_nocheck(buf, end, p, spec);
+>  }
+>  #ifdef CONFIG_BLOCK
+>  static noinline_for_stack
