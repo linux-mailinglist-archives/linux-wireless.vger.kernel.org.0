@@ -2,101 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA41393BED
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 05:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EE3B393CED
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 08:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236104AbhE1Daz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 May 2021 23:30:55 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39342 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236314AbhE1Dax (ORCPT
+        id S235494AbhE1GLN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 May 2021 02:11:13 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:41210 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234288AbhE1GLM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 May 2021 23:30:53 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14S3TDyhC003337, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14S3TDyhC003337
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 28 May 2021 11:29:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 28 May 2021 11:29:13 +0800
-Received: from localhost (172.16.16.242) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 28 May
- 2021 11:29:12 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>,
-        <kevin_yang@realtek.com>
-Subject: [PATCH 2/2] rtw88: refine unwanted h2c command
-Date:   Fri, 28 May 2021 11:29:01 +0800
-Message-ID: <20210528032901.12927-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210528032901.12927-1-pkshih@realtek.com>
-References: <20210528032901.12927-1-pkshih@realtek.com>
+        Fri, 28 May 2021 02:11:12 -0400
+X-UUID: 0c4953406652420e82ff630c6757085e-20210528
+X-UUID: 0c4953406652420e82ff630c6757085e-20210528
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 307835176; Fri, 28 May 2021 14:09:36 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 28 May 2021 14:09:34 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 28 May 2021 14:09:34 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Bo Jiao <bo.jiao@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2 1/4] mac80211: call ieee80211_tx_h_rate_ctrl() when dequeue
+Date:   Fri, 28 May 2021 14:05:41 +0800
+Message-ID: <2176023d8f13d82d093452e1c105609396c30622.1622164961.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.242]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 05/28/2021 03:11:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzUvMjggpFekyCAwMjoxOTowMA==?=
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Antivirus-Attachment-Filter-Interceptor-Info: license violation
-X-KSE-AntiSpam-Interceptor-Info: bases corrupted
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+Make ieee80211_tx_h_rate_ctrl() get called on dequeue to improve
+performance since it reduces the turnaround time for rate control.
 
-Don't send beacon filter h2c when there is no valid context.
-Return early instead of printing out warning messages, so others
-won't get confused.
-
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+change since v2 - roll ieee80211_tx_h_rate_ctrl checks into one condition
+---
+ net/mac80211/tx.c | 52 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 58f4e47aa96a..176e8b67530e 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -601,7 +601,7 @@ void rtw_fw_beacon_filter_config(struct rtw_dev *rtwdev, bool connect,
- 	s32 threshold = bss_conf->cqm_rssi_thold + rssi_offset;
- 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 0b719f3d2dec..d3016c3a3069 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1768,8 +1768,6 @@ static int invoke_tx_handlers_early(struct ieee80211_tx_data *tx)
+ 	CALL_TXH(ieee80211_tx_h_ps_buf);
+ 	CALL_TXH(ieee80211_tx_h_check_control_port_protocol);
+ 	CALL_TXH(ieee80211_tx_h_select_key);
+-	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
+-		CALL_TXH(ieee80211_tx_h_rate_ctrl);
  
--	if (!rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_BCN_FILTER))
-+	if (!rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_BCN_FILTER) || !si)
- 		return;
+  txh_done:
+ 	if (unlikely(res == TX_DROP)) {
+@@ -1802,6 +1800,9 @@ static int invoke_tx_handlers_late(struct ieee80211_tx_data *tx)
+ 		goto txh_done;
+ 	}
  
- 	if (!connect) {
-@@ -623,10 +623,7 @@ void rtw_fw_beacon_filter_config(struct rtw_dev *rtwdev, bool connect,
- 					       BCN_FILTER_OFFLOAD_MODE_DEFAULT);
- 	SET_BCN_FILTER_OFFLOAD_P1_THRESHOLD(h2c_pkt, (u8)threshold);
- 	SET_BCN_FILTER_OFFLOAD_P1_BCN_LOSS_CNT(h2c_pkt, BCN_LOSS_CNT);
--	if (si)
--		SET_BCN_FILTER_OFFLOAD_P1_MACID(h2c_pkt, si->mac_id);
--	else
--		rtw_warn(rtwdev, "CQM config with station not found\n");
-+	SET_BCN_FILTER_OFFLOAD_P1_MACID(h2c_pkt, si->mac_id);
- 	SET_BCN_FILTER_OFFLOAD_P1_HYST(h2c_pkt, bss_conf->cqm_rssi_hyst);
- 	SET_BCN_FILTER_OFFLOAD_P1_BCN_INTERVAL(h2c_pkt, bss_conf->beacon_int);
- 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
++	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
++		CALL_TXH(ieee80211_tx_h_rate_ctrl);
++
+ 	CALL_TXH(ieee80211_tx_h_michael_mic_add);
+ 	CALL_TXH(ieee80211_tx_h_sequence);
+ 	CALL_TXH(ieee80211_tx_h_fragment);
+@@ -3369,15 +3370,21 @@ static bool ieee80211_amsdu_aggregate(struct ieee80211_sub_if_data *sdata,
+  * Can be called while the sta lock is held. Anything that can cause packets to
+  * be generated will cause deadlock!
+  */
+-static void ieee80211_xmit_fast_finish(struct ieee80211_sub_if_data *sdata,
+-				       struct sta_info *sta, u8 pn_offs,
+-				       struct ieee80211_key *key,
+-				       struct sk_buff *skb)
++static ieee80211_tx_result
++ieee80211_xmit_fast_finish(struct ieee80211_sub_if_data *sdata,
++			   struct sta_info *sta, u8 pn_offs,
++			   struct ieee80211_key *key,
++			   struct ieee80211_tx_data *tx)
+ {
++	struct sk_buff *skb = tx->skb;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	u8 tid = IEEE80211_NUM_TIDS;
+ 
++	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL) &&
++	    ieee80211_tx_h_rate_ctrl(tx) != TX_CONTINUE)
++		return TX_DROP;
++
+ 	if (key)
+ 		info->control.hw_key = &key->conf;
+ 
+@@ -3426,6 +3433,8 @@ static void ieee80211_xmit_fast_finish(struct ieee80211_sub_if_data *sdata,
+ 			break;
+ 		}
+ 	}
++
++	return TX_CONTINUE;
+ }
+ 
+ static bool ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
+@@ -3529,24 +3538,17 @@ static bool ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 	tx.sta = sta;
+ 	tx.key = fast_tx->key;
+ 
+-	if (!ieee80211_hw_check(&local->hw, HAS_RATE_CONTROL)) {
+-		tx.skb = skb;
+-		r = ieee80211_tx_h_rate_ctrl(&tx);
+-		skb = tx.skb;
+-		tx.skb = NULL;
+-
+-		if (r != TX_CONTINUE) {
+-			if (r != TX_QUEUED)
+-				kfree_skb(skb);
+-			return true;
+-		}
+-	}
+-
+ 	if (ieee80211_queue_skb(local, sdata, sta, skb))
+ 		return true;
+ 
+-	ieee80211_xmit_fast_finish(sdata, sta, fast_tx->pn_offs,
+-				   fast_tx->key, skb);
++	tx.skb = skb;
++	r = ieee80211_xmit_fast_finish(sdata, sta, fast_tx->pn_offs,
++				       fast_tx->key, &tx);
++	tx.skb = NULL;
++	if (r == TX_DROP) {
++		kfree_skb(skb);
++		return true;
++	}
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		sdata = container_of(sdata->bss,
+@@ -3663,8 +3665,12 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 		    (tx.key->conf.flags & IEEE80211_KEY_FLAG_GENERATE_IV))
+ 			pn_offs = ieee80211_hdrlen(hdr->frame_control);
+ 
+-		ieee80211_xmit_fast_finish(sta->sdata, sta, pn_offs,
+-					   tx.key, skb);
++		r = ieee80211_xmit_fast_finish(sta->sdata, sta, pn_offs,
++					       tx.key, &tx);
++		if (r != TX_CONTINUE) {
++			ieee80211_free_txskb(&local->hw, skb);
++			goto begin;
++		}
+ 	} else {
+ 		if (invoke_tx_handlers_late(&tx))
+ 			goto begin;
 -- 
-2.25.1
+2.18.0
 
