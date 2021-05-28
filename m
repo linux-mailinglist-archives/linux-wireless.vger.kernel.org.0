@@ -2,75 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E44B393B27
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 03:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8DA393BEB
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 05:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234398AbhE1Bse (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 May 2021 21:48:34 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187]:5120 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229749AbhE1Bse (ORCPT
+        id S236267AbhE1Dav (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 May 2021 23:30:51 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:39334 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229977AbhE1Dat (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 May 2021 21:48:34 -0400
-Received: from dggeml759-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4FrnXy3mlmzYnqS;
-        Fri, 28 May 2021 09:44:18 +0800 (CST)
-Received: from dggemi762-chm.china.huawei.com (10.1.198.148) by
- dggeml759-chm.china.huawei.com (10.1.199.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Fri, 28 May 2021 09:46:58 +0800
-Received: from linux-lmwb.huawei.com (10.175.103.112) by
- dggemi762-chm.china.huawei.com (10.1.198.148) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Fri, 28 May 2021 09:46:57 +0800
-From:   Zou Wei <zou_wei@huawei.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
-        <ryder.lee@mediatek.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>, <matthias.bgg@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Zou Wei <zou_wei@huawei.com>
-Subject: [PATCH -next] mt76: mt7915: Fix unsigned comparison to zero
-Date:   Fri, 28 May 2021 10:05:37 +0800
-Message-ID: <1622167537-74981-1-git-send-email-zou_wei@huawei.com>
-X-Mailer: git-send-email 2.6.2
+        Thu, 27 May 2021 23:30:49 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14S3T7oS4003303, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14S3T7oS4003303
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 28 May 2021 11:29:07 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 28 May 2021 11:29:07 +0800
+Received: from localhost (172.16.16.242) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 28 May
+ 2021 11:29:06 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>,
+        <kevin_yang@realtek.com>
+Subject: [PATCH 0/2] rtw88: dump firmware log by devcoredump and refine unwanted H2C
+Date:   Fri, 28 May 2021 11:28:59 +0800
+Message-ID: <20210528032901.12927-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.103.112]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggemi762-chm.china.huawei.com (10.1.198.148)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.242]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/28/2021 03:00:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzUvMjggpFekyCAwMjoxOTowMA==?=
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Antivirus-Attachment-Filter-Interceptor-Info: license violation
+X-KSE-AntiSpam-Interceptor-Info: bases corrupted
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes coccicheck warnings:
+This patchset depends on previous one; 
+"[PATCH 0/2] rtw88: add scan notify to firmware and refine fw_feature check".
+The content isn't highly related, but it leads conflict if the order is wrong.
 
-./drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3450:5-8: WARNING: Unsigned expression compared with zero: idx < 0
+Po-Hao Huang (1):
+  rtw88: refine unwanted h2c command
 
-Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zou Wei <zou_wei@huawei.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Zong-Zhe Yang (1):
+  rtw88: dump FW crash via devcoredump
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index b3f14ff..764f25a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3440,8 +3440,9 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
- {
- 	struct mt7915_dev *dev = phy->dev;
- 	struct cfg80211_chan_def *chandef = &phy->mt76->chandef;
--	u16 total = 2, idx, center_freq = chandef->center_freq1;
-+	u16 total = 2, center_freq = chandef->center_freq1;
- 	u8 *cal = dev->cal, *eep = dev->mt76.eeprom.data;
-+	int idx;
- 
- 	if (!(eep[MT_EE_DO_PRE_CAL] & MT_EE_WIFI_CAL_DPD))
- 		return 0;
+ drivers/net/wireless/realtek/rtw88/debug.c    |   7 +
+ drivers/net/wireless/realtek/rtw88/fw.c       |   7 +-
+ drivers/net/wireless/realtek/rtw88/main.c     | 170 ++++++++++++------
+ drivers/net/wireless/realtek/rtw88/main.h     |  37 +++-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  51 +++++-
+ 5 files changed, 203 insertions(+), 69 deletions(-)
+
 -- 
-2.6.2
+2.25.1
 
