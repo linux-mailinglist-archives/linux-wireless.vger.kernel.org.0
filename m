@@ -2,110 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E36023944F5
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 17:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C320839463B
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 19:11:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236285AbhE1PYu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 May 2021 11:24:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45272 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbhE1PYk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 May 2021 11:24:40 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52AEAC061574;
-        Fri, 28 May 2021 08:23:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=UM5DN4/cqvUU0xmTLWTsMkmBxsLpKI9DFsTdLupUfM8=; b=rixJj00vbxOG8VpsVpP8RbwTCr
-        7BdeaCq+hpyarwuXl+O3dOf5/mfbsr/do79SCZlf3on6u8YY3NZmQbi6VKZ8WEVqtJtGGU/Q0QI7E
-        7/13hGYvF6K3ei013bzRtVwFVdSGdx+hMe5efukKz3ZVKnOnRqw5ipIDrdLxIBXF6zNNSS2CYn64r
-        jkpPmGKmoUPksIDohqJaF0jo59P0Pfx82bIhjUY9UQECizoXUfdRMsXEPSo3rHMhIEkG02qytSW0/
-        l9fmshRAtie23VjM/0TiggGalzRIWEC+vtQb/ObqtL/vKtzI+k3STDAathHQRnqwoIrkw7vZ+dFfN
-        VUIRZJ2Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1lmeJU-006kN3-P6; Fri, 28 May 2021 15:22:20 +0000
-Date:   Fri, 28 May 2021 16:22:16 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Justin He <Justin.He@arm.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>
-Subject: Re: [PATCH RFCv2 2/3] lib/vsprintf.c: make %pD print full path for
- file
-Message-ID: <YLEKqGkm8bX6LZfP@casper.infradead.org>
-References: <20210528113951.6225-1-justin.he@arm.com>
- <20210528113951.6225-3-justin.he@arm.com>
- <YLDpSnV9XBUJq5RU@casper.infradead.org>
- <AM6PR08MB437691E7314C6B774EFED4BDF7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
- <YLEDwFCPcFx+qeul@casper.infradead.org>
- <AM6PR08MB437615DB6A6DEC33223A3138F7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
+        id S234330AbhE1RN2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 May 2021 13:13:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35374 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231919AbhE1RN2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 28 May 2021 13:13:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A642E613B4;
+        Fri, 28 May 2021 17:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622221913;
+        bh=O+0s3Im5qRTilBsOVRaGOwZMIGy61SLzbC1smZ4A+s4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LQSsODEcFSxVGd7BNH+QQ9vDXebVov/Njzq9zTpzBOXWLkVBxgauqt+j+Daqi5iwA
+         XSgn0ctuAL/iuJPx8D/1UiNuDTJlBA71efUAUo3v5zIxVuU+6N+I78YEv4LUNK39CC
+         NA4HfYM9YE4JTkeEB/T0pLCr/JDDDlWG0MoqY5T0jVu4L32EfmlBbcShM6m47eS0cP
+         u5Y70xtzpb182MUp8hvqyz5QA7Qzkb+IBxhfmR35L1/8LPKLxatTCsAbCLzcLU83eo
+         HQa/BOiW0H34QyIp6M2rRbcO8d1hqHae7y0AUqFdGzOdRUgZxH+94LLl5Cjn2z/Bby
+         49AvshoBPpXZA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH v3] mt76: mt7921: set MT76_RESET during mac reset
+Date:   Fri, 28 May 2021 19:11:42 +0200
+Message-Id: <349c7c836e0b2c1978d0c3706d74034e71279532.1622221131.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AM6PR08MB437615DB6A6DEC33223A3138F7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 28, 2021 at 03:09:28PM +0000, Justin He wrote:
-> > I'm not sure why it's so complicated.  p->len records how many bytes
-> > are needed for the entire path; can't you just return -p->len ?
-> 
-> prepend_name() will return at the beginning if p->len is <0 in this case,
-> we can't even get the correct full path size if keep __prepend_path unchanged.
-> We need another new helper __prepend_path_size() to get the full path size
-> regardless of the negative value p->len.
+Set MT76_RESET during mt7921_mac_reset in order to avoid packet
+transmissions. Move tx scheduling at the end of reset routine.
 
-It's a little hard to follow, based on just the patches.  Is there a
-git tree somewhere of Al's patches that you're based on?
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v2:
+- clear flags in case of error
 
-Seems to me that prepend_name() is just fine because it updates p->len
-before returning false:
+Changes since v1:
+- move tx scheduling at the end of reset routine
+---
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 25 +++++++++++--------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
- static bool prepend_name(struct prepend_buffer *p, const struct qstr *name)
- {
- 	const char *dname = smp_load_acquire(&name->name); /* ^^^ */
- 	u32 dlen = READ_ONCE(name->len);
- 	char *s;
-
- 	p->len -= dlen + 1;
- 	if (unlikely(p->len < 0))
- 		return false;
-
-I think the only change you'd need to make for vsnprintf() is in
-prepend_path():
-
--		if (!prepend_name(&b, &dentry->d_name))
--			break;
-+		prepend_name(&b, &dentry->d_name);
-
-Would that hurt anything else?
-
-> More than that, even the 1st vsnprintf could have _end_ > _buf_ in some case:
-> What if printk("%pD", filp) ? The 1st vsnprintf has positive (end-buf).
-
-I don't understand the problem ... if p->len is positive, then you
-succeeded.  if p->len is negative then -p->len is the expected return
-value from vsnprintf().  No?
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index aecb2615b63d..f518c84d7fa9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1294,6 +1294,7 @@ mt7921_mac_reset(struct mt7921_dev *dev)
+ 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
+ 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
+ 
++	set_bit(MT76_RESET, &dev->mphy.state);
+ 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 	wake_up(&dev->mt76.mcu.wait);
+ 	skb_queue_purge(&dev->mt76.mcu.res_q);
+@@ -1309,19 +1310,13 @@ mt7921_mac_reset(struct mt7921_dev *dev)
+ 	mt7921_tx_token_put(dev);
+ 	idr_init(&dev->mt76.token);
+ 
+-	err = mt7921_wpdma_reset(dev, true);
+-	if (err)
+-		return err;
++	mt7921_wpdma_reset(dev, true);
+ 
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		napi_enable(&dev->mt76.napi[i]);
+ 		napi_schedule(&dev->mt76.napi[i]);
+ 	}
+ 
+-	napi_enable(&dev->mt76.tx_napi);
+-	napi_schedule(&dev->mt76.tx_napi);
+-	mt76_worker_enable(&dev->mt76.tx_worker);
+-
+ 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 
+ 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA,
+@@ -1331,17 +1326,25 @@ mt7921_mac_reset(struct mt7921_dev *dev)
+ 
+ 	err = mt7921_run_firmware(dev);
+ 	if (err)
+-		return err;
++		goto out;
+ 
+ 	err = mt7921_mcu_set_eeprom(dev);
+ 	if (err)
+-		return err;
++		goto out;
+ 
+ 	err = mt7921_mac_init(dev);
+ 	if (err)
+-		return err;
++		goto out;
++
++	err = __mt7921_start(&dev->phy);
++out:
++	clear_bit(MT76_RESET, &dev->mphy.state);
++
++	napi_enable(&dev->mt76.tx_napi);
++	napi_schedule(&dev->mt76.tx_napi);
++	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	return __mt7921_start(&dev->phy);
++	return err;
+ }
+ 
+ /* system error recovery */
+-- 
+2.31.1
 
