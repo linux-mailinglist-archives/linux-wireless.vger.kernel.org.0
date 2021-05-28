@@ -2,38 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E8DA393BEB
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 05:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38668393BEC
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 05:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236267AbhE1Dav (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 May 2021 23:30:51 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39334 "EHLO
+        id S236327AbhE1Daw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 May 2021 23:30:52 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:39337 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbhE1Dat (ORCPT
+        with ESMTP id S236104AbhE1Dav (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 May 2021 23:30:49 -0400
+        Thu, 27 May 2021 23:30:51 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14S3T7oS4003303, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 14S3TADa8003321, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14S3T7oS4003303
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 14S3TADa8003321
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 28 May 2021 11:29:07 +0800
+        Fri, 28 May 2021 11:29:11 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 28 May 2021 11:29:07 +0800
+ 15.1.2106.2; Fri, 28 May 2021 11:29:10 +0800
 Received: from localhost (172.16.16.242) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 28 May
- 2021 11:29:06 +0800
+ 2021 11:29:09 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [PATCH 0/2] rtw88: dump firmware log by devcoredump and refine unwanted H2C
-Date:   Fri, 28 May 2021 11:28:59 +0800
-Message-ID: <20210528032901.12927-1-pkshih@realtek.com>
+Subject: [PATCH 1/2] rtw88: dump FW crash via devcoredump
+Date:   Fri, 28 May 2021 11:29:00 +0800
+Message-ID: <20210528032901.12927-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210528032901.12927-1-pkshih@realtek.com>
+References: <20210528032901.12927-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -45,7 +47,7 @@ X-KSE-AntiSpam-Interceptor-Info: trusted connection
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Deterministic
 X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 05/28/2021 03:00:00
+X-KSE-Antiphishing-Bases: 05/28/2021 03:11:00
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzUvMjggpFekyCAwMjoxOTowMA==?=
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
@@ -58,23 +60,477 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patchset depends on previous one; 
-"[PATCH 0/2] rtw88: add scan notify to firmware and refine fw_feature check".
-The content isn't highly related, but it leads conflict if the order is wrong.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Po-Hao Huang (1):
-  rtw88: refine unwanted h2c command
+Use device coredump framework instead of print_hex_dump to support
+FW crash dump. Pass data to the framework if preparing and dumping
+are successful. The framework will take the ownership of the data.
+The data will be freed after the framework determines its lifetime
+is over. A new coredump will not work if the previous one still
+exists.
 
-Zong-Zhe Yang (1):
-  rtw88: dump FW crash via devcoredump
-
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
  drivers/net/wireless/realtek/rtw88/debug.c    |   7 +
- drivers/net/wireless/realtek/rtw88/fw.c       |   7 +-
  drivers/net/wireless/realtek/rtw88/main.c     | 170 ++++++++++++------
  drivers/net/wireless/realtek/rtw88/main.h     |  37 +++-
  drivers/net/wireless/realtek/rtw88/rtw8822c.c |  51 +++++-
- 5 files changed, 203 insertions(+), 69 deletions(-)
+ 4 files changed, 201 insertions(+), 64 deletions(-)
 
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index 18ab472ea46c..dfd52cff5d02 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -11,6 +11,7 @@
+ #include "debug.h"
+ #include "phy.h"
+ #include "reg.h"
++#include "ps.h"
+ 
+ #ifdef CONFIG_RTW88_DEBUGFS
+ 
+@@ -847,7 +848,13 @@ static ssize_t rtw_debugfs_set_fw_crash(struct file *filp,
+ 	if (!input)
+ 		return -EINVAL;
+ 
++	if (test_bit(RTW_FLAG_RESTARTING, rtwdev->flags))
++		return -EINPROGRESS;
++
++	mutex_lock(&rtwdev->mutex);
++	rtw_leave_lps_deep(rtwdev);
+ 	rtw_write8(rtwdev, REG_HRCV_MSG, 1);
++	mutex_unlock(&rtwdev->mutex);
+ 
+ 	return count;
+ }
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 47f4838d0c58..4a9a8544e8ca 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -2,6 +2,8 @@
+ /* Copyright(c) 2018-2019  Realtek Corporation
+  */
+ 
++#include <linux/devcoredump.h>
++
+ #include "main.h"
+ #include "regd.h"
+ #include "fw.h"
+@@ -320,59 +322,131 @@ void rtw_sta_remove(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 		 sta->addr, si->mac_id);
+ }
+ 
+-static bool rtw_fw_dump_crash_log(struct rtw_dev *rtwdev)
++struct rtw_fwcd_hdr {
++	u32 item;
++	u32 size;
++	u32 padding1;
++	u32 padding2;
++} __packed;
++
++static int rtw_fwcd_prep(struct rtw_dev *rtwdev)
++{
++	struct rtw_chip_info *chip = rtwdev->chip;
++	struct rtw_fwcd_desc *desc = &rtwdev->fw.fwcd_desc;
++	const struct rtw_fwcd_segs *segs = chip->fwcd_segs;
++	u32 prep_size = chip->fw_rxff_size + sizeof(struct rtw_fwcd_hdr);
++	u8 i;
++
++	if (segs) {
++		prep_size += segs->num * sizeof(struct rtw_fwcd_hdr);
++
++		for (i = 0; i < segs->num; i++)
++			prep_size += segs->segs[i];
++	}
++
++	desc->data = vmalloc(prep_size);
++	if (!desc->data)
++		return -ENOMEM;
++
++	desc->size = prep_size;
++	desc->next = desc->data;
++
++	return 0;
++}
++
++static u8 *rtw_fwcd_next(struct rtw_dev *rtwdev, u32 item, u32 size)
++{
++	struct rtw_fwcd_desc *desc = &rtwdev->fw.fwcd_desc;
++	struct rtw_fwcd_hdr *hdr;
++	u8 *next;
++
++	if (!desc->data) {
++		rtw_dbg(rtwdev, RTW_DBG_FW, "fwcd isn't prepared successfully\n");
++		return NULL;
++	}
++
++	next = desc->next + sizeof(struct rtw_fwcd_hdr);
++	if (next - desc->data + size > desc->size) {
++		rtw_dbg(rtwdev, RTW_DBG_FW, "fwcd isn't prepared enough\n");
++		return NULL;
++	}
++
++	hdr = (struct rtw_fwcd_hdr *)(desc->next);
++	hdr->item = item;
++	hdr->size = size;
++	hdr->padding1 = 0x01234567;
++	hdr->padding2 = 0x89abcdef;
++	desc->next = next + size;
++
++	return next;
++}
++
++static void rtw_fwcd_dump(struct rtw_dev *rtwdev)
++{
++	struct rtw_fwcd_desc *desc = &rtwdev->fw.fwcd_desc;
++
++	rtw_dbg(rtwdev, RTW_DBG_FW, "dump fwcd\n");
++
++	/* Data will be freed after lifetime of device coredump. After calling
++	 * dev_coredump, data is supposed to be handled by the device coredump
++	 * framework. Note that a new dump will be discarded if a previous one
++	 * hasn't been released yet.
++	 */
++	dev_coredumpv(rtwdev->dev, desc->data, desc->size, GFP_KERNEL);
++}
++
++static void rtw_fwcd_free(struct rtw_dev *rtwdev, bool free_self)
++{
++	struct rtw_fwcd_desc *desc = &rtwdev->fw.fwcd_desc;
++
++	if (free_self) {
++		rtw_dbg(rtwdev, RTW_DBG_FW, "free fwcd by self\n");
++		vfree(desc->data);
++	}
++
++	desc->data = NULL;
++	desc->next = NULL;
++}
++
++static int rtw_fw_dump_crash_log(struct rtw_dev *rtwdev)
+ {
+ 	u32 size = rtwdev->chip->fw_rxff_size;
+ 	u32 *buf;
+ 	u8 seq;
+-	bool ret = true;
+ 
+-	buf = vmalloc(size);
++	buf = (u32 *)rtw_fwcd_next(rtwdev, RTW_FWCD_TLV, size);
+ 	if (!buf)
+-		goto exit;
++		return -ENOMEM;
+ 
+ 	if (rtw_fw_dump_fifo(rtwdev, RTW_FW_FIFO_SEL_RXBUF_FW, 0, size, buf)) {
+ 		rtw_dbg(rtwdev, RTW_DBG_FW, "dump fw fifo fail\n");
+-		goto free_buf;
++		return -EINVAL;
+ 	}
+ 
+ 	if (GET_FW_DUMP_LEN(buf) == 0) {
+ 		rtw_dbg(rtwdev, RTW_DBG_FW, "fw crash dump's length is 0\n");
+-		goto free_buf;
++		return -EINVAL;
+ 	}
+ 
+ 	seq = GET_FW_DUMP_SEQ(buf);
+-	if (seq > 0 && seq != (rtwdev->fw.prev_dump_seq + 1)) {
++	if (seq > 0) {
+ 		rtw_dbg(rtwdev, RTW_DBG_FW,
+ 			"fw crash dump's seq is wrong: %d\n", seq);
+-		goto free_buf;
+-	}
+-
+-	print_hex_dump(KERN_ERR, "rtw88 fw dump: ", DUMP_PREFIX_OFFSET, 16, 1,
+-		       buf, size, true);
+-
+-	if (GET_FW_DUMP_MORE(buf) == 1) {
+-		rtwdev->fw.prev_dump_seq = seq;
+-		ret = false;
++		return -EINVAL;
+ 	}
+ 
+-free_buf:
+-	vfree(buf);
+-exit:
+-	rtw_write8(rtwdev, REG_MCU_TST_CFG, 0);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ int rtw_dump_fw(struct rtw_dev *rtwdev, const u32 ocp_src, u32 size,
+-		const char *prefix_str)
++		u32 fwcd_item)
+ {
+ 	u32 rxff = rtwdev->chip->fw_rxff_size;
+ 	u32 dump_size, done_size = 0;
+ 	u8 *buf;
+ 	int ret;
+ 
+-	buf = vzalloc(size);
++	buf = rtw_fwcd_next(rtwdev, fwcd_item, size);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+@@ -385,7 +459,7 @@ int rtw_dump_fw(struct rtw_dev *rtwdev, const u32 ocp_src, u32 size,
+ 			rtw_err(rtwdev,
+ 				"ddma fw 0x%x [+0x%x] to fw fifo fail\n",
+ 				ocp_src, done_size);
+-			goto exit;
++			return ret;
+ 		}
+ 
+ 		ret = rtw_fw_dump_fifo(rtwdev, RTW_FW_FIFO_SEL_RXBUF_FW, 0,
+@@ -394,24 +468,18 @@ int rtw_dump_fw(struct rtw_dev *rtwdev, const u32 ocp_src, u32 size,
+ 			rtw_err(rtwdev,
+ 				"dump fw 0x%x [+0x%x] from fw fifo fail\n",
+ 				ocp_src, done_size);
+-			goto exit;
++			return ret;
+ 		}
+ 
+ 		size -= dump_size;
+ 		done_size += dump_size;
+ 	}
+ 
+-	print_hex_dump(KERN_ERR, prefix_str, DUMP_PREFIX_OFFSET, 16, 1,
+-		       buf, done_size, true);
+-
+-exit:
+-	vfree(buf);
+-	return ret;
++	return 0;
+ }
+ EXPORT_SYMBOL(rtw_dump_fw);
+ 
+-int rtw_dump_reg(struct rtw_dev *rtwdev, const u32 addr, const u32 size,
+-		 const char *prefix_str)
++int rtw_dump_reg(struct rtw_dev *rtwdev, const u32 addr, const u32 size)
+ {
+ 	u8 *buf;
+ 	u32 i;
+@@ -421,17 +489,13 @@ int rtw_dump_reg(struct rtw_dev *rtwdev, const u32 addr, const u32 size,
+ 		return -EINVAL;
+ 	}
+ 
+-	buf = vzalloc(size);
++	buf = rtw_fwcd_next(rtwdev, RTW_FWCD_REG, size);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i < size; i += 4)
+ 		*(u32 *)(buf + i) = rtw_read32(rtwdev, addr + i);
+ 
+-	print_hex_dump(KERN_ERR, prefix_str, DUMP_PREFIX_OFFSET, 16, 4, buf,
+-		       size, true);
+-
+-	vfree(buf);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(rtw_dump_reg);
+@@ -489,20 +553,24 @@ void rtw_fw_recovery(struct rtw_dev *rtwdev)
+ 
+ static void __fw_recovery_work(struct rtw_dev *rtwdev)
+ {
+-
+-	/* rtw_fw_dump_crash_log() returns false indicates that there are
+-	 * still more log to dump. Driver set 0x1cf[7:0] = 0x1 to tell firmware
+-	 * to dump the remaining part of the log, and firmware will trigger an
+-	 * IMR_C2HCMD interrupt to inform driver the log is ready.
+-	 */
+-	if (!rtw_fw_dump_crash_log(rtwdev)) {
+-		rtw_write8(rtwdev, REG_HRCV_MSG, 1);
+-		return;
+-	}
+-	rtwdev->fw.prev_dump_seq = 0;
++	int ret = 0;
+ 
+ 	set_bit(RTW_FLAG_RESTARTING, rtwdev->flags);
+-	rtw_chip_dump_fw_crash(rtwdev);
++
++	ret = rtw_fwcd_prep(rtwdev);
++	if (ret)
++		goto free;
++	ret = rtw_fw_dump_crash_log(rtwdev);
++	if (ret)
++		goto free;
++	ret = rtw_chip_dump_fw_crash(rtwdev);
++	if (ret)
++		goto free;
++
++	rtw_fwcd_dump(rtwdev);
++free:
++	rtw_fwcd_free(rtwdev, !!ret);
++	rtw_write8(rtwdev, REG_MCU_TST_CFG, 0);
+ 
+ 	WARN(1, "firmware crash, start reset and recover\n");
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 20b20a6db9cc..e5af375b3dd0 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -806,7 +806,7 @@ struct rtw_regulatory {
+ 
+ struct rtw_chip_ops {
+ 	int (*mac_init)(struct rtw_dev *rtwdev);
+-	void (*dump_fw_crash)(struct rtw_dev *rtwdev);
++	int (*dump_fw_crash)(struct rtw_dev *rtwdev);
+ 	void (*shutdown)(struct rtw_dev *rtwdev);
+ 	int (*read_efuse)(struct rtw_dev *rtwdev, u8 *map);
+ 	void (*phy_set_param)(struct rtw_dev *rtwdev);
+@@ -1112,6 +1112,15 @@ enum rtw_fw_fifo_sel {
+ 	RTW_FW_FIFO_MAX,
+ };
+ 
++enum rtw_fwcd_item {
++	RTW_FWCD_TLV,
++	RTW_FWCD_REG,
++	RTW_FWCD_ROM,
++	RTW_FWCD_IMEM,
++	RTW_FWCD_DMEM,
++	RTW_FWCD_EMEM,
++};
++
+ /* hardware configuration for each IC */
+ struct rtw_chip_info {
+ 	struct rtw_chip_ops *ops;
+@@ -1140,6 +1149,8 @@ struct rtw_chip_info {
+ 	u8 max_power_index;
+ 
+ 	u16 fw_fifo_addr[RTW_FW_FIFO_MAX];
++	const struct rtw_fwcd_segs *fwcd_segs;
++
+ 	u8 default_1ss_tx_path;
+ 
+ 	bool path_div_supported;
+@@ -1725,6 +1736,17 @@ struct rtw_fifo_conf {
+ 	const struct rtw_rqpn *rqpn;
+ };
+ 
++struct rtw_fwcd_desc {
++	u32 size;
++	u8 *next;
++	u8 *data;
++};
++
++struct rtw_fwcd_segs {
++	const u32 *segs;
++	u8 num;
++};
++
+ #define FW_CD_TYPE 0xffff
+ #define FW_CD_LEN 4
+ #define FW_CD_VAL 0xaabbccdd
+@@ -1732,11 +1754,11 @@ struct rtw_fw_state {
+ 	const struct firmware *firmware;
+ 	struct rtw_dev *rtwdev;
+ 	struct completion completion;
++	struct rtw_fwcd_desc fwcd_desc;
+ 	u16 version;
+ 	u8 sub_version;
+ 	u8 sub_index;
+ 	u16 h2c_version;
+-	u8 prev_dump_seq;
+ 	u32 feature;
+ };
+ 
+@@ -1942,10 +1964,12 @@ static inline void rtw_release_macid(struct rtw_dev *rtwdev, u8 mac_id)
+ 	clear_bit(mac_id, rtwdev->mac_id_map);
+ }
+ 
+-static inline void rtw_chip_dump_fw_crash(struct rtw_dev *rtwdev)
++static inline int rtw_chip_dump_fw_crash(struct rtw_dev *rtwdev)
+ {
+ 	if (rtwdev->chip->ops->dump_fw_crash)
+-		rtwdev->chip->ops->dump_fw_crash(rtwdev);
++		return rtwdev->chip->ops->dump_fw_crash(rtwdev);
++
++	return 0;
+ }
+ 
+ void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
+@@ -1979,8 +2003,7 @@ void rtw_sta_remove(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ void rtw_fw_recovery(struct rtw_dev *rtwdev);
+ void rtw_core_fw_scan_notify(struct rtw_dev *rtwdev, bool start);
+ int rtw_dump_fw(struct rtw_dev *rtwdev, const u32 ocp_src, u32 size,
+-		const char *prefix_str);
+-int rtw_dump_reg(struct rtw_dev *rtwdev, const u32 addr, const u32 size,
+-		 const char *prefix_str);
++		u32 fwcd_item);
++int rtw_dump_reg(struct rtw_dev *rtwdev, const u32 addr, const u32 size);
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 436347f3b60f..55a03a52f858 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -2110,13 +2110,51 @@ static int rtw8822c_mac_init(struct rtw_dev *rtwdev)
+ 	return 0;
+ }
+ 
+-static void rtw8822c_dump_fw_crash(struct rtw_dev *rtwdev)
++#define FWCD_SIZE_REG_8822C 0x2000
++#define FWCD_SIZE_DMEM_8822C 0x10000
++#define FWCD_SIZE_IMEM_8822C 0x10000
++#define FWCD_SIZE_EMEM_8822C 0x20000
++#define FWCD_SIZE_ROM_8822C 0x10000
++
++static const u32 __fwcd_segs_8822c[] = {
++	FWCD_SIZE_REG_8822C,
++	FWCD_SIZE_DMEM_8822C,
++	FWCD_SIZE_IMEM_8822C,
++	FWCD_SIZE_EMEM_8822C,
++	FWCD_SIZE_ROM_8822C,
++};
++
++static const struct rtw_fwcd_segs rtw8822c_fwcd_segs = {
++	.segs = __fwcd_segs_8822c,
++	.num = ARRAY_SIZE(__fwcd_segs_8822c),
++};
++
++static int rtw8822c_dump_fw_crash(struct rtw_dev *rtwdev)
+ {
+-	rtw_dump_reg(rtwdev, 0x0, 0x2000, "rtw8822c reg_");
+-	rtw_dump_fw(rtwdev, OCPBASE_DMEM_88XX, 0x10000, "rtw8822c DMEM_");
+-	rtw_dump_fw(rtwdev, OCPBASE_IMEM_88XX, 0x10000, "rtw8822c IMEM_");
+-	rtw_dump_fw(rtwdev, OCPBASE_EMEM_88XX, 0x20000, "rtw8822c EMEM_");
+-	rtw_dump_fw(rtwdev, OCPBASE_ROM_88XX, 0x10000, "rtw8822c ROM_");
++#define __dump_fw_8822c(_dev, _mem) \
++	rtw_dump_fw(_dev, OCPBASE_ ## _mem ## _88XX, \
++		    FWCD_SIZE_ ## _mem ## _8822C, RTW_FWCD_ ## _mem)
++	int ret;
++
++	ret = rtw_dump_reg(rtwdev, 0x0, FWCD_SIZE_REG_8822C);
++	if (ret)
++		return ret;
++	ret = __dump_fw_8822c(rtwdev, DMEM);
++	if (ret)
++		return ret;
++	ret = __dump_fw_8822c(rtwdev, IMEM);
++	if (ret)
++		return ret;
++	ret = __dump_fw_8822c(rtwdev, EMEM);
++	if (ret)
++		return ret;
++	ret = __dump_fw_8822c(rtwdev, ROM);
++	if (ret)
++		return ret;
++
++	return 0;
++
++#undef __dump_fw_8822c
+ }
+ 
+ static void rtw8822c_rstb_3wire(struct rtw_dev *rtwdev, bool enable)
+@@ -5288,6 +5326,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
+ 	.coex_info_hw_regs = coex_info_hw_regs_8822c,
+ 
+ 	.fw_fifo_addr = {0x780, 0x700, 0x780, 0x660, 0x650, 0x680},
++	.fwcd_segs = &rtw8822c_fwcd_segs,
+ };
+ EXPORT_SYMBOL(rtw8822c_hw_spec);
+ 
 -- 
 2.25.1
 
