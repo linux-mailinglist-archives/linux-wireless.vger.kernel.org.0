@@ -2,79 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A54CF39415F
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 12:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58FCA39419F
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 May 2021 13:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236684AbhE1KxQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 May 2021 06:53:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42386 "EHLO mail.kernel.org"
+        id S236566AbhE1LE2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 May 2021 07:04:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56164 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236661AbhE1KxK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 May 2021 06:53:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DAC9D611C9;
-        Fri, 28 May 2021 10:51:35 +0000 (UTC)
+        id S236596AbhE1LEW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 28 May 2021 07:04:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 24AA9613B6;
+        Fri, 28 May 2021 11:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622199096;
-        bh=U7nAhSet6qmUJ2H84uWnzuqsqcrl05T/3pRlfiTFo/4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NMTqSdUui7OUaBe5AZAgCnl8dVxD1ahwrzz/PmIOWzPibvo2WpgNMlH5OiEIVd9jI
-         fPm6ue4eMXQ5rq4G2mfyU0EslQI4LVJF+cZNBtYRQshSdeESwI5JomyPQTtZNmXD/x
-         CyOsz1NcsKxrXmBdsyxgN5lagGOJhUaInq0UhbHnWxee67T/CcirctfgYJE/o7jeHb
-         z1iPls2uDvWHVtCI7ZxMUbphBfv/PV0mAqVFSSBbTxP+8KnDk0B/jKT0c6s0aWjbdo
-         9eGLMPbtjgoP7phqpcMDC9PXhk0NwMzdKDbaoriT/DgeC6oyyMsRYg3gnYy5EajiGU
-         eO7loWQgN7Biw==
-Date:   Fri, 28 May 2021 12:51:31 +0200
+        s=k20201202; t=1622199763;
+        bh=Yp5M4BTKVbrtIZiKOHmt6JRhzbPNWFwKVyM03acKxww=;
+        h=From:To:Cc:Subject:Date:From;
+        b=sofQnFolcXfewv5fs+qKmypLeq8mThwtdN5nvBDryKsM8O70Kl1heggodKTxOik8/
+         CK983vMWmA9OG2v3r30NQsOoHQCjINO33arGHVmQYFV8HWbR9/QsHZVda22flf1vxs
+         erDHo0oR8lz7Z4PFYtYVjnVk+r3yrNc6Qb4z5E/37fQ3+rXl0C/X8LNEpOaCVeYR0j
+         e4lymi+HZyRiIZL2jHIrXW7R/z81ceFdagn3blvXlvhBN0GGUNpZDqWUyPXfy4sWoC
+         mFhDtC24MYQy7ahzx2ZMhJhSsRutczwYkTa1Gx+EYx27eJgSeeLaCiagcra9Fh6j0Q
+         5GSxJ0KH8piVg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sean.wang@mediatek.com, ryder.lee@mediatek.com
-Subject: Re: [PATCH] mt76: move interface_modes configuration in hw specific
- code
-Message-ID: <YLDLM2Pxw1USmtr6@lore-desk>
-References: <2b1f297ab8fd61241d86ff18f9c1ca634289c3f2.1621582373.git.lorenzo@kernel.org>
- <a3039b37-e41f-dc13-c719-2958324bc98d@nbd.name>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH v2] mt76: allow hw driver code to overwrite wiphy interface_modes
+Date:   Fri, 28 May 2021 13:02:24 +0200
+Message-Id: <ab0e389729d33759ad0aca1f1a98546bc4599df4.1622199436.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="tkmHrt39L5LnDZ9w"
-Content-Disposition: inline
-In-Reply-To: <a3039b37-e41f-dc13-c719-2958324bc98d@nbd.name>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Move wiphy interface_modes configuration in mt76_alloc_device and
+mt76_alloc_phy in order to be overwritten by hw specific code
+since some drivers do not support all operating modes (mt7921
+supports sta only in the current codebase)
 
---tkmHrt39L5LnDZ9w
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- move wiphy interface_modes configuration in mt76_alloc_device and
+  mt76_alloc_phy
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 33 ++++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  2 ++
+ 2 files changed, 24 insertions(+), 11 deletions(-)
 
->=20
-> On 2021-05-21 09:35, Lorenzo Bianconi wrote:
-> > Move wiphy interface_modes configuration in hw specific code since some
-> > drivers (e.g. mt7921) do not support all operating modes (mt7921 suppor=
-ts
-> > sta only in the current codebase)
-> >=20
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> I'd prefer moving it to mt76_alloc_device and mt76_alloc_phy, which
-> allows the driver to override it.
->=20
-> - Felix
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index fa9f80686272..5a11dacae09f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -331,17 +331,6 @@ mt76_phy_init(struct mt76_phy *phy, struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, MFP_CAPABLE);
+ 	ieee80211_hw_set(hw, AP_LINK_PS);
+ 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
+-
+-	wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
+-	wiphy->interface_modes =
+-		BIT(NL80211_IFTYPE_STATION) |
+-		BIT(NL80211_IFTYPE_AP) |
+-#ifdef CONFIG_MAC80211_MESH
+-		BIT(NL80211_IFTYPE_MESH_POINT) |
+-#endif
+-		BIT(NL80211_IFTYPE_P2P_CLIENT) |
+-		BIT(NL80211_IFTYPE_P2P_GO) |
+-		BIT(NL80211_IFTYPE_ADHOC);
+ }
+ 
+ struct mt76_phy *
+@@ -362,6 +351,17 @@ mt76_alloc_phy(struct mt76_dev *dev, unsigned int size,
+ 	phy->hw = hw;
+ 	phy->priv = hw->priv + phy_size;
+ 
++	hw->wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
++	hw->wiphy->interface_modes =
++		BIT(NL80211_IFTYPE_STATION) |
++		BIT(NL80211_IFTYPE_AP) |
++#ifdef CONFIG_MAC80211_MESH
++		BIT(NL80211_IFTYPE_MESH_POINT) |
++#endif
++		BIT(NL80211_IFTYPE_P2P_CLIENT) |
++		BIT(NL80211_IFTYPE_P2P_GO) |
++		BIT(NL80211_IFTYPE_ADHOC);
++
+ 	return phy;
+ }
+ EXPORT_SYMBOL_GPL(mt76_alloc_phy);
+@@ -444,6 +444,17 @@ mt76_alloc_device(struct device *pdev, unsigned int size,
+ 	mutex_init(&dev->mcu.mutex);
+ 	dev->tx_worker.fn = mt76_tx_worker;
+ 
++	hw->wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
++	hw->wiphy->interface_modes =
++		BIT(NL80211_IFTYPE_STATION) |
++		BIT(NL80211_IFTYPE_AP) |
++#ifdef CONFIG_MAC80211_MESH
++		BIT(NL80211_IFTYPE_MESH_POINT) |
++#endif
++		BIT(NL80211_IFTYPE_P2P_CLIENT) |
++		BIT(NL80211_IFTYPE_P2P_GO) |
++		BIT(NL80211_IFTYPE_ADHOC);
++
+ 	spin_lock_init(&dev->token_lock);
+ 	idr_init(&dev->token);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 6374f6719856..59da29032645 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -62,6 +62,8 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
+ 	hw->vif_data_size = sizeof(struct mt7921_vif);
+ 
+ 	wiphy->iface_combinations = if_comb;
++	wiphy->flags &= ~WIPHY_FLAG_IBSS_RSN;
++	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION);
+ 	wiphy->n_iface_combinations = ARRAY_SIZE(if_comb);
+ 	wiphy->max_scan_ie_len = MT76_CONNAC_SCAN_IE_LEN;
+ 	wiphy->max_scan_ssids = 4;
+-- 
+2.31.1
 
-ack, I will fix it in v2.
-
-Regards,
-Lorenzo
-
---tkmHrt39L5LnDZ9w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYLDLLQAKCRA6cBh0uS2t
-rJJXAQD2uEktDfMzdBGgUqV5noMPvcmJuYXgQ9bgWhW+iWd/BQD/ZVMK2Sii68dk
-xSG6o6E7JuJgW85rL2KfmRFVS6cTHgs=
-=NR/N
------END PGP SIGNATURE-----
-
---tkmHrt39L5LnDZ9w--
