@@ -2,90 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A355D394C22
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 May 2021 14:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF902394C57
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 May 2021 15:41:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbhE2MNl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 May 2021 08:13:41 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:39667 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbhE2MNj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 May 2021 08:13:39 -0400
-Received: from mail-wr1-f48.google.com ([209.85.221.48]) by
- mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MXH7g-1lu9Ne3R4o-00Yf3k; Sat, 29 May 2021 14:12:00 +0200
-Received: by mail-wr1-f48.google.com with SMTP id f11so5890940wrq.1;
-        Sat, 29 May 2021 05:12:00 -0700 (PDT)
-X-Gm-Message-State: AOAM531V7mB4y/tTXAEpqh7y55HkzmQC/UYHSA3NQAQSFHT9wRdoNVJ5
-        jyR8K1ZkqYB+4mUJ5ij/5h4ULXMyiNOMoqdzHCY=
-X-Google-Smtp-Source: ABdhPJwj4ddQH/kkWrToqiXjuuZw4oFvsfNtI2oNoNLEHzsy+IDZup8Sh5Bs8Mc6+7rFuKBo95mR+TPvDL/Kd5fyNU0=
-X-Received: by 2002:adf:a28c:: with SMTP id s12mr14087456wra.105.1622290320379;
- Sat, 29 May 2021 05:12:00 -0700 (PDT)
+        id S229686AbhE2NnE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 May 2021 09:43:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56226 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229666AbhE2NnE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 29 May 2021 09:43:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C2DF861206;
+        Sat, 29 May 2021 13:41:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622295688;
+        bh=S2JqlfZshOAIrvs72EijV0/6qGJSOnJbKfh6oKD7vN8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oNiaEuPFDpPRYDzgY3yb7LPhTyNMaHSh9gurf/5HvSbJzG+C+2GOi5mLozQqUPoq8
+         jnJnRqa9mm9MIJBYmUT6N2qDxUfQsO4lJl5o96UhXoAbteXrm2GPM3Wm8Vwxri6Scn
+         pOfmBC9gNz7VRryQEWma7bqwoUec7Ar28UvcCQ18dzYriqOho2lciEt4F9FOKzvD+r
+         gTjn5NeOPkUAW0mEqm/mIo0ztfrm2LGWDhH5/bSQrbLBpiLVqaXG+UOPq8/sy8mgMa
+         1j+nYNbeoxgzapFsQL6BeAFQzZS30riAQgxjoO0+Ah2RUbWjsEYc1iv7MMb1jL1u17
+         3ND1XHha21z+g==
+Date:   Sat, 29 May 2021 15:41:23 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@codeaurora.org
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com
+Subject: Re: [PATCH v2 5.13] mt76: mt7615: do not set MT76_STATE_PM at
+ bootstrap
+Message-ID: <YLJEgzafftYq7JBg@lore-desk>
+References: <e5a2618574007113d844874420f7855891abf167.1621085028.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-References: <20210529071523.2044-1-rdunlap@infradead.org>
-In-Reply-To: <20210529071523.2044-1-rdunlap@infradead.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Sat, 29 May 2021 14:10:28 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2mmQvsK+geQCGAOjZ4r2S9E4AUkWaT2coKW2AL8ZOAYg@mail.gmail.com>
-Message-ID: <CAK8P3a2mmQvsK+geQCGAOjZ4r2S9E4AUkWaT2coKW2AL8ZOAYg@mail.gmail.com>
-Subject: Re: [PATCH] wireless: carl9170: fix LEDS build errors & warnings
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:WOe+E8GiYoi1YJ4uKMT6YmB+XjCet8Kfi/iSai+QXjAeBQVST3U
- HLbbfFzz5iijFRLdiOyu9yDC/0pCn7rIiSC6Lbq2oCDBrzbNXldrBaE/bbzCwlxnHj0fUQ2
- qQCXNUcpWRczeBK+CB/0JkfjBeRmTOGkMhVlzvxQtT2xU2wN5EmS5kQTXbiyW5hz0AAcWdL
- vnOb5HI/b1zuW2Wj+rl8Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:A7YDe+6hyxU=:qxG3mZ7FPJrAcI1aKPsHBJ
- ztulVK2c4LMbKD4msf12x4DUG5BCM8U3bFy1Koj/6glM2ELnr6SVjfUi9A2W5LNPxkfymNpbE
- kLrY9XyqvESglKMGop5xpqvivt+tWD9kJxz4I2XkRlaIKnTQC/avYoaxFzcHaZ0FVfI5kflpC
- 1aUvBO9yHLPvRFkovdjpdOtnPUdH6xpc5hRtDmEkNl/BlZKTEL/62PR620EGVZv7Hr5590Dxf
- DkV4OflCylmV0pnffbe+3+QKujvP0OdXiVkpQkZOYVVfgbvk4x5btOoq9Kp0CenZ6BTMbbMRi
- dX3r1TeWfiHGWpBL2BCDRi0E/s+uW7mdI9uDgjl055aAQ4vyzeN0tkGLy7tvMHZwKSuo98ZX0
- 4ENXYESMabNnWP6ywxRSCZvZ/yZh6+l9ipMc9YkfK95ZgDmSTBWRZwJpVE15hxE9NmLsVlE/F
- TEBF9yb0fuuHDqOBvFRaCLvqHbQc3eyOZea41PCvg+hlg7ievlyqdtl2O0WPPH2QN5oX5cGEM
- mEkmsK5+BH8DYtFobZ8daU=
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="BMr6Ci4IaaGDUoB0"
+Content-Disposition: inline
+In-Reply-To: <e5a2618574007113d844874420f7855891abf167.1621085028.git.lorenzo@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, May 29, 2021 at 9:16 AM Randy Dunlap <rdunlap@infradead.org> wrote:
->
-> kernel test robot reports over 200 build errors and warnings
-> that are due to this Kconfig problem when CARL9170=m,
-> MAC80211=y, and LEDS_CLASS=m.
 
-I think this avoids the build problems, but it's not really logical:
+--BMr6Ci4IaaGDUoB0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> --- linux-next-20210528.orig/drivers/net/wireless/ath/carl9170/Kconfig
-> +++ linux-next-20210528/drivers/net/wireless/ath/carl9170/Kconfig
-> @@ -17,9 +17,7 @@ config CARL9170
->  config CARL9170_LEDS
->         bool "SoftLED Support"
->         depends on CARL9170
-> -       select MAC80211_LEDS
-> -       select LEDS_CLASS
-> -       select NEW_LEDS
-> +       select MAC80211_LEDS if LEDS_CLASS=y || LEDS_CLASS=MAC80211
->         default y
->         help
->           This option is necessary, if you want your device' LEDs to blink
+> Remove MT76_STATE_PM in mt7615_init_device() and introduce
+> __mt7663s_mcu_drv_pmctrl for fw loading in mt7663s.
+> This patch fixes a crash at bootstrap for device (e.g. mt7622) that do
+> not support runtime-pm
+>=20
+> Fixes: 7f2bc8ba11a0 ("mt76: connac: introduce wake counter for fw_pmctrl =
+synchronization")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-The point of the option is to enable LED support, but now it doesn't do that
-when LEDS_CLASS is a loadable module and MAC80211 is built-in.
+Hi Kalle,
 
-I think a more sensible solution would be to follow the example of
+any news about this patch?
 
-config MT76_LEDS
-        bool
-        depends on MT76_CORE
-        depends on LEDS_CLASS=y || MT76_CORE=LEDS_CLASS
-        default y
+Regards,
+Lorenzo
 
-    Arnd
+> ---
+> Changes since v1:
+> - use proper Fixes commit hash
+> ---
+>  .../net/wireless/mediatek/mt76/mt7615/init.c  |  1 -
+>  .../wireless/mediatek/mt76/mt7615/sdio_mcu.c  | 19 ++++++++++++-------
+>  .../wireless/mediatek/mt76/mt7615/usb_mcu.c   |  3 ---
+>  3 files changed, 12 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7615/init.c
+> index 86341d1f82f3..d20f05a7717d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> @@ -510,7 +510,6 @@ void mt7615_init_device(struct mt7615_dev *dev)
+>  	mutex_init(&dev->pm.mutex);
+>  	init_waitqueue_head(&dev->pm.wait);
+>  	spin_lock_init(&dev->pm.txq_lock);
+> -	set_bit(MT76_STATE_PM, &dev->mphy.state);
+>  	INIT_DELAYED_WORK(&dev->mphy.mac_work, mt7615_mac_work);
+>  	INIT_DELAYED_WORK(&dev->phy.scan_work, mt7615_scan_work);
+>  	INIT_DELAYED_WORK(&dev->coredump.work, mt7615_coredump_work);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c b/drive=
+rs/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+> index 17fe4187d1de..d1be78b0711c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+> @@ -51,16 +51,13 @@ mt7663s_mcu_send_message(struct mt76_dev *mdev, struc=
+t sk_buff *skb,
+>  	return ret;
+>  }
+> =20
+> -static int mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
+> +static int __mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
+>  {
+>  	struct sdio_func *func =3D dev->mt76.sdio.func;
+>  	struct mt76_phy *mphy =3D &dev->mt76.phy;
+>  	u32 status;
+>  	int ret;
+> =20
+> -	if (!test_and_clear_bit(MT76_STATE_PM, &mphy->state))
+> -		goto out;
+> -
+>  	sdio_claim_host(func);
+> =20
+>  	sdio_writel(func, WHLPCR_FW_OWN_REQ_CLR, MCR_WHLPCR, NULL);
+> @@ -76,13 +73,21 @@ static int mt7663s_mcu_drv_pmctrl(struct mt7615_dev *=
+dev)
+>  	}
+> =20
+>  	sdio_release_host(func);
+> -
+> -out:
+>  	dev->pm.last_activity =3D jiffies;
+> =20
+>  	return 0;
+>  }
+> =20
+> +static int mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
+> +{
+> +	struct mt76_phy *mphy =3D &dev->mt76.phy;
+> +
+> +	if (test_and_clear_bit(MT76_STATE_PM, &mphy->state))
+> +		return __mt7663s_mcu_drv_pmctrl(dev);
+> +
+> +	return 0;
+> +}
+> +
+>  static int mt7663s_mcu_fw_pmctrl(struct mt7615_dev *dev)
+>  {
+>  	struct sdio_func *func =3D dev->mt76.sdio.func;
+> @@ -123,7 +128,7 @@ int mt7663s_mcu_init(struct mt7615_dev *dev)
+>  	struct mt7615_mcu_ops *mcu_ops;
+>  	int ret;
+> =20
+> -	ret =3D mt7663s_mcu_drv_pmctrl(dev);
+> +	ret =3D __mt7663s_mcu_drv_pmctrl(dev);
+>  	if (ret)
+>  		return ret;
+> =20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c b/driver=
+s/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+> index c55698f9c49a..028ff432d811 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+> @@ -55,10 +55,7 @@ int mt7663u_mcu_init(struct mt7615_dev *dev)
+> =20
+>  	dev->mt76.mcu_ops =3D &mt7663u_mcu_ops,
+> =20
+> -	/* usb does not support runtime-pm */
+> -	clear_bit(MT76_STATE_PM, &dev->mphy.state);
+>  	mt76_set(dev, MT_UDMA_TX_QSEL, MT_FW_DL_EN);
+> -
+>  	if (test_and_clear_bit(MT76_STATE_POWER_OFF, &dev->mphy.state)) {
+>  		mt7615_mcu_restart(&dev->mt76);
+>  		if (!mt76_poll_msec(dev, MT_CONN_ON_MISC,
+> --=20
+> 2.31.1
+>=20
+
+--BMr6Ci4IaaGDUoB0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYLJEfgAKCRA6cBh0uS2t
+rD44AQDujya8Nhf8vCjAYz4nG4ieDsbKNvWeQlp4sAcQyOG3JwEA9c/ZC8ar0Aal
+eke1e5khEYzj0W45EzIS1muz5P6dCwo=
+=cS6K
+-----END PGP SIGNATURE-----
+
+--BMr6Ci4IaaGDUoB0--
