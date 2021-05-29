@@ -2,86 +2,208 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99523394AE0
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 May 2021 09:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E5BD394BEB
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 May 2021 13:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbhE2HRF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 May 2021 03:17:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55424 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbhE2HRE (ORCPT
+        id S229652AbhE2LNe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 May 2021 07:13:34 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:54379 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229614AbhE2LNd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 May 2021 03:17:04 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A17AC061574;
-        Sat, 29 May 2021 00:15:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=lP+gOPGEdSQsYs+wpEUstBEX/Os02KFbsZt+jZwnsa0=; b=1Y/LARd2iZo4Kv/GWpXjRCe8X/
-        a/3DdMYZWAX24uWhZ5IeC4FRD6u6qot+sHl3IK39NNiH1O0XOVQ8WpoWI/euBadZd4sX4pTmaB8aw
-        Z4i/BVLtKGZoYfwaJtZjTJuibNWonIFAzKw0s8qlDcXH1eoMIJJB2NULXf57OBkUea3tC3beC3aqD
-        y2TofShFu5Bi79e+/b6VYdeatiDhcxFqRPadMWxIiulkVfHMNxbYxBtB9PGE3YTqJsS8FhVZVfsEA
-        x4AEc75+vZWVx9NspwEAkPaZEZFyXzN0xGxjyGZg23xP5R6tRbwlfq52lRsTfytQFdjD4VFyrF5sz
-        mAstOwaQ==;
-Received: from [2601:1c0:6280:3f0::ce7d] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1lmtBt-003jea-N7; Sat, 29 May 2021 07:15:25 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] wireless: carl9170: fix LEDS build errors & warnings
-Date:   Sat, 29 May 2021 00:15:23 -0700
-Message-Id: <20210529071523.2044-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        Sat, 29 May 2021 07:13:33 -0400
+X-UUID: f9922accfe8747f88df9b0ede9c4db1f-20210529
+X-UUID: f9922accfe8747f88df9b0ede9c4db1f-20210529
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 841726352; Sat, 29 May 2021 19:11:54 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 29 May 2021 19:11:53 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 29 May 2021 19:11:53 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH] mt76: mt7915: read all eeprom fields from fw in efuse mode
+Date:   Sat, 29 May 2021 19:11:50 +0800
+Message-ID: <20210529111150.21611-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-kernel test robot reports over 200 build errors and warnings
-that are due to this Kconfig problem when CARL9170=m,
-MAC80211=y, and LEDS_CLASS=m.
+If efuse mode is used, read all values from fw during eeprom init,
+which makes it more convinient to check if rf values in efuse are
+properly burned.
 
-WARNING: unmet direct dependencies detected for MAC80211_LEDS
-  Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
-  Selected by [m]:
-  - CARL9170_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && CARL9170 [=m]
-
-CARL9170_LEDS selects MAC80211_LEDS even though its kconfig
-dependencies are not met. This happens because 'select' does not follow
-any Kconfig dependency chains.
-
-Fix this by making the select depend on LEDS_CLASS=y or
-LEDS_CLASS=MAC80211, just as this is done for ath9k.
-
-Fixes: 1d7e1e6b1b8ed ("carl9170: Makefile, Kconfig files and MAINTAINERS")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Christian Lamparter <chunkeey@googlemail.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/ath/carl9170/Kconfig |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    | 44 +++++++++----------
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  5 ++-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
+ 3 files changed, 24 insertions(+), 26 deletions(-)
 
---- linux-next-20210528.orig/drivers/net/wireless/ath/carl9170/Kconfig
-+++ linux-next-20210528/drivers/net/wireless/ath/carl9170/Kconfig
-@@ -17,9 +17,7 @@ config CARL9170
- config CARL9170_LEDS
- 	bool "SoftLED Support"
- 	depends on CARL9170
--	select MAC80211_LEDS
--	select LEDS_CLASS
--	select NEW_LEDS
-+	select MAC80211_LEDS if LEDS_CLASS=y || LEDS_CLASS=MAC80211
- 	default y
- 	help
- 	  This option is necessary, if you want your device' LEDs to blink
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index 8ededf2..ee3d644 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -4,22 +4,12 @@
+ #include "mt7915.h"
+ #include "eeprom.h"
+ 
+-static u32 mt7915_eeprom_read(struct mt7915_dev *dev, u32 offset)
+-{
+-	u8 *data = dev->mt76.eeprom.data;
+-
+-	if (data[offset] == 0xff && !dev->flash_mode)
+-		mt7915_mcu_get_eeprom(dev, offset);
+-
+-	return data[offset];
+-}
+-
+ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ {
+ 	struct mt76_dev *mdev = &dev->mt76;
+-	u32 val;
++	u8 *eeprom = mdev->eeprom.data;
++	u32 val = eeprom[MT_EE_DO_PRE_CAL];
+ 
+-	val = mt7915_eeprom_read(dev, MT_EE_DO_PRE_CAL);
+ 	if (val != (MT_EE_WIFI_CAL_DPD | MT_EE_WIFI_CAL_GROUP))
+ 		return 0;
+ 
+@@ -43,7 +33,13 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 		dev->flash_mode = true;
+ 		ret = mt7915_eeprom_load_precal(dev);
+ 	} else {
+-		memset(dev->mt76.eeprom.data, -1, MT7915_EEPROM_SIZE);
++		u32 block_num, i;
++
++		block_num = DIV_ROUND_UP(MT7915_EEPROM_SIZE,
++					 MT7915_EEPROM_BLOCK_SIZE);
++		for (i = 0; i < block_num; i++)
++			mt7915_mcu_get_eeprom(dev,
++					      i * MT7915_EEPROM_BLOCK_SIZE);
+ 	}
+ 
+ 	return ret;
+@@ -52,10 +48,7 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ static int mt7915_check_eeprom(struct mt7915_dev *dev)
+ {
+ 	u8 *eeprom = dev->mt76.eeprom.data;
+-	u16 val;
+-
+-	mt7915_eeprom_read(dev, MT_EE_CHIP_ID);
+-	val = get_unaligned_le16(eeprom);
++	u16 val = get_unaligned_le16(eeprom);
+ 
+ 	switch (val) {
+ 	case 0x7915:
+@@ -69,9 +62,10 @@ void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
+ 	bool ext_phy = phy != &dev->phy;
++	u8 *eeprom = dev->mt76.eeprom.data;
+ 	u32 val;
+ 
+-	val = mt7915_eeprom_read(dev, MT_EE_WIFI_CONF + ext_phy);
++	val = eeprom[MT_EE_WIFI_CONF + ext_phy];
+ 	val = FIELD_GET(MT_EE_WIFI_CONF0_BAND_SEL, val);
+ 	if (val == MT_EE_BAND_SEL_DEFAULT && dev->dbdc_support)
+ 		val = ext_phy ? MT_EE_BAND_SEL_5GHZ : MT_EE_BAND_SEL_2GHZ;
+@@ -143,6 +137,7 @@ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
+ 				   struct ieee80211_channel *chan,
+ 				   u8 chain_idx)
+ {
++	u8 *eeprom = dev->mt76.eeprom.data;
+ 	int index, target_power;
+ 	bool tssi_on;
+ 
+@@ -153,18 +148,18 @@ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
+ 
+ 	if (chan->band == NL80211_BAND_2GHZ) {
+ 		index = MT_EE_TX0_POWER_2G + chain_idx * 3;
+-		target_power = mt7915_eeprom_read(dev, index);
++		target_power = eeprom[index];
+ 
+ 		if (!tssi_on)
+-			target_power += mt7915_eeprom_read(dev, index + 1);
++			target_power += eeprom[index + 1];
+ 	} else {
+ 		int group = mt7915_get_channel_group(chan->hw_value);
+ 
+ 		index = MT_EE_TX0_POWER_5G + chain_idx * 12;
+-		target_power = mt7915_eeprom_read(dev, index + group);
++		target_power = eeprom[index + group];
+ 
+ 		if (!tssi_on)
+-			target_power += mt7915_eeprom_read(dev, index + 8);
++			target_power += eeprom[index + 8];
+ 	}
+ 
+ 	return target_power;
+@@ -172,13 +167,14 @@ int mt7915_eeprom_get_target_power(struct mt7915_dev *dev,
+ 
+ s8 mt7915_eeprom_get_power_delta(struct mt7915_dev *dev, int band)
+ {
++	u8 *eeprom = dev->mt76.eeprom.data;
+ 	u32 val;
+ 	s8 delta;
+ 
+ 	if (band == NL80211_BAND_2GHZ)
+-		val = mt7915_eeprom_read(dev, MT_EE_RATE_DELTA_2G);
++		val = eeprom[MT_EE_RATE_DELTA_2G];
+ 	else
+-		val = mt7915_eeprom_read(dev, MT_EE_RATE_DELTA_5G);
++		val = eeprom[MT_EE_RATE_DELTA_5G];
+ 
+ 	if (!(val & MT_EE_RATE_DELTA_EN))
+ 		return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index dcf2d4d..e716feb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3316,7 +3316,8 @@ int mt7915_mcu_set_eeprom(struct mt7915_dev *dev)
+ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
+ {
+ 	struct mt7915_mcu_eeprom_info req = {
+-		.addr = cpu_to_le32(round_down(offset, 16)),
++		.addr = cpu_to_le32(round_down(offset,
++				    MT7915_EEPROM_BLOCK_SIZE)),
+ 	};
+ 	struct mt7915_mcu_eeprom_info *res;
+ 	struct sk_buff *skb;
+@@ -3330,7 +3331,7 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
+ 
+ 	res = (struct mt7915_mcu_eeprom_info *)skb->data;
+ 	buf = dev->mt76.eeprom.data + le32_to_cpu(res->addr);
+-	memcpy(buf, res->data, 16);
++	memcpy(buf, res->data, MT7915_EEPROM_BLOCK_SIZE);
+ 	dev_kfree_skb(skb);
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index c4bf8ed..4a79a10 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -31,6 +31,7 @@
+ #define MT7915_ROM_PATCH		"mediatek/mt7915_rom_patch.bin"
+ 
+ #define MT7915_EEPROM_SIZE		3584
++#define MT7915_EEPROM_BLOCK_SIZE	16
+ #define MT7915_TOKEN_SIZE		8192
+ 
+ #define MT7915_CFEND_RATE_DEFAULT	0x49	/* OFDM 24M */
+-- 
+2.18.0
+
