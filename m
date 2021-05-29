@@ -2,99 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06A4F394D29
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 May 2021 18:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2867394D49
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 May 2021 18:57:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229762AbhE2Qp7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 May 2021 12:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37008 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbhE2Qp7 (ORCPT
+        id S229792AbhE2Q7I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 May 2021 12:59:08 -0400
+Received: from vulcan.natalenko.name ([104.207.131.136]:56766 "EHLO
+        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229704AbhE2Q7I (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 May 2021 12:45:59 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E601AC061574
-        for <linux-wireless@vger.kernel.org>; Sat, 29 May 2021 09:44:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=xi8Hckx6I6kriebdsDJfh9Bh9Zr3qvC0QyzFQQMwYnA=; b=qW+KLVDnTdoLNyZvVf5VwzIuSw
-        b1SMxcOxJHHwU/e8+TAbr9dVjOl8ahlbhDahBE54V9DbyMC/XrV4kbHW4IfjV7uqgoKimt+8q9lNW
-        sMvLc5SGQ19NM+5CvkgTeeLVK0514uRArFTnb9UHJFTyshR52HXueOdsBZ33CMg4pCTQi0/YrDFrr
-        Ag74U3bgt+7SiPAbZwKM1V/mJBHC7PoXfNXamm6blUjGI4U11aylN8Q/n/p2N3YEBz4RAMyEtzXhA
-        y05acIdnWj7m+zgK73gXZmhmQqeL0eIYIrz/aKM+MhjZz+5QDVgfMH+7q0HNe9N3rsXZX3cH4/IrZ
-        8kRzZegw==;
-Received: from [2601:1c0:6280:3f0::ce7d] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1ln24T-007aLN-En; Sat, 29 May 2021 16:44:21 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2] wireless: carl9170: fix LEDS build errors & warnings
-Date:   Sat, 29 May 2021 09:44:20 -0700
-Message-Id: <20210529164420.11454-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        Sat, 29 May 2021 12:59:08 -0400
+Received: from localhost (unknown [151.237.229.131])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id 9BA4FAAD459;
+        Sat, 29 May 2021 18:57:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1622307449;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=acZCODMVIfo7hE7GQKxy20Z7jTwbvcULRej4Ycy93LA=;
+        b=R6ExW1Y8KNlbX12BtZMz/P8UuKMBlltds3x6YlD0EAjB90yumXF0ZEqSYFDfKWX3W/X7wA
+        iy4wFHX0xxMphpkJ8kWP3vgbU8XNMUEwzMIekbfNJa8m3d3nrRXZSGF6zjt4+eVIkpNnAU
+        suGgy+z+i8yzSot0Ys72x8NWWMA5DNE=
+Date:   Sat, 29 May 2021 18:57:28 +0200
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     linux-kernel@vger.kernel.org
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Divide error in minstrel_ht_get_tp_avg()
+Message-ID: <20210529165728.bskaozwtmwxnvucx@spock.localdomain>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-kernel test robot reports over 200 build errors and warnings
-that are due to this Kconfig problem when CARL9170=m,
-MAC80211=y, and LEDS_CLASS=m.
+Hello.
 
-WARNING: unmet direct dependencies detected for MAC80211_LEDS
-  Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
-  Selected by [m]:
-  - CARL9170_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && CARL9170 [=m]
+The following woe happened on my home router running as a Wi-Fi AP with
+MT7612:
 
-CARL9170_LEDS selects MAC80211_LEDS even though its kconfig
-dependencies are not met. This happens because 'select' does not follow
-any Kconfig dependency chains.
+```
+[16592.157962] divide error: 0000 [#1] PREEMPT SMP PTI
+[16592.163169] CPU: 2 PID: 683 Comm: mt76-tx phy0 Tainted: G         C        5.12.0-pf4 #1
+[16592.171745] Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./J3710-ITX, BIOS P1.50 04/16/2018
+[16592.182155] RIP: 0010:minstrel_ht_get_tp_avg+0xb1/0x100 [mac80211]
+[16592.188795] Code: 04 00 00 00 7f 1c 31 c9 81 fa f1 49 02 00 0f 9c c1 8d 0c cd 08 00 00 00 eb 08 8b 47 30 b9 01 00 00 00 69 c0 e8 03 00 00 31 d2 <f7> f1 ba 66 0e 00 00 39 d6 0f 4f f2 49 63 d1 48 8d 0c 52 48 8d 0c
+[16592.208796] RSP: 0018:ffffb6a601293be8 EFLAGS: 00010246
+[16592.214292] RAX: 000000000001a5e0 RBX: ffff9c658ee95170 RCX: 0000000000000000
+[16592.222054] RDX: 0000000000000000 RSI: 0000000000000585 RDI: ffff9c658ee94000
+[16592.229620] RBP: 0000000000000006 R08: 0000000000000006 R09: 0000000000000012
+[16592.237254] R10: 0000000000000007 R11: 0000000000000000 R12: ffff9c658ee94000
+[16592.244828] R13: 0000000000000012 R14: ffff9c658ee9534c R15: 0000000000000585
+[16592.252635] FS:  0000000000000000(0000) GS:ffff9c66f8500000(0000) knlGS:0000000000000000
+[16592.261086] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[16592.267326] CR2: 0000555d81abe7b8 CR3: 0000000116c10000 CR4: 00000000001006e0
+[16592.274904] Call Trace:
+[16592.277549]  minstrel_ht_update_stats+0x1fe/0x1320 [mac80211]
+[16592.283730]  minstrel_ht_tx_status+0x67f/0x710 [mac80211]
+[16592.289442]  rate_control_tx_status+0x6e/0xb0 [mac80211]
+[16592.295267]  ieee80211_tx_status_ext+0x22e/0xb00 [mac80211]
+[16592.311290]  ieee80211_tx_status+0x7d/0xa0 [mac80211]
+[16592.316714]  mt76_tx_status_unlock+0x83/0xa0 [mt76]
+[16592.321999]  mt76x02_send_tx_status+0x1b7/0x400 [mt76x02_lib]
+[16592.334516]  mt76x02_tx_worker+0x8f/0xd0 [mt76x02_lib]
+[16592.340091]  __mt76_worker_fn+0x78/0xb0 [mt76]
+[16592.345067]  kthread+0x183/0x1b0
+[16592.353378]  ret_from_fork+0x22/0x30
+```
 
-Fix this by making CARL9170_LEDS always set/enabled if certain
-conditions are met: LEDS_CLASS=y or LEDS_CLASS=CARL9170, just as
-this is done for Mediatek MT76.
+`faddr2line` says it is this:
 
-Fixes: 1d7e1e6b1b8ed ("carl9170: Makefile, Kconfig files and MAINTAINERS")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Christian Lamparter <chunkeey@googlemail.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
----
-v2: modify as suggesed by Arnd
+```
+ 430 int
+ 431 minstrel_ht_get_tp_avg(struct minstrel_ht_sta *mi, int group, int rate,
+ 432                int prob_avg)
+ 433 {
+…
+ 435     unsigned int ampdu_len = 1;
+…
+ 441     if (minstrel_ht_is_legacy_group(group))
+…
+ 443     else
+ 444         ampdu_len = minstrel_ht_avg_ampdu_len(mi);
+…
+ 446     nsecs = 1000 * overhead / ampdu_len;
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
 
- drivers/net/wireless/ath/carl9170/Kconfig |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+So, it seems `minstrel_ht_avg_ampdu_len()` can return 0, which is not
+really legitimate.
 
---- linux-next-20210528.orig/drivers/net/wireless/ath/carl9170/Kconfig
-+++ linux-next-20210528/drivers/net/wireless/ath/carl9170/Kconfig
-@@ -15,16 +15,10 @@ config CARL9170
- 	  If you choose to build a module, it'll be called carl9170.
- 
- config CARL9170_LEDS
--	bool "SoftLED Support"
--	depends on CARL9170
--	select MAC80211_LEDS
--	select LEDS_CLASS
--	select NEW_LEDS
-+	bool
- 	default y
--	help
--	  This option is necessary, if you want your device' LEDs to blink
--
--	  Say Y, unless you need the LEDs for firmware debugging.
-+	depends on CARL9170
-+	depends on LEDS_CLASS=y || LEDS_CLASS=CARL9170
- 
- config CARL9170_DEBUGFS
- 	bool "DebugFS Support"
+Looking at `minstrel_ht_avg_ampdu_len()`, I see the following:
+
+```
+16:#define MINSTREL_SCALE  12
+…
+18:#define MINSTREL_TRUNC(val) ((val) >> MINSTREL_SCALE)
+```
+
+```
+ 401 static unsigned int
+ 402 minstrel_ht_avg_ampdu_len(struct minstrel_ht_sta *mi)
+ 403 {
+…
+ 406     if (mi->avg_ampdu_len)
+ 407         return MINSTREL_TRUNC(mi->avg_ampdu_len);
+```
+
+So, likely, `mi->avg_ampdu_len` is non-zero, but it's too small, hence
+right bitshift makes it zero.
+
+Should there be some protection against such a situation?
+
+Felix, could you maybe check this? Looks like you were the last one to
+overhaul that part of code.
+
+Thanks!
+
+-- 
+  Oleksandr Natalenko (post-factum)
