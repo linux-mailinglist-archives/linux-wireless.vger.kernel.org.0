@@ -2,92 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A203951AC
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 May 2021 17:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29CE03951EF
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 May 2021 18:20:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229735AbhE3PVI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 May 2021 11:21:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbhE3PVH (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 May 2021 11:21:07 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 389A4C061574;
-        Sun, 30 May 2021 08:19:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=y3DXZLXagxiVtFwWPQ3/eHYfS2BTxh16gXAXVZkHbvs=; b=ERoCFxV5SBNYHz1mskauOJriQG
-        y0EBj4Br/zzwvWrtLk3vX22nZllTohRJ5TQZXvvoR/DlZWEdD3+J+aWd0D3MjDgXqjeMomuoREo15
-        Cfme5ehFNPenJvMiyHyXZhqmVhuziWXecTBPN2yyAErWv0+ZAjvCLEpJ92Ql6y1m+BoQ6Laiocewj
-        hDPS6WoBh9JirO2W57C45f6LVKRUSZVMBQx/E/OIb+lhnSF5lAShLs5xdPXkA101Cn4AzSahmxMsp
-        NXTwIOgJlFR9nzMnOPnnJ3kTwfN5Ap8ZJoaS1yNCQw5RN7dpPBfESQiaB/yYHdk3cdZr0ikeOD0Kl
-        eA1SFVtg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1lnNCp-008Dun-I2; Sun, 30 May 2021 15:18:26 +0000
-Date:   Sun, 30 May 2021 16:18:23 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Justin He <Justin.He@arm.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>
-Subject: Re: [PATCH RFCv2 2/3] lib/vsprintf.c: make %pD print full path for
- file
-Message-ID: <YLOsvz8ZbpjfcuGO@casper.infradead.org>
-References: <20210528113951.6225-1-justin.he@arm.com>
- <20210528113951.6225-3-justin.he@arm.com>
- <YLDpSnV9XBUJq5RU@casper.infradead.org>
- <AM6PR08MB437691E7314C6B774EFED4BDF7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
- <89fc3919-ca2c-50fd-35e1-33bf3a59b993@rasmusvillemoes.dk>
+        id S229806AbhE3QWD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 May 2021 12:22:03 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:14219 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229683AbhE3QWC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 30 May 2021 12:22:02 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1622391624; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=fp8fg4VAC/PWprxEdS7PmHgJn0uHKSucre0dkRZgoME=;
+ b=dCOu3CEqFcAylk2Eb48ZkIJNJZ4mBZ3ks3hwr9gV+gKLULcYF1g6hZpsEwbccD9Fg28001OQ
+ v+gNYH0UFw51SYAoeWcMuGAH42EP7RZPThLj0SEAVQHdz1e0UYcity4vAoquEhAVvx+HRrqu
+ PVKRU+qTKJB9e5t/HM8X9jADdpY=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 60b3bb3bea2aacd72911c952 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 30 May 2021 16:20:11
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B21A8C4323A; Sun, 30 May 2021 16:20:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DF58AC433F1;
+        Sun, 30 May 2021 16:20:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DF58AC433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <89fc3919-ca2c-50fd-35e1-33bf3a59b993@rasmusvillemoes.dk>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 5.13] mt76: mt7615: do not set MT76_STATE_PM at
+ bootstrap
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <e5a2618574007113d844874420f7855891abf167.1621085028.git.lorenzo@kernel.org>
+References: <e5a2618574007113d844874420f7855891abf167.1621085028.git.lorenzo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210530162010.B21A8C4323A@smtp.codeaurora.org>
+Date:   Sun, 30 May 2021 16:20:10 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 28, 2021 at 10:06:37PM +0200, Rasmus Villemoes wrote:
-> On 28/05/2021 16.22, Justin He wrote:
-> > 
-> >> From: Matthew Wilcox <willy@infradead.org>
-> 
-> >> How is it "safer"?  You already have a buffer passed from the caller.
-> >> Are you saying that d_path_fast() might overrun a really small buffer
-> >> but won't overrun a 256 byte buffer?
-> > No, it won't overrun a 256 byte buf. When the full path size is larger than 256, the p->len is < 0 in prepend_name, and this overrun will be
-> > dectected in extract_string() with "-ENAMETOOLONG".
-> > 
-> > Each printk contains 2 vsnprintf. vsnprintf() returns the required size after formatting the string.>
-> > 1. vprintk_store() will invoke 1st vsnprintf() will 8 bytes space to get the reserve_size. In this case, the _buf_ could be less than _end_ by design.
-> > 2. Then it invokes 2nd printk_sprint()->vscnprintf()->vsnprintf() to really fill the space.
-> 
-> Please do not assume that printk is the only user of vsnprintf() or the
-> only one that would use a given %p<foo> extension.
-> 
-> Also, is it clear that nothing can change underneath you in between two
-> calls to vsnprintf()? IOW, is it certain that the path will fit upon a
-> second call using the size returned from the first?
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-No, but that's also true of %s.  I think vprintk_store() is foolish to
-do it this way.
+> Remove MT76_STATE_PM in mt7615_init_device() and introduce
+> __mt7663s_mcu_drv_pmctrl for fw loading in mt7663s.
+> This patch fixes a crash at bootstrap for device (e.g. mt7622) that do
+> not support runtime-pm
+> 
+> Fixes: 7f2bc8ba11a0 ("mt76: connac: introduce wake counter for fw_pmctrl synchronization")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+Patch applied to wireless-drivers.git, thanks.
+
+02de318afa7a mt76: mt7615: do not set MT76_STATE_PM at bootstrap
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/e5a2618574007113d844874420f7855891abf167.1621085028.git.lorenzo@kernel.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
