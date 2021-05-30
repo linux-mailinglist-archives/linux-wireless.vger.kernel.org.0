@@ -2,96 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FC50394F05
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 May 2021 05:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AD239502D
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 May 2021 11:01:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbhE3DNO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 May 2021 23:13:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60310 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbhE3DNO (ORCPT
+        id S229765AbhE3JCp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 May 2021 05:02:45 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:24990 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229620AbhE3JCo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 May 2021 23:13:14 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E447FC061574;
-        Sat, 29 May 2021 20:11:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=ZoIcdg5AL1+xAPL6KUjtQy5DxiqjE2MF5d6qElZ5fQI=; b=mDZHJC1oGGH3makryqiIh74GBn
-        1JlSiRDn1U1jmhcvjAU4wuvoLN+6Cs4K5AZ2IF/kdq+GOrxGqvpWVMNUjxYzIciFbFujKS8Nn6nm+
-        C1GzVseXKNxBJR6/FH7j/6GIE4BFl1jK+MjcNw1oBQe7MkvuTU1CAAO4apOhG64T56xkvw/KeMqrf
-        LbRawlNIETl+dcKh8Qc/pYRU6IizplZ072XfxaItqf6tS1qJ2b9ybAmSkZEGSVKhtDmUsgKD7JON2
-        Q0PnrYF0HInaHF/pb9flZ+F0/BJQErhsuJWH3oiRCPm7W3NjPuFKOznqn4GNpKPXxi4VJ6nZ5FmA3
-        +8V6MluA==;
-Received: from [2601:1c0:6280:3f0::ce7d] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1lnBrT-008rkD-Ly; Sun, 30 May 2021 03:11:35 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v3] wireless: carl9170: fix LEDS build errors & warnings
-Date:   Sat, 29 May 2021 20:11:34 -0700
-Message-Id: <20210530031134.23274-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        Sun, 30 May 2021 05:02:44 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1622365266; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=m6gbfF2M8WEGMtZm9Ch5HQfluH/QE2I8j/C41+TlWbM=; b=ZIythUawtpBDSbsYQx+SIFGdGymdXK+1WI6b9N/o4N4h/LSIhfamIYulW/t/eUQf1H94lt6w
+ OmWo8G9oxIpc8j0C8uD6c5a2GEYTPg4l5D0o85r6j5BaznQn96xolaOqqMAfcTcuuH3ZU5Vv
+ MSDEIAQQ/Z8dTVTvV5m5bMw+pGs=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 60b3544b51f29e6bae4b4ea3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 30 May 2021 09:00:59
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 600C2C433F1; Sun, 30 May 2021 09:00:58 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7DB0FC433D3;
+        Sun, 30 May 2021 09:00:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7DB0FC433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Phillip Potter <phil@philpotter.co.uk>
+Cc:     davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath9k-devel@qca.qualcomm.com,
+        fw@strlen.de
+Subject: Re: [PATCH v2] ath9k: ath9k_htc_rx_msg: return when sk_buff is too small
+References: <20210502212611.1818-1-phil@philpotter.co.uk>
+Date:   Sun, 30 May 2021 12:00:53 +0300
+In-Reply-To: <20210502212611.1818-1-phil@philpotter.co.uk> (Phillip Potter's
+        message of "Sun, 2 May 2021 22:26:11 +0100")
+Message-ID: <87fsy4ppdm.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-kernel test robot reports over 200 build errors and warnings
-that are due to this Kconfig problem when CARL9170=m,
-MAC80211=y, and LEDS_CLASS=m.
+Phillip Potter <phil@philpotter.co.uk> writes:
 
-WARNING: unmet direct dependencies detected for MAC80211_LEDS
-  Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
-  Selected by [m]:
-  - CARL9170_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && CARL9170 [=m]
+> At the start of ath9k_htc_rx_msg, we check to see if the skb pointer is
+> valid, but what we don't do is check if it is large enough to contain a
+> valid struct htc_frame_hdr. We should check for this and return if not,
+> as the buffer is invalid in this case. Fixes a KMSAN-found uninit-value bug
+> reported by syzbot at:
+> https://syzkaller.appspot.com/bug?id=7dccb7d9ad4251df1c49f370607a49e1f09644ee
+>
+> Reported-by: syzbot+e4534e8c1c382508312c@syzkaller.appspotmail.com
+> Signed-off-by: Phillip Potter <phil@philpotter.co.uk>
+> ---
+>
+> V2:
+> * Free skb properly when this problem is detected, as pointed out by
+>   Florian Westphal.
+>
+> ---
+>  drivers/net/wireless/ath/ath9k/htc_hst.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
+> index 510e61e97dbc..1fe89b068ac4 100644
+> --- a/drivers/net/wireless/ath/ath9k/htc_hst.c
+> +++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
+> @@ -406,6 +406,11 @@ void ath9k_htc_rx_msg(struct htc_target *htc_handle,
+>  	if (!htc_handle || !skb)
+>  		return;
+>  
+> +	if (!pskb_may_pull(skb, sizeof(struct htc_frame_hdr))) {
+> +		kfree_skb(skb);
+> +		return;
+> +	}
 
-CARL9170_LEDS selects MAC80211_LEDS even though its kconfig
-dependencies are not met. This happens because 'select' does not follow
-any Kconfig dependency chains.
+This does not look complete to me, I think the function is missing
+proper length checks. For example, with ENDPOINT0 it reads two byte
+msg_id after the htc header and it's not verified that skb really has
+that. I did not check if ep_callbacks.rx handlers have proper length
+handling, I recommend verifying that also while fixing this.
 
-Fix this by making CARL9170_LEDS depend on MAC80211_LEDS, where
-the latter supplies any needed dependencies on LEDS_CLASS.
+Also I want to point out that the skb is freed differently based on
+endpoint, I did not check why and don't know if it causes:
 
-Fixes: 1d7e1e6b1b8ed ("carl9170: Makefile, Kconfig files and MAINTAINERS")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Christian Lamparter <chunkeey@googlemail.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Suggested-by: Christian Lamparter <chunkeey@googlemail.com>
----
-v2: modify as suggesed by Arnd
-v3: modify as suggested by Christian
+	if (epid < 0 || epid >= ENDPOINT_MAX) {
+		if (pipe_id != USB_REG_IN_PIPE)
+			dev_kfree_skb_any(skb);
+		else
+			kfree_skb(skb);
+		return;
+	}
 
- drivers/net/wireless/ath/carl9170/Kconfig |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
---- linux-next-20210528.orig/drivers/net/wireless/ath/carl9170/Kconfig
-+++ linux-next-20210528/drivers/net/wireless/ath/carl9170/Kconfig
-@@ -16,13 +16,11 @@ config CARL9170
- 
- config CARL9170_LEDS
- 	bool "SoftLED Support"
--	depends on CARL9170
--	select MAC80211_LEDS
--	select LEDS_CLASS
--	select NEW_LEDS
- 	default y
-+	depends on CARL9170
-+	depends on MAC80211_LEDS
- 	help
--	  This option is necessary, if you want your device' LEDs to blink
-+	  This option is necessary, if you want your device's LEDs to blink.
- 
- 	  Say Y, unless you need the LEDs for firmware debugging.
- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
