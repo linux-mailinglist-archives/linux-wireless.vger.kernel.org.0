@@ -2,125 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A4E23950A7
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 May 2021 13:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABFD839510E
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 May 2021 15:33:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbhE3L1h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 May 2021 07:27:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54434 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbhE3L1g (ORCPT
+        id S229617AbhE3NfP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 May 2021 09:35:15 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:38042 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229580AbhE3NfP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 May 2021 07:27:36 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF8FC061574
-        for <linux-wireless@vger.kernel.org>; Sun, 30 May 2021 04:25:57 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id b15-20020a17090a550fb029015dad75163dso5087852pji.0
-        for <linux-wireless@vger.kernel.org>; Sun, 30 May 2021 04:25:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HNa82AGxltrUgWZP3TuoWDeM9PCyLQw1GWApGDdlR0Y=;
-        b=SvqwsGy8E0Fe/rYwjJIp8TCapDPyNHFJ4AuosCUP36nbSX7kjpCQT0rx6F29FkqJPh
-         0zoxO62BR630Imr3D/ziH9LJNS6NrkKiiiSKXK7hjFoaxh6X0HUkBfM3BrIm3eDNbD+W
-         khiD5z2aLiK9vy8NOdgFY0m6874o7EtYGIgpcOYq7dQu1rTKOWZe3v6PhdFN+CH5orq2
-         y+AZ39L1rd7+aac/g09Qhm9z946R03zZjoLUWbx4cAG5Pn0ZYCAwErf2TvyJA0tNy0AD
-         JSi/FS8f3Gy5GtvWqSkEmtJCyHQUNFJAqFbn9mDM+cKehhufdd+CnLK4JkkZeAvH0kw3
-         wS1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HNa82AGxltrUgWZP3TuoWDeM9PCyLQw1GWApGDdlR0Y=;
-        b=fICbYiVWO2Q3kVGDG9Es+4g/OodAmh38L9WhaOa2yLYR/lfDLlObw7x/gD9Dgi6JgR
-         9PUvECcov6RWo5IDHd8NGAxHyAVvZSi9iyK0ooHvJSXaGUJvj7F1YaoaT4sZx6OLHwol
-         F/b25xRv5z7PTLsLfI8teT0k+fMR1zLJO5XA3A7D8gRHP8zWI3xLgq0/KXzHN3/Sw2dV
-         k555mQP2zX5TlHQYAi54jexS6INAg/dcM3XN1h8Njmq1CQt3kpWHyxSg0NZzbORQmGax
-         cMaiH7bEIOKv+4JpjqwwGG2wSZzGRr75WjxL3E65KhE4N9I2Sq3spDE/CkKYDR40b+dw
-         cNnA==
-X-Gm-Message-State: AOAM5301ALmahldLgeiNnQB/UKe1upGgipY62WXgP06GucBEQDjB9mM7
-        i4qnkdeMIMxFYrtRuyk/Ke7+EIuwbqzeCg==
-X-Google-Smtp-Source: ABdhPJzcsaYG0xsfkn0blH8YcTovp7+vdCpRcTWhYdpe8ScEhQ4NYKSs/MwljkUZmyKjBqYg3e5yhg==
-X-Received: by 2002:a17:90a:8005:: with SMTP id b5mr13795932pjn.203.1622373956871;
-        Sun, 30 May 2021 04:25:56 -0700 (PDT)
-Received: from localhost ([193.110.201.122])
-        by smtp.gmail.com with ESMTPSA id k9sm9003083pgq.27.2021.05.30.04.25.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 May 2021 04:25:56 -0700 (PDT)
-From:   Jianhui Zhao <zhaojh329@gmail.com>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, zhaojh329@gmail.com
-Subject: [PATCH] iw: add option to set auth type for connect
-Date:   Sun, 30 May 2021 19:25:52 +0800
-Message-Id: <20210530112552.577329-1-zhaojh329@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Sun, 30 May 2021 09:35:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1622381610;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=hxcehSV8QaHK1iGq8z5tSsnm6CF6iHJbAMOXME7h/rQ=;
+        b=0Tuf7z7kk1GIWRlDFKkUjN1vBE2VHW7ZrT0CwnZXFkrD1Gw8SoCzrYo/Kzz4T/4uJTMRZV
+        6JkoJaukex6HxrZojmoCTbhY0IhDAplfUJUIZIVEyRsjN0YU3tBBWgLWyuUlqyMOMP0aAY
+        aKh54Epp2nalu76qua+SNQAFSVTZ3eI=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>, stable@vger.kernel.org,
+        Ben Greear <greearb@candelatech.com>,
+        Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH] mac80211: Fix NULL ptr deref for injected rate info
+Date:   Sun, 30 May 2021 15:32:26 +0200
+Message-Id: <20210530133226.40587-1-sven@narfation.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Jianhui Zhao <zhaojh329@gmail.com>
----
- connect.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+From: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
 
-diff --git a/connect.c b/connect.c
-index 3237a27..e5b177f 100644
---- a/connect.c
-+++ b/connect.c
-@@ -15,6 +15,7 @@ static int iw_conn(struct nl80211_state *state,
- {
- 	char *end;
- 	unsigned char bssid[6];
-+	bool need_key = false;
- 	int freq;
- 	int ret;
+The commit cb17ed29a7a5 ("mac80211: parse radiotap header when selecting Tx
+queue") moved the code to validate the radiotap header from
+ieee80211_monitor_start_xmit to ieee80211_parse_tx_radiotap. This made is
+possible to share more code with the new Tx queue selection code for
+injected frames. But at the same time, it now required the call of
+ieee80211_parse_tx_radiotap at the beginning of functions which wanted to
+handle the radiotap header. And this broke the rate parser for radiotap
+header parser.
+
+The radiotap parser for rates is operating most of the time only on the
+data in the actual radiotap header. But for the 802.11a/b/g rates, it must
+also know the selected band from the chandef information. But this
+information is only written to the ieee80211_tx_info at the end of the
+ieee80211_monitor_start_xmit - long after ieee80211_parse_tx_radiotap was
+already called. The info->band information was therefore always 0
+(NL80211_BAND_2GHZ) when the parser code tried to access it.
+
+For a 5GHz only device, injecting a frame with 802.11a rates would cause a
+NULL pointer dereference because local->hw.wiphy->bands[NL80211_BAND_2GHZ]
+would most likely have been NULL when the radiotap parser searched for the
+correct rate index of the driver.
+
+Cc: stable@vger.kernel.org
+Reported-by: Ben Greear <greearb@candelatech.com>
+Fixes: cb17ed29a7a5 ("mac80211: parse radiotap header when selecting Tx queue")
+Signed-off-by: Mathy Vanhoef <Mathy.Vanhoef@kuleuven.be>
+[sven@narfation.org: added commit message]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+---
+ include/net/mac80211.h |  7 +++++-
+ net/mac80211/tx.c      | 52 +++++++++++++++++++++++++++++-------------
+ 2 files changed, 42 insertions(+), 17 deletions(-)
+
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 445b66c6eb7e..d4a539c70521 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -6392,7 +6392,12 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
  
-@@ -48,7 +49,32 @@ static int iw_conn(struct nl80211_state *state,
- 	if (!argc)
- 		return 0;
- 
--	if (strcmp(*argv, "key") != 0 && strcmp(*argv, "keys") != 0)
-+	if (strcmp(*argv, "auth") == 0) {
-+		argv++;
-+		argc--;
-+
-+		if (!argc)
-+			return 1;
-+
-+		if (strcmp(argv[0], "open") == 0) {
-+			NLA_PUT_U32(msg, NL80211_ATTR_AUTH_TYPE,
-+			    NL80211_AUTHTYPE_OPEN_SYSTEM);
-+		} else if (strcmp(argv[0], "shared") == 0) {
-+			NLA_PUT_U32(msg, NL80211_ATTR_AUTH_TYPE,
-+			    NL80211_AUTHTYPE_SHARED_KEY);
-+			need_key = true;
-+		} else {
-+			return 1;
-+		}
-+
-+		argv++;
-+		argc--;
-+	}
-+
-+	if (need_key && !argc)
-+		return 1;
-+
-+	if (argc && strcmp(*argv, "key") != 0 && strcmp(*argv, "keys") != 0)
- 		return 1;
- 
- 	argv++;
-@@ -160,7 +186,7 @@ static int iw_connect(struct nl80211_state *state,
- 			   &printargs);
- 	return 0;
+ /**
+  * ieee80211_parse_tx_radiotap - Sanity-check and parse the radiotap header
+- *				 of injected frames
++ *				 of injected frames.
++ *
++ * To accurately parse and take into account rate and retransmission fields,
++ * you must initialize the chandef field in the ieee80211_tx_info structure
++ * of the skb before calling this function.
++ *
+  * @skb: packet injected by userspace
+  * @dev: the &struct device of this 802.11 device
+  */
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 0b719f3d2dec..2651498d05e8 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2014,6 +2014,26 @@ void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
+ 	ieee80211_tx(sdata, sta, skb, false);
  }
--TOPLEVEL(connect, "[-w] <SSID> [<freq in MHz>] [<bssid>] [key 0:abcde d:1:6162636465] [mfp:req/opt/no]",
-+TOPLEVEL(connect, "[-w] <SSID> [<freq in MHz>] [<bssid>] [auth open|shared] [key 0:abcde d:1:6162636465] [mfp:req/opt/no]",
- 	0, 0, CIB_NETDEV, iw_connect,
- 	"Join the network with the given SSID (and frequency, BSSID).\n"
- 	"With -w, wait for the connect to finish or fail.");
+ 
++static bool ieee80211_validate_radiotap_len(struct sk_buff *skb)
++{
++	struct ieee80211_radiotap_header *rthdr =
++		(struct ieee80211_radiotap_header *)skb->data;
++
++	/* check for not even having the fixed radiotap header part */
++	if (unlikely(skb->len < sizeof(struct ieee80211_radiotap_header)))
++		return false; /* too short to be possibly valid */
++
++	/* is it a header version we can trust to find length from? */
++	if (unlikely(rthdr->it_version))
++		return false; /* only version 0 is supported */
++
++	/* does the skb contain enough to deliver on the alleged length? */
++	if (unlikely(skb->len < ieee80211_get_radiotap_len(skb->data)))
++		return false; /* skb too short for claimed rt header extent */
++
++	return true;
++}
++
+ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 				 struct net_device *dev)
+ {
+@@ -2022,8 +2042,6 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 	struct ieee80211_radiotap_header *rthdr =
+ 		(struct ieee80211_radiotap_header *) skb->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+-	struct ieee80211_supported_band *sband =
+-		local->hw.wiphy->bands[info->band];
+ 	int ret = ieee80211_radiotap_iterator_init(&iterator, rthdr, skb->len,
+ 						   NULL);
+ 	u16 txflags;
+@@ -2036,17 +2054,8 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 	u8 vht_mcs = 0, vht_nss = 0;
+ 	int i;
+ 
+-	/* check for not even having the fixed radiotap header part */
+-	if (unlikely(skb->len < sizeof(struct ieee80211_radiotap_header)))
+-		return false; /* too short to be possibly valid */
+-
+-	/* is it a header version we can trust to find length from? */
+-	if (unlikely(rthdr->it_version))
+-		return false; /* only version 0 is supported */
+-
+-	/* does the skb contain enough to deliver on the alleged length? */
+-	if (unlikely(skb->len < ieee80211_get_radiotap_len(skb->data)))
+-		return false; /* skb too short for claimed rt header extent */
++	if (!ieee80211_validate_radiotap_len(skb))
++		return false;
+ 
+ 	info->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT |
+ 		       IEEE80211_TX_CTL_DONTFRAG;
+@@ -2186,6 +2195,9 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 		return false;
+ 
+ 	if (rate_found) {
++		struct ieee80211_supported_band *sband =
++			local->hw.wiphy->bands[info->band];
++
+ 		info->control.flags |= IEEE80211_TX_CTRL_RATE_INJECT;
+ 
+ 		for (i = 0; i < IEEE80211_TX_MAX_RATES; i++) {
+@@ -2199,7 +2211,7 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
+ 		} else if (rate_flags & IEEE80211_TX_RC_VHT_MCS) {
+ 			ieee80211_rate_set_vht(info->control.rates, vht_mcs,
+ 					       vht_nss);
+-		} else {
++		} else if (sband) {
+ 			for (i = 0; i < sband->n_bitrates; i++) {
+ 				if (rate * 5 != sband->bitrates[i].bitrate)
+ 					continue;
+@@ -2236,8 +2248,8 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 	info->flags = IEEE80211_TX_CTL_REQ_TX_STATUS |
+ 		      IEEE80211_TX_CTL_INJECTED;
+ 
+-	/* Sanity-check and process the injection radiotap header */
+-	if (!ieee80211_parse_tx_radiotap(skb, dev))
++	/* Sanity-check the length of the radiotap header */
++	if (!ieee80211_validate_radiotap_len(skb))
+ 		goto fail;
+ 
+ 	/* we now know there is a radiotap header with a length we can use */
+@@ -2351,6 +2363,14 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 	ieee80211_select_queue_80211(sdata, skb, hdr);
+ 	skb_set_queue_mapping(skb, ieee80211_ac_from_tid(skb->priority));
+ 
++	/*
++	 * Process the radiotap header. This will now take into account the
++	 * selected chandef above to accurately set injection rates and
++	 * retransmissions.
++	 */
++	if (!ieee80211_parse_tx_radiotap(skb, dev))
++		goto fail_rcu;
++
+ 	/* remove the injection radiotap header */
+ 	skb_pull(skb, len_rthdr);
+ 
 -- 
-2.25.1
+2.30.2
 
