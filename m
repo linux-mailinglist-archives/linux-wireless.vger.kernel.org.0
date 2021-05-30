@@ -2,122 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F84395150
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 May 2021 16:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78A203951AC
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 May 2021 17:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbhE3Odu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 May 2021 10:33:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38076 "EHLO
+        id S229735AbhE3PVI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 May 2021 11:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbhE3Odu (ORCPT
+        with ESMTP id S229580AbhE3PVH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 May 2021 10:33:50 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A889C061574;
-        Sun, 30 May 2021 07:32:12 -0700 (PDT)
+        Sun, 30 May 2021 11:21:07 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 389A4C061574;
+        Sun, 30 May 2021 08:19:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=YPRb01aMhesQxdqGA6MBTiCuI6fX275v8ray7uBqpWY=; b=VhhzXpB9WnPXTvaTHWaN57FAmj
-        3Ue04bB05yPgOqU1EsVg0NIDa4UjMl6b5X1LUaM3ibtaSXvst1yTaAtkE0JuxdD5//qVsOT6tle1V
-        tYcVS3yQwBI3lY1FqfldIPm3dzTla284Vbyu3c5H9TloiYjqoi26C354PuIWh6jj29WPlF2N4VotK
-        gRnJit/k1fj6MgGlLZL0OqXgNM1QBDwiHfT+nZY/YoMt8CtyQSUfEfElnTq+hOwXQ7bC0K4lTvWgF
-        Po6uJKyukr5DfjA2GiJ9SS3zrIChHRihFe7rY2boWGEVn2qyGMqDGc03v8XH6Jxs4ZA6769cJmAry
-        Xn2kxGuw==;
-Received: from [2601:1c0:6280:3f0::ce7d]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1lnMU5-009ktt-Ua; Sun, 30 May 2021 14:32:10 +0000
-Subject: Re: [PATCH v3] wireless: carl9170: fix LEDS build errors & warnings
-To:     Christian Lamparter <chunkeey@gmail.com>,
-        linux-kernel@vger.kernel.org
-Cc:     kernel test robot <lkp@intel.com>,
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=y3DXZLXagxiVtFwWPQ3/eHYfS2BTxh16gXAXVZkHbvs=; b=ERoCFxV5SBNYHz1mskauOJriQG
+        y0EBj4Br/zzwvWrtLk3vX22nZllTohRJ5TQZXvvoR/DlZWEdD3+J+aWd0D3MjDgXqjeMomuoREo15
+        Cfme5ehFNPenJvMiyHyXZhqmVhuziWXecTBPN2yyAErWv0+ZAjvCLEpJ92Ql6y1m+BoQ6Laiocewj
+        hDPS6WoBh9JirO2W57C45f6LVKRUSZVMBQx/E/OIb+lhnSF5lAShLs5xdPXkA101Cn4AzSahmxMsp
+        NXTwIOgJlFR9nzMnOPnnJ3kTwfN5Ap8ZJoaS1yNCQw5RN7dpPBfESQiaB/yYHdk3cdZr0ikeOD0Kl
+        eA1SFVtg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1lnNCp-008Dun-I2; Sun, 30 May 2021 15:18:26 +0000
+Date:   Sun, 30 May 2021 16:18:23 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Justin He <Justin.He@arm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-References: <20210530031134.23274-1-rdunlap@infradead.org>
- <8043ff50-d592-7666-f001-7505efa0d4c2@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <c49c07d5-1d6e-5b99-30b4-bc8f48b0fde3@infradead.org>
-Date:   Sun, 30 May 2021 07:32:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>
+Subject: Re: [PATCH RFCv2 2/3] lib/vsprintf.c: make %pD print full path for
+ file
+Message-ID: <YLOsvz8ZbpjfcuGO@casper.infradead.org>
+References: <20210528113951.6225-1-justin.he@arm.com>
+ <20210528113951.6225-3-justin.he@arm.com>
+ <YLDpSnV9XBUJq5RU@casper.infradead.org>
+ <AM6PR08MB437691E7314C6B774EFED4BDF7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
+ <89fc3919-ca2c-50fd-35e1-33bf3a59b993@rasmusvillemoes.dk>
 MIME-Version: 1.0
-In-Reply-To: <8043ff50-d592-7666-f001-7505efa0d4c2@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <89fc3919-ca2c-50fd-35e1-33bf3a59b993@rasmusvillemoes.dk>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/30/21 2:31 AM, Christian Lamparter wrote:
-> On 30/05/2021 05:11, Randy Dunlap wrote:
->> kernel test robot reports over 200 build errors and warnings
->> that are due to this Kconfig problem when CARL9170=m,
->> MAC80211=y, and LEDS_CLASS=m.
->>
->> WARNING: unmet direct dependencies detected for MAC80211_LEDS
->>    Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
->>    Selected by [m]:
->>    - CARL9170_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && CARL9170 [=m]
->>
->> CARL9170_LEDS selects MAC80211_LEDS even though its kconfig
->> dependencies are not met. This happens because 'select' does not follow
->> any Kconfig dependency chains.
->>
->> Fix this by making CARL9170_LEDS depend on MAC80211_LEDS, where
->> the latter supplies any needed dependencies on LEDS_CLASS.
+On Fri, May 28, 2021 at 10:06:37PM +0200, Rasmus Villemoes wrote:
+> On 28/05/2021 16.22, Justin He wrote:
+> > 
+> >> From: Matthew Wilcox <willy@infradead.org>
 > 
-> Ok, this is not what I was expecting... I though you would just
-> add a "depends on / imply MAC80211_LEDS" on your v2. (this was
-> based on the assumption of what mac80211,  ath9k/_htc and mt76
-> solutions of the same problem looked like).
-
-Do you want the user choice/prompt removed, like MT76 is?
-
-> But since (I assuming here) this patch passed the build-bots
-> testing with flying colors in the different config permutations.
-
-It hasn't passed any build-bots testing that I know of.
-I did 8 combinations of kconfigs (well, 2 of them were invalid),
-but they all passed my own build testing.
-
-> Acked-by: Christian Lamparter <chunkeey@gmail.com>
+> >> How is it "safer"?  You already have a buffer passed from the caller.
+> >> Are you saying that d_path_fast() might overrun a really small buffer
+> >> but won't overrun a 256 byte buffer?
+> > No, it won't overrun a 256 byte buf. When the full path size is larger than 256, the p->len is < 0 in prepend_name, and this overrun will be
+> > dectected in extract_string() with "-ENAMETOOLONG".
+> > 
+> > Each printk contains 2 vsnprintf. vsnprintf() returns the required size after formatting the string.>
+> > 1. vprintk_store() will invoke 1st vsnprintf() will 8 bytes space to get the reserve_size. In this case, the _buf_ could be less than _end_ by design.
+> > 2. Then it invokes 2nd printk_sprint()->vscnprintf()->vsnprintf() to really fill the space.
 > 
->> Fixes: 1d7e1e6b1b8ed ("carl9170: Makefile, Kconfig files and MAINTAINERS")
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Cc: Kalle Valo <kvalo@codeaurora.org>
->> Cc: Christian Lamparter <chunkeey@gmail.com>
->> Cc: linux-wireless@vger.kernel.org
->> Cc: Arnd Bergmann <arnd@arndb.de>
->> Suggested-by: Christian Lamparter <chunkeey@gmail.com>
->> ---
->> v2: modify as suggesed by Arnd
->> v3: modify as suggested by Christian
->>
->>   drivers/net/wireless/ath/carl9170/Kconfig |    8 +++-----
->>   1 file changed, 3 insertions(+), 5 deletions(-)
->>
->> --- linux-next-20210528.orig/drivers/net/wireless/ath/carl9170/Kconfig
->> +++ linux-next-20210528/drivers/net/wireless/ath/carl9170/Kconfig
->> @@ -16,13 +16,11 @@ config CARL9170
->>     config CARL9170_LEDS
->>       bool "SoftLED Support"
->> -    depends on CARL9170
->> -    select MAC80211_LEDS
->> -    select LEDS_CLASS
->> -    select NEW_LEDS
->>       default y
->> +    depends on CARL9170
->> +    depends on MAC80211_LEDS
->>       help
->> -      This option is necessary, if you want your device' LEDs to blink
->> +      This option is necessary, if you want your device's LEDs to blink.
->>           Say Y, unless you need the LEDs for firmware debugging.
+> Please do not assume that printk is the only user of vsnprintf() or the
+> only one that would use a given %p<foo> extension.
 > 
+> Also, is it clear that nothing can change underneath you in between two
+> calls to vsnprintf()? IOW, is it certain that the path will fit upon a
+> second call using the size returned from the first?
 
-thanks.
--- 
-~Randy
-
+No, but that's also true of %s.  I think vprintk_store() is foolish to
+do it this way.
