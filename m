@@ -2,141 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B9BB3957C9
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 11:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80B9F395846
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 11:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbhEaJFD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 May 2021 05:05:03 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34431 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230491AbhEaJFA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 May 2021 05:05:00 -0400
-Received: from 111-240-143-199.dynamic-ip.hinet.net ([111.240.143.199] helo=localhost.localdomain)
-        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <chris.chiu@canonical.com>)
-        id 1lndpM-0004qd-Cv; Mon, 31 May 2021 09:03:16 +0000
-From:   chris.chiu@canonical.com
-To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Chiu <chris.chiu@canonical.com>
-Subject: [PATCH 2/2] rtl8xxxu: Fix ampdu_action to get block ack session work
-Date:   Mon, 31 May 2021 17:02:54 +0800
-Message-Id: <20210531090254.86830-3-chris.chiu@canonical.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210531090254.86830-1-chris.chiu@canonical.com>
-References: <20210531090254.86830-1-chris.chiu@canonical.com>
+        id S230479AbhEaJmR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 May 2021 05:42:17 -0400
+Received: from mx2.suse.de ([195.135.220.15]:55936 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230500AbhEaJmQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 31 May 2021 05:42:16 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1622454035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=bPMteFR0fnmyo8FXBzBxRPRmVb4fglfAJIgPFxZ76ck=;
+        b=fUx3YXqwD0FYvZRCenXctrEefGQaPnqoTrhsrCqr6gtMMdzrHn7ieUqpDhSpsgIMLE6vmZ
+        yIU4fc6DL/cUolu5k960Gxlh8oizRRK4+SmC0UbANavCdZccin0KFMEMVg1If0YV691wVi
+        WEnSrZAT6SGY/njmbiqICl2miIcbHZ0=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id 7D2B2B4BA;
+        Mon, 31 May 2021 09:40:35 +0000 (UTC)
+Date:   Mon, 31 May 2021 11:40:34 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Justin He <Justin.He@arm.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>
+Subject: Re: [PATCH RFCv2 2/3] lib/vsprintf.c: make %pD print full path for
+ file
+Message-ID: <YLSvEqQQj5RLjAJ/@alley>
+References: <20210528113951.6225-1-justin.he@arm.com>
+ <20210528113951.6225-3-justin.he@arm.com>
+ <YLDpSnV9XBUJq5RU@casper.infradead.org>
+ <AM6PR08MB437691E7314C6B774EFED4BDF7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
+ <89fc3919-ca2c-50fd-35e1-33bf3a59b993@rasmusvillemoes.dk>
+ <YLOsvz8ZbpjfcuGO@casper.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YLOsvz8ZbpjfcuGO@casper.infradead.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chris Chiu <chris.chiu@canonical.com>
+On Sun 2021-05-30 16:18:23, Matthew Wilcox wrote:
+> On Fri, May 28, 2021 at 10:06:37PM +0200, Rasmus Villemoes wrote:
+> > On 28/05/2021 16.22, Justin He wrote:
+> > > 
+> > >> From: Matthew Wilcox <willy@infradead.org>
+> > 
+> > >> How is it "safer"?  You already have a buffer passed from the caller.
+> > >> Are you saying that d_path_fast() might overrun a really small buffer
+> > >> but won't overrun a 256 byte buffer?
+> > > No, it won't overrun a 256 byte buf. When the full path size is larger than 256, the p->len is < 0 in prepend_name, and this overrun will be
+> > > dectected in extract_string() with "-ENAMETOOLONG".
+> > > 
+> > > Each printk contains 2 vsnprintf. vsnprintf() returns the required size after formatting the string.>
+> > > 1. vprintk_store() will invoke 1st vsnprintf() will 8 bytes space to get the reserve_size. In this case, the _buf_ could be less than _end_ by design.
+> > > 2. Then it invokes 2nd printk_sprint()->vscnprintf()->vsnprintf() to really fill the space.
+> > 
+> > Please do not assume that printk is the only user of vsnprintf() or the
+> > only one that would use a given %p<foo> extension.
+> > 
+> > Also, is it clear that nothing can change underneath you in between two
+> > calls to vsnprintf()? IOW, is it certain that the path will fit upon a
+> > second call using the size returned from the first?
+> 
+> No, but that's also true of %s.  I think vprintk_store() is foolish to
+> do it this way.
 
-The TID is not handled in the ampdu actions. Fix the ampdu_action
-to handle the ampdu operations according to the TID. The ampdu
-stop also needs to be handled by ieee80211_stop_tx_ba_cb_irqsafe
-for the mac80211 to respond accordingly.
+Just for record. vprintk_store() is foolish here by intention.
+It avoids the need of static per-CPU X per-context buffers
+and it is simple.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
----
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  1 +
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 27 ++++++++++++-------
- 2 files changed, 19 insertions(+), 9 deletions(-)
+I believe that it should be good enough in practice. Any race here
+would make the result racy anyway.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index d1a566cc0c9e..ebd69c161899 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1383,6 +1383,7 @@ struct rtl8xxxu_priv {
- 	u8 no_pape:1;
- 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
- 	u8 rssi_level;
-+	u8 tid_bitmap;
- 	/*
- 	 * Only one virtual interface permitted because only STA mode
- 	 * is supported and no iface_combinations are provided.
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 4cf13d2f86b1..790be4ecc3d0 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4805,6 +4805,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	struct ieee80211_rate *tx_rate = ieee80211_get_tx_rate(hw, tx_info);
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct device *dev = &priv->udev->dev;
-+	u8 *qc = ieee80211_get_qos_ctl(hdr);
-+	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
- 	u32 rate;
- 	u16 rate_flags = tx_info->control.rates[0].flags;
- 	u16 seq_number;
-@@ -4828,7 +4830,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 
- 	tx_desc->txdw3 = cpu_to_le32((u32)seq_number << TXDESC32_SEQ_SHIFT);
- 
--	if (ampdu_enable)
-+	if (ampdu_enable && (priv->tid_bitmap & BIT(tid)) &&
-+	    (tx_info->flags & IEEE80211_TX_CTL_AMPDU))
- 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_ENABLE);
- 	else
- 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_BREAK);
-@@ -4876,6 +4879,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct device *dev = &priv->udev->dev;
- 	struct rtl8xxxu_txdesc40 *tx_desc40;
-+	u8 *qc = ieee80211_get_qos_ctl(hdr);
-+	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
- 	u32 rate;
- 	u16 rate_flags = tx_info->control.rates[0].flags;
- 	u16 seq_number;
-@@ -4902,7 +4907,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 
- 	tx_desc40->txdw9 = cpu_to_le32((u32)seq_number << TXDESC40_SEQ_SHIFT);
- 
--	if (ampdu_enable)
-+	if (ampdu_enable && (priv->tid_bitmap & BIT(tid)) &&
-+	    (tx_info->flags & IEEE80211_TX_CTL_AMPDU))
- 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_ENABLE);
- 	else
- 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_BREAK);
-@@ -6089,6 +6095,7 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	struct device *dev = &priv->udev->dev;
- 	u8 ampdu_factor, ampdu_density;
- 	struct ieee80211_sta *sta = params->sta;
-+	u16 tid = params->tid;
- 	enum ieee80211_ampdu_mlme_action action = params->action;
- 
- 	switch (action) {
-@@ -6101,17 +6108,19 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		dev_dbg(dev,
- 			"Changed HT: ampdu_factor %02x, ampdu_density %02x\n",
- 			ampdu_factor, ampdu_density);
--		break;
-+		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+	case IEEE80211_AMPDU_TX_STOP_CONT:
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
--		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH\n", __func__);
--		rtl8xxxu_set_ampdu_factor(priv, 0);
--		rtl8xxxu_set_ampdu_min_space(priv, 0);
--		break;
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
--		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH_CONT\n",
--			 __func__);
-+		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP\n", __func__);
- 		rtl8xxxu_set_ampdu_factor(priv, 0);
- 		rtl8xxxu_set_ampdu_min_space(priv, 0);
-+		priv->tid_bitmap &= ~BIT(tid);
-+		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
-+		break;
-+	case IEEE80211_AMPDU_TX_OPERATIONAL:
-+		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_OPERATIONAL\n", __func__);
-+		priv->tid_bitmap |= BIT(tid);
- 		break;
- 	case IEEE80211_AMPDU_RX_START:
- 		dev_dbg(dev, "%s: IEEE80211_AMPDU_RX_START\n", __func__);
--- 
-2.20.1
+Of course, we might need to reconsider it if there are real life
+problems with this approach.
 
+Best Regards,
+Petr
