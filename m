@@ -2,128 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C53043966B3
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 19:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 159F6396860
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 21:33:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233957AbhEaRSH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 May 2021 13:18:07 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:60563 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231918AbhEaRQj (ORCPT
+        id S232043AbhEaTfS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 May 2021 15:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54532 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231809AbhEaTfR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 May 2021 13:16:39 -0400
-X-UUID: c5cba36c189b4586a485932cef46bbb2-20210601
-X-UUID: c5cba36c189b4586a485932cef46bbb2-20210601
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 239473377; Tue, 01 Jun 2021 01:01:26 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 1 Jun 2021 01:01:24 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 1 Jun 2021 01:01:24 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>, <jemele@google.com>,
-        <yenlinlai@google.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH v2] mt76: mt7921: enable random mac address during sched_scan
-Date:   Tue, 1 Jun 2021 01:01:22 +0800
-Message-ID: <28147493241281fa1d272a93428fe470118a5f81.1622480119.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Mon, 31 May 2021 15:35:17 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A27C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 31 May 2021 12:33:37 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lnnfK-000DeU-Hq; Mon, 31 May 2021 21:33:34 +0200
+Message-ID: <852730091c657314056f56ebebae57351ce7d354.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] iw: set retain atrribute on sections
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Manoj Gupta <manojgupta@google.com>
+Cc:     llozano@google.com, linux-wireless@vger.kernel.org,
+        Fangrui Song <maskray@google.com>
+Date:   Mon, 31 May 2021 21:33:33 +0200
+In-Reply-To: <20210426163021.3594482-1-manojgupta@google.com> (sfid-20210426_183030_475195_F16BBCA2)
+References: <20210422182545.726897-1-manojgupta@google.com>
+         <20210426163021.3594482-1-manojgupta@google.com>
+         (sfid-20210426_183030_475195_F16BBCA2)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+On Mon, 2021-04-26 at 09:30 -0700, Manoj Gupta wrote:
+> LLD 13 and GNU ld 2.37 support -z start-stop-gc which allows garbage
+> collection of C identifier name sections despite the __start_/__stop_
+> references.  Simply set the retain attribute so that GCC 11 (if
+> configure-time binutils is 2.36 or newer)/Clang 13 will set the
+> SHF_GNU_RETAIN section attribute to prevent garbage collection.
+> 
+> Without the patch, there are linker errors like the following with -z
+> start-stop-gc:
+> ld.lld: error: undefined symbol: __stop___cmd
+> > > > referenced by iw.c:418
+> > > >               iw.o:(__handle_cmd)
+> 
+> Suggested-by: Fangrui Song <maskray@google.com>
+> 
+> Cc: stable@vger.kernel.org
 
-Enable src address randomization during scheduled scanning
+This is *clearly* inappropriate.
 
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
-change since v2: update contributor info
----
- .../net/wireless/mediatek/mt76/mt76_connac_mcu.c   | 14 ++++++++------
- .../net/wireless/mediatek/mt76/mt76_connac_mcu.h   |  4 +++-
- drivers/net/wireless/mediatek/mt76/mt7921/init.c   |  3 ++-
- 3 files changed, 13 insertions(+), 8 deletions(-)
+> +++ b/iw.h
+> @@ -118,8 +118,9 @@ struct chandef {
+>  		.parent = _section,					\
+>  		.selector = (_sel),					\
+>  	};								\
+> +	_Pragma("GCC diagnostic ignored \"-Wattributes\"") 		\
+>  	static struct cmd *__cmd ## _ ## _symname ## _ ## _handler ## _ ## _nlcmd ## _ ## _idby ## _ ## _hidden ## _p \
+> -	__attribute__((used,section("__cmd"))) =			\
+> +	__attribute__((used,retain,section("__cmd"))) =			\
+>  	&__cmd ## _ ## _symname ## _ ## _handler ## _ ## _nlcmd ## _ ## _idby ## _ ## _hidden
+>  #define __ACMD(_section, _symname, _name, _args, _nlcmd, _flags, _hidden, _idby, _handler, _help, _sel, _alias)\
+>  	__COMMAND(_section, _symname, _name, _args, _nlcmd, _flags, _hidden, _idby, _handler, _help, _sel);\
+> @@ -141,16 +142,18 @@ struct chandef {
+>  		.handler = (_handler),					\
+>  		.help = (_help),					\
+>  	 };								\
+> +	_Pragma("GCC diagnostic ignored \"-Wattributes\"") 		\
+>  	static struct cmd *__section ## _ ## _name ## _p		\
+> -	__attribute__((used,section("__cmd"))) = &__section ## _ ## _name
+> +	__attribute__((used,retain,section("__cmd"))) = &__section ## _ ## _name
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 73359defa176..b155e7b8d89d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1515,14 +1515,16 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
- 	req->version = 1;
- 	req->seq_num = mvif->scan_seq_num | ext_phy << 7;
- 
--	if (is_mt7663(phy->dev) &&
--	    (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR)) {
--		get_random_mask_addr(req->mt7663.random_mac, sreq->mac_addr,
--				     sreq->mac_addr_mask);
-+	if (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
-+		u8 *addr = is_mt7663(phy->dev) ? req->mt7663.random_mac
-+					       : req->mt7921.random_mac;
-+
- 		req->scan_func = 1;
--	} else if (is_mt7921(phy->dev)) {
--		req->mt7921.bss_idx = mvif->idx;
-+		get_random_mask_addr(addr, sreq->mac_addr,
-+				     sreq->mac_addr_mask);
- 	}
-+	if (is_mt7921(phy->dev))
-+		req->mt7921.bss_idx = mvif->idx;
- 
- 	req->ssids_num = sreq->n_ssids;
- 	for (i = 0; i < req->ssids_num; i++) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index d64b8058b744..3076417ead5f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -779,7 +779,9 @@ struct mt76_connac_sched_scan_req {
- 		} mt7663;
- 		struct {
- 			u8 bss_idx;
--			u8 pad2[63];
-+			u8 pad2[19];
-+			u8 random_mac[ETH_ALEN];
-+			u8 pad3[38];
- 		} mt7921;
- 	};
- } __packed;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 59da29032645..19ce9ca72542 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -76,7 +76,8 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 	wiphy->reg_notifier = mt7921_regd_notifier;
- 
--	wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
-+	wiphy->features |= NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR |
-+			   NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
- 
- 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
--- 
-2.18.0
+All of these cases are in macros, it feels it would be more appropriate
+to do _Pragma("GCC diagnostic push") and ...pop... around it?
+
+johannes
 
