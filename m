@@ -2,103 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80B9F395846
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 11:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCBFB39634E
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 17:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230479AbhEaJmR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 May 2021 05:42:17 -0400
-Received: from mx2.suse.de ([195.135.220.15]:55936 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230500AbhEaJmQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 May 2021 05:42:16 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1622454035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=bPMteFR0fnmyo8FXBzBxRPRmVb4fglfAJIgPFxZ76ck=;
-        b=fUx3YXqwD0FYvZRCenXctrEefGQaPnqoTrhsrCqr6gtMMdzrHn7ieUqpDhSpsgIMLE6vmZ
-        yIU4fc6DL/cUolu5k960Gxlh8oizRRK4+SmC0UbANavCdZccin0KFMEMVg1If0YV691wVi
-        WEnSrZAT6SGY/njmbiqICl2miIcbHZ0=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 7D2B2B4BA;
-        Mon, 31 May 2021 09:40:35 +0000 (UTC)
-Date:   Mon, 31 May 2021 11:40:34 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Justin He <Justin.He@arm.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>
-Subject: Re: [PATCH RFCv2 2/3] lib/vsprintf.c: make %pD print full path for
- file
-Message-ID: <YLSvEqQQj5RLjAJ/@alley>
-References: <20210528113951.6225-1-justin.he@arm.com>
- <20210528113951.6225-3-justin.he@arm.com>
- <YLDpSnV9XBUJq5RU@casper.infradead.org>
- <AM6PR08MB437691E7314C6B774EFED4BDF7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
- <89fc3919-ca2c-50fd-35e1-33bf3a59b993@rasmusvillemoes.dk>
- <YLOsvz8ZbpjfcuGO@casper.infradead.org>
+        id S234315AbhEaPND (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 May 2021 11:13:03 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:11099 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233240AbhEaPLA (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 31 May 2021 11:11:00 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1622473761; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=B9FVKugDSt9Fsc2ZBPWVWENKfl+H0G+pO1djroLQj+Y=;
+ b=GJpQA6lQZfCK2omq3lprzl+VJk3f5aHW7v3raJKhbbUc5mBcDvd6gczjS+kYp/ygEQM6TdOW
+ R3PonganikUf52BLONwMfno8c2MlsNNGAcB6ccSYUrLN4E74b2se3CsGf5NceoBg/CyXseJD
+ zkf3pOT7//71AoRxH5ySguiH4tw=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 60b4fc1c6ddc3305c4ec59ba (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 31 May 2021 15:09:16
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 45522C4323A; Mon, 31 May 2021 15:09:15 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4A589C4338A;
+        Mon, 31 May 2021 15:09:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4A589C4338A
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YLOsvz8ZbpjfcuGO@casper.infradead.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/7] ath11k: add hw reg support for WCN6855
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210511162214.29475-2-jouni@codeaurora.org>
+References: <20210511162214.29475-2-jouni@codeaurora.org>
+To:     Jouni Malinen <jouni@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Baochen Qiang <bqiang@codeaurora.org>,
+        Govind Singh <govinds@codeaurora.org>,
+        Jouni Malinen <jouni@codeaurora.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210531150915.45522C4323A@smtp.codeaurora.org>
+Date:   Mon, 31 May 2021 15:09:15 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun 2021-05-30 16:18:23, Matthew Wilcox wrote:
-> On Fri, May 28, 2021 at 10:06:37PM +0200, Rasmus Villemoes wrote:
-> > On 28/05/2021 16.22, Justin He wrote:
-> > > 
-> > >> From: Matthew Wilcox <willy@infradead.org>
-> > 
-> > >> How is it "safer"?  You already have a buffer passed from the caller.
-> > >> Are you saying that d_path_fast() might overrun a really small buffer
-> > >> but won't overrun a 256 byte buffer?
-> > > No, it won't overrun a 256 byte buf. When the full path size is larger than 256, the p->len is < 0 in prepend_name, and this overrun will be
-> > > dectected in extract_string() with "-ENAMETOOLONG".
-> > > 
-> > > Each printk contains 2 vsnprintf. vsnprintf() returns the required size after formatting the string.>
-> > > 1. vprintk_store() will invoke 1st vsnprintf() will 8 bytes space to get the reserve_size. In this case, the _buf_ could be less than _end_ by design.
-> > > 2. Then it invokes 2nd printk_sprint()->vscnprintf()->vsnprintf() to really fill the space.
-> > 
-> > Please do not assume that printk is the only user of vsnprintf() or the
-> > only one that would use a given %p<foo> extension.
-> > 
-> > Also, is it clear that nothing can change underneath you in between two
-> > calls to vsnprintf()? IOW, is it certain that the path will fit upon a
-> > second call using the size returned from the first?
+Jouni Malinen <jouni@codeaurora.org> wrote:
+
+> Reg address of WCN6855 is different from other devices,
+> so add separate reg definition for this target.
 > 
-> No, but that's also true of %s.  I think vprintk_store() is foolish to
-> do it this way.
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> 
+> Signed-off-by: Govind Singh <govinds@codeaurora.org>
+> Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
+> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Just for record. vprintk_store() is foolish here by intention.
-It avoids the need of static per-CPU X per-context buffers
-and it is simple.
+This patchset had some warnings from ath11k-check:
 
-I believe that it should be good enough in practice. Any race here
-would make the result racy anyway.
+drivers/net/wireless/ath/ath11k/pci.c:1229: line length of 93 exceeds 90 columns
+drivers/net/wireless/ath/ath11k/pci.c:1248: line length of 93 exceeds 90 columns
+drivers/net/wireless/ath/ath11k/hal_rx.c:804: Please don't use multiple blank lines
 
-Of course, we might need to reconsider it if there are real life
-problems with this approach.
+I fixed them in the pending branch.
 
-Best Regards,
-Petr
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210511162214.29475-2-jouni@codeaurora.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
