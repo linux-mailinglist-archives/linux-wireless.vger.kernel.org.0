@@ -2,107 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B93739541F
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 05:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C92DD39557F
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 08:33:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230055AbhEaDGo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 May 2021 23:06:44 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:37249 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbhEaDGm (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 May 2021 23:06:42 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1622430303; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=Or/D49BJIOEB6eLFPLwThrUBfwDf6Y7sHmq8eM+/Z7Q=;
- b=Q9SArqlY34WIxzTquLCamoCnwn5vni4+noW+QCcUJzFSwvnZPJSUvIkriZppJS+5hD97n7zZ
- vCDnVkuWluABNrRi+ZT+Guwim/K/7hGYuPFgOPUH6m8A9xvUZpAx1wcma8yNxubNsp3c3pL/
- b63c7NtuoYyRZ6+eFVxe8vmnSWo=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 60b452448491191eb39cd2cd (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 31 May 2021 03:04:36
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4D252C43217; Mon, 31 May 2021 03:04:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4305BC433D3;
-        Mon, 31 May 2021 03:04:33 +0000 (UTC)
+        id S230121AbhEaGfF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 May 2021 02:35:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54758 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230070AbhEaGfD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 31 May 2021 02:35:03 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A622D60241;
+        Mon, 31 May 2021 06:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622442803;
+        bh=msFzLWwwh1Ulc47nPnwkM1sfXwQxdpKaFnvhlACc3Do=;
+        h=From:To:Cc:Subject:Date:From;
+        b=HtjoNvX+5Ckp6Z5CZYHFM80Ca2YC+NdOF4piLBKP792aVBCntuHfG0zATvA+Wa7Nl
+         MwEI7z9W5V9KGYx6o0bvHd2syjuuks92wPWTZDhUEbc/ed0wqY5339vg5SHp6DJEv2
+         WBp5HO+/ulk2JSAjRubsVMOMJ6rg0WL7DDTBKCCbIZbujs4rKJ69sGuvO+vsuklmuW
+         9xsG/T8FHccxFEO48/qSdQHa5bMivX48cp/NWWdrxSmFIjkRFnAL26iNfnQbZaaA2M
+         9bqqw5BtmSd1FrkkFezyihM3DpCZLH5+U8MkhS6RSYD8uRe72lk/geznf+ncuAAoOQ
+         4ThEdvuZ3XVIw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        deren.wu@mediatek.com, sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7921: enable hw offloading for wep keys
+Date:   Mon, 31 May 2021 08:33:18 +0200
+Message-Id: <7a8326eb7648f5e617e429484142ed948cbc8647.1622442697.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 31 May 2021 11:04:33 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     kernel test robot <lkp@intel.com>
-Cc:     johannes@sipsolutions.net, ath11k@lists.infradead.org,
-        kbuild-all@lists.01.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] wireless: add check of field VHT Extended NSS BW
- Capable for 160/80+80 MHz setting
-In-Reply-To: <202105230249.n4ifN4Wm-lkp@intel.com>
-References: <20210521021809.23986-1-wgong@codeaurora.org>
- <202105230249.n4ifN4Wm-lkp@intel.com>
-Message-ID: <6dedc959bd3b7515a7e151ea4dae2964@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-05-23 02:36, kernel test robot wrote:
-> Hi Wen,
-> 
-> Thank you for the patch! Perhaps something to improve:
-> 
-> [auto build test WARNING on mac80211-next/master]
-> [also build test WARNING on mac80211/master v5.13-rc2 next-20210521]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
-> 
-> url:
-> https://github.com/0day-ci/linux/commits/Wen-Gong/wireless-add-check-of-field-VHT-Extended-NSS-BW-Capable-for-160-80-80-MHz-setting/20210522-224810
-> base:
-> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
-> master
-> config: i386-randconfig-s001-20210522 (attached as .config)
-> compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-> reproduce:
->         # apt-get install sparse
->         # sparse version: v0.6.3-341-g8af24329-dirty
->         #
-> https://github.com/0day-ci/linux/commit/ed41c78effa1b66bb3d00e368b92940e5ffadb57
->         git remote add linux-review https://github.com/0day-ci/linux
->         git fetch --no-tags linux-review
-> Wen-Gong/wireless-add-check-of-field-VHT-Extended-NSS-BW-Capable-for-160-80-80-MHz-setting/20210522-224810
->         git checkout ed41c78effa1b66bb3d00e368b92940e5ffadb57
->         # save the attached .config to linux build tree
->         make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' W=1 
-> ARCH=i386
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> 
-> sparse warnings: (new ones prefixed by >>)
->>> net/wireless/chan.c:953:39: sparse: sparse: restricted __le16 
->>> degrades to integer
-> 
+Enable wep key hw offloading for sta mode. This patch fixes
+WoW support for wep connections.
 
-please use new patch: "[PATCH v3] wireless: add check of field VHT 
-Extended NSS BW Capable for 160/80+80 MHz setting"
+Tested-by: Deren.Wu <deren.wu@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 22 ++++++++++++++-----
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 ++
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
-...
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 472afd4ea487..84930ad5ebc7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -377,6 +377,10 @@ static int mt7921_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIE;
+ 		wcid_keyidx = &wcid->hw_key_idx2;
+ 		break;
++	case WLAN_CIPHER_SUITE_WEP40:
++	case WLAN_CIPHER_SUITE_WEP104:
++		if (!mvif->wep_sta)
++			return -EOPNOTSUPP;
+ 	case WLAN_CIPHER_SUITE_TKIP:
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 	case WLAN_CIPHER_SUITE_CCMP_256:
+@@ -384,8 +388,6 @@ static int mt7921_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	case WLAN_CIPHER_SUITE_GCMP_256:
+ 	case WLAN_CIPHER_SUITE_SMS4:
+ 		break;
+-	case WLAN_CIPHER_SUITE_WEP40:
+-	case WLAN_CIPHER_SUITE_WEP104:
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -403,6 +405,12 @@ static int mt7921_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 			    cmd == SET_KEY ? key : NULL);
+ 
+ 	err = mt7921_mcu_add_key(dev, vif, msta, key, cmd);
++	if (err)
++		goto out;
++
++	if (key->cipher == WLAN_CIPHER_SUITE_WEP104 ||
++	    key->cipher == WLAN_CIPHER_SUITE_WEP40)
++		err = mt7921_mcu_add_key(dev, vif, mvif->wep_sta, key, cmd);
+ out:
+ 	mt7921_mutex_release(dev);
+ 
+@@ -609,9 +617,12 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
+-		mt76_connac_mcu_uni_add_bss(&dev->mphy, vif, &mvif->sta.wcid,
+-					    true);
++	if (vif->type == NL80211_IFTYPE_STATION) {
++		mvif->wep_sta = msta;
++		if (!sta->tdls)
++			mt76_connac_mcu_uni_add_bss(&dev->mphy, vif,
++						    &mvif->sta.wcid, true);
++	}
+ 
+ 	mt7921_mac_wtbl_update(dev, idx,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+@@ -641,6 +652,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	if (vif->type == NL80211_IFTYPE_STATION) {
+ 		struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+ 
++		mvif->wep_sta = NULL;
+ 		ewma_rssi_init(&mvif->rssi);
+ 		if (!sta->tdls)
+ 			mt76_connac_mcu_uni_add_bss(&dev->mphy, vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index a9b21fcc321c..30902231a4bf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -102,6 +102,8 @@ struct mt7921_vif {
+ 	struct mt76_vif mt76; /* must be first */
+ 
+ 	struct mt7921_sta sta;
++	struct mt7921_sta *wep_sta;
++
+ 	struct mt7921_phy *phy;
+ 
+ 	struct ewma_rssi rssi;
+-- 
+2.31.1
+
