@@ -2,64 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 761783953C1
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 03:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B93739541F
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 05:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230090AbhEaBtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 May 2021 21:49:47 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:2416 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229945AbhEaBto (ORCPT
+        id S230055AbhEaDGo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 May 2021 23:06:44 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:37249 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229952AbhEaDGm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 May 2021 21:49:44 -0400
-Received: from dggeme760-chm.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4FtdPf0Rh6z67M9;
-        Mon, 31 May 2021 09:44:22 +0800 (CST)
-Received: from localhost.localdomain (10.175.104.82) by
- dggeme760-chm.china.huawei.com (10.3.19.106) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 31 May 2021 09:48:02 +0800
-From:   Zheng Yongjun <zhengyongjun3@huawei.com>
-To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <kuba@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
-Subject: [PATCH] net: wireless: wext-compat: Fix spelling mistakes
-Date:   Mon, 31 May 2021 10:01:42 +0800
-Message-ID: <20210531020142.2920521-1-zhengyongjun3@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Sun, 30 May 2021 23:06:42 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1622430303; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=Or/D49BJIOEB6eLFPLwThrUBfwDf6Y7sHmq8eM+/Z7Q=;
+ b=Q9SArqlY34WIxzTquLCamoCnwn5vni4+noW+QCcUJzFSwvnZPJSUvIkriZppJS+5hD97n7zZ
+ vCDnVkuWluABNrRi+ZT+Guwim/K/7hGYuPFgOPUH6m8A9xvUZpAx1wcma8yNxubNsp3c3pL/
+ b63c7NtuoYyRZ6+eFVxe8vmnSWo=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 60b452448491191eb39cd2cd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 31 May 2021 03:04:36
+ GMT
+Sender: wgong=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4D252C43217; Mon, 31 May 2021 03:04:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4305BC433D3;
+        Mon, 31 May 2021 03:04:33 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.104.82]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggeme760-chm.china.huawei.com (10.3.19.106)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 31 May 2021 11:04:33 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     kernel test robot <lkp@intel.com>
+Cc:     johannes@sipsolutions.net, ath11k@lists.infradead.org,
+        kbuild-all@lists.01.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] wireless: add check of field VHT Extended NSS BW
+ Capable for 160/80+80 MHz setting
+In-Reply-To: <202105230249.n4ifN4Wm-lkp@intel.com>
+References: <20210521021809.23986-1-wgong@codeaurora.org>
+ <202105230249.n4ifN4Wm-lkp@intel.com>
+Message-ID: <6dedc959bd3b7515a7e151ea4dae2964@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix some spelling mistakes in comments:
-explicitely  ==> explicitly
+On 2021-05-23 02:36, kernel test robot wrote:
+> Hi Wen,
+> 
+> Thank you for the patch! Perhaps something to improve:
+> 
+> [auto build test WARNING on mac80211-next/master]
+> [also build test WARNING on mac80211/master v5.13-rc2 next-20210521]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:
+> https://github.com/0day-ci/linux/commits/Wen-Gong/wireless-add-check-of-field-VHT-Extended-NSS-BW-Capable-for-160-80-80-MHz-setting/20210522-224810
+> base:
+> https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
+> master
+> config: i386-randconfig-s001-20210522 (attached as .config)
+> compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+> reproduce:
+>         # apt-get install sparse
+>         # sparse version: v0.6.3-341-g8af24329-dirty
+>         #
+> https://github.com/0day-ci/linux/commit/ed41c78effa1b66bb3d00e368b92940e5ffadb57
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review
+> Wen-Gong/wireless-add-check-of-field-VHT-Extended-NSS-BW-Capable-for-160-80-80-MHz-setting/20210522-224810
+>         git checkout ed41c78effa1b66bb3d00e368b92940e5ffadb57
+>         # save the attached .config to linux build tree
+>         make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' W=1 
+> ARCH=i386
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> 
+> sparse warnings: (new ones prefixed by >>)
+>>> net/wireless/chan.c:953:39: sparse: sparse: restricted __le16 
+>>> degrades to integer
+> 
 
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
----
- net/wireless/wext-compat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+please use new patch: "[PATCH v3] wireless: add check of field VHT 
+Extended NSS BW Capable for 160/80+80 MHz setting"
 
-diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
-index a8320dc59af7..7ef6fd26450c 100644
---- a/net/wireless/wext-compat.c
-+++ b/net/wireless/wext-compat.c
-@@ -1183,7 +1183,7 @@ static int cfg80211_wext_siwpower(struct net_device *dev,
- 		switch (wrq->flags & IW_POWER_MODE) {
- 		case IW_POWER_ON:       /* If not specified */
- 		case IW_POWER_MODE:     /* If set all mask */
--		case IW_POWER_ALL_R:    /* If explicitely state all */
-+		case IW_POWER_ALL_R:    /* If explicitly state all */
- 			ps = true;
- 			break;
- 		default:                /* Otherwise we ignore */
--- 
-2.25.1
-
+...
