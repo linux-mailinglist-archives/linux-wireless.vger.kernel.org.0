@@ -2,16 +2,16 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC24396699
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 19:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3256396624
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 18:59:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234241AbhEaRMp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 May 2021 13:12:45 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:52857 "EHLO
+        id S234288AbhEaQ7O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 May 2021 12:59:14 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:45356 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232931AbhEaRKl (ORCPT
+        with ESMTP id S232973AbhEaQ5M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 May 2021 13:10:41 -0400
+        Mon, 31 May 2021 12:57:12 -0400
 X-UUID: 80e9839df25f4914b62f51502a4959a7-20210601
 X-UUID: 80e9839df25f4914b62f51502a4959a7-20210601
 Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
