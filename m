@@ -2,59 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C259396592
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 18:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B51396634
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 18:59:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233234AbhEaQky (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 May 2021 12:40:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:50123 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232035AbhEaQis (ORCPT
+        id S232605AbhEaRBJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 May 2021 13:01:09 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:46380 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234039AbhEaQ7E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 May 2021 12:38:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1622479027;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=vRiaPq4HrVEZoadvbfaVcc8TG6Dzr80c9q09+g6SHSA=;
-        b=L6Fi/6LGGH7MUWALex2NjJ8rvWPz9wPf7uGPawiNJDwoiZiRbYUhk4WVfiWbw7SH0kNDn3
-        zji1xghW8Cg5g8GSlHqrelcMEhq+CwfIZJs1Q15ZPrdustPKuRSHUXOhWIVapeIae/kUfM
-        Hyh5TJ046PqBrfxTGtGSToCMLTqsM8s=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-410-8CYJobbbNZi0AM7KAIufnA-1; Mon, 31 May 2021 12:37:06 -0400
-X-MC-Unique: 8CYJobbbNZi0AM7KAIufnA-1
-Received: by mail-ej1-f70.google.com with SMTP id nd10-20020a170907628ab02903a324b229bfso2595522ejc.7
-        for <linux-wireless@vger.kernel.org>; Mon, 31 May 2021 09:37:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=vRiaPq4HrVEZoadvbfaVcc8TG6Dzr80c9q09+g6SHSA=;
-        b=lEZsnJ0vTKkhwiXEvnCxVMi7A9rmzO23S8KkIeDwhxlerctFWZpZYCW7aYzh9Q8Z31
-         9pngKoQMmNnKeXnynxHPpFZOZuXoEOB0igyNfxydiAsKZzT+gc8wdklGEMxx0YD5aT22
-         xWMExtT8PEBcBGIfU2uthyb2EtkfRr03qHqFuvzEN4psHjF2yGgkZcEhj0WuHqvvHKVz
-         Y6kIqVB8JOVtAkBnJGITn3xP93M5nzf/6TBHVGEqPxVoCmGhQ7K2fGrGZRmUKspbtvzJ
-         c+37v3CNsiBBmT8eeppNA2ZbP6EAnK9uBgebTTXWUrnZ9Qw8VZ12R63TBVJDSv6ROuhZ
-         WoaQ==
-X-Gm-Message-State: AOAM531A1JBWG43GstdomSosVcDQ0QtBXstgCstiY54isyIxXeMsBcGt
-        +N0EbxHn1DVF5enTJklJQDsZhrmCuWZxOWgsl5BUOfnH5YDQ4GcPjGIhsBbJ1lvkUD0ByJzBGI/
-        qhwvRnCPCfXLYO3LmZBazHCbaXDw=
-X-Received: by 2002:aa7:d294:: with SMTP id w20mr11467886edq.229.1622479020663;
-        Mon, 31 May 2021 09:37:00 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwvS/6Ym1pqZPPg1Kkro2Oc+uWf6FJ0dXo00/t+ZtJRpvh+39HKAPQXNBnjmjSnrJqTC6GEeQ==
-X-Received: by 2002:aa7:d294:: with SMTP id w20mr11467860edq.229.1622479020456;
-        Mon, 31 May 2021 09:37:00 -0700 (PDT)
-Received: from localhost (net-93-71-117-34.cust.vodafonedsl.it. [93.71.117.34])
-        by smtp.gmail.com with ESMTPSA id c26sm7157400edu.42.2021.05.31.09.36.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 May 2021 09:36:59 -0700 (PDT)
-Date:   Mon, 31 May 2021 18:36:56 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Deren Wu <Deren.Wu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
+        Mon, 31 May 2021 12:59:04 -0400
+X-UUID: f596e7ca21514637bfc319f3d70a5c1c-20210601
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=jOyhX6Re5eXq28+/L1oMJ2keBDSoTs6sF7Oih/n0Kpk=;
+        b=Ormfhnl0Onavzmf77P5ZCCClxetdPlaL5oAzhn6u4BzTP5wkfkuwEBJrAugqoUvurEfbFPQPPl8l+4pVowT+JKlsiXU6Mkq2L4p0gfFOqo0D+qpyUwvBVTQAizwDHd7lC3ZVI19AlVRWY70iBBvpmyfBRygpqMB3aoQj1YO9nWI=;
+X-UUID: f596e7ca21514637bfc319f3d70a5c1c-20210601
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 32020009; Tue, 01 Jun 2021 00:50:38 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 1 Jun 2021 00:50:37 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 1 Jun 2021 00:50:36 +0800
+Message-ID: <6188b37ca5f9aa74c7403c999c74540fe462a174.camel@mediatek.com>
+Subject: Re: [PATCH] mt76: mt7921: enable random mac address during
+ sched_scan
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+        "Soul Huang" <Soul.Huang@mediatek.com>,
         YN Chen <YN.Chen@mediatek.com>,
         Leon Yen <Leon.Yen@mediatek.com>,
         Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
@@ -62,120 +41,82 @@ Cc:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
         Robin Chiu <robin.chiu@mediatek.com>,
         CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
         Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>, jemele@google.com,
-        yenlinlai@google.com,
+        Stella Chang <Stella.Chang@mediatek.com>, <jemele@google.com>,
+        <yenlinlai@google.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: mt7921: enable random mac address during sched_scan
-Message-ID: <YLUQqIqbojUNRZVA@lore-desk>
+Date:   Tue, 1 Jun 2021 00:50:36 +0800
+In-Reply-To: <YLUQqIqbojUNRZVA@lore-desk>
 References: <14360a28083d56520a2cabc87841d9dee3d97a01.1622476643.git.deren.wu@mediatek.com>
+         <YLUQqIqbojUNRZVA@lore-desk>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/UgLne4xHOsvro2G"
-Content-Disposition: inline
-In-Reply-To: <14360a28083d56520a2cabc87841d9dee3d97a01.1622476643.git.deren.wu@mediatek.com>
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---/UgLne4xHOsvro2G
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> From: Deren Wu <deren.wu@mediatek.com>
->=20
-> Enable src address randomization during scheduled scanning
->=20
-> Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
-Here we are missing my SoB, it should be:
-
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> ---
->  .../net/wireless/mediatek/mt76/mt76_connac_mcu.c   | 14 ++++++++------
->  .../net/wireless/mediatek/mt76/mt76_connac_mcu.h   |  4 +++-
->  drivers/net/wireless/mediatek/mt76/mt7921/init.c   |  3 ++-
->  3 files changed, 13 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drive=
-rs/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> index 73359defa176..b155e7b8d89d 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> @@ -1515,14 +1515,16 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_ph=
-y *phy,
->  	req->version =3D 1;
->  	req->seq_num =3D mvif->scan_seq_num | ext_phy << 7;
-> =20
-> -	if (is_mt7663(phy->dev) &&
-> -	    (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR)) {
-> -		get_random_mask_addr(req->mt7663.random_mac, sreq->mac_addr,
-> -				     sreq->mac_addr_mask);
-> +	if (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
-> +		u8 *addr =3D is_mt7663(phy->dev) ? req->mt7663.random_mac
-> +					       : req->mt7921.random_mac;
-> +
->  		req->scan_func =3D 1;
-> -	} else if (is_mt7921(phy->dev)) {
-> -		req->mt7921.bss_idx =3D mvif->idx;
-> +		get_random_mask_addr(addr, sreq->mac_addr,
-> +				     sreq->mac_addr_mask);
->  	}
-> +	if (is_mt7921(phy->dev))
-> +		req->mt7921.bss_idx =3D mvif->idx;
-> =20
->  	req->ssids_num =3D sreq->n_ssids;
->  	for (i =3D 0; i < req->ssids_num; i++) {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drive=
-rs/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> index d64b8058b744..3076417ead5f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> @@ -779,7 +779,9 @@ struct mt76_connac_sched_scan_req {
->  		} mt7663;
->  		struct {
->  			u8 bss_idx;
-> -			u8 pad2[63];
-> +			u8 pad2[19];
-> +			u8 random_mac[ETH_ALEN];
-> +			u8 pad3[38];
->  		} mt7921;
->  	};
->  } __packed;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/init.c
-> index 59da29032645..19ce9ca72542 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -76,7 +76,8 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
->  	wiphy->flags |=3D WIPHY_FLAG_HAS_CHANNEL_SWITCH;
->  	wiphy->reg_notifier =3D mt7921_regd_notifier;
-> =20
-> -	wiphy->features |=3D NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
-> +	wiphy->features |=3D NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR |
-> +			   NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
->  	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
-> =20
->  	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
-> --=20
-> 2.18.0
->=20
-
---/UgLne4xHOsvro2G
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYLUQowAKCRA6cBh0uS2t
-rOwXAP9J1ny4dm2+BniqHq6bBBulK4VdbKtFPJKhnCp002GyrgD/U2sfaKpHQBFy
-cE3lFXkvdUPo8gi9E+OFBQEuM7vH2g0=
-=1H2n
------END PGP SIGNATURE-----
-
---/UgLne4xHOsvro2G--
+T24gTW9uLCAyMDIxLTA1LTMxIGF0IDE4OjM2ICswMjAwLCBMb3JlbnpvIEJpYW5jb25pIHdyb3Rl
+Og0KPiA+IEZyb206IERlcmVuIFd1IDxkZXJlbi53dUBtZWRpYXRlay5jb20+DQo+ID4gDQo+ID4g
+RW5hYmxlIHNyYyBhZGRyZXNzIHJhbmRvbWl6YXRpb24gZHVyaW5nIHNjaGVkdWxlZCBzY2Fubmlu
+Zw0KPiA+IA0KPiA+IENvLWRldmVsb3BlZC1ieTogTG9yZW56byBCaWFuY29uaSA8bG9yZW56b0Br
+ZXJuZWwub3JnPg0KPiANCj4gSGVyZSB3ZSBhcmUgbWlzc2luZyBteSBTb0IsIGl0IHNob3VsZCBi
+ZToNCj4gDQo+IENvLWRldmVsb3BlZC1ieTogTG9yZW56byBCaWFuY29uaSA8bG9yZW56b0BrZXJu
+ZWwub3JnPg0KPiBTaWduZWQtb2ZmLWJ5OiBMb3JlbnpvIEJpYW5jb25pIDxsb3JlbnpvQGtlcm5l
+bC5vcmc+DQoNCkhpIExvcmUsDQoNClNvcnJ5IGZvciB0eXBvLiBJIHdpbGwgdXBkYXRlIGEgbmV3
+IHZlcmlvbi4NCg0KDQpSZWdhcmRzLA0KRGVyZW4NCg0KPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBE
+ZXJlbiBXdSA8ZGVyZW4ud3VAbWVkaWF0ZWsuY29tPg0KPiA+IC0tLQ0KPiA+ICAuLi4vbmV0L3dp
+cmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Nl9jb25uYWNfbWN1LmMgICB8IDE0ICsrKysrKysrDQo+
+ID4gLS0tLS0tDQo+ID4gIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5h
+Y19tY3UuaCAgIHwgIDQgKysrLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkyMS9pbml0LmMgICB8ICAzICsrLQ0KPiA+ICAzIGZpbGVzIGNoYW5nZWQsIDEzIGlu
+c2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Nl9jb25uYWNfbWN1LmMNCj4gPiBiL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Nl9jb25uYWNfbWN1LmMNCj4gPiBp
+bmRleCA3MzM1OWRlZmExNzYuLmIxNTVlN2I4ZDg5ZCAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZfY29ubmFjX21jdS5jDQo+ID4gKysrIGIv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hY19tY3UuYw0KPiA+
+IEBAIC0xNTE1LDE0ICsxNTE1LDE2IEBAIGludCBtdDc2X2Nvbm5hY19tY3Vfc2NoZWRfc2Nhbl9y
+ZXEoc3RydWN0DQo+ID4gbXQ3Nl9waHkgKnBoeSwNCj4gPiAgCXJlcS0+dmVyc2lvbiA9IDE7DQo+
+ID4gIAlyZXEtPnNlcV9udW0gPSBtdmlmLT5zY2FuX3NlcV9udW0gfCBleHRfcGh5IDw8IDc7DQo+
+ID4gIA0KPiA+IC0JaWYgKGlzX210NzY2MyhwaHktPmRldikgJiYNCj4gPiAtCSAgICAoc3JlcS0+
+ZmxhZ3MgJiBOTDgwMjExX1NDQU5fRkxBR19SQU5ET01fQUREUikpIHsNCj4gPiAtCQlnZXRfcmFu
+ZG9tX21hc2tfYWRkcihyZXEtPm10NzY2My5yYW5kb21fbWFjLCBzcmVxLQ0KPiA+ID5tYWNfYWRk
+ciwNCj4gPiAtCQkJCSAgICAgc3JlcS0+bWFjX2FkZHJfbWFzayk7DQo+ID4gKwlpZiAoc3JlcS0+
+ZmxhZ3MgJiBOTDgwMjExX1NDQU5fRkxBR19SQU5ET01fQUREUikgew0KPiA+ICsJCXU4ICphZGRy
+ID0gaXNfbXQ3NjYzKHBoeS0+ZGV2KSA/IHJlcS0+bXQ3NjYzLnJhbmRvbV9tYWMNCj4gPiArCQkJ
+CQkgICAgICAgOiByZXEtDQo+ID4gPm10NzkyMS5yYW5kb21fbWFjOw0KPiA+ICsNCj4gPiAgCQly
+ZXEtPnNjYW5fZnVuYyA9IDE7DQo+ID4gLQl9IGVsc2UgaWYgKGlzX210NzkyMShwaHktPmRldikp
+IHsNCj4gPiAtCQlyZXEtPm10NzkyMS5ic3NfaWR4ID0gbXZpZi0+aWR4Ow0KPiA+ICsJCWdldF9y
+YW5kb21fbWFza19hZGRyKGFkZHIsIHNyZXEtPm1hY19hZGRyLA0KPiA+ICsJCQkJICAgICBzcmVx
+LT5tYWNfYWRkcl9tYXNrKTsNCj4gPiAgCX0NCj4gPiArCWlmIChpc19tdDc5MjEocGh5LT5kZXYp
+KQ0KPiA+ICsJCXJlcS0+bXQ3OTIxLmJzc19pZHggPSBtdmlmLT5pZHg7DQo+ID4gIA0KPiA+ICAJ
+cmVxLT5zc2lkc19udW0gPSBzcmVxLT5uX3NzaWRzOw0KPiA+ICAJZm9yIChpID0gMDsgaSA8IHJl
+cS0+c3NpZHNfbnVtOyBpKyspIHsNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxl
+c3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hY19tY3UuaA0KPiA+IGIvZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hY19tY3UuaA0KPiA+IGluZGV4IGQ2NGI4MDU4
+Yjc0NC4uMzA3NjQxN2VhZDVmIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3Nl9jb25uYWNfbWN1LmgNCj4gPiArKysgYi9kcml2ZXJzL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZfY29ubmFjX21jdS5oDQo+ID4gQEAgLTc3OSw3ICs3
+NzksOSBAQCBzdHJ1Y3QgbXQ3Nl9jb25uYWNfc2NoZWRfc2Nhbl9yZXEgew0KPiA+ICAJCX0gbXQ3
+NjYzOw0KPiA+ICAJCXN0cnVjdCB7DQo+ID4gIAkJCXU4IGJzc19pZHg7DQo+ID4gLQkJCXU4IHBh
+ZDJbNjNdOw0KPiA+ICsJCQl1OCBwYWQyWzE5XTsNCj4gPiArCQkJdTggcmFuZG9tX21hY1tFVEhf
+QUxFTl07DQo+ID4gKwkJCXU4IHBhZDNbMzhdOw0KPiA+ICAJCX0gbXQ3OTIxOw0KPiA+ICAJfTsN
+Cj4gPiAgfSBfX3BhY2tlZDsNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3Ni9tdDc5MjEvaW5pdC5jDQo+ID4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkyMS9pbml0LmMNCj4gPiBpbmRleCA1OWRhMjkwMzI2NDUuLjE5Y2U5
+Y2E3MjU0MiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkyMS9pbml0LmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzkyMS9pbml0LmMNCj4gPiBAQCAtNzYsNyArNzYsOCBAQCBtdDc5MjFfaW5pdF93
+aXBoeShzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodykNCj4gPiAgCXdpcGh5LT5mbGFncyB8PSBXSVBI
+WV9GTEFHX0hBU19DSEFOTkVMX1NXSVRDSDsNCj4gPiAgCXdpcGh5LT5yZWdfbm90aWZpZXIgPSBt
+dDc5MjFfcmVnZF9ub3RpZmllcjsNCj4gPiAgDQo+ID4gLQl3aXBoeS0+ZmVhdHVyZXMgfD0gTkw4
+MDIxMV9GRUFUVVJFX1NDQU5fUkFORE9NX01BQ19BRERSOw0KPiA+ICsJd2lwaHktPmZlYXR1cmVz
+IHw9IE5MODAyMTFfRkVBVFVSRV9TQ0hFRF9TQ0FOX1JBTkRPTV9NQUNfQUREUiB8DQo+ID4gKwkJ
+CSAgIE5MODAyMTFfRkVBVFVSRV9TQ0FOX1JBTkRPTV9NQUNfQUREUjsNCj4gPiAgCXdpcGh5X2V4
+dF9mZWF0dXJlX3NldCh3aXBoeSwNCj4gPiBOTDgwMjExX0VYVF9GRUFUVVJFX1NFVF9TQ0FOX0RX
+RUxMKTsNCj4gPiAgDQo+ID4gIAlpZWVlODAyMTFfaHdfc2V0KGh3LCBTSU5HTEVfU0NBTl9PTl9B
+TExfQkFORFMpOw0KPiA+IC0tIA0KPiA+IDIuMTguMA0KPiA+IA0K
 
