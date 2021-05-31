@@ -2,124 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19C913965E9
-	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 18:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D66F4396724
+	for <lists+linux-wireless@lfdr.de>; Mon, 31 May 2021 19:32:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232884AbhEaQwa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 31 May 2021 12:52:30 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:41334 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232470AbhEaQu3 (ORCPT
+        id S232339AbhEaRe1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 31 May 2021 13:34:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55878 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232975AbhEaRd5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 31 May 2021 12:50:29 -0400
-X-UUID: 80e9839df25f4914b62f51502a4959a7-20210601
-X-UUID: 80e9839df25f4914b62f51502a4959a7-20210601
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 813919618; Tue, 01 Jun 2021 00:28:36 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 1 Jun 2021 00:28:35 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 1 Jun 2021 00:28:34 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>, <jemele@google.com>,
-        <yenlinlai@google.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] mt76: mt7921: enable random mac address during sched_scan
-Date:   Tue, 1 Jun 2021 00:28:31 +0800
-Message-ID: <14360a28083d56520a2cabc87841d9dee3d97a01.1622476643.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Mon, 31 May 2021 13:33:57 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D155EC061237
+        for <linux-wireless@vger.kernel.org>; Mon, 31 May 2021 09:33:09 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id j1so5010565oie.6
+        for <linux-wireless@vger.kernel.org>; Mon, 31 May 2021 09:33:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=QP5LNb4El4/rZNDG00JTVtCCr+8eN4gHZWK+691nZ+w=;
+        b=h2+JvBupdynnHCn8y5qmotQX4/b3+Ql9ZQ/Oakn5SozAt1G1xSOI/c1r0Pj0fak2o6
+         iLx1hzzCQYFKn8QU8Ae3Si/bl9PzCYdJLIY5DFkBRX/WCmglFH/YtEKCw3TSF9FFxweN
+         fA3uK2VyOhJZVCDBbwTSI4RspR6aWmMtNdoubyMfjC5YSU0p7iHb9ZKq3M2DGaQmZ4a6
+         6xvIIxZ0AjG3ByMZWGGVKpFeCuhIkrCsGgw+Nfl//BrDHlkw3BMIQR9dopVnZhJNA9fw
+         GFne4gHoOLtj+26H19MzCmqkbhMCLSnjnoSDYFZkVo39KmVowEcbd1dZKxXIRlX3CGDF
+         LDqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=QP5LNb4El4/rZNDG00JTVtCCr+8eN4gHZWK+691nZ+w=;
+        b=ZUz1sC+LQ9mq9X1niuotYFdZttE6N6EgliHiCIqYTWNP9ChDMOQMVyMkfVmH5OpACs
+         o7BtrXmlt6cOyaPvm0eyPngwN3ESZkwvgOiOutPOOcykVkQ0XCS/s/Y1/hoPL7XEbchC
+         7AoNeNaUuu9mMQmIc8wfezE+ndbfaQHbvODbTRY0aAsL+9LhRKthzL42/vQme03LsdOL
+         ZMGExWSbyCv8WD5LbPmKnzSArrZH10cYxyISkSVpJvDIdSSDt5duV4ZaAEYhmuSqpney
+         afDWRmWD5MwqcHXRD9d5GAvCKDz0Ja7UEZitwwV79q1MfYK41r5vB+NbMzkh0V8tAiB8
+         +2MQ==
+X-Gm-Message-State: AOAM530PK7fsjDCbTE3izgOIRN9rOK8FTNkSUoVKALAVukxTsBzOUK2V
+        3KBgK/imT7Z8Z3V3mJRn5OeHbg==
+X-Google-Smtp-Source: ABdhPJyvRGt8EqMiQvwDJo86HHk+JR6+rac0yGqlbu7+RuWwwoBNe3sU4G/6NUlarR0g5Ph9a5lFtA==
+X-Received: by 2002:aca:dc84:: with SMTP id t126mr14476306oig.32.1622478789149;
+        Mon, 31 May 2021 09:33:09 -0700 (PDT)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id z25sm2861589oic.30.2021.05.31.09.33.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 May 2021 09:33:08 -0700 (PDT)
+Date:   Mon, 31 May 2021 11:33:06 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 5/5] arm64: dts: qcom: msm8916: Enable modem and WiFi
+Message-ID: <YLUPwuD9+z8G1FXN@builder.lan>
+References: <20210312003318.3273536-1-bjorn.andersson@linaro.org>
+ <20210312003318.3273536-6-bjorn.andersson@linaro.org>
+ <YFTA8gEPp1x6o/9f@gerhold.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YFTA8gEPp1x6o/9f@gerhold.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+On Fri 19 Mar 10:19 CDT 2021, Stephan Gerhold wrote:
 
-Enable src address randomization during scheduled scanning
+> Hi Bjorn,
+> 
 
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt76_connac_mcu.c   | 14 ++++++++------
- .../net/wireless/mediatek/mt76/mt76_connac_mcu.h   |  4 +++-
- drivers/net/wireless/mediatek/mt76/mt7921/init.c   |  3 ++-
- 3 files changed, 13 insertions(+), 8 deletions(-)
+Hi Stephan,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 73359defa176..b155e7b8d89d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1515,14 +1515,16 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
- 	req->version = 1;
- 	req->seq_num = mvif->scan_seq_num | ext_phy << 7;
- 
--	if (is_mt7663(phy->dev) &&
--	    (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR)) {
--		get_random_mask_addr(req->mt7663.random_mac, sreq->mac_addr,
--				     sreq->mac_addr_mask);
-+	if (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
-+		u8 *addr = is_mt7663(phy->dev) ? req->mt7663.random_mac
-+					       : req->mt7921.random_mac;
-+
- 		req->scan_func = 1;
--	} else if (is_mt7921(phy->dev)) {
--		req->mt7921.bss_idx = mvif->idx;
-+		get_random_mask_addr(addr, sreq->mac_addr,
-+				     sreq->mac_addr_mask);
- 	}
-+	if (is_mt7921(phy->dev))
-+		req->mt7921.bss_idx = mvif->idx;
- 
- 	req->ssids_num = sreq->n_ssids;
- 	for (i = 0; i < req->ssids_num; i++) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index d64b8058b744..3076417ead5f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -779,7 +779,9 @@ struct mt76_connac_sched_scan_req {
- 		} mt7663;
- 		struct {
- 			u8 bss_idx;
--			u8 pad2[63];
-+			u8 pad2[19];
-+			u8 random_mac[ETH_ALEN];
-+			u8 pad3[38];
- 		} mt7921;
- 	};
- } __packed;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 59da29032645..19ce9ca72542 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -76,7 +76,8 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 	wiphy->reg_notifier = mt7921_regd_notifier;
- 
--	wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
-+	wiphy->features |= NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR |
-+			   NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
- 
- 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
--- 
-2.18.0
+I thought I wrote you a reply, but I don't see it on lore or in my
+mailbox...
 
+> On Thu, Mar 11, 2021 at 04:33:18PM -0800, Bjorn Andersson wrote:
+> > Enable the modem and WiFi subsystems and specify msm8916 specific
+> > firmware path for these and the WCNSS control service.
+> > 
+> > Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> 
+> The changes itself look good to me, but the commit message is really
+> misleading. It does not mention anywhere that the change actually just
+> enables "modem" on apq8016-sbc instead of "msm8916". :)
+> 
+> Also, WCNSS was actually enabled before already (with the default
+> firmware path). In my opinion, it would be clearer to change the
+> firmware-name for it in an extra patch.
+> 
+
+You're right, I will rewrite the commit message.
+
+> > ---
+> >  arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi | 12 ++++++++++++
+> >  arch/arm64/boot/dts/qcom/msm8916.dtsi     |  2 +-
+> >  2 files changed, 13 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi b/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
+> > index 6aef0c2e4f0a..448e3561ef63 100644
+> > --- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
+> > +++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
+> > @@ -305,6 +305,12 @@ &mdss {
+> >  	status = "okay";
+> >  };
+> >  
+> > +&mpss {
+> > +	status = "okay";
+> > +
+> > +	firmware-name = "qcom/msm8916/mba.mbn", "qcom/msm8916/modem.mbn";
+> > +};
+> > +
+> >  &pm8916_resin {
+> >  	status = "okay";
+> >  	linux,code = <KEY_VOLUMEDOWN>;
+> > @@ -312,6 +318,8 @@ &pm8916_resin {
+> >  
+> >  &pronto {
+> >  	status = "okay";
+> > +
+> > +	firmware-name = "qcom/msm8916/wcnss.mbn";
+> >  };
+> >  
+> 
+> How do I get a .mbn from the wcnss.{mdt,.b??} files provided in the
+> DB410c firmware package? I guess I should just run them through
+> https://github.com/andersson/pil-squasher?
+> 
+
+Yes, .mdt + .bNN files can be put back together as a .mbn by running
+them through the pil-squasher.
+
+It's worth mentioning that the suffix doesn't matter for the loader, so
+symlinking the .mdt to .mbn (in either way) will keep the kernel
+happy - if that simplifies transitions in either way.
+
+> Also, is the single file format (mbn) preferred now? Not sure if there
+> is any significant difference except having less files laying around.
+> 
+
+We've had numerous cases where people has managed to mix the parts from
+different versions of the firmware, sometimes with the nice result of
+the loader complaining that some particular .bNN file is missing
+other times just with the signature check (mysteriously) failing.
+
+Lumping the parts into a single .mbn resolves all these issues and
+hence I prefer this. It is however not a requirement.
+
+Regards,
+Bjorn
