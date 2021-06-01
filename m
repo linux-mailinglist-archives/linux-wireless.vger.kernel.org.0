@@ -2,135 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B328B397A5B
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 21:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8751B397A66
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 21:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234695AbhFATDd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 15:03:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60276 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234684AbhFATDc (ORCPT
+        id S234685AbhFATG0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 15:06:26 -0400
+Received: from smtp-fw-2101.amazon.com ([72.21.196.25]:21290 "EHLO
+        smtp-fw-2101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233853AbhFATG0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 15:03:32 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9ADC061760
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Jun 2021 12:01:50 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id a4so13953051ljq.9
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 12:01:50 -0700 (PDT)
+        Tue, 1 Jun 2021 15:06:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RAu0njSTC+kf8drexs7MaZKoE+RFr/l6rpBisM//YE8=;
-        b=Ubm1IKre509GEWJnIt1bo0fRJNfmHccoI20TkXQ9yfHdF/oebFoF8keJiNoiUOrs7X
-         VfT4DycS9NU6tC6PB5TL9w1v0tqnoJiSrlqYUM0sNWE2MwixNys6XjGaG7v6mpXb57b7
-         LWKaKfyXXz9TMrKN2/lbmduSACCMKLBdvT3SM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=RAu0njSTC+kf8drexs7MaZKoE+RFr/l6rpBisM//YE8=;
-        b=hcpcAMs1lh1rCYIoBj+TEo2hiUjSCMhGaHwoQf6pE/O+7V5UpixVAzigaDWYWLub4Q
-         lCxNYtoAJeZdPrc09trJwkp300PuoUF3+xAcmTybUt4WFf7vt/xs/WqV5dWBQCXjlET7
-         T/uUyTUs3C3ldBO3+bhRFDU7sw8P9bZR6jNQVVWsr6NY4gan//0i79PazLyKxRV2GXld
-         vkZS9pJ+UFbmU1ib/Wun30eH8w8mBSAVAX4z2HCNilOuL42ktPPvn5EBpz+NcBYi+FMu
-         BSm0v9aG59Pn8n43rBJoX4rEyBslev4LQVfp2a5Gi4+Whcx/XjiFScIdeXyZOmaCUQR1
-         EvZQ==
-X-Gm-Message-State: AOAM532EfNrxBbfNd73DcJDNkZH6nlnDRtaHWRVYtW45ZQRMrVu2UcwU
-        aOjG/omprpJwbj08vDUds3mltQ==
-X-Google-Smtp-Source: ABdhPJw9s8bBsmzDHRpKgKg/J93DXW07RWbA/3WaPNRwJsVn9SJW571H6MDEnq3hSiz8E+K7r3/Pmg==
-X-Received: by 2002:a05:651c:2c7:: with SMTP id f7mr22407178ljo.255.1622574107996;
-        Tue, 01 Jun 2021 12:01:47 -0700 (PDT)
-Received: from [172.17.20.140] ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id g2sm2103831ljn.35.2021.06.01.12.01.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Jun 2021 12:01:47 -0700 (PDT)
-Subject: Re: [PATCH RFCv2 2/3] lib/vsprintf.c: make %pD print full path for
- file
-To:     Matthew Wilcox <willy@infradead.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Justin He <Justin.He@arm.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>
-References: <AM6PR08MB437691E7314C6B774EFED4BDF7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
- <YLEDwFCPcFx+qeul@casper.infradead.org>
- <AM6PR08MB437615DB6A6DEC33223A3138F7229@AM6PR08MB4376.eurprd08.prod.outlook.com>
- <YLEKqGkm8bX6LZfP@casper.infradead.org>
- <AM6PR08MB43764764B52AAC7F05B71056F73E9@AM6PR08MB4376.eurprd08.prod.outlook.com>
- <YLZSgZIcWyYTmqOT@casper.infradead.org>
- <CAHp75VfYgEtJeiVp8b10Va54QShyg4DmWeufuB_WGC8C2SE2mQ@mail.gmail.com>
- <YLZVwFh9MZJR3amM@casper.infradead.org> <YLZX9oicn8u4ZVCl@smile.fi.intel.com>
- <YLZcAesVG1SYL5fp@smile.fi.intel.com> <YLZoyjSJyzU5w1qO@casper.infradead.org>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <39f599a7-9175-f220-3803-b1920ddb8d40@rasmusvillemoes.dk>
-Date:   Tue, 1 Jun 2021 21:01:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1622574284; x=1654110284;
+  h=date:from:to:cc:message-id:references:mime-version:
+   content-transfer-encoding:in-reply-to:subject;
+  bh=wkZbi27AtrRxZMDmQ97Xu0SEXvYaRjua8e3iPd1u7cM=;
+  b=ksQ9zKTGU/SUkWN5s619xsiwGtaVZKqBFP5RF8EKDLGh/w0zSvAxXKAD
+   ZKyhGU73NxOdg9so7AKepSw3AunBmUJMcNctrVWwmzjeKIh3B79MWLdjo
+   JVf052AXfQdM5W1k0RBZrsXb7DWm8TOagXDz2pj1hYpQlgMkaoK2RhsFB
+   U=;
+X-IronPort-AV: E=Sophos;i="5.83,240,1616457600"; 
+   d="scan'208";a="112986220"
+Subject: Re: ath9k: possible bug with AR93xx during background scanning
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-1e-c7c08562.us-east-1.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP; 01 Jun 2021 19:04:44 +0000
+Received: from EX13MTAUEE001.ant.amazon.com (iad55-ws-svc-p15-lb9-vlan3.iad.amazon.com [10.40.159.166])
+        by email-inbound-relay-1e-c7c08562.us-east-1.amazon.com (Postfix) with ESMTPS id 600E0240B76;
+        Tue,  1 Jun 2021 19:04:43 +0000 (UTC)
+Received: from EX13D06UEA002.ant.amazon.com (10.43.61.198) by
+ EX13MTAUEE001.ant.amazon.com (10.43.62.200) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.18; Tue, 1 Jun 2021 19:04:42 +0000
+Received: from ucf43ac461c9a53.ant.amazon.com (10.43.162.93) by
+ EX13D06UEA002.ant.amazon.com (10.43.61.198) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.18; Tue, 1 Jun 2021 19:04:41 +0000
+Date:   Tue, 1 Jun 2021 15:04:38 -0400
+From:   Tong Zhu <zhutong@amazon.com>
+To:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        <linux-wireless@vger.kernel.org>
+CC:     <zhutong@amazon.com>
+Message-ID: <20210601190437.GA16991@ucf43ac461c9a53.ant.amazon.com>
+References: <20210518231612.GA29178@ucf43ac461c9a53.ant.amazon.com>
+ <87r1hmdh5z.fsf@toke.dk>
 MIME-Version: 1.0
-In-Reply-To: <YLZoyjSJyzU5w1qO@casper.infradead.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87r1hmdh5z.fsf@toke.dk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Originating-IP: [10.43.162.93]
+X-ClientProxiedBy: EX13D12UWC001.ant.amazon.com (10.43.162.78) To
+ EX13D06UEA002.ant.amazon.com (10.43.61.198)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 01/06/2021 19.05, Matthew Wilcox wrote:
+Yes, this commit would fix it. I am glad the community has taken care of this.
 
-> Here's some examples, what do you think makes sense?
+Thanks you.
+-Tong
+
+On Mon, May 31, 2021 at 06:03:36PM +0200, Toke Høiland-Jørgensen wrote:
 > 
-> snprintf(buf, 16, "bad file '%pD'\n", q);
 > 
-> what content do you want buf to have when q is variously:
+> Tong Zhu <zhutong@amazon.com> writes:
 > 
-> 1. /abcd/efgh
-> 2. /a/bcdefgh.iso
-> 3. /abcdef/gh
+> > Hello
+> >
+> > After moving to kernel 4.14 from 4.1, our station with an AR93xx pcie card began
+> > to see packet loss during background scanning. After inspecting the changes, I
+> > realized ath9k no longer pushes to stop traffic at VIF for off-channel scan after
+> > this change.
+> >
+> > 50f08edf98096a68f01ff4566b605a25bf8e42ce ath9k: Switch to using mac80211 intermediate software queues.
+> >
+> > Here is a snippet of a ftrace function sequence during a scan.
+> >
+> >     kworker/u4:0-28892 [001] .n.....  3082.957750: ieee80211_offchannel_stop_vifs <-ieee80211_scan_work
+> >   XX-XXXXXXXXXXd-489   [001] .....12  3082.971105: __ieee80211_subif_start_xmit <-ieee80211_subif_start_xmit
+> >   XX-XXXXXXXXXXd-489   [001] .....14  3082.971128: ath_tx_txqaddbuf <-ath_txq_schedule
+> >    irq/175-ath9k-189   [001] .....15  3082.998888: ath_tx_process_buffer <-ath_tx_edma_tasklet
+> >    irq/175-ath9k-189   [001] .....16  3082.998898: ath_tx_txqaddbuf <-ath_txq_schedule
+> >    irq/175-ath9k-189   [000] .....15  3083.011497: ath_tx_process_buffer <-ath_tx_edma_tasklet
+> >    irq/175-ath9k-189   [000] .....16  3083.011504: ath_tx_txqaddbuf <-ath_txq_schedule
+> >    irq/175-ath9k-189   [001] .....15  3083.022261: ath_tx_process_buffer <-ath_tx_edma_tasklet
+> >    irq/175-ath9k-189   [001] .....16  3083.022268: ath_tx_txqaddbuf <-ath_txq_schedule
+> >    irq/175-ath9k-189   [000] .....15  3083.034131: ath_tx_process_buffer <-ath_tx_edma_tasklet
+> >    irq/175-ath9k-189   [000] .....15  3083.034134: ath_tx_complete_buf <-ath_tx_process_buffer
+> >    irq/175-ath9k-189   [000] .....15  3083.034136: ath_tx_complete <-ath_tx_complete_buf
+> >     kworker/u4:0-28892 [001] .......  3083.083246: ieee80211_offchannel_return <-ieee80211_scan_work
+> >
+> > Between timestamp 3082.957750 and 3083.083246, the device went off channel. A packet
+> > came down and reached hardware queue. Hardware TX processing continued. It is a
+> > serious issue if PDUs are indeed sent out during off-channel.
 > 
-> I would argue that
-> "bad file ''\n"
-> is actually a better string to have than any of (case 2)
-> "bad file '/a/bc"
-> "bad file 'bcdef"
-> "bad file 'h.iso"
+> I believe this was fixed by this commit:
+> 21a5d4c3a45c ("mac80211: add stop/start logic for software TXQs")
 > 
-
-Whatever ends up being decided, _please_ document that in
-machine-readable and -verifiable form. I.e., update lib/test_printf.c
-accordingly.
-
-Currently (and originally) it only tests %pd because %pD is/was
-essentially just %pd with an indirection to get the struct dentry* from
-a struct file*.
-
-The existing framework is strongly centered around expecting '/a/bc (see
-all the logic where we do multiple checks with size 0, size random, size
-plenty, and for the random case check that the buffer contents match the
-complete output up till the randomly chosen size), so adding tests for
-some other semantics would require a bit more juggling.
-
-Not that that should be an argument in favor of that behaviour. But FWIW
-that would be my preference.
-
-Rasmus
-
-
+> which first appeared in kernel 4.20. It doesn't appear to have been
+> backported to 4.14, so I suppose it makes sense if you're seeing queues
+> not getting stopped on that kernel...
+> 
+> -Toke
