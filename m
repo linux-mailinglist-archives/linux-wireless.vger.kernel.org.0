@@ -2,125 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA6F3396FEC
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 11:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BE14397060
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 11:28:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233342AbhFAJIJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 05:08:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:48478 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233336AbhFAJIH (ORCPT
+        id S233711AbhFAJaN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 05:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233609AbhFAJaM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 05:08:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1622538385;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TC49diZ8yvtNeRfoDHho9BsiKWB6WeW1SJE0j6cAKdU=;
-        b=dYX25Y4Iqimh5oLvTA6qBEDPuntB3jBavsXxjHvSlcaU1blU8u2/SbmeDglxWPuUvHwMD3
-        ML+MbARBY+wKoTMBaf0Y2OJNLc/MSBOk197GMxcmBd1lFyUmMn3bcuBSxcbRpL2lUDZyMf
-        ekd0tzoSY6UNY8fF8R324/SjWK/eKH4=
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
- [209.85.166.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-436-dMn7G792Pbm8ZTXO8-vCVw-1; Tue, 01 Jun 2021 05:06:22 -0400
-X-MC-Unique: dMn7G792Pbm8ZTXO8-vCVw-1
-Received: by mail-il1-f197.google.com with SMTP id n18-20020a92d9d20000b02901d7b2ca03e6so8305457ilq.1
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 02:06:22 -0700 (PDT)
+        Tue, 1 Jun 2021 05:30:12 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB70C06174A
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Jun 2021 02:28:30 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id t9so6491040pgn.4
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 02:28:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Clq5ycZC/DAkJrYzdB1pjmh54x4ErJny57qDeI6dFMY=;
+        b=dqKX3q8NCgLQ8S4jk1QY0OmAyeKWU/lyZWfKfBB96LACpUFbC/sWq3KYPZYjOphssF
+         3Yl8gRO5UbgB6hzGstclGpYDZZKtawQHpfvjL6qyl2vPfslKnofb7b+/suNTC2BIWaE4
+         Tiuh0Gd0oE7vtsPRMSo+tPeE0oxVgLYeb4gsvD3vUYdCLM39TpggczBvxzXapSWHixA1
+         peqD/Glhwj0vCPZG6XPmwApk2tR9h6FHhJFnn3dbbIqtbhUR6XgNfB2e/fvXxVtdBB9Y
+         MExlglVyfGgMHBIuu2oamq3Xvsfad4qWXXnM3OCi0RBs42WUF+sDcIhe8GFtwO/4fJ+6
+         WDNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=TC49diZ8yvtNeRfoDHho9BsiKWB6WeW1SJE0j6cAKdU=;
-        b=ZN6qbz6Al+LAp4ogncEYkvOmWXHlrn2NOC+nVwIZfOKJreQWWvRvW+oxP6k2sknP2F
-         Emjp4zJK+qnriC/QINJTPkABMqV3VEWjdr33sa70KFvJyBaQ6xFWO2uh39kmN5k1ZsSV
-         KUyiWtwrWQC0W3jflMQrq2k6c9JS8XweVFA3FcET5K6R0toB0rc+0oraDkWeYTq1KqKz
-         6eCnqkLpK92LnXuyTychOMZnAilvl4+E5SJHN1wikeMJ44+vnHnOiOSKFZn0lwdy5gWo
-         WCfXG9I4tAFWpX2rL9damG21wjiTk516ocG23cHFnkc+KbXFauvI8hFMY1ed2CyCRj2T
-         W6Uw==
-X-Gm-Message-State: AOAM530AYh0JUJSBR25MHIZrsCbFD3FMKH92yKfVImeeJOG9+T9yh+WL
-        nBEfpRNRcG426BnsJAKYnKkWRx41b7xs9BpmCW8iJRbiKxEUIOq+hq6t002OuZcQvcEKy5OFUVL
-        q3+t1cMEG4CEeM9Knpj93ckOjZg9H4dqQpqSBFvCByRY=
-X-Received: by 2002:a02:384b:: with SMTP id v11mr11232995jae.90.1622538382158;
-        Tue, 01 Jun 2021 02:06:22 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxZQ8URK5CiJvEC5yEjY6vdL8Z9nhAdkHGrPEoD8pjNhf2DMrUcABocCKqqN/gaPUGnJjPa/rOI/2sHGIkGGqQ=
-X-Received: by 2002:a02:384b:: with SMTP id v11mr11232977jae.90.1622538382042;
- Tue, 01 Jun 2021 02:06:22 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=Clq5ycZC/DAkJrYzdB1pjmh54x4ErJny57qDeI6dFMY=;
+        b=tcaw08Gmw8Vg8yBbe4RUwRClDwJEzX9PJq4S9ezOxE0KFyoBfHUGSqT6/IHMZngIUe
+         5IuLsxi9SjoWT3y5g2EOBfjLP1xbFLXF5SPljjrgccqCaQLSz3gThOoJmtKWdufi3hvv
+         /7i5Y5z6sadGipesK68thcok+0ssuSQ52qB+VyjRsIZpZZp0SqSzYRl/fQeNU8aMQcII
+         hMklsRFUmBaSDLRqFuR9JU+ITvzn7MB7ZjKPg9Zq8/pGhcOuvbixifrREsTlXBgUNwvj
+         8voMF06tkONgVjlrFpHl3KIjJ6tMdk4s7StlkozYkWaxI943ZAarJ3FGJtUfcpr9MyBt
+         MnyA==
+X-Gm-Message-State: AOAM531Tjsau19Bas/PwoDLeSoa/Mwky+kasMFtdWe8Jg8GkJMPH7Ifd
+        IWyIpSl7hNrTXC8c069/RflumxiTOMS+o9mwf8yLkVSwwn/rfA==
+X-Google-Smtp-Source: ABdhPJySTvgpukyVQ3CCDDXP1MyH8YRLR2q7+viVESyoBvVTzX1jPv2ME/JVkoLduK0+S61xmqcZlgPx+rEgxdOuZHo=
+X-Received: by 2002:a63:1906:: with SMTP id z6mr26722024pgl.173.1622539709406;
+ Tue, 01 Jun 2021 02:28:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210511070257.7843-1-ihuguet@redhat.com>
-In-Reply-To: <20210511070257.7843-1-ihuguet@redhat.com>
-From:   =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
-Date:   Tue, 1 Jun 2021 11:06:11 +0200
-Message-ID: <CACT4oufayruhjHdog6UKyjYrCQS_SVkAearf1RdamQhSraa=BQ@mail.gmail.com>
-Subject: Re: [PATCH] BRCM80211: improve readability on addresses copy
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+References: <20210601080538.71036-1-johannes@sipsolutions.net> <20210601100320.7d39e9c33a18.I0474861dad426152ac7e7afddfd7fe3ce70870e4@changeid>
+In-Reply-To: <20210601100320.7d39e9c33a18.I0474861dad426152ac7e7afddfd7fe3ce70870e4@changeid>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Tue, 1 Jun 2021 11:37:48 +0200
+Message-ID: <CAMZdPi-ZaH8WWKfhfKzy0OKpUtNAiCUfekh9R1de5awFP-ed=A@mail.gmail.com>
+Subject: Re: [RFC 3/4] wwan: add interface creation support
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Network Development <netdev@vger.kernel.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 11, 2021 at 9:04 AM =C3=8D=C3=B1igo Huguet <ihuguet@redhat.com>=
- wrote:
+Hi Johannes,
+
+On Tue, 1 Jun 2021 at 10:05, Johannes Berg <johannes@sipsolutions.net> wrote:
 >
-> A static analyzer identified as a potential bug the copy of
-> 12 bytes from a 6 bytes array to a 6 bytes array. Both
-> arrays are 6 bytes addresses.
+> From: Johannes Berg <johannes.berg@intel.com>
 >
-> Although not being a real bug, it is not immediately clear
-> why is done this way: next 6 bytes address, contiguous to
-> the first one, must also be copied to next contiguous 6 bytes
-> address of the destination.
+> Add support to create (and destroy) interfaces via a new
+> rtnetlink kind "wwan". The responsible driver has to use
+> the new wwan_register_ops() to make this possible.
 >
-> Copying each one separately will make both static analyzers
-> and reviewers happier.
->
-> Signed-off-by: =C3=8D=C3=B1igo Huguet <ihuguet@redhat.com>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 > ---
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/net/wwan/wwan_core.c | 219 ++++++++++++++++++++++++++++++++++-
+>  include/linux/wwan.h         |  36 ++++++
+>  include/uapi/linux/wwan.h    |  17 +++
+>  3 files changed, 267 insertions(+), 5 deletions(-)
+>  create mode 100644 include/uapi/linux/wwan.h
 >
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/dr=
-ivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-> index 763e0ec583d7..26de1bd7fee9 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-> @@ -6607,7 +6607,8 @@ brcms_c_d11hdrs_mac80211(struct brcms_c_info *wlc, =
-struct ieee80211_hw *hw,
->                         rts->frame_control =3D cpu_to_le16(IEEE80211_FTYP=
-E_CTL |
->                                                          IEEE80211_STYPE_=
-RTS);
+> diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+> index cff04e532c1e..b1ad78f386bc 100644
+> --- a/drivers/net/wwan/wwan_core.c
+> +++ b/drivers/net/wwan/wwan_core.c
+> @@ -13,6 +13,8 @@
+>  #include <linux/slab.h>
+>  #include <linux/types.h>
+>  #include <linux/wwan.h>
+> +#include <net/rtnetlink.h>
+> +#include <uapi/linux/wwan.h>
 >
-> -                       memcpy(&rts->ra, &h->addr1, 2 * ETH_ALEN);
-> +                       memcpy(&rts->ra, &h->addr1, ETH_ALEN);
-> +                       memcpy(&rts->ta, &h->addr2, ETH_ALEN);
->                 }
+>  #define WWAN_MAX_MINORS 256 /* 256 minors allowed with register_chrdev() */
 >
->                 /* mainrate
-> --
-> 2.31.1
+> @@ -524,24 +526,231 @@ static const struct file_operations wwan_port_fops = {
+>         .llseek = noop_llseek,
+>  };
 >
+> +struct wwan_dev_reg {
+> +       struct list_head list;
+> +       struct device *dev;
+> +       const struct wwan_ops *ops;
+> +       void *ctxt;
+> +};
+> +
+> +static DEFINE_MUTEX(wwan_mtx);
+> +static LIST_HEAD(wwan_devs);
+> +
+> +int wwan_register_ops(struct device *parent, const struct wwan_ops *ops,
+> +                     void *ctxt)
+> +{
+> +       struct wwan_dev_reg *reg;
+> +       int ret;
+> +
+> +       if (WARN_ON(!parent || !ops))
+> +               return -EINVAL;
+> +
+> +       mutex_lock(&wwan_mtx);
+> +       list_for_each_entry(reg, &wwan_devs, list) {
+> +               if (WARN_ON(reg->dev == parent)) {
+> +                       ret = -EBUSY;
+> +                       goto out;
+> +               }
+> +       }
 
-Hello,
+Thanks for this, overall it looks good to me, but just checking why
+you're not using the wwan_dev internally to create-or-pick wwan_dev
+(wwan_dev_create) and register ops to it, instead of having a global
+new wwan_devs list.
 
-About 3 weeks ago I sent this patch, just with a small style change
-proposal. Any feedback would be appreciated.
+> +
+> +       reg = kzalloc(sizeof(*reg), GFP_KERNEL);
+> +       if (!reg) {
+> +               ret = -ENOMEM;
+> +               goto out;
+> +       }
+> +
+> +       reg->dev = parent;
+> +       reg->ops = ops;
+> +       reg->ctxt = ctxt;
+> +       list_add_tail(&reg->list, &wwan_devs);
+> +
+> +       ret = 0;
+> +
+> +out:
+> +       mutex_unlock(&wwan_mtx);
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(wwan_register_ops);
 
-Thanks!
---=20
-=C3=8D=C3=B1igo Huguet
-
+Regards,
+Loic
