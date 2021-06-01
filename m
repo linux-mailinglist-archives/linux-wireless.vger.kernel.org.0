@@ -2,124 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79775396FC5
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 11:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6F3396FEC
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 11:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233438AbhFAJEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 05:04:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233628AbhFAJEO (ORCPT
+        id S233342AbhFAJIJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 05:08:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:48478 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233336AbhFAJIH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 05:04:14 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71160C061760
-        for <linux-wireless@vger.kernel.org>; Tue,  1 Jun 2021 02:02:31 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id h3so7667386wmq.3
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 02:02:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flowbird.group; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=S426NvUwnGOCjzkrl5jzsuxo4jUDZnsm79SUS445wp0=;
-        b=DU98Ta12dnp3+1qJmCY1HvAVFlbkeVV9lznzFZ5seG9KbpALYJyNts5R6Ya3CXwjVT
-         3k2mTY+FwtFZs7sIWNxWDc/g4mZy3t6guXx58N0uK2cyrw/fQpbI6+8PdYMRFb2JRDPo
-         GYpW15HA0grtmTqz1XMU5JQicc6w+nAtsqMxaVcsAH9vA6Ku0I+Ziz26GIAKcfsbRjNn
-         czKcoWe9zXEkNXoeqW1mDv6YxAMMfhtRvQMNIrhGMOnCTqN6zNi00gfvozGpCwwj047v
-         CKwBarpoXK5sryLioEkHdgRQaozXVNY75+JxNTXrbIDXcQ6FjF7MJbJei5eKREP2SFBA
-         oJCQ==
+        Tue, 1 Jun 2021 05:08:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1622538385;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TC49diZ8yvtNeRfoDHho9BsiKWB6WeW1SJE0j6cAKdU=;
+        b=dYX25Y4Iqimh5oLvTA6qBEDPuntB3jBavsXxjHvSlcaU1blU8u2/SbmeDglxWPuUvHwMD3
+        ML+MbARBY+wKoTMBaf0Y2OJNLc/MSBOk197GMxcmBd1lFyUmMn3bcuBSxcbRpL2lUDZyMf
+        ekd0tzoSY6UNY8fF8R324/SjWK/eKH4=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-436-dMn7G792Pbm8ZTXO8-vCVw-1; Tue, 01 Jun 2021 05:06:22 -0400
+X-MC-Unique: dMn7G792Pbm8ZTXO8-vCVw-1
+Received: by mail-il1-f197.google.com with SMTP id n18-20020a92d9d20000b02901d7b2ca03e6so8305457ilq.1
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 02:06:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=S426NvUwnGOCjzkrl5jzsuxo4jUDZnsm79SUS445wp0=;
-        b=Ojot+cbvX1+2XZXj27i9NEldCQwKLDz1xn0WoUZsCfBY4xZ587T+h327k9Zg4+/B9B
-         O4VrEOA1T1VoptAzmAxvtytkGAydHWHP5XuUm0jQxFeSI2GIHIIVxQPoPqoJFEMkPMfT
-         pizWeP0tkACi3Z++a8RuG35X9u1YmyucjaoRWFiYzvQoruHoZuzetGZcDzgsH8AcZWDY
-         5RY0/pAzwLE/D1FfkGxcW7o/6GjYIHr0UwtT9f2+RPnhDxCajTzj4G5prCMz67Ji68/Q
-         GjVJEhL1E6rm8eiR8Zrdw5kMGkMn3K7WoN9AgF8ZhP5SgKqCk/nj/TFpBuJXxBCVa4BJ
-         vggA==
-X-Gm-Message-State: AOAM531kPxId2srZ4v5Axd+Fjimu3QgX1uOoXCZuUrv0qXAAf3Z9gWde
-        0OS7LxE/xqSFbTXt85qimaX3T2caHJaN43heTqK7jw==
-X-Google-Smtp-Source: ABdhPJw1e/ioLQZZ/KX8dvjW/dXgB5kdgooECoGWrKzmNX+n/HM9CTBJ+yzkDmkzm7IiH5i1mP4dLwaVIayjpJ+AgSs=
-X-Received: by 2002:a7b:c3da:: with SMTP id t26mr592402wmj.63.1622538149944;
- Tue, 01 Jun 2021 02:02:29 -0700 (PDT)
+         :message-id:subject:to:content-transfer-encoding;
+        bh=TC49diZ8yvtNeRfoDHho9BsiKWB6WeW1SJE0j6cAKdU=;
+        b=ZN6qbz6Al+LAp4ogncEYkvOmWXHlrn2NOC+nVwIZfOKJreQWWvRvW+oxP6k2sknP2F
+         Emjp4zJK+qnriC/QINJTPkABMqV3VEWjdr33sa70KFvJyBaQ6xFWO2uh39kmN5k1ZsSV
+         KUyiWtwrWQC0W3jflMQrq2k6c9JS8XweVFA3FcET5K6R0toB0rc+0oraDkWeYTq1KqKz
+         6eCnqkLpK92LnXuyTychOMZnAilvl4+E5SJHN1wikeMJ44+vnHnOiOSKFZn0lwdy5gWo
+         WCfXG9I4tAFWpX2rL9damG21wjiTk516ocG23cHFnkc+KbXFauvI8hFMY1ed2CyCRj2T
+         W6Uw==
+X-Gm-Message-State: AOAM530AYh0JUJSBR25MHIZrsCbFD3FMKH92yKfVImeeJOG9+T9yh+WL
+        nBEfpRNRcG426BnsJAKYnKkWRx41b7xs9BpmCW8iJRbiKxEUIOq+hq6t002OuZcQvcEKy5OFUVL
+        q3+t1cMEG4CEeM9Knpj93ckOjZg9H4dqQpqSBFvCByRY=
+X-Received: by 2002:a02:384b:: with SMTP id v11mr11232995jae.90.1622538382158;
+        Tue, 01 Jun 2021 02:06:22 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxZQ8URK5CiJvEC5yEjY6vdL8Z9nhAdkHGrPEoD8pjNhf2DMrUcABocCKqqN/gaPUGnJjPa/rOI/2sHGIkGGqQ=
+X-Received: by 2002:a02:384b:: with SMTP id v11mr11232977jae.90.1622538382042;
+ Tue, 01 Jun 2021 02:06:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <1622222314-17192-1-git-send-email-martin.fuzzey@flowbird.group> <6f1d3952-c30e-4a6d-9857-5a6d68e962b2@denx.de>
-In-Reply-To: <6f1d3952-c30e-4a6d-9857-5a6d68e962b2@denx.de>
-From:   "Fuzzey, Martin" <martin.fuzzey@flowbird.group>
-Date:   Tue, 1 Jun 2021 11:02:19 +0200
-Message-ID: <CANh8QzykdFSvmEgY=iTyZdbzg5Uv785zVZdAoYbrx2--sDyiCQ@mail.gmail.com>
-Subject: Re: [PATCH] rsi: fix broken AP mode due to unwanted encryption
-To:     Marek Vasut <marex@denx.de>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
+References: <20210511070257.7843-1-ihuguet@redhat.com>
+In-Reply-To: <20210511070257.7843-1-ihuguet@redhat.com>
+From:   =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
+Date:   Tue, 1 Jun 2021 11:06:11 +0200
+Message-ID: <CACT4oufayruhjHdog6UKyjYrCQS_SVkAearf1RdamQhSraa=BQ@mail.gmail.com>
+Subject: Re: [PATCH] BRCM80211: improve readability on addresses copy
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Marek,
-thanks for the review.
-
-On Fri, 28 May 2021 at 20:11, Marek Vasut <marex@denx.de> wrote:
+On Tue, May 11, 2021 at 9:04 AM =C3=8D=C3=B1igo Huguet <ihuguet@redhat.com>=
+ wrote:
 >
-> > Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
-> > CC: stable@vger.kernel.org
+> A static analyzer identified as a potential bug the copy of
+> 12 bytes from a 6 bytes array to a 6 bytes array. Both
+> arrays are 6 bytes addresses.
 >
-> This likely needs a Fixes: tag ?
+> Although not being a real bug, it is not immediately clear
+> why is done this way: next 6 bytes address, contiguous to
+> the first one, must also be copied to next contiguous 6 bytes
+> address of the destination.
 >
-
-I'm not quite sure what that should be.
-The test involved here has been present since the very first version
-of the driver back in 2014 but at that time AP mode wasn't supported.
-
-AP mode was added in 2017 by the patch series "rsi: support for AP mode" [1]
-In particular 38ef62353acb ("rsi: security enhancements for AP mode")
-does some stuff relating to AP key configuration but it doesn't
-actually change the behaviour concerning the encryption condition.
-
-In fact I don't understand how it ever worked in AP WPA2 mode given
-that secinfo->security_enable (which is tested in the encryption
-condition) has always been unconditionally set in set_key (when
-setting not deleting).
-Yet the series cover letter [1] says "Tests are performed to confirm
-aggregation, connections in WEP and WPA/WPA2 security."
-
-The problem is that in AP mode with WPA2 there is a set_key done at AP
-startup time to set the GTK (but not yet the pairwise key which is
-only done after the 4 way handshake) so this sets security_enable to
-true which later causes the EAPOL messages to be sent encrypted.
-
-Maybe there have been userspace changes to hostapd that have changed
-the time at which the GTK is set?
-I had a quick look at the hostapd history but didn't see anything obvious.
-
-I'm going to send a V2 completely removing the security_enable flag in
-addition to adding the new test (which is what downstream has too).
-Keeping security_enable doesn't actually break anything but is
-redundant and confusing.
-
-Unfortunately I cannot find any downstream history, I just have 2
-downstream tarballs, a "2.0 RC2" which has the same problem as
-mainline and a "2.0 RC4" which does not
-
-
-[1] https://www.spinics.net/lists/linux-wireless/msg165302.html
-
-> >       if ((!(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT)) &&
-> > +         (info->control.hw_key) &&
+> Copying each one separately will make both static analyzers
+> and reviewers happier.
 >
-> The () are not needed.
+> Signed-off-by: =C3=8D=C3=B1igo Huguet <ihuguet@redhat.com>
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/dr=
+ivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> index 763e0ec583d7..26de1bd7fee9 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> @@ -6607,7 +6607,8 @@ brcms_c_d11hdrs_mac80211(struct brcms_c_info *wlc, =
+struct ieee80211_hw *hw,
+>                         rts->frame_control =3D cpu_to_le16(IEEE80211_FTYP=
+E_CTL |
+>                                                          IEEE80211_STYPE_=
+RTS);
+>
+> -                       memcpy(&rts->ra, &h->addr1, 2 * ETH_ALEN);
+> +                       memcpy(&rts->ra, &h->addr1, ETH_ALEN);
+> +                       memcpy(&rts->ta, &h->addr2, ETH_ALEN);
+>                 }
+>
+>                 /* mainrate
+> --
+> 2.31.1
 >
 
-Ok, will fix for V2
+Hello,
 
-> Reviewed-by: Marek Vasut <marex@denx.de>
+About 3 weeks ago I sent this patch, just with a small style change
+proposal. Any feedback would be appreciated.
 
-Seeing as the V2 will be a bit different I won't add that yet.
+Thanks!
+--=20
+=C3=8D=C3=B1igo Huguet
 
-Martin
