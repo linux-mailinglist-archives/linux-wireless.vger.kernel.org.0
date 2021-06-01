@@ -2,79 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64FBB3970A5
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 11:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4AB33970F9
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 12:09:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232704AbhFAJyC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 05:54:02 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187]:6109 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230282AbhFAJx5 (ORCPT
+        id S232207AbhFAKKy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 06:10:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51464 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231792AbhFAKKx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 05:53:57 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4FvS6y47mtzYpXD;
-        Tue,  1 Jun 2021 17:49:30 +0800 (CST)
-Received: from dggpemm000001.china.huawei.com (7.185.36.245) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 1 Jun 2021 17:52:14 +0800
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- dggpemm000001.china.huawei.com (7.185.36.245) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 1 Jun 2021 17:52:13 +0800
-From:   Tong Tiangen <tongtiangen@huawei.com>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Tong Tiangen <tongtiangen@huawei.com>
-Subject: [PATCH -next] brcmfmac: Fix a double-free in brcmf_sdio_bus_reset
-Date:   Tue, 1 Jun 2021 18:01:28 +0800
-Message-ID: <20210601100128.69561-1-tongtiangen@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        Tue, 1 Jun 2021 06:10:53 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1852C061574
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Jun 2021 03:09:10 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id m18so7840152wmq.0
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 03:09:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexus-software-ie.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=hCIPY4HDbLRRO1Z15dBmi3GOZSKm7silzJJPQLthE08=;
+        b=w4sxOh5cQXQQdV86+hlfaL6mpao96OJQqZvPWP4qsrQSNwTwcxCTHN+gFkP9xG83Qm
+         1G5hrFnOsIDZjHHKAFrf3XeCWm9SIDdIqhpQCzlFn+v/jNN2XCh5uxkqpqncGmkihZ1n
+         3Dm4RNnweBiZvZ1NMPxucbDhRkCJtA3/KaruM3axL2koGCZdgrtcX36h5vTEWNiDiMlK
+         CHUFCy+9qYQcPYuHpr2ewTMrCyRKUcsbyqsf5IOIUwoauVn1+U3dn818oXonOgHiIkDa
+         fKLe4zFiy+RCHwgAFBIet+kRin7qAy4xQ68NFgE9L1jxyc4BAQjNVcEp09gG9PPw/1if
+         8ULA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=hCIPY4HDbLRRO1Z15dBmi3GOZSKm7silzJJPQLthE08=;
+        b=WF8GEvVHBYbeHIP/Ny1JjKeyVz1Pl9qfOS4EZzZIkAlx+xhssHY4CEvKePjobyAtD+
+         RjwfdKNaXgAZjkVbonVQPJZ3/A1eHJFHG2EEgrW1/s9KEPv89CzsXOEGUXtTH/xPlnW5
+         fyRK0HlaSYZ4xarNwjc5y9lnlb+Ndp6ze3FHc7K8qcRqgophF3a9DRR6ObjtGYz3cqNk
+         RZmrXtes9O0oTV+FRF3LWYQi855uwT0iRMaDStfYghbA4iklWRHYzYfWxF9pAeuCF/U6
+         LJquMPudIKW2lSkCOPzCBWRXCaUrOze7ARADSg3i7M3e2aBjR/sulgJKvNoikr0iNLe0
+         UfTw==
+X-Gm-Message-State: AOAM530fcQDsXFdQzezAv/UrE1Xsg534IKxs591IR5umw9rF2qi9lGND
+        Rxq3ZOGYkSgWg98KGJten/G3pQ==
+X-Google-Smtp-Source: ABdhPJz9XBK4lPF7MZSAD8lPa8xd+I9UXsIEAkT9sKoaBaq9SrvYU5nBM3TX+I7YtPYKzxx0gHK7ig==
+X-Received: by 2002:a7b:cd06:: with SMTP id f6mr8549379wmj.125.1622542149663;
+        Tue, 01 Jun 2021 03:09:09 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id e27sm3063159wra.50.2021.06.01.03.09.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Jun 2021 03:09:08 -0700 (PDT)
+Subject: Re: [PATCH v4 02/12] wcn36xx: Run suspend for the first ieee80211_vif
+To:     Loic Poulain <loic.poulain@linaro.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>,
+        Benjamin Li <benl@squareup.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+References: <20210601024920.1424144-1-bryan.odonoghue@linaro.org>
+ <20210601024920.1424144-3-bryan.odonoghue@linaro.org>
+ <CAMZdPi9VOPdz_4nhjDC1o49eobRPZRkniKtWc4ZLOiGEH3nP6w@mail.gmail.com>
+From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
+Message-ID: <bf3c59db-83d5-d057-d525-780df77d71d2@nexus-software.ie>
+Date:   Tue, 1 Jun 2021 11:10:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm000001.china.huawei.com (7.185.36.245)
-X-CFilter-Loop: Reflected
+In-Reply-To: <CAMZdPi9VOPdz_4nhjDC1o49eobRPZRkniKtWc4ZLOiGEH3nP6w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-brcmf_sdiod_remove has been called inside brcmf_sdiod_probe when fails,
-so there's no need to call another one. Otherwise, sdiodev->freezer
-would be double freed.
+On 01/06/2021 08:09, Loic Poulain wrote:
+> Where is the balanced mutex_unlock?
 
-Fixes: 7836102a750a ("brcmfmac: reset SDIO bus on a firmware crash")
-Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 16ed325795a8..3a1c98a046f0 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -4162,7 +4162,6 @@ static int brcmf_sdio_bus_reset(struct device *dev)
- 	if (ret) {
- 		brcmf_err("Failed to probe after sdio device reset: ret %d\n",
- 			  ret);
--		brcmf_sdiod_remove(sdiodev);
- 	}
- 
- 	return ret;
--- 
-2.18.0.huawei.25
+Ah - I've mixed patch #2 and patch #3
 
