@@ -2,104 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E33396CA7
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 07:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F739396DA8
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 09:00:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232599AbhFAFLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 01:11:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57312 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229521AbhFAFK7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 01:10:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 55688610FC;
-        Tue,  1 Jun 2021 05:09:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622524159;
-        bh=n711I0MWA9e0vcWex39A7jnlO48y3pis64NnpnLhV4A=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KCV6Jcv4k9/18aJv10zA7T7SRzai9TReVO2k1S0WrUmdNXfQdHfFLcEkKy1NvkE86
-         7+5TVGoYiDkN+LpYbCV0jccGmnHbMUNzp4KJJiWoqpMSFhpTfIUp887QqVDDjt71l0
-         NqcELpUb3FYPhROBJvqrL++Zi3kQEaVBrE60cmU8NtaxKY7qUqEf/k27HZfEq+3Cea
-         Po4j2Bu1SFDfJG2YvQX+aqTll8AWBu0kexNFN2m/9ZMBpFJAvubSfT9vuymzVhmvj3
-         hqMXVKn146v6wPfuZV6dggKiDBYVd+W0o+p9pAZlvffypYjfup1VqxVYKL4Phwe8dW
-         3rYUbBd3IAWgw==
-Date:   Mon, 31 May 2021 22:09:17 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Huazhong Tan <tanhuazhong@huawei.com>
-Cc:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        <salil.mehta@huawei.com>, <yisen.zhuang@huawei.com>,
-        <huangdaode@huawei.com>, <linuxarm@huawei.com>,
-        <dledford@redhat.com>, <jgg@ziepe.ca>, <netanel@amazon.com>,
-        <akiyano@amazon.com>, <thomas.lendacky@amd.com>,
-        <irusskikh@marvell.com>, <michael.chan@broadcom.com>,
-        <edwin.peer@broadcom.com>, <rohitm@chelsio.com>,
-        <jesse.brandeburg@intel.com>, <jacob.e.keller@intel.com>,
-        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
-        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
-        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
-        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [RFC V2 net-next 1/3] ethtool: extend coalesce setting uAPI
- with CQE mode
-Message-ID: <20210531220917.3df91899@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-In-Reply-To: <dbdfcac5-f772-1b73-7af8-af2340f21aea@huawei.com>
-References: <1622258536-55776-1-git-send-email-tanhuazhong@huawei.com>
-        <1622258536-55776-2-git-send-email-tanhuazhong@huawei.com>
-        <20210529142355.17fb609d@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-        <dbdfcac5-f772-1b73-7af8-af2340f21aea@huawei.com>
+        id S232915AbhFAHBm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 03:01:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36536 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230326AbhFAHBl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Jun 2021 03:01:41 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA69C061574
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Jun 2021 00:00:00 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id k5so7821874pjj.1
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 00:00:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8tTsQuQCsLwRpJgFfs++8bxo0SlKt39W/n7IJcrblXA=;
+        b=JpnA24OpoKoXGgpBj1h4n/1yfjU+rM5ob/xduk5M4rCAHCAz3Bkqay5UV/lx02KuIk
+         Ed8gkP9L2H/G9fuEwCq0DmgERIFkgEHbBN82OhVHiXyJx7WOKGihSbUBWm7MuX8vNWAm
+         VpgVROusZQz9wueweMpsQqpTf7Bq7kFHLZW0/ndv7GNLnM573oup+sMM5SKI+uQMpoAK
+         zk1k2Rc+ZzefzJNbtUycKqsqa5QTQ80NWh1TsqsOeYyaEBrjMR8JV6jQoJXgXq2L0jwC
+         8zuMGXrk7Jm9O+pk+i/HgqAQ+4WDr5xMAIn1XiA5oIPZ2Ik4ZlK49BEVQx+GeX5mNNwt
+         nKCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8tTsQuQCsLwRpJgFfs++8bxo0SlKt39W/n7IJcrblXA=;
+        b=VO3gk1NPQfHhawAXXcsRrMwDcnchnyWLgehFkEP0ACCVrLWOZvObYoA6PYi9UnweNn
+         2b+fNKY4kSXY7a68DGpKgoeYjmTS/Ot0OFMlDFcce2O43vkdC0pF48tF7Cp1zO+5HYTC
+         ElrgRxTPEBmayagHsiPRs2IPdTu5lx+dD5jqLLg1YzU7sKO6zHmgWGmGFuUx8d55/b2/
+         A0IsDLxA0YXsa+qlCp8HJWzwHidRAAhqxq4PhAHcP1U5t8PQhyfvFyIQ1HULDMH0Dr/n
+         NwklTRmP76d3bH5dl9XIWQLEl9LAj6n1ASyPldqiOrFKjZl57Ulq4OVJ38LZuRb6JLdO
+         sXpw==
+X-Gm-Message-State: AOAM532gjyCHy40SNs9XMnPQdf2r6yURR6GIcvb/LP9Rid0iKcwsphsf
+        J43qMSHZWvg+84+G2o4+6UVjahEGD1mPerN3sXehuw==
+X-Google-Smtp-Source: ABdhPJy2haoxcO6Y5VuEj0cp72xgUUzox0GCtbYSJzUw9oQt9xXjgNaUkNpVZJB8o2TivipvwVUBYv/Cgybl+WvhHAc=
+X-Received: by 2002:a17:90b:1b04:: with SMTP id nu4mr23943311pjb.18.1622530799858;
+ Mon, 31 May 2021 23:59:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20210601024920.1424144-1-bryan.odonoghue@linaro.org> <20210601024920.1424144-3-bryan.odonoghue@linaro.org>
+In-Reply-To: <20210601024920.1424144-3-bryan.odonoghue@linaro.org>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Tue, 1 Jun 2021 09:09:19 +0200
+Message-ID: <CAMZdPi9VOPdz_4nhjDC1o49eobRPZRkniKtWc4ZLOiGEH3nP6w@mail.gmail.com>
+Subject: Re: [PATCH v4 02/12] wcn36xx: Run suspend for the first ieee80211_vif
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>,
+        Benjamin Li <benl@squareup.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 31 May 2021 09:24:01 +0800 Huazhong Tan wrote:
-> >> @@ -975,6 +977,8 @@ Request contents:
-> >>     ``ETHTOOL_A_COALESCE_TX_USECS_HIGH``         u32     delay (us), h=
-igh Tx
-> >>     ``ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH``    u32     max packets, =
-high Tx
-> >>     ``ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL``  u32     rate sampling=
- interval
-> >> +  ``ETHTOOL_A_COALESCE_USE_CQE_TX``	       bool    timer reset in CQE=
-, Tx
-> >> +  ``ETHTOOL_A_COALESCE_USE_CQE_RX``	       bool    timer reset in CQE=
-, Rx
-> >>     =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=
-=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-> >>  =20
-> >>   Request is rejected if it attributes declared as unsupported by driv=
-er (i.e. =20
-> > Did you provide the theory of operation for CQE vs EQE mode somewhere,
-> > as I requested? =20
->=20
->=20
-> the definition of enum dim_cq_period_mode in include/linux/dim.h has
->=20
-> below comment:
->=20
-> /**
->  =C2=A0* enum dim_cq_period_mode - Modes for CQ period count
->  =C2=A0*
->  =C2=A0* @DIM_CQ_PERIOD_MODE_START_FROM_EQE: Start counting from EQE
->  =C2=A0* @DIM_CQ_PERIOD_MODE_START_FROM_CQE: Start counting from CQE (imp=
-lies=20
-> timer reset)
->  =C2=A0* @DIM_CQ_PERIOD_NUM_MODES: Number of modes
->  =C2=A0*/
->=20
->=20
-> is this comment suitable? and add reference in=20
-> Documentation/networking/ethtool-netlink.rst to
->=20
-> the comment in dim.h.
+Hi Bryan,
 
-DIM is kernel internals we need user facing, meaningful documentation.
-I'm not 100% clea on what the exact difference is.
+On Tue, 1 Jun 2021 at 04:47, Bryan O'Donoghue
+<bryan.odonoghue@linaro.org> wrote:
+>
+> A subsequent set of patches will extend out suspend/resume support in this
+> driver, we cannot set the firmware up for multiple ipv4/ipv6 addresses and
+> as such we can't iterate through a list of ieee80211_vif.
+>
+> Constrain the interaction with the firmware to the first ieee80211_vif on
+> the suspend/resume/wowlan path.
+>
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Tested-by: Benjamin Li <benl@squareup.com>
+> ---
+>  drivers/net/wireless/ath/wcn36xx/main.c | 30 ++++++++++++++++++++++---
+>  1 file changed, 27 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+> index b361e40697a6..6802dce2a02b 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/main.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
+> @@ -1088,15 +1088,34 @@ static int wcn36xx_sta_remove(struct ieee80211_hw *hw,
+>
+>  #ifdef CONFIG_PM
+>
+> +static struct ieee80211_vif *wcn36xx_get_first_assoc_vif(struct wcn36xx *wcn)
+> +{
+> +       struct wcn36xx_vif *vif_priv = NULL;
+> +       struct ieee80211_vif *vif = NULL;
+> +
+> +       list_for_each_entry(vif_priv, &wcn->vif_list, list) {
+> +               if (vif_priv->sta_assoc) {
+> +                       vif = wcn36xx_priv_to_vif(vif_priv);
+> +                       break;
+> +               }
+> +       }
+> +       return vif;
+> +}
+> +
+>  static int wcn36xx_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wow)
+>  {
+>         struct wcn36xx *wcn = hw->priv;
+> -       int ret;
+> +       struct ieee80211_vif *vif = NULL;
+> +       int ret = 0;
+>
+>         wcn36xx_dbg(WCN36XX_DBG_MAC, "mac suspend\n");
+>
+>         flush_workqueue(wcn->hal_ind_wq);
+> -       ret = wcn36xx_smd_set_power_params(wcn, true);
+> +       mutex_lock(&wcn->conf_mutex);
+> +       vif = wcn36xx_get_first_assoc_vif(wcn);
+> +       if (vif)
+> +               ret = wcn36xx_smd_set_power_params(wcn, true);
+> +       mutex_unlock(&wcn->conf_mutex);
+>
+>         return ret;
+>  }
+> @@ -1104,11 +1123,16 @@ static int wcn36xx_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wow)
+>  static int wcn36xx_resume(struct ieee80211_hw *hw)
+>  {
+>         struct wcn36xx *wcn = hw->priv;
+> +       struct ieee80211_vif *vif = NULL;
+>
+>         wcn36xx_dbg(WCN36XX_DBG_MAC, "mac resume\n");
+>
+>         flush_workqueue(wcn->hal_ind_wq);
+> -       wcn36xx_smd_set_power_params(wcn, false);
+> +       mutex_lock(&wcn->conf_mutex);
+> +       vif = wcn36xx_get_first_assoc_vif(wcn);
+> +       if (vif)
+> +               wcn36xx_smd_set_power_params(wcn, false);
+> +
 
-If the difference is whether timer is restarted on new packet arrival
-or not - why mention CQE at all and not just call the configuration
-knob "restart timer on new packet arrival"?
+Where is the balanced mutex_unlock?
+
+>         return 0;
+>  }
+
+Regards,
+Loic
