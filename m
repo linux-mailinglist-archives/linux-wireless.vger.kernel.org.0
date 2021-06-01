@@ -2,156 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB77D396FAF
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 10:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79775396FC5
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 11:02:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233425AbhFAI7i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 04:59:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:20841 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233381AbhFAI7h (ORCPT
+        id S233438AbhFAJEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 05:04:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233628AbhFAJEO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 04:59:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1622537876;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tCLKp5QbeTeSoMKJu2XZdwfGKFAJA6gZeT6GS9HfPdI=;
-        b=MleYQOm8JkdCwY5zIIhpSYP+wHI3z0IbgRbFIKWEIRhoJh9XD8Vo6JGSShk3fhANu4M5Re
-        ogBgtwDQAUYz1PaYa9kSVeoV4TV3wXhFUSZ/ppAvfHSgwsnIDBsghXU+e/DlC2pLVc6JJv
-        Dc4cqZ1PEohEvwh5+pTEmCreOKo0W10=
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com
- [209.85.166.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-5-CYIC21gQOpSIstKE8N6ZyA-1; Tue, 01 Jun 2021 04:57:53 -0400
-X-MC-Unique: CYIC21gQOpSIstKE8N6ZyA-1
-Received: by mail-il1-f200.google.com with SMTP id p11-20020a056e02104bb02901c6927c3934so9599950ilj.20
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 01:57:53 -0700 (PDT)
+        Tue, 1 Jun 2021 05:04:14 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71160C061760
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Jun 2021 02:02:31 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id h3so7667386wmq.3
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 02:02:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flowbird.group; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=S426NvUwnGOCjzkrl5jzsuxo4jUDZnsm79SUS445wp0=;
+        b=DU98Ta12dnp3+1qJmCY1HvAVFlbkeVV9lznzFZ5seG9KbpALYJyNts5R6Ya3CXwjVT
+         3k2mTY+FwtFZs7sIWNxWDc/g4mZy3t6guXx58N0uK2cyrw/fQpbI6+8PdYMRFb2JRDPo
+         GYpW15HA0grtmTqz1XMU5JQicc6w+nAtsqMxaVcsAH9vA6Ku0I+Ziz26GIAKcfsbRjNn
+         czKcoWe9zXEkNXoeqW1mDv6YxAMMfhtRvQMNIrhGMOnCTqN6zNi00gfvozGpCwwj047v
+         CKwBarpoXK5sryLioEkHdgRQaozXVNY75+JxNTXrbIDXcQ6FjF7MJbJei5eKREP2SFBA
+         oJCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=tCLKp5QbeTeSoMKJu2XZdwfGKFAJA6gZeT6GS9HfPdI=;
-        b=FUPlXbv483rtILgPMnfckpd9udpBx0XzcdIyzjS14nU31psqqpjB22CohnGfWc3NW0
-         KLgnu1t9YXOzrnvYcb9jLCwyMgzlGeC8tyFj3xPV/uBFhaeU7QpPLeNVWyLhovLBbfEF
-         QJl3wUaUumoPUCG/eyYeWmH4zY+XyFOM7mTww0OELOfiG8dsumyX02Hy+2b0KBTJBz4f
-         dzZK7LYALY/tkwQv2ky6bk7IFtsjwuOMX4aYTw2uJEcJx0cS0CvBdRrFaoKb7g9jv8Qm
-         6XHUXTgjaY9GuBLCPfEReBmRDk3ITNnt36V851V8a/rZcQRBabBiyFOO96DMtdqNNRbv
-         1OXQ==
-X-Gm-Message-State: AOAM532IMZQeafVHKTwkldLxfMqng/y0KpQL4HR2UShgNzXwo6a5OrFG
-        CLOznD/vCSZzNS93vQ8vM4lbis1o4BM1mUlIiQDrq00ILT0C+gavXEW/vKjIBw0lBL+OD9k0i2K
-        IBrizmKnm3EgqaxDcely7t6IGLliqIRWmUAqGeoLPHo4=
-X-Received: by 2002:a92:bf06:: with SMTP id z6mr22085877ilh.57.1622537872738;
-        Tue, 01 Jun 2021 01:57:52 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwkITRswOcTQRqMoxvzVNiux7fQBKfBVvRCPHzPaz9xFXkfLTqF5VT/UjBcaJODDrwLHC883DU0M6lX1cQ8q+4=
-X-Received: by 2002:a92:bf06:: with SMTP id z6mr22085871ilh.57.1622537872609;
- Tue, 01 Jun 2021 01:57:52 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=S426NvUwnGOCjzkrl5jzsuxo4jUDZnsm79SUS445wp0=;
+        b=Ojot+cbvX1+2XZXj27i9NEldCQwKLDz1xn0WoUZsCfBY4xZ587T+h327k9Zg4+/B9B
+         O4VrEOA1T1VoptAzmAxvtytkGAydHWHP5XuUm0jQxFeSI2GIHIIVxQPoPqoJFEMkPMfT
+         pizWeP0tkACi3Z++a8RuG35X9u1YmyucjaoRWFiYzvQoruHoZuzetGZcDzgsH8AcZWDY
+         5RY0/pAzwLE/D1FfkGxcW7o/6GjYIHr0UwtT9f2+RPnhDxCajTzj4G5prCMz67Ji68/Q
+         GjVJEhL1E6rm8eiR8Zrdw5kMGkMn3K7WoN9AgF8ZhP5SgKqCk/nj/TFpBuJXxBCVa4BJ
+         vggA==
+X-Gm-Message-State: AOAM531kPxId2srZ4v5Axd+Fjimu3QgX1uOoXCZuUrv0qXAAf3Z9gWde
+        0OS7LxE/xqSFbTXt85qimaX3T2caHJaN43heTqK7jw==
+X-Google-Smtp-Source: ABdhPJw1e/ioLQZZ/KX8dvjW/dXgB5kdgooECoGWrKzmNX+n/HM9CTBJ+yzkDmkzm7IiH5i1mP4dLwaVIayjpJ+AgSs=
+X-Received: by 2002:a7b:c3da:: with SMTP id t26mr592402wmj.63.1622538149944;
+ Tue, 01 Jun 2021 02:02:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210511071926.8951-1-ihuguet@redhat.com>
-In-Reply-To: <20210511071926.8951-1-ihuguet@redhat.com>
-From:   =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
-Date:   Tue, 1 Jun 2021 10:57:41 +0200
-Message-ID: <CACT4oufLD3Fa5J=y5dz1LjdCVa2pZ=N1SB141DOcebeMYj8-Yw@mail.gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: avoid parsing short RX packet
-To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <1622222314-17192-1-git-send-email-martin.fuzzey@flowbird.group> <6f1d3952-c30e-4a6d-9857-5a6d68e962b2@denx.de>
+In-Reply-To: <6f1d3952-c30e-4a6d-9857-5a6d68e962b2@denx.de>
+From:   "Fuzzey, Martin" <martin.fuzzey@flowbird.group>
+Date:   Tue, 1 Jun 2021 11:02:19 +0200
+Message-ID: <CANh8QzykdFSvmEgY=iTyZdbzg5Uv785zVZdAoYbrx2--sDyiCQ@mail.gmail.com>
+Subject: Re: [PATCH] rsi: fix broken AP mode due to unwanted encryption
+To:     Marek Vasut <marex@denx.de>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 11, 2021 at 9:19 AM =C3=8D=C3=B1igo Huguet <ihuguet@redhat.com>=
- wrote:
+Hi Marek,
+thanks for the review.
+
+On Fri, 28 May 2021 at 20:11, Marek Vasut <marex@denx.de> wrote:
 >
-> One USB data buffer can contain multiple received network
-> packets. If that's the case, they're processed this way:
-> 1. Original buffer is cloned
-> 2. Original buffer is trimmed to contain only the first
->    network packet
-> 3. This first network packet is passed to network stack
-> 4. Cloned buffer is trimmed to eliminate the first network
->    packet
-> 5. Repeat with the cloned buffer until there are no more
->    network packets inside
+> > Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
+> > CC: stable@vger.kernel.org
 >
-> However, if the space remaining in original buffer after
-> the first network packet is not enough to contain at least
-> another network packet descriptor, it is not cloned.
->
-> The loop parsing this packets ended if remaining space =3D=3D 0.
-> But if the remaining space was > 0 but < packet descriptor
-> size, another iteration of the loop was done, processing again
-> the previous packet because cloning didn't happen. Moreover,
-> the ownership of this packet had been passed to network
-> stack in the previous iteration.
->
-> This patch ensures that no extra iteration is done if the
-> remaining size is not enough for one packet, and also avoid
-> the first iteration for the same reason.
->
-> Probably this doesn't happen in practice, but can happen
-> theoretically.
->
-> Signed-off-by: =C3=8D=C3=B1igo Huguet <ihuguet@redhat.com>
-> ---
->  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/driv=
-ers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index 9ff09cf7eb62..673961a82c40 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -5554,6 +5554,11 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *=
-priv, struct sk_buff *skb)
->         urb_len =3D skb->len;
->         pkt_cnt =3D 0;
->
-> +       if (urb_len < sizeof(struct rtl8xxxu_rxdesc16)) {
-> +               kfree_skb(skb);
-> +               return RX_TYPE_ERROR;
-> +       }
-> +
->         do {
->                 rx_desc =3D (struct rtl8xxxu_rxdesc16 *)skb->data;
->                 _rx_desc_le =3D (__le32 *)skb->data;
-> @@ -5581,7 +5586,7 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *p=
-riv, struct sk_buff *skb)
->                  * at least cover the rx descriptor
->                  */
->                 if (pkt_cnt > 1 &&
-> -                   urb_len > (pkt_offset + sizeof(struct rtl8xxxu_rxdesc=
-16)))
-> +                   urb_len >=3D (pkt_offset + sizeof(struct rtl8xxxu_rxd=
-esc16)))
->                         next_skb =3D skb_clone(skb, GFP_ATOMIC);
->
->                 rx_status =3D IEEE80211_SKB_RXCB(skb);
-> @@ -5627,7 +5632,9 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *p=
-riv, struct sk_buff *skb)
->
->                 pkt_cnt--;
->                 urb_len -=3D pkt_offset;
-> -       } while (skb && urb_len > 0 && pkt_cnt > 0);
-> +               next_skb =3D NULL;
-> +       } while (skb && pkt_cnt > 0 &&
-> +                urb_len >=3D sizeof(struct rtl8xxxu_rxdesc16));
->
->         return RX_TYPE_DATA_PKT;
->  }
-> --
-> 2.31.1
+> This likely needs a Fixes: tag ?
 >
 
-Hello,
+I'm not quite sure what that should be.
+The test involved here has been present since the very first version
+of the driver back in 2014 but at that time AP mode wasn't supported.
 
-About 3 weeks ago I sent this patch, but received no response. Any
-feedback would be appreciated.
+AP mode was added in 2017 by the patch series "rsi: support for AP mode" [1]
+In particular 38ef62353acb ("rsi: security enhancements for AP mode")
+does some stuff relating to AP key configuration but it doesn't
+actually change the behaviour concerning the encryption condition.
 
-Thanks!
---=20
-=C3=8D=C3=B1igo Huguet
+In fact I don't understand how it ever worked in AP WPA2 mode given
+that secinfo->security_enable (which is tested in the encryption
+condition) has always been unconditionally set in set_key (when
+setting not deleting).
+Yet the series cover letter [1] says "Tests are performed to confirm
+aggregation, connections in WEP and WPA/WPA2 security."
 
+The problem is that in AP mode with WPA2 there is a set_key done at AP
+startup time to set the GTK (but not yet the pairwise key which is
+only done after the 4 way handshake) so this sets security_enable to
+true which later causes the EAPOL messages to be sent encrypted.
+
+Maybe there have been userspace changes to hostapd that have changed
+the time at which the GTK is set?
+I had a quick look at the hostapd history but didn't see anything obvious.
+
+I'm going to send a V2 completely removing the security_enable flag in
+addition to adding the new test (which is what downstream has too).
+Keeping security_enable doesn't actually break anything but is
+redundant and confusing.
+
+Unfortunately I cannot find any downstream history, I just have 2
+downstream tarballs, a "2.0 RC2" which has the same problem as
+mainline and a "2.0 RC4" which does not
+
+
+[1] https://www.spinics.net/lists/linux-wireless/msg165302.html
+
+> >       if ((!(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT)) &&
+> > +         (info->control.hw_key) &&
+>
+> The () are not needed.
+>
+
+Ok, will fix for V2
+
+> Reviewed-by: Marek Vasut <marex@denx.de>
+
+Seeing as the V2 will be a bit different I won't add that yet.
+
+Martin
