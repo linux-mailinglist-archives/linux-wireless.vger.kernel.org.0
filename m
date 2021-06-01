@@ -2,89 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACBA5397257
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 13:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10FAC39728F
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 13:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233726AbhFALaG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 07:30:06 -0400
-Received: from mail-wr1-f46.google.com ([209.85.221.46]:38678 "EHLO
-        mail-wr1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbhFALaG (ORCPT
+        id S233791AbhFALjo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 07:39:44 -0400
+Received: from relay.smtp-ext.broadcom.com ([192.19.11.229]:38874 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233409AbhFALjn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 07:30:06 -0400
-Received: by mail-wr1-f46.google.com with SMTP id j14so13897055wrq.5;
-        Tue, 01 Jun 2021 04:28:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=HAFqZJJNfiC2AGdxA4gbkC1Qg+KvNCEqsSjmBVkFjH0=;
-        b=HfuO5MCXgvAbV7MOMZkdWMS1Szy8LhbEfuEh1DvRd/WJXNx07sNayx9K0vU4MJ1ucX
-         GogIsPU0DILCwWAFJD3Mh7Wy9CIgaxm4ozUMk+Yy4HSIgzynnEwQ1H27VhLeOvZrGHXX
-         vTKXIHB8Qj4lI5ILNesXbSHT3QfVMa6RWy/G1VjxX0Ee7LaZUa/KXBXIiu9NQUMZ5NIF
-         7N2nrMVZ9RdOac2PU0sNFMfpjk32+q4GTLJYQVH94wjEOXFJ8zMomMLPn99mi0Aodq7O
-         vuL3xZ5LdPLQrclxohakP7ibUtc0AQiVHYmg3oxmiJM6ufuwYAb/P2RiKsJtUupqtbK9
-         0VYg==
-X-Gm-Message-State: AOAM531TDIMCugzZ8U3fR+l9eztGbSyN5mX7W/k70jhZtasIwrWsJchq
-        UJ2QFVmlWgWrGLXVzPMfwbE=
-X-Google-Smtp-Source: ABdhPJzSJFaWOyQO59mkgqVzre/9t0p9NiapOKwk/5uV6uk+H29hMEjZJWzfGWuZPiUwRs81xnoi4Q==
-X-Received: by 2002:a5d:6382:: with SMTP id p2mr10176931wru.338.1622546903114;
-        Tue, 01 Jun 2021 04:28:23 -0700 (PDT)
-Received: from rocinante.localdomain ([95.155.85.46])
-        by smtp.gmail.com with ESMTPSA id o3sm2917179wrm.78.2021.06.01.04.28.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jun 2021 04:28:22 -0700 (PDT)
-Date:   Tue, 1 Jun 2021 13:28:20 +0200
-From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To:     Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Tue, 1 Jun 2021 07:39:43 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 3A7C5829D;
+        Tue,  1 Jun 2021 04:38:01 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 3A7C5829D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1622547481;
+        bh=A7DViLzhSSmk++S9KSFL1GRI7XxOsNHRI9z60MGz1zw=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=Bxwbgz/205KnBPTpWMrQIYHlRNlywbla8G5vLdUvYZVgjA9StBtnydwBRPdIRUs4m
+         hiil/PzpEiJqXrmJ3XdGhrfqC6RbYfrNsvPW46pJQgdF9gRi8hRFtB9d4/5+5uiTBQ
+         KuWHSJqlhA64kjfJVXa1ltvQQVp+feVBW1xr1S/8=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 16ACE1874BE;
+        Tue,  1 Jun 2021 04:37:56 -0700 (PDT)
+Subject: Re: [PATCH -next] brcmfmac: Fix a double-free in brcmf_sdio_bus_reset
+To:     Tong Tiangen <tongtiangen@huawei.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        vtolkm@gmail.com, Rob Herring <robh@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-pci@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] PCI: Disallow retraining link for Atheros chips on
- non-Gen1 PCIe bridges
-Message-ID: <20210601112820.GA189305@rocinante.localdomain>
-References: <20210326124326.21163-1-pali@kernel.org>
- <20210505163357.16012-1-pali@kernel.org>
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210601100128.69561-1-tongtiangen@huawei.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <224ed779-5d68-9f67-9b17-75e1e1b4250c@broadcom.com>
+Date:   Tue, 1 Jun 2021 13:37:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210505163357.16012-1-pali@kernel.org>
+In-Reply-To: <20210601100128.69561-1-tongtiangen@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Pali,
-
-Thank you for working on this and fixing the problem, and also thank you
-goes to Marek and Toke for testing!  Much appreciated!
-
-[...]
-> - AR9287 chip throws also Link Down and Link Up events, also has
->   accessible config space containing correct values. But ath9k driver
->   fails to initialize card from this state as it is unable to access HW
->   registers. This also indicates that the chip iself is not able to read
-
-A typo here - it would be "itself" in the above.  But this is not worth
-sending v4, and I am sure that Bjorn or Lorenzo could fix this in-place
-when merging.
-
-[...]
-> Signed-off-by: Pali Rohár <pali@kernel.org>
-> Reported-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> Tested-by: Marek Behún <kabel@kernel.org>
-[...]
-
-Thank you everyone!
-
-Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
-
-	Krzysztof
+On 01-06-2021 12:01, Tong Tiangen wrote:
+> brcmf_sdiod_remove has been called inside brcmf_sdiod_probe when fails,
+> so there's no need to call another one. Otherwise, sdiodev->freezer
+> would be double freed.
+> 
+> Fixes: 7836102a750a ("brcmfmac: reset SDIO bus on a firmware crash")
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 -
+>   1 file changed, 1 deletion(-)
