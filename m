@@ -2,383 +2,302 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73EE9397BA6
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 23:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0C32397D08
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 01:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234858AbhFAVUY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 17:20:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52504 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234740AbhFAVUY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 17:20:24 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DEA8F610CB;
-        Tue,  1 Jun 2021 21:18:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622582322;
-        bh=5JfgHNm8NdG/r/d4fEfT+EVpiMWzIp0GDqOKc7BpJVQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=F9rxCDDOBoRUjRr+nWcA8DBjsq+H24EKDSnIF72LWaWdagAhx5d5nXhEBdU+BduEe
-         462B1rzoOS4ciusYWILQwvLTHtcHjuUEezYPOissbUk4tqGPWDZFil3DvRQWhXVdUP
-         oCV5GosFS7E3S6pDVXijNSJeCalmdsnB9EiyCxFPCPH6ymcbLLj45WwQ1Ho+w5y/+d
-         SG1pk4BiP7wPh6jwq58LnZRWW1Nk2xnjPR5U9Uv7wsWBW0sFDmoF1HLrYIb104r/mf
-         l+y4/NToJz2eDUFpj0MyE/Z6GfnCdGrZ21YSkLhgXoDJhp2T/kLxfhePw1TOUdIZe9
-         rWaoS7a9qQTHw==
-Received: by pali.im (Postfix)
-        id 70854BC7; Tue,  1 Jun 2021 23:18:39 +0200 (CEST)
-Date:   Tue, 1 Jun 2021 23:18:39 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        vtolkm@gmail.com, Rob Herring <robh@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-pci@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] PCI: Disallow retraining link for Atheros chips on
- non-Gen1 PCIe bridges
-Message-ID: <20210601211839.b2jlspy3x6lmt4by@pali>
-References: <20210505163357.16012-1-pali@kernel.org>
- <20210601200549.GA1965100@bjorn-Precision-5520>
+        id S235156AbhFAXbB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 19:31:01 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:38558 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S235137AbhFAXbB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Jun 2021 19:31:01 -0400
+X-UUID: a6fe5b76ac224fceb111e6d586737761-20210602
+X-UUID: a6fe5b76ac224fceb111e6d586737761-20210602
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 302526353; Wed, 02 Jun 2021 07:29:15 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 2 Jun 2021 07:29:14 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 2 Jun 2021 07:29:13 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 1/3] mt76: connac: add mt76_connac_mcu_update_sta_cmd support
+Date:   Wed, 2 Jun 2021 07:29:09 +0800
+Message-ID: <37cd2b61bfeeb4fd6c14bd3eb2ff611d6b127e1a.1622589640.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210601200549.GA1965100@bjorn-Precision-5520>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello!
+From: Sean Wang <sean.wang@mediatek.com>
 
-On Tuesday 01 June 2021 15:05:49 Bjorn Helgaas wrote:
-> On Wed, May 05, 2021 at 06:33:57PM +0200, Pali Rohár wrote:
-> > Atheros AR9xxx and QCA9xxx chips have behaviour issues not only after a
-> > bus reset, but also after doing retrain link, if PCIe bridge is not in
-> > GEN1 mode (at 2.5 GT/s speed):
-> > 
-> > - QCA9880 and QCA9890 chips throw a Link Down event and completely
-> >   disappear from the bus and their config space is not accessible
-> >   afterwards.
-> > 
-> > - QCA9377 chip throws a Link Down event followed by Link Up event, the
-> >   config space is accessible and PCI device ID is correct. But trying to
-> >   access chip's I/O space causes Uncorrected (Non-Fatal) AER error,
-> >   followed by Synchronous external abort 96000210 and Segmentation fault
-> >   of insmod while loading ath10k_pci.ko module.
-> > 
-> > - AR9390 chip throws a Link Down event followed by Link Up event, config
-> >   space is accessible, but contains nonsense values. PCI device ID is
-> >   0xABCD which indicates HW bug that chip itself was not able to read
-> >   values from internal EEPROM/OTP.
-> > 
-> > - AR9287 chip throws also Link Down and Link Up events, also has
-> >   accessible config space containing correct values. But ath9k driver
-> >   fails to initialize card from this state as it is unable to access HW
-> >   registers. This also indicates that the chip iself is not able to read
-> >   values from internal EEPROM/OTP.
-> > 
-> > These issues related to PCI device ID 0xABCD and to reading internal
-> > EEPROM/OTP were previously discussed at ath9k-devel mailing list in
-> > following thread:
-> > 
-> >   https://www.mail-archive.com/ath9k-devel@lists.ath9k.org/msg07529.html
-> > 
-> > After experiments we've come up with a solution: it seems that Retrain
-> > link can be called only when using GEN1 PCIe bridge or when PCIe bridge
-> > link speed is forced to 2.5 GT/s. Applying this workaround fixes all
-> > mentioned cards.
-> 
-> I *assume* this means the device was running at > 2.5 GT/s in the
-> first place,
+Add mt76_connac_mcu_update_sta_cmd support that is the prerequisite patch
+for we are able to update the station record with the current state the
+station has into the offload firmware at runtime.
 
-No. All these Atheros chips are 2.5 GT/s only. It looks like that if
-PCIe Bridge has initial value 5 GT/s (or higher) in PCI_EXP_LNKCAP2
-register and link retraining is activated, something happen which cause
-these Atheros chips to "crash". Looks like that Root Bridge tries to
-change link speed from 2.5 GT/s to 5 GT/s (which is not supported by all
-these Atheros chips).
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  6 ++--
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 32 ++++++++++++++-----
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 16 ++++++++--
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  8 +++--
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  3 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 +-
+ 6 files changed, 50 insertions(+), 17 deletions(-)
 
-> and when aspm.c retrains the link to configure the common
-> clock, we downgrade to 2.5 GT/s, so the device is now slower than it
-> used to be?
-> 
-> Is that slower speed acceptable?  Is it better to be slower with ASPM,
-> or faster without ASPM?  Or maybe it could be faster *with* ASPM if we
-> avoided the common clock config and the retrain?  I think that would
-> give up some of the benefit of ASPM, but maybe it would still be
-> worthwhile?
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index fc9cd8da2a11..3352c3559c09 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1024,9 +1024,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	if (IS_ERR(sskb))
+ 		return PTR_ERR(sskb);
+ 
+-	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable);
++	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable, true);
+ 	if (enable && sta)
+-		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0);
++		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0,
++					MT76_STA_INFO_STATE_3);
+ 
+ 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&dev->mt76, &msta->wcid,
+ 						  WTBL_RESET_AND_SET, NULL,
+@@ -1152,6 +1153,7 @@ __mt7615_mcu_add_sta(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		.vif = vif,
+ 		.enable = enable,
+ 		.cmd = cmd,
++		.state = MT76_STA_INFO_STATE_3,
+ 	};
+ 
+ 	info.wcid = sta ? (struct mt76_wcid *)sta->drv_priv : &mvif->sta.wcid;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 73359defa176..c49e4763fa4c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -304,7 +304,7 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_alloc_wtbl_req);
+ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
+ 				   struct ieee80211_vif *vif,
+ 				   struct ieee80211_sta *sta,
+-				   bool enable)
++				   bool enable, bool newly)
+ {
+ 	struct sta_rec_basic *basic;
+ 	struct tlv *tlv;
+@@ -316,7 +316,8 @@ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
+ 	basic->extra_info = cpu_to_le16(EXTRA_INFO_VER);
+ 
+ 	if (enable) {
+-		basic->extra_info |= cpu_to_le16(EXTRA_INFO_NEW);
++		if (newly)
++			basic->extra_info |= cpu_to_le16(EXTRA_INFO_NEW);
+ 		basic->conn_state = CONN_STATE_PORT_SECURE;
+ 	} else {
+ 		basic->conn_state = CONN_STATE_DISCONNECT;
+@@ -709,7 +710,7 @@ mt76_connac_get_phy_mode_v2(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
+ 			     struct ieee80211_sta *sta,
+ 			     struct ieee80211_vif *vif,
+-			     u8 rcpi)
++			     u8 rcpi, u8 sta_state)
+ {
+ 	struct cfg80211_chan_def *chandef = &mphy->chandef;
+ 	enum nl80211_band band = chandef->chan->band;
+@@ -770,7 +771,7 @@ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
+ 
+ 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_STATE, sizeof(*state));
+ 	state = (struct sta_rec_state *)tlv;
+-	state->state = 2;
++	state->state = sta_state;
+ 
+ 	if (sta->vht_cap.vht_supported) {
+ 		state->vht_opmode = sta->bandwidth;
+@@ -862,8 +863,9 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_wtbl_ht_tlv);
+ 
+-int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
+-				struct mt76_sta_cmd_info *info)
++static int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
++				   struct mt76_sta_cmd_info *info,
++				   bool newly)
+ {
+ 	struct mt76_vif *mvif = (struct mt76_vif *)info->vif->drv_priv;
+ 	struct mt76_dev *dev = phy->dev;
+@@ -875,10 +877,11 @@ int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
+ 	if (IS_ERR(skb))
+ 		return PTR_ERR(skb);
+ 
+-	mt76_connac_mcu_sta_basic_tlv(skb, info->vif, info->sta, info->enable);
++	mt76_connac_mcu_sta_basic_tlv(skb, info->vif, info->sta, info->enable,
++				      newly);
+ 	if (info->enable && info->sta)
+ 		mt76_connac_mcu_sta_tlv(phy, skb, info->sta, info->vif,
+-					info->rcpi);
++					info->rcpi, info->state);
+ 
+ 	sta_wtbl = mt76_connac_mcu_add_tlv(skb, STA_REC_WTBL,
+ 					   sizeof(struct tlv));
+@@ -902,8 +905,21 @@ int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
+ 
+ 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
+ }
++
++int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
++				struct mt76_sta_cmd_info *info)
++{
++	return mt76_connac_mcu_sta_cmd(phy, info, true);
++}
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_add_sta_cmd);
+ 
++int mt76_connac_mcu_update_sta_cmd(struct mt76_phy *phy,
++				   struct mt76_sta_cmd_info *info)
++{
++	return mt76_connac_mcu_sta_cmd(phy, info, false);
++}
++EXPORT_SYMBOL_GPL(mt76_connac_mcu_update_sta_cmd);
++
+ void mt76_connac_mcu_wtbl_ba_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				 struct ieee80211_ampdu_params *params,
+ 				 bool enable, bool tx, void *sta_wtbl,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index d64b8058b744..6666507f43ed 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -902,6 +902,14 @@ struct mt76_connac_suspend_tlv {
+ 	u8 pad[5];
+ } __packed;
+ 
++ /* 0: state 1 - unauthenticated & unassociated
++  * 1: state 2 - authenticated & unassociated
++  * 2: state 3 - authenticated & associated
++  */
++#define MT76_STA_INFO_STATE_1	0
++#define MT76_STA_INFO_STATE_2	1
++#define MT76_STA_INFO_STATE_3	2
++
+ struct mt76_sta_cmd_info {
+ 	struct ieee80211_sta *sta;
+ 	struct mt76_wcid *wcid;
+@@ -911,6 +919,7 @@ struct mt76_sta_cmd_info {
+ 	bool enable;
+ 	int cmd;
+ 	u8 rcpi;
++	u8 state;
+ };
+ 
+ #define MT_SKU_POWER_LIMIT	161
+@@ -980,7 +989,8 @@ int mt76_connac_mcu_set_channel_domain(struct mt76_phy *phy);
+ int mt76_connac_mcu_set_vif_ps(struct mt76_dev *dev, struct ieee80211_vif *vif);
+ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
+ 				   struct ieee80211_vif *vif,
+-				   struct ieee80211_sta *sta, bool enable);
++				   struct ieee80211_sta *sta, bool enable,
++				   bool newly);
+ void mt76_connac_mcu_wtbl_generic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				      struct ieee80211_vif *vif,
+ 				      struct ieee80211_sta *sta, void *sta_wtbl,
+@@ -995,7 +1005,7 @@ int mt76_connac_mcu_sta_update_hdr_trans(struct mt76_dev *dev,
+ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
+ 			     struct ieee80211_sta *sta,
+ 			     struct ieee80211_vif *vif,
+-			     u8 rcpi);
++			     u8 rcpi, u8 state);
+ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				 struct ieee80211_sta *sta, void *sta_wtbl,
+ 				 void *wtbl_tlv);
+@@ -1019,6 +1029,8 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
+ 				bool enable);
+ int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
+ 				struct mt76_sta_cmd_info *info);
++int mt76_connac_mcu_update_sta_cmd(struct mt76_phy *phy,
++				   struct mt76_sta_cmd_info *info);
+ void mt76_connac_mcu_beacon_loss_iter(void *priv, u8 *mac,
+ 				      struct ieee80211_vif *vif);
+ int mt76_connac_mcu_set_rts_thresh(struct mt76_dev *dev, u32 val, u8 band);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 472afd4ea487..ece0cecf049d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -570,7 +570,8 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
+ 		mt7921_mcu_uni_bss_ps(dev, vif);
+ 
+ 	if (changed & BSS_CHANGED_ASSOC) {
+-		mt7921_mcu_sta_add(dev, NULL, vif, true);
++		mt7921_mcu_sta_add(dev, NULL, vif, true,
++				   MT76_STA_INFO_STATE_3);
+ 		mt7921_bss_bcnft_apply(dev, vif, info->assoc);
+ 	}
+ 
+@@ -616,7 +617,8 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	mt7921_mac_wtbl_update(dev, idx,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 
+-	ret = mt7921_mcu_sta_add(dev, sta, vif, true);
++	ret = mt7921_mcu_sta_add(dev, sta, vif, true,
++				 MT76_STA_INFO_STATE_3);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -634,7 +636,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, &msta->wcid);
+ 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 
+-	mt7921_mcu_sta_add(dev, sta, vif, false);
++	mt7921_mcu_sta_add(dev, sta, vif, false, MT76_STA_INFO_STATE_1);
+ 	mt7921_mac_wtbl_update(dev, msta->wcid.idx,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 4c97c5bdbf86..631f408520c9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1322,7 +1322,7 @@ int mt7921_mcu_set_bss_pm(struct mt7921_dev *dev, struct ieee80211_vif *vif,
+ }
+ 
+ int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
+-		       struct ieee80211_vif *vif, bool enable)
++		       struct ieee80211_vif *vif, bool enable, u8 state)
+ {
+ 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+ 	int rssi = -ewma_rssi_read(&mvif->rssi);
+@@ -1330,6 +1330,7 @@ int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
+ 		.sta = sta,
+ 		.vif = vif,
+ 		.enable = enable,
++		.state = state,
+ 		.cmd = MCU_UNI_CMD_STA_REC_UPDATE,
+ 		.rcpi = to_rcpi(rssi),
+ 	};
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index a9b21fcc321c..694f85e52222 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -261,7 +261,7 @@ int mt7921_mcu_add_key(struct mt7921_dev *dev, struct ieee80211_vif *vif,
+ 		       enum set_key_cmd cmd);
+ int mt7921_set_channel(struct mt7921_phy *phy);
+ int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
+-		       struct ieee80211_vif *vif, bool enable);
++		       struct ieee80211_vif *vif, bool enable, u8 state);
+ int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, int cmd);
+ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif);
+ int mt7921_mcu_set_eeprom(struct mt7921_dev *dev);
+-- 
+2.25.1
 
-There is no slow down with these chips as all these which I tested and
-written into description are 2.5 GT/s -only.
-
-> If the device was running at > 2.5 GT/s to begin with, obviously there
-> is *some* way to get there.
-
-Root Bridge in PCI_EXP_LNKSTA reports that they are running at 2.5 GT/s
-even on begin.
-
-> This patch implies that the hardware
-> automatically trained to a higher rate after power-on (which I think
-> is what PCIe hardware is *supposed* to do) and something prevents that
-> from succeeding when we retrain, or maybe BIOS did something different
-> than what Linux is doing, or ... something else?
-
-Tested platforms was also without BIOS and without any other firmware
-which touched PCIe.
-
-> Maybe the device can only retrain to 2.5 GT/s or from the current
-> speed to a higher speed.  This sort of experimentation could probably
-> be done with setpci.
-> 
-> > This issue was reproduced with more cards:
-> > - Compex WLE900VX (QCA9880 based / device ID 0x003c)
-> > - QCNFA435 (QCA9377 based / device ID 0x0042)
-> > - Compex WLE200NX (AR9287 based / device ID 0x002e)
-> > - "noname" card (QCA9890 based / device ID 0x003c)
-> > - Wistron NKR-DNXAH1 (AR9390 based / device ID 0x0030)
-> > on Armada 385 with pci-mvebu.c driver and also on Armada 3720 with
-> > pci-aardvark.c driver.
-> > 
-> > To workaround this issue, this change introduces a new PCI quirk called
-> > PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1, which is enabled for all
-> > Atheros chips with PCI_DEV_FLAGS_NO_BUS_RESET quirk, and also for Atheros
-> > chip AR9287.
-> > 
-> > When this quirk is set, kernel disallows triggering PCI_EXP_LNKCTL_RL
-> > bit in config space of PCIe Bridge in the case when PCIe Bridge is
-> > capable of higher speed than 2.5 GT/s and this higher speed is already
-> > allowed. When PCIe Bridge has accessible LNKCTL2 register, we try to
-> > force target link speed to 2.5 GT/s. After this change it is possible
-> > to trigger PCI_EXP_LNKCTL_RL bit without issues.
-> 
-> This basically feels like a "it hurts when I do X, so stop doing X"
-> patch.  We don't really know what's wrong; we've just determined
-> experimentally how to avoid it.
-
-Yes.
-
-> > Currently only PCIe ASPM kernel code triggers this PCI_EXP_LNKCTL_RL bit,
-> > so quirk check is added only into pcie/aspm.c file.
-> > 
-> > Signed-off-by: Pali Rohár <pali@kernel.org>
-> > Reported-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> > Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> > Tested-by: Marek Behún <kabel@kernel.org>
-> > BugLink: https://lore.kernel.org/linux-pci/87h7l8axqp.fsf@toke.dk/
-> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=84821
-> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=192441
-> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=209833
-> > Cc: stable@vger.kernel.org # c80851f6ce63a ("PCI: Add PCI_EXP_LNKCTL2_TLS* macros")
-> > 
-> > ---
-> > Changes since v1:
-> > * Move whole quirk code into pcie_downgrade_link_to_gen1() function
-> > * Reformat to 80 chars per line where possible
-> > * Add quirk also for cards with AR9287 chip (PCI ID 0x002e)
-> > * Extend commit message description and add information about 0xABCD
-> > 
-> > Changes since v2:
-> > * Add quirk also for Atheros QCA9377 chip
-> > ---
-> >  drivers/pci/pcie/aspm.c | 44 +++++++++++++++++++++++++++++++++++++++++
-> >  drivers/pci/quirks.c    | 39 ++++++++++++++++++++++++++++--------
-> >  include/linux/pci.h     |  2 ++
-> >  3 files changed, 77 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> > index ac0557a305af..729b0389562b 100644
-> > --- a/drivers/pci/pcie/aspm.c
-> > +++ b/drivers/pci/pcie/aspm.c
-> > @@ -192,12 +192,56 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
-> >  	link->clkpm_disable = blacklist ? 1 : 0;
-> >  }
-> >  
-> > +static int pcie_downgrade_link_to_gen1(struct pci_dev *parent)
-> > +{
-> > +	u16 reg16;
-> > +	u32 reg32;
-> > +	int ret;
-> > +
-> > +	/* Check if link is capable of higher speed than 2.5 GT/s */
-> > +	pcie_capability_read_dword(parent, PCI_EXP_LNKCAP, &reg32);
-> > +	if ((reg32 & PCI_EXP_LNKCAP_SLS) <= PCI_EXP_LNKCAP_SLS_2_5GB)
-> > +		return 0;
-> 
-> I guess this means "if the link is already at 2.5 GT/s, no need to do
-> anything."  Right?
-
-PCI_EXP_LNKCAP_SLS is maximal supported speed by Bridge. So if bridge
-does not support higher speed, we do not have to do anything.
-
-> > +	/* Check if link speed can be downgraded to 2.5 GT/s */
-> > +	pcie_capability_read_dword(parent, PCI_EXP_LNKCAP2, &reg32);
-> > +	if (!(reg32 & PCI_EXP_LNKCAP2_SLS_2_5GB)) {
-> > +		pci_err(parent, "ASPM: Bridge does not support changing Link Speed to 2.5 GT/s\n");
-> > +		return -EOPNOTSUPP;
-> > +	}
-> 
-> Why is this check needed?  Per PCIe r5.0, sec 8.2.1, all devices must
-> support 2.5 GT/s.
-
-Because older PCIe devices does not have to support PCI_EXP_LNKCAP2
-register (in which cause they returns zero). And this applies also for
-pci-bridge-emul.c driver. So this check is needed at least for devices
-which use pci-bridge-emul.c driver.
-
-> > +	/* Force link speed to 2.5 GT/s */
-> > +	ret = pcie_capability_clear_and_set_word(parent, PCI_EXP_LNKCTL2,
-> > +						 PCI_EXP_LNKCTL2_TLS,
-> > +						 PCI_EXP_LNKCTL2_TLS_2_5GT);
-> > +	if (!ret) {
-> > +		/* Verify that new value was really set */
-> > +		pcie_capability_read_word(parent, PCI_EXP_LNKCTL2, &reg16);
-> > +		if ((reg16 & PCI_EXP_LNKCTL2_TLS) != PCI_EXP_LNKCTL2_TLS_2_5GT)
-> > +			ret = -EINVAL;
-> > +	}
-> > +
-> > +	if (ret) {
-> > +		pci_err(parent, "ASPM: Changing Target Link Speed to 2.5 GT/s failed: %d\n", ret);
-> > +		return ret;
-> > +	}
-> > +
-> > +	pci_info(parent, "ASPM: Target Link Speed changed to 2.5 GT/s due to quirk\n");
-> > +	return 0;
-> > +}
-> > +
-> >  static bool pcie_retrain_link(struct pcie_link_state *link)
-> >  {
-> >  	struct pci_dev *parent = link->pdev;
-> >  	unsigned long end_jiffies;
-> >  	u16 reg16;
-> >  
-> > +	if ((link->downstream->dev_flags & PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1) &&
-> > +	    pcie_downgrade_link_to_gen1(parent)) {
-> 
-> I assume (correct me if I'm wrong) that this would work equally well
-> if we set the *endpoint's* target link speed to 2.5 GT/s instead of
-> the upstream bridge's?
-
-I think not. Issue is really when Bridge-end of the link supports higher
-than 2.5 GT/s speed this end tries to increase speed. As device-end of
-the link supports only 2.5 GT/s there is nothing to change to higher
-speed from device-end point of view.
-
-> I think the log messages would make more sense
-> then, since the problem is really with the endpoint, not the parent.
-
-So... buggy is device (child) end of the link and only bridge (parent)
-end of the link can workaround it. And if bridge end is not capable
-(e.g. because of pci-bridge-emul.c) then it is problem of bridge
-(parent) end.
-
-> > +		pci_err(parent, "ASPM: Retrain Link at higher speed is disallowed by quirk\n");
-> > +		return false;
-> > +	}
-> > +
-> >  	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
-> >  	reg16 |= PCI_EXP_LNKCTL_RL;
-> >  	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
-> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> > index 653660e3ba9e..4999ad9d08b8 100644
-> > --- a/drivers/pci/quirks.c
-> > +++ b/drivers/pci/quirks.c
-> > @@ -3553,23 +3553,46 @@ static void mellanox_check_broken_intx_masking(struct pci_dev *pdev)
-> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_MELLANOX, PCI_ANY_ID,
-> >  			mellanox_check_broken_intx_masking);
-> >  
-> > -static void quirk_no_bus_reset(struct pci_dev *dev)
-> > +static void quirk_no_bus_reset_and_no_retrain_link(struct pci_dev *dev)
-> >  {
-> > -	dev->dev_flags |= PCI_DEV_FLAGS_NO_BUS_RESET;
-> > +	dev->dev_flags |= PCI_DEV_FLAGS_NO_BUS_RESET |
-> > +			  PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1;
-> >  }
-> >  
-> >  /*
-> > - * Some Atheros AR9xxx and QCA988x chips do not behave after a bus reset.
-> > + * Atheros AR9xxx and QCA9xxx chips do not behave after a bus reset and also
-> > + * after retrain link when PCIe bridge is not in GEN1 mode at 2.5 GT/s speed.
-> >   * The device will throw a Link Down error on AER-capable systems and
-> >   * regardless of AER, config space of the device is never accessible again
-> >   * and typically causes the system to hang or reset when access is attempted.
-> > + * Or if config space is accessible again then it contains only dummy values
-> > + * like fixed PCI device ID 0xABCD or values not initialized at all.
-> > + * Retrain link can be called only when using GEN1 PCIe bridge or when
-> > + * PCIe bridge has forced link speed to 2.5 GT/s via PCI_EXP_LNKCTL2 register.
-> > + * To reset these cards it is required to do PCIe Warm Reset via PERST# pin.
-> >   * https://lore.kernel.org/r/20140923210318.498dacbd@dualc.maya.org/
-> > + * https://lore.kernel.org/r/87h7l8axqp.fsf@toke.dk/
-> > + * https://www.mail-archive.com/ath9k-devel@lists.ath9k.org/msg07529.html
-> >   */
-> > -DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0030, quirk_no_bus_reset);
-> > -DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0032, quirk_no_bus_reset);
-> > -DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x003c, quirk_no_bus_reset);
-> > -DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0033, quirk_no_bus_reset);
-> > -DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0034, quirk_no_bus_reset);
-> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x002e,
-> > +			 quirk_no_bus_reset_and_no_retrain_link);
-> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0030,
-> > +			 quirk_no_bus_reset_and_no_retrain_link);
-> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0032,
-> > +			 quirk_no_bus_reset_and_no_retrain_link);
-> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0033,
-> > +			 quirk_no_bus_reset_and_no_retrain_link);
-> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0034,
-> > +			 quirk_no_bus_reset_and_no_retrain_link);
-> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x003c,
-> > +			 quirk_no_bus_reset_and_no_retrain_link);
-> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0042,
-> > +			 quirk_no_bus_reset_and_no_retrain_link);
-> > +
-> > +static void quirk_no_bus_reset(struct pci_dev *dev)
-> > +{
-> > +	dev->dev_flags |= PCI_DEV_FLAGS_NO_BUS_RESET;
-> > +}
-> >  
-> >  /*
-> >   * Root port on some Cavium CN8xxx chips do not successfully complete a bus
-> > diff --git a/include/linux/pci.h b/include/linux/pci.h
-> > index 86c799c97b77..fdbf7254e4ab 100644
-> > --- a/include/linux/pci.h
-> > +++ b/include/linux/pci.h
-> > @@ -227,6 +227,8 @@ enum pci_dev_flags {
-> >  	PCI_DEV_FLAGS_NO_FLR_RESET = (__force pci_dev_flags_t) (1 << 10),
-> >  	/* Don't use Relaxed Ordering for TLPs directed at this device */
-> >  	PCI_DEV_FLAGS_NO_RELAXED_ORDERING = (__force pci_dev_flags_t) (1 << 11),
-> > +	/* Don't Retrain Link for device when bridge is not in GEN1 mode */
-> > +	PCI_DEV_FLAGS_NO_RETRAIN_LINK_WHEN_NOT_GEN1 = (__force pci_dev_flags_t) (1 << 12),
-> 
-> I know this is entangled with the existing PCI_DEV_FLAGS_NO_BUS_RESET,
-> but unless there's a better reason to use pci_dev_flags, I'd prefer a
-> new "unsigned retrain_gen1:1" or similar bit.  
-
-Ok! I can change patch...
-
-> Whatever you do, I'd like to avoid the double negative of "*no*
-> retrain when *not* gen1."
-
-Do you have a suggestion for this name? Because I do not know how to
-call this "quirk" in English, so it describes "disallow link retrain
-when link is not at gen1 = 2.5GT/s". Somehow I cannot imagine name
-without double negative words.
-
-> It does make me wonder whether the bus reset would work on these
-> devices if we set the target link speed back down to 2.5 GT/s.
-
-Tested and does not work. Secondary bus reset (=Hot Reset) is broken
-also when link is forced to 2.5 GT/s. It looks like that when
-PCI_EXP_LNKCTL2_TLS is not set to 2.5 GT/s when setting
-PCI_EXP_LNKCTL_RL it results in the same effect / issue like calling
-secondary bus reset.
-
-> >  };
-> >  
-> >  enum pci_irq_reroute_variant {
-> > -- 
-> > 2.20.1
-> > 
