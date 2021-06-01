@@ -2,107 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE5CC3979DC
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 20:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 827193979E7
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jun 2021 20:17:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234623AbhFASQV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 1 Jun 2021 14:16:21 -0400
-Received: from mga01.intel.com ([192.55.52.88]:46250 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234513AbhFASQU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 1 Jun 2021 14:16:20 -0400
-IronPort-SDR: hhVZFbIvqa77dbgX9pzFHwngmTT9heU9E5H73yBfLBIgbONSh/zMzQ710iMSpIvg/GlL58xCdH
- OaCyRjkFCmSQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,10002"; a="224884243"
-X-IronPort-AV: E=Sophos;i="5.83,240,1616482800"; 
-   d="scan'208";a="224884243"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2021 11:14:38 -0700
-IronPort-SDR: fQcAOBUzDfMZaD5LQ8NCA9urtGcc04vjtIctOInIq5o96ywMjVIqWEBiOhEkPfRTQ51CijOyM0
- XSiC1wy+HD3A==
-X-IronPort-AV: E=Sophos;i="5.83,240,1616482800"; 
-   d="scan'208";a="549147068"
-Received: from jbrandeb-mobl4.amr.corp.intel.com (HELO localhost) ([10.212.201.74])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2021 11:14:37 -0700
-Date:   Tue, 1 Jun 2021 11:14:36 -0700
-From:   Jesse Brandeburg <jesse.brandeburg@intel.com>
-To:     Huazhong Tan <tanhuazhong@huawei.com>
-Cc:     <davem@davemloft.net>, <kuba@kernel.org>, <netdev@vger.kernel.org>,
-        <salil.mehta@huawei.com>, <yisen.zhuang@huawei.com>,
-        <huangdaode@huawei.com>, <linuxarm@huawei.com>,
-        <dledford@redhat.com>, <jgg@ziepe.ca>, <netanel@amazon.com>,
-        <akiyano@amazon.com>, <thomas.lendacky@amd.com>,
-        <irusskikh@marvell.com>, <michael.chan@broadcom.com>,
-        <edwin.peer@broadcom.com>, <rohitm@chelsio.com>,
-        <jacob.e.keller@intel.com>, <ioana.ciornei@nxp.com>,
-        <vladimir.oltean@nxp.com>, <sgoutham@marvell.com>,
-        <sbhatta@marvell.com>, <saeedm@nvidia.com>,
-        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
-        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [RFC V2 net-next 0/3] ethtool: extend coalesce uAPI
-Message-ID: <20210601111436.00001c69@intel.com>
-In-Reply-To: <1622258536-55776-1-git-send-email-tanhuazhong@huawei.com>
-References: <1622258536-55776-1-git-send-email-tanhuazhong@huawei.com>
-X-Mailer: Claws Mail 3.12.0 (GTK+ 2.24.28; i686-w64-mingw32)
+        id S232490AbhFASSp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 1 Jun 2021 14:18:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50290 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231331AbhFASSo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 1 Jun 2021 14:18:44 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28CE3C061574
+        for <linux-wireless@vger.kernel.org>; Tue,  1 Jun 2021 11:17:02 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id e7so5258850plj.7
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Jun 2021 11:17:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LhC+qqznpymVevxrLR6Z+UkipRD5f1Y+ypPigsJs+ps=;
+        b=pp52p7GZmPLk18tOqXz0Hyyn0mz95r+LTehp27dnodD6eEII+fLuAJircbZj7J5ssr
+         XBzKw2ILQvLdAkjgFOr3IkC8ZslP/Ga645uIFXZ8g4IJmCCh8mJN5CO/ut6G5yTffEnz
+         OR0SMpgBdmKLr30NHxMwbE4WOFJ45e1bXquALQfBbkyE8317kacKNLBmUHO/IIbaorJy
+         VI9O20wQQi9AgG+0MfFAW8by/QGmTSSHl8vxC+pvpZ25T1v41SATxotO0qNdJvWtcB7N
+         XyJd3A+Xa9DIkQftM0L7r2sbrPDsg2ByxaquJAY7g2Squq6IxEeidW6xCzGzUNY4blq3
+         u9WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LhC+qqznpymVevxrLR6Z+UkipRD5f1Y+ypPigsJs+ps=;
+        b=e4731lKXTmgByZoM3EPqz0iUZbx4DeEXSpFFe2yMIlhVIQxc2ANKgYH1l9//Q9eZC6
+         hIQm2rGcK7XMFqExi5aSCz+ZtTWXVV1SzA/1RZLh7QUntBxzKyQ2Nc0L8PbNrmN4FhVx
+         LhvgMKmmv9XvcqDD0ebcE6EZleAnMjlWdBW4t2JkouryHI7tRsmLQdAQWMb8z8nVdZxe
+         l4t1Evv4bx6yVARQ302z+w/Xvsd9ZBs0v8YoJyKIMsh18w0KKXbWkotvLe6AVebrv4EV
+         8qdhrMeNdSCAf/onuUbpVpwolExAXmp0Sa1DT9h9DYaPRlbwhqG3tlmTPV1J5MbQmgun
+         WC0w==
+X-Gm-Message-State: AOAM531WZLqeucmAsevD74Lv+JD2HTF8dC8riXikYYPn9hBuT0ssYNo7
+        TEZ8GcXRR4gs5K3kPz4CFVdoXIZ5KBwzwmIkWvQ6KA==
+X-Google-Smtp-Source: ABdhPJyRb4OruYjY14HMrzk3zjs0x1GZMf1Hf+F0AIg27mitO/hvsQ4WYq4Y7nc1SzEfN+ze/iVIovkvRBGszT+NkXE=
+X-Received: by 2002:a17:90a:d590:: with SMTP id v16mr25863805pju.205.1622571421462;
+ Tue, 01 Jun 2021 11:17:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20210601151001.1450540-1-bryan.odonoghue@linaro.org>
+In-Reply-To: <20210601151001.1450540-1-bryan.odonoghue@linaro.org>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Tue, 1 Jun 2021 20:16:25 +0200
+Message-ID: <CAMZdPi91uOZoJEEaa7xbO=kfAZdn7DoYpAUFuqPsAMY6Z_e-VQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/12] wcn36xx: Enable downstream consistent Wake on Lan
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, Shawn Guo <shawn.guo@linaro.org>,
+        Benjamin Li <benl@squareup.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Huazhong Tan wrote:
+On Tue, 1 Jun 2021 at 17:08, Bryan O'Donoghue
+<bryan.odonoghue@linaro.org> wrote:
+>
+> In both cases using Wireshark we see the target system receive an ARP or
+> NS6 lookup and respond, followed by the host sending a ping or ping6 and
+> the target system coming out of suspend.
+>
+> Similarly watching GTK keying on the AP when the device is in suspend, we
+> see the firmware successfully rekey and when we resume, the host picking up
+> the rekey material with persistence of the WiFi link during suspend/resume.
+>
+> commit 5336fad96e8f ("wcn36xx: Enable firmware offloaded keepalive")
+> ensures that the link is kept alive in suspend, this additional set gives
+> the ability to
+>
+> - Resolve ARP/NS6 lookups without waking the system
+> - Rekeying in suspend
+> - Suspending and resuming based on received datagram
+>
+> https://git.linaro.org/people/bryan.odonoghue/kernel.git/log/?h=ath.master-wcn36xx-fw-offload-suspend-resume
+>
+> Bryan O'Donoghue (12):
+>   wcn36xx: Return result of set_power_params in suspend
+>   wcn36xx: Run suspend for the first ieee80211_vif
+>   wcn36xx: Add ipv4 ARP offload support in suspend
+>   wcn36xx: Do not flush indication queue on suspend/resume
+>   wcn36xx: Add ipv6 address tracking
+>   wcn36xx: Add ipv6 namespace offload in suspend
+>   wcn36xx: Add set_rekey_data callback
+>   wcn36xx: Add GTK offload to WoWLAN path
+>   wcn36xx: Add GTK offload info to WoWLAN resume
+>   wcn36xx: Add Host suspend indication support
+>   wcn36xx: Add host resume request support
+>   wcn36xx: Enable WOWLAN flags
+>
+>  drivers/net/wireless/ath/wcn36xx/hal.h     |  20 +-
+>  drivers/net/wireless/ath/wcn36xx/main.c    | 110 ++++++++-
+>  drivers/net/wireless/ath/wcn36xx/smd.c     | 265 +++++++++++++++++++++
+>  drivers/net/wireless/ath/wcn36xx/smd.h     |  17 ++
+>  drivers/net/wireless/ath/wcn36xx/wcn36xx.h |  14 ++
+>  5 files changed, 412 insertions(+), 14 deletions(-)
 
-> In order to support some configuration in coalesce uAPI, this RFC
-> extends coalesce uAPI and add support for CQE mode.
-> ...
-
-> 3. ethool(netlink with cqe mode) + kernel with cqe mode:
-> estuary:/$ ethtool -c eth0
-> Coalesce parameters for eth0:
-> Adaptive RX: on  TX: on
-> stats-block-usecs: n/a
-> sample-interval: n/a
-> pkt-rate-low: n/a
-> pkt-rate-high: n/a
-> 
-> rx-usecs: 20
-> rx-frames: 0
-> rx-usecs-irq: n/a
-> rx-frames-irq: n/a
-> 
-> tx-usecs: 20
-> tx-frames: 0
-> tx-usecs-irq: n/a
-> tx-frames-irq: n/a
-> 
-> rx-usecs-low: n/a
-> rx-frame-low: n/a
-> tx-usecs-low: n/a
-> tx-frame-low: n/a
-> 
-> rx-usecs-high: 0
-> rx-frame-high: n/a
-> tx-usecs-high: 0
-> tx-frame-high: n/a
-> 
-> CQE mode RX: off  TX: off
-
-BTW, thanks for working on something like this.
-I hope it's not just me, but I don't like the display of the new CQE
-line, at the very least, it's not consistent with what is there already
-in the output of this command, and at worst, it surprises the user and
-makes it hard to parse for any scripting tools.
-
-Can I suggest something like:
-
-rx-cqe: off
-tx-cqe: off
-rx-eqe: off
-tx-eqe: off
-
-Then, if hardware is in EQE mode it is clear that it's supported and
-ON/OFF, as well as for CQE mode.
-
--Jesse
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
