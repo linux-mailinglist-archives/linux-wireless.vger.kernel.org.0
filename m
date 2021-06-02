@@ -2,139 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A93C639931D
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 21:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34D84399545
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 23:13:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbhFBTEu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Jun 2021 15:04:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34056 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229755AbhFBTEs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Jun 2021 15:04:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 06146613DE;
-        Wed,  2 Jun 2021 19:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622660585;
-        bh=UmpCat1vUqyqVee399R6xx/T2Sz4LjLr8R8Go7S3p1k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IslsaRMEZqqFu3ZzSgqNdLrDRXTjEsWWBTdbepFtuZAlmqCW7jni6jsPwMosOCRva
-         hVL4+t36l+lWWC9rTXUuGHZZNChuQuVPwsgAcgarySIPQWhv3ySLboMSW6JMAf2YId
-         ToOOtiPdJHHzvzYjHqjjfZEO2eYA4AX3Aljp7kAmGXZVA7L2lL6g56NGyyXCmMhVl1
-         sQBuEtFrWqF1K+sFvakhAFEVFj0EMbQqcXRB118BwCBgCvQ2560yN11nj7Z+69id6J
-         JER6VIjNBqPeimx5Ez/tElO4wGeBBVyTueFWmNTpZMfSZeX2/qtGWJoWzcr8IJn95m
-         meDf8kBhp6UbA==
-Received: by pali.im (Postfix)
-        id 81EBA1534; Wed,  2 Jun 2021 21:03:02 +0200 (CEST)
-Date:   Wed, 2 Jun 2021 21:03:02 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        vtolkm@gmail.com, Rob Herring <robh@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-pci@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] PCI: Disallow retraining link for Atheros chips on
- non-Gen1 PCIe bridges
-Message-ID: <20210602190302.d3ibdtwti4yq57vi@pali>
-References: <20210602120816.axi4dtnyg5gl2h2z@pali>
- <20210602155559.GA2028037@bjorn-Precision-5520>
+        id S229583AbhFBVPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Jun 2021 17:15:38 -0400
+Received: from mail-oo1-f50.google.com ([209.85.161.50]:46934 "EHLO
+        mail-oo1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229467AbhFBVPh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 2 Jun 2021 17:15:37 -0400
+Received: by mail-oo1-f50.google.com with SMTP id x22-20020a4a62160000b0290245cf6b7feeso892477ooc.13
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Jun 2021 14:13:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xuaPVMlBEIohsrUF8vDQmI5hGYCXS2qbehZHi55t3us=;
+        b=TytJcgjwjblg2cCGGT8JiDD2ybyDEtpha+3cOSTG9af87dvgmThAuHzrsMtXE1BkPS
+         jAoxUfwM9UqndpvAvwfOfjWwW1hBctTv2EMyojEUZyBuT5X50dmQtMyIbLbuWYtR/wwo
+         DLx6jfwlRnkhfv2e3xs7SQSioy3z0h1//Nous=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xuaPVMlBEIohsrUF8vDQmI5hGYCXS2qbehZHi55t3us=;
+        b=axQ5COZ9NNhz7z8JxC9eccHa9/LUhJvYwAQZgTHm3TGR6FRT96UhuXto6xmMfdY1ja
+         3FQvt7RLCS8cOvy8n9w8cw3kHCj9M6aBMa7JRE0ZU95FU196i4pn9eVJAtkpgxiwPm2A
+         OX1qvuW5Uuu2USNV9l7lDKIA1CHNKWfM2I3IrkWf59KBsiFm9rW3iV7rDzaXQIs2HgF6
+         +BvtBWPS/wqLHG4Xn87QJPEnw6H3UcqiDYG1shSJEuO23ryZiHlf+H1GwXjqJ9kFWAVa
+         ulY1x9m94GIq4mTp5BZuB1mAZu7tG4WWY54KuhSjQTUfPtjmbrs0/fpLG9Xwxaf4fF65
+         Aefw==
+X-Gm-Message-State: AOAM532qTA+SbOy7Ngtv2DTCgdPK5yO6EnxBJVGCCA/owQclBlzBEboQ
+        Kn3ceViY4dY5llBdOLv20GhsJlKc3/umcA==
+X-Google-Smtp-Source: ABdhPJyLOgD035C37GItWsy4qvF8g1Ng5e2m0fIh3AfXnUU4bCEvlqAIU4lAydI3jzB879VOKY2K4w==
+X-Received: by 2002:a4a:94ef:: with SMTP id l44mr25917656ooi.84.1622668363293;
+        Wed, 02 Jun 2021 14:12:43 -0700 (PDT)
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com. [209.85.210.42])
+        by smtp.gmail.com with ESMTPSA id l1sm215946oos.37.2021.06.02.14.12.42
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Jun 2021 14:12:42 -0700 (PDT)
+Received: by mail-ot1-f42.google.com with SMTP id r26-20020a056830121ab02902a5ff1c9b81so3723437otp.11
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Jun 2021 14:12:42 -0700 (PDT)
+X-Received: by 2002:a9d:65d5:: with SMTP id z21mr27597173oth.229.1622668362044;
+ Wed, 02 Jun 2021 14:12:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210602155559.GA2028037@bjorn-Precision-5520>
-User-Agent: NeoMutt/20180716
+References: <X8irC3FP0QDE9QFe@mwanda>
+In-Reply-To: <X8irC3FP0QDE9QFe@mwanda>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 2 Jun 2021 14:12:31 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXMS-qR2tgFzE7_cqtxLj9-TavbmghqGo0jDtHkbUB59Ow@mail.gmail.com>
+Message-ID: <CA+ASDXMS-qR2tgFzE7_cqtxLj9-TavbmghqGo0jDtHkbUB59Ow@mail.gmail.com>
+Subject: Re: [bug report] iwlwifi: support REDUCE_TX_POWER_CMD version 6
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wednesday 02 June 2021 10:55:59 Bjorn Helgaas wrote:
-> On Wed, Jun 02, 2021 at 02:08:16PM +0200, Pali Rohár wrote:
-> > On Tuesday 01 June 2021 19:00:36 Bjorn Helgaas wrote:
-> 
-> > > I wonder if this could be restructured as a generic quirk in quirks.c
-> > > that simply set the bridge's TLS to 2.5 GT/s during enumeration.  Or
-> > > would the retrain fail even in that case?
-> > 
-> > If I understand it correctly then PCIe link is already up when kernel
-> > starts enumeration. So setting Bridge TLS to 2.5 GT/s does not change
-> > anything here.
-> > 
-> > Moreover it would have side effect that cards which are already set to
-> > 5+ GT/s would be downgraded to 2.5 GT/s during enumeration and for
-> > increasing speed would be needed another round of "enumeration" to set a
-> > new TLS and retrain link again. As TLS affects link only after link goes
-> > into Recovery state.
-> > 
-> > So this would just complicate card enumeration and settings.
-> 
-> The current quirk complicates the ASPM code.  I'm hoping that if we
-> set the bridge's Target Link Speed during enumeration, the link
-> retrain will "just work" without complicating the ASPM code.
-> 
-> An enumeration quirk wouldn't have to set the bridge's TLS to 2.5
-> GT/s; the quirk would be attached to specific endpoint devices and
-> could set the bridge's TLS to whatever the endpoint supports.
+Signal boost:
+I've seen issues in this code in the past, as this is a custom format,
+the docs are non-public, it interacts with ACPI tables that Intel
+doesn't always get to review, and the parsing is all written in C...
+...I also think Dan's static checker warning below is correct.
 
-Now I see what you mean. Yes, I agree this is a good idea and can
-simplify code. Quirk is not related to ASPM code and basically has
-nothing with it, just I put it into aspm.c because this is the only
-place where link retraining was activated.
+Luca, has this been addressed yet?
 
-But with this proposal there is one issue. Some kernel drivers already
-overwrite PCI_EXP_LNKCTL2_TLS value. So if PCI enumeration code set some
-value into PCI_EXP_LNKCTL2_TLS bits then drivers can change it and once
-ASPM will try to retrain link this may cause this issue.
+On Thu, Dec 3, 2020 at 1:10 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> Hello Luca Coelho,
+>
+> The patch fbb7957d28ac: "iwlwifi: support REDUCE_TX_POWER_CMD version
+> 6" from Sep 28, 2020, leads to the following static checker warning:
+>
+>         drivers/net/wireless/intel/iwlwifi/fw/acpi.c:462 iwl_sar_fill_table()
+>         error: buffer overflow 'prof->table' 10 <= 15
+>
+> drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+>    422  static int iwl_sar_fill_table(struct iwl_fw_runtime *fwrt,
+>    423                                __le16 *per_chain, u32 n_subbands,
+>    424                                int prof_a, int prof_b)
+>
+> Original n_subbands was ACPI_SAR_NUM_SUB_BANDS (5) but now it can be
+> IWL_NUM_SUB_BANDS_V2 (11) as well.
+>
+>    425  {
+>    426          int profs[ACPI_SAR_NUM_CHAIN_LIMITS] = { prof_a, prof_b };
+>    427          int i, j, idx;
+>    428
+>    429          for (i = 0; i < ACPI_SAR_NUM_CHAIN_LIMITS; i++) {
+>    430                  struct iwl_sar_profile *prof;
+>    431
+>    432                  /* don't allow SAR to be disabled (profile 0 means disable) */
+>    433                  if (profs[i] == 0)
+>    434                          return -EPERM;
+>    435
+>    436                  /* we are off by one, so allow up to ACPI_SAR_PROFILE_NUM */
+>    437                  if (profs[i] > ACPI_SAR_PROFILE_NUM)
 
-> > Moreover here we are dealing with specific OTP/EEPROM bug in Atheros
-> > chips, which was confirmed that exists. As I wrote in previous email, I
-> > was told that semi-official workaround is do Warm Reset or Cold Reset
-> > with turning power off from card. Which on most platforms / boards is
-> > not possible.
-> 
-> If there's a specific bug with a real root-cause analysis, please cite
-> it.  The threads mentioned in the current commit log are basically
-> informed speculation.
+Side note: stuff like this would be more readable and hopefully less
+error prone if we used ARRAY_SIZE() instead of memorizing the array's
+size here. Similar up at line 429, but at least that array is defined
+~3 lines away.
 
-I had (private) discussion with Adrian Chadd about ABCD device id issue.
-I hope that nobody is against if I put there summary and important parts
-about secondary bus reset (=hot reset):
+>    438                          return -EINVAL;
+>    439
+>    440                  /* profiles go from 1 to 4, so decrement to access the array */
+>    441                  prof = &fwrt->sar_profiles[profs[i] - 1];
+>    442
+>    443                  /* if the profile is disabled, do nothing */
+>    444                  if (!prof->enabled) {
+>    445                          IWL_DEBUG_RADIO(fwrt, "SAR profile %d is disabled.\n",
+>    446                                          profs[i]);
+>    447                          /*
+>    448                           * if one of the profiles is disabled, we
+>    449                           * ignore all of them and return 1 to
+>    450                           * differentiate disabled from other failures.
+>    451                           */
+>    452                          return 1;
+>    453                  }
+>    454
+>    455                  IWL_DEBUG_INFO(fwrt,
+>    456                                 "SAR EWRD: chain %d profile index %d\n",
+>    457                                 i, profs[i]);
+>    458                  IWL_DEBUG_RADIO(fwrt, "  Chain[%d]:\n", i);
+>    459                  for (j = 0; j < n_subbands; j++) {
+>    460                          idx = i * ACPI_SAR_NUM_SUB_BANDS + j;
+>    461                          per_chain[i * n_subbands + j] =
+>    462                                  cpu_to_le16(prof->table[idx]);
+>                                                     ^^^^^^^^^^^^^^^^
+> But this table size wasn't increased so potentially we're reading beyond
+> the end of the array?
 
+I believe your warning is pointing out a real issue, and I think (?)
+it's safe to just bump the table size, but given all the
+not-quite-explicit relationships between various bits of the ACPI
+table, the IWL command definition, and the various macros, it's not
+obvious that this is the only necessary change.
 
-The reason for abcd is because:
-* the MAC has hardware that upon cold reset, will read EEPROM/OTP
-  values for things like PCIe and other register defaults, and squirt
-  them into the MAC/PHY/etc registers
-* the default values for the PCIe bus pre-AR9300 were 0x168c:0xff<id>,
-  where <id> is the normal chip ID
-* the default values for the PCIe bus POST-AR9300 were 0x168c:0xabcd,
-  where they're always that regardless of the chip family
-* so yeah, all you know with 0x168c:0xabcd is there's an atheros
-  device there, but not WHICH it is.
+Brian
 
-* the bug is that the reset line isn't held low for long enough, or it's
-  bounced twice in quick succession, before the MAC has time to program
-  in the defaults from EEPROM/OTP and it doesn't do it a second time.
-
-* the MAC has hardware that upon cold reset, will read EEPROM/OTP
-  values for things like PCIe and other register defaults, and squirt
-  them into the MAC/PHY/etc registers
-
-* need to use the external reset line OR try using D3, not D3hot
-  (I assume that "external reset line" means PERST# - PCIe Warm Reset
-  and "D3, not D3hot" means D3cold)
-
-
-And now my experiments: Disabling and Enabling link via root bridge has
-exactly same syndromes as hot reset on all tested cards. See that
-different chips (pre-AR9300 and post-AR9300) have slightly different
-behavior and it matches all my experiments (I wrote test details in
-commit message). And doing link retrain when root bridge has non-2.5GT/s
-value in PCI_EXP_LNKCTL2_TLS has also same effect as hot reset.
-So based on same results from my experiments all these actions
-(disabling link, hot reset and link retrain) have common issue.
+>    463                          IWL_DEBUG_RADIO(fwrt, "    Band[%d] = %d * .125dBm\n",
+>    464                                          j, prof->table[idx]);
+>                                                    ^^^^^^^^^^^^^^^^
+>    465                  }
+>    466          }
+>    468          return 0;
+>    469  }
+>
+> regards,
+> dan carpenter
