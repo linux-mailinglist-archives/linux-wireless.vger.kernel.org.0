@@ -2,108 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A725398ED2
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 17:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10E5D398F65
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 17:56:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231204AbhFBPkp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Jun 2021 11:40:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231415AbhFBPko (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Jun 2021 11:40:44 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05671C061574;
-        Wed,  2 Jun 2021 08:39:01 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id i12-20020a05683033ecb02903346fa0f74dso2775656otu.10;
-        Wed, 02 Jun 2021 08:39:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RspDkee90yUUBxRu5qM7EKFWbFArMFdC6jUFJ1rxZY4=;
-        b=roEjTXLG72sH1Wu0DdDEvcvn+Wo/eRNO80rtIe0VjfIUcONGD0ie8YhM9ijfsZMSYh
-         q1UoONM9qKk74syckh8BIgYtVUrZB6gcCZ0r3HBGdU4BmPkdh4PPWBqd7ncISUzFQ4Lv
-         H03XY03lC0c5YBSdhgcOID2Wz+9b86HTVQkMghyW76XZENlZj785ZK5ALxUXTsPVbCjF
-         OJmA3j0tNkyIqFHXXmidyegjmU4XG4HQk4ouVDLJjfxwsBAys2wnFs9N6P31jtjQnQIy
-         QAnmwvaqUaMbEVry/t5KuQnxr5/UCgQ9JjG1wm9HkE/khFMsmP9mZ5MzAjytHVwpdpT5
-         K/9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RspDkee90yUUBxRu5qM7EKFWbFArMFdC6jUFJ1rxZY4=;
-        b=kOWf+tj4e23vwIE5o0qiW1pPyNpoSV+/hB4fIVLT3xtytwKk3wYZdcE/OZ1+rgD/o8
-         ebXSLNLvhtecYcF2AK4egYHkblCZ8NENN/9igDXvVL+WkMEcg9WyIuHlsfDLZ3VoQEqR
-         +nCs8kTo2r+pFOR8FvIsKe7r4COV0wXqkcDhyBWOo1eTNcmfDjYW4zYniFF9M0d5BusZ
-         A69Rnqu6UQEtpuhZ+TBlCeW9hD7O6vqZFcrbipboqdFK0nWWet0AN1P9OqbzGjHUIGi8
-         TVWmBamrGMyFxFr0/jANSt8BQGXs5/u6RK9rmTKYUzHbotLhvXDNM8xy5RBfW9u46Oo9
-         NiHQ==
-X-Gm-Message-State: AOAM531Z8RCOpdeQzWzUB1mcHizE7Q/0mZbDKhkqNGIuV3I0d4ecpUAa
-        GHTAsFdUeeJpjShcKAFkRWAgyMftjRTQoilJKaY=
-X-Google-Smtp-Source: ABdhPJyTYYAF2pcziCdoIpfOwUVcbVioPbp5S3hoJAq09LWQw7ISN5n1xy7cuaTQ5Hg0uzZR8NnUC52jlIzZfp3HoqY=
-X-Received: by 2002:a9d:7a5:: with SMTP id 34mr2406484oto.371.1622648340438;
- Wed, 02 Jun 2021 08:39:00 -0700 (PDT)
+        id S232294AbhFBP5s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Jun 2021 11:57:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50102 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231474AbhFBP5r (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 2 Jun 2021 11:57:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4E8F76139A;
+        Wed,  2 Jun 2021 15:56:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622649364;
+        bh=0+ttTFtR3wVvom3XUhqGkOd1u+wQH6+lzC3K8Fb6Go8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=sEjKnbNfbSBMp7xHwr2mZkFmT7ZIJ+M+BvcoSnJLEkgXjfyhU2xzzfsuNYI7Kgg+y
+         4D9fLdIhz2C8svTlEezci7xeaRsD5FBiq6AhSPaGiO/L14onlrtOqh2fAgSYV44FRK
+         dKozh0xkYBQ+LRftGLgvAu1iTfqI16Kaish3xymzKgEsJLzFCudHJ4UmsodmnnhaeK
+         4nriDD/S23kN1tkaAqLr2jAbyAHZBAXOb1DXo2495Dha0LLQbmVXjtY0w0Z4gjdoTX
+         CRN0S7e0biMvZv8+yyS4/brYTJzT5xBFbTl+zgudv6pSHg7zx/Z+pU8xSldsIXacGF
+         SpxdZCA8Yn3Wg==
+Date:   Wed, 2 Jun 2021 10:55:59 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        vtolkm@gmail.com, Rob Herring <robh@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-pci@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] PCI: Disallow retraining link for Atheros chips on
+ non-Gen1 PCIe bridges
+Message-ID: <20210602155559.GA2028037@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <20210601080538.71036-1-johannes@sipsolutions.net>
- <20210601100320.7d39e9c33a18.I0474861dad426152ac7e7afddfd7fe3ce70870e4@changeid>
- <CAHNKnsRv3r=Y7fTR-kUNVXyqeKiugXwAmzryBPvwYpxgjgBeBA@mail.gmail.com>
- <15e467334b2162728de22d393860d7c01e26ea97.camel@sipsolutions.net>
- <CAHNKnsQh7ikP4MCB0LhjpdqkMTjWq2ByWG4wToaXgzteYjUQaQ@mail.gmail.com> <2dbf474b0a0358627d12b1949ff98b9022943d76.camel@sipsolutions.net>
-In-Reply-To: <2dbf474b0a0358627d12b1949ff98b9022943d76.camel@sipsolutions.net>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Wed, 2 Jun 2021 18:38:49 +0300
-Message-ID: <CAHNKnsQW_s6vJu2Otb91WaFebP1-wt7ZB7drxCTvnwFkPVk0SA@mail.gmail.com>
-Subject: Re: [RFC 3/4] wwan: add interface creation support
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Loic Poulain <loic.poulain@linaro.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        m.chetan.kumar@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210602120816.axi4dtnyg5gl2h2z@pali>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jun 2, 2021 at 3:56 PM Johannes Berg <johannes@sipsolutions.net> wrote:
->>> The only thing I'd be worried about is that different implementations
->>> use it for different meanings, but I guess that's not that big a deal?
->>
->> The spectrum of sane use of the IFLA_PARENT_DEV_NAME attribute by
->> various subsystems and (or) drivers will be quite narrow. It should do
->> exactly what its name says - identify a parent device.
->
-> Sure, I was more worried there could be multiple interpretations as to
-> what "a parent device" is, since userspace does nothing but pass a
-> string in. But we can say it should be a 'struct device' in the kernel.
->
->> We can not handle the attribute in the common rtnetlink code since
->> rtnetlink does not know the HW configuration details. That is why
->> IFLA_PARENT_DEV_NAME should be handled by the RTNL ->newlink()
->> callback. But after all the processing, the device that is identified
->> by the IFLA_PARENT_DEV_NAME attribute should appear in the
->> netdev->dev.parent field with help of SET_NETDEV_DEV(). Eventually
->> RTNL will be able to fill IFLA_PARENT_DEV_NAME during the netdevs dump
->> on its own, taking data from netdev->dev.parent.
->
-> I didn't do that second part, but I guess that makes sense.
->
-> Want to send a follow-up patch to my other patch? I guess you should've
-> gotten it, but if not the new series is here:
->
-> https://lore.kernel.org/netdev/20210602082840.85828-1-johannes@sipsolutions.net/T/#t
+On Wed, Jun 02, 2021 at 02:08:16PM +0200, Pali Rohár wrote:
+> On Tuesday 01 June 2021 19:00:36 Bjorn Helgaas wrote:
 
-Yes, I saw the second version of your RFC and even attempted to
-provide a full picture of why this attribute should be generic.
+> > I wonder if this could be restructured as a generic quirk in quirks.c
+> > that simply set the bridge's TLS to 2.5 GT/s during enumeration.  Or
+> > would the retrain fail even in that case?
+> 
+> If I understand it correctly then PCIe link is already up when kernel
+> starts enumeration. So setting Bridge TLS to 2.5 GT/s does not change
+> anything here.
+> 
+> Moreover it would have side effect that cards which are already set to
+> 5+ GT/s would be downgraded to 2.5 GT/s during enumeration and for
+> increasing speed would be needed another round of "enumeration" to set a
+> new TLS and retrain link again. As TLS affects link only after link goes
+> into Recovery state.
+> 
+> So this would just complicate card enumeration and settings.
 
-I will send a follow-up series tonight with parent device exporting
-support and with some usage examples.
+The current quirk complicates the ASPM code.  I'm hoping that if we
+set the bridge's Target Link Speed during enumeration, the link
+retrain will "just work" without complicating the ASPM code.
 
->> I assume that IFLA_PARENT_DEV_NAME could replace the IFLA_LINK
->> attribute usage in such drivers as MBIM and RMNET. But the best way to
->> evolve these drivers is to make them WWAN-subsystem-aware using the
->> WWAN interface configuration API from your proposal, IMHO.
->
-> Right.
+An enumeration quirk wouldn't have to set the bridge's TLS to 2.5
+GT/s; the quirk would be attached to specific endpoint devices and
+could set the bridge's TLS to whatever the endpoint supports.
 
--- 
-Sergey
+> Moreover here we are dealing with specific OTP/EEPROM bug in Atheros
+> chips, which was confirmed that exists. As I wrote in previous email, I
+> was told that semi-official workaround is do Warm Reset or Cold Reset
+> with turning power off from card. Which on most platforms / boards is
+> not possible.
+
+If there's a specific bug with a real root-cause analysis, please cite
+it.  The threads mentioned in the current commit log are basically
+informed speculation.
+
+Bjorn
