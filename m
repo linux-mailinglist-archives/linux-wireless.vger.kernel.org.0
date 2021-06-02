@@ -2,187 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8A2399562
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 23:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52E03399615
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 00:52:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbhFBV1T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Jun 2021 17:27:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33278 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229576AbhFBV1S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Jun 2021 17:27:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 44E3F613C9;
-        Wed,  2 Jun 2021 21:25:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622669133;
-        bh=yK3WQBMMeMxbKAV9/TxMCM13oArnGK6q8YFGSwV+Cb0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=JysNYlsH6So6PJBoLqaagUyFo1EdTXmeDimUngBWO5b36BXi1ILNKxQaP475lGwmh
-         25t4SNoxscgRisOY1He0ykq1YLSgYiWfv0IcvioFehTMjiffwBJZs25odf2pJQGB9R
-         lywBCu2J3h67qoo/5FLULMw0ggR9I1uNvwFUvOYDhDKZu9lmADdksLPR64VZpkU8wG
-         vSuhnmee6IOp0OoIvSySOwma8MamHyYmBZ3uNrZePPd+ni6bP6id0BXHnMbPfwJOHU
-         5LuoDYtUWhDGxxiaHDjTqOASyLcfYC2Ijqhpmnan/IioA3cjHmF1bjXr7aXbB/aSPE
-         XPaiLZTJzgiRQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        deren.wu@mediatek.com, sean.wang@mediatek.com
-Subject: [PATCH] mt76: connac: add mt76_connac_power_save_sched in mt76_connac_pm_unref
-Date:   Wed,  2 Jun 2021 23:25:28 +0200
-Message-Id: <31548b57b6932dc8e59d6bc9039d6286b954a68a.1622669073.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S229724AbhFBWyj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Jun 2021 18:54:39 -0400
+Received: from mail-lj1-f182.google.com ([209.85.208.182]:46746 "EHLO
+        mail-lj1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229626AbhFBWyi (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 2 Jun 2021 18:54:38 -0400
+Received: by mail-lj1-f182.google.com with SMTP id e11so4610146ljn.13
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Jun 2021 15:52:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ij3SXWTCN+9dB7mTVvay4q49mzvCUt7VB9xa4OQCn4U=;
+        b=HUunR1qKj7DKAaLYSHc2CTq5DBlpV3tP1n9bK+HxFnIcWRw9iDRh0sjIVWtD/2AUE0
+         aiMbBjTcHLDCj+1H9CoHWbAEtO7KmEnpoHfl+JqmRm6TogSPABnm84vWHVj9ylDVXRwR
+         Ua5ZDhyhLqSNXy3K1Ql7Nz8wEFcMT/N3VTqf1WsQGNbczISPwanDCz9R5wi0WKw9bH54
+         uYAkn+RGya50NNZm8heKbLCkzQZ5ChigL0U13LKyeqPMlmC2p3FX+7cacNfVbe2552dq
+         eYSdRb7ZhHEshb+CF8AES+S3S4m4eGwPoQ72LuCPdwe57ohNUK7I7SjPUk3/r3iVb7N9
+         38eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ij3SXWTCN+9dB7mTVvay4q49mzvCUt7VB9xa4OQCn4U=;
+        b=hXFNpLh4lXj5UXDHABCeJ3XbZfnbxSusuJ4otLVLQVBvqX534eSsV2oKvzdrPTnUTD
+         fdcSoAuTMSdn1OJ5JXY+ckA3hVeTO1Xyj4zXfq3Ehx0juezErD5XoyJP/YUC/kNlmHPt
+         7BGcTLtW4n44ZnZxDzsWuI2rsxzOD01qGp1r6wTKCSj+TmwmztWGtOiuZqIheoKKBsNz
+         /ZBovrXU+FuNT7Em8kObaFl70GUpyL/ttgZdWmu6GnfIUX7X7w/M6Pp3cB0yv5eJAxB5
+         2+ns/EfBdQqRGMAArfANxPH59UKFT0AWwAZlVucGK6NmWPT7Mj9waR/J8BQGm7qf1B7l
+         99tA==
+X-Gm-Message-State: AOAM5313/+gR//JPhNzXYWNVYr2uO5/F0NDl0MonFOSYYpC7i4i3oeW/
+        rFmDIFuL/0YgQ4k3spApJGKtVB/2K6fsn39JFkg=
+X-Google-Smtp-Source: ABdhPJx+9LZ9gMGy1HdEnT3q9aKDob4ubLjOVJO44vl1JLyua7cTBc+RLzpZusJQi9dsBnwoRttLA3R5MADijg1LksA=
+X-Received: by 2002:a2e:824c:: with SMTP id j12mr26962032ljh.490.1622674300938;
+ Wed, 02 Jun 2021 15:51:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAOMZO5DPAr0XPHefewjF2fx7UL+7RvycAYLZdfosOUT6bwWHBA@mail.gmail.com>
+In-Reply-To: <CAOMZO5DPAr0XPHefewjF2fx7UL+7RvycAYLZdfosOUT6bwWHBA@mail.gmail.com>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Wed, 2 Jun 2021 19:51:29 -0300
+Message-ID: <CAOMZO5A3csY5GkczjXWeec188vUr08kWDnY-miv=9OU8pDToBw@mail.gmail.com>
+Subject: Re: ath10k_sdio: Long time for loading firmware and RCU errors
+To:     Christian Hewitt <christianshewitt@gmail.com>,
+        Gary Bisson <gary.bisson@boundarydevices.com>, gerg@kernel.org,
+        erik.stromdahl@gmail.com, Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        ath10k@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Schedule power_save work running mt76_connac_pm_unref in order to reduce
-power consumption
+On Tue, May 25, 2021 at 9:40 PM Fabio Estevam <festevam@gmail.com> wrote:
+>
+> Hi,
+>
+> I am using the QCA9377 chip on an imx6dl-pico-pi board running kernel
+> 5.10.37 and I noticed that the firmware takes a long time to load
+> (more than 3 minutes after boot):
 
-Tested-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/dma.c      | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7615/main.c     | 6 +++---
- drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt76_connac.h     | 8 ++++++--
- drivers/net/wireless/mediatek/mt76/mt7921/dma.c      | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7921/main.c     | 4 ++--
- 6 files changed, 16 insertions(+), 12 deletions(-)
+Ok, I replaced eudev with mdev in Buildroot and now it loads the
+QCA9377 firmware quickly.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
-index 8004ae5c16a9..b6184234cad2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
-@@ -81,7 +81,7 @@ static int mt7615_poll_tx(struct napi_struct *napi, int budget)
- 	if (napi_complete(napi))
- 		mt7615_irq_enable(dev, mt7615_tx_mcu_int_mask(dev));
- 
--	mt76_connac_pm_unref(&dev->pm);
-+	mt76_connac_pm_unref(&dev->mphy, &dev->pm);
- 
- 	return 0;
- }
-@@ -99,7 +99,7 @@ static int mt7615_poll_rx(struct napi_struct *napi, int budget)
- 		return 0;
- 	}
- 	done = mt76_dma_rx_poll(napi, budget);
--	mt76_connac_pm_unref(&dev->pm);
-+	mt76_connac_pm_unref(&dev->mphy, &dev->pm);
- 
- 	return done;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 7c9a55c57578..bd2f42ef5ad7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -693,7 +693,7 @@ static void mt7615_sta_rate_tbl_update(struct ieee80211_hw *hw,
- 	msta->n_rates = i;
- 	if (mt76_connac_pm_ref(phy->mt76, &dev->pm)) {
- 		mt7615_mac_set_rates(phy, msta, NULL, msta->rates);
--		mt76_connac_pm_unref(&dev->pm);
-+		mt76_connac_pm_unref(phy->mt76, &dev->pm);
- 	}
- 	spin_unlock_bh(&dev->mt76.lock);
- }
-@@ -709,7 +709,7 @@ void mt7615_tx_worker(struct mt76_worker *w)
- 	}
- 
- 	mt76_tx_worker_run(&dev->mt76);
--	mt76_connac_pm_unref(&dev->pm);
-+	mt76_connac_pm_unref(&dev->mphy, &dev->pm);
- }
- 
- static void mt7615_tx(struct ieee80211_hw *hw,
-@@ -739,7 +739,7 @@ static void mt7615_tx(struct ieee80211_hw *hw,
- 
- 	if (mt76_connac_pm_ref(mphy, &dev->pm)) {
- 		mt76_tx(mphy, control->sta, wcid, skb);
--		mt76_connac_pm_unref(&dev->pm);
-+		mt76_connac_pm_unref(mphy, &dev->pm);
- 		return;
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-index 261cff78de40..a2465b49ecd0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-@@ -98,7 +98,7 @@ mt7615_led_set_config(struct led_classdev *led_cdev,
- 	addr = mt7615_reg_map(dev, MT_LED_CTRL);
- 	mt76_wr(dev, addr, val);
- 
--	mt76_connac_pm_unref(&dev->pm);
-+	mt76_connac_pm_unref(&dev->mphy, &dev->pm);
- }
- 
- static int
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 63c1d1a68a70..0dfa09902ffd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -117,11 +117,15 @@ mt76_connac_pm_ref(struct mt76_phy *phy, struct mt76_connac_pm *pm)
- }
- 
- static inline void
--mt76_connac_pm_unref(struct mt76_connac_pm *pm)
-+mt76_connac_pm_unref(struct mt76_phy *phy, struct mt76_connac_pm *pm)
- {
- 	spin_lock_bh(&pm->wake.lock);
--	pm->wake.count--;
-+
- 	pm->last_activity = jiffies;
-+	if (--pm->wake.count == 0 &&
-+	    test_bit(MT76_STATE_MCU_RUNNING, &phy->state))
-+		mt76_connac_power_save_sched(phy, pm);
-+
- 	spin_unlock_bh(&pm->wake.lock);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index 7fca7dc466b8..5e745e9c2185 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -74,7 +74,7 @@ static int mt7921_poll_tx(struct napi_struct *napi, int budget)
- 	mt7921_tx_cleanup(dev);
- 	if (napi_complete(napi))
- 		mt7921_irq_enable(dev, MT_INT_TX_DONE_ALL);
--	mt76_connac_pm_unref(&dev->pm);
-+	mt76_connac_pm_unref(&dev->mphy, &dev->pm);
- 
- 	return 0;
- }
-@@ -92,7 +92,7 @@ static int mt7921_poll_rx(struct napi_struct *napi, int budget)
- 		return 0;
- 	}
- 	done = mt76_dma_rx_poll(napi, budget);
--	mt76_connac_pm_unref(&dev->pm);
-+	mt76_connac_pm_unref(&dev->mphy, &dev->pm);
- 
- 	return done;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 84930ad5ebc7..0465b91bda6d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -680,7 +680,7 @@ void mt7921_tx_worker(struct mt76_worker *w)
- 	}
- 
- 	mt76_txq_schedule_all(&dev->mphy);
--	mt76_connac_pm_unref(&dev->pm);
-+	mt76_connac_pm_unref(&dev->mphy, &dev->pm);
- }
- 
- static void mt7921_tx(struct ieee80211_hw *hw,
-@@ -710,7 +710,7 @@ static void mt7921_tx(struct ieee80211_hw *hw,
- 
- 	if (mt76_connac_pm_ref(mphy, &dev->pm)) {
- 		mt76_tx(mphy, control->sta, wcid, skb);
--		mt76_connac_pm_unref(&dev->pm);
-+		mt76_connac_pm_unref(mphy, &dev->pm);
- 		return;
- 	}
- 
--- 
-2.31.1
+> # wpa_supplicant  -iwlan0 -c /etc/wpa.conf &
+> # Successfully initialized wpa_supplicant
+> [  234.360447] NOHZ tick-stop error: Non-RCU local softirq work is
+> pending, handler #08!!!
+> [  234.390478] NOHZ tick-stop error: Non-RCU local softirq work is
+> pending, handler #08!!!
 
+These NOHZ messages still pop up.
+
+Cheers
