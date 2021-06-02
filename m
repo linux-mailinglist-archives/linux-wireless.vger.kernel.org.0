@@ -2,82 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A1BF398A1E
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 14:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB724398D4F
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 16:43:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229590AbhFBM5x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Jun 2021 08:57:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46268 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbhFBM5w (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Jun 2021 08:57:52 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986A9C061574;
-        Wed,  2 Jun 2021 05:56:09 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1loQPl-0013QI-0O; Wed, 02 Jun 2021 14:56:05 +0200
-Message-ID: <2dbf474b0a0358627d12b1949ff98b9022943d76.camel@sipsolutions.net>
-Subject: Re: [RFC 3/4] wwan: add interface creation support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     Loic Poulain <loic.poulain@linaro.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        m.chetan.kumar@intel.com
-Date:   Wed, 02 Jun 2021 14:56:04 +0200
-In-Reply-To: <CAHNKnsQh7ikP4MCB0LhjpdqkMTjWq2ByWG4wToaXgzteYjUQaQ@mail.gmail.com> (sfid-20210602_144554_521105_C70F7C7C)
-References: <20210601080538.71036-1-johannes@sipsolutions.net>
-         <20210601100320.7d39e9c33a18.I0474861dad426152ac7e7afddfd7fe3ce70870e4@changeid>
-         <CAHNKnsRv3r=Y7fTR-kUNVXyqeKiugXwAmzryBPvwYpxgjgBeBA@mail.gmail.com>
-         <15e467334b2162728de22d393860d7c01e26ea97.camel@sipsolutions.net>
-         <CAHNKnsQh7ikP4MCB0LhjpdqkMTjWq2ByWG4wToaXgzteYjUQaQ@mail.gmail.com>
-         (sfid-20210602_144554_521105_C70F7C7C)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S230262AbhFBOpD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Jun 2021 10:45:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60592 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230092AbhFBOpC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 2 Jun 2021 10:45:02 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B7BF9613BF;
+        Wed,  2 Jun 2021 14:43:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622644999;
+        bh=6hYLmEtJfyj17Pk5FCyvFiZi3GRWNPANkuUiPoffKss=;
+        h=From:To:Cc:Subject:Date:From;
+        b=E5hNuZK0bX4AptxU9d0sWXEhSHtZZIajx7yEOTCqFhj2INqGeMoHeL8GYKtb2xunP
+         K2oCd+TOa+cAmRsFfPaQvAXHCsNxvzat4jkXKqbo1/IwmWZhLE//coH4j7DtL5f6R7
+         KQy9As2urUyiGBJdApPXHmQeyWBZ5sHlzJ/kfC4RZtK9I8YcstyU352/bSk/G80mUS
+         OUx1AX0IXprm99gKWuP0fxDvTV7IlO9b5i20XHGLnBcjncX9mAEXaEYrYx4U/dCuFn
+         YEbM39nbiQ7+ffWTB19KtoWt/s2iJhZ6ONq17a+4fIl8nhESZen1d8Qx+u3Oc/M0Z7
+         n5f0fAa8wSIxA==
+From:   matthias.bgg@kernel.org
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        netdev@vger.kernel.org,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        linux-wireless@vger.kernel.org, Amar Shankar <amsr@cypress.com>,
+        ivan.ivanov@suse.com, linux-kernel@vger.kernel.org,
+        Dmitry Osipenko <digetx@gmail.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        Wright Feng <wright.feng@infineon.com>,
+        Remi Depommier <rde@setrix.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Arend van Spriel <aspriel@gmail.com>, dmueller@suse.de,
+        Matthias Brugger <mbrugger@suse.com>,
+        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH] brcmfmac: Delete second brcm folder hierarchy
+Date:   Wed,  2 Jun 2021 16:43:05 +0200
+Message-Id: <20210602144305.4481-1-matthias.bgg@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Sergey,
+From: Matthias Brugger <mbrugger@suse.com>
 
-> > The only thing I'd be worried about is that different implementations
-> > use it for different meanings, but I guess that's not that big a deal?
-> 
-> The spectrum of sane use of the IFLA_PARENT_DEV_NAME attribute by
-> various subsystems and (or) drivers will be quite narrow. It should do
-> exactly what its name says - identify a parent device.
+BRCMF_FW_DEFAULT_PATH already defines the brcm folder, delete the second
+folder to match with Linux firmware repository layout.
 
-Sure, I was more worried there could be multiple interpretations as to
-what "a parent device" is, since userspace does nothing but pass a
-string in. But we can say it should be a 'struct device' in the kernel.
+Fixes: 75729e110e68 ("brcmfmac: expose firmware config files through modinfo")
+Signed-off-by: Matthias Brugger <mbrugger@suse.com>
 
-> We can not handle the attribute in the common rtnetlink code since
-> rtnetlink does not know the HW configuration details. That is why
-> IFLA_PARENT_DEV_NAME should be handled by the RTNL ->newlink()
-> callback. But after all the processing, the device that is identified
-> by the IFLA_PARENT_DEV_NAME attribute should appear in the
-> netdev->dev.parent field with help of SET_NETDEV_DEV(). Eventually
-> RTNL will be able to fill IFLA_PARENT_DEV_NAME during the netdevs dump
-> on its own, taking data from netdev->dev.parent.
+---
 
-I didn't do that second part, but I guess that makes sense.
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Want to send a follow-up patch to my other patch? I guess you should've
-gotten it, but if not the new series is here:
-
-https://lore.kernel.org/netdev/20210602082840.85828-1-johannes@sipsolutions.net/T/#t
-
-> I assume that IFLA_PARENT_DEV_NAME could replace the IFLA_LINK
-> attribute usage in such drivers as MBIM and RMNET. But the best way to
-> evolve these drivers is to make them WWAN-subsystem-aware using the
-> WWAN interface configuration API from your proposal, IMHO.
-
-Right.
-
-johannes
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 16ed325795a8..b8788d7090a4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -626,8 +626,8 @@ BRCMF_FW_DEF(4373, "brcmfmac4373-sdio");
+ BRCMF_FW_DEF(43012, "brcmfmac43012-sdio");
+ 
+ /* firmware config files */
+-MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac*-sdio.*.txt");
+-MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac*-pcie.*.txt");
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-sdio.*.txt");
++MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.*.txt");
+ 
+ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
+ 	BRCMF_FW_ENTRY(BRCM_CC_43143_CHIP_ID, 0xFFFFFFFF, 43143),
+-- 
+2.31.1
 
