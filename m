@@ -2,132 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1CB4398D84
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 16:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E283E398E3B
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 17:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231474AbhFBO62 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Jun 2021 10:58:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:24866 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231222AbhFBO61 (ORCPT
+        id S231799AbhFBPUL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Jun 2021 11:20:11 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:48207 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231618AbhFBPUK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Jun 2021 10:58:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1622645804;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TMcD5cH8Gq97lrhqQCtDsFyiGiLKX1rySB5M/G3UShE=;
-        b=YZ7mnP8zT55k8RQDTHuUIHpY4ix65F62WA5beEjKyJ8AY7wl5sMI/asqNX4sf6Bqn8UDiz
-        LAFPd1lYvRd6Q8DPUNW7KIUysdwTJUsst6qOuurW/Wc3PxRerRUpLr4DIVWfoDJzPkgHDl
-        yQ+Pp8YO4XyIBPlLqhNiv9H8GLH9cBA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-594-etku91f3PSW39vFUNDYFpg-1; Wed, 02 Jun 2021 10:56:40 -0400
-X-MC-Unique: etku91f3PSW39vFUNDYFpg-1
-Received: by mail-ed1-f70.google.com with SMTP id d8-20020a0564020008b0290387d38e3ce0so1581913edu.1
-        for <linux-wireless@vger.kernel.org>; Wed, 02 Jun 2021 07:56:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=TMcD5cH8Gq97lrhqQCtDsFyiGiLKX1rySB5M/G3UShE=;
-        b=fDLT6u6HoEpLTciut2zwBGN4Q+TTFwsqOkNa0tyglCsHi2cKX0RsWsgs26AriucGg6
-         hJfGCQ8ThL5LdEAc2PNz0MpSvATRWxffmW7jG4tjmt50/g5CbMAfZVlrRTvbcISx8ViJ
-         1iwgL7IXTbWoOSzxwELY0EpDt/fLLyoshOhU7W4+q5gGDj44J5l0Oq3M+8dv1l45AuIv
-         1tIUbJ6CK0x7xv/1AlxzMprUPfq1vAKs6lKtQ1E2YRxpZnmCRZupk7ORa3YZ9zje5BOd
-         /BGIJq27LI6SGtw6HJ23Yw/BGmI9fJ3q4MIwbnoDfUxkH+TNdXcGIVfdS9rpSiMkYCCF
-         Pb6g==
-X-Gm-Message-State: AOAM53190AsIta6aMIiuoV7fttd1gG+yrgOAy7J2h0oz96T5sHqhkZxB
-        jal2TvByAupGYp6MNPMR3cpIr+OIb7PTMy1ml6NC4OyXbsy9JV3Tz4+mvxlWr5MvkU6itlNGEZy
-        A4HpUVZWEfc6CMdv4xKYjGrAOICI=
-X-Received: by 2002:aa7:cd19:: with SMTP id b25mr37414291edw.84.1622645799648;
-        Wed, 02 Jun 2021 07:56:39 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxETIGO2DZMJnum6q9KmB/yfISXhRFopOOUID+RlpBdT/IOOqIC9wTBVDUx7nYRfzZeiS6/GA==
-X-Received: by 2002:aa7:cd19:: with SMTP id b25mr37414281edw.84.1622645799426;
-        Wed, 02 Jun 2021 07:56:39 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id w14sm115661edj.6.2021.06.02.07.56.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jun 2021 07:56:39 -0700 (PDT)
-Subject: Re: [PATCH] brcmfmac: Delete second brcm folder hierarchy
-To:     matthias.bgg@kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        netdev@vger.kernel.org,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org, Amar Shankar <amsr@cypress.com>,
-        ivan.ivanov@suse.com, linux-kernel@vger.kernel.org,
-        Dmitry Osipenko <digetx@gmail.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Wright Feng <wright.feng@infineon.com>,
-        Remi Depommier <rde@setrix.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>, dmueller@suse.de,
-        Matthias Brugger <mbrugger@suse.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-References: <20210602144305.4481-1-matthias.bgg@kernel.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <be57da0c-bb2a-787b-caa2-843f7110c109@redhat.com>
-Date:   Wed, 2 Jun 2021 16:56:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Wed, 2 Jun 2021 11:20:10 -0400
+X-UUID: 36bace2b19b64c5496c75d4df3d970f7-20210602
+X-UUID: 36bace2b19b64c5496c75d4df3d970f7-20210602
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 266100842; Wed, 02 Jun 2021 23:18:26 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 2 Jun 2021 23:18:24 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 2 Jun 2021 23:18:24 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>, <jemele@google.com>,
+        <yenlinlai@google.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] mt76: mt7921: enable VHT BFee capabiliity
+Date:   Wed, 2 Jun 2021 23:17:52 +0800
+Message-ID: <a5748514496b2b4e4b23be7b0b560d2585feafb6.1622627260.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-In-Reply-To: <20210602144305.4481-1-matthias.bgg@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Deren Wu <deren.wu@mediatek.com>
 
-On 6/2/21 4:43 PM, matthias.bgg@kernel.org wrote:
-> From: Matthias Brugger <mbrugger@suse.com>
-> 
-> BRCMF_FW_DEFAULT_PATH already defines the brcm folder, delete the second
-> folder to match with Linux firmware repository layout.
-> 
-> Fixes: 75729e110e68 ("brcmfmac: expose firmware config files through modinfo")
-> Signed-off-by: Matthias Brugger <mbrugger@suse.com>
+enable BFee functions with proper BFee IEs
 
-Thanks, patch looks good to me:
+Tested-by: Eric-SY Chang <Eric-SY.Chang@mediatek.com>
+Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7921/init.c   |  1 +
+ .../net/wireless/mediatek/mt76/mt7921/main.c   | 18 ++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mt7921.h |  1 +
+ 3 files changed, 20 insertions(+)
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-
-> 
-> ---
-> 
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> index 16ed325795a8..b8788d7090a4 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> @@ -626,8 +626,8 @@ BRCMF_FW_DEF(4373, "brcmfmac4373-sdio");
->  BRCMF_FW_DEF(43012, "brcmfmac43012-sdio");
->  
->  /* firmware config files */
-> -MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac*-sdio.*.txt");
-> -MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcm/brcmfmac*-pcie.*.txt");
-> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-sdio.*.txt");
-> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.*.txt");
->  
->  static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
->  	BRCMF_FW_ENTRY(BRCM_CC_43143_CHIP_ID, 0xFFFFFFFF, 43143),
-> 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 59da29032645..82b01a2cea69 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -219,6 +219,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
+ 	dev->mphy.hw->wiphy->available_antennas_tx = dev->mphy.chainmask;
+ 
+ 	mt76_set_stream_caps(&dev->mphy, true);
++	mt7921_set_stream_vht_bf_caps(&dev->phy);
+ 	mt7921_set_stream_he_caps(&dev->phy);
+ 
+ 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 84930ad5ebc7..95502708b840 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -140,6 +140,24 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
+ 	return idx;
+ }
+ 
++void mt7921_set_stream_vht_bf_caps(struct mt7921_phy *phy)
++{
++	u32 *cap;
++
++	if (!phy->mt76->cap.has_5ghz)
++		return;
++
++	cap = &phy->mt76->sband_5g.sband.vht_cap.cap;
++
++	*cap |= IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
++		IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE |
++		(3 << IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT);
++
++	*cap &= ~(IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_MASK |
++		  IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE |
++		  IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE);
++}
++
+ void mt7921_set_stream_he_caps(struct mt7921_phy *phy)
+ {
+ 	struct ieee80211_sband_iftype_data *data;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 8aa8d2ecdffa..abf8be358786 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -356,6 +356,7 @@ void mt7921_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta, bool ps);
+ void mt7921_stats_work(struct work_struct *work);
+ void mt7921_txp_skb_unmap(struct mt76_dev *dev,
+ 			  struct mt76_txwi_cache *txwi);
++void mt7921_set_stream_vht_bf_caps(struct mt7921_phy *phy);
+ void mt7921_set_stream_he_caps(struct mt7921_phy *phy);
+ void mt7921_update_channel(struct mt76_dev *mdev);
+ int mt7921_init_debugfs(struct mt7921_dev *dev);
+-- 
+2.18.0
 
