@@ -2,122 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6963989F5
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 14:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A1BF398A1E
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jun 2021 14:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbhFBMrx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 2 Jun 2021 08:47:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44020 "EHLO
+        id S229590AbhFBM5x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 2 Jun 2021 08:57:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbhFBMrw (ORCPT
+        with ESMTP id S229662AbhFBM5w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 2 Jun 2021 08:47:52 -0400
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EAEBC061574;
-        Wed,  2 Jun 2021 05:45:53 -0700 (PDT)
-Received: by mail-ot1-x32c.google.com with SMTP id 5-20020a9d01050000b02903c700c45721so1225904otu.6;
-        Wed, 02 Jun 2021 05:45:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WVXpnpg85QY1n+XQbQwo5ampIxgrZeixQi2//ZteRcA=;
-        b=kfQtdmfpIv+3c9Qbxo12VXBCRlc5f0AxnV8Y9Rr0Y9Wci7q0FR3tAcqOinrF0W57ya
-         /wf8YiwTn25gWQANErDQ7K7lH/q9clxWyK7JTgqf0Mx3L+r1wVHlmXjN6ZTjCTukCqVm
-         03sJ4DbeN1GwYla8CPlI248q7Y7ydnc1iChjL5FMOWWww4XPRPQNM9P2mN0VkDc05ZSu
-         JSPQQHPfok/D08DJqmRRT23p8XHSeudXFe6JOFt6+1mzQ3TiYQPHhuGBhkRT3FC8eZGr
-         pLth2IlW+RJ3EtDDHD7AAM85hR61s/LB1uCHpN4LMBqmrH4mPQtLMg9fIEK7S7Gvjp+P
-         pLdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WVXpnpg85QY1n+XQbQwo5ampIxgrZeixQi2//ZteRcA=;
-        b=l601Hnz8+iAYbMGIt/L31qFmjnj8bzRTXPKXnARJw+waYEIA0iXBhlku47dnkvIRNK
-         Gt3ba2nbq0wtaMgOzu2oaGbxmy4XRD/DHuiY0yqRO4fHGuZ7DlmcYRhF0uT8c3uqxvnm
-         A7/z7+Gl7fgRwIY7K30XKY8kKhmtpyJbgzrR1LfjDzL46Kz2jirpI8WLiza8V/ZG3u90
-         GZC4//kqsq2cMmY9Ix/SrNMffOiL5q1Uvom8zHoMkXErSOQAF1nig47T2kRnNb0tJFwK
-         bVRnhd1EVR/EIkXBk97m6cWJLzTgpJnOTzPchzUoLO4et6pMmINpNyBnci1+leYd0FrM
-         Pi+g==
-X-Gm-Message-State: AOAM531hxnysm4KUHwyXtsbBKp2ns+/K8ppFDDBaqctTwMoV/5S0oq9d
-        GDzzzOZ49w6IqdeUE1KQiXWyMXkU1IFdoamoiPrrPCmNq8E=
-X-Google-Smtp-Source: ABdhPJwO0yC8co2oFUFXOIwYhqkhiXCm7Gf+8AGtoeMSCfLI1WcFL+xloe7R8Cg/NcqdY5iJnkk42pKHQ3bJw7AnlZA=
-X-Received: by 2002:a9d:3e5:: with SMTP id f92mr3464476otf.181.1622637952761;
- Wed, 02 Jun 2021 05:45:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210601080538.71036-1-johannes@sipsolutions.net>
- <20210601100320.7d39e9c33a18.I0474861dad426152ac7e7afddfd7fe3ce70870e4@changeid>
- <CAHNKnsRv3r=Y7fTR-kUNVXyqeKiugXwAmzryBPvwYpxgjgBeBA@mail.gmail.com> <15e467334b2162728de22d393860d7c01e26ea97.camel@sipsolutions.net>
-In-Reply-To: <15e467334b2162728de22d393860d7c01e26ea97.camel@sipsolutions.net>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Wed, 2 Jun 2021 15:45:41 +0300
-Message-ID: <CAHNKnsQh7ikP4MCB0LhjpdqkMTjWq2ByWG4wToaXgzteYjUQaQ@mail.gmail.com>
+        Wed, 2 Jun 2021 08:57:52 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986A9C061574;
+        Wed,  2 Jun 2021 05:56:09 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1loQPl-0013QI-0O; Wed, 02 Jun 2021 14:56:05 +0200
+Message-ID: <2dbf474b0a0358627d12b1949ff98b9022943d76.camel@sipsolutions.net>
 Subject: Re: [RFC 3/4] wwan: add interface creation support
-To:     Johannes Berg <johannes@sipsolutions.net>
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Cc:     Loic Poulain <loic.poulain@linaro.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         m.chetan.kumar@intel.com
+Date:   Wed, 02 Jun 2021 14:56:04 +0200
+In-Reply-To: <CAHNKnsQh7ikP4MCB0LhjpdqkMTjWq2ByWG4wToaXgzteYjUQaQ@mail.gmail.com> (sfid-20210602_144554_521105_C70F7C7C)
+References: <20210601080538.71036-1-johannes@sipsolutions.net>
+         <20210601100320.7d39e9c33a18.I0474861dad426152ac7e7afddfd7fe3ce70870e4@changeid>
+         <CAHNKnsRv3r=Y7fTR-kUNVXyqeKiugXwAmzryBPvwYpxgjgBeBA@mail.gmail.com>
+         <15e467334b2162728de22d393860d7c01e26ea97.camel@sipsolutions.net>
+         <CAHNKnsQh7ikP4MCB0LhjpdqkMTjWq2ByWG4wToaXgzteYjUQaQ@mail.gmail.com>
+         (sfid-20210602_144554_521105_C70F7C7C)
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Johannes,
+Hi Sergey,
 
-On Wed, Jun 2, 2021 at 10:38 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->> Wow, this is a perfect solution! I just could not help but praise this
->> proposal :)
->
-> Heh.
->
->> When researching the latest WWAN device drivers and related
->> discussions, I began to assume that implementing the netdev management
->> API without the dummy (no-op) netdev is only possible using genetlink.
->> But this usage of a regular device specified by its name as a parent
->> for netdev creation is so natural and clear that I believe in RTNL
->> again.
->>
->> Let me place my 2 cents. Maybe the parent device attribute should be
->> made generic? E.g. call it IFLA_PARENT_DEV_NAME, with usage semantics
->> similar to the IFLA_LINK attribute for VLAN interfaces. The case when
->> a user needs to create a netdev on behalf of a regular device is not
->> WWAN specific, IMHO. So, other drivers could benefit from such
->> attribute too. To be honest, I can not recall any driver that could
->> immediately start using such attribute, but the situation with the
->> need for such attribute seems to be quite common.
->
-> That's a good question/thought.
->
-> I mean, in principle this is trivial, right? Just add a
-> IFLA_PARENT_DEV_NAME like you say, and use it instead of
-> IFLA_WWAN_DEV_NAME.
->
-> It'd come out of tb[] instead of data[] and in this case would remove
-> the need to add the additional data[] argument to rtnl_create_link() in
-> my patch, since it's in tb[] then.
+> > The only thing I'd be worried about is that different implementations
+> > use it for different meanings, but I guess that's not that big a deal?
+> 
+> The spectrum of sane use of the IFLA_PARENT_DEV_NAME attribute by
+> various subsystems and (or) drivers will be quite narrow. It should do
+> exactly what its name says - identify a parent device.
 
-Yep, exactly.
+Sure, I was more worried there could be multiple interpretations as to
+what "a parent device" is, since userspace does nothing but pass a
+string in. But we can say it should be a 'struct device' in the kernel.
 
-> The only thing I'd be worried about is that different implementations
-> use it for different meanings, but I guess that's not that big a deal?
+> We can not handle the attribute in the common rtnetlink code since
+> rtnetlink does not know the HW configuration details. That is why
+> IFLA_PARENT_DEV_NAME should be handled by the RTNL ->newlink()
+> callback. But after all the processing, the device that is identified
+> by the IFLA_PARENT_DEV_NAME attribute should appear in the
+> netdev->dev.parent field with help of SET_NETDEV_DEV(). Eventually
+> RTNL will be able to fill IFLA_PARENT_DEV_NAME during the netdevs dump
+> on its own, taking data from netdev->dev.parent.
 
-The spectrum of sane use of the IFLA_PARENT_DEV_NAME attribute by
-various subsystems and (or) drivers will be quite narrow. It should do
-exactly what its name says - identify a parent device.
+I didn't do that second part, but I guess that makes sense.
 
-We can not handle the attribute in the common rtnetlink code since
-rtnetlink does not know the HW configuration details. That is why
-IFLA_PARENT_DEV_NAME should be handled by the RTNL ->newlink()
-callback. But after all the processing, the device that is identified
-by the IFLA_PARENT_DEV_NAME attribute should appear in the
-netdev->dev.parent field with help of SET_NETDEV_DEV(). Eventually
-RTNL will be able to fill IFLA_PARENT_DEV_NAME during the netdevs dump
-on its own, taking data from netdev->dev.parent.
+Want to send a follow-up patch to my other patch? I guess you should've
+gotten it, but if not the new series is here:
 
-I assume that IFLA_PARENT_DEV_NAME could replace the IFLA_LINK
-attribute usage in such drivers as MBIM and RMNET. But the best way to
-evolve these drivers is to make them WWAN-subsystem-aware using the
-WWAN interface configuration API from your proposal, IMHO.
+https://lore.kernel.org/netdev/20210602082840.85828-1-johannes@sipsolutions.net/T/#t
 
--- 
-Sergey
+> I assume that IFLA_PARENT_DEV_NAME could replace the IFLA_LINK
+> attribute usage in such drivers as MBIM and RMNET. But the best way to
+> evolve these drivers is to make them WWAN-subsystem-aware using the
+> WWAN interface configuration API from your proposal, IMHO.
+
+Right.
+
+johannes
+
