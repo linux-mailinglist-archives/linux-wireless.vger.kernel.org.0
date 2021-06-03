@@ -2,181 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 986EE39A238
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 15:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D9839A466
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 17:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230282AbhFCNcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Jun 2021 09:32:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55780 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230056AbhFCNcQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Jun 2021 09:32:16 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 16461613E9;
-        Thu,  3 Jun 2021 13:30:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622727032;
-        bh=nHnd7vzh3M8RC1fZNrNRtyhWT47kuzKHbn1QeDwEt+Y=;
-        h=From:To:Cc:Subject:Date:From;
-        b=lEmr2Z512td2Le9XA0X0ekrs0hkXV+9Gj1rLxIp0328KLzbj+1AP1xqrXSKWtFLCa
-         R12KZHYXkSsc3jm+vsR+nj8T3LeD+9eTDVZkeNZ4VmqyJfuDFca9BznRQWKYSRT6Zw
-         a2AQODEqSDkyySN/u03Um6xgojD41c3Zsz384wLkd3ku+jgGEtUxTEAn97iCVLgYux
-         7EOHLCOaHPtBxitwAnQvj2B6MEjPHqBHlFVJ8HKbxR9Tt8GQdryEvRWjeyqsxoFpoa
-         JPSG90kxh4fcfe95d8ndr+ZNJl4GDeX6BAFW6AXOUh55wmL03lQxmN+z+sJYscIkzh
-         DxXdcCq0SrnGg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        deren.wu@mediatek.com, sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7921: introduce dedicated control for deep_sleep
-Date:   Thu,  3 Jun 2021 15:30:24 +0200
-Message-Id: <a0c5992f502b5eca5967de4bc5cfa4533e91a18d.1622726976.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S231986AbhFCPWO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Jun 2021 11:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55028 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231826AbhFCPWN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Jun 2021 11:22:13 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16701C06174A;
+        Thu,  3 Jun 2021 08:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=N2VWo8wKw7dopgHVxyfYdau0jmOFUHRM6wN4YMv4xKI=; b=dxttJ+W0F2wEGpLOdBnsncftqU
+        378QRkd3zGU6qPRq7ZEn2zXSaGuaWTjr4Iu3BB4VB84Tc0JbhACJWicFbHmjNs9GIEoirpQqCr+0H
+        lFdV0pNI8XXltxYdJQGvTYiQCDW7DEW7INM4EEmUwb0vGTcYN6nrj5quXvvdPPx0EidwbJfYsmcyd
+        EkIP04P5/QCR7hYcuYL+rNmQkTxNKhKCvZ5z85iOhR50g6rIa53wBMifcAIFYjHKGNTqn1tymNTOe
+        +phsZB0dztLLgDh+cwCy9pCViMl617E1ipJ8/fzhSkaZQmGVIpnkEDg7DOmxKdedtuR2aNZUvbBPM
+        oYuU6Bkw==;
+Received: from [2601:1c0:6280:3f0::ce7d]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1lop91-009LaP-BE; Thu, 03 Jun 2021 15:20:27 +0000
+Subject: Re: [PATCH v3] wireless: carl9170: fix LEDS build errors & warnings
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Christian Lamparter <chunkeey@gmail.com>,
+        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+References: <20210530031134.23274-1-rdunlap@infradead.org>
+ <8043ff50-d592-7666-f001-7505efa0d4c2@gmail.com>
+ <c49c07d5-1d6e-5b99-30b4-bc8f48b0fde3@infradead.org>
+ <87czt31dt3.fsf@codeaurora.org>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <5e5a50e0-7e42-9fd3-f927-d3b695a21912@infradead.org>
+Date:   Thu, 3 Jun 2021 08:20:25 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
+In-Reply-To: <87czt31dt3.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce ds_enable switch to fully control fw deep_sleep capability
+On 6/3/21 2:46 AM, Kalle Valo wrote:
+> Randy Dunlap <rdunlap@infradead.org> writes:
+> 
+>> On 5/30/21 2:31 AM, Christian Lamparter wrote:
+>>> On 30/05/2021 05:11, Randy Dunlap wrote:
+>>>> kernel test robot reports over 200 build errors and warnings
+>>>> that are due to this Kconfig problem when CARL9170=m,
+>>>> MAC80211=y, and LEDS_CLASS=m.
+>>>>
+>>>> WARNING: unmet direct dependencies detected for MAC80211_LEDS
+>>>>    Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] &&
+>>>> (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
+>>>>    Selected by [m]:
+>>>>    - CARL9170_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] &&
+>>>> WLAN_VENDOR_ATH [=y] && CARL9170 [=m]
+>>>>
+>>>> CARL9170_LEDS selects MAC80211_LEDS even though its kconfig
+>>>> dependencies are not met. This happens because 'select' does not follow
+>>>> any Kconfig dependency chains.
+>>>>
+>>>> Fix this by making CARL9170_LEDS depend on MAC80211_LEDS, where
+>>>> the latter supplies any needed dependencies on LEDS_CLASS.
+>>>
+>>> Ok, this is not what I was expecting... I though you would just
+>>> add a "depends on / imply MAC80211_LEDS" on your v2. (this was
+>>> based on the assumption of what mac80211,  ath9k/_htc and mt76
+>>> solutions of the same problem looked like).
+>>
+>> Do you want the user choice/prompt removed, like MT76 is?
+>>
+>>> But since (I assuming here) this patch passed the build-bots
+>>> testing with flying colors in the different config permutations.
+>>
+>> It hasn't passed any build-bots testing that I know of.
+>> I did 8 combinations of kconfigs (well, 2 of them were invalid),
+>> but they all passed my own build testing.
+> 
+> So is this ok to take now? Or will there be v4?
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt76_connac.h  |  1 +
- .../wireless/mediatek/mt76/mt7921/debugfs.c   | 22 ++++++++++++++++---
- .../net/wireless/mediatek/mt76/mt7921/init.c  |  3 ++-
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/pci.c   | 11 ++++++----
- 5 files changed, 30 insertions(+), 9 deletions(-)
+It's all good AFAIK unless Christian wants something changed.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 0dfa09902ffd..2b8f9b5e38f1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -45,6 +45,7 @@ enum {
- 
- struct mt76_connac_pm {
- 	bool enable;
-+	bool ds_enable;
- 	bool suspended;
- 
- 	spinlock_t txq_lock;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-index b41d70be948b..fe4db4916a4b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-@@ -248,7 +248,7 @@ mt7921_pm_set(void *data, u64 val)
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
- 					    mt7921_pm_interface_iter, mphy->priv);
- 
--	mt76_connac_mcu_set_deep_sleep(&dev->mt76, !!pm->enable);
-+	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
- 
- 	mt7921_mutex_release(dev);
- 
-@@ -271,15 +271,31 @@ static int
- mt7921_deep_sleep_set(void *data, u64 val)
- {
- 	struct mt7921_dev *dev = data;
-+	struct mt76_connac_pm *pm = &dev->pm;
-+	bool enable = !!val;
- 
- 	mt7921_mutex_acquire(dev);
--	mt76_connac_mcu_set_deep_sleep(&dev->mt76, !!val);
-+	if (pm->ds_enable != enable) {
-+		mt76_connac_mcu_set_deep_sleep(&dev->mt76, enable);
-+		pm->ds_enable = enable;
-+	}
- 	mt7921_mutex_release(dev);
- 
- 	return 0;
- }
- 
--DEFINE_DEBUGFS_ATTRIBUTE(fops_ds, NULL, mt7921_deep_sleep_set, "%lld\n");
-+static int
-+mt7921_deep_sleep_get(void *data, u64 *val)
-+{
-+	struct mt7921_dev *dev = data;
-+
-+	*val = dev->pm.ds_enable;
-+
-+	return 0;
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(fops_ds, mt7921_deep_sleep_get,
-+			 mt7921_deep_sleep_set, "%lld\n");
- 
- static int
- mt7921_pm_stats(struct seq_file *s, void *data)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 59da29032645..be70dd5b4b2b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -200,6 +200,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
- 	dev->pm.stats.last_wake_event = jiffies;
- 	dev->pm.stats.last_doze_event = jiffies;
- 	dev->pm.enable = true;
-+	dev->pm.ds_enable = true;
- 
- 	ret = mt7921_init_hardware(dev);
- 	if (ret)
-@@ -230,7 +231,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
- 	if (ret)
- 		return ret;
- 
--	return mt76_connac_mcu_set_deep_sleep(&dev->mt76, dev->pm.enable);
-+	return mt76_connac_mcu_set_deep_sleep(&dev->mt76, dev->pm.ds_enable);
- }
- 
- void mt7921_unregister_device(struct mt7921_dev *dev)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 0465b91bda6d..26dcfb200b4b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -815,7 +815,7 @@ static int mt7921_sta_state(struct ieee80211_hw *hw,
- {
- 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
- 
--	if (dev->pm.enable) {
-+	if (dev->pm.ds_enable) {
- 		mt7921_mutex_acquire(dev);
- 		mt76_connac_sta_state_dp(&dev->mt76, old_state, new_state);
- 		mt7921_mutex_release(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 13263f50dc00..a984f6d43719 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -207,8 +207,10 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
- 			goto restore_suspend;
- 	}
- 
--	if (!pm->enable)
--		mt76_connac_mcu_set_deep_sleep(&dev->mt76, true);
-+	/* always enable deep sleep during suspend to reduce
-+	 * power consumption
-+	 */
-+	mt76_connac_mcu_set_deep_sleep(&dev->mt76, true);
- 
- 	napi_disable(&mdev->tx_napi);
- 	mt76_worker_disable(&mdev->tx_worker);
-@@ -251,7 +253,7 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
- 	}
- 	napi_enable(&mdev->tx_napi);
- 
--	if (!pm->enable)
-+	if (!pm->ds_enable)
- 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
- 
- 	if (hif_suspend)
-@@ -300,7 +302,8 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
- 	napi_enable(&mdev->tx_napi);
- 	napi_schedule(&mdev->tx_napi);
- 
--	if (!dev->pm.enable)
-+	/* restore previous ds setting */
-+	if (!pm->ds_enable)
- 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
- 
- 	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state))
+Christian?
+
 -- 
-2.31.1
+~Randy
 
