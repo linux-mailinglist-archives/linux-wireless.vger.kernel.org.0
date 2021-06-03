@@ -2,100 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B684399AB7
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 08:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F17F2399B0E
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 08:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbhFCGbc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Jun 2021 02:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51502 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229721AbhFCGbb (ORCPT
+        id S229721AbhFCGxy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Jun 2021 02:53:54 -0400
+Received: from mail-pg1-f173.google.com ([209.85.215.173]:37395 "EHLO
+        mail-pg1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229665AbhFCGxy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Jun 2021 02:31:31 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C970BC06174A
-        for <linux-wireless@vger.kernel.org>; Wed,  2 Jun 2021 23:29:35 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id v8so7138248lft.8
-        for <linux-wireless@vger.kernel.org>; Wed, 02 Jun 2021 23:29:35 -0700 (PDT)
+        Thu, 3 Jun 2021 02:53:54 -0400
+Received: by mail-pg1-f173.google.com with SMTP id t9so4406551pgn.4
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Jun 2021 23:52:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=dhD4QqKHpRWsIEdljQV9IJSaKCpTNr2FVYc85c6SZBo=;
-        b=g4pYiiKW8we+NyMnxSaAKuYiTsF9IbzI1z1cKVx4QXDX3B8qrALbM1q9yCvfj1+4dS
-         2dD/R3rpnbJt5yrrgNo4Qk2DIzeqUQ0O0MSWuw+8bM8j1sv+JLkkG4mvmbZBTMcA16F+
-         SX8o456Ul6vd0cXty2lMctl6C+VT47DlNwvFbxkdgPa8U3Gwe6WZZiPb20EBX7OAJ/fK
-         9BWsuqEn0hCx5oyO03uMrXNbH05zabNa/Q4hM4ldAAyS60+YB8imRu+PSIVmoECt32xq
-         0pFN6nY/pUJCCcJuxnWPwsvAD4pOZtvaydxH45jOAFJ2YEPWtAHZ34HsyUIwz1+YPTBi
-         5Pmg==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9XycJN3Z2QtVixsKYzXsAVtV+JUFSqzqxdmsTE6pZCI=;
+        b=otXLMBqu9C8yMIXKbfphbBHyfaTFlz3vlpDEPayJFgkJUv9VNDa79NiokwsBSDf4fk
+         DPipM34ggkYjMNOtORMJH07mxBssA22x516QiVJYHCEBsBlWaBcEH/5hCGzJA6eKubYx
+         HFYImtha2nhYF3xMkdnvOc1nYnNHo/Z00E89AHVSmGhQjnkq66IhdO/k48dulhuCekqv
+         truftPEvH+JhXCBwdwbXY8sslu4nfJ/BlO0xtRpsptXgbjuJ1t0hlo103Yp0WAD2BKNQ
+         /l/7uUZKc6a9xQiYyb0FBwUz1+flkxsLa41mBcePBZ2Sd26/C3FfGzFy0FbIVGnZjlzS
+         aWmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=dhD4QqKHpRWsIEdljQV9IJSaKCpTNr2FVYc85c6SZBo=;
-        b=UUg1BJBd+bzaKexesI/o7ThIt4oHaP8WlZEduPnxzMw77JuO3z8UvVN8As8IVscsgW
-         hX2R3a3mWHvcyhIM78kqA1p37wnqOEd5+57Sxu1AUgKl8SLrZlooBdSPoA3yIQ1xp6Jh
-         koY2Yu0oexHli+0aouToOSROMsJLCpi4F7Yb7ugKi7aq19noixo20dBHzUIr14ign3w1
-         Tucp+lwuqLo6RiN8OZcMFqS6QIuwPRzYHOJb2KzVTw3FofNWrLJoaayNmqYOZRYb7UyH
-         LuEntmpBdhCKVdjxDkVwvcUQTXqtcif3d+zdmbPlzZ7f7nZsS2ClkwaJNIX9gIdebQap
-         xpGw==
-X-Gm-Message-State: AOAM5300kneX2wFO+JL1HsJeczpD4/ff+uV2FfzIXZDNi5GU+238HbAJ
-        kkeVJYITvi8aX53FmvY5sgB9bK7eZSgmdZExWlE=
-X-Google-Smtp-Source: ABdhPJzPL8yPi/ekft+2Rr3AKLc6MsfaE8dvEYv+jQQ/rnX/eSQEys6onwo7OB252vuUOxEhjzoMTWD64oRe8SWq8H8=
-X-Received: by 2002:a05:6512:3703:: with SMTP id z3mr16435300lfr.468.1622701774014;
- Wed, 02 Jun 2021 23:29:34 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9XycJN3Z2QtVixsKYzXsAVtV+JUFSqzqxdmsTE6pZCI=;
+        b=dDm8Pvk6HM1qCoiCeRS4X+t+PfmSUBpVRtgvUaPJTa2nrZEyt1qflarvM6EXPGYxu9
+         Q6J4B59DW2n+3Lwy88khBm5PFwcO2uU4qmn6pX++LHkcJ2aCwZIMX+VcdlDzUEwROhrq
+         Q1LIbwvM6gSvr61jWX0Nxk0PqcyK12ABGbkKc7ATXez4M2G5aGQhr2SUphgURLHWRFyo
+         Lt0srOFR28FReCr6zvlU6YnwRY8qzGwqtHbOCIu0xTXzMFpi9iS4TdcSOXs/QZKDje+P
+         v9tkVldur7x60Zo7E7taMamuVQNGoWQNJl39BDThW+OTwnZWi4b1ELLEyBwYiflgAjbl
+         lReg==
+X-Gm-Message-State: AOAM530Hn/WXF1X8kSLzDVrQInvt0tVNz5Q5ZKa4/bbs0JEDi+wCYMvJ
+        3vShMi/vGX5kfx/RIKpjMEBTSgAR/Qlv6OQAHjfOTR8TYTk2hw==
+X-Google-Smtp-Source: ABdhPJyVRv4/kE+k4Aslrczm9l9JWwwxVSFmtu93acoC82cCmhfKylDQuArKPQ0jhEspi/aURX7WZnwAkODihAfEXZw=
+X-Received: by 2002:a63:1906:: with SMTP id z6mr37475603pgl.173.1622703070195;
+ Wed, 02 Jun 2021 23:51:10 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ac2:4188:0:0:0:0:0 with HTTP; Wed, 2 Jun 2021 23:29:33 -0700 (PDT)
-Reply-To: wstun.office123@gmail.com
-From:   WESTERN UNION AGENT <rev.tonyjohnson101@gmail.com>
-Date:   Thu, 3 Jun 2021 07:29:33 +0100
-Message-ID: <CAGEMD6fvcA77NXRkw4axfWokeejFqSrJAYzdzfWYv4j1JEuuOg@mail.gmail.com>
-Subject: Attention Beneficiary,
-To:     undisclosed-recipients:;
+References: <20210601080538.71036-1-johannes@sipsolutions.net>
+ <20210601100320.7d39e9c33a18.I0474861dad426152ac7e7afddfd7fe3ce70870e4@changeid>
+ <CAMZdPi-ZaH8WWKfhfKzy0OKpUtNAiCUfekh9R1de5awFP-ed=A@mail.gmail.com>
+ <0555025c6d7a88f4f3dcdd6704612ed8ba33b175.camel@sipsolutions.net>
+ <CAMZdPi8Ca3YRaVWGL6Fjd7yfowQcX2V2RYNDNm-2kQdEZ-Z1Bw@mail.gmail.com> <17fd0311eb8b51e6d23fce8b7eb23e3d2581cf54.camel@sipsolutions.net>
+In-Reply-To: <17fd0311eb8b51e6d23fce8b7eb23e3d2581cf54.camel@sipsolutions.net>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Thu, 3 Jun 2021 09:00:27 +0200
+Message-ID: <CAMZdPi8RQ7580nTLHf+GYavU3CTME76P86haB8VCdVjXxrgqLA@mail.gmail.com>
+Subject: Re: [RFC 3/4] wwan: add interface creation support
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Network Development <netdev@vger.kernel.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Dear Friend,
+On Wed, 2 Jun 2021 at 10:29, Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Wed, 2021-06-02 at 08:52 +0200, Loic Poulain wrote:
+> >
+> > OK no prob ;-), are you going to resubmit something or do you want I
+> > take care of this?
+>
+> I just respun a v2, but I'm still not able to test any of this (I'm in a
+> completely different group than Chetan, just have been helping/advising
+> them, so I don't even have their HW).
+>
+> So if you want to take over at some point and are able to test it, I'd
+> much appreciate it.
 
-I was looking for your contact since two months ago to tell you about
-the new development in which you will receive your outstanding fund
-easily without any problem because the federal government of this
-country has Release your fund to you by western union money transfer.
+Thanks for this work, yes I can try testing this with mhi_net.
 
-According to minister of finance you will be receiving the sum of
-$5000usd every day till you receive all your funds. So try as much as
-possible to get you funds transferred to you. This is your opportunity
-to have your funds transferred to you.
+Chetan, would you be able to test that as well? basically with the two
+kernel series (Johannes, Sergey) applied on top of your IOSM one + the
+iproute2 changes for the userspace side (Sergey), that should work,
+but let us know if any issues.
 
-Contact western union money transfer office for immediate for the
-transfer of your fund at the rate of $5000.00 us dollar everyday till
-you
-Receive all your total fund of $2.5million us dollar.
-
-Bellow is your files number
-
-Contact western union department below and send to them your full
-information as listed below
-
-1. Your Full Names---------
-2. Postal Address----------
-3. Phone Numbers-----------
-5. Sex-------------
-6. Age-------------
-7. Occupation--------------
-8. Nationality-------------
-9 Your Attached Id card or ------
-10.Your whatsapp Number....
-
-Contact the REV.ERIC G.CHARLS, who is in position to release your
-payment now through this email address
-
-( wstun.office123@gmail.com ) forward to him the stated information
-immediately for the release
-
-of your first payment of $5000 today.
-
-Best Regards
-
-WESTERN UNION AGENT.
+Regards,
+Loic
