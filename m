@@ -2,98 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90D9839A466
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 17:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C0C39A616
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 18:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231986AbhFCPWO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Jun 2021 11:22:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55028 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231826AbhFCPWN (ORCPT
+        id S230157AbhFCQrD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Jun 2021 12:47:03 -0400
+Received: from mail-ed1-f52.google.com ([209.85.208.52]:36669 "EHLO
+        mail-ed1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230054AbhFCQrD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Jun 2021 11:22:13 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16701C06174A;
-        Thu,  3 Jun 2021 08:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=N2VWo8wKw7dopgHVxyfYdau0jmOFUHRM6wN4YMv4xKI=; b=dxttJ+W0F2wEGpLOdBnsncftqU
-        378QRkd3zGU6qPRq7ZEn2zXSaGuaWTjr4Iu3BB4VB84Tc0JbhACJWicFbHmjNs9GIEoirpQqCr+0H
-        lFdV0pNI8XXltxYdJQGvTYiQCDW7DEW7INM4EEmUwb0vGTcYN6nrj5quXvvdPPx0EidwbJfYsmcyd
-        EkIP04P5/QCR7hYcuYL+rNmQkTxNKhKCvZ5z85iOhR50g6rIa53wBMifcAIFYjHKGNTqn1tymNTOe
-        +phsZB0dztLLgDh+cwCy9pCViMl617E1ipJ8/fzhSkaZQmGVIpnkEDg7DOmxKdedtuR2aNZUvbBPM
-        oYuU6Bkw==;
-Received: from [2601:1c0:6280:3f0::ce7d]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1lop91-009LaP-BE; Thu, 03 Jun 2021 15:20:27 +0000
-Subject: Re: [PATCH v3] wireless: carl9170: fix LEDS build errors & warnings
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Christian Lamparter <chunkeey@gmail.com>,
-        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-References: <20210530031134.23274-1-rdunlap@infradead.org>
- <8043ff50-d592-7666-f001-7505efa0d4c2@gmail.com>
- <c49c07d5-1d6e-5b99-30b4-bc8f48b0fde3@infradead.org>
- <87czt31dt3.fsf@codeaurora.org>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <5e5a50e0-7e42-9fd3-f927-d3b695a21912@infradead.org>
-Date:   Thu, 3 Jun 2021 08:20:25 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        Thu, 3 Jun 2021 12:47:03 -0400
+Received: by mail-ed1-f52.google.com with SMTP id w21so7803126edv.3
+        for <linux-wireless@vger.kernel.org>; Thu, 03 Jun 2021 09:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=+ViIoKAJPzyUU5XsR8IS1dmKwsxsBwo0ub/03st1PAo=;
+        b=RWB5Y6x7tFS6zgt8VcOBhkuAEOhkWYuU3up5l7MEJH5WcToIxebYU8AXIr8y1ESZMz
+         dM8sX1grm81xZrZTGpqxHWL/2PenHNMshVbXZ7dk0491FhZzwHvOjo47p461jGn7tyvU
+         TjLs4+wXiGiCpEH8L7TkZvkuUMde+cE4zqD+GY9G51coa4bkoM9TwKEmHD4QXL+d3nNt
+         3HNu4aPiHMO+SJ0LiKSfWLK/a0hnS//XwVO35aydz92KXEyGQsZNIzPlFWv2bQ6x1qpl
+         yTMyByytgX0qUKJN0jFWRKpD5n+Zr7di3jcHtENAoHCiq1fq47Z5wmuJ3ZAUJniLSnVD
+         uYhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=+ViIoKAJPzyUU5XsR8IS1dmKwsxsBwo0ub/03st1PAo=;
+        b=niwkGC7Y6QumdaEhOsTLwXphKoBbURHVZXT3BGHtKCqlZgnHEL5rNhhozWh3u2u3fz
+         D0BsytdyjK8m1yJ+a8V4syfe65r2EMkg979BY192meeDrYr7E4AYod9JLX7JBVZtEYS6
+         A87foZYXIYTnpMbztZJfiSCmJG9QxNxApohYlTDiq+0nn6VXVQ/+bl+ajfl3sIshq4Of
+         sOrW1MkEETymB3ZwOsST1mtmmyo/ISO0/t+iNOJU8ZLIUVi4nrkVI/k82y7zumB64Rba
+         vDh4LJGGE0aF8xGLVbdekSgNOUm1d0NmHUMzGo1mXNZePyF9OdTrzeXjNPSwwLTs6WZ9
+         SwAA==
+X-Gm-Message-State: AOAM531lFtuulsLzc4c40XXrQzmMAamgSYNJHyt9zXTHI1eYtltjj+CT
+        sVtXpI9Y5uGBGeZy255M1zQd4lCetWhvo8ZBL+s=
+X-Google-Smtp-Source: ABdhPJytaBww1zxzvumyq8jAFgdpM0bSAgxAZQqQtueS/nUhv/vIUN6joEHd1kINphTwxGDq8HH60fCgde9EXECku4w=
+X-Received: by 2002:a05:6402:61a:: with SMTP id n26mr420132edv.220.1622738643213;
+ Thu, 03 Jun 2021 09:44:03 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87czt31dt3.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a55:981a:0:b029:e6:823:573a with HTTP; Thu, 3 Jun 2021
+ 09:44:02 -0700 (PDT)
+Reply-To: revbishop.kenedward@gmail.com
+From:   "Rev. Ken Edward" <hamzab.lawchambersllc@gmail.com>
+Date:   Thu, 3 Jun 2021 09:44:02 -0700
+Message-ID: <CABZTcMKen3CXHLP19=bkoa7MZEGZ4CyWAENV=ar5nkNQv_99dQ@mail.gmail.com>
+Subject: Attn: Esteem Beneficiary.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/3/21 2:46 AM, Kalle Valo wrote:
-> Randy Dunlap <rdunlap@infradead.org> writes:
-> 
->> On 5/30/21 2:31 AM, Christian Lamparter wrote:
->>> On 30/05/2021 05:11, Randy Dunlap wrote:
->>>> kernel test robot reports over 200 build errors and warnings
->>>> that are due to this Kconfig problem when CARL9170=m,
->>>> MAC80211=y, and LEDS_CLASS=m.
->>>>
->>>> WARNING: unmet direct dependencies detected for MAC80211_LEDS
->>>>    Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] &&
->>>> (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
->>>>    Selected by [m]:
->>>>    - CARL9170_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] &&
->>>> WLAN_VENDOR_ATH [=y] && CARL9170 [=m]
->>>>
->>>> CARL9170_LEDS selects MAC80211_LEDS even though its kconfig
->>>> dependencies are not met. This happens because 'select' does not follow
->>>> any Kconfig dependency chains.
->>>>
->>>> Fix this by making CARL9170_LEDS depend on MAC80211_LEDS, where
->>>> the latter supplies any needed dependencies on LEDS_CLASS.
->>>
->>> Ok, this is not what I was expecting... I though you would just
->>> add a "depends on / imply MAC80211_LEDS" on your v2. (this was
->>> based on the assumption of what mac80211,  ath9k/_htc and mt76
->>> solutions of the same problem looked like).
->>
->> Do you want the user choice/prompt removed, like MT76 is?
->>
->>> But since (I assuming here) this patch passed the build-bots
->>> testing with flying colors in the different config permutations.
->>
->> It hasn't passed any build-bots testing that I know of.
->> I did 8 combinations of kconfigs (well, 2 of them were invalid),
->> but they all passed my own build testing.
-> 
-> So is this ok to take now? Or will there be v4?
+Nations (UN), European Union (EU) and FBI.We have been able to track down.
 
-It's all good AFAIK unless Christian wants something changed.
+Information from Nations (UN), European Union (EU) and FBI.We have
+been able to track down some scam artist in various parts of African
+countries which includes (Nigeria, Ghana and Senegal with cote
+d'ivoire, Cotonou,
+Republic of Benin ) and they are all in Government custody now, they
+will appear at International Criminal Court (ICC) soon for Justice.
+During the course of investigation, they were able to recover some
+funds from these scam artists and IMF organization have ordered the
+funds recovered to be shared among the 100 Lucky people listed around
+the World as a compensation.
+This notice is been directed to you because your email address was
+found in one of the scam Artists file and computer hard-disk while the
+investigation, maybe you have been scammed,
+You are therefore being compensated with sum of $6.5million US Dollars
+valid into an (ATM
+Card Number 506119102227). Even if you are now dealing with this
+nonofficial directors of the bank or any department always requesting
+money from you,
+You should STOP your communication with them and forward the details
+so that we will help and recover your fund peacefully and ilegal.
+Since your email address is among the lucky beneficiaries who will
+receive a compensation funds, we have arranged your payment to be paid
+to you through ATM VISA CARD and deliver to your postal address with
+the Pin
+Numbers as to enable you withdrawal maximum of $4,000 on each
+withdrawal from any Bank ATM Machine of your choice, until all the
+funds are exhausted.
 
-Christian?
+The package is coming from Ouagadougou Burkina Faso.don't forget to
+reconfirm your following information.
 
--- 
-~Randy
+1. Your Full Name:
+2. Address Where You want us to Send Your ATM Card
+3. Cell/Mobile Number
+4. Copy of your passport
 
+All that is required of your now is to contact our 100% trust
+officials by the Name of Rev. Ken Edward. Below is his contact
+information:
+
+Contact Name:  Rev. Ken Edward
+Email Address: revbishop.kenedward@gmail.com
+Whatsapp number : +22662295810
+
+
+Yours Faithfully,
+Mr. Wu Hongbo
+Under-Secretary-General for Economic and Social Affairs
