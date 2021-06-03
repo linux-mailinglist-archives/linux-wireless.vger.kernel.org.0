@@ -2,140 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD62339A08B
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 14:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 986EE39A238
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jun 2021 15:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbhFCMIi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Jun 2021 08:08:38 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36237 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbhFCMIh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Jun 2021 08:08:37 -0400
-Received: from 1.general.mschiu77.us.vpn ([10.172.65.162] helo=localhost.localdomain)
-        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <chris.chiu@canonical.com>)
-        id 1lom7d-0007iL-Iw; Thu, 03 Jun 2021 12:06:50 +0000
-From:   chris.chiu@canonical.com
-To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chris Chiu <chris.chiu@canonical.com>
-Subject: [PATCH v2 2/2] rtl8xxxu: Fix ampdu_action to get block ack session work
-Date:   Thu,  3 Jun 2021 20:06:09 +0800
-Message-Id: <20210603120609.58932-3-chris.chiu@canonical.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210603120609.58932-1-chris.chiu@canonical.com>
-References: <20210603120609.58932-1-chris.chiu@canonical.com>
+        id S230282AbhFCNcR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Jun 2021 09:32:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55780 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230056AbhFCNcQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Jun 2021 09:32:16 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 16461613E9;
+        Thu,  3 Jun 2021 13:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622727032;
+        bh=nHnd7vzh3M8RC1fZNrNRtyhWT47kuzKHbn1QeDwEt+Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lEmr2Z512td2Le9XA0X0ekrs0hkXV+9Gj1rLxIp0328KLzbj+1AP1xqrXSKWtFLCa
+         R12KZHYXkSsc3jm+vsR+nj8T3LeD+9eTDVZkeNZ4VmqyJfuDFca9BznRQWKYSRT6Zw
+         a2AQODEqSDkyySN/u03Um6xgojD41c3Zsz384wLkd3ku+jgGEtUxTEAn97iCVLgYux
+         7EOHLCOaHPtBxitwAnQvj2B6MEjPHqBHlFVJ8HKbxR9Tt8GQdryEvRWjeyqsxoFpoa
+         JPSG90kxh4fcfe95d8ndr+ZNJl4GDeX6BAFW6AXOUh55wmL03lQxmN+z+sJYscIkzh
+         DxXdcCq0SrnGg==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        deren.wu@mediatek.com, sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7921: introduce dedicated control for deep_sleep
+Date:   Thu,  3 Jun 2021 15:30:24 +0200
+Message-Id: <a0c5992f502b5eca5967de4bc5cfa4533e91a18d.1622726976.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chris Chiu <chris.chiu@canonical.com>
+Introduce ds_enable switch to fully control fw deep_sleep capability
 
-The TID is not handled in the ampdu actions. Fix the ampdu_action
-to handle the ampdu operations according to the TID. The ampdu
-stop also needs to be handled by ieee80211_stop_tx_ba_cb_irqsafe
-for the mac80211 to respond accordingly.
-
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  1 +
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 27 ++++++++++++-------
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |  1 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   | 22 ++++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  3 ++-
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   | 11 ++++++----
+ 5 files changed, 30 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index d1a566cc0c9e..ebd69c161899 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1383,6 +1383,7 @@ struct rtl8xxxu_priv {
- 	u8 no_pape:1;
- 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
- 	u8 rssi_level;
-+	u8 tid_bitmap;
- 	/*
- 	 * Only one virtual interface permitted because only STA mode
- 	 * is supported and no iface_combinations are provided.
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 4cf13d2f86b1..790be4ecc3d0 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4805,6 +4805,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	struct ieee80211_rate *tx_rate = ieee80211_get_tx_rate(hw, tx_info);
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct device *dev = &priv->udev->dev;
-+	u8 *qc = ieee80211_get_qos_ctl(hdr);
-+	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
- 	u32 rate;
- 	u16 rate_flags = tx_info->control.rates[0].flags;
- 	u16 seq_number;
-@@ -4828,7 +4830,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index 0dfa09902ffd..2b8f9b5e38f1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -45,6 +45,7 @@ enum {
  
- 	tx_desc->txdw3 = cpu_to_le32((u32)seq_number << TXDESC32_SEQ_SHIFT);
+ struct mt76_connac_pm {
+ 	bool enable;
++	bool ds_enable;
+ 	bool suspended;
  
--	if (ampdu_enable)
-+	if (ampdu_enable && (priv->tid_bitmap & BIT(tid)) &&
-+	    (tx_info->flags & IEEE80211_TX_CTL_AMPDU))
- 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_ENABLE);
- 	else
- 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_BREAK);
-@@ -4876,6 +4879,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct device *dev = &priv->udev->dev;
- 	struct rtl8xxxu_txdesc40 *tx_desc40;
-+	u8 *qc = ieee80211_get_qos_ctl(hdr);
-+	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
- 	u32 rate;
- 	u16 rate_flags = tx_info->control.rates[0].flags;
- 	u16 seq_number;
-@@ -4902,7 +4907,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 	spinlock_t txq_lock;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index b41d70be948b..fe4db4916a4b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -248,7 +248,7 @@ mt7921_pm_set(void *data, u64 val)
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+ 					    mt7921_pm_interface_iter, mphy->priv);
  
- 	tx_desc40->txdw9 = cpu_to_le32((u32)seq_number << TXDESC40_SEQ_SHIFT);
+-	mt76_connac_mcu_set_deep_sleep(&dev->mt76, !!pm->enable);
++	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
  
--	if (ampdu_enable)
-+	if (ampdu_enable && (priv->tid_bitmap & BIT(tid)) &&
-+	    (tx_info->flags & IEEE80211_TX_CTL_AMPDU))
- 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_ENABLE);
- 	else
- 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_BREAK);
-@@ -6089,6 +6095,7 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	struct device *dev = &priv->udev->dev;
- 	u8 ampdu_factor, ampdu_density;
- 	struct ieee80211_sta *sta = params->sta;
-+	u16 tid = params->tid;
- 	enum ieee80211_ampdu_mlme_action action = params->action;
+ 	mt7921_mutex_release(dev);
  
- 	switch (action) {
-@@ -6101,17 +6108,19 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		dev_dbg(dev,
- 			"Changed HT: ampdu_factor %02x, ampdu_density %02x\n",
- 			ampdu_factor, ampdu_density);
--		break;
-+		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+	case IEEE80211_AMPDU_TX_STOP_CONT:
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
--		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH\n", __func__);
--		rtl8xxxu_set_ampdu_factor(priv, 0);
--		rtl8xxxu_set_ampdu_min_space(priv, 0);
--		break;
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
--		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH_CONT\n",
--			 __func__);
-+		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP\n", __func__);
- 		rtl8xxxu_set_ampdu_factor(priv, 0);
- 		rtl8xxxu_set_ampdu_min_space(priv, 0);
-+		priv->tid_bitmap &= ~BIT(tid);
-+		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
-+		break;
-+	case IEEE80211_AMPDU_TX_OPERATIONAL:
-+		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_OPERATIONAL\n", __func__);
-+		priv->tid_bitmap |= BIT(tid);
- 		break;
- 	case IEEE80211_AMPDU_RX_START:
- 		dev_dbg(dev, "%s: IEEE80211_AMPDU_RX_START\n", __func__);
+@@ -271,15 +271,31 @@ static int
+ mt7921_deep_sleep_set(void *data, u64 val)
+ {
+ 	struct mt7921_dev *dev = data;
++	struct mt76_connac_pm *pm = &dev->pm;
++	bool enable = !!val;
+ 
+ 	mt7921_mutex_acquire(dev);
+-	mt76_connac_mcu_set_deep_sleep(&dev->mt76, !!val);
++	if (pm->ds_enable != enable) {
++		mt76_connac_mcu_set_deep_sleep(&dev->mt76, enable);
++		pm->ds_enable = enable;
++	}
+ 	mt7921_mutex_release(dev);
+ 
+ 	return 0;
+ }
+ 
+-DEFINE_DEBUGFS_ATTRIBUTE(fops_ds, NULL, mt7921_deep_sleep_set, "%lld\n");
++static int
++mt7921_deep_sleep_get(void *data, u64 *val)
++{
++	struct mt7921_dev *dev = data;
++
++	*val = dev->pm.ds_enable;
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_ds, mt7921_deep_sleep_get,
++			 mt7921_deep_sleep_set, "%lld\n");
+ 
+ static int
+ mt7921_pm_stats(struct seq_file *s, void *data)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 59da29032645..be70dd5b4b2b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -200,6 +200,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
+ 	dev->pm.stats.last_wake_event = jiffies;
+ 	dev->pm.stats.last_doze_event = jiffies;
+ 	dev->pm.enable = true;
++	dev->pm.ds_enable = true;
+ 
+ 	ret = mt7921_init_hardware(dev);
+ 	if (ret)
+@@ -230,7 +231,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	return mt76_connac_mcu_set_deep_sleep(&dev->mt76, dev->pm.enable);
++	return mt76_connac_mcu_set_deep_sleep(&dev->mt76, dev->pm.ds_enable);
+ }
+ 
+ void mt7921_unregister_device(struct mt7921_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 0465b91bda6d..26dcfb200b4b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -815,7 +815,7 @@ static int mt7921_sta_state(struct ieee80211_hw *hw,
+ {
+ 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
+ 
+-	if (dev->pm.enable) {
++	if (dev->pm.ds_enable) {
+ 		mt7921_mutex_acquire(dev);
+ 		mt76_connac_sta_state_dp(&dev->mt76, old_state, new_state);
+ 		mt7921_mutex_release(dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 13263f50dc00..a984f6d43719 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -207,8 +207,10 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 			goto restore_suspend;
+ 	}
+ 
+-	if (!pm->enable)
+-		mt76_connac_mcu_set_deep_sleep(&dev->mt76, true);
++	/* always enable deep sleep during suspend to reduce
++	 * power consumption
++	 */
++	mt76_connac_mcu_set_deep_sleep(&dev->mt76, true);
+ 
+ 	napi_disable(&mdev->tx_napi);
+ 	mt76_worker_disable(&mdev->tx_worker);
+@@ -251,7 +253,7 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	}
+ 	napi_enable(&mdev->tx_napi);
+ 
+-	if (!pm->enable)
++	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+ 	if (hif_suspend)
+@@ -300,7 +302,8 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
+ 	napi_enable(&mdev->tx_napi);
+ 	napi_schedule(&mdev->tx_napi);
+ 
+-	if (!dev->pm.enable)
++	/* restore previous ds setting */
++	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+ 	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state))
 -- 
-2.20.1
+2.31.1
 
