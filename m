@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D52CB39AEF0
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jun 2021 01:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E92639AF03
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jun 2021 02:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbhFCX76 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Jun 2021 19:59:58 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:48042 "EHLO
+        id S229721AbhFDARJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Jun 2021 20:17:09 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:56962 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229576AbhFCX76 (ORCPT
+        with ESMTP id S229576AbhFDARJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Jun 2021 19:59:58 -0400
-X-UUID: 9522bbf47c3744a59ca121ec671e3751-20210604
-X-UUID: 9522bbf47c3744a59ca121ec671e3751-20210604
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        Thu, 3 Jun 2021 20:17:09 -0400
+X-UUID: feede3cc80214f09b0881bc751bd122e-20210604
+X-UUID: feede3cc80214f09b0881bc751bd122e-20210604
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 249584580; Fri, 04 Jun 2021 07:58:09 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 4 Jun 2021 07:58:07 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+        with ESMTP id 795748425; Fri, 04 Jun 2021 08:15:21 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 4 Jun 2021 08:15:20 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 4 Jun 2021 07:58:07 +0800
+ Transport; Fri, 4 Jun 2021 08:15:20 +0800
 From:   <sean.wang@mediatek.com>
 To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
 CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
@@ -35,12 +35,13 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <jemele@google.com>, <yenlinlai@google.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>
-Subject: [PATCH v4] mt76: mt7921: fix sta_state incorrect implementation
-Date:   Fri, 4 Jun 2021 07:58:07 +0800
-Message-ID: <5ead84b2d377f3763f0dc6fd9cb04d158212e3ea.1622764570.git.objelf@gmail.com>
+Subject: [PATCH v5] mt76: mt7921: fix sta_state incorrect implementation
+Date:   Fri, 4 Jun 2021 08:15:19 +0800
+Message-ID: <0f941bce18b2f4c481611c94c8ec674ab9610f94.1622765526.git.objelf@gmail.com>
 X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -58,6 +59,23 @@ being associated.
 
 Fixes: 8aa5a9b7361c ("mt76: mt7921: enable deep sleep at runtime")
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+    v1->v2: Put back the careless change not belonged to the patch to keep
+            mt7921_mcu_sta_add for BC entry and mt76_connac_mcu_uni_add_bss
+            on the association.
+    v2->v3: 1. rebase the latest mt76
+            2. squashing 2/3 to the one
+            3. add the proper lock in mt7921_mac_sta_assoc
+    v3->v4: 1. drop mt76_connac_mcu_add_sta_cmd, call mt76_connac_mcu_sta_cmd
+               instead
+            2. drop mt76_connac_mcu_update_sta_cmd, call
+               mt76_connac_mcu_sta_cmd instead
+            3. squash the patch 1/2
+            4. drop mt7921_mcu_sta_add, call mt7921_mcu_sta_update instead
+            5. rebase onto the top of the latest mt76 plus
+               “mt76: connac: fix UC entry is being overwritten”
+            6. move .newly to be one of parameters in struct mt76_sta_cmd_info
+    v4->v5: include back the changelog
 ---
  .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  8 ++-
  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 20 +++---
