@@ -2,438 +2,366 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E92639AF03
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jun 2021 02:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE84F39B021
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jun 2021 04:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229721AbhFDARJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 3 Jun 2021 20:17:09 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:56962 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229576AbhFDARJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 3 Jun 2021 20:17:09 -0400
-X-UUID: feede3cc80214f09b0881bc751bd122e-20210604
-X-UUID: feede3cc80214f09b0881bc751bd122e-20210604
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 795748425; Fri, 04 Jun 2021 08:15:21 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 4 Jun 2021 08:15:20 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 4 Jun 2021 08:15:20 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH v5] mt76: mt7921: fix sta_state incorrect implementation
-Date:   Fri, 4 Jun 2021 08:15:19 +0800
-Message-ID: <0f941bce18b2f4c481611c94c8ec674ab9610f94.1622765526.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        id S229764AbhFDCEy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 3 Jun 2021 22:04:54 -0400
+Received: from mga14.intel.com ([192.55.52.115]:44081 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229576AbhFDCEx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 3 Jun 2021 22:04:53 -0400
+IronPort-SDR: IXeNuQxtA7fB9ALzee1m/Id8pn97QIpjv3LIYGQU3NmODyDfBpM4c648rviel3x3YV6WcdVCPH
+ yzJTDo7vD/Lw==
+X-IronPort-AV: E=McAfee;i="6200,9189,10004"; a="204016466"
+X-IronPort-AV: E=Sophos;i="5.83,246,1616482800"; 
+   d="scan'208";a="204016466"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2021 19:01:38 -0700
+IronPort-SDR: ZKK3ziXMedLFlW3ke9dCel+pJNVJa2NQxHVcVNWmZ9m936OEazQGDWbu2ZvVs8gIlb0Yj/Ek+1
+ T8MX/aS0V2AQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,246,1616482800"; 
+   d="scan'208";a="468178992"
+Received: from lkp-server02.sh.intel.com (HELO 1ec8406c5392) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 03 Jun 2021 19:01:37 -0700
+Received: from kbuild by 1ec8406c5392 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1loz9U-0006a4-He; Fri, 04 Jun 2021 02:01:36 +0000
+Date:   Fri, 04 Jun 2021 10:00:43 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:iosm] BUILD REGRESSION
+ 400a4588283d05861c0b8ab54c8ab195f7752e6c
+Message-ID: <60b9894b.ic89T6R/OeuwlYk2%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git iosm
+branch HEAD: 400a4588283d05861c0b8ab54c8ab195f7752e6c  iosm: convert to generic wwan ops
 
-When .sta_state is implemented, mac80211 assumes that the station entry is
-usable after the NOTEXIST->NONE transition.
+Error/Warning in current branch:
 
-So we should create the sta entry as early as possible in order that
-mac80211 pass assoc/auth frames to mt76 with the newly created sta entry,
-and add .sta_assoc to mt76 core to refresh the sta entry again when sta is
-being associated.
+error: include/uapi/linux/wwan.h: missing "WITH Linux-syscall-note" for SPDX-License-Identifier
 
-Fixes: 8aa5a9b7361c ("mt76: mt7921: enable deep sleep at runtime")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Error/Warning ids grouped by kconfigs:
+
+clang_recent_errors
+|-- arm-randconfig-r003-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- arm-randconfig-r004-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- arm-randconfig-r036-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- arm64-randconfig-r015-20210528
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- arm64-randconfig-r023-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- arm64-randconfig-r034-20210527
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- mips-randconfig-r001-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- mips-randconfig-r002-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- mips-randconfig-r004-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- mips-randconfig-r005-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- mips-randconfig-r013-20210527
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- mips-randconfig-r026-20210527
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- mips-randconfig-r031-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- powerpc-randconfig-r015-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- powerpc-randconfig-r021-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- powerpc64-randconfig-r032-20210527
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- riscv-randconfig-r014-20210528
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- riscv-randconfig-r024-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- riscv-randconfig-r033-20210527
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- s390-randconfig-r022-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- s390-randconfig-r023-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- s390-randconfig-r026-20210528
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- s390-randconfig-r033-20210527
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-a011-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-a012-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-a013-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-a014-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-a015-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-a016-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-b001-20210527
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-r025-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+|-- x86_64-randconfig-r026-20210526
+|   `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+`-- x86_64-randconfig-r032-20210527
+    `-- error:include-uapi-linux-wwan.h:missing-WITH-Linux-syscall-note-for-SPDX-License-Identifier
+
+elapsed time: 11043m
+
+configs tested: 233
+configs skipped: 3
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                          pcm027_defconfig
+powerpc                          g5_defconfig
+mips                       capcella_defconfig
+powerpc                     tqm8555_defconfig
+arm                             ezx_defconfig
+mips                           ip32_defconfig
+m68k                         amcore_defconfig
+mips                        jmr3927_defconfig
+powerpc                      ppc44x_defconfig
+mips                        nlm_xlp_defconfig
+powerpc                  iss476-smp_defconfig
+arc                          axs101_defconfig
+xtensa                generic_kc705_defconfig
+arm                         s3c6400_defconfig
+m68k                       m5249evb_defconfig
+sh                  sh7785lcr_32bit_defconfig
+arm                              alldefconfig
+powerpc                  mpc866_ads_defconfig
+xtensa                         virt_defconfig
+arm                          ep93xx_defconfig
+sh                           se7705_defconfig
+powerpc                       maple_defconfig
+arc                 nsimosci_hs_smp_defconfig
+arm                     davinci_all_defconfig
+mips                         bigsur_defconfig
+mips                            ar7_defconfig
+arm                         s5pv210_defconfig
+m68k                            mac_defconfig
+powerpc                     ppa8548_defconfig
+powerpc                    sam440ep_defconfig
+sh                        edosk7760_defconfig
+arm                          iop32x_defconfig
+arm                         lpc32xx_defconfig
+arm                          ixp4xx_defconfig
+sh                          lboxre2_defconfig
+mips                        workpad_defconfig
+powerpc                   bluestone_defconfig
+sh                         apsh4a3a_defconfig
+arc                    vdk_hs38_smp_defconfig
+arm                        mvebu_v5_defconfig
+nds32                            alldefconfig
+arm                            hisi_defconfig
+mips                         mpc30x_defconfig
+powerpc                      ppc40x_defconfig
+sh                          rsk7201_defconfig
+m68k                       m5475evb_defconfig
+m68k                        m5307c3_defconfig
+m68k                         apollo_defconfig
+sh                           se7712_defconfig
+arm                        keystone_defconfig
+mips                  maltasmvp_eva_defconfig
+arm                      footbridge_defconfig
+mips                  decstation_64_defconfig
+openrisc                 simple_smp_defconfig
+arm                         axm55xx_defconfig
+powerpc                 mpc834x_itx_defconfig
+nios2                            allyesconfig
+arm                           spitz_defconfig
+arm                     am200epdkit_defconfig
+powerpc                 mpc8313_rdb_defconfig
+arc                     nsimosci_hs_defconfig
+sh                            shmin_defconfig
+arm                          collie_defconfig
+mips                         tb0287_defconfig
+arm64                            alldefconfig
+mips                        bcm47xx_defconfig
+h8300                               defconfig
+sh                     sh7710voipgw_defconfig
+mips                           ip22_defconfig
+um                           x86_64_defconfig
+mips                      malta_kvm_defconfig
+um                             i386_defconfig
+xtensa                       common_defconfig
+powerpc                    amigaone_defconfig
+mips                    maltaup_xpa_defconfig
+mips                        maltaup_defconfig
+arm                        realview_defconfig
+um                                  defconfig
+m68k                        stmark2_defconfig
+arm                         lpc18xx_defconfig
+arc                            hsdk_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                       ebony_defconfig
+mips                        vocore2_defconfig
+openrisc                  or1klitex_defconfig
+arm                        spear6xx_defconfig
+powerpc                      arches_defconfig
+arm                         orion5x_defconfig
+powerpc                      bamboo_defconfig
+arm                           u8500_defconfig
+arm                         s3c2410_defconfig
+parisc                           allyesconfig
+arm                         shannon_defconfig
+arc                     haps_hs_smp_defconfig
+powerpc64                        alldefconfig
+sh                          r7780mp_defconfig
+m68k                          amiga_defconfig
+powerpc                    mvme5100_defconfig
+mips                          ath79_defconfig
+arm                          lpd270_defconfig
+powerpc                   lite5200b_defconfig
+powerpc                mpc7448_hpc2_defconfig
+powerpc                     tqm8548_defconfig
+arm                        multi_v5_defconfig
+mips                            e55_defconfig
+sh                          rsk7269_defconfig
+powerpc64                           defconfig
+sh                          r7785rp_defconfig
+mips                          ath25_defconfig
+powerpc                     stx_gp3_defconfig
+powerpc                    ge_imp3a_defconfig
+sh                          polaris_defconfig
+powerpc                      obs600_defconfig
+powerpc                        fsp2_defconfig
+arm                        multi_v7_defconfig
+nios2                         3c120_defconfig
+sh                          kfr2r09_defconfig
+arc                      axs103_smp_defconfig
+arm                        cerfcube_defconfig
+mips                           ci20_defconfig
+xtensa                  cadence_csp_defconfig
+m68k                       m5208evb_defconfig
+mips                     decstation_defconfig
+powerpc                    klondike_defconfig
+mips                           jazz_defconfig
+arm                       omap2plus_defconfig
+powerpc                     mpc83xx_defconfig
+microblaze                          defconfig
+powerpc                  mpc885_ads_defconfig
+arm                            mmp2_defconfig
+powerpc                   currituck_defconfig
+sh                     magicpanelr2_defconfig
+arm                            qcom_defconfig
+arm                       cns3420vb_defconfig
+arc                        nsim_700_defconfig
+m68k                        mvme147_defconfig
+mips                        nlm_xlr_defconfig
+powerpc                   motionpro_defconfig
+arm                          exynos_defconfig
+mips                     cu1830-neo_defconfig
+arm                           corgi_defconfig
+mips                     cu1000-neo_defconfig
+parisc                generic-64bit_defconfig
+s390                          debug_defconfig
+mips                           xway_defconfig
+m68k                          sun3x_defconfig
+sparc                       sparc32_defconfig
+powerpc               mpc834x_itxgp_defconfig
+arm                         hackkit_defconfig
+mips                        qi_lb60_defconfig
+sparc                       sparc64_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a005-20210526
+x86_64               randconfig-a001-20210526
+x86_64               randconfig-a006-20210526
+x86_64               randconfig-a003-20210526
+x86_64               randconfig-a004-20210526
+x86_64               randconfig-a002-20210526
+i386                 randconfig-a001-20210526
+i386                 randconfig-a002-20210526
+i386                 randconfig-a005-20210526
+i386                 randconfig-a004-20210526
+i386                 randconfig-a003-20210526
+i386                 randconfig-a006-20210526
+x86_64               randconfig-a013-20210527
+x86_64               randconfig-a012-20210527
+x86_64               randconfig-a014-20210527
+x86_64               randconfig-a016-20210527
+x86_64               randconfig-a015-20210527
+x86_64               randconfig-a011-20210527
+i386                 randconfig-a011-20210526
+i386                 randconfig-a016-20210526
+i386                 randconfig-a015-20210526
+i386                 randconfig-a012-20210526
+i386                 randconfig-a014-20210526
+i386                 randconfig-a013-20210526
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-b001-20210527
+x86_64               randconfig-b001-20210526
+x86_64               randconfig-a013-20210526
+x86_64               randconfig-a012-20210526
+x86_64               randconfig-a014-20210526
+x86_64               randconfig-a016-20210526
+x86_64               randconfig-a015-20210526
+x86_64               randconfig-a011-20210526
+
 ---
-    v1->v2: Put back the careless change not belonged to the patch to keep
-            mt7921_mcu_sta_add for BC entry and mt76_connac_mcu_uni_add_bss
-            on the association.
-    v2->v3: 1. rebase the latest mt76
-            2. squashing 2/3 to the one
-            3. add the proper lock in mt7921_mac_sta_assoc
-    v3->v4: 1. drop mt76_connac_mcu_add_sta_cmd, call mt76_connac_mcu_sta_cmd
-               instead
-            2. drop mt76_connac_mcu_update_sta_cmd, call
-               mt76_connac_mcu_sta_cmd instead
-            3. squash the patch 1/2
-            4. drop mt7921_mcu_sta_add, call mt7921_mcu_sta_update instead
-            5. rebase onto the top of the latest mt76 plus
-               “mt76: connac: fix UC entry is being overwritten”
-            6. move .newly to be one of parameters in struct mt76_sta_cmd_info
-    v4->v5: include back the changelog
----
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  8 ++-
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 20 +++---
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 17 ++++--
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 61 +++++++++----------
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  9 ++-
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  7 ++-
- .../net/wireless/mediatek/mt76/mt7921/pci.c   |  1 +
- 7 files changed, 69 insertions(+), 54 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index ea1f23e99ca1..f8a09692d3e4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1028,9 +1028,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	if (IS_ERR(sskb))
- 		return PTR_ERR(sskb);
- 
--	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable);
-+	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable, true);
- 	if (enable && sta)
--		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0);
-+		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0,
-+					MT76_STA_INFO_STATE_ASSOC);
- 
- 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&dev->mt76, &msta->wcid,
- 						  WTBL_RESET_AND_SET, NULL,
-@@ -1157,11 +1158,12 @@ __mt7615_mcu_add_sta(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 		.vif = vif,
- 		.offload_fw = offload_fw,
- 		.enable = enable,
-+		.newly = true,
- 		.cmd = cmd,
- 	};
- 
- 	info.wcid = sta ? (struct mt76_wcid *)sta->drv_priv : &mvif->sta.wcid;
--	return mt76_connac_mcu_add_sta_cmd(phy, &info);
-+	return mt76_connac_mcu_sta_cmd(phy, &info);
- }
- 
- static int
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 7b036c700b28..5786041caf41 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -304,7 +304,7 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_alloc_wtbl_req);
- void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_sta *sta,
--				   bool enable)
-+				   bool enable, bool newly)
- {
- 	struct sta_rec_basic *basic;
- 	struct tlv *tlv;
-@@ -316,7 +316,8 @@ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
- 	basic->extra_info = cpu_to_le16(EXTRA_INFO_VER);
- 
- 	if (enable) {
--		basic->extra_info |= cpu_to_le16(EXTRA_INFO_NEW);
-+		if (newly)
-+			basic->extra_info |= cpu_to_le16(EXTRA_INFO_NEW);
- 		basic->conn_state = CONN_STATE_PORT_SECURE;
- 	} else {
- 		basic->conn_state = CONN_STATE_DISCONNECT;
-@@ -709,7 +710,7 @@ mt76_connac_get_phy_mode_v2(struct mt76_phy *mphy, struct ieee80211_vif *vif,
- void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
- 			     struct ieee80211_sta *sta,
- 			     struct ieee80211_vif *vif,
--			     u8 rcpi)
-+			     u8 rcpi, u8 sta_state)
- {
- 	struct cfg80211_chan_def *chandef = &mphy->chandef;
- 	enum nl80211_band band = chandef->chan->band;
-@@ -770,7 +771,7 @@ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
- 
- 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_STATE, sizeof(*state));
- 	state = (struct sta_rec_state *)tlv;
--	state->state = 2;
-+	state->state = sta_state;
- 
- 	if (sta->vht_cap.vht_supported) {
- 		state->vht_opmode = sta->bandwidth;
-@@ -862,8 +863,8 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_wtbl_ht_tlv);
- 
--int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
--				struct mt76_sta_cmd_info *info)
-+int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
-+			    struct mt76_sta_cmd_info *info)
- {
- 	struct mt76_vif *mvif = (struct mt76_vif *)info->vif->drv_priv;
- 	struct mt76_dev *dev = phy->dev;
-@@ -877,10 +878,11 @@ int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
- 
- 	if (info->sta || !info->offload_fw)
- 		mt76_connac_mcu_sta_basic_tlv(skb, info->vif, info->sta,
--					      info->enable);
-+					      info->enable, info->newly);
- 	if (info->sta && info->enable)
- 		mt76_connac_mcu_sta_tlv(phy, skb, info->sta,
--					info->vif, info->rcpi);
-+					info->vif, info->rcpi,
-+					info->state);
- 
- 	sta_wtbl = mt76_connac_mcu_add_tlv(skb, STA_REC_WTBL,
- 					   sizeof(struct tlv));
-@@ -904,7 +906,7 @@ int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
- 
- 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
- }
--EXPORT_SYMBOL_GPL(mt76_connac_mcu_add_sta_cmd);
-+EXPORT_SYMBOL_GPL(mt76_connac_mcu_sta_cmd);
- 
- void mt76_connac_mcu_wtbl_ba_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				 struct ieee80211_ampdu_params *params,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 258b262c7c23..2c1c93122c2d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -904,6 +904,12 @@ struct mt76_connac_suspend_tlv {
- 	u8 pad[5];
- } __packed;
- 
-+enum mt76_sta_info_state {
-+	MT76_STA_INFO_STATE_NONE,
-+	MT76_STA_INFO_STATE_AUTH,
-+	MT76_STA_INFO_STATE_ASSOC
-+};
-+
- struct mt76_sta_cmd_info {
- 	struct ieee80211_sta *sta;
- 	struct mt76_wcid *wcid;
-@@ -912,8 +918,10 @@ struct mt76_sta_cmd_info {
- 
- 	bool offload_fw;
- 	bool enable;
-+	bool newly;
- 	int cmd;
- 	u8 rcpi;
-+	u8 state;
- };
- 
- #define MT_SKU_POWER_LIMIT	161
-@@ -983,7 +991,8 @@ int mt76_connac_mcu_set_channel_domain(struct mt76_phy *phy);
- int mt76_connac_mcu_set_vif_ps(struct mt76_dev *dev, struct ieee80211_vif *vif);
- void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
- 				   struct ieee80211_vif *vif,
--				   struct ieee80211_sta *sta, bool enable);
-+				   struct ieee80211_sta *sta, bool enable,
-+				   bool newly);
- void mt76_connac_mcu_wtbl_generic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				      struct ieee80211_vif *vif,
- 				      struct ieee80211_sta *sta, void *sta_wtbl,
-@@ -998,7 +1007,7 @@ int mt76_connac_mcu_sta_update_hdr_trans(struct mt76_dev *dev,
- void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
- 			     struct ieee80211_sta *sta,
- 			     struct ieee80211_vif *vif,
--			     u8 rcpi);
-+			     u8 rcpi, u8 state);
- void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				 struct ieee80211_sta *sta, void *sta_wtbl,
- 				 void *wtbl_tlv);
-@@ -1020,8 +1029,8 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
- 				struct ieee80211_vif *vif,
- 				struct mt76_wcid *wcid,
- 				bool enable);
--int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
--				struct mt76_sta_cmd_info *info);
-+int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
-+			    struct mt76_sta_cmd_info *info);
- void mt76_connac_mcu_beacon_loss_iter(void *priv, u8 *mac,
- 				      struct ieee80211_vif *vif);
- int mt76_connac_mcu_set_rts_thresh(struct mt76_dev *dev, u32 val, u8 band);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 84930ad5ebc7..724763b3844f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -578,7 +578,8 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 		mt7921_mcu_uni_bss_ps(dev, vif);
- 
- 	if (changed & BSS_CHANGED_ASSOC) {
--		mt7921_mcu_sta_add(dev, NULL, vif, true);
-+		mt7921_mcu_sta_update(dev, NULL, vif, true,
-+				      MT76_STA_INFO_STATE_ASSOC);
- 		mt7921_bss_bcnft_apply(dev, vif, info->assoc);
- 	}
- 
-@@ -617,17 +618,14 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	if (ret)
- 		return ret;
- 
--	if (vif->type == NL80211_IFTYPE_STATION) {
-+	if (vif->type == NL80211_IFTYPE_STATION)
- 		mvif->wep_sta = msta;
--		if (!sta->tdls)
--			mt76_connac_mcu_uni_add_bss(&dev->mphy, vif,
--						    &mvif->sta.wcid, true);
--	}
- 
- 	mt7921_mac_wtbl_update(dev, idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 
--	ret = mt7921_mcu_sta_add(dev, sta, vif, true);
-+	ret = mt7921_mcu_sta_update(dev, sta, vif, true,
-+				    MT76_STA_INFO_STATE_NONE);
- 	if (ret)
- 		return ret;
- 
-@@ -636,6 +634,27 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	return 0;
- }
- 
-+void mt7921_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
-+			  struct ieee80211_sta *sta)
-+{
-+	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
-+	struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
-+	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
-+
-+	mt7921_mutex_acquire(dev);
-+
-+	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
-+		mt76_connac_mcu_uni_add_bss(&dev->mphy, vif, &mvif->sta.wcid,
-+					    true);
-+
-+	mt7921_mac_wtbl_update(dev, msta->wcid.idx,
-+			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
-+
-+	mt7921_mcu_sta_update(dev, sta, vif, true, MT76_STA_INFO_STATE_ASSOC);
-+
-+	mt7921_mutex_release(dev);
-+}
-+
- void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta)
- {
-@@ -645,7 +664,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, &msta->wcid);
- 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
- 
--	mt7921_mcu_sta_add(dev, sta, vif, false);
-+	mt7921_mcu_sta_update(dev, sta, vif, false, MT76_STA_INFO_STATE_NONE);
- 	mt7921_mac_wtbl_update(dev, msta->wcid.idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 
-@@ -791,22 +810,6 @@ mt7921_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	return ret;
- }
- 
--static int
--mt7921_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
--	       struct ieee80211_sta *sta)
--{
--	return mt76_sta_state(hw, vif, sta, IEEE80211_STA_NOTEXIST,
--			      IEEE80211_STA_NONE);
--}
--
--static int
--mt7921_sta_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
--		  struct ieee80211_sta *sta)
--{
--	return mt76_sta_state(hw, vif, sta, IEEE80211_STA_NONE,
--			      IEEE80211_STA_NOTEXIST);
--}
--
- static int mt7921_sta_state(struct ieee80211_hw *hw,
- 			    struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta,
-@@ -821,15 +824,7 @@ static int mt7921_sta_state(struct ieee80211_hw *hw,
- 		mt7921_mutex_release(dev);
- 	}
- 
--	if (old_state == IEEE80211_STA_AUTH &&
--	    new_state == IEEE80211_STA_ASSOC) {
--		return mt7921_sta_add(hw, vif, sta);
--	} else if (old_state == IEEE80211_STA_ASSOC &&
--		   new_state == IEEE80211_STA_AUTH) {
--		return mt7921_sta_remove(hw, vif, sta);
--	}
--
--	return 0;
-+	return mt76_sta_state(hw, vif, sta, old_state, new_state);
- }
- 
- static int
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index bd94d1244975..c95d71583cc1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1267,8 +1267,9 @@ int mt7921_mcu_set_bss_pm(struct mt7921_dev *dev, struct ieee80211_vif *vif,
- 				 sizeof(req), false);
- }
- 
--int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
--		       struct ieee80211_vif *vif, bool enable)
-+int mt7921_mcu_sta_update(struct mt7921_dev *dev, struct ieee80211_sta *sta,
-+			  struct ieee80211_vif *vif, bool enable,
-+			  enum mt76_sta_info_state state)
- {
- 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
- 	int rssi = -ewma_rssi_read(&mvif->rssi);
-@@ -1277,6 +1278,7 @@ int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
- 		.vif = vif,
- 		.enable = enable,
- 		.cmd = MCU_UNI_CMD_STA_REC_UPDATE,
-+		.state = state,
- 		.offload_fw = true,
- 		.rcpi = to_rcpi(rssi),
- 	};
-@@ -1284,8 +1286,9 @@ int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
- 
- 	msta = sta ? (struct mt7921_sta *)sta->drv_priv : NULL;
- 	info.wcid = msta ? &msta->wcid : &mvif->sta.wcid;
-+	info.newly = msta ? state != MT76_STA_INFO_STATE_ASSOC : true;
- 
--	return mt76_connac_mcu_add_sta_cmd(&dev->mphy, &info);
-+	return mt76_connac_mcu_sta_cmd(&dev->mphy, &info);
- }
- 
- int __mt7921_mcu_drv_pmctrl(struct mt7921_dev *dev)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 8aa8d2ecdffa..71cf1d1a2e02 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -262,8 +262,9 @@ int mt7921_mcu_add_key(struct mt7921_dev *dev, struct ieee80211_vif *vif,
- 		       struct mt7921_sta *msta, struct ieee80211_key_conf *key,
- 		       enum set_key_cmd cmd);
- int mt7921_set_channel(struct mt7921_phy *phy);
--int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
--		       struct ieee80211_vif *vif, bool enable);
-+int mt7921_mcu_sta_update(struct mt7921_dev *dev, struct ieee80211_sta *sta,
-+			  struct ieee80211_vif *vif, bool enable,
-+			  enum mt76_sta_info_state state);
- int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, int cmd);
- int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif);
- int mt7921_mcu_set_eeprom(struct mt7921_dev *dev);
-@@ -335,6 +336,8 @@ void mt7921_mac_fill_rx_vector(struct mt7921_dev *dev, struct sk_buff *skb);
- void mt7921_mac_tx_free(struct mt7921_dev *dev, struct sk_buff *skb);
- int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		       struct ieee80211_sta *sta);
-+void mt7921_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
-+			  struct ieee80211_sta *sta);
- void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta);
- void mt7921_mac_work(struct work_struct *work);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 13263f50dc00..27906b2cd912 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -106,6 +106,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 		.rx_poll_complete = mt7921_rx_poll_complete,
- 		.sta_ps = mt7921_sta_ps,
- 		.sta_add = mt7921_mac_sta_add,
-+		.sta_assoc = mt7921_mac_sta_assoc,
- 		.sta_remove = mt7921_mac_sta_remove,
- 		.update_survey = mt7921_update_channel,
- 	};
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
