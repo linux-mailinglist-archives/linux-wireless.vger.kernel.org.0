@@ -2,105 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76FCB39C4C9
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Jun 2021 03:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A2239C79E
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Jun 2021 12:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231411AbhFEBNK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 4 Jun 2021 21:13:10 -0400
-Received: from mail-wr1-f53.google.com ([209.85.221.53]:34350 "EHLO
-        mail-wr1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231172AbhFEBNK (ORCPT
+        id S230080AbhFELAB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 5 Jun 2021 07:00:01 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:4488 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229933AbhFELAA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 4 Jun 2021 21:13:10 -0400
-Received: by mail-wr1-f53.google.com with SMTP id q5so10967759wrm.1
-        for <linux-wireless@vger.kernel.org>; Fri, 04 Jun 2021 18:11:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=oAnhL/rLVHOlPObR2Xdk1DvWetZIgbSOpJEsqp74oTI=;
-        b=GrHfUEWKjurl1ciAfg2VIP28dimAf7b7ofB33I17yzchXsa9ImRgc+F7SZyhcv7wIP
-         fSnN/gjO9vjBV5/47XBSoai+YiIkMw7XLwtsLr9xHyFnnWuvktZCAIwj6UFxzLkU1g6V
-         MsfCw1GkQi1k2GOth14jRaayjiS9BfS8D8a5uFjj1QcnEp3CkFAj1nKskH3nCc6kDvqT
-         8b89DplyNeKLLXQHQuhDUcCXwm3pMz25CHl0RHSVzbHGWSNxDnwfh5ZfRI8jvOiGIQTN
-         w7N7mDuJWvau4qcBKg5O+kcBDGlIL6pk8WqxjIL8ug7DeX8URxhGiHfcYsRq3sp3nK+3
-         Ouyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=oAnhL/rLVHOlPObR2Xdk1DvWetZIgbSOpJEsqp74oTI=;
-        b=TY7PB/LAOjJmSlSIqDh7OBQ+DUteXKXI8IJwwTVpcq9lUWm49avnsMBFyaw6eXK0pN
-         PwvPd4DxYdnIHV+CSKSRa5ekz2C9PmywszwIld7cebtxiWPSD6HOIkMfQ8sxR6g42aF/
-         ymM0Wbtx+8kkdBQa9Odw7x48xd9HLHKQVwQTMXvk+E3CSJUzQLFAcULkMdtTRRJL0sqG
-         xnLDS272jGKK7U/vhDrz8HJwAAH5ahACrwOHTmFD4cKcF1evZafy9O8BFMkq9a65WOmy
-         BohAa7n4QkgMbNd0LIzR2T66J8iliEOCw8zL3eH4kdFDYJBVwnV6A7NEyg+KAP0qVuGA
-         aoGw==
-X-Gm-Message-State: AOAM5301W5nR+3S8f/TlFov6zWdG8LeAsm4ZNIAGM50FrVcpLKL5gWQD
-        Rbo6miHPm4MpAnjgMNnlPH/jw68X4nsdp0z5
-X-Google-Smtp-Source: ABdhPJyTxlnuafkU8MqKdbGPUj2CQDrGQ6UTC7IOz5oA0QDCvXEZxJCHIXZY9r8bM0exu9/VeHSGaA==
-X-Received: by 2002:a5d:474d:: with SMTP id o13mr6156029wrs.176.1622855408301;
-        Fri, 04 Jun 2021 18:10:08 -0700 (PDT)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id u8sm9594941wmq.29.2021.06.04.18.10.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jun 2021 18:10:07 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Cc:     bryan.odonoghue@linaro.org, shawn.guo@linaro.org,
-        benl@squareup.com, loic.poulain@linaro.org,
-        bjorn.andersson@linaro.org
-Subject: [PATCH v6 12/12] wcn36xx: Enable WOWLAN flags
-Date:   Sat,  5 Jun 2021 02:11:40 +0100
-Message-Id: <20210605011140.2004643-13-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210605011140.2004643-1-bryan.odonoghue@linaro.org>
-References: <20210605011140.2004643-1-bryan.odonoghue@linaro.org>
+        Sat, 5 Jun 2021 07:00:00 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4FxxP71gMkzZcnQ;
+        Sat,  5 Jun 2021 18:55:23 +0800 (CST)
+Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Sat, 5 Jun 2021 18:58:10 +0800
+Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
+ (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Sat, 5 Jun 2021
+ 18:58:09 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+CC:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>
+Subject: [PATCH net-next] ath10k: Use devm_platform_get_and_ioremap_resource()
+Date:   Sat, 5 Jun 2021 19:02:27 +0800
+Message-ID: <20210605110227.2429420-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500017.china.huawei.com (7.185.36.243)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable flags for
+Use devm_platform_get_and_ioremap_resource() to simplify
+code.
 
-- Magic packet
-- GTK rekey
-
-Previous patches implemented the necessary code to switch these two on.
-Standalone magic packet absent GTK rekey is pretty useless, so it makes
-sense to flag both at once.
-
-Once done it is possible for wcn36xx firmware to
-
-1. Respond to ipv4 and ipv6 ARP/NS lookup requests
-2. Bring the system out of suspend when a magic packet is received.
-   Magic in our case is a simple ipv4 or ipv6 unicast.
-3. GTK rekey whilst in suspend
-   Once we wake from suspend the GTK will be updated as necessary
-
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Benjamin Li <benl@squareup.com>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/ahb.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index c697b9f3633a..3a4e383b3a6c 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -173,7 +173,9 @@ static struct ieee80211_supported_band wcn_band_5ghz = {
- #ifdef CONFIG_PM
+diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
+index 869524852fba..ab8f77ae5e66 100644
+--- a/drivers/net/wireless/ath/ath10k/ahb.c
++++ b/drivers/net/wireless/ath/ath10k/ahb.c
+@@ -442,14 +442,7 @@ static int ath10k_ahb_resource_init(struct ath10k *ar)
  
- static const struct wiphy_wowlan_support wowlan_support = {
--	.flags = WIPHY_WOWLAN_ANY
-+	.flags = WIPHY_WOWLAN_ANY	|
-+		 WIPHY_WOWLAN_MAGIC_PKT	|
-+		 WIPHY_WOWLAN_SUPPORTS_GTK_REKEY
- };
+ 	pdev = ar_ahb->pdev;
  
- #endif
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		ath10k_err(ar, "failed to get memory resource\n");
+-		ret = -ENXIO;
+-		goto out;
+-	}
+-
+-	ar_ahb->mem = devm_ioremap_resource(&pdev->dev, res);
++	ar_ahb->mem = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(ar_ahb->mem)) {
+ 		ath10k_err(ar, "mem ioremap error\n");
+ 		ret = PTR_ERR(ar_ahb->mem);
 -- 
-2.30.1
+2.25.1
 
