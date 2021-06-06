@@ -2,72 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C0F39CDED
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jun 2021 09:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BD7A39CDEE
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jun 2021 09:51:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbhFFHxF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Jun 2021 03:53:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49220 "EHLO
+        id S230153AbhFFHxQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Jun 2021 03:53:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230131AbhFFHxF (ORCPT
+        with ESMTP id S230131AbhFFHxQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Jun 2021 03:53:05 -0400
+        Sun, 6 Jun 2021 03:53:16 -0400
 Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77F4DC061766
-        for <linux-wireless@vger.kernel.org>; Sun,  6 Jun 2021 00:51:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560A9C061766
+        for <linux-wireless@vger.kernel.org>; Sun,  6 Jun 2021 00:51:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=3TYLAwAr9BYAZhu8Z8iErL3tTOVG8cYhBABdtRu4tW4=; b=PSzEVMHTtx07ROI7LUlVZzhzgX
-        XclZ2buOs3xxMa0lIZtGIbPmmk9SUKBRVlNimSYfPzJQLYC3TR7fc5VFtd++/URKv2MQRp8mmGn1Y
-        11xBkHZTI6RQ1yFqIwbGXfnIgFsr12SsrSb/JOn4tIZ7DL9fhwQQhSZRzWhJCzcabLbg=;
-Received: from p54ae9ff2.dip0.t-ipconnect.de ([84.174.159.242] helo=localhost.localdomain)
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=m4mfxV1cLh/U8mnTVlqg6bh+DS71kDcuBuvTfogr+e0=; b=sVg3hDUJodNb+TqZiAyXadK1q6
+        4WaPA2GD32T2DcaMbZin+St2N80Y4wu0nUJyl4LdK8JR20wCuSce1opDcj8vrKjwGK8gWtvVM22wP
+        Cp+WuTqxlSusUJ4lGiSg2HYej+uPsFmmmVTM2MBPtlP4NqNCJem9dxkh+g0V96BTJtv0=;
+Received: from p54ae9ff2.dip0.t-ipconnect.de ([84.174.159.242] helo=nf.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1lpnYu-0007dP-IQ; Sun, 06 Jun 2021 09:51:12 +0200
+        id 1lpnZ6-0007eZ-AY; Sun, 06 Jun 2021 09:51:24 +0200
+Subject: Re: [PATCH] mt76: mt7921: enable VHT BFee capabiliity
+To:     Deren Wu <Deren.Wu@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>, jemele@google.com,
+        yenlinlai@google.com,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <a5748514496b2b4e4b23be7b0b560d2585feafb6.1622627260.git.deren.wu@mediatek.com>
 From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     deren.wu@mediatek.com
-Subject: [PATCH v2] mt76: mt7921: enable VHT BFee capability
-Date:   Sun,  6 Jun 2021 09:51:07 +0200
-Message-Id: <20210606075107.343-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.30.1
+Message-ID: <3bbdab20-60be-61fb-d731-5cf5d04f7f3c@nbd.name>
+Date:   Sun, 6 Jun 2021 09:51:22 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <a5748514496b2b4e4b23be7b0b560d2585feafb6.1622627260.git.deren.wu@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enables VHT beamformee functionality
+On 2021-06-02 17:17, Deren Wu wrote:
+> From: Deren Wu <deren.wu@mediatek.com>
+> 
+> enable BFee functions with proper BFee IEs
+> 
+> Tested-by: Eric-SY Chang <Eric-SY.Chang@mediatek.com>
+> Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+I've sent out a much simpler replacement for this patch, please take a look.
 
-Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 19ce9ca72542..021abd75e522 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -215,7 +215,11 @@ int mt7921_register_device(struct mt7921_dev *dev)
- 			IEEE80211_HT_CAP_MAX_AMSDU;
- 	dev->mphy.sband_5g.sband.vht_cap.cap |=
- 			IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991 |
--			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
-+			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK |
-+			IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
-+			IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE |
-+			(3 << IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT);
-+
- 	dev->mphy.hw->wiphy->available_antennas_rx = dev->mphy.chainmask;
- 	dev->mphy.hw->wiphy->available_antennas_tx = dev->mphy.chainmask;
- 
--- 
-2.30.1
-
+- Felix
