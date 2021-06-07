@@ -2,186 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 721A539DF88
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jun 2021 16:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D02739DF0A
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jun 2021 16:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231391AbhFGOyk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Jun 2021 10:54:40 -0400
-Received: from vulcan.natalenko.name ([104.207.131.136]:57020 "EHLO
-        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230395AbhFGOya (ORCPT
+        id S230203AbhFGOtH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Jun 2021 10:49:07 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:4383 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230193AbhFGOtH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Jun 2021 10:54:30 -0400
-Received: from localhost (unknown [151.237.229.131])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id DBF62AC1E8A;
-        Mon,  7 Jun 2021 16:52:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1623077544;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=1H+7Ck2Bcpux8ENLgMA7IprIPdwgQ1/191FjhNRfItU=;
-        b=J2XQ8L+BQLpu1BNxPxCrsw5GQ78wPxXhzmZvwbZe1XbEVYgZAP03xrFnhOT1x/cSDJvWb3
-        y4/Pn6UGYsomVYjPWlcebDqAg35XTXxKsfLHBLE1JRDhIPAHOEWC0zwgDlEoaOGvcaBtAb
-        +hSoOHWUoMFeRDvir0X+vmAg+vxXDWk=
-Date:   Mon, 7 Jun 2021 16:52:23 +0200
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     linux-kernel@vger.kernel.org
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: Divide error in minstrel_ht_get_tp_avg()
-Message-ID: <20210607145223.tlxo5ge42mef44m5@spock.localdomain>
-References: <20210529165728.bskaozwtmwxnvucx@spock.localdomain>
+        Mon, 7 Jun 2021 10:49:07 -0400
+Received: from dggeme760-chm.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4FzGMG1XCpz6v26;
+        Mon,  7 Jun 2021 22:43:22 +0800 (CST)
+Received: from localhost.localdomain (10.175.104.82) by
+ dggeme760-chm.china.huawei.com (10.3.19.106) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Mon, 7 Jun 2021 22:47:10 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <kuba@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: [PATCH net-next] mac80211: mesh: Fix spelling mistakes
+Date:   Mon, 7 Jun 2021 23:00:47 +0800
+Message-ID: <20210607150047.2855962-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210529165728.bskaozwtmwxnvucx@spock.localdomain>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.104.82]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggeme760-chm.china.huawei.com (10.3.19.106)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, May 29, 2021 at 06:57:29PM +0200, Oleksandr Natalenko wrote:
-> The following woe happened on my home router running as a Wi-Fi AP with
-> MT7612:
-> 
-> ```
-> [16592.157962] divide error: 0000 [#1] PREEMPT SMP PTI
-> [16592.163169] CPU: 2 PID: 683 Comm: mt76-tx phy0 Tainted: G         C        5.12.0-pf4 #1
-> [16592.171745] Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./J3710-ITX, BIOS P1.50 04/16/2018
-> [16592.182155] RIP: 0010:minstrel_ht_get_tp_avg+0xb1/0x100 [mac80211]
-> [16592.188795] Code: 04 00 00 00 7f 1c 31 c9 81 fa f1 49 02 00 0f 9c c1 8d 0c cd 08 00 00 00 eb 08 8b 47 30 b9 01 00 00 00 69 c0 e8 03 00 00 31 d2 <f7> f1 ba 66 0e 00 00 39 d6 0f 4f f2 49 63 d1 48 8d 0c 52 48 8d 0c
-> [16592.208796] RSP: 0018:ffffb6a601293be8 EFLAGS: 00010246
-> [16592.214292] RAX: 000000000001a5e0 RBX: ffff9c658ee95170 RCX: 0000000000000000
-> [16592.222054] RDX: 0000000000000000 RSI: 0000000000000585 RDI: ffff9c658ee94000
-> [16592.229620] RBP: 0000000000000006 R08: 0000000000000006 R09: 0000000000000012
-> [16592.237254] R10: 0000000000000007 R11: 0000000000000000 R12: ffff9c658ee94000
-> [16592.244828] R13: 0000000000000012 R14: ffff9c658ee9534c R15: 0000000000000585
-> [16592.252635] FS:  0000000000000000(0000) GS:ffff9c66f8500000(0000) knlGS:0000000000000000
-> [16592.261086] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [16592.267326] CR2: 0000555d81abe7b8 CR3: 0000000116c10000 CR4: 00000000001006e0
-> [16592.274904] Call Trace:
-> [16592.277549]  minstrel_ht_update_stats+0x1fe/0x1320 [mac80211]
-> [16592.283730]  minstrel_ht_tx_status+0x67f/0x710 [mac80211]
-> [16592.289442]  rate_control_tx_status+0x6e/0xb0 [mac80211]
-> [16592.295267]  ieee80211_tx_status_ext+0x22e/0xb00 [mac80211]
-> [16592.311290]  ieee80211_tx_status+0x7d/0xa0 [mac80211]
-> [16592.316714]  mt76_tx_status_unlock+0x83/0xa0 [mt76]
-> [16592.321999]  mt76x02_send_tx_status+0x1b7/0x400 [mt76x02_lib]
-> [16592.334516]  mt76x02_tx_worker+0x8f/0xd0 [mt76x02_lib]
-> [16592.340091]  __mt76_worker_fn+0x78/0xb0 [mt76]
-> [16592.345067]  kthread+0x183/0x1b0
-> [16592.353378]  ret_from_fork+0x22/0x30
-> ```
-> 
-> `faddr2line` says it is this:
-> 
-> ```
->  430 int
->  431 minstrel_ht_get_tp_avg(struct minstrel_ht_sta *mi, int group, int rate,
->  432                int prob_avg)
->  433 {
-> …
->  435     unsigned int ampdu_len = 1;
-> …
->  441     if (minstrel_ht_is_legacy_group(group))
-> …
->  443     else
->  444         ampdu_len = minstrel_ht_avg_ampdu_len(mi);
-> …
->  446     nsecs = 1000 * overhead / ampdu_len;
->          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> ```
-> 
-> So, it seems `minstrel_ht_avg_ampdu_len()` can return 0, which is not
-> really legitimate.
-> 
-> Looking at `minstrel_ht_avg_ampdu_len()`, I see the following:
-> 
-> ```
-> 16:#define MINSTREL_SCALE  12
-> …
-> 18:#define MINSTREL_TRUNC(val) ((val) >> MINSTREL_SCALE)
-> ```
-> 
-> ```
->  401 static unsigned int
->  402 minstrel_ht_avg_ampdu_len(struct minstrel_ht_sta *mi)
->  403 {
-> …
->  406     if (mi->avg_ampdu_len)
->  407         return MINSTREL_TRUNC(mi->avg_ampdu_len);
-> ```
-> 
-> So, likely, `mi->avg_ampdu_len` is non-zero, but it's too small, hence
-> right bitshift makes it zero.
-> 
-> Should there be some protection against such a situation?
-> 
-> Felix, could you maybe check this? Looks like you were the last one to
-> overhaul that part of code.
+Fix some spelling mistakes in comments:
+freeed  ==> freed
+addreses  ==> addresses
+containging  ==> containing
+capablity  ==> capability
+sucess  ==> success
+atleast  ==> at least
 
-Quick hack from me:
-
-commit a23d3f77658de968c5bb852ba478402c93958f7f
-Author: Oleksandr Natalenko <oleksandr@natalenko.name>
-Date:   Mon Jun 7 16:45:45 2021 +0200
-
-    mac80211: minstrel_ht: force ampdu_len to be > 0
-    
-    This is a hack.
-    
-    Work around the following crash:
-    
-    ```
-    divide error: 0000 [#1] PREEMPT SMP PTI
-    CPU: 2 PID: 683 Comm: mt76-tx phy0 Tainted: G         C        5.12.0-pf4 #1
-    Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./J3710-ITX, BIOS P1.50 04/16/2018
-    RIP: 0010:minstrel_ht_get_tp_avg+0xb1/0x100 [mac80211]
-    …
-    Call Trace:
-     minstrel_ht_update_stats+0x1fe/0x1320 [mac80211]
-     minstrel_ht_tx_status+0x67f/0x710 [mac80211]
-     rate_control_tx_status+0x6e/0xb0 [mac80211]
-     ieee80211_tx_status_ext+0x22e/0xb00 [mac80211]
-     ieee80211_tx_status+0x7d/0xa0 [mac80211]
-     mt76_tx_status_unlock+0x83/0xa0 [mt76]
-     mt76x02_send_tx_status+0x1b7/0x400 [mt76x02_lib]
-     mt76x02_tx_worker+0x8f/0xd0 [mt76x02_lib]
-     __mt76_worker_fn+0x78/0xb0 [mt76]
-     kthread+0x183/0x1b0
-     ret_from_fork+0x22/0x30
-    ```
-    
-    Link: https://lore.kernel.org/lkml/20210529165728.bskaozwtmwxnvucx@spock.localdomain/
-    Signed-off-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
+ net/mac80211/mesh.h                | 2 +-
+ net/mac80211/mesh_hwmp.c           | 2 +-
+ net/mac80211/mesh_pathtbl.c        | 2 +-
+ net/mac80211/mesh_plink.c          | 2 +-
+ net/mac80211/mlme.c                | 2 +-
+ net/mac80211/rc80211_minstrel_ht.c | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/mac80211/mesh.h b/net/mac80211/mesh.h
+index 40492d1bd8fd..77080b4f87b8 100644
+--- a/net/mac80211/mesh.h
++++ b/net/mac80211/mesh.h
+@@ -134,7 +134,7 @@ struct mesh_path {
+  * gate's mpath may or may not be resolved and active.
+  * @gates_lock: protects updates to known_gates
+  * @rhead: the rhashtable containing struct mesh_paths, keyed by dest addr
+- * @walk_head: linked list containging all mesh_path objects
++ * @walk_head: linked list containing all mesh_path objects
+  * @walk_lock: lock protecting walk_head
+  * @entries: number of entries in the table
+  */
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index 3db514c4c63a..a05b615deb51 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -1124,7 +1124,7 @@ void mesh_path_start_discovery(struct ieee80211_sub_if_data *sdata)
+  * forwarding information is found.
+  *
+  * Returns: 0 if the next hop was found and -ENOENT if the frame was queued.
+- * skb is freeed here if no mpath could be allocated.
++ * skb is freed here if no mpath could be allocated.
+  */
+ int mesh_nexthop_resolve(struct ieee80211_sub_if_data *sdata,
+ 			 struct sk_buff *skb)
+diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
+index 620ecf922408..efbefcbac3ac 100644
+--- a/net/mac80211/mesh_pathtbl.c
++++ b/net/mac80211/mesh_pathtbl.c
+@@ -122,7 +122,7 @@ static void prepare_for_gate(struct sk_buff *skb, char *dst_addr,
+ 		hdr = (struct ieee80211_hdr *) skb->data;
+ 
+ 		/* we preserve the previous mesh header and only add
+-		 * the new addreses */
++		 * the new addresses */
+ 		mshdr = (struct ieee80211s_hdr *) (skb->data + hdrlen);
+ 		mshdr->flags = MESH_FLAGS_AE_A5_A6;
+ 		memcpy(mshdr->eaddr1, hdr->addr3, ETH_ALEN);
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index aca26df7587d..a6915847d78a 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -150,7 +150,7 @@ static u32 mesh_set_short_slot_time(struct ieee80211_sub_if_data *sdata)
+  * mesh STA in a MBSS. Three HT protection modes are supported for now, non-HT
+  * mixed mode, 20MHz-protection and no-protection mode. non-HT mixed mode is
+  * selected if any non-HT peers are present in our MBSS.  20MHz-protection mode
+- * is selected if all peers in our 20/40MHz MBSS support HT and atleast one
++ * is selected if all peers in our 20/40MHz MBSS support HT and at least one
+  * HT20 peer is present. Otherwise no-protection mode is selected.
+  */
+ static u32 mesh_set_ht_prot_mode(struct ieee80211_sub_if_data *sdata)
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2480bd0577bb..c6b90db32bd1 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -617,7 +617,7 @@ static void ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
+ 		cap &= ~IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE;
+ 
+ 	/*
+-	 * If some other vif is using the MU-MIMO capablity we cannot associate
++	 * If some other vif is using the MU-MIMO capability we cannot associate
+ 	 * using MU-MIMO - this will lead to contradictions in the group-id
+ 	 * mechanism.
+ 	 * Ownership is defined since association request, in order to avoid
 diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-index ecad9b10984f..6ad188c4101e 100644
+index 6487b05da6fa..b3a00c755bc0 100644
 --- a/net/mac80211/rc80211_minstrel_ht.c
 +++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -440,8 +440,13 @@ minstrel_ht_get_tp_avg(struct minstrel_ht_sta *mi, int group, int rate,
+@@ -434,7 +434,7 @@ minstrel_ht_get_tp_avg(struct minstrel_ht_sta *mi, int group, int rate,
+ 	unsigned int nsecs = 0, overhead = mi->overhead;
+ 	unsigned int ampdu_len = 1;
  
- 	if (minstrel_ht_is_legacy_group(group))
- 		overhead = mi->overhead_legacy;
--	else
-+	else {
- 		ampdu_len = minstrel_ht_avg_ampdu_len(mi);
-+		if (unlikely(!ampdu_len)) {
-+			pr_err_once("minstrel_ht_get_tp_avg: ampdu_len == 0!");
-+			ampdu_len = 1;
-+		}
-+	}
+-	/* do not account throughput if sucess prob is below 10% */
++	/* do not account throughput if success prob is below 10% */
+ 	if (prob_avg < MINSTREL_FRAC(10, 100))
+ 		return 0;
  
- 	nsecs = 1000 * overhead / ampdu_len;
- 	nsecs += minstrel_mcs_groups[group].duration[rate] <<
-
 -- 
-  Oleksandr Natalenko (post-factum)
+2.25.1
+
