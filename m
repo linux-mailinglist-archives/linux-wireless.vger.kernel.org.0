@@ -2,139 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D02739DF0A
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jun 2021 16:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4698D39E094
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jun 2021 17:34:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230203AbhFGOtH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 7 Jun 2021 10:49:07 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:4383 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230193AbhFGOtH (ORCPT
+        id S230493AbhFGPft (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 7 Jun 2021 11:35:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:50476 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230220AbhFGPft (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 7 Jun 2021 10:49:07 -0400
-Received: from dggeme760-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4FzGMG1XCpz6v26;
-        Mon,  7 Jun 2021 22:43:22 +0800 (CST)
-Received: from localhost.localdomain (10.175.104.82) by
- dggeme760-chm.china.huawei.com (10.3.19.106) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 7 Jun 2021 22:47:10 +0800
-From:   Zheng Yongjun <zhengyongjun3@huawei.com>
-To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <kuba@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
-Subject: [PATCH net-next] mac80211: mesh: Fix spelling mistakes
-Date:   Mon, 7 Jun 2021 23:00:47 +0800
-Message-ID: <20210607150047.2855962-1-zhengyongjun3@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 7 Jun 2021 11:35:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623080037;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=DankcACZXWslvex/hGCrRKXxxv4UiIym257Vx0lNYb4=;
+        b=gY48wKg8HE7Ya3PBUad8Wz0enAHJYtlMEkF+40qIcDYrGe5qvyWk18gm/XK4laomlQtxPI
+        VpLhCFELGifwJKttDnUi5DpcVwVGiyxu+0INlNdMSnik4qDtvJkP7oHVs2jXn7O33XTPL9
+        sRlDPAaVKhl/dnguZc5eGReUR3bJehc=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-297-fQ1HkIZ1NCWTdPi19cQhTw-1; Mon, 07 Jun 2021 11:33:55 -0400
+X-MC-Unique: fQ1HkIZ1NCWTdPi19cQhTw-1
+Received: by mail-ej1-f72.google.com with SMTP id ji22-20020a1709079816b0290414bdf5da11so1023376ejc.9
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Jun 2021 08:33:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=DankcACZXWslvex/hGCrRKXxxv4UiIym257Vx0lNYb4=;
+        b=O1yR28FTbCtayGYIyaQjrMslE/SuQMRASaiovN8HjoioG7X7HNrRbhsbAMPEDc7MK0
+         Vb2FT21a+aJPAc//66l2Pql61Tzw+xNoyLMOykUCFQ9n6qIaybhdnuzrRkiE4wNf7obA
+         /LW76Cpsmc+jEk9/t4nDxtpeXEbMSu2TarbfcsYO2/9eYQuVGvr+hTh9+1xcekuC45lA
+         YVPjV7yttQezbuCvyfxDo5SV0T1KFiiaAO186pr1yw7g64tycwwKlSssSkKiYXbpH/bO
+         Ml8WUWt/xf+bPcJaTk55RmVZy1mIXeeqPUopfQEku7H/uQHg4Yf/nLYN4Xwjvpke683V
+         6GNw==
+X-Gm-Message-State: AOAM530vcY0TN/UFwKHVQ7oTnJMBumZkN4I0ErGMxK2yfzn70eBaj8A3
+        S4wFFE99PcFdkW2KnQfPXvNrWoXOEWzdIQ0dVvO986hdwokpfrSq7PH5FqFXSMyXvRyCp9ArAFk
+        mMr0oenNKPz5Z9QlPF9F96V1zkac=
+X-Received: by 2002:a17:907:20da:: with SMTP id qq26mr17820562ejb.42.1623080033902;
+        Mon, 07 Jun 2021 08:33:53 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyI7KVwpREF18YgH/3bFCnlBjU/J/cfKvgYikWI+jCFkukPGJiLXyu+tjZ0OfcXFYMkBnvSKw==
+X-Received: by 2002:a17:907:20da:: with SMTP id qq26mr17820533ejb.42.1623080033736;
+        Mon, 07 Jun 2021 08:33:53 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id s2sm7949873edu.89.2021.06.07.08.33.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Jun 2021 08:33:53 -0700 (PDT)
+Subject: Re: [PATCH] brcmfmac: Add clm_blob firmware files to modinfo
+To:     matthias.bgg@kernel.org, Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        Remi Depommier <rde@setrix.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        linux-wireless@vger.kernel.org, Amar Shankar <amsr@cypress.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, Dmitry Osipenko <digetx@gmail.com>,
+        SHA-cyfmac-dev-list@infineon.com, rafal@milecki.pl,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Matthias Brugger <mbrugger@suse.com>,
+        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        Wright Feng <wright.feng@infineon.com>
+References: <20210607103433.21022-1-matthias.bgg@kernel.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <b43c0fe0-0252-40f5-39f2-1c60905fd0ea@redhat.com>
+Date:   Mon, 7 Jun 2021 17:33:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.104.82]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggeme760-chm.china.huawei.com (10.3.19.106)
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210607103433.21022-1-matthias.bgg@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix some spelling mistakes in comments:
-freeed  ==> freed
-addreses  ==> addresses
-containging  ==> containing
-capablity  ==> capability
-sucess  ==> success
-atleast  ==> at least
+Hi,
 
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
----
- net/mac80211/mesh.h                | 2 +-
- net/mac80211/mesh_hwmp.c           | 2 +-
- net/mac80211/mesh_pathtbl.c        | 2 +-
- net/mac80211/mesh_plink.c          | 2 +-
- net/mac80211/mlme.c                | 2 +-
- net/mac80211/rc80211_minstrel_ht.c | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+On 6/7/21 12:34 PM, matthias.bgg@kernel.org wrote:
+> From: Matthias Brugger <mbrugger@suse.com>
+> 
+> Cypress Wi-Fi chipsets include information regarding regulatory
+> constraints. These are provided to the driver through "Country Local
+> Matrix" (CLM) blobs. Files present in Linux firmware repository are
+> on a generic world-wide safe version with conservative power
+> settings which is designed to comply with regulatory but may not
+> provide best performance on all boards. Never the less, a better
+> functionality can be expected with the file present, so add it to the
+> modinfo of the driver.
+> 
+> Signed-off-by: Matthias Brugger <mbrugger@suse.com>
 
-diff --git a/net/mac80211/mesh.h b/net/mac80211/mesh.h
-index 40492d1bd8fd..77080b4f87b8 100644
---- a/net/mac80211/mesh.h
-+++ b/net/mac80211/mesh.h
-@@ -134,7 +134,7 @@ struct mesh_path {
-  * gate's mpath may or may not be resolved and active.
-  * @gates_lock: protects updates to known_gates
-  * @rhead: the rhashtable containing struct mesh_paths, keyed by dest addr
-- * @walk_head: linked list containging all mesh_path objects
-+ * @walk_head: linked list containing all mesh_path objects
-  * @walk_lock: lock protecting walk_head
-  * @entries: number of entries in the table
-  */
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 3db514c4c63a..a05b615deb51 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -1124,7 +1124,7 @@ void mesh_path_start_discovery(struct ieee80211_sub_if_data *sdata)
-  * forwarding information is found.
-  *
-  * Returns: 0 if the next hop was found and -ENOENT if the frame was queued.
-- * skb is freeed here if no mpath could be allocated.
-+ * skb is freed here if no mpath could be allocated.
-  */
- int mesh_nexthop_resolve(struct ieee80211_sub_if_data *sdata,
- 			 struct sk_buff *skb)
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index 620ecf922408..efbefcbac3ac 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -122,7 +122,7 @@ static void prepare_for_gate(struct sk_buff *skb, char *dst_addr,
- 		hdr = (struct ieee80211_hdr *) skb->data;
- 
- 		/* we preserve the previous mesh header and only add
--		 * the new addreses */
-+		 * the new addresses */
- 		mshdr = (struct ieee80211s_hdr *) (skb->data + hdrlen);
- 		mshdr->flags = MESH_FLAGS_AE_A5_A6;
- 		memcpy(mshdr->eaddr1, hdr->addr3, ETH_ALEN);
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index aca26df7587d..a6915847d78a 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -150,7 +150,7 @@ static u32 mesh_set_short_slot_time(struct ieee80211_sub_if_data *sdata)
-  * mesh STA in a MBSS. Three HT protection modes are supported for now, non-HT
-  * mixed mode, 20MHz-protection and no-protection mode. non-HT mixed mode is
-  * selected if any non-HT peers are present in our MBSS.  20MHz-protection mode
-- * is selected if all peers in our 20/40MHz MBSS support HT and atleast one
-+ * is selected if all peers in our 20/40MHz MBSS support HT and at least one
-  * HT20 peer is present. Otherwise no-protection mode is selected.
-  */
- static u32 mesh_set_ht_prot_mode(struct ieee80211_sub_if_data *sdata)
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 2480bd0577bb..c6b90db32bd1 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -617,7 +617,7 @@ static void ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
- 		cap &= ~IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE;
- 
- 	/*
--	 * If some other vif is using the MU-MIMO capablity we cannot associate
-+	 * If some other vif is using the MU-MIMO capability we cannot associate
- 	 * using MU-MIMO - this will lead to contradictions in the group-id
- 	 * mechanism.
- 	 * Ownership is defined since association request, in order to avoid
-diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-index 6487b05da6fa..b3a00c755bc0 100644
---- a/net/mac80211/rc80211_minstrel_ht.c
-+++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -434,7 +434,7 @@ minstrel_ht_get_tp_avg(struct minstrel_ht_sta *mi, int group, int rate,
- 	unsigned int nsecs = 0, overhead = mi->overhead;
- 	unsigned int ampdu_len = 1;
- 
--	/* do not account throughput if sucess prob is below 10% */
-+	/* do not account throughput if success prob is below 10% */
- 	if (prob_avg < MINSTREL_FRAC(10, 100))
- 		return 0;
- 
--- 
-2.25.1
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+> 
+> ---
+> 
+>  .../wireless/broadcom/brcm80211/brcmfmac/firmware.h  |  7 +++++++
+>  .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c  |  4 ++--
+>  .../net/wireless/broadcom/brcm80211/brcmfmac/sdio.c  | 12 ++++++------
+>  3 files changed, 15 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
+> index 46c66415b4a6..e290dec9c53d 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
+> @@ -32,6 +32,13 @@ static const char BRCM_ ## fw_name ## _FIRMWARE_BASENAME[] = \
+>  	BRCMF_FW_DEFAULT_PATH fw_base; \
+>  MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH fw_base ".bin")
+>  
+> +/* Firmware and Country Local Matrix files */
+> +#define BRCMF_FW_CLM_DEF(fw_name, fw_base) \
+> +static const char BRCM_ ## fw_name ## _FIRMWARE_BASENAME[] = \
+> +	BRCMF_FW_DEFAULT_PATH fw_base; \
+> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH fw_base ".bin"); \
+> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH fw_base ".clm_blob")
+> +
+>  #define BRCMF_FW_ENTRY(chipid, mask, name) \
+>  	{ chipid, mask, BRCM_ ## name ## _FIRMWARE_BASENAME }
+>  
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> index 143a705b5cb3..c49dd0c36ae4 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> @@ -48,8 +48,8 @@ enum brcmf_pcie_state {
+>  BRCMF_FW_DEF(43602, "brcmfmac43602-pcie");
+>  BRCMF_FW_DEF(4350, "brcmfmac4350-pcie");
+>  BRCMF_FW_DEF(4350C, "brcmfmac4350c2-pcie");
+> -BRCMF_FW_DEF(4356, "brcmfmac4356-pcie");
+> -BRCMF_FW_DEF(43570, "brcmfmac43570-pcie");
+> +BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-pcie");
+> +BRCMF_FW_CLM_DEF(43570, "brcmfmac43570-pcie");
+>  BRCMF_FW_DEF(4358, "brcmfmac4358-pcie");
+>  BRCMF_FW_DEF(4359, "brcmfmac4359-pcie");
+>  BRCMF_FW_DEF(4364, "brcmfmac4364-pcie");
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> index b8788d7090a4..69cbe38f05ce 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> @@ -616,14 +616,14 @@ BRCMF_FW_DEF(43362, "brcmfmac43362-sdio");
+>  BRCMF_FW_DEF(4339, "brcmfmac4339-sdio");
+>  BRCMF_FW_DEF(43430A0, "brcmfmac43430a0-sdio");
+>  /* Note the names are not postfixed with a1 for backward compatibility */
+> -BRCMF_FW_DEF(43430A1, "brcmfmac43430-sdio");
+> -BRCMF_FW_DEF(43455, "brcmfmac43455-sdio");
+> +BRCMF_FW_CLM_DEF(43430A1, "brcmfmac43430-sdio");
+> +BRCMF_FW_CLM_DEF(43455, "brcmfmac43455-sdio");
+>  BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
+> -BRCMF_FW_DEF(4354, "brcmfmac4354-sdio");
+> -BRCMF_FW_DEF(4356, "brcmfmac4356-sdio");
+> +BRCMF_FW_CLM_DEF(4354, "brcmfmac4354-sdio");
+> +BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-sdio");
+>  BRCMF_FW_DEF(4359, "brcmfmac4359-sdio");
+> -BRCMF_FW_DEF(4373, "brcmfmac4373-sdio");
+> -BRCMF_FW_DEF(43012, "brcmfmac43012-sdio");
+> +BRCMF_FW_CLM_DEF(4373, "brcmfmac4373-sdio");
+> +BRCMF_FW_CLM_DEF(43012, "brcmfmac43012-sdio");
+>  
+>  /* firmware config files */
+>  MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-sdio.*.txt");
+> 
 
