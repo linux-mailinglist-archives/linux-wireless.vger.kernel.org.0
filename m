@@ -2,92 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D20EB39D308
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jun 2021 04:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAEF439D355
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jun 2021 05:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbhFGCnX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 6 Jun 2021 22:43:23 -0400
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:33527 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbhFGCnX (ORCPT
+        id S230161AbhFGDS7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 6 Jun 2021 23:18:59 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:41440 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230139AbhFGDS6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 6 Jun 2021 22:43:23 -0400
-Received: by mail-ot1-f49.google.com with SMTP id o17-20020a9d76510000b02903eabfc221a9so1580288otl.0
-        for <linux-wireless@vger.kernel.org>; Sun, 06 Jun 2021 19:41:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=xMYq/fUfhoTG3yARgAOvonRXPE0qKYTNauPK8taCErY=;
-        b=YXmGUwYxIz/toXU6x0gRzy7PUOayh6FDoG0x3N/Fb1rDlIoGqnNx1f/TJ5BVfw7arF
-         Hr+4h5duM7cIXb3C9ATDeeCA0xTXonwLl62Z9gSkDYL2F0aSwBLGhxX5F549xG5uJcY0
-         X5ZpTAYsZg3zSB2lM1NXf+3ap59WDx2/jSmryjohDfznoX8GQzjy/cnVpLcIFv1PovYs
-         nGHfdjEwBA0pthyl8RUbgNkUBJIOR0RsHwMSR8je9KU4tTGMnrMmZCWY1KDezqC2X5fL
-         TV15QhtLw/kyS21AbnTNb23YFTJDHJS3RJRkq6y2FYvcHnJefQTN3v1AZYeHgu9O5YrU
-         gDfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=xMYq/fUfhoTG3yARgAOvonRXPE0qKYTNauPK8taCErY=;
-        b=bb1UdKtMbDUMBxGSmw8ldBu4j55aFBGi7Hh66R5FJS7V404MJyMw2ZjvIrdOgdPuK7
-         aZxEVIzIPRL8KHveouBOR36krkqtCfNkzwDPolDQwPT5+rRnWrh+PA6WlgA/om6s2BoR
-         F6VjLiP04tTQyPGKDBpIlcitPV6LJRMzXj0Bm6JLliguj2H83kMeoej4ruFgsiswGSzj
-         TtKpRL/e6xKU9CMF45WlabrbwUflx9SLFczEM8UtF8v0/BEoLvYr/9oBPPGTBlF17T7n
-         HYYSvhh7EksnxGL6D07O+38xwoD5LZun4FWtaq24fqVC9YJrKoShg8oJM7bDDrrSlnYc
-         Pcsw==
-X-Gm-Message-State: AOAM532tz3CTw4svKT+JfKIip5gGvnWATGmybPKyCorPsM4g6bOTOyWf
-        FIqXoEv1pGvkP0B6/xD+OmsznSqXh5U=
-X-Google-Smtp-Source: ABdhPJxfcGw6RPwQ0+XZ4XFuGgpOMHnR/EAb4gdYYHDsNAbMfC0q8wpDkhe6EAVWVth6fySxSrsYdw==
-X-Received: by 2002:a05:6830:22ec:: with SMTP id t12mr12393647otc.243.1623033623171;
-        Sun, 06 Jun 2021 19:40:23 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id j24sm453933oou.8.2021.06.06.19.40.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Jun 2021 19:40:22 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: rtw88: Guaranteed system freeze with RTL8821CE with RFE 2 type
-To:     rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <vWuRjLpNOkVGXHNeCL6phN5YDcd6Oljm1WgEMO4vA9aufK8MxzN5itvDnRjPBWHZN0geAbRLAzgIj36kAiNtdHh5vg2RjUH_TzuqZ7WSYeE=@protonmail.com>
- <65c86fe7-f1f1-445f-40c2-25ceaa4e4fb6@lwfinger.net>
- <1jmF9EMZn2ywrHSGrNCzOUSAzllw9ox-Da2zfbSTnTULlX8Ha8F211TfKuxITBBtkfxiU_R0w7zUeFLdtDj4ejp6qPnCIhFj2U-rsCVNlMg=@protonmail.com>
- <Qg7Ae-IznoeEC_X2m_4XXKRlM-yT3O7dzdbZ0egHTsdEaA0uILKZ0uBymFMrN7aI38rz-ZTKSxTDUAU4tKJPIntXELdx9Rd0MIU5sSG_VCI=@protonmail.com>
- <ZJknGMd-LYMAOQNAoIsR9G59_Wlt9uYUPzzJ_v2p3W8kCQ_gIQ_ymF09TV83SN0h5Md0tyzlpIxTjCMkK88gXOkSI5UA_knH6RGUd4ITHrA=@protonmail.com>
- <d65a162e-9d0c-fff9-65e3-4553a1981ad3@lwfinger.net>
- <hXlLGR-ccu9ozKXl1rsCyt7jWfmH0ufgepYDXU9dkZUYJWDmwjflabUNuxh-XWDeey4GQRjaSmtSIEqFsY5mieunEOMCTawMpyFzW9dbA0A=@protonmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <37f988a9-8966-3482-f0ad-812a8cecce00@lwfinger.net>
-Date:   Sun, 6 Jun 2021 21:40:21 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+        Sun, 6 Jun 2021 23:18:58 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1573H3V60025084, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1573H3V60025084
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 7 Jun 2021 11:17:03 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 7 Jun 2021 11:17:03 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 7 Jun 2021 11:17:02 +0800
+Received: from RTEXMBS03.realtek.com.tw ([fe80::5dd5:a082:ce5b:82b5]) by
+ RTEXMBS03.realtek.com.tw ([fe80::5dd5:a082:ce5b:82b5%3]) with mapi id
+ 15.01.2106.013; Mon, 7 Jun 2021 11:17:02 +0800
+From:   Steven Ting <steventing@realtek.com>
+To:     "johannes.berg@intel.com" <johannes.berg@intel.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Is the extra_tx_headroom guarenteed ?
+Thread-Topic: Is the extra_tx_headroom guarenteed ?
+Thread-Index: AddbSjppmAX3DQgITcSrSZZ1Rzj0gw==
+Date:   Mon, 7 Jun 2021 03:17:02 +0000
+Message-ID: <f045bc11c75e4603bf58f3d596448c7e@realtek.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.218]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/6/6_=3F=3F_11:20:00?=
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-In-Reply-To: <hXlLGR-ccu9ozKXl1rsCyt7jWfmH0ufgepYDXU9dkZUYJWDmwjflabUNuxh-XWDeey4GQRjaSmtSIEqFsY5mieunEOMCTawMpyFzW9dbA0A=@protonmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 06/07/2021 03:03:44
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 164137 [Jun 06 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: steventing@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 06/07/2021 03:06:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I just push a patch from Realtek with the following commit message:
+Johannes and all mac80211 gurus,
 
-8821CE with ASPM cannot work properly on Protempo Ltd L116HTN6SPW. Add a
-quirk to disable the cap.
+We encountered a problem that we use the extra_tx_headroom to reserve the headroom
+which we put the txdesc in.
 
-The reporter describes the symptom is that this module (driver) causes
-frequent freezes, randomly but usually within a few minutes of running
-(thus very soon after boot): screen display remains frozen, no response
-to either keyboard or mouse input. All I can do is to hold the power
-button to power off, then reboot.
+Current workaround is that we check our needed headroom size by skb_headroom()
+in the driver layer.
 
+Is extra_tx_headroom in struct ieee80211_hw always guaranteed?
+The header file describes:
+* @extra_tx_headroom: headroom to reserve in each transmit skb
+*      for use by the driver (e.g. for transmit headers.)
 
-Please do a 'git pull' and try the new code. If you still have the problem, the 
-quirk may need to be extended for your system. Please run the command:
+But when the skb goes through the ieee80211_amsdu_realloc_pad(), it does not
+take care of the extra_tx_headroom, i.e. the original reserved headroom might be
+eaten.
 
-sudo dmidecode > dmidecode.txt
+Does the ieee80211_amsdu_realloc_pad() lacks some check for extra_tx_headroom
+or the extra_tx_headroom in mac80211 is not guaranteed?
 
-Then post that .txt file.
+Furthermore, for the packet that would not be aggregate in A-MSDU and ndev->needed_headroom
+is not guaranteed, in this case whether mac80211 layer still guarantee the extra_tx_headroom ?
 
-Larry
+Or mac80211 only guarantees the headroom of the skb which is built by itself ?
+
+Steven
