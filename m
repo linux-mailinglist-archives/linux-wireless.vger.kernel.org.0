@@ -2,74 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B1839F127
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jun 2021 10:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D416539F276
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jun 2021 11:32:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230426AbhFHIop (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Jun 2021 04:44:45 -0400
-Received: from mail-pl1-f179.google.com ([209.85.214.179]:45695 "EHLO
-        mail-pl1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230333AbhFHIop (ORCPT
+        id S230520AbhFHJe3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Jun 2021 05:34:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50154 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229512AbhFHJe3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Jun 2021 04:44:45 -0400
-Received: by mail-pl1-f179.google.com with SMTP id 11so10239489plk.12
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Jun 2021 01:42:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LJLi9BhF+LiFNRjDPUmJyFD+uMa3FNUXRrTewLNrVvg=;
-        b=YMoMPkMzOdknJkSCxwrfnQEJUlQOFnyOHCQzuM95FAikMw17xO5CkI7DnGQWvpePhy
-         XxDgvGdX8FRI8djNwwzQ7KOcx/RQs2VQaAxqfSKaN06V//NtAWan16kdgU5OE6SqBb8C
-         ihVX3vQ68wzkcx4Dml+4iD8QA7nAs0oO9Rpk0RB7zVDtVyaK4tKXgBBwafA0pGr5o25/
-         koZyZgkjp+yVFENOFMmC7Lz28RqOs3Fl5fPmha5nU3A6O33gkD1ktW4MnalPgjMu+YJr
-         sqXHrhWoKrDLoqcLzYhnOb+tpkUheWGMjBakQkpCngjbqQQalohxSyXFWx5yC+yAP+/Y
-         B0Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LJLi9BhF+LiFNRjDPUmJyFD+uMa3FNUXRrTewLNrVvg=;
-        b=EuLsZBXaR4NkfUmS4HBTFL/q+sJlUWVec9xaBKsIRTUhoOhiN1kIlY7w6izzaw0wc5
-         wj1iedM8QBPN2LebFtGI16LMROZmFU3mSLyU1zTkoEUibNMVEcNqOQPgKzitTaYxFIuT
-         uq6NKBB2r3sB/svMQqk99AX3Akq2BFR+/VFj62iVxIAbhrJFAEq3UuddrAF3APf/9u94
-         sfoXQk6p2TOkNsMUmjrfk/h/0E+IiuIMiDnnEQl1WyiseBqp/lu7xQMthXGwIy4lHaRr
-         zMJ/0f9dZMhL/x9NVIMBgM0htFBpK7YL4BUzQGP6+0/lXb1tXcGdMmU83VyuPkGHPi7+
-         3WTA==
-X-Gm-Message-State: AOAM532UcgbJoOjxnYKkrxGT1vcu8SuVZZIZZ9wdRpZyB4vStN1LgAR0
-        5GFmCIc8vDx1qIkrs0uHC6WZdthFuyYjlfpcLHRTzw==
-X-Google-Smtp-Source: ABdhPJxfMNAjLkZ52tEdGM+okCpTDfBp5W9UFvvIcwnSj3aSgX/KMogzksKup7OrSz/9H1ZbgCA4RY2iwMR+km9+6dQ=
-X-Received: by 2002:a17:90a:d590:: with SMTP id v16mr24579215pju.205.1623141713015;
- Tue, 08 Jun 2021 01:41:53 -0700 (PDT)
+        Tue, 8 Jun 2021 05:34:29 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CACEC061787
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Jun 2021 02:32:36 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lqY65-003gsH-RM; Tue, 08 Jun 2021 11:32:33 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 1/4] mac80211: fix 'reset' debugfs locking
+Date:   Tue,  8 Jun 2021 11:32:27 +0200
+Message-Id: <20210608113226.14020430e449.I78e19db0a55a8295a376e15ac4cf77dbb4c6fb51@changeid>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20210608040241.10658-1-ryazanov.s.a@gmail.com> <20210608040241.10658-9-ryazanov.s.a@gmail.com>
-In-Reply-To: <20210608040241.10658-9-ryazanov.s.a@gmail.com>
-From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Tue, 8 Jun 2021 10:51:03 +0200
-Message-ID: <CAMZdPi-24bQUKWQK7fnuOdD85dSqys9-twUggbrbZUAGvOnRKA@mail.gmail.com>
-Subject: Re: [PATCH 08/10] net: wwan: core: implement TIOCINQ ioctl
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 8 Jun 2021 at 06:02, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
->
-> It is quite common for a userpace program to fetch the buffered amount
-> of data in the rx queue to avoid the read block. Implement the TIOCINQ
-> ioctl to make the migration to the WWAN port usage smooth.
->
-> Despite the fact that the read call will return no more data than the
-> size of a first skb in the queue, TIOCINQ returns the entire amount of
-> buffered data (sum of all queued skbs). This is done to prevent the
-> breaking of programs that optimize reading, avoiding it if the buffered
-> amount of data is too small.
->
-> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+cfg80211 now calls suspend/resume with the wiphy lock
+held, and while there's a problem with that needing
+to be fixed, we should do the same in debugfs.
+
+Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/debugfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index 9245c0421bda..b5ff61b6448a 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -4,7 +4,7 @@
+  *
+  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright (C) 2018 - 2019 Intel Corporation
++ * Copyright (C) 2018 - 2019, 2021 Intel Corporation
+  */
+ 
+ #include <linux/debugfs.h>
+@@ -389,8 +389,10 @@ static ssize_t reset_write(struct file *file, const char __user *user_buf,
+ 	struct ieee80211_local *local = file->private_data;
+ 
+ 	rtnl_lock();
++	wiphy_lock(local->hw.wiphy);
+ 	__ieee80211_suspend(&local->hw, NULL);
+ 	__ieee80211_resume(&local->hw);
++	wiphy_unlock(local->hw.wiphy);
+ 	rtnl_unlock();
+ 
+ 	return count;
+-- 
+2.31.1
+
