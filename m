@@ -2,52 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AF4139F0E5
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jun 2021 10:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D6C39F0E7
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jun 2021 10:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231289AbhFHI2p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 8 Jun 2021 04:28:45 -0400
-Received: from mail-pf1-f175.google.com ([209.85.210.175]:41736 "EHLO
-        mail-pf1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230516AbhFHI2o (ORCPT
+        id S230435AbhFHI3j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 8 Jun 2021 04:29:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35686 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229657AbhFHI3i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 8 Jun 2021 04:28:44 -0400
-Received: by mail-pf1-f175.google.com with SMTP id x73so15153873pfc.8
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Jun 2021 01:26:52 -0700 (PDT)
+        Tue, 8 Jun 2021 04:29:38 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C054EC061787
+        for <linux-wireless@vger.kernel.org>; Tue,  8 Jun 2021 01:27:29 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id d5-20020a17090ab305b02901675357c371so13274608pjr.1
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Jun 2021 01:27:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=00PfNRcZcqMBfYq8HarCC1wcOInvFG5JKiJ94/fmwE4=;
-        b=khshN8CeOIcR9fydB9VBOieeel753hRUU5Z1lxzC65HJwwqUCzOSCeEw/MP7xanU0c
-         Rex/PGIE+Opf52At/T/L11iFMU4NZ8cv/OsL5RNhVe0v+5VYjowkjVJvQdCsM4XzdWSQ
-         5S08lmKrfGRWeV2JsBDJtlYW5P34WHWpJrOrUvsHy9TH1dtU6lgWq2ZNajiHFiW6+EQ9
-         U3Llp+ECgx/Qhdg+v8JQzD/UrPiVpueUFuKQn6EAjvxaoV3B+jVZH72qbwiXxfVJgz08
-         /yhj8Vn8mWu9NE417tspWHN1iluQayEVikUhbcdHhM+1p0yPpTz5qZuiXvD7Y8Q59KO1
-         jSow==
+        bh=kru1jVKIZDBbX/gbXId8v7rU5ZsvCdv1CDcksUANLSM=;
+        b=PCY7GfBYObdBW6XaxdECThXX+WKhR0WID57PrjrWtuc52OtUQzDC1l6FFxmF5/dMVw
+         G+QM5sEHfZmNy/aEaLf6Acw0vzeeoMSHkt3bqAJnjjo4RfSqrk0okxmOs/mn2uA8zpGp
+         fSgXCMbgNwV5H7JNsjXoGUmrr0GrxfI/hi6JfLrG2YhIEJk5AgVbmh6z5R/aj1cw6/p+
+         +4G9qZPpXLdjYsPSlnNZbAp6Hj42wgyVnSZOq1/SElmgJBL4Z2W3NmaBks7ULIfhNrui
+         DhXwZuoCSY9xiEpGPuin1DAtSnENmnMHhinlG4gKCT2Px0sylPVun+ttRHxAYFtvNxz/
+         /iUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=00PfNRcZcqMBfYq8HarCC1wcOInvFG5JKiJ94/fmwE4=;
-        b=pDV31BNqro1a+ZX5I5x7BU5QCoVjlPWmjMpQHdJfz9mIrTClpOVmG2Gvk+zftdD6fs
-         oPDzNHAqkid6E7S7F3x+zyKyvJmML0kg8DkKQ9WT7QrLgUYbNEWQ70cj1rVHiKbqK80c
-         pLegwVeMPmGTd2iyRt6VwyoWYG4tTToc1OVClb0AyIDBHJj+KuLKI3jDu4ReTWbRJY+9
-         KgMH/4ruJeGoTzHU+hMAnMm15kStRZ5wYezC94qAjCFflX1ib/V9PTezOfof7OsjR3vo
-         KOnVdquGGA7TCM+FLZjADlLAO4+2QVB2RbP3bBw+zRf0KhNy/M1mSHNn+sOzEVX3Ge2z
-         QF3g==
-X-Gm-Message-State: AOAM532eedibdrKRfBV4wxIgdQCnqAockKmdV3vJ+C1VsQ6Nl0UeGwiR
-        AVpwUg+Kr+t4vaNCIt4ZR7/W7VYTZeqvwZ6wHLqZsA==
-X-Google-Smtp-Source: ABdhPJwrN6I54ad7/gEccK2yJkwCbDOypZowDEBHw7TqVb8ydJoZjeDKK/L0RP4RGL5oDnwgCS9FZCR67Gm2/unxOXc=
-X-Received: by 2002:a63:1906:: with SMTP id z6mr21306328pgl.173.1623140752278;
- Tue, 08 Jun 2021 01:25:52 -0700 (PDT)
+        bh=kru1jVKIZDBbX/gbXId8v7rU5ZsvCdv1CDcksUANLSM=;
+        b=J4v9nfPQF8y262E1MGbDbUi4YCAUfXZL5D4vj4GDc4+v41dZebmIz3ipMswlyeEwQj
+         jOqA7Rc3aTxWVV+EmB/3yHa2cmsWdGFitWeFQyI1ts+0D9zqpqfrTZRhZ9zPT78BkhG0
+         8uXmt+zTy9wTNSQQBLnl0WHrBL3kViByqS20/MhKDuLWJa3+vldg0iRZdS1/qxa6/R3m
+         Ca5SOGoTfIBO/yi8/uV6OM4xvDrBLXW6jPw6lZfNCYm+Ktaqs2C8TDZhYirhSM1sfvA3
+         TCwlGOZcBtyDH8EC5kkE6luEjw6UM8jatq73iJfoZRHwqxy6zyNgFBM234bpFCQMdHXA
+         HPpA==
+X-Gm-Message-State: AOAM532bWJpz9DIXq8m8yrszThg6OYH4K4pW8axb3bpvSj+pPY0BUFJE
+        zk8Qke5VPxHfyIoeQwbQpAmVJat3oPtPapgq+OFtyA==
+X-Google-Smtp-Source: ABdhPJzbAX1nUH+3GGcXlPZ9uD9JPAK6Bo2dLzJrat++g2PixCKqruoRtTKM8RrwvOduXp07jnUJUOlJHmx5O/L29mA=
+X-Received: by 2002:a17:902:8e86:b029:10f:44bb:2c42 with SMTP id
+ bg6-20020a1709028e86b029010f44bb2c42mr20670116plb.67.1623140848266; Tue, 08
+ Jun 2021 01:27:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210608040241.10658-1-ryazanov.s.a@gmail.com> <20210608040241.10658-4-ryazanov.s.a@gmail.com>
-In-Reply-To: <20210608040241.10658-4-ryazanov.s.a@gmail.com>
+References: <20210608040241.10658-1-ryazanov.s.a@gmail.com> <20210608040241.10658-5-ryazanov.s.a@gmail.com>
+In-Reply-To: <20210608040241.10658-5-ryazanov.s.a@gmail.com>
 From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Tue, 8 Jun 2021 10:35:02 +0200
-Message-ID: <CAMZdPi9y=LXp0XVFR_+Wfnxt83tXfMcdR9MjQkcaXpZb7=Le5w@mail.gmail.com>
-Subject: Re: [PATCH 03/10] net: wwan: make WWAN_PORT_MAX meaning less surprised
+Date:   Tue, 8 Jun 2021 10:36:39 +0200
+Message-ID: <CAMZdPi9myKaDmanHv-FGrdwv0taDU3Q-8=n5zL0QHA12go=9Kw@mail.gmail.com>
+Subject: Re: [PATCH 04/10] net: wwan: core: init port type string array using
+ enum values
 To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Cc:     "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -60,10 +65,8 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Tue, 8 Jun 2021 at 06:02, Sergey Ryazanov <ryazanov.s.a@gmail.com> wrote:
 >
-> It is quite unusual when some value can not be equal to a defined range
-> max value. Also most subsystems defines FOO_TYPE_MAX as a maximum valid
-> value. So turn the WAN_PORT_MAX meaning from the number of supported
-> port types to the maximum valid port type.
+> This array is indexed by port type. Make it self-descriptive by using
+> the port type enum values as indices in the array initializer.
 >
 > Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
