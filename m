@@ -2,184 +2,253 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C04C3A18E6
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 17:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A0FD3A1AA8
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 18:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231509AbhFIPQD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Jun 2021 11:16:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44660 "EHLO mail.kernel.org"
+        id S234837AbhFIQSb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Jun 2021 12:18:31 -0400
+Received: from mga11.intel.com ([192.55.52.93]:33502 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233486AbhFIPQC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Jun 2021 11:16:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B841B60E0B;
-        Wed,  9 Jun 2021 15:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623251647;
-        bh=F02YCRxZBTjIvd1BvzZ4xcAS4hUNYSlEeTxDGudoenA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=VdYQPtGURvWT0Ekdy85+n7tzkpj32dyWlb2LVZ3V12OcRzvO2JMZHmPQXAZfcZrFV
-         LMWjwr2xQu104G0rj2XH40Vt7tK5sUCaH7kuEW5bEA72PsPUPDC2+KVmCZlm7t4G37
-         zcR5pDrZrgS0og4++2q6u97Xm8noEyuYB18O3p4IaOtt9jgXFAqcYm41QPAhBGs15G
-         DoIhLJPagpNAskhGi/JIZEaQZ/ZXhRj2O6XofdARjtk42AVNRtVxjk2ObJ6S4Y7GlH
-         KmhK9nENe2gzZP5t9KawymoQRbqRA2RfnU9ps4liokFJywv+OB8UuV/vbX6CU5uuYW
-         uoh0r50PU0xQQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        deren.wu@mediatek.com, sean.wang@mediatek.com,
-        ryder.lee@mediatek.com
-Subject: [PATCH] mt76: reduce rx buffer size to 2048
-Date:   Wed,  9 Jun 2021 17:13:58 +0200
-Message-Id: <53e6938fa1b938a6c1753ed2bd3a5df4fb198482.1623251404.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S234710AbhFIQSa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Jun 2021 12:18:30 -0400
+IronPort-SDR: etupRFStkgYP8RDdO4ewWBWQWcJUGRjglBoyWi3agG0/UO/qwJ41WhFuc9QYlwP6M1RgpyHMBw
+ xjAS2TIK+UFg==
+X-IronPort-AV: E=McAfee;i="6200,9189,10010"; a="202082273"
+X-IronPort-AV: E=Sophos;i="5.83,261,1616482800"; 
+   d="scan'208";a="202082273"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 09:15:37 -0700
+IronPort-SDR: JLyStGEYUcjrlYkTuxb4lO0dWZOencve1q2vLUwKAso1au7OyM2PABw9Ysc3xa/MqgwXfMdWlQ
+ DouVHrQoU31g==
+X-IronPort-AV: E=Sophos;i="5.83,261,1616482800"; 
+   d="scan'208";a="448337976"
+Received: from pbabich-mobl.ger.corp.intel.com (HELO egrumbac-mobl1.intel.com) ([10.251.173.180])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 09:15:34 -0700
+From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH] cfg80211: expose the rfkill device to the low level driver
+Date:   Wed,  9 Jun 2021 19:15:20 +0300
+Message-Id: <20210609161520.109824-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Reduce rx buffer size to 2048 for mt7921/mt7915/mt7615 since we
-now support rx amsdu offload
+This will allow the low level driver to query the rfkill
+state.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/dma.c |  9 ++-------
- drivers/net/wireless/mediatek/mt76/mt7915/dma.c | 12 +++++-------
- drivers/net/wireless/mediatek/mt76/mt7921/dma.c |  8 +++-----
- 3 files changed, 10 insertions(+), 19 deletions(-)
+ include/net/cfg80211.h     |  8 +++++++-
+ net/wireless/core.c        | 34 +++++++++++++---------------------
+ net/wireless/core.h        |  3 +--
+ net/wireless/nl80211.c     |  4 ++--
+ net/wireless/wext-compat.c |  6 +++---
+ 5 files changed, 26 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
-index b6184234cad2..00aefea1bf61 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
-@@ -222,14 +222,9 @@ void mt7615_dma_start(struct mt7615_dev *dev)
- int mt7615_dma_init(struct mt7615_dev *dev)
- {
- 	int rx_ring_size = MT7615_RX_RING_SIZE;
--	int rx_buf_size = MT_RX_BUF_SIZE;
- 	u32 mask;
- 	int ret;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 5224f885a99a..57c8cbbd7598 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -4945,6 +4945,7 @@ struct wiphy_iftype_akm_suites {
+  *	configuration through the %NL80211_TID_CONFIG_ATTR_RETRY_SHORT and
+  *	%NL80211_TID_CONFIG_ATTR_RETRY_LONG attributes
+  * @sar_capa: SAR control capabilities
++ * @rfkill: a pointer to the rfkill structure
+  */
+ struct wiphy {
+ 	struct mutex mtx;
+@@ -5087,6 +5088,8 @@ struct wiphy {
  
--	/* Increase buffer size to receive large VHT MPDUs */
--	if (dev->mphy.cap.has_5ghz)
--		rx_buf_size *= 2;
+ 	const struct cfg80211_sar_capa *sar_capa;
+ 
++	struct rfkill *rfkill;
++
+ 	char priv[] __aligned(NETDEV_ALIGN);
+ };
+ 
+@@ -6661,7 +6664,10 @@ void wiphy_rfkill_start_polling(struct wiphy *wiphy);
+  * wiphy_rfkill_stop_polling - stop polling rfkill
+  * @wiphy: the wiphy
+  */
+-void wiphy_rfkill_stop_polling(struct wiphy *wiphy);
++static inline void wiphy_rfkill_stop_polling(struct wiphy *wiphy)
++{
++	rfkill_pause_polling(wiphy->rfkill);
++}
+ 
+ /**
+  * DOC: Vendor commands
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 6fbf7537faf5..bd1edec19cfa 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -532,11 +532,11 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
+ 	wiphy_net_set(&rdev->wiphy, &init_net);
+ 
+ 	rdev->rfkill_ops.set_block = cfg80211_rfkill_set_block;
+-	rdev->rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
+-				   &rdev->wiphy.dev, RFKILL_TYPE_WLAN,
+-				   &rdev->rfkill_ops, rdev);
++	rdev->wiphy.rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
++					  &rdev->wiphy.dev, RFKILL_TYPE_WLAN,
++					  &rdev->rfkill_ops, rdev);
+ 
+-	if (!rdev->rfkill) {
++	if (!rdev->wiphy.rfkill) {
+ 		wiphy_free(&rdev->wiphy);
+ 		return NULL;
+ 	}
+@@ -993,10 +993,10 @@ int wiphy_register(struct wiphy *wiphy)
+ 	rdev->wiphy.registered = true;
+ 	rtnl_unlock();
+ 
+-	res = rfkill_register(rdev->rfkill);
++	res = rfkill_register(rdev->wiphy.rfkill);
+ 	if (res) {
+-		rfkill_destroy(rdev->rfkill);
+-		rdev->rfkill = NULL;
++		rfkill_destroy(rdev->wiphy.rfkill);
++		rdev->wiphy.rfkill = NULL;
+ 		wiphy_unregister(&rdev->wiphy);
+ 		return res;
+ 	}
+@@ -1012,18 +1012,10 @@ void wiphy_rfkill_start_polling(struct wiphy *wiphy)
+ 	if (!rdev->ops->rfkill_poll)
+ 		return;
+ 	rdev->rfkill_ops.poll = cfg80211_rfkill_poll;
+-	rfkill_resume_polling(rdev->rfkill);
++	rfkill_resume_polling(wiphy->rfkill);
+ }
+ EXPORT_SYMBOL(wiphy_rfkill_start_polling);
+ 
+-void wiphy_rfkill_stop_polling(struct wiphy *wiphy)
+-{
+-	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
 -
- 	mt76_dma_attach(&dev->mt76);
- 
- 	mt76_wr(dev, MT_WPDMA_GLO_CFG,
-@@ -270,7 +265,7 @@ int mt7615_dma_init(struct mt7615_dev *dev)
- 
- 	/* init rx queues */
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU], 1,
--			       MT7615_RX_MCU_RING_SIZE, rx_buf_size,
-+			       MT7615_RX_MCU_RING_SIZE, MT_RX_BUF_SIZE,
- 			       MT_RX_RING_BASE);
- 	if (ret)
- 		return ret;
-@@ -279,7 +274,7 @@ int mt7615_dma_init(struct mt7615_dev *dev)
- 	    rx_ring_size /= 2;
- 
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN], 0,
--			       rx_ring_size, rx_buf_size, MT_RX_RING_BASE);
-+			       rx_ring_size, MT_RX_BUF_SIZE, MT_RX_RING_BASE);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-index 69a7e3dce113..9182568f95c7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-@@ -79,8 +79,6 @@ void mt7915_dma_prefetch(struct mt7915_dev *dev)
- 
- int mt7915_dma_init(struct mt7915_dev *dev)
+-	rfkill_pause_polling(rdev->rfkill);
+-}
+-EXPORT_SYMBOL(wiphy_rfkill_stop_polling);
+-
+ void wiphy_unregister(struct wiphy *wiphy)
  {
--	/* Increase buffer size to receive large VHT/HE MPDUs */
--	int rx_buf_size = MT_RX_BUF_SIZE * 2;
- 	u32 hif1_ofs = 0;
- 	int ret;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+@@ -1035,8 +1027,8 @@ void wiphy_unregister(struct wiphy *wiphy)
+ 		wiphy_unlock(&rdev->wiphy);
+ 		__count == 0; }));
  
-@@ -144,28 +142,28 @@ int mt7915_dma_init(struct mt7915_dev *dev)
- 	/* event from WM */
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
- 			       MT7915_RXQ_MCU_WM, MT7915_RX_MCU_RING_SIZE,
--			       rx_buf_size, MT_RX_EVENT_RING_BASE);
-+			       MT_RX_BUF_SIZE, MT_RX_EVENT_RING_BASE);
- 	if (ret)
- 		return ret;
+-	if (rdev->rfkill)
+-		rfkill_unregister(rdev->rfkill);
++	if (rdev->wiphy.rfkill)
++		rfkill_unregister(rdev->wiphy.rfkill);
  
- 	/* event from WA */
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
- 			       MT7915_RXQ_MCU_WA, MT7915_RX_MCU_RING_SIZE,
--			       rx_buf_size, MT_RX_EVENT_RING_BASE);
-+			       MT_RX_BUF_SIZE, MT_RX_EVENT_RING_BASE);
- 	if (ret)
- 		return ret;
- 
- 	/* rx data queue */
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN],
- 			       MT7915_RXQ_BAND0, MT7915_RX_RING_SIZE,
--			       rx_buf_size, MT_RX_DATA_RING_BASE);
-+			       MT_RX_BUF_SIZE, MT_RX_DATA_RING_BASE);
- 	if (ret)
- 		return ret;
- 
- 	if (dev->dbdc_support) {
- 		ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_EXT],
- 				       MT7915_RXQ_BAND1, MT7915_RX_RING_SIZE,
--				       rx_buf_size,
-+				       MT_RX_BUF_SIZE,
- 				       MT_RX_DATA_RING_BASE + hif1_ofs);
- 		if (ret)
- 			return ret;
-@@ -174,7 +172,7 @@ int mt7915_dma_init(struct mt7915_dev *dev)
- 		ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_EXT_WA],
- 				       MT7915_RXQ_MCU_WA_EXT,
- 				       MT7915_RX_MCU_RING_SIZE,
--				       rx_buf_size,
-+				       MT_RX_BUF_SIZE,
- 				       MT_RX_EVENT_RING_BASE + hif1_ofs);
- 		if (ret)
- 			return ret;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index 5e745e9c2185..7d7d43a5422f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -380,9 +380,7 @@ int mt7921_wpdma_reinit_cond(struct mt7921_dev *dev)
- 
- int mt7921_dma_init(struct mt7921_dev *dev)
+ 	rtnl_lock();
+ 	wiphy_lock(&rdev->wiphy);
+@@ -1088,7 +1080,7 @@ void cfg80211_dev_free(struct cfg80211_registered_device *rdev)
  {
--	/* Increase buffer size to receive large VHT/HE MPDUs */
- 	struct mt76_bus_ops *bus_ops;
--	int rx_buf_size = MT_RX_BUF_SIZE * 2;
- 	int ret;
+ 	struct cfg80211_internal_bss *scan, *tmp;
+ 	struct cfg80211_beacon_registration *reg, *treg;
+-	rfkill_destroy(rdev->rfkill);
++	rfkill_destroy(rdev->wiphy.rfkill);
+ 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
+ 		list_del(&reg->list);
+ 		kfree(reg);
+@@ -1110,7 +1102,7 @@ void wiphy_rfkill_set_hw_state_reason(struct wiphy *wiphy, bool blocked,
+ {
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
  
- 	dev->bus_ops = dev->mt76.bus;
-@@ -430,7 +428,7 @@ int mt7921_dma_init(struct mt7921_dev *dev)
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
- 			       MT7921_RXQ_MCU_WM,
- 			       MT7921_RX_MCU_RING_SIZE,
--			       rx_buf_size, MT_RX_EVENT_RING_BASE);
-+			       MT_RX_BUF_SIZE, MT_RX_EVENT_RING_BASE);
- 	if (ret)
- 		return ret;
+-	if (rfkill_set_hw_state_reason(rdev->rfkill, blocked, reason))
++	if (rfkill_set_hw_state_reason(wiphy->rfkill, blocked, reason))
+ 		schedule_work(&rdev->rfkill_block);
+ }
+ EXPORT_SYMBOL(wiphy_rfkill_set_hw_state_reason);
+@@ -1506,7 +1498,7 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
+ 					     wdev->use_4addr, 0))
+ 			return notifier_from_errno(-EOPNOTSUPP);
  
-@@ -438,14 +436,14 @@ int mt7921_dma_init(struct mt7921_dev *dev)
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
- 			       MT7921_RXQ_MCU_WM,
- 			       MT7921_RX_MCU_RING_SIZE,
--			       rx_buf_size, MT_WFDMA0(0x540));
-+			       MT_RX_BUF_SIZE, MT_WFDMA0(0x540));
- 	if (ret)
- 		return ret;
+-		if (rfkill_blocked(rdev->rfkill))
++		if (rfkill_blocked(rdev->wiphy.rfkill))
+ 			return notifier_from_errno(-ERFKILL);
+ 		break;
+ 	default:
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index a7d19b4b40ac..b35d0db12f1d 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -3,7 +3,7 @@
+  * Wireless configuration interface internals.
+  *
+  * Copyright 2006-2010	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2018-2020 Intel Corporation
++ * Copyright (C) 2018-2021 Intel Corporation
+  */
+ #ifndef __NET_WIRELESS_CORE_H
+ #define __NET_WIRELESS_CORE_H
+@@ -27,7 +27,6 @@ struct cfg80211_registered_device {
  
- 	/* rx data */
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN],
- 			       MT7921_RXQ_BAND0, MT7921_RX_RING_SIZE,
--			       rx_buf_size, MT_RX_DATA_RING_BASE);
-+			       MT_RX_BUF_SIZE, MT_RX_DATA_RING_BASE);
- 	if (ret)
- 		return ret;
+ 	/* rfkill support */
+ 	struct rfkill_ops rfkill_ops;
+-	struct rfkill *rfkill;
+ 	struct work_struct rfkill_block;
+ 
+ 	/* ISO / IEC 3166 alpha2 for which this device is receiving
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index fc9286afe3c9..e006d26d5c2a 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -13042,7 +13042,7 @@ static int nl80211_start_p2p_device(struct sk_buff *skb, struct genl_info *info)
+ 	if (wdev_running(wdev))
+ 		return 0;
+ 
+-	if (rfkill_blocked(rdev->rfkill))
++	if (rfkill_blocked(rdev->wiphy.rfkill))
+ 		return -ERFKILL;
+ 
+ 	err = rdev_start_p2p_device(rdev, wdev);
+@@ -13084,7 +13084,7 @@ static int nl80211_start_nan(struct sk_buff *skb, struct genl_info *info)
+ 	if (wdev_running(wdev))
+ 		return -EEXIST;
+ 
+-	if (rfkill_blocked(rdev->rfkill))
++	if (rfkill_blocked(rdev->wiphy.rfkill))
+ 		return -ERFKILL;
+ 
+ 	if (!info->attrs[NL80211_ATTR_NAN_MASTER_PREF])
+diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
+index a8320dc59af7..35c6c705a073 100644
+--- a/net/wireless/wext-compat.c
++++ b/net/wireless/wext-compat.c
+@@ -902,7 +902,7 @@ static int cfg80211_wext_siwtxpower(struct net_device *dev,
+ 
+ 	/* only change when not disabling */
+ 	if (!data->txpower.disabled) {
+-		rfkill_set_sw_state(rdev->rfkill, false);
++		rfkill_set_sw_state(rdev->wiphy.rfkill, false);
+ 
+ 		if (data->txpower.fixed) {
+ 			/*
+@@ -927,7 +927,7 @@ static int cfg80211_wext_siwtxpower(struct net_device *dev,
+ 			}
+ 		}
+ 	} else {
+-		if (rfkill_set_sw_state(rdev->rfkill, true))
++		if (rfkill_set_sw_state(rdev->wiphy.rfkill, true))
+ 			schedule_work(&rdev->rfkill_block);
+ 		return 0;
+ 	}
+@@ -963,7 +963,7 @@ static int cfg80211_wext_giwtxpower(struct net_device *dev,
+ 
+ 	/* well... oh well */
+ 	data->txpower.fixed = 1;
+-	data->txpower.disabled = rfkill_blocked(rdev->rfkill);
++	data->txpower.disabled = rfkill_blocked(rdev->wiphy.rfkill);
+ 	data->txpower.value = val;
+ 	data->txpower.flags = IW_TXPOW_DBM;
  
 -- 
-2.31.1
+2.25.1
 
