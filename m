@@ -2,70 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F3CE3A1617
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 15:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E853A16BF
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 16:13:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236788AbhFINvg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Jun 2021 09:51:36 -0400
-Received: from flippie-beckerswealthsa.xyz ([62.173.138.170]:44150 "EHLO
-        host.flippie-beckerswealthsa.xyz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236495AbhFINve (ORCPT
+        id S234280AbhFIOPL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Jun 2021 10:15:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237465AbhFIOPI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Jun 2021 09:51:34 -0400
-X-Greylist: delayed 5195 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 09:51:34 EDT
-Received: from flippie-beckerswealthsa.xyz (ec2-18-118-29-154.us-east-2.compute.amazonaws.com [18.118.29.154])
-        by host.flippie-beckerswealthsa.xyz (Postfix) with ESMTPA id C6F5E3115DE3
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Jun 2021 15:09:34 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealthsa.xyz C6F5E3115DE3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealthsa.xyz; s=default; t=1623240575;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=Le2tewebEGfFXZRwFzZsnJHGdmuxz7qQOdPuoMKAq4cDtHwKL1LVqwdt5tfPxx1BA
-         TQTVNcPeW9GVrp+LHMasRxN2EHVgQNJa0jcyhtz6Wj8ALiulmVjaBUguTM4BNHR6aL
-         IJprQ//c0tlqZaXckMABdwE6O4pwX/hCN/wEg/8M=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealthsa.xyz C6F5E3115DE3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealthsa.xyz; s=default; t=1623240575;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=Le2tewebEGfFXZRwFzZsnJHGdmuxz7qQOdPuoMKAq4cDtHwKL1LVqwdt5tfPxx1BA
-         TQTVNcPeW9GVrp+LHMasRxN2EHVgQNJa0jcyhtz6Wj8ALiulmVjaBUguTM4BNHR6aL
-         IJprQ//c0tlqZaXckMABdwE6O4pwX/hCN/wEg/8M=
-Reply-To: jmasuku40@flippiebeckerwealthservices.com
-From:   Jotham Masuku <jmasuku40@flippie-beckerswealthsa.xyz>
+        Wed, 9 Jun 2021 10:15:08 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 615DDC061574
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Jun 2021 07:13:12 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lqyxB-004HAv-Oa; Wed, 09 Jun 2021 16:13:09 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Subject: Projects
-Date:   09 Jun 2021 12:09:34 +0000
-Message-ID: <20210609120934.6CA6D69F83434916@flippie-beckerswealthsa.xyz>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] mac80211: drop multicast fragments
+Date:   Wed,  9 Jun 2021 16:13:06 +0200
+Message-Id: <20210609161305.23def022b750.Ibd6dd3cdce573dae262fcdc47f8ac52b883a9c50@changeid>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello there,
+From: Johannes Berg <johannes.berg@intel.com>
 
-I hope this message finds you in good spirits especially during=20
-this challenging time of coronavirus pandemic. I hope you and=20
-your family are well and keeping safe. Anyway, I am Jotham=20
-Masuku, a broker working with Flippiebecker Wealth. I got your=20
-contact (along with few other contacts) through an online=20
-business directory and I thought I should contact you to see if=20
-you are interested in this opportunity. I am contacting you=20
-because one of my high profile clients is interested in investing=20
-abroad and has asked me to look for individuals and companies=20
-with interesting business ideas and projects that he can invest=20
-in. He wants to invest a substantial amount of asset abroad.
+These are not permitted by the spec, just drop them.
 
-Please kindly respond back to this email if you are interested in=20
-this opportunity. Once I receive your response, I will give you=20
-more details and we can plan a strategy that will be beneficial=20
-to all parties.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/rx.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-Best regards
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 1bb43edd47b6..af0ef456eb0f 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2240,17 +2240,15 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 	sc = le16_to_cpu(hdr->seq_ctrl);
+ 	frag = sc & IEEE80211_SCTL_FRAG;
+ 
+-	if (is_multicast_ether_addr(hdr->addr1)) {
+-		I802_DEBUG_INC(rx->local->dot11MulticastReceivedFrameCount);
+-		goto out_no_led;
+-	}
+-
+ 	if (rx->sta)
+ 		cache = &rx->sta->frags;
+ 
+ 	if (likely(!ieee80211_has_morefrags(fc) && frag == 0))
+ 		goto out;
+ 
++	if (is_multicast_ether_addr(hdr->addr1))
++		return RX_DROP_MONITOR;
++
+ 	I802_DEBUG_INC(rx->local->rx_handlers_fragments);
+ 
+ 	if (skb_linearize(rx->skb))
+@@ -2376,7 +2374,6 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 
+  out:
+ 	ieee80211_led_rx(rx->local);
+- out_no_led:
+ 	if (rx->sta)
+ 		rx->sta->rx_stats.packets++;
+ 	return RX_CONTINUE;
+-- 
+2.31.1
 
-J Masuku
-Flippiebecker Wealth
