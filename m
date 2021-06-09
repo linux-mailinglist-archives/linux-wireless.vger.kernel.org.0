@@ -2,67 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63DDB3A10DA
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 12:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F3CE3A1617
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 15:49:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238579AbhFIKKD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Jun 2021 06:10:03 -0400
-Received: from m12-14.163.com ([220.181.12.14]:40393 "EHLO m12-14.163.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234249AbhFIKKC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Jun 2021 06:10:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=CyN9y
-        auZ9A10j7+vRszAOPbzX0M3IqT0uJAzoEoUjPs=; b=SzDGISK4rr1bh3Vb9uCNM
-        LTso1KEBhdDNmM8KBcAHM74YHyybqAphNHh/ufM6vgcId5bpAwdx8nT6cvxYracp
-        zBsxSmlygYWFb8gywnu6M0gS3MjFu2+Jb3eBuCObPWOWMsoOocR9TzpiFtmGd5dd
-        3w70bL451kA8fc21w1pXDQ=
-Received: from ubuntu.localdomain (unknown [218.17.89.92])
-        by smtp10 (Coremail) with SMTP id DsCowAB3C2DiksBgXskzNw--.23263S2;
-        Wed, 09 Jun 2021 18:07:31 +0800 (CST)
-From:   13145886936@163.com
-To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, gushengxian <gushengxian@yulong.com>
-Subject: [PATCH] wext: fix a misspelling
-Date:   Wed,  9 Jun 2021 03:07:24 -0700
-Message-Id: <20210609100724.23376-1-13145886936@163.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DsCowAB3C2DiksBgXskzNw--.23263S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtryrtw15trWkKw1rtr15twb_yoW3CrX_Gr
-        WxJw1kKFW8JrnavayUuw4xur4jy3y0qa1Fga9xtrySyw4DA3yDt3s5Cr4Utw429w4jyrWf
-        C3Z5Jr45tF4fZjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUekgA3UUUUU==
-X-Originating-IP: [218.17.89.92]
-X-CM-SenderInfo: 5zrdx5xxdq6xppld0qqrwthudrp/1tbiygOsg1QHMViXDgAAsF
+        id S236788AbhFINvg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Jun 2021 09:51:36 -0400
+Received: from flippie-beckerswealthsa.xyz ([62.173.138.170]:44150 "EHLO
+        host.flippie-beckerswealthsa.xyz" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236495AbhFINve (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Jun 2021 09:51:34 -0400
+X-Greylist: delayed 5195 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 09:51:34 EDT
+Received: from flippie-beckerswealthsa.xyz (ec2-18-118-29-154.us-east-2.compute.amazonaws.com [18.118.29.154])
+        by host.flippie-beckerswealthsa.xyz (Postfix) with ESMTPA id C6F5E3115DE3
+        for <linux-wireless@vger.kernel.org>; Wed,  9 Jun 2021 15:09:34 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealthsa.xyz C6F5E3115DE3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flippie-beckerswealthsa.xyz; s=default; t=1623240575;
+        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=Le2tewebEGfFXZRwFzZsnJHGdmuxz7qQOdPuoMKAq4cDtHwKL1LVqwdt5tfPxx1BA
+         TQTVNcPeW9GVrp+LHMasRxN2EHVgQNJa0jcyhtz6Wj8ALiulmVjaBUguTM4BNHR6aL
+         IJprQ//c0tlqZaXckMABdwE6O4pwX/hCN/wEg/8M=
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealthsa.xyz C6F5E3115DE3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flippie-beckerswealthsa.xyz; s=default; t=1623240575;
+        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=Le2tewebEGfFXZRwFzZsnJHGdmuxz7qQOdPuoMKAq4cDtHwKL1LVqwdt5tfPxx1BA
+         TQTVNcPeW9GVrp+LHMasRxN2EHVgQNJa0jcyhtz6Wj8ALiulmVjaBUguTM4BNHR6aL
+         IJprQ//c0tlqZaXckMABdwE6O4pwX/hCN/wEg/8M=
+Reply-To: jmasuku40@flippiebeckerwealthservices.com
+From:   Jotham Masuku <jmasuku40@flippie-beckerswealthsa.xyz>
+To:     linux-wireless@vger.kernel.org
+Subject: Projects
+Date:   09 Jun 2021 12:09:34 +0000
+Message-ID: <20210609120934.6CA6D69F83434916@flippie-beckerswealthsa.xyz>
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: gushengxian <gushengxian@yulong.com>
+Hello there,
 
-Fix a misspelling.
+I hope this message finds you in good spirits especially during=20
+this challenging time of coronavirus pandemic. I hope you and=20
+your family are well and keeping safe. Anyway, I am Jotham=20
+Masuku, a broker working with Flippiebecker Wealth. I got your=20
+contact (along with few other contacts) through an online=20
+business directory and I thought I should contact you to see if=20
+you are interested in this opportunity. I am contacting you=20
+because one of my high profile clients is interested in investing=20
+abroad and has asked me to look for individuals and companies=20
+with interesting business ideas and projects that he can invest=20
+in. He wants to invest a substantial amount of asset abroad.
 
-Signed-off-by: gushengxian <gushengxian@yulong.com>
----
- net/wireless/wext-compat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please kindly respond back to this email if you are interested in=20
+this opportunity. Once I receive your response, I will give you=20
+more details and we can plan a strategy that will be beneficial=20
+to all parties.
 
-diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
-index a8320dc59af7..7ef6fd26450c 100644
---- a/net/wireless/wext-compat.c
-+++ b/net/wireless/wext-compat.c
-@@ -1183,7 +1183,7 @@ static int cfg80211_wext_siwpower(struct net_device *dev,
- 		switch (wrq->flags & IW_POWER_MODE) {
- 		case IW_POWER_ON:       /* If not specified */
- 		case IW_POWER_MODE:     /* If set all mask */
--		case IW_POWER_ALL_R:    /* If explicitely state all */
-+		case IW_POWER_ALL_R:    /* If explicitly state all */
- 			ps = true;
- 			break;
- 		default:                /* Otherwise we ignore */
--- 
-2.25.1
+Best regards
 
+J Masuku
+Flippiebecker Wealth
