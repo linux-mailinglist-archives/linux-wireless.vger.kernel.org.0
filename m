@@ -2,70 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0928F3A17FA
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 16:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDE03A179D
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 16:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238337AbhFIOyh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Jun 2021 10:54:37 -0400
-Received: from flippie-beckerswealth-sa.xyz ([62.173.147.2]:47924 "EHLO
-        host.flippie-beckerswealth-sa.xyz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237011AbhFIOyf (ORCPT
+        id S238151AbhFIOon (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Jun 2021 10:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41732 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237065AbhFIOom (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Jun 2021 10:54:35 -0400
-X-Greylist: delayed 8154 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 10:54:34 EDT
-Received: from flippie-beckerswealth-sa.xyz (ec2-3-131-99-163.us-east-2.compute.amazonaws.com [3.131.99.163])
-        by host.flippie-beckerswealth-sa.xyz (Postfix) with ESMTPA id 263A530C469E
-        for <linux-wireless@vger.kernel.org>; Wed,  9 Jun 2021 15:10:30 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz 263A530C469E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240630;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=hpbdDhrcwjspBJnkVm0IDmGkV86PvJAtuLKA/bkGNW5eOS7DDbnLDQCkO6iURbPmY
-         374BjNCN4Gol4oOhuAz+PKpF0QjibrBo/OqN1GvRRuQVShlSJFo05lO7w94RtzkPOh
-         CT8K3Vz7hjOHFvyeCvQSSp3Vx8Uq5a9KBM5Ddvsw=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz 263A530C469E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240630;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=hpbdDhrcwjspBJnkVm0IDmGkV86PvJAtuLKA/bkGNW5eOS7DDbnLDQCkO6iURbPmY
-         374BjNCN4Gol4oOhuAz+PKpF0QjibrBo/OqN1GvRRuQVShlSJFo05lO7w94RtzkPOh
-         CT8K3Vz7hjOHFvyeCvQSSp3Vx8Uq5a9KBM5Ddvsw=
-Reply-To: jmasuku40@flippiebeckerwealthservices.com
-From:   Jotham Masuku <jmasuku40@flippie-beckerswealth-sa.xyz>
-To:     linux-wireless@vger.kernel.org
-Subject: Proposal
-Date:   09 Jun 2021 12:10:29 +0000
-Message-ID: <20210609121029.739DAE3D28EE038D@flippie-beckerswealth-sa.xyz>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        Wed, 9 Jun 2021 10:44:42 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D91CC061574;
+        Wed,  9 Jun 2021 07:42:48 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lqzPq-004Hl0-Ds; Wed, 09 Jun 2021 16:42:46 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211 2021-06-09
+Date:   Wed,  9 Jun 2021 16:42:42 +0200
+Message-Id: <20210609144243.97486-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello there,
+Hi,
 
-I hope this message finds you in good spirits especially during=20
-this challenging time of coronavirus pandemic. I hope you and=20
-your family are well and keeping safe. Anyway, I am Jotham=20
-Masuku, a broker working with Flippiebecker Wealth. I got your=20
-contact (along with few other contacts) through an online=20
-business directory and I thought I should contact you to see if=20
-you are interested in this opportunity. I am contacting you=20
-because one of my high profile clients is interested in investing=20
-abroad and has asked me to look for individuals and companies=20
-with interesting business ideas and projects that he can invest=20
-in. He wants to invest a substantial amount of asset abroad.
+The last pull request I sent was coordinated with only
+those CVE fixes - now I have accumulated more fixes,
+many of them actually locking fixes for the RTNL redux.
 
-Please kindly respond back to this email if you are interested in=20
-this opportunity. Once I receive your response, I will give you=20
-more details and we can plan a strategy that will be beneficial=20
-to all parties.
+Please pull and let me know if there's any problem.
 
-Best regards
+Thanks,
+johannes
 
-J Masuku
-Flippiebecker Wealth
+
+
+The following changes since commit 593f555fbc6091bbaec8dd2a38b47ee643412e61:
+
+  net: stmmac: fix kernel panic due to NULL pointer dereference of mdio_bus_data (2021-05-30 13:41:55 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-06-09
+
+for you to fetch changes up to a9799541ca34652d9996e45f80e8e03144c12949:
+
+  mac80211: drop multicast fragments (2021-06-09 16:17:45 +0200)
+
+----------------------------------------------------------------
+A fair number of fixes:
+ * fix more fallout from RTNL locking changes
+ * fixes for some of the bugs found by syzbot
+ * drop multicast fragments in mac80211 to align
+   with the spec and what drivers are doing now
+ * fix NULL-ptr deref in radiotap injection
+
+----------------------------------------------------------------
+Brian Norris (1):
+      mac80211: correct ieee80211_iterate_active_interfaces_mtx() locking comments
+
+Du Cheng (2):
+      cfg80211: call cfg80211_leave_ocb when switching away from OCB
+      mac80211: fix skb length check in ieee80211_scan_rx()
+
+Johannes Berg (9):
+      mac80211: remove warning in ieee80211_get_sband()
+      mac80211_hwsim: drop pending frames on stop
+      staging: rtl8723bs: fix monitor netdev register/unregister
+      mac80211: fix deadlock in AP/VLAN handling
+      mac80211: fix 'reset' debugfs locking
+      cfg80211: fix phy80211 symlink creation
+      cfg80211: shut down interfaces on failed resume
+      mac80211: move interface shutdown out of wiphy lock
+      mac80211: drop multicast fragments
+
+Mathy Vanhoef (1):
+      mac80211: Fix NULL ptr deref for injected rate info
+
+ drivers/net/wireless/mac80211_hwsim.c             |  5 +++
+ drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c |  4 +-
+ include/net/mac80211.h                            |  9 +++-
+ net/mac80211/debugfs.c                            | 11 ++++-
+ net/mac80211/ieee80211_i.h                        |  2 +-
+ net/mac80211/iface.c                              | 19 ++++++---
+ net/mac80211/main.c                               |  7 ++-
+ net/mac80211/rx.c                                 |  9 ++--
+ net/mac80211/scan.c                               | 21 ++++++---
+ net/mac80211/tx.c                                 | 52 ++++++++++++++++-------
+ net/mac80211/util.c                               |  2 -
+ net/wireless/core.c                               | 13 +++---
+ net/wireless/sysfs.c                              |  4 ++
+ net/wireless/util.c                               |  3 ++
+ 14 files changed, 109 insertions(+), 52 deletions(-)
+
