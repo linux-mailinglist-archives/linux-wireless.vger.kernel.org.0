@@ -2,104 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FDE03A179D
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 16:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6EF23A1867
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jun 2021 17:02:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238151AbhFIOon (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Jun 2021 10:44:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41732 "EHLO
+        id S238806AbhFIPDI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Jun 2021 11:03:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237065AbhFIOom (ORCPT
+        with ESMTP id S238801AbhFIPDG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Jun 2021 10:44:42 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D91CC061574;
-        Wed,  9 Jun 2021 07:42:48 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lqzPq-004Hl0-Ds; Wed, 09 Jun 2021 16:42:46 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211 2021-06-09
-Date:   Wed,  9 Jun 2021 16:42:42 +0200
-Message-Id: <20210609144243.97486-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.31.1
+        Wed, 9 Jun 2021 11:03:06 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16638C061574;
+        Wed,  9 Jun 2021 08:01:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=ffjZdEaHfFJL2PlBT1Pi9QMrYzsEmrd1QXquQzBQ3MI=; b=agVhEldAJI80iEC/bn2apBj6dj
+        GShcrxSObtemYZVq7w0qS86pRLEuBNhoO6Lj0AIFSOBqjOP5Q++7p2bZOa2sYfhuYk4pqwcXP+30Y
+        hz/YOlzHP8iNOmzami6ODx0OZNVYgIWnBMkM0bOfOjqU9EOK234N6YvSufy4dSCSNEHNHAjG8eEre
+        ZgiRHunrZwOuijUfNJ6Bc0ljF7liAZsnmLAJq7da3ZYD4lPDEXrjFNxAxtNcWioFg1Y1NeTiVLYw7
+        uJpv3IMCtEuSgHzn1DCS3S1LLSL+jqHBYD8dEyZOENfT9QAJFxtJoBCLlH31VhB2ZpDgw+lq03XzA
+        ninwpdqg==;
+Received: from [2601:1c0:6280:3f0::bd57]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1lqzhd-00ET7w-JV; Wed, 09 Jun 2021 15:01:09 +0000
+Subject: Re: [PATCH] nl80211: fix a mistake in grammar
+To:     Johannes Berg <johannes@sipsolutions.net>, 13145886936@163.com,
+        davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, gushengxian <gushengxian@yulong.com>
+References: <20210609081556.19641-1-13145886936@163.com>
+ <d32bec575d204a17531f61c8d2f67443ffdaee6c.camel@sipsolutions.net>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <c4ab41c7-7230-2548-f7ab-1a0aa8d16e36@infradead.org>
+Date:   Wed, 9 Jun 2021 08:01:05 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <d32bec575d204a17531f61c8d2f67443ffdaee6c.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 6/9/21 1:55 AM, Johannes Berg wrote:
+> On Wed, 2021-06-09 at 01:15 -0700, 13145886936@163.com wrote:
+>>
+>> -	/* don't allow or configure an mcast address */
+>> +	/* don't allow or configure a mcast address */
+> 
+> Arguable? I'd say "an M-cast" address, and I guess that's why it's
+> written that way. Not sure how else you'd say it, unless you always
+> expand it to "multicast" when reading.
 
-The last pull request I sent was coordinated with only
-those CVE fixes - now I have accumulated more fixes,
-many of them actually locking fixes for the RTNL redux.
-
-Please pull and let me know if there's any problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit 593f555fbc6091bbaec8dd2a38b47ee643412e61:
-
-  net: stmmac: fix kernel panic due to NULL pointer dereference of mdio_bus_data (2021-05-30 13:41:55 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-06-09
-
-for you to fetch changes up to a9799541ca34652d9996e45f80e8e03144c12949:
-
-  mac80211: drop multicast fragments (2021-06-09 16:17:45 +0200)
-
-----------------------------------------------------------------
-A fair number of fixes:
- * fix more fallout from RTNL locking changes
- * fixes for some of the bugs found by syzbot
- * drop multicast fragments in mac80211 to align
-   with the spec and what drivers are doing now
- * fix NULL-ptr deref in radiotap injection
-
-----------------------------------------------------------------
-Brian Norris (1):
-      mac80211: correct ieee80211_iterate_active_interfaces_mtx() locking comments
-
-Du Cheng (2):
-      cfg80211: call cfg80211_leave_ocb when switching away from OCB
-      mac80211: fix skb length check in ieee80211_scan_rx()
-
-Johannes Berg (9):
-      mac80211: remove warning in ieee80211_get_sband()
-      mac80211_hwsim: drop pending frames on stop
-      staging: rtl8723bs: fix monitor netdev register/unregister
-      mac80211: fix deadlock in AP/VLAN handling
-      mac80211: fix 'reset' debugfs locking
-      cfg80211: fix phy80211 symlink creation
-      cfg80211: shut down interfaces on failed resume
-      mac80211: move interface shutdown out of wiphy lock
-      mac80211: drop multicast fragments
-
-Mathy Vanhoef (1):
-      mac80211: Fix NULL ptr deref for injected rate info
-
- drivers/net/wireless/mac80211_hwsim.c             |  5 +++
- drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c |  4 +-
- include/net/mac80211.h                            |  9 +++-
- net/mac80211/debugfs.c                            | 11 ++++-
- net/mac80211/ieee80211_i.h                        |  2 +-
- net/mac80211/iface.c                              | 19 ++++++---
- net/mac80211/main.c                               |  7 ++-
- net/mac80211/rx.c                                 |  9 ++--
- net/mac80211/scan.c                               | 21 ++++++---
- net/mac80211/tx.c                                 | 52 ++++++++++++++++-------
- net/mac80211/util.c                               |  2 -
- net/wireless/core.c                               | 13 +++---
- net/wireless/sysfs.c                              |  4 ++
- net/wireless/util.c                               |  3 ++
- 14 files changed, 109 insertions(+), 52 deletions(-)
+Agreed, it's ok as is.
 
