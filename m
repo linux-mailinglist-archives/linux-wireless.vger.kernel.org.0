@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9096A3A366E
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 23:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 667583A3674
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 23:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231328AbhFJVrj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Jun 2021 17:47:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:42654 "EHLO
+        id S231424AbhFJVrw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Jun 2021 17:47:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:40105 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231200AbhFJVrb (ORCPT
+        by vger.kernel.org with ESMTP id S231342AbhFJVrk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Jun 2021 17:47:31 -0400
+        Thu, 10 Jun 2021 17:47:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623361534;
+        s=mimecast20190719; t=1623361543;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TSv9PvVn6D8P1hr2HASl5EPE56aRrWalXa3WhtLcjzQ=;
-        b=cU6yn79nOFJPuuLOo17nWSv7pPg7YWom4odjPVqIEj/gg1lOVlJLF4H+N1oOL1hzMBEzl2
-        Pu/Z80Nb7O0Iaz+plLnMR6K1ZJsniglTk5lhNuyt7dQBKUyUynNRKnVKDQeVd1R9VvmbeB
-        9hzRZloFAtGxuJuVaM19uxGBN56OMsA=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-559-iaNN9FoEOoSA3C5HM6aOfQ-1; Thu, 10 Jun 2021 17:45:33 -0400
-X-MC-Unique: iaNN9FoEOoSA3C5HM6aOfQ-1
-Received: by mail-ot1-f71.google.com with SMTP id 59-20020a9d0dc10000b02902a57e382ca1so670887ots.7
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Jun 2021 14:45:33 -0700 (PDT)
+        bh=Sg0e7jXQsTWhtJdkPVNcldGSCJQVzZfo88rGKEyxbVM=;
+        b=jF0km8g4p89mBhncdGbC1/Vg5ETEzZF00pe+w/WdilVR7Ux17nxM3V3BO//XUmDMZQUg2H
+        22p8+VrTeI3qjV/ffpXIy8nIt1CG8s0Kw2UrVS7x35vHgfDwkC4I1sk8vnMbah81ugmy7X
+        S8n0kWWgQlxIG3COtd67pFg2iRtKcAA=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-447-pXFaQnYYNhKnv8y2h04IqQ-1; Thu, 10 Jun 2021 17:45:42 -0400
+X-MC-Unique: pXFaQnYYNhKnv8y2h04IqQ-1
+Received: by mail-oi1-f198.google.com with SMTP id j1-20020aca65410000b02901f1d632e208so1892784oiw.16
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Jun 2021 14:45:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TSv9PvVn6D8P1hr2HASl5EPE56aRrWalXa3WhtLcjzQ=;
-        b=SPskN9209HQ0K6cfdniWaSnwqCs8gC/dZzpe++SojajVaO6zOCurcL6FOUawxPFhNY
-         3E4eTI2B/sbTJou0Q5K0aYoNaBAPszMy/Ar1lJI7FowgxZq1rrxtnS53f+F4jknYxLCG
-         jspXoXcIdjhe7sDbZFIRazFiL85PIcmFU0YwefCJuir6vf3guqJl/23J1nXeW6NK3ddD
-         M+hND6cS7aV0z1Ujqr32xXfjCCVg8sQc0vBEKvzciubSWLuFLflgvH/gl+YqUlqyn4QU
-         ANo54/g0RLSHHE0Sj7t9WYrn6LDDnqjG5Ne0DoPh9i/QEvDSKJy2ZbDVtBRpkvWrxjdF
-         uHEw==
-X-Gm-Message-State: AOAM531xFrhquRgCgkGtGCfaXvKhfZ3oTdOZsOUlDyH/FKCqMYuKLia+
-        R/dmg5sYYCbdvcGy7xfIGMHb5x71n9+1AFRR82Vpi6K2tsvjAt76QJm05bPiPOHfj4uGdRyE7qo
-        pntLFJ5utLJLaABR8avQOxoqEPzU=
-X-Received: by 2002:aca:b506:: with SMTP id e6mr361769oif.178.1623361531507;
-        Thu, 10 Jun 2021 14:45:31 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwLkOYqEPHROAavZ+GqUoBa88evwWu8hew7OzFYwlCFApTMasrs2l9HZneVNx3WKlokSV6LKQ==
-X-Received: by 2002:aca:b506:: with SMTP id e6mr361752oif.178.1623361531370;
-        Thu, 10 Jun 2021 14:45:31 -0700 (PDT)
+        bh=Sg0e7jXQsTWhtJdkPVNcldGSCJQVzZfo88rGKEyxbVM=;
+        b=kO2n7rBc1nf4GXfrCGjV3VvSCswUNuByRh2OxnBQEsmYZX2hyChY238D3FgssuNlQg
+         wBKE/RrB/BFX51LeUoIa4S+Fg9bPbySkjoDSQLsmVhH7knNDSLFF0jXakNrjIBqj9cZ+
+         IdDYF7RBjgG2EQj8u7d0C0lbFC83LMinUHrKIr2VqdUMnf/S3FvZX/Rkf+vZbUUTbtSg
+         AQDJc+45LntUuj9k9D3hby9U375qCXRC8a1MPPv1PKTE5RTqp+lGkKbUYOveIr8pHEbs
+         vdkfkHhJE8FxJ/fN6emOSDfpploGM8IxEQf1cdN7yEJzatqTZ/vsD86pfD1KKwsIbmYX
+         CPXg==
+X-Gm-Message-State: AOAM533Fhkn/8Ra81UDFkUdFU4c6YG5sFCRHxjAr6sgQQyG9jIr+2gUz
+        Zh04REeNJ86VDt5DS7zeaNbVtv6xKR/TFw5WcpAMcl5lrheqhSuRFtmhg8RLbDCaEIb89/ryj+X
+        J/2Xnnr4m5WRX/xRk5hbaKtWx/Qs=
+X-Received: by 2002:a9d:6087:: with SMTP id m7mr370787otj.318.1623361541284;
+        Thu, 10 Jun 2021 14:45:41 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwXb9l1V2GdEF4zDsZ9LozrWKOCTW8y6roYjcLTL2ZDJoW3I+XShj/h6JSCX5VGU9bVCgQ4yA==
+X-Received: by 2002:a9d:6087:: with SMTP id m7mr370744otj.318.1623361541117;
+        Thu, 10 Jun 2021 14:45:41 -0700 (PDT)
 Received: from localhost.localdomain.com (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id i15sm881839ots.39.2021.06.10.14.45.27
+        by smtp.gmail.com with ESMTPSA id i15sm881839ots.39.2021.06.10.14.45.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jun 2021 14:45:31 -0700 (PDT)
+        Thu, 10 Jun 2021 14:45:40 -0700 (PDT)
 From:   trix@redhat.com
 To:     robh+dt@kernel.org, tsbogend@alpha.franken.de, jic23@kernel.org,
         lars@metafoo.de, tomas.winkler@intel.com, arnd@arndb.de,
@@ -72,9 +72,9 @@ Cc:     devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org,
         linux-stm32@st-md-mailman.stormreply.com, Tom Rix <trix@redhat.com>
-Subject: [PATCH 2/7] mei: hdcp: SPDX tag should be the first line
-Date:   Thu, 10 Jun 2021 14:44:33 -0700
-Message-Id: <20210610214438.3161140-4-trix@redhat.com>
+Subject: [PATCH 3/7] drivers/soc/litex: fix spelling of SPDX tag
+Date:   Thu, 10 Jun 2021 14:44:34 -0700
+Message-Id: <20210610214438.3161140-5-trix@redhat.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210610214438.3161140-1-trix@redhat.com>
 References: <20210610214438.3161140-1-trix@redhat.com>
@@ -86,23 +86,34 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Tom Rix <trix@redhat.com>
 
-checkpatch looks for the tag on the first line.
-So delete empty first line
+checkpatch looks for SPDX-License-Identifier.
+So change the '_' to '-'
 
 Signed-off-by: Tom Rix <trix@redhat.com>
 ---
- drivers/misc/mei/hdcp/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/soc/litex/Kconfig  | 2 +-
+ drivers/soc/litex/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/mei/hdcp/Kconfig b/drivers/misc/mei/hdcp/Kconfig
-index 95b2d6d37f102..54e1c95269096 100644
---- a/drivers/misc/mei/hdcp/Kconfig
-+++ b/drivers/misc/mei/hdcp/Kconfig
-@@ -1,4 +1,3 @@
--
- # SPDX-License-Identifier: GPL-2.0
- # Copyright (c) 2019, Intel Corporation. All rights reserved.
- #
+diff --git a/drivers/soc/litex/Kconfig b/drivers/soc/litex/Kconfig
+index e7011d665b151..c03b1f816cc08 100644
+--- a/drivers/soc/litex/Kconfig
++++ b/drivers/soc/litex/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License_Identifier: GPL-2.0
++# SPDX-License-Identifier: GPL-2.0
+ 
+ menu "Enable LiteX SoC Builder specific drivers"
+ 
+diff --git a/drivers/soc/litex/Makefile b/drivers/soc/litex/Makefile
+index 98ff7325b1c07..aeae1f4165a70 100644
+--- a/drivers/soc/litex/Makefile
++++ b/drivers/soc/litex/Makefile
+@@ -1,3 +1,3 @@
+-# SPDX-License_Identifier: GPL-2.0
++# SPDX-License-Identifier: GPL-2.0
+ 
+ obj-$(CONFIG_LITEX_SOC_CONTROLLER)	+= litex_soc_ctrl.o
 -- 
 2.26.3
 
