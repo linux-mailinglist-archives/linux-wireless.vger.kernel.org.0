@@ -2,85 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2CC03A239A
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 06:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15B933A25B3
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 09:44:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbhFJEqg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Jun 2021 00:46:36 -0400
-Received: from mail.chalver.com.ec ([186.3.12.10]:31514 "EHLO
-        mail.chalver.com.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230083AbhFJEqd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Jun 2021 00:46:33 -0400
-X-Greylist: delayed 709 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Jun 2021 00:46:33 EDT
-Received: from mail.chalver.com.ec (localhost.localdomain [127.0.0.1])
-        by mail.chalver.com.ec (Postfix) with ESMTPS id 27C241F21CAA;
-        Wed,  9 Jun 2021 23:23:07 -0500 (ECT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.chalver.com.ec (Postfix) with ESMTP id 267D91F21CFB;
-        Wed,  9 Jun 2021 23:22:25 -0500 (ECT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.chalver.com.ec 267D91F21CFB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chalver.com.ec;
-        s=E2A417BC-DDA7-11E6-85F6-38495636B764; t=1623298945;
-        bh=PxMh0SAMbBGlctefOH2OhvTlJNlHw25bONEEE7Ldp0I=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=YYLiF7JZ8NOGuNwHQ0ugo455JT2Ss/pKrpzfK+IoFo1mpzPoPRzDPQj3/DVjvlaVc
-         cWK1xKqz3pr9ehDGe8YSlO5PcXBJf72NL4RBEWclrAaxRjcE6xxSzDuowfZFbgjRRl
-         j6c1a7yQFxZqTzbF4thjEkibFzCXP8WLwdO3ogatakL2dcZL/aXg16E1voXhmhXdTa
-         4zFQq+mqaLs1spNdh0OZqIl8XqytSOk5A9a7OM0G9rqKCQVWypr/bLmvCjZPiPYrfH
-         51Al+NZXhDgzTlF199MhEI6wj/ewZ5uh221dv4P8gS5WGDfNx0GfCt6S43B0DZIfoU
-         j6ouI8rGLak7w==
-X-Virus-Scanned: amavisd-new at chalver.com.ec
-Received: from mail.chalver.com.ec ([127.0.0.1])
-        by localhost (mail.chalver.com.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 3fOK5qKfiCui; Wed,  9 Jun 2021 23:22:24 -0500 (ECT)
-Received: from cris-PC.wifi (unknown [105.9.120.116])
-        by mail.chalver.com.ec (Postfix) with ESMTPSA id 0591A1F21CD1;
-        Wed,  9 Jun 2021 23:22:14 -0500 (ECT)
-Content-Type: text/plain; charset="utf-8"
+        id S230077AbhFJHqQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Jun 2021 03:46:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55506 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229941AbhFJHqP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 10 Jun 2021 03:46:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0A222613C1;
+        Thu, 10 Jun 2021 07:44:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623311059;
+        bh=a/6v0hO6KlTETav0fObFmNvGoQ0R7KniiSrtd7W+TGs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=aqFepXOnAbB9+YG+4rQjUwMu4gxwsqXCfnZAIpXzqBg5VOBQGHxlaBNMVN/rjX21C
+         m6EGOIKdsly+wuVLTwj9JygTMjz98BbGUteV/tykpF2yfQ8110URZRY6UCStSBAEzO
+         ga3ymfLlP95hzpkKn7+kqFikcotlsrrDLrGowr+KY30kqmOCRWYtEF5lsfX5e/dooY
+         SeJwnK9BshXqa8T+gZxbua6cT7qyGDJPhyQl6XLWF/uR1ciIbF+q8aVnf5mTCKNzkV
+         ZXMW27BCKhaSlGvVpb/acR120obDaYunYOSX5713+2552zeSW4Jpd+/b4uM1Y/KLTe
+         Jwkfihhijetvw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: move mt76_get_next_pkt_id in mt76.h
+Date:   Thu, 10 Jun 2021 09:44:12 +0200
+Message-Id: <21fd76c13fb30b56893411f3d6c9af72adab52d0.1623310950.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <mpaucar@chalver.com.ec>
-From:   ''Tayeb souami'' <mpaucar@chalver.com.ec>
-Date:   Thu, 10 Jun 2021 06:29:25 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20210610042215.0591A1F21CD1@mail.chalver.com.ec>
-X-Laboratorios-Chalver-MailScanner-Information: Please contact the ISP for more information
-X-Laboratorios-Chalver-MailScanner-ID: 0591A1F21CD1.A296E
-X-Laboratorios-Chalver-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+In order to remove duplicated code, move mt76_get_next_pkt_id routine
+in mt76.h
 
-Lieber Freund,
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h       | 11 +++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 15 +++------------
+ drivers/net/wireless/mediatek/mt76/tx.c         |  7 +------
+ 3 files changed, 15 insertions(+), 18 deletions(-)
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
-Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
-f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
-il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
-meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
-und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
-Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
- spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
-ou Tube Seite unten.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 338219024ba7..a50ba8e9344e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1276,4 +1276,15 @@ mt76_token_put(struct mt76_dev *dev, int token)
+ 
+ 	return txwi;
+ }
++
++static inline int
++mt76_get_next_pkt_id(struct mt76_wcid *wcid)
++{
++	wcid->packet_id = (wcid->packet_id + 1) & MT_PACKET_ID_MASK;
++	if (wcid->packet_id == MT_PACKET_ID_NO_ACK ||
++	    wcid->packet_id == MT_PACKET_ID_NO_SKB)
++		wcid->packet_id = MT_PACKET_ID_FIRST;
++
++	return wcid->packet_id;
++}
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index f518c84d7fa9..fb4de73df701 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -13,16 +13,6 @@
+ #define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
+ 						 IEEE80211_RADIOTAP_HE_##f)
+ 
+-static u8
+-mt7921_next_pid(struct mt7921_dev *dev, struct mt76_wcid *wcid)
+-{
+-	wcid->packet_id = (wcid->packet_id + 1) & MT_PACKET_ID_MASK;
+-	if (wcid->packet_id == MT_PACKET_ID_NO_ACK ||
+-	    wcid->packet_id == MT_PACKET_ID_NO_SKB)
+-		wcid->packet_id = MT_PACKET_ID_FIRST;
+-	return wcid->packet_id;
+-}
+-
+ unsigned long
+ mt7921_next_txs_set(struct mt7921_dev *dev, struct mt76_wcid *wcid,
+ 		    u32 timeout)
+@@ -756,7 +746,7 @@ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_vif *vif = info->control.vif;
+ 	struct mt76_phy *mphy = &dev->mphy;
+-	u8 pid, p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
++	u8 p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
+ 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
+ 	u16 tx_count = 15;
+ 	u32 val;
+@@ -829,8 +819,9 @@ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
+ 	if ((FIELD_GET(MT_TXD2_FRAME_TYPE, txwi[2]) &
+ 		(IEEE80211_FTYPE_DATA >> 2)) &&
+ 		mt7921_next_txs_timeout(dev, wcid)) {
++		u8 pid = mt76_get_next_pkt_id(wcid);
++
+ 		mt7921_next_txs_set(dev, wcid, 250);
+-		pid = mt7921_next_pid(dev, wcid);
+ 		val = MT_TXD5_TX_STATUS_MCU | FIELD_PREP(MT_TXD5_PID, pid);
+ 		txwi[5] |= cpu_to_le32(val);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 5cc3e4d75c4f..f0f7a913eaab 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -129,12 +129,7 @@ mt76_tx_status_skb_add(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 	spin_lock_bh(&dev->status_list.lock);
+ 
+ 	memset(cb, 0, sizeof(*cb));
+-	wcid->packet_id = (wcid->packet_id + 1) & MT_PACKET_ID_MASK;
+-	if (wcid->packet_id == MT_PACKET_ID_NO_ACK ||
+-	    wcid->packet_id == MT_PACKET_ID_NO_SKB)
+-		wcid->packet_id = MT_PACKET_ID_FIRST;
+-
+-	pid = wcid->packet_id;
++	pid = mt76_get_next_pkt_id(wcid);
+ 	cb->wcid = wcid->idx;
+ 	cb->pktid = pid;
+ 	cb->jiffies = jiffies;
+-- 
+2.31.1
 
-UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
-
-
-
-Das ist dein Spendencode: [TS530342018]
-
-
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
-
-Gr=C3=BC=C3=9Fe
-Herr Tayeb Souami
