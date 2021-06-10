@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4CD3A337C
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 20:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DA443A3478
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 22:03:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229895AbhFJSqJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Jun 2021 14:46:09 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:47541 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230184AbhFJSqG (ORCPT
+        id S230481AbhFJUFc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Jun 2021 16:05:32 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:59373 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229963AbhFJUFb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Jun 2021 14:46:06 -0400
-X-UUID: 9475c62db03f4524b1f5873970cc526b-20210611
-X-UUID: 9475c62db03f4524b1f5873970cc526b-20210611
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        Thu, 10 Jun 2021 16:05:31 -0400
+X-UUID: 8d015d0e8218410b8310744efefab0ee-20210611
+X-UUID: 8d015d0e8218410b8310744efefab0ee-20210611
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1948788747; Fri, 11 Jun 2021 02:44:07 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 884057279; Fri, 11 Jun 2021 04:03:32 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
  mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 11 Jun 2021 02:43:53 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ 15.0.1497.2; Fri, 11 Jun 2021 04:03:30 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 11 Jun 2021 02:43:53 +0800
+ Transport; Fri, 11 Jun 2021 04:03:30 +0800
 From:   Ryder Lee <ryder.lee@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
@@ -31,13 +31,11 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Evelyn Tsai <evelyn.tsai@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
-        "Ryder Lee" <ryder.lee@mediatek.com>
-Subject: [PATCH 4/4] mt76: mt7915: improve MU stability
-Date:   Fri, 11 Jun 2021 02:43:47 +0800
-Message-ID: <61c73b3c279e10ee848d74611631282b43039671.1623347029.git.ryder.lee@mediatek.com>
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2] mt76: mt7915: improve MU stability
+Date:   Fri, 11 Jun 2021 04:03:26 +0800
+Message-ID: <fbd21e7653abd3432f82d011deee682c39c235c6.1623355065.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <245a3745aea487793e40fbf82172c5367649bab3.1623347029.git.ryder.lee@mediatek.com>
-References: <245a3745aea487793e40fbf82172c5367649bab3.1623347029.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -49,7 +47,35 @@ X-Mailing-List: linux-wireless@vger.kernel.org
   follows starec_bf settings.
 - Drop unnecessary MU BF checks.
 
+TX MPDU PER (Status = Success):
+                                           TOT_MPDU_CNT  FAIL_MPDU_CNT  TX_PER
+WCID Rate
+1      VHT_BW80_2SS_MCS7_LGI_LDPC_MUBF              114              0   0.00%
+       VHT_BW80_2SS_MCS7_LGI_LDPC_MUBF_MU            64              0   0.00%
+       VHT_BW80_2SS_MCS7_SGI_LDPC_MUBF              128              0   0.00%
+       VHT_BW80_2SS_MCS7_SGI_LDPC_MUBF_MU           745              0   0.00%
+       VHT_BW80_2SS_MCS8_LGI_LDPC_MUBF_MU           856              0   0.00%
+       VHT_BW80_2SS_MCS8_SGI_LDPC_MUBF_MU          1430              4   0.28%
+       VHT_BW80_2SS_MCS9_LGI_LDPC_MUBF_MU          5220             31   0.59%
+       VHT_BW80_2SS_MCS9_LGI_LDPC_iBF                59              0   0.00%
+       VHT_BW80_2SS_MCS9_SGI_LDPC_MUBF               64              2   3.12%
+       VHT_BW80_2SS_MCS9_SGI_LDPC_MUBF_MU         22132             76   0.34%
+       VHT_BW80_2SS_MCS9_SGI_LDPC_iBF              2866              1   0.03%
+2      VHT_BW80_2SS_MCS7_LGI_LDPC_MUBF_MU          3781              5   0.13%
+       VHT_BW80_2SS_MCS7_SGI_LDPC_MUBF_MU           735              0   0.00%
+       VHT_BW80_2SS_MCS8_LGI_LDPC_MUBF_MU          1270            365  28.74%
+       VHT_BW80_2SS_MCS8_SGI_LDPC_MUBF_MU          3420             57   1.67%
+       VHT_BW80_2SS_MCS9_LGI_LDPC_MUBF              128              0   0.00%
+       VHT_BW80_2SS_MCS9_LGI_LDPC_MUBF_MU            64              0   0.00%
+       VHT_BW80_2SS_MCS9_SGI_LDPC_MUBF              191              0   0.00%
+       VHT_BW80_2SS_MCS9_SGI_LDPC_MUBF_MU         18833            320   1.70%
+       VHT_BW80_2SS_MCS9_SGI_LDPC_iBF              6040              0   0.00%
+287    OFDM 6M
+
+Tested-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+v2 - add test result and a missing tag.
 ---
  .../wireless/mediatek/mt76/mt7915/debugfs.c   | 12 ++-
  .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 98 +++++++++----------
