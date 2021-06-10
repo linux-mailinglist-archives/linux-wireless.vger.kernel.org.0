@@ -2,67 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 481DE3A1F9C
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 00:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11DD33A2125
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 02:06:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbhFIWCV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 9 Jun 2021 18:02:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49392 "EHLO mail.kernel.org"
+        id S229692AbhFJAIW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 9 Jun 2021 20:08:22 -0400
+Received: from m12-18.163.com ([220.181.12.18]:49288 "EHLO m12-18.163.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229942AbhFIWCU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 9 Jun 2021 18:02:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id CD462613E1;
-        Wed,  9 Jun 2021 22:00:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623276025;
-        bh=7attH/TeAB28fCUKe6JAND/YMfKDuqiGqkd7Ab6Xv0k=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Zcf0bcE+sTmoaJZb3gCDRvwUWpa34LA9BrwHMfIH2dX2f6BrzxclRoMP9fW1Ih00b
-         0dSMZOCe+3H7QVrPvYOJBh0bTW9tzcN4OPk0Ri3lLVNeoINaGF3KveeDVGWvhYVRWX
-         LyXLJO3jlLVKqEi7PWbCBU1PLGaK++nKxfECH6KdSHsb53mqQtD1Y0zFMDVsNOVYy9
-         3q1HfhLA4KMhSwkQWSB0WeNZEaFTByma5auxAsW13hHgh9lvfYWCBDkczWbRZsx0xi
-         VQLRi7ViKJEO1zgyB6By61+eNW/8tVt/QmTHif99b9eqaoCPq1c2omvNh1EHy6FXpD
-         GY2o4LdJvtH2g==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id C3B3860A53;
-        Wed,  9 Jun 2021 22:00:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S229557AbhFJAIW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 9 Jun 2021 20:08:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=CyN9y
+        auZ9A10j7+vRszAOPbzX0M3IqT0uJAzoEoUjPs=; b=lz74xfUOaMK54XCVclVvj
+        v5Wcv0PGwdXDEZHAy1S0bMU7TrpBEFNGGqK+Q5zr2Tdq7BDJQmXi7i7CFfYpT9BD
+        7XOPtDVeB6PSJ1nMadEAPEdH7UkCsEga8P3CJ7gyfRzgBZXpAHGQV1fMTJ3+dtdG
+        luj7bM222dHwx6GBeBS+cU=
+Received: from ubuntu.localdomain (unknown [218.17.89.92])
+        by smtp14 (Coremail) with SMTP id EsCowAC3uOBzV8Fg+LUuog--.29299S2;
+        Thu, 10 Jun 2021 08:06:12 +0800 (CST)
+From:   13145886936@163.com
+To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, gushengxian <gushengxian@yulong.com>
+Subject: [PATCH] wext: fix a misspelling
+Date:   Wed,  9 Jun 2021 17:06:09 -0700
+Message-Id: <20210610000609.32579-1-13145886936@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: mac80211 2021-06-09
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162327602579.7324.16342817883327528118.git-patchwork-notify@kernel.org>
-Date:   Wed, 09 Jun 2021 22:00:25 +0000
-References: <20210609144243.97486-1-johannes@sipsolutions.net>
-In-Reply-To: <20210609144243.97486-1-johannes@sipsolutions.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-CM-TRANSID: EsCowAC3uOBzV8Fg+LUuog--.29299S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtryrtw15trWkKw1rtr15twb_yoW3CrX_Gr
+        WxJw1kKFW8JrnavayUuw4xur4jy3y0qa1Fga9xtrySyw4DA3yDt3s5Cr4Utw429w4jyrWf
+        C3Z5Jr45tF4fZjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUefcTJUUUUU==
+X-Originating-IP: [218.17.89.92]
+X-CM-SenderInfo: 5zrdx5xxdq6xppld0qqrwthudrp/xtbBRwitg1PADAr4kwAAsf
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+From: gushengxian <gushengxian@yulong.com>
 
-This pull request was applied to netdev/net.git (refs/heads/master):
+Fix a misspelling.
 
-On Wed,  9 Jun 2021 16:42:42 +0200 you wrote:
-> Hi,
-> 
-> The last pull request I sent was coordinated with only
-> those CVE fixes - now I have accumulated more fixes,
-> many of them actually locking fixes for the RTNL redux.
-> 
-> Please pull and let me know if there's any problem.
-> 
-> [...]
+Signed-off-by: gushengxian <gushengxian@yulong.com>
+---
+ net/wireless/wext-compat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Here is the summary with links:
-  - pull-request: mac80211 2021-06-09
-    https://git.kernel.org/netdev/net/c/93124d4a90ba
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
+index a8320dc59af7..7ef6fd26450c 100644
+--- a/net/wireless/wext-compat.c
++++ b/net/wireless/wext-compat.c
+@@ -1183,7 +1183,7 @@ static int cfg80211_wext_siwpower(struct net_device *dev,
+ 		switch (wrq->flags & IW_POWER_MODE) {
+ 		case IW_POWER_ON:       /* If not specified */
+ 		case IW_POWER_MODE:     /* If set all mask */
+-		case IW_POWER_ALL_R:    /* If explicitely state all */
++		case IW_POWER_ALL_R:    /* If explicitly state all */
+ 			ps = true;
+ 			break;
+ 		default:                /* Otherwise we ignore */
+-- 
+2.25.1
 
 
