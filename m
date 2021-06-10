@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87B363A3684
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 23:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3037B3A368B
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 23:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231405AbhFJVsD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Jun 2021 17:48:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:54247 "EHLO
+        id S231565AbhFJVsO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Jun 2021 17:48:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:49890 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231398AbhFJVrs (ORCPT
+        by vger.kernel.org with ESMTP id S231360AbhFJVr4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Jun 2021 17:47:48 -0400
+        Thu, 10 Jun 2021 17:47:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623361551;
+        s=mimecast20190719; t=1623361559;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y8OLwWcydmQrpMr98JXIDo8D3KC7riTE8VF0bgAOtZQ=;
-        b=ZhXXbV2wwfaDRjVkHsl0mBJAEHAISM8iUHLVnXYyvxcmOn1fyfwlopf5eAYb5a5uueOlCz
-        z8ee5KzU4SU5uwAP3jmbsB5D69ShsEJn3BKPztbY2jJhLdwsaxlqoPO3rkOzPoW8LkM6p8
-        VAsQv6o22+20/Foqa6P1U3yw5sVNP8c=
+        bh=7i5e+OtT+7tpx8qfL0qW2Nid+sJzqzF/pZfWD+IYGk0=;
+        b=AeRmnKhuFeAmLsFvwaGWi0wU8H83AVW2JiZcXgOHpWUAiM04/oOpjoe77yFOeB66b7jZ/k
+        FMGREIb6+prMVnzgZ7TLgXutYJKdlrjVh2+EXQOFr5BRHpqlcl9dz4WclEg8kOf1wUiIBI
+        HmhRnzJ6n1kuUJ4EVqG7QI8mRO4Vu9Y=
 Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
  [209.85.167.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-290-BQ4CLoyvNei7tb0rNsRLlA-1; Thu, 10 Jun 2021 17:45:50 -0400
-X-MC-Unique: BQ4CLoyvNei7tb0rNsRLlA-1
-Received: by mail-oi1-f198.google.com with SMTP id 82-20020aca04550000b02901f40670cf75so1896085oie.19
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Jun 2021 14:45:50 -0700 (PDT)
+ us-mta-429-SgxyDKoQP-m2fYzwDfjyOw-1; Thu, 10 Jun 2021 17:45:58 -0400
+X-MC-Unique: SgxyDKoQP-m2fYzwDfjyOw-1
+Received: by mail-oi1-f198.google.com with SMTP id v142-20020acaac940000b02901f80189ca30so753901oie.22
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Jun 2021 14:45:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=y8OLwWcydmQrpMr98JXIDo8D3KC7riTE8VF0bgAOtZQ=;
-        b=SKxSTEYP+cyVAE3abdOEKi4N5So/tcaNzYdaqqMHN9N+a4Su2yF73YDKmNKz+NkR/N
-         1R826pBwmVPjC+Lu6RWMmeS1t628EFgk95/YzUdeUAdo0Efpq+Hm5PT5kamdPVkLzb/5
-         NEJI5uJprJ+L/d8wuOQKh8k5T3o0SpucN6XCf/3qtWNDrBTMZvKakPEs6OLIUdpRjQo4
-         nkcaLdsNcuaxji3APaa+cfNoUhaQoBO35E2KIS32OZNbzgnhW4U9mCKLTzS88dh0fAc0
-         WQKXG38cTgok+Euqm7NffcZoWoW76FR546kNpoosiTvGouxlBEZdFHwPs5P9Uyv2eqTj
-         KA/Q==
-X-Gm-Message-State: AOAM533/bRP0b/24CVYK/5A068GOVz/xVSl2TjOgC47AavgglMlqcyih
-        cwuuEWfkafK6AIr3kxtBdQLk4qUFfjv3j1DpMfM+Nfz6lnh1wx4uTRDXZU/b7RDilU9xhm4NwfZ
-        IlRbe6Q7mPzAdcu6tNE2aVQtSxiI=
-X-Received: by 2002:aca:e057:: with SMTP id x84mr5132600oig.8.1623361549812;
-        Thu, 10 Jun 2021 14:45:49 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxLlHvZFtWFFxENEp0wDljEClNcJJVqS2ZhXs5nt3LvfBJs1wbUwA8ID2fcLwIpQkKP9sNHPQ==
-X-Received: by 2002:aca:e057:: with SMTP id x84mr5132562oig.8.1623361549673;
-        Thu, 10 Jun 2021 14:45:49 -0700 (PDT)
+        bh=7i5e+OtT+7tpx8qfL0qW2Nid+sJzqzF/pZfWD+IYGk0=;
+        b=GKdnVy1FQDfRrW/ZmzhDvQacj4ynsNCYinSPlTl4GsydDn+rXKXLEWXh1hBSiSjAsT
+         trn5+ef2NHa2WWNfJsPGuU/rZ/ek+RsEXqbTEid1nbPtBK5KtLsKBW7li3fs8MLERLKY
+         eCPXBc+aQKTmYEio5RpmuA9FuwfxmC4tkBkQ5ddQqoJNiSznLA7OEeJOISluZ+9XBxdX
+         9nKS5Xl2/AKdGZF/1fpoNq55l6N960RmwnPx6B5LKX1KU3nrVeNHZN8+weJqlS+loolh
+         N9laHll5pvCog4nvudObkKm2fUnuGiX0N6U4DuzMJsKcTSPv6vlFKZVWOwiniLRheZS+
+         BPmw==
+X-Gm-Message-State: AOAM5303soRdEbL8a+tfKWPdsHjZEg1nGWtew6xeBgcD3KdVxX7k7MrB
+        SZ4/teji9H6cInHSU+O/DQzjG5TvWQTH6Jyh8H1fkQBNfkADZ5x8dtlj3xROczOSScddFMG+mTo
+        KYKRrSs6DzgbQNo5Afv5OBlZGjfg=
+X-Received: by 2002:a9d:426:: with SMTP id 35mr375798otc.162.1623361557577;
+        Thu, 10 Jun 2021 14:45:57 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzGF5LvkW/bwE5nlK1SyjpSfDezjll8ZHnP0L9H/o8fCFKmkIJKYig7nd4MMYjIcR0HYassvw==
+X-Received: by 2002:a9d:426:: with SMTP id 35mr375776otc.162.1623361557405;
+        Thu, 10 Jun 2021 14:45:57 -0700 (PDT)
 Received: from localhost.localdomain.com (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id i15sm881839ots.39.2021.06.10.14.45.45
+        by smtp.gmail.com with ESMTPSA id i15sm881839ots.39.2021.06.10.14.45.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jun 2021 14:45:49 -0700 (PDT)
+        Thu, 10 Jun 2021 14:45:57 -0700 (PDT)
 From:   trix@redhat.com
 To:     robh+dt@kernel.org, tsbogend@alpha.franken.de, jic23@kernel.org,
         lars@metafoo.de, tomas.winkler@intel.com, arnd@arndb.de,
@@ -72,9 +72,9 @@ Cc:     devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org,
         linux-stm32@st-md-mailman.stormreply.com, Tom Rix <trix@redhat.com>
-Subject: [PATCH 4/7] MIPS: Loongson64: fix spelling of SPDX tag
-Date:   Thu, 10 Jun 2021 14:44:35 -0700
-Message-Id: <20210610214438.3161140-6-trix@redhat.com>
+Subject: [PATCH 5/7] iio/scmi: fix spelling of SPDX tag
+Date:   Thu, 10 Jun 2021 14:44:36 -0700
+Message-Id: <20210610214438.3161140-7-trix@redhat.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210610214438.3161140-1-trix@redhat.com>
 References: <20210610214438.3161140-1-trix@redhat.com>
@@ -87,23 +87,23 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 From: Tom Rix <trix@redhat.com>
 
 checkpatch looks for SPDX-License-Identifier.
-So change the '_' to '-'
+Remove the extra spaces.
 
 Signed-off-by: Tom Rix <trix@redhat.com>
 ---
- arch/mips/boot/dts/loongson/Makefile | 2 +-
+ drivers/iio/common/scmi_sensors/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/loongson/Makefile b/arch/mips/boot/dts/loongson/Makefile
-index 72267bfda9b41..5c6433e441ee4 100644
---- a/arch/mips/boot/dts/loongson/Makefile
-+++ b/arch/mips/boot/dts/loongson/Makefile
+diff --git a/drivers/iio/common/scmi_sensors/Makefile b/drivers/iio/common/scmi_sensors/Makefile
+index f13140a2575a4..645e0fce1a739 100644
+--- a/drivers/iio/common/scmi_sensors/Makefile
++++ b/drivers/iio/common/scmi_sensors/Makefile
 @@ -1,4 +1,4 @@
--# SPDX_License_Identifier: GPL_2.0
-+# SPDX-License-Identifier: GPL-2.0
- dtb-$(CONFIG_MACH_LOONGSON64)	+= loongson64_2core_2k1000.dtb
- dtb-$(CONFIG_MACH_LOONGSON64)	+= loongson64c_4core_ls7a.dtb
- dtb-$(CONFIG_MACH_LOONGSON64)	+= loongson64c_4core_rs780e.dtb
+-# SPDX - License - Identifier : GPL - 2.0 - only
++# SPDX-License-Identifier: GPL-2.0-only
+ #
+ # Makefile for the IIO over SCMI
+ #
 -- 
 2.26.3
 
