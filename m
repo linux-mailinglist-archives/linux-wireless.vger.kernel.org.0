@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7D43A34A5
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 22:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02D7F3A34AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 22:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbhFJUQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Jun 2021 16:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
+        id S230293AbhFJUSI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Jun 2021 16:18:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbhFJUQ3 (ORCPT
+        with ESMTP id S230349AbhFJUSG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Jun 2021 16:16:29 -0400
+        Thu, 10 Jun 2021 16:18:06 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80473C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Jun 2021 13:14:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40F95C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 10 Jun 2021 13:16:09 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94.2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1lrR4O-0050UP-TU; Thu, 10 Jun 2021 22:14:29 +0200
-Message-ID: <e787fefd695aed489f30978a9e950d9a7390a7b1.camel@sipsolutions.net>
-Subject: Re: Is the extra_tx_headroom guarenteed ?
+        id 1lrR5z-0050XM-Ek; Thu, 10 Jun 2021 22:16:07 +0200
+Message-ID: <0bbe620b0b078f2fde3521a3778d1d84a3b35813.camel@sipsolutions.net>
+Subject: Re: iwlwifi: understanding potential firmware regression
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Steven Ting <steventing@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Thu, 10 Jun 2021 22:14:28 +0200
-In-Reply-To: <f045bc11c75e4603bf58f3d596448c7e@realtek.com> (sfid-20210607_051714_758886_6CCCA7F4)
-References: <f045bc11c75e4603bf58f3d596448c7e@realtek.com>
-         (sfid-20210607_051714_758886_6CCCA7F4)
+To:     Mark Nelson <mark.a.nelson@gmail.com>,
+        linux-wireless@vger.kernel.org
+Date:   Thu, 10 Jun 2021 22:16:06 +0200
+In-Reply-To: <de4c5734-f9f6-b492-0e3d-4ff814a4b6cf@gmail.com> (sfid-20210525_020247_490502_A14ED5B3)
+References: <de4c5734-f9f6-b492-0e3d-4ff814a4b6cf@gmail.com>
+         (sfid-20210525_020247_490502_A14ED5B3)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
@@ -39,36 +39,25 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-> We encountered a problem that we use the extra_tx_headroom to reserve the headroom
-> which we put the txdesc in.
 > 
-> Current workaround is that we check our needed headroom size by skb_headroom()
-> in the driver layer.
+> iwlwifi 0000:03:00.0: Failed to set soc latency: -110
 > 
-> Is extra_tx_headroom in struct ieee80211_hw always guaranteed?
-
-It _should_ be, IMHO. Having the check in all the drivers would be
-pointless.
-
-> The header file describes:
-> * @extra_tx_headroom: headroom to reserve in each transmit skb
-> *      for use by the driver (e.g. for transmit headers.)
+> but potentially also:
 > 
-> But when the skb goes through the ieee80211_amsdu_realloc_pad(), it does not
-> take care of the extra_tx_headroom, i.e. the original reserved headroom might be
-> eaten.
+> iwlwifi 0000:03:00.0: PHY ctxt cmd error. ret=-110
 
-OK, so I guess that's a bug there.
+Can you report a bug on bugzilla.kernel.org, per 
 
-> Does the ieee80211_amsdu_realloc_pad() lacks some check for extra_tx_headroom
-> or the extra_tx_headroom in mac80211 is not guaranteed?
+https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#how_to_report
 
-I would say it lacks the checks - want to send a patch?
+Also, I think in this case tracing might be useful, see
 
-> Furthermore, for the packet that would not be aggregate in A-MSDU and ndev->needed_headroom
-> is not guaranteed, in this case whether mac80211 layer still guarantee the extra_tx_headroom ?
+https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#tracing
 
-Yes, this case should be handled.
+but then take note of
+
+https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#privacy_aspects
+
 
 johannes
 
