@@ -2,32 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D7F3A34AA
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 22:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A5663A34B7
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jun 2021 22:18:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230293AbhFJUSI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Jun 2021 16:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38384 "EHLO
+        id S230255AbhFJUUr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 10 Jun 2021 16:20:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230349AbhFJUSG (ORCPT
+        with ESMTP id S230077AbhFJUUq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Jun 2021 16:18:06 -0400
+        Thu, 10 Jun 2021 16:20:46 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40F95C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 10 Jun 2021 13:16:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38B5C061574;
+        Thu, 10 Jun 2021 13:18:49 -0700 (PDT)
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.94.2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1lrR5z-0050XM-Ek; Thu, 10 Jun 2021 22:16:07 +0200
-Message-ID: <0bbe620b0b078f2fde3521a3778d1d84a3b35813.camel@sipsolutions.net>
-Subject: Re: iwlwifi: understanding potential firmware regression
+        id 1lrR8V-0050Za-8D; Thu, 10 Jun 2021 22:18:43 +0200
+Message-ID: <5bb08a2db092c590119ff706ac3654de14c984fc.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 1/2] rtl8xxxu: unset the hw capability
+ HAS_RATE_CONTROL
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Mark Nelson <mark.a.nelson@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Thu, 10 Jun 2021 22:16:06 +0200
-In-Reply-To: <de4c5734-f9f6-b492-0e3d-4ff814a4b6cf@gmail.com> (sfid-20210525_020247_490502_A14ED5B3)
-References: <de4c5734-f9f6-b492-0e3d-4ff814a4b6cf@gmail.com>
-         (sfid-20210525_020247_490502_A14ED5B3)
+To:     chris.chiu@canonical.com, Jes.Sorensen@gmail.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 10 Jun 2021 22:18:42 +0200
+In-Reply-To: <20210603120609.58932-2-chris.chiu@canonical.com> (sfid-20210603_140802_983573_B146892B)
+References: <20210603120609.58932-1-chris.chiu@canonical.com>
+         <20210603120609.58932-2-chris.chiu@canonical.com>
+         (sfid-20210603_140802_983573_B146892B)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
@@ -37,27 +41,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Chris,
 
+> Since AMPDU_AGGREGATION is set so packets will be handed to the
+> driver with a flag indicating A-MPDU aggregation and device should
+> be responsible for setting up and starting the TX aggregation with
+> the AMPDU_TX_START action. The TX aggregation is usually started by
+> the rate control algorithm so the HAS_RATE_CONTROL has to be unset
+> for the mac80211 to start BA session by ieee80211_start_tx_ba_session.
 > 
-> iwlwifi 0000:03:00.0: Failed to set soc latency: -110
-> 
-> but potentially also:
-> 
-> iwlwifi 0000:03:00.0: PHY ctxt cmd error. ret=-110
+> The realtek chips tx rate will still be handled by the rate adaptive
+> mechanism in the underlying firmware which is controlled by the
+> rate mask H2C command in the driver. Unset HAS_RATE_CONTROL cause
+> no change for the tx rate control and the TX BA session can be started
+> by the mac80211 default rate control mechanism.
 
-Can you report a bug on bugzilla.kernel.org, per 
+This seems ... strange, to say the least? You want to run the full
+minstrel algorithm just to have it start aggregation sessions at the
+beginning?
 
-https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#how_to_report
+I really don't think this makes sense, and it's super confusing. It may
+also result in things like reporting a TX rate to userspace/other
+components that *minstrel* thinks is the best rate, rather than your
+driver's implementation, etc.
 
-Also, I think in this case tracing might be useful, see
-
-https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#tracing
-
-but then take note of
-
-https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#privacy_aspects
-
+I suggest you instead just call ieee80211_start_tx_ba_session() at some
+appropriate time, maybe copying parts of the logic of
+minstrel_aggr_check().
 
 johannes
+
 
