@@ -2,122 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6E5B3A3A35
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 05:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 540693A3C3A
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 08:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230435AbhFKDZl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 10 Jun 2021 23:25:41 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:43798 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbhFKDZl (ORCPT
+        id S230329AbhFKGuQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Jun 2021 02:50:16 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:34906 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230299AbhFKGuP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 10 Jun 2021 23:25:41 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 15B3NYznC016916, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 15B3NYznC016916
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 11 Jun 2021 11:23:34 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 11 Jun 2021 11:23:33 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 11 Jun 2021 11:23:33 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74]) by
- RTEXMBS04.realtek.com.tw ([fe80::1d8:ba7d:61ca:bd74%5]) with mapi id
- 15.01.2106.013; Fri, 11 Jun 2021 11:23:33 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Pkshih <pkshih@realtek.com>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] mac80211: Fix sw connection monitor and sw scan when STA is connected HE
-Thread-Topic: [PATCH] mac80211: Fix sw connection monitor and sw scan when STA
- is connected HE
-Thread-Index: AQHXXm6ItuGkMH9RLkaoOlE6YAkORKsOIMzw
-Date:   Fri, 11 Jun 2021 03:23:33 +0000
-Message-ID: <072bfd8473ac4054a43818009e66a914@realtek.com>
-References: <20210611030422.9608-1-pkshih@realtek.com>
-In-Reply-To: <20210611030422.9608-1-pkshih@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/6/11_=3F=3F_01:08:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 11 Jun 2021 02:50:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1623394094;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yC7DYQZ6KnzuPIK3qEDW/n0fnsnwbGps1v7M2TXyDLc=;
+        b=swXHPndtlXdYhyBAr+hOfZAzG8OrLusjps7b/RFJn8T83q5Yl0tdc2mYWD58QFVVKfruqu
+        kkJxg9fXZds2ObFjlGyzhXRiGyatoKFqUTSY3BGRyPuWxt7SLGMVSNRFTXlrbZ3/ByWeD6
+        fCp2ENfsvRRb7tYQXLrQ7agSfmiUVs0=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     "b.a.t.m.a.n@lists.open-mesh.org" <b.a.t.m.a.n@lists.open-mesh.org>
+Cc:     Maurice Smulders <Maurice.Smulders@windtalker.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: MediaTek MT7612u and IBSS mode
+Date:   Fri, 11 Jun 2021 08:48:10 +0200
+Message-ID: <4182303.XkkeXVZP1n@ripper>
+In-Reply-To: <4E744A61-BBA0-404E-B435-23C26ACF031B@windtalker.com>
+References: <4E744A61-BBA0-404E-B435-23C26ACF031B@windtalker.com>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 06/11/2021 03:11:58
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 164259 [Jun 10 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/11/2021 03:15:00
+Content-Type: multipart/signed; boundary="nextPart3186444.dtHR1CuC4E"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--nextPart3186444.dtHR1CuC4E
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: "b.a.t.m.a.n@lists.open-mesh.org" <b.a.t.m.a.n@lists.open-mesh.org>
+Cc: Maurice Smulders <Maurice.Smulders@windtalker.com>, linux-wireless@vger.kernel.org
+Subject: Re: MediaTek MT7612u and IBSS mode
+Date: Fri, 11 Jun 2021 08:48:10 +0200
+Message-ID: <4182303.XkkeXVZP1n@ripper>
+In-Reply-To: <4E744A61-BBA0-404E-B435-23C26ACF031B@windtalker.com>
+References: <4E744A61-BBA0-404E-B435-23C26ACF031B@windtalker.com>
 
-> -----Original Message-----
-> From: Ping-Ke Shih [mailto:pkshih@realtek.com]
-> Sent: Friday, June 11, 2021 11:04 AM
-> To: johannes@sipsolutions.net
-> Cc: linux-wireless@vger.kernel.org
-> Subject: [PATCH] mac80211: Fix sw connection monitor and sw scan when STA is connected HE
+On Friday, 11 June 2021 03:55:29 CEST Maurice Smulders wrote:
+> Platform: Raspberry Pi 4B / CM4 with CentOS 8 stream 64 bit - 5.10.42 kernel
 > 
-> Add HE_NULLFUNC_STACK hw_flag to allow sending nullfunc when STA is
-> connected HE. Then, sw connection monitor can detects AP has left, and sw
-> scan can issue nullfunc properly when switching to off channel.
+> Trying to use this Mediatek USB device and I notice a - quite nasty - problem using IBSS mode. On startup of the IBSS network, there is a chance the Pi goes into a tizzy 	https://github.com/openwrt/mt76/issues/543 - when it's the first (and only) node.
+> I was able to dupe it consistently in my home - fairly static network - but not anymore in a lab environment. I cannot easily go back home - it's ~3000km from where I am at temporarily.
 > 
-> The related commits are commit 41cbb0f5a295 ("mac80211: add support for HE")
-> that stops sending nullfunc when STA is connected HE, and commit f39b07fdfb68
-> ("mac80211: HE STA disassoc due to QOS NULL not sent") that makes STA
-> doesn't disconnect locally even if AP has left.
+> Does anyone have experience with these MediaTek devices and B.A.T.M.A.N. on lower performance nodes like a Raspberry Pi...
+
+It doesn't seem to me like this is batman-adv or batmand related. So I would 
+most likely better to ask on linux-wireless@vger.kernel.org too
+
+And is IBSS mode really required or would meshpoint with mesh_fwding set 0 
+also work?
+
+    iw phy0 interface add mesh0 type mp
+    ip link set up dev mesh0
+    iw dev mesh0 mesh join 11s-bat freq 2412 HT20 mcast-rate 18 beacon-interval 1000
+
+    iw dev mesh0 set mesh_param mesh_fwding 0
+    # please make sure that it is actually 0 with: iw dev mesh0 get mesh_param mesh_fwding
+
+    ip link set master bat0 dev mesh0
+
+> I have ascertained that NONE of the USB Realtek dongles work, as the kernel driver is missing IBSS support at this time...
 > 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
-[...]
+> I'm against an urgent deadline, and trying to understand what I can do to make this work
 
-Hi mac80211 team,
+Kind regards,
+	Sven
+--nextPart3186444.dtHR1CuC4E
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-We are working on Realtek 11ax driver, rtw89, not being merged yet.
-This driver uses software connection monitor and software scan, like our 11ac driver rtw88,
-but we found these two functions don't work properly due to mac80211 doesn't send
-null data frame when STA is connected HE.
+-----BEGIN PGP SIGNATURE-----
 
-We search for the reason why it can't send null frame, but we don't get the answer.
-Possibly, it is because existing HE hardware supports hardware connection monitor
-and scan, or supports TWT to avoid sending null data frame to tell AP its PS mode.
-Could anyone enlighten me the reason?
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmDDByoACgkQXYcKB8Em
+e0ZEvRAArrEZQKItYRDBcWQkhHGIYMrm9SDMPNU942EUUeR20vTjFQAfxFo2mrNL
+0umJZ04+tK6DyifCWdobfsXq9pjKOXierYpET/4GVFEaD9T6RjzgoycKVom4Lh8/
+8cg+k3TdU6I0MtQAeMKhRDWZNrzA/Y6iqi45uGUGJmBPiB9Q7gQSgO6X1YeSTpuR
+s81X8AGL/8aWcpvMvmYGa2Ond9wDqA3pQLGtilQgKvOfMtG8X8jNu0eRqumLqeU8
+Ga3SHO7DfLVcU0USmJRx2YVPrPgDM6qjcOM7NcWVP19tIWv1VayEu/9ZufjI1ezr
+IjQ0JZSuPB0rCjec6YWRXLktNVPWz5GAElDDg72U0c7dlnR7fhymR1J66BV5LPl+
+Kwg487eXgrASPgXchxSEoPdxXifget0pyXpx/UcNXEpOfcsUpSXeTZxJ4T3ZJ+t6
+kXyr3/3cJgnuQ8qa8ELwKIiTYbHNIEubI4Oxmd9ACxbxqoH0G+htEgexuOMqfO6b
+G21P2J8S4sJumja8A3xjkZD4rFzQHHgBQ3YQqa2DLatEdWfnycIysLS7LouiBsEk
+iO45SQupbEaRU861l8+Zfh2yVilgjbBSnr1AeR3nCCA0alj++nFeDhbTw97HgiUP
+zL4Y+jkwLTHK2PFyjJI9BBPL9Dp9JAkiKTYe+PKqdRt+iMeAQU4=
+=PMMc
+-----END PGP SIGNATURE-----
 
-Thank you
---
-Ping-Ke
+--nextPart3186444.dtHR1CuC4E--
+
 
 
