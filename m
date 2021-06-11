@@ -2,728 +2,439 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 106E93A4A4B
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 22:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F45D3A4AA2
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 23:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229965AbhFKUtC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Jun 2021 16:49:02 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:47187 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229540AbhFKUtA (ORCPT
+        id S230083AbhFKVei (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Jun 2021 17:34:38 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:56877 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230040AbhFKVeh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Jun 2021 16:49:00 -0400
-X-UUID: 5801102cc5c946dc93fac80aa257ef0d-20210612
-X-UUID: 5801102cc5c946dc93fac80aa257ef0d-20210612
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
+        Fri, 11 Jun 2021 17:34:37 -0400
+X-UUID: 11a2737a98cd455f8feba1a6c9e74961-20210612
+X-UUID: 11a2737a98cd455f8feba1a6c9e74961-20210612
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 402217038; Sat, 12 Jun 2021 04:46:59 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+        with ESMTP id 1589366803; Sat, 12 Jun 2021 05:32:35 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
  mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 12 Jun 2021 04:46:58 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ 15.0.1497.2; Sat, 12 Jun 2021 05:32:33 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 12 Jun 2021 04:46:57 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+ Transport; Sat, 12 Jun 2021 05:32:33 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
         <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>
-Subject: [PATCH v2] mt76: fix iv and CCMP header insertion
-Date:   Sat, 12 Jun 2021 04:45:15 +0800
-Message-ID: <8c7b46457a2f2c1caeb22e2cbb296f14ac195b79.1623438850.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v6] mt76: mt7921: fix sta_state incorrect implementation
+Date:   Sat, 12 Jun 2021 05:32:32 +0800
+Message-ID: <945bcd85bf950d00dd79162dbf87c50376285b10.1623446820.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The iv from RXD is only for TKIP_RSC/CCMP_PN/GCMP_PN, and it needs a
-check for CCMP header insertion. Move mt76_cipher_type to mt76.h to
-reduce duplicated code.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Signed-off-by: Xing Song <xing.song@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-v2: Move mt76_cipher_type to mt76.h to reduce duplicated code
----
- drivers/net/wireless/mediatek/mt76/mt76.h     | 16 +++++
- .../net/wireless/mediatek/mt76/mt7603/mac.c   | 33 +++++++---
- .../net/wireless/mediatek/mt76/mt7603/regs.h  | 12 ----
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 64 +++++++++++++++----
- .../net/wireless/mediatek/mt76/mt7615/mac.h   | 42 ------------
- .../net/wireless/mediatek/mt76/mt76x02_mac.c  | 18 +++---
- .../net/wireless/mediatek/mt76/mt76x02_regs.h | 17 +++--
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 29 ++++++---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 30 ++++-----
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   | 23 ++++---
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 29 ++++++---
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 30 ++++-----
- .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 23 ++++---
- 13 files changed, 202 insertions(+), 164 deletions(-)
+When .sta_state is implemented, mac80211 assumes that the station entry is
+usable after the NOTEXIST->NONE transition.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 971195c5ca95..c7085d6cdcc4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -87,6 +87,22 @@ enum mt76_rxq_id {
- 	__MT_RXQ_MAX
- };
+So we should create the sta entry as early as possible in order that
+mac80211 pass assoc/auth frames to mt76 with the newly created sta entry,
+and add .sta_assoc to mt76 core to refresh the sta entry again when sta is
+being associated.
+
+Fixes: 8aa5a9b7361c ("mt76: mt7921: enable deep sleep at runtime")
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+v1->v2: Put back the careless change not belonged to the patch to keep
+	mt7921_mcu_sta_add for BC entry and mt76_connac_mcu_uni_add_bss
+	on the association.
+v2->v3: 1. rebase the latest mt76
+	2. squashing 2/3 to the one
+	3. add the proper lock in mt7921_mac_sta_assoc
+v3->v4: 1. drop mt76_connac_mcu_add_sta_cmd, call mt76_connac_mcu_sta_cmd
+	   instead
+	2. drop mt76_connac_mcu_update_sta_cmd, call
+	   mt76_connac_mcu_sta_cmd instead
+	3. squash the patch 1/2
+	4. drop mt7921_mcu_sta_add, call mt7921_mcu_sta_update instead
+	5. rebase onto the top of the latest mt76 plus
+	   “mt76: connac: fix UC entry is being overwritten”
+	6. move .newly to be one of parameters in struct mt76_sta_cmd_info
+v4->v5: include back the changelog
+v5->v6: rebase the latest mt76
+---
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  8 ++-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 20 +++---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 17 ++++--
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 61 +++++++++----------
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  9 ++-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  7 ++-
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  1 +
+ 7 files changed, 69 insertions(+), 54 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index ea1f23e99ca1..f8a09692d3e4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1028,9 +1028,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	if (IS_ERR(sskb))
+ 		return PTR_ERR(sskb);
  
-+enum mt76_cipher_type {
-+	MT_CIPHER_NONE,
-+	MT_CIPHER_WEP40,
-+	MT_CIPHER_TKIP,
-+	MT_CIPHER_TKIP_NO_MIC,
-+	MT_CIPHER_AES_CCMP,
-+	MT_CIPHER_WEP104,
-+	MT_CIPHER_BIP_CMAC_128,
-+	MT_CIPHER_WEP128,
-+	MT_CIPHER_WAPI,
-+	MT_CIPHER_CCMP_CCX,
-+	MT_CIPHER_CCMP_256,
-+	MT_CIPHER_GCMP,
-+	MT_CIPHER_GCMP_256,
-+};
-+
- struct mt76_queue_buf {
- 	dma_addr_t addr;
- 	u16 len;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index 8435e9597688..3972c56136a2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -550,14 +550,27 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
- 		u8 *data = (u8 *)rxd;
+-	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable);
++	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable, true);
+ 	if (enable && sta)
+-		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0);
++		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0,
++					MT76_STA_INFO_STATE_ASSOC);
  
- 		if (status->flag & RX_FLAG_DECRYPTED) {
--			status->iv[0] = data[5];
--			status->iv[1] = data[4];
--			status->iv[2] = data[3];
--			status->iv[3] = data[2];
--			status->iv[4] = data[1];
--			status->iv[5] = data[0];
--
--			insert_ccmp_hdr = FIELD_GET(MT_RXD2_NORMAL_FRAG, rxd2);
-+			switch (FIELD_GET(MT_RXD2_NORMAL_SEC_MODE, rxd2)) {
-+			case MT_CIPHER_AES_CCMP:
-+			case MT_CIPHER_CCMP_CCX:
-+			case MT_CIPHER_CCMP_256:
-+				insert_ccmp_hdr =
-+					FIELD_GET(MT_RXD2_NORMAL_FRAG, rxd2);
-+				fallthrough;
-+			case MT_CIPHER_TKIP:
-+			case MT_CIPHER_TKIP_NO_MIC:
-+			case MT_CIPHER_GCMP:
-+			case MT_CIPHER_GCMP_256:
-+				status->iv[0] = data[5];
-+				status->iv[1] = data[4];
-+				status->iv[2] = data[3];
-+				status->iv[3] = data[2];
-+				status->iv[4] = data[1];
-+				status->iv[5] = data[0];
-+				break;
-+			default:
-+				break;
-+			}
- 		}
+ 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&dev->mt76, &msta->wcid,
+ 						  WTBL_RESET_AND_SET, NULL,
+@@ -1157,11 +1158,12 @@ __mt7615_mcu_add_sta(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		.vif = vif,
+ 		.offload_fw = offload_fw,
+ 		.enable = enable,
++		.newly = true,
+ 		.cmd = cmd,
+ 	};
  
- 		rxd += 4;
-@@ -831,7 +844,7 @@ void mt7603_wtbl_set_rates(struct mt7603_dev *dev, struct mt7603_sta *sta,
- 	sta->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 	info.wcid = sta ? (struct mt76_wcid *)sta->drv_priv : &mvif->sta.wcid;
+-	return mt76_connac_mcu_add_sta_cmd(phy, &info);
++	return mt76_connac_mcu_sta_cmd(phy, &info);
  }
  
--static enum mt7603_cipher_type
-+static enum mt76_cipher_type
- mt7603_mac_get_key_info(struct ieee80211_key_conf *key, u8 *key_data)
- {
- 	memset(key_data, 0, 32);
-@@ -863,7 +876,7 @@ mt7603_mac_get_key_info(struct ieee80211_key_conf *key, u8 *key_data)
- int mt7603_wtbl_set_key(struct mt7603_dev *dev, int wcid,
- 			struct ieee80211_key_conf *key)
- {
--	enum mt7603_cipher_type cipher;
-+	enum mt76_cipher_type cipher;
- 	u32 addr = mt7603_wtbl3_addr(wcid);
- 	u8 key_data[32];
- 	int key_len = sizeof(key_data);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/regs.h b/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
-index 6741e6907194..3b901090b29c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
-@@ -765,16 +765,4 @@ enum {
- #define MT_WTBL1_OR			(MT_WTBL1_BASE + 0x2300)
- #define MT_WTBL1_OR_PSM_WRITE		BIT(31)
- 
--enum mt7603_cipher_type {
--	MT_CIPHER_NONE,
--	MT_CIPHER_WEP40,
--	MT_CIPHER_TKIP,
--	MT_CIPHER_TKIP_NO_MIC,
--	MT_CIPHER_AES_CCMP,
--	MT_CIPHER_WEP104,
--	MT_CIPHER_BIP_CMAC_128,
--	MT_CIPHER_WEP128,
--	MT_CIPHER_WAPI,
--};
--
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index a48c198fb9cd..9123a5611b5e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -57,6 +57,33 @@ static const struct mt7615_dfs_radar_spec jp_radar_specs = {
- 	},
- };
- 
-+static enum mt76_cipher_type
-+mt7615_mac_get_cipher(int cipher)
-+{
-+	switch (cipher) {
-+	case WLAN_CIPHER_SUITE_WEP40:
-+		return MT_CIPHER_WEP40;
-+	case WLAN_CIPHER_SUITE_WEP104:
-+		return MT_CIPHER_WEP104;
-+	case WLAN_CIPHER_SUITE_TKIP:
-+		return MT_CIPHER_TKIP;
-+	case WLAN_CIPHER_SUITE_AES_CMAC:
-+		return MT_CIPHER_BIP_CMAC_128;
-+	case WLAN_CIPHER_SUITE_CCMP:
-+		return MT_CIPHER_AES_CCMP;
-+	case WLAN_CIPHER_SUITE_CCMP_256:
-+		return MT_CIPHER_CCMP_256;
-+	case WLAN_CIPHER_SUITE_GCMP:
-+		return MT_CIPHER_GCMP;
-+	case WLAN_CIPHER_SUITE_GCMP_256:
-+		return MT_CIPHER_GCMP_256;
-+	case WLAN_CIPHER_SUITE_SMS4:
-+		return MT_CIPHER_WAPI;
-+	default:
-+		return MT_CIPHER_NONE;
-+	}
-+}
-+
- static struct mt76_wcid *mt7615_rx_get_wcid(struct mt7615_dev *dev,
- 					    u8 idx, bool unicast)
- {
-@@ -313,14 +340,27 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- 		u8 *data = (u8 *)rxd;
- 
- 		if (status->flag & RX_FLAG_DECRYPTED) {
--			status->iv[0] = data[5];
--			status->iv[1] = data[4];
--			status->iv[2] = data[3];
--			status->iv[3] = data[2];
--			status->iv[4] = data[1];
--			status->iv[5] = data[0];
--
--			insert_ccmp_hdr = FIELD_GET(MT_RXD2_NORMAL_FRAG, rxd2);
-+			switch (FIELD_GET(MT_RXD2_NORMAL_SEC_MODE, rxd2)) {
-+			case MT_CIPHER_AES_CCMP:
-+			case MT_CIPHER_CCMP_CCX:
-+			case MT_CIPHER_CCMP_256:
-+				insert_ccmp_hdr =
-+					FIELD_GET(MT_RXD2_NORMAL_FRAG, rxd2);
-+				fallthrough;
-+			case MT_CIPHER_TKIP:
-+			case MT_CIPHER_TKIP_NO_MIC:
-+			case MT_CIPHER_GCMP:
-+			case MT_CIPHER_GCMP_256:
-+				status->iv[0] = data[5];
-+				status->iv[1] = data[4];
-+				status->iv[2] = data[3];
-+				status->iv[3] = data[2];
-+				status->iv[4] = data[1];
-+				status->iv[5] = data[0];
-+				break;
-+			default:
-+				break;
-+			}
- 		}
- 		rxd += 4;
- 		if ((u8 *)rxd - skb->data >= skb->len)
-@@ -1141,7 +1181,7 @@ EXPORT_SYMBOL_GPL(mt7615_mac_set_rates);
  static int
- mt7615_mac_wtbl_update_key(struct mt7615_dev *dev, struct mt76_wcid *wcid,
- 			   struct ieee80211_key_conf *key,
--			   enum mt7615_cipher_type cipher, u16 cipher_mask,
-+			   enum mt76_cipher_type cipher, u16 cipher_mask,
- 			   enum set_key_cmd cmd)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 8fe09e7363ca..ac155c85b93b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -304,7 +304,7 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_alloc_wtbl_req);
+ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
+ 				   struct ieee80211_vif *vif,
+ 				   struct ieee80211_sta *sta,
+-				   bool enable)
++				   bool enable, bool newly)
  {
- 	u32 addr = mt7615_mac_wtbl_addr(dev, wcid->idx) + 30 * 4;
-@@ -1181,7 +1221,7 @@ mt7615_mac_wtbl_update_key(struct mt7615_dev *dev, struct mt76_wcid *wcid,
+ 	struct sta_rec_basic *basic;
+ 	struct tlv *tlv;
+@@ -316,7 +316,8 @@ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
+ 	basic->extra_info = cpu_to_le16(EXTRA_INFO_VER);
  
- static int
- mt7615_mac_wtbl_update_pk(struct mt7615_dev *dev, struct mt76_wcid *wcid,
--			  enum mt7615_cipher_type cipher, u16 cipher_mask,
-+			  enum mt76_cipher_type cipher, u16 cipher_mask,
- 			  int keyidx, enum set_key_cmd cmd)
- {
- 	u32 addr = mt7615_mac_wtbl_addr(dev, wcid->idx), w0, w1;
-@@ -1220,7 +1260,7 @@ mt7615_mac_wtbl_update_pk(struct mt7615_dev *dev, struct mt76_wcid *wcid,
- 
- static void
- mt7615_mac_wtbl_update_cipher(struct mt7615_dev *dev, struct mt76_wcid *wcid,
--			      enum mt7615_cipher_type cipher, u16 cipher_mask,
-+			      enum mt76_cipher_type cipher, u16 cipher_mask,
- 			      enum set_key_cmd cmd)
- {
- 	u32 addr = mt7615_mac_wtbl_addr(dev, wcid->idx);
-@@ -1246,7 +1286,7 @@ int __mt7615_mac_wtbl_set_key(struct mt7615_dev *dev,
- 			      struct ieee80211_key_conf *key,
- 			      enum set_key_cmd cmd)
- {
--	enum mt7615_cipher_type cipher;
-+	enum mt76_cipher_type cipher;
- 	u16 cipher_mask = wcid->cipher;
- 	int err;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-index d17bf200d8de..0b6d0b41ad83 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-@@ -384,48 +384,6 @@ struct mt7615_dfs_radar_spec {
- 	struct mt7615_dfs_pattern radar_pattern[16];
- };
- 
--enum mt7615_cipher_type {
--	MT_CIPHER_NONE,
--	MT_CIPHER_WEP40,
--	MT_CIPHER_TKIP,
--	MT_CIPHER_TKIP_NO_MIC,
--	MT_CIPHER_AES_CCMP,
--	MT_CIPHER_WEP104,
--	MT_CIPHER_BIP_CMAC_128,
--	MT_CIPHER_WEP128,
--	MT_CIPHER_WAPI,
--	MT_CIPHER_CCMP_256 = 10,
--	MT_CIPHER_GCMP,
--	MT_CIPHER_GCMP_256,
--};
--
--static inline enum mt7615_cipher_type
--mt7615_mac_get_cipher(int cipher)
--{
--	switch (cipher) {
--	case WLAN_CIPHER_SUITE_WEP40:
--		return MT_CIPHER_WEP40;
--	case WLAN_CIPHER_SUITE_WEP104:
--		return MT_CIPHER_WEP104;
--	case WLAN_CIPHER_SUITE_TKIP:
--		return MT_CIPHER_TKIP;
--	case WLAN_CIPHER_SUITE_AES_CMAC:
--		return MT_CIPHER_BIP_CMAC_128;
--	case WLAN_CIPHER_SUITE_CCMP:
--		return MT_CIPHER_AES_CCMP;
--	case WLAN_CIPHER_SUITE_CCMP_256:
--		return MT_CIPHER_CCMP_256;
--	case WLAN_CIPHER_SUITE_GCMP:
--		return MT_CIPHER_GCMP;
--	case WLAN_CIPHER_SUITE_GCMP_256:
--		return MT_CIPHER_GCMP_256;
--	case WLAN_CIPHER_SUITE_SMS4:
--		return MT_CIPHER_WAPI;
--	default:
--		return MT_CIPHER_NONE;
--	}
--}
--
- static inline struct mt7615_txp_common *
- mt7615_txwi_to_txp(struct mt76_dev *dev, struct mt76_txwi_cache *t)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index 7572c793aa51..d8c03a409266 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -43,13 +43,13 @@ mt76x02_mac_get_key_info(struct ieee80211_key_conf *key, u8 *key_data)
- 
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
--		return MT_CIPHER_WEP40;
-+		return MT76X02_CIPHER_WEP40;
- 	case WLAN_CIPHER_SUITE_WEP104:
--		return MT_CIPHER_WEP104;
-+		return MT76X02_CIPHER_WEP104;
- 	case WLAN_CIPHER_SUITE_TKIP:
--		return MT_CIPHER_TKIP;
-+		return MT76X02_CIPHER_TKIP;
- 	case WLAN_CIPHER_SUITE_CCMP:
--		return MT_CIPHER_AES_CCMP;
-+		return MT76X02_CIPHER_AES_CCMP;
- 	default:
- 		return MT_CIPHER_NONE;
- 	}
-@@ -91,10 +91,10 @@ void mt76x02_mac_wcid_sync_pn(struct mt76x02_dev *dev, u8 idx,
- 	eiv = mt76_rr(dev, MT_WCID_IV(idx) + 4);
- 
- 	pn = (u64)eiv << 16;
--	if (cipher == MT_CIPHER_TKIP) {
-+	if (cipher == MT76X02_CIPHER_TKIP) {
- 		pn |= (iv >> 16) & 0xff;
- 		pn |= (iv & 0xff) << 8;
--	} else if (cipher >= MT_CIPHER_AES_CCMP) {
-+	} else if (cipher >= MT76X02_CIPHER_AES_CCMP) {
- 		pn |= iv & 0xffff;
+ 	if (enable) {
+-		basic->extra_info |= cpu_to_le16(EXTRA_INFO_NEW);
++		if (newly)
++			basic->extra_info |= cpu_to_le16(EXTRA_INFO_NEW);
+ 		basic->conn_state = CONN_STATE_PORT_SECURE;
  	} else {
- 		return;
-@@ -126,16 +126,16 @@ int mt76x02_mac_wcid_set_key(struct mt76x02_dev *dev, u8 idx,
- 		pn = atomic64_read(&key->tx_pn);
- 
- 		iv_data[3] = key->keyidx << 6;
--		if (cipher >= MT_CIPHER_TKIP) {
-+		if (cipher >= MT76X02_CIPHER_TKIP) {
- 			iv_data[3] |= 0x20;
- 			put_unaligned_le32(pn >> 16, &iv_data[4]);
- 		}
- 
--		if (cipher == MT_CIPHER_TKIP) {
-+		if (cipher == MT76X02_CIPHER_TKIP) {
- 			iv_data[0] = (pn >> 8) & 0xff;
- 			iv_data[1] = (iv_data[0] | 0x20) & 0x7f;
- 			iv_data[2] = pn & 0xff;
--		} else if (cipher >= MT_CIPHER_AES_CCMP) {
-+		} else if (cipher >= MT76X02_CIPHER_AES_CCMP) {
- 			put_unaligned_le16((pn & 0xffff), &iv_data[0]);
- 		}
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h b/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
-index 3e722276b5c2..0d37642dc5d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
-@@ -692,15 +692,14 @@ struct mt76_wcid_key {
- } __packed __aligned(4);
- 
- enum mt76x02_cipher_type {
--	MT_CIPHER_NONE,
--	MT_CIPHER_WEP40,
--	MT_CIPHER_WEP104,
--	MT_CIPHER_TKIP,
--	MT_CIPHER_AES_CCMP,
--	MT_CIPHER_CKIP40,
--	MT_CIPHER_CKIP104,
--	MT_CIPHER_CKIP128,
--	MT_CIPHER_WAPI,
-+	MT76X02_CIPHER_WEP40 = 1,
-+	MT76X02_CIPHER_WEP104,
-+	MT76X02_CIPHER_TKIP,
-+	MT76X02_CIPHER_AES_CCMP,
-+	MT76X02_CIPHER_CKIP40,
-+	MT76X02_CIPHER_CKIP104,
-+	MT76X02_CIPHER_CKIP128,
-+	MT76X02_CIPHER_WAPI,
- };
- 
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index c093c13bf1f1..2462704094b0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -413,14 +413,27 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 		u8 *data = (u8 *)rxd;
- 
- 		if (status->flag & RX_FLAG_DECRYPTED) {
--			status->iv[0] = data[5];
--			status->iv[1] = data[4];
--			status->iv[2] = data[3];
--			status->iv[3] = data[2];
--			status->iv[4] = data[1];
--			status->iv[5] = data[0];
--
--			insert_ccmp_hdr = FIELD_GET(MT_RXD2_NORMAL_FRAG, rxd2);
-+			switch (FIELD_GET(MT_RXD1_NORMAL_SEC_MODE, rxd1)) {
-+			case MT_CIPHER_AES_CCMP:
-+			case MT_CIPHER_CCMP_CCX:
-+			case MT_CIPHER_CCMP_256:
-+				insert_ccmp_hdr =
-+					FIELD_GET(MT_RXD2_NORMAL_FRAG, rxd2);
-+				fallthrough;
-+			case MT_CIPHER_TKIP:
-+			case MT_CIPHER_TKIP_NO_MIC:
-+			case MT_CIPHER_GCMP:
-+			case MT_CIPHER_GCMP_256:
-+				status->iv[0] = data[5];
-+				status->iv[1] = data[4];
-+				status->iv[2] = data[3];
-+				status->iv[3] = data[2];
-+				status->iv[4] = data[1];
-+				status->iv[5] = data[0];
-+				break;
-+			default:
-+				break;
-+			}
- 		}
- 		rxd += 4;
- 		if ((u8 *)rxd - skb->data >= skb->len)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index b565024404cf..863aa18b3024 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -88,28 +88,28 @@ struct mt7915_fw_region {
- #define HE_PHY(p, c)			u8_get_bits(c, IEEE80211_HE_PHY_##p)
- #define HE_MAC(m, c)			u8_get_bits(c, IEEE80211_HE_MAC_##m)
- 
--static enum mt7915_cipher_type
-+static enum mcu_cipher_type
- mt7915_mcu_get_cipher(int cipher)
+ 		basic->conn_state = CONN_STATE_DISCONNECT;
+@@ -709,7 +710,7 @@ mt76_connac_get_phy_mode_v2(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
+ 			     struct ieee80211_sta *sta,
+ 			     struct ieee80211_vif *vif,
+-			     u8 rcpi)
++			     u8 rcpi, u8 sta_state)
  {
- 	switch (cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
--		return MT_CIPHER_WEP40;
-+		return MCU_CIPHER_WEP40;
- 	case WLAN_CIPHER_SUITE_WEP104:
--		return MT_CIPHER_WEP104;
-+		return MCU_CIPHER_WEP104;
- 	case WLAN_CIPHER_SUITE_TKIP:
--		return MT_CIPHER_TKIP;
-+		return MCU_CIPHER_TKIP;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		return MT_CIPHER_BIP_CMAC_128;
-+		return MCU_CIPHER_BIP_CMAC_128;
- 	case WLAN_CIPHER_SUITE_CCMP:
--		return MT_CIPHER_AES_CCMP;
-+		return MCU_CIPHER_AES_CCMP;
- 	case WLAN_CIPHER_SUITE_CCMP_256:
--		return MT_CIPHER_CCMP_256;
-+		return MCU_CIPHER_CCMP_256;
- 	case WLAN_CIPHER_SUITE_GCMP:
--		return MT_CIPHER_GCMP;
-+		return MCU_CIPHER_GCMP;
- 	case WLAN_CIPHER_SUITE_GCMP_256:
--		return MT_CIPHER_GCMP_256;
-+		return MCU_CIPHER_GCMP_256;
- 	case WLAN_CIPHER_SUITE_SMS4:
--		return MT_CIPHER_WAPI;
-+		return MCU_CIPHER_WAPI;
- 	default:
- 		return MT_CIPHER_NONE;
- 	}
-@@ -1207,14 +1207,14 @@ mt7915_mcu_sta_key_tlv(struct mt7915_sta *msta, struct sk_buff *skb,
- 		sec_key = &sec->key[0];
- 		sec_key->cipher_len = sizeof(*sec_key);
+ 	struct cfg80211_chan_def *chandef = &mphy->chandef;
+ 	enum nl80211_band band = chandef->chan->band;
+@@ -770,7 +771,7 @@ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
  
--		if (cipher == MT_CIPHER_BIP_CMAC_128) {
--			sec_key->cipher_id = MT_CIPHER_AES_CCMP;
-+		if (cipher == MCU_CIPHER_BIP_CMAC_128) {
-+			sec_key->cipher_id = MCU_CIPHER_AES_CCMP;
- 			sec_key->key_id = bip->keyidx;
- 			sec_key->key_len = 16;
- 			memcpy(sec_key->key, bip->key, 16);
+ 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_STATE, sizeof(*state));
+ 	state = (struct sta_rec_state *)tlv;
+-	state->state = 2;
++	state->state = sta_state;
  
- 			sec_key = &sec->key[1];
--			sec_key->cipher_id = MT_CIPHER_BIP_CMAC_128;
-+			sec_key->cipher_id = MCU_CIPHER_BIP_CMAC_128;
- 			sec_key->cipher_len = sizeof(*sec_key);
- 			sec_key->key_len = 16;
- 			memcpy(sec_key->key, key->key, 16);
-@@ -1226,14 +1226,14 @@ mt7915_mcu_sta_key_tlv(struct mt7915_sta *msta, struct sk_buff *skb,
- 			sec_key->key_len = key->keylen;
- 			memcpy(sec_key->key, key->key, key->keylen);
+ 	if (sta->vht_cap.vht_supported) {
+ 		state->vht_opmode = sta->bandwidth;
+@@ -862,8 +863,8 @@ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_wtbl_ht_tlv);
  
--			if (cipher == MT_CIPHER_TKIP) {
-+			if (cipher == MCU_CIPHER_TKIP) {
- 				/* Rx/Tx MIC keys are swapped */
- 				memcpy(sec_key->key + 16, key->key + 24, 8);
- 				memcpy(sec_key->key + 24, key->key + 16, 8);
- 			}
- 
- 			/* store key_conf for BIP batch update */
--			if (cipher == MT_CIPHER_AES_CCMP) {
-+			if (cipher == MCU_CIPHER_AES_CCMP) {
- 				memcpy(bip->key, key->key, key->keylen);
- 				bip->keyidx = key->keyidx;
- 			}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 9087a7771c35..edd3ba3a0c2d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -1072,18 +1072,17 @@ enum {
- 	STA_REC_MAX_NUM
- };
- 
--enum mt7915_cipher_type {
--	MT_CIPHER_NONE,
--	MT_CIPHER_WEP40,
--	MT_CIPHER_WEP104,
--	MT_CIPHER_WEP128,
--	MT_CIPHER_TKIP,
--	MT_CIPHER_AES_CCMP,
--	MT_CIPHER_CCMP_256,
--	MT_CIPHER_GCMP,
--	MT_CIPHER_GCMP_256,
--	MT_CIPHER_WAPI,
--	MT_CIPHER_BIP_CMAC_128,
-+enum mcu_cipher_type {
-+	MCU_CIPHER_WEP40 = 1,
-+	MCU_CIPHER_WEP104,
-+	MCU_CIPHER_WEP128,
-+	MCU_CIPHER_TKIP,
-+	MCU_CIPHER_AES_CCMP,
-+	MCU_CIPHER_CCMP_256,
-+	MCU_CIPHER_GCMP,
-+	MCU_CIPHER_GCMP_256,
-+	MCU_CIPHER_WAPI,
-+	MCU_CIPHER_BIP_CMAC_128,
- };
- 
- enum {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 5af3a958e5b0..c879a258b4a6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -433,14 +433,27 @@ int mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 		u8 *data = (u8 *)rxd;
- 
- 		if (status->flag & RX_FLAG_DECRYPTED) {
--			status->iv[0] = data[5];
--			status->iv[1] = data[4];
--			status->iv[2] = data[3];
--			status->iv[3] = data[2];
--			status->iv[4] = data[1];
--			status->iv[5] = data[0];
--
--			insert_ccmp_hdr = FIELD_GET(MT_RXD2_NORMAL_FRAG, rxd2);
-+			switch (FIELD_GET(MT_RXD1_NORMAL_SEC_MODE, rxd1)) {
-+			case MT_CIPHER_AES_CCMP:
-+			case MT_CIPHER_CCMP_CCX:
-+			case MT_CIPHER_CCMP_256:
-+				insert_ccmp_hdr =
-+					FIELD_GET(MT_RXD2_NORMAL_FRAG, rxd2);
-+				fallthrough;
-+			case MT_CIPHER_TKIP:
-+			case MT_CIPHER_TKIP_NO_MIC:
-+			case MT_CIPHER_GCMP:
-+			case MT_CIPHER_GCMP_256:
-+				status->iv[0] = data[5];
-+				status->iv[1] = data[4];
-+				status->iv[2] = data[3];
-+				status->iv[3] = data[2];
-+				status->iv[4] = data[1];
-+				status->iv[5] = data[0];
-+				break;
-+			default:
-+				break;
-+			}
- 		}
- 		rxd += 4;
- 		if ((u8 *)rxd - skb->data >= skb->len)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index ffc83717fd0d..a3ccf6b47967 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -88,28 +88,28 @@ struct mt7921_fw_region {
- #define to_wcid_lo(id)			FIELD_GET(GENMASK(7, 0), (u16)id)
- #define to_wcid_hi(id)			FIELD_GET(GENMASK(9, 8), (u16)id)
- 
--static enum mt7921_cipher_type
-+static enum mcu_cipher_type
- mt7921_mcu_get_cipher(int cipher)
+-int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
+-				struct mt76_sta_cmd_info *info)
++int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
++			    struct mt76_sta_cmd_info *info)
  {
- 	switch (cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
--		return MT_CIPHER_WEP40;
-+		return MCU_CIPHER_WEP40;
- 	case WLAN_CIPHER_SUITE_WEP104:
--		return MT_CIPHER_WEP104;
-+		return MCU_CIPHER_WEP104;
- 	case WLAN_CIPHER_SUITE_TKIP:
--		return MT_CIPHER_TKIP;
-+		return MCU_CIPHER_TKIP;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		return MT_CIPHER_BIP_CMAC_128;
-+		return MCU_CIPHER_BIP_CMAC_128;
- 	case WLAN_CIPHER_SUITE_CCMP:
--		return MT_CIPHER_AES_CCMP;
-+		return MCU_CIPHER_AES_CCMP;
- 	case WLAN_CIPHER_SUITE_CCMP_256:
--		return MT_CIPHER_CCMP_256;
-+		return MCU_CIPHER_CCMP_256;
- 	case WLAN_CIPHER_SUITE_GCMP:
--		return MT_CIPHER_GCMP;
-+		return MCU_CIPHER_GCMP;
- 	case WLAN_CIPHER_SUITE_GCMP_256:
--		return MT_CIPHER_GCMP_256;
-+		return MCU_CIPHER_GCMP_256;
- 	case WLAN_CIPHER_SUITE_SMS4:
--		return MT_CIPHER_WAPI;
-+		return MCU_CIPHER_WAPI;
- 	default:
- 		return MT_CIPHER_NONE;
- 	}
-@@ -625,14 +625,14 @@ mt7921_mcu_sta_key_tlv(struct mt7921_sta *msta, struct sk_buff *skb,
- 		sec_key = &sec->key[0];
- 		sec_key->cipher_len = sizeof(*sec_key);
+ 	struct mt76_vif *mvif = (struct mt76_vif *)info->vif->drv_priv;
+ 	struct mt76_dev *dev = phy->dev;
+@@ -877,10 +878,11 @@ int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
  
--		if (cipher == MT_CIPHER_BIP_CMAC_128) {
--			sec_key->cipher_id = MT_CIPHER_AES_CCMP;
-+		if (cipher == MCU_CIPHER_BIP_CMAC_128) {
-+			sec_key->cipher_id = MCU_CIPHER_AES_CCMP;
- 			sec_key->key_id = bip->keyidx;
- 			sec_key->key_len = 16;
- 			memcpy(sec_key->key, bip->key, 16);
+ 	if (info->sta || !info->offload_fw)
+ 		mt76_connac_mcu_sta_basic_tlv(skb, info->vif, info->sta,
+-					      info->enable);
++					      info->enable, info->newly);
+ 	if (info->sta && info->enable)
+ 		mt76_connac_mcu_sta_tlv(phy, skb, info->sta,
+-					info->vif, info->rcpi);
++					info->vif, info->rcpi,
++					info->state);
  
- 			sec_key = &sec->key[1];
--			sec_key->cipher_id = MT_CIPHER_BIP_CMAC_128;
-+			sec_key->cipher_id = MCU_CIPHER_BIP_CMAC_128;
- 			sec_key->cipher_len = sizeof(*sec_key);
- 			sec_key->key_len = 16;
- 			memcpy(sec_key->key, key->key, 16);
-@@ -644,14 +644,14 @@ mt7921_mcu_sta_key_tlv(struct mt7921_sta *msta, struct sk_buff *skb,
- 			sec_key->key_len = key->keylen;
- 			memcpy(sec_key->key, key->key, key->keylen);
+ 	sta_wtbl = mt76_connac_mcu_add_tlv(skb, STA_REC_WTBL,
+ 					   sizeof(struct tlv));
+@@ -904,7 +906,7 @@ int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
  
--			if (cipher == MT_CIPHER_TKIP) {
-+			if (cipher == MCU_CIPHER_TKIP) {
- 				/* Rx/Tx MIC keys are swapped */
- 				memcpy(sec_key->key + 16, key->key + 24, 8);
- 				memcpy(sec_key->key + 24, key->key + 16, 8);
- 			}
+ 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
+ }
+-EXPORT_SYMBOL_GPL(mt76_connac_mcu_add_sta_cmd);
++EXPORT_SYMBOL_GPL(mt76_connac_mcu_sta_cmd);
  
- 			/* store key_conf for BIP batch update */
--			if (cipher == MT_CIPHER_AES_CCMP) {
-+			if (cipher == MCU_CIPHER_AES_CCMP) {
- 				memcpy(bip->key, key->key, key->keylen);
- 				bip->keyidx = key->keyidx;
- 			}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-index 89fed2f71161..d76cf8f8dfdf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-@@ -198,18 +198,17 @@ struct sta_rec_sec {
- 	struct sec_key key[2];
+ void mt76_connac_mcu_wtbl_ba_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				 struct ieee80211_ampdu_params *params,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index bb0d7b28fe24..1c73beb22677 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -927,6 +927,12 @@ struct mt76_connac_suspend_tlv {
+ 	u8 pad[5];
  } __packed;
  
--enum mt7921_cipher_type {
--	MT_CIPHER_NONE,
--	MT_CIPHER_WEP40,
--	MT_CIPHER_WEP104,
--	MT_CIPHER_WEP128,
--	MT_CIPHER_TKIP,
--	MT_CIPHER_AES_CCMP,
--	MT_CIPHER_CCMP_256,
--	MT_CIPHER_GCMP,
--	MT_CIPHER_GCMP_256,
--	MT_CIPHER_WAPI,
--	MT_CIPHER_BIP_CMAC_128,
-+enum mcu_cipher_type {
-+	MCU_CIPHER_WEP40 = 1,
-+	MCU_CIPHER_WEP104,
-+	MCU_CIPHER_WEP128,
-+	MCU_CIPHER_TKIP,
-+	MCU_CIPHER_AES_CCMP,
-+	MCU_CIPHER_CCMP_256,
-+	MCU_CIPHER_GCMP,
-+	MCU_CIPHER_GCMP_256,
-+	MCU_CIPHER_WAPI,
-+	MCU_CIPHER_BIP_CMAC_128,
++enum mt76_sta_info_state {
++	MT76_STA_INFO_STATE_NONE,
++	MT76_STA_INFO_STATE_AUTH,
++	MT76_STA_INFO_STATE_ASSOC
++};
++
+ struct mt76_sta_cmd_info {
+ 	struct ieee80211_sta *sta;
+ 	struct mt76_wcid *wcid;
+@@ -935,8 +941,10 @@ struct mt76_sta_cmd_info {
+ 
+ 	bool offload_fw;
+ 	bool enable;
++	bool newly;
+ 	int cmd;
+ 	u8 rcpi;
++	u8 state;
  };
  
- enum {
+ #define MT_SKU_POWER_LIMIT	161
+@@ -1006,7 +1014,8 @@ int mt76_connac_mcu_set_channel_domain(struct mt76_phy *phy);
+ int mt76_connac_mcu_set_vif_ps(struct mt76_dev *dev, struct ieee80211_vif *vif);
+ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
+ 				   struct ieee80211_vif *vif,
+-				   struct ieee80211_sta *sta, bool enable);
++				   struct ieee80211_sta *sta, bool enable,
++				   bool newly);
+ void mt76_connac_mcu_wtbl_generic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				      struct ieee80211_vif *vif,
+ 				      struct ieee80211_sta *sta, void *sta_wtbl,
+@@ -1021,7 +1030,7 @@ int mt76_connac_mcu_sta_update_hdr_trans(struct mt76_dev *dev,
+ void mt76_connac_mcu_sta_tlv(struct mt76_phy *mphy, struct sk_buff *skb,
+ 			     struct ieee80211_sta *sta,
+ 			     struct ieee80211_vif *vif,
+-			     u8 rcpi);
++			     u8 rcpi, u8 state);
+ void mt76_connac_mcu_wtbl_ht_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				 struct ieee80211_sta *sta, void *sta_wtbl,
+ 				 void *wtbl_tlv);
+@@ -1043,8 +1052,8 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
+ 				struct ieee80211_vif *vif,
+ 				struct mt76_wcid *wcid,
+ 				bool enable);
+-int mt76_connac_mcu_add_sta_cmd(struct mt76_phy *phy,
+-				struct mt76_sta_cmd_info *info);
++int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
++			    struct mt76_sta_cmd_info *info);
+ void mt76_connac_mcu_beacon_loss_iter(void *priv, u8 *mac,
+ 				      struct ieee80211_vif *vif);
+ int mt76_connac_mcu_set_rts_thresh(struct mt76_dev *dev, u32 val, u8 band);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index f062088780c2..bc5643f485c5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -578,7 +578,8 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
+ 		mt7921_mcu_uni_bss_ps(dev, vif);
+ 
+ 	if (changed & BSS_CHANGED_ASSOC) {
+-		mt7921_mcu_sta_add(dev, NULL, vif, true);
++		mt7921_mcu_sta_update(dev, NULL, vif, true,
++				      MT76_STA_INFO_STATE_ASSOC);
+ 		mt7921_bss_bcnft_apply(dev, vif, info->assoc);
+ 	}
+ 
+@@ -617,17 +618,14 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (vif->type == NL80211_IFTYPE_STATION) {
++	if (vif->type == NL80211_IFTYPE_STATION)
+ 		mvif->wep_sta = msta;
+-		if (!sta->tdls)
+-			mt76_connac_mcu_uni_add_bss(&dev->mphy, vif,
+-						    &mvif->sta.wcid, true);
+-	}
+ 
+ 	mt7921_mac_wtbl_update(dev, idx,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 
+-	ret = mt7921_mcu_sta_add(dev, sta, vif, true);
++	ret = mt7921_mcu_sta_update(dev, sta, vif, true,
++				    MT76_STA_INFO_STATE_NONE);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -636,6 +634,27 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	return 0;
+ }
+ 
++void mt7921_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
++			  struct ieee80211_sta *sta)
++{
++	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
++	struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
++	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
++
++	mt7921_mutex_acquire(dev);
++
++	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
++		mt76_connac_mcu_uni_add_bss(&dev->mphy, vif, &mvif->sta.wcid,
++					    true);
++
++	mt7921_mac_wtbl_update(dev, msta->wcid.idx,
++			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
++
++	mt7921_mcu_sta_update(dev, sta, vif, true, MT76_STA_INFO_STATE_ASSOC);
++
++	mt7921_mutex_release(dev);
++}
++
+ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta)
+ {
+@@ -645,7 +664,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, &msta->wcid);
+ 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 
+-	mt7921_mcu_sta_add(dev, sta, vif, false);
++	mt7921_mcu_sta_update(dev, sta, vif, false, MT76_STA_INFO_STATE_NONE);
+ 	mt7921_mac_wtbl_update(dev, msta->wcid.idx,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 
+@@ -791,22 +810,6 @@ mt7921_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	return ret;
+ }
+ 
+-static int
+-mt7921_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-	       struct ieee80211_sta *sta)
+-{
+-	return mt76_sta_state(hw, vif, sta, IEEE80211_STA_NOTEXIST,
+-			      IEEE80211_STA_NONE);
+-}
+-
+-static int
+-mt7921_sta_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-		  struct ieee80211_sta *sta)
+-{
+-	return mt76_sta_state(hw, vif, sta, IEEE80211_STA_NONE,
+-			      IEEE80211_STA_NOTEXIST);
+-}
+-
+ static int mt7921_sta_state(struct ieee80211_hw *hw,
+ 			    struct ieee80211_vif *vif,
+ 			    struct ieee80211_sta *sta,
+@@ -821,15 +824,7 @@ static int mt7921_sta_state(struct ieee80211_hw *hw,
+ 		mt7921_mutex_release(dev);
+ 	}
+ 
+-	if (old_state == IEEE80211_STA_AUTH &&
+-	    new_state == IEEE80211_STA_ASSOC) {
+-		return mt7921_sta_add(hw, vif, sta);
+-	} else if (old_state == IEEE80211_STA_ASSOC &&
+-		   new_state == IEEE80211_STA_AUTH) {
+-		return mt7921_sta_remove(hw, vif, sta);
+-	}
+-
+-	return 0;
++	return mt76_sta_state(hw, vif, sta, old_state, new_state);
+ }
+ 
+ static int
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index ca481e37d22c..23ec0c816d64 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1267,8 +1267,9 @@ int mt7921_mcu_set_bss_pm(struct mt7921_dev *dev, struct ieee80211_vif *vif,
+ 				 sizeof(req), false);
+ }
+ 
+-int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
+-		       struct ieee80211_vif *vif, bool enable)
++int mt7921_mcu_sta_update(struct mt7921_dev *dev, struct ieee80211_sta *sta,
++			  struct ieee80211_vif *vif, bool enable,
++			  enum mt76_sta_info_state state)
+ {
+ 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+ 	int rssi = -ewma_rssi_read(&mvif->rssi);
+@@ -1277,6 +1278,7 @@ int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
+ 		.vif = vif,
+ 		.enable = enable,
+ 		.cmd = MCU_UNI_CMD_STA_REC_UPDATE,
++		.state = state,
+ 		.offload_fw = true,
+ 		.rcpi = to_rcpi(rssi),
+ 	};
+@@ -1284,8 +1286,9 @@ int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
+ 
+ 	msta = sta ? (struct mt7921_sta *)sta->drv_priv : NULL;
+ 	info.wcid = msta ? &msta->wcid : &mvif->sta.wcid;
++	info.newly = msta ? state != MT76_STA_INFO_STATE_ASSOC : true;
+ 
+-	return mt76_connac_mcu_add_sta_cmd(&dev->mphy, &info);
++	return mt76_connac_mcu_sta_cmd(&dev->mphy, &info);
+ }
+ 
+ int __mt7921_mcu_drv_pmctrl(struct mt7921_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 087067e7ea5b..a249ce34b44b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -261,8 +261,9 @@ int mt7921_mcu_init(struct mt7921_dev *dev);
+ int mt7921_mcu_add_key(struct mt7921_dev *dev, struct ieee80211_vif *vif,
+ 		       struct mt7921_sta *msta, struct ieee80211_key_conf *key,
+ 		       enum set_key_cmd cmd);
+-int mt7921_mcu_sta_add(struct mt7921_dev *dev, struct ieee80211_sta *sta,
+-		       struct ieee80211_vif *vif, bool enable);
++int mt7921_mcu_sta_update(struct mt7921_dev *dev, struct ieee80211_sta *sta,
++			  struct ieee80211_vif *vif, bool enable,
++			  enum mt76_sta_info_state state);
+ int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, int cmd);
+ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif);
+ int mt7921_mcu_set_eeprom(struct mt7921_dev *dev);
+@@ -334,6 +335,8 @@ void mt7921_mac_fill_rx_vector(struct mt7921_dev *dev, struct sk_buff *skb);
+ void mt7921_mac_tx_free(struct mt7921_dev *dev, struct sk_buff *skb);
+ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 		       struct ieee80211_sta *sta);
++void mt7921_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
++			  struct ieee80211_sta *sta);
+ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta);
+ void mt7921_mac_work(struct work_struct *work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 13263f50dc00..27906b2cd912 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -106,6 +106,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 		.rx_poll_complete = mt7921_rx_poll_complete,
+ 		.sta_ps = mt7921_sta_ps,
+ 		.sta_add = mt7921_mac_sta_add,
++		.sta_assoc = mt7921_mac_sta_assoc,
+ 		.sta_remove = mt7921_mac_sta_remove,
+ 		.update_survey = mt7921_update_channel,
+ 	};
 -- 
-2.18.0
+2.25.1
 
