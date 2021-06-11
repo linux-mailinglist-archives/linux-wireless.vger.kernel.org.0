@@ -2,117 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 667A03A4457
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 16:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63A863A4638
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 18:12:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231797AbhFKOtb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Jun 2021 10:49:31 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33057 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbhFKOta (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Jun 2021 10:49:30 -0400
-Received: from mail-oo1-f71.google.com ([209.85.161.71])
-        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <chris.chiu@canonical.com>)
-        id 1lriRW-0002cs-2b
-        for linux-wireless@vger.kernel.org; Fri, 11 Jun 2021 14:47:32 +0000
-Received: by mail-oo1-f71.google.com with SMTP id t19-20020a4ae4130000b029023950cb8d35so1650480oov.6
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Jun 2021 07:47:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HM/OpCdDbXxCKOPzELJHKGAfyo0GFyK7Y/hjzFUi874=;
-        b=UMhyZ3deS1i05A4CclDVrsYsqFdVgRU9w4neJ8jetunbuXRKxULQIh3I7B35nkMpTm
-         ejSfQbWKRGtvTbjC0NP36CU6ZrGAEyrKpVaKv0JAnisjhy7JeiCllpQhQKk1xiGrxegY
-         YmSXAylS2PI5iJFlHhQ0pttSjBmOZx6hzTDF6ZhDXofJKg63MazfNyfh/isVp1QWcNtU
-         mzQ21yu2HIoSEeZNtDSMotW44fGZRFNwEasxNHdFOXugm0OAY3Y2hDv6BCYoRUQPFpWl
-         IXDDWPnL7eBG0ZnDpS0nkeihRDfNEPZA9EcVoRNo5yibtW7R6M0lZK4atYrp6sYsP+Eq
-         jkmA==
-X-Gm-Message-State: AOAM532VSuMb4YtLOtjD6qBcobgs76W3+YW/YAKhF115OTpk0GVNTzcT
-        Nf+tskkGckIbq4F0V2C7SUB2UO/BCZmZNsa5P4hV3s38DZO2SWEyHLoS56zW2Y4yAZ5DlLA1vzw
-        OdNBK32QKVS8eR+NuwNtgnlC12Oxy3i9pggY55kSPj/tZ62giXt9zqWZZ6TF7
-X-Received: by 2002:a9d:12eb:: with SMTP id g98mr3366597otg.303.1623422849086;
-        Fri, 11 Jun 2021 07:47:29 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzNIqId8/saV2hUMjH0y78sNNvpCYY0s9FH5nbvC8+V2xmzfp1e0A6YmUWsCKSiUf4p5z17PA3fUc3Qcn3WFMA=
-X-Received: by 2002:a9d:12eb:: with SMTP id g98mr3366582otg.303.1623422848860;
- Fri, 11 Jun 2021 07:47:28 -0700 (PDT)
+        id S230230AbhFKQOb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Jun 2021 12:14:31 -0400
+Received: from mga05.intel.com ([192.55.52.43]:3788 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230184AbhFKQO3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 11 Jun 2021 12:14:29 -0400
+IronPort-SDR: glJEyLZvCS+tSt6CpbgQ92PrxohRMeIeK04rCu65L/QGx+tX/a451S5EbcqqZ2JUTdKHzPU++C
+ B9UM3/7kaJ9w==
+X-IronPort-AV: E=McAfee;i="6200,9189,10012"; a="291186011"
+X-IronPort-AV: E=Sophos;i="5.83,265,1616482800"; 
+   d="scan'208";a="291186011"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2021 09:12:29 -0700
+IronPort-SDR: hYweaGxaI7yIu9RoJ5cDtL4ZzMjbpf6PDj6vl8pQKBonCgwUo3XoTke2a2/hBCPki0E+XgCvwG
+ fodlEZNQ1BEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,265,1616482800"; 
+   d="scan'208";a="483316279"
+Received: from fmsmsx605.amr.corp.intel.com ([10.18.126.85])
+  by orsmga001.jf.intel.com with ESMTP; 11 Jun 2021 09:12:28 -0700
+Received: from lcsmsx601.ger.corp.intel.com (10.109.210.10) by
+ fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.4; Fri, 11 Jun 2021 09:12:27 -0700
+Received: from hasmsx602.ger.corp.intel.com (10.184.107.142) by
+ LCSMSX601.ger.corp.intel.com (10.109.210.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.4; Fri, 11 Jun 2021 19:12:25 +0300
+Received: from hasmsx602.ger.corp.intel.com ([10.184.107.142]) by
+ HASMSX602.ger.corp.intel.com ([10.184.107.142]) with mapi id 15.01.2242.008;
+ Fri, 11 Jun 2021 19:12:25 +0300
+From:   "Winkler, Tomas" <tomas.winkler@intel.com>
+To:     "trix@redhat.com" <trix@redhat.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
+        "ryder.lee@mediatek.com" <ryder.lee@mediatek.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+        "alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
+        "apw@canonical.com" <apw@canonical.com>,
+        "joe@perches.com" <joe@perches.com>,
+        "dwaipayanray1@gmail.com" <dwaipayanray1@gmail.com>,
+        "lukas.bulwahn@gmail.com" <lukas.bulwahn@gmail.com>,
+        "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
+        "jiaxun.yang@flygoat.com" <jiaxun.yang@flygoat.com>,
+        "zhangqing@loongson.cn" <zhangqing@loongson.cn>,
+        "jbhayana@google.com" <jbhayana@google.com>,
+        "sean.wang@mediatek.com" <sean.wang@mediatek.com>,
+        "shayne.chen@mediatek.com" <shayne.chen@mediatek.com>,
+        "Soul.Huang@mediatek.com" <Soul.Huang@mediatek.com>,
+        "shorne@gmail.com" <shorne@gmail.com>,
+        "gsomlo@gmail.com" <gsomlo@gmail.com>,
+        "pczarnecki@internships.antmicro.com" 
+        <pczarnecki@internships.antmicro.com>,
+        "mholenko@antmicro.com" <mholenko@antmicro.com>,
+        "davidgow@google.com" <davidgow@google.com>
+CC:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: RE: [PATCH 2/7] mei: hdcp: SPDX tag should be the first line
+Thread-Topic: [PATCH 2/7] mei: hdcp: SPDX tag should be the first line
+Thread-Index: AQHXXkH6CZWhH34xEEKudrvKO6IQEasO/INA
+Date:   Fri, 11 Jun 2021 16:12:24 +0000
+Message-ID: <22a4dc49b49348438d71be0fb02e3ab1@intel.com>
+References: <20210610214438.3161140-1-trix@redhat.com>
+ <20210610214438.3161140-4-trix@redhat.com>
+In-Reply-To: <20210610214438.3161140-4-trix@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.5.1.3
+x-originating-ip: [10.184.70.1]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20210603120609.58932-1-chris.chiu@canonical.com>
- <20210603120609.58932-2-chris.chiu@canonical.com> <5bb08a2db092c590119ff706ac3654de14c984fc.camel@sipsolutions.net>
-In-Reply-To: <5bb08a2db092c590119ff706ac3654de14c984fc.camel@sipsolutions.net>
-From:   Chris Chiu <chris.chiu@canonical.com>
-Date:   Fri, 11 Jun 2021 22:47:18 +0800
-Message-ID: <CABTNMG0Q6Oh8T_sqW-b3ymdbepYmMRQALGozo6pXiKg=r-ndxA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rtl8xxxu: unset the hw capability HAS_RATE_CONTROL
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        code@reto-schneider.ch
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 11, 2021 at 4:18 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> Hi Chris,
->
-> > Since AMPDU_AGGREGATION is set so packets will be handed to the
-> > driver with a flag indicating A-MPDU aggregation and device should
-> > be responsible for setting up and starting the TX aggregation with
-> > the AMPDU_TX_START action. The TX aggregation is usually started by
-> > the rate control algorithm so the HAS_RATE_CONTROL has to be unset
-> > for the mac80211 to start BA session by ieee80211_start_tx_ba_session.
-> >
-> > The realtek chips tx rate will still be handled by the rate adaptive
-> > mechanism in the underlying firmware which is controlled by the
-> > rate mask H2C command in the driver. Unset HAS_RATE_CONTROL cause
-> > no change for the tx rate control and the TX BA session can be started
-> > by the mac80211 default rate control mechanism.
->
-> This seems ... strange, to say the least? You want to run the full
-> minstrel algorithm just to have it start aggregation sessions at the
-> beginning?
->
-> I really don't think this makes sense, and it's super confusing. It may
-> also result in things like reporting a TX rate to userspace/other
-> components that *minstrel* thinks is the best rate, rather than your
-> driver's implementation, etc.
->
-> I suggest you instead just call ieee80211_start_tx_ba_session() at some
-> appropriate time, maybe copying parts of the logic of
-> minstrel_aggr_check().
->
-> johannes
->
->
-Based on the description in
-https://github.com/torvalds/linux/blob/master/net/mac80211/agg-tx.c#L32
-to L36, if we set HAS_RATE_CONTROL, which means we don't want the
-software rate control (default minstrel), then we will have to deal
-with both the rate control and the TX aggregation in the driver, and
-the .ampdu_action is not really required. Since the rtl8xxxu driver
-doesn't handle the TX aggregation, and the minstrel is the default
-rate control (can't even be disabled), that's the reason why I want to
-unset the HAS_RATE_CONTROL to make use of the existing mac80211
-aggregation handling.
+> 
+> From: Tom Rix <trix@redhat.com>
+> 
+> checkpatch looks for the tag on the first line.
+> So delete empty first line
+> 
+> Signed-off-by: Tom Rix <trix@redhat.com>
+Acked-by: Tomas Winkler <tomas.winkler@intel.com>
+> ---
+>  drivers/misc/mei/hdcp/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/misc/mei/hdcp/Kconfig b/drivers/misc/mei/hdcp/Kconfig
+> index 95b2d6d37f102..54e1c95269096 100644
+> --- a/drivers/misc/mei/hdcp/Kconfig
+> +++ b/drivers/misc/mei/hdcp/Kconfig
+> @@ -1,4 +1,3 @@
+> -
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Copyright (c) 2019, Intel Corporation. All rights reserved.
+>  #
+> --
+> 2.26.3
 
-And the minstrel doesn't really take effect for rate selection in HT
-mode because most drivers don't provide HT/VHT rates in .bitrates of
-the ieee80211_supported_band data structure which is required for
-hw->wiphy->bands. The mac80211 API ieee80211_get_tx_rate() will
-return 0 when the IEEE80211_TX_RC_MCS is set in rate flags. The tx
-rate which is filled in the tx descriptor makes no difference because
-the underlying rate selection will be actually controlled by the
-controller which we can set rate mask via H2C command. Unless we force
-the fixed rate in the TX descriptor, we don't really have to fill the
-tx rate. Reporting TX rate of each packet will not depend on the rate
-from the minstrel, drivers have to handle it by itself. I'll also try
-to address that in my next PATCH series.
-
-Chris
