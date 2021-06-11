@@ -2,104 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 540693A3C3A
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 08:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 489063A3F94
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 11:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230329AbhFKGuQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Jun 2021 02:50:16 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:34906 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbhFKGuP (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Jun 2021 02:50:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1623394094;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yC7DYQZ6KnzuPIK3qEDW/n0fnsnwbGps1v7M2TXyDLc=;
-        b=swXHPndtlXdYhyBAr+hOfZAzG8OrLusjps7b/RFJn8T83q5Yl0tdc2mYWD58QFVVKfruqu
-        kkJxg9fXZds2ObFjlGyzhXRiGyatoKFqUTSY3BGRyPuWxt7SLGMVSNRFTXlrbZ3/ByWeD6
-        fCp2ENfsvRRb7tYQXLrQ7agSfmiUVs0=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     "b.a.t.m.a.n@lists.open-mesh.org" <b.a.t.m.a.n@lists.open-mesh.org>
-Cc:     Maurice Smulders <Maurice.Smulders@windtalker.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: MediaTek MT7612u and IBSS mode
-Date:   Fri, 11 Jun 2021 08:48:10 +0200
-Message-ID: <4182303.XkkeXVZP1n@ripper>
-In-Reply-To: <4E744A61-BBA0-404E-B435-23C26ACF031B@windtalker.com>
-References: <4E744A61-BBA0-404E-B435-23C26ACF031B@windtalker.com>
+        id S231485AbhFKJzn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Jun 2021 05:55:43 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:36494 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229480AbhFKJzm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 11 Jun 2021 05:55:42 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1623405225; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=666YK8gINgc1UHCiC58S85Bukn28o750jo/NOXjdXL4=; b=BtGjh/HA5eUBHCYIgxjU18AB4sqBJexx/Dp9qFlL+JYQVx4Dl58J+/X4tdeUuNHjJmNufusl
+ yHyeSbTPn3U5gCPVr5SpvIxgeYarbVzY6LleiC1ftp30zW+5Nl2Zi6QWVEm7jIXSyeMnb71w
+ s6KoJGK0VWx6QKRYkHTkebD7oRU=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 60c332a2ed59bf69ccbc3cfa (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 11 Jun 2021 09:53:38
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5A08AC4338A; Fri, 11 Jun 2021 09:53:38 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D407EC433F1;
+        Fri, 11 Jun 2021 09:53:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D407EC433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        stable <stable@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>, dave@bewaar.me,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH 5.13] mwifiex: bring down link before deleting interface
+References: <20210515024227.2159311-1-briannorris@chromium.org>
+        <CA+ASDXMDtWpZ-xrymmq51j4TjPT-NXs61-7q=sn090BoJu9qDg@mail.gmail.com>
+Date:   Fri, 11 Jun 2021 12:53:30 +0300
+In-Reply-To: <CA+ASDXMDtWpZ-xrymmq51j4TjPT-NXs61-7q=sn090BoJu9qDg@mail.gmail.com>
+        (Brian Norris's message of "Thu, 10 Jun 2021 17:18:31 -0700")
+Message-ID: <87eed8zq05.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3186444.dtHR1CuC4E"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart3186444.dtHR1CuC4E
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: "b.a.t.m.a.n@lists.open-mesh.org" <b.a.t.m.a.n@lists.open-mesh.org>
-Cc: Maurice Smulders <Maurice.Smulders@windtalker.com>, linux-wireless@vger.kernel.org
-Subject: Re: MediaTek MT7612u and IBSS mode
-Date: Fri, 11 Jun 2021 08:48:10 +0200
-Message-ID: <4182303.XkkeXVZP1n@ripper>
-In-Reply-To: <4E744A61-BBA0-404E-B435-23C26ACF031B@windtalker.com>
-References: <4E744A61-BBA0-404E-B435-23C26ACF031B@windtalker.com>
+Brian Norris <briannorris@chromium.org> writes:
 
-On Friday, 11 June 2021 03:55:29 CEST Maurice Smulders wrote:
-> Platform: Raspberry Pi 4B / CM4 with CentOS 8 stream 64 bit - 5.10.42 kernel
-> 
-> Trying to use this Mediatek USB device and I notice a - quite nasty - problem using IBSS mode. On startup of the IBSS network, there is a chance the Pi goes into a tizzy 	https://github.com/openwrt/mt76/issues/543 - when it's the first (and only) node.
-> I was able to dupe it consistently in my home - fairly static network - but not anymore in a lab environment. I cannot easily go back home - it's ~3000km from where I am at temporarily.
-> 
-> Does anyone have experience with these MediaTek devices and B.A.T.M.A.N. on lower performance nodes like a Raspberry Pi...
+> On Fri, May 14, 2021 at 7:45 PM Brian Norris <briannorris@chromium.org> wrote:
+>>
+>> We can deadlock when rmmod'ing the driver or going through firmware
+>> reset, because the cfg80211_unregister_wdev() has to bring down the link
+>> for us, ... which then grab the same wiphy lock.
+> ...
+>> Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+>> Cc: stable@vger.kernel.org
+>> Link:
+>> https://lore.kernel.org/linux-wireless/98392296-40ee-6300-369c-32e16cff3725@gmail.com/
+>> Link:
+>> https://lore.kernel.org/linux-wireless/ab4d00ce52f32bd8e45ad0448a44737e@bewaar.me/
+>> Reported-by: Maximilian Luz <luzmaximilian@gmail.com>
+>> Reported-by: dave@bewaar.me
+>> Cc: Johannes Berg <johannes@sipsolutions.net>
+>> Signed-off-by: Brian Norris <briannorris@chromium.org>
+>
+> Ping - is this going to get merged? It's a 5.12 regression, and we
+> have multiple people complaining about it (and they tested the fix
+> too!).
 
-It doesn't seem to me like this is batman-adv or batmand related. So I would 
-most likely better to ask on linux-wireless@vger.kernel.org too
+Thanks for the ping, this got piled up under all the -next patches and I
+missed it. I'll look at it now.
 
-And is IBSS mode really required or would meshpoint with mesh_fwding set 0 
-also work?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-    iw phy0 interface add mesh0 type mp
-    ip link set up dev mesh0
-    iw dev mesh0 mesh join 11s-bat freq 2412 HT20 mcast-rate 18 beacon-interval 1000
-
-    iw dev mesh0 set mesh_param mesh_fwding 0
-    # please make sure that it is actually 0 with: iw dev mesh0 get mesh_param mesh_fwding
-
-    ip link set master bat0 dev mesh0
-
-> I have ascertained that NONE of the USB Realtek dongles work, as the kernel driver is missing IBSS support at this time...
-> 
-> I'm against an urgent deadline, and trying to understand what I can do to make this work
-
-Kind regards,
-	Sven
---nextPart3186444.dtHR1CuC4E
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmDDByoACgkQXYcKB8Em
-e0ZEvRAArrEZQKItYRDBcWQkhHGIYMrm9SDMPNU942EUUeR20vTjFQAfxFo2mrNL
-0umJZ04+tK6DyifCWdobfsXq9pjKOXierYpET/4GVFEaD9T6RjzgoycKVom4Lh8/
-8cg+k3TdU6I0MtQAeMKhRDWZNrzA/Y6iqi45uGUGJmBPiB9Q7gQSgO6X1YeSTpuR
-s81X8AGL/8aWcpvMvmYGa2Ond9wDqA3pQLGtilQgKvOfMtG8X8jNu0eRqumLqeU8
-Ga3SHO7DfLVcU0USmJRx2YVPrPgDM6qjcOM7NcWVP19tIWv1VayEu/9ZufjI1ezr
-IjQ0JZSuPB0rCjec6YWRXLktNVPWz5GAElDDg72U0c7dlnR7fhymR1J66BV5LPl+
-Kwg487eXgrASPgXchxSEoPdxXifget0pyXpx/UcNXEpOfcsUpSXeTZxJ4T3ZJ+t6
-kXyr3/3cJgnuQ8qa8ELwKIiTYbHNIEubI4Oxmd9ACxbxqoH0G+htEgexuOMqfO6b
-G21P2J8S4sJumja8A3xjkZD4rFzQHHgBQ3YQqa2DLatEdWfnycIysLS7LouiBsEk
-iO45SQupbEaRU861l8+Zfh2yVilgjbBSnr1AeR3nCCA0alj++nFeDhbTw97HgiUP
-zL4Y+jkwLTHK2PFyjJI9BBPL9Dp9JAkiKTYe+PKqdRt+iMeAQU4=
-=PMMc
------END PGP SIGNATURE-----
-
---nextPart3186444.dtHR1CuC4E--
-
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
