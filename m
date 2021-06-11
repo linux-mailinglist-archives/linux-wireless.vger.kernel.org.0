@@ -2,80 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E14A3A47F4
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 19:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F853A4861
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jun 2021 20:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230378AbhFKRh6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 11 Jun 2021 13:37:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38086 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229480AbhFKRh4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 11 Jun 2021 13:37:56 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 292F960E0C;
-        Fri, 11 Jun 2021 17:35:47 +0000 (UTC)
-Date:   Fri, 11 Jun 2021 18:37:43 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     trix@redhat.com
-Cc:     robh+dt@kernel.org, tsbogend@alpha.franken.de, lars@metafoo.de,
-        tomas.winkler@intel.com, arnd@arndb.de, gregkh@linuxfoundation.org,
-        nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, apw@canonical.com, joe@perches.com,
-        dwaipayanray1@gmail.com, lukas.bulwahn@gmail.com,
-        chenhuacai@kernel.org, jiaxun.yang@flygoat.com,
-        zhangqing@loongson.cn, jbhayana@google.com, sean.wang@mediatek.com,
-        shayne.chen@mediatek.com, Soul.Huang@mediatek.com,
-        shorne@gmail.com, gsomlo@gmail.com,
-        pczarnecki@internships.antmicro.com, mholenko@antmicro.com,
-        davidgow@google.com, devicetree@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 5/7] iio/scmi: fix spelling of SPDX tag
-Message-ID: <20210611183743.6f65100f@jic23-huawei>
-In-Reply-To: <20210610214438.3161140-7-trix@redhat.com>
-References: <20210610214438.3161140-1-trix@redhat.com>
-        <20210610214438.3161140-7-trix@redhat.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S231618AbhFKSGh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 11 Jun 2021 14:06:37 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:40325 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231680AbhFKSG2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 11 Jun 2021 14:06:28 -0400
+X-UUID: 5a8e4727aee34bb89d13b1ce25b79835-20210612
+X-UUID: 5a8e4727aee34bb89d13b1ce25b79835-20210612
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1793685457; Sat, 12 Jun 2021 02:04:25 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 12 Jun 2021 02:04:23 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 12 Jun 2021 02:04:23 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: fix IEEE80211_HE_PHY_CAP7_MAX_NC for station mode
+Date:   Sat, 12 Jun 2021 02:04:20 +0800
+Message-ID: <28077c152c43d40f78252efb39d77ed5fca18028.1623434432.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 10 Jun 2021 14:44:36 -0700
-trix@redhat.com wrote:
+The value of station mode is always 0.
 
-> From: Tom Rix <trix@redhat.com>
-> 
-> checkpatch looks for SPDX-License-Identifier.
-> Remove the extra spaces.
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
-Applied this one to the togreg branch of iio.git (initially pushed out as testing
-to let 0-day have first poke at it).  Thanks,
+Fixed: 00b2e16e0063 ("mt76: mt7915: add TxBF capabilities")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Jonathan
-
-> ---
->  drivers/iio/common/scmi_sensors/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/common/scmi_sensors/Makefile b/drivers/iio/common/scmi_sensors/Makefile
-> index f13140a2575a4..645e0fce1a739 100644
-> --- a/drivers/iio/common/scmi_sensors/Makefile
-> +++ b/drivers/iio/common/scmi_sensors/Makefile
-> @@ -1,4 +1,4 @@
-> -# SPDX - License - Identifier : GPL - 2.0 - only
-> +# SPDX-License-Identifier: GPL-2.0-only
->  #
->  # Makefile for the IIO over SCMI
->  #
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 72b65799cc1a..4e02b4e45042 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -574,6 +574,9 @@ mt7915_set_stream_he_txbf_caps(struct ieee80211_sta_he_cap *he_cap,
+ 	if (nss < 2)
+ 		return;
+ 
++	/* the maximum cap is 4 x 3, (Nr, Nc) = (3, 2) */
++	elem->phy_cap_info[7] |= min_t(int, nss - 1, 2) << 3;
++
+ 	if (vif != NL80211_IFTYPE_AP)
+ 		return;
+ 
+@@ -587,9 +590,6 @@ mt7915_set_stream_he_txbf_caps(struct ieee80211_sta_he_cap *he_cap,
+ 	c = IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB |
+ 	    IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMING_PARTIAL_BW_FB;
+ 	elem->phy_cap_info[6] |= c;
+-
+-	/* the maximum cap is 4 x 3, (Nr, Nc) = (3, 2) */
+-	elem->phy_cap_info[7] |= min_t(int, nss - 1, 2) << 3;
+ }
+ 
+ static void
+-- 
+2.18.0
 
