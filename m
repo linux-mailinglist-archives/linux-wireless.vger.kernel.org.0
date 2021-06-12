@@ -2,136 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97D0B3A4E62
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 13:33:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 520A83A4EEA
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 14:43:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231270AbhFLLfS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Jun 2021 07:35:18 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:47636 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231273AbhFLLfS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Jun 2021 07:35:18 -0400
-Received: from [192.130.48.226] (helo=kveik.superpark.guest)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1ls1sl-001V8i-29; Sat, 12 Jun 2021 14:32:56 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sat, 12 Jun 2021 14:32:45 +0300
-Message-Id: <iwlwifi.20210612142637.60dd4c60ab49.I44fe02af389d3ab089363bf9bde0d99a4c1ff383@changeid>
-X-Mailer: git-send-email 2.32.0.rc2
-In-Reply-To: <20210612113245.691117-1-luca@coelho.fi>
-References: <20210612113245.691117-1-luca@coelho.fi>
+        id S231193AbhFLMpJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Jun 2021 08:45:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40136 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230191AbhFLMpI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Jun 2021 08:45:08 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9835A61287;
+        Sat, 12 Jun 2021 12:43:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623501789;
+        bh=lt4C8nGFs3CpkI5JtS/RSQOW5Rg8bNc7FP1rB2r0/YI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fVEOtzhbJ3UtxpUWOdXoFfSL1Trg7+PbRDWHTYG/sjME6Rh2vpuiPWs3RHSsRMIGb
+         Qe9FR1z5hiVzLU/4zvh8gn8vM3ZprN6BbPbi0TR9l7rrmHb6qYJXpXq4NX+KEryxlK
+         wiO6t6SASY/qtAFEvdch0jFrJqL9mE/tC4VkQhgCzeoBRhfvoCpmM9YGOquf0PFWAN
+         Ka38YGQRuSmAxPsWCDNH+t70OEK4USTrV7wm/JrIox6CAa1aJdJMmtdg8D4Cfi4BCb
+         Z9+LROxh9vfbBI7KvEMk3JJ5oBK/1SBtKmUL/o2pzlvIpThkQF8Y/uAhQTm9LX7H33
+         8p7XXzluI2olA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7921: improve code readability for mt7921_update_txs
+Date:   Sat, 12 Jun 2021 14:43:03 +0200
+Message-Id: <a2e7a0fb19f3842de99014b6d7284cdcfd46730b.1623501708.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 12/12] iwlwifi: yoyo: support region TLV version 2
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Introduce mt7921_update_txs routine in order to improve code readability
+for tx timestamp parsing/configuration.
 
-Region TLV version 2 now includes more data, but it is not
-relevant for the driver.
-In order to support this new version, just mask the new part out.
-
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h |  3 ++-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c         |  9 ++++++++-
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c    | 13 ++++++++++++-
- 3 files changed, 22 insertions(+), 3 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 47 +++++++------------
+ 1 file changed, 18 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h b/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
-index 996d5cc5bd9a..5a2d9a1f7e73 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2018-2020 Intel Corporation
-+ * Copyright (C) 2018-2021 Intel Corporation
-  */
- #ifndef __iwl_fw_dbg_tlv_h__
- #define __iwl_fw_dbg_tlv_h__
-@@ -11,6 +11,7 @@
- #define IWL_FW_INI_MAX_NAME			32
- #define IWL_FW_INI_MAX_CFG_NAME			64
- #define IWL_FW_INI_DOMAIN_ALWAYS_ON		0
-+#define IWL_FW_INI_REGION_V2_MASK		0x0000FFFF
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index fb4de73df701..4a120b77e6c4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -13,26 +13,6 @@
+ #define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
+ 						 IEEE80211_RADIOTAP_HE_##f)
  
- /**
-  * struct iwl_fw_ini_hcmd
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index cc4e18ca9566..5a534d70f253 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1933,6 +1933,13 @@ static u32 iwl_dump_ini_mem(struct iwl_fw_runtime *fwrt, struct list_head *list,
- 	u32 num_of_ranges, i, size;
- 	void *range;
+-unsigned long
+-mt7921_next_txs_set(struct mt7921_dev *dev, struct mt76_wcid *wcid,
+-		    u32 timeout)
+-{
+-	struct mt7921_sta *msta;
+-
+-	msta = container_of(wcid, struct mt7921_sta, wcid);
+-	msta->next_txs_ts = jiffies + msecs_to_jiffies(timeout);
+-	return msta->next_txs_ts;
+-}
+-
+-bool
+-mt7921_next_txs_timeout(struct mt7921_dev *dev, struct mt76_wcid *wcid)
+-{
+-	struct mt7921_sta *msta;
+-
+-	msta = container_of(wcid, struct mt7921_sta, wcid);
+-	return time_is_before_jiffies(msta->next_txs_ts);
+-}
+-
+ static struct mt76_wcid *mt7921_rx_get_wcid(struct mt7921_dev *dev,
+ 					    u16 idx, bool unicast)
+ {
+@@ -739,6 +719,23 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
+ 	txwi[7] |= cpu_to_le32(val);
+ }
  
-+	/*
-+	 * The higher part of the ID in version 2 is irrelevant for
-+	 * us, so mask it out.
-+	 */
-+	if (le32_to_cpu(reg->hdr.version) == 2)
-+		id &= IWL_FW_INI_REGION_V2_MASK;
++static void mt7921_update_txs(struct mt76_wcid *wcid, __le32 *txwi)
++{
++	struct mt7921_sta *msta = container_of(wcid, struct mt7921_sta, wcid);
++	u32 pid, frame_type = FIELD_GET(MT_TXD2_FRAME_TYPE, txwi[2]);
 +
- 	if (!ops->get_num_of_ranges || !ops->get_size || !ops->fill_mem_hdr ||
- 	    !ops->fill_range)
- 		return 0;
-@@ -1957,7 +1964,7 @@ static u32 iwl_dump_ini_mem(struct iwl_fw_runtime *fwrt, struct list_head *list,
- 	num_of_ranges = ops->get_num_of_ranges(fwrt, reg_data);
- 
- 	header = (void *)tlv->data;
--	header->region_id = reg->id;
-+	header->region_id = cpu_to_le32(id);
- 	header->num_of_ranges = cpu_to_le32(num_of_ranges);
- 	header->name_len = cpu_to_le32(IWL_FW_INI_MAX_NAME);
- 	memcpy(header->name, reg->name, IWL_FW_INI_MAX_NAME);
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 4cd8c39cc3e9..0ddd255a8cc1 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -57,7 +57,7 @@ dbg_ver_table[IWL_DBG_TLV_TYPE_NUM] = {
- 	[IWL_DBG_TLV_TYPE_DEBUG_INFO]	= {.min_ver = 1, .max_ver = 1,},
- 	[IWL_DBG_TLV_TYPE_BUF_ALLOC]	= {.min_ver = 1, .max_ver = 1,},
- 	[IWL_DBG_TLV_TYPE_HCMD]		= {.min_ver = 1, .max_ver = 1,},
--	[IWL_DBG_TLV_TYPE_REGION]	= {.min_ver = 1, .max_ver = 1,},
-+	[IWL_DBG_TLV_TYPE_REGION]	= {.min_ver = 1, .max_ver = 2,},
- 	[IWL_DBG_TLV_TYPE_TRIGGER]	= {.min_ver = 1, .max_ver = 1,},
- };
- 
-@@ -178,9 +178,20 @@ static int iwl_dbg_tlv_alloc_region(struct iwl_trans *trans,
- 	u32 type = le32_to_cpu(reg->type);
- 	u32 tlv_len = sizeof(*tlv) + le32_to_cpu(tlv->length);
- 
-+	/*
-+	 * The higher part of the ID in version 2 is irrelevant for
-+	 * us, so mask it out.
-+	 */
-+	if (le32_to_cpu(reg->hdr.version) == 2)
-+		id &= IWL_FW_INI_REGION_V2_MASK;
++	if (!(frame_type & (IEEE80211_FTYPE_DATA >> 2)))
++		return;
 +
- 	if (le32_to_cpu(tlv->length) < sizeof(*reg))
- 		return -EINVAL;
- 
-+	/* for safe use of a string from FW, limit it to IWL_FW_INI_MAX_NAME */
-+	IWL_DEBUG_FW(trans, "WRT: parsing region: %.*s\n",
-+		     IWL_FW_INI_MAX_NAME, reg->name);
++	if (time_is_after_eq_jiffies(msta->next_txs_ts))
++		return;
 +
- 	if (id >= IWL_FW_INI_MAX_REGION_ID) {
- 		IWL_ERR(trans, "WRT: Invalid region id %u\n", id);
- 		return -EINVAL;
++	msta->next_txs_ts = jiffies + msecs_to_jiffies(250);
++	pid = mt76_get_next_pkt_id(wcid);
++	txwi[5] |= cpu_to_le32(MT_TXD5_TX_STATUS_MCU |
++			       FIELD_PREP(MT_TXD5_PID, pid));
++}
++
+ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
+ 			   struct sk_buff *skb, struct mt76_wcid *wcid,
+ 			   struct ieee80211_key_conf *key, bool beacon)
+@@ -816,15 +813,7 @@ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
+ 		txwi[3] |= cpu_to_le32(MT_TXD3_BA_DISABLE);
+ 	}
+ 
+-	if ((FIELD_GET(MT_TXD2_FRAME_TYPE, txwi[2]) &
+-		(IEEE80211_FTYPE_DATA >> 2)) &&
+-		mt7921_next_txs_timeout(dev, wcid)) {
+-		u8 pid = mt76_get_next_pkt_id(wcid);
+-
+-		mt7921_next_txs_set(dev, wcid, 250);
+-		val = MT_TXD5_TX_STATUS_MCU | FIELD_PREP(MT_TXD5_PID, pid);
+-		txwi[5] |= cpu_to_le32(val);
+-	}
++	mt7921_update_txs(wcid, txwi);
+ }
+ 
+ static void
 -- 
-2.32.0.rc2
+2.31.1
 
