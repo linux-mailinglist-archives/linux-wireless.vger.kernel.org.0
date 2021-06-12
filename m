@@ -2,91 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E9A53A4F08
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 15:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C5A3A4F3F
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 16:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231294AbhFLNDG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Jun 2021 09:03:06 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:41832 "EHLO
-        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231228AbhFLNDF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Jun 2021 09:03:05 -0400
-Date:   Sat, 12 Jun 2021 13:00:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1623502861;
-        bh=pgwY2LSzrTH3x6cddXIr2d/PpxKxnWBnWbNdx+MeaIo=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=R3EfeI/qLvB3XtNMyPPJGZ2lfAlWHHeOIMHnuhmolSn1ZjiPG9nmQbfF0qZ6QC0OO
-         CjaEG9Z2rFmvy096uZGobcgSpGKvJw7Igs1lZFJ4U6qek2wPmXw9njdu4yMnPYH1uk
-         /ztfBzM9NLGgXrDy1VQXgMcJuXOeUXbjz3ihwbDI=
-To:     Kalle Valo <kvalo@codeaurora.org>
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+        id S230470AbhFLOhx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Jun 2021 10:37:53 -0400
+Received: from mout.gmx.net ([212.227.15.18]:53379 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230191AbhFLOhw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Jun 2021 10:37:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1623508529;
+        bh=4GRBqMXu77f5LzS1AYmY/Pv3PyBwvmo8iWWSKO+eOSM=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=MOUpEMFz2zwru/v/vvDy+q8zQBqjKnDBqkptW8QS+wxzQ/4z4NfOnO77JaNYUHowL
+         ZJ8JmgUjJLtNAAUF0bHUqvK3lvjRpAh18C7y7Yu+A5CxXTPlTeuA7X53oKA6TKZWaX
+         MyN/WQIGTLnBllo9wSB3BDcAECZ3hdySw3bx96fU=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.localdomain ([83.52.228.41]) by mail.gmx.net
+ (mrgmx004 [212.227.17.184]) with ESMTPSA (Nemesis) id
+ 1MG9gE-1m6QjE3X3M-00Gct6; Sat, 12 Jun 2021 16:35:29 +0200
+From:   John Wood <john.wood@gmx.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Cc:     John Wood <john.wood@gmx.com>, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: Re: [PATCH] ath10k: demote chan info without scan request warning
-Message-ID: <f39034ea-f4da-1564-e22f-398e4a1ae077@connolly.tech>
-In-Reply-To: <20210612103640.2FD93C433F1@smtp.codeaurora.org>
-References: <20210522171609.299611-1-caleb@connolly.tech> <20210612103640.2FD93C433F1@smtp.codeaurora.org>
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] mt76/mt7915: Fix unsigned compared against zero
+Date:   Sat, 12 Jun 2021 16:35:05 +0200
+Message-Id: <20210612143505.7637-1-john.wood@gmx.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+X-Provags-ID: V03:K1:RLOmvHMXqv6YzC6MbWRgT6VnA5VAhfOSQfIeL9vcZRQOX2acGVX
+ iFXwCXoE4TnDXw5rfZ0VQBHl2rJ2xS7R4Rm6FhL3+iTmFFmT1Okpy9Uu5nwBDJ2vGH8lxoK
+ Q01TmeCapD6wUdgI51jJ9t176VmNcezyrJMHUELa/8EKxo5VcJPOf4vvbu7y3dkc60p4QAK
+ xzAYFKNLbqYHIs81Pc8Dg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:XQhJptkxzu8=:GGdsO5+3quPg2/g0XpWZlq
+ y0lAUcznNQGLmuH16OSKkJIM4Y5/1EoH2WK6+oqLGe6LgZu+8x9SKeHr0djXqltXoF6J5XxOY
+ ALRycaueYFMpUZzbNG+RmXleNj8jO4mlKOjmioYPHZYFP/gxNYUGEDMFCxURxp7zBiktfG2iT
+ ZvFlCmZoILCizNSKhbF/yp9oyHxgVpe4kkd9S3KOMl5ashU5DCAXWqnfXUkRDcwieCuI72R7R
+ AhTugHHYhE3uIzwp2LUwAKfrabcXNMb4mJ3NuY3iAqDHJ3NK4S0EN6IJc4ezxK3LloMal67eY
+ /ibmICAdETG+6pvTI2v+KjiMra/M1gFQEK8mnILXE8cVLSLb/We3HxAD+l6kPWSo6c3vqcJi6
+ iJmTmfncgmAvpJuEKYMkA05p1ImF2/+BBpRBRf80H2SwAmFehKOjBuitB5K03cs+DGqRVza69
+ IJrCBKj4DfiXd2UlCBf77jYdL7SsVWW4cMYvX4Hn4//c5++RowKsZ8y9btg8vGyETa+Ll9jfl
+ uwUi/1PWRmoQl+/SgU5sEGugHB0ap7Ttmb+9yTvYZPBfL8N3+bjNM4Rpv4gmDK+L3RdjPLAIi
+ dqtdPCXRpERtFzyJD1SQKMBaqbPzpnPS/Ag8ebeqwdQWf3Z8LeYbPaIk0Q+Zhxb4bMZWRIF+l
+ OuRngIlIRrfsA1AMvDkqhdxdP4rbvonSfwhkFzvx6exXl4pgko6I0x75PY7SIizeunCxMIaBy
+ GsAH0TSCWn8i3HKLBwNvp52UvZZVeUJBqREQ0ut3F+C4+dDea1o62bKlhtDxHRQsELyXKxYQG
+ 3pwq/ojHjW1fjCybKyu4HiQBMSsg6Dqdk5DX6bLK/b/xpD6kPW/mDwH+tI1uZMVwh9iFBUBhe
+ q2CKAxApNZfzEzIRpIdAEN0FTESLfRiuj97IGsFaPF/hTbavQtdEHryZejTlNmHCkHGA3lw5+
+ p/5HmwTAS74AydtlI6QbhXE02pnCKspy77tuHpb+Pg166zkwTeu7jYYK8qvXsy8Z3BcmsvDqU
+ TM10UDILOhMK9Rfu+vDGNHorrpxBZIqzyToOEZ9msLnhqvYdu4GCST0Rh9tSFx6RZhfG5ap4I
+ 9vA83+u7aHTVXJEwAKBoW9mOAN3l/eIkbc9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+The mt7915_dpd_freq_idx() function can return a negative value but this
+value is assigned to an unsigned variable named idx. Then, the code
+tests if this variable is less than zero. This can never happen with an
+unsigned type.
 
-On 12/06/2021 11:36 am, Kalle Valo wrote:
-> Caleb Connolly <caleb@connolly.tech> wrote:
->
->> Some devices/firmwares cause this to be printed every 5-15 seconds,
->> though it has no impact on functionality. Demote this to a debug
->> message.
->>
->> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
->> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Is this meant to be an Ack?
->
-> On what hardware and firmware version do you see this?
-I see this on SDM845 and MSM8998 platforms, specifically the OnePlus 6
-devices, PocoPhone F1 and OnePlus 5.
-On the OnePlus 6 (SDM845) we are stuck with the following signed vendor fw:
+So, change the idx type to a signed one.
 
-[    9.339873] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
-chip_family 0x4001 board_id 0xff soc_id 0x40030001
-[    9.339897] ath10k_snoc 18800000.wifi: qmi fw_version 0x20060029
-fw_build_timestamp 2019-07-12 02:14 fw_build_id
-QC_IMAGE_VERSION_STRING=3DWLAN.HL.2.0.c8-00041-QCAHLSWMTPLZ-1
+Addresses-Coverity-ID: 1484753 ("Unsigned compared against 0")
+Fixes: 495184ac91bb8 ("mt76: mt7915: add support for applying pre-calibrat=
+ion data")
+Signed-off-by: John Wood <john.wood@gmx.com>
+=2D--
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The OnePlus 5 (MSM8998) is using firmware:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net=
+/wireless/mediatek/mt76/mt7915/mcu.c
+index b3f14ff67c5a..764f25a828fa 100644
+=2D-- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3440,8 +3440,9 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
+ {
+ 	struct mt7915_dev *dev =3D phy->dev;
+ 	struct cfg80211_chan_def *chandef =3D &phy->mt76->chandef;
+-	u16 total =3D 2, idx, center_freq =3D chandef->center_freq1;
++	u16 total =3D 2, center_freq =3D chandef->center_freq1;
+ 	u8 *cal =3D dev->cal, *eep =3D dev->mt76.eeprom.data;
++	int idx;
 
-[ 6096.956799] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
-chip_family 0x4001 board_id 0xff soc_id 0x40010002
-[ 6096.956824] ath10k_snoc 18800000.wifi: qmi fw_version 0x1007007e
-fw_build_timestamp 2020-04-14 22:45 fw_build_id
-QC_IMAGE_VERSION_STRING=3DWLAN.HL.1.0.c6-00126-QCAHLSWMTPLZ-1.211883.1.2786=
-48.
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/patch/20210522171609.=
-299611-1-caleb@connolly.tech/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
->
-
---
-Kind Regards,
-Caleb
+ 	if (!(eep[MT_EE_DO_PRE_CAL] & MT_EE_WIFI_CAL_DPD))
+ 		return 0;
+=2D-
+2.25.1
 
