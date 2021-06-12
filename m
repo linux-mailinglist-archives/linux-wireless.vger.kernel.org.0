@@ -2,101 +2,196 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77C5A3A4F3F
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 16:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C7393A4F60
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 16:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230470AbhFLOhx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Jun 2021 10:37:53 -0400
-Received: from mout.gmx.net ([212.227.15.18]:53379 "EHLO mout.gmx.net"
+        id S230225AbhFLOvh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Jun 2021 10:51:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59634 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230191AbhFLOhw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Jun 2021 10:37:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1623508529;
-        bh=4GRBqMXu77f5LzS1AYmY/Pv3PyBwvmo8iWWSKO+eOSM=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=MOUpEMFz2zwru/v/vvDy+q8zQBqjKnDBqkptW8QS+wxzQ/4z4NfOnO77JaNYUHowL
-         ZJ8JmgUjJLtNAAUF0bHUqvK3lvjRpAh18C7y7Yu+A5CxXTPlTeuA7X53oKA6TKZWaX
-         MyN/WQIGTLnBllo9wSB3BDcAECZ3hdySw3bx96fU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([83.52.228.41]) by mail.gmx.net
- (mrgmx004 [212.227.17.184]) with ESMTPSA (Nemesis) id
- 1MG9gE-1m6QjE3X3M-00Gct6; Sat, 12 Jun 2021 16:35:29 +0200
-From:   John Wood <john.wood@gmx.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Cc:     John Wood <john.wood@gmx.com>, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mt76/mt7915: Fix unsigned compared against zero
-Date:   Sat, 12 Jun 2021 16:35:05 +0200
-Message-Id: <20210612143505.7637-1-john.wood@gmx.com>
-X-Mailer: git-send-email 2.25.1
+        id S230191AbhFLOvg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Jun 2021 10:51:36 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2CFBA611CD;
+        Sat, 12 Jun 2021 14:49:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623509377;
+        bh=yW2hdt8mHwT1tQi7UQO720udASyfMrVdkWFJ8QSfP1M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dOCR7Z0l9JlYbK5WSdl+4l6kV3Kd0HDfAACFyDP/eOQ7DNVxKebWZq/1zBkj/3e0m
+         lHtUF1Cw7kXGXwwNPdu6Gw0Aq61u5K9Mtmup1Dt9KZxPcuaqSsd93jXC3EVu/3MD2Q
+         CvT5iXYsEIJWutNlR20jmjv3KWt78AsyazoLSr2NPvpPUNm1A+yi8G2yv0WV8CmEKP
+         RYpUbI4mxILsdnPMQsBfdZ7U30YOCgY68/KSAL7LYK4CHFJFbhNGJSK0Qx0Fu/4vyI
+         +OhR4WulWHaQ6W6RdMhWYxakos8yaIntgMK5x/g2HX3xbbU2KEiixF8WWUL7tC5glO
+         0P9sLMB0VMmbA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sean.wang@mediatek.com, Deren.Wu@mediatek.com
+Subject: [PATCH v2] mt76: mt7921: introduce dedicated control for deep_sleep
+Date:   Sat, 12 Jun 2021 16:49:30 +0200
+Message-Id: <fd2b9c9b80149668de039c38403f3022e263955e.1623506799.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:RLOmvHMXqv6YzC6MbWRgT6VnA5VAhfOSQfIeL9vcZRQOX2acGVX
- iFXwCXoE4TnDXw5rfZ0VQBHl2rJ2xS7R4Rm6FhL3+iTmFFmT1Okpy9Uu5nwBDJ2vGH8lxoK
- Q01TmeCapD6wUdgI51jJ9t176VmNcezyrJMHUELa/8EKxo5VcJPOf4vvbu7y3dkc60p4QAK
- xzAYFKNLbqYHIs81Pc8Dg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:XQhJptkxzu8=:GGdsO5+3quPg2/g0XpWZlq
- y0lAUcznNQGLmuH16OSKkJIM4Y5/1EoH2WK6+oqLGe6LgZu+8x9SKeHr0djXqltXoF6J5XxOY
- ALRycaueYFMpUZzbNG+RmXleNj8jO4mlKOjmioYPHZYFP/gxNYUGEDMFCxURxp7zBiktfG2iT
- ZvFlCmZoILCizNSKhbF/yp9oyHxgVpe4kkd9S3KOMl5ashU5DCAXWqnfXUkRDcwieCuI72R7R
- AhTugHHYhE3uIzwp2LUwAKfrabcXNMb4mJ3NuY3iAqDHJ3NK4S0EN6IJc4ezxK3LloMal67eY
- /ibmICAdETG+6pvTI2v+KjiMra/M1gFQEK8mnILXE8cVLSLb/We3HxAD+l6kPWSo6c3vqcJi6
- iJmTmfncgmAvpJuEKYMkA05p1ImF2/+BBpRBRf80H2SwAmFehKOjBuitB5K03cs+DGqRVza69
- IJrCBKj4DfiXd2UlCBf77jYdL7SsVWW4cMYvX4Hn4//c5++RowKsZ8y9btg8vGyETa+Ll9jfl
- uwUi/1PWRmoQl+/SgU5sEGugHB0ap7Ttmb+9yTvYZPBfL8N3+bjNM4Rpv4gmDK+L3RdjPLAIi
- dqtdPCXRpERtFzyJD1SQKMBaqbPzpnPS/Ag8ebeqwdQWf3Z8LeYbPaIk0Q+Zhxb4bMZWRIF+l
- OuRngIlIRrfsA1AMvDkqhdxdP4rbvonSfwhkFzvx6exXl4pgko6I0x75PY7SIizeunCxMIaBy
- GsAH0TSCWn8i3HKLBwNvp52UvZZVeUJBqREQ0ut3F+C4+dDea1o62bKlhtDxHRQsELyXKxYQG
- 3pwq/ojHjW1fjCybKyu4HiQBMSsg6Dqdk5DX6bLK/b/xpD6kPW/mDwH+tI1uZMVwh9iFBUBhe
- q2CKAxApNZfzEzIRpIdAEN0FTESLfRiuj97IGsFaPF/hTbavQtdEHryZejTlNmHCkHGA3lw5+
- p/5HmwTAS74AydtlI6QbhXE02pnCKspy77tuHpb+Pg166zkwTeu7jYYK8qvXsy8Z3BcmsvDqU
- TM10UDILOhMK9Rfu+vDGNHorrpxBZIqzyToOEZ9msLnhqvYdu4GCST0Rh9tSFx6RZhfG5ap4I
- 9vA83+u7aHTVXJEwAKBoW9mOAN3l/eIkbc9
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The mt7915_dpd_freq_idx() function can return a negative value but this
-value is assigned to an unsigned variable named idx. Then, the code
-tests if this variable is less than zero. This can never happen with an
-unsigned type.
+Introduce ds_enable switch to fully control fw deep_sleep capability
 
-So, change the idx type to a signed one.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v1:
+- fix compilation error
+---
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |  1 +
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   | 22 ++++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  3 ++-
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   | 14 +++++++-----
+ 5 files changed, 32 insertions(+), 10 deletions(-)
 
-Addresses-Coverity-ID: 1484753 ("Unsigned compared against 0")
-Fixes: 495184ac91bb8 ("mt76: mt7915: add support for applying pre-calibrat=
-ion data")
-Signed-off-by: John Wood <john.wood@gmx.com>
-=2D--
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net=
-/wireless/mediatek/mt76/mt7915/mcu.c
-index b3f14ff67c5a..764f25a828fa 100644
-=2D-- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3440,8 +3440,9 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index 9b3f8d22f17e..93a37ed0c483 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -46,6 +46,7 @@ enum {
+ 
+ struct mt76_connac_pm {
+ 	bool enable;
++	bool ds_enable;
+ 	bool suspended;
+ 
+ 	spinlock_t txq_lock;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index c8cba1821cd7..77468bdae460 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -251,7 +251,7 @@ mt7921_pm_set(void *data, u64 val)
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+ 					    mt7921_pm_interface_iter, mphy->priv);
+ 
+-	mt76_connac_mcu_set_deep_sleep(&dev->mt76, !!pm->enable);
++	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
+ 
+ 	mt7921_mutex_release(dev);
+ 
+@@ -274,15 +274,31 @@ static int
+ mt7921_deep_sleep_set(void *data, u64 val)
  {
- 	struct mt7915_dev *dev =3D phy->dev;
- 	struct cfg80211_chan_def *chandef =3D &phy->mt76->chandef;
--	u16 total =3D 2, idx, center_freq =3D chandef->center_freq1;
-+	u16 total =3D 2, center_freq =3D chandef->center_freq1;
- 	u8 *cal =3D dev->cal, *eep =3D dev->mt76.eeprom.data;
-+	int idx;
-
- 	if (!(eep[MT_EE_DO_PRE_CAL] & MT_EE_WIFI_CAL_DPD))
- 		return 0;
-=2D-
-2.25.1
+ 	struct mt7921_dev *dev = data;
++	struct mt76_connac_pm *pm = &dev->pm;
++	bool enable = !!val;
+ 
+ 	mt7921_mutex_acquire(dev);
+-	mt76_connac_mcu_set_deep_sleep(&dev->mt76, !!val);
++	if (pm->ds_enable != enable) {
++		mt76_connac_mcu_set_deep_sleep(&dev->mt76, enable);
++		pm->ds_enable = enable;
++	}
+ 	mt7921_mutex_release(dev);
+ 
+ 	return 0;
+ }
+ 
+-DEFINE_DEBUGFS_ATTRIBUTE(fops_ds, NULL, mt7921_deep_sleep_set, "%lld\n");
++static int
++mt7921_deep_sleep_get(void *data, u64 *val)
++{
++	struct mt7921_dev *dev = data;
++
++	*val = dev->pm.ds_enable;
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_ds, mt7921_deep_sleep_get,
++			 mt7921_deep_sleep_set, "%lld\n");
+ 
+ static int
+ mt7921_pm_stats(struct seq_file *s, void *data)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 2caa5096a419..4f2866ded922 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -201,6 +201,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
+ 	dev->pm.stats.last_wake_event = jiffies;
+ 	dev->pm.stats.last_doze_event = jiffies;
+ 	dev->pm.enable = true;
++	dev->pm.ds_enable = true;
+ 
+ 	ret = mt7921_init_hardware(dev);
+ 	if (ret)
+@@ -235,7 +236,7 @@ int mt7921_register_device(struct mt7921_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	return mt76_connac_mcu_set_deep_sleep(&dev->mt76, dev->pm.enable);
++	return mt76_connac_mcu_set_deep_sleep(&dev->mt76, dev->pm.ds_enable);
+ }
+ 
+ void mt7921_unregister_device(struct mt7921_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 873eecd48833..d20532dd4547 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -818,7 +818,7 @@ static int mt7921_sta_state(struct ieee80211_hw *hw,
+ {
+ 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
+ 
+-	if (dev->pm.enable) {
++	if (dev->pm.ds_enable) {
+ 		mt7921_mutex_acquire(dev);
+ 		mt76_connac_sta_state_dp(&dev->mt76, old_state, new_state);
+ 		mt7921_mutex_release(dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 13263f50dc00..22773bb5d1e9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -207,8 +207,10 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 			goto restore_suspend;
+ 	}
+ 
+-	if (!pm->enable)
+-		mt76_connac_mcu_set_deep_sleep(&dev->mt76, true);
++	/* always enable deep sleep during suspend to reduce
++	 * power consumption
++	 */
++	mt76_connac_mcu_set_deep_sleep(&dev->mt76, true);
+ 
+ 	napi_disable(&mdev->tx_napi);
+ 	mt76_worker_disable(&mdev->tx_worker);
+@@ -251,7 +253,7 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	}
+ 	napi_enable(&mdev->tx_napi);
+ 
+-	if (!pm->enable)
++	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+ 	if (hif_suspend)
+@@ -267,9 +269,10 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
+ {
+ 	struct mt76_dev *mdev = pci_get_drvdata(pdev);
+ 	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
++	struct mt76_connac_pm *pm = &dev->pm;
+ 	int i, err;
+ 
+-	dev->pm.suspended = false;
++	pm->suspended = false;
+ 	err = pci_set_power_state(pdev, PCI_D0);
+ 	if (err)
+ 		return err;
+@@ -300,7 +303,8 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
+ 	napi_enable(&mdev->tx_napi);
+ 	napi_schedule(&mdev->tx_napi);
+ 
+-	if (!dev->pm.enable)
++	/* restore previous ds setting */
++	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+ 	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state))
+-- 
+2.31.1
 
