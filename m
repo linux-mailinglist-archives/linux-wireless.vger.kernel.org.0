@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4442B3A4E59
+	by mail.lfdr.de (Postfix) with ESMTP id A44E33A4E5A
 	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 13:32:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231195AbhFLLes (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Jun 2021 07:34:48 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:47540 "EHLO
+        id S231210AbhFLLeu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Jun 2021 07:34:50 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:47546 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231187AbhFLLes (ORCPT
+        with ESMTP id S229942AbhFLLet (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Jun 2021 07:34:48 -0400
+        Sat, 12 Jun 2021 07:34:49 -0400
 Received: from [192.130.48.226] (helo=kveik.superpark.guest)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1ls1sb-001V8i-RW; Sat, 12 Jun 2021 14:32:47 +0300
+        id 1ls1sc-001V8i-Ot; Sat, 12 Jun 2021 14:32:48 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sat, 12 Jun 2021 14:32:34 +0300
-Message-Id: <iwlwifi.20210612142637.a705f7cedff8.I580f1021cabcc37e88f5ec5e9a6bbf00aae514b6@changeid>
+Date:   Sat, 12 Jun 2021 14:32:35 +0300
+Message-Id: <iwlwifi.20210612142637.093f6660e69b.Ifd2328ac2130269f729c9c1bceec44ba01d79e88@changeid>
 X-Mailer: git-send-email 2.32.0.rc2
 In-Reply-To: <20210612113245.691117-1-luca@coelho.fi>
 References: <20210612113245.691117-1-luca@coelho.fi>
@@ -32,185 +32,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
         autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 01/12] iwlwifi: mvm: support BIOS enable/disable for 11ax in Russia
+Subject: [PATCH 02/12] iwlwifi: mvm: pass the clock type to iwl_mvm_get_sync_time()
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Read the new BIOS DSM and Pass to FW if to disable\enable
-11ax for Russia according to the BIOS key. This is
-needed to enable OEMs to control enable/disable 11ax in Russia.
-Also add support for future "enable 11ax in country X" features.
+Allow the caller to pass the clock type to iwl_mvm_get_sync_time() so
+callers with different needs can decide whether to use boottime or
+realtime.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 50 +++++++++++++++-----
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h |  9 ++++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c  | 26 ++++++----
- 3 files changed, 63 insertions(+), 22 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c  |  4 ++--
+ .../net/wireless/intel/iwlwifi/mvm/ftm-initiator.c    |  5 +++--
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h          |  5 ++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c        | 11 ++++++++---
+ 4 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index e31bba836c6f..8cf7bc3aa09a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -163,6 +163,27 @@ int iwl_acpi_get_dsm_u8(struct device *dev, int rev, int func,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+index 38d0bfb649cc..7d9faeffd154 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2020 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -460,7 +460,7 @@ static ssize_t iwl_dbgfs_os_device_timediff_read(struct file *file,
+ 	int pos = 0;
+ 
+ 	mutex_lock(&mvm->mutex);
+-	iwl_mvm_get_sync_time(mvm, &curr_gp2, &curr_os);
++	iwl_mvm_get_sync_time(mvm, CLOCK_BOOTTIME, &curr_gp2, &curr_os, NULL);
+ 	mutex_unlock(&mvm->mutex);
+ 
+ 	do_div(curr_os, NSEC_PER_USEC);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+index a456b8a0ae58..a24e6c0490e9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2020 Intel Corporation
++ * Copyright (C) 2018-2021 Intel Corporation
+  */
+ #include <linux/etherdevice.h>
+ #include <linux/math64.h>
+@@ -879,7 +879,8 @@ static u64 iwl_mvm_ftm_get_host_time(struct iwl_mvm *mvm, __le32 fw_gp2_ts)
+ 	u32 curr_gp2, diff;
+ 	u64 now_from_boot_ns;
+ 
+-	iwl_mvm_get_sync_time(mvm, &curr_gp2, &now_from_boot_ns);
++	iwl_mvm_get_sync_time(mvm, CLOCK_BOOTTIME, &curr_gp2,
++			      &now_from_boot_ns, NULL);
+ 
+ 	if (curr_gp2 >= gp2_ts)
+ 		diff = curr_gp2 - gp2_ts;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 3df150d9b5f2..3d738243fcee 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -16,6 +16,8 @@
+ #include <linux/thermal.h>
+ #endif
+ 
++#include <linux/ktime.h>
++
+ #include "iwl-op-mode.h"
+ #include "iwl-trans.h"
+ #include "fw/notif-wait.h"
+@@ -1470,7 +1472,8 @@ u8 iwl_mvm_mac80211_ac_to_ucode_ac(enum ieee80211_ac_numbers ac);
+ void iwl_mvm_dump_nic_error_log(struct iwl_mvm *mvm);
+ u8 first_antenna(u8 mask);
+ u8 iwl_mvm_next_antenna(struct iwl_mvm *mvm, u8 valid, u8 last_idx);
+-void iwl_mvm_get_sync_time(struct iwl_mvm *mvm, u32 *gp2, u64 *boottime);
++void iwl_mvm_get_sync_time(struct iwl_mvm *mvm, int clock_type, u32 *gp2,
++			   u64 *boottime, ktime_t *realtime);
+ u32 iwl_mvm_get_systime(struct iwl_mvm *mvm);
+ 
+ /* Tx / Host Commands */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index c566be99a4c7..99105272139d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2020 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+  */
+@@ -1398,7 +1398,8 @@ u32 iwl_mvm_get_systime(struct iwl_mvm *mvm)
+ 	return iwl_read_prph(mvm->trans, reg_addr);
  }
- IWL_EXPORT_SYMBOL(iwl_acpi_get_dsm_u8);
  
-+/*
-+ * Evaluate a DSM with no arguments and a u32 return value,
-+ */
-+int iwl_acpi_get_dsm_u32(struct device *dev, int rev, int func,
-+			 const guid_t *guid, u32 *value)
-+{
-+	int ret;
-+	u64 val;
-+
-+	ret = iwl_acpi_get_dsm_integer(dev, rev, func,
-+				       guid, &val, sizeof(u32));
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	/* cast val (u64) to be u32 */
-+	*value = (u32)val;
-+	return 0;
-+}
-+IWL_EXPORT_SYMBOL(iwl_acpi_get_dsm_u32);
-+
- union acpi_object *iwl_acpi_get_wifi_pkg(struct device *dev,
- 					 union acpi_object *data,
- 					 int data_size, int *tbl_rev)
-@@ -734,30 +755,35 @@ static u32 iwl_acpi_eval_dsm_func(struct device *dev, enum iwl_dsm_funcs_rev_0 e
- 
- __le32 iwl_acpi_get_lari_config_bitmap(struct iwl_fw_runtime *fwrt)
+-void iwl_mvm_get_sync_time(struct iwl_mvm *mvm, u32 *gp2, u64 *boottime)
++void iwl_mvm_get_sync_time(struct iwl_mvm *mvm, int clock_type,
++			   u32 *gp2, u64 *boottime, ktime_t *realtime)
  {
--	u32 ret;
-+	int ret;
-+	u8 value;
- 	__le32 config_bitmap = 0;
+ 	bool ps_disabled;
  
- 	/*
- 	 ** Evaluate func 'DSM_FUNC_ENABLE_INDONESIA_5G2'
- 	 */
--	ret = iwl_acpi_eval_dsm_func(fwrt->dev, DSM_FUNC_ENABLE_INDONESIA_5G2);
-+	ret = iwl_acpi_get_dsm_u8(fwrt->dev, 0,
-+				  DSM_FUNC_ENABLE_INDONESIA_5G2,
-+				  &iwl_guid, &value);
- 
--	if (ret == DSM_VALUE_INDONESIA_ENABLE)
-+	if (!ret && value == DSM_VALUE_INDONESIA_ENABLE)
- 		config_bitmap |=
- 			cpu_to_le32(LARI_CONFIG_ENABLE_5G2_IN_INDONESIA_MSK);
- 
- 	/*
- 	 ** Evaluate func 'DSM_FUNC_DISABLE_SRD'
- 	 */
--	ret = iwl_acpi_eval_dsm_func(fwrt->dev, DSM_FUNC_DISABLE_SRD);
--
--	if (ret == DSM_VALUE_SRD_PASSIVE)
--		config_bitmap |=
--			cpu_to_le32(LARI_CONFIG_CHANGE_ETSI_TO_PASSIVE_MSK);
--
--	else if (ret == DSM_VALUE_SRD_DISABLE)
--		config_bitmap |=
--			cpu_to_le32(LARI_CONFIG_CHANGE_ETSI_TO_DISABLED_MSK);
-+	ret = iwl_acpi_get_dsm_u8(fwrt->dev, 0,
-+				  DSM_FUNC_DISABLE_SRD,
-+				  &iwl_guid, &value);
-+	if (!ret) {
-+		if (value == DSM_VALUE_SRD_PASSIVE)
-+			config_bitmap |=
-+				cpu_to_le32(LARI_CONFIG_CHANGE_ETSI_TO_PASSIVE_MSK);
-+		else if (value == DSM_VALUE_SRD_DISABLE)
-+			config_bitmap |=
-+				cpu_to_le32(LARI_CONFIG_CHANGE_ETSI_TO_DISABLED_MSK);
-+	}
- 
- 	return config_bitmap;
- }
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-index d16e6ec08c9f..9fe64476083d 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-@@ -116,6 +116,9 @@ void *iwl_acpi_get_object(struct device *dev, acpi_string method);
- int iwl_acpi_get_dsm_u8(struct device *dev, int rev, int func,
- 			const guid_t *guid, u8 *value);
- 
-+int iwl_acpi_get_dsm_u32(struct device *dev, int rev, int func,
-+			 const guid_t *guid, u32 *value);
-+
- union acpi_object *iwl_acpi_get_wifi_pkg(struct device *dev,
- 					 union acpi_object *data,
- 					 int data_size, int *tbl_rev);
-@@ -182,6 +185,12 @@ static inline int iwl_acpi_get_dsm_u8(struct device *dev, int rev, int func,
- 	return -ENOENT;
- }
- 
-+static inline int iwl_acpi_get_dsm_u32(struct device *dev, int rev, int func,
-+				       const guid_t *guid, u32 *value)
-+{
-+	return -ENOENT;
-+}
-+
- static inline union acpi_object *iwl_acpi_get_wifi_pkg(struct device *dev,
- 						       union acpi_object *data,
- 						       int data_size,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index d46172c2e7b8..8af24e446634 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1141,14 +1141,19 @@ static u8 iwl_mvm_eval_dsm_rfi(struct iwl_mvm *mvm)
- 
- static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- {
--	int cmd_ret;
-+	int ret;
-+	u32 value;
- 	struct iwl_lari_config_change_cmd_v3 cmd = {};
- 
- 	cmd.config_bitmap = iwl_acpi_get_lari_config_bitmap(&mvm->fwrt);
- 
-+	ret = iwl_acpi_get_dsm_u32((&mvm->fwrt)->dev, 0, DSM_FUNC_11AX_ENABLEMENT,
-+				   &iwl_guid, &value);
-+	if (!ret)
-+		cmd.oem_11ax_allow_bitmap = cpu_to_le32(value);
- 	/* apply more config masks here */
- 
--	if (cmd.config_bitmap) {
-+	if (cmd.config_bitmap || cmd.oem_11ax_allow_bitmap) {
- 		size_t cmd_size;
- 		u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw,
- 						   REGULATORY_AND_NVM_GROUP,
-@@ -1161,16 +1166,17 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- 			cmd_size = sizeof(struct iwl_lari_config_change_cmd_v1);
- 
- 		IWL_DEBUG_RADIO(mvm,
--				"sending LARI_CONFIG_CHANGE, config_bitmap=0x%x\n",
--				le32_to_cpu(cmd.config_bitmap));
--		cmd_ret = iwl_mvm_send_cmd_pdu(mvm,
--					       WIDE_ID(REGULATORY_AND_NVM_GROUP,
--						       LARI_CONFIG_CHANGE),
--					       0, cmd_size, &cmd);
--		if (cmd_ret < 0)
-+				"sending LARI_CONFIG_CHANGE, config_bitmap=0x%x, oem_11ax_allow_bitmap=0x%x\n",
-+				le32_to_cpu(cmd.config_bitmap),
-+				le32_to_cpu(cmd.oem_11ax_allow_bitmap));
-+		ret = iwl_mvm_send_cmd_pdu(mvm,
-+					   WIDE_ID(REGULATORY_AND_NVM_GROUP,
-+						   LARI_CONFIG_CHANGE),
-+					   0, cmd_size, &cmd);
-+		if (ret < 0)
- 			IWL_DEBUG_RADIO(mvm,
- 					"Failed to send LARI_CONFIG_CHANGE (%d)\n",
--					cmd_ret);
-+					ret);
+@@ -1412,7 +1413,11 @@ void iwl_mvm_get_sync_time(struct iwl_mvm *mvm, u32 *gp2, u64 *boottime)
  	}
- }
- #else /* CONFIG_ACPI */
+ 
+ 	*gp2 = iwl_mvm_get_systime(mvm);
+-	*boottime = ktime_get_boottime_ns();
++
++	if (clock_type == CLOCK_BOOTTIME && boottime)
++		*boottime = ktime_get_boottime_ns();
++	else if (clock_type == CLOCK_REALTIME && realtime)
++		*realtime = ktime_get_real();
+ 
+ 	if (!ps_disabled) {
+ 		mvm->ps_disabled = ps_disabled;
 -- 
 2.32.0.rc2
 
