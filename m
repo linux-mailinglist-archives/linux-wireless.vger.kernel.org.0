@@ -2,86 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48F0D3A4E45
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 13:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCD713A4E58
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 13:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231157AbhFLLHF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Jun 2021 07:07:05 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:20736 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229584AbhFLLHD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Jun 2021 07:07:03 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1623495904; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=kjHxY9YDTUvdbQnJ/lulcSlCbEzIXndXJy3S2twb1II=; b=OXP6J/SzchQ3zk0ZvhukKx18JUUAHd8SzAgl2OIL/kwQcbquwO2iQGaYegS2t47tYOPvVdCB
- atZ64JrXdIpX3Tf3trrX1pXZgchzvvvr63ZeA1PjW9edQHuvHaCCBvjQjC6xuq0iHJdMM+1G
- CfEBo4RSMOnmz8dWGNr+3wiPTP0=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60c494bdabfd22a3dc554f0f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 12 Jun 2021 11:04:29
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A5D74C43460; Sat, 12 Jun 2021 11:04:28 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 46F8CC433D3;
-        Sat, 12 Jun 2021 11:04:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 46F8CC433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        shawn.guo@linaro.org, benl@squareup.com, loic.poulain@linaro.org,
-        bjorn.andersson@linaro.org
-Subject: Re: [PATCH] wcn36xx: Move hal_buf allocation to devm_kmalloc in probe
-References: <20210605173347.2266003-1-bryan.odonoghue@linaro.org>
-Date:   Sat, 12 Jun 2021 14:04:21 +0300
-In-Reply-To: <20210605173347.2266003-1-bryan.odonoghue@linaro.org> (Bryan
-        O'Donoghue's message of "Sat, 5 Jun 2021 18:33:47 +0100")
-Message-ID: <875yyjz6mi.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S231192AbhFLLes (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Jun 2021 07:34:48 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:47534 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229942AbhFLLer (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Jun 2021 07:34:47 -0400
+Received: from [192.130.48.226] (helo=kveik.superpark.guest)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1ls1sa-001V8i-Tl; Sat, 12 Jun 2021 14:32:46 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Sat, 12 Jun 2021 14:32:33 +0300
+Message-Id: <20210612113245.691117-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.32.0.rc2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.14 2021-06-12
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> Right now wcn->hal_buf is allocated in wcn36xx_start(). This is a problem
-> since we should have setup all of the buffers we required by the time
-> ieee80211_register_hw() is called.
->
-> struct ieee80211_ops callbacks may run prior to mac_start() and therefore
-> wcn->hal_buf must be initialized.
->
-> This is easily remediated by moving the allocation to probe() taking the
-> opportunity to tidy up freeing memory by using devm_kmalloc().
->
-> Fixes: 8e84c2582169 ('wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680
-> hardware')
+Hi,
 
-Fixes tag is wrong, it should be like this and all in one line:
+Here's the first set of patches intended for v5.14.  It's the usual
+development, new features, cleanups and bugfixes.
 
-Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
+The changes are:
 
-I fixed it in the pending branch, no need to resend.
+* Some robustness improvements in the PCI code;
+* Remove some duplicate and unused declarations;
+* Improve PNVM load robustness by increasing the timeout a bit;
+* Support for a new HW;
+* Suport for BIOS control of 11ax enablement in Russia;
+* Some other small fixes, clean-ups and improvements.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Johannes Berg (5):
+  iwlwifi: mvm: don't change band on bound PHY contexts
+  iwlwifi: pcie: handle pcim_iomap_table() failures better
+  iwlwifi: pcie: print interrupt number, not index
+  iwlwifi: pcie: remove CSR_HW_RF_ID_TYPE_CHIP_ID
+  iwlwifi: remove duplicate iwl_ax201_cfg_qu_hr declaration
+
+Luca Coelho (4):
+  iwlwifi: mvm: pass the clock type to iwl_mvm_get_sync_time()
+  iwlwifi: mvm: fix indentation in some scan functions
+  iwlwifi: remove unused REMOTE_WAKE_CONFIG_CMD definitions
+  iwlwifi: increase PNVM load timeout
+
+Matti Gottlieb (1):
+  iwlwifi: pcie: Add support for AX231 radio module with Ma devices
+
+Miri Korenblit (1):
+  iwlwifi: mvm: support BIOS enable/disable for 11ax in Russia
+
+Mukesh Sisodiya (1):
+  iwlwifi: yoyo: support region TLV version 2
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    | 12 +++++
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 50 +++++++++++++-----
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  9 ++++
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  5 --
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    | 51 +------------------
+ .../wireless/intel/iwlwifi/fw/api/dbg-tlv.h   |  3 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  9 +++-
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.h  |  4 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |  5 +-
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  | 13 ++++-
+ .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  |  4 +-
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |  5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 26 ++++++----
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 24 ++++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 14 ++---
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    | 11 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 17 ++++---
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 14 +++--
+ 21 files changed, 168 insertions(+), 118 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.32.0.rc2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
