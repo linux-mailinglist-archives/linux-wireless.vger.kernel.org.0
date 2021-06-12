@@ -2,140 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22C953A4EEC
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 14:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9A53A4F08
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jun 2021 15:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231288AbhFLMu5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Jun 2021 08:50:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40442 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230191AbhFLMu5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Jun 2021 08:50:57 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 147F760FDA;
-        Sat, 12 Jun 2021 12:48:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623502138;
-        bh=YXq5N1qkcP0iXRvP+jEQieuw/3G28CkTFd+TYK1GYLI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Ewrd+yxZJlgh7KxDNtwdSKMiaHLeg7dkLiicQDDcuB6XVDn8vq2IOkE/pDzBQpR3T
-         r5BGVayb0fZs4EocQQDL18rZ+Baog3xaKGA+NfEAAev7aqUKJSuKWqEgLWYWztziqK
-         Jh0+W7f7e/vpqeQUfkxmJauWpuilrF/zOsZPbeQmpZtr3zhrfF3CBWlbvJ/JaIed28
-         iIh5MJyF6/WA9IpDY2w5f2FS++tKt9p3bf+jbbMWapYn2X+DWQq18aiYRax6dtK/6A
-         JY0Som/5JK0A5Q+eVgiJupTyDkAi0TXsmutQ4sA9C213Qt6ciHCCfJ75sshq8OzP53
-         oM9QWPuTw0EnA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sean.wang@mediatek.com, Deren.Wu@mediatek.com
-Subject: [PATCH] mt76: mt7921: limit txpower according to userlevel power
-Date:   Sat, 12 Jun 2021 14:48:48 +0200
-Message-Id: <bdcb48d390e0b0768a614b8b7451849224c5a6ea.1623501997.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S231294AbhFLNDG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Jun 2021 09:03:06 -0400
+Received: from mail-0201.mail-europe.com ([51.77.79.158]:41832 "EHLO
+        mail-02.mail-europe.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231228AbhFLNDF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 12 Jun 2021 09:03:05 -0400
+Date:   Sat, 12 Jun 2021 13:00:57 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1623502861;
+        bh=pgwY2LSzrTH3x6cddXIr2d/PpxKxnWBnWbNdx+MeaIo=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=R3EfeI/qLvB3XtNMyPPJGZ2lfAlWHHeOIMHnuhmolSn1ZjiPG9nmQbfF0qZ6QC0OO
+         CjaEG9Z2rFmvy096uZGobcgSpGKvJw7Igs1lZFJ4U6qek2wPmXw9njdu4yMnPYH1uk
+         /ztfBzM9NLGgXrDy1VQXgMcJuXOeUXbjz3ihwbDI=
+To:     Kalle Valo <kvalo@codeaurora.org>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH] ath10k: demote chan info without scan request warning
+Message-ID: <f39034ea-f4da-1564-e22f-398e4a1ae077@connolly.tech>
+In-Reply-To: <20210612103640.2FD93C433F1@smtp.codeaurora.org>
+References: <20210522171609.299611-1-caleb@connolly.tech> <20210612103640.2FD93C433F1@smtp.codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Limit tx power for single-sku according to userlevel power.
+Hi Kalle,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 28 +++++++++++++------
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  3 ++
- 2 files changed, 23 insertions(+), 8 deletions(-)
+On 12/06/2021 11:36 am, Kalle Valo wrote:
+> Caleb Connolly <caleb@connolly.tech> wrote:
+>
+>> Some devices/firmwares cause this to be printed every 5-15 seconds,
+>> though it has no impact on functionality. Demote this to a debug
+>> message.
+>>
+>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Is this meant to be an Ack?
+>
+> On what hardware and firmware version do you see this?
+I see this on SDM845 and MSM8998 platforms, specifically the OnePlus 6
+devices, PocoPhone F1 and OnePlus 5.
+On the OnePlus 6 (SDM845) we are stuck with the following signed vendor fw:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 8fe09e7363ca..614a0e96e711 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1762,12 +1762,15 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 		142, 144, 149, 151, 153, 155, 157,
- 		159, 161, 165
- 	};
-+	int i, n_chan, batch_size, idx = 0, tx_power, last_ch;
- 	struct mt76_connac_sku_tlv sku_tlbv;
--	int i, n_chan, batch_size, idx = 0;
- 	struct mt76_power_limits limits;
- 	const u8 *ch_list;
- 
- 	sku_len = is_mt7921(dev) ? sizeof(sku_tlbv) : sizeof(sku_tlbv) - 92;
-+	tx_power = 2 * phy->hw->conf.power_level;
-+	if (!tx_power)
-+		tx_power = 127;
- 
- 	if (band == NL80211_BAND_2GHZ) {
- 		n_chan = ARRAY_SIZE(chan_list_2ghz);
-@@ -1778,39 +1781,48 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 	}
- 	batch_size = DIV_ROUND_UP(n_chan, batch_len);
- 
-+	if (!phy->cap.has_5ghz)
-+		last_ch = chan_list_2ghz[n_chan - 1];
-+	else
-+		last_ch = chan_list_5ghz[n_chan - 1];
-+
- 	for (i = 0; i < batch_size; i++) {
--		bool last_msg = i == batch_size - 1;
--		int num_ch = last_msg ? n_chan % batch_len : batch_len;
- 		struct mt76_connac_tx_power_limit_tlv tx_power_tlv = {
- 			.band = band == NL80211_BAND_2GHZ ? 1 : 2,
--			.n_chan = num_ch,
--			.last_msg = last_msg,
- 		};
-+		int j, err, msg_len, num_ch;
- 		struct sk_buff *skb;
--		int j, err, msg_len;
- 
-+		num_ch = i == batch_size - 1 ? n_chan % batch_len : batch_len;
- 		msg_len = sizeof(tx_power_tlv) + num_ch * sizeof(sku_tlbv);
- 		skb = mt76_mcu_msg_alloc(dev, NULL, msg_len);
- 		if (!skb)
- 			return -ENOMEM;
- 
-+		skb_reserve(skb, sizeof(tx_power_tlv));
-+
- 		BUILD_BUG_ON(sizeof(dev->alpha2) > sizeof(tx_power_tlv.alpha2));
- 		memcpy(tx_power_tlv.alpha2, dev->alpha2, sizeof(dev->alpha2));
-+		tx_power_tlv.n_chan = num_ch;
- 
--		skb_put_data(skb, &tx_power_tlv, sizeof(tx_power_tlv));
- 		for (j = 0; j < num_ch; j++, idx++) {
- 			struct ieee80211_channel chan = {
- 				.hw_value = ch_list[idx],
- 				.band = band,
- 			};
- 
--			mt76_get_rate_power_limits(phy, &chan, &limits, 127);
-+			mt76_get_rate_power_limits(phy, &chan, &limits,
-+						   tx_power);
- 
-+			tx_power_tlv.last_msg = ch_list[idx] == last_ch;
- 			sku_tlbv.channel = ch_list[idx];
-+
- 			mt76_connac_mcu_build_sku(dev, sku_tlbv.pwr_limit,
- 						  &limits, band);
- 			skb_put_data(skb, &sku_tlbv, sku_len);
- 		}
-+		__skb_push(skb, sizeof(tx_power_tlv));
-+		memcpy(skb->data, &tx_power_tlv, sizeof(tx_power_tlv));
- 
- 		err = mt76_mcu_skb_send_msg(dev, skb,
- 					    MCU_CMD_SET_RATE_TX_POWER, false);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index f062088780c2..873eecd48833 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -433,6 +433,9 @@ static int mt7921_config(struct ieee80211_hw *hw, u32 changed)
- 
- 	mt7921_mutex_acquire(dev);
- 
-+	if (changed & IEEE80211_CONF_CHANGE_POWER)
-+		mt76_connac_mcu_set_rate_txpower(phy->mt76);
-+
- 	if (changed & IEEE80211_CONF_CHANGE_MONITOR) {
- 		bool enabled = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
- 
--- 
-2.31.1
+[    9.339873] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
+chip_family 0x4001 board_id 0xff soc_id 0x40030001
+[    9.339897] ath10k_snoc 18800000.wifi: qmi fw_version 0x20060029
+fw_build_timestamp 2019-07-12 02:14 fw_build_id
+QC_IMAGE_VERSION_STRING=3DWLAN.HL.2.0.c8-00041-QCAHLSWMTPLZ-1
+
+The OnePlus 5 (MSM8998) is using firmware:
+
+[ 6096.956799] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
+chip_family 0x4001 board_id 0xff soc_id 0x40010002
+[ 6096.956824] ath10k_snoc 18800000.wifi: qmi fw_version 0x1007007e
+fw_build_timestamp 2020-04-14 22:45 fw_build_id
+QC_IMAGE_VERSION_STRING=3DWLAN.HL.1.0.c6-00126-QCAHLSWMTPLZ-1.211883.1.2786=
+48.
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/patch/20210522171609.=
+299611-1-caleb@connolly.tech/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+>
+
+--
+Kind Regards,
+Caleb
 
