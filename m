@@ -2,87 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 302853A5A27
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jun 2021 21:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5966B3A5AA2
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jun 2021 23:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232012AbhFMTVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Jun 2021 15:21:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60890 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231912AbhFMTVh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Jun 2021 15:21:37 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB32AC061574
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Jun 2021 12:19:35 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lsVds-006LMe-6O; Sun, 13 Jun 2021 21:19:32 +0200
-Message-ID: <d04aa1e0550572448f2443c763ddc0260fabcd3c.camel@sipsolutions.net>
-Subject: Re: ipw2200 driver no longer sets encrypted WEP in ipw2200 device?
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Peter.T.Breuer@gmail.com, linux-wireless@vger.kernel.org
-Date:   Sun, 13 Jun 2021 21:19:30 +0200
-In-Reply-To: <20210613103347.0c2148bd@ptb> (sfid-20210613_113416_435859_DECC4D0A)
-References: <20210610131139.4fce5404@ptb> <20210613103347.0c2148bd@ptb>
-         (sfid-20210613_113416_435859_DECC4D0A)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S232127AbhFMVcJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Jun 2021 17:32:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56400 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232087AbhFMVcJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 13 Jun 2021 17:32:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id B7FE761357;
+        Sun, 13 Jun 2021 21:30:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623619807;
+        bh=EPnmic1qiae6Uj6aIPU4YXMIMUGygUDIQszUiKijFwA=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=GrOzcHc/XFdYsOFQdlaAiQbk2xYskMw/LYdYxOxWxw8EGKQ63gTtgG8K2zUKBiuob
+         ZZqnwceg2sYZ01UyNPHwJp+BgZ4zw+Ix14/ov9i5pPvzVknHbdRGe85QTttfogvsX0
+         HQeIiZDo//TtTDopGtYBDdisFv42O8nV0dqL9GBigdIEaGgPshFZcFIdktSOCn4cDI
+         z/tFq1CSSpereSr43mZK4LFSZl9LuSSZLOwgT3k+n+Ot2UrSV8cCVRs32+9W1l+RU+
+         lg4EoH0GJ+v8/4RSMcupRAg4dz1cXVx28u0HBgtkp7vHEIdP79Im3mXNCl+G6qa7nE
+         l9isl0Me/hKjg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id AA872609AE;
+        Sun, 13 Jun 2021 21:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Subject: Re: [PATCH V5 00/16] net: iosm: PCIe Driver for Intel M.2 Modem
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162361980669.14320.17522019509048799009.git-patchwork-notify@kernel.org>
+Date:   Sun, 13 Jun 2021 21:30:06 +0000
+References: <20210613125023.18945-1-m.chetan.kumar@intel.com>
+In-Reply-To: <20210613125023.18945-1-m.chetan.kumar@intel.com>
+To:     M Chetan Kumar <m.chetan.kumar@intel.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        johannes@sipsolutions.net, krishna.c.sudi@intel.com,
+        linuxwwan@intel.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 2021-06-13 at 10:33 +0100, Peter Breuer wrote:
-> This list is so offically dead! Still, I have a clue for you:
+Hello:
 
-You sound frustrated. FYI, in case you haven't noticed, the list isn't
-even near dead. I'll have a clue down below as to why your question
-didn't get any answers.
+This series was applied to netdev/net-next.git (refs/heads/master):
 
-
-> On Thu, 10 Jun 2021 13:11:39 +0100
-> Peter Breuer <Peter.T.Breuer@gmail.com> wrote:
+On Sun, 13 Jun 2021 18:20:07 +0530 you wrote:
+> The IOSM (IPC over Shared Memory) driver is a PCIe host driver implemented
+> for linux or chrome platform for data exchange over PCIe interface between
+> Host platform & Intel M.2 Modem. The driver exposes interface conforming to
+> the MBIM protocol. Any front end application ( eg: Modem Manager) could
+> easily manage the MBIM interface to enable data communication towards WWAN.
 > 
-> > Hello - has somebody disabled encrypted WEP in ipw2200 firmwares, or
-> > done something global that would have an equivalent effect, perhaps
+> Intel M.2 modem uses 2 BAR regions. The first region is dedicated to Doorbell
+> register for IRQs and the second region is used as scratchpad area for book
+> keeping modem execution stage details along with host system shared memory
+> region context details. The upper edge of the driver exposes the control and
+> data channels for user space application interaction. At lower edge these data
+> and control channels are associated to pipes. The pipes are lowest level
+> interfaces used over PCIe as a logical channel for message exchange. A single
+> channel maps to UL and DL pipe and are initialized on device open.
 > 
-> Same issue with WPA1 or 2. Plaintext is OK except the signal keeps
-> dropping, and the same is true even from my modern mobile phone.
-> 
-> The clue is this note from TP-Link:
-> 
->   https://www.tp-link.com/en/support/faq/2303/
+> [...]
 
-Which is talking about the 7265 as the oldest product of the bunch, and
-~9260 as the newest.
+Here is the summary with links:
+  - [V5,01/16] net: iosm: entry point
+    https://git.kernel.org/netdev/net-next/c/7e98d785ae61
+  - [V5,02/16] net: iosm: irq handling
+    https://git.kernel.org/netdev/net-next/c/7f41ce085de0
+  - [V5,03/16] net: iosm: mmio scratchpad
+    https://git.kernel.org/netdev/net-next/c/dc0514f5d828
+  - [V5,04/16] net: iosm: shared memory IPC interface
+    https://git.kernel.org/netdev/net-next/c/3670970dd8c6
+  - [V5,05/16] net: iosm: shared memory I/O operations
+    https://git.kernel.org/netdev/net-next/c/edf6423c0403
+  - [V5,06/16] net: iosm: channel configuration
+    https://git.kernel.org/netdev/net-next/c/30ebda7a313d
+  - [V5,07/16] net: iosm: wwan port control device
+    https://git.kernel.org/netdev/net-next/c/10685b6e9868
+  - [V5,08/16] net: iosm: bottom half
+    https://git.kernel.org/netdev/net-next/c/3b575260cb86
+  - [V5,09/16] net: iosm: multiplex IP sessions
+    https://git.kernel.org/netdev/net-next/c/51c45fa95435
+  - [V5,10/16] net: iosm: encode or decode datagram
+    https://git.kernel.org/netdev/net-next/c/9413491e20e1
+  - [V5,11/16] net: iosm: power management
+    https://git.kernel.org/netdev/net-next/c/be8c936e540f
+  - [V5,12/16] net: iosm: shared memory protocol
+    https://git.kernel.org/netdev/net-next/c/faed4c6f6f48
+  - [V5,13/16] net: iosm: protocol operations
+    https://git.kernel.org/netdev/net-next/c/64516f633bfd
+  - [V5,14/16] net: iosm: uevent support
+    https://git.kernel.org/netdev/net-next/c/110e6e02eb19
+  - [V5,15/16] net: iosm: net driver
+    https://git.kernel.org/netdev/net-next/c/2a54f2c77934
+  - [V5,16/16] net: iosm: infrastructure
+    https://git.kernel.org/netdev/net-next/c/f7af616c632e
 
-Those had a launch date of Q3'14 and Q4'17 respectively. You might call
-them old, but evidently they were fixed. I can't even speculate what the
-issue might have been though, but if it wasn't just a Windows driver
-(Linux not affected) or firmware issue (new binaries would've been
-released for Linux as well), then I certainly never heard about it.
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-
-However, your thread here is talking about ipw2200. The devices that
-driver is for aren't even listed on ark.intel.com (any more?), but I
-recently du out something about them for unrelated reasons. The _latest_
-of the bunch (this driver works on) was a mini-PCI (not PCIe) product
-called 2915ABG, with a *launch* date of ~2003, and an *EOL* date of EOY
-2009.
-
-I think you'll not be surprised that there's hardly anyone who could
-help you.
-
-I'll note though that the driver for those ancient devices is just as
-ancient, and (obviously) hasn't changed recently. You'll need to look
-elsewhere.
-
-I'm also not sure why you're complaining about WEP (might as well run
-open network) and AX interoperability together. :)
-
-johannes
 
