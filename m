@@ -2,365 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0C0C3A5628
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jun 2021 05:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2C473A572D
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jun 2021 11:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231556AbhFMDlV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Jun 2021 23:41:21 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:52158 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230281AbhFMDlU (ORCPT
+        id S230293AbhFMJEI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Jun 2021 05:04:08 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:54155 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229777AbhFMJEI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Jun 2021 23:41:20 -0400
-X-UUID: ce05814388a24946b8f93b5b68ba30f4-20210613
-X-UUID: ce05814388a24946b8f93b5b68ba30f4-20210613
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 459441680; Sun, 13 Jun 2021 11:39:16 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sun, 13 Jun 2021 11:39:08 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 13 Jun 2021 11:39:08 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH] mt76: mt7921: introduce testmode support
-Date:   Sun, 13 Jun 2021 11:39:07 +0800
-Message-ID: <1623555547-15442-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
+        Sun, 13 Jun 2021 05:04:08 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1623574927; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=dQoeZwVu2n9jRfR6UQm6hwPctLkAmGru9+XJJja6Lvo=; b=bM7i2EE403jSuvCXhhcDrE6jkhikvPUG2QRTEqa5nN0EWXXChwDLDCpRGJUixGaa+fHNh4f5
+ Zh+UwBdKnDXX87+OKAGCkHWunhDXsyZq+k4Xiy5XaWlgcq0RU1fYhduICwkPiVsM6PzaS/Y3
+ 8fM9/6nA2Bww/f/sQ81qPLKYQgo=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 60c5c98c8491191eb36e29ba (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 13 Jun 2021 09:02:04
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7794AC433D3; Sun, 13 Jun 2021 09:02:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3D256C433D3;
+        Sun, 13 Jun 2021 09:02:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D256C433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath10k: demote chan info without scan request warning
+References: <20210522171609.299611-1-caleb@connolly.tech>
+        <20210612103640.2FD93C433F1@smtp.codeaurora.org>
+        <f39034ea-f4da-1564-e22f-398e4a1ae077@connolly.tech>
+Date:   Sun, 13 Jun 2021 12:01:56 +0300
+In-Reply-To: <f39034ea-f4da-1564-e22f-398e4a1ae077@connolly.tech> (Caleb
+        Connolly's message of "Sat, 12 Jun 2021 13:00:57 +0000")
+Message-ID: <871r96yw6z.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+Caleb Connolly <caleb@connolly.tech> writes:
 
-We add the testmode support to access the testmode feature provided
-by the MT7921 firmware.
+> Hi Kalle,
+>
+> On 12/06/2021 11:36 am, Kalle Valo wrote:
+>> Caleb Connolly <caleb@connolly.tech> wrote:
+>>
+>>> Some devices/firmwares cause this to be printed every 5-15 seconds,
+>>> though it has no impact on functionality. Demote this to a debug
+>>> message.
+>>>
+>>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>
+> Is this meant to be an Ack?
 
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   1 +
- .../wireless/mediatek/mt76/mt7921/Makefile    |   1 +
- .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 +
- .../net/wireless/mediatek/mt76/mt7921/main.c  |   2 +
- .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  26 +++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |   4 +
- .../wireless/mediatek/mt76/mt7921/testmode.c  | 173 ++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/testmode.h |   2 +
- 8 files changed, 211 insertions(+)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
+No, my patchwork script has few quirks and it actually takes the quoted
+text from my pending branch, not from your actual email. That's why you
+see my s-o-b there. I haven't bothered to fix that yet, but hopefully
+one day.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 1c73beb22677..a37090cac019 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -548,6 +548,7 @@ enum {
- 
- /* offload mcu commands */
- enum {
-+	MCU_CMD_TEST_CTRL = MCU_CE_PREFIX | 0x01,
- 	MCU_CMD_START_HW_SCAN = MCU_CE_PREFIX | 0x03,
- 	MCU_CMD_SET_PS_PROFILE = MCU_CE_PREFIX | 0x05,
- 	MCU_CMD_SET_CHAN_DOMAIN = MCU_CE_PREFIX | 0x0f,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-index e531666f9fb4..8361f9558ea1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-@@ -5,3 +5,4 @@ obj-$(CONFIG_MT7921E) += mt7921e.o
- CFLAGS_trace.o := -I$(src)
- 
- mt7921e-y := pci.o mac.o mcu.o dma.o eeprom.o main.o init.o debugfs.o trace.o
-+mt7921e-$(CONFIG_NL80211_TESTMODE) += testmode.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 2caa5096a419..c37084796525 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -127,6 +127,8 @@ int mt7921_mac_init(struct mt7921_dev *dev)
- 	for (i = 0; i < 2; i++)
- 		mt7921_mac_init_band(dev, i);
- 
-+	dev->mt76.rxfilter = mt76_rr(dev, MT_WF_RFCR(0));
-+
- 	return mt76_connac_mcu_set_rts_thresh(&dev->mt76, 0x92b, 0);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index bc5643f485c5..c4fd670b89b0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1191,6 +1191,8 @@ const struct ieee80211_ops mt7921_ops = {
- 	.sta_statistics = mt7921_sta_statistics,
- 	.sched_scan_start = mt7921_start_sched_scan,
- 	.sched_scan_stop = mt7921_stop_sched_scan,
-+	CFG80211_TESTMODE_CMD(mt7921_testmode_cmd)
-+	CFG80211_TESTMODE_DUMP(mt7921_testmode_dump)
- #ifdef CONFIG_PM
- 	.suspend = mt7921_suspend,
- 	.resume = mt7921_resume,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-index 89fed2f71161..e964a06359d3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-@@ -320,4 +320,30 @@ struct mt7921_mcu_tx_done_event {
- 
- 	u8 rsv1[32];
- } __packed;
-+
-+enum {
-+	TM_SWITCH_MODE,
-+	TM_SET_AT_CMD,
-+	TM_QUERY_AT_CMD,
-+};
-+
-+enum {
-+	MT7921_TM_NORMAL,
-+	MT7921_TM_TESTMODE,
-+	MT7921_TM_ICAP,
-+	MT7921_TM_ICAP_OVERLAP,
-+	MT7921_TM_WIFISPECTRUM,
-+};
-+
-+struct mt7921_rftest_cmd {
-+	u8 action;
-+	u8 rsv[3];
-+	__le32 param0;
-+	__le32 param1;
-+} __packed;
-+
-+struct mt7921_rftest_evt {
-+	__le32 param0;
-+	__le32 param1;
-+} __packed;
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index a249ce34b44b..34f0e3cca211 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -387,4 +387,8 @@ void mt7921_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif);
- void mt7921_coredump_work(struct work_struct *work);
- int mt7921_wfsys_reset(struct mt7921_dev *dev);
- int mt7921_get_txpwr_info(struct mt7921_dev *dev, struct mt7921_txpwr *txpwr);
-+int mt7921_testmode_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			void *data, int len);
-+int mt7921_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *msg,
-+			 struct netlink_callback *cb, void *data, int len);
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
-new file mode 100644
-index 000000000000..e1ba536008fa
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
-@@ -0,0 +1,173 @@
-+// SPDX-License-Identifier: ISC
-+
-+#include "mt7921.h"
-+#include "mcu.h"
-+
-+enum mt7921_testmode_attr {
-+	MT7921_TM_ATTR_UNSPEC,
-+	MT7921_TM_ATTR_SET,
-+	MT7921_TM_ATTR_QUERY,
-+	MT7921_TM_ATTR_RSP,
-+
-+	/* keep last */
-+	NUM_MT7921_TM_ATTRS,
-+	MT7921_TM_ATTR_MAX = NUM_MT7921_TM_ATTRS - 1,
-+};
-+
-+struct mt7921_tm_cmd {
-+	u8 action;
-+	u32 param0;
-+	u32 param1;
-+};
-+
-+struct mt7921_tm_evt {
-+	u32 param0;
-+	u32 param1;
-+};
-+
-+static const struct nla_policy mt7921_tm_policy[NUM_MT7921_TM_ATTRS] = {
-+	[MT7921_TM_ATTR_SET] = NLA_POLICY_EXACT_LEN(sizeof(struct mt7921_tm_cmd)),
-+	[MT7921_TM_ATTR_QUERY] = NLA_POLICY_EXACT_LEN(sizeof(struct mt7921_tm_cmd)),
-+};
-+
-+static int
-+mt7921_tm_set(struct mt7921_dev *dev, struct mt7921_tm_cmd *req)
-+{
-+	struct mt7921_rftest_cmd cmd = {
-+		.action = req->action,
-+		.param0 = cpu_to_le32(req->param0),
-+		.param1 = cpu_to_le32(req->param1),
-+	};
-+	bool to_testmode = false, to_normal = false;
-+	struct mt76_connac_pm *pm = &dev->pm;
-+	struct mt76_phy *phy = &dev->mphy;
-+	int ret = -ENOTCONN;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	if (req->action == TM_SWITCH_MODE) {
-+		if (req->param0 != MT7921_TM_NORMAL)
-+			to_testmode = true;
-+		else
-+			to_normal = true;
-+	}
-+
-+	if (to_testmode) {
-+		mt76_wr(dev, MT_WF_RFCR(0), dev->mt76.rxfilter);
-+
-+		/* Make sure testmode running on full power mode */
-+		pm->enable = false;
-+		cancel_delayed_work_sync(&pm->ps_work);
-+		cancel_work_sync(&pm->wake_work);
-+		__mt7921_mcu_drv_pmctrl(dev);
-+
-+		phy->test.state = MT76_TM_STATE_ON;
-+	}
-+
-+	if (!mt76_testmode_enabled(phy))
-+		goto out;
-+
-+	ret = mt76_mcu_send_msg(&dev->mt76, MCU_CMD_TEST_CTRL, &cmd,
-+				sizeof(cmd), false);
-+
-+	if (to_normal) {
-+		/* Switch back to the normal world */
-+		phy->test.state = MT76_TM_STATE_OFF;
-+		pm->enable = true;
-+	}
-+out:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return ret;
-+}
-+
-+static int
-+mt7921_tm_query(struct mt7921_dev *dev, struct mt7921_tm_cmd *req,
-+		struct mt7921_tm_evt *resp)
-+{
-+	struct mt7921_rftest_cmd cmd = {
-+		.action = req->action,
-+		.param0 = cpu_to_le32(req->param0),
-+		.param1 = cpu_to_le32(req->param1),
-+	};
-+	struct mt7921_rftest_evt *evt;
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CMD_TEST_CTRL,
-+					&cmd, sizeof(cmd), true, &skb);
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	if (ret)
-+		goto out;
-+
-+	evt = (struct mt7921_rftest_evt *)(skb->data);
-+	resp->param0 = le32_to_cpu(evt->param0);
-+	resp->param1 = le32_to_cpu(evt->param1);
-+out:
-+	dev_kfree_skb(skb);
-+
-+	return ret;
-+}
-+
-+int mt7921_testmode_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			void *data, int len)
-+{
-+	struct nlattr *tb[NUM_MT7921_TM_ATTRS];
-+	struct mt76_phy *mphy = hw->priv;
-+	struct mt7921_phy *phy = mphy->priv;
-+	struct mt7921_dev *dev = phy->dev;
-+	int err;
-+
-+	if (!test_bit(MT76_STATE_RUNNING, &mphy->state) ||
-+	    !(hw->conf.flags & IEEE80211_CONF_MONITOR))
-+		return -ENOTCONN;
-+
-+	err = nla_parse_deprecated(tb, MT7921_TM_ATTR_MAX, data, len,
-+				   mt7921_tm_policy, NULL);
-+	if (err)
-+		return err;
-+
-+	err = -EINVAL;
-+	if (tb[MT7921_TM_ATTR_SET])
-+		err = mt7921_tm_set(dev, nla_data(tb[MT7921_TM_ATTR_SET]));
-+
-+	return err;
-+}
-+
-+int mt7921_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *msg,
-+			 struct netlink_callback *cb, void *data, int len)
-+{
-+	struct nlattr *tb[NUM_MT7921_TM_ATTRS];
-+	struct mt76_phy *mphy = hw->priv;
-+	struct mt7921_phy *phy = mphy->priv;
-+	struct mt7921_dev *dev = phy->dev;
-+	struct mt7921_tm_evt resp;
-+	int err;
-+
-+	if (!test_bit(MT76_STATE_RUNNING, &mphy->state) ||
-+	    !(hw->conf.flags & IEEE80211_CONF_MONITOR) ||
-+	    !mt76_testmode_enabled(mphy))
-+		return -ENOTCONN;
-+
-+	if (cb->args[2]++ > 0)
-+		return -ENOENT;
-+
-+	err = nla_parse_deprecated(tb, MT7921_TM_ATTR_MAX, data, len,
-+				   mt7921_tm_policy, NULL);
-+	if (err)
-+		return err;
-+
-+	err = -EINVAL;
-+	if (tb[MT7921_TM_ATTR_QUERY]) {
-+		err = mt7921_tm_query(dev, nla_data(tb[MT7921_TM_ATTR_QUERY]), &resp);
-+		if (err)
-+			goto out;
-+
-+		err = nla_put(msg, MT7921_TM_ATTR_RSP, sizeof(resp), &resp);
-+	}
-+out:
-+	return err;
-+}
-diff --git a/drivers/net/wireless/mediatek/mt76/testmode.h b/drivers/net/wireless/mediatek/mt76/testmode.h
-index d32a7654c47e..127c13105ee9 100644
---- a/drivers/net/wireless/mediatek/mt76/testmode.h
-+++ b/drivers/net/wireless/mediatek/mt76/testmode.h
-@@ -140,6 +140,7 @@ enum mt76_testmode_rx_attr {
-  * enum mt76_testmode_state - phy test state
-  *
-  * @MT76_TM_STATE_OFF: test mode disabled (normal operation)
-+ * @MT76_TM_STATE_ON: test mode enabled used in offload firmware
-  * @MT76_TM_STATE_IDLE: test mode enabled, but idle
-  * @MT76_TM_STATE_TX_FRAMES: send a fixed number of test frames
-  * @MT76_TM_STATE_RX_FRAMES: receive packets and keep statistics
-@@ -147,6 +148,7 @@ enum mt76_testmode_rx_attr {
-  */
- enum mt76_testmode_state {
- 	MT76_TM_STATE_OFF,
-+	MT76_TM_STATE_ON,
- 	MT76_TM_STATE_IDLE,
- 	MT76_TM_STATE_TX_FRAMES,
- 	MT76_TM_STATE_RX_FRAMES,
+>> On what hardware and firmware version do you see this?
+>
+> I see this on SDM845 and MSM8998 platforms, specifically the OnePlus 6
+> devices, PocoPhone F1 and OnePlus 5.
+> On the OnePlus 6 (SDM845) we are stuck with the following signed vendor fw:
+>
+> [    9.339873] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
+> chip_family 0x4001 board_id 0xff soc_id 0x40030001
+> [    9.339897] ath10k_snoc 18800000.wifi: qmi fw_version 0x20060029
+> fw_build_timestamp 2019-07-12 02:14 fw_build_id
+> QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c8-00041-QCAHLSWMTPLZ-1
+>
+> The OnePlus 5 (MSM8998) is using firmware:
+>
+> [ 6096.956799] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
+> chip_family 0x4001 board_id 0xff soc_id 0x40010002
+> [ 6096.956824] ath10k_snoc 18800000.wifi: qmi fw_version 0x1007007e
+> fw_build_timestamp 2020-04-14 22:45 fw_build_id
+> QC_IMAGE_VERSION_STRING=WLAN.HL.1.0.c6-00126-QCAHLSWMTPLZ-1.211883.1.278648.
+
+Thanks, I'll include this information to the commit log and then apply
+the patch. And I'll assume you have also tested this patch on those
+platforms so that I can add a Tested-on tag?
+
+BTW, ath10k should strip that ugly "QC_IMAGE_VERSION_STRING=" string in
+the firmware version. Patches very welcome :)
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
