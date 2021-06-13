@@ -2,115 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E850D3A5975
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jun 2021 18:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 302853A5A27
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jun 2021 21:19:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231924AbhFMQDP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 13 Jun 2021 12:03:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36058 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231887AbhFMQDO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 13 Jun 2021 12:03:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C6E446109E;
-        Sun, 13 Jun 2021 16:01:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623600073;
-        bh=6XtbqBMiV++spgtUrHW4ONaxsafcflcg/T61pQoP0LU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qACohP6sLJcb8WgGmP7iRsdOWVo+ZKoDZaK7tOXgSAyh/amkW9qqBaJFmtzIpS6NN
-         hueQdAj4uWctorvaPM6GIlBQ2XO+wHgKqXkEWi2AvUFXvvq2uUtaA5Ce1CWNyXyQKD
-         REDrj3Eilvk+TU/ff/oEnRT8i9O65dmv/twNU8YnTjDoNyV0a+LEZu1RbuidigaiAL
-         /feaEfhQf3B2DBEasJnJJCuQT0lmlTnDly+UedHO7rbolda8zQAbLLCds3CxLO2Ehk
-         BBM1AoBlkU505ZYcHZaElQxI1Uzez/E5YmTMpaaicp9dS5+oZ7Ny2y33R3hVi7euWX
-         u7WrTIFNBw16Q==
-Date:   Sun, 13 Jun 2021 19:01:09 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     M Chetan Kumar <m.chetan.kumar@intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        johannes@sipsolutions.net, krishna.c.sudi@intel.com,
-        linuxwwan@intel.com
-Subject: Re: [PATCH V5 16/16] net: iosm: infrastructure
-Message-ID: <YMYrxfpr4q8R1mcq@unreal>
-References: <20210613125023.18945-1-m.chetan.kumar@intel.com>
- <20210613125023.18945-17-m.chetan.kumar@intel.com>
+        id S232012AbhFMTVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 13 Jun 2021 15:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231912AbhFMTVh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 13 Jun 2021 15:21:37 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB32AC061574
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Jun 2021 12:19:35 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lsVds-006LMe-6O; Sun, 13 Jun 2021 21:19:32 +0200
+Message-ID: <d04aa1e0550572448f2443c763ddc0260fabcd3c.camel@sipsolutions.net>
+Subject: Re: ipw2200 driver no longer sets encrypted WEP in ipw2200 device?
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Peter.T.Breuer@gmail.com, linux-wireless@vger.kernel.org
+Date:   Sun, 13 Jun 2021 21:19:30 +0200
+In-Reply-To: <20210613103347.0c2148bd@ptb> (sfid-20210613_113416_435859_DECC4D0A)
+References: <20210610131139.4fce5404@ptb> <20210613103347.0c2148bd@ptb>
+         (sfid-20210613_113416_435859_DECC4D0A)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210613125023.18945-17-m.chetan.kumar@intel.com>
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jun 13, 2021 at 06:20:23PM +0530, M Chetan Kumar wrote:
-> 1) Kconfig & Makefile changes for IOSM Driver compilation.
-> 2) Add IOSM Driver documentation.
-> 3) Modified MAINTAINER file for IOSM Driver addition.
+On Sun, 2021-06-13 at 10:33 +0100, Peter Breuer wrote:
+> This list is so offically dead! Still, I have a clue for you:
+
+You sound frustrated. FYI, in case you haven't noticed, the list isn't
+even near dead. I'll have a clue down below as to why your question
+didn't get any answers.
+
+
+> On Thu, 10 Jun 2021 13:11:39 +0100
+> Peter Breuer <Peter.T.Breuer@gmail.com> wrote:
 > 
-> Signed-off-by: M Chetan Kumar <m.chetan.kumar@intel.com>
-> ---
-> v5: Update mbim port name in doc to wwan0mbim0.
-> v4: Adapt to wwan subsystem rtnet_link framework.
-> v3:
-> * Clean-up driver/net Kconfig & Makefile (Changes available as
->   part of wwan subsystem).
-> * Removed NET dependency key word from iosm Kconfig.
-> * Removed IOCTL section from documentation.
-> v2:
-> * Moved driver documentation to RsT file.
-> * Modified if_link.h file to support link type iosm.
-> ---
->  .../networking/device_drivers/index.rst       |  1 +
->  .../networking/device_drivers/wwan/index.rst  | 18 ++++
->  .../networking/device_drivers/wwan/iosm.rst   | 96 +++++++++++++++++++
->  MAINTAINERS                                   |  7 ++
->  drivers/net/wwan/Kconfig                      | 12 +++
->  drivers/net/wwan/Makefile                     |  1 +
->  drivers/net/wwan/iosm/Makefile                | 26 +++++
->  7 files changed, 161 insertions(+)
->  create mode 100644 Documentation/networking/device_drivers/wwan/index.rst
->  create mode 100644 Documentation/networking/device_drivers/wwan/iosm.rst
->  create mode 100644 drivers/net/wwan/iosm/Makefile
-
-<...>
-
-> +obj-$(CONFIG_IOSM) += iosm/
-> diff --git a/drivers/net/wwan/iosm/Makefile b/drivers/net/wwan/iosm/Makefile
-> new file mode 100644
-> index 000000000000..cdeeb9357af6
-> --- /dev/null
-> +++ b/drivers/net/wwan/iosm/Makefile
-> @@ -0,0 +1,26 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only)
-> +#
-> +# Copyright (C) 2020-21 Intel Corporation.
-> +#
-> +
-> +iosm-y = \
-> +	iosm_ipc_task_queue.o	\
-> +	iosm_ipc_imem.o			\
-> +	iosm_ipc_imem_ops.o		\
-> +	iosm_ipc_mmio.o			\
-> +	iosm_ipc_port.o			\
-> +	iosm_ipc_wwan.o			\
-> +	iosm_ipc_uevent.o		\
-> +	iosm_ipc_pm.o			\
-> +	iosm_ipc_pcie.o			\
-> +	iosm_ipc_irq.o			\
-> +	iosm_ipc_chnl_cfg.o		\
-> +	iosm_ipc_protocol.o		\
-> +	iosm_ipc_protocol_ops.o	\
-> +	iosm_ipc_mux.o			\
-> +	iosm_ipc_mux_codec.o
-> +
-> +obj-$(CONFIG_IOSM) := iosm.o
-> +
-> +# compilation flags
-> +ccflags-y += -DDEBUG
-
-Please no, default kernel code should be in release quality.
-
-Thanks
-
-> -- 
-> 2.25.1
+> > Hello - has somebody disabled encrypted WEP in ipw2200 firmwares, or
+> > done something global that would have an equivalent effect, perhaps
 > 
+> Same issue with WPA1 or 2. Plaintext is OK except the signal keeps
+> dropping, and the same is true even from my modern mobile phone.
+> 
+> The clue is this note from TP-Link:
+> 
+>   https://www.tp-link.com/en/support/faq/2303/
+
+Which is talking about the 7265 as the oldest product of the bunch, and
+~9260 as the newest.
+
+Those had a launch date of Q3'14 and Q4'17 respectively. You might call
+them old, but evidently they were fixed. I can't even speculate what the
+issue might have been though, but if it wasn't just a Windows driver
+(Linux not affected) or firmware issue (new binaries would've been
+released for Linux as well), then I certainly never heard about it.
+
+
+However, your thread here is talking about ipw2200. The devices that
+driver is for aren't even listed on ark.intel.com (any more?), but I
+recently du out something about them for unrelated reasons. The _latest_
+of the bunch (this driver works on) was a mini-PCI (not PCIe) product
+called 2915ABG, with a *launch* date of ~2003, and an *EOL* date of EOY
+2009.
+
+I think you'll not be surprised that there's hardly anyone who could
+help you.
+
+I'll note though that the driver for those ancient devices is just as
+ancient, and (obviously) hasn't changed recently. You'll need to look
+elsewhere.
+
+I'm also not sure why you're complaining about WEP (might as well run
+open network) and AX interoperability together. :)
+
+johannes
+
