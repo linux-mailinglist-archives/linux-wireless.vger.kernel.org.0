@@ -2,156 +2,365 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 240423A5613
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jun 2021 04:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0C0C3A5628
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jun 2021 05:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbhFMC7C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 12 Jun 2021 22:59:02 -0400
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:40567 "EHLO
-        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbhFMC7A (ORCPT
+        id S231556AbhFMDlV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 12 Jun 2021 23:41:21 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:52158 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230281AbhFMDlU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 12 Jun 2021 22:59:00 -0400
-Received: by mail-ot1-f45.google.com with SMTP id l15-20020a05683016cfb02903fca0eacd15so7309362otr.7
-        for <linux-wireless@vger.kernel.org>; Sat, 12 Jun 2021 19:56:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=mOAEpeZMqBh4CF7tKkSYNil1m5voHKfi6yDQu1hrWRU=;
-        b=yN7SOzeBQE+g/tOayYKRE/urcB9rw5UtC8dO95QALy78cfOGXIe3X3fJZXonMMfmyK
-         kVaai6Jbd6N4TFwucbv6znztJ5iRRv5n+NjXrGyppPULHKilnZWZJpFErOzgFy60LV9c
-         ACNuqDbz+43v0NKF6aPZB2YVNLL6B9SzjBdQ2y2sFp5g+6XT9nwA4e4sleEntl/8W8dl
-         ll/DzC4X/ehFLKjK08RYLbNKkBNkuiWaQURszLiZi9Kl+j8Q75QDgxkMOE4G89Sj6/p7
-         5Un6H6BeC0oesiBDKtS8kZEVCp1PL2EerELtNaqP3WNq+GMJ1R6AAzozm5cu1/Gq62au
-         cnPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mOAEpeZMqBh4CF7tKkSYNil1m5voHKfi6yDQu1hrWRU=;
-        b=Vy1iGZ/H9p0ZcNDhkTIauCNeI8iPmh7gF5ouxkgPEvNJVuy2CLAljMJAQm/7wR8Edc
-         iYIxVPcW9wT544MfzZLbByaQ5+Ltqt5kdqQgO5xifC8ocFtBHxCruR7W6esxF/D6FuFv
-         E56FN1/09XmGG3+FvIyJukERn3OkJXSkJYvQlNGYT2JsOS3CF4pZKQMayaFJuJMTzrqP
-         qxeglidppYBj1pe8LjQ7GSDHgGRBpCLkjLcYWU5PqsmUlxuT/FnbacDUiFPAWYzgOfAG
-         qtqn6O1YjKUBKtiQqZRorXEHxT02BQaDtjau+QYq2bP2IuVXWo6baJ57P27RNqkuR0KL
-         aJhw==
-X-Gm-Message-State: AOAM530zsozy7/PICCgeeTfr0UTyqzdgMMinHfQ2wKdFJAbDbBKYz8Dc
-        5bBOs03L0nBPoEAt1Q88hJT1XQ==
-X-Google-Smtp-Source: ABdhPJz+IURZIjeFNVFk/haPQ6MuItn76Xuga7jrS16ZeIDKLr/uunCrG8ozzcTE4BmoW0BWIHvEHA==
-X-Received: by 2002:a9d:4c91:: with SMTP id m17mr8596878otf.347.1623552949368;
-        Sat, 12 Jun 2021 19:55:49 -0700 (PDT)
-Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id a6sm2233649oon.20.2021.06.12.19.55.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Jun 2021 19:55:48 -0700 (PDT)
-Date:   Sat, 12 Jun 2021 21:55:46 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     kvalo@codeaurora.org, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, shawn.guo@linaro.org,
-        benl@squareup.com, loic.poulain@linaro.org
-Subject: Re: [PATCH] wcn36xx: Move hal_buf allocation to devm_kmalloc in probe
-Message-ID: <YMVzsh7CxGUmTprx@yoga>
-References: <20210605173347.2266003-1-bryan.odonoghue@linaro.org>
+        Sat, 12 Jun 2021 23:41:20 -0400
+X-UUID: ce05814388a24946b8f93b5b68ba30f4-20210613
+X-UUID: ce05814388a24946b8f93b5b68ba30f4-20210613
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 459441680; Sun, 13 Jun 2021 11:39:16 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sun, 13 Jun 2021 11:39:08 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sun, 13 Jun 2021 11:39:08 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH] mt76: mt7921: introduce testmode support
+Date:   Sun, 13 Jun 2021 11:39:07 +0800
+Message-ID: <1623555547-15442-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210605173347.2266003-1-bryan.odonoghue@linaro.org>
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat 05 Jun 12:33 CDT 2021, Bryan O'Donoghue wrote:
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-> Right now wcn->hal_buf is allocated in wcn36xx_start(). This is a problem
-> since we should have setup all of the buffers we required by the time
-> ieee80211_register_hw() is called.
-> 
-> struct ieee80211_ops callbacks may run prior to mac_start() and therefore
-> wcn->hal_buf must be initialized.
-> 
-> This is easily remediated by moving the allocation to probe() taking the
-> opportunity to tidy up freeing memory by using devm_kmalloc().
-> 
-> Fixes: 8e84c2582169 ('wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680
-> hardware')
-> 
+We add the testmode support to access the testmode feature provided
+by the MT7921 firmware.
 
-I don't think you're supposed to have an empty line between your Fixes
-and S-o-b. That said, this looks good and your reasoning is sound.
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   1 +
+ .../wireless/mediatek/mt76/mt7921/Makefile    |   1 +
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 +
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |   2 +
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  26 +++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |   4 +
+ .../wireless/mediatek/mt76/mt7921/testmode.c  | 173 ++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/testmode.h |   2 +
+ 8 files changed, 211 insertions(+)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
 
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 1c73beb22677..a37090cac019 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -548,6 +548,7 @@ enum {
+ 
+ /* offload mcu commands */
+ enum {
++	MCU_CMD_TEST_CTRL = MCU_CE_PREFIX | 0x01,
+ 	MCU_CMD_START_HW_SCAN = MCU_CE_PREFIX | 0x03,
+ 	MCU_CMD_SET_PS_PROFILE = MCU_CE_PREFIX | 0x05,
+ 	MCU_CMD_SET_CHAN_DOMAIN = MCU_CE_PREFIX | 0x0f,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+index e531666f9fb4..8361f9558ea1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+@@ -5,3 +5,4 @@ obj-$(CONFIG_MT7921E) += mt7921e.o
+ CFLAGS_trace.o := -I$(src)
+ 
+ mt7921e-y := pci.o mac.o mcu.o dma.o eeprom.o main.o init.o debugfs.o trace.o
++mt7921e-$(CONFIG_NL80211_TESTMODE) += testmode.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 2caa5096a419..c37084796525 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -127,6 +127,8 @@ int mt7921_mac_init(struct mt7921_dev *dev)
+ 	for (i = 0; i < 2; i++)
+ 		mt7921_mac_init_band(dev, i);
+ 
++	dev->mt76.rxfilter = mt76_rr(dev, MT_WF_RFCR(0));
++
+ 	return mt76_connac_mcu_set_rts_thresh(&dev->mt76, 0x92b, 0);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index bc5643f485c5..c4fd670b89b0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1191,6 +1191,8 @@ const struct ieee80211_ops mt7921_ops = {
+ 	.sta_statistics = mt7921_sta_statistics,
+ 	.sched_scan_start = mt7921_start_sched_scan,
+ 	.sched_scan_stop = mt7921_stop_sched_scan,
++	CFG80211_TESTMODE_CMD(mt7921_testmode_cmd)
++	CFG80211_TESTMODE_DUMP(mt7921_testmode_dump)
+ #ifdef CONFIG_PM
+ 	.suspend = mt7921_suspend,
+ 	.resume = mt7921_resume,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+index 89fed2f71161..e964a06359d3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+@@ -320,4 +320,30 @@ struct mt7921_mcu_tx_done_event {
+ 
+ 	u8 rsv1[32];
+ } __packed;
++
++enum {
++	TM_SWITCH_MODE,
++	TM_SET_AT_CMD,
++	TM_QUERY_AT_CMD,
++};
++
++enum {
++	MT7921_TM_NORMAL,
++	MT7921_TM_TESTMODE,
++	MT7921_TM_ICAP,
++	MT7921_TM_ICAP_OVERLAP,
++	MT7921_TM_WIFISPECTRUM,
++};
++
++struct mt7921_rftest_cmd {
++	u8 action;
++	u8 rsv[3];
++	__le32 param0;
++	__le32 param1;
++} __packed;
++
++struct mt7921_rftest_evt {
++	__le32 param0;
++	__le32 param1;
++} __packed;
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index a249ce34b44b..34f0e3cca211 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -387,4 +387,8 @@ void mt7921_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif);
+ void mt7921_coredump_work(struct work_struct *work);
+ int mt7921_wfsys_reset(struct mt7921_dev *dev);
+ int mt7921_get_txpwr_info(struct mt7921_dev *dev, struct mt7921_txpwr *txpwr);
++int mt7921_testmode_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++			void *data, int len);
++int mt7921_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *msg,
++			 struct netlink_callback *cb, void *data, int len);
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
+new file mode 100644
+index 000000000000..e1ba536008fa
+--- /dev/null
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
+@@ -0,0 +1,173 @@
++// SPDX-License-Identifier: ISC
++
++#include "mt7921.h"
++#include "mcu.h"
++
++enum mt7921_testmode_attr {
++	MT7921_TM_ATTR_UNSPEC,
++	MT7921_TM_ATTR_SET,
++	MT7921_TM_ATTR_QUERY,
++	MT7921_TM_ATTR_RSP,
++
++	/* keep last */
++	NUM_MT7921_TM_ATTRS,
++	MT7921_TM_ATTR_MAX = NUM_MT7921_TM_ATTRS - 1,
++};
++
++struct mt7921_tm_cmd {
++	u8 action;
++	u32 param0;
++	u32 param1;
++};
++
++struct mt7921_tm_evt {
++	u32 param0;
++	u32 param1;
++};
++
++static const struct nla_policy mt7921_tm_policy[NUM_MT7921_TM_ATTRS] = {
++	[MT7921_TM_ATTR_SET] = NLA_POLICY_EXACT_LEN(sizeof(struct mt7921_tm_cmd)),
++	[MT7921_TM_ATTR_QUERY] = NLA_POLICY_EXACT_LEN(sizeof(struct mt7921_tm_cmd)),
++};
++
++static int
++mt7921_tm_set(struct mt7921_dev *dev, struct mt7921_tm_cmd *req)
++{
++	struct mt7921_rftest_cmd cmd = {
++		.action = req->action,
++		.param0 = cpu_to_le32(req->param0),
++		.param1 = cpu_to_le32(req->param1),
++	};
++	bool to_testmode = false, to_normal = false;
++	struct mt76_connac_pm *pm = &dev->pm;
++	struct mt76_phy *phy = &dev->mphy;
++	int ret = -ENOTCONN;
++
++	mutex_lock(&dev->mt76.mutex);
++
++	if (req->action == TM_SWITCH_MODE) {
++		if (req->param0 != MT7921_TM_NORMAL)
++			to_testmode = true;
++		else
++			to_normal = true;
++	}
++
++	if (to_testmode) {
++		mt76_wr(dev, MT_WF_RFCR(0), dev->mt76.rxfilter);
++
++		/* Make sure testmode running on full power mode */
++		pm->enable = false;
++		cancel_delayed_work_sync(&pm->ps_work);
++		cancel_work_sync(&pm->wake_work);
++		__mt7921_mcu_drv_pmctrl(dev);
++
++		phy->test.state = MT76_TM_STATE_ON;
++	}
++
++	if (!mt76_testmode_enabled(phy))
++		goto out;
++
++	ret = mt76_mcu_send_msg(&dev->mt76, MCU_CMD_TEST_CTRL, &cmd,
++				sizeof(cmd), false);
++
++	if (to_normal) {
++		/* Switch back to the normal world */
++		phy->test.state = MT76_TM_STATE_OFF;
++		pm->enable = true;
++	}
++out:
++	mutex_unlock(&dev->mt76.mutex);
++
++	return ret;
++}
++
++static int
++mt7921_tm_query(struct mt7921_dev *dev, struct mt7921_tm_cmd *req,
++		struct mt7921_tm_evt *resp)
++{
++	struct mt7921_rftest_cmd cmd = {
++		.action = req->action,
++		.param0 = cpu_to_le32(req->param0),
++		.param1 = cpu_to_le32(req->param1),
++	};
++	struct mt7921_rftest_evt *evt;
++	struct sk_buff *skb;
++	int ret;
++
++	mutex_lock(&dev->mt76.mutex);
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CMD_TEST_CTRL,
++					&cmd, sizeof(cmd), true, &skb);
++	mutex_unlock(&dev->mt76.mutex);
++
++	if (ret)
++		goto out;
++
++	evt = (struct mt7921_rftest_evt *)(skb->data);
++	resp->param0 = le32_to_cpu(evt->param0);
++	resp->param1 = le32_to_cpu(evt->param1);
++out:
++	dev_kfree_skb(skb);
++
++	return ret;
++}
++
++int mt7921_testmode_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++			void *data, int len)
++{
++	struct nlattr *tb[NUM_MT7921_TM_ATTRS];
++	struct mt76_phy *mphy = hw->priv;
++	struct mt7921_phy *phy = mphy->priv;
++	struct mt7921_dev *dev = phy->dev;
++	int err;
++
++	if (!test_bit(MT76_STATE_RUNNING, &mphy->state) ||
++	    !(hw->conf.flags & IEEE80211_CONF_MONITOR))
++		return -ENOTCONN;
++
++	err = nla_parse_deprecated(tb, MT7921_TM_ATTR_MAX, data, len,
++				   mt7921_tm_policy, NULL);
++	if (err)
++		return err;
++
++	err = -EINVAL;
++	if (tb[MT7921_TM_ATTR_SET])
++		err = mt7921_tm_set(dev, nla_data(tb[MT7921_TM_ATTR_SET]));
++
++	return err;
++}
++
++int mt7921_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *msg,
++			 struct netlink_callback *cb, void *data, int len)
++{
++	struct nlattr *tb[NUM_MT7921_TM_ATTRS];
++	struct mt76_phy *mphy = hw->priv;
++	struct mt7921_phy *phy = mphy->priv;
++	struct mt7921_dev *dev = phy->dev;
++	struct mt7921_tm_evt resp;
++	int err;
++
++	if (!test_bit(MT76_STATE_RUNNING, &mphy->state) ||
++	    !(hw->conf.flags & IEEE80211_CONF_MONITOR) ||
++	    !mt76_testmode_enabled(mphy))
++		return -ENOTCONN;
++
++	if (cb->args[2]++ > 0)
++		return -ENOENT;
++
++	err = nla_parse_deprecated(tb, MT7921_TM_ATTR_MAX, data, len,
++				   mt7921_tm_policy, NULL);
++	if (err)
++		return err;
++
++	err = -EINVAL;
++	if (tb[MT7921_TM_ATTR_QUERY]) {
++		err = mt7921_tm_query(dev, nla_data(tb[MT7921_TM_ATTR_QUERY]), &resp);
++		if (err)
++			goto out;
++
++		err = nla_put(msg, MT7921_TM_ATTR_RSP, sizeof(resp), &resp);
++	}
++out:
++	return err;
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/testmode.h b/drivers/net/wireless/mediatek/mt76/testmode.h
+index d32a7654c47e..127c13105ee9 100644
+--- a/drivers/net/wireless/mediatek/mt76/testmode.h
++++ b/drivers/net/wireless/mediatek/mt76/testmode.h
+@@ -140,6 +140,7 @@ enum mt76_testmode_rx_attr {
+  * enum mt76_testmode_state - phy test state
+  *
+  * @MT76_TM_STATE_OFF: test mode disabled (normal operation)
++ * @MT76_TM_STATE_ON: test mode enabled used in offload firmware
+  * @MT76_TM_STATE_IDLE: test mode enabled, but idle
+  * @MT76_TM_STATE_TX_FRAMES: send a fixed number of test frames
+  * @MT76_TM_STATE_RX_FRAMES: receive packets and keep statistics
+@@ -147,6 +148,7 @@ enum mt76_testmode_rx_attr {
+  */
+ enum mt76_testmode_state {
+ 	MT76_TM_STATE_OFF,
++	MT76_TM_STATE_ON,
+ 	MT76_TM_STATE_IDLE,
+ 	MT76_TM_STATE_TX_FRAMES,
+ 	MT76_TM_STATE_RX_FRAMES,
+-- 
+2.25.1
 
-Regards,
-Bjorn
-
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> ---
->  drivers/net/wireless/ath/wcn36xx/main.c | 21 ++++++++-------------
->  1 file changed, 8 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-> index 84e117e0546c..2ccf7a8924a0 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/main.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> @@ -296,23 +296,16 @@ static int wcn36xx_start(struct ieee80211_hw *hw)
->  		goto out_free_dxe_pool;
->  	}
->  
-> -	wcn->hal_buf = kmalloc(WCN36XX_HAL_BUF_SIZE, GFP_KERNEL);
-> -	if (!wcn->hal_buf) {
-> -		wcn36xx_err("Failed to allocate smd buf\n");
-> -		ret = -ENOMEM;
-> -		goto out_free_dxe_ctl;
-> -	}
-> -
->  	ret = wcn36xx_smd_load_nv(wcn);
->  	if (ret) {
->  		wcn36xx_err("Failed to push NV to chip\n");
-> -		goto out_free_smd_buf;
-> +		goto out_free_dxe_ctl;
->  	}
->  
->  	ret = wcn36xx_smd_start(wcn);
->  	if (ret) {
->  		wcn36xx_err("Failed to start chip\n");
-> -		goto out_free_smd_buf;
-> +		goto out_free_dxe_ctl;
->  	}
->  
->  	if (!wcn36xx_is_fw_version(wcn, 1, 2, 2, 24)) {
-> @@ -339,8 +332,6 @@ static int wcn36xx_start(struct ieee80211_hw *hw)
->  
->  out_smd_stop:
->  	wcn36xx_smd_stop(wcn);
-> -out_free_smd_buf:
-> -	kfree(wcn->hal_buf);
->  out_free_dxe_ctl:
->  	wcn36xx_dxe_free_ctl_blks(wcn);
->  out_free_dxe_pool:
-> @@ -375,8 +366,6 @@ static void wcn36xx_stop(struct ieee80211_hw *hw)
->  
->  	wcn36xx_dxe_free_mem_pools(wcn);
->  	wcn36xx_dxe_free_ctl_blks(wcn);
-> -
-> -	kfree(wcn->hal_buf);
->  }
->  
->  static void wcn36xx_change_ps(struct wcn36xx *wcn, bool enable)
-> @@ -1499,6 +1488,12 @@ static int wcn36xx_probe(struct platform_device *pdev)
->  	mutex_init(&wcn->hal_mutex);
->  	mutex_init(&wcn->scan_lock);
->  
-> +	wcn->hal_buf = devm_kmalloc(wcn->dev, WCN36XX_HAL_BUF_SIZE, GFP_KERNEL);
-> +	if (!wcn->hal_buf) {
-> +		ret = -ENOMEM;
-> +		goto out_wq;
-> +	}
-> +
->  	ret = dma_set_mask_and_coherent(wcn->dev, DMA_BIT_MASK(32));
->  	if (ret < 0) {
->  		wcn36xx_err("failed to set DMA mask: %d\n", ret);
-> -- 
-> 2.30.1
-> 
