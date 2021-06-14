@@ -2,146 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 336C73A6CFF
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jun 2021 19:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6351F3A6DA7
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jun 2021 19:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235586AbhFNRU3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Jun 2021 13:20:29 -0400
-Received: from mail-eopbgr00122.outbound.protection.outlook.com ([40.107.0.122]:49742
-        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S235582AbhFNRU1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Jun 2021 13:20:27 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UEUe4F9fQGIsEC6Qb/580XWTuDjIHWfPSQOr2TZXycMVW7eKzeFOqmMo6Af9G3T77tzmbxubjfKKWqUhD1bh9aDUluyzvWOyL4oLY5wGPB8avnCqhX2LPxIdM1nE5D9DPuIMerF3ya8j9NGiJ0XqO7Q/mhkfMPP3lXNl1rxiCTpNEZVjiaOGTMX9HRyh08j5gCvFQf84u56DGZMcYWjAg5F67na1Dl+JH0lKElBMDYF8O/D/ldRf4Kjdcu9ISzlQ3m/z1pfbDirEtCw1YsFOVFo3/QK61uKOcCoEu6iAHHrHhzM1tOeIYexOytdDnsA/DPLX9erucc7Dg7dz/vY/kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NEfmqAL3lMeM7CuPDF7bhAvIuzHL8ujXB5N6GHvXA7g=;
- b=kSt0CNHCU3bNresWHTIwJA4RBK68v4ifMM/5aR2PoEH1wYTuiVJFTQQuTGEdvKrJT+IpOpuEGgiYyrd1Ve0C80kib5rX45oibywwvSrKJYwIFQAbUt+P6H0cVquQipQTHPO8VL53ks0jwXa3yVXoVnbf18sYARjYquQksYKuy34pAxjh/nKS95rNO659xB9v76MkososiTCEdv2I4JTX5YWSFo/cYr7yTRihVF7rh9Tb3DZVnPMbdeUq/LRHIuMm6MCECfMNyUt034pCuT9Uq2xGYWmGur2df7BwmqvcNH1osK8yaxigUVUcviEzyyc9BBPn+01M4AVvqhSeRvh10g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bang-olufsen.dk; dmarc=pass action=none
- header.from=bang-olufsen.dk; dkim=pass header.d=bang-olufsen.dk; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bang-olufsen.dk;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NEfmqAL3lMeM7CuPDF7bhAvIuzHL8ujXB5N6GHvXA7g=;
- b=UhqD3HyQ1xLG0qV5S4dG6e2IVy6zw2Ogc6CNaU/nMCoHzPtcMmICrWfbZC12KJoPbZqav8QBS83OdK7TsybLDXcMR9YHwKIsx1+VgW17NbYzv0rImuAI13Sh368pjTZXcNrcEDGU1cjK2TjCF2tVtWS0HGkel23inWp61ak3fAs=
-Received: from VI1PR03MB3166.eurprd03.prod.outlook.com (2603:10a6:802:32::30)
- by VE1PR03MB5152.eurprd03.prod.outlook.com (2603:10a6:802:ac::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.23; Mon, 14 Jun
- 2021 17:18:21 +0000
-Received: from VI1PR03MB3166.eurprd03.prod.outlook.com
- ([fe80::1134:eb4d:952c:85fb]) by VI1PR03MB3166.eurprd03.prod.outlook.com
- ([fe80::1134:eb4d:952c:85fb%6]) with mapi id 15.20.4219.025; Mon, 14 Jun 2021
- 17:18:21 +0000
-From:   =?utf-8?B?QWx2aW4gxaBpcHJhZ2E=?= <ALSI@bang-olufsen.dk>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        =?utf-8?B?QWx2aW4gxaBpcHJhZ2E=?= <alvin@pqrs.dk>
-CC:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>
-Subject: Re: [PATCH 1/2] brcmfmac: fix setting of station info chains bitmask
-Thread-Topic: [PATCH 1/2] brcmfmac: fix setting of station info chains bitmask
-Thread-Index: AQHXQnqLrkcIm6m/cUuFlqnvRe20bqsTu4qAgAAUKUeAAC3jAA==
-Date:   Mon, 14 Jun 2021 17:18:21 +0000
-Message-ID: <3dec15fc-568c-806e-e1b6-1b40b75135a0@bang-olufsen.dk>
-References: <20210506132010.3964484-1-alsi@bang-olufsen.dk>
- <ea5a0ce5-1bc9-774c-06be-6ecc284531c5@pqrs.dk>
- <87wnqwy0r7.fsf@codeaurora.org>
-In-Reply-To: <87wnqwy0r7.fsf@codeaurora.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
-authentication-results: codeaurora.org; dkim=none (message not signed)
- header.d=none;codeaurora.org; dmarc=none action=none
- header.from=bang-olufsen.dk;
-x-originating-ip: [80.71.142.18]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 14ecb705-da33-4577-2c12-08d92f5868cc
-x-ms-traffictypediagnostic: VE1PR03MB5152:
-x-microsoft-antispam-prvs: <VE1PR03MB5152EAF8180702D9312AF2B483319@VE1PR03MB5152.eurprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: WJezWT/LkC6mKCOLx38kCMzH8VRheEInSZndqBtlXrSC73J2oTVxd54Kq53I3YmQgK5+pCyKAFaft4oEri+m7WRjYV2tWLd4r5cfbK0oKH3cD+jVc2Oc6H4ZGmUA+R7TxF9aMJWV8cS4FWiYVOVakJZGWTuOOZrqCuwLeChMkzerUbybJl0az8QocMrRO+mTwmkybHk3MvjvRMtpYgAsxZreiplG4rATxfk81PyFCIVac5+JFYbPCFBKZASgmRHvcjEPaUJLoJA2KRYJlESFgWZk2HQTlN0AoEM66S34rgHUk26EZmVqQrxhRUsc58XA+5I1MxmdY99CDDCZa0F7ADpF1BVslqn9XlMDyePRpfiffZ2o2apXymr6I4lMjVKnTqEPhmx8Hk2tWIX2Dgq8al8gFkhSw7LoFKj6FxgPAaXLYf/1d8MWmkje7jFG5oPP25+x/S+HikajexTdAgW+yuISo9aWH98qQQ175RV+cJ9yVLYE11nYZU30ZVRVU2LKjfgIyABTloS+zRNWfphf6op3Hkgkndr09qdkYt3hA6AID5k+RsDTbrwSRjmzVRU/5U6mVoRFGfZisiJsw1YYSjb8llNZVp0xkPvuhKqlmWbOQf5xX3UCxZlLjcLqqOQw7cVU+XcWlHrOlJQNvRY1DpZjZTOlsqc1ek2K/eM2V9/jDg+z/CgG9OBjJKHyrc1DowVbeyA6vCMg4WySEg76rUz36R/y2m6gbQbJjY7PxyAcHS19CkuJwkwU4PI7AlYxgkpdrc057t0kMpEOtYz0xdUot9cs38S3WPUL4/4W/x0MV5mmJ929DboWCtGReDZH
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR03MB3166.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(376002)(366004)(136003)(39830400003)(396003)(110136005)(6486002)(2906002)(6512007)(31696002)(85182001)(4744005)(54906003)(36756003)(7416002)(26005)(71200400001)(186003)(2616005)(316002)(83380400001)(478600001)(31686004)(86362001)(966005)(4326008)(53546011)(5660300002)(66946007)(64756008)(66446008)(66476007)(66556008)(6506007)(8676002)(85202003)(91956017)(66574015)(76116006)(8976002)(8936002)(38100700002)(122000001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eEtMQzB4U3BPMUxLdjNaeEw3QnJTbGQ0c20rMHZ0bDNONklYOXVTaE9JMnky?=
- =?utf-8?B?NUVqcy9WQjFsNWFHbWhNU3l5VlNtQmpoZ3AzeWJWSHVNZXdGQmVrWTZyVjlm?=
- =?utf-8?B?bE0xSno3YmhFQ2V3aDhTcTVjeHk0dWF0K1FEaUZVK3B0ZVB2bWExNHJDb0hW?=
- =?utf-8?B?dG93dlNZQVBRVVlHRU5idWtkUms0akt6OG82djI2aUFCVXQxa3ZYWXRkMTRC?=
- =?utf-8?B?VUJSQkt1V2Y0QnJObjdxdERJUm5VNElaK2RZTzhQQ21rOEg1OU1MbjFJcDNE?=
- =?utf-8?B?Q0FJV2pyM29IMWtieEluYWV4K0JUV21rSWdmeTlGZmsvWXppTEtOdUhuVkxL?=
- =?utf-8?B?MkxEUDhSRzZjQkc5cm9TUUNNSWM0MGdHR2RIRit1aG5kYlRDY0w5dGNlek80?=
- =?utf-8?B?OUJrN29DVXRYQ0hwS21HTjc1azNONE9xbnUrRGgwek5xTFAyZ085RmhEbUN2?=
- =?utf-8?B?OW0yQzFxeTRSdVpDNzFGRENnWEQwMGRCelJEek5URENFRDNPekU2a3ZHcXlF?=
- =?utf-8?B?RlNxVEw1bWZ0cnRQVHMycFNKWDVFMVRXWUVRUFdkc2huTzVvaGRxbnpYaFRP?=
- =?utf-8?B?cXlrU3lLUTZEK0x2Ni9iU2lZYzFxcjBBbDRIVXR6Znd6TjZGQjkxM0VQZFhT?=
- =?utf-8?B?eEhlRDcvdkZRNXNjUHFsRW45UkZNVGdjOFVMS2hSdjljaG9qRzEwb0RsRG1m?=
- =?utf-8?B?bHJEcTJSTVFwWmxWQnZaTEZaelhYVTRJaENpKzVGbm9FR2NBNUNVRFRmMW5l?=
- =?utf-8?B?bDFFS1diRzk2KzhsKzhZYURTRDN3UlpCVXNoZVZNSG9NT1R2YmZDTHlWTFJa?=
- =?utf-8?B?OXp2Y1c5OWp0ZTBUTExNWlIxRm5tYXJUSDFlY1QxT1B1SkJYQXVERkRLOHZy?=
- =?utf-8?B?Q3g1M0d1U0xIbEN6QlFsY2Rnby9yL05wUUkxcTVvY0pjM3ZKTEJhKzNVZU4y?=
- =?utf-8?B?QXErVUJsbUtLdmFWeThiOXhNRVNTUkJrZ3BxejJwK2hHb0Z3enZjWGFGZGhj?=
- =?utf-8?B?VXJIamxVYTlRUXY1c0hObmg5UkJlcGhEUlRsa1djbFVqK1UwK1FWYWJyQzRp?=
- =?utf-8?B?VUY5cVNJbUZGYzFvb25hc1V0Nnk3Sy9aM2pwenJ3bHZ2M3ptUVR0dGVnL2Jk?=
- =?utf-8?B?YnROZENKVkJFdjlPd3JQMmtvN2NCVXRYdGFzYnNkQ0V2VXdJSDdRbm5Ka3hG?=
- =?utf-8?B?ZFVNWHpkYU5XRHlqcG1MblFKL1ZjRnUybnRPZi9iNVNFZERieXc3K3JHblN6?=
- =?utf-8?B?VHU3c1ArUjF5cE4zOUdYVGhoYUE5VlNHc1ErUWlEeXFWbEsyS1NZT2dXRFhX?=
- =?utf-8?B?VENSaDdDOEtKU3lOSGRHLzMzNGhpd1I5OWhwNEdmUUY2MFZicFBxNmQ3bkpn?=
- =?utf-8?B?MzZVeml1ZXFsa0NNRE1nZWVnVVI5NUFxSmZuRE03OTFIYW5OMUZmYU9YZ014?=
- =?utf-8?B?Lzcvd3BaclIyeU1YUVQwSk1iNm1BbU9URzZoTEQvTjZuUGgyZEJzbjE2dUow?=
- =?utf-8?B?eVRjQ0RoLzU0MS9VUlVOWTdvcGNaYzRSVEdtRFZWaXVUOUJaWGNhdDFHN0c0?=
- =?utf-8?B?NFFvd0xsc2FJNks5NkVuc1ZUT1pxMzJZMnVua2tZZDMyME95VXpzRHRrUHEw?=
- =?utf-8?B?ZEo1UHdYUDZnelBIM1hwSXlNbHdhbDFOdjhIamJJL1RVZktwcmQ5NFZtVXA3?=
- =?utf-8?B?TDlTZFB5RmNldlZtcWVJejlRM1JLcStZZndTSGZKeWFQNjh6MUUyd1FaUkxs?=
- =?utf-8?Q?fCgjjixedhCwoe+vEWqIAR7Saum0AYb2Gt3KIdm?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <66114D76D63E7F4CA71B84DE94723CBA@eurprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S233826AbhFNRv5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Jun 2021 13:51:57 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:55511 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232776AbhFNRv4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 14 Jun 2021 13:51:56 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1623692994; h=Message-ID: References: In-Reply-To: Reply-To:
+ Subject: Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=KEdYtHQyiUtt7ZlGjdInmYZxYY3b99OgSBMH10I1Gwk=;
+ b=m3Es+LktXPp17htWZitk5uAkzWqzc+w2qDHZ8COBlkrHOQFPFILDYl0iNqaqXEG9nEWl7xpZ
+ CWERTvfIxBfEKY676YgjulBj15wJbs+us1L0IqIE2WnY9jSBvwOwwstxRvZ8mFfGx8Jhi1xF
+ 57wNh9hZd41MeUwwLo+ebemimNE=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 60c796c02eaeb98b5e56864c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 14 Jun 2021 17:49:52
+ GMT
+Sender: bbhatt=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 757D2C4323A; Mon, 14 Jun 2021 17:49:52 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bbhatt)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 837CFC4338A;
+        Mon, 14 Jun 2021 17:49:51 +0000 (UTC)
 MIME-Version: 1.0
-X-OriginatorOrg: bang-olufsen.dk
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3166.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14ecb705-da33-4577-2c12-08d92f5868cc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jun 2021 17:18:21.0774
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 210d08b8-83f7-470a-bc96-381193ca14a1
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Xmg3wfcdST7bXyhy5Rg1RsWSod7/aUM5z+Nh1iN5198URZkKQM71TX9izxhMq/uLCrBJIW3pICDB3SFpFCSS0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR03MB5152
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 14 Jun 2021 10:49:51 -0700
+From:   Bhaumik Bhatt <bbhatt@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        linux-arm-msm@vger.kernel.org, hemantk@codeaurora.org,
+        jhugo@codeaurora.org, linux-kernel@vger.kernel.org,
+        loic.poulain@linaro.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org
+Subject: Re: [PATCH v4 4/6] ath11k: set register access length for MHI driver
+Organization: Qualcomm Innovation Center, Inc.
+Reply-To: bbhatt@codeaurora.org
+Mail-Reply-To: bbhatt@codeaurora.org
+In-Reply-To: <87h7i0juxt.fsf@codeaurora.org>
+References: <1620330705-40192-1-git-send-email-bbhatt@codeaurora.org>
+ <1620330705-40192-5-git-send-email-bbhatt@codeaurora.org>
+ <20210521135152.GL70095@thinkpad> <87h7i0juxt.fsf@codeaurora.org>
+Message-ID: <37184e28dcc952ba9ad5ed0dc2c1a6da@codeaurora.org>
+X-Sender: bbhatt@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgS2FsbGUsDQoNCk9uIDYvMTQvMjEgNDozMyBQTSwgS2FsbGUgVmFsbyB3cm90ZToNCj4gQWx2
-aW4gxaBpcHJhZ2EgPGFsdmluQHBxcnMuZGs+IHdyaXRlczoNCj4gDQo+PiBIZWxsbywNCj4+DQo+
-PiBPbiA1LzYvMjEgMzoyMCBQTSwgQWx2aW4gxaBpcHJhZ2Egd3JvdGU6DQo+Pj4gVGhlIHNpbmZv
-LT5jaGFpbnMgZmllbGQgaXMgYSBiaXRtYXNrIGZvciBmaWxsZWQgdmFsdWVzIGluIGNoYWluX3Np
-Z25hbA0KPj4+IGFuZCBjaGFpbl9zaWduYWxfYXZnLCBub3QgYSBjb3VudC4gVHJlYXQgaXQgYXMg
-c3VjaCBzbyB0aGF0IHRoZSBkcml2ZXINCj4+PiBjYW4gcHJvcGVybHkgcmVwb3J0IHBlci1jaGFp
-biBSU1NJIGluZm9ybWF0aW9uLg0KPj4+DQo+Pg0KPj4gPHNuaXA+DQo+Pg0KPj4gVGhpcyBpcyBh
-IGdlbnRsZSBwaW5nIHRvIHNlZSBpZiB0aGVzZSB0d28gcGF0Y2hlcyBnb3QgbG9zdC4gSSB3YXMg
-dG9sZA0KPj4gb24gYW5vdGhlciBtYWlsaW5nIGxpc3QgcmVjZW50bHkgdGhhdCBtYWlsIHNlbnQg
-ZnJvbSBteSB3b3JrIGFkZHJlc3MNCj4+IGlzIGZpbmRpbmcgaXRzIHdheSBpbnRvIHBlb3BsZXMn
-IGp1bmsgZm9sZGVycy4NCj4+DQo+PiBJIHdpbGwgcmVzZW5kIHRoZSBwYXRjaGVzIGluIHRoZSBu
-ZWFyIGZ1dHVyZSBpZiBJIGRvbid0IHNlZSBhbnkNCj4+IHJlc3BvbnNlIGhlcmUuDQo+IA0KPiBJ
-IGp1c3QgaGF2ZSBiZWVuIGJ1c3kgYW5kIGhlYXZpbHkgYmFja2xvZ2dlZC4gVGhlIHBhdGNoZXMg
-YXJlIGluDQo+IHBhdGNod29yaywgc28gbm8gbmVlZCB0byByZXNlbmQ6DQo+IA0KPiBodHRwczov
-L3BhdGNod29yay5rZXJuZWwub3JnL3Byb2plY3QvbGludXgtd2lyZWxlc3MvbGlzdC8/c2VyaWVz
-PTQ3Nzg3NyZzdGF0ZT0qPj4gDQoNCkdyZWF0IC0gdGhhbmtzIGZvciB0aGUgcXVpY2sgcmVwbHku
-IEkgd2lsbCBub3QgcmVzZW5kLg0KDQpLaW5kIHJlZ2FyZHMsDQpBbHZpbg==
+Hi Kalle,
+
+On 2021-06-14 09:02 AM, Kalle Valo wrote:
+> Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+> 
+>> On Thu, May 06, 2021 at 12:51:43PM -0700, Bhaumik Bhatt wrote:
+>>> MHI driver requires register space length to add range checks and
+>>> prevent memory region accesses outside of that for MMIO space.
+>>> Set it before registering the MHI controller.
+>>> 
+>>> Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+>>> Reviewed-by: Hemant Kumar <hemantk@codeaurora.org>
+>> 
+>> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> 
+>> Kalle, should we do immutable branch for this patch or I can pick it 
+>> up via MHI
+>> tree (if there are no other patches expected from ath11k for this 
+>> controller)?
+> 
+> I'm not expecting any conflicts with this, and if there are, they 
+> should
+> be easy for Stephen or Linus to fix. So it's easiest to route this via
+> your tree. But I'm not giving my ack yet, see below.
+> 
+> I'm worried that this patchset breaks bisect. Every patch in the
+> patchset should not break existing functionality, what if only patches
+> 1-3 are included in the tree but not patch 4? Wouldn't ath11k be broken
+> then? I didn't review the whole patchset, but I suspect the fix is to
+> include the ath11k change in the actual mhi patch which changes the
+> functionality. So that way we would not have a separate ath11k patch at
+> all.
+> 
+> Also I'm not able to test this patchset at the moment. Can someone else
+> help and do a quick test with QCA6390 to verify these doesn't break
+> ath11k?
+
+I have requested someone to try and test this patch series with QCA6390.
+
+I or the testers will get back to you with the test results when they 
+are
+available.
+
+As far as your concerns go, you can choose to pick patches 1-3 and that 
+would
+be just fine.
+
+Things will break if patchset 4 is _not_ in place with patchset 6 being 
+part of
+the tree.
+
+It would, however, be nice to pick the whole series instead and ensure 
+that
+the functionality MHI introduces for boot-up sanity is in place for any
+controllers such as ath11k.
+
+Thanks,
+Bhaumik
+---
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
+Forum,
+a Linux Foundation Collaborative Project
