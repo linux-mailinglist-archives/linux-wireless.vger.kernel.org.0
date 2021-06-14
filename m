@@ -2,84 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11CDF3A69EF
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jun 2021 17:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA3A33A6A14
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jun 2021 17:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233295AbhFNPWj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Jun 2021 11:22:39 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:20390 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232919AbhFNPWi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Jun 2021 11:22:38 -0400
+        id S233538AbhFNP2P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Jun 2021 11:28:15 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:19906 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233440AbhFNP2M (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 14 Jun 2021 11:28:12 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1623684036; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=TgruFaOHgaX1w1KfWjUbiFXZ4JxCDk9YTxQIoQffRp0=;
- b=auYqu4BqX8sqrtGWbCct+WE3IlhDahTBvxgq5uoJnEFRS0nH9UdaC7e3WHkTraJEnYR57l4U
- 06GqtTbu8nzXZF+ZFMn579h0EZT6pPiY0Udi0SL2DK7CJ0wjfgtS4fswUhhzr9hNskReOn5M
- q8wMMqoaWNbmFfdSftnlPNftvK0=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1623684369; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=3+IT44PTPvc+qOY7Ekz20Fwe84qXj+9/gdT5cBAqBkM=; b=hrbFo1vQj4ryrC/Wf7/A71UAzl9tYe74fQKUqlYD1vNy9ycEO/lwr5j+qEtOn4d5OMUE0a2N
+ tQ+/nUdSlYX/FsrkwgUqxhwow4sYEP0kyURJfoy5BV8llO1Z/XGSNONpVjycWS28qf5VWLGq
+ KgEK+TKC/Ixn9Mww6bYp+6AZ0+M=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 60c773c2ed59bf69cc41d323 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 14 Jun 2021 15:20:34
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 60c7750cb6ccaab7531064e7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 14 Jun 2021 15:26:04
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9BA62C4323A; Mon, 14 Jun 2021 15:20:34 +0000 (UTC)
+        id F2B19C4323A; Mon, 14 Jun 2021 15:26:03 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 10BBCC433D3;
-        Mon, 14 Jun 2021 15:20:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 10BBCC433D3
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ECB9AC43217;
+        Mon, 14 Jun 2021 15:26:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ECB9AC43217
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wcn36xx: Fix inconsistent indenting
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1622024568-32130-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-References: <1622024568-32130-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Cc:     davem@davemloft.net, kuba@kernel.org, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210614152034.9BA62C4323A@smtp.codeaurora.org>
-Date:   Mon, 14 Jun 2021 15:20:34 +0000 (UTC)
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        shawn.guo@linaro.org, benl@squareup.com, loic.poulain@linaro.org,
+        bjorn.andersson@linaro.org
+Subject: Re: [PATCH v6 01/12] wcn36xx: Return result of set_power_params in suspend
+References: <20210605011140.2004643-2-bryan.odonoghue@linaro.org>
+        <20210614151850.9DCE7C433D3@smtp.codeaurora.org>
+Date:   Mon, 14 Jun 2021 18:25:54 +0300
+In-Reply-To: <20210614151850.9DCE7C433D3@smtp.codeaurora.org> (Kalle Valo's
+        message of "Mon, 14 Jun 2021 15:18:50 +0000 (UTC)")
+Message-ID: <87mtrsmprx.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-> Eliminate the follow smatch warning:
-> 
-> drivers/net/wireless/ath/wcn36xx/dxe.c:803 wcn36xx_dxe_tx_frame() warn:
-> inconsistent indenting.
-> 
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Bryan O'Donoghue <bryan.odonoghue@linaro.org> wrote:
+>
+>> wcn36xx_smd_set_power_params() can return an error. For the purposes of
+>> entering into suspend we need the suspend() function to trap and report
+>> errors up the stack.
+>> 
+>> First step in this process is reporting the existing result code for
+>> wcn36xx_smd_set_power_params().
+>> 
+>> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>> Tested-by: Benjamin Li <benl@squareup.com>
+>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>
+> 12 patches applied to ath-next branch of ath.git, thanks.
+>
+> ba4e967379f0 wcn36xx: Return result of set_power_params in suspend
+> f2f49601067b wcn36xx: Run suspend for the first ieee80211_vif
+> 5478c41fce5d wcn36xx: Add ipv4 ARP offload support in suspend
+> 6feb634f4d9f wcn36xx: Do not flush indication queue on suspend/resume
+> c7a61af55976 wcn36xx: Add ipv6 address tracking
+> 1456223c4684 wcn36xx: Add ipv6 namespace offload in suspend
+> 8974e5917b31 wcn36xx: Add set_rekey_data callback
+> 6693f7675c9b wcn36xx: Add GTK offload to WoWLAN path
+> bedf1169bcae wcn36xx: Add GTK offload info to WoWLAN resume
+> 60f0078b1ebd wcn36xx: Add Host suspend indication support
+> ebe7c1a6635f wcn36xx: Add host resume request support
+> 1e2e8ee95734 wcn36xx: Enable WOWLAN flags
 
-Patch applied to ath-next branch of ath.git, thanks.
+BTW, I'm not sure about CONFIG_IPV6 checks but they looked minor so I
+applied these anyway. But can you check them anyway and send a followup
+patch if my hunch is correct?
 
-743b575af18d wcn36xx: Fix inconsistent indenting
+main.c:#if IS_ENABLED(CONFIG_IPV6)
+main.c:#if IS_ENABLED(CONFIG_IPV6)
+
+These two look ok.
+
+smd.c:#if IS_ENABLED(CONFIG_IPV6)
+wcn36xx.h:#if IS_ENABLED(CONFIG_IPV6)
+
+But these two seem unnecessary, at least I was not able to find anything
+which would require these. Although I didn't have time to do a build
+test so of course I might have missed something.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1622024568-32130-1-git-send-email-jiapeng.chong@linux.alibaba.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
