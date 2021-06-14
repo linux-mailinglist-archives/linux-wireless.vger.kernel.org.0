@@ -2,93 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A74383A67AF
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jun 2021 15:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163113A690F
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jun 2021 16:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233923AbhFNNYT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 14 Jun 2021 09:24:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41348 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233885AbhFNNYR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 14 Jun 2021 09:24:17 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF10C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Jun 2021 06:22:01 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id b11so46486058edy.4
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Jun 2021 06:22:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pqrs.dk; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=gzLXJsinZ/30/PhvJs3+ZVCBQVyiZKoc4Rf7ipm66V0=;
-        b=PfMP1QLQAAzpvD/ZGLn1B9ODHNs0umz5LkxBb3A4HIMzqwikQ2eRYC7y2tpMUjPato
-         G/W7jo//wUguYftaC3ZHcni31+Rzi6pQbmherJt/cw+R8iK6fhtxXhtvwKqzGTUYLXsX
-         482n5X8+qlU5kJqx6rgm2LVaHafuXcJLQo0cU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=gzLXJsinZ/30/PhvJs3+ZVCBQVyiZKoc4Rf7ipm66V0=;
-        b=phhMkx+hwLCaac7VGA9CqNxuadJlzT88YQ7zQwdTE1mwqoUI8OmgYtPiolswdahM5D
-         Lpv4JTxwJ7GsKvLDuSpQmV9+Kl47B4cbcXbv1Oo2vaz8ZP1kKVDUhTJm+9fAk7Plusg8
-         1xWP8Ruk4cjlZFfDHsDk3VI1uJR0XNgE/Rj004W1CPwzwLmPJD9RHG/uSBePrMiJ6D68
-         4efEG7ERL8AtW9L6CuB/u0c3VTDV316OPI+mcEYsvJz45ZeV70pC6l5RafsDmY4qVuef
-         TgyShN6yLc3Ty1Ok4L11Ix+Xsl4yKZqtE4ag0vZvqtr48n/gLvlF1H2cIIzFqJHqawQw
-         Qz6g==
-X-Gm-Message-State: AOAM532hQ82piyMs4wxuX1VIBSLLyk27kkbGWyUatVm+ay0pffm61Tt2
-        sD+/GIOn/zzLaNdDT5Fhi+eIMA==
-X-Google-Smtp-Source: ABdhPJxz5ZzHEUl2V6/3xa9U2t9clB99MhMcYtaCm4DNXMMHE9yypsvTo1FVxr4+n5a5iYfstdhHzA==
-X-Received: by 2002:aa7:c799:: with SMTP id n25mr16503045eds.16.1623676919676;
-        Mon, 14 Jun 2021 06:21:59 -0700 (PDT)
-Received: from [172.20.2.21] ([80.71.142.18])
-        by smtp.gmail.com with ESMTPSA id i6sm7270780ejr.68.2021.06.14.06.21.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Jun 2021 06:21:59 -0700 (PDT)
-Subject: Re: [PATCH 1/2] brcmfmac: fix setting of station info chains bitmask
-To:     Arend van Spriel <aspriel@gmail.com>,
+        id S232958AbhFNOgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 14 Jun 2021 10:36:04 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:31808 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232815AbhFNOgE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 14 Jun 2021 10:36:04 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1623681241; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=JjeuJNf5EtjKxKIZCEFmri0qAfcdNBH+gaeNtZ3y2rU=; b=VTuNVnPDQWf++uEZsgYjKuYadeHzHEYMKSVSrir0xl4ubEWkqb5aE8qlcRUi1kkb28nwAMhR
+ rf0rynX5HqmCDwaHmKNv0y+3ikpnaDVzRn0mRMz1/SZvb7rjg56uDOLzWDTSLyueWLz7We/y
+ 5dzwQn/fheewaHIkZedd12pPS8w=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 60c768b7e27c0cc77fea5bb9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 14 Jun 2021 14:33:27
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 279F7C4323A; Mon, 14 Jun 2021 14:33:26 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 793EFC4338A;
+        Mon, 14 Jun 2021 14:33:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 793EFC4338A
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin@pqrs.dk>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
         Wright Feng <wright.feng@infineon.com>,
         Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl\@broadcom.com" 
         <brcm80211-dev-list.pdl@broadcom.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>
+        "SHA-cyfmac-dev-list\@infineon.com" 
+        <SHA-cyfmac-dev-list@infineon.com>
+Subject: Re: [PATCH 1/2] brcmfmac: fix setting of station info chains bitmask
 References: <20210506132010.3964484-1-alsi@bang-olufsen.dk>
-From:   =?UTF-8?Q?Alvin_=c5=a0ipraga?= <alvin@pqrs.dk>
-Message-ID: <ea5a0ce5-1bc9-774c-06be-6ecc284531c5@pqrs.dk>
-Date:   Mon, 14 Jun 2021 15:21:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+        <ea5a0ce5-1bc9-774c-06be-6ecc284531c5@pqrs.dk>
+Date:   Mon, 14 Jun 2021 17:33:16 +0300
+In-Reply-To: <ea5a0ce5-1bc9-774c-06be-6ecc284531c5@pqrs.dk> ("Alvin
+ \=\?utf-8\?Q\?\=C5\=A0ipraga\=22's\?\=
+        message of "Mon, 14 Jun 2021 15:21:57 +0200")
+Message-ID: <87wnqwy0r7.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20210506132010.3964484-1-alsi@bang-olufsen.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Alvin =C5=A0ipraga <alvin@pqrs.dk> writes:
 
-On 5/6/21 3:20 PM, Alvin Šipraga wrote:
-> The sinfo->chains field is a bitmask for filled values in chain_signal
-> and chain_signal_avg, not a count. Treat it as such so that the driver
-> can properly report per-chain RSSI information.
-> 
+> Hello,
+>
+> On 5/6/21 3:20 PM, Alvin =C5=A0ipraga wrote:
+>> The sinfo->chains field is a bitmask for filled values in chain_signal
+>> and chain_signal_avg, not a count. Treat it as such so that the driver
+>> can properly report per-chain RSSI information.
+>>
+>
+> <snip>
+>
+> This is a gentle ping to see if these two patches got lost. I was told
+> on another mailing list recently that mail sent from my work address
+> is finding its way into peoples' junk folders.
+>
+> I will resend the patches in the near future if I don't see any
+> response here.
 
-<snip>
+I just have been busy and heavily backlogged. The patches are in
+patchwork, so no need to resend:
 
-This is a gentle ping to see if these two patches got lost. I was told 
-on another mailing list recently that mail sent from my work address is 
-finding its way into peoples' junk folders.
+https://patchwork.kernel.org/project/linux-wireless/list/?series=3D477877&s=
+tate=3D*
 
-I will resend the patches in the near future if I don't see any response 
-here.
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Thanks,
-Alvin
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
