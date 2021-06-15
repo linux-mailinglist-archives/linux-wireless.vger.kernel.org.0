@@ -2,82 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A2083A81DD
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 16:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E0E3A8295
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 16:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230076AbhFOOKI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Jun 2021 10:10:08 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:21475 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbhFOOKI (ORCPT
+        id S231953AbhFOOVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Jun 2021 10:21:23 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:56535 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231538AbhFOOTn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Jun 2021 10:10:08 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1623766083; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=bL2RsfZYXAV0vII8L/w93w8CwK5JzCrsqfTfhYDVCas=;
- b=SiOvuwRRsIriVzMBlXEdptp4RwmBsGRbzfwNm1ZkiF52AP3v8D8ZTX29gC53fZnJVOe21bDZ
- JXi71KxWQnvbVpj2A1mQ8PPNWsnnJusFwuq7cS5MtaFw8wqre7hDQTSdtT9T6iydEHS0xEY7
- 2UqZ8JkfdtQsaP5c3wvQ6YT1b1o=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 60c8b3f9e27c0cc77f5492e9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 15 Jun 2021 14:06:49
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C5755C43146; Tue, 15 Jun 2021 14:06:48 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B6DB3C433F1;
-        Tue, 15 Jun 2021 14:06:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B6DB3C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 15 Jun 2021 10:19:43 -0400
+Received: from [192.168.0.66] ([92.154.77.116]) by mrelayeu.kundenserver.de
+ (mreue107 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1MsIfc-1l0eLh26BO-00tj9M; Tue, 15 Jun 2021 16:17:31 +0200
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Abinaya Kalaiselvan <akalaise@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+References: <1618483625-31097-1-git-send-email-akalaise@codeaurora.org>
+ <f7ebb34a0c01b1652defa3929559997c9885c045.camel@sipsolutions.net>
+From:   Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
+Subject: Re: [PATCHv2] mac80211: fix NULL ptr dereference during mesh peer
+ connection for non HE devices
+Message-ID: <717ff301-e29c-66d1-c0d7-5efd1b2415ba@green-communications.fr>
+Date:   Tue, 15 Jun 2021 16:17:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wil6210: remove erroneous wiphy locking
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210426212929.83f1de07c2cd.I630a2a00eff185ba0452324b3d3f645e01128a95@changeid>
-References: <20210426212929.83f1de07c2cd.I630a2a00eff185ba0452324b3d3f645e01128a95@changeid>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Harald Arnesen <harald@skogtun.org>,
-        Johannes Berg <johannes.berg@intel.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210615140648.C5755C43146@smtp.codeaurora.org>
-Date:   Tue, 15 Jun 2021 14:06:48 +0000 (UTC)
+In-Reply-To: <f7ebb34a0c01b1652defa3929559997c9885c045.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:YHeQPDNcsDqMpxhvtH+QBRxVYd7e0vSrKXQFyMWbHXXkjjIQbcm
+ wu/D0ZTt1kw9shGwZ2x8R3/QwVuXifofcqr0Vrd9JDzV7wJAvSRaRsWqfU4mpqYRpbaGDA+
+ iBwNuGldVuhaAat6dzRBabwZFZqumU6cqcJ/QoquF5giyC/VVXYeUgOM5KZCNBqaXqBwB4j
+ Pw1B5NUqglnCpzpT+tvNg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:6abhCuWGEXU=:iYmO/H6AS4ROWWox/Gf24W
+ aNMtDdaKUOl3NLCcQiAXKCckMXLPXlAarxbq8PKJrxsL18xaD7p12EB07VwMfTKYmEZAgS/DV
+ /hCucn0uH6KBX8CdDjlagpBhkg+SP3Yh9Bg8w46U+jaotMe293gJOx8ko6iAY9EcHT2bspwMg
+ sJSyslkUPnFzr8V/1uoQU8CQD4ug6i7aZ49HIsXdn1zstYC3WmgGl7LJaV2Zj7eExkh7oCepl
+ CcAU8bapyVDwnEtb5Tv7r8zj300kFk+WgAKJPLRI+YErgyk5YI6K9ofJpdB+ufnbQugqcQjDI
+ RC2hZQLbrYF56wuJmPf/FP3/49tALxFrllz6YomOC/UziaHOv4dGE5ynh/u6iFCtNIHwND1MQ
+ 6KEk7/BqPgXFZ4r+KVp5n18xajdymBs1u46wBsN7Ng7AF2/eFcmL2rv57KhNTpwXyRCEnh/2C
+ 1x57WvKkzFpGZCzCkRsR/slGEVAZsvxO25eQr9yiC2g3MIQn9Yo+9OKAgliR6SNM/TyQPvolh
+ um+efi0S0K091OWDq7yCPp8lDWRVZBCTPGFiyvSAQrf
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> wrote:
-
-> We already hold the wiphy lock in all cases when we get
-> here, so this would deadlock, remove the erroneous locking.
+On 19/04/2021 13:23, Johannes Berg wrote:
+> On Thu, 2021-04-15 at 16:17 +0530, Abinaya Kalaiselvan wrote:
+>> "sband->iftype_data" is not assigned with any value for non HE supported
+>> devices, which causes NULL pointer access during mesh peer connection
+>> in those devices. Fix this by accessing the pointer after HE
+>> capabilities condition check.
+>>
+>> Fixes: 7f7aa94bcaf0 (mac80211: reduce peer HE MCS/NSS to own capabilities)
+>> Signed-off-by: Abinaya Kalaiselvan <akalaise@codeaurora.org>
+>> ---
+>> v2:
+>> * ieee80211_sta_he_cap structure instance is initialized.
+>>
+> How about taking other feedback into account?
 > 
-> Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> johannes
+> 
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-8f78caa2264e wil6210: remove erroneous wiphy locking
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210426212929.83f1de07c2cd.I630a2a00eff185ba0452324b3d3f645e01128a95@changeid/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+I got a crash because of this bug and this patch fixes it. Abinaya, do you plan 
+to submit a version with the indentation fixed, or can I do it ?
