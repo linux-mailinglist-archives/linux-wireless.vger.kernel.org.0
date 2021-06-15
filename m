@@ -2,153 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5D23A8ADF
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 23:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5333F3A8B1B
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 23:31:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231371AbhFOVRW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Jun 2021 17:17:22 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:19049 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbhFOVRW (ORCPT
+        id S229898AbhFOVd0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Jun 2021 17:33:26 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:51909 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229689AbhFOVd0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Jun 2021 17:17:22 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1623791717; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=OJzxyJAbKjQ3t8h2kb3Qwx2K1ZliALJEeolpOxZGi/8=; b=Rnhpk8KKpI1OnNGBGO4gRIxL6rV4FR2U9BsgDtSGgA7jUYjUI0cjas13iz+gnmW1cR3FRyG2
- So3depO9K1PrbVt3xUzal9E7eiqkYFU7Qfbz6oBRtiB2IoTNwT/sZIA8NqCQTdkvuLLzJDSI
- DoxlkCIIX9huyl5McmDLu7m+uGs=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 60c9185551f29e6bae1dcc69 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 15 Jun 2021 21:15:01
- GMT
-Sender: jouni=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A9695C43143; Tue, 15 Jun 2021 21:15:00 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from jouni.codeaurora.org (85-76-78-13-nat.elisa-mobile.fi [85.76.78.13])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jouni)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 464AAC4338A;
-        Tue, 15 Jun 2021 21:14:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 464AAC4338A
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jouni@codeaurora.org
-From:   Jouni Malinen <jouni@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        P Praneesh <ppranees@codeaurora.org>,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>
-Subject: [PATCH 12/12] ath11k: avoid unnecessary lock contention in tx_completion path
-Date:   Wed, 16 Jun 2021 00:14:07 +0300
-Message-Id: <20210615211407.92233-13-jouni@codeaurora.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210615211407.92233-1-jouni@codeaurora.org>
-References: <20210615211407.92233-1-jouni@codeaurora.org>
+        Tue, 15 Jun 2021 17:33:26 -0400
+X-UUID: 19d598751580470d84a2b598ebaf3763-20210616
+X-UUID: 19d598751580470d84a2b598ebaf3763-20210616
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1651506827; Wed, 16 Jun 2021 05:31:19 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs01n2.mediatek.inc (172.21.101.79) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 16 Jun 2021 05:31:17 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 16 Jun 2021 05:31:11 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] mt76: mt7921: fix kernel warning when reset on vif is not sta
+Date:   Wed, 16 Jun 2021 05:31:10 +0800
+Message-ID: <f2fd5eab61a26c43d668cfc06d943f7bf514db36.1623792576.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: P Praneesh <ppranees@codeaurora.org>
+From: Sean Wang <sean.wang@mediatek.com>
 
-Lock is not needed for the readable idr operation, so avoid spin_lock_bh
-for the idr_find() call. No need to disable the bottom half preempt if
-it is already in bottom half context, so modify the spin_lock_bh to
-spin_lock in the data tx completion handler.
+ieee80211_disconnect is only called for the staton mode.
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01734-QCAHKSWPL_SILICONZ-1 v2
+[  714.050429] WARNING: CPU: 1 PID: 382 at net/mac80211/mlme.c:2787
+ieee80211_disconnect+0x108/0x118 [mac80211]
+[  714.116704] Hardware name: MediaTek Asurada rev1 board (DT)
+[  714.122303] Workqueue: mt76 mt7921_mac_reset_work [mt7921e]
+[  714.127877] pstate: 20c00009 (nzCv daif +PAN +UAO)
+[  714.132761] pc : ieee80211_disconnect+0x108/0x118 [mac80211]
+[  714.138430] lr : mt7921_vif_connect_iter+0x28/0x54 [mt7921e]
+[  714.144083] sp : ffffffc0107cbbd0
+[  714.147394] x29: ffffffc0107cbbd0 x28: ffffffb26c9cb928
+[  714.152706] x27: ffffffb26c9cbd98 x26: 0000000000000000
+[  714.158017] x25: 0000000000000003 x24: ffffffb26c9c9c38
+[  714.163328] x23: ffffffb26c9c9c38 x22: ffffffb26c9c8860
+[  714.168639] x21: ffffffb23b940000 x20: ffffffb26c9c8860
+[  714.173950] x19: 0000000000000001 x18: 000000000000b67e
+[  714.179261] x17: 00000000064dd409 x16: ffffffd739cb28f0
+[  714.184571] x15: 0000000000000000 x14: 0000000000000227
+[  714.189881] x13: 0000000000000400 x12: ffffffd73a4eb060
+[  714.195191] x11: 0000000000000000 x10: 0000000000000000
+[  714.200502] x9 : ffffffd703a0a000 x8 : 0000000000000006
+[  714.205812] x7 : 2828282828282828 x6 : ffffffb200440396
+[  714.211122] x5 : 0000000000000000 x4 : 0000000000000004
+[  714.216432] x3 : 0000000000000000 x2 : ffffffb23b940c90
+[  714.221743] x1 : 0000000000000001 x0 : ffffffb23b940c90
+[  714.227054] Call trace:
+[  714.229594]  ieee80211_disconnect+0x108/0x118 [mac80211]
+[  714.234913]  mt7921_vif_connect_iter+0x28/0x54 [mt7921e]
+[  714.240313]  __iterate_interfaces+0xc4/0xdc [mac80211]
+[  714.245541]  ieee80211_iterate_interfaces+0x4c/0x68 [mac80211]
+[  714.251381]  mt7921_mac_reset_work+0x410/0x468 [mt7921e]
+[  714.256696]  process_one_work+0x208/0x3c8
+[  714.260706]  worker_thread+0x23c/0x3e8
+[  714.264456]  kthread+0x140/0x17c
+[  714.267685]  ret_from_fork+0x10/0x18
 
-Co-developed-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
-Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
-Signed-off-by: P Praneesh <ppranees@codeaurora.org>
-Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+Fixes: 0c1ce9884607 ("mt76: mt7921: add wifi reset support")
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/ath/ath11k/dp_tx.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index ab9ccf0eb274..659f9d98bc0c 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -288,19 +288,18 @@ static void ath11k_dp_tx_free_txbuf(struct ath11k_base *ab, u8 mac_id,
- 	struct sk_buff *msdu;
- 	struct ath11k_skb_cb *skb_cb;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index fb4de73df701..0a2df295596a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1269,7 +1269,8 @@ mt7921_vif_connect_iter(void *priv, u8 *mac,
+ 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+ 	struct mt7921_dev *dev = mvif->phy->dev;
  
--	spin_lock_bh(&tx_ring->tx_idr_lock);
- 	msdu = idr_find(&tx_ring->txbuf_idr, msdu_id);
--	if (!msdu) {
-+	if (unlikely(!msdu)) {
- 		ath11k_warn(ab, "tx completion for unknown msdu_id %d\n",
- 			    msdu_id);
--		spin_unlock_bh(&tx_ring->tx_idr_lock);
- 		return;
- 	}
+-	ieee80211_disconnect(vif, true);
++	if (vif->type == NL80211_IFTYPE_STATION)
++		ieee80211_disconnect(vif, true);
  
- 	skb_cb = ATH11K_SKB_CB(msdu);
- 
-+	spin_lock(&tx_ring->tx_idr_lock);
- 	idr_remove(&tx_ring->txbuf_idr, msdu_id);
--	spin_unlock_bh(&tx_ring->tx_idr_lock);
-+	spin_unlock(&tx_ring->tx_idr_lock);
- 
- 	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
- 	dev_kfree_skb_any(msdu);
-@@ -320,12 +319,10 @@ ath11k_dp_tx_htt_tx_complete_buf(struct ath11k_base *ab,
- 	struct ath11k_skb_cb *skb_cb;
- 	struct ath11k *ar;
- 
--	spin_lock_bh(&tx_ring->tx_idr_lock);
- 	msdu = idr_find(&tx_ring->txbuf_idr, ts->msdu_id);
- 	if (unlikely(!msdu)) {
- 		ath11k_warn(ab, "htt tx completion for unknown msdu_id %d\n",
- 			    ts->msdu_id);
--		spin_unlock_bh(&tx_ring->tx_idr_lock);
- 		return;
- 	}
- 
-@@ -334,8 +331,9 @@ ath11k_dp_tx_htt_tx_complete_buf(struct ath11k_base *ab,
- 
- 	ar = skb_cb->ar;
- 
-+	spin_lock(&tx_ring->tx_idr_lock);
- 	idr_remove(&tx_ring->txbuf_idr, ts->msdu_id);
--	spin_unlock_bh(&tx_ring->tx_idr_lock);
-+	spin_unlock(&tx_ring->tx_idr_lock);
- 
- 	if (atomic_dec_and_test(&ar->dp.num_tx_pending))
- 		wake_up(&ar->dp.tx_empty_waitq);
-@@ -584,16 +582,16 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- 			continue;
- 		}
- 
--		spin_lock_bh(&tx_ring->tx_idr_lock);
- 		msdu = idr_find(&tx_ring->txbuf_idr, msdu_id);
- 		if (unlikely(!msdu)) {
- 			ath11k_warn(ab, "tx completion for unknown msdu_id %d\n",
- 				    msdu_id);
--			spin_unlock_bh(&tx_ring->tx_idr_lock);
- 			continue;
- 		}
-+
-+		spin_lock(&tx_ring->tx_idr_lock);
- 		idr_remove(&tx_ring->txbuf_idr, msdu_id);
--		spin_unlock_bh(&tx_ring->tx_idr_lock);
-+		spin_unlock(&tx_ring->tx_idr_lock);
- 
- 		ar = ab->pdevs[mac_id].ar;
- 
+ 	mt76_connac_mcu_uni_add_dev(&dev->mphy, vif, &mvif->sta.wcid, true);
+ 	mt7921_mcu_set_tx(dev, vif);
 -- 
 2.25.1
 
