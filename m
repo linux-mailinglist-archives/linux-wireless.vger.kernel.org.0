@@ -2,79 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 478A93A7C46
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 12:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 789CD3A7E6C
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 14:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231643AbhFOKqC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Jun 2021 06:46:02 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:40104 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231604AbhFOKqC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Jun 2021 06:46:02 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1623753838; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=eJHUJ3XchNapb61OFLx4Bj9dQxkJA9MLe8GGlEFuNL8=;
- b=YlQDSLNRXGyJqPlrJJI3N58V4+OkgdPnTqJ7cVqDd92XTuZbMwDxbcs/PsJqie7w4I+kyttM
- lkWkqEjJ20b49Sp47KankL2+ZA69EN5i+3PXLlyFgk1cS226/ZlR9g9WVZ24S9gJ/mXRzZXr
- WmsXAnDYyZ+N2d/F3XifiLylL7k=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 60c88454e27c0cc77f2a03da (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 15 Jun 2021 10:43:32
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 670B1C433D3; Tue, 15 Jun 2021 10:43:31 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 20EDBC4338A;
-        Tue, 15 Jun 2021 10:43:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 20EDBC4338A
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S230235AbhFOMza (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Jun 2021 08:55:30 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:12512 "EHLO
+        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230079AbhFOMz1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Jun 2021 08:55:27 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15FCqEAm019421;
+        Tue, 15 Jun 2021 12:53:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=aploqCIcpWnVsbEPSdiKHfqPNxfuEd4QgUs/dMcsioY=;
+ b=Oiu7wYjfIxRn3GpEO4DYiYX1U1PsPe+dLI+bzAR1bv4Cm+rc+JEMfMwa0L2FWb5NaIbA
+ zTal2kEDdD+2J7gRmWP0c59E2PMAss82INnT73WhQ/JcI6Mpr8W3it78Vf8REyLbg8+E
+ 2bvFXqOPQ3crP4LD324oN7KjYQ9I5Ah/2RKubHRqCUG6OU6+oWX/dWK5AOE83D5oz7eK
+ f+BmVw2c5gl3ecen0gSeBYHNBItt+XYzWuUEqaGldHFJXtrmDM70RuB6cSSGq/3wB8r4
+ C3NyktOgu2MMcmfPO5qDN9fa1Bdnz/S6Xtkt322hjNLXcavce2n3g5WV1l/TnjFNj914 +A== 
+Received: from oracle.com (userp3030.oracle.com [156.151.31.80])
+        by mx0b-00069f02.pphosted.com with ESMTP id 395x06gjsf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 15 Jun 2021 12:53:11 +0000
+Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
+        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 15FCrAIf125847;
+        Tue, 15 Jun 2021 12:53:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3030.oracle.com with ESMTP id 394j1ufyft-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 15 Jun 2021 12:53:10 +0000
+Received: from userp3030.oracle.com (userp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 15FCp1PM121957;
+        Tue, 15 Jun 2021 12:53:09 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 394j1ufyfa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 15 Jun 2021 12:53:09 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 15FCr7dL021533;
+        Tue, 15 Jun 2021 12:53:07 GMT
+Received: from kadam (/41.212.42.34)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 15 Jun 2021 05:53:07 -0700
+Date:   Tue, 15 Jun 2021 15:52:59 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Hans deGoede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] brcmfmac: fix a loop exit condition
+Message-ID: <20210615125259.GB1901@kadam>
+References: <YIKzmoMiTdToaIyP@mwanda>
+ <20210615102656.DBB04C43143@smtp.codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] brcmsmac: Remove the repeated declaration
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1621844443-38290-1-git-send-email-zhangshaokun@hisilicon.com>
-References: <1621844443-38290-1-git-send-email-zhangshaokun@hisilicon.com>
-To:     Shaokun Zhang <zhangshaokun@hisilicon.com>
-Cc:     <linux-wireless@vger.kernel.org>,
-        Shaokun Zhang <zhangshaokun@hisilicon.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210615104331.670B1C433D3@smtp.codeaurora.org>
-Date:   Tue, 15 Jun 2021 10:43:31 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210615102656.DBB04C43143@smtp.codeaurora.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-ORIG-GUID: OqLDt2x4tzF4SkafUwDhpbc6VAgGyEGf
+X-Proofpoint-GUID: OqLDt2x4tzF4SkafUwDhpbc6VAgGyEGf
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Shaokun Zhang <zhangshaokun@hisilicon.com> wrote:
-
-> Function 'brcms_c_stf_phy_txant_upd' are declared twice, remove
-> the repeated declaration.
+On Tue, Jun 15, 2021 at 10:26:56AM +0000, Kalle Valo wrote:
+> Dan Carpenter <dan.carpenter@oracle.com> wrote:
 > 
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Signed-off-by: Shaokun Zhang <zhangshaokun@hisilicon.com>
+> > This code is supposed to loop over the whole board_type[] string.  The
+> > current code kind of works just because ascii values start 97 and the
+> > string is likely shorter than that so it will break when we hit the NUL
+> > terminator.  But really the condition should be "i < len" instead of
+> > "i < board_type[i]".
+> > 
+> > Fixes: 29e354ebeeec ("brcmfmac: Transform compatible string for FW loading")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+> 
+> There was talk about v2, but I don't see it in the patchwork.
+> 
 
-Patch applied to wireless-drivers-next.git, thanks.
+Ah, crap.  I started to debug Smatch to find out why it wasn't warning
+about some of these bugs and I got a bit carried away writing Smatch
+code and forgot to come back to this.
 
-5a8e5dae2a22 brcmsmac: Remove the repeated declaration
+I will send it tomorrow.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1621844443-38290-1-git-send-email-zhangshaokun@hisilicon.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+regards,
+dan carpenter
