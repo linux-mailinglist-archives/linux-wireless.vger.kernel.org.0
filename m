@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B773A80A5
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 15:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A1B83A80D0
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 15:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231683AbhFONl2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Jun 2021 09:41:28 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:64010 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231500AbhFONlF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Jun 2021 09:41:05 -0400
+        id S231806AbhFONmM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Jun 2021 09:42:12 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:59875 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231788AbhFONlt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Jun 2021 09:41:49 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1623764340; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1623764384; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=lqqfvWYiXL+6MJgxBWggWqJA+H9Cc5/40wYC5Wou4AM=;
- b=v0flSET5V2AKpMBdORNFWSiCCWHY8tVOZ8orxhlGz/F4hjzQm5Dwy0P6nzpd6ZXphu0IFKpT
- F//mXnGS5+fb4b8UJ68QKTZtmYxMdQHuL4EvVwkAUdIDFoDfshNWy4CtilN6bT3p9RY6ppl6
- 4MoYC3ttJh7vByFRaYoLIVOqBHQ=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ Content-Type: Sender; bh=9JAPvoFh2W6yNK07dOvGWNDxKnIUNbVDxB1h5jwB69w=;
+ b=U8kggiWAvqgUiu498heATVOKZbEVVbOPI3XC1tFmaT6NpK78iV0vXFgWn4GR2CiO3404fHjo
+ YSuTD57KSiQ17oAR4tDMSZambcSUSrf2H0UuZZFtS5rwxsnxj9MuaLTgK0IgwyAC+I1z003V
+ zDE4Up/O8QOHsxjcfzCozhJkK1Q=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 60c8ad5ae27c0cc77f223d6b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 15 Jun 2021 13:38:34
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 60c8ad86b6ccaab75328e981 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 15 Jun 2021 13:39:18
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C74A8C4360C; Tue, 15 Jun 2021 13:38:33 +0000 (UTC)
+        id B19D2C43146; Tue, 15 Jun 2021 13:39:18 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,44 +39,45 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DAB44C433F1;
-        Tue, 15 Jun 2021 13:38:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DAB44C433F1
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3217EC43151;
+        Tue, 15 Jun 2021 13:39:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3217EC43151
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next] cw1200: add missing MODULE_DEVICE_TABLE
+Subject: Re: [10/11] wl1251: Fix missing function name in comments
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1620788714-14300-1-git-send-email-zou_wei@huawei.com>
-References: <1620788714-14300-1-git-send-email-zou_wei@huawei.com>
-To:     Zou Wei <zou_wei@huawei.com>
-Cc:     <pizza@shaftnet.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Zou Wei <zou_wei@huawei.com>
+In-Reply-To: <20210517050141.61488-11-shenyang39@huawei.com>
+References: <20210517050141.61488-11-shenyang39@huawei.com>
+To:     Yang Shen <shenyang39@huawei.com>
+Cc:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Yang Shen" <shenyang39@huawei.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210615133833.C74A8C4360C@smtp.codeaurora.org>
-Date:   Tue, 15 Jun 2021 13:38:33 +0000 (UTC)
+Message-Id: <20210615133918.B19D2C43146@smtp.codeaurora.org>
+Date:   Tue, 15 Jun 2021 13:39:18 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zou Wei <zou_wei@huawei.com> wrote:
+Yang Shen <shenyang39@huawei.com> wrote:
 
-> This patch adds missing MODULE_DEVICE_TABLE definition which generates
-> correct modalias for automatic loading of this driver when it is built
-> as an external module.
+> Fixes the following W=1 kernel build warning(s):
 > 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Zou Wei <zou_wei@huawei.com>
+>  drivers/net/wireless/ti/wl1251/cmd.c:15: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>  drivers/net/wireless/ti/wl1251/cmd.c:62: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>  drivers/net/wireless/ti/wl1251/cmd.c:103: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>  drivers/net/wireless/ti/wl1251/cmd.c:141: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+> 
+> Signed-off-by: Yang Shen <shenyang39@huawei.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-dd778f89225c cw1200: add missing MODULE_DEVICE_TABLE
+c362dd84013e wl1251: Fix missing function name in comments
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1620788714-14300-1-git-send-email-zou_wei@huawei.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210517050141.61488-11-shenyang39@huawei.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
