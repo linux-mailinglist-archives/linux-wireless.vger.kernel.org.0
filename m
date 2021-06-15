@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CCDE3A8044
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 15:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FFBD3A803E
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 15:35:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbhFONhm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Jun 2021 09:37:42 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:63350 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231235AbhFONhY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Jun 2021 09:37:24 -0400
+        id S231519AbhFONhV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Jun 2021 09:37:21 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:12095 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230469AbhFONhR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 15 Jun 2021 09:37:17 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1623764120; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1623764112; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=pnBlFlGA1t0ltpP51MqIm6PlzT9E15l1xJKmxIS2uqU=;
- b=wz4BPg6gKm7Qyw8DShFzy6LOIz0oyc0/g4R9P/YNmDPBNnQ1N/P31SSeA0GWq9z5ZSZpat+q
- RLZKJmdI082MmYbJkgmVBWEp6/Ta/G7FdLt2djmJbkekQNZFUHrgPDR/DnmroN43R+Y0bJsO
- JmJcb1R39myixTG3qdqFOfLY2Ek=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=UKtsXMpVK9SiGqVXzkLqYeEov0vtg1GMx8MgB0t1nN0=;
+ b=diI9Gt3KjcXC2gmqFiJyvzm4I1pw+O+G7JsRC46OMy1D0WAMNVKkOVIA9ussJphXU9qyv/sE
+ wf8X+kacCfnKl4D6Wmo6Ioerkn2wuknGwgXXy16qAAGsgtggsRxDXs+fMrjN00TfNyN6+OI1
+ RT7ZS0eO4HYfIrW/kPKXdaVHv2M=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60c8ac69abfd22a3dc8cf588 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 15 Jun 2021 13:34:33
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 60c8ac88ed59bf69ccf64754 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 15 Jun 2021 13:35:04
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B73AEC43217; Tue, 15 Jun 2021 13:34:32 +0000 (UTC)
+        id 1900CC4314A; Tue, 15 Jun 2021 13:35:03 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,44 +40,63 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B14FDC433F1;
-        Tue, 15 Jun 2021 13:34:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B14FDC433F1
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E82F4C43143;
+        Tue, 15 Jun 2021 13:34:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E82F4C43143
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: rndis_wlan: simplify is_associated()
+Subject: Re: [PATCH v2] ipw2x00: Minor documentation update
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210423094940.1593-1-zuoqilin1@163.com>
-References: <20210423094940.1593-1-zuoqilin1@163.com>
-To:     zuoqilin1@163.com
-Cc:     jussi.kivilinna@iki.fi, davem@davemloft.net, kuba@kernel.org,
+In-Reply-To: <1619348088-6887-1-git-send-email-jrdr.linux@gmail.com>
+References: <1619348088-6887-1-git-send-email-jrdr.linux@gmail.com>
+To:     Souptick Joarder <jrdr.linux@gmail.com>
+Cc:     stas.yakovlev@gmail.com, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, zuoqilin <zuoqilin@yulong.com>
+        linux-kernel@vger.kernel.org,
+        Souptick Joarder <jrdr.linux@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210615133432.B73AEC43217@smtp.codeaurora.org>
-Date:   Tue, 15 Jun 2021 13:34:32 +0000 (UTC)
+Message-Id: <20210615133504.1900CC4314A@smtp.codeaurora.org>
+Date:   Tue, 15 Jun 2021 13:35:03 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-zuoqilin1@163.com wrote:
+Souptick Joarder <jrdr.linux@gmail.com> wrote:
 
-> From: zuoqilin <zuoqilin@yulong.com>
+> Kernel test robot throws below warning ->
 > 
-> It is not necessary to define the variable ret to receive
-> the return value of the get_bssid() method.
+> drivers/net/wireless/intel/ipw2x00/ipw2100.c:5359: warning: This comment
+> starts with '/**', but isn't a kernel-doc comment. Refer
+> Documentation/doc-guide/kernel-doc.rst
 > 
-> Signed-off-by: zuoqilin <zuoqilin@yulong.com>
+> Minor update in documentation.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Acked-by: Randy Dunlap <rdunlap@infradead.org>
 
-Patch applied to wireless-drivers-next.git, thanks.
+Fails to apply, please rebase.
 
-ad4d74cd8177 rndis_wlan: simplify is_associated()
+Recorded preimage for 'drivers/net/wireless/intel/ipw2x00/ipw2100.c'
+error: Failed to merge in the changes.
+hint: Use 'git am --show-current-patch' to see the failed patch
+Applying: ipw2x00: Minor documentation update
+Using index info to reconstruct a base tree...
+M	drivers/net/wireless/intel/ipw2x00/ipw2100.c
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/intel/ipw2x00/ipw2100.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/intel/ipw2x00/ipw2100.c
+Patch failed at 0001 ipw2x00: Minor documentation update
+
+Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210423094940.1593-1-zuoqilin1@163.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/1619348088-6887-1-git-send-email-jrdr.linux@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
