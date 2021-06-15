@@ -2,101 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 283033A8319
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 16:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3493D3A8766
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jun 2021 19:18:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231228AbhFOOoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 15 Jun 2021 10:44:34 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:50505 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231250AbhFOOod (ORCPT
+        id S229898AbhFORUI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 15 Jun 2021 13:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229494AbhFORUH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 15 Jun 2021 10:44:33 -0400
-Received: from [192.168.0.66] ([92.154.77.116]) by mrelayeu.kundenserver.de
- (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MCKO4-1m2TwT2tHu-009Qet; Tue, 15 Jun 2021 16:42:23 +0200
-To:     Luca Coelho <luca@coelho.fi>, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-References: <20201129153055.1971298-1-luca@coelho.fi>
- <iwlwifi.20201129172929.290fa5c5568a.Ic5732aa64de6ee97ae3578bd5779fc723ba489d1@changeid>
-From:   Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
-Subject: Re: [PATCH 09/13] cfg80211: Save the regulatory domain when setting
- custom regulatory
-Message-ID: <e8e6afa6-275e-2cc5-6351-e1ed5eb0e0af@green-communications.fr>
-Date:   Tue, 15 Jun 2021 16:42:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Tue, 15 Jun 2021 13:20:07 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7F8C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Jun 2021 10:18:02 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id h9so18945539oih.4
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Jun 2021 10:18:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RwNx+DWFt6NNdGSxWQzHJjFVZVQ/XJYkZRUEXCZIYHk=;
+        b=RUZvQpey2LpbHYX4a5zfm5XX9WX7G4+MwqUTOgxNJY7fHoY+kPL4EGAaupGCJZM/M2
+         vJ7j3+a0kBJUhvhbwm30UR/YYRyZNblFjqZAnSDDCZLIUDYWp4M0cnQ76tuMiizIzc4d
+         JjfykEYKErjeE9KQChscveDKf6mhNXHy4hu0c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RwNx+DWFt6NNdGSxWQzHJjFVZVQ/XJYkZRUEXCZIYHk=;
+        b=BFxtMvnVA7UpIzhbKQaTXBNX8Np0kk3nRKbPNePCvFWdSwrUdmfXNey623jrCc+oAT
+         78d19kov+oPZU8F90OwoOVl+aadi9GLMRpzPyqymQClv9zBlo4NxAz0hOPBtT1iGZ6Ut
+         SSYIS7gaINbumv+idr7h3sLgsEHieIvPLaXkJECJMShLvCMC1WvmGUeejywirgtgMiaS
+         hpnhNaHbAYOP0PXNk35rThflg5+7XfADOPx8JWoWsyNy3W6v2KD8dWKsPa8OkemEYoXq
+         99neDbTvUh+s8PFVp1IREy4gFT3K2FjNDFN1Zl7/GD6XR5ByrwgPXHQy1Ws9WmXe2ByE
+         idaA==
+X-Gm-Message-State: AOAM530xZothrK3s5aTDUQQrAiB476iYC6Zvio2WgZZE33p+I7GhE437
+        BYn/df1zWPDTxORdiKeymU91Oe+nf2wfUw==
+X-Google-Smtp-Source: ABdhPJyZo5Ybxo14UV/iOeDqrkz40N9YhB+dNx0RP+x9SD3qP01po2YVHchZFtDVILqm3y2qEIIlcQ==
+X-Received: by 2002:a05:6808:6d1:: with SMTP id m17mr3879498oih.34.1623777481287;
+        Tue, 15 Jun 2021 10:18:01 -0700 (PDT)
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com. [209.85.210.45])
+        by smtp.gmail.com with ESMTPSA id n7sm3879268oom.37.2021.06.15.10.18.00
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Jun 2021 10:18:00 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id i12-20020a05683033ecb02903346fa0f74dso15011379otu.10
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Jun 2021 10:18:00 -0700 (PDT)
+X-Received: by 2002:a9d:5f11:: with SMTP id f17mr240707oti.229.1623777479566;
+ Tue, 15 Jun 2021 10:17:59 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <iwlwifi.20201129172929.290fa5c5568a.Ic5732aa64de6ee97ae3578bd5779fc723ba489d1@changeid>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:oqaWP9lyG64KMV174V5ceL48pUbF5DHVhBUG+6JzwQ0mMfR76kB
- pJCvCg+oXD1eVVk1A/UPp3/G1uj+P6AgIxk7Le8n7uzao0XJte2tHhERIbTA0sdxcmFDvJ7
- 537TyANe+JcYROdjOoBBcSgpGSuFzcdjJWJQDHLD53ezTrmnx3h4tpfgPmoO91gAPzoZHJb
- xgE4y8v5B6qErBlkhy9ng==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9GPsCaF3kAM=:NJgKcbj0b3PvNSsNKhpgbL
- Qc0V9TjSmxKqHbQER8SuG1wMl9DHx2xwLIBJhC+AEifeagQqxkKXawbkYiLgotoBvFhZ7fnOf
- 9uyZKXmWgDwK0kU1hGV/hogVmfAm89ibaXM80Qp4dvq1344F+N6r2O0nOpdYuls54Am0ZPpVE
- EQHMHj44VMxpLilfSrOh/hvoK3EUcNsPjafTfanuGqkN6qpJG+5+tnz4EuTUVAX8QbMNa/Y9e
- ZCg2cL9Gsh8O9RWBERziNI3S7tXcJ0ttH5uy1wqxxvGv1B8xFG0Z8VcrM/museSS/9Fcx9ot5
- 5Y3FZAI5I+wVmkMCdYFA8Ma+9xZoDpgWO90i8+uKMBrvXq58rjBBAuBNVMcCtTvWiGgPldesM
- 2lJNkI44SV0Q4qm1RCX9jtwBUog6fgT9cePwpm9KwPGZre9A+s4OMJGltGfZi5WqX7cetlabB
- +JK6CWJgt5kkCR37+WRhNEEKBt2vAoP0KQy3TPvAnaLdLa47ZrM1CyAjejDQIYva2pHze2yW9
- x+TFjpPaV4sLAIOIjxQ901GBq2ASTzz7J2dNWE6JefL
+References: <20210521024834.8354-1-yguoaz@cse.ust.hk> <20210615133102.7E774C43145@smtp.codeaurora.org>
+In-Reply-To: <20210615133102.7E774C43145@smtp.codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 15 Jun 2021 10:17:47 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXNQkZvnCezWS6Y7e7SPO-u+9fY23g4VVpHC-Z5HC55Nig@mail.gmail.com>
+Message-ID: <CA+ASDXNQkZvnCezWS6Y7e7SPO-u+9fY23g4VVpHC-Z5HC55Nig@mail.gmail.com>
+Subject: Re: [PATCH] mwifiex: protect against divide by zero in mwifiex_set_ibss_params
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Yiyuan GUO <yguoaz@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        amit karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Yiyuan GUO <yguoaz@cse.ust.hk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 29/11/2020 16:30, Luca Coelho wrote:
-> From: Ilan Peer <ilan.peer@intel.com>
-> 
-> When custom regulatory was set, only the channels setting was updated, but
-> the regulatory domain was not saved. Fix it by saving it.
-> 
-> Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> ---
->   net/wireless/reg.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-> index a04fdfb35f07..094492b62f8a 100644
-> --- a/net/wireless/reg.c
-> +++ b/net/wireless/reg.c
-> @@ -2547,6 +2547,7 @@ static void handle_band_custom(struct wiphy *wiphy,
->   void wiphy_apply_custom_regulatory(struct wiphy *wiphy,
->   				   const struct ieee80211_regdomain *regd)
->   {
-> +	const struct ieee80211_regdomain *new_regd, *tmp;
->   	enum nl80211_band band;
->   	unsigned int bands_set = 0;
->   
-> @@ -2566,6 +2567,13 @@ void wiphy_apply_custom_regulatory(struct wiphy *wiphy,
->   	 * on your device's supported bands.
->   	 */
->   	WARN_ON(!bands_set);
-> +	new_regd = reg_copy_regd(regd);
-> +	if (IS_ERR(new_regd))
-> +		return;
-> +
-> +	tmp = get_wiphy_regdom(wiphy);
-> +	rcu_assign_pointer(wiphy->regd, new_regd);
-> +	rcu_free_regdom(tmp);
->   }
->   EXPORT_SYMBOL(wiphy_apply_custom_regulatory);
->   
-> 
+On Tue, Jun 15, 2021 at 6:31 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Yiyuan GUO <yguoaz@gmail.com> wrote:
+>
+> > In function mwifiex_set_ibss_params, the variable index may remain
+> > zero if it is never altered inside the loop, leading to a potential
+> > divide by zero problem.
+> >
+> > Signed-off-by: Yiyuan GUO <yguoaz@cse.ust.hk>
+>
+> Brian explains in the report why the code is ok:
+> https://bugzilla.kernel.org/show_bug.cgi?id=212993#c1
 
-Hello,
+Ah, forgot there was a patch for this too. FWIW, it's probably ok to
+submit such a patch, if just for safety's sake (future refactoring?).
+I just didn't figure it deserved an open "bug" entry, when it's
+clearly not one.
 
-This patch somehow appears to break ath9k's eeprom hints and restrict it to the 
-world regulatory domain on v5.12.10.
+> Patch set to Rejected.
 
-ath9k calls wiphy_apply_custom_regulatory() with its own kind of world 
-regulatory domain, before it decodes hints from the eeprom and uses 
-regulatory_hint() to request a specific alpha2.
+That's fine with me.
 
-With this patch, applying the hint fails because wiphy->regd is already set.
-If i revert this patch, ath9k works again.
+Thanks,
+Brian
