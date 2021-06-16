@@ -2,269 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7C93AA550
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jun 2021 22:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 077743AA573
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jun 2021 22:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233495AbhFPUan (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Jun 2021 16:30:43 -0400
-Received: from mga09.intel.com ([134.134.136.24]:3816 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233470AbhFPUam (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Jun 2021 16:30:42 -0400
-IronPort-SDR: qS/SHAbDpf+w8HbNO4USH7nbkVncPhlDoiJU35fF9AiTMNE+3629apNH7I+Skgfkx962bOzerX
- mTYw1j94N24Q==
-X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="206209971"
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
-   d="scan'208";a="206209971"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2021 13:28:34 -0700
-IronPort-SDR: Y2/OuSN21XHf7kaS9WlFR1K4rEEhtwiBb/TPTXHrGn78PoIz5kNL1AHx8Jqp70w+TRe1whiMtk
- 17Gp85G2GS0w==
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
-   d="scan'208";a="450755948"
-Received: from lmakrabi-mobl.ger.corp.intel.com (HELO egrumbac-mobl1.lan) ([10.251.175.194])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2021 13:28:33 -0700
-From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH v2] cfg80211: expose the rfkill device to the low level driver
-Date:   Wed, 16 Jun 2021 23:28:26 +0300
-Message-Id: <20210616202826.9833-1-emmanuel.grumbach@intel.com>
+        id S233616AbhFPUmC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Jun 2021 16:42:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233607AbhFPUmB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 16 Jun 2021 16:42:01 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52A1DC06175F
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jun 2021 13:39:55 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id o10-20020a17090aac0ab029016e92770073so2488800pjq.5
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jun 2021 13:39:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SmhdhmsA0X75weRybbZNoVh+EvQd+Iz0Fl+AidPXRmE=;
+        b=Vh7QJ+xnoo0RqR0VyML2hyVWCrhNzuAsvU1JJgd7G8QEQltjCNvn+cChGunibWPm6J
+         6owMLGuymcCRj8MsFtQn+PgGer4z3Er9UtFUsuNBe7FqlMxDIMoSJiMwACAOEg1ufilL
+         8IcOd3EzsrnBef974H6rlM6Iq1UcxiBBF0x8I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SmhdhmsA0X75weRybbZNoVh+EvQd+Iz0Fl+AidPXRmE=;
+        b=LVDGNwmpjY2u66ZZt+XPl4IHVTHIKE5Qdcu21Ll6lDtpl76/ojXufSnpePTwKzIvM/
+         i+CCM+w7Hl1EMgGb7jG0sFdknCsWN48pjQfqMEaaIOeM6CZSK52GdTyLtYWQgtWXbjH4
+         J6INZB7sg+0UCdZuVtThiQ+haE4pTjSGUZermfaJqexlqJmRtiiUqqTQUGr3XnscvCre
+         OzkTQ6b6X/51bZneciO2Ty+yrnvwHiS/EyTdc+g6IQOla1mSkFnWjDzzf8j7lKtwEWDo
+         GjXd+zE58oYLwCB6NI1hzeFeMIiN4ND5y7koLlWLMUQC/K+SvAMeCI3eRWoF+z6OT1ka
+         ZdvA==
+X-Gm-Message-State: AOAM530WMEKY85kZxTJ9mKIesY78oj9DP7aQR+3EAw/z9iWodnSLZhHP
+        SgukTnKaN5Jc2ESJsk5tPlTeBA==
+X-Google-Smtp-Source: ABdhPJzrVDeH8lypdMacFxkxdycYjzThxIc72HqgLirIbDGhLTUlwbwroCrVf81eN8/yxl8nHgx/eg==
+X-Received: by 2002:a17:90a:b284:: with SMTP id c4mr1722095pjr.213.1623875994939;
+        Wed, 16 Jun 2021 13:39:54 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id j7sm7866009pjf.0.2021.06.16.13.39.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jun 2021 13:39:54 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH] orinoco: Avoid field-overflowing memcpy()
+Date:   Wed, 16 Jun 2021 13:39:51 -0700
+Message-Id: <20210616203952.1248910-1-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210609161520.109824-1-emmanuel.grumbach@intel.com>
-References: <20210609161520.109824-1-emmanuel.grumbach@intel.com>
 MIME-Version: 1.0
+X-Patch-Hashes: v=1; h=sha256; g=89de090dea0239b1bd78c9c46e85fd796dd40c70; i=pw9pIO5cSvehAPXOYHpT36oPIsjxZgLBBPkjzgwo04A=; m=ULgPUYgopMLRjuXTD0/UgUsfNvLp6QV22Z7i5a71D2c=; p=8N134GX410DnBkaZCpurE9BNvmX2qXrE1f/VxCDCm1I=
+X-Patch-Sig: m=pgp; i=keescook@chromium.org; s=0x0x8972F4DFDC6DC026; b=iQIzBAABCgAdFiEEpcP2jyKd1g9yPm4TiXL039xtwCYFAmDKYZcACgkQiXL039xtwCYpqBAAhNs iU92ddJ1SHdKbx0as+XPYDkLjrDbdPDcjvyPC2KeBTMXSHBRa0hLjgR3gmd4oJrA9ekBvvmsM5yVE NfQmh9veoO7YKYRDSQ7xMZa380xYT52+y0DrJIy45ibUIpPU8Z4+17QxyTDZ4oqtTNLs63FuRJch+ DsFzi9E1qVcRrGKk/R3UbNn+K4ejXMOdMQrfoAFPKXG6NkESileQv7IV/eo4UUmYjpPhDH9kEqJW8 8bNmZ6lTUao3iWvnFvqE6UwDdojEIOnFiYtVRwnvqB0gb/m5wDjAndT/BvBROmmXMm75SdcvTeWDy tzsUtRMKsX72qOebrUwNOY+eiFUwXnjxrKjTNeOnLyV8GmoSevoHdcSIFgKTjRuv0qdZq2iZL683z /VhWjP9OZKSGq/P8hAsKd8hetXzYdHMGmCOv6stE6eGdSlHUHQNYmfgdwH+fDKmzFjtquuXvfjCix F6kGTxgdjd5lLKRuKFbiHU5Uf0lj5HMbTaiyX1E4oOj0amSlbenbYfyb72TqMj5dJa17INcVNLTGR /XKWMdZJ/hRZ9rtJjA5ShkBN9YUSP3XQx5MC4JZxIKZ+/2eIUashdw10+xek7Y4dlCACP7Xq7vo9l ENwkwBPSuoYm48jBkGTeII20I/hZ5ogLPIu/chTReK7tDmipf7NGjfh/7XWNA7c8=
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This will allow the low level driver to query the rfkill
-state.
+In preparation for FORTIFY_SOURCE performing compile-time and run-time
+field bounds checking for memcpy(), memmove(), and memset(), avoid
+intentionally writing across neighboring array fields.
 
-v2: Fix the compilation issue
-Reported-by: kernel test robot <lkp@intel.com>
+Validate the expected key size and introduce a wrapping structure
+to use as the multi-field memcpy() destination so that overflows
+can be correctly detected.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- include/net/cfg80211.h     |  9 ++++++++-
- net/wireless/core.c        | 34 +++++++++++++---------------------
- net/wireless/core.h        |  3 +--
- net/wireless/nl80211.c     |  4 ++--
- net/wireless/wext-compat.c |  6 +++---
- 5 files changed, 27 insertions(+), 29 deletions(-)
+ drivers/net/wireless/intersil/orinoco/hw.c   | 18 +++++++++++-------
+ drivers/net/wireless/intersil/orinoco/hw.h   |  5 +++--
+ drivers/net/wireless/intersil/orinoco/wext.c |  2 +-
+ 3 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 5224f885a99a..31ad04c78fb6 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -22,6 +22,7 @@
- #include <linux/if_ether.h>
- #include <linux/ieee80211.h>
- #include <linux/net.h>
-+#include <linux/rfkill.h>
- #include <net/regulatory.h>
- 
- /**
-@@ -4945,6 +4946,7 @@ struct wiphy_iftype_akm_suites {
-  *	configuration through the %NL80211_TID_CONFIG_ATTR_RETRY_SHORT and
-  *	%NL80211_TID_CONFIG_ATTR_RETRY_LONG attributes
-  * @sar_capa: SAR control capabilities
-+ * @rfkill: a pointer to the rfkill structure
+diff --git a/drivers/net/wireless/intersil/orinoco/hw.c b/drivers/net/wireless/intersil/orinoco/hw.c
+index 2c7adb4be100..0aea35c9c11c 100644
+--- a/drivers/net/wireless/intersil/orinoco/hw.c
++++ b/drivers/net/wireless/intersil/orinoco/hw.c
+@@ -988,15 +988,18 @@ int __orinoco_hw_setup_enc(struct orinoco_private *priv)
+  * tsc must be NULL or up to 8 bytes
   */
- struct wiphy {
- 	struct mutex mtx;
-@@ -5087,6 +5089,8 @@ struct wiphy {
- 
- 	const struct cfg80211_sar_capa *sar_capa;
- 
-+	struct rfkill *rfkill;
-+
- 	char priv[] __aligned(NETDEV_ALIGN);
- };
- 
-@@ -6661,7 +6665,10 @@ void wiphy_rfkill_start_polling(struct wiphy *wiphy);
-  * wiphy_rfkill_stop_polling - stop polling rfkill
-  * @wiphy: the wiphy
-  */
--void wiphy_rfkill_stop_polling(struct wiphy *wiphy);
-+static inline void wiphy_rfkill_stop_polling(struct wiphy *wiphy)
-+{
-+	rfkill_pause_polling(wiphy->rfkill);
-+}
- 
- /**
-  * DOC: Vendor commands
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 6fbf7537faf5..bd1edec19cfa 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -532,11 +532,11 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
- 	wiphy_net_set(&rdev->wiphy, &init_net);
- 
- 	rdev->rfkill_ops.set_block = cfg80211_rfkill_set_block;
--	rdev->rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
--				   &rdev->wiphy.dev, RFKILL_TYPE_WLAN,
--				   &rdev->rfkill_ops, rdev);
-+	rdev->wiphy.rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
-+					  &rdev->wiphy.dev, RFKILL_TYPE_WLAN,
-+					  &rdev->rfkill_ops, rdev);
- 
--	if (!rdev->rfkill) {
-+	if (!rdev->wiphy.rfkill) {
- 		wiphy_free(&rdev->wiphy);
- 		return NULL;
- 	}
-@@ -993,10 +993,10 @@ int wiphy_register(struct wiphy *wiphy)
- 	rdev->wiphy.registered = true;
- 	rtnl_unlock();
- 
--	res = rfkill_register(rdev->rfkill);
-+	res = rfkill_register(rdev->wiphy.rfkill);
- 	if (res) {
--		rfkill_destroy(rdev->rfkill);
--		rdev->rfkill = NULL;
-+		rfkill_destroy(rdev->wiphy.rfkill);
-+		rdev->wiphy.rfkill = NULL;
- 		wiphy_unregister(&rdev->wiphy);
- 		return res;
- 	}
-@@ -1012,18 +1012,10 @@ void wiphy_rfkill_start_polling(struct wiphy *wiphy)
- 	if (!rdev->ops->rfkill_poll)
- 		return;
- 	rdev->rfkill_ops.poll = cfg80211_rfkill_poll;
--	rfkill_resume_polling(rdev->rfkill);
-+	rfkill_resume_polling(wiphy->rfkill);
- }
- EXPORT_SYMBOL(wiphy_rfkill_start_polling);
- 
--void wiphy_rfkill_stop_polling(struct wiphy *wiphy)
--{
--	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
--
--	rfkill_pause_polling(rdev->rfkill);
--}
--EXPORT_SYMBOL(wiphy_rfkill_stop_polling);
--
- void wiphy_unregister(struct wiphy *wiphy)
+ int __orinoco_hw_set_tkip_key(struct orinoco_private *priv, int key_idx,
+-			      int set_tx, const u8 *key, const u8 *rsc,
+-			      size_t rsc_len, const u8 *tsc, size_t tsc_len)
++			      int set_tx, const u8 *key, size_t key_len,
++			      const u8 *rsc, size_t rsc_len,
++			      const u8 *tsc, size_t tsc_len)
  {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-@@ -1035,8 +1027,8 @@ void wiphy_unregister(struct wiphy *wiphy)
- 		wiphy_unlock(&rdev->wiphy);
- 		__count == 0; }));
+ 	struct {
+ 		__le16 idx;
+ 		u8 rsc[ORINOCO_SEQ_LEN];
+-		u8 key[TKIP_KEYLEN];
+-		u8 tx_mic[MIC_KEYLEN];
+-		u8 rx_mic[MIC_KEYLEN];
++		struct {
++			u8 key[TKIP_KEYLEN];
++			u8 tx_mic[MIC_KEYLEN];
++			u8 rx_mic[MIC_KEYLEN];
++		} tkip;
+ 		u8 tsc[ORINOCO_SEQ_LEN];
+ 	} __packed buf;
+ 	struct hermes *hw = &priv->hw;
+@@ -1011,8 +1014,9 @@ int __orinoco_hw_set_tkip_key(struct orinoco_private *priv, int key_idx,
+ 		key_idx |= 0x8000;
  
--	if (rdev->rfkill)
--		rfkill_unregister(rdev->rfkill);
-+	if (rdev->wiphy.rfkill)
-+		rfkill_unregister(rdev->wiphy.rfkill);
+ 	buf.idx = cpu_to_le16(key_idx);
+-	memcpy(buf.key, key,
+-	       sizeof(buf.key) + sizeof(buf.tx_mic) + sizeof(buf.rx_mic));
++	if (key_len != sizeof(buf.tkip))
++		return -EINVAL;
++	memcpy(&buf.tkip, key, sizeof(buf.tkip));
  
- 	rtnl_lock();
- 	wiphy_lock(&rdev->wiphy);
-@@ -1088,7 +1080,7 @@ void cfg80211_dev_free(struct cfg80211_registered_device *rdev)
- {
- 	struct cfg80211_internal_bss *scan, *tmp;
- 	struct cfg80211_beacon_registration *reg, *treg;
--	rfkill_destroy(rdev->rfkill);
-+	rfkill_destroy(rdev->wiphy.rfkill);
- 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
- 		list_del(&reg->list);
- 		kfree(reg);
-@@ -1110,7 +1102,7 @@ void wiphy_rfkill_set_hw_state_reason(struct wiphy *wiphy, bool blocked,
- {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+ 	if (rsc_len > sizeof(buf.rsc))
+ 		rsc_len = sizeof(buf.rsc);
+diff --git a/drivers/net/wireless/intersil/orinoco/hw.h b/drivers/net/wireless/intersil/orinoco/hw.h
+index 466d1ede76f1..da5804dbdf34 100644
+--- a/drivers/net/wireless/intersil/orinoco/hw.h
++++ b/drivers/net/wireless/intersil/orinoco/hw.h
+@@ -38,8 +38,9 @@ int __orinoco_hw_set_wap(struct orinoco_private *priv);
+ int __orinoco_hw_setup_wepkeys(struct orinoco_private *priv);
+ int __orinoco_hw_setup_enc(struct orinoco_private *priv);
+ int __orinoco_hw_set_tkip_key(struct orinoco_private *priv, int key_idx,
+-			      int set_tx, const u8 *key, const u8 *rsc,
+-			      size_t rsc_len, const u8 *tsc, size_t tsc_len);
++			      int set_tx, const u8 *key, size_t key_len,
++			      const u8 *rsc, size_t rsc_len,
++			      const u8 *tsc, size_t tsc_len);
+ int orinoco_clear_tkip_key(struct orinoco_private *priv, int key_idx);
+ int __orinoco_hw_set_multicast_list(struct orinoco_private *priv,
+ 				    struct net_device *dev,
+diff --git a/drivers/net/wireless/intersil/orinoco/wext.c b/drivers/net/wireless/intersil/orinoco/wext.c
+index 7b6c4ae8ddb3..4a01260027bc 100644
+--- a/drivers/net/wireless/intersil/orinoco/wext.c
++++ b/drivers/net/wireless/intersil/orinoco/wext.c
+@@ -791,7 +791,7 @@ static int orinoco_ioctl_set_encodeext(struct net_device *dev,
  
--	if (rfkill_set_hw_state_reason(rdev->rfkill, blocked, reason))
-+	if (rfkill_set_hw_state_reason(wiphy->rfkill, blocked, reason))
- 		schedule_work(&rdev->rfkill_block);
- }
- EXPORT_SYMBOL(wiphy_rfkill_set_hw_state_reason);
-@@ -1506,7 +1498,7 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
- 					     wdev->use_4addr, 0))
- 			return notifier_from_errno(-EOPNOTSUPP);
- 
--		if (rfkill_blocked(rdev->rfkill))
-+		if (rfkill_blocked(rdev->wiphy.rfkill))
- 			return notifier_from_errno(-ERFKILL);
- 		break;
- 	default:
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index a7d19b4b40ac..b35d0db12f1d 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -3,7 +3,7 @@
-  * Wireless configuration interface internals.
-  *
-  * Copyright 2006-2010	Johannes Berg <johannes@sipsolutions.net>
-- * Copyright (C) 2018-2020 Intel Corporation
-+ * Copyright (C) 2018-2021 Intel Corporation
-  */
- #ifndef __NET_WIRELESS_CORE_H
- #define __NET_WIRELESS_CORE_H
-@@ -27,7 +27,6 @@ struct cfg80211_registered_device {
- 
- 	/* rfkill support */
- 	struct rfkill_ops rfkill_ops;
--	struct rfkill *rfkill;
- 	struct work_struct rfkill_block;
- 
- 	/* ISO / IEC 3166 alpha2 for which this device is receiving
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index fc9286afe3c9..e006d26d5c2a 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -13042,7 +13042,7 @@ static int nl80211_start_p2p_device(struct sk_buff *skb, struct genl_info *info)
- 	if (wdev_running(wdev))
- 		return 0;
- 
--	if (rfkill_blocked(rdev->rfkill))
-+	if (rfkill_blocked(rdev->wiphy.rfkill))
- 		return -ERFKILL;
- 
- 	err = rdev_start_p2p_device(rdev, wdev);
-@@ -13084,7 +13084,7 @@ static int nl80211_start_nan(struct sk_buff *skb, struct genl_info *info)
- 	if (wdev_running(wdev))
- 		return -EEXIST;
- 
--	if (rfkill_blocked(rdev->rfkill))
-+	if (rfkill_blocked(rdev->wiphy.rfkill))
- 		return -ERFKILL;
- 
- 	if (!info->attrs[NL80211_ATTR_NAN_MASTER_PREF])
-diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
-index a8320dc59af7..35c6c705a073 100644
---- a/net/wireless/wext-compat.c
-+++ b/net/wireless/wext-compat.c
-@@ -902,7 +902,7 @@ static int cfg80211_wext_siwtxpower(struct net_device *dev,
- 
- 	/* only change when not disabling */
- 	if (!data->txpower.disabled) {
--		rfkill_set_sw_state(rdev->rfkill, false);
-+		rfkill_set_sw_state(rdev->wiphy.rfkill, false);
- 
- 		if (data->txpower.fixed) {
- 			/*
-@@ -927,7 +927,7 @@ static int cfg80211_wext_siwtxpower(struct net_device *dev,
- 			}
- 		}
- 	} else {
--		if (rfkill_set_sw_state(rdev->rfkill, true))
-+		if (rfkill_set_sw_state(rdev->wiphy.rfkill, true))
- 			schedule_work(&rdev->rfkill_block);
- 		return 0;
- 	}
-@@ -963,7 +963,7 @@ static int cfg80211_wext_giwtxpower(struct net_device *dev,
- 
- 	/* well... oh well */
- 	data->txpower.fixed = 1;
--	data->txpower.disabled = rfkill_blocked(rdev->rfkill);
-+	data->txpower.disabled = rfkill_blocked(rdev->wiphy.rfkill);
- 	data->txpower.value = val;
- 	data->txpower.flags = IW_TXPOW_DBM;
- 
-
-base-commit: 77091933e453a258bbe9ff2aeb1c8d6fc1db7ef9
+ 			err = __orinoco_hw_set_tkip_key(priv, idx,
+ 				 ext->ext_flags & IW_ENCODE_EXT_SET_TX_KEY,
+-				 priv->keys[idx].key,
++				 priv->keys[idx].key, priv->keys[idx].key_len,
+ 				 tkip_iv, ORINOCO_SEQ_LEN, NULL, 0);
+ 			if (err)
+ 				printk(KERN_ERR "%s: Error %d setting TKIP key"
 -- 
 2.25.1
 
