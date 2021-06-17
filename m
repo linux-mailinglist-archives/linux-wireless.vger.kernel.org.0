@@ -2,72 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 103E43AA9CE
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 06:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 708FE3AAA14
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 06:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbhFQEQm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 00:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38882 "EHLO
+        id S229827AbhFQE3T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 00:29:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbhFQEQl (ORCPT
+        with ESMTP id S229551AbhFQE3T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 00:16:41 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAED9C061760
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Jun 2021 21:14:34 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id u18so3912890pfk.11
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Jun 2021 21:14:34 -0700 (PDT)
+        Thu, 17 Jun 2021 00:29:19 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49FCEC061760
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jun 2021 21:27:12 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id q15so3850467pgg.12
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jun 2021 21:27:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Jv/UoXdCMo0JEqhR4JZpjm63vYe4PkZ/uNFos3Hcr5o=;
-        b=A19U7TVRICNEpmChktJUVRK/HrEPvtIYtzN7xfKOeipvKpp+3im8EJ3IUK6Rq8EGKh
-         Trp0H77LSIPjae5hVTja653G6JbAQ4yEa+Wze4xtfLuUgjsKEOqkRWrSIMNVVFBm3Ai8
-         /pWkJZEd8WOCd6TG1w9thVrxS60K1k9cTv55Y=
+        bh=zuAYjQFtuIQCmO1rMjR+p21Q0Trj1l5ASgWxbkTK9wA=;
+        b=Uv2fCei424Ypp83aUrHk1FNQtzrzzxcWjmyFu4H68+GAxcC1lRAOT9+abTyzD1hADw
+         NnfALb++pBhrvBW3H4jOX8zOzTkl9Yxam50FmCouTDs6gjvDglX4qj2JdER3MQ55UScC
+         hYzydqWeqWBFbhr0clBEm5KZTNf/PvyhIp1aY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Jv/UoXdCMo0JEqhR4JZpjm63vYe4PkZ/uNFos3Hcr5o=;
-        b=CScwhLz+XiB96DLWUM840YqsXp1G9YJ83WJAFYj8T+qF4MdwdnHM341strlxkGUxVJ
-         d499Ef5gJBDz/fmr/xPr39ZqV/6v9+rD8s0P/5LH5aUF/t7Gv8DjxSa3brojBAzEqywJ
-         ccMYyV4+LTV/jxVW++eDqqR+Q3cVc48y1gVWnRMCnQfaMas/Fmb0gUwsnNeC4/5se8uc
-         FZBQaRBWJB9Hma+57b5bWS3CnMeyNKsrf3QHChuUo61RlrVBqfx338ZX5ggv1dKy2hva
-         43HXnVucKnlgsqXNfnjm0XwxYt916tiC5Wrih0gzFCYLSCtDLGI+hkrCKWCIncnGEjgz
-         JtJA==
-X-Gm-Message-State: AOAM533k6OAO4lX02pYjkCxFWs2h4BEJN+k+GPZRwpVasOQzmLcWYkuL
-        bP+FSBWRUgtRMyCibDFv651knQ==
-X-Google-Smtp-Source: ABdhPJw8tzkSj/rTqVQg03PC/E2Lugi3OxWCfRjtrX4eg6F5WqfQzvg5sKcxtCUCMbHJSeH4wxR/uQ==
-X-Received: by 2002:a63:6884:: with SMTP id d126mr3113715pgc.368.1623903274133;
-        Wed, 16 Jun 2021 21:14:34 -0700 (PDT)
+        bh=zuAYjQFtuIQCmO1rMjR+p21Q0Trj1l5ASgWxbkTK9wA=;
+        b=O5Dn6zV+/eBMmDi5d6OxdYAv2QB4srQN4RCY4LA6RjkL4FO4zhLghv7/lFCRC/VPE2
+         AMFQGfRftRUxH1AAd7SZv7kEqatuZcqgwASlG5PubzmCfOl33syZECWPuRFwftCjqjBd
+         15CctlJcfQZ6FWifBr7EDSOaH7wfnQxSkjgYx1MBp9xYbK3r13ZQr45o/PkZf3N1LdyU
+         KtLpgLrk0dT+rA+ObO+HSF56gJywT1GNoHU7Etk5c0qp0vuuRoDZ+MwwnIkwWjpBxTSZ
+         Gd4TRi20JfFSoGftdXYqv30USylhoWBKM/a/WIAGGPtRujS0piXQvsFxiJtcZIrGE/Wb
+         dHjw==
+X-Gm-Message-State: AOAM533IknrvpuI/DCkWD5JsGYFaZ/KFyMA1irgipCGASaQSEA4NGhyr
+        TEvves0HVTEEOlZTNW2RmnEFEw==
+X-Google-Smtp-Source: ABdhPJzYMo1gT6vK0OEtP2ovZPyiyZaomQF4VL+8aJfBArMS2v9RGhR8Iqqd8U5ML6xgegxmo2943w==
+X-Received: by 2002:a63:3d82:: with SMTP id k124mr3049823pga.401.1623904031759;
+        Wed, 16 Jun 2021 21:27:11 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a25sm3473251pff.54.2021.06.16.21.14.33
+        by smtp.gmail.com with ESMTPSA id p6sm4473754pjh.24.2021.06.16.21.27.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jun 2021 21:14:33 -0700 (PDT)
+        Wed, 16 Jun 2021 21:27:11 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
-To:     Andrew Lunn <andrew@lunn.ch>
+To:     netdev@vger.kernel.org
 Cc:     Kees Cook <keescook@chromium.org>,
-        Lennert Buytenhek <buytenh@wantstofly.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Romain Perier <romain.perier@gmail.com>,
-        Allen Pais <allen.lkml@gmail.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        wengjianfeng <wengjianfeng@yulong.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Lv Yunlong <lyl2019@mail.ustc.edu.cn>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH v2] mwl8k: Avoid memcpy() over-reading of mcs.rx_mask
-Date:   Wed, 16 Jun 2021 21:14:31 -0700
-Message-Id: <20210617041431.2168953-1-keescook@chromium.org>
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH] mac80211: Recast pointer for trailing memcpy()
+Date:   Wed, 16 Jun 2021 21:27:09 -0700
+Message-Id: <20210617042709.2170111-1-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Patch-Hashes: v=1; h=sha256; g=b6df66ea320e2dd2f60b6aa198c92d8bf5668fd0; i=3LMRMQs/su+jg96J7A+W2izaO7vn5zDULMuljW/1kps=; m=oovpy32QOGm7F0CxLPSpC3hYkeAu+GX5CeuC6rbYRG0=; p=rNzffPVViPPasgNsA9kftAkj+3z+yfBDZn11q5PzClA=
-X-Patch-Sig: m=pgp; i=keescook@chromium.org; s=0x0x8972F4DFDC6DC026; b=iQIzBAABCgAdFiEEpcP2jyKd1g9yPm4TiXL039xtwCYFAmDKzCcACgkQiXL039xtwCZW3hAAhyN bQVuYyNMdKH9LEZ4myTR8iuC9+GZl30h8ohltamC4kXQh/K/yjtqOGYQESCKYKuEZrnc6J2aCoYo0 HcW79pA7w1zWsXHX2yctOTFVNJ4JuAZB3n043WD2MfdkpIv6SE4B7eb0V5rSZIafL3reFm/eTQQkI p32VtKk/W7oiSmuU7ZeDMFjUfE+Hn9aVFJXvlw8MzDSOXL/syftnpzzuw8faYJnvKp4wowXmfszqH 4WdoHnt6QvpmRYCgBv9MuFY1USZp1Sv62fFPw9jJTozB97ALW83iqjjqug0n60ItP/DAQVCMKE86A N4yq4boVdQgbYO2P0ompG7Lm5GgX09P9vdx/aYotUD3srUQRMWH6vLRlZuqMsNSY7pHOCujgeYIWH xuathey5Ui74bk+dWEAJcxfgkYaQAo4dH/nWUBULfLS3rTRyctGxwDe/wukSxSqULgXm1uK6uzr3C bRWk5cNoEmKW6dBdLEYXjmnppbQxe5KL0u4AMqeKpoKh/kaIuFsroMoFvFH033DL4F3LH7Z5H38Uz YuIv9TZbZMUUtVMJMDtFP3/QMGpTDJpKx8mNjzROArMuT4JPLrjlNkWJHYuZAYsXzD+1SOZn2D09j 2hnLN4E6zKYo1n9az/q7mdEWRbt2/slqjQ7VmBrGPF4kp6Ow3ofaFXuEDwfT63+E=
+X-Patch-Hashes: v=1; h=sha256; g=a59972a95d22e6cba17e8ca1ef339d3a3ef1b4e5; i=P4B4b65qJuhqVi5i2irgu0AhoblNfL65fECGIen2RpA=; m=ye9VNM2/KkSGCD7iU041Afv+zNGB2BR/2/Lf1/HGmmk=; p=jmhDm1u21oAA6abJCLcWjlq9egIRuBdVv23WaQ1b954=
+X-Patch-Sig: m=pgp; i=keescook@chromium.org; s=0x0x8972F4DFDC6DC026; b=iQIzBAABCgAdFiEEpcP2jyKd1g9yPm4TiXL039xtwCYFAmDKzxwACgkQiXL039xtwCZKsQ/+KRk qClgQaevJdpMV/HrC1/U+leuhMDzRHQ+71fiVOPofuqUOQVTtWE+ofVrBg5T6/rY7R3yAsr+M6jIl NJ5qwODjOmqe2eIHOtMdAd4junJjRi6O+8K7pH2Y8x7WLob4RubcXcogaPRTWlrcYGQiWAD14hyv2 mOkbE6mK0UWHeNnACpdecukYVYk5r3MTX0P/OlUO/FwEfnEhrM+DaXP/HWV9EbIQNqbEwsDmcTKY8 VtIggri22AUecFKn4TZKZJ7BIr1R7gMabDODg5vQRdnavOQ2LTaYprz+LO34lEaAsxfPU2onkBVet QIQBQS0Ti8XB+PcQuFsuIdTbu/qxP0yTqvwDq+C1bcSDkzsRMkDu/jGJfbA79rAt16c380/hh9eqP T78RVtzSJBOX+FpOA+/cQR5oZPQzKJpOjAIbdfbyazFb/+qaVakoDq6X0lmtF4MQgo0hrbhJg83Nc nQ4xKK6c6WN1Sno8eGF/JZl5GNKNNdolU2hEmyBJc46P/1CWCOqkhxON0XWPJWJVtqvea1i+WUYDn 7e9lU3+RyC8m/7yaBWVHyolrF+zityHQGiJKD0C6HZmACMw9nA/v5du3fLhtjD68HH8PhAdM8IEjt caIQX7Cm+K9rpWZB/2N/l5dXOIMPjx8g9R8DJtnr2znfH5CD4wW1DFjnlLen/Cco=
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -75,39 +66,73 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 In preparation for FORTIFY_SOURCE performing compile-time and run-time
 field bounds checking for memcpy(), memmove(), and memset(), avoid
-intentionally reading across neighboring array fields. Use the
-sub-structure address directly.
+intentionally writing across neighboring array fields.
+
+Give memcpy() a specific source pointer type so it can correctly
+calculate the bounds of the copy.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
-v2: fix Subject for actual issue
-v1: https://lore.kernel.org/lkml/20210616195242.1231287-1-keescook@chromium.org
----
- drivers/net/wireless/marvell/mwl8k.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/rx.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index 84b32a5f01ee..3bf6571f4149 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -4552,7 +4552,7 @@ static int mwl8k_cmd_update_stadb_add(struct ieee80211_hw *hw,
- 	else
- 		rates = sta->supp_rates[NL80211_BAND_5GHZ] << 5;
- 	legacy_rate_mask_to_array(p->legacy_rates, rates);
--	memcpy(p->ht_rates, sta->ht_cap.mcs.rx_mask, 16);
-+	memcpy(p->ht_rates, &sta->ht_cap.mcs, 16);
- 	p->interop = 1;
- 	p->amsdu_enabled = 0;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index af0ef456eb0f..cb141bb788a8 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -559,6 +559,8 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
  
-@@ -5034,7 +5034,7 @@ mwl8k_bss_info_changed_sta(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			ap_legacy_rates =
- 				ap->supp_rates[NL80211_BAND_5GHZ] << 5;
- 		}
--		memcpy(ap_mcs_rates, ap->ht_cap.mcs.rx_mask, 16);
-+		memcpy(ap_mcs_rates, &ap->ht_cap.mcs, 16);
+ 	if (status->encoding == RX_ENC_HE &&
+ 	    status->flag & RX_FLAG_RADIOTAP_HE) {
++		struct ieee80211_radiotap_he *he_ptr;
++
+ #define HE_PREP(f, val)	le16_encode_bits(val, IEEE80211_RADIOTAP_HE_##f)
  
- 		rcu_read_unlock();
+ 		if (status->enc_flags & RX_ENC_FLAG_STBC_MASK) {
+@@ -626,18 +628,22 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 		while ((pos - (u8 *)rthdr) & 1)
+ 			pos++;
+ 		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE);
+-		memcpy(pos, &he, sizeof(he));
+-		pos += sizeof(he);
++		he_ptr = (void *)pos;
++		memcpy(he_ptr, &he, sizeof(he));
++		pos += sizeof(*he_ptr);
+ 	}
  
+ 	if (status->encoding == RX_ENC_HE &&
+ 	    status->flag & RX_FLAG_RADIOTAP_HE_MU) {
++		struct ieee80211_radiotap_he_mu *he_mu_ptr;
++
+ 		/* ensure 2 byte alignment */
+ 		while ((pos - (u8 *)rthdr) & 1)
+ 			pos++;
+ 		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE_MU);
+-		memcpy(pos, &he_mu, sizeof(he_mu));
+-		pos += sizeof(he_mu);
++		he_mu_ptr = (void *)pos;
++		memcpy(he_mu_ptr, &he_mu, sizeof(he_mu));
++		pos += sizeof(*he_mu_ptr);
+ 	}
+ 
+ 	if (status->flag & RX_FLAG_NO_PSDU) {
+@@ -647,12 +653,14 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 	}
+ 
+ 	if (status->flag & RX_FLAG_RADIOTAP_LSIG) {
++		struct ieee80211_radiotap_lsig *lsig_ptr;
+ 		/* ensure 2 byte alignment */
+ 		while ((pos - (u8 *)rthdr) & 1)
+ 			pos++;
+ 		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_LSIG);
+-		memcpy(pos, &lsig, sizeof(lsig));
+-		pos += sizeof(lsig);
++		lsig_ptr = (void *)pos;
++		memcpy(lsig_ptr, &lsig, sizeof(lsig));
++		pos += sizeof(*lsig_ptr);
+ 	}
+ 
+ 	for_each_set_bit(chain, &chains, IEEE80211_MAX_CHAINS) {
 -- 
 2.25.1
 
