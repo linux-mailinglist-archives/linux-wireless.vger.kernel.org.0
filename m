@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FE303AB92A
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DB643AB934
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233803AbhFQQNL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:13:11 -0400
-Received: from mail-eopbgr80050.outbound.protection.outlook.com ([40.107.8.50]:33286
+        id S232432AbhFQQNa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:13:30 -0400
+Received: from mail-eopbgr80043.outbound.protection.outlook.com ([40.107.8.43]:32846
         "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233000AbhFQQL6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:11:58 -0400
+        id S232941AbhFQQMH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:12:07 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ATr4fJvJ/3uJvS/nDWXPslazbbcqUarMxY9S/Gy0jWBxIz5bhO9UqnMzLLGnQqvBomhV4bEursC1xjnNVHN+1jy1kuMkX32GwpSmOb7eZFZ2IC236nFDyyK8dEujy87gfAMnynRn4W1wjBQ8SSHinU9mWymA6Y3Pzsb7Y5eLBi807L4dLiXpaM/uncS0BMai9J8sZOj18xW37Y0nrU5pxftiFCTMMligdaamuFguKIP3m4uOsqyRW/wfx3Kcdl4lhasGsG+eqef80P+KjuK9622SfN1ReUsZzuyrIfuCQ8O61pI3PRjKkaqVffngOzB+IC8GaNajpAIL5iNSHwm5ZA==
+ b=cCIfal5hJIPwy0taSOcm9Lgi7lT1pCvTUYxVvbaFMX++79czGFBZPDildO877zKczmEicKzF1vjF45DvBRhQUR7J6ry4JMatEfccdHe93WBrjLtcyFPzQcOX/WA/LH4deDAIrzMOK56ylksGwGMQSSQxpbye3J7qGqhQnSW/BrBeuMxqKJX/hOpHG8yAQdV61lVKTU0zsm1qFSqHenuAs7lFdvXedwgQgewO5+2xgxK87jw1uNtITSFpbZbHcYoqlhifSrp39hmVffB+6MYWCXwxVz0Na1Kbu+OD6DgUFssYKb9eqnmbsU62KPREx3ajCPplhkq46sGeRfh/AEw30g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dRWihsBEmPNWXV2wTUKBLHICgsdxHQalsLG0QJ0aOTY=;
- b=QIxk86dfB/g1lnbBkS0lsHiQpA9NDQOuKPksQA6ScY0GwDtzfnhZfTsB+VHtasGzJ1xG6R1I9SDa/ejy0PHURwfzPo+9hBs/X+j3RVI43nrv0a5YU0nhibMHfkPG+2eBnhryuEu8gIEviUh+FKNEnMT3Pjx7PCdmNXDcgqfey6vrONPoBSSaluTToEQbtDEkRVH9ieyfT6oKGh0ybLPLLCn0+JUKcj6kEFBzoZokaufoyQj76L/C5THziSiM40ZWXzmrHgiK1X+MSYvFlAdJs9HKOCHnas2hiJs6KliFleOs1X7X8dMRmwWE96Ba8IUjV3/3UKP3wIrclBOGP87XQg==
+ bh=ySco48bqbR+0T/HqXFw24uswvFEncwsvgV5jDkojB/4=;
+ b=ha3yXe01rv99P+zlDCasj8TwurBz4n63Qn008aRW1SKOx//EWPgSzm8NN0pumm+TvJ3zW25+X3dqnCeH65jdZL82uFqVZJIqGmkTe9227WOWia7YSoNuvr+ZEjUx6T70KTVB4LtWt/jT0Kgg4mnZ3VPv70Az7MkE9XNKZ0Hw0mUQbJwLGnaOuIZRsCWeapZvd6bZM1dcy4kuVt0QGfg8tDBipT1Xcmy3zOB2sPQJpXScvAAQXf/AsaY3DvC7bU4jr76U9Q/BsZL9+7/Ed+Gsru532aC4GHuJvnuNTl/tpSjjz0ljxJpiWKnUE0Pmz/H9KZgQT0K0W6NmjV2Jh8cZQQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dRWihsBEmPNWXV2wTUKBLHICgsdxHQalsLG0QJ0aOTY=;
- b=A3iTpE6mg+KQl8noAxFnc2rOif8dIjD+oJZRsX5utEMplszuWs0MsuEt/7GLWZdQZoWZdw0DlRtnfQByNNxgE0aYOZHgsBS+fNMnt1pmF+F01x9zsBdDb5dbi2ZWmPq0mM5nuEJgDOJ0xVcVsBHjPmLzBN3+V78/OotgR2Iw3og=
+ bh=ySco48bqbR+0T/HqXFw24uswvFEncwsvgV5jDkojB/4=;
+ b=ZBPJFf7e9s6QyPIfp66HdeOTeOiFGQIgs/DDgm9r0tbX/GrelDOcMIaXl12pDkhdZiZsldDRvP3jC4Edo32O6z2C5XzDpgcuvxhBv6D3q9Ozyztsbr/4fJUN4LLyVtHLzNxZN+Y2kclCOtltm034XG5CYuHs5Hgen1r5M6zndmY=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM0P192MB0260.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:47::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.21; Thu, 17 Jun
- 2021 16:07:11 +0000
+ 2021 16:07:12 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:07:11 +0000
+ 16:07:12 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 189/256] cl8k: add temperature.h
-Date:   Thu, 17 Jun 2021 16:01:16 +0000
-Message-Id: <20210617160223.160998-190-viktor.barna@celeno.com>
+Subject: [RFC v1 190/256] cl8k: add trace.c
+Date:   Thu, 17 Jun 2021 16:01:17 +0000
+Message-Id: <20210617160223.160998-191-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:02 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:03 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5f91a49c-3b61-45fa-2e7b-08d931a9ce8a
+X-MS-Office365-Filtering-Correlation-Id: 975dd28e-1907-437b-cce2-08d931a9cf2d
 X-MS-TrafficTypeDiagnostic: AM0P192MB0260:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB026009FAB639D7E23AA3EF42F60E9@AM0P192MB0260.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:655;
+X-Microsoft-Antispam-PRVS: <AM0P192MB0260C3C367F29D0D0582BD81F60E9@AM0P192MB0260.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: f2Ul6NzbbWSaGTGZewYmmKWt4vr9m/l4EGL89XiNtKHao/LAfdU1DGhbtnIS1WyMJ3RfTu4PYDEVV02OaVqujegjEGsayf1JPu3+DE/+wBzM4Vmub4cKvMTThu6eBEr3i15fB42uvV2on/sEf0NVJKLX+HJcdh4wPGZu5QTCfqySUxuinAoNpd5d9CB3Do6riijoTs+zWh4edPBGW3d9r+jo/FroXNSytTtetrjioRpwUJXAEYCmnYxHJ4sIbryrxrCGv2LVgDbJX4oPvFHULOC2uFSQZXy8gWVHdXp7Bs+SIuV1GIy59l8gppwQeCj8PuycGwliHlnOsmBVIKqtX1dM6fEUPrTNKYc4R/uyP88069K9mvJq8vQkHdr1J3aBzRXgNXTA6tFHZV1QVp/ZKqJFeRz9aF2ikAinoLKXurUYhIWHIZzjC1V6XKsUNx/gKaMFtoyvVO0c18hdP5lfCx7DTvp1m5CIp3lc5v0SGa/8WLlSm5A5SpfhwxzbXA5Ac5o0gu3wrSDgi3HGsdhWIABcZ1papbaxxBEvWV3xO0VpJeuUmC8wodb3kYcYJVoLe6BjzegK5RRb7+WztGaUtZ5vPmtMuLb9NPLgRsostZKyqY39zEj4P4x0NfK8P/DZgjwmn79XHuD8VHijvS/plClaYKUX4EdTJOKmsth9m+X/EJQKYPjgWJJISREiib2NFzZ0he+zHE8e/h1sWo7e8g==
+X-Microsoft-Antispam-Message-Info: tNzjEPl5wKbB6+jFS7w01qH61a4ewf90ndEu8WnCvPTS2x9IVSLIR+2h8eFXzqYsNf8S8rWHUYrRMhRnNrXkyYg89I27lKvseuR5pb1qlAkj3CoXuCabR1w0tBesLvkce1b6KBT4tFHQY34aFB059tkUM7H7pv5Ewd2gyhHoi1mY6i6FoB3Muzb13aUKCPU/V4Nk/zsko3DqKfoIKwqTdCWP1pcRhK0IZDjCq7LoKoVMOAH1lipRESq2dICjFOHErA2Qts6tvGcZSPslrH6MiKxvfQlpEbE1a3eU5Z1qtlmk5FbJoDOL69KTtvLH+HAo5mh9+irWn1NVzI41LS5pVgDp5X+HOazhpfon++8MoCJwNY3dEmwdeNN/KPau/LMzjnJsJd1M2LjCSlNlUYwN9bFHCFPOVUUq0BD5XFfhXFXDoX0wgeJR+BNKcYPnx+1MFOimuA2tJMTK3c8xGrMSkFWfDoLSV278BQHURaa540HcykZUtSBSirCLtjituxPVBhTlq8+qa99HDHBH82X4sU6+89bKzE+AAuwG/H/AlQDnwIOQM39k6CFkp4hD5wEl9cxrgQp2hGHScMtNquBPEGjas89TjL2Qtb8up3ztCjVGCdbDtKhSMfG3LRtYjTUh8AS0OYT68HS5gA4wInxFcyzN1sTuPMeF9EcqdwBhgY2kdPgoc5goj0Fr5EMFdC7EFQBzIcC7v7BSUx+NUTcunw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(8936002)(86362001)(107886003)(4326008)(26005)(8676002)(956004)(186003)(6666004)(2906002)(6512007)(66556008)(2616005)(5660300002)(498600001)(38350700002)(54906003)(38100700002)(16526019)(66946007)(9686003)(83380400001)(55236004)(52116002)(66476007)(6486002)(6916009)(6506007)(36756003)(1076003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aYOSpJxRGeYPYUge5jnr3TOODZOufJ+FU6GrGhLQ7k6p0FsCyVlIDDJ0vsSU?=
- =?us-ascii?Q?W4pRH8vAdSXW4GU/OgGuDDGTfZeFk9GmTQH0JEBS36PC+mT3DEPNIViSMq1S?=
- =?us-ascii?Q?BXoJZ0PWlu8g5VPCw6yxbPBPnAbMzGHIVp6TOZ09/l98Gl3n8a8AKHVfzHgo?=
- =?us-ascii?Q?mkxXjB8Ia53xnVlQN/R+fqTM6IQFvb48szbF9tTsiIH9RXMiPXXG/7nKuApj?=
- =?us-ascii?Q?wEKj4rkZQ3p8QSMCyijxiUm5ErVpEqWluNoX0b/+evH9ikjp4ChAdzClXCxl?=
- =?us-ascii?Q?JwknKueUgGgRakHB3ymYD59S1BTyu/YGOhLLTWs/0B2k6KBqAejFgGK2L6mr?=
- =?us-ascii?Q?E0zRWVze4ZcC8xKVVSLXwRWnd4I3uqnD5WBF2pLq2LUOW0tAxmNh1HCRMFQT?=
- =?us-ascii?Q?kXBAFeWGfPabkdR0pPkM2NzZP5qHPBxQZLIlPB8ISkIBJp2jzpmazwEZwio2?=
- =?us-ascii?Q?n4Im3c5OKmBlGzUvzOoFQ0sxkzxdNFifOKtoTMrkyRMgM+frC2Pk2LzBF+Ut?=
- =?us-ascii?Q?NL1H0Pynf74JBuJbzdT44GenS59E/9U/1RxknO3nngQeTYSH//61Mamps4OP?=
- =?us-ascii?Q?NqAl5rt6yqPjUJAjBm0a4IHPygux01KexdFcDwwbBXKLKXuAiAWSyLDXaI5X?=
- =?us-ascii?Q?/X5kk8IxiEJvRyvlumk/gSuahrR5NyE89g1Ve59keJTjAcutKWp+QcJ2GJ0h?=
- =?us-ascii?Q?17jmGhmixM5+gsr90wjcE1FAxPs1ggNx2nXcGGJ9i7MOIyQAZi4xZ5ZcjsdM?=
- =?us-ascii?Q?8cofdv2aQUZtt+bEnm4I2+6fjYdXglpdyV3Qt7JTtrOfRgx9TrbrVaDp0N/0?=
- =?us-ascii?Q?v7wesuFUmQxypuTE9tbeyX2cQKjkEmTaBAZW8jH/N9HcU1nBMHFq8akfr9UR?=
- =?us-ascii?Q?00SzFAzsMfy4PnCYyujegII8DfAv+iG2RnzhTu19/Q2mnSqiKVtjq80Gzn4u?=
- =?us-ascii?Q?3XhIZie1UPWGBw9DUcgH3L4D/F80myjBmbH3er5dytNNf4ytKBYuNdeljy9a?=
- =?us-ascii?Q?1cv3gZ/965ENjbkfLIuMMLzmNjIbFOyMQYvJOqtykM3IhaVvDEm8dSFn5Ttb?=
- =?us-ascii?Q?FW2AJK5YSZ/lME8NpKQEg7VHIt/B7P8aVfyAmf/C5hjrT91CWdmvvr53Wr9n?=
- =?us-ascii?Q?Umr6FlKw3nGsNyjuQatWkn/XlBpzc4FFQTYEoDX7TjXf0Ru3iFr4yEyM0FXv?=
- =?us-ascii?Q?GNfpcAx79888J2dYVrXVgfCsFJbIuok7V5tpdT3n944T79J6OPgUD14qb/KF?=
- =?us-ascii?Q?aoYjCQdOCsn0STqWvJndOlBwkOh00b1hX7bg36oz+qOjVjfpf7A1kcFaTkw5?=
- =?us-ascii?Q?2kJJBdFCDCugUXDUPbgr2tkC?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kb0f0MXB9/Uf/tentArrKZzMYglDo90LWJs9wJZiRnBmAYbRuS4qlimErBhk?=
+ =?us-ascii?Q?UKtXtHLHY/aG3QufAHPQp7KN8B5tqzcPuTZn1hWd4FEZx9g9BbQbKg/HFboF?=
+ =?us-ascii?Q?WE4UP3s8hOYv42jeAJ09ekANmmRhN/TuSpjbMihaFrO7hCaZ8eMAbAwUA9kQ?=
+ =?us-ascii?Q?yrhrlIj3dxlf8SmJD1uwjc2XaIKQR7cSiIY67Us+WzH59K+AARSqrLUE8UKY?=
+ =?us-ascii?Q?JQQXLY6KvsTLTMwmU1lT+rYpgxbHjuK/fcI3+8jcdEDgyhexC4vgpBSjILCD?=
+ =?us-ascii?Q?ecq1aSHEh88SQXOHLnuzFDwGIzRuOvlrsuIb3IJ4/VqxF68AO2NowrXnK8N7?=
+ =?us-ascii?Q?S/7wRsuwzdAA+T2V9mrIKn6zyhOSKIobbvWPsFKVUQqF1cKV7QV+N8PN49nO?=
+ =?us-ascii?Q?aGWdh6Fs9ZDZYGg9v+Bkmn1NIyr9xF1eDhCNQeajmHo+o4+NaNfD6gTz/+Ew?=
+ =?us-ascii?Q?OcjLK7/cKAIcXWHCrDobIepJ6hawETmh3j9ziu1wYji1lQTcMOIITsSyW8Rb?=
+ =?us-ascii?Q?e2HZ+o0vJiSASejkQh/T/uvSk9foBoik2GeUACEs3kkLuWTPJ5KP6Mch1cWu?=
+ =?us-ascii?Q?Z5SfkVa5PFXJbeUdkPiu25UvDaOAcXjRvfmDtZhWfNbOnpLof/daK6Nu/bhD?=
+ =?us-ascii?Q?N34leWrNov9UBNboNEWNlEjhM7Q4OUoQ1XpfcJZAkLokrHL372FjdUt+4hBl?=
+ =?us-ascii?Q?C0voktOg4EOTVytIdhVksrZfbm8ywJ3GGA/wH1hDQhSaTl2uRATWAFpjJUSC?=
+ =?us-ascii?Q?E37AQez5NSHnpy9VR2tbjux9J3u7nwGUP+p8/eX02hTiV4Ma4lJpxKRQ/QkF?=
+ =?us-ascii?Q?jaMOU0TkwzGdhhAjy7OyPPS7AdOGK+L75imFY5TbfRiBF8Acfj9Fmv/oyl+B?=
+ =?us-ascii?Q?PoNDcCnvawHWdxBbZP3Vz1TVhQYdHfNGXWzT4v4X8YJX6Mg8LOQ3NoQVBBaN?=
+ =?us-ascii?Q?U6xCf61gCYl9pbV9vW51BAYpaj2Vhyyd9frpt1KUM2udASM7yBAEJPecs//u?=
+ =?us-ascii?Q?qNYGSp/dFuwpn4IxdIevy93670VPu4rac4oOqk7RuDMI9rqVri8crmcTcR+m?=
+ =?us-ascii?Q?pYr/ARHm5ffvVlvh6NvZSzQYn+p69beOedpPneaQWyTEniUa/U2d0DDv26In?=
+ =?us-ascii?Q?cklzhg8X/X46+jaUq04PFQcY90GJp68lapsNnAcMCDhgwLk+dRcTsYbTj9M1?=
+ =?us-ascii?Q?uetW6HmVjr14D0Lbt7v+QtAg50pmssOgi1l7tlrbPqFk63CkCteMF2LZ/kK1?=
+ =?us-ascii?Q?4xHz/PxPrhMbN35lhRVVMG85BTM0i4kX9qFirjPAZe+GlttUrqETiyHZzNZR?=
+ =?us-ascii?Q?d1ACPzlNaZNVI9CYuYc48nZv?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f91a49c-3b61-45fa-2e7b-08d931a9ce8a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 975dd28e-1907-437b-cce2-08d931a9cf2d
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:03.5416
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:04.6646
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QKSA0i7MpNUf8U7PtmKx9/4pe+/PE3M2+G80bfoP2AL4qhR5M6gzBbCTzywTGhqq9iVng0U6lKlZNt4xGfwumA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 052U4ckTw85LAdcD161063snl22BUnNq9mkREXxJDm5yAB5t+twHPOJ9Xu0cBY1JhXfke1Tg3oKwHhA065rDjQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0260
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,93 +119,27 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../net/wireless/celeno/cl8k/temperature.h    | 74 +++++++++++++++++++
- 1 file changed, 74 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/temperature.h
+ drivers/net/wireless/celeno/cl8k/trace.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/trace.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/temperature.h b/drivers/net/w=
-ireless/celeno/cl8k/temperature.h
+diff --git a/drivers/net/wireless/celeno/cl8k/trace.c b/drivers/net/wireles=
+s/celeno/cl8k/trace.c
 new file mode 100644
-index 000000000000..9f34d06b64eb
+index 000000000000..4644f4132bdd
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/temperature.h
-@@ -0,0 +1,74 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/trace.c
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_TEMPERATURE_H
-+#define CL_TEMPERATURE_H
-+
-+#include <net/mac80211.h>
-+#include "vendor_cmd.h"
-+
-+#define CL_TEMP_PROTECT_INTERVAL_MS       40000
-+#define CL_TEMP_PROTECT_NUM_SAMPLES       4
-+#define CL_TEMP_PROTECT_RADIO_OFF_HYST    10
-+
-+#define CL_TEMP_COMP_ITERATIONS           4
-+
-+#define CL_TEMPERATURE_TIMER_INTERVAL_MS  4000
-+#define CL_TEMPERATURE_UPDATE_INTERVAL_MS (CL_TEMPERATURE_TIMER_INTERVAL_M=
-S - 100)
-+
-+enum cl_temp_state {
-+       TEMP_PROTECT_OFF,
-+       TEMP_PROTECT_INTERNAL,
-+       TEMP_PROTECT_EXTERNAL,
-+       TEMP_PROTECT_DIFF
-+};
-+
-+enum cl_temp_mode {
-+       TEMP_MODE_INTERNAL,
-+       TEMP_MODE_EXTERNAL
-+};
-+
-+struct cl_temp_comp_db {
-+       s8 calib_temperature;
-+       s8 power_offset;
-+       s32 acc_temp_delta;
-+       s32 avg_temp_delta;
-+};
-+
-+struct cl_temp_protect_db {
-+       bool force_radio_off;
-+       u8 duty_cycle;
-+       u8 test_mode_duty_cycle;
-+       u8 curr_idx;
-+       s16 last_samples[CL_TEMP_PROTECT_NUM_SAMPLES];
-+       unsigned long last_timestamp;
-+};
-+
-+struct cl_temperature {
-+       s8 diff_internal_external;
-+       u8 comp_iterations;
-+       struct cl_temp_protect_db protect_db;
-+       struct task_struct *kthread;
-+       wait_queue_head_t wait_q;
-+       s16 internal_last;
-+       s16 external_last;
-+       unsigned long internal_read_timestamp;
-+       unsigned long external_read_timestamp;
-+       struct mutex mutex;
-+};
-+
-+struct cl_chip;
-+struct cl_hw;
-+
-+void cl_temperature_init(struct cl_chip *chip);
-+void cl_temperature_close(struct cl_chip *chip);
-+s16 cl_temperature_get_internal(struct cl_hw *cl_hw);
-+s8 cl_temperature_read(struct cl_hw *cl_hw, enum cl_temp_mode mode);
-+int cl_temperature_cli(struct cl_hw *cl_hw, struct cli_params *cli_params)=
-;
-+void cl_temperature_recovery(struct cl_hw *cl_hw);
-+bool cl_temperature_protect_did_reduce_duty_cycle(struct cl_hw *cl_hw);
-+int cl_temperature_diff_e2p_read(struct cl_hw *cl_hw);
-+s16 cl_temperature_calib_calc(struct cl_hw *cl_hw, u16 raw_bits);
-+void cl_temperature_comp_update_calib(struct cl_hw *cl_hw);
-+
-+#endif /* CL_TEMPERATURE_H */
++/*
++ * The definition below generates all the relevant code for the tracepoint=
+s.
++ * It should appear in only one translation unit.
++ */
++#define CREATE_TRACE_POINTS
++#include "trace.h"
 --
 2.30.0
 
