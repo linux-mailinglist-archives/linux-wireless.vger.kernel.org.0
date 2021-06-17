@@ -2,105 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7246D3ABB3A
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 20:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25CF33ABC2B
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 20:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232727AbhFQSSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 14:18:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59026 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231162AbhFQSSV (ORCPT
+        id S232152AbhFQSzW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 14:55:22 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:44009 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231151AbhFQSzT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 14:18:21 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A6AC061574;
-        Thu, 17 Jun 2021 11:16:14 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id w127so7478168oig.12;
-        Thu, 17 Jun 2021 11:16:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=lDrvv4SjpRGkcXHTZ4eLR8O6nHpZy/vmSgaV/fvgZQc=;
-        b=dDS7K0yryIVcseJxuPdmMMFGGB0HEZPSwv85uGF5IKpvHrqKoQZXn5+Z4dnhycn4dV
-         5N3FucpSvxP0B7GWK0i4ztJsX3onaM2qj1pb1/AUwF2HecmpdFHwtHk22XHBFRw7nlwB
-         o28/1g/B60d5U9bNdn1hpJuGWnXKHFcTg15AMUtX0HHlLYiIM06JQMAaXQbQbv0V/9jD
-         SfPhb9hqWJY96njZ+xFpQYXfpI6U/QgXDc725PtljX3BOBS18wpprrVSMU/OfLHeJoVJ
-         gy4t0CCiDhE7bUHyn7zlLmL88NEJlnVcIwpsZH+IsSIjrAUw8b9Rmmlp3SkV96l14vWi
-         jDUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=lDrvv4SjpRGkcXHTZ4eLR8O6nHpZy/vmSgaV/fvgZQc=;
-        b=NfrW8diJNLfl15zfoAebA6KhMLVzTWz/XS46sRILPaA70BMitUNwVe+a2lqveab9MZ
-         BxDeekVIvAftvvnscScpm7fIgPR51kV34WoX38smFWSZOvoS6SOTc9o01GISOqIROQNi
-         123Uf4/qmw04qJ7fLa5Xag2YB2PM2rDjM7BS+ccyPckw4qp+WyXh6XcAm1DBXKjX0GG1
-         eiAULtK1iPJAwBLA/yrZsERPwjYM0bLREwE71RrDvAkQM2BnUkCh7Mlpo46gp7VxxLRy
-         yeOABTdKnG9wjIg09AQpxKcXdNl4bG5Wb+PMzTSk4opjHsHXSO1GvI40m90eceZSNOqs
-         8g0A==
-X-Gm-Message-State: AOAM5327qtiZ7ReRd16AFVnqy1V9c/MHNyA+TVV5VF7GxKX7Wud7HJX9
-        cOnlqV0l5dwc1z0CFnkfGJ8z7WUMmvk=
-X-Google-Smtp-Source: ABdhPJzL4f3FCY/yfEYFwYetlXRUTOfrxQ09K6/SCwmy1h9jq+scI9PwkZczubIUdPL2JypV+NXXsQ==
-X-Received: by 2002:aca:4a46:: with SMTP id x67mr11539185oia.59.1623953771779;
-        Thu, 17 Jun 2021 11:16:11 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id v82sm1275328oia.27.2021.06.17.11.16.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Jun 2021 11:16:10 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: [PATCH] rtlwifi: rtl8192de: Fully initialize curvecount_val
-To:     Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kaixu Xia <kaixuxia@tencent.com>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-References: <20210617171317.3410722-1-keescook@chromium.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <92f5a610-a623-b17d-40ba-963e3e84c622@lwfinger.net>
-Date:   Thu, 17 Jun 2021 13:16:09 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Thu, 17 Jun 2021 14:55:19 -0400
+X-UUID: f783e27c69a743f3bb4a1fd43f7b9146-20210618
+X-UUID: f783e27c69a743f3bb4a1fd43f7b9146-20210618
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 528475718; Fri, 18 Jun 2021 02:53:08 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 18 Jun 2021 02:53:06 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 18 Jun 2021 02:53:06 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/4] mac80211: check per vif offload_flags in Tx path
+Date:   Fri, 18 Jun 2021 02:53:02 +0800
+Message-ID: <4718d8041f908cb3249ec68c59a6854919f00752.1623955182.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-In-Reply-To: <20210617171317.3410722-1-keescook@chromium.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/17/21 12:13 PM, Kees Cook wrote:
-> In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> field bounds checking for memcpy(), memmove(), and memset(), avoid
-> intentionally writing across neighboring array fields.
-> 
-> The size argument to memset() is bytes, but the array element size
-> of curvecount_val is u32, so "CV_CURVE_CNT * 2" was only 1/4th of the
-> contents of curvecount_val. Adjust memset() to wipe full buffer size.
-> 
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->   drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> index 68ec009ea157..76dd881ef9bb 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> @@ -2574,7 +2574,7 @@ static void _rtl92d_phy_lc_calibrate_sw(struct ieee80211_hw *hw, bool is2t)
->   			RTPRINT(rtlpriv, FINIT, INIT_IQK,
->   				"path-B / 2.4G LCK\n");
->   		}
-> -		memset(&curvecount_val[0], 0, CV_CURVE_CNT * 2);
-> +		memset(curvecount_val, 0, sizeof(curvecount_val));
->   		/* Set LC calibration off */
->   		rtl_set_rfreg(hw, (enum radio_path)index, RF_CHNLBW,
->   			      0x08000, 0x0);
-> 
+offload_flags has been introduced to indicate encap status of each interface.
+An interface can encap offload at runtime, or if it has some extra limitations
+it can simply override the flags, so it's more flexible to check offload_flags
+in Tx path.
 
-Reviewed-by: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ net/mac80211/tx.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 0a4bc9e08637..8cb1289c704a 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3267,6 +3267,9 @@ static bool ieee80211_amsdu_aggregate(struct ieee80211_sub_if_data *sdata,
+ 	if (!ieee80211_hw_check(&local->hw, TX_AMSDU))
+ 		return false;
+ 
++	if (sdata->vif.offload_flags & IEEE80211_OFFLOAD_ENCAP_ENABLED)
++		return false;
++
+ 	if (skb_is_gso(skb))
+ 		return false;
+ 
+@@ -3695,7 +3698,8 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	}
+ 
+ 	if (skb_has_frag_list(skb) &&
+-	    !ieee80211_hw_check(&local->hw, TX_FRAG_LIST)) {
++	    (!ieee80211_hw_check(&local->hw, TX_FRAG_LIST) ||
++	     vif->offload_flags & IEEE80211_OFFLOAD_ENCAP_ENABLED)) {
+ 		if (skb_linearize(skb)) {
+ 			ieee80211_free_txskb(&local->hw, skb);
+ 			goto begin;
+-- 
+2.18.0
+
