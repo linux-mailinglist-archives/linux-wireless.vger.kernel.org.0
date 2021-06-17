@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A42A43AB907
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D93753AB8F0
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233668AbhFQQMD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:12:03 -0400
-Received: from mail-eopbgr10062.outbound.protection.outlook.com ([40.107.1.62]:13120
+        id S233858AbhFQQLR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:11:17 -0400
+Received: from mail-he1eur02hn2203.outbound.protection.outlook.com ([52.100.9.203]:12679
         "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232861AbhFQQKq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:10:46 -0400
+        id S233731AbhFQQKI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:10:08 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Zy4vLUthMDAFbnc4n1QBDl1Ll9D3wmGa/8WQbKPOtcVnooMMgBcuD1/x4j/nu4XZpuaBbdKjBhXJI2Jc7LIPsj4TYgGWpD3LpQW4bZmR6gJZTbzTAvkm/VlH97UhSBxElX+BlEr6bi0BMBb2bzFIGj+L0xtOXIOOGxHg6Zoiwk7ZMDtNT8Al0MSe5ivZg8eau62zoJs5AN2QFHLQPj8aA0/yhTGQPtS3anGkxXQlLkP36xkh9Xqv0DRxilhWsbU8QlXHCdHw1o17bYG9XZUNd3EoRtpTZpBvHB6biWi/uKB/2Z2cSNcJ7RmeAJC9j8qfTpOTb0kSLQ61x/1XJqd6RA==
+ b=ULu+eTiadmI5I2rLB0b01pIL4yE1X8gkJNIWWjRGYPUWaCa9mPGEdJwPENwfCO/9wbdFVYLx7fmkdCtwxDQ9rKHKmQ/uDtsjoUDh8UVDQhlSvPGxr4VAZC4GQcURxzvDwrX8id67eV+O3yuQHrCOukcmC5ZSxw+S3tQlkN162q/oPiJXDS0OJQwWSrR+LoMJkmROalR7McKyxry5IKbioN1vapCGuCqvWhJupLlZ88CC12dMz0g4MLpOpyrmmYbvexEHeQNVE/VMb+vPmmiZz6b9XvIRvAFtpUgkgl1TyrheJny7z+qQ9geiCta2y5HVWyKmEkt3ZQsMBAcOv0dmXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jXZ9BiixqLezMieBNK9BC+oIhvaY2O2Hz7HGR/H/5ho=;
- b=lVJx+Tw8Lb0OCbKgO6QDO+lLYkBxzb34MOUemxrtHYEgwdXXT6npLoVh3AMaMotZSiBlJGo/UDAoZ+/hNiFb8+66k3s6+WZwTslazuHzI1W7RITpE7KeeWdMv0QKKrwLvjmuqrrKCMaqxO7aBN2qpmLBbwuYLU4DHm3lpxxMBTo3Y0m9TkZhKn7z5pTcQXo9Q+5eIrSsNiJMXDNetpR+iOqHEJ7DJDKm482k2zHFxxUhFLk5viYB6TWCYCLKsdzWLkv9Nn8zSM6PKuFV31dlOgqjAHp+gsRpw7KJpCxXypmkyo4t0OV8AlczGyoxRWULHowzo+btC/2N/yWpBw0PNw==
+ bh=tS7/QuK0GerwrgKnSPVurn1AWgNx0k/26BHgb2KnYWA=;
+ b=DLjOZ0qljIfBdzg1ebrjj5D/xtqPanh9BVbfMTv3jT7NgevFAa5ZbGziz8k+GX9WFoLiS6CnyWfLWsbao3q1or3W9hNC7OL1qt8madYl8bNovAf4Wp4VDVahabZRSrPrJ6pl0rM8DWjg/MIYPPR3qhmQzeGOSn3b49TIAGs2Z+l8QQH9+Ig5FAsYOuAtNRTVaJOUthsENqH4oajvc+3VDnjeOKnT5d685Vdniep+ccO1S0rxXu7dGr0eUjuSTXw1djSS+DY95HDz7vMXDJDkxC6YizXaBK5wpxYKV1Fm66tvbb8zVSL44AJapAiIYs1scZsSfWuS+toXTCMEaaC6Lw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jXZ9BiixqLezMieBNK9BC+oIhvaY2O2Hz7HGR/H/5ho=;
- b=RKGp37y1yeZAJg5QaooIgxR7XlI+OVJx4aEIsnbi5mD08xWW+shZ2Bb/X7Aiyw14dJY3V2wwxegDDxc2QzSI3AMArLYP+Rs/pNJzRZOgU2F+F96gd9cvLDfyAynzQgoWf1Rgvy7MSiM3CJReQt/4L4+ieeBGdszHvOwsQLcXDcM=
+ bh=tS7/QuK0GerwrgKnSPVurn1AWgNx0k/26BHgb2KnYWA=;
+ b=TKCxCq9xkm8NAkhNITAlE2iKii5jW+2KRJ6Kp4n7vR8VBPPMK2ZkCTUu7ZWL3BVmveHk4FWa42oZBuDtCMhaIq2irjFWDHxyxkI9G5P9UuIppAqDkSsHIDR42xO4yk2KNXyOC0Hg6cvY/AEJQ4Npdndwh9WoutTbgX28EbxnXMY=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 231/256] cl8k: add vendor_cmd.c
-Date:   Thu, 17 Jun 2021 16:01:58 +0000
-Message-Id: <20210617160223.160998-232-viktor.barna@celeno.com>
+Subject: [RFC v1 232/256] cl8k: add vendor_cmd.h
+Date:   Thu, 17 Jun 2021 16:01:59 +0000
+Message-Id: <20210617160223.160998-233-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,69 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:51 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:52 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bc26ba52-4fdf-4480-baee-08d931a9eb7c
+X-MS-Office365-Filtering-Correlation-Id: 38eb6453-98a3-4758-0824-08d931a9ec1b
 X-MS-TrafficTypeDiagnostic: AM0P192MB0515:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB0515B9B835A9E7507A9EDABFF60E9@AM0P192MB0515.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Microsoft-Antispam-PRVS: <AM0P192MB051554192B9BC68867F6979EF60E9@AM0P192MB0515.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: BKabLO0F+bJuN4n9dM6aHQvPjSBthBiSRq6iaGgrFfyDLHi9eXe9tmB+K8+kOK5KSqwYEQ4uG3aalC3FzYKtahf1MrUiBds+4N4ktAuT9AhJW2kAFOJ81ggi1yKJHtgGiCD9VXEtdoZVpoE9aAcqFpueSmDuz9nELD626CLp+exwjgh5zOKzsspt68iBmjcjWlxAbf3eQjVkFkVUVZE6unVH2vnwLnCS/xdDwdZx2JBi2cSlafZHPzsJYS6gg5RCa81sEGrokeUa28acW4+X/RlYGCknmNYhvF+ewxPQXRtpU+wOY2jFdTwLNj40yB25GLtvu7uZfKXgpdIgTxuYeWSVLVfDxbBY18CnL9DFjEwCsq7kWYnBt9aIZpv4lSbR5hP/FCOT2B7O6uzoUq153HAna1+OKFm2SqxSotp7nJXTAJARvh6EX6Mh/L78U6LWiNEiREAJMsJuouiXv2TJ1bYO2s4m82QBE6rxZjjtmz/l37ZK10k1SmwqY/sTcdw0pOBDfhk4SS5aiR0+r6s2FGPJHYMO3iEZOyKVo71rd1TwMYXs7lqTerQvdmz5n8xeDhi3iVUkIAwyY5apRSe4ppB+KrOAkKMnYvj5sb2GgQyxMMW3SNq1Jn4TKKgXb9wPvGT2ry7WhFrRjmJpAOqAM/JHz8i1/P6LRAVhk7Gw+wc+HRApCRYHnJg/z0Agq+uroVnjnZMRV/nOj/1ESavHwA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(396003)(376002)(39850400004)(136003)(366004)(346002)(4326008)(16526019)(83380400001)(1076003)(8676002)(9686003)(55236004)(36756003)(478600001)(8936002)(956004)(186003)(6486002)(38350700002)(6512007)(6916009)(52116002)(86362001)(5660300002)(2906002)(38100700002)(66946007)(2616005)(316002)(6506007)(30864003)(26005)(54906003)(66476007)(107886003)(66556008)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?tRs90N4Nvo6ZQrCI01Z4lSmq9y4SYF3OTKnAX73unYqsco5aRgd0B+wDo9zp?=
+ =?us-ascii?Q?fW7lNTDgFFSS7K7uXiU/rgwDqhAwIIc0guyQEBbMgw7nW6QWuy8awhCO6dAY?=
+ =?us-ascii?Q?q0OIYR5om83Udhy+D4Pp7Qra0ZoPaMqCzGqTNry4TaeyIuTP7SIHu74wxbij?=
+ =?us-ascii?Q?cNy2ZjkzXrMGcYXsGTy4lfUNr1i29BXqBKbvuKSDuflK1hEhlKZBGUA4vIK9?=
+ =?us-ascii?Q?PTXgoYcGbj1LipIk6H6pvo1LgFBW5a8z2z0AiqluRDqmfiszR+MwWCDAnwQb?=
+ =?us-ascii?Q?LSOa0wXpCrJWplSr/luXetgHfSfqu2Ch9Dq/Nc4Dg1xvrNc3vwqQQihKgl9n?=
+ =?us-ascii?Q?rzzeDbud8Bl1ruhNo+hLImd9Tq4d9OBvpE6Oy1/XTHp6t7fsuD+QOCHkusWa?=
+ =?us-ascii?Q?ywufxsyL+nGjXOQoXzfy7EBrB37tMzVqert1tuLIej1mXtywkQGnknuMlouD?=
+ =?us-ascii?Q?yKWOmI/XJTDnFLzpSGCPvXQy+DwwNKs4Qq3tqW6OYHeK5sKvP+YBJIAExyDH?=
+ =?us-ascii?Q?4XH6GzlYjHP14V/yp7EQTXYkAPqoB94QSJO2vLWRAJkq2V0Vmr64jMK1JO/9?=
+ =?us-ascii?Q?j+snD60r2TjXO8Xf2TJYbESX97VHDszzQKYQXRpmH4pR83Em6xEc/4K/6ZPy?=
+ =?us-ascii?Q?GTHv2WXNCZ/gOrgEkTrzPZBAp8ESrpH7yOALuUsQnE79G8wRJSvlQvY/YkWO?=
+ =?us-ascii?Q?MTT1ythGajELUlTvHeQwfyDHKeflqAWwn8KlMvFDoGkZeoT/doebfzRPKpQo?=
+ =?us-ascii?Q?7S042KKXYqJenxi13SFjBsflFzUTG3qUQwCa6wsr7wm1SufKQc2UpEWFzRCv?=
+ =?us-ascii?Q?17uWOQwJUbBLc+Uyup7y+zuNO0ycwCIb4ZPAAz5yZbpPzDrGYZjHNxQidHoN?=
+ =?us-ascii?Q?S/FznXD2kjFfJ9TkBfk5anMm7JoVpLetLt6N1yDfhbq/DqksoI9ORPk4zLfg?=
+ =?us-ascii?Q?FRV8HB7UeLHcjTVgAN64KBPHYTq4U+wZ6lQALC2F8b/QPLSpPlY2c7XAsdeD?=
+ =?us-ascii?Q?Iifwer9ia1sHR3oMhVUxv2r9w2a2RLASjlzs62ydRWnjw4+3vk31cIIyh/gN?=
+ =?us-ascii?Q?ElHIfH+BkMOuep55J+IHg7CGxQoCjA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:5;SRV:;IPV:NLI;SFV:SPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:OSPM;SFS:(396003)(376002)(39850400004)(136003)(366004)(346002)(4326008)(16526019)(83380400001)(1076003)(8676002)(9686003)(55236004)(36756003)(478600001)(8936002)(956004)(186003)(6486002)(38350700002)(6512007)(6916009)(52116002)(86362001)(5660300002)(2906002)(38100700002)(66946007)(2616005)(316002)(6506007)(26005)(54906003)(66476007)(107886003)(66556008)(966005)(140170200002);DIR:OUT;SFP:1501;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?K0tdOkZNcRVg62lXHLAD6jK35648/YXXuePlFLBkVtF53deimfu3eNsrW/Mg?=
- =?us-ascii?Q?RHe5zDbMaALSjdZBVQTnB9iXSAb84IFfQ9UiP7CvZwaH/pKZQ/El+iIyojiy?=
- =?us-ascii?Q?uj+v3kMwPSlbGztFgRjuuCr1cC0NV+mDIcUVf71gv6G+sDV2+eBviS62WrKH?=
- =?us-ascii?Q?zcqEvPPkOP+jn3A374HqwTMiU7YscdE8nfnXrz8EAtVFNyn2LwRzXil19EZY?=
- =?us-ascii?Q?2a3JoEGMAJWMrI9SgN/xa87Vqro+WheeOCp32SvQh/VYWACqBz6Y2YvJdkZc?=
- =?us-ascii?Q?Yy4mGlQnhTBpoTJQV0OEUfBHTfLAdDKj19v2SkKkyjnWi5/sanrSQKMNvpWI?=
- =?us-ascii?Q?hL3p7xvVT9I1J+s51WEAbmKDK2q1XJhzr5IuJCm8C1s0/FjSJS3yyyxLhosL?=
- =?us-ascii?Q?/oMbMRNzd8fhxurI7sxIc2+MbwOQyolnTkQSw8zXP8kZEoA2fIsbu8zLjiXK?=
- =?us-ascii?Q?9r7TurBdnpv/XwdFCxneQ2j5WJPHjBRtzytis79NXDW34C/F0P3p88V8Kbqv?=
- =?us-ascii?Q?XCjuOMbA8icMRmeeRYrL7RL2eWzOPg+tmvsWwrK4+bSvRNuGquSc4Z0JtZ7S?=
- =?us-ascii?Q?QIpnQp2LkTpMklGx6UeGxaVXp0zB1Q4GW3r3FefprDKXMfO4mVvA+QjjzsM/?=
- =?us-ascii?Q?kW6JhJI4w+eeqQMCOm6N3RiYCiq0jkBjIMwjwReMbwg5hz+kaz37HhHqYZmg?=
- =?us-ascii?Q?lRZAetxPyW7mkaJoXqffCYJllAEZQcpf0oGQ1BLSR+sI9FgBMSJDoJEZaoQw?=
- =?us-ascii?Q?r7K64WdJO2fjuc6X2LhE4sPLNwFsoeCEYLyNjfQVSw8pmvHwpdumPi0Dpu3s?=
- =?us-ascii?Q?ByLZlzslCvKfh9pmdrkDprNt29bP0t+NsPHgK7GUSLuMBwMjrdlMAqc2l2IC?=
- =?us-ascii?Q?xzRU+m4UeGm8Ua/O99MuM5rriT83DcMtDgg86aZ1EHV+Dr9n410ys/ddyqNc?=
- =?us-ascii?Q?kyY0QNS4TphA1TZzSGH84MrTbUPHHO++IuGKfDcQSPzbh975+HJBx5Hz/yS6?=
- =?us-ascii?Q?utoYT03knosLd6JbyHgZTIMDChXe+5nHmfiZfw86ekpbGYuW8Ecg87O6mogx?=
- =?us-ascii?Q?hDDhIs8mCJQSV9TrDwylCeTzehp7JpFT4pMPtLSF86x7VGRwMJfmAAW/M0Hc?=
- =?us-ascii?Q?le1zhZayESdlkjF4AUCMcu6PMUXqxap+AuoDhvazgxins714rqt1HGLT25KL?=
- =?us-ascii?Q?YFP/BREGUhfjuqrah2ZnFgNkRssconyEqdZLIolhmIYgwUqxj/I7Hbesr/As?=
- =?us-ascii?Q?zURwfACfqe51EYWRZK10fDH2Y7juu8SAnNS8ZaqIfpfTy7jeWiLrmv/3ZOrU?=
- =?us-ascii?Q?VdqhSPXh1T0hKfGbagSkEW9o?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8Ix/0VX9PVeyjHFZ29ZL8Df0VcabdV+65IBXOSrHgmp/kuoVxWvQPQQ7Rq1A?=
+ =?us-ascii?Q?ZS2rMQhCNFs6nPuxBxpfO86JpE+A4ZmRlvlo2gA+qLoAXML6fzyZzYqZ1NoR?=
+ =?us-ascii?Q?eRpzgDoxHBPdvNXDlcIlw0L8DfADxC9kTbJAna6rkggsi47Gqf1x0PiXik9E?=
+ =?us-ascii?Q?i9LQLxZsMKGQCLQdm07C6CjeKAIQweGbngjV5rlgg2Ckm4Zb7DKSHh9SW1Vn?=
+ =?us-ascii?Q?xYirKIL6k5XID3rAyZOD4wtfbhP97sxxOmbEaDcLNt+ceastfIeJrTG9CFSB?=
+ =?us-ascii?Q?4HpmVZQDlBZAl/2W24cSGQD5a1VirHUWrP3PadB2t5B89us8ol71dL3nkJyN?=
+ =?us-ascii?Q?5QnVRHWWDrbnwi5qJ4IU0Vioj7qcgWOBgFllvZROQYdLcnYKbw1Yzu97aEPs?=
+ =?us-ascii?Q?tDJF0Ury3U2sk+E5A70GLsa9PADUBXQ2upe/0aR39e8JsENt0PXA1hYduL9H?=
+ =?us-ascii?Q?S2Nn6giUjIvqLBATYkimXi2uOCDmx1mhL6ZBjARY24L6wCB7vxcHPNoOadsR?=
+ =?us-ascii?Q?nVf0frNmdXUzEaT6KlbO+1G6V6nPoE1YVRcP0p1IY/bZLkb0n6vjwD8lp5OZ?=
+ =?us-ascii?Q?0vbVfkQDFgzB1LZWocFNxtAr06QL7VfVrL2x+gkDRo6EPFIp2Lw5eH+Uv5do?=
+ =?us-ascii?Q?EYL+wPZYvYmGXyuDLFy6AVbmh1yOBOMAKKH44YMcRzcLN4dqJ8tUBkAvyE14?=
+ =?us-ascii?Q?Gb1vzIlb2hSlVbZlN6V8w5eWWmUalCXdGdEVlWP7pvJNl+6cEHw8KTkqiTHM?=
+ =?us-ascii?Q?a7bfUCN25AFfNvXM2T3pscrgDgVN0PfxZGnuYoIjRfFg07fEU9liTq/Nv/bH?=
+ =?us-ascii?Q?5+LkuSlnb9geKLG0R/GoUleXDJZis6D5Hang9a0y9tc66LlgQN3gDHQMeu6z?=
+ =?us-ascii?Q?oh4mVf/TV6/i8nSIodGimXuiPP+KKtDDqv4XP/rX4lVfZeriVAcmncwM2V+x?=
+ =?us-ascii?Q?xP8yuqv4oG7wA+Hp82iL8NQ7bbBIL/TEag0dvrn7l2Pm/K9SEbBqUKVPQ8bJ?=
+ =?us-ascii?Q?z7+k1XsZPY/jL7B1bLWTix+ad7mKcx2gsvN7cr21PVMdLGWR/3Fci1KXSoAi?=
+ =?us-ascii?Q?+dHTGchH14u6iZkNL1UZWpV9i1sTvw0zESsU9j1kb+dK0rMoXmlGoIPYukQ9?=
+ =?us-ascii?Q?TuLC7QjOQkd3vOUDbFTB/QRF1o6igOlBH5k9SpTBuiuq8Jtz8zESL22HP3Jp?=
+ =?us-ascii?Q?cOPLGB9sEj/qwkQkPQZ08Uvsrwx7o5DHWTKAd7PTMtiFV7JVBL2TIbjcQEp+?=
+ =?us-ascii?Q?lfgFJcCiY2G1F6LdRlSJzRJFyov0e0hlanoo/QINML4k8ftffClUIShTw197?=
+ =?us-ascii?Q?0X+3czGievEOnQLrblOf/fVG?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc26ba52-4fdf-4480-baee-08d931a9eb7c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38eb6453-98a3-4758-0824-08d931a9ec1b
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:52.1442
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:53.1378
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TwBFkps6PjM0JChPIvSSXlGiUodx1TPVVCPdbsCgPHrMzg8ZyShBC4yR/mpl6o02lSsKFgvn7ReKrNrbwR1q4Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: HRaEPyVMc87z2x5PmB7IfQmcBg53+lpcxuZZvJ/ljRuxapeGrhrVvxsLGlkBmsbgiRWpdUNuUqofn0P/2FDLXg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0515
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,402 +137,133 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/vendor_cmd.c | 377 ++++++++++++++++++
- 1 file changed, 377 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/vendor_cmd.c
+ drivers/net/wireless/celeno/cl8k/vendor_cmd.h | 116 ++++++++++++++++++
+ 1 file changed, 116 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/vendor_cmd.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/vendor_cmd.c b/drivers/net/wi=
-reless/celeno/cl8k/vendor_cmd.c
+diff --git a/drivers/net/wireless/celeno/cl8k/vendor_cmd.h b/drivers/net/wi=
+reless/celeno/cl8k/vendor_cmd.h
 new file mode 100644
-index 000000000000..812eebe72956
+index 000000000000..9c7c3fe571be
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/vendor_cmd.c
-@@ -0,0 +1,377 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/vendor_cmd.h
+@@ -0,0 +1,116 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include <net/cfg80211.h>
-+#include <net/mac80211.h>
-+#include <linux/version.h>
-+#include "vendor_cmd.h"
-+#include "calib.h"
++#ifndef CL_VENDOR_CMD_H
++#define CL_VENDOR_CMD_H
++
++/*
++ * DOC: Vendor commands
++ *
++ * A driver supporting vendor commands must register them as an array
++ * in struct wiphy, with handlers for each one, each command has an
++ * OUI and sub command ID to identify it.
++ *
++ * Note that this feature should not be (ab)used to implement protocol
++ * features that could openly be shared across drivers. In particular,
++ * it must never be required to use vendor commands to implement any
++ * "normal" functionality that higher-level userspace like connection
++ * managers etc. need.
++ */
++
++#include "def.h"
 +#include "e2p.h"
-+#include "ate.h"
-+#include "cecli.h"
-+#include "utils/utils.h"
 +
-+static int vendor_reply(struct wiphy *wiphy, void *data, u16 len)
-+{
-+       /* Utility function to send reply message */
-+       struct sk_buff *msg =3D cfg80211_vendor_cmd_alloc_reply_skb(wiphy, =
-len);
-+       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
-+       struct cl_msg_data *msg_data =3D (struct cl_msg_data *)data;
++#define VENDOR_CMD_TIMER_PERIOD_MS 5000
 +
-+       if (!msg)
-+               return -ENOMEM;
++/* Celeno OUI - see http://www.my-ip.club/oui-info/00-1C-51 */
++#define CELENO_OUI 0x001c51
 +
-+       if (data) {
-+               if (nla_put(msg, CL_VENDOR_ATTR_REPLY, len, (void *)msg_dat=
-a) < 0) {
-+                       kfree_skb(msg);
-+                       return -ENOBUFS;
-+               }
-+       }
++struct cl_hw;
 +
-+       /* Start timer if we waiting for more msg's from userspace */
-+       if (msg_data->more_data)
-+               cl_timer_enable(&cl_hw->vendor_timer);
-+
-+       return cfg80211_vendor_cmd_reply(msg);
-+}
-+
-+static int _cl_vendor_reply(struct cl_hw *cl_hw, void *data, u16 len, bool=
- process_data)
-+{
-+       struct cl_vendor_msg *vendor_msg =3D &cl_hw->vendor_msg;
-+       struct cl_msg_data *msg_data =3D NULL;
-+       int ret =3D 0;
-+       u16 curr_size;
-+
-+       if (!data || len =3D=3D 0)
-+               return -EIO;
-+
-+       msg_data =3D kzalloc(sizeof(*msg_data), GFP_KERNEL);
-+       if (!msg_data)
-+               return -ENOMEM;
-+
-+       /* Messages 2..N */
-+       if (process_data) {
-+               curr_size =3D vendor_msg->len - vendor_msg->offset;
-+               if (curr_size <=3D MSG_SIZE) {
-+                       vendor_msg->in_process =3D false;
-+               } else {
-+                       curr_size =3D MSG_SIZE;
-+                       msg_data->more_data =3D 1;
-+               }
-+
-+               memcpy(msg_data->data, vendor_msg->buf + vendor_msg->offset=
-, curr_size);
-+               vendor_msg->offset +=3D curr_size;
-+               ret =3D vendor_reply(cl_hw->hw->wiphy, (void *)msg_data, si=
-zeof(*msg_data));
-+
-+               /* Last msg */
-+               if (!vendor_msg->in_process)
-+                       memset(vendor_msg, 0, sizeof(*vendor_msg));
-+
-+               goto out;
-+       }
-+
-+       /* Single message */
-+       if (len < MSG_SIZE) {
-+               memcpy(msg_data->data, data, len);
-+               ret =3D vendor_reply(cl_hw->hw->wiphy, (void *)msg_data, si=
-zeof(*msg_data));
-+               goto out;
-+       } else if (vendor_msg->in_process) {
-+               goto out;
-+       }
-+
-+       /* First message */
-+       msg_data->more_data =3D 1;
-+
-+       /* Allocate buffer in driver */
-+       vendor_msg->buf =3D data;
-+
-+       vendor_msg->in_process =3D true;
-+       vendor_msg->len =3D len;
-+
-+       memcpy(msg_data->data, data, MSG_SIZE);
-+       vendor_msg->offset +=3D MSG_SIZE;
-+       ret =3D vendor_reply(cl_hw->hw->wiphy, (void *)msg_data, sizeof(*ms=
-g_data));
-+
-+out:
-+       kfree(msg_data);
-+       return ret;
-+}
-+
-+static int cl_vendor_cecli_handler(struct wiphy *wiphy,
-+                                  struct wireless_dev *wdev,
-+                                  const void *data, int len)
-+{
-+       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
-+       u8 cecli_cmd_id =3D *(u8 *)data;
-+       void *real_data =3D (u8 *)(data + 1);
-+
-+       len--;
-+
-+       cl_timer_disable_sync(&cl_hw->vendor_timer);
-+       if (cl_hw->vendor_msg.in_process &&
-+           cecli_cmd_id =3D=3D CL_CECLI_MORE_DATA)
-+               return _cl_vendor_reply(cl_hw, real_data, len, true);
-+
-+       switch (cecli_cmd_id) {
-+       case CL_CECLI_AGC_PARAMS:
-+               return cl_cecli_agc_params(wiphy, wdev, real_data, len);
-+       case CL_CECLI_BF:
-+               return cl_cecli_bf(wiphy, wdev, real_data, len);
-+       case CL_CECLI_CALIB:
-+               return cl_cecli_calib(wiphy, wdev, real_data, len);
-+       case CL_CECLI_CCA:
-+               return cl_cecli_cca(wiphy, wdev, real_data, len);
-+       case CL_CECLI_CHIP:
-+               return cl_cecli_chip(wiphy, wdev, real_data, len);
-+       case CL_CECLI_CONFIG:
-+               return cl_cecli_config(wiphy, wdev, real_data, len);
-+       case CL_CECLI_DEBUG:
-+               return cl_cecli_debug(wiphy, wdev, real_data, len);
-+       case CL_CECLI_DFS:
-+               return cl_cecli_dfs(wiphy, wdev, real_data, len);
-+       case CL_CECLI_EDCA:
-+               return cl_cecli_edca(wiphy, wdev, real_data, len);
-+       case CL_CECLI_FW:
-+               return cl_cecli_fw(wiphy, wdev, real_data, len);
-+       case CL_CECLI_MOTION:
-+               return cl_cecli_motion(wiphy, wdev, real_data, len);
-+       case CL_CECLI_NOISE:
-+               return cl_cecli_noise(wiphy, wdev, real_data, len);
-+       case CL_CECLI_OMI:
-+               return cl_cecli_omi(wiphy, wdev, real_data, len);
-+       case CL_CECLI_POWER:
-+               return cl_cecli_power(wiphy, wdev, real_data, len);
-+       case CL_CECLI_QOS:
-+               return cl_cecli_qos(wiphy, wdev, real_data, len);
-+       case CL_CECLI_RADIO:
-+               return cl_cecli_radio(wiphy, wdev, real_data, len);
-+       case CL_CECLI_REG:
-+               return cl_cecli_reg(wiphy, wdev, real_data, len);
-+       case CL_CECLI_SOUNDING:
-+               return cl_cecli_sounding(wiphy, wdev, real_data, len);
-+       case CL_CECLI_STATS:
-+               return cl_cecli_stats(wiphy, wdev, real_data, len);
-+       case CL_CECLI_TCV:
-+               return cl_cecli_tcv(wiphy, wdev, real_data, len);
-+       case CL_CECLI_TEMP:
-+               return cl_cecli_temp(wiphy, wdev, real_data, len);
-+       case CL_CECLI_TRAFFIC:
-+               return cl_cecli_traffic(wiphy, wdev, real_data, len);
-+       case CL_CECLI_TWT:
-+               return cl_cecli_twt(wiphy, wdev, real_data, len);
-+       case CL_CECLI_TXQ:
-+               return cl_cecli_txq(wiphy, wdev, real_data, len);
-+       case CL_CECLI_VERSION:
-+               return cl_cecli_version(wiphy, wdev, real_data, len);
-+       case CL_CECLI_VNS:
-+               return cl_cecli_vns(wiphy, wdev, real_data, len);
-+       case CL_CECLI_WRS:
-+               return cl_cecli_wrs(wiphy, wdev, real_data, len);
-+       default:
-+               return cl_cecli_help(wiphy, wdev, real_data, len);
-+       }
-+
-+       return 0;
-+}
-+
-+static int cl_vendor_e2p_handler(struct wiphy *wiphy,
-+                                struct wireless_dev *wdev,
-+                                const void *data, int len)
-+{
-+       u8 e2p_cmd_id =3D *(u8 *)data;
-+       void *real_data =3D (u8 *)(data + 1);
-+
-+       len--;
-+
-+       switch (e2p_cmd_id) {
-+       case CL_E2P_GET_ADDR:
-+       case CL_E2P_GET_MAC:
-+       case CL_E2P_GET_SERIAL_NUMBER:
-+       case CL_E2P_GET_PWR_TABLE_ID:
-+       case CL_E2P_GET_FREQ_OFFSET:
-+       case CL_E2P_GET_WIRING_ID:
-+       case CL_E2P_GET_FEM_LUT:
-+       case CL_E2P_GET_PLATFORM_ID:
-+       case CL_E2P_GET_HEXDUMP:
-+       case CL_E2P_GET_TABLE:
-+               return cl_e2p_get_addr(wiphy, wdev, real_data, len);
-+       case CL_E2P_GET_CALIB:
-+               return cl_calib_get(wiphy, wdev, real_data, len);
-+       case CL_E2P_SET_ADDR:
-+       case CL_E2P_SET_MAC:
-+       case CL_E2P_SET_SERIAL_NUMBER:
-+       case CL_E2P_SET_PWR_TABLE_ID:
-+       case CL_E2P_SET_FREQ_OFFSET:
-+       case CL_E2P_SET_FEM_LUT:
-+       case CL_E2P_SET_PLATFORM_ID:
-+               return cl_e2p_set_addr(wiphy, wdev, real_data, len);
-+       case CL_E2P_SET_WIRING_ID:
-+               return cl_e2p_set_wiring_id(wiphy, wdev, real_data, len);
-+       case CL_E2P_SET_CALIB:
-+               return cl_calib_set(wiphy, wdev, real_data, len);
-+       default:
-+               return cl_e2p_help(wiphy, wdev, real_data, len);
-+       }
-+
-+       return 0;
-+}
-+
-+static int cl_vendor_ate_handler(struct wiphy *wiphy,
-+                                struct wireless_dev *wdev,
-+                                const void *data, int len)
-+{
-+       u8 ate_cmd_id =3D *(u8 *)data;
-+       void *real_data =3D (u8 *)(data + 1);
-+
-+       len--;
-+
-+       switch (ate_cmd_id) {
-+       case CL_ATE_RESET:
-+               return cl_ate_reset(wiphy, wdev, real_data, len);
-+       case CL_ATE_MODE:
-+               return cl_ate_mode(wiphy, wdev, real_data, len);
-+       case CL_ATE_BW:
-+               return cl_ate_bw(wiphy, wdev, real_data, len);
-+       case CL_ATE_MCS:
-+               return cl_ate_mcs(wiphy, wdev, real_data, len);
-+       case CL_ATE_NSS:
-+               return cl_ate_nss(wiphy, wdev, real_data, len);
-+       case CL_ATE_GI:
-+               return cl_ate_gi(wiphy, wdev, real_data, len);
-+       case CL_ATE_LTF:
-+               return cl_ate_ltf(wiphy, wdev, real_data, len);
-+       case CL_ATE_LDPC:
-+               return cl_ate_ldpc(wiphy, wdev, real_data, len);
-+       case CL_ATE_CHANNEL:
-+               return cl_ate_channel(wiphy, wdev, real_data, len);
-+       case CL_ATE_ANT:
-+               return cl_ate_ant(wiphy, wdev, real_data, len);
-+       case CL_ATE_MULTI_ANT:
-+               return cl_ate_multi_ant(wiphy, wdev, real_data, len);
-+       case CL_ATE_PACKET_LEN:
-+               return cl_ate_packet_len(wiphy, wdev, real_data, len);
-+       case CL_ATE_VECTOR_RESET:
-+               return cl_ate_vector_reset(wiphy, wdev, real_data, len);
-+       case CL_ATE_VECTOR:
-+               return cl_ate_vector(wiphy, wdev, real_data, len);
-+       case CL_ATE_FREQ_OFFSET:
-+               return cl_ate_freq_offset(wiphy, wdev, real_data, len);
-+       case CL_ATE_STAT_RESET:
-+               return cl_ate_stat_reset(wiphy, wdev, real_data, len);
-+       case CL_ATE_STAT:
-+               return cl_ate_stat(wiphy, wdev, real_data, len);
-+       case CL_ATE_POWER:
-+               return cl_ate_power(wiphy, wdev, real_data, len);
-+       case CL_ATE_POWER_OFFSET:
-+               return cl_ate_power_offset(wiphy, wdev, real_data, len);
-+       case CL_ATE_TX_START:
-+               return cl_ate_tx_start(wiphy, wdev, real_data, len);
-+       case CL_ATE_TX_CONTINUOUS:
-+               return cl_ate_tx_continuous(wiphy, wdev, real_data, len);
-+       case CL_ATE_STOP:
-+               return cl_ate_stop(wiphy, wdev, real_data, len);
-+       default:
-+               return cl_ate_help(wiphy, wdev, real_data, len);
-+       }
-+
-+       return 0;
-+}
-+
-+static int cl_vendor_help_handler(struct wiphy *wiphy,
-+                                 struct wireless_dev *wdev,
-+                                 const void *data, int len)
-+{
-+       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
-+       char ret_buf[] =3D {
-+               "usage:\n"
-+               "cecli - Celeno driver related\n"
-+               "e2p   - Celeno eeprom related\n"
-+               "ATE   - Celeno production related\n"
-+       };
-+
-+       return cl_vendor_reply(cl_hw, ret_buf, strlen(ret_buf));
-+}
-+
-+static void cl_vendor_handle_timeout(unsigned long data)
-+{
-+       struct cl_hw *cl_hw =3D (struct cl_hw *)data;
-+       struct cl_vendor_msg *vendor_msg =3D &cl_hw->vendor_msg;
-+
-+       memset(vendor_msg, 0, sizeof(*vendor_msg));
-+       pr_warn("cl_vendor timer expired!\n");
-+}
-+
-+int cl_vendor_reply(struct cl_hw *cl_hw, void *data, u16 len)
-+{
-+       return _cl_vendor_reply(cl_hw, data, len, false);
-+}
-+
-+void cl_vendor_timer_init(struct cl_hw *cl_hw)
-+{
-+       /* Init vendor_cmd timer */
-+       cl_timer_init(&cl_hw->vendor_timer, cl_vendor_handle_timeout,
-+                     (unsigned long)cl_hw, VENDOR_CMD_TIMER_PERIOD_MS, fal=
-se);
-+}
-+
-+void cl_vendor_timer_close(struct cl_hw *cl_hw)
-+{
-+       cl_timer_disable_sync(&cl_hw->vendor_timer);
-+}
-+
-+/* Vendor specific commands */
-+const struct wiphy_vendor_command cl_vendor_cmds[] =3D {
-+       {
-+               .info.vendor_id =3D CELENO_OUI,
-+               .info.subcmd =3D CL_VNDR_CMDS_CECLI,
-+               .flags =3D WIPHY_VENDOR_CMD_NEED_WDEV |
-+                       WIPHY_VENDOR_CMD_NEED_RUNNING |
-+                       WIPHY_VENDOR_CMD_NEED_NETDEV,
-+               .policy =3D VENDOR_CMD_RAW_DATA,
-+               .doit =3D cl_vendor_cecli_handler
-+       },
-+       {
-+               .info.vendor_id =3D CELENO_OUI,
-+               .info.subcmd =3D CL_VNDR_CMDS_E2P,
-+               .flags =3D WIPHY_VENDOR_CMD_NEED_WDEV |
-+                       WIPHY_VENDOR_CMD_NEED_RUNNING |
-+                       WIPHY_VENDOR_CMD_NEED_NETDEV,
-+               .policy =3D VENDOR_CMD_RAW_DATA,
-+               .doit =3D cl_vendor_e2p_handler
-+       },
-+       {
-+               .info.vendor_id =3D CELENO_OUI,
-+               .info.subcmd =3D CL_VNDR_CMDS_ATE,
-+               .flags =3D WIPHY_VENDOR_CMD_NEED_WDEV |
-+                       WIPHY_VENDOR_CMD_NEED_RUNNING |
-+                       WIPHY_VENDOR_CMD_NEED_NETDEV,
-+               .policy =3D VENDOR_CMD_RAW_DATA,
-+               .doit =3D cl_vendor_ate_handler
-+       },
-+       {
-+               .info.vendor_id =3D CELENO_OUI,
-+               .info.subcmd =3D CL_VNDR_CMDS_HELP,
-+               .flags =3D WIPHY_VENDOR_CMD_NEED_WDEV |
-+                       WIPHY_VENDOR_CMD_NEED_RUNNING |
-+                       WIPHY_VENDOR_CMD_NEED_NETDEV,
-+               .policy =3D VENDOR_CMD_RAW_DATA,
-+               .doit =3D cl_vendor_help_handler
-+       },
++enum cl_vndr_cmds {
++       CL_VNDR_CMDS_UNSPEC,
++       CL_VNDR_CMDS_CECLI,
++       CL_VNDR_CMDS_E2P,
++       CL_VNDR_CMDS_ATE,
++       CL_VNDR_CMDS_HELP,
++       CL_VNDR_CMDS_LAST
 +};
 +
-+/* Vendor specific events */
-+const struct nl80211_vendor_cmd_info cl_vendor_events[] =3D {
-+       {
-+               .vendor_id =3D CELENO_OUI,
-+               .subcmd =3D CL_VENDOR_EVENT_ASYNC,
-+       }
++enum cl_vndr_events {
++       CL_VENDOR_EVENT_ASYNC,
++
++       CL_VENDOR_EVENT_LAST
 +};
 +
-+void cl_vendor_cmds_init(struct wiphy *wiphy)
-+{
-+       /* Set celeno vendor commands used by nl80211 */
-+       wiphy->vendor_commands =3D cl_vendor_cmds;
-+       wiphy->n_vendor_commands =3D ARRAY_SIZE(cl_vendor_cmds);
-+       wiphy->vendor_events =3D cl_vendor_events;
-+       wiphy->n_vendor_events =3D ARRAY_SIZE(cl_vendor_events);
-+}
++/* Enum cl_vndr_nlattrs - nl80211 message attributes */
++enum cl_vndr_nlattrs {
++       CL_VENDOR_ATTR_UNSPEC,
++       CL_VENDOR_ATTR_REPLY,
++       CL_VENDOR_ATTR_DATA,
++       CL_VENDOR_ATTR_LEN,
 +
++       NUM_CL_VENDOR_ATTR,
++       MAX_CL_VENDOR_ATTR =3D NUM_CL_VENDOR_ATTR - 1
++};
++
++struct point {
++       u8 chan;
++       u8 phy;
++       u8 idx;
++       u16 addr;
++       struct eeprom_phy_calib calib;
++} __packed;
++
++#define CLI_MAX_PARAMS 32
++
++enum {
++       E2P_MODE_BIN,
++       E2P_MODE_EEPROM,
++
++       E2P_MODE_MAX
++};
++
++struct wiphy;
++void cl_vendor_cmds_init(struct wiphy *wiphy);
++
++/* Note: data structures used by kernel and by userspace */
++struct ate_stats {
++       u32 tx_bw20;
++       u32 tx_bw40;
++       u32 tx_bw80;
++       u32 tx_bw160;
++       u32 rx_bw20;
++       u32 rx_bw40;
++       u32 rx_bw80;
++       u32 rx_bw160;
++       u32 fcs_err;
++       u32 phy_err;
++       u32 delimiter_err;
++       u32 rx_success;
++       s8 rssi0;
++       s8 rssi1;
++       s8 rssi2;
++       s8 rssi3;
++       s8 rssi4;
++       s8 rssi5;
++};
++
++struct cli_params {
++       u32 num_params;
++       char option;
++       s32 params[CLI_MAX_PARAMS];
++};
++
++#define MSG_SIZE 4095
++
++struct cl_msg_data {
++       char more_data;
++       char data[MSG_SIZE];
++} __attribute__((__packed__));
++
++int cl_vendor_reply(struct cl_hw *cl_hw, void *data, u16 len);
++void cl_vendor_timer_init(struct cl_hw *cl_hw);
++void cl_vendor_timer_close(struct cl_hw *cl_hw);
++
++#endif /* CL_VENDOR_CMD_H */
 --
 2.30.0
 
