@@ -2,97 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 877EE3ABA57
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 19:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7723ABA68
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 19:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231760AbhFQRP2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 13:15:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45008 "EHLO
+        id S232173AbhFQRRe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 13:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230028AbhFQRP2 (ORCPT
+        with ESMTP id S232144AbhFQRRd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 13:15:28 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB0AC061760
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 10:13:20 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id m15-20020a17090a5a4fb029016f385ffad0so1419361pji.0
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 10:13:20 -0700 (PDT)
+        Thu, 17 Jun 2021 13:17:33 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F7FC061767
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 10:15:25 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id w31so5484698pga.6
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 10:15:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=RwrF+pnbkNf/qjoCdMQCOFlfbqT0rVKgXWLbQyXYamg=;
-        b=P/WRkHUBfJdT59+t0H+g3ZYXtCV76z76WRyN1S196khpyBZkajbdGWnbVcz86fJgMt
-         dWMpwlJJ/T8JnuQfAcZnc50FkBvJ9VhpPwk6d4eMM3mxiIlUNfFBFzXavq7NJLkRx41b
-         GoiX8WP7XeMZbFcvKz6QNUqyHrqZo8ORWWZ4o=
+        bh=1zD+T81jZZgZpyjFh0xFUsdQjL/HhqmGe6jBuS5LlYM=;
+        b=VNTKhE5cST2J0ZnjsR5r3QutKIJAPxdYyKrH0WhAhImj92y8rywVUrDhn5E6UvCEVs
+         jnF1hD2ZBj/+9soV3yLKupEXB/gCaqaptyKZ21N5+glwJDNV3wZyO1x4mJqmk61zA06g
+         7ijTYSH+TXIBumKzmNqYu2FWwdSDsDboZTmT0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=RwrF+pnbkNf/qjoCdMQCOFlfbqT0rVKgXWLbQyXYamg=;
-        b=q5VEGPNgLrltJLHbuGcfj7nG8SsDxqF4QryHSbCNPhuo1O2PZrE22yXwpiy6Ifo7IN
-         +0RogqcmX9BTIoW8FQfSWD9fX4GJrPZY4yd2G+Qxs98SFR4rUMZGxmmE53XHYV4nDCv6
-         Qh0Svhsa6hYt/LioQeykgu7NsqWk9HAG/Py39G+uhvtkGpJC4EAxXDSlke9oGYhfhR8C
-         wGw9JxfvuXZ+lPzjAQua7OO7KlIUQHTYF9qNG45EmW69ByYj9XzCBl+6xRwvMYUOKYmt
-         wEtqwlepPykWFLyPU5LQbDP3cpb607jCTmE1XUFwHtoIAM5nQ/FY09/ti5xNtmn/WUm/
-         w6xQ==
-X-Gm-Message-State: AOAM5335eQ80vrqYMb1uCy4mYYJ6TtreMS3iE8LMthSxbEUGrfxbv4Sk
-        OD5lQZmii672kFEDCFV4g1VEUQ==
-X-Google-Smtp-Source: ABdhPJxw4pWvq9M9vSGmYbe4PQOcVW8uzQA2U2vP4ifPT9snrMW2XJ+40Gz+YfUBpaA9aacy/sSIzQ==
-X-Received: by 2002:a17:90a:a607:: with SMTP id c7mr6485761pjq.199.1623949999827;
-        Thu, 17 Jun 2021 10:13:19 -0700 (PDT)
+        bh=1zD+T81jZZgZpyjFh0xFUsdQjL/HhqmGe6jBuS5LlYM=;
+        b=cpDQJOkSzldypnJzJTCTV8x40ZSgUArpUys/Ey8+vkhK+8IWj8SOXoCnkuNnBNIlJw
+         XsBnTXRXJDJ22xMG3rZQY/wngVueYPS87RTt+bNvc2/uMNs42vlyZfcQJxwsm1DhdoxM
+         9sIl1ptiEcNsHUUordIVg5pngJtGWS2BS3V9gbO7vFUx9pckUHkMNDgrW757bvHca2lD
+         BiRjGHZQC7yZdufIq5qRqJlkfTse4ZhXNBzPgDV5KRtPfa/FA97H7AvV8kx5/OWC2+Lt
+         3roNqa0YYC8FKSd2ONPRDoM818C8Bm30Nl4QWHFAnj5XsA3CII7luSiFFPdaPfCpJptN
+         DqiQ==
+X-Gm-Message-State: AOAM532HD7Z3+iwQ2Ddd/yYPklMM1idcI4nDl56QzCwQYiE921oDGJCK
+        3a1PZD8d/gPcGJuo90O6ARgvOQ==
+X-Google-Smtp-Source: ABdhPJz+2jMCBEzFuT+7hJ4eMDlrWtKm4cUhhJRiazj6nJ5uWZLUBTK9YaUYt7u9fLzPz5cyGpDL8g==
+X-Received: by 2002:a63:c112:: with SMTP id w18mr5792064pgf.375.1623950124830;
+        Thu, 17 Jun 2021 10:15:24 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id o14sm2580236pjj.6.2021.06.17.10.13.19
+        by smtp.gmail.com with ESMTPSA id q21sm6146371pfn.81.2021.06.17.10.15.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jun 2021 10:13:19 -0700 (PDT)
+        Thu, 17 Jun 2021 10:15:24 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     Kees Cook <keescook@chromium.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Ping-Ke Shih <pkshih@realtek.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kaixu Xia <kaixuxia@tencent.com>, linux-kernel@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-hardening@vger.kernel.org
-Subject: [PATCH] rtlwifi: rtl8192de: Fully initialize curvecount_val
-Date:   Thu, 17 Jun 2021 10:13:17 -0700
-Message-Id: <20210617171317.3410722-1-keescook@chromium.org>
+Subject: [PATCH] mwifiex: Avoid memset() over-write of WEP key_material
+Date:   Thu, 17 Jun 2021 10:15:22 -0700
+Message-Id: <20210617171522.3410951-1-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Patch-Hashes: v=1; h=sha256; g=ad19d92695e58ee1a3610c1c93b1215aa0b454ab; i=8Mjgo7nwZa2B1T2pbFU78xkknAoUC7gygPgmoHcS04s=; m=Q+QcMAuMZQjhqnPxtv9+5wQ0q2weIg7NstC3dFeLQcw=; p=k6vO4+RMbTJEd7/3zKfAdx4+Y+A7g9G5Bir9iEa2vSY=
-X-Patch-Sig: m=pgp; i=keescook@chromium.org; s=0x0x8972F4DFDC6DC026; b=iQIzBAABCgAdFiEEpcP2jyKd1g9yPm4TiXL039xtwCYFAmDLgqwACgkQiXL039xtwCaHwg//RkP 6Vu5YljWonyECSbJPtdj5WIHHyZq6nBqsa9wOtb1WPJVjyfJ/p3RI+y8fLo7SCMeDLaJ3bNDWrDf9 AacrqhLgalwDP/A3PcBviaAbGlsW8OdtW0LSU0sqOZ5Vv9fMUlS4rVxk5/YcfGkS8JzwB9q+gSRi0 MsrXYuOGDq9DsbpIntRHzKmgKZdgDULimtw/fQyrnL+tPslnKUX/KTYaZRZGuZaWcA+WrmCN+ERu5 XsKRaTnLNBpFubJRUfnnOgUixWks1Hd7Rr2SjgmoqQS1RXQ6tqAUx31EnJOwSijrGulXqiTiN8hA0 7BqKM8nk+XlzS0YthRAutxkrtTUuFGDez28JzvAOiDPs/S/U7lLiItSFZgp1ufk68tLIjaop3h2/W uQdA1lJh2A22I8q0+lWiUhMNnnEqhDJcquGCqAaJxuoVdaoCxOL/5er5jn+lPb8hi+DN0Syx1aA0Z EbHuoFS+77OcePhHe0qR6VFKVJeGsoJEmkjuNh//2nQwflUHabvYztHvEmgVtXYYPc8GWEFeI/mHR ADcHdxwVlRzSLo/TImkzQiu7YwvHbWibnQLSQkkMTJlz8/rUxkORUv3Pbc2ctYHqzUH1oyuExYqsD 4pzqWdAFQXQiYXDP7qzMb5SNCSgUyA6BCbU7YphrTitfep7zkuC2R78tCX5x/YLs=
+X-Patch-Hashes: v=1; h=sha256; g=8ee66baceadd27f658a8dfa2fe3397021a28ad22; i=BArkIcxklEnQKmH2E0CxJuEpf2GPz0bKINbIuaIaeGg=; m=QhaE3cdmOtrz4D6MWzL5ksVjqyQuqa6XFh/VF/68Fns=; p=0XEJ9f86jVziXDyuQV+SK180J33uce0FHTOpZ2MXGNU=
+X-Patch-Sig: m=pgp; i=keescook@chromium.org; s=0x0x8972F4DFDC6DC026; b=iQIzBAABCgAdFiEEpcP2jyKd1g9yPm4TiXL039xtwCYFAmDLgykACgkQiXL039xtwCZAaQ//VPH Acw4YzlV6FoySvgPI2F9hIrqIUecqEJLuZXlKbEO/+XVh/E+asMJRVYfC8aixmaMj6xJGj+PKKpZL Qrk94z5tRQ12XIVKK+5/EOykBXLcclyyn+JsVbXH51ofvofhAHUw6MldFBCNgWVH0NIJe9zWdpwdx DORMsA2AjLkCAjNXBaiWktvfyy+PWhR7bqZwYK8Bhhz76nmlRsWR1tDb8lQUfD5Kpk9ohIBpuXMpj cey5gKDWIc+ri9vCGuF6P/Vq+3/jSvmB0mn0BdiWeito+OxIETfM4rOjwTBCKRmgT93Mn56Qg5S+h wWM+thXDZ78dKqiFlhgzeMjHM5k7nrMaMb5sLB00j9Pvu289BTmS8I8Nl4UJDQpMwGNmqgcqkkAKv c52rJ7yMm3w6VW7e1J3AEGNT8G2WH+VmebmyIGkJgjkZErnFrS4GgAqwZT3IdrHfcTTehxJ1gPOa7 1oL6gBBsos0Qx0bi9/dz7WNFYo6XCL52zVjGtJ8bZ7jHbnwmZ41fwJ/Bfi+GYTPJDTKKz5/vXh1gf 8q+hJIBNOd7tM6eY+BM9zwrD0GZVuDRHZvk+Dkt/rQe5RJ7gGnHWFmJJ/E4MxuBetyxVM4LORtedk 71BXhfbgPNN1AMJeYNwRTL4T6u2r7FgjFMUFbo3wY+ezV1dW71gAD/NSOyez5KcM=
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 In preparation for FORTIFY_SOURCE performing compile-time and run-time
-field bounds checking for memcpy(), memmove(), and memset(), avoid
-intentionally writing across neighboring array fields.
+field bounds checking for memset(), avoid intentionally writing across
+neighboring array fields.
 
-The size argument to memset() is bytes, but the array element size
-of curvecount_val is u32, so "CV_CURVE_CNT * 2" was only 1/4th of the
-contents of curvecount_val. Adjust memset() to wipe full buffer size.
+When preparing to call mwifiex_set_keyparamset_wep(), key_material is
+treated very differently from its structure layout (which has only a
+single struct mwifiex_ie_type_key_param_set). Instead, add a new type to
+the union so memset() can correctly reason about the size of the
+structure.
+
+Note that the union ("params", 196 bytes) containing key_material was
+not large enough to hold the target of this memset(): sizeof(struct
+mwifiex_ie_type_key_param_set) == 60, NUM_WEP_KEYS = 4, so 240
+bytes, or 44 bytes past the end of "params". The good news is that
+it appears that the command buffer, as allocated, is 2048 bytes
+(MWIFIEX_SIZE_OF_CMD_BUFFER), so no neighboring memory appears to be
+getting clobbered.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/fw.h      |  6 ++++++
+ drivers/net/wireless/marvell/mwifiex/sta_cmd.c | 11 ++++++-----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index 68ec009ea157..76dd881ef9bb 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -2574,7 +2574,7 @@ static void _rtl92d_phy_lc_calibrate_sw(struct ieee80211_hw *hw, bool is2t)
- 			RTPRINT(rtlpriv, FINIT, INIT_IQK,
- 				"path-B / 2.4G LCK\n");
- 		}
--		memset(&curvecount_val[0], 0, CV_CURVE_CNT * 2);
-+		memset(curvecount_val, 0, sizeof(curvecount_val));
- 		/* Set LC calibration off */
- 		rtl_set_rfreg(hw, (enum radio_path)index, RF_CHNLBW,
- 			      0x08000, 0x0);
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index 470d669c7f14..2ff23ab259ab 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -995,6 +995,11 @@ struct host_cmd_ds_802_11_key_material {
+ 	struct mwifiex_ie_type_key_param_set key_param_set;
+ } __packed;
+ 
++struct host_cmd_ds_802_11_key_material_wep {
++	__le16 action;
++	struct mwifiex_ie_type_key_param_set key_param_set[NUM_WEP_KEYS];
++} __packed;
++
+ struct host_cmd_ds_gen {
+ 	__le16 command;
+ 	__le16 size;
+@@ -2347,6 +2352,7 @@ struct host_cmd_ds_command {
+ 		struct host_cmd_ds_wmm_get_status get_wmm_status;
+ 		struct host_cmd_ds_802_11_key_material key_material;
+ 		struct host_cmd_ds_802_11_key_material_v2 key_material_v2;
++		struct host_cmd_ds_802_11_key_material_wep key_material_wep;
+ 		struct host_cmd_ds_version_ext verext;
+ 		struct host_cmd_ds_mgmt_frame_reg reg_mask;
+ 		struct host_cmd_ds_remain_on_chan roc_cfg;
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+index d3a968ef21ef..48ea00da1fc9 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+@@ -840,14 +840,15 @@ mwifiex_cmd_802_11_key_material_v1(struct mwifiex_private *priv,
+ 	}
+ 
+ 	if (!enc_key) {
+-		memset(&key_material->key_param_set, 0,
+-		       (NUM_WEP_KEYS *
+-			sizeof(struct mwifiex_ie_type_key_param_set)));
++		struct host_cmd_ds_802_11_key_material_wep *key_material_wep =
++			(struct host_cmd_ds_802_11_key_material_wep *)key_material;
++		memset(key_material_wep->key_param_set, 0,
++		       sizeof(key_material_wep->key_param_set));
+ 		ret = mwifiex_set_keyparamset_wep(priv,
+-						  &key_material->key_param_set,
++						  &key_material_wep->key_param_set[0],
+ 						  &key_param_len);
+ 		cmd->size = cpu_to_le16(key_param_len +
+-				    sizeof(key_material->action) + S_DS_GEN);
++				    sizeof(key_material_wep->action) + S_DS_GEN);
+ 		return ret;
+ 	} else
+ 		memset(&key_material->key_param_set, 0,
 -- 
 2.25.1
 
