@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D7433AB85A
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8BCE3AB85E
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233575AbhFQQHC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:07:02 -0400
-Received: from mail-eopbgr60049.outbound.protection.outlook.com ([40.107.6.49]:40639
+        id S231891AbhFQQHY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:07:24 -0400
+Received: from mail-eopbgr60055.outbound.protection.outlook.com ([40.107.6.55]:9431
         "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232477AbhFQQGi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:06:38 -0400
+        id S231250AbhFQQG5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:06:57 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OUXa5gI/orwCb8+2a4nh6EW/n7U1mVUpHxtJDr5vpWWQlJNDulK5pMh2f5ZOzB92w5lfWBWKfA8oh3nvx7SRG6exZ5JHlHkXK+W3NIonxjNb8CXmxfsFvNHQt+bawCiwVXqVewCqqsVZrtiAU2E4M9HN/pCyclYRk0W90BQxMEXBjKZg2Xa5qtTaKl42ec7r5/fLg/8uMgDzCebpMVnz4jUis3MGf61YTEHwzK5plShCuozE8sVsCxQ6bpUY1AihH/+clfchcDZ+uaY2zT+IOcli4Sh+l5rhp8N2Rwmok4jiXnv9WELrVtMPCAnsqBWQT66tLUSjCDwhN7cHLMIEVQ==
+ b=nEyQTw5jMGxYyfM5vZxUqYknva8DtY0denN1vd7PfxDI8NWCE7S0Bv8yS3y6E3DDIcQ7YOIrw05BLjZ84Y8qXUNZxteN2FRjI5w2nhJJOwrnTONXXU5zN/yE6PqJdIUMyk0qVmmu0cXP2dVUQbDGeDjaJ3QSsQnVLL+SLWd/axHZJi+/3jV1PLaEs99qkGJdoDm5VAaPVlP4ZPV16m6WR2dr3nXmXVHH9GAd1XipoeDYSjLcAA/z+ll2eT+9KUC+TyFG5YlsTRF6zaSdQBYnTOE2ArLBS0aDGJmJZeDY0sxlTc2VevDLtd965dN9Ro6Iwm4RE+NqKikiF6SOsU/Ajg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=po7t3+FUh81zh0dF6jWBCuDtnqJ8eooKgqJymLP0ZkQ=;
- b=Xp7wXsCsKac9zbvf5L7Vt0qvxUGbxjMM3pGrfGiVhZKNHneCliwbp/uETji5bqus6byEKki9HyEsQd9fGHiTCu6UcuFW2d7ozSS4j7cRDsbwaZOFHI9ARGP1TL14bWcq3O9Oq+FAvW7Yr7uf7plyL7eTIjvWabvmsr+CmwElhMoRvMgrnPzCwF5K3yKFqrdBnFCPksDx+rMxbw3Rw03++MZ7Xc60jgPJZBTVpH5lbDbkBc0NPVa0OIjQdeuwVFq3uLfjAqyu2oybu808KcFD/m814ndMhgDuvpV2q+Li86hBTVmRttgxBilr88+2GHZVsy1Gl9XdFlbFqZXf8ABvBQ==
+ bh=BkC1xuyuLRAgicDO+WAcDllcKSpVNF5iPSIlVAMzX+s=;
+ b=XSQu+uX0Y2oEoFtNuKbYV1Pb6psw4FuQ1tsg4zAUDc4TkKq68ffrtlzjSTQi4G/PsWYxezZLzCwLTX+I+ddkshtcP5xUMK/keU+Ao9HbRy6x2RaN5NeJKeAUgcw9EeULOJ8HA24IIdFyZ5XHaQiYxGjun3f8O474aroRiLGIb+cBEuBbBBf1Ulw30sKD6RXUT/2GJlrPxZdmv/bEnbKqgX8K5yK2p0P+qRMZxvHjhhFXXZCs6gcw/pX4c54FMimy0dafKLZl8oIidOyBp0r6CkWd1yQZ7Oh2GzptjNO5QbOKpiERPrKPrb+jGLDwbrcUIGQ+NoZ9yZXUFHl96twfuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=po7t3+FUh81zh0dF6jWBCuDtnqJ8eooKgqJymLP0ZkQ=;
- b=c0Pzc7Bjd9+Vv/gnW+Xz+BHudSPvbWez1R/dp0MwwUphloMe76xvsw8eou++Q+A/WGzir2cFmnl2WQ7fpktvMdwN9RkPyzYOb/EgvFK9WPlwhL0sVr3BPDiG1QOiHF1VM2My/d7jmus1ENhywbufjUjh7GleXi03pUdGOYd/DeY=
+ bh=BkC1xuyuLRAgicDO+WAcDllcKSpVNF5iPSIlVAMzX+s=;
+ b=Rxj2W0vKNSNQA+kcIPo48UTB/sIPbd74g9Lu0DbiToBWy3FkGSAi3FtzMCEgty6tV2NBlyX05/ljVcFdJVT9VbfRexvscQQodQ8PCzKyer2RauGvluGi7sx3YlYX8y1shR9yM9fu42QnM5Q4rfd40DHqWcVgLLrsljdCbaw/UhU=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM9P192MB1268.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:3a9::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.19; Thu, 17 Jun
- 2021 16:04:19 +0000
+ 2021 16:04:20 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:04:19 +0000
+ 16:04:20 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 063/256] cl8k: add dfs/radar.h
-Date:   Thu, 17 Jun 2021 15:59:10 +0000
-Message-Id: <20210617160223.160998-64-viktor.barna@celeno.com>
+Subject: [RFC v1 064/256] cl8k: add drv_ops.h
+Date:   Thu, 17 Jun 2021 15:59:11 +0000
+Message-Id: <20210617160223.160998-65-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:42 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:43 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b57e4d5a-4c9e-4994-69b5-08d931a97aea
+X-MS-Office365-Filtering-Correlation-Id: 1e31b6cd-eeb1-4c27-221b-08d931a97b92
 X-MS-TrafficTypeDiagnostic: AM9P192MB1268:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB126826BD33693FBB3D0E8498F60E9@AM9P192MB1268.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3968;
+X-Microsoft-Antispam-PRVS: <AM9P192MB1268E25ACB59C854337FDCF4F60E9@AM9P192MB1268.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Jc2NLWxb0inFkBbESuZmb7L+XuGwS1L0T8TeIujKjQ6PHVzll+S/RG+dRwfjibQCPzZFt69OVV8acndWaKQCmWnN/UI8W6/9SDWCNvjhq5fhaezVwkP0vbQIWQ+rPfOFYFR/spGD6gXdHOwwF6cQdBGiK1S9GYXmUR+SwvQsrN9Xc5jZFofJ9WJKFPQUobXV2ZDdTin0+KfPx7whYfkJxz6FXlVaGyjXqUdO5cblS4xkBmyDwvkb2C7FIKTswuKfq1o45/aG/OL9aLhXZrvLJtQ7/eceiCyROLPLSb1sIVbtQy4EUo1JsU8o361fxZreAAoh3mV0LAzuq1A6A992rnzjrsi//gEEpE3jQleMkusOzBLkFivFHdsxre64fUrDRhPQay36kkpDjF+cTJuBlAvWvI/J+jQjwDOqjMjun9ypVJMSEIA/DLoUvT6K65I+pz6iVEeXmFeATOLRpk+D7iY/erqkVa0dbRAqRM5SemyONyWXKOWVC6r0VDWrOTFL/+oQfgZXMBVHRDZfUzX79e/CM/ANeNnF+3tMwLkzadGk4f8HeEBX3lzlaYl1AnahrWfE4RhO5AfxNpnY/an659/ST103nNjvvgqpeClKtp0Ue6cgiwSBI3Av6FIjsJxA1CG5ED0l3vIGfw9J1c3Wfld/V7F8PNhhOlCY2vpE5mpw06nZL4lQVu1YpFWsIFbpMlgtf3QFrcrQXbo9DiFCtQ==
+X-Microsoft-Antispam-Message-Info: Iu/iJ5xwQ6igNQzGfnNgiaMhlIwyEEcPvuaYBMjBDFMIeoAPh/8lfZhKk6gIUMp2iMge7XNGvKLF+9V1Yp+w3lOFe2QhfayCVuk89uil+PkQIYnLGy9HlKDX4T2JGdVEEuTEoVBuOIKfexE8Jcjt6Z5sUDchJORL6AFsZhQpe/UWQ2Pt4FBItXv7nKvo8MBRScmt0F2O65slmAWLr26rp4avqP+o8hIE/XdZEPIuf6ZJZwYEjXdbx+ubnCGDraASqtPZV1TTWZkv8DrZ+xhLsClTRa75LGj1Pq9Fa6OESOQdEoth2GRkR50o7k4IenwOwtlnfOYydahE3nWI/WKbwd3IVZQsaldND+UvJiUQBQU6WlZwOLbpUU40Q6gNaE3O+BY0DzhoF3SCu6HSl/sJVpfL3koUvQPKQ3B1gc0oYWD0SIcm+wI4t2fbqgHClFk7gzCSdUb8saUYvsI3cIgz/UVoTJrEKbIND5DdqnIyjC0nksxXbg0iNBlPHnTGAFjEudLmpIh+cUlD/WryEPhFjbiMtxrt82/zVx9GVzEIIDeo50NvM3EoMTMjrjLmautoDtZRub79prZ9Vy/8Dw5pT+aBALyjc1CswH5sSdB8v4ElbRI3jL5zB2rnmzk2MzEfSsKtmXRWC7tXjhBLoW+3LPGhevyc5e9ETaEaOc+NCY0zSRf0UxgVSE/5TmpARWm2JefopipNgbI1iBPZ+tUuow==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(6486002)(956004)(54906003)(4326008)(2616005)(186003)(38100700002)(16526019)(8676002)(5660300002)(38350700002)(8936002)(26005)(2906002)(6512007)(9686003)(52116002)(83380400001)(6916009)(66946007)(66556008)(66476007)(86362001)(55236004)(498600001)(6666004)(6506007)(1076003)(107886003)(36756003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NkEBEfUdpgwh1Hrd+vGOlQI4RJovDX4/Ysdwt89884jCBdqVeibEnJFS2tyU?=
- =?us-ascii?Q?v5/QfTkTpNMilcUToJPuTKHGfzOJflzFDeclDdyvLwCzuk8uEgTDY7kK8VdS?=
- =?us-ascii?Q?2GPKR1dM6eZB5ZzcQxEBoSQuFPvDYQJnWWgFI5MWnRyqsM4mwt0Lctc6LLO4?=
- =?us-ascii?Q?wXdpAx76/kVHIoIyAJFQR/RQx9a4m3yYHDjv0n6Am69XzNaRkUmN+uiX0Khu?=
- =?us-ascii?Q?TfGvmdmVn6um4fa1oVHhoqRTw81F4thClQrLH6DgW320xqUgFCsSxJ+WqvO7?=
- =?us-ascii?Q?/Bgxz1+e8/Z99Tg2scBrsRuG/KW7ggeVFEXIFdVsJvmGTg5Ktok43Mmf02SO?=
- =?us-ascii?Q?ujmemlVO1+E12ANYoVfrVPxnSKFtQqvt2KSgrFU5A+qOBDl5nO8zMUWhEwEL?=
- =?us-ascii?Q?ItnTmTRxZySDBeeRhoFdQHXz0E2PH6OHWcp+5nV9r91DxiG5R4G4CFsLJ8fi?=
- =?us-ascii?Q?DLQJZFI0D5gwUBg0eyw0QhEGWR0Mbq7I7JRlLOsXe7CGC32JfRUOZBKev7oz?=
- =?us-ascii?Q?4jSL/XODJn7mTGf9kU073YfN8l4CL9Oag8WXBg80ABlOU/SotraC9TCnHytj?=
- =?us-ascii?Q?QvKw0TwLOMnb5/aKkbgVYyOSTnN0sejlZAB1a6IN4SmCDnH9x6AJC5+jfVED?=
- =?us-ascii?Q?/ssaQwkGzRlgs6OSMWsTt62Lxf+BDmFPa7h5ES3T22WPBV38QBCgaS5SctBy?=
- =?us-ascii?Q?C3RGdiIOHQolK5koCazJ/E0ITux/IfW1CqHkeZb7JA2sGMrurF/yg459QgF4?=
- =?us-ascii?Q?a7mVXh1OhXO+X7SIzekqDbJHffaHoHdmYMO8gTnL9jW9z4Bk4xpjNQQaBYpE?=
- =?us-ascii?Q?pqJ+HN7JbabWN03uR/7SamvcSK/Tq9KBkUJiI1NCm5I1gxHh/QqWN2O2boHW?=
- =?us-ascii?Q?dxO2LPytDoT6p/F3Tz4+2KAuwQB7ta1rnddEeV7jJuwCkKHIy08l09Eb6sM5?=
- =?us-ascii?Q?OqgBmCoDRfX7k5cM0ElIkmZo2CX4kSDHPITCRkMfetLcphXf2ue8CDq66lFq?=
- =?us-ascii?Q?q0yKWxaJ9bjEQuQlq/yq/4oHTE/4AAOMSm8MZYx+LcLqLbqxVgj7kFJyju/4?=
- =?us-ascii?Q?dfrP/sHV1ZF/wec8eG5/RnGj+H76XzyB8Jm0i8zc3X7+pNKcPL+cgDBhSmNJ?=
- =?us-ascii?Q?cPBPQgM+7+dOnzxusRfnZoVM1j94Sa1HXlHDtSxFYOSAzWLzJXvlyOOMGBKo?=
- =?us-ascii?Q?/jo1iKwj+ijzJuvUI/xnePdXcfbT4edxxEqFf59hFP6GsZVwtcD2yGdACv1g?=
- =?us-ascii?Q?lNTyu5ky725uzdYw2QBsNFdAGUXp8S1ZAP6ClW0xdpyvGYUKGpShK2Seim3l?=
- =?us-ascii?Q?U4GTkp3e5WuHx/8xzNXkc8XS?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?bx7ST5HodbKLeLLnWweVerxGAGMhQHGTpIfTJ9rjJuKLBk0/ryfwxTiXmQTZ?=
+ =?us-ascii?Q?ApcaXF2O/mSagW/oXfCsqPVQ6ddAlOASjxAwoBrQb8/06c2kxg+g20u6qFA4?=
+ =?us-ascii?Q?L7BPLgH7JqUIlvGrsqQG2AHqsEfQE6ksSb0xcWJqSE+6oFLLAN6ictX6fhrR?=
+ =?us-ascii?Q?nx8zpl9VmJNoqy+1he5nfM9LndcqGo7EA2HBKOYbilYAuHukpy1c+R0mug9e?=
+ =?us-ascii?Q?QYTA9hIfFPzzr7CH+OpI2QwaAodM09PGM/Cl/+k2tHMDVtVHdDa3Rv4rgkkV?=
+ =?us-ascii?Q?tcYlxHzp0zQL8KGRGIonmG57kS/uN3/UyFeY15lgO3AjuTD0WzHW7zMVTVwZ?=
+ =?us-ascii?Q?He2Pc3d/Gb8pFbZkSi/QTrNgzrwQAB7spmqH+S+cT2pUosZBLlML1lhic7zn?=
+ =?us-ascii?Q?TIHv+SmSBQX0mWo26rD4idoNgMiPvmrlCg17KktZIF6Vd00TGl39GUCScSdf?=
+ =?us-ascii?Q?0vZl8Ef+Iqh2+EvRu4uxM6vvNcKZoScG/TwI0Pb5Oip1xsQgv3cEwO+9pmJJ?=
+ =?us-ascii?Q?7OHS5v5ZjA5ApWn4DezjL3Vd7l+wd9OYRDUeDc1jk46OQe5zlJJGMbC3GFCz?=
+ =?us-ascii?Q?ros+eEysscqmmyQwIRgSri2hZGjtHBKoLSw8pAEtWsMvJYF/BX3B1bN4MYfV?=
+ =?us-ascii?Q?psDQSDheetWrEB+D1r7qLk1dbSD3wrTJZ1HBkWYD/w2IQJDI32mbWvHk+VzA?=
+ =?us-ascii?Q?6cgbWwnt6K1/Phmxp5jydoibI3ongfn+Bc7gQ/BcB+Mna80U72q76cTSXVbK?=
+ =?us-ascii?Q?+GFSj/IjOcCmIzRnulmngc8JhS1VgChObbxceLEl0qxI40UeQRyFjeK14kGh?=
+ =?us-ascii?Q?bRFCspacvAmITmVt046/Pc6f/9dSS4Z00oX5sWaMunO2GTJQFK2ZPDjNiy7C?=
+ =?us-ascii?Q?z57S4M6uUXKg3KLgDptPDttIRitGFjKSIfBNRTmn3E7C9yPywyN9ZfL2GNxD?=
+ =?us-ascii?Q?JnfRrc8SekRcOzN68l9wAIcKkXK5SbT8rrWxl+IRWbL6fOnb+pRGzkCMASsj?=
+ =?us-ascii?Q?BYAgXniZdaqW1B11+hTzDUR9vj4zjWIqmHTer05RU94p/2fpx0n0rTWgv0sB?=
+ =?us-ascii?Q?hcIOBs0vo1gkAD5F2RYB+nb/XfpGcCGDzlQXhMc/mqs+Dz1OFM+ggLUnajdk?=
+ =?us-ascii?Q?nN49nODttKs01a8nKgOz2MIaJArwQeBurYsw2D9k9sFTbNDWStzQOHnUDLa/?=
+ =?us-ascii?Q?DqG0X2Rq2pLm+Y6M1HAZyvF9AtAeJa0zsLD80eDzKvhG2JxElPNUbkI1zIkC?=
+ =?us-ascii?Q?hxstYf6d6BCphPfj0+7NDsMC8Hm+QKCeWEgiJ/N9IS24BtW/iioA27zQAlee?=
+ =?us-ascii?Q?ZtlTTUHe3m8XfEVZ5vVunovF?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b57e4d5a-4c9e-4994-69b5-08d931a97aea
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e31b6cd-eeb1-4c27-221b-08d931a97b92
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:43.2814
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:44.4224
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cLIzmvWl2FRI21zrg6650MN7dg90Npo421VL9WzgfpRACOG+ud3REET36fyh2CsT2Vzpi+1A7mPxlYquoXTvdg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: hQM9hrnzsx4KE5r4CO4UWbX6EXen5pB3rBBvO8IgXKg4flnQqTkBsyWjiZNUMJdsk+/+L1NGwNZK2d+R8Rerrw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1268
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,72 +119,45 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/dfs/radar.h | 55 ++++++++++++++++++++
- 1 file changed, 55 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/dfs/radar.h
+ drivers/net/wireless/celeno/cl8k/drv_ops.h | 28 ++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/drv_ops.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/dfs/radar.h b/drivers/net/wir=
-eless/celeno/cl8k/dfs/radar.h
+diff --git a/drivers/net/wireless/celeno/cl8k/drv_ops.h b/drivers/net/wirel=
+ess/celeno/cl8k/drv_ops.h
 new file mode 100644
-index 000000000000..bed037cce624
+index 000000000000..3e8f56d9d6f6
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/dfs/radar.h
-@@ -0,0 +1,55 @@
++++ b/drivers/net/wireless/celeno/cl8k/drv_ops.h
+@@ -0,0 +1,28 @@
 +/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_RADAR_H
-+#define CL_RADAR_H
++#ifndef CL_DRV_OPS_H
++#define CL_DRV_OPS_H
 +
-+  #include <linux/types.h>
++#include "hw.h"
++#include "tx/sw_txhdr.h"
 +
-+/* Number of pulses in a radar event structure */
-+#define RADAR_PULSE_MAX 4
++static inline int cl_drv_ops_msg_fw_send(struct cl_hw *cl_hw,
++                                        const void *msg_params,
++                                        bool background)
++{
++       if (cl_hw->drv_ops->msg_fw_send)
++               return cl_hw->drv_ops->msg_fw_send(cl_hw, msg_params,
++                                                  background);
++       return 0;
++}
 +
-+/*
-+ * Structure used to store information regarding
-+ * E2A radar events in the driver
-+ */
-+struct cl_radar_elem {
-+       struct cl_radar_pulse_array *radarbuf_ptr;
-+       dma_addr_t dma_addr;
-+};
++static inline void cl_drv_ops_pkt_fw_send(struct cl_hw *cl_hw,
++                                         struct cl_sw_txhdr *sw_txhdr,
++                                         struct cl_tx_queue *tx_queue)
++{
++       if (cl_hw->drv_ops->pkt_fw_send)
++               cl_hw->drv_ops->pkt_fw_send(cl_hw, sw_txhdr, tx_queue);
++}
 +
-+/* Bit mapping inside a radar pulse element */
-+struct cl_radar_pulse {
-+       u64 freq        : 8;
-+       u64 fom         : 8;
-+       u64 len         : 8;  /* Pulse length timer */
-+       u64 measure_cnt : 2;  /* Measure count */
-+       u64 rsv1        : 6;  /* Reserve1 */
-+       u64 rep         : 16; /* PRI */
-+       u64 rsv2        : 16; /* Reserve2 */
-+};
-+
-+/* Definition of an array of radar pulses */
-+struct cl_radar_pulse_array {
-+       /* Buffer containing the radar pulses */
-+       u64 pulse[RADAR_PULSE_MAX];
-+       /* Number of valid pulses in the buffer */
-+       u32 cnt;
-+};
-+
-+struct cl_radar_queue_elem {
-+       struct list_head list;
-+       struct cl_hw *cl_hw;
-+       struct cl_radar_elem radar_elem;
-+       unsigned long time;
-+};
-+
-+struct cl_hw;
-+
-+void cl_radar_init(struct cl_hw *cl_hw);
-+void cl_radar_push(struct cl_hw *cl_hw, struct cl_radar_elem *radar_elem);
-+void cl_radar_tasklet_schedule(struct cl_hw *cl_hw);
-+void cl_radar_flush(struct cl_hw *cl_hw);
-+void cl_radar_close(struct cl_hw *cl_hw);
-+
-+#endif /* CL_RADAR_H */
++#endif /* CL_DRV_OPS_H */
 --
 2.30.0
 
