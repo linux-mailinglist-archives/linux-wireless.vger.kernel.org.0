@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 685563AB889
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0FE33AB8F5
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233671AbhFQQIr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:08:47 -0400
-Received: from mail-eopbgr140087.outbound.protection.outlook.com ([40.107.14.87]:56046
-        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
+        id S233968AbhFQQLZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:11:25 -0400
+Received: from mail-vi1eur05on2083.outbound.protection.outlook.com ([40.107.21.83]:50945
+        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233594AbhFQQH4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:07:56 -0400
+        id S233777AbhFQQKK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:10:10 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hBPZ+B2kxOli98wsXj2hFuasc7567mvkfDMiJu3NL0T3MOo8Iog6PDdlp8RNkhr6YJ75BNNNlpe5a3yk8ZgttoDKWUhwee5AfEAda27eRhJNPh4BF3qSDm56LTMhvMVWkK6wQAKoCpwIt1FsoQIrv88dqp8jy4hcBpazeK4lcAAWD7e05qfMfA2h9Yzo+yN2xMyKu2Pr7eF3Q2zZ6NAfCwKtHh6CrNTEnoFRrGBD0DWQnkNOs65ZsyIU0wIQl/joHQeoo4PEr1bLKPS2odKlfAuUwCOPodw08cmhcMkvtjF30A3J119e3STWsVuQhmEkJCfzsitOvKI/CmUnt1cw2w==
+ b=UpuN/r4ObO0sGnMS1ulSPjOaFP2BSuFVDhf0ELXnwoukdZKGiWI4nLZ60s7FuIUnhVfbbg6I2Ya2hu3bUpwTUqJoTXsO2rd1h8m+ZNcUiCTRVOZZn2FgJ9dVqr9mQf4bg6TbwnovGn8jbPJJFK6OgMZuz0Yrl564xtstW0njqdYIu3tFefCMeYbp4Gp5E6AhCVOloQCLfj/aZ3/o5alhYUElvCUHk/GoA/noIyzIIIyj0tJYlbMagfkXMqytWAuCPKXQVXEtRmnFgtChTDdJ0hTYn/9K8XzG33i/i7cNIJQyreCpxcmkd9GVTC+AY2UH6W0EgiVbZjDEZPGt6SK+/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q/JHCUo0hG3CkBa0l2f+0xMSw0iNO7fN4ibITJQe68s=;
- b=fCNcP2y73Oi+4S2y7GxQNzXaL5XKebGZUonHzALLwKAKbeX8Ls4MGpu10uP829VtcoLgvLhm9WLslaYcARab6QnqTwRGwPC3hCqUGfhx5z6uzbgU/cHhy72bDhfYrgAnQhbZVI4P/DdXke6HT+xltvpoUFCTDOqA1hbid4Cs2Vz4JXAToMpG60XBxgZkFe4wOlLiKmga1zm8/l9PM3iUEJ3esnIoNatOW0Nkn+qX2SSBN8jRM1IA1HiOAhGp3mSl6xtVy/yQw2jhT99xp0cJZu0g/Cx45QozOU7E7BUiYSIC+HezzhQLiZ+mAIm04mp85lWClK4Gp7zsO495/C29Lg==
+ bh=/U3okoiz2KMyo6nPVoSBw0F93u+iDiVPnVTVsfsx3Gc=;
+ b=kM3yj25cLovSDG2sMLwCXeCR1tr0fGk1yiPM8QTwb+sDy1IsP3ACWyPRAvHrNsa8fjPceE2WY3WXZkgxkfmwUrX0U11duH0YYCQ0pE1368W6xe68qhRCnKJBdvkdsOZp7yQdrDakUUjmyaNS8mJ6wXZD6y+sbCAsEYVP1TjC1At0dlD7PGaAPx7nhKQX3R2zt9aKN1lswm39rtc4C7re1Oekm04YcCTzpCNi38DPGfDaaQc2Qw3Y+qk7gpFXXqqPoBbzuc0svuLPt0TfwAjdQKUUH5VWok8x4wfjPtMu0kuyGFUxRDEuM3XoZlkjluLrUlsermPhX0enGLLtUzN1cQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q/JHCUo0hG3CkBa0l2f+0xMSw0iNO7fN4ibITJQe68s=;
- b=2imFV2vhGeKINk66y+u6L81ddvo92awouGjyc0TuijfEN7PpdN+pzNTCZtuJd1WI5g0DFj+OWGV1ePCdScJovQTGjfGTYdXCENqMNi1eG3UCliprlUwcTQQvAKmFOrT0eBv8Rz513tWD4inZqOZOu1pHeqO5r8NrQyf3JiuD1Js=
+ bh=/U3okoiz2KMyo6nPVoSBw0F93u+iDiVPnVTVsfsx3Gc=;
+ b=MpOkCk0fsjJEfHGecSqYnLzRVht5CX6kMmHWROLejp2JmwlfsunTms2IanTMROdU4W/FcXhQ5t6tkzh4hwu4iBwVhZb6BPuZetDSvfzdzGFmh5djR+HKfPDtIkXXKcqFCZKGRGFznTIkYB77UxGs/qRc5FRoQC2aVPonovoIBL4=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
- by AM8P192MB1059.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1e3::21) with
+ by AM9P192MB1314.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:3a6::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18; Thu, 17 Jun
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.15; Thu, 17 Jun
  2021 16:05:46 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 130/256] cl8k: add phy/phy_common_lut.h
-Date:   Thu, 17 Jun 2021 16:00:17 +0000
-Message-Id: <20210617160223.160998-131-viktor.barna@celeno.com>
+Subject: [RFC v1 131/256] cl8k: add phy/phy_olympus_lut.c
+Date:   Thu, 17 Jun 2021 16:00:18 +0000
+Message-Id: <20210617160223.160998-132-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,52 +62,52 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:56 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:57 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 14ecee24-fb28-45d1-b22b-08d931a9a6ff
-X-MS-TrafficTypeDiagnostic: AM8P192MB1059:
+X-MS-Office365-Filtering-Correlation-Id: 8a16b35e-dade-4002-263c-08d931a9a79e
+X-MS-TrafficTypeDiagnostic: AM9P192MB1314:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM8P192MB1059CB31E2D8238C28CF86AFF60E9@AM8P192MB1059.EURP192.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <AM9P192MB13149D0A78DE164AC43559C2F60E9@AM9P192MB1314.EURP192.PROD.OUTLOOK.COM>
 X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fnl8kjZzBniTsW3lro06G4/jNKs0Xn5LQ9qSg8JRbrPIc0cCnV7mHr+giJFj6Rvdmy5n0YWNTxJG9B5bw/YjGZgr6Vf1xJ7+Rp34PKWW7ynSNWuDiYA6PNAm7vh1TrRIZfaEtPnvxZ8V83EaEC8dIxGHwz5k79yma+WTF1OVz+/NKQsQ7hskS9s7XnMqHwjLi3Q0ZiIWxLZt64PtjnIKIq70vgczWYRTBQPDgloMzhdDBrg3efp5WRZvElk1bsb/CZrT1r5AJyjc0Codf5yQXkJdOzRE95qqlssUZOq366uGr5kbFSiKMhF3mxHmb9dloBKMGemJXHzS1yYPhDX3cDPW0V74zxxH008M8p0G5A0zx84NmxQqma/VneGfYwh2AFc7clPWjUV8DYBO5XwJhR/kQb2Ib2QrpAGenwE6NUR8kjS1PQ47EAC3oFDDy+CsBGpj8h8S68fCnFNnPPraxAQzYjbDVnyYH61b1Df7VbToDXaVgBncnky9pp/mJdB7xhBrH8AO6M3miwvT/gCURdzi2nGdR82Fdi6ZziJr390BLTzzSXsOmFgh8NqG2iAlYdGjmqkgCw3H4UhIjmxOiAzG3r1DvCx/0q/LBXzh2eKX3XgYOPWSbGTwHQGnoAuH8LmCiuqofKbpbhYoK544z/FLgk1F0V5U2OmIhe9TOn0dV3i1cveNq6gpNYUNR/T3HxWyShj83xvDsulLWMnRAQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(26005)(956004)(498600001)(186003)(66556008)(16526019)(107886003)(66946007)(66476007)(8936002)(6916009)(2616005)(1076003)(2906002)(54906003)(6506007)(6666004)(4326008)(38100700002)(38350700002)(83380400001)(9686003)(6512007)(5660300002)(6486002)(86362001)(55236004)(36756003)(52116002)(8676002)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 9qzyK4VHzPchtNMSkJFpfQ1PI77ekgBD/16jYXbYOju8KRwmFnMatNl+afI8D2xUfR3SRZDl8JT7Fp8WXBtIfyFg7rVdvTNIkb8khoK02Kr6zjlfzWIuVzqiNUoi0AmBeTgWb3OqFCWPeJ16hB3v8cJ+cIDcWFAh1QhLavy5d8zAjtSh0/VZpQemmMrOLgbdg3D3Xa4zm3pRUvLrYFH5CUtTG4OGuFGHG68DKqq+osmNTb68XzdHfxX1c2GEqqLzlxIEgZhJoduPdOV9JP1ydLGPDe/SSPpGS3V6pQnEkmjlT+b9XzBaHmO+KhlIFz+FsaoppRNOnmp7Yt/lTFw5AZjTuq1uY1t/Fy6vIICZSR2/NqW2PGEGJwkpd2yLLd826WEW6RUQb0R952sb3ZeP+kUszWeTFdocYl7sRs2wS9vnyhDNUmY7jqhsr94YKlV3EKowb6SlcB6yS8E028nchlUxhDnXZni7ILCwfp08RoRV/VdWBS7AprjXFSHaqqGTd0Z0AoDlA5OchEkHqWgs1UG55Wh8jfECUyncdOpOQa6MlnVo+Ge3Z7mU2vtwFRfmcCdYkdj4PIbtn2Adk20XO8dIV24ZDbVx0WKXJYklpGTtNKa07xwNfJgv6jvJAolGXhSPNwHCv4sDnRS1MDpR/b2g1jrLlZiFtnrdCzJ7FQUhORtgeKtDBhACh9NTBaXUYNjrnTCQLWtuVYyO0t7QHQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(396003)(39840400004)(366004)(376002)(136003)(346002)(8936002)(66946007)(83380400001)(186003)(5660300002)(26005)(36756003)(86362001)(8676002)(55236004)(1076003)(6916009)(2906002)(6506007)(66476007)(478600001)(6666004)(30864003)(38350700002)(52116002)(66556008)(956004)(4326008)(107886003)(54906003)(38100700002)(6486002)(2616005)(316002)(16526019)(6512007)(9686003)(69590400013)(32563001)(559001)(579004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?EawNoORgwlYHjMzLv39nDVHoiEstrmkKXcA4gdkmZcMgY6jmGVVx+0dnc8gS?=
- =?us-ascii?Q?sfaxNAdv84gFvo4vK55LoJ3Hlw0MRlnuMUPUoS0ZxDvzKBq/vgdOU8R7GA4u?=
- =?us-ascii?Q?PXLt3cCBzusIn+Tx5+sM0SztePKwAlkLqAXCmUvlCXD+tVTI0MysR9TnPvRA?=
- =?us-ascii?Q?2ofZ5mYg23xp3Qk3YAE8BpG4v79R0rokTGqckiLHGtPqPNhp3cBgo4dCWlS6?=
- =?us-ascii?Q?1J9FVbRDL268hOWJOKsDuZLWVIvlTACceN6k92ZkN2C4qT4PZx39MJqhSyZa?=
- =?us-ascii?Q?8nKmRsH49vJUsM81DFvi1p+ACmWfuAjwGxKImWOkNHmGkjsk7BAzyhMO2JTP?=
- =?us-ascii?Q?uA7OzeawlMjtDHl61i/0YNqYhXJ5Chsg/U5u3ciB/1UEwiHZjuMEl6uRRURY?=
- =?us-ascii?Q?dhd//NSANAanbcZHIoXusn8cMe6qzy8H51EVIQMY0+T1xqdDCSvHJap3xMqK?=
- =?us-ascii?Q?miQFJREX0Bu++5P7DOuNeK0Zz111sR0TWZmsxpQCoJ+2P6N2nK7b5p1Es/3Q?=
- =?us-ascii?Q?oozqftgTgxDRGpdSj+yhlV6+acoxMpYBwcIOlc3vWpMihpIbhLY7bf2bKAQ4?=
- =?us-ascii?Q?opOblmPKS6uUcoS2zXtHEaPxTFn97lRLyoyP7D4JIeCvvdknNvrjtnxZwClZ?=
- =?us-ascii?Q?Z+ho39hnUCUaChBkNkVuowEchKuM9PbmfY2xve+5+WwvxhQgEBPtyP2S/qhD?=
- =?us-ascii?Q?whfthyU2BzKdRdnDTnXjSNzjHbDYvRg2dEgX3H0tdWNGRMc+dLOyE62yCLyj?=
- =?us-ascii?Q?st7OjjAlazjROF2y5fKF7AbTT5Ryk5xZW47To6r3TkKjRSP4nbtQzLLIJgjn?=
- =?us-ascii?Q?+QlFfJxOETAAmosNV6nrukW2Kndp6oQfvRxdiM9PMAXjMW1vHKxRz/mZZ0q+?=
- =?us-ascii?Q?r0YOP3rQ5Xxd1faE25Z6jSx4wb00Kax5QCutAx0oy1lRsfOCQieiG3Gd80Yw?=
- =?us-ascii?Q?ok8GIOeSaOQFR+Xw3zsVgYm4Maf0CCVTp9yvnKt3SAYA0KdgSU7iVmXOv9Hy?=
- =?us-ascii?Q?BX99cEPPe3VCVCC/JZPlRDOMJ5YcRrlMpPxA8l/l6D51Itjg0gO1Rz5txrge?=
- =?us-ascii?Q?4gmxOwFZz1NCELLJEiMOV8HiouVcInOiPnltaJ6WZ/sBLK9hX16HiCsRX8Dv?=
- =?us-ascii?Q?UyRTRF4anWkM8JegCYpWMXxBzQ+rHafyumcCQiXzClJcdjocGPP4C8yXea0L?=
- =?us-ascii?Q?QLvJ+xKrgSEcd37z7LC2wnZaHZAOq021XWECdsYoJ1uC4U3hjhfMH25A5MPe?=
- =?us-ascii?Q?2uVq7wq7Jg8z4Wu/O6Vfp9wprU8fDIuurOUIyjnmfH/3YRbbLvBqJreI9TSw?=
- =?us-ascii?Q?Jjw/vHHJHn2HC0/uj2BrSP37?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OHjxVxQibjWJUtvTivwrev7awmQb/RpVGMu4HB7/BMyJSIJcqnY4DLoOL+QX?=
+ =?us-ascii?Q?gYjzEKt+N7jSuMabo9nGqDTVMPNaekfuLUEyw5HW/DW5jUZTtEiDxdNfdRUn?=
+ =?us-ascii?Q?Fo3CChaMnagX/zWCYBrdxjyzTVeKYZDzU4G0kCY4mNbk/ZX5UGtP+TfhHDrG?=
+ =?us-ascii?Q?Hq+t+l1W5+M9PLRSfrwXL21SpJtUwEPsYpJIWpqQ+7DlDoZhsG9Bh6mWOPJS?=
+ =?us-ascii?Q?p0plzLV5iIuMrr9FEQPUyuzd0DLqc82L6Zs4xSSaLZmjFt6gquaqLBH/R6mS?=
+ =?us-ascii?Q?A4jxZ5MTtoGly8cr/2dITE4c9JGONFaAty2kWKZC0JbaiP2iWJUXRFOYdgpP?=
+ =?us-ascii?Q?eyxvRo+nRcxXrPzPWADM1VdRv6TcLXhBuXrwAvFoODQ4kxahtBjrikjoB5M5?=
+ =?us-ascii?Q?Ta9FfbO3cS1pjkqb202mn2ACHk6qNq447bT2mE1dq7GFaHuTWYbnnC6ZKUXo?=
+ =?us-ascii?Q?Yk8zep7SysIl8s2VdMwkO9Vxe/pRKJswKiqPH4MorYa7o0vef1TGVMQulzCs?=
+ =?us-ascii?Q?ho3QWVqeLMruziUaZ2rn30HV0k5DnNCZ0/BY6Aj74I1ttT5DmhekUs3khh8T?=
+ =?us-ascii?Q?1baEtz/flxsEsBbZVTYu42QZSNVl2HSLqrZ2/Tb3x2BJqEE4NKu47BX58FYI?=
+ =?us-ascii?Q?t+4httDIMqeb7WbylcO+mqvTAHw/Hrb0lmpuR1f1k083rsiK/jdmsWDbz+TT?=
+ =?us-ascii?Q?Rt7YuGtXk75qM77sLkcWxsKRAcIeECmG4z4kpEWJVxxDwcO3yN49ZDUiIp0V?=
+ =?us-ascii?Q?xXtsT1FG45lOFqO5Q5QIIdVJxYPty03g3O0cS8Kytn7Vr/7NdngAfPGAuElN?=
+ =?us-ascii?Q?/1nqS7Hr5/Y434Yz+lJA+r/aKF/0xUFF3bDIZXYcL7wFRha+DPJ5Y4VVRuva?=
+ =?us-ascii?Q?bNdKivEuO5LKwFFd8WXrFWny/nQLf5NQio8/UbQVOIpoZwPswMa8d5m/epug?=
+ =?us-ascii?Q?ljmHDh6Cq6LDuYti+3egJFzNCrz6cY6qze9ERz887+oIFk6PjKTKnT4Tr4ND?=
+ =?us-ascii?Q?XUXsH5pBkbVXlnNuck+UVSOrsLXXyaRsNeWsgIvNlg/9Siy2IOBfVegq05Vu?=
+ =?us-ascii?Q?P/cdJXWSUl1R676qCT1j6TMu4at5LiWXBbNoDw1003oZnje3/8zfd9tqM9XW?=
+ =?us-ascii?Q?vvBfOIRtaxAStXhqNmaYVUhcgCKuLdZydhWnUMPBJ6ow31ryvvzRFqkkG6r1?=
+ =?us-ascii?Q?5y4R4tguoLSVH6bR7RIHmfj3gZWL9T3v51mMBQtWfRuEcoyWumT7oqQmburz?=
+ =?us-ascii?Q?3nnLvLGeSKpff0x78h2tmYlNjwI9enfQa1a33i/3XB8gSAE3rZhF/RfR12m8?=
+ =?us-ascii?Q?5cijAOr5NdOBhcepb1TRJ2C9?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14ecee24-fb28-45d1-b22b-08d931a9a6ff
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a16b35e-dade-4002-263c-08d931a9a79e
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:57.2009
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:58.5599
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HREsLu/OE4k8PmspLrfeWflv2zcFT4fXTfuB7ie8MtvJxdMXNmgPgf882kPVLekB/JJ4/xg5y+4588oF21+Ykw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P192MB1059
+X-MS-Exchange-CrossTenant-UserPrincipalName: dVAgKf9ENUiwV3m1rQiS2o6pZrFQt+qcmhKFHvHrwojHGjXfjK9A4AP0zgvCivpEVCp0E09SxVwaGTs4k6V8LA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1314
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -119,38 +119,4337 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../wireless/celeno/cl8k/phy/phy_common_lut.h | 21 +++++++++++++++++++
- 1 file changed, 21 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.h
+ .../celeno/cl8k/phy/phy_olympus_lut.c         | 2189 +++++++++++++++++
+ 1 file changed, 2189 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/phy/phy_olympus_lut.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.h b/driver=
-s/net/wireless/celeno/cl8k/phy/phy_common_lut.h
+diff --git a/drivers/net/wireless/celeno/cl8k/phy/phy_olympus_lut.c b/drive=
+rs/net/wireless/celeno/cl8k/phy/phy_olympus_lut.c
 new file mode 100644
-index 000000000000..7ff17cb81ca3
+index 000000000000..c33f4460d6fa
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/phy/phy_olympus_lut.c
+@@ -0,0 +1,2189 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_PHY_COMMON_LUT_H
-+#define CL_PHY_COMMON_LUT_H
++#include "phy_olympus_lut.h"
 +
-+#include <linux/types.h>
-+#include "fw/fw_msg.h"
-+
-+struct common_lut_line {
-+       u16 frequency_q2;
-+       u8 vcocalsel;
-+       u8 nint;
-+       u32 nfrac;
-+       u32 freqmeastarg;
++const struct olympus_lut_line olympus_lut_5g_40_mhz[OLYMPUS_LUT_CHAN_5G_MA=
+X] =3D {
++       [OLYMPUS_LUT_CHAN_516000_IDX] =3D { 20640, 0x0, 0x56, 0x0, 0x6B8 },
++       [OLYMPUS_LUT_CHAN_516125_IDX] =3D { 20645, 0x0, 0x56, 0xAAAB, 0x6B8=
+ },
++       [OLYMPUS_LUT_CHAN_516250_IDX] =3D { 20650, 0x0, 0x56, 0x15555, 0x6B=
+9 },
++       [OLYMPUS_LUT_CHAN_516375_IDX] =3D { 20655, 0x0, 0x56, 0x20000, 0x6B=
+9 },
++       [OLYMPUS_LUT_CHAN_516500_IDX] =3D { 20660, 0x0, 0x56, 0x2AAAB, 0x6B=
+A },
++       [OLYMPUS_LUT_CHAN_516625_IDX] =3D { 20665, 0x0, 0x56, 0x35555, 0x6B=
+A },
++       [OLYMPUS_LUT_CHAN_516750_IDX] =3D { 20670, 0x0, 0x56, 0x40000, 0x6B=
+B },
++       [OLYMPUS_LUT_CHAN_516875_IDX] =3D { 20675, 0x0, 0x56, 0x4AAAB, 0x6B=
+B },
++       [OLYMPUS_LUT_CHAN_517000_IDX] =3D { 20680, 0x0, 0x56, 0x55555, 0x6B=
+B },
++       [OLYMPUS_LUT_CHAN_517125_IDX] =3D { 20685, 0x0, 0x56, 0x60000, 0x6B=
+C },
++       [OLYMPUS_LUT_CHAN_517250_IDX] =3D { 20690, 0x0, 0x56, 0x6AAAB, 0x6B=
+C },
++       [OLYMPUS_LUT_CHAN_517375_IDX] =3D { 20695, 0x0, 0x56, 0x75555, 0x6B=
+D },
++       [OLYMPUS_LUT_CHAN_517500_IDX] =3D { 20700, 0x0, 0x56, 0x80000, 0x6B=
+D },
++       [OLYMPUS_LUT_CHAN_517625_IDX] =3D { 20705, 0x0, 0x56, 0x8AAAB, 0x6B=
+D },
++       [OLYMPUS_LUT_CHAN_517750_IDX] =3D { 20710, 0x0, 0x56, 0x95555, 0x6B=
+E },
++       [OLYMPUS_LUT_CHAN_517875_IDX] =3D { 20715, 0x0, 0x56, 0xA0000, 0x6B=
+E },
++       [OLYMPUS_LUT_CHAN_518000_IDX] =3D { 20720, 0x1, 0x56, 0xAAAAB, 0x6B=
+F },
++       [OLYMPUS_LUT_CHAN_518125_IDX] =3D { 20725, 0x1, 0x56, 0xB5555, 0x6B=
+F },
++       [OLYMPUS_LUT_CHAN_518250_IDX] =3D { 20730, 0x1, 0x56, 0xC0000, 0x6C=
+0 },
++       [OLYMPUS_LUT_CHAN_518375_IDX] =3D { 20735, 0x1, 0x56, 0xCAAAB, 0x6C=
+0 },
++       [OLYMPUS_LUT_CHAN_518500_IDX] =3D { 20740, 0x1, 0x56, 0xD5555, 0x6C=
+0 },
++       [OLYMPUS_LUT_CHAN_518625_IDX] =3D { 20745, 0x1, 0x56, 0xE0000, 0x6C=
+1 },
++       [OLYMPUS_LUT_CHAN_518750_IDX] =3D { 20750, 0x1, 0x56, 0xEAAAB, 0x6C=
+1 },
++       [OLYMPUS_LUT_CHAN_518875_IDX] =3D { 20755, 0x1, 0x56, 0xF5555, 0x6C=
+2 },
++       [OLYMPUS_LUT_CHAN_519000_IDX] =3D { 20760, 0x1, 0x56, 0x100000, 0x6=
+C2 },
++       [OLYMPUS_LUT_CHAN_519125_IDX] =3D { 20765, 0x1, 0x56, 0x10AAAB, 0x6=
+C2 },
++       [OLYMPUS_LUT_CHAN_519250_IDX] =3D { 20770, 0x1, 0x56, 0x115555, 0x6=
+C3 },
++       [OLYMPUS_LUT_CHAN_519375_IDX] =3D { 20775, 0x1, 0x56, 0x120000, 0x6=
+C3 },
++       [OLYMPUS_LUT_CHAN_519500_IDX] =3D { 20780, 0x1, 0x56, 0x12AAAB, 0x6=
+C4 },
++       [OLYMPUS_LUT_CHAN_519625_IDX] =3D { 20785, 0x1, 0x56, 0x135555, 0x6=
+C4 },
++       [OLYMPUS_LUT_CHAN_519750_IDX] =3D { 20790, 0x1, 0x56, 0x140000, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_519875_IDX] =3D { 20795, 0x1, 0x56, 0x14AAAB, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_520000_IDX] =3D { 20800, 0x1, 0x56, 0x155555, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_520125_IDX] =3D { 20805, 0x1, 0x56, 0x160000, 0x6=
+C6 },
++       [OLYMPUS_LUT_CHAN_520250_IDX] =3D { 20810, 0x1, 0x56, 0x16AAAB, 0x6=
+C6 },
++       [OLYMPUS_LUT_CHAN_520375_IDX] =3D { 20815, 0x1, 0x56, 0x175555, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520500_IDX] =3D { 20820, 0x1, 0x56, 0x180000, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520625_IDX] =3D { 20825, 0x1, 0x56, 0x18AAAB, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520750_IDX] =3D { 20830, 0x1, 0x56, 0x195555, 0x6=
+C8 },
++       [OLYMPUS_LUT_CHAN_520875_IDX] =3D { 20835, 0x1, 0x56, 0x1A0000, 0x6=
+C8 },
++       [OLYMPUS_LUT_CHAN_521000_IDX] =3D { 20840, 0x1, 0x56, 0x1AAAAB, 0x6=
+C9 },
++       [OLYMPUS_LUT_CHAN_521125_IDX] =3D { 20845, 0x1, 0x56, 0x1B5555, 0x6=
+C9 },
++       [OLYMPUS_LUT_CHAN_521250_IDX] =3D { 20850, 0x1, 0x56, 0x1C0000, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521375_IDX] =3D { 20855, 0x1, 0x56, 0x1CAAAB, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521500_IDX] =3D { 20860, 0x1, 0x56, 0x1D5555, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521625_IDX] =3D { 20865, 0x1, 0x56, 0x1E0000, 0x6=
+CB },
++       [OLYMPUS_LUT_CHAN_521750_IDX] =3D { 20870, 0x1, 0x56, 0x1EAAAB, 0x6=
+CB },
++       [OLYMPUS_LUT_CHAN_521875_IDX] =3D { 20875, 0x1, 0x56, 0x1F5555, 0x6=
+CC },
++       [OLYMPUS_LUT_CHAN_522000_IDX] =3D { 20880, 0x1, 0x57, 0x0, 0x6CC },
++       [OLYMPUS_LUT_CHAN_522125_IDX] =3D { 20885, 0x1, 0x57, 0xAAAB, 0x6CC=
+ },
++       [OLYMPUS_LUT_CHAN_522250_IDX] =3D { 20890, 0x1, 0x57, 0x15555, 0x6C=
+D },
++       [OLYMPUS_LUT_CHAN_522375_IDX] =3D { 20895, 0x1, 0x57, 0x20000, 0x6C=
+D },
++       [OLYMPUS_LUT_CHAN_522500_IDX] =3D { 20900, 0x1, 0x57, 0x2AAAB, 0x6C=
+E },
++       [OLYMPUS_LUT_CHAN_522625_IDX] =3D { 20905, 0x1, 0x57, 0x35555, 0x6C=
+E },
++       [OLYMPUS_LUT_CHAN_522750_IDX] =3D { 20910, 0x1, 0x57, 0x40000, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_522875_IDX] =3D { 20915, 0x1, 0x57, 0x4AAAB, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_523000_IDX] =3D { 20920, 0x1, 0x57, 0x55555, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_523125_IDX] =3D { 20925, 0x1, 0x57, 0x60000, 0x6D=
+0 },
++       [OLYMPUS_LUT_CHAN_523250_IDX] =3D { 20930, 0x1, 0x57, 0x6AAAB, 0x6D=
+0 },
++       [OLYMPUS_LUT_CHAN_523375_IDX] =3D { 20935, 0x1, 0x57, 0x75555, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523500_IDX] =3D { 20940, 0x1, 0x57, 0x80000, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523625_IDX] =3D { 20945, 0x1, 0x57, 0x8AAAB, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523750_IDX] =3D { 20950, 0x1, 0x57, 0x95555, 0x6D=
+2 },
++       [OLYMPUS_LUT_CHAN_523875_IDX] =3D { 20955, 0x1, 0x57, 0xA0000, 0x6D=
+2 },
++       [OLYMPUS_LUT_CHAN_524000_IDX] =3D { 20960, 0x1, 0x57, 0xAAAAB, 0x6D=
+3 },
++       [OLYMPUS_LUT_CHAN_524125_IDX] =3D { 20965, 0x1, 0x57, 0xB5555, 0x6D=
+3 },
++       [OLYMPUS_LUT_CHAN_524250_IDX] =3D { 20970, 0x1, 0x57, 0xC0000, 0x6D=
+4 },
++       [OLYMPUS_LUT_CHAN_524375_IDX] =3D { 20975, 0x1, 0x57, 0xCAAAB, 0x6D=
+4 },
++       [OLYMPUS_LUT_CHAN_524500_IDX] =3D { 20980, 0x1, 0x57, 0xD5555, 0x6D=
+4 },
++       [OLYMPUS_LUT_CHAN_524625_IDX] =3D { 20985, 0x1, 0x57, 0xE0000, 0x6D=
+5 },
++       [OLYMPUS_LUT_CHAN_524750_IDX] =3D { 20990, 0x1, 0x57, 0xEAAAB, 0x6D=
+5 },
++       [OLYMPUS_LUT_CHAN_524875_IDX] =3D { 20995, 0x1, 0x57, 0xF5555, 0x6D=
+6 },
++       [OLYMPUS_LUT_CHAN_525000_IDX] =3D { 21000, 0x1, 0x57, 0x100000, 0x6=
+D6 },
++       [OLYMPUS_LUT_CHAN_525125_IDX] =3D { 21005, 0x1, 0x57, 0x10AAAB, 0x6=
+D6 },
++       [OLYMPUS_LUT_CHAN_525250_IDX] =3D { 21010, 0x1, 0x57, 0x115555, 0x6=
+D7 },
++       [OLYMPUS_LUT_CHAN_525375_IDX] =3D { 21015, 0x1, 0x57, 0x120000, 0x6=
+D7 },
++       [OLYMPUS_LUT_CHAN_525500_IDX] =3D { 21020, 0x1, 0x57, 0x12AAAB, 0x6=
+D8 },
++       [OLYMPUS_LUT_CHAN_525625_IDX] =3D { 21025, 0x1, 0x57, 0x135555, 0x6=
+D8 },
++       [OLYMPUS_LUT_CHAN_525750_IDX] =3D { 21030, 0x1, 0x57, 0x140000, 0x6=
+D9 },
++       [OLYMPUS_LUT_CHAN_525875_IDX] =3D { 21035, 0x1, 0x57, 0x14AAAB, 0x6=
+D9 },
++       [OLYMPUS_LUT_CHAN_526000_IDX] =3D { 21040, 0x1, 0x57, 0x155555, 0x6=
+D9 },
++       [OLYMPUS_LUT_CHAN_526125_IDX] =3D { 21045, 0x1, 0x57, 0x160000, 0x6=
+DA },
++       [OLYMPUS_LUT_CHAN_526250_IDX] =3D { 21050, 0x1, 0x57, 0x16AAAB, 0x6=
+DA },
++       [OLYMPUS_LUT_CHAN_526375_IDX] =3D { 21055, 0x1, 0x57, 0x175555, 0x6=
+DB },
++       [OLYMPUS_LUT_CHAN_526500_IDX] =3D { 21060, 0x1, 0x57, 0x180000, 0x6=
+DB },
++       [OLYMPUS_LUT_CHAN_526625_IDX] =3D { 21065, 0x1, 0x57, 0x18AAAB, 0x6=
+DB },
++       [OLYMPUS_LUT_CHAN_526750_IDX] =3D { 21070, 0x1, 0x57, 0x195555, 0x6=
+DC },
++       [OLYMPUS_LUT_CHAN_526875_IDX] =3D { 21075, 0x1, 0x57, 0x1A0000, 0x6=
+DC },
++       [OLYMPUS_LUT_CHAN_527000_IDX] =3D { 21080, 0x1, 0x57, 0x1AAAAB, 0x6=
+DD },
++       [OLYMPUS_LUT_CHAN_527125_IDX] =3D { 21085, 0x1, 0x57, 0x1B5555, 0x6=
+DD },
++       [OLYMPUS_LUT_CHAN_527250_IDX] =3D { 21090, 0x1, 0x57, 0x1C0000, 0x6=
+DE },
++       [OLYMPUS_LUT_CHAN_527375_IDX] =3D { 21095, 0x1, 0x57, 0x1CAAAB, 0x6=
+DE },
++       [OLYMPUS_LUT_CHAN_527500_IDX] =3D { 21100, 0x1, 0x57, 0x1D5555, 0x6=
+DE },
++       [OLYMPUS_LUT_CHAN_527625_IDX] =3D { 21105, 0x1, 0x57, 0x1E0000, 0x6=
+DF },
++       [OLYMPUS_LUT_CHAN_527750_IDX] =3D { 21110, 0x1, 0x57, 0x1EAAAB, 0x6=
+DF },
++       [OLYMPUS_LUT_CHAN_527875_IDX] =3D { 21115, 0x1, 0x57, 0x1F5555, 0x6=
+E0 },
++       [OLYMPUS_LUT_CHAN_528000_IDX] =3D { 21120, 0x1, 0x58, 0x0, 0x6E0 },
++       [OLYMPUS_LUT_CHAN_528125_IDX] =3D { 21125, 0x1, 0x58, 0xAAAB, 0x6E0=
+ },
++       [OLYMPUS_LUT_CHAN_528250_IDX] =3D { 21130, 0x1, 0x58, 0x15555, 0x6E=
+1 },
++       [OLYMPUS_LUT_CHAN_528375_IDX] =3D { 21135, 0x1, 0x58, 0x20000, 0x6E=
+1 },
++       [OLYMPUS_LUT_CHAN_528500_IDX] =3D { 21140, 0x1, 0x58, 0x2AAAB, 0x6E=
+2 },
++       [OLYMPUS_LUT_CHAN_528625_IDX] =3D { 21145, 0x1, 0x58, 0x35555, 0x6E=
+2 },
++       [OLYMPUS_LUT_CHAN_528750_IDX] =3D { 21150, 0x1, 0x58, 0x40000, 0x6E=
+3 },
++       [OLYMPUS_LUT_CHAN_528875_IDX] =3D { 21155, 0x1, 0x58, 0x4AAAB, 0x6E=
+3 },
++       [OLYMPUS_LUT_CHAN_529000_IDX] =3D { 21160, 0x1, 0x58, 0x55555, 0x6E=
+3 },
++       [OLYMPUS_LUT_CHAN_529125_IDX] =3D { 21165, 0x1, 0x58, 0x60000, 0x6E=
+4 },
++       [OLYMPUS_LUT_CHAN_529250_IDX] =3D { 21170, 0x1, 0x58, 0x6AAAB, 0x6E=
+4 },
++       [OLYMPUS_LUT_CHAN_529375_IDX] =3D { 21175, 0x1, 0x58, 0x75555, 0x6E=
+5 },
++       [OLYMPUS_LUT_CHAN_529500_IDX] =3D { 21180, 0x1, 0x58, 0x80000, 0x6E=
+5 },
++       [OLYMPUS_LUT_CHAN_529625_IDX] =3D { 21185, 0x1, 0x58, 0x8AAAB, 0x6E=
+5 },
++       [OLYMPUS_LUT_CHAN_529750_IDX] =3D { 21190, 0x1, 0x58, 0x95555, 0x6E=
+6 },
++       [OLYMPUS_LUT_CHAN_529875_IDX] =3D { 21195, 0x1, 0x58, 0xA0000, 0x6E=
+6 },
++       [OLYMPUS_LUT_CHAN_530000_IDX] =3D { 21200, 0x1, 0x58, 0xAAAAB, 0x6E=
+7 },
++       [OLYMPUS_LUT_CHAN_530125_IDX] =3D { 21205, 0x1, 0x58, 0xB5555, 0x6E=
+7 },
++       [OLYMPUS_LUT_CHAN_530250_IDX] =3D { 21210, 0x1, 0x58, 0xC0000, 0x6E=
+8 },
++       [OLYMPUS_LUT_CHAN_530375_IDX] =3D { 21215, 0x1, 0x58, 0xCAAAB, 0x6E=
+8 },
++       [OLYMPUS_LUT_CHAN_530500_IDX] =3D { 21220, 0x1, 0x58, 0xD5555, 0x6E=
+8 },
++       [OLYMPUS_LUT_CHAN_530625_IDX] =3D { 21225, 0x1, 0x58, 0xE0000, 0x6E=
+9 },
++       [OLYMPUS_LUT_CHAN_530750_IDX] =3D { 21230, 0x1, 0x58, 0xEAAAB, 0x6E=
+9 },
++       [OLYMPUS_LUT_CHAN_530875_IDX] =3D { 21235, 0x1, 0x58, 0xF5555, 0x6E=
+A },
++       [OLYMPUS_LUT_CHAN_531000_IDX] =3D { 21240, 0x1, 0x58, 0x100000, 0x6=
+EA },
++       [OLYMPUS_LUT_CHAN_531125_IDX] =3D { 21245, 0x1, 0x58, 0x10AAAB, 0x6=
+EA },
++       [OLYMPUS_LUT_CHAN_531250_IDX] =3D { 21250, 0x1, 0x58, 0x115555, 0x6=
+EB },
++       [OLYMPUS_LUT_CHAN_531375_IDX] =3D { 21255, 0x1, 0x58, 0x120000, 0x6=
+EB },
++       [OLYMPUS_LUT_CHAN_531500_IDX] =3D { 21260, 0x1, 0x58, 0x12AAAB, 0x6=
+EC },
++       [OLYMPUS_LUT_CHAN_531625_IDX] =3D { 21265, 0x1, 0x58, 0x135555, 0x6=
+EC },
++       [OLYMPUS_LUT_CHAN_531750_IDX] =3D { 21270, 0x1, 0x58, 0x140000, 0x6=
+ED },
++       [OLYMPUS_LUT_CHAN_531875_IDX] =3D { 21275, 0x1, 0x58, 0x14AAAB, 0x6=
+ED },
++       [OLYMPUS_LUT_CHAN_532000_IDX] =3D { 21280, 0x1, 0x58, 0x155555, 0x6=
+ED },
++       [OLYMPUS_LUT_CHAN_532125_IDX] =3D { 21285, 0x1, 0x58, 0x160000, 0x6=
+EE },
++       [OLYMPUS_LUT_CHAN_532250_IDX] =3D { 21290, 0x1, 0x58, 0x16AAAB, 0x6=
+EE },
++       [OLYMPUS_LUT_CHAN_532375_IDX] =3D { 21295, 0x1, 0x58, 0x175555, 0x6=
+EF },
++       [OLYMPUS_LUT_CHAN_532500_IDX] =3D { 21300, 0x1, 0x58, 0x180000, 0x6=
+EF },
++       [OLYMPUS_LUT_CHAN_532625_IDX] =3D { 21305, 0x1, 0x58, 0x18AAAB, 0x6=
+EF },
++       [OLYMPUS_LUT_CHAN_532750_IDX] =3D { 21310, 0x1, 0x58, 0x195555, 0x6=
+F0 },
++       [OLYMPUS_LUT_CHAN_532875_IDX] =3D { 21315, 0x1, 0x58, 0x1A0000, 0x6=
+F0 },
++       [OLYMPUS_LUT_CHAN_533000_IDX] =3D { 21320, 0x1, 0x58, 0x1AAAAB, 0x6=
+F1 },
++       [OLYMPUS_LUT_CHAN_533125_IDX] =3D { 21325, 0x1, 0x58, 0x1B5555, 0x6=
+F1 },
++       [OLYMPUS_LUT_CHAN_533250_IDX] =3D { 21330, 0x1, 0x58, 0x1C0000, 0x6=
+F2 },
++       [OLYMPUS_LUT_CHAN_533375_IDX] =3D { 21335, 0x1, 0x58, 0x1CAAAB, 0x6=
+F2 },
++       [OLYMPUS_LUT_CHAN_533500_IDX] =3D { 21340, 0x1, 0x58, 0x1D5555, 0x6=
+F2 },
++       [OLYMPUS_LUT_CHAN_533625_IDX] =3D { 21345, 0x1, 0x58, 0x1E0000, 0x6=
+F3 },
++       [OLYMPUS_LUT_CHAN_533750_IDX] =3D { 21350, 0x1, 0x58, 0x1EAAAB, 0x6=
+F3 },
++       [OLYMPUS_LUT_CHAN_533875_IDX] =3D { 21355, 0x1, 0x58, 0x1F5555, 0x6=
+F4 },
++       [OLYMPUS_LUT_CHAN_534000_IDX] =3D { 21360, 0x1, 0x59, 0x0, 0x6F4 },
++       [OLYMPUS_LUT_CHAN_534125_IDX] =3D { 21365, 0x1, 0x59, 0xAAAB, 0x6F4=
+ },
++       [OLYMPUS_LUT_CHAN_534250_IDX] =3D { 21370, 0x1, 0x59, 0x15555, 0x6F=
+5 },
++       [OLYMPUS_LUT_CHAN_534375_IDX] =3D { 21375, 0x1, 0x59, 0x20000, 0x6F=
+5 },
++       [OLYMPUS_LUT_CHAN_534500_IDX] =3D { 21380, 0x1, 0x59, 0x2AAAB, 0x6F=
+6 },
++       [OLYMPUS_LUT_CHAN_534625_IDX] =3D { 21385, 0x1, 0x59, 0x35555, 0x6F=
+6 },
++       [OLYMPUS_LUT_CHAN_534750_IDX] =3D { 21390, 0x1, 0x59, 0x40000, 0x6F=
+7 },
++       [OLYMPUS_LUT_CHAN_534875_IDX] =3D { 21395, 0x1, 0x59, 0x4AAAB, 0x6F=
+7 },
++       [OLYMPUS_LUT_CHAN_535000_IDX] =3D { 21400, 0x1, 0x59, 0x55555, 0x6F=
+7 },
++       [OLYMPUS_LUT_CHAN_535125_IDX] =3D { 21405, 0x1, 0x59, 0x60000, 0x6F=
+8 },
++       [OLYMPUS_LUT_CHAN_535250_IDX] =3D { 21410, 0x1, 0x59, 0x6AAAB, 0x6F=
+8 },
++       [OLYMPUS_LUT_CHAN_535375_IDX] =3D { 21415, 0x1, 0x59, 0x75555, 0x6F=
+9 },
++       [OLYMPUS_LUT_CHAN_535500_IDX] =3D { 21420, 0x1, 0x59, 0x80000, 0x6F=
+9 },
++       [OLYMPUS_LUT_CHAN_535625_IDX] =3D { 21425, 0x1, 0x59, 0x8AAAB, 0x6F=
+9 },
++       [OLYMPUS_LUT_CHAN_535750_IDX] =3D { 21430, 0x1, 0x59, 0x95555, 0x6F=
+A },
++       [OLYMPUS_LUT_CHAN_535875_IDX] =3D { 21435, 0x1, 0x59, 0xA0000, 0x6F=
+A },
++       [OLYMPUS_LUT_CHAN_536000_IDX] =3D { 21440, 0x1, 0x59, 0xAAAAB, 0x6F=
+B },
++       [OLYMPUS_LUT_CHAN_536125_IDX] =3D { 21445, 0x1, 0x59, 0xB5555, 0x6F=
+B },
++       [OLYMPUS_LUT_CHAN_536250_IDX] =3D { 21450, 0x1, 0x59, 0xC0000, 0x6F=
+C },
++       [OLYMPUS_LUT_CHAN_536375_IDX] =3D { 21455, 0x1, 0x59, 0xCAAAB, 0x6F=
+C },
++       [OLYMPUS_LUT_CHAN_536500_IDX] =3D { 21460, 0x1, 0x59, 0xD5555, 0x6F=
+C },
++       [OLYMPUS_LUT_CHAN_536625_IDX] =3D { 21465, 0x1, 0x59, 0xE0000, 0x6F=
+D },
++       [OLYMPUS_LUT_CHAN_536750_IDX] =3D { 21470, 0x1, 0x59, 0xEAAAB, 0x6F=
+D },
++       [OLYMPUS_LUT_CHAN_536875_IDX] =3D { 21475, 0x1, 0x59, 0xF5555, 0x6F=
+E },
++       [OLYMPUS_LUT_CHAN_537000_IDX] =3D { 21480, 0x1, 0x59, 0x100000, 0x6=
+FE },
++       [OLYMPUS_LUT_CHAN_537125_IDX] =3D { 21485, 0x1, 0x59, 0x10AAAB, 0x6=
+FE },
++       [OLYMPUS_LUT_CHAN_537250_IDX] =3D { 21490, 0x1, 0x59, 0x115555, 0x6=
+FF },
++       [OLYMPUS_LUT_CHAN_537375_IDX] =3D { 21495, 0x1, 0x59, 0x120000, 0x6=
+FF },
++       [OLYMPUS_LUT_CHAN_537500_IDX] =3D { 21500, 0x1, 0x59, 0x12AAAB, 0x7=
+00 },
++       [OLYMPUS_LUT_CHAN_537625_IDX] =3D { 21505, 0x1, 0x59, 0x135555, 0x7=
+00 },
++       [OLYMPUS_LUT_CHAN_537750_IDX] =3D { 21510, 0x1, 0x59, 0x140000, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_537875_IDX] =3D { 21515, 0x1, 0x59, 0x14AAAB, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_538000_IDX] =3D { 21520, 0x1, 0x59, 0x155555, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_538125_IDX] =3D { 21525, 0x1, 0x59, 0x160000, 0x7=
+02 },
++       [OLYMPUS_LUT_CHAN_538250_IDX] =3D { 21530, 0x1, 0x59, 0x16AAAB, 0x7=
+02 },
++       [OLYMPUS_LUT_CHAN_538375_IDX] =3D { 21535, 0x1, 0x59, 0x175555, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538500_IDX] =3D { 21540, 0x1, 0x59, 0x180000, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538625_IDX] =3D { 21545, 0x1, 0x59, 0x18AAAB, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538750_IDX] =3D { 21550, 0x1, 0x59, 0x195555, 0x7=
+04 },
++       [OLYMPUS_LUT_CHAN_538875_IDX] =3D { 21555, 0x1, 0x59, 0x1A0000, 0x7=
+04 },
++       [OLYMPUS_LUT_CHAN_539000_IDX] =3D { 21560, 0x1, 0x59, 0x1AAAAB, 0x7=
+05 },
++       [OLYMPUS_LUT_CHAN_539125_IDX] =3D { 21565, 0x1, 0x59, 0x1B5555, 0x7=
+05 },
++       [OLYMPUS_LUT_CHAN_539250_IDX] =3D { 21570, 0x1, 0x59, 0x1C0000, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539375_IDX] =3D { 21575, 0x1, 0x59, 0x1CAAAB, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539500_IDX] =3D { 21580, 0x1, 0x59, 0x1D5555, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539625_IDX] =3D { 21585, 0x1, 0x59, 0x1E0000, 0x7=
+07 },
++       [OLYMPUS_LUT_CHAN_539750_IDX] =3D { 21590, 0x1, 0x59, 0x1EAAAB, 0x7=
+07 },
++       [OLYMPUS_LUT_CHAN_539875_IDX] =3D { 21595, 0x1, 0x59, 0x1F5555, 0x7=
+08 },
++       [OLYMPUS_LUT_CHAN_540000_IDX] =3D { 21600, 0x1, 0x5A, 0x0, 0x708 },
++       [OLYMPUS_LUT_CHAN_540125_IDX] =3D { 21605, 0x1, 0x5A, 0xAAAB, 0x708=
+ },
++       [OLYMPUS_LUT_CHAN_540250_IDX] =3D { 21610, 0x1, 0x5A, 0x15555, 0x70=
+9 },
++       [OLYMPUS_LUT_CHAN_540375_IDX] =3D { 21615, 0x1, 0x5A, 0x20000, 0x70=
+9 },
++       [OLYMPUS_LUT_CHAN_540500_IDX] =3D { 21620, 0x1, 0x5A, 0x2AAAB, 0x70=
+A },
++       [OLYMPUS_LUT_CHAN_540625_IDX] =3D { 21625, 0x1, 0x5A, 0x35555, 0x70=
+A },
++       [OLYMPUS_LUT_CHAN_540750_IDX] =3D { 21630, 0x1, 0x5A, 0x40000, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_540875_IDX] =3D { 21635, 0x1, 0x5A, 0x4AAAB, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_541000_IDX] =3D { 21640, 0x1, 0x5A, 0x55555, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_541125_IDX] =3D { 21645, 0x1, 0x5A, 0x60000, 0x70=
+C },
++       [OLYMPUS_LUT_CHAN_541250_IDX] =3D { 21650, 0x1, 0x5A, 0x6AAAB, 0x70=
+C },
++       [OLYMPUS_LUT_CHAN_541375_IDX] =3D { 21655, 0x1, 0x5A, 0x75555, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541500_IDX] =3D { 21660, 0x1, 0x5A, 0x80000, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541625_IDX] =3D { 21665, 0x1, 0x5A, 0x8AAAB, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541750_IDX] =3D { 21670, 0x1, 0x5A, 0x95555, 0x70=
+E },
++       [OLYMPUS_LUT_CHAN_541875_IDX] =3D { 21675, 0x1, 0x5A, 0xA0000, 0x70=
+E },
++       [OLYMPUS_LUT_CHAN_542000_IDX] =3D { 21680, 0x1, 0x5A, 0xAAAAB, 0x70=
+F },
++       [OLYMPUS_LUT_CHAN_542125_IDX] =3D { 21685, 0x1, 0x5A, 0xB5555, 0x70=
+F },
++       [OLYMPUS_LUT_CHAN_542250_IDX] =3D { 21690, 0x1, 0x5A, 0xC0000, 0x71=
+0 },
++       [OLYMPUS_LUT_CHAN_542375_IDX] =3D { 21695, 0x1, 0x5A, 0xCAAAB, 0x71=
+0 },
++       [OLYMPUS_LUT_CHAN_542500_IDX] =3D { 21700, 0x1, 0x5A, 0xD5555, 0x71=
+0 },
++       [OLYMPUS_LUT_CHAN_542625_IDX] =3D { 21705, 0x1, 0x5A, 0xE0000, 0x71=
+1 },
++       [OLYMPUS_LUT_CHAN_542750_IDX] =3D { 21710, 0x1, 0x5A, 0xEAAAB, 0x71=
+1 },
++       [OLYMPUS_LUT_CHAN_542875_IDX] =3D { 21715, 0x1, 0x5A, 0xF5555, 0x71=
+2 },
++       [OLYMPUS_LUT_CHAN_543000_IDX] =3D { 21720, 0x1, 0x5A, 0x100000, 0x7=
+12 },
++       [OLYMPUS_LUT_CHAN_543125_IDX] =3D { 21725, 0x1, 0x5A, 0x10AAAB, 0x7=
+12 },
++       [OLYMPUS_LUT_CHAN_543250_IDX] =3D { 21730, 0x1, 0x5A, 0x115555, 0x7=
+13 },
++       [OLYMPUS_LUT_CHAN_543375_IDX] =3D { 21735, 0x1, 0x5A, 0x120000, 0x7=
+13 },
++       [OLYMPUS_LUT_CHAN_543500_IDX] =3D { 21740, 0x1, 0x5A, 0x12AAAB, 0x7=
+14 },
++       [OLYMPUS_LUT_CHAN_543625_IDX] =3D { 21745, 0x1, 0x5A, 0x135555, 0x7=
+14 },
++       [OLYMPUS_LUT_CHAN_543750_IDX] =3D { 21750, 0x1, 0x5A, 0x140000, 0x7=
+15 },
++       [OLYMPUS_LUT_CHAN_543875_IDX] =3D { 21755, 0x1, 0x5A, 0x14AAAB, 0x7=
+15 },
++       [OLYMPUS_LUT_CHAN_544000_IDX] =3D { 21760, 0x1, 0x5A, 0x155555, 0x7=
+15 },
++       [OLYMPUS_LUT_CHAN_544125_IDX] =3D { 21765, 0x1, 0x5A, 0x160000, 0x7=
+16 },
++       [OLYMPUS_LUT_CHAN_544250_IDX] =3D { 21770, 0x1, 0x5A, 0x16AAAB, 0x7=
+16 },
++       [OLYMPUS_LUT_CHAN_544375_IDX] =3D { 21775, 0x1, 0x5A, 0x175555, 0x7=
+17 },
++       [OLYMPUS_LUT_CHAN_544500_IDX] =3D { 21780, 0x1, 0x5A, 0x180000, 0x7=
+17 },
++       [OLYMPUS_LUT_CHAN_544625_IDX] =3D { 21785, 0x1, 0x5A, 0x18AAAB, 0x7=
+17 },
++       [OLYMPUS_LUT_CHAN_544750_IDX] =3D { 21790, 0x1, 0x5A, 0x195555, 0x7=
+18 },
++       [OLYMPUS_LUT_CHAN_544875_IDX] =3D { 21795, 0x1, 0x5A, 0x1A0000, 0x7=
+18 },
++       [OLYMPUS_LUT_CHAN_545000_IDX] =3D { 21800, 0x1, 0x5A, 0x1AAAAB, 0x7=
+19 },
++       [OLYMPUS_LUT_CHAN_545125_IDX] =3D { 21805, 0x1, 0x5A, 0x1B5555, 0x7=
+19 },
++       [OLYMPUS_LUT_CHAN_545250_IDX] =3D { 21810, 0x1, 0x5A, 0x1C0000, 0x7=
+1A },
++       [OLYMPUS_LUT_CHAN_545375_IDX] =3D { 21815, 0x1, 0x5A, 0x1CAAAB, 0x7=
+1A },
++       [OLYMPUS_LUT_CHAN_545500_IDX] =3D { 21820, 0x1, 0x5A, 0x1D5555, 0x7=
+1A },
++       [OLYMPUS_LUT_CHAN_545625_IDX] =3D { 21825, 0x1, 0x5A, 0x1E0000, 0x7=
+1B },
++       [OLYMPUS_LUT_CHAN_545750_IDX] =3D { 21830, 0x1, 0x5A, 0x1EAAAB, 0x7=
+1B },
++       [OLYMPUS_LUT_CHAN_545875_IDX] =3D { 21835, 0x1, 0x5A, 0x1F5555, 0x7=
+1C },
++       [OLYMPUS_LUT_CHAN_546000_IDX] =3D { 21840, 0x1, 0x5B, 0x0, 0x71C },
++       [OLYMPUS_LUT_CHAN_546125_IDX] =3D { 21845, 0x1, 0x5B, 0xAAAB, 0x71C=
+ },
++       [OLYMPUS_LUT_CHAN_546250_IDX] =3D { 21850, 0x1, 0x5B, 0x15555, 0x71=
+D },
++       [OLYMPUS_LUT_CHAN_546375_IDX] =3D { 21855, 0x1, 0x5B, 0x20000, 0x71=
+D },
++       [OLYMPUS_LUT_CHAN_546500_IDX] =3D { 21860, 0x1, 0x5B, 0x2AAAB, 0x71=
+E },
++       [OLYMPUS_LUT_CHAN_546625_IDX] =3D { 21865, 0x1, 0x5B, 0x35555, 0x71=
+E },
++       [OLYMPUS_LUT_CHAN_546750_IDX] =3D { 21870, 0x1, 0x5B, 0x40000, 0x71=
+F },
++       [OLYMPUS_LUT_CHAN_546875_IDX] =3D { 21875, 0x1, 0x5B, 0x4AAAB, 0x71=
+F },
++       [OLYMPUS_LUT_CHAN_547000_IDX] =3D { 21880, 0x1, 0x5B, 0x55555, 0x71=
+F },
++       [OLYMPUS_LUT_CHAN_547125_IDX] =3D { 21885, 0x1, 0x5B, 0x60000, 0x72=
+0 },
++       [OLYMPUS_LUT_CHAN_547250_IDX] =3D { 21890, 0x1, 0x5B, 0x6AAAB, 0x72=
+0 },
++       [OLYMPUS_LUT_CHAN_547375_IDX] =3D { 21895, 0x1, 0x5B, 0x75555, 0x72=
+1 },
++       [OLYMPUS_LUT_CHAN_547500_IDX] =3D { 21900, 0x1, 0x5B, 0x80000, 0x72=
+1 },
++       [OLYMPUS_LUT_CHAN_547625_IDX] =3D { 21905, 0x1, 0x5B, 0x8AAAB, 0x72=
+1 },
++       [OLYMPUS_LUT_CHAN_547750_IDX] =3D { 21910, 0x1, 0x5B, 0x95555, 0x72=
+2 },
++       [OLYMPUS_LUT_CHAN_547875_IDX] =3D { 21915, 0x1, 0x5B, 0xA0000, 0x72=
+2 },
++       [OLYMPUS_LUT_CHAN_548000_IDX] =3D { 21920, 0x1, 0x5B, 0xAAAAB, 0x72=
+3 },
++       [OLYMPUS_LUT_CHAN_548125_IDX] =3D { 21925, 0x1, 0x5B, 0xB5555, 0x72=
+3 },
++       [OLYMPUS_LUT_CHAN_548250_IDX] =3D { 21930, 0x1, 0x5B, 0xC0000, 0x72=
+4 },
++       [OLYMPUS_LUT_CHAN_548375_IDX] =3D { 21935, 0x1, 0x5B, 0xCAAAB, 0x72=
+4 },
++       [OLYMPUS_LUT_CHAN_548500_IDX] =3D { 21940, 0x1, 0x5B, 0xD5555, 0x72=
+4 },
++       [OLYMPUS_LUT_CHAN_548625_IDX] =3D { 21945, 0x1, 0x5B, 0xE0000, 0x72=
+5 },
++       [OLYMPUS_LUT_CHAN_548750_IDX] =3D { 21950, 0x1, 0x5B, 0xEAAAB, 0x72=
+5 },
++       [OLYMPUS_LUT_CHAN_548875_IDX] =3D { 21955, 0x1, 0x5B, 0xF5555, 0x72=
+6 },
++       [OLYMPUS_LUT_CHAN_549000_IDX] =3D { 21960, 0x1, 0x5B, 0x100000, 0x7=
+26 },
++       [OLYMPUS_LUT_CHAN_549125_IDX] =3D { 21965, 0x1, 0x5B, 0x10AAAB, 0x7=
+26 },
++       [OLYMPUS_LUT_CHAN_549250_IDX] =3D { 21970, 0x1, 0x5B, 0x115555, 0x7=
+27 },
++       [OLYMPUS_LUT_CHAN_549375_IDX] =3D { 21975, 0x1, 0x5B, 0x120000, 0x7=
+27 },
++       [OLYMPUS_LUT_CHAN_549500_IDX] =3D { 21980, 0x1, 0x5B, 0x12AAAB, 0x7=
+28 },
++       [OLYMPUS_LUT_CHAN_549625_IDX] =3D { 21985, 0x1, 0x5B, 0x135555, 0x7=
+28 },
++       [OLYMPUS_LUT_CHAN_549750_IDX] =3D { 21990, 0x1, 0x5B, 0x140000, 0x7=
+29 },
++       [OLYMPUS_LUT_CHAN_549875_IDX] =3D { 21995, 0x1, 0x5B, 0x14AAAB, 0x7=
+29 },
++       [OLYMPUS_LUT_CHAN_550000_IDX] =3D { 22000, 0x1, 0x5B, 0x155555, 0x7=
+29 },
++       [OLYMPUS_LUT_CHAN_550125_IDX] =3D { 22005, 0x1, 0x5B, 0x160000, 0x7=
+2A },
++       [OLYMPUS_LUT_CHAN_550250_IDX] =3D { 22010, 0x1, 0x5B, 0x16AAAB, 0x7=
+2A },
++       [OLYMPUS_LUT_CHAN_550375_IDX] =3D { 22015, 0x1, 0x5B, 0x175555, 0x7=
+2B },
++       [OLYMPUS_LUT_CHAN_550500_IDX] =3D { 22020, 0x1, 0x5B, 0x180000, 0x7=
+2B },
++       [OLYMPUS_LUT_CHAN_550625_IDX] =3D { 22025, 0x1, 0x5B, 0x18AAAB, 0x7=
+2B },
++       [OLYMPUS_LUT_CHAN_550750_IDX] =3D { 22030, 0x1, 0x5B, 0x195555, 0x7=
+2C },
++       [OLYMPUS_LUT_CHAN_550875_IDX] =3D { 22035, 0x1, 0x5B, 0x1A0000, 0x7=
+2C },
++       [OLYMPUS_LUT_CHAN_551000_IDX] =3D { 22040, 0x1, 0x5B, 0x1AAAAB, 0x7=
+2D },
++       [OLYMPUS_LUT_CHAN_551125_IDX] =3D { 22045, 0x1, 0x5B, 0x1B5555, 0x7=
+2D },
++       [OLYMPUS_LUT_CHAN_551250_IDX] =3D { 22050, 0x1, 0x5B, 0x1C0000, 0x7=
+2E },
++       [OLYMPUS_LUT_CHAN_551375_IDX] =3D { 22055, 0x1, 0x5B, 0x1CAAAB, 0x7=
+2E },
++       [OLYMPUS_LUT_CHAN_551500_IDX] =3D { 22060, 0x1, 0x5B, 0x1D5555, 0x7=
+2E },
++       [OLYMPUS_LUT_CHAN_551625_IDX] =3D { 22065, 0x1, 0x5B, 0x1E0000, 0x7=
+2F },
++       [OLYMPUS_LUT_CHAN_551750_IDX] =3D { 22070, 0x1, 0x5B, 0x1EAAAB, 0x7=
+2F },
++       [OLYMPUS_LUT_CHAN_551875_IDX] =3D { 22075, 0x1, 0x5B, 0x1F5555, 0x7=
+30 },
++       [OLYMPUS_LUT_CHAN_552000_IDX] =3D { 22080, 0x1, 0x5C, 0x0, 0x730 },
++       [OLYMPUS_LUT_CHAN_552125_IDX] =3D { 22085, 0x1, 0x5C, 0xAAAB, 0x730=
+ },
++       [OLYMPUS_LUT_CHAN_552250_IDX] =3D { 22090, 0x1, 0x5C, 0x15555, 0x73=
+1 },
++       [OLYMPUS_LUT_CHAN_552375_IDX] =3D { 22095, 0x1, 0x5C, 0x20000, 0x73=
+1 },
++       [OLYMPUS_LUT_CHAN_552500_IDX] =3D { 22100, 0x1, 0x5C, 0x2AAAB, 0x73=
+2 },
++       [OLYMPUS_LUT_CHAN_552625_IDX] =3D { 22105, 0x1, 0x5C, 0x35555, 0x73=
+2 },
++       [OLYMPUS_LUT_CHAN_552750_IDX] =3D { 22110, 0x1, 0x5C, 0x40000, 0x73=
+3 },
++       [OLYMPUS_LUT_CHAN_552875_IDX] =3D { 22115, 0x1, 0x5C, 0x4AAAB, 0x73=
+3 },
++       [OLYMPUS_LUT_CHAN_553000_IDX] =3D { 22120, 0x1, 0x5C, 0x55555, 0x73=
+3 },
++       [OLYMPUS_LUT_CHAN_553125_IDX] =3D { 22125, 0x1, 0x5C, 0x60000, 0x73=
+4 },
++       [OLYMPUS_LUT_CHAN_553250_IDX] =3D { 22130, 0x1, 0x5C, 0x6AAAB, 0x73=
+4 },
++       [OLYMPUS_LUT_CHAN_553375_IDX] =3D { 22135, 0x1, 0x5C, 0x75555, 0x73=
+5 },
++       [OLYMPUS_LUT_CHAN_553500_IDX] =3D { 22140, 0x1, 0x5C, 0x80000, 0x73=
+5 },
++       [OLYMPUS_LUT_CHAN_553625_IDX] =3D { 22145, 0x1, 0x5C, 0x8AAAB, 0x73=
+5 },
++       [OLYMPUS_LUT_CHAN_553750_IDX] =3D { 22150, 0x1, 0x5C, 0x95555, 0x73=
+6 },
++       [OLYMPUS_LUT_CHAN_553875_IDX] =3D { 22155, 0x1, 0x5C, 0xA0000, 0x73=
+6 },
++       [OLYMPUS_LUT_CHAN_554000_IDX] =3D { 22160, 0x1, 0x5C, 0xAAAAB, 0x73=
+7 },
++       [OLYMPUS_LUT_CHAN_554125_IDX] =3D { 22165, 0x1, 0x5C, 0xB5555, 0x73=
+7 },
++       [OLYMPUS_LUT_CHAN_554250_IDX] =3D { 22170, 0x1, 0x5C, 0xC0000, 0x73=
+8 },
++       [OLYMPUS_LUT_CHAN_554375_IDX] =3D { 22175, 0x1, 0x5C, 0xCAAAB, 0x73=
+8 },
++       [OLYMPUS_LUT_CHAN_554500_IDX] =3D { 22180, 0x1, 0x5C, 0xD5555, 0x73=
+8 },
++       [OLYMPUS_LUT_CHAN_554625_IDX] =3D { 22185, 0x1, 0x5C, 0xE0000, 0x73=
+9 },
++       [OLYMPUS_LUT_CHAN_554750_IDX] =3D { 22190, 0x1, 0x5C, 0xEAAAB, 0x73=
+9 },
++       [OLYMPUS_LUT_CHAN_554875_IDX] =3D { 22195, 0x1, 0x5C, 0xF5555, 0x73=
+A },
++       [OLYMPUS_LUT_CHAN_555000_IDX] =3D { 22200, 0x1, 0x5C, 0x100000, 0x7=
+3A },
++       [OLYMPUS_LUT_CHAN_555125_IDX] =3D { 22205, 0x1, 0x5C, 0x10AAAB, 0x7=
+3A },
++       [OLYMPUS_LUT_CHAN_555250_IDX] =3D { 22210, 0x1, 0x5C, 0x115555, 0x7=
+3B },
++       [OLYMPUS_LUT_CHAN_555375_IDX] =3D { 22215, 0x1, 0x5C, 0x120000, 0x7=
+3B },
++       [OLYMPUS_LUT_CHAN_555500_IDX] =3D { 22220, 0x1, 0x5C, 0x12AAAB, 0x7=
+3C },
++       [OLYMPUS_LUT_CHAN_555625_IDX] =3D { 22225, 0x1, 0x5C, 0x135555, 0x7=
+3C },
++       [OLYMPUS_LUT_CHAN_555750_IDX] =3D { 22230, 0x1, 0x5C, 0x140000, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_555875_IDX] =3D { 22235, 0x1, 0x5C, 0x14AAAB, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_556000_IDX] =3D { 22240, 0x1, 0x5C, 0x155555, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_556125_IDX] =3D { 22245, 0x1, 0x5C, 0x160000, 0x7=
+3E },
++       [OLYMPUS_LUT_CHAN_556250_IDX] =3D { 22250, 0x1, 0x5C, 0x16AAAB, 0x7=
+3E },
++       [OLYMPUS_LUT_CHAN_556375_IDX] =3D { 22255, 0x1, 0x5C, 0x175555, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556500_IDX] =3D { 22260, 0x1, 0x5C, 0x180000, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556625_IDX] =3D { 22265, 0x1, 0x5C, 0x18AAAB, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556750_IDX] =3D { 22270, 0x1, 0x5C, 0x195555, 0x7=
+40 },
++       [OLYMPUS_LUT_CHAN_556875_IDX] =3D { 22275, 0x1, 0x5C, 0x1A0000, 0x7=
+40 },
++       [OLYMPUS_LUT_CHAN_557000_IDX] =3D { 22280, 0x1, 0x5C, 0x1AAAAB, 0x7=
+41 },
++       [OLYMPUS_LUT_CHAN_557125_IDX] =3D { 22285, 0x1, 0x5C, 0x1B5555, 0x7=
+41 },
++       [OLYMPUS_LUT_CHAN_557250_IDX] =3D { 22290, 0x1, 0x5C, 0x1C0000, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557375_IDX] =3D { 22295, 0x1, 0x5C, 0x1CAAAB, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557500_IDX] =3D { 22300, 0x1, 0x5C, 0x1D5555, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557625_IDX] =3D { 22305, 0x1, 0x5C, 0x1E0000, 0x7=
+43 },
++       [OLYMPUS_LUT_CHAN_557750_IDX] =3D { 22310, 0x1, 0x5C, 0x1EAAAB, 0x7=
+43 },
++       [OLYMPUS_LUT_CHAN_557875_IDX] =3D { 22315, 0x1, 0x5C, 0x1F5555, 0x7=
+44 },
++       [OLYMPUS_LUT_CHAN_558000_IDX] =3D { 22320, 0x1, 0x5D, 0x0, 0x744 },
++       [OLYMPUS_LUT_CHAN_558125_IDX] =3D { 22325, 0x1, 0x5D, 0xAAAB, 0x744=
+ },
++       [OLYMPUS_LUT_CHAN_558250_IDX] =3D { 22330, 0x1, 0x5D, 0x15555, 0x74=
+5 },
++       [OLYMPUS_LUT_CHAN_558375_IDX] =3D { 22335, 0x1, 0x5D, 0x20000, 0x74=
+5 },
++       [OLYMPUS_LUT_CHAN_558500_IDX] =3D { 22340, 0x1, 0x5D, 0x2AAAB, 0x74=
+6 },
++       [OLYMPUS_LUT_CHAN_558625_IDX] =3D { 22345, 0x1, 0x5D, 0x35555, 0x74=
+6 },
++       [OLYMPUS_LUT_CHAN_558750_IDX] =3D { 22350, 0x1, 0x5D, 0x40000, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_558875_IDX] =3D { 22355, 0x1, 0x5D, 0x4AAAB, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_559000_IDX] =3D { 22360, 0x1, 0x5D, 0x55555, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_559125_IDX] =3D { 22365, 0x1, 0x5D, 0x60000, 0x74=
+8 },
++       [OLYMPUS_LUT_CHAN_559250_IDX] =3D { 22370, 0x1, 0x5D, 0x6AAAB, 0x74=
+8 },
++       [OLYMPUS_LUT_CHAN_559375_IDX] =3D { 22375, 0x1, 0x5D, 0x75555, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559500_IDX] =3D { 22380, 0x1, 0x5D, 0x80000, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559625_IDX] =3D { 22385, 0x1, 0x5D, 0x8AAAB, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559750_IDX] =3D { 22390, 0x1, 0x5D, 0x95555, 0x74=
+A },
++       [OLYMPUS_LUT_CHAN_559875_IDX] =3D { 22395, 0x1, 0x5D, 0xA0000, 0x74=
+A },
++       [OLYMPUS_LUT_CHAN_560000_IDX] =3D { 22400, 0x1, 0x5D, 0xAAAAB, 0x74=
+B },
++       [OLYMPUS_LUT_CHAN_560125_IDX] =3D { 22405, 0x1, 0x5D, 0xB5555, 0x74=
+B },
++       [OLYMPUS_LUT_CHAN_560250_IDX] =3D { 22410, 0x1, 0x5D, 0xC0000, 0x74=
+C },
++       [OLYMPUS_LUT_CHAN_560375_IDX] =3D { 22415, 0x1, 0x5D, 0xCAAAB, 0x74=
+C },
++       [OLYMPUS_LUT_CHAN_560500_IDX] =3D { 22420, 0x1, 0x5D, 0xD5555, 0x74=
+C },
++       [OLYMPUS_LUT_CHAN_560625_IDX] =3D { 22425, 0x1, 0x5D, 0xE0000, 0x74=
+D },
++       [OLYMPUS_LUT_CHAN_560750_IDX] =3D { 22430, 0x1, 0x5D, 0xEAAAB, 0x74=
+D },
++       [OLYMPUS_LUT_CHAN_560875_IDX] =3D { 22435, 0x1, 0x5D, 0xF5555, 0x74=
+E },
++       [OLYMPUS_LUT_CHAN_561000_IDX] =3D { 22440, 0x1, 0x5D, 0x100000, 0x7=
+4E },
++       [OLYMPUS_LUT_CHAN_561125_IDX] =3D { 22445, 0x1, 0x5D, 0x10AAAB, 0x7=
+4E },
++       [OLYMPUS_LUT_CHAN_561250_IDX] =3D { 22450, 0x1, 0x5D, 0x115555, 0x7=
+4F },
++       [OLYMPUS_LUT_CHAN_561375_IDX] =3D { 22455, 0x1, 0x5D, 0x120000, 0x7=
+4F },
++       [OLYMPUS_LUT_CHAN_561500_IDX] =3D { 22460, 0x1, 0x5D, 0x12AAAB, 0x7=
+50 },
++       [OLYMPUS_LUT_CHAN_561625_IDX] =3D { 22465, 0x1, 0x5D, 0x135555, 0x7=
+50 },
++       [OLYMPUS_LUT_CHAN_561750_IDX] =3D { 22470, 0x1, 0x5D, 0x140000, 0x7=
+51 },
++       [OLYMPUS_LUT_CHAN_561875_IDX] =3D { 22475, 0x1, 0x5D, 0x14AAAB, 0x7=
+51 },
++       [OLYMPUS_LUT_CHAN_562000_IDX] =3D { 22480, 0x1, 0x5D, 0x155555, 0x7=
+51 },
++       [OLYMPUS_LUT_CHAN_562125_IDX] =3D { 22485, 0x1, 0x5D, 0x160000, 0x7=
+52 },
++       [OLYMPUS_LUT_CHAN_562250_IDX] =3D { 22490, 0x1, 0x5D, 0x16AAAB, 0x7=
+52 },
++       [OLYMPUS_LUT_CHAN_562375_IDX] =3D { 22495, 0x1, 0x5D, 0x175555, 0x7=
+53 },
++       [OLYMPUS_LUT_CHAN_562500_IDX] =3D { 22500, 0x1, 0x5D, 0x180000, 0x7=
+53 },
++       [OLYMPUS_LUT_CHAN_562625_IDX] =3D { 22505, 0x1, 0x5D, 0x18AAAB, 0x7=
+53 },
++       [OLYMPUS_LUT_CHAN_562750_IDX] =3D { 22510, 0x1, 0x5D, 0x195555, 0x7=
+54 },
++       [OLYMPUS_LUT_CHAN_562875_IDX] =3D { 22515, 0x1, 0x5D, 0x1A0000, 0x7=
+54 },
++       [OLYMPUS_LUT_CHAN_563000_IDX] =3D { 22520, 0x1, 0x5D, 0x1AAAAB, 0x7=
+55 },
++       [OLYMPUS_LUT_CHAN_563125_IDX] =3D { 22525, 0x1, 0x5D, 0x1B5555, 0x7=
+55 },
++       [OLYMPUS_LUT_CHAN_563250_IDX] =3D { 22530, 0x1, 0x5D, 0x1C0000, 0x7=
+56 },
++       [OLYMPUS_LUT_CHAN_563375_IDX] =3D { 22535, 0x1, 0x5D, 0x1CAAAB, 0x7=
+56 },
++       [OLYMPUS_LUT_CHAN_563500_IDX] =3D { 22540, 0x1, 0x5D, 0x1D5555, 0x7=
+56 },
++       [OLYMPUS_LUT_CHAN_563625_IDX] =3D { 22545, 0x1, 0x5D, 0x1E0000, 0x7=
+57 },
++       [OLYMPUS_LUT_CHAN_563750_IDX] =3D { 22550, 0x1, 0x5D, 0x1EAAAB, 0x7=
+57 },
++       [OLYMPUS_LUT_CHAN_563875_IDX] =3D { 22555, 0x1, 0x5D, 0x1F5555, 0x7=
+58 },
++       [OLYMPUS_LUT_CHAN_564000_IDX] =3D { 22560, 0x1, 0x5E, 0x0, 0x758 },
++       [OLYMPUS_LUT_CHAN_564125_IDX] =3D { 22565, 0x1, 0x5E, 0xAAAB, 0x758=
+ },
++       [OLYMPUS_LUT_CHAN_564250_IDX] =3D { 22570, 0x1, 0x5E, 0x15555, 0x75=
+9 },
++       [OLYMPUS_LUT_CHAN_564375_IDX] =3D { 22575, 0x1, 0x5E, 0x20000, 0x75=
+9 },
++       [OLYMPUS_LUT_CHAN_564500_IDX] =3D { 22580, 0x1, 0x5E, 0x2AAAB, 0x75=
+A },
++       [OLYMPUS_LUT_CHAN_564625_IDX] =3D { 22585, 0x1, 0x5E, 0x35555, 0x75=
+A },
++       [OLYMPUS_LUT_CHAN_564750_IDX] =3D { 22590, 0x1, 0x5E, 0x40000, 0x75=
+B },
++       [OLYMPUS_LUT_CHAN_564875_IDX] =3D { 22595, 0x1, 0x5E, 0x4AAAB, 0x75=
+B },
++       [OLYMPUS_LUT_CHAN_565000_IDX] =3D { 22600, 0x1, 0x5E, 0x55555, 0x75=
+B },
++       [OLYMPUS_LUT_CHAN_565125_IDX] =3D { 22605, 0x1, 0x5E, 0x60000, 0x75=
+C },
++       [OLYMPUS_LUT_CHAN_565250_IDX] =3D { 22610, 0x1, 0x5E, 0x6AAAB, 0x75=
+C },
++       [OLYMPUS_LUT_CHAN_565375_IDX] =3D { 22615, 0x1, 0x5E, 0x75555, 0x75=
+D },
++       [OLYMPUS_LUT_CHAN_565500_IDX] =3D { 22620, 0x1, 0x5E, 0x80000, 0x75=
+D },
++       [OLYMPUS_LUT_CHAN_565625_IDX] =3D { 22625, 0x1, 0x5E, 0x8AAAB, 0x75=
+D },
++       [OLYMPUS_LUT_CHAN_565750_IDX] =3D { 22630, 0x1, 0x5E, 0x95555, 0x75=
+E },
++       [OLYMPUS_LUT_CHAN_565875_IDX] =3D { 22635, 0x1, 0x5E, 0xA0000, 0x75=
+E },
++       [OLYMPUS_LUT_CHAN_566000_IDX] =3D { 22640, 0x1, 0x5E, 0xAAAAB, 0x75=
+F },
++       [OLYMPUS_LUT_CHAN_566125_IDX] =3D { 22645, 0x1, 0x5E, 0xB5555, 0x75=
+F },
++       [OLYMPUS_LUT_CHAN_566250_IDX] =3D { 22650, 0x1, 0x5E, 0xC0000, 0x76=
+0 },
++       [OLYMPUS_LUT_CHAN_566375_IDX] =3D { 22655, 0x1, 0x5E, 0xCAAAB, 0x76=
+0 },
++       [OLYMPUS_LUT_CHAN_566500_IDX] =3D { 22660, 0x1, 0x5E, 0xD5555, 0x76=
+0 },
++       [OLYMPUS_LUT_CHAN_566625_IDX] =3D { 22665, 0x1, 0x5E, 0xE0000, 0x76=
+1 },
++       [OLYMPUS_LUT_CHAN_566750_IDX] =3D { 22670, 0x1, 0x5E, 0xEAAAB, 0x76=
+1 },
++       [OLYMPUS_LUT_CHAN_566875_IDX] =3D { 22675, 0x1, 0x5E, 0xF5555, 0x76=
+2 },
++       [OLYMPUS_LUT_CHAN_567000_IDX] =3D { 22680, 0x1, 0x5E, 0x100000, 0x7=
+62 },
++       [OLYMPUS_LUT_CHAN_567125_IDX] =3D { 22685, 0x1, 0x5E, 0x10AAAB, 0x7=
+62 },
++       [OLYMPUS_LUT_CHAN_567250_IDX] =3D { 22690, 0x1, 0x5E, 0x115555, 0x7=
+63 },
++       [OLYMPUS_LUT_CHAN_567375_IDX] =3D { 22695, 0x1, 0x5E, 0x120000, 0x7=
+63 },
++       [OLYMPUS_LUT_CHAN_567500_IDX] =3D { 22700, 0x1, 0x5E, 0x12AAAB, 0x7=
+64 },
++       [OLYMPUS_LUT_CHAN_567625_IDX] =3D { 22705, 0x1, 0x5E, 0x135555, 0x7=
+64 },
++       [OLYMPUS_LUT_CHAN_567750_IDX] =3D { 22710, 0x1, 0x5E, 0x140000, 0x7=
+65 },
++       [OLYMPUS_LUT_CHAN_567875_IDX] =3D { 22715, 0x1, 0x5E, 0x14AAAB, 0x7=
+65 },
++       [OLYMPUS_LUT_CHAN_568000_IDX] =3D { 22720, 0x1, 0x5E, 0x155555, 0x7=
+65 },
++       [OLYMPUS_LUT_CHAN_568125_IDX] =3D { 22725, 0x1, 0x5E, 0x160000, 0x7=
+66 },
++       [OLYMPUS_LUT_CHAN_568250_IDX] =3D { 22730, 0x1, 0x5E, 0x16AAAB, 0x7=
+66 },
++       [OLYMPUS_LUT_CHAN_568375_IDX] =3D { 22735, 0x1, 0x5E, 0x175555, 0x7=
+67 },
++       [OLYMPUS_LUT_CHAN_568500_IDX] =3D { 22740, 0x1, 0x5E, 0x180000, 0x7=
+67 },
++       [OLYMPUS_LUT_CHAN_568625_IDX] =3D { 22745, 0x1, 0x5E, 0x18AAAB, 0x7=
+67 },
++       [OLYMPUS_LUT_CHAN_568750_IDX] =3D { 22750, 0x1, 0x5E, 0x195555, 0x7=
+68 },
++       [OLYMPUS_LUT_CHAN_568875_IDX] =3D { 22755, 0x1, 0x5E, 0x1A0000, 0x7=
+68 },
++       [OLYMPUS_LUT_CHAN_569000_IDX] =3D { 22760, 0x1, 0x5E, 0x1AAAAB, 0x7=
+69 },
++       [OLYMPUS_LUT_CHAN_569125_IDX] =3D { 22765, 0x1, 0x5E, 0x1B5555, 0x7=
+69 },
++       [OLYMPUS_LUT_CHAN_569250_IDX] =3D { 22770, 0x1, 0x5E, 0x1C0000, 0x7=
+6A },
++       [OLYMPUS_LUT_CHAN_569375_IDX] =3D { 22775, 0x1, 0x5E, 0x1CAAAB, 0x7=
+6A },
++       [OLYMPUS_LUT_CHAN_569500_IDX] =3D { 22780, 0x1, 0x5E, 0x1D5555, 0x7=
+6A },
++       [OLYMPUS_LUT_CHAN_569625_IDX] =3D { 22785, 0x1, 0x5E, 0x1E0000, 0x7=
+6B },
++       [OLYMPUS_LUT_CHAN_569750_IDX] =3D { 22790, 0x1, 0x5E, 0x1EAAAB, 0x7=
+6B },
++       [OLYMPUS_LUT_CHAN_569875_IDX] =3D { 22795, 0x1, 0x5E, 0x1F5555, 0x7=
+6C },
++       [OLYMPUS_LUT_CHAN_570000_IDX] =3D { 22800, 0x1, 0x5F, 0x0, 0x76C },
++       [OLYMPUS_LUT_CHAN_570125_IDX] =3D { 22805, 0x1, 0x5F, 0xAAAB, 0x76C=
+ },
++       [OLYMPUS_LUT_CHAN_570250_IDX] =3D { 22810, 0x1, 0x5F, 0x15555, 0x76=
+D },
++       [OLYMPUS_LUT_CHAN_570375_IDX] =3D { 22815, 0x1, 0x5F, 0x20000, 0x76=
+D },
++       [OLYMPUS_LUT_CHAN_570500_IDX] =3D { 22820, 0x1, 0x5F, 0x2AAAB, 0x76=
+E },
++       [OLYMPUS_LUT_CHAN_570625_IDX] =3D { 22825, 0x1, 0x5F, 0x35555, 0x76=
+E },
++       [OLYMPUS_LUT_CHAN_570750_IDX] =3D { 22830, 0x1, 0x5F, 0x40000, 0x76=
+F },
++       [OLYMPUS_LUT_CHAN_570875_IDX] =3D { 22835, 0x1, 0x5F, 0x4AAAB, 0x76=
+F },
++       [OLYMPUS_LUT_CHAN_571000_IDX] =3D { 22840, 0x1, 0x5F, 0x55555, 0x76=
+F },
++       [OLYMPUS_LUT_CHAN_571125_IDX] =3D { 22845, 0x1, 0x5F, 0x60000, 0x77=
+0 },
++       [OLYMPUS_LUT_CHAN_571250_IDX] =3D { 22850, 0x1, 0x5F, 0x6AAAB, 0x77=
+0 },
++       [OLYMPUS_LUT_CHAN_571375_IDX] =3D { 22855, 0x1, 0x5F, 0x75555, 0x77=
+1 },
++       [OLYMPUS_LUT_CHAN_571500_IDX] =3D { 22860, 0x1, 0x5F, 0x80000, 0x77=
+1 },
++       [OLYMPUS_LUT_CHAN_571625_IDX] =3D { 22865, 0x1, 0x5F, 0x8AAAB, 0x77=
+1 },
++       [OLYMPUS_LUT_CHAN_571750_IDX] =3D { 22870, 0x1, 0x5F, 0x95555, 0x77=
+2 },
++       [OLYMPUS_LUT_CHAN_571875_IDX] =3D { 22875, 0x1, 0x5F, 0xA0000, 0x77=
+2 },
++       [OLYMPUS_LUT_CHAN_572000_IDX] =3D { 22880, 0x1, 0x5F, 0xAAAAB, 0x77=
+3 },
++       [OLYMPUS_LUT_CHAN_572125_IDX] =3D { 22885, 0x1, 0x5F, 0xB5555, 0x77=
+3 },
++       [OLYMPUS_LUT_CHAN_572250_IDX] =3D { 22890, 0x1, 0x5F, 0xC0000, 0x77=
+4 },
++       [OLYMPUS_LUT_CHAN_572375_IDX] =3D { 22895, 0x1, 0x5F, 0xCAAAB, 0x77=
+4 },
++       [OLYMPUS_LUT_CHAN_572500_IDX] =3D { 22900, 0x1, 0x5F, 0xD5555, 0x77=
+4 },
++       [OLYMPUS_LUT_CHAN_572625_IDX] =3D { 22905, 0x1, 0x5F, 0xE0000, 0x77=
+5 },
++       [OLYMPUS_LUT_CHAN_572750_IDX] =3D { 22910, 0x1, 0x5F, 0xEAAAB, 0x77=
+5 },
++       [OLYMPUS_LUT_CHAN_572875_IDX] =3D { 22915, 0x1, 0x5F, 0xF5555, 0x77=
+6 },
++       [OLYMPUS_LUT_CHAN_573000_IDX] =3D { 22920, 0x1, 0x5F, 0x100000, 0x7=
+76 },
++       [OLYMPUS_LUT_CHAN_573125_IDX] =3D { 22925, 0x1, 0x5F, 0x10AAAB, 0x7=
+76 },
++       [OLYMPUS_LUT_CHAN_573250_IDX] =3D { 22930, 0x1, 0x5F, 0x115555, 0x7=
+77 },
++       [OLYMPUS_LUT_CHAN_573375_IDX] =3D { 22935, 0x1, 0x5F, 0x120000, 0x7=
+77 },
++       [OLYMPUS_LUT_CHAN_573500_IDX] =3D { 22940, 0x1, 0x5F, 0x12AAAB, 0x7=
+78 },
++       [OLYMPUS_LUT_CHAN_573625_IDX] =3D { 22945, 0x1, 0x5F, 0x135555, 0x7=
+78 },
++       [OLYMPUS_LUT_CHAN_573750_IDX] =3D { 22950, 0x1, 0x5F, 0x140000, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_573875_IDX] =3D { 22955, 0x1, 0x5F, 0x14AAAB, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_574000_IDX] =3D { 22960, 0x1, 0x5F, 0x155555, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_574125_IDX] =3D { 22965, 0x1, 0x5F, 0x160000, 0x7=
+7A },
++       [OLYMPUS_LUT_CHAN_574250_IDX] =3D { 22970, 0x1, 0x5F, 0x16AAAB, 0x7=
+7A },
++       [OLYMPUS_LUT_CHAN_574375_IDX] =3D { 22975, 0x1, 0x5F, 0x175555, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574500_IDX] =3D { 22980, 0x1, 0x5F, 0x180000, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574625_IDX] =3D { 22985, 0x1, 0x5F, 0x18AAAB, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574750_IDX] =3D { 22990, 0x1, 0x5F, 0x195555, 0x7=
+7C },
++       [OLYMPUS_LUT_CHAN_574875_IDX] =3D { 22995, 0x1, 0x5F, 0x1A0000, 0x7=
+7C },
++       [OLYMPUS_LUT_CHAN_575000_IDX] =3D { 23000, 0x1, 0x5F, 0x1AAAAB, 0x7=
+7D },
++       [OLYMPUS_LUT_CHAN_575125_IDX] =3D { 23005, 0x1, 0x5F, 0x1B5555, 0x7=
+7D },
++       [OLYMPUS_LUT_CHAN_575250_IDX] =3D { 23010, 0x1, 0x5F, 0x1C0000, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575375_IDX] =3D { 23015, 0x1, 0x5F, 0x1CAAAB, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575500_IDX] =3D { 23020, 0x1, 0x5F, 0x1D5555, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575625_IDX] =3D { 23025, 0x1, 0x5F, 0x1E0000, 0x7=
+7F },
++       [OLYMPUS_LUT_CHAN_575750_IDX] =3D { 23030, 0x1, 0x5F, 0x1EAAAB, 0x7=
+7F },
++       [OLYMPUS_LUT_CHAN_575875_IDX] =3D { 23035, 0x1, 0x5F, 0x1F5555, 0x7=
+80 },
++       [OLYMPUS_LUT_CHAN_576000_IDX] =3D { 23040, 0x1, 0x60, 0x0, 0x780 },
++       [OLYMPUS_LUT_CHAN_576125_IDX] =3D { 23045, 0x1, 0x60, 0xAAAB, 0x780=
+ },
++       [OLYMPUS_LUT_CHAN_576250_IDX] =3D { 23050, 0x1, 0x60, 0x15555, 0x78=
+1 },
++       [OLYMPUS_LUT_CHAN_576375_IDX] =3D { 23055, 0x1, 0x60, 0x20000, 0x78=
+1 },
++       [OLYMPUS_LUT_CHAN_576500_IDX] =3D { 23060, 0x1, 0x60, 0x2AAAB, 0x78=
+2 },
++       [OLYMPUS_LUT_CHAN_576625_IDX] =3D { 23065, 0x1, 0x60, 0x35555, 0x78=
+2 },
++       [OLYMPUS_LUT_CHAN_576750_IDX] =3D { 23070, 0x1, 0x60, 0x40000, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_576875_IDX] =3D { 23075, 0x1, 0x60, 0x4AAAB, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_577000_IDX] =3D { 23080, 0x1, 0x60, 0x55555, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_577125_IDX] =3D { 23085, 0x1, 0x60, 0x60000, 0x78=
+4 },
++       [OLYMPUS_LUT_CHAN_577250_IDX] =3D { 23090, 0x1, 0x60, 0x6AAAB, 0x78=
+4 },
++       [OLYMPUS_LUT_CHAN_577375_IDX] =3D { 23095, 0x1, 0x60, 0x75555, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577500_IDX] =3D { 23100, 0x1, 0x60, 0x80000, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577625_IDX] =3D { 23105, 0x1, 0x60, 0x8AAAB, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577750_IDX] =3D { 23110, 0x1, 0x60, 0x95555, 0x78=
+6 },
++       [OLYMPUS_LUT_CHAN_577875_IDX] =3D { 23115, 0x1, 0x60, 0xA0000, 0x78=
+6 },
++       [OLYMPUS_LUT_CHAN_578000_IDX] =3D { 23120, 0x1, 0x60, 0xAAAAB, 0x78=
+7 },
++       [OLYMPUS_LUT_CHAN_578125_IDX] =3D { 23125, 0x1, 0x60, 0xB5555, 0x78=
+7 },
++       [OLYMPUS_LUT_CHAN_578250_IDX] =3D { 23130, 0x1, 0x60, 0xC0000, 0x78=
+8 },
++       [OLYMPUS_LUT_CHAN_578375_IDX] =3D { 23135, 0x1, 0x60, 0xCAAAB, 0x78=
+8 },
++       [OLYMPUS_LUT_CHAN_578500_IDX] =3D { 23140, 0x1, 0x60, 0xD5555, 0x78=
+8 },
++       [OLYMPUS_LUT_CHAN_578625_IDX] =3D { 23145, 0x1, 0x60, 0xE0000, 0x78=
+9 },
++       [OLYMPUS_LUT_CHAN_578750_IDX] =3D { 23150, 0x1, 0x60, 0xEAAAB, 0x78=
+9 },
++       [OLYMPUS_LUT_CHAN_578875_IDX] =3D { 23155, 0x1, 0x60, 0xF5555, 0x78=
+A },
++       [OLYMPUS_LUT_CHAN_579000_IDX] =3D { 23160, 0x1, 0x60, 0x100000, 0x7=
+8A },
++       [OLYMPUS_LUT_CHAN_579125_IDX] =3D { 23165, 0x1, 0x60, 0x10AAAB, 0x7=
+8A },
++       [OLYMPUS_LUT_CHAN_579250_IDX] =3D { 23170, 0x1, 0x60, 0x115555, 0x7=
+8B },
++       [OLYMPUS_LUT_CHAN_579375_IDX] =3D { 23175, 0x1, 0x60, 0x120000, 0x7=
+8B },
++       [OLYMPUS_LUT_CHAN_579500_IDX] =3D { 23180, 0x1, 0x60, 0x12AAAB, 0x7=
+8C },
++       [OLYMPUS_LUT_CHAN_579625_IDX] =3D { 23185, 0x1, 0x60, 0x135555, 0x7=
+8C },
++       [OLYMPUS_LUT_CHAN_579750_IDX] =3D { 23190, 0x1, 0x60, 0x140000, 0x7=
+8D },
++       [OLYMPUS_LUT_CHAN_579875_IDX] =3D { 23195, 0x1, 0x60, 0x14AAAB, 0x7=
+8D },
++       [OLYMPUS_LUT_CHAN_580000_IDX] =3D { 23200, 0x1, 0x60, 0x155555, 0x7=
+8D },
++       [OLYMPUS_LUT_CHAN_580125_IDX] =3D { 23205, 0x1, 0x60, 0x160000, 0x7=
+8E },
++       [OLYMPUS_LUT_CHAN_580250_IDX] =3D { 23210, 0x1, 0x60, 0x16AAAB, 0x7=
+8E },
++       [OLYMPUS_LUT_CHAN_580375_IDX] =3D { 23215, 0x1, 0x60, 0x175555, 0x7=
+8F },
++       [OLYMPUS_LUT_CHAN_580500_IDX] =3D { 23220, 0x1, 0x60, 0x180000, 0x7=
+8F },
++       [OLYMPUS_LUT_CHAN_580625_IDX] =3D { 23225, 0x1, 0x60, 0x18AAAB, 0x7=
+8F },
++       [OLYMPUS_LUT_CHAN_580750_IDX] =3D { 23230, 0x1, 0x60, 0x195555, 0x7=
+90 },
++       [OLYMPUS_LUT_CHAN_580875_IDX] =3D { 23235, 0x1, 0x60, 0x1A0000, 0x7=
+90 },
++       [OLYMPUS_LUT_CHAN_581000_IDX] =3D { 23240, 0x1, 0x60, 0x1AAAAB, 0x7=
+91 },
++       [OLYMPUS_LUT_CHAN_581125_IDX] =3D { 23245, 0x1, 0x60, 0x1B5555, 0x7=
+91 },
++       [OLYMPUS_LUT_CHAN_581250_IDX] =3D { 23250, 0x1, 0x60, 0x1C0000, 0x7=
+92 },
++       [OLYMPUS_LUT_CHAN_581375_IDX] =3D { 23255, 0x1, 0x60, 0x1CAAAB, 0x7=
+92 },
++       [OLYMPUS_LUT_CHAN_581500_IDX] =3D { 23260, 0x1, 0x60, 0x1D5555, 0x7=
+92 },
++       [OLYMPUS_LUT_CHAN_581625_IDX] =3D { 23265, 0x1, 0x60, 0x1E0000, 0x7=
+93 },
++       [OLYMPUS_LUT_CHAN_581750_IDX] =3D { 23270, 0x1, 0x60, 0x1EAAAB, 0x7=
+93 },
++       [OLYMPUS_LUT_CHAN_581875_IDX] =3D { 23275, 0x1, 0x60, 0x1F5555, 0x7=
+94 },
++       [OLYMPUS_LUT_CHAN_582000_IDX] =3D { 23280, 0x1, 0x61, 0x0, 0x794 },
++       [OLYMPUS_LUT_CHAN_582125_IDX] =3D { 23285, 0x1, 0x61, 0xAAAB, 0x794=
+ },
++       [OLYMPUS_LUT_CHAN_582250_IDX] =3D { 23290, 0x1, 0x61, 0x15555, 0x79=
+5 },
++       [OLYMPUS_LUT_CHAN_582375_IDX] =3D { 23295, 0x1, 0x61, 0x20000, 0x79=
+5 },
++       [OLYMPUS_LUT_CHAN_582500_IDX] =3D { 23300, 0x1, 0x61, 0x2AAAB, 0x79=
+6 },
++       [OLYMPUS_LUT_CHAN_582625_IDX] =3D { 23305, 0x1, 0x61, 0x35555, 0x79=
+6 },
++       [OLYMPUS_LUT_CHAN_582750_IDX] =3D { 23310, 0x1, 0x61, 0x40000, 0x79=
+7 },
++       [OLYMPUS_LUT_CHAN_582875_IDX] =3D { 23315, 0x1, 0x61, 0x4AAAB, 0x79=
+7 },
++       [OLYMPUS_LUT_CHAN_583000_IDX] =3D { 23320, 0x1, 0x61, 0x55555, 0x79=
+7 },
++       [OLYMPUS_LUT_CHAN_583125_IDX] =3D { 23325, 0x1, 0x61, 0x60000, 0x79=
+8 },
++       [OLYMPUS_LUT_CHAN_583250_IDX] =3D { 23330, 0x1, 0x61, 0x6AAAB, 0x79=
+8 },
++       [OLYMPUS_LUT_CHAN_583375_IDX] =3D { 23335, 0x1, 0x61, 0x75555, 0x79=
+9 },
++       [OLYMPUS_LUT_CHAN_583500_IDX] =3D { 23340, 0x1, 0x61, 0x80000, 0x79=
+9 },
++       [OLYMPUS_LUT_CHAN_583625_IDX] =3D { 23345, 0x1, 0x61, 0x8AAAB, 0x79=
+9 },
++       [OLYMPUS_LUT_CHAN_583750_IDX] =3D { 23350, 0x1, 0x61, 0x95555, 0x79=
+A },
++       [OLYMPUS_LUT_CHAN_583875_IDX] =3D { 23355, 0x1, 0x61, 0xA0000, 0x79=
+A },
++       [OLYMPUS_LUT_CHAN_584000_IDX] =3D { 23360, 0x1, 0x61, 0xAAAAB, 0x79=
+B },
++       [OLYMPUS_LUT_CHAN_584125_IDX] =3D { 23365, 0x1, 0x61, 0xB5555, 0x79=
+B },
++       [OLYMPUS_LUT_CHAN_584250_IDX] =3D { 23370, 0x1, 0x61, 0xC0000, 0x79=
+C },
++       [OLYMPUS_LUT_CHAN_584375_IDX] =3D { 23375, 0x1, 0x61, 0xCAAAB, 0x79=
+C },
++       [OLYMPUS_LUT_CHAN_584500_IDX] =3D { 23380, 0x1, 0x61, 0xD5555, 0x79=
+C },
++       [OLYMPUS_LUT_CHAN_584625_IDX] =3D { 23385, 0x1, 0x61, 0xE0000, 0x79=
+D },
++       [OLYMPUS_LUT_CHAN_584750_IDX] =3D { 23390, 0x1, 0x61, 0xEAAAB, 0x79=
+D },
++       [OLYMPUS_LUT_CHAN_584875_IDX] =3D { 23395, 0x1, 0x61, 0xF5555, 0x79=
+E },
++       [OLYMPUS_LUT_CHAN_585000_IDX] =3D { 23400, 0x1, 0x61, 0x100000, 0x7=
+9E },
++       [OLYMPUS_LUT_CHAN_585125_IDX] =3D { 23405, 0x1, 0x61, 0x10AAAB, 0x7=
+9E },
++       [OLYMPUS_LUT_CHAN_585250_IDX] =3D { 23410, 0x1, 0x61, 0x115555, 0x7=
+9F },
++       [OLYMPUS_LUT_CHAN_585375_IDX] =3D { 23415, 0x1, 0x61, 0x120000, 0x7=
+9F },
++       [OLYMPUS_LUT_CHAN_585500_IDX] =3D { 23420, 0x1, 0x61, 0x12AAAB, 0x7=
+A0 },
++       [OLYMPUS_LUT_CHAN_585625_IDX] =3D { 23425, 0x1, 0x61, 0x135555, 0x7=
+A0 },
++       [OLYMPUS_LUT_CHAN_585750_IDX] =3D { 23430, 0x1, 0x61, 0x140000, 0x7=
+A1 },
++       [OLYMPUS_LUT_CHAN_585875_IDX] =3D { 23435, 0x1, 0x61, 0x14AAAB, 0x7=
+A1 },
++       [OLYMPUS_LUT_CHAN_586000_IDX] =3D { 23440, 0x1, 0x61, 0x155555, 0x7=
+A1 },
++       [OLYMPUS_LUT_CHAN_586125_IDX] =3D { 23445, 0x1, 0x61, 0x160000, 0x7=
+A2 },
++       [OLYMPUS_LUT_CHAN_586250_IDX] =3D { 23450, 0x1, 0x61, 0x16AAAB, 0x7=
+A2 },
++       [OLYMPUS_LUT_CHAN_586375_IDX] =3D { 23455, 0x1, 0x61, 0x175555, 0x7=
+A3 },
++       [OLYMPUS_LUT_CHAN_586500_IDX] =3D { 23460, 0x1, 0x61, 0x180000, 0x7=
+A3 },
++       [OLYMPUS_LUT_CHAN_586625_IDX] =3D { 23465, 0x1, 0x61, 0x18AAAB, 0x7=
+A3 },
++       [OLYMPUS_LUT_CHAN_586750_IDX] =3D { 23470, 0x1, 0x61, 0x195555, 0x7=
+A4 },
++       [OLYMPUS_LUT_CHAN_586875_IDX] =3D { 23475, 0x1, 0x61, 0x1A0000, 0x7=
+A4 },
++       [OLYMPUS_LUT_CHAN_587000_IDX] =3D { 23480, 0x1, 0x61, 0x1AAAAB, 0x7=
+A5 },
++       [OLYMPUS_LUT_CHAN_587125_IDX] =3D { 23485, 0x1, 0x61, 0x1B5555, 0x7=
+A5 },
++       [OLYMPUS_LUT_CHAN_587250_IDX] =3D { 23490, 0x1, 0x61, 0x1C0000, 0x7=
+A6 },
++       [OLYMPUS_LUT_CHAN_587375_IDX] =3D { 23495, 0x1, 0x61, 0x1CAAAB, 0x7=
+A6 },
++       [OLYMPUS_LUT_CHAN_587500_IDX] =3D { 23500, 0x1, 0x61, 0x1D5555, 0x7=
+A6 },
++       [OLYMPUS_LUT_CHAN_587625_IDX] =3D { 23505, 0x1, 0x61, 0x1E0000, 0x7=
+A7 },
++       [OLYMPUS_LUT_CHAN_587750_IDX] =3D { 23510, 0x1, 0x61, 0x1EAAAB, 0x7=
+A7 },
++       [OLYMPUS_LUT_CHAN_587875_IDX] =3D { 23515, 0x1, 0x61, 0x1F5555, 0x7=
+A8 },
++       [OLYMPUS_LUT_CHAN_588000_IDX] =3D { 23520, 0x1, 0x62, 0x0, 0x7A8 },
++       [OLYMPUS_LUT_CHAN_588125_IDX] =3D { 23525, 0x1, 0x62, 0xAAAB, 0x7A8=
+ },
++       [OLYMPUS_LUT_CHAN_588250_IDX] =3D { 23530, 0x1, 0x62, 0x15555, 0x7A=
+9 },
++       [OLYMPUS_LUT_CHAN_588375_IDX] =3D { 23535, 0x1, 0x62, 0x20000, 0x7A=
+9 },
++       [OLYMPUS_LUT_CHAN_588500_IDX] =3D { 23540, 0x1, 0x62, 0x2AAAB, 0x7A=
+A },
++       [OLYMPUS_LUT_CHAN_588625_IDX] =3D { 23545, 0x1, 0x62, 0x35555, 0x7A=
+A },
++       [OLYMPUS_LUT_CHAN_588750_IDX] =3D { 23550, 0x1, 0x62, 0x40000, 0x7A=
+B },
++       [OLYMPUS_LUT_CHAN_588875_IDX] =3D { 23555, 0x1, 0x62, 0x4AAAB, 0x7A=
+B },
++       [OLYMPUS_LUT_CHAN_589000_IDX] =3D { 23560, 0x1, 0x62, 0x55555, 0x7A=
+B },
++       [OLYMPUS_LUT_CHAN_589125_IDX] =3D { 23565, 0x1, 0x62, 0x60000, 0x7A=
+C },
++       [OLYMPUS_LUT_CHAN_589250_IDX] =3D { 23570, 0x1, 0x62, 0x6AAAB, 0x7A=
+C },
++       [OLYMPUS_LUT_CHAN_589375_IDX] =3D { 23575, 0x1, 0x62, 0x75555, 0x7A=
+D },
++       [OLYMPUS_LUT_CHAN_589500_IDX] =3D { 23580, 0x1, 0x62, 0x80000, 0x7A=
+D },
++       [OLYMPUS_LUT_CHAN_589625_IDX] =3D { 23585, 0x1, 0x62, 0x8AAAB, 0x7A=
+D },
++       [OLYMPUS_LUT_CHAN_589750_IDX] =3D { 23590, 0x1, 0x62, 0x95555, 0x7A=
+E },
++       [OLYMPUS_LUT_CHAN_589875_IDX] =3D { 23595, 0x1, 0x62, 0xA0000, 0x7A=
+E },
++       [OLYMPUS_LUT_CHAN_590000_IDX] =3D { 23600, 0x1, 0x62, 0xAAAAB, 0x7A=
+F },
++       [OLYMPUS_LUT_CHAN_590125_IDX] =3D { 23605, 0x1, 0x62, 0xB5555, 0x7A=
+F },
++       [OLYMPUS_LUT_CHAN_590250_IDX] =3D { 23610, 0x1, 0x62, 0xC0000, 0x7B=
+0 },
++       [OLYMPUS_LUT_CHAN_590375_IDX] =3D { 23615, 0x1, 0x62, 0xCAAAB, 0x7B=
+0 },
++       [OLYMPUS_LUT_CHAN_590500_IDX] =3D { 23620, 0x1, 0x62, 0xD5555, 0x7B=
+0 },
++       [OLYMPUS_LUT_CHAN_590625_IDX] =3D { 23625, 0x1, 0x62, 0xE0000, 0x7B=
+1 },
++       [OLYMPUS_LUT_CHAN_590750_IDX] =3D { 23630, 0x1, 0x62, 0xEAAAB, 0x7B=
+1 },
++       [OLYMPUS_LUT_CHAN_590875_IDX] =3D { 23635, 0x1, 0x62, 0xF5555, 0x7B=
+2 },
++       [OLYMPUS_LUT_CHAN_591000_IDX] =3D { 23640, 0x1, 0x62, 0x100000, 0x7=
+B2 },
++       [OLYMPUS_LUT_CHAN_591125_IDX] =3D { 23645, 0x1, 0x62, 0x10AAAB, 0x7=
+B2 },
++       [OLYMPUS_LUT_CHAN_591250_IDX] =3D { 23650, 0x1, 0x62, 0x115555, 0x7=
+B3 },
++       [OLYMPUS_LUT_CHAN_591375_IDX] =3D { 23655, 0x1, 0x62, 0x120000, 0x7=
+B3 },
++       [OLYMPUS_LUT_CHAN_591500_IDX] =3D { 23660, 0x1, 0x62, 0x12AAAB, 0x7=
+B4 },
++       [OLYMPUS_LUT_CHAN_591625_IDX] =3D { 23665, 0x1, 0x62, 0x135555, 0x7=
+B4 },
++       [OLYMPUS_LUT_CHAN_591750_IDX] =3D { 23670, 0x1, 0x62, 0x140000, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_591875_IDX] =3D { 23675, 0x1, 0x62, 0x14AAAB, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_592000_IDX] =3D { 23680, 0x1, 0x62, 0x155555, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_592125_IDX] =3D { 23685, 0x1, 0x62, 0x160000, 0x7=
+B6 },
++       [OLYMPUS_LUT_CHAN_592250_IDX] =3D { 23690, 0x1, 0x62, 0x16AAAB, 0x7=
+B6 },
++       [OLYMPUS_LUT_CHAN_592375_IDX] =3D { 23695, 0x1, 0x62, 0x175555, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592500_IDX] =3D { 23700, 0x1, 0x62, 0x180000, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592625_IDX] =3D { 23705, 0x1, 0x62, 0x18AAAB, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592750_IDX] =3D { 23710, 0x1, 0x62, 0x195555, 0x7=
+B8 },
++       [OLYMPUS_LUT_CHAN_592875_IDX] =3D { 23715, 0x1, 0x62, 0x1A0000, 0x7=
+B8 },
++       [OLYMPUS_LUT_CHAN_593000_IDX] =3D { 23720, 0x1, 0x62, 0x1AAAAB, 0x7=
+B9 },
++       [OLYMPUS_LUT_CHAN_593125_IDX] =3D { 23725, 0x1, 0x62, 0x1B5555, 0x7=
+B9 },
++       [OLYMPUS_LUT_CHAN_593250_IDX] =3D { 23730, 0x1, 0x62, 0x1C0000, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593375_IDX] =3D { 23735, 0x1, 0x62, 0x1CAAAB, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593500_IDX] =3D { 23740, 0x1, 0x62, 0x1D5555, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593625_IDX] =3D { 23745, 0x1, 0x62, 0x1E0000, 0x7=
+BB },
++       [OLYMPUS_LUT_CHAN_593750_IDX] =3D { 23750, 0x1, 0x62, 0x1EAAAB, 0x7=
+BB },
++       [OLYMPUS_LUT_CHAN_593875_IDX] =3D { 23755, 0x1, 0x62, 0x1F5555, 0x7=
+BC },
++       [OLYMPUS_LUT_CHAN_594000_IDX] =3D { 23760, 0x1, 0x63, 0x0, 0x7BC },
++       [OLYMPUS_LUT_CHAN_594125_IDX] =3D { 23765, 0x1, 0x63, 0xAAAB, 0x7BC=
+ },
++       [OLYMPUS_LUT_CHAN_594250_IDX] =3D { 23770, 0x1, 0x63, 0x15555, 0x7B=
+D },
++       [OLYMPUS_LUT_CHAN_594375_IDX] =3D { 23775, 0x1, 0x63, 0x20000, 0x7B=
+D },
++       [OLYMPUS_LUT_CHAN_594500_IDX] =3D { 23780, 0x1, 0x63, 0x2AAAB, 0x7B=
+E },
++       [OLYMPUS_LUT_CHAN_594625_IDX] =3D { 23785, 0x1, 0x63, 0x35555, 0x7B=
+E },
++       [OLYMPUS_LUT_CHAN_594750_IDX] =3D { 23790, 0x1, 0x63, 0x40000, 0x7B=
+F },
++       [OLYMPUS_LUT_CHAN_594875_IDX] =3D { 23795, 0x1, 0x63, 0x4AAAB, 0x7B=
+F },
++       [OLYMPUS_LUT_CHAN_595000_IDX] =3D { 23800, 0x1, 0x63, 0x55555, 0x7B=
+F },
++       [OLYMPUS_LUT_CHAN_595125_IDX] =3D { 23805, 0x1, 0x63, 0x60000, 0x7C=
+0 },
++       [OLYMPUS_LUT_CHAN_595250_IDX] =3D { 23810, 0x1, 0x63, 0x6AAAB, 0x7C=
+0 },
++       [OLYMPUS_LUT_CHAN_595375_IDX] =3D { 23815, 0x1, 0x63, 0x75555, 0x7C=
+1 },
++       [OLYMPUS_LUT_CHAN_595500_IDX] =3D { 23820, 0x1, 0x63, 0x80000, 0x7C=
+1 },
++       [OLYMPUS_LUT_CHAN_595625_IDX] =3D { 23825, 0x1, 0x63, 0x8AAAB, 0x7C=
+1 },
++       [OLYMPUS_LUT_CHAN_595750_IDX] =3D { 23830, 0x1, 0x63, 0x95555, 0x7C=
+2 },
++       [OLYMPUS_LUT_CHAN_595875_IDX] =3D { 23835, 0x1, 0x63, 0xA0000, 0x7C=
+2 },
++       [OLYMPUS_LUT_CHAN_596000_IDX] =3D { 23840, 0x1, 0x63, 0xAAAAB, 0x7C=
+3 },
++       [OLYMPUS_LUT_CHAN_596125_IDX] =3D { 23845, 0x1, 0x63, 0xB5555, 0x7C=
+3 },
++       [OLYMPUS_LUT_CHAN_596250_IDX] =3D { 23850, 0x1, 0x63, 0xC0000, 0x7C=
+4 },
++       [OLYMPUS_LUT_CHAN_596375_IDX] =3D { 23855, 0x1, 0x63, 0xCAAAB, 0x7C=
+4 },
++       [OLYMPUS_LUT_CHAN_596500_IDX] =3D { 23860, 0x1, 0x63, 0xD5555, 0x7C=
+4 },
++       [OLYMPUS_LUT_CHAN_596625_IDX] =3D { 23865, 0x1, 0x63, 0xE0000, 0x7C=
+5 },
++       [OLYMPUS_LUT_CHAN_596750_IDX] =3D { 23870, 0x1, 0x63, 0xEAAAB, 0x7C=
+5 },
++       [OLYMPUS_LUT_CHAN_596875_IDX] =3D { 23875, 0x1, 0x63, 0xF5555, 0x7C=
+6 },
++       [OLYMPUS_LUT_CHAN_597000_IDX] =3D { 23880, 0x1, 0x63, 0x100000, 0x7=
+C6 },
++       [OLYMPUS_LUT_CHAN_597125_IDX] =3D { 23885, 0x1, 0x63, 0x10AAAB, 0x7=
+C6 },
++       [OLYMPUS_LUT_CHAN_597250_IDX] =3D { 23890, 0x1, 0x63, 0x115555, 0x7=
+C7 },
++       [OLYMPUS_LUT_CHAN_597375_IDX] =3D { 23895, 0x1, 0x63, 0x120000, 0x7=
+C7 },
++       [OLYMPUS_LUT_CHAN_597500_IDX] =3D { 23900, 0x1, 0x63, 0x12AAAB, 0x7=
+C8 },
++       [OLYMPUS_LUT_CHAN_597625_IDX] =3D { 23905, 0x1, 0x63, 0x135555, 0x7=
+C8 },
++       [OLYMPUS_LUT_CHAN_597750_IDX] =3D { 23910, 0x1, 0x63, 0x140000, 0x7=
+C9 },
++       [OLYMPUS_LUT_CHAN_597875_IDX] =3D { 23915, 0x1, 0x63, 0x14AAAB, 0x7=
+C9 },
++       [OLYMPUS_LUT_CHAN_598000_IDX] =3D { 23920, 0x1, 0x63, 0x155555, 0x7=
+C9 },
++       [OLYMPUS_LUT_CHAN_598125_IDX] =3D { 23925, 0x1, 0x63, 0x160000, 0x7=
+CA },
++       [OLYMPUS_LUT_CHAN_598250_IDX] =3D { 23930, 0x1, 0x63, 0x16AAAB, 0x7=
+CA },
++       [OLYMPUS_LUT_CHAN_598375_IDX] =3D { 23935, 0x1, 0x63, 0x175555, 0x7=
+CB },
++       [OLYMPUS_LUT_CHAN_598500_IDX] =3D { 23940, 0x1, 0x63, 0x180000, 0x7=
+CB },
++       [OLYMPUS_LUT_CHAN_598625_IDX] =3D { 23945, 0x1, 0x63, 0x18AAAB, 0x7=
+CB },
++       [OLYMPUS_LUT_CHAN_598750_IDX] =3D { 23950, 0x1, 0x63, 0x195555, 0x7=
+CC },
++       [OLYMPUS_LUT_CHAN_598875_IDX] =3D { 23955, 0x1, 0x63, 0x1A0000, 0x7=
+CC },
++       [OLYMPUS_LUT_CHAN_599000_IDX] =3D { 23960, 0x1, 0x63, 0x1AAAAB, 0x7=
+CD },
++       [OLYMPUS_LUT_CHAN_599125_IDX] =3D { 23965, 0x1, 0x63, 0x1B5555, 0x7=
+CD },
++       [OLYMPUS_LUT_CHAN_599250_IDX] =3D { 23970, 0x1, 0x63, 0x1C0000, 0x7=
+CE },
++       [OLYMPUS_LUT_CHAN_599375_IDX] =3D { 23975, 0x1, 0x63, 0x1CAAAB, 0x7=
+CE },
++       [OLYMPUS_LUT_CHAN_599500_IDX] =3D { 23980, 0x1, 0x63, 0x1D5555, 0x7=
+CE },
++       [OLYMPUS_LUT_CHAN_599625_IDX] =3D { 23985, 0x1, 0x63, 0x1E0000, 0x7=
+CF },
++       [OLYMPUS_LUT_CHAN_599750_IDX] =3D { 23990, 0x1, 0x63, 0x1EAAAB, 0x7=
+CF },
++       [OLYMPUS_LUT_CHAN_599875_IDX] =3D { 23995, 0x1, 0x63, 0x1F5555, 0x7=
+D0 },
++       [OLYMPUS_LUT_CHAN_600000_IDX] =3D { 24000, 0x1, 0x64, 0x0, 0x7D0 }
 +};
 +
-+void cl_phy_oly_lut_update(u8 nl_band, u16 freq,
-+                          struct mm_mac_api_lut_line *api_lut_line);
++const struct olympus_lut_line olympus_lut_5g_60_mhz_s1[OLYMPUS_LUT_CHAN_5G=
+_MAX] =3D {
++       [OLYMPUS_LUT_CHAN_516000_IDX] =3D { 20640, 0x0, 0x39, 0x11C71C, 0x6=
+BF },
++       [OLYMPUS_LUT_CHAN_516125_IDX] =3D { 20645, 0x0, 0x39, 0xB1C72, 0x6B=
+8 },
++       [OLYMPUS_LUT_CHAN_516250_IDX] =3D { 20650, 0x0, 0x39, 0xB8E39, 0x6B=
+9 },
++       [OLYMPUS_LUT_CHAN_516375_IDX] =3D { 20655, 0x0, 0x39, 0xC0000, 0x6B=
+9 },
++       [OLYMPUS_LUT_CHAN_516500_IDX] =3D { 20660, 0x0, 0x39, 0xC71C7, 0x6B=
+A },
++       [OLYMPUS_LUT_CHAN_516625_IDX] =3D { 20665, 0x0, 0x39, 0xCE38E, 0x6B=
+A },
++       [OLYMPUS_LUT_CHAN_516750_IDX] =3D { 20670, 0x0, 0x39, 0xD5555, 0x6B=
+B },
++       [OLYMPUS_LUT_CHAN_516875_IDX] =3D { 20675, 0x0, 0x39, 0xDC71C, 0x6B=
+B },
++       [OLYMPUS_LUT_CHAN_517000_IDX] =3D { 20680, 0x0, 0x39, 0xE38E4, 0x6B=
+B },
++       [OLYMPUS_LUT_CHAN_517125_IDX] =3D { 20685, 0x0, 0x39, 0xEAAAB, 0x6B=
+C },
++       [OLYMPUS_LUT_CHAN_517250_IDX] =3D { 20690, 0x0, 0x39, 0xF1C72, 0x6B=
+C },
++       [OLYMPUS_LUT_CHAN_517375_IDX] =3D { 20695, 0x0, 0x39, 0xF8E39, 0x6B=
+D },
++       [OLYMPUS_LUT_CHAN_517500_IDX] =3D { 20700, 0x0, 0x39, 0x100000, 0x6=
+BD },
++       [OLYMPUS_LUT_CHAN_517625_IDX] =3D { 20705, 0x0, 0x39, 0x1071C7, 0x6=
+BD },
++       [OLYMPUS_LUT_CHAN_517750_IDX] =3D { 20710, 0x0, 0x39, 0x10E38E, 0x6=
+BE },
++       [OLYMPUS_LUT_CHAN_517875_IDX] =3D { 20715, 0x0, 0x39, 0x115555, 0x6=
+BE },
++       [OLYMPUS_LUT_CHAN_518000_IDX] =3D { 20720, 0x1, 0x39, 0x11C71C, 0x6=
+BF },
++       [OLYMPUS_LUT_CHAN_518125_IDX] =3D { 20725, 0x1, 0x39, 0x1238E4, 0x6=
+BF },
++       [OLYMPUS_LUT_CHAN_518250_IDX] =3D { 20730, 0x1, 0x39, 0x12AAAB, 0x6=
+C0 },
++       [OLYMPUS_LUT_CHAN_518375_IDX] =3D { 20735, 0x1, 0x39, 0x131C72, 0x6=
+C0 },
++       [OLYMPUS_LUT_CHAN_518500_IDX] =3D { 20740, 0x1, 0x39, 0x138E39, 0x6=
+C0 },
++       [OLYMPUS_LUT_CHAN_518625_IDX] =3D { 20745, 0x1, 0x39, 0x140000, 0x6=
+C1 },
++       [OLYMPUS_LUT_CHAN_518750_IDX] =3D { 20750, 0x1, 0x39, 0x1471C7, 0x6=
+C1 },
++       [OLYMPUS_LUT_CHAN_518875_IDX] =3D { 20755, 0x1, 0x39, 0x14E38E, 0x6=
+C2 },
++       [OLYMPUS_LUT_CHAN_519000_IDX] =3D { 20760, 0x1, 0x39, 0x155555, 0x6=
+C2 },
++       [OLYMPUS_LUT_CHAN_519125_IDX] =3D { 20765, 0x1, 0x39, 0x15C71C, 0x6=
+C2 },
++       [OLYMPUS_LUT_CHAN_519250_IDX] =3D { 20770, 0x1, 0x39, 0x1638E4, 0x6=
+C3 },
++       [OLYMPUS_LUT_CHAN_519375_IDX] =3D { 20775, 0x1, 0x39, 0x16AAAB, 0x6=
+C3 },
++       [OLYMPUS_LUT_CHAN_519500_IDX] =3D { 20780, 0x1, 0x39, 0x171C72, 0x6=
+C4 },
++       [OLYMPUS_LUT_CHAN_519625_IDX] =3D { 20785, 0x1, 0x39, 0x178E39, 0x6=
+C4 },
++       [OLYMPUS_LUT_CHAN_519750_IDX] =3D { 20790, 0x1, 0x39, 0x180000, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_519875_IDX] =3D { 20795, 0x1, 0x39, 0x1871C7, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_520000_IDX] =3D { 20800, 0x1, 0x39, 0x18E38E, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_520125_IDX] =3D { 20805, 0x1, 0x39, 0x195555, 0x6=
+C6 },
++       [OLYMPUS_LUT_CHAN_520250_IDX] =3D { 20810, 0x1, 0x39, 0x19C71C, 0x6=
+C6 },
++       [OLYMPUS_LUT_CHAN_520375_IDX] =3D { 20815, 0x1, 0x39, 0x1A38E4, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520500_IDX] =3D { 20820, 0x1, 0x39, 0x1AAAAB, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520625_IDX] =3D { 20825, 0x1, 0x39, 0x1B1C72, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520750_IDX] =3D { 20830, 0x1, 0x39, 0x1B8E39, 0x6=
+C8 },
++       [OLYMPUS_LUT_CHAN_520875_IDX] =3D { 20835, 0x1, 0x39, 0x1C0000, 0x6=
+C8 },
++       [OLYMPUS_LUT_CHAN_521000_IDX] =3D { 20840, 0x1, 0x39, 0x1C71C7, 0x6=
+C9 },
++       [OLYMPUS_LUT_CHAN_521125_IDX] =3D { 20845, 0x1, 0x39, 0x1CE38E, 0x6=
+C9 },
++       [OLYMPUS_LUT_CHAN_521250_IDX] =3D { 20850, 0x1, 0x39, 0x1D5555, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521375_IDX] =3D { 20855, 0x1, 0x39, 0x1DC71C, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521500_IDX] =3D { 20860, 0x1, 0x39, 0x1E38E4, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521625_IDX] =3D { 20865, 0x1, 0x39, 0x1EAAAB, 0x6=
+CB },
++       [OLYMPUS_LUT_CHAN_521750_IDX] =3D { 20870, 0x1, 0x39, 0x1F1C72, 0x6=
+CB },
++       [OLYMPUS_LUT_CHAN_521875_IDX] =3D { 20875, 0x1, 0x39, 0x1F8E39, 0x6=
+CC },
++       [OLYMPUS_LUT_CHAN_522000_IDX] =3D { 20880, 0x1, 0x3A, 0x0, 0x6CC },
++       [OLYMPUS_LUT_CHAN_522125_IDX] =3D { 20885, 0x1, 0x3A, 0x71C7, 0x6CC=
+ },
++       [OLYMPUS_LUT_CHAN_522250_IDX] =3D { 20890, 0x1, 0x3A, 0xE38E, 0x6CD=
+ },
++       [OLYMPUS_LUT_CHAN_522375_IDX] =3D { 20895, 0x1, 0x3A, 0x15555, 0x6C=
+D },
++       [OLYMPUS_LUT_CHAN_522500_IDX] =3D { 20900, 0x1, 0x3A, 0x1C71C, 0x6C=
+E },
++       [OLYMPUS_LUT_CHAN_522625_IDX] =3D { 20905, 0x1, 0x3A, 0x238E4, 0x6C=
+E },
++       [OLYMPUS_LUT_CHAN_522750_IDX] =3D { 20910, 0x1, 0x3A, 0x2AAAB, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_522875_IDX] =3D { 20915, 0x1, 0x3A, 0x31C72, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_523000_IDX] =3D { 20920, 0x1, 0x3A, 0x38E39, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_523125_IDX] =3D { 20925, 0x1, 0x3A, 0x40000, 0x6D=
+0 },
++       [OLYMPUS_LUT_CHAN_523250_IDX] =3D { 20930, 0x1, 0x3A, 0x471C7, 0x6D=
+0 },
++       [OLYMPUS_LUT_CHAN_523375_IDX] =3D { 20935, 0x1, 0x3A, 0x4E38E, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523500_IDX] =3D { 20940, 0x1, 0x3A, 0x55555, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523625_IDX] =3D { 20945, 0x1, 0x3A, 0x5C71C, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523750_IDX] =3D { 20950, 0x1, 0x3A, 0x638E4, 0x6D=
+2 },
++       [OLYMPUS_LUT_CHAN_523875_IDX] =3D { 20955, 0x1, 0x3A, 0x6AAAB, 0x6D=
+2 },
++       [OLYMPUS_LUT_CHAN_524000_IDX] =3D { 20960, 0x1, 0x3A, 0x71C72, 0x6D=
+3 },
++       [OLYMPUS_LUT_CHAN_524125_IDX] =3D { 20965, 0x1, 0x3A, 0x78E39, 0x6D=
+3 },
++       [OLYMPUS_LUT_CHAN_524250_IDX] =3D { 20970, 0x1, 0x3A, 0x80000, 0x6D=
+4 },
++       [OLYMPUS_LUT_CHAN_524375_IDX] =3D { 20975, 0x1, 0x3A, 0x871C7, 0x6D=
+4 },
++       [OLYMPUS_LUT_CHAN_524500_IDX] =3D { 20980, 0x1, 0x3A, 0x8E38E, 0x6D=
+4 },
++       [OLYMPUS_LUT_CHAN_524625_IDX] =3D { 20985, 0x1, 0x3A, 0x95555, 0x6D=
+5 },
++       [OLYMPUS_LUT_CHAN_524750_IDX] =3D { 20990, 0x1, 0x3A, 0x9C71C, 0x6D=
+5 },
++       [OLYMPUS_LUT_CHAN_524875_IDX] =3D { 20995, 0x1, 0x3A, 0xA38E4, 0x6D=
+6 },
++       [OLYMPUS_LUT_CHAN_525000_IDX] =3D { 21000, 0x1, 0x3A, 0xAAAAB, 0x6D=
+6 },
++       [OLYMPUS_LUT_CHAN_525125_IDX] =3D { 21005, 0x1, 0x3A, 0xB1C72, 0x6D=
+6 },
++       [OLYMPUS_LUT_CHAN_525250_IDX] =3D { 21010, 0x1, 0x3A, 0xB8E39, 0x6D=
+7 },
++       [OLYMPUS_LUT_CHAN_525375_IDX] =3D { 21015, 0x1, 0x3A, 0xC0000, 0x6D=
+7 },
++       [OLYMPUS_LUT_CHAN_525500_IDX] =3D { 21020, 0x1, 0x3A, 0xC71C7, 0x6D=
+8 },
++       [OLYMPUS_LUT_CHAN_525625_IDX] =3D { 21025, 0x1, 0x3A, 0xCE38E, 0x6D=
+8 },
++       [OLYMPUS_LUT_CHAN_525750_IDX] =3D { 21030, 0x1, 0x3A, 0xD5555, 0x6D=
+9 },
++       [OLYMPUS_LUT_CHAN_525875_IDX] =3D { 21035, 0x1, 0x3A, 0xDC71C, 0x6D=
+9 },
++       [OLYMPUS_LUT_CHAN_526000_IDX] =3D { 21040, 0x1, 0x3A, 0xE38E4, 0x6D=
+9 },
++       [OLYMPUS_LUT_CHAN_526125_IDX] =3D { 21045, 0x1, 0x3A, 0xEAAAB, 0x6D=
+A },
++       [OLYMPUS_LUT_CHAN_526250_IDX] =3D { 21050, 0x1, 0x3A, 0xF1C72, 0x6D=
+A },
++       [OLYMPUS_LUT_CHAN_526375_IDX] =3D { 21055, 0x1, 0x3A, 0xF8E39, 0x6D=
+B },
++       [OLYMPUS_LUT_CHAN_526500_IDX] =3D { 21060, 0x1, 0x3A, 0x100000, 0x6=
+DB },
++       [OLYMPUS_LUT_CHAN_526625_IDX] =3D { 21065, 0x1, 0x3A, 0x1071C7, 0x6=
+DB },
++       [OLYMPUS_LUT_CHAN_526750_IDX] =3D { 21070, 0x1, 0x3A, 0x10E38E, 0x6=
+DC },
++       [OLYMPUS_LUT_CHAN_526875_IDX] =3D { 21075, 0x1, 0x3A, 0x115555, 0x6=
+DC },
++       [OLYMPUS_LUT_CHAN_527000_IDX] =3D { 21080, 0x1, 0x3A, 0x11C71C, 0x6=
+DD },
++       [OLYMPUS_LUT_CHAN_527125_IDX] =3D { 21085, 0x1, 0x3A, 0x1238E4, 0x6=
+DD },
++       [OLYMPUS_LUT_CHAN_527250_IDX] =3D { 21090, 0x1, 0x3A, 0x12AAAB, 0x6=
+DE },
++       [OLYMPUS_LUT_CHAN_527375_IDX] =3D { 21095, 0x1, 0x3A, 0x131C72, 0x6=
+DE },
++       [OLYMPUS_LUT_CHAN_527500_IDX] =3D { 21100, 0x1, 0x3A, 0x138E39, 0x6=
+DE },
++       [OLYMPUS_LUT_CHAN_527625_IDX] =3D { 21105, 0x1, 0x3A, 0x140000, 0x6=
+DF },
++       [OLYMPUS_LUT_CHAN_527750_IDX] =3D { 21110, 0x1, 0x3A, 0x1471C7, 0x6=
+DF },
++       [OLYMPUS_LUT_CHAN_527875_IDX] =3D { 21115, 0x1, 0x3A, 0x14E38E, 0x6=
+E0 },
++       [OLYMPUS_LUT_CHAN_528000_IDX] =3D { 21120, 0x1, 0x3A, 0x155555, 0x6=
+E0 },
++       [OLYMPUS_LUT_CHAN_528125_IDX] =3D { 21125, 0x1, 0x3A, 0x15C71C, 0x6=
+E0 },
++       [OLYMPUS_LUT_CHAN_528250_IDX] =3D { 21130, 0x1, 0x3A, 0x1638E4, 0x6=
+E1 },
++       [OLYMPUS_LUT_CHAN_528375_IDX] =3D { 21135, 0x1, 0x3A, 0x16AAAB, 0x6=
+E1 },
++       [OLYMPUS_LUT_CHAN_528500_IDX] =3D { 21140, 0x1, 0x3A, 0x171C72, 0x6=
+E2 },
++       [OLYMPUS_LUT_CHAN_528625_IDX] =3D { 21145, 0x1, 0x3A, 0x178E39, 0x6=
+E2 },
++       [OLYMPUS_LUT_CHAN_528750_IDX] =3D { 21150, 0x1, 0x3A, 0x180000, 0x6=
+E3 },
++       [OLYMPUS_LUT_CHAN_528875_IDX] =3D { 21155, 0x1, 0x3A, 0x1871C7, 0x6=
+E3 },
++       [OLYMPUS_LUT_CHAN_529000_IDX] =3D { 21160, 0x1, 0x3A, 0x18E38E, 0x6=
+E3 },
++       [OLYMPUS_LUT_CHAN_529125_IDX] =3D { 21165, 0x1, 0x3A, 0x195555, 0x6=
+E4 },
++       [OLYMPUS_LUT_CHAN_529250_IDX] =3D { 21170, 0x1, 0x3A, 0x19C71C, 0x6=
+E4 },
++       [OLYMPUS_LUT_CHAN_529375_IDX] =3D { 21175, 0x1, 0x3A, 0x1A38E4, 0x6=
+E5 },
++       [OLYMPUS_LUT_CHAN_529500_IDX] =3D { 21180, 0x1, 0x3A, 0x1AAAAB, 0x6=
+E5 },
++       [OLYMPUS_LUT_CHAN_529625_IDX] =3D { 21185, 0x1, 0x3A, 0x1B1C72, 0x6=
+E5 },
++       [OLYMPUS_LUT_CHAN_529750_IDX] =3D { 21190, 0x1, 0x3A, 0x1B8E39, 0x6=
+E6 },
++       [OLYMPUS_LUT_CHAN_529875_IDX] =3D { 21195, 0x1, 0x3A, 0x1C0000, 0x6=
+E6 },
++       [OLYMPUS_LUT_CHAN_530000_IDX] =3D { 21200, 0x1, 0x3A, 0x1C71C7, 0x6=
+E7 },
++       [OLYMPUS_LUT_CHAN_530125_IDX] =3D { 21205, 0x1, 0x3A, 0x1CE38E, 0x6=
+E7 },
++       [OLYMPUS_LUT_CHAN_530250_IDX] =3D { 21210, 0x1, 0x3A, 0x1D5555, 0x6=
+E8 },
++       [OLYMPUS_LUT_CHAN_530375_IDX] =3D { 21215, 0x1, 0x3A, 0x1DC71C, 0x6=
+E8 },
++       [OLYMPUS_LUT_CHAN_530500_IDX] =3D { 21220, 0x1, 0x3A, 0x1E38E4, 0x6=
+E8 },
++       [OLYMPUS_LUT_CHAN_530625_IDX] =3D { 21225, 0x1, 0x3A, 0x1EAAAB, 0x6=
+E9 },
++       [OLYMPUS_LUT_CHAN_530750_IDX] =3D { 21230, 0x1, 0x3A, 0x1F1C72, 0x6=
+E9 },
++       [OLYMPUS_LUT_CHAN_530875_IDX] =3D { 21235, 0x1, 0x3A, 0x1F8E39, 0x6=
+EA },
++       [OLYMPUS_LUT_CHAN_531000_IDX] =3D { 21240, 0x1, 0x3B, 0x0, 0x6EA },
++       [OLYMPUS_LUT_CHAN_531125_IDX] =3D { 21245, 0x1, 0x3B, 0x71C7, 0x6EA=
+ },
++       [OLYMPUS_LUT_CHAN_531250_IDX] =3D { 21250, 0x1, 0x3B, 0xE38E, 0x6EB=
+ },
++       [OLYMPUS_LUT_CHAN_531375_IDX] =3D { 21255, 0x1, 0x3B, 0x15555, 0x6E=
+B },
++       [OLYMPUS_LUT_CHAN_531500_IDX] =3D { 21260, 0x1, 0x3B, 0x1C71C, 0x6E=
+C },
++       [OLYMPUS_LUT_CHAN_531625_IDX] =3D { 21265, 0x1, 0x3B, 0x238E4, 0x6E=
+C },
++       [OLYMPUS_LUT_CHAN_531750_IDX] =3D { 21270, 0x1, 0x3B, 0x2AAAB, 0x6E=
+D },
++       [OLYMPUS_LUT_CHAN_531875_IDX] =3D { 21275, 0x1, 0x3B, 0x31C72, 0x6E=
+D },
++       [OLYMPUS_LUT_CHAN_532000_IDX] =3D { 21280, 0x1, 0x3B, 0x38E39, 0x6E=
+D },
++       [OLYMPUS_LUT_CHAN_532125_IDX] =3D { 21285, 0x1, 0x3B, 0x40000, 0x6E=
+E },
++       [OLYMPUS_LUT_CHAN_532250_IDX] =3D { 21290, 0x1, 0x3B, 0x471C7, 0x6E=
+E },
++       [OLYMPUS_LUT_CHAN_532375_IDX] =3D { 21295, 0x1, 0x3B, 0x4E38E, 0x6E=
+F },
++       [OLYMPUS_LUT_CHAN_532500_IDX] =3D { 21300, 0x1, 0x3B, 0x55555, 0x6E=
+F },
++       [OLYMPUS_LUT_CHAN_532625_IDX] =3D { 21305, 0x1, 0x3B, 0x5C71C, 0x6E=
+F },
++       [OLYMPUS_LUT_CHAN_532750_IDX] =3D { 21310, 0x1, 0x3B, 0x638E4, 0x6F=
+0 },
++       [OLYMPUS_LUT_CHAN_532875_IDX] =3D { 21315, 0x1, 0x3B, 0x6AAAB, 0x6F=
+0 },
++       [OLYMPUS_LUT_CHAN_533000_IDX] =3D { 21320, 0x1, 0x3B, 0x71C72, 0x6F=
+1 },
++       [OLYMPUS_LUT_CHAN_533125_IDX] =3D { 21325, 0x1, 0x3B, 0x78E39, 0x6F=
+1 },
++       [OLYMPUS_LUT_CHAN_533250_IDX] =3D { 21330, 0x1, 0x3B, 0x80000, 0x6F=
+2 },
++       [OLYMPUS_LUT_CHAN_533375_IDX] =3D { 21335, 0x1, 0x3B, 0x871C7, 0x6F=
+2 },
++       [OLYMPUS_LUT_CHAN_533500_IDX] =3D { 21340, 0x1, 0x3B, 0x8E38E, 0x6F=
+2 },
++       [OLYMPUS_LUT_CHAN_533625_IDX] =3D { 21345, 0x1, 0x3B, 0x95555, 0x6F=
+3 },
++       [OLYMPUS_LUT_CHAN_533750_IDX] =3D { 21350, 0x1, 0x3B, 0x9C71C, 0x6F=
+3 },
++       [OLYMPUS_LUT_CHAN_533875_IDX] =3D { 21355, 0x1, 0x3B, 0xA38E4, 0x6F=
+4 },
++       [OLYMPUS_LUT_CHAN_534000_IDX] =3D { 21360, 0x1, 0x3B, 0xAAAAB, 0x6F=
+4 },
++       [OLYMPUS_LUT_CHAN_534125_IDX] =3D { 21365, 0x1, 0x3B, 0xB1C72, 0x6F=
+4 },
++       [OLYMPUS_LUT_CHAN_534250_IDX] =3D { 21370, 0x1, 0x3B, 0xB8E39, 0x6F=
+5 },
++       [OLYMPUS_LUT_CHAN_534375_IDX] =3D { 21375, 0x1, 0x3B, 0xC0000, 0x6F=
+5 },
++       [OLYMPUS_LUT_CHAN_534500_IDX] =3D { 21380, 0x1, 0x3B, 0xC71C7, 0x6F=
+6 },
++       [OLYMPUS_LUT_CHAN_534625_IDX] =3D { 21385, 0x1, 0x3B, 0xCE38E, 0x6F=
+6 },
++       [OLYMPUS_LUT_CHAN_534750_IDX] =3D { 21390, 0x1, 0x3B, 0xD5555, 0x6F=
+7 },
++       [OLYMPUS_LUT_CHAN_534875_IDX] =3D { 21395, 0x1, 0x3B, 0xDC71C, 0x6F=
+7 },
++       [OLYMPUS_LUT_CHAN_535000_IDX] =3D { 21400, 0x1, 0x3B, 0xE38E4, 0x6F=
+7 },
++       [OLYMPUS_LUT_CHAN_535125_IDX] =3D { 21405, 0x1, 0x3B, 0xEAAAB, 0x6F=
+8 },
++       [OLYMPUS_LUT_CHAN_535250_IDX] =3D { 21410, 0x1, 0x3B, 0xF1C72, 0x6F=
+8 },
++       [OLYMPUS_LUT_CHAN_535375_IDX] =3D { 21415, 0x1, 0x3B, 0xF8E39, 0x6F=
+9 },
++       [OLYMPUS_LUT_CHAN_535500_IDX] =3D { 21420, 0x1, 0x3B, 0x100000, 0x6=
+F9 },
++       [OLYMPUS_LUT_CHAN_535625_IDX] =3D { 21425, 0x1, 0x3B, 0x1071C7, 0x6=
+F9 },
++       [OLYMPUS_LUT_CHAN_535750_IDX] =3D { 21430, 0x1, 0x3B, 0x10E38E, 0x6=
+FA },
++       [OLYMPUS_LUT_CHAN_535875_IDX] =3D { 21435, 0x1, 0x3B, 0x115555, 0x6=
+FA },
++       [OLYMPUS_LUT_CHAN_536000_IDX] =3D { 21440, 0x1, 0x3B, 0x11C71C, 0x6=
+FB },
++       [OLYMPUS_LUT_CHAN_536125_IDX] =3D { 21445, 0x1, 0x3B, 0x1238E4, 0x6=
+FB },
++       [OLYMPUS_LUT_CHAN_536250_IDX] =3D { 21450, 0x1, 0x3B, 0x12AAAB, 0x6=
+FC },
++       [OLYMPUS_LUT_CHAN_536375_IDX] =3D { 21455, 0x1, 0x3B, 0x131C72, 0x6=
+FC },
++       [OLYMPUS_LUT_CHAN_536500_IDX] =3D { 21460, 0x1, 0x3B, 0x138E39, 0x6=
+FC },
++       [OLYMPUS_LUT_CHAN_536625_IDX] =3D { 21465, 0x1, 0x3B, 0x140000, 0x6=
+FD },
++       [OLYMPUS_LUT_CHAN_536750_IDX] =3D { 21470, 0x1, 0x3B, 0x1471C7, 0x6=
+FD },
++       [OLYMPUS_LUT_CHAN_536875_IDX] =3D { 21475, 0x1, 0x3B, 0x14E38E, 0x6=
+FE },
++       [OLYMPUS_LUT_CHAN_537000_IDX] =3D { 21480, 0x1, 0x3B, 0x155555, 0x6=
+FE },
++       [OLYMPUS_LUT_CHAN_537125_IDX] =3D { 21485, 0x1, 0x3B, 0x15C71C, 0x6=
+FE },
++       [OLYMPUS_LUT_CHAN_537250_IDX] =3D { 21490, 0x1, 0x3B, 0x1638E4, 0x6=
+FF },
++       [OLYMPUS_LUT_CHAN_537375_IDX] =3D { 21495, 0x1, 0x3B, 0x16AAAB, 0x6=
+FF },
++       [OLYMPUS_LUT_CHAN_537500_IDX] =3D { 21500, 0x1, 0x3B, 0x171C72, 0x7=
+00 },
++       [OLYMPUS_LUT_CHAN_537625_IDX] =3D { 21505, 0x1, 0x3B, 0x178E39, 0x7=
+00 },
++       [OLYMPUS_LUT_CHAN_537750_IDX] =3D { 21510, 0x1, 0x3B, 0x180000, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_537875_IDX] =3D { 21515, 0x1, 0x3B, 0x1871C7, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_538000_IDX] =3D { 21520, 0x1, 0x3B, 0x18E38E, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_538125_IDX] =3D { 21525, 0x1, 0x3B, 0x195555, 0x7=
+02 },
++       [OLYMPUS_LUT_CHAN_538250_IDX] =3D { 21530, 0x1, 0x3B, 0x19C71C, 0x7=
+02 },
++       [OLYMPUS_LUT_CHAN_538375_IDX] =3D { 21535, 0x1, 0x3B, 0x1A38E4, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538500_IDX] =3D { 21540, 0x1, 0x3B, 0x1AAAAB, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538625_IDX] =3D { 21545, 0x1, 0x3B, 0x1B1C72, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538750_IDX] =3D { 21550, 0x1, 0x3B, 0x1B8E39, 0x7=
+04 },
++       [OLYMPUS_LUT_CHAN_538875_IDX] =3D { 21555, 0x1, 0x3B, 0x1C0000, 0x7=
+04 },
++       [OLYMPUS_LUT_CHAN_539000_IDX] =3D { 21560, 0x1, 0x3B, 0x1C71C7, 0x7=
+05 },
++       [OLYMPUS_LUT_CHAN_539125_IDX] =3D { 21565, 0x1, 0x3B, 0x1CE38E, 0x7=
+05 },
++       [OLYMPUS_LUT_CHAN_539250_IDX] =3D { 21570, 0x1, 0x3B, 0x1D5555, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539375_IDX] =3D { 21575, 0x1, 0x3B, 0x1DC71C, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539500_IDX] =3D { 21580, 0x1, 0x3B, 0x1E38E4, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539625_IDX] =3D { 21585, 0x1, 0x3B, 0x1EAAAB, 0x7=
+07 },
++       [OLYMPUS_LUT_CHAN_539750_IDX] =3D { 21590, 0x1, 0x3B, 0x1F1C72, 0x7=
+07 },
++       [OLYMPUS_LUT_CHAN_539875_IDX] =3D { 21595, 0x1, 0x3B, 0x1F8E39, 0x7=
+08 },
++       [OLYMPUS_LUT_CHAN_540000_IDX] =3D { 21600, 0x1, 0x3C, 0x0, 0x708 },
++       [OLYMPUS_LUT_CHAN_540125_IDX] =3D { 21605, 0x1, 0x3C, 0x71C7, 0x708=
+ },
++       [OLYMPUS_LUT_CHAN_540250_IDX] =3D { 21610, 0x1, 0x3C, 0xE38E, 0x709=
+ },
++       [OLYMPUS_LUT_CHAN_540375_IDX] =3D { 21615, 0x1, 0x3C, 0x15555, 0x70=
+9 },
++       [OLYMPUS_LUT_CHAN_540500_IDX] =3D { 21620, 0x1, 0x3C, 0x1C71C, 0x70=
+A },
++       [OLYMPUS_LUT_CHAN_540625_IDX] =3D { 21625, 0x1, 0x3C, 0x238E4, 0x70=
+A },
++       [OLYMPUS_LUT_CHAN_540750_IDX] =3D { 21630, 0x1, 0x3C, 0x2AAAB, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_540875_IDX] =3D { 21635, 0x1, 0x3C, 0x31C72, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_541000_IDX] =3D { 21640, 0x1, 0x3C, 0x38E39, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_541125_IDX] =3D { 21645, 0x1, 0x3C, 0x40000, 0x70=
+C },
++       [OLYMPUS_LUT_CHAN_541250_IDX] =3D { 21650, 0x1, 0x3C, 0x471C7, 0x70=
+C },
++       [OLYMPUS_LUT_CHAN_541375_IDX] =3D { 21655, 0x1, 0x3C, 0x4E38E, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541500_IDX] =3D { 21660, 0x1, 0x3C, 0x55555, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541625_IDX] =3D { 21665, 0x1, 0x3C, 0x5C71C, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541750_IDX] =3D { 21670, 0x1, 0x3C, 0x638E4, 0x70=
+E },
++       [OLYMPUS_LUT_CHAN_541875_IDX] =3D { 21675, 0x1, 0x3C, 0x6AAAB, 0x70=
+E },
++       [OLYMPUS_LUT_CHAN_542000_IDX] =3D { 21680, 0x1, 0x3C, 0x71C72, 0x70=
+F },
++       [OLYMPUS_LUT_CHAN_542125_IDX] =3D { 21685, 0x1, 0x3C, 0x78E39, 0x70=
+F },
++       [OLYMPUS_LUT_CHAN_542250_IDX] =3D { 21690, 0x1, 0x3C, 0x80000, 0x71=
+0 },
++       [OLYMPUS_LUT_CHAN_542375_IDX] =3D { 21695, 0x1, 0x3C, 0x871C7, 0x71=
+0 },
++       [OLYMPUS_LUT_CHAN_542500_IDX] =3D { 21700, 0x1, 0x3C, 0x8E38E, 0x71=
+0 },
++       [OLYMPUS_LUT_CHAN_542625_IDX] =3D { 21705, 0x1, 0x3C, 0x95555, 0x71=
+1 },
++       [OLYMPUS_LUT_CHAN_542750_IDX] =3D { 21710, 0x1, 0x3C, 0x9C71C, 0x71=
+1 },
++       [OLYMPUS_LUT_CHAN_542875_IDX] =3D { 21715, 0x1, 0x3C, 0xA38E4, 0x71=
+2 },
++       [OLYMPUS_LUT_CHAN_543000_IDX] =3D { 21720, 0x1, 0x3C, 0xAAAAB, 0x71=
+2 },
++       [OLYMPUS_LUT_CHAN_543125_IDX] =3D { 21725, 0x1, 0x3C, 0xB1C72, 0x71=
+2 },
++       [OLYMPUS_LUT_CHAN_543250_IDX] =3D { 21730, 0x1, 0x3C, 0xB8E39, 0x71=
+3 },
++       [OLYMPUS_LUT_CHAN_543375_IDX] =3D { 21735, 0x1, 0x3C, 0xC0000, 0x71=
+3 },
++       [OLYMPUS_LUT_CHAN_543500_IDX] =3D { 21740, 0x1, 0x3C, 0xC71C7, 0x71=
+4 },
++       [OLYMPUS_LUT_CHAN_543625_IDX] =3D { 21745, 0x1, 0x3C, 0xCE38E, 0x71=
+4 },
++       [OLYMPUS_LUT_CHAN_543750_IDX] =3D { 21750, 0x1, 0x3C, 0xD5555, 0x71=
+5 },
++       [OLYMPUS_LUT_CHAN_543875_IDX] =3D { 21755, 0x1, 0x3C, 0xDC71C, 0x71=
+5 },
++       [OLYMPUS_LUT_CHAN_544000_IDX] =3D { 21760, 0x1, 0x3C, 0xE38E4, 0x71=
+5 },
++       [OLYMPUS_LUT_CHAN_544125_IDX] =3D { 21765, 0x1, 0x3C, 0xEAAAB, 0x71=
+6 },
++       [OLYMPUS_LUT_CHAN_544250_IDX] =3D { 21770, 0x1, 0x3C, 0xF1C72, 0x71=
+6 },
++       [OLYMPUS_LUT_CHAN_544375_IDX] =3D { 21775, 0x1, 0x3C, 0xF8E39, 0x71=
+7 },
++       [OLYMPUS_LUT_CHAN_544500_IDX] =3D { 21780, 0x1, 0x3C, 0x100000, 0x7=
+17 },
++       [OLYMPUS_LUT_CHAN_544625_IDX] =3D { 21785, 0x1, 0x3C, 0x1071C7, 0x7=
+17 },
++       [OLYMPUS_LUT_CHAN_544750_IDX] =3D { 21790, 0x1, 0x3C, 0x10E38E, 0x7=
+18 },
++       [OLYMPUS_LUT_CHAN_544875_IDX] =3D { 21795, 0x1, 0x3C, 0x115555, 0x7=
+18 },
++       [OLYMPUS_LUT_CHAN_545000_IDX] =3D { 21800, 0x1, 0x3C, 0x11C71C, 0x7=
+19 },
++       [OLYMPUS_LUT_CHAN_545125_IDX] =3D { 21805, 0x1, 0x3C, 0x1238E4, 0x7=
+19 },
++       [OLYMPUS_LUT_CHAN_545250_IDX] =3D { 21810, 0x1, 0x3C, 0x12AAAB, 0x7=
+1A },
++       [OLYMPUS_LUT_CHAN_545375_IDX] =3D { 21815, 0x1, 0x3C, 0x131C72, 0x7=
+1A },
++       [OLYMPUS_LUT_CHAN_545500_IDX] =3D { 21820, 0x1, 0x3C, 0x138E39, 0x7=
+1A },
++       [OLYMPUS_LUT_CHAN_545625_IDX] =3D { 21825, 0x1, 0x3C, 0x140000, 0x7=
+1B },
++       [OLYMPUS_LUT_CHAN_545750_IDX] =3D { 21830, 0x1, 0x3C, 0x1471C7, 0x7=
+1B },
++       [OLYMPUS_LUT_CHAN_545875_IDX] =3D { 21835, 0x1, 0x3C, 0x14E38E, 0x7=
+1C },
++       [OLYMPUS_LUT_CHAN_546000_IDX] =3D { 21840, 0x1, 0x3C, 0x155555, 0x7=
+1C },
++       [OLYMPUS_LUT_CHAN_546125_IDX] =3D { 21845, 0x1, 0x3C, 0x15C71C, 0x7=
+1C },
++       [OLYMPUS_LUT_CHAN_546250_IDX] =3D { 21850, 0x1, 0x3C, 0x1638E4, 0x7=
+1D },
++       [OLYMPUS_LUT_CHAN_546375_IDX] =3D { 21855, 0x1, 0x3C, 0x16AAAB, 0x7=
+1D },
++       [OLYMPUS_LUT_CHAN_546500_IDX] =3D { 21860, 0x1, 0x3C, 0x171C72, 0x7=
+1E },
++       [OLYMPUS_LUT_CHAN_546625_IDX] =3D { 21865, 0x1, 0x3C, 0x178E39, 0x7=
+1E },
++       [OLYMPUS_LUT_CHAN_546750_IDX] =3D { 21870, 0x1, 0x3C, 0x180000, 0x7=
+1F },
++       [OLYMPUS_LUT_CHAN_546875_IDX] =3D { 21875, 0x1, 0x3C, 0x1871C7, 0x7=
+1F },
++       [OLYMPUS_LUT_CHAN_547000_IDX] =3D { 21880, 0x1, 0x3C, 0x18E38E, 0x7=
+1F },
++       [OLYMPUS_LUT_CHAN_547125_IDX] =3D { 21885, 0x1, 0x3C, 0x195555, 0x7=
+20 },
++       [OLYMPUS_LUT_CHAN_547250_IDX] =3D { 21890, 0x1, 0x3C, 0x19C71C, 0x7=
+20 },
++       [OLYMPUS_LUT_CHAN_547375_IDX] =3D { 21895, 0x1, 0x3C, 0x1A38E4, 0x7=
+21 },
++       [OLYMPUS_LUT_CHAN_547500_IDX] =3D { 21900, 0x1, 0x3C, 0x1AAAAB, 0x7=
+21 },
++       [OLYMPUS_LUT_CHAN_547625_IDX] =3D { 21905, 0x1, 0x3C, 0x1B1C72, 0x7=
+21 },
++       [OLYMPUS_LUT_CHAN_547750_IDX] =3D { 21910, 0x1, 0x3C, 0x1B8E39, 0x7=
+22 },
++       [OLYMPUS_LUT_CHAN_547875_IDX] =3D { 21915, 0x1, 0x3C, 0x1C0000, 0x7=
+22 },
++       [OLYMPUS_LUT_CHAN_548000_IDX] =3D { 21920, 0x1, 0x3C, 0x1C71C7, 0x7=
+23 },
++       [OLYMPUS_LUT_CHAN_548125_IDX] =3D { 21925, 0x1, 0x3C, 0x1CE38E, 0x7=
+23 },
++       [OLYMPUS_LUT_CHAN_548250_IDX] =3D { 21930, 0x1, 0x3C, 0x1D5555, 0x7=
+24 },
++       [OLYMPUS_LUT_CHAN_548375_IDX] =3D { 21935, 0x1, 0x3C, 0x1DC71C, 0x7=
+24 },
++       [OLYMPUS_LUT_CHAN_548500_IDX] =3D { 21940, 0x1, 0x3C, 0x1E38E4, 0x7=
+24 },
++       [OLYMPUS_LUT_CHAN_548625_IDX] =3D { 21945, 0x1, 0x3C, 0x1EAAAB, 0x7=
+25 },
++       [OLYMPUS_LUT_CHAN_548750_IDX] =3D { 21950, 0x1, 0x3C, 0x1F1C72, 0x7=
+25 },
++       [OLYMPUS_LUT_CHAN_548875_IDX] =3D { 21955, 0x1, 0x3C, 0x1F8E39, 0x7=
+26 },
++       [OLYMPUS_LUT_CHAN_549000_IDX] =3D { 21960, 0x1, 0x3D, 0x0, 0x726 },
++       [OLYMPUS_LUT_CHAN_549125_IDX] =3D { 21965, 0x1, 0x3D, 0x71C7, 0x726=
+ },
++       [OLYMPUS_LUT_CHAN_549250_IDX] =3D { 21970, 0x1, 0x3D, 0xE38E, 0x727=
+ },
++       [OLYMPUS_LUT_CHAN_549375_IDX] =3D { 21975, 0x1, 0x3D, 0x15555, 0x72=
+7 },
++       [OLYMPUS_LUT_CHAN_549500_IDX] =3D { 21980, 0x1, 0x3D, 0x1C71C, 0x72=
+8 },
++       [OLYMPUS_LUT_CHAN_549625_IDX] =3D { 21985, 0x1, 0x3D, 0x238E4, 0x72=
+8 },
++       [OLYMPUS_LUT_CHAN_549750_IDX] =3D { 21990, 0x1, 0x3D, 0x2AAAB, 0x72=
+9 },
++       [OLYMPUS_LUT_CHAN_549875_IDX] =3D { 21995, 0x1, 0x3D, 0x31C72, 0x72=
+9 },
++       [OLYMPUS_LUT_CHAN_550000_IDX] =3D { 22000, 0x1, 0x3D, 0x38E39, 0x72=
+9 },
++       [OLYMPUS_LUT_CHAN_550125_IDX] =3D { 22005, 0x1, 0x3D, 0x40000, 0x72=
+A },
++       [OLYMPUS_LUT_CHAN_550250_IDX] =3D { 22010, 0x1, 0x3D, 0x471C7, 0x72=
+A },
++       [OLYMPUS_LUT_CHAN_550375_IDX] =3D { 22015, 0x1, 0x3D, 0x4E38E, 0x72=
+B },
++       [OLYMPUS_LUT_CHAN_550500_IDX] =3D { 22020, 0x1, 0x3D, 0x55555, 0x72=
+B },
++       [OLYMPUS_LUT_CHAN_550625_IDX] =3D { 22025, 0x1, 0x3D, 0x5C71C, 0x72=
+B },
++       [OLYMPUS_LUT_CHAN_550750_IDX] =3D { 22030, 0x1, 0x3D, 0x638E4, 0x72=
+C },
++       [OLYMPUS_LUT_CHAN_550875_IDX] =3D { 22035, 0x1, 0x3D, 0x6AAAB, 0x72=
+C },
++       [OLYMPUS_LUT_CHAN_551000_IDX] =3D { 22040, 0x1, 0x3D, 0x71C72, 0x72=
+D },
++       [OLYMPUS_LUT_CHAN_551125_IDX] =3D { 22045, 0x1, 0x3D, 0x78E39, 0x72=
+D },
++       [OLYMPUS_LUT_CHAN_551250_IDX] =3D { 22050, 0x1, 0x3D, 0x80000, 0x72=
+E },
++       [OLYMPUS_LUT_CHAN_551375_IDX] =3D { 22055, 0x1, 0x3D, 0x871C7, 0x72=
+E },
++       [OLYMPUS_LUT_CHAN_551500_IDX] =3D { 22060, 0x1, 0x3D, 0x8E38E, 0x72=
+E },
++       [OLYMPUS_LUT_CHAN_551625_IDX] =3D { 22065, 0x1, 0x3D, 0x95555, 0x72=
+F },
++       [OLYMPUS_LUT_CHAN_551750_IDX] =3D { 22070, 0x1, 0x3D, 0x9C71C, 0x72=
+F },
++       [OLYMPUS_LUT_CHAN_551875_IDX] =3D { 22075, 0x1, 0x3D, 0xA38E4, 0x73=
+0 },
++       [OLYMPUS_LUT_CHAN_552000_IDX] =3D { 22080, 0x1, 0x3D, 0xAAAAB, 0x73=
+0 },
++       [OLYMPUS_LUT_CHAN_552125_IDX] =3D { 22085, 0x1, 0x3D, 0xB1C72, 0x73=
+0 },
++       [OLYMPUS_LUT_CHAN_552250_IDX] =3D { 22090, 0x1, 0x3D, 0xB8E39, 0x73=
+1 },
++       [OLYMPUS_LUT_CHAN_552375_IDX] =3D { 22095, 0x1, 0x3D, 0xC0000, 0x73=
+1 },
++       [OLYMPUS_LUT_CHAN_552500_IDX] =3D { 22100, 0x1, 0x3D, 0xC71C7, 0x73=
+2 },
++       [OLYMPUS_LUT_CHAN_552625_IDX] =3D { 22105, 0x1, 0x3D, 0xCE38E, 0x73=
+2 },
++       [OLYMPUS_LUT_CHAN_552750_IDX] =3D { 22110, 0x1, 0x3D, 0xD5555, 0x73=
+3 },
++       [OLYMPUS_LUT_CHAN_552875_IDX] =3D { 22115, 0x1, 0x3D, 0xDC71C, 0x73=
+3 },
++       [OLYMPUS_LUT_CHAN_553000_IDX] =3D { 22120, 0x1, 0x3D, 0xE38E4, 0x73=
+3 },
++       [OLYMPUS_LUT_CHAN_553125_IDX] =3D { 22125, 0x1, 0x3D, 0xEAAAB, 0x73=
+4 },
++       [OLYMPUS_LUT_CHAN_553250_IDX] =3D { 22130, 0x1, 0x3D, 0xF1C72, 0x73=
+4 },
++       [OLYMPUS_LUT_CHAN_553375_IDX] =3D { 22135, 0x1, 0x3D, 0xF8E39, 0x73=
+5 },
++       [OLYMPUS_LUT_CHAN_553500_IDX] =3D { 22140, 0x1, 0x3D, 0x100000, 0x7=
+35 },
++       [OLYMPUS_LUT_CHAN_553625_IDX] =3D { 22145, 0x1, 0x3D, 0x1071C7, 0x7=
+35 },
++       [OLYMPUS_LUT_CHAN_553750_IDX] =3D { 22150, 0x1, 0x3D, 0x10E38E, 0x7=
+36 },
++       [OLYMPUS_LUT_CHAN_553875_IDX] =3D { 22155, 0x1, 0x3D, 0x115555, 0x7=
+36 },
++       [OLYMPUS_LUT_CHAN_554000_IDX] =3D { 22160, 0x1, 0x3D, 0x11C71C, 0x7=
+37 },
++       [OLYMPUS_LUT_CHAN_554125_IDX] =3D { 22165, 0x1, 0x3D, 0x1238E4, 0x7=
+37 },
++       [OLYMPUS_LUT_CHAN_554250_IDX] =3D { 22170, 0x1, 0x3D, 0x12AAAB, 0x7=
+38 },
++       [OLYMPUS_LUT_CHAN_554375_IDX] =3D { 22175, 0x1, 0x3D, 0x131C72, 0x7=
+38 },
++       [OLYMPUS_LUT_CHAN_554500_IDX] =3D { 22180, 0x1, 0x3D, 0x138E39, 0x7=
+38 },
++       [OLYMPUS_LUT_CHAN_554625_IDX] =3D { 22185, 0x1, 0x3D, 0x140000, 0x7=
+39 },
++       [OLYMPUS_LUT_CHAN_554750_IDX] =3D { 22190, 0x1, 0x3D, 0x1471C7, 0x7=
+39 },
++       [OLYMPUS_LUT_CHAN_554875_IDX] =3D { 22195, 0x1, 0x3D, 0x14E38E, 0x7=
+3A },
++       [OLYMPUS_LUT_CHAN_555000_IDX] =3D { 22200, 0x1, 0x3D, 0x155555, 0x7=
+3A },
++       [OLYMPUS_LUT_CHAN_555125_IDX] =3D { 22205, 0x1, 0x3D, 0x15C71C, 0x7=
+3A },
++       [OLYMPUS_LUT_CHAN_555250_IDX] =3D { 22210, 0x1, 0x3D, 0x1638E4, 0x7=
+3B },
++       [OLYMPUS_LUT_CHAN_555375_IDX] =3D { 22215, 0x1, 0x3D, 0x16AAAB, 0x7=
+3B },
++       [OLYMPUS_LUT_CHAN_555500_IDX] =3D { 22220, 0x1, 0x3D, 0x171C72, 0x7=
+3C },
++       [OLYMPUS_LUT_CHAN_555625_IDX] =3D { 22225, 0x1, 0x3D, 0x178E39, 0x7=
+3C },
++       [OLYMPUS_LUT_CHAN_555750_IDX] =3D { 22230, 0x1, 0x3D, 0x180000, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_555875_IDX] =3D { 22235, 0x1, 0x3D, 0x1871C7, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_556000_IDX] =3D { 22240, 0x1, 0x3D, 0x18E38E, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_556125_IDX] =3D { 22245, 0x1, 0x3D, 0x195555, 0x7=
+3E },
++       [OLYMPUS_LUT_CHAN_556250_IDX] =3D { 22250, 0x1, 0x3D, 0x19C71C, 0x7=
+3E },
++       [OLYMPUS_LUT_CHAN_556375_IDX] =3D { 22255, 0x1, 0x3D, 0x1A38E4, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556500_IDX] =3D { 22260, 0x1, 0x3D, 0x1AAAAB, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556625_IDX] =3D { 22265, 0x1, 0x3D, 0x1B1C72, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556750_IDX] =3D { 22270, 0x1, 0x3D, 0x1B8E39, 0x7=
+40 },
++       [OLYMPUS_LUT_CHAN_556875_IDX] =3D { 22275, 0x1, 0x3D, 0x1C0000, 0x7=
+40 },
++       [OLYMPUS_LUT_CHAN_557000_IDX] =3D { 22280, 0x1, 0x3D, 0x1C71C7, 0x7=
+41 },
++       [OLYMPUS_LUT_CHAN_557125_IDX] =3D { 22285, 0x1, 0x3D, 0x1CE38E, 0x7=
+41 },
++       [OLYMPUS_LUT_CHAN_557250_IDX] =3D { 22290, 0x1, 0x3D, 0x1D5555, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557375_IDX] =3D { 22295, 0x1, 0x3D, 0x1DC71C, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557500_IDX] =3D { 22300, 0x1, 0x3D, 0x1E38E4, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557625_IDX] =3D { 22305, 0x1, 0x3D, 0x1EAAAB, 0x7=
+43 },
++       [OLYMPUS_LUT_CHAN_557750_IDX] =3D { 22310, 0x1, 0x3D, 0x1F1C72, 0x7=
+43 },
++       [OLYMPUS_LUT_CHAN_557875_IDX] =3D { 22315, 0x1, 0x3D, 0x1F8E39, 0x7=
+44 },
++       [OLYMPUS_LUT_CHAN_558000_IDX] =3D { 22320, 0x1, 0x3E, 0x0, 0x744 },
++       [OLYMPUS_LUT_CHAN_558125_IDX] =3D { 22325, 0x1, 0x3E, 0x71C7, 0x744=
+ },
++       [OLYMPUS_LUT_CHAN_558250_IDX] =3D { 22330, 0x1, 0x3E, 0xE38E, 0x745=
+ },
++       [OLYMPUS_LUT_CHAN_558375_IDX] =3D { 22335, 0x1, 0x3E, 0x15555, 0x74=
+5 },
++       [OLYMPUS_LUT_CHAN_558500_IDX] =3D { 22340, 0x1, 0x3E, 0x1C71C, 0x74=
+6 },
++       [OLYMPUS_LUT_CHAN_558625_IDX] =3D { 22345, 0x1, 0x3E, 0x238E4, 0x74=
+6 },
++       [OLYMPUS_LUT_CHAN_558750_IDX] =3D { 22350, 0x1, 0x3E, 0x2AAAB, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_558875_IDX] =3D { 22355, 0x1, 0x3E, 0x31C72, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_559000_IDX] =3D { 22360, 0x1, 0x3E, 0x38E39, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_559125_IDX] =3D { 22365, 0x1, 0x3E, 0x40000, 0x74=
+8 },
++       [OLYMPUS_LUT_CHAN_559250_IDX] =3D { 22370, 0x1, 0x3E, 0x471C7, 0x74=
+8 },
++       [OLYMPUS_LUT_CHAN_559375_IDX] =3D { 22375, 0x1, 0x3E, 0x4E38E, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559500_IDX] =3D { 22380, 0x1, 0x3E, 0x55555, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559625_IDX] =3D { 22385, 0x1, 0x3E, 0x5C71C, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559750_IDX] =3D { 22390, 0x1, 0x3E, 0x638E4, 0x74=
+A },
++       [OLYMPUS_LUT_CHAN_559875_IDX] =3D { 22395, 0x1, 0x3E, 0x6AAAB, 0x74=
+A },
++       [OLYMPUS_LUT_CHAN_560000_IDX] =3D { 22400, 0x1, 0x3E, 0x71C72, 0x74=
+B },
++       [OLYMPUS_LUT_CHAN_560125_IDX] =3D { 22405, 0x1, 0x3E, 0x78E39, 0x74=
+B },
++       [OLYMPUS_LUT_CHAN_560250_IDX] =3D { 22410, 0x1, 0x3E, 0x80000, 0x74=
+C },
++       [OLYMPUS_LUT_CHAN_560375_IDX] =3D { 22415, 0x1, 0x3E, 0x871C7, 0x74=
+C },
++       [OLYMPUS_LUT_CHAN_560500_IDX] =3D { 22420, 0x1, 0x3E, 0x8E38E, 0x74=
+C },
++       [OLYMPUS_LUT_CHAN_560625_IDX] =3D { 22425, 0x1, 0x3E, 0x95555, 0x74=
+D },
++       [OLYMPUS_LUT_CHAN_560750_IDX] =3D { 22430, 0x1, 0x3E, 0x9C71C, 0x74=
+D },
++       [OLYMPUS_LUT_CHAN_560875_IDX] =3D { 22435, 0x1, 0x3E, 0xA38E4, 0x74=
+E },
++       [OLYMPUS_LUT_CHAN_561000_IDX] =3D { 22440, 0x1, 0x3E, 0xAAAAB, 0x74=
+E },
++       [OLYMPUS_LUT_CHAN_561125_IDX] =3D { 22445, 0x1, 0x3E, 0xB1C72, 0x74=
+E },
++       [OLYMPUS_LUT_CHAN_561250_IDX] =3D { 22450, 0x1, 0x3E, 0xB8E39, 0x74=
+F },
++       [OLYMPUS_LUT_CHAN_561375_IDX] =3D { 22455, 0x1, 0x3E, 0xC0000, 0x74=
+F },
++       [OLYMPUS_LUT_CHAN_561500_IDX] =3D { 22460, 0x1, 0x3E, 0xC71C7, 0x75=
+0 },
++       [OLYMPUS_LUT_CHAN_561625_IDX] =3D { 22465, 0x1, 0x3E, 0xCE38E, 0x75=
+0 },
++       [OLYMPUS_LUT_CHAN_561750_IDX] =3D { 22470, 0x1, 0x3E, 0xD5555, 0x75=
+1 },
++       [OLYMPUS_LUT_CHAN_561875_IDX] =3D { 22475, 0x1, 0x3E, 0xDC71C, 0x75=
+1 },
++       [OLYMPUS_LUT_CHAN_562000_IDX] =3D { 22480, 0x1, 0x3E, 0xE38E4, 0x75=
+1 },
++       [OLYMPUS_LUT_CHAN_562125_IDX] =3D { 22485, 0x1, 0x3E, 0xEAAAB, 0x75=
+2 },
++       [OLYMPUS_LUT_CHAN_562250_IDX] =3D { 22490, 0x1, 0x3E, 0xF1C72, 0x75=
+2 },
++       [OLYMPUS_LUT_CHAN_562375_IDX] =3D { 22495, 0x1, 0x3E, 0xF8E39, 0x75=
+3 },
++       [OLYMPUS_LUT_CHAN_562500_IDX] =3D { 22500, 0x1, 0x3E, 0x100000, 0x7=
+53 },
++       [OLYMPUS_LUT_CHAN_562625_IDX] =3D { 22505, 0x1, 0x3E, 0x1071C7, 0x7=
+53 },
++       [OLYMPUS_LUT_CHAN_562750_IDX] =3D { 22510, 0x1, 0x3E, 0x10E38E, 0x7=
+54 },
++       [OLYMPUS_LUT_CHAN_562875_IDX] =3D { 22515, 0x1, 0x3E, 0x115555, 0x7=
+54 },
++       [OLYMPUS_LUT_CHAN_563000_IDX] =3D { 22520, 0x1, 0x3E, 0x11C71C, 0x7=
+55 },
++       [OLYMPUS_LUT_CHAN_563125_IDX] =3D { 22525, 0x1, 0x3E, 0x1238E4, 0x7=
+55 },
++       [OLYMPUS_LUT_CHAN_563250_IDX] =3D { 22530, 0x1, 0x3E, 0x12AAAB, 0x7=
+56 },
++       [OLYMPUS_LUT_CHAN_563375_IDX] =3D { 22535, 0x1, 0x3E, 0x131C72, 0x7=
+56 },
++       [OLYMPUS_LUT_CHAN_563500_IDX] =3D { 22540, 0x1, 0x3E, 0x138E39, 0x7=
+56 },
++       [OLYMPUS_LUT_CHAN_563625_IDX] =3D { 22545, 0x1, 0x3E, 0x140000, 0x7=
+57 },
++       [OLYMPUS_LUT_CHAN_563750_IDX] =3D { 22550, 0x1, 0x3E, 0x1471C7, 0x7=
+57 },
++       [OLYMPUS_LUT_CHAN_563875_IDX] =3D { 22555, 0x1, 0x3E, 0x14E38E, 0x7=
+58 },
++       [OLYMPUS_LUT_CHAN_564000_IDX] =3D { 22560, 0x1, 0x3E, 0x155555, 0x7=
+58 },
++       [OLYMPUS_LUT_CHAN_564125_IDX] =3D { 22565, 0x1, 0x3E, 0x15C71C, 0x7=
+58 },
++       [OLYMPUS_LUT_CHAN_564250_IDX] =3D { 22570, 0x1, 0x3E, 0x1638E4, 0x7=
+59 },
++       [OLYMPUS_LUT_CHAN_564375_IDX] =3D { 22575, 0x1, 0x3E, 0x16AAAB, 0x7=
+59 },
++       [OLYMPUS_LUT_CHAN_564500_IDX] =3D { 22580, 0x1, 0x3E, 0x171C72, 0x7=
+5A },
++       [OLYMPUS_LUT_CHAN_564625_IDX] =3D { 22585, 0x1, 0x3E, 0x178E39, 0x7=
+5A },
++       [OLYMPUS_LUT_CHAN_564750_IDX] =3D { 22590, 0x1, 0x3E, 0x180000, 0x7=
+5B },
++       [OLYMPUS_LUT_CHAN_564875_IDX] =3D { 22595, 0x1, 0x3E, 0x1871C7, 0x7=
+5B },
++       [OLYMPUS_LUT_CHAN_565000_IDX] =3D { 22600, 0x1, 0x3E, 0x18E38E, 0x7=
+5B },
++       [OLYMPUS_LUT_CHAN_565125_IDX] =3D { 22605, 0x1, 0x3E, 0x195555, 0x7=
+5C },
++       [OLYMPUS_LUT_CHAN_565250_IDX] =3D { 22610, 0x1, 0x3E, 0x19C71C, 0x7=
+5C },
++       [OLYMPUS_LUT_CHAN_565375_IDX] =3D { 22615, 0x1, 0x3E, 0x1A38E4, 0x7=
+5D },
++       [OLYMPUS_LUT_CHAN_565500_IDX] =3D { 22620, 0x1, 0x3E, 0x1AAAAB, 0x7=
+5D },
++       [OLYMPUS_LUT_CHAN_565625_IDX] =3D { 22625, 0x1, 0x3E, 0x1B1C72, 0x7=
+5D },
++       [OLYMPUS_LUT_CHAN_565750_IDX] =3D { 22630, 0x1, 0x3E, 0x1B8E39, 0x7=
+5E },
++       [OLYMPUS_LUT_CHAN_565875_IDX] =3D { 22635, 0x1, 0x3E, 0x1C0000, 0x7=
+5E },
++       [OLYMPUS_LUT_CHAN_566000_IDX] =3D { 22640, 0x1, 0x3E, 0x1C71C7, 0x7=
+5F },
++       [OLYMPUS_LUT_CHAN_566125_IDX] =3D { 22645, 0x1, 0x3E, 0x1CE38E, 0x7=
+5F },
++       [OLYMPUS_LUT_CHAN_566250_IDX] =3D { 22650, 0x1, 0x3E, 0x1D5555, 0x7=
+60 },
++       [OLYMPUS_LUT_CHAN_566375_IDX] =3D { 22655, 0x1, 0x3E, 0x1DC71C, 0x7=
+60 },
++       [OLYMPUS_LUT_CHAN_566500_IDX] =3D { 22660, 0x1, 0x3E, 0x1E38E4, 0x7=
+60 },
++       [OLYMPUS_LUT_CHAN_566625_IDX] =3D { 22665, 0x1, 0x3E, 0x1EAAAB, 0x7=
+61 },
++       [OLYMPUS_LUT_CHAN_566750_IDX] =3D { 22670, 0x1, 0x3E, 0x1F1C72, 0x7=
+61 },
++       [OLYMPUS_LUT_CHAN_566875_IDX] =3D { 22675, 0x1, 0x3E, 0x1F8E39, 0x7=
+62 },
++       [OLYMPUS_LUT_CHAN_567000_IDX] =3D { 22680, 0x1, 0x3F, 0x0, 0x762 },
++       [OLYMPUS_LUT_CHAN_567125_IDX] =3D { 22685, 0x1, 0x3F, 0x71C7, 0x762=
+ },
++       [OLYMPUS_LUT_CHAN_567250_IDX] =3D { 22690, 0x1, 0x3F, 0xE38E, 0x763=
+ },
++       [OLYMPUS_LUT_CHAN_567375_IDX] =3D { 22695, 0x1, 0x3F, 0x15555, 0x76=
+3 },
++       [OLYMPUS_LUT_CHAN_567500_IDX] =3D { 22700, 0x1, 0x3F, 0x1C71C, 0x76=
+4 },
++       [OLYMPUS_LUT_CHAN_567625_IDX] =3D { 22705, 0x1, 0x3F, 0x238E4, 0x76=
+4 },
++       [OLYMPUS_LUT_CHAN_567750_IDX] =3D { 22710, 0x1, 0x3F, 0x2AAAB, 0x76=
+5 },
++       [OLYMPUS_LUT_CHAN_567875_IDX] =3D { 22715, 0x1, 0x3F, 0x31C72, 0x76=
+5 },
++       [OLYMPUS_LUT_CHAN_568000_IDX] =3D { 22720, 0x1, 0x3F, 0x38E39, 0x76=
+5 },
++       [OLYMPUS_LUT_CHAN_568125_IDX] =3D { 22725, 0x1, 0x3F, 0x40000, 0x76=
+6 },
++       [OLYMPUS_LUT_CHAN_568250_IDX] =3D { 22730, 0x1, 0x3F, 0x471C7, 0x76=
+6 },
++       [OLYMPUS_LUT_CHAN_568375_IDX] =3D { 22735, 0x1, 0x3F, 0x4E38E, 0x76=
+7 },
++       [OLYMPUS_LUT_CHAN_568500_IDX] =3D { 22740, 0x1, 0x3F, 0x55555, 0x76=
+7 },
++       [OLYMPUS_LUT_CHAN_568625_IDX] =3D { 22745, 0x1, 0x3F, 0x5C71C, 0x76=
+7 },
++       [OLYMPUS_LUT_CHAN_568750_IDX] =3D { 22750, 0x1, 0x3F, 0x638E4, 0x76=
+8 },
++       [OLYMPUS_LUT_CHAN_568875_IDX] =3D { 22755, 0x1, 0x3F, 0x6AAAB, 0x76=
+8 },
++       [OLYMPUS_LUT_CHAN_569000_IDX] =3D { 22760, 0x1, 0x3F, 0x71C72, 0x76=
+9 },
++       [OLYMPUS_LUT_CHAN_569125_IDX] =3D { 22765, 0x1, 0x3F, 0x78E39, 0x76=
+9 },
++       [OLYMPUS_LUT_CHAN_569250_IDX] =3D { 22770, 0x1, 0x3F, 0x80000, 0x76=
+A },
++       [OLYMPUS_LUT_CHAN_569375_IDX] =3D { 22775, 0x1, 0x3F, 0x871C7, 0x76=
+A },
++       [OLYMPUS_LUT_CHAN_569500_IDX] =3D { 22780, 0x1, 0x3F, 0x8E38E, 0x76=
+A },
++       [OLYMPUS_LUT_CHAN_569625_IDX] =3D { 22785, 0x1, 0x3F, 0x95555, 0x76=
+B },
++       [OLYMPUS_LUT_CHAN_569750_IDX] =3D { 22790, 0x1, 0x3F, 0x9C71C, 0x76=
+B },
++       [OLYMPUS_LUT_CHAN_569875_IDX] =3D { 22795, 0x1, 0x3F, 0xA38E4, 0x76=
+C },
++       [OLYMPUS_LUT_CHAN_570000_IDX] =3D { 22800, 0x1, 0x3F, 0xAAAAB, 0x76=
+C },
++       [OLYMPUS_LUT_CHAN_570125_IDX] =3D { 22805, 0x1, 0x3F, 0xB1C72, 0x76=
+C },
++       [OLYMPUS_LUT_CHAN_570250_IDX] =3D { 22810, 0x1, 0x3F, 0xB8E39, 0x76=
+D },
++       [OLYMPUS_LUT_CHAN_570375_IDX] =3D { 22815, 0x1, 0x3F, 0xC0000, 0x76=
+D },
++       [OLYMPUS_LUT_CHAN_570500_IDX] =3D { 22820, 0x1, 0x3F, 0xC71C7, 0x76=
+E },
++       [OLYMPUS_LUT_CHAN_570625_IDX] =3D { 22825, 0x1, 0x3F, 0xCE38E, 0x76=
+E },
++       [OLYMPUS_LUT_CHAN_570750_IDX] =3D { 22830, 0x1, 0x3F, 0xD5555, 0x76=
+F },
++       [OLYMPUS_LUT_CHAN_570875_IDX] =3D { 22835, 0x1, 0x3F, 0xDC71C, 0x76=
+F },
++       [OLYMPUS_LUT_CHAN_571000_IDX] =3D { 22840, 0x1, 0x3F, 0xE38E4, 0x76=
+F },
++       [OLYMPUS_LUT_CHAN_571125_IDX] =3D { 22845, 0x1, 0x3F, 0xEAAAB, 0x77=
+0 },
++       [OLYMPUS_LUT_CHAN_571250_IDX] =3D { 22850, 0x1, 0x3F, 0xF1C72, 0x77=
+0 },
++       [OLYMPUS_LUT_CHAN_571375_IDX] =3D { 22855, 0x1, 0x3F, 0xF8E39, 0x77=
+1 },
++       [OLYMPUS_LUT_CHAN_571500_IDX] =3D { 22860, 0x1, 0x3F, 0x100000, 0x7=
+71 },
++       [OLYMPUS_LUT_CHAN_571625_IDX] =3D { 22865, 0x1, 0x3F, 0x1071C7, 0x7=
+71 },
++       [OLYMPUS_LUT_CHAN_571750_IDX] =3D { 22870, 0x1, 0x3F, 0x10E38E, 0x7=
+72 },
++       [OLYMPUS_LUT_CHAN_571875_IDX] =3D { 22875, 0x1, 0x3F, 0x115555, 0x7=
+72 },
++       [OLYMPUS_LUT_CHAN_572000_IDX] =3D { 22880, 0x1, 0x3F, 0x11C71C, 0x7=
+73 },
++       [OLYMPUS_LUT_CHAN_572125_IDX] =3D { 22885, 0x1, 0x3F, 0x1238E4, 0x7=
+73 },
++       [OLYMPUS_LUT_CHAN_572250_IDX] =3D { 22890, 0x1, 0x3F, 0x12AAAB, 0x7=
+74 },
++       [OLYMPUS_LUT_CHAN_572375_IDX] =3D { 22895, 0x1, 0x3F, 0x131C72, 0x7=
+74 },
++       [OLYMPUS_LUT_CHAN_572500_IDX] =3D { 22900, 0x1, 0x3F, 0x138E39, 0x7=
+74 },
++       [OLYMPUS_LUT_CHAN_572625_IDX] =3D { 22905, 0x1, 0x3F, 0x140000, 0x7=
+75 },
++       [OLYMPUS_LUT_CHAN_572750_IDX] =3D { 22910, 0x1, 0x3F, 0x1471C7, 0x7=
+75 },
++       [OLYMPUS_LUT_CHAN_572875_IDX] =3D { 22915, 0x1, 0x3F, 0x14E38E, 0x7=
+76 },
++       [OLYMPUS_LUT_CHAN_573000_IDX] =3D { 22920, 0x1, 0x3F, 0x155555, 0x7=
+76 },
++       [OLYMPUS_LUT_CHAN_573125_IDX] =3D { 22925, 0x1, 0x3F, 0x15C71C, 0x7=
+76 },
++       [OLYMPUS_LUT_CHAN_573250_IDX] =3D { 22930, 0x1, 0x3F, 0x1638E4, 0x7=
+77 },
++       [OLYMPUS_LUT_CHAN_573375_IDX] =3D { 22935, 0x1, 0x3F, 0x16AAAB, 0x7=
+77 },
++       [OLYMPUS_LUT_CHAN_573500_IDX] =3D { 22940, 0x1, 0x3F, 0x171C72, 0x7=
+78 },
++       [OLYMPUS_LUT_CHAN_573625_IDX] =3D { 22945, 0x1, 0x3F, 0x178E39, 0x7=
+78 },
++       [OLYMPUS_LUT_CHAN_573750_IDX] =3D { 22950, 0x1, 0x3F, 0x180000, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_573875_IDX] =3D { 22955, 0x1, 0x3F, 0x1871C7, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_574000_IDX] =3D { 22960, 0x1, 0x3F, 0x18E38E, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_574125_IDX] =3D { 22965, 0x1, 0x3F, 0x195555, 0x7=
+7A },
++       [OLYMPUS_LUT_CHAN_574250_IDX] =3D { 22970, 0x1, 0x3F, 0x19C71C, 0x7=
+7A },
++       [OLYMPUS_LUT_CHAN_574375_IDX] =3D { 22975, 0x1, 0x3F, 0x1A38E4, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574500_IDX] =3D { 22980, 0x1, 0x3F, 0x1AAAAB, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574625_IDX] =3D { 22985, 0x1, 0x3F, 0x1B1C72, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574750_IDX] =3D { 22990, 0x1, 0x3F, 0x1B8E39, 0x7=
+7C },
++       [OLYMPUS_LUT_CHAN_574875_IDX] =3D { 22995, 0x1, 0x3F, 0x1C0000, 0x7=
+7C },
++       [OLYMPUS_LUT_CHAN_575000_IDX] =3D { 23000, 0x1, 0x3F, 0x1C71C7, 0x7=
+7D },
++       [OLYMPUS_LUT_CHAN_575125_IDX] =3D { 23005, 0x1, 0x3F, 0x1CE38E, 0x7=
+7D },
++       [OLYMPUS_LUT_CHAN_575250_IDX] =3D { 23010, 0x1, 0x3F, 0x1D5555, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575375_IDX] =3D { 23015, 0x1, 0x3F, 0x1DC71C, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575500_IDX] =3D { 23020, 0x1, 0x3F, 0x1E38E4, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575625_IDX] =3D { 23025, 0x1, 0x3F, 0x1EAAAB, 0x7=
+7F },
++       [OLYMPUS_LUT_CHAN_575750_IDX] =3D { 23030, 0x1, 0x3F, 0x1F1C72, 0x7=
+7F },
++       [OLYMPUS_LUT_CHAN_575875_IDX] =3D { 23035, 0x1, 0x3F, 0x1F8E39, 0x7=
+80 },
++       [OLYMPUS_LUT_CHAN_576000_IDX] =3D { 23040, 0x1, 0x40, 0x0, 0x780 },
++       [OLYMPUS_LUT_CHAN_576125_IDX] =3D { 23045, 0x1, 0x40, 0x71C7, 0x780=
+ },
++       [OLYMPUS_LUT_CHAN_576250_IDX] =3D { 23050, 0x1, 0x40, 0xE38E, 0x781=
+ },
++       [OLYMPUS_LUT_CHAN_576375_IDX] =3D { 23055, 0x1, 0x40, 0x15555, 0x78=
+1 },
++       [OLYMPUS_LUT_CHAN_576500_IDX] =3D { 23060, 0x1, 0x40, 0x1C71C, 0x78=
+2 },
++       [OLYMPUS_LUT_CHAN_576625_IDX] =3D { 23065, 0x1, 0x40, 0x238E4, 0x78=
+2 },
++       [OLYMPUS_LUT_CHAN_576750_IDX] =3D { 23070, 0x1, 0x40, 0x2AAAB, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_576875_IDX] =3D { 23075, 0x1, 0x40, 0x31C72, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_577000_IDX] =3D { 23080, 0x1, 0x40, 0x38E39, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_577125_IDX] =3D { 23085, 0x1, 0x40, 0x40000, 0x78=
+4 },
++       [OLYMPUS_LUT_CHAN_577250_IDX] =3D { 23090, 0x1, 0x40, 0x471C7, 0x78=
+4 },
++       [OLYMPUS_LUT_CHAN_577375_IDX] =3D { 23095, 0x1, 0x40, 0x4E38E, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577500_IDX] =3D { 23100, 0x1, 0x40, 0x55555, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577625_IDX] =3D { 23105, 0x1, 0x40, 0x5C71C, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577750_IDX] =3D { 23110, 0x1, 0x40, 0x638E4, 0x78=
+6 },
++       [OLYMPUS_LUT_CHAN_577875_IDX] =3D { 23115, 0x1, 0x40, 0x6AAAB, 0x78=
+6 },
++       [OLYMPUS_LUT_CHAN_578000_IDX] =3D { 23120, 0x1, 0x40, 0x71C72, 0x78=
+7 },
++       [OLYMPUS_LUT_CHAN_578125_IDX] =3D { 23125, 0x1, 0x40, 0x78E39, 0x78=
+7 },
++       [OLYMPUS_LUT_CHAN_578250_IDX] =3D { 23130, 0x1, 0x40, 0x80000, 0x78=
+8 },
++       [OLYMPUS_LUT_CHAN_578375_IDX] =3D { 23135, 0x1, 0x40, 0x871C7, 0x78=
+8 },
++       [OLYMPUS_LUT_CHAN_578500_IDX] =3D { 23140, 0x1, 0x40, 0x8E38E, 0x78=
+8 },
++       [OLYMPUS_LUT_CHAN_578625_IDX] =3D { 23145, 0x1, 0x40, 0x95555, 0x78=
+9 },
++       [OLYMPUS_LUT_CHAN_578750_IDX] =3D { 23150, 0x1, 0x40, 0x9C71C, 0x78=
+9 },
++       [OLYMPUS_LUT_CHAN_578875_IDX] =3D { 23155, 0x1, 0x40, 0xA38E4, 0x78=
+A },
++       [OLYMPUS_LUT_CHAN_579000_IDX] =3D { 23160, 0x1, 0x40, 0xAAAAB, 0x78=
+A },
++       [OLYMPUS_LUT_CHAN_579125_IDX] =3D { 23165, 0x1, 0x40, 0xB1C72, 0x78=
+A },
++       [OLYMPUS_LUT_CHAN_579250_IDX] =3D { 23170, 0x1, 0x40, 0xB8E39, 0x78=
+B },
++       [OLYMPUS_LUT_CHAN_579375_IDX] =3D { 23175, 0x1, 0x40, 0xC0000, 0x78=
+B },
++       [OLYMPUS_LUT_CHAN_579500_IDX] =3D { 23180, 0x1, 0x40, 0xC71C7, 0x78=
+C },
++       [OLYMPUS_LUT_CHAN_579625_IDX] =3D { 23185, 0x1, 0x40, 0xCE38E, 0x78=
+C },
++       [OLYMPUS_LUT_CHAN_579750_IDX] =3D { 23190, 0x1, 0x40, 0xD5555, 0x78=
+D },
++       [OLYMPUS_LUT_CHAN_579875_IDX] =3D { 23195, 0x1, 0x40, 0xDC71C, 0x78=
+D },
++       [OLYMPUS_LUT_CHAN_580000_IDX] =3D { 23200, 0x1, 0x40, 0xE38E4, 0x78=
+D },
++       [OLYMPUS_LUT_CHAN_580125_IDX] =3D { 23205, 0x1, 0x40, 0xEAAAB, 0x78=
+E },
++       [OLYMPUS_LUT_CHAN_580250_IDX] =3D { 23210, 0x1, 0x40, 0xF1C72, 0x78=
+E },
++       [OLYMPUS_LUT_CHAN_580375_IDX] =3D { 23215, 0x1, 0x40, 0xF8E39, 0x78=
+F },
++       [OLYMPUS_LUT_CHAN_580500_IDX] =3D { 23220, 0x1, 0x40, 0x100000, 0x7=
+8F },
++       [OLYMPUS_LUT_CHAN_580625_IDX] =3D { 23225, 0x1, 0x40, 0x1071C7, 0x7=
+8F },
++       [OLYMPUS_LUT_CHAN_580750_IDX] =3D { 23230, 0x1, 0x40, 0x10E38E, 0x7=
+90 },
++       [OLYMPUS_LUT_CHAN_580875_IDX] =3D { 23235, 0x1, 0x40, 0x115555, 0x7=
+90 },
++       [OLYMPUS_LUT_CHAN_581000_IDX] =3D { 23240, 0x1, 0x40, 0x11C71C, 0x7=
+91 },
++       [OLYMPUS_LUT_CHAN_581125_IDX] =3D { 23245, 0x1, 0x40, 0x1238E4, 0x7=
+91 },
++       [OLYMPUS_LUT_CHAN_581250_IDX] =3D { 23250, 0x1, 0x40, 0x12AAAB, 0x7=
+92 },
++       [OLYMPUS_LUT_CHAN_581375_IDX] =3D { 23255, 0x1, 0x40, 0x131C72, 0x7=
+92 },
++       [OLYMPUS_LUT_CHAN_581500_IDX] =3D { 23260, 0x1, 0x40, 0x138E39, 0x7=
+92 },
++       [OLYMPUS_LUT_CHAN_581625_IDX] =3D { 23265, 0x1, 0x40, 0x140000, 0x7=
+93 },
++       [OLYMPUS_LUT_CHAN_581750_IDX] =3D { 23270, 0x1, 0x40, 0x1471C7, 0x7=
+93 },
++       [OLYMPUS_LUT_CHAN_581875_IDX] =3D { 23275, 0x1, 0x40, 0x14E38E, 0x7=
+94 },
++       [OLYMPUS_LUT_CHAN_582000_IDX] =3D { 23280, 0x1, 0x40, 0x155555, 0x7=
+94 },
++       [OLYMPUS_LUT_CHAN_582125_IDX] =3D { 23285, 0x1, 0x40, 0x15C71C, 0x7=
+94 },
++       [OLYMPUS_LUT_CHAN_582250_IDX] =3D { 23290, 0x1, 0x40, 0x1638E4, 0x7=
+95 },
++       [OLYMPUS_LUT_CHAN_582375_IDX] =3D { 23295, 0x1, 0x40, 0x16AAAB, 0x7=
+95 },
++       [OLYMPUS_LUT_CHAN_582500_IDX] =3D { 23300, 0x1, 0x40, 0x171C72, 0x7=
+96 },
++       [OLYMPUS_LUT_CHAN_582625_IDX] =3D { 23305, 0x1, 0x40, 0x178E39, 0x7=
+96 },
++       [OLYMPUS_LUT_CHAN_582750_IDX] =3D { 23310, 0x1, 0x40, 0x180000, 0x7=
+97 },
++       [OLYMPUS_LUT_CHAN_582875_IDX] =3D { 23315, 0x1, 0x40, 0x1871C7, 0x7=
+97 },
++       [OLYMPUS_LUT_CHAN_583000_IDX] =3D { 23320, 0x1, 0x40, 0x18E38E, 0x7=
+97 },
++       [OLYMPUS_LUT_CHAN_583125_IDX] =3D { 23325, 0x1, 0x40, 0x195555, 0x7=
+98 },
++       [OLYMPUS_LUT_CHAN_583250_IDX] =3D { 23330, 0x1, 0x40, 0x19C71C, 0x7=
+98 },
++       [OLYMPUS_LUT_CHAN_583375_IDX] =3D { 23335, 0x1, 0x40, 0x1A38E4, 0x7=
+99 },
++       [OLYMPUS_LUT_CHAN_583500_IDX] =3D { 23340, 0x1, 0x40, 0x1AAAAB, 0x7=
+99 },
++       [OLYMPUS_LUT_CHAN_583625_IDX] =3D { 23345, 0x1, 0x40, 0x1B1C72, 0x7=
+99 },
++       [OLYMPUS_LUT_CHAN_583750_IDX] =3D { 23350, 0x1, 0x40, 0x1B8E39, 0x7=
+9A },
++       [OLYMPUS_LUT_CHAN_583875_IDX] =3D { 23355, 0x1, 0x40, 0x1C0000, 0x7=
+9A },
++       [OLYMPUS_LUT_CHAN_584000_IDX] =3D { 23360, 0x1, 0x40, 0x1C71C7, 0x7=
+9B },
++       [OLYMPUS_LUT_CHAN_584125_IDX] =3D { 23365, 0x1, 0x40, 0x1CE38E, 0x7=
+9B },
++       [OLYMPUS_LUT_CHAN_584250_IDX] =3D { 23370, 0x1, 0x40, 0x1D5555, 0x7=
+9C },
++       [OLYMPUS_LUT_CHAN_584375_IDX] =3D { 23375, 0x1, 0x40, 0x1DC71C, 0x7=
+9C },
++       [OLYMPUS_LUT_CHAN_584500_IDX] =3D { 23380, 0x1, 0x40, 0x1E38E4, 0x7=
+9C },
++       [OLYMPUS_LUT_CHAN_584625_IDX] =3D { 23385, 0x1, 0x40, 0x1EAAAB, 0x7=
+9D },
++       [OLYMPUS_LUT_CHAN_584750_IDX] =3D { 23390, 0x1, 0x40, 0x1F1C72, 0x7=
+9D },
++       [OLYMPUS_LUT_CHAN_584875_IDX] =3D { 23395, 0x1, 0x40, 0x1F8E39, 0x7=
+9E },
++       [OLYMPUS_LUT_CHAN_585000_IDX] =3D { 23400, 0x1, 0x41, 0x0, 0x79E },
++       [OLYMPUS_LUT_CHAN_585125_IDX] =3D { 23405, 0x1, 0x41, 0x71C7, 0x79E=
+ },
++       [OLYMPUS_LUT_CHAN_585250_IDX] =3D { 23410, 0x1, 0x41, 0xE38E, 0x79F=
+ },
++       [OLYMPUS_LUT_CHAN_585375_IDX] =3D { 23415, 0x1, 0x41, 0x15555, 0x79=
+F },
++       [OLYMPUS_LUT_CHAN_585500_IDX] =3D { 23420, 0x1, 0x41, 0x1C71C, 0x7A=
+0 },
++       [OLYMPUS_LUT_CHAN_585625_IDX] =3D { 23425, 0x1, 0x41, 0x238E4, 0x7A=
+0 },
++       [OLYMPUS_LUT_CHAN_585750_IDX] =3D { 23430, 0x1, 0x41, 0x2AAAB, 0x7A=
+1 },
++       [OLYMPUS_LUT_CHAN_585875_IDX] =3D { 23435, 0x1, 0x41, 0x31C72, 0x7A=
+1 },
++       [OLYMPUS_LUT_CHAN_586000_IDX] =3D { 23440, 0x1, 0x41, 0x38E39, 0x7A=
+1 },
++       [OLYMPUS_LUT_CHAN_586125_IDX] =3D { 23445, 0x1, 0x41, 0x40000, 0x7A=
+2 },
++       [OLYMPUS_LUT_CHAN_586250_IDX] =3D { 23450, 0x1, 0x41, 0x471C7, 0x7A=
+2 },
++       [OLYMPUS_LUT_CHAN_586375_IDX] =3D { 23455, 0x1, 0x41, 0x4E38E, 0x7A=
+3 },
++       [OLYMPUS_LUT_CHAN_586500_IDX] =3D { 23460, 0x1, 0x41, 0x55555, 0x7A=
+3 },
++       [OLYMPUS_LUT_CHAN_586625_IDX] =3D { 23465, 0x1, 0x41, 0x5C71C, 0x7A=
+3 },
++       [OLYMPUS_LUT_CHAN_586750_IDX] =3D { 23470, 0x1, 0x41, 0x638E4, 0x7A=
+4 },
++       [OLYMPUS_LUT_CHAN_586875_IDX] =3D { 23475, 0x1, 0x41, 0x6AAAB, 0x7A=
+4 },
++       [OLYMPUS_LUT_CHAN_587000_IDX] =3D { 23480, 0x1, 0x41, 0x71C72, 0x7A=
+5 },
++       [OLYMPUS_LUT_CHAN_587125_IDX] =3D { 23485, 0x1, 0x41, 0x78E39, 0x7A=
+5 },
++       [OLYMPUS_LUT_CHAN_587250_IDX] =3D { 23490, 0x1, 0x41, 0x80000, 0x7A=
+6 },
++       [OLYMPUS_LUT_CHAN_587375_IDX] =3D { 23495, 0x1, 0x41, 0x871C7, 0x7A=
+6 },
++       [OLYMPUS_LUT_CHAN_587500_IDX] =3D { 23500, 0x1, 0x41, 0x8E38E, 0x7A=
+6 },
++       [OLYMPUS_LUT_CHAN_587625_IDX] =3D { 23505, 0x1, 0x41, 0x95555, 0x7A=
+7 },
++       [OLYMPUS_LUT_CHAN_587750_IDX] =3D { 23510, 0x1, 0x41, 0x9C71C, 0x7A=
+7 },
++       [OLYMPUS_LUT_CHAN_587875_IDX] =3D { 23515, 0x1, 0x41, 0xA38E4, 0x7A=
+8 },
++       [OLYMPUS_LUT_CHAN_588000_IDX] =3D { 23520, 0x1, 0x41, 0xAAAAB, 0x7A=
+8 },
++       [OLYMPUS_LUT_CHAN_588125_IDX] =3D { 23525, 0x1, 0x41, 0xB1C72, 0x7A=
+8 },
++       [OLYMPUS_LUT_CHAN_588250_IDX] =3D { 23530, 0x1, 0x41, 0xB8E39, 0x7A=
+9 },
++       [OLYMPUS_LUT_CHAN_588375_IDX] =3D { 23535, 0x1, 0x41, 0xC0000, 0x7A=
+9 },
++       [OLYMPUS_LUT_CHAN_588500_IDX] =3D { 23540, 0x1, 0x41, 0xC71C7, 0x7A=
+A },
++       [OLYMPUS_LUT_CHAN_588625_IDX] =3D { 23545, 0x1, 0x41, 0xCE38E, 0x7A=
+A },
++       [OLYMPUS_LUT_CHAN_588750_IDX] =3D { 23550, 0x1, 0x41, 0xD5555, 0x7A=
+B },
++       [OLYMPUS_LUT_CHAN_588875_IDX] =3D { 23555, 0x1, 0x41, 0xDC71C, 0x7A=
+B },
++       [OLYMPUS_LUT_CHAN_589000_IDX] =3D { 23560, 0x1, 0x41, 0xE38E4, 0x7A=
+B },
++       [OLYMPUS_LUT_CHAN_589125_IDX] =3D { 23565, 0x1, 0x41, 0xEAAAB, 0x7A=
+C },
++       [OLYMPUS_LUT_CHAN_589250_IDX] =3D { 23570, 0x1, 0x41, 0xF1C72, 0x7A=
+C },
++       [OLYMPUS_LUT_CHAN_589375_IDX] =3D { 23575, 0x1, 0x41, 0xF8E39, 0x7A=
+D },
++       [OLYMPUS_LUT_CHAN_589500_IDX] =3D { 23580, 0x1, 0x41, 0x100000, 0x7=
+AD },
++       [OLYMPUS_LUT_CHAN_589625_IDX] =3D { 23585, 0x1, 0x41, 0x1071C7, 0x7=
+AD },
++       [OLYMPUS_LUT_CHAN_589750_IDX] =3D { 23590, 0x1, 0x41, 0x10E38E, 0x7=
+AE },
++       [OLYMPUS_LUT_CHAN_589875_IDX] =3D { 23595, 0x1, 0x41, 0x115555, 0x7=
+AE },
++       [OLYMPUS_LUT_CHAN_590000_IDX] =3D { 23600, 0x1, 0x41, 0x11C71C, 0x7=
+AF },
++       [OLYMPUS_LUT_CHAN_590125_IDX] =3D { 23605, 0x1, 0x41, 0x1238E4, 0x7=
+AF },
++       [OLYMPUS_LUT_CHAN_590250_IDX] =3D { 23610, 0x1, 0x41, 0x12AAAB, 0x7=
+B0 },
++       [OLYMPUS_LUT_CHAN_590375_IDX] =3D { 23615, 0x1, 0x41, 0x131C72, 0x7=
+B0 },
++       [OLYMPUS_LUT_CHAN_590500_IDX] =3D { 23620, 0x1, 0x41, 0x138E39, 0x7=
+B0 },
++       [OLYMPUS_LUT_CHAN_590625_IDX] =3D { 23625, 0x1, 0x41, 0x140000, 0x7=
+B1 },
++       [OLYMPUS_LUT_CHAN_590750_IDX] =3D { 23630, 0x1, 0x41, 0x1471C7, 0x7=
+B1 },
++       [OLYMPUS_LUT_CHAN_590875_IDX] =3D { 23635, 0x1, 0x41, 0x14E38E, 0x7=
+B2 },
++       [OLYMPUS_LUT_CHAN_591000_IDX] =3D { 23640, 0x1, 0x41, 0x155555, 0x7=
+B2 },
++       [OLYMPUS_LUT_CHAN_591125_IDX] =3D { 23645, 0x1, 0x41, 0x15C71C, 0x7=
+B2 },
++       [OLYMPUS_LUT_CHAN_591250_IDX] =3D { 23650, 0x1, 0x41, 0x1638E4, 0x7=
+B3 },
++       [OLYMPUS_LUT_CHAN_591375_IDX] =3D { 23655, 0x1, 0x41, 0x16AAAB, 0x7=
+B3 },
++       [OLYMPUS_LUT_CHAN_591500_IDX] =3D { 23660, 0x1, 0x41, 0x171C72, 0x7=
+B4 },
++       [OLYMPUS_LUT_CHAN_591625_IDX] =3D { 23665, 0x1, 0x41, 0x178E39, 0x7=
+B4 },
++       [OLYMPUS_LUT_CHAN_591750_IDX] =3D { 23670, 0x1, 0x41, 0x180000, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_591875_IDX] =3D { 23675, 0x1, 0x41, 0x1871C7, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_592000_IDX] =3D { 23680, 0x1, 0x41, 0x18E38E, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_592125_IDX] =3D { 23685, 0x1, 0x41, 0x195555, 0x7=
+B6 },
++       [OLYMPUS_LUT_CHAN_592250_IDX] =3D { 23690, 0x1, 0x41, 0x19C71C, 0x7=
+B6 },
++       [OLYMPUS_LUT_CHAN_592375_IDX] =3D { 23695, 0x1, 0x41, 0x1A38E4, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592500_IDX] =3D { 23700, 0x1, 0x41, 0x1AAAAB, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592625_IDX] =3D { 23705, 0x1, 0x41, 0x1B1C72, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592750_IDX] =3D { 23710, 0x1, 0x41, 0x1B8E39, 0x7=
+B8 },
++       [OLYMPUS_LUT_CHAN_592875_IDX] =3D { 23715, 0x1, 0x41, 0x1C0000, 0x7=
+B8 },
++       [OLYMPUS_LUT_CHAN_593000_IDX] =3D { 23720, 0x1, 0x41, 0x1C71C7, 0x7=
+B9 },
++       [OLYMPUS_LUT_CHAN_593125_IDX] =3D { 23725, 0x1, 0x41, 0x1CE38E, 0x7=
+B9 },
++       [OLYMPUS_LUT_CHAN_593250_IDX] =3D { 23730, 0x1, 0x41, 0x1D5555, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593375_IDX] =3D { 23735, 0x1, 0x41, 0x1DC71C, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593500_IDX] =3D { 23740, 0x1, 0x41, 0x1E38E4, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593625_IDX] =3D { 23745, 0x1, 0x41, 0x1EAAAB, 0x7=
+BB },
++       [OLYMPUS_LUT_CHAN_593750_IDX] =3D { 23750, 0x1, 0x41, 0x1F1C72, 0x7=
+BB },
++       [OLYMPUS_LUT_CHAN_593875_IDX] =3D { 23755, 0x1, 0x41, 0x1F8E39, 0x7=
+BC },
++       [OLYMPUS_LUT_CHAN_594000_IDX] =3D { 23760, 0x1, 0x42, 0x0, 0x7BC },
++       [OLYMPUS_LUT_CHAN_594125_IDX] =3D { 23765, 0x1, 0x42, 0x71C7, 0x7BC=
+ },
++       [OLYMPUS_LUT_CHAN_594250_IDX] =3D { 23770, 0x1, 0x42, 0xE38E, 0x7BD=
+ },
++       [OLYMPUS_LUT_CHAN_594375_IDX] =3D { 23775, 0x1, 0x42, 0x15555, 0x7B=
+D },
++       [OLYMPUS_LUT_CHAN_594500_IDX] =3D { 23780, 0x1, 0x42, 0x1C71C, 0x7B=
+E },
++       [OLYMPUS_LUT_CHAN_594625_IDX] =3D { 23785, 0x1, 0x42, 0x238E4, 0x7B=
+E },
++       [OLYMPUS_LUT_CHAN_594750_IDX] =3D { 23790, 0x1, 0x42, 0x2AAAB, 0x7B=
+F },
++       [OLYMPUS_LUT_CHAN_594875_IDX] =3D { 23795, 0x1, 0x42, 0x31C72, 0x7B=
+F },
++       [OLYMPUS_LUT_CHAN_595000_IDX] =3D { 23800, 0x1, 0x42, 0x38E39, 0x7B=
+F }
++};
 +
-+#endif /* CL_PHY_COMMON_LUT_H */
++const struct olympus_lut_line olympus_lut_24g_40_mhz[OLYMPUS_LUT_CHAN_24G_=
+MAX] =3D {
++       [OLYMPUS_LUT_CHAN_240700_IDX] =3D { 9628, 0x0, 0x50, 0x77777, 0x645=
+ },
++       [OLYMPUS_LUT_CHAN_240825_IDX] =3D { 9633, 0x0, 0x50, 0x8CCCD, 0x646=
+ },
++       [OLYMPUS_LUT_CHAN_240950_IDX] =3D { 9638, 0x0, 0x50, 0xA2222, 0x646=
+ },
++       [OLYMPUS_LUT_CHAN_241075_IDX] =3D { 9643, 0x0, 0x50, 0xB7777, 0x647=
+ },
++       [OLYMPUS_LUT_CHAN_241200_IDX] =3D { 9648, 0x0, 0x50, 0xCCCCD, 0x648=
+ },
++       [OLYMPUS_LUT_CHAN_241325_IDX] =3D { 9653, 0x0, 0x50, 0xE2222, 0x649=
+ },
++       [OLYMPUS_LUT_CHAN_241450_IDX] =3D { 9658, 0x0, 0x50, 0xF7777, 0x64A=
+ },
++       [OLYMPUS_LUT_CHAN_241575_IDX] =3D { 9663, 0x0, 0x50, 0x10CCCD, 0x64=
+B },
++       [OLYMPUS_LUT_CHAN_241700_IDX] =3D { 9668, 0x0, 0x50, 0x122222, 0x64=
+B },
++       [OLYMPUS_LUT_CHAN_241825_IDX] =3D { 9673, 0x0, 0x50, 0x137777, 0x64=
+C },
++       [OLYMPUS_LUT_CHAN_241950_IDX] =3D { 9678, 0x0, 0x50, 0x14CCCD, 0x64=
+D },
++       [OLYMPUS_LUT_CHAN_242075_IDX] =3D { 9683, 0x0, 0x50, 0x162222, 0x64=
+E },
++       [OLYMPUS_LUT_CHAN_242200_IDX] =3D { 9688, 0x0, 0x50, 0x177777, 0x64=
+F },
++       [OLYMPUS_LUT_CHAN_242325_IDX] =3D { 9693, 0x0, 0x50, 0x18CCCD, 0x65=
+0 },
++       [OLYMPUS_LUT_CHAN_242450_IDX] =3D { 9698, 0x0, 0x50, 0x1A2222, 0x65=
+0 },
++       [OLYMPUS_LUT_CHAN_242575_IDX] =3D { 9703, 0x0, 0x50, 0x1B7777, 0x65=
+1 },
++       [OLYMPUS_LUT_CHAN_242700_IDX] =3D { 9708, 0x0, 0x50, 0x1CCCCD, 0x65=
+2 },
++       [OLYMPUS_LUT_CHAN_242825_IDX] =3D { 9713, 0x0, 0x50, 0x1E2222, 0x65=
+3 },
++       [OLYMPUS_LUT_CHAN_242950_IDX] =3D { 9718, 0x0, 0x50, 0x1F7777, 0x65=
+4 },
++       [OLYMPUS_LUT_CHAN_243075_IDX] =3D { 9723, 0x0, 0x51, 0xCCCD, 0x655 =
+},
++       [OLYMPUS_LUT_CHAN_243200_IDX] =3D { 9728, 0x0, 0x51, 0x22222, 0x655=
+ },
++       [OLYMPUS_LUT_CHAN_243325_IDX] =3D { 9733, 0x0, 0x51, 0x37777, 0x656=
+ },
++       [OLYMPUS_LUT_CHAN_243450_IDX] =3D { 9738, 0x0, 0x51, 0x4CCCD, 0x657=
+ },
++       [OLYMPUS_LUT_CHAN_243575_IDX] =3D { 9743, 0x0, 0x51, 0x62222, 0x658=
+ },
++       [OLYMPUS_LUT_CHAN_243700_IDX] =3D { 9748, 0x0, 0x51, 0x77777, 0x659=
+ },
++       [OLYMPUS_LUT_CHAN_243825_IDX] =3D { 9753, 0x0, 0x51, 0x8CCCD, 0x65A=
+ },
++       [OLYMPUS_LUT_CHAN_243950_IDX] =3D { 9758, 0x0, 0x51, 0xA2222, 0x65A=
+ },
++       [OLYMPUS_LUT_CHAN_244075_IDX] =3D { 9763, 0x0, 0x51, 0xB7777, 0x65B=
+ },
++       [OLYMPUS_LUT_CHAN_244200_IDX] =3D { 9768, 0x0, 0x51, 0xCCCCD, 0x65C=
+ },
++       [OLYMPUS_LUT_CHAN_244325_IDX] =3D { 9773, 0x0, 0x51, 0xE2222, 0x65D=
+ },
++       [OLYMPUS_LUT_CHAN_244450_IDX] =3D { 9778, 0x0, 0x51, 0xF7777, 0x65E=
+ },
++       [OLYMPUS_LUT_CHAN_244575_IDX] =3D { 9783, 0x0, 0x51, 0x10CCCD, 0x65=
+F },
++       [OLYMPUS_LUT_CHAN_244700_IDX] =3D { 9788, 0x0, 0x51, 0x122222, 0x65=
+F },
++       [OLYMPUS_LUT_CHAN_244825_IDX] =3D { 9793, 0x0, 0x51, 0x137777, 0x66=
+0 },
++       [OLYMPUS_LUT_CHAN_244950_IDX] =3D { 9798, 0x0, 0x51, 0x14CCCD, 0x66=
+1 },
++       [OLYMPUS_LUT_CHAN_245075_IDX] =3D { 9803, 0x0, 0x51, 0x162222, 0x66=
+2 },
++       [OLYMPUS_LUT_CHAN_245200_IDX] =3D { 9808, 0x0, 0x51, 0x177777, 0x66=
+3 },
++       [OLYMPUS_LUT_CHAN_245325_IDX] =3D { 9813, 0x0, 0x51, 0x18CCCD, 0x66=
+4 },
++       [OLYMPUS_LUT_CHAN_245450_IDX] =3D { 9818, 0x0, 0x51, 0x1A2222, 0x66=
+4 },
++       [OLYMPUS_LUT_CHAN_245575_IDX] =3D { 9823, 0x0, 0x51, 0x1B7777, 0x66=
+5 },
++       [OLYMPUS_LUT_CHAN_245700_IDX] =3D { 9828, 0x0, 0x51, 0x1CCCCD, 0x66=
+6 },
++       [OLYMPUS_LUT_CHAN_245825_IDX] =3D { 9833, 0x0, 0x51, 0x1E2222, 0x66=
+7 },
++       [OLYMPUS_LUT_CHAN_245950_IDX] =3D { 9838, 0x0, 0x51, 0x1F7777, 0x66=
+8 },
++       [OLYMPUS_LUT_CHAN_246075_IDX] =3D { 9843, 0x0, 0x52, 0xCCCD, 0x669 =
+},
++       [OLYMPUS_LUT_CHAN_246200_IDX] =3D { 9848, 0x0, 0x52, 0x22222, 0x669=
+ },
++       [OLYMPUS_LUT_CHAN_246325_IDX] =3D { 9853, 0x0, 0x52, 0x37777, 0x66A=
+ },
++       [OLYMPUS_LUT_CHAN_246450_IDX] =3D { 9858, 0x0, 0x52, 0x4CCCD, 0x66B=
+ },
++       [OLYMPUS_LUT_CHAN_246575_IDX] =3D { 9863, 0x0, 0x52, 0x62222, 0x66C=
+ },
++       [OLYMPUS_LUT_CHAN_246700_IDX] =3D { 9868, 0x0, 0x52, 0x77777, 0x66D=
+ },
++       [OLYMPUS_LUT_CHAN_246825_IDX] =3D { 9873, 0x0, 0x52, 0x8CCCD, 0x66E=
+ },
++       [OLYMPUS_LUT_CHAN_246950_IDX] =3D { 9878, 0x0, 0x52, 0xA2222, 0x66E=
+ },
++       [OLYMPUS_LUT_CHAN_247075_IDX] =3D { 9883, 0x0, 0x52, 0xB7777, 0x66F=
+ },
++       [OLYMPUS_LUT_CHAN_247200_IDX] =3D { 9888, 0x0, 0x52, 0xCCCCD, 0x670=
+ },
++       [OLYMPUS_LUT_CHAN_247325_IDX] =3D { 9893, 0x0, 0x52, 0xE2222, 0x671=
+ },
++       [OLYMPUS_LUT_CHAN_247450_IDX] =3D { 9898, 0x0, 0x52, 0xF7777, 0x672=
+ },
++       [OLYMPUS_LUT_CHAN_247575_IDX] =3D { 9903, 0x0, 0x52, 0x10CCCD, 0x67=
+3 },
++       [OLYMPUS_LUT_CHAN_247700_IDX] =3D { 9908, 0x0, 0x52, 0x122222, 0x67=
+3 },
++       [OLYMPUS_LUT_CHAN_247825_IDX] =3D { 9913, 0x0, 0x52, 0x137777, 0x67=
+4 },
++       [OLYMPUS_LUT_CHAN_247950_IDX] =3D { 9918, 0x0, 0x52, 0x14CCCD, 0x67=
+5 },
++       [OLYMPUS_LUT_CHAN_248075_IDX] =3D { 9923, 0x0, 0x52, 0x162222, 0x67=
+6 },
++       [OLYMPUS_LUT_CHAN_248200_IDX] =3D { 9928, 0x0, 0x52, 0x177777, 0x67=
+7 },
++       [OLYMPUS_LUT_CHAN_248325_IDX] =3D { 9933, 0x0, 0x52, 0x18CCCD, 0x67=
+8 },
++       [OLYMPUS_LUT_CHAN_248450_IDX] =3D { 9938, 0x0, 0x52, 0x1A2222, 0x67=
+8 },
++       [OLYMPUS_LUT_CHAN_248575_IDX] =3D { 9943, 0x0, 0x52, 0x1B7777, 0x67=
+9 },
++       [OLYMPUS_LUT_CHAN_248700_IDX] =3D { 9948, 0x0, 0x52, 0x1CCCCD, 0x67=
+A },
++       [OLYMPUS_LUT_CHAN_248825_IDX] =3D { 9953, 0x0, 0x52, 0x1E2222, 0x67=
+B },
++       [OLYMPUS_LUT_CHAN_248950_IDX] =3D { 9958, 0x0, 0x52, 0x1F7777, 0x67=
+C },
++       [OLYMPUS_LUT_CHAN_249075_IDX] =3D { 9963, 0x0, 0x53, 0xCCCD, 0x67D =
+},
++       [OLYMPUS_LUT_CHAN_249200_IDX] =3D { 9968, 0x0, 0x53, 0x22222, 0x67D=
+ },
++       [OLYMPUS_LUT_CHAN_249325_IDX] =3D { 9973, 0x0, 0x53, 0x37777, 0x67E=
+ },
++       [OLYMPUS_LUT_CHAN_249450_IDX] =3D { 9978, 0x0, 0x53, 0x4CCCD, 0x67F=
+ },
++       [OLYMPUS_LUT_CHAN_249575_IDX] =3D { 9983, 0x0, 0x53, 0x62222, 0x680=
+ },
++       [OLYMPUS_LUT_CHAN_249700_IDX] =3D { 9988, 0x0, 0x53, 0x77777, 0x681=
+ },
++       [OLYMPUS_LUT_CHAN_249825_IDX] =3D { 9993, 0x0, 0x53, 0x8CCCD, 0x682=
+ },
++       [OLYMPUS_LUT_CHAN_249950_IDX] =3D { 9998, 0x0, 0x53, 0xA2222, 0x682=
+ },
++       [OLYMPUS_LUT_CHAN_250075_IDX] =3D { 10003, 0x0, 0x53, 0xB7777, 0x68=
+3 }
++};
++
++const struct olympus_lut_line olympus_lut_24g_60_mhz_s0[OLYMPUS_LUT_CHAN_2=
+4G_MAX] =3D {
++       [OLYMPUS_LUT_CHAN_240700_IDX] =3D { 9628, 0x0, 0x6A, 0x1F49F5, 0x64=
+5 },
++       [OLYMPUS_LUT_CHAN_240825_IDX] =3D { 9633, 0x0, 0x6B, 0x11111, 0x646=
+ },
++       [OLYMPUS_LUT_CHAN_240950_IDX] =3D { 9638, 0x0, 0x6B, 0x2D82E, 0x646=
+ },
++       [OLYMPUS_LUT_CHAN_241075_IDX] =3D { 9643, 0x0, 0x6B, 0x49F4A, 0x647=
+ },
++       [OLYMPUS_LUT_CHAN_241200_IDX] =3D { 9648, 0x0, 0x6B, 0x66666, 0x648=
+ },
++       [OLYMPUS_LUT_CHAN_241325_IDX] =3D { 9653, 0x0, 0x6B, 0x82D83, 0x649=
+ },
++       [OLYMPUS_LUT_CHAN_241450_IDX] =3D { 9658, 0x0, 0x6B, 0x9F49F, 0x64A=
+ },
++       [OLYMPUS_LUT_CHAN_241575_IDX] =3D { 9663, 0x0, 0x6B, 0xBBBBC, 0x64B=
+ },
++       [OLYMPUS_LUT_CHAN_241700_IDX] =3D { 9668, 0x0, 0x6B, 0xD82D8, 0x64B=
+ },
++       [OLYMPUS_LUT_CHAN_241825_IDX] =3D { 9673, 0x0, 0x6B, 0xF49F5, 0x64C=
+ },
++       [OLYMPUS_LUT_CHAN_241950_IDX] =3D { 9678, 0x0, 0x6B, 0x111111, 0x64=
+D },
++       [OLYMPUS_LUT_CHAN_242075_IDX] =3D { 9683, 0x0, 0x6B, 0x12D82E, 0x64=
+E },
++       [OLYMPUS_LUT_CHAN_242200_IDX] =3D { 9688, 0x0, 0x6B, 0x149F4A, 0x64=
+F },
++       [OLYMPUS_LUT_CHAN_242325_IDX] =3D { 9693, 0x0, 0x6B, 0x166666, 0x65=
+0 },
++       [OLYMPUS_LUT_CHAN_242450_IDX] =3D { 9698, 0x0, 0x6B, 0x182D83, 0x65=
+0 },
++       [OLYMPUS_LUT_CHAN_242575_IDX] =3D { 9703, 0x0, 0x6B, 0x19F49F, 0x65=
+1 },
++       [OLYMPUS_LUT_CHAN_242700_IDX] =3D { 9708, 0x0, 0x6B, 0x1BBBBC, 0x65=
+2 },
++       [OLYMPUS_LUT_CHAN_242825_IDX] =3D { 9713, 0x0, 0x6B, 0x1D82D8, 0x65=
+3 },
++       [OLYMPUS_LUT_CHAN_242950_IDX] =3D { 9718, 0x0, 0x6B, 0x1F49F5, 0x65=
+4 },
++       [OLYMPUS_LUT_CHAN_243075_IDX] =3D { 9723, 0x0, 0x6C, 0x11111, 0x655=
+ },
++       [OLYMPUS_LUT_CHAN_243200_IDX] =3D { 9728, 0x0, 0x6C, 0x2D82E, 0x655=
+ },
++       [OLYMPUS_LUT_CHAN_243325_IDX] =3D { 9733, 0x0, 0x6C, 0x49F4A, 0x656=
+ },
++       [OLYMPUS_LUT_CHAN_243450_IDX] =3D { 9738, 0x0, 0x6C, 0x66666, 0x657=
+ },
++       [OLYMPUS_LUT_CHAN_243575_IDX] =3D { 9743, 0x0, 0x6C, 0x82D83, 0x658=
+ },
++       [OLYMPUS_LUT_CHAN_243700_IDX] =3D { 9748, 0x0, 0x6C, 0x9F49F, 0x659=
+ },
++       [OLYMPUS_LUT_CHAN_243825_IDX] =3D { 9753, 0x0, 0x6C, 0xBBBBC, 0x65A=
+ },
++       [OLYMPUS_LUT_CHAN_243950_IDX] =3D { 9758, 0x0, 0x6C, 0xD82D8, 0x65A=
+ },
++       [OLYMPUS_LUT_CHAN_244075_IDX] =3D { 9763, 0x0, 0x6C, 0xF49F5, 0x65B=
+ },
++       [OLYMPUS_LUT_CHAN_244200_IDX] =3D { 9768, 0x0, 0x6C, 0x111111, 0x65=
+C },
++       [OLYMPUS_LUT_CHAN_244325_IDX] =3D { 9773, 0x0, 0x6C, 0x12D82E, 0x65=
+D },
++       [OLYMPUS_LUT_CHAN_244450_IDX] =3D { 9778, 0x0, 0x6C, 0x149F4A, 0x65=
+E },
++       [OLYMPUS_LUT_CHAN_244575_IDX] =3D { 9783, 0x0, 0x6C, 0x166666, 0x65=
+F },
++       [OLYMPUS_LUT_CHAN_244700_IDX] =3D { 9788, 0x0, 0x6C, 0x182D83, 0x65=
+F },
++       [OLYMPUS_LUT_CHAN_244825_IDX] =3D { 9793, 0x0, 0x6C, 0x19F49F, 0x66=
+0 },
++       [OLYMPUS_LUT_CHAN_244950_IDX] =3D { 9798, 0x0, 0x6C, 0x1BBBBC, 0x66=
+1 },
++       [OLYMPUS_LUT_CHAN_245075_IDX] =3D { 9803, 0x0, 0x6C, 0x1D82D8, 0x66=
+2 },
++       [OLYMPUS_LUT_CHAN_245200_IDX] =3D { 9808, 0x0, 0x6C, 0x1F49F5, 0x66=
+3 },
++       [OLYMPUS_LUT_CHAN_245325_IDX] =3D { 9813, 0x0, 0x6D, 0x11111, 0x664=
+ },
++       [OLYMPUS_LUT_CHAN_245450_IDX] =3D { 9818, 0x0, 0x6D, 0x2D82E, 0x664=
+ },
++       [OLYMPUS_LUT_CHAN_245575_IDX] =3D { 9823, 0x0, 0x6D, 0x49F4A, 0x665=
+ },
++       [OLYMPUS_LUT_CHAN_245700_IDX] =3D { 9828, 0x0, 0x6D, 0x66666, 0x666=
+ },
++       [OLYMPUS_LUT_CHAN_245825_IDX] =3D { 9833, 0x0, 0x6D, 0x82D83, 0x667=
+ },
++       [OLYMPUS_LUT_CHAN_245950_IDX] =3D { 9838, 0x0, 0x6D, 0x9F49F, 0x668=
+ },
++       [OLYMPUS_LUT_CHAN_246075_IDX] =3D { 9843, 0x0, 0x6D, 0xBBBBC, 0x669=
+ },
++       [OLYMPUS_LUT_CHAN_246200_IDX] =3D { 9848, 0x0, 0x6D, 0xD82D8, 0x669=
+ },
++       [OLYMPUS_LUT_CHAN_246325_IDX] =3D { 9853, 0x0, 0x6D, 0xF49F5, 0x66A=
+ },
++       [OLYMPUS_LUT_CHAN_246450_IDX] =3D { 9858, 0x0, 0x6D, 0x111111, 0x66=
+B },
++       [OLYMPUS_LUT_CHAN_246575_IDX] =3D { 9863, 0x0, 0x6D, 0x12D82E, 0x66=
+C },
++       [OLYMPUS_LUT_CHAN_246700_IDX] =3D { 9868, 0x0, 0x6D, 0x149F4A, 0x66=
+D },
++       [OLYMPUS_LUT_CHAN_246825_IDX] =3D { 9873, 0x0, 0x6D, 0x166666, 0x66=
+E },
++       [OLYMPUS_LUT_CHAN_246950_IDX] =3D { 9878, 0x0, 0x6D, 0x182D83, 0x66=
+E },
++       [OLYMPUS_LUT_CHAN_247075_IDX] =3D { 9883, 0x0, 0x6D, 0x19F49F, 0x66=
+F },
++       [OLYMPUS_LUT_CHAN_247200_IDX] =3D { 9888, 0x0, 0x6D, 0x1BBBBC, 0x67=
+0 },
++       [OLYMPUS_LUT_CHAN_247325_IDX] =3D { 9893, 0x0, 0x6D, 0x1D82D8, 0x67=
+1 },
++       [OLYMPUS_LUT_CHAN_247450_IDX] =3D { 9898, 0x0, 0x6D, 0x1F49F5, 0x67=
+2 },
++       [OLYMPUS_LUT_CHAN_247575_IDX] =3D { 9903, 0x0, 0x6E, 0x11111, 0x673=
+ },
++       [OLYMPUS_LUT_CHAN_247700_IDX] =3D { 9908, 0x0, 0x6E, 0x2D82E, 0x673=
+ },
++       [OLYMPUS_LUT_CHAN_247825_IDX] =3D { 9913, 0x0, 0x6E, 0x49F4A, 0x674=
+ },
++       [OLYMPUS_LUT_CHAN_247950_IDX] =3D { 9918, 0x0, 0x6E, 0x66666, 0x675=
+ },
++       [OLYMPUS_LUT_CHAN_248075_IDX] =3D { 9923, 0x0, 0x6E, 0x82D83, 0x676=
+ },
++       [OLYMPUS_LUT_CHAN_248200_IDX] =3D { 9928, 0x0, 0x6E, 0x9F49F, 0x677=
+ },
++       [OLYMPUS_LUT_CHAN_248325_IDX] =3D { 9933, 0x0, 0x6E, 0xBBBBC, 0x678=
+ },
++       [OLYMPUS_LUT_CHAN_248450_IDX] =3D { 9938, 0x0, 0x6E, 0xD82D8, 0x678=
+ },
++       [OLYMPUS_LUT_CHAN_248575_IDX] =3D { 9943, 0x0, 0x6E, 0xF49F5, 0x679=
+ },
++       [OLYMPUS_LUT_CHAN_248700_IDX] =3D { 9948, 0x0, 0x6E, 0x111111, 0x67=
+A },
++       [OLYMPUS_LUT_CHAN_248825_IDX] =3D { 9953, 0x0, 0x6E, 0x12D82E, 0x67=
+B },
++       [OLYMPUS_LUT_CHAN_248950_IDX] =3D { 9958, 0x0, 0x6E, 0x149F4A, 0x67=
+C },
++       [OLYMPUS_LUT_CHAN_249075_IDX] =3D { 9963, 0x0, 0x6E, 0x166666, 0x67=
+D },
++       [OLYMPUS_LUT_CHAN_249200_IDX] =3D { 9968, 0x0, 0x6E, 0x182D83, 0x67=
+D },
++       [OLYMPUS_LUT_CHAN_249325_IDX] =3D { 9973, 0x0, 0x6E, 0x19F49F, 0x67=
+E },
++       [OLYMPUS_LUT_CHAN_249450_IDX] =3D { 9978, 0x0, 0x6E, 0x1BBBBC, 0x67=
+F },
++       [OLYMPUS_LUT_CHAN_249575_IDX] =3D { 9983, 0x0, 0x6E, 0x1D82D8, 0x68=
+0 },
++       [OLYMPUS_LUT_CHAN_249700_IDX] =3D { 9988, 0x0, 0x6E, 0x1F49F5, 0x68=
+1 },
++       [OLYMPUS_LUT_CHAN_249825_IDX] =3D { 9993, 0x0, 0x6F, 0x11111, 0x682=
+ },
++       [OLYMPUS_LUT_CHAN_249950_IDX] =3D { 9998, 0x0, 0x6F, 0x2D82E, 0x682=
+ },
++       [OLYMPUS_LUT_CHAN_250075_IDX] =3D { 10003, 0x0, 0x6F, 0x49F4A, 0x68=
+3 }
++};
++
++const struct olympus_lut_line olympus_lut_24g_60_mhz_s1[OLYMPUS_LUT_CHAN_2=
+4G_MAX] =3D {
++       [OLYMPUS_LUT_CHAN_240700_IDX] =3D { 9628, 0x0, 0x35, 0xFA4FA, 0x645=
+ },
++       [OLYMPUS_LUT_CHAN_240825_IDX] =3D { 9633, 0x0, 0x35, 0x108889, 0x64=
+6 },
++       [OLYMPUS_LUT_CHAN_240950_IDX] =3D { 9638, 0x0, 0x35, 0x116C17, 0x64=
+6 },
++       [OLYMPUS_LUT_CHAN_241075_IDX] =3D { 9643, 0x0, 0x35, 0x124FA5, 0x64=
+7 },
++       [OLYMPUS_LUT_CHAN_241200_IDX] =3D { 9648, 0x0, 0x35, 0x133333, 0x64=
+8 },
++       [OLYMPUS_LUT_CHAN_241325_IDX] =3D { 9653, 0x0, 0x35, 0x1416C1, 0x64=
+9 },
++       [OLYMPUS_LUT_CHAN_241450_IDX] =3D { 9658, 0x0, 0x35, 0x14FA50, 0x64=
+A },
++       [OLYMPUS_LUT_CHAN_241575_IDX] =3D { 9663, 0x0, 0x35, 0x15DDDE, 0x64=
+B },
++       [OLYMPUS_LUT_CHAN_241700_IDX] =3D { 9668, 0x0, 0x35, 0x16C16C, 0x64=
+B },
++       [OLYMPUS_LUT_CHAN_241825_IDX] =3D { 9673, 0x0, 0x35, 0x17A4FA, 0x64=
+C },
++       [OLYMPUS_LUT_CHAN_241950_IDX] =3D { 9678, 0x0, 0x35, 0x188889, 0x64=
+D },
++       [OLYMPUS_LUT_CHAN_242075_IDX] =3D { 9683, 0x0, 0x35, 0x196C17, 0x64=
+E },
++       [OLYMPUS_LUT_CHAN_242200_IDX] =3D { 9688, 0x0, 0x35, 0x1A4FA5, 0x64=
+F },
++       [OLYMPUS_LUT_CHAN_242325_IDX] =3D { 9693, 0x0, 0x35, 0x1B3333, 0x65=
+0 },
++       [OLYMPUS_LUT_CHAN_242450_IDX] =3D { 9698, 0x0, 0x35, 0x1C16C1, 0x65=
+0 },
++       [OLYMPUS_LUT_CHAN_242575_IDX] =3D { 9703, 0x0, 0x35, 0x1CFA50, 0x65=
+1 },
++       [OLYMPUS_LUT_CHAN_242700_IDX] =3D { 9708, 0x0, 0x35, 0x1DDDDE, 0x65=
+2 },
++       [OLYMPUS_LUT_CHAN_242825_IDX] =3D { 9713, 0x0, 0x35, 0x1EC16C, 0x65=
+3 },
++       [OLYMPUS_LUT_CHAN_242950_IDX] =3D { 9718, 0x0, 0x35, 0x1FA4FA, 0x65=
+4 },
++       [OLYMPUS_LUT_CHAN_243075_IDX] =3D { 9723, 0x0, 0x36, 0x8889, 0x655 =
+},
++       [OLYMPUS_LUT_CHAN_243200_IDX] =3D { 9728, 0x0, 0x36, 0x16C17, 0x655=
+ },
++       [OLYMPUS_LUT_CHAN_243325_IDX] =3D { 9733, 0x0, 0x36, 0x24FA5, 0x656=
+ },
++       [OLYMPUS_LUT_CHAN_243450_IDX] =3D { 9738, 0x0, 0x36, 0x33333, 0x657=
+ },
++       [OLYMPUS_LUT_CHAN_243575_IDX] =3D { 9743, 0x0, 0x36, 0x416C1, 0x658=
+ },
++       [OLYMPUS_LUT_CHAN_243700_IDX] =3D { 9748, 0x0, 0x36, 0x4FA50, 0x659=
+ },
++       [OLYMPUS_LUT_CHAN_243825_IDX] =3D { 9753, 0x0, 0x36, 0x5DDDE, 0x65A=
+ },
++       [OLYMPUS_LUT_CHAN_243950_IDX] =3D { 9758, 0x0, 0x36, 0x6C16C, 0x65A=
+ },
++       [OLYMPUS_LUT_CHAN_244075_IDX] =3D { 9763, 0x0, 0x36, 0x7A4FA, 0x65B=
+ },
++       [OLYMPUS_LUT_CHAN_244200_IDX] =3D { 9768, 0x0, 0x36, 0x88889, 0x65C=
+ },
++       [OLYMPUS_LUT_CHAN_244325_IDX] =3D { 9773, 0x0, 0x36, 0x96C17, 0x65D=
+ },
++       [OLYMPUS_LUT_CHAN_244450_IDX] =3D { 9778, 0x0, 0x36, 0xA4FA5, 0x65E=
+ },
++       [OLYMPUS_LUT_CHAN_244575_IDX] =3D { 9783, 0x0, 0x36, 0xB3333, 0x65F=
+ },
++       [OLYMPUS_LUT_CHAN_244700_IDX] =3D { 9788, 0x0, 0x36, 0xC16C1, 0x65F=
+ },
++       [OLYMPUS_LUT_CHAN_244825_IDX] =3D { 9793, 0x0, 0x36, 0xCFA50, 0x660=
+ },
++       [OLYMPUS_LUT_CHAN_244950_IDX] =3D { 9798, 0x0, 0x36, 0xDDDDE, 0x661=
+ },
++       [OLYMPUS_LUT_CHAN_245075_IDX] =3D { 9803, 0x0, 0x36, 0xEC16C, 0x662=
+ },
++       [OLYMPUS_LUT_CHAN_245200_IDX] =3D { 9808, 0x0, 0x36, 0xFA4FA, 0x663=
+ },
++       [OLYMPUS_LUT_CHAN_245325_IDX] =3D { 9813, 0x0, 0x36, 0x108889, 0x66=
+4 },
++       [OLYMPUS_LUT_CHAN_245450_IDX] =3D { 9818, 0x0, 0x36, 0x116C17, 0x66=
+4 },
++       [OLYMPUS_LUT_CHAN_245575_IDX] =3D { 9823, 0x0, 0x36, 0x124FA5, 0x66=
+5 },
++       [OLYMPUS_LUT_CHAN_245700_IDX] =3D { 9828, 0x0, 0x36, 0x133333, 0x66=
+6 },
++       [OLYMPUS_LUT_CHAN_245825_IDX] =3D { 9833, 0x0, 0x36, 0x1416C1, 0x66=
+7 },
++       [OLYMPUS_LUT_CHAN_245950_IDX] =3D { 9838, 0x0, 0x36, 0x14FA50, 0x66=
+8 },
++       [OLYMPUS_LUT_CHAN_246075_IDX] =3D { 9843, 0x0, 0x36, 0x15DDDE, 0x66=
+9 },
++       [OLYMPUS_LUT_CHAN_246200_IDX] =3D { 9848, 0x0, 0x36, 0x16C16C, 0x66=
+9 },
++       [OLYMPUS_LUT_CHAN_246325_IDX] =3D { 9853, 0x0, 0x36, 0x17A4FA, 0x66=
+A },
++       [OLYMPUS_LUT_CHAN_246450_IDX] =3D { 9858, 0x0, 0x36, 0x188889, 0x66=
+B },
++       [OLYMPUS_LUT_CHAN_246575_IDX] =3D { 9863, 0x0, 0x36, 0x196C17, 0x66=
+C },
++       [OLYMPUS_LUT_CHAN_246700_IDX] =3D { 9868, 0x0, 0x36, 0x1A4FA5, 0x66=
+D },
++       [OLYMPUS_LUT_CHAN_246825_IDX] =3D { 9873, 0x0, 0x36, 0x1B3333, 0x66=
+E },
++       [OLYMPUS_LUT_CHAN_246950_IDX] =3D { 9878, 0x0, 0x36, 0x1C16C1, 0x66=
+E },
++       [OLYMPUS_LUT_CHAN_247075_IDX] =3D { 9883, 0x0, 0x36, 0x1CFA50, 0x66=
+F },
++       [OLYMPUS_LUT_CHAN_247200_IDX] =3D { 9888, 0x0, 0x36, 0x1DDDDE, 0x67=
+0 },
++       [OLYMPUS_LUT_CHAN_247325_IDX] =3D { 9893, 0x0, 0x36, 0x1EC16C, 0x67=
+1 },
++       [OLYMPUS_LUT_CHAN_247450_IDX] =3D { 9898, 0x0, 0x36, 0x1FA4FA, 0x67=
+2 },
++       [OLYMPUS_LUT_CHAN_247575_IDX] =3D { 9903, 0x0, 0x37, 0x8889, 0x673 =
+},
++       [OLYMPUS_LUT_CHAN_247700_IDX] =3D { 9908, 0x0, 0x37, 0x16C17, 0x673=
+ },
++       [OLYMPUS_LUT_CHAN_247825_IDX] =3D { 9913, 0x0, 0x37, 0x24FA5, 0x674=
+ },
++       [OLYMPUS_LUT_CHAN_247950_IDX] =3D { 9918, 0x0, 0x37, 0x33333, 0x675=
+ },
++       [OLYMPUS_LUT_CHAN_248075_IDX] =3D { 9923, 0x0, 0x37, 0x416C1, 0x676=
+ },
++       [OLYMPUS_LUT_CHAN_248200_IDX] =3D { 9928, 0x0, 0x37, 0x4FA50, 0x677=
+ },
++       [OLYMPUS_LUT_CHAN_248325_IDX] =3D { 9933, 0x0, 0x37, 0x5DDDE, 0x678=
+ },
++       [OLYMPUS_LUT_CHAN_248450_IDX] =3D { 9938, 0x0, 0x37, 0x6C16C, 0x678=
+ },
++       [OLYMPUS_LUT_CHAN_248575_IDX] =3D { 9943, 0x0, 0x37, 0x7A4FA, 0x679=
+ },
++       [OLYMPUS_LUT_CHAN_248700_IDX] =3D { 9948, 0x0, 0x37, 0x88889, 0x67A=
+ },
++       [OLYMPUS_LUT_CHAN_248825_IDX] =3D { 9953, 0x0, 0x37, 0x96C17, 0x67B=
+ },
++       [OLYMPUS_LUT_CHAN_248950_IDX] =3D { 9958, 0x0, 0x37, 0xA4FA5, 0x67C=
+ },
++       [OLYMPUS_LUT_CHAN_249075_IDX] =3D { 9963, 0x0, 0x37, 0xB3333, 0x67D=
+ },
++       [OLYMPUS_LUT_CHAN_249200_IDX] =3D { 9968, 0x0, 0x37, 0xC16C1, 0x67D=
+ },
++       [OLYMPUS_LUT_CHAN_249325_IDX] =3D { 9973, 0x0, 0x37, 0xCFA50, 0x67E=
+ },
++       [OLYMPUS_LUT_CHAN_249450_IDX] =3D { 9978, 0x0, 0x37, 0xDDDDE, 0x67F=
+ },
++       [OLYMPUS_LUT_CHAN_249575_IDX] =3D { 9983, 0x0, 0x37, 0xEC16C, 0x680=
+ },
++       [OLYMPUS_LUT_CHAN_249700_IDX] =3D { 9988, 0x0, 0x37, 0xFA4FA, 0x681=
+ },
++       [OLYMPUS_LUT_CHAN_249825_IDX] =3D { 9993, 0x0, 0x37, 0x108889, 0x68=
+2 },
++       [OLYMPUS_LUT_CHAN_249950_IDX] =3D { 9998, 0x0, 0x37, 0x116C17, 0x68=
+2 },
++       [OLYMPUS_LUT_CHAN_250075_IDX] =3D { 10003, 0x0, 0x37, 0x124FA5, 0x6=
+83 }
++};
++
++const struct olympus_lut_line olympus_lut_5g_60_mhz_s0[OLYMPUS_LUT_CHAN_5G=
+_MAX] =3D {
++       [OLYMPUS_LUT_CHAN_516000_IDX] =3D { 20640, 0x0, 0x73, 0x38E39, 0x6B=
+F },
++       [OLYMPUS_LUT_CHAN_516125_IDX] =3D { 20645, 0x0, 0x72, 0x1638E4, 0x6=
+B8 },
++       [OLYMPUS_LUT_CHAN_516250_IDX] =3D { 20650, 0x0, 0x72, 0x171C72, 0x6=
+B9 },
++       [OLYMPUS_LUT_CHAN_516375_IDX] =3D { 20655, 0x0, 0x72, 0x180000, 0x6=
+B9 },
++       [OLYMPUS_LUT_CHAN_516500_IDX] =3D { 20660, 0x0, 0x72, 0x18E38E, 0x6=
+BA },
++       [OLYMPUS_LUT_CHAN_516625_IDX] =3D { 20665, 0x0, 0x72, 0x19C71C, 0x6=
+BA },
++       [OLYMPUS_LUT_CHAN_516750_IDX] =3D { 20670, 0x0, 0x72, 0x1AAAAB, 0x6=
+BB },
++       [OLYMPUS_LUT_CHAN_516875_IDX] =3D { 20675, 0x0, 0x72, 0x1B8E39, 0x6=
+BB },
++       [OLYMPUS_LUT_CHAN_517000_IDX] =3D { 20680, 0x0, 0x72, 0x1C71C7, 0x6=
+BB },
++       [OLYMPUS_LUT_CHAN_517125_IDX] =3D { 20685, 0x0, 0x72, 0x1D5555, 0x6=
+BC },
++       [OLYMPUS_LUT_CHAN_517250_IDX] =3D { 20690, 0x0, 0x72, 0x1E38E4, 0x6=
+BC },
++       [OLYMPUS_LUT_CHAN_517375_IDX] =3D { 20695, 0x0, 0x72, 0x1F1C72, 0x6=
+BD },
++       [OLYMPUS_LUT_CHAN_517500_IDX] =3D { 20700, 0x0, 0x73, 0x0, 0x6BD },
++       [OLYMPUS_LUT_CHAN_517625_IDX] =3D { 20705, 0x0, 0x73, 0xE38E, 0x6BD=
+ },
++       [OLYMPUS_LUT_CHAN_517750_IDX] =3D { 20710, 0x0, 0x73, 0x1C71C, 0x6B=
+E },
++       [OLYMPUS_LUT_CHAN_517875_IDX] =3D { 20715, 0x0, 0x73, 0x2AAAB, 0x6B=
+E },
++       [OLYMPUS_LUT_CHAN_518000_IDX] =3D { 20720, 0x0, 0x73, 0x38E39, 0x6B=
+F },
++       [OLYMPUS_LUT_CHAN_518125_IDX] =3D { 20725, 0x0, 0x73, 0x471C7, 0x6B=
+F },
++       [OLYMPUS_LUT_CHAN_518250_IDX] =3D { 20730, 0x0, 0x73, 0x55555, 0x6C=
+0 },
++       [OLYMPUS_LUT_CHAN_518375_IDX] =3D { 20735, 0x0, 0x73, 0x638E4, 0x6C=
+0 },
++       [OLYMPUS_LUT_CHAN_518500_IDX] =3D { 20740, 0x0, 0x73, 0x71C72, 0x6C=
+0 },
++       [OLYMPUS_LUT_CHAN_518625_IDX] =3D { 20745, 0x0, 0x73, 0x80000, 0x6C=
+1 },
++       [OLYMPUS_LUT_CHAN_518750_IDX] =3D { 20750, 0x0, 0x73, 0x8E38E, 0x6C=
+1 },
++       [OLYMPUS_LUT_CHAN_518875_IDX] =3D { 20755, 0x0, 0x73, 0x9C71C, 0x6C=
+2 },
++       [OLYMPUS_LUT_CHAN_519000_IDX] =3D { 20760, 0x0, 0x73, 0xAAAAB, 0x6C=
+2 },
++       [OLYMPUS_LUT_CHAN_519125_IDX] =3D { 20765, 0x0, 0x73, 0xB8E39, 0x6C=
+2 },
++       [OLYMPUS_LUT_CHAN_519250_IDX] =3D { 20770, 0x0, 0x73, 0xC71C7, 0x6C=
+3 },
++       [OLYMPUS_LUT_CHAN_519375_IDX] =3D { 20775, 0x0, 0x73, 0xD5555, 0x6C=
+3 },
++       [OLYMPUS_LUT_CHAN_519500_IDX] =3D { 20780, 0x0, 0x73, 0xE38E4, 0x6C=
+4 },
++       [OLYMPUS_LUT_CHAN_519625_IDX] =3D { 20785, 0x0, 0x73, 0xF1C72, 0x6C=
+4 },
++       [OLYMPUS_LUT_CHAN_519750_IDX] =3D { 20790, 0x0, 0x73, 0x100000, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_519875_IDX] =3D { 20795, 0x0, 0x73, 0x10E38E, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_520000_IDX] =3D { 20800, 0x1, 0x73, 0x11C71C, 0x6=
+C5 },
++       [OLYMPUS_LUT_CHAN_520125_IDX] =3D { 20805, 0x1, 0x73, 0x12AAAB, 0x6=
+C6 },
++       [OLYMPUS_LUT_CHAN_520250_IDX] =3D { 20810, 0x1, 0x73, 0x138E39, 0x6=
+C6 },
++       [OLYMPUS_LUT_CHAN_520375_IDX] =3D { 20815, 0x1, 0x73, 0x1471C7, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520500_IDX] =3D { 20820, 0x1, 0x73, 0x155555, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520625_IDX] =3D { 20825, 0x1, 0x73, 0x1638E4, 0x6=
+C7 },
++       [OLYMPUS_LUT_CHAN_520750_IDX] =3D { 20830, 0x1, 0x73, 0x171C72, 0x6=
+C8 },
++       [OLYMPUS_LUT_CHAN_520875_IDX] =3D { 20835, 0x1, 0x73, 0x180000, 0x6=
+C8 },
++       [OLYMPUS_LUT_CHAN_521000_IDX] =3D { 20840, 0x1, 0x73, 0x18E38E, 0x6=
+C9 },
++       [OLYMPUS_LUT_CHAN_521125_IDX] =3D { 20845, 0x1, 0x73, 0x19C71C, 0x6=
+C9 },
++       [OLYMPUS_LUT_CHAN_521250_IDX] =3D { 20850, 0x1, 0x73, 0x1AAAAB, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521375_IDX] =3D { 20855, 0x1, 0x73, 0x1B8E39, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521500_IDX] =3D { 20860, 0x1, 0x73, 0x1C71C7, 0x6=
+CA },
++       [OLYMPUS_LUT_CHAN_521625_IDX] =3D { 20865, 0x1, 0x73, 0x1D5555, 0x6=
+CB },
++       [OLYMPUS_LUT_CHAN_521750_IDX] =3D { 20870, 0x1, 0x73, 0x1E38E4, 0x6=
+CB },
++       [OLYMPUS_LUT_CHAN_521875_IDX] =3D { 20875, 0x1, 0x73, 0x1F1C72, 0x6=
+CC },
++       [OLYMPUS_LUT_CHAN_522000_IDX] =3D { 20880, 0x1, 0x74, 0x0, 0x6CC },
++       [OLYMPUS_LUT_CHAN_522125_IDX] =3D { 20885, 0x1, 0x74, 0xE38E, 0x6CC=
+ },
++       [OLYMPUS_LUT_CHAN_522250_IDX] =3D { 20890, 0x1, 0x74, 0x1C71C, 0x6C=
+D },
++       [OLYMPUS_LUT_CHAN_522375_IDX] =3D { 20895, 0x1, 0x74, 0x2AAAB, 0x6C=
+D },
++       [OLYMPUS_LUT_CHAN_522500_IDX] =3D { 20900, 0x1, 0x74, 0x38E39, 0x6C=
+E },
++       [OLYMPUS_LUT_CHAN_522625_IDX] =3D { 20905, 0x1, 0x74, 0x471C7, 0x6C=
+E },
++       [OLYMPUS_LUT_CHAN_522750_IDX] =3D { 20910, 0x1, 0x74, 0x55555, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_522875_IDX] =3D { 20915, 0x1, 0x74, 0x638E4, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_523000_IDX] =3D { 20920, 0x1, 0x74, 0x71C72, 0x6C=
+F },
++       [OLYMPUS_LUT_CHAN_523125_IDX] =3D { 20925, 0x1, 0x74, 0x80000, 0x6D=
+0 },
++       [OLYMPUS_LUT_CHAN_523250_IDX] =3D { 20930, 0x1, 0x74, 0x8E38E, 0x6D=
+0 },
++       [OLYMPUS_LUT_CHAN_523375_IDX] =3D { 20935, 0x1, 0x74, 0x9C71C, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523500_IDX] =3D { 20940, 0x1, 0x74, 0xAAAAB, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523625_IDX] =3D { 20945, 0x1, 0x74, 0xB8E39, 0x6D=
+1 },
++       [OLYMPUS_LUT_CHAN_523750_IDX] =3D { 20950, 0x1, 0x74, 0xC71C7, 0x6D=
+2 },
++       [OLYMPUS_LUT_CHAN_523875_IDX] =3D { 20955, 0x1, 0x74, 0xD5555, 0x6D=
+2 },
++       [OLYMPUS_LUT_CHAN_524000_IDX] =3D { 20960, 0x1, 0x74, 0xE38E4, 0x6D=
+3 },
++       [OLYMPUS_LUT_CHAN_524125_IDX] =3D { 20965, 0x1, 0x74, 0xF1C72, 0x6D=
+3 },
++       [OLYMPUS_LUT_CHAN_524250_IDX] =3D { 20970, 0x1, 0x74, 0x100000, 0x6=
+D4 },
++       [OLYMPUS_LUT_CHAN_524375_IDX] =3D { 20975, 0x1, 0x74, 0x10E38E, 0x6=
+D4 },
++       [OLYMPUS_LUT_CHAN_524500_IDX] =3D { 20980, 0x1, 0x74, 0x11C71C, 0x6=
+D4 },
++       [OLYMPUS_LUT_CHAN_524625_IDX] =3D { 20985, 0x1, 0x74, 0x12AAAB, 0x6=
+D5 },
++       [OLYMPUS_LUT_CHAN_524750_IDX] =3D { 20990, 0x1, 0x74, 0x138E39, 0x6=
+D5 },
++       [OLYMPUS_LUT_CHAN_524875_IDX] =3D { 20995, 0x1, 0x74, 0x1471C7, 0x6=
+D6 },
++       [OLYMPUS_LUT_CHAN_525000_IDX] =3D { 21000, 0x1, 0x74, 0x155555, 0x6=
+D6 },
++       [OLYMPUS_LUT_CHAN_525125_IDX] =3D { 21005, 0x1, 0x74, 0x1638E4, 0x6=
+D6 },
++       [OLYMPUS_LUT_CHAN_525250_IDX] =3D { 21010, 0x1, 0x74, 0x171C72, 0x6=
+D7 },
++       [OLYMPUS_LUT_CHAN_525375_IDX] =3D { 21015, 0x1, 0x74, 0x180000, 0x6=
+D7 },
++       [OLYMPUS_LUT_CHAN_525500_IDX] =3D { 21020, 0x1, 0x74, 0x18E38E, 0x6=
+D8 },
++       [OLYMPUS_LUT_CHAN_525625_IDX] =3D { 21025, 0x1, 0x74, 0x19C71C, 0x6=
+D8 },
++       [OLYMPUS_LUT_CHAN_525750_IDX] =3D { 21030, 0x1, 0x74, 0x1AAAAB, 0x6=
+D9 },
++       [OLYMPUS_LUT_CHAN_525875_IDX] =3D { 21035, 0x1, 0x74, 0x1B8E39, 0x6=
+D9 },
++       [OLYMPUS_LUT_CHAN_526000_IDX] =3D { 21040, 0x1, 0x74, 0x1C71C7, 0x6=
+D9 },
++       [OLYMPUS_LUT_CHAN_526125_IDX] =3D { 21045, 0x1, 0x74, 0x1D5555, 0x6=
+DA },
++       [OLYMPUS_LUT_CHAN_526250_IDX] =3D { 21050, 0x1, 0x74, 0x1E38E4, 0x6=
+DA },
++       [OLYMPUS_LUT_CHAN_526375_IDX] =3D { 21055, 0x1, 0x74, 0x1F1C72, 0x6=
+DB },
++       [OLYMPUS_LUT_CHAN_526500_IDX] =3D { 21060, 0x1, 0x75, 0x0, 0x6DB },
++       [OLYMPUS_LUT_CHAN_526625_IDX] =3D { 21065, 0x1, 0x75, 0xE38E, 0x6DB=
+ },
++       [OLYMPUS_LUT_CHAN_526750_IDX] =3D { 21070, 0x1, 0x75, 0x1C71C, 0x6D=
+C },
++       [OLYMPUS_LUT_CHAN_526875_IDX] =3D { 21075, 0x1, 0x75, 0x2AAAB, 0x6D=
+C },
++       [OLYMPUS_LUT_CHAN_527000_IDX] =3D { 21080, 0x1, 0x75, 0x38E39, 0x6D=
+D },
++       [OLYMPUS_LUT_CHAN_527125_IDX] =3D { 21085, 0x1, 0x75, 0x471C7, 0x6D=
+D },
++       [OLYMPUS_LUT_CHAN_527250_IDX] =3D { 21090, 0x1, 0x75, 0x55555, 0x6D=
+E },
++       [OLYMPUS_LUT_CHAN_527375_IDX] =3D { 21095, 0x1, 0x75, 0x638E4, 0x6D=
+E },
++       [OLYMPUS_LUT_CHAN_527500_IDX] =3D { 21100, 0x1, 0x75, 0x71C72, 0x6D=
+E },
++       [OLYMPUS_LUT_CHAN_527625_IDX] =3D { 21105, 0x1, 0x75, 0x80000, 0x6D=
+F },
++       [OLYMPUS_LUT_CHAN_527750_IDX] =3D { 21110, 0x1, 0x75, 0x8E38E, 0x6D=
+F },
++       [OLYMPUS_LUT_CHAN_527875_IDX] =3D { 21115, 0x1, 0x75, 0x9C71C, 0x6E=
+0 },
++       [OLYMPUS_LUT_CHAN_528000_IDX] =3D { 21120, 0x1, 0x75, 0xAAAAB, 0x6E=
+0 },
++       [OLYMPUS_LUT_CHAN_528125_IDX] =3D { 21125, 0x1, 0x75, 0xB8E39, 0x6E=
+0 },
++       [OLYMPUS_LUT_CHAN_528250_IDX] =3D { 21130, 0x1, 0x75, 0xC71C7, 0x6E=
+1 },
++       [OLYMPUS_LUT_CHAN_528375_IDX] =3D { 21135, 0x1, 0x75, 0xD5555, 0x6E=
+1 },
++       [OLYMPUS_LUT_CHAN_528500_IDX] =3D { 21140, 0x1, 0x75, 0xE38E4, 0x6E=
+2 },
++       [OLYMPUS_LUT_CHAN_528625_IDX] =3D { 21145, 0x1, 0x75, 0xF1C72, 0x6E=
+2 },
++       [OLYMPUS_LUT_CHAN_528750_IDX] =3D { 21150, 0x1, 0x75, 0x100000, 0x6=
+E3 },
++       [OLYMPUS_LUT_CHAN_528875_IDX] =3D { 21155, 0x1, 0x75, 0x10E38E, 0x6=
+E3 },
++       [OLYMPUS_LUT_CHAN_529000_IDX] =3D { 21160, 0x1, 0x75, 0x11C71C, 0x6=
+E3 },
++       [OLYMPUS_LUT_CHAN_529125_IDX] =3D { 21165, 0x1, 0x75, 0x12AAAB, 0x6=
+E4 },
++       [OLYMPUS_LUT_CHAN_529250_IDX] =3D { 21170, 0x1, 0x75, 0x138E39, 0x6=
+E4 },
++       [OLYMPUS_LUT_CHAN_529375_IDX] =3D { 21175, 0x1, 0x75, 0x1471C7, 0x6=
+E5 },
++       [OLYMPUS_LUT_CHAN_529500_IDX] =3D { 21180, 0x1, 0x75, 0x155555, 0x6=
+E5 },
++       [OLYMPUS_LUT_CHAN_529625_IDX] =3D { 21185, 0x1, 0x75, 0x1638E4, 0x6=
+E5 },
++       [OLYMPUS_LUT_CHAN_529750_IDX] =3D { 21190, 0x1, 0x75, 0x171C72, 0x6=
+E6 },
++       [OLYMPUS_LUT_CHAN_529875_IDX] =3D { 21195, 0x1, 0x75, 0x180000, 0x6=
+E6 },
++       [OLYMPUS_LUT_CHAN_530000_IDX] =3D { 21200, 0x1, 0x75, 0x18E38E, 0x6=
+E7 },
++       [OLYMPUS_LUT_CHAN_530125_IDX] =3D { 21205, 0x1, 0x75, 0x19C71C, 0x6=
+E7 },
++       [OLYMPUS_LUT_CHAN_530250_IDX] =3D { 21210, 0x1, 0x75, 0x1AAAAB, 0x6=
+E8 },
++       [OLYMPUS_LUT_CHAN_530375_IDX] =3D { 21215, 0x1, 0x75, 0x1B8E39, 0x6=
+E8 },
++       [OLYMPUS_LUT_CHAN_530500_IDX] =3D { 21220, 0x1, 0x75, 0x1C71C7, 0x6=
+E8 },
++       [OLYMPUS_LUT_CHAN_530625_IDX] =3D { 21225, 0x1, 0x75, 0x1D5555, 0x6=
+E9 },
++       [OLYMPUS_LUT_CHAN_530750_IDX] =3D { 21230, 0x1, 0x75, 0x1E38E4, 0x6=
+E9 },
++       [OLYMPUS_LUT_CHAN_530875_IDX] =3D { 21235, 0x1, 0x75, 0x1F1C72, 0x6=
+EA },
++       [OLYMPUS_LUT_CHAN_531000_IDX] =3D { 21240, 0x1, 0x76, 0x0, 0x6EA },
++       [OLYMPUS_LUT_CHAN_531125_IDX] =3D { 21245, 0x1, 0x76, 0xE38E, 0x6EA=
+ },
++       [OLYMPUS_LUT_CHAN_531250_IDX] =3D { 21250, 0x1, 0x76, 0x1C71C, 0x6E=
+B },
++       [OLYMPUS_LUT_CHAN_531375_IDX] =3D { 21255, 0x1, 0x76, 0x2AAAB, 0x6E=
+B },
++       [OLYMPUS_LUT_CHAN_531500_IDX] =3D { 21260, 0x1, 0x76, 0x38E39, 0x6E=
+C },
++       [OLYMPUS_LUT_CHAN_531625_IDX] =3D { 21265, 0x1, 0x76, 0x471C7, 0x6E=
+C },
++       [OLYMPUS_LUT_CHAN_531750_IDX] =3D { 21270, 0x1, 0x76, 0x55555, 0x6E=
+D },
++       [OLYMPUS_LUT_CHAN_531875_IDX] =3D { 21275, 0x1, 0x76, 0x638E4, 0x6E=
+D },
++       [OLYMPUS_LUT_CHAN_532000_IDX] =3D { 21280, 0x1, 0x76, 0x71C72, 0x6E=
+D },
++       [OLYMPUS_LUT_CHAN_532125_IDX] =3D { 21285, 0x1, 0x76, 0x80000, 0x6E=
+E },
++       [OLYMPUS_LUT_CHAN_532250_IDX] =3D { 21290, 0x1, 0x76, 0x8E38E, 0x6E=
+E },
++       [OLYMPUS_LUT_CHAN_532375_IDX] =3D { 21295, 0x1, 0x76, 0x9C71C, 0x6E=
+F },
++       [OLYMPUS_LUT_CHAN_532500_IDX] =3D { 21300, 0x1, 0x76, 0xAAAAB, 0x6E=
+F },
++       [OLYMPUS_LUT_CHAN_532625_IDX] =3D { 21305, 0x1, 0x76, 0xB8E39, 0x6E=
+F },
++       [OLYMPUS_LUT_CHAN_532750_IDX] =3D { 21310, 0x1, 0x76, 0xC71C7, 0x6F=
+0 },
++       [OLYMPUS_LUT_CHAN_532875_IDX] =3D { 21315, 0x1, 0x76, 0xD5555, 0x6F=
+0 },
++       [OLYMPUS_LUT_CHAN_533000_IDX] =3D { 21320, 0x1, 0x76, 0xE38E4, 0x6F=
+1 },
++       [OLYMPUS_LUT_CHAN_533125_IDX] =3D { 21325, 0x1, 0x76, 0xF1C72, 0x6F=
+1 },
++       [OLYMPUS_LUT_CHAN_533250_IDX] =3D { 21330, 0x1, 0x76, 0x100000, 0x6=
+F2 },
++       [OLYMPUS_LUT_CHAN_533375_IDX] =3D { 21335, 0x1, 0x76, 0x10E38E, 0x6=
+F2 },
++       [OLYMPUS_LUT_CHAN_533500_IDX] =3D { 21340, 0x1, 0x76, 0x11C71C, 0x6=
+F2 },
++       [OLYMPUS_LUT_CHAN_533625_IDX] =3D { 21345, 0x1, 0x76, 0x12AAAB, 0x6=
+F3 },
++       [OLYMPUS_LUT_CHAN_533750_IDX] =3D { 21350, 0x1, 0x76, 0x138E39, 0x6=
+F3 },
++       [OLYMPUS_LUT_CHAN_533875_IDX] =3D { 21355, 0x1, 0x76, 0x1471C7, 0x6=
+F4 },
++       [OLYMPUS_LUT_CHAN_534000_IDX] =3D { 21360, 0x1, 0x76, 0x155555, 0x6=
+F4 },
++       [OLYMPUS_LUT_CHAN_534125_IDX] =3D { 21365, 0x1, 0x76, 0x1638E4, 0x6=
+F4 },
++       [OLYMPUS_LUT_CHAN_534250_IDX] =3D { 21370, 0x1, 0x76, 0x171C72, 0x6=
+F5 },
++       [OLYMPUS_LUT_CHAN_534375_IDX] =3D { 21375, 0x1, 0x76, 0x180000, 0x6=
+F5 },
++       [OLYMPUS_LUT_CHAN_534500_IDX] =3D { 21380, 0x1, 0x76, 0x18E38E, 0x6=
+F6 },
++       [OLYMPUS_LUT_CHAN_534625_IDX] =3D { 21385, 0x1, 0x76, 0x19C71C, 0x6=
+F6 },
++       [OLYMPUS_LUT_CHAN_534750_IDX] =3D { 21390, 0x1, 0x76, 0x1AAAAB, 0x6=
+F7 },
++       [OLYMPUS_LUT_CHAN_534875_IDX] =3D { 21395, 0x1, 0x76, 0x1B8E39, 0x6=
+F7 },
++       [OLYMPUS_LUT_CHAN_535000_IDX] =3D { 21400, 0x1, 0x76, 0x1C71C7, 0x6=
+F7 },
++       [OLYMPUS_LUT_CHAN_535125_IDX] =3D { 21405, 0x1, 0x76, 0x1D5555, 0x6=
+F8 },
++       [OLYMPUS_LUT_CHAN_535250_IDX] =3D { 21410, 0x1, 0x76, 0x1E38E4, 0x6=
+F8 },
++       [OLYMPUS_LUT_CHAN_535375_IDX] =3D { 21415, 0x1, 0x76, 0x1F1C72, 0x6=
+F9 },
++       [OLYMPUS_LUT_CHAN_535500_IDX] =3D { 21420, 0x1, 0x77, 0x0, 0x6F9 },
++       [OLYMPUS_LUT_CHAN_535625_IDX] =3D { 21425, 0x1, 0x77, 0xE38E, 0x6F9=
+ },
++       [OLYMPUS_LUT_CHAN_535750_IDX] =3D { 21430, 0x1, 0x77, 0x1C71C, 0x6F=
+A },
++       [OLYMPUS_LUT_CHAN_535875_IDX] =3D { 21435, 0x1, 0x77, 0x2AAAB, 0x6F=
+A },
++       [OLYMPUS_LUT_CHAN_536000_IDX] =3D { 21440, 0x1, 0x77, 0x38E39, 0x6F=
+B },
++       [OLYMPUS_LUT_CHAN_536125_IDX] =3D { 21445, 0x1, 0x77, 0x471C7, 0x6F=
+B },
++       [OLYMPUS_LUT_CHAN_536250_IDX] =3D { 21450, 0x1, 0x77, 0x55555, 0x6F=
+C },
++       [OLYMPUS_LUT_CHAN_536375_IDX] =3D { 21455, 0x1, 0x77, 0x638E4, 0x6F=
+C },
++       [OLYMPUS_LUT_CHAN_536500_IDX] =3D { 21460, 0x1, 0x77, 0x71C72, 0x6F=
+C },
++       [OLYMPUS_LUT_CHAN_536625_IDX] =3D { 21465, 0x1, 0x77, 0x80000, 0x6F=
+D },
++       [OLYMPUS_LUT_CHAN_536750_IDX] =3D { 21470, 0x1, 0x77, 0x8E38E, 0x6F=
+D },
++       [OLYMPUS_LUT_CHAN_536875_IDX] =3D { 21475, 0x1, 0x77, 0x9C71C, 0x6F=
+E },
++       [OLYMPUS_LUT_CHAN_537000_IDX] =3D { 21480, 0x1, 0x77, 0xAAAAB, 0x6F=
+E },
++       [OLYMPUS_LUT_CHAN_537125_IDX] =3D { 21485, 0x1, 0x77, 0xB8E39, 0x6F=
+E },
++       [OLYMPUS_LUT_CHAN_537250_IDX] =3D { 21490, 0x1, 0x77, 0xC71C7, 0x6F=
+F },
++       [OLYMPUS_LUT_CHAN_537375_IDX] =3D { 21495, 0x1, 0x77, 0xD5555, 0x6F=
+F },
++       [OLYMPUS_LUT_CHAN_537500_IDX] =3D { 21500, 0x1, 0x77, 0xE38E4, 0x70=
+0 },
++       [OLYMPUS_LUT_CHAN_537625_IDX] =3D { 21505, 0x1, 0x77, 0xF1C72, 0x70=
+0 },
++       [OLYMPUS_LUT_CHAN_537750_IDX] =3D { 21510, 0x1, 0x77, 0x100000, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_537875_IDX] =3D { 21515, 0x1, 0x77, 0x10E38E, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_538000_IDX] =3D { 21520, 0x1, 0x77, 0x11C71C, 0x7=
+01 },
++       [OLYMPUS_LUT_CHAN_538125_IDX] =3D { 21525, 0x1, 0x77, 0x12AAAB, 0x7=
+02 },
++       [OLYMPUS_LUT_CHAN_538250_IDX] =3D { 21530, 0x1, 0x77, 0x138E39, 0x7=
+02 },
++       [OLYMPUS_LUT_CHAN_538375_IDX] =3D { 21535, 0x1, 0x77, 0x1471C7, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538500_IDX] =3D { 21540, 0x1, 0x77, 0x155555, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538625_IDX] =3D { 21545, 0x1, 0x77, 0x1638E4, 0x7=
+03 },
++       [OLYMPUS_LUT_CHAN_538750_IDX] =3D { 21550, 0x1, 0x77, 0x171C72, 0x7=
+04 },
++       [OLYMPUS_LUT_CHAN_538875_IDX] =3D { 21555, 0x1, 0x77, 0x180000, 0x7=
+04 },
++       [OLYMPUS_LUT_CHAN_539000_IDX] =3D { 21560, 0x1, 0x77, 0x18E38E, 0x7=
+05 },
++       [OLYMPUS_LUT_CHAN_539125_IDX] =3D { 21565, 0x1, 0x77, 0x19C71C, 0x7=
+05 },
++       [OLYMPUS_LUT_CHAN_539250_IDX] =3D { 21570, 0x1, 0x77, 0x1AAAAB, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539375_IDX] =3D { 21575, 0x1, 0x77, 0x1B8E39, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539500_IDX] =3D { 21580, 0x1, 0x77, 0x1C71C7, 0x7=
+06 },
++       [OLYMPUS_LUT_CHAN_539625_IDX] =3D { 21585, 0x1, 0x77, 0x1D5555, 0x7=
+07 },
++       [OLYMPUS_LUT_CHAN_539750_IDX] =3D { 21590, 0x1, 0x77, 0x1E38E4, 0x7=
+07 },
++       [OLYMPUS_LUT_CHAN_539875_IDX] =3D { 21595, 0x1, 0x77, 0x1F1C72, 0x7=
+08 },
++       [OLYMPUS_LUT_CHAN_540000_IDX] =3D { 21600, 0x1, 0x78, 0x0, 0x708 },
++       [OLYMPUS_LUT_CHAN_540125_IDX] =3D { 21605, 0x1, 0x78, 0xE38E, 0x708=
+ },
++       [OLYMPUS_LUT_CHAN_540250_IDX] =3D { 21610, 0x1, 0x78, 0x1C71C, 0x70=
+9 },
++       [OLYMPUS_LUT_CHAN_540375_IDX] =3D { 21615, 0x1, 0x78, 0x2AAAB, 0x70=
+9 },
++       [OLYMPUS_LUT_CHAN_540500_IDX] =3D { 21620, 0x1, 0x78, 0x38E39, 0x70=
+A },
++       [OLYMPUS_LUT_CHAN_540625_IDX] =3D { 21625, 0x1, 0x78, 0x471C7, 0x70=
+A },
++       [OLYMPUS_LUT_CHAN_540750_IDX] =3D { 21630, 0x1, 0x78, 0x55555, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_540875_IDX] =3D { 21635, 0x1, 0x78, 0x638E4, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_541000_IDX] =3D { 21640, 0x1, 0x78, 0x71C72, 0x70=
+B },
++       [OLYMPUS_LUT_CHAN_541125_IDX] =3D { 21645, 0x1, 0x78, 0x80000, 0x70=
+C },
++       [OLYMPUS_LUT_CHAN_541250_IDX] =3D { 21650, 0x1, 0x78, 0x8E38E, 0x70=
+C },
++       [OLYMPUS_LUT_CHAN_541375_IDX] =3D { 21655, 0x1, 0x78, 0x9C71C, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541500_IDX] =3D { 21660, 0x1, 0x78, 0xAAAAB, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541625_IDX] =3D { 21665, 0x1, 0x78, 0xB8E39, 0x70=
+D },
++       [OLYMPUS_LUT_CHAN_541750_IDX] =3D { 21670, 0x1, 0x78, 0xC71C7, 0x70=
+E },
++       [OLYMPUS_LUT_CHAN_541875_IDX] =3D { 21675, 0x1, 0x78, 0xD5555, 0x70=
+E },
++       [OLYMPUS_LUT_CHAN_542000_IDX] =3D { 21680, 0x1, 0x78, 0xE38E4, 0x70=
+F },
++       [OLYMPUS_LUT_CHAN_542125_IDX] =3D { 21685, 0x1, 0x78, 0xF1C72, 0x70=
+F },
++       [OLYMPUS_LUT_CHAN_542250_IDX] =3D { 21690, 0x1, 0x78, 0x100000, 0x7=
+10 },
++       [OLYMPUS_LUT_CHAN_542375_IDX] =3D { 21695, 0x1, 0x78, 0x10E38E, 0x7=
+10 },
++       [OLYMPUS_LUT_CHAN_542500_IDX] =3D { 21700, 0x1, 0x78, 0x11C71C, 0x7=
+10 },
++       [OLYMPUS_LUT_CHAN_542625_IDX] =3D { 21705, 0x1, 0x78, 0x12AAAB, 0x7=
+11 },
++       [OLYMPUS_LUT_CHAN_542750_IDX] =3D { 21710, 0x1, 0x78, 0x138E39, 0x7=
+11 },
++       [OLYMPUS_LUT_CHAN_542875_IDX] =3D { 21715, 0x1, 0x78, 0x1471C7, 0x7=
+12 },
++       [OLYMPUS_LUT_CHAN_543000_IDX] =3D { 21720, 0x1, 0x78, 0x155555, 0x7=
+12 },
++       [OLYMPUS_LUT_CHAN_543125_IDX] =3D { 21725, 0x1, 0x78, 0x1638E4, 0x7=
+12 },
++       [OLYMPUS_LUT_CHAN_543250_IDX] =3D { 21730, 0x1, 0x78, 0x171C72, 0x7=
+13 },
++       [OLYMPUS_LUT_CHAN_543375_IDX] =3D { 21735, 0x1, 0x78, 0x180000, 0x7=
+13 },
++       [OLYMPUS_LUT_CHAN_543500_IDX] =3D { 21740, 0x1, 0x78, 0x18E38E, 0x7=
+14 },
++       [OLYMPUS_LUT_CHAN_543625_IDX] =3D { 21745, 0x1, 0x78, 0x19C71C, 0x7=
+14 },
++       [OLYMPUS_LUT_CHAN_543750_IDX] =3D { 21750, 0x1, 0x78, 0x1AAAAB, 0x7=
+15 },
++       [OLYMPUS_LUT_CHAN_543875_IDX] =3D { 21755, 0x1, 0x78, 0x1B8E39, 0x7=
+15 },
++       [OLYMPUS_LUT_CHAN_544000_IDX] =3D { 21760, 0x1, 0x78, 0x1C71C7, 0x7=
+15 },
++       [OLYMPUS_LUT_CHAN_544125_IDX] =3D { 21765, 0x1, 0x78, 0x1D5555, 0x7=
+16 },
++       [OLYMPUS_LUT_CHAN_544250_IDX] =3D { 21770, 0x1, 0x78, 0x1E38E4, 0x7=
+16 },
++       [OLYMPUS_LUT_CHAN_544375_IDX] =3D { 21775, 0x1, 0x78, 0x1F1C72, 0x7=
+17 },
++       [OLYMPUS_LUT_CHAN_544500_IDX] =3D { 21780, 0x1, 0x79, 0x0, 0x717 },
++       [OLYMPUS_LUT_CHAN_544625_IDX] =3D { 21785, 0x1, 0x79, 0xE38E, 0x717=
+ },
++       [OLYMPUS_LUT_CHAN_544750_IDX] =3D { 21790, 0x1, 0x79, 0x1C71C, 0x71=
+8 },
++       [OLYMPUS_LUT_CHAN_544875_IDX] =3D { 21795, 0x1, 0x79, 0x2AAAB, 0x71=
+8 },
++       [OLYMPUS_LUT_CHAN_545000_IDX] =3D { 21800, 0x1, 0x79, 0x38E39, 0x71=
+9 },
++       [OLYMPUS_LUT_CHAN_545125_IDX] =3D { 21805, 0x1, 0x79, 0x471C7, 0x71=
+9 },
++       [OLYMPUS_LUT_CHAN_545250_IDX] =3D { 21810, 0x1, 0x79, 0x55555, 0x71=
+A },
++       [OLYMPUS_LUT_CHAN_545375_IDX] =3D { 21815, 0x1, 0x79, 0x638E4, 0x71=
+A },
++       [OLYMPUS_LUT_CHAN_545500_IDX] =3D { 21820, 0x1, 0x79, 0x71C72, 0x71=
+A },
++       [OLYMPUS_LUT_CHAN_545625_IDX] =3D { 21825, 0x1, 0x79, 0x80000, 0x71=
+B },
++       [OLYMPUS_LUT_CHAN_545750_IDX] =3D { 21830, 0x1, 0x79, 0x8E38E, 0x71=
+B },
++       [OLYMPUS_LUT_CHAN_545875_IDX] =3D { 21835, 0x1, 0x79, 0x9C71C, 0x71=
+C },
++       [OLYMPUS_LUT_CHAN_546000_IDX] =3D { 21840, 0x1, 0x79, 0xAAAAB, 0x71=
+C },
++       [OLYMPUS_LUT_CHAN_546125_IDX] =3D { 21845, 0x1, 0x79, 0xB8E39, 0x71=
+C },
++       [OLYMPUS_LUT_CHAN_546250_IDX] =3D { 21850, 0x1, 0x79, 0xC71C7, 0x71=
+D },
++       [OLYMPUS_LUT_CHAN_546375_IDX] =3D { 21855, 0x1, 0x79, 0xD5555, 0x71=
+D },
++       [OLYMPUS_LUT_CHAN_546500_IDX] =3D { 21860, 0x1, 0x79, 0xE38E4, 0x71=
+E },
++       [OLYMPUS_LUT_CHAN_546625_IDX] =3D { 21865, 0x1, 0x79, 0xF1C72, 0x71=
+E },
++       [OLYMPUS_LUT_CHAN_546750_IDX] =3D { 21870, 0x1, 0x79, 0x100000, 0x7=
+1F },
++       [OLYMPUS_LUT_CHAN_546875_IDX] =3D { 21875, 0x1, 0x79, 0x10E38E, 0x7=
+1F },
++       [OLYMPUS_LUT_CHAN_547000_IDX] =3D { 21880, 0x1, 0x79, 0x11C71C, 0x7=
+1F },
++       [OLYMPUS_LUT_CHAN_547125_IDX] =3D { 21885, 0x1, 0x79, 0x12AAAB, 0x7=
+20 },
++       [OLYMPUS_LUT_CHAN_547250_IDX] =3D { 21890, 0x1, 0x79, 0x138E39, 0x7=
+20 },
++       [OLYMPUS_LUT_CHAN_547375_IDX] =3D { 21895, 0x1, 0x79, 0x1471C7, 0x7=
+21 },
++       [OLYMPUS_LUT_CHAN_547500_IDX] =3D { 21900, 0x1, 0x79, 0x155555, 0x7=
+21 },
++       [OLYMPUS_LUT_CHAN_547625_IDX] =3D { 21905, 0x1, 0x79, 0x1638E4, 0x7=
+21 },
++       [OLYMPUS_LUT_CHAN_547750_IDX] =3D { 21910, 0x1, 0x79, 0x171C72, 0x7=
+22 },
++       [OLYMPUS_LUT_CHAN_547875_IDX] =3D { 21915, 0x1, 0x79, 0x180000, 0x7=
+22 },
++       [OLYMPUS_LUT_CHAN_548000_IDX] =3D { 21920, 0x1, 0x79, 0x18E38E, 0x7=
+23 },
++       [OLYMPUS_LUT_CHAN_548125_IDX] =3D { 21925, 0x1, 0x79, 0x19C71C, 0x7=
+23 },
++       [OLYMPUS_LUT_CHAN_548250_IDX] =3D { 21930, 0x1, 0x79, 0x1AAAAB, 0x7=
+24 },
++       [OLYMPUS_LUT_CHAN_548375_IDX] =3D { 21935, 0x1, 0x79, 0x1B8E39, 0x7=
+24 },
++       [OLYMPUS_LUT_CHAN_548500_IDX] =3D { 21940, 0x1, 0x79, 0x1C71C7, 0x7=
+24 },
++       [OLYMPUS_LUT_CHAN_548625_IDX] =3D { 21945, 0x1, 0x79, 0x1D5555, 0x7=
+25 },
++       [OLYMPUS_LUT_CHAN_548750_IDX] =3D { 21950, 0x1, 0x79, 0x1E38E4, 0x7=
+25 },
++       [OLYMPUS_LUT_CHAN_548875_IDX] =3D { 21955, 0x1, 0x79, 0x1F1C72, 0x7=
+26 },
++       [OLYMPUS_LUT_CHAN_549000_IDX] =3D { 21960, 0x1, 0x7A, 0x0, 0x726 },
++       [OLYMPUS_LUT_CHAN_549125_IDX] =3D { 21965, 0x1, 0x7A, 0xE38E, 0x726=
+ },
++       [OLYMPUS_LUT_CHAN_549250_IDX] =3D { 21970, 0x1, 0x7A, 0x1C71C, 0x72=
+7 },
++       [OLYMPUS_LUT_CHAN_549375_IDX] =3D { 21975, 0x1, 0x7A, 0x2AAAB, 0x72=
+7 },
++       [OLYMPUS_LUT_CHAN_549500_IDX] =3D { 21980, 0x1, 0x7A, 0x38E39, 0x72=
+8 },
++       [OLYMPUS_LUT_CHAN_549625_IDX] =3D { 21985, 0x1, 0x7A, 0x471C7, 0x72=
+8 },
++       [OLYMPUS_LUT_CHAN_549750_IDX] =3D { 21990, 0x1, 0x7A, 0x55555, 0x72=
+9 },
++       [OLYMPUS_LUT_CHAN_549875_IDX] =3D { 21995, 0x1, 0x7A, 0x638E4, 0x72=
+9 },
++       [OLYMPUS_LUT_CHAN_550000_IDX] =3D { 22000, 0x1, 0x7A, 0x71C72, 0x72=
+9 },
++       [OLYMPUS_LUT_CHAN_550125_IDX] =3D { 22005, 0x1, 0x7A, 0x80000, 0x72=
+A },
++       [OLYMPUS_LUT_CHAN_550250_IDX] =3D { 22010, 0x1, 0x7A, 0x8E38E, 0x72=
+A },
++       [OLYMPUS_LUT_CHAN_550375_IDX] =3D { 22015, 0x1, 0x7A, 0x9C71C, 0x72=
+B },
++       [OLYMPUS_LUT_CHAN_550500_IDX] =3D { 22020, 0x1, 0x7A, 0xAAAAB, 0x72=
+B },
++       [OLYMPUS_LUT_CHAN_550625_IDX] =3D { 22025, 0x1, 0x7A, 0xB8E39, 0x72=
+B },
++       [OLYMPUS_LUT_CHAN_550750_IDX] =3D { 22030, 0x1, 0x7A, 0xC71C7, 0x72=
+C },
++       [OLYMPUS_LUT_CHAN_550875_IDX] =3D { 22035, 0x1, 0x7A, 0xD5555, 0x72=
+C },
++       [OLYMPUS_LUT_CHAN_551000_IDX] =3D { 22040, 0x1, 0x7A, 0xE38E4, 0x72=
+D },
++       [OLYMPUS_LUT_CHAN_551125_IDX] =3D { 22045, 0x1, 0x7A, 0xF1C72, 0x72=
+D },
++       [OLYMPUS_LUT_CHAN_551250_IDX] =3D { 22050, 0x1, 0x7A, 0x100000, 0x7=
+2E },
++       [OLYMPUS_LUT_CHAN_551375_IDX] =3D { 22055, 0x1, 0x7A, 0x10E38E, 0x7=
+2E },
++       [OLYMPUS_LUT_CHAN_551500_IDX] =3D { 22060, 0x1, 0x7A, 0x11C71C, 0x7=
+2E },
++       [OLYMPUS_LUT_CHAN_551625_IDX] =3D { 22065, 0x1, 0x7A, 0x12AAAB, 0x7=
+2F },
++       [OLYMPUS_LUT_CHAN_551750_IDX] =3D { 22070, 0x1, 0x7A, 0x138E39, 0x7=
+2F },
++       [OLYMPUS_LUT_CHAN_551875_IDX] =3D { 22075, 0x1, 0x7A, 0x1471C7, 0x7=
+30 },
++       [OLYMPUS_LUT_CHAN_552000_IDX] =3D { 22080, 0x1, 0x7A, 0x155555, 0x7=
+30 },
++       [OLYMPUS_LUT_CHAN_552125_IDX] =3D { 22085, 0x1, 0x7A, 0x1638E4, 0x7=
+30 },
++       [OLYMPUS_LUT_CHAN_552250_IDX] =3D { 22090, 0x1, 0x7A, 0x171C72, 0x7=
+31 },
++       [OLYMPUS_LUT_CHAN_552375_IDX] =3D { 22095, 0x1, 0x7A, 0x180000, 0x7=
+31 },
++       [OLYMPUS_LUT_CHAN_552500_IDX] =3D { 22100, 0x1, 0x7A, 0x18E38E, 0x7=
+32 },
++       [OLYMPUS_LUT_CHAN_552625_IDX] =3D { 22105, 0x1, 0x7A, 0x19C71C, 0x7=
+32 },
++       [OLYMPUS_LUT_CHAN_552750_IDX] =3D { 22110, 0x1, 0x7A, 0x1AAAAB, 0x7=
+33 },
++       [OLYMPUS_LUT_CHAN_552875_IDX] =3D { 22115, 0x1, 0x7A, 0x1B8E39, 0x7=
+33 },
++       [OLYMPUS_LUT_CHAN_553000_IDX] =3D { 22120, 0x1, 0x7A, 0x1C71C7, 0x7=
+33 },
++       [OLYMPUS_LUT_CHAN_553125_IDX] =3D { 22125, 0x1, 0x7A, 0x1D5555, 0x7=
+34 },
++       [OLYMPUS_LUT_CHAN_553250_IDX] =3D { 22130, 0x1, 0x7A, 0x1E38E4, 0x7=
+34 },
++       [OLYMPUS_LUT_CHAN_553375_IDX] =3D { 22135, 0x1, 0x7A, 0x1F1C72, 0x7=
+35 },
++       [OLYMPUS_LUT_CHAN_553500_IDX] =3D { 22140, 0x1, 0x7B, 0x0, 0x735 },
++       [OLYMPUS_LUT_CHAN_553625_IDX] =3D { 22145, 0x1, 0x7B, 0xE38E, 0x735=
+ },
++       [OLYMPUS_LUT_CHAN_553750_IDX] =3D { 22150, 0x1, 0x7B, 0x1C71C, 0x73=
+6 },
++       [OLYMPUS_LUT_CHAN_553875_IDX] =3D { 22155, 0x1, 0x7B, 0x2AAAB, 0x73=
+6 },
++       [OLYMPUS_LUT_CHAN_554000_IDX] =3D { 22160, 0x1, 0x7B, 0x38E39, 0x73=
+7 },
++       [OLYMPUS_LUT_CHAN_554125_IDX] =3D { 22165, 0x1, 0x7B, 0x471C7, 0x73=
+7 },
++       [OLYMPUS_LUT_CHAN_554250_IDX] =3D { 22170, 0x1, 0x7B, 0x55555, 0x73=
+8 },
++       [OLYMPUS_LUT_CHAN_554375_IDX] =3D { 22175, 0x1, 0x7B, 0x638E4, 0x73=
+8 },
++       [OLYMPUS_LUT_CHAN_554500_IDX] =3D { 22180, 0x1, 0x7B, 0x71C72, 0x73=
+8 },
++       [OLYMPUS_LUT_CHAN_554625_IDX] =3D { 22185, 0x1, 0x7B, 0x80000, 0x73=
+9 },
++       [OLYMPUS_LUT_CHAN_554750_IDX] =3D { 22190, 0x1, 0x7B, 0x8E38E, 0x73=
+9 },
++       [OLYMPUS_LUT_CHAN_554875_IDX] =3D { 22195, 0x1, 0x7B, 0x9C71C, 0x73=
+A },
++       [OLYMPUS_LUT_CHAN_555000_IDX] =3D { 22200, 0x1, 0x7B, 0xAAAAB, 0x73=
+A },
++       [OLYMPUS_LUT_CHAN_555125_IDX] =3D { 22205, 0x1, 0x7B, 0xB8E39, 0x73=
+A },
++       [OLYMPUS_LUT_CHAN_555250_IDX] =3D { 22210, 0x1, 0x7B, 0xC71C7, 0x73=
+B },
++       [OLYMPUS_LUT_CHAN_555375_IDX] =3D { 22215, 0x1, 0x7B, 0xD5555, 0x73=
+B },
++       [OLYMPUS_LUT_CHAN_555500_IDX] =3D { 22220, 0x1, 0x7B, 0xE38E4, 0x73=
+C },
++       [OLYMPUS_LUT_CHAN_555625_IDX] =3D { 22225, 0x1, 0x7B, 0xF1C72, 0x73=
+C },
++       [OLYMPUS_LUT_CHAN_555750_IDX] =3D { 22230, 0x1, 0x7B, 0x100000, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_555875_IDX] =3D { 22235, 0x1, 0x7B, 0x10E38E, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_556000_IDX] =3D { 22240, 0x1, 0x7B, 0x11C71C, 0x7=
+3D },
++       [OLYMPUS_LUT_CHAN_556125_IDX] =3D { 22245, 0x1, 0x7B, 0x12AAAB, 0x7=
+3E },
++       [OLYMPUS_LUT_CHAN_556250_IDX] =3D { 22250, 0x1, 0x7B, 0x138E39, 0x7=
+3E },
++       [OLYMPUS_LUT_CHAN_556375_IDX] =3D { 22255, 0x1, 0x7B, 0x1471C7, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556500_IDX] =3D { 22260, 0x1, 0x7B, 0x155555, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556625_IDX] =3D { 22265, 0x1, 0x7B, 0x1638E4, 0x7=
+3F },
++       [OLYMPUS_LUT_CHAN_556750_IDX] =3D { 22270, 0x1, 0x7B, 0x171C72, 0x7=
+40 },
++       [OLYMPUS_LUT_CHAN_556875_IDX] =3D { 22275, 0x1, 0x7B, 0x180000, 0x7=
+40 },
++       [OLYMPUS_LUT_CHAN_557000_IDX] =3D { 22280, 0x1, 0x7B, 0x18E38E, 0x7=
+41 },
++       [OLYMPUS_LUT_CHAN_557125_IDX] =3D { 22285, 0x1, 0x7B, 0x19C71C, 0x7=
+41 },
++       [OLYMPUS_LUT_CHAN_557250_IDX] =3D { 22290, 0x1, 0x7B, 0x1AAAAB, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557375_IDX] =3D { 22295, 0x1, 0x7B, 0x1B8E39, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557500_IDX] =3D { 22300, 0x1, 0x7B, 0x1C71C7, 0x7=
+42 },
++       [OLYMPUS_LUT_CHAN_557625_IDX] =3D { 22305, 0x1, 0x7B, 0x1D5555, 0x7=
+43 },
++       [OLYMPUS_LUT_CHAN_557750_IDX] =3D { 22310, 0x1, 0x7B, 0x1E38E4, 0x7=
+43 },
++       [OLYMPUS_LUT_CHAN_557875_IDX] =3D { 22315, 0x1, 0x7B, 0x1F1C72, 0x7=
+44 },
++       [OLYMPUS_LUT_CHAN_558000_IDX] =3D { 22320, 0x1, 0x7C, 0x0, 0x744 },
++       [OLYMPUS_LUT_CHAN_558125_IDX] =3D { 22325, 0x1, 0x7C, 0xE38E, 0x744=
+ },
++       [OLYMPUS_LUT_CHAN_558250_IDX] =3D { 22330, 0x1, 0x7C, 0x1C71C, 0x74=
+5 },
++       [OLYMPUS_LUT_CHAN_558375_IDX] =3D { 22335, 0x1, 0x7C, 0x2AAAB, 0x74=
+5 },
++       [OLYMPUS_LUT_CHAN_558500_IDX] =3D { 22340, 0x1, 0x7C, 0x38E39, 0x74=
+6 },
++       [OLYMPUS_LUT_CHAN_558625_IDX] =3D { 22345, 0x1, 0x7C, 0x471C7, 0x74=
+6 },
++       [OLYMPUS_LUT_CHAN_558750_IDX] =3D { 22350, 0x1, 0x7C, 0x55555, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_558875_IDX] =3D { 22355, 0x1, 0x7C, 0x638E4, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_559000_IDX] =3D { 22360, 0x1, 0x7C, 0x71C72, 0x74=
+7 },
++       [OLYMPUS_LUT_CHAN_559125_IDX] =3D { 22365, 0x1, 0x7C, 0x80000, 0x74=
+8 },
++       [OLYMPUS_LUT_CHAN_559250_IDX] =3D { 22370, 0x1, 0x7C, 0x8E38E, 0x74=
+8 },
++       [OLYMPUS_LUT_CHAN_559375_IDX] =3D { 22375, 0x1, 0x7C, 0x9C71C, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559500_IDX] =3D { 22380, 0x1, 0x7C, 0xAAAAB, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559625_IDX] =3D { 22385, 0x1, 0x7C, 0xB8E39, 0x74=
+9 },
++       [OLYMPUS_LUT_CHAN_559750_IDX] =3D { 22390, 0x1, 0x7C, 0xC71C7, 0x74=
+A },
++       [OLYMPUS_LUT_CHAN_559875_IDX] =3D { 22395, 0x1, 0x7C, 0xD5555, 0x74=
+A },
++       [OLYMPUS_LUT_CHAN_560000_IDX] =3D { 22400, 0x1, 0x7C, 0xE38E4, 0x74=
+B },
++       [OLYMPUS_LUT_CHAN_560125_IDX] =3D { 22405, 0x1, 0x7C, 0xF1C72, 0x74=
+B },
++       [OLYMPUS_LUT_CHAN_560250_IDX] =3D { 22410, 0x1, 0x7C, 0x100000, 0x7=
+4C },
++       [OLYMPUS_LUT_CHAN_560375_IDX] =3D { 22415, 0x1, 0x7C, 0x10E38E, 0x7=
+4C },
++       [OLYMPUS_LUT_CHAN_560500_IDX] =3D { 22420, 0x1, 0x7C, 0x11C71C, 0x7=
+4C },
++       [OLYMPUS_LUT_CHAN_560625_IDX] =3D { 22425, 0x1, 0x7C, 0x12AAAB, 0x7=
+4D },
++       [OLYMPUS_LUT_CHAN_560750_IDX] =3D { 22430, 0x1, 0x7C, 0x138E39, 0x7=
+4D },
++       [OLYMPUS_LUT_CHAN_560875_IDX] =3D { 22435, 0x1, 0x7C, 0x1471C7, 0x7=
+4E },
++       [OLYMPUS_LUT_CHAN_561000_IDX] =3D { 22440, 0x1, 0x7C, 0x155555, 0x7=
+4E },
++       [OLYMPUS_LUT_CHAN_561125_IDX] =3D { 22445, 0x1, 0x7C, 0x1638E4, 0x7=
+4E },
++       [OLYMPUS_LUT_CHAN_561250_IDX] =3D { 22450, 0x1, 0x7C, 0x171C72, 0x7=
+4F },
++       [OLYMPUS_LUT_CHAN_561375_IDX] =3D { 22455, 0x1, 0x7C, 0x180000, 0x7=
+4F },
++       [OLYMPUS_LUT_CHAN_561500_IDX] =3D { 22460, 0x1, 0x7C, 0x18E38E, 0x7=
+50 },
++       [OLYMPUS_LUT_CHAN_561625_IDX] =3D { 22465, 0x1, 0x7C, 0x19C71C, 0x7=
+50 },
++       [OLYMPUS_LUT_CHAN_561750_IDX] =3D { 22470, 0x1, 0x7C, 0x1AAAAB, 0x7=
+51 },
++       [OLYMPUS_LUT_CHAN_561875_IDX] =3D { 22475, 0x1, 0x7C, 0x1B8E39, 0x7=
+51 },
++       [OLYMPUS_LUT_CHAN_562000_IDX] =3D { 22480, 0x1, 0x7C, 0x1C71C7, 0x7=
+51 },
++       [OLYMPUS_LUT_CHAN_562125_IDX] =3D { 22485, 0x1, 0x7C, 0x1D5555, 0x7=
+52 },
++       [OLYMPUS_LUT_CHAN_562250_IDX] =3D { 22490, 0x1, 0x7C, 0x1E38E4, 0x7=
+52 },
++       [OLYMPUS_LUT_CHAN_562375_IDX] =3D { 22495, 0x1, 0x7C, 0x1F1C72, 0x7=
+53 },
++       [OLYMPUS_LUT_CHAN_562500_IDX] =3D { 22500, 0x1, 0x7D, 0x0, 0x753 },
++       [OLYMPUS_LUT_CHAN_562625_IDX] =3D { 22505, 0x1, 0x7D, 0xE38E, 0x753=
+ },
++       [OLYMPUS_LUT_CHAN_562750_IDX] =3D { 22510, 0x1, 0x7D, 0x1C71C, 0x75=
+4 },
++       [OLYMPUS_LUT_CHAN_562875_IDX] =3D { 22515, 0x1, 0x7D, 0x2AAAB, 0x75=
+4 },
++       [OLYMPUS_LUT_CHAN_563000_IDX] =3D { 22520, 0x1, 0x7D, 0x38E39, 0x75=
+5 },
++       [OLYMPUS_LUT_CHAN_563125_IDX] =3D { 22525, 0x1, 0x7D, 0x471C7, 0x75=
+5 },
++       [OLYMPUS_LUT_CHAN_563250_IDX] =3D { 22530, 0x1, 0x7D, 0x55555, 0x75=
+6 },
++       [OLYMPUS_LUT_CHAN_563375_IDX] =3D { 22535, 0x1, 0x7D, 0x638E4, 0x75=
+6 },
++       [OLYMPUS_LUT_CHAN_563500_IDX] =3D { 22540, 0x1, 0x7D, 0x71C72, 0x75=
+6 },
++       [OLYMPUS_LUT_CHAN_563625_IDX] =3D { 22545, 0x1, 0x7D, 0x80000, 0x75=
+7 },
++       [OLYMPUS_LUT_CHAN_563750_IDX] =3D { 22550, 0x1, 0x7D, 0x8E38E, 0x75=
+7 },
++       [OLYMPUS_LUT_CHAN_563875_IDX] =3D { 22555, 0x1, 0x7D, 0x9C71C, 0x75=
+8 },
++       [OLYMPUS_LUT_CHAN_564000_IDX] =3D { 22560, 0x1, 0x7D, 0xAAAAB, 0x75=
+8 },
++       [OLYMPUS_LUT_CHAN_564125_IDX] =3D { 22565, 0x1, 0x7D, 0xB8E39, 0x75=
+8 },
++       [OLYMPUS_LUT_CHAN_564250_IDX] =3D { 22570, 0x1, 0x7D, 0xC71C7, 0x75=
+9 },
++       [OLYMPUS_LUT_CHAN_564375_IDX] =3D { 22575, 0x1, 0x7D, 0xD5555, 0x75=
+9 },
++       [OLYMPUS_LUT_CHAN_564500_IDX] =3D { 22580, 0x1, 0x7D, 0xE38E4, 0x75=
+A },
++       [OLYMPUS_LUT_CHAN_564625_IDX] =3D { 22585, 0x1, 0x7D, 0xF1C72, 0x75=
+A },
++       [OLYMPUS_LUT_CHAN_564750_IDX] =3D { 22590, 0x1, 0x7D, 0x100000, 0x7=
+5B },
++       [OLYMPUS_LUT_CHAN_564875_IDX] =3D { 22595, 0x1, 0x7D, 0x10E38E, 0x7=
+5B },
++       [OLYMPUS_LUT_CHAN_565000_IDX] =3D { 22600, 0x1, 0x7D, 0x11C71C, 0x7=
+5B },
++       [OLYMPUS_LUT_CHAN_565125_IDX] =3D { 22605, 0x1, 0x7D, 0x12AAAB, 0x7=
+5C },
++       [OLYMPUS_LUT_CHAN_565250_IDX] =3D { 22610, 0x1, 0x7D, 0x138E39, 0x7=
+5C },
++       [OLYMPUS_LUT_CHAN_565375_IDX] =3D { 22615, 0x1, 0x7D, 0x1471C7, 0x7=
+5D },
++       [OLYMPUS_LUT_CHAN_565500_IDX] =3D { 22620, 0x1, 0x7D, 0x155555, 0x7=
+5D },
++       [OLYMPUS_LUT_CHAN_565625_IDX] =3D { 22625, 0x1, 0x7D, 0x1638E4, 0x7=
+5D },
++       [OLYMPUS_LUT_CHAN_565750_IDX] =3D { 22630, 0x1, 0x7D, 0x171C72, 0x7=
+5E },
++       [OLYMPUS_LUT_CHAN_565875_IDX] =3D { 22635, 0x1, 0x7D, 0x180000, 0x7=
+5E },
++       [OLYMPUS_LUT_CHAN_566000_IDX] =3D { 22640, 0x1, 0x7D, 0x18E38E, 0x7=
+5F },
++       [OLYMPUS_LUT_CHAN_566125_IDX] =3D { 22645, 0x1, 0x7D, 0x19C71C, 0x7=
+5F },
++       [OLYMPUS_LUT_CHAN_566250_IDX] =3D { 22650, 0x1, 0x7D, 0x1AAAAB, 0x7=
+60 },
++       [OLYMPUS_LUT_CHAN_566375_IDX] =3D { 22655, 0x1, 0x7D, 0x1B8E39, 0x7=
+60 },
++       [OLYMPUS_LUT_CHAN_566500_IDX] =3D { 22660, 0x1, 0x7D, 0x1C71C7, 0x7=
+60 },
++       [OLYMPUS_LUT_CHAN_566625_IDX] =3D { 22665, 0x1, 0x7D, 0x1D5555, 0x7=
+61 },
++       [OLYMPUS_LUT_CHAN_566750_IDX] =3D { 22670, 0x1, 0x7D, 0x1E38E4, 0x7=
+61 },
++       [OLYMPUS_LUT_CHAN_566875_IDX] =3D { 22675, 0x1, 0x7D, 0x1F1C72, 0x7=
+62 },
++       [OLYMPUS_LUT_CHAN_567000_IDX] =3D { 22680, 0x1, 0x7E, 0x0, 0x762 },
++       [OLYMPUS_LUT_CHAN_567125_IDX] =3D { 22685, 0x1, 0x7E, 0xE38E, 0x762=
+ },
++       [OLYMPUS_LUT_CHAN_567250_IDX] =3D { 22690, 0x1, 0x7E, 0x1C71C, 0x76=
+3 },
++       [OLYMPUS_LUT_CHAN_567375_IDX] =3D { 22695, 0x1, 0x7E, 0x2AAAB, 0x76=
+3 },
++       [OLYMPUS_LUT_CHAN_567500_IDX] =3D { 22700, 0x1, 0x7E, 0x38E39, 0x76=
+4 },
++       [OLYMPUS_LUT_CHAN_567625_IDX] =3D { 22705, 0x1, 0x7E, 0x471C7, 0x76=
+4 },
++       [OLYMPUS_LUT_CHAN_567750_IDX] =3D { 22710, 0x1, 0x7E, 0x55555, 0x76=
+5 },
++       [OLYMPUS_LUT_CHAN_567875_IDX] =3D { 22715, 0x1, 0x7E, 0x638E4, 0x76=
+5 },
++       [OLYMPUS_LUT_CHAN_568000_IDX] =3D { 22720, 0x1, 0x7E, 0x71C72, 0x76=
+5 },
++       [OLYMPUS_LUT_CHAN_568125_IDX] =3D { 22725, 0x1, 0x7E, 0x80000, 0x76=
+6 },
++       [OLYMPUS_LUT_CHAN_568250_IDX] =3D { 22730, 0x1, 0x7E, 0x8E38E, 0x76=
+6 },
++       [OLYMPUS_LUT_CHAN_568375_IDX] =3D { 22735, 0x1, 0x7E, 0x9C71C, 0x76=
+7 },
++       [OLYMPUS_LUT_CHAN_568500_IDX] =3D { 22740, 0x1, 0x7E, 0xAAAAB, 0x76=
+7 },
++       [OLYMPUS_LUT_CHAN_568625_IDX] =3D { 22745, 0x1, 0x7E, 0xB8E39, 0x76=
+7 },
++       [OLYMPUS_LUT_CHAN_568750_IDX] =3D { 22750, 0x1, 0x7E, 0xC71C7, 0x76=
+8 },
++       [OLYMPUS_LUT_CHAN_568875_IDX] =3D { 22755, 0x1, 0x7E, 0xD5555, 0x76=
+8 },
++       [OLYMPUS_LUT_CHAN_569000_IDX] =3D { 22760, 0x1, 0x7E, 0xE38E4, 0x76=
+9 },
++       [OLYMPUS_LUT_CHAN_569125_IDX] =3D { 22765, 0x1, 0x7E, 0xF1C72, 0x76=
+9 },
++       [OLYMPUS_LUT_CHAN_569250_IDX] =3D { 22770, 0x1, 0x7E, 0x100000, 0x7=
+6A },
++       [OLYMPUS_LUT_CHAN_569375_IDX] =3D { 22775, 0x1, 0x7E, 0x10E38E, 0x7=
+6A },
++       [OLYMPUS_LUT_CHAN_569500_IDX] =3D { 22780, 0x1, 0x7E, 0x11C71C, 0x7=
+6A },
++       [OLYMPUS_LUT_CHAN_569625_IDX] =3D { 22785, 0x1, 0x7E, 0x12AAAB, 0x7=
+6B },
++       [OLYMPUS_LUT_CHAN_569750_IDX] =3D { 22790, 0x1, 0x7E, 0x138E39, 0x7=
+6B },
++       [OLYMPUS_LUT_CHAN_569875_IDX] =3D { 22795, 0x1, 0x7E, 0x1471C7, 0x7=
+6C },
++       [OLYMPUS_LUT_CHAN_570000_IDX] =3D { 22800, 0x1, 0x7E, 0x155555, 0x7=
+6C },
++       [OLYMPUS_LUT_CHAN_570125_IDX] =3D { 22805, 0x1, 0x7E, 0x1638E4, 0x7=
+6C },
++       [OLYMPUS_LUT_CHAN_570250_IDX] =3D { 22810, 0x1, 0x7E, 0x171C72, 0x7=
+6D },
++       [OLYMPUS_LUT_CHAN_570375_IDX] =3D { 22815, 0x1, 0x7E, 0x180000, 0x7=
+6D },
++       [OLYMPUS_LUT_CHAN_570500_IDX] =3D { 22820, 0x1, 0x7E, 0x18E38E, 0x7=
+6E },
++       [OLYMPUS_LUT_CHAN_570625_IDX] =3D { 22825, 0x1, 0x7E, 0x19C71C, 0x7=
+6E },
++       [OLYMPUS_LUT_CHAN_570750_IDX] =3D { 22830, 0x1, 0x7E, 0x1AAAAB, 0x7=
+6F },
++       [OLYMPUS_LUT_CHAN_570875_IDX] =3D { 22835, 0x1, 0x7E, 0x1B8E39, 0x7=
+6F },
++       [OLYMPUS_LUT_CHAN_571000_IDX] =3D { 22840, 0x1, 0x7E, 0x1C71C7, 0x7=
+6F },
++       [OLYMPUS_LUT_CHAN_571125_IDX] =3D { 22845, 0x1, 0x7E, 0x1D5555, 0x7=
+70 },
++       [OLYMPUS_LUT_CHAN_571250_IDX] =3D { 22850, 0x1, 0x7E, 0x1E38E4, 0x7=
+70 },
++       [OLYMPUS_LUT_CHAN_571375_IDX] =3D { 22855, 0x1, 0x7E, 0x1F1C72, 0x7=
+71 },
++       [OLYMPUS_LUT_CHAN_571500_IDX] =3D { 22860, 0x1, 0x7F, 0x0, 0x771 },
++       [OLYMPUS_LUT_CHAN_571625_IDX] =3D { 22865, 0x1, 0x7F, 0xE38E, 0x771=
+ },
++       [OLYMPUS_LUT_CHAN_571750_IDX] =3D { 22870, 0x1, 0x7F, 0x1C71C, 0x77=
+2 },
++       [OLYMPUS_LUT_CHAN_571875_IDX] =3D { 22875, 0x1, 0x7F, 0x2AAAB, 0x77=
+2 },
++       [OLYMPUS_LUT_CHAN_572000_IDX] =3D { 22880, 0x1, 0x7F, 0x38E39, 0x77=
+3 },
++       [OLYMPUS_LUT_CHAN_572125_IDX] =3D { 22885, 0x1, 0x7F, 0x471C7, 0x77=
+3 },
++       [OLYMPUS_LUT_CHAN_572250_IDX] =3D { 22890, 0x1, 0x7F, 0x55555, 0x77=
+4 },
++       [OLYMPUS_LUT_CHAN_572375_IDX] =3D { 22895, 0x1, 0x7F, 0x638E4, 0x77=
+4 },
++       [OLYMPUS_LUT_CHAN_572500_IDX] =3D { 22900, 0x1, 0x7F, 0x71C72, 0x77=
+4 },
++       [OLYMPUS_LUT_CHAN_572625_IDX] =3D { 22905, 0x1, 0x7F, 0x80000, 0x77=
+5 },
++       [OLYMPUS_LUT_CHAN_572750_IDX] =3D { 22910, 0x1, 0x7F, 0x8E38E, 0x77=
+5 },
++       [OLYMPUS_LUT_CHAN_572875_IDX] =3D { 22915, 0x1, 0x7F, 0x9C71C, 0x77=
+6 },
++       [OLYMPUS_LUT_CHAN_573000_IDX] =3D { 22920, 0x1, 0x7F, 0xAAAAB, 0x77=
+6 },
++       [OLYMPUS_LUT_CHAN_573125_IDX] =3D { 22925, 0x1, 0x7F, 0xB8E39, 0x77=
+6 },
++       [OLYMPUS_LUT_CHAN_573250_IDX] =3D { 22930, 0x1, 0x7F, 0xC71C7, 0x77=
+7 },
++       [OLYMPUS_LUT_CHAN_573375_IDX] =3D { 22935, 0x1, 0x7F, 0xD5555, 0x77=
+7 },
++       [OLYMPUS_LUT_CHAN_573500_IDX] =3D { 22940, 0x1, 0x7F, 0xE38E4, 0x77=
+8 },
++       [OLYMPUS_LUT_CHAN_573625_IDX] =3D { 22945, 0x1, 0x7F, 0xF1C72, 0x77=
+8 },
++       [OLYMPUS_LUT_CHAN_573750_IDX] =3D { 22950, 0x1, 0x7F, 0x100000, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_573875_IDX] =3D { 22955, 0x1, 0x7F, 0x10E38E, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_574000_IDX] =3D { 22960, 0x1, 0x7F, 0x11C71C, 0x7=
+79 },
++       [OLYMPUS_LUT_CHAN_574125_IDX] =3D { 22965, 0x1, 0x7F, 0x12AAAB, 0x7=
+7A },
++       [OLYMPUS_LUT_CHAN_574250_IDX] =3D { 22970, 0x1, 0x7F, 0x138E39, 0x7=
+7A },
++       [OLYMPUS_LUT_CHAN_574375_IDX] =3D { 22975, 0x1, 0x7F, 0x1471C7, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574500_IDX] =3D { 22980, 0x1, 0x7F, 0x155555, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574625_IDX] =3D { 22985, 0x1, 0x7F, 0x1638E4, 0x7=
+7B },
++       [OLYMPUS_LUT_CHAN_574750_IDX] =3D { 22990, 0x1, 0x7F, 0x171C72, 0x7=
+7C },
++       [OLYMPUS_LUT_CHAN_574875_IDX] =3D { 22995, 0x1, 0x7F, 0x180000, 0x7=
+7C },
++       [OLYMPUS_LUT_CHAN_575000_IDX] =3D { 23000, 0x1, 0x7F, 0x18E38E, 0x7=
+7D },
++       [OLYMPUS_LUT_CHAN_575125_IDX] =3D { 23005, 0x1, 0x7F, 0x19C71C, 0x7=
+7D },
++       [OLYMPUS_LUT_CHAN_575250_IDX] =3D { 23010, 0x1, 0x7F, 0x1AAAAB, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575375_IDX] =3D { 23015, 0x1, 0x7F, 0x1B8E39, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575500_IDX] =3D { 23020, 0x1, 0x7F, 0x1C71C7, 0x7=
+7E },
++       [OLYMPUS_LUT_CHAN_575625_IDX] =3D { 23025, 0x1, 0x7F, 0x1D5555, 0x7=
+7F },
++       [OLYMPUS_LUT_CHAN_575750_IDX] =3D { 23030, 0x1, 0x7F, 0x1E38E4, 0x7=
+7F },
++       [OLYMPUS_LUT_CHAN_575875_IDX] =3D { 23035, 0x1, 0x7F, 0x1F1C72, 0x7=
+80 },
++       [OLYMPUS_LUT_CHAN_576000_IDX] =3D { 23040, 0x1, 0x80, 0x0, 0x780 },
++       [OLYMPUS_LUT_CHAN_576125_IDX] =3D { 23045, 0x1, 0x80, 0xE38E, 0x780=
+ },
++       [OLYMPUS_LUT_CHAN_576250_IDX] =3D { 23050, 0x1, 0x80, 0x1C71C, 0x78=
+1 },
++       [OLYMPUS_LUT_CHAN_576375_IDX] =3D { 23055, 0x1, 0x80, 0x2AAAB, 0x78=
+1 },
++       [OLYMPUS_LUT_CHAN_576500_IDX] =3D { 23060, 0x1, 0x80, 0x38E39, 0x78=
+2 },
++       [OLYMPUS_LUT_CHAN_576625_IDX] =3D { 23065, 0x1, 0x80, 0x471C7, 0x78=
+2 },
++       [OLYMPUS_LUT_CHAN_576750_IDX] =3D { 23070, 0x1, 0x80, 0x55555, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_576875_IDX] =3D { 23075, 0x1, 0x80, 0x638E4, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_577000_IDX] =3D { 23080, 0x1, 0x80, 0x71C72, 0x78=
+3 },
++       [OLYMPUS_LUT_CHAN_577125_IDX] =3D { 23085, 0x1, 0x80, 0x80000, 0x78=
+4 },
++       [OLYMPUS_LUT_CHAN_577250_IDX] =3D { 23090, 0x1, 0x80, 0x8E38E, 0x78=
+4 },
++       [OLYMPUS_LUT_CHAN_577375_IDX] =3D { 23095, 0x1, 0x80, 0x9C71C, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577500_IDX] =3D { 23100, 0x1, 0x80, 0xAAAAB, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577625_IDX] =3D { 23105, 0x1, 0x80, 0xB8E39, 0x78=
+5 },
++       [OLYMPUS_LUT_CHAN_577750_IDX] =3D { 23110, 0x1, 0x80, 0xC71C7, 0x78=
+6 },
++       [OLYMPUS_LUT_CHAN_577875_IDX] =3D { 23115, 0x1, 0x80, 0xD5555, 0x78=
+6 },
++       [OLYMPUS_LUT_CHAN_578000_IDX] =3D { 23120, 0x1, 0x80, 0xE38E4, 0x78=
+7 },
++       [OLYMPUS_LUT_CHAN_578125_IDX] =3D { 23125, 0x1, 0x80, 0xF1C72, 0x78=
+7 },
++       [OLYMPUS_LUT_CHAN_578250_IDX] =3D { 23130, 0x1, 0x80, 0x100000, 0x7=
+88 },
++       [OLYMPUS_LUT_CHAN_578375_IDX] =3D { 23135, 0x1, 0x80, 0x10E38E, 0x7=
+88 },
++       [OLYMPUS_LUT_CHAN_578500_IDX] =3D { 23140, 0x1, 0x80, 0x11C71C, 0x7=
+88 },
++       [OLYMPUS_LUT_CHAN_578625_IDX] =3D { 23145, 0x1, 0x80, 0x12AAAB, 0x7=
+89 },
++       [OLYMPUS_LUT_CHAN_578750_IDX] =3D { 23150, 0x1, 0x80, 0x138E39, 0x7=
+89 },
++       [OLYMPUS_LUT_CHAN_578875_IDX] =3D { 23155, 0x1, 0x80, 0x1471C7, 0x7=
+8A },
++       [OLYMPUS_LUT_CHAN_579000_IDX] =3D { 23160, 0x1, 0x80, 0x155555, 0x7=
+8A },
++       [OLYMPUS_LUT_CHAN_579125_IDX] =3D { 23165, 0x1, 0x80, 0x1638E4, 0x7=
+8A },
++       [OLYMPUS_LUT_CHAN_579250_IDX] =3D { 23170, 0x1, 0x80, 0x171C72, 0x7=
+8B },
++       [OLYMPUS_LUT_CHAN_579375_IDX] =3D { 23175, 0x1, 0x80, 0x180000, 0x7=
+8B },
++       [OLYMPUS_LUT_CHAN_579500_IDX] =3D { 23180, 0x1, 0x80, 0x18E38E, 0x7=
+8C },
++       [OLYMPUS_LUT_CHAN_579625_IDX] =3D { 23185, 0x1, 0x80, 0x19C71C, 0x7=
+8C },
++       [OLYMPUS_LUT_CHAN_579750_IDX] =3D { 23190, 0x1, 0x80, 0x1AAAAB, 0x7=
+8D },
++       [OLYMPUS_LUT_CHAN_579875_IDX] =3D { 23195, 0x1, 0x80, 0x1B8E39, 0x7=
+8D },
++       [OLYMPUS_LUT_CHAN_580000_IDX] =3D { 23200, 0x1, 0x80, 0x1C71C7, 0x7=
+8D },
++       [OLYMPUS_LUT_CHAN_580125_IDX] =3D { 23205, 0x1, 0x80, 0x1D5555, 0x7=
+8E },
++       [OLYMPUS_LUT_CHAN_580250_IDX] =3D { 23210, 0x1, 0x80, 0x1E38E4, 0x7=
+8E },
++       [OLYMPUS_LUT_CHAN_580375_IDX] =3D { 23215, 0x1, 0x80, 0x1F1C72, 0x7=
+8F },
++       [OLYMPUS_LUT_CHAN_580500_IDX] =3D { 23220, 0x1, 0x81, 0x0, 0x78F },
++       [OLYMPUS_LUT_CHAN_580625_IDX] =3D { 23225, 0x1, 0x81, 0xE38E, 0x78F=
+ },
++       [OLYMPUS_LUT_CHAN_580750_IDX] =3D { 23230, 0x1, 0x81, 0x1C71C, 0x79=
+0 },
++       [OLYMPUS_LUT_CHAN_580875_IDX] =3D { 23235, 0x1, 0x81, 0x2AAAB, 0x79=
+0 },
++       [OLYMPUS_LUT_CHAN_581000_IDX] =3D { 23240, 0x1, 0x81, 0x38E39, 0x79=
+1 },
++       [OLYMPUS_LUT_CHAN_581125_IDX] =3D { 23245, 0x1, 0x81, 0x471C7, 0x79=
+1 },
++       [OLYMPUS_LUT_CHAN_581250_IDX] =3D { 23250, 0x1, 0x81, 0x55555, 0x79=
+2 },
++       [OLYMPUS_LUT_CHAN_581375_IDX] =3D { 23255, 0x1, 0x81, 0x638E4, 0x79=
+2 },
++       [OLYMPUS_LUT_CHAN_581500_IDX] =3D { 23260, 0x1, 0x81, 0x71C72, 0x79=
+2 },
++       [OLYMPUS_LUT_CHAN_581625_IDX] =3D { 23265, 0x1, 0x81, 0x80000, 0x79=
+3 },
++       [OLYMPUS_LUT_CHAN_581750_IDX] =3D { 23270, 0x1, 0x81, 0x8E38E, 0x79=
+3 },
++       [OLYMPUS_LUT_CHAN_581875_IDX] =3D { 23275, 0x1, 0x81, 0x9C71C, 0x79=
+4 },
++       [OLYMPUS_LUT_CHAN_582000_IDX] =3D { 23280, 0x1, 0x81, 0xAAAAB, 0x79=
+4 },
++       [OLYMPUS_LUT_CHAN_582125_IDX] =3D { 23285, 0x1, 0x81, 0xB8E39, 0x79=
+4 },
++       [OLYMPUS_LUT_CHAN_582250_IDX] =3D { 23290, 0x1, 0x81, 0xC71C7, 0x79=
+5 },
++       [OLYMPUS_LUT_CHAN_582375_IDX] =3D { 23295, 0x1, 0x81, 0xD5555, 0x79=
+5 },
++       [OLYMPUS_LUT_CHAN_582500_IDX] =3D { 23300, 0x1, 0x81, 0xE38E4, 0x79=
+6 },
++       [OLYMPUS_LUT_CHAN_582625_IDX] =3D { 23305, 0x1, 0x81, 0xF1C72, 0x79=
+6 },
++       [OLYMPUS_LUT_CHAN_582750_IDX] =3D { 23310, 0x1, 0x81, 0x100000, 0x7=
+97 },
++       [OLYMPUS_LUT_CHAN_582875_IDX] =3D { 23315, 0x1, 0x81, 0x10E38E, 0x7=
+97 },
++       [OLYMPUS_LUT_CHAN_583000_IDX] =3D { 23320, 0x1, 0x81, 0x11C71C, 0x7=
+97 },
++       [OLYMPUS_LUT_CHAN_583125_IDX] =3D { 23325, 0x1, 0x81, 0x12AAAB, 0x7=
+98 },
++       [OLYMPUS_LUT_CHAN_583250_IDX] =3D { 23330, 0x1, 0x81, 0x138E39, 0x7=
+98 },
++       [OLYMPUS_LUT_CHAN_583375_IDX] =3D { 23335, 0x1, 0x81, 0x1471C7, 0x7=
+99 },
++       [OLYMPUS_LUT_CHAN_583500_IDX] =3D { 23340, 0x1, 0x81, 0x155555, 0x7=
+99 },
++       [OLYMPUS_LUT_CHAN_583625_IDX] =3D { 23345, 0x1, 0x81, 0x1638E4, 0x7=
+99 },
++       [OLYMPUS_LUT_CHAN_583750_IDX] =3D { 23350, 0x1, 0x81, 0x171C72, 0x7=
+9A },
++       [OLYMPUS_LUT_CHAN_583875_IDX] =3D { 23355, 0x1, 0x81, 0x180000, 0x7=
+9A },
++       [OLYMPUS_LUT_CHAN_584000_IDX] =3D { 23360, 0x1, 0x81, 0x18E38E, 0x7=
+9B },
++       [OLYMPUS_LUT_CHAN_584125_IDX] =3D { 23365, 0x1, 0x81, 0x19C71C, 0x7=
+9B },
++       [OLYMPUS_LUT_CHAN_584250_IDX] =3D { 23370, 0x1, 0x81, 0x1AAAAB, 0x7=
+9C },
++       [OLYMPUS_LUT_CHAN_584375_IDX] =3D { 23375, 0x1, 0x81, 0x1B8E39, 0x7=
+9C },
++       [OLYMPUS_LUT_CHAN_584500_IDX] =3D { 23380, 0x1, 0x81, 0x1C71C7, 0x7=
+9C },
++       [OLYMPUS_LUT_CHAN_584625_IDX] =3D { 23385, 0x1, 0x81, 0x1D5555, 0x7=
+9D },
++       [OLYMPUS_LUT_CHAN_584750_IDX] =3D { 23390, 0x1, 0x81, 0x1E38E4, 0x7=
+9D },
++       [OLYMPUS_LUT_CHAN_584875_IDX] =3D { 23395, 0x1, 0x81, 0x1F1C72, 0x7=
+9E },
++       [OLYMPUS_LUT_CHAN_585000_IDX] =3D { 23400, 0x1, 0x82, 0x0, 0x79E },
++       [OLYMPUS_LUT_CHAN_585125_IDX] =3D { 23405, 0x1, 0x82, 0xE38E, 0x79E=
+ },
++       [OLYMPUS_LUT_CHAN_585250_IDX] =3D { 23410, 0x1, 0x82, 0x1C71C, 0x79=
+F },
++       [OLYMPUS_LUT_CHAN_585375_IDX] =3D { 23415, 0x1, 0x82, 0x2AAAB, 0x79=
+F },
++       [OLYMPUS_LUT_CHAN_585500_IDX] =3D { 23420, 0x1, 0x82, 0x38E39, 0x7A=
+0 },
++       [OLYMPUS_LUT_CHAN_585625_IDX] =3D { 23425, 0x1, 0x82, 0x471C7, 0x7A=
+0 },
++       [OLYMPUS_LUT_CHAN_585750_IDX] =3D { 23430, 0x1, 0x82, 0x55555, 0x7A=
+1 },
++       [OLYMPUS_LUT_CHAN_585875_IDX] =3D { 23435, 0x1, 0x82, 0x638E4, 0x7A=
+1 },
++       [OLYMPUS_LUT_CHAN_586000_IDX] =3D { 23440, 0x1, 0x82, 0x71C72, 0x7A=
+1 },
++       [OLYMPUS_LUT_CHAN_586125_IDX] =3D { 23445, 0x1, 0x82, 0x80000, 0x7A=
+2 },
++       [OLYMPUS_LUT_CHAN_586250_IDX] =3D { 23450, 0x1, 0x82, 0x8E38E, 0x7A=
+2 },
++       [OLYMPUS_LUT_CHAN_586375_IDX] =3D { 23455, 0x1, 0x82, 0x9C71C, 0x7A=
+3 },
++       [OLYMPUS_LUT_CHAN_586500_IDX] =3D { 23460, 0x1, 0x82, 0xAAAAB, 0x7A=
+3 },
++       [OLYMPUS_LUT_CHAN_586625_IDX] =3D { 23465, 0x1, 0x82, 0xB8E39, 0x7A=
+3 },
++       [OLYMPUS_LUT_CHAN_586750_IDX] =3D { 23470, 0x1, 0x82, 0xC71C7, 0x7A=
+4 },
++       [OLYMPUS_LUT_CHAN_586875_IDX] =3D { 23475, 0x1, 0x82, 0xD5555, 0x7A=
+4 },
++       [OLYMPUS_LUT_CHAN_587000_IDX] =3D { 23480, 0x1, 0x82, 0xE38E4, 0x7A=
+5 },
++       [OLYMPUS_LUT_CHAN_587125_IDX] =3D { 23485, 0x1, 0x82, 0xF1C72, 0x7A=
+5 },
++       [OLYMPUS_LUT_CHAN_587250_IDX] =3D { 23490, 0x1, 0x82, 0x100000, 0x7=
+A6 },
++       [OLYMPUS_LUT_CHAN_587375_IDX] =3D { 23495, 0x1, 0x82, 0x10E38E, 0x7=
+A6 },
++       [OLYMPUS_LUT_CHAN_587500_IDX] =3D { 23500, 0x1, 0x82, 0x11C71C, 0x7=
+A6 },
++       [OLYMPUS_LUT_CHAN_587625_IDX] =3D { 23505, 0x1, 0x82, 0x12AAAB, 0x7=
+A7 },
++       [OLYMPUS_LUT_CHAN_587750_IDX] =3D { 23510, 0x1, 0x82, 0x138E39, 0x7=
+A7 },
++       [OLYMPUS_LUT_CHAN_587875_IDX] =3D { 23515, 0x1, 0x82, 0x1471C7, 0x7=
+A8 },
++       [OLYMPUS_LUT_CHAN_588000_IDX] =3D { 23520, 0x1, 0x82, 0x155555, 0x7=
+A8 },
++       [OLYMPUS_LUT_CHAN_588125_IDX] =3D { 23525, 0x1, 0x82, 0x1638E4, 0x7=
+A8 },
++       [OLYMPUS_LUT_CHAN_588250_IDX] =3D { 23530, 0x1, 0x82, 0x171C72, 0x7=
+A9 },
++       [OLYMPUS_LUT_CHAN_588375_IDX] =3D { 23535, 0x1, 0x82, 0x180000, 0x7=
+A9 },
++       [OLYMPUS_LUT_CHAN_588500_IDX] =3D { 23540, 0x1, 0x82, 0x18E38E, 0x7=
+AA },
++       [OLYMPUS_LUT_CHAN_588625_IDX] =3D { 23545, 0x1, 0x82, 0x19C71C, 0x7=
+AA },
++       [OLYMPUS_LUT_CHAN_588750_IDX] =3D { 23550, 0x1, 0x82, 0x1AAAAB, 0x7=
+AB },
++       [OLYMPUS_LUT_CHAN_588875_IDX] =3D { 23555, 0x1, 0x82, 0x1B8E39, 0x7=
+AB },
++       [OLYMPUS_LUT_CHAN_589000_IDX] =3D { 23560, 0x1, 0x82, 0x1C71C7, 0x7=
+AB },
++       [OLYMPUS_LUT_CHAN_589125_IDX] =3D { 23565, 0x1, 0x82, 0x1D5555, 0x7=
+AC },
++       [OLYMPUS_LUT_CHAN_589250_IDX] =3D { 23570, 0x1, 0x82, 0x1E38E4, 0x7=
+AC },
++       [OLYMPUS_LUT_CHAN_589375_IDX] =3D { 23575, 0x1, 0x82, 0x1F1C72, 0x7=
+AD },
++       [OLYMPUS_LUT_CHAN_589500_IDX] =3D { 23580, 0x1, 0x83, 0x0, 0x7AD },
++       [OLYMPUS_LUT_CHAN_589625_IDX] =3D { 23585, 0x1, 0x83, 0xE38E, 0x7AD=
+ },
++       [OLYMPUS_LUT_CHAN_589750_IDX] =3D { 23590, 0x1, 0x83, 0x1C71C, 0x7A=
+E },
++       [OLYMPUS_LUT_CHAN_589875_IDX] =3D { 23595, 0x1, 0x83, 0x2AAAB, 0x7A=
+E },
++       [OLYMPUS_LUT_CHAN_590000_IDX] =3D { 23600, 0x1, 0x83, 0x38E39, 0x7A=
+F },
++       [OLYMPUS_LUT_CHAN_590125_IDX] =3D { 23605, 0x1, 0x83, 0x471C7, 0x7A=
+F },
++       [OLYMPUS_LUT_CHAN_590250_IDX] =3D { 23610, 0x1, 0x83, 0x55555, 0x7B=
+0 },
++       [OLYMPUS_LUT_CHAN_590375_IDX] =3D { 23615, 0x1, 0x83, 0x638E4, 0x7B=
+0 },
++       [OLYMPUS_LUT_CHAN_590500_IDX] =3D { 23620, 0x1, 0x83, 0x71C72, 0x7B=
+0 },
++       [OLYMPUS_LUT_CHAN_590625_IDX] =3D { 23625, 0x1, 0x83, 0x80000, 0x7B=
+1 },
++       [OLYMPUS_LUT_CHAN_590750_IDX] =3D { 23630, 0x1, 0x83, 0x8E38E, 0x7B=
+1 },
++       [OLYMPUS_LUT_CHAN_590875_IDX] =3D { 23635, 0x1, 0x83, 0x9C71C, 0x7B=
+2 },
++       [OLYMPUS_LUT_CHAN_591000_IDX] =3D { 23640, 0x1, 0x83, 0xAAAAB, 0x7B=
+2 },
++       [OLYMPUS_LUT_CHAN_591125_IDX] =3D { 23645, 0x1, 0x83, 0xB8E39, 0x7B=
+2 },
++       [OLYMPUS_LUT_CHAN_591250_IDX] =3D { 23650, 0x1, 0x83, 0xC71C7, 0x7B=
+3 },
++       [OLYMPUS_LUT_CHAN_591375_IDX] =3D { 23655, 0x1, 0x83, 0xD5555, 0x7B=
+3 },
++       [OLYMPUS_LUT_CHAN_591500_IDX] =3D { 23660, 0x1, 0x83, 0xE38E4, 0x7B=
+4 },
++       [OLYMPUS_LUT_CHAN_591625_IDX] =3D { 23665, 0x1, 0x83, 0xF1C72, 0x7B=
+4 },
++       [OLYMPUS_LUT_CHAN_591750_IDX] =3D { 23670, 0x1, 0x83, 0x100000, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_591875_IDX] =3D { 23675, 0x1, 0x83, 0x10E38E, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_592000_IDX] =3D { 23680, 0x1, 0x83, 0x11C71C, 0x7=
+B5 },
++       [OLYMPUS_LUT_CHAN_592125_IDX] =3D { 23685, 0x1, 0x83, 0x12AAAB, 0x7=
+B6 },
++       [OLYMPUS_LUT_CHAN_592250_IDX] =3D { 23690, 0x1, 0x83, 0x138E39, 0x7=
+B6 },
++       [OLYMPUS_LUT_CHAN_592375_IDX] =3D { 23695, 0x1, 0x83, 0x1471C7, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592500_IDX] =3D { 23700, 0x1, 0x83, 0x155555, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592625_IDX] =3D { 23705, 0x1, 0x83, 0x1638E4, 0x7=
+B7 },
++       [OLYMPUS_LUT_CHAN_592750_IDX] =3D { 23710, 0x1, 0x83, 0x171C72, 0x7=
+B8 },
++       [OLYMPUS_LUT_CHAN_592875_IDX] =3D { 23715, 0x1, 0x83, 0x180000, 0x7=
+B8 },
++       [OLYMPUS_LUT_CHAN_593000_IDX] =3D { 23720, 0x1, 0x83, 0x18E38E, 0x7=
+B9 },
++       [OLYMPUS_LUT_CHAN_593125_IDX] =3D { 23725, 0x1, 0x83, 0x19C71C, 0x7=
+B9 },
++       [OLYMPUS_LUT_CHAN_593250_IDX] =3D { 23730, 0x1, 0x83, 0x1AAAAB, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593375_IDX] =3D { 23735, 0x1, 0x83, 0x1B8E39, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593500_IDX] =3D { 23740, 0x1, 0x83, 0x1C71C7, 0x7=
+BA },
++       [OLYMPUS_LUT_CHAN_593625_IDX] =3D { 23745, 0x1, 0x83, 0x1D5555, 0x7=
+BB },
++       [OLYMPUS_LUT_CHAN_593750_IDX] =3D { 23750, 0x1, 0x83, 0x1E38E4, 0x7=
+BB },
++       [OLYMPUS_LUT_CHAN_593875_IDX] =3D { 23755, 0x1, 0x83, 0x1F1C72, 0x7=
+BC },
++       [OLYMPUS_LUT_CHAN_594000_IDX] =3D { 23760, 0x1, 0x84, 0x0, 0x7BC },
++       [OLYMPUS_LUT_CHAN_594125_IDX] =3D { 23765, 0x1, 0x84, 0xE38E, 0x7BC=
+ },
++       [OLYMPUS_LUT_CHAN_594250_IDX] =3D { 23770, 0x1, 0x84, 0x1C71C, 0x7B=
+D },
++       [OLYMPUS_LUT_CHAN_594375_IDX] =3D { 23775, 0x1, 0x84, 0x2AAAB, 0x7B=
+D },
++       [OLYMPUS_LUT_CHAN_594500_IDX] =3D { 23780, 0x1, 0x84, 0x38E39, 0x7B=
+E },
++       [OLYMPUS_LUT_CHAN_594625_IDX] =3D { 23785, 0x1, 0x84, 0x471C7, 0x7B=
+E },
++       [OLYMPUS_LUT_CHAN_594750_IDX] =3D { 23790, 0x1, 0x84, 0x55555, 0x7B=
+F },
++       [OLYMPUS_LUT_CHAN_594875_IDX] =3D { 23795, 0x1, 0x84, 0x638E4, 0x7B=
+F },
++       [OLYMPUS_LUT_CHAN_595000_IDX] =3D { 23800, 0x1, 0x84, 0x71C72, 0x7B=
+F }
++};
 --
 2.30.0
 
