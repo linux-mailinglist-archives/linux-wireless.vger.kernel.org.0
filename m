@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEF43AB90A
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D068C3AB900
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233815AbhFQQMH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:12:07 -0400
-Received: from mail-eopbgr80050.outbound.protection.outlook.com ([40.107.8.50]:33286
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        id S232891AbhFQQLt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:11:49 -0400
+Received: from mail-eopbgr60058.outbound.protection.outlook.com ([40.107.6.58]:26086
+        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231591AbhFQQKv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:10:51 -0400
+        id S232582AbhFQQKb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:10:31 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Pdg4TpqHutf2LTGhUSBXMZ8WUL3IXHKH7HJjmGBqouqRQ2Sj7Fap/wRRf2oHGX939mwLbtnQEy/AS4wpDSSZSnhA4oJnhkkuYIYZxKceQf7fWa/BU403ZQKEepiEYUt9orKKQpPg/vEpbHjOu470dUqnsFy/1/B9sEtEUUyFGdfB4oW63T0uGHVA5KMJowQh0b3eKom3xxzLJSjvhEvLXIf9KDJLUUx/Px6bSHZfE8yjJi54GfAuNi29XIhA1PNTxi2Ocb+QgtQXatEZLJttxCN5OpguhR9xblpAl36SU5L4LoGlVMlWvcH53z1ciacbSpv4u/Fj+37cHV/eePr9Dw==
+ b=JRENXgjrJt7sCsqpo3K8MhOS6Hir+K2see5DwFS0TyYbFxdW1fXvO3d8z3Pyq2+dh5yCwShNjUeq0zV9smHrXpFfGWRR+9GWyH/i2sIdQ6lClvc8SZmSqfe+Q5bZgbz0LIAQQM4ZwFNtvWOpQpXmjMPULUjAkl061zc0VSey1IrlLMuWex4k0bUTuzA6muAAIjrvcFYCaA24s3jo5tcseiQpQNlrZUhTYDAb9nFA515BjYSf580Pb5jHxU/d/e6JQpJEwX8isJVlGvAR8wPm7N3CyPbRHLnmSnDI2TLxiUAE5/fFxKTgHB5fOJ1VWu8OThByKBeD0UT/U6fAXpyWZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FfAJyIqC65upTMzTte5zMzCwrop8pOboAoDABAp5ShQ=;
- b=PzEfMdR5Xn2KAEI5ICIZ2i+Ej+5KuCNVrg2BD16awrZkIa76F5B3c0t2fh2UPDrhiB88Awe2g/sh1UfN8gfFp9jVFohBS7eIXuHy6eL8sDMC9paCy8TYBm4f8S8nHwv71ybb/YmQU3d4b8N1t3v/7N2EIthpWOrLQjOI1oJ64v9OpEfrtYBxOE+WafQsqYQLKx3VB9W7CH/2Y4MJ3lc61d6YYYiP4bRioJToxROk0Wpx6s2kx+X8Fj4K8Ywg3IjFCSp+EklmP8Yge+n6xZ4cJVnWf6D0FFMb3uOpXudUpu2z+lL92HTZKB7vwgqxTaM/Xyxfnc0FgnvNXkad20twQA==
+ bh=sPKFeQmNIHHClTPZiud1aPccgjYignzkGrl90UCOtqs=;
+ b=XGq5B3e8gagCmOUmIXTUs7K6xlrJOk3R6JdKWmpUcmi3LpBp2wCATlss+oJyf8sUldZv/zALEHa/a1MUn2RltQly8aANNF3oWb91sXgaUp/lTF/r9lwnUp1HKxzhWa9jmfm3CRtHwiw5ALfAX6pVawKyXF7OHVb/2iDhW6JiK03BVJVznUF9hsvHVqQzu0xEVxZqp+TkQ1l3IPTK1Ctznx+tFaNuSTgAsvgKRymOquR/Rl4cldyXSv6FAntIrGDc6Pk9YtQHSZ6gLX8FoKq/0wX6TJKiqcY9Q1CEbPBcxvRZu+R9/+bpAi1p9ihfkxP92J1/iMbTklcqcSjiFE1SVw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FfAJyIqC65upTMzTte5zMzCwrop8pOboAoDABAp5ShQ=;
- b=aRzB3fcX+p1qI4qgG+6EzaQ2ug12oH6p06ZvQ69xjA/x0kISVOZ8LDlx3+5rc8nPDocM/2NyeGlRO4Gj+DMW5kam67ZGDPo74xCpYNVvr9pKcj67Ms1PsxN1Oi2Ptj+ekzAXdC0wyM6TXcsEY8Gn5RVd7JSZZ19C/BZv3oBxZtM=
+ bh=sPKFeQmNIHHClTPZiud1aPccgjYignzkGrl90UCOtqs=;
+ b=fFkNa45o6U7li5QIREJXSD12LrcsEXUBgK0WK0HPbCFfua1xukZK7VHDprr1aqj2ExJ+2AOA1bXEqwLbepbqo/+eeVxO4BYPdMd7W7GAIYbARHMRXcCwqj63w8CEfcHBMtGvnHx/009udqLOlTgLtixa1opC/4pY+dFqwrvcA2M=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM0P192MB0260.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:47::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.21; Thu, 17 Jun
- 2021 16:07:08 +0000
+ 2021 16:07:09 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:07:08 +0000
+ 16:07:09 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 182/256] cl8k: add sta.c
-Date:   Thu, 17 Jun 2021 16:01:09 +0000
-Message-Id: <20210617160223.160998-183-viktor.barna@celeno.com>
+Subject: [RFC v1 183/256] cl8k: add sta.h
+Date:   Thu, 17 Jun 2021 16:01:10 +0000
+Message-Id: <20210617160223.160998-184-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:54 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:56 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8f65da1b-0e2b-4ab4-5876-08d931a9c9c5
+X-MS-Office365-Filtering-Correlation-Id: da940bb8-7116-49bd-5fa1-08d931a9ca85
 X-MS-TrafficTypeDiagnostic: AM0P192MB0260:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB0260FA6409017D38BDF36F63F60E9@AM0P192MB0260.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1284;
+X-Microsoft-Antispam-PRVS: <AM0P192MB02609B4A42E80BA392D23E21F60E9@AM0P192MB0260.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2AbRtP4CSSHTTtAQmdMJl4apSehEOq5EOXDzIq+j0iSXLUd22hsDvfeTFdgTQOuzMIVynNwle2OS4gQr3+3s5JWZqD89xeRw0Rb/HqqlJnecrVhjQlRchaWHWNNaIxMB1SKFOGNRiyQIFh6CsrdiJYAe5VsI3Vl+TSc6ikkO1v/QwFlB1QUwLiBSoZFuHL08POJiZn++ofcM4R++X+Cp6PPF9/fcK4n5J6xCUariZ+uS42wqCqerTRV6YqsuIXPZzRvVVe7+8kOB/4nbOKjbDjYNoLTeu2b3/a5IJNA5VnhEWPIHSDkiO7GfutpMkUv9LklUt3vIQDfWawTDaYHs0hmMnk6TM8RnhmmxNrcBR4eKwIdvc+OjOSwxkj1xb19ML7/ahpV93juyPyv7MCYJarqccro3oGVP17GITiAh41tcjnepviilxmVDMRkG6FO1Gl1KIsmw6z1GKI3EHApTA7dZFvPP3ihHtIEQRUgUiU6/urdSoGt46ikyvSxDNdXmyi6D36Wjci33HHaFOjR7BHttUkMcO8btXhzrqpjBGs4+Gi26mxSLuglc3pbqeWfb3N2rqOJXmbcI7mzvroptH0lj1754zGmq+a0tt+xoNet5V4GWMeet8sSNmF4I1+g7U3hQ7uzT8OrUXGxc7n2ofeDy0Yet09jlz8g0uvmylIpJh/8gDB+CEUR5vIoarR5ahByoAi+z3/9oHAVRPXiGXg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(8936002)(86362001)(107886003)(4326008)(26005)(8676002)(956004)(186003)(6666004)(2906002)(6512007)(66556008)(2616005)(5660300002)(498600001)(38350700002)(54906003)(38100700002)(16526019)(66946007)(9686003)(83380400001)(55236004)(52116002)(66476007)(6486002)(6916009)(30864003)(6506007)(36756003)(1076003)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: HJjNRbcdJ+hS8N89w9lV89+14d68hkQeKW/lnoQPXLOUL/Gdjs/T1Uji+tqRG97JemkantHtrtiv57fa3pRZNswZMApuYuZnP5o7HFUdUDFO+IGQjU5gBrMN8Hcmg+SLsM3BPTF4eRB4jhlQm5Lz6RQ/rsceI756epXzhnOZrEywsdpPcCOvNGvJ0M7kjjPsnrU4tYLYey1K5QjEMEuGf8AGe02++f3LyLauNbCl9CkYqSAV5lzK38IXPa8Z0zG/h2W9gKvz7sn2kDvQBGqAmb9o0SGLQCnKOErQGiWIkgyBOpMjlb55SFU+sSK0IfGOmMDNDHiI9mowI7QdY3AMM9ggQsJz5aoD82n/CtV0Pp0/KSJXwrY58pF424Smw4tdPi6yvWOUnORrF8qMhtD8+Aqg0Fj+jpRmfXfbVHX1oykGgaZCsvERz/42Rr1s4JSsi1Knv6RQjI9UrKDwrSWcTrraqp4ypJgrW8PyK79ZH0IUwh5EjOhWIercjJJ3/cJAKnKaVeF59VtMx26YuMfISpyukw6V6/B52PqHUaUOlUdxF2DO4/9V3DF8VlCuz6wmPmZpERhNR/UjL+1Af9YUcU62lfBYZL5Dd7r9+x3cWQQSMhe37LUjMD88e3AMT76+7Nvttio3Fs2qZD8ccZF5LJgdNLc4aEgICdwmY6LtYiZfvgE+3yaUmaSmpls8Z+zEd3Ou5TvYBHtcrfI9nfBhxA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(8936002)(86362001)(107886003)(4326008)(26005)(8676002)(956004)(186003)(6666004)(2906002)(6512007)(66556008)(2616005)(5660300002)(498600001)(38350700002)(54906003)(38100700002)(16526019)(66946007)(9686003)(83380400001)(55236004)(52116002)(66476007)(6486002)(6916009)(6506007)(36756003)(1076003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7j44HqXmvtZmT5qAlmZyy4sRh9nlgbkfaX9A4GDfwn6RqkrTLCREQXfW21kt?=
- =?us-ascii?Q?VmLG4pbX+sX6aZzgiIcr1VpsGvUt4iSn84KzCil0SwmQuewgj0UZMZKYojUl?=
- =?us-ascii?Q?f7hbsTOVXcpOhhlJaKZ/HpVBUbX9fVuuxRqNcBGnnTJOHo9gkIilmILJj/QF?=
- =?us-ascii?Q?7exlvVklueV1Qxg05GHhQ2XuX8/6vOKA39oV9W8zNyto9pCIHEF2Bpmnz4lh?=
- =?us-ascii?Q?6AEG0ljMZTynwYUUiyVfz9kQv8q8y4uSPQW62AEeMMlF8uCzhbiZZ4AIvHFV?=
- =?us-ascii?Q?Uwh2PD/mfiNERx59ncaQm9nAv4cLoGuvh6EKJYDUnHg2PfP7zK46UGHhyfR2?=
- =?us-ascii?Q?OrRms/86KdVnbIarpT9Jd2cfjVaAYzooq0Rehgh2wxZpuuuU+E4wIU0HbovE?=
- =?us-ascii?Q?eNq01hIEaOGUekZ33BQtKbqmJmStIHtlL0YyGV+mXumCQFVThELnskSBnKlX?=
- =?us-ascii?Q?8xxFu7H+JW3Zi0tLK4PVTgWX1E3NNWD3BULDfqNbFT4tpW4+49i3G/1T9EPa?=
- =?us-ascii?Q?7CCXUTeZulyvpvPCmcBEM4vw2XRL1hWnlJzEJl8Vlp/w6vcqe8+8XHrgcQrB?=
- =?us-ascii?Q?7PS7VZgLOYIDrU3ll99UlWWKIRQb82hDV+NIlaC9xTgw3B+ZkNpuMZ9IZwNS?=
- =?us-ascii?Q?9agYsZA5PNcnemfsUI1Yqm7uYD7rc894tGLMY6USyVYPrpck0MaJgxL5+q0k?=
- =?us-ascii?Q?KC1w8bUiUFOzK3Of3/2KV9GxQ+Cm2bF1R6I5c/QGK8fjR5uaP9KOninGUvny?=
- =?us-ascii?Q?z7YtPTTv5jCWSCHLPEVEEW4q91JwL50r6zCoK7bppzyOIw3KqZ9Az1CNgI3e?=
- =?us-ascii?Q?PoVBVPASj99Zr9Uwvd/mtrAmL1oKCjF6bKPrYEQaIT88cay60G3HeoZUtZ7s?=
- =?us-ascii?Q?kS8ClWuzTl+z6VygAYD5W6V6o4ijiM78btIxp5sOjduU5PvlekW5RY2vzLgs?=
- =?us-ascii?Q?l3wakI2DDF5uotzyQJCHEn0NLHX0SDsO2pBSRO38DrGZdjr3JxoI1/oxtILC?=
- =?us-ascii?Q?eB1APo99UYc/RpRSRj/hzYTyj40DyuQdQq/5P5BlVGh7SkfU4SAP4x1QDWZE?=
- =?us-ascii?Q?SNC07WVmQoTblIETYPKnnZb8XnVgd3uBi5p9yOObHcbYoXikL8Vybes+NzGL?=
- =?us-ascii?Q?SD6ZLtKDPjirsnfGCmhjNKU/k/FYx4EiMS81J3BLYQLEwEgh3eYbnZNBZZtY?=
- =?us-ascii?Q?2LCGqwjESOISJtYWN5vv/teIk7W/4YxuWdJBGHE5S4agUF+MTYzQ26FlKpNA?=
- =?us-ascii?Q?LnWIie6N+hlIY8gQSXdtKr8JU8kVgfDhUFGY0odKyIVueZBjW1r0kr/cYG6w?=
- =?us-ascii?Q?NCeMTCTNG30/nOYdALQXgGDP?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?IQJfDEmCtrzJJrFYWaP6p/wKqVugak26SBzI61xaxs1iZs7wjFybHLE19Q9A?=
+ =?us-ascii?Q?K0kMynQ83UB4fvzjHF+7b9bc5/sI2d1YY71rsPxSQN92qh8ayDTTcQnsRX4g?=
+ =?us-ascii?Q?B+tRoJpOt4X0UnLQl9T8cyU3LM49LI0yzF0QDKUMeTWtdFKd3oBbpKtqF28a?=
+ =?us-ascii?Q?RJWP/icoEGKWPGIRJz55d5JTUteUbbYFH6j3+IoB9sbOofSRA+hqCwYUNgQC?=
+ =?us-ascii?Q?7Nprp0oZBTnIk9szAC94caHVpAYRTHkjmFFhal2RG1Lejfzh3XHOOiVfblY0?=
+ =?us-ascii?Q?hItdqRTrmPbeEaGeb2wtrmxShYhAIIi2wlxo++ywGPiopROra1ML3Psa4IvM?=
+ =?us-ascii?Q?XjtFr7K87CXUXtSHgLAQZklAFOf6m4CkVBO5N7sGXvTMlHFQ3b5e+b/ma9Uj?=
+ =?us-ascii?Q?UuxyOP8FAabqJ31zguuCR6/hckQ6Sml3hWNVBmoP9M9bXB0hVO7Ks+7E5XGV?=
+ =?us-ascii?Q?UkOPQIACtHZ6NWIPF1WGPFHchELW/nJGhLRUIIbDPsUoKyTQZe7+mEHCJHaw?=
+ =?us-ascii?Q?QfcE4EGsSERDM1yQRdqXMODIdpXwPU9d+onyiarc3RTuyfkhrDONkh7/D6/I?=
+ =?us-ascii?Q?Ay3pfYXLuuzAiO7xIr7b/p/QDC73rVrbluAU+W4UBwSo7+15+a/hG1yINm02?=
+ =?us-ascii?Q?FQLrutF6qebgRJLTawufKs40wCXV7kENcsji5CHkuInY97Pva8owkJM6x7RW?=
+ =?us-ascii?Q?lTmasCwIaXx2jff9HXFQ/KSnZ4OTcxdd3JeOM54+vOBVqr22+dccX9ZYAhfK?=
+ =?us-ascii?Q?pKUdPemhI+NFcDSIjwrmAt19oVjYAuydsKqjfZ03vRLDWHkHg+tkTkxFrylL?=
+ =?us-ascii?Q?FafqCtuJkLnxU1oZoRUxPrD+cRRQ5/3zGBvUAPkjMiXjwKU2fzW5Fv3IZs/+?=
+ =?us-ascii?Q?b0d9PC6geBSZAU120DskmlBqWYaUwzcZ/BbkiKhjDh2d1F47vgPllanyGIWj?=
+ =?us-ascii?Q?NBC9J2IBTNjfC30DQQyWJcIeWItqi9FmpFjCs1OnQ3TVqipTklfTM+FdDI2o?=
+ =?us-ascii?Q?l+gioYFNlfdkle6uhNibnXzluGWldYPmwrJXFpqOhx43V3NqhXPC5Qwj1DJ3?=
+ =?us-ascii?Q?zEvg3ATgi7qhIsOjGQnkzQLEDI14hU6PpNZs0d/cwSErUHygcK/lwdNwy+K/?=
+ =?us-ascii?Q?E8lQwyXEvC1s4jWdFjQgdo0SgdPrdWZx+msXjGrtCTLFfW2f76x3JjTC/Ox+?=
+ =?us-ascii?Q?4YAPw4yOShXeCPHoPHtuIiyTOOJGBWbcLDAGLw2TeyCEY1wvH3aWT6HjM2K0?=
+ =?us-ascii?Q?01SQTCGkF3Lf1Z33NRoQTdLOpykDyygt0JbX+tv7eo7fTCZ4EEBMfDcRYspz?=
+ =?us-ascii?Q?cL4nNCA372UOZL/NfrxhXADb?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f65da1b-0e2b-4ab4-5876-08d931a9c9c5
+X-MS-Exchange-CrossTenant-Network-Message-Id: da940bb8-7116-49bd-5fa1-08d931a9ca85
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:55.7030
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:56.8400
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ExWAmc1de8CVJOwKqwYoVdv+7WeMjIlT3tGuDG8UHHg5wx4Tnb4TuZQy+W9CrMuJyvNHKn4S57d0hqWKvKEu7w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: LMDGXnQh3DSXDmFQG7reDfcLQpKD6Oclzu5JPI5iFle6NSW8+qbmuHwsXe7rXbjxc9YsmDzgXOhjYpZ8iWijdQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0260
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,593 +119,267 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/sta.c | 536 +++++++++++++++++++++++++
- 1 file changed, 536 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/sta.c
+ drivers/net/wireless/celeno/cl8k/sta.h | 241 +++++++++++++++++++++++++
+ 1 file changed, 241 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/sta.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/sta.c b/drivers/net/wireless/=
-celeno/cl8k/sta.c
+diff --git a/drivers/net/wireless/celeno/cl8k/sta.h b/drivers/net/wireless/=
+celeno/cl8k/sta.h
 new file mode 100644
-index 000000000000..625edd51cb93
+index 000000000000..8e1e47316cf8
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/sta.c
-@@ -0,0 +1,536 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/sta.h
+@@ -0,0 +1,241 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "sta.h"
-+#include "rssi.h"
-+#include "bf.h"
-+#include "stats.h"
-+#include "wrs/wrs_api.h"
-+#include "utils/utils.h"
-+#include "band.h"
-+#include "vns.h"
-+#include "radio.h"
-+#include "tx/tx_inject.h"
-+#include "twt.h"
++#ifndef CL_STA_H
++#define CL_STA_H
++
++#include "sta_info.h"
++#include "utils/timer.h"
++#include "rate_ctrl.h"
 +#include "motion_sense.h"
-+#include "mac_addr.h"
-+#include "tx/baw.h"
-+#include "recovery.h"
-+#include "tx/tx_queue.h"
-+#include "tx/single_cfm.h"
-+#include "ext/dyn_mcast_rate.h"
-+#include "ext/dyn_bcast_rate.h"
-+#include "chip.h"
-+#include "fw/msg_tx.h"
 +
-+void cl_sta_init(struct cl_hw *cl_hw)
-+{
-+       u32 i;
++#define IEEE80211_STA_TO_CL_STA(sta) ((struct cl_sta *)(sta)->drv_priv)
++#define STA_INFO_TO_CL_STA(sta_info) ((struct cl_sta *)(sta_info)->sta.drv=
+_priv)
 +
-+       rwlock_init(&cl_hw->cl_sta_db.lock);
-+       INIT_LIST_HEAD(&cl_hw->cl_sta_db.head);
++#define STA_IDX_INVALID U8_MAX
 +
-+       for (i =3D 0; i < CL_STA_HASH_SIZE; i++)
-+               INIT_LIST_HEAD(&cl_hw->cl_sta_db.hash[i]);
-+}
++struct cl_wrs_info {
++       u64 epr_acc;
++       u32 tx_success;
++       u32 tx_fail;
++       u32 tx_fail_prev;
++       u32 ba_not_rcv;
++       u8 ba_not_rcv_consecutive;
++       u8 ba_not_rcv_consecutive_max;
++       bool synced;
++       u32 sync_attempts;
++       u8 quick_rate_agg_cntr;
++       u16 quick_rate_pkt_cntr;
++       bool quick_rate_check;
++};
 +
-+void cl_sta_init_stainfo(struct cl_hw *cl_hw, struct sta_info *stainfo)
-+{
-+       if (!cl_recovery_in_progress(cl_hw)) {
++struct cl_wrs_rssi {
++       s32 sum[MAX_ANTENNAS];
++       s32 cnt;
++};
 +
-+               struct cl_sta *cl_sta =3D STA_INFO_TO_CL_STA(stainfo);
++struct cl_amsdu_ctrl {
++       struct cl_sw_txhdr *sw_txhdr;
++       u16 rem_len;
++       u16 max_len;
++       u16 hdrlen;
++       u8 packet_cnt;
++       bool is_sw_amsdu;
++};
 +
-+               /* Reset all cl_sta structure */
-+               memset(cl_sta, 0, sizeof(struct cl_sta));
-+               cl_sta->stainfo =3D stainfo;
-+               /*
-+                * Set sta_idx to 0xFF since FW expects this value as long =
-as
-+                * the STA is not fully connected
-+                */
-+               cl_sta->sta_idx =3D STA_IDX_INVALID;
-+       }
-+}
++struct cl_bf_sta_db {
++       bool traffic_active;
++       bool sounding_start;
++       bool sounding_remove_required;
++       bool indication_timeout;
++       bool synced;
++       bool is_on;
++       bool is_on_fallback;
++       u8 num_ss;
++       u8 num_ss_fallback;
++       u8 beamformee_sts;
++       u8 nc;
++       u32 sounding_indications;
++       struct cl_timer timer;
++};
 +
-+static void cl_sta_add_to_lut(struct cl_hw *cl_hw, struct cl_vif *cl_vif, =
-struct cl_sta *cl_sta)
-+{
-+       write_lock_bh(&cl_hw->cl_sta_db.lock);
++#define RSSI_ARR_SIZE 128
++#define BF_IDX_MAX 2
 +
-+       cl_hw->cl_sta_db.num++;
-+       cl_vif->num_sta++;
-+       cl_hw->cl_sta_db.lut[cl_sta->sta_idx] =3D cl_sta;
++struct cl_tx_cntrs {
++       u32 success;
++       u32 fail;
++};
 +
-+       /* Done here inside the lock because it allocates cl_stats */
-+       cl_stats_sta_add(cl_hw, cl_sta);
++struct cl_tx_stats {
++       struct cl_tx_cntrs he[CHNL_BW_MAX][WRS_SS_MAX][WRS_MCS_MAX][WRS_GI_=
+MAX][BF_IDX_MAX];
++       struct cl_tx_cntrs
++               vht[CHNL_BW_MAX_VHT][WRS_SS_MAX][WRS_MCS_MAX_VHT][WRS_GI_MA=
+X_VHT][BF_IDX_MAX];
++       struct cl_tx_cntrs ht[CHNL_BW_MAX_HT][WRS_SS_MAX][WRS_MCS_MAX_HT][W=
+RS_GI_MAX_HT];
++       struct cl_tx_cntrs ofdm[WRS_MCS_MAX_OFDM];
++       struct cl_tx_cntrs cck[WRS_MCS_MAX_CCK];
++       u32 agg_cntr;
++       u32 fail_cntr;
++};
 +
-+       write_unlock_bh(&cl_hw->cl_sta_db.lock);
++enum cl_ps_period {
++       PS_PERIOD_50MS,
++       PS_PERIOD_100MS,
++       PS_PERIOD_250MS,
++       PS_PERIOD_500MS,
++       PS_PERIOD_750MS,
++       PS_PERIOD_1000MS,
++       PS_PERIOD_2000MS,
++       PS_PERIOD_5000MS,
++       PS_PERIOD_10000MS,
++       PS_PERIOD_ABOVE,
 +
-+       cl_dbg_verbose(cl_hw, "mac=3D%pM, sta_idx=3D%u, vif_index=3D%u\n",
-+                      cl_sta->addr, cl_sta->sta_idx, cl_sta->cl_vif->vif_i=
-ndex);
-+}
++       PS_PERIOD_MAX
++};
 +
-+static void cl_sta_add_to_list(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
-+{
-+       u8 hash_idx =3D CL_STA_HASH_IDX(cl_sta->addr[5]);
++struct cl_ps_stats {
++       bool is_ps;
++       unsigned long timestamp_sleep;
++       u32 period[PS_PERIOD_MAX];
++};
 +
-+       write_lock_bh(&cl_hw->cl_sta_db.lock);
++enum cl_fec_coding {
++       CL_FEC_CODING_BCC,
++       CL_FEC_CODING_LDPC,
++       CL_FEC_CODING_MAX
++};
 +
-+       /* Add to hash table */
-+       list_add(&cl_sta->list_hash, &cl_hw->cl_sta_db.hash[hash_idx]);
++struct cl_stats {
++       struct cl_tx_stats tx;
++       struct cl_rx_stats rx;
++       u32 rssi[RSSI_ARR_SIZE][MAX_ANTENNAS];
++       u32 fec_coding[CL_FEC_CODING_MAX];
++       struct cl_ps_stats ps;
++};
 +
-+       /* Make sure that cl_sta's are stored in the list according to thei=
-r sta_idx. */
-+       if (list_empty(&cl_hw->cl_sta_db.head)) {
-+               list_add(&cl_sta->list, &cl_hw->cl_sta_db.head);
-+       } else if (list_is_singular(&cl_hw->cl_sta_db.head)) {
-+               struct cl_sta *cl_sta_singular =3D
-+                       list_first_entry(&cl_hw->cl_sta_db.head, struct cl_=
-sta, list);
++/* Per RA/TID Data for AMPDU TX */
++struct cl_baw {
++       u8 fw_agg_idx;
++       bool amsdu;
++       bool action_start;
++       u16 ssn;
++       u16 tid_seq;
++       struct sk_buff_head pending;
++};
 +
-+               if (cl_sta_singular->sta_idx < cl_sta->sta_idx)
-+                       list_add_tail(&cl_sta->list, &cl_hw->cl_sta_db.head=
-);
-+               else
-+                       list_add(&cl_sta->list, &cl_hw->cl_sta_db.head);
-+       } else {
-+               struct cl_sta *cl_sta_last =3D
-+                       list_last_entry(&cl_hw->cl_sta_db.head, struct cl_s=
-ta, list);
++struct cl_vns_sta_db {
++       bool is_very_near;
++       bool prev_decision;
++       s32 rssi_sum[MAX_ANTENNAS];
++       s32 rssi_samples;
++};
 +
-+               if (cl_sta->sta_idx > cl_sta_last->sta_idx) {
-+                       list_add_tail(&cl_sta->list, &cl_hw->cl_sta_db.head=
-);
-+               } else {
-+                       struct cl_sta *cl_sta_next =3D NULL;
-+                       struct cl_sta *cl_sta_prev =3D NULL;
++struct cl_agc_cd_rssi {
++       s32 samples;
++       s32 sum[MAX_ANTENNAS];
++       s8 prev;
++};
 +
-+                       list_for_each_entry(cl_sta_next, &cl_hw->cl_sta_db.=
-head, list) {
-+                               if (cl_sta_next->sta_idx < cl_sta->sta_idx)
-+                                       continue;
-+
-+                               cl_sta_prev =3D list_prev_entry(cl_sta_next=
-, list);
-+                               __list_add(&cl_sta->list, &cl_sta_prev->lis=
-t, &cl_sta_next->list);
-+                               break;
-+                       }
-+               }
-+       }
-+
-+       write_unlock_bh(&cl_hw->cl_sta_db.lock);
-+
-+       cl_sta->add_complete =3D true;
-+}
-+
-+static void _cl_sta_add(struct cl_hw *cl_hw, struct ieee80211_vif *vif, st=
-ruct ieee80211_sta *sta)
-+{
-+       struct cl_vif *cl_vif =3D (struct cl_vif *)vif->drv_priv;
-+       struct cl_sta *cl_sta =3D IEEE80211_STA_TO_CL_STA(sta);
-+
-+       /* !!! Must be first !!! */
-+       cl_sta_add_to_lut(cl_hw, cl_vif, cl_sta);
-+
-+       cl_baw_init(cl_sta);
-+       cl_txq_sta_add(cl_hw, cl_sta);
-+       cl_vns_sta_add(cl_hw, cl_sta);
-+
-+       /*
-+        * Add rssi of association request to rssi pool
-+        * Make sure to call it before cl_wrs_api_sta_add()
-+        */
-+       cl_rssi_assoc_find(cl_hw, cl_sta, cl_hw->cl_sta_db.num);
-+
-+       cl_motion_sense_sta_add(cl_hw, cl_sta);
-+       cl_bf_sta_add(cl_hw, cl_sta, sta);
-+       cl_wrs_api_sta_add(cl_hw, sta);
-+       cl_wrs_api_set_smps_mode(cl_hw, sta,
-+                                cl_sta->stainfo->cur_max_bandwidth);
-+       /* Should be called after cl_wrs_api_sta_add() */
-+       cl_dyn_mcast_rate_update_upon_assoc(cl_hw, cl_sta->wrs_sta.mode,
-+                                           cl_hw->cl_sta_db.num);
-+       cl_dyn_bcast_rate_update_upon_assoc(cl_hw,
-+                                           cl_sta->wrs_sta.su_params.tx_pa=
-rams.mcs,
-+                                           cl_hw->cl_sta_db.num);
-+
-+       /* !!! Must be last !!! */
-+       cl_sta_add_to_list(cl_hw, cl_sta);
-+}
-+
-+static void cl_sta_disassociate(struct cl_hw *cl_hw, bool ap_only)
-+{
-+       struct cl_sta *cl_sta;
-+       int sta_idx;
-+       int cnt =3D 0;
-+       int sta_num =3D cl_hw->cl_sta_db.num;
-+
-+       for (sta_idx =3D 0; ((sta_idx < CL_MAX_NUM_STA) && (cnt < sta_num))=
-; sta_idx++) {
-+               cl_sta =3D cl_hw->cl_sta_db.lut[sta_idx];
-+               if (cl_sta) {
-+                       cnt++;
-+                       if (ap_only && cl_sta->cl_vif->vif->type !=3D NL802=
-11_IFTYPE_AP)
-+                               continue;
-+                       cfg80211_del_sta(cl_sta->cl_vif->dev, cl_sta->addr,=
- GFP_ATOMIC);
-+               }
-+       }
-+}
++struct cl_tid_ampdu_rx {
++       spinlock_t reorder_lock;
++       u64 reorder_buf_filtered;
++       struct sk_buff_head *reorder_buf;
++       unsigned long *reorder_time;
++       struct ieee80211_sta *sta;
++       struct cl_timer reorder_timer;
++       struct cl_hw *cl_hw;
++       u16 head_seq_num;
++       u16 stored_mpdu_num;
++       u16 ssn;
++       u16 buf_size;
++       u16 timeout;
++       u8 tid;
++       u8 auto_seq:1,
++          removed:1,
++          started:1;
++};
 +
 +/*
-+ * Parse the ampdu density to retrieve the value in usec, according to
-+ * the values defined in ieee80211.h
++ * Structure used to save information relative to the managed stations.
++ * Will be used as the 'drv_priv' field of the "struct ieee80211_sta" stru=
+cture.
 + */
-+static u8 cl_sta_density2usec(u8 ampdu_density)
-+{
-+       switch (ampdu_density) {
-+       case IEEE80211_HT_MPDU_DENSITY_NONE:
-+               return 0;
-+               /* 1 microsecond is our granularity */
-+       case IEEE80211_HT_MPDU_DENSITY_0_25:
-+       case IEEE80211_HT_MPDU_DENSITY_0_5:
-+       case IEEE80211_HT_MPDU_DENSITY_1:
-+               return 1;
-+       case IEEE80211_HT_MPDU_DENSITY_2:
-+               return 2;
-+       case IEEE80211_HT_MPDU_DENSITY_4:
-+               return 4;
-+       case IEEE80211_HT_MPDU_DENSITY_8:
-+               return 8;
-+       case IEEE80211_HT_MPDU_DENSITY_16:
-+               return 16;
-+       default:
-+               return 0;
-+       }
-+}
++struct cl_sta {
++       struct list_head list;
++       struct list_head list_hash;
++       u8 sta_idx;
++       u8 su_sid;
++       bool key_disable;
++       u8 addr[ETH_ALEN];
++       struct cl_baw baws[IEEE80211_NUM_TIDS];
++       struct cl_amsdu_ctrl amsdu_anchor[IEEE80211_NUM_TIDS];
++       struct cl_tx_queue *agg_tx_queues[IEEE80211_NUM_TIDS];
++       struct cl_vif *cl_vif;
++       struct sta_info *stainfo;
++       struct ieee80211_key_conf *key_conf;
++       struct cl_bf_sta_db bf_db;
++       struct cl_stats *stats;
++       s32 alpha_rssi;
++       bool manual_alpha_rssi;
++       s8 last_rssi[MAX_ANTENNAS];
++       u8 ampdu_min_spacing;
++       struct cl_traffic_sta traffic_db[TRAFFIC_DIRECTION_MAX];
++       struct cl_vns_sta_db vns_db;
++       struct cl_agc_cd_rssi agc_cd_rssi;
++       u32 retry_count;
++       u32 data_pending[AC_MAX];
++       struct cl_wrs_info wrs_info;
++       struct cl_wrs_rssi wrs_rssi;
++       bool add_complete;
++       struct cl_wrs_sta wrs_sta;
++       struct cl_motion_sense motion_sense;
++       union cl_rate_ctrl_info_he rate_ctrl_he;
++       struct cl_tid_ampdu_rx *tid_agg_rx[IEEE80211_NUM_TIDS];
++};
 +
-+static void cl_sta_set_min_spacing(struct cl_hw *cl_hw,
-+                                  struct ieee80211_sta *sta)
-+{
-+       bool is_6g =3D cl_band_is_6g(cl_hw);
-+       u8 sta_min_spacing =3D 0;
-+       struct cl_sta *cl_sta =3D IEEE80211_STA_TO_CL_STA(sta);
++typedef void (*sta_callback)(struct cl_hw *, struct cl_sta *);
 +
-+       if (is_6g)
-+               sta_min_spacing =3D
-+                       cl_sta_density2usec(sta->he_6ghz_capa.capa &
-+                                       IEEE80211_HE_6GHZ_CAP_MIN_MPDU_STAR=
-T);
-+       else if (sta->ht_cap.ht_supported)
-+               sta_min_spacing =3D
-+                       cl_sta_density2usec(sta->ht_cap.ampdu_density);
-+       else
-+               cl_dbg_err(cl_hw, "HT is not supported - cannot set sta_min=
-_spacing\n");
++void cl_sta_init(struct cl_hw *cl_hw);
 +
-+       cl_sta->ampdu_min_spacing =3D
-+               max(cl_sta_density2usec(cl_hw->sband.ht_cap.ampdu_density),=
- sta_min_spacing);
-+}
++/* These functions take the lock inside */
++u32 cl_sta_num(struct cl_hw *cl_hw);
++u32 cl_sta_num_bh(struct cl_hw *cl_hw);
++bool cl_sta_is_assoc(struct cl_hw *cl_hw, u8 sta_idx);
 +
-+u32 cl_sta_num(struct cl_hw *cl_hw)
-+{
-+       u32 num =3D 0;
++/* Must take lock before calling these functions */
++struct cl_sta *cl_sta_get(struct cl_hw *cl_hw, u8 sta_idx);
++struct cl_sta *cl_sta_get_by_addr(struct cl_hw *cl_hw, u8 *addr);
 +
-+       read_lock(&cl_hw->cl_sta_db.lock);
-+       num =3D cl_hw->cl_sta_db.num;
-+       read_unlock(&cl_hw->cl_sta_db.lock);
++/* Loop over list of stations and run the callback for each station */
++void cl_sta_loop(struct cl_hw *cl_hw, sta_callback callback);
++void cl_sta_loop_bh(struct cl_hw *cl_hw, sta_callback callback);
++void cl_sta_loop_safe(struct cl_hw *cl_hw, sta_callback callback);
 +
-+       return num;
-+}
-+
-+u32 cl_sta_num_bh(struct cl_hw *cl_hw)
-+{
-+       u32 num =3D 0;
-+
-+       read_lock_bh(&cl_hw->cl_sta_db.lock);
-+       num =3D cl_hw->cl_sta_db.num;
-+       read_unlock_bh(&cl_hw->cl_sta_db.lock);
-+
-+       return num;
-+}
-+
-+bool cl_sta_is_assoc(struct cl_hw *cl_hw, u8 sta_idx)
-+{
-+       bool is_assoc =3D false;
-+
-+       if (sta_idx < CL_MAX_NUM_STA) {
-+               read_lock_bh(&cl_hw->cl_sta_db.lock);
-+               is_assoc =3D cl_hw->cl_sta_db.lut[sta_idx] ? true : false;
-+               read_unlock_bh(&cl_hw->cl_sta_db.lock);
-+       }
-+
-+       return is_assoc;
-+}
-+
-+struct cl_sta *cl_sta_get(struct cl_hw *cl_hw, u8 sta_idx)
-+{
-+       if (sta_idx < CL_MAX_NUM_STA)
-+               return cl_hw->cl_sta_db.lut[sta_idx];
-+
-+       return NULL;
-+}
-+
-+struct cl_sta *cl_sta_get_by_addr(struct cl_hw *cl_hw, u8 *addr)
-+{
-+       struct cl_sta *cl_sta =3D NULL;
-+       u8 hash_idx =3D CL_STA_HASH_IDX(addr[5]);
-+
-+       if (is_multicast_ether_addr(addr))
-+               return NULL;
-+
-+       list_for_each_entry(cl_sta, &cl_hw->cl_sta_db.hash[hash_idx], list_=
-hash)
-+               if (cl_mac_addr_compare(cl_sta->addr, addr))
-+                       return cl_sta;
-+
-+       return NULL;
-+}
-+
-+void cl_sta_loop(struct cl_hw *cl_hw, sta_callback callback)
-+{
-+       struct cl_sta *cl_sta =3D NULL;
-+
-+       /* Go over all stations */
-+       read_lock(&cl_hw->cl_sta_db.lock);
-+
-+       list_for_each_entry(cl_sta, &cl_hw->cl_sta_db.head, list)
-+               callback(cl_hw, cl_sta);
-+
-+       read_unlock(&cl_hw->cl_sta_db.lock);
-+}
-+
-+void cl_sta_loop_bh(struct cl_hw *cl_hw, sta_callback callback)
-+{
-+       struct cl_sta *cl_sta =3D NULL;
-+
-+       /* Go over all stations - use bottom-half lock */
-+       read_lock_bh(&cl_hw->cl_sta_db.lock);
-+
-+       list_for_each_entry(cl_sta, &cl_hw->cl_sta_db.head, list)
-+               callback(cl_hw, cl_sta);
-+
-+       read_unlock_bh(&cl_hw->cl_sta_db.lock);
-+}
-+
-+void cl_sta_loop_safe(struct cl_hw *cl_hw, sta_callback callback)
-+{
-+       struct cl_sta *cl_sta =3D NULL;
-+       struct cl_sta *cl_sta_tmp =3D NULL;
-+
-+       /* Go over all stations */
-+       read_lock(&cl_hw->cl_sta_db.lock);
-+
-+       list_for_each_entry_safe(cl_sta, cl_sta_tmp, &cl_hw->cl_sta_db.head=
-, list)
-+               callback(cl_hw, cl_sta);
-+
-+       read_unlock(&cl_hw->cl_sta_db.lock);
-+}
-+
-+static int cl_sta_add_to_firmware(struct cl_hw *cl_hw, struct ieee80211_vi=
-f *vif,
-+                                 struct ieee80211_sta *sta)
-+{
-+       struct cl_sta *cl_sta =3D (struct cl_sta *)sta->drv_priv;
-+       struct cl_vif *cl_vif =3D (struct cl_vif *)vif->drv_priv;
-+       struct mm_sta_add_cfm *sta_add_cfm;
-+       int error =3D 0;
-+       u8 recovery_sta_idx =3D 0;
-+       u32 rate_ctrl_info =3D 0;
-+
-+       if (cl_recovery_in_progress(cl_hw)) {
-+               struct cl_wrs_tx_params *tx_params =3D &cl_sta->wrs_sta.su_=
-params.tx_params;
-+
-+               /*
-+                * If station is added to firmware during recovery, the dri=
-ver passes to firmware
-+                * the station index to be used instead of firmware selecti=
-ng a free index
-+                */
-+               recovery_sta_idx =3D cl_sta->sta_idx;
-+
-+               /* Keep current rate value */
-+               rate_ctrl_info =3D cl_rate_ctrl_generate(cl_hw, cl_sta, tx_=
-params->mode,
-+                                                      tx_params->bw, tx_pa=
-rams->nss,
-+                                                      tx_params->mcs, tx_p=
-arams->gi,
-+                                                      false);
-+       } else {
-+               bool is_cck =3D cl_band_is_24g(cl_hw) && cl_hw_mode_is_b_or=
-_bg(cl_hw);
-+               u8 mode =3D is_cck ? WRS_MODE_CCK : WRS_MODE_OFDM;
-+
-+               /*
-+                * Not in recovery:
-+                * firmware will set sta_idx and will return in confirmatio=
-n message
-+                */
-+               recovery_sta_idx =3D STA_IDX_INVALID;
-+
-+               /* Default rate value */
-+               rate_ctrl_info =3D cl_rate_ctrl_generate(cl_hw, cl_sta, mod=
-e,
-+                                                      0, 0, 0, 0, false);
-+       }
-+
-+       /* Must be called before cl_msg_tx_sta_add() */
-+       cl_sta_set_min_spacing(cl_hw, sta);
-+
-+       /* Send message to firmware */
-+       error =3D cl_msg_tx_sta_add(cl_hw, sta, cl_vif, recovery_sta_idx, r=
-ate_ctrl_info);
-+       if (error)
-+               return error;
-+
-+       sta_add_cfm =3D (struct mm_sta_add_cfm *)(cl_hw->msg_cfm_params[MM_=
-STA_ADD_CFM]);
-+       if (!sta_add_cfm)
-+               return -ENOMSG;
-+
-+       if (sta_add_cfm->status !=3D 0) {
-+               cl_dbg_verbose(cl_hw, "Status Error (%u)\n", sta_add_cfm->s=
-tatus);
-+               cl_msg_tx_free_cfm_params(cl_hw, MM_STA_ADD_CFM);
-+               return -EIO;
-+       }
-+
-+       /* Save the index retrieved from firmware */
-+       cl_sta->sta_idx =3D sta_add_cfm->sta_idx;
-+
-+       /* Release cfm msg */
-+       cl_msg_tx_free_cfm_params(cl_hw, MM_STA_ADD_CFM);
-+
-+       return 0;
-+}
-+
-+int cl_sta_add(struct cl_hw *cl_hw, struct ieee80211_vif *vif,
-+              struct ieee80211_sta *sta)
-+{
-+       struct cl_sta *cl_sta =3D (struct cl_sta *)sta->drv_priv;
-+       struct cl_vif *cl_vif =3D (struct cl_vif *)vif->drv_priv;
-+       int error =3D 0;
-+
-+       if (cl_radio_is_going_down(cl_hw))
-+               return -EPERM;
-+
-+       cl_sta->cl_vif =3D cl_vif;
-+       cl_mac_addr_copy(cl_sta->addr, sta->addr);
-+
-+       error =3D cl_sta_add_to_firmware(cl_hw, vif, sta);
-+       if (error)
-+               return error;
-+
-+       if (!cl_recovery_in_progress(cl_hw))
-+               if (vif->type !=3D NL80211_IFTYPE_STATION ||
-+                   cl_hw->chip->conf->ce_production_mode)
-+                       _cl_sta_add(cl_hw, vif, sta);
-+
-+       if (vif->type =3D=3D NL80211_IFTYPE_MESH_POINT &&
-+           cl_vif->num_sta =3D=3D 1) {
-+               cl_vif_ap_tx_enable(cl_hw, true);
-+               set_bit(CL_DEV_MESH_AP, &cl_hw->drv_flags);
-+       }
-+
-+       return 0;
-+}
-+
++void cl_sta_init_stainfo(struct cl_hw *cl_hw, struct sta_info *stainfo);
++int cl_sta_add(struct cl_hw *cl_hw, struct ieee80211_vif *vif, struct ieee=
+80211_sta *sta);
 +void cl_sta_mgd_add(struct cl_hw *cl_hw, struct cl_vif *cl_vif, struct iee=
-e80211_sta *sta)
-+{
-+       /* Should be called in station mode */
-+       struct cl_sta *cl_sta =3D (struct cl_sta *)sta->drv_priv;
-+
-+       /* !!! Must be first !!! */
-+       cl_sta_add_to_lut(cl_hw, cl_vif, cl_sta);
-+
-+       cl_baw_init(cl_sta);
-+       cl_txq_sta_add(cl_hw, cl_sta);
-+       cl_vns_sta_add(cl_hw, cl_sta);
-+
-+       /*
-+        * Add rssi of association response to rssi pool
-+        * Make sure to call it before cl_wrs_api_sta_add()
-+        */
-+       cl_rssi_assoc_find(cl_hw, cl_sta, cl_hw->cl_sta_db.num);
-+
-+       /* In station mode we assume that the AP we connect to is static */
-+       cl_motion_sense_sta_add(cl_hw, cl_sta);
-+       cl_bf_sta_add(cl_hw, cl_sta, sta);
-+       cl_wrs_api_sta_add(cl_hw, sta);
-+       /* Should be called after cl_wrs_api_sta_add() */
-+       cl_dyn_mcast_rate_update_upon_assoc(cl_hw, cl_sta->wrs_sta.mode,
-+                                           cl_hw->cl_sta_db.num);
-+       cl_dyn_bcast_rate_update_upon_assoc(cl_hw,
-+                                           cl_sta->wrs_sta.su_params.tx_pa=
-rams.mcs,
-+                                           cl_hw->cl_sta_db.num);
-+
-+       /* !!! Must be last !!! */
-+       cl_sta_add_to_list(cl_hw, cl_sta);
-+}
-+
-+static void _cl_sta_remove(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
-+{
-+       write_lock_bh(&cl_hw->cl_sta_db.lock);
-+
-+       list_del(&cl_sta->list);
-+       list_del(&cl_sta->list_hash);
-+
-+       cl_hw->cl_sta_db.lut[cl_sta->sta_idx] =3D NULL;
-+       cl_hw->cl_sta_db.num--;
-+       cl_sta->cl_vif->num_sta--;
-+
-+       cl_dbg_verbose(cl_hw, "mac=3D%pM, sta_idx=3D%u, vif_index=3D%u\n",
-+                      cl_sta->addr, cl_sta->sta_idx, cl_sta->cl_vif->vif_i=
-ndex);
-+
-+       write_unlock_bh(&cl_hw->cl_sta_db.lock);
-+}
-+
+e80211_sta *sta);
 +void cl_sta_remove(struct cl_hw *cl_hw, struct ieee80211_vif *vif, struct =
-ieee80211_sta *sta)
-+{
-+       struct cl_vif *cl_vif =3D (struct cl_vif *)vif->drv_priv;
-+       struct cl_sta *cl_sta =3D (struct cl_sta *)sta->drv_priv;
-+       u8 sta_idx =3D cl_sta->sta_idx;
-+
-+       /* !!! Must be first - remove from list and LUT !!! */
-+       _cl_sta_remove(cl_hw, cl_sta);
-+
-+       cl_traffic_sta_remove(cl_hw, cl_sta);
-+       cl_bf_sta_remove(cl_hw, cl_sta);
-+       cl_dyn_mcast_rate_update_upon_disassoc(cl_hw,
-+                                              cl_sta->wrs_sta.mode,
-+                                              cl_hw->cl_sta_db.num);
-+       cl_dyn_bcast_rate_update_upon_disassoc(cl_hw,
-+                                              cl_sta->wrs_sta.su_params.tx=
-_params.mcs,
-+                                              cl_hw->cl_sta_db.num);
-+       cl_wrs_api_sta_remove(cl_hw, cl_sta);
-+       cl_tx_inject_sta_remove(cl_hw, cl_sta);
-+       cl_twt_sta_remove(cl_hw, cl_sta);
-+       cl_stats_sta_remove(cl_hw, cl_sta);
-+
-+       /*
-+        * TX stop flow:
-+        * 1) Flush TX queues
-+        * 2) Poll confirmation queue and clear enhanced TIM
-+        * 3) Send MM_STA_DEL_REQ message to firmware
-+        * 4) Flush confirmation queue
-+        * 5) Reset write index
-+        */
-+
-+       cl_txq_flush_sta(cl_hw, cl_sta);
-+       cl_single_cfm_poll_empty_sta(cl_hw, sta_idx);
-+       cl_txq_sta_remove(cl_hw, sta_idx);
-+
-+       if (cl_vif->vif->type =3D=3D NL80211_IFTYPE_MESH_POINT &&
-+           cl_vif->num_sta =3D=3D 0) {
-+               cl_sta_disassociate_ap_iface(cl_hw);
-+               cl_vif_ap_tx_enable(cl_hw, false);
-+               clear_bit(CL_DEV_MESH_AP, &cl_hw->drv_flags);
-+       }
-+
-+       cl_msg_tx_sta_del(cl_hw, sta_idx);
-+
-+       cl_single_cfm_flush_sta(cl_hw, sta_idx);
-+
-+       if (cl_vif->num_sta =3D=3D 0)
-+               cl_radio_off_wake_up(cl_hw);
-+}
-+
-+void cl_sta_disassociate_all(struct cl_hw *cl_hw)
-+{
-+       /* Disassociate all associated stations (AP + STA mode) */
-+       cl_sta_disassociate(cl_hw, false);
-+}
-+
-+void cl_sta_disassociate_ap_iface(struct cl_hw *cl_hw)
-+{
-+       /* Disassociate all AP associated stations (AP mode only) */
-+       cl_sta_disassociate(cl_hw, true);
-+}
-+
+ieee80211_sta *sta);
++void cl_sta_disassociate_all(struct cl_hw *cl_hw);
++void cl_sta_disassociate_ap_iface(struct cl_hw *cl_hw);
 +void cl_sta_ps_notify(struct cl_hw *cl_hw, struct cl_sta *cl_sta, bool is_=
-ps)
-+{
-+       /*
-+        * PS-Poll & UAPSD are handled by FW, by setting
-+        * WLAN_STA_SP we ensure mac80211 does not re-handle.
-+        * flag is unset at ieee80211_sta_ps_deliver_wakeup
-+        */
-+       if (is_ps)
-+               set_sta_flag(cl_sta->stainfo, WLAN_STA_SP);
+ps);
 +
-+       cl_stats_update_ps(cl_hw, cl_sta, is_ps);
++static inline void cl_sta_lock_bh(struct cl_hw *cl_hw)
++{
++       read_lock_bh(&cl_hw->cl_sta_db.lock);
 +}
 +
++static inline void cl_sta_unlock_bh(struct cl_hw *cl_hw)
++{
++       read_unlock_bh(&cl_hw->cl_sta_db.lock);
++}
++
++static inline void cl_sta_lock(struct cl_hw *cl_hw)
++{
++       read_lock(&cl_hw->cl_sta_db.lock);
++}
++
++static inline void cl_sta_unlock(struct cl_hw *cl_hw)
++{
++       read_unlock(&cl_hw->cl_sta_db.lock);
++}
++
++#endif /* CL_STA_H */
 --
 2.30.0
 
