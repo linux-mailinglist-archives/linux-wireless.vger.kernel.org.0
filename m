@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26BD53AB85D
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D7433AB85A
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231558AbhFQQHX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:07:23 -0400
-Received: from mail-eopbgr60088.outbound.protection.outlook.com ([40.107.6.88]:43502
+        id S233575AbhFQQHC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:07:02 -0400
+Received: from mail-eopbgr60049.outbound.protection.outlook.com ([40.107.6.49]:40639
         "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231649AbhFQQGy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:06:54 -0400
+        id S232477AbhFQQGi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:06:38 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VJSLF3B3bv2trjk/6OHENgU8A4vwQHxz6+IQD5Z3KGZRhLhOGbvuMgIiVNVpIgQWonXPwC4PhXJyGKmYA4AogMiMG/Pzs6k9JdGQFcKIE1W2LnwZlFSsAV/hxl/FTgcgWrb9R2RULlLfD/vNg5HXCcIvHJb5C1CT27TTxD064ydDzIU5txtw9nWTVGYkZBQALxk8d0cb4FBXx+i4AlVzIGa6e++NMY8pjkLDQaNdIiVOephkoU8Y0g89dv2OYNAmmYtVO4jnZwv9sojLUyrCUfLG7JppcCpbL5JJ0pdKNy+p1HE6jFVCt+nA7JoqAQgv6jJXR2SSUKGo94nPi3EMpg==
+ b=OUXa5gI/orwCb8+2a4nh6EW/n7U1mVUpHxtJDr5vpWWQlJNDulK5pMh2f5ZOzB92w5lfWBWKfA8oh3nvx7SRG6exZ5JHlHkXK+W3NIonxjNb8CXmxfsFvNHQt+bawCiwVXqVewCqqsVZrtiAU2E4M9HN/pCyclYRk0W90BQxMEXBjKZg2Xa5qtTaKl42ec7r5/fLg/8uMgDzCebpMVnz4jUis3MGf61YTEHwzK5plShCuozE8sVsCxQ6bpUY1AihH/+clfchcDZ+uaY2zT+IOcli4Sh+l5rhp8N2Rwmok4jiXnv9WELrVtMPCAnsqBWQT66tLUSjCDwhN7cHLMIEVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t36YL8aex4578GW0N37cv4n5bc8LOr5ZxXMJw4LDo5Y=;
- b=GQqGQbbWc8IwXoXWkAHc3lns3E7dL3G04JBwisIdpaVKj6cIWM82H/r4VnOHQniJ2WTb3xIA+amVkmz9iOJKYxt0AyQx6/Ey8PJhfcLwVKifaDFEnov+vOShTE5v9muCWO2gZ+oW2lsXGdI8BLgwhHKEv8FObhqgMgbf6EJfU1MWK0WRBDYlofTYM1kAI6k8ArqPgh9TQrhcqKk78gs9ngCeApokjV3ZR1KuZkbT8QUmVTvkkI8fUWx62rwbOWyGCQlJyL5Cpkb2pLA7MlqNE7urhJaWV1Ea0+qYokAyyKU7iDrbOHkVpVlWqEbEr/+uLAKIKdqEi4A2l5ofZOc9bQ==
+ bh=po7t3+FUh81zh0dF6jWBCuDtnqJ8eooKgqJymLP0ZkQ=;
+ b=Xp7wXsCsKac9zbvf5L7Vt0qvxUGbxjMM3pGrfGiVhZKNHneCliwbp/uETji5bqus6byEKki9HyEsQd9fGHiTCu6UcuFW2d7ozSS4j7cRDsbwaZOFHI9ARGP1TL14bWcq3O9Oq+FAvW7Yr7uf7plyL7eTIjvWabvmsr+CmwElhMoRvMgrnPzCwF5K3yKFqrdBnFCPksDx+rMxbw3Rw03++MZ7Xc60jgPJZBTVpH5lbDbkBc0NPVa0OIjQdeuwVFq3uLfjAqyu2oybu808KcFD/m814ndMhgDuvpV2q+Li86hBTVmRttgxBilr88+2GHZVsy1Gl9XdFlbFqZXf8ABvBQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t36YL8aex4578GW0N37cv4n5bc8LOr5ZxXMJw4LDo5Y=;
- b=WKTWakhSBJUbaSb+Htc6IpemmJRzBEiESJxm2vLZ91HmaopW6Z0n9Rh1w4lVekOwJ4Is2gWdY7BDM+7FZjzA+jQ7tDi+0PmAfG/DcrR9qRwDo4uxJVuQKiAsGmvM73vY1KVtH12WOXcfI28A3Dk6dRD7kNgRdC9XZa9f6MwNeV0=
+ bh=po7t3+FUh81zh0dF6jWBCuDtnqJ8eooKgqJymLP0ZkQ=;
+ b=c0Pzc7Bjd9+Vv/gnW+Xz+BHudSPvbWez1R/dp0MwwUphloMe76xvsw8eou++Q+A/WGzir2cFmnl2WQ7fpktvMdwN9RkPyzYOb/EgvFK9WPlwhL0sVr3BPDiG1QOiHF1VM2My/d7jmus1ENhywbufjUjh7GleXi03pUdGOYd/DeY=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 062/256] cl8k: add dfs/radar.c
-Date:   Thu, 17 Jun 2021 15:59:09 +0000
-Message-Id: <20210617160223.160998-63-viktor.barna@celeno.com>
+Subject: [RFC v1 063/256] cl8k: add dfs/radar.h
+Date:   Thu, 17 Jun 2021 15:59:10 +0000
+Message-Id: <20210617160223.160998-64-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:41 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:42 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: dee548d9-40e9-41c0-571a-08d931a97a52
+X-MS-Office365-Filtering-Correlation-Id: b57e4d5a-4c9e-4994-69b5-08d931a97aea
 X-MS-TrafficTypeDiagnostic: AM9P192MB1268:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB1268DCA9611DAF068F671BD6F60E9@AM9P192MB1268.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:901;
+X-Microsoft-Antispam-PRVS: <AM9P192MB126826BD33693FBB3D0E8498F60E9@AM9P192MB1268.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3968;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 3nRCDWXY/kkymwzccvfz4ZII9TuJAywppQVVjRq6I0Ly8rRMcdL6l3yKjTIykuX7/Cqul9y5lvaNbg/bfGPLu45QJMce7d5KV8fTGGXsvHA3hqdwyLiehCnfCJEI2VanTwYuMZm+Th41b/UNMM7Ycm7h9H3GcyWpsy43mlH4ELUpXZ+URl+r6D9WdchV2N2f68Q0bEQbxURiDpP8/W6UywdNJS/+xxYAfxECnE1B9gjHBWkMYjfnkNjMaPUmb+5MyLZjKGDRF+pj0kQcUpV3e5rTc5dbudNpN0T0XHdPQyZq4J0FPDaqBGvojnznHGmrHmHWI55d/va8scPK/XkHDylA/ZzE4emG0ho5E+GkgGGdPcAJv5GiubOBLSM4MzesOhn8N3y4NFbg7sGl9Ys6273Kiy0ZmPFQ999tnSpE+wWS/8rUpLcpH86IE9jlTcHZQnOTGW2T+Ao1K7nq8C6lju0c4G7CHvomNfmSYvbF6hRPVudEPpvTNvGAt8z5bJvsdWM7Ggaafu9X9B3w1JOu6CycM62Kj/ISVIGREHksrCOEBAyJaQitqGEwdoVu5PAF7KxvE3RRtGdOi8I83xmozaH5hJXBMh7nSpRbTylM2pTaCyGTY5n904hzD669R0Ym3KqNl0LmSDeb6c3Lv51bmmLYnJKYxD03i2Hk+WdU0q619mQuy1Vw6C+b0+HwMkWLWGR/5nK83N3n5m9Zw/toPQ==
+X-Microsoft-Antispam-Message-Info: Jc2NLWxb0inFkBbESuZmb7L+XuGwS1L0T8TeIujKjQ6PHVzll+S/RG+dRwfjibQCPzZFt69OVV8acndWaKQCmWnN/UI8W6/9SDWCNvjhq5fhaezVwkP0vbQIWQ+rPfOFYFR/spGD6gXdHOwwF6cQdBGiK1S9GYXmUR+SwvQsrN9Xc5jZFofJ9WJKFPQUobXV2ZDdTin0+KfPx7whYfkJxz6FXlVaGyjXqUdO5cblS4xkBmyDwvkb2C7FIKTswuKfq1o45/aG/OL9aLhXZrvLJtQ7/eceiCyROLPLSb1sIVbtQy4EUo1JsU8o361fxZreAAoh3mV0LAzuq1A6A992rnzjrsi//gEEpE3jQleMkusOzBLkFivFHdsxre64fUrDRhPQay36kkpDjF+cTJuBlAvWvI/J+jQjwDOqjMjun9ypVJMSEIA/DLoUvT6K65I+pz6iVEeXmFeATOLRpk+D7iY/erqkVa0dbRAqRM5SemyONyWXKOWVC6r0VDWrOTFL/+oQfgZXMBVHRDZfUzX79e/CM/ANeNnF+3tMwLkzadGk4f8HeEBX3lzlaYl1AnahrWfE4RhO5AfxNpnY/an659/ST103nNjvvgqpeClKtp0Ue6cgiwSBI3Av6FIjsJxA1CG5ED0l3vIGfw9J1c3Wfld/V7F8PNhhOlCY2vpE5mpw06nZL4lQVu1YpFWsIFbpMlgtf3QFrcrQXbo9DiFCtQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(6486002)(956004)(54906003)(4326008)(2616005)(186003)(38100700002)(16526019)(8676002)(5660300002)(38350700002)(8936002)(26005)(2906002)(6512007)(9686003)(52116002)(83380400001)(6916009)(66946007)(66556008)(66476007)(86362001)(55236004)(498600001)(6666004)(6506007)(1076003)(107886003)(36756003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?HMXKMNDDW2mc5oktkmRUlPYdm7AZtaa0L7ao+bdiXrPxZyBu4b27XwmOoM30?=
- =?us-ascii?Q?Oep29UDu+ycVuEoMfSqWXo2UKNC8wLinJ1lIqzfjljRYtN9ZZQCgtzDawnLl?=
- =?us-ascii?Q?9/g/SSlaH7dPbCacCG++0qvGzS49icqpKzMCrBWnXTAm3UksiSPywcdAN+1r?=
- =?us-ascii?Q?O6er7qB++HVO36mexIchUebxanBI3DQei5MHxILdERbPcaVwv1qM3sC4wQsT?=
- =?us-ascii?Q?1K98Y/7T9MW2Hwg5Dp6YcdYwgPcld8FnaaGwYf6c9x/7lgUL8zfk3xxo1dvC?=
- =?us-ascii?Q?uaFBqhRn1puKv8CB3UuHoxWxZ3IbViYOtfCwLdyV+zKOgz3lgewss7u4qdmO?=
- =?us-ascii?Q?yDv80tSjIWI/K52cIEg6kqpUVwFqvL7rEtz2reWsDi65x3N+uIe+ZG4CI1gt?=
- =?us-ascii?Q?9YbQYuE/O5yh/Me8cPrHxz45mUhWhgzQqXdHMT6/hI6EL93ZQ7nm7GOj3Q2+?=
- =?us-ascii?Q?3gX3T984VJGdib10mtq1pkL72kqFsxffam5MnMqKns3on2D376WAUR1WvI/Y?=
- =?us-ascii?Q?GL89S0QAclrOKWgatvr7OMdDJrLomGsfYYH+lS49Ll0YJsynbpStLtNVKyp6?=
- =?us-ascii?Q?0CRsxJ+l+HoTgKmFutlowWuzhqOv4Y0LaEtc8doPp4XrRJe3vqDWDslujs3e?=
- =?us-ascii?Q?bg1LNF5HosucHjDWLrQDsZv7M4TrWG26A+D5UF5zXGUqqkdwoala5Ksb+46z?=
- =?us-ascii?Q?WEakwqy4kWTnuJuw1CYuZ5JgyG41z4exKksMhS2IdCAmWtGhV+gu/UPFwuG8?=
- =?us-ascii?Q?xSZvwrQb7BQyW2tb30vnSNN9qIxF4Q4nf68h75UuS/B9T1OtnGHQ3QiPTN8f?=
- =?us-ascii?Q?7sQE0dcPPaD0RwUxbP7/4cDxtq42T/4YPl1W/PTadTtA1/r46MMTaIlpdFG8?=
- =?us-ascii?Q?wCB0lKDlK0k8dTkqepTW4lVptVqnANf80kzV4HeksFbchE6A3X//mnEBC2Fx?=
- =?us-ascii?Q?8U3qJx4nwDEHjLuojjXi0ZUzSpWB7IJ2yB2m/DVduVdNDnTZ+hPnWkn21KBP?=
- =?us-ascii?Q?247EQc4HyqJ4OU21h3Zglplg3s7/pSlaroeFho65PV43b+iLu3KX0GcVJjRi?=
- =?us-ascii?Q?ENofQ1JYjfrO7R2U7wmbP6WwpEklDVlOxXZm9RHjsVuJeD7DLodh7UtxfQRo?=
- =?us-ascii?Q?8UZwTr8Qd0nHJyjfC2K5rRk6MuXzi2Y4THmh0nyxLRvLLxjOHkFvXyVg1rds?=
- =?us-ascii?Q?T70cOzqcDK4Gvs7YSOK3PPUwLnmlZWadTLL4tQ7nJpR3c+gkj6O+lmEqgKJO?=
- =?us-ascii?Q?fOhbw8KyHOtw77BoeYddfl3Uk0BEf1EB8qSlSn9cRnkyKMVKvVXQ4fUomaY9?=
- =?us-ascii?Q?DJNXzJLjzRuBk07ewUP07K+0?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NkEBEfUdpgwh1Hrd+vGOlQI4RJovDX4/Ysdwt89884jCBdqVeibEnJFS2tyU?=
+ =?us-ascii?Q?v5/QfTkTpNMilcUToJPuTKHGfzOJflzFDeclDdyvLwCzuk8uEgTDY7kK8VdS?=
+ =?us-ascii?Q?2GPKR1dM6eZB5ZzcQxEBoSQuFPvDYQJnWWgFI5MWnRyqsM4mwt0Lctc6LLO4?=
+ =?us-ascii?Q?wXdpAx76/kVHIoIyAJFQR/RQx9a4m3yYHDjv0n6Am69XzNaRkUmN+uiX0Khu?=
+ =?us-ascii?Q?TfGvmdmVn6um4fa1oVHhoqRTw81F4thClQrLH6DgW320xqUgFCsSxJ+WqvO7?=
+ =?us-ascii?Q?/Bgxz1+e8/Z99Tg2scBrsRuG/KW7ggeVFEXIFdVsJvmGTg5Ktok43Mmf02SO?=
+ =?us-ascii?Q?ujmemlVO1+E12ANYoVfrVPxnSKFtQqvt2KSgrFU5A+qOBDl5nO8zMUWhEwEL?=
+ =?us-ascii?Q?ItnTmTRxZySDBeeRhoFdQHXz0E2PH6OHWcp+5nV9r91DxiG5R4G4CFsLJ8fi?=
+ =?us-ascii?Q?DLQJZFI0D5gwUBg0eyw0QhEGWR0Mbq7I7JRlLOsXe7CGC32JfRUOZBKev7oz?=
+ =?us-ascii?Q?4jSL/XODJn7mTGf9kU073YfN8l4CL9Oag8WXBg80ABlOU/SotraC9TCnHytj?=
+ =?us-ascii?Q?QvKw0TwLOMnb5/aKkbgVYyOSTnN0sejlZAB1a6IN4SmCDnH9x6AJC5+jfVED?=
+ =?us-ascii?Q?/ssaQwkGzRlgs6OSMWsTt62Lxf+BDmFPa7h5ES3T22WPBV38QBCgaS5SctBy?=
+ =?us-ascii?Q?C3RGdiIOHQolK5koCazJ/E0ITux/IfW1CqHkeZb7JA2sGMrurF/yg459QgF4?=
+ =?us-ascii?Q?a7mVXh1OhXO+X7SIzekqDbJHffaHoHdmYMO8gTnL9jW9z4Bk4xpjNQQaBYpE?=
+ =?us-ascii?Q?pqJ+HN7JbabWN03uR/7SamvcSK/Tq9KBkUJiI1NCm5I1gxHh/QqWN2O2boHW?=
+ =?us-ascii?Q?dxO2LPytDoT6p/F3Tz4+2KAuwQB7ta1rnddEeV7jJuwCkKHIy08l09Eb6sM5?=
+ =?us-ascii?Q?OqgBmCoDRfX7k5cM0ElIkmZo2CX4kSDHPITCRkMfetLcphXf2ue8CDq66lFq?=
+ =?us-ascii?Q?q0yKWxaJ9bjEQuQlq/yq/4oHTE/4AAOMSm8MZYx+LcLqLbqxVgj7kFJyju/4?=
+ =?us-ascii?Q?dfrP/sHV1ZF/wec8eG5/RnGj+H76XzyB8Jm0i8zc3X7+pNKcPL+cgDBhSmNJ?=
+ =?us-ascii?Q?cPBPQgM+7+dOnzxusRfnZoVM1j94Sa1HXlHDtSxFYOSAzWLzJXvlyOOMGBKo?=
+ =?us-ascii?Q?/jo1iKwj+ijzJuvUI/xnePdXcfbT4edxxEqFf59hFP6GsZVwtcD2yGdACv1g?=
+ =?us-ascii?Q?lNTyu5ky725uzdYw2QBsNFdAGUXp8S1ZAP6ClW0xdpyvGYUKGpShK2Seim3l?=
+ =?us-ascii?Q?U4GTkp3e5WuHx/8xzNXkc8XS?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dee548d9-40e9-41c0-571a-08d931a97a52
+X-MS-Exchange-CrossTenant-Network-Message-Id: b57e4d5a-4c9e-4994-69b5-08d931a97aea
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:42.2639
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:43.2814
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wWIbeHXM+442tzwiabDLzrelQxUg8aWx8gmCR363mtzZyjbD4owqpjXodlrgLYKToMjEnpsPy1aKIbJY8YpKUA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: cLIzmvWl2FRI21zrg6650MN7dg90Npo421VL9WzgfpRACOG+ud3REET36fyh2CsT2Vzpi+1A7mPxlYquoXTvdg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1268
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,144 +119,72 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/dfs/radar.c | 116 +++++++++++++++++++
- 1 file changed, 116 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/dfs/radar.c
+ drivers/net/wireless/celeno/cl8k/dfs/radar.h | 55 ++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/dfs/radar.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/dfs/radar.c b/drivers/net/wir=
-eless/celeno/cl8k/dfs/radar.c
+diff --git a/drivers/net/wireless/celeno/cl8k/dfs/radar.h b/drivers/net/wir=
+eless/celeno/cl8k/dfs/radar.h
 new file mode 100644
-index 000000000000..3f763e274102
+index 000000000000..bed037cce624
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/dfs/radar.c
-@@ -0,0 +1,116 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/dfs/radar.h
+@@ -0,0 +1,55 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "dfs/radar.h"
-+#include "dfs/dfs.h"
-+#ifdef CONFIG_CL_PCIE
-+#include "bus/pci/irq.h"
-+#include "ipc_shared.h"
-+#endif
++#ifndef CL_RADAR_H
++#define CL_RADAR_H
 +
-+static void cl_radar_handler(struct cl_hw *cl_hw, struct cl_radar_elem *ra=
-dar_elem,
-+                            unsigned long time)
-+{
-+       /* Retrieve the radar pulses structure */
-+       struct cl_radar_pulse_array *pulses =3D radar_elem->radarbuf_ptr;
++  #include <linux/types.h>
 +
-+       cl_dfs_pulse_process(cl_hw, (struct cl_radar_pulse *)pulses->pulse,
-+                            pulses->cnt, time);
-+}
++/* Number of pulses in a radar event structure */
++#define RADAR_PULSE_MAX 4
 +
-+static void cl_radar_tasklet(unsigned long data)
-+{
-+       struct cl_hw *cl_hw =3D (struct cl_hw *)data;
-+       struct cl_radar_queue_elem *radar_elem =3D NULL;
-+       unsigned long flags =3D 0;
++/*
++ * Structure used to store information regarding
++ * E2A radar events in the driver
++ */
++struct cl_radar_elem {
++       struct cl_radar_pulse_array *radarbuf_ptr;
++       dma_addr_t dma_addr;
++};
 +
-+       while (!list_empty(&cl_hw->radar_queue.head)) {
-+               spin_lock_irqsave(&cl_hw->radar_queue.lock, flags);
-+               radar_elem =3D list_first_entry(&cl_hw->radar_queue.head,
-+                                             struct cl_radar_queue_elem, l=
-ist);
-+               list_del(&radar_elem->list);
-+               spin_unlock_irqrestore(&cl_hw->radar_queue.lock, flags);
++/* Bit mapping inside a radar pulse element */
++struct cl_radar_pulse {
++       u64 freq        : 8;
++       u64 fom         : 8;
++       u64 len         : 8;  /* Pulse length timer */
++       u64 measure_cnt : 2;  /* Measure count */
++       u64 rsv1        : 6;  /* Reserve1 */
++       u64 rep         : 16; /* PRI */
++       u64 rsv2        : 16; /* Reserve2 */
++};
 +
-+               cl_radar_handler(radar_elem->cl_hw, &radar_elem->radar_elem=
-,
-+                                radar_elem->time);
++/* Definition of an array of radar pulses */
++struct cl_radar_pulse_array {
++       /* Buffer containing the radar pulses */
++       u64 pulse[RADAR_PULSE_MAX];
++       /* Number of valid pulses in the buffer */
++       u32 cnt;
++};
 +
-+               kfree(radar_elem->radar_elem.radarbuf_ptr);
-+               kfree(radar_elem);
-+       }
++struct cl_radar_queue_elem {
++       struct list_head list;
++       struct cl_hw *cl_hw;
++       struct cl_radar_elem radar_elem;
++       unsigned long time;
++};
 +
-+#ifdef CONFIG_CL_PCIE
-+       if (!test_bit(CL_DEV_STOP_HW, &cl_hw->drv_flags))
-+               cl_irq_enable(cl_hw, cl_hw->ipc_e2a_irq.radar);
-+#endif
-+}
++struct cl_hw;
 +
-+void cl_radar_init(struct cl_hw *cl_hw)
-+{
-+       INIT_LIST_HEAD(&cl_hw->radar_queue.head);
++void cl_radar_init(struct cl_hw *cl_hw);
++void cl_radar_push(struct cl_hw *cl_hw, struct cl_radar_elem *radar_elem);
++void cl_radar_tasklet_schedule(struct cl_hw *cl_hw);
++void cl_radar_flush(struct cl_hw *cl_hw);
++void cl_radar_close(struct cl_hw *cl_hw);
 +
-+       tasklet_init(&cl_hw->radar_tasklet, cl_radar_tasklet, (unsigned lon=
-g)cl_hw);
-+
-+       spin_lock_init(&cl_hw->radar_queue.lock);
-+}
-+
-+void cl_radar_push(struct cl_hw *cl_hw, struct cl_radar_elem *radar_elem)
-+{
-+       struct cl_radar_queue_elem *new_queue_elem =3D NULL;
-+       u32 i;
-+
-+       new_queue_elem =3D kzalloc(sizeof(*new_queue_elem), GFP_ATOMIC);
-+
-+       if (new_queue_elem) {
-+               new_queue_elem->radar_elem.radarbuf_ptr =3D
-+                       kzalloc(sizeof(*new_queue_elem->radar_elem.radarbuf=
-_ptr), GFP_ATOMIC);
-+
-+               if (new_queue_elem->radar_elem.radarbuf_ptr) {
-+                       new_queue_elem->radar_elem.dma_addr =3D radar_elem-=
->dma_addr;
-+                       new_queue_elem->radar_elem.radarbuf_ptr->cnt =3D
-+                               le32_to_cpu(radar_elem->radarbuf_ptr->cnt);
-+
-+                       /* Copy into local list */
-+                       for (i =3D 0; i < ARRAY_SIZE(radar_elem->radarbuf_p=
-tr->pulse); i++)
-+                               new_queue_elem->radar_elem.radarbuf_ptr->pu=
-lse[i] =3D
-+                                       le64_to_cpu(radar_elem->radarbuf_pt=
-r->pulse[i]);
-+
-+                       new_queue_elem->time =3D jiffies_to_msecs(jiffies);
-+                       new_queue_elem->cl_hw =3D cl_hw;
-+
-+                       spin_lock(&cl_hw->radar_queue.lock);
-+                       list_add_tail(&new_queue_elem->list, &cl_hw->radar_=
-queue.head);
-+                       spin_unlock(&cl_hw->radar_queue.lock);
-+               } else {
-+                       kfree(new_queue_elem);
-+               }
-+       }
-+}
-+
-+void cl_radar_tasklet_schedule(struct cl_hw *cl_hw)
-+{
-+       tasklet_schedule(&cl_hw->radar_tasklet);
-+}
-+
-+void cl_radar_flush(struct cl_hw *cl_hw)
-+{
-+       struct cl_radar_queue_elem *radar_elem =3D NULL;
-+       unsigned long flags =3D 0;
-+
-+       spin_lock_irqsave(&cl_hw->radar_queue.lock, flags);
-+
-+       while (!list_empty(&cl_hw->radar_queue.head)) {
-+               radar_elem =3D list_first_entry(&cl_hw->radar_queue.head,
-+                                             struct cl_radar_queue_elem, l=
-ist);
-+               list_del(&radar_elem->list);
-+               kfree(radar_elem->radar_elem.radarbuf_ptr);
-+               kfree(radar_elem);
-+       }
-+
-+       spin_unlock_irqrestore(&cl_hw->radar_queue.lock, flags);
-+}
-+
-+void cl_radar_close(struct cl_hw *cl_hw)
-+{
-+       cl_radar_flush(cl_hw);
-+       tasklet_kill(&cl_hw->radar_tasklet);
-+}
++#endif /* CL_RADAR_H */
 --
 2.30.0
 
