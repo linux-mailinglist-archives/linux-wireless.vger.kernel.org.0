@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF023AB82E
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D0E03AB82F
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233555AbhFQQFZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:05:25 -0400
+        id S233537AbhFQQF0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:05:26 -0400
 Received: from mail-vi1eur05on2073.outbound.protection.outlook.com ([40.107.21.73]:38880
         "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233527AbhFQQFL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:05:11 -0400
+        id S233576AbhFQQFM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:05:12 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bw09d0ICZF8tPznW15/r+bBEPYnbYsKSVazXgXunQvuX0yaANgy6jEyoz8nhmPE7FHnOfYJuPQUyxChXi4M5cmvHc3pFsUuD+pNBMD9SNRmeHr1kjRIvpEk9X07YrwxCnxfEBtBZ96g8rQvVh6wtULTKqNR2sLA35DRvlR65ypILl3DlqIhnSeaLSYIKfnVRhP0Hg33CAiBRkl+A8uDjDOiNy+wK6Dd7+tKQtcV/yjC2GOjjWs4ylcfA/ECGGT0+Nt9ZNaYdmV2Gb+Gn3IJWdSdw1IFMPyBBjUIKtq7KJajS9vaLT41GH+E0VwjDGJp8SLo/8/6lvQ0WwZwMe4CfEA==
+ b=QtfF0Cjo7HjcI3w8Yq0vHCRvzDOcpH91sERO47lrhOaSGqCy3KTWn8cUsFW9D7uGamhOGSaoHvRc7Tm5oaSNcN2qg9jFW1KKikiuAz3EtHyiP2l7pZHfBrTEB+uG5d2Ome4BA7fpiP4FLZUDdpR5CFsYy7py0Ga8EUwj9XTNYz8QaOuS3UiCTSXti4QvE0HTDS8Od60RihtKQ0HrUYffHi3J5LFqp6+adevW9rFLvOyPT64Dyspw+yCV1FflILun9cHxN+z/+f4xbg7yZzJtTfyZayF9joMXvicqaetF1dfGfy13r37f574f4f11pOSVPsTdqyFFAnehEgpukSQCVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EJoBTD9OLUDBWjEaWAJTBBWEcOSNOgF89bVECEunxJw=;
- b=SrIGtF7eOLGajxz/VutezF67XIBKDZp6wZ8NvZLFtO0sAw1mRPe5oYZSNBx8aTHN7P/aax4c2hwU5iDvBkihoTyBVaHjrX+t82l+w8DRDqOFgczMn2r35ht2c9sKLJy1SXGudi9OhITRAKoPo1YSozcN/MIRkqhkHkGCr85fHPGQNDBF4Pb0PIUp5Ovpd7QtLqilISpXBUMOROCQF+6BYZSZ3VZEgOese9xWAJtKxcA7Fga4aymRcXzPsQOrQiaRVZYdedjSC7huisO5KKa3/kcM0U+NcK9/nCXG9xDHUYREc6MLqTl2tcMxiQz4OGWMQfqph/syU6gaPa6FzCb2sQ==
+ bh=E82klbUSJwTGNyiOrdh5ara0wBdo7lVD0yaXP/7gzIc=;
+ b=ODFRNLHO5LBEWX3/0s7MNdwpKfkAUYqyzjrhxQs4LB78+TzUe/4HPtC28yZf1+4ycduIHC0EUjUONWB1eZ2FS4Ba0uMIh35gPrbcYizqRMc64oadzQVsjSSKxJLmYyAaKzhkwIxzE0CU4bCXPJqSShSlyGgy/mYUQlKKHlUgLuECav3WQqrgSrZ3Zv9tfUg4iloOWEamAPBuxxvgjlMl9L7OvQT6TtM+vAfAzkNeB8SyqazHHb3pflL9Xea+u0hFcHpEBRy6mPK3pvvfR6Y/lUHd9FgV99lolAb+tMYIlCZXx+Y2FncFdwl7Om/7OkJEz4QhUmrrJ9JaulQnJdVdHQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EJoBTD9OLUDBWjEaWAJTBBWEcOSNOgF89bVECEunxJw=;
- b=vG43yUfbNOCOg2lWqZTyrJ4m3Y/cOjuKiqsZA4lStrnsRh7QW3rYBDFkwknkQ0qipb9QgK/xbMBluX2QGL+N1rOLG4qOdHiZCCdDCEC1B8qOhjxdgLh5zDjcRfOrKhR32+Cql+QLn0pvCnSZx6E8Uc9eVNi6wSKTJDckAwKfLwc=
+ bh=E82klbUSJwTGNyiOrdh5ara0wBdo7lVD0yaXP/7gzIc=;
+ b=DUqxgbdIM73v1yVgP8ok4t/uLE6VGP9Gt0UaPN40i9uaLA6URImrPzNv8miQZS3XLODvORO0oQOQvOCmkv3xVIJRZ9T1n1NmQ4EfNn44QHrR7NkQ6xgL88zn08afFlDTosqSylvZNGmATpWUWbwU4U2dpEUFpvtUpMA/UAezRuw=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM0P192MB0499.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:4e::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.15; Thu, 17 Jun
- 2021 16:02:58 +0000
+ 2021 16:02:59 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:02:58 +0000
+ 16:02:59 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 022/256] cl8k: add bus/pci/msg_pci.h
-Date:   Thu, 17 Jun 2021 15:58:29 +0000
-Message-Id: <20210617160223.160998-23-viktor.barna@celeno.com>
+Subject: [RFC v1 023/256] cl8k: add bus/pci/pci.c
+Date:   Thu, 17 Jun 2021 15:58:30 +0000
+Message-Id: <20210617160223.160998-24-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:02:57 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:02:58 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 994ca7bd-9a8d-4440-d18b-08d931a95fed
+X-MS-Office365-Filtering-Correlation-Id: 776cb767-edc8-4bbe-b6d6-08d931a96087
 X-MS-TrafficTypeDiagnostic: AM0P192MB0499:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB04999ADD6103EA597345EB9CF60E9@AM0P192MB0499.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Microsoft-Antispam-PRVS: <AM0P192MB0499116DEA5085FE27ABBB1AF60E9@AM0P192MB0499.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ltXPdFxxsnCynu5vqEkAAV7/uOd/3QYM4XtcpArorYQsXClpM/DtXJB9FIv0p7s3KBZ5tJoDsaIwvYgNboInG1qf747v40Cy82O3fpfsoujC/2AzxRfFqwGsiUEbYQt7m6w7kk3h5Em2gxxK1BfCQRUIupzCv+ZBPFL3QzUlLCdPI1ctmhQIc8geR5o8qjxcgNdg65sLqKDgDxLGGpcCK4o9iCpwqH2lTueVOzg3K6UImHW2zwQSuPP8G/JhWXlko3pOkmmN3E4tQMj0p0WrSxyxUcszT5h6ifUXRwZrU+ChC6IqA86T9Shi/07AEFK2lZIO9gSvRpGvWR+BbqSjbVdZCboX+fdVlyjOM5rGkcd7MyBjuntbjQCnb5J0JdVR/IpEkPmVLJ/xj00m1mkRJTmk07UTrvItK+AgD7mFmqbKQgolRmxk1/lWjYxpqsE3Hjn4eQ0DqV77CRtzMqsq4HIyAbh7kD73mSLs/nw+GiiWmKZRJBO+X/WE++V/ci1E9FLZkuTfqgnOEhWHW3+TupI3taVUjm/oUEcwJ8DUf2d5FjwEKTItp6mJn8fo2MweYhRrOzmc7r6zafvSOQ/8lCzuvZRW1zIIhl65T3HgWE3ih8D5//9MGcZcfJkYzrNz5zHiRLuiZkigIT+ky7keP5VU1JiEsK9EdwBQ6aCkK0MjeblnKFpEds5mUdJQ70TLyQw5yVLpcbOk7zjq8/qcQw==
+X-Microsoft-Antispam-Message-Info: M+3N3cbMDe1Vux7eYSyvGC20YlLr0YohT1pDa4eOXQYWlt8wOGTSkh1TZo2oMYiikhUb9YfXonQAd1T2M0FhWlFan2rFMaCIFJx89ZHLqqvjmYhIH6my/zDpoKll3mX5gcuEkj8n71tDhxYETVxOGAByx3tv/4O6lwDf8kdMF0lSHy/g8fOW8MBe7nGqDjM1BWhevQjb3Vh5vUozQaX0hSsaYE09Md6Fs/6i6YghIzhQ6SezCxtNcU73ObuvfpfgZ73qLvjvHItPqXo3acvgVFBIqv6gPfhth2ICFFGz2TwN1pWL5imnkOOys0WmcMSkfDuwDlQTkLmKrXXzYHnoRc57wGd3yntrjxbnb2Dfgwp0OcMzpY2IGfHHHUIk6K3kLNuQn6GFwuFtWTzWtbwTRw4KYm+qBNPLBzl/s926cHGxROqJ6CDDM/yg/XknM3p2EXpGJuN0LLG2Mytp/cl3Pl/MlQHCljRZYIxgFZCiYeo8olC64asILKwvb+v/TeLZ3MEaaQDJVsRkJuV25fz+M67ngb7ceq3Ff3WwmxD1qrqL1HzOB3aTivSyPn4Xpm+tAVkiv4Awqxgz+Z/fFNCE0aXD5p/8O5E05/nBv4u4swJqMTpplZK2I6tgVYzXGeJuHyTHIT6FdV/IOxmtclbkn81XYK+0CW7CwJdBGFjV5idz5hBZMDFsEn64qVNQP3eCtyfCXzo0eCoJ8LNRkEQnhQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(39840400004)(396003)(376002)(366004)(346002)(86362001)(107886003)(66556008)(52116002)(83380400001)(55236004)(36756003)(4326008)(186003)(16526019)(956004)(316002)(6486002)(8676002)(54906003)(38100700002)(38350700002)(66476007)(6506007)(2906002)(26005)(9686003)(6512007)(66946007)(2616005)(5660300002)(478600001)(1076003)(6666004)(8936002)(6916009)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SK3SSu0McbPmZB6mbIhv3C2jlAeDnu+tdZNZw7APmoPs5CBnh9ITdlHzSPUE?=
- =?us-ascii?Q?QeX2o3IBzXIfEX1ScJwIMtW8Ww32IE3dJiO2f1YYv62Es+9/bLKCq5RDLlzN?=
- =?us-ascii?Q?pnlBq5kXiB6gnNhnt9mEKrGNJ9dAzqF976jjnxOI6NyVD1dqL85bO5BkDkJS?=
- =?us-ascii?Q?64E9M657NpSiNPWfEXzgtYzJAPwxr4cBGL3QK5dXuMjKl8DwyTYnuYu2Jfss?=
- =?us-ascii?Q?AwAbwIy2yu+9o0EMKF/q8wyBEBxAh7FmAbgr/Gy5ZigxF7Bfft9yNModUfa6?=
- =?us-ascii?Q?Z1XDzFx/dZdJvgAdOrgLUr7nEQsV3POMgRQdM/2y0MzRgN0RsZueunINpuZ+?=
- =?us-ascii?Q?mAFnAwumcdmvEmq5r3kbAlWD4LyYrGiqr/cma6dTd/F9nqjkny4ksS3MvJ2L?=
- =?us-ascii?Q?47aSZ303H8r+Fkk8iIgfpXenXEDYSv4fxU3UzxgzbCtJy+o6fmKXppRcYZtM?=
- =?us-ascii?Q?h8TGZoC6rcyda5A9rKqRmTWVYtIqdY7UVbfoZnvdYcZQPnxoIZp6k5jVAaqW?=
- =?us-ascii?Q?aMKoCFkeUvcoKGiqS0+xIYI2Aq9OM175x4EA3ZQJiwNWq0utY/zMyZT0zCpy?=
- =?us-ascii?Q?+XxeH7PW3Bl+hPPLtPNirCwG0kwwGZlr7AezxrTutDm3d8AkuMXo4et3l9Nk?=
- =?us-ascii?Q?XFHdIYXDlJ5hfArv4hbVVjX28a8gtHMo3yWqsIt9KpQciwlcX+XQ5YCmXzIk?=
- =?us-ascii?Q?rLKT/bPNuHFNBHFhnbGMXk9RRScJFPqjVd1/0ywun7gV3h8HzrieGmAL6gU2?=
- =?us-ascii?Q?B32EjhkM00AcLTkG/4jgGoRYmoKa5nQWeKCxwLGHqX71v46a6J9siJoG1nQS?=
- =?us-ascii?Q?ufz4ahuwSCApcDAEwiF5qfhUEbltjqbHvvR5XUN7razALtdoRi5Xp/X4R6AB?=
- =?us-ascii?Q?x8yVBa2Htdk1rZoAh+rSUxPzAcFj5n3p2b6OObtTdKr9Eukkwk4FuO/6Pls0?=
- =?us-ascii?Q?AO0bdK3GoFTCKziDLXySbI0ibAVuThUerZZW1SL9YeXxJN47v2Dmn0yChhzv?=
- =?us-ascii?Q?BBuOD1B2ESCwgwqwSuamIZfMwu4lxDNnkOE4WqCP+CnYVcaccFGveyO4tft8?=
- =?us-ascii?Q?gsSiogctgpCa+UY4MHx3PvffQcKda25KNURHePkKuc3ilTYHRKsr77sZcUTd?=
- =?us-ascii?Q?zLKlTAx8eDZA+xcX7vR9RSFXhUP8ImnzROMuS+WvgLCl5FcFdV6v7hyvKz/h?=
- =?us-ascii?Q?nePFdMiEk2kW5nHw9UEFCcnrCzAyqASFpFK6i1aVNblIiMsQmFDYXZ7hCo9B?=
- =?us-ascii?Q?uB2Zantbv5bnvff5enLkcXkJyqjhrau2iLVs4GoHWK2hWbxH5M2YuI1mzmT1?=
- =?us-ascii?Q?/8ETUB/WZkKJwq0WwFZymHOK?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/WeH96jDA8s6y1IVojrmJoYQ+Pt1EG+ucFCTqloXKWQHqJWjLtlEG73/dSrz?=
+ =?us-ascii?Q?OKd4LEp4IPGmx56ogXAzoC+qlAbsSyC6Sn5R+2n9ugnx6FhgZB70OeUoWuoG?=
+ =?us-ascii?Q?flaA4bk9QnEg19YcrhWitXoHpjqZLvWS8hwqfzNr/cCZOk3GAs5qDA7v+nz2?=
+ =?us-ascii?Q?EZ5rZfoWKQNWbGR5uzwTVf2I3tMUWy12J6AFvv5fbg/nhnhA7gjsWj2mmJYE?=
+ =?us-ascii?Q?EMh7oGVU5VX7NmigXsO3pDgvwFt41/ARG40b0Xc8J7iBsfv2P6dNwqcqiRjz?=
+ =?us-ascii?Q?yP4n74K1d0HikTCkwo80+EQJYxNcTDrhYxi/fZvA8IurnRbSLR5FkNdxQcEu?=
+ =?us-ascii?Q?Hq8JHD9YnKW0soPBW7IUK75Qtae4x0ZuFHWzUfF186ndKKyxNDn5e01D/d8K?=
+ =?us-ascii?Q?LhWDyMMpcfHyEZaocdj0S6fpEHfK6WNQnlEKUMBFjzBHWVGd8XVRkTqP7bfW?=
+ =?us-ascii?Q?Wqgywm+7eqYPnIyt724aqMkW/Q74HGDeOn585Yu8Q/ndrj9hZepPIQ+Va6hh?=
+ =?us-ascii?Q?6ecmOCh0EKxwpsUXSXzlBaTXVjbUTLGVHnA3eFjkImgn7IN8zpI2mS5NZ4RD?=
+ =?us-ascii?Q?wGlmRrlB1a613Rz/5UrCA3yaSLZRJKPkrtXB2PvE/1buU/vz/JqgX+TlszcC?=
+ =?us-ascii?Q?//i+y3cAKbyMfVgO04UpHHPQBbaE5ORx59RWCQGV8/3KTcf5Am2xDnHnxJA0?=
+ =?us-ascii?Q?jfLPSd6Fco/FLw6Grk8Uoe1YlpDxbXJGus5gRnCin/oJaMc8+oAkxYQyxMnK?=
+ =?us-ascii?Q?rEIreG8wppFtbsCW/aAEn9hExEeUTEndvp/m3Kx603Z1ghZgE+onQQnjQhKR?=
+ =?us-ascii?Q?/RAyqeWfQRAoxMFF2F99OaXHYbG8vNSSBW7gwcUVkW5NK6iYol/Noak5yHbv?=
+ =?us-ascii?Q?3kW1RIzGiuxdEMf/TMCiqFmRz8sX8SBgLD137sXAZiW/+TZH9+b0PL1D5Hft?=
+ =?us-ascii?Q?x4k/bcL2AqsHJJR07oVasOa/rHqFvh6KiAEq36syTYv12E5OVJuWyG2etMLp?=
+ =?us-ascii?Q?l7XGcp6IsqVXq8IH8WnYqB96nLk1ceoeg4TU9vTfYEq6mc/sDsl3XBqPFOZc?=
+ =?us-ascii?Q?QFR7UmGhufTlPcxBSnmBTpweAFfI43X3FUCPQLjLZ9YaEHL3QBbvG84p+nwM?=
+ =?us-ascii?Q?MbNu5iIw7VWJsRWQTLaungQyJCb1WokbLDyf/V9JOjvQ+c/YzQ0DkIoIEn5V?=
+ =?us-ascii?Q?nvwbTTIaQXWZ8Mb8B0mTeXjQ0yYclBe3vBnXUkLMRQtZbqQ4HcPtaW8zi9T3?=
+ =?us-ascii?Q?GQOQS2f9rIoFn9IlM+dFWQ69zG8xs1RAN9uv2yBqBWEuRvQsf2xmD0eP9Z53?=
+ =?us-ascii?Q?eQtRmdr3dbxivodIxsh8INq1?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 994ca7bd-9a8d-4440-d18b-08d931a95fed
+X-MS-Exchange-CrossTenant-Network-Message-Id: 776cb767-edc8-4bbe-b6d6-08d931a96087
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:02:57.9714
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:02:59.1035
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vcZ7vKK95RgMpckSP2ohoVXBWrGmeIMVR8R3fr+NsmPzS66kfe4FzlnQ/YfK5GLv47gb/FUEfPisQUlXmRoo2A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ds6vvgFjOUL+/21ZwWLAHWFdYZ79uKZTSoJWrMyrt8FFDgZhb3mHOJXA/2sieVSn8ajhIheIffu/XkeP8ZwvzA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0499
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,29 +119,231 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/bus/pci/msg_pci.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/bus/pci/msg_pci.h
+ .../net/wireless/celeno/cl8k/bus/pci/pci.c    | 210 ++++++++++++++++++
+ 1 file changed, 210 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/bus/pci/pci.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/bus/pci/msg_pci.h b/drivers/n=
-et/wireless/celeno/cl8k/bus/pci/msg_pci.h
+diff --git a/drivers/net/wireless/celeno/cl8k/bus/pci/pci.c b/drivers/net/w=
+ireless/celeno/cl8k/bus/pci/pci.c
 new file mode 100644
-index 000000000000..6ad2050dc57c
+index 000000000000..a9c2eebaeb1f
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/bus/pci/msg_pci.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/bus/pci/pci.c
+@@ -0,0 +1,210 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_MSG_PCI_H
-+#define CL_MSG_PCI_H
-+
++#include "chip.h"
 +#include "hw.h"
++#include "bus/pci/msg_pci.h"
++#include "bus/pci/tx_pci.h"
++#include "bus/pci/rx_pci.h"
++#include "reg/reg_macsys_gcu.h"
++#include "main.h"
++#include "ela.h"
++#include "debug.h"
 +
-+int cl_msg_pci_msg_fw_send(struct cl_hw *cl_hw, const void *msg_params,
-+                          bool background);
++struct cl_pci_db {
++       u8 device_cntr;
++       struct pci_dev *dev[CHIP_MAX];
++};
 +
-+#endif /* CL_MSG_PCI_H */
++static struct cl_pci_db pci_db;
++
++void cl_pci_get_celeno_device(void)
++{
++       /*
++        * Search the PCI for all Celeno devices.
++        * If there are two devices sort them in ascending order.
++        */
++       struct pci_dev *dev =3D NULL;
++
++       while ((dev =3D pci_get_device(CL_VENDOR_ID, PCI_ANY_ID, dev))) {
++               pci_db.dev[pci_db.device_cntr] =3D dev;
++               pci_db.device_cntr++;
++
++               if (pci_db.device_cntr =3D=3D CHIP_MAX) {
++                       if (pci_db.dev[CHIP0]->device > pci_db.dev[CHIP1]->=
+device)
++                               swap(pci_db.dev[CHIP0], pci_db.dev[CHIP1]);
++
++                       break;
++               }
++       }
++}
++
++static u8 cl_pci_chip_idx(struct pci_dev *pci_dev)
++{
++       if (pci_db.device_cntr =3D=3D 0)
++               cl_pci_get_celeno_device();
++
++       if (pci_db.device_cntr =3D=3D 1)
++               return CHIP0;
++
++       return (pci_db.dev[CHIP0] =3D=3D pci_dev) ? CHIP0 : CHIP1;
++}
++
++static const struct cl_driver_ops drv_ops =3D {
++       .msg_fw_send =3D cl_msg_pci_msg_fw_send,
++       .pkt_fw_send =3D cl_tx_pci_pkt_fw_send,
++};
++
++static int cl_pci_probe(struct pci_dev *pci_dev,
++                       const struct pci_device_id *pci_id)
++{
++       u16 pci_cmd;
++       int ret;
++       u8 chip_idx =3D cl_pci_chip_idx(pci_dev);
++       u8 step_id;
++       struct cl_chip *chip =3D cl_chip_alloc(chip_idx);
++
++       if (!chip) {
++               pr_err("Chip [%u] alloc failed\n", chip_idx);
++               ret =3D -ENOMEM;
++               goto out;
++       }
++
++       ret =3D cl_chip_config_read(chip);
++       if (ret) {
++               cl_chip_dealloc(chip);
++               return 0;
++       }
++
++       chip->pci_dev =3D pci_dev;
++       chip->dev =3D &pci_dev->dev;
++       chip->bus_type =3D CL_BUS_TYPE_PCI;
++
++       pci_set_drvdata(pci_dev, chip);
++
++       /* Hotplug fixups */
++       pci_read_config_word(pci_dev, PCI_COMMAND, &pci_cmd);
++       pci_cmd |=3D PCI_COMMAND_PARITY | PCI_COMMAND_SERR;
++       pci_write_config_word(pci_dev, PCI_COMMAND, pci_cmd);
++       pci_write_config_byte(pci_dev, PCI_CACHE_LINE_SIZE, L1_CACHE_BYTES =
+>> 2);
++
++       ret =3D pci_enable_device(pci_dev);
++       if (ret) {
++               cl_dbg_chip_err(chip, "pci_enable_device failed\n");
++               goto out;
++       }
++
++       if (!dma_set_mask_and_coherent(&pci_dev->dev, DMA_BIT_MASK(32))) {
++               cl_dbg_chip_verbose(chip, "Using 32bit DMA\n");
++       } else {
++               cl_dbg_chip_verbose(chip, "No suitable DMA available\n");
++               goto out_disable_device;
++       }
++
++       pci_set_master(pci_dev);
++
++       ret =3D pci_request_regions(pci_dev, chip->pci_drv.name);
++       if (ret) {
++               cl_dbg_chip_verbose(chip, "pci_request_regions failed\n");
++               goto out_disable_device;
++       }
++
++       chip->pci_bar0_virt_addr =3D pci_ioremap_bar(pci_dev, 0);
++       if (!chip->pci_bar0_virt_addr) {
++               cl_dbg_chip_verbose(chip, "pci_ioremap_bar 0 failed\n");
++               ret =3D -ENOMEM;
++               goto out_release_regions;
++       }
++
++#ifdef CONFIG_PCI_MSI
++       if (chip->conf->ci_pci_msi_enable) {
++               ret =3D pci_enable_msi(pci_dev);
++               if (ret)
++                       cl_dbg_chip_err(chip, "pci_enable_msi failed (%d)\n=
+", ret);
++       }
++#endif
++
++       step_id =3D macsys_gcu_chip_version_step_id_getf(chip);
++       if (step_id !=3D 0xB) {
++               cl_dbg_chip_err(chip, "Invalid Step ID: 0x%X\n", step_id);
++               ret =3D -EOPNOTSUPP;
++               goto out_release_regions;
++       }
++
++       ret =3D cl_chip_init(chip);
++       if (ret)
++               goto out_chip_deinit;
++
++       ret =3D cl_main_init(chip, &drv_ops);
++       if (ret)
++               goto out_chip_deinit;
++
++       if (cl_ela_init(chip))
++               cl_dbg_chip_err(chip, "Non-critical: cl_ela_init failed\n")=
+;
++
++       return 0;
++
++out_chip_deinit:
++       cl_chip_deinit(chip);
++#ifdef CONFIG_PCI_MSI
++       if (chip->conf->ci_pci_msi_enable)
++               pci_disable_msi(pci_dev);
++#endif
++       iounmap(chip->pci_bar0_virt_addr);
++out_release_regions:
++       pci_release_regions(pci_dev);
++out_disable_device:
++       pci_disable_device(pci_dev);
++out:
++
++       return ret;
++}
++
++static void cl_pci_remove(struct pci_dev *pci_dev)
++{
++       struct cl_chip *chip =3D pci_get_drvdata(pci_dev);
++
++       if (!chip) {
++               pr_err("%s: failed to find chip\n", __func__);
++               return;
++       }
++
++       cl_ela_deinit(chip);
++
++       cl_main_deinit(chip);
++
++       cl_chip_deinit(chip);
++
++#ifdef CONFIG_PCI_MSI
++       if (chip->conf->ci_pci_msi_enable) {
++               pci_disable_msi(pci_dev);
++               pr_debug("pci_disable_msi\n");
++       }
++#endif
++
++       iounmap(chip->pci_bar0_virt_addr);
++       cl_chip_dealloc(chip);
++       pci_release_regions(pci_dev);
++       pci_disable_device(pci_dev);
++}
++
++static const struct pci_device_id cl_pci_id_table[] =3D {
++       { PCI_DEVICE(CL_VENDOR_ID, 0x8000) },
++       { PCI_DEVICE(CL_VENDOR_ID, 0x8001) },
++       { PCI_DEVICE(CL_VENDOR_ID, 0x8040) },
++       { PCI_DEVICE(CL_VENDOR_ID, 0x8060) },
++       { PCI_DEVICE(CL_VENDOR_ID, 0x8080) },
++       { PCI_DEVICE(CL_VENDOR_ID, 0x8046) },
++       { PCI_DEVICE(CL_VENDOR_ID, 0x8066) },
++       { PCI_DEVICE(CL_VENDOR_ID, 0x8086) },
++       { },
++};
++
++static struct pci_driver cl_pci_driver =3D {
++       .name =3D "cl_pci",
++       .id_table =3D cl_pci_id_table,
++       .probe =3D cl_pci_probe,
++       .remove =3D cl_pci_remove,
++};
++
++module_pci_driver(cl_pci_driver);
 --
 2.30.0
 
