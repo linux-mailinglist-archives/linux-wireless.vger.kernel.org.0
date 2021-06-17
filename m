@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5E93AB8BE
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 137A43AB8C1
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233868AbhFQQKQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:10:16 -0400
-Received: from mail-eopbgr20072.outbound.protection.outlook.com ([40.107.2.72]:4749
-        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        id S231600AbhFQQKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:10:19 -0400
+Received: from mail-eopbgr70045.outbound.protection.outlook.com ([40.107.7.45]:47334
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233724AbhFQQJJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:09:09 -0400
+        id S232109AbhFQQJO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:09:14 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TfbuPU1GYJdmLbq4sqb+GUVC3ambpqzj90LvddJFMG+zL+P7u4qTXHz9PK55Kq2cfL9KksHSHT3fJie2Sw0tVPa4JA7gQ24ydlzbnq7nBg/+psYkuWn8Ih+UHCclYSEqxg2FBKu0y/ov333oUDuCIFAIW0K3mKjj4g9vrasw9DH8uAc8WtE4lPHZpg+vNbJD6Zuo/zKIPICFPrzlsiuMX1FZjDMcT14D45SwXkHndkPontus6LdjFdoLlctlbRv40CiUuSO11xDDqMGRzd7Kv1jn886pTcqarqcG9SFAuVhpUv9CWKBVJTUVqdSwvu+ikoXevyFqaJ8Za3X/0Of/rQ==
+ b=V0cz/xc3+zh2sdWJdd+8YrxtjTGqVmaRmeFi2OJcxMYiAfbMZzI2LoA4i+DlLW9OXGm7ob5M2n+8YWukK1/ixZvODoV1o2ZtMjy8Rj4N+LKZo1xjAojLj4f8nZM/CVOHbXyCdFWiiBGY1lWenMKZpGbyrv6Cfh7YYKA65P3+Vbp0fxqk7e3pgILgcr9PtPG1qSrS35cGUG0vEafH3ShlR2HY5w7O9Ffy3Tfy2cOKmKOcdCjZSOP3nkQDwMD937OCNr9KBD5LZc+fXqT9HhyTUvLUcVClP4yHC36UzT/vY9NH+Scx7z3FeUK/nbvOlVkKaMzBNfa2LIclj6ET9S3W5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V6Jp2ZWDpmXuvhy2UC/IlOvFWHexJBSfLpvrJKhbvxI=;
- b=nfSdoh5N057jOow3jReB6NasyGsOZ47y2GZN0ZXn9QmJakl8XUm7dlIfpfUNWYBiKdjfv888N9eYY9d8NpnawkFkMp5cV12wrxB38UAn5gGV90fnTsX85hhKa5zmWGAG1HKkC7w/xj2mqeVIZnJmrZCzkMnCtEFex4hTqNo3zBIQI7m0Pf3b76+VD67shqYI2W0jCB7SyE7eFB2UNVBg54IyDB0+dX3PZYWNVkK2y1rU2YKbhLcG/Kl3ko7tUj+xPy+51ZMZVYEbIcFmf9HKKJIeaka+EOsp9xfpkiCN9UGa0JmLx1yPelHxQLTE6RWM7LHhm0OAKXT2XN0am36FGA==
+ bh=5Ckg85WOT5VP4GdL3dT51Z3K+dWBnRwRbTSixtFwVgs=;
+ b=it220IopDBzL20F+lj4vEfl/9bMQ9MnkKNlB5LAGnT+GUVNmenhkCThew9a4wUPsOdfk+Ul1anUCVoRABEYyHXP68Bpnsau2By2u3rdtMHP3KYWKrCMT+Msam5+PatzakG6S4f2crAosYnMvPDG2alct2qXQvCnU1kTmPsx8pkU5KyLak4CGT0u0tO/ChGMcVUY39KtSDbejKxy343sZsykcvh93fF0CsRRHR5ap78urIL7V8iOUaIDvv4sw4ywO9KFDe7GjTOjFOTGPVQgyzGzIu8WxfmoQQ0qTq3IRwEhXi36AiwUXgP5CfD1J3C3zkL6I3zR0IKKaautBhuBmRw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V6Jp2ZWDpmXuvhy2UC/IlOvFWHexJBSfLpvrJKhbvxI=;
- b=tSEoR/Iog/Z6GqV9wJWL0oa5PBIXoTyIA5Fjo9y5CAQo6jYQlf4gaCjmBDOSDxO4jpOy2YTXTNIr7cyM8rSEPmVA62ngSsdu5CCYbLwufzslpgTNB+rH7sTlRPuMC33b1DY09fzHHArzY3Psc99V7AFNijgg5B+yLdTHZKYEbvQ=
+ bh=5Ckg85WOT5VP4GdL3dT51Z3K+dWBnRwRbTSixtFwVgs=;
+ b=ZXfLbu3kQR62BXXKAfvxhdJQO3va5J9xEpRltHICPonN2mVViPoD8WpzZwVQX1l6lNnlFk4Bw7QnmBz6o+6k/mAGSShza7MilC8rgJOxw+wOckf5ie9cPHWgkdyQ+zElQgfXA4uUpWeHe+aHAV8y7YmHkQOEe0QyrEn9O4+9WgM=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM9P192MB1187.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:3af::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.15; Thu, 17 Jun
- 2021 16:06:25 +0000
+ 2021 16:06:26 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:06:25 +0000
+ 16:06:26 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 155/256] cl8k: add reg/reg_lcu_common.h
-Date:   Thu, 17 Jun 2021 16:00:42 +0000
-Message-Id: <20210617160223.160998-156-viktor.barna@celeno.com>
+Subject: [RFC v1 156/256] cl8k: add reg/reg_lcu_phy.h
+Date:   Thu, 17 Jun 2021 16:00:43 +0000
+Message-Id: <20210617160223.160998-157-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:23 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:24 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 40a4952f-88c8-4285-eeb6-08d931a9b736
+X-MS-Office365-Filtering-Correlation-Id: 1dc9ea6c-2181-4dab-015d-08d931a9b7cf
 X-MS-TrafficTypeDiagnostic: AM9P192MB1187:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB1187C286B6DED7407A7910E0F60E9@AM9P192MB1187.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Microsoft-Antispam-PRVS: <AM9P192MB1187C2B1E076C17342CE199CF60E9@AM9P192MB1187.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2276;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: jHIhKjXDnnV3h6TENEfWMwfLVhiOwNznQ9+BHKvsQBVCt56LvVLiP9nDeOf6t01aCHWjeQuTkvONcpw4hQFWaz+skghp5k2r6xjygZ7q74UqugrXpF9hoSpPKicGlOrunLtl3FRW+cUOhKTIIss2ujznm6DPJ6UdwEoHa8NDoD0QVG7TJ45OY8Yckn3TQvoZVZsJ8xKa9lesSskoT7w/o9Z4pdM5oLb1rGAMmNIQW8cg7tmprAmCXl6en89DZOEGfuxyHzBpns3sjTKeqcDwEtGRt021wjTK1mFW/vQppDPm5R+VPl0sYEw0QOyoPOnN5shtuZspwhNMD6mvsoKakd6iHSfzrA62QIllHB9ZJ0vRRR0jAY3YmAFlIT1Uur6rOGA4ByWkZ6aj5d0f88eGoedaY+JuB16Hur2nw+2pdmwOBIubAgSsgwAFeWkpbP8Kxnzh1gaGVNaS2RibyNFVgP9gd4CaMfFy9yScyLUnmaadUawpYKdhDsOyAVK5YUET6OoYBCWyl/PBb7Lyc4AjahYNHJzPvaN/g7bhBiTZbGr2lh80d2OO82o/b8bLTEwanzRF1FiA4z09TGlUvkeuAXHiNwvWiUHeVPUgNGmlbrx0tI/Q6wm7apxlZHIE1swYAwojOM5CL4ey/iShq4av9+dJltQIwMXwtE4yaKHut0/dsG/10iYLiqzqz/HCQZn5bZlHEg8x3h9ZT0rnCjuwdQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(6512007)(66946007)(55236004)(66556008)(6506007)(54906003)(8676002)(4326008)(186003)(66476007)(6486002)(26005)(6916009)(86362001)(36756003)(9686003)(8936002)(6666004)(5660300002)(2616005)(956004)(2906002)(52116002)(83380400001)(38350700002)(16526019)(1076003)(38100700002)(498600001)(107886003)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: TCnDcTcPgeyMFHo00jj7LdEekPWS+LVevLomB3AgQnszEx00LwLY89XrbIkjQ4H9cQbx4gbZ1rHI6iJQxL7Zmt1BSJO1FK4I+vbDx8c+EGi2JdzitMsaRt9qZA/rtkcLwsomsVG/SuWb+InkIs0Q/wsJX+OChm/KZVf/K1lK0i11vuvkxkGZ1Bk0WD7xqq3L/ZOoI9/xCjlKnbjKtEd2YdvhBm0a9aBdbPVUUt87vdGY/eGZHiVUrTfzJoWcnmgCL994q1sIzOU4MYsN91VFFHHmm8Nw3lCSQAUEqpFJgKDpP8+C/jR5ZbsY6bCiY09mpzvfA7L7GaHnXUqA5UJKCE1nqcIYYOrP75GuWEJGAIKmHrGv1hDz+//rSXO05svJd4YFp1w/idrJp5cFc7WxHQxXhthkSUnchzGmpRkP7RN7tH2vKvCPng5DJthG2n/nIAy1wMtQzbSnzt48Igxt3+xhgsOhvWVjyEUdEeWNGW+pwX0rGZ6KBeyr+/ucnXiS4kiLHnTtGNBoT55mMpO+grcLnA3wRD/rxROFWNPFhX219KjfSUpeFKV6kTby6JLqqp6OeQ5+ObumlTMLqfR1OpLfM0j1V52HEZdtZQxL9p8EeqQbaoRGXmDRdS27Qp6VWSI6G907laPC6tVjGryMuRVBE5u81xQV+D+etouXzDmddIEfwuP4WLeB9KUv/iWN6xIGF56GUXxPoSbx885+yXU8SiK5zTqfovFAGmHpjRQpPIBZL1i6AiDRno1ug0wo/IWZ+Ly+MVfWqvi2zgek1A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(39840400004)(376002)(396003)(136003)(366004)(346002)(6512007)(66946007)(55236004)(66556008)(6506007)(54906003)(8676002)(4326008)(186003)(316002)(66476007)(6486002)(26005)(6916009)(86362001)(36756003)(9686003)(8936002)(6666004)(5660300002)(2616005)(956004)(2906002)(478600001)(52116002)(83380400001)(38350700002)(16526019)(1076003)(38100700002)(107886003)(69590400013)(32563001)(473944003)(414714003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ogyg171KiYXP3nKwYn24WOhZiBZ6tKLLK2GdqhJBGahy1pLsNl/Sdt0VrnKy?=
- =?us-ascii?Q?gPE0AIxPd2ZtPreUHJesoiLOE+tmzgkjiUG8r9yg3JqOgBuNtMLWKES5aOk1?=
- =?us-ascii?Q?QhQsqFg42hymRz8ZTbNGUTh/4o1s/4Q+EZ2hWxykXn7YKs7JxochBOgnrhRh?=
- =?us-ascii?Q?LMDfrdxt3ImClwD6SzpRUFYxCiyWyU73f8HBzQ324z/bZ9yxIE1TPThNvgKp?=
- =?us-ascii?Q?GdLkvfL6n/eaQq/qI+nKaXJpTlYzNEgrp/LYUYn2PlBTvsxsNxOQ2oXBEyyS?=
- =?us-ascii?Q?k4IZaG8Z11zQfqUJ4fTbQg/OhkfWENxLMYpDMLPZSN7hOOzJhaB2UXQfasLq?=
- =?us-ascii?Q?trCfRaLE/UxqVlIzLewc2tBUFPgj7bue6YHrw3hK1zCVdh4A/fUW+bsxaeKO?=
- =?us-ascii?Q?i86fqmOISkhlpa12p93lS8Yu1Mwu4tLieljZ3wFYs9npSSiWHMpDVDnVwcMs?=
- =?us-ascii?Q?Ub0gJhJRrijvhYAA7FHzffSabQWJ0Y4aa+hW7SJorxGZP2gMIvGHU8Bwz+m8?=
- =?us-ascii?Q?9jIcPOmGG83idW6TE6BySPpfWQx4o4jtIPO9pjRCxWmeLiV5tAoDcUnYwthI?=
- =?us-ascii?Q?9E5GCB3IiVNYeYSp7OzkvqaivQipKjfzc+B+AwdSMhucr5O8quULiIA88TgU?=
- =?us-ascii?Q?ggJXMnwZ7aXLm13es0cktJPXH5R9McWKIwGkbapZmXHo4IveOoPVso1eBzo9?=
- =?us-ascii?Q?8FHRA3ShCASK57rdIqr1vK3pyPNExXppKExMcU8J3dbvJQhT59Ourw1aTk3x?=
- =?us-ascii?Q?XyAIYSGs/eYa4TlMQUlOrjg4eu5eZZPvn2gcXjqv2D41HwlEwFk2mrjjxupZ?=
- =?us-ascii?Q?AghREBaLt1cRKlQ7gb31jvZaVhlXL1F0khcU49VGju0PMy5FGEExs8Rz7EWg?=
- =?us-ascii?Q?q525dB3TZH3vxWRhc4i1YjjPp90BP4VuG6C6S6ohjEOCvlYx8LVxB4ef1636?=
- =?us-ascii?Q?+vXHUa8AIMRj8tAERfa4A26aG1U73S8k9liJpnSk1KImBygsI9ZIRd9taGHG?=
- =?us-ascii?Q?e7bb3TP6usvBYKEXElwaRH5EAaUba88BSq0QECq2OHzeEbsRhL0EXvzxfZiV?=
- =?us-ascii?Q?qveWgZw5KaVYd0ihL6Ld5OE04qTp0phUe2IDtVPfUk0aJQ0cwa1qUUhH+KaM?=
- =?us-ascii?Q?0Li4M50uX3hZX0+0JlOIi5WN+s6HtBc1KLQWmO/oOw96ns7dKE53utZe+LdB?=
- =?us-ascii?Q?9g6/Rd0tPyJHVFRvl1AkPmKZmR6pgUS9OGDgNgM9eQmrHJLV3qjIYSBySXZn?=
- =?us-ascii?Q?TCgxG4fNarxQALUn0QrnjAGahNpOLOpQuEAEYKkY/FgenZdwnn0oLcnYENHI?=
- =?us-ascii?Q?5bqRlFM5x6j2M4+llAYn4rD/?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cf9UqtEMg5EDUCVFIVtq+zV2FUFiBxDN9dfgX9hdV9PMBjhx6A2QWFK9/Oel?=
+ =?us-ascii?Q?ipqw8AvudVa0R7VE+2IJa56Kwsyf3mvGF6OQe86mERcqN7a2JOBTS26lGaxS?=
+ =?us-ascii?Q?iEwE2W2MGMuQEeMTjs9eU2gBbFc+9DiZ1vpGsh/YxF/CNKhWAEIkMI6wudui?=
+ =?us-ascii?Q?c+uw/xRV84fAvtTtFfcGIc/nzAHCoWTqTnSGc6vEd96Qtp7OIzwzlAuwi6KL?=
+ =?us-ascii?Q?bRlST62Ryug9GnqCvImEYY9CT4h78SyIcCUfTz3VrTCZLGde+PDSLPap397X?=
+ =?us-ascii?Q?iVFpx3ORIlnpVk/V0YmsDVOPWRwiuzuKoklL5ko1rdlD0pXbOXVVcoSw9mC8?=
+ =?us-ascii?Q?/RqPmY9T3296pC+hfWxzWAKMDwC3IMM0ZDuORMzQ1vo9Z0uCGM/tSPtfFQG/?=
+ =?us-ascii?Q?RlTKnifJo2dg4GogSgEz5URqh9Bfn46wbm464Pc6bu+nbr5BOM+v6aAbvJ2Z?=
+ =?us-ascii?Q?2pL4iMgUlkMmWoNEx21vN4xeW1AF57Tw5omdryaOp5sW60K+Mk8a+S67ZuXn?=
+ =?us-ascii?Q?a63rXpg2yHxNmgSi9K3KQNYVexcgDzUv9Gd28CW0C2lI2nzbg8kkEMT9iuSa?=
+ =?us-ascii?Q?iIWphyYuLXx73xc9TNiVtgQogkyxUUojCl5u3rWj0JZz9DzrjjGs3QE1Q8dK?=
+ =?us-ascii?Q?GY96MfCv65HCk8NgGWyAtu8t8+KavBRvQvkZVJXh96at8vL39APPvNoo9acT?=
+ =?us-ascii?Q?jZMMFGpFzvy5gpoYHOmSQpii02e2Z/VUxXiluw2cOok7BbiQc1j34yL0giQB?=
+ =?us-ascii?Q?M+i8aM6kjXWiZujLLa91Y78zPQO8g/h6JgavrWo6PdBEo1QAx3xO+v8fjVlA?=
+ =?us-ascii?Q?e6uS7L0YcEQYllucSpkFnBrzZJSgTw3xc55VWZv7ISA7WyTVEDdOAa6VDyHt?=
+ =?us-ascii?Q?M+dNgQbaQTj/JdwKwuGtJmOEaGqW0wvUSenZUCwbtteIttWA5Jcsa5wwQXYD?=
+ =?us-ascii?Q?6MpadC3mnEU/actEdO7Z8YkqsB1iWgseNfu5bkL0Jtf6oE8qkMESupYmTpga?=
+ =?us-ascii?Q?hUf90TLWbkiwsVjv9YAsCd+AdYt4hCJnUmfCTExqBhRZK0zLGkPaJYIINX4d?=
+ =?us-ascii?Q?uNEBSqAuc1jYFEhUzBVhW/6cDExcY0D1fSm0AFAIyRPk6YbBwX+471ml04hl?=
+ =?us-ascii?Q?nRIxfXJMM/elIAww5jc53Il42jSxOON4qhx5i2kL/BlwrcCwZ90bjh3PCkWH?=
+ =?us-ascii?Q?wSudNFuuBmaCWlY0sMfl8srA36uTdWR/kx2cn+VrFnPb0rE6AKAAqSVq7qKB?=
+ =?us-ascii?Q?dDEbCwVooi+9XSEF3S5H91A3CcKfHxUORJ9NePlGTN/IfnOjFxZd2Iy48X4F?=
+ =?us-ascii?Q?zs1Lp71Qf1meFSn6DAxJD6C2?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40a4952f-88c8-4285-eeb6-08d931a9b736
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1dc9ea6c-2181-4dab-015d-08d931a9b7cf
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:24.4034
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:25.4020
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: apOPJCC8StTxjWbQLhy5dgHgFHJYDMNnVB4ciT1L4HRG48xTHhdSwBBPpRuBBPSpqImmAHvq5GnDnhVIWKJUpg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 65V3OScN11vGuUpEe4LcL8Rw/zujhZkr74E6cNFmuM8Ujb+zXXmq0ArqcdU/46bZBOOyETt0djIRTjX3XfLcSQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1187
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,50 +119,116 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../wireless/celeno/cl8k/reg/reg_lcu_common.h | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/reg/reg_lcu_common.h
+ .../wireless/celeno/cl8k/reg/reg_lcu_phy.h    | 92 +++++++++++++++++++
+ 1 file changed, 92 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/reg/reg_lcu_phy.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/reg/reg_lcu_common.h b/driver=
-s/net/wireless/celeno/cl8k/reg/reg_lcu_common.h
+diff --git a/drivers/net/wireless/celeno/cl8k/reg/reg_lcu_phy.h b/drivers/n=
+et/wireless/celeno/cl8k/reg/reg_lcu_phy.h
 new file mode 100644
-index 000000000000..0f4695b7f66f
+index 000000000000..b59f327ff6a4
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/reg/reg_lcu_common.h
-@@ -0,0 +1,32 @@
++++ b/drivers/net/wireless/celeno/cl8k/reg/reg_lcu_phy.h
+@@ -0,0 +1,92 @@
 +/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef REG_LCU_COMMON_H
-+#define REG_LCU_COMMON_H
++#ifndef CL_REG_LCU_PHY_H
++#define CL_REG_LCU_PHY_H
 +
 +#include <linux/types.h>
 +#include "reg/reg_access.h"
-+#include "chip.h"
++#include "hw.h"
 +
-+#define REG_LCU_COMMON_BASE_ADDR 0x007CF000
++#define REG_LCU_PHY_BASE_ADDR 0x0048E000
 +
 +/*
-+ * @brief LCU_COMMON_SW_RST register definition
-+ *  Software reset register description
++ * @brief LCU_CH_0_STOP register definition
++ * <pre>
++ *   Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *    00    CH0_STOP                  0
++ * </pre>
++ */
++#define LCU_PHY_LCU_CH_0_STOP_ADDR        (REG_LCU_PHY_BASE_ADDR + 0x00000=
+070)
++#define LCU_PHY_LCU_CH_0_STOP_OFFSET      0x00000070
++#define LCU_PHY_LCU_CH_0_STOP_INDEX       0x0000001C
++#define LCU_PHY_LCU_CH_0_STOP_RESET       0x00000000
++
++static inline void lcu_phy_lcu_ch_0_stop_set(struct cl_hw *cl_hw, u32 valu=
+e)
++{
++       cl_reg_write(cl_hw, LCU_PHY_LCU_CH_0_STOP_ADDR, value);
++}
++
++/* Field definitions */
++#define LCU_PHY_CH_0_STOP_BIT               ((u32)0x00000001)
++#define LCU_PHY_CH_0_STOP_POS               0
++
++#define LCU_PHY_CH_0_STOP_RST               0x0
++
++static inline void lcu_phy_lcu_ch_0_stop_ch_0_stop_setf(struct cl_hw *cl_h=
+w, u8 ch0stop)
++{
++       ASSERT_ERR((((u32)ch0stop << 0) & ~((u32)0x00000001)) =3D=3D 0);
++       cl_reg_write(cl_hw, LCU_PHY_LCU_CH_0_STOP_ADDR, (u32)ch0stop << 0);
++}
++
++/*
++ * @brief LCU_CH_1_STOP register definition
++ * <pre>
++ *   Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *    00    CH1_STOP                  0
++ * </pre>
++ */
++#define LCU_PHY_LCU_CH_1_STOP_ADDR        (REG_LCU_PHY_BASE_ADDR + 0x00000=
+074)
++#define LCU_PHY_LCU_CH_1_STOP_OFFSET      0x00000074
++#define LCU_PHY_LCU_CH_1_STOP_INDEX       0x0000001D
++#define LCU_PHY_LCU_CH_1_STOP_RESET       0x00000000
++
++static inline void lcu_phy_lcu_ch_1_stop_set(struct cl_hw *cl_hw, u32 valu=
+e)
++{
++       cl_reg_write(cl_hw, LCU_PHY_LCU_CH_1_STOP_ADDR, value);
++}
++
++/* Field definitions */
++#define LCU_PHY_CH_1_STOP_BIT               ((u32)0x00000001)
++#define LCU_PHY_CH_1_STOP_POS               0
++
++#define LCU_PHY_CH_1_STOP_RST               0x0
++
++static inline void lcu_phy_lcu_ch_1_stop_ch_1_stop_setf(struct cl_hw *cl_h=
+w, u8 ch1stop)
++{
++       ASSERT_ERR((((u32)ch1stop << 0) & ~((u32)0x00000001)) =3D=3D 0);
++       cl_reg_write(cl_hw, LCU_PHY_LCU_CH_1_STOP_ADDR, (u32)ch1stop << 0);
++}
++
++/*
++ * @brief LCU_SW_RST register definition
 + * <pre>
 + *   Bits           Field Name   Reset Value
 + *  -----   ------------------   -----------
 + *    00    SW_RST                    0
 + * </pre>
 + */
-+#define LCU_COMMON_SW_RST_ADDR        (REG_LCU_COMMON_BASE_ADDR + 0x000000=
-48)
-+#define LCU_COMMON_SW_RST_OFFSET      0x00000048
-+#define LCU_COMMON_SW_RST_INDEX       0x00000012
-+#define LCU_COMMON_SW_RST_RESET       0x00000000
 +
-+static inline void lcu_common_sw_rst_set(struct cl_chip *chip, u32 value)
++#define LCU_PHY_LCU_SW_RST_ADDR        (REG_LCU_PHY_BASE_ADDR + 0x00000154=
+)
++#define LCU_PHY_LCU_SW_RST_OFFSET      0x00000154
++#define LCU_PHY_LCU_SW_RST_INDEX       0x00000055
++#define LCU_PHY_LCU_SW_RST_RESET       0x00000000
++
++static inline void lcu_phy_lcu_sw_rst_set(struct cl_hw *cl_hw, u32 value)
 +{
-+       cl_reg_write_chip(chip, LCU_COMMON_SW_RST_ADDR, value);
++       cl_reg_write(cl_hw, LCU_PHY_LCU_SW_RST_ADDR, value);
 +}
 +
-+#endif /* REG_LCU_COMMON_H */
++#endif /* CL_REG_LCU_PHY_H */
 --
 2.30.0
 
