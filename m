@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 064633AB88E
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F12E23AB898
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:07:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233766AbhFQQIy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:08:54 -0400
-Received: from mail-am6eur05on2057.outbound.protection.outlook.com ([40.107.22.57]:62080
-        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        id S229887AbhFQQJJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:09:09 -0400
+Received: from mail-eopbgr70075.outbound.protection.outlook.com ([40.107.7.75]:41442
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231919AbhFQQH7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:07:59 -0400
+        id S229686AbhFQQIG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:08:06 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aqf5Odcfa2zWVlQCco6lcPi4WYQwBYccZN1I0brwuVd21kaOmb5yOpTIyeoEW7lgenC33NCod1Hp7gipYaiQoWJ2GPsg8Lk2ylNtXP7r/4aWthQ/ylDhNM+jyAgn6wlfo55lUSKqD3TESd8W6Fw14qE3L7hLIUhwYDBaTt8PmOt6jRs9wc5CKDMXwOnIu3UvVeo09MyJUeD9qswrD0OE72HlWoXgwuqK/SQ+i4tenKvK/NJmVsn94mH5R4damYKZsllGDfliI/GfEc6A+t6TR82s5IAc2VF+ne/sOmGihRSrFZY0rn+i6lfKgrG0GMZwDWE3xt71k7UQ1Xe7wXAkoQ==
+ b=fjb8qqG3QfxSMzRxRX7MUhi+/SG9SgHy5wQEhr8yXUWRTEulb26sxUGBKvIPeA3Sb6MC5pC6l6t6FNr49R2BbkLuaWgVeJ2eYA2WWdliV/4k6E/35FQ65QmTJWDVjzjrByxLuJZxxKHwkNLCxawLQzdy+ZMn/GcuFHR7oSJ2nBpXd2npal2oKVvaJuSSM+JMF2rZOZHvk8M0Tfatywle/8hE86KACewjwAPkEOdbYoPjQ6u6fhxTKDUI75mEcTuo0zQt0QFkQOmmtLfU/zFnxOt4wcUGFLYtGpqsMjdGrbBw0fh5RwRsf+DGQ2Ddp+GjZlfPPU6SUTVd+zO/zQRf3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E5etvoYGEP+gmqfS9Sw5wGHruOc/4k/sI4PLCjaJoo0=;
- b=LY+tQxVuiT3ybJ4QYM/Yyf4v6K8/F0ADlIuQaqNET82CiOIPc1QXugTidT43iTdlrbrXV820Q9EOCVNZ7vAAp7UAEzmLRm/RMc03TFF0crJ9g3SgI//91M5OicFaQFgMrB3ifk4d7QWuJ8BV+KA0kymYKY48M3mE+pEwcLERhW0X7bhCUqcdkhEqhKr4GwmWHsJEEoXkaoy5kf8W1Xn1RlKPN0LSChY+9beM6aHsICJFKA/pc52iTcnSH9Mo7Bpj1Srr3emm/4Hq6i+W+J4FxR5H9jwi2ai28FzXXAt1ZezcMnEaSYCgxZQ77kZ2GO4G04qZ8ieilnR8mh6zK632fg==
+ bh=qd16VHWT4vt5w/nR3aDImuF4ZQfa/KxsXT/3NUY1nvs=;
+ b=aSfkaIPfjnzESLAqq8R369PoN5D3ai/dRF4aLorJRnbHZJMKqBnCHK+RvK0VLm/W501Wof8Rti3P/Iw88AgiS+rtvJb8MnTx7N+u64URaLIY4miATDDL1JyhiqBTYubS5niRmvKeRy1u5nhpVFJOuA7cOyLpuTroeELg2oL/ZYVa2uwR5CuiFqXjkGswqP8SazOFBhZUbf93XhdxPqz2eJtCQFr2N/+zvLVVuWK0bWBXQVlUP9rBQva2PSJ5P6QXLgJKKbzmxmmKpRgGZhTcwTNd1ELX1xvqSDxY9NhI37kVTCPcYpkdxYR5XhURCZEiQx8ZHgzks+MpTuJI5gSG2w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E5etvoYGEP+gmqfS9Sw5wGHruOc/4k/sI4PLCjaJoo0=;
- b=M2AtGAZNtkLfHkdx+hQlTAmkjBfywxfa0K/JC6dm4iSKF54kH+bCT4qgikRQRvnI25znrFP1O60eUKdPMS8IlGcW9SXDzgkNNbrdDqPtjHBf5Ev0++WKdU3a0VMY1MMx/5ojI6oHJsZw3j5JtoaAGsQx4+vwXohj1iEjz6j/uWM=
+ bh=qd16VHWT4vt5w/nR3aDImuF4ZQfa/KxsXT/3NUY1nvs=;
+ b=yAa8MCbEYdJwzartZYbU6SCn3JdIFU96IgMLM7qblfpmICdpWxmwy8zR7WwAhOC96vqCTA7FchmxbMFnuuL5D1/A6zjbSHJr7gBHuOwFXJuNACadUtPHIX8VTDqSeeao17xTxAmwD2JReWhtpl8HNyrHsf+iaFTmVLU3KL9L7Sw=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 114/256] cl8k: add mib.h
-Date:   Thu, 17 Jun 2021 16:00:01 +0000
-Message-Id: <20210617160223.160998-115-viktor.barna@celeno.com>
+Subject: [RFC v1 115/256] cl8k: add motion_sense.c
+Date:   Thu, 17 Jun 2021 16:00:02 +0000
+Message-Id: <20210617160223.160998-116-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:39 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:40 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c214607a-267b-49ae-ecdc-08d931a99cd3
+X-MS-Office365-Filtering-Correlation-Id: 1efd3fc6-a637-4b29-2065-08d931a99d7a
 X-MS-TrafficTypeDiagnostic: AM0P192MB0402:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB0402193B29F2D3686B8DAB89F60E9@AM0P192MB0402.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:330;
+X-Microsoft-Antispam-PRVS: <AM0P192MB0402179D92780A508E3CA4CEF60E9@AM0P192MB0402.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:126;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mnt+REfmM4aWX6yySsPm/rAjEqL0H+RI47dZh9cNP/JYdDBpp75swwmcY9uAqPvmgqcz0ZcqIwVQE7BVzUaYRDPSS4Q/RILbUhpJXoo3fj1OdBqyJmPBf5SAPyFFFxuUdzoG/aLoasNyg2IWGePwxqvcFh4i+7+rxFP3gGYvneAmMdBbhV5krvxfxz3ScToDw60SMDujWAGWMR0VsiylBPt6l1vjemEU95DlBAEtF3D+m2wzxw55rFVoTqLqMqpa1QHASE5eCaSY8UA+Uhc5pn+2llk6V2eliGY3EuWZ0g+CBiN0aZLTI5dP+a8ChZOBatcuLKmfvAJiGGKgwZVUd5hkmBxOl4XRpqtkbNnIYsdze5f1LKGNIIVnZ4y7ZvA1t9Ai5dt+PI3Soym7bHIArBhbcxu9Rnp7LVQ2e1CbjvF43prr3srsuYhtQ7+x8MVGkaMjckOmjbRPWrINKX1IWQ6gg6GaltEfnAQa0OIkl/mNpLZGaL+1+ciesSo4jlTFwQWGsENhsMezAg/95AuhtnOvkxM1/kanIyj3YUfMakwJXOsWHZVgULzMu0PQfeR8MtABpMjFLlOBX8/uaPdBPvjR+yuGphHos3F4X0b6g0wCYZmlFT/EuHbw8GcIA6cSEppFUG5+M/j5gyzkUfun/j3eet1vWaFLDafNxXsF/QkhDn7elDSrEQN0J3D0vslQP7fVKkgYR4OSgkyxOaBSnQ==
+X-Microsoft-Antispam-Message-Info: svVjPVgVxwMw/O2tlOjm9ScrZ79iO+6oFYC5EDEe2VN3PZ2Gbc7I/1YyDLKyteQ9bwBv3aRIkk/VcCo9aCY18DI1RfluiRdZLr4nq6FfLGtbo8/tC+3yFv3G6c4tJ/cdiWQRHp713eMsldwVvj1+qtl9Cp2AK0SmpZCQx5JUEQe75vflhi02ABGRrOGVofFuZy521E19v9Nq1oAA3sQAjeNAHvw2LDaEpN2P6jIYS+do5oPv8ZcT5nubj01HyA5JfyNaZ+Snoa1Q1uB2oKNGq7puUEHD1/VpcRXc9TnjZdFQ6+riquxM35eG7GwpqG36y5MaAxk2sR7FvUUSzq+7GngunQqaxjeoE54CgZ/Ysu3vZ7/7pLAf7FhU49aI2D2zmMROoq1tURR385XJBGgfcr08y59Fy5EHLnDxe/iT/TIuB6z7RoSeKUSPaboV+Wijox+W5Y/OZSF9QXNEc4f4f7n6cHIxeKgq5icjyaqrnQzcnnlOqZH/ZRQtI12YX/95AAk1oWOyLmPM1oD9/Df2zrORloHOl44rBuS9Fqar/gmvLaftySnJobala8XTVqbJerewUzQ6RZeRW5bMWzHx/Z7PQwg1iC0CErO7HWjZbrNKd4osaNQm8JAO1kl8gsBQDWEGD7Yx1yal1Bc4Kd5JA+3/wRTekVZ3XrYWOz3LOWDue2OjwbNRDooVffieEbpY4nGKFMouaQDU9XMhfPJeFQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(39850400004)(136003)(376002)(396003)(366004)(346002)(6916009)(6512007)(9686003)(6666004)(52116002)(2616005)(186003)(16526019)(38100700002)(38350700002)(1076003)(6506007)(5660300002)(107886003)(55236004)(86362001)(6486002)(8936002)(956004)(26005)(8676002)(30864003)(508600001)(2906002)(36756003)(54906003)(316002)(66946007)(66556008)(4326008)(66476007)(83380400001)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ncmPVHgr8I+oqbEbtdvPdnGFQ/Q0wwa7hO0rNuz99CVwpfAyMxgGDb0bdVPH?=
- =?us-ascii?Q?t9hbZ13kLkTCx2Z3mLmFs8fiuXZoYEHpWEudjquy+/nmyaJYMmkiM0Y9b+3M?=
- =?us-ascii?Q?fSxL5sbertFFf3TmXmARyAby78WVxkG3e0HmBJeoI1ohBDMLN+WmfvOoKHNw?=
- =?us-ascii?Q?xpSzlKz98VeN8m1G+WD5lQQqeNx5aHDBDHhQ5oRpupMoyT70Gdtd1E2uxxIg?=
- =?us-ascii?Q?q73web/G3rpO0vgMzlpGnTa4PrNEquYoVBax11GGfQNG2wTHdfwhS7s9ADWz?=
- =?us-ascii?Q?XcE48ivl9e7f7QHy3CCh7O3inCD57G2KZ5oq+CZl75HH3IQ0np7hpu9qol9D?=
- =?us-ascii?Q?cELsfvaws0jG0OmE6DzPeqXchy1rZQd8HE6loxPLjrbqxyno/tfXE1TLZeEL?=
- =?us-ascii?Q?h+88XCe9srMyzNw+wIpIkbMwxw/mCX2uVfv6YYjEEk/FIrJZxnVc8voZ7bwg?=
- =?us-ascii?Q?uuQ+zobICtRTTZpItCJ+tPIKglQjuUKr8MI4K9JwXyvhn+YRKeOklqdMDOYq?=
- =?us-ascii?Q?6hl9DYybXvi6LyKtzm7vbF9dtFoLNxHYhu1TlKAq80QZb4oLd5MjgPHsZB0t?=
- =?us-ascii?Q?HJ9X5Ds5f5DdRXp1HMHytTsVvJzoqfeGwJp1K/7marfJaFa9k6PPuPPwOTKG?=
- =?us-ascii?Q?LY82nmSmGoanH2DnPrrQMHz0SRo/iJ9UUQFYaf961rnDnOXlSkNFJXuVyoX2?=
- =?us-ascii?Q?qjKKkYEEirXXZT9OKoLLOsP4lqFF6Gpk5xuW1dFPj0K3dbN4krUdHsLq6ul4?=
- =?us-ascii?Q?59oQzx0us2DEHQ8BYgq8jCbj6OyUgzXj2EWxFXIVJDz1OYESLBClzHErfBoV?=
- =?us-ascii?Q?P13fbtSI3UJQkSP6DAYW40xNbQDXwg2K53nEkhCaOE5w7x0iEGI6ifHUWR07?=
- =?us-ascii?Q?FDAsZIG2WjGHTEKn6TC/4OK1loMxu5Zm+tMParVrogAA50upfqvUXom+Pb9J?=
- =?us-ascii?Q?ovBVUAnHGYhRaU4k/zuuCsGVyd4LaPGLyhx8QMb4MZ6Eei6sZT0ijGLlLYEl?=
- =?us-ascii?Q?zZjWI3J3Q5K1EBUO87ffauQ99g84eEyU9UhX4FczXs8+ei0DtYfEGkqrY2ne?=
- =?us-ascii?Q?8XP38JyZTKrzotiuyX3z1cg8QK3hm2GAQbAlqenn4YxzH2opZ22JR3cEVC4A?=
- =?us-ascii?Q?OQAJ4FEs17G/YUUzLxLSvarhA9IoJGqYriQmQawAclrAI5N5t+Moz8ILVRkM?=
- =?us-ascii?Q?3clK8N7B8tMDmt3oq0OEqUIBbZLblDZrOQWOJRtdnCJ2qoO4AI8coV73l7mp?=
- =?us-ascii?Q?c+/oVLAjkfGN1tufO9pj6wYEHgExLTfiXhoIB39hDeeYvAw+gLVfNX1iGr4N?=
- =?us-ascii?Q?/6d0VvXwbh3PLVrQnvqyhYuh?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SOKrgRUj4H/zDKTMMOZ9KNk/QqgCneu0lW6OWKcpbm4wOz5Ye6vmunWg9FIW?=
+ =?us-ascii?Q?XZ2HI3tHsI1rUODRKnC2MUoQPXtafZdD2b9GedbkjGc7+byfB4zDph9E0QuG?=
+ =?us-ascii?Q?TlLOkH+2wjRu449PrDjW6ZLQ/HseTBawQhAGITD1ClcS0snrdxExSZK3auij?=
+ =?us-ascii?Q?g/5oenuJ++9lkK5Vo8zAI8x09xiBGFMjP8YzqjKHs/T7RE7CE1RiN9vualP7?=
+ =?us-ascii?Q?ujE0sHtT2IPvuyoAdQXqq2RCyYdoBw+1gyqXMuP/9hb5ZhArmrXf8TDZKDvI?=
+ =?us-ascii?Q?S2LCTGIe1iKwt+l3eRBqWcWE0kvgkJTWgxlIvTKPLc5v2fj7yMOj1fafUdMK?=
+ =?us-ascii?Q?WBT7lcASV0I9Gwi27bbopb2SR+mhHfR1HoS1CAJQwrVNXCKG25PnLgiGwz0P?=
+ =?us-ascii?Q?4Me3TKAhfpcxxBj1klOWRfTcbH8p7NiKKNT8LoRoqXfQEspy4pN5RyC3eEcT?=
+ =?us-ascii?Q?XmOEzCF/xAiZ07dDuAr6RCOkRjGhcMjTmzOAgnWrponyoRYk+uITBlmyYgaF?=
+ =?us-ascii?Q?lnOrriXGIsw0Xkf4OTnXWbx1FNTkfP1+WCUChekqkXfVDA1wc0Y30k/71FIT?=
+ =?us-ascii?Q?9fIotBoelrBCitQXEvdqrut1wsL5fnSwRhZkZPQJvqGaxWtgwpEFhVFogBAH?=
+ =?us-ascii?Q?myas9kidJMB/kRU6ZbWN8UReB2kLbbTAiOyeWEGkeczIzAERKzMth6aZEGUU?=
+ =?us-ascii?Q?KrCAdGkdUhBg2XrONx88arGk5zSWA+wR4rO23F+a26hbvxz35jQh4nvO9Doq?=
+ =?us-ascii?Q?CfCvoedLT1pRNIjMhkhmz47AWJm3Amng3gqc5LSM3Fw0IRLWaWerkBf4M2Bt?=
+ =?us-ascii?Q?Mof3EL8HoOavdp7uRHPGZ6wlZpoVd2FUpYqdvtCiTOt9ImB6Gs/CMZoAj251?=
+ =?us-ascii?Q?1hjsB+tr+ZaLvmqME5ZLxBkmwe097AOqT5Dv7a6VozJVGtGN5e3AFAquOBwY?=
+ =?us-ascii?Q?viCEWO/RClmPfdd+JrNhvI6Oz0d/dNFj8Oa+YtVZWjLea6K3h8oM1514IP8/?=
+ =?us-ascii?Q?Ewkau3DpRvX1nM8JLMGQdqpUQ3Nr2EbFkZZMO010Wl7lS81mWn0Q9LUDQg94?=
+ =?us-ascii?Q?PrFhrGSMhuPMpXCEzhdh4RBjsAKm3Odf+zmmO3yWEGEbqgaUdDGjYK1JainN?=
+ =?us-ascii?Q?q8XT4koIeiM+bLTAGRXmLKozQAXS/rlzQvAUazG0wUkCxyn0vxyGFi2xwPiH?=
+ =?us-ascii?Q?MMWD1mfrl6iwdUz4BBgLayjexH3QZLird4cdDtWEKgie3PKk2J5QRr+L9xTR?=
+ =?us-ascii?Q?8fALcvHyXzkkGblpAI8FbUxbchhV7LgSYpcejjGotv5gYfzaeW2AabnmJtj4?=
+ =?us-ascii?Q?VTsjtwFhEa9zjrtJ9SEme1vy?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c214607a-267b-49ae-ecdc-08d931a99cd3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1efd3fc6-a637-4b29-2065-08d931a99d7a
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:40.2055
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:41.3186
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uP/raYIMVn6Acnk8jEVC2YFu0GqRKgmQ5iNKT15tJh5AcvJJZBAVR6QtCz7eROdLZTK8PK2I1DbbDJg7fND79g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: KcM+MIx7yEqIfF9vEMGm5d3zAcN4VEXTZn9rOwUMgBz+gV+wr2ODaqzgvfhEbcY5T6GnU68xdJehMb7v02FLfg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0402
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,303 +119,514 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/mib.h | 286 +++++++++++++++++++++++++
- 1 file changed, 286 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/mib.h
+ .../net/wireless/celeno/cl8k/motion_sense.c   | 458 ++++++++++++++++++
+ 1 file changed, 458 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/motion_sense.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/mib.h b/drivers/net/wireless/=
-celeno/cl8k/mib.h
+diff --git a/drivers/net/wireless/celeno/cl8k/motion_sense.c b/drivers/net/=
+wireless/celeno/cl8k/motion_sense.c
 new file mode 100644
-index 000000000000..7089ecf3c374
+index 000000000000..bd8b1c6df08e
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/mib.h
-@@ -0,0 +1,286 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/motion_sense.c
+@@ -0,0 +1,458 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_MIB_H
-+#define CL_MIB_H
++#include "motion_sense.h"
++#include "rssi.h"
++#include "chip.h"
 +
-+#include "hw.h"
++#define MOTION_PRINT(...) \
++       do { \
++               if (cl_hw->motion_sense_dbg) \
++                       pr_debug(__VA_ARGS__); \
++       } while (0)
 +
-+/**
-+ * MIB (=3DManagaement Information Database, 802.11)
-+ */
++/* Minimum time (+1) for taking a decison */
++#define MOTION_SENSE_MIN_DECISION_MGMT_CTL 4
++#define MOTION_SENSE_MIN_DECISION_DATA     9
++#define MOTION_SENSE_MIN_DECISION_BA       9
 +
-+/*
-+ * MIB counters RW
-+ */
-+#define MIB_DOT11_WEP_EXCLUDED_COUNT 0x800
-+#define MIB_DOT11_FCS_ERROR_COUNT 0x804
-+#define MIB_DOT11_RX_PHY_ERROR_COUNT 0x808
-+#define MIB_DOT11_RX_FIFO_OVERFLOW_COUNT 0x80C
-+#define MIB_DOT11_TX_UNDERRUN_COUNT 0x810
-+#define MIB_RW_QOS_U_TRANSMITTED_MPDU_COUNT_TID0 0x814
-+#define MIB_RW_QOS_U_TRANSMITTED_MPDU_COUNT_TID1 0x818
-+#define MIB_RW_QOS_U_TRANSMITTED_MPDU_COUNT_TID2 0x81C
-+#define MIB_RW_QOS_U_TRANSMITTED_MPDU_COUNT_TID3 0x820
-+#define MIB_RW_QOS_U_TRANSMITTED_MPDU_COUNT_TID4 0x824
-+#define MIB_RW_QOS_U_TRANSMITTED_MPDU_COUNT_TID5 0x828
-+#define MIB_RW_QOS_U_TRANSMITTED_MPDU_COUNT_TID6 0x82C
-+#define MIB_RW_QOS_U_TRANSMITTED_MPDU_COUNT_TID7 0x830
-+#define MIB_RW_QOS_G_TRANSMITTED_MPDU_COUNT_TID0 0x834
-+#define MIB_RW_QOS_G_TRANSMITTED_MPDU_COUNT_TID1 0x838
-+#define MIB_RW_QOS_G_TRANSMITTED_MPDU_COUNT_TID2 0x83C
-+#define MIB_RW_QOS_G_TRANSMITTED_MPDU_COUNT_TID3 0x840
-+#define MIB_RW_QOS_G_TRANSMITTED_MPDU_COUNT_TID4 0x844
-+#define MIB_RW_QOS_G_TRANSMITTED_MPDU_COUNT_TID5 0x848
-+#define MIB_RW_QOS_G_TRANSMITTED_MPDU_COUNT_TID6 0x84C
-+#define MIB_RW_QOS_G_TRANSMITTED_MPDU_COUNT_TID7 0x850
-+#define MIB_DOT11_QOS_FAILED_COUNT0 0x854
-+#define MIB_DOT11_QOS_FAILED_COUNT1 0x858
-+#define MIB_DOT11_QOS_FAILED_COUNT2 0x85C
-+#define MIB_DOT11_QOS_FAILED_COUNT3 0x860
-+#define MIB_DOT11_QOS_FAILED_COUNT4 0x864
-+#define MIB_DOT11_QOS_FAILED_COUNT5 0x868
-+#define MIB_DOT11_QOS_FAILED_COUNT6 0x86C
-+#define MIB_DOT11_QOS_FAILED_COUNT7 0x870
-+#define MIB_DOT11_QOS_RETRY_COUNT0 0x874
-+#define MIB_DOT11_QOS_RETRY_COUNT1 0x878
-+#define MIB_DOT11_QOS_RETRY_COUNT2 0x87C
-+#define MIB_DOT11_QOS_RETRY_COUNT3 0x880
-+#define MIB_DOT11_QOS_RETRY_COUNT4 0x884
-+#define MIB_DOT11_QOS_RETRY_COUNT5 0x888
-+#define MIB_DOT11_QOS_RETRY_COUNT6 0x88C
-+#define MIB_DOT11_QOS_RETRY_COUNT7 0x890
-+#define MIB_DOT11_QOS_RTS_SUCCESS_COUNT0 0x894
-+#define MIB_DOT11_QOS_RTS_SUCCESS_COUNT1 0x898
-+#define MIB_DOT11_QOS_RTS_SUCCESS_COUNT2 0x89C
-+#define MIB_DOT11_QOS_RTS_SUCCESS_COUNT3 0x8A0
-+#define MIB_DOT11_QOS_RTS_SUCCESS_COUNT4 0x8A4
-+#define MIB_DOT11_QOS_RTS_SUCCESS_COUNT5 0x8A8
-+#define MIB_DOT11_QOS_RTS_SUCCESS_COUNT6 0x8AC
-+#define MIB_DOT11_QOS_RTS_SUCCESS_COUNT7 0x8B0
-+#define MIB_DOT11_QOS_RTS_FAILURE_COUNT0 0x8B4
-+#define MIB_DOT11_QOS_RTS_FAILURE_COUNT1 0x8B8
-+#define MIB_DOT11_QOS_RTS_FAILURE_COUNT2 0x8BC
-+#define MIB_DOT11_QOS_RTS_FAILURE_COUNT3 0x8C0
-+#define MIB_DOT11_QOS_RTS_FAILURE_COUNT4 0x8C4
-+#define MIB_DOT11_QOS_RTS_FAILURE_COUNT5 0x8C8
-+#define MIB_DOT11_QOS_RTS_FAILURE_COUNT6 0x8CC
-+#define MIB_DOT11_QOS_RTS_FAILURE_COUNT7 0x8D0
-+#define MIB_RW_QOS_ACK_FAILURE_COUNT0 0x8D4
-+#define MIB_RW_QOS_ACK_FAILURE_COUNT1 0x8D8
-+#define MIB_RW_QOS_ACK_FAILURE_COUNT2 0x8DC
-+#define MIB_RW_QOS_ACK_FAILURE_COUNT3 0x8E0
-+#define MIB_RW_QOS_ACK_FAILURE_COUNT4 0x8E4
-+#define MIB_RW_QOS_ACK_FAILURE_COUNT5 0x8E8
-+#define MIB_RW_QOS_ACK_FAILURE_COUNT6 0x8EC
-+#define MIB_RW_QOS_ACK_FAILURE_COUNT7 0x8F0
-+#define MIB_RW_QOS_U_RECEIVED_MPDU_COUNT0 0x8F4
-+#define MIB_RW_QOS_U_RECEIVED_MPDU_COUNT1 0x8F8
-+#define MIB_RW_QOS_U_RECEIVED_MPDU_COUNT2 0x8FC
-+#define MIB_RW_QOS_U_RECEIVED_MPDU_COUNT3 0x900
-+#define MIB_RW_QOS_U_RECEIVED_MPDU_COUNT4 0x904
-+#define MIB_RW_QOS_U_RECEIVED_MPDU_COUNT5 0x908
-+#define MIB_RW_QOS_U_RECEIVED_MPDU_COUNT6 0x90C
-+#define MIB_RW_QOS_U_RECEIVED_MPDU_COUNT7 0x910
-+#define MIB_RW_QOS_G_RECEIVED_MPDU_COUNT0 0x914
-+#define MIB_RW_QOS_G_RECEIVED_MPDU_COUNT1 0x918
-+#define MIB_RW_QOS_G_RECEIVED_MPDU_COUNT2 0x91C
-+#define MIB_RW_QOS_G_RECEIVED_MPDU_COUNT3 0x920
-+#define MIB_RW_QOS_G_RECEIVED_MPDU_COUNT4 0x924
-+#define MIB_RW_QOS_G_RECEIVED_MPDU_COUNT5 0x928
-+#define MIB_RW_QOS_G_RECEIVED_MPDU_COUNT6 0x92C
-+#define MIB_RW_QOS_G_RECEIVED_MPDU_COUNT7 0x930
-+#define MIB_RW_QOS_U_RECEIVED_OTHER_MPDU0 0x934
-+#define MIB_RW_QOS_U_RECEIVED_OTHER_MPDU1 0x938
-+#define MIB_RW_QOS_U_RECEIVED_OTHER_MPDU2 0x93C
-+#define MIB_RW_QOS_U_RECEIVED_OTHER_MPDU3 0x940
-+#define MIB_RW_QOS_U_RECEIVED_OTHER_MPDU4 0x944
-+#define MIB_RW_QOS_U_RECEIVED_OTHER_MPDU5 0x948
-+#define MIB_RW_QOS_U_RECEIVED_OTHER_MPDU6 0x94C
-+#define MIB_RW_QOS_U_RECEIVED_OTHER_MPDU7 0x950
-+#define MIB_DOT11_QOS_RETRIES_RECEIVED_COUNT0 0x954
-+#define MIB_DOT11_QOS_RETRIES_RECEIVED_COUNT1 0x958
-+#define MIB_DOT11_QOS_RETRIES_RECEIVED_COUNT2 0x95C
-+#define MIB_DOT11_QOS_RETRIES_RECEIVED_COUNT3 0x960
-+#define MIB_DOT11_QOS_RETRIES_RECEIVED_COUNT4 0x964
-+#define MIB_DOT11_QOS_RETRIES_RECEIVED_COUNT5 0x968
-+#define MIB_DOT11_QOS_RETRIES_RECEIVED_COUNT6 0x96C
-+#define MIB_DOT11_QOS_RETRIES_RECEIVED_COUNT7 0x970
-+#define MIB_RW_U_TRANSMITTED_AMSDU_COUNT0 0x974
-+#define MIB_RW_U_TRANSMITTED_AMSDU_COUNT1 0x978
-+#define MIB_RW_U_TRANSMITTED_AMSDU_COUNT2 0x97C
-+#define MIB_RW_U_TRANSMITTED_AMSDU_COUNT3 0x980
-+#define MIB_RW_U_TRANSMITTED_AMSDU_COUNT4 0x984
-+#define MIB_RW_U_TRANSMITTED_AMSDU_COUNT5 0x988
-+#define MIB_RW_U_TRANSMITTED_AMSDU_COUNT6 0x98C
-+#define MIB_RW_U_TRANSMITTED_AMSDU_COUNT7 0x990
-+#define MIB_RW_G_TRANSMITTED_AMSDU_COUNT0 0x994
-+#define MIB_RW_G_TRANSMITTED_AMSDU_COUNT1 0x998
-+#define MIB_RW_G_TRANSMITTED_AMSDU_COUNT2 0x99C
-+#define MIB_RW_G_TRANSMITTED_AMSDU_COUNT3 0x9A0
-+#define MIB_RW_G_TRANSMITTED_AMSDU_COUNT4 0x9A4
-+#define MIB_RW_G_TRANSMITTED_AMSDU_COUNT5 0x9A8
-+#define MIB_RW_G_TRANSMITTED_AMSDU_COUNT6 0x9AC
-+#define MIB_RW_G_TRANSMITTED_AMSDU_COUNT7 0x9B0
-+#define MIB_DOT11_FAILED_AMSDU_COUNT0 0x9B4
-+#define MIB_DOT11_FAILED_AMSDU_COUNT1 0x9B8
-+#define MIB_DOT11_FAILED_AMSDU_COUNT2 0x9BC
-+#define MIB_DOT11_FAILED_AMSDU_COUNT3 0x9C0
-+#define MIB_DOT11_FAILED_AMSDU_COUNT4 0x9C4
-+#define MIB_DOT11_FAILED_AMSDU_COUNT5 0x9C8
-+#define MIB_DOT11_FAILED_AMSDU_COUNT6 0x9CC
-+#define MIB_DOT11_FAILED_AMSDU_COUNT7 0x9D0
-+#define MIB_DOT11_RETRY_AMSDU_COUNT0 0x9D4
-+#define MIB_DOT11_RETRY_AMSDU_COUNT1 0x9D8
-+#define MIB_DOT11_RETRY_AMSDU_COUNT2 0x9DC
-+#define MIB_DOT11_RETRY_AMSDU_COUNT3 0x9E0
-+#define MIB_DOT11_RETRY_AMSDU_COUNT4 0x9E4
-+#define MIB_DOT11_RETRY_AMSDU_COUNT5 0x9E8
-+#define MIB_DOT11_RETRY_AMSDU_COUNT6 0x9EC
-+#define MIB_DOT11_RETRY_AMSDU_COUNT7 0x9F0
-+#define MIB_DOT11_TRANSMITTED_OCTETS_IN_AMSDU0 0x9F4
-+#define MIB_DOT11_TRANSMITTED_OCTETS_IN_AMSDU1 0x9F8
-+#define MIB_DOT11_TRANSMITTED_OCTETS_IN_AMSDU2 0x9FC
-+#define MIB_DOT11_TRANSMITTED_OCTETS_IN_AMSDU3 0xA00
-+#define MIB_DOT11_TRANSMITTED_OCTETS_IN_AMSDU4 0xA04
-+#define MIB_DOT11_TRANSMITTED_OCTETS_IN_AMSDU5 0xA08
-+#define MIB_DOT11_TRANSMITTED_OCTETS_IN_AMSDU6 0xA0C
-+#define MIB_DOT11_TRANSMITTED_OCTETS_IN_AMSDU7 0xA10
-+#define MIB_DOT11_AMSDU_ACK_FAILURE_COUNT0 0xA14
-+#define MIB_DOT11_AMSDU_ACK_FAILURE_COUNT1 0xA18
-+#define MIB_DOT11_AMSDU_ACK_FAILURE_COUNT2 0xA1C
-+#define MIB_DOT11_AMSDU_ACK_FAILURE_COUNT3 0xA20
-+#define MIB_DOT11_AMSDU_ACK_FAILURE_COUNT4 0xA24
-+#define MIB_DOT11_AMSDU_ACK_FAILURE_COUNT5 0xA28
-+#define MIB_DOT11_AMSDU_ACK_FAILURE_COUNT6 0xA2C
-+#define MIB_DOT11_AMSDU_ACK_FAILURE_COUNT7 0xA30
-+#define MIB_RW_U_RECEIVED_AMSDU_COUNT0 0xA34
-+#define MIB_RW_U_RECEIVED_AMSDU_COUNT1 0xA38
-+#define MIB_RW_U_RECEIVED_AMSDU_COUNT2 0xA3C
-+#define MIB_RW_U_RECEIVED_AMSDU_COUNT3 0xA40
-+#define MIB_RW_U_RECEIVED_AMSDU_COUNT4 0xA44
-+#define MIB_RW_U_RECEIVED_AMSDU_COUNT5 0xA48
-+#define MIB_RW_U_RECEIVED_AMSDU_COUNT6 0xA4C
-+#define MIB_RW_U_RECEIVED_AMSDU_COUNT7 0xA50
-+#define MIB_RW_G_RECEIVED_AMSDU_COUNT0 0xA54
-+#define MIB_RW_G_RECEIVED_AMSDU_COUNT1 0xA58
-+#define MIB_RW_G_RECEIVED_AMSDU_COUNT2 0xA5C
-+#define MIB_RW_G_RECEIVED_AMSDU_COUNT3 0xA60
-+#define MIB_RW_G_RECEIVED_AMSDU_COUNT4 0xA64
-+#define MIB_RW_G_RECEIVED_AMSDU_COUNT5 0xA68
-+#define MIB_RW_G_RECEIVED_AMSDU_COUNT6 0xA6C
-+#define MIB_RW_G_RECEIVED_AMSDU_COUNT7 0xA70
-+#define MIB_RW_U_RECEIVED_OTHER_COUNT0 0xA74
-+#define MIB_RW_U_RECEIVED_OTHER_COUNT1 0xA78
-+#define MIB_RW_U_RECEIVED_OTHER_COUNT2 0xA7C
-+#define MIB_RW_U_RECEIVED_OTHER_COUNT3 0xA80
-+#define MIB_RW_U_RECEIVED_OTHER_COUNT4 0xA84
-+#define MIB_RW_U_RECEIVED_OTHER_COUNT5 0xA88
-+#define MIB_RW_U_RECEIVED_OTHER_COUNT6 0xA8C
-+#define MIB_RW_U_RECEIVED_OTHER_COUNT7 0xA90
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMSDU_COUNT0 0xA94
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMSDU_COUNT1 0xA98
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMSDU_COUNT2 0xA9C
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMSDU_COUNT3 0xAA0
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMSDU_COUNT4 0xAA4
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMSDU_COUNT5 0xAA8
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMSDU_COUNT6 0xAAC
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMSDU_COUNT7 0xAB0
++#define MOTION_STATE_STR(state) \
++       (((state) =3D=3D STATE_NULL) ? "NULL" : \
++       (((state) =3D=3D STATE_MOVING) ? "MOVING" : "STATIC")) \
 +
-+/* RESERVED 173 - 176 */
++static void _cl_motion_sense_sta_add(struct cl_motion_rssi *motion_rssi)
++{
++       motion_rssi->max =3D S8_MIN;
++       motion_rssi->min =3D S8_MAX;
++}
 +
-+#define MIB_DOT11_BEAMFORMING_FRAME_COUNT 0xAC0
-+#define BEAMFORMING_RECEIVED_FRAME_COUNT 0xAC4
-+#define MIB_RW_SU_BFR_TRANSMITTED_COUNT 0xAC8
-+#define MIB_RW_MU_BFR_TRANSMITTED_COUNT 0xACC
-+#define MIB_RW_BFR_RECEIVED_COUNT 0xAD0
-+#define MIB_RW_MU_RECEIVED_FRAME_COUNT 0xAD4
++void cl_motion_sense_sta_add(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++       _cl_motion_sense_sta_add(&cl_sta->motion_sense.rssi_mgmt_ctl);
++       _cl_motion_sense_sta_add(&cl_sta->motion_sense.rssi_data);
++       _cl_motion_sense_sta_add(&cl_sta->motion_sense.rssi_ba);
++}
 +
-+/* RESERVED 182 - 203 */
++static void cl_motion_sense_rssi_handler(struct cl_hw *cl_hw,
++                                        struct cl_motion_rssi *motion_rssi=
+,
++                                        s8 rssi[MAX_ANTENNAS])
++{
++       u8 i;
 +
-+#define MIB_DOT11_TRANSMITTED_AMPDU_COUNT 0xB30
-+#define MIB_DOT11_TRANSMITTED_MPDUIN_AMPDU_COUNT 0xB34
-+#define MIB_DOT11_TRANSMITTED_OCTESTS_IN_AMPDU_COUNT 0xB38
-+#define MIB_RW_U_AMPDU_RECEIVED_COUNT 0xB3C
-+#define MIB_RW_G_AMPDU_RECEIVED_COUNT 0xB40
-+#define MIB_RW_OTHER_AMPDU_RECEIVED_COUNT 0xB44
-+#define MIB_DOT11_MPDU_IN_RECEIVED_AMPDU_COUNT 0xB48
-+#define MIB_DOT11_RECEIVED_OCTETS_IN_AMPDU_COUNT 0xB4C
-+#define MIB_DOT11_AMPDU_DELIMITER_CRC_ERROR_COUNT 0xB50
-+#define MIB_DOT11_IMPLICIT_BAR_FAILURE_COUNT 0xB54
-+#define MIB_DOT11_EXPLICIT_BAR_FAILURE_COUNT 0xB58
++       motion_rssi->cnt++;
 +
-+/* RESERVED  215-219 */
++       for (i =3D 0; i < cl_hw->num_antennas; i++)
++               motion_rssi->sum[i] +=3D rssi[i];
++}
 +
-+#define MIB_DOT11_20MHZ_FRAME_TRANSMITTED_COUNT 0xB70
-+#define MIB_DOT11_40MHZ_FRAME_TRANSMITTED_COUNT 0xB74
-+#define MIB_DOT11_80MHZ_FRAME_TRANSMITTED_COUNT 0xB78
-+#define MIB_DOT11_160MHZ_FRAME_TRANSMITTED_COUNT 0xB7C
-+#define MIB_DOT11_20MHZ_FRAME_RECEIVED_COUNT 0xB80
-+#define MIB_DOT11_40MHZ_FRAME_RECEIVED_COUNT 0xB84
-+#define MIB_DOT11_80MHZ_FRAME_RECEIVED_COUNT 0xB88
-+#define MIB_DOT11_160MHZ_FRAME_RECEIVED_COUNT 0xB8C
-+#define MIB_RW_20MHZ_FAILED_TXOP_COUNT 0xB90
-+#define MIB_RW_20MHZ_SUCCESSFUL_TXOP_COUNT 0xB94
-+#define MIB_RW_40MHZ_FAILED_TXOP_COUNT 0xB98
-+#define MIB_RW_40MHZ_SUCCESSFUL_TXOP_COUNT 0xB9C
-+#define MIB_RW_80MHZ_FAILED_TXOP_COUNT 0xBA0
-+#define MIB_RW_80MHZ_SUCCESSFUL_TXOP_COUNT 0xBA4
-+#define MIB_RW_160MHZ_FAILED_TXOP_COUNT 0xBA8
-+#define MIB_RW_160MHZ_SUCCESSFUL_TXOP_COUNT 0xBAC
-+#define MIB_RW_DYN_BW_DROP_COUNT 0xBB0
-+#define MIB_RW_STA_BW_FAILED_COUNT 0xBB4
++void cl_motion_sense_rssi_mgmt_ctl(struct cl_hw *cl_hw, struct cl_sta *cl_=
+sta,
++                                  struct hw_rxhdr *rxhdr)
++{
++       /* RSSI of mgmt and ctl packets */
++       if (cl_hw->conf->ci_motion_sense_en) {
++               s8 rssi[MAX_ANTENNAS] =3D RX_HDR_RSSI(rxhdr);
 +
-+/* RESERVED 238-239 */
++               cl_motion_sense_rssi_handler(cl_hw, &cl_sta->motion_sense.r=
+ssi_mgmt_ctl, rssi);
++       }
++}
 +
-+#define MIB_DOT11_DUAL_CTS_SUCCESS_COUNT 0xBC0
-+#define MIB_DOT11_STBC_CTS_SUCCESS_COUNT 0xBC4
-+#define MIB_DOT11_STBC_CTS_FAILURE_COUNT 0xBC8
-+#define MIB_DOT11_NON_STBC_CTS_SUCCESS_COUNT 0xBCC
-+#define MIB_DOT11_NON_STBC_CTS_FAILURE_COUNT 0xBD0
++void cl_motion_sense_rssi_data(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
++                              struct hw_rxhdr *rxhdr)
++{
++       /* RSSI of data packets */
++       s8 rssi[MAX_ANTENNAS] =3D RX_HDR_RSSI(rxhdr);
 +
-+/*
-+ * MIB counters Celeno
-+ */
-+#define MIB_TX_UND_DISCARD_FCS_COUNT 0xBD4
-+#define MIB_AMPDU_INCORRECT_RCVED_COUNT 0xBD8
-+#define MIB_CL_RX_CLASS0_MATCH_COUNT 0xBDC
-+#define MIB_CL_RX_CLASS1_MATCH_COUNT 0xBE0
-+#define MIB_CL_RX_CLASS2_MATCH_COUNT 0xBE4
-+#define MIB_CL_RX_CLASS3_MATCH_COUNT 0xBE8
-+#define MIB_CL_RX_CLASS4_MATCH_COUNT 0xBEC
-+#define MIB_CL_RX_CLASS5_MATCH_COUNT 0xBF0
-+#define MIB_RW_RX_MPIF_OVERFLOW_COUNT 0xBF4
++       if (!cl_hw->conf->ci_motion_sense_en)
++               return;
 +
-+#define MIB_RESP_SET_BY_FW 0xAD8
-+#define MIB_RESP_FORCE_BY_FW 0xADC
-+#define MIB_RESP_SET_BY_HW 0xAE0
-+#define MIB_RESP_FORCED_BY_HW 0xAE4
-+#define MIB_RX_UNEXPECTED_FRAME_TYPE_IN_AMPDU 0xAE8
-+#define MIB_RX_MILTI_TID 0xAEC
-+#define MIB_KSR_MISS_QOS_DATA_IN_AMPDU 0xAF0
-+#define MIB_KSR_MISS_MULTI_TID 0xAF4
-+#define MIB_KSR_MISS_QOS_DATA_IN_AMPDUHE_TB 0xAF8
-+#define MIB_RX_UNASSOCIATED_MGMT_IN_HE_TB 0xAFC
-+#define MIB_HTP_FAILED_MEDIUM_CHECK_COUNT 0xB00
-+#define MIB_RX_ERROR_VECTOR0 0xB04
-+#define MIB_RX_ERROR_VECTOR1 0xB08
-+#define MIB_RX_ERROR_VECTOR2 0xB0C
-+#define MIB_RX_ERROR_VECTOR3 0xB10
-+#define MIB_RX_ERROR_VECTOR4 0xB14
-+#define MIB_RX_ERROR_VECTOR5 0xB18
-+#define MIB_RX_ERROR_VECTOR6 0xB1C
-+#define MIB_RX_ERROR_VECTOR7 0xB20
-+#define MIB_RX_ERROR_VECTOR8 0xB24
-+#define MIB_RX_ERROR_VECTOR9 0xB28
-+#define MIB_RX_ERROR_VECTOR10 0xB2C
-+#define MIB_RX_ERROR_VECTOR11 0xB5C
-+#define MIB_RX_ERROR_VECTOR12 0xB60
-+#define MIB_RX_ERROR_VECTOR13 0xB64
-+#define MIB_RX_ERROR_VECTOR14 0xB68
-+#define MIB_RX_ERROR_VECTOR15 0xB6C
++       cl_motion_sense_rssi_handler(cl_hw, &cl_sta->motion_sense.rssi_data=
+, rssi);
++}
 +
-+void cl_mib_cntrs_dump(struct cl_hw *cl_hw);
-+u32 cl_mib_cntr_read(struct cl_hw *cl_hw, u32 addr);
++void cl_motion_sense_rssi_ba(struct cl_hw *cl_hw, struct cl_sta *cl_sta, s=
+8 rssi[MAX_ANTENNAS])
++{
++       /* RSSI of block-acks */
++       if (cl_hw->conf->ci_motion_sense_en)
++               cl_motion_sense_rssi_handler(cl_hw, &cl_sta->motion_sense.r=
+ssi_ba, rssi);
++}
 +
-+#endif /* CL_MIB_H */
++static s8 cl_motion_sense_calc_new_rssi(struct cl_hw *cl_hw, struct cl_mot=
+ion_rssi *motion_rssi)
++{
++       u8 i =3D 0;
++       s8 rssi_avg[MAX_ANTENNAS] =3D {0};
++
++       /* Calculate average rssi */
++       for (i =3D 0; i < cl_hw->num_antennas; i++)
++               rssi_avg[i] =3D (s8)(motion_rssi->sum[i] / motion_rssi->cnt=
+);
++
++       /* Reset rssi sum for next maintenance cycle */
++       memset(motion_rssi->sum, 0, sizeof(motion_rssi->sum));
++       motion_rssi->cnt =3D 0;
++
++       return cl_rssi_calc_equivalent(cl_hw, rssi_avg);
++}
++
++static void cl_motion_sense_state(struct cl_hw *cl_hw, struct cl_motion_rs=
+si *motion_rssi,
++                                 u8 sta_idx, u8 min_history, const s8 *typ=
+e)
++{
++       u8 i =3D 0;
++       s8 rssi_new =3D 0, rssi_old =3D 0;
++
++       if (motion_rssi->cnt =3D=3D 0)
++               return;
++
++       /* Get new and old rssi */
++       rssi_new =3D cl_motion_sense_calc_new_rssi(cl_hw, motion_rssi);
++       rssi_old =3D motion_rssi->history[motion_rssi->idx];
++
++       /* Add new rssi to history and increase history index */
++       motion_rssi->history[motion_rssi->idx] =3D rssi_new;
++
++       motion_rssi->idx++;
++       if (motion_rssi->idx =3D=3D MOTION_SENSE_SIZE)
++               motion_rssi->idx =3D 0;
++
++       /* Check if new rssi is max or min */
++       if (rssi_new > motion_rssi->max) {
++               motion_rssi->max =3D rssi_new;
++               goto out;
++       } else if (rssi_new < motion_rssi->min) {
++               motion_rssi->min =3D rssi_new;
++               goto out;
++       }
++
++       /*
++        * Check if old rssi was max or min.
++        * If so, go over history and find new max/min
++        */
++       if (rssi_old =3D=3D motion_rssi->max) {
++               motion_rssi->max =3D S8_MIN;
++
++               for (i =3D 0; i < MOTION_SENSE_SIZE; i++) {
++                       if (motion_rssi->history[i] =3D=3D 0)
++                               break;
++
++                       if (motion_rssi->history[i] > motion_rssi->max)
++                               motion_rssi->max =3D motion_rssi->history[i=
+];
++               }
++       } else if (rssi_old =3D=3D motion_rssi->min) {
++               motion_rssi->min =3D S8_MAX;
++
++               for (i =3D 0; i < MOTION_SENSE_SIZE; i++) {
++                       if (motion_rssi->history[i] =3D=3D 0)
++                               break;
++
++                       if (motion_rssi->history[i] < motion_rssi->min)
++                               motion_rssi->min =3D motion_rssi->history[i=
+];
++               }
++       }
++
++out:
++       /* Wait X second after connection, before making first decision */
++       if (motion_rssi->history[min_history] =3D=3D 0)
++               return;
++
++       /* According to delta decide if station is STATIC or in MOTION */
++       if ((motion_rssi->max - motion_rssi->min) < cl_hw->conf->ci_motion_=
+sense_rssi_thr) {
++               if (motion_rssi->state =3D=3D STATE_STATIC)
++                       return;
++
++               motion_rssi->state =3D STATE_STATIC;
++
++               MOTION_PRINT("[MOTION_SENSE] %s - sta_idx=3D%u, min=3D%d, m=
+ax=3D%d, state=3DSTATIC\n",
++                            type, sta_idx, motion_rssi->min, motion_rssi->=
+max);
++       } else {
++               if (motion_rssi->state =3D=3D STATE_MOVING)
++                       return;
++
++               motion_rssi->state =3D STATE_MOVING;
++
++               MOTION_PRINT("[MOTION_SENSE] %s - sta_idx=3D%u, min=3D%d, m=
+ax=3D%d, state=3DMOVING\n",
++                            type, sta_idx, motion_rssi->min, motion_rssi->=
+max);
++       }
++}
++
++static void _cl_motion_sense_dump(char **buf, int *len, ssize_t *buf_size,
++                                 struct cl_motion_rssi *motion_rssi,
++                                 const s8 *type)
++{
++       int delta =3D motion_rssi->max - motion_rssi->min;
++       int i;
++
++       cl_snprintf(buf, len, buf_size, "\n");
++       cl_snprintf(buf, len, buf_size, "type =3D %s\n", type);
++       cl_snprintf(buf, len, buf_size,
++                   "state =3D %s\n", MOTION_STATE_STR(motion_rssi->state))=
+;
++       cl_snprintf(buf, len, buf_size,
++                   "min =3D %d\n", motion_rssi->min);
++       cl_snprintf(buf, len, buf_size,
++                   "max =3D %d\n", motion_rssi->max);
++       cl_snprintf(buf, len, buf_size,
++                   "delta =3D %d\n", delta);
++       cl_snprintf(buf, len, buf_size,
++                   "idx =3D %u\n", motion_rssi->idx);
++
++       for (i =3D 0; i < MOTION_SENSE_SIZE; i++) {
++               if (motion_rssi->history[i])
++                       cl_snprintf(buf, len, buf_size,
++                                   "%2i) =3D %3d, ", i, motion_rssi->histo=
+ry[i]);
++               else
++                       break;
++
++               if ((i % 8) =3D=3D 7)
++                       cl_snprintf(buf, len, buf_size, "\n");
++       }
++
++       cl_snprintf(buf, len, buf_size, "\n");
++}
++
++static int cl_motion_sense_dump(struct cl_hw *cl_hw, u8 sta_idx)
++{
++       struct cl_sta *cl_sta =3D NULL;
++       struct cl_motion_sense *motion_sense =3D NULL;
++       char *buf =3D NULL;
++       ssize_t buf_size;
++       int err =3D 0;
++       int len =3D 0;
++
++       cl_sta_lock_bh(cl_hw);
++       cl_sta =3D cl_sta_get(cl_hw, sta_idx);
++
++       if (!cl_sta) {
++               pr_err("[MS] Invalid sta_idx =3D %u\n", sta_idx);
++               goto out;
++       }
++
++       motion_sense =3D &cl_sta->motion_sense;
++
++       cl_snprintf(&buf, &len, &buf_size,
++                   "sta_idx =3D %u\n", sta_idx);
++
++       if (motion_sense->forced_state !=3D STATE_NULL) {
++               cl_snprintf(&buf, &len, &buf_size,
++                           "forced_state =3D %s\n",
++                           MOTION_STATE_STR(motion_sense->forced_state));
++               goto out;
++       }
++
++       cl_snprintf(&buf, &len, &buf_size,
++                   "combined_state =3D %s\n",
++                   MOTION_STATE_STR(motion_sense->combined_state));
++
++       _cl_motion_sense_dump(&buf, &len, &buf_size, &motion_sense->rssi_mg=
+mt_ctl, "mgmt/ctl");
++       _cl_motion_sense_dump(&buf, &len, &buf_size, &motion_sense->rssi_ba=
+, "ba");
++       _cl_motion_sense_dump(&buf, &len, &buf_size, &motion_sense->rssi_da=
+ta, "data");
++
++out:
++       cl_sta_unlock_bh(cl_hw);
++
++       err =3D cl_vendor_reply(cl_hw, buf, len);
++       kfree(buf);
++
++       return err;
++}
++
++static void cl_motion_sense_moving(struct cl_hw *cl_hw, struct cl_sta *cl_=
+sta,
++                                  struct cl_motion_sense *motion_sense)
++{
++       if (motion_sense->combined_state !=3D STATE_MOVING) {
++               motion_sense->combined_state =3D STATE_MOVING;
++               MOTION_PRINT("[MOTION_SENSE] sta_idx =3D %u, combined_state=
+ =3D MOVING\n",
++                            cl_sta->sta_idx);
++       }
++}
++
++static void cl_motion_sense_static(struct cl_hw *cl_hw, struct cl_sta *cl_=
+sta,
++                                  struct cl_motion_sense *motion_sense)
++{
++       if (motion_sense->combined_state !=3D STATE_STATIC) {
++               motion_sense->combined_state =3D STATE_STATIC;
++               MOTION_PRINT("[MOTION_SENSE] sta_idx =3D %u, combined_state=
+ =3D STATIC\n",
++                            cl_sta->sta_idx);
++       }
++}
++
++static void cl_motion_sense_combined_state(struct cl_hw *cl_hw, struct cl_=
+sta *cl_sta)
++{
++       struct cl_motion_sense *motion_sense =3D &cl_sta->motion_sense;
++
++       if (motion_sense->rssi_mgmt_ctl.history[MOTION_SENSE_MIN_DECISION_M=
+GMT_CTL] =3D=3D 0 &&
++           motion_sense->rssi_data.history[MOTION_SENSE_MIN_DECISION_DATA]=
+ =3D=3D 0 &&
++           motion_sense->rssi_ba.history[MOTION_SENSE_MIN_DECISION_BA] =3D=
+=3D 0)
++               return;
++
++       if (motion_sense->rssi_mgmt_ctl.state =3D=3D STATE_MOVING ||
++           motion_sense->rssi_data.state =3D=3D STATE_MOVING ||
++           motion_sense->rssi_ba.state =3D=3D STATE_MOVING)
++               cl_motion_sense_moving(cl_hw, cl_sta, motion_sense);
++       else
++               cl_motion_sense_static(cl_hw, cl_sta, motion_sense);
++}
++
++static void cl_motion_sense_maintenance_sta(struct cl_hw *cl_hw, struct cl=
+_sta *cl_sta)
++{
++       u8 sta_idx =3D cl_sta->sta_idx;
++       struct cl_motion_sense *motion_sense =3D &cl_sta->motion_sense;
++
++       cl_motion_sense_state(cl_hw, &motion_sense->rssi_mgmt_ctl, sta_idx,
++                             MOTION_SENSE_MIN_DECISION_MGMT_CTL, "mgmt/ctl=
+");
++       cl_motion_sense_state(cl_hw, &motion_sense->rssi_data, sta_idx,
++                             MOTION_SENSE_MIN_DECISION_DATA, "data");
++       cl_motion_sense_state(cl_hw, &motion_sense->rssi_ba, sta_idx,
++                             MOTION_SENSE_MIN_DECISION_BA, "ba");
++
++       if (motion_sense->forced_state !=3D STATE_NULL)
++               return;
++
++       cl_motion_sense_combined_state(cl_hw, cl_sta);
++}
++
++void cl_motion_sense_maintenance(struct cl_hw *cl_hw)
++{
++       cl_sta_loop(cl_hw, cl_motion_sense_maintenance_sta);
++}
++
++bool cl_motion_sense_is_static(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++       return (cl_sta->motion_sense.combined_state =3D=3D STATE_STATIC);
++}
++
++static void cl_motion_sense_force_state(struct cl_hw *cl_hw, u8 sta_idx, u=
+8 state)
++{
++       struct cl_sta *cl_sta =3D NULL;
++       struct cl_motion_sense *motion_sense =3D NULL;
++
++       cl_sta_lock_bh(cl_hw);
++       cl_sta =3D cl_sta_get(cl_hw, sta_idx);
++
++       if (!cl_sta) {
++               pr_err("[MS] Invalid station (%u)\n", sta_idx);
++               goto out;
++       }
++
++       motion_sense =3D &cl_sta->motion_sense;
++
++       switch (state) {
++       case STATE_NULL:
++               pr_debug("[MS] Disable force state\n");
++               break;
++       case STATE_MOVING:
++               pr_debug("[MS] Force state - MOVING\n");
++               cl_motion_sense_moving(cl_hw, cl_sta, motion_sense);
++               break;
++       case STATE_STATIC:
++               pr_debug("[MS] Force state - STATIC\n");
++               cl_motion_sense_static(cl_hw, cl_sta, motion_sense);
++               break;
++       default:
++               pr_warn("[MS] Invalid state (%u)\n", state);
++               goto out;
++       }
++
++       motion_sense->forced_state =3D state;
++
++out:
++       cl_sta_unlock_bh(cl_hw);
++}
++
++static int cl_motion_sense_cli_help(struct cl_hw *cl_hw)
++{
++       char *buf =3D kzalloc(PAGE_SIZE, GFP_KERNEL);
++       int err =3D 0;
++
++       if (!buf)
++               return -ENOMEM;
++
++       snprintf(buf, PAGE_SIZE,
++                "motion usage:\n"
++                "-d: Set debug [0/1]\n"
++                "-e: Set enable [0/1]\n"
++                "-f: Force state [sta_idx].[0-null, 1-moving, 2-static]\n"
++                "-i: Dump info [sta_idx]\n"
++                "-r: Set rssi threshold [rssi]\n");
++
++       err =3D cl_vendor_reply(cl_hw, buf, strlen(buf));
++       kfree(buf);
++
++       return err;
++}
++
++int cl_motion_sense_cli(struct cl_hw *cl_hw, struct cli_params *cli_params=
+)
++{
++       u32 expected_params =3D 0;
++       bool set_debug =3D false;
++       bool set_enable =3D false;
++       bool force_state =3D false;
++       bool dump_info =3D false;
++       bool set_rssi_thr =3D false;
++
++       switch (cli_params->option) {
++       case 'd':
++               set_debug =3D true;
++               expected_params =3D 1;
++               break;
++       case 'e':
++               set_enable =3D true;
++               expected_params =3D 1;
++               break;
++       case 'f':
++               force_state =3D true;
++               expected_params =3D 2;
++               break;
++       case 'i':
++               dump_info =3D true;
++               expected_params =3D 1;
++               break;
++       case 'r':
++               set_rssi_thr =3D true;
++               expected_params =3D 1;
++               break;
++       case '?':
++               return cl_motion_sense_cli_help(cl_hw);
++       default:
++               cl_dbg_err(cl_hw, "Illegal option (%c) - try '?' for help\n=
+", cli_params->option);
++               goto out_err;
++       }
++
++       if (expected_params !=3D cli_params->num_params) {
++               cl_dbg_err(cl_hw, "Wrong number of arguments (expected %u) =
+(actual %u)\n",
++                          expected_params, cli_params->num_params);
++               goto out_err;
++       }
++
++       if (set_debug) {
++               cl_hw->motion_sense_dbg =3D (bool)cli_params->params[0];
++               pr_debug("[MS] debug =3D %u\n", cl_hw->motion_sense_dbg);
++               return 0;
++       }
++
++       if (dump_info) {
++               u8 sta_idx =3D (u8)cli_params->params[0];
++
++               return cl_motion_sense_dump(cl_hw, sta_idx);
++       }
++
++       if (set_enable) {
++               cl_hw->conf->ci_motion_sense_en =3D (bool)cli_params->param=
+s[0];
++               pr_debug("[MS] ci_motion_sense_en =3D %s\n",
++                        cl_hw->conf->ci_motion_sense_en ? "true" : "false"=
+);
++               return 0;
++       }
++
++       if (force_state) {
++               u8 sta_idx =3D (u8)cli_params->params[0];
++               u8 state =3D (u8)cli_params->params[1];
++
++               cl_motion_sense_force_state(cl_hw, sta_idx, state);
++               return 0;
++       }
++
++       if (set_rssi_thr) {
++               cl_hw->conf->ci_motion_sense_rssi_thr =3D (s8)cli_params->p=
+arams[0];
++               pr_debug("[MS] ci_motion_sense_rssi_thr =3D %d\n",
++                        cl_hw->conf->ci_motion_sense_rssi_thr);
++               return 0;
++       }
++
++out_err:
++       return -EIO;
++}
 --
 2.30.0
 
