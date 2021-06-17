@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D4F33AB8F1
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ECF73AB8F9
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233731AbhFQQLS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:11:18 -0400
-Received: from mail-eopbgr10086.outbound.protection.outlook.com ([40.107.1.86]:64640
+        id S233747AbhFQQLh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:11:37 -0400
+Received: from mail-eopbgr10042.outbound.protection.outlook.com ([40.107.1.42]:19479
         "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233594AbhFQQKH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:10:07 -0400
+        id S233773AbhFQQKQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:10:16 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KfWJCn01JTNlGChaXZo/aB4LmBtEf9hBfOTPjZ32XBnzqUexfzvllHzrJOy2QIEtp0YYTDRjOjLrFhrHb/hkd9vTX1365fWFbUUV9k2SQhTmQ0mHHLRfbkFoBRLssbfvZgagROquFXzKohixtSxzj8wcN+PV3oCSldkd2Iq8sQqNOBGKys5SFdWODjPjpXSIKLacZfUq1flifZi2f7YevWTQSYr983/Cd7mTp3xDQEcK0OEPkhcP0X8tIKUM4kcRPqUzKwllVLeToRIJqYHQByJTYGhg2Ftk+jrj1pyS4AkRQ8QvoRBFl0tRX/KKW5dAHVmD+docAL1rJiPtmjnY7w==
+ b=RDEwCnJ2askiq7rKC6mTrnhxXsQxKCXT+wsuD8fyfULx0IwaAr4XWdYLWvSdMb3tkUKj4sjFyqnasYLSuS6c2XOp/8NqNKAd164inVl6mO+LoFZ95A+nIrJOhv1bjbWbFxogRIZj49dLFYUKsL9faWrKIBw43Yd/xk/XsYq9/IzJt3KvS2Awj3/x5BNBV/pgwTTN4sdkCRKrQbwofsc9a5CeXd7fOs77cIA8Ylj4sZ/xW0LURA4Qv6qZHULtuAZdYNI3KiFiUBDFndCxpwVZ1+zuT+a+7xQcKCwYEJsdIW6d9wnQqDptAydL4R/jLJAjwnUJVLu5MOoa19qbkjDnVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MlFUXudKfigqF8NuTl7BLqfJKPJVdnATWkgl+sW9umA=;
- b=dMPpBSlyNnAUJqKFtOlNF6BLx6jr2btc/O1HcDS61mbdd5YQC/IIEgiMIykeJR8YJpAsK/hrUDsjin7TI4XHAr1Q5DTaOvfVjz3JDXD+kKILcWPgMkZLMW+Pis6VQl4gRKpBjxzYVQ4ygDR14XxsEZ4gaIoXIMKxmsUWEJNt0+cp9u/sqGG1T1/G/65ujTdtTpX5S0m9LQkOGaU5YF3JwutB0n2iOC5LGRKY56WCRuSbysxpDgfQ7xexxAE7F0Jx26a4k8YAXDeBlmhYRkdT2jgHrsPUUdjUUWDDyGja+D17MyuAJspInniEjuCGRQLkgDS3yKeL7FVV/aVbrNj/4g==
+ bh=YLhnEA4L5RlebqXIgs2oB4ZkahhKHLgyzP0HPMg3FKM=;
+ b=l2R5ddwQ+tD+HMVXoxI3PfY8N3WW2WHDIFtMQm5TWYNhNnHQQz3Htvo4GlPHvOpjjlfAlF4vAU2aUAvIiQCE9hLu88YE7yDPAiiOuqLkmXhE3oYDpzdro0YKAcDwRWcECV1cU1F21L7YvHPevhAWCVCWfOZBvyvafNUfial1t7T/kFIeECHWcCpFgGtfbPJovQbEtGXAxNYjVFY6HJYezXl8BYvZx3wJro8wKCh/EFesTPJdMaz7inw6hu3f443meTNEW8L78FnnxKF2hrV0UZRcQQ570tKCNgUK+vaqrEfeAXRSv2Oxys/YTYBin/NsAgNdmlFJBsg5tvVrD+3TeA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MlFUXudKfigqF8NuTl7BLqfJKPJVdnATWkgl+sW9umA=;
- b=2W9KalOfVVbWZMXlbZzZmnqWO4QEQNQEX0ZfOUw2gWKYkh7rvc70KstdGOv4k2BFTzDl+x2eYNb2LvMaygtflzTfQaJ9UQuXuoYXEBz6chF4yxuFT7O0oczg/wBBANp5qsRPVKJpJo2BZuksdlwIHQaVcO/ytcF+K1OpSXqEjvE=
+ bh=YLhnEA4L5RlebqXIgs2oB4ZkahhKHLgyzP0HPMg3FKM=;
+ b=O4MwLOIrQ2D2AOiuuUfEpHasRY2JcrE8w66c0VD3wecQfwwA/B2K+CQGwd+rHNomkWW1aY6imJLGwxhLi2knaqA5HGM9Zj6dmLqJZOYanEe4OaPmlQqQA8yunKvYenkJYK4atBfgqvSs2rOLPnvAJm8qlVKEiW5lfR1GcLkdDAE=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 229/256] cl8k: add utils/utils.c
-Date:   Thu, 17 Jun 2021 16:01:56 +0000
-Message-Id: <20210617160223.160998-230-viktor.barna@celeno.com>
+Subject: [RFC v1 230/256] cl8k: add utils/utils.h
+Date:   Thu, 17 Jun 2021 16:01:57 +0000
+Message-Id: <20210617160223.160998-231-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:49 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:50 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6fa6f399-a8e3-42a7-57aa-08d931a9ea41
+X-MS-Office365-Filtering-Correlation-Id: 25058e7f-a25f-45c4-712b-08d931a9eae3
 X-MS-TrafficTypeDiagnostic: AM0P192MB0515:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB0515BAFC75771BEE44354E73F60E9@AM0P192MB0515.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:101;
+X-Microsoft-Antispam-PRVS: <AM0P192MB051572E7086D0AFEF39785F0F60E9@AM0P192MB0515.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:494;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qMy0ja2FNmKCUBsWXlMKLm9FNsV0ep+OoFa43NsY+mrIiK5dboBmLaVSl7goZbYrDvn09y6qbfIzAxClmlws+SfR4OCWdbXcdrcXRzjpt4HLXm7mJopqiNBmT3avIHLjfu6pSVA+UC9OnHwFDxho5ZoxLs5B5N8jpoEaV19qk4i3XE8Jq1sfPRw+oy2sXzUzvbDshQQNkYGm45tdie4ljqF7z+J/dn7dyIsmeFlYgV5d+OPETBB9CV0k6zV14qxbrPxZTb3H+1GlgTohYs/4beljPL9Ti8coCnwr371nmlfVT2PfOFTI60ZBEUM5BoOBcjxu8JX8dRjq34nbe7r6vMzn/oSR1pp9WDR41yYZdhK6Gk5IgSCQqPeHqIeEBhJHCXpXQg8ql2vLiUZUZPJOm3Mj0es95pu0IjRk0xLRjMFqWHA+6G1g/vt32IKvKXehyjx8L4r51KsAjVIog9GuuLHcNmjc5ucQi/BYIzEJFlpGY3t2KKWMN6zcnT/g0fkaVWhEQ++qiI3fHfcGRGg6MkA1DfBEOdeIdF+iX1XhMmbqH27B3vGi8qWiQLrmpleTUGFPwPUMnOPErcmdHArRSnBP2eodngLjTx67FPNOtAv0b8WlENm1QNTF4I1yh1PAToBRYK2JnPUIN85stDqZQsx2i0xImts/tEJF2h3hqhPFHl0agWKbKYQOkTazfNxN2LX38Xl3lFav1qO2UH/xeg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(396003)(376002)(39850400004)(136003)(366004)(346002)(4326008)(16526019)(83380400001)(1076003)(8676002)(9686003)(55236004)(6666004)(36756003)(478600001)(8936002)(956004)(186003)(6486002)(38350700002)(6512007)(6916009)(52116002)(86362001)(5660300002)(2906002)(38100700002)(66946007)(2616005)(316002)(6506007)(30864003)(26005)(54906003)(66476007)(107886003)(66556008)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: AXyv/Pb3G7QKXuilVTpjoxgMzeLJHCuhG8BbrtajN42k5iKJcvHMx4xYjaz9ELhKDCL663W7T1TCNwMvREc7KSbg7OCYZ6oATVL854TnmdJlVPXSF8Fe4pneiRBt166sRlYF58PvXWb4gv7j61GKe8stwDQBqVmV+T8fxC2Pe6MQ9p+S3qYg0O/n01tusn4JxHFBm4U3vosgfDWW03ObzI0zdb2fHmDcMY3fLGCfVH8WIPyTTpvBTMBCpYWsV5l9FrE9quJtxXwj4ZpHLS7htegVRc3ZINaBTn4JwoJalngOWQDzZNBlY/K7GCzHuptBaninlZ+bS2tv/GNdO5Tl6nFws1AkJ9xKBAtayXIWbuzSZeJ12XcdXit1epwET0HKRhgnRTp2ODmbctw/kZvJ1KuCZNVgZBNqQ9q1wjwd7Wl/MWJ8+udjUsHcCkjVt7c/WGJP9PP0o2fjNZLwsT9IoYq84Q96yotXufmI1Dux8QtnzOIXznc9QSbE9L6n74vzJLNbaNq118QqPWrfpl4F+GwaR5uoy+QBwJRz0MwqvUaQe3rFUZzH95r7cwdEnR6MX8BCRlFxq+/DsM+kHH9aYCi6/HAvCtJAHLdTqFrzg1w35Tu6DSasZMlAHNswsvE2Eav3owpiYyAQ+k5Gg6Z1t/q/Zo6CqdsqhMTbtmHzCNNzrihdCLF+23rnZToZtmiy7mTxDs9IL6SNdJUKsOUhKA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(396003)(376002)(39850400004)(136003)(366004)(346002)(4326008)(16526019)(83380400001)(1076003)(8676002)(9686003)(55236004)(36756003)(478600001)(8936002)(956004)(186003)(6486002)(38350700002)(6512007)(6916009)(52116002)(86362001)(5660300002)(2906002)(38100700002)(66946007)(2616005)(316002)(6506007)(26005)(54906003)(66476007)(107886003)(66556008)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uC/jkwiEUrSxl0dhJdBcEqwWwlRfUvB9c6U8eYbSCqCUdZCw03r1yi8Melad?=
- =?us-ascii?Q?aXXUSyIFzGZp3enwzN2PCUr7s9X67PPyDFyBXdgeMl9O5X+dSdhbDmBaE06J?=
- =?us-ascii?Q?b/Qob8o9p5kMjVOtCRSDdFjQjfENwRek4ZxCNenjRqbpMx2Q2mjqC3S6AFum?=
- =?us-ascii?Q?hW/tNMb1CpsGthURammCl7vM/d2VJ535rsNZGd3GcmRtM+pM+MMh8qeTdtsx?=
- =?us-ascii?Q?lXvF83CG+sMw4JS+HLxDpe1SvnQeWPvo/KTtbhOGr+sfC9KM2tKlBAZOaR26?=
- =?us-ascii?Q?NdwFFK8Q1vObJfNUAWn53BxYixQVOWVwdpae8h8P+bpTpjeKG0kpSVjvsEa1?=
- =?us-ascii?Q?RufdAAZ0KL/qlk1HFkhKFS0Ap1snSay3Q+5A1cqmWUHA6wJVcHFwuMpCTBOU?=
- =?us-ascii?Q?V4ZyEYYg27D5Qc2nXCYB9iJexwEI/7jkHSJ/PWjdfhYkf3MgxDiTiz3XOL9Z?=
- =?us-ascii?Q?iG7sUssY1rwN11gYX/4jLd/KH+FEjxCpBom2LNAMMOBjGMTjw4OrRW8pXxFK?=
- =?us-ascii?Q?X8wYJWJmkNFTzx5bzlgdc8/0SWWNmDBuOjAZOCAJDJZLM4Ib/vVp4Yw60G5f?=
- =?us-ascii?Q?4UB1ZzfKb1Bd0j5Gd/jaggiuRqCb4onOJxyj7ZQxWjGfpHEeBBR2eR4xOHm9?=
- =?us-ascii?Q?nHb/+ZVjH2VJsT8Oh3q1GuDSZ5IZrqYAsa+jExFZoH0aG7M8FhWaLr82m9WL?=
- =?us-ascii?Q?iONnNXEacDk7twFNQnTh8OfygoTpbtAESR7VHaoWBMJ6SZ2gg8wouX9odtiZ?=
- =?us-ascii?Q?wSOzkbODN6QhLnc9OYAEthQrabtR7TGLQcZ4LySOgkcXrLyH1XRreRncPWvc?=
- =?us-ascii?Q?8Pew7ZhHiHa1D5WAOlsr7pO4yWknNa8tmQ27h9KCc7h3gSt7PFTIPKsOn0um?=
- =?us-ascii?Q?Fe85MEE14w4sSISW2NRk7aChaz6aesFGQHlBPeYfiIpz+B6yBNEIsOfT+G7D?=
- =?us-ascii?Q?X5v+nIiqI5S1zy8KLrvUBfOpRvy/vhWbTLhMMHllaxUWiYrM/a3VMbUE+20S?=
- =?us-ascii?Q?qo5j6ROH7r7Qc7laPiIwGpF6+8wpfTj+xfnzbaxaBWwoqB7J939vNaiufpM5?=
- =?us-ascii?Q?5jmfMVYPWVlgK1SVh50fiiu20Hz4WSoi9z5Vd4YOnuTSkFTN1lVfD/wjv8vP?=
- =?us-ascii?Q?gsKdoPs7hs8OZgm2r3/zinwh8R+GZcZVJvy5gFKMBGmEC40GtitovpccGQJM?=
- =?us-ascii?Q?8AUCIr9+CmADIeNqoH+TCf/uVG+6r1DJwHKsFujz+1JjYWHZVC1lZlviWutE?=
- =?us-ascii?Q?J9tG3eAwLYiVmb3XKrgu5lrcB+IEE7W9385VHI1Xox95JmsJck+PdL/LOapW?=
- =?us-ascii?Q?5TquF9zx1yMT3pegMegcatRr?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?bxjZGJl1sdNH0ZecczDb9NmQPBwNM3zO02RBTgTvLcVy3PyAWvANQPgt4Rrt?=
+ =?us-ascii?Q?+Qsy5Y905hgksBZl16ezhgeWXeOHNXThE+CZkpnnlXZEGMziaKpcLUwsuo27?=
+ =?us-ascii?Q?Ln0JAstGMNZm0SHgqMZ77GAHmmjEW2+Oklf+jRDwAeT2G42m07TwJgmUaYJ3?=
+ =?us-ascii?Q?vW4dwFgpExUmmWPNjKR6p9BVX3jHBEJ6yMyox99MFZij07oK+P2Pq4UXFFlG?=
+ =?us-ascii?Q?vdUJa+QZuQD8Ie4aBF/bJ/1wSAM52up96LQJ61OmfVT8vcZXleld1937s1Mb?=
+ =?us-ascii?Q?liWgtOMJ11BusVJ+nPV9Zo2J95PlfRoMlirNCB9TIElCbok34dbJyxkhbnB6?=
+ =?us-ascii?Q?Y5ABoF0NP3Uipi/cwBvWuuFcNo+WTLZbT84bgzDfqGxV92E3Zq2RbNzauwJ0?=
+ =?us-ascii?Q?UU2j4dWKfjwN8BQ086E8/IjRMC6LLBGrfT6r8nAjDqfkxJbff7N9bw6FlLdS?=
+ =?us-ascii?Q?ixzc1xkRaqf/6lCwacXLtB3CI4PolJgcDJgIR5ZHj9dw5Cy8zfocUllvFop3?=
+ =?us-ascii?Q?R8QQ7/bWa0FlOInUawK1iiYk405qd2LyIx9hHC3Lt2APyIrLuI9QTvIfG7zW?=
+ =?us-ascii?Q?1QMf9KRh5Kf89fK1/6gEI0/Uvy88OblSbW9jhmzdpnPrMQXmv49U8W8tMdZs?=
+ =?us-ascii?Q?1O7RceKNlv3V0IyRM/S3JE1IAiVYzEdUtrpC01XEr3GpcpaX07XAozfCbiBI?=
+ =?us-ascii?Q?CCyolovQb5FJDN6mlLQl1tl9cLQuqzzaRkbX67NTXVHoKosaKv50CoDi7eK9?=
+ =?us-ascii?Q?wZf/O1TheIOx0ovNePl+MmcHKSlHDiwTvP0s56Um6SYqs90OT5w461LCWOrj?=
+ =?us-ascii?Q?UMDxaWFIUUuMK+vk/YqrnmuPquHn3zqUPHPRC83GBdsQpRBG2Ig0j/S/s3VV?=
+ =?us-ascii?Q?LiOAFRtzgWy73Sq5cYedYAO9TxBL72ny7EaQPsPQWSpOXHSBWyhWP8xYi6uW?=
+ =?us-ascii?Q?a3swSkoBQBEbtmpG7KlH9i3/aqNozD6ex+X3JilIMzhdS2SY1rCRr/3gtPS+?=
+ =?us-ascii?Q?jYtSC2EBccBbjhqfDx3OvnwqoU+VBBAx55MXNNaFvQy86wIYLUUIy2L8Kdm7?=
+ =?us-ascii?Q?HfwyAJJWLqwQaJhAGKrGPZF11e47RaRaj+ic2uSFXjRRBeIyVyaT7iHTPcb1?=
+ =?us-ascii?Q?dDxxXJp84HyTtrAOxfnceSy0jOUKtahXPG5T7NHll2gFljDrxbICdAWFcQ6e?=
+ =?us-ascii?Q?WtiAbvVfBtBnrOG0xGTU3u1yoiQwmyGZWmgMPiC5d5HrM+vNpsKpC0vg86JY?=
+ =?us-ascii?Q?67GdTbsQuDpK6PGOOOQcAusz2SFWMFla0ZruoMSMlo5zHaNakVdeyIPnnwS/?=
+ =?us-ascii?Q?HsHMQ0t/4wARoyq/nbPx5o+n?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fa6f399-a8e3-42a7-57aa-08d931a9ea41
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25058e7f-a25f-45c4-712b-08d931a9eae3
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:50.1002
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:51.0898
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SwnHE6WZwpLvN94MakPTRbIhq8Az8Kazy06QM5LZck0r4tVjDQYbJr7zfiD0EhhxUwtxZjYnDdt4ZQoM4ziKdA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: CW8ZOaSiGSvnG5ts4c9+lBcMR2adl/N8Md+BcU1c2hhVUls/RvTda5OB7i7eHXS0q95rRC4AruhDnSq9bi+sFg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0515
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,439 +119,125 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../net/wireless/celeno/cl8k/utils/utils.c    | 388 ++++++++++++++++++
- 1 file changed, 388 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/utils/utils.c
+ .../net/wireless/celeno/cl8k/utils/utils.h    | 104 ++++++++++++++++++
+ 1 file changed, 104 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/utils/utils.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/utils/utils.c b/drivers/net/w=
-ireless/celeno/cl8k/utils/utils.c
+diff --git a/drivers/net/wireless/celeno/cl8k/utils/utils.h b/drivers/net/w=
+ireless/celeno/cl8k/utils/utils.h
 new file mode 100644
-index 000000000000..6d6f913ae95a
+index 000000000000..d08cb23513ef
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/utils/utils.c
-@@ -0,0 +1,388 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/utils/utils.h
+@@ -0,0 +1,104 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include <linux/dma-mapping.h>
-+#include <linux/list.h>
-+#include <linux/jiffies.h>
-+#include <linux/kthread.h>
-+#include <net/mac80211.h>
-+#include <linux/sched/signal.h>
++#ifndef CL_UTILS_H
++#define CL_UTILS_H
 +
-+#include "utils/utils.h"
-+#include "rx/rx.h"
-+#include "tx/tx.h"
-+#include "fw/msg_tx.h"
-+#include "debugfs.h"
++#include "hw.h"
++#include "vendor_cmd.h"
++#include "vif.h"
 +#include "ipc_shared.h"
-+#include "rssi.h"
-+#include "traffic.h"
-+#include "reg/reg_riu.h"
-+#include "reg/reg_mac_hw.h"
-+#include "utils/ip.h"
++#include "ieee80211_i.h"
 +
-+#define GI_08  0
-+#define GI_16  1
-+#define GI_32  2
-+#define GI_04  3
-+
-+#define GI_MAX_FW 4
-+#define GI_MAX_HE 3
-+#define GI_MAX_HT_VHT 2
-+
-+#define CL_TSF_LOW_MIGHT_OVERFLOW_TH 0xFFFFF000
-+
-+static u8 conv_wrs_gi_ht_vht[GI_MAX_HT_VHT] =3D {
-+       [WRS_GI_LONG] =3D GI_08,
-+       [WRS_GI_SHORT] =3D GI_04
++static const u8 tid_to_ac[] =3D {
++       AC_BE, AC_BK, AC_BK, AC_BE, AC_VI, AC_VI, AC_VO, AC_VO
 +};
 +
-+static u8 conv_wrs_gi_he[GI_MAX_HE] =3D {
-+       [WRS_GI_LONG] =3D GI_32,
-+       [WRS_GI_SHORT] =3D GI_16,
-+       [WRS_GI_VSHORT] =3D GI_08
-+};
++static inline struct cl_vif *NETDEV_TO_CL_VIF(struct net_device *dev)
++{
++       struct ieee80211_sub_if_data *sdata =3D netdev_priv(dev);
 +
-+static u8 conv_fw_gi_ht_vht[GI_MAX_FW] =3D {
-+       [GI_08] =3D WRS_GI_LONG,
-+       [GI_16] =3D 0,
-+       [GI_32] =3D 0,
-+       [GI_04] =3D WRS_GI_SHORT,
-+};
++       return (struct cl_vif *)(sdata->vif.drv_priv);
++}
 +
-+static u8 conv_fw_gi_he[GI_MAX_FW] =3D {
-+       [GI_08] =3D WRS_GI_VSHORT,
-+       [GI_16] =3D WRS_GI_SHORT,
-+       [GI_32] =3D WRS_GI_LONG,
-+       [GI_04] =3D 0,
-+};
++static inline struct cl_hw *NETDEV_TO_CL_HW(struct net_device *dev)
++{
++       struct ieee80211_sub_if_data *sdata =3D netdev_priv(dev);
++
++       return sdata->local->hw.priv;
++}
++
++static inline struct cl_hw *WIPHY_TO_CL_HW(struct wiphy *wiphy)
++{
++       struct ieee80211_hw *hw =3D wiphy_to_ieee80211_hw(wiphy);
++
++       return (struct cl_hw *)hw->priv;
++}
 +
 +void cl_hex_dump(char *caption, u8 *buffer, u32 length, u32 offset, bool i=
-s_byte)
-+{
-+       u8 *pt =3D buffer;
-+       u32 i;
-+       bool end_nl =3D false;
-+       char buf[STR_LEN_256B] =3D {0};
-+       int len =3D 0;
+s_byte);
 +
-+       if (caption)
-+               pr_debug("%s: %p, len =3D %u\n", caption, buffer, length);
++bool cl_is_valid_auth_mode(bool wpa_ie, u8 auth_mode);
++bool cl_is_open_auth_mode(u8 auth_mode);
++u8 convert_gi_format_wrs_to_fw(u8 wrs_mode, u8 gi);
++u8 convert_gi_format_fw_to_wrs(u8 format_mode, u8 gi);
++u8 cl_map_gi_to_ltf(u8 mode, u8 gi);
 +
-+       if (is_byte) {
-+               for (i =3D 0; i < length; i++) {
-+                       if (i % 16 =3D=3D 0)
-+                               len +=3D snprintf(buf + len, sizeof(buf) - =
-len,
-+                                               "0x%04x : ", i + offset);
-+                       len +=3D snprintf(buf + len, sizeof(buf) - len,
-+                                       "%02x ", ((u8)pt[i]));
-+                       end_nl =3D true;
-+                       if (i % 16 =3D=3D 15) {
-+                               pr_debug("%s", buf);
-+                               len =3D 0;
-+                               end_nl =3D false;
-+                       }
-+               }
-+       } else {
-+               for (i =3D 0; i < (length / sizeof(u32)); i++) {
-+                       if (i % 4 =3D=3D 0)
-+                               len +=3D snprintf(buf + len, sizeof(buf) - =
-len,
-+                                               "0x%04x : ",
-+                                               (u32)(i * sizeof(u32) + off=
-set));
-+                       len +=3D snprintf(buf + len, sizeof(buf) - len,
-+                                       "%08x ", *((u32 *)(pt + i * sizeof(=
-u32))));
-+                       end_nl =3D true;
-+                       if (i % 4 =3D=3D 3) {
-+                               pr_debug("%s", buf);
-+                               len =3D 0;
-+                               end_nl =3D false;
-+                       }
-+               }
-+       }
++s8 cl_calc_noise_floor(struct cl_hw *cl_hw, const s8 *reg_noise_floor);
 +
-+       if (end_nl)
-+               pr_debug("%s", buf);
-+}
++u8 cl_convert_signed_to_reg_value(s8 val);
 +
-+u8 convert_gi_format_wrs_to_fw(u8 wrs_mode, u8 gi)
-+{
-+       if (wrs_mode =3D=3D WRS_MODE_HE && gi < GI_MAX_HE)
-+               return conv_wrs_gi_he[gi];
-+       else if (wrs_mode > WRS_MODE_OFDM && gi < GI_MAX_HT_VHT)
-+               return conv_wrs_gi_ht_vht[gi];
-+       else
-+               return 0;
-+}
++u8 width_to_bw(enum nl80211_chan_width width);
++enum nl80211_chan_width bw_to_width(u8 bw);
++u64 cl_get_tsf_u64(struct cl_hw *cl_hw);
 +
-+u8 convert_gi_format_fw_to_wrs(u8 format_mode, u8 gi)
-+{
-+       if (gi < GI_MAX_FW) {
-+               if (format_mode >=3D FORMATMOD_HE_SU)
-+                       return conv_fw_gi_he[gi];
-+               else if (format_mode >=3D FORMATMOD_HT_MF)
-+                       return conv_fw_gi_ht_vht[gi];
-+       }
++u8 cl_center_freq_offset(u8 bw);
 +
-+       return 0;
-+}
++u8 max_bw_idx(u8 wrs_mode, bool is_24g);
 +
-+static u8 map_gi_to_ltf[WRS_GI_MAX] =3D {
-+       [WRS_GI_LONG] =3D LTF_X4,
-+       [WRS_GI_SHORT] =3D LTF_X2,
-+       [WRS_GI_VSHORT] =3D LTF_X2,
-+};
-+
-+u8 cl_map_gi_to_ltf(u8 mode, u8 gi)
-+{
-+       if (mode =3D=3D WRS_MODE_HE && gi < WRS_GI_MAX)
-+               return map_gi_to_ltf[gi];
-+
-+       return 0;
-+}
-+
-+/* This table holds 10^(-110 -> 0) Q39 values for rx RSSI and noise floor =
-calculations */
-+#define CL_EXP_TBL_SIZE 111 /* 10^x table size (-110 -> 0dBm) */
-+
-+static u64 CL_EXP_10[CL_EXP_TBL_SIZE] =3D {
-+       0x7FFFFFFFFF, 0x65AC8C2F36, 0x50C335D3DB, 0x4026E73CCD, 0x32F52CFEE=
-A, 0x287A26C490,
-+       0x2026F30FBB, 0x198A13577C, 0x144960C577, 0x101D3F2D96, 0x0CCCCCCCC=
-D, 0x0A2ADAD185,
-+       0x08138561FC, 0x066A4A52E1, 0x0518847FE4, 0x040C3713A8, 0x0337184E5=
-F, 0x028DCEBBF3,
-+       0x0207567A25, 0x019C86515C, 0x0147AE147B, 0x01044914F4, 0x00CEC089C=
-C, 0x00A43AA1E3,
-+       0x008273A664, 0x00679F1B91, 0x00524F3B0A, 0x0041617932, 0x0033EF0C3=
-7, 0x002940A1BC,
-+       0x0020C49BA6, 0x001A074EE5, 0x0014ACDA94, 0x00106C4364, 0x000D0B90A=
-4, 0x000A5CB5F5,
-+       0x00083B1F81, 0x000689BF52, 0x0005318139, 0x000420102C, 0x000346DC5=
-D, 0x00029A54B1,
-+       0x000211490F, 0x0001A46D24, 0x00014DF4DD, 0x0001094565, 0x0000D2B65=
-A, 0x0000A75FEF,
-+       0x000084F352, 0x0000699B38, 0x000053E2D6, 0x000042A212, 0x000034EDB=
-5, 0x00002A0AEA,
-+       0x0000216549, 0x00001A86F1, 0x000015123C, 0x000010BCCB, 0x00000D4B8=
-8, 0x00000A8F86,
-+       0x000008637C, 0x000006A9CF, 0x0000054AF8, 0x000004344B, 0x00000356E=
-E, 0x000002A718,
-+       0x0000021B6C, 0x000001AC7B, 0x000001545A, 0x0000010E5A, 0x000000D6C=
-0, 0x000000AA95,
-+       0x000000877F, 0x0000006BA1, 0x000000557E, 0x00000043E9, 0x00000035F=
-1, 0x0000002AD9,
-+       0x0000002209, 0x0000001B09, 0x000000157A, 0x000000110F, 0x0000000D8=
-D, 0x0000000AC3,
-+       0x000000088D, 0x00000006CA, 0x0000000565, 0x0000000449, 0x000000036=
-7, 0x00000002B4,
-+       0x0000000226, 0x00000001B5, 0x000000015B, 0x0000000114, 0x00000000D=
-B, 0x00000000AE,
-+       0x000000008A, 0x000000006E, 0x0000000057, 0x0000000045, 0x000000003=
-7, 0x000000002C,
-+       0x0000000023, 0x000000001C, 0x0000000016, 0x0000000011, 0x000000000=
-E, 0x000000000B,
-+       0x0000000009, 0x0000000007, 0x0000000005
-+};
-+
-+static s8 cl_eng_to_noise_floor(u64 eng)
-+{
-+       s8 i =3D 0;
-+       s8 noise =3D 0;
-+       s64 min_delta =3D S64_MAX;
-+
-+       for (i =3D ARRAY_SIZE(CL_EXP_10) - 1; i >=3D 0; i--) {
-+               if (abs((s64)(((s64)eng) - ((s64)CL_EXP_10[i]))) < min_delt=
-a) {
-+                       min_delta =3D abs((s64)(((s64)eng) - ((s64)CL_EXP_1=
-0[i])));
-+                       noise =3D i;
-+               }
-+       }
-+
-+       return (-noise);
-+}
-+
-+static void cl_read_reg_noise(struct cl_hw *cl_hw, s8 res[4])
-+{
-+       u32 reg_val =3D riu_agcinbdpow_20_pnoisestat_get(cl_hw);
-+       u8 i =3D 0;
-+
-+       for (i =3D 0; i < 4; i++) {
-+               u8 curr_val =3D (reg_val >> (i * 8)) & 0xFF;
-+               /* Convert reg value to real value */
-+               res[i] =3D curr_val - 0xFF;
-+       }
-+}
-+
-+s8 cl_calc_noise_floor(struct cl_hw *cl_hw, const s8 *reg_noise_floor)
-+{
-+       s8 noise_floor[4] =3D {0};
-+       u64 noise_floor_eng =3D 0;
-+
-+       if (reg_noise_floor)
-+               memcpy(noise_floor, reg_noise_floor, sizeof(noise_floor));
-+       else
-+               cl_read_reg_noise(cl_hw, noise_floor);
-+
-+       noise_floor[0] =3D abs(noise_floor[0]);
-+       noise_floor[1] =3D abs(noise_floor[1]);
-+       noise_floor[2] =3D abs(noise_floor[2]);
-+       noise_floor[3] =3D abs(noise_floor[3]);
-+
-+       BUILD_BUG_ON(CL_EXP_TBL_SIZE > S8_MAX);
-+       noise_floor_eng =3D (CL_EXP_10[min_t(s8, noise_floor[0], CL_EXP_TBL=
-_SIZE - 1)] +
-+                          CL_EXP_10[min_t(s8, noise_floor[1], CL_EXP_TBL_S=
-IZE - 1)] +
-+                          CL_EXP_10[min_t(s8, noise_floor[2], CL_EXP_TBL_S=
-IZE - 1)] +
-+                          CL_EXP_10[min_t(s8, noise_floor[3], CL_EXP_TBL_S=
-IZE - 1)]);
-+
-+       noise_floor_eng =3D div64_u64(noise_floor_eng, 4);
-+
-+       return cl_eng_to_noise_floor(noise_floor_eng);
-+}
-+
-+u8 cl_convert_signed_to_reg_value(s8 val)
-+{
-+       bool sign =3D (val < 0 ? true : false);
-+       u8 res =3D abs(val);
-+
-+       if (sign)
-+               res |=3D (1 << 7);
-+
-+       return res;
-+}
-+
-+static const int nl_width_to_phy_bw[] =3D {
-+       [NL80211_CHAN_WIDTH_20_NOHT] =3D CHNL_BW_20,
-+       [NL80211_CHAN_WIDTH_20]      =3D CHNL_BW_20,
-+       [NL80211_CHAN_WIDTH_40]      =3D CHNL_BW_40,
-+       [NL80211_CHAN_WIDTH_80]      =3D CHNL_BW_80,
-+       [NL80211_CHAN_WIDTH_80P80]   =3D CHNL_BW_20,
-+       [NL80211_CHAN_WIDTH_160]     =3D CHNL_BW_160,
-+       [NL80211_CHAN_WIDTH_5]       =3D CHNL_BW_20,
-+       [NL80211_CHAN_WIDTH_10]      =3D CHNL_BW_20,
-+};
-+
-+u8 width_to_bw(enum nl80211_chan_width width)
-+{
-+       if (width <=3D NL80211_CHAN_WIDTH_10)
-+               return nl_width_to_phy_bw[width];
-+
-+       return NL80211_CHAN_WIDTH_20;
-+}
-+
-+static const int phy_bw_to_nl_width[] =3D {
-+       [CHNL_BW_20]  =3D NL80211_CHAN_WIDTH_20,
-+       [CHNL_BW_40]  =3D NL80211_CHAN_WIDTH_40,
-+       [CHNL_BW_80]  =3D NL80211_CHAN_WIDTH_80,
-+       [CHNL_BW_160] =3D NL80211_CHAN_WIDTH_160,
-+};
-+
-+enum nl80211_chan_width bw_to_width(u8 bw)
-+{
-+       if (bw < CHNL_BW_MAX)
-+               return phy_bw_to_nl_width[bw];
-+
-+       return CHNL_BW_20;
-+}
-+
-+bool cl_is_valid_auth_mode(bool is_wpa, u8 auth_mode)
-+{
-+       return is_wpa ? (auth_mode <=3D CL_AKM_SUITE_PSK) :
-+               (auth_mode <=3D CL_AKM_SUITE_FT_FILS_SHA384);
-+}
-+
-+bool cl_is_open_auth_mode(u8 auth_mode)
-+{
-+       return auth_mode =3D=3D CL_AKM_SUITE_OPEN;
-+}
-+
-+u64 cl_get_tsf_u64(struct cl_hw *cl_hw)
-+{
-+       u32 tsf_low =3D mac_hw_tsf_lo_get(cl_hw);
-+       u32 tsf_high =3D mac_hw_tsf_hi_get(cl_hw);
-+       u64 tsf;
-+
-+       if (tsf_low > CL_TSF_LOW_MIGHT_OVERFLOW_TH) {
-+               u32 tmp_tsf_low =3D mac_hw_tsf_lo_get(cl_hw);
-+
-+               /* Overflow of tsf_low occurred */
-+               if (tmp_tsf_low < 0xFFFFF000)
-+                       tsf_high++;
-+       }
-+
-+       tsf =3D ((u64)tsf_high << 32) | (u64)tsf_low;
-+
-+       return tsf;
-+}
-+
-+u8 cl_center_freq_offset(u8 bw)
-+{
-+       if (bw =3D=3D CHNL_BW_160)
-+               return 70;
-+
-+       if (bw =3D=3D CHNL_BW_80)
-+               return 30;
-+
-+       if (bw =3D=3D CHNL_BW_40)
-+               return 10;
-+
-+       return 0;
-+}
-+
-+u8 max_bw_idx(u8 wrs_mode, bool is_24g)
-+{
-+       if (wrs_mode < WRS_MODE_HT)
-+               return CHNL_BW_20 + 1;
-+
-+       if (wrs_mode =3D=3D WRS_MODE_HT || is_24g)
-+               return CHNL_BW_40 + 1;
-+
-+       return CHNL_BW_MAX;
-+}
-+
-+bool cl_hw_mode_is_b_or_bg(struct cl_hw *cl_hw)
-+{
-+       return (cl_hw->conf->ha_hw_mode =3D=3D HW_MODE_B ||
-+               cl_hw->conf->ha_hw_mode =3D=3D HW_MODE_BG);
-+}
++bool cl_hw_mode_is_b_or_bg(struct cl_hw *cl_hw);
 +
 +void cl_snprintf(char **buf, int *offset, size_t *size, const char *fmt, .=
-..)
+..);
++
++bool cl_is_eapol(struct sk_buff *skb);
++
++static inline bool cl_are_host_bytes_le(void)
 +{
-+       void *new_buf =3D NULL;
-+       va_list args;
-+       u16 str_len =3D strlen(fmt);
-+       u16 new_size;
-+
-+       if (!*buf) {
-+               *size =3D PAGE_SIZE;
-+               *buf =3D kzalloc(*size, GFP_KERNEL);
-+               if (!*buf) {
-+                       pr_err("Buffer allocation failed (%u)\n", (u32)*siz=
-e);
-+                       return;
-+               }
-+       }
-+
-+       /* Additional space is required */
-+       if (str_len > *size - *offset) {
-+               new_size =3D *size * 2;
-+               new_buf =3D kvzalloc(new_size, GFP_KERNEL);
-+               if (new_buf) {
-+                       *size =3D new_size;
-+                       memcpy(new_buf, *buf, strlen(*buf));
-+                       kvfree(*buf);
-+                       *buf =3D new_buf;
-+               } else {
-+                       pr_err("Buffer allocation failed (%u)\n", (u32)*siz=
-e);
-+                       return;
-+               }
-+       }
-+
-+       va_start(args, fmt);
-+       *offset +=3D vsnprintf(*buf + *offset, *size, fmt, args);
-+       va_end(args);
++#ifdef __LITTLE_ENDIAN
++       return true;
++#else
++       return false;
++#endif /* __LITTLE_ENDIAN */
 +}
 +
-+bool cl_is_eapol(struct sk_buff *skb)
++/* Most likely, bit endianess is the same as the byte endianess, but turn =
+on
++ * paranoid mode and check separately */
++static inline bool cl_are_host_bits_le(void)
 +{
-+       struct ieee80211_hdr *hdr =3D (struct ieee80211_hdr *)skb->data;
-+       __le16 fc =3D hdr->frame_control;
-+       unsigned int hdrlen =3D 0;
-+       unsigned short ethertype =3D 0;
-+       u8 *temp =3D NULL;
-+
-+       /* Find the wireless header size */
-+       hdrlen =3D ieee80211_has_a4(fc) ? 30 : 24;
-+
-+       if (ieee80211_is_data_qos(fc)) {
-+               hdrlen +=3D IEEE80211_QOS_CTL_LEN;
-+
-+               if (ieee80211_has_order(fc))
-+                       hdrlen +=3D IEEE80211_HT_CTL_LEN;
-+       }
-+
-+       /* Skip wireless header */
-+       temp =3D (u8 *)(skb->data + hdrlen);
-+
-+       /* Skip LLC and SNAP header */
-+       if (PKT_HAS_LLC_HDR(temp))
-+               ethertype =3D get_ether_type(LENGTH_LLC + LENGTH_SSNAP - 2,=
- temp);
-+
-+       return (ethertype =3D=3D ETH_P_PAE) ? true : false;
++#ifdef __LITTLE_ENDIAN_BITFIELD
++       return true;
++#else
++       return false;
++#endif /* __LITTLE_ENDIAN_BITFIELD */
 +}
++
++/* We could inverse *_le checks here, but the motivation is the, as per bi=
+ts
++ * endianess - anyway, it is better to check */
++static inline bool cl_are_host_bytes_be(void)
++{
++#ifdef __BIG_ENDIAN
++       return true;
++#else
++       return false;
++#endif /* __BIG_ENDIAN */
++}
++
++static inline bool cl_are_host_bits_be(void)
++{
++#ifdef __BIG_ENDIAN_BITFIELD
++       return true;
++#else
++       return false;
++#endif /* __BIG_ENDIAN_BITFIELD */
++}
++
++#endif /* CL_UTILS_H */
 --
 2.30.0
 
