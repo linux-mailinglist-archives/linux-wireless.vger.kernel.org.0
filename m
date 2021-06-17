@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 924EF3AB865
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E0A3AB867
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:05:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231311AbhFQQHk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:07:40 -0400
-Received: from mail-eopbgr70049.outbound.protection.outlook.com ([40.107.7.49]:64480
+        id S233219AbhFQQHv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:07:51 -0400
+Received: from mail-eopbgr70075.outbound.protection.outlook.com ([40.107.7.75]:41442
         "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232113AbhFQQHQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:07:16 -0400
+        id S230167AbhFQQHT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:07:19 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=in0NvS68OXLL/cLXnLBCxgZK0vxCt1muFrDfuE65q5vkaXLC2Bgp0iFBLSEJJ2fETyME9nvaGhJaGTkgSwnuoHY9CUOT9BdjgFlHTHOfs9grOqnmHxyKOe5GG6K3HkWywZgbD8mwV8raWe8FIPjUXZqi1BW1YqSPkLV0xG1q0rEB1PdcPh46LpATa0N4lOXXJdyxAma04VS5d0TOQHSP2TJOYQk7QcDAuHzUtIF1oqJ8vbpEBgvHRDw2YGWz3KYvNFVHBylra9zjpa234XWdcYocFlSq028ftSl7osEI69qQDT3HLGQDpUN1CIZA9kFeztIDwVq5mkA7fCYnYk/XNw==
+ b=TjHj7RjCrjRL4FodG73KhUAmtmP3Of4L2BEpwWdpxb/wt0Q5Gh359cumJZ16lwXsYuCy53aG7CfGH5Q9SOV2n9GWE8/bYF8FpKQqOR354ToR7aDUdtGwYgW+KNcPp06M6YEjVuOYKK+l0UT+fOpzEoDMlzqV7IXDAvi0sDeageoW3WUfRpYG3o5GLgnUoZJ2UQfLwWBX1/26irs/NatRLSX8MeYEStPmq/FwUyOphcIwuPY6i8K71bMKlBwWczi7kqse53E60bG/aaeIID4I6xxL4/C6xbeIeD8YkmOGh0okHmGQ+dit8G17bbpRh7fXomwZpiNJjJklhgSvbh75iQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MUdARfgsljQ5UALp6Tyqx6tRJWplu8XeJEJcvfVAsSk=;
- b=XNnGUqGMUwts2l6cxTQOPVdj+FGrCKYIAv2s3A38c3yt/RmfBcFyW4kvy4igWQSCYxZTqo9d+ZBxMqVYa7+pwdgkEzolfXQQyDMP5KujFDN0wFeZqPF9oaAMky/95RFNQvpUiqhQaVp8VEGuE8hOC4RvSAlXTRNYLF7DSnU9yxcJp4gDqHYQ8Fq0BPxbavd/H3/lyPE1FamcsAsraUXS5WV/2q6W4Of8SqOLuKEELSD12aQuLzUR0ddTEWY1i2j+wwkb++VUeYg0ZiT/7TeJ3KwpeKLyZdjsvsUtucp5hnl+SdJSjXim8G2LwqycKJDlgwG0hr1tK17pIEwII4FFHA==
+ bh=knDtX294vQYSjbFyLfKqP4nnUWeJm6eVXe5Lg9jYR+U=;
+ b=e+riFRbyb4EAdh4EV/715qseloGCRNpXSJQOAwwW/jCChWYJKPAkEK4N3AavzA97vf9rBxlC0hwjL4JLknbIonBO1BYpYXxP7X6y9fXIu0Vv8AGlxUO6EpZdLlgaSA8A0dlgDzKU/Yl7ZXBVGoGT9k+KoqaZ7XqAkx9E9/Jj9DvbzBJYFNcZwM6mh8xc9TP++r/zIBSpiJHWIdEWsHPVXb4iI9cmjIetbhTskqpIpvWReSLkUpkiYfNPSAYhRDJoHGq94+tM8Yz0x0mzY9wsu/nm8MOAXCZhtJJG5uGnjM91BLqv4kbnPWcOQaregHkrtyIB6T5EbfTiffuE10r8TA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MUdARfgsljQ5UALp6Tyqx6tRJWplu8XeJEJcvfVAsSk=;
- b=OO5mgBx7lnQ8kM+4SGNvFI89XvIjRfe+WbZYLOJZZJaJ3SE9uJYA/nIGQWGyExOvfh05NRWBAV389ynduag7a4Ls2h7nGxpSle9JlMg6koB6NOi0PTPRqD2R+2ITzLL1k7Tu6QyXwmx/yf3o0ts2CLeByAMm3Zi//KCo0EH+LgE=
+ bh=knDtX294vQYSjbFyLfKqP4nnUWeJm6eVXe5Lg9jYR+U=;
+ b=2OvPSwQFk5i6sc2hS6/8hjPhXGh2vNtuWtEoHUyRJZUg+KGGIc+kcyakUgLcCn3ZxwccSkPUHY2O5tsL0F4xKb7RUKaAcMDgMz4W9w/m8z5QMQEE0rC7Xy2r5LdzyYoq84Od5asCEov2vBW/dvgVt2X1xhulOaTIKR+AqvlQDgU=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 105/256] cl8k: add mac80211.c
-Date:   Thu, 17 Jun 2021 15:59:52 +0000
-Message-Id: <20210617160223.160998-106-viktor.barna@celeno.com>
+Subject: [RFC v1 106/256] cl8k: add mac80211.h
+Date:   Thu, 17 Jun 2021 15:59:53 +0000
+Message-Id: <20210617160223.160998-107-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:29 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:30 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 154a132a-b1ca-474b-2958-08d931a996ec
+X-MS-Office365-Filtering-Correlation-Id: c080d996-01b8-4a50-4c33-08d931a99785
 X-MS-TrafficTypeDiagnostic: AM0P192MB0402:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB04028517D8BF9F940BE1497BF60E9@AM0P192MB0402.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-Microsoft-Antispam-PRVS: <AM0P192MB04021ED51A0A1ADA2122E64FF60E9@AM0P192MB0402.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:773;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: l34Byq9OKeQ0Wk68MfSm7O9JVKTPY+OWFzTyKxV9on6Q03EHPp02WMzLTfCjZJ/gyrtkEGXGPrsqgZE7DmFsZiB2n2oBnoWgzitQoCglo3RHtiz5OxTuQD/uiElbzJa9NdEY5ehfCJsyFS09B5vLKCKEZoGlt9PNnP0fM40Y9B5oAHIYHDZw/gmheFLbaq5YMIsw7ei2eSOoVTcKbMrWYueYCTJyjCbo07htdBwlxDhqqSkUSydYom0Ym30O6GcDtKHojO+nc45n/fy1VNDSuhqYYemENzZVdZe6oaQqictESq0wwK+kWnLFWciIQU85yROfe3sAkPUwK0iuouXRJue/VGzeBl0/djIp/VMgUtcJrAF3qkIDHU+F2sYKfy6L3C082D+WiX4s20kudBTqCOjtD5gcT0EGDTlLdApNttwz+SFj8UH8Sl90ZH+fg48qmKAkoso1v2/kmRumStOPh1c1DE6IgFNV0QkFxeXtF3+xTrBjtL+3gINeK0IDwnJnRKXdeiMZ4B+1hoqiCRnDFPjbed/1QiRVK2vFK6eBdE9R+TvOOQhSn/FOiD7vgHZ/OtXbuO/zVmlt2Com3zqo2UOBJcE4lW47OoMk6+wVnNoh8bxHlOVhAboXyWIfLeSEA6yaPIK31ZfGHjR+pWNvXe2yL5n7Y1v9Cg+J0Fkt0o5iUBjKnFj7nk2z3cG7orktMNWC4XtNNiaGCll0btSBCA==
+X-Microsoft-Antispam-Message-Info: 9vDuC2Rh5O7lfrfMrlFU1az2euLKIIgxkkB+sWDQ8DsvKw/IslweynE4RMf21PW8/JaIVarCfutaWCAo9OY66i+ESF2QQ2wqV5XKY6U9KkollJNroCK3pyILwKey+svfD9ZuU1PLfcBCL1V5W6ofO9pPwUPXJX1SwfEVX7RhjDHehvq9/ZKzo7KIOIrIGf7S/JXtlBUETfTxINB53Rr3aG5d3LY8fmMepMFeDJDIwzM7IcL3zzLdbdJ8Ss7LiUFetNUFo2rC2w1pehqqMt8pXDnyxlRrd+US/Gg+P4/M7oGKOkvZD0bYVee5UIRt40RVwwcB9C0CcebRStDZD0fhxYK1QVzdKtvXgeztZILCi1+RVmi8MtKh4hWnPbRFQT+sOy4E8DAHFpO6XPG7tNNekywlUn8wHLNzgNbDBIKbgMKmvWXWmQX05u2PyufQw12IV2KVk5OzJEXDw82MUtoL/TecPdwQGsDeJJEiv/3IOG2e87vlgdr0OfQvxWbh6RLTpqdz3ya2z9XsiIrHrtdqbHeX/gfQImCy5rKcXR7slu9Yq6NpoGUJaKDZQJz+yvA6XxXZIXaiJ3GrHD+yv3yLWLVSUHmmamg6IEhYUxNDQjK0aL2Jn82NkZpWIhA5e1N3HDrEWN/5bjmBdM1Zbyrr33OT98v0it8usXtYJPdAHFcPvED4kz0pFMCZo5qBhbtw6iNAYpdPLqVSHJpw4amxBg==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(39850400004)(136003)(376002)(396003)(366004)(346002)(6916009)(6512007)(9686003)(6666004)(52116002)(2616005)(186003)(16526019)(38100700002)(38350700002)(1076003)(6506007)(5660300002)(107886003)(55236004)(86362001)(6486002)(8936002)(956004)(26005)(8676002)(508600001)(2906002)(36756003)(54906003)(316002)(66946007)(66556008)(4326008)(66476007)(83380400001)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?MlzJDELDxan1/M5bBUEmf1B5xQ+riZOgB/jqGriJ8UBPnZs53lSl4flnCNjA?=
- =?us-ascii?Q?h1QN+neXvYVVbx03XNNjpNo+9fehnB9o7yjH4D7TdukNRjo4N4GxjQjnBc0/?=
- =?us-ascii?Q?Co2DBchmEunSxMrN7kY9HfUmVH0wWsiTugYeVFqYByxQmRbybubujWw8jyQJ?=
- =?us-ascii?Q?mAemJsX55ByJBoScLL8m0b4EzMvmsV23ehhUK4zMw+ADddSnsdtai7qa7gvi?=
- =?us-ascii?Q?DSjmvy7R0NNR5SUZDoWb2D975nKk4px0WQoZIwyDd7x4tyfbpZ8lBLdFrq2S?=
- =?us-ascii?Q?q3+BnDc7AF+Nb7fHpXuVzv48ram7AUzRr6qRxiXgOnTPsNAbjWANWR4tRXlV?=
- =?us-ascii?Q?b/lKlOEd4/KtEUj6g24iBr0Pv+FOeVkucCq66aJ0RH2D521ItaMX03skgcD9?=
- =?us-ascii?Q?O3FdHwWignvyUqUsS/17jVztKkyLL3OoliIgpd5uVI6WbGKyBQf6yOixH5k9?=
- =?us-ascii?Q?DV9t/XJC5AvMacqaMVEdcvFtkuWdWzQPIWM1eOgMSVfRulDnP2BylEDfoptd?=
- =?us-ascii?Q?kGLVEMXgEUqM4AulB3TITDSIZIzL6A96eZd77y6Y29XulTpbkR1VfFA5BF+F?=
- =?us-ascii?Q?tF4VC9DWEVD6o6RW3Xgvi2OGqbVYtFoYgYi9DIFBM2rj0V0VN+Jp0cdvDHV4?=
- =?us-ascii?Q?TB7ITpP6YFN4RC0m82JUKADit2fnd6qFV3UuLlGM7TbrM2/DC4pK6wR9DPwr?=
- =?us-ascii?Q?hq28VyGBZ5qYOSOc0Cn1G5QMemPWmgKOxjo6gErF3QKGaMu//PIxslsRXeTC?=
- =?us-ascii?Q?sBIdp63BlsJpuImt8SiG+pdAeGWVSEjkOAuvto0AAQvn5l4vq3LWOJ6e6vao?=
- =?us-ascii?Q?b/AGKfzgtf8emzMgeYsvJkxM3gBvq6QwBKRfL/LdOwL2bUqchkfnPPxAuY8a?=
- =?us-ascii?Q?qUPZjGDSrh6e8FeEFXV0OEMqWHoEx2cylD8EQDJZtywGfL8gKxC+LtrpEGM6?=
- =?us-ascii?Q?ORBWEccovTqtOyDQDvnECPuV8OCQ1Ayw5uJg8gUyzMyatkZ8aFqYOqwvPpnI?=
- =?us-ascii?Q?dChvwhg3Sz9RXdumlo61131kdn8A6YW0TCayyl7iCFaZ3uGUvswU30VAzpdB?=
- =?us-ascii?Q?9N3EFCpGlb9UgQpxlEnEcvqjEcODKZdhmbInCKN84q0tzgYB5MXQK6nSY9ma?=
- =?us-ascii?Q?sMaDBJmZi0MW9IvqFczZ8y0SIxpCawUVRFQbEfs/2u4LKsriXhurhziiuFpv?=
- =?us-ascii?Q?arZDPzUcr0DWDS2kRpMECZc6/kfcSUcxr0XfTLAkGPg1aP+E4qonxbfBowJ+?=
- =?us-ascii?Q?SW6wSIBTWuUkQNcSAUYnhB+C/s+2T0TrvUAiNt+9sL1Uf3ydffKvFiFk53H1?=
- =?us-ascii?Q?s7rgb3kb+V24PQWcoSLigIZl?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9zmi1Qp0FYOfWwi3otmrqQ0I650og7wAxLfofO01XL6ejd4bLWHy7s7iLOVi?=
+ =?us-ascii?Q?7IwyzbWJQCOnMvfWvA7KVr8IMJ0jIZPZQLZDnbwUWu0Nz/+c1HSFt4a4dIKf?=
+ =?us-ascii?Q?PJd6bfMV/t82l/DLXYBL1G0haM7M9J+Wznkw82dYorO31hzXU64kr+BeTUBj?=
+ =?us-ascii?Q?H3WXwncruvOsp6mb+4BUA/NGhRnGTv4Fe2Bt7XS13whHCQ5lEHSDHOS26KfQ?=
+ =?us-ascii?Q?JCC1mp31m8hUaf+B/5A/PGgUlG73Ofz6WOBy+DBk4RtDbbQ39TvlISKfUku2?=
+ =?us-ascii?Q?jljJiPcbKBeNyGLGaRuDuvyTRmXPH1kHvHJ+6Xl/xyBPeyAq5rHDav+3lHEx?=
+ =?us-ascii?Q?yH1KobTlBdXWTeLyh0zEjOCPwVkzwoJuvTK25Z50c8euR81yASuJR18kMAsQ?=
+ =?us-ascii?Q?so2XmPvxrxuO/fq6TwSvk/xegLp8ZT6aHsvhrMPykjTC3j7TceDiwcaeFbIh?=
+ =?us-ascii?Q?9juSyVZI5WQVGTnvRp3xL+w9IzFXRDc6isuESnUi0STIvpKel0H8eoTVpwoh?=
+ =?us-ascii?Q?cncx2vDZgwptjfT1vQbRt+hMU+py/yU3guj3hBEIzEjvJhxz3y8udHGVfMle?=
+ =?us-ascii?Q?UiWFDMcc6QCxnZSoeopPRWUuI8yh4lBg7+7vVeNOJt7m/Qxtj8GGdZ6PiuOg?=
+ =?us-ascii?Q?4HSb/2CHT71+0UZEKceBKa9Rj/0NmijIxJ9+UqiB/Ds80n9Xj1abwUT5mMuU?=
+ =?us-ascii?Q?YNZ51xgyajgVh2v6mL2DCmy2UFihjcJRDfpImWOpwSAbrpDflXtEeOAChJnN?=
+ =?us-ascii?Q?nQTZ3HCw4fp3cpZz2cuiGBY9LQX7ewEi1/nCPtccWPxa33buZbtN098V3emj?=
+ =?us-ascii?Q?hTWzN3PDtyRaBSMVPAyEKWSWYZ9EGYCHWLi3h/38GAmsPg8WeBDwGYB0+wnz?=
+ =?us-ascii?Q?Xcx0IsXl6/3Q80uvgkfmcEZsCkqQbQ26J5fQAtJ8FTknWVm30LCZ8HvM8ZZe?=
+ =?us-ascii?Q?Fd2FjUywpKYci8XvPNoiRrokHIvsbBv6u3ZegDudaYLSi9Vn0P6eqYrEmq89?=
+ =?us-ascii?Q?F4cH1/M9aP7bPjHFKtZxpqUcEm071GUvpx+iVwJYYYZqTdyxNqa8IzV+Zk6C?=
+ =?us-ascii?Q?lgYzfMn3+wb703Mun7Fj3gfUs1z8e46Ldn1LZ9A/5pChdoCVhaIlDqE986xE?=
+ =?us-ascii?Q?+Uf/MK09p80jF9fyL8Iax83l2hTUWTh/yD8mBrQR62KtyuRa/SDDh6MNDjEP?=
+ =?us-ascii?Q?ztVoe8ZRZsZO9/xvM6aZq2T21ZTQDbtI7lrG0Y10vZyljFMXXuxJlGRRCY2z?=
+ =?us-ascii?Q?dIJn6YFcGSt7kdeZSQlzQbYvwLPRdDcA/CUl74eHAEFrvEXfezffPaZYMkTY?=
+ =?us-ascii?Q?yp6tYGDAq8X4hIInbiPWbQYd?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 154a132a-b1ca-474b-2958-08d931a996ec
+X-MS-Exchange-CrossTenant-Network-Message-Id: c080d996-01b8-4a50-4c33-08d931a99785
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:30.2392
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:31.3175
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Tr/LZLFNClDpxewN0UnMLKisP2f4ipUbNJwHnrHq2coLLtdBvH5T5FElG8aWMnELW0k0x9tbwdc7oYJFK5Pelw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FkOn0DvRVSAD5RPVtkwIUfLrnzKTj95+lbapZNfrFGWCvwQuiDBAmemeicSjdZkhH6BHg0CM+nMoLqSWScYu6Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0402
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,34 +119,340 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/mac80211.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/mac80211.c
+ drivers/net/wireless/celeno/cl8k/mac80211.h | 310 ++++++++++++++++++++
+ 1 file changed, 310 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/mac80211.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/mac80211.c b/drivers/net/wire=
-less/celeno/cl8k/mac80211.c
+diff --git a/drivers/net/wireless/celeno/cl8k/mac80211.h b/drivers/net/wire=
+less/celeno/cl8k/mac80211.h
 new file mode 100644
-index 000000000000..4ba6dd1e6eec
+index 000000000000..57bd08d5a730
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/mac80211.c
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/mac80211.h
+@@ -0,0 +1,310 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "mac80211.h"
-+#include <net/mac80211.h>
++#ifndef CL_MAC80211_H
++#define CL_MAC80211_H
 +
-+/* Copied from kernel/bp/net/mac80211/wme.c */
-+const int ieee802_1d_to_ac[8] =3D {
-+       IEEE80211_AC_BE,
-+       IEEE80211_AC_BK,
-+       IEEE80211_AC_BK,
-+       IEEE80211_AC_BE,
-+       IEEE80211_AC_VI,
-+       IEEE80211_AC_VI,
-+       IEEE80211_AC_VO,
-+       IEEE80211_AC_VO
++#include <linux/types.h>
++#include <linux/if_ether.h>
++
++extern const int ieee802_1d_to_ac[8];
++
++#define IEEE80211_CTRL_A_CTRL_MASK  0x3
++
++#define IEEE80211_CTRL_A_CTRL_ID_OM  0x1
++#define IEEE80211_CTRL_A_CTRL_ID_UPH 0x4
++
++#define IEEE80211_CTRL_UPH_OFFSET 6
++
++static inline bool ieee80211_has_a_ctrl(u32 val)
++{
++       return ((val & IEEE80211_CTRL_A_CTRL_MASK) =3D=3D IEEE80211_CTRL_A_=
+CTRL_MASK);
++}
++
++struct ieee80211_a_control {
++       union {
++               struct {
++                       u32 b0 : 1,
++                          b1 : 1,
++                          control_id : 4,
++                          control_info : 26;
++               } __packed fields;
++               u32 value;
++       } u;
++} __packed;
++
++struct ieee80211_uph_ctrl {
++       union {
++               struct {
++                       u8 pwr_headroom : 5,
++                          min_pwr      : 1,
++                          reserved     : 2;
++               } __packed fields;
++               u8 value;
++       } u;
++} __packed;
++
++/* HTC header might includes HT/VHT/HE variant */
++/* This struct implements only HE variant type */
++struct ieee80211_qos_htc_hdr {
++       __le16 frame_control;
++       __le16 duration_id;
++       u8 addr1[ETH_ALEN];
++       u8 addr2[ETH_ALEN];
++       u8 addr3[ETH_ALEN];
++       __le16 seq_ctrl;
++       __le16 qos_ctrl;
++       struct ieee80211_a_control a_ctrl;
++} __packed __aligned(2);
++
++/* WLAN_EID_BSS_COEX_2040 =3D 72 */
++/* 802.11n 7.3.2.61 */
++struct ieee80211_bss_coex_20_40_ie {
++       u8 element_id;
++       u8 len;
++       u8 info_req : 1;
++       /* Inter-BSS set 1 when prohibits a receiving BSS from operating as=
+ a 20/40 Mhz BSS */
++       u8 intolerant40 : 1;
++       /* Intra-BSS set 1 when prohibits a receiving AP from operating its=
+ BSS as a 20/40MHz BSS */
++       u8 bss20_width_req : 1;
++       u8 obss_scan_exemp_req : 1;
++       u8 obss_scan_exemp_grant : 1;
++       u8 rsv : 3;
++} __packed;
++
++/* WLAN_EID_BSS_INTOLERANT_CHL_REPORT =3D 73 */
++/*802.11n 7.3.2.59 */
++struct ieee80211_bss_intolerant_chl_report_ie {
++       u8 element_id;
++       u8 len;
++       u8 regulatory_class;
++       u8 ch_list[0];
++} __packed;
++
++enum ieee80211_twt_setup_command {
++       IEEE80211_TWT_SETUP_COMMAND_REQUEST =3D 0,
++       IEEE80211_TWT_SETUP_COMMAND_SUGGEST =3D 1,
++       IEEE80211_TWT_SETUP_COMMAND_DEMAND =3D 2,
++       IEEE80211_TWT_SETUP_COMMAND_GROUPING =3D 3,
++       IEEE80211_TWT_SETUP_COMMAND_ACCEPT =3D 4,
++       IEEE80211_TWT_SETUP_COMMAND_ALTERNATE =3D 5,
++       IEEE80211_TWT_SETUP_COMMAND_DICTATE =3D 6,
++       IEEE80211_TWT_SETUP_COMMAND_REJECT =3D 7
 +};
++
++union ieee80211_twt_control_field {
++       struct {
++               u8 ndp_paging_indicator:1,
++                  responder_pm_mode:1,
++                  negotiation_type:2,
++                  twt_info_frame_disabled:1,
++                  wake_duration_unit:1, /* 0 - 256us, 1 - 1024us */
++                  reserved:2;
++       } __packed fields;
++       u8 value;
++} __packed;
++
++struct ieee80211_twt_individual_elem {
++       union ieee80211_twt_control_field control;
++       union {
++               struct {
++                       u16 request               :1,
++                           setup_cmd             :3,
++                           trigger               :1,
++                           implicit              :1,
++                           flow_type             :1,
++                           flow_id               :3,
++                           wake_interval_exponent:5,
++                           protection            :1;
++               } __packed fields;
++               u16 value;
++       } req_type;
++       u64 target_wake_time;
++       u8 min_wake_duration;
++       u16 wake_interval_mantissa;
++       u8 channel;
++} __packed;
++
++struct ieee80211_twt_broadcast_elem {
++       union ieee80211_twt_control_field control;
++       union {
++               struct {
++                       u16 request                 :1,
++                           setup_cmd               :3,
++                           trigger                 :1,
++                           last_broadcast_param_set:1,
++                           flow_type               :1,
++                           recommendation          :3,
++                           wake_interval_exponent  :5,
++                           reserved                :1;
++               } __packed fields;
++               u16 value;
++       } req_type;
++       u16 target_wake_time;
++       u8 min_wake_duration;
++       u16 wake_interval_mantissa;
++       union {
++               struct {
++                       u16 reserved   :3,
++                           id         :5,
++                           persistence:8;
++               } __packed fields;
++               u16 value;
++       } broadcast_twt_info;
++} __packed;
++
++/* Union options that are not included in 'struct ieee80211_mgmt' */
++struct cl_ieee80211_mgmt {
++       __le16 frame_control;
++       __le16 duration;
++       u8 da[ETH_ALEN];
++       u8 sa[ETH_ALEN];
++       u8 bssid[ETH_ALEN];
++       __le16 seq_ctrl;
++       union {
++               struct {
++                       __le16 auth_alg;
++                       __le16 auth_transaction;
++                       __le16 status_code;
++                       /* Possibly followed by Challenge text */
++                       u8 variable[0];
++               } __packed auth;
++               struct {
++                       __le16 reason_code;
++               } __packed deauth;
++               struct {
++                       __le16 capab_info;
++                       __le16 listen_interval;
++                       /* Followed by SSID and Supported rates */
++                       u8 variable[0];
++               } __packed assoc_req;
++               struct {
++                       __le16 capab_info;
++                       __le16 status_code;
++                       __le16 aid;
++                       /* Followed by Supported rates */
++                       u8 variable[0];
++               } __packed assoc_resp, reassoc_resp;
++               struct {
++                       __le16 capab_info;
++                       __le16 listen_interval;
++                       u8 current_ap[ETH_ALEN];
++                       /* Followed by SSID and Supported rates */
++                       u8 variable[0];
++               } __packed reassoc_req;
++               struct {
++                       __le16 reason_code;
++               } __packed disassoc;
++               struct {
++                       __le64 timestamp;
++                       __le16 beacon_int;
++                       __le16 capab_info;
++                       /*
++                        * Followed by some of SSID, Supported rates,
++                        * FH Params, DS Params, CF Params, IBSS Params, TI=
+M
++                        */
++                       u8 variable[0];
++               } __packed beacon;
++               struct {
++                       /* Only variable items: SSID, Supported rates */
++                       u8 variable[0];
++               } __packed probe_req;
++               struct {
++                       __le64 timestamp;
++                       __le16 beacon_int;
++                       __le16 capab_info;
++                       /*
++                        * Followed by some of SSID, Supported rates,
++                        * FH Params, DS Params, CF Params, IBSS Params
++                        */
++                       u8 variable[0];
++               } __packed probe_resp;
++               struct {
++                       u8 category;
++                       union {
++                               struct {
++                                       u8 action_code;
++                                       struct ieee80211_bss_coex_20_40_ie =
+bss_coex_20_40_ie;
++                                       /*
++                                        * This IE May appear zero or more =
+times,
++                                        * that situation wasn't handled he=
+re.
++                                        */
++                                       struct ieee80211_bss_intolerant_chl=
+_report_ie
++                                               bss_intolerant_chl_report_i=
+e;
++                               } __packed coex_2040_mgmt;
++                               struct {
++                                       u8 action_code;
++                                       u8 dialog_token;
++                                       u8 twt_elem_id;
++                                       u8 twt_elem_length;
++                                       struct ieee80211_twt_individual_ele=
+m twt_elem;
++                               } __packed twt_individual_setup;
++                               struct {
++                                       u8 action_code;
++                                       u8 dialog_token;
++                                       u8 twt_elem_id;
++                                       u8 twt_elem_length;
++                                       struct ieee80211_twt_broadcast_elem=
+ twt_elem;
++                               } __packed twt_broadcast_setup;
++                               struct {
++                                       u8 action_code;
++                                       /*
++                                        * reserved bits can be combined wi=
+th flow_id to
++                                        * form broadcast TWT id of 5 bits =
+in case that
++                                        * negotiation_type =3D 3
++                                        */
++                                       u8 flow_id :3,
++                                          reserved:2,
++                                          negotiation_type:2,
++                                          teardown_all_twt:1;
++                               } __packed twt_individual_teardown;
++                               struct {
++                                       u8 action_code;
++                                       u8 flow_id:3,
++                                          response_requested:1,
++                                          next_twt_request:1,
++                                          next_twt_subfield_size:2,
++                                          all_twt:1;
++                                       u8 next_twt[64];
++                               } __packed twt_information;
++                       } u;
++               } __packed action;
++       } u;
++} __packed __aligned(2);
++
++/*
++ * Information Element IDs
++ * Should be part of 'enum ieee80211_eid'
++ */
++#define WLAN_EID_TWT 216
++
++/*
++ * Action category code
++ * Should be part of 'enum ieee80211_category'
++ */
++#define WLAN_CATEGORY_UNPROTECTED_S1G 22
++#define WLAN_CATEGORY_S1G 23
++
++enum ieee80211_unprotected_s1g_actioncode {
++       WLAN_UNPROT_S1G_ACTION_AID_SWITCH_REQUEST =3D 0,
++       WLAN_UNPROT_S1G_ACTION_AID_SWITCH_RESPONSE =3D 1,
++       WLAN_UNPROT_S1G_ACTION_SYNC_CONTROL =3D 2,
++       WLAN_UNPROT_S1G_ACTION_STA_INFO_ANNOUNCEMENT =3D 3,
++       WLAN_UNPROT_S1G_ACTION_EDCA_PARAMETER_SET =3D 4,
++       WLAN_UNPROT_S1G_ACTION_EL_OPERATION =3D 5,
++       WLAN_UNPROT_S1G_ACTION_TWT_SETUP =3D 6,
++       WLAN_UNPROT_S1G_ACTION_TWT_TEARDOWN =3D 7,
++       WLAN_UNPROT_S1G_ACTION_SECTORIZED_GROUP_ID_LIST =3D 8,
++       WLAN_UNPROT_S1G_ACTION_SECTOR_ID_FEEDBACK =3D 9,
++       WLAN_UNPROT_S1G_ACTION_RESERVED =3D 10,
++       WLAN_UNPROT_S1G_ACTION_TWT_INFORMATION =3D 11,
++};
++
++/*
++ * Extended Channel Switching capability to be set in the 1st byte of
++ * the @WLAN_EID_EXT_CAPABILITY information element
++ */
++#define WLAN_EXT_CAPA1_2040_BSS_COEX_MGMT_ENABLED BIT(0)
++#define WLAN_EXT_CAPA11_COMPLETE_LIST_OF_NONTXBSSID_PROFILES BIT(0)
++
++#endif /* CL_MAC80211_H */
 --
 2.30.0
 
