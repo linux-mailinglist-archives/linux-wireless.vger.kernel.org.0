@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 447F73AB820
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E47D93AB823
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233562AbhFQQFF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:05:05 -0400
+        id S233530AbhFQQFL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:05:11 -0400
 Received: from mail-db8eur05on2077.outbound.protection.outlook.com ([40.107.20.77]:6177
         "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233528AbhFQQFA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:05:00 -0400
+        id S233539AbhFQQFB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:05:01 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LicN8nYWE32Js0GfQSlMKOhcrZXhSSuKVeN93xet+h9AXcXXa/nUYX5mUtB7tQ1Axr2QiWEWrwUUFYUW6L1uGPvJsm1to0ZuNJ9ikYLkLGe54G8JaPswlV/6/cEdHPhSEPbT60aZK0M5IIGN9+txluIdwrKCT0u+9n8pVs+dKIbMAhgBclSVaet89RqKKVaOWu0K7S/SXFZQbEmMG0OrykidSj+52Wrdhi8G5/2eGeEQIREWKjSOZHVNfEWTZtrJvy4Cd9fcmKqOjoe0gFc96W+s2dnBUksycIlLAsq+9xnE3xKcjYtBtNuB7eR5qI187y8huAYFqH0ks2S7MCUS/Q==
+ b=XHugMhbwFSpV4Io/87Ck0ALzQ5Y8XXYYd2AuWb8aOVVL/JEwezjIR124bj5ZwYPtSnhmbfK2DLg88taBqJU9FLg5X/3GKYAYUEGycIGinuBf4+E7UqWpMZmF/ka5bQKbEeAZDxq9Rq08Y85Aayw5y1OKQqkQ4N/7cFlMwej8ffLaVNNIcwaZ7PzIewihlxnqpGQQFjprFB0h893iy8AVmTy8zDmX3lVgt9v2t7iOWAY0qQRYMBeZuIWQLb3Xgl8w18qkqH2+rsbfmV0FhrPm7GNnwtjpdbUnVtdedHiUType2AwfwpY4IIe7Nmbd9Ox1YZIzx16ab+MQfBPlDc5BhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uMSMANzpGl2iN2NJFkB7KEAvnxqibY4D7lN9MzMx+vk=;
- b=S3cg0LjLYpUhzu0FITT9Rvja2O1qiBMkdNdSRfHECoSshkpDIb7C0M9tla2vAWCJOAFQXj11AQbb7r+Si4CyegrC4mDGS9TBj/pKRhIs4eoRvljdgM5l36A8dIdVKEynhI/MzVEVM9asmH1qdnZswt5WZuyZLCd0/tEfjZSV9ppH7t8Coqms1jKbwgYEzqn7dO5tGwGDzKptSrvvVdLP2GlM9jiwg3UBHu8//mEjyUj6BkruMR8BNaPGvp94BQxcHth8haq86rSq9o9LR9uOEDcyvO7qr2SWJms4CwfUtM8bvJeXdQUqGT3Q15kO46UTXiedO0AE6H1uxNDNkWxFzg==
+ bh=kYhIKIbioIK3k5xCwOQrkHp6hhUaigJNnkJUTgrBZdE=;
+ b=Up/Cps8LrC/jDLLyDdTsZl9vk4NPnwU6QdYsSlvQnC3FlnWCwvTn5aCLbLWsPNBvwEd1ISObeeUR+zBqv7m5sKo1g78nXJbiFxB/B7IOPVwwpVn+77Pc6Nu+gKBdd+I2Bl9awiEIWw2y2vJQRnuQg9RxJmEHQZJy5EqtDKf0fh75zxFomVkctHjaMvKJZD3qpF/MhoEkI1/HTUdS4k5AvSzV/PhCzd3oQMpIzHO79nTwJyQivLc6meNtDsiDRKGjufcC6cJ3mb4DWURw0RLE583dvsH4ybO/t/ugiLt/CqV4osm3D+5mtJ4er4aGdzJuZnmnJX7vmE3/6/Cwyo/DaQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uMSMANzpGl2iN2NJFkB7KEAvnxqibY4D7lN9MzMx+vk=;
- b=YAkVSG9k+vMRHMS+lQyvcuEsW2kmrR6VfUm7I/VFhW9RBam845DM6McOKLhrl7of3HQJJBYMkPlNEgN6xsUOfyyyI1E3+LrUw5VwZc0r63Ma7ZRCQyQUBPOl3o096iRAxl2golQvlg8/jjnWql8szibKk2+klcHnNOYxIjD05GY=
+ bh=kYhIKIbioIK3k5xCwOQrkHp6hhUaigJNnkJUTgrBZdE=;
+ b=gCliebgInF1BxuGspe1blzUXeSIAoGLCha5rug8iYkeAP6JZfNsDWyZG5shj9AMJYF5xd1uoz8bMIgN5vtssMgQpD1pD1hvyXeZT/r6kw9IzQT9AncWqZsE0Hyk2TOVi4ZQbGvw83K4pSIklNbVbmgZanMvuKRr8+EegG8eSkaE=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.16; Thu, 17 Jun
- 2021 16:02:42 +0000
+ 2021 16:02:44 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:02:42 +0000
+ 16:02:44 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 008/256] cl8k: add agc_params.h
-Date:   Thu, 17 Jun 2021 15:58:15 +0000
-Message-Id: <20210617160223.160998-9-viktor.barna@celeno.com>
+Subject: [RFC v1 009/256] cl8k: add ampdu.c
+Date:   Thu, 17 Jun 2021 15:58:16 +0000
+Message-Id: <20210617160223.160998-10-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:02:42 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:02:43 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bd6ed952-7f6b-441d-95fa-08d931a956e5
+X-MS-Office365-Filtering-Correlation-Id: fbd63310-9827-45a8-3abc-08d931a95787
 X-MS-TrafficTypeDiagnostic: AM9P192MB1412:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB141289FB9C2BB46674BD4870F60E9@AM9P192MB1412.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-Microsoft-Antispam-PRVS: <AM9P192MB1412410CE5D4764FAE51D801F60E9@AM9P192MB1412.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1417;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XJvKrnAMXpvZkOzm55fq0Puz9jC1a/w/q6CHhOwK6SY7v43Nh9SWbQZIyLLZ2V1hBXXzdHfvTTunOGRWOxvcdC1QIf8oBNpEqO88xkMOE16b88spbI6DXbhROQEsN+UgMCYgXo+duS5xQgAjKrm5Js26su+sGFMgjI29p+4bkxDAJhCwXMhg06Xk01Cr6Fk5XnQmqiCUh/l6kvg03hfmeXmIYjPZnu1EA3t+pgkxVeHSfyELHt9VlwlSZOrp5qrrfcplsSIhxqj5Lc5uZfm5SlvMTUlej5hWAVEZicOIctNh8tUEN6jE9es2H4emYW55k1VTjPwUyAUV+CER972bgcLaNcrvNCjFTSEtRWOuefAB+rbb+tGNSn8NG7rR9DxFuBEePrbip0azBxxWbmq4e0qr5J6IRGsHaNNhws5fdi+pvWVlzd7oypDJaE5gaKYsn2agvL6fE+VQBhYortLGZTqN0agSLUHYlqIFVgU20Y6M98Ugr9XZWTgehwtmgIsPo6pUJYHTVq3lySetU7OlZ0s41q6nEcEaNGBbvt0i5QPCQMeW4oSbz7vJ/dim0yqSm+LNLEoRKmTmoMf7FiKOLxROdlA1DiGS9OLZQI0Nact1CtmCd1cpPLZt62ANDDUFRKE3VHUYpzK7tObJlxfQ+dtFQl2aJEwU5C9EVUmaBMeOf6mUNP65+UQ8lro6SOLxIuNsLzpQf/RVaQm1ff+jNw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(346002)(366004)(136003)(376002)(39840400004)(396003)(38350700002)(9686003)(16526019)(38100700002)(6512007)(478600001)(36756003)(6506007)(52116002)(55236004)(6486002)(186003)(66556008)(2906002)(8936002)(2616005)(26005)(66946007)(956004)(66476007)(86362001)(83380400001)(107886003)(5660300002)(1076003)(6666004)(4326008)(316002)(8676002)(6916009)(54906003)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: ZtBnSLZqIpL0GVGb/XC0raWVLtUO4rZFJ4JouHC0Cm1mrFQxkaqIqyosXrbnCXY0oxbYIROj2+oBN7OXdNpoaKHqsR4Bt0xZaZ0qOcRYHpVA2v4Rk+P7NF9EttQ8yUZFASIM9GXQTBBFW6F11nthvZc0eStYAaBRFzHIYxXI9rUDAVDg2DiN3/8Us2os0jyZPUnOTVCERAG1D3zXfTicIXOuU8WLj+TAk9C1DA8qs7TTBRSuYXCnR7EL49C5AljHTd/uPgsS8b8Ek1tsli9bTgevg5CA7anj+ZZ7xQW+5KbjQhRT18vZ5/ZaZ/ope+B7JiSNez3XWg6Udxj/CBNiFj6cVrZqDSGgvM1B3XabARLhomrRM14/GBhqPbOLgZrfHkGe0ghbCDv9Iez2aPWUGW+p+/gAfKMSM37ZFpeY4KszWo2w3whsP4R71cnRvm7SSWLoYqyssIZZhm97fOw8Nx5my9mUqZKpvA9oZj3UfCmL3JQ/0Rx9+vtexCiYJ9pVFHd8NY4vvmafuHOK+BGWAaSpyl9c2Ka/RppPSQYyW5Ks6+5CWCNsPNrPLms1TMgwB+R/wA7BMoUlBjN+OHB1jiTDPX+OZegFjxdqpydBYYV6svaw8+glrohU/zFBdkoyrt2I6DkHGn6tGAnsJxb+m0GLV/07b+eVySJTtzZ4vuI6jDS6SJluiOD/rhuh947Q3XQowPQYXfCyu6LyZLmWXA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(346002)(366004)(136003)(376002)(39840400004)(396003)(38350700002)(9686003)(16526019)(38100700002)(6512007)(478600001)(36756003)(6506007)(52116002)(55236004)(6486002)(186003)(66556008)(2906002)(8936002)(2616005)(26005)(66946007)(956004)(66476007)(86362001)(83380400001)(107886003)(5660300002)(1076003)(6666004)(4326008)(316002)(8676002)(30864003)(6916009)(54906003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?W8GbH12Nn6ckgB9pDLTW/+ygmI+NJSqQkX3/igIxoLn/zU+4UfY/iocIeqws?=
- =?us-ascii?Q?8WSbUibsWr/PJPB03th6n9yg6NALxWZ00HC8D3tWzqK+xLgNu7dqiP6CSKDR?=
- =?us-ascii?Q?KXgu9Gqi5eQfwZ0XsR4HTCjqGuxc7MpKEomIqoCQlQ6Dywzqm7OI3qFgzhPo?=
- =?us-ascii?Q?jZHA6T9KhTxBOKlf8cvaZGS3cN3D3DWMCNyJnVMScMmV9xthzLGIHbTZ1jl/?=
- =?us-ascii?Q?q0eX69HYH9LFT+OVFdt7JRKIOUAdFCLspJD3MfghLrl4uD90P42HiqKH0yk9?=
- =?us-ascii?Q?EJZBqJ3PAxWgLDaJ2ewxEu8s+Xqdo2V6FHgZR4SneasQYTEkONY3k+/OkFgA?=
- =?us-ascii?Q?kk2teKKQAIKUlCblXPS70H7w4i15RpR2LW8xdXE1/YdAqzgY6n/vxNzzYAgJ?=
- =?us-ascii?Q?r9M6nhxHPpc2AMliu9GEceP0jPF9VzE9Wr+tfP/+76J9yRwzHvS9ZzdiME2V?=
- =?us-ascii?Q?tEQi7I2kbSwc0BNqxGUUfu7uItCAe4DQ+pxABmsJQXsbrIEAWl7iFhXuUlTr?=
- =?us-ascii?Q?FdQewTXXLwA7pbxfCSa3eZRHYpwgpqfb441M3iZpWK7YJ58dXpfr0/s7DF6g?=
- =?us-ascii?Q?kJXgJ6n4gy8CHemg3so8rRVSEkL80SLERSbHkoz1LZRn1HwINEMxaZPMz2ho?=
- =?us-ascii?Q?JqqbMlDMdKFcuUsd7DGxath8mnvjzrfcPqJyjZw3yvlPpGlyC8o/jovJUas+?=
- =?us-ascii?Q?TMEIrzWpvQL6Kv3QFWlD/jeDWrYSw6r9a/GGSHR3jaeZvdWI+rGI2NeRv593?=
- =?us-ascii?Q?aGuzGJ5Ecg0P/OTU68NkXAek8Bcz4h4OvOx1jY+en4vJswnxWRYFZCXjB2Yz?=
- =?us-ascii?Q?H4xgK+43VympRG+FO+9joXYWkJgfDHsgMmNtXUk3fMOkIPGs4GyTs80K5Ozl?=
- =?us-ascii?Q?lYhmTLaFm2QRSkHre1jszhqcTbElYOVGUhbqZ98i8T0ToJpZCEcmkavM6jDY?=
- =?us-ascii?Q?Rvlgo2OGOHgYbTEhP3V4i3CL/tVnB8fX8kZv51okiAgX2qLsg6yL8Rj4GKMu?=
- =?us-ascii?Q?LJFvsygozVwXpE9nhGLTqVvvEpBPT5x4dI4/Cb2Vs/cCWmPwx6h00RI5e4Ud?=
- =?us-ascii?Q?+oP9nO9w7cDzDYkmPNr3CtPo+14t1ds6e1pp3L2vvLFnYQCCqrdi1BkokMZK?=
- =?us-ascii?Q?+970faYyPQPHOw1938vStBMdY95P0ldmroLs7VvlSMc7Ztycxls0MaEyRFUg?=
- =?us-ascii?Q?bYjnM8qrxUdXDddE+wcepIef6JRaqXd0cutG10jG2tVEXSWMEeXFDbUKAHEb?=
- =?us-ascii?Q?p/GdlrYkydd/O7lX8WcNc69y7lIVkSu9YoIA7yCxkzU00DWSMKeDF9GTZ0xy?=
- =?us-ascii?Q?IIbGRUHIkvy02qrw6nPthS72?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SXQ95t4QpAJbGY+1ojIc84Fo5BRSifd8MpDt+Qjv42t8gwkAKbJE7Basb3YW?=
+ =?us-ascii?Q?iDTAR6ap3h3yySsTdHlvk1Pe2QZZDhrbSAdsPL19b/MFU8lUWz9m8i+3sNeu?=
+ =?us-ascii?Q?TJ7fu4ztJ5xSfKjzrL3TNKUsMD74aSNkH6mqbtjWaQjp+eJMO5ZfvoUPuufO?=
+ =?us-ascii?Q?6yyu8L6GORAtVtYl56H+lXd03qilP1LZfc8gYasqGNQlLit+ixoU5QM0pckU?=
+ =?us-ascii?Q?yqLhprapBjBIMOq/HrZ/snAz1DRpmlyvnU8WQ2nbtrrxEwqN+qK0dJGudLlt?=
+ =?us-ascii?Q?CDByYF2RUFf/vhtPaFZ8MKJi06AS6b4a+SSsUUzqj6RrwUluHjJwyv07RbPr?=
+ =?us-ascii?Q?Td705SL59gH5ULrqvAiyDKXKaIojG7/GLlQyE3O0lm9COaX5w6sG/4qSGl2u?=
+ =?us-ascii?Q?idUv38E2oN9YDvLrdH01SWcdYJfneIT3/wKy65d/V/EZJTMYEsF5NA93bOuZ?=
+ =?us-ascii?Q?KKLrLma6YodrbAeZ2KhjBf6SWkXcPlI9l2dTM2U1Few37V28jsFUcpMfFx/L?=
+ =?us-ascii?Q?ejm9hp6rFbVrI3K7Xo+MXqi1wJ13sT/5G0JF5lDbyoRgTdwczBjUiT12V6fa?=
+ =?us-ascii?Q?BrOP8zIrG+GVYdfwcyZEpTclg7jakMojt/tjLDMCp35S2idJI2ZLuLRWQ8YE?=
+ =?us-ascii?Q?jO+6ApjzwVnj6PUELV5aYPVLy7ar+Va+hEVXGqb2v8EppzCXmYbQuAWSzRmq?=
+ =?us-ascii?Q?ZDMzUWz7pD5xDRRpGYTrifOpqVwSQVv+FLKAg3wJQZx+pW0LKW1YIyGzmjea?=
+ =?us-ascii?Q?vQq1PVYRE/e8l0FFvEL/gxc4NZAHpgSYECu1VNQaWuzPrl1lhAX+GhIg2jdI?=
+ =?us-ascii?Q?PmK1yX3vnDI2FttT/2HSHvneCyeu34Ppw9KYcbo1334Karl6JyRvmhIMArgt?=
+ =?us-ascii?Q?+x5xc/g5GQ5+xGcYu3CqRzkMpmd3XFtcIl5omPsYXD598oUlZOdlTit3uJgU?=
+ =?us-ascii?Q?kKBHuxGlmRVcHz4aFQOMBob07+1bsKJ6s4QdkciglQZq9q9s9isF7fHoAW9o?=
+ =?us-ascii?Q?H6Gu91PwdVp/NwFAwFF5N0BZEUGDHcDJPEtfm3/5XUHImzCc1i8ucv8klzNB?=
+ =?us-ascii?Q?MrSpGg2r1fMo0FVViOwcAdAGZliaXU9LxgEA6H52sYT4I468gX9M+vjqemXT?=
+ =?us-ascii?Q?mo4ST9QzABe50OoIb5wV21mAexh3v8qwz7M7S8o0XNoib15qonxwLkeJoSP3?=
+ =?us-ascii?Q?yn5ipZZIohhaomErd2y+X6w+ML6Cz3iZpo286/NTrq79aUdrrBSQ3JsXrk7N?=
+ =?us-ascii?Q?hK0CN32pM7RwFzW/675jWJbocJ+fX3/xjobVhSiiqlODVl+OEdlcwSoesqdh?=
+ =?us-ascii?Q?kKhMkZKDlkomW1U+eQl4/tC5?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd6ed952-7f6b-441d-95fa-08d931a956e5
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbd63310-9827-45a8-3abc-08d931a95787
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:02:42.8469
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:02:43.9231
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CSBQS4HuSwgtvo4Si7a8baMAaTFexMbuHvbXjOlskMA/prfczyAc4bl4V+NJLWcg2LE2TXlQIVRMO/ZDzuD6LA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 05DoVqR+hdA4GqjNounk8fkBdrtUdxaxF/R9Rz53CYywhhnCGMiIy++lLZlnr9aQ2lIvwOeTn+YRaFwTjklvPA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1412
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,169 +119,408 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/agc_params.h | 151 ++++++++++++++++++
- 1 file changed, 151 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/agc_params.h
+ drivers/net/wireless/celeno/cl8k/ampdu.c | 344 +++++++++++++++++++++++
+ 1 file changed, 344 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/ampdu.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/agc_params.h b/drivers/net/wi=
-reless/celeno/cl8k/agc_params.h
+diff --git a/drivers/net/wireless/celeno/cl8k/ampdu.c b/drivers/net/wireles=
+s/celeno/cl8k/ampdu.c
 new file mode 100644
-index 000000000000..e0f5816d6e07
+index 000000000000..7116995b5059
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/agc_params.h
-@@ -0,0 +1,151 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/ampdu.c
+@@ -0,0 +1,344 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_AGC_PARAMS_H
-+#define CL_AGC_PARAMS_H
++#include "ampdu.h"
++#include "hw.h"
++#include "fw/msg_tx.h"
++#include "tx/tx_queue.h"
++#include "tx/agg_cfm.h"
++#include "recovery.h"
++#include "tx/tx_inject.h"
++#include "tx/baw.h"
++#include "utils/math.h"
++#include "band.h"
++#include "rx/rx_reorder.h"
++#ifdef CONFIG_CL_PCIE
++#include "bus/pci/ipc.h"
++#endif
 +
-+#include <linux/types.h>
-+#include <linux/bitfield.h>
-+#include "def.h"
-+#include "vendor_cmd.h"
++int cl_ampdu_rx_start(struct cl_hw *cl_hw,
++                     struct cl_sta *cl_sta,
++                     u16 tid,
++                     u16 ssn,
++                     u16 buf_size)
++{
++       /* @IEEE80211_AMPDU_RX_START: start RX aggregation */
++       if (!cl_hw->conf->ci_agg_rx)
++               return -EOPNOTSUPP;
 +
-+/**
-+ * AGC (=3DAutomatic Gain Control)
-+ */
++       cl_dbg_trace(cl_hw, "sta_idx [%u] tid [%u]\n", cl_sta->sta_idx, tid=
+);
 +
-+/* AGC PROFILE */
-+#define AGC_PROFILE_BAND_OFFSET     28
-+#define AGC_PROFILE_BAND_MASK       0xf0000000
-+#define AGC_PROFILE_BRANCH_OFFSET   20
-+#define AGC_PROFILE_BRANCH_MASK     0x0ff00000
-+#define AGC_PROFILE_VERSION_OFFSET  12
-+#define AGC_PROFILE_VERSION_MASK    0x000ff000
-+#define AGC_PROFILE_RESERVED_OFFSET 0
-+#define AGC_PROFILE_RESERVED_MASK   0x00000fff
++       buf_size =3D min(buf_size, cl_hw->conf->ce_max_agg_size_rx);
 +
-+#define AGC_PROFILE(band, branch, version) \
-+       (((band) << AGC_PROFILE_BAND_OFFSET) | \
-+        ((branch) << AGC_PROFILE_BRANCH_OFFSET) | \
-+        ((version) << AGC_PROFILE_VERSION_OFFSET))
++       if (cl_hw->conf->ci_fast_rx_en)
++               cl_rx_reorder_init(cl_hw, cl_sta, tid, buf_size);
 +
-+#define AGC_PROFILE_BAND(profile) \
-+       u32_get_bits(profile, AGC_PROFILE_BAND_MASK)
-+#define AGC_PROFILE_BRANCH(profile) \
-+       u32_get_bits(profile, AGC_PROFILE_BRANCH_MASK)
-+#define AGC_PROFILE_VERSION(profile) \
-+       u32_get_bits(profile, AGC_PROFILE_VERSION_MASK)
++       cl_msg_tx_ba_add(cl_hw, BA_AGMT_RX, cl_sta->sta_idx, tid, buf_size,=
+ ssn);
 +
-+/* AGC PLATFORM */
-+#define AGC_PLATFORM_CUSTOMER_OFFSET 16
-+#define AGC_PLATFORM_CUSTOMER_MASK   0xffff0000
-+#define AGC_PLATFORM_BOARD_OFFSET    8
-+#define AGC_PLATFORM_BOARD_MASK      0x0000ff00
-+#define AGC_PLATFORM_CHIP_OFFSET     4
-+#define AGC_PLATFORM_CHIP_MASK       0x000000f0
-+#define AGC_PLATFORM_RESERVED_OFFSET 0
-+#define AGC_PLATFORM_RESERVED_MASK   0x0000000f
++       return 0;
++}
 +
-+#define AGC_PLATFORM(customer, board, chip) \
-+       (((customer) << AGC_PLATFORM_CUSTOMER_OFFSET) | \
-+        ((board) << AGC_PLATFORM_BOARD_OFFSET) | \
-+        ((chip) << AGC_PLATFORM_CHIP_OFFSET))
++void cl_ampdu_rx_stop(struct cl_hw *cl_hw,
++                     struct cl_sta *cl_sta,
++                     u16 tid)
++{
++       /* @IEEE80211_AMPDU_RX_STOP: stop RX aggregation */
++       cl_dbg_trace(cl_hw, "sta_idx [%u] tid [%u]\n", cl_sta->sta_idx, tid=
+);
 +
-+#define AGC_PLATFORM_CUSTOMER(platform) \
-+       u32_get_bits(platform, AGC_PLATFORM_CUSTOMER_MASK)
-+#define AGC_PLATFORM_BOARD(platform) \
-+       u32_get_bits(platform, AGC_PLATFORM_BOARD_MASK)
-+#define AGC_PLATFORM_CHIP(platform) \
-+       u32_get_bits(platform, AGC_PLATFORM_CHIP_MASK)
++       if (cl_hw->conf->ci_fast_rx_en)
++               cl_rx_reorder_close(cl_sta, tid);
++}
 +
-+enum cl_customer_list {
-+       CL_CUSTOMER_CELENO =3D 0,
-+};
++int cl_ampdu_tx_start(struct cl_hw *cl_hw,
++                     struct ieee80211_vif *vif,
++                     struct cl_sta *cl_sta,
++                     u16 tid,
++                     u16 ssn)
++{
++       /* @IEEE80211_AMPDU_TX_START: start TX aggregation */
++       struct mm_available_ba_txq_cfm *cfm =3D NULL;
++       int ret =3D 0;
 +
-+enum cl_board_list {
-+       /* Board list for Celeno customer */
-+       CL_BOARD_EVB =3D 0,
-+       /* Values from 1 to 5 are reserved */
-+       CL_BOARD_MERLIN =3D 6,
-+       CL_BOARD_EVB_6G =3D 7,
-+       CL_BOARD_ALBATROSS =3D 8,
-+       CL_BOARD_ALBATROSS_2 =3D 9,
-+       CL_BOARD_CHAMELEON =3D 10,
-+};
++       if (!ieee80211_hw_check(cl_hw->hw, AMPDU_AGGREGATION) || !cl_hw->co=
+nf->ci_agg_tx)
++               return -EOPNOTSUPP;
 +
-+struct cl_agc_reg {
-+       u32 val;
-+       u32 mask;
-+};
++       if (!cl_txq_is_agg_available(cl_hw)) {
++               cl_dbg_warn(cl_hw, "No free aggregation queue for sta_idx [=
+%u] tid [%u]\n",
++                           cl_sta->sta_idx, tid);
++               return -1;
++       }
 +
-+struct cl_agc_profile {
-+       u32 id;
-+       struct cl_agc_reg fsm_preset_p2;      /* 0x244 */
-+       struct cl_agc_reg lna_thr_set0_ref2;  /* 0x25C */
-+       struct cl_agc_reg lna_thr_set0_ref3;  /* 0x260 */
-+       struct cl_agc_reg lna_thr_set1_ref2;  /* 0x264 */
-+       struct cl_agc_reg lna_thr_set1_ref3;  /* 0x268 */
-+       struct cl_agc_reg lna_thr_set2_ref2;  /* 0x26C */
-+       struct cl_agc_reg lna_thr_set2_ref3;  /* 0x270 */
-+       struct cl_agc_reg lna_gain_set0_ref2; /* 0x274 */
-+       struct cl_agc_reg lna_gain_set0_ref3; /* 0x278 */
-+       struct cl_agc_reg lna_nf_set0_ref2;   /* 0x27C */
-+       struct cl_agc_reg lna_nf_set0_ref3;   /* 0x280 */
-+       struct cl_agc_reg lna_icp1_set0_ref2; /* 0x284 */
-+       struct cl_agc_reg lna_icp1_set0_ref3; /* 0x288 */
-+       struct cl_agc_reg fsm_preset_p10;     /* 0x2A8 */
-+       struct cl_agc_reg fsm_preset_p11;     /* 0x2AC */
-+       struct cl_agc_reg fsm_preset_p12;     /* 0x2B0 */
-+       struct cl_agc_reg ant_loss;           /* 0x300 */
-+       struct cl_agc_reg gain_range;         /* 0x304 */
-+       struct cl_agc_reg vga_ref0;           /* 0x308 */
-+       struct cl_agc_reg lna_gain_set0_ref0; /* 0x30C */
-+       struct cl_agc_reg lna_gain_set0_ref1; /* 0x310 */
-+       struct cl_agc_reg lna_thr_set0_ref0;  /* 0x314 */
-+       struct cl_agc_reg lna_thr_set0_ref1;  /* 0x318 */
-+       struct cl_agc_reg lna_thr_set1_ref0;  /* 0x31C */
-+       struct cl_agc_reg lna_thr_set1_ref1;  /* 0x320 */
-+       struct cl_agc_reg lna_thr_set2_ref0;  /* 0x324 */
-+       struct cl_agc_reg lna_thr_set2_ref1;  /* 0x328 */
-+       struct cl_agc_reg lna_nf_set0_ref0;   /* 0x32C */
-+       struct cl_agc_reg lna_nf_set0_ref1;   /* 0x330 */
-+       struct cl_agc_reg lna_icp1_set0_ref0; /* 0x334 */
-+       struct cl_agc_reg lna_icp1_set0_ref1; /* 0x338 */
-+       struct cl_agc_reg saturation;         /* 0x364 */
-+       struct cl_agc_reg ramp;               /* 0x36C */
-+       struct cl_agc_reg dsp0;               /* 0x394 */
-+       struct cl_agc_reg dsp1;               /* 0x398 */
-+       struct cl_agc_reg dsp2;               /* 0x39C */
-+       struct cl_agc_reg dsp3;               /* 0x3A0 */
-+       struct cl_agc_reg lna_gain_set1_ref0; /* 0x590 */
-+       struct cl_agc_reg lna_gain_set1_ref1; /* 0x594 */
-+       struct cl_agc_reg lna_gain_set1_ref2; /* 0x598 */
-+       struct cl_agc_reg lna_gain_set1_ref3; /* 0x59c */
-+       struct cl_agc_reg lna_nf_set1_ref0;   /* 0x5A0 */
-+       struct cl_agc_reg lna_nf_set1_ref1;   /* 0x5A4 */
-+       struct cl_agc_reg lna_nf_set1_ref2;   /* 0x5A8 */
-+       struct cl_agc_reg lna_nf_set1_ref3 ;  /* 0x5AC */
-+       struct cl_agc_reg lna_icp1_set1_ref0; /* 0x5B0 */
-+       struct cl_agc_reg lna_icp1_set1_ref1; /* 0x5B4 */
-+       struct cl_agc_reg lna_icp1_set1_ref2; /* 0x5B8 */
-+       struct cl_agc_reg lna_icp1_set1_ref3 ;/* 0x5BC */
-+};
++       ret =3D cl_msg_tx_available_ba_txq(cl_hw, cl_sta->sta_idx, tid);
++       if (ret)
++               return ret;
 +
-+struct cl_agc_params {
-+       u8 num_profiles;
-+       u8 ant_mask1;
-+       u8 ant_mask2;
-+       struct cl_agc_profile profile1;
-+       struct cl_agc_profile profile2;
-+};
++       /* Read FW confirm message */
++       cfm =3D (struct mm_available_ba_txq_cfm *)(cl_hw->msg_cfm_params[MM=
+_AVAILABLE_BA_TXQ_CFM]);
++       if (!cfm)
++               return -ENOMSG;
 +
-+struct cl_chip;
-+struct cl_hw;
++       /* Check if status is valid */
++       if (cfm->status !=3D BA_TXQUEUE_INVALID && cfm->status !=3D BA_TXQU=
+EUE_VALID) {
++               cl_dbg_verbose(cl_hw, "Status Error (%u)\n", cfm->status);
++               cl_msg_tx_free_cfm_params(cl_hw, MM_AVAILABLE_BA_TXQ_CFM);
++               return -EIO;
++       }
 +
-+int cl_agc_params_read_platform_id(struct cl_chip *chip);
-+int cl_agc_params_fill(struct cl_hw *cl_hw, struct cl_agc_params *agc_para=
-ms);
-+void cl_agc_params_print_profile(char **buf, int *len, ssize_t *buf_size,
-+                                struct cl_agc_profile *profile,
-+                                const char *str);
-+int cl_agc_params_cli(struct cl_hw *cl_hw, struct cli_params *cli_params);
++       if (cfm->status =3D=3D BA_TXQUEUE_INVALID) {
++               cl_dbg_warn(cl_hw, "BA_TXQUEUE_INVALID - sta_idx [%u] tid [=
+%u]\n",
++                           cfm->sta_idx, cfm->tid);
++               cl_msg_tx_free_cfm_params(cl_hw, MM_AVAILABLE_BA_TXQ_CFM);
++               return -1;
++       }
 +
-+#endif /* CL_AGC_PARAMS_H */
++       cl_msg_tx_free_cfm_params(cl_hw, MM_AVAILABLE_BA_TXQ_CFM);
++       cl_txq_agg_request_add(cl_hw, cl_sta->sta_idx, tid);
++       cl_baw_start(&cl_sta->baws[tid], ssn);
++
++       /* Mandatory callback once setup preparations are done at lower lev=
+el */
++       ieee80211_start_tx_ba_cb_irqsafe(vif, cl_sta->addr, tid);
++
++       return 0;
++}
++
++int cl_ampdu_tx_operational(struct cl_hw *cl_hw,
++                           struct cl_sta *cl_sta,
++                           u16 tid,
++                           u16 buf_size,
++                           bool amsdu_supported)
++{
++       /* @IEEE80211_AMPDU_TX_OPERATIONAL: TX aggregation has become opera=
+tional */
++       struct mm_ba_add_cfm *cfm =3D NULL;
++       struct cl_baw *baw =3D &cl_sta->baws[tid];
++       u16 ssn =3D baw->ssn;
++       int ret =3D 0;
++
++       buf_size =3D min(buf_size, cl_hw->conf->ce_max_agg_size_tx);
++
++       /* Send MM_BA_ADD_TX_REQ message to firmware */
++       ret =3D cl_msg_tx_ba_add(cl_hw, BA_AGMT_TX, cl_sta->sta_idx, tid, b=
+uf_size, ssn);
++       if (ret)
++               return ret;
++
++       /* Handle message confirmation */
++       cfm =3D (struct mm_ba_add_cfm *)(cl_hw->msg_cfm_params[MM_BA_ADD_TX=
+_CFM]);
++       if (!cfm)
++               return -ENOMSG;
++
++       if (cfm->status !=3D BA_AGMT_ESTABLISHED) {
++               cl_dbg_verbose(cl_hw, "Status Error (%u)\n", cfm->status);
++               cl_msg_tx_free_cfm_params(cl_hw, MM_BA_ADD_TX_CFM);
++               cl_txq_agg_request_del(cl_hw, cl_sta->sta_idx, tid);
++               return -EIO;
++       }
++
++       cl_baw_operational(cl_hw, baw, cfm->agg_idx, amsdu_supported);
++       cl_agg_cfm_set_ssn(cl_hw, ssn, cfm->agg_idx);
++#ifdef CONFIG_CL_PCIE
++       cl_hw->ipc_env->ring_indices_elem->indices->new_ssn_idx[cfm->agg_id=
+x] =3D cpu_to_le16(ssn);
++#endif
++
++       if (amsdu_supported)
++               cl_tx_amsdu_set_max_len(cl_hw, cl_sta, tid);
++       else
++               cl_dbg_trace(cl_hw, "AMSDU not supported - sta_idx=3D%u\n",=
+ cl_sta->sta_idx);
++
++       cl_txq_agg_alloc(cl_hw, cl_sta, cfm, buf_size);
++       cl_msg_tx_free_cfm_params(cl_hw, MM_BA_ADD_TX_CFM);
++
++       return 0;
++}
++
++void _cl_ampdu_tx_stop(struct cl_hw *cl_hw,
++                      struct cl_tx_queue *tx_queue,
++                      struct cl_sta *cl_sta,
++                      u8 tid)
++{
++       struct mm_ba_del_cfm *cfm =3D NULL;
++       u8 fw_agg_idx =3D tx_queue->index;
++
++       if (cl_recovery_in_progress(cl_hw))
++               goto out;
++
++       /*
++        * TX stop flow:
++        * 1) Flush TX queues - done in cl_ampdu_tx_stop()
++        * 2) Poll confirmation queue and clear enhanced TIM
++        * 3) Send MM_STA_DEL_REQ message to firmware
++        * 4) Poll again confirmation and flush confirmation queue
++        * 5) Reset write index
++        */
++       cl_agg_cfm_poll_empty(cl_hw, fw_agg_idx, false);
++
++       /* Send MM_BA_DEL_REQ message to firmware */
++       if (cl_msg_tx_ba_del(cl_hw, cl_sta->sta_idx, tid))
++               goto out;
++
++       cfm =3D (struct mm_ba_del_cfm *)(cl_hw->msg_cfm_params[MM_BA_DEL_CF=
+M]);
++       if (!cfm) {
++               cl_dbg_err(cl_hw, "Unable to fetch CFM\n");
++               goto out;
++       }
++
++       /* Check confirmation status */
++       if (cfm->status !=3D BA_AGMT_DELETED && cfm->status !=3D BA_AGMT_DO=
+ES_NOT_EXIST)
++               cl_dbg_verbose(cl_hw, "Status Error (%u)\n", cfm->status);
++
++       cl_msg_tx_free_cfm_params(cl_hw, MM_BA_DEL_CFM);
++
++out:
++       cl_agg_cfm_poll_empty(cl_hw, fw_agg_idx, true);
++       cl_txq_agg_free(cl_hw, tx_queue, cl_sta, tid);
++
++#ifdef CONFIG_CL_PCIE
++       /* Reset the synchronization counters between the fw and the IPC la=
+yer */
++       cl_hw->ipc_env->ring_indices_elem->indices->txdesc_write_idx.agg[fw=
+_agg_idx] =3D 0;
++#endif
++}
++
++int cl_ampdu_tx_stop(struct cl_hw *cl_hw,
++                    struct ieee80211_vif *vif,
++                    enum ieee80211_ampdu_mlme_action action,
++                    struct cl_sta *cl_sta,
++                    u16 tid)
++{
++       /*
++        * @IEEE80211_AMPDU_TX_STOP_CONT: stop TX aggregation but continue =
+transmitting
++        *      queued packets, now unaggregated. After all packets are tra=
+nsmitted the
++        *      driver has to call ieee80211_stop_tx_ba_cb_irqsafe().
++        * @IEEE80211_AMPDU_TX_STOP_FLUSH: stop TX aggregation and flush al=
+l packets,
++        *      called when the station is removed. There's no need or reas=
+on to call
++        *      ieee80211_stop_tx_ba_cb_irqsafe() in this case as mac80211 =
+assumes the
++        *      session is gone and removes the station.
++        * @IEEE80211_AMPDU_TX_STOP_FLUSH_CONT: called when TX aggregation =
+is stopped
++        *      but the driver hasn't called ieee80211_stop_tx_ba_cb_irqsaf=
+e() yet and
++        *      now the connection is dropped and the station will be remov=
+ed. Drivers
++        *      should clean up and drop remaining packets when this is cal=
+led.
++        */
++
++       /* !!!  Comment in agg-tx.c, ___ieee80211_stop_tx_ba_session():  !!=
+!
++        * !!!  HW shall not deny going back to legacy                   !!=
+!
++        * !!!  Therefore cl_ampdu_tx_stop() always returns 0            !!=
+!
++        */
++
++       struct cl_tx_queue *tx_queue =3D cl_sta->agg_tx_queues[tid];
++       struct cl_baw *baw =3D &cl_sta->baws[tid];
++
++       spin_lock_bh(&cl_hw->tx_lock_agg);
++
++       cl_baw_stop(baw);
++       cl_txq_agg_request_del(cl_hw, cl_sta->sta_idx, tid);
++
++       /* Check if BA session exist */
++       if (!tx_queue) {
++               spin_unlock_bh(&cl_hw->tx_lock_agg);
++
++               if (!cl_recovery_in_progress(cl_hw))
++                       cl_dbg_warn(cl_hw, "Queue doesn't exist - sta_idx [=
+%u] tid [%u]\n",
++                                   cl_sta->sta_idx, tid);
++
++               goto out;
++       }
++
++       if (action =3D=3D IEEE80211_AMPDU_TX_STOP_CONT) {
++               /*
++                * The order of flow here is very important here to avoid r=
+eorder problem!
++                * 1) Take single lock to block single traffic
++                * 2) Stop agg traffic.
++                * 3) Transfer agg-to-single and push all skbs from agg que=
+ue to single queue.
++                * 4) Transfer BA window pending queue to single queue.
++                * 5) Release single lock
++                */
++               spin_lock_bh(&cl_hw->tx_lock_single);
++               cl_txq_agg_stop(cl_sta, tid);
++               cl_txq_transfer_agg_to_single(cl_hw, tx_queue);
++               cl_baw_pending_to_single(cl_hw, cl_sta, baw);
++               spin_unlock_bh(&cl_hw->tx_lock_single);
++       } else {
++               cl_txq_agg_stop(cl_sta, tid);
++               cl_txq_flush(cl_hw, tx_queue);
++               cl_baw_pending_purge(baw);
++       }
++
++       cl_tx_amsdu_anchor_reset(&cl_sta->amsdu_anchor[tid]);
++
++       spin_unlock_bh(&cl_hw->tx_lock_agg);
++
++       _cl_ampdu_tx_stop(cl_hw, tx_queue, cl_sta, tid);
++
++out:
++       /* Mandatory callback once we've made our own tear down ops */
++       if (action !=3D IEEE80211_AMPDU_TX_STOP_FLUSH)
++               ieee80211_stop_tx_ba_cb_irqsafe(vif, cl_sta->addr, tid);
++
++       return 0;
++}
++
++#define HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_OFFSET 3
++#define HE_EXP_MAX 22 /* 2 ^ 22 =3D 4194304 < 6500631 */
++
++static void _cl_ampdu_size_exp(struct ieee80211_sta *sta,
++                              u8 *ampdu_exp_he,
++                              u8 *ampdu_exp_vht,
++                              u8 *ampdu_exp_ht)
++{
++       struct ieee80211_sta_he_cap *he_cap =3D &sta->he_cap;
++       u8 mac_cap_info3 =3D he_cap->he_cap_elem.mac_cap_info[3];
++       u8 he_exp;
++
++       if (sta->ht_cap.ht_supported)
++               *ampdu_exp_ht =3D IEEE80211_HT_MAX_AMPDU_FACTOR + sta->ht_c=
+ap.ampdu_factor;
++
++       if (sta->vht_cap.vht_supported) {
++               u32 vht_exp =3D (sta->vht_cap.cap &
++                              IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT=
+_MASK) >>
++                       IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT;
++
++               *ampdu_exp_vht =3D IEEE80211_HT_MAX_AMPDU_FACTOR + vht_exp;
++       }
++
++       he_exp =3D (mac_cap_info3 & IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP=
+_MASK) >>
++               HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_OFFSET;
++
++       if (sta->vht_cap.vht_supported) {
++               if (he_exp)
++                       *ampdu_exp_he =3D min(IEEE80211_HE_VHT_MAX_AMPDU_FA=
+CTOR + he_exp, HE_EXP_MAX);
++               else
++                       *ampdu_exp_he =3D *ampdu_exp_vht;
++       } else if (sta->ht_cap.ht_supported) {
++               if (he_exp)
++                       *ampdu_exp_he =3D IEEE80211_HE_HT_MAX_AMPDU_FACTOR =
++ he_exp;
++               else
++                       *ampdu_exp_he =3D *ampdu_exp_ht;
++       }
++}
++
++static void _cl_ampdu_size_exp_6g(struct ieee80211_sta *sta, u8 *ampdu_exp=
+_he)
++{
++       u8 mac_cap_info3 =3D sta->he_cap.he_cap_elem.mac_cap_info[3];
++       u8 he_exp_ext =3D (mac_cap_info3 & IEEE80211_HE_MAC_CAP3_MAX_AMPDU_=
+LEN_EXP_MASK) >>
++               HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_OFFSET;
++
++       if (he_exp_ext) {
++               *ampdu_exp_he =3D min(IEEE80211_HE_VHT_MAX_AMPDU_FACTOR + h=
+e_exp_ext, HE_EXP_MAX);
++       } else {
++               struct ieee80211_he_6ghz_capa *he_6g_cap =3D &sta->he_6ghz_=
+capa;
++               u8 he_exp_6ghz =3D (he_6g_cap->capa & HE_6GHZ_CAP_MAX_AMPDU=
+_LEN_EXP_MASK) >>
++                       HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP_OFFSET;
++
++               *ampdu_exp_he =3D min(HE_6GHZ_CAP_MAX_AMPDU_LEN_FACTOR + he=
+_exp_6ghz, HE_EXP_MAX);
++       }
++}
++
++void cl_ampdu_size_exp(struct cl_hw *cl_hw, struct ieee80211_sta *sta,
++                      u8 *ampdu_exp_he, u8 *ampdu_exp_vht, u8 *ampdu_exp_h=
+t)
++{
++       if (cl_band_is_6g(cl_hw))
++               _cl_ampdu_size_exp_6g(sta, ampdu_exp_he);
++       else
++               _cl_ampdu_size_exp(sta, ampdu_exp_he, ampdu_exp_vht, ampdu_=
+exp_ht);
++
++       cl_dbg_info(cl_hw, "ampdu_size_exp: he =3D %u, vht =3D %u, ht =3D %=
+u\n",
++                   *ampdu_exp_he, *ampdu_exp_vht, *ampdu_exp_ht);
++}
++
 --
 2.30.0
 
