@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75FDC3AB8B6
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32F813AB8C3
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232111AbhFQQJ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:09:57 -0400
+        id S232477AbhFQQKW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:10:22 -0400
 Received: from mail-eopbgr80075.outbound.protection.outlook.com ([40.107.8.75]:14478
         "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233672AbhFQQIp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:08:45 -0400
+        id S232095AbhFQQJP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:09:15 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jTxkeI7Wclr8JoMRD6eWUlR7c9r1/zk3XTcYHlbxSXCtom1jN27PUpj27G0LVva9seV96MBYjoQZyXcqoMjEpbq9uU3e9Qt+zU5CP5vsiUc7zIqld+pL9DT3N4jCelbMODe+oaRWsozNELZy+er1NH9EWJ0vloLkfJhaMFkAemGM+dZzy967PWCCsTzgohdlnIhznCBdsiGPVM94vLG+yWaAg2zWgfd0aS5ETWKFtiClIk/E/vMc94RrYF6DugaeSt7bKAAbh5pETLOSvv67yMmLwuPEhs2iEJ/VW4kEywE5PhZUYq4D6ODUD3zVI+v63Yzd6xluhuxd7e+myBfWzw==
+ b=DFqVnFAofzrxhYCrv9r1np69Bu5LuA8Kk3N9sAzqz7DRC/D9gEYpBtFoaNj65w6I+H5uf26enEPdKRlCBNDrecr0esRsPUtnlw56E9ZnNviaOinPwNHDAdlufxWUf96npL3CqozD1I1KuiOl6uGAziYh7TfI48zKBSYyP5RzEcmyjcAZ8hyMGKAwz4EWJkkMY91YEABlYQ985BeFtmr4eB8jIs9BwIuJQIT8YrcEl9By4zGdl9Rc1uqHZmtCfy/DlOyL4zc+EtH3KFMHnbtoTLGGs14xl5F8CebXqaXOyvgJ4nPovRRGBdIQK5W4RKl1IRAL9Isw1yylQggpbpyVFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SDcNtTNMNfE6NgQ93o+ahB+qeEd4NII2vPahk4+taxU=;
- b=Wk08Ol+j8MAPUSgH/dlaiMQfJ7l7Jp7+2avVPB6nkxDhjgPOPGfjzK7bdNa2sEYjwIdDLCtuIQtSeLC96wiVENjdJoOi2o2lOsXFjAmEgfsm4xPF4XxZ375AxLCe+GZLypPJRUj83F2Ikl8NVud/g7ralfJqDUTidTw6fZBBQzPfGzHvEWWsKA/6iod52etHWphr8roD/6Ei+uOTHSuL0EYaF2Mh9CmQoxTR2z/Jb0BiACSYN2CSEH/NjIa1QXvPdwuTqRk+dQk5Nn9NsEwS4wpHoZmW4tfPDN3yiMcJiVNFD6wEAhmkGdyV4RAzYWQ0zM9Vp35s1akjpWzB/O5bKA==
+ bh=PvmBt7GUBZJ4l+75aqx+YJ+vTMK0yx6hPil5ttTrH+s=;
+ b=NQ+ZFnVjGAc3vtJOgQjysfppifAorbw3jk/j43fqfiviAZJcO+JMYjJhjg5TlDD6V49t13pZOGQdQe5hBvTcsV/uCtsXFm1PKIGzKH4qFutTLyJlhQXKmnYWexlcbGZ45S2Yjs+ryqvdxE6TWwpnDBguekJjUiovbdQw5odGvAHagZKKEHeq8ws7Jjr5BkQ6I3In0gGMm1muDaRkjbTct/bBeooJJhWtDeXufoxA8GicskDmDCgZWnGFSCivI7rfX6Va6n45YBC3N2L+w8O9zNtCq+rYOBdgl67lufCFn/JmxLf8vFOGdUHlHjliUuidr7XEoumODzKbOXxRUU7JmQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SDcNtTNMNfE6NgQ93o+ahB+qeEd4NII2vPahk4+taxU=;
- b=vxE70V1QjzMeB714uDQyAHpiuhXOFrzAE/Q3h1gbjH4H0CLOn26U7QQSF/p7P9fqZqSxbv7k4hq9XmlYmm0b+3I9PdMe7n2RW+nFiswiU4kAoWKvk5qKV1yPZCyIDUkzBIjTpYiTVR+p9l8OGU+c3U8eXO8d63a9VNmjQC89CX0=
+ bh=PvmBt7GUBZJ4l+75aqx+YJ+vTMK0yx6hPil5ttTrH+s=;
+ b=FhnCJbE8AtYye+lCOsZJU62eiM31OP6U+9Qb+acjHlrk9FuoX4olv1kN7SaycNLQ694hfNn2bDWTC4O8o5pz1Ocb0oYSMXHgsc7QM8M901J8n9WCLnef586SWsAonUgZppaVizQWB/mk3VPNLKH+g9h0ZXmYIKd3fo12OxMKGeE=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 175/256] cl8k: add rx/rx_amsdu.h
-Date:   Thu, 17 Jun 2021 16:01:02 +0000
-Message-Id: <20210617160223.160998-176-viktor.barna@celeno.com>
+Subject: [RFC v1 176/256] cl8k: add rx/rx_filter.c
+Date:   Thu, 17 Jun 2021 16:01:03 +0000
+Message-Id: <20210617160223.160998-177-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:46 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:47 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c902cd7c-eeac-4c43-d015-08d931a9c4a5
+X-MS-Office365-Filtering-Correlation-Id: 1b4b6d36-2a22-4542-e706-08d931a9c55a
 X-MS-TrafficTypeDiagnostic: AM9P192MB0981:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB09816860B4C3F4ABE838CFA1F60E9@AM9P192MB0981.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Microsoft-Antispam-PRVS: <AM9P192MB0981DA273CD0D35611E912CDF60E9@AM9P192MB0981.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HrnK9gxwkV4Cp2ffsgrLDeeX1D7OjXbr0SDPj/cyYCLesDqrdQzrPkRsEF+bdR+kFVOEmbvRmHzSZF9p6hPcHccMkuY374DsoKlo2HK89OEdpwxKjq9yyYeeOuoCaqK1Fpf9oj9mPyl/udxwdfW9MX6l+pwtsDKaXphBeq6GJxk0TnJnSElxQ/Ah6/PWdTE3xOhtUkU9qX+11G97X+aPIaPHdfebUEgQEWluojUi4+WUO/unq3uFjNne6GrVW3ub6c8xJ9rtTBFrvGlYYfG7MZX/7UEb62Dz4OGSOovQRXaQkiJnK416FEGbKBs+gavqCnWQuHf6rAza53e9BqUaXfDHzwO/Q5IZUkjn/ngte/PhjrSqKG+/2OBxFWyfHmT31BNPqgBmdwOnFJIyt0RUm3wf+y60NNlFGZ9gUedTwvnsscx01pPNUR2XFhrJ7b+PbnG/5uEhR4CtWOW6kITZ8c8uNm7TDdD0GxZUlcp/2vSQBHnHLFKDeghn15Jnesrn1SYtLZNx8rotDJSHUBf/MuRCMquBRnjGy6B6eVlRJzzQIl5Grgor6m9gaY6dsuoZ3Qxy2nCfJ6sIRwh7sEyrXDYFFmP4nAcOitomnRjhfoMTyjYL//wQVBRr13QkXCtVPCetto65lxtLSGgiogqCicqVJ1DhuUOv0uFpsvhzfcMiUaB5FUYmwagAyn/7cgUUdrMbXWc4KPW9WGIFZRuZlA==
+X-Microsoft-Antispam-Message-Info: uydw1jmwtdXRRZ8lgdiCkxq4gif+d/AAwir0IsEMS1AObTCp3tqBnb9FFV/c+u3NnIIQIdlBQZz3yLshCsbEzo2gTsaYnleGd0dH8+PhkDOmOkAZJbLAH4go7Rg8/5JA8Zkna2i1P28Ouk7jMth4jEu09Y2yPbCdpeMj9YmrJU/YMXuh2S3L6+eJrVmBOCEzNI/fUZH5j9PnkpCEDx6CLAhqBIBQuxaSVCz/S3iPq13EgdQe+MsaAkH0n7NonIEWQvKz2ijSajNHUEyniRH5pybBS+i9OH+f7wiEXlwEEz7BD/QunlSze82eFzP0LNLuyTVcc4mDgunA228Yl+vQ3LSEIw1R/x3f0OMu2c0Fb/fy1QuN+SoBXE4z7wUi0kvYi3g6I4bczDl29qquk7iHTZPEP0/0vVCE+mJ4s94oCil830hYXaBrg2KMjtmr/QD46u0J+NbnQFblmNNKpPxG6aQI5ctyrYmKIBV5srY4pFeOxrEHYVDWsWSdpz3+wdTZAqTvD6hd/u8sP9F8z3iZoCn4RJlL54qbuaoBsFAcAVcIz1ESUgP+EyKQeUUMKcT9BMOyKXHpkJKcAU3O+HxrVpOuKzR42nLnUwm2KPJnMUYuMJ3cYeWy2nu5aAWQ35Xq6I5YOHBviCyH8DnUvlOiYvGola2BxhRiRaEPFevG/Xm0k2dKQ4A67/hPnalBs/0dar5qD0Wseh0aKRQRD5AgXQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(346002)(376002)(396003)(136003)(366004)(39850400004)(86362001)(5660300002)(9686003)(54906003)(107886003)(6666004)(1076003)(2906002)(478600001)(6512007)(26005)(2616005)(38350700002)(16526019)(55236004)(38100700002)(6506007)(4326008)(8676002)(66946007)(186003)(66476007)(66556008)(956004)(83380400001)(6916009)(8936002)(36756003)(52116002)(6486002)(316002)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?O3SgT9bEIcQnTLW9mfKqyF/jQApEVhCXYSD+fwvn2loBrrp2FTWd5HbGNe1k?=
- =?us-ascii?Q?UzOw/p4xDPVaNUE7av25VnSNu7cpF8kzV+swO9Z4rEhIS91rKtBt3+3RTvOH?=
- =?us-ascii?Q?m85KbFFc5/gvsNMsmZw7vQb+/eXUokkxtsskOhjKTn1Z7jidRRbaRJ6a9n5v?=
- =?us-ascii?Q?hLTp3m2tUnaAMYC1SIM7ZrDtiYWqBenrOxPdMsFnugshhPhq4PDVQbM/S5ys?=
- =?us-ascii?Q?LYoTLOLbHScljtGsCWovgStLsWhBgxykFEOhsQrMFVtlQHaAjbqwnZK7vknK?=
- =?us-ascii?Q?6NtO+VNqLWikt80oIYs3ruceK02I5dauE20JlSFg/CNNJDbbbkqQBEP9YCAO?=
- =?us-ascii?Q?5+uxS4B9Q0d0qYntIqrC7BYososlSN60HebJ+CfsMIhXCw1jHfnsHO4ymK1T?=
- =?us-ascii?Q?KcSHpFmbB6xquc4BoZZaSMtDdiUoiMfO+3tpXqkDYoaN3sofiGTCxH2xV77W?=
- =?us-ascii?Q?EKxbGE8nmYd/lzYmZCrToQyfx7znUidKabDgChc49e78WKH7fGy/ertdVouf?=
- =?us-ascii?Q?TWf82H/BMSJKSFDgRT63/VvKePGEwNoValXaCT8L2M4yKpdBYN+WLJtIZGWi?=
- =?us-ascii?Q?5A84hbfwrniFd92uJIJRYidXtMMdOeWEQIMXIQ/kDprdTRia5WB8z+ic0xgA?=
- =?us-ascii?Q?KvxJmwZF+/HE316M1UhXZy8Cu4yTWkhtUeoZuY/IE3PhXn8UxKW+ZJoEhEgp?=
- =?us-ascii?Q?IhZCxfxGN8SuSJUdItAZjtcu9hKWlkHm95n+VUGBTTmeaj+0Vy1iMstxaJVu?=
- =?us-ascii?Q?C7OHu0TQ35UgTFMXY8VbQDCb6yNEHn7oGBBr1d2gjDRSpddOMYCy8r78iFRr?=
- =?us-ascii?Q?qsELjFrHrSCj6dtxGG3Y1qfaAeCeg3asFiYnATH8SQQVxqQ6UKL3CW8oynZV?=
- =?us-ascii?Q?j8axaOzr+OCx3Zz0HA9MU7V98liJAXzn1aiz5Sle76LTXNQSomscbARQWMO/?=
- =?us-ascii?Q?plZVwFJ08hLeo2bXdPNHVa3cprZYLZkaWPIEiZgKg2tl/S37H6FHUmx7KCbO?=
- =?us-ascii?Q?wdud7/X20yInwaAVuRVexw7HHHRvVibZkSwwEUK4UU+YfnxuVF2OmxyTvkkv?=
- =?us-ascii?Q?/BCUEFufhS7g34sNqtIJN49oz5rKoEvwd/Oy8IMIfSR1BeR3Ol1yL8h+0YVy?=
- =?us-ascii?Q?YccKW+W4raywIzbh9UIzKB9TojIhsezI/vckAkdkVdqv63PB82vh+oaUgSOQ?=
- =?us-ascii?Q?s9Gu/6xrdDHnYfLw0yNxZZJkbF4DMq5RUxI37WLRGdsZMvfiiOd5ywh+8nn9?=
- =?us-ascii?Q?VFVPYLMlwLwvoOcBKbx0iJQm+RjWkOXuUp4AyFleiQS3skBBQbytebt5/6Iv?=
- =?us-ascii?Q?oh0krcx/kYj2o9fpy8GmPX6/?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LSkAwBvg4CfIUGFBJKbHakzllTisroaS8UAzod6obRivkhqtw77VJ9zuXlmL?=
+ =?us-ascii?Q?x5y8c1fXBlawGP1mAnorfxEUTb7DHMLKJ+bNVt8Y5FycvmSc1LAgnhI68AZF?=
+ =?us-ascii?Q?QdWitFojSvGw7GGsGteNHEqtSoTpblZqRuZNgvvmFm/oaA+vZWYOYJr4cdS+?=
+ =?us-ascii?Q?VLezSxeeKo/Asi0VdFfObHyoztJfVGBRDewDU7YKLAsF02xjBQJHwcC6zbMr?=
+ =?us-ascii?Q?AvkuHULFiNvRmXIyH03Uf3vdagbKmqAaKfpgNCJqF9dDD7jC1SCfWyoC9ibN?=
+ =?us-ascii?Q?BfwJiQ0jozrY3u71GT/I9CMoWPcXiGE5Amhul/9pQLu8G58OfA2kMuO0/hw7?=
+ =?us-ascii?Q?G/MMMSKzIsutYv8ptBuWYYMEmG3m+9ib+UAhEqbYPtxI9XvilNdSM4TSg7Qs?=
+ =?us-ascii?Q?p37e4GiA0xsRgnX48s3q/ovywpqIA5cdrCWfHuDQt5xw5mhsOHDZYyrLcIbk?=
+ =?us-ascii?Q?YlG5N14KpNcE17nY7tjRXKaY8uM4cm2wvPJzV/pdf621fdDh16Bl8ajyzdkY?=
+ =?us-ascii?Q?UFWpQROomvgnzVt2LWtrKkHjCyDalhNRLPcb9nD3cR8M3HfDyzXh/TJ8S/5N?=
+ =?us-ascii?Q?qG5s9MbtMHRlPtc4171rrxT6Ma7op4GTBmI+gMIFMkcMPFjKSEuLWhYzWg9I?=
+ =?us-ascii?Q?wkmfE7sMEM6cuy14fqchkwvnG8NRiJ7ZMae6YLI/GVBTvFV41XnnvmYTzUu2?=
+ =?us-ascii?Q?h2cX7+c5GDwxCx1mV17Y396HM9JjGj9TZvm8t3wbC9NAhO9gMYSCQQKLSbgU?=
+ =?us-ascii?Q?aVYqvHn5W/fBD8EzGWWWs/EUE2qHVKLgTKCJGYIur9Dyv9h2DCt9Thwx1pUb?=
+ =?us-ascii?Q?POZMyCcYotvTTVrGX4eVY4rsCMUExh+C2kyzUzeOnl+n87nyJubbP8oiIfFq?=
+ =?us-ascii?Q?7PTlNYBye+ND8wA6ncnqvsTM5ZrjmNlvhAib9gkHt3lQAlCuu77NuiRV6hiF?=
+ =?us-ascii?Q?xnUmhvD3/oN5jhHVXVqO8BLIwFm4EQ7wiGOBvB27b0uo1zjuQaLfrVibYfTW?=
+ =?us-ascii?Q?N9NlJhbx6kKE0UMpfBy2JYhXdNYSl/ZOwy5jQ49XSkqKQ+usH6pqmLm6y/qM?=
+ =?us-ascii?Q?jZQlWLmy7Yxr1kks4kZhsSRnSbfYmvu2M9mhTmHu8EkuXsKgfMa7QIZjFKNZ?=
+ =?us-ascii?Q?LUZbOv5jEUdUGL95qxOpImFSxw5nNBRtQFrkEhwxowhtyDKbiMyHMVsvP5lN?=
+ =?us-ascii?Q?84gIuYOyZgBTIbPUaR01XBGjHTVbKsOYCi6tYtATSzOfR4h/E2HkXOuAXkN3?=
+ =?us-ascii?Q?j2MLyYgQT3xKEQ0koevxXIx0IbSF7s4LygjX+3IXXomPy86PyBZe3cTLFv/l?=
+ =?us-ascii?Q?8YLde7qTSfCcWCuYKZOYxqgG?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c902cd7c-eeac-4c43-d015-08d931a9c4a5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b4b6d36-2a22-4542-e706-08d931a9c55a
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:46.9992
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:48.1561
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WwLjHNJYs9len3dhY5pgJGcZkTnJ7koqH+2E7FmLijD2L9Zc8w7M5KtPFXwc6e3+wrC7z1PW/gRZmx/AZqRdww==
+X-MS-Exchange-CrossTenant-UserPrincipalName: nd1sJ2gNun1oHFQFf4hDKagGPAp4F0DFcibjtvxVQbhzD6mePvTaJWGDKASaMb6xTwzBR1z1PYf+jLR2T6gijA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB0981
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,38 +119,108 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../net/wireless/celeno/cl8k/rx/rx_amsdu.h    | 20 +++++++++++++++++++
- 1 file changed, 20 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/rx/rx_amsdu.h
+ .../net/wireless/celeno/cl8k/rx/rx_filter.c   | 88 +++++++++++++++++++
+ 1 file changed, 88 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/rx/rx_filter.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/rx/rx_amsdu.h b/drivers/net/w=
-ireless/celeno/cl8k/rx/rx_amsdu.h
+diff --git a/drivers/net/wireless/celeno/cl8k/rx/rx_filter.c b/drivers/net/=
+wireless/celeno/cl8k/rx/rx_filter.c
 new file mode 100644
-index 000000000000..a445f4a83187
+index 000000000000..95415ec6aad0
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/rx/rx_amsdu.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/rx/rx_filter.c
+@@ -0,0 +1,88 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_RX_AMSDU_H
-+#define CL_RX_AMSDU_H
++#include "rx/rx_filter.h"
++#include "fw/msg_tx.h"
++#include "ieee80211_i.h"
 +
-+#include "hw.h"
-+#include "rx/rx.h"
++u32 cl_rx_filter_update_flags(struct cl_hw *cl_hw, u32 filter)
++{
++       u32 rx_filter =3D 0;
 +
-+void cl_rx_amsdu_first(struct cl_hw *cl_hw, struct sk_buff *skb, struct hw=
-_rxhdr *rxhdr,
-+                      u8 sta_idx, u8 tid, u8 encrypt_len);
-+bool cl_rx_amsdu_sub(struct cl_hw *cl_hw, struct sk_buff *skb);
-+void cl_rx_amsdu_first_corrupted(struct cl_hw *cl_hw, struct sk_buff *skb,
-+                                struct hw_rxhdr *rxhdr);
-+void cl_rx_amsdu_sub_error(struct cl_hw *cl_hw, struct sk_buff *skb);
-+void cl_rx_amsdu_reset(struct cl_hw *cl_hw);
-+void cl_rx_amsdu_stats(struct cl_hw *cl_hw, u8 msdu_cnt);
-+void cl_rx_amsdu_hw_en(struct ieee80211_hw *hw, bool rxamsdu_en);
++       if (filter & FIF_ALLMULTI)
++               rx_filter |=3D RX_CNTRL_ACCEPT_MULTICAST_BIT;
 +
-+#endif /* CL_RX_AMSDU_H */
++       if (filter & (FIF_FCSFAIL | FIF_PLCPFAIL))
++               rx_filter |=3D RX_CNTRL_ACCEPT_ERROR_FRAMES_BIT;
++
++       if (filter & FIF_BCN_PRBRESP_PROMISC)
++               rx_filter |=3D RX_CNTRL_ACCEPT_OTHER_BSSID_BIT;
++
++       if (filter & FIF_CONTROL)
++               rx_filter |=3D RX_CNTRL_ACCEPT_OTHER_CNTRL_FRAMES_BIT |
++                            RX_CNTRL_ACCEPT_CF_END_BIT |
++                            RX_CNTRL_ACCEPT_ACK_BIT |
++                            RX_CNTRL_ACCEPT_CTS_BIT |
++                            RX_CNTRL_ACCEPT_RTS_BIT |
++                            RX_CNTRL_ACCEPT_BA_BIT | RX_CNTRL_ACCEPT_BAR_B=
+IT;
++
++       if (filter & FIF_OTHER_BSS)
++               rx_filter |=3D RX_CNTRL_ACCEPT_OTHER_BSSID_BIT;
++
++       if (filter & FIF_PSPOLL)
++               rx_filter |=3D RX_CNTRL_ACCEPT_PS_POLL_BIT;
++
++       if (filter & FIF_PROBE_REQ)
++               rx_filter |=3D RX_CNTRL_ACCEPT_PROBE_REQ_BIT;
++
++       /* Add the filter flags that are set by default and cannot be chang=
+ed here */
++       rx_filter |=3D CL_MAC80211_NOT_CHANGEABLE;
++
++       if (ieee80211_hw_check(cl_hw->hw, AMPDU_AGGREGATION))
++               rx_filter |=3D RX_CNTRL_ACCEPT_BA_BIT;
++
++       /*
++        * work around for HW bug (AD 14672)
++        * In order for the response frames to BAR and RTS be with correct
++        * power they should always be accepted and found in the KSR
++        */
++       rx_filter |=3D RX_CNTRL_ACCEPT_BAR_BIT | RX_CNTRL_ACCEPT_RTS_BIT;
++
++       return rx_filter;
++}
++
++static u32 cl_filter_get_flags(struct net_device *dev)
++{
++       struct ieee80211_sub_if_data *sdata =3D IEEE80211_DEV_TO_SUB_IF(dev=
+);
++
++       return sdata->local->filter_flags;
++}
++
++void cl_rx_filter_restore_flags(struct cl_hw *cl_hw)
++{
++       struct net_device *dev =3D cl_vif_get_first_net_device(cl_hw);
++       u32 filter =3D 0;
++
++       if (!dev)
++               return;
++
++       filter =3D cl_filter_get_flags(dev);
++       cl_dbg_verbose(cl_hw, "Restoring filter flags to 0x%x\n", filter);
++       cl_msg_tx_set_filter(cl_hw, filter, false);
++}
++
++void cl_rx_filter_set_promiscuous_off(unsigned long data)
++{
++       struct cl_hw *cl_hw =3D (struct cl_hw *)data;
++
++       cl_rx_filter_restore_flags(cl_hw);
++}
++
++void cl_rx_filter_set_promiscuous(struct cl_hw *cl_hw)
++{
++       u32 filter =3D ~(FIF_FCSFAIL | FIF_PLCPFAIL | (1 << 31));
++
++       cl_dbg_verbose(cl_hw, "set promiscuous mode 0x%x\n", filter);
++       cl_msg_tx_set_filter(cl_hw, filter, false);
++}
++
 --
 2.30.0
 
