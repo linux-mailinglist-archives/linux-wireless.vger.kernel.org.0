@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F24BD3AB927
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E80703AB926
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231455AbhFQQNG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:13:06 -0400
-Received: from mail-eopbgr30073.outbound.protection.outlook.com ([40.107.3.73]:59547
-        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
+        id S233953AbhFQQNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:13:02 -0400
+Received: from mail-eopbgr130077.outbound.protection.outlook.com ([40.107.13.77]:23879
+        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233693AbhFQQLw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S233709AbhFQQLw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 17 Jun 2021 12:11:52 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Hp61VMF/EcZFzMcooYL+LPQCnHQM1HFNnzy1kHwJPGiYUJKDdRvEHEAlg+l0+YgA7vc1YWZfDJ4V/Ns5frAKU7IcH56wJVosRWVPbDucHqvFHM59ER7+Hl5iCzzANm/o3VPJH5SO3NNFKDnKbUOAM9Hkri4ErETEaNasb622u2+rF2Le6KY9iQxrpczz8zgVIOu5EDamB3ARw2dWEwo+5RpcvuVuICfPaYui2ZwzDrAodX9QP8hVEJKkk+ZHWQqVkimWV/BJC32Kq8e1PLqSkgXzEwVWfHaQPOoe5UxCyhrX/e+bOsq4EDeSar2s93WXw6rSuEG08HPQhCc2ndjizg==
+ b=HytxgubL/AuzBxLaiqYj75yAM5qy81WGRx8EsEVLTyWNCCMLVE/19eDXn9CVjSMI4pMaDmLITDGZdVTcSYz+TyH7aXeyUx19MUj/jyn2XLKjtISSeIkzkxT2aHJAwOHnUKZiAFX4nZ8oLrhV0OobFCVIab4eosV7V3v1QOOOZHQouJmZjZ9gEp3Cuz53tBfW/MNYjw9XL4yir+uUhavml5hKB4leHCdpxU8/RZbDoIplyTMNFOm0Q/QRD+gkS8R7hw049F5LOTVXrf978EVJu4HglXIonXJQSfMGSuBbf5ubo8VvS70b/eVm5UGt0PjcIiPykNAgLfidDSJYsDcABQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KBwgm0yp/JjJADD/5k6NBSeL6KB2YeL4A1nO6qbaFbo=;
- b=DO3R7eccB9kS8iwwcR1BRKv7ZJZosxnMSsNfh/X/ShtcjRtppEaGUsDfI3Yw5aXfORo3JzmuDd5uiwFwuU+Z8MNZ8tx/H0q0/RojT/6e2uqDD1H2RzuHZCoO35Q01GxO4GFF5KNsnonzI2iIEhHv/5oZ0G138DjAYVvT6vVF0BwjCYA8qO0hF+lQEOWjM7E9PraNsBVFU5W1KwPmpdlelPIbwZPrm28hPJMToKPoHM80JBUN06JJeuUSjm+Xkvmw+STJDgPJ+G4CQ98Zx+ub/7qpW6eCB/I1hT9x1hJ1lkBv5GQNENIWzsDs1ZjP1teIR/eVN8HfI+OCYn/hVwVWCw==
+ bh=lrAhmlWjzAmRFbllSeMdMSdDYRmifAX7wegtulbU8Sk=;
+ b=YbkHqc5VeG+wlll1hEZwJw1ta0V1NnwCNLU7SdyVcoJ/IEZfJr5JYOMiN2TvzD5T4+qfEijTuAatvuEgCTqFDMLMlyAQc8WdcQomBBLc/vDeAbHO9ZCCgE41If8ToW4tSr6qtf9BDrw5cVExBJ7QdiFO7aGREAtAEXy4qFFuCi1kMi5ZibU6SzhgfIW1AnsCQzEg4XpWfsVClB5sSzesbVgQ1TgoFk0ms7U3PBOxU0w46aMRrtqIc73Z/fVALvqIqlosO75aIEY1YrA+h+MOkXrZj9JpiPLnXaB/MZB+ohrwXtgRr8i9HL1RwH8GhmkZlhfotC+X/15v13omBUKBVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KBwgm0yp/JjJADD/5k6NBSeL6KB2YeL4A1nO6qbaFbo=;
- b=bZlBBQdpnthxzHLlba9MmFlgC4Yr70jdHMOvetMPLC2tVzwpPZ1FDWgJxQAvPaBAC0OoT28Jbq0utHEXdJnuIQAPQoYCt3eL4xhtzViAEyNDeJODaCP62vG+ZPpXW1xjbSjyFPKdQ4hZgUi9lX6Dd/NTMTo+lvi5wqMjAGhJkio=
+ bh=lrAhmlWjzAmRFbllSeMdMSdDYRmifAX7wegtulbU8Sk=;
+ b=ixJItP1Mzw4zneURvdLByPSvquTQTHbeu6LEdNp4KfMXWaAwETBbvwAEy/gal+Xitfa9sGuhh3wbV93hkjP9g/xCj3eO/dPWXF6seDWnmztYyjkil8MWmQiRQiJkJwJ8dpVSa8mtqW8mZPcgoTgyqpuW/DnBAWMA5jLYgszZP7k=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 227/256] cl8k: add utils/timer.c
-Date:   Thu, 17 Jun 2021 16:01:54 +0000
-Message-Id: <20210617160223.160998-228-viktor.barna@celeno.com>
+Subject: [RFC v1 228/256] cl8k: add utils/timer.h
+Date:   Thu, 17 Jun 2021 16:01:55 +0000
+Message-Id: <20210617160223.160998-229-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:47 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:48 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 71045015-cfb7-4fd5-9cc8-08d931a9e902
+X-MS-Office365-Filtering-Correlation-Id: 47cf599d-f4e6-4724-1748-08d931a9e99f
 X-MS-TrafficTypeDiagnostic: AM0P192MB0452:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB04529C198AF539D5EFB289AEF60E9@AM0P192MB0452.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Microsoft-Antispam-PRVS: <AM0P192MB04524197FBDC5118AFC638B7F60E9@AM0P192MB0452.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: O8KlmAvAPOeypdYa6KWN2JUPShL8dSoA4xodl5tkcSOT8JNU/y8MrCy9HmCc3yqOuy7l8gfr5FOFkWhhmIO51Z5oelBt8fFXWQBAPP8pB0KOfdpMxdqhX3qlbXAh7ecBd4RSF1SOfiwYHX9pXRUFicwspNV2Ul7LoKCIw/y8yvNLiCuAqFq6kif1NfMEXlpyvoemAljlf4V9Vja0hEqdA8YxhC3ymxpbjL7MIat+Knl9uD+XaMMxSCxu7RnxHsbjd1AnuSov4cg9RTpyftaeOb/tEgXofo9LHYI+AnEM9Bp4+EzluGPL+pKRJB0G70bAowZ3NTOhXBZwlthbLseO3muj/BCmlSaBIGuKPknQCyoHrXFaFSZ0ldsokDDv32xr3LXVewdXgsZBFitbdNy6/IyGbKTHszjqWt8OTMidNfDgCRV6QAU3agvJrgmxz84hfqFSU66CAkT3tJXwDoMoim/BPFWaPUu1t7UcbD+IpAh6QVG+E5q1kTfFiLZ5ecB/TCr2tSNDH5oSNleJTHI/vXxWS61kMtaQtu6ZssJstvzuHHfIVHhtsMCXyqeVLUffdmNu+vdyoZI7h03iIXpJFreYSgCYlVb1zwo1GHurVDIGCl09Ci+RDQkT0ab/YHB2Ujl4OPxxmpZHMruwlRdAr24gcE4S2kK7C2UqOnpljUTB26v5jpcb/e7FI4wjB/lxidWXD3K9Cyh0kniSsgnIAw==
+X-Microsoft-Antispam-Message-Info: 5PkGNxWUPMtMAOLQT1cbvVl3fyC3ztabu8qJIV/+RWObDPHZ98a0WWIgTp5kDhLC6hMByvb/PGBSmYDhLRv1KgOVEYJt9J5LCa80yZqWzbhQf5soCcHo+wMvZkiSutfe2kPL3fB55yoqRaqoK5ED6WBAEMidC5eqTy4DtZkNpzNy6bWMXAngMtZlE/3T9tErold7ULmlcQdUTezIQQ2EGKk5nSQHb2jbBqPu/EqX4YmnCk2FJcCO5ihLU99ZOxzvVo+r0+HFnVCSoCh1+SBQRbq2fO9B/fdke/P1cWx64430QOJx7BrAI5zbRDkTGBg1t2PHxaZtS67vu9GXJxgxF2fecW08ck4gHQEwDKmkPQ4ZdwlQtymKyMLxZPxX3JdPXOsHa0w9hMFaayz7HK/xo1+9hFKKW70Zy2lswPGV7VHyydR7es/x3/c/7bSXHJ9nSrPn4JcJgF6BNcFFcUcpYdrCypYja5iWLPVfTOSjn3ilxRDvRUXE1lz8DXBkXIwqL3FQn9Ao83LKO0/v+15AsRP0nP2tR5W0CZeAJQB2e+yypV8ftMwJZQjRlMlannSakia7iZSPvsYSk+0ZKiOskZ4pZxyc6szkbIqiDPnFz/2p+pKs28Jof/K8tV2tFA3EyX5V91jTSrsHItlAaAgMA7CIlNo9KVN1OdMD7p5fOxW4l8pNcZNwzMl4jaRD63Po3XzLiqh1PkgVRFcivQbeDw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(376002)(366004)(346002)(136003)(396003)(39850400004)(66946007)(66556008)(54906003)(9686003)(6512007)(16526019)(36756003)(107886003)(8676002)(66476007)(4326008)(26005)(316002)(6486002)(6666004)(8936002)(86362001)(186003)(1076003)(2906002)(2616005)(38100700002)(38350700002)(6916009)(956004)(55236004)(52116002)(508600001)(6506007)(5660300002)(83380400001)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?espAlb7EVOgObWDSLRwAexCuid+huNE1u16y8qupP954qrIOmPq1i+h55310?=
- =?us-ascii?Q?L52pY3AyFQ0etNFY2JiDqZjDWtbXytmQi548BwLvbyefhUT6fLUTwRR3uNtX?=
- =?us-ascii?Q?c4QEIIqtuniaa1vDN1TpjklE6u0EztS/RcpLZabXrmlFa2ZSdN8AuqAlNYbB?=
- =?us-ascii?Q?I6YWC2u8KD8DPQrpnDnq9N+xFcT+5ORgGazEyrigKOca0eulUKbM/f0PJnZx?=
- =?us-ascii?Q?vlAUwXAPvl7DIgR03AMEco1BP2VG56p56wcmxsecm0eJRVwAoZ2mRSnfE/Lh?=
- =?us-ascii?Q?jNbmil8pq7eroIrGi31UjeQGcNAU2h9rume7Z7YqZTQrao5lnOYBIkYCbzc7?=
- =?us-ascii?Q?3DJ1D9zWY2yyn9mLtEU8Utb01vl+MjNp8jy5qvdswmFwOtiw2ACflG4+dbXc?=
- =?us-ascii?Q?0j+S815KBwDvFLfejfPqu02Y8Xcd7A8Vez55bsAOGEcsBKCBPN5yGCIR4pJS?=
- =?us-ascii?Q?uUsP05sX2S1B8P/IVBZUFjtLDSZFg72lXxjVZ6PD75ZnCNp8QfACdMxVHdjh?=
- =?us-ascii?Q?0nd/pq9dxoluL0AFx2Bq1w9bGwaXD/Ry9RdT8pogjFVHNx6vvLMoaZoLrzu9?=
- =?us-ascii?Q?YPz9mWI6HG3fdi7ALpmhGmhVPDKBNMBOnemrQciKcOv8ThVdSTLqFzLwjjuh?=
- =?us-ascii?Q?cmuyP3uy3ceevwgkhgWRYpzOq0vSC/0iGIcqkhuYS/alA1VxlIqQ+euhIkJg?=
- =?us-ascii?Q?iwOb32pdFjyHO1+lF+1YWewHg8xsLg5N3Ngf1l4NWzyMXKkwieI8FqMo9oD6?=
- =?us-ascii?Q?iKvTfNSlxZFksUPMRlszi+rGhwD1CY+SVg7uRPdFaajUm0+prDHOGkeWSttC?=
- =?us-ascii?Q?wxZ0QZ6IKT0423men2M0GRt/0KEhryf8dzdbK5+QSFog6ScBBaKq7VXETq4o?=
- =?us-ascii?Q?Nyh7rMf3LZNHbKf0AuWUOix7IJBnYgCCKROFtReyt8JbmOLWPH+IdflIjkRG?=
- =?us-ascii?Q?Ps7ZIcRq6MJxf8SgrySv4lh2rfLjuW3idF0JmzD5hHnXxb3F4RuvF3x0DVOD?=
- =?us-ascii?Q?O3AYiavkaJGzNVI5648qhYGjchr236lt/wNRa47Ut1/Bp4+VnGUzVVqFgoaa?=
- =?us-ascii?Q?ZzluxgSRjJ+zzMxp+YfNcoUWM83ZzBY4C3yDNQtcZUWCn7kvqTLsDyIjdR/7?=
- =?us-ascii?Q?F7k/c3lERfioJYmssLWqTfyDdf5eusrNBATL8Rywu0M/eQINqLP2JOvHN/0f?=
- =?us-ascii?Q?AHw+++SC3WGK68GS/KHQFuIuw67E5iIZWD7EgLuWcST7VYzxpwzFs+tEyPCR?=
- =?us-ascii?Q?wk6T0TDB9GvesHS5pqqEI0/9yGqZ1Ew1He3QGj/aac1AdYiRhuigj+fjsFnc?=
- =?us-ascii?Q?p83F05zhE7Lua1axVFRT9YAM?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?grWlBfcwdGazvPW1ykgGkR2+H8alBFqhhIbY2DcTeKUgVKkmUZ45lQe/RnOA?=
+ =?us-ascii?Q?AjWLDokGvfoMz1qUF9EjP5gwoMkd3Zo+H6/bo74uxOYv2PEdWUmnbkhNGKSF?=
+ =?us-ascii?Q?IQxALR5r2z8as68sF+Cgb/srDf20/hH9Roo+OZxYaJ/l0WtwhAWFVD9DJEJb?=
+ =?us-ascii?Q?aSPIKUiakYTHMrvRWHEhEzGCapSMxlff/WpanxWikbfRqi3daNawz6pTx3X/?=
+ =?us-ascii?Q?/mwkkLQ++DRR5Ks0YB4Pf1BuSBRIDiHhPVzM7QjEWDbmiq+EzsI6RbuPURTK?=
+ =?us-ascii?Q?WGoKZ9gdjovenDghwXwkOY4aLWcsgl7a6XRtL9N6n+kSx1OE0ki1zCKYua0X?=
+ =?us-ascii?Q?PWA5HdwL7AOr7c5LYjktqNIfKTnPllx/IgB/uRyHj2Q08cAyVGkvaDUAbxoR?=
+ =?us-ascii?Q?M9S7ILTI5g7enreSOgPBxUVVUZ1OLIBhW0+0Rzdgm2pGvexOBai7A1IKKA+M?=
+ =?us-ascii?Q?KOB0Udxrn2bvtzbn7y2pNWZKSI+dHaxB1/rj+JTpMAMovK8i1F3qscdiNvG6?=
+ =?us-ascii?Q?y/rQPXoFIgua0LUOQOg5UsOAtA1Fwr20ILkKIgsP+4WfPinpzVQ3KpBI0xE+?=
+ =?us-ascii?Q?u0m06ExsCOhPK03cAyd8TnRp1pCd83OrkpLL0qJ86AYQ3lCmAjSZYKzIiFZ8?=
+ =?us-ascii?Q?0JSGDRzXTcOXGG6UNcqg5kuZwaubG0dHNa6BlNIBU27neTf81Ndzm5R37Lx+?=
+ =?us-ascii?Q?wn6jFzPiK4YNPqL98OAQYZS1IOHrki2eAqMfLKCNXTVfxgp7x8FDrehWqMrB?=
+ =?us-ascii?Q?ZbZnCjcdczqF3IA1629+p7ImXhpV+81p/Jm/DD0jq993Of2h40hkZxdLBwoW?=
+ =?us-ascii?Q?8fIsbv0ryPPnki4wQzxJm6VlcKJcS3FyuV5PILqbXlyHcyDM5XRIDI0hgdo4?=
+ =?us-ascii?Q?Cp0xKblcEGMBVXIpEhJ1QFtKhDx0jOJ8BSlZyxtrIvcg3YHpx1tnNQFWrpu+?=
+ =?us-ascii?Q?qUe5CALFg3pGVVL70nNBmdO1yhRu7L9bi3987x/Mm0N6YcF1W+bhb/WsU2Nn?=
+ =?us-ascii?Q?JI8dkPzLVBk514fBlQQakmbm9bCyNjO2rS0nkI+xZG7zp3g5CBFrYIbqg6xI?=
+ =?us-ascii?Q?pkqze6mfgAe+8fArpMVrN/FSRLW8jAfL1YPz1K1t3nWO9D67KeW1PtTUlXae?=
+ =?us-ascii?Q?10Pyh94X0/NWRSlJkk06G9L5qO+AxEnbMDPutrgdR+SED6Dn1WVlcVogkh4T?=
+ =?us-ascii?Q?i2+OdYAZuproaGW9Ii7mFh6PVdcCHCkPcWQHs6FvJ1Ymgo1Fl5eEIaur0Kmr?=
+ =?us-ascii?Q?rxxH3tpnzaWtFRer2Vv3uX7k+7sCCtZl3Aj9n9X4ij8fcpaKZGxEUCAjWcJF?=
+ =?us-ascii?Q?GcixaJodHd75qtgVEe9IQW/L?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71045015-cfb7-4fd5-9cc8-08d931a9e902
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47cf599d-f4e6-4724-1748-08d931a9e99f
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:47.9576
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:48.9771
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1xDBsMj/ufbeSM+hZuAu/BkG5VlZV1HPMiUhNYGsl6sM2M8eakDb5PRprIUzyT9aJsvQ4gHYqvsJu2EST2m0Dw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: TsjI/mSB0fQjFMWXTkoekG93xQQ2d+wVgQHbMpx1B+3pz/TVhaz8yTDKccQ7uTXTMqTgjJ4EGBK4rbF0jhFwEg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0452
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,91 +119,48 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../net/wireless/celeno/cl8k/utils/timer.c    | 72 +++++++++++++++++++
- 1 file changed, 72 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/utils/timer.c
+ .../net/wireless/celeno/cl8k/utils/timer.h    | 30 +++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/utils/timer.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/utils/timer.c b/drivers/net/w=
-ireless/celeno/cl8k/utils/timer.c
+diff --git a/drivers/net/wireless/celeno/cl8k/utils/timer.h b/drivers/net/w=
+ireless/celeno/cl8k/utils/timer.h
 new file mode 100644
-index 000000000000..8ab8b44ef085
+index 000000000000..1481d8d78db4
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/utils/timer.c
-@@ -0,0 +1,72 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/utils/timer.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "utils/timer.h"
++#ifndef CL_TIMER_H
++#define CL_TIMER_H
 +
-+static void cl_timer_func(struct timer_list *t)
-+{
-+       struct cl_timer *timer =3D from_timer(timer, t, obj);
++#include <linux/timer.h>
 +
-+       timer->f(timer->data);
-+       if (timer->enable && timer->periodic)
-+               cl_timer_enable(timer);
-+}
++struct cl_timer {
++       struct timer_list obj;
++       void (*f)(unsigned long data);
++       unsigned long data;
++       atomic_t period;
++       bool periodic;
++       bool enable;
++};
 +
 +void cl_timer_init(struct cl_timer *timer,
-+                  void (*f)(unsigned long),
++                  void (*f)(unsigned long data),
 +                  unsigned long data,
 +                  unsigned long period,
-+                  bool periodic)
-+{
-+       timer_setup(&timer->obj, cl_timer_func, 0);
-+       cl_timer_period_set(timer, period);
-+       timer->data =3D data;
-+       timer->f =3D f;
-+       timer->periodic =3D periodic;
-+       timer->enable =3D false;
-+}
-+
-+void cl_timer_period_set(struct cl_timer *timer, unsigned long period)
-+{
-+       atomic_set(&timer->period, msecs_to_jiffies(period));
-+}
-+
-+void cl_timer_enable(struct cl_timer *timer)
-+{
-+       if (timer_pending(&timer->obj))
-+               return;
-+
-+       timer->obj.expires =3D jiffies + atomic_read(&timer->period);
-+       timer->enable =3D true;
-+       add_timer(&timer->obj);
-+}
-+
-+void cl_timer_disable(struct cl_timer *timer)
-+{
-+       if (timer->enable) {
-+               timer->enable =3D false;
-+               del_timer(&timer->obj);
-+       }
-+}
-+
-+void cl_timer_disable_sync(struct cl_timer *timer)
-+{
-+       if (timer->enable) {
-+               timer->enable =3D false;
-+               del_timer_sync(&timer->obj);
-+       }
-+}
-+
-+void cl_timer_rearm(struct cl_timer *timer)
-+{
-+       timer->enable =3D true;
-+
-+       mod_timer(&timer->obj, jiffies + atomic_read(&timer->period));
-+}
-+
++                  bool periodic);
++void cl_timer_period_set(struct cl_timer *timer, unsigned long period);
++void cl_timer_enable(struct cl_timer *timer);
++void cl_timer_disable(struct cl_timer *timer);
++void cl_timer_disable_sync(struct cl_timer *timer);
++void cl_timer_rearm(struct cl_timer *timer);
 +int cl_timer_rearm_offset(struct cl_timer *timer, unsigned long time_offse=
-t)
-+{
-+       timer->enable =3D true;
+t);
 +
-+       return mod_timer(&timer->obj, time_offset + atomic_read(&timer->per=
-iod));
-+}
++#endif /* CL_TIMER_H */
 --
 2.30.0
 
