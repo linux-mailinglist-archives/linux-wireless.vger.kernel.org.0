@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61B983AB851
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5FD3AB855
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:04:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232553AbhFQQGZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:06:25 -0400
-Received: from mail-vi1eur05on2073.outbound.protection.outlook.com ([40.107.21.73]:35841
+        id S231856AbhFQQGj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:06:39 -0400
+Received: from mail-vi1eur05on2081.outbound.protection.outlook.com ([40.107.21.81]:58626
         "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233081AbhFQQGI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:06:08 -0400
+        id S233644AbhFQQGJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:06:09 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OHBBOHJnRsUiySrX97VivKc6/mwYBCJOX2ftgoBfQRXCLJut3hOKAHqWwX+jDjfTYe9uJbbkHt9I9LK/CDoDUUECjEEH3QOtIbVbU0rAiB2VrxLzO6ru1dtVqPURwAmTzr57Fawlyf/MH7dDr4x4EiP7GTAewNNbaMzOWPxY49RUohhQW/Liis+Z2/3z6TAPGEpTJdzrrmhOfNkJimF1odCTbO7Rvzz5wQ6q7nu1nBmv8q5qwW3ie/Osn+estRoQD/AAQCbTpoeHDlrff7a1+7HgTA5Ybs/d8POrKxBWCpf9pohItntCn1Vy5vw6lfUwVLSEhiiylln49aNp2imSEQ==
+ b=XVPC+T80+HyuxhzzdRCrcAx0yr9nlNjmDhqrS6yopWiS772gboFJmuwy20vLWqLz0Luxac1sWWiYvYO+3bwZVg+rTtqjknNoHKeZEZk2WZaJ6BGyb7kU9JImbIm+23XYTdKdz4g0Iey+Yc5IJo7pyiTVFqtaqK6V562nR6UPqkVNLcAcw1fJfxizpxDmDeh8YAfa8qDlO4Y6SS3xj2hSMxm/ikzWYYfBT/V7+NuWe0nO22DMnWKrPdoL5bTeu/W2qe3bzV0ETUkvpX05QRfEfdJo/W3UUow6HCfSdhrzIOrDc9hjwoqTZDEH2lXRWfUg9zJgbTk3Zmud24T/C5Topg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P2DRfQ0bwibLJFIxPrPv0FIlU+fo+KphB7UlvgNSLfk=;
- b=iKoIE6dlckkpO+DxLMzl2ry+escoBDVgZNiP/fYKprrYpiP7VhOyZt+VURornj0DKu1LpN7+9zA/ZRV8epGZ0EgNsKTCUMBJV9STvF1FrUnwgk38Ksn1j5sH5d2lx+L6t4UC9z6ayvlajPAUkcjmWFBzG5pUIy9QzoaAzdmSzV/OVHoNuAOsaXaxFxSrrTOW6s5zkLI2FKVPVgUUlRmFwYfa68feNDDLJzEQztfD8t5kQBNpH6N3xPVorsGuaQVxvH84xVAykNdFOIl+D4RWyYcygilAF4NSi64ViWttkYFVeU3ni9nmKxtO9I63qM5sDKSMM6e+FnWI0BfPWdo3JA==
+ bh=6GUoDSoczNNQUgumtLTp+ew/hJxs5ovMI/hnArTTsOA=;
+ b=D9Bqi6DZoZkm9amPCC4biHWq9d/4pnsQnLrgAZXQ0FiMlTd9HGB91xfc0vsmUeAgi70QAP4zFZiZwOm5maPhS5uM3bF/p2snP0nhQh3u985K82KZX9169cBK6PkCrSgLrLitnSJzJGr4D7OwojOJAQu+TFUZZccR3fkrg3jrgdrPgcY3UYusnlATGp/Dx1mMQIkmkUdZYQW8eYC7KE0X4UfKWZzxsTOK1Nl/Ur91lVC5jlhtGAB9kEInqkisdsadhZK6XgyC0pIj2HLYHQdHngI6kODt8MUF8WB0WngPzOyDGhMP/xk0arhHVZlTKJnzqWretFjT8/96GAROmeC57g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P2DRfQ0bwibLJFIxPrPv0FIlU+fo+KphB7UlvgNSLfk=;
- b=3ltnlafXstJolFRQJISTa0fsNuOrfK51b4a0zLO5KaG3hK0GtRj59msi+Uw/QVd3UFfL0+vA+e+h5qn/jwxBg5yIdRXHsdbQ4O1LGwyjn7My+ainoD1kdREyw91Lp2QQKGDK044DPQz59mSujJBIx5neH7FuvTdG94Y6ipJWD44=
+ bh=6GUoDSoczNNQUgumtLTp+ew/hJxs5ovMI/hnArTTsOA=;
+ b=aaJj7NKWP4ygLq74Kg1HelgTZ7UyXhjY3To4Of/uVrdBcEEwFKx6fSzVA481E8NDTYFckcbZQgIt52d/l9hic0qnoKyc9GUygrbqAH+/GuL+YAlzde4cwwtUqD+EAylF2NWvfQ5ldDlDtbk5FMCc+t02FSJHfSyhpNaRHIdHpBY=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 058/256] cl8k: add def.h
-Date:   Thu, 17 Jun 2021 15:59:05 +0000
-Message-Id: <20210617160223.160998-59-viktor.barna@celeno.com>
+Subject: [RFC v1 059/256] cl8k: add dfs/dfs.c
+Date:   Thu, 17 Jun 2021 15:59:06 +0000
+Message-Id: <20210617160223.160998-60-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:36 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:37 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bde1d4d1-0236-47cf-2546-08d931a97777
+X-MS-Office365-Filtering-Correlation-Id: ebe3e279-10d1-4606-f0fd-08d931a97818
 X-MS-TrafficTypeDiagnostic: AM0P192MB0499:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB0499051CF0E3EDFF46D6251FF60E9@AM0P192MB0499.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-Microsoft-Antispam-PRVS: <AM0P192MB0499FBAC2BE5553CA5CBC9CFF60E9@AM0P192MB0499.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vUFmpLoWtPJcOfS/3OqbZR+w74k0glP4Em6eTN5A73d7CZut/pY/93QZxlsIyplUdpiMSAELv9JxyVj0UbnhlZgWDyGa8SOzCsAD+W4FkBhHW7LvesKy++RK6SOuTULlbeULUSdUorydHuKmMBcl8QYptC/6d36JiAXYqjOGeE9fRBNFoI/NHR+zK4mmjdOnBjkyHo4B0PBM8AjrqqdzFaBtG9KW2dSPQqAGOq2MuSLk0oOPKOBIBXdyB+0VTZsMU0XwiS1z43x1Nv2D+9ALgXhkHi0U5FM1TSyihXiU44NVYUE/6pdXNwKAQERAn15PzSQSvhOSWdpTTtc+yGQVJLcHvuQ/Otl1kqYaRbhd24Qxm5yT1oL3qTZvnE8pF5nGLVq6ayJg8gMqUyYJtfL4ASPICWjfe3zRpII8xO5c6ExQ6CwqwR91e4BatXretIhnb41hleRFWQFbrvWbFY1NT1asyTx2dI3VvQGzRTxfRB86i6wY2IIyAIiERy6WY9Eidwf57SvJKsZxrHTa5bhvam+p3cAG3AlVfHS5aNj3vd27OwRSQPez9KIJ/sflQCL+1teaNUu7xsXRp87eC99iRcmKyo4TS+w+STDHTSfp1UwrslgOfmqyFiEbygvwzP5yW3oCoQI2Y+H7CdwpL0wyZLeaLZTw2+jAjKhmIpWg9UnvrjpGRCLST0HOoKSS/90K2Qkht8wVYYS0tsxkHc3YUw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(39840400004)(396003)(376002)(366004)(346002)(86362001)(107886003)(66556008)(52116002)(83380400001)(55236004)(36756003)(4326008)(186003)(16526019)(956004)(316002)(6486002)(8676002)(54906003)(38100700002)(38350700002)(66476007)(6506007)(2906002)(26005)(9686003)(6512007)(66946007)(2616005)(5660300002)(478600001)(1076003)(6666004)(8936002)(6916009)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: zeitfKhqiu0Bm3qc9CTNjGBWK0u7TODOYAzpahDbtKf4MD1gg0m2wGkqHCuvaQvBLRku0u/i1Cq6/bPijJtfP/NdE0JwQ5jNUI8xlYzBPjpobVAclmBb0fkJrqOWUbFlZEweX05twGQRp0qnYwuZTFBPZXx68sIm4YMk3JntZxzJRTM/XIkpmldw/J3EMneZ8nJ5qbUcxEOrDVxYXFMbCCxsU3ipekv7K1m4ziB0FhRx0czl4IW0hrXS91UdORrJBj2V35tvh8jkUStSJrWGQ/eWe3nP+z5MEhUdOQvxp272NSUn4vF6SeUyNXtuKzTL8k4qrp7KAIQirEsE6XWXa9JVLF3f8CFMUdgJwMOhddfMzK5rBIwQ0GHl3BwRVuHChYFg/af1OwMDgSC2GdMOBBRBZRHbDF7oJuUL9ODgLESQzn+2WM4lK8CRhG8iNoPxDgDc6qjJ0kO4FMCtI9ORpr3quUA9rEqDi4z+Qjvx8qaHISS01Eqh6/OhAiEk4RCc/bVVHh6egkRE/YPRuuyK+ruXIpl/20lzZe8YhHNnjgrTJyZGoILAIXDQpo5Qj9/OvK/2FwVVLmlQ3ZSHOvPougHQbEiJXS1sr1iJI/bd4ypwAloJM3V+B8bCpaK1oRJFaIY+Tcw15mgHOTbXO53wsMA+kTGz5c1DLQ4EZPh9NRV0E82FZZigO2410lfP/TwFULOcCERVHqRUv47uFZPoYQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(39840400004)(396003)(376002)(366004)(346002)(86362001)(107886003)(66556008)(52116002)(83380400001)(55236004)(36756003)(4326008)(186003)(16526019)(956004)(316002)(6486002)(8676002)(54906003)(38100700002)(38350700002)(66476007)(6506007)(2906002)(26005)(9686003)(6512007)(66946007)(2616005)(5660300002)(478600001)(30864003)(1076003)(6666004)(8936002)(6916009)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?BW0zKRNsYoMtTQaEQtvJoDPuBuWJcSX9rxkB8OZRiGMUB7vw96Buo96xthe4?=
- =?us-ascii?Q?ax3/9YG9ct0YYTSqxH9qxifHWX3M0IvXR871YkVPpNfzBcxRmaFv0dIs9Bxh?=
- =?us-ascii?Q?ftMQjzb7JoUSbMm6ujWnN2GpPuSVVlnuIgCc0Mpn34o+jtBgDIw7CaQxu3GC?=
- =?us-ascii?Q?nHZS5BbVSPqyT2xfl/F6SyfqyXIxgxIIlQkh541qGQQAY85IHE0ziWfkqV2K?=
- =?us-ascii?Q?l3q57FRNCVybIGlzpQ71cGFBSVaiiZceQpmthcq3iqSoWLV6uUtAK0CAgVRw?=
- =?us-ascii?Q?mveRjoHHm1zL9hJIO4UgwdCOLU3lseClh5zrfU5ybRhQWDLuCeyiH2OhLPzw?=
- =?us-ascii?Q?1DcBLdP9CGtqL21J8pOrMJcjr9SgZHgKSiNGCnuf/CczDpMkpJpWZKlO0mFa?=
- =?us-ascii?Q?Fz/3u9LYW0kkb2TmZCQD42iIisOExFlNQPzj82TZmB222Q+jBVe5+BRtVuWw?=
- =?us-ascii?Q?GT9raIDDn2ex2JLy+kXPthXbKUBKIdnJdY4meXxmqXJ/WjXnfD2g8SKS2sne?=
- =?us-ascii?Q?NiZCnQiWSuS5hX2gl8+VcrpmHVXClellu1diqP6FAk/T86ii83Yu4jlraop+?=
- =?us-ascii?Q?1dmRIMxak9IpcUrbXGOEXMukRGoRAoDuKslsLZP9GC+gXMG1f0p5TFxG+/Fp?=
- =?us-ascii?Q?DTTZXbZc5iRTsNY2GVEImtbEjXg2pS5B60x1oaALDBBEuRpW618f6Z2R1fU1?=
- =?us-ascii?Q?Rp+i1BJOXIITgM+QBdZYvPhd7odp/h3YxOVAtcEmZKWj4wZAgbgoer3+Ynxu?=
- =?us-ascii?Q?Nz9/saw6KStPe9HQRFEXfvvi2gQFcsvwRbErIpUrmHwpJjLxIeRHReBbFHjO?=
- =?us-ascii?Q?1ubd2lo1kyDY0AlRzaUbTZhb3e4gj8tuJ8LHlW490NZ09PXb1R6zrwKXxQsB?=
- =?us-ascii?Q?rBq7PrfSPx08FibTcdvsvFiegY538Q8Xq4aexK3GBC03MgFb/LV6Y0SG3DZS?=
- =?us-ascii?Q?mZN5/YbR7hB5Si+dOCJ1hBVFDjXyxmEPX8uVQFHQRqzj1Cq1fj8UJRRJGLHB?=
- =?us-ascii?Q?LLnb2q9921G/O3Uxaf+QNs4hBZdasAgFTbT1gCQ2cd0Gq8Q5/2p+W5y+I49o?=
- =?us-ascii?Q?8xG5LUe7zM218LpXITKiaBWn2KR2YnjGybabG+C+WS0527S7OYbZQYc35M5m?=
- =?us-ascii?Q?V9MdtUj5OulA6Md3eTtUke2MPKDvcddMJpeoZtrebFUOL9hSxbhmhgd2deVt?=
- =?us-ascii?Q?al+ZsgGHXuso2n9+O36fEOuhi8olAlQ22F/eI1JMLXWOCeYym7B06U42mMgR?=
- =?us-ascii?Q?i5/Rmf25l2Deymcns/RRhR+Q3Kwc7QTJehfx69YccTVR9a3kQcWqivjiTmzV?=
- =?us-ascii?Q?53e1Gfh3yxG/yC5/fE0O2vs5?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?bjdOby3w002dD9a044kxySNvy2qC5auFwufg4zu2Vs5TJToq4xCbZynRIGu0?=
+ =?us-ascii?Q?zqm956IpVmLlsIbZde8rhHu2ooQKLdYtkVXNIekISJ5F9C4+eN+Iss7tmTkc?=
+ =?us-ascii?Q?nXKIjop/UYSms4mcU6JSoXUT7Da+pSZ6L3Ys10I3+zCoaQ581U+8DsifsCfR?=
+ =?us-ascii?Q?jqjBAmh5UWVId+MVsuIQri5wOkdhXtFvkG8CL86PgFyapZEHYOXqXdNXDmdJ?=
+ =?us-ascii?Q?dfe3UXE0zdwsItrd+TsOFjTEoy3h/1GBSdIER5OHosps784UWwKA8xl84LBH?=
+ =?us-ascii?Q?qOjfsEO9OlvTPMYlgiYjxgzn7pxG4bztfPEv4eSGeuzezQRf//7uBN2dhvmC?=
+ =?us-ascii?Q?x57JTTOV46KbEtp/PYzU6iELPSADhg+C4JJas5JhwEQisbjZxS8aHWHkSS8R?=
+ =?us-ascii?Q?weMRqLPDAEPVk+nEVngdkasZ4s+DanM4DQoe93St9YmfJpEULaEwM0BFQ9f0?=
+ =?us-ascii?Q?gnpSCa8ynDNwKNGDcI10iuNjgU/3D3fb3s9a/6naoiMm2qFq62Pl19AkbySD?=
+ =?us-ascii?Q?3chWNy8NvFb+5BR71xUCDwAEs34eUhsrVMY251WT6LBppUwaOl69mft/4CAg?=
+ =?us-ascii?Q?t8F+kvLX7MrD31fmsh7+ZQBqrnG57DSX+afEIXkrr7eiv9rIvUA7GPU3Tl3h?=
+ =?us-ascii?Q?oIUyEXosuz3naYh1Y+A1nPSZtyygqjUDfbwwySpb9JQm6AK270tmfpM33j4R?=
+ =?us-ascii?Q?DGcyD5+UJxpVUMNWAIcUdUWqB6746aPg/+b1oAh67PneWIcBPBQjI2MMitVY?=
+ =?us-ascii?Q?3A7DKCck3Oy3Ap6ZlP4OE9kbnQDRxs1JX3TIZtPEGZy37FKRas9BkQ5RTMB/?=
+ =?us-ascii?Q?DV1OqyAJwF1GV+mWVPb/JkM946o/UqnJ2IZp3W59FPLO9wb9HK7C/mDCUa46?=
+ =?us-ascii?Q?0FwAj7AXo0EHpYiq43KdAD+3/r9HRLUkbBq9glNKnGkxPupfK9aMIXERPGz3?=
+ =?us-ascii?Q?XMVU2OE1mqwq8SHZnVdKStFtrU7NBBxDIlNZ5x2VgOT53JNHGulPEUO5jzph?=
+ =?us-ascii?Q?uypQ4andm3+2FcpieqGhyMEcd/gN+pFpBRC17RtyMddejOl/8eLZcUS9s8XB?=
+ =?us-ascii?Q?Ncg45qArCtWgyq7RidfqoUA1cUfkq3gFaOlVMuoOi29CzgS5Z0UHW8v3FoSJ?=
+ =?us-ascii?Q?50lyQuAJ3ESxwI/MtNgvMDTkCBjxN2BPoMDW6cMrT6pk9BrV7bneOi58hylz?=
+ =?us-ascii?Q?BbrO8ZWX25WFEBD7/ulpeqvyMJlINZk723bv8T3ARAnuhD1xg9SFrzjIqIfO?=
+ =?us-ascii?Q?oR9G0URhZcgBpDIVY8B22Se3dGItEEuk25A0cLhFs4yg+Z6a6grijH+9iv9f?=
+ =?us-ascii?Q?ls4E/E2husyqMq2h/ARC5rIb?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bde1d4d1-0236-47cf-2546-08d931a97777
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebe3e279-10d1-4606-f0fd-08d931a97818
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:37.4580
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:38.8001
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2b7k5Bdq3bAlFixjTLY8fi4GA8PM4E93Fl/59g0f2St+M+QBjsO0ZV05XuqIoTg3X8p8lE1+QBd280wAciGMDQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: TicE9WvpBg9s1GH312fhlIlu3aNcpNX6cpG15e0hCezBZ6CiDb01g54jw6hb5Bw7wAuFF4O6G3xLnR0ak2J4lQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0499
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,292 +119,1126 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/def.h | 269 +++++++++++++++++++++++++
- 1 file changed, 269 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/def.h
+ drivers/net/wireless/celeno/cl8k/dfs/dfs.c | 977 +++++++++++++++++++++
+ 1 file changed, 977 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/dfs/dfs.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/def.h b/drivers/net/wireless/=
-celeno/cl8k/def.h
+diff --git a/drivers/net/wireless/celeno/cl8k/dfs/dfs.c b/drivers/net/wirel=
+ess/celeno/cl8k/dfs/dfs.c
 new file mode 100644
-index 000000000000..b57f611dfac2
+index 000000000000..b2717a8be26a
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/def.h
-@@ -0,0 +1,269 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/dfs/dfs.c
+@@ -0,0 +1,977 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_DEF_H
-+#define CL_DEF_H
++#include "dfs/dfs.h"
++#include "dfs/dfs_db.h"
++#include "dfs/radar.h"
++#include "chip.h"
++#include "channel.h"
++#include "chan_info.h"
++#include "env_det.h"
++#include "debug.h"
++#include "utils/timer.h"
++#include "tx/tx.h"
++#include "temperature.h"
++#include "utils/math.h"
++#include "calib.h"
++#include "traffic.h"
++#include "utils/utils.h"
++#include "reg/reg_riu.h"
++#include "reg/reg_mac_hw.h"
++#include "band.h"
++#include "chandef.h"
++#include "utils/string.h"
++#include "utils/file.h"
++#include "config.h"
 +
-+#include <stddef.h>
-+#include <linux/types.h>
-+
-+#define ASSERT_ERR(condition) \
++#define dfs_pr(cl_hw, level, ...) \
 +       do { \
-+               if (unlikely(!(condition))) \
-+                       cl_dbg_err(cl_hw, ":ASSERT_ERR(" #condition ")\n");=
- \
++               if ((level) <=3D (cl_hw)->dfs_db.dbg_lvl) \
++                       pr_debug(__VA_ARGS__); \
 +       } while (0)
 +
-+#define ASSERT_ERR_CHIP(condition) \
-+       do { \
-+               if (unlikely(!(condition))) \
-+                       cl_dbg_chip_err(chip, ":ASSERT_ERR(" #condition ")\=
-n"); \
-+       } while (0)
++#define dfs_pr_verbose(cl_hw, ...) dfs_pr((cl_hw), DBG_LVL_VERBOSE, ##__VA=
+_ARGS__)
++#define dfs_pr_err(cl_hw, ...)     dfs_pr((cl_hw), DBG_LVL_ERROR, ##__VA_A=
+RGS__)
++#define dfs_pr_warn(cl_hw, ...)    dfs_pr((cl_hw), DBG_LVL_WARNING, ##__VA=
+_ARGS__)
++#define dfs_pr_trace(cl_hw, ...)   dfs_pr((cl_hw), DBG_LVL_TRACE, ##__VA_A=
+RGS__)
++#define dfs_pr_info(cl_hw, ...)    dfs_pr((cl_hw), DBG_LVL_INFO, ##__VA_AR=
+GS__)
 +
-+#define CL_TIME_DIFF(a, b) ((a) - (b))
++#define COUNTRY_CODE_LEN 2
 +
-+#define msecs_round(ms) jiffies_to_msecs(msecs_to_jiffies(ms))
++/*
++ * ID  Min    Max    Tol    Min  Max  Tol  Tol   MIN    PPB  Trig   Type
++ *     Width  Width  Width  PRI  PRI  PRI  FREQ  Burst       Count
++ */
 +
-+/* Each chip supports two TCVs */
-+#define TCV0    0
-+#define TCV1    1
-+#define TCV_MAX 2
++/* ETSI Radar Types v1.8.2 */
++static struct cl_radar_type radar_type_etsi[] =3D {
 +
-+#define CHIP0    0
-+#define CHIP1    1
-+#define CHIP_MAX 2
++       {0, 1,  1,  1, 1428, 1428, 1, 1, 1, 18, 10, RADAR_WAVEFORM_SHORT},
++       {1, 1,  5,  1, 1000, 5000, 1, 1, 1, 10, 5,  RADAR_WAVEFORM_SHORT},
++       {2, 1,  15, 1, 625,  5000, 1, 1, 1, 15, 8,  RADAR_WAVEFORM_SHORT},
++       {3, 1,  15, 1, 250,  435,  1, 1, 1, 25, 10, RADAR_WAVEFORM_SHORT},
++       {4, 10, 30, 1, 250,  500,  1, 1, 1, 20, 10, RADAR_WAVEFORM_SHORT},
++       {5, 1,  5,  1, 2500, 3334, 1, 1, 2, 10, 5,  RADAR_WAVEFORM_STAGGERE=
+D},
++       {6, 1,  5,  1, 833,  2500, 1, 1, 2, 15, 8,  RADAR_WAVEFORM_STAGGERE=
+D},
++};
 +
-+#define TCV_TOTAL (CHIP_MAX * TCV_MAX)
++/* FCC Radar Types 8/14 */
++static struct cl_radar_type radar_type_fcc[] =3D {
++       {0, 1,  1,   0,  1428, 1428, 1, 1, 1, 18, 10, RADAR_WAVEFORM_SHORT}=
+,
++       {1, 1,  5,   3,  518,  3066, 3, 1, 1, 18, 10, RADAR_WAVEFORM_SHORT}=
+,
++       {2, 1,  5,   3,  150,  230,  3, 1, 1, 23, 10, RADAR_WAVEFORM_SHORT}=
+,
++       {3, 3,  10,  3,  200,  500,  3, 1, 1, 16, 6,  RADAR_WAVEFORM_SHORT}=
+,
++       {4, 6,  20,  3,  200,  500,  3, 1, 1, 12, 6,  RADAR_WAVEFORM_SHORT}=
+,
++       {5, 50, 100, 50, 1000, 2000, 1, 1, 2, 10, 5,  RADAR_WAVEFORM_LONG},
++       {6, 1,  1,   0,  333,  333,  1, 1, 2, 30, 10, RADAR_WAVEFORM_LONG},
++};
 +
-+#define CL_VENDOR_ID 0x1d69
++static void cl_dfs_fw_en(struct cl_hw *cl_hw, u8 dfs_en)
++{
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++       struct cl_tcv_conf *conf =3D cl_hw->conf;
 +
-+#define CPU_MAX_NUM 8
++       cl_msg_tx_set_dfs(cl_hw, dfs_en, dfs_db->dfs_standard,
++                         conf->ci_dfs_initial_gain, conf->ci_dfs_agc_cd_th=
+);
++}
 +
-+/* We support 128 stations and last station is assigned for high priority =
++static int cl_dfs_print_tbl(struct cl_hw *cl_hw)
++{
++       int i;
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++       char *buf =3D NULL;
++       ssize_t buf_size;
++       int err =3D 0;
++       int len =3D 0;
++
++       cl_snprintf(&buf, &len, &buf_size,
++                   "------------------------------------------------------=
+-------------------"
++                   "---------------\n"
++                   "|    | Min   | Max   | Tol   |  Min  |  Max  | Tol | T=
+ol  | Min   |     |"
++                   " Trig  |      |\n"
++                   "| ID | Width | Width | Width |  PRI  |  PRI  | PRI | F=
+REQ | Burst | PPB |"
++                   " Count | Type |\n"
++                   "------------------------------------------------------=
+-------------------"
++                   "---------------\n");
++
++       for (i =3D 0; i < dfs_db->radar_type_cnt; i++) {
++               cl_snprintf(&buf, &len, &buf_size,
++                           "| %2u | %5d  | %5d  | %5d  | %5d  | %5d  | %3d=
+  | %4d  | %5u |"
++                           " %3u | %5u | %4d |\n",
++                           dfs_db->radar_type[i].id,
++                           dfs_db->radar_type[i].min_width,
++                           dfs_db->radar_type[i].max_width,
++                           dfs_db->radar_type[i].tol_width,
++                           dfs_db->radar_type[i].min_pri,
++                           dfs_db->radar_type[i].max_pri,
++                           dfs_db->radar_type[i].tol_pri,
++                           dfs_db->radar_type[i].tol_freq,
++                           dfs_db->radar_type[i].min_burst,
++                           dfs_db->radar_type[i].ppb,
++                           dfs_db->radar_type[i].trig_count,
++                           dfs_db->radar_type[i].waveform);
++               cl_snprintf(&buf, &len, &buf_size,
++                           "----------------------------------------------=
+-------------------"
++                           "-----------------------\n");
++       }
++
++       err =3D cl_vendor_reply(cl_hw, buf, len);
++       kfree(buf);
++
++       return err;
++}
++
++static bool cl_dfs_create_detection_buffer(struct cl_hw *cl_hw, struct cl_=
+dfs_db *dfs_db,
++                                          struct cl_dfs_pulse *pulse_buffe=
+r, u8 *samples_cnt,
++                                          unsigned long time)
++{
++       u8 i;
++       u8 pulse_idx;
++       /* Init First index to last */
++       u8 first_pulse_idx =3D (dfs_db->buf_idx - 1 + CL_DFS_PULSE_BUF_SIZE=
+) & CL_DFS_PULSE_BUF_MASK;
++
++       /* Find Start Pulse indexes */
++       for (i =3D 0; i < CL_DFS_PULSE_BUF_SIZE; i++) {
++               pulse_idx =3D (i + dfs_db->buf_idx) & CL_DFS_PULSE_BUF_MASK=
+;
++
++               if ((time - dfs_db->dfs_pulse[pulse_idx].time) < dfs_db->se=
+arch_window) {
++                       first_pulse_idx =3D pulse_idx;
++                       break;
++               }
++       }
++
++       dfs_pr_info(cl_hw, "DFS: First pulse idx =3D %u, Last  pulse idx =
+=3D %u\n",
++                   first_pulse_idx, dfs_db->buf_idx - 1);
++
++       if (dfs_db->buf_idx - 1 >=3D first_pulse_idx)
++               if ((dfs_db->buf_idx - first_pulse_idx - 1) < (dfs_db->min_=
+pulse_eeq - 1)) {
++                       /* Return if buffer don't hold enough valid samples=
+ */
++                       dfs_pr_warn(cl_hw, "DFS: Not enough pulses in buffe=
+r\n");
++
++                       return false;
++               }
++
++       /* Copy the processed samples to local Buf to avoid index castings =
 */
-+#define CL_MAX_NUM_STA 128
-+#define FW_MAX_NUM_STA (CL_MAX_NUM_STA + 1)
++       for (i =3D 0; pulse_idx !=3D ((dfs_db->buf_idx - 1 + CL_DFS_PULSE_B=
+UF_SIZE)
++               & CL_DFS_PULSE_BUF_MASK); i++) {
++               pulse_idx =3D (i + first_pulse_idx) & CL_DFS_PULSE_BUF_MASK=
+;
++               memcpy(&pulse_buffer[i], &dfs_db->dfs_pulse[pulse_idx], siz=
+eof(pulse_buffer[i]));
++       }
++       *samples_cnt =3D i + 1;
 +
-+#define MAX_SINGLE_QUEUES   (AC_MAX * FW_MAX_NUM_STA)
-+#define HIGH_PRIORITY_QUEUE (MAX_SINGLE_QUEUES - 1)
++       return true;
++}
 +
-+/* Must be aligned to NX_VIRT_DEV_MAX definition in rwnx_config.h */
-+#define MAX_BSS_NUM 8
++static void cl_dfs_add_pulses_to_global_buffer(struct cl_hw *cl_hw, struct=
+ cl_dfs_db *dfs_db,
++                                              struct cl_radar_pulse *pulse=
+, u8 pulse_cnt,
++                                              unsigned long time)
++{
++       int  i;
 +
-+#define MAX_TX_SW_AMSDU_PACKET 15
++       for (i =3D 0; i < pulse_cnt; i++)
++               dfs_pr_info(cl_hw, "Pulse=3D%d, Width=3D%u, PRI=3D%u, FREQ=
+=3D%d, Time=3D%lu, FOM=3D%x\n",
++                           i, pulse[i].len, pulse[i].rep, pulse[i].freq, t=
+ime, pulse[i].fom);
 +
-+#define RX_MAX_MSDU_IN_AMSDU 128
++       /* Maintain cyclic pulse buffer */
++       for (i =3D 0; i < pulse_cnt; i++) {
++               dfs_db->dfs_pulse[dfs_db->buf_idx].freq =3D pulse[i].freq;
++               dfs_db->dfs_pulse[dfs_db->buf_idx].width =3D pulse[i].len;
++               dfs_db->dfs_pulse[dfs_db->buf_idx].pri =3D pulse[i].rep;
++               dfs_db->dfs_pulse[dfs_db->buf_idx].occ =3D 0; /* occ temp d=
+isabled. */
++               dfs_db->dfs_pulse[dfs_db->buf_idx].time =3D time;
 +
-+#define CL_PATH_MAX 200
-+#define CL_FILENAME_MAX 100
++               dfs_db->buf_idx++;
++               dfs_db->buf_idx &=3D CL_DFS_PULSE_BUF_MASK;
++       }
++}
 +
-+/* MAX/MIN number of antennas supported */
-+#define MIN_ANTENNAS             1
-+#define MAX_ANTENNAS             6
-+#define MAX_ANTENNAS_OFDM_HT_VHT 4
-+#define MAX_ANTENNAS_CCK         4
-+#define MAX_ANTENNAS_CHIP        8
++static bool cl_dfs_buf_maintain(struct cl_hw *cl_hw, struct cl_radar_pulse=
+ *pulse,
++                               struct cl_dfs_pulse *pulse_buffer, u8 pulse=
+_cnt,
++                               unsigned long time, u8 *samples_cnt, struct=
+ cl_dfs_db *dfs_db)
++{
++       int  i;
 +
-+#define MAX_ANTENNAS_CL808X      8
-+#define MAX_ANTENNAS_CL806X      6
-+#define MAX_ANTENNAS_CL804X      4
++       cl_dfs_add_pulses_to_global_buffer(cl_hw, dfs_db, pulse, pulse_cnt,=
+ time);
++       if (!cl_dfs_create_detection_buffer(cl_hw, dfs_db, pulse_buffer, sa=
+mples_cnt, time))
++               return false;
 +
-+#define ANT_MASK(ant) (BIT(ant) - 1)
++       for (i =3D 0; i < *samples_cnt; i++)
++               dfs_pr_info(cl_hw, "DFS: pulse[%d]: width=3D%u, pri=3D%u, f=
+req=3D%d\n",
++                           i, pulse_buffer[i].width, pulse_buffer[i].pri, =
+pulse_buffer[i].freq);
 +
-+/* 6GHz defines */
-+#define HE_6GHZ_CAP_MIN_MPDU_START_OFFSET    0
-+#define HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP_OFFSET 3
-+#define HE_6GHZ_CAP_MAX_MPDU_LEN_OFFSET      6
-+#define HE_6GHZ_CAP_MAX_AMPDU_LEN_FACTOR     13
-+#define HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP_MASK   0x38
++       return true;
++}
 +
-+#define MHZ_TO_BW(mhz) ilog2((mhz) / 20)
-+#define BW_TO_MHZ(bw)  ((1 << (bw)) * 20)
-+#define BW_TO_KHZ(bw)  ((1 << (bw)) * 20000)
++static inline bool cl_dfs_pulse_match(s32 pulse_val, s32 spec_min_val,
++                                     s32 spec_max_val, s32 spec_tol)
++{
++       return ((pulse_val >=3D (spec_min_val - spec_tol)) &&
++               (pulse_val <=3D (spec_max_val + spec_tol)));
++}
 +
-+#define CIPHER_SUITE_LIST_OFFSET 11
-+#define CIPHER_SUITE_LIST_SIZE   4
++static u8 cl_dfs_is_stag_pulse(struct cl_hw *cl_hw, struct cl_dfs_db *dfs_=
+db,
++                              struct cl_dfs_pulse *pulse)
++{
++       int  i;
++       struct cl_radar_type *radar_type;
 +
-+/* Cipher suite selectors */
-+#define CL_CIPHER_SUITE_USE_NONE     0
-+#define CL_CIPHER_SUITE_WEP40        1
-+#define CL_CIPHER_SUITE_TKIP         2
-+#define CL_CIPHER_SUITE_CCMP         4
-+#define CL_CIPHER_SUITE_WEP104       5
-+#define CL_CIPHER_SUITE_AES_CMAC     6
-+#define CL_CIPHER_SUITE_GCMP         8
-+#define CL_CIPHER_SUITE_GCMP_256     9
-+#define CL_CIPHER_SUITE_CCMP_256     10
-+#define CL_CIPHER_SUITE_BIP_GMAC_128 11
-+#define CL_CIPHER_SUITE_BIP_GMAC_256 12
-+#define CL_CIPHER_SUITE_BIP_CMAC_256 13
-+#define CL_CIPHER_SUITE_USE_GROUP    14
++       for (i =3D 0; i < dfs_db->radar_type_cnt; i++) {
++               radar_type =3D &dfs_db->radar_type[i];
 +
-+#define CIPHER_SUITE_MASK() (BIT(CL_CIPHER_SUITE_WEP40)        | \
-+                            BIT(CL_CIPHER_SUITE_WEP40)        | \
-+                            BIT(CL_CIPHER_SUITE_TKIP)         | \
-+                            BIT(CL_CIPHER_SUITE_CCMP)         | \
-+                            BIT(CL_CIPHER_SUITE_WEP104)       | \
-+                            BIT(CL_CIPHER_SUITE_AES_CMAC)     | \
-+                            BIT(CL_CIPHER_SUITE_GCMP)         | \
-+                            BIT(CL_CIPHER_SUITE_GCMP_256)     | \
-+                            BIT(CL_CIPHER_SUITE_CCMP_256)     | \
-+                            BIT(CL_CIPHER_SUITE_BIP_GMAC_128) | \
-+                            BIT(CL_CIPHER_SUITE_BIP_GMAC_256) | \
-+                            BIT(CL_CIPHER_SUITE_BIP_CMAC_256) | \
-+                            BIT(CL_CIPHER_SUITE_USE_GROUP))
++               if (radar_type->waveform !=3D RADAR_WAVEFORM_STAGGERED)
++                       continue;
 +
-+#define IS_VALID_ENCRYPT_TYPE(encrypt_type) ((encrypt_type) & CIPHER_SUITE=
-_MASK())
++               if (cl_dfs_pulse_match((s32)pulse->width, radar_type->min_w=
+idth,
++                                      radar_type->max_width, radar_type->t=
+ol_width) &&
++                   cl_dfs_pulse_match((s32)pulse->pri, radar_type->min_pri=
+,
++                                      radar_type->max_pri, radar_type->tol=
+_pri)) {
++                       /* Search for the second burst */
++                       if (abs(pulse[0].pri - pulse[2].pri) <=3D dfs_db->r=
+adar_type[i].tol_pri &&
++                           abs(pulse[1].pri - pulse[3].pri) <=3D radar_typ=
+e->tol_pri &&
++                           abs(pulse[0].pri - pulse[1].pri) > radar_type->=
+tol_pri &&
++                           abs(pulse[2].pri - pulse[3].pri) > radar_type->=
+tol_pri) {
++                               dfs_pr_info(cl_hw, "DFS: Found match type %=
+d\n", i);
++                               return (i + 1);
++                       } else if (abs(pulse[0].pri - pulse[3].pri) <=3D ra=
+dar_type->tol_pri &&
++                                  abs(pulse[1].pri - pulse[4].pri) <=3D ra=
+dar_type->tol_pri &&
++                                  abs(pulse[0].pri - pulse[1].pri) > radar=
+_type->tol_pri &&
++                                  abs(pulse[3].pri - pulse[4].pri) > radar=
+_type->tol_pri) {
++                               dfs_pr_info(cl_hw, "DFS: Found match radar =
+%d\n", i);
++                               return (i + 1);
++                       }
++               }
++       }
 +
-+#define CL_CIPHER_SUITE_MIXED_TKIP_CCMP (BIT(CL_CIPHER_SUITE_TKIP) | \
-+                                        BIT(CL_CIPHER_SUITE_CCMP))
++       return 0;
++}
 +
-+/* AKM suite selectors */
-+#define CL_AKM_SUITE_OPEN              0
-+#define CL_AKM_SUITE_8021X             1
-+#define CL_AKM_SUITE_PSK               2
-+#define CL_AKM_SUITE_FT_8021X          3
-+#define CL_AKM_SUITE_FT_PSK            4
-+#define CL_AKM_SUITE_8021X_SHA256      5
-+#define CL_AKM_SUITE_PSK_SHA256        6
-+#define CL_AKM_SUITE_TDLS              7
-+#define CL_AKM_SUITE_SAE               8
-+#define CL_AKM_SUITE_FT_OVER_SAE       9
-+#define CL_AKM_SUITE_8021X_SUITE_B     11
-+#define CL_AKM_SUITE_8021X_SUITE_B_192 12
-+#define CL_AKM_SUITE_FILS_SHA256       14
-+#define CL_AKM_SUITE_FILS_SHA384       15
-+#define CL_AKM_SUITE_FT_FILS_SHA256    16
-+#define CL_AKM_SUITE_FT_FILS_SHA384    17
++static u8 cl_dfs_is_non_stag_pulse(struct cl_hw *cl_hw, struct cl_dfs_db *=
+dfs_db,
++                                  struct cl_dfs_pulse *pulse)
++{
++       int  i;
++       struct cl_radar_type *radar_type;
 +
-+#define CL_HWQ_BK  0
-+#define CL_HWQ_BE  1
-+#define CL_HWQ_VI  2
-+#define CL_HWQ_VO  3
-+#define CL_HWQ_BCN 4
++       for (i =3D 0; i < dfs_db->radar_type_cnt; i++) {
++               radar_type =3D &dfs_db->radar_type[i];
 +
-+/* Traffic ID enumeration */
-+enum {
-+       TID_0,
-+       TID_1,
-+       TID_2,
-+       TID_3,
-+       TID_4,
-+       TID_5,
-+       TID_6,
-+       TID_7,
-+       TID_MAX
-+};
++               if (radar_type->waveform =3D=3D RADAR_WAVEFORM_STAGGERED)
++                       continue;
 +
-+/* Access Category enumeration */
-+enum {
-+       AC_BK =3D 0,
-+       AC_BE,
-+       AC_VI,
-+       AC_VO,
-+       AC_MAX
-+};
++               if (cl_dfs_pulse_match((s32)pulse->width, radar_type->min_w=
+idth,
++                                      radar_type->max_width, radar_type->t=
+ol_width) &&
++                   cl_dfs_pulse_match((s32)pulse->pri, radar_type->min_pri=
+,
++                                      radar_type->max_pri, radar_type->tol=
+_pri)) {
++                       dfs_pr_info(cl_hw, "DFS: Found match type %d\n", i)=
+;
++                       return (i + 1);
++               }
++       }
 +
-+enum cl_dev_flag {
-+       CL_DEV_HW_RESTART,
-+       CL_DEV_SW_RESTART,
-+       CL_DEV_STOP_HW,
-+       CL_DEV_STARTED,
-+       CL_DEV_RADAR_LISTEN,
-+       CL_DEV_INIT,
-+       CL_DEV_FW_SYNC,
-+       CL_DEV_FW_ERROR,
-+       CL_DEV_REPEATER,
-+       CL_DEV_MESH_AP,
-+};
++       dfs_pr_warn(cl_hw, "DFS: Match not found\n");
 +
-+enum cl_hw_mode {
-+       HW_MODE_A,
-+       HW_MODE_B,
-+       HW_MODE_G,
-+       HW_MODE_BG,
++       return 0;
++}
 +
-+       HW_MODE_MAX,
-+};
++static u8 cl_dfs_get_pulse_type(struct cl_hw *cl_hw, struct cl_dfs_pulse *=
+pulse,
++                               bool stag_candidate)
++{
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
 +
-+enum cl_channel_bw {
-+       CHNL_BW_20,
-+       CHNL_BW_40,
-+       CHNL_BW_80,
-+       CHNL_BW_160,
++       if (stag_candidate) {
++               u8 pulse_type =3D cl_dfs_is_stag_pulse(cl_hw, dfs_db, pulse=
+);
 +
-+       CHNL_BW_MAX,
-+};
++               if (pulse_type)
++                       return pulse_type;
++       }
 +
-+#define MU_UL_MAX 4
++       return cl_dfs_is_non_stag_pulse(cl_hw, dfs_db, pulse);
++}
 +
-+#define CHNL_BW_MAX_HE   CHNL_BW_MAX
-+#define CHNL_BW_MAX_VHT  CHNL_BW_MAX
-+#define CHNL_BW_MAX_HT   CHNL_BW_80
-+#define CHNL_BW_MAX_OFDM CHNL_BW_40
-+#define CHNL_BW_MAX_CCK  CHNL_BW_40
++static bool cl_dfs_compare_cand(struct cl_hw *cl_hw, struct cl_dfs_db *dfs=
+_db, u8 pulse_type,
++                               struct cl_dfs_pulse radar_cand, u8 *match, =
+int idx,
++                               u8 *occ_ch_cand)
++{
++       int i;
 +
-+#define CHNL_BW_2_5 4
-+#define CHNL_BW_5   5
-+#define CHNL_BW_10  6
++       if (!(abs(dfs_db->pulse_buffer[idx].width - radar_cand.width) <=3D
++           dfs_db->radar_type[pulse_type].tol_width))
++               goto end;
 +
-+#define CHNL_BW_MAX_OFDMA 7
++       if (!(abs(dfs_db->pulse_buffer[idx].freq - radar_cand.freq) <=3D
++           dfs_db->radar_type[pulse_type].tol_freq))
++               goto end;
 +
-+enum cl_reg_standard {
-+       CL_STANDARD_NONE,
-+       CL_STANDARD_FCC,
-+       CL_STANDARD_ETSI,
-+};
++       for (i =3D 1; i < CL_DFS_CONCEAL_CNT; i++)
++               if (abs(dfs_db->pulse_buffer[idx].pri - i * radar_cand.pri)=
+ <=3D
++                   dfs_db->radar_type[pulse_type].tol_pri)
++                       break;
 +
-+enum cl_wireless_mode {
-+       WIRELESS_MODE_LEGACY,
-+       WIRELESS_MODE_HT,
-+       WIRELESS_MODE_HT_VHT,
-+       WIRELESS_MODE_HT_VHT_HE,
-+       WIRELESS_MODE_HE
-+};
++       if (i =3D=3D CL_DFS_CONCEAL_CNT)
++               goto end;
 +
-+enum cl_ndp_tx_chains {
-+       NDP_TX_PHY0 =3D 0x1,
-+       NDP_TX_PHY1 =3D 0x2,
-+       NDP_TX_PHY01 =3D 0x3,
-+};
++       (*match)++;
++       (*occ_ch_cand) +=3D dfs_db->pulse_buffer[i].occ;
 +
-+#define IS_VALID_TX_CHAINS(mask) \
-+       (((mask) =3D=3D NDP_TX_PHY0) || \
-+        ((mask) =3D=3D NDP_TX_PHY1) || \
-+        ((mask) =3D=3D NDP_TX_PHY01))
++end:
++       dfs_pr_info(cl_hw, "DFS: compared pulse - width=3D%u, pri=3D%u, fre=
+q=3D%u match: %u "
++                   "trig cnt: %u\n",
++                   dfs_db->pulse_buffer[idx].width, dfs_db->pulse_buffer[i=
+dx].pri,
++                   dfs_db->pulse_buffer[idx].freq, *match,
++                   dfs_db->radar_type[pulse_type].trig_count);
 +
-+#define Q2_TO_FREQ(x)    ((x) >> 2)
-+#define Q2_TO_FREQ_FRAC(x) (((x) & 0x3) * 25)
-+#define FREQ_TO_Q2(freq) ((freq) << 2)
++       if (*match < dfs_db->radar_type[pulse_type].trig_count)
++               return false;
 +
-+/* Values of the firmware FORMATMOD fields */
-+enum format_mode {
-+       FORMATMOD_NON_HT =3D 0,
-+       FORMATMOD_NON_HT_DUP_OFDM =3D 1,
-+       FORMATMOD_HT_MF =3D 2,
-+       FORMATMOD_HT_GF =3D 3,
-+       FORMATMOD_VHT =3D 4,
-+       FORMATMOD_HE_SU =3D 5,
-+       FORMATMOD_HE_MU =3D 6,
-+       FORMATMOD_HE_EXT =3D 7,
-+       FORMATMOD_HE_TRIG =3D 8,
-+       FORMATMOD_MAX =3D 9
-+};
++       return true;
++}
 +
-+/* PHY device options */
-+enum {
-+       PHY_DEV_OLYMPUS, /* Olympus - 5g + 24g */
-+       PHY_DEV_ATHOS,   /* Athos - 6g + 5g */
-+       PHY_DEV_MAX,
-+};
++static bool cl_dfs_check_cand(struct cl_hw *cl_hw, struct cl_dfs_db *dfs_d=
+b, u8 pulse_type,
++                             struct cl_dfs_pulse radar_cand, u8 samples_cn=
+t)
++{
++       u8 occ_ch_cand =3D 0;
++       u8 match =3D 0;
++       int i;
 +
-+#define IS_PHY_OLYMPUS(chip) ((chip)->conf->ci_phy_dev =3D=3D PHY_DEV_OLYM=
-PUS)
-+#define IS_PHY_ATHOS(chip) ((chip)->conf->ci_phy_dev =3D=3D PHY_DEV_ATHOS)
++       dfs_pr_info(cl_hw, "DFS: candidate pulse - width=3D%u, pri=3D%u, fr=
+eq=3D%u\n",
++                   radar_cand.width, radar_cand.pri, radar_cand.freq);
 +
-+#define ant_for_each(_ant) for (_ant =3D cl_hw->first_ant; _ant <=3D cl_hw=
-->last_ant; _ant++)
++       for (i =3D 0; i < samples_cnt; i++) {
++               if (!cl_dfs_compare_cand(cl_hw, dfs_db, pulse_type, radar_c=
+and, &match, i,
++                                        &occ_ch_cand))
++                       continue;
 +
-+#define CL_MU_MAX_STA_PER_GROUP     8
-+#define CL_MU_OFDMA_MAX_STA_PER_GRP 8
-+#define CL_MU_MIMO_MAX_STA_PER_GRP  4
++               dfs_pr_verbose(cl_hw, "DFS: Radar detected - type %u\n", pu=
+lse_type);
++               return true;
++       }
 +
-+#endif /* CL_DEF_H */
++       return false;
++}
++
++static bool cl_dfs_short_pulse_search(struct cl_hw *cl_hw, struct cl_radar=
+_pulse *pulse,
++                                     u8 pulse_cnt, unsigned long time, str=
+uct cl_dfs_db *dfs_db)
++{
++       int i;
++       bool stag_candidate;
++       u8 samples_cnt =3D 0;
++       u8 pulse_type;
++
++       /* Return if not enough pulses in the buffer */
++       if (!cl_dfs_buf_maintain(cl_hw, pulse, dfs_db->pulse_buffer, pulse_=
+cnt, time,
++                                &samples_cnt, dfs_db))
++               return false;
++
++       for (i =3D 0; i < samples_cnt; i++) {
++               struct cl_dfs_pulse radar_cand;
++
++               stag_candidate =3D false;
++
++               /* Make sure there is enough samples to staggered check */
++               if (dfs_db->dfs_standard =3D=3D CL_STANDARD_ETSI &&
++                   (samples_cnt - i) > CL_DFS_STAGGERED_CHEC_LEN)
++                       stag_candidate =3D true;
++
++               pulse_type =3D cl_dfs_get_pulse_type(cl_hw, &dfs_db->pulse_=
+buffer[i], stag_candidate);
++
++               if (!pulse_type)
++                       continue;
++
++               radar_cand.width =3D dfs_db->pulse_buffer[i].width;
++               radar_cand.pri =3D dfs_db->pulse_buffer[i].pri;
++               radar_cand.freq =3D dfs_db->pulse_buffer[i].freq;
++
++               if (cl_dfs_check_cand(cl_hw, dfs_db, pulse_type - 1, radar_=
+cand, samples_cnt))
++                       return true;
++       }
++
++       return false;
++}
++
++static bool cl_dfs_long_pulse_search(struct cl_hw *cl_hw, struct cl_radar_=
+pulse *pulse,
++                                    u8 pulse_cnt, unsigned long time)
++{
++       u32 prev_pulse_time_diff;
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++       struct cl_tcv_conf *conf =3D cl_hw->conf;
++       int i;
++
++       for (i =3D 0; i < pulse_cnt; i++) {
++               if (pulse[i].len > CL_DFS_LONG_MIN_WIDTH) {
++                       prev_pulse_time_diff =3D time - dfs_db->last_long_p=
+ulse_ts;
++
++                       if (pulse[i].rep >=3D dfs_db->radar_type[5].min_pri=
+ &&
++                           pulse[i].rep <=3D dfs_db->radar_type[5].max_pri=
+)
++                               dfs_db->long_pri_match_count +=3D 1;
++
++                       dfs_pr_info(cl_hw, "DFS: Long pulse search: width =
+=3D %u, delta_time =3D %u\n",
++                                   pulse[i].len, prev_pulse_time_diff);
++
++                       if (dfs_db->long_pulse_count =3D=3D 0 ||
++                           (prev_pulse_time_diff >=3D conf->ci_dfs_long_pu=
+lse_min &&
++                            prev_pulse_time_diff <=3D conf->ci_dfs_long_pu=
+lse_max)) {
++                               dfs_db->long_pulse_count +=3D 1;
++                       } else if (prev_pulse_time_diff > min(dfs_db->max_i=
+nterrupt_diff,
++                                                    conf->ci_dfs_long_puls=
+e_min)) {
++                               dfs_db->long_pulse_count =3D 0;
++                               dfs_db->short_pulse_count =3D 0;
++                               dfs_db->long_pri_match_count =3D 0;
++                       }
++                       dfs_db->last_long_pulse_ts =3D time;
++               } else if (pulse[i].len < CL_DFS_LONG_FALSE_WIDTH) {
++                       dfs_db->short_pulse_count++;
++
++                       if (dfs_db->short_pulse_count > CL_DFS_LONG_FALSE_I=
+ND) {
++                               dfs_db->long_pulse_count =3D 0;
++                               dfs_db->short_pulse_count =3D 0;
++                               dfs_db->long_pri_match_count =3D 0;
++
++                               dfs_pr_warn(cl_hw, "DFS: Restart long seque=
+nce search\n");
++                       }
++               }
++       }
++
++       if (dfs_db->long_pulse_count >=3D dfs_db->radar_type[5].trig_count =
+&&
++           dfs_db->long_pri_match_count >=3D (dfs_db->radar_type[5].trig_c=
+ount - 1)) {
++               dfs_db->short_pulse_count =3D 0;
++               dfs_db->long_pulse_count =3D 0;
++               dfs_db->long_pri_match_count =3D 0;
++               return true;
++       } else {
++               return false;
++       }
++}
++
++static bool cl_dfs_post_detection(struct cl_hw *cl_hw)
++{
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++       struct cl_tcv_conf *conf =3D cl_hw->conf;
++
++       /* Make sure firmware sets the DFS registers */
++       cl_radar_flush(cl_hw);
++       cl_msg_tx_set_dfs(cl_hw, false, dfs_db->dfs_standard,
++                         conf->ci_dfs_initial_gain, conf->ci_dfs_agc_cd_th=
+);
++
++       ieee80211_radar_detected(cl_hw->hw);
++
++       return true;
++}
++
++bool cl_dfs_pulse_process(struct cl_hw *cl_hw, struct cl_radar_pulse *puls=
+e, u8 pulse_cnt,
++                         unsigned long time)
++{
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++
++       dfs_db->pulse_cnt +=3D pulse_cnt;
++
++       if (dfs_db->dfs_standard =3D=3D CL_STANDARD_FCC &&
++           cl_dfs_long_pulse_search(cl_hw, pulse, pulse_cnt, time)) {
++               dfs_pr_verbose(cl_hw, "DFS: Radar detected - long\n");
++               return cl_dfs_post_detection(cl_hw);
++       } else if (cl_dfs_short_pulse_search(cl_hw, pulse, pulse_cnt, time,=
+ dfs_db)) {
++               dfs_pr_verbose(cl_hw, "DFS: Radar detected - short\n");
++               return cl_dfs_post_detection(cl_hw);
++       }
++
++       return false;
++}
++
++static void cl_dfs_set_min_pulse(struct cl_hw *cl_hw)
++{
++       int i;
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++
++       dfs_db->min_pulse_eeq =3D U8_MAX;
++
++       for (i =3D 0; i < dfs_db->radar_type_cnt; i++) {
++               if (dfs_db->radar_type[i].trig_count < dfs_db->min_pulse_ee=
+q)
++                       dfs_db->min_pulse_eeq =3D dfs_db->radar_type[i].tri=
+g_count;
++       }
++       dfs_db->min_pulse_eeq =3D max(dfs_db->min_pulse_eeq, (u8)CL_DFS_MIN=
+_PULSE_TRIG);
++}
++
++static void cl_dfs_set_region(struct cl_hw *cl_hw, enum cl_reg_standard st=
+d)
++{
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++
++       dfs_db->dfs_standard =3D std;
++
++       if (dfs_db->dfs_standard =3D=3D CL_STANDARD_FCC) {
++               dfs_db->csa_cnt =3D CL_DFS_FCC_CSA_CNT;
++               dfs_db->radar_type =3D radar_type_fcc;
++               dfs_db->radar_type_cnt =3D sizeof(radar_type_fcc) / sizeof(=
+struct cl_radar_type);
++       } else {
++               dfs_db->csa_cnt =3D CL_DFS_CE_CSA_CNT;
++               dfs_db->radar_type =3D radar_type_etsi;
++               dfs_db->radar_type_cnt =3D sizeof(radar_type_etsi) / sizeof=
+(struct cl_radar_type);
++       }
++}
++
++static void cl_dfs_start_cac(struct cl_dfs_db *db)
++{
++       db->cac.started =3D true;
++}
++
++static void cl_dfs_end_cac(struct cl_dfs_db *db)
++{
++       db->cac.started =3D false;
++}
++
++void cl_dfs_radar_listen_start(struct cl_hw *cl_hw)
++{
++       set_bit(CL_DEV_RADAR_LISTEN, &cl_hw->drv_flags);
++
++       cl_dfs_fw_en(cl_hw, true);
++
++       dfs_pr_verbose(cl_hw, "DFS: Started radar listening\n");
++}
++
++void cl_dfs_radar_listen_end(struct cl_hw *cl_hw)
++{
++       clear_bit(CL_DEV_RADAR_LISTEN, &cl_hw->drv_flags);
++
++       cl_dfs_fw_en(cl_hw, false);
++
++       dfs_pr_verbose(cl_hw, "DFS: Ended radar listening\n");
++}
++
++void cl_dfs_force_cac_start(struct cl_hw *cl_hw)
++{
++       bool is_listening =3D test_bit(CL_DEV_RADAR_LISTEN, &cl_hw->drv_fla=
+gs);
++
++       cl_dfs_start_cac(&cl_hw->dfs_db);
++
++       /* Reset request state upon completion */
++       cl_dfs_request_cac(cl_hw, false);
++
++       /* Disable all the TX flow - be silent */
++       cl_tx_en(cl_hw, CL_TX_EN_DFS, false);
++
++       /* If for some reason we are still not listening radar, do it */
++       if (unlikely(!is_listening && cl_hw->hw->conf.radar_enabled))
++               cl_dfs_radar_listen_start(cl_hw);
++
++       dfs_pr_verbose(cl_hw, "DFS: CAC started\n");
++}
++
++void cl_dfs_force_cac_end(struct cl_hw *cl_hw)
++{
++       bool is_listening =3D test_bit(CL_DEV_RADAR_LISTEN, &cl_hw->drv_fla=
+gs);
++
++       /* Enable all the TX flow */
++       cl_tx_en(cl_hw, CL_TX_EN_DFS, true);
++
++       /*
++        * If for some reason we are still listening and mac80211 does not
++        * require to listen radar - disable it
++        */
++       if (unlikely(is_listening && !cl_hw->hw->conf.radar_enabled))
++               cl_dfs_radar_listen_end(cl_hw);
++
++       cl_dfs_end_cac(&cl_hw->dfs_db);
++
++       dfs_pr_verbose(cl_hw, "DFS: CAC ended\n");
++}
++
++static u16 cl_dfs_get_remain_cac_time(struct cl_hw *cl_hw)
++{
++       struct cl_vif *cl_vif =3D cl_vif_get_first_ap(cl_hw);
++       struct wireless_dev *wdev =3D cl_vif ? ieee80211_vif_to_wdev(cl_vif=
+->vif) : NULL;
++
++       if (wdev && wdev->cac_started)
++               return (jiffies_to_msecs(jiffies - wdev->cac_start_time) / =
+1000U);
++
++       return 0;
++}
++
++bool __must_check cl_dfs_is_en(struct cl_hw *cl_hw)
++{
++       return cl_hw->dfs_db.en;
++}
++
++bool __must_check cl_dfs_is_in_cac(struct cl_hw *cl_hw)
++{
++       return cl_hw->dfs_db.cac.started;
++}
++
++bool __must_check cl_dfs_radar_listening(struct cl_hw *cl_hw)
++{
++       return test_bit(CL_DEV_RADAR_LISTEN, &cl_hw->drv_flags);
++}
++
++bool __must_check cl_dfs_requested_cac(struct cl_hw *cl_hw)
++{
++       return cl_hw->dfs_db.cac.requested;
++}
++
++void cl_dfs_request_cac(struct cl_hw *cl_hw, bool should_do)
++{
++       cl_hw->dfs_db.cac.requested =3D should_do;
++}
++
++static void cl_dfs_edit_tbl(struct cl_hw *cl_hw, u8 row, u8 line, s16 val)
++{
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++
++       if (row > dfs_db->radar_type_cnt) {
++               dfs_pr_err(cl_hw, "Invalid row number (%u) [0 - %u]\n", lin=
+e,
++                          dfs_db->radar_type_cnt - 1);
++               return;
++       }
++
++       if (line =3D=3D 0 || line > CL_DFS_MAX_TBL_LINE) {
++               dfs_pr_err(cl_hw, "Invalid line number (%u) [1 - %u]\n", li=
+ne,
++                          CL_DFS_MAX_TBL_LINE - 1);
++               return;
++       }
++
++       if (line =3D=3D 1)
++               dfs_db->radar_type[row].min_width =3D (s32)val;
++       else if (line =3D=3D 2)
++               dfs_db->radar_type[row].max_width =3D (s32)val;
++       else if (line =3D=3D 3)
++               dfs_db->radar_type[row].tol_width =3D (s32)val;
++       else if (line =3D=3D 4)
++               dfs_db->radar_type[row].min_pri =3D (s32)val;
++       else if (line =3D=3D 5)
++               dfs_db->radar_type[row].max_pri =3D (s32)val;
++       else if (line =3D=3D 6)
++               dfs_db->radar_type[row].tol_pri =3D (s32)val;
++       else if (line =3D=3D 7)
++               dfs_db->radar_type[row].tol_freq =3D (s32)val;
++       else if (line =3D=3D 8)
++               dfs_db->radar_type[row].min_burst =3D (u8)val;
++       else if (line =3D=3D 9)
++               dfs_db->radar_type[row].ppb =3D (u8)val;
++       else if (line =3D=3D 10)
++               dfs_db->radar_type[row].trig_count =3D (u8)val;
++       else if (line =3D=3D 11)
++               dfs_db->radar_type[row].waveform =3D (enum cl_radar_wavefor=
+m)val;
++
++       /* Verify if min_pulse_eeq was changed */
++       cl_dfs_set_min_pulse(cl_hw);
++}
++
++static void cl_dfs_tbl_overwrite_set(struct cl_hw *cl_hw)
++{
++       s8 *tok =3D NULL, *saveptr =3D NULL;
++       u8 param1 =3D 0;
++       u8 param2 =3D 0;
++       s16 param3 =3D 0;
++       char str[64];
++
++       if (strlen(cl_hw->conf->ce_dfs_tbl_overwrite) =3D=3D 0)
++               return;
++
++       snprintf(str, sizeof(str), cl_hw->conf->ce_dfs_tbl_overwrite);
++
++       tok =3D cl_strtok_r(str, ",", &saveptr);
++       while (tok) {
++               if (sscanf(tok, "%hhd,%hhd,%hd", &param1, &param2, &param3)=
+ =3D=3D 3)
++                       cl_dfs_edit_tbl(cl_hw, param1, param2, param3);
++               tok =3D cl_strtok_r(NULL, ",", &saveptr);
++       }
++}
++
++void cl_dfs_close(struct cl_hw *cl_hw)
++{
++       if (!cl_band_is_5g(cl_hw))
++               return;
++
++       cl_hw->dfs_db.en =3D false;
++}
++
++void cl_dfs_init(struct cl_hw *cl_hw)
++{
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++       struct cl_tcv_conf *conf =3D cl_hw->conf;
++
++       if (!cl_band_is_5g(cl_hw))
++               return;
++
++       dfs_db->en =3D conf->ci_ieee80211h;
++
++       /*
++        * Setting min window size to avoid the case where the second inter=
+rupt
++        * within the burst is setting the counter to 0. the max is between=
+ jiffies
++        * unit and max PRI in ms.
++        */
++       dfs_db->max_interrupt_diff =3D max(1000 / HZ, 2);
++       dfs_db->search_window =3D CL_DFS_PULSE_WINDOW;
++
++       cl_dfs_set_region(cl_hw, cl_hw->channel_info.standard);
++       cl_dfs_set_min_pulse(cl_hw);
++       cl_dfs_tbl_overwrite_set(cl_hw);
++}
++
++void cl_dfs_recovery(struct cl_hw *cl_hw)
++{
++       /* Re-enable DFS after recovery */
++       if (cl_dfs_is_in_cac(cl_hw)) {
++               cl_dfs_fw_en(cl_hw, true);
++
++               /* If recovery happened during CAC make sure to disable bea=
+con backup */
++               cl_tx_en(cl_hw, CL_TX_EN_DFS, false);
++       }
++}
++
++static int cl_dfs_print_pulse_buffer(struct cl_hw *cl_hw, bool clear_buf)
++{
++       int i;
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++       char *buf =3D NULL;
++       ssize_t buf_size;
++       int err =3D 0;
++       int len =3D 0;
++
++       cl_snprintf(&buf, &len, &buf_size,
++                   "DFS Pulse Count =3D %u\n", dfs_db->pulse_cnt);
++
++       for (i =3D 0; i < ARRAY_SIZE(dfs_db->dfs_pulse); i++) {
++               cl_snprintf(&buf, &len, &buf_size,
++                           "Pulse Buffer: i=3D%d, Width=3D%u, PRI=3D%u, FR=
+EQ=3D%d, OCC=3D%u, Time=3D%lu\n",
++                           i, dfs_db->dfs_pulse[i].width,
++                           dfs_db->dfs_pulse[i].pri,
++                           dfs_db->dfs_pulse[i].freq,
++                           dfs_db->dfs_pulse[i].occ,
++                           dfs_db->dfs_pulse[i].time);
++       }
++
++       if (clear_buf) {
++               dfs_db->pulse_cnt =3D 0;
++               memset(dfs_db->dfs_pulse, 0, sizeof(dfs_db->dfs_pulse));
++       }
++
++       err =3D cl_vendor_reply(cl_hw, buf, len);
++       kfree(buf);
++
++       return err;
++}
++
++static void cl_dfs_cli_force_detection(struct cl_hw *cl_hw, struct cl_dfs_=
+db *dfs_db)
++{
++       dfs_pr_verbose(cl_hw, "DFS: Force Radar Detection\n");
++       cl_dfs_post_detection(cl_hw);
++}
++
++static void cl_dfs_cli_set_cac(struct cl_hw *cl_hw, bool start)
++{
++       if (start)
++               cl_dfs_force_cac_start(cl_hw);
++       else
++               cl_dfs_force_cac_end(cl_hw);
++}
++
++static int cl_dfs_cli_help(struct cl_hw *cl_hw)
++{
++       char *buf =3D kzalloc(PAGE_SIZE, GFP_KERNEL);
++       int err =3D 0;
++
++       if (!buf)
++               return -ENOMEM;
++
++       snprintf(buf, PAGE_SIZE,
++                "dfs usage:\n"
++                "-b : Print pulse buffer [(0)Read / (1)Read and clear]\n"
++                "-c : Stop/Start CAC[(0)Stop / (1)Start]\n"
++                "-d : DFS debug mode[0: Verbose 1: Error, 2: Warning, 3: T=
+race, 4: Info]\n"
++                "-e : Enable/Disable DFS [(0)Disable DFS / (1)Enable DFS]\=
+n"
++                "-f : Force radar detection\n"
++                "-i : Set initial gain\n"
++                "-j : Set agc cd threshold\n"
++                "-k : return remaining cac time (in seconds)\n"
++                "-m : Set Min/Max Windows for Long radar types\n"
++                "-p : Print radar tables [0:Detection Table, 1:Channel inf=
+o]\n"
++                "-q : Print jumpable channel list\n"
++                "-s : Simulate radar detection table "
++                       "[width][pri][freq][time]\n"
++                "-t : Edit radar detection table [row][line][value]\n"
++                "-w : Set search window size\n");
++
++       err =3D cl_vendor_reply(cl_hw, buf, strlen(buf));
++       kfree(buf);
++
++       return err;
++}
++
++int cl_dfs_cli(struct cl_hw *cl_hw, struct cli_params *cli_params, u8 *ret=
+_buf, u16 *ret_buf_len)
++{
++       s32 *params =3D cli_params->params;
++       u32 expected_params =3D 0;
++       struct cl_dfs_db *dfs_db =3D &cl_hw->dfs_db;
++       struct cl_tcv_conf *conf =3D cl_hw->conf;
++       bool print_buf =3D false;
++       bool dbg_lvl =3D false;
++       bool en =3D false;
++       bool force =3D false;
++       bool print_tbl =3D false;
++       bool return_remain_cac_time =3D false;
++       bool radar_sim =3D false;
++       bool edit_tbl =3D false;
++       bool win_set =3D false;
++       bool cac =3D false;
++       bool long_prms =3D false;
++       bool init_gain =3D false;
++       bool agc_cd_hh =3D false;
++
++       switch (cli_params->option) {
++       case 'b':
++               print_buf =3D true;
++               expected_params =3D 1;
++               break;
++       case 'c':
++               cac =3D true;
++               expected_params =3D 1;
++               break;
++       case 'd':
++               dbg_lvl =3D true;
++               expected_params =3D 1;
++               break;
++       case 'e':
++               en =3D true;
++               expected_params =3D 1;
++               break;
++       case 'f':
++               force =3D true;
++               expected_params =3D 0;
++               break;
++       case 'i':
++               init_gain =3D true;
++               expected_params =3D 1;
++               break;
++       case 'j':
++               agc_cd_hh =3D true;
++               expected_params =3D 1;
++               break;
++       case 'k':
++               return_remain_cac_time =3D true;
++               expected_params =3D 0;
++               break;
++       case 'm':
++               long_prms =3D true;
++               expected_params =3D 2;
++               break;
++       case 'p':
++               print_tbl =3D true;
++               expected_params =3D 1;
++               break;
++       case 's':
++               radar_sim =3D true;
++               expected_params =3D 4;
++               break;
++       case 't':
++               edit_tbl =3D true;
++               expected_params =3D 3;
++               break;
++       case 'w':
++               win_set =3D true;
++               expected_params =3D 1;
++               break;
++       case '?':
++               return cl_dfs_cli_help(cl_hw);
++       default:
++               cl_dbg_err(cl_hw, "Illegal option (%c) - try '?' for help\n=
+", cli_params->option);
++               goto out_err;
++       }
++
++       if (expected_params !=3D cli_params->num_params) {
++               cl_dbg_err(cl_hw, "Wrong number of arguments (expected %u) =
+(actual %u)\n",
++                          expected_params, cli_params->num_params);
++               goto out_err;
++       }
++
++       if (cac) {
++               bool start =3D (bool)params[0];
++
++               cl_dfs_cli_set_cac(cl_hw, start);
++               return 0;
++       }
++
++       if (print_buf)
++               return cl_dfs_print_pulse_buffer(cl_hw, (bool)params[0]);
++
++       if (dbg_lvl) {
++               s32 dbg_lvl =3D params[0];
++
++               if (dbg_lvl > 0 && dbg_lvl < DBG_LVL_MAX) {
++                       dfs_db->dbg_lvl =3D dbg_lvl;
++                       dfs_pr_verbose(cl_hw, "Debug level =3D %d\n", dbg_l=
+vl);
++               } else {
++                       dfs_pr_err(cl_hw, "Invalid debug level (%d)\n", dbg=
+_lvl);
++               }
++
++               return 0;
++       }
++
++       if (en) {
++               dfs_db->en =3D (bool)(params[0]);
++               dfs_pr_verbose(cl_hw, "DFS =3D %s\n", dfs_db->en ? "Enabled=
+" : "Disabled");
++               cl_dfs_fw_en(cl_hw, dfs_db->en);
++               return 0;
++       }
++
++       if (force) {
++               cl_dfs_cli_force_detection(cl_hw, dfs_db);
++               return 0;
++       }
++
++       if (print_tbl) {
++               u8 table =3D (u8)params[0];
++
++               if (table =3D=3D 0)
++                       return cl_dfs_print_tbl(cl_hw);
++               return 0;
++       }
++
++       if (return_remain_cac_time) {
++               u16 cac_time =3D cl_dfs_get_remain_cac_time(cl_hw);
++
++               snprintf(ret_buf, PAGE_SIZE, "%u", cac_time);
++               *ret_buf_len =3D strlen(ret_buf);
++               return 1;
++       }
++
++       if (radar_sim) {
++               struct cl_radar_pulse pulse[CL_DFS_MAX_PULSE];
++               unsigned long time;
++
++               pulse[0].len  =3D (u32)params[0];
++               pulse[0].rep  =3D (u32)params[1];
++               pulse[0].freq =3D (s32)params[2];
++               time =3D (unsigned long)params[3];
++               cl_dfs_pulse_process(cl_hw, pulse, 1, time);
++               return 0;
++       }
++
++       if (edit_tbl) {
++               cl_dfs_edit_tbl(cl_hw, (u8)params[0], (u8)params[1], (s16)p=
+arams[2]);
++               return 0;
++       }
++
++       if (win_set) {
++               dfs_db->search_window =3D (u16)params[0];
++               dfs_pr_verbose(cl_hw, "Search window size =3D %u\n", dfs_db=
+->search_window);
++               return 0;
++       }
++
++       if (long_prms) {
++               conf->ci_dfs_long_pulse_min =3D (u16)params[0];
++               conf->ci_dfs_long_pulse_max =3D (u16)params[1];
++               dfs_pr_verbose(cl_hw, "Long pulse min =3D %u\n", conf->ci_d=
+fs_long_pulse_min);
++               dfs_pr_verbose(cl_hw, "Long pulse max =3D %u\n", conf->ci_d=
+fs_long_pulse_max);
++               return 0;
++       }
++
++       if (init_gain) {
++               conf->ci_dfs_initial_gain =3D (u8)params[0];
++               dfs_pr_verbose(cl_hw, "Initial gain =3D %u\n", conf->ci_dfs=
+_initial_gain);
++               return 0;
++       }
++
++       if (agc_cd_hh) {
++               conf->ci_dfs_agc_cd_th =3D (u8)params[0];
++               dfs_pr_verbose(cl_hw, "AGC CD threshold =3D %u\n", conf->ci=
+_dfs_agc_cd_th);
++               return 0;
++       }
++
++out_err:
++       return -EIO;
++}
++
 --
 2.30.0
 
