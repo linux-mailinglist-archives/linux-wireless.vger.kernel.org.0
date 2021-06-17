@@ -2,129 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D034F3ABA90
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 19:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2D2C3ABA94
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 19:23:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231558AbhFQRVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 13:21:49 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:34104 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230457AbhFQRVs (ORCPT
+        id S231772AbhFQRZv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 13:25:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230457AbhFQRZt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 13:21:48 -0400
-X-UUID: 0e27484dec4e4902a992eb0ec3a07766-20210618
-X-UUID: 0e27484dec4e4902a992eb0ec3a07766-20210618
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1803025238; Fri, 18 Jun 2021 01:19:38 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 18 Jun 2021 01:19:36 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 18 Jun 2021 01:19:36 +0800
-From:   <sean.wang@mediatek.com>
-To:     <lorenzo.bianconi@redhat.com>
-CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: mt7921: fix the coredump is being truncated
-Date:   Fri, 18 Jun 2021 01:19:35 +0800
-Message-ID: <1623950375-23007-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <YMtTlS3Nh4uGnJvq@lore-desk--annotate>
-References: <YMtTlS3Nh4uGnJvq@lore-desk--annotate>
+        Thu, 17 Jun 2021 13:25:49 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD84C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 10:23:41 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ltvjs-0089S5-E6; Thu, 17 Jun 2021 19:23:36 +0200
+Message-ID: <4526c9fb8269675a98845160d15d4b746ae3b62e.camel@sipsolutions.net>
+Subject: Re: [RFC v1 000/256] wireless: cl8k driver for Celeno IEEE 802.11ax
+ devices
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     viktor.barna@celeno.com, linux-wireless@vger.kernel.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Aviad Brikman <aviad.brikman@celeno.com>,
+        Eliav Farber <eliav.farber@gmail.com>,
+        Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
+        Shay Bar <shay.bar@celeno.com>
+Date:   Thu, 17 Jun 2021 19:23:35 +0200
+In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com> (sfid-20210617_180250_327693_0073AC4A)
+References: <20210617160223.160998-1-viktor.barna@celeno.com>
+         (sfid-20210617_180250_327693_0073AC4A)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Hi Viktor,
+
+> The RFC is divided into separate patches on a per-file basis to simplify
+> the review process.
+
+Wow, umm, seems big! LOC maybe not, but # of files ... not that easy to
+review.
+
+I've only looked a little while now, but for making this easier to
+review it would be nice to split it into a "minimum viable product"
+first, i.e. have a much smaller driver, and this is probably not an
+exhaustive list:
+
+ * without command line interfaces with string parsing built into the
+   kernel
+   (OK, that's probably something that will never go upstream anyway)
+ * Kconfig vs. code inconsistencies cleaned up, you have a TON of
+   CONFIG_* ifdefs that don't even exist and can never be set, so remove
+   the code, at least for now?
+ * remove wrappers like cl_snprintf(), though that seems part of all
+   those command line interfaces built into the driver
+ * consider joining some of the many header files into bigger chunks,
+   header files that are 50% boilerplate aren't really all that useful
+ * namespace your things better - e.g. "is_ipv4_packet" and friends?
+   (why do you even care?)
+ * remove all vendor commands for now, and read the vendor commands
+   upstreaming documentation before re-introducing them
+   https://wireless.wiki.kernel.org/en/developers/documentation/nl80211#vendor-specific_api
+ * remove utils/string.c, obviously, use kernel stuff directly or
+   improve where needed I guess - but likely all part of the weird CLI-
+   in-kernel stuff?
+ * remove abstraction layers like cl_timer
+ * what's this VNS stuff? doesn't look like it belongs into a driver
+   (a mac80211 one at that!)
+ * bitfields in endian-safe code are generally frowned upon, so you
+   shouldn't need cl_are_host_bits_le(). And also cl_are_host_bits_be()?
+   What?
+ * Use ERR_PTR() and friends, instead of out pointer parameters.
 
 
->> From: Sean Wang <sean.wang@mediatek.com>
->>
->> Fix the maximum size of the coredump generated with current mt7921
->> firmware. Otherwise, a truncated coredump would be reported to
->> userland via dev_coredumpv.
->>
->> Also, there is an additional error handling enhanced in the patch to
->> avoid the possible invalid buffer access when the system failed to
->> create the buffer to hold the coredump.
->>
->> Fixes: 0da3c795d07b ("mt76: mt7921: add coredump support")
->> Co-developed-by: YN Chen <YN.Chen@mediatek.com>
->> Signed-off-by: YN Chen <YN.Chen@mediatek.com>
->> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
->> ---
->>  drivers/net/wireless/mediatek/mt76/mt76_connac.h | 2 +-
->> drivers/net/wireless/mediatek/mt76/mt7921/mac.c  | 9 ++++++---
->>  2 files changed, 7 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
->> b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
->> index 9b3f8d22f17e..d93ab1ece8ae 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
->> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
->> @@ -13,7 +13,7 @@
->>  #define MT76_CONNAC_MAX_SCAN_MATCH		16
->>
->>  #define MT76_CONNAC_COREDUMP_TIMEOUT		(HZ / 20)
->> -#define MT76_CONNAC_COREDUMP_SZ			(128 * 1024)
->> +#define MT76_CONNAC_COREDUMP_SZ			(1300 * 1024)
->>
->>  enum {
->>	CMD_CBW_20MHZ = IEEE80211_STA_RX_BW_20, diff --git
->> a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->> b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->> index fb4de73df701..905dddbfbb0b 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
->> @@ -1557,7 +1557,7 @@ void mt7921_coredump_work(struct work_struct *work)
->>			break;
->>
->>		skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
->> -		if (data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
->> +		if (!dump || data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
->
->why not just return if dump allocation fails? Doing so we will reset the device even if dump is NULL, do you think it is a real use-case?
+You'll probably also notice a lot of issues yourself if you take a step
+back and actually read your patches, rather than just the code they were
+generated from, e.g. the Kconfig confusion I mentioned below.
 
-We cannot just return if dump allocation fails because we still must properly free skb in coredump.msg_list to avoid
-the memory leak.
+Thanks,
+johannes
 
-Reset the device is eventually required even dump is NULL because mt7921 cannot work anymore in case coredump happens
-so that needs the following reset to recover it back in time.
-
->Regards,
->Lorenzo
->
->>			dev_kfree_skb(skb);
->>			continue;
->>		}
->> @@ -1567,7 +1567,10 @@ void mt7921_coredump_work(struct work_struct
->> *work)
->>
->>		dev_kfree_skb(skb);
->>	}
->> -	dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
->> -		      GFP_KERNEL);
->> +
->> +	if (dump)
->> +		dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
->> +			      GFP_KERNEL);
->> +
->>	mt7921_reset(&dev->mt76);
->>  }
->> --
->> 2.25.1
->>
->
