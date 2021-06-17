@@ -2,68 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66A5E3AB1A3
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 12:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCF113AB1DB
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 13:02:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230393AbhFQKxB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 06:53:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43190 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbhFQKxB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 06:53:01 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A361BC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 03:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=j/udkT5IeBSNjwumPYiud7qBUHcZ1EN6G37If3NBOIU=; b=rD5aV4Nx6K1bJFb0KVNg4L4385
-        W6kQfKg1HfsbTWCSynd0rOuEOvB9H/Ht/mtOf18a6ethz/5Ch50n64wgWRSA7TFP/IyZQJG2WpABp
-        2PfJuW/diQoMYI79sQMphrZoIRlXs2IEMvtTqkPCpSW2c0bnnBAjGyMeW2/qCOFlTY2g=;
-Received: from p54ae9ff2.dip0.t-ipconnect.de ([84.174.159.242] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1ltpbj-0001KH-Sg; Thu, 17 Jun 2021 12:50:47 +0200
-Subject: Re: [PATCH v2 1/4] mac80211: call ieee80211_tx_h_rate_ctrl() when
- dequeue
-To:     Ryder Lee <ryder.lee@mediatek.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <bo.jiao@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <2176023d8f13d82d093452e1c105609396c30622.1622164961.git.ryder.lee@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <a89137bf-401b-c9d0-8848-d79ea9e2a9c3@nbd.name>
-Date:   Thu, 17 Jun 2021 12:50:47 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.11.0
+        id S231854AbhFQLEb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 07:04:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51132 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232251AbhFQLEb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 07:04:31 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 58EEE610CA;
+        Thu, 17 Jun 2021 11:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623927738;
+        bh=51lFLtuBD6yWBxNY2HYbaFs6bxD50wtryWZwc711TuE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dyUszPgZggZ5ljKxl6sgQ0VHh4J9XazT8VnwITKZoVxJpX1AAOqh3oShO8t50A0CE
+         6n5MYv8U5p2NY5CD/uAW5vC2Smhb7occIDJr+v9qT6MMQwOE/2B3Dxx06GwOOW0hca
+         02V2qJqLIf80Qdvkb7pLp2RHgsIupmoQb+S5JEW6Llg7TH52U8yUFMr/90Y+q4Z5GW
+         M3rDimS5LH7zOjY+45k7m+mQm8hVenY+Oyqq/ZIbEwsGQm9gFZxg9YV/Etrp97VoSk
+         QDYc9D8sAV+Y+Eb0M2wRDGBVwN1j+XasPOE63TtlhzXqjBWniYFnDjkv0SoV6oVBiy
+         Y6JKUTMg81JUg==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sean.wang@mediatek.com, Deren.Wu@mediatek.com,
+        ryder.lee@mediatek.com
+Subject: [PATCH] mt76: disable TWT capabilities for the moment
+Date:   Thu, 17 Jun 2021 13:02:09 +0200
+Message-Id: <295231e60299c95c563fbb5f7006496a3275b251.1623927672.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <2176023d8f13d82d093452e1c105609396c30622.1622164961.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Disable TWT REQ/RES mac capabilities since TWT is not supported
+yet in mt7915/mt7921.
 
-On 2021-05-28 08:05, Ryder Lee wrote:
-> Make ieee80211_tx_h_rate_ctrl() get called on dequeue to improve
-> performance since it reduces the turnaround time for rate control.
-> 
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
-> change since v2 - roll ieee80211_tx_h_rate_ctrl checks into one condition
-There were some OpenWrt crash reported which appear to be related to
-this patch. I was able to reproduce a deadlock with ath9k, and I'm
-currently looking into it.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 4 ----
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 --
+ 2 files changed, 6 deletions(-)
 
-- Felix
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 92b16c5ecca7..7e7dea0bb030 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -666,8 +666,6 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 
+ 		switch (i) {
+ 		case NL80211_IFTYPE_AP:
+-			he_cap_elem->mac_cap_info[0] |=
+-				IEEE80211_HE_MAC_CAP0_TWT_RES;
+ 			he_cap_elem->mac_cap_info[2] |=
+ 				IEEE80211_HE_MAC_CAP2_BSR;
+ 			he_cap_elem->mac_cap_info[4] |=
+@@ -681,8 +679,6 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 				IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT;
+ 			break;
+ 		case NL80211_IFTYPE_STATION:
+-			he_cap_elem->mac_cap_info[0] |=
+-				IEEE80211_HE_MAC_CAP0_TWT_REQ;
+ 			he_cap_elem->mac_cap_info[1] |=
+ 				IEEE80211_HE_MAC_CAP1_TF_MAC_PAD_DUR_16US;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index d20532dd4547..ad27b543d744 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -85,8 +85,6 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
+ 
+ 		switch (i) {
+ 		case NL80211_IFTYPE_STATION:
+-			he_cap_elem->mac_cap_info[0] |=
+-				IEEE80211_HE_MAC_CAP0_TWT_REQ;
+ 			he_cap_elem->mac_cap_info[1] |=
+ 				IEEE80211_HE_MAC_CAP1_TF_MAC_PAD_DUR_16US;
+ 
+-- 
+2.31.1
+
