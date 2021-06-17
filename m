@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA7A23AB869
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85B423AB875
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232077AbhFQQH5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:07:57 -0400
-Received: from mail-eopbgr60055.outbound.protection.outlook.com ([40.107.6.55]:9431
+        id S233673AbhFQQIM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:08:12 -0400
+Received: from mail-eopbgr60088.outbound.protection.outlook.com ([40.107.6.88]:43502
         "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231186AbhFQQHX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:07:23 -0400
+        id S231326AbhFQQHc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:07:32 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D9WWGz3d+W8WFF4F7ox4XoVkAF91x2AhSzbXfiwyWtqHjX4C3h/gAZF9wTPdC5OWfVgoLrVmYxAFnoZ62wgU589doAoJ69fdTM8n9r54R9MqhZHdtSbtODjX22f17MBKpTfXOzNthz6pHeP3/xic6ZYwSorV4r7z2LmOupZgi8P92/liy4a/FG4rEmiBDQP8NZKEp8GGmcD9tbLu04PUE76hQzk7KropjOLhKIDF7qffq2vM3LWdfPqSmVS9AVgjyT1vpHkcY4pUSRLl0O1FpP+fi4RdyPeu4VtxIgi3IVE1nZK81jyvy/eAdE5hwvczVrF/V7zYHhq7TZKXMctexA==
+ b=BupSPGVRCY8IaudsdADTWSNmgqaRm/VgxO5O5QnXlsuPiBxbW3BYwZzoHYqxZfRPvHsPxclXAG6E/wwepEyRNDvJk0CUHa489cT7L2KZtzTsKG3xid0KGR7bS993Z2OsCALwhbmIiUbKphd5IJt7bL3rQzymfGXxoh6OrHQ76L+MIVgkCXKUfSE0+ND1NMQpCPuHWWSr+6P/7IxHHRlxs9Tz9myHPLUHNAol+ITGTC+rVm90+wgj7ID/DSvDGGzrRCOCnozbtXs9fg98C5aGkh91S4ohqFnPf/aaUCJ7fLmjJjLzwtac8kByGoV7RRcdp2Sde4UcVvsd6DvAp5jEoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yUZ7YNDxKkI5Fuw+DtAIVYn2pxe+z2R8vJZTxIAUf+w=;
- b=dsDiyhCQ9IdYnYQRCze7rZQUCy+++JmBfyWPIOGQJoNdTq18DAl/WPd61/D8DxhW3A8/OWNScDC4YWI7z3MHd8D6P67FTA1YorRtuxd7SF77ufXtCJCuRsh+KvxJ18za6pb2KFt1U1gapDaQQdMfqEF6583J7qmYi98FgaJA4dC8NqkosaLtc5L2UkYf5veyUNLTAx1l+TbvCUCLeHJHdQHasOn76HXOQhZLoI8DkqeYROvWYKhdXEPqcDv4uZBon02un9Tj35KoYaWI0azyzvY3quiwHPVdKZlmN+jylfs1JHVj8ahTWx99fe+vSqhjYKsQlVbDpWiM0MW3FYH4Mw==
+ bh=rod/+7Qkhyw4UJhd97EfRp9Savc5EM6wA0cK5hvQA1M=;
+ b=fnbHR4JoRcrSeYNUw0+jOqZG1nHwHgWMLVNv6G+Ps5i6zsUm9Pbm9dsx/yMKWUHijcBJcsBw5kN8QUCfiCkJ5gdVCWAO69tzxk5fJaXZX+jXNRDA9Xo1eHHayqWuf03pxF/jVMN2rrNtfXXiQQiSqAGYs8JBGOBqdW8XT5aayCayKo3VgVRqo5cJNF/LZtBa3aAMLDoiSZHyiF4smMFSNOaZ8ZbLnFZfN5pnDj1FH6dQ2LqNjpQblRmnCOcV7QRlf+5Jxt4gA7YjjfZvIST95ZyDHs6/U4+ke/PmYOKdHYkey5KFD8RRaLV25WbjyQEtdqRecheF5I3ubkefsG6CDw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yUZ7YNDxKkI5Fuw+DtAIVYn2pxe+z2R8vJZTxIAUf+w=;
- b=sWvNEmYS10qHGGhBH9hInt9Hs3K2aE0tTSBt3VkAWQ0fqFET1fEFBo9Y4UYaag0sQYYgTPt2nBG/A4w/6RfA9xPi5VBNmp0mFhUMytxfgWeO7VsJCoaqFxO7+CVUIZRLG62+8SFHGYoRvQznriP+fbCqvHZyL0vedOnwqNGzEgo=
+ bh=rod/+7Qkhyw4UJhd97EfRp9Savc5EM6wA0cK5hvQA1M=;
+ b=ztDNaSqDEjOWPAgCWthPhKsaQy1bYGmT40gp2PFd4UJKN+ngpebREBx1tKkPkod8uxquu7t/c5p+nJbg00nuH7NXPkgQP4qB09EQwxpjMMFkGtllJvbbyIumcDbDgoRO5ur2iMUrvjcwlZiwvwpSg3DaJr1PFcUd6AjQWJFU3HQ=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 068/256] cl8k: add e2p.h
-Date:   Thu, 17 Jun 2021 15:59:15 +0000
-Message-Id: <20210617160223.160998-69-viktor.barna@celeno.com>
+Subject: [RFC v1 069/256] cl8k: add edca.c
+Date:   Thu, 17 Jun 2021 15:59:16 +0000
+Message-Id: <20210617160223.160998-70-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:48 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:49 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d3441ff2-7d93-4848-fd37-08d931a97e81
+X-MS-Office365-Filtering-Correlation-Id: 64835f21-14a9-4d31-9237-08d931a97f2e
 X-MS-TrafficTypeDiagnostic: AM9P192MB1268:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB1268496128B6A33444ECF3A0F60E9@AM9P192MB1268.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2582;
+X-Microsoft-Antispam-PRVS: <AM9P192MB1268E6671EF0B4166D67D1C0F60E9@AM9P192MB1268.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:480;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: M5ZYE/b+g1pl56Xlv/NsdIc2QC7aNq3aBbovKasX2uKvR5dDAh0VSPZNPxHhlbOPfZ1rS3tU57LuvgiX2JUKE9wRSL4G3Zyj7X5uRIMonGq/75czQb1w2IeshVX2z9cj5AmS7KtN688xu85rRl7ukJgJWbJQeEy4aL2qmn5v625KaFotw86EmGj4b0kx621/riHekKH7UjlCw78dOcJdGAocZTtT7izFrY+0IJky41QuUA7Wx4KwUZapH2Ua3AbjEkrfX90jiC+1TsFEqJamPJW0Tx3mwu84a7PU9iaeuvqLEBnGfVxgKt8kXtzAREEAHjzKmlVBYa628sTUU43snJtWEk9tR3pfzKWtaZ9e0ar69hz1iOccWsqF0APxzpYv3+XNb4tahNUk6wIWuSVZtOZJbfWs5ZiegTuZaG3Z1hFuIbVPxoHYh7/1yNZ9ClIv5TI5rv62jLIrFTyt11ZFGZU3YtqUe+Jt1j9wz/buoVlRXMYqPtwI8AWc0F2qTbTGTHVniCX4J4sZkoQSI4NbTE8U/eWgIvBPY6UIOVKfUY9W/+PniiGyjqQVVqDo+odbcbkshDC8UqVRAjculaD8PU2GyH8QMq31L97bB/HKvjwNES/ezhIoTeh0nodhIaeItDkCl80HOUs165zPq+QpwJDWdynf/NpEW6XYPjgM0FXLvtV+9vTlNf1FToBg0B7j8RgG3gD7eq9Do+m1tD8mEw==
+X-Microsoft-Antispam-Message-Info: nLYfEJeSOXI4QoZ6JnVwyQYx50E7cio/kzYp9eu7V4Ps+Xr1gAh1dA/GXXL/EcltyK2O5M0JPb4tUn+FDlMm2NweiLlKn22esSzXdDuLnBbB4Zb5Id0BjD6RhSYTgpUzjCWmTo0i/g1DOj7RizIcNgJuXDsRCtIGN/cVgYtv0kFe4gfjUdBGqSwEIRSR+SRvnR3ZHdKooZwiRNrMGMiAn2AQhlhah8OoYQOjKV2YYWq/eevZsPBGtW4EBposoHPQzEBb1u8I7WmO5OO+/cMk+MblRgjBZE+Jacr/6Se10N1W6VxQQDo/Z+NnR7ywTyEsbLOSrWL2Kep53o4TDndhF/GnaTCxMtFSMbwwLLQ55YRX+jA3O1hnsHU+X+3FefZy/dGv9TyaENnfFFuJ+6iOC0N0CSviSxOMzLrYpnEz9xXO1pl7FJwKMnIRMuELVDDVxHCq1U/hrHGATChBIyNb3PpE7zR6zpmf0t9M8Yxy23CaWB+a8m46jmEWjqIaHF6+JDbdBGaM8dSrqRSqWT5mIu+Iw5eRXXn5ctyPmmWj1kO+WfTxb+l1C6BHTfkxZMYpb0FaZrKipDIze2uqOEKQlD+y8gjqeCZWa/Xa/23T+sPAihBcHHF+9AAuJ5xYechgxV+lg8aZRDg+xh3rjDsf/ix0qDyhCoyYmB5uLbZ1SYGl2H0jUF0UPi+832qYHIc+KOKrNit4tE36PTw+puEXzg==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(6486002)(956004)(54906003)(4326008)(2616005)(186003)(38100700002)(16526019)(8676002)(5660300002)(38350700002)(8936002)(26005)(2906002)(6512007)(9686003)(52116002)(83380400001)(6916009)(66946007)(66556008)(66476007)(86362001)(55236004)(498600001)(6666004)(6506007)(1076003)(107886003)(36756003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KzwIXorVf+JK9vtE1rpupZEjmFCAu7k2JYHxqMTp0JW6TjvefITHLVMfe9HO?=
- =?us-ascii?Q?s1JUysESIltmoImB0OqTEm1hf1NvomiwQXwyR9YPYWifi8RkEgajO5qo/+iT?=
- =?us-ascii?Q?1ERhmNSvz+J+lf08c4fm0Mv5sdKZiA1kBhBcuYgqCxXYLGtmax5BsFZrZsv5?=
- =?us-ascii?Q?6ex7kC82qcZDex6HwvqR/fTmHzVlSjT0ed6g4MLTc/v31JhNtxlT4pwYA1zK?=
- =?us-ascii?Q?fk0Zhwjg6rllGwTyrv0ineTA/jwLNcYUtgcNroejjXS0k723fErUlD1EMpLO?=
- =?us-ascii?Q?4gXlX4P5aY0FHD33dRD974t3CNZ3BgIlgN0wJwLRYex1JUgzCdcWNnBUGsKp?=
- =?us-ascii?Q?aUrNom4KbwJDXqPC24l6KGweAlvd4KfFjUChGAE/tL5hjUb0wRsrJZTRArYA?=
- =?us-ascii?Q?K+aAecs657e51dK1MW1585sALsf+jVq/TrdD2kNVfdjDBIl1/LPGU97+p71g?=
- =?us-ascii?Q?8ET5ZU/RjBFkMDpOW2lWspzQZzdVNE5iaiypyfM5AQDdYFFhs1lvYguZmS/X?=
- =?us-ascii?Q?YTQkJlMfHgQtFIf+rmDnYfIsxRpm7yG8w1nEKwqZg5uXFV05YSFZadw2mehd?=
- =?us-ascii?Q?lPtUsqmNLUHmf2vrWy1Kk2UDMtERZac/GCpG8Af+XJQNE71AFw2p08Uh/Iz9?=
- =?us-ascii?Q?gKSXJ6HhUj/alyClF+LOmvRYtO4iNaUdTzrdp33vzTYIH2z6SeRL1C5SjjWI?=
- =?us-ascii?Q?lp7hsVt6Lrj8mgICjh+nti0aFk/FAHryAWLW6fVrrhD2gW+A8EN+gCddTYvp?=
- =?us-ascii?Q?gooExMeY34latNjOJL6Knn6DJkqPS5poEH4MPbb2GHvMq0Kf1s45Y5RFgo6h?=
- =?us-ascii?Q?JBdjMPQmM+RfGOvzHoLYRLKa2MY3TSlhlHw5+v7gqXuwbb92uelQi7RTjR3Y?=
- =?us-ascii?Q?9RmlgbHY0C2mAcqxgvlQENZRYrsghRM2aStUMK/P/oYO/nRUuzIdGhsMl4R9?=
- =?us-ascii?Q?cZYD/pnPDcY3Sg/zX/q+YM9+RAZprCJTxOan/z81hDlBCAlRjjOfaKzUDERb?=
- =?us-ascii?Q?Vrn/9y0vWOFQtWSt2PrPtLsZRdQPus2TZE0cCIGiA4UOQwD88JcgCu61iKlo?=
- =?us-ascii?Q?UC0AoTnk4WSK2UdPumsVaD0TggJAJf6eJmE8mIvjEicRbfRyvNOTyPJ/yNzS?=
- =?us-ascii?Q?Si9byeS1P5sYeg1UT1CArZ69c5D+Sm0Ckfpou2RMTldTYFFf+t4h4aQUg2yU?=
- =?us-ascii?Q?SLSRg5F+hPCNlI7mcsrDE1EiSLanr0rdP5AyjBsOqc1lmiuvOcuVGToD78qR?=
- =?us-ascii?Q?CUqvXRGmIUh3c3cKeIqvzXPg92XSJrvol5DAaLHRWh7auWnvn6BnJHEiTW1u?=
- =?us-ascii?Q?ID+GDPKG9jazObXaDhrIiiYx?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ug5eYJ7T5qg+Z9/ce+bg+IIHgrdW48hr32Gr5X93bawk3wI08kLdStq75cKv?=
+ =?us-ascii?Q?1ZCarrS9hVgoUdyzkw3+0kkKViXUsl0spb6Y6DDOFUObHWDNWpukUVBzB5Ip?=
+ =?us-ascii?Q?xXdw1U+PS85Tcu6jaD7NUXawwIhthtBCh1ouqbv4yAC5ALvDjdWX0kyIeDPz?=
+ =?us-ascii?Q?0xUUHFlB82owFgnXVqQwHy+3gI5oQBm30cBuqSXMz8Yg9D+fl7B1bzB5EUz9?=
+ =?us-ascii?Q?P7imx0Ihe3fKpAtrpc2pezFTZ+QcdTbfFFmSq5hFD/HQf+0ft8wA1i3ixrZk?=
+ =?us-ascii?Q?AAUHSIqYc6QqW9tCrB0N69+UjpY+UiqvDKOWFbe3gIb34tBPg1jpA+OVILr1?=
+ =?us-ascii?Q?VDNzqFqxe+RqK4HV7yYAaMj6aXqwHfVW0/RjV1QNu54uEei0erfrSl++9gLe?=
+ =?us-ascii?Q?3Fv5jeH/UAPi80/iZH8SAdqSHYhTRgoANyx84BdIHr8HMlCX1Eb2qdBe1RNs?=
+ =?us-ascii?Q?zawm+W9GkTv+lcObjjhPtVUHu3BWQvVV8or8wIv3poy6gGNFZT+OqpqsKQEy?=
+ =?us-ascii?Q?8Y3UEsVwODY5ffpTGp1fRFDr1vPbFA86riwHJqqDb8lyha4XjiYoE2Lxd4CD?=
+ =?us-ascii?Q?T2VemVHLMhzZH+KKr4hR291F//AKJqTKgVS/BzLPoUmwxbPoBOz05ZRDV3CT?=
+ =?us-ascii?Q?VKiuEBncy7lxZKqhds1HiDQImvOMMh8BIPrY4MI/5ZXl5InIvCDjE90+aAfP?=
+ =?us-ascii?Q?YAdbLX83H8GqmQtVo8p0aIy7RewuvSgk9i6ZPltN4WlXJ9QsYuT5UPJnGD+B?=
+ =?us-ascii?Q?0pSjOD0JlrLkH22u0kixoVFJyzzDiH3CF9KV2SKPY1ciV9P0mh0ZsYavyAtC?=
+ =?us-ascii?Q?V+8V0xxLiobL1B63HFGb7zLS4cYN8uMSOQ4gDsO4yXL5H0rbfnmxSEvruzy9?=
+ =?us-ascii?Q?wIrgXu58toPJelweBHz9fOzClzc9KfXugknQDVoSh2Kyd73RdZ2XpE8JIne4?=
+ =?us-ascii?Q?5eyCvchohfODeR4H9Ca2W3zmt/nt9k8l/ioetZugEnsrurSpWugY/xCG7LL4?=
+ =?us-ascii?Q?qMuGOQ/ooG2fHNPJKlRaQVdPzIjNkbkKyRZ3FRw3ThnBpCEPAF4oM6ynoNr4?=
+ =?us-ascii?Q?tVLVpTcVdq53qsYeHCgHBCjl+FmwKTd1qOPwM4QO5I68mGqrGyOK//anEL8g?=
+ =?us-ascii?Q?09/XhGWj0dLKUalj6pOhv1e3Ym08K4wVNxBhU8zL4L65ztXriRqJCO7YOphd?=
+ =?us-ascii?Q?SlAsy4EUJdJnMZ7dopZcRK14ZVmUgTN2jeLOw2zEcZaB62eg78MII62UkkO/?=
+ =?us-ascii?Q?j5w4SlY9+1TFuXMBXLOhuw+p9M60Q69WFpYkuMO8jDgKEEM5bvony3TvctHe?=
+ =?us-ascii?Q?5hmByfNptpby7lq4AiU0sq3r?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3441ff2-7d93-4848-fd37-08d931a97e81
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64835f21-14a9-4d31-9237-08d931a97f2e
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:49.3498
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:50.4759
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iQ33KfODvwLHodw9Zll8BJRYDqm1D0kduz4+PZWL3+19D2E64OeFsQGGSX7bVFew6SI9JUSrBFJDZzl2yG7CcA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 49I3VNZOMBhmIJKoatcySFbdYBXc7DDSfF7flt43+CmyAVDlCFFXr8pxhD3iGo4tqvhMaP2sal/iw8cbxmln8A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1268
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,201 +119,292 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/e2p.h | 166 +++++++++++++++++++++++++
- 1 file changed, 166 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/e2p.h
+ drivers/net/wireless/celeno/cl8k/edca.c | 265 ++++++++++++++++++++++++
+ 1 file changed, 265 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/edca.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/e2p.h b/drivers/net/wireless/=
-celeno/cl8k/e2p.h
+diff --git a/drivers/net/wireless/celeno/cl8k/edca.c b/drivers/net/wireless=
+/celeno/cl8k/edca.c
 new file mode 100644
-index 000000000000..74ec66dfe277
+index 000000000000..d17a7bd674c5
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/e2p.h
-@@ -0,0 +1,166 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/edca.c
+@@ -0,0 +1,265 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_E2P_H
-+#define CL_E2P_H
++#include "edca.h"
++#include "sta.h"
++#include "vendor_cmd.h"
++#include "fw/msg_tx.h"
++#include "utils/utils.h"
 +
-+#include <linux/types.h>
-+#include <net/cfg80211.h>
-+
-+
-+#include "def.h"
-+#include "fem_common.h"
-+
-+/**
-+ * EEPROM abstraction layer
-+ */
-+
-+#define SERIAL_NUMBER_SIZE 32
-+
-+enum eeprom_flavor {
-+       EEPROM_FLAVOR_CL80X0,
-+       EEPROM_FLAVOR_CL80X6,
++static u8 conv_to_fw_ac[EDCA_AC_MAX] =3D {
++       [EDCA_AC_BE] =3D AC_BE,
++       [EDCA_AC_BK] =3D AC_BK,
++       [EDCA_AC_VI] =3D AC_VI,
++       [EDCA_AC_VO] =3D AC_VO
 +};
 +
-+struct eeprom_hw {
-+       u8 reserved[96];
-+} __packed;
++static const char *edca_ac_str[EDCA_AC_MAX] =3D {
++       [EDCA_AC_BE] =3D "BE",
++       [EDCA_AC_BK] =3D "BK",
++       [EDCA_AC_VI] =3D "VI",
++       [EDCA_AC_VO] =3D "VO"
++};
 +
-+struct eeprom_general {
-+       u8 version;
-+       u8 flavor;
-+       u8 mac_address[6];
-+       u8 temp_diff; /* Default value TEMP_DIFF_INVALID =3D 0x7F */
-+       u8 serial_number[SERIAL_NUMBER_SIZE];
-+       u8 pwr_table_id[2];
-+       u8 reserved[53];
-+} __attribute__((__packed__));
++static int cl_edca_print(struct cl_hw *cl_hw)
++{
++       u8 ac =3D 0;
++       struct edca_params *params;
++       char *buf =3D NULL;
++       ssize_t buf_size;
++       int err =3D 0;
++       int len =3D 0;
 +
-+struct eeprom_fem {
-+       u8 wiring_id;
-+       u16 fem_lut[FEM_TYPE_MAX];
-+       u32 platform_id;
-+       u8 reserved[19];
-+} __packed;
++       cl_snprintf(&buf, &len, &buf_size,
++                   "---------------------------------------\n"
++                   "| ac | aifsn | cw_min | cw_max | txop |\n"
++                   "|----+-------+--------+--------+------|\n");
 +
-+struct eeprom_phy_calib {
-+       s8 pow;
-+       s8 offset;
-+       s8 tmp;
-+} __packed;
++       for (ac =3D 0; ac < AC_MAX; ac++) {
++               params =3D &cl_hw->edca_db.hw_params[ac];
++               cl_snprintf(&buf, &len, &buf_size,
++                           "| %s | %5u | %6u | %6u | %4u |\n",
++                           edca_ac_str[ac], params->aifsn, params->cw_min,
++                           params->cw_max, params->txop);
++       }
 +
-+#define BIT_MAP_SIZE   20
-+#define NUM_OF_PIVOTS  20
-+#define NUM_PIVOT_PHYS (MAX_ANTENNAS * NUM_OF_PIVOTS)
++       cl_snprintf(&buf, &len, &buf_size,
++                   "---------------------------------------\n\n");
 +
-+struct eeprom_calib {
-+       u16 freq_offset;
-+       u8 chan_bmp[BIT_MAP_SIZE];
-+       struct eeprom_phy_calib phy_calib[NUM_PIVOT_PHYS];
-+} __packed;
++       err =3D cl_vendor_reply(cl_hw, buf, len);
++       kfree(buf);
 +
-+struct eeprom {
-+       struct eeprom_hw hw;
-+       struct eeprom_general general;
-+       struct eeprom_fem fem;
-+       struct eeprom_calib calib;
-+} __packed;
++       return err;
++}
 +
-+enum {
-+       ADDR_HW =3D offsetof(struct eeprom, hw),
-+       ADDR_HW_RESERVED =3D ADDR_HW + offsetof(struct eeprom_hw, reserved)=
++static void cl_edca_set_conf(struct cl_hw *cl_hw, u8 ac)
++{
++       struct edca_params params =3D {
++               .aifsn =3D cl_hw->conf->ce_wmm_aifsn[ac],
++               .cw_min =3D cl_hw->conf->ce_wmm_cwmin[ac],
++               .cw_max =3D cl_hw->conf->ce_wmm_cwmax[ac],
++               .txop =3D cl_hw->conf->ce_wmm_txop[ac]
++       };
++
++       cl_edca_set(cl_hw, ac, &params, NULL);
++}
++
++static void cl_edca_ac_set(struct cl_hw *cl_hw, u8 ac, u8 aifsn, u8 cw_min=
+, u8 cw_max, u16 txop)
++{
++       pr_debug("ac =3D %u, aifsn =3D %u, cw_min =3D %u, cw_max =3D %u, tx=
+op =3D %u\n",
++                ac, aifsn, cw_min, cw_max, txop);
++
++       cl_hw->conf->ce_wmm_aifsn[ac] =3D aifsn;
++       cl_hw->conf->ce_wmm_cwmin[ac] =3D cw_min;
++       cl_hw->conf->ce_wmm_cwmax[ac] =3D cw_max;
++       cl_hw->conf->ce_wmm_txop[ac] =3D txop;
++
++       cl_edca_set_conf(cl_hw, ac);
++}
++
++static void cl_edca_aifsn_set(struct cl_hw *cl_hw, s32 aifsn[AC_MAX])
++{
++       u8 ac =3D 0;
++
++       pr_debug("Set aifsn: BE =3D %d, BK =3D %d, VI =3D %d, VO =3D %d\n",
++                aifsn[0], aifsn[1], aifsn[2], aifsn[3]);
++
++       for (ac =3D 0; ac < AC_MAX; ac++) {
++               cl_hw->conf->ce_wmm_aifsn[ac] =3D (u8)aifsn[ac];
++               cl_edca_set_conf(cl_hw, ac);
++       }
++}
++
++static void cl_edca_cwmin_set(struct cl_hw *cl_hw, s32 cw_min[AC_MAX])
++{
++       u8 ac =3D 0;
++
++       pr_debug("Set cw_min: BE =3D %d, BK =3D %d, VI =3D %d, VO =3D %d\n"=
 ,
++                cw_min[0], cw_min[1], cw_min[2], cw_min[3]);
 +
-+       ADDR_GEN =3D offsetof(struct eeprom, general),
-+       ADDR_GEN_VERSION =3D ADDR_GEN + offsetof(struct eeprom_general, ver=
-sion),
-+       ADDR_GEN_FLAVOR =3D ADDR_GEN + offsetof(struct eeprom_general, flav=
-or),
-+       ADDR_GEN_MAC_ADDR =3D ADDR_GEN + offsetof(struct eeprom_general, ma=
-c_address),
-+       ADDR_GEN_TEMP_DIFF =3D ADDR_GEN + offsetof(struct eeprom_general, t=
-emp_diff),
-+       ADDR_GEN_SERIAL_NUMBER =3D ADDR_GEN + offsetof(struct eeprom_genera=
-l, serial_number),
-+       ADDR_GEN_PWR_TABLE_ID =3D ADDR_GEN + offsetof(struct eeprom_general=
-, pwr_table_id),
-+       ADDR_GEN_RESERVED =3D ADDR_GEN + offsetof(struct eeprom_general, re=
-served),
++       for (ac =3D 0; ac < AC_MAX; ac++) {
++               cl_hw->conf->ce_wmm_cwmin[ac] =3D (u8)cw_min[ac];
++               cl_edca_set_conf(cl_hw, ac);
++       }
++}
 +
-+       ADDR_FEM =3D offsetof(struct eeprom, fem),
-+       ADDR_FEM_WIRING_ID =3D ADDR_FEM + offsetof(struct eeprom_fem, wirin=
-g_id),
-+       ADDR_FEM_LUT =3D ADDR_FEM + offsetof(struct eeprom_fem, fem_lut),
-+       ADDR_FEM_PLATFORM_ID =3D ADDR_FEM + offsetof(struct eeprom_fem, pla=
-tform_id),
-+       ADDR_FEM_RESERVED =3D ADDR_FEM + offsetof(struct eeprom_fem, reserv=
-ed),
++static void cl_edca_cwmax_set(struct cl_hw *cl_hw, s32 cw_max[AC_MAX])
++{
++       u8 ac =3D 0;
 +
-+       ADDR_CALIB =3D offsetof(struct eeprom, calib),
-+       ADDR_CALIB_FREQ_OFFSET =3D ADDR_CALIB + offsetof(struct eeprom_cali=
-b, freq_offset),
-+       ADDR_CALIB_CHAN_BMP =3D ADDR_CALIB + offsetof(struct eeprom_calib, =
-chan_bmp),
-+       ADDR_CALIB_PHY =3D ADDR_CALIB + offsetof(struct eeprom_calib, phy_c=
-alib),
-+
-+       SIZE_HW =3D sizeof(struct eeprom_hw),
-+       SIZE_HW_RESERVED =3D ADDR_GEN - ADDR_HW_RESERVED,
-+
-+       SIZE_GEN =3D sizeof(struct eeprom_general),
-+       SIZE_GEN_VERSION =3D ADDR_GEN_FLAVOR - ADDR_GEN_VERSION,
-+       SIZE_GEN_FLAVOR =3D ADDR_GEN_MAC_ADDR - ADDR_GEN_FLAVOR,
-+       SIZE_GEN_MAC_ADDR =3D ADDR_GEN_TEMP_DIFF - ADDR_GEN_MAC_ADDR,
-+       SIZE_GEN_TEMP_DIFF =3D ADDR_GEN_SERIAL_NUMBER - ADDR_GEN_TEMP_DIFF,
-+       SIZE_GEN_SERIAL_NUMBER =3D ADDR_GEN_PWR_TABLE_ID - ADDR_GEN_SERIAL_=
-NUMBER,
-+       SIZE_GEN_PWR_TABLE_ID =3D ADDR_GEN_RESERVED - ADDR_GEN_PWR_TABLE_ID=
++       pr_debug("Set cw_max: BE =3D %d, BK =3D %d, VI =3D %d, VO =3D %d\n"=
 ,
-+       SIZE_GEN_RESERVED =3D ADDR_FEM - ADDR_GEN_RESERVED,
++                cw_max[0], cw_max[1], cw_max[2], cw_max[3]);
 +
-+       SIZE_FEM =3D sizeof(struct eeprom_fem),
-+       SIZE_FEM_WIRING_ID =3D ADDR_FEM_LUT - ADDR_FEM_WIRING_ID,
-+       SIZE_FEM_LUT =3D ADDR_FEM_PLATFORM_ID - ADDR_FEM_LUT,
-+       SIZE_FEM_PLATFORM_ID =3D ADDR_FEM_RESERVED - ADDR_FEM_PLATFORM_ID,
++       for (ac =3D 0; ac < AC_MAX; ac++) {
++               cl_hw->conf->ce_wmm_cwmax[ac] =3D (u8)cw_max[ac];
++               cl_edca_set_conf(cl_hw, ac);
++       }
++}
 +
-+       SIZE_CALIB =3D sizeof(struct eeprom_calib),
-+       SIZE_CALIB_FREQ_OFFSET =3D ADDR_CALIB_CHAN_BMP - ADDR_CALIB_FREQ_OF=
-FSET,
-+       SIZE_CALIB_CHAN_BMP =3D ADDR_CALIB_PHY - ADDR_CALIB_CHAN_BMP,
-+       SIZE_CALIB_PHY =3D sizeof(struct eeprom_phy_calib) * NUM_PIVOT_PHYS=
-,
++static void cl_edca_txop_set(struct cl_hw *cl_hw, s32 txop[AC_MAX])
++{
++       u8 ac =3D 0;
 +
-+       EEPROM_NUM_BYTES =3D sizeof(struct eeprom),
-+       EEPROM_LAST_BYTE =3D EEPROM_NUM_BYTES - 1,
-+};
++       pr_debug("Set txop: BE =3D %d, BK =3D %d, VI =3D %d, VO =3D %d\n",
++                txop[0], txop[1], txop[2], txop[3]);
 +
-+struct cl_e2p_get_reply {
-+       u8 e2p_mode;
-+       u8 e2p_data[];
-+};
++       for (ac =3D 0; ac < AC_MAX; ac++) {
++               cl_hw->conf->ce_wmm_txop[ac] =3D (u16)txop[ac];
++               cl_edca_set_conf(cl_hw, ac);
++       }
++}
 +
-+struct cl_chip;
++static int cl_edca_cli_help(struct cl_hw *cl_hw)
++{
++       char *buf =3D kzalloc(PAGE_SIZE, GFP_KERNEL);
++       int err =3D 0;
 +
-+int cl_e2p_init(struct cl_chip *chip);
-+void cl_e2p_close(struct cl_chip *chip);
-+int cl_e2p_write(struct cl_chip *chip, u8 *data, u16 size, u16 addr);
-+int cl_e2p_read(struct cl_chip *chip, u8 *data, u16 size, u16 addr);
-+int cl_e2p_write_version(struct cl_chip *chip);
-+int cl_e2p_get_addr(struct wiphy *wiphy, struct wireless_dev *wdev,
-+                   void *data, int data_len);
-+int cl_e2p_set_addr(struct wiphy *wiphy, struct wireless_dev *wdev,
-+                   const void *data, int data_len);
-+int cl_e2p_set_wiring_id(struct wiphy *wiphy, struct wireless_dev *wdev,
-+                        const void *data, int data_len);
-+int cl_e2p_help(struct wiphy *wiphy, struct wireless_dev *wdev,
-+               void *data, int data_len);
++       if (!buf)
++               return -ENOMEM;
 +
-+enum cl_e2p_cmd {
-+       CL_E2P_GET_ADDR,
-+       CL_E2P_GET_MAC,
-+       CL_E2P_GET_SERIAL_NUMBER,
-+       CL_E2P_GET_PWR_TABLE_ID,
-+       CL_E2P_GET_FREQ_OFFSET,
-+       CL_E2P_GET_WIRING_ID,
-+       CL_E2P_GET_FEM_LUT,
-+       CL_E2P_GET_PLATFORM_ID,
-+       CL_E2P_GET_CALIB,
-+       CL_E2P_GET_HEXDUMP,
-+       CL_E2P_GET_TABLE,
++       snprintf(buf, PAGE_SIZE,
++                "edca usage:\n"
++                "-a : Print current configuration\n"
++                "-b : Set per AC [0-BE,1-BK,2-VI,3-VO].[aifsn].[cw_min]."
++                       "[cw_max].[txop]\n"
++                "-c : Set aifsn [BE].[BK].[VI].[VO]\n"
++                "-d : Set cw_min [BE].[BK].[VI].[VO]\n"
++                "-e : Set cw_max [BE].[BK].[VI].[VO]\n"
++                "-f : Set txop  [BE].[BK].[VI].[VO]\n");
 +
-+       CL_E2P_SET_ADDR,
-+       CL_E2P_SET_MAC,
-+       CL_E2P_SET_SERIAL_NUMBER,
-+       CL_E2P_SET_PWR_TABLE_ID,
-+       CL_E2P_SET_FREQ_OFFSET,
-+       CL_E2P_SET_WIRING_ID,
-+       CL_E2P_SET_FEM_LUT,
-+       CL_E2P_SET_PLATFORM_ID,
-+       CL_E2P_SET_CALIB,
++       err =3D cl_vendor_reply(cl_hw, buf, strlen(buf));
++       kfree(buf);
 +
-+       CL_E2P_MAX
-+};
++       return err;
++}
 +
-+#endif /* CL_E2P_H */
++void cl_edca_hw_conf(struct cl_hw *cl_hw)
++{
++       u8 ac =3D 0;
++       struct cl_tcv_conf *conf =3D cl_hw->conf;
++
++       for (ac =3D 0; ac < AC_MAX; ac++) {
++               struct edca_params params =3D {
++                       .aifsn =3D conf->ce_wmm_aifsn[ac],
++                       .cw_min =3D conf->ce_wmm_cwmin[ac],
++                       .cw_max =3D conf->ce_wmm_cwmax[ac],
++                       .txop =3D conf->ce_wmm_txop[ac]
++               };
++
++               cl_edca_set(cl_hw, ac, &params, NULL);
++       }
++}
++
++void cl_edca_set(struct cl_hw *cl_hw, u8 ac, struct edca_params *params,
++                struct ieee80211_he_mu_edca_param_ac_rec *mu_edca)
++{
++       u32 edca_reg_val =3D 0;
++
++       if (ac >=3D AC_MAX) {
++               pr_err("%s: Invalid AC index\n", __func__);
++               return;
++       }
++
++       edca_reg_val  =3D (u32)(params->aifsn);
++       edca_reg_val |=3D (u32)(params->cw_min << 4);
++       edca_reg_val |=3D (u32)(params->cw_max << 8);
++       edca_reg_val |=3D (u32)(params->txop << 12);
++
++       memcpy(&cl_hw->edca_db.hw_params[ac], params, sizeof(struct edca_pa=
+rams));
++
++       cl_msg_tx_set_edca(cl_hw, conv_to_fw_ac[ac], edca_reg_val, mu_edca)=
+;
++
++       cl_dbg_trace(cl_hw, "EDCA-%s: aifsn=3D%u, cw_min=3D%u, cw_max=3D%u,=
+ txop=3D%u\n",
++                    edca_ac_str[ac], params->aifsn, params->cw_min, params=
+->cw_max, params->txop);
++}
++
++void cl_edca_restore_conf(struct cl_hw *cl_hw, u8 ac)
++{
++       cl_edca_set_conf(cl_hw, ac);
++}
++
++void cl_edca_recovery(struct cl_hw *cl_hw)
++{
++       u8 ac;
++
++       for (ac =3D 0; ac < AC_MAX; ac++)
++               cl_edca_set(cl_hw, ac, &cl_hw->edca_db.hw_params[ac], NULL)=
+;
++}
++
++int cl_edca_cli(struct cl_hw *cl_hw, struct cli_params *cli_params)
++{
++       u8 ac, aifsn, cw_min, cw_max;
++       u16 txop;
++
++       switch (cli_params->option) {
++       case 'a':
++               return cl_edca_print(cl_hw);
++       case 'b':
++               if (cli_params->num_params !=3D 5)
++                       goto err_num_of_arg;
++
++               ac =3D (u8)cli_params->params[0];
++               aifsn =3D (u8)cli_params->params[1];
++               cw_min =3D (u8)cli_params->params[2];
++               cw_max =3D (u8)cli_params->params[3];
++               txop =3D (u16)cli_params->params[4];
++
++               cl_edca_ac_set(cl_hw, ac, aifsn, cw_min, cw_max, txop);
++               break;
++       case 'c':
++               if (cli_params->num_params !=3D AC_MAX)
++                       goto err_num_of_arg;
++
++               cl_edca_aifsn_set(cl_hw, cli_params->params);
++               break;
++       case 'd':
++               if (cli_params->num_params !=3D AC_MAX)
++                       goto err_num_of_arg;
++
++               cl_edca_cwmin_set(cl_hw, cli_params->params);
++               break;
++       case 'e':
++               if (cli_params->num_params !=3D AC_MAX)
++                       goto err_num_of_arg;
++
++               cl_edca_cwmax_set(cl_hw, cli_params->params);
++               break;
++       case 'f':
++               if (cli_params->num_params !=3D AC_MAX)
++                       goto err_num_of_arg;
++
++               cl_edca_txop_set(cl_hw, cli_params->params);
++               break;
++       case '?':
++               return cl_edca_cli_help(cl_hw);
++       default:
++               cl_dbg_err(cl_hw, "Illegal option (%c) - try '?' for help\n=
+", cli_params->option);
++               break;
++       }
++
++       return 0;
++
++err_num_of_arg:
++       pr_err("wrong number of arguments\n");
++       return 0;
++}
 --
 2.30.0
 
