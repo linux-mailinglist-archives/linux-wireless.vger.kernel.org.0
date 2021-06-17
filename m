@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8EC3AB839
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E66773AB83B
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233613AbhFQQFt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:05:49 -0400
+        id S233626AbhFQQFw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:05:52 -0400
 Received: from mail-eopbgr140042.outbound.protection.outlook.com ([40.107.14.42]:47438
         "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233570AbhFQQFs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:05:48 -0400
+        id S233606AbhFQQFt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:05:49 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XaCzzL95qbZ63dboHHuP4WEy1LMFzhPyrNlWi2ESUX7W19zqsBz3yVqfBj2JTh6SHIpVXx9L92wtMp++okii+XN+dzLuaXMZKVSFeEX7QWARqHqraEHUOTRWOSjMPN9zx8xD9Exq4KpyyYuiCDm6w4aQrI+f9gqw3nXLMwWLNku3+k1rzcyXCtAI9PBOFuTc7LZlxCcjX/3aNNv35XkmN12yc0mlm3kh0zytPaXn0cMj6El5HT8yYC7wo4M43pOtDmxdXTtNUUTn1c5XoD6/J/YJZXH0z5aCv4ggcU6298HkGiOHv9ZGNdwQe4enIdLv9VC3p31IuMNNv8k8k00glg==
+ b=iIfnE897GJXiji1z7C6dFY7vgZX9aIdfe+t4w47Zpiq2KAH942lvgzRb0QtHTK91WuJZnqDK0I89OKGzO7cZLcdZPGRVlqbUKjimDW7DjPGlUoIQbw4l0r2QSL9CTSNm28JHAEubKRezrb8r2poezu2LkzQIh5lI7RGIM0SqjepQeJDPVOgK/2li9Wg0wu1Gqo4zKMPQABnxb8AGXtY1ux0lXynTIJ0Dr8nDVB8GDGGQknUAHshREOzCACUEatlh+sOJWuNuG+Pu9CSJmK+dBguGNgPAofEwGKW6s95YBGqr2mY1E4UCC2A0clJQDh3UQ0mcxlguoy/9DIKPCInFnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aFLtkPSk8HsJojJFMqoNd1rSdc7k32UyGOloV+rt+sk=;
- b=dtxokp2YSfSku37uNJ8Ol82HaqiaaYPEGV1iFcG+3eIyI8QIhQcnbRAW9G3GXnsodB+4xI/95V7haVuaPUlmdmtekK+tVgbSKvj9Li7vaZKv4meB5+6Vv1PJ5dSTw6f96Wi0nwpr7323uj5WL8va/khdOqaP8+/n+S5jNPQIdOav25AhAdiH7KoctlJGkkvdslNKVaYjAbxZdfzscbxa0G+8QTnDPiqT7lmpJspYT03Jblwko2v07Oi2WbbwA67ZkiLsDJJ6AnNIEJRDpPN1lvWjs3NrUCiu2NCqjInos6+2h5IYU6DF8r15BQofvu8DXpiX9Tf1KInbKTMik77LOg==
+ bh=WNiyw4dsG6t2BFz/CZL4f6zdXLNqfpeCCo/bI/KyTQk=;
+ b=IUJTRzt9UBV5ix9b3TS3aZMVc5YIWUtIAXiHTx7m0vZCqiIChClNQPtzaUO+kUMn9uQyAI4T6z9KxpHo7qeY7pw+sMNQKO3mZMzXFmnaGdiujC0ipDcUfj2mnebRD2J3m88vMQ+GX0M6st45QypFxXEcEMDv9CH2yL65Qy/BuF/fYHS0TP+50zUhjeqwX2WKrY8AnnAkCWW4krlIGqr7EFLDNuRKCWhttryJyA6esD0o+silyiL76ZCSIork0h18JBoLGPOFEWHhPon3eb9nhRAiTVeP1+ZGpUBy971qceDt7dAJQVfOAUcm1/Vc71sUb39iiJKSIsXf46wZGCR2zA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aFLtkPSk8HsJojJFMqoNd1rSdc7k32UyGOloV+rt+sk=;
- b=LNq2XlPkBTbwcGPZMUn+5HY7e5huR1gW/71IywLUpu/sjfikwYeH3myCCLVlgAFsOKDoIWnlV1UI0oPGbuGl7DAZG8NTD94Pr2hz0zeP/obrpuy59fjU5VTU2mK5WfgyW4oRXsBssI9OBJSHRmwDxpEsIFprne4y0gKHkDv7H50=
+ bh=WNiyw4dsG6t2BFz/CZL4f6zdXLNqfpeCCo/bI/KyTQk=;
+ b=ntNgmwjmbW8mlNzvBDgA5TZmarZ0h7dZoGx0E1a2OZYamq5XwzbWCpngO+STzRzNunjFdD/DG67Wat7v4jJ7ux6X7xxoQH/rFE1+VGjOLICL91lRis3EwxQCFv7DkTQ+HOtL5U2FZMiy6IjDMB6IaL7eoeR3xp1juxPNVKzfSa0=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 033/256] cl8k: add cca.h
-Date:   Thu, 17 Jun 2021 15:58:40 +0000
-Message-Id: <20210617160223.160998-34-viktor.barna@celeno.com>
+Subject: [RFC v1 034/256] cl8k: add cecli.c
+Date:   Thu, 17 Jun 2021 15:58:41 +0000
+Message-Id: <20210617160223.160998-35-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:10 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:11 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8766c91a-fef0-49e8-a320-08d931a967b0
+X-MS-Office365-Filtering-Correlation-Id: cace090d-a9da-40e9-fa23-08d931a96851
 X-MS-TrafficTypeDiagnostic: AM9P192MB1234:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB12345956A22A43026AF92492F60E9@AM9P192MB1234.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Microsoft-Antispam-PRVS: <AM9P192MB123488A6BF2533FD782E435EF60E9@AM9P192MB1234.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hHujcZAb/4fEZo5Mb3Sl6mBWZwESSv8wfxPaZXpYFMzArKpm0s65Cqd32034E7dGyeHCsjis5k8d/5cRxha0CaofcJBQmd4YPWq28P5S67zI+k65BnbX8KnQQAgbW+CARu1KGI+/YU8YPrykdamRHFtn5xvExO4X3r9ONsW7HVpW8G9V8/63II7VNTFmHWhHD36zOD6dUcjoemQy0A7SE4rTEIBtAG03CfUixbo5eyt/QjwhylQN4IWx6rBXl0L8c0EfYo5jdsYqCwLZRhsUuYkT1bjtD/tNAI4eydYte52pPfNl4p98S9z07CdnB4uZlvwNm86fP2VQZT0wKoxHT5hk/kifYcn/i0rbyOkagPRPwOvOOEGXwbsl79Tw/pgB7Fu14HF7X/tvYT6DLmFL8wuzWMvgoOxLkL+OCtgjKgAWwaqqGif3kGjSzdr/OVKp/0qDRymHvNNsepGkssvOZVbiRo06qg7HJ/F5M7Dg+sCq8oPA5zI3zIXwwtTI+N5vKe/40d05vq1MqbeDibLAY9QvpDHLi5wvMqGX5lQZjgZXgkERDzNio4kgBCfvEIf6ejFDWezE+VV7ZlBb0fAbLUU6POP6i46CMGjy0GLOrP9CjUNnNwL4y5As5H3a83y1xsm14p0qQIwG1PD1Pm2AL3MzZ67/JfJjxIqlq248zQYy3zu1RGCs+Q5G0iYGbJG0q+6kxxH8AD+lMmNjNsG9mA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(376002)(366004)(136003)(346002)(396003)(39850400004)(6666004)(107886003)(36756003)(956004)(66476007)(66556008)(2616005)(66946007)(6916009)(2906002)(26005)(9686003)(1076003)(6512007)(6486002)(16526019)(6506007)(38100700002)(52116002)(86362001)(8936002)(316002)(38350700002)(186003)(55236004)(54906003)(8676002)(5660300002)(508600001)(83380400001)(4326008)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: QXDSsTwAOOzK/dZ6surdMkMl+wS5gDneiM3+IXtKXUtntiTTI3rodNQwEo6WjSwl9FaxVo0/wfQ8Em5VZ/SGZbecFEpH7nMiyNhRG3mkDvV41eV4yxsqTsWZrNMmg32Eh2wJ1lHrIsLTjIVOgC/PxdTvoaGTNbjm0ATewPEmpS7nsB19H3CNCjo8U8P27jSH1o2s+Io9OGtizfxTdDwdKnUh5kSZAM4gOAMSo4LrAk2Ue7CnhFJGHsddRbGGbximBajLYZuYu2+cC1LFPhC68H/sv//hga8S3FGDZQjrxxR0aLjj2UdSTu5Y3Eo/g2Vpe477O5Uzgs81s7MebGTU1d0/SSgBOcTi3Sh2Ks5m+39LQEvYp8lam87xjAyos0Ggi6SN511wYrqchxCi15BtUxLUJiU8ms8GnqPhbi5L5nH8F7eiGAcd2OIBNRXVsrP6GNa/w8UMybkHqBIigkuTiovsdXmJb4c+i4tRLWRaerieUYrUbRl9f+0vyFlpBAIOrC1tAN+KAqDseK+4DIkASHwvdULIVhN9U9lk6SG1I1f+zdNILn96NmFvK2YcacH8WuRhHroF5Lq94SHstOpdcKLXGS9oCsNVAz6Lk0Xm8n+9rGlANBxZbFcQFqApH8DEuxlVua/N6UIVjtRcycaKXFw/5JVGcP/dNjh4WC1LiL94vGqmHTqVBx4Q3vGVfIpAMYYvQNZSXsC/o2lABBAOIA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(376002)(366004)(136003)(346002)(396003)(39850400004)(6666004)(107886003)(36756003)(956004)(66476007)(66556008)(2616005)(66946007)(30864003)(6916009)(2906002)(26005)(9686003)(1076003)(6512007)(6486002)(16526019)(6506007)(38100700002)(52116002)(86362001)(8936002)(316002)(38350700002)(186003)(55236004)(54906003)(8676002)(5660300002)(508600001)(83380400001)(4326008)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fzdL/1o5kPcQNMAV8Iuf4JQWOKdF/mbxzu2BXdHai6OXCDIdhU3ZbtTFee36?=
- =?us-ascii?Q?lfaJ1OAbYWfgrbonSx/K0J+3s4EYiQZj+c1OvhdOdTGwCi7x/u4J4GBNHyrc?=
- =?us-ascii?Q?hVsX9S8Ku2GcRoIgD2dc2zoE1wGW+1DeEr+ZEqkTeWVR3AvRI3+vH8aGadZ7?=
- =?us-ascii?Q?F6NSI82il06Gag0/2xSGHrbqpnTzHnYaEtH2kMQwIx0XjNi4uy+AMmrmb5Gz?=
- =?us-ascii?Q?ajoWyECOdZnE3B3J3gSpwKX9StUoQy7028hZ2b69i2dY68RQf090KCfG1yMN?=
- =?us-ascii?Q?pmoSFHPD6W39TC0MnEYdv4yWHPGOzarxYCg6KtjcimlsapPn5TdkGdXBgG/7?=
- =?us-ascii?Q?o2X1oPKi0SSUyDM+/SfvJK7nbWmDWz9lix/s/kSx9BUpw8rPO/y2rni5YCOX?=
- =?us-ascii?Q?vgXXeoKqQ5HO8jy0bmcxyIN3k4C2ICi365ByhLAzTh8ZGxEO7rutpIoKTXUF?=
- =?us-ascii?Q?EVpEE/1tlWykMCVux0aohTn3qxFWgR2oqmILMC1cwuxv63yDT/SioQJsojfV?=
- =?us-ascii?Q?CC7ziiInoE6ylQoPOx8KyOf/DHv2UbHz6PW6SKma9A4p5N2wEevc9h5g11+L?=
- =?us-ascii?Q?VaW1/9jsDqhIkgbGYP7lawcHti5dNLXjOQSJPsDY6ryU0upRDgpbZVATyEwe?=
- =?us-ascii?Q?LIWnteTDfwoLfk0MDab/janxA4TJ13RuxdNyLwpIYcjctmAClJamDIMhOll4?=
- =?us-ascii?Q?KZKNoe6u2kN0FBHpFtWn94FQun2DDBIan9FBXrJ2ARRs5JVBGriOdcTtShsw?=
- =?us-ascii?Q?VThEL7UHXhw1O8Ria/7lzjb1jI+f+E/XHtPo8z76dAhRkWBl4nSaOB61uZif?=
- =?us-ascii?Q?w4reKlAndBRPuHWii9eilCG/9v2I6lZxCbJhhtqusN0o6cr1FQXH12nhNhii?=
- =?us-ascii?Q?+UNc8tjeTko2puGA9C/Ett0d6sWNC3OxZJc7Npj7gXOytWLoKOBTxAYzgXba?=
- =?us-ascii?Q?pYP25VLaIOxpYNxIAbd5f9rkXrQ2p28ydYoyTCh+JJ4GhQvHLVHf1/WR9OyI?=
- =?us-ascii?Q?33RP9hN01pGiYvxki+DfqtE1cK2u7nOMZ5v+4uF+/Z+sfg8UhI4htnnhYZeH?=
- =?us-ascii?Q?Bx3pQKG12WblF9JorIdGIKOcpPgNOBVPWZVOUSxuXtUJPfFfOYtGy061+SNz?=
- =?us-ascii?Q?sYe7q1Mv9HkEIit8b5TtkJDdbAMlJV+DHBYahF4okr3/hun7bCIOuQFyIhD4?=
- =?us-ascii?Q?e5EBXFPKWlL+IMSeez1C0x9VWpNP+a5CTb6NvZm54av1WP3eSQro1Rfv6NAH?=
- =?us-ascii?Q?u15O1n6JhAGR4ZsW6iI063bapJutan24R3Zlf1gn8GlzhYoFbx1Fm/u+NNUP?=
- =?us-ascii?Q?hOP0UMdkyuoFEROkCauFQMAs?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7fVteBx+Hiqo3+Chceuy9Fk+LGtbfT29tKiCxfaVq3pFQjWqL4NHrum7Lr40?=
+ =?us-ascii?Q?9z+2wVVZvG2WawQ96h7fwzoWgsoLO8FTQvJ0D1NMIa2Zx+WJz1l88J7k23Cu?=
+ =?us-ascii?Q?Bd4CeabDzQezRBr61fhbO7O05CSpRxVVUlXeeN/tbIAWjJA2Uwl2bMDSkaVP?=
+ =?us-ascii?Q?J5LX1qHAjNT5ZV4ZkcaMLR/Vn72DZcbyr6nuumO7A1EwAErnHUvbhR1yVCVv?=
+ =?us-ascii?Q?e29C4k4ySmVHGEkFyoeHPKbceJOCWvHPc83yDV0XMNG1lAYY0tgzu9B61Shd?=
+ =?us-ascii?Q?hQuknr1YNBOtTAfFJiNpvgQ7c2FSHmacDG2uW6uv9QDbxDxzHzqYioh1YyR9?=
+ =?us-ascii?Q?lquk8UwKx2QIhWxhllZuJdrCYieRlZmBPf0Vz9TpffZGdYvQJ4aTIHZnSi5G?=
+ =?us-ascii?Q?5E4CXaxUwq3dTtURWs6KTX4JxIcS9Dg8XkpcuI2xGx92ut7WRiIsZGSt6JB/?=
+ =?us-ascii?Q?OPUe7b0sFzk3NFJL8SAqAbG36Gmo1ycYVThUL0o8qo0P07ePpq5p08pzllJB?=
+ =?us-ascii?Q?OR5sXBz1GpMGiaBuD7XBNQT3eaUpNCfl6lzAtOmIDrwBiUAXfILoJnBHRuvb?=
+ =?us-ascii?Q?D6WBJM7DRwog4WeBRrdNyntdMUI3k5SlsUcqirA0f8fB5OSrvXOWdGC7yiIQ?=
+ =?us-ascii?Q?Z2W23sRyUADABbWrTKQnvExzrQ5dMJGg40a+k/P9Jz5qmFPJCBHDXxXSNWWZ?=
+ =?us-ascii?Q?YV0mbgfh37SMaR+Vp2nh2SG0RMDgqP6DH68ElV1/plgnAggn1QXVyPZ5KU8B?=
+ =?us-ascii?Q?JIBwHFiCKhzyi8Xt7yQz+LSqNB6LZH4S31n5YAaCT7wo13Es1LemDfqOgyOK?=
+ =?us-ascii?Q?J0bH4rYQQjH2bwNoLJAIfegZ89BLy6ARYd0xYLkIKB+MIEofXRbOiktm8DfM?=
+ =?us-ascii?Q?NCWCdB/765etGz+JdXX6JoAtKZBYWRCgtfmoHIiP+aRLDsrgFqwg7mJeQFBJ?=
+ =?us-ascii?Q?ruU6LnoT35PvMgyoQVSyc1blhdUHu3RHtVuek1XDRO3J0mXsGFMkUtRZUDf4?=
+ =?us-ascii?Q?M/B8AEAxjFjxQPxAJNAXrUKnZhumeImPcJeKxSFmdpC8PKehAgz1t2GLWXPY?=
+ =?us-ascii?Q?+1+T+SJKemRbTTysbm0BKBvHwS4glw9efVkpX50KIm5QM2wQ26T7JB1/ItbT?=
+ =?us-ascii?Q?UqHe1HPV3tn8siwpwSPDGvKx6dpIf/RWbXo3D+LsrahnMWHn15zWxjjTPSux?=
+ =?us-ascii?Q?hpfjFbzqp7WIR8Jv0P/nPgEG1IF0QIcZzcKioWL18bSZjEDLL5YFcnYoA7kN?=
+ =?us-ascii?Q?yBKHxoj/HFXIXVpyjUHOSmzl8OnMPF1NvRdP+13Gk1VwmtstubXEmV2MdpO4?=
+ =?us-ascii?Q?mXSGOkSTlJsJp8hGQhmxAPsO?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8766c91a-fef0-49e8-a320-08d931a967b0
+X-MS-Exchange-CrossTenant-Network-Message-Id: cace090d-a9da-40e9-fa23-08d931a96851
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:11.0072
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:12.1034
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cGR9fqLEP5B5dmC9d1mrSCzfZDpnYZCZazKWiUbCTlkOWvWCbZxLGC8Uw5N+/1yBOb8HA1SxrzGqZb7EentGAA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: m6FoX2MgQNzBTrikB8mEHtUWtuXNwLWZoH8FwQ/RSzeGAiXsJiTQWH8AOSLIMKEkcYOpKIHZzvpc+aqU1Bxgew==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1234
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,47 +119,373 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/cca.h | 30 ++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/cca.h
+ drivers/net/wireless/celeno/cl8k/cecli.c | 354 +++++++++++++++++++++++
+ 1 file changed, 354 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/cecli.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/cca.h b/drivers/net/wireless/=
-celeno/cl8k/cca.h
+diff --git a/drivers/net/wireless/celeno/cl8k/cecli.c b/drivers/net/wireles=
+s/celeno/cl8k/cecli.c
 new file mode 100644
-index 000000000000..ceb2c4251d9a
+index 000000000000..abe5d4a06f48
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/cca.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/cecli.c
+@@ -0,0 +1,354 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_CCA_H
-+#define CL_CCA_H
++#include "hw.h"
++#include "vif.h"
++#include "cecli.h"
++#include "vendor_cmd.h"
++#include "wrs/wrs_api.h"
++#include "chip.h"
++#include "fw/msg_tx.h"
++#include "channel.h"
++#include "calib.h"
++#include "tx/tx_queue.h"
++#include "tx/tx.h"
++#include "stats.h"
++#include "power_cli.h"
++#include "bf.h"
++#include "edca.h"
++#include "traffic.h"
++#include "reg/reg_cli.h"
++#include "radio.h"
++#include "temperature.h"
++#include "rx/rx_filter.h"
++#include "dfs/dfs.h"
++#include "utils/math.h"
++#include "cecli.h"
++#include "utils/utils.h"
++#include "fw/fw_dbg.h"
++#include "ext/vlan_dscp.h"
++#include "vns.h"
++#include "motion_sense.h"
++#include "version.h"
++#include "enhanced_tim.h"
++#include "rssi.h"
++#include "cca.h"
++#include "noise.h"
++#include "twt_cli.h"
++#include "omi.h"
++#include "config.h"
 +
-+/**
-+ * CCA (=3DClear Channel Assessment)
-+ */
++int cl_cecli_agc_params(struct wiphy *wiphy, struct wireless_dev *wdev,
++                       const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cli_params *cli_params =3D (struct cli_params *)data;
 +
-+struct cl_hw;
-+struct cli_params;
++       return cl_agc_params_cli(cl_hw, cli_params);
++}
 +
-+enum cl_cca_opt {
-+       CCA_OPT_CNT_CS =3D 0x1,
-+       CCA_OPT_CNT_MDM_STATE =3D 0x2,
-+       CCA_OPT_CNT_MP =3D 0x4,
-+       CCA_OPT_CNT_ENERGY =3D 0x8,
-+       CCA_OPT_CNT_ENERGY_BAND =3D 0x10,
-+       CCA_OPT_UTIL =3D 0x20,
-+       CCA_OPT_TX_RX_MINE =3D 0x40,
-+       CCA_OPT_EDCA =3D 0x80,
-+       CCA_OPT_EDCA_NAV =3D 0x100,
-+       CCA_OPT_REC_HIST =3D 0x200
-+};
++int cl_cecli_bf(struct wiphy *wiphy, struct wireless_dev *wdev,
++               const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
 +
-+void cl_cca_maintenance(struct cl_hw *cl_hw);
-+int cl_cca_cli(struct cl_hw *cl_hw, struct cli_params *cli_params);
++       return cl_bf_cli(cl_hw, cli_params);
++}
 +
-+#endif /* CL_CCA_H */
++int cl_cecli_calib(struct wiphy *wiphy, struct wireless_dev *wdev,
++                  const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++
++       return cl_calib_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_cca(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++
++       return cl_cca_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_chip(struct wiphy *wiphy, struct wireless_dev *wdev,
++                 const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       if (data) {
++               char *str =3D (char *)data;
++
++               return cl_chip_config_set(cl_hw->chip, str, strlen(str) + 1=
+);
++       }
++
++       return -1;
++}
++
++int cl_cecli_config(struct wiphy *wiphy, struct wireless_dev *wdev,
++                   const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_config_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_debug(struct wiphy *wiphy, struct wireless_dev *wdev,
++                  const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       cl_hw->conf->ce_debug_level =3D *(s8 *)data;
++       cl_hw->chip->conf->ce_debug_level =3D *(s8 *)data;
++
++       return 0;
++}
++
++int cl_cecli_dfs(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       u16 ret_buf_len =3D PAGE_SIZE;
++       char *ret_buf =3D kzalloc(ret_buf_len, GFP_KERNEL);
++
++       if (ret_buf) {
++               struct cli_params *cli_params =3D (struct cli_params *)data=
+;
++
++               if (cl_dfs_cli(cl_hw, cli_params, ret_buf, &ret_buf_len))
++                       cl_vendor_reply(cl_hw, ret_buf, (int)ret_buf_len);
++
++               kfree(ret_buf);
++       } else {
++               return -ENOMEM;
++       }
++
++       return 0;
++}
++
++int cl_cecli_edca(struct wiphy *wiphy, struct wireless_dev *wdev,
++                 const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++
++       return cl_edca_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_fw(struct wiphy *wiphy, struct wireless_dev *wdev,
++               const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_fw_dbg_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_motion(struct wiphy *wiphy, struct wireless_dev *wdev,
++                   const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_motion_sense_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_noise(struct wiphy *wiphy, struct wireless_dev *wdev,
++                  const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++
++       return cl_noise_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_omi(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_omi_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_power(struct wiphy *wiphy, struct wireless_dev *wdev,
++                  const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++
++       return cl_power_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_qos(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cl_vif *cl_vif =3D NETDEV_TO_CL_VIF(wdev->netdev);
++
++       return data ? cl_vlan_dscp_cli(cl_hw, cl_vif, (char *)data) : -1;
++}
++
++int cl_cecli_radio(struct wiphy *wiphy, struct wireless_dev *wdev,
++                  const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       bool radio_on =3D *(bool *)data;
++
++       return cl_radio_cli(cl_hw, radio_on);
++}
++
++int cl_cecli_reg(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_reg_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_sounding(struct wiphy *wiphy, struct wireless_dev *wdev,
++                     const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_sounding_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_stats(struct wiphy *wiphy, struct wireless_dev *wdev,
++                  const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cl_vif *cl_vif =3D NETDEV_TO_CL_VIF(wdev->netdev);
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++
++       return cl_stats_cli(cl_hw, cl_vif, cli_params);
++}
++
++int cl_cecli_tcv(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       if (data) {
++               char *str =3D (char *)data;
++
++               return cl_tcv_config_set(cl_hw, str, strlen(str) + 1);
++       }
++
++       return -1;
++}
++
++int cl_cecli_temp(struct wiphy *wiphy, struct wireless_dev *wdev,
++                 const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++
++       cl_temperature_cli(cl_hw, cli_params);
++       return 0;
++}
++
++int cl_cecli_traffic(struct wiphy *wiphy, struct wireless_dev *wdev,
++                    const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_traffic_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_twt(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_twt_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_txq(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_txq_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_version(struct wiphy *wiphy, struct wireless_dev *wdev,
++                    const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       cl_version_cli(cl_hw);
++       return 0;
++}
++
++int cl_cecli_vns(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_vns_cli(cl_hw, cli_params);
++}
++
++int cl_cecli_wrs(struct wiphy *wiphy, struct wireless_dev *wdev,
++                const void *data, int data_len)
++{
++       struct cli_params *cli_params =3D (struct cli_params *)data;
++       struct cl_vif *cl_vif =3D NETDEV_TO_CL_VIF(wdev->netdev);
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++
++       return cl_wrs_api_cli(cl_hw, cl_vif, cli_params);
++}
++
++int cl_cecli_help(struct wiphy *wiphy, struct wireless_dev *wdev,
++                 const void *data, int data_len)
++{
++       struct cl_hw *cl_hw =3D WIPHY_TO_CL_HW(wiphy);
++       char *ret_buf =3D kzalloc(PAGE_SIZE, GFP_KERNEL);
++       int err =3D 0;
++
++       if (!ret_buf)
++               return -ENOMEM;
++
++       snprintf(ret_buf, PAGE_SIZE,
++                "usage:\n"
++                "agc_params -    AGC params\n"
++                "bf -            Beem Forming\n"
++                "cca -           CCA related\n"
++                "chip -          Set nvram per chip\n"
++                "config -        Debug configuration\n"
++                "debug -         Set Debug level\n"
++                "dfs -           Dynamic Frequency Selection\n"
++                "edca -          Enhanced Distributed Channel Access\n"
++                "fw -            Firmware related\n"
++                "motion -        Motion feature\n"
++                "noise -         Noise related\n"
++                "omi -           OM infrastructure\n"
++                "power -         Power related\n"
++                "qos -           Quality Of Service\n"
++                "radio -         Set radio on/off\n"
++                "reg -           Register related\n"
++                "sounding -      Sounding related\n"
++                "stats -         Statistics related\n"
++                "tcv -           Set nvram per tcv\n"
++                "temp -          Temperature related\n"
++                "traffic -       Traffic related\n"
++                "twt -           Target Wake Time\n"
++                "txq -           TX queue\n"
++                "version -       Read Version\n"
++                "vns -           Very Near Station\n"
++                "wrs -           Weighted Rate Selection\n");
++
++       err =3D cl_vendor_reply(cl_hw, ret_buf, strlen(ret_buf));
++       kfree(ret_buf);
++
++       return err;
++}
 --
 2.30.0
 
