@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7C893AB845
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 431C43AB848
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233588AbhFQQGM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:06:12 -0400
-Received: from mail-eopbgr140058.outbound.protection.outlook.com ([40.107.14.58]:8512
+        id S232246AbhFQQGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:06:16 -0400
+Received: from mail-eopbgr140042.outbound.protection.outlook.com ([40.107.14.42]:47438
         "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233581AbhFQQF6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:05:58 -0400
+        id S233631AbhFQQGB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:06:01 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NiDj7NcJNl7pZasOz/Lm0yuIOEpZG9M2g4L2sslkVu0sITBKzp1BzLHY6AdQKw0+0R2pFoF7BnLIevUL5Azs0OIQakAopE8A4lQutKP+jMfwxUH6kLoSpe6hmrtHkgcyGONiRj7uLYO5TXIbngYxHOZb7w4a7c3wLh1gx7m5OkUqGp0+gIVIp+yI9vsaqUifJOdvTPCSH+iJ0w2MEdvexxCf+yeGfMTHg4WkEUbTyu0BJCAEgwUnsWKOrcpgmTNmc4G9q+JWoVXkqYj6nShP5iU/hz8BeybJPbX9rdvUusYVbkmzM4SW0v9TxmBcDpeeaT801gIG0eLYnUaqLw9EAA==
+ b=jKHG4ucfXGgJHSLWT08BXYsnVPWUa28z5oF5s9qGkZ2NdVwbiuW4M5TjSCqw7Z7x3/141OQe0CbdJ6zP04RJpRym6LSNR+Yv7m0xPbBdoNe78HL/Vm7YbtWFyVxTQbVdieJ99kZIh2DRDHsht/Wm9EG5i2xpnRJI5IyFjVYWU2yNWmK8imaeglsZk8/YE1Yhc4+LHJr0/0TAz0NA4vTLX6o9q+9uwR0jN/EXsjCXVCs/0aWAo9UtVqSLnsFoYIQa6U60zB0ecm9EGbLgGUuomHpRtEC44YpvA/a0GeTaFJyYubn03gyK6Ci+uwpsyo3fpuOv5kk+UTt7CgYIqplbFQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7x9EZCVOOPZFjOS+r8CXd6P0OHei2BLNzrogh8Bmv/k=;
- b=PrxNwYCpxxKHTMybV7BFFrYg9uQ9lZAdEI+QiFdkSR7akyfTDeUPWik0YQ/dlDkgidAGe1SNlsfkvK4h9IpIj+89XDOJQTYOWFf0dkMbP1I2OVmdnkrjjsY1ZfNF67jZyd55XZxnaG5RadGkUz/qmEFqF3+5owPpdHU3NeneuDJdEiizpP2kcPB4r45rAfxqTNHiozvQm14KJbDLCpXXrAeq4Z1PtMzKKM+7bmXKWReLB6CveVVd7+6tQgOYqQweWvu0odQZAItf5IZWhXS5pvDvK6Po1/1CzXbFo9xNfzSVpbsky+wfr8frr1uucfxFDlowF7bEQIhfWgNvYKgLoA==
+ bh=lGY1q7SqNGIRIMtBbDDOWZrOK5fbeM6NppfGsqvLe90=;
+ b=Twqu6tQfmWe4W1/JIL46xLG25Mr5Tt35eR2tPWUmi0pFrhBkWC1lxQ70UlDKCibUR4MtT5UiGVLzlCuaRP96TbXbXuAE/8o5f5FjxHOpgsQP2yE1E5DLgMloyBHiYId1ICu0RhjB+Gif01A2561Njib8Eszk6lCWUpAIo2QXzzBhhcO9zVtjfeiH2Tm1h1tl4dgkq00eCQnP9CR2Ulo4qEu5RvIAStS0+VJl06aeGzC1na4VnN0lN5ajtjunOzsOweQ0FDVkrYzHr/7STz6xs8EWmFQo32WTkbhNZ34u2sGdRV0zT8+zXuq2h+3qagyHMxa/jmexIMY5hxVjUFgHCA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7x9EZCVOOPZFjOS+r8CXd6P0OHei2BLNzrogh8Bmv/k=;
- b=FmNs7btRPbL8wFEowTgghURQTBLIFzQKH61bDgnlo4ffxZ+MvAH49GwJbspR693evXnem2Tp854uEuRoyzYYb7Hyi1wqnwxLy/brCfIDTjq8TJTAgF7cl9qsleg0/5qv+iaBpWMjjyYq6cfr62WLf5kSR2ehkylkTfD3seguVko=
+ bh=lGY1q7SqNGIRIMtBbDDOWZrOK5fbeM6NppfGsqvLe90=;
+ b=LXsgGVyiYRUa7SLQHcU2Eku/6lQsMM+980MoZiimb8HWMsGf+SnJETo4fLxRA4FjlOJ5vAPuhiV46ZsYT4rgYltp5VSO/pk8DIFzjvssonZj/nsuAWbjoenU71YwkqTS81zkcEiMdTjMhIbRi3O32TO7MGVDGDAk8aIIiCIggng=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 043/256] cl8k: add chip.h
-Date:   Thu, 17 Jun 2021 15:58:50 +0000
-Message-Id: <20210617160223.160998-44-viktor.barna@celeno.com>
+Subject: [RFC v1 044/256] cl8k: add chip_config.c
+Date:   Thu, 17 Jun 2021 15:58:51 +0000
+Message-Id: <20210617160223.160998-45-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:20 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:21 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4ab720e6-8f3b-427e-38d9-08d931a96de9
+X-MS-Office365-Filtering-Correlation-Id: b6956fb4-65f1-49c4-e706-08d931a96e81
 X-MS-TrafficTypeDiagnostic: AM9P192MB1234:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB1234122B360D364A061E65F8F60E9@AM9P192MB1234.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-Microsoft-Antispam-PRVS: <AM9P192MB1234338FC6AEB37A4188769AF60E9@AM9P192MB1234.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:175;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: t6FeUbDvKSrMlyTwRqm4Tr74z4JShEHyjySu6zSQL/9dHZ/Ki3ZG+LpI1/JOPINQDuGHCutdYLESYZhl0T39tEf0mAIQG9FIwHBTlayboq8ChJ8E0/0Wl4YFjcAfCFKI+yKpcGqhoXbjVx/a1DMvihncFeQYm5UCK9EpbO0z3K6jRoVeoptnWP6iN0oHr2prb56Ft+XNm1rIxtkr/unonVg7aw/GslFIM5b7qxIAQ/YPQWXNyfwjwYOwix6p9ZLMOdwRoeXpqv/CFGIAzEXNScOCRu37lZdVckgk8BQqM/6oyO5JKlFrYRPR10buTiqzGPBK4lcVvSgI9ys2wyAEzQQvOZN+F9Stc6YLlynX7gIcejBbZIVSbZkJnvkrLI/1RV1XZFyOMyKN2z0eTaOxeChV4/uLefTrHL2BC5tJhWbJlMc1WA0ztp5ID1/ez+Cm4WlInCUFSjxEuGhxGMs6wyQpt94p//twOtNxoVJCP52+twe/bnyGnixHlPUhJXirFsRhfepCaLAkRZRol7aOHagS1/XAdpL4lfBaRSnuuI7alovgqF/2bN4EwWtOnR6rv4bqvXtkaz2wAeM22gtKGcSsE8JrgG2u5a/9CdzjBsxrxqB9leqUtJWOK4hQRuxSXWPM+ExyRRaWAHT5hBLpoAtqEPULwU9EjHDKRxS9y17Nw8W1ep0HVzCaOR34LKHNI3juPRJYxq0C6yspZEz2EA==
+X-Microsoft-Antispam-Message-Info: X85dDIDNdyj9hyi6U2DcBupYIxvtBU8TeA2B7nsss4aYBaB7i/W5GhBcfm+YkwZ+oFyoaYJm/uY5d/HMlfAhWNwqbtvN8ff9hTuld++rN7eckXlpHWsDe3goLJ2hJvINDmaG95gzLeKdQO0lzH8nHxD7O/o/n7h9F6KOXQTrplEIdhJHOtqaUpHFpR+CRrt+6oxeYDw/H+BmX0CvxbB7vUGKqS9KmeG9MNm3xo670RIwKnU29Dy6FLgOVNXqQ5JoGoQiwZlKa8iXJK9cUvcTk6LVLiAvLwW8jbevfkRrPwkVWc3R5xGfIHlkDOs06XjBIV0pMIs36VVpQFS1Lzxrcvf75Xig/Z9Zk+z/8pfeDEJd85v8Sns6YX1lldYabVIpUr/iqdZ1YbHz9wR51jCTcPkem3Uiah8NDyMWPe+uMd2IPWuX7nGWJrmVty8OOoOsuUHPryTnHpCK9RyXL9ZmrPGpA0AQ+NjAzcN4a1XzI8X2BPnVsgUgEFU5lrjcZ32J1m9OxxMYVpYf7FRoBAGBiriEWnZ8WPQckv9xLhFuU5IMAdFP4pytrvFpP5Opnoidnl+5ZiGsYUHUXci6RtpWunVVtO+XFcTfs+IPvhyuXJlD2R+rzwStmuK/tOQZ1DWsp/599JNXTAcomNHeUniBtOi52e00na+ThiHe597w/IWPSQjp6QJE3MOftPcoIVNmWKvtgrHgsoC5ePMEnUVFQQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(376002)(366004)(136003)(346002)(396003)(39850400004)(6666004)(107886003)(36756003)(956004)(66476007)(66556008)(2616005)(66946007)(6916009)(2906002)(26005)(9686003)(1076003)(6512007)(6486002)(16526019)(6506007)(38100700002)(52116002)(86362001)(8936002)(316002)(38350700002)(186003)(55236004)(54906003)(8676002)(5660300002)(508600001)(83380400001)(4326008)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CLaHKy4t0DbT67XuJ2TJpaZjpPbb8LVzn8TxxP0KgPyCFHO6mOIYXUsHubGP?=
- =?us-ascii?Q?udOw/42adyYd4RzVKDVqLaaiS/7osurqZGaSCC+TSJU9dlRwOBhYG8mMr83k?=
- =?us-ascii?Q?zBf1dRESwx245BzdRvTIDJJi9z7ZM2OYGwAIe4PyJWZ69MzhPa9jGw3qq9C3?=
- =?us-ascii?Q?176SvxJca/fj8EOP5H9H31Osb4aQm+u6xq0xkg8Ru7F2WklDYgC/g3IJGAOb?=
- =?us-ascii?Q?6Sy64Pt25YgSFQfR2UQEp+eQuwlkqdGh69O97wQY8NE0vzCQTiBHbzl1WbhH?=
- =?us-ascii?Q?zlh9aEScwm/R9xBZoSuKTJX9yeI6D89SOS3n2jREVoV577pUTOyrFF0D5uv0?=
- =?us-ascii?Q?w6fanEm2UjMdTZIc8TeKu2KQUlI47/pAdIccFBpjsSpchSGn0stW05ZzQp0P?=
- =?us-ascii?Q?LoukIF1yfdWsqzM21MgdtQR+iTSoM4U8QcZo9ZsdbsYRd2ue4N1u3D8G8g20?=
- =?us-ascii?Q?eSJqwLPCA6Vzq6BkDXn9THPH1KCgmQRZJqiJEdyl2IkgSX8AX1c46Q1HkE9F?=
- =?us-ascii?Q?8y4DhAOjnS7wECeQldgrSVxv0LQp4/yCD5lPI7OCVnmr494g8JVCqSAiqux+?=
- =?us-ascii?Q?+pffGzoZlcy4Ck+CcD2SzokDZM+knsmvf1BgRupiAbg2b0SxnEcWb1qqmYH4?=
- =?us-ascii?Q?YRJvFkEuecIjASnCKVq56S+Ifx0+jIbUP8muSEt/aZkixgjL9ACE6W7c/f9p?=
- =?us-ascii?Q?ortYwhFI0LSnVYOUEjNe/HtAdH4mDM3+puw8M7qEOG32hueO4pLRUMAf83xd?=
- =?us-ascii?Q?utRKHs+KTzQHQMnr/GRLlMls2XvkQ/doMOGm2No2uA7H8h28aCgOWsHJwKv9?=
- =?us-ascii?Q?5EE6sOiBxhdIkIGfeWhdP7jIunexPG3wGp2WOPAyYfQrcOk/CaXTJM4YSOr7?=
- =?us-ascii?Q?tLwqAOBeJtLI/IOZ+j3+Gy8kpRLnhVhnUP8JPF2SQnc2cH+67zwAxy++MwyT?=
- =?us-ascii?Q?OFSpK8OVzAIjCw3E1p7vynSaN1fX+VNrVPMFxUTN7LaF0VFmxJ7l72DtCggR?=
- =?us-ascii?Q?UXF+lQPqcox660w2q95//omherx/z4acu0gw3tnCFHp9mbALLSvkZZ5C3Mdp?=
- =?us-ascii?Q?4gRCSdF2kzj2FO8RnDTXybtCfV3xc19C0yAcfCeeIL6s3tbV2NFbcIfZbRwY?=
- =?us-ascii?Q?7MbELhtf/BmXDFgRUdRhTyqR/lw8bpArAfGhighnMKpyzxcYAA34AB4yo9RA?=
- =?us-ascii?Q?Z1Cz1C9gkoBAamgyXKp4QzWgD3KRc5j54Lgv1LCBebhdcy9uJ38lxG5S5t4e?=
- =?us-ascii?Q?humIxmFB4e/KG62qH/Uvw7rHJgY9f+KeEEpbjHVjZzvEljWYCG6ib40bkvJZ?=
- =?us-ascii?Q?QfndxAAFYReXvh1FJJSE/QmW?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?K0C6txkqDb+lvVm059LKGR6T7Yw540JPrAQ/OuOAGMcFwlFPubYW/iaVtFkR?=
+ =?us-ascii?Q?a9p1JO8OoKiJhJh5Pb/GkfJVuige6724P+LNZStlxLNf93IgFoypqch1E3SY?=
+ =?us-ascii?Q?mgPdObQeuubrdcuzh1LinGtq4GY59CXEXwuoaTD+EU+1fihTBvXtNktRnFtI?=
+ =?us-ascii?Q?uVAj6HUoSwZ1z8sacW4ZE0wIy7tsA/iGRFz3Wd9ezflW12AFpOGxe+P8WzAU?=
+ =?us-ascii?Q?jJTFGYXSHiYQ6iU6O2VfQ+ys5pf9G8OvxeV4SH5klUUOB5yrb2VqYyZkFeNv?=
+ =?us-ascii?Q?RwW6iQvrnZ7uu+1Kvm4t8b+jcHie7ZSCZNlNz/ztxwHv4aKMjVj3tOI8WVug?=
+ =?us-ascii?Q?j+SjoOdtylZH0gOpP+WeJrzYAsPFj8HvsIEvxt2UQi3UknvvG4/gk/DPL+YE?=
+ =?us-ascii?Q?5EkbU8Hv0EXsUsOBX1pSJh6DYTOUDV0SWeVEstP5I6i2UbGKuVDrBjyKI0w2?=
+ =?us-ascii?Q?ZCJ77wVv3MaZadGSjGJSD4AmylpAsuj6iwHzXbt0T/DvttIuek8drHJJaQOL?=
+ =?us-ascii?Q?kUJmtoOjGZiNM8P2+ivK91DULC5jjYCgemrSlvMzXgrbKNZMEhdsYyIbshgI?=
+ =?us-ascii?Q?2iNUJunFrY09jFhAesb0GzodJHAnxAu09s5VI61S8vbR9ZDr20ZTai8EIvz6?=
+ =?us-ascii?Q?um2P9ALNZY6d73OwVdfsmfbYadsmLs3Tn5WZlqq6IwMm1afH9/J5CqXC2qxg?=
+ =?us-ascii?Q?oTyRL834YJfKOg3aUxZ/WnpwcvOVvmQbZBUGPO1hpMn2/azLy3MYUsO7jTPL?=
+ =?us-ascii?Q?74EfC/cvRkCqt/Dr9wMxCkmjfzP6oe0e0PgLwbbLabv/LXzcdoImsAyrp/aY?=
+ =?us-ascii?Q?O8wTQiK+JasJARD8AwAHZH7VqUIf8BtFBnExSGlBIArFdzBPNzvvCd+juQB8?=
+ =?us-ascii?Q?18czhOMmx04UdnNE0Pg3iC5rddfGe/XxLHXal0+GSGC13Jklma/1zii3Wc5o?=
+ =?us-ascii?Q?gVSKAIlAXCL2Z6Ww1nwWxB03KvHkeuEa6DCMZVsJU/cEvNvS8NcpxmM9dMoE?=
+ =?us-ascii?Q?t/JySrk5UkqNZnJaryy2x8lVgBNTSxjVNFVpU93+DzbW8lEWHjhjNro7Sw0a?=
+ =?us-ascii?Q?qfmFwwpte0OpzbZkGk9n8s6IoxeJPl2yC933kfNk5W6+FVdfUQQdYgCwvMXh?=
+ =?us-ascii?Q?NpcgMVw35kmKBDbltj68Fzfj8PHmdjXtwTljcAX1l0WrIV67z7X6AE7stbS7?=
+ =?us-ascii?Q?gRypQUreVJ2/dpis7G0/0kweZMhyMnB3ScPYBVcbD1XIpckCE7ZT5zOCFejR?=
+ =?us-ascii?Q?KJmlgX7Oini8YYqSdU4oZtTpPIywii5BwwGUbo6dQkLCtd0h4acPWIBVYanS?=
+ =?us-ascii?Q?Ngvy+E89tSa6uCPo98cPSlFy?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ab720e6-8f3b-427e-38d9-08d931a96de9
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6956fb4-65f1-49c4-e706-08d931a96e81
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:21.4424
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:22.4609
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IhM0dJaOhzjNC4L2LAJQygDdM1+AnJ/YJ1Hg0p4izrX+S6YiZh2px8mO1OE27ClDc1d7XVx+785abL4f/n3/+w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: YtdTNG6aWiEvNPMbjvyd3A66ONE1AGSqv4sa+2b6cK5PJUhzQ4NKaB/IibV2HrWS82QMKBRleHVtNyv8fpvkPg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1234
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,174 +119,317 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/chip.h | 143 ++++++++++++++++++++++++
- 1 file changed, 143 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/chip.h
+ .../net/wireless/celeno/cl8k/chip_config.c    | 290 ++++++++++++++++++
+ 1 file changed, 290 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/chip_config.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/chip.h b/drivers/net/wireless=
-/celeno/cl8k/chip.h
+diff --git a/drivers/net/wireless/celeno/cl8k/chip_config.c b/drivers/net/w=
+ireless/celeno/cl8k/chip_config.c
 new file mode 100644
-index 000000000000..c7548ca92e59
+index 000000000000..c6d60ff685d5
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/chip.h
-@@ -0,0 +1,143 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/chip_config.c
+@@ -0,0 +1,290 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_CHIP_H
-+#define CL_CHIP_H
-+
-+#include <linux/types.h>
-+#include <linux/spinlock.h>
-+#ifdef CONFIG_CL_PCIE
-+#include <linux/pci.h>
-+#endif
-+#include "calib.h"
-+#include "temperature.h"
-+#include "bus/pci/ipc.h"
 +#include "chip_config.h"
++#include "chip.h"
++#include "utils/file.h"
++#include "config.h"
 +
-+/**
-+ * DOC: Chip basics
-+ *
-+ * Each physical device of ours is a separate chip, that is being describe=
-d by
-+ * %cl_chip structure. Each chip may be several (%TCV_MAX) transceivers (b=
-ands),
-+ * which are operating simultaneously and are described via own %ieee80211=
-_hw
-+ * unit (it refers to the private driver via specific pointer, described b=
-y
-+ * %cl_hw). Totally, 3 types of bands are supported - 2.4G/5.2G/6G. Driver
-+ * supports multiple chips (up to %CHIP_MAX). Since the driver can control=
- up
-+ * to %TCV_TOTAL entities, it is important to pass it's pointer to each
-+ * function, that operates somehow with specific band/transceiver.
-+ *
-+ * Chip instance is being created during bus probing procedure and is bein=
-g
-+ * destroyed during bus removal procedure.
-+ *
-+ * Physically, 80xx chips family may have different amount of antennas (4/=
-6/8),
-+ * each of which may not be hardly bounded to the specific band (both band=
-s are
-+ * sharing them and may change antenna combinations in specific circumstan=
-ces).
-+ *
-+ * Each band (transceiver) has own FW, that is being loaded by
-+ * request_firmware() call during chip structure initialization procedure.=
- At
-+ * lower layer each band is associated with own HW die by LMAC and SMAC na=
-mes
-+ * (e.g: 5.2G and 2.4G). Celeno is using XMAC naming when we are referring=
- to any
-+ * of LMAC/SMAC components.
-+ */
++#define MAX_FIRST_MASK_BIT ((ETH_ALEN * 8) - 1)
 +
-+enum cl_bus_type {
-+       CL_BUS_TYPE_PCI,
++static struct cl_chip_conf chip_conf =3D {
++       .ce_tcv_enabled =3D {
++               [TCV0] =3D false,
++               [TCV1] =3D false
++       },
++       .ce_lmac =3D "lmacfw.bin",
++       .ce_smac =3D "smacfw.bin",
++       .ce_umac =3D "no_load",
++       .ce_irq_smp_affinity =3D -1,
++       .ce_eeprom_mode =3D E2P_MODE_BIN,
++       .ce_production_mode =3D false,
++       .ci_pci_msi_enable =3D true,
++       .ci_dma_lli_max_chan =3D {
++               [TCV0] =3D 6,
++               [TCV1] =3D 3
++       },
++       .ce_country_code =3D "EU",
++       .ce_ela_mode =3D "default",
++       .ci_phy_dev =3D PHY_DEV_OLYMPUS,
++       .ce_debug_level =3D DBG_LVL_ERROR,
++       .ce_host_pci_gen_ver =3D 3,
++       .ce_temp_comp_en =3D false,
++       .ce_temp_protect_en =3D TEMP_PROTECT_OFF,
++       .ce_temp_protect_delta =3D 0,
++       .ce_temp_protect_th_max =3D 110,
++       .ce_temp_protect_th_min =3D 100,
++       .ce_temp_protect_tx_period_ms =3D 50,
++       .ce_temp_protect_radio_off_th =3D 115,
++       .ce_phys_mac_addr =3D {0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
++       .ce_lam_enable =3D true,
++       .ce_first_mask_bit =3D 0,
++       .ci_no_capture_noise_sleep =3D true,
++       .ci_dcoc_mv_thr =3D {
++               [CHNL_BW_20] =3D 150,
++               [CHNL_BW_40] =3D 100,
++               [CHNL_BW_80] =3D 100,
++               [CHNL_BW_160] =3D 100
++       },
++       .ci_lolc_db_thr =3D -40,
++       .ci_iq_db_thr =3D -46,
++       .ci_rx_resched_tasklet =3D false,
++       .ci_rx_skb_max =3D 10000,
++       .ce_calib_scan_en =3D false,
 +};
 +
-+struct cl_irq_stats {
-+       unsigned long last_rx;
-+       unsigned long last_tx;
-+       unsigned long last_isr;
-+       u32 last_isr_statuses;
-+       u32 count_irq;
-+       u32 ipc_success;
-+};
++static int update_config(struct cl_chip *chip, char *name, char *value)
++{
++       struct cl_chip_conf *conf =3D chip->conf;
 +
-+struct cl_fem_params {
-+       u8 wiring_id;
-+       u16 lut[FEM_TYPE_MAX];
-+       u16 lut_registers[TCV_MAX][FEM_LUT_AMOUNT_PER_MAC];
-+       u16 lut_off_register[TCV_MAX];
-+       u16 lut_off_register_list[FEM_TYPE_MAX];
-+};
++       READ_BOOL_ARR(ce_tcv_enabled, TCV_MAX);
++       READ_STR(ce_lmac);
++       READ_STR(ce_smac);
++       READ_STR(ce_umac);
++       READ_S32(ce_irq_smp_affinity);
++       READ_U8(ce_eeprom_mode);
++       READ_BOOL(ce_production_mode);
++       READ_BOOL(ci_pci_msi_enable);
++       READ_U8_ARR(ci_dma_lli_max_chan, TCV_MAX);
++       READ_STR(ce_country_code);
++       READ_STR(ce_ela_mode);
++       READ_U8(ci_phy_dev);
++       READ_S8(ce_debug_level);
++       READ_U8(ce_host_pci_gen_ver);
++       READ_BOOL(ce_temp_comp_en);
++       READ_U8(ce_temp_protect_en);
++       READ_S8(ce_temp_protect_delta);
++       READ_S16(ce_temp_protect_th_max);
++       READ_S16(ce_temp_protect_th_min);
++       READ_U16(ce_temp_protect_tx_period_ms);
++       READ_S16(ce_temp_protect_radio_off_th);
++       READ_MAC(ce_phys_mac_addr);
++       READ_BOOL(ce_lam_enable);
++       READ_U8(ce_first_mask_bit);
++       READ_BOOL(ci_no_capture_noise_sleep);
++       READ_U8_ARR(ci_dcoc_mv_thr, CHNL_BW_MAX);
++       READ_S8(ci_lolc_db_thr);
++       READ_S8(ci_iq_db_thr);
++       READ_BOOL(ci_rx_resched_tasklet);
++       READ_U32(ci_rx_skb_max);
++       READ_BOOL(ce_calib_scan_en);
 +
-+struct cl_afe_reg {
-+       u32 ctrl36_phy0;
-+       u32 ctrl36_phy1;
-+       u32 ctrl37_phy0;
-+       u32 ctrl37_phy1;
-+};
++       if (!cl_config_is_non_driver_param(name)) {
++               CL_DBG_ERROR_CHIP(chip, "No matching conf for nvram paramet=
+er %s\n", name);
++               return -EINVAL;
++       }
 +
-+struct cl_ring_indices {
-+       struct cl_ipc_ring_indices *params;
-+       dma_addr_t dma_addr;
-+       struct dma_pool *pool;
-+};
++       return 0;
++}
 +
-+struct cl_xmem {
-+       u32 total_used;
-+       u32 size;
-+};
++static int post_configuration(struct cl_chip *chip)
++{
++       struct cl_chip_conf *conf =3D chip->conf;
 +
-+struct cl_ela_db {
-+       char *raw_lcu_config;
-+       struct list_head cmd_head;
-+       struct {
-+               u32 adaptations_cnt;
-+               u32 applications_cnt;
-+       } stats;
-+       int error_state;
-+};
++       if (!conf->ce_tcv_enabled[TCV0] && conf->ce_tcv_enabled[TCV1]) {
++               CL_DBG_ERROR_CHIP(chip,
++                                 "TCV1 can't be enabled without enabling T=
+CV0\n");
++               return -EINVAL;
++       }
 +
-+struct cl_chip {
-+       u8 idx;
-+       enum cl_bus_type bus_type;
-+       bool temperature_configured;
-+       u8 max_antennas;
-+#ifdef CONFIG_CL_PCIE
-+       struct pci_driver pci_drv;
-+       struct pci_dev *pci_dev;
-+#endif
-+       void __iomem *pci_bar0_virt_addr;
-+       struct cl_irq_stats irq_stats;
-+       struct cl_temperature temperature;
-+       struct cl_chip_conf *conf;
-+       struct device *dev;
-+       struct cl_hw *cl_hw_lut[TCV_MAX];
-+       struct cl_hw *cl_hw_tcv0;
-+       struct cl_hw *cl_hw_tcv1;
-+       spinlock_t isr_lock;
-+       spinlock_t spi_lock;
-+       rwlock_t cl_hw_lock;
-+       bool fw_first_tcv;
-+       struct cl_fem_params fem;
-+       struct eeprom *eeprom_cache;
-+       int (*eeprom_read_block)(struct cl_chip *chip, u16 addr, u16 num_of=
-_byte, u8 *data);
-+       int (*eeprom_write_block)(struct cl_chip *chip, u16 addr, u16 num_o=
-f_byte, u8 *data);
-+       struct cl_afe_reg orig_afe_reg;
-+       u8 agc_table_entry;
-+       u8 lna_bypass_mode_set;
-+       struct cl_calib_db calib_db;
-+       struct cl_ela_db ela_db;
-+       struct cl_ring_indices ring_indices;
-+       u8 reg_dbg;
-+       struct cl_xmem xmem_db;
-+};
++       if (conf->ce_eeprom_mode >=3D E2P_MODE_MAX) {
++               CL_DBG_ERROR_CHIP(chip,
++                                 "Invalid ce_eeprom_mode [%u]. Must be 0 (=
+file) or 1 (eeprom)\n",
++                                 conf->ce_eeprom_mode);
++               return -EINVAL;
++       }
 +
-+struct cl_chip *cl_chip_alloc(u8 idx);
-+void cl_chip_dealloc(struct cl_chip *chip);
-+int cl_chip_init(struct cl_chip *chip);
-+void cl_chip_deinit(struct cl_chip *chip);
-+bool cl_chip_is_enabled(struct cl_chip *chip);
-+bool cl_chip_is_both_enabled(struct cl_chip *chip);
-+bool cl_chip_is_tcv_enabled(struct cl_chip *chip, u8 tcv_idx);
-+bool cl_chip_is_tcv0_enabled(struct cl_chip *chip);
-+bool cl_chip_is_tcv1_enabled(struct cl_chip *chip);
-+void cl_chip_set_hw(struct cl_chip *chip, struct cl_hw *cl_hw);
-+void cl_chip_unset_hw(struct cl_chip *chip, struct cl_hw *cl_hw);
-+bool cl_chip_is_8ant(struct cl_chip *chip);
-+bool cl_chip_is_6ant(struct cl_chip *chip);
-+bool cl_chip_is_4ant(struct cl_chip *chip);
-+bool cl_chip_is_6g(struct cl_chip *chip);
++       if (conf->ce_first_mask_bit > MAX_FIRST_MASK_BIT) {
++               CL_DBG_ERROR_CHIP(chip, "Invalid ce_first_mask_bit (%u). Mu=
+st be <=3D %u\n",
++                                 conf->ce_first_mask_bit, MAX_FIRST_MASK_B=
+IT);
++               return -EINVAL;
++       }
 +
-+#endif /* CL_CHIP_H */
++       return 0;
++}
++
++static int set_all_params_from_buf(struct cl_chip *chip, char *buf, loff_t=
+ size)
++{
++       char *line =3D buf;
++       char name[MAX_PARAM_NAME_LENGTH];
++       char value[STR_LEN_256B];
++       char *begin;
++       char *end;
++       int ret =3D 0;
++       int name_length =3D 0;
++       int value_length =3D 0;
++
++       while (line && strlen(line) && (line !=3D (buf + size))) {
++               if ((*line =3D=3D '#') || (*line =3D=3D '\n')) {
++                       /* Skip comment or blank line */
++                       line =3D strstr(line, "\n") + 1;
++               } else if (*line) {
++                       begin =3D line;
++                       end =3D strstr(begin, "=3D");
++
++                       if (!end) {
++                               ret =3D -EBADMSG;
++                               goto exit;
++                       }
++
++                       end++;
++                       name_length =3D end - begin;
++                       value_length =3D strstr(end, "\n") - end + 1;
++
++                       if (name_length >=3D MAX_PARAM_NAME_LENGTH) {
++                               cl_dbg_chip_err(chip, "Name too long (%u)\n=
+", name_length);
++                               ret =3D -EBADMSG;
++                               goto exit;
++                       }
++                       if (value_length >=3D STR_LEN_256B) {
++                               cl_dbg_chip_err(chip, "Value too long (%u)\=
+n", value_length);
++                               ret =3D -EBADMSG;
++                               goto exit;
++                       }
++
++                       snprintf(name, name_length, "%s", begin);
++                       snprintf(value, value_length, "%s", end);
++
++                       ret =3D update_config(chip, name, value);
++                       if (ret)
++                               goto exit;
++
++                       line =3D strstr(line, "\n") + 1;
++               }
++       }
++
++exit:
++
++       return ret;
++}
++
++int cl_chip_config_read(struct cl_chip *chip)
++{
++       char *buf =3D NULL;
++       loff_t size =3D 0;
++       int ret =3D 0;
++       char filename[CL_FILENAME_MAX] =3D {0};
++
++       /* Allocate cl_chip_conf */
++       chip->conf =3D kzalloc(sizeof(*chip->conf), GFP_KERNEL);
++       if (!chip->conf)
++               return -ENOMEM;
++
++       /* Copy default parameters */
++       memcpy(chip->conf, &chip_conf, sizeof(*chip->conf));
++
++       snprintf(filename, sizeof(filename), "cl_chip%u.dat", chip->idx);
++       pr_debug("%s: %s\n", __func__, filename);
++       size =3D cl_file_open_and_read(chip, filename, &buf);
++
++       if (!buf) {
++               pr_err("read %s failed !!!\n", filename);
++               return -ENODATA;
++       }
++
++       ret =3D set_all_params_from_buf(chip, buf, size);
++       if (ret) {
++               kfree(buf);
++               return ret;
++       }
++
++       kfree(buf);
++
++       if (!cl_chip_is_enabled(chip)) {
++               cl_dbg_chip_verbose(chip, "Disabled\n");
++               return -EOPNOTSUPP;
++       }
++
++       ret =3D post_configuration(chip);
++
++       return ret;
++}
++
++int cl_chip_config_set(struct cl_chip *chip, char *buf, loff_t size)
++{
++       loff_t new_size =3D size + 1;
++       char *new_buf =3D kzalloc(new_size, GFP_KERNEL);
++       int ret;
++
++       if (!new_buf)
++               return -ENOMEM;
++
++       /* Add '\n' at the end of the string, before the NULL */
++       memcpy(new_buf, buf, size);
++       new_buf[size - 1] =3D '\n';
++
++       ret =3D set_all_params_from_buf(chip, new_buf, new_size);
++       if (ret =3D=3D 0)
++               ret =3D post_configuration(chip);
++
++       kfree(new_buf);
++
++       return ret;
++}
++
++void cl_chip_config_dealloc(struct cl_chip *chip)
++{
++       kfree(chip->conf);
++}
++
++void cl_chip_config_print(struct cl_chip *chip)
++{
++       struct cl_chip_conf *conf =3D chip->conf;
++
++       pr_debug("=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D\n");
++       pr_debug("  Chip%u configuration\n", chip->idx);
++       pr_debug("=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D\n");
++
++       print_unsigned_arr(ce_tcv_enabled, TCV_MAX);
++       print_str(ce_lmac);
++       print_str(ce_smac);
++       print_str(ce_umac);
++       print_signed(ce_irq_smp_affinity);
++       print_unsigned(ce_eeprom_mode);
++       print_bool(ce_production_mode);
++       print_bool(ci_pci_msi_enable);
++       print_unsigned_arr(ci_dma_lli_max_chan, TCV_MAX);
++       print_str(ce_country_code);
++       print_str(ce_ela_mode);
++       print_unsigned(ci_phy_dev);
++       print_signed(ce_debug_level);
++       print_unsigned(ce_host_pci_gen_ver);
++       print_bool(ce_temp_comp_en);
++       print_unsigned(ce_temp_protect_en);
++       print_signed(ce_temp_protect_delta);
++       print_signed(ce_temp_protect_th_max);
++       print_signed(ce_temp_protect_th_min);
++       print_unsigned(ce_temp_protect_tx_period_ms);
++       print_signed(ce_temp_protect_radio_off_th);
++       print_mac(ce_phys_mac_addr);
++       print_bool(ce_lam_enable);
++       print_unsigned(ce_first_mask_bit);
++       print_bool(ci_no_capture_noise_sleep);
++       print_unsigned_arr(ci_dcoc_mv_thr, CHNL_BW_MAX);
++       print_signed(ci_lolc_db_thr);
++       print_signed(ci_iq_db_thr);
++       print_bool(ci_rx_resched_tasklet);
++       print_unsigned(ci_rx_skb_max);
++       print_bool(ce_calib_scan_en);
++}
++
 --
 2.30.0
 
