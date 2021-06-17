@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48F2C3AB82A
+	by mail.lfdr.de (Postfix) with ESMTP id C1D883AB82B
 	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233544AbhFQQFV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:05:21 -0400
+        id S233591AbhFQQFW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:05:22 -0400
 Received: from mail-vi1eur05on2073.outbound.protection.outlook.com ([40.107.21.73]:38880
         "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233552AbhFQQFF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:05:05 -0400
+        id S233561AbhFQQFG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:05:06 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j3SaecPHvfvj4Y4g2WjGllovHShWutcUajm/bjfFfUseLmD2GUT7Vj9Q7c2iMXHY7CL1Bd1YZeBSsH8zhAaguLL89dQq7Hh5ogz7+3JuReHXOS9SmYjtQ+/lw80XqacHlOLupJ6zPcekqlSxMEeScspaya+ugjj1tvsu2CzecyM6fYMsqj2OutBIvlzOibKQo1mFCOd+yIdKX57wn9+iuNfNMoelHfxQePFqCaVppc3xO2ZSeIXgmIewU0USpqJtinArBUNalstjMSRGkOrey2nwQkqEcEux5OYRMGV/UTBCeyduL6XEwpn8vyZd/BfPlq+htqC/xU9l3TDSyUWPMw==
+ b=UbILaB0W786jrZPuwLSSlRCHfLAk2uzF8CXGZe3h170hnunjJ7OiqI/iKlBe8tYBACoNDIHRU8pMgfcajWNh20Zc+gUD8ii+YjZ75kj1pT6gv8sD/7Fud9T11L6kVIeVBPDwIbSR3UBuEm1uemU+tPVZRLc0VKDFdDeaY3MyABFb/YgFUL4PEVAcqdHWkpG6gcJ2V0oN3xLd11myJDuJ1+Ro3E88XfZH+/kkcZb6ouSaDv2HQrIKMO5HpRVzvhLViwsPp3k5mqw66G8aiNJ6foj1QeQV/Jav+QTcYBibhgdQq0Cq1XtDqZ6eWVj9KAOWdjC9oElfRenDy0D0rRfnKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GYPlY+qHWUL8vYRwlXSiBfYBKqVsJRuPj8OyYZdru+I=;
- b=h4R3EdKaBLvNO7XFhZxDhoNqcieYSYE8inTGFXPjU7jfh62sg1DgFk2p6FWBi39fvUv8+cbj5jAOBF/Q93m57TsGjelzz1iDWXLliY2RV1PmFU9A+V1sV795vT0UDlNdY4L6JKmHIVWNmzi0WjUNZEas4mHjN+ne++JI/Og4JXu4pHZ4DCsBgXFr6MQLGA/75fjZGWCx8v+DHrfm2F9ju4RlIp5bM2FrLJCZaP3SYTmnki7j3BGq6PG5YIW4Ud99BE4Dk0doIE8l5QjOmdW87M07KouxLS3ndZhXBivnnvIXQFx8UijX62vEVD1baAowFk/LBCogfEiBuT3eey7yKQ==
+ bh=6iBtH2i5EQgXcathytMEBpY1SA9u1V4vktnDE+N/H20=;
+ b=VHpqJSMZH7/ZndLCQA0KHGgL7A4VxZNL5uhtCLF/3NBeU4mfsviJkps+oBEHU65muz+9qh84/OoA9O08MH98IY2saxo7o/S2MGrTtY3SHQ8Xo50pGIupMPQPaEsZTttA0e5exSmg3SvEK/xPksVEJfbmgjiKNgglJvKn6G01BTaxR3pr74lFO5yY9eAp2mk1ix5fxgExnhJ+CNpW2tiyKNE3feOMHapVTWwyqg1Exqw1FMFF6mnAVmsGGNzn6du3CLq7eIY0hI9FGZ8uSzVgN5I6qH38yP/lmYUd6WMMIVGssNdQyTMWett606mW6t7kdnv+gThJRLPxBfOsqxe1hw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GYPlY+qHWUL8vYRwlXSiBfYBKqVsJRuPj8OyYZdru+I=;
- b=LDYuoYIDLHw/TYOad1we5lCfRJ/IYv1GhoenJ3X6mNTpUf9RGRLrWLYpXqf2mVFog5c8Bd4PAzMnNhTNNVeaplt5xJkvRclbdlZcmjIT4D10tNp5V5awc084AwUfEfmxrQJ8FlzPmfEJdgee3Q+4DvYqaxra4B4WM4H2rO1gid4=
+ bh=6iBtH2i5EQgXcathytMEBpY1SA9u1V4vktnDE+N/H20=;
+ b=H7k6MfXPXdBdON+JvdDfMmsmWB5dQugcBnd8zAn/y44TC4TrSWqHdRGA4PIVttqa6rK2kgObEdI7/qeM8JfegBc6NQAEkY5csxjrHTBOuQNMMetOUjRwBavEMzD4FthzQWQrVt59XJX+1jdouRItYs7key+Jm2/jNXtiNC+clEU=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM0P192MB0499.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:4e::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.15; Thu, 17 Jun
- 2021 16:02:54 +0000
+ 2021 16:02:55 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:02:54 +0000
+ 16:02:55 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 018/256] cl8k: add bus/pci/ipc.h
-Date:   Thu, 17 Jun 2021 15:58:25 +0000
-Message-Id: <20210617160223.160998-19-viktor.barna@celeno.com>
+Subject: [RFC v1 019/256] cl8k: add bus/pci/irq.c
+Date:   Thu, 17 Jun 2021 15:58:26 +0000
+Message-Id: <20210617160223.160998-20-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:02:53 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:02:54 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c88e060d-a13a-4692-701c-08d931a95d82
+X-MS-Office365-Filtering-Correlation-Id: 9a93a481-de33-43f4-8c7e-08d931a95e1d
 X-MS-TrafficTypeDiagnostic: AM0P192MB0499:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB0499E9548452A8C16F7765E2F60E9@AM0P192MB0499.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-Microsoft-Antispam-PRVS: <AM0P192MB0499C23858ADA8E5B3705C91F60E9@AM0P192MB0499.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EdpuSOyB4cis81Na18i0dozBc9SnyGDWUNHluKAD7CT9I5rTSUu2JEeWKE2R/Qzmd1SPyVSapCBa1gFlwkdCX6UxZhJyRKkubhn3CIS9BpJDRia1LzLfUjDyYPtBxkyf8VKeWhSZp9LQgck/P/EhKmIPImXcpPaiuR7bx1aZUAwGa0NYl8x/Vv7SSg3TVGENCqN5rowbnVIpFnGycEU0CS9EUaVgcCxoZJ0cH5s9Q3oWL6ctbiDg2IJQ9f+VJnU/WAVscTTZFuSwO66CyWuxARmZ30LLZ80kPemQbPgtgWVbT6woCFP7yskgsDpwVbxGWoU93DgXr7LtVD3h2YEi/rZfALOHuDMQeKlyIGYV0NUQvgzuPpDyw7EL9g+x4vLRks6V9XdkKymYDDWWJci0Iv2w24LYecCFZB9xK5zhUbwOhsIfYdfLHh4clvDSG7P7nwhThh1/Y1iP/KvKJFTj0adE8oJVDSV5qFmVVxbpZo/jAfIYwhlZr277O0Fp8BQzBNxYliq4ffUevI4WXzgD5SL0Q1rX8+R0q31IxZ/EQspnCpCC8WLIaRmTJCD4IV5nQEw1AWYftMHoDSsvJ+78sMwFCamZ2IJNA9JFqTLu3matQ/umxfadbK1vZpHtf5Oa99vKB94F84JDkUMNAgT1JiXmI+NRLQW8CIhG6JaYPZIsorw4fApmDN3MK4JGPw/kOCPhYDVEG4PrJpqXxVop7Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(39840400004)(396003)(376002)(366004)(346002)(86362001)(107886003)(66556008)(52116002)(83380400001)(55236004)(36756003)(4326008)(186003)(16526019)(956004)(316002)(6486002)(8676002)(54906003)(38100700002)(38350700002)(66476007)(6506007)(2906002)(26005)(9686003)(6512007)(66946007)(2616005)(5660300002)(478600001)(1076003)(6666004)(8936002)(6916009)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: AaGS5mPoumBhOXYr/RfW7DZwXYOYiCQwMKn+mgbUg7y8PCucX0spcB4KHAQcNyFCOk8+mBsi9h14Mc7EjmAWwUuZrg+rmq2qFEuafeReoFO4nMpFHmXwaTeEgHIME8sb0RREi1WOaOXCYjCTsSribAK1crdvQX/sJ1JguUgh4YYithu6LTsxS+lRyaeUgAyYjYc+l0CXfXtPfkUzWdsFUNpnmcvZPSuY9IcM0tDOeir+riyFMA4kn7617k52E32w8fe2lu3kYs9KhoAUPjq+KPHeFuI/HSz4wT10Bqu7StfQb370Aqg6jyemvPw6X+eBsk/bBz7xpoaQJ/cIPu9nuIjDmZkxepZUTeQMPb5VIHxFTNpdw2mda6IGOKl83XN84MguIFNt0O2kdndu0lyAG6IJI2Kp3tBabEDFEV6HkI4YDzlyTOb8e6vUTWm8UrFyjZmL7Guck9wWAo08vqhgTgbTYuFhMEQc7dZqpvuRqeTHsG8c1CbxqwSgt/6TFDjtHBjO9IBL6EwRMoYRF4ZZO8vFD7uhTzHnDz8WMkfL7CMZr9GaYnj/ZnnJfeALKynubM7geTJhKbUr1VBFBqIaMr8LIaPu6/n7YWyIAB0uGKFMXanMifSss5bwm+ExN8Oynt0ZJoIl04RJSn1Zhf2qqxH0hXVrYooyAsOroMmm5PJG9f84cXOEOFkv00z7wODb2jXFSfwe6YPAl7jTHAaPBg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(39840400004)(396003)(376002)(366004)(346002)(86362001)(107886003)(66556008)(52116002)(83380400001)(55236004)(36756003)(4326008)(186003)(16526019)(956004)(316002)(6486002)(8676002)(54906003)(38100700002)(38350700002)(66476007)(6506007)(2906002)(26005)(9686003)(6512007)(66946007)(2616005)(5660300002)(478600001)(30864003)(1076003)(6666004)(8936002)(6916009)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+O/4z1JsRQx52JIzEPahvJ821do/oAiGwArA8qM/PClyb2FktV4Ak8gEiKgM?=
- =?us-ascii?Q?QZF3gozjpMgX1WkwDmwrNbSINh87toDv+/F1LRShP5WnOr5NiTUmae4mR51W?=
- =?us-ascii?Q?6oVyXeAqVEcdpulP56H1zsVk8Q1a8c9wUfEQRuZhBiyuUCILZHoEeadG6tNA?=
- =?us-ascii?Q?FU6yGmz8HWKPM9zCHmC8yvp3y5y4/xpbrCT+WsiwjguFL6ZXvSd8Dx23iLua?=
- =?us-ascii?Q?T2tQP0oG4GpntBCEDZ86IEG7Dlg0JGHl0+Mcrcek0ja6++dax8burCbZFeYo?=
- =?us-ascii?Q?UQd/N2RVwVNy1xOMSRwSBgpCS0is7YNeP86trQ+51RJsC6628iGU0rhI32EM?=
- =?us-ascii?Q?j6Rj9KE9cxJQZ/zb5KuMp0bqQ+ravvnQqdLtgBRWK7r6MsIt4pRUcv7MPasc?=
- =?us-ascii?Q?Wmq/UT6FmSYWJgVKWmS/aVKsd2Sga+zQhkPOEJsFu8HvsSOJGBAuTsHAiqbL?=
- =?us-ascii?Q?x8Wh2mSxzE8PXsuxq4IotzdXil+0AgIZ3zAzsdK8Ya70F6/zEXiw49JGCo3u?=
- =?us-ascii?Q?FAlZHmCXypdxgcUAIij+Wicj6yWDspR5BZon4gG8dXPtizgOcKyco2C3o8aU?=
- =?us-ascii?Q?O3vzWDK6S/dy6EFmsfG0nTSmEBTKSmcO9iA03IvX8LSpIO7h6ZE0ggAM2r9u?=
- =?us-ascii?Q?SvjQp/IHEvuT/FsfsFyQI6ew4qhkMXFlLpDOMgL3HBv9FUIY/YhI8txR7adD?=
- =?us-ascii?Q?G6EVJBvMl67Mff9ehiGVxCF+l0dHQz4vNa6/nvA8ic65fhevny/ClFhEQQOx?=
- =?us-ascii?Q?o7zrsijg5fHlEDmD2f5IvyvU8nfSLrjazFI7x9HZqQcn3TddnoMSqecZbR+t?=
- =?us-ascii?Q?DDiHTh0z4NGP69uBYLssDDvhMCGrgRhUPsvDFt91lfbKsyf1C/9z1mEhHfPk?=
- =?us-ascii?Q?hPMVyDeloHIxLh4vh7VtWbfEKRJl+zEogz73p728S05JUn4CuNo5fhTsbV5+?=
- =?us-ascii?Q?zDdgxNvaE5hTev6POmSaYYb8Y0sbsgSJKW4ygcJ/hrkh2H9c+Ls5Fwa4FomU?=
- =?us-ascii?Q?ckGJoMgTkLM7lxNXgcHMIMMDYDmBlQB8r9feDrA5aHO2Z1BH9kcz3xQZ4do3?=
- =?us-ascii?Q?3pvBvIY6D8tQUJ6KY4vY7q2RjaUPafiUNmEdwdqMB/XxKSyAxP31sL7464VU?=
- =?us-ascii?Q?ZdOgdHhyCOj+PbHFQ4yTOpZzhUGPrI8u+OujHiqqe2+apmxKY6P3zgIgd5+C?=
- =?us-ascii?Q?D0vDypFj+TqcsCDsfWlAUBO/xMmhXZlZ4SfIvvjOJXA+LF1ZGKN5VSEvk3rK?=
- =?us-ascii?Q?aMnBKf7iGG22yQeHAwWytGC86l7VCnM/uqsBCKPLPfavJzZCBQ1VefrPaQX4?=
- =?us-ascii?Q?2GeeeX/Lbf9CDqlBOTD8bvJU?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VHMzjr0Cax0RPD0yQ+S6QQGsx/e+B4fb9EzVobMfHvBp2ni+NrF+b3l4Gy6Z?=
+ =?us-ascii?Q?unv1b6fawnk/MCLbU1bQ8ko2kUZon7Aejg6/towqcMaz6jKPpCQ0+CT67hpd?=
+ =?us-ascii?Q?4L14qYzdzi+C2vdMwFqqUPOMFkaqUJNHC6V7e3iq//ihNMg+E7cmXsYRuA5r?=
+ =?us-ascii?Q?KjDMb92Jgup849sACIPxetR/R6VjnnGeeG7XGinpMwMVU7qUJ82wC7aE3wF7?=
+ =?us-ascii?Q?uPejllUIpRIvQcZbOnfloocckktsGOxDUrYFztDJE8rYmkW4YP9raVslpaEK?=
+ =?us-ascii?Q?mqCN0AL/JkdqhnofnzsliCljalF5Vy2FL+BCj5QODCz+ypGl+BsIiddph04q?=
+ =?us-ascii?Q?z6yTNbk6OCelZFEhCWRbLeUoMFoVEjwsuBKPGAETAW8FVwroo1hWbdaiU6oZ?=
+ =?us-ascii?Q?lwU5fXzEcvWRgnuAVhrYRnyljo63eGgg1sqSmjRRxtSN2ldzRm8c6Fl60bT5?=
+ =?us-ascii?Q?pRTnDjhV6sXJ4AQL1b60rgzBWPiF9Jwbd0uB44wL9bp8ELaKKb1rzfQT/KqD?=
+ =?us-ascii?Q?HhfZIqyxOhbH0HidAxuwzY5g9AQmVRQiStjJ2XpidYY0v1wZh4JIs8aEGNhd?=
+ =?us-ascii?Q?knn+uNeqPV1iAHrkn2xWSa/Gc07eO15D4bG8SwzOnvh5hkO5toYtySxovDpQ?=
+ =?us-ascii?Q?mJ7KWVZzEJEkPOkx5/EO8E+swrnAutPv6ldfFfeMDpaD0HGmSeiYPEMP58WB?=
+ =?us-ascii?Q?MnfmQ6vDvoFA9EFM3SlvPrbawdcjAHm8ZLckYiqM4yfOx1qwBBEBXrtz8I7J?=
+ =?us-ascii?Q?ki47JG3I3WnC6JAYUlMbuPajrrwQ0tgTlCUayP1+pqUm+RuLvIYOdjvAYtik?=
+ =?us-ascii?Q?P5x3Q/lhrd+071SYbXh9d/6igI8bhZ8l1Qy7YyWBFgL0BDKJToRq2GL0NrH9?=
+ =?us-ascii?Q?oYS5WYgnAEeGiG+N+GPgkUqJU0Ns7zeXy6I64Ao/QsABIofLsBt6klptW27O?=
+ =?us-ascii?Q?pXRDjQite0MdOM03rl8kgvLpaECsurE4F0OT/QjyUZr8+iNOyPU7r354RVei?=
+ =?us-ascii?Q?nrsuAWQLRYFhGIC/KeH0JcrKt5hc11YiDhXyL5pEGlR0ABB1qyqugVtkwRhv?=
+ =?us-ascii?Q?FvzGT77e6c35oibBPBcGUsm8iDaWey4Wwz07sIO32oJWxbWVDVBDp9xa0MiY?=
+ =?us-ascii?Q?IdYZzyO+EfowSb0260THHyvSQw/RuWJksXjyh4folKGivfYklldoWZVphxwT?=
+ =?us-ascii?Q?ZpL9v+Rnlrwwe3l0ts99oB21DO1JVuqmsZZbobSFmDVf7UCrUTckFoYujARz?=
+ =?us-ascii?Q?ALhvKsUfobCvWQQ0pmKLuoW6MHekmLSJSKN4teVg/CsVxfumgeD3J8cfvNzr?=
+ =?us-ascii?Q?i9WWk1iCiEhrxVSLkFyjMj6W?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c88e060d-a13a-4692-701c-08d931a95d82
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a93a481-de33-43f4-8c7e-08d931a95e1d
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:02:53.9143
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:02:55.0015
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: laXFlaGMi4FBIA2HoWjAid6UDtUSTYH27IuP4ofKTTONGLuqp+jlJY6cX3d56xf5PtZvxO9hH1g5ZQuq8SaOUQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: O1xpH5igyesVryT96KvXfaZx4vifr19EvGpfpBtkzc+gi5Pbl0kJ0Kvz9s6yaLMRKStV+QLO7ld8HwL5dR8crQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0499
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,167 +119,382 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../net/wireless/celeno/cl8k/bus/pci/ipc.h    | 135 ++++++++++++++++++
- 1 file changed, 135 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/bus/pci/ipc.h
+ .../net/wireless/celeno/cl8k/bus/pci/irq.c    | 331 ++++++++++++++++++
+ 1 file changed, 331 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/bus/pci/irq.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/bus/pci/ipc.h b/drivers/net/w=
-ireless/celeno/cl8k/bus/pci/ipc.h
+diff --git a/drivers/net/wireless/celeno/cl8k/bus/pci/irq.c b/drivers/net/w=
+ireless/celeno/cl8k/bus/pci/irq.c
 new file mode 100644
-index 000000000000..81cdae55f467
+index 000000000000..8ef5d2dba9ac
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/bus/pci/ipc.h
-@@ -0,0 +1,135 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/bus/pci/irq.c
+@@ -0,0 +1,331 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_IPC_H
-+#define CL_IPC_H
-+
-+#include "ipc_shared.h"
++#include <linux/interrupt.h>
++#include <linux/irq.h>
++#include "reg/reg_access.h"
++#include "reg/reg_ipc.h"
++#include "bus/pci/ipc.h"
++#include "fw/msg_rx.h"
++#include "bus/pci/irq.h"
++#include "chip.h"
 +#include "hw.h"
++#include "tx/tx.h"
++#include "dfs/radar.h"
++#include "recovery.h"
++#include "radio.h"
++#include "bus/pci/rx_pci.h"
 +
-+/* Struct used to store information about host buffers (DMA Address and lo=
-cal pointer) */
-+struct cl_ipc_hostbuf {
-+       ptrdiff_t hostid; /* Ptr to hostbuf client (ipc_host client) struct=
-ure */
-+       dma_addr_t dma_addr; /* Ptr to real hostbuf dma address */
-+};
++static void cl_irq_status_rxdesc(struct cl_hw *cl_hw, struct cl_ipc_host_e=
+nv *ipc_env)
++{
++       /* Handle the reception of a Rx Descriptor */
 +
-+/*
-+ * Index in txdesc - updated by host on every push, used by firmware side
-+ * Keep this structure aligned to 4-byte
-+ */
-+struct cl_ipc_txdesc_write_idx {
-+       u32 agg[IPC_MAX_BA_SESSIONS];
-+       u32 single[MAX_SINGLE_QUEUES];
-+       u32 bcmc;
-+};
-+
-+struct cl_ipc_ring_indices {
-+       /* Last copy of ipc txdesc write desc right after DMA push operatio=
-n */
-+       volatile struct cl_ipc_txdesc_write_idx txdesc_write_idx;
 +       /*
-+        * new start sn - equal to last acknowledged sequence number + 1.
-+        * Updated by firmware and used by host.
++        * Disable the RX interrupt until rxelement/skb handled
++        * this would avoid redundant context switch + redundant tasklet sc=
+heduling
 +        */
-+       volatile u16 new_ssn_idx[IPC_MAX_BA_SESSIONS];
-+       volatile u8 dtim_count[MAX_BSS_NUM];
-+       /* Index in rxdesc array, updated by firmware on every payload push=
-, used by host */
-+       volatile u32 rxdesc_write_idx[CL_RX_BUF_MAX];
-+       /* Index in rxdesc array, updated by host on rxdesc copy completion=
-, used by firmware */
-+       volatile u32 rxdesc_read_idx[CL_RX_BUF_MAX];
-+       /* BSR data counters */
-+       volatile u32 bsr_data_ctrs[TID_MAX];
-+};
++       cl_irq_disable(cl_hw, cl_hw->ipc_e2a_irq.rxdesc);
 +
-+/* Structure used to store Shared Txring indices */
-+struct cl_ipc_ring_indices_elem {
-+       struct cl_ipc_ring_indices *indices;
-+       dma_addr_t dma_addr;
-+};
++       /* Acknowledge the interrupt BEFORE handling the packet */
++       ipc_xmac_2_host_ack_set(cl_hw->chip, cl_hw->ipc_e2a_irq.rxdesc);
 +
-+struct cl_ipc_host_rxbuf {
-+       /* Array of drv desc which holds the skb and additional data */
-+       ptrdiff_t **ipc_host_rxdesc_ptr;
-+       /* Address of payload for embedded push operation (part of rxdesc d=
-ata) */
-+       u32 *dma_payload_addr;
-+       /* Dma pointer to array of DMA payload addresses */
-+       __le32 dma_payload_base_addr;
-+};
++       /*
++        * If more than 50% of buffer are populated handle them in the inte=
+rrupt,
++        * otherwise schedule a tasklet to handle the buffers.
++        */
++       if (cl_rx_process_in_irq(cl_hw))
++               cl_rx_pci_desc_handler(cl_hw);
++       else
++               tasklet_schedule(&ipc_env->rxdesc_tasklet);
++}
 +
-+/*
-+ * struct tx_queues_dma_addr - ipc layer queues addresses casted to DMA ad=
-dresses
-+ *
-+ * The ipc layer points to array of txdesc, there are:
-+ * 'IPC_MAX_BA_SESSIONS' arrays for aggregation queues
-+ * 'MAX_SINGLE_QUEUES' arrayes for singletons queues
-+ * '1' arrays for broadcast/unicast queue
-+ *
-+ * Each one of this arrays should be copied compeletly to the FW, therefor=
-e we should
-+ * cast all of the arrays to dma addresses.
-+ */
-+struct tx_queues_dma_addr {
-+       u32 agg[IPC_MAX_BA_SESSIONS];
-+       u32 single[MAX_SINGLE_QUEUES];
-+       u32 bcmc;
-+};
++static void cl_irq_status_txcfm(struct cl_hw *cl_hw, struct cl_ipc_host_en=
+v *ipc_env)
++{
++       /*
++        * Disable the TXCFM interrupt bit - will be enabled
++        * at the end of cl_tx_pci_single_cfm_tasklet()
++        */
++       cl_irq_disable(cl_hw, cl_hw->ipc_e2a_irq.txcfm);
 +
-+/* struct cl_ipc_tx_queues - ipc layer tx queues */
-+struct cl_ipc_tx_queues {
-+       struct txdesc *ipc_txdesc_agg[IPC_MAX_BA_SESSIONS];
-+       struct txdesc *ipc_txdesc_single[MAX_SINGLE_QUEUES];
-+       struct txdesc *ipc_txdesc_bcmc;
-+       /* Mapping of the TXQ's addresses to DMA addresses */
-+       struct tx_queues_dma_addr *queues_dma_addr;
-+       /* DMA address of tx_queues_dma_addr */
-+       u32 dma_addr;
-+};
++       /* Acknowledge the TXCFM interrupt */
++       ipc_xmac_2_host_ack_set(cl_hw->chip, cl_hw->ipc_e2a_irq.txcfm);
 +
-+struct cl_ipc_host_env {
-+       /* Pointer to the shared environment */
-+       struct cl_ipc_shared_env *shared;
-+       /* TX ring indices (RD, WR idx & new_ssn) */
-+       struct cl_ipc_ring_indices_elem *ring_indices_elem;
-+       /* RX buffers (rxdesc & dma_addr) */
-+       ptrdiff_t *ipc_host_rxdesc_rxm[IPC_RXBUF_CNT_RXM];
-+       ptrdiff_t *ipc_host_rxdesc_fw[IPC_RXBUF_CNT_FW];
-+       struct cl_ipc_host_rxbuf rx_hostbuf_array[CL_RX_BUF_MAX];
-+       /* Host last read idx */
-+       u32 host_rxdesc_read_idx[CL_RX_BUF_MAX];
-+       /* Fields for Radar events handling */
-+       struct cl_ipc_hostbuf radar_hostbuf_array[IPC_RADAR_BUF_CNT];
-+       u8 radar_host_idx;
-+       /* Fields for Emb->App MSGs handling */
-+       struct cl_ipc_hostbuf e2a_msg_hostbuf_array[IPC_E2A_MSG_BUF_CNT];
-+       u8 e2a_msg_host_idx;
-+       /* Fields for Debug MSGs handling */
-+       struct cl_ipc_hostbuf dbg_hostbuf_array[IPC_DBG_BUF_CNT];
-+       u8 dbg_host_idx;
-+       /* IPC queues */
-+       struct cl_ipc_tx_queues tx_queues;
-+       struct cl_ipc_enhanced_tim enhanced_tim;
-+       /* Fields for single confirmation handling */
-+       u8 *cfm_virt_base_addr;
-+       dma_addr_t cfm_dma_base_addr;
-+       /* Index used that points to the first used CFM */
-+       u32 cfm_used_idx;
-+       /* Tasklets */
-+       struct tasklet_struct rxdesc_tasklet;
-+       struct tasklet_struct tx_single_cfm_tasklet;
-+       struct tasklet_struct tx_agg_cfm_tasklet;
-+       struct tasklet_struct msg_tasklet;
-+       struct tasklet_struct dbg_tasklet;
-+};
++       /* Schedule tasklet to handle the TXCFM */
++       tasklet_schedule(&ipc_env->tx_single_cfm_tasklet);
++}
 +
-+int cl_ipc_init(struct cl_hw *cl_hw);
-+void cl_ipc_recovery(struct cl_hw *cl_hw);
-+void cl_ipc_reset(struct cl_hw *cl_hw);
-+void cl_ipc_deinit(struct cl_hw *cl_hw);
-+void cl_ipc_stop(struct cl_hw *cl_hw);
-+int cl_ipc_rx_elem_alloc(struct cl_hw *cl_hw, struct cl_rx_elem *rx_elem, =
-u32 size);
-+void cl_ipc_msgbuf_push(struct cl_ipc_host_env *ipc_env, ptrdiff_t hostid,=
- dma_addr_t hostbuf);
-+void cl_ipc_rxbuf_push(struct cl_ipc_host_env *ipc_env, struct cl_rx_elem =
-*rx_elem,
-+                      u32 rxdesc_read_idx, u32 host_read_idx, enum rx_buf_=
-type type);
-+void cl_ipc_radarbuf_push(struct cl_ipc_host_env *ipc_env, ptrdiff_t hosti=
-d, dma_addr_t hostbuf);
-+void cl_ipc_dbgbuf_push(struct cl_ipc_host_env *ipc_env, ptrdiff_t hostid,=
- dma_addr_t hostbuf);
-+void cl_ipc_dbginfobuf_push(struct cl_ipc_host_env *ipc_env, dma_addr_t in=
-fobuf);
++static void cl_irq_status_tbtt(struct cl_hw *cl_hw)
++{
++       unsigned long tbtt_diff_msec =3D jiffies_to_msecs(jiffies - cl_hw->=
+last_tbtt_irq);
 +
-+#endif /* CL_IPC_H */
++       /* Acknowledge the interrupt BEFORE handling the request */
++       ipc_xmac_2_host_ack_set(cl_hw->chip, cl_hw->ipc_e2a_irq.tbtt);
++
++       cl_hw->last_tbtt_irq =3D jiffies;
++       cl_hw->tbtt_cnt++;
++
++       /*
++        * Send beacon only if radio is on, there is at least one AP interf=
+ace
++        * up, we aren't in the middle of recovery, and user didn't disable=
+ them.
++        */
++       if (cl_radio_is_off(cl_hw) ||
++           cl_hw->vif_db.num_iface_bcn =3D=3D 0 ||
++           cl_recovery_in_progress(cl_hw) ||
++           cl_hw->tx_disable_flags ||
++           !test_bit(CL_DEV_STARTED, &cl_hw->drv_flags) ||
++           test_bit(CL_DEV_FW_ERROR, &cl_hw->drv_flags))
++               return;
++
++       if (cl_hw->iface_conf =3D=3D CL_IFCONF_MESH_ONLY ||
++           (cl_hw->mesh_tbtt_div > 1 &&
++           ((cl_hw->tbtt_cnt % cl_hw->mesh_tbtt_div) =3D=3D 0))) {
++               tasklet_hi_schedule(&cl_hw->tx_mesh_bcn_task);
++       } else {
++               /*
++                * More than 2 times the beacon interval passed between bea=
+cons - WARNING
++                * More than 3 times the beacon interval passed between bea=
+cons - ERROR
++                */
++               if (tbtt_diff_msec > (cl_hw->conf->ha_beacon_int * 3))
++                       cl_dbg_err(cl_hw, "last_tbtt_irq=3D%lu, curr_time=
+=3D%lu, diff=3D%lu\n",
++                                  cl_hw->last_tbtt_irq, jiffies, tbtt_diff=
+_msec);
++               else if (tbtt_diff_msec > (cl_hw->conf->ha_beacon_int * 2))
++                       cl_dbg_warn(cl_hw, "last_tbtt_irq=3D%lu, curr_time=
+=3D%lu, diff=3D%lu\n",
++                                   cl_hw->last_tbtt_irq, jiffies, tbtt_dif=
+f_msec);
++       }
++
++       cl_tx_bcns(cl_hw);
++}
++
++static void cl_irq_status_msg(struct cl_hw *cl_hw, struct cl_ipc_host_env =
+*ipc_env)
++{
++       /* Acknowledge the interrupt BEFORE handling the request */
++       ipc_xmac_2_host_ack_set(cl_hw->chip, cl_hw->ipc_e2a_irq.msg);
++
++       /* Schedule tasklet to handle the messages */
++       tasklet_schedule(&ipc_env->msg_tasklet);
++}
++
++static u8 cl_radar_handler(struct cl_hw *cl_hw, ptrdiff_t hostid)
++{
++       struct cl_radar_elem *radar_elem =3D (struct cl_radar_elem *)hostid=
+;
++       u8 ret =3D 0;
++       struct cl_radar_pulse_array *pulses;
++
++       /* Retrieve the radar pulses structure */
++       pulses =3D (struct cl_radar_pulse_array *)radar_elem->radarbuf_ptr;
++
++       /* Look for pulse count meaning that this hostbuf contains RADAR pu=
+lses */
++       if (pulses->cnt =3D=3D 0) {
++               ret =3D -1;
++               goto radar_no_push;
++       }
++
++       /* Push pulse information to queue and schedule a tasklet to handle=
+ it */
++       cl_radar_push(cl_hw, radar_elem);
++
++       /* Reset the radar element and re-use it */
++       pulses->cnt =3D 0;
++
++       /* Make sure memory is written before push to HW */
++       wmb();
++
++       /* Push back the buffer to the firmware */
++       cl_ipc_radarbuf_push(cl_hw->ipc_env, (ptrdiff_t)radar_elem, radar_e=
+lem->dma_addr);
++
++radar_no_push:
++       return ret;
++}
++
++static void cl_irq_status_radar(struct cl_hw *cl_hw, struct cl_ipc_host_en=
+v *ipc_env)
++{
++       /*
++        * Firmware has triggered an IT saying that a radar event has been =
+sent to upper layer.
++        * Then we first need to check the validity of the current msg buf,=
+ and the validity
++        * of the next buffers too, because it is likely that several buffe=
+rs have been
++        * filled within the time needed for this irq handling
++        */
++
++       /* Disable the RADAR interrupt bit - will be enabled at the end of =
+cl_radar_tasklet() */
++       cl_irq_disable(cl_hw, cl_hw->ipc_e2a_irq.radar);
++
++       /* Acknowledge the RADAR interrupt */
++       ipc_xmac_2_host_ack_set(cl_hw->chip, cl_hw->ipc_e2a_irq.radar);
++
++       /* Push all new radar pulses to queue */
++       while (cl_radar_handler(cl_hw,
++                               ipc_env->radar_hostbuf_array[ipc_env->radar=
+_host_idx].hostid) =3D=3D 0)
++               ;
++
++       /* Schedule tasklet to handle the radar pulses */
++       cl_radar_tasklet_schedule(cl_hw);
++}
++
++static void cl_irq_status_dbg(struct cl_hw *cl_hw, struct cl_ipc_host_env =
+*ipc_env)
++{
++       /* Disable the DBG interrupt bit - will be enabled at the end of cl=
+_dbgfile_tasklet() */
++       cl_irq_disable(cl_hw, cl_hw->ipc_e2a_irq.dbg);
++
++       /* Acknowledge the DBG interrupt */
++       ipc_xmac_2_host_ack_set(cl_hw->chip, cl_hw->ipc_e2a_irq.dbg);
++
++       /* Schedule tasklet to handle the debug */
++       tasklet_schedule(&ipc_env->dbg_tasklet);
++}
++
++static void cl_irq_status_txdesc_ind(struct cl_hw *cl_hw, struct cl_ipc_ho=
+st_env *ipc_env)
++{
++       /*
++        * Disable the TXDESC_IND interrupt bit -
++        * will be enabled at the end of cl_tx_pci_agg_cfm_tasklet()
++        */
++       cl_irq_disable(cl_hw, cl_hw->ipc_e2a_irq.txdesc_ind);
++
++       /* Acknowledge the TXDESC_IND interrupt */
++       ipc_xmac_2_host_ack_set(cl_hw->chip, cl_hw->ipc_e2a_irq.txdesc_ind)=
+;
++
++       tasklet_schedule(&ipc_env->tx_agg_cfm_tasklet);
++       tasklet_schedule(&cl_hw->tx_task);
++}
++
++static void cl_irq_status_sync(struct cl_hw *cl_hw, struct cl_ipc_host_env=
+ *ipc_env)
++{
++       /* Acknowledge the interrupt BEFORE handling the request */
++       ipc_xmac_2_host_ack_set(cl_hw->chip, cl_hw->ipc_e2a_irq.sync);
++
++       set_bit(CL_DEV_FW_SYNC, &cl_hw->drv_flags);
++       wake_up_interruptible(&cl_hw->fw_sync_wq);
++}
++
++void cl_irq_status(struct cl_hw *cl_hw, u32 status)
++{
++       /* Handle all IPC interrupts on the host side */
++       struct cl_ipc_host_env *ipc_env =3D cl_hw->ipc_env;
++
++       if (status & cl_hw->ipc_e2a_irq.rxdesc)
++               cl_irq_status_rxdesc(cl_hw, ipc_env);
++
++       if (status & cl_hw->ipc_e2a_irq.txcfm)
++               cl_irq_status_txcfm(cl_hw, ipc_env);
++
++       if (status & cl_hw->ipc_e2a_irq.tbtt)
++               cl_irq_status_tbtt(cl_hw);
++
++       if (status & cl_hw->ipc_e2a_irq.msg)
++               cl_irq_status_msg(cl_hw, ipc_env);
++
++       if (status & cl_hw->ipc_e2a_irq.radar)
++               cl_irq_status_radar(cl_hw, ipc_env);
++
++       if (status & cl_hw->ipc_e2a_irq.dbg)
++               cl_irq_status_dbg(cl_hw, ipc_env);
++
++       if (status & cl_hw->ipc_e2a_irq.txdesc_ind)
++               cl_irq_status_txdesc_ind(cl_hw, ipc_env);
++
++       if (status & cl_hw->ipc_e2a_irq.sync)
++               cl_irq_status_sync(cl_hw, ipc_env);
++}
++
++#ifdef CONFIG_CL_PCIE
++static void cl_irq_handler(struct cl_chip *chip)
++{
++       /* Interrupt handler */
++       u32 status, statuses =3D 0;
++       unsigned long now =3D jiffies;
++       struct cl_irq_stats *irq_stats =3D &chip->irq_stats;
++
++       while ((status =3D ipc_xmac_2_host_status_get(chip))) {
++               statuses |=3D status;
++
++               if (status & IPC_IRQ_L2H_ALL)
++                       cl_irq_status(chip->cl_hw_tcv0, status);
++
++               if (status & IPC_IRQ_S2H_ALL)
++                       cl_irq_status(chip->cl_hw_tcv1, status);
++       }
++
++       if (statuses & (IPC_IRQ_L2H_RXDESC | IPC_IRQ_S2H_RXDESC))
++               irq_stats->last_rx =3D now;
++
++       if (statuses & (IPC_IRQ_L2H_TXCFM | IPC_IRQ_S2H_TXCFM))
++               irq_stats->last_tx =3D now;
++
++       irq_stats->last_isr =3D now;
++       irq_stats->last_isr_statuses =3D statuses;
++}
++
++static irqreturn_t cl_irq_request_handler(int irq, void *dev_id)
++{
++       struct cl_chip *chip =3D (struct cl_chip *)dev_id;
++
++       cl_irq_handler(chip);
++
++       return IRQ_HANDLED;
++}
++
++#ifdef CONFIG_SMP
++static void cl_irq_set_affinity(struct cl_chip *chip, struct pci_dev *pci_=
+dev)
++{
++       s32 irq_smp_affinity =3D chip->conf->ce_irq_smp_affinity;
++
++       if (irq_smp_affinity !=3D -1) {
++               struct irq_data *data =3D irq_get_irq_data(pci_dev->irq);
++
++               if (data) {
++                       static struct cpumask mask;
++
++                       cpumask_clear(&mask);
++                       cpumask_set_cpu(irq_smp_affinity, &mask);
++
++                       if (data->chip->irq_set_affinity) {
++                               data->chip->irq_set_affinity(data, &mask, f=
+alse);
++                               pr_debug("irq=3D%d, affinity=3D%d\n", pci_d=
+ev->irq, irq_smp_affinity);
++                       }
++               }
++       }
++}
++#endif
++
++int cl_irq_request(struct cl_chip *chip)
++{
++       /*
++        * Allocate host irq line.
++        * Enable PCIe device interrupts
++        */
++       int ret;
++       /* Request exclusive PCI interrupt in firmware test mode */
++       struct pci_dev *pci_dev =3D chip->pci_dev;
++
++       ret =3D request_irq(pci_dev->irq, cl_irq_request_handler, IRQF_SHAR=
+ED, "cl", chip);
++
++       if (ret) {
++               pr_err("ERROR: could not assign interrupt %d, err=3D%d\n", =
+pci_dev->irq, ret);
++               return ret;
++       }
++
++#ifdef CONFIG_SMP
++       cl_irq_set_affinity(chip, pci_dev);
++#endif
++
++       return ret;
++}
++
++void cl_irq_free(struct cl_chip *chip)
++{
++       struct pci_dev *pci_dev =3D chip->pci_dev;
++       /* Disable PCI device interrupt and release irq line */
++       free_irq(pci_dev->irq, chip);
++}
++#endif /* CONFIG_CL_PCIE */
++
++void cl_irq_enable(struct cl_hw *cl_hw, u32 value)
++{
++       /* Enable IPC interrupts */
++       ipc_xmac_2_host_enable_set_set(cl_hw->chip, value);
++}
++
++void cl_irq_disable(struct cl_hw *cl_hw, u32 value)
++{
++       /* Disable IPC interrupts */
++       ipc_xmac_2_host_enable_clear_set(cl_hw->chip, value);
++}
 --
 2.30.0
 
