@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E3CE3AB903
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 979C03AB908
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231216AbhFQQLy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:11:54 -0400
-Received: from mail-eopbgr130084.outbound.protection.outlook.com ([40.107.13.84]:35463
+        id S233792AbhFQQMF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:12:05 -0400
+Received: from mail-eopbgr130082.outbound.protection.outlook.com ([40.107.13.82]:11146
         "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230292AbhFQQKm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:10:42 -0400
+        id S233787AbhFQQKs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:10:48 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NFt0ifD37sW9XmKs+x8qrFZX0viMIGa+hzSktgRQmRWgw2/msjH5q2e5FAA8qVJ3GN37p2JSOnf+NZwf00T6mxa9yWk06K9NAyOVkTpEWbVsjju+YBltGOVcejbVV2Lks1uJCVy5KEMU8AE6JhRojHlVpeflw75hgmcl92GO+KyN+yRb3hmvtnxjbK7gnqpW84X9stXx+U2cwK936e+dkbGoSPXG0/gs+RtlldzQqICdzvqywS6cKwCNsK4j/FgYB5dkP7tCd2mrliTFwvaWiL9NM2iP8FYeHvqKUqkc6PNaSuXH2EQ9noK+WqkcUAF9FpD4/Z3JdLg5WA0MC66IhA==
+ b=PSXTDopIP5NPvW6w2/wvn5hev7T0eRaWvtyd8L//DrHo/jApQIPYYEYBt1EmD6m8HxHhCU1zIBzD3lQaRtZ7mDWou+wZGx5itQFGAo7Jo2/Ti91vTYgMGaHx0XXWqE3FNVe9w4YlewakMdO8bgmh8X4L3du3rifCljSgdxLCfZtCB6ra9r80up5Zt25d+7scxD5hXGnyui/dXPNoIDf3pynMJwJePgtQyJSc5SGM/dBoh7b+yCxsMM2Ym+yaQ4KarnADjpfW8TJ9bNenO/0CMaEiUVDcVSU+/oc6/4MA+S0kmHYEQaWqjqCIYwxMg+/m+xCqEfOewBvmAdPr+DGVSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r9cpEU4oB19qua3yZO5pXOV6iVuXFQjbXo1mRp62Eug=;
- b=KPgEzdSH7d99txCyRe248KnkHL1h4YBK53OTLeXHxio+yEQYa0IL4x/BOKiXSqY8OGxDsMbHgNXumXVHT790ld8A9a7lPMgKsv5gSl/IFHWst8bwS+FPkyvXCCjzGRX/OfMZwyA5rQ7VR6qObXCqZewU+XkwjQiJUtWUD6AWOqRpiZJFYOdJvW75eeFco9xxJway+PSJhsnuhvUWdiwzBnEcCyL2nfK6BXNCV4X/M6AQPNSkDjJi7+r1ZKSCa8LcjPzJI2iZsb8n3LiWNb3xWCvU0FOp5VFIwh4zleMTSJEqeZyTd+oTrf+Ikwz0nccpCA0tEdvOGOPyWjAmAhV+mw==
+ bh=SXSAYy+bXQPp0mLXlgRkmQaY4AJBCSOdtj2ck2VrSjc=;
+ b=YdPkCo6i53sXRQPrXGihp9aWl2kCFe1XfFFeJSUt6km44dTR4exWq8+1WVNSFZl0zO0oAxIE6h3Bq7RExN+//0GD3vfxMtB5OlM9UMXkQDsh/e2gY7FNLqbLRFUl0PhMT8cXvkSqvaY2L6xy8anby2cuQ/qYI3O8Yylj7bageQV2yOIkK/bYAJ5AlXtBoOLB/sIr3P560Uj1kyXQtXKdPIVwn2cIsP3CkbtJkYwBX3VWur9akOsBHrYpi4EVnUCZPzAzUbPSb7yG3fJeKps7menxeTDj3n0vYyYuZOJCvLDeD4gORW0Nov4j6P08MKKakIJjSMwAGA8B9MU9XTffjA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r9cpEU4oB19qua3yZO5pXOV6iVuXFQjbXo1mRp62Eug=;
- b=LIXYEzKoXYONkVEx+yD6scxceUykcFVRE6SkoEdDVKT4gOz5Ce5erEzR4u97kmbcYyNhez8b2Uigp0q0IP5wxQSKvgvN79dGSEkDROcPDeNNlvsNFqPnVOmUHN0NAQrAemHGCfArAMIBpxOKr8EBeQPGdf6SybJxbLTrhMmGWzU=
+ bh=SXSAYy+bXQPp0mLXlgRkmQaY4AJBCSOdtj2ck2VrSjc=;
+ b=dw2aZnz+Mz9Fwhh2qw2T1ZY+Yyqa8WwXmmWoCzEZE2KmVIYF7xeQRXf+L05TrS5VW4zZ1APiLwFrNhDZL6/nLZWpbvBpfGs7BY8wtP/3NRPLYTXQ5s2YzKZ3Bdqf+H3wZ8fSzSFGYWk7TQpdVRk+WFQFolpTxaMqp26RgK51zG4=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 240/256] cl8k: add wrs/wrs.h
-Date:   Thu, 17 Jun 2021 16:02:07 +0000
-Message-Id: <20210617160223.160998-241-viktor.barna@celeno.com>
+Subject: [RFC v1 241/256] cl8k: add wrs/wrs_ap.c
+Date:   Thu, 17 Jun 2021 16:02:08 +0000
+Message-Id: <20210617160223.160998-242-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:07:01 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:07:02 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d70e8d87-97a7-4471-c8a9-08d931a9f153
+X-MS-Office365-Filtering-Correlation-Id: a0c8b2fd-2063-4653-c96a-08d931a9f215
 X-MS-TrafficTypeDiagnostic: AM8P192MB0978:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM8P192MB0978A6DB56C2F72D4DEA6FD2F60E9@AM8P192MB0978.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Microsoft-Antispam-PRVS: <AM8P192MB097830A609B2F40225B52EE2F60E9@AM8P192MB0978.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:590;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: L9as/Jd16JHJnnKc9PxwaQgtOR/O32o9djboAwv3AV9SnoHoPdpBiVfjmSHjI6+UIz08dKwHSSxBGj/Etkw+VeqwPk+ll6jfUQ4sKCHsRzVZ0BktooRUY7GdCqUpE0khn/eunxJCT6lXLFtl//WQbtcSYWeWFulNNQwJsitPTrLQc7OOFEfl2EJzXia3E6Yr+DjcxjG5vzHLEEZA1dDFmJEUDKEsMV0rs/atwbHx79lqzkh4VljB/A7S/eLdMowFs3lue+e0oFJ7trdu7jYMYrRCMISdiAslQSPAPyUYROiJkKkukrEsW+a7aZA48ZOmO7vFmi2Wor/uGMhHjerELwwzC567+m1Bdx85dU3Es/9KSlldzhvB6CRQsZDVoaCdudmdBC2uG3wlqvzCyJ+xQP40IjYt8mSgJAkIq09VhzZlNqBTXRkLjsyDfVZ5cnY9wbF9hk2g0ChDcYQo/8d/MqpIiDB87c9aW/S+LsOQrXok6MqqqNMBbUvNnfdcYxlSSE/8FCFcncVrIW0ORqWABgwplzKTKjHbXQISaQjaq76RY8xTx7R39m2lOkLGS/5HIFz6ckOIxWS10BskSQsDKJMbORrTRIn+L4x2l/nG9ZOahHEl+godjhQxHDcBUHJnHnBvFhqXe1Z0RTZx2lpPj6iOW77LCTGqbno0nukPvoFxMNMpltQTQeCoa25gp4+7aIdgfuIRa7IQ/oHRB+P+vQ==
+X-Microsoft-Antispam-Message-Info: Tcj6EOuZzk21DjAmbRKm6QzFtUPtrWHRAbdHIC2o6St3x4g/8Syn3G/G6W3UmoxEkNCsHkX5EO4g91kL9QazScrF+VOrW4URI/NsABZOfPcq4wCQ13cL9T0EGU+ka2kU0wZFC5WB2i2bg5gbkEW8eEjCn35pwkL85HRxex5dUA//tgU1mprNJM2NpKbNdzI+bUVuI0OBL8Iw9JZq+Vo6f96nfip8TG05gWehKBl1oNxhDdoSNtAhGEcM9NDeRSiznlzTqthuvlhgnxV4OF6HbGClswQH8dNhagZG+B+jJ2koE6pLlmYGZfQdB2g098z2Hm2Kck0z2Qk7ExqLEXI9XD7R381zvY/Y7sYiW+5S4dGzznlHQXzdHbPUo+4b32WMM8pfQqI1Bx+kNKvCCKW6n0I7XJLFnGal9hmR0jq+bqKzvR5ACY9RMQhZfQxR3hdULmzyqE/5+t8XbSsxcHpdWb1I/EsaHgEZAGvtUwVHBggid/hRBymFUm9uRzIVYYuClns2Xm0pyJD/gcG+I7SaaCiXy5S/48/r7ixFfqLeo/ecks1ROkN7wpfitTQUUZA6sLok4q24gu9mI6/VuFTEk1twUP2ZmG8omeYp4clir4V08UGr0Az9vS/ByMV2ntirQdtImuvRWAD1Bk1Z/R72j/XOCa/7rfRkwLugpQT+Wz5Gceyxk2oogMIqSb+TVqZXMpxlNEvFB2VZa8zKIniqDw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(346002)(136003)(396003)(376002)(39850400004)(366004)(16526019)(107886003)(5660300002)(66556008)(83380400001)(26005)(186003)(1076003)(2616005)(316002)(66476007)(66946007)(9686003)(2906002)(6512007)(8676002)(508600001)(52116002)(55236004)(6486002)(38350700002)(86362001)(38100700002)(6916009)(8936002)(6506007)(956004)(4326008)(54906003)(36756003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rOFEz2+VOvPCKjETSSNP4x05ZZhpL4ukY3Xxn6WjyeT8PF6FsjVfOFs2Kfrv?=
- =?us-ascii?Q?bLWkrGryeT5XcvUTAp3cLNw9zrXln6SCqamcNOM6x2CBiMjdQJJneKrbo4OC?=
- =?us-ascii?Q?m7v7mZv+sZ6J9s6ydSM/3MMgGsAfW73GEqpFqF4fYXPCoUMJtDcLdm9Bj3m3?=
- =?us-ascii?Q?W/TzoE+PQMTVJ0K6cI8UggQplu1IMj8jUXp0q/J4B6JMRML8ij9eBI2bV2r6?=
- =?us-ascii?Q?P6nVjxsHsEJGZVuzPyTVXz1niTa7FluyExM+fk3DvVMuxY4oEu0jyQ4Lhfyl?=
- =?us-ascii?Q?xrR8nF+1UDS8j+nP8Zh0b41/qUMJYnoZKvAdsji9nZ3k7oyHvNPMWKQPF6o3?=
- =?us-ascii?Q?FxYKLmTo4Uu7H9/+t/nvpGHlm787AyDSJ4+p/uAbUK+yhmhiJS1QBYxsxDdj?=
- =?us-ascii?Q?xkcySwUajoLUsGST/sgnbRS4lO/6A+qxoC+sTQTX7Xvy5ay5cbYHK5c8jiP8?=
- =?us-ascii?Q?ots4rKDv0oUj+DqvarFFi67IuZBrTMJORNLQGqzoshmcu7oio2Vef4XHvZVl?=
- =?us-ascii?Q?BtmG8aYgA63udaCL5oGL25/kBofZFXbW83bC2CCWHHd8mOymaoBImN493pZN?=
- =?us-ascii?Q?clMAOcRBZCtT62TyX8DDW2qcEv6OWFfPaYy90kABViHMi9PwZMpUUj5W4RQk?=
- =?us-ascii?Q?ku/zDRorSH3b3MafqcuUHs6OouFWCgJxipPXXiBvK7of/Mj4ECq6zIL436ka?=
- =?us-ascii?Q?mxjJz5qnbxN/iJF7Ve9eSSQXge8/uSF0noeYOOx58tYTM43vQabndZyjeN6C?=
- =?us-ascii?Q?JGhN2myJjPWkrWT2cDF3lhO8Aa//vJrOv7jHGJB8nM6/gVhdOb7Ef1oESQcj?=
- =?us-ascii?Q?xJJCZyLcjDVn1AEIWeYHqMDESj/X99+bHXTSQFvsl7BskgBDUu3kBPo9MtNF?=
- =?us-ascii?Q?SX7RBgokos6zHAF7gj5dthsyphOL20Hc7RgkVVmBudnVJM4OyXdKqgcHYrk5?=
- =?us-ascii?Q?NnKQFVUECYYLhCD6u6bKbBAU1Lpu2VCnDCFSXVgVnppliCr83DfXianq5qjL?=
- =?us-ascii?Q?d0Z8dIuhzjVWYSuzyDr+zVvwuC+sOT7u0zD9x5jiE7+vgzvhkPac55zs1J6S?=
- =?us-ascii?Q?8C7gWBa5ltr1N4krbslLR7Oyt/mw1rjs5Xtr07VOwgaHjMeBi+Te3CWcWguN?=
- =?us-ascii?Q?xvQLxSkMPpgUNM6vMw5a6OqxsOBl7uZT/ypZ4U9rwk+uLhdc+dASr1Ad2jo1?=
- =?us-ascii?Q?sD1ZDvH0MJGNcMu5wS35XxKFfEUXVnchD7Sx17p1Qw+TfR4SFhXVM02AA9VH?=
- =?us-ascii?Q?LUousGY70eSS4EyUuZcmZ8gsM705LXNCSjqwKXnS8husZ0cMf30iz5cTAyaK?=
- =?us-ascii?Q?AbwwtQy331jjdGGG9QfnyQRe?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4eQ8STadqusGwRv/Tm25PBVSW0DZ2oWVHszV0gqAtycW7Fq/9woSjUUtQBcD?=
+ =?us-ascii?Q?B5EG1ndtAzhpDkn1Km22k6lgigMp4TUKORISTzk39qEYin0RiqIRfIvavSNO?=
+ =?us-ascii?Q?y9sudQnOpKSee0/hUwJUN4SD13FUAl3fPRaSESm3AcEUz8VSNicZ5jknSoIt?=
+ =?us-ascii?Q?nP/h38ievjheA+EfEC+Zt5FQw2u1FsPhvf31t+se5RqoNUV6AjMbKysmmqOw?=
+ =?us-ascii?Q?lsYfHsHt4F3ympf64al1ioraclbjezq+HKZvrZbS5CPDnSWNpjVK68GpemBc?=
+ =?us-ascii?Q?BSj3pqp10EYcYQI7sncg1fmP+lLeIbGoslIALLYc8t6v8OUUIH3Tr7EwjE5g?=
+ =?us-ascii?Q?rpJ1mgEGEgvvlaUVDgmVzotAuuQ2t0IueJMiH5KrZuREpWQgE+MoviX9lwFf?=
+ =?us-ascii?Q?XyZipruRhc2ilHj1/jFNz7ZNSNyhFa5JnvzCdFSrgoR5gcsXCh1bQFigWTZI?=
+ =?us-ascii?Q?GBsgCKZrzLeHjBlU4P8XZlsJrZKDtJ1Fmr/uqhNz/Lpwe+OR7wMngJD/d+gz?=
+ =?us-ascii?Q?QFCD90Wbc+QpJGQNIW2Fh+shzZxF4Mg7mZ0yDL/LwzEQBHkMS4EeSclammJ0?=
+ =?us-ascii?Q?3/84EVes7W7+L3g2CD7p7UnFXG6cCl8UQ0oLwNRxhcyJZ6eStKI0xqw8ASyv?=
+ =?us-ascii?Q?2nmCwnTILe6I+7E+86EMc1Ki46ZKR/IeOvx9bWwfKywqcB6VWy2UUnIIDfLv?=
+ =?us-ascii?Q?gnp0vVuhOMLOO65WuSMMof7h1YP+E2TXALkuYZN8G/YzgmZ8zFjImqTv1+AZ?=
+ =?us-ascii?Q?mlHyUqsmtINwzIo7M2qYr3O+IpMH2OtO9bP3prPsuRl1uHi+EoC/ze1Kpnei?=
+ =?us-ascii?Q?1RtkdMP8QAT//Kzc3Chui1UQ3BTQlmLqEvZ3NoKw1+oXKIAMKLlKVJqrKI5X?=
+ =?us-ascii?Q?7KSAzIPdiNS5VZvKKKUHO4dTJ6DRqWRN60fXOl0qn30h0waYWayLfEDp7YBD?=
+ =?us-ascii?Q?w/jxmEUt89Xj8Qy7q751wW7BRYCl6y0GIy53geueu/cigVOAqw2mR/iTSiaN?=
+ =?us-ascii?Q?oEjfoue9eFnBTJmt7yuQhWPyjSnOmZgXewJ2U61m4y+fEo5zdJEYmFjKQNLa?=
+ =?us-ascii?Q?7lQhrDVC1wzR02lRzxkr7YZcqzdoNpOarkYPZZVRHozWxGSS/LKdPNK1kEJf?=
+ =?us-ascii?Q?hiXhbuwc0D1cRdxunWa1Lnel8GT5MdKr14J49dBJPotKeZtfUgLdNIpARiUt?=
+ =?us-ascii?Q?3nElk3uCDs4s5AeAw8fGyfJXF97BFBI4Xho3LoKEQoJwZmaKNUK6RVvqVQX1?=
+ =?us-ascii?Q?oG7W+KkMrtpBXhJxP37b0T4DQJc6atsN9LSY2exRK7qnNRa92KJfocw6ReTw?=
+ =?us-ascii?Q?eGoGTD0611z+dYFRyQ/9Kqwy?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d70e8d87-97a7-4471-c8a9-08d931a9f153
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0c8b2fd-2063-4653-c96a-08d931a9f215
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:07:01.9003
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:07:03.2474
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LrP1IpMdinZAf/3xG7uMcqnwQJdmfz7N9gTvs03hQ9TlV/0/5u0n2e/PQvbbZHuTn8dokwfQDeVvHKjH1ekxJg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: PibeUNrj9TMzsfO/AVK94/jV92Ug8bI8tlPdwBkazG6BqPVBXM/v8MhHwbOnklzG8uQU7SdTlw77BS2AMOa4Dg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P192MB0978
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,74 +119,123 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/wrs/wrs.h | 45 ++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/wrs/wrs.h
+ drivers/net/wireless/celeno/cl8k/wrs/wrs_ap.c | 99 +++++++++++++++++++
+ 1 file changed, 99 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/wrs/wrs_ap.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/wrs/wrs.h b/drivers/net/wirel=
-ess/celeno/cl8k/wrs/wrs.h
+diff --git a/drivers/net/wireless/celeno/cl8k/wrs/wrs_ap.c b/drivers/net/wi=
+reless/celeno/cl8k/wrs/wrs_ap.c
 new file mode 100644
-index 000000000000..cf525e868341
+index 000000000000..8ac8f7f8c644
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/wrs/wrs.h
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/wrs/wrs_ap.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_WRS_H
-+#define CL_WRS_H
++#include "wrs/wrs_ap.h"
 +
-+#include "wrs/wrs_db.h"
-+#include "hw.h"
++static void cl_wrs_ap_set_bitmap(struct cl_hw *cl_hw, struct cl_wrs_db *wr=
+s_db)
++{
++       u8 mcs, bw, nss, rate_idx;
 +
-+/**
-+ * WRS (=3DWeighted Rate Selection)
-+ */
++       memset(wrs_db->ap_supported_rates, 0, sizeof(wrs_db->ap_supported_r=
+ates));
 +
-+void cl_wrs_init(struct cl_hw *cl_hw);
-+void cl_wrs_lock_bh(struct cl_wrs_db *wrs_db);
-+void cl_wrs_unlock_bh(struct cl_wrs_db *wrs_db);
-+void cl_wrs_lock(struct cl_wrs_db *wrs_db);
-+void cl_wrs_unlock(struct cl_wrs_db *wrs_db);
-+void cl_wrs_fixed_rate_set(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_db,
-+                          struct cl_wrs_sta *wrs_sta, struct cl_wrs_params=
- *wrs_params,
-+                          u8 is_fixed_rate, u8 mode, u8 bw, u8 nss, u8 mcs=
-, u8 gi);
-+void cl_wrs_tx_param_sync(struct cl_wrs_db *wrs_db, struct cl_wrs_sta *wrs=
-_sta,
-+                         struct cl_wrs_params *wrs_params);
-+void cl_wrs_tx_params_update(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_db=
-,
-+                            struct cl_wrs_sta *wrs_sta, struct cl_wrs_para=
-ms *wrs_params,
-+                            u16 new_rate_idx, bool is_sync_required);
-+void cl_wrs_decision_make(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_db,
-+                         struct cl_wrs_sta *wrs_sta, struct cl_wrs_params =
-*wrs_params,
-+                         enum cl_wrs_decision decision, u16 new_rate_idx);
-+void cl_wrs_decision_update(struct cl_wrs_db *wrs_db, struct cl_wrs_sta *w=
-rs_sta,
-+                           struct cl_wrs_params *wrs_params, enum cl_wrs_d=
-ecision decision,
-+                           u16 new_rate_idx);
-+void cl_wrs_quick_down_check(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_db=
-,
-+                            struct cl_wrs_sta *wrs_sta, struct cl_wrs_para=
-ms *wrs_params);
-+bool cl_wrs_up_mcs1(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_db,
-+                   struct cl_wrs_sta *wrs_sta, struct cl_wrs_params *wrs_p=
-arams);
-+void cl_wrs_tx_param_set(struct cl_hw *cl_hw, struct cl_wrs_sta *wrs_sta,
-+                        struct cl_wrs_params *wrs_params,
-+                        struct cl_wrs_tx_params *tx_params,
-+                        struct cl_wrs_rate *rate_fallback);
-+s8 cl_wrs_rssi_eq_calc(struct cl_hw *cl_hw, struct cl_wrs_sta *wrs_sta,
-+                      bool read_clear, s8 *sorted_rssi);
-+void cl_wrs_tx_cntrs_reset(struct cl_wrs_sta *wrs_sta, struct cl_wrs_param=
-s *wrs_params);
++       for (bw =3D cl_hw->conf->ci_wrs_min_bw; bw <=3D wrs_db->max_cap.bw;=
+ bw++)
++               for (nss =3D 0; nss <=3D wrs_db->max_cap.nss; nss++)
++                       for (mcs =3D 0; mcs <=3D wrs_db->max_cap.mcs; mcs++=
+) {
++                               rate_idx =3D mcs + (nss * WRS_MCS_MAX);
++                               wrs_db->ap_supported_rates[bw] |=3D BIT(rat=
+e_idx);
++                       }
++}
 +
-+#endif /* CL_WRS_H */
++static void cl_wrs_ap_capab_print(struct cl_hw *cl_hw)
++{
++       struct cl_wrs_db *wrs_db =3D &cl_hw->wrs_db;
++       struct cl_wrs_rate *max_cap =3D &wrs_db->max_cap;
++       u8 bw_mhz =3D BW_TO_MHZ(max_cap->bw);
++
++       pr_debug("\n");
++       pr_debug("AP max capabilities\n");
++       pr_debug("-------------------\n");
++       pr_debug("Band : %ug\n", cl_hw->conf->ci_band_num);
++       pr_debug("Mode : %s\n", WRS_MODE_STR(wrs_db->mode));
++       pr_debug("BW   : %uMHz\n", bw_mhz);
++       pr_debug("NSS  : %u\n", max_cap->nss);
++       pr_debug("MCS  : %u\n", max_cap->mcs);
++       pr_debug("GI   : %u\n", max_cap->gi);
++}
++
++void cl_wrs_ap_capab_set(struct cl_hw *cl_hw)
++{
++       struct cl_wrs_db *wrs_db =3D &cl_hw->wrs_db;
++       struct cl_wrs_rate *max_cap =3D &wrs_db->max_cap;
++       u8 conf_bw =3D cl_hw->conf->ce_channel_bandwidth;
++       u8 conf_nss =3D cl_hw->conf->ce_tx_nss - 1;
++       u8 conf_gi =3D cl_hw->conf->ha_short_guard_interval;
++
++       switch (cl_hw->conf->ce_wireless_mode) {
++       case WIRELESS_MODE_HE:
++       case WIRELESS_MODE_HT_VHT_HE:
++               wrs_db->mode =3D WRS_MODE_HE;
++               max_cap->bw =3D conf_bw;
++               max_cap->nss =3D conf_nss;
++               max_cap->mcs =3D WRS_MCS_11;
++               max_cap->gi =3D conf_gi ? WRS_GI_VSHORT : 0;
++               break;
++       case WIRELESS_MODE_HT_VHT:
++               wrs_db->mode =3D WRS_MODE_VHT;
++               max_cap->bw =3D conf_bw;
++               max_cap->nss =3D conf_nss;
++               max_cap->mcs =3D WRS_MCS_9;
++               max_cap->gi =3D conf_gi ? WRS_GI_SHORT : 0;
++               break;
++       case WIRELESS_MODE_HT:
++               wrs_db->mode =3D WRS_MODE_HT;
++               max_cap->bw =3D min_t(u8, conf_bw, CHNL_BW_80);
++               max_cap->nss =3D conf_nss;
++               max_cap->mcs =3D WRS_MCS_7;
++               max_cap->gi =3D conf_gi ? WRS_GI_SHORT : 0;
++               break;
++       case WIRELESS_MODE_LEGACY:
++       default:
++               if (cl_hw->conf->ha_hw_mode =3D=3D HW_MODE_B) {
++                       wrs_db->mode =3D WRS_MODE_CCK;
++                       max_cap->mcs =3D WRS_MCS_3;
++               } else {
++                       wrs_db->mode =3D WRS_MODE_OFDM;
++                       max_cap->mcs =3D WRS_MCS_7;
++               }
++
++               max_cap->bw =3D CHNL_BW_20;
++               max_cap->nss =3D 0;
++               max_cap->gi =3D 0;
++               break;
++       }
++
++       if (cl_hw->conf->ci_wrs_max_bw < max_cap->bw) {
++               max_cap->bw =3D cl_hw->conf->ci_wrs_max_bw;
++               pr_debug("[WRS] Max BW limited to %uMHz\n", BW_TO_MHZ(max_c=
+ap->bw));
++       }
++
++       cl_wrs_ap_set_bitmap(cl_hw, wrs_db);
++
++       cl_wrs_ap_capab_print(cl_hw);
++}
++
++void cl_wrs_ap_capab_modify_bw(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_=
+db, u8 max_bw)
++{
++       wrs_db->max_cap.bw =3D max_bw;
++
++       cl_wrs_ap_set_bitmap(cl_hw, wrs_db);
++}
 --
 2.30.0
 
