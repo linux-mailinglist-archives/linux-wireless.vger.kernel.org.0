@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB393AB847
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4F3E3AB846
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:04:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbhFQQGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:06:14 -0400
-Received: from mail-vi1eur05on2073.outbound.protection.outlook.com ([40.107.21.73]:35841
+        id S229673AbhFQQGN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:06:13 -0400
+Received: from mail-vi1eur05on2081.outbound.protection.outlook.com ([40.107.21.81]:58626
         "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233628AbhFQQF7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:05:59 -0400
+        id S233642AbhFQQF6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:05:58 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OLSxgqoQBUcIZe7pHvykRcKhZUjrE9fFV6x3aQjB9ICpsDZ3Z1/eM0uvELsICv6JjeC2P/wrPC5w6lGukj86KXhCx6A9lCHA17cP9oiUJXpJSM4m+GjZg5hdoYZh3/SjZCz3ERtntYls6SCazNi8EubAAo7G3d28M33vW9TYBvxsxuJ5LGZ8eiZ8YUgo12e1tI3eBZs/bFzZYxcPHzZ/LWLQmOclThHVJX6mfCDhziGWu1UkmaMPl5ADbp81i+klCy3Lp6kb/KKRDauvKdFiIX1WuKwU0GTFv5gLJebguJ7+/w2m8QDCIslNOYxbAaV9LFz2fnGBdZxW0SD+JW2sPA==
+ b=g4kY3X90oCTYrehGnLP3poI1oaiPNAbCiZtszK2yyzFIqF9EAI+LU2sV7yhcMy+g8u4Wv0fm6+oSdrkmIQcNGXYxWsvCxQeaofPKuYz2NiEwFPSSBVhj3uySnuW8grC6Jd3Zco4SpbgyxLB5FsJOR0Bs7TnLXuB/XGRJUQoZBwsZEAvMH+yJZutUo1gagY9QvEHIhHqIndDmEWUrC2KmyvXChkpB2OCA9/YCqUPGdESo32cbgT5OlCfea8aW15liAGcc/o2x5mgNj4NUW1VAVsk7yA37TT18CU3dRhO5fYz5OccMJuxnRkR8liADGlocqc22XW7DQiPls6fGG2xbdw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KjxJxYWeTO9AzPV+I2H63GPUn42pIIxw926KKfBV9cQ=;
- b=n5I1bZNj6hGB0wPM0AfolC8H1jOVWb06VYVcs+RB0EFm4BUtlPhgQ3epsfeLUb7fQdJZ1HwbNdmHZbREM5MSPMs8/mbjUf+3I+KYpJxri9WbcyV2iZfDx/ADWoFHhmp9/ZrxkbExhb0og6pOGKUhBTdjsG4eAITd3QiJ785KnED/waa8WZOXKs1YkJlPG2FxBZf0LdfYhGel+HedOgsg34K60PQLvB6wCGTM/ybsk50mGPKgMHP2+TAXDkhRqJ2sq92ma/4c+jjuTTkV7PArS8GshqrYlvtDi5sTm3G7+7A5zL/k1oDhe/rO4ac2TBCJG2ZoGGZqR/RRMUxPDoyRKA==
+ bh=JjFgC45B9R8TkOP7PpbZinh56CrNG68HSy4ON8jZySE=;
+ b=Zv2oZ9B3rIsxnN29mRGepr1fBeZcITrlI82m1fCNfIkRSBncrubpoxQsHKg0O/m8PAXPhSrkb1hi31kj5BRktAGlYxwtaxqfZeEK+6P4EBdVx7rSMY+07mC2mtF52GJZPDSFzmZhsx9k9mjhnFuefcQdP7034Gz15EP0oGT0KuB8HpruIdnjKCM+bzj44rdFx/Rg1yDeRaPnZ1+us6OUWC9iq2o2+3A/HmbDlYItGpPhaPhb/8xXPzJ2qffjQ7fgo833HIsJqUqCDsjG3Ja8hW3NhK/o3j3kwG5UHMdAX3e6Jf8TaFlQhAJuViZ3Pxf2YH70QLTI/Nk/RgoVbt+IMw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KjxJxYWeTO9AzPV+I2H63GPUn42pIIxw926KKfBV9cQ=;
- b=Hw4K6e9eivmCNz9vFYEZsGs7gbXC9/IRPy/nhJ2t8GyyFIcBVE5IF2jnhrFOaSC4C2YLZqlXPESlLouVeapZ3XHoCEROEQ0C4Wvo2iYNZUwbEarFANGVA9miVpnBFenwCaDfGQ67eXqj+MWZ9NPzs+9Y5M9YvuPcw7iOgyH/ql8=
+ bh=JjFgC45B9R8TkOP7PpbZinh56CrNG68HSy4ON8jZySE=;
+ b=NQJHMfrD0svJAf0jWbKX7Z8VwFdpowT55s6pinVCK91dNxqyBJIaUkJWwbj3kyeM5hA8VaIxhGhqhy/NCGHyBMZOQwMTScEJcL3WVxUo/0IL4NFBYcHfSJ3d+YRDCQnJ/W5c8vvxuOKVfIdCufXoduIx37eONPX4sQFUb0Yqc2M=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM0P192MB0499.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:4e::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.15; Thu, 17 Jun
- 2021 16:03:43 +0000
+ 2021 16:03:44 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:03:43 +0000
+ 16:03:44 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 047/256] cl8k: add config.h
-Date:   Thu, 17 Jun 2021 15:58:54 +0000
-Message-Id: <20210617160223.160998-48-viktor.barna@celeno.com>
+Subject: [RFC v1 048/256] cl8k: add coredump.c
+Date:   Thu, 17 Jun 2021 15:58:55 +0000
+Message-Id: <20210617160223.160998-49-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:24 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:25 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: dc676b62-26bd-4702-04b6-08d931a97046
+X-MS-Office365-Filtering-Correlation-Id: 2f70d0a6-4c6c-45a3-3b39-08d931a970e5
 X-MS-TrafficTypeDiagnostic: AM0P192MB0499:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB049976CE8A4634FA777A4DDAF60E9@AM0P192MB0499.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:308;
+X-Microsoft-Antispam-PRVS: <AM0P192MB04999D7D92F5501812A2C703F60E9@AM0P192MB0499.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bf5rwU07lfAxLnqGYsyNcZhfR6et74TXhKhzW8PdXES1T7w/X12f6nfamZXPx05dbDMuFzG9ieKMJzXmWKEWqew+f219l8pdzhbezh9oOb7nM2GTMwnImRlUyXr1yxyFX+JTCkzRWuA3r6lmX2UvI6GWklmfaIa8hyCscrovb2IsSCpxMG5U7PvsffhYcvjYeOPo00Ic7S2qe4hdlXgsMSZTFkC8Arlsc0OlWmRWyoiX+/a5fSWG9Bs7Ddd/de/qN7XMWhQhPO39jqKZMLh/mWHZrVno6c1HRclOah+q8s39bwGeBGZYZtTAvK9Lcf5lmJCwQ3gx9KY+Zw7ffzKlvxUQQLF10yTD0fm38FRqpa8YZTkzy+SQhsaUDkLYN8kI+p8PHzraHcETMB906UAdONYdoXlgGOcCcf33Sv6K6oiAOUe8RdumlthrvmzGG9umMNVBrH67qOLO4WS25LalSOt2KVy+jkp9wDlDaK8ttxeAl88Pu2CB2TmD2Xy3yUigE7xii2KyvYEVTIA5LQV0T+md/mEQQ5/jRSDNDBgAmKQLHohc8SAlRvgl1BxzM/pwsEbRy4io8eXkpy3eRqMNk0AL++HHx+cHyag1ocVZBvGQArp8uHInvVBq64BO7ax88aT/k7qdV1xty+YNFPtgkdBLkB357ogI/JjI79nDAWPEo4CXqkVME1DvK+SrULqIl9/mCzcoxUmIO/e3AAi7JA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(39840400004)(396003)(376002)(366004)(346002)(86362001)(107886003)(66556008)(52116002)(83380400001)(55236004)(36756003)(4326008)(186003)(16526019)(956004)(316002)(6486002)(8676002)(54906003)(38100700002)(38350700002)(66476007)(6506007)(2906002)(26005)(9686003)(6512007)(66946007)(2616005)(5660300002)(478600001)(30864003)(1076003)(6666004)(8936002)(6916009)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: uDsU2DsoUPgnTTfWPhRegFX26+XTZUzcR9iicxapvBCcba1crylMQf9RAi0WcKaaKo9LyCpYw8PM/XACnBnf0t6iS/zbNie0Of9BN5PmyXU+0ErmoXWVB9AZBpCkEwapw0ReWlqU4UTe0SwtUa7TtRPWP/xi14qEFWl8m3JzM87X4EVEVJ9r1IFSVG7q8Nstvy+XlmXyUtqHRkoNQpGcPgV9pXwip1GXtztUmWs5/OKJgvbnIVp0grfC0eKRJTb7EAuhfBTNcBflqqnJ4SydudGUuJdu1S9mkOrdZZ9RC+S5FMN6V70bacipBvo7zvsRrn3R0+sOKOwh+QmIphwO5s3rAsR2fp3aXbd6iuUE6mxiQRe6uyuEQGivU7ddTByFjJuHe041DfrXfbqjIbUEBqCKgp4QAX6b5x0ZVCzwBtXWxAGxi6F7XohTDzmvhUyWzF9tTTTsU5Q/4NZpeK6IjNfvS9a7hieYGCmld11VFUqm6zqUILHNS3FqRU50brGP5Wa1wC1j8eLAgWkBIFROyRPl97yRLbS2gSpjvUQyTVUyu+ihFSP629chJe8f9/I1OQTG6jg8tfljzYon/X9f4QzhXZjvjHhg67RVONHi7xvyqUUU+OU3ORm2JtpyPvAxX+buusGgtUcSsp8KiC+KeUQ3b/ENCcy1C0r1lW/gcmAezpS9gRVhkSUka3yzwFskW6Ore7rkbqd1JKPbBQ2Xpw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(39840400004)(396003)(376002)(366004)(346002)(86362001)(107886003)(66556008)(52116002)(83380400001)(55236004)(36756003)(4326008)(186003)(16526019)(956004)(316002)(6486002)(8676002)(54906003)(38100700002)(38350700002)(66476007)(6506007)(2906002)(26005)(9686003)(6512007)(66946007)(2616005)(5660300002)(478600001)(1076003)(6666004)(8936002)(6916009)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1/RlsE/nCdQRRPAcRD5VxVMpa5NYparW50GWsilvkX6TA/Mz7d7fet+ZYl9q?=
- =?us-ascii?Q?0y4fthQaQr6ye9ULKRh4wVdoZE624YcjxTuGBEC2k38bS6arRwgmVUpKQf85?=
- =?us-ascii?Q?aHvO+m2kILnr0K772zGkYHpgqaT3nOhdBhjdisVnvm4J6eLQYOE1WGIEG+Ok?=
- =?us-ascii?Q?YwNkCnSXknZafBHVUB+zcYtH0oPq2LoExZbONROEjD4xdiZZozW85wVzMHSG?=
- =?us-ascii?Q?0882rNuQUXr9iQ5zl0vb3UVeiA/i5ACUQrXnbjYIMOEH2V4O/QXl2/EOi4ki?=
- =?us-ascii?Q?cs8HuV+uLM9jra05Y858ByrPGS965AMYajiJ8ZkYVbWCYzvt6fBD9xJqXgee?=
- =?us-ascii?Q?xfUuvSHcP5OeFReGT8MvhB2AJRdzA2Sc2CY2XW14zf3/FYQBi2JpiRnMUPdu?=
- =?us-ascii?Q?VbkWunk3Ovs6qVBPM/b9sEAlWa43VU++12RjF+GDCFPFArNWRShAJqmEuUB0?=
- =?us-ascii?Q?qIXSecnOgtN3QlGl6k5rxxAVEuzv75IzfI5eVaiYM4Smi2uips6j91hyNf79?=
- =?us-ascii?Q?NQ98jDO4s1J9ZxKjhmhYlEt6frNxq5Jxghw2Srl3odkqAYpPuB6JtybOCy9z?=
- =?us-ascii?Q?eNuUaGXRAz5Ygysvyqnry8R2CpWPCeBOirwwNzgH/wkK3wshnrk/8G8g4GsV?=
- =?us-ascii?Q?9htGQ0MWlVh7/TnnCRa+EYZOjspyyg5iFbhVIMT2BAful37R4PleX6CQ/ZEu?=
- =?us-ascii?Q?wOVWuyXDT11rLKSnt79+ehLwj3mBWzZpNmJ8AP4jAoSEuAVtNsHhIZE0Ds2K?=
- =?us-ascii?Q?ohzIYBfsPz4/a2j5KMz/ZaoszOa6yZv7NpXWrjg3ThJanRyXCjZA7mjOHoP3?=
- =?us-ascii?Q?oFBvkXbOB7QJ5UTPKyQX3Amyt0VVgq5U7JKmajnCpcJOGMUOCPmm/e1WdSzP?=
- =?us-ascii?Q?2VDrh3QWGAAtv7x+F/hv+7CEAZl3ljfRMUUzWvihg4dJcRstBMcVhDd3SO4h?=
- =?us-ascii?Q?kumwQZdSTkyNFeCcw+W74d9plEOmMQmR5I860ZS7vHcH18BJZtrGqLC/khg8?=
- =?us-ascii?Q?To6MDj9VtYf3hkJVjnUyvhGCXnPYesbI0s/H8isYjuRSDXSQgj+yIygcqYtu?=
- =?us-ascii?Q?ucCH9U0rU5PmyOZgluGSvUZwqLewCNDIApL7+92XTFE6otyjXEGYKB7mxg1E?=
- =?us-ascii?Q?SZx9xbeWNIpGPlvhhiUl5Le5OUV9nFGUjZd57lPLVmyI4Ak5PV7LMgulDIpq?=
- =?us-ascii?Q?KYnCzxPSrnmJ84soYl1Vpw+QnKh2d4NCL7ucm0SleIAWokEV0HPlO6ES0/yD?=
- =?us-ascii?Q?4t0rJ0mmVP3BJr/DKemYCxjeJU8YLa7G9XQw478u5DHOhNWt51jye/Y9zgRw?=
- =?us-ascii?Q?SruMQ47XQsjtrGsUOaKx9mfM?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1Tij3CB7quMuvUFGvWAJ+aSdPMqk6isZFGHGWcOhq/VVeH5M2XE5pEiMyX+K?=
+ =?us-ascii?Q?s9cXxTBfNd8C1IbDEHuvL4AJl7ixBI4RzsHD6iYS/35rBANW4O9Iv1rxHlr2?=
+ =?us-ascii?Q?FpyM47BDmH46R3QNjNZa2jYrbyjAE6s94ivuly8uh3K4NWkeTdIGnJjuYFFz?=
+ =?us-ascii?Q?BroTbZ06IXfR/k1Exm2+U6vqzVLUvGLmUl2MLwbMBnhL2GyFgqkZwnJNZD7N?=
+ =?us-ascii?Q?3qisnTcjK0fUA3cKmITqrNIAmTHQztUrlsPUtioHIrdcSZtjA68hVIpYuLuV?=
+ =?us-ascii?Q?kGpgIYTrb21Kxwuiv4t9+Al5ZqiXbqrA9ngqBjuMF5tAVk2xRpFTcypah+Au?=
+ =?us-ascii?Q?wh9zhxq4VmFxDNAwC2svtmL+zYHeQ6MU2GJKpsulnA8l+Z4QfKxv9rzkIFBX?=
+ =?us-ascii?Q?4Li1d+x34VFlFti/HWhpGl3mOkRxGOs6oou92OW8GITiavOoFdSKvXlWrYBg?=
+ =?us-ascii?Q?KINKwLCe0SGfslYyZP1VHkl4n5X57BCpthbXNBz0JDN3vzaI4o+LT+eJrnZL?=
+ =?us-ascii?Q?zScZrzOD1BwvtBrdFTjcWXHsgooBFhsUjQHKSCaqQOVk6Jrl3KSfrT/JyDG0?=
+ =?us-ascii?Q?kK8ujn0o+dIW64w/Y6+sbprXagaiz8fdYq9Gu1hIe0XM+dSkiv2IEuKY4tKJ?=
+ =?us-ascii?Q?giDDY8eAU8/6HdYlzPZKUdKtqaLVJueUzvDnXO7r43whFaN2y8hW+FnwrCIY?=
+ =?us-ascii?Q?itrEoFzs7N5f7XEH9++cvbiF9oWtw3qljRRoGH/rjF5/K0Vhfg4Tn2AZ4+Tr?=
+ =?us-ascii?Q?hY3e+vSJp0ecitILGR8S/eDxlUmJf79n7RajakZ6Zif/szpMsbkhAySJiLlx?=
+ =?us-ascii?Q?poSxUHS88vBQw9E2KoHg76ukxhR3JwCX8KmYGyBrtZ+AoIfYls2PAY+KRu/u?=
+ =?us-ascii?Q?CYLVkZcWi/nZ4ZFJmDGhvL2AZ0W0Kh429BlAKBhPon7HayF5OUOa+jqNGYFc?=
+ =?us-ascii?Q?XU8Od1K21pX0+OYJj3Ij7o611IV2laOgTN/n1oAVYDIcaxMuEOMN3QRbIc+c?=
+ =?us-ascii?Q?pQC+gcRAHDv6ErVoC2vjdFqhWotqjaKxKMlPrpspW/cKJk2FIQLWT/TJtLdL?=
+ =?us-ascii?Q?eF7KQJX+PX4p8MuSeWzla8AUxjhNzlwsoGGjPj6nNQ/kOcSaNQDaEQvIDvvA?=
+ =?us-ascii?Q?rDgi7OFe8tgzDeD0ZOx/v6PyhjyOtCm7TzMbG3DFufwz+ZOFrROD659Jjs5G?=
+ =?us-ascii?Q?zpIDCeIcHJzJcxewNASHpr5lOhac/wWtvZ1DlyUO7L6N59M4MfR90cvqmMaJ?=
+ =?us-ascii?Q?iRhl9X9B/GN4r1XsKnDgs4ulvnJPOuFfSZJMeRAp2WP0gUX5z57a2erF6BqQ?=
+ =?us-ascii?Q?5vGoYIb34Vz5pfVXpTtUoKXa?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc676b62-26bd-4702-04b6-08d931a97046
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f70d0a6-4c6c-45a3-3b39-08d931a970e5
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:25.4428
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:26.4384
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YgBmCfqSv0cpz7OMrxL17bYUZimxi6eRFhFEV/0Y9vNFP9jEyLxQdJmg+qZN9oW3jdaAtalNnMDMXrmGbltICg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: J7sO13E117j22785IvH+3S/A+82cUGQcfHg23hwC0a4jLSqVi8c6XrnawgGqYnbRxgMFeV/ZDqsR/VKt3DiTmg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0499
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,462 +119,217 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/config.h | 392 ++++++++++++++++++++++
- 1 file changed, 392 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/config.h
+ drivers/net/wireless/celeno/cl8k/coredump.c | 190 ++++++++++++++++++++
+ 1 file changed, 190 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/coredump.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/config.h b/drivers/net/wirele=
-ss/celeno/cl8k/config.h
+diff --git a/drivers/net/wireless/celeno/cl8k/coredump.c b/drivers/net/wire=
+less/celeno/cl8k/coredump.c
 new file mode 100644
-index 000000000000..7809b72b0f86
+index 000000000000..bf0313715f6f
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/config.h
-@@ -0,0 +1,392 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/coredump.c
+@@ -0,0 +1,190 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_CONFIG_H
-+#define CL_CONFIG_H
++#include "coredump.h"
++#include "recovery.h"
++#include "mib.h"
++#include "ela.h"
++#ifdef CONFIG_CL_PCIE
++#include "bus/pci/ipc.h"
++#endif
++#include "chip.h"
++#include "config.h"
 +
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include "vendor_cmd.h"
++#include "fw/fw_dbg.h"
 +
-+#define MAX_PARAM_NAME_LENGTH 64
++#include <linux/devcoredump.h>
 +
-+#define PRINT_UNSIGNED_ARR(param, old_val, size, new_val) \
-+do { \
-+       u8 i; \
-+       char buf[STR_LEN_256B]; \
-+       int len =3D 0; \
-+       len +=3D snprintf(buf, sizeof(buf), "%s: old value ", #param); \
-+       for (i =3D 0; i < (size) - 1; i++) \
-+               len +=3D snprintf(buf + len, sizeof(buf) - len, \
-+                               "%u,", old_val[i]); \
-+       len +=3D snprintf(buf + len, sizeof(buf) - len, \
-+                       "%u --> new value %s\n", old_val[(size) - 1], new_v=
-al); \
-+       pr_debug("%s", buf); \
-+} while (0)
++static int cl_coredump_generate(struct cl_hw *cl_hw)
++{
++       struct cl_coredump *dump;
 +
-+#define PRINT_SIGNED_ARR(param, old_val, size, new_val) \
-+do { \
-+       u8 i; \
-+       char buf[STR_LEN_256B]; \
-+       int len =3D 0; \
-+       len +=3D snprintf(buf, sizeof(buf), "%s: old value ", #param); \
-+       for (i =3D 0; i < (size) - 1; i++) \
-+               len +=3D snprintf(buf + len, sizeof(buf) - len, \
-+                               "%d,", old_val[i]); \
-+       len +=3D snprintf(buf + len, sizeof(buf) - len, \
-+                       "%d --> new value %s\n", old_val[(size) - 1], new_v=
-al); \
-+       pr_debug("%s", buf); \
-+} while (0)
++       dump =3D cl_fw_dbg_prepare_coredump(cl_hw);
++       if (!dump)
++               return -ENODATA;
 +
-+#define READ_BOOL(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               bool new_val =3D false; \
-+               if (kstrtobool(value, &new_val) !=3D 0) { \
-+                       pr_err("%s: invalid value [%s]\n", #param, value); =
-\
-+                       return -1; \
-+               } \
-+               if (conf->param !=3D new_val) { \
-+                       pr_debug("%s: old value %u -> new value %u\n", \
-+                                #param, conf->param, new_val); \
-+                       conf->param =3D new_val; \
-+               } \
-+               return 0; \
-+       } \
-+} while (0)
++       dev_coredumpv(cl_hw->chip->dev, dump, le32_to_cpu(dump->len),
++                     GFP_KERNEL);
 +
-+#define READ_U8(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               u8 new_val =3D 0; \
-+               if (kstrtou8(value, 0, &new_val) !=3D 0) { \
-+                       pr_err("%s: invalid value [%s]\n", #param, value); =
-\
-+                       return -1; \
-+               } \
-+               if (conf->param !=3D new_val) { \
-+                       pr_debug("%s: old value %u -> new value %u\n", \
-+                                #param, conf->param, new_val); \
-+                       conf->param =3D new_val; \
-+               } \
-+               return 0; \
-+       } \
-+} while (0)
++       return 0;
++}
 +
-+#define READ_U16(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               u16 new_val =3D 0; \
-+               if (kstrtou16(value, 0, &new_val) !=3D 0) { \
-+                       pr_err("%s: invalid value [%s]\n", #param, value); =
-\
-+                       return -1; \
-+               } \
-+               if (conf->param !=3D new_val) { \
-+                       pr_debug("%s: old value %u -> new value %u\n", \
-+                                #param, conf->param, new_val); \
-+                       conf->param =3D new_val; \
-+               } \
-+               return 0; \
-+       } \
-+} while (0)
++static void cl_coredump_done(struct cl_hw *cl_hw)
++{
++       /*
++        * Print MIB counters only if watchdog is disabled,
++        * otherwise the dump of prints effects the recovery
++        */
++       if (cl_hw->conf->ce_fw_watchdog_mode =3D=3D FW_WD_DISABLE)
++               cl_mib_cntrs_dump(cl_hw);
 +
-+#define READ_U32(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               u32 new_val =3D 0; \
-+               if (kstrtou32(value, 0, &new_val) !=3D 0) { \
-+                       pr_err("%s: invalid value [%s]\n", #param, value); =
-\
-+                       return -1; \
-+               } \
-+               if (conf->param !=3D new_val) { \
-+                       pr_debug("%s: old value %u -> new value %u\n", \
-+                                #param, conf->param, new_val); \
-+                       conf->param =3D new_val; \
-+               } \
-+               return 0; \
-+       } \
-+} while (0)
++       if (!test_bit(CL_DEV_STARTED, &cl_hw->drv_flags))
++               return;
 +
-+#define READ_S8(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               s8 new_val =3D 0; \
-+               if (kstrtos8(value, 0, &new_val) !=3D 0) { \
-+                       pr_err("%s: invalid value [%s]\n", #param, value); =
-\
-+                       return -1; \
-+               } \
-+               if (conf->param !=3D new_val) { \
-+                       pr_debug("%s: old value %d -> new value %d\n", \
-+                                #param, conf->param, new_val); \
-+                       conf->param =3D new_val; \
-+               } \
-+               return 0; \
-+       } \
-+} while (0)
++       /*
++        * Assuming firmware cannot request next dump before we release the=
+ host buffer
++        *  so no need to sync the following against error_ind()
++        */
++       cl_hw->debugfs.trace_prst =3D false;
++#ifdef CONFIG_CL_PCIE
++       cl_ipc_dbginfobuf_push(cl_hw->ipc_env, cl_hw->dbginfo.dma_addr);
++#endif
++       if (cl_hw->dbginfo.buf->u.dump.general_data.error_type =3D=3D DBG_E=
+RROR_FATAL ||
++           cl_hw->assert_info.restart_needed) {
++               cl_dbg_err(cl_hw, "Starting recovery due to unrecoverable a=
+ssert\n");
++               cl_recovery_start(cl_hw, RECOVERY_UNRECOVERABLE_ASSERT);
++       }
++}
 +
-+#define READ_S16(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               s16 new_val =3D 0; \
-+               if (kstrtos16(value, 0, &new_val) !=3D 0) { \
-+                       pr_err("%s: invalid value [%s]\n", #param, value); =
-\
-+                       return -1; \
-+               } \
-+               if (conf->param !=3D new_val) { \
-+                       pr_debug("%s: old value %d -> new value %d\n", \
-+                                #param, conf->param, new_val); \
-+                       conf->param =3D new_val; \
-+               } \
-+               return 0; \
-+       } \
-+} while (0)
++static void cl_coredump_work(struct work_struct *ws)
++{
++       struct cl_debugfs *debugfs =3D container_of(ws, struct cl_debugfs, =
+coredump_work);
++       struct cl_hw *cl_hw =3D container_of(debugfs, struct cl_hw, debugfs=
+);
++       unsigned long flags;
 +
-+#define READ_S32(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               s32 new_val =3D 0; \
-+               if (kstrtos32(value, 0, &new_val) !=3D 0) { \
-+                       pr_err("%s: invalid value [%s]\n", #param, value); =
-\
-+                       return -1; \
-+               } \
-+               if (conf->param !=3D new_val) { \
-+                       pr_debug("%s: old value %d -> new value %d\n", \
-+                                #param, conf->param, new_val); \
-+                       conf->param =3D new_val; \
-+               } \
-+               return 0; \
-+       } \
-+} while (0)
++       debugfs->coredump_call_tstamp =3D jiffies;
 +
-+#define READ_BOOL_ARR(param, size) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               int ret =3D 0; \
-+               bool old_val[size] =3D {false}; \
-+               memcpy(old_val, conf->param, sizeof(old_val)); \
-+               ret =3D cl_strtobool_vector(value, conf->param, size, ",");=
- \
-+               if (ret =3D=3D 0) { \
-+                       if (memcmp(old_val, conf->param, sizeof(old_val))) =
-\
-+                               PRINT_UNSIGNED_ARR(param, old_val, size, va=
-lue); \
-+               } else if (ret =3D=3D -E2BIG) { \
-+                       pr_err("%s: value [%s] too big [%zu]\n", #param, va=
-lue, strlen(value)); \
-+               } else if (ret =3D=3D -EIO) { \
-+                       pr_err("%s: delimiter ',' not found\n", #param); \
-+               } else if (ret =3D=3D -EINVAL) { \
-+                       pr_err("%s: invalid argument [%s]\n", #param, value=
-); \
-+               } else if (ret =3D=3D -1) { \
-+                       pr_err("%s: value [%s] doesn't have %u elements\n",=
- #param, value, size); \
-+               } \
-+               return ret; \
-+       } \
-+} while (0)
-+
-+#define READ_U8_ARR(param, size) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               int ret =3D 0; \
-+               u8 old_val[size] =3D {0}; \
-+               memcpy(old_val, conf->param, sizeof(old_val)); \
-+               ret =3D cl_strtou8_vector(value, conf->param, size, ","); \
-+               if (ret =3D=3D 0) { \
-+                       if (memcmp(old_val, conf->param, sizeof(old_val))) =
-\
-+                               PRINT_UNSIGNED_ARR(param, old_val, size, va=
-lue); \
-+               } else if (ret =3D=3D -E2BIG) { \
-+                       pr_err("%s: value [%s] too big [%zu]\n", #param, va=
-lue, strlen(value)); \
-+               } else if (ret =3D=3D -EIO) { \
-+                       pr_err("%s: delimiter ',' not found\n", #param); \
-+               } else if (ret =3D=3D -EINVAL) { \
-+                       pr_err("%s: invalid argument [%s]\n", #param, value=
-); \
-+               } else if (ret =3D=3D -1) { \
-+                       pr_err("%s: value [%s] doesn't have %u elements\n",=
- #param, value, size); \
-+               } \
-+               return ret; \
-+       } \
-+} while (0)
-+
-+#define READ_U16_ARR(param, size) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               int ret =3D 0; \
-+               u16 old_val[size] =3D {0}; \
-+               memcpy(old_val, conf->param, sizeof(old_val)); \
-+               ret =3D cl_strtou16_vector(value, conf->param, size, ","); =
-\
-+               if (ret =3D=3D 0) { \
-+                       if (memcmp(old_val, conf->param, sizeof(old_val))) =
-\
-+                               PRINT_UNSIGNED_ARR(param, old_val, size, va=
-lue); \
-+               } else if (ret =3D=3D -E2BIG) { \
-+                       pr_err("%s: value [%s] too big [%zu]\n", #param, va=
-lue, strlen(value)); \
-+               } else if (ret =3D=3D -EIO) { \
-+                       pr_err("%s: delimiter ',' not found\n", #param); \
-+               } else if (ret =3D=3D -EINVAL) { \
-+                       pr_err("%s: invalid argument [%s]\n", #param, value=
-); \
-+               } else if (ret =3D=3D -1) { \
-+                       pr_err("%s: value [%s] doesn't have %u elements\n",=
- #param, value, size); \
-+               } \
-+               return ret; \
-+       } \
-+} while (0)
-+
-+#define READ_U32_ARR(param, size) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               int ret =3D 0; \
-+               u32 old_val[size] =3D {0}; \
-+               memcpy(old_val, conf->param, sizeof(old_val)); \
-+               ret =3D cl_strtou32_vector(value, conf->param, size, ","); =
-\
-+               if (ret =3D=3D 0) { \
-+                       if (memcmp(old_val, conf->param, sizeof(old_val))) =
-\
-+                               PRINT_UNSIGNED_ARR(param, old_val, size, va=
-lue); \
-+               } else if (ret =3D=3D -E2BIG) { \
-+                       pr_err("%s: value [%s] too big [%zu]\n", #param, va=
-lue, strlen(value)); \
-+               } else if (ret =3D=3D -EIO) { \
-+                       pr_err("%s: delimiter ',' not found\n", #param); \
-+               } else if (ret =3D=3D -EINVAL) { \
-+                       pr_err("%s: invalid argument [%s]\n", #param, value=
-); \
-+               } else if (ret =3D=3D -1) { \
-+                       pr_err("%s: value [%s] doesn't have %u elements\n",=
- #param, value, size); \
-+               } \
-+               return ret; \
-+       } \
-+} while (0)
-+
-+#define READ_S8_ARR(param, size) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               int ret =3D 0; \
-+               s8 old_val[size] =3D {0}; \
-+               memcpy(old_val, conf->param, sizeof(old_val)); \
-+               ret =3D cl_strtos8_vector(value, conf->param, size, ","); \
-+               if (ret =3D=3D 0) { \
-+                       if (memcmp(old_val, conf->param, sizeof(old_val))) =
-\
-+                               PRINT_SIGNED_ARR(param, old_val, size, valu=
-e); \
-+               } else if (ret =3D=3D -E2BIG) { \
-+                       pr_err("%s: value [%s] too big [%zu]\n", #param, va=
-lue, strlen(value)); \
-+               } else if (ret =3D=3D -EIO) { \
-+                       pr_err("%s: delimiter ',' not found\n", #param); \
-+               } else if (ret =3D=3D -EINVAL) { \
-+                       pr_err("%s: invalid argument [%s]\n", #param, value=
-); \
-+               } else if (ret =3D=3D -1) { \
-+                       pr_err("%s: value [%s] doesn't have %u elements\n",=
- #param, value, size); \
-+               } \
-+               return ret; \
-+       } \
-+} while (0)
-+
-+#define READ_S16_ARR(param, size) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               int ret =3D 0; \
-+               s16 old_val[size] =3D {0}; \
-+               memcpy(old_val, conf->param, sizeof(old_val)); \
-+               ret =3D cl_strtos16_vector(value, conf->param, size, ","); =
-\
-+               if (ret =3D=3D 0) { \
-+                       if (memcmp(old_val, conf->param, sizeof(old_val))) =
-\
-+                               PRINT_SIGNED_ARR(param, old_val, size, valu=
-e); \
-+               } else if (ret =3D=3D -E2BIG) { \
-+                       pr_err("%s: value [%s] too big [%zu]\n", #param, va=
-lue, strlen(value)); \
-+               } else if (ret =3D=3D -EIO) { \
-+                       pr_err("%s: delimiter ',' not found\n", #param); \
-+               } else if (ret =3D=3D -EINVAL) { \
-+                       pr_err("%s: invalid argument [%s]\n", #param, value=
-); \
-+               } else if (ret =3D=3D -1) { \
-+                       pr_err("%s: value [%s] doesn't have %u elements\n",=
- #param, value, size); \
-+               } \
-+               return ret; \
-+       } \
-+} while (0)
-+
-+#define READ_S32_ARR(param, size) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               int ret =3D 0; \
-+               s32 old_val[size] =3D {0}; \
-+               memcpy(old_val, conf->param, sizeof(old_val)); \
-+               ret =3D cl_strtos32_vector(value, conf->param, size, ","); =
-\
-+               if (ret =3D=3D 0) { \
-+                       if (memcmp(old_val, conf->param, sizeof(old_val))) =
-\
-+                               PRINT_SIGNED_ARR(param, old_val, size, valu=
-e); \
-+               } else if (ret =3D=3D -E2BIG) { \
-+                       pr_err("%s: value [%s] too big [%zu]\n", #param, va=
-lue, strlen(value)); \
-+               } else if (ret =3D=3D -EIO) { \
-+                       pr_err("%s: delimiter ',' not found\n", #param); \
-+               } else if (ret =3D=3D -EINVAL) { \
-+                       pr_err("%s: invalid argument [%s]\n", #param, value=
-); \
-+               } else if (ret =3D=3D -1) { \
-+                       pr_err("%s: value [%s] doesn't have %u elements\n",=
- #param, value, size); \
-+               } \
-+               return ret; \
-+       } \
-+} while (0)
-+
-+#define READ_STR(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               if (strcmp(value, conf->param)) { \
-+                       pr_debug("%s: old value %s -> new value %s\n", \
-+                                #param, conf->param, value); \
-+                       strncpy(conf->param, value, sizeof(conf->param) - 1=
-); \
-+               } \
-+               return 0; \
-+       } \
-+} while (0)
-+
-+#define READ_MAC(param) \
-+do { \
-+       if (!strcmp(name, #param)) { \
-+               u8 old_val[ETH_ALEN] =3D {0}; \
-+               memcpy(old_val, conf->param, ETH_ALEN); \
-+               if (cl_strtou8_hex_vector(value, conf->param, ETH_ALEN, ":"=
-)) \
-+                       return -1; \
-+               if (memcmp(old_val, conf->param, sizeof(old_val))) \
-+                       pr_debug("%s: old value %pM -> new value %pM\n", \
-+                                #param, old_val, conf->param); \
-+               return 0; \
-+       } \
-+} while (0)
-+
-+#define print_signed(var) \
-+       pr_debug("%s =3D %d\n", #var, conf->var)
-+
-+#define print_unsigned(var) \
-+       pr_debug("%s =3D %u\n", #var, conf->var)
-+
-+#define print_bool(var) \
-+       pr_debug("%s =3D %s\n", #var, conf->var ? "true" : "false")
-+
-+#define print_str(var) \
-+       pr_debug("%s =3D %s\n", #var, conf->var)
-+
-+#define print_mac(var) \
-+       pr_debug("%s =3D %pM\n", #var, conf->var)
-+
-+#define print_hex(var) \
-+       pr_debug("%s =3D 0x%x\n", #var, conf->var)
-+
-+#define print_signed_arr(var, size) \
-+       { \
-+               int i, len; \
-+               char str[256] =3D {0}; \
-+               len =3D snprintf(str, sizeof(str), "%s =3D ", #var); \
-+               for (i =3D 0; i < (size); i++) \
-+                       len +=3D snprintf(str + len, sizeof(str) - len, \
-+                                       "%d%s", conf->var[i], (i < ((size) =
-- 1)) ? "," : ""); \
-+               pr_debug("%s\n", str); \
++       cl_coredump_generate(cl_hw);
++       if (cl_ela_is_on(cl_hw->chip)) {
++               cl_ela_lcu_reset(cl_hw->chip);
++               cl_ela_lcu_apply_config(cl_hw->chip);
 +       }
 +
-+#define print_unsigned_arr(var, size) \
-+       { \
-+               int i, len; \
-+               char str[256] =3D {0}; \
-+               len =3D snprintf(str, sizeof(str), "%s =3D ", #var); \
-+               for (i =3D 0; i < (size); i++) \
-+                       len +=3D snprintf(str + len, sizeof(str) - len, \
-+                                       "%u%s", conf->var[i], (i < ((size) =
-- 1)) ? "," : ""); \
-+               pr_debug("%s\n", str); \
++       spin_lock_irqsave(&debugfs->coredump_lock, flags);
++       if (!debugfs->unregistering)
++               cl_coredump_done(cl_hw);
++       debugfs->coredump_scheduled =3D false;
++       spin_unlock_irqrestore(&debugfs->coredump_lock, flags);
++}
++
++int cl_coredump_trigger(struct cl_hw *cl_hw)
++{
++       struct cl_debugfs *debugfs =3D &cl_hw->debugfs;
++       unsigned long flags;
++       unsigned long curr_time =3D jiffies;
++       unsigned int diff_time =3D jiffies_to_msecs(curr_time - debugfs->co=
+redump_call_tstamp);
++
++       if (diff_time < cl_hw->conf->ci_coredump_diff_time_ms) {
++#ifdef CONFIG_CL_PCIE
++               cl_ipc_dbginfobuf_push(cl_hw->ipc_env, cl_hw->dbginfo.dma_a=
+ddr);
++#endif
++               cl_dbg_verbose(cl_hw,
++                              "Skip coredump - time from previous call=3D%=
+u m-sec\n",
++                              diff_time);
++               return -1;
 +       }
 +
-+struct cl_hw;
++       spin_lock_irqsave(&debugfs->coredump_lock, flags);
++       if (debugfs->coredump_scheduled) {
++               spin_unlock_irqrestore(&debugfs->coredump_lock, flags);
++               cl_dbg_verbose(cl_hw, ": Already scheduled\n");
++               return -EBUSY;
++       }
 +
-+bool cl_config_is_non_driver_param(char *name);
-+int cl_config_cli(struct cl_hw *cl_hw, struct cli_params *cli_params);
++       if (debugfs->unregistering) {
++               spin_unlock_irqrestore(&debugfs->coredump_lock, flags);
++               cl_dbg_verbose(cl_hw, ": unregistering\n");
++               return -ENOENT;
++       }
 +
-+#endif /* CL_CONFIG_H */
++       debugfs->coredump_scheduled =3D true;
++       debugfs->trace_prst =3D true;
++       ktime_get_real_ts64(&cl_hw->dbginfo.trigger_tstamp);
++
++       schedule_work(&debugfs->coredump_work);
++       spin_unlock_irqrestore(&debugfs->coredump_lock, flags);
++
++       return 0;
++}
++
++bool cl_coredump_recovery(struct cl_hw *cl_hw, int reason)
++{
++       struct cl_debugfs *debugfs =3D &cl_hw->debugfs;
++       unsigned long flags;
++       bool need_restart =3D false;
++
++       spin_lock_irqsave(&debugfs->coredump_lock, flags);
++
++       if (!debugfs->coredump_scheduled) {
++               cl_dbg_trace(cl_hw,
++                            "Starting recovery due to reason:%d\n",
++                            reason);
++               cl_recovery_start(cl_hw, reason);
++       } else {
++               need_restart =3D true;
++       }
++
++       spin_unlock_irqrestore(&debugfs->coredump_lock, flags);
++
++       return need_restart;
++}
++
++bool cl_coredump_is_scheduled(struct cl_hw *cl_hw)
++{
++       struct cl_debugfs *debugfs =3D &cl_hw->debugfs;
++
++       return debugfs->coredump_scheduled;
++}
++
++void cl_coredump_reset_trace(struct cl_hw *cl_hw)
++{
++       struct cl_debugfs *debugfs =3D &cl_hw->debugfs;
++
++       debugfs->trace_prst =3D false;
++}
++
++void cl_coredump_init(struct cl_hw *cl_hw, struct dentry *dir_drv)
++{
++       struct cl_debugfs *debugfs =3D &cl_hw->debugfs;
++
++       debugfs->dir =3D dir_drv;
++       debugfs->unregistering =3D false;
++       debugfs->trace_prst =3D false;
++       debugfs->coredump_scheduled =3D false;
++
++       INIT_WORK(&debugfs->coredump_work, cl_coredump_work);
++
++       spin_lock_init(&debugfs->coredump_lock);
++
++       /*
++        * Initialize coredump_call_tstamp to current time minus
++        * (ci_coredump_diff_time_ms + 1), so that if assert happens immedi=
+ately
++        * coredump will be called.
++        */
++       debugfs->coredump_call_tstamp =3D jiffies -
++               msecs_to_jiffies(cl_hw->conf->ci_coredump_diff_time_ms + 1)=
+;
++}
++
++void cl_coredump_close(struct cl_hw *cl_hw)
++{
++       struct cl_debugfs *debugfs =3D &cl_hw->debugfs;
++
++       flush_work(&debugfs->coredump_work);
++
++       if (!debugfs->dir)
++               return;
++
++       debugfs->unregistering =3D true;
++       debugfs_remove_recursive(debugfs->dir);
++       debugfs->dir =3D NULL;
++}
 --
 2.30.0
 
