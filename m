@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE1FD3AB8B5
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25F8A3AB8BA
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:08:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232395AbhFQQJ4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:09:56 -0400
-Received: from mail-vi1eur05on2059.outbound.protection.outlook.com ([40.107.21.59]:25895
-        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
+        id S232657AbhFQQKG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:10:06 -0400
+Received: from mail-eopbgr140087.outbound.protection.outlook.com ([40.107.14.87]:56046
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231359AbhFQQIo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:08:44 -0400
+        id S231560AbhFQQJE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:09:04 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GB420Hug63GGBT+rZeARvs11yCNZZ3CqjinsgI8ztqGRTFXpJKUA0A/tq5IEoMBfoQ1oytlaZy4EyTifI5wODRXa+eJ1EvQM2vxipSoLcpC9Kr+qB/7HEJr1YakbfxUBuhXc9YpnlabwYRDi2ZZqjuZL9lKVwZK8zTeNGLaEvhsmAE0vZk7dEQTDEJ5tBQ4ZNQJEeQkAq+fIkB+zO/jQdfmVC0TKoDXPH/RHz7O+bd2ZR6OG44MrtQDZ1izbDJ/XTDgQ3pMao37d4Va4GxOgoHVcb6MFgW8QLLqZeOdraDGPbdhH/AiLq3Aeytyw4oito3lWLXB48oevwICXcrGK/A==
+ b=DAwKzYiUSZ64HahSEKz4fFuk9S6tl2E6cqgF5kUeRDHwHUi4OmbSk17cfLPsttVdcpF2OfTq0a6+psCaC15RxzRwWgWvnKlsObrIRBdbUOJ7u/Xuc+NbEGUGHqGng7yFYDK/NShc+R86EFBkyVUvPyCYEYHf5tsjKhRA0nkgUQ44EIFSiY/Kpykw/iHjhGdoE2TPppvi+hFXqbMqkJqCF+t09W2AvkvfULgeBvOvKWNbLAuhFvNusSta8+LDxcxAznNr+h4KE8pbpXi2FrvMY+WHntBoCuvFCT+TQm2OEUtVEzB6LOb8t6ausn0kYHAkmOIuZxsVPgW9gwGeY30nRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VGQnrjiPruHw668xAocl4HnllWb+EoZhdXPaTaTywq4=;
- b=mfWIFDsJc4YyVoq/wvgEphvIG2KCYgHGV2/Dvyof9+JeJX45jz2KH85QareBuKCfUdEobI7vHiVxrsHoZflAfifg5FQMbtlEYl/oZQMH4GQNnOZ6kkfluFB2zpZ1PmXJjORgn+u/ny3z9tieLv9C4X3hZ7/QqriBuknAkwMyzllcSkeTvh0V2o+rPRQQrlN4vkioMFEsySDOWK8eTq2l1P5DBM8N6ho5bZ7RQweEDWXSQ/cnBPb72TwyTR1xT1XWktQUExTj1MQMiphYJyqRCAllyJYbNW2bO1hL+6uLnA5+wmcjIwCw5ODQkOpkCzQG3gMtUE0woGoqcAN/xTGX1w==
+ bh=tDCgxlAHrdIZjNA6d4trn0H2uoexJBlJTlkBnIjgOko=;
+ b=UA3afv5fr5a6afBDeUZ/g2Tb412ysg8aXGbA5H9QH//hvj3dmq6zXF4rMl8Sx4CO5a56Fq/L6n/f3djVlKJvpDu64zKquHD1KUOLOx5LgUuZ0RhGq+D3M7dLcM53iI1SaThr5dxaFFw9fY48uu6HzmYagXvX0J9QbpOEb4QTZJpvasqZFTYKZLKp/uOWx5vBPYlgMAhghcngSJhNZb4XgEHXexbX51wFj2vPOmGgjNxoRnHlwJv25lpuP1umRn884Y9QWhNKTSsS0PG/7O09W7pxQywbew7o+JFdxUcu3ycTKfprzgJib16X7NldPDZel3EsVieL06weAxQCqUcQlQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VGQnrjiPruHw668xAocl4HnllWb+EoZhdXPaTaTywq4=;
- b=eVyp4jXJ8fSrZG2N+o38/gOLxUXcf9PFld13cNpQRydNy3g7iGMtVU/ChZuZkWk64vObGKQADdPb6ue0Vnh7NEOX79qqRsruKjG7Ox0Ys+ZlpuF0NAdMQf7H9/b+2jspZpUO4b42gyMzRpOsd95iG811vx2hhHPRKe5hLj6UJ3g=
+ bh=tDCgxlAHrdIZjNA6d4trn0H2uoexJBlJTlkBnIjgOko=;
+ b=0kjs7A0/pQO2E8drE95XV3ttQTBYDJpcID6d1xUHaXaZMJKxJPIXCAmOvofFVC8t+hywfwcy6NMMPlxl5EApvcjKUNseWwvCzj8TrFJ+O0qUjlE8PLjgMUV8J/S1QqMoUZ9wMlgulYKeWrys7gnhm81aOvtnwWqFbdIo60Gqsc4=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 143/256] cl8k: add rate_ctrl.c
-Date:   Thu, 17 Jun 2021 16:00:30 +0000
-Message-Id: <20210617160223.160998-144-viktor.barna@celeno.com>
+Subject: [RFC v1 144/256] cl8k: add rate_ctrl.h
+Date:   Thu, 17 Jun 2021 16:00:31 +0000
+Message-Id: <20210617160223.160998-145-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:11 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:12 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7d590eb9-5275-425a-9e4b-08d931a9afcb
+X-MS-Office365-Filtering-Correlation-Id: 9002c221-fa6e-4717-66f8-08d931a9b074
 X-MS-TrafficTypeDiagnostic: AM8P192MB1059:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM8P192MB1059ECED1686214E159AFD03F60E9@AM8P192MB1059.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
+X-Microsoft-Antispam-PRVS: <AM8P192MB10590DB4A1F87D8944A167FCF60E9@AM8P192MB1059.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2089;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Hb7jgwHtF1T+6c1M+ieNdycLukvJKiNlSAuU2xqe26EC5WufKJAVZ4V08xlVI3CAbdccRyR3CrQuhbMLJLrTXC98+nUZrXez7cc8gpvhY3HzrN+s2aL2OPeleejZCaKhbeWPCjdNuTNKNOpRBPKtHEJWHhbKZerpM6NK6O4vUtQZ8Op1QWvqpVkt3s5PyOLpSEjCgxMFxzdowOJ399khImh26MUuQ4NPatNtdF/scIDYn6wLfgWL0hsWOEDI43co82frWHu3JXc32Wk1GJk0HOOiGtODqtpYRCcABZGmnROQY0VWKwWY4IG4/YWp7nkizkuoVhZ7wh6j41a2cKe1JIuDxrq3+HurouDd/diaZKh7ShdIKaZ8ef5qtyJE8MmUDD9upC2jnsskLHraEs5z0sXcQ0BMcl9m1lhqVYgPbNEJXb9vWmvFCNqD3AkVqcNIc8ognqPwh4imCSOdf13Fupg7F4Dwsb/q5QMty88ymsskWxGPmz86fFXsL62QYF7z6Dj0ENW96Kd7M3WGWJVLAtmjC1pY3/V85Nit3Ak2XwM6POXZZBPyFhUihqgdklkZLVJUrgLhrSEwgYJkTUOQ5SZgkiAu42qmG4BYWu9Kw+6+krlzmJ/pP83NF0SMCQVx0rt7diyDV6cpu8emQG/XDS2gmMm7mTuxVBizg14GCvFiOCp+paJgqh0Acicv26bU0ElxZE675DrnYs2EGUaG4Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(26005)(956004)(498600001)(186003)(66556008)(16526019)(107886003)(66946007)(66476007)(8936002)(6916009)(2616005)(1076003)(2906002)(54906003)(6506007)(6666004)(4326008)(38100700002)(38350700002)(83380400001)(9686003)(6512007)(5660300002)(6486002)(86362001)(55236004)(36756003)(52116002)(8676002)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: eTcUQNCO/2T1lefR+4NIjVIWUCt6kxvN0yh3t5EhvMDrsN9hRrK/5f2CQ8uZ77LzbzsbJ8fR1Sw1Z4MvnzF8SMAq6v4Lwkk+jW5pZph//qnOTXQ0chaDOnSxYInpHbMvFzb1SRnarG7z84h6dR9hpSe6HOmjNsDoTCNL5Bx/DEc+te/Od1XamXxiFk4hfzrCH0Qq0Ws5Gn/f8LtTS4i/MmfaDNXUYb+ZfKJLRyHkpb0n7uH25fmb0BjPBa4tGhvBS1IBSst3iZOhpkGAxCMgQZ+uNjqOhfppfsD+qsgKycmvpJGBKx0/t0Evn7IQaXew2O1AK8stZrMkmo30S2Q/CXpQgW8aXqQoWMqKimPcf617kVfVDpclG+XsGAM3rl16CrJNTJme2UmwQ1VrI7ry/7cT65cFBp5aWM8fZr6zqXAtsdXexP7klkDFXIIayrdUm2WoJQ0j+lwhdCdQuXhnHTW3cyYRvwQxRXVdsIlns3musCyjZcPSJtbQpXk6kjigInuHB0y6gghrxm3naXFcASNeQWexzz34ukWeB25ieH2wPrUv04hRvds15T8YE/x2UpI4hnYY537gfnTI+W+Cpalw0s8HnjQ/usLF636JP/xilP2zPNqLkKwPNxqyIvjVL0v4CTn6APBE2DQLAUIK8hv2FYEjxh6sTTSHHPtOTPIBzWct7/w5e5jJXt10SExZBHFf64btKIW7pGQEvKid2w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(39840400004)(346002)(136003)(376002)(396003)(366004)(26005)(956004)(478600001)(186003)(66556008)(16526019)(107886003)(66946007)(66476007)(8936002)(6916009)(2616005)(1076003)(2906002)(54906003)(6506007)(6666004)(4326008)(38100700002)(38350700002)(83380400001)(9686003)(6512007)(5660300002)(6486002)(86362001)(316002)(55236004)(36756003)(52116002)(8676002)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?pLdawf4SNSLBALghtSgmOSB80pqDL6bvraOZfM+S8sWTbxpg6WwLbZ0kD9TD?=
- =?us-ascii?Q?rgFgrjAI2uNrrxpRGVrMfwKmgyx2keARQhFeGKntTjW3Ur0wyN/XsD8EHp/f?=
- =?us-ascii?Q?sFkSW1Uv+zq0EEgXYRd12uQF4fSgqX2fBrvAOg8mWRpFkS9+USWGIZaJ/d7a?=
- =?us-ascii?Q?ao5VsKyRAUAON2iJeXk74BeNKnB2ICd3114Q/FrY7CrRZtIK/wDHgR2HKS7R?=
- =?us-ascii?Q?m5rH7njBZTAFtff49mRN7BAA+LLlsgpwobYomV/ne/Uae4KFBDwlUQtq19DA?=
- =?us-ascii?Q?I7sdBZtRBt/JRQ8z/V/dcRKuFOvhC36FyWK2xekZmPEO+hDZDzW+QSSmN2Nr?=
- =?us-ascii?Q?CA6VL9/sp3J2zez5reanyTs5Rq9i0pdf3QFn6iUnZ4E9fP+1fiyDRm2AET+T?=
- =?us-ascii?Q?lw1yG/ho1V5DzjohehNPEPur50Akqpl6u8bwVohZ3ZvCx0wliP5Ep2Mzs+sg?=
- =?us-ascii?Q?uUBDn+Mn1UN7MZhzqPlQJkytdb7ufKDu0vfs+rOE1Kh+ddNjAilccR3F+1Vy?=
- =?us-ascii?Q?1JI9qYvKmX6kAlt7DzN4l2dtrEKBFAIiCqDjipU43zUzOxPK+sf1DUv6if6g?=
- =?us-ascii?Q?XZGf9qkohuvNB3qZGeWGmVHiAVYVPmjFJQIKOkLhPOxNmeX0XObV0nyL9IDK?=
- =?us-ascii?Q?EDPCy3KrD9TBzxy5sEmg9OC08wFlKyJxSHOnr4J1LGWeBkJJPWeg2NM5hpsD?=
- =?us-ascii?Q?32Uc28cadm4Rezlm9vuWr5yTWr6N8ZBdhe+P5ZwM/oUM1SajnXI5XP6pZ+3L?=
- =?us-ascii?Q?HyWklH7e/g96szAwEZXqE9wjnVuJDx1NPHSU5AhVBcrLV8WcAhzP90kWDeFQ?=
- =?us-ascii?Q?4pGzPWxxAt2C9YebAG24qg1TecUZxeH0vqsLaismFqw1Crqyv9HjJciGp2/X?=
- =?us-ascii?Q?Rx6OJRNpj5KPpv0JoNGM8bnqfy+1mRW+NGBEsi+3+MpUqWvq2OegCC+qbpIc?=
- =?us-ascii?Q?UYxHKCGgHrJYd/cuysTOmi5XVzSZQcvoewQdQicDBRJPFAfrirYTN0VJ7MSd?=
- =?us-ascii?Q?FAjDeBtCxlwL6Nrs/db1kC50+plpjsFC/pS9XF4rV5+MxGNacOuUsJ7RtXBv?=
- =?us-ascii?Q?JobhaKBE+wL+maqQ392VHT9j2o/8O8ywS+WhhZmOhu6Jnpvc+BtjgbN1X8YQ?=
- =?us-ascii?Q?n6GzslF0socPOzyWzJWCK5B0Xl79DSJD0IFbuNR+ZeuRitZSDk5qSocgjfoR?=
- =?us-ascii?Q?zTPITKu1AMLQsxM9qKPN4/k8BeGSQ5blYS0EL6n2FmpFOOiNKVjvRLmHAxed?=
- =?us-ascii?Q?Pxnz6sNuRanHZ2565uF+mgCgE4zx86ydT3gmUimDPUN8nOyLUYggJdJbf/Lq?=
- =?us-ascii?Q?XlD+RKJ4DoeowNsSGTOVWEmB?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?I/k3RROWX/P9DbTp/qlIMbdU1x+KFjCVuC8FRobLokfrdsBXa5n7PsEy5ZbM?=
+ =?us-ascii?Q?FGVdFeRa+wgNcyP48vnZtjKBlUPNhwhiVNl+YjKpKZX8cdJai05I0YYU9P8h?=
+ =?us-ascii?Q?AmJg6Bk9v41v8VEIs5ozx2nNhtZDUwk1ExBcGDhuC4kGWg1gbKGm5M+9iDrv?=
+ =?us-ascii?Q?U3CLXN/Xg/d8PfXYaf9FLiLuaSlDEY+eRd/wBrfojECPS0imlcZnl5G2qi9x?=
+ =?us-ascii?Q?9PDAGsDjlaq5GO/rjtG8nGTNolc00mLNFG7nqtqK8r378oC/wK1nyHEw5QHE?=
+ =?us-ascii?Q?mkCULYCH7YRNPNo45kIBCmhLHWebzp9H+YhSrxox2XTVU5aI2gKUBB1MCLek?=
+ =?us-ascii?Q?+9CsMAkBA3LhnzuYSOtKtE7VSvvuSGvww6UBISp8FCe3DxX6HwXjPsumcmVb?=
+ =?us-ascii?Q?o+1HjSow4LhQSUnoVguG2A2zZMrCyQDKTIT5B3Terv1DljdV5rGGYp3eMJQo?=
+ =?us-ascii?Q?6Wude5y4Yzbh+PWfNzVm/afjfztr+vgowvOpsWyFJWBBrRVlGYNwqqNLKytn?=
+ =?us-ascii?Q?g5qttxKc41HBhMLAlhC4TkV9PV+JdXPzA6036TLjqrj4qSYjvMyqxS2T6er3?=
+ =?us-ascii?Q?lRoYtglUAkXwbQJAlcxzwmqz3o2fcflFyPGQNd5pIoQniaEEeFLCxLn9+AXO?=
+ =?us-ascii?Q?Q/rkpu4fXbeHAAt1uIaXiDyoVamDwrmkWVaZV9wu+wkwS07WzhQSZAb/QlRn?=
+ =?us-ascii?Q?ELfQbHEsKNMttB0cD7106ySbsZvhlZxLVE5VfTv/C6vs4KCauPGzPQLmIaAo?=
+ =?us-ascii?Q?U2cc/N9DLmumcif/hU/x69cfbdxl7gAageyZpEykvyb+xiHj7mzcsgPYdVhS?=
+ =?us-ascii?Q?iDKt/73xJ7/etMm2BpKdzeLwhVH0MOscCz5dMRM3KUY20oTfpsYkUkb2scqz?=
+ =?us-ascii?Q?w0BQQyo3dgEiJbYJxAD5fm3XZItw/moYtygC2YVES7uQh7drjI01gx0pPm42?=
+ =?us-ascii?Q?GUMVvhpPukQ5GQECVc3VGe26sTzIlGeRQnpnJzTx7Go/DoPP7h4KWRZOvTBJ?=
+ =?us-ascii?Q?sjZcYIEd8Ry58nOfcY6YCCNAajJxk5OI1Mvj4I/qI0tjugdbDEHCXI8kgBv/?=
+ =?us-ascii?Q?ubjvTcLrCsxJci/AI/bucKStIXV6VSHml3s6fVkl6/yAVHyYdjhujKV5QjnV?=
+ =?us-ascii?Q?ksohVRxGLQKOu4vDyXLIEB862ROKiw7bJ/gWnkeMArqLwGJ7WrkjgkZtSXXF?=
+ =?us-ascii?Q?VSCCxEew9T257csOn/ubBFvmp2ClTBqDJtnFpv+22b2+OLII0onkO/Bk/gbD?=
+ =?us-ascii?Q?jAqLRPEgVVLEExPN3szdtBvMtI8/QXB1AAqxXKbB3e0+LsQcFWG+wowHSors?=
+ =?us-ascii?Q?41oUJWZ/8GGs/DvuV8CPjK2R?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d590eb9-5275-425a-9e4b-08d931a9afcb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9002c221-fa6e-4717-66f8-08d931a9b074
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:12.0268
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:13.1080
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gh8k3xg9ueZ5DpsmiJv7alN/I51FyCKbI19QQFIe8Doo26BbnkVNIgwi4TA31cOT52mxZSo6+NS5/mJ1HUjn4Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: QjhtBBgECnR81xc5wmO2Zfx2/9B+sPM3p7BikxlxhsBYcJzlkWOGkSYIPa/BlBEZonNx3sCF0i3Dl1/jrU7aSg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P192MB1059
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,326 +119,128 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/rate_ctrl.c | 276 +++++++++++++++++++
- 1 file changed, 276 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/rate_ctrl.c
+ drivers/net/wireless/celeno/cl8k/rate_ctrl.h | 106 +++++++++++++++++++
+ 1 file changed, 106 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/rate_ctrl.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/rate_ctrl.c b/drivers/net/wir=
-eless/celeno/cl8k/rate_ctrl.c
+diff --git a/drivers/net/wireless/celeno/cl8k/rate_ctrl.h b/drivers/net/wir=
+eless/celeno/cl8k/rate_ctrl.h
 new file mode 100644
-index 000000000000..960ca4ea4473
+index 000000000000..181f6e31ca00
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/rate_ctrl.c
-@@ -0,0 +1,276 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/rate_ctrl.h
+@@ -0,0 +1,106 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "rate_ctrl.h"
-+#include "tx/tx.h"
-+#include "band.h"
-+#include "bf.h"
-+#include "fw/msg_tx.h"
-+#include "utils/utils.h"
++#ifndef CL_RATE_CTRL_H
++#define CL_RATE_CTRL_H
++
++#include <linux/types.h>
++#include "ipc_shared.h"
++
++#define RATE_CTRL_OFFSET_OFDM          4
++#define RATE_CNTRL_HE_SPATIAL_CONF_DEF 0xF
++
++/* Op_mode field in mm_update_rate_dl_req structure */
++enum cl_op_mode {
++       RATE_OP_MODE_FIXED,
++       RATE_OP_MODE_DEFAULT_HE,
++       RATE_OP_MODE_DEFAULT_OFDM,
++       RATE_OP_MODE_DEFAULT_CCK,
++       RATE_OP_MODE_STA_SU,
++       RATE_OP_MODE_STA_MU,
++       RATE_OP_MODE_MCAST,
++       RATE_OP_MODE_BCAST
++};
++
++/* Value to be set in tx_host_info */
++enum cl_rate_ctrl_entry {
++       RATE_CTRL_ENTRY_NA =3D 0,
++
++       RATE_CTRL_ENTRY_STA,
++       RATE_CTRL_ENTRY_FIXED_RATE,
++       RATE_CTRL_ENTRY_MIN_HE,
++       RATE_CTRL_ENTRY_MIN_OFDM,
++       RATE_CTRL_ENTRY_MIN_CCK,
++       RATE_CTRL_ENTRY_MCAST,
++       RATE_CTRL_ENTRY_BCAST,
++
++       /* Entry size in firmware is represented by 3 bits */
++       RATE_CTRL_ENTRY_MAX =3D 8
++};
++
++/*
++ * sw_ctrl includes eights bits (16 - 23) to be used by software.
++ * Bit 16 is used by driver to indicate tx_bf.
++ * Bit 17 is used by driver to indicate fallback.
++ * Bit 18 - 23 are still free.
++ */
++struct cl_rate_ctrl_info_fields {
++       u32 mcs_index        : 7;   /* [6:0] */
++       u32 bw               : 2;   /* [8:7] */
++       u32 gi               : 2;   /* [10:9] */
++       u32 pre_type_or_stbc : 1;   /* [11] */
++       u32 format_mod       : 4;   /* [15:12] */
++       u32 tx_bf            : 1;   /* [16] */
++       u32 fallback         : 1;   /* [17] */
++       u32 sw_ctrl          : 6;   /* [23:18] */
++       u32 tx_chains        : 8;   /* [31:24] */
++};
++
++union cl_rate_ctrl_info {
++       struct cl_rate_ctrl_info_fields field;
++       u32 word;
++};
++
++struct cl_rate_ctrl_info_he_fields {
++       u32 spatial_conf    : 4;   /* [3:0] */
++       u32 starting_sts    : 3;   /* [6:4] */
++       u32 ru_index        : 6;   /* [12:7] */
++       u32 ru_type         : 3;   /* [15:13] */
++       u32 ru_band         : 1;   /* [16] */
++       u32 mu_usr_pos      : 2;   /* [18:17] */
++       u32 dcm_data        : 1;   /* [19] */
++       u32 num_usrs_mu_dl  : 4;   /* [23:20] */
++       u32 ru_alloc        : 8;   /* [31:24] */
++};
++
++union cl_rate_ctrl_info_he {
++       struct cl_rate_ctrl_info_he_fields field;
++       u32 word;
++};
++
++struct cl_hw;
++struct cl_sta;
++struct cl_sw_txhdr;
 +
 +u32 cl_rate_ctrl_generate(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
 +                         u8 mode, u8 bw, u8 nss, u8 mcs, u8 gi,
-+                         bool fallback_en)
-+{
-+       union cl_rate_ctrl_info rate_ctrl_info;
-+
-+       rate_ctrl_info.word =3D 0;
-+
-+       /* Format_mod + mcs_index */
-+       if (mode =3D=3D WRS_MODE_HE) {
-+               rate_ctrl_info.field.mcs_index =3D (nss << 4) | mcs;
-+               rate_ctrl_info.field.format_mod =3D FORMATMOD_HE_SU;
-+       } else if (mode =3D=3D WRS_MODE_VHT) {
-+               rate_ctrl_info.field.mcs_index =3D (nss << 4) | mcs;
-+               rate_ctrl_info.field.format_mod =3D FORMATMOD_VHT;
-+       } else if (mode =3D=3D WRS_MODE_HT) {
-+               rate_ctrl_info.field.mcs_index =3D (nss << 3) | mcs;
-+               rate_ctrl_info.field.format_mod =3D FORMATMOD_HT_MF;
-+       } else if (mode =3D=3D WRS_MODE_OFDM) {
-+               rate_ctrl_info.field.mcs_index =3D mcs + RATE_CTRL_OFFSET_O=
-FDM;
-+               rate_ctrl_info.field.format_mod =3D
-+                       (bw =3D=3D CHNL_BW_20) ? FORMATMOD_NON_HT : FORMATM=
-OD_NON_HT_DUP_OFDM;
-+       } else { /* WRS_MODE_CCK */
-+               rate_ctrl_info.field.mcs_index =3D mcs;
-+               rate_ctrl_info.field.format_mod =3D FORMATMOD_NON_HT;
-+       }
-+
-+       /* Gi */
-+       rate_ctrl_info.field.gi =3D convert_gi_format_wrs_to_fw(mode, gi);
-+
-+       /* Bw */
-+       rate_ctrl_info.field.bw =3D bw;
-+
-+       /* Fallback */
-+       rate_ctrl_info.field.fallback =3D fallback_en;
-+
-+       /* Tx_bf */
-+       if (cl_sta && cl_bf_is_on(cl_hw, cl_sta, nss))
-+               rate_ctrl_info.field.tx_bf =3D true;
-+
-+       /* Pre_type/stbc */
-+       if (rate_ctrl_info.field.format_mod =3D=3D FORMATMOD_NON_HT)
-+               rate_ctrl_info.field.pre_type_or_stbc =3D 1;
-+
-+       return rate_ctrl_info.word;
-+}
-+
-+void cl_rate_ctrl_convert(union cl_rate_ctrl_info *rate_ctrl_info)
-+{
-+       u32 format_mod =3D rate_ctrl_info->field.format_mod;
-+
-+       /*
-+        * Convert gi from firmware format to driver format
-+        * !!! Must be done before converting the format mode !!!
-+        */
-+       rate_ctrl_info->field.gi =3D convert_gi_format_fw_to_wrs(format_mod=
-,
-+                                                              rate_ctrl_in=
-fo->field.gi);
-+
-+       /* Convert format_mod from firmware format to WRS format */
-+       if (format_mod >=3D FORMATMOD_HE_SU) {
-+               rate_ctrl_info->field.format_mod =3D WRS_MODE_HE;
-+       } else if (format_mod =3D=3D FORMATMOD_VHT) {
-+               rate_ctrl_info->field.format_mod =3D WRS_MODE_VHT;
-+       } else if (format_mod >=3D FORMATMOD_HT_MF) {
-+               rate_ctrl_info->field.format_mod =3D WRS_MODE_HT;
-+       } else if (format_mod =3D=3D FORMATMOD_NON_HT_DUP_OFDM) {
-+               rate_ctrl_info->field.format_mod =3D WRS_MODE_OFDM;
-+       } else {
-+               if (rate_ctrl_info->field.mcs_index >=3D RATE_CTRL_OFFSET_O=
-FDM)
-+                       rate_ctrl_info->field.format_mod =3D WRS_MODE_OFDM;
-+               else
-+                       rate_ctrl_info->field.format_mod =3D WRS_MODE_CCK;
-+       }
-+}
-+
++                         bool fallback_en);
++void cl_rate_ctrl_convert(union cl_rate_ctrl_info *rate_ctrl_info);
 +void cl_rate_ctrl_parse(union cl_rate_ctrl_info *rate_ctrl_info, u8 *nss, =
-u8 *mcs)
-+{
-+       switch (rate_ctrl_info->field.format_mod) {
-+       case WRS_MODE_HE:
-+       case WRS_MODE_VHT:
-+               *nss =3D (rate_ctrl_info->field.mcs_index >> 4);
-+               *mcs =3D (rate_ctrl_info->field.mcs_index & 0xF);
-+               break;
-+       case WRS_MODE_HT:
-+               *nss =3D (rate_ctrl_info->field.mcs_index >> 3);
-+               *mcs =3D (rate_ctrl_info->field.mcs_index & 0x7);
-+               break;
-+       case WRS_MODE_OFDM:
-+               *nss =3D 0;
-+               *mcs =3D rate_ctrl_info->field.mcs_index - RATE_CTRL_OFFSET=
-_OFDM;
-+               break;
-+       case WRS_MODE_CCK:
-+               *nss =3D 0;
-+               *mcs =3D rate_ctrl_info->field.mcs_index;
-+               break;
-+       default:
-+               *nss =3D *mcs =3D 0;
-+       }
-+}
+u8 *mcs);
 +
-+void cl_rate_ctrl_set_default(struct cl_hw *cl_hw)
-+{
-+       u32 rate_ctrl =3D 0;
-+       union cl_rate_ctrl_info_he rate_ctrl_he;
-+
-+       /* HE default */
-+       rate_ctrl_he.word =3D 0;
-+       rate_ctrl_he.field.spatial_conf =3D RATE_CNTRL_HE_SPATIAL_CONF_DEF;
-+       rate_ctrl =3D cl_rate_ctrl_generate(cl_hw, NULL, WRS_MODE_HE,
-+                                         0, 0, 0, 0, false);
-+
-+       cl_msg_tx_update_rate_dl(cl_hw, 0xff, rate_ctrl, 0, 0,
-+                                RATE_OP_MODE_DEFAULT_HE, LTF_X4, 0, rate_c=
-trl_he.word);
-+
-+       /* OFDM default */
-+       rate_ctrl =3D cl_rate_ctrl_generate(cl_hw, NULL, WRS_MODE_OFDM, 0, =
-0,
-+                                         cl_hw->conf->ce_default_mcs_ofdm,=
- 0, false);
-+
-+       cl_msg_tx_update_rate_dl(cl_hw, 0xff, rate_ctrl, 0, 0,
-+                                RATE_OP_MODE_DEFAULT_OFDM, 0, 0, 0);
-+
-+       /* CCK default */
-+       if (cl_band_is_24g(cl_hw)) {
-+               rate_ctrl =3D cl_rate_ctrl_generate(cl_hw, NULL, WRS_MODE_C=
-CK, 0, 0,
-+                                                 cl_hw->conf->ce_default_m=
-cs_cck, 0, false);
-+
-+               cl_msg_tx_update_rate_dl(cl_hw, 0xff, rate_ctrl, 0, 0,
-+                                        RATE_OP_MODE_DEFAULT_CCK, 0, 0, 0)=
-;
-+       }
-+}
++void cl_rate_ctrl_set_default(struct cl_hw *cl_hw);
 +
 +void cl_rate_ctrl_set_default_per_he_minrate(struct cl_hw *cl_hw, u8 bw,
-+                                            u8 nss, u8 mcs, u8 gi)
-+{
-+       union cl_rate_ctrl_info_he rate_ctrl_he;
-+       u32 rate_ctrl =3D 0;
-+       u8 ltf =3D cl_map_gi_to_ltf(WRS_MODE_HE, gi);
-+
-+       rate_ctrl_he.word =3D 0;
-+       rate_ctrl_he.field.spatial_conf =3D RATE_CNTRL_HE_SPATIAL_CONF_DEF;
-+       rate_ctrl =3D cl_rate_ctrl_generate(cl_hw, NULL, WRS_MODE_HE, bw,
-+                                         nss, mcs, gi, false);
-+
-+       cl_msg_tx_update_rate_dl(cl_hw, 0xff, rate_ctrl, 0, 0,
-+                                RATE_OP_MODE_DEFAULT_HE, ltf,
-+                                0, rate_ctrl_he.word);
-+
-+       cl_msg_tx_update_rate_dl(cl_hw, 0xff, rate_ctrl, 0, 0,
-+                                RATE_OP_MODE_MCAST, ltf, 0, 0);
-+
-+       cl_msg_tx_update_rate_dl(cl_hw, 0xff, rate_ctrl, 0, 0,
-+                                RATE_OP_MODE_BCAST, ltf, 0, 0);
-+}
-+
-+bool cl_rate_ctrl_set_mcast(struct cl_hw *cl_hw, u8 mode, u8 mcs)
-+{
-+       u32 rate_ctrl_mcast =3D cl_rate_ctrl_generate(cl_hw, NULL, mode, 0,=
- 0, mcs,
-+                                                   WRS_GI_LONG, false);
-+       u8 ltf =3D cl_map_gi_to_ltf(mode, WRS_GI_LONG);
-+
-+       if (cl_msg_tx_update_rate_dl(cl_hw, 0xff, rate_ctrl_mcast, 0, 0,
-+                                    RATE_OP_MODE_MCAST, ltf, 0, 0))
-+               return false;
-+
-+       return true;
-+}
-+
++                                            u8 nss, u8 mcs, u8 gi);
++bool cl_rate_ctrl_set_mcast(struct cl_hw *cl_hw, u8 mode, u8 mcs);
 +bool cl_rate_ctrl_set_fixed(struct cl_hw *cl_hw, u32 rate_ctrl_he, u8 mode=
 , u8 mcs, u8 nss,
-+                           u8 bw, u8 gi, u8 ltf_field)
-+{
-+       u32 rate_ctrl_fixed =3D cl_rate_ctrl_generate(cl_hw, NULL, mode, bw=
-, nss,
-+                                                   mcs, gi, false);
-+
-+       if (cl_msg_tx_update_rate_dl(cl_hw, 0xff, rate_ctrl_fixed, 0, bw, R=
-ATE_OP_MODE_FIXED,
-+                                    ltf_field, 0, rate_ctrl_he))
-+               return false;
-+
-+       return true;
-+}
-+
++                           u8 bw, u8 gi, u8 ltf_field);
 +bool cl_rate_ctrl_set_dbgfs(struct cl_hw *cl_hw, u8 sta_idx, u32 rate_ctrl=
 , u32 rate_ctrl_he,
-+                           u8 op_mode, u8 bw, u8 ltf_field)
-+{
-+       /*
-+        * op_mode can be RATE_OP_MODE_FIXED or RATE_OP_MODE_STA_MU.
-+        * Therefore rate_fallback should be 0.
-+        */
-+       if (cl_msg_tx_update_rate_dl(cl_hw, sta_idx, rate_ctrl, 0, bw, op_m=
-ode,
-+                                    ltf_field, 0, rate_ctrl_he))
-+               return false;
-+
-+       return true;
-+}
-+
-+void cl_rate_ctrl_set_ate_agg(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
-+{
-+       struct cl_ate_db *ate_db =3D &cl_hw->ate_db;
-+       union cl_rate_ctrl_info rate_ctrl;
-+       union cl_rate_ctrl_info_he rate_ctrl_he;
-+       u8 ltf_mode =3D cl_map_gi_to_ltf(ate_db->mode, ate_db->gi);
-+       u8 sta_idx =3D cl_sta->sta_idx;
-+
-+       rate_ctrl_he.word =3D 0;
-+       rate_ctrl_he.field.spatial_conf =3D RATE_CNTRL_HE_SPATIAL_CONF_DEF;
-+
-+       rate_ctrl.word =3D cl_rate_ctrl_generate(cl_hw, cl_sta, ate_db->mod=
-e, ate_db->bw,
-+                                              ate_db->nss, ate_db->mcs, at=
-e_db->gi, false);
-+
-+       cl_msg_tx_update_rate_dl(cl_hw, sta_idx, rate_ctrl.word, 0, ate_db-=
->bw,
-+                                RATE_OP_MODE_STA_SU, ltf_mode, 0, rate_ctr=
-l_he.word);
-+}
-+
-+static u8 cl_rate_ctrl_get_min(struct cl_hw *cl_hw)
-+{
-+       if (cl_hw->conf->ci_min_he_en &&
-+           cl_hw->conf->ce_wireless_mode =3D=3D WIRELESS_MODE_HE)
-+               return RATE_CTRL_ENTRY_MIN_HE;
-+
-+       if (cl_hw_mode_is_b_or_bg(cl_hw))
-+               return RATE_CTRL_ENTRY_MIN_CCK;
-+
-+       return RATE_CTRL_ENTRY_MIN_OFDM;
-+}
++                           u8 op_mode, u8 bw, u8 ltf_field);
++void cl_rate_ctrl_set_ate_agg(struct cl_hw *cl_hw, struct cl_sta *cl_sta);
 +
 +void cl_rate_ctrl_update_desc_single(struct cl_hw *cl_hw, struct tx_host_i=
 nfo *info,
-+                                    struct cl_sw_txhdr *sw_txhdr)
-+{
-+       struct ieee80211_hdr *mac_hdr =3D sw_txhdr->hdr80211;
-+       struct ieee80211_tx_info *tx_info =3D IEEE80211_SKB_CB(sw_txhdr->sk=
-b);
-+       bool is_data =3D ieee80211_is_data(sw_txhdr->fc);
-+
-+       if (sw_txhdr->cl_sta && is_data) {
-+               if (cl_tx_ctrl_is_eapol(tx_info)) {
-+                       info->rate_ctrl_entry =3D cl_rate_ctrl_get_min(cl_h=
-w);
-+               } else {
-+                       if (cl_hw->entry_fixed_rate)
-+                               info->rate_ctrl_entry =3D RATE_CTRL_ENTRY_F=
-IXED_RATE;
-+                       else
-+                               info->rate_ctrl_entry =3D RATE_CTRL_ENTRY_S=
-TA;
-+               }
-+       } else {
-+               if (sw_txhdr->is_bcn) {
-+                       info->rate_ctrl_entry =3D cl_rate_ctrl_get_min(cl_h=
-w);
-+               } else if (is_multicast_ether_addr(mac_hdr->addr1) &&
-+                          !is_broadcast_ether_addr(mac_hdr->addr1)) {
-+                       info->rate_ctrl_entry =3D RATE_CTRL_ENTRY_MCAST;
-+               } else if (is_broadcast_ether_addr(mac_hdr->addr1) &&
-+                          !cl_hw->entry_fixed_rate) {
-+                       info->rate_ctrl_entry =3D RATE_CTRL_ENTRY_BCAST;
-+               } else {
-+                       if (cl_hw->entry_fixed_rate && is_data)
-+                               info->rate_ctrl_entry =3D RATE_CTRL_ENTRY_F=
-IXED_RATE;
-+                       else
-+                               info->rate_ctrl_entry =3D cl_rate_ctrl_get_=
-min(cl_hw);
-+               }
-+       }
-+}
-+
++                                    struct cl_sw_txhdr *sw_txhdr);
 +void cl_rate_ctrl_update_desc_agg(struct cl_hw *cl_hw, struct tx_host_info=
- *info)
-+{
-+       /* For aggregation there are only two options - STA and FIXED_RATE =
-*/
-+       if (cl_hw->entry_fixed_rate)
-+               info->rate_ctrl_entry =3D RATE_CTRL_ENTRY_FIXED_RATE;
-+       else
-+               info->rate_ctrl_entry =3D RATE_CTRL_ENTRY_STA;
-+}
+ *info);
++
++#endif /* CL_RATE_CTRL_H */
 --
 2.30.0
 
