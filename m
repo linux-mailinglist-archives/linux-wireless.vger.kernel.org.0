@@ -2,80 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 301BA3ABB10
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 20:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7246D3ABB3A
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 20:16:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233319AbhFQSBz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 14:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55280 "EHLO
+        id S232727AbhFQSSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 14:18:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233262AbhFQSBm (ORCPT
+        with ESMTP id S231162AbhFQSSV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 14:01:42 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B359C0613A2
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 10:59:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:References:Cc:To:From:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=v40nMHwOtRaKTUDeGhfNF5508cHey0NmopoGXvvxr+M=; b=JKxqz9SXxD33n/K1sgphRSadPB
-        fE858ogNbnGN0OVdQW496blpRWNjehYrVn3ZlOspz6yzDdXBLTUUG4CYijZyJQCSdxdBvXqscPSC0
-        shF61mpsnBmNabjZyjM69ZNPozPMWN0YAUL4C2vX74JL8SGxp1Co1ppfawLzJmUKLPxM=;
-Received: from p54ae9ff2.dip0.t-ipconnect.de ([84.174.159.242] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1ltwIZ-0007zT-1t; Thu, 17 Jun 2021 19:59:27 +0200
-Subject: Re: [PATCH v2 1/4] mac80211: call ieee80211_tx_h_rate_ctrl() when
- dequeue
-From:   Felix Fietkau <nbd@nbd.name>
-To:     Ryder Lee <ryder.lee@mediatek.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <bo.jiao@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <2176023d8f13d82d093452e1c105609396c30622.1622164961.git.ryder.lee@mediatek.com>
- <a89137bf-401b-c9d0-8848-d79ea9e2a9c3@nbd.name>
-Message-ID: <4d652f4a-c258-f248-911f-28238531ae4d@nbd.name>
-Date:   Thu, 17 Jun 2021 19:59:26 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.11.0
+        Thu, 17 Jun 2021 14:18:21 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A6AC061574;
+        Thu, 17 Jun 2021 11:16:14 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id w127so7478168oig.12;
+        Thu, 17 Jun 2021 11:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=lDrvv4SjpRGkcXHTZ4eLR8O6nHpZy/vmSgaV/fvgZQc=;
+        b=dDS7K0yryIVcseJxuPdmMMFGGB0HEZPSwv85uGF5IKpvHrqKoQZXn5+Z4dnhycn4dV
+         5N3FucpSvxP0B7GWK0i4ztJsX3onaM2qj1pb1/AUwF2HecmpdFHwtHk22XHBFRw7nlwB
+         o28/1g/B60d5U9bNdn1hpJuGWnXKHFcTg15AMUtX0HHlLYiIM06JQMAaXQbQbv0V/9jD
+         SfPhb9hqWJY96njZ+xFpQYXfpI6U/QgXDc725PtljX3BOBS18wpprrVSMU/OfLHeJoVJ
+         gy4t0CCiDhE7bUHyn7zlLmL88NEJlnVcIwpsZH+IsSIjrAUw8b9Rmmlp3SkV96l14vWi
+         jDUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lDrvv4SjpRGkcXHTZ4eLR8O6nHpZy/vmSgaV/fvgZQc=;
+        b=NfrW8diJNLfl15zfoAebA6KhMLVzTWz/XS46sRILPaA70BMitUNwVe+a2lqveab9MZ
+         BxDeekVIvAftvvnscScpm7fIgPR51kV34WoX38smFWSZOvoS6SOTc9o01GISOqIROQNi
+         123Uf4/qmw04qJ7fLa5Xag2YB2PM2rDjM7BS+ccyPckw4qp+WyXh6XcAm1DBXKjX0GG1
+         eiAULtK1iPJAwBLA/yrZsERPwjYM0bLREwE71RrDvAkQM2BnUkCh7Mlpo46gp7VxxLRy
+         yeOABTdKnG9wjIg09AQpxKcXdNl4bG5Wb+PMzTSk4opjHsHXSO1GvI40m90eceZSNOqs
+         8g0A==
+X-Gm-Message-State: AOAM5327qtiZ7ReRd16AFVnqy1V9c/MHNyA+TVV5VF7GxKX7Wud7HJX9
+        cOnlqV0l5dwc1z0CFnkfGJ8z7WUMmvk=
+X-Google-Smtp-Source: ABdhPJzL4f3FCY/yfEYFwYetlXRUTOfrxQ09K6/SCwmy1h9jq+scI9PwkZczubIUdPL2JypV+NXXsQ==
+X-Received: by 2002:aca:4a46:: with SMTP id x67mr11539185oia.59.1623953771779;
+        Thu, 17 Jun 2021 11:16:11 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id v82sm1275328oia.27.2021.06.17.11.16.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Jun 2021 11:16:10 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: [PATCH] rtlwifi: rtl8192de: Fully initialize curvecount_val
+To:     Kees Cook <keescook@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kaixu Xia <kaixuxia@tencent.com>, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+References: <20210617171317.3410722-1-keescook@chromium.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <92f5a610-a623-b17d-40ba-963e3e84c622@lwfinger.net>
+Date:   Thu, 17 Jun 2021 13:16:09 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <a89137bf-401b-c9d0-8848-d79ea9e2a9c3@nbd.name>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20210617171317.3410722-1-keescook@chromium.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-06-17 12:50, Felix Fietkau wrote:
+On 6/17/21 12:13 PM, Kees Cook wrote:
+> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> field bounds checking for memcpy(), memmove(), and memset(), avoid
+> intentionally writing across neighboring array fields.
 > 
-> On 2021-05-28 08:05, Ryder Lee wrote:
->> Make ieee80211_tx_h_rate_ctrl() get called on dequeue to improve
->> performance since it reduces the turnaround time for rate control.
->> 
->> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
->> ---
->> change since v2 - roll ieee80211_tx_h_rate_ctrl checks into one condition
-> There were some OpenWrt crash reported which appear to be related to
-> this patch. I was able to reproduce a deadlock with ath9k, and I'm
-> currently looking into it.
-Some more information about the crash:
-- ath9k calls ieee80211_tx_dequeue with the tx queue lock held
-- ieee80211_tx_dequeue calls minstrel get_rate
-- get_rate calls minstrel_aggr_check
-- minstrel_aggr check calls ieee80211_start_tx_ba_session
-- ieee80211_start_tx_ba_session tries to send a frame
-- ath9k tries to acquire the tx lock it already holds
+> The size argument to memset() is bytes, but the array element size
+> of curvecount_val is u32, so "CV_CURVE_CNT * 2" was only 1/4th of the
+> contents of curvecount_val. Adjust memset() to wipe full buffer size.
+> 
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> index 68ec009ea157..76dd881ef9bb 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> @@ -2574,7 +2574,7 @@ static void _rtl92d_phy_lc_calibrate_sw(struct ieee80211_hw *hw, bool is2t)
+>   			RTPRINT(rtlpriv, FINIT, INIT_IQK,
+>   				"path-B / 2.4G LCK\n");
+>   		}
+> -		memset(&curvecount_val[0], 0, CV_CURVE_CNT * 2);
+> +		memset(curvecount_val, 0, sizeof(curvecount_val));
+>   		/* Set LC calibration off */
+>   		rtl_set_rfreg(hw, (enum radio_path)index, RF_CHNLBW,
+>   			      0x08000, 0x0);
+> 
 
-I've fixed this in v3 by moving the logic of minstrel_aggr_check into
-mac80211
-
-- Felix
+Reviewed-by: Larry Finger <Larry.Finger@lwfinger.net>
