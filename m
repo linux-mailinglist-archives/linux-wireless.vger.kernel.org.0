@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74ADB3AB8EC
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EEF43AB90A
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233930AbhFQQLO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:11:14 -0400
+        id S233815AbhFQQMH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:12:07 -0400
 Received: from mail-eopbgr80050.outbound.protection.outlook.com ([40.107.8.50]:33286
         "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231318AbhFQQKB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:10:01 -0400
+        id S231591AbhFQQKv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:10:51 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ij0H1mgvkGMdnREF9O+8hTwVV0V0ncZfjeJJMpfed6e5dfXV+z2QTSL4t4RwTeX9Xv5ZJMXFMwNeZdCXkhSgl9AUQPkL5EXuuioCtsYOJDNixp5trHPl1tOzG0iNcyiBVgvPypc741D3+CfKOTiNQcg3fchu57m+4iNYGixQpll4Nd/lLvJD7xhQso8I5i+Jacj639S7091rznq8IeSUGFfiuVW8FAHA2x6s8CGQ8dvQOW3stoZMPx1YZqh50Ir1OKcVnTBLgchWpl9gN5fpneW+yfMZ44o1MH0x96IgDg/J5JW0Sof1SHC3825HDuF7HV660u7H24PRD3ZRw1gUUQ==
+ b=Pdg4TpqHutf2LTGhUSBXMZ8WUL3IXHKH7HJjmGBqouqRQ2Sj7Fap/wRRf2oHGX939mwLbtnQEy/AS4wpDSSZSnhA4oJnhkkuYIYZxKceQf7fWa/BU403ZQKEepiEYUt9orKKQpPg/vEpbHjOu470dUqnsFy/1/B9sEtEUUyFGdfB4oW63T0uGHVA5KMJowQh0b3eKom3xxzLJSjvhEvLXIf9KDJLUUx/Px6bSHZfE8yjJi54GfAuNi29XIhA1PNTxi2Ocb+QgtQXatEZLJttxCN5OpguhR9xblpAl36SU5L4LoGlVMlWvcH53z1ciacbSpv4u/Fj+37cHV/eePr9Dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tVw6Z7I4Ia1lo1qypUa45eebG+Qykohrl4nInvATeq8=;
- b=fQBPPTTomZe7QdvU5D1QCTI3kVYsT44BTOL+ftttRv9oUXOyHw0kQbU23eNJYjNZdT4mYhG5pr44GhK8JoZH9C3urvkSLxtgEk9vJGNLvJkyervt7tSTUpPt0tBlRfxjB/uWXw9x5iOPD9NeU0HyeMCTiiN4LPSwIN7YLSmaHQ38SgvDtTahlcyExvt1gS+V/3AD997013QL/0eoFKe6vyn2o/AfBTF540hqtZu8LkYjIW5K7Nwpp6pfwb7L78AspLi81x2XYa0y3BwFR+fag3qtdUeEMWDs0POmKmzQxhZWVQvGntMf/LeY6JaUVFLyRGA/uYNYJUx6xmad1F7org==
+ bh=FfAJyIqC65upTMzTte5zMzCwrop8pOboAoDABAp5ShQ=;
+ b=PzEfMdR5Xn2KAEI5ICIZ2i+Ej+5KuCNVrg2BD16awrZkIa76F5B3c0t2fh2UPDrhiB88Awe2g/sh1UfN8gfFp9jVFohBS7eIXuHy6eL8sDMC9paCy8TYBm4f8S8nHwv71ybb/YmQU3d4b8N1t3v/7N2EIthpWOrLQjOI1oJ64v9OpEfrtYBxOE+WafQsqYQLKx3VB9W7CH/2Y4MJ3lc61d6YYYiP4bRioJToxROk0Wpx6s2kx+X8Fj4K8Ywg3IjFCSp+EklmP8Yge+n6xZ4cJVnWf6D0FFMb3uOpXudUpu2z+lL92HTZKB7vwgqxTaM/Xyxfnc0FgnvNXkad20twQA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tVw6Z7I4Ia1lo1qypUa45eebG+Qykohrl4nInvATeq8=;
- b=AhOFhqEV45W/ZbnkWzNmo/TsONC7WGO9Vh+QFVTQU9VHJyp0b96SnO4kRKHTFChhMvpWZq/+J2rnlJUPOlTK4hpz+4u8tkLaeAbKhmQneUXP+H4Yjc3wPk/Ho/zp/fQzuW6DUR9v1fMvA3sEhH0GTA+ybkFr05CeoZRpx7sBxrI=
+ bh=FfAJyIqC65upTMzTte5zMzCwrop8pOboAoDABAp5ShQ=;
+ b=aRzB3fcX+p1qI4qgG+6EzaQ2ug12oH6p06ZvQ69xjA/x0kISVOZ8LDlx3+5rc8nPDocM/2NyeGlRO4Gj+DMW5kam67ZGDPo74xCpYNVvr9pKcj67Ms1PsxN1Oi2Ptj+ekzAXdC0wyM6TXcsEY8Gn5RVd7JSZZ19C/BZv3oBxZtM=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 181/256] cl8k: add sounding.h
-Date:   Thu, 17 Jun 2021 16:01:08 +0000
-Message-Id: <20210617160223.160998-182-viktor.barna@celeno.com>
+Subject: [RFC v1 182/256] cl8k: add sta.c
+Date:   Thu, 17 Jun 2021 16:01:09 +0000
+Message-Id: <20210617160223.160998-183-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:53 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:54 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8c5049a6-5275-48e4-6bce-08d931a9c915
+X-MS-Office365-Filtering-Correlation-Id: 8f65da1b-0e2b-4ab4-5876-08d931a9c9c5
 X-MS-TrafficTypeDiagnostic: AM0P192MB0260:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB026029F0D917475EBCD6CAC4F60E9@AM0P192MB0260.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:238;
+X-Microsoft-Antispam-PRVS: <AM0P192MB0260FA6409017D38BDF36F63F60E9@AM0P192MB0260.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1284;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6xDdjy97kLgnIH7/RR/m8UFsY4b/ayBXR/6V8JmryO211Pg/1Fbdu+i7bTywx11/aVAIjcE7ONHV4csdjVPWbRm3B4p7DCXA8Q+94Bm1YkEVq06FOGiY6pN5HTZ5/A0aUc8nYyA/GTw5K9QZ1QntdhBSYNe/tLKoLJYZnLWlUQ3JDbuU2tM0KJ08EkVe7moutYVqF/b9ww/aipbvw8Vjj4Vew9aeGeH8P4gmisfiH9GUznySMW1S9sLxlDQNUwNC8LIkB92dYH18CXDla3J6AVWDpjCzbLM7fmQCp5rjocBQqTsR/tYepkxaPIHDLBu8K73FjZ69KIidqJGUB67fGJTF12jSRlnjbt5lWDUTmnlkAUgHZL6f1ZannkvTM1jQe0rIbE9D4yHvU1PonyuoxEy+g6Kxet1ituKEii1kkY7j48kYMuS5WKXKUiJokn7NZvKPYAxWpBTLA9EpqRxPBOy2+x2XuAoy0tR7Yeo+ukeON7hG1vg1Ij285uXgVWeFGFiqK9n9JKaAyzpRA7Deq7fJx++w9wOBlk7NamdXIIdhQR8OjB19R4YpgL7dQgQHEq2tp1fZI73Qe+a6MKVG0XkmpDutlW3HQFqMbxqRfwwjqe91ECsVXQ8HEMmBQcbo4EPzAPOqBzrMJpqGhGHo1K+mb7rzR17JhMY1Oy/5ezHETsx9jW5GcziID9xI96/npnD8xyO7ZH9HBTVpQxUJeA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(8936002)(86362001)(107886003)(4326008)(26005)(8676002)(956004)(186003)(6666004)(2906002)(6512007)(66556008)(2616005)(5660300002)(498600001)(38350700002)(54906003)(38100700002)(16526019)(66946007)(9686003)(83380400001)(55236004)(52116002)(66476007)(6486002)(6916009)(6506007)(36756003)(1076003)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 2AbRtP4CSSHTTtAQmdMJl4apSehEOq5EOXDzIq+j0iSXLUd22hsDvfeTFdgTQOuzMIVynNwle2OS4gQr3+3s5JWZqD89xeRw0Rb/HqqlJnecrVhjQlRchaWHWNNaIxMB1SKFOGNRiyQIFh6CsrdiJYAe5VsI3Vl+TSc6ikkO1v/QwFlB1QUwLiBSoZFuHL08POJiZn++ofcM4R++X+Cp6PPF9/fcK4n5J6xCUariZ+uS42wqCqerTRV6YqsuIXPZzRvVVe7+8kOB/4nbOKjbDjYNoLTeu2b3/a5IJNA5VnhEWPIHSDkiO7GfutpMkUv9LklUt3vIQDfWawTDaYHs0hmMnk6TM8RnhmmxNrcBR4eKwIdvc+OjOSwxkj1xb19ML7/ahpV93juyPyv7MCYJarqccro3oGVP17GITiAh41tcjnepviilxmVDMRkG6FO1Gl1KIsmw6z1GKI3EHApTA7dZFvPP3ihHtIEQRUgUiU6/urdSoGt46ikyvSxDNdXmyi6D36Wjci33HHaFOjR7BHttUkMcO8btXhzrqpjBGs4+Gi26mxSLuglc3pbqeWfb3N2rqOJXmbcI7mzvroptH0lj1754zGmq+a0tt+xoNet5V4GWMeet8sSNmF4I1+g7U3hQ7uzT8OrUXGxc7n2ofeDy0Yet09jlz8g0uvmylIpJh/8gDB+CEUR5vIoarR5ahByoAi+z3/9oHAVRPXiGXg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(8936002)(86362001)(107886003)(4326008)(26005)(8676002)(956004)(186003)(6666004)(2906002)(6512007)(66556008)(2616005)(5660300002)(498600001)(38350700002)(54906003)(38100700002)(16526019)(66946007)(9686003)(83380400001)(55236004)(52116002)(66476007)(6486002)(6916009)(30864003)(6506007)(36756003)(1076003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vfv23rfb8IGlNys2uMYkaN3s/waPe37sjuF8GEQ7h9CEXISLLOqMR26AsNH6?=
- =?us-ascii?Q?1s3Aj2OC+HsS2ALMUwnNnkkBaMD1ZRldlXSSpxQNl3+ZGiuR01mAbP+RQT1P?=
- =?us-ascii?Q?SZYIKD7QSqTRksaExFIURTaYLl2DzUreDSd8XyTyqO9lXkwFhZ6C32G36bBb?=
- =?us-ascii?Q?WGKtMESc0j+A7gK+0hSAQlJWdGZcyGXbOdZ55iYm6VdfxdcKG4XLspEQB38e?=
- =?us-ascii?Q?pUoCPLKMabswrcndMRC3rQ2HQD5k0o9Idsbvs8IhsHnWtonVnRullqoaq/5W?=
- =?us-ascii?Q?CuloEOwVowwkGNa4vG6OH0Ns5xPFV8FZTLsXCQmEuegvPjpEoH+sONKVQsUm?=
- =?us-ascii?Q?3RaL8mnm8oY2lA5/BEZb9TyLLwfsqMW42uWzaWbTEqe15lJV2ut5xgL5n/uX?=
- =?us-ascii?Q?ESIH+y+td2czlZasx2segqVFsRM5wT2k5TWz+oBFWtyWPSSV5xhcdsMPWQcl?=
- =?us-ascii?Q?LY9DRYtRxc8hPwg9aKnORq9HmB2YpRsGizLWGgd0DHEP/y1+7l5TJ1b7c9HY?=
- =?us-ascii?Q?8w490NxIGZxQlu1O/865mWZUk3QJo0TSvWkGCvzRhykEFtE3bfN9Kli1slFh?=
- =?us-ascii?Q?rQcjc/h9oRHtp2Prr1VdUmL65lgvfKPpyKuOW6MuWQ6vmk4zNA01Vvz6eVtC?=
- =?us-ascii?Q?Q/xtS8L+T4VoY620BWhM2AnaQo8rDVPUzKIxYy0YPNYxId9LDijn603aSX/P?=
- =?us-ascii?Q?bN2i+qItT5rTkcw3l44qy3R8RT73ZsOoO/vjW/fYLdHDrzSIUCATHjW70cLX?=
- =?us-ascii?Q?Ax/+WDNnu9RKtqNhBoWI0UCyWm6SSuD8fFaHiL5aijULWLWTG2sMhVvX8d6G?=
- =?us-ascii?Q?6Bh2T1gjkgA2NqpSibfhzxaA10BK4/vPI/5Iy2XY7KrcEZloM83cDes0fksp?=
- =?us-ascii?Q?fQcQgMJIWO3H9lhmmyk2U2GQT9nnkqwEerSeA4fIUlQxcRe6Ip9TEgpPSRrm?=
- =?us-ascii?Q?l7T6ftOZwx6rHZJ4105KJXsk6vZPkx12Og3PJr4w33cmFF7ynfSTCqFp7HkP?=
- =?us-ascii?Q?/EvwQ71J+mjmgXsALSL7ZMP8ThSSzBghk+JNrnyi8w5Hqz9tpyUo6Et0kAt1?=
- =?us-ascii?Q?wC9lIB4SG4OL36Vqaaai8z9EWgUy1EnoOSxfiM/dtUZj32dhuAXA6Dr1UwBj?=
- =?us-ascii?Q?VDEMm/T4ffe4C6Oi8JFjQgChKcBGCpSIk4qCuHk3DCNyT0zyflc9yKB3qHDf?=
- =?us-ascii?Q?y9rqjne5yO1mpGhbja4mn1Bc6+A/1ZvBdahVTrNe7eBxcJmh3nulim8gr5RK?=
- =?us-ascii?Q?DPtCqEgPPeoEclO8OgVHZ53C3+R5M+ull6NdC410X2vt+6Gb5T2Ar9tdgGcV?=
- =?us-ascii?Q?c5cBl3yhZA+1tCIjQVYceSXW?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7j44HqXmvtZmT5qAlmZyy4sRh9nlgbkfaX9A4GDfwn6RqkrTLCREQXfW21kt?=
+ =?us-ascii?Q?VmLG4pbX+sX6aZzgiIcr1VpsGvUt4iSn84KzCil0SwmQuewgj0UZMZKYojUl?=
+ =?us-ascii?Q?f7hbsTOVXcpOhhlJaKZ/HpVBUbX9fVuuxRqNcBGnnTJOHo9gkIilmILJj/QF?=
+ =?us-ascii?Q?7exlvVklueV1Qxg05GHhQ2XuX8/6vOKA39oV9W8zNyto9pCIHEF2Bpmnz4lh?=
+ =?us-ascii?Q?6AEG0ljMZTynwYUUiyVfz9kQv8q8y4uSPQW62AEeMMlF8uCzhbiZZ4AIvHFV?=
+ =?us-ascii?Q?Uwh2PD/mfiNERx59ncaQm9nAv4cLoGuvh6EKJYDUnHg2PfP7zK46UGHhyfR2?=
+ =?us-ascii?Q?OrRms/86KdVnbIarpT9Jd2cfjVaAYzooq0Rehgh2wxZpuuuU+E4wIU0HbovE?=
+ =?us-ascii?Q?eNq01hIEaOGUekZ33BQtKbqmJmStIHtlL0YyGV+mXumCQFVThELnskSBnKlX?=
+ =?us-ascii?Q?8xxFu7H+JW3Zi0tLK4PVTgWX1E3NNWD3BULDfqNbFT4tpW4+49i3G/1T9EPa?=
+ =?us-ascii?Q?7CCXUTeZulyvpvPCmcBEM4vw2XRL1hWnlJzEJl8Vlp/w6vcqe8+8XHrgcQrB?=
+ =?us-ascii?Q?7PS7VZgLOYIDrU3ll99UlWWKIRQb82hDV+NIlaC9xTgw3B+ZkNpuMZ9IZwNS?=
+ =?us-ascii?Q?9agYsZA5PNcnemfsUI1Yqm7uYD7rc894tGLMY6USyVYPrpck0MaJgxL5+q0k?=
+ =?us-ascii?Q?KC1w8bUiUFOzK3Of3/2KV9GxQ+Cm2bF1R6I5c/QGK8fjR5uaP9KOninGUvny?=
+ =?us-ascii?Q?z7YtPTTv5jCWSCHLPEVEEW4q91JwL50r6zCoK7bppzyOIw3KqZ9Az1CNgI3e?=
+ =?us-ascii?Q?PoVBVPASj99Zr9Uwvd/mtrAmL1oKCjF6bKPrYEQaIT88cay60G3HeoZUtZ7s?=
+ =?us-ascii?Q?kS8ClWuzTl+z6VygAYD5W6V6o4ijiM78btIxp5sOjduU5PvlekW5RY2vzLgs?=
+ =?us-ascii?Q?l3wakI2DDF5uotzyQJCHEn0NLHX0SDsO2pBSRO38DrGZdjr3JxoI1/oxtILC?=
+ =?us-ascii?Q?eB1APo99UYc/RpRSRj/hzYTyj40DyuQdQq/5P5BlVGh7SkfU4SAP4x1QDWZE?=
+ =?us-ascii?Q?SNC07WVmQoTblIETYPKnnZb8XnVgd3uBi5p9yOObHcbYoXikL8Vybes+NzGL?=
+ =?us-ascii?Q?SD6ZLtKDPjirsnfGCmhjNKU/k/FYx4EiMS81J3BLYQLEwEgh3eYbnZNBZZtY?=
+ =?us-ascii?Q?2LCGqwjESOISJtYWN5vv/teIk7W/4YxuWdJBGHE5S4agUF+MTYzQ26FlKpNA?=
+ =?us-ascii?Q?LnWIie6N+hlIY8gQSXdtKr8JU8kVgfDhUFGY0odKyIVueZBjW1r0kr/cYG6w?=
+ =?us-ascii?Q?NCeMTCTNG30/nOYdALQXgGDP?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c5049a6-5275-48e4-6bce-08d931a9c915
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f65da1b-0e2b-4ab4-5876-08d931a9c9c5
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:54.3907
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:55.7030
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /XwgOIz9lwMsiKCVv0Bhg0MTw2U+kJf9aZMpfhVS8OGwZKhs2Be4y7gArPcetyUuGbptktxaHT5eceF7q+6wLw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ExWAmc1de8CVJOwKqwYoVdv+7WeMjIlT3tGuDG8UHHg5wx4Tnb4TuZQy+W9CrMuJyvNHKn4S57d0hqWKvKEu7w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0260
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,188 +119,593 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/sounding.h | 148 ++++++++++++++++++++
- 1 file changed, 148 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/sounding.h
+ drivers/net/wireless/celeno/cl8k/sta.c | 536 +++++++++++++++++++++++++
+ 1 file changed, 536 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/sta.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/sounding.h b/drivers/net/wire=
-less/celeno/cl8k/sounding.h
+diff --git a/drivers/net/wireless/celeno/cl8k/sta.c b/drivers/net/wireless/=
+celeno/cl8k/sta.c
 new file mode 100644
-index 000000000000..d5d9d4941b23
+index 000000000000..625edd51cb93
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/sounding.h
-@@ -0,0 +1,148 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/sta.c
+@@ -0,0 +1,536 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_SOUNDING_H
-+#define CL_SOUNDING_H
++#include "sta.h"
++#include "rssi.h"
++#include "bf.h"
++#include "stats.h"
++#include "wrs/wrs_api.h"
++#include "utils/utils.h"
++#include "band.h"
++#include "vns.h"
++#include "radio.h"
++#include "tx/tx_inject.h"
++#include "twt.h"
++#include "motion_sense.h"
++#include "mac_addr.h"
++#include "tx/baw.h"
++#include "recovery.h"
++#include "tx/tx_queue.h"
++#include "tx/single_cfm.h"
++#include "ext/dyn_mcast_rate.h"
++#include "ext/dyn_bcast_rate.h"
++#include "chip.h"
++#include "fw/msg_tx.h"
 +
-+#include <linux/types.h>
-+#include "fw/fw_msg.h"
++void cl_sta_init(struct cl_hw *cl_hw)
++{
++       u32 i;
 +
-+#define SOUNDING_ENABLE                                true
-+#define SOUNDING_DISABLE                               false
-+#define INVALID_SID                                    0xff
-+#define XMEM_SIZE                                      (0x180 << 10) /* 38=
-4KB */
-+#define CL_SOUNDING_STABILITY_TIME                     5
-+#define CL_SOUNDING_FACTOR                             10
++       rwlock_init(&cl_hw->cl_sta_db.lock);
++       INIT_LIST_HEAD(&cl_hw->cl_sta_db.head);
 +
-+#define SOUNDING_FEEDBACK_TYPE_SHIFT                   2
-+#define SOUNDING_FEEDBACK_TYPE_MASK                    (BIT(SOUNDING_FEEDB=
-ACK_TYPE_SHIFT))
-+#define SOUNDING_NG_SHIFT                              1
-+#define SOUNDING_NG_MASK                               (BIT(SOUNDING_NG_SH=
-IFT))
-+#define SOUNDING_MU_CODEBOOK_SIZE_SHIFT                0
-+#define SOUNDING_MU_CODEBOOK_SIZE_MASK                 (BIT(SOUNDING_MU_CO=
-DEBOOK_SIZE_SHIFT))
-+#define SOUNDING_FEEDBACK_TYPE_VAL(fb_type_ng_cb_size) (((fb_type_ng_cb_si=
-ze) & \
-+                                                         SOUNDING_FEEDBACK=
-_TYPE_MASK) >> \
-+                                                         SOUNDING_FEEDBACK=
-_TYPE_SHIFT)
-+#define SOUNDING_NG_VAL(fb_type_ng_cb_size)            (((fb_type_ng_cb_si=
-ze) & \
-+                                                         SOUNDING_NG_MASK)=
- >> SOUNDING_NG_SHIFT)
-+#define SOUNDING_CODEBOOK_SIZE_VAL(fb_type_ng_cb_size) (((fb_type_ng_cb_si=
-ze) & \
-+                                                         SOUNDING_MU_CODEB=
-OOK_SIZE_MASK) >> \
-+                                                         SOUNDING_MU_CODEB=
-OOK_SIZE_SHIFT)
++       for (i =3D 0; i < CL_STA_HASH_SIZE; i++)
++               INIT_LIST_HEAD(&cl_hw->cl_sta_db.hash[i]);
++}
 +
-+#define SOUNDING_TYPE_IS_VHT(type)                     ((type) =3D=3D SOUN=
-DING_TYPE_VHT_SU || \
-+                                                       (type) =3D=3D SOUND=
-ING_TYPE_VHT_MU)
-+#define SOUNDING_TYPE_IS_CQI(type)                     ((type) =3D=3D SOUN=
-DING_TYPE_HE_CQI || \
-+                                                       (type) =3D=3D SOUND=
-ING_TYPE_HE_CQI_TB)
++void cl_sta_init_stainfo(struct cl_hw *cl_hw, struct sta_info *stainfo)
++{
++       if (!cl_recovery_in_progress(cl_hw)) {
 +
-+enum fb_type_ng_cb_size {
-+       FEEDBACK_TYPE_SU_NG_4_CODEBOOK_SIZE_4_2 =3D 0x0,
-+       FEEDBACK_TYPE_SU_NG_4_CODEBOOK_SIZE_6_4,
-+       FEEDBACK_TYPE_SU_NG_16_CODEBOOK_SIZE_4_2,
-+       FEEDBACK_TYPE_SU_NG_16_CODEBOOK_SIZE_6_4,
-+       FEEDBACK_TYPE_MU_NG_4_CODEBOOK_SIZE_7_5,
-+       FEEDBACK_TYPE_MU_NG_4_CODEBOOK_SIZE_9_7,
-+       FEEDBACK_TYPE_CQI_TB,
-+       FEEDBACK_TYPE_MU_NG_16_CODEBOOK_SIZE_9_7,
-+};
++               struct cl_sta *cl_sta =3D STA_INFO_TO_CL_STA(stainfo);
 +
-+enum cl_sounding_response {
-+       CL_SOUNDING_RSP_OK =3D 0,
++               /* Reset all cl_sta structure */
++               memset(cl_sta, 0, sizeof(struct cl_sta));
++               cl_sta->stainfo =3D stainfo;
++               /*
++                * Set sta_idx to 0xFF since FW expects this value as long =
+as
++                * the STA is not fully connected
++                */
++               cl_sta->sta_idx =3D STA_IDX_INVALID;
++       }
++}
 +
-+       CL_SOUNDING_RSP_ERR_RLIMIT,
-+       CL_SOUNDING_RSP_ERR_BW,
-+       CL_SOUNDING_RSP_ERR_NSS,
-+       CL_SOUNDING_RSP_ERR_INTERVAL,
-+       CL_SOUNDING_RSP_ERR_ALREADY,
-+       CL_SOUNDING_RSP_ERR_STA,
-+       CL_SOUNDING_RSP_ERR_TYPE,
-+};
++static void cl_sta_add_to_lut(struct cl_hw *cl_hw, struct cl_vif *cl_vif, =
+struct cl_sta *cl_sta)
++{
++       write_lock_bh(&cl_hw->cl_sta_db.lock);
 +
-+enum sounding_type {
-+       SOUNDING_TYPE_HE_SU =3D 0,
-+       SOUNDING_TYPE_HE_SU_TB,
-+       SOUNDING_TYPE_VHT_SU,
-+       SOUNDING_TYPE_HE_CQI,
-+       SOUNDING_TYPE_HE_CQI_TB,
-+       SOUNDING_TYPE_HE_MU,
-+       SOUNDING_TYPE_VHT_MU,
++       cl_hw->cl_sta_db.num++;
++       cl_vif->num_sta++;
++       cl_hw->cl_sta_db.lut[cl_sta->sta_idx] =3D cl_sta;
 +
-+       SOUNDING_TYPE_MAX
-+};
++       /* Done here inside the lock because it allocates cl_stats */
++       cl_stats_sta_add(cl_hw, cl_sta);
 +
-+enum sounding_interval_coef {
-+       SOUNDING_INTERVAL_COEF_MIN_INTERVAL =3D 0,
-+       SOUNDING_INTERVAL_COEF_STA_STEP,
-+       SOUNDING_INTERVAL_COEF_INTERVAL_STEP,
-+       SOUNDING_INTERVAL_COEF_MAX_INTERVAL,
-+       SOUNDING_INTERVAL_COEF_MAX
-+};
++       write_unlock_bh(&cl_hw->cl_sta_db.lock);
 +
-+struct cl_hw;
++       cl_dbg_verbose(cl_hw, "mac=3D%pM, sta_idx=3D%u, vif_index=3D%u\n",
++                      cl_sta->addr, cl_sta->sta_idx, cl_sta->cl_vif->vif_i=
+ndex);
++}
 +
-+struct v_matrix_header {
-+       u32 format        : 2,
-+           rsv1          : 30;
-+       u32 bw            : 2,
-+           nr_index      : 3,
-+           nc_index      : 3,
-+           rsv2          : 24;
-+       u32 grouping      : 4,
-+           rsv3          : 28;
-+       u32 feedback_type : 1,
-+           codebook_info : 3,
-+           rsv4          : 28;
-+       u32 ru_start_idx  : 7,
-+           rsv5          : 25;
-+       u32 ru_end_idx    : 7,
-+           rsv6          : 25;
-+       u32 padding       : 6,
-+           rsv7          : 26;
-+       u32 rsv8;
-+};
++static void cl_sta_add_to_list(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++       u8 hash_idx =3D CL_STA_HASH_IDX(cl_sta->addr[5]);
 +
-+struct cl_sounding_info {
-+       enum sounding_type type;
-+       u8 sounding_id;
-+       struct v_matrix_header *v_matrices_data;
-+       u32 v_matrices_data_len;
-+       u32 v_matrices_dma_addr;
-+       u8 gid;
-+       u8 bw;
-+       u8 sta_num;
-+       u8 q_matrix_bitmap;
-+       struct cl_sta *su_cl_sta_arr[CL_MU_MAX_STA_PER_GROUP];
-+       u32 xmem_space;
-+       bool sounding_restart_required;
-+       struct list_head list;
-+};
++       write_lock_bh(&cl_hw->cl_sta_db.lock);
 +
-+struct cl_sounding_db {
-+       struct workqueue_struct *sounding_wq;
-+       u8 num_soundings;
-+       u8 cqi_profiles; /* Num of STAs with CQI active sounding */
-+       u8 active_profiles; /* Num of STAs with non-CQI active sounding */
-+       u8 active_profiles_prev[CL_SOUNDING_STABILITY_TIME];
-+       u8 active_profiles_idx;
-+       u8 dbg_level;
-+       u8 current_interval;
-+       u8 last_conf_active_profiles;
-+       rwlock_t list_lock;
-+       struct list_head head;
-+};
++       /* Add to hash table */
++       list_add(&cl_sta->list_hash, &cl_hw->cl_sta_db.hash[hash_idx]);
 +
-+void cl_sounding_init(struct cl_hw *cl_hw);
-+void cl_sounding_close(struct cl_hw *cl_hw);
-+void cl_sounding_send_request(struct cl_hw *cl_hw, struct cl_sta **cl_sta_=
-arr,
-+                             u8 sta_num, bool enable, u8 sounding_type, u8=
- bw,
-+                             u8 q_matrix_bitmap, struct cl_sounding_info *=
-recovery_elem);
-+void cl_sounding_switch_profile(struct cl_hw *cl_hw, u8 sta_idx_en, u8 sta=
-_idx_dis);
-+u8 cl_sounding_get_active_profiles(struct cl_hw *cl_hw);
-+void cl_sounding_stop_by_sid(struct cl_hw *cl_hw, u8 sid, bool sounding_re=
-start_check);
-+void cl_sounding_maintenance(struct cl_hw *cl_hw);
-+u16 cl_sounding_get_interval(struct cl_hw *cl_hw);
-+void cl_sounding_recovery(struct cl_hw *cl_hw);
-+struct cl_sounding_info *cl_sounding_get_elem(struct cl_hw *cl_hw, u8 soun=
-ding_id);
-+void cl_sounding_indication(struct cl_hw *cl_hw, struct mm_sounding_ind *i=
-nd);
-+int cl_sounding_cli(struct cl_hw *cl_hw, struct cli_params *cli_params);
++       /* Make sure that cl_sta's are stored in the list according to thei=
+r sta_idx. */
++       if (list_empty(&cl_hw->cl_sta_db.head)) {
++               list_add(&cl_sta->list, &cl_hw->cl_sta_db.head);
++       } else if (list_is_singular(&cl_hw->cl_sta_db.head)) {
++               struct cl_sta *cl_sta_singular =3D
++                       list_first_entry(&cl_hw->cl_sta_db.head, struct cl_=
+sta, list);
 +
-+#endif /* CL_SOUNDING_H */
++               if (cl_sta_singular->sta_idx < cl_sta->sta_idx)
++                       list_add_tail(&cl_sta->list, &cl_hw->cl_sta_db.head=
+);
++               else
++                       list_add(&cl_sta->list, &cl_hw->cl_sta_db.head);
++       } else {
++               struct cl_sta *cl_sta_last =3D
++                       list_last_entry(&cl_hw->cl_sta_db.head, struct cl_s=
+ta, list);
++
++               if (cl_sta->sta_idx > cl_sta_last->sta_idx) {
++                       list_add_tail(&cl_sta->list, &cl_hw->cl_sta_db.head=
+);
++               } else {
++                       struct cl_sta *cl_sta_next =3D NULL;
++                       struct cl_sta *cl_sta_prev =3D NULL;
++
++                       list_for_each_entry(cl_sta_next, &cl_hw->cl_sta_db.=
+head, list) {
++                               if (cl_sta_next->sta_idx < cl_sta->sta_idx)
++                                       continue;
++
++                               cl_sta_prev =3D list_prev_entry(cl_sta_next=
+, list);
++                               __list_add(&cl_sta->list, &cl_sta_prev->lis=
+t, &cl_sta_next->list);
++                               break;
++                       }
++               }
++       }
++
++       write_unlock_bh(&cl_hw->cl_sta_db.lock);
++
++       cl_sta->add_complete =3D true;
++}
++
++static void _cl_sta_add(struct cl_hw *cl_hw, struct ieee80211_vif *vif, st=
+ruct ieee80211_sta *sta)
++{
++       struct cl_vif *cl_vif =3D (struct cl_vif *)vif->drv_priv;
++       struct cl_sta *cl_sta =3D IEEE80211_STA_TO_CL_STA(sta);
++
++       /* !!! Must be first !!! */
++       cl_sta_add_to_lut(cl_hw, cl_vif, cl_sta);
++
++       cl_baw_init(cl_sta);
++       cl_txq_sta_add(cl_hw, cl_sta);
++       cl_vns_sta_add(cl_hw, cl_sta);
++
++       /*
++        * Add rssi of association request to rssi pool
++        * Make sure to call it before cl_wrs_api_sta_add()
++        */
++       cl_rssi_assoc_find(cl_hw, cl_sta, cl_hw->cl_sta_db.num);
++
++       cl_motion_sense_sta_add(cl_hw, cl_sta);
++       cl_bf_sta_add(cl_hw, cl_sta, sta);
++       cl_wrs_api_sta_add(cl_hw, sta);
++       cl_wrs_api_set_smps_mode(cl_hw, sta,
++                                cl_sta->stainfo->cur_max_bandwidth);
++       /* Should be called after cl_wrs_api_sta_add() */
++       cl_dyn_mcast_rate_update_upon_assoc(cl_hw, cl_sta->wrs_sta.mode,
++                                           cl_hw->cl_sta_db.num);
++       cl_dyn_bcast_rate_update_upon_assoc(cl_hw,
++                                           cl_sta->wrs_sta.su_params.tx_pa=
+rams.mcs,
++                                           cl_hw->cl_sta_db.num);
++
++       /* !!! Must be last !!! */
++       cl_sta_add_to_list(cl_hw, cl_sta);
++}
++
++static void cl_sta_disassociate(struct cl_hw *cl_hw, bool ap_only)
++{
++       struct cl_sta *cl_sta;
++       int sta_idx;
++       int cnt =3D 0;
++       int sta_num =3D cl_hw->cl_sta_db.num;
++
++       for (sta_idx =3D 0; ((sta_idx < CL_MAX_NUM_STA) && (cnt < sta_num))=
+; sta_idx++) {
++               cl_sta =3D cl_hw->cl_sta_db.lut[sta_idx];
++               if (cl_sta) {
++                       cnt++;
++                       if (ap_only && cl_sta->cl_vif->vif->type !=3D NL802=
+11_IFTYPE_AP)
++                               continue;
++                       cfg80211_del_sta(cl_sta->cl_vif->dev, cl_sta->addr,=
+ GFP_ATOMIC);
++               }
++       }
++}
++
++/*
++ * Parse the ampdu density to retrieve the value in usec, according to
++ * the values defined in ieee80211.h
++ */
++static u8 cl_sta_density2usec(u8 ampdu_density)
++{
++       switch (ampdu_density) {
++       case IEEE80211_HT_MPDU_DENSITY_NONE:
++               return 0;
++               /* 1 microsecond is our granularity */
++       case IEEE80211_HT_MPDU_DENSITY_0_25:
++       case IEEE80211_HT_MPDU_DENSITY_0_5:
++       case IEEE80211_HT_MPDU_DENSITY_1:
++               return 1;
++       case IEEE80211_HT_MPDU_DENSITY_2:
++               return 2;
++       case IEEE80211_HT_MPDU_DENSITY_4:
++               return 4;
++       case IEEE80211_HT_MPDU_DENSITY_8:
++               return 8;
++       case IEEE80211_HT_MPDU_DENSITY_16:
++               return 16;
++       default:
++               return 0;
++       }
++}
++
++static void cl_sta_set_min_spacing(struct cl_hw *cl_hw,
++                                  struct ieee80211_sta *sta)
++{
++       bool is_6g =3D cl_band_is_6g(cl_hw);
++       u8 sta_min_spacing =3D 0;
++       struct cl_sta *cl_sta =3D IEEE80211_STA_TO_CL_STA(sta);
++
++       if (is_6g)
++               sta_min_spacing =3D
++                       cl_sta_density2usec(sta->he_6ghz_capa.capa &
++                                       IEEE80211_HE_6GHZ_CAP_MIN_MPDU_STAR=
+T);
++       else if (sta->ht_cap.ht_supported)
++               sta_min_spacing =3D
++                       cl_sta_density2usec(sta->ht_cap.ampdu_density);
++       else
++               cl_dbg_err(cl_hw, "HT is not supported - cannot set sta_min=
+_spacing\n");
++
++       cl_sta->ampdu_min_spacing =3D
++               max(cl_sta_density2usec(cl_hw->sband.ht_cap.ampdu_density),=
+ sta_min_spacing);
++}
++
++u32 cl_sta_num(struct cl_hw *cl_hw)
++{
++       u32 num =3D 0;
++
++       read_lock(&cl_hw->cl_sta_db.lock);
++       num =3D cl_hw->cl_sta_db.num;
++       read_unlock(&cl_hw->cl_sta_db.lock);
++
++       return num;
++}
++
++u32 cl_sta_num_bh(struct cl_hw *cl_hw)
++{
++       u32 num =3D 0;
++
++       read_lock_bh(&cl_hw->cl_sta_db.lock);
++       num =3D cl_hw->cl_sta_db.num;
++       read_unlock_bh(&cl_hw->cl_sta_db.lock);
++
++       return num;
++}
++
++bool cl_sta_is_assoc(struct cl_hw *cl_hw, u8 sta_idx)
++{
++       bool is_assoc =3D false;
++
++       if (sta_idx < CL_MAX_NUM_STA) {
++               read_lock_bh(&cl_hw->cl_sta_db.lock);
++               is_assoc =3D cl_hw->cl_sta_db.lut[sta_idx] ? true : false;
++               read_unlock_bh(&cl_hw->cl_sta_db.lock);
++       }
++
++       return is_assoc;
++}
++
++struct cl_sta *cl_sta_get(struct cl_hw *cl_hw, u8 sta_idx)
++{
++       if (sta_idx < CL_MAX_NUM_STA)
++               return cl_hw->cl_sta_db.lut[sta_idx];
++
++       return NULL;
++}
++
++struct cl_sta *cl_sta_get_by_addr(struct cl_hw *cl_hw, u8 *addr)
++{
++       struct cl_sta *cl_sta =3D NULL;
++       u8 hash_idx =3D CL_STA_HASH_IDX(addr[5]);
++
++       if (is_multicast_ether_addr(addr))
++               return NULL;
++
++       list_for_each_entry(cl_sta, &cl_hw->cl_sta_db.hash[hash_idx], list_=
+hash)
++               if (cl_mac_addr_compare(cl_sta->addr, addr))
++                       return cl_sta;
++
++       return NULL;
++}
++
++void cl_sta_loop(struct cl_hw *cl_hw, sta_callback callback)
++{
++       struct cl_sta *cl_sta =3D NULL;
++
++       /* Go over all stations */
++       read_lock(&cl_hw->cl_sta_db.lock);
++
++       list_for_each_entry(cl_sta, &cl_hw->cl_sta_db.head, list)
++               callback(cl_hw, cl_sta);
++
++       read_unlock(&cl_hw->cl_sta_db.lock);
++}
++
++void cl_sta_loop_bh(struct cl_hw *cl_hw, sta_callback callback)
++{
++       struct cl_sta *cl_sta =3D NULL;
++
++       /* Go over all stations - use bottom-half lock */
++       read_lock_bh(&cl_hw->cl_sta_db.lock);
++
++       list_for_each_entry(cl_sta, &cl_hw->cl_sta_db.head, list)
++               callback(cl_hw, cl_sta);
++
++       read_unlock_bh(&cl_hw->cl_sta_db.lock);
++}
++
++void cl_sta_loop_safe(struct cl_hw *cl_hw, sta_callback callback)
++{
++       struct cl_sta *cl_sta =3D NULL;
++       struct cl_sta *cl_sta_tmp =3D NULL;
++
++       /* Go over all stations */
++       read_lock(&cl_hw->cl_sta_db.lock);
++
++       list_for_each_entry_safe(cl_sta, cl_sta_tmp, &cl_hw->cl_sta_db.head=
+, list)
++               callback(cl_hw, cl_sta);
++
++       read_unlock(&cl_hw->cl_sta_db.lock);
++}
++
++static int cl_sta_add_to_firmware(struct cl_hw *cl_hw, struct ieee80211_vi=
+f *vif,
++                                 struct ieee80211_sta *sta)
++{
++       struct cl_sta *cl_sta =3D (struct cl_sta *)sta->drv_priv;
++       struct cl_vif *cl_vif =3D (struct cl_vif *)vif->drv_priv;
++       struct mm_sta_add_cfm *sta_add_cfm;
++       int error =3D 0;
++       u8 recovery_sta_idx =3D 0;
++       u32 rate_ctrl_info =3D 0;
++
++       if (cl_recovery_in_progress(cl_hw)) {
++               struct cl_wrs_tx_params *tx_params =3D &cl_sta->wrs_sta.su_=
+params.tx_params;
++
++               /*
++                * If station is added to firmware during recovery, the dri=
+ver passes to firmware
++                * the station index to be used instead of firmware selecti=
+ng a free index
++                */
++               recovery_sta_idx =3D cl_sta->sta_idx;
++
++               /* Keep current rate value */
++               rate_ctrl_info =3D cl_rate_ctrl_generate(cl_hw, cl_sta, tx_=
+params->mode,
++                                                      tx_params->bw, tx_pa=
+rams->nss,
++                                                      tx_params->mcs, tx_p=
+arams->gi,
++                                                      false);
++       } else {
++               bool is_cck =3D cl_band_is_24g(cl_hw) && cl_hw_mode_is_b_or=
+_bg(cl_hw);
++               u8 mode =3D is_cck ? WRS_MODE_CCK : WRS_MODE_OFDM;
++
++               /*
++                * Not in recovery:
++                * firmware will set sta_idx and will return in confirmatio=
+n message
++                */
++               recovery_sta_idx =3D STA_IDX_INVALID;
++
++               /* Default rate value */
++               rate_ctrl_info =3D cl_rate_ctrl_generate(cl_hw, cl_sta, mod=
+e,
++                                                      0, 0, 0, 0, false);
++       }
++
++       /* Must be called before cl_msg_tx_sta_add() */
++       cl_sta_set_min_spacing(cl_hw, sta);
++
++       /* Send message to firmware */
++       error =3D cl_msg_tx_sta_add(cl_hw, sta, cl_vif, recovery_sta_idx, r=
+ate_ctrl_info);
++       if (error)
++               return error;
++
++       sta_add_cfm =3D (struct mm_sta_add_cfm *)(cl_hw->msg_cfm_params[MM_=
+STA_ADD_CFM]);
++       if (!sta_add_cfm)
++               return -ENOMSG;
++
++       if (sta_add_cfm->status !=3D 0) {
++               cl_dbg_verbose(cl_hw, "Status Error (%u)\n", sta_add_cfm->s=
+tatus);
++               cl_msg_tx_free_cfm_params(cl_hw, MM_STA_ADD_CFM);
++               return -EIO;
++       }
++
++       /* Save the index retrieved from firmware */
++       cl_sta->sta_idx =3D sta_add_cfm->sta_idx;
++
++       /* Release cfm msg */
++       cl_msg_tx_free_cfm_params(cl_hw, MM_STA_ADD_CFM);
++
++       return 0;
++}
++
++int cl_sta_add(struct cl_hw *cl_hw, struct ieee80211_vif *vif,
++              struct ieee80211_sta *sta)
++{
++       struct cl_sta *cl_sta =3D (struct cl_sta *)sta->drv_priv;
++       struct cl_vif *cl_vif =3D (struct cl_vif *)vif->drv_priv;
++       int error =3D 0;
++
++       if (cl_radio_is_going_down(cl_hw))
++               return -EPERM;
++
++       cl_sta->cl_vif =3D cl_vif;
++       cl_mac_addr_copy(cl_sta->addr, sta->addr);
++
++       error =3D cl_sta_add_to_firmware(cl_hw, vif, sta);
++       if (error)
++               return error;
++
++       if (!cl_recovery_in_progress(cl_hw))
++               if (vif->type !=3D NL80211_IFTYPE_STATION ||
++                   cl_hw->chip->conf->ce_production_mode)
++                       _cl_sta_add(cl_hw, vif, sta);
++
++       if (vif->type =3D=3D NL80211_IFTYPE_MESH_POINT &&
++           cl_vif->num_sta =3D=3D 1) {
++               cl_vif_ap_tx_enable(cl_hw, true);
++               set_bit(CL_DEV_MESH_AP, &cl_hw->drv_flags);
++       }
++
++       return 0;
++}
++
++void cl_sta_mgd_add(struct cl_hw *cl_hw, struct cl_vif *cl_vif, struct iee=
+e80211_sta *sta)
++{
++       /* Should be called in station mode */
++       struct cl_sta *cl_sta =3D (struct cl_sta *)sta->drv_priv;
++
++       /* !!! Must be first !!! */
++       cl_sta_add_to_lut(cl_hw, cl_vif, cl_sta);
++
++       cl_baw_init(cl_sta);
++       cl_txq_sta_add(cl_hw, cl_sta);
++       cl_vns_sta_add(cl_hw, cl_sta);
++
++       /*
++        * Add rssi of association response to rssi pool
++        * Make sure to call it before cl_wrs_api_sta_add()
++        */
++       cl_rssi_assoc_find(cl_hw, cl_sta, cl_hw->cl_sta_db.num);
++
++       /* In station mode we assume that the AP we connect to is static */
++       cl_motion_sense_sta_add(cl_hw, cl_sta);
++       cl_bf_sta_add(cl_hw, cl_sta, sta);
++       cl_wrs_api_sta_add(cl_hw, sta);
++       /* Should be called after cl_wrs_api_sta_add() */
++       cl_dyn_mcast_rate_update_upon_assoc(cl_hw, cl_sta->wrs_sta.mode,
++                                           cl_hw->cl_sta_db.num);
++       cl_dyn_bcast_rate_update_upon_assoc(cl_hw,
++                                           cl_sta->wrs_sta.su_params.tx_pa=
+rams.mcs,
++                                           cl_hw->cl_sta_db.num);
++
++       /* !!! Must be last !!! */
++       cl_sta_add_to_list(cl_hw, cl_sta);
++}
++
++static void _cl_sta_remove(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++       write_lock_bh(&cl_hw->cl_sta_db.lock);
++
++       list_del(&cl_sta->list);
++       list_del(&cl_sta->list_hash);
++
++       cl_hw->cl_sta_db.lut[cl_sta->sta_idx] =3D NULL;
++       cl_hw->cl_sta_db.num--;
++       cl_sta->cl_vif->num_sta--;
++
++       cl_dbg_verbose(cl_hw, "mac=3D%pM, sta_idx=3D%u, vif_index=3D%u\n",
++                      cl_sta->addr, cl_sta->sta_idx, cl_sta->cl_vif->vif_i=
+ndex);
++
++       write_unlock_bh(&cl_hw->cl_sta_db.lock);
++}
++
++void cl_sta_remove(struct cl_hw *cl_hw, struct ieee80211_vif *vif, struct =
+ieee80211_sta *sta)
++{
++       struct cl_vif *cl_vif =3D (struct cl_vif *)vif->drv_priv;
++       struct cl_sta *cl_sta =3D (struct cl_sta *)sta->drv_priv;
++       u8 sta_idx =3D cl_sta->sta_idx;
++
++       /* !!! Must be first - remove from list and LUT !!! */
++       _cl_sta_remove(cl_hw, cl_sta);
++
++       cl_traffic_sta_remove(cl_hw, cl_sta);
++       cl_bf_sta_remove(cl_hw, cl_sta);
++       cl_dyn_mcast_rate_update_upon_disassoc(cl_hw,
++                                              cl_sta->wrs_sta.mode,
++                                              cl_hw->cl_sta_db.num);
++       cl_dyn_bcast_rate_update_upon_disassoc(cl_hw,
++                                              cl_sta->wrs_sta.su_params.tx=
+_params.mcs,
++                                              cl_hw->cl_sta_db.num);
++       cl_wrs_api_sta_remove(cl_hw, cl_sta);
++       cl_tx_inject_sta_remove(cl_hw, cl_sta);
++       cl_twt_sta_remove(cl_hw, cl_sta);
++       cl_stats_sta_remove(cl_hw, cl_sta);
++
++       /*
++        * TX stop flow:
++        * 1) Flush TX queues
++        * 2) Poll confirmation queue and clear enhanced TIM
++        * 3) Send MM_STA_DEL_REQ message to firmware
++        * 4) Flush confirmation queue
++        * 5) Reset write index
++        */
++
++       cl_txq_flush_sta(cl_hw, cl_sta);
++       cl_single_cfm_poll_empty_sta(cl_hw, sta_idx);
++       cl_txq_sta_remove(cl_hw, sta_idx);
++
++       if (cl_vif->vif->type =3D=3D NL80211_IFTYPE_MESH_POINT &&
++           cl_vif->num_sta =3D=3D 0) {
++               cl_sta_disassociate_ap_iface(cl_hw);
++               cl_vif_ap_tx_enable(cl_hw, false);
++               clear_bit(CL_DEV_MESH_AP, &cl_hw->drv_flags);
++       }
++
++       cl_msg_tx_sta_del(cl_hw, sta_idx);
++
++       cl_single_cfm_flush_sta(cl_hw, sta_idx);
++
++       if (cl_vif->num_sta =3D=3D 0)
++               cl_radio_off_wake_up(cl_hw);
++}
++
++void cl_sta_disassociate_all(struct cl_hw *cl_hw)
++{
++       /* Disassociate all associated stations (AP + STA mode) */
++       cl_sta_disassociate(cl_hw, false);
++}
++
++void cl_sta_disassociate_ap_iface(struct cl_hw *cl_hw)
++{
++       /* Disassociate all AP associated stations (AP mode only) */
++       cl_sta_disassociate(cl_hw, true);
++}
++
++void cl_sta_ps_notify(struct cl_hw *cl_hw, struct cl_sta *cl_sta, bool is_=
+ps)
++{
++       /*
++        * PS-Poll & UAPSD are handled by FW, by setting
++        * WLAN_STA_SP we ensure mac80211 does not re-handle.
++        * flag is unset at ieee80211_sta_ps_deliver_wakeup
++        */
++       if (is_ps)
++               set_sta_flag(cl_sta->stainfo, WLAN_STA_SP);
++
++       cl_stats_update_ps(cl_hw, cl_sta, is_ps);
++}
++
 --
 2.30.0
 
