@@ -2,108 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 574A33AA8B4
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 03:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4CC83AA97F
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 05:22:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232137AbhFQBlh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 16 Jun 2021 21:41:37 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:55568 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229713AbhFQBlh (ORCPT
+        id S230001AbhFQDZB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 16 Jun 2021 23:25:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55896 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229709AbhFQDZB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 16 Jun 2021 21:41:37 -0400
-X-UUID: 46ac3d6201de4faaa4227846d2e4ea1a-20210617
-X-UUID: 46ac3d6201de4faaa4227846d2e4ea1a-20210617
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1988424041; Thu, 17 Jun 2021 09:39:27 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 17 Jun 2021 09:39:20 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 17 Jun 2021 09:39:20 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7921: fix the coredump is being truncated
-Date:   Thu, 17 Jun 2021 09:39:19 +0800
-Message-ID: <2ebb95099102ffe62c0fa8aedd95d7e77b5ca385.1623884856.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Wed, 16 Jun 2021 23:25:01 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36B45C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jun 2021 20:22:54 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id k7so2944797pjf.5
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jun 2021 20:22:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=/r5ooZDhhLfZ1DxAdI7xi00/b7gD8uPD95BirZhzfSQ=;
+        b=AypfzAPR3T++kLN1GaQh9r4/38MyZkb9oatGyAOxCNc/26PN4VAYQdfqPB3KqOzuKH
+         2NG0EmfmIcx5anEsj/C4exw4GXZo+EdyfFFYa0ex7IL0EsQFkBIRFNuDNCAIWtLDFBh3
+         mQIxC8agWgwYY+SqQkrUJ/3QAwUGwlkmd9RQg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=/r5ooZDhhLfZ1DxAdI7xi00/b7gD8uPD95BirZhzfSQ=;
+        b=l6d+tPPHmW1IDA3qC3lMRsB32lmFl2vkxWbwOiw1BhOo64DWs8s/HhX4HsTdn9DOKE
+         ZdWXfuXrrpcRqm3ZK3XWebQpHjAk3bFL4ruaFsKUT/ynYsH3d41NMGlFUl8jjwvnTI7C
+         NgeLax460JedmI3w4WxH8VfKh8C0/cMTKTHpaO6S0OftcQVZ2VVzlgdBfqQH+tIeQ22/
+         x4TcvF90xslj9yQJynXu3R5of0rqXaajxZ0OzKrlqYe8hEb+kRh5HhzGdzIAktwkroih
+         9FniNmyuGjTdrBWTaJWYCGJ+7XR1mK1AIWMYrU4QjTpv/6A8eAWNaQu3V6+ixsbhKJ9C
+         clxg==
+X-Gm-Message-State: AOAM533TXb03sQkMusMW3z6rSPZDNqNA1Ckh9RHLbd8FiGOoj/p1iEE2
+        NwlEv/0Ogu0og8EVzVQomXIgZA==
+X-Google-Smtp-Source: ABdhPJzftp1MjNvohc+8a9WaJdSvhhUhW1bNaRZeFamEiS7UH+ZEG0G5QwymN2cpVOI2wWfCn2ISMg==
+X-Received: by 2002:a17:90a:fa10:: with SMTP id cm16mr14664353pjb.175.1623900173863;
+        Wed, 16 Jun 2021 20:22:53 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id d5sm3436533pfd.115.2021.06.16.20.22.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jun 2021 20:22:53 -0700 (PDT)
+Date:   Wed, 16 Jun 2021 20:22:52 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     netdev@vger.kernel.org, Lennert Buytenhek <buytenh@wantstofly.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Romain Perier <romain.perier@gmail.com>,
+        Allen Pais <allen.lkml@gmail.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        wengjianfeng <wengjianfeng@yulong.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Lv Yunlong <lyl2019@mail.ustc.edu.cn>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] mwl8k: Avoid memcpy() over-reading of ETH_SS_STATS
+Message-ID: <202106162022.F3DABCEDD@keescook>
+References: <20210616195242.1231287-1-keescook@chromium.org>
+ <YMpX0S/Xeis0kKoP@lunn.ch>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YMpX0S/Xeis0kKoP@lunn.ch>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On Wed, Jun 16, 2021 at 09:58:09PM +0200, Andrew Lunn wrote:
+> On Wed, Jun 16, 2021 at 12:52:42PM -0700, Kees Cook wrote:
+> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > field bounds checking for memcpy(), memmove(), and memset(), avoid
+> > intentionally reading across neighboring array fields. Use the
+> > sub-structure address directly.
+> > 
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> >  drivers/net/wireless/marvell/mwl8k.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+> > index 84b32a5f01ee..3bf6571f4149 100644
+> > --- a/drivers/net/wireless/marvell/mwl8k.c
+> > +++ b/drivers/net/wireless/marvell/mwl8k.c
+> > @@ -4552,7 +4552,7 @@ static int mwl8k_cmd_update_stadb_add(struct ieee80211_hw *hw,
+> >  	else
+> >  		rates = sta->supp_rates[NL80211_BAND_5GHZ] << 5;
+> >  	legacy_rate_mask_to_array(p->legacy_rates, rates);
+> > -	memcpy(p->ht_rates, sta->ht_cap.mcs.rx_mask, 16);
+> > +	memcpy(p->ht_rates, &sta->ht_cap.mcs, 16);
+> >  	p->interop = 1;
+> >  	p->amsdu_enabled = 0;
+> >  
+> > @@ -5034,7 +5034,7 @@ mwl8k_bss_info_changed_sta(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+> >  			ap_legacy_rates =
+> >  				ap->supp_rates[NL80211_BAND_5GHZ] << 5;
+> >  		}
+> > -		memcpy(ap_mcs_rates, ap->ht_cap.mcs.rx_mask, 16);
+> > +		memcpy(ap_mcs_rates, &ap->ht_cap.mcs, 16);
+> >  
+> >  		rcu_read_unlock();
+> 
+> This does not appear to have anything to do with ETH_SS_STATS which is
+> what the Subject: says.
 
-Fix the maximum size of the coredump generated with current mt7921
-firmware. Otherwise, a truncated coredump would be reported to userland
-via dev_coredumpv.
+Whoops! I was off-by-one in my Subject edits. I will respin.
 
-Also, there is an additional error handling enhanced in the patch to avoid
-the possible invalid buffer access when the system failed to create the
-buffer to hold the coredump.
+-Kees
 
-Fixes: 0da3c795d07b ("mt76: mt7921: add coredump support")
-Co-developed-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac.h | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c  | 9 ++++++---
- 2 files changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 9b3f8d22f17e..d93ab1ece8ae 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -13,7 +13,7 @@
- #define MT76_CONNAC_MAX_SCAN_MATCH		16
- 
- #define MT76_CONNAC_COREDUMP_TIMEOUT		(HZ / 20)
--#define MT76_CONNAC_COREDUMP_SZ			(128 * 1024)
-+#define MT76_CONNAC_COREDUMP_SZ			(1300 * 1024)
- 
- enum {
- 	CMD_CBW_20MHZ = IEEE80211_STA_RX_BW_20,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index fb4de73df701..905dddbfbb0b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1557,7 +1557,7 @@ void mt7921_coredump_work(struct work_struct *work)
- 			break;
- 
- 		skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
--		if (data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
-+		if (!dump || data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
- 			dev_kfree_skb(skb);
- 			continue;
- 		}
-@@ -1567,7 +1567,10 @@ void mt7921_coredump_work(struct work_struct *work)
- 
- 		dev_kfree_skb(skb);
- 	}
--	dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
--		      GFP_KERNEL);
-+
-+	if (dump)
-+		dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
-+			      GFP_KERNEL);
-+
- 	mt7921_reset(&dev->mt76);
- }
 -- 
-2.25.1
-
+Kees Cook
