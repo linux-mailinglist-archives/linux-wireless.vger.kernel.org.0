@@ -2,145 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C7723ABA68
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 19:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D034F3ABA90
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 19:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232173AbhFQRRe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 13:17:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232144AbhFQRRd (ORCPT
+        id S231558AbhFQRVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 13:21:49 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:34104 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230457AbhFQRVs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 13:17:33 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F7FC061767
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 10:15:25 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id w31so5484698pga.6
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 10:15:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1zD+T81jZZgZpyjFh0xFUsdQjL/HhqmGe6jBuS5LlYM=;
-        b=VNTKhE5cST2J0ZnjsR5r3QutKIJAPxdYyKrH0WhAhImj92y8rywVUrDhn5E6UvCEVs
-         jnF1hD2ZBj/+9soV3yLKupEXB/gCaqaptyKZ21N5+glwJDNV3wZyO1x4mJqmk61zA06g
-         7ijTYSH+TXIBumKzmNqYu2FWwdSDsDboZTmT0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1zD+T81jZZgZpyjFh0xFUsdQjL/HhqmGe6jBuS5LlYM=;
-        b=cpDQJOkSzldypnJzJTCTV8x40ZSgUArpUys/Ey8+vkhK+8IWj8SOXoCnkuNnBNIlJw
-         XsBnTXRXJDJ22xMG3rZQY/wngVueYPS87RTt+bNvc2/uMNs42vlyZfcQJxwsm1DhdoxM
-         9sIl1ptiEcNsHUUordIVg5pngJtGWS2BS3V9gbO7vFUx9pckUHkMNDgrW757bvHca2lD
-         BiRjGHZQC7yZdufIq5qRqJlkfTse4ZhXNBzPgDV5KRtPfa/FA97H7AvV8kx5/OWC2+Lt
-         3roNqa0YYC8FKSd2ONPRDoM818C8Bm30Nl4QWHFAnj5XsA3CII7luSiFFPdaPfCpJptN
-         DqiQ==
-X-Gm-Message-State: AOAM532HD7Z3+iwQ2Ddd/yYPklMM1idcI4nDl56QzCwQYiE921oDGJCK
-        3a1PZD8d/gPcGJuo90O6ARgvOQ==
-X-Google-Smtp-Source: ABdhPJz+2jMCBEzFuT+7hJ4eMDlrWtKm4cUhhJRiazj6nJ5uWZLUBTK9YaUYt7u9fLzPz5cyGpDL8g==
-X-Received: by 2002:a63:c112:: with SMTP id w18mr5792064pgf.375.1623950124830;
-        Thu, 17 Jun 2021 10:15:24 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id q21sm6146371pfn.81.2021.06.17.10.15.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jun 2021 10:15:24 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH] mwifiex: Avoid memset() over-write of WEP key_material
-Date:   Thu, 17 Jun 2021 10:15:22 -0700
-Message-Id: <20210617171522.3410951-1-keescook@chromium.org>
-X-Mailer: git-send-email 2.25.1
+        Thu, 17 Jun 2021 13:21:48 -0400
+X-UUID: 0e27484dec4e4902a992eb0ec3a07766-20210618
+X-UUID: 0e27484dec4e4902a992eb0ec3a07766-20210618
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1803025238; Fri, 18 Jun 2021 01:19:38 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 18 Jun 2021 01:19:36 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 18 Jun 2021 01:19:36 +0800
+From:   <sean.wang@mediatek.com>
+To:     <lorenzo.bianconi@redhat.com>
+CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
+        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] mt76: mt7921: fix the coredump is being truncated
+Date:   Fri, 18 Jun 2021 01:19:35 +0800
+Message-ID: <1623950375-23007-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <YMtTlS3Nh4uGnJvq@lore-desk--annotate>
+References: <YMtTlS3Nh4uGnJvq@lore-desk--annotate>
 MIME-Version: 1.0
-X-Patch-Hashes: v=1; h=sha256; g=8ee66baceadd27f658a8dfa2fe3397021a28ad22; i=BArkIcxklEnQKmH2E0CxJuEpf2GPz0bKINbIuaIaeGg=; m=QhaE3cdmOtrz4D6MWzL5ksVjqyQuqa6XFh/VF/68Fns=; p=0XEJ9f86jVziXDyuQV+SK180J33uce0FHTOpZ2MXGNU=
-X-Patch-Sig: m=pgp; i=keescook@chromium.org; s=0x0x8972F4DFDC6DC026; b=iQIzBAABCgAdFiEEpcP2jyKd1g9yPm4TiXL039xtwCYFAmDLgykACgkQiXL039xtwCZAaQ//VPH Acw4YzlV6FoySvgPI2F9hIrqIUecqEJLuZXlKbEO/+XVh/E+asMJRVYfC8aixmaMj6xJGj+PKKpZL Qrk94z5tRQ12XIVKK+5/EOykBXLcclyyn+JsVbXH51ofvofhAHUw6MldFBCNgWVH0NIJe9zWdpwdx DORMsA2AjLkCAjNXBaiWktvfyy+PWhR7bqZwYK8Bhhz76nmlRsWR1tDb8lQUfD5Kpk9ohIBpuXMpj cey5gKDWIc+ri9vCGuF6P/Vq+3/jSvmB0mn0BdiWeito+OxIETfM4rOjwTBCKRmgT93Mn56Qg5S+h wWM+thXDZ78dKqiFlhgzeMjHM5k7nrMaMb5sLB00j9Pvu289BTmS8I8Nl4UJDQpMwGNmqgcqkkAKv c52rJ7yMm3w6VW7e1J3AEGNT8G2WH+VmebmyIGkJgjkZErnFrS4GgAqwZT3IdrHfcTTehxJ1gPOa7 1oL6gBBsos0Qx0bi9/dz7WNFYo6XCL52zVjGtJ8bZ7jHbnwmZ41fwJ/Bfi+GYTPJDTKKz5/vXh1gf 8q+hJIBNOd7tM6eY+BM9zwrD0GZVuDRHZvk+Dkt/rQe5RJ7gGnHWFmJJ/E4MxuBetyxVM4LORtedk 71BXhfbgPNN1AMJeYNwRTL4T6u2r7FgjFMUFbo3wY+ezV1dW71gAD/NSOyez5KcM=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In preparation for FORTIFY_SOURCE performing compile-time and run-time
-field bounds checking for memset(), avoid intentionally writing across
-neighboring array fields.
+From: Sean Wang <sean.wang@mediatek.com>
 
-When preparing to call mwifiex_set_keyparamset_wep(), key_material is
-treated very differently from its structure layout (which has only a
-single struct mwifiex_ie_type_key_param_set). Instead, add a new type to
-the union so memset() can correctly reason about the size of the
-structure.
 
-Note that the union ("params", 196 bytes) containing key_material was
-not large enough to hold the target of this memset(): sizeof(struct
-mwifiex_ie_type_key_param_set) == 60, NUM_WEP_KEYS = 4, so 240
-bytes, or 44 bytes past the end of "params". The good news is that
-it appears that the command buffer, as allocated, is 2048 bytes
-(MWIFIEX_SIZE_OF_CMD_BUFFER), so no neighboring memory appears to be
-getting clobbered.
+>> From: Sean Wang <sean.wang@mediatek.com>
+>>
+>> Fix the maximum size of the coredump generated with current mt7921
+>> firmware. Otherwise, a truncated coredump would be reported to
+>> userland via dev_coredumpv.
+>>
+>> Also, there is an additional error handling enhanced in the patch to
+>> avoid the possible invalid buffer access when the system failed to
+>> create the buffer to hold the coredump.
+>>
+>> Fixes: 0da3c795d07b ("mt76: mt7921: add coredump support")
+>> Co-developed-by: YN Chen <YN.Chen@mediatek.com>
+>> Signed-off-by: YN Chen <YN.Chen@mediatek.com>
+>> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/mt76_connac.h | 2 +-
+>> drivers/net/wireless/mediatek/mt76/mt7921/mac.c  | 9 ++++++---
+>>  2 files changed, 7 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+>> b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+>> index 9b3f8d22f17e..d93ab1ece8ae 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+>> @@ -13,7 +13,7 @@
+>>  #define MT76_CONNAC_MAX_SCAN_MATCH		16
+>>
+>>  #define MT76_CONNAC_COREDUMP_TIMEOUT		(HZ / 20)
+>> -#define MT76_CONNAC_COREDUMP_SZ			(128 * 1024)
+>> +#define MT76_CONNAC_COREDUMP_SZ			(1300 * 1024)
+>>
+>>  enum {
+>>	CMD_CBW_20MHZ = IEEE80211_STA_RX_BW_20, diff --git
+>> a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> index fb4de73df701..905dddbfbb0b 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> @@ -1557,7 +1557,7 @@ void mt7921_coredump_work(struct work_struct *work)
+>>			break;
+>>
+>>		skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
+>> -		if (data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
+>> +		if (!dump || data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
+>
+>why not just return if dump allocation fails? Doing so we will reset the device even if dump is NULL, do you think it is a real use-case?
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- drivers/net/wireless/marvell/mwifiex/fw.h      |  6 ++++++
- drivers/net/wireless/marvell/mwifiex/sta_cmd.c | 11 ++++++-----
- 2 files changed, 12 insertions(+), 5 deletions(-)
+We cannot just return if dump allocation fails because we still must properly free skb in coredump.msg_list to avoid
+the memory leak.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 470d669c7f14..2ff23ab259ab 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -995,6 +995,11 @@ struct host_cmd_ds_802_11_key_material {
- 	struct mwifiex_ie_type_key_param_set key_param_set;
- } __packed;
- 
-+struct host_cmd_ds_802_11_key_material_wep {
-+	__le16 action;
-+	struct mwifiex_ie_type_key_param_set key_param_set[NUM_WEP_KEYS];
-+} __packed;
-+
- struct host_cmd_ds_gen {
- 	__le16 command;
- 	__le16 size;
-@@ -2347,6 +2352,7 @@ struct host_cmd_ds_command {
- 		struct host_cmd_ds_wmm_get_status get_wmm_status;
- 		struct host_cmd_ds_802_11_key_material key_material;
- 		struct host_cmd_ds_802_11_key_material_v2 key_material_v2;
-+		struct host_cmd_ds_802_11_key_material_wep key_material_wep;
- 		struct host_cmd_ds_version_ext verext;
- 		struct host_cmd_ds_mgmt_frame_reg reg_mask;
- 		struct host_cmd_ds_remain_on_chan roc_cfg;
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-index d3a968ef21ef..48ea00da1fc9 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-@@ -840,14 +840,15 @@ mwifiex_cmd_802_11_key_material_v1(struct mwifiex_private *priv,
- 	}
- 
- 	if (!enc_key) {
--		memset(&key_material->key_param_set, 0,
--		       (NUM_WEP_KEYS *
--			sizeof(struct mwifiex_ie_type_key_param_set)));
-+		struct host_cmd_ds_802_11_key_material_wep *key_material_wep =
-+			(struct host_cmd_ds_802_11_key_material_wep *)key_material;
-+		memset(key_material_wep->key_param_set, 0,
-+		       sizeof(key_material_wep->key_param_set));
- 		ret = mwifiex_set_keyparamset_wep(priv,
--						  &key_material->key_param_set,
-+						  &key_material_wep->key_param_set[0],
- 						  &key_param_len);
- 		cmd->size = cpu_to_le16(key_param_len +
--				    sizeof(key_material->action) + S_DS_GEN);
-+				    sizeof(key_material_wep->action) + S_DS_GEN);
- 		return ret;
- 	} else
- 		memset(&key_material->key_param_set, 0,
--- 
-2.25.1
+Reset the device is eventually required even dump is NULL because mt7921 cannot work anymore in case coredump happens
+so that needs the following reset to recover it back in time.
 
+>Regards,
+>Lorenzo
+>
+>>			dev_kfree_skb(skb);
+>>			continue;
+>>		}
+>> @@ -1567,7 +1567,10 @@ void mt7921_coredump_work(struct work_struct
+>> *work)
+>>
+>>		dev_kfree_skb(skb);
+>>	}
+>> -	dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
+>> -		      GFP_KERNEL);
+>> +
+>> +	if (dump)
+>> +		dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
+>> +			      GFP_KERNEL);
+>> +
+>>	mt7921_reset(&dev->mt76);
+>>  }
+>> --
+>> 2.25.1
+>>
+>
