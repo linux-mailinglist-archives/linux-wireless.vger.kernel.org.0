@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32CD33AB894
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 685563AB889
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231849AbhFQQJD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:09:03 -0400
-Received: from mail-vi1eur05on2059.outbound.protection.outlook.com ([40.107.21.59]:25895
-        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
+        id S233671AbhFQQIr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:08:47 -0400
+Received: from mail-eopbgr140087.outbound.protection.outlook.com ([40.107.14.87]:56046
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233621AbhFQQID (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:08:03 -0400
+        id S233594AbhFQQH4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:07:56 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VkuKe6vl0wjc0330TZEiF+vk/cuPcKRI6FAvpEFdCXoVLl5Rl7tE3FbY1nfNrWWuZ+oxObpW5cllaBDjNyvoV9i03Bh0upNpnHyuqh+5bQOyFtWHoaSt9eybzDrfUmOg/R0PPqR+OMJqYJWe4AhpV6V/g94ovEVAFhcXfxPBSKQXygEk/9Pxcouj9bcYZcyr6xbifWGLWJY3pQ50i0JzQ2JR6lavFBN5ekf2dEPufU7+Imf8YIyW6WouEpAotNjdsTGqcuAtni7FynEPprkQxCV/29L3l5raPJjbO14vhNoW32rMBhCuKDYT0cTSWVO4t6pT6y+UgwVC7GpYHXWrHQ==
+ b=hBPZ+B2kxOli98wsXj2hFuasc7567mvkfDMiJu3NL0T3MOo8Iog6PDdlp8RNkhr6YJ75BNNNlpe5a3yk8ZgttoDKWUhwee5AfEAda27eRhJNPh4BF3qSDm56LTMhvMVWkK6wQAKoCpwIt1FsoQIrv88dqp8jy4hcBpazeK4lcAAWD7e05qfMfA2h9Yzo+yN2xMyKu2Pr7eF3Q2zZ6NAfCwKtHh6CrNTEnoFRrGBD0DWQnkNOs65ZsyIU0wIQl/joHQeoo4PEr1bLKPS2odKlfAuUwCOPodw08cmhcMkvtjF30A3J119e3STWsVuQhmEkJCfzsitOvKI/CmUnt1cw2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cq9zXmb7IoTdl+nt3+IMpbclxIPbURWjYzwgYbuoX7U=;
- b=LU4P5Vg7Ko8AS4K7m4YRZ9ZUkME13ebO9kQTMFdqe7y1gZ6cPYYLwdmb2W0ZmpEa2QAUf9H50B1bSerBU0wR7JgR1285SElVO77jvSG1ge4bHrWVfbddn66Q9v7rH8ANFrlI2ZHKD92n6laXyYc44+tWYI1KD13HBA+szNDD63Vc/O84NmZ/gIw2LqxTehospRr/Un0ySiJvDzrz7Akf1WpdS84XVCghfp6FD2JKNbw9t/LIrd5gvEcsD2frPnkjSMnucMwpqp1IbgNgodI67eraaRvvcgxlJCP09qHAvvTJ08umn6orB8WFgTLBDa7oTAjcJ5+K0DNPQyuPYBPj9A==
+ bh=Q/JHCUo0hG3CkBa0l2f+0xMSw0iNO7fN4ibITJQe68s=;
+ b=fCNcP2y73Oi+4S2y7GxQNzXaL5XKebGZUonHzALLwKAKbeX8Ls4MGpu10uP829VtcoLgvLhm9WLslaYcARab6QnqTwRGwPC3hCqUGfhx5z6uzbgU/cHhy72bDhfYrgAnQhbZVI4P/DdXke6HT+xltvpoUFCTDOqA1hbid4Cs2Vz4JXAToMpG60XBxgZkFe4wOlLiKmga1zm8/l9PM3iUEJ3esnIoNatOW0Nkn+qX2SSBN8jRM1IA1HiOAhGp3mSl6xtVy/yQw2jhT99xp0cJZu0g/Cx45QozOU7E7BUiYSIC+HezzhQLiZ+mAIm04mp85lWClK4Gp7zsO495/C29Lg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cq9zXmb7IoTdl+nt3+IMpbclxIPbURWjYzwgYbuoX7U=;
- b=scEkPbYg2eQ/ucCW92DbDqiD6A4N3D9U4yDmfNoIAKaUsmU/a5mlgw0G58+dM91IMnXOz/hkjPUvvwSVfjh5AjARKK0griSGvPfrUdLsz3cVVdMWExuD4+4lmR6BZ0YgZIdEMqWPd15rwFmPeTE+4CaupNJao/nKTuHuYA62yw0=
+ bh=Q/JHCUo0hG3CkBa0l2f+0xMSw0iNO7fN4ibITJQe68s=;
+ b=2imFV2vhGeKINk66y+u6L81ddvo92awouGjyc0TuijfEN7PpdN+pzNTCZtuJd1WI5g0DFj+OWGV1ePCdScJovQTGjfGTYdXCENqMNi1eG3UCliprlUwcTQQvAKmFOrT0eBv8Rz513tWD4inZqOZOu1pHeqO5r8NrQyf3JiuD1Js=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 129/256] cl8k: add phy/phy_common_lut.c
-Date:   Thu, 17 Jun 2021 16:00:16 +0000
-Message-Id: <20210617160223.160998-130-viktor.barna@celeno.com>
+Subject: [RFC v1 130/256] cl8k: add phy/phy_common_lut.h
+Date:   Thu, 17 Jun 2021 16:00:17 +0000
+Message-Id: <20210617160223.160998-131-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:55 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:56 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cb5a40ef-a878-4d7d-2479-08d931a9a669
+X-MS-Office365-Filtering-Correlation-Id: 14ecee24-fb28-45d1-b22b-08d931a9a6ff
 X-MS-TrafficTypeDiagnostic: AM8P192MB1059:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM8P192MB1059DB5E50911C7845A70D3BF60E9@AM8P192MB1059.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Microsoft-Antispam-PRVS: <AM8P192MB1059CB31E2D8238C28CF86AFF60E9@AM8P192MB1059.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vq9wxatBD/N3vH4F3OnoFMfalPTCCrdRKyWJo5TmBS5nl2BecC1ihBWlBqxPP2pvGh+l7vwrSW64qrxPJzIHPWm5ivmv1FB++vI+3at21pO7pN8/kXqJVL9rvgPBynVaQTY4iKtYNdXKBEGXipDHv0ZQFiSICg5z+5ref0xLDshxYpOPsdrfUI/X5adC2qT3P8XvksMZGYgfWDU4azlernSnNL6GUXjXBnJdKEBUjcsYlCG2JPFGBjJywzmBCWR6Z5oxSjfUP6tsvkLITJ3Ix5hkzhytUCSm0YB/O7iSsWFt2B0dADY8+PFHVJyXC3/Adv3kNGk9ePHFEdbd2yHlnvUwjs/0u0jynPwNEo/i48kHcaFSXLBIyDn0Rjpb5asgDLnG+LoRwqkwoyVmyVs3X2LggLXJzbSXoMprjiiyGqrP7AauOdalJeaduHaaU1Yc/6DDhAvCZFokqdLdv2rCoaDQCmMS349eoK5Ub0u7tMHHbowuER+T/59npG0gSvTeHDO5pSuT07fhqY5PlP1zQIBVoQbAY7G9O8Hm94OkmqGJgrbGlhIHWejqU9o7nH4/W/4KSn9SCC4KZwmRwSxGz2zvU9XV5SSEAtwOeihBcPSQBB4ZZo2YzADKvR/veccMddjnefKx0cStAHalc/8+47wXU1dg388N0w+AP/owAHLvsmDaGlNMU3Q1Z1KZEVbdG7VT8xi90O8hpRs18KQrSQ==
+X-Microsoft-Antispam-Message-Info: fnl8kjZzBniTsW3lro06G4/jNKs0Xn5LQ9qSg8JRbrPIc0cCnV7mHr+giJFj6Rvdmy5n0YWNTxJG9B5bw/YjGZgr6Vf1xJ7+Rp34PKWW7ynSNWuDiYA6PNAm7vh1TrRIZfaEtPnvxZ8V83EaEC8dIxGHwz5k79yma+WTF1OVz+/NKQsQ7hskS9s7XnMqHwjLi3Q0ZiIWxLZt64PtjnIKIq70vgczWYRTBQPDgloMzhdDBrg3efp5WRZvElk1bsb/CZrT1r5AJyjc0Codf5yQXkJdOzRE95qqlssUZOq366uGr5kbFSiKMhF3mxHmb9dloBKMGemJXHzS1yYPhDX3cDPW0V74zxxH008M8p0G5A0zx84NmxQqma/VneGfYwh2AFc7clPWjUV8DYBO5XwJhR/kQb2Ib2QrpAGenwE6NUR8kjS1PQ47EAC3oFDDy+CsBGpj8h8S68fCnFNnPPraxAQzYjbDVnyYH61b1Df7VbToDXaVgBncnky9pp/mJdB7xhBrH8AO6M3miwvT/gCURdzi2nGdR82Fdi6ZziJr390BLTzzSXsOmFgh8NqG2iAlYdGjmqkgCw3H4UhIjmxOiAzG3r1DvCx/0q/LBXzh2eKX3XgYOPWSbGTwHQGnoAuH8LmCiuqofKbpbhYoK544z/FLgk1F0V5U2OmIhe9TOn0dV3i1cveNq6gpNYUNR/T3HxWyShj83xvDsulLWMnRAQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(26005)(956004)(498600001)(186003)(66556008)(16526019)(107886003)(66946007)(66476007)(8936002)(6916009)(2616005)(1076003)(2906002)(54906003)(6506007)(6666004)(4326008)(38100700002)(38350700002)(83380400001)(9686003)(6512007)(5660300002)(6486002)(86362001)(55236004)(36756003)(52116002)(8676002)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?q60bTg4SFSwnFWx9nRpjKij6c4kxtT7XBx+GwscBzvBYL/UY/rVl9o9mwamY?=
- =?us-ascii?Q?fEmCyXFxFYl/pu4iKhU36OyDE1mEnv/JBDikDX5/0McXHkEuEif3v3miiwD/?=
- =?us-ascii?Q?Gttyg/fb+8jtAHBjGUkd4mnzKY9eFhgI0bduwASJeJTFdgwwvhWPBETrb+mr?=
- =?us-ascii?Q?jwrNhBmfk1Tfkpup1zZIUVMxOmaOutS10yWfb9VQg1waqtPGg9H+9h6FJhO9?=
- =?us-ascii?Q?Be04qf/D64VlBqRfnpITLJ6japnWGvCe6/fva0us/clyX35f7NGR3S6rqqY+?=
- =?us-ascii?Q?Ki09ueLVF1Mtu+iw8GQaknuDVU/MtTtAgGp5yHbfTa2YoAb3E7EuPsrU1y58?=
- =?us-ascii?Q?1ZrFwygXhctYfnJx02s33XgiMixxeSvFA6+2GuAPsyEm0nHdADhKgm9gGeSL?=
- =?us-ascii?Q?wlxnXix2+l26L32i7yHRPIKp2qQvVfsRXqlj63qlNzIvq5GIo/NkxnG5fcEA?=
- =?us-ascii?Q?i1PrH2tCKHtRpzukpZW1QVBCJ0ItVjMrLfbqX8OVB2OOTTP+h7sN9IpoEoOo?=
- =?us-ascii?Q?Cc/S2JV/OoqzZgUtcQQETjGaxRQ4GA8MY1tkL1Y6fOugFx9bJkzS6A5vPkUI?=
- =?us-ascii?Q?fNHXVT1K49uaat3IKUfsJx01lmrJkBUjtXTH/nedtuLXr1enyRXk99KwICAF?=
- =?us-ascii?Q?MKBn6+O/GphYCO4Ker+oeQ22/K9QFRJh3/bApHS5ywR6VYmejMtdihxxbC2B?=
- =?us-ascii?Q?9/7Ewv9FDPdgFtSktu2IS7fhHBuQJOZVhQjoBLznJCJLvk4YX0gO2B1kcpOb?=
- =?us-ascii?Q?X0oXRaTKjy6ifLPsCyxtuLHeHYFcwoA85Ziz0g0pUKzAU/H5GWyA7ILQqsBT?=
- =?us-ascii?Q?VbEf49SFUSaDvOWRz8ScpxIOsNsqiNypo2AlFup4imQaTMMemj5ndhbClbOJ?=
- =?us-ascii?Q?dng27AaCkscs3x18Ufw4Rco8p3r6hxIHERGG2LXZoTxuY8LK0x9J/6EyiWQn?=
- =?us-ascii?Q?T8B0ygOVULWal5AJF0Bl31aeWR7xrZW5B4W73aQGs3a7Dzm9jUdRo3KR4arW?=
- =?us-ascii?Q?fAvymeMFmrfefmhMLGxNkybtdo1s+961QhIiaOkRXS3WhEb+7aEtZtOQlrc/?=
- =?us-ascii?Q?DHNTApPF+ldeIHizZMrOsvgV9MvbzY+OgcODBKBaSh7IjWp3PcO223e3SlMY?=
- =?us-ascii?Q?XCSeL5zx+MTzbo1s9bUA0351cFJGzscsFhPfuRtPiAEd0Pk8ZXQFgx/YP+Ku?=
- =?us-ascii?Q?ebPngUzow9D+nSx/JvIOwUQDqbsWh09bimZOkd6HGFj/v4bO56T9gdXDH0LW?=
- =?us-ascii?Q?ZSg4CuUShkSTP29g8bGDvvsN4mEFDpo33yAYv0Sz3oFBoPJ3vBnuJA4L/ZHF?=
- =?us-ascii?Q?gG6SplZtMP0lcFJeUEuJyLnK?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?EawNoORgwlYHjMzLv39nDVHoiEstrmkKXcA4gdkmZcMgY6jmGVVx+0dnc8gS?=
+ =?us-ascii?Q?sfaxNAdv84gFvo4vK55LoJ3Hlw0MRlnuMUPUoS0ZxDvzKBq/vgdOU8R7GA4u?=
+ =?us-ascii?Q?PXLt3cCBzusIn+Tx5+sM0SztePKwAlkLqAXCmUvlCXD+tVTI0MysR9TnPvRA?=
+ =?us-ascii?Q?2ofZ5mYg23xp3Qk3YAE8BpG4v79R0rokTGqckiLHGtPqPNhp3cBgo4dCWlS6?=
+ =?us-ascii?Q?1J9FVbRDL268hOWJOKsDuZLWVIvlTACceN6k92ZkN2C4qT4PZx39MJqhSyZa?=
+ =?us-ascii?Q?8nKmRsH49vJUsM81DFvi1p+ACmWfuAjwGxKImWOkNHmGkjsk7BAzyhMO2JTP?=
+ =?us-ascii?Q?uA7OzeawlMjtDHl61i/0YNqYhXJ5Chsg/U5u3ciB/1UEwiHZjuMEl6uRRURY?=
+ =?us-ascii?Q?dhd//NSANAanbcZHIoXusn8cMe6qzy8H51EVIQMY0+T1xqdDCSvHJap3xMqK?=
+ =?us-ascii?Q?miQFJREX0Bu++5P7DOuNeK0Zz111sR0TWZmsxpQCoJ+2P6N2nK7b5p1Es/3Q?=
+ =?us-ascii?Q?oozqftgTgxDRGpdSj+yhlV6+acoxMpYBwcIOlc3vWpMihpIbhLY7bf2bKAQ4?=
+ =?us-ascii?Q?opOblmPKS6uUcoS2zXtHEaPxTFn97lRLyoyP7D4JIeCvvdknNvrjtnxZwClZ?=
+ =?us-ascii?Q?Z+ho39hnUCUaChBkNkVuowEchKuM9PbmfY2xve+5+WwvxhQgEBPtyP2S/qhD?=
+ =?us-ascii?Q?whfthyU2BzKdRdnDTnXjSNzjHbDYvRg2dEgX3H0tdWNGRMc+dLOyE62yCLyj?=
+ =?us-ascii?Q?st7OjjAlazjROF2y5fKF7AbTT5Ryk5xZW47To6r3TkKjRSP4nbtQzLLIJgjn?=
+ =?us-ascii?Q?+QlFfJxOETAAmosNV6nrukW2Kndp6oQfvRxdiM9PMAXjMW1vHKxRz/mZZ0q+?=
+ =?us-ascii?Q?r0YOP3rQ5Xxd1faE25Z6jSx4wb00Kax5QCutAx0oy1lRsfOCQieiG3Gd80Yw?=
+ =?us-ascii?Q?ok8GIOeSaOQFR+Xw3zsVgYm4Maf0CCVTp9yvnKt3SAYA0KdgSU7iVmXOv9Hy?=
+ =?us-ascii?Q?BX99cEPPe3VCVCC/JZPlRDOMJ5YcRrlMpPxA8l/l6D51Itjg0gO1Rz5txrge?=
+ =?us-ascii?Q?4gmxOwFZz1NCELLJEiMOV8HiouVcInOiPnltaJ6WZ/sBLK9hX16HiCsRX8Dv?=
+ =?us-ascii?Q?UyRTRF4anWkM8JegCYpWMXxBzQ+rHafyumcCQiXzClJcdjocGPP4C8yXea0L?=
+ =?us-ascii?Q?QLvJ+xKrgSEcd37z7LC2wnZaHZAOq021XWECdsYoJ1uC4U3hjhfMH25A5MPe?=
+ =?us-ascii?Q?2uVq7wq7Jg8z4Wu/O6Vfp9wprU8fDIuurOUIyjnmfH/3YRbbLvBqJreI9TSw?=
+ =?us-ascii?Q?Jjw/vHHJHn2HC0/uj2BrSP37?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb5a40ef-a878-4d7d-2479-08d931a9a669
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14ecee24-fb28-45d1-b22b-08d931a9a6ff
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:56.2132
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:57.2009
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5hT2HoKeT5EnEyalpCVGqPoFAEOaUUCpLPtTusSbYR6KRYWhiSMeuHWNb8putB8mJ2J9ugc6vXXLnhBYb2k3iw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: HREsLu/OE4k8PmspLrfeWflv2zcFT4fXTfuB7ie8MtvJxdMXNmgPgf882kPVLekB/JJ4/xg5y+4588oF21+Ykw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P192MB1059
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,180 +119,38 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../wireless/celeno/cl8k/phy/phy_common_lut.c | 143 ++++++++++++++++++
- 1 file changed, 143 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.c
+ .../wireless/celeno/cl8k/phy/phy_common_lut.h | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.c b/driver=
-s/net/wireless/celeno/cl8k/phy/phy_common_lut.c
+diff --git a/drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.h b/driver=
+s/net/wireless/celeno/cl8k/phy/phy_common_lut.h
 new file mode 100644
-index 000000000000..73a79f297718
+index 000000000000..7ff17cb81ca3
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.c
-@@ -0,0 +1,143 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/phy/phy_common_lut.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "phy_common_lut.h"
-+#include "phy_athos_lut.h"
-+#include "phy_olympus_lut.h"
++#ifndef CL_PHY_COMMON_LUT_H
++#define CL_PHY_COMMON_LUT_H
 +
-+const struct common_lut_line *cl_phy_oly_get_lut_index(const struct common=
-_lut_line *lut_table,
-+                                                      const u16 lut_table_=
-size, u16 freq)
-+{
-+       u16 frequency_idx;
++#include <linux/types.h>
++#include "fw/fw_msg.h"
 +
-+       /* Fine highest frequency in  lut table that is lower or equal freq=
- */
-+       for (frequency_idx =3D 0;
-+               frequency_idx < lut_table_size && lut_table[frequency_idx].=
-frequency_q2 <=3D freq;
-+               ++frequency_idx)
-+               ;
-+
-+       if (frequency_idx)
-+               frequency_idx--;
-+
-+       return &lut_table[frequency_idx];
-+}
-+
-+void cl_phy_lut_2_lines_update(u16 freq,
-+                              const struct common_lut_line *lut_table_60m,
-+                              const u16 lut_table_60m_size,
-+                              const struct common_lut_line *lut_table_40m,
-+                              const u16 lut_table_40m_size,
-+                              struct mm_mac_api_lut_line *api_lut_line)
-+{
-+       /* 1. configure the 40M xco lut table */
-+       const struct common_lut_line *data_line =3D
-+               cl_phy_oly_get_lut_index(lut_table_40m, lut_table_40m_size,=
- freq);
-+
-+       api_lut_line->rfic_specific.olympus_2_lines.xco_40M.freqmeastarg =
-=3D
-+               cpu_to_le32(data_line->freqmeastarg);
-+       api_lut_line->rfic_specific.olympus_2_lines.xco_40M.nfrac =3D
-+               cpu_to_le32(data_line->nfrac);
-+       api_lut_line->rfic_specific.olympus_2_lines.xco_40M.nint =3D
-+               data_line->nint;
-+       api_lut_line->rfic_specific.olympus_2_lines.xco_40M.vcocalsel =3D
-+               data_line->vcocalsel;
-+
-+       /* 2. configure the 60M xco lut table */
-+       data_line =3D cl_phy_oly_get_lut_index(lut_table_60m, lut_table_60m=
-_size, freq);
-+       api_lut_line->rfic_specific.olympus_2_lines.xco_60M.freqmeastarg =
-=3D
-+               cpu_to_le32(data_line->freqmeastarg);
-+       api_lut_line->rfic_specific.olympus_2_lines.xco_60M.nfrac =3D
-+               cpu_to_le32(data_line->nfrac);
-+       api_lut_line->rfic_specific.olympus_2_lines.xco_60M.nint =3D
-+               data_line->nint;
-+       api_lut_line->rfic_specific.olympus_2_lines.xco_60M.vcocalsel =3D
-+               data_line->vcocalsel;
-+
-+       /* 3. set frequency */
-+       api_lut_line->frequency_q2 =3D cpu_to_le16(freq);
-+}
-+
-+void cl_phy_lut_3_lines_update(u16 freq,
-+                              const struct common_lut_line *lut_table_60m_=
-s1,
-+                              const u16 lut_table_60m_s1_size,
-+                              const struct common_lut_line *lut_table_60m_=
-s0,
-+                              const u16 lut_table_60m_s0_size,
-+                              const struct common_lut_line *lut_table_40m,
-+                              const u16 lut_table_40m_size,
-+                              struct mm_mac_api_lut_line *api_lut_line)
-+{
-+       /* 1. configure the 40M xco lut table */
-+       const struct common_lut_line *data_line =3D
-+       cl_phy_oly_get_lut_index(lut_table_40m, lut_table_40m_size, freq);
-+
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_40M.freqmeastarg =
-=3D
-+       cpu_to_le32(data_line->freqmeastarg);
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_40M.nfrac =3D
-+       cpu_to_le32(data_line->nfrac);
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_40M.nint =3D
-+       data_line->nint;
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_40M.vcocalsel =3D
-+       data_line->vcocalsel;
-+
-+       /* 2. configure the 60M xco lut table , sxpfddesel=3D1*/
-+       data_line =3D cl_phy_oly_get_lut_index(lut_table_60m_s1, lut_table_=
-60m_s1_size, freq);
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_60M_s1.freqmeastarg=
- =3D
-+       cpu_to_le32(data_line->freqmeastarg);
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_60M_s1.nfrac =3D
-+       cpu_to_le32(data_line->nfrac);
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_60M_s1.nint =3D
-+       data_line->nint;
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_60M_s1.vcocalsel =
-=3D
-+       data_line->vcocalsel;
-+
-+       /* 3. configure the 60M xco lut table , sxpfddesel=3D0*/
-+       data_line =3D cl_phy_oly_get_lut_index(lut_table_60m_s0, lut_table_=
-60m_s0_size, freq);
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_60M_s0.freqmeastarg=
- =3D
-+       cpu_to_le32(data_line->freqmeastarg);
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_60M_s0.nfrac =3D
-+       cpu_to_le32(data_line->nfrac);
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_60M_s0.nint =3D
-+       data_line->nint;
-+       api_lut_line->rfic_specific.olympus_3_lines.xco_60M_s0.vcocalsel =
-=3D
-+       data_line->vcocalsel;
-+
-+       /* 4. set frequency */
-+       api_lut_line->frequency_q2 =3D cpu_to_le16(freq);
-+}
++struct common_lut_line {
++       u16 frequency_q2;
++       u8 vcocalsel;
++       u8 nint;
++       u32 nfrac;
++       u32 freqmeastarg;
++};
 +
 +void cl_phy_oly_lut_update(u8 nl_band, u16 freq,
-+                          struct mm_mac_api_lut_line *api_lut_line)
-+{
-+       switch (nl_band) {
-+       case NL80211_BAND_2GHZ:
-+               cl_phy_lut_3_lines_update(freq,
-+                                         olympus_lut_24g_60_mhz_s1,
-+                                         OLYMPUS_LUT_CHAN_24G_MAX,
-+                                         olympus_lut_24g_60_mhz_s0,
-+                                         OLYMPUS_LUT_CHAN_24G_MAX,
-+                                         olympus_lut_24g_40_mhz,
-+                                         OLYMPUS_LUT_CHAN_24G_MAX,
-+                                         api_lut_line);
-+               break;
-+       case NL80211_BAND_5GHZ:
-+               cl_phy_lut_3_lines_update(freq,
-+                                         olympus_lut_5g_60_mhz_s1,
-+                                         OLYMPUS_LUT_CHAN_5G_MAX,
-+                                         olympus_lut_5g_60_mhz_s0,
-+                                         OLYMPUS_LUT_CHAN_5G_MAX,
-+                                         olympus_lut_5g_40_mhz,
-+                                         OLYMPUS_LUT_CHAN_5G_MAX,
-+                                         api_lut_line);
-+               break;
-+       case NL80211_BAND_6GHZ:
-+               cl_phy_lut_2_lines_update(freq,
-+                                         athos_lut_6g_60_mhz, ATHOS_LUT_CH=
-AN_6G_MAX,
-+                                         athos_lut_6g_40_mhz, ATHOS_LUT_CH=
-AN_6G_MAX,
-+                                         api_lut_line);
-+               break;
-+       default:
-+               /* If nl_band is not supported return zero's */
-+               memset(api_lut_line, 0, sizeof(struct mm_mac_api_lut_line))=
-;
-+               api_lut_line->frequency_q2 =3D cpu_to_le16(freq);
-+       }
-+}
++                          struct mm_mac_api_lut_line *api_lut_line);
++
++#endif /* CL_PHY_COMMON_LUT_H */
 --
 2.30.0
 
