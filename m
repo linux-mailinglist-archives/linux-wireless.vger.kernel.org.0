@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 429F13AB8D0
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5879A3AB8BF
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232883AbhFQQKr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:10:47 -0400
-Received: from mail-eopbgr20072.outbound.protection.outlook.com ([40.107.2.72]:4749
-        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        id S233724AbhFQQKR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:10:17 -0400
+Received: from mail-eopbgr30064.outbound.protection.outlook.com ([40.107.3.64]:27105
+        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232598AbhFQQJu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:09:50 -0400
+        id S233781AbhFQQJJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:09:09 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z3ydCt97uywPWAG8yNkBDHw8V0XTxODXqgaIqw2tp9y876HKMYr23OlcYyioqxrZZxkBQxDbdmChixfqQGWiIycZ9/2UbSGLLXEnk7WFPB08sImqYJVB2WiV6KyQPZLY4cCS+aqjp149cbqVjTXuAgz+Gbd9LiMd9dtlXjUQK1eVm85+zdKmcX/ZdqTO9gQtBWsrJZuqnChOTbDag+Zg1T1lQnrIbbCPbAphymZU1NQY5fGNGD5FyfpaSgBp07e7lbPCij+imSioRXHM25sjZwbw87Q7jGOmaETDpdXxHz9run5I1dIAGkUs0PRqlccc1Mw0YSJtkgA8dKL8Cva0Zw==
+ b=kkKvrtoxec4AmpHjqZekz+pNBugFZ7UGBIPNtdSDe2lMd3GHlpmJzkEHSqoSd2ilJdzrAGE86MAbUZq8uBAz7R9Rz+ZS9NaCtBCdEqJg/Y5NJZKmrasTiJ1k6p2BNicb9zVdEzhXFbriA4ymxSWCBm8v3mq26ErsPZXkNNOcoYEOJj8OZw+YqlhBj/F7R1ZxlJ3aqQkcPg3fRUXDGcWNAF0O0Baj91f+zBlm0KaXDv+2Dq5+HbVko4yb1x9H2F6spOtMNYWMnl705ob36X65NAxOYLt7ZGX8qz9/L90TcqkNjUIlPGa99ZoSDkJsvCUXOsk42v54+VFNNJgeq3wYuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VnbiDJUrS0osfSRKsPpfFxKgFQHWSOksUpZOemyPrxc=;
- b=KlZfyI7E6YyGhh8DRh/BPhMeOouJXpg/Ut1pfF9HX9PKQvNycM8H10SS/k8JildkdF0W54GMUQz5TntTJ+NksmMStItMXYwTokITZ8StO6eI7G7oFkIBzh5NKYAfprkEm2csa/TCL/UNsMvIMwY8YQZDJFXD3+jzwKNr4JqeiANgj0gAzun3+OzH2dbq6EOTvN6O24kV/ZdG8T6it5pi4tsQLp4SWUvQNm7jYbCz0jteaSsAlyOQzu3IQ4NERj/T9OmhIogF2vTmz4YJU2XgX+nNrlTGcgwObiYPKSVix7JeOBS2yN2gXPzS9s+JQRIGRHA5+kT99rZwX4kcKjxmjg==
+ bh=rbr3kmJlQjKgPwk6fxF7KA87mPVp/KgQZnqCXSAUIaQ=;
+ b=KVTprEIrs8EPZm4qwMfkIE2uTwtpUWhLWb/P0jZinKHqSeoCWTN2NPjkJ+hjh8wn/L/lYEyEPnzWLsrO9OvePJae9rz/fwnaRbK3fecFIHdHXfBohfGm8FJ1g4PWFgcOpWCKUddc4QUZyWxZKtJ/uGaC//U3UAtek++EGo32+In66tgffWXSzGqnJrbN5cfMfa2JoCOj2OJBwUn3m9gTi/gQJkoW75d2scVMPzbsukfr3fHDJeTOl5n2s6sXMMQOsqs5LEhfzLTcDMDGSN+emC1jPZXlFw0rtWnw6lRZT2nH8h5PRsjR7AAG6dWV874VPp53bPyYgMDz1GkfqGkPfg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VnbiDJUrS0osfSRKsPpfFxKgFQHWSOksUpZOemyPrxc=;
- b=uxtrQbcYQC4jfI/32fZ7l6RUEtCM1zj4ffah/fJdlmMSAURYZUKOV38TcTou/me28On8xhhkm/ylZMkkrCwjLlWOjKIIaNLLm3Mk1ZomMKKzUlnPcv426mDWgedw1bCoji1zEhWVRKhf85lr5MlcTC0Ar5V4mj/BPDbCzRdJbVg=
+ bh=rbr3kmJlQjKgPwk6fxF7KA87mPVp/KgQZnqCXSAUIaQ=;
+ b=UUIqfbgypA9PJkwIqHduDkwF+5iIFjIKF1Pv4hLyU+S5xR6oiw+50Fw/V3E6EatUUT1qvAGXQap313mpBKQKimYF959ofBazX7RB4sjPiLM7AQnXzjG0KzbbeunV8f/ItWM7kiC26ws85YWMidX2yOiqv26URCjaKzyCY4qwO3w=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
- by AM9P192MB1187.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:3af::24) with
+ by AM0P192MB0465.EURP192.PROD.OUTLOOK.COM (2603:10a6:208:43::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.15; Thu, 17 Jun
- 2021 16:06:27 +0000
+ 2021 16:06:28 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:06:27 +0000
+ 16:06:28 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 160/256] cl8k: add reg/reg_mac_hw_mu.h
-Date:   Thu, 17 Jun 2021 16:00:47 +0000
-Message-Id: <20210617160223.160998-161-viktor.barna@celeno.com>
+Subject: [RFC v1 161/256] cl8k: add reg/reg_modem_gcu.h
+Date:   Thu, 17 Jun 2021 16:00:48 +0000
+Message-Id: <20210617160223.160998-162-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,52 +62,52 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:28 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:29 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0ee6aa56-85e9-4722-1f6f-08d931a9ba49
-X-MS-TrafficTypeDiagnostic: AM9P192MB1187:
+X-MS-Office365-Filtering-Correlation-Id: 9463edfa-3b5c-4ba5-7fda-08d931a9bae1
+X-MS-TrafficTypeDiagnostic: AM0P192MB0465:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB11878A7BA36F78B949715B72F60E9@AM9P192MB1187.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4125;
+X-Microsoft-Antispam-PRVS: <AM0P192MB04658121F863FF2ED06F7C57F60E9@AM0P192MB0465.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3044;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 019K4zjC3oRGCdXRQOKGUkMSMIlmjslVY27gHTd3yuR4zkmTEA91Z3dEmpyrHlXnJiNUo7L/hLg/TcUU0UwvKML6/3NkG4hZMNf2Y6cM9dfCHI4x/YDL9/lAmYJoBHYkGbeLNuvrNVCW6D+nTh2kaIkg9OGBDPp1Y5UeNJN5VMKPZr1B03xqJvV2eOMSxxrQiCkaBxX1aV0FIA5ETUc8Vh9XHkDXPQ0NCkNwCAv8jm0/8RJxHB5PeXEaQQsCyA9WjOI5BPvwf7opQjUBQ/bhvF7a5YFt+NxBtXf2VJp9nERwUYcdzbO74IusTOJ7fEg5jbcPPH8F4/ej8D9CBxJFA6mAs/i9OloIzYTyCIfYxMa/R2oqlf89wuv3ClBn+bvQNBsgcXfj0AXP5V4vpB9Guzmo1+If1BIyE9JAuZXNi+pyYzpOrPN5b2CJPJ560Wi8tRgk+7mYPi+R3viRBU3+rC0fCozvs6zZH+Ki2Fb38TB9tAewaLslBTeFGToa4DKMrSilEQ8RMGJJ4CUX6dm6hFqm5CEZyaBSp9FtdjdlgFeZHN09ohQbcR3L5jC3eFAj4I1LSFbLrK4A3EGYzvTNWNtXSgFEWhmxgBsfid51mtf0AZ83ph5kzZ5lcpHILoq3QHUB95dJYYQEC1c5nTjXf+kFzQNKmnkTg4AD68geX5YOeYCFn+U0qTq+kjJlPzKc7Vjw+jgB57hNsOo3c1P2mQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(39840400004)(376002)(396003)(136003)(366004)(346002)(6512007)(66946007)(55236004)(66556008)(6506007)(54906003)(8676002)(4326008)(186003)(316002)(66476007)(6486002)(26005)(6916009)(86362001)(36756003)(9686003)(8936002)(6666004)(5660300002)(2616005)(956004)(2906002)(478600001)(52116002)(83380400001)(38350700002)(16526019)(1076003)(38100700002)(107886003)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 80ljoMwjVIbHdVBo4uBR5xi9Gt+c3Mc3VT/j/SLDV+bcEvz9Wd4XT95dKaBpKTmsM49UmNKR7xxbIXJ7Llgtn3VFij3q+hZ7EjKa5utLlVfSjKdN/h/dVt5XACr+0mEh6zox3oVNVA9t/6MmqbgS5TXup/fC9J6Q6BMJHrMheBdAH9mbYGZ7zCRvbrbvjCj8ZjFlarhXJ/Cuz/lYgocA815CHwnprCfnhAtc+Oy6m0eby8CQksME7C5jdoE7GjKCza8eFmh6DAZWbkTEyi/YNNktKJni6u0A6rVfjsBGJwr5i+tgeYydoOQchb6b9WBuwPO3Q2Ultbt670E3VKIgLAvvdvrj0+VjNCTpbyuQTeasFjr6foT6Dx7auz6joA5MhPcx08JKgp7BG14npLZSLoN1VHcIhzv3Xyx2DtDrBpPITafX57rZGrSwG4gW06bYi6E2jFIAFTjJAzJYt+GGHolpYvrfjjbe1VO5mVVhr2EDidOGYiKYiZFHWhWOX0Pw2VWA4dOsqwdUIMJR/th0djCUoTVEWt7UhVRNzXHZTd807Ci8KmmGnJLN5H5QLDf2IDNTWCL9FZ3iPcQSn/4XzIlQR8ZISE+DfNKXKveR/nFlfxVq0OpeiyM9vvFyMjySNwtdZsFcrLopD9N9FfaFSj4B/HCzxhDlwnAbUjVKYyRaDbfF3NxqBnImO8dP4h5ZLkdl8t76V8aUd3TaMZ59pA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(55236004)(6506007)(4326008)(5660300002)(54906003)(107886003)(8936002)(86362001)(36756003)(6486002)(38100700002)(38350700002)(26005)(8676002)(2906002)(6666004)(186003)(30864003)(83380400001)(1076003)(6512007)(2616005)(66946007)(66556008)(52116002)(66476007)(956004)(6916009)(498600001)(16526019)(9686003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jTriP1CHYTDtatq3d2+gSCYbeJfui6PEtY1seMBuzrpTIuVKKqc00oWcP+mB?=
- =?us-ascii?Q?PmxNq6ywgYEM2OoKuewxn4osCOTpO0lGS2g4UJpWpTSK4ABEVoe2yzKEVZXz?=
- =?us-ascii?Q?XfecQ/kDs7H1uglc6wNp0VcGI5mt8/Ri3WBIdnRcEjTksTIk0iIqkh09KrmW?=
- =?us-ascii?Q?Ssb1ZJD8hXh0Zgc7tZdlQDdBeK93uF+UqWC7lWZjITOzTvE79J0ItLRMD325?=
- =?us-ascii?Q?Gv06I+36Amme9Dxfw0V/ob9ofgcfm/dI+7Qi44xqWN2DNE+1EUl+Id11XzdG?=
- =?us-ascii?Q?gzrlk5PavAtzjNYboFCCNBhw9WHDoNItLpKGwCdv636H3KYansoZ63VNiuPq?=
- =?us-ascii?Q?jUgKhSXWUtW+TPnHkhaJ8JS/8FW1tK2WHbpp7RGTNpvPtfJVxbMt7558uq0/?=
- =?us-ascii?Q?+JxEoVxX29OAKoL0/blr3uyjmcHpe+PwnUV8KxprYr7dU1YVYj1Kc0w8YaGA?=
- =?us-ascii?Q?LQpHh/Wbfgliz82yGKXusF86bQlvJ87WdkAu7hI7wDv/QRZmmPjJ0tXTat/+?=
- =?us-ascii?Q?kdTRUFsClfWMPpqKZYDzPcr0d2vLfNqgknydp6Ka+18RaeY3JfiRx7sCefHx?=
- =?us-ascii?Q?qTQp7fAXuX9pytDxbQ0mPr7HDFveXod6N15fThOIR8JK6yJqnKRmVNpsZXXs?=
- =?us-ascii?Q?YrqVuFXZnVpYKe3OhO0Sh498RcepHS7F+z1KaSTcupB3cLR/qrfKlmphN2sX?=
- =?us-ascii?Q?L7hIgYKCTJB9zTbO+VAauyxygLkToeX/KIxOJVwyCBA5SBnGqfsCZq452dEq?=
- =?us-ascii?Q?TYB8FcDsmTQbI9DAnaUYAtOsY7pwxMuBFcWpPdtMI9nF+DSwRdPrvYKtIc4P?=
- =?us-ascii?Q?xeAPC54iOC6NPdgQzp7XRsyZGSwc2b2QlyeUy/0ra66Yp/jpDm3mtzXkr1N4?=
- =?us-ascii?Q?unEnbn0Am+mWn8NL2JaAcIDEgJ6I78rNP3M4QxtlbckZOy1/aTJIkiCQ1SGY?=
- =?us-ascii?Q?K2pdaDNSLhZH+TckkCHs/NbP5yO1BWuXQWPKG2SjwLR2/ClrJ66IsxpWiTmY?=
- =?us-ascii?Q?Wl5wY/OlbyJiffnIgulHJbx5TKXFv4bXl4yM42XEM3GfXJobiknc9jHsEeaM?=
- =?us-ascii?Q?a7GJ5Ryff1+75Q+dBT8Dp4oSK+04HdBke+7xobn9E/pO/Yl2p+9q1tNueteb?=
- =?us-ascii?Q?S9sFbafznlDeNIM+l4MJ4hYKw72Bd3AxCUfY0z3Kdd12P5g1jbKmBtbDjYss?=
- =?us-ascii?Q?Bs3xuX7n7BabNsq1vZ6uWpY0RFZ5P+ceWbgfNz93GeOKLGouJkwbUKUt0fvC?=
- =?us-ascii?Q?2gDCDC6iXxh8jvA2Ew8F2tk8FumVhyACPaMwjp4uJWlgeA64Qaoon/nPP/En?=
- =?us-ascii?Q?w5VQH2Op/+xvpW4yg+PTmUcf?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?04K6C37sIb4k0/n8V96IHR1uNmuHrNBwpeqPI2m6lNbxx4AnnZhiUjmfj3V3?=
+ =?us-ascii?Q?EPma+ZYdMbRXN8hSxueTiKaSVH9xPXkyo0GkoXoUbdq60Rb+PTGrYLhusjN8?=
+ =?us-ascii?Q?84JzueSHt2rwDIeui3CJJy0qCPjD/MsfOLwiaF15AzwmbDJI0sIInhmLJ8cD?=
+ =?us-ascii?Q?JUCbtBtDWfIsu7EA9a0/Utrj8HGNuGXUZFLqonZConPLbrmPy1Oo2ru/FciV?=
+ =?us-ascii?Q?QTwhU0fowU/8YFkB9/fuNpUrzpuud4h+vYciUsUDbmsBrkBeKTPkFM9CQyUL?=
+ =?us-ascii?Q?gc01VxsxinpBNe6Iqbe0i8jBxmDT9bcoZv8rAf3NRhn8guAhAP3DGMHfYMDA?=
+ =?us-ascii?Q?vb5ZYXmQycW2rD4nf034LOjg4k+T1oZBiOuvZAnX7fmL/DM+9D6dwai2Nzhf?=
+ =?us-ascii?Q?KbxLV/dRvT7eWbeBa4mExuT5LAalWJ1OzGrwbs06tQ11oJivKLPWN5WHszZu?=
+ =?us-ascii?Q?du/yhK0xNuqAUcol/SoRjMkgxSGKdFkrVqN3ISXUHusMMnAk8Th+akG76LNu?=
+ =?us-ascii?Q?vFFXti/y+oPd3K6uri41xaGnqNSuw7PM67YLrtFs2cq22RLCqYZzqRX7vgfe?=
+ =?us-ascii?Q?VQkHilu0uWxinHXIJnI0yERnakbX7206ccIaLfEX2KQpbH5J211CEDO6W6Eg?=
+ =?us-ascii?Q?StIBLsTW5vLmN2jYaqTUJljR88+AaLpxa93sSVWfujFrOu67TxZxX88mpZtF?=
+ =?us-ascii?Q?U/ro5FVbPjmX1i5E7TXsSwXlTW18C2lqVzXiDq7KD53j4jRprF07f4nUSoxE?=
+ =?us-ascii?Q?1ZVeY2K1U8aU3bXynvJ09IPdE9vgGm4PQAFmNuBzMq5J7mcmZBW2F+OKwhBB?=
+ =?us-ascii?Q?OmoeyQrzd56FDuc3R6rE2vzCGkTizQoZEVvqdJcQAauLVvk0xC8nApEzUXde?=
+ =?us-ascii?Q?u7OBJZjvHVmL1r2sdiymuOyWgcG82ih191wLxiOXgdGu4YHfOKZy/v4ys1Dp?=
+ =?us-ascii?Q?51QdVlLYv5pUlQ/UORPkwWKRsyX6cNinOzc/0myAPXEJZnBpR5vGVKW+gYk7?=
+ =?us-ascii?Q?0iGpFpvvS6gt7utANgTZDGhu1OH5eMiN3kBWSz8xnEL3oDgKEgwnNnUZpPDs?=
+ =?us-ascii?Q?Wf0s30Doq85RH+qYMPH4k+C7mRkW0rcD413kpFELv/sbPZ+7b+Hz1RY8Dv4B?=
+ =?us-ascii?Q?bRN4x5IxeMeFCbd3Biv8B+8RWQn9nTu6pFyyx7YHIJEulAb9if/5rVgckRJz?=
+ =?us-ascii?Q?C4iDUE9lY8dBcx92F3WKO3X8rcDuS+gYBlAy1YOwTCAKAh1SonqgoLeEaMAk?=
+ =?us-ascii?Q?8T1ndH5hHxbxIScINocdHjIVACnrVL4IRapZ3iJ0CqiU34Iy6LiixQxAN21k?=
+ =?us-ascii?Q?nc2bZqdfokEayUEARZggwsha?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ee6aa56-85e9-4722-1f6f-08d931a9ba49
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9463edfa-3b5c-4ba5-7fda-08d931a9bae1
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:29.5518
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:30.6072
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xiSiAsrIzLdfQMWofCsdrDjaBEbiGErN9RotnUP9zN7sW5j86DlfianKMv/gEmZuM39AQW/93qwCvfhAsgasng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1187
+X-MS-Exchange-CrossTenant-UserPrincipalName: eLKIyXbIML4jEuLHDTvq/XI/vLpJJh2CFl7wAjxJFDy5xjQhhRd6YCwzntcRLyQf3APaBuaqPoAuPoiQvajVEQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0465
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -119,54 +119,670 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../wireless/celeno/cl8k/reg/reg_mac_hw_mu.h  | 33 +++++++++++++++++++
- 1 file changed, 33 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/reg/reg_mac_hw_mu.h
+ .../wireless/celeno/cl8k/reg/reg_modem_gcu.h  | 628 ++++++++++++++++++
+ 1 file changed, 628 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/reg/reg_modem_gcu.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/reg/reg_mac_hw_mu.h b/drivers=
-/net/wireless/celeno/cl8k/reg/reg_mac_hw_mu.h
+diff --git a/drivers/net/wireless/celeno/cl8k/reg/reg_modem_gcu.h b/drivers=
+/net/wireless/celeno/cl8k/reg/reg_modem_gcu.h
 new file mode 100644
-index 000000000000..45368cfc36d6
+index 000000000000..3073a364acec
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/reg/reg_mac_hw_mu.h
-@@ -0,0 +1,33 @@
++++ b/drivers/net/wireless/celeno/cl8k/reg/reg_modem_gcu.h
+@@ -0,0 +1,628 @@
 +/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_REG_MAC_HW_MU_H
-+#define CL_REG_MAC_HW_MU_H
++#ifndef CL_REG_MODEM_GCU_H
++#define CL_REG_MODEM_GCU_H
 +
 +#include <linux/types.h>
 +#include "reg/reg_access.h"
 +#include "hw.h"
 +
-+#define MU_ADDR_OFFSET(i) ((i) << 16)
++#define REG_MODEM_GCU_BASE_ADDR 0x00480000
 +
 +/*
-+ * @brief MAC_CNTRL_2 register definition
-+ * Contains various settings for controlling the operation of the core. re=
-gister description
++ * @brief MPU register definition
 + * <pre>
 + *  Bits           Field Name   Reset Value
 + *  -----   ------------------   -----------
-+ *   00    SOFT_RESET                0
++ *   21    MPU_CLK_F                 0
++ *   20    MPU_REG_CLK_F             0
++ *   13    MPU_CLK_EN                0
++ *   12    MPU_REG_CLK_EN            0
++ *   01    MPU_RST_N                 0
++ *   00    MPU_REG_RST_N             0
 + * </pre>
 + */
-+#define MAC_HW_MU_MAC_CNTRL_2_ADDR        (REG_MAC_HW_BASE_ADDR + 0x000080=
-50)
-+#define MAC_HW_MU_MAC_CNTRL_2_OFFSET      0x00008050
-+#define MAC_HW_MU_MAC_CNTRL_2_INDEX       0x00002014
-+#define MAC_HW_MU_MAC_CNTRL_2_RESET       0x00000000
++#define MODEM_GCU_MPU_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x00000004)
++#define MODEM_GCU_MPU_OFFSET      0x00000004
++#define MODEM_GCU_MPU_INDEX       0x00000001
++#define MODEM_GCU_MPU_RESET       0x00000000
 +
-+static inline void  mac_hw_mu_mac_cntrl_2_set(struct cl_hw *cl_hw, u32 val=
-ue, u8 mu_idx)
++static inline void modem_gcu_mpu_set(struct cl_hw *cl_hw, u32 value)
 +{
-+       ASSERT_ERR(mu_idx < cl_hw->max_mu_cnt);
-+       cl_reg_write(cl_hw, (MAC_HW_MU_MAC_CNTRL_2_ADDR + MU_ADDR_OFFSET(mu=
-_idx)), value);
++       cl_reg_write(cl_hw, MODEM_GCU_MPU_ADDR, value);
 +}
 +
-+#endif /* CL_REG_MAC_HW_MU_H */
++/* Field definitions */
++#define MODEM_GCU_MPU_CLK_F_BIT         ((u32)0x00200000)
++#define MODEM_GCU_MPU_CLK_F_POS         21
++#define MODEM_GCU_MPU_REG_CLK_F_BIT     ((u32)0x00100000)
++#define MODEM_GCU_MPU_REG_CLK_F_POS     20
++#define MODEM_GCU_MPU_CLK_EN_BIT        ((u32)0x00002000)
++#define MODEM_GCU_MPU_CLK_EN_POS        13
++#define MODEM_GCU_MPU_REG_CLK_EN_BIT    ((u32)0x00001000)
++#define MODEM_GCU_MPU_REG_CLK_EN_POS    12
++#define MODEM_GCU_MPU_RST_N_BIT         ((u32)0x00000002)
++#define MODEM_GCU_MPU_RST_N_POS         1
++#define MODEM_GCU_MPU_REG_RST_N_BIT     ((u32)0x00000001)
++#define MODEM_GCU_MPU_REG_RST_N_POS     0
++
++/*
++ * @brief BPU register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   24    BPUL_RX_CLK_F             0
++ *   23    BPU_CLK_F                 0
++ *   22    BPU_RX_CLK_F              0
++ *   21    BPU_TX_CLK_F              0
++ *   20    BPU_REG_CLK_F             0
++ *   16    BPUL_RX_CLK_EN            0
++ *   15    BPU_CLK_EN                0
++ *   14    BPU_RX_CLK_EN             0
++ *   13    BPU_TX_CLK_EN             0
++ *   12    BPU_REG_CLK_EN            0
++ *   03    BPU_RST_N                 0
++ *   02    BPU_RX_RST_N              0
++ *   01    BPU_TX_RST_N              0
++ *   00    BPU_REG_RST_N             0
++ * </pre>
++ */
++#define MODEM_GCU_BPU_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x00000008)
++#define MODEM_GCU_BPU_OFFSET      0x00000008
++#define MODEM_GCU_BPU_INDEX       0x00000002
++#define MODEM_GCU_BPU_RESET       0x00000000
++
++static inline void modem_gcu_bpu_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_BPU_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_BPU_BPUL_RX_CLK_F_BIT  ((u32)0x01000000)
++#define MODEM_GCU_BPU_BPUL_RX_CLK_F_POS  24
++#define MODEM_GCU_BPU_CLK_F_BIT          ((u32)0x00800000)
++#define MODEM_GCU_BPU_CLK_F_POS          23
++#define MODEM_GCU_BPU_RX_CLK_F_BIT       ((u32)0x00400000)
++#define MODEM_GCU_BPU_RX_CLK_F_POS       22
++#define MODEM_GCU_BPU_TX_CLK_F_BIT       ((u32)0x00200000)
++#define MODEM_GCU_BPU_TX_CLK_F_POS       21
++#define MODEM_GCU_BPU_REG_CLK_F_BIT      ((u32)0x00100000)
++#define MODEM_GCU_BPU_REG_CLK_F_POS      20
++#define MODEM_GCU_BPU_BPUL_RX_CLK_EN_BIT ((u32)0x00010000)
++#define MODEM_GCU_BPU_BPUL_RX_CLK_EN_POS 16
++#define MODEM_GCU_BPU_CLK_EN_BIT         ((u32)0x00008000)
++#define MODEM_GCU_BPU_CLK_EN_POS         15
++#define MODEM_GCU_BPU_RX_CLK_EN_BIT      ((u32)0x00004000)
++#define MODEM_GCU_BPU_RX_CLK_EN_POS      14
++#define MODEM_GCU_BPU_TX_CLK_EN_BIT      ((u32)0x00002000)
++#define MODEM_GCU_BPU_TX_CLK_EN_POS      13
++#define MODEM_GCU_BPU_REG_CLK_EN_BIT     ((u32)0x00001000)
++#define MODEM_GCU_BPU_REG_CLK_EN_POS     12
++#define MODEM_GCU_BPU_RST_N_BIT          ((u32)0x00000008)
++#define MODEM_GCU_BPU_RST_N_POS          3
++#define MODEM_GCU_BPU_RX_RST_N_BIT       ((u32)0x00000004)
++#define MODEM_GCU_BPU_RX_RST_N_POS       2
++#define MODEM_GCU_BPU_TX_RST_N_BIT       ((u32)0x00000002)
++#define MODEM_GCU_BPU_TX_RST_N_POS       1
++#define MODEM_GCU_BPU_REG_RST_N_BIT      ((u32)0x00000001)
++#define MODEM_GCU_BPU_REG_RST_N_POS      0
++/*
++ * @brief TFU register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   21    TFU_CLK_F                 0
++ *   20    TFU_REG_CLK_F             0
++ *   13    TFU_CLK_EN                0
++ *   12    TFU_REG_CLK_EN            0
++ *   01    TFU_RST_N                 0
++ *   00    TFU_REG_RST_N             0
++ * </pre>
++ */
++#define MODEM_GCU_TFU_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x0000000C)
++#define MODEM_GCU_TFU_OFFSET      0x0000000C
++#define MODEM_GCU_TFU_INDEX       0x00000003
++#define MODEM_GCU_TFU_RESET       0x00000000
++
++static inline void modem_gcu_tfu_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_TFU_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_TFU_CLK_F_BIT         ((u32)0x00200000)
++#define MODEM_GCU_TFU_CLK_F_POS         21
++#define MODEM_GCU_TFU_REG_CLK_F_BIT     ((u32)0x00100000)
++#define MODEM_GCU_TFU_REG_CLK_F_POS     20
++#define MODEM_GCU_TFU_CLK_EN_BIT        ((u32)0x00002000)
++#define MODEM_GCU_TFU_CLK_EN_POS        13
++#define MODEM_GCU_TFU_REG_CLK_EN_BIT    ((u32)0x00001000)
++#define MODEM_GCU_TFU_REG_CLK_EN_POS    12
++#define MODEM_GCU_TFU_RST_N_BIT         ((u32)0x00000002)
++#define MODEM_GCU_TFU_RST_N_POS         1
++#define MODEM_GCU_TFU_REG_RST_N_BIT     ((u32)0x00000001)
++#define MODEM_GCU_TFU_REG_RST_N_POS     0
++
++/*
++ * @brief SMU register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   21    SMU_CLK_F                 0
++ *   20    SMU_REG_CLK_F             0
++ *   13    SMU_CLK_EN                0
++ *   12    SMU_REG_CLK_EN            0
++ *   01    SMU_RST_N                 0
++ *   00    SMU_REG_RST_N             0
++ * </pre>
++ */
++#define MODEM_GCU_SMU_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x00000010)
++#define MODEM_GCU_SMU_OFFSET      0x00000010
++#define MODEM_GCU_SMU_INDEX       0x00000004
++#define MODEM_GCU_SMU_RESET       0x00000000
++
++static inline void modem_gcu_smu_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_SMU_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_SMU_CLK_F_BIT         ((u32)0x00200000)
++#define MODEM_GCU_SMU_CLK_F_POS         21
++#define MODEM_GCU_SMU_REG_CLK_F_BIT     ((u32)0x00100000)
++#define MODEM_GCU_SMU_REG_CLK_F_POS     20
++#define MODEM_GCU_SMU_CLK_EN_BIT        ((u32)0x00002000)
++#define MODEM_GCU_SMU_CLK_EN_POS        13
++#define MODEM_GCU_SMU_REG_CLK_EN_BIT    ((u32)0x00001000)
++#define MODEM_GCU_SMU_REG_CLK_EN_POS    12
++#define MODEM_GCU_SMU_RST_N_BIT         ((u32)0x00000002)
++#define MODEM_GCU_SMU_RST_N_POS         1
++#define MODEM_GCU_SMU_REG_RST_N_BIT     ((u32)0x00000001)
++#define MODEM_GCU_SMU_REG_RST_N_POS     0
++
++/*
++ * @brief MUX_FIC register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   20    MUX_FIC_CLK_F             0
++ *   12    MUX_FIC_CLK_EN            0
++ *   01    FIC_MUX_SOFT_RST_N        1
++ *   00    MUX_FIC_RST_N             0
++ * </pre>
++ */
++#define MODEM_GCU_MUX_FIC_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x0000001=
+4)
++#define MODEM_GCU_MUX_FIC_OFFSET      0x00000014
++#define MODEM_GCU_MUX_FIC_INDEX       0x00000005
++#define MODEM_GCU_MUX_FIC_RESET       0x00000002
++
++static inline void modem_gcu_mux_fic_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_MUX_FIC_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_MUX_FIC_CLK_F_BIT      ((u32)0x00100000)
++#define MODEM_GCU_MUX_FIC_CLK_F_POS      20
++#define MODEM_GCU_MUX_FIC_CLK_EN_BIT     ((u32)0x00001000)
++#define MODEM_GCU_MUX_FIC_CLK_EN_POS     12
++#define MODEM_GCU_MUX_FIC_SOFT_RST_N_BIT ((u32)0x00000002)
++#define MODEM_GCU_MUX_FIC_SOFT_RST_N_POS 1
++#define MODEM_GCU_MUX_FIC_RST_N_BIT      ((u32)0x00000001)
++#define MODEM_GCU_MUX_FIC_RST_N_POS      0
++
++/*
++ * @brief MUX_FIC_CONFIG register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   31    FIC_ISOLATED              0
++ *   17    FIC_ISOLATE               0
++ *   16    DISABLE_FIC_MESS          0
++ *   15:08 MUX_FIC_CONFLICT_DELAY_WRITE 0x0
++ *   07:00 MUX_FIC_CONFLICT_DELAY_READ 0x0
++ * </pre>
++ */
++#define MODEM_GCU_MUX_FIC_CONFIG_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x=
+0000001C)
++#define MODEM_GCU_MUX_FIC_CONFIG_OFFSET      0x0000001C
++#define MODEM_GCU_MUX_FIC_CONFIG_INDEX       0x00000007
++#define MODEM_GCU_MUX_FIC_CONFIG_RESET       0x00000000
++
++static inline void modem_gcu_mux_fic_config_set(struct cl_hw *cl_hw, u32 v=
+alue)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_MUX_FIC_CONFIG_ADDR, value);
++}
++
++static inline u8 modem_gcu_mux_fic_config_fic_isolate_getf(struct cl_hw *c=
+l_hw)
++{
++       u32 local_val =3D cl_reg_read(cl_hw, MODEM_GCU_MUX_FIC_CONFIG_ADDR)=
+;
++
++       return ((local_val & ((u32)0x00020000)) >> 17);
++}
++
++static inline void modem_gcu_mux_fic_config_fic_isolate_setf(struct cl_hw =
+*cl_hw, u8 ficisolate)
++{
++       ASSERT_ERR((((u32)ficisolate << 17) & ~((u32)0x00020000)) =3D=3D 0)=
+;
++       cl_reg_write(cl_hw, MODEM_GCU_MUX_FIC_CONFIG_ADDR,
++                    (cl_reg_read(cl_hw, MODEM_GCU_MUX_FIC_CONFIG_ADDR) & ~=
+((u32)0x00020000)) | ((u32)ficisolate << 17));
++}
++
++static inline u8 modem_gcu_mux_fic_config_fic_isolated_getf(struct cl_hw *=
+cl_hw)
++{
++       u32 local_val =3D cl_reg_read(cl_hw, MODEM_GCU_MUX_FIC_CONFIG_ADDR)=
+;
++
++       return ((local_val & ((u32)0x80000000)) >> 31);
++}
++
++/*
++ * @brief RIU_RST register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   07    RIUFE_RST_N               0
++ *   06    RIUAGC_RST_N              0
++ *   05    RIU_MDM_B_RST_N           0
++ *   04    RIULB_RST_N               0
++ *   03    RIURC_RST_N               0
++ *   02    RIU_RADAR_RST_N           0
++ *   01    RIU_RST_N                 0
++ *   00    RIU_REG_RST_N             0
++ * </pre>
++ */
++#define MODEM_GCU_RIU_RST_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x0000002=
+0)
++#define MODEM_GCU_RIU_RST_OFFSET      0x00000020
++#define MODEM_GCU_RIU_RST_INDEX       0x00000008
++#define MODEM_GCU_RIU_RST_RESET       0x00000000
++
++static inline void modem_gcu_riu_rst_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_RIU_RST_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_RIU_FE_RST_N_BIT    ((u32)0x00000080)
++#define MODEM_GCU_RIU_FE_RST_N_POS    7
++#define MODEM_GCU_RIU_AGC_RST_N_BIT   ((u32)0x00000040)
++#define MODEM_GCU_RIU_AGC_RST_N_POS   6
++#define MODEM_GCU_RIU_MDM_B_RST_N_BIT ((u32)0x00000020)
++#define MODEM_GCU_RIU_MDM_B_RST_N_POS 5
++#define MODEM_GCU_RIU_LB_RST_N_BIT    ((u32)0x00000010)
++#define MODEM_GCU_RIU_LB_RST_N_POS    4
++#define MODEM_GCU_RIU_RC_RST_N_BIT    ((u32)0x00000008)
++#define MODEM_GCU_RIU_RC_RST_N_POS    3
++#define MODEM_GCU_RIU_RADAR_RST_N_BIT ((u32)0x00000004)
++#define MODEM_GCU_RIU_RADAR_RST_N_POS 2
++#define MODEM_GCU_RIU_RST_N_BIT       ((u32)0x00000002)
++#define MODEM_GCU_RIU_RST_N_POS       1
++#define MODEM_GCU_RIU_REG_RST_N_BIT   ((u32)0x00000001)
++#define MODEM_GCU_RIU_REG_RST_N_POS   0
++
++/*
++ * @brief RIU_CLK register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   31    RIUADC_PWR_CLK_F          0
++ *   30    RIUFEA_5_CLK_F            0
++ *   29    RIUFEA_4_CLK_F            0
++ *   28    RIUFEA_3_CLK_F            0
++ *   27    RIUFEA_2_CLK_F            0
++ *   26    RIUFEA_1_CLK_F            0
++ *   25    RIUFEA_0_CLK_F            0
++ *   24    RIU_MDM_B_TX_CLK_F        0
++ *   23    RIU_MDM_B_RX_CLK_F        0
++ *   22    RIU_MDM_B_CLK_F           0
++ *   21    RIULB_CLK_F               0
++ *   20    RIURC_CLK_F               0
++ *   19    RIU_RADAR_CLK_F           0
++ *   18    RIUAGC_CLK_F              0
++ *   17    RIU_CLK_F                 0
++ *   16    RIU_REG_CLK_F             0
++ *   15    RIUADC_PWR_CLK_EN         0
++ *   14    RIUFEA_5_CLK_EN           0
++ *   13    RIUFEA_4_CLK_EN           0
++ *   12    RIUFEA_3_CLK_EN           0
++ *   11    RIUFEA_2_CLK_EN           0
++ *   10    RIUFEA_1_CLK_EN           0
++ *   09    RIUFEA_0_CLK_EN           0
++ *   08    RIU_MDM_B_TX_CLK_EN       0
++ *   07    RIU_MDM_B_RX_CLK_EN       0
++ *   06    RIU_MDM_B_CLK_EN          0
++ *   05    RIULB_CLK_EN              0
++ *   04    RIURCR_CLK_EN             0
++ *   03    RIU_RADAR_CLK_EN          0
++ *   02    RIUAGC_CLK_EN             0
++ *   01    RIU_CLK_EN                0
++ *   00    RIU_REG_CLK_EN            0
++ * </pre>
++ */
++#define MODEM_GCU_RIU_CLK_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x0000002=
+4)
++#define MODEM_GCU_RIU_CLK_OFFSET      0x00000024
++#define MODEM_GCU_RIU_CLK_INDEX       0x00000009
++#define MODEM_GCU_RIU_CLK_RESET       0x00000000
++
++static inline void modem_gcu_riu_clk_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_RIU_CLK_ADDR, value);
++}
++
++/*
++ * @brief SPU register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   21    SPU_CLK_F                 0
++ *   20    SPU_REG_CLK_F             0
++ *   13    SPU_CLK_EN                0
++ *   12    SPU_REG_CLK_EN            0
++ *   01    SPU_RST_N                 0
++ *   00    SPU_REG_RST_N             0
++ * </pre>
++ */
++#define MODEM_GCU_SPU_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x00000030)
++#define MODEM_GCU_SPU_OFFSET      0x00000030
++#define MODEM_GCU_SPU_INDEX       0x0000000C
++#define MODEM_GCU_SPU_RESET       0x00000000
++
++static inline void modem_gcu_spu_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_SPU_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_SPU_CLK_F_BIT         ((u32)0x00200000)
++#define MODEM_GCU_SPU_CLK_F_POS         21
++#define MODEM_GCU_SPU_REG_CLK_F_BIT     ((u32)0x00100000)
++#define MODEM_GCU_SPU_REG_CLK_F_POS     20
++#define MODEM_GCU_SPU_CLK_EN_BIT        ((u32)0x00002000)
++#define MODEM_GCU_SPU_CLK_EN_POS        13
++#define MODEM_GCU_SPU_REG_CLK_EN_BIT    ((u32)0x00001000)
++#define MODEM_GCU_SPU_REG_CLK_EN_POS    12
++#define MODEM_GCU_SPU_RST_N_BIT         ((u32)0x00000002)
++#define MODEM_GCU_SPU_RST_N_POS         1
++#define MODEM_GCU_SPU_REG_RST_N_BIT     ((u32)0x00000001)
++#define MODEM_GCU_SPU_REG_RST_N_POS     0
++
++/*
++ * @brief LCU register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   14    LCU_HLF_CLK_EN            0
++ *   13    LCU_CLK_EN                0
++ *   12    LCU_REG_CLK_EN            0
++ *   02    LCU_HLF_RST_N             0
++ *   01    LCU_RST_N                 0
++ *   00    LCU_REG_RST_N             0
++ * </pre>
++ */
++#define MODEM_GCU_LCU_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x00000034)
++#define MODEM_GCU_LCU_OFFSET      0x00000034
++#define MODEM_GCU_LCU_INDEX       0x0000000D
++#define MODEM_GCU_LCU_RESET       0x00000000
++
++static inline void modem_gcu_lcu_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_LCU_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_LCU_HLF_CLK_EN_BIT    ((u32)0x00004000)
++#define MODEM_GCU_LCU_HLF_CLK_EN_POS    14
++#define MODEM_GCU_LCU_CLK_EN_BIT        ((u32)0x00002000)
++#define MODEM_GCU_LCU_CLK_EN_POS        13
++#define MODEM_GCU_LCU_REG_CLK_EN_BIT    ((u32)0x00001000)
++#define MODEM_GCU_LCU_REG_CLK_EN_POS    12
++#define MODEM_GCU_LCU_HLF_RST_N_BIT     ((u32)0x00000004)
++#define MODEM_GCU_LCU_HLF_RST_N_POS     2
++#define MODEM_GCU_LCU_RST_N_BIT         ((u32)0x00000002)
++#define MODEM_GCU_LCU_RST_N_POS         1
++#define MODEM_GCU_LCU_REG_RST_N_BIT     ((u32)0x00000001)
++#define MODEM_GCU_LCU_REG_RST_N_POS     0
++
++/*
++ * @brief EPA register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   13    EPA_CLK_EN                0
++ *   12    EPA_REG_CLK_EN            0
++ *   01    EPA_RST_N                 0
++ *   00    EPA_REG_RST_N             0
++ * </pre>
++ */
++#define MODEM_GCU_EPA_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x00000038)
++#define MODEM_GCU_EPA_OFFSET      0x00000038
++#define MODEM_GCU_EPA_INDEX       0x0000000E
++#define MODEM_GCU_EPA_RESET       0x00000000
++
++static inline void modem_gcu_epa_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_EPA_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_EPA_CLK_EN_BIT        ((u32)0x00002000)
++#define MODEM_GCU_EPA_CLK_EN_POS        13
++#define MODEM_GCU_EPA_REG_CLK_EN_BIT    ((u32)0x00001000)
++#define MODEM_GCU_EPA_REG_CLK_EN_POS    12
++#define MODEM_GCU_EPA_RST_N_BIT         ((u32)0x00000002)
++#define MODEM_GCU_EPA_RST_N_POS         1
++#define MODEM_GCU_EPA_REG_RST_N_BIT     ((u32)0x00000001)
++#define MODEM_GCU_EPA_REG_RST_N_POS     0
++
++/*
++ * @brief BF register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   13    BF_CLK_EN                 0
++ *   12    BF_REG_CLK_EN             0
++ *   01    BF_RST_N                  0
++ *   00    BF_REG_RST_N              0
++ * </pre>
++ */
++#define MODEM_GCU_BF_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x0000003C)
++#define MODEM_GCU_BF_OFFSET      0x0000003C
++#define MODEM_GCU_BF_INDEX       0x0000000F
++#define MODEM_GCU_BF_RESET       0x00000000
++
++static inline void modem_gcu_bf_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_BF_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_BF_CLK_EN_BIT          ((u32)0x00002000)
++#define MODEM_GCU_BF_CLK_EN_POS          13
++#define MODEM_GCU_BF_REG_CLK_EN_BIT      ((u32)0x00001000)
++#define MODEM_GCU_BF_REG_CLK_EN_POS      12
++#define MODEM_GCU_BF_RST_N_BIT           ((u32)0x00000002)
++#define MODEM_GCU_BF_RST_N_POS           1
++#define MODEM_GCU_BF_REG_RST_N_BIT       ((u32)0x00000001)
++#define MODEM_GCU_BF_REG_RST_N_POS       0
++
++/*
++ * @brief RIU_CLK_1 register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   17    RIUFE_EXT_CLK_F           0
++ *   16    RIUFRC_CLK_F              0
++ *   01    RIUFE_EXT_CLK_EN          0
++ *   00    RIUFRC_CLK_EN             0
++ * </pre>
++ */
++#define MODEM_GCU_RIU_CLK_1_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x00000=
+124)
++#define MODEM_GCU_RIU_CLK_1_OFFSET      0x00000124
++#define MODEM_GCU_RIU_CLK_1_INDEX       0x00000049
++#define MODEM_GCU_RIU_CLK_1_RESET       0x00000000
++
++static inline void modem_gcu_riu_clk_1_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_RIU_CLK_1_ADDR, value);
++}
++
++/*
++ * @brief CEVA_CTRL register definition
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   16    MCCI_ADDR_BASE            0
++ *   14    VINTC                     0
++ *   12    NMI                       0
++ *   10:09 EXT_VOM                   0x0
++ *   08    EXT_PV                    0
++ *   07:06 UIA                       0x0
++ *   05    STOP_SD                   0
++ *   04    MON_STAT                  0
++ *   02    EXTERNAL_WAIT             1
++ *   00    BOOT                      0
++ * </pre>
++ */
++#define MODEM_GCU_CEVA_CTRL_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x00001=
+004)
++#define MODEM_GCU_CEVA_CTRL_OFFSET      0x00001004
++#define MODEM_GCU_CEVA_CTRL_INDEX       0x00000401
++#define MODEM_GCU_CEVA_CTRL_RESET       0x00000004
++
++static inline u32 modem_gcu_ceva_ctrl_get(struct cl_hw *cl_hw)
++{
++       return cl_reg_read(cl_hw, MODEM_GCU_CEVA_CTRL_ADDR);
++}
++
++static inline void modem_gcu_ceva_ctrl_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_CEVA_CTRL_ADDR, value);
++}
++
++/* Field definitions */
++#define MODEM_GCU_CEVA_CTRL_MCCI_ADDR_BASE_BIT ((u32)0x00010000)
++#define MODEM_GCU_CEVA_CTRL_MCCI_ADDR_BASE_POS 16
++#define MODEM_GCU_CEVA_CTRL_VINTC_BIT          ((u32)0x00004000)
++#define MODEM_GCU_CEVA_CTRL_VINTC_POS          14
++#define MODEM_GCU_CEVA_CTRL_NMI_BIT            ((u32)0x00001000)
++#define MODEM_GCU_CEVA_CTRL_NMI_POS            12
++#define MODEM_GCU_CEVA_CTRL_EXT_VOM_MASK       ((u32)0x00000600)
++#define MODEM_GCU_CEVA_CTRL_EXT_VOM_LSB        9
++#define MODEM_GCU_CEVA_CTRL_EXT_VOM_WIDTH      ((u32)0x00000002)
++#define MODEM_GCU_CEVA_CTRL_EXT_PV_BIT         ((u32)0x00000100)
++#define MODEM_GCU_CEVA_CTRL_EXT_PV_POS         8
++#define MODEM_GCU_CEVA_CTRL_UIA_MASK           ((u32)0x000000C0)
++#define MODEM_GCU_CEVA_CTRL_UIA_LSB            6
++#define MODEM_GCU_CEVA_CTRL_UIA_WIDTH          ((u32)0x00000002)
++#define MODEM_GCU_CEVA_CTRL_STOP_SD_BIT        ((u32)0x00000020)
++#define MODEM_GCU_CEVA_CTRL_STOP_SD_POS        5
++#define MODEM_GCU_CEVA_CTRL_MON_STAT_BIT       ((u32)0x00000010)
++#define MODEM_GCU_CEVA_CTRL_MON_STAT_POS       4
++#define MODEM_GCU_CEVA_CTRL_EXTERNAL_WAIT_BIT  ((u32)0x00000004)
++#define MODEM_GCU_CEVA_CTRL_EXTERNAL_WAIT_POS  2
++#define MODEM_GCU_CEVA_CTRL_BOOT_BIT           ((u32)0x00000001)
++#define MODEM_GCU_CEVA_CTRL_BOOT_POS           0
++
++static inline void modem_gcu_ceva_ctrl_external_wait_setf(struct cl_hw *cl=
+_hw, u8 externalwait)
++{
++       ASSERT_ERR((((u32)externalwait << 2) & ~((u32)0x00000004)) =3D=3D 0=
+);
++       cl_reg_write(cl_hw, MODEM_GCU_CEVA_CTRL_ADDR,
++                    (cl_reg_read(cl_hw, MODEM_GCU_CEVA_CTRL_ADDR) & ~((u32=
+)0x00000004)) | ((u32)externalwait << 2));
++}
++
++static inline void modem_gcu_ceva_ctrl_boot_setf(struct cl_hw *cl_hw, u8 b=
+oot)
++{
++       ASSERT_ERR((((u32)boot << 0) & ~((u32)0x00000001)) =3D=3D 0);
++       cl_reg_write(cl_hw, MODEM_GCU_CEVA_CTRL_ADDR,
++                    (cl_reg_read(cl_hw, MODEM_GCU_CEVA_CTRL_ADDR) & ~((u32=
+)0x00000001)) | ((u32)boot << 0));
++}
++
++/*
++ * @brief CEVA_VEC register definition
++ * Ceva Vector register description
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   31:00 VECTOR                    0x0
++ * </pre>
++ */
++#define MODEM_GCU_CEVA_VEC_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x000010=
+08)
++#define MODEM_GCU_CEVA_VEC_OFFSET      0x00001008
++#define MODEM_GCU_CEVA_VEC_INDEX       0x00000402
++#define MODEM_GCU_CEVA_VEC_RESET       0x00000000
++
++static inline void modem_gcu_ceva_vec_set(struct cl_hw *cl_hw, u32 value)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_CEVA_VEC_ADDR, value);
++}
++
++/*
++ * @brief RIU_CLK_BW register definition
++ * RIU clocks BW. register description
++ * <pre>
++ *  Bits           Field Name   Reset Value
++ *  -----   ------------------   -----------
++ *   13    agc_clk_bw                0
++ *   12:10 lb_mem_clk_bw             0x2
++ *   09:08 agc_mem_clk_bw            0x1
++ *   07:06 riu_afe_clk_bw            0x2
++ *   05:04 phyfesync_bw              0x2
++ *   03:02 adcpowclk_bw              0x2
++ *   01:00 riulbgclk_bw              0x2
++ * </pre>
++ */
++#define MODEM_GCU_RIU_CLK_BW_ADDR        (REG_MODEM_GCU_BASE_ADDR + 0x0000=
+1240)
++#define MODEM_GCU_RIU_CLK_BW_OFFSET      0x00001240
++#define MODEM_GCU_RIU_CLK_BW_INDEX       0x00000490
++#define MODEM_GCU_RIU_CLK_BW_RESET       0x000009AA
++
++static inline void modem_gcu_riu_clk_bw_set(struct cl_hw *cl_hw, u32 value=
+)
++{
++       cl_reg_write(cl_hw, MODEM_GCU_RIU_CLK_BW_ADDR, value);
++}
++
++static inline void modem_gcu_riu_clk_bw_agc_mem_clk_bw_setf(struct cl_hw *=
+cl_hw, u8 agcmemclkbw)
++{
++       ASSERT_ERR((((u32)agcmemclkbw << 8) & ~((u32)0x00000300)) =3D=3D 0)=
+;
++       cl_reg_write(cl_hw, MODEM_GCU_RIU_CLK_BW_ADDR,
++                    (cl_reg_read(cl_hw, MODEM_GCU_RIU_CLK_BW_ADDR) & ~((u3=
+2)0x00000300)) | ((u32)agcmemclkbw << 8));
++}
++
++#endif /* CL_REG_MODEM_GCU_H */
 --
 2.30.0
 
