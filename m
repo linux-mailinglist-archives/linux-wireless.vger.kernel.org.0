@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32BD83AB8B0
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDC343AB8B4
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbhFQQJv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:09:51 -0400
-Received: from mail-eopbgr20072.outbound.protection.outlook.com ([40.107.2.72]:4749
-        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        id S233841AbhFQQJz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:09:55 -0400
+Received: from mail-eopbgr70045.outbound.protection.outlook.com ([40.107.7.45]:47334
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233726AbhFQQIh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:08:37 -0400
+        id S231680AbhFQQIn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:08:43 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d5CHn0sUoq2K5+Joigr1zNMTRkHwVF7EuveHtQD+4o4bYFWYgy6gxwPoyM0e7RLOobM3qeo71pIWY9E5q5xpIsiOAri4+/mPUPW3usVB6w1AbidXsQ8GPSPVC2TMUCiUlS+fLBtaqG+56XZZo8AtwVZhtcD0pCktiLQe76eVuxc1qwYpM4veuQPEw5F4lonifGHvsPv4FIAmS83hYicD85ypJthQsaUczLbV32ARgc26pwuE9pS2dGkpjm3Np0EutxvY7mVGyu94Aj+sB+Izl8EH0wacSuD29EV7UA3B9Skl4Awvt63XnoyBqupL4qj6FCsqSRBvGdijkz/VBNSwjQ==
+ b=FJLgkJLmW9dGhh0BelISJtmUkKngzwLDvkInVNizaQk3Bt03A4sjTplNrcLJLZAoZeMrFyTQm90Rk6NGKy968Bls61+jNrouKaEuwZBZzoXkfRsoElEeGBdt0coisPMDT6v4U4L7WkRNb4eTlhQuTOQcUU3s+PKjBOneNjCyg9K6PA42yUzreMggaQg+fOfY28s8c9C1KFX0j5Qjn9Ov9Q1/L5H5MOMUdHJhatNauTr5RmWVgIatcJ1No3KmAneavX+CFc4J1d2KeNCDTzLewkyUrA2yFv5NsYOMnmLc/M0sOkK/SB7keecOm/fOzih446utf/TqIQcbUgSVzwjLbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XonmHg04xYKLMaSqJNeIztOEZjjycppqBbn4+RcC9HM=;
- b=nGI4giYGT4V/tB9/E+VpxER6t1RS5qpRhPvNQa+LeIKisKjLCX+Wgh3jdKu9G9KOyN16YJAbe9p2HLtlMOX26P+wVNS9pR9SPrsDD4fjfIOX1N1/dvQL9qED6PdV3dZ2Rc6W14JdvMhTnRLhezRHdBHCCkXLpAd3Z54FJJoC7YxGB5vHgAOWvFzN2+EaSBF+Dc7phv5Yg8jUUB72SA7+wB00cZahvsT/BuUT3biC67zecP6h7BK9LarP4pxwj4loc/KZVsrA0uKeZPHJo3VvoU5ra5zB9tIi2Qc1znXHfLeGNpifCrsGJUGU8SJZmzbW7T67p5dJHR1O+9iG75nw6w==
+ bh=vLSPt3m06p/sjN8PHT1jUWE6Ub/8dxzjcRSpRilUfEo=;
+ b=a56jddtu4edGtpOgZ5IrAypZP+nSB1VTF0acNyjU5q6SsyKltOHeAOfefOae+QJmq+CfO3UGK/sK358Jpt7cJC1FfQ5adSliNo34pG/YBYQBFY6+F4pqk6ps0Upw+26BW53xtTIoLcgmOF5uOYV/jBPEf4EiPh+m6C8PUh1y2aFGJUqj2/2Rpr8m7O8+ssCL02BWIipkwQonSApmn5t67psDui5B1PqOVEw3sTvLmmfylMFji5lntwZbP77sWVliv9S4llkb3Egpx8Q6sRkHPIvGLjjxCYFXT64AcBFb71fK1/LBio4XjQkaW95Y41MskNyWw9ESCUUFppmtKhlrhA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XonmHg04xYKLMaSqJNeIztOEZjjycppqBbn4+RcC9HM=;
- b=gE6KaCZ5Bez4C6YQdZnk3go4i2shSQbvNAQCQWIG3fsqgpXCTYs7nxwzO8zrtq0ILuouX4ZjZtP0wghyPDwSlmqrPyCewsDH9Tz95fEs+D6GLu6WSurYYGKD0g8C1ck8BUPkP1tKeGRSHiA89FLwp6SuL6V+8o9myfrR197W8z4=
+ bh=vLSPt3m06p/sjN8PHT1jUWE6Ub/8dxzjcRSpRilUfEo=;
+ b=wqpzIyt2ur9fvWrnlerTEKgAy1EJ6/SaFlFsShZPn3xFmDxhm+KVB6Kf+GeR2QrjZ3d7nelpdhl68Wi3IXrZqUu0EXQpdiwUFBFSo2uZrJnBaOLCkHRlXyGJzJChTiOzx90GPw4uCfzJvCISMDcitWqKK7TOsKKdeQVLWoMbdfY=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 151/256] cl8k: add reg/reg_cmu.h
-Date:   Thu, 17 Jun 2021 16:00:38 +0000
-Message-Id: <20210617160223.160998-152-viktor.barna@celeno.com>
+Subject: [RFC v1 152/256] cl8k: add reg/reg_fem.h
+Date:   Thu, 17 Jun 2021 16:00:39 +0000
+Message-Id: <20210617160223.160998-153-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:19 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:20 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 668c68bb-84b9-439d-4eb2-08d931a9b4b4
+X-MS-Office365-Filtering-Correlation-Id: 7cf14df8-3c60-495a-cc9b-08d931a9b555
 X-MS-TrafficTypeDiagnostic: AM9P192MB1187:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB11871C4C8FE52603A0C6927CF60E9@AM9P192MB1187.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Microsoft-Antispam-PRVS: <AM9P192MB1187BB8A9A80E1DB38B6EC54F60E9@AM9P192MB1187.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:660;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sVoFBv/w2MxpUzicY2VJeV6ymgPGITapjEnDkL+NqWVQ80cNWqh3ycVyMgTCbRjRoqOzdm6A3QFe6T1RR/U/NFZFpWCryAU/zOwmdmhfa424NWWlwOce/jQvijlTFpB67JKP4yl+1SLvJBIUpFdbwzwPWk1V7tCNVEuQwvP/znPX5umZoFuv1L6oeM1qQBxOD8nfkbocDcNcn+vRPOadUY25vhNR9Lsb7tjiSaJGfG2SmxPmCEUesfuqbdcY4KIL5YTV4RLrpvkV2GjS7xy3c9Ufhcu8wOAWTeAcoSGMuWZUGUcEBOfxhU+2kYxd1S1xxt9mdMk9crD68Vr7LAikeAu2QSwBwe70vg+EMuk+Ywufu/Cqf5cMT1TC32t51ehdhknrAQ4C7J4G6GSfG3zYXoMpd2CrerfvAEuCKjcOV1HGFKLiScPvNcBed7+MxDnp7F8XW5JTLfpi83kEj5kxDMA7Sw6JGI629dGu/cpVVLQTvj1Pj7LT+ooU8jh/RZTkR/aHYD0jxUsMMcmMUGdJ4bFXL/UGUGwQzuFoaodFjYsaXxTD5TbQuQ0LO2n+UsJ6Ck5P60VZYAfUE3dzod6pMwH7KkS7pQbmncB050QfuddsM1qjlnm1Llp3W17dE7EyKq2oIhlf1cguF1EWgzPEw7SnbKrwslJTBKzUBg6wdCCmrEsNRTXKseN6JaMAddhXLdJ9djMP3E2j860/INlGP6eWA7pztst+H/uMcV2LxxqRZqf4r56qBq6+nFEWNcNqxn/CWK5aVnhEaYgXi73rjg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(6512007)(66946007)(55236004)(66556008)(6506007)(54906003)(8676002)(4326008)(186003)(66476007)(6486002)(26005)(6916009)(86362001)(36756003)(9686003)(30864003)(8936002)(6666004)(5660300002)(2616005)(956004)(2906002)(52116002)(83380400001)(38350700002)(16526019)(1076003)(38100700002)(498600001)(107886003)(69590400013)(32563001)(473944003)(414714003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Gu0ZfOVZrVV5AjVzrRl8c/769W05vYJQmOBK9+EQLgfLD3sUrn3i+x1Pm73mDM3DC1YKl5z25iwGB1we/ztqpHdS/Pso7hnl5q1wprkK7J7tStuoex+j2l0NwMYpMbyo2H1XOMCle0JhNRIVnQ/vW8eknNdAocVd9V1nWndwxApkRI/+lDPBAB/XKDIhl6N5OT19dsJGmDMrtU6nTIGORhITcjFNKrIwcpkT0uO8o4dzETGKt4pa1pYeH1BP4egZ4G0PXMjKy4KT2LbmsbXBl0hOjzJs4qoV54rh96+swEr1lqyiO05G0TW25EHbNOJLW9x0rAtOCFaJwL6Nin+b1to2fId0cjk1FM22f+fZRdPbF5JT3MEyRDqQJjiUlX9xnB56IwE2+vyI5zbZnuKqse4WsZWaMhk5ytLIRO2G7eyItW4+rLFU9HrLPDYF4Vyu1VlJ19A3zmXLo9SoqB5I1Abo2+MAB7Ip90E4IpMtqkLi4dcG6iDhE97BJdtOy0VWakpwhnVydtAwvQ9ajSigIj6Q9rGrZJNPLlgPBW/3d7qLhF8vv8/twTO2B5MTGU1S/WYzRg57IgICK8cs2+aDourqZuzS0Yc7Us8piV4EF2nHrPV8fDwbSxYc141C5CmE4EWUQ87mukqkAVkfHCer9IEPMa20xYCrwKItZZQ99nNMqWegeDjVSYIlShCC9khiwd4GQJIegezshOn/JqOu8g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(366004)(6512007)(66946007)(55236004)(66556008)(6506007)(54906003)(8676002)(4326008)(186003)(66476007)(6486002)(26005)(6916009)(86362001)(36756003)(9686003)(8936002)(6666004)(5660300002)(2616005)(956004)(2906002)(52116002)(83380400001)(38350700002)(16526019)(1076003)(38100700002)(498600001)(107886003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aZLcXDqSezS0bu3BllWawM9XLe9KbDNwSeAmryKJa/dpT0h83SkeTmZgb8b4?=
- =?us-ascii?Q?nkc3lHdS5Jg1VvrhIn76TZcJ3pMw4B8SVCC8EtVkgoJcKvwJ5lVFSAr8p4/B?=
- =?us-ascii?Q?9xq+l/rIkSTBh05EZh2JJOB7IjoeHYnqBtw3MmkY7B+dBMdgfZlnV98lezlx?=
- =?us-ascii?Q?l/Wk0l/0iS9RQlQETrENFMALIMBaITs9/xyKywsQDENM4SPZUOEs3Bk2Gg7Q?=
- =?us-ascii?Q?rx3q5CJGLhfF5O+jzsUH+s0iE3beQQb/0QUDj9GVSTzlc25qtvknKGvGIcoK?=
- =?us-ascii?Q?KyQcmxjcWDfDS7rUXhZ65cinynPr1EQFkCSJGd8wXIi0w3pYx5NRtYVUKnLX?=
- =?us-ascii?Q?mCokavLi+t/slnhJPeXd77P50lfX59syDMSTwxdKQHRt8Xeh/YpcYvpR5d0X?=
- =?us-ascii?Q?/DTlwwYrODg5ple+wjl71PyzP3rr+iyvagbtLkN3D6fSRu6yPpQhNxh441s5?=
- =?us-ascii?Q?DlN2iPuvEqcNahrDIr9mdfUDpGt45ESq+JAOtvFnLT8yDjX7ts3AIPI7E3Ji?=
- =?us-ascii?Q?aB0wt+NvGhTECRQcfXmhI4TngR/BvRFgsPmHADRUiV9lwy+DrEslh+zOaQU1?=
- =?us-ascii?Q?h4LEWTtX2ELYYt9rOTC1ZYevMWH+l75Ulany+aJmRLVg8jr7Hk0vMzglUM7f?=
- =?us-ascii?Q?Zn392OjOMfPILqEGMk7x/SfFGfm+IpMOjR7XPtYaThwsBjIjCmPIkBzulQzc?=
- =?us-ascii?Q?D9XCBHHANyM+F92POu6pnx4eZ4bp38cgyPfv+eq3/MFXQtdrZUj9ldNfYDW0?=
- =?us-ascii?Q?pk7NoDY92AMEM40m794rbE3BPq3q2T0FYGarTqCrlJDAz2Bop+tKgv6LfnfQ?=
- =?us-ascii?Q?bnsF0txQCNhwrS7OG/VGcEdr0twTT5WhvorpZX2ciVIYzjcuYWjgOVFv4qWf?=
- =?us-ascii?Q?hyVX2GjfQGuTt5ns6BnQX24qojy/i15+Q2IuW+iwEZyVygHohnBfgfXLtQfb?=
- =?us-ascii?Q?lB6wai8HYB6VG30Y/yn2qCiNfvg9JZCJSpA4rWStGjS55CX+fWApK4iiBzkr?=
- =?us-ascii?Q?F6Ds1V9ZzeGyyjmWocapLkaTlRNqOhuWXO+5k/ojMfB8YbK+EtG2Jcnl4oip?=
- =?us-ascii?Q?g62NbcvbWhk2D3B1A8YnxyBf0qmIg+QIwlz2mQUgsShC0qdNbrvaRI2ZIbqH?=
- =?us-ascii?Q?crUteGSDIE3L6WohbUwcuRVpRXJ/X+kqJozmy5VSvGnW/hykAWnThqxZa3lz?=
- =?us-ascii?Q?fmkaDupq/vQ1R9KuQD6MRuxnF3an2BE2klDgITXahhPlF2veY/+U+GuDr6Jd?=
- =?us-ascii?Q?gSeJTu5EytBjr2mVSQwc63VSJXmT9pdPeOmLGfn9twPtW9XO9gy5V8AMDdl7?=
- =?us-ascii?Q?XEeT6PHL4ixYZxSTPRqq2UMY?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?85sHjb0/k+mCFYng0LsRDBkLfQqt0gX2gt7cM4UzVmu1S70ZhKXR5dtaYvGA?=
+ =?us-ascii?Q?h8lMHVRiWxSy7u7Jpaetn7QVw8Qei5wvDkFKCsp5AqADwq0MtNyDdVbY2AwC?=
+ =?us-ascii?Q?r5WvkhNFA8Ko4DDhM3qq1CIfdlMNmSWAKX7mv+MUMDfoRjylnqJHyflO/jCi?=
+ =?us-ascii?Q?NqrwrIHKQyVxSCmTpRqRxDPF7dMl6Tf/gWpCjLc3Yxpeb0V2zGHSIzJa1FV3?=
+ =?us-ascii?Q?VvJVjhYHpfq5kD7E+/zSnsOt+mK/FJtQeWiVLjJABD1CJNUTbLvpF6GsLOLK?=
+ =?us-ascii?Q?B9lFoLgUD/mjCaarQOkBHk2QAoLSfK20Oc/5Y4qnXwztZdb8II+P/RCx+Jv2?=
+ =?us-ascii?Q?JqumRjpDoUKwhnB3kR3voxxKR+Kpwj8TugcLAKdqgykZU81M+5myG9JZ6sSy?=
+ =?us-ascii?Q?kBSb0bWdMnLD7fwfDKjEgd65cEjDu41ABDri+8sNVYlOFti8qOfysIZ62KTb?=
+ =?us-ascii?Q?adwS2wRMTJ/rBB9qRjE0bDclFSDWj/KCqK0+VLhQlQvQM4Qp5Bo7zrbppEKi?=
+ =?us-ascii?Q?FIshbpM438tXIMQqkKrTlKyjx1WECOD8Swn3kUCr5ZaR/QfhLLyfrwoCV5Ao?=
+ =?us-ascii?Q?E1wFP3hQ+aGu13TjooeRrAB5rLtw0/ei9/NFqZyvXXVVuHFgp6VkSMGkZ5LB?=
+ =?us-ascii?Q?+QmSui8ZpiUoM05AKW+2+K+BCfYh6sUhydrshxGgjraRNz2VmueeLJQjeC8U?=
+ =?us-ascii?Q?FNZcYvrXL1/GpI4SHzaCYQvfntJVy6ruivOrcb1IGfS/l5gHqYRscqR5cdk7?=
+ =?us-ascii?Q?HT1OFRxSkWVod3NNdlPb6mjyang5FS59puOdf/ETMSOow+ApBjQJRDZ3PLf7?=
+ =?us-ascii?Q?HBX/nYlq1Ivl0Z2bdYYy/s9bnYBSa1FDnK0UaNp3MwgEOzlGX0WJDWvT9snK?=
+ =?us-ascii?Q?MbZldwkZ96CxRmZWDT6oxl0DiLT0ut2XlH9ZbR4v+aGuwGBVw6KMAXxZ5y03?=
+ =?us-ascii?Q?Q8WbW2mM3o14hwKHuxAbYnfaCnQUFTab3NyWUaF1Nw/zkuDOeuyq7I10b1GN?=
+ =?us-ascii?Q?aPXt/oi6FozUBg1LCwLYCKSIjt9nGUF1oboyl4tU9d7ocEi7PAETSmKfMA/B?=
+ =?us-ascii?Q?blf1+N04kMwz7S6T2gFidvsb/2hEPme3eLSMn1OoGR/9Cn4FKOgiSmdO+qfk?=
+ =?us-ascii?Q?2acTMWWVxs43gbuWQwhXVLhza9S5btA1LuJcJV9V62gAN5z66AtqQV3/Q4p0?=
+ =?us-ascii?Q?PtgpUR9ZzbF//+uYK9k5JlguVbqFfxGKtc/fKCPURPni+cS4h+RJ4cWztBb1?=
+ =?us-ascii?Q?8nS/dq71F8qRuCZ+kHCkO97R6nPldFZyqY9SQu9AaeCgkKLaBjWTS2VmrWjk?=
+ =?us-ascii?Q?Hg/eprsSBjyQAt3Y2ElVcWC4?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 668c68bb-84b9-439d-4eb2-08d931a9b4b4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7cf14df8-3c60-495a-cc9b-08d931a9b555
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:20.2347
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:21.2552
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bU3NgrqMmCJiOG8U0dVvW/Emp+vfVrgPIP15Bxi5TA7vBmTj+PQe25UU4eHGw9E5jxJToSHbFvPpgq2eaHye9Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: xaBd7JZ9/FT6t73BfG/OMu+FHxEm7mXWnZjxyoIMiOt6Fuu9AlGW1Vn1UwVNDq9mJc/Xwr1sjOTd+tuoNG4qRw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1187
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,431 +119,128 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../net/wireless/celeno/cl8k/reg/reg_cmu.h    | 379 ++++++++++++++++++
- 1 file changed, 379 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/reg/reg_cmu.h
+ .../net/wireless/celeno/cl8k/reg/reg_fem.h    | 102 ++++++++++++++++++
+ 1 file changed, 102 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/reg/reg_fem.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/reg/reg_cmu.h b/drivers/net/w=
-ireless/celeno/cl8k/reg/reg_cmu.h
+diff --git a/drivers/net/wireless/celeno/cl8k/reg/reg_fem.h b/drivers/net/w=
+ireless/celeno/cl8k/reg/reg_fem.h
 new file mode 100644
-index 000000000000..59428bf81e20
+index 000000000000..ab1aaae23782
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/reg/reg_cmu.h
-@@ -0,0 +1,379 @@
++++ b/drivers/net/wireless/celeno/cl8k/reg/reg_fem.h
+@@ -0,0 +1,102 @@
 +/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_REG_CMU_H
-+#define CL_REG_CMU_H
++#ifndef CL_REG_FEM_H
++#define CL_REG_FEM_H
 +
-+#include <linux/types.h>
-+#include "reg/reg_access.h"
-+#include "chip.h"
++#include "reg/reg_io_ctrl.h"
 +
-+#define REG_CMU_BASE_ADDR 0x007C6000
++struct cl_fem_lna_enable_gpio {
++       union {
++               u16 b0 : 1,
++                   b1 : 1,
++                   b2 : 1,
++                   b3 : 1,
++                   b4 : 1,
++                   b5 : 1,
++                   b6 : 1,
++                   b7 : 1,
++                   b8 : 1,
++                   b9 : 1,
++                   b10 : 1,
++                   b11 : 1,
++                   rsv : 4;
++               u16 val;
++       };
++};
 +
-+/*
-+ * @brief CMU_CLK_EN register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    31    spare_afe_gnrl_en         0
-+ *    30    spare_sys_gnrl_en         0
-+ *    27    spare_riu44_clk_en        0
-+ *    26    spare_riu_clk_en          0
-+ *    25    spare_riu2x_clk_en        0
-+ *    24    spare_riu4x_clk_en        0
-+ *    23    spare_phy_clk_en          0
-+ *    22    spare_phy2x_clk_en        0
-+ *    21    spare_sysx_clk_en         0
-+ *    20    spare_sys2x_clk_en        0
-+ *    19    ricu_clk_en               0
-+ *    05    smac_proc_clk_en          1
-+ *    04    umac_proc_clk_en          1
-+ *    03    lmac_proc_clk_en          1
-+ * </pre>
-+ */
-+#define CMU_CLK_EN_ADDR        (REG_CMU_BASE_ADDR + 0x00000000)
-+#define CMU_CLK_EN_OFFSET      0x00000000
-+#define CMU_CLK_EN_INDEX       0x00000000
-+#define CMU_CLK_EN_RESET       0x00000038
++struct cl_fem_pa_enable_gpio {
++       union {
++               u16 b0 : 1,
++                   b1 : 1,
++                   b2 : 1,
++                   b3 : 1,
++                   b4 : 1,
++                   b5 : 1,
++                   b6 : 1,
++                   b7 : 1,
++                   b8 : 1,
++                   b9 : 1,
++                   b10 : 1,
++                   b11 : 1,
++                   rsv : 4;
++               u16 val;
++       };
++};
 +
-+/* Field definitions */
-+#define CMU_SPARE_AFE_GNRL_EN_BIT           ((u32)0x80000000)
-+#define CMU_SPARE_AFE_GNRL_EN_POS           31
-+#define CMU_SPARE_SYS_GNRL_EN_BIT           ((u32)0x40000000)
-+#define CMU_SPARE_SYS_GNRL_EN_POS           30
-+#define CMU_SPARE_RIU_44_CLK_EN_BIT         ((u32)0x08000000)
-+#define CMU_SPARE_RIU_44_CLK_EN_POS         27
-+#define CMU_SPARE_RIU_CLK_EN_BIT            ((u32)0x04000000)
-+#define CMU_SPARE_RIU_CLK_EN_POS            26
-+#define CMU_SPARE_RIU_2_X_CLK_EN_BIT        ((u32)0x02000000)
-+#define CMU_SPARE_RIU_2_X_CLK_EN_POS        25
-+#define CMU_SPARE_RIU_4_X_CLK_EN_BIT        ((u32)0x01000000)
-+#define CMU_SPARE_RIU_4_X_CLK_EN_POS        24
-+#define CMU_SPARE_PHY_CLK_EN_BIT            ((u32)0x00800000)
-+#define CMU_SPARE_PHY_CLK_EN_POS            23
-+#define CMU_SPARE_PHY_2_X_CLK_EN_BIT        ((u32)0x00400000)
-+#define CMU_SPARE_PHY_2_X_CLK_EN_POS        22
-+#define CMU_SPARE_SYSX_CLK_EN_BIT           ((u32)0x00200000)
-+#define CMU_SPARE_SYSX_CLK_EN_POS           21
-+#define CMU_SPARE_SYS_2_X_CLK_EN_BIT        ((u32)0x00100000)
-+#define CMU_SPARE_SYS_2_X_CLK_EN_POS        20
-+#define CMU_RICU_CLK_EN_BIT                 ((u32)0x00080000)
-+#define CMU_RICU_CLK_EN_POS                 19
-+#define CMU_SMAC_PROC_CLK_EN_BIT            ((u32)0x00000020)
-+#define CMU_SMAC_PROC_CLK_EN_POS            5
-+#define CMU_UMAC_PROC_CLK_EN_BIT            ((u32)0x00000010)
-+#define CMU_UMAC_PROC_CLK_EN_POS            4
-+#define CMU_LMAC_PROC_CLK_EN_BIT            ((u32)0x00000008)
-+#define CMU_LMAC_PROC_CLK_EN_POS            3
++struct cl_fem_rx_active_gpio {
++       union {
++               u8 b0 : 1,
++                  b1 : 1,
++                  b2 : 1,
++                  b3 : 1,
++                  b4 : 1,
++                  b5 : 1,
++                  b6 : 1,
++                  b7 : 1;
++               u8 val;
++       };
++};
 +
-+#define CMU_MAC_ALL_CLK_EN \
-+       (CMU_RICU_CLK_EN_BIT | \
-+        CMU_SMAC_PROC_CLK_EN_BIT | \
-+        CMU_UMAC_PROC_CLK_EN_BIT | \
-+        CMU_LMAC_PROC_CLK_EN_BIT)
++#define EXTRACT_OFF_LUT(lut) (((lut) >> 12) & 0x7)
++#define FEM_LUT_MASK         0x0777
 +
-+static inline void cmu_clk_en_set(struct cl_chip *chip, u32 value)
-+{
-+       cl_reg_write_chip(chip, CMU_CLK_EN_ADDR, value);
-+}
++#define PA_ENABLE_POS  0
++#define LNA_ENABLE_POS 1
++#define RX_ACTIVE_POS  2
++#define GET_BIT(reg, pos) (((reg) >> (pos)) & 0x1)
 +
 +/*
-+ * @brief CMU_PHY_0_CLK_EN register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    02    ceva0_clk_en              0
-+ *    01    phy0_apb_clk_en           0
-+ *    00    phy0_main_clk_en          0
-+ * </pre>
++ * LNA_ENABLE
++ * IO_CTRL_LNA_ENABLE_0_GPIO_ENABLE_POS is used for all ioctl APIs -
++ * io_ctrl_lna_enable_0_set() ... io_ctrl_lna_enable_11_set()
++ * because all have the same value
 + */
-+#define CMU_PHY_0_CLK_EN_ADDR        (REG_CMU_BASE_ADDR + 0x00000004)
-+#define CMU_PHY_0_CLK_EN_OFFSET      0x00000004
-+#define CMU_PHY_0_CLK_EN_INDEX       0x00000001
-+#define CMU_PHY_0_CLK_EN_RESET       0x00000000
++#define LNA_ENABLE_GPIO_VAL(val) \
++       (((u32)(val) << IO_CTRL_LNA_ENABLE_0_GPIO_ENABLE_POS) & \
++        IO_CTRL_LNA_ENABLE_0_GPIO_ENABLE_BIT)
 +
-+static inline void cmu_phy_0_clk_en_set(struct cl_chip *chip, u32 value)
-+{
-+       cl_reg_write_chip(chip, CMU_PHY_0_CLK_EN_ADDR, value);
-+}
++/* PA_ENABLE */
++#define PA_ENABLE_GPIO_VAL(val) \
++       (((u32)(val) << IO_CTRL_PA_ENABLE_0_GPIO_ENABLE_POS) & \
++        IO_CTRL_PA_ENABLE_0_GPIO_ENABLE_BIT)
 +
-+/* Field definitions */
-+#define CMU_CEVA_0_CLK_EN_BIT               ((u32)0x00000004)
-+#define CMU_CEVA_0_CLK_EN_POS               2
-+#define CMU_PHY_0_APB_CLK_EN_BIT            ((u32)0x00000002)
-+#define CMU_PHY_0_APB_CLK_EN_POS            1
-+#define CMU_PHY_0_MAIN_CLK_EN_BIT           ((u32)0x00000001)
-+#define CMU_PHY_0_MAIN_CLK_EN_POS           0
++/* RX_ACTIVE */
++#define RX_ACTIVE_GPIO_VAL(val) \
++       (((u32)(val) << IO_CTRL_RX_ACTIVE_0_GPIO_ENABLE_POS) & \
++        IO_CTRL_RX_ACTIVE_0_GPIO_ENABLE_BIT)
 +
-+#define CMU_PHY0_CLK_EN \
-+       (CMU_CEVA_0_CLK_EN_BIT | \
-+        CMU_PHY_0_APB_CLK_EN_BIT | \
-+        CMU_PHY_0_MAIN_CLK_EN_BIT)
++#define LNA_ENABLE_GPIO_OUT_CFG(val) \
++       (((1 << IO_CTRL_LNA_ENABLE_0_GPIO_ENABLE_POS) & IO_CTRL_LNA_ENABLE_=
+0_GPIO_ENABLE_BIT) | \
++        ((1 << IO_CTRL_LNA_ENABLE_0_GPIO_OE_POS) & IO_CTRL_LNA_ENABLE_0_GP=
+IO_OE_BIT) | \
++        (((u32)(val) << IO_CTRL_LNA_ENABLE_0_GPIO_OUT_POS) & IO_CTRL_LNA_E=
+NABLE_0_GPIO_OUT_BIT))
++#define PA_ENABLE_GPIO_OUT_CFG(val) \
++        (((1 << IO_CTRL_PA_ENABLE_0_GPIO_ENABLE_POS) & IO_CTRL_PA_ENABLE_0=
+_GPIO_ENABLE_BIT) | \
++         ((1 << IO_CTRL_PA_ENABLE_0_GPIO_OE_POS) & IO_CTRL_PA_ENABLE_0_GPI=
+O_OE_BIT) | \
++         (((u32)(val) << IO_CTRL_PA_ENABLE_0_GPIO_OUT_POS) & IO_CTRL_PA_EN=
+ABLE_0_GPIO_OUT_BIT))
++#define RX_ACTIVE_GPIO_OUT_CFG(val) \
++         (((1 << IO_CTRL_RX_ACTIVE_0_GPIO_ENABLE_POS) & IO_CTRL_RX_ACTIVE_=
+0_GPIO_ENABLE_BIT) | \
++          ((1 << IO_CTRL_RX_ACTIVE_0_GPIO_OE_POS) & IO_CTRL_RX_ACTIVE_0_GP=
+IO_OE_BIT) | \
++          (((u32)(val) << IO_CTRL_RX_ACTIVE_0_GPIO_OUT_POS) & IO_CTRL_RX_A=
+CTIVE_0_GPIO_OUT_BIT))
 +
-+static inline void cmu_phy_0_clk_en_pack(struct cl_chip *chip, u8 ceva0clk=
-en, u8 phy0apbclken,
-+                                        u8 phy0mainclken)
-+{
-+       ASSERT_ERR_CHIP((((u32)ceva0clken << 2) & ~((u32)0x00000004)) =3D=
-=3D 0);
-+       ASSERT_ERR_CHIP((((u32)phy0apbclken << 1) & ~((u32)0x00000002)) =3D=
-=3D 0);
-+       ASSERT_ERR_CHIP((((u32)phy0mainclken << 0) & ~((u32)0x00000001)) =
-=3D=3D 0);
-+       cl_reg_write_chip(chip, CMU_PHY_0_CLK_EN_ADDR, ((u32)ceva0clken << =
-2) |
-+                         ((u32)phy0apbclken << 1) | ((u32)phy0mainclken <<=
- 0));
-+}
-+
-+static inline void cmu_phy_0_clk_en_ceva_0_clk_en_setf(struct cl_chip *chi=
-p, u8 ceva0clken)
-+{
-+       ASSERT_ERR_CHIP((((u32)ceva0clken << 2) & ~((u32)0x00000004)) =3D=
-=3D 0);
-+       cl_reg_write_chip(chip, CMU_PHY_0_CLK_EN_ADDR,
-+                         (cl_reg_read_chip(chip, CMU_PHY_0_CLK_EN_ADDR) & =
-~((u32)0x00000004)) | ((u32)ceva0clken << 2));
-+}
-+
-+static inline void cmu_phy_0_clk_en_phy_0_apb_clk_en_setf(struct cl_chip *=
-chip, u8 phy0apbclken)
-+{
-+       ASSERT_ERR_CHIP((((u32)phy0apbclken << 1) & ~((u32)0x00000002)) =3D=
-=3D 0);
-+       cl_reg_write_chip(chip, CMU_PHY_0_CLK_EN_ADDR,
-+                         (cl_reg_read_chip(chip, CMU_PHY_0_CLK_EN_ADDR) & =
-~((u32)0x00000002)) | ((u32)phy0apbclken << 1));
-+}
-+
-+/*
-+ * @brief CMU_PHY_1_CLK_EN register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    02    ceva1_clk_en              0
-+ *    01    phy1_apb_clk_en           0
-+ *    00    phy1_main_clk_en          0
-+ * </pre>
-+ */
-+#define CMU_PHY_1_CLK_EN_ADDR        (REG_CMU_BASE_ADDR + 0x00000008)
-+#define CMU_PHY_1_CLK_EN_OFFSET      0x00000008
-+#define CMU_PHY_1_CLK_EN_INDEX       0x00000002
-+#define CMU_PHY_1_CLK_EN_RESET       0x00000000
-+
-+static inline void cmu_phy_1_clk_en_set(struct cl_chip *chip, u32 value)
-+{
-+       cl_reg_write_chip(chip, CMU_PHY_1_CLK_EN_ADDR, value);
-+}
-+
-+/* Field definitions */
-+#define CMU_CEVA_1_CLK_EN_BIT               ((u32)0x00000004)
-+#define CMU_CEVA_1_CLK_EN_POS               2
-+#define CMU_PHY_1_APB_CLK_EN_BIT            ((u32)0x00000002)
-+#define CMU_PHY_1_APB_CLK_EN_POS            1
-+#define CMU_PHY_1_MAIN_CLK_EN_BIT           ((u32)0x00000001)
-+#define CMU_PHY_1_MAIN_CLK_EN_POS           0
-+
-+#define CMU_PHY1_CLK_EN \
-+       (CMU_CEVA_1_CLK_EN_BIT | \
-+        CMU_PHY_1_APB_CLK_EN_BIT | \
-+        CMU_PHY_1_MAIN_CLK_EN_BIT)
-+
-+static inline void cmu_phy_1_clk_en_pack(struct cl_chip *chip, u8 ceva1clk=
-en, u8 phy1apbclken,
-+                                        u8 phy1mainclken)
-+{
-+       ASSERT_ERR_CHIP((((u32)ceva1clken << 2) & ~((u32)0x00000004)) =3D=
-=3D 0);
-+       ASSERT_ERR_CHIP((((u32)phy1apbclken << 1) & ~((u32)0x00000002)) =3D=
-=3D 0);
-+       ASSERT_ERR_CHIP((((u32)phy1mainclken << 0) & ~((u32)0x00000001)) =
-=3D=3D 0);
-+       cl_reg_write_chip(chip, CMU_PHY_1_CLK_EN_ADDR, ((u32)ceva1clken << =
-2) |
-+                         ((u32)phy1apbclken << 1) | ((u32)phy1mainclken <<=
- 0));
-+}
-+
-+static inline void cmu_phy_1_clk_en_ceva_1_clk_en_setf(struct cl_chip *chi=
-p, u8 ceva1clken)
-+{
-+       ASSERT_ERR_CHIP((((u32)ceva1clken << 2) & ~((u32)0x00000004)) =3D=
-=3D 0);
-+       cl_reg_write_chip(chip, CMU_PHY_1_CLK_EN_ADDR,
-+                         (cl_reg_read_chip(chip, CMU_PHY_1_CLK_EN_ADDR) & =
-~((u32)0x00000004)) | ((u32)ceva1clken << 2));
-+}
-+
-+static inline void cmu_phy_1_clk_en_phy_1_apb_clk_en_setf(struct cl_chip *=
-chip, u8 phy1apbclken)
-+{
-+       ASSERT_ERR_CHIP((((u32)phy1apbclken << 1) & ~((u32)0x00000002)) =3D=
-=3D 0);
-+       cl_reg_write_chip(chip, CMU_PHY_1_CLK_EN_ADDR,
-+                         (cl_reg_read_chip(chip, CMU_PHY_1_CLK_EN_ADDR) & =
-~((u32)0x00000002)) | ((u32)phy1apbclken << 1));
-+}
-+
-+/*
-+ * @brief CMU_CONTROL register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    00    gl_mux_sel                0
-+ * </pre>
-+ */
-+#define CMU_CONTROL_ADDR        (REG_CMU_BASE_ADDR + 0x0000000C)
-+#define CMU_CONTROL_OFFSET      0x0000000C
-+#define CMU_CONTROL_INDEX       0x00000003
-+#define CMU_CONTROL_RESET       0x00000000
-+
-+static inline void cmu_control_gl_mux_sel_setf(struct cl_chip *chip, u8 gl=
-muxsel)
-+{
-+       ASSERT_ERR_CHIP((((u32)glmuxsel << 0) & ~((u32)0x00000001)) =3D=3D =
-0);
-+       cl_reg_write_chip(chip, CMU_CONTROL_ADDR, (u32)glmuxsel << 0);
-+}
-+
-+/*
-+ * @brief CMU_RST register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    18    spare_riu44_reset_n       0
-+ *    17    spare_modem_reset_n       0
-+ *    16    spare_sys_reset_n         0
-+ *    15    n_RICURst                 1
-+ * </pre>
-+ */
-+#define CMU_RST_ADDR        (REG_CMU_BASE_ADDR + 0x00000010)
-+#define CMU_RST_OFFSET      0x00000010
-+#define CMU_RST_INDEX       0x00000004
-+#define CMU_RST_RESET       0x0000FF80
-+
-+static inline void cmu_rst_n_ricurst_setf(struct cl_chip *chip, u8 nricurs=
-t)
-+{
-+       ASSERT_ERR_CHIP((((u32)nricurst << 15) & ~((u32)0x00008000)) =3D=3D=
- 0);
-+       cl_reg_write_chip(chip, CMU_RST_ADDR,
-+                         (cl_reg_read_chip(chip, CMU_RST_ADDR) & ~((u32)0x=
-00008000)) | ((u32)nricurst << 15));
-+}
-+
-+/*
-+ * @brief CMU_PHY_0_RST register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    03    ceva0_global_rst_n        1
-+ *    02    mpif0_rst_n               1
-+ *    01    phy0_preset_n             1
-+ *    00    phy0_rst_n                1
-+ * </pre>
-+ */
-+#define CMU_PHY_0_RST_ADDR        (REG_CMU_BASE_ADDR + 0x00000014)
-+#define CMU_PHY_0_RST_OFFSET      0x00000014
-+#define CMU_PHY_0_RST_INDEX       0x00000005
-+#define CMU_PHY_0_RST_RESET       0x0000000F
-+
-+static inline void cmu_phy_0_rst_set(struct cl_chip *chip, u32 value)
-+{
-+       cl_reg_write_chip(chip, CMU_PHY_0_RST_ADDR, value);
-+}
-+
-+/* Field definitions */
-+#define CMU_CEVA_0_GLOBAL_RST_N_BIT         ((u32)0x00000008)
-+#define CMU_CEVA_0_GLOBAL_RST_N_POS         3
-+#define CMU_MPIF_0_RST_N_BIT                ((u32)0x00000004)
-+#define CMU_MPIF_0_RST_N_POS                2
-+#define CMU_PHY_0_PRESET_N_BIT              ((u32)0x00000002)
-+#define CMU_PHY_0_PRESET_N_POS              1
-+#define CMU_PHY_0_RST_N_BIT                 ((u32)0x00000001)
-+#define CMU_PHY_0_RST_N_POS                 0
-+
-+#define CMU_PHY0_RST_EN \
-+       (CMU_PHY_0_PRESET_N_BIT | \
-+        CMU_MPIF_0_RST_N_BIT | \
-+        CMU_PHY_0_RST_N_BIT | \
-+        CMU_CEVA_0_GLOBAL_RST_N_BIT)
-+
-+static inline void cmu_phy_0_rst_ceva_0_global_rst_n_setf(struct cl_chip *=
-chip, u8 ceva0globalrstn)
-+{
-+       ASSERT_ERR_CHIP((((u32)ceva0globalrstn << 3) & ~((u32)0x00000008)) =
-=3D=3D 0);
-+       cl_reg_write_chip(chip, CMU_PHY_0_RST_ADDR,
-+                         (cl_reg_read_chip(chip, CMU_PHY_0_RST_ADDR) & ~((=
-u32)0x00000008)) | ((u32)ceva0globalrstn << 3));
-+}
-+
-+/*
-+ * @brief CMU_PHY_1_RST register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    03    ceva1_global_rst_n        1
-+ *    02    mpif1_rst_n               1
-+ *    01    phy1_preset_n             1
-+ *    00    phy1_rst_n                1
-+ * </pre>
-+ */
-+#define CMU_PHY_1_RST_ADDR        (REG_CMU_BASE_ADDR + 0x00000018)
-+#define CMU_PHY_1_RST_OFFSET      0x00000018
-+#define CMU_PHY_1_RST_INDEX       0x00000006
-+#define CMU_PHY_1_RST_RESET       0x0000000F
-+
-+static inline void cmu_phy_1_rst_set(struct cl_chip *chip, u32 value)
-+{
-+       cl_reg_write_chip(chip, CMU_PHY_1_RST_ADDR, value);
-+}
-+
-+/* Field definitions */
-+#define CMU_CEVA_1_GLOBAL_RST_N_BIT         ((u32)0x00000008)
-+#define CMU_CEVA_1_GLOBAL_RST_N_POS         3
-+#define CMU_MPIF_1_RST_N_BIT                ((u32)0x00000004)
-+#define CMU_MPIF_1_RST_N_POS                2
-+#define CMU_PHY_1_PRESET_N_BIT              ((u32)0x00000002)
-+#define CMU_PHY_1_PRESET_N_POS              1
-+#define CMU_PHY_1_RST_N_BIT                 ((u32)0x00000001)
-+#define CMU_PHY_1_RST_N_POS                 0
-+
-+#define CMU_PHY1_RST_EN \
-+       (CMU_PHY_1_PRESET_N_BIT | \
-+        CMU_MPIF_1_RST_N_BIT | \
-+        CMU_PHY_1_RST_N_BIT | \
-+        CMU_CEVA_1_GLOBAL_RST_N_BIT)
-+
-+static inline void cmu_phy_1_rst_ceva_1_global_rst_n_setf(struct cl_chip *=
-chip, u8 ceva1globalrstn)
-+{
-+       ASSERT_ERR_CHIP((((u32)ceva1globalrstn << 3) & ~((u32)0x00000008)) =
-=3D=3D 0);
-+       cl_reg_write_chip(chip, CMU_PHY_1_RST_ADDR,
-+                         (cl_reg_read_chip(chip, CMU_PHY_1_RST_ADDR) & ~((=
-u32)0x00000008)) | ((u32)ceva1globalrstn << 3));
-+}
-+
-+/*
-+ * @brief CMU_PLL_1_STAT register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    31    pll_lock                  0
-+ * </pre>
-+ */
-+#define CMU_PLL_1_STAT_ADDR        (REG_CMU_BASE_ADDR + 0x00000050)
-+#define CMU_PLL_1_STAT_OFFSET      0x00000050
-+#define CMU_PLL_1_STAT_INDEX       0x00000014
-+#define CMU_PLL_1_STAT_RESET       0x00000000
-+
-+static inline u8 cmu_pll_1_stat_pll_lock_getf(struct cl_chip *chip)
-+{
-+       u32 local_val =3D cl_reg_read_chip(chip, CMU_PLL_1_STAT_ADDR);
-+
-+       ASSERT_ERR_CHIP((local_val & ~((u32)0x80000000)) =3D=3D 0);
-+       return (local_val >> 31);
-+}
-+
-+/*
-+ * @brief CMU_PHASE_SEL register definition
-+ * <pre>
-+ *   Bits           Field Name   Reset Value
-+ *  -----   ------------------   -----------
-+ *    20    gp_clk_phase_sel          1
-+ *    19    dac_cdb_clk_phase_sel     0
-+ *    18    adc_cdb_clk_phase_sel     0
-+ *    17    dac_clk_phase_sel         0
-+ *    16    adc_clk_phase_sel         0
-+ * </pre>
-+ */
-+#define CMU_PHASE_SEL_ADDR        (REG_CMU_BASE_ADDR + 0x00000060)
-+#define CMU_PHASE_SEL_OFFSET      0x00000060
-+#define CMU_PHASE_SEL_INDEX       0x00000018
-+#define CMU_PHASE_SEL_RESET       0x00100000
-+
-+static inline void cmu_phase_sel_set(struct cl_chip *chip, u32 value)
-+{
-+       cl_reg_write_chip(chip, CMU_PHASE_SEL_ADDR, value);
-+}
-+
-+/* Field definitions */
-+#define CMU_GP_CLK_PHASE_SEL_BIT            ((u32)0x00100000)
-+#define CMU_GP_CLK_PHASE_SEL_POS            20
-+#define CMU_DAC_CDB_CLK_PHASE_SEL_BIT       ((u32)0x00080000)
-+#define CMU_DAC_CDB_CLK_PHASE_SEL_POS       19
-+#define CMU_ADC_CDB_CLK_PHASE_SEL_BIT       ((u32)0x00040000)
-+#define CMU_ADC_CDB_CLK_PHASE_SEL_POS       18
-+#define CMU_DAC_CLK_PHASE_SEL_BIT           ((u32)0x00020000)
-+#define CMU_DAC_CLK_PHASE_SEL_POS           17
-+#define CMU_ADC_CLK_PHASE_SEL_BIT           ((u32)0x00010000)
-+#define CMU_ADC_CLK_PHASE_SEL_POS           16
-+
-+#endif /* CL_REG_CMU_H */
++#endif /* CL_REG_FEM_H */
 --
 2.30.0
 
