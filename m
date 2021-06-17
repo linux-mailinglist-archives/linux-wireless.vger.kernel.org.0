@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D3F3AB916
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:10:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 925733AB91E
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:10:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233922AbhFQQMZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:12:25 -0400
-Received: from mail-eopbgr60087.outbound.protection.outlook.com ([40.107.6.87]:37092
+        id S233024AbhFQQMt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:12:49 -0400
+Received: from mail-eopbgr60067.outbound.protection.outlook.com ([40.107.6.67]:35227
         "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233655AbhFQQLS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:11:18 -0400
+        id S232424AbhFQQLm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:11:42 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EJidwIREXYrDXzeTL2cF8yeFN609Eg9XKX7PkDJ1T8P4FaZ2+ZUJ+syzvyUqWY06qXCR719SveeVwOlfL4NS7j59Yo4QXNOEt9K2XmU/DQESygAxEcAxxRcghPgQxZDp4cypAV5Ju4GxnBoW+3DVpi6M8dLRW40htqDeUyCygMXJ4wNDXz/iAG0HlIxYurm1Ww3JpI8Y9I2GZqTdKL6D3n7MHqJVPYH55Vn+PgqgT3kdDhkvc8samo/oSqubHOmJLdc7hd141jsljydqn0khucq+WBOtsK/2t/1jNL4U3UYUvffI61FCx9mxZn6Tepb2eJej4ZJ4VUb77l5Q9lD6SA==
+ b=RRTYI/2mAEWJiTogoJbkA9q+5YivazWltAWLJZ6ugIRP9KY9UdH0LDhkslETgcpFK3n7f42QDzwyeaaOfQgMtU0sQLThAM+YFKCn6x5s6zb0NxLBEXYRpgcouRlOgv6FqH16MBKTxwH/X+hYtMAgKkFX8GBG7EJQmaHu+AlmZE/+0uVntg0RsIn5QSCkN6D0wOiAXnOIivS/iuCzvFst8p6FzMdukpAH6tYirivGRC7Wo3x9rJAJQuDX+4y2DxoK5pTgNrAWstY5LpeaKVj68lmuyNxbwkhY76KkazLBY8z0dXoJJMyRRo/o7OUwQAWLHRkrlHYRVbhIUZo/lwwJOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QE1TlWDC/8mzpncUXUvVHg6D/yc3SJJZYXj30rLVQ0I=;
- b=lZA2tIJyZk7kbSEj2UbxBgyVdvUmoPiV/kaJMSTRdGGhzYTPm5Bh2RFoaPTHQCV8WRzdyytUmeHADwS2wYGqb24XtbUMB+ru1t83fHFBpUCGYpz/xseWO/PGGNNbFZVBhFCYcaGXYtiMfmPVB3kpvJNpgu2jhYmSkPSEtVIFbXqHcFnESybJM2dnzJ6iNbFU4N64qer2FHR32lkQw/14KXggW+5LXmTEBUrLTSqmSwJmUlWMwGhO0sEx4zodOYiXiOwXC6+GQ12lj+DLthkAA7UHYdDSTDP9b4GcydspxkAZ9yG7KinRX0BuayHGj3LhWKFoWXoxoM5I1e9l23fgCA==
+ bh=EKzxNTiGTDkGbZDF9V6Cb9gJKoFJ+37khkXqxDNrPAY=;
+ b=kBm6m3Td5XPhO+9OZbwskotLgmrcVQjdfae94Fzb6LvuasdTtjMQhe3OO53h/o9mC60pFpCwzPElolhWVmHx4mGPB4Ya6zYAs/82yQeLeP52RAqz89zuc1XZDqmpaIUW9T8hVTidc+nkZa/DzeV638CEA/Qci95mkk99sYrvLehG8OPEGWTjdAkCexm4GxXj0NMIOS4hq4MT2dnIiNUL9MrKaPCMz9hEIxiLZ7+jfZQPh3a/cezSmZYRxO16DUJ6Lz9dNJ558eRcVMyhXmmIwhwEYe+8Sw6K3Q8gH4WwGq1DAgFdlEH8jiFRVASOAStGVxGzLv1n9iWoeXChN/lQXg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QE1TlWDC/8mzpncUXUvVHg6D/yc3SJJZYXj30rLVQ0I=;
- b=bgtiUzSSODmfeL3JzCwLDDjiUrLyZP9u4Klf51S3rsUGUckpcPsWUtw+kpp+Nbr+Fz9SHz+9T3PuKP9OyKDwMwrLTX1/GJHZspU0GClORgJyY2HG9XpagKhjXnva6M2vNfshoRhEcYCWZvsEzgxYkxFDEONmuNVdtSBev0I8Vuo=
+ bh=EKzxNTiGTDkGbZDF9V6Cb9gJKoFJ+37khkXqxDNrPAY=;
+ b=ATLH5ZVYco/iEEUwuQlXUtW+r6rotX8au/xM89DLswdj/52g0DdwHhGJyHFssl2IXlrAVX1uRHEqYdetFsF8XBUi0KkiHjwWe1u8Xj0jWcxWeni+zo2/zuqSarh/fFYvip7XxrNFKTTZ+qTreqb0orRVFxIiIKU11RB31iGiu9M=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM8P192MB1075.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1eb::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.19; Thu, 17 Jun
- 2021 16:07:16 +0000
+ 2021 16:07:17 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:07:16 +0000
+ 16:07:17 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 202/256] cl8k: add tx/agg_tx_report.c
-Date:   Thu, 17 Jun 2021 16:01:29 +0000
-Message-Id: <20210617160223.160998-203-viktor.barna@celeno.com>
+Subject: [RFC v1 203/256] cl8k: add tx/agg_tx_report.h
+Date:   Thu, 17 Jun 2021 16:01:30 +0000
+Message-Id: <20210617160223.160998-204-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:17 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:18 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e012d52f-850e-455c-0554-08d931a9d720
+X-MS-Office365-Filtering-Correlation-Id: 2a958cd0-16c3-446d-99e9-08d931a9d7c0
 X-MS-TrafficTypeDiagnostic: AM8P192MB1075:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM8P192MB1075AAF136081C42A43BA330F60E9@AM8P192MB1075.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2657;
+X-Microsoft-Antispam-PRVS: <AM8P192MB10750CAAD3DBF3310AD30C80F60E9@AM8P192MB1075.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2201;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: oUeijqTnmQ08yhk4DOe0IQeXsWra+pQL2JGrEnqrcdgdnETYzIgCRTqSUz+oB+16Bl0q1ZErg9Wi/yPBBoPq/WzpG3KhSv0tHimeFHAJxuErdKcitJ/D5p8WMbKZfUvtZTmirPMcWSwQoeR4yVoNqxn3Yv5DUYLBdGlKu4eb+s14Jn+nZQtTN1Y/bZ3ojx2E9gukKwn/wJn2e2+A2LGK/bZjFeAdx6rH6FLnzrfGwkFu1fXqsTmUsNeUtzsHSlHZU8JYEKetna91RP/DtX3/7zNL0Pszp+gn+5NtuqSEQjmP+YxPjrj+/jXFuDZegnQZ7dSr/CXXJxbtaeGdrD/qzKcj8fV32WMQfeDafBMv9Wsxruz21HeYCoaP9QJmcntFGV3wJG8S0EPSR+3fWZkdDqeoqmS4xqLgt4LHg2Xn29pAyu46G97+N+TAo/U/iiGDb0VgCBXN8nGNk2N0s7r8DCXpRgecXocNadUulZzL2Sf+14P+qu1SI6ceXDB5BRtcNTxo0sfMchdtBfj+j9QDgoj3TMriETtTMDAXS4kneE+oc1B1J7btr9ZV498dSQi7f6GNbEMpWFx6Kax7jk47giT13UTEftPCG5xDeC/YbDlUPUmWeet1AlqFOoeKMe46m1GMOAISswj1YUd5dxAXBIej3cvDVMk9CGCrT8cctM6F7Fl2aOb7HaivIZqUGwCn0W+0Tl8BG8B+hbIihnTLDA==
+X-Microsoft-Antispam-Message-Info: 4jF6dPA7plbBMFS2R/Veqoip3xR/t8Y59b9xg803M2Wh3qCBQ5wCgUaT+Ngn411sV1g0c9pj8Argl9ToQXXLRQ1kE4g8Vlxcjv3l3DKnSRWnLYsX82yOwMUUPZLirOyMVXADFE2xP40ORI8KcYkaKAy1cWjxCiFslAXujxG2ah94X/QrK6RMGHPGQqke/PJG3xV4WQq3Qz6CGCNkdsW4unYsvoFKIEnc7tN7XyG38AGevhPkK8Kike+2pf+tPHzqt7Z9lUuof80q9gpCGwUt2F50w6UEtLfbe7qPWcxW6DoiHPA6Pgw/uTG2you9CCnR4YMw4Y/xf/M1U6I+2+Wn/3ajT3Hkh9sTJ3q01lxijm7h1dCLZi2DevJYRHDzDv4WocsPW7kVx6RgAhf7hmHAqkT5JFwt/E6VnDT30RzeZpJgtpRIIccNEVk2rWfXOu33VjWXCQrcDUH0emZ1ggDxXK0N1xGidudeEXG0ipYZ7DyzhBdAmFkIvX6IOQrsL0WbnekGLkpkkdOsFvUEgRVXHziBQd4uiL65HDsRxSKE7KrQORerl9aqQv8v7XjHR1ziwt8Wg7s6UQ9mhOTVhS1qZBfN62dFsQ72de6uGb+MKEvmUyEUoYijFiEwID8w1XBZyh+fM9B4lspNWjFRYrytkzP242w4Z2Qps9Za1eVRdLZeRfpMeLOEbTUhY8Eu2u8Z3QV9p7PGI/JReG4JjEVzoQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(396003)(136003)(39850400004)(376002)(366004)(346002)(66476007)(6512007)(8936002)(66556008)(38350700002)(6916009)(9686003)(66946007)(956004)(86362001)(26005)(5660300002)(2616005)(38100700002)(478600001)(8676002)(6506007)(6666004)(4326008)(1076003)(55236004)(186003)(316002)(2906002)(83380400001)(16526019)(54906003)(52116002)(36756003)(107886003)(6486002)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?izainW7Fe5wWOviitLcqReNWSkj5aFMKwHQHFvxJAy7TdtI4/9A3dB07bUCj?=
- =?us-ascii?Q?LZNvySxNt1VioR0wbNjK7D+ex4tTfVlvtbnSYtbqsXq4zBGvAwHEnZ+Ay+sX?=
- =?us-ascii?Q?fUB49PVnIpzRHD1UWkWn8DLgzrkeQhiSCVRBwWSuiXuXoGNXhlDwjH1MFqZ5?=
- =?us-ascii?Q?mOK/ecfa6imbxOckIFHDBimqlePkfr4gIJK/1W8vW5NUKf5PrcLY6yO9jWhw?=
- =?us-ascii?Q?Qf6CHZepMU03uNIbAiRYSQviiR0hczJKtT2xFs0TXtpN2wt/lQXSMq9eCpw1?=
- =?us-ascii?Q?L830WsegIrQL+XOeKC4mpGAp87bpeHVYAM/irE6Z8pVQCxWza5Q4f6ZLGgFM?=
- =?us-ascii?Q?opQw/xjsS2b2Kg3WnSvOlfULmymA8LEZDhig03XvyH2euiryqQgB/4ecJTRq?=
- =?us-ascii?Q?NEt+0U9+yrrQI2Y5xNA89uxGCjw+oLGq000OHeKadJNLaSrbw0Ldvyn/+vg1?=
- =?us-ascii?Q?f9xJm7TvKAbXI4V2BZTdeLJGGKfHUg+vrBZFWhA8lKKIOtdXu58w+R2X22wE?=
- =?us-ascii?Q?xRyUQImoCnAM3gguAF4VBO22sqcuazY+J9t+WG5UgRuKXOPo4RhpXuSQJl+Q?=
- =?us-ascii?Q?OQUL/ZTqglVA4b6NOe8cqLlr4opkkDrx7QLQVywknONpvHbJNc+Pou3iGC0p?=
- =?us-ascii?Q?X6bE3DBRz0+lGdqh6NnM4YJ2Nm2i5mR9ONyizP706gp7ng9yM7QFNT6eocju?=
- =?us-ascii?Q?4fXdgmwjKcAiv6jQ6A8mdQF6VPWsj6iNZc0J1Wa/WksVlDK8yLkyhJXM6TKU?=
- =?us-ascii?Q?oY+y3JZtWjFgiJ+A4jdX8/z+t42JpWRkZt1EcB5zpe38T1wtLLAKBetfM7xv?=
- =?us-ascii?Q?KYoTQ9Id9huZcX+k/7LFtH6RA9yRaqO4nRJZluV39QUEhB4UILMcxqPDx5i5?=
- =?us-ascii?Q?9G/m/rvDUVWYWbotCjPbltyyHyUNASpY4l/XoOqch8fOnvXrVM88cq+mIISv?=
- =?us-ascii?Q?jLrtfw0+X3PKk88DQWwy2neBfCte9TJiEEZWynmqiGzQjxDxYyZth7rfvKoa?=
- =?us-ascii?Q?ZbICQ2Sv03Y17wwDBiqIzaGyNMBvvKKleREaFFInitWr7i44CQUYLukQRfcN?=
- =?us-ascii?Q?FHilLSG2jCaOoEeDrbFa4U0HjWklU3G++W7LKqSoatIvmlc+tfjXuCc97Jv9?=
- =?us-ascii?Q?XP5mgIap8yG30kx0bo/EweITOkLxxnILXmicWMTj69xEuJE+W6ekpj2uPj1Z?=
- =?us-ascii?Q?KE37jcIpqASfVTYjgtQIcq1Il+nQx+1DW4aQ9dFhNcwBYzY5Zfo2OoQnnbLY?=
- =?us-ascii?Q?t781g0UYCRWU0jxWfbuezxiAzqbEkmQ1ahzgiiZ2nqUK+irjU1pdBg9sck9m?=
- =?us-ascii?Q?okW8uyymY+LD3e3SoR0SkIRK?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VMArOOxV54Qkyh5sbLF5TWnYLhNchvpCMNEtZGuVvI7UQKRk+gZdV3kjQT8P?=
+ =?us-ascii?Q?ofLJ78pwUaVhpwesj0b39QsvT6DXqPIvEWqFIy63hSVigC51nyUhDrtYMCVb?=
+ =?us-ascii?Q?gDuOH1CLyYX12BKHCZXhjGuEhlyK145kmTVwqP3csLCjQjTZ1Mum4WzCg9E4?=
+ =?us-ascii?Q?8A3Uja1qAk5f18dcET8LG/NcKu2MWV7JFDjoOxWk/5Vv5MsxrKT5EzO+XxqF?=
+ =?us-ascii?Q?r/xc+W6sT0pp95/o2f+/9IZvKE5tL2tAGTgL2AqWu8aBBAQHBhENo+ARssJm?=
+ =?us-ascii?Q?WqWTKok1ZmaOdIaHWMK2F32R5ScsfoVHYaNYXBjZmuddUiv7ZcnJ3gm97Rjs?=
+ =?us-ascii?Q?YQHQn69pohSFqa/L9vFZLnFhxtBgEHzRyPUCMxQRx2LkSKTki5cmDtobFW8E?=
+ =?us-ascii?Q?FiTvAMtqtD2F4l+I8WQOPWU7D5w5ahOPy6qEvojbCovwqddRMWjQzNhVXVVb?=
+ =?us-ascii?Q?gQLns7FB42MiPQ46TYJzjZ47qhEW1qzt6eraja4FUD6MirCly3ign+uFCBfn?=
+ =?us-ascii?Q?m4Lw/jQ9QrdhRjePEliO6IAvKMEq8GFv/3WC1rDCnnXz2W5fH8VGVs4Ib/Xo?=
+ =?us-ascii?Q?9L2gLBa+Z+z/Z0itHTNNtDSnp82N5ru1GqiNza5fVZpc/fTWLmyNi2IDzkuM?=
+ =?us-ascii?Q?2i3QauZCgEB6KFSWxEFGejbwbb1Gp6XcGaZss/IMZJvOaM3H9M1elQ3CTn3g?=
+ =?us-ascii?Q?oGhyNXc5EMjwIpJs5pg/N4qUiQ4IgCijXTduGfJ/xBjLGq5SBSV8YSi11AZm?=
+ =?us-ascii?Q?DbA4R0TaPptERj+Eu0WLUokOvqrbgxaQAJgFI9HIa0RXR5t+uslOeiRh0lPU?=
+ =?us-ascii?Q?JAhwZPtOgjQ8zrwAe9CqAAbegYeVsge4G/iSNBO9zo9WNiSQ3PMduez17XGi?=
+ =?us-ascii?Q?mUZHwLo+dQV5ZlfISWrvWAS/6J88ok2+aWfIgbz+5QuIm8hriiZ1s3jprZ8k?=
+ =?us-ascii?Q?qql75HiXxg14Z2xaMiOGN4Qs58cpg/8ulZeoCzCz0OFRbRQk3/2y1zFwtMn8?=
+ =?us-ascii?Q?JIMJ+U1ZepIRVx39iFTxI4gLfgiMPwGVx96u4Q9ccdtkQsMG0/MBpbA+KQnZ?=
+ =?us-ascii?Q?LTJt96VaVaFZGabh19vmvyQ8G/Yt0CxZPBaakw7oMFeWbf+eJz1rriii+Eyk?=
+ =?us-ascii?Q?E5R5w6+PP8pHOtYvIexTvQs0pQlnnz7Z4abiLl2/gRuNs9MzwdJLiN+0Gvqh?=
+ =?us-ascii?Q?+ApY1gN/9Pz4+rnv8vjrFGCE8vJT2pp4Hxst6s/HzqzBYyTXx0b7nC8aAvp5?=
+ =?us-ascii?Q?pYhjLlwOXpfhOYYLVpBYi84iPPuVcYEei3ZfhlGKBj619ycQ0W5zzAKs4vME?=
+ =?us-ascii?Q?kgQT71wuFvMMryQ05cBoOpnT?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e012d52f-850e-455c-0554-08d931a9d720
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a958cd0-16c3-446d-99e9-08d931a9d7c0
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:17.9852
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:19.0057
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +gE0ooXl6u1jwpCRyFH1jp3GLczPSu1AMbNknHYDI0UEf/IJn8/j1Nzvg7lrustE9kZT24RLeiIla+UiWIVYHg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FUZqqfBf67oOIETREiKLlioy7lVMzK0WENW60wwPynKgkOe+iWqHP+tb9GNxIAvMfR0DBx/yInr8dAnwgl7NSw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P192MB1075
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,245 +119,111 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../wireless/celeno/cl8k/tx/agg_tx_report.c   | 196 ++++++++++++++++++
- 1 file changed, 196 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/tx/agg_tx_report.c
+ .../wireless/celeno/cl8k/tx/agg_tx_report.h   | 92 +++++++++++++++++++
+ 1 file changed, 92 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/tx/agg_tx_report.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/tx/agg_tx_report.c b/drivers/=
-net/wireless/celeno/cl8k/tx/agg_tx_report.c
+diff --git a/drivers/net/wireless/celeno/cl8k/tx/agg_tx_report.h b/drivers/=
+net/wireless/celeno/cl8k/tx/agg_tx_report.h
 new file mode 100644
-index 000000000000..478e5e734f08
+index 000000000000..def24d2accd8
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/tx/agg_tx_report.c
-@@ -0,0 +1,196 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/tx/agg_tx_report.h
+@@ -0,0 +1,92 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "tx/agg_tx_report.h"
-+#include "stats.h"
-+#include "rate_ctrl.h"
-+#include "wrs/wrs_api.h"
-+#include "data_rates.h"
++#ifndef CL_AGG_TX_REPORT_H
++#define CL_AGG_TX_REPORT_H
 +
-+static bool is_same_rate(struct cl_agg_tx_report *agg_report, struct cl_wr=
-s_tx_params *tx_params)
-+{
-+       union cl_rate_ctrl_info rate_ctrl_info =3D {.word =3D agg_report->r=
-ate_cntrl_info};
-+       u8 mcs =3D U8_MAX, nss =3D U8_MAX;
++#include "tx/tx.h"
 +
-+       if (agg_report->bw_requested !=3D tx_params->bw ||
-+           rate_ctrl_info.field.gi !=3D tx_params->gi)
-+               return false;
++/* Structure containing the parameters of the MM_AGG_TX_REPORT_IND message=
+. */
++struct cl_agg_tx_report {
++       u32 rate_cntrl_info;
++       u32 rate_cntrl_info_he;
 +
-+       cl_rate_ctrl_parse(&rate_ctrl_info, &nss, &mcs);
++#if defined(__LITTLE_ENDIAN_BITFIELD)
++       u32 sta_idx                    : 8,
++           is_sta_ps                  : 1,
++           bw_requested               : 2,
++           is_agg                     : 1,
++           ba_not_received            : 1,
++           ba_received_empty          : 1,
++           bf                         : 1,
++           is_fallback                : 1,
++           mu_su_gid                  : 6,
++           mu_mimo_valid              : 1,
++           mu_ofdma_valid             : 1,
++           rate_fix_mcs1              : 1,
++           rsv0                       : 7;
 +
-+       return ((mcs =3D=3D tx_params->mcs) && (nss =3D=3D tx_params->nss))=
-;
-+}
++       u32 success                    : 9,
++           fail                       : 9,
++           below_baw_cnt              : 9,
++           num_prot_retries           : 5;
 +
-+static void sync_tx_rate(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+                        struct cl_agg_tx_report *agg_report,
-+                        struct cl_wrs_info *wrs_info, struct cl_wrs_params=
- *wrs_params)
-+{
-+       if (!agg_report->is_fallback && is_same_rate(agg_report, &wrs_param=
-s->tx_params)) {
-+               cl_wrs_api_rate_sync(cl_hw, cl_sta, wrs_params);
++       u32 success_after_retry        : 9,
++           success_more_one_retry     : 9,
++           retry_limit_reached        : 9,
++           is_retry                   : 1,
++           is_rts_retry_limit_reached : 1,
++           prot_type                  : 3;
 +
-+               wrs_info->synced =3D true;
-+               wrs_info->quick_rate_check =3D true;
-+               wrs_info->quick_rate_agg_cntr =3D 0;
-+               wrs_info->quick_rate_pkt_cntr =3D 0;
-+       } else {
-+               wrs_info->sync_attempts++;
-+       }
-+}
++       u32 rssi1                      : 8,
++           rssi2                      : 8,
++           rssi3                      : 8,
++           rssi4                      : 8;
 +
-+static void ba_not_received_handler(struct cl_hw *cl_hw, struct cl_wrs_inf=
-o *wrs_info,
-+                                   struct cl_agg_tx_report *agg_report)
-+{
-+       /* Ignore 'BA not received' if station is in power-save or if RTS l=
-imit was reached */
-+       if (agg_report->is_sta_ps || agg_report->is_rts_retry_limit_reached=
-)
-+               return;
++       u32 rssi5                      : 8,
++           rssi6                      : 8,
++           rsv1                       : 16;
++#else
++       u32 rsv0                       : 7,
++           rate_fix_mcs1              : 1,
++           mu_ofdma_valid             : 1,
++           mu_mimo_valid              : 1,
++           mu_su_gid                  : 6,
++           is_fallback                : 1,
++           bf                         : 1,
++           ba_received_empty          : 1,
++           ba_not_received            : 1,
++           is_agg                     : 1,
++           bw_requested               : 2,
++           is_sta_ps                  : 1,
++           sta_idx                    : 8;
 +
-+       /* Count number of consecutive 'BA not received' */
-+       wrs_info->ba_not_rcv_consecutive++;
++       u32 num_prot_retries           : 5,
++           below_baw_cnt              : 9,
++           fail                       : 9,
++           success                    : 9;
 +
-+       /* Save longest sequence of consecutive 'BA not received' */
-+       if (wrs_info->ba_not_rcv_consecutive > wrs_info->ba_not_rcv_consecu=
-tive_max)
-+               wrs_info->ba_not_rcv_consecutive_max =3D wrs_info->ba_not_r=
-cv_consecutive;
++       u32 prot_type                  : 3,
++           is_rts_retry_limit_reached : 1,
++           is_retry                   : 1,
++           retry_limit_reached        : 9,
++           success_more_one_retry     : 9,
++           success_after_retry        : 9;
 +
-+       if (cl_hw->wrs_db.ba_not_rcv_collision_filter) {
-+               /*
-+                * First 'BA not received' - might just be a collision.
-+                * Don't add fail to ba_not_rcv but keep aside.
-+                * Second consecutive 'BA not received' - not likely to be =
-a collisions.
-+                * Add fail to ba_not_rcv including previous fail that was =
-kept aside.
-+                * More than two consecutive 'BA not received' - very unlik=
-ely to be a collisions.
-+                * Add fail to ba_not_rcv.
-+                */
-+               if (wrs_info->ba_not_rcv_consecutive =3D=3D 1)
-+                       wrs_info->tx_fail_prev =3D agg_report->fail;
-+               else if (wrs_info->ba_not_rcv_consecutive =3D=3D 2)
-+                       wrs_info->ba_not_rcv +=3D (agg_report->fail + wrs_i=
-nfo->tx_fail_prev);
-+               else
-+                       wrs_info->ba_not_rcv +=3D agg_report->fail;
-+       } else {
-+               wrs_info->ba_not_rcv +=3D agg_report->fail;
-+       }
-+}
++       u32 rssi4                      : 8,
++           rssi3                      : 8,
++           rssi2                      : 8,
++           rssi1                      : 8;
++
++       u32 rsv1                       : 16,
++           rssi6                      : 8,
++           rssi5                      : 8;
++#endif
++};
 +
 +void cl_agg_tx_report_handler(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
-+                             struct cl_agg_tx_report *agg_report)
-+{
-+       struct cl_wrs_info *wrs_info =3D &cl_sta->wrs_info;
-+       struct cl_wrs_params *wrs_params =3D &cl_sta->wrs_sta.su_params;
-+       bool skip_epr_update =3D false;
-+       union cl_rate_ctrl_info rate_ctrl_info =3D {.word =3D agg_report->r=
-ate_cntrl_info};
-+
-+       /* Retry_count for cl_wlan */
-+       cl_sta->retry_count +=3D agg_report->success_after_retry;
-+
-+       /*
-+        * In case of big packets (4300 in VHT and 5400 in HE) and low
-+        * rate (BW 20, NSS 1, MCS 0), firmware will increase rate to MCS 1=
-,
-+        * and give an indication to driver (set rate_fix_mcs1 in cl_agg_tx=
-_report).
-+        * WRS should also move to MCS 1, and give the maximum time
-+        * penalty time from MCS 0 toMCS 1.
-+        */
-+       if (agg_report->rate_fix_mcs1 && !agg_report->is_fallback)
-+               if (cl_wrs_api_up_mcs1(cl_hw, cl_sta, wrs_params))
-+                       return;
-+
-+       /* WRS sync mechanism */
-+       if (!wrs_info->synced)
-+               sync_tx_rate(cl_hw, cl_sta, agg_report, wrs_info, wrs_param=
-s);
-+
-+       if (agg_report->bf && cl_sta->bf_db.is_on && !cl_sta->bf_db.synced)=
- {
-+               cl_sta->bf_db.synced =3D true;
-+               /* Resetting the WRS UP weights */
-+               cl_wrs_api_beamforming_sync(cl_hw, cl_sta);
-+       }
-+
-+       if (agg_report->ba_not_received) {
-+               ba_not_received_handler(cl_hw, wrs_info, agg_report);
-+       } else {
-+               if (!skip_epr_update)
-+                       wrs_info->tx_fail +=3D agg_report->fail;
-+
-+               wrs_info->ba_not_rcv_consecutive =3D 0;
-+       }
-+
-+       if (!skip_epr_update) {
-+               u8 mcs =3D 0, nss =3D 0, bw =3D 0;
-+               u16 data_rate =3D 0;
-+
-+               switch (agg_report->bw_requested) {
-+               case CHNL_BW_160:
-+                       bw =3D (cl_hw->wrs_db.adjacent_interference20 ||
-+                             cl_hw->wrs_db.adjacent_interference40 ||
-+                             cl_hw->wrs_db.adjacent_interference80) ?
-+                               rate_ctrl_info.field.bw : agg_report->bw_re=
-quested;
-+                       break;
-+               case CHNL_BW_80:
-+                       bw =3D (cl_hw->wrs_db.adjacent_interference20 ||
-+                             cl_hw->wrs_db.adjacent_interference40) ?
-+                               rate_ctrl_info.field.bw : agg_report->bw_re=
-quested;
-+                       break;
-+               case CHNL_BW_40:
-+                       bw =3D cl_hw->wrs_db.adjacent_interference20 ?
-+                               rate_ctrl_info.field.bw : agg_report->bw_re=
-quested;
-+                       break;
-+               case CHNL_BW_20:
-+                       bw =3D agg_report->bw_requested;
-+                       break;
-+               }
-+
-+               cl_rate_ctrl_parse(&rate_ctrl_info, &nss, &mcs);
-+
-+               data_rate =3D cl_data_rates_get_x10(rate_ctrl_info.field.fo=
-rmat_mod,
-+                                                 bw,
-+                                                 nss,
-+                                                 mcs,
-+                                                 rate_ctrl_info.field.gi);
-+
-+               wrs_info->epr_acc +=3D ((u64)agg_report->success * data_rat=
-e);
-+               wrs_info->tx_success +=3D agg_report->success;
-+       }
-+
-+       if (cl_hw->wrs_db.quick_down_en && wrs_info->quick_rate_check) {
-+               if (is_same_rate(agg_report, &wrs_params->tx_params)) {
-+                       wrs_info->quick_rate_agg_cntr++;
-+                       wrs_info->quick_rate_pkt_cntr +=3D (agg_report->suc=
-cess + agg_report->fail);
-+
-+                       if (wrs_info->quick_rate_agg_cntr >=3D cl_hw->wrs_d=
-b.quick_down_agg_thr &&
-+                           wrs_info->quick_rate_pkt_cntr > cl_hw->wrs_db.q=
-uick_down_pkt_thr) {
-+                               wrs_info->quick_rate_check =3D false;
-+                               cl_wrs_api_quick_down_check(cl_hw, cl_sta, =
-wrs_params);
-+                       }
-+               }
-+       }
-+}
-+
++                             struct cl_agg_tx_report *agg_report);
 +void cl_agg_tx_report_simulate_for_single(struct cl_hw *cl_hw, struct cl_s=
 ta *cl_sta,
-+                                         struct cl_hw_tx_status *status)
-+{
-+       /* Assign statistics struct */
-+       struct cl_agg_tx_report agg_report;
-+       union cl_rate_ctrl_info rate_ctrl_info;
++                                         struct cl_hw_tx_status *status);
 +
-+       memset(&agg_report, 0, sizeof(struct cl_agg_tx_report));
-+
-+       agg_report.bf =3D status->bf;
-+       agg_report.success =3D status->frm_successful;
-+       agg_report.fail =3D status->num_mpdu_retries + (status->frm_success=
-ful ? 0 : 1);
-+       agg_report.success_after_retry =3D
-+               (status->frm_successful && status->num_mpdu_retries) ? 1 : =
-0;
-+       agg_report.retry_limit_reached =3D !status->frm_successful ? 1 : 0;
-+       agg_report.success_more_one_retry =3D
-+               (status->frm_successful && (status->num_mpdu_retries > 1)) =
-? 1 : 0;
-+       agg_report.sta_idx =3D cl_sta->sta_idx;
-+       agg_report.bw_requested =3D status->bw_requested;
-+
-+       rate_ctrl_info.field.bw =3D status->bw_transmitted;
-+       rate_ctrl_info.field.gi =3D status->gi;
-+       rate_ctrl_info.field.format_mod =3D status->format_mod;
-+       rate_ctrl_info.field.mcs_index =3D status->mcs_index;
-+
-+       cl_rate_ctrl_convert(&rate_ctrl_info);
-+
-+       agg_report.rate_cntrl_info =3D rate_ctrl_info.word;
-+       cl_agg_tx_report_handler(cl_hw, cl_sta, &agg_report);
-+       cl_stats_update_tx_single(cl_hw, cl_sta, &agg_report);
-+}
++#endif /* CL_AGG_TX_REPORT_H */
 --
 2.30.0
 
