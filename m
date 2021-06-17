@@ -2,164 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 087753AB538
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 15:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A7D73AB54A
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 15:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232657AbhFQNyj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 09:54:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:58443 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231299AbhFQNyi (ORCPT
+        id S232926AbhFQOBG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 10:01:06 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:56439 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231651AbhFQOBF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 09:54:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623937950;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=8y98L/La9x4KilFgUirdLHSyWfxKWG7oJ+i1N0Sw+rE=;
-        b=N/OLcEAuvQwCNv7KsGQlVbdd5lmroENjooplUzTLR7fr/ZAbu+T7G+cebgSFo1vYxE797Y
-        K7nyQnqNGYPejOgstLVOi26Q5w4wBofaqTd1sMU9uYu1KhPupZW6hwYXMDJ+iZ/Da7RjVu
-        wp1yIzGaeVQ86icZ0sudBH1aQbe7VFw=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-531-ZT4q3pdNNpWCvYyw3qSHUQ-1; Thu, 17 Jun 2021 09:52:26 -0400
-X-MC-Unique: ZT4q3pdNNpWCvYyw3qSHUQ-1
-Received: by mail-ed1-f72.google.com with SMTP id cb4-20020a0564020b64b02903947455afa5so1569176edb.9
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 06:52:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=8y98L/La9x4KilFgUirdLHSyWfxKWG7oJ+i1N0Sw+rE=;
-        b=cTsUW3pXLJXlXl4UeibzSiOP+VT6y9aWs1G7G0TJ1LW1gZpXJ0DXaqiqzRG+JhaPCj
-         rhLHSBUwZ5UyASm2NhbX8ygpozZSpgO0/nlYJCwDrEH6N4dFXU31mpr67sibCwa2Slct
-         /RGZ9nPaWvvX9AVBAJRHBmA3VlrKlmQXPEE7P6s0JrlNYMlRy8KDD55QfD4J5/Bt7zdc
-         7HblANBc3l+UpryvSsxgVHWJ4mGRd7QMlPMWIaOPt6EgPuFsO/ynBsvHLAzcTXs1yX0A
-         aW+lLcmy0PoS8OVJ2bvjvMnkU57fljW3FL4sfU106uFsyNcSZad1i/GyDWJLbfHsKg55
-         JDEQ==
-X-Gm-Message-State: AOAM533LfkdEWHI6I8XLQHlh4QKiWNN9oND2zLZpG2p0PprCUbUf3oCA
-        WyFsTtADFi0obFbDqi8ZTtw8XV3ZxPRcobEvRlM3QzheGCcPYBDghCMgxkffQqnHpgrQ4nxtjUa
-        gf+OTRrFng8221+3CYL8aqMNx3Oo=
-X-Received: by 2002:a17:906:ac4:: with SMTP id z4mr5401312ejf.303.1623937945424;
-        Thu, 17 Jun 2021 06:52:25 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyVnvDt8sJxsVa0fDP6Dfi05+2CsBlMMecSDxuktxQNzHRmcOB6hhGTbOV8xxEslBGQUip1PQ==
-X-Received: by 2002:a17:906:ac4:: with SMTP id z4mr5401288ejf.303.1623937945287;
-        Thu, 17 Jun 2021 06:52:25 -0700 (PDT)
-Received: from localhost (net-130-25-105-72.cust.vodafonedsl.it. [130.25.105.72])
-        by smtp.gmail.com with ESMTPSA id i15sm3849945ejk.30.2021.06.17.06.52.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jun 2021 06:52:24 -0700 (PDT)
-Date:   Thu, 17 Jun 2021 15:52:21 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     sean.wang@mediatek.com
-Cc:     nbd@nbd.name, Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
-        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
-        Deren.Wu@mediatek.com, km.lin@mediatek.com,
-        robin.chiu@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, Eric.Liang@mediatek.com,
-        Stella.Chang@mediatek.com, jemele@google.com, yenlinlai@google.com,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] mt76: mt7921: fix the coredump is being truncated
-Message-ID: <YMtTlS3Nh4uGnJvq@lore-desk>
-References: <2ebb95099102ffe62c0fa8aedd95d7e77b5ca385.1623884856.git.objelf@gmail.com>
+        Thu, 17 Jun 2021 10:01:05 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1623938338; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=TzfxZUyHGmp56u7Fj/mDFFozDlUVMgHz4/qdIVPnPuE=; b=T7UsijArKTcxK4GWGx0pu25ExNMHFSbONQ9Nc+KrLIQcUmQbir4b9lRoOrVd4Tp+ZzfoX0ox
+ BzngQT8bYf2YhAw48I10bsR0bIno1qaYPFcI+I6l/0XaA4UvhGKZwH1L/bvzJw1HoyaI3d+E
+ rrWzMtrFGgTRd1KigoIxdmVdpoI=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 60cb5516b6ccaab75394d1cd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 17 Jun 2021 13:58:46
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2ABE1C43460; Thu, 17 Jun 2021 13:58:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 286B1C433F1;
+        Thu, 17 Jun 2021 13:58:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 286B1C433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: pull request: mt76 2021-06-10
+References: <7e509477-cb3d-9d18-7386-d989cbeeb178@nbd.name>
+Date:   Thu, 17 Jun 2021 16:58:40 +0300
+In-Reply-To: <7e509477-cb3d-9d18-7386-d989cbeeb178@nbd.name> (Felix Fietkau's
+        message of "Thu, 10 Jun 2021 13:41:59 +0200")
+Message-ID: <871r90k2y7.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/rucmuLPAqyrwX+6"
-Content-Disposition: inline
-In-Reply-To: <2ebb95099102ffe62c0fa8aedd95d7e77b5ca385.1623884856.git.objelf@gmail.com>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Felix Fietkau <nbd@nbd.name> writes:
 
---/rucmuLPAqyrwX+6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Hi Kalle,
+>
+> here's my first pull request for 5.14
+>
+> - Felix
+>
+> The following changes since commit 080f9c10c773df39ccebe8dc414179d9179005a9:
+>
+>   ipw2x00: Minor documentation update (2021-06-03 12:33:55 +0300)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-06-10
+>
+> for you to fetch changes up to c3dfa83c3e625e111874295076557b7dddadda13:
+>
+>   mt76: mt7915: drop the use of repeater entries for station interfaces (2021-06-10 13:39:41 +0200)
+>
+> ----------------------------------------------------------------
+> mt76 patches for 5.14
+>
+> * mt7915 MSI support
+> * disable ASPM on mt7915
+> * mt7915 tx status reporting
+> * mt7921 decap offload
+> * driver fixes
+> * cleanups
+> * mt7921 runtime power management improvements
+> * testmode improvements/fixes
+>
+> ----------------------------------------------------------------
 
-> From: Sean Wang <sean.wang@mediatek.com>
->=20
-> Fix the maximum size of the coredump generated with current mt7921
-> firmware. Otherwise, a truncated coredump would be reported to userland
-> via dev_coredumpv.
->=20
-> Also, there is an additional error handling enhanced in the patch to avoid
-> the possible invalid buffer access when the system failed to create the
-> buffer to hold the coredump.
->=20
-> Fixes: 0da3c795d07b ("mt76: mt7921: add coredump support")
-> Co-developed-by: YN Chen <YN.Chen@mediatek.com>
-> Signed-off-by: YN Chen <YN.Chen@mediatek.com>
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt76_connac.h | 2 +-
->  drivers/net/wireless/mediatek/mt76/mt7921/mac.c  | 9 ++++++---
->  2 files changed, 7 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/n=
-et/wireless/mediatek/mt76/mt76_connac.h
-> index 9b3f8d22f17e..d93ab1ece8ae 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> @@ -13,7 +13,7 @@
->  #define MT76_CONNAC_MAX_SCAN_MATCH		16
-> =20
->  #define MT76_CONNAC_COREDUMP_TIMEOUT		(HZ / 20)
-> -#define MT76_CONNAC_COREDUMP_SZ			(128 * 1024)
-> +#define MT76_CONNAC_COREDUMP_SZ			(1300 * 1024)
-> =20
->  enum {
->  	CMD_CBW_20MHZ =3D IEEE80211_STA_RX_BW_20,
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/mac.c
-> index fb4de73df701..905dddbfbb0b 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-> @@ -1557,7 +1557,7 @@ void mt7921_coredump_work(struct work_struct *work)
->  			break;
-> =20
->  		skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
-> -		if (data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
-> +		if (!dump || data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
+I updated wireless-drivers-next this morning to latest net-next and
+there are now few conflicts:
 
-why not just return if dump allocation fails? Doing so we will reset the de=
-vice
-even if dump is NULL, do you think it is a real use-case?
+$ git pull https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-06-10
+From https://github.com/nbd168/wireless
+ * tag                         mt76-for-kvalo-2021-06-10 -> FETCH_HEAD
+Auto-merging drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+Auto-merging drivers/net/wireless/mediatek/mt76/mt7921/main.c
+Auto-merging drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+Auto-merging drivers/net/wireless/mediatek/mt76/mt7921/init.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/mediatek/mt76/mt7921/init.c
+Auto-merging drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+Auto-merging drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+Auto-merging drivers/net/wireless/mediatek/mt76/mt7615/init.c
+Auto-merging drivers/net/wireless/mediatek/mt76/mac80211.c
 
-Regards,
-Lorenzo
+I can fix those but having instructions how to solve them will help.
 
->  			dev_kfree_skb(skb);
->  			continue;
->  		}
-> @@ -1567,7 +1567,10 @@ void mt7921_coredump_work(struct work_struct *work)
-> =20
->  		dev_kfree_skb(skb);
->  	}
-> -	dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
-> -		      GFP_KERNEL);
-> +
-> +	if (dump)
-> +		dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
-> +			      GFP_KERNEL);
-> +
->  	mt7921_reset(&dev->mt76);
->  }
-> --=20
-> 2.25.1
->=20
+With GCC 11.1 I see a new warning:
 
---/rucmuLPAqyrwX+6
-Content-Type: application/pgp-signature; name="signature.asc"
+drivers/net/wireless/mediatek/mt76/mt7915/init.c: In function 'mt7915_thermal_init':
+drivers/net/wireless/mediatek/mt76/mt7915/init.c:138:17: warning: ignoring return value of 'sysfs_create_link' declared with attribute 'warn_unused_result' [-Wunused-result]
+  138 |                 sysfs_create_link(&wiphy->dev.kobj, &cdev->device.kobj,
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  139 |                                   "cooling_device");
+      |                                   ~~~~~~~~~~~~~~~~~
 
------BEGIN PGP SIGNATURE-----
+Also two problems with commit logs:
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYMtTkgAKCRA6cBh0uS2t
-rIHjAQCqNVvge4z+NsfUu91P1Cey8w++PXYbKlGOEW8i9n++kgEAjU5Q6TPVUx/n
-1Wzjj3kkXpDbJSvZuKl+IZJbOnRKzwo=
-=rDOE
------END PGP SIGNATURE-----
+In commit
 
---/rucmuLPAqyrwX+6--
+  a4777798a401 ("mt76: connac: fix WoW with disconnetion and bitmap pattern")
 
+Fixes tag
+
+  Fixes: ffa1bf97425 ("mt76: mt7921: introduce PM support")
+
+has these problem(s):
+
+  - SHA1 should be at least 12 digits long
+    Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
+    or later) just making sure it is not set (or set to "auto").
+
+Commit
+
+  34bd6f5f1e24 ("mt76: move mt76_rates in mt76 module")
+
+is missing a Signed-off-by from its committer.
+
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
