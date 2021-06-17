@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 599393AB910
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D56B53AB917
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbhFQQMO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:12:14 -0400
-Received: from mail-eopbgr30082.outbound.protection.outlook.com ([40.107.3.82]:58153
-        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
+        id S232848AbhFQQMZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:12:25 -0400
+Received: from mail-eopbgr130083.outbound.protection.outlook.com ([40.107.13.83]:60643
+        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233901AbhFQQLG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:11:06 -0400
+        id S233669AbhFQQLT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:11:19 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ngRKHYytTH8qQ9Nsx87kEGkQdv3SVGM6RwJTtE5WB3zTvFdQ4Wwx9Uhs0mir1qh0Ypv/BbU/hpBxJAWtAkBXyy8koaayl+2VdKDwg3lJ+ZXOWhYg9WQr0Xs3IZmJr2es1zcCanNBCxU7lYsZDzcXyRiGGyOMSmKdt00rP6BFiaPNOUeOWw+duO6yxD8Wuk2lm+VXsdFfbK8eKk3zhB+P+7yEWo/+OWcxYJgffWQ+xoKdQ9W2/pzzIMqyq7WS5z80MfjyqpzlCqwkjmBYSoTmVT33YaPt+56an8G/XHvbjyxs8r0vksIwm102gmYyYmJN4kEQ314Uo1ouKEPXiRZnrg==
+ b=B5gdipIyebsMgqDnLWA6jnZ+KiyGzhx7WQ59TmN+cnsMB4gjZqcg8a81wlpBu6njnuYv4aW8ZgxCSZ/aEJ/WMhE4SYLFc1I0pqDFtDSmnunK+qPQumawPxvV9N+/9GDoAE1su8RtzGJcLw9IYWNzTX1FD8w35tAXrvqnl/sG5ANlmPIoxfefqlpRViu2SkOOSqtoqvPbqNX9/DsBcUAcN1lvs75SuY1eXENBbsOqnYm0AhhBntTOqoubTobw3cQJ/5qx3PsRk19Vcfby77PGzs3jbnBiNxDeBxKSsFkK6UeTsBOZ0JO7kVT3GpKjVEZlN43ayMO75GAqMKywT6m7Ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pqBCiGiNkEMI7C+1H4LMo7RnmDW5KH+Ea1KhexpGGOA=;
- b=JlcxU83/vUgeNVTfQ59hANz2CjpPTdjsO4pSJYIYNCur69sXa5BN7oVI3bYW3apuXayvJsFlck20o5wmaYO3d4E700Tb9nwvlWJwD/bbAm+6aRxAwqhK+DQtl5y8uK9LXGom0HvNBCJfjKdfndu4MrbHFYIsBOOrQbATq7FdZqsTIFsW2w4DHStE7ouCQTWyWo044H6ZzejYq1RsiEHcfZKQRRQFO5Mt7oGqgbXIgKn8CumvsgLvEomuchrCK1KsRiXk+jRSSBQPUZ5zw6UMzCVIWccHIgH0Rz07ftQPrf57/SxaAxSN8wAeLHrqkMKZVKufu71xuj3Bne61lZqncA==
+ bh=oybJtMbBClRaeVwsgsu6nLPf1qmdVFUl1Ry3Dhoknek=;
+ b=VkKJl3HmeLNHefOgJ5WmPowF/lNUfRZOe00pyirQ8/6ahx0m6+8LgVwdRpV+EbJm50JPZApZgsGHk2UmvN5UejaUHsLZ+CWw0U4omj57W8wLcx/3JLMMUp0UGEs6WHxWSuK03z0mEDrxm/drxhrVjzTb2B0KiSCGYT0F5wFBlchYV5g/XnncVpDYCq6uPjnNRJj+rPBTy+/uA8aRvCS40goCVQ6+ugdHTP7LiHeYus8/TD3mbB4Uo0RoqD6+cyHDHes0gIrbvJ6VUT699hkU29pa0guJWANDJlZLHcIPV4F5CGtF05EzVBijw2ihswgDkoMXsIWPNGslVD6xZUPZRw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pqBCiGiNkEMI7C+1H4LMo7RnmDW5KH+Ea1KhexpGGOA=;
- b=1Hp8mA4+ujxahtf7aOi7sM2DaGpnSl8G8DUlJjwAqUTqov5pXSwlkZF7Mjfuo5yDuV58C+k4FwpE2lIXEEMa7771cuCY5e2i2m1dlakpsnZqXfmdfV1C1iIMCAvjCnR7rudXWijdRgpSdAl3ijngmRuidtX95Ohw6oMmElW871I=
+ bh=oybJtMbBClRaeVwsgsu6nLPf1qmdVFUl1Ry3Dhoknek=;
+ b=lAah54uQxsMwoEuh82GQghxE7kH2sBNAVAOeHatwi7scWSgeC9lvPFOh5DLn4DaEDVKbApuywZqz//rU9vlqDW1ChLwWaP+wSTjVN8bGV8X2XHLmB5Sw3sh7W57yD1nCn+UZ5b5zgohJONNcjQIQRoQZpZzAQa2vnsTKZX9j3Tw=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 225/256] cl8k: add utils/string.c
-Date:   Thu, 17 Jun 2021 16:01:52 +0000
-Message-Id: <20210617160223.160998-226-viktor.barna@celeno.com>
+Subject: [RFC v1 226/256] cl8k: add utils/string.h
+Date:   Thu, 17 Jun 2021 16:01:53 +0000
+Message-Id: <20210617160223.160998-227-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:44 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:06:46 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4baeea58-73f4-4162-6801-08d931a9e78e
+X-MS-Office365-Filtering-Correlation-Id: ee5006ad-fa68-4294-700d-08d931a9e866
 X-MS-TrafficTypeDiagnostic: AM0P192MB0452:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB045288CEB809CBDACD441221F60E9@AM0P192MB0452.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:270;
+X-Microsoft-Antispam-PRVS: <AM0P192MB0452BC196EDBB44F9A287AF8F60E9@AM0P192MB0452.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:525;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iJokDDTAKToEb0mgpUBviqOuIh68uvzYZLN9QhjoZt+IznD6fOncdT65rKy9+Q15doqVvw3/jjJ48fT+b5Ebt2QJofUVjTZKmMkordjd1VtTvAnuqBCikpUVXM1NTPfcEJwDmDDx1sJ2dsSLK03t/9UZOuaLrP9ezwyOPVqL4mTuH2+AS08ULUmdE0vNFqjUwzLrf+HM28ZndBVAzKA19Vmnc239qETLzz3KPnQdStkYK7uAIDthdfQbbKD57BpWuFI62k0yfEAaH7eelKmux7sSoR6UZw7ghaRWRBVVKDOFGImOgFn1ut3pEcPEqjEkFUN6g8M93ZZRBF8fneVJcWCO9RC8PEZ7GSHadtCGp3xe5K4kJPY3oRprXrXmeF1tfBt9txuYIs/Qqn3Sgvard/dvgEgFjVzQAmX8EglJ34kVjHagsKTe25qlu3sDZrsqybp65rJ7D5R2DK5w4qc0wEoH++tpyRrQF4IcdPK9e5BWGOwJQpDmQ4B7AzvAeJxu/mxP4jrmduCZhWMiHp3OlberVuZWtd1FSqlsQPXtLr84D2PCPnV4iFFTge76eiC5C/TUjQgu5qhyzpfVRSUg9vtG0iLz8fOoqTvHMc/H/TsHz4XKjter1sJsmous5v8AKudw44g/1qEaoSej3Fgj3FrTvqXASAppxnZ2JtH+J+VUvNh6mPnYRR9MYDl+uXLg1IXeQWxNkWCsP3SHP5T5Vg==
+X-Microsoft-Antispam-Message-Info: lkdvwiq5utXmKT9WY0rxapdfg+vHBB+FXqnNzjRT6rIoTB6BkawdJpSI8BrMQToqbTe6H087H1Kv77fcU6ZAzFwPU3AjDeiiNa/FDFRlxPJdx0XF7ETr5VXK4JGSLoOaXxjkNl0FQMcjKf5670Ncx8uSJ0vGIfUyo7GRaB0st84+zo7f5HlqZYBWhIewXxaqu5ddvztqCcno7BVq2O2WUlFtqV1bhBuo8E8oIWCTvS3XJEmKhG1WVEUaXHsB3A+rX7hC8f2R5/n4p5rWyWTehpecfQkvnqEcknS/dZqq9qL70zjXnFmQV2YwfVeCtaYI3mQc4fGhN2TbETfuiqxM538AqmKM9fNeC4O/q+FZkiWPLFGPJuwY9hChl6f4nXWdXKl+Q7HK80A4+FvDfTxNTRRZasVVoQBWCnH1dQXKoDYqqTe/uC+h4MD+L2G6G7MGINTiRzE7zxWNRluPCrF5Ki4mzLLqw0pIxQm7Vlgouw4Pf7f5MVauhm+xqOLKn6yF6A4iaPOw1/TTSxqaxONFMYu2rfjCGK2q2jWaAj/d3oyYWC3XTH0t3hbzU/+9Lxmrwu5nz2AWNtBhCXWG/X2cATeLCKi2tDs3YSb/FhIESObTqVoEgprXHtVlzxMC+qP3CBdPA/6ZBFHmfwtvJ/hhtHGTXao/PhCroKlZrEpQFRxtvNFZzyf43QXJ+1dHKl/fTiMGW4f+ZbattUnIsJi0dw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(376002)(366004)(346002)(136003)(396003)(39850400004)(66946007)(66556008)(54906003)(9686003)(6512007)(16526019)(36756003)(107886003)(8676002)(66476007)(4326008)(26005)(316002)(6486002)(6666004)(8936002)(86362001)(186003)(1076003)(2906002)(2616005)(38100700002)(38350700002)(6916009)(956004)(55236004)(52116002)(508600001)(6506007)(5660300002)(83380400001)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wZ9X5iG4TwqsvtgWlOQEAlu4oT1OX5BqkVH2d1hey6qCrZSvq425aHgGXcXV?=
- =?us-ascii?Q?I1jkf2DO8bYbS4E8eGqXlu0aXAZMBuWcYsWufyMTbf5myxu+kMM0CyMwDhcO?=
- =?us-ascii?Q?mzCp4TheTcV3HHimzcRTqEwXs2VPdUn6ZxRGzqyZKwa+u58bGbcWtU/4Y3Ei?=
- =?us-ascii?Q?OaTZA07L9NX5bzJFjS3QluXjxmwmA3Xg7vMVw7zvWax+SQvVQL9zWIq85Qc/?=
- =?us-ascii?Q?Q2r1oQ7ZNQbmrOqPIi6c7QIJeeS2uVIfGdxpIpVBLzP/vrgBZDAAxj9Ho1UG?=
- =?us-ascii?Q?RqG/sZOPVEqsSYxP/IDHC9JcrA1DQXSvwZYHo3DGNSsWEE90BlRUNR/+4Qs7?=
- =?us-ascii?Q?I9w0IBFFMM3FuJsj1bTtaHgzoAM34m2yqMbS5CMnPONtVWDGAlOlM97Hl7xd?=
- =?us-ascii?Q?lwR52dswG0EQ4N8tup/YtQzKahIku9laojvyRf8hxLMzbYo2HZsFcLX9ybZl?=
- =?us-ascii?Q?wJvTbyjF+tDr0hzyq1q7pVSOzZ3yj2h6eSok4o4b087znomnvj+WrO+RrF2B?=
- =?us-ascii?Q?JftE+OgobsClQfvGLNMiJA3wgvXlCwcWE8a8YoMH3IBys6lTMIPpWAT8t8oP?=
- =?us-ascii?Q?u1Asp40KuWSyKI1ptQwsSUIMxLTee+dQmjeBJ+WDC5D13nRYnI51M54Wt1sD?=
- =?us-ascii?Q?hQbBb3rWpDXxsu6qO50mTEF31k329yyIH2J1AHA6A9WWiVtQCI4Bxk6XrDrC?=
- =?us-ascii?Q?ajOt+ENhzLp3QJLTERKJLMo9yoOb40az7JY2vAIlPXlFOOeqxnkIgqatRuCi?=
- =?us-ascii?Q?HXkhopOCocswkyP8MotCUBoCwnhjkg2IXwSjZWQQG4z8ZHEdvQ/OqCZhNYLq?=
- =?us-ascii?Q?t64mhRhU5JUFaQE5pQYHepXTL4RgqAziumCJFfESOf8tm2v9evdbzwQoBikZ?=
- =?us-ascii?Q?heDw1ZSbIyYV/EeTfRvSWHe/OW7aXB8KlthrC9O4sSyk7HM6lWP7UzWpCaUo?=
- =?us-ascii?Q?+J9qlIhVFdfZoju34p5Q3Jx0Fhze0AF0lDzc7cMujDMNe+rmBuNH/rGjeod8?=
- =?us-ascii?Q?5r/8HS+/b1zNqSdneZPEAV3Wdxz2/5keWsNNBjuph5g+EftX+DCl/qbvTzJ1?=
- =?us-ascii?Q?vDNx8cCEZEab8L15JtptJE93J+u1s/MYouHMTgZSjAgtCvp3AJYANy+Gp0fJ?=
- =?us-ascii?Q?faJlJAYEBkljkcWoBC6TUD83Y9MMJWbeGZh7VvkBsKZOkvoEnhtrS57vzERs?=
- =?us-ascii?Q?j/+ZoztSeS3vrKg5M0sl4X4+EOId2KQNPPUUV9llkLKndNdhdRtdjB6BJWgl?=
- =?us-ascii?Q?AUF+o/Wzd+v6vzpebshsmjIDJNqR0ChnSsVd5BxIs3wrwG1UGSWk3CHgKqwK?=
- =?us-ascii?Q?90UWN7TSqu9ekdPAF8JysNGq?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?h+V32WUTtX8Jzv7K/3vPWdiKrciWlx9IibE77CphhLBqTslwnEIyGZNOfVmn?=
+ =?us-ascii?Q?DK8wnL2rBdD0lMtZFkQLkWp6i5f2Ph2YXYIwYlIJ6lCoqCoxyFN0uCcLiBOo?=
+ =?us-ascii?Q?t4tBsXnH/7WhN8+061CxYd5isrnP2aJzDxddzEMlWKmLwWE7gAvdsqmXxnkK?=
+ =?us-ascii?Q?yuFem2mEdL27aXNaiqZxzA4I2aDYlPnYv8uzSxdMu2u11htm1RmbkD1iX+F5?=
+ =?us-ascii?Q?kMnwHYhm8MWUs04rdC9b6sY41MA3qyv+bI9/Y/2URV2ckvGSAtcKKHwsp3UJ?=
+ =?us-ascii?Q?VXP99S5yNXyQRw+fLTR3a3HSKCS/RwsHI4iMu871WvNGdV3Cjyv/utr+8/Ba?=
+ =?us-ascii?Q?CgznXs5i8CYmWnj/Ur+hUFj1VPLMDJMpMRbgMuqhVxWYF2PAUwPq5cZE3qwQ?=
+ =?us-ascii?Q?M/ZGE4WQ+NCK6f3iGu+QukkYbcTT1rQEH0hxcmSfl0fj6N2fzdLyt2CKac6J?=
+ =?us-ascii?Q?2sJEMiv0W7O3hqYKkdnJIfMYCpIDynxZyniVhpWrlz0rFnnWKGKJTJ5ZJ2wa?=
+ =?us-ascii?Q?xzxGZeElmFfb1mL2M7UZL3XzSJ4eJBPXNuhHujl8ZrDiPQUsXv7WMdB6Qcbo?=
+ =?us-ascii?Q?Y1JzKTSTvlkknR+CducHJHoQD8P9nhciARdEhPK/vWhGhUVCkSRVpI07B7vU?=
+ =?us-ascii?Q?Xdne7gIcBCU/Lk/aK0MElqcL2E7po0nA5oTcFFgleqTH2zFJXlc0lZtJxrPK?=
+ =?us-ascii?Q?IZn7YdL92l/6OObyfdyZ+RpHdgOh4p2MoBE9CuJ73VlEaJ+kk6iPn8nPQKAN?=
+ =?us-ascii?Q?mLslzR6rNW6e4Y0eV76JnGKJPO7sSjtKCOiqmvroa8ZHx+HTRfpyf4SkevRo?=
+ =?us-ascii?Q?YVWBsZ6QBnBmQYfY1uXPt8r9Jxvi9uLbDogfIi1BcGQEgvO0qXZ78AFbidZU?=
+ =?us-ascii?Q?dFA01jB1p0Su/s/w7Ri9INOVpBC9Bqirbh5Q6t0MAbIOsdg4sZwtJ3AKbgPl?=
+ =?us-ascii?Q?lvsZpT8SbN8EsAD+eeLfwoYhzGXZXY2zhWCRwF+s1uEyu9WFq8OoCp5m2A/L?=
+ =?us-ascii?Q?XbnKdzF6n3YsZyWiUOYv0vTPnnngO6qKUXRFOHEXmJT3Avpgc9vJ31pexuth?=
+ =?us-ascii?Q?WDl+QjQoQy8kcHtXRgZPtonOHIAVN+FOAWZb2oqrWJGPKB3lo68Spv2k3Mzs?=
+ =?us-ascii?Q?NE2BvIFpTx3YEHWTVXObdQYK1uMEkl3m9aELZloMIlWXF8lp4yphfrSyOZfm?=
+ =?us-ascii?Q?otvcim02Eg9eDFOINyg8WJz/8zyxBRhjfV3gQuN+AgrZkQxQLXBimxMY6T38?=
+ =?us-ascii?Q?N7Bc3/yQ+q6apn04JtCuzf8cD3F7b36XhDscllY/qEOif1jehNr0PEMzbbOC?=
+ =?us-ascii?Q?jOlHn6xZaOdgn07WmLEiNukp?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4baeea58-73f4-4162-6801-08d931a9e78e
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee5006ad-fa68-4294-700d-08d931a9e866
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:45.5153
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:06:46.9410
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FRUkqRw9vHAaHPW0zzvuiJz8tra0w5uy/ex8iqCo79SIkd/YkKs1tWGKoBWjK5lPY99wJYC4Gytb8yYUfhiovg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: U4fVSEx4lRVIJQH47xwgtKUqmZlxPSltRvAAP+8EbpwhNg47VvU5DUKGRYTD0rXPuvzTLoSd+qjVhCJMRssy5Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0452
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,252 +119,42 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../net/wireless/celeno/cl8k/utils/string.c   | 235 ++++++++++++++++++
- 1 file changed, 235 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/utils/string.c
+ .../net/wireless/celeno/cl8k/utils/string.h   | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/utils/string.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/utils/string.c b/drivers/net/=
-wireless/celeno/cl8k/utils/string.c
+diff --git a/drivers/net/wireless/celeno/cl8k/utils/string.h b/drivers/net/=
+wireless/celeno/cl8k/utils/string.h
 new file mode 100644
-index 000000000000..1300563e86a6
+index 000000000000..aea19516ff99
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/utils/string.c
-@@ -0,0 +1,235 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/utils/string.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "utils/string.h"
-+#include "utils/utils.h"
++#ifndef CL_STRING_H
++#define CL_STRING_H
 +
-+int cl_strtobool_vector(char *src, bool *dest, u8 elem_cnt, char *delim)
-+{
-+       u8 i =3D 0;
-+       char *buf =3D NULL;
-+       char vector[STR_LEN_256B] =3D {0};
++#include <linux/types.h>
 +
-+       if (strlen(src) >=3D sizeof(vector))
-+               return -E2BIG;
++#define STR_LEN_16B  16
++#define STR_LEN_32B  32
++#define STR_LEN_64B  64
++#define STR_LEN_128B 128
++#define STR_LEN_256B 256
 +
-+       strcpy(vector, src);
-+       buf =3D cl_strtok(vector, delim);
++int cl_strtobool_vector(char *src, bool *dest, u8 elem_cnt, char *delim);
++int cl_strtou8_vector(char *src, u8 *dest, u8 elem_cnt, char *delim);
++int cl_strtou8_hex_vector(char *src, u8 *dest, u8 elem_cnt, char *delim);
++int cl_strtou16_vector(char *src, u16 *dest, u8 elem_cnt, char *delim);
++int cl_strtou32_vector(char *src, u32 *dest, u8 elem_cnt, char *delim);
++int cl_strtos8_vector(char *src, s8 *dest, u8 elem_cnt, char *delim);
 +
-+       if (!buf)
-+               return -EIO;
-+       if (kstrtobool(buf, &dest[0]) !=3D 0)
-+               return -EINVAL;
++s8 *cl_strtok(s8 *s, const s8 *ct);
++s8 *cl_strtok_r(s8 *s, const s8 *ct, s8 **saveptr);
 +
-+       for (i =3D 1; i < elem_cnt; i++) {
-+               buf =3D cl_strtok(NULL, delim);
-+               if (!buf)
-+                       break;
-+               if (kstrtobool(buf, &dest[i]) !=3D 0)
-+                       return -EINVAL;
-+       }
-+
-+       if (i < elem_cnt) {
-+               pr_err("src %s doesn't have %u elements\n", src, elem_cnt);
-+               return  -1;
-+       }
-+
-+       return 0;
-+}
-+
-+int cl_strtou8_vector(char *src, u8 *dest, u8 elem_cnt, char *delim)
-+{
-+       u8 i =3D 0;
-+       char *buf =3D NULL;
-+       char vector[STR_LEN_256B] =3D {0};
-+
-+       if (strlen(src) >=3D sizeof(vector))
-+               return -E2BIG;
-+
-+       strcpy(vector, src);
-+       buf =3D cl_strtok(vector, delim);
-+
-+       if (!buf)
-+               return -EIO;
-+       if (kstrtou8(buf, 0, &dest[0]) !=3D 0)
-+               return -EINVAL;
-+
-+       for (i =3D 1; i < elem_cnt; i++) {
-+               buf =3D cl_strtok(NULL, delim);
-+               if (!buf)
-+                       break;
-+               if (kstrtou8(buf, 0, &dest[i]) !=3D 0)
-+                       return -EINVAL;
-+       }
-+
-+       if (i < elem_cnt) {
-+               pr_err("src %s doesn't have %u elements\n", src, elem_cnt);
-+               return -1;
-+       }
-+
-+       return 0;
-+}
-+
-+int cl_strtou8_hex_vector(char *src, u8 *dest, u8 elem_cnt, char *delim)
-+{
-+       u8 i =3D 0;
-+       char *buf =3D NULL;
-+       char vector[STR_LEN_32B] =3D {0};
-+
-+       if (strlen(src) >=3D sizeof(vector))
-+               return -E2BIG;
-+
-+       strcpy(vector, src);
-+       buf =3D cl_strtok(vector, delim);
-+
-+       if (!buf)
-+               return -EIO;
-+       if (kstrtou8(buf, 16, &dest[0]) !=3D 0)
-+               return -EINVAL;
-+
-+       for (i =3D 1; i < elem_cnt; i++) {
-+               buf =3D cl_strtok(NULL, delim);
-+               if (!buf)
-+                       break;
-+               if (kstrtou8(buf, 16, &dest[i]) !=3D 0)
-+                       return -1;
-+       }
-+
-+       if (i < elem_cnt) {
-+               pr_err("src %s doesn't have %u elements\n", src, elem_cnt);
-+               return -1;
-+       }
-+
-+       return 0;
-+}
-+
-+int cl_strtou16_vector(char *src, u16 *dest, u8 elem_cnt, char *delim)
-+{
-+       u8 i =3D 0;
-+       char *buf =3D NULL;
-+       char vector[STR_LEN_256B] =3D {0};
-+
-+       if (strlen(src) >=3D sizeof(vector))
-+               return -E2BIG;
-+
-+       strcpy(vector, src);
-+       buf =3D cl_strtok(vector, delim);
-+
-+       if (!buf)
-+               return -EIO;
-+       if (kstrtou16(buf, 0, &dest[0]) !=3D 0)
-+               return -EINVAL;
-+
-+       for (i =3D 1; i < elem_cnt; i++) {
-+               buf =3D cl_strtok(NULL, delim);
-+               if (!buf)
-+                       break;
-+               if (kstrtou16(buf, 0, &dest[i]) !=3D 0)
-+                       return -EINVAL;
-+       }
-+
-+       if (i < elem_cnt) {
-+               pr_err("src %s doesn't have %u elements\n", src, elem_cnt);
-+               return -1;
-+       }
-+
-+       return 0;
-+}
-+
-+int cl_strtou32_vector(char *src, u32 *dest, u8 elem_cnt, char *delim)
-+{
-+       u8 i =3D 0;
-+       char *buf =3D NULL;
-+       char vector[STR_LEN_256B] =3D {0};
-+
-+       if (strlen(src) >=3D sizeof(vector))
-+               return -E2BIG;
-+
-+       strcpy(vector, src);
-+       buf =3D cl_strtok(vector, delim);
-+
-+       if (!buf)
-+               return -EIO;
-+       if (kstrtou32(buf, 0, &dest[0]) !=3D 0)
-+               return -EINVAL;
-+
-+       for (i =3D 1; i < elem_cnt; i++) {
-+               buf =3D cl_strtok(NULL, delim);
-+               if (!buf)
-+                       break;
-+               if (kstrtou32(buf, 0, &dest[i]) !=3D 0)
-+                       return -EINVAL;
-+       }
-+
-+       if (i < elem_cnt) {
-+               pr_err("src %s doesn't have %u elements\n", src, elem_cnt);
-+               return -1;
-+       }
-+
-+       return 0;
-+}
-+
-+int cl_strtos8_vector(char *src, s8 *dest, u8 elem_cnt, char *delim)
-+{
-+       u8 i =3D 0;
-+       char *buf =3D NULL;
-+       char vector[STR_LEN_256B] =3D {0};
-+
-+       if (strlen(src) >=3D sizeof(vector))
-+               return -E2BIG;
-+
-+       strcpy(vector, src);
-+       buf =3D cl_strtok(vector, delim);
-+
-+       if (!buf)
-+               return -EIO;
-+       if (kstrtos8(buf, 0, &dest[0]) !=3D 0)
-+               return -EINVAL;
-+
-+       for (i =3D 1; i < elem_cnt; i++) {
-+               buf =3D cl_strtok(NULL, delim);
-+               if (!buf)
-+                       break;
-+               if (kstrtos8(buf, 0, &dest[i]) !=3D 0)
-+                       return -EINVAL;
-+       }
-+
-+       if (i < elem_cnt) {
-+               pr_err("src %s doesn't have %u elements\n", src, elem_cnt);
-+               return -1;
-+       }
-+
-+       return 0;
-+}
-+
-+static s8 *_strtok;
-+
-+s8 *cl_strtok(s8 *s, const s8 *ct)
-+{
-+       return cl_strtok_r(s, ct, &_strtok);
-+}
-+
-+/* cl_strtok_r() is a reentrant version of cl_strtok() */
-+s8 *cl_strtok_r(s8 *s, const s8 *ct, s8 **saveptr)
-+{
-+       s8 *sbegin, *send;
-+
-+       sbegin  =3D s ? s : *saveptr;
-+       if (!sbegin)
-+               return NULL;
-+
-+       sbegin +=3D strspn(sbegin, ct);
-+       if (*sbegin =3D=3D '\0') {
-+               *saveptr =3D NULL;
-+               return NULL;
-+       }
-+
-+       send =3D strpbrk(sbegin, ct);
-+       if (send && *send !=3D '\0')
-+               *send++ =3D '\0';
-+
-+       *saveptr =3D send;
-+
-+       return sbegin;
-+}
-+
++#endif /* CL_STRING_H */
 --
 2.30.0
 
