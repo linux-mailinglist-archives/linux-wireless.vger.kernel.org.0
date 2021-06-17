@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CEE33AB83C
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D815E3AB83E
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:03:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233640AbhFQQF5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:05:57 -0400
+        id S233645AbhFQQF7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:05:59 -0400
 Received: from mail-eopbgr80052.outbound.protection.outlook.com ([40.107.8.52]:15895
         "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233612AbhFQQFt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:05:49 -0400
+        id S233570AbhFQQFu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:05:50 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DE3HfU3qnbfAPPKQC4SQLKJ5ICpn1iCSDh1xt8OD18Eyi0eY06oznIjid/ri2qB06XhBxffnD0Fp3e8RC7/Qlo3xsgCZmBt2fxuU19tqJrMQ7znTA3GGKtvfFJydpyNSp6C7ZuJ+zKOHfJ7Is9XfI79hh8CZltlkKL9Au6gd1hWg0kXSTvUCOlCXF1y15n8pZs/YPbLqQNQacypsW5+amg1Zd0UOFahiX7Nyubvswep7uOaMdE9QTP5H8UCreKASkCYbmdndB5jOT7WrH2SUSpDK817RMkbQTTyXO1HzbF7AN7qRtM5SmF/vgDoY+glsAH9ZCrtX0SYj/pCx6gMu2g==
+ b=bWJ0VWEjIpyVt4GmdycpxqHnfIHMvJJXllpr4czC40V3D2bXLOq0BjHpCxLMP9mbr0ZZgkWe32u9ym52wpBw26NDHus3cvDKVWocurq/ny25WdYKh4QstZdzYihhWQzgNTJb722XzNAChWrOcR8Jh5MiAN+nB/jJa0n7/gwyAF5PSeUFK7g0K8BVhxu86PdwdyFNUqlEs74IhDY9FWIKHPNEyHHCzuIJgmKSTmfzxbqrOdTuXlXXk4cJmKxou+OfSQhxccQwFykEVl8tNeSDHbBcXWei5NXYB6vN/1SixKdCZBtFAcDtbcUiy+cdK+rvUimvEF4GfLR369iFWwkSCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ReQanTgEXuRxzelIJk0KTx50AVXqAMRyWugjXCwn+uk=;
- b=ZfwarfcIGSC+K9hWG0EO7O863/XxWv7DUhvZkZgrzcS2JZyWJXEGkODPOECYTj2iFCk3y1RTRhJLXsUm0PhlDrgiVTQIhyJIDd871OOc7EwoS1FdIdcmj0Mse6M0HS2flvywuqqUcMMDv+k7b+Lyk6oAmd1PfwsPZisZlJmCyV6IKNUmhC0iykHCImsvl7FDaLEcSaNcisuC28oJGhU2oFPWxP6BgNSkRUFW4fDgRnXJa1W+jS+1EOs34JBYETg+h1Y07rwtD3+2je6/sNqoOUURUXS1FUdDOxtkbn6nYi8uJ9pjCegdTBQAqeC9dgHOLiVongZLoLn8odf/lo7IxA==
+ bh=kYwYPaZsms30XYnxyCOgd3OmpGbPP4OJEjBxzEb2S3Q=;
+ b=fFYcMHwGLLfnCq2xyd3OhmDkmyK8osRpGzTmVJ0ek+qrUPRx4ZrcuShyvl5lQJ+StRQ0u2kYPpK+JLF56s1qYi6cX2LPlSsK8QgxmIk5+q1Pwbcpp4q/fxe2lwngGkHoUOcE76cpqai60681Z+pjQE1YPFUuhB8vQScbBO+VgsSHz8brMQTbh7UcEebaGDSlfxsELEz4Y7QdTtxC7eSzUhnZPf8mjP12cOzN+H0IJgO/afSt7p4G7biNgDAJTcmmhM2AlU7fzf8awK1W3VDqbKg0OyaoshbuirJMdFREzksWZDkLMMXWt9Y7I1h9buSZxJTN9qpWRVo+tsEaWDS3qA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ReQanTgEXuRxzelIJk0KTx50AVXqAMRyWugjXCwn+uk=;
- b=kIASny7ohn8dSyFuohvBy5MrYjjo4RvEVZhnN88ixbecipxjeSRJFka0jlPd0nrolEnK1oBdAHnZY3Q0Z8ThFZH59Ptopz8PE2eFOUPjayg+uqC/XR6qd23Jx73i8W+4h1K9v0ud7cu4hhd/WnBWwHZmlT4CRGSKADSxRHY/aJ8=
+ bh=kYwYPaZsms30XYnxyCOgd3OmpGbPP4OJEjBxzEb2S3Q=;
+ b=mk3cK/AzJJhaLZ/ga9hAblQz2ru7keq+xOO+Sw5nSEXkRGx2TyL3LGUTOAOVcy7IkJeJqsa/w1X9Y1OT0WG/jmmjzfSDVIhKNLZk6mL0JRvHde+cYcd7czHuI5Dd3eIjfPi30ZngJ9tb4i1wo0jZPC2pX7pNERODlkwCPrJuMcg=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 038/256] cl8k: add channel.c
-Date:   Thu, 17 Jun 2021 15:58:45 +0000
-Message-Id: <20210617160223.160998-39-viktor.barna@celeno.com>
+Subject: [RFC v1 039/256] cl8k: add channel.h
+Date:   Thu, 17 Jun 2021 15:58:46 +0000
+Message-Id: <20210617160223.160998-40-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:15 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:03:16 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2eebb8a3-c120-4005-f0bc-08d931a96abf
+X-MS-Office365-Filtering-Correlation-Id: 079f2c37-778c-420a-7b78-08d931a96b5d
 X-MS-TrafficTypeDiagnostic: AM9P192MB0966:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB0966F15EC1CA1D3985ECA2A1F60E9@AM9P192MB0966.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-Microsoft-Antispam-PRVS: <AM9P192MB0966E4FA807F4C3F5D730AEAF60E9@AM9P192MB0966.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: j+XbNkP4ObsE9USE9bf+wvIg2Zr8h1wnBl7NJ9bDW5QTCo32GJ11tux+rQhf9flrW+HoqsCMhzOjMuXKjL2F055NZa06KBKfLgioN9rzFHCHD3HDYj7XOE+hDuOssxknsmLK9Y1u9cUVhp7EEzvgAbSYFtBQ+fSaJmv66Fh4ffiVXlRJ7RVKsNityEt2SrehZFmdonqKrYHHf1pvL4GPJoWP0Yiok6UzKcB4Yxrn9ARLMCzCmmW5NKVYWPnbBGwrsgMKhO2c468FeaUEfi/5hl/7NqgsUjS5IcN0xsinHBL9v5ejiA+VGTuOdS9zK/kgQBBehqV3RQ7/9UZQwvLQmfcYhCbsq1uvhdUNobcoIUIIMOwl6NmXPYLd3q7QIIf5WJDQNIZozcqzzwU1forqRyoKdq8mkeezP5rmS84ob3rHLifSMOPYn9+Mv8PXbeYcL2YDInqEL5/DeDD9TKMqB3tWS6PmtHTy9QlSMCDlmRwsXBA3eYLe+HxSwbgyfC2iRe2LZ3AaIJYZV4tgQ4p4DhIvcuXraXJXA1g7npgDDKTzOb8O1hDrYEn8ecn/CPQ28KI8kLKG1ZldLTF6OxmcWiQr/f5VK/QFyLa57Fb9G8MkHbPcH1k+Ls2K+dRSo1V6mxWgPxTQsxe8XCcq6QfxjmkfzBl43Vcar5QaMlBpxFzEkqjM3sqXz9akJA47X9fIzB0d/yg/spCLSgAjENJeaA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(366004)(346002)(39850400004)(376002)(396003)(30864003)(4326008)(1076003)(2616005)(8676002)(186003)(6512007)(6486002)(107886003)(83380400001)(6916009)(38100700002)(55236004)(316002)(16526019)(6506007)(38350700002)(6666004)(54906003)(8936002)(26005)(508600001)(36756003)(2906002)(9686003)(52116002)(956004)(5660300002)(66946007)(66556008)(66476007)(86362001)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Gw/Juut75SNV0sgZblh/VraCeD1eB0AXrAgzSW2YqM6ph5ceqbdCmfEkUqMruhNkWSp+SgtEDEtz4vB82f2bUbxIi5t51PSvaPyPDrryQcnFhCw3wfer0lEI5a+ixotoxjThQSJgcJe+zPUdsBqUVX9UsfKAvmBOof4T6BfB72djAmflkpx3VJnr6X9KrrctSlWX3l+gXgtYQxQ6564azly/tCdnz7lX9CIe0ZiBJ4XROgPtJ9sLKcPbjdRfZt7YmBM2jIojONHR2Wk6CDcUHe/diQr+TYnCEkfj8Psetaq97NVnEjHoHskXrf0XQpFDApFsXmWKrxU9tv7cF9sKT6UkVOqKXDyB9Byfl0mEYAkzOz+Ismc3pEZb8iFnUNQeSDhBaI+5JeAruKN8Xu5ofSP7DCJCjrlhvhiJAFZYFQ20DrWCxmXs4/g86xNrtI4OBI4lqxZtHTDJy8BlPKy4L13ZWrwu30+nSXPisfSn9XkVn8Q51w+4t0+8OvT5qPXe++wTVJUMrlpLbMtvzDsyRSamu1S5mci/qUdM2j0YOiB1fqxjBnkHM5BUcwmd/XILc5NtMC69CU1KLGRDvTe0yRvxGAM+sGjsAh5Ytr+u8dJgehEVNnyhMy1eOluWB6jeY43ythDIb9pLLA3ReMJJnjqDJ76OsmwFUBzGshtGOCud01e6dyKYC9FQ7YM3m9mWaBPtnKQwbLcilWvhSY6cBw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(136003)(366004)(346002)(39850400004)(376002)(396003)(4326008)(1076003)(2616005)(8676002)(186003)(6512007)(6486002)(107886003)(83380400001)(6916009)(38100700002)(55236004)(316002)(16526019)(6506007)(38350700002)(6666004)(54906003)(8936002)(26005)(508600001)(36756003)(2906002)(9686003)(52116002)(956004)(5660300002)(66946007)(66556008)(66476007)(86362001)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vWIU4rNfoP31y+Af2VVv4ss+rKKOOFtxpiJw/P5o/givQawBk9r3UkPV0poo?=
- =?us-ascii?Q?2rPkacEC+r0/6fu+uggwMohWYRHlPgppShh22sH9tIaF/+pEQItvfgqB/zxK?=
- =?us-ascii?Q?Pmdw2eT5/SWn6EArIxqLjOfLzRfK9yGtGBvp124jA2tJi+8j3uGpLTmpSSuK?=
- =?us-ascii?Q?gu7X6sbMfE+JISUJB7V77qDO8Xr9hheKRwNXv1y7ZFL3DvL5QT/XQ+8dPUhr?=
- =?us-ascii?Q?Jhms84XvXb20c3tTNmbpfwxAjcwdk0Z2xQVFbJpUHeOR9XFXuOCCnZK4K4Fn?=
- =?us-ascii?Q?v/7RhKqnKO5zs43SbmMxSI8iBHn+fJ2Rt3TsbM5BF/rnDpg0UiZq1PTPcml+?=
- =?us-ascii?Q?I6quHUDqlRQxE/2FBKXUt6Jg9pXwd/5D5c+ja5hH3VQL8dx60DHVp1OHAyiy?=
- =?us-ascii?Q?9/j6UkWiMEGj2aEPcKJYhv8I+NY/79nhJND/T7AnXz5D+PDWszZaAACI9Kng?=
- =?us-ascii?Q?MLlspozWyeLHHqMR1mQqhFz7PVB6w0cf8Qgs+Ytc9dP9R3vVCzLIeXraDDYF?=
- =?us-ascii?Q?RM87d+VPgyJXFxaOSjvHzCu/zbAh7vz7OUC4zoKUirOcpxG5aoR3xtk6nnnG?=
- =?us-ascii?Q?oZSh0sV7n3upFZy2l8758qmGOMc44OKM343fQRIGgVS3vm6m2wSSeA5WKBny?=
- =?us-ascii?Q?zabzTPXe7YwZgL+TPrsa3Vl8aFb5H/geOHGPxQI3WI/WpdOGz6wBbiaknURC?=
- =?us-ascii?Q?rOzaVdzC3rXyvacAdGf/WDbzjl+eFHuCQ/iMom2MwvaNdQwPNKX5zwBcswsP?=
- =?us-ascii?Q?HMaJL5RQw1OwErleFe041b47Bk6Q9icA8cFzcXQdW7vD8f9Ru7wuDYXvECkh?=
- =?us-ascii?Q?q1Y/AqW5c168Cch1toBhNKjNex0vDDMCJNw6/eLNqYEal4AIsLSM0/lG/KOK?=
- =?us-ascii?Q?WTmHeD8R7D1nTYQSMVsXyqQfXuR/hvtlVqpdgLSwumA1lPEypH4zXKR1UAx3?=
- =?us-ascii?Q?y6al6tYUBDzxtAGxTRk4JhBWDqeL3Po980q/Elt1S0SoQzrcayOXu/jLLVca?=
- =?us-ascii?Q?t/jZfu+KUtrLdL3/ujocfnbDvWaQbAJgJO/63f5739ion6cp9Twca6dEX7Pt?=
- =?us-ascii?Q?OTVTg2D170OWXRUJ3TqurO4bv+U7RiXLIHeXqAk0LLpD5excwu/f8mZDcp8A?=
- =?us-ascii?Q?wZAeNffsJsDyaONFyXYHr7y753Ef8diTLJHwxxWjKFcf59RQ5lxrM4i4BT3q?=
- =?us-ascii?Q?do/R9yP/ygLvWZ0dng7wdU6j3ZbVNw8kr4RhnyZIVfVimshqEo9NZZCvuWVV?=
- =?us-ascii?Q?pELwT6GG7RH3SF1XN7TagAS8qLEvySgPLDyuE9+BTVKQLIda7QLK0Uq51pWV?=
- =?us-ascii?Q?SCH9Ip4itO6jtdvTRLl0k/Va?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?bUfvF3fQvdX9Q359M14MSs3Q4UqwQvN0BzlFJ0c2po/dqzjBLSt0ROHbWfmX?=
+ =?us-ascii?Q?jVcphxL9pQsDuEA8xqv1kRy+lAetr//MsYNCRqzFsPKsuL0lI3KGywRF7QPk?=
+ =?us-ascii?Q?FdZ9D9RNgIjI2AlNovC0nzPDSRaHiCT3eJYL/J72nj7Dxm5aU0e5JuwmAPE8?=
+ =?us-ascii?Q?iv2heCfPt8MGQCGl1Q3GYOsWnR1wXzMd9Yp9SMj2Fb80WME1aQwFLIPQtcZX?=
+ =?us-ascii?Q?uZKUUYLWeiVUpvsriGwGCKg58oVJKjlP42pN/3TwWRF/slEoeq3eoEYUOaFb?=
+ =?us-ascii?Q?wdGmJW/J+AVrZUevLp2gLlygLZYruUherDAp2tZWZbVLZtDA0NmDuci00Xpd?=
+ =?us-ascii?Q?TAMIPD9ONFR/PV40iZFZh4YXmic9S3jTYYdBEGDiMImo3o2KQxmrzdEyG1jJ?=
+ =?us-ascii?Q?Bk+a/tHMUAdBPKMGUwEc3fR9tDZWmGovOo2q6XLoV8ZzDUt5iErHxoS4jZK9?=
+ =?us-ascii?Q?/hQTqg1MWjIh9T+928/p6454rvks7bjTHxbO4lJuGlQ80qZWrPhDzdCYtGdN?=
+ =?us-ascii?Q?S5W1qb9dhbtQA+gCccp+voQpGAyZKc9FeykKDaf5Nql4ZQX6kpvuitn2+MtK?=
+ =?us-ascii?Q?SPBdKHQDnJMUh12R+vimVi/DVMsXiMPLa6BW6q3CXkaoYQv0PfJHHXXwhLf7?=
+ =?us-ascii?Q?O3u4tMgQ0HDBo9cwAVR1T80YyKY/9YpPVMNG79wu7ov2fZjqly3mIcFgDDEf?=
+ =?us-ascii?Q?keWz2JZMfAAJNlJHH1Z1z1G9Awy26GJXAkDLw910MyiLkYfki2y34qMebDH8?=
+ =?us-ascii?Q?CgsvwKn8uWNnwLvM7Yv53yEFhha50O7A3fJ1xFpQT5hX0eSVsgHvZHDtopSJ?=
+ =?us-ascii?Q?JFfKKjzmGjib1KWA87F7RU4TQmiFwiyK4FkyHucNOpr5Ui+oliPuJMzdOnex?=
+ =?us-ascii?Q?F6mIc6oQJ5QDaLGFrag/NpNnm/cTDuWdC82JK++sVsBFi4UfzVzhK7mm4LFV?=
+ =?us-ascii?Q?NHADI4Qaw6Sorpp2lVR9tw3+4MKciedI4zgPDrn+L5gKrYmstkIKPL83NoRt?=
+ =?us-ascii?Q?kBU3mEhRr1RMDO4dXS+/wdfrzGXnkzBUGEV62bi2r86s0WQ+djvbmD08AH92?=
+ =?us-ascii?Q?7/iFi22xvIA7XS2lU05O60Bi8YfM5dEL2VVUB0Lu/5a1LEJnKwSx25RYqqoh?=
+ =?us-ascii?Q?qQmpGXrE0mtjeMHTUY+gIhubTy9/ibSZWHrfU4nSJfj+VXOBxnSwrRSzLmZy?=
+ =?us-ascii?Q?0mRABjliyRdw7R9Ewj2FskUX11+sunoZkMkLXbQXZjIHnvw4qJKVUsKkdVVE?=
+ =?us-ascii?Q?7lvjL/U8LV2Hk7sqaWdHWDc3shdFi7t12RhJik4ZSq5l36iij84JrkL4GKTA?=
+ =?us-ascii?Q?81s/Ggxgq1IcnloyHq0kqBJm?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2eebb8a3-c120-4005-f0bc-08d931a96abf
+X-MS-Exchange-CrossTenant-Network-Message-Id: 079f2c37-778c-420a-7b78-08d931a96b5d
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:16.1725
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:03:17.1492
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zRWGV8PNe1IQc8NYj7ZxvgCRuA7SmW6qHSP827UcWQAx0+4+2xpIzX5dgTC9wwcaH4ChoJQrZhShKlM3MwmtZg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: t9njhoGB4NVelM1Q1RqU9lZPL/PJdN6UQYppzwFkL/Aio3hn+UsCfEAAUyImOKfhhTmKKefUDYlXcdkHHWnBug==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB0966
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,393 +119,204 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/channel.c | 373 +++++++++++++++++++++
- 1 file changed, 373 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/channel.c
+ drivers/net/wireless/celeno/cl8k/channel.h | 187 +++++++++++++++++++++
+ 1 file changed, 187 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/channel.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/channel.c b/drivers/net/wirel=
-ess/celeno/cl8k/channel.c
+diff --git a/drivers/net/wireless/celeno/cl8k/channel.h b/drivers/net/wirel=
+ess/celeno/cl8k/channel.h
 new file mode 100644
-index 000000000000..78346f04e332
+index 000000000000..c31cb4f69f2a
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/channel.c
-@@ -0,0 +1,373 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/channel.h
+@@ -0,0 +1,187 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include "channel.h"
-+#include "band.h"
-+#include "vif.h"
-+#include "dfs/dfs.h"
-+#include "chandef.h"
-+#include "netlink.h"
++#ifndef CL_CHANNEL_H
++#define CL_CHANNEL_H
 +
-+#define CASE_CHAN2IDX_6G(_chan) { case _chan: return (b6g_ch ## _chan); }
-+#define CASE_CHAN2IDX_5G(_chan) { case _chan: return (b5g_ch ## _chan); }
-+#define CASE_CHAN2IDX_2G(_chan) { case _chan: return (b24g_ch ## _chan); }
++#include <linux/types.h>
++#include <linux/errno.h>
 +
-+#define CASE_IDX2FREQ_6G(_chan) { case (b6g_ch ## _chan): return FREQ6G(_c=
-han); }
-+#define CASE_IDX2FREQ_5G(_chan) { case (b5g_ch ## _chan): return FREQ5G(_c=
-han); }
-+#define CASE_IDX2FREQ_2G(_chan) { case (b24g_ch ## _chan): return FREQ2G(_=
-chan); }
++enum chan_idx_6g {
++       b6g_ch1,
++       b6g_ch2,
++       b6g_ch5,
++       b6g_ch9,
++       b6g_ch13,
++       b6g_ch17,
++       b6g_ch21,
++       b6g_ch25,
++       b6g_ch29,
++       b6g_ch33,
++       b6g_ch37,
++       b6g_ch41,
++       b6g_ch45,
++       b6g_ch49,
++       b6g_ch53,
++       b6g_ch57,
++       b6g_ch61,
++       b6g_ch65,
++       b6g_ch69,
++       b6g_ch73,
++       b6g_ch77,
++       b6g_ch81,
++       b6g_ch85,
++       b6g_ch89,
++       b6g_ch93,
++       b6g_ch97,
++       b6g_ch101,
++       b6g_ch105,
++       b6g_ch109,
++       b6g_ch113,
++       b6g_ch117,
++       b6g_ch121,
++       b6g_ch125,
++       b6g_ch129,
++       b6g_ch133,
++       b6g_ch137,
++       b6g_ch141,
++       b6g_ch145,
++       b6g_ch149,
++       b6g_ch153,
++       b6g_ch157,
++       b6g_ch161,
++       b6g_ch165,
++       b6g_ch169,
++       b6g_ch173,
++       b6g_ch177,
++       b6g_ch181,
++       b6g_ch185,
++       b6g_ch189,
++       b6g_ch193,
++       b6g_ch197,
++       b6g_ch201,
++       b6g_ch205,
++       b6g_ch209,
++       b6g_ch213,
++       b6g_ch217,
++       b6g_ch221,
++       b6g_ch225,
++       b6g_ch229,
++       b6g_ch233,
 +
-+#define INVALID_FREQ 0xffff
++       NUM_CHANNELS_6G
++};
 +
-+static u8 cl_channel_to_index_6g(struct cl_hw *cl_hw, u32 channel)
-+{
-+       switch (channel) {
-+       CASE_CHAN2IDX_6G(1);
-+       CASE_CHAN2IDX_6G(2);
-+       CASE_CHAN2IDX_6G(5);
-+       CASE_CHAN2IDX_6G(9);
-+       CASE_CHAN2IDX_6G(13);
-+       CASE_CHAN2IDX_6G(17);
-+       CASE_CHAN2IDX_6G(21);
-+       CASE_CHAN2IDX_6G(25);
-+       CASE_CHAN2IDX_6G(29);
-+       CASE_CHAN2IDX_6G(33);
-+       CASE_CHAN2IDX_6G(37);
-+       CASE_CHAN2IDX_6G(41);
-+       CASE_CHAN2IDX_6G(45);
-+       CASE_CHAN2IDX_6G(49);
-+       CASE_CHAN2IDX_6G(53);
-+       CASE_CHAN2IDX_6G(57);
-+       CASE_CHAN2IDX_6G(61);
-+       CASE_CHAN2IDX_6G(65);
-+       CASE_CHAN2IDX_6G(69);
-+       CASE_CHAN2IDX_6G(73);
-+       CASE_CHAN2IDX_6G(77);
-+       CASE_CHAN2IDX_6G(81);
-+       CASE_CHAN2IDX_6G(85);
-+       CASE_CHAN2IDX_6G(89);
-+       CASE_CHAN2IDX_6G(93);
-+       CASE_CHAN2IDX_6G(97);
-+       CASE_CHAN2IDX_6G(101);
-+       CASE_CHAN2IDX_6G(105);
-+       CASE_CHAN2IDX_6G(109);
-+       CASE_CHAN2IDX_6G(113);
-+       CASE_CHAN2IDX_6G(117);
-+       CASE_CHAN2IDX_6G(121);
-+       CASE_CHAN2IDX_6G(125);
-+       CASE_CHAN2IDX_6G(129);
-+       CASE_CHAN2IDX_6G(133);
-+       CASE_CHAN2IDX_6G(137);
-+       CASE_CHAN2IDX_6G(141);
-+       CASE_CHAN2IDX_6G(145);
-+       CASE_CHAN2IDX_6G(149);
-+       CASE_CHAN2IDX_6G(153);
-+       CASE_CHAN2IDX_6G(157);
-+       CASE_CHAN2IDX_6G(161);
-+       CASE_CHAN2IDX_6G(165);
-+       CASE_CHAN2IDX_6G(169);
-+       CASE_CHAN2IDX_6G(173);
-+       CASE_CHAN2IDX_6G(177);
-+       CASE_CHAN2IDX_6G(181);
-+       CASE_CHAN2IDX_6G(185);
-+       CASE_CHAN2IDX_6G(189);
-+       CASE_CHAN2IDX_6G(193);
-+       CASE_CHAN2IDX_6G(197);
-+       CASE_CHAN2IDX_6G(201);
-+       CASE_CHAN2IDX_6G(205);
-+       CASE_CHAN2IDX_6G(209);
-+       CASE_CHAN2IDX_6G(213);
-+       CASE_CHAN2IDX_6G(217);
-+       CASE_CHAN2IDX_6G(221);
-+       CASE_CHAN2IDX_6G(225);
-+       CASE_CHAN2IDX_6G(229);
-+       CASE_CHAN2IDX_6G(233);
-+       };
++enum chan_idx_5g {
++       b5g_ch36,
++       b5g_ch38,
++       b5g_ch40,
++       b5g_ch42,
++       b5g_ch44,
++       b5g_ch46,
++       b5g_ch48,
++       b5g_ch50,
++       b5g_ch52,
++       b5g_ch54,
++       b5g_ch56,
++       b5g_ch58,
++       b5g_ch60,
++       b5g_ch62,
++       b5g_ch64,
++       b5g_ch100,
++       b5g_ch102,
++       b5g_ch104,
++       b5g_ch106,
++       b5g_ch108,
++       b5g_ch110,
++       b5g_ch112,
++       b5g_ch114,
++       b5g_ch116,
++       b5g_ch118,
++       b5g_ch120,
++       b5g_ch122,
++       b5g_ch124,
++       b5g_ch126,
++       b5g_ch128,
++       b5g_ch132,
++       b5g_ch134,
++       b5g_ch136,
++       b5g_ch138,
++       b5g_ch140,
++       b5g_ch142,
++       b5g_ch144,
++       b5g_ch149,
++       b5g_ch151,
++       b5g_ch153,
++       b5g_ch155,
++       b5g_ch157,
++       b5g_ch159,
++       b5g_ch161,
++       b5g_ch165,
 +
-+       return INVALID_CHAN_IDX;
-+}
++       NUM_CHANNELS_5G
++};
 +
-+static u8 cl_channel_to_index_5g(struct cl_hw *cl_hw, u32 channel)
-+{
-+       switch (channel) {
-+       CASE_CHAN2IDX_5G(36);
-+       CASE_CHAN2IDX_5G(38);
-+       CASE_CHAN2IDX_5G(40);
-+       CASE_CHAN2IDX_5G(42);
-+       CASE_CHAN2IDX_5G(44);
-+       CASE_CHAN2IDX_5G(46);
-+       CASE_CHAN2IDX_5G(48);
-+       CASE_CHAN2IDX_5G(50);
-+       CASE_CHAN2IDX_5G(52);
-+       CASE_CHAN2IDX_5G(54);
-+       CASE_CHAN2IDX_5G(56);
-+       CASE_CHAN2IDX_5G(58);
-+       CASE_CHAN2IDX_5G(60);
-+       CASE_CHAN2IDX_5G(62);
-+       CASE_CHAN2IDX_5G(64);
-+       CASE_CHAN2IDX_5G(100);
-+       CASE_CHAN2IDX_5G(102);
-+       CASE_CHAN2IDX_5G(104);
-+       CASE_CHAN2IDX_5G(106);
-+       CASE_CHAN2IDX_5G(108);
-+       CASE_CHAN2IDX_5G(110);
-+       CASE_CHAN2IDX_5G(112);
-+       CASE_CHAN2IDX_5G(114);
-+       CASE_CHAN2IDX_5G(116);
-+       CASE_CHAN2IDX_5G(118);
-+       CASE_CHAN2IDX_5G(120);
-+       CASE_CHAN2IDX_5G(122);
-+       CASE_CHAN2IDX_5G(124);
-+       CASE_CHAN2IDX_5G(126);
-+       CASE_CHAN2IDX_5G(128);
-+       /* 130 - invalid */
-+       CASE_CHAN2IDX_5G(132);
-+       CASE_CHAN2IDX_5G(134);
-+       CASE_CHAN2IDX_5G(136);
-+       CASE_CHAN2IDX_5G(138);
-+       CASE_CHAN2IDX_5G(140);
-+       CASE_CHAN2IDX_5G(142);
-+       CASE_CHAN2IDX_5G(144);
-+       CASE_CHAN2IDX_5G(149);
-+       CASE_CHAN2IDX_5G(151);
-+       CASE_CHAN2IDX_5G(153);
-+       CASE_CHAN2IDX_5G(155);
-+       CASE_CHAN2IDX_5G(157);
-+       CASE_CHAN2IDX_5G(159);
-+       CASE_CHAN2IDX_5G(161);
-+       /* 163 - invalid */
-+       CASE_CHAN2IDX_5G(165);
-+       };
++enum chan_idx_24g {
++       b24g_ch1,
++       b24g_ch2,
++       b24g_ch3,
++       b24g_ch4,
++       b24g_ch5,
++       b24g_ch6,
++       b24g_ch7,
++       b24g_ch8,
++       b24g_ch9,
++       b24g_ch10,
++       b24g_ch11,
++       b24g_ch12,
++       b24g_ch13,
++       b24g_ch14,
 +
-+       return INVALID_CHAN_IDX;
-+}
++       NUM_CHANNELS_24G
++};
 +
-+static u8 cl_channel_to_index_24g(struct cl_hw *cl_hw, u32 channel)
-+{
-+       switch (channel) {
-+       CASE_CHAN2IDX_2G(1);
-+       CASE_CHAN2IDX_2G(2);
-+       CASE_CHAN2IDX_2G(3);
-+       CASE_CHAN2IDX_2G(4);
-+       CASE_CHAN2IDX_2G(5);
-+       CASE_CHAN2IDX_2G(6);
-+       CASE_CHAN2IDX_2G(7);
-+       CASE_CHAN2IDX_2G(8);
-+       CASE_CHAN2IDX_2G(9);
-+       CASE_CHAN2IDX_2G(10);
-+       CASE_CHAN2IDX_2G(11);
-+       CASE_CHAN2IDX_2G(12);
-+       CASE_CHAN2IDX_2G(13);
-+       CASE_CHAN2IDX_2G(14);
-+       };
++enum cl_ch_status {
++       CH_STATUS_SUCCESS,
++       CH_STATUS_ALREADY_ON_CHANNEL,
++       CH_STATUS_INVALID_PARAM =3D -EINVAL,
 +
-+       return INVALID_CHAN_IDX;
-+}
++       CH_STATUS_MAX
++};
 +
-+u8 cl_channel_to_index(struct cl_hw *cl_hw, u32 channel)
-+{
-+       /* Calculate index for a given channel */
-+       if (cl_band_is_6g(cl_hw))
-+               return cl_channel_to_index_6g(cl_hw, channel);
-+       else if (cl_band_is_5g(cl_hw))
-+               return cl_channel_to_index_5g(cl_hw, channel);
-+       else
-+               return cl_channel_to_index_24g(cl_hw, channel);
-+}
++/* 6g band has the largest list */
++#define MAX_CHANNELS NUM_CHANNELS_6G
 +
-+static u16 cl_channel_idx_to_freq_6g(struct cl_hw *cl_hw, u8 index)
-+{
-+       switch (index) {
-+       CASE_IDX2FREQ_6G(1);
-+       CASE_IDX2FREQ_6G(2);
-+       CASE_IDX2FREQ_6G(5);
-+       CASE_IDX2FREQ_6G(9);
-+       CASE_IDX2FREQ_6G(13);
-+       CASE_IDX2FREQ_6G(17);
-+       CASE_IDX2FREQ_6G(21);
-+       CASE_IDX2FREQ_6G(25);
-+       CASE_IDX2FREQ_6G(29);
-+       CASE_IDX2FREQ_6G(33);
-+       CASE_IDX2FREQ_6G(37);
-+       CASE_IDX2FREQ_6G(41);
-+       CASE_IDX2FREQ_6G(45);
-+       CASE_IDX2FREQ_6G(49);
-+       CASE_IDX2FREQ_6G(53);
-+       CASE_IDX2FREQ_6G(57);
-+       CASE_IDX2FREQ_6G(61);
-+       CASE_IDX2FREQ_6G(65);
-+       CASE_IDX2FREQ_6G(69);
-+       CASE_IDX2FREQ_6G(73);
-+       CASE_IDX2FREQ_6G(77);
-+       CASE_IDX2FREQ_6G(81);
-+       CASE_IDX2FREQ_6G(85);
-+       CASE_IDX2FREQ_6G(89);
-+       CASE_IDX2FREQ_6G(93);
-+       CASE_IDX2FREQ_6G(97);
-+       CASE_IDX2FREQ_6G(101);
-+       CASE_IDX2FREQ_6G(105);
-+       CASE_IDX2FREQ_6G(109);
-+       CASE_IDX2FREQ_6G(113);
-+       CASE_IDX2FREQ_6G(117);
-+       CASE_IDX2FREQ_6G(121);
-+       CASE_IDX2FREQ_6G(125);
-+       CASE_IDX2FREQ_6G(129);
-+       CASE_IDX2FREQ_6G(133);
-+       CASE_IDX2FREQ_6G(137);
-+       CASE_IDX2FREQ_6G(141);
-+       CASE_IDX2FREQ_6G(145);
-+       CASE_IDX2FREQ_6G(149);
-+       CASE_IDX2FREQ_6G(153);
-+       CASE_IDX2FREQ_6G(157);
-+       CASE_IDX2FREQ_6G(161);
-+       CASE_IDX2FREQ_6G(165);
-+       CASE_IDX2FREQ_6G(169);
-+       CASE_IDX2FREQ_6G(173);
-+       CASE_IDX2FREQ_6G(177);
-+       CASE_IDX2FREQ_6G(181);
-+       CASE_IDX2FREQ_6G(185);
-+       CASE_IDX2FREQ_6G(189);
-+       CASE_IDX2FREQ_6G(193);
-+       CASE_IDX2FREQ_6G(197);
-+       CASE_IDX2FREQ_6G(201);
-+       CASE_IDX2FREQ_6G(205);
-+       CASE_IDX2FREQ_6G(209);
-+       CASE_IDX2FREQ_6G(213);
-+       CASE_IDX2FREQ_6G(217);
-+       CASE_IDX2FREQ_6G(221);
-+       CASE_IDX2FREQ_6G(225);
-+       CASE_IDX2FREQ_6G(229);
-+       CASE_IDX2FREQ_6G(233);
-+       };
++#define START_CHAN_IDX_6G 1
 +
-+       return INVALID_FREQ;
-+}
++/* 1 =3D=3D> 5955 */
++#define FREQ6G(_chan) ((_chan) =3D=3D 2 ? 5935 : 5950 + 5 * (_chan))
++/* 36 =3D=3D> 5180 */
++#define FREQ5G(_chan) (5000 + 5 * (_chan))
++/* 1 =3D=3D> 2412 */
++#define FREQ2G(_chan) ((_chan) =3D=3D 14 ? 2484 : 2407 + (_chan) *  5)
 +
-+static u16 cl_channel_idx_to_freq_5g(struct cl_hw *cl_hw, u8 index)
-+{
-+       switch (index) {
-+       CASE_IDX2FREQ_5G(36);
-+       CASE_IDX2FREQ_5G(38);
-+       CASE_IDX2FREQ_5G(40);
-+       CASE_IDX2FREQ_5G(42);
-+       CASE_IDX2FREQ_5G(44);
-+       CASE_IDX2FREQ_5G(46);
-+       CASE_IDX2FREQ_5G(48);
-+       CASE_IDX2FREQ_5G(50);
-+       CASE_IDX2FREQ_5G(52);
-+       CASE_IDX2FREQ_5G(54);
-+       CASE_IDX2FREQ_5G(56);
-+       CASE_IDX2FREQ_5G(58);
-+       CASE_IDX2FREQ_5G(60);
-+       CASE_IDX2FREQ_5G(62);
-+       CASE_IDX2FREQ_5G(64);
-+       CASE_IDX2FREQ_5G(100);
-+       CASE_IDX2FREQ_5G(102);
-+       CASE_IDX2FREQ_5G(104);
-+       CASE_IDX2FREQ_5G(106);
-+       CASE_IDX2FREQ_5G(108);
-+       CASE_IDX2FREQ_5G(110);
-+       CASE_IDX2FREQ_5G(112);
-+       CASE_IDX2FREQ_5G(114);
-+       CASE_IDX2FREQ_5G(116);
-+       CASE_IDX2FREQ_5G(118);
-+       CASE_IDX2FREQ_5G(120);
-+       CASE_IDX2FREQ_5G(122);
-+       CASE_IDX2FREQ_5G(124);
-+       CASE_IDX2FREQ_5G(126);
-+       CASE_IDX2FREQ_5G(128);
-+       CASE_IDX2FREQ_5G(132);
-+       CASE_IDX2FREQ_5G(134);
-+       CASE_IDX2FREQ_5G(136);
-+       CASE_IDX2FREQ_5G(138);
-+       CASE_IDX2FREQ_5G(140);
-+       CASE_IDX2FREQ_5G(142);
-+       CASE_IDX2FREQ_5G(144);
-+       CASE_IDX2FREQ_5G(149);
-+       CASE_IDX2FREQ_5G(151);
-+       CASE_IDX2FREQ_5G(153);
-+       CASE_IDX2FREQ_5G(155);
-+       CASE_IDX2FREQ_5G(157);
-+       CASE_IDX2FREQ_5G(159);
-+       CASE_IDX2FREQ_5G(161);
-+       CASE_IDX2FREQ_5G(165);
-+       };
++/* 6G channels - UNII-5 */
++#define START_CHAN_IDX_UNII5 1
++#define END_CHAN_IDX_UNII5   85
++/* 6G channels - UNII-6 */
++#define START_CHAN_IDX_UNII6 89
++#define END_CHAN_IDX_UNII6   109
++/* 6G channels - UNII-7 */
++#define START_CHAN_IDX_UNII7 113
++#define END_CHAN_IDX_UNII7   165
++/* 6G channels - UNII-8 */
++#define START_CHAN_IDX_UNII8 169
++#define END_CHAN_IDX_UNII8   233
 +
-+       return INVALID_FREQ;
-+}
++#define INVALID_CHAN_IDX 0xff
 +
-+static u16 cl_channel_idx_to_freq_24g(struct cl_hw *cl_hw, u8 index)
-+{
-+       switch (index) {
-+       CASE_IDX2FREQ_2G(1);
-+       CASE_IDX2FREQ_2G(2);
-+       CASE_IDX2FREQ_2G(3);
-+       CASE_IDX2FREQ_2G(4);
-+       CASE_IDX2FREQ_2G(5);
-+       CASE_IDX2FREQ_2G(6);
-+       CASE_IDX2FREQ_2G(7);
-+       CASE_IDX2FREQ_2G(8);
-+       CASE_IDX2FREQ_2G(9);
-+       CASE_IDX2FREQ_2G(10);
-+       CASE_IDX2FREQ_2G(11);
-+       CASE_IDX2FREQ_2G(12);
-+       CASE_IDX2FREQ_2G(13);
-+       CASE_IDX2FREQ_2G(14);
-+       };
++struct cl_hw;
 +
-+       return INVALID_FREQ;
-+}
++u8 cl_channel_to_index(struct cl_hw *cl_hw, u32 channel);
++u16 cl_channel_idx_to_freq(struct cl_hw *cl_hw, u8 index);
++bool cl_channel_is_valid(struct cl_hw *cl_hw, u8 channel);
++u32 cl_channel_num(struct cl_hw *cl_hw);
++bool __must_check cl_channel_is_scan_active(struct cl_hw *cl_hw);
 +
-+u16 cl_channel_idx_to_freq(struct cl_hw *cl_hw, u8 index)
-+{
-+       /* Calculate frequency of a given idnex */
-+       if (cl_band_is_6g(cl_hw))
-+               return cl_channel_idx_to_freq_6g(cl_hw, index);
-+       else if (cl_band_is_5g(cl_hw))
-+               return cl_channel_idx_to_freq_5g(cl_hw, index);
-+       else
-+               return cl_channel_idx_to_freq_24g(cl_hw, index);
-+}
-+
-+bool cl_channel_is_valid(struct cl_hw *cl_hw, u8 channel)
-+{
-+       if (cl_band_is_24g(cl_hw)) {
-+               return (channel > 0 && channel <=3D 14);
-+       } else if (cl_band_is_5g(cl_hw)) {
-+               if (channel >=3D 36 && channel <=3D 64)
-+                       return ((channel & 0x1) =3D=3D 0x0);
-+
-+               if (channel >=3D 100 && channel <=3D 144)
-+                       return ((channel & 0x1) =3D=3D 0x0);
-+
-+               if (channel >=3D 149 && channel <=3D 161)
-+                       return ((channel & 0x1) =3D=3D 0x1);
-+
-+               if (channel =3D=3D 165)
-+                       return true;
-+       } else {
-+               if (channel =3D=3D 2)
-+                       return true;
-+
-+               if (channel >=3D 1 && channel <=3D 233)
-+                       if ((channel & 0x3) =3D=3D 0x1)
-+                               return true;
-+       }
-+
-+       return false;
-+}
-+
-+u32 cl_channel_num(struct cl_hw *cl_hw)
-+{
-+       if (cl_hw->conf->ci_band_num =3D=3D 6)
-+               return NUM_CHANNELS_6G;
-+
-+       if (cl_hw->conf->ci_band_num =3D=3D 5)
-+               return NUM_CHANNELS_5G;
-+
-+       return NUM_CHANNELS_24G;
-+}
-+
-+bool __must_check cl_channel_is_scan_active(struct cl_hw *cl_hw)
-+{
-+       return false;
-+}
++#endif /* CL_CHANNEL_H */
 --
 2.30.0
 
