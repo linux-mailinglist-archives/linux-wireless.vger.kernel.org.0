@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAC773AB8CF
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DDCC3AB8E0
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231572AbhFQQKo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:10:44 -0400
-Received: from mail-eopbgr80055.outbound.protection.outlook.com ([40.107.8.55]:64930
+        id S233884AbhFQQLE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:11:04 -0400
+Received: from mail-eopbgr80075.outbound.protection.outlook.com ([40.107.8.75]:14478
         "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233819AbhFQQJs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:09:48 -0400
+        id S232277AbhFQQJz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:09:55 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mMu+cTVRku/H2hUwGQXV/6n06cZD2hz1tInl5SBbU05JPTcdGjg1gjw/PMZfUS3AOUlm0ueWtTtGqjWn+Hg/7U0dcwhwKB3+kbddpTnyfAW1MjeKQkkYW1txKKzaCRmL5yKZNVGksptzfy4qMm+aFWLL+Bgi5PzfdGdSx4xiWmT+LQVs47ZBcT1OLRlr6Zf8xaiHzh9X9Dy1Wp0Ajw8BpQHzKb+rTitDxZILFEqNuCX2DP2TtqL3mHm4w/YOvLKsOQiN/eoCbBFFbCqKRMnoBNglsVV37nIvUgvTPOFtq2BoY1ri56ulvzV1FRlczfse+id1j8W6dL6FEhBSJIISTw==
+ b=AfHZk0t3nJRcgSvkXOpQC5ptmxkOxrogR9VyvsWq48nIzznQ6fTl7iCRk3BUQomHgCwPCo51/4AsQzuBgnHC/z8SI5lndIevp+HdXNILCFEI4cy+1WSbtwyKd+7fv6E49lF34H5roxZwZlBQxqA2iSa5nJxfQWlwu1KHuUSA0pqVGghVJwpNi1tsvt8sW8tJ8PVRo51+OngN2uVG5uFQuy/qeTKjAj/3XatS7ZAAOVp22A0vsQ9nozsG47SLMy0ia2DOfWTW+uEiAOitY2Ts0o7S1q7rlxIb++Tr7w6EZoLPfVx84jeBYLAZOK0Kr4qvMK9lc+DTiIFSOCCu5XeYiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=haJcCw9+T4a0a03XVzIyVIsNfv/DEhVzPSNaMoxMSL8=;
- b=PoiNhjNnuuc4kFLvHhKTU9DuxhT7e5E02yNV5o7VGRSJxMZa9NZNuYCGw39p6CDtyqFsmi1J0QAU8zK2dI7qap+LkEmD6FxA3H8ZLQCqMrHo2YTX+qxINRLUA2nsfU4lLAkDDTAlHQo7Bc7Gz73LJ+TsjYbR0J914XdAdPCOrSSaPqKoafaOX/DywLcBQp7FVfeFQ1P4lWIm2FPPUOkDno0fIORzqfsZg4tXIdrO6qMNq5WqyOsZjJke/i88y7N/Z2AdmT4CN+hKLht5JmLCGgEBnyjoX4qgeKnRI2W0w/2FiOJaeb4ywLTkNwQuXAp37r/80on6OyDipOe4DFa8Ow==
+ bh=Lbijr2SNhKnpiKxFoFFjnmUZGOdPNBWFAJz3s7O+Gno=;
+ b=CKJrXLsFRSgS6rFwtrfxww4Ff4apSWU6+xjv9TgGjTLAiUQhzcJnknrV6+logfiMZsD5YhJDaqGTlpVw1t5lHfsXNShyZNYcJxVqKVDCa8FUNXfLBAjQdnqrOKv24ZI0onH+uc7etEE/o7rmqZucpeg2UlSOBYqsCvFja3S/CamqAu5/K6grdSjrPBartbq05V4tBVVPY9O39iCKPh5g5MOL7McuxZlHlI0tcaITibXXrZ2z+Z9RoEj+VKYgX68hlCyqz14aBUeApuAbEOzDj9gxikXGcNjNL+cxsyPPhOcPdUhBUq8/1ibxoLIWG1BjNBu8lSW17j1IKwXNCjX+nw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=haJcCw9+T4a0a03XVzIyVIsNfv/DEhVzPSNaMoxMSL8=;
- b=wS8ils0QwI8OOohkmTnqF2LUrzDx0spsuLfY7ygaJfgLFbmv6S+G80m1bNgBvMBjQ53LKlV0MqNMIQJCC1Ur+4M9ogvHtS3oBR+w+EIar2GIteq07w2h5rnIOOBf7ADpjbtNxthbWxJqN/e8sKuh8ZXrc+z1Darmor5iv5SHLqE=
+ bh=Lbijr2SNhKnpiKxFoFFjnmUZGOdPNBWFAJz3s7O+Gno=;
+ b=zR5XBUaZUEsOGVinsUw2Exx96ye3LQULeM/ZPS1yMg6VmHDHI4CreanggzwZ10RTWIOLoKN2Q0u0Iixx1weZiwD6ygSrJ9443c99vRu7pWTcIO/16eS0J7r7x8KdCEvAdOMk0jNGLez5z1scjmYi2J/VOS4Ht8mje0gkCitntE0=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM9P192MB0981.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18; Thu, 17 Jun
- 2021 16:06:36 +0000
+ 2021 16:06:37 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
- 16:06:36 +0000
+ 16:06:37 +0000
 From:   viktor.barna@celeno.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 177/256] cl8k: add rx/rx_filter.h
-Date:   Thu, 17 Jun 2021 16:01:04 +0000
-Message-Id: <20210617160223.160998-178-viktor.barna@celeno.com>
+Subject: [RFC v1 178/256] cl8k: add rx/rx_reorder.c
+Date:   Thu, 17 Jun 2021 16:01:05 +0000
+Message-Id: <20210617160223.160998-179-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:48 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:05:49 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 53c0cea6-ed1a-4531-3ef2-08d931a9c614
+X-MS-Office365-Filtering-Correlation-Id: 00f46c62-c867-4858-4831-08d931a9c6b5
 X-MS-TrafficTypeDiagnostic: AM9P192MB0981:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM9P192MB0981E398CC2ABBCD50D2BD87F60E9@AM9P192MB0981.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-Microsoft-Antispam-PRVS: <AM9P192MB09818E786BE6BA44870876CCF60E9@AM9P192MB0981.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2657;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7UBnQFfrtdqSau0UwWKWVrw0mOQja8N3HrZc6a4iEe5udBIYMRogu4R2e420ZVhae7xlamnCzcWdB5mgfGKPXlSCPGE2DVVW5AwvJ6U8sKZMod6aE38CGd2I2Wo2LxNlvE7Mx4+NkQSNJaigEjf1aA4TCYXKtRkGWAGa/H4snT/5KoTMhoPogFhbhSmRR1zZQhjvCwvzsApKEezJ7vl74TD+/5L3FuXUdviRXTidB7AZvMUbqbvUmXngkD9NCiaJbbnTDyb+VCxtOa1OoSR7QhcYpkMFtNI+d3+bGREgCnvXI2mNYdYvd3Ps29ZP5PWr2qT8JrMZ52o3IPdDoGd3dYzg8CK9lkSbnT0aJksa7kjBaZdR12LLniZezZLBoHYSRhWZeIvWLHMH1s38Hz6rbLFOe4Rd07THULZYOlQaMaV+Wz1VHDZ83MWl5Dk77NdpmQlc7jGHV6RgedA77VQNPLOFw5T3TyVEqD798Y9DX5O30WaWTfy6UAgKP+ksNqWRLy6qHXOBCnVvhBa0mz4RRDitzUEr0BJbNeOKR0JpLRpr3yrXvvitVFEhqNHYyh2kWYJ19WnjM/0bN753k6AjpVBvCW1q5BhFM1W38/O0jwGKnpJPcaJWZDackVTKCslNDmwMi5oLEZWXwTT+e81C5/kCUTkOILxkSvi/+w6WG2oYm7Y83QCHopzXTYFLiWgTADa6O9V1Dg9QYOUFFFIJNw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(346002)(376002)(396003)(136003)(366004)(39850400004)(86362001)(5660300002)(9686003)(54906003)(107886003)(6666004)(1076003)(2906002)(478600001)(6512007)(26005)(2616005)(38350700002)(16526019)(55236004)(38100700002)(6506007)(4326008)(8676002)(66946007)(186003)(66476007)(66556008)(956004)(83380400001)(6916009)(8936002)(36756003)(52116002)(6486002)(316002)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: rdZ6VDAtBsHi0L9FGbQwJU0xvF5563OztXIbknxQFAPGaoe4U+hOTxkQSILI7MoozaQdxHmtOSAb9r5RdSJ+7rewqdhSf87oU4F+GPWMjO7/vKK2kSVU+0FNlMYixa5CXtjzl0PZ45ZdkCYtB9GcRgWgb7YfA2oGCV4wvmWrcy7e8tigi1xpkIX2BQVxw6okX5TaKQr5pQMl71XCySUjgNpAmj0QCJKhdHgMSfcfR+Eo8qgMMbzf4jYwj1EBlfYZOoUUDIrKw1cxf95PTCki+4SBocglaMr9cLl79eCOfTOzPefrn8I/HExSZEryk6Zlwe0TwHHokfaQQuRQRCW7nR7nWRsn7BoqELM4mMJau/2n++ZNacwXHYiclOSWw5p2xnOdL9dUnB8ljY5fHxEunLYMItPXb4EXT7eFk9r/cnevsDs147In4Fe01HYrVNEZKu5FAzIrXRjbVs7+Wmk7/JqA1CdVOc0XeJREZT9MMmuhXclxUxtw5GPOdwNUuKqy/QDzbO3El7dckQKTRhjPDhJzTMQRj0NKJmvI2PLHQ9J8s9KUAI6GWacnbqaF+iwySor7vZhB1W1Y6BqKg+xJ+YfjGp80n/SEUaoGjJ83hOaNwFbl8wrHRX/2WttYAADS6ts6Him31x9BXwVmfYcwgSoONJWjyLQbBthn41nG2uNTiemgjKueylyEMfZEjEyjYeMIqq1YJ6JIwjyKY/e0Dw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(346002)(376002)(396003)(136003)(366004)(39850400004)(86362001)(5660300002)(9686003)(54906003)(107886003)(6666004)(1076003)(2906002)(478600001)(6512007)(26005)(2616005)(38350700002)(16526019)(55236004)(38100700002)(6506007)(4326008)(8676002)(66946007)(30864003)(186003)(66476007)(66556008)(956004)(83380400001)(6916009)(8936002)(36756003)(52116002)(6486002)(316002)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?C0HMM4fXxoVGblFZiMLFfluVIUCaOnefMVUyxrPjxWwzx90M90OLddgd7mRN?=
- =?us-ascii?Q?RM3Md8s+97b1koPRFOsqPWcJ0K2L7OyPkPXC+4eWAd3o50G5CWlj2KWAkBWs?=
- =?us-ascii?Q?aI16IDrT0jVuSErBbvmqXTN2EkpUyhmPZAOJxW/iMwpGTlUVC4D8uqmmpTyx?=
- =?us-ascii?Q?Guc4gEbPHStb2OsjegMsJmG0lXRVy7QBbapc9pcvQSe3jLm1kWYcjFqHFpGF?=
- =?us-ascii?Q?2cstzaAoeGHcIqLkTQyG0C8O605AEBPV4994GSIwIi+2Cxft0dJ9cGTIVAFY?=
- =?us-ascii?Q?b2QPT5+APAGMsggYwOSGp74Ctv7DcrjkvrNowQUYe6tbhbNbHELIHe1XF4hq?=
- =?us-ascii?Q?dxqnbdX6mR+Tpt5fSNvfCP7PKM15nXqyc2jonNItMNudoeJPOnyLZsU2U/wg?=
- =?us-ascii?Q?f0F3Iz75TfxABJ2t8Z5u4MBfRGfTawe0v2HyoEYVPPWVZwD7DImICs+yLRIt?=
- =?us-ascii?Q?rVLl9LurjBJsfAeXugVp3ejcVpSFyDabhOBYy/L+1MFU7kRPS3Nk99+ahah9?=
- =?us-ascii?Q?w1RAfKli+8o3qYri+oMATm3/sp8USZdwNhQfCsfQhmryPQo/wnzOOHpuFRgH?=
- =?us-ascii?Q?5MqvGg3DLLtz2RHVIa8ecggv02iWznad+psmlnnk0HdgD8X7IapMsGAZr/80?=
- =?us-ascii?Q?pQkMHjvxlqH0ToeIXG12DelQl/9f+qdR0ZGZ1cEzw9MKQJdOTiAY7+fJzID1?=
- =?us-ascii?Q?ZDje5HbiCMirbYkn81g50jaDZh8gFc5/YSBDkFzyX2AVm47DXFNMqV9cneZK?=
- =?us-ascii?Q?nF+TF4hjQOVP2p1IzyJJ43HRMwNa67V9Aqmk4iV1Lt0Xts0XYlOkQ7KtyoJU?=
- =?us-ascii?Q?1vOR4MTiGoBIS5+0tYvZZseos39L1Pq3Wy3nELExQHuGOX75pKSnjdPggUl4?=
- =?us-ascii?Q?JXbIEJUuiFepMZi54RSDyW+2mt2GPP9EuMMNauxGS57yApPoTx65mTdk0BR1?=
- =?us-ascii?Q?w5TXVaRUcuFYGPVPS/9jVknNcEcyL/PdciqNpWNjcKmWi7AB61Lv2B1MNJI4?=
- =?us-ascii?Q?7Rc6cJnK93Do4tzbmWeRLXRrQ/1KJn8X23io3O3IubPO+tYMe9rFZPOfDssB?=
- =?us-ascii?Q?z1EoTUHWT3pYcdP5tQInXFYqinWAChghERKl7K2E33FdtCszb5efefym5srx?=
- =?us-ascii?Q?38fBHHSiP1/lSCLKgrAqh/+35gHiOtI97HOdWv729PK8QteILYdULhP3DWDo?=
- =?us-ascii?Q?6UqaRqgERkPPlJon1Zg2B62j0rn7xhFf5VprJX4uGjDtxbfne4AF3Rj2CeI7?=
- =?us-ascii?Q?pm/+uEhws8FeWqaF93bF1spfjlvEB1yaMfgoYIL73IYxQAnh3mFGRhZjGRqt?=
- =?us-ascii?Q?5VS3ePgfnAvN7Y0KPnDB6z2/?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?EHHVTem1f7AMISVv2lT/jJneTrAVx91GtnEabBl9dAwtN7+Qjr4VbquHzBm0?=
+ =?us-ascii?Q?lvvNctvSHeSoS1xjDaqoVzASQw2xLi6n52C8JHwtws6klsNzsYUvXV7lRTD+?=
+ =?us-ascii?Q?eveR8bXva6KCKO08FU+ywg5ePEupfugHGQq/oYFWpACD0kiCnH5uZEfy3giJ?=
+ =?us-ascii?Q?RFJSTvx42ZlCqks+v/HQ+54u41b5uwO9HnH6YeLjt42Q8AVCw3rR0L66C0KG?=
+ =?us-ascii?Q?6gstKOYuRNfHR5DUEDfN3nPOows+kNTYQEnr45CCs7eiZgZqoF8myuWnhI8h?=
+ =?us-ascii?Q?piT8ygbI0p0dAnwgXEEd31CTVSAOE3zKwf4BMfoB0ZJUiJXucFcd0Hy+oJBW?=
+ =?us-ascii?Q?0+bgHFLwz9yYzyeCxj5dSXHU8veL/N92MOmz3K10UY6xzBlBRtnp6APvtsrL?=
+ =?us-ascii?Q?TQF4vql5itD3RPrx+YL/aiGiYTN8mG7Jv2gPgcY3yFa/lZVj2881oRPGN9JQ?=
+ =?us-ascii?Q?byNmAFi0xtetULQruYslDACiWTXstg787Aw1rNAGB6NQTDsUBLqGKbRSZvA2?=
+ =?us-ascii?Q?F8d+bQAhxZKJnup99j+Ymh+xcnanD6usLzr0IQBYgE6oIoNmooeVO3bjDuzx?=
+ =?us-ascii?Q?K7ifRK443tJMoslZWh1c5mrPA0imp5TA8quqxz8zcr1I7C9KlwBTnnuMI2HD?=
+ =?us-ascii?Q?4VK+qizszAwa9pkWzUDw6eeq/g7C2gXr1O6CwpfashnjgrH+co5GLqCXJQyr?=
+ =?us-ascii?Q?wt3U3Elxmi7qR6jq118frOP8kNiaHtoXR3xOYRlLGoOUZVTnO0WEaxY1LCE+?=
+ =?us-ascii?Q?vKZM/RF1ULSQDppP37mZpjJhIJ1/12icCUZ9nuNfmlw6ufpYGhWB3EBvQdP4?=
+ =?us-ascii?Q?TeeilKWLUxz74CvYSyRB127CerkVpJMZ1uuzrLK+Hsp4dE67ow/6aiXHtNhH?=
+ =?us-ascii?Q?AbMicVExpAUd9VvXjFWwU1/F7xcmzlNoakU0Q9RwhvLWKg9WOMLCKZW+cH3l?=
+ =?us-ascii?Q?aVk1agzJDnMNgr9rohiI4e3NOyTZcT3Ha4wwlpsUWx7eyh1izrkm6jAaWHR7?=
+ =?us-ascii?Q?SIFLUuuDdYyf1uX8gp97Nb9pToYsILjvWv0XAfNSjRtQ9fjF9f98aDdT6+EP?=
+ =?us-ascii?Q?LtXNBlqTdczg3MWOyuqQcBOvDvz+JyelmuIeXK3pOoSSX6YBpvtTCwK8gv0q?=
+ =?us-ascii?Q?eB0vyebHdQBeukH6txmL4AVufQwuUgPEkrY2i0ZsgZEbtTXamzXnwQ6KQj94?=
+ =?us-ascii?Q?m1WjPKt7wx0IwvubgSX/7b4UruwXY1O2ylOG+e1vUWFmjkdfahuvM/Klncrx?=
+ =?us-ascii?Q?iZc89Y7S/LIOf/mghF75vYMXVnrzuwbfusAnsyofZehLyi0Yl+XxBu0HDBOP?=
+ =?us-ascii?Q?8svMitItxF8jxDeOQlbQinWr?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53c0cea6-ed1a-4531-3ef2-08d931a9c614
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00f46c62-c867-4858-4831-08d931a9c6b5
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:49.3379
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:05:50.4680
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bLLIhUQV5xNmJWoaI+kVBAIXVmI5V/K47+67uFeAtft9YNbIOXp3L1gtqFk2If5GgO5bsHvNuiiIDW/FddnmSw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8LXqATJcV5C1gwgc1iqePsTtIrM1+3MiJmUcfff5QoMzFGgfDgco5SdLoz6EJnSrxZhXORVXg8eTlIeUlp3n3Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB0981
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,108 +119,372 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- .../net/wireless/celeno/cl8k/rx/rx_filter.h   | 91 +++++++++++++++++++
- 1 file changed, 91 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/rx/rx_filter.h
+ .../net/wireless/celeno/cl8k/rx/rx_reorder.c  | 335 ++++++++++++++++++
+ 1 file changed, 335 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/rx/rx_reorder.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/rx/rx_filter.h b/drivers/net/=
-wireless/celeno/cl8k/rx/rx_filter.h
+diff --git a/drivers/net/wireless/celeno/cl8k/rx/rx_reorder.c b/drivers/net=
+/wireless/celeno/cl8k/rx/rx_reorder.c
 new file mode 100644
-index 000000000000..a51f730019d3
+index 000000000000..7a5c38369d2e
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/rx/rx_filter.h
-@@ -0,0 +1,91 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/rx/rx_reorder.c
+@@ -0,0 +1,335 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_RX_FILTER_H
-+#define CL_RX_FILTER_H
++#include "rx_reorder.h"
++#include "sta.h"
++#include "utils/utils.h"
 +
-+#include "hw.h"
-+#include "vendor_cmd.h"
++#define REORDER_BUF_TIMEOUT (HZ / 10)
 +
-+/* Field definitions */
-+#define RX_CNTRL_EN_DUPLICATE_DETECTION_BIT      ((u32)0x80000000)
-+#define RX_CNTRL_EN_DUPLICATE_DETECTION_POS      31
-+#define RX_CNTRL_ACCEPT_UNKNOWN_BIT              ((u32)0x40000000)
-+#define RX_CNTRL_ACCEPT_UNKNOWN_POS              30
-+#define RX_CNTRL_ACCEPT_OTHER_DATA_FRAMES_BIT    ((u32)0x20000000)
-+#define RX_CNTRL_ACCEPT_OTHER_DATA_FRAMES_POS    29
-+#define RX_CNTRL_ACCEPT_QO_S_NULL_BIT            ((u32)0x10000000)
-+#define RX_CNTRL_ACCEPT_QO_S_NULL_POS            28
-+#define RX_CNTRL_ACCEPT_QCFWO_DATA_BIT           ((u32)0x08000000)
-+#define RX_CNTRL_ACCEPT_QCFWO_DATA_POS           27
-+#define RX_CNTRL_ACCEPT_Q_DATA_BIT               ((u32)0x04000000)
-+#define RX_CNTRL_ACCEPT_Q_DATA_POS               26
-+#define RX_CNTRL_ACCEPT_CFWO_DATA_BIT            ((u32)0x02000000)
-+#define RX_CNTRL_ACCEPT_CFWO_DATA_POS            25
-+#define RX_CNTRL_ACCEPT_DATA_BIT                 ((u32)0x01000000)
-+#define RX_CNTRL_ACCEPT_DATA_POS                 24
-+#define RX_CNTRL_ACCEPT_OTHER_CNTRL_FRAMES_BIT   ((u32)0x00800000)
-+#define RX_CNTRL_ACCEPT_OTHER_CNTRL_FRAMES_POS   23
-+#define RX_CNTRL_ACCEPT_CF_END_BIT               ((u32)0x00400000)
-+#define RX_CNTRL_ACCEPT_CF_END_POS               22
-+#define RX_CNTRL_ACCEPT_ACK_BIT                  ((u32)0x00200000)
-+#define RX_CNTRL_ACCEPT_ACK_POS                  21
-+#define RX_CNTRL_ACCEPT_CTS_BIT                  ((u32)0x00100000)
-+#define RX_CNTRL_ACCEPT_CTS_POS                  20
-+#define RX_CNTRL_ACCEPT_RTS_BIT                  ((u32)0x00080000)
-+#define RX_CNTRL_ACCEPT_RTS_POS                  19
-+#define RX_CNTRL_ACCEPT_PS_POLL_BIT              ((u32)0x00040000)
-+#define RX_CNTRL_ACCEPT_PS_POLL_POS              18
-+#define RX_CNTRL_ACCEPT_BA_BIT                   ((u32)0x00020000)
-+#define RX_CNTRL_ACCEPT_BA_POS                   17
-+#define RX_CNTRL_ACCEPT_BAR_BIT                  ((u32)0x00010000)
-+#define RX_CNTRL_ACCEPT_BAR_POS                  16
-+#define RX_CNTRL_ACCEPT_OTHER_MGMT_FRAMES_BIT    ((u32)0x00008000)
-+#define RX_CNTRL_ACCEPT_OTHER_MGMT_FRAMES_POS    15
-+#define RX_CNTRL_ACCEPT_ALL_BEACON_BIT           ((u32)0x00002000)
-+#define RX_CNTRL_ACCEPT_ALL_BEACON_POS           13
-+#define RX_CNTRL_ACCEPT_NOT_EXPECTED_BA_BIT      ((u32)0x00001000)
-+#define RX_CNTRL_ACCEPT_NOT_EXPECTED_BA_POS      12
-+#define RX_CNTRL_ACCEPT_DECRYPT_ERROR_FRAMES_BIT ((u32)0x00000800)
-+#define RX_CNTRL_ACCEPT_DECRYPT_ERROR_FRAMES_POS 11
-+#define RX_CNTRL_ACCEPT_BEACON_BIT               ((u32)0x00000400)
-+#define RX_CNTRL_ACCEPT_BEACON_POS               10
-+#define RX_CNTRL_ACCEPT_PROBE_RESP_BIT           ((u32)0x00000200)
-+#define RX_CNTRL_ACCEPT_PROBE_RESP_POS           9
-+#define RX_CNTRL_ACCEPT_PROBE_REQ_BIT            ((u32)0x00000100)
-+#define RX_CNTRL_ACCEPT_PROBE_REQ_POS            8
-+#define RX_CNTRL_ACCEPT_MY_UNICAST_BIT           ((u32)0x00000080)
-+#define RX_CNTRL_ACCEPT_MY_UNICAST_POS           7
-+#define RX_CNTRL_ACCEPT_UNICAST_BIT              ((u32)0x00000040)
-+#define RX_CNTRL_ACCEPT_UNICAST_POS              6
-+#define RX_CNTRL_ACCEPT_ERROR_FRAMES_BIT         ((u32)0x00000020)
-+#define RX_CNTRL_ACCEPT_ERROR_FRAMES_POS         5
-+#define RX_CNTRL_ACCEPT_OTHER_BSSID_BIT          ((u32)0x00000010)
-+#define RX_CNTRL_ACCEPT_OTHER_BSSID_POS          4
-+#define RX_CNTRL_ACCEPT_BROADCAST_BIT            ((u32)0x00000008)
-+#define RX_CNTRL_ACCEPT_BROADCAST_POS            3
-+#define RX_CNTRL_ACCEPT_MULTICAST_BIT            ((u32)0x00000004)
-+#define RX_CNTRL_ACCEPT_MULTICAST_POS            2
-+#define RX_CNTRL_DONT_DECRYPT_BIT                ((u32)0x00000002)
-+#define RX_CNTRL_DONT_DECRYPT_POS                1
-+#define RX_CNTRL_EXC_UNENCRYPTED_BIT             ((u32)0x00000001)
-+#define RX_CNTRL_EXC_UNENCRYPTED_POS             0
++static bool cl_rx_reorder_ready(struct cl_tid_ampdu_rx *tid_agg_rx, u8 ind=
+ex)
++{
++       struct sk_buff_head *frames =3D &tid_agg_rx->reorder_buf[index];
++       struct sk_buff *tail =3D skb_peek_tail(frames);
++       struct ieee80211_rx_status *status;
 +
-+/* Default MAC Rx filters that cannot be changed by mac80211 */
-+#define CL_MAC80211_NOT_CHANGEABLE (            \
-+       RX_CNTRL_ACCEPT_QO_S_NULL_BIT         | \
-+       RX_CNTRL_ACCEPT_Q_DATA_BIT            | \
-+       RX_CNTRL_ACCEPT_DATA_BIT              | \
-+       RX_CNTRL_ACCEPT_OTHER_MGMT_FRAMES_BIT | \
-+       RX_CNTRL_ACCEPT_MY_UNICAST_BIT        | \
-+       RX_CNTRL_ACCEPT_BROADCAST_BIT         | \
-+       RX_CNTRL_ACCEPT_BEACON_BIT            | \
-+       RX_CNTRL_ACCEPT_PROBE_RESP_BIT          \
-+       )
++       if (tid_agg_rx->reorder_buf_filtered & BIT_ULL(index))
++               return true;
 +
-+u32 cl_rx_filter_update_flags(struct cl_hw *cl_hw, u32 filter);
-+void cl_rx_filter_restore_flags(struct cl_hw *cl_hw);
-+void cl_rx_filter_set_promiscuous_off(unsigned long data);
-+void cl_rx_filter_set_promiscuous(struct cl_hw *cl_hw);
++       if (!tail)
++               return false;
 +
-+#endif /* CL_RX_FILTER_H */
++       status =3D IEEE80211_SKB_RXCB(tail);
++
++       if (status->flag & RX_FLAG_AMSDU_MORE)
++               return false;
++
++       return true;
++}
++
++static void cl_rx_release_reorder_frame(struct cl_tid_ampdu_rx *tid_agg_rx=
+, int index,
++                                       struct sk_buff_head *frames)
++{
++       struct sk_buff_head *skb_list =3D &tid_agg_rx->reorder_buf[index];
++       struct sk_buff *skb;
++
++       lockdep_assert_held(&tid_agg_rx->reorder_lock);
++
++       if (skb_queue_empty(skb_list))
++               goto no_frame;
++
++       if (!cl_rx_reorder_ready(tid_agg_rx, index)) {
++               __skb_queue_purge(skb_list);
++               goto no_frame;
++       }
++
++       tid_agg_rx->stored_mpdu_num--;
++
++       while ((skb =3D __skb_dequeue(skb_list)))
++               __skb_queue_tail(frames, skb);
++
++no_frame:
++       tid_agg_rx->reorder_buf_filtered &=3D ~BIT_ULL(index);
++       tid_agg_rx->head_seq_num =3D ieee80211_sn_inc(tid_agg_rx->head_seq_=
+num);
++}
++
++static void cl_rx_release_reorder_frames(struct cl_tid_ampdu_rx *tid_agg_r=
+x,
++                                        u16 head_seq_num,
++                                        struct sk_buff_head *frames)
++{
++       int index;
++
++       lockdep_assert_held(&tid_agg_rx->reorder_lock);
++
++       while (ieee80211_sn_less(tid_agg_rx->head_seq_num, head_seq_num)) {
++               index =3D tid_agg_rx->head_seq_num % tid_agg_rx->buf_size;
++               cl_rx_release_reorder_frame(tid_agg_rx, index, frames);
++       }
++}
++
++static void cl_reorder_release(struct cl_tid_ampdu_rx *tid_agg_rx, struct =
+sk_buff_head *frames)
++{
++       u8 index, i, j;
++
++       lockdep_assert_held(&tid_agg_rx->reorder_lock);
++
++       /* Release buffer until next hole */
++       index =3D tid_agg_rx->head_seq_num % tid_agg_rx->buf_size;
++       if (!cl_rx_reorder_ready(tid_agg_rx, index) && tid_agg_rx->stored_m=
+pdu_num) {
++               u8 skipped =3D 1;
++
++               for (j =3D (index + 1) % tid_agg_rx->buf_size; j !=3D index=
+;
++                    j =3D (j + 1) % tid_agg_rx->buf_size) {
++                       if (!cl_rx_reorder_ready(tid_agg_rx, j)) {
++                               skipped++;
++                               continue;
++                       }
++                       if (skipped &&
++                           !time_after(jiffies, tid_agg_rx->reorder_time[j=
+] +
++                                       REORDER_BUF_TIMEOUT))
++                               goto set_release_timer;
++
++                       /* Incomplete A-MSDUs */
++                       for (i =3D (index + 1) % tid_agg_rx->buf_size; i !=
+=3D j;
++                            i =3D (i + 1) % tid_agg_rx->buf_size) {
++                               __skb_queue_purge(&tid_agg_rx->reorder_buf[=
+i]);
++                       }
++
++                       cl_rx_release_reorder_frame(tid_agg_rx, j, frames);
++
++                       tid_agg_rx->head_seq_num =3D
++                               (tid_agg_rx->head_seq_num +
++                                skipped) & IEEE80211_SN_MASK;
++                       skipped =3D 0;
++               }
++       } else {
++               while (cl_rx_reorder_ready(tid_agg_rx, index)) {
++                       cl_rx_release_reorder_frame(tid_agg_rx, index, fram=
+es);
++                       index =3D tid_agg_rx->head_seq_num % tid_agg_rx->bu=
+f_size;
++               }
++       }
++
++       if (tid_agg_rx->stored_mpdu_num) {
++               j =3D tid_agg_rx->head_seq_num % tid_agg_rx->buf_size;
++               index =3D j;
++               for (; j !=3D (index - 1) % tid_agg_rx->buf_size;
++                    j =3D (j + 1) % tid_agg_rx->buf_size) {
++                       if (cl_rx_reorder_ready(tid_agg_rx, j))
++                               break;
++               }
++
++ set_release_timer:
++               if (!tid_agg_rx->removed)
++                       cl_timer_rearm_offset(&tid_agg_rx->reorder_timer,
++                                             tid_agg_rx->reorder_time[j]);
++       } else {
++               cl_timer_disable(&tid_agg_rx->reorder_timer);
++       }
++}
++
++static void cl_rx_reorder_release_timeout(unsigned long data)
++{
++       struct cl_tid_ampdu_rx *tid_agg_rx =3D (struct cl_tid_ampdu_rx *)da=
+ta;
++       struct sk_buff *skb =3D NULL;
++       struct cl_hw *cl_hw =3D NULL;
++       struct ieee80211_sta *sta =3D NULL;
++       struct sk_buff_head buffer;
++
++       if (!tid_agg_rx)
++               return;
++
++       __skb_queue_head_init(&buffer);
++
++       spin_lock(&tid_agg_rx->reorder_lock);
++
++       cl_hw =3D tid_agg_rx->cl_hw;
++       sta =3D tid_agg_rx->sta;
++       cl_reorder_release(tid_agg_rx, &buffer);
++
++       spin_unlock(&tid_agg_rx->reorder_lock);
++
++       while (!skb_queue_empty(&buffer)) {
++               skb =3D __skb_dequeue(&buffer);
++               ieee80211_rx_napi(cl_hw->hw, sta, skb, NULL);
++       }
++}
++
++static bool cl_rx_manage_reorder_buf(struct cl_tid_ampdu_rx *tid_agg_rx,
++                                    struct sk_buff *skb,
++                                    struct sk_buff_head *ordered_mpdu)
++{
++       struct ieee80211_hdr *hdr =3D (struct ieee80211_hdr *)skb->data;
++       struct ieee80211_rx_status *status =3D IEEE80211_SKB_RXCB(skb);
++       u16 sc =3D le16_to_cpu(hdr->seq_ctrl);
++       u16 mpdu_seq_num =3D (sc & IEEE80211_SCTL_SEQ) >> 4;
++       u16 head_seq_num, buf_size;
++       u8 index;
++       bool ret =3D true;
++
++       if (unlikely(tid_agg_rx->auto_seq)) {
++               tid_agg_rx->auto_seq =3D false;
++               tid_agg_rx->ssn =3D mpdu_seq_num;
++               tid_agg_rx->head_seq_num =3D mpdu_seq_num;
++       }
++
++       buf_size =3D tid_agg_rx->buf_size;
++       head_seq_num =3D tid_agg_rx->head_seq_num;
++
++       /* Current SN is smaller than the SSN */
++       if (unlikely(!tid_agg_rx->started)) {
++               if (ieee80211_sn_less(mpdu_seq_num, head_seq_num)) {
++                       ret =3D false;
++                       goto out;
++               }
++               tid_agg_rx->started =3D true;
++       }
++
++       /* Out of date sequence number */
++       if (ieee80211_sn_less(mpdu_seq_num, head_seq_num)) {
++               dev_kfree_skb(skb);
++               goto out;
++       }
++
++       /* SN exceeds buffer window */
++       if (!ieee80211_sn_less(mpdu_seq_num, head_seq_num + buf_size)) {
++               head_seq_num =3D ieee80211_sn_inc(ieee80211_sn_sub(mpdu_seq=
+_num, buf_size));
++               cl_rx_release_reorder_frames(tid_agg_rx, head_seq_num, orde=
+red_mpdu);
++       }
++
++       index =3D mpdu_seq_num % tid_agg_rx->buf_size;
++
++       /* Frame already stored */
++       if (cl_rx_reorder_ready(tid_agg_rx, index)) {
++               dev_kfree_skb(skb);
++               goto out;
++       }
++
++       if (mpdu_seq_num =3D=3D tid_agg_rx->head_seq_num &&
++           tid_agg_rx->stored_mpdu_num =3D=3D 0) {
++               if (!(status->flag & RX_FLAG_AMSDU_MORE)) {
++                       tid_agg_rx->head_seq_num =3D
++                               ieee80211_sn_inc(tid_agg_rx->head_seq_num);
++               }
++               ret =3D false;
++               goto out;
++       }
++
++       /* Insert frame into reorder buffer */
++       __skb_queue_tail(&tid_agg_rx->reorder_buf[index], skb);
++       if (!(status->flag & RX_FLAG_AMSDU_MORE)) {
++               tid_agg_rx->reorder_time[index] =3D jiffies;
++               tid_agg_rx->stored_mpdu_num++;
++               cl_reorder_release(tid_agg_rx, ordered_mpdu);
++       }
++
++ out:
++       return ret;
++}
++
++void cl_rx_reorder_ampdu(struct cl_hw *cl_hw, struct cl_sta *cl_sta,
++                        struct sk_buff *skb, struct sk_buff_head *ordered_=
+mpdu)
++{
++       struct ieee80211_hdr *hdr =3D (struct ieee80211_hdr *)skb->data;
++       struct cl_tid_ampdu_rx *tid_agg_rx;
++       u8 tid, ack_policy;
++
++       if (!cl_sta)
++               return;
++
++       ack_policy =3D *ieee80211_get_qos_ctl(hdr) &
++                    IEEE80211_QOS_CTL_ACK_POLICY_MASK;
++       tid =3D ieee80211_get_tid(hdr);
++
++       tid_agg_rx =3D cl_sta->tid_agg_rx[tid];
++       if (!tid_agg_rx)
++               return;
++
++       spin_lock(&tid_agg_rx->reorder_lock);
++       if (!ieee80211_is_data_qos(hdr->frame_control) ||
++           is_multicast_ether_addr(hdr->addr1))
++               goto dont_reorder;
++
++       if (unlikely(hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_NULLF=
+UNC)))
++               goto dont_reorder;
++
++       if (ack_policy !=3D IEEE80211_QOS_CTL_ACK_POLICY_BLOCKACK &&
++           ack_policy !=3D IEEE80211_QOS_CTL_ACK_POLICY_NORMAL)
++               goto dont_reorder;
++
++       /* Ignore EAPOL frames */
++       if (cl_is_eapol(skb))
++               goto dont_reorder;
++
++       if (cl_rx_manage_reorder_buf(tid_agg_rx, skb, ordered_mpdu)) {
++               spin_unlock(&tid_agg_rx->reorder_lock);
++               return;
++       }
++
++ dont_reorder:
++       spin_unlock(&tid_agg_rx->reorder_lock);
++       __skb_queue_tail(ordered_mpdu, skb);
++}
++
++void cl_rx_reorder_close(struct cl_sta *cl_sta, u8 tid)
++{
++       struct cl_tid_ampdu_rx *tid_agg_rx =3D cl_sta->tid_agg_rx[tid];
++       u16 i;
++
++       spin_lock_bh(&tid_agg_rx->reorder_lock);
++       tid_agg_rx->removed =3D true;
++       spin_unlock_bh(&tid_agg_rx->reorder_lock);
++
++       cl_timer_disable_sync(&tid_agg_rx->reorder_timer);
++
++       spin_lock_bh(&tid_agg_rx->reorder_lock);
++       for (i =3D 0; i < tid_agg_rx->buf_size; i++)
++               __skb_queue_purge(&tid_agg_rx->reorder_buf[i]);
++
++       kfree(tid_agg_rx->reorder_buf);
++       kfree(tid_agg_rx->reorder_time);
++       cl_sta->tid_agg_rx[tid] =3D NULL;
++
++       spin_unlock_bh(&tid_agg_rx->reorder_lock);
++       kfree(tid_agg_rx);
++}
++
++void cl_rx_reorder_init(struct cl_hw *cl_hw, struct cl_sta *cl_sta, u8 tid=
+, u16 buf_size)
++{
++       struct cl_tid_ampdu_rx *tid_agg_rx;
++       u16 i;
++
++       tid_agg_rx =3D kzalloc(sizeof(*tid_agg_rx), GFP_KERNEL);
++       if (!tid_agg_rx)
++               return;
++
++       spin_lock_init(&tid_agg_rx->reorder_lock);
++
++       cl_timer_init(&tid_agg_rx->reorder_timer, cl_rx_reorder_release_tim=
+eout,
++                     (unsigned long)tid_agg_rx, REORDER_BUF_TIMEOUT + 1, f=
+alse);
++
++       tid_agg_rx->reorder_buf =3D
++               kcalloc(buf_size, sizeof(struct sk_buff_head), GFP_KERNEL);
++       tid_agg_rx->reorder_time =3D
++               kcalloc(buf_size, sizeof(unsigned long), GFP_KERNEL);
++       if (!tid_agg_rx->reorder_buf || !tid_agg_rx->reorder_time) {
++               pr_err("Allocation failed!\n");
++               kfree(tid_agg_rx->reorder_buf);
++               kfree(tid_agg_rx->reorder_time);
++               return;
++       }
++
++       for (i =3D 0; i < buf_size; i++)
++               __skb_queue_head_init(&tid_agg_rx->reorder_buf[i]);
++
++       tid_agg_rx->ssn =3D 0;
++       tid_agg_rx->head_seq_num =3D 0;
++       tid_agg_rx->buf_size =3D buf_size;
++       tid_agg_rx->stored_mpdu_num =3D 0;
++       tid_agg_rx->auto_seq =3D 0;
++       tid_agg_rx->started =3D false;
++       tid_agg_rx->reorder_buf_filtered =3D 0;
++       tid_agg_rx->tid =3D tid;
++       tid_agg_rx->sta =3D &cl_sta->stainfo->sta;
++       tid_agg_rx->cl_hw =3D cl_hw;
++       cl_sta->tid_agg_rx[tid] =3D tid_agg_rx;
++}
 --
 2.30.0
 
