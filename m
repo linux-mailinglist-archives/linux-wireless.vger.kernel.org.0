@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7E63AB8A6
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 296733AB8A7
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:07:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233790AbhFQQJj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:09:39 -0400
-Received: from mail-eopbgr70049.outbound.protection.outlook.com ([40.107.7.49]:64480
+        id S233795AbhFQQJk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:09:40 -0400
+Received: from mail-eopbgr70075.outbound.protection.outlook.com ([40.107.7.75]:41442
         "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233693AbhFQQIR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:08:17 -0400
+        id S233696AbhFQQIV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:08:21 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XvxMR8gno+NjHnZyWRvEkY1LfUM28PiXa5vyuQmH59wyryqOCaHBtSer6w3X0mYKmE77+gl8gVHZwAamaDWfi2xVxqPwLt3I42fXjSe+KJ1SsCdaiMsRm801SGDiUXaex2Hp8d2yNnoc+JhXVVkLAzPzgehx9hV2kjL+yuxbHul3UAIlk8lfqECfiF8XBHKcCuw9MmswkDJsLgQcymMcsJAqbyl3aJeP23Mnw2ba9+T3AdV7jt+JRn41EEowa4z3Ydlkne8ADFk4gn8MfG95ObhX6X0LWLigahSYYfPZcE22k5LBlMQNR1GyvJFm4s6djHOfzvLO9VnE7ZuLuxsjgA==
+ b=ILWXl4SqQdmaD9P1pVM54CPiahJHND2h2YayTXvwIp/jIcvbsa8lM0AlyfDZ1btHhmB1rWjZ2DNrLFCQ6U+dhwVkWOBT6rrB+T8OcQUur0RRaNfPXYaK3LtYx9ATqT4tOXSm/NnKdCXMQqZS7s7b+oavbxopY+lRZiGZ9u1+dl6PnlGsY6WGk2Cn++Pch0ZsOkLcKAOBIuaZvGa1QUIb8w8zMBIkICX9s4hbe6ygKc0AeVNxD0RSgsMDw6xvOTO94hSQxpDc/30pjMKNAiYZChUxIppO0Lar+KFtEXUhcx5iUzpCgd2i/bszX0FRJ5s8Mf08Fb6S+aWAl3JIA6baMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YLyCqNwjjtwWE+MCOtIKts16DbZ/1faEJES+NF8QPHw=;
- b=CJrDFCxI/Bo3VRvpYeTc3K2tg0QkZSt415awQPW8aVKOMdeAe4h9uVtcbfeVzs1b7VRMpUURI8Ov0U7IS/EyD3paIEFyBvmkKpY0b8jaDtaYKrM9vi3HRsFJnxbK1+rcKYt1zkPh1UBWMhX64NS3TN86FcbS1z99xAVbYQTLvH4E4D6XA47hcZYnSKgr5U2+7mqcNtSCE1gcjMxPUsaIDuCYobiuzHcBGUsdEG+f5fv5dyXph7JdKTRFYSeoTBbPR5m2D+vDT5IaacqEZXd/ufql6L56tK6rQVpGC3wsZarJQTZ/eg6cZYWmq10Ws9bFfHWY+hLIs6V64/oTzVDimQ==
+ bh=CtJkTSa+1HgIzi1oobvpE5xl/9yV3rnzBZ1qwOxU8zU=;
+ b=XWeWB+Hyv+WzZfvGIw6nAJkaDq4s1tPrVvOlxYL8MEbG4CvZ03Y76kgGpn4ppKewnIKNUcWxh7zio53aqKvmPudBqPOVtZO3rsFIbLLOyRjwOUlavXWz2FKdjkgIn81TxoEq0pEQ/WazVMQR+Km1jz+ja/dqJd1QRQZDxrpCXMoJd+H5htfoK7sSYqqmqbE0kOJNwWPDk0MWtglflDfYb605pwJc2p1KozDY1nTIF7gCPPrB/NfpeKeW1N9Ujb3ahdL9Sben0MujeoNUfS9iCsSfCMZ96+h3cDOKNtpQifIvLwozY1W71DJUzLjc66bLD65Yq6fsAhSTDCxFTkiCGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YLyCqNwjjtwWE+MCOtIKts16DbZ/1faEJES+NF8QPHw=;
- b=wN2ftwuwlXjyCgduoIsukhNkuY+h4YT1obSY/lZrmSDPU9283Y6gIHZfpuh7ccWNSYOF5RYRqJMpUrpAZLtktYOmzMQXj7rxx/8PUtql5TMJ+g0Qgca+dpFjLh0mLzuMlZhnHu4n/W/xkoADwWwS1neJwBS8uKrcxA5Bb46Bew8=
+ bh=CtJkTSa+1HgIzi1oobvpE5xl/9yV3rnzBZ1qwOxU8zU=;
+ b=2we4Ey1UauDaB+3AYYBpnSejd5oOgBIaFbHI3vcpCWHcE0oTfPQ+F45pYdKtcRg8wvQ6kxni6Ar5BS7LuKtBNV3RdcdXehPuuABT348d1cYlckNcfvEq9B6PxtiHEhavNYxm36qLUKVlBGnNB6xZIHEu9D5N9b2no/H8lWFUOcA=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 117/256] cl8k: add netlink.c
-Date:   Thu, 17 Jun 2021 16:00:04 +0000
-Message-Id: <20210617160223.160998-118-viktor.barna@celeno.com>
+Subject: [RFC v1 118/256] cl8k: add netlink.h
+Date:   Thu, 17 Jun 2021 16:00:05 +0000
+Message-Id: <20210617160223.160998-119-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:42 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:04:43 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c1a81f10-205d-4f5d-8867-08d931a99ede
+X-MS-Office365-Filtering-Correlation-Id: 02289728-9de8-41be-ab46-08d931a99f77
 X-MS-TrafficTypeDiagnostic: AM0P192MB0402:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0P192MB04028AE621FAE68F05C6B537F60E9@AM0P192MB0402.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3276;
+X-Microsoft-Antispam-PRVS: <AM0P192MB0402E8BF5EFFF59453322FCDF60E9@AM0P192MB0402.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DiNXSbxUV5EySboW2fT7K84OsM0C2i6WBOFcyRfeVFr4d3wHr/Evv0/Z9n+FSUd9APIHkNu/OJIx8eMYfk1mO2wlz3r7cxGEEUgMn2QWpZL8vXSxjoSYZL24DJDAM15xmc1P1agXpJxswb4EDI262tk8fIShsbCtgqy5bMweoW+NB2NRqzvIr2KSJL6C+JyT4cqubSnlaeF9ku60gFxW3YBlZnlOoJeJ4Wc4ZgIgGbl8hn3C6SBKJIZUFq8q8u9ipHe0dX4skiI3laK6w4adC2i5NRxoPW0HPqhFgOZhsIZ4JsR351mk6ZVjduVBj8D+EtrupXkFB7/61y0XJSjE94aF+XGbDgIoGaq/25Eb1cIBKERDYIPKlaOhYruTGJgSfB2UY/c7fEsH5uDRMrP3U6wHSQcFrWOLwaT/PpOawG+SpHwO8WZVLJtbUnaXEflCxgE0Nd34xRUPox+MbjG+JYP/1pL/F5hSlu03iZjcIZb5oVqtMTDDYb8MtV6zXqn4avqK+HGS3zUTlHj4qbD0x7ht2ZsmaqEsNvJKYs94NHpEcXy8qKPMfbnHPNNYB/CGSv055soi0w/ItZqL4KIbDVIinrpKJkdGSHRDHWXMIxZFiNDgbvMUTzIINxcGi06DgA2y1A/utzz3GXuOjVhLVnHkO/3mvPvK74Q8OfBI2lvkylrSjkSVsiNPau/RNGGcWeVynRbIecqf96zLH370Vw==
+X-Microsoft-Antispam-Message-Info: reSl54693BLIB5NHjFZdycEu5zcbsUZ8cqZl7XN58CddiCqIWrTEARNYRU1RSl1PSmmL5bHIIAyjRMFsomW3/eRLiG0FGOfVhItoWEgungw3S+kLCz6MxlTlNV0B8848wDcrS68KdDA9RtWgh7uZ/mRUqyQVSVIDwUO1bGytbh3NO84wzZewLQbk/3uVK7yhJwBCjyn3uxIUGlZZFS8zuT2kPhhtvnX4Qq1I84edtUwqU8oI6XGZ3uxEWK91icIiMl9D9pHS6q/1jr/lwf1DNGHcKZjuAN2qlEjXzQNKP8Xn+vp4ZmUeYUR12iBVBlU7mNjKMD7nbf8vJVOdSElhsqYXoLWeEqtrgg24qD1PdmHW/h9U55DkUhRnBhJwEFmSAWPv5vBx2yKcoO/avKzoHSVbrKs5hZwLCx4Lk1JmvF4O9Lvz/WWG13ThTJ63MpZnp7yU+pRNZmCkBnLIvIgBXNmSe0m0NzIXQ1V0VWyMdigSTn5wz6aBVTMW1V29jpSuJObdD49JoxyVJe7GVvwTINRT84VUv0bNYmgSop42xCghAY6or6XnIGYbveG4xwlpVhnxGNcWMAsv7J6pRSwScYzrW0LAkrCGx05vnvgEHrpoTQTgHztpelDcuNmZb1J7qstl34/BH0z4H+jmlAI02mLWaCL1jO17CuJLTa8MmSqV+rSkDrdzz4zp2xlYrOfqW6HgRGFXynL7VIWV8r+ZQA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(39850400004)(136003)(376002)(396003)(366004)(346002)(6916009)(6512007)(9686003)(6666004)(52116002)(2616005)(186003)(16526019)(38100700002)(38350700002)(1076003)(6506007)(5660300002)(107886003)(55236004)(86362001)(6486002)(8936002)(956004)(26005)(8676002)(508600001)(2906002)(36756003)(54906003)(316002)(66946007)(66556008)(4326008)(66476007)(83380400001)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?GyfaJYKHDZRyYr7RVD98pZyq1KGREQRe6f+Hv9pVrcVnv2nq2M4qjN7Kp20v?=
- =?us-ascii?Q?ZsKoQD2jliuA3lwG+yxqPx/+dTS0dNgMtzZSU2/O+qV7w5KdUXzdvVs9UCPq?=
- =?us-ascii?Q?cj7I46NoaBrMhLuwjxNHV/L5FY7duGOyyMNUXPbB8HxY9F1i/lJMKlLETVAn?=
- =?us-ascii?Q?cgKkI72nOQzf/GkYDLVgKj3tIOiniPEWnNMdKPS6As0TOtkElDm3B/kK88N5?=
- =?us-ascii?Q?xU4b3uP8qWFB/Fsy7C+t8ygww3loiIwcPHylKyyW8UbKZkAjx560WZ82YMRU?=
- =?us-ascii?Q?bTd9XnubZ8FSACKFTeDw+z8EHRAGs8HetD677PxkBEzQ5ok7WX/AjaD9RKD4?=
- =?us-ascii?Q?xnGwxzK75FOVyD7bO8JNY/E3Z4sFTVsvy9ngwFEXvp3bIHLA9hgSoIH2STnM?=
- =?us-ascii?Q?I6s+Cc1C+USp5cxS0eAN3uZ1qUNtTLbEIJF4mBhRnSZOppyWfimbpoZ/kxw+?=
- =?us-ascii?Q?Ve/AmdtRgyomp58b3FNX8XvaxJEUQV38LJp7yQG6FSGqURb+SmzlhCO65LWT?=
- =?us-ascii?Q?2BSfBZMTEwBARu+lIPJ1GwIE4tt0uPQ0but+z5/Nr0CeqR2EeQ9FhXFARRz+?=
- =?us-ascii?Q?UDuqsBFTHWAmcjek41sxMYMfB1uP/+B58d0TrSyenUCJF5iyUN5PsIpqrBef?=
- =?us-ascii?Q?C8sJJ8xOwRKh/Y0RaQOLItRL1+exd+Y1YMuLkx+7oZKIsS+beXiR3wd1kquf?=
- =?us-ascii?Q?Jboj3tWRyn5g5zS7QR5Vmdh/ie4BzghVqkYXfkklrqEjOjSo3RtLpUVnf4Y/?=
- =?us-ascii?Q?3gS2/jDmwQ6I7pUDwv+CITSokSKcnfEcuoESkpyUo2sQOG6XDtswrr3G5IFF?=
- =?us-ascii?Q?kPY4Ex6HKMOMOGKbb8vfTLFVer83O3bIJHkzcvcRP/kDQNmvUe+RVNZe48LQ?=
- =?us-ascii?Q?6PzyLNxpzIqP0CwCmqiQOlTO2FeLwpzKFuI2MxMFQUJKI6tSUtcuS2BzYNhb?=
- =?us-ascii?Q?vkDC03yz9Om1oEpvL4fxA8ouj3Y+n6FC7UybEqR/rRpr/lk1cmXomk+myxCi?=
- =?us-ascii?Q?4qcqBlR3z3ubxNhf54U+YsIqX0zdlP8GWOxYRYfEyiwToSJ23+QINiSqZySa?=
- =?us-ascii?Q?0l4DgopMK0QIpiyyiukdQfelQz5nw1LeMvQUixli8pPzhmksukPnNUY8kpkz?=
- =?us-ascii?Q?fhYBgAH89KORp/z5P+3XrZGnaRkd1KBYud20BO0TSJyaDGx0qANIOUFLLsW+?=
- =?us-ascii?Q?Hc0bhXRyXfUvW14ZWfcO4e63P9/4xq5gEd/7FcYlWSniE5oKN7W5+Qlc6hB/?=
- =?us-ascii?Q?LLX6N34btXpSizWtM7a9AObpoHTlpfe2HGnxAtuPyjPUDo/FSu20L3PYaMKo?=
- =?us-ascii?Q?IuP9Vsk4+fh67HIL0IO/Yctt?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xoa6v5EAkSV7qIu82nCTgoCXro9DBghUY+Zc90Tny2/qH/uCPXlV6DPSOCfL?=
+ =?us-ascii?Q?1Ht2tlaQkfB5wZY5Uv8XQwkNMy/+0tqmSaqGs6FegM1DgFROhCrmK80VKN4e?=
+ =?us-ascii?Q?VhO/ScFlvljxKLauLfoeCnqPoKF1fwSnm+bGKGrFe/ssAe+fD6f/dNI+LVa3?=
+ =?us-ascii?Q?uEC0QFtWLAhweuKCvhvku4slP40WNB5S9wIa7gUpV5WoDIWfpPQtcC4obA4x?=
+ =?us-ascii?Q?VTnAWH8QwfYuUbmgfW2HymWiBayrmu8zNkhmMU2u0JXqjw4b4LShh1SzDhig?=
+ =?us-ascii?Q?hNC5TQvhutYfiV1cUd5eUEvImBLRANYM7Add48Iy194dvlBqIn5erjNmxc4e?=
+ =?us-ascii?Q?Jf0qUgfJl237Xcr9xaLVBHJOaMKvL5V53u22rRnkgm1Xrb2KLPaGTWx6C4uN?=
+ =?us-ascii?Q?bPpiC736QpEOt0LkS8BzRnEJzjrPyYRq6UcJwAqUTkGTu3qIojUXStUJ+Pph?=
+ =?us-ascii?Q?hyqFSV3xwYt4zzfYaj9p7VEmGVdgp7ZXVq/xVzpQgSwOt3W0DvoGvjRLLp/a?=
+ =?us-ascii?Q?OyAIqobixdVy65Opcgy44vm+pxr7ok1vK9Ewu97HLulqKZzBEuzvjdcwoZrP?=
+ =?us-ascii?Q?i0RfnRre6Tm3uaDBeRXBxMrhxz9MU95LrMYI4gzL9U8jlEp4cyQKlievezPM?=
+ =?us-ascii?Q?y5dG5bjQajUuZKgMxvzf1cIfqnmNqUr96X59TEN/Sfw17K5JBdJt3tS2U1d2?=
+ =?us-ascii?Q?IbZtPCCd8F66THsGoA++kgd/LKivILbsUuECcGFW3XxAco92cmzpGTHx9u5k?=
+ =?us-ascii?Q?efWGPXQ09sJns5jBJGMEAuhqk92icD6MmIrnmEdjCFuAdwqfjpYdlBFxD6oO?=
+ =?us-ascii?Q?+vmLWcEg9NiwlDAxSzpx/7bNktWNb4d3oosRVEHy/i2xQjivF3/3FOUdgk2m?=
+ =?us-ascii?Q?x94SsbA8uYDNEAOHreAKJ9tWYcrFsiDqVLRWkCP5MPcVKlhOwMLSQSGEpAat?=
+ =?us-ascii?Q?A7ADrGbINlcxk75sIyDnqu6BRSK0ziJXlk5KJtaXmtG1mCZL8aMkvYpLBvOK?=
+ =?us-ascii?Q?V4yrs6hA59JG/nFc2A1+fHQHb0ohoso7YOIqaP1ZahAC0LZH8V0eP5HbljOf?=
+ =?us-ascii?Q?celmc/b2L8RiM1yNB5QiL8vGM5eAkC4sGfpHjQHcGEYQxmDVWZQwnXtirbL3?=
+ =?us-ascii?Q?xHlHemeUJT0N234AX0u/6E7aSEAKnayFDDnTYBfwmW95t6YTz+ziJJlpGKy0?=
+ =?us-ascii?Q?e3Afdagkbk8HauIu/V5M8Tl/Tc7Fm6bx17DLb18ukOXXzhkSK4YxxxPVmkdX?=
+ =?us-ascii?Q?3U4eWwtu+PW6cZGpvf5e8iD+HDolNetJaeVEE1TIr3ELb4kv+yrOcRLSHJdT?=
+ =?us-ascii?Q?BP+1dBIwwzF/T5ZRudvjwDTl?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1a81f10-205d-4f5d-8867-08d931a99ede
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02289728-9de8-41be-ab46-08d931a99f77
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:43.5558
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:04:44.5713
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oefHAztGFUzH1kXC1pojK3/eYU658wV6V3ZcyHxUiRSjF8E2BME4r9jLAV8Rs1h//ssaHbqc+sL9rFZLzRBVFw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ej9Z7QuVhDyv5LtUI4KVQ6a2R0/B6jQ67unHViNF90g/7eG7ztNBO6cjHkoqYT4hPkOXtWB92YsLZpcF7C7awA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P192MB0402
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,61 +119,46 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/netlink.c | 41 ++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/netlink.c
+ drivers/net/wireless/celeno/cl8k/netlink.h | 28 ++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/netlink.h
 
-diff --git a/drivers/net/wireless/celeno/cl8k/netlink.c b/drivers/net/wirel=
-ess/celeno/cl8k/netlink.c
+diff --git a/drivers/net/wireless/celeno/cl8k/netlink.h b/drivers/net/wirel=
+ess/celeno/cl8k/netlink.h
 new file mode 100644
-index 000000000000..cc03575704ad
+index 000000000000..7bc7f0404a73
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/netlink.c
-@@ -0,0 +1,41 @@
-+// SPDX-License-Identifier: MIT
++++ b/drivers/net/wireless/celeno/cl8k/netlink.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: MIT */
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#include <linux/kernel.h>
-+#include <linux/version.h>
-+#include <linux/socket.h>
-+#include <linux/rtnetlink.h>
-+#include <net/cfg80211.h>
++#ifndef CL_NETLINK_H
++#define CL_NETLINK_H
 +
-+#include "netlink.h"
++#include "hw.h"
++#include "vif.h"
 +
-+void cl_netlink_send_async(struct cl_hw *cl_hw, struct cl_nl_event *event)
-+{
-+       struct sk_buff *skb =3D NULL;
-+       int msg_len;
++#define CL_NL_MAX_PAYLOAD 512
 +
-+       msg_len =3D sizeof(*event);
-+       skb =3D cfg80211_vendor_event_alloc(cl_hw->hw->wiphy, NULL, msg_len=
-,
-+                                         CL_VENDOR_EVENT_ASYNC, GFP_ATOMIC=
-);
-+       if (!skb) {
-+               cl_dbg_err(cl_hw, "vendor_event_alloc(len:%u) failed\n", ms=
-g_len);
-+               return;
-+       }
++struct cl_nl_event {
++       char event_id;
++       char tcv_idx;
++       char data[CL_NL_MAX_PAYLOAD];
++};
 +
-+       if (nla_put(skb, CL_VENDOR_ATTR_DATA, msg_len, event)) {
-+               kfree_skb(skb);
-+               return;
-+       }
++enum cl_nl_event_id {
++       CL_NL_EVENT_ID_UNSPEC,
++       CL_NL_EVENT_ID_CO_LOCATE_UPDATE,
 +
-+       cfg80211_vendor_event(skb, GFP_ATOMIC);
-+}
++       CL_NL_EVENT_ID_MAX
++};
 +
-+void cl_netlink_send_event_co_locate_update(struct cl_hw *cl_hw)
-+{
-+       struct cl_nl_event event =3D {0};
++void cl_netlink_send_async(struct cl_hw *cl_hw, struct cl_nl_event *event)=
+;
++void cl_netlink_send_event_co_locate_update(struct cl_hw *cl_hw);
 +
-+       event.tcv_idx =3D cl_hw->idx;
-+       event.event_id =3D CL_NL_EVENT_ID_CO_LOCATE_UPDATE;
-+
-+       cl_netlink_send_async(cl_hw, &event);
-+}
++#endif /* CL_NETLINK_H */
 --
 2.30.0
 
