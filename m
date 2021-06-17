@@ -2,38 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C323AB92C
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FBFE3AB938
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jun 2021 18:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232180AbhFQQNM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 17 Jun 2021 12:13:12 -0400
-Received: from mail-db8eur05on2058.outbound.protection.outlook.com ([40.107.20.58]:36864
+        id S232000AbhFQQNn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 17 Jun 2021 12:13:43 -0400
+Received: from mail-db8eur05on2051.outbound.protection.outlook.com ([40.107.20.51]:48736
         "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233781AbhFQQL7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 17 Jun 2021 12:11:59 -0400
+        id S233729AbhFQQMY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 17 Jun 2021 12:12:24 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kt1FSoY7daiI6LKREicrclJVQtOKphK38yBIAQMnZaGGhnNJRg8k8BHIHFzkwAixmw2ylGhFh6bbh5m8SX4viDswWMYk74dwSLVUaD9hebdaQPnie9+FGjYjahNleqmNYMFjgMICu4iI2OaRZhTUkqU/KGY0W8h0n9rtMnoZda6uFr9UF7KraGv/AJqgI13PhIaJRaFSJYUx9jPvnwb6pHwGba51whZIl3BmipThWtwx0XSdPvwmT6aD9kvGMzWdN2AP/8mUAlrYMT/b1rBGNgimOvk1bzzC3I8s56S2e9J/bxza0mGg8Uw+fNxDcEx5reUStZENs92FLQN3mMWseg==
+ b=HwczaTJ3OKO8z8kXECiaFGT8ogce8hZMUh5wkapAIFINYrOUUjGw4F5/B0xSieK1cOTTbeqlQ26fviHRKTglDTFod3vSrl7odSjeRKMPsyzOeC3ReYS6RZnz4gxDmfPspHQCf8+Y5y+7l8V0aRT91qTz19V0Ev5qu3KFZ07Qfm6eIh/+GPMwEBzlN/jerUUNxw7H18Hd/KvSzmllDU1TDHlNWTtRfV4DRLGH1dyllquTqI3vKpNMoosdE7fWTkmDsjD4IAqBb578dGGBLsynaY7woT3fEiZYEQXFai3aEt+WGhNZUkkKRPOwSScCS7ULEix9u29hZgPm23lGeW9RqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EvTMS/5/SxHTkFZ93yvrieO7ZTesUdv0to0lY4ZohGs=;
- b=W2unwqNqx+PzGhHdFZLrBWBRnh+dFsZ+3nJjVnfPq7xPkZkDF9+30pMP6Vy6dqDCX1uYvD/wschoogPAvBqYugrXZ4vfn5zMiXIsHBtlpbFec7Lo0FyvKZnFgHSF5vruNrz4HKS7lyAL2t/G2lAYhV2E+5urwnk9/F19bHEM9a86Mj24KjWuVT6QePy+p/j4F1LZOqx2YPpWVP/bUT7ZkTxc8DWQqsP8z6OWOhQJpiNaNe7GVTQ/herwBEE0RdXfvPf3sIhApLuZEyoA1cekvMc6N+Hy7q3riH6tzKBFt5Oy+87MKC1a2rVygazuXIWGN1om10vuW12HkcSzB2cEgw==
+ bh=ZcVj6Gnnu/aWxUKB2Snw09O/GIPWlZ0qfcWlspJEiQI=;
+ b=Yq+BVuGGLgERzKg6u60j1j5H3asHk+PgJQ3SpvQ6WgEyZ3d4NvBmJtNuYD4PtqkdYpqWJ7aY8n8TZBBt+oK0aCojAA7ltn+z2rOT66uH+mJ8iepsOzpG03COMcEg0eQf3FaiM5lFyHu9KpYlnwAciWuhki/9c+oah2uoIrEfAUFnguoOqpIeZmnGQ4nHM0xnjt/XPj1XIw42vj50vzxRCD70OXaXzBESuHp/kT7XNlJnL3UEBMU5oHK+LqdZjtioWphpPAu4UvzkFHgm/Jr0e4RHuEezhkvpH+PiMTgAhsfk1Ihgq40u61vFTUo2RnR7WUcLrV/3waUPS1HRPTjClg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=celeno.com; dmarc=pass action=none header.from=celeno.com;
  dkim=pass header.d=celeno.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=celeno.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EvTMS/5/SxHTkFZ93yvrieO7ZTesUdv0to0lY4ZohGs=;
- b=kV836SW4LDA9kL7mA7u4ltvJh1wtTt+px8nx2ubUONUSi3KUGbd5MNjQOFw4jY+jHfGwxYf9j9Ps7sjW7ETTDXNwkWpUGc5eKGNl+SeHTDIXA99YjvbtGoZWGNZeANHZr8fqnm+h24CwURXlMe2z2xr7besFDZ7tmHSaqrCihKk=
+ bh=ZcVj6Gnnu/aWxUKB2Snw09O/GIPWlZ0qfcWlspJEiQI=;
+ b=NCUaYohj75JMD2ChSTEsCfdKJ2/h27L2I7u3WMrp2frFDFNHw3r08K+/Pu98OfkLfdER8rh43ye86YZgv+h1+P/0r9oCAnH8qk/zabhBBaImw4vJWYtdRnDckWZsLy/y7jAemHXjjQ4CmZCT1NkLzG3+bEr8DqtB6BJzP1Dp6rA=
 Authentication-Results: vger.kernel.org; dkim=none (message not signed)
  header.d=none;vger.kernel.org; dmarc=none action=none header.from=celeno.com;
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:38b::16)
  by AM8P192MB0978.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1e9::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.16; Thu, 17 Jun
- 2021 16:08:34 +0000
+ 2021 16:08:35 +0000
 Received: from AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f]) by AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
  ([fe80::1847:5583:4db7:102f%4]) with mapi id 15.20.4242.021; Thu, 17 Jun 2021
@@ -48,9 +48,9 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
         Shay Bar <shay.bar@celeno.com>,
         Viktor Barna <viktor.barna@celeno.com>
-Subject: [RFC v1 247/256] cl8k: add wrs/wrs_db.h
-Date:   Thu, 17 Jun 2021 16:02:14 +0000
-Message-Id: <20210617160223.160998-248-viktor.barna@celeno.com>
+Subject: [RFC v1 248/256] cl8k: add wrs/wrs_rssi.c
+Date:   Thu, 17 Jun 2021 16:02:15 +0000
+Message-Id: <20210617160223.160998-249-viktor.barna@celeno.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com>
 References: <20210617160223.160998-1-viktor.barna@celeno.com>
@@ -62,51 +62,51 @@ X-ClientProxiedBy: PR3PR09CA0018.eurprd09.prod.outlook.com
  (2603:10a6:20b:38b::16)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:07:09 +0000
+Received: from localhost.localdomain (62.216.42.54) by PR3PR09CA0018.eurprd09.prod.outlook.com (2603:10a6:102:b7::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18 via Frontend Transport; Thu, 17 Jun 2021 16:07:10 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2d863a3e-0c77-45e0-286c-08d931a9f643
+X-MS-Office365-Filtering-Correlation-Id: e4c924dc-1960-4a0b-158d-08d931a9f6ff
 X-MS-TrafficTypeDiagnostic: AM8P192MB0978:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM8P192MB09783737DFC2B28B626B7494F60E9@AM8P192MB0978.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:140;
+X-Microsoft-Antispam-PRVS: <AM8P192MB0978004D9DCCEF0F90E3D78BF60E9@AM8P192MB0978.EURP192.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:27;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JmVgIzI3rAFaIRgD9QCHKrMQow/Imvd91B8fBRhU4lc7hsUYx7ah2yd0vp4EAS8z9OfEwwXU2EWAgTAdSssoni1Kx3m/pFb+AHaA6c5a4qbWCgqtDX0gRKLuuEm7oN3hMAGxjdemB8icndKFatVa3p5QUZPtBCkwsZGW3W94Y6j64UruuvYcUUs4xzk5iaukWQLwn9CMOjx0cYQo9Agge6iVk13n1wfsZPAyPaWhd9WEQl3CbVVBkA/4syeRG+jC3IsU0iGvR/E2CzUGzWSLlpZi/WntuS2NtFoYzgNH30b6QjIkgysNxFhmBZLq14JBrmZFPvjQCv4VE0+5IpLAd+STnpoYZ6DW/N6pVxEVt8aRunFY+m4a1nS1FdkJmZXO03yz/D0mdRHO8LFOD8lqPukzr7gnp9Ty0+W6QGeJ5nDqpWCgUdNbFg+KDXncIdQpNYW+mR0WMDo/DW1+Nj5KdHKT/TZqtvoNQf01wrSbZ9nVFpF7c6stBI6PnQNNaWE8WdyLgfeRhAw9Csf9TddhjVOU1YjyS21LOEi1ktFYKiLJ0ViZ72BzMvvQTevdcDdfFJOzQsHHN62zWX0OshBhPTsEJVe0pCEf+m3vPnd8ix9GDbnbK5t3fPlq99O8wouiHoMlkISR/hZni4lPYmMOGW1pNHOnFNkwnUY0IPWR06RS+RYzWSQnpusHtCicO+TXhS8O1cNSuF8GOX9uQIuzQw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(346002)(136003)(396003)(376002)(39850400004)(366004)(16526019)(107886003)(6666004)(5660300002)(66556008)(83380400001)(26005)(30864003)(186003)(1076003)(2616005)(316002)(66476007)(66946007)(9686003)(2906002)(6512007)(8676002)(508600001)(52116002)(55236004)(6486002)(38350700002)(86362001)(38100700002)(6916009)(8936002)(6506007)(956004)(4326008)(54906003)(36756003)(69590400013)(32563001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Y6QggG3cYCgWlF92C0mQHNCITENl8RjkISurdy9W7VJTni8TWQo7MWXTMANRVgg9X2fS97cmLWO2Mc4uO35Yk0PutkCyx38il4jQ9sOkXbPnG6ZJMmY8R6nMyKrcMeNThyEUjjMU7yoSfhXFE5qJdifSARGvuiqdMKaqHLzn0H3oGK39FE6L0QGPXQCxZMk7GIKj1yNq/WXsHN8BgZJbB0hno5CjydxcR0BmA5qyjXco7pnqAMopgYVGkcQRy+N9R1ndjP9uUtEJGEOtZ+TmcQ9uYyphxyys8KAPPjGYB9TBee+NMleXuyqFgM2sJwpNaV2GxTcGgl3SIoMasuunrKvIjT3dQcm6W41KJq6N3RqV9FOOwzQrqhRgyXrDHY10z8VKYSaIsd1IusH5QRik0BW1r/F2mobBYanJSMYeMsmBk23MFEmGyNyy3nF4BI6hakdWmrwYLmdYy+jXlFmBC5eI+k0gUgZi20HrbYXKH/crp2cdxZd9Pn75DrRGIe7aL9H5q1RkX4BCbqBOK6L7IK/zsBAT/QouoI1cBUZskiXue9Ef2AtSJSPUJ/l6Svvolaer29gpYRB+1k/FlBa9w+Sx7S4zz2zWcjNNyWfqMeN++oretFygo5qkWXuENUn5i60gnJjL30h2tfa7TrlsSzn/CeRv0eZHRHkxLUkt/9eLS92VqPEVdkdFjQOpv8T0Vlr70j44Itm8PQbHSJ+iHA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1412.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(346002)(136003)(396003)(376002)(39850400004)(366004)(16526019)(107886003)(5660300002)(66556008)(83380400001)(26005)(30864003)(186003)(1076003)(2616005)(316002)(66476007)(66946007)(9686003)(2906002)(6512007)(8676002)(508600001)(52116002)(55236004)(6486002)(38350700002)(86362001)(38100700002)(6916009)(8936002)(6506007)(956004)(4326008)(54906003)(36756003)(69590400013)(32563001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xx/HlWGElsuOLeRtttX4J6q4Re0TRp5ZxjWCVK8nQV4RmtjvHqeCil/zqn35?=
- =?us-ascii?Q?xdkARF5xldH4A/gkiUUCYKNbNG8lHMdLbP5CbTZSl4j92ao/2vrMso3lmMD9?=
- =?us-ascii?Q?Q4MOqefT42YYIlMMjLhDlgxZrNoAmIYkFRsgb3z0ouaEc9tlZ+QA5GppdrOm?=
- =?us-ascii?Q?MipYgppM8pu0o0EbZEy9dEcWmnsFWFk83zvHSzFcyfdRQaLZMP7vF2CQGqC8?=
- =?us-ascii?Q?jQbvHN/DISaejQPX/RZ6lPK/VRfFuBSYU2tZzQkC3iM+oSONkVYcAOt/7URF?=
- =?us-ascii?Q?rQMvUayFtsWjt+OZu9m0Re7QRP8Nq7YfoMO00bx9HuB2S3UjtZE7hXd0p7+h?=
- =?us-ascii?Q?dT4XS/tc2kFODDVnoeHD1X+siJ3ZMZekuUPUR7Nh559xhOVXS/STN8+w2EAT?=
- =?us-ascii?Q?Q1VDK30l2uIG3zOXaKggg1GqCwyQdBEyZrWEmDNqnDvRH8hm6GiuAiobyDCn?=
- =?us-ascii?Q?7csimcnWtK/O5oS4a4HhvKqSVr2CHq6vP1Due7tXrGdibGhCvT1Cz7csM3MU?=
- =?us-ascii?Q?Ycmb1uw/bdsgMZKdxOaG6SbYQr8NjDYoqwz/M0+q8K6p8aYCCWsRpbksLKPg?=
- =?us-ascii?Q?UzTGNHEX3Ox4T9TuPxkswx3o/Zk4Pyn4TMETeKPy3qMFRuFqPyPWiI5iFkaR?=
- =?us-ascii?Q?TNkO+1I3rSjWKE+8r9lWqcgf4JCRGNl3O6i3nhlsVx1Aa4snLajAywxyS6cx?=
- =?us-ascii?Q?tKLhwuHiwf5OyCGL2sOqcu9xXxRMJ5AeynlpKgxUyS9D7QjT5BE9WdoN+GQV?=
- =?us-ascii?Q?Cq3XX+T5FlpIV1HcUxu2VL74j71UwcQMgrf7uTDdV2AxRcxX2SkmMGa8mANO?=
- =?us-ascii?Q?3QJ1PTAzLGq8+0QhOzOcDOE61kRqtilBhb4dNYoJ6HiQo456rYs3IHs83ZLr?=
- =?us-ascii?Q?vn3T2HzWvNyBT596dTY/ntUDTphun5Dv9+v9p8lxAFvWroBpZkvlpgNw7yjl?=
- =?us-ascii?Q?aiiuzU7wImWZoC3Fqf2lDlyhrqzEjfsZQMHFCWn3U+6g7jb6tmFwcSDvWGnS?=
- =?us-ascii?Q?kaXV+a9JnCfxhnrgdLBZM4ZfTYI01oztzy+u5iKXs+rllF3yNihIiAKxE2hz?=
- =?us-ascii?Q?/gIFr+qH4FNu3RctKcdGm70fQOz9Ik1+/5l6VhJzbQj4cnTsPLN+0g2jS/aC?=
- =?us-ascii?Q?pe4AdJAKFiNQFsYkrIRlvrqFvgjFSPCJuubiyYrU0ZZzOXEc0G0TUL6ohFmO?=
- =?us-ascii?Q?iLDyv87yKY7fk85KwLm3JlfRSFKq+oKzi+1s+NCiv936Kpv1ndGug9nwhnT6?=
- =?us-ascii?Q?nl6u4fQvG6713FLk3H0NntHhAR3vcczwuoDCcLKSHb/P1bFfGwLspb5GT9UH?=
- =?us-ascii?Q?QPgtofng3ivQKRQxUq2jD/3f?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jQ1WHE6+ZnpX7Ax1p3NoEMnYwJkZ5pnox107C7ya3jZLzCbedk0bz+2FIyYf?=
+ =?us-ascii?Q?/naj8S2p0t+HrJJHZSJhR5MpN0jvh+RKst8nwdoe8NllWttvriAbaY6rqbY8?=
+ =?us-ascii?Q?qMN1/MLHRDGk0EB1q4KsCNOA/LRuiy/zIJd6NMfjX68I+fEBCdvSHjbf4DxW?=
+ =?us-ascii?Q?xAoZRUAKcW8bmPMUqjAOxc0P+hlS4yIWCQLlYMxIuR/JowjRkSiwsH4THy5N?=
+ =?us-ascii?Q?wicxVcAOMhquOiXpmOgh5BDoYAqI+0l0nH6Sdn6QW0KeULFdwn4X13Cj/lh2?=
+ =?us-ascii?Q?B1fysFhcxFIvfAmlRSnkTTHsNuMngVIIdlAk12FJkmZSPbw1plnbSMqscBiC?=
+ =?us-ascii?Q?hF18Ni7knomjuerspUWhaAr7tSB79hXvNDTZjviObcsbV5blkX56XCubhiPL?=
+ =?us-ascii?Q?MhHVpZWz0KLzEBNnBiKAIjZugBM/dodGvJId8fnJsEYKhYtRU4LkoMVaWQPf?=
+ =?us-ascii?Q?gfYZ+32y5YdvubGFVxnCzOl1x5WPnICO611FCbq1hsMTxjYCqGbtP4PZDcAp?=
+ =?us-ascii?Q?6hga4wQbW72LyERH/lJqbupn9b8NwkTlFVKN4MpFH7c376kMG1JEJTD6yXM4?=
+ =?us-ascii?Q?FQll/KTK42I5l/aAhysQ3lLcS30Y7YuyYMMrkszbyWKm8NqVfDbT1OijjgIp?=
+ =?us-ascii?Q?UhCcqfSdSoM2ojI5Db4K1EILW0REKWrh1S2gTyo0eCXyNjIgxn6HatukFfoA?=
+ =?us-ascii?Q?sCSCCRyalsBBfuvEJjH0Lh9Rq40eTNMMyK7jTLCVxabfimifamrgN2UthB69?=
+ =?us-ascii?Q?RJ587sj/CDrMMrOLM/yYK8ZGf5YhMuOr4Xlsbu08IkTRXe6AgNPpjoTYn9Is?=
+ =?us-ascii?Q?6jDM1oQB9toBEGONkuy+jUBdmDKa6skueDXHy45b7KBL63dpi4cYK2+CQxdd?=
+ =?us-ascii?Q?a7CLiJmU4XUgWLAAXrZM/6NFdISJH+nYAkMvaBIZFdbC0M+gXDbGZ8zdhLgn?=
+ =?us-ascii?Q?tpWwV01pyBSIw6yVxqv13O0M9rwfqL/m7WVrH+eqo+mkNLK2q5wxdOf84CNb?=
+ =?us-ascii?Q?TZyhYn/3P3Y/aJ3utKKifPqJb2kycUONlxMw8g1dNmiSfxyw61H6T8Bnk6Xz?=
+ =?us-ascii?Q?PvXTEOY8qem/q84t2u85n8baHxkNJf3jugOeX2P+pGXAyJ4m96UnPinwynUf?=
+ =?us-ascii?Q?kij43U+K5MimZim6oMHvveXcOegzDIHivNDFSF6J440mqHEAXpnvaRFV27tJ?=
+ =?us-ascii?Q?hQlKLny5JhWqSza3DQ6XzwoyRXuBbDm+/X8neX0V1QAxS439BoT7JDEg5iVH?=
+ =?us-ascii?Q?O5ZqyFI06GhOjZyxKr5lJb2MV3iBTyVs62CqRQwgQb4E2phYZEe3vzH3bQM5?=
+ =?us-ascii?Q?mAeXPoEB3GCwqgs9VZiid2bA?=
 X-OriginatorOrg: celeno.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d863a3e-0c77-45e0-286c-08d931a9f643
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4c924dc-1960-4a0b-158d-08d931a9f6ff
 X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1412.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:07:10.2786
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2021 16:07:11.5779
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: f313103b-4c9f-4fd3-b5cf-b97f91c4afa8
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GN2CpBD3guNB+9T272m8h7aDnpKF08YX8pI8O3kJo5BK/tQKq0Wqsthw9jXruSm1eFrJbFlEqCa0s4svRerS3w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: GSHu2ptoBFdRqc+Uz7g4YOjQMCTKlDd2x6+j6KqBUu1bOVCi4M8sFQ6D9NqaQIQJb3K/mLTDwuceELGVOe56CA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P192MB0978
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -119,430 +119,539 @@ details).
 
 Signed-off-by: Viktor Barna <viktor.barna@celeno.com>
 ---
- drivers/net/wireless/celeno/cl8k/wrs/wrs_db.h | 386 ++++++++++++++++++
- 1 file changed, 386 insertions(+)
- create mode 100644 drivers/net/wireless/celeno/cl8k/wrs/wrs_db.h
+ .../net/wireless/celeno/cl8k/wrs/wrs_rssi.c   | 444 ++++++++++++++++++
+ 1 file changed, 444 insertions(+)
+ create mode 100644 drivers/net/wireless/celeno/cl8k/wrs/wrs_rssi.c
 
-diff --git a/drivers/net/wireless/celeno/cl8k/wrs/wrs_db.h b/drivers/net/wi=
-reless/celeno/cl8k/wrs/wrs_db.h
+diff --git a/drivers/net/wireless/celeno/cl8k/wrs/wrs_rssi.c b/drivers/net/=
+wireless/celeno/cl8k/wrs/wrs_rssi.c
 new file mode 100644
-index 000000000000..2eefa0abaf8d
+index 000000000000..9f4e691c81db
 --- /dev/null
-+++ b/drivers/net/wireless/celeno/cl8k/wrs/wrs_db.h
-@@ -0,0 +1,386 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/drivers/net/wireless/celeno/cl8k/wrs/wrs_rssi.c
+@@ -0,0 +1,444 @@
++// SPDX-License-Identifier: MIT
 +/* Copyright(c) 2019-2021, Celeno Communications Ltd. */
 +
-+#ifndef CL_WRS_DB_H
-+#define CL_WRS_DB_H
-+
-+#include "debug.h"
-+#include "utils/timer.h"
++#include "wrs/wrs_rssi.h"
++#include "wrs/wrs.h"
 +#include "def.h"
-+#include "wrs/wrs_tables.h"
++#include "rssi.h"
++#include "data_rates.h"
 +
-+#define WRS_MAINTENANCE_PERIOD_MS         40
-+#define WRS_DATA_RATE_FACTOR              10
-+#define WRS_RSSI_PROTECT_UP_THR           10
-+#define WRS_RSSI_PROTECT_DN_THR           10
-+#define WRS_MIN_FRAMES_FOR_DECISION       15
-+#define WRS_EPR_FACTOR                    105
-+#define WRS_CONVERGE_IDLE_PACKET_TH       5
-+#define WRS_CONVERGE_IDLE_INTERVAL_RESET  6000  /* 6 sec */
-+#define WRS_CONVERGE_IDLE_INTERVAL_RSSI   2000  /* 2 sec */
-+#define WRS_CONVERGE_TRFC_INTERVAL_STATIC 30000 /* 30 sec */
-+#define WRS_CONVERGE_TRFC_INTERVAL_MOTION 1000  /* 1 sec */
-+#define WRS_IMMEDIATE_DROP_EPR_FACTOR     70    /* 70% */
-+#define WRS_IMMEDIATE_DROP_MAX_IN_ROW     U32_MAX
-+#define WRS_SYNC_MIN_ATTEMPTS             4
-+#define WRS_SYNC_TIMEOUT                  1000  /* 1 sec */
-+#define WRS_QUICK_UP_BA_THR               5
-+#define WRS_QUICK_UP_INTERVAL_MS          1000
-+#define WRS_QUICK_DOWN_EPR_FACTOR         85
-+#define WRS_QUICK_DOWN_AGG_THR            3
-+#define WRS_QUICK_DOWN_PKT_THR            60
-+#define WRS_RSSI_PROTECT_SHIFT            7
-+#define WRS_RSSI_PROTECT_BUF_SZ_OLD       BIT(WRS_RSSI_PROTECT_SHIFT) /* 2=
- ^ 7 =3D 128 */
-+#define WRS_RSSI_PROTECT_BUF_SZ_NEW       3
-+#define WRS_BA_NOT_RCV_TIME_SINCE_SYNC    1000
-+#define WRS_CCA_PERIOD_MS                 1000
-+#define WRS_CCA_PRIMARY_SHIFT             7
-+#define WRS_CCA_PRIMARY_FACTOR            160 /* 160 / 2^7 =3D 1.25 =3D 25=
-% */
-+
-+enum cl_wrs_rssi_prot_mode {
-+       WRS_RSSI_PROT_MODE_RSSI,     /* Up/down based on rssi */
-+       WRS_RSSI_PROT_MODE_NEIGHBOR, /* Up/down based on neighbors */
-+
-+       WRS_RSSI_PROTECT_MODE_MAX
++/*
++ * Section #1:
++ * rate based on rssi.
++ */
++static s8 rssi_threshold_he[WRS_MCS_MAX_HE] =3D {
++       -35, -40, -45, -50, -55, -60, -65, -70, -75, -80, -85, -90
 +};
 +
-+enum cl_wrs_fixed_rate {
-+       WRS_AUTO_RATE,
-+       WRS_FIXED_FALLBACK_EN,
-+       WRS_FIXED_FALLBACK_DIS,
-+
-+       WRS_FIXED_RATE_MAX
++static s8 rssi_threshold_vht[WRS_MCS_MAX_VHT] =3D {
++       -36, -42, -48, -54, -60, -66, -72, -78, -84, -90
 +};
 +
-+enum cl_wrs_fixed_param {
-+       WRS_FIXED_PARAM_MODE,
-+       WRS_FIXED_PARAM_BW,
-+       WRS_FIXED_PARAM_NSS,
-+       WRS_FIXED_PARAM_MCS,
-+       WRS_FIXED_PARAM_GI,
-+
-+       WRS_FIXED_PARAM_MAX
++static s8 rssi_threshold_ht[WRS_MCS_MAX_HT] =3D {
++       -34, -42, -50, -58, -66, -74, -82, -90
 +};
 +
-+#define FIXED_RATE_STR(x) \
-+       (((x) =3D=3D WRS_AUTO_RATE) ? "auto rate" : \
-+       (((x) =3D=3D WRS_FIXED_FALLBACK_EN) ? "fixed rate (fallbacks enable=
-d)" : \
-+       "fixed rate (fallbacks disabled)"))
-+
-+enum cl_wrs_decision {
-+       WRS_DECISION_NONE,
-+       WRS_DECISION_SAME,
-+       WRS_DECISION_UP,
-+       WRS_DECISION_UP_QUICK,
-+       WRS_DECISION_UP_RSSI,
-+       WRS_DECISION_UP_MCS1,
-+       WRS_DECISION_DOWN,
-+       WRS_DECISION_DOWN_RSSI,
-+       WRS_DECISION_DOWN_IMMEDIATE,
-+       WRS_DECISION_DOWN_QUICK,
-+       WRS_DECISION_DOWN_NO_SYNC,
-+       WRS_DECISION_RSSI_MGMT,
-+
-+       WRS_DECISION_MAX,
++static s8 rssi_threshold_ofdm[WRS_MCS_MAX_OFDM] =3D {
++       -34, -42, -50, -58, -66, -74, -82, -90
 +};
 +
-+enum cl_wrs_mcs {
-+       WRS_MCS_0,
-+       WRS_MCS_1,
-+       WRS_MCS_2,
-+       WRS_MCS_3,
-+       WRS_MCS_4,
-+       WRS_MCS_5,
-+       WRS_MCS_6,
-+       WRS_MCS_7,
-+       WRS_MCS_8,
-+       WRS_MCS_9,
-+       WRS_MCS_10,
-+       WRS_MCS_11,
-+       WRS_MCS_MAX,
++static s8 rssi_threshold_cck[WRS_MCS_MAX_CCK] =3D {
++       -45, -60, -75, -90
 +};
 +
-+#define WRS_MCS_MAX_CCK  WRS_MCS_4
-+#define WRS_MCS_MAX_OFDM WRS_MCS_8
-+#define WRS_MCS_MAX_HT   WRS_MCS_8
-+#define WRS_MCS_MAX_VHT  WRS_MCS_10
-+#define WRS_MCS_MAX_HE   WRS_MCS_MAX
++static u16 cl_wrs_rssi_find_rate_ht_vht_he(struct cl_hw *cl_hw, struct cl_=
+wrs_db *wrs_db,
++                                          struct cl_wrs_sta *wrs_sta, s8 *=
+rssi_sort,
++                                          s8 *thresholds)
++{
++       struct cl_wrs_params *wrs_params =3D &wrs_sta->su_params;
++       s8 max_ss =3D (s8)wrs_sta->max_rate_cap.nss;
++       s8 nss =3D 0;
++       u8 max_bw =3D wrs_sta->max_rate_cap.bw;
++       u8 bw =3D 0;
++       u8 max_mcs =3D wrs_sta->max_rate_cap.mcs;
++       u8 mcs =3D 0;
++       u8 gi =3D WRS_GI_LONG;
++       u8 selected_mcs =3D 0;
++       u8 selected_nss =3D 0;
++       u8 selected_bw =3D 0;
++       u8 i =3D 0;
++       u16 rate_idx =3D 0;
++       u16 data_rate =3D 0;
++       u16 max_data_rate =3D 0;
 +
-+enum cl_wrs_ss {
-+       WRS_SS_1,
-+       WRS_SS_2,
-+       WRS_SS_3,
-+       WRS_SS_4,
++       if (max_bw > cl_hw->conf->ci_wrs_max_bw)
++               max_bw =3D cl_hw->conf->ci_wrs_max_bw;
 +
-+       WRS_SS_MAX
-+};
++       for (i =3D 0; i <=3D max_mcs; i++) {
++               mcs =3D max_mcs - i;
 +
-+enum cl_wrs_gi {
-+       WRS_GI_LONG,
-+       WRS_GI_SHORT,
-+       WRS_GI_VSHORT,
++               for (nss =3D max_ss; nss >=3D 0; nss--) {
++                       if (rssi_sort[nss] <=3D thresholds[i])
++                               continue;
 +
-+       WRS_GI_MAX
-+};
++                       /* In last level decrease BW */
++                       bw =3D ((i =3D=3D max_mcs) && (max_bw > CHNL_BW_20)=
+) ? (max_bw - 1) : max_bw;
 +
-+#define WRS_GI_MAX_HT  WRS_GI_VSHORT
-+#define WRS_GI_MAX_VHT WRS_GI_VSHORT
-+#define WRS_GI_MAX_HE  WRS_GI_MAX
++                       if (wrs_sta->mode =3D=3D WRS_MODE_HE) {
++                               data_rate =3D data_rate_he_x10[nss][bw][mcs=
+][WRS_GI_LONG];
++                       } else {
++                               if (wrs_sta->mode =3D=3D WRS_MODE_VHT) {
++                                       /* 160MHz in VHT is valid only for =
+1/2 SS */
++                                       if (nss >=3D WRS_SS_3 && bw =3D=3D =
+CHNL_BW_160)
++                                               bw =3D CHNL_BW_80;
 +
-+enum cl_wrs_ltf {
-+       LTF_X1,
-+       LTF_X2,
-+       LTF_X4,
-+       LTF_MAX
-+};
++                                       /* BW 80, 3 SS MCS 6 is invalid in =
+VHT */
++                                       if (bw =3D=3D CHNL_BW_80 &&
++                                           nss =3D=3D WRS_SS_3 &&
++                                           mcs =3D=3D WRS_MCS_6)
++                                               continue;
++                               }
 +
-+enum cl_wrs_converge_mode {
-+       WRS_CONVERGE_MODE_RESET,
-+       WRS_CONVERGE_MODE_RSSI,
++                               data_rate =3D data_rate_ht_vht_x10[bw][nss]=
+[mcs][gi];
++                       }
 +
-+       WRS_CONVERGE_MODE_MAX,
-+};
++                       if (data_rate > max_data_rate) {
++                               selected_mcs =3D mcs;
++                               selected_nss =3D nss;
++                               selected_bw =3D bw;
++                               max_data_rate =3D data_rate;
++                               rate_idx =3D cl_wrs_tables_find_rate_idx(wr=
+s_params,
++                                                                      bw, =
+nss, mcs, gi);
++                       }
 +
-+enum cl_wrs_mode {
-+       WRS_MODE_CCK,
-+       WRS_MODE_OFDM,
-+       WRS_MODE_HT,
-+       WRS_MODE_VHT,
-+       WRS_MODE_HE,
++                       break;
++               }
++       }
 +
-+       WRS_MODE_MAX,
-+};
++       if (cl_env_det_is_noisy(cl_hw) || cl_env_det_is_very_noisy(cl_hw)) =
+{
++               /* In conservative mode select less agressive parameters */
++               if (wrs_db->conservative_nss_noisy_env && selected_nss > 0)
++                       selected_nss--;
 +
-+#define wrs_pr(wrs_db, level, ...) \
-+       do { \
-+               if ((level) <=3D (wrs_db)->debug_level) \
-+                       pr_debug(__VA_ARGS__); \
-+       } while (0)
++               if (wrs_db->conservative_nss_noisy_env && selected_mcs > 0)
++                       selected_mcs--;
 +
-+#define wrs_pr_verbose(wrs_db, ...) wrs_pr(wrs_db, DBG_LVL_VERBOSE, ##__VA=
-_ARGS__)
-+#define wrs_pr_err(wrs_db, ...)     wrs_pr(wrs_db, DBG_LVL_ERROR, ##__VA_A=
-RGS__)
-+#define wrs_pr_warn(wrs_db, ...)    wrs_pr(wrs_db, DBG_LVL_WARNING, ##__VA=
-_ARGS__)
-+#define wrs_pr_trace(wrs_db, ...)   wrs_pr(wrs_db, DBG_LVL_TRACE, ##__VA_A=
-RGS__)
-+#define wrs_pr_info(wrs_db, ...)    wrs_pr(wrs_db, DBG_LVL_INFO, ##__VA_AR=
-GS__)
++               /* BW 80, 3 SS MCS 6 is invalid in VHT */
++               if (wrs_sta->mode =3D=3D WRS_MODE_VHT &&
++                   selected_bw =3D=3D CHNL_BW_80 &&
++                   selected_nss =3D=3D WRS_SS_3 &&
++                   selected_mcs =3D=3D WRS_MCS_6)
++                       selected_mcs--;
 +
-+/* m MUST be power of 2 ! */
-+#define WRS_INC_POW2(c, m) (((c) + 1) & ((m) - 1))
++               rate_idx =3D cl_wrs_tables_find_rate_idx(wrs_params,
++                                                      selected_bw, selecte=
+d_nss, selected_mcs, gi);
++       }
 +
-+#define WRS_INC(c, m) \
-+       do { \
-+               (c)++; \
-+               if ((c) =3D=3D (m)) \
-+                       (c) =3D 0; \
-+       } while (0)
++       return rate_idx;
++}
 +
-+#define WRS_IS_DECISION_UP(decision) \
-+       (((decision) >=3D WRS_DECISION_UP) && ((decision) <=3D WRS_DECISION=
-_UP_MCS1))
-+#define WRS_IS_DECISION_DOWN(decision) \
-+       (((decision) >=3D WRS_DECISION_DOWN) && ((decision) <=3D WRS_DECISI=
-ON_DOWN_NO_SYNC))
++static u16 cl_wrs_rssi_find_rate_cck_ofdm(struct cl_wrs_sta *wrs_sta,
++                                         s8 *rssi_sort, s8 *thresholds)
++{
++       struct cl_wrs_params *wrs_params =3D &wrs_sta->su_params;
++       u8 max_mcs =3D wrs_sta->max_rate_cap.mcs;
++       u8 mcs =3D 0;
++       u8 i =3D 0;
 +
-+#define WRS_DECISION_STR(decision) (                                   \
-+       (decision) =3D=3D WRS_DECISION_NONE           ? "NONE"           : =
-\
-+       (decision) =3D=3D WRS_DECISION_SAME           ? "SAME"           : =
-\
-+       (decision) =3D=3D WRS_DECISION_UP             ? "UP"             : =
-\
-+       (decision) =3D=3D WRS_DECISION_UP_QUICK       ? "UP QUICK"       : =
-\
-+       (decision) =3D=3D WRS_DECISION_UP_RSSI        ? "UP RSSI"        : =
-\
-+       (decision) =3D=3D WRS_DECISION_UP_MCS1        ? "UP MCS1"        : =
-\
-+       (decision) =3D=3D WRS_DECISION_DOWN           ? "DOWN"           : =
-\
-+       (decision) =3D=3D WRS_DECISION_DOWN_RSSI      ? "DOWN RSSI"      : =
-\
-+       (decision) =3D=3D WRS_DECISION_DOWN_IMMEDIATE ? "DOWN IMMEDIATE" : =
-\
-+       (decision) =3D=3D WRS_DECISION_DOWN_QUICK     ? "DOWN QUICK"     : =
-\
-+       (decision) =3D=3D WRS_DECISION_DOWN_NO_SYNC   ? "DOWN NO_SYNC"   : =
-\
-+       (decision) =3D=3D WRS_DECISION_RSSI_MGMT      ? "RSSI MGMT"      : =
-\
-+       "ERROR")
++       for (i =3D 0; i <=3D max_mcs; i++) {
++               mcs =3D max_mcs - i;
 +
-+#define WRS_MODE_STR(mode) (               \
-+       (mode) =3D=3D WRS_MODE_CCK  ? "CCK"  : \
-+       (mode) =3D=3D WRS_MODE_OFDM ? "OFDM" : \
-+       (mode) =3D=3D WRS_MODE_HT   ? "HT"   : \
-+       (mode) =3D=3D WRS_MODE_VHT  ? "VHT"  : \
-+       (mode) =3D=3D WRS_MODE_HE   ? "HE"   : \
-+       "ERR")
++               if (rssi_sort[WRS_SS_1] > thresholds[i])
++                       return cl_wrs_tables_find_rate_idx(wrs_params,
++                                                          CHNL_BW_20, WRS_=
+SS_1, mcs, WRS_GI_LONG);
++       }
 +
-+#define WRS_CONVERGE_MODE_STR(mode) \
-+       ((mode) =3D=3D WRS_CONVERGE_MODE_RESET ? "RESET" : "RSSI")
++       return 0;
++}
 +
-+#define WRS_BW_STR(bw) (                  \
-+       (bw) =3D=3D CHNL_BW_20  ? "20"  : \
-+       (bw) =3D=3D CHNL_BW_40  ? "40"  : \
-+       (bw) =3D=3D CHNL_BW_80  ? "80"  : \
-+       (bw) =3D=3D CHNL_BW_160 ? "160" : \
-+       "ERR")
++static u16 cl_wrs_rssi_find_rate(struct cl_hw *cl_hw, struct cl_wrs_db *wr=
+s_db,
++                                struct cl_wrs_sta *wrs_sta, s8 *rssi_sort)
++{
++       struct cl_wrs_params *wrs_params =3D &wrs_sta->su_params;
++       u16 rate_idx =3D 0;
 +
-+#define WRS_GI_STR(gi) (                       \
-+       (gi) =3D=3D WRS_GI_LONG   ? "Long"       : \
-+       (gi) =3D=3D WRS_GI_SHORT  ? "Short"      : \
-+       (gi) =3D=3D WRS_GI_VSHORT ? "VeryShort" :  \
-+       "ERROR")
++       switch (wrs_sta->mode) {
++       case WRS_MODE_HE:
++               rate_idx =3D cl_wrs_rssi_find_rate_ht_vht_he(cl_hw, wrs_db,=
+ wrs_sta,
++                                                          rssi_sort, rssi_=
+threshold_he);
++               break;
++       case WRS_MODE_VHT:
++               rate_idx =3D cl_wrs_rssi_find_rate_ht_vht_he(cl_hw, wrs_db,=
+ wrs_sta,
++                                                          rssi_sort, rssi_=
+threshold_vht);
++               break;
++       case WRS_MODE_HT:
++               rate_idx =3D cl_wrs_rssi_find_rate_ht_vht_he(cl_hw, wrs_db,=
+ wrs_sta,
++                                                          rssi_sort, rssi_=
+threshold_ht);
++               break;
++       case WRS_MODE_OFDM:
++               rate_idx =3D cl_wrs_rssi_find_rate_cck_ofdm(wrs_sta, rssi_s=
+ort,
++                                                         rssi_threshold_of=
+dm);
++               break;
++       case WRS_MODE_CCK:
++               rate_idx =3D cl_wrs_rssi_find_rate_cck_ofdm(wrs_sta, rssi_s=
+ort,
++                                                         rssi_threshold_cc=
+k);
++               break;
++       default:
++               break;
++       }
 +
-+struct cl_wrs_tx_cntrs {
-+       u64 epr_acc;
-+       u32 total;
-+       u32 fail;
-+       u32 ba_not_rcv;
-+       u32 ba_not_rcv_consecutive;
-+};
++       if (rate_idx =3D=3D WRS_INVALID_RATE)
++               rate_idx =3D 0;
 +
-+struct cl_wrs_tx_params {
-+       u16 mode        : 3, /* Mode - 0 =3D CCK, 1 =3D OFDM, 2 =3D HT, 3 =
-=3D VHT, 4 =3D HE. */
-+           gi          : 2, /* GI - O =3D Long, 1 =3D Short, 2 =3D Very sh=
-ort. */
-+           bw          : 2, /* Bandwidth - 0 =3D 20M, 1 =3D 40M, 2 =3D 80M=
-, 3 =3D 160M. */
-+           nss         : 3, /* Spatial Streams - 0 =3D 1SS, 1 =3D 2SS, .. =
-7 =3D 8SS. */
-+           mcs         : 4, /* MCS - CCK (0 - 3), OFDM/HT (0 - 7), VHT (0 =
-- 9), HE (0 - 11). */
-+           fallback_en : 1,
-+           is_fixed    : 1;
-+};
++       wrs_pr_trace(wrs_db,
++                    "[WRS] Select rate based rssi - sta=3D%u, rssi [%d,%d,=
+%d,%d], "
++                    "rate_idx=3D%u, bw=3D%u, nss=3D%u, mcs=3D%u\n",
++                    wrs_sta->sta_idx,
++                    rssi_sort[0],
++                    rssi_sort[1],
++                    rssi_sort[2],
++                    rssi_sort[3],
++                    rate_idx,
++                    wrs_params->table[rate_idx].rate.bw,
++                    wrs_params->table[rate_idx].rate.nss,
++                    wrs_params->table[rate_idx].rate.mcs);
 +
-+struct cl_wrs_logger {
-+       unsigned long timestamp;
-+       u16 rate_idx;
-+       u32 success;
-+       u32 fail;
-+       u32 ba_not_rcv;
-+       u16 down_rate_idx;
-+       u16 up_rate_idx;
-+       u16 curr_epr;
-+       u16 down_epr;
-+       u16 down_epr_factorized;
-+       u16 penalty;
-+       u16 up_time;
-+       enum cl_wrs_decision decision;
-+       u16 new_rate_idx;
-+};
++       return rate_idx;
++}
 +
-+struct cl_wrs_per_stats {
-+       struct list_head list;
-+       u8 mcs;
-+       u8 bw;
-+       u8 nss;
-+       u8 gi;
-+       u32 frames_total;
-+       u32 frames_failed;
-+       u64 epr_acc;
-+};
++bool cl_wrs_rssi_set_rate(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_db,
++                         struct cl_wrs_sta *wrs_sta)
++{
++       struct cl_wrs_params *wrs_params =3D &wrs_sta->su_params;
++       s8 rssi_sort[MAX_ANTENNAS] =3D {0};
++       u16 new_rate_idx =3D 0;
 +
-+struct cl_wrs_rssi_prot_db {
-+       s8 samples_old[WRS_RSSI_PROTECT_BUF_SZ_OLD];
-+       s8 samples_new[WRS_RSSI_PROTECT_BUF_SZ_NEW];
-+       u8 curr_idx_old;
-+       u8 curr_idx_new;
-+       s32 sum;
-+};
++       /* Get rssi */
++       cl_wrs_rssi_eq_calc(cl_hw, wrs_sta, true, rssi_sort);
 +
-+struct cl_wrs_params {
-+       u8 is_fixed_rate  : 2,
-+          quick_up_check : 1,
-+          rsv            : 5;
-+       u32 up_same_time_cnt;
-+       u32 down_time_cnt;
-+       enum cl_wrs_converge_mode converge_mode;
-+       u32 converge_time_idle;
-+       u32 converge_time_trfc;
-+       u16 data_rate;
-+       u16 rate_idx;
-+       struct cl_wrs_table *table;
-+       u16 table_size;
-+       u16 penalty_decision_dn;
-+       struct cl_wrs_tx_params tx_params;
-+       enum cl_wrs_decision last_decision;
-+       u32 decision_cnt[WRS_DECISION_MAX];
-+       struct list_head list_rates;
-+       u32 frames_total;
-+       u32 fail_total;
-+       u32 ba_not_rcv_total;
-+       u64 epr_acc;
-+       bool calc_ba_not_rcv;
-+       bool sync;
-+       unsigned long sync_timestamp;
-+       unsigned long no_sync_timestamp;
-+       u32 immediate_drop_cntr;
-+       u32 immediate_drop_ignore;
-+};
++       /* Find new rate according to rssi thresholds */
++       new_rate_idx =3D cl_wrs_rssi_find_rate(cl_hw, wrs_db, wrs_sta, rssi=
+_sort);
 +
-+struct cl_wrs_sta {
-+       u8 sta_idx;
-+       bool smps_enable;
-+       u8 assoc_bw;
-+       u8 gi_cap[CHNL_BW_MAX];
-+       u64 supported_rates[CHNL_BW_MAX];
-+       enum cl_wrs_mode mode;
-+       struct cl_wrs_rate max_rate_cap;
-+       struct cl_wrs_rssi_prot_db rssi_prot_db;
-+       struct cl_wrs_params su_params;
-+};
++       if (new_rate_idx !=3D wrs_params->rate_idx) {
++               cl_wrs_decision_update(wrs_db, wrs_sta, wrs_params,
++                                      WRS_DECISION_RSSI_MGMT, new_rate_idx=
+);
++               cl_wrs_tx_params_update(cl_hw, wrs_db, wrs_sta, wrs_params,
++                                       new_rate_idx, false);
++       } else {
++               wrs_params->sync =3D true;
++       }
 +
-+struct cl_wrs_db {
-+       /* General */
-+       spinlock_t lock;
-+       enum cl_dbg_level debug_level;
-+       /* Timer */
-+       struct cl_timer timer_maintenance;
-+       u32 interval;
-+       /* Fixed rate */
-+       u8 is_fixed_rate;
-+       /* Conservative initial rate */
-+       bool conservative_mcs_noisy_env;
-+       bool conservative_nss_noisy_env;
-+       /* Immediate drop */
-+       bool immediate_drop_en;
-+       u8 immediate_drop_epr_factor;
-+       u32 immediate_drop_max_in_row;
-+       /* Converge idle */
-+       bool converge_idle_en;
-+       u32 converge_idle_interval_reset;
-+       u32 converge_idle_interval_rssi;
-+       u32 converge_idle_packet_th;
-+       /* Converge traffic */
-+       bool converge_trfc_en;
-+       u32 converge_trfc_interval_static;
-+       u32 converge_trfc_interval_motion;
-+       /* Supported rates */
-+       u8 mode;
-+       u64 ap_supported_rates[CHNL_BW_MAX]; /* Bit array for each bw */
-+       struct cl_wrs_rate max_cap;
-+       /* RSSI protect */
-+       bool rssi_protect_en;
-+       u8 rssi_protect_mode;
-+       s8 rssi_protect_up_thr;
-+       s8 rssi_protect_dn_thr;
-+       /* Time + step thresholds */
-+       u16 time_th_min;
-+       u16 time_th_max_up;
-+       u16 time_th_max_down;
-+       u16 step_down;
-+       u16 step_up_same;
-+       /* Quick up */
-+       bool quick_up_en;
-+       u8 quick_up_ba_thr;
-+       u16 quick_up_interval;
-+       /* Quick down */
-+       bool quick_down_en;
-+       u8 quick_down_epr_factor;
-+       u8 quick_down_agg_thr;
-+       u16 quick_down_pkt_thr;
-+       /* BA not received */
-+       bool ba_not_rcv_collision_filter;
-+       bool ba_not_rcv_force;
-+       u32 ba_not_rcv_time_since_sync;
-+       /* Sync */
-+       u16 sync_timeout;
-+       u8 sync_min_attempts;
-+       /* CCA counters */
-+       unsigned long cca_timestamp;
-+       u32 cca_primary;
-+       u32 cca_sec80;
-+       u32 cca_sec40;
-+       u32 cca_sec20;
-+       bool adjacent_interference20;
-+       bool adjacent_interference40;
-+       bool adjacent_interference80;
-+       /* All the rest */
-+       u32 min_frames_for_decision;
-+       u8 epr_factor;
-+};
++       return true;
++}
 +
-+#endif /* CL_WRS_DB_H */
++/*
++ * Section #2:
++ * rssi protect.
++ */
++static void cl_wrs_rssi_prot_set_avg(struct cl_wrs_sta *wrs_sta, s8 avg)
++{
++       struct cl_wrs_rssi_prot_db *rssi_prot_db =3D &wrs_sta->rssi_prot_db=
+;
++
++       memset(rssi_prot_db->samples_old, avg, WRS_RSSI_PROTECT_BUF_SZ_OLD)=
+;
++       memset(rssi_prot_db->samples_new, avg, WRS_RSSI_PROTECT_BUF_SZ_NEW)=
+;
++       rssi_prot_db->sum =3D avg << WRS_RSSI_PROTECT_SHIFT;
++}
++
++static s8 cl_wrs_rssi_prot_add_smpl(struct cl_wrs_sta *wrs_sta, s8 rssi_eq=
+)
++{
++       struct cl_wrs_rssi_prot_db *rssi_prot_db =3D &wrs_sta->rssi_prot_db=
+;
++       u8 curr_idx_old =3D rssi_prot_db->curr_idx_old;
++       u8 curr_idx_new =3D rssi_prot_db->curr_idx_new;
++
++       rssi_prot_db->sum +=3D
++               rssi_prot_db->samples_new[curr_idx_new] - rssi_prot_db->sam=
+ples_old[curr_idx_old];
++       rssi_prot_db->samples_old[curr_idx_old] =3D rssi_prot_db->samples_n=
+ew[curr_idx_new];
++       rssi_prot_db->samples_new[curr_idx_new] =3D rssi_eq;
++
++       rssi_prot_db->curr_idx_old =3D
++               WRS_INC_POW2(rssi_prot_db->curr_idx_old, WRS_RSSI_PROTECT_B=
+UF_SZ_OLD);
++       WRS_INC(rssi_prot_db->curr_idx_new, WRS_RSSI_PROTECT_BUF_SZ_NEW);
++
++       return (s8)(wrs_sta->rssi_prot_db.sum >> WRS_RSSI_PROTECT_SHIFT);
++}
++
++static bool cl_wrs_rssi_prot_decision_up(struct cl_hw *cl_hw, struct cl_wr=
+s_db *wrs_db,
++                                        struct cl_wrs_sta *wrs_sta, s8 rss=
+i_avg, s8 rssi_eq,
++                                        s8 *rssi_sort, u8 up_rate_idx)
++{
++       /* Decide UP only if all new samples are greater than old average *=
+/
++       struct cl_wrs_params *wrs_params =3D &wrs_sta->su_params;
++       s8 *samples_new =3D wrs_sta->rssi_prot_db.samples_new;
++       s8 up_thr =3D rssi_avg + wrs_db->rssi_protect_up_thr;
++       u8 i =3D 0;
++
++       for (i =3D 0; i < WRS_RSSI_PROTECT_BUF_SZ_NEW; i++)
++               if (samples_new[i] <=3D up_thr)
++                       return false;
++
++       if (wrs_db->rssi_protect_mode =3D=3D WRS_RSSI_PROT_MODE_RSSI) {
++               u16 rate_idx_old =3D wrs_params->rate_idx;
++               u16 rate_idx_new =3D cl_wrs_rssi_find_rate(cl_hw, wrs_db, w=
+rs_sta, rssi_sort);
++               struct cl_wrs_rate *rate_old =3D &wrs_params->table[rate_id=
+x_old].rate;
++               struct cl_wrs_rate *rate_new =3D &wrs_params->table[rate_id=
+x_new].rate;
++               u16 data_rate_old =3D cl_data_rates_get_x10(wrs_sta->mode, =
+rate_old->bw,
++                                                         rate_old->nss, ra=
+te_old->mcs,
++                                                         rate_old->gi);
++               u16 data_rate_new =3D cl_data_rates_get_x10(wrs_sta->mode, =
+rate_new->bw,
++                                                         rate_new->nss, ra=
+te_new->mcs,
++                                                         rate_new->gi);
++
++               if (rate_idx_old =3D=3D rate_idx_new || data_rate_old >=3D =
+data_rate_new)
++                       rate_idx_new =3D up_rate_idx;
++
++               wrs_pr_info(wrs_db, "[WRS] Increase rate based on RSSI - ol=
+d [%u], new [%u]\n",
++                           rate_idx_old, rate_idx_new);
++               cl_wrs_decision_update(wrs_db, wrs_sta, wrs_params,
++                                      WRS_DECISION_UP_RSSI, rate_idx_new);
++               cl_wrs_tx_params_update(cl_hw, wrs_db, wrs_sta,
++                                       wrs_params, rate_idx_new, true);
++       } else {
++               cl_wrs_decision_make(cl_hw, wrs_db, wrs_sta, wrs_params,
++                                    WRS_DECISION_UP_RSSI, up_rate_idx);
++       }
++
++       cl_wrs_tables_reset(wrs_db, wrs_sta, wrs_params);
++       cl_wrs_rssi_prot_set_avg(wrs_sta, rssi_eq);
++
++       return true;
++}
++
++static bool cl_wrs_rssi_prot_decision_down(struct cl_hw *cl_hw, struct cl_=
+wrs_db *wrs_db,
++                                          struct cl_wrs_sta *wrs_sta, s8 r=
+ssi_avg, s8 rssi_eq,
++                                          s8 *rssi_sort, u8 down_rate_idx)
++{
++       /* Decide DOWN only if all new samples are smaller than old average=
+ */
++       struct cl_wrs_params *wrs_params =3D &wrs_sta->su_params;
++       s8 *samples_new =3D wrs_sta->rssi_prot_db.samples_new;
++       s8 dn_thr =3D rssi_avg - wrs_db->rssi_protect_dn_thr;
++       u8 i =3D 0;
++
++       if (wrs_params->rate_idx =3D=3D 0)
++               return false;
++
++       for (i =3D 0; i < WRS_RSSI_PROTECT_BUF_SZ_NEW; i++)
++               if (samples_new[i] >=3D dn_thr)
++                       return false;
++
++       if (wrs_db->rssi_protect_mode =3D=3D WRS_RSSI_PROT_MODE_RSSI) {
++               u16 rate_idx_old =3D wrs_params->rate_idx;
++               u16 rate_idx_new =3D cl_wrs_rssi_find_rate(cl_hw, wrs_db, w=
+rs_sta, rssi_sort);
++               struct cl_wrs_rate *rate_old =3D &wrs_params->table[rate_id=
+x_old].rate;
++               struct cl_wrs_rate *rate_new =3D &wrs_params->table[rate_id=
+x_new].rate;
++               u16 data_rate_old =3D cl_data_rates_get_x10(wrs_sta->mode, =
+rate_old->bw,
++                                                         rate_old->nss, ra=
+te_old->mcs,
++                                                         rate_old->gi);
++               u16 data_rate_new =3D cl_data_rates_get_x10(wrs_sta->mode, =
+rate_new->bw,
++                                                         rate_new->nss, ra=
+te_new->mcs,
++                                                         rate_new->gi);
++
++               if (rate_idx_old =3D=3D rate_idx_new || data_rate_old <=3D =
+data_rate_new)
++                       rate_idx_new =3D down_rate_idx;
++
++               wrs_pr_info(wrs_db, "[WRS] Decrease rate based on RSSI - ol=
+d [%u], new [%u]\n",
++                           rate_idx_old, rate_idx_new);
++               cl_wrs_decision_update(wrs_db, wrs_sta, wrs_params,
++                                      WRS_DECISION_DOWN_RSSI, rate_idx_new=
+);
++               cl_wrs_tx_params_update(cl_hw, wrs_db, wrs_sta, wrs_params,
++                                       rate_idx_new, true);
++       } else {
++               cl_wrs_decision_make(cl_hw, wrs_db, wrs_sta, wrs_params,
++                                    WRS_DECISION_DOWN_RSSI, down_rate_idx)=
+;
++       }
++
++       cl_wrs_tables_reset(wrs_db, wrs_sta, wrs_params);
++       cl_wrs_rssi_prot_set_avg(wrs_sta, rssi_eq);
++
++       return true;
++}
++
++static void cl_wrs_rssi_prot_reset(struct cl_hw *cl_hw, struct cl_sta *cl_=
+sta)
++{
++       memset(&cl_sta->wrs_sta.rssi_prot_db, 0, sizeof(struct cl_wrs_rssi_=
+prot_db));
++}
++
++void cl_wrs_rssi_prot_start(struct cl_hw *cl_hw, struct cl_sta *cl_sta)
++{
++       struct cl_wrs_sta *wrs_sta =3D &cl_sta->wrs_sta;
++       s8 rssi_sort[MAX_ANTENNAS] =3D {0};
++       s8 rssi_eq =3D 0;
++
++       if (!cl_hw->wrs_db.rssi_protect_en)
++               return;
++
++       rssi_eq =3D cl_wrs_rssi_eq_calc(cl_hw, wrs_sta, false, rssi_sort);
++       cl_wrs_rssi_prot_set_avg(wrs_sta, rssi_eq);
++}
++
++bool cl_wrs_rssi_prot_decision(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_=
+db,
++                              struct cl_wrs_sta *wrs_sta, bool up_rate_val=
+id,
++                              u8 up_rate_idx, u8 down_rate_idx)
++{
++       s8 rssi_avg =3D 0;
++       s8 rssi_eq =3D 0;
++       s8 rssi_sort[MAX_ANTENNAS] =3D {0};
++
++       rssi_eq =3D cl_wrs_rssi_eq_calc(cl_hw, wrs_sta, true, rssi_sort);
++       rssi_avg =3D cl_wrs_rssi_prot_add_smpl(wrs_sta, rssi_eq);
++
++       if (up_rate_valid)
++               if (cl_wrs_rssi_prot_decision_up(cl_hw, wrs_db, wrs_sta, rs=
+si_avg,
++                                                rssi_eq, rssi_sort, up_rat=
+e_idx))
++                       return true;
++
++       return cl_wrs_rssi_prot_decision_down(cl_hw, wrs_db, wrs_sta, rssi_=
+avg,
++                                             rssi_eq, rssi_sort, down_rate=
+_idx);
++}
++
++void cl_wrs_rssi_prot_dbg(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_db,
++                         struct cl_wrs_sta *wrs_sta)
++{
++       struct cl_wrs_rssi_prot_db *rssi_prot_db =3D NULL;
++       u8 curr_idx_old =3D 0;
++       u8 curr_idx_new =3D 0;
++       u8 rate_idx =3D 0;
++       char *buf =3D NULL;
++       ssize_t buf_size;
++       int len =3D 0;
++
++       if (!wrs_db->rssi_protect_en) {
++               cl_snprintf(&buf, &len, &buf_size, "RSSI protect is disable=
+d!\n");
++               goto out;
++       }
++
++       rssi_prot_db =3D &wrs_sta->rssi_prot_db;
++       curr_idx_old =3D rssi_prot_db->curr_idx_old;
++       curr_idx_new =3D rssi_prot_db->curr_idx_new;
++
++       cl_snprintf(&buf, &len, &buf_size, "sta %u\n", wrs_sta->sta_idx);
++       cl_snprintf(&buf, &len, &buf_size, "Old rssi samples:");
++
++       for (rate_idx =3D 0; rate_idx < WRS_RSSI_PROTECT_BUF_SZ_OLD; rate_i=
+dx++) {
++               if (!(rate_idx & 0x7))
++                       cl_snprintf(&buf, &len, &buf_size, "\n");
++
++               cl_snprintf(&buf, &len, &buf_size, "%3u) %d, ",
++                           rate_idx, rssi_prot_db->samples_old[curr_idx_ol=
+d]);
++               curr_idx_old =3D WRS_INC_POW2(curr_idx_old, WRS_RSSI_PROTEC=
+T_BUF_SZ_OLD);
++       }
++
++       cl_snprintf(&buf, &len, &buf_size, "\nAvg =3D [%d]\n\n",
++                   wrs_sta->rssi_prot_db.sum >> WRS_RSSI_PROTECT_SHIFT);
++
++       cl_snprintf(&buf, &len, &buf_size, "New rssi samples:\n");
++       for (rate_idx =3D 0; rate_idx < WRS_RSSI_PROTECT_BUF_SZ_NEW; rate_i=
+dx++) {
++               cl_snprintf(&buf, &len, &buf_size, "%u) %d\n", rate_idx,
++                           rssi_prot_db->samples_new[curr_idx_new]);
++               curr_idx_new =3D WRS_INC_POW2(curr_idx_new, WRS_RSSI_PROTEC=
+T_BUF_SZ_NEW);
++       }
++out:
++       cl_vendor_reply(cl_hw, buf, len);
++       kfree(buf);
++}
++
++void cl_wrs_rssi_prot_config(struct cl_hw *cl_hw, struct cl_wrs_db *wrs_db=
+,
++                            bool enable, bool mode, s32 rssi_up_thr, s32 r=
+ssi_dn_thr)
++{
++       bool en_prev =3D wrs_db->rssi_protect_en;
++
++       wrs_db->rssi_protect_en =3D enable;
++       wrs_db->rssi_protect_mode =3D mode;
++       wrs_db->rssi_protect_up_thr =3D (s8)rssi_up_thr;
++       wrs_db->rssi_protect_dn_thr =3D (s8)rssi_dn_thr;
++
++       if (!en_prev && wrs_db->rssi_protect_en)
++               cl_sta_loop_bh(cl_hw, cl_wrs_rssi_prot_start);
++       else if (en_prev && !wrs_db->rssi_protect_en)
++               cl_sta_loop_bh(cl_hw, cl_wrs_rssi_prot_reset);
++
++       pr_debug("[WRS] Enable =3D %s, Mode =3D %s, Up threshold =3D %d, Do=
+wn threshold =3D %d\n",
++                wrs_db->rssi_protect_en ? "true" : "false",
++                wrs_db->rssi_protect_mode ? "rssi" : "neighbor",
++                wrs_db->rssi_protect_up_thr,
++                wrs_db->rssi_protect_dn_thr);
++}
 --
 2.30.0
 
