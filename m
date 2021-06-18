@@ -2,121 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 452023AD0FB
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 19:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CB0A3AD105
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 19:15:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233669AbhFRRPH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Jun 2021 13:15:07 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:54364 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232598AbhFRRPF (ORCPT
+        id S236064AbhFRRRG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Jun 2021 13:17:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236052AbhFRRRG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Jun 2021 13:15:05 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624036376; h=Content-Type: MIME-Version: Message-ID: Date:
- References: In-Reply-To: Subject: Cc: To: From: Sender;
- bh=9WX/tS6yFNICIaQ97f9GR/N/9aRMSiCPvLjxFXkem3M=; b=WE+7Erf5iENLtmGoJXz/aQlImzv2gLJupy8g0GgOqfdOILZWt1S9Eo1EoEQw6tVShmBYvpou
- HZuuR3+nLXLDLmjSRcPJiz2tjNQ6v3S9TI6IZ2FA4eTFnLcxANPctp8bCT8X8dJ6G9bIgpRM
- EArPFK8KGp0/FVqJ6Sn/fzwnYK0=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 60ccd406e570c05619cef725 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 18 Jun 2021 17:12:38
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 715A1C4338A; Fri, 18 Jun 2021 17:12:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C8D98C433F1;
-        Fri, 18 Jun 2021 17:12:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C8D98C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2021-06-18
-In-Reply-To: <3369c6a7-1fa5-7f9a-2d50-867d61dce304@nbd.name> (Felix Fietkau's
-        message of "Fri, 18 Jun 2021 17:26:33 +0200")
-References: <3369c6a7-1fa5-7f9a-2d50-867d61dce304@nbd.name>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Fri, 18 Jun 2021 20:12:34 +0300
-Message-ID: <87v96bhzb1.fsf@codeaurora.org>
+        Fri, 18 Jun 2021 13:17:06 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA278C061574
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Jun 2021 10:14:55 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id g4so6083588pjk.0
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Jun 2021 10:14:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=IG1N/xYEJPDHXZM58vax/RZqEdUoBLDIXoPzlvwPpq4=;
+        b=XVMSUkOBoyHfSQlN0FVLe7Gm3IY8nt2yFfBQSg2POl3XMDU024mnmVlwKkuLplEOWH
+         D39TIEwx7B8TWSyPIv8oYeZ/EwOMyvT7gGOURGkwwhc/YOF6jTn75AD62AT7ieK+e3vb
+         5XzrPhbGTElZRDMwQvhuJjUIzZkp0Wz9T2qV7Y/YLTnOgIeMkUswJqCU8RHOuk84ynn5
+         Q8xqWtjQ6nuxPU49weqONjnY2GxhDY01tcmBEwS3OIG54w5DYf0BS5W1/Di33BGoHhGf
+         aP8F0CMgfZo6/vjNCR4HgyTUZ+kxUW+vhySvE2uprg1GN9Bgh3FLPYjCOO5lmfReLnkU
+         PwiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=IG1N/xYEJPDHXZM58vax/RZqEdUoBLDIXoPzlvwPpq4=;
+        b=FppzFb0/oc1Jhu7u4O6Pqx1caJRRh32SbfIqER6f2AUmy5XXqhP+vBvae25z8UUEvc
+         LbEIbXPXwOjpsv7WiaAs4fkXogW4582E4TKs6TXk5fOSiAq6raKNRqzpiNQGrAuSK5jd
+         TVITaJ7RtTCaGKpWeqTMOownh3AX9mEFAdAAe0uhF29DUL1Kt4usGvAFLnT0kBhDlr2R
+         aDfmfVySdG1s4NszwPFNmOW5HyrMh6BslmwDQ3RVqjCgGKF7NrJ72QWjMK9FHWD8QnNQ
+         LKovTvW0L80SmMzVhTB3HDgnH5uaekjn14+pEHUF7H+0DYRbF4/9rVXo2Ssy7U4NJPls
+         BCxg==
+X-Gm-Message-State: AOAM531lEgBRPHl2V+vdHPkZlZVux0EeLHPFHfKVQhDXhBEnspt7YAKc
+        QiYcZDwau3BNEZ5aRpITWquf2/7jfqU=
+X-Google-Smtp-Source: ABdhPJxK1dbjiWmmYHgUD0/1MBsLFlYSEOYkZvUNGByoBy/Xm1mLbqhbyaAsA5HK+vlqviKMcAvqNw==
+X-Received: by 2002:a17:902:c403:b029:106:7793:3fcc with SMTP id k3-20020a170902c403b029010677933fccmr5616695plk.81.1624036494787;
+        Fri, 18 Jun 2021 10:14:54 -0700 (PDT)
+Received: from [192.168.1.67] (99-44-17-11.lightspeed.irvnca.sbcglobal.net. [99.44.17.11])
+        by smtp.gmail.com with ESMTPSA id u24sm9120526pfm.200.2021.06.18.10.14.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Jun 2021 10:14:54 -0700 (PDT)
+Subject: Re: [PATCH 02/31] mac80211: do not add twice the HE 6GHz cap IE
+To:     Luca Coelho <luca@coelho.fi>, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+References: <20210618104156.747775-1-luca@coelho.fi>
+ <iwlwifi.20210618133832.5b2063dea3b3.I56248f2ce2e22a5c0cf797378726f6904b5de5e2@changeid>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <db8585de-f1a2-b40c-0e4d-30dc5ad1d6ae@gmail.com>
+Date:   Fri, 18 Jun 2021 10:14:52 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.10.2
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <iwlwifi.20210618133832.5b2063dea3b3.I56248f2ce2e22a5c0cf797378726f6904b5de5e2@changeid>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
 
-> Hi Kalle,
->
-> here's an updated version of my first pull request for 5.14
->
-> - Felix
->
-> The following changes since commit 0c33795231bff5df410bd405b569c66851e92d4b:
->
->   Merge tag 'wireless-drivers-next-2021-06-16' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next (2021-06-16 12:59:42 -0700)
->
-> are available in the Git repository at:
->
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-06-18
->
-> for you to fetch changes up to 6edc39a381a0842d6dd5dc073879fcaee08e9989:
->
->   mt76: mt7921: allow chip reset during device restart (2021-06-18 17:18:09 +0200)
->
-> ----------------------------------------------------------------
-> mt76 patches for 5.14
->
-> * mt7915 MSI support
-> * disable ASPM on mt7915
-> * mt7915 tx status reporting
-> * mt7921 decap offload
-> * driver fixes
-> * cleanups
-> * mt7921 runtime power management improvements
-> * testmode improvements/fixes
-> * runtime PM improvements
->
-> ----------------------------------------------------------------
 
-Unfortunately I still see the sysfs warning:
+On 6/18/2021 3:41 AM, Luca Coelho wrote:
+> From: Shaul Triebitz <shaul.triebitz@intel.com>
+> 
+> The HE 6GHz capability IE is already added before:
+> ieee80211_add_he_ie -> ieee80211_ie_build_he_6ghz_cap
+> 
+> Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> ---
+>  net/mac80211/mlme.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> index 2480bd0577bb..310cfd02fda4 100644
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -8,7 +8,7 @@
+>   * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+>   * Copyright 2013-2014  Intel Mobile Communications GmbH
+>   * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
+> - * Copyright (C) 2018 - 2020 Intel Corporation
+> + * Copyright (C) 2018 - 2021 Intel Corporation
 
-drivers/net/wireless/mediatek/mt76/mt7915/init.c: In function 'mt7915_thermal_init':
-drivers/net/wireless/mediatek/mt76/mt7915/init.c:138:17: warning: ignoring return value of 'sysfs_create_link' declared with attribute 'warn_unused_result' [-Wunused-result]
-  138 |                 sysfs_create_link(&wiphy->dev.kobj, &cdev->device.kobj,
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  139 |                                   "cooling_device");
-      |                                   ~~~~~~~~~~~~~~~~~
-
-And s-o-b is missing in one commit:
-
-Commit
-
-  7c649aa4de81 ("mt76: move mt76_rates in mt76 module")
-
-is missing a Signed-off-by from its committer.
-
-I checked that I pulled the correct tag, and not the old one:
-
-From https://github.com/nbd168/wireless
- * tag                         mt76-for-kvalo-2021-06-18 -> FETCH_HEAD
-
+This change only bumps the copyright year...
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Florian
