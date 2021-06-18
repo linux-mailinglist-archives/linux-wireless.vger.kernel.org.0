@@ -2,165 +2,242 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DAE43AC41F
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 08:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A82E83AC421
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 08:47:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232609AbhFRGr3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Jun 2021 02:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53600 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232570AbhFRGr3 (ORCPT
+        id S229816AbhFRGtK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Jun 2021 02:49:10 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:38845 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229580AbhFRGtK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Jun 2021 02:47:29 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C26BC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 23:45:20 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id 13-20020a17090a08cdb029016eed209ca4so5303813pjn.1
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jun 2021 23:45:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=okAyK8M7Z6Ptw0beX4Y2yCnZuEPisK0I1+muMAhoiXg=;
-        b=zvf795snOW2u51TXtNSz7v4xK9goLJUViwWj0aEGNbsut7dP75ADSDlQh6oE7mcJ2S
-         KQxOAl4vPgYZpTfVuyt6MAnzP/7BgRrJu2/GVYEyZJwUT5IRHxkdr7Isvudt85dQ9zzh
-         xHAjB4fCPwghogU+JREfrotPHVsyLiXqyXfaCgPnWBYoF6vwyzckE1Odm7FiE+eEXMzO
-         TlsmJskTiSwW8U36LJKco/Ex63OSmZa/KZ5/IVsFNdhIdsGZdtLBTPaWEuUmPlyrW4Gc
-         X9XjDC3nw93l03ofs0zegJI5k8Wc2bWf1ivyX0i4zRjgUB7CVKGOqekAYHqlj3hFr3NL
-         PlRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=okAyK8M7Z6Ptw0beX4Y2yCnZuEPisK0I1+muMAhoiXg=;
-        b=BkLF35B5UJRcROayUtIJBVtIdoZCLUPa6pLinB1aHvbVmgUzyM9Tt2hBdXGlXeeZ7R
-         d84pakMgEh1RRn7XPieWQE7kHz3cbbEg/hXB0wHZUQ8fMwAPcQn791Dp64xNb9y4dlAG
-         L0Gc+mkKd+izLJZFJa26bNYSn8PE7l9EZLvS84y1EyLqoa6vwB13Q7WfeQ8aKYwJWCCn
-         bYmnke4moTwG+fb2+o1w41+0Fxolh6Wauski/YAGW01Binmg3iQpMRIWoq5xvXkncygt
-         cntqixQf7fh2DHUFM3ylZXKyijN3ZUyRe0Y4rYZZVlD4mUFOs1HAQtS+/2OzSjnYurSc
-         pBwA==
-X-Gm-Message-State: AOAM533DvY8q9vaNOn4zmeB9aAuubj1IHl6n8ilL1K9mzjD5JjYPCAo+
-        pZPYZYqnMgGyiU4Hy9jTeYqM
-X-Google-Smtp-Source: ABdhPJw7hiGjytMs5xdZLxzGMXIBTPSrji65dpHP37DcFsR16C6/rcqV4IZNtVQLqLewkCrdfqATzw==
-X-Received: by 2002:a17:902:b188:b029:11b:1549:da31 with SMTP id s8-20020a170902b188b029011b1549da31mr3431833plr.7.1623998719794;
-        Thu, 17 Jun 2021 23:45:19 -0700 (PDT)
-Received: from workstation ([120.138.13.11])
-        by smtp.gmail.com with ESMTPSA id b18sm7026451pfb.131.2021.06.17.23.45.16
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 17 Jun 2021 23:45:19 -0700 (PDT)
-Date:   Fri, 18 Jun 2021 12:15:14 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Bhaumik Bhatt <bbhatt@codeaurora.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-arm-msm@vger.kernel.org,
-        hemantk@codeaurora.org, jhugo@codeaurora.org,
-        linux-kernel@vger.kernel.org, loic.poulain@linaro.org,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        bbhatt=codeaurora.org@codeaurora.org, lilic@codeaurora.org,
-        kangxu@codeaurora.org
-Subject: Re: [PATCH v4 4/6] ath11k: set register access length for MHI driver
-Message-ID: <20210618064514.GM3682@workstation>
-References: <1620330705-40192-1-git-send-email-bbhatt@codeaurora.org>
- <1620330705-40192-5-git-send-email-bbhatt@codeaurora.org>
- <20210521135152.GL70095@thinkpad>
- <87h7i0juxt.fsf@codeaurora.org>
- <37184e28dcc952ba9ad5ed0dc2c1a6da@codeaurora.org>
- <6ed9fe90f40e5f8151d3a028abf0acd1@codeaurora.org>
+        Fri, 18 Jun 2021 02:49:10 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 15I6kuLoB010955, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 15I6kuLoB010955
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 18 Jun 2021 14:46:56 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 18 Jun 2021 14:46:55 +0800
+Received: from localhost (172.16.16.17) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 18 Jun
+ 2021 14:46:41 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH 00/24] rtw89: add Realtek 802.11ax driver
+Date:   Fri, 18 Jun 2021 14:46:01 +0800
+Message-ID: <20210618064625.14131-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ed9fe90f40e5f8151d3a028abf0acd1@codeaurora.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.17]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 06/18/2021 06:27:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzYvMTggpFekyCAwNjowMTowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 06/18/2021 06:23:56
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 164465 [Jun 18 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;github.com:7.1.1;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 06/18/2021 06:27:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jun 16, 2021 at 10:38:01AM -0700, Bhaumik Bhatt wrote:
-> Hi Kalle/Mani,
-> 
-> On 2021-06-14 10:49 AM, Bhaumik Bhatt wrote:
-> > Hi Kalle,
-> > 
-> > On 2021-06-14 09:02 AM, Kalle Valo wrote:
-> > > Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
-> > > 
-> > > > On Thu, May 06, 2021 at 12:51:43PM -0700, Bhaumik Bhatt wrote:
-> > > > > MHI driver requires register space length to add range checks and
-> > > > > prevent memory region accesses outside of that for MMIO space.
-> > > > > Set it before registering the MHI controller.
-> > > > > 
-> > > > > Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
-> > > > > Reviewed-by: Hemant Kumar <hemantk@codeaurora.org>
-> > > > 
-> > > > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > > > 
-> > > > Kalle, should we do immutable branch for this patch or I can
-> > > > pick it up via MHI
-> > > > tree (if there are no other patches expected from ath11k for
-> > > > this controller)?
-> > > 
-> > > I'm not expecting any conflicts with this, and if there are, they
-> > > should
-> > > be easy for Stephen or Linus to fix. So it's easiest to route this via
-> > > your tree. But I'm not giving my ack yet, see below.
-> > > 
-> > > I'm worried that this patchset breaks bisect. Every patch in the
-> > > patchset should not break existing functionality, what if only patches
-> > > 1-3 are included in the tree but not patch 4? Wouldn't ath11k be
-> > > broken
-> > > then? I didn't review the whole patchset, but I suspect the fix is to
-> > > include the ath11k change in the actual mhi patch which changes the
-> > > functionality. So that way we would not have a separate ath11k patch
-> > > at
-> > > all.
-> > > 
-> > > Also I'm not able to test this patchset at the moment. Can someone
-> > > else
-> > > help and do a quick test with QCA6390 to verify these doesn't break
-> > > ath11k?
-> > 
-> > I have requested someone to try and test this patch series with QCA6390.
-> > 
-> > I or the testers will get back to you with the test results when they
-> > are
-> > available.
-> > 
-> > As far as your concerns go, you can choose to pick patches 1-3 and that
-> > would
-> > be just fine.
-> > 
-> > Things will break if patchset 4 is _not_ in place with patchset 6 being
-> > part of
-> > the tree.
-> > 
-> > It would, however, be nice to pick the whole series instead and ensure
-> > that
-> > the functionality MHI introduces for boot-up sanity is in place for any
-> > controllers such as ath11k.
-> > 
-> > Thanks,
-> > Bhaumik
-> > ---
-> > The Qualcomm Innovation Center, Inc. is a member of the Code Aurora
-> > Forum,
-> > a Linux Foundation Collaborative Project
-> 
-> Just got confirmation that the whole patch series was tested for functional
-> sanity on
-> Dell E7590 + QCA6390 with Ubuntu18.04 and patch 4/6 is also good to go.
-> 
-> Can you please ACK and pick up this series?
-> 
+This driver named rtw89, which is the next generation of rtw88, supports
+Realtek 8852AE 802.11ax 2x2 chip whose new features are OFDMA, DBCC,
+Spatial reuse, TWT and BSS coloring; now some of them aren't implemented
+though.
 
-I can pick the series but I need an Ack from Kalle since it contains
-ath11k changes. Kalle, can you please Ack this patch?
+The chip architecture is entirely different from the chips supported by
+rtw88 like RTL8822CE 802.11ac chip. First of all, register address ranges
+are totally redefined, so it's impossible to reuse register definition. To
+communicate with firmware, new H2C/C2H format is proposed. In order to have
+better utilization, TX DMA flow is changed to two stages DMA. To provide
+rich RX status information, additional RX PPDU packets are added.
 
-I'm planning to send the PR by this weekend.
+Since there are so many differences mentioned above, we decide to propose
+a new driver. It has many authors, they are listed in alphabetic order:
 
-Thanks,
-Mani
+Chin-Yen Lee <timlee@realtek.com>
+Ping-Ke Shih <pkshih@realtek.com>
+Po Hao Huang <phhuang@realtek.com>
+Tzu-En Huang <tehuang@realtek.com>
+Vincent Fann <vincent_fann@realtek.com>
+Yan-Hsuan Chuang <tony0620emma@gmail.com>
+Zong-Zhe Yang <kevin_yang@realtek.com>
 
-> Thanks,
-> Bhaumik
-> ---
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-> a Linux Foundation Collaborative Project
+v5:
+  - add OFDMA feature
+  - improve BT coexistence performance
+  - improve power save mode
+  - support SAR
+  - fine tune performance
+  - firmware: rtw89: 8852a: update fw to v0.13.24.0
+    https://github.com/pkshih/linux-firmware.git 
+    pick the commit a5b79c4790da3eb3690e23554225ef8db464f2c6
+v4:
+  - add basic BT coexistence features
+  - add power save mode, so an new patch (two files) is added
+  - fine tune performance
+  - add debugfs for debugging coex, bb, ...
+v3:
+  - fix "networking block comments" reported by checkpatch
+  - Add MODULE_DEVICE_TABLE() generated by Thomas Backlund <tmb@mageia.org>
+  - Add missed BB settings
+  - error handle of RX BD and DESC length
+  - reduce debug level of C2H ACKs
+  - fix rekey failure due to wrong operator
+v2:
+  - fix compiler warnings made by W=1
+    Reported-by: kernel test robot <lkp@intel.com>
+  - sort header file alphabetically
+  - fix "networking block comments" reported by checkpatch
+
+Ping-Ke Shih (24):
+  rtw89: add CAM files
+  rtw89: add BT coexistence files
+  rtw89: add core and trx files
+  rtw89: add debug files
+  rtw89: add efuse files
+  rtw89: add files to download and communicate with firmware
+  rtw89: add MAC files
+  rtw89: implement mac80211 ops
+  rtw89: add pci files
+  rtw89: add phy files
+  rtw89: define register names
+  rtw89: add regulatory support
+  rtw89: 8852a: add 8852a specific files
+  rtw89: 8852a: add 8852a RFK files
+  rtw89: 8852a: add 8852a RFK tables
+  rtw89: 8852a: add 8852a tables (1 of 5)
+  rtw89: 8852a: add 8852a tables (2 of 5)
+  rtw89: 8852a: add 8852a tables (3 of 5)
+  rtw89: 8852a: add 8852a tables (4 of 5)
+  rtw89: 8852a: add 8852a tables (5 of 5)
+  rtw89: add ser to recover error reported by firmware
+  rtw89: add PS files
+  rtw89: add SAR files
+  rtw89: add Kconfig and Makefile
+
+ drivers/net/wireless/realtek/Kconfig          |     1 +
+ drivers/net/wireless/realtek/Makefile         |     1 +
+ drivers/net/wireless/realtek/rtw89/Kconfig    |    50 +
+ drivers/net/wireless/realtek/rtw89/Makefile   |    26 +
+ drivers/net/wireless/realtek/rtw89/cam.c      |   700 +
+ drivers/net/wireless/realtek/rtw89/cam.h      |   165 +
+ drivers/net/wireless/realtek/rtw89/coex.c     |  5620 ++
+ drivers/net/wireless/realtek/rtw89/coex.h     |   152 +
+ drivers/net/wireless/realtek/rtw89/core.c     |  2359 +
+ drivers/net/wireless/realtek/rtw89/core.h     |  3336 ++
+ drivers/net/wireless/realtek/rtw89/debug.c    |  2404 +
+ drivers/net/wireless/realtek/rtw89/debug.h    |    77 +
+ drivers/net/wireless/realtek/rtw89/efuse.c    |   188 +
+ drivers/net/wireless/realtek/rtw89/efuse.h    |    13 +
+ drivers/net/wireless/realtek/rtw89/fw.c       |  1599 +
+ drivers/net/wireless/realtek/rtw89/fw.h       |  1378 +
+ drivers/net/wireless/realtek/rtw89/mac.c      |  4070 ++
+ drivers/net/wireless/realtek/rtw89/mac.h      |   905 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   667 +
+ drivers/net/wireless/realtek/rtw89/pci.c      |  3030 +
+ drivers/net/wireless/realtek/rtw89/pci.h      |   601 +
+ drivers/net/wireless/realtek/rtw89/phy.c      |  2736 +
+ drivers/net/wireless/realtek/rtw89/phy.h      |   305 +
+ drivers/net/wireless/realtek/rtw89/ps.c       |   149 +
+ drivers/net/wireless/realtek/rtw89/ps.h       |    15 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  2116 +
+ drivers/net/wireless/realtek/rtw89/regd.c     |   353 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  2083 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.h |   109 +
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c |  3806 ++
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.h |    22 +
+ .../realtek/rtw89/rtw8852a_rfk_table.c        |  1596 +
+ .../realtek/rtw89/rtw8852a_rfk_table.h        |   132 +
+ .../wireless/realtek/rtw89/rtw8852a_table.c   | 48725 ++++++++++++++++
+ .../wireless/realtek/rtw89/rtw8852a_table.h   |    28 +
+ drivers/net/wireless/realtek/rtw89/sar.c      |   190 +
+ drivers/net/wireless/realtek/rtw89/sar.h      |    26 +
+ drivers/net/wireless/realtek/rtw89/ser.c      |   491 +
+ drivers/net/wireless/realtek/rtw89/ser.h      |    15 +
+ drivers/net/wireless/realtek/rtw89/txrx.h     |   393 +
+ drivers/net/wireless/realtek/rtw89/util.c     |    37 +
+ drivers/net/wireless/realtek/rtw89/util.h     |    31 +
+ 42 files changed, 90700 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/Kconfig
+ create mode 100644 drivers/net/wireless/realtek/rtw89/Makefile
+ create mode 100644 drivers/net/wireless/realtek/rtw89/cam.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/cam.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/coex.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/coex.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/core.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/core.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/debug.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/debug.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/efuse.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/efuse.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/fw.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/fw.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/mac.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/mac.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/mac80211.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/pci.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/pci.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/phy.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/phy.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/ps.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/ps.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/reg.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/regd.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk_table.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852a_table.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/sar.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/sar.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/ser.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/ser.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/txrx.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/util.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/util.h
+
+-- 
+2.25.1
+
