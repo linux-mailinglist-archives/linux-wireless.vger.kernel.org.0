@@ -2,88 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E28F93ACA22
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 13:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3FFE3ACA5B
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 13:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233731AbhFRLo0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Jun 2021 07:44:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35730 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232692AbhFRLo0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Jun 2021 07:44:26 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D975C061574;
-        Fri, 18 Jun 2021 04:42:17 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1luCt4-008Tjj-PB; Fri, 18 Jun 2021 13:42:14 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211 2021-06-18
-Date:   Fri, 18 Jun 2021 13:42:10 +0200
-Message-Id: <20210618114211.49437-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.31.1
+        id S234206AbhFRLqs convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Jun 2021 07:46:48 -0400
+Received: from [210.180.118.67] ([210.180.118.67]:36482 "EHLO blank.cafe24.com"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S234174AbhFRLql (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 18 Jun 2021 07:46:41 -0400
+X-Greylist: delayed 108571 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Jun 2021 07:46:40 EDT
+Received: from IP-130-143.dataclub.eu (ip-130-143.dataclub.info [84.38.130.143] (may be forged))
+        (authenticated bits=0)
+        by blank.cafe24.com (8.14.7/8.14.7) with ESMTP id 15IBiBJ1011442
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Jun 2021 20:44:30 +0900
+Message-Id: <202106181144.15IBiBJ1011442@blank.cafe24.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: BUSINESS LOAN/PROJECT FUNDING...67
+To:     linux-wireless@vger.kernel.org
+From:   "Smith Green" <ssbinvestmentsllc@citromail.hu>
+Date:   Fri, 18 Jun 2021 14:45:08 +0300
+Reply-To: ssbinvestmentsllc@citromail.hu
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Dear Sir/Madam,
 
-We've got a few more stragglers for hopefully 5.13, see
-the tag message below for more details.
+Our Investors are based in the middle east with a profound track record. We invite you to take advantage of our investment loan program to fund your existing or intending projects. We offer a straight or convertible loan investment program for projects with high-returns and payback prospects without the usual rigid procedures of conventional lenders.
+ 
+Kindly forward a copy of your Executive business summary for our review: info@ssbinvestmentsllc.us
 
-Please pull and let me know if there's any problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit 1c200f832e14420fa770193f9871f4ce2df00d07:
-
-  net: qed: Fix memcpy() overflow of qed_dcbx_params() (2021-06-17 12:14:51 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-06-18
-
-for you to fetch changes up to 652e8363bbc7d149fa194a5cbf30b1001c0274b0:
-
-  mac80211: handle various extensible elements correctly (2021-06-18 13:25:49 +0200)
-
-----------------------------------------------------------------
-A couple of straggler fixes:
- * a minstrel HT sample check fix
- * peer measurement could double-free on races
- * certificate file generation at build time could
-   sometimes hang
- * some parameters weren't reset between connections
-   in mac80211
- * some extensible elements were treated as non-
-   extensible, possibly causuing bad connections
-   (or failures) if the AP adds data
-
-----------------------------------------------------------------
-Avraham Stern (1):
-      cfg80211: avoid double free of PMSR request
-
-Felix Fietkau (1):
-      mac80211: minstrel_ht: fix sample time check
-
-Johannes Berg (3):
-      cfg80211: make certificate generation more robust
-      mac80211: reset profile_periodicity/ema_ap
-      mac80211: handle various extensible elements correctly
-
- net/mac80211/mlme.c                |  8 ++++++++
- net/mac80211/rc80211_minstrel_ht.c |  2 +-
- net/mac80211/util.c                | 22 +++++++++++-----------
- net/wireless/Makefile              |  2 +-
- net/wireless/pmsr.c                | 16 ++++++++++++++--
- 5 files changed, 35 insertions(+), 15 deletions(-)
-
+ 
+Best Regards.
+Smith Green
+E:info@ssbinvestmentsllc.us
+International investment broker
