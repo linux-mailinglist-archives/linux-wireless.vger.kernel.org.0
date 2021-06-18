@@ -2,69 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 662E53AC943
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 12:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E8E03AC923
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 12:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbhFRK6l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Jun 2021 06:58:41 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:48248 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229550AbhFRK6k (ORCPT
+        id S233740AbhFRKvQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Jun 2021 06:51:16 -0400
+Received: from mail-io1-f72.google.com ([209.85.166.72]:55164 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233668AbhFRKvP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Jun 2021 06:58:40 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1luBxC-001YXx-VN; Fri, 18 Jun 2021 13:42:28 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     johannes@sipsolutions.net
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Fri, 18 Jun 2021 13:41:56 +0300
-Message-Id: <iwlwifi.20210618133832.853ffdd6c62b.I63e37b2ab184ee3653686e4df4dd23eb303687d2@changeid>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210618104156.747775-1-luca@coelho.fi>
-References: <20210618104156.747775-1-luca@coelho.fi>
+        Fri, 18 Jun 2021 06:51:15 -0400
+Received: by mail-io1-f72.google.com with SMTP id s14-20020a5eaa0e0000b02904abce57cb24so3837928ioe.21
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Jun 2021 03:49:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=HrK3zoZ7mBoYxTNh9K06ogvFxCCPaWcCp7U6uUfuszg=;
+        b=DkoRhymp/lGkWSFtdK3GoXdNQm9ranlWiaYj/SU6XoGB/OXK2DmE3LDnxc2r1pU1I8
+         rZqmth27+X9YTWJHj/x+W5tW/FsySXSj48VyMjO//sz41/9yYai0uqlIw6gJCCCObLco
+         3ufFKzDtCL1VOijmmila6cIx+ecdagw4uRf+VZXEBUNTrq8Hc0+7RlVGQAVIbW4Xjt2k
+         D7AcbB66H61sqmie3rRFgvmQrmEPUWoABEuYRbZZzaFQvG5K3rRK8aQQxNQpu8t8Rkqg
+         Yz9OTtTmYInQmMPDHJzzWWGw75DtrCEse7RR6MN6+YLkR2SMXd9XEz1Qn565xl+xeaQd
+         jvQA==
+X-Gm-Message-State: AOAM530+M0i6Kb4nYE3dmAmlDrTpeYGLIy4nyL5n1eJwz4IK4bJZvazT
+        WxjvUYDljlwx+kd9IemCOHUX6XNyHvEIo98E1KlCU0i5PScM
+X-Google-Smtp-Source: ABdhPJzCs/4OA4IQ6EdpX5w7LDi1TyMBN9jVHynWWJ1IIwL1ilVww+diOFD/9gDfLlvjM0MAPMOEjUjnAUdQpIPV/79GfMvNceNj
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 31/31] cfg80211: reg: improve bad regulatory warning
+X-Received: by 2002:a05:6602:38d:: with SMTP id f13mr7558181iov.109.1624013345667;
+ Fri, 18 Jun 2021 03:49:05 -0700 (PDT)
+Date:   Fri, 18 Jun 2021 03:49:05 -0700
+In-Reply-To: <20210618133112.596c60d8@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000943f6e05c50812c3@google.com>
+Subject: Re: [syzbot] divide error in ath9k_htc_swba
+From:   syzbot <syzbot+90d241d7661ca2493f0b@syzkaller.appspotmail.com>
+To:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net, kuba@kernel.org,
+        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, paskripkin@gmail.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hello,
 
-There's a WARN_ON here but it says nothing, and the later
-dump of the regdomain aren't usually printed. As a first
-step, include the regdomain code in the WARN_ON message,
-just like in other similar instances.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- net/wireless/reg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Reported-and-tested-by: syzbot+90d241d7661ca2493f0b@syzkaller.appspotmail.com
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 0df048bd4b84..c2d0ff7f089f 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -3975,7 +3975,9 @@ static int __regulatory_set_wiphy_regd(struct wiphy *wiphy,
- 		 "wiphy should have REGULATORY_WIPHY_SELF_MANAGED\n"))
- 		return -EPERM;
- 
--	if (WARN(!is_valid_rd(rd), "Invalid regulatory domain detected\n")) {
-+	if (WARN(!is_valid_rd(rd),
-+		 "Invalid regulatory domain detected: %c%c\n",
-+		 rd->alpha2[0], rd->alpha2[1])) {
- 		print_regdomain_info(rd);
- 		return -EINVAL;
- 	}
--- 
-2.32.0
+Tested on:
 
+commit:         fd0aa1a4 Merge tag 'for-linus' of git://git.kernel.org/pub..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5a4fe6d9e0a3e71f
+dashboard link: https://syzkaller.appspot.com/bug?extid=90d241d7661ca2493f0b
+compiler:       
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=14f9aff0300000
+
+Note: testing is done by a robot and is best-effort only.
