@@ -2,204 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7459C3AC447
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 08:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5C203AC461
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 09:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232903AbhFRGuw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Jun 2021 02:50:52 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39042 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232867AbhFRGut (ORCPT
+        id S230335AbhFRHCZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Jun 2021 03:02:25 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255]:8270 "EHLO
+        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229816AbhFRHCY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Jun 2021 02:50:49 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 15I6matwF011531, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 15I6matwF011531
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 18 Jun 2021 14:48:36 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 18 Jun 2021 14:48:36 +0800
-Received: from localhost (172.16.16.17) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 18 Jun
- 2021 14:48:35 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 24/24] rtw89: add Kconfig and Makefile
-Date:   Fri, 18 Jun 2021 14:46:25 +0800
-Message-ID: <20210618064625.14131-25-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210618064625.14131-1-pkshih@realtek.com>
-References: <20210618064625.14131-1-pkshih@realtek.com>
+        Fri, 18 Jun 2021 03:02:24 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.55])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4G5qRw3s2Nz1BG5V;
+        Fri, 18 Jun 2021 14:55:08 +0800 (CST)
+Received: from dggema704-chm.china.huawei.com (10.3.20.68) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Fri, 18 Jun 2021 15:00:12 +0800
+Received: from [10.69.38.207] (10.69.38.207) by dggema704-chm.china.huawei.com
+ (10.3.20.68) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 18
+ Jun 2021 15:00:11 +0800
+Subject: Re: [05/11] ipw2x00: Fix wrong function name in comments
+To:     Kalle Valo <kvalo@codeaurora.org>
+References: <20210517050141.61488-6-shenyang39@huawei.com>
+ <20210615131210.1599EC4338A@smtp.codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>
+From:   Yang Shen <shenyang39@huawei.com>
+Message-ID: <6f3782fe-1e84-d700-c902-26921a93f41b@huawei.com>
+Date:   Fri, 18 Jun 2021 15:00:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.17]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/18/2021 06:27:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzYvMTggpFekyCAwNjowMTowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 06/18/2021 06:23:56
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 164465 [Jun 18 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/18/2021 06:27:00
+In-Reply-To: <20210615131210.1599EC4338A@smtp.codeaurora.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.69.38.207]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggema704-chm.china.huawei.com (10.3.20.68)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With Kconfig and Makefile, we can build rtw89 and support 8852AE chip.
+Got it, I'll rebase on the latest branch.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/Kconfig        |  1 +
- drivers/net/wireless/realtek/Makefile       |  1 +
- drivers/net/wireless/realtek/rtw89/Kconfig  | 50 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/Makefile | 26 +++++++++++
- 4 files changed, 78 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/Kconfig
- create mode 100644 drivers/net/wireless/realtek/rtw89/Makefile
-
-diff --git a/drivers/net/wireless/realtek/Kconfig b/drivers/net/wireless/realtek/Kconfig
-index 474843277fa1..4a1f0e64df03 100644
---- a/drivers/net/wireless/realtek/Kconfig
-+++ b/drivers/net/wireless/realtek/Kconfig
-@@ -16,5 +16,6 @@ source "drivers/net/wireless/realtek/rtl818x/Kconfig"
- source "drivers/net/wireless/realtek/rtlwifi/Kconfig"
- source "drivers/net/wireless/realtek/rtl8xxxu/Kconfig"
- source "drivers/net/wireless/realtek/rtw88/Kconfig"
-+source "drivers/net/wireless/realtek/rtw89/Kconfig"
- 
- endif # WLAN_VENDOR_REALTEK
-diff --git a/drivers/net/wireless/realtek/Makefile b/drivers/net/wireless/realtek/Makefile
-index 888b5d594e79..ab25419f56c6 100644
---- a/drivers/net/wireless/realtek/Makefile
-+++ b/drivers/net/wireless/realtek/Makefile
-@@ -8,4 +8,5 @@ obj-$(CONFIG_RTL8187)		+= rtl818x/
- obj-$(CONFIG_RTLWIFI)		+= rtlwifi/
- obj-$(CONFIG_RTL8XXXU)		+= rtl8xxxu/
- obj-$(CONFIG_RTW88)		+= rtw88/
-+obj-$(CONFIG_RTW89)		+= rtw89/
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-new file mode 100644
-index 000000000000..055d45103a4b
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+menuconfig RTW89
-+	tristate "Realtek 802.11ax wireless chips support"
-+	depends on MAC80211
-+	help
-+	  This module adds support for mac80211-based wireless drivers that
-+	  enables Realtek IEEE 802.11ax wireless chipsets.
-+
-+	  If you choose to build a module, it'll be called rtw89.
-+
-+if RTW89
-+
-+config RTW89_CORE
-+	tristate
-+
-+config RTW89_PCI
-+	tristate
-+
-+config RTW89_8852AE
-+	tristate "Realtek 8852AE PCI wireless network adapter"
-+	depends on PCI
-+	select RTW89_CORE
-+	select RTW89_PCI
-+	help
-+	  Select this option will enable support for 8852AE chipset
-+
-+	  802.11ax PCIe wireless network adapter
-+
-+config RTW89_DEBUG
-+	bool
-+
-+config RTW89_DEBUGMSG
-+	bool "Realtek rtw89 debug message support"
-+	depends on RTW89_CORE
-+	select RTW89_DEBUG
-+	help
-+	  Enable debug message support
-+
-+	  If unsure, say Y to simplify debug problems
-+
-+config RTW89_DEBUGFS
-+	bool "Realtek rtw89 debugfs support"
-+	depends on RTW89_CORE
-+	select RTW89_DEBUG
-+	help
-+	  Enable debugfs support
-+
-+	  If unsure, say Y to simplify debug problems
-+
-+endif
-diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
-new file mode 100644
-index 000000000000..02a96d899cca
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/Makefile
-@@ -0,0 +1,26 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+
-+obj-$(CONFIG_RTW89_CORE) += rtw89_core.o
-+rtw89_core-y += core.o \
-+		mac80211.o \
-+		mac.o \
-+		phy.o \
-+		fw.o \
-+		rtw8852a.o \
-+		rtw8852a_table.o \
-+		rtw8852a_rfk.o \
-+		rtw8852a_rfk_table.o \
-+		cam.o \
-+		efuse.o \
-+		regd.o \
-+		sar.o \
-+		coex.o \
-+		ps.o \
-+		util.o \
-+		ser.o
-+
-+rtw89_core-$(CONFIG_RTW89_DEBUG) += debug.o
-+
-+obj-$(CONFIG_RTW89_PCI) += rtw89_pci.o
-+rtw89_pci-y := pci.o
-+
--- 
-2.25.1
-
+On 2021/6/15 21:12, Kalle Valo wrote:
+> Yang Shen <shenyang39@huawei.com> wrote:
+>
+>> Fixes the following W=1 kernel build warning(s):
+>>
+>>  drivers/net/wireless/intel/ipw2x00/ipw2100.c:5359: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>>  drivers/net/wireless/intel/ipw2x00/ipw2100.c:6533: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>>  drivers/net/wireless/intel/ipw2x00/ipw2100.c:6565: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>>
+>> Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
+>> Signed-off-by: Yang Shen <shenyang39@huawei.com>
+>
+> Failed to apply, please rebase:
+>
+> Recorded preimage for 'drivers/net/wireless/intel/ipw2x00/ipw2100.c'
+> error: Failed to merge in the changes.
+> hint: Use 'git am --show-current-patch' to see the failed patch
+> Applying: ipw2x00: Fix wrong function name in comments
+> Using index info to reconstruct a base tree...
+> M	drivers/net/wireless/intel/ipw2x00/ipw2100.c
+> Falling back to patching base and 3-way merge...
+> Auto-merging drivers/net/wireless/intel/ipw2x00/ipw2100.c
+> CONFLICT (content): Merge conflict in drivers/net/wireless/intel/ipw2x00/ipw2100.c
+> Patch failed at 0001 ipw2x00: Fix wrong function name in comments
+>
+> Patch set to Changes Requested.
+>
