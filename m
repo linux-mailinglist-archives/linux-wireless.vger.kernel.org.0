@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82FF93AC5BF
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 10:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82D6E3AC5C0
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jun 2021 10:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232395AbhFRIKp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 18 Jun 2021 04:10:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37556 "EHLO mail.kernel.org"
+        id S232630AbhFRIKr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 18 Jun 2021 04:10:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37566 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231216AbhFRIKp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 18 Jun 2021 04:10:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 62DF060FE6;
-        Fri, 18 Jun 2021 08:08:35 +0000 (UTC)
+        id S231216AbhFRIKq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 18 Jun 2021 04:10:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4A86361249;
+        Fri, 18 Jun 2021 08:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624003716;
-        bh=cpQ/ZyCMbd69sJyz7DVcJwikPJLGi1/Iast/VGV7cRo=;
+        s=k20201202; t=1624003718;
+        bh=DgBcdPbRRR8zN5iiw5yCAfQFzH88KzMTBDKTGSx4Dq8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iPkJTemdHTLa92y9CToVt3fodHBunVZWlviuc1WFybqj9fxGMwZjT2u5n3IzdrYUr
-         Iq/mD/xzIdIdZsu2C3lpifdaBrUfk75CCvPvNdhBO4O1IUq7/5eEZPMXnpgDsnknx3
-         GH8wf0zbB5mtc2nUQwSssdEvcDyMlQAAdsQMr/5755cfHClBN5CQHfNpoPpWC0EJZf
-         PvRjYIHMtvnmHvS92ayg5kh31RlZPY1RGm1/FU5llRUZfOCwdwFJ3nWG3bNgfFXOYs
-         pGRlYPou7G5ORAl2WGERDxxn6zBrYrAYXbK5vDYTqnEIaA3l1u+9buuIAvnbFMTLRu
-         aK80GZA8qh/wA==
+        b=DIEG29Rj7xaBfLHvGGFOic32UlZllPJWO/4DrjejVjOni790Pz5EQLh/c81kYvmyk
+         p+/PoQDeWfHg0BW1LVPC1LwWBAediuhbvr2eBha2x98KGTWAk6pbQIOKcvCgPM6tI6
+         +zIhaDpHz01ZBoUYOdiJWYELa3bxPC8ZnIwy0z0VSCImVSbIUlGUl2VAXFGn7JKCTV
+         hJxYpDA2xtXJBAECAoRa2+NkJtsCsWYSEThP4p3siW5JKF+nyvRh7Y8kXqX5s3q4nv
+         7L36mdxDrSOKwk9pJrvy1MOqcTn5mOQ7RCCbyy4eTj48wMEuTUYK8NfbAU9Er4zf7/
+         puld5IaTDuJqw==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         sean.wang@mediatek.com
-Subject: [PATCH v2 1/5] mt76: sdio: do not run mt76_txq_schedule directly
-Date:   Fri, 18 Jun 2021 10:08:20 +0200
-Message-Id: <351312614bd7ecd578bf08626db04aedd224f267.1624003282.git.lorenzo@kernel.org>
+Subject: [PATCH v2 2/5] mt76: mt7663s: rely on pm reference counting
+Date:   Fri, 18 Jun 2021 10:08:21 +0200
+Message-Id: <7eea154a0d02b9d47a0fa3ac401a84385cdf32b3.1624003282.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1624003282.git.lorenzo@kernel.org>
 References: <cover.1624003282.git.lorenzo@kernel.org>
@@ -39,59 +39,94 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In order to support runtime-pm for sdio, do not run mt76_txq_schedule
-directly, but schedule tx_worker instead
+As already done for mt7921 and mt7663e, rely on pm reference counting in
+drv/fw_own
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/sdio.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ .../wireless/mediatek/mt76/mt7615/sdio_mcu.c  | 36 +++++++++++--------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
-index 1665fe88ebb8..783a15635ec5 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-@@ -184,9 +184,6 @@ static int mt76s_process_tx_queue(struct mt76_dev *dev, struct mt76_queue *q)
- 	if (!q->queued)
- 		wake_up(&dev->tx_wait);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+index d1be78b0711c..6c23c6dbf1c6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+@@ -55,6 +55,7 @@ static int __mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
+ {
+ 	struct sdio_func *func = dev->mt76.sdio.func;
+ 	struct mt76_phy *mphy = &dev->mt76.phy;
++	struct mt76_connac_pm *pm = &dev->pm;
+ 	u32 status;
+ 	int ret;
  
--	if (!mcu)
--		mt76_txq_schedule(&dev->phy, q->qid);
+@@ -64,39 +65,44 @@ static int __mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
+ 
+ 	ret = readx_poll_timeout(mt7663s_read_pcr, dev, status,
+ 				 status & WHLPCR_IS_DRIVER_OWN, 2000, 1000000);
+-	if (ret < 0) {
++	if (ret < 0)
+ 		dev_err(dev->mt76.dev, "Cannot get ownership from device");
+-		set_bit(MT76_STATE_PM, &mphy->state);
+-		sdio_release_host(func);
 -
- 	return nframes;
+-		return ret;
+-	}
++	else
++		clear_bit(MT76_STATE_PM, &mphy->state);
+ 
+ 	sdio_release_host(func);
+-	dev->pm.last_activity = jiffies;
++	pm->last_activity = jiffies;
+ 
+-	return 0;
++	return ret;
  }
  
-@@ -195,19 +192,28 @@ static void mt76s_status_worker(struct mt76_worker *w)
- 	struct mt76_sdio *sdio = container_of(w, struct mt76_sdio,
- 					      status_worker);
- 	struct mt76_dev *dev = container_of(sdio, struct mt76_dev, sdio);
-+	bool resched = false;
- 	int i, nframes;
+ static int mt7663s_mcu_drv_pmctrl(struct mt7615_dev *dev)
+ {
+ 	struct mt76_phy *mphy = &dev->mt76.phy;
++	int ret = 0;
  
- 	do {
-+		int ndata_frames = 0;
+-	if (test_and_clear_bit(MT76_STATE_PM, &mphy->state))
+-		return __mt7663s_mcu_drv_pmctrl(dev);
++	mutex_lock(&dev->pm.mutex);
+ 
+-	return 0;
++	if (test_bit(MT76_STATE_PM, &mphy->state))
++		ret = __mt7663s_mcu_drv_pmctrl(dev);
 +
- 		nframes = mt76s_process_tx_queue(dev, dev->q_mcu[MT_MCUQ_WM]);
- 
- 		for (i = 0; i <= MT_TXQ_PSD; i++)
--			nframes += mt76s_process_tx_queue(dev,
--							  dev->phy.q_tx[i]);
-+			ndata_frames += mt76s_process_tx_queue(dev,
-+							       dev->phy.q_tx[i]);
-+		nframes += ndata_frames;
-+		if (ndata_frames > 0)
-+			resched = true;
- 
- 		if (dev->drv->tx_status_data &&
- 		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state))
- 			queue_work(dev->wq, &dev->sdio.stat_work);
- 	} while (nframes > 0);
++	mutex_unlock(&dev->pm.mutex);
 +
-+	if (resched)
-+		mt76_worker_schedule(&dev->sdio.txrx_worker);
++	return ret;
  }
  
- static void mt76s_tx_status_data(struct work_struct *work)
+ static int mt7663s_mcu_fw_pmctrl(struct mt7615_dev *dev)
+ {
+ 	struct sdio_func *func = dev->mt76.sdio.func;
+ 	struct mt76_phy *mphy = &dev->mt76.phy;
++	struct mt76_connac_pm *pm = &dev->pm;
++	int ret = 0;
+ 	u32 status;
+-	int ret;
+ 
+-	if (test_and_set_bit(MT76_STATE_PM, &mphy->state))
+-		return 0;
++	mutex_lock(&pm->mutex);
++
++	if (mt76_connac_skip_fw_pmctrl(mphy, pm))
++		goto out;
+ 
+ 	sdio_claim_host(func);
+ 
+@@ -110,6 +116,8 @@ static int mt7663s_mcu_fw_pmctrl(struct mt7615_dev *dev)
+ 	}
+ 
+ 	sdio_release_host(func);
++out:
++	mutex_unlock(&pm->mutex);
+ 
+ 	return ret;
+ }
 -- 
 2.31.1
 
