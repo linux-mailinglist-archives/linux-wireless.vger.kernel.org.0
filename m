@@ -2,124 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC183AD9B8
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 13:02:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D1B73AD9BC
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 13:07:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232921AbhFSLFB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Jun 2021 07:05:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35916 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232892AbhFSLFA (ORCPT
+        id S233266AbhFSLJK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Jun 2021 07:09:10 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:38723 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232892AbhFSLJK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Jun 2021 07:05:00 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6820C061574;
-        Sat, 19 Jun 2021 04:02:48 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id u13so1937867lfk.2;
-        Sat, 19 Jun 2021 04:02:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Gh/qA823gv0wUZBQ9vSTS2qs/t2ngMR2CfJ3i7Nee+k=;
-        b=qGvvmgl5w1yrnYggtooVweWGrVW8lInIgwxMc2pBs5cNptgsXJDQ+MMT+AklBGwtR+
-         wsXZtarIjYAGh+qUcPNFgLDssnOPvxYKZrJgBtBFQ8ebO/c/97pzyQyQQve59K47AaKn
-         hfL5GAseR7cNQESzteo0FrbJl60jAudILSAPJekKpU/gCyin3sa96dzU8sZV4ZkcVwL5
-         KhjkMt7BVAwLAVtwpNxDsggR1X5Y9BW8K9d2+WhJjGJC/sGyvCdakA8bBarqcQAiKxJp
-         vm69pBpsWW5dchkpxdevrVewxxkET3WGfhAAirLwUK+eYy347A/X6JyEO0kuIH61zbt8
-         wEbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Gh/qA823gv0wUZBQ9vSTS2qs/t2ngMR2CfJ3i7Nee+k=;
-        b=k2dmGLEFRbBucaDqlLs+McOYtIYCzEqtdC4+w1iS2jsn3zESAesWq6TbC3EeycXcE5
-         WAQsdpgzAhbwcqdj+8NH6M+JtyxkfxF3a6UBOyr5Krecsmfy8H28ZTU01wxxtp8Yrqzo
-         t2Fn9ezVEkJqwR0oMcfQ8e5IqoprELIm6LTdOj+/UPfDDUPzyQRMFtu9rIKoq5rtQd9r
-         phQo5d9MZZx9b2PrlxeaSqxVKijT9ThILldc3D89xXfhbYwxC+tLWHOJpIMhlGVk9/6y
-         IbMOkRM7YAMUMLSLBvpb6Awz93BKxJUE0zQQn2rMsNiFEzIrgPqQoR+CQA3wqT9zt9JB
-         aYtg==
-X-Gm-Message-State: AOAM531QBfhqo2YEvfLxAq037+U96HTG5hdED6iy4OzlgPfThFKzYdQv
-        6q5EPpVWavqHewbp5QC1l7E=
-X-Google-Smtp-Source: ABdhPJxYj+ZMaQFtctcc7+90N+CUnJOs0pnsPQZIqjJkIQb5K50AFerTOXUCVJuhEpMPxxj+vmbGqg==
-X-Received: by 2002:a05:6512:239d:: with SMTP id c29mr6683514lfv.248.1624100567125;
-        Sat, 19 Jun 2021 04:02:47 -0700 (PDT)
-Received: from [192.168.2.145] (94-29-29-31.dynamic.spd-mgts.ru. [94.29.29.31])
-        by smtp.googlemail.com with ESMTPSA id l5sm1306915lfc.250.2021.06.19.04.02.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Jun 2021 04:02:46 -0700 (PDT)
-Subject: Re: [PATCH v2 1/2] cfg80211: Add wiphy_info_once()
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Franky Lin <franky.lin@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-References: <20210511211549.30571-1-digetx@gmail.com>
- <e7495304-d62c-fd20-fab3-3930735f2076@gmail.com>
- <87r1gyid39.fsf@codeaurora.org>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <46a3cb5a-2ce3-997b-154d-dd4e1b7333d1@gmail.com>
-Date:   Sat, 19 Jun 2021 14:02:45 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        Sat, 19 Jun 2021 07:09:10 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1624100819; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=O5T/Cbcb8DSpBcvMfr32sTZZ6HdAT24NRUIKNzd+LSw=; b=Lek8oiNrhRCG6aY+eK9fMrHtPzJ40NQz0lUX1pAkRgVxYD+16VJLNQLcCwLlyrWAzd/FPMtw
+ 5I2/qPKRQKVMKIatecTs/qGE+bVxM3HTFtkOXMInySfV0vxi82oKa0xBV8K/CdPCL+nvwi+f
+ 5OAcgZ9SobnE43b7Fsgaji8IeYU=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 60cdcfb86ddc3305c418bceb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Jun 2021 11:06:32
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 3FBF8C433D3; Sat, 19 Jun 2021 11:06:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 70FA3C433F1;
+        Sat, 19 Jun 2021 11:06:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 70FA3C433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, sean.wang@mediatek.com
+Subject: Re: [PATCH] mt76: mt7921: allow chip reset during device restart
+References: <96d84ef577cb558969a56ed42e68769eac0d3a1c.1624012209.git.lorenzo@kernel.org>
+Date:   Sat, 19 Jun 2021 14:06:23 +0300
+In-Reply-To: <96d84ef577cb558969a56ed42e68769eac0d3a1c.1624012209.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Fri, 18 Jun 2021 12:30:47 +0200")
+Message-ID: <874kduktao.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <87r1gyid39.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-19.06.2021 09:27, Kalle Valo пишет:
-> Dmitry Osipenko <digetx@gmail.com> writes:
-> 
->> 12.05.2021 00:15, Dmitry Osipenko пишет:
->>> Add wiphy_info_once() helper that prints info message only once.
->>>
->>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->>> ---
->>>
->>> Changelog:
->>>
->>> v2: - New patch added in v2.
->>>
->>>  include/net/cfg80211.h | 2 ++
->>>  1 file changed, 2 insertions(+)
->>>
->>> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
->>> index 5224f885a99a..3b19e03509b3 100644
->>> --- a/include/net/cfg80211.h
->>> +++ b/include/net/cfg80211.h
->>> @@ -8154,6 +8154,8 @@ bool cfg80211_iftype_allowed(struct wiphy *wiphy, enum nl80211_iftype iftype,
->>>  	dev_notice(&(wiphy)->dev, format, ##args)
->>>  #define wiphy_info(wiphy, format, args...)			\
->>>  	dev_info(&(wiphy)->dev, format, ##args)
->>> +#define wiphy_info_once(wiphy, format, args...)			\
->>> +	dev_info_once(&(wiphy)->dev, format, ##args)
->>>  
->>>  #define wiphy_err_ratelimited(wiphy, format, args...)		\
->>>  	dev_err_ratelimited(&(wiphy)->dev, format, ##args)
->>>
->>
->> Ping?
->>
->> Arend, is this series good to you? I assume Kalle could pick it up if
->> you'll give ack. Thanks in advance.
-> 
-> Normally cfg80211 changes go via Johannes' tree though I guess small
-> changes I could take it via my tree, but then I need an ack from
-> Johannes.
-> 
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-Thank you for the clarification.
+> Disable chip full reset just during device probing but allow
+> it during hw restart.
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Johannes, are these patches good to you?
+[...]
+
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> @@ -160,7 +160,8 @@ struct mt7921_dev {
+>  	u16 chainmask;
+>  
+>  	struct work_struct reset_work;
+> -	bool hw_full_reset;
+> +	bool hw_full_reset:1;
+> +	bool hw_init_done:1;
+
+Is there a specific reason why you use bitfields in a boolean? Looks
+strange to me.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
