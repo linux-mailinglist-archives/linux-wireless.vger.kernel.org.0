@@ -2,72 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 673C03ADA25
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 15:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A413ADAC0
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 17:53:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234312AbhFSNiy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Jun 2021 09:38:54 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:25285 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234307AbhFSNiy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Jun 2021 09:38:54 -0400
-Received: from localhost.localdomain ([86.243.172.93])
-        by mwinf5d03 with ME
-        id K1cg2500G21Fzsu031cgFZ; Sat, 19 Jun 2021 15:36:41 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 19 Jun 2021 15:36:41 +0200
-X-ME-IP: 86.243.172.93
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ieee80211: add the value for Category '6' in "rtw_ieee80211_category"
-Date:   Sat, 19 Jun 2021 15:36:30 +0200
-Message-Id: <66be0187869bd7dae1c0b0785a32db695ee9872e.1624108556.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+        id S234672AbhFSPza (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Jun 2021 11:55:30 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:21898 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231680AbhFSPz1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 19 Jun 2021 11:55:27 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1624117996; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=ed6e2KMRxnZvSNW68Wr+dv8wBm1YAzNNe2MwzSu/rh4=; b=Q6/tE78giKvJvKI7yFXVldTWOo1sau3IP82x8EIBdr5GiBbClhxgj1RFJWxWmxUMx++AXI/F
+ W/hPNye9pwxer7EgO3qW37yiOGMO2tfHlBhBM4JcLUnLluIaJXZtleLGfq2tz3px2e2bjb/m
+ hsfuNAWCLPNc7zwo37HyvV3x/hM=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 60ce12e5abfd22a3dcf19b88 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Jun 2021 15:53:09
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 68798C433D3; Sat, 19 Jun 2021 15:53:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6EC86C433F1;
+        Sat, 19 Jun 2021 15:53:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6EC86C433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-2021-06-19
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20210619155308.68798C433D3@smtp.codeaurora.org>
+Date:   Sat, 19 Jun 2021 15:53:08 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Preparation work for removing the "enum rtw_ieee80211_category" in
-"drivers/staging/rtl8188eu/include/ieee80211.h" and
-"drivers/staging/rtl8723bs/include/ieee80211.h".
+Hi,
 
-This enum is similar to "enum ieee80211_category" from
-"include/linux/ieee80211.h". However it defines the value '6' as
-RTW_WLAN_CATEGORY_FT.
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-So add a corresponding value in "ieee80211_category"
+Kalle
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-/!\ Review with care. I don't have access to the standard. /!\
+The following changes since commit d4826d17b3931cf0d8351d8f614332dd4b71efc4:
 
-The name has been adjusted from what I have found on:
-   https://mrncciew.com/2014/10/09/802-11-mgmt-action-frames/
+  mt76: mt7921: remove leftover 80+80 HE capability (2021-05-30 22:11:24 +0300)
 
-I guess that FT was for "Fast Transition".
----
- include/linux/ieee80211.h | 1 +
- 1 file changed, 1 insertion(+)
+are available in the Git repository at:
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 2967437f1b11..67f3e51e7ecc 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -2933,6 +2933,7 @@ enum ieee80211_category {
- 	WLAN_CATEGORY_BACK = 3,
- 	WLAN_CATEGORY_PUBLIC = 4,
- 	WLAN_CATEGORY_RADIO_MEASUREMENT = 5,
-+	WLAN_CATEGORY_FAST_BBS_TRANSITION = 6,
- 	WLAN_CATEGORY_HT = 7,
- 	WLAN_CATEGORY_SA_QUERY = 8,
- 	WLAN_CATEGORY_PROTECTED_DUAL_OF_ACTION = 9,
--- 
-2.30.2
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-06-19
 
+for you to fetch changes up to 1f9482aa8d412b4ba06ce6ab8e333fb8ca29a06e:
+
+  mwifiex: bring down link before deleting interface (2021-06-11 13:02:27 +0300)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.13
+
+Only one important fix for an mwifiex regression.
+
+mwifiex
+
+* fix deadlock during rmmod or firmware reset, regression from
+  cfg80211 RTNL changes in v5.12-rc1
+
+----------------------------------------------------------------
+Brian Norris (1):
+      mwifiex: bring down link before deleting interface
+
+ drivers/net/wireless/marvell/mwifiex/main.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
