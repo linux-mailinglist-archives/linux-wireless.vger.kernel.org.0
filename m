@@ -2,92 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1A413ADAC0
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 17:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D911A3ADB48
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 20:24:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234672AbhFSPza (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Jun 2021 11:55:30 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:21898 "EHLO m43-7.mailgun.net"
+        id S234935AbhFSSUi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Jun 2021 14:20:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37066 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231680AbhFSPz1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Jun 2021 11:55:27 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624117996; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=ed6e2KMRxnZvSNW68Wr+dv8wBm1YAzNNe2MwzSu/rh4=; b=Q6/tE78giKvJvKI7yFXVldTWOo1sau3IP82x8EIBdr5GiBbClhxgj1RFJWxWmxUMx++AXI/F
- W/hPNye9pwxer7EgO3qW37yiOGMO2tfHlBhBM4JcLUnLluIaJXZtleLGfq2tz3px2e2bjb/m
- hsfuNAWCLPNc7zwo37HyvV3x/hM=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 60ce12e5abfd22a3dcf19b88 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Jun 2021 15:53:09
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 68798C433D3; Sat, 19 Jun 2021 15:53:08 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6EC86C433F1;
-        Sat, 19 Jun 2021 15:53:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6EC86C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S234084AbhFSSUh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 19 Jun 2021 14:20:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 51CB6610CD;
+        Sat, 19 Jun 2021 18:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624126706;
+        bh=sHJ5jxGRoxIVeEewlhvtETKOo2nJHVNCWuXeraCxlrY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VkxtyIIXw8TCKdZfzQbNrO5bBGVwLvuJPG+G5OJIwu5m1Ng7Z/l9JRUqk9jOG11kJ
+         3VprDVy92Xb7+9MzQa84tQv5Rn4BUREj0wZUahWcrqbxgB4s4eNs50RHVjAvA37w8o
+         sHTdvJ+I2SGsfwPDz3cDlO0D2EGK3GnaasyHpRy0QbQx+UI2PE4TaVYcre2xQIlNwu
+         eUUADOJQl47ak4Lm/2hfrDG4oi8goqRmPPpMzLnrimO2uY2E3sBNmQCzXirlwAgeVN
+         wkX5wm1AlapwGxDfPD8uTMpe6UxXuMsFqif19vKrxPwiQz4Fg2d1Iza9m3B2ksXcuE
+         pRu9FQvUeV+4Q==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        sean.wang@mediatek.com, deren.wu@mediatek.com
+Subject: [PATCH] mt76: mt7921: fix endianness in mt7921_mcu_tx_done_event
+Date:   Sat, 19 Jun 2021 20:18:19 +0200
+Message-Id: <948d3572e324c82c80259279264651998da56232.1624126593.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2021-06-19
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20210619155308.68798C433D3@smtp.codeaurora.org>
-Date:   Sat, 19 Jun 2021 15:53:08 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Fix endianness in mt7921_mcu_tx_done_event event reported by the
+firmware.
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+Fixes: 3cce2b98e0241 ("mt76: mt7921: introduce mac tx done handling")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c |  3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.h | 10 +++++-----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-Kalle
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index c2c4dc196802..1819de869fdf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -532,7 +532,8 @@ mt7921_mcu_tx_done_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ 		peer.g8 = !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_SHORT_GI_80);
+ 		peer.g16 = !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_SHORT_GI_160);
+ 		mt7921_mcu_tx_rate_parse(mphy->mt76, &peer,
+-					 &msta->stats.tx_rate, event->tx_rate);
++					 &msta->stats.tx_rate,
++					 le16_to_cpu(event->tx_rate));
+ 
+ 		spin_lock_bh(&dev->sta_poll_lock);
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+index d76cf8f8dfdf..d142c50c1a3d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+@@ -295,11 +295,11 @@ struct mt7921_txpwr_event {
+ struct mt7921_mcu_tx_done_event {
+ 	u8 pid;
+ 	u8 status;
+-	u16 seq;
++	__le16 seq;
+ 
+ 	u8 wlan_idx;
+ 	u8 tx_cnt;
+-	u16 tx_rate;
++	__le16 tx_rate;
+ 
+ 	u8 flag;
+ 	u8 tid;
+@@ -311,9 +311,9 @@ struct mt7921_mcu_tx_done_event {
+ 	u8 reason;
+ 	u8 rsv0[1];
+ 
+-	u32 delay;
+-	u32 timestamp;
+-	u32 applied_flag;
++	__le32 delay;
++	__le32 timestamp;
++	__le32 applied_flag;
+ 
+ 	u8 txs[28];
+ 
+-- 
+2.31.1
 
-The following changes since commit d4826d17b3931cf0d8351d8f614332dd4b71efc4:
-
-  mt76: mt7921: remove leftover 80+80 HE capability (2021-05-30 22:11:24 +0300)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-06-19
-
-for you to fetch changes up to 1f9482aa8d412b4ba06ce6ab8e333fb8ca29a06e:
-
-  mwifiex: bring down link before deleting interface (2021-06-11 13:02:27 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.13
-
-Only one important fix for an mwifiex regression.
-
-mwifiex
-
-* fix deadlock during rmmod or firmware reset, regression from
-  cfg80211 RTNL changes in v5.12-rc1
-
-----------------------------------------------------------------
-Brian Norris (1):
-      mwifiex: bring down link before deleting interface
-
- drivers/net/wireless/marvell/mwifiex/main.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
