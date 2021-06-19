@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 487ED3AD8CE
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 11:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CAC3AD8CC
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 11:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbhFSJIh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Jun 2021 05:08:37 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:42543 "EHLO
+        id S230175AbhFSJIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Jun 2021 05:08:36 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:24731 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229768AbhFSJIf (ORCPT
+        with ESMTP id S229475AbhFSJId (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Jun 2021 05:08:35 -0400
+        Sat, 19 Jun 2021 05:08:33 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624093585; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1624093582; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=mH+qv9WCwRFtGepgrLgmaZiRBlcWLKrRo52cPCcVzxM=;
- b=urmnAM6TPNgeiOtfLbE8Xite/hzRqdaGKIIAu9/EAWkE8U8CHx0/iyiFkbBcnME8mz8yHhup
- xDw7qJHkg5CmHCs8oL/TpmF5nJCkfT9WgIq5yPandNjklgXr+lg9RbHxURmJaLsIzIMcgS8o
- 9+fpR2CBelbhPqm9OIIUx3f44QY=
+ Content-Type: Sender; bh=JExdWib+2vNvSJ1ZeWNdFikcr81uBm3qt2YwfkU3z68=;
+ b=pEqqmxqLZXL3KxxzeKAup8xqxjNN/sxwdM6huv0HMddJThfsNh0/QayPS0Q94s8+p4+SX6q8
+ a5YmMd4ZQi+wmq0xHRbeeu1KNPhiqN912/w6GZbZZcafIzS11bBa4Ynk5nWBAWsnKpm8N5OC
+ xqtPT3Lv1RNNbBQ0+lXYVfz0WOs=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 60cdb3705eaa81cb1edddc41 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Jun 2021 09:05:52
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 60cdb38ce570c056194f6450 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Jun 2021 09:06:20
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4D6B1C4338A; Sat, 19 Jun 2021 09:05:51 +0000 (UTC)
+        id D786BC43460; Sat, 19 Jun 2021 09:06:19 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,62 +40,68 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D3B7EC433F1;
-        Sat, 19 Jun 2021 09:05:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D3B7EC433F1
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9C290C433D3;
+        Sat, 19 Jun 2021 09:06:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9C290C433D3
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtl8xxxu: Fix device info for RTL8192EU devices
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] rtl8xxxu: avoid parsing short RX packet
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210424172959.1559890-1-pterjan@google.com>
-References: <20210424172959.1559890-1-pterjan@google.com>
-To:     Pascal Terjan <pterjan@google.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Jes Sorensen <jes.sorensen@gmail.com>,
-        Pascal Terjan <pterjan@google.com>
+In-Reply-To: <20210511071926.8951-1-ihuguet@redhat.com>
+References: <20210511071926.8951-1-ihuguet@redhat.com>
+To:     =?utf-8?b?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
+Cc:     Jes.Sorensen@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        ihuguet@redhat.com
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210619090551.4D6B1C4338A@smtp.codeaurora.org>
-Date:   Sat, 19 Jun 2021 09:05:51 +0000 (UTC)
+Message-Id: <20210619090619.D786BC43460@smtp.codeaurora.org>
+Date:   Sat, 19 Jun 2021 09:06:19 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pascal Terjan <pterjan@google.com> wrote:
+Íñigo Huguet <ihuguet@redhat.com> wrote:
 
-> Based on 2001:3319 and 2357:0109 which I used to test the fix and
-> 0bda:818b and 2357:0108 for which I found efuse dumps online.
+> One USB data buffer can contain multiple received network
+> packets. If that's the case, they're processed this way:
+> 1. Original buffer is cloned
+> 2. Original buffer is trimmed to contain only the first
+>    network packet
+> 3. This first network packet is passed to network stack
+> 4. Cloned buffer is trimmed to eliminate the first network
+>    packet
+> 5. Repeat with the cloned buffer until there are no more
+>    network packets inside
 > 
-> == 2357:0109 ==
-> === Before ===
-> Vendor: Realtek
-> Product: \x03802.11n NI
-> Serial:
-> === After ===
-> Vendor: Realtek
-> Product: 802.11n NIC
-> Serial not available.
+> However, if the space remaining in original buffer after
+> the first network packet is not enough to contain at least
+> another network packet descriptor, it is not cloned.
 > 
-> == 2001:3319 ==
-> === Before ===
-> Vendor: Realtek
-> Product: Wireless N
-> Serial: no USB Adap
-> === After ===
-> Vendor: Realtek
-> Product: Wireless N Nano USB Adapter
-> Serial not available.
+> The loop parsing this packets ended if remaining space == 0.
+> But if the remaining space was > 0 but < packet descriptor
+> size, another iteration of the loop was done, processing again
+> the previous packet because cloning didn't happen. Moreover,
+> the ownership of this packet had been passed to network
+> stack in the previous iteration.
 > 
-> Signed-off-by: Pascal Terjan <pterjan@google.com>
+> This patch ensures that no extra iteration is done if the
+> remaining size is not enough for one packet, and also avoid
+> the first iteration for the same reason.
+> 
+> Probably this doesn't happen in practice, but can happen
+> theoretically.
+> 
+> Signed-off-by: Íñigo Huguet <ihuguet@redhat.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-c240b044edef rtl8xxxu: Fix device info for RTL8192EU devices
+adf6a0f8c0a6 rtl8xxxu: avoid parsing short RX packet
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210424172959.1559890-1-pterjan@google.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210511071926.8951-1-ihuguet@redhat.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
