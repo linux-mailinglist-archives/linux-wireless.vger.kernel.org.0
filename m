@@ -2,127 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0270A3ADA00
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 14:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 298773ADA20
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 15:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234148AbhFSMjB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Jun 2021 08:39:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:54424 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234112AbhFSMjB (ORCPT
+        id S234282AbhFSNbc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Jun 2021 09:31:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39388 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234281AbhFSNba (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Jun 2021 08:39:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1624106210;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=aUfC5e8Q8yPtHqzv3GrsV4cF/leHgif5ynQm/ztqXzE=;
-        b=MxEBNShKmIHmBpglYLl0/dmCFCwY4MChIcKyZNKTZXzT3zhNSKYgr7Rf4M7JimUmmEdhtH
-        yTm5Yisr6jR3KJF5Xqe2kWSzLKhnaR2UUO6gwD8NMtIbXrggIasaIDLIIn1hBEwvP94Fnz
-        AMam60cqG/qo74vnn8xWX+mFOmUZ2PE=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-530-voERBgKsMbKYvBH1E67ckw-1; Sat, 19 Jun 2021 08:36:46 -0400
-X-MC-Unique: voERBgKsMbKYvBH1E67ckw-1
-Received: by mail-ed1-f71.google.com with SMTP id u26-20020a05640207dab02903935beb5c71so4878016edy.3
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Jun 2021 05:36:46 -0700 (PDT)
+        Sat, 19 Jun 2021 09:31:30 -0400
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5EFC061574
+        for <linux-wireless@vger.kernel.org>; Sat, 19 Jun 2021 06:29:18 -0700 (PDT)
+Received: by mail-qk1-x72e.google.com with SMTP id f70so18209633qke.13
+        for <linux-wireless@vger.kernel.org>; Sat, 19 Jun 2021 06:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=gfNauruCjgHZhdqzW7ZsI8vUBpPsRmwg+YoAVeGAQOI=;
+        b=jvbyW7VeMBBVbAVE7mp+HoKkE/njd5SJS9T5YmmTBXpseB22xVhUh9pVv6oIP+433J
+         W2tqMSw2r4Tpv6ar8QjDAYIj3lOmRuFqCS5zWSGrSp54DxjUSIfO5X4sxeeHrH0lz6Dj
+         bSohhsNzPQ3XgKeK7/V0EgVUgGgqZkoS7mp8UwHKb3rc7tzelgWj97c8Mw7zUYdX+/FX
+         9a3HdvoEq/irwDKgScd5fOXbwqq7O0SyQGUUIV5IdI64j5mq73Ajewy2pK7Bl6q3eqKY
+         1u9yBd4xAEsR5ubhV/5Q8EiTL3TD+041zPYpl4Yr/7qvvphdQPe64X6uqPMA/W0ASswr
+         WBbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=aUfC5e8Q8yPtHqzv3GrsV4cF/leHgif5ynQm/ztqXzE=;
-        b=sLswouZCqBqVm9lwej6TThVtnNJZfcD/a4vVL5Ya40gtZOi0xwFXtvH1qyUPtJh031
-         J7oMlKWt+d+olMtPaATJecyWNv9hRn2wKJmlDfFKtLbBBcgo1Gw63JVFnqtMVcxBnkJs
-         1GOm4/7UZctHcOQ9+BKjfTcqMQTEb77HcypK7dBp+yREjLF18+5i+zX1iMapAYz+PXnL
-         gO40bXlOxN/hQcq0ND41egKjAePdKheBXEofnX+bqCTXs00oQy64Rt+m0dbnZmVwrtDw
-         HK8qgnnZNutEieoxgo1h205Wo0pFA+NLzSY457Z8EytebEpd0wW15P7cKZeszlNNVFIT
-         j7xA==
-X-Gm-Message-State: AOAM5331UGZSTohZVYl/7lgQPA5p0CafOnTmWdA+qBB8YMIf5eA8iu+A
-        N+VmyOhPRv8JQwC2APFTDZ53jDyxboLMHmIDNx/ax9rlPn2ncvx3NYuvxzcQd51L/LUgAKqudT2
-        svvawipvjC8VwdL7XhSuH3fpzb3I=
-X-Received: by 2002:a17:907:7b9e:: with SMTP id ne30mr15658160ejc.389.1624106205407;
-        Sat, 19 Jun 2021 05:36:45 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyWOlQEfNtxrHCiLPKIp/QpNvvyc/9NwptE5AmsuEoldyDP282+zjgC+CKvSgJJ8nKbvtLHHA==
-X-Received: by 2002:a17:907:7b9e:: with SMTP id ne30mr15658152ejc.389.1624106205247;
-        Sat, 19 Jun 2021 05:36:45 -0700 (PDT)
-Received: from localhost (net-130-25-105-72.cust.vodafonedsl.it. [130.25.105.72])
-        by smtp.gmail.com with ESMTPSA id r17sm7590944edt.33.2021.06.19.05.36.43
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=gfNauruCjgHZhdqzW7ZsI8vUBpPsRmwg+YoAVeGAQOI=;
+        b=kvOq3gGYGkkb+M4YTOxBsakjxjGbeFqoHXqQ0rbE6Wq59XVoSK1oFnV0K1DOnJslVV
+         jzInbpXha98CfNNbka7lrpSha2as30xpTSCQ1D1JtLWqtYevjkC7lCbBbRIcny3lN2PI
+         Yye+f0KQdHNcMQNQu++Ouh21OyVYfwGmtXJhty6dxocpTsHajg4mwvOk3UXvh2sziVjU
+         YxtvN28JgWXQi8ZA1avY6E6mAA5BzSGM43HC1ZS9LPoRaG4rlBaAEkS+F80OjBIh823o
+         pnnht5UmcKVWX8S9ANQe+UOEFklBqNXoOcTQTSKig/FQn42G8JXrv73rJx5d5bIIzUJ6
+         5JUQ==
+X-Gm-Message-State: AOAM533ISMUXcXK195LYykl0lSi6XvUVAVDKkub1h3DDK8pPR8B2LC3v
+        Ki3om014iaUCFehww8cd0fk=
+X-Google-Smtp-Source: ABdhPJzFlrTUsnJG8KGQBz2PLRVa6ilZCAYosJW/axIbkPd86wwZ0uxlfn61ot+dtVDdhq4jLwuCvQ==
+X-Received: by 2002:a05:620a:ce4:: with SMTP id c4mr11057004qkj.254.1624109357455;
+        Sat, 19 Jun 2021 06:29:17 -0700 (PDT)
+Received: from Zekuns-MBP-16.fios-router.home (cpe-74-73-56-100.nyc.res.rr.com. [74.73.56.100])
+        by smtp.gmail.com with ESMTPSA id y15sm7141955qto.90.2021.06.19.06.29.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Jun 2021 05:36:44 -0700 (PDT)
-Date:   Sat, 19 Jun 2021 14:36:41 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
-        linux-wireless@vger.kernel.org, sean.wang@mediatek.com
-Subject: Re: [PATCH] mt76: mt7921: allow chip reset during device restart
-Message-ID: <YM3k2dm2HcW/J+FJ@lore-desk>
-References: <96d84ef577cb558969a56ed42e68769eac0d3a1c.1624012209.git.lorenzo@kernel.org>
- <874kduktao.fsf@tynnyri.adurom.net>
+        Sat, 19 Jun 2021 06:29:16 -0700 (PDT)
+Date:   Sat, 19 Jun 2021 09:29:14 -0400
+From:   Zekun Shen <bruceshenzk@gmail.com>
+To:     bruceshenzk@gmail.com
+Cc:     linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH] ath9k: fix OOB read ar9300_eeprom_restore_internal
+Message-ID: <YM3xKsQJ0Hw2hjrc@Zekuns-MBP-16.fios-router.home>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hYRt0vSG9dtgb5Li"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <874kduktao.fsf@tynnyri.adurom.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Bad header can have large length field which can cause OOB.
+cptr is the last bytes for read, and the eeprom is parsed
+from high to low address. The OOB, triggered by the condition
+length > cptr could cause memory error with a read on
+negative index.
 
---hYRt0vSG9dtgb5Li
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+There are some sanity check around length, but it is not
+compared with cptr (the remaining bytes). Here, the
+corrupted/bad EEPROM can cause panic.
 
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->=20
-> > Disable chip full reset just during device probing but allow
-> > it during hw restart.
-> >
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->=20
-> [...]
->=20
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> > @@ -160,7 +160,8 @@ struct mt7921_dev {
-> >  	u16 chainmask;
-> > =20
-> >  	struct work_struct reset_work;
-> > -	bool hw_full_reset;
-> > +	bool hw_full_reset:1;
-> > +	bool hw_init_done:1;
->=20
-> Is there a specific reason why you use bitfields in a boolean? Looks
-> strange to me.
+I was able to reproduce the crash, but I cannot find the
+log and the reproducer now. After I applied the patch, the
+bug is no longer reproducible.
 
-Hi Kalle,
+Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-nope, there is no specific reason, I have just reused the same approach use=
-d in
-mt76_queue_entry for skip_buf{0,1}.
-
-Regards,
-Lorenzo
-
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
->=20
-
---hYRt0vSG9dtgb5Li
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYM3k1gAKCRA6cBh0uS2t
-rL9ZAP0RLCCGd9vcS14J9RFTCaZxP5E3xz6XpmsAmyFCr4KNOQD/ecC4qNoXECnY
-4kh5y88j3i7DPqazG71Iw0vi98bEBwE=
-=nkOW
------END PGP SIGNATURE-----
-
---hYRt0vSG9dtgb5Li--
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+index b4885a700296..b0a4ca3559fd 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+@@ -3351,7 +3351,8 @@ static int ar9300_eeprom_restore_internal(struct ath_hw *ah,
+ 			"Found block at %x: code=%d ref=%d length=%d major=%d minor=%d\n",
+ 			cptr, code, reference, length, major, minor);
+ 		if ((!AR_SREV_9485(ah) && length >= 1024) ||
+-		    (AR_SREV_9485(ah) && length > EEPROM_DATA_LEN_9485)) {
++		    (AR_SREV_9485(ah) && length > EEPROM_DATA_LEN_9485) ||
++		    (length > cptr)) {
+ 			ath_dbg(common, EEPROM, "Skipping bad header\n");
+ 			cptr -= COMP_HDR_LEN;
+ 			continue;
+-- 
+2.23.0.rc1
 
