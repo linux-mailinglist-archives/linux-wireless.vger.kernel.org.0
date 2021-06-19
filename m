@@ -2,32 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B0213AD817
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 08:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BDF23AD82A
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 08:39:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232897AbhFSG3z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Jun 2021 02:29:55 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:56133 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232605AbhFSG3x (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Jun 2021 02:29:53 -0400
+        id S233100AbhFSGl1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Jun 2021 02:41:27 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:17538 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231637AbhFSGl1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 19 Jun 2021 02:41:27 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624084059; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=ReeHdDtZ1CGVXKaLf4XclDol0SUyu66O157eCXFCbig=; b=EqXe0fnU8UOq8QafoXMtwhVDPo+jhXzycMY+W8eiNKmjEr4Ivq8RQOGpgFxa7MMIP2VR5IBV
- 2n4SE9sp8nDk4Kk3jADDYSVMo9NEcsT/Bnf73uF6odKrHrpiV9rKOV1KK9DKb/1V0Rbdqvo1
- uFw528SqEJqpCie+70Eov6GmPFU=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1624084757; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=/guua7JNF7X/bzK0PnOvryWWZSYg05MwaJIMvdOltW8=; b=LwDzxZJwbf06r1wye+44bwpoKtYg7qsNkHl/030ejX2MWoqA6ltNaZpVqdshny13+5IaMeFK
+ zg/VKSaFjUcRR1bsPjk1Sdjhumb+xCAMJ/AwLnXCF1lAEoqt7rq/M6f8lHPmteNBQF7BoBPi
+ 8g0uJqbOJOvfF9ZwIttMkVJZfaY=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 60cd8e42e27c0cc77fa6dbc4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Jun 2021 06:27:14
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 60cd911151f29e6bae3cc3ee (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Jun 2021 06:39:13
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9E741C43460; Sat, 19 Jun 2021 06:27:13 +0000 (UTC)
+        id E53FFC4360C; Sat, 19 Jun 2021 06:39:12 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,82 +38,72 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B6D88C433F1;
-        Sat, 19 Jun 2021 06:27:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B6D88C433F1
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 07FA9C433D3;
+        Sat, 19 Jun 2021 06:39:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 07FA9C433D3
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Franky Lin <franky.lin@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        "David S. Miller" <davem@davemloft.net>,
+To:     viktor.barna@celeno.com
+Cc:     linux-wireless@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH v2 1/2] cfg80211: Add wiphy_info_once()
-References: <20210511211549.30571-1-digetx@gmail.com>
-        <e7495304-d62c-fd20-fab3-3930735f2076@gmail.com>
-Date:   Sat, 19 Jun 2021 09:27:06 +0300
-In-Reply-To: <e7495304-d62c-fd20-fab3-3930735f2076@gmail.com> (Dmitry
-        Osipenko's message of "Fri, 18 Jun 2021 23:44:50 +0300")
-Message-ID: <87r1gyid39.fsf@codeaurora.org>
+        Aviad Brikman <aviad.brikman@celeno.com>,
+        Eliav Farber <eliav.farber@gmail.com>,
+        Oleksandr Savchenko <oleksandr.savchenko@celeno.com>,
+        Shay Bar <shay.bar@celeno.com>
+Subject: Re: [RFC v1 000/256] wireless: cl8k driver for Celeno IEEE 802.11ax devices
+References: <20210617160223.160998-1-viktor.barna@celeno.com>
+Date:   Sat, 19 Jun 2021 09:39:07 +0300
+In-Reply-To: <20210617160223.160998-1-viktor.barna@celeno.com> (viktor barna's
+        message of "Thu, 17 Jun 2021 15:58:07 +0000")
+Message-ID: <87mtrmicj8.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Osipenko <digetx@gmail.com> writes:
+viktor.barna@celeno.com writes:
 
-> 12.05.2021 00:15, Dmitry Osipenko =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
->> Add wiphy_info_once() helper that prints info message only once.
->>=20
->> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->> ---
->>=20
->> Changelog:
->>=20
->> v2: - New patch added in v2.
->>=20
->>  include/net/cfg80211.h | 2 ++
->>  1 file changed, 2 insertions(+)
->>=20
->> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
->> index 5224f885a99a..3b19e03509b3 100644
->> --- a/include/net/cfg80211.h
->> +++ b/include/net/cfg80211.h
->> @@ -8154,6 +8154,8 @@ bool cfg80211_iftype_allowed(struct wiphy *wiphy, =
-enum nl80211_iftype iftype,
->>  	dev_notice(&(wiphy)->dev, format, ##args)
->>  #define wiphy_info(wiphy, format, args...)			\
->>  	dev_info(&(wiphy)->dev, format, ##args)
->> +#define wiphy_info_once(wiphy, format, args...)			\
->> +	dev_info_once(&(wiphy)->dev, format, ##args)
->>=20=20
->>  #define wiphy_err_ratelimited(wiphy, format, args...)		\
->>  	dev_err_ratelimited(&(wiphy)->dev, format, ##args)
->>=20
+> From: Viktor Barna <viktor.barna@celeno.com>
 >
-> Ping?
+> Celeno Communications publishes to the opensource new wireless driver
+> for an own 802.11 chipset family - 80xx. The main chip supports multiple
+> simultaneous bands functioning (2.4G/5.2G or 5.2G/6G) over PCIe 3.0
+> dual-lane interface. Basically, the chip is dual-band concurrent up to
+> 8x8 in total, and up to 6x6 per band, including 802.11ax 160MHz support
+> and functioning of AP/STA/MESH modes. The driver architecture is strong
+> SoftMAC.
 >
-> Arend, is this series good to you? I assume Kalle could pick it up if
-> you'll give ack. Thanks in advance.
+> The current patchset is considered to be published in form of RFC
+> (Request for Comments). If there are any suggestions/propositions - we
+> will be glad to fix them and eventually share the driver with the
+> community in form of an official patch (including the firmware
+> binaries).
+>
+> The RFC is divided into separate patches on a per-file basis to simplify
+> the review process.
 
-Normally cfg80211 changes go via Johannes' tree though I guess small
-changes I could take it via my tree, but then I need an ack from
-Johannes.
+[...]
 
---=20
+> ________________________________ The information transmitted is
+> intended only for the person or entity to which it is addressed and
+> may contain confidential and/or privileged material. Any
+> retransmission, dissemination, copying or other use of, or taking of
+> any action in reliance upon this information is prohibited. If you
+> received this in error, please contact the sender and delete the
+> material from any computer. Nothing contained herein shall be deemed
+> as a representation, warranty or a commitment by Celeno. No warranties
+> are expressed or implied, including, but not limited to, any implied
+> warranties of non-infringement, merchantability and fitness for a
+> particular purpose. ________________________________
+>
+
+I'm not going to review a driver with a disclaimer like this.
+
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
