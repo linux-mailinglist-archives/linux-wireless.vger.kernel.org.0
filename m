@@ -2,87 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D1B73AD9BC
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 13:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0270A3ADA00
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jun 2021 14:36:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233266AbhFSLJK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 19 Jun 2021 07:09:10 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:38723 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232892AbhFSLJK (ORCPT
+        id S234148AbhFSMjB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 19 Jun 2021 08:39:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:54424 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234112AbhFSMjB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 19 Jun 2021 07:09:10 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624100819; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=O5T/Cbcb8DSpBcvMfr32sTZZ6HdAT24NRUIKNzd+LSw=; b=Lek8oiNrhRCG6aY+eK9fMrHtPzJ40NQz0lUX1pAkRgVxYD+16VJLNQLcCwLlyrWAzd/FPMtw
- 5I2/qPKRQKVMKIatecTs/qGE+bVxM3HTFtkOXMInySfV0vxi82oKa0xBV8K/CdPCL+nvwi+f
- 5OAcgZ9SobnE43b7Fsgaji8IeYU=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60cdcfb86ddc3305c418bceb (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 19 Jun 2021 11:06:32
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3FBF8C433D3; Sat, 19 Jun 2021 11:06:31 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 70FA3C433F1;
-        Sat, 19 Jun 2021 11:06:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 70FA3C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        Sat, 19 Jun 2021 08:39:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1624106210;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=aUfC5e8Q8yPtHqzv3GrsV4cF/leHgif5ynQm/ztqXzE=;
+        b=MxEBNShKmIHmBpglYLl0/dmCFCwY4MChIcKyZNKTZXzT3zhNSKYgr7Rf4M7JimUmmEdhtH
+        yTm5Yisr6jR3KJF5Xqe2kWSzLKhnaR2UUO6gwD8NMtIbXrggIasaIDLIIn1hBEwvP94Fnz
+        AMam60cqG/qo74vnn8xWX+mFOmUZ2PE=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-530-voERBgKsMbKYvBH1E67ckw-1; Sat, 19 Jun 2021 08:36:46 -0400
+X-MC-Unique: voERBgKsMbKYvBH1E67ckw-1
+Received: by mail-ed1-f71.google.com with SMTP id u26-20020a05640207dab02903935beb5c71so4878016edy.3
+        for <linux-wireless@vger.kernel.org>; Sat, 19 Jun 2021 05:36:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=aUfC5e8Q8yPtHqzv3GrsV4cF/leHgif5ynQm/ztqXzE=;
+        b=sLswouZCqBqVm9lwej6TThVtnNJZfcD/a4vVL5Ya40gtZOi0xwFXtvH1qyUPtJh031
+         J7oMlKWt+d+olMtPaATJecyWNv9hRn2wKJmlDfFKtLbBBcgo1Gw63JVFnqtMVcxBnkJs
+         1GOm4/7UZctHcOQ9+BKjfTcqMQTEb77HcypK7dBp+yREjLF18+5i+zX1iMapAYz+PXnL
+         gO40bXlOxN/hQcq0ND41egKjAePdKheBXEofnX+bqCTXs00oQy64Rt+m0dbnZmVwrtDw
+         HK8qgnnZNutEieoxgo1h205Wo0pFA+NLzSY457Z8EytebEpd0wW15P7cKZeszlNNVFIT
+         j7xA==
+X-Gm-Message-State: AOAM5331UGZSTohZVYl/7lgQPA5p0CafOnTmWdA+qBB8YMIf5eA8iu+A
+        N+VmyOhPRv8JQwC2APFTDZ53jDyxboLMHmIDNx/ax9rlPn2ncvx3NYuvxzcQd51L/LUgAKqudT2
+        svvawipvjC8VwdL7XhSuH3fpzb3I=
+X-Received: by 2002:a17:907:7b9e:: with SMTP id ne30mr15658160ejc.389.1624106205407;
+        Sat, 19 Jun 2021 05:36:45 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyWOlQEfNtxrHCiLPKIp/QpNvvyc/9NwptE5AmsuEoldyDP282+zjgC+CKvSgJJ8nKbvtLHHA==
+X-Received: by 2002:a17:907:7b9e:: with SMTP id ne30mr15658152ejc.389.1624106205247;
+        Sat, 19 Jun 2021 05:36:45 -0700 (PDT)
+Received: from localhost (net-130-25-105-72.cust.vodafonedsl.it. [130.25.105.72])
+        by smtp.gmail.com with ESMTPSA id r17sm7590944edt.33.2021.06.19.05.36.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Jun 2021 05:36:44 -0700 (PDT)
+Date:   Sat, 19 Jun 2021 14:36:41 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name,
         linux-wireless@vger.kernel.org, sean.wang@mediatek.com
 Subject: Re: [PATCH] mt76: mt7921: allow chip reset during device restart
+Message-ID: <YM3k2dm2HcW/J+FJ@lore-desk>
 References: <96d84ef577cb558969a56ed42e68769eac0d3a1c.1624012209.git.lorenzo@kernel.org>
-Date:   Sat, 19 Jun 2021 14:06:23 +0300
-In-Reply-To: <96d84ef577cb558969a56ed42e68769eac0d3a1c.1624012209.git.lorenzo@kernel.org>
-        (Lorenzo Bianconi's message of "Fri, 18 Jun 2021 12:30:47 +0200")
-Message-ID: <874kduktao.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ <874kduktao.fsf@tynnyri.adurom.net>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="hYRt0vSG9dtgb5Li"
+Content-Disposition: inline
+In-Reply-To: <874kduktao.fsf@tynnyri.adurom.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-> Disable chip full reset just during device probing but allow
-> it during hw restart.
->
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+--hYRt0vSG9dtgb5Li
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[...]
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>=20
+> > Disable chip full reset just during device probing but allow
+> > it during hw restart.
+> >
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+> [...]
+>=20
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > @@ -160,7 +160,8 @@ struct mt7921_dev {
+> >  	u16 chainmask;
+> > =20
+> >  	struct work_struct reset_work;
+> > -	bool hw_full_reset;
+> > +	bool hw_full_reset:1;
+> > +	bool hw_init_done:1;
+>=20
+> Is there a specific reason why you use bitfields in a boolean? Looks
+> strange to me.
 
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> @@ -160,7 +160,8 @@ struct mt7921_dev {
->  	u16 chainmask;
->  
->  	struct work_struct reset_work;
-> -	bool hw_full_reset;
-> +	bool hw_full_reset:1;
-> +	bool hw_init_done:1;
+Hi Kalle,
 
-Is there a specific reason why you use bitfields in a boolean? Looks
-strange to me.
+nope, there is no specific reason, I have just reused the same approach use=
+d in
+mt76_queue_entry for skip_buf{0,1}.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Regards,
+Lorenzo
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+>=20
+
+--hYRt0vSG9dtgb5Li
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYM3k1gAKCRA6cBh0uS2t
+rL9ZAP0RLCCGd9vcS14J9RFTCaZxP5E3xz6XpmsAmyFCr4KNOQD/ecC4qNoXECnY
+4kh5y88j3i7DPqazG71Iw0vi98bEBwE=
+=nkOW
+-----END PGP SIGNATURE-----
+
+--hYRt0vSG9dtgb5Li--
+
