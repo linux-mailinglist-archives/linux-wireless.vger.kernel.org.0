@@ -2,107 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C8E3ADFEB
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Jun 2021 21:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56383ADFFA
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Jun 2021 21:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230005AbhFTTbx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Jun 2021 15:31:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
+        id S230013AbhFTTdt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Jun 2021 15:33:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbhFTTbx (ORCPT
+        with ESMTP id S229872AbhFTTds (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Jun 2021 15:31:53 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D933C061574;
-        Sun, 20 Jun 2021 12:29:39 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id t40so17576166oiw.8;
-        Sun, 20 Jun 2021 12:29:39 -0700 (PDT)
+        Sun, 20 Jun 2021 15:33:48 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 887C7C0617A8
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Jun 2021 12:31:34 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id i13so26367606lfc.7
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Jun 2021 12:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
+        h=mime-version:reply-to:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=Qu6fBuMh64lrI4f61hCLY5QUT4ZgoRuYD96GPAue7zg=;
-        b=OKcbKXOsRdz7SW/4lCerafSnc+FFg3AU0vulzjlEbV5Ca3q0TptA13xOyvSEJM51bF
-         2VRn2nhsHzwrUOLE4Vs5CQv1HbVzd3ajc2uxZmZUL8pCThnXchYdVW++OIZx16muhFou
-         jZSbJVl0ZhB3O0QUPZ8NY5DkApjrRYJyGWwEX8RfCBFt9H2iXIwKh50X7WSbeZQcww2O
-         6nXoHS7W3EhBhHnCrmnjkeNF2X94UOTe5Ti0ok9cyJwbpi19OqREpp0m3iKYf7apcmEa
-         fSkhajgEbmI6Hh0jQdzc/0r9zW/sHFL7NxLlftMExFxYQc+rUDEOxeSm98bVQx3tCTiy
-         tQsg==
+        bh=a2zlJLb2cHVJ/vhYiwd0h6Ss03bH4wa1SiOeNNr1qqA=;
+        b=bkPS4yFR98020frGZuTqkshvNSWXl0Z6aTQyqDBQOYRNn8mNj5ss4TtiudbSrK7ff/
+         QNZJY25CiO+MAZJaIbw2u0HDwtyse9WT3A0cEIgMb7BhAc5Gi6ayNLOmqZZccWa+fNBh
+         k61qS4LmcyXeqJul4RPlYtrHntUAvOZQNCldFK4euecaucVDQIZPJo6OCRHDFo8n8io6
+         y/wykfU9I/qPBsaSVZvRbHpzbXcDYmsqOM+wVrXUhyO/jptCVxl1LpxYgYbXKqQg0pGJ
+         jrhELtWISoo7lLKraKAHFp1ru6KpHU4ePpKhtD5yFuFfQm9+elaj+smp5+MyUD/KdPaP
+         Ef2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=Qu6fBuMh64lrI4f61hCLY5QUT4ZgoRuYD96GPAue7zg=;
-        b=HoEfGZrV537kJA/aA2A79a72fSDRhK2tOCk/pnf7dEf0gI5EpoeDJUppc6mE5lenoy
-         XHKZZfZOW0dRM6etJZPyrwHB8NJ/QWXGLDz4UWYxr8qRsnQ6rSbMYsa2xDx+4hykuoVa
-         JoaNfdEa9tyQVooD5LN6ACXXsxisSIZxKB9h5MNKilvXoOgloCx/8uzINSH3h6Zpad0H
-         MX94fbs2yu7OlB26abrttON5JZF6wh3RrkRvqhQ8K38fRYl1YVvCj35AKQTUj9/Chwsd
-         YAObWAff53XYO6pQc03hVx/ZJq+UMwWoFAsCrR0dcIOrxVkT+lDZ+a54TrykII1W8zkG
-         Lj0g==
-X-Gm-Message-State: AOAM530tW0BWPz5x6R9SljRMEDWOBzy/LuwbyfyTkgvuTtnHhVNXRiLH
-        F3PttE3ck0VAbEkUoCqlaEk=
-X-Google-Smtp-Source: ABdhPJz3ndRuoqcarZlKK4Npc/trmAwIcIulEu0SMQcBGfn6RR1gPceRm0k9kKBqrrt/aMS6bWZwHQ==
-X-Received: by 2002:aca:1c11:: with SMTP id c17mr15955572oic.77.1624217378873;
-        Sun, 20 Jun 2021 12:29:38 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id 3sm3187612oob.1.2021.06.20.12.29.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jun 2021 12:29:38 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Stable <stable@vger.kernel.org>
-Subject: [PATCH] rtw88: Fix some memory leaks
-Date:   Sun, 20 Jun 2021 14:24:07 -0500
-Message-Id: <20210620192407.22812-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.32.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=a2zlJLb2cHVJ/vhYiwd0h6Ss03bH4wa1SiOeNNr1qqA=;
+        b=amUumFnFmuka2pqMkLUd9py5CzoqfgO/NJJuJotT72Mrors0hEa2HZdGdIWBm+Q/ym
+         am1OK1TNHAwqrWSJpPRTEoPZLMOiwMnelHspzkCBPUEnU4qRkun3A8DFmKAfQWQkXjnV
+         MZvL02SR21KfXFtkvGyawZeJIS3nGfiSCsTA5WyL3EaQ+k7jDJIIVD7I7HVwwbblId0Z
+         4GT15Jiotl9RodI5oNxiv+lg18G4X779rrFzVOIwQxV9jRJz80ckjoKkCfM0hcUeuCtZ
+         sWDz9dRQ1X0tj5jgV6KKRZTWIQg236AxCShpVfruZHsJDt4hu0cxYLgnpIZpBAnDMXw5
+         8Mrw==
+X-Gm-Message-State: AOAM5317PVeMt9886xVeltZb2e8M179fQrGoCa6MrdJ7496kv++gW6cu
+        RyggQLknPtWng/P6d0sRsEdrPceS24h5G7ULYyE=
+X-Google-Smtp-Source: ABdhPJyRr8xkKh1v74sSXR4glyEviCtgGMwIox16xrJwn4HhjsAH3AQXF/kC87XZ0K1UcvikGGPprpK4pH75Np6p+uM=
+X-Received: by 2002:ac2:499d:: with SMTP id f29mr6724142lfl.602.1624217492479;
+ Sun, 20 Jun 2021 12:31:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:aa6:da47:0:b029:fa:6d7d:24c with HTTP; Sun, 20 Jun 2021
+ 12:31:32 -0700 (PDT)
+Reply-To: contactcenter@gnbinvestorsb.com
+From:   Gnb Investors Bank <sandraquntoo@gmail.com>
+Date:   Sun, 20 Jun 2021 22:31:32 +0300
+Message-ID: <CAPu=tC5n-=M7EGJZV++m9omRBkAZZ+M9gcWgQjJkA4Y9N6hVBQ@mail.gmail.com>
+Subject: Brauchen Sie einen Kredit?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Stable <stable@vger.kernel.org>
----
- drivers/net/wireless/realtek/rtw88/coex.c | 4 +++-
- drivers/net/wireless/realtek/rtw88/fw.c   | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+--=20
+Brauchen Sie einen Kredit? Unsere Bank vergibt Kredite zu einem Zinssatz vo=
+n 2%
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index cedbf3825848..e81bf5070183 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -591,8 +591,10 @@ void rtw_coex_info_response(struct rtw_dev *rtwdev, struct sk_buff *skb)
- 	struct rtw_coex *coex = &rtwdev->coex;
- 	u8 *payload = get_payload_from_coex_resp(skb);
- 
--	if (payload[0] != COEX_RESP_ACK_BY_WL_FW)
-+	if (payload[0] != COEX_RESP_ACK_BY_WL_FW) {
-+		dev_kfree_skb_any(skb);
- 		return;
-+	}
- 
- 	skb_queue_tail(&coex->queue, skb);
- 	wake_up(&coex->wait);
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 797b08b2a494..43525ad8543f 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -231,9 +231,11 @@ void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
- 	switch (c2h->id) {
- 	case C2H_BT_MP_INFO:
- 		rtw_coex_info_response(rtwdev, skb);
-+		dev_kfree_skb_any(skb);
- 		break;
- 	case C2H_WLAN_RFON:
- 		complete(&rtwdev->lps_leave_check);
-+		dev_kfree_skb_any(skb);
- 		break;
- 	default:
- 		/* pass offset for further operation */
--- 
-2.32.0
+Melden Sie sich f=C3=BCr weitere Informationen bei uns.
 
+E-Mail: contactcenter@gnbinvestorsb.com
