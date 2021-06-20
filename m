@@ -2,117 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36BDE3ADDE7
-	for <lists+linux-wireless@lfdr.de>; Sun, 20 Jun 2021 11:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED263ADEDB
+	for <lists+linux-wireless@lfdr.de>; Sun, 20 Jun 2021 15:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbhFTJqa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 20 Jun 2021 05:46:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42630 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229553AbhFTJq3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 20 Jun 2021 05:46:29 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 244856100A;
-        Sun, 20 Jun 2021 09:44:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624182257;
-        bh=ZVpCRDYLtBBwy7xkskFEB+FcTLVSN6KKKd1Hft64J0c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=s2FW1waHDmMcQYOwP4vbKZENkaPwbvReIIhmHSxKZnOmz/C9sRfpIERYsobkHHVQU
-         zbOBhkEdWbXv9+T+epJ/Km1hTn2RajYinJqDRgeCqfMlGwzbdThSgkLX5aCADivC93
-         Oza1stKSE7G/ZmcuIsLaYqZ7exKOcVL/syKNv/OGExuSRtLyfVAoZXq6l4say1aq9i
-         zxt4HwhhjzRqSv8q9pyUrVbu1v5Fkjk3silMB55Gc5WVT53+UH9mgA7PW3Sm8Q7B/8
-         OwE5BTdkG7y4gQeQz8FTu6feiGWvzOvQ+uJEkWAbTx+I+AdgteGYAy1KtPclqEFCD9
-         4bf6bNWwIEdFQ==
-Date:   Sun, 20 Jun 2021 11:44:12 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     sean.wang@mediatek.com
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
-        YN.Chen@mediatek.com, Leon.Yen@mediatek.com,
-        Eric-SY.Chang@mediatek.com, Deren.Wu@mediatek.com,
-        km.lin@mediatek.com, robin.chiu@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, Eric.Liang@mediatek.com,
-        Stella.Chang@mediatek.com, jemele@google.com, yenlinlai@google.com,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 1/2] mt76: mt7921: enable aspm by default
-Message-ID: <YM8N7BRIk5QzaEZy@lore-desk>
-References: <9b704807383f3048898944d2b9cb74e6b4e8d83d.1624174954.git.objelf@gmail.com>
+        id S229836AbhFTNjS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 20 Jun 2021 09:39:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40614 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229841AbhFTNi5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 20 Jun 2021 09:38:57 -0400
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD17DC0611C2
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Jun 2021 06:36:26 -0700 (PDT)
+Received: by mail-qk1-x741.google.com with SMTP id 22so2567333qkv.8
+        for <linux-wireless@vger.kernel.org>; Sun, 20 Jun 2021 06:36:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=uDIEtWfgl91FDet7ZYX1u1ozW0abpKvg4acx3thqXBCDoYcWKg7eyNZSXNk+51VeuJ
+         sYbwx77CCJt/Xl1UBy7P++4/uHOQjQcptGzc4BiJd5A/7x+FLCtsFr6R08yAScCPxE/G
+         ycRitdP5UZQCPHBcljPWiYz9qooX9+o9VlIcE1iBIKjgWFsG58IfpnIZmKh5Mer/et0Q
+         Wvv2McVtUA6rn+iTugaAQulni5t+7gIBWkpgi42U+JEUmcEEUifIxcViVFyKhDEEgfNV
+         A33afccbptAYxVMQ3XRd6cg8QS8Vl2AEYQyihFbFLRpIaiCXlHMQE4BSfPfytvzUMqcd
+         FXMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=sW0SQTxGv7aez6+kVgXo7QimcaLM9p/dtRToNuC7Uz31ZFAfqo6y5U4DMI4dfPJu/6
+         jrKu3BKXwx8SofO8PdxhXjEPBMaUmtjg6hULpURKbk/+nSvM7T+Nagyq/KciRGql4Li3
+         6AbwD1U5rkbIv0GGvDkonfAyniHnrGDaM43Zu/szz3qpXXl8FaqWS5lARZ6XHA2gmQ7t
+         kUtMolcStRuQB8Q9adu1VUH+9YvCAjvwv1UsJGwwBrwsKNGSWqEQ1bZ7tMeBznUWsbcd
+         5W6uzt5aeIF7y55cunfrD6e6wAGT3K5T4F69tzGoVxcjIMLR5rMMlJhTM6+dYmhi3duM
+         POUA==
+X-Gm-Message-State: AOAM532KlzOsKOiL6vErOhaqO+U5eFqT4j1Vbr8KKdDqjQiorzBXEJMx
+        a88N8Re/zA+ANWsQJlRROJT8Z9UGEG/EJmZ3tdK5rcgGmUM=
+X-Google-Smtp-Source: ABdhPJwOQ5lA8oaPxit1UXNypL8Kah2QWj0jtAWNuj5/Z8/Rl7T8YsfxHtOIriCZuXo1tXOWzxp5d5YlbnVjDFRsY5Q=
+X-Received: by 2002:a02:a810:: with SMTP id f16mr12630337jaj.64.1624196175568;
+ Sun, 20 Jun 2021 06:36:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="yw7NNhvB76jksAQU"
-Content-Disposition: inline
-In-Reply-To: <9b704807383f3048898944d2b9cb74e6b4e8d83d.1624174954.git.objelf@gmail.com>
+Received: by 2002:a05:6e02:1baf:0:0:0:0 with HTTP; Sun, 20 Jun 2021 06:36:14
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <sarah.koffi101@gmail.com>
+Date:   Sun, 20 Jun 2021 15:36:14 +0200
+Message-ID: <CA+ifgLE1g7jgi567M2HhZfvRSUF63Hu6stsW+ysX=3U-=qnn6Q@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Greetings From Mrs. Sarah Koffi
 
---yw7NNhvB76jksAQU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-> From: Sean Wang <sean.wang@mediatek.com>
->=20
-> mt7921 is mainly used in NB, CE and IoT application where battery life is
-> much concerned so the patch enabled PCIe ASPM by default to shut off the
-> clocks related PCIe as much as possible when MT7921 is either in suspend
-> state or in runtime pm to lower power consumption.
->=20
-> We still leave disable aspm as an option with module_param for users to
-> disable ASPM if necessary.
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
-instead of adding a module parameter (deprecated), why not just enable it by
-default for mt7921 and add a debugfs knob to flip it?
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
 
-Regards,
-Lorenzo
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
 
->=20
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/pci.c
-> index c3905bcab360..33782e1ee312 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> @@ -17,6 +17,10 @@ static const struct pci_device_id mt7921_pci_device_ta=
-ble[] =3D {
->  	{ },
->  };
-> =20
-> +static bool mt7921_disable_aspm;
-> +module_param_named(disable_aspm, mt7921_disable_aspm, bool, 0644);
-> +MODULE_PARM_DESC(disable_aspm, "disable PCI ASPM support");
-> +
->  static void
->  mt7921_rx_poll_complete(struct mt76_dev *mdev, enum mt76_rxq_id q)
->  {
-> @@ -132,7 +136,8 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
->  	if (ret)
->  		goto err_free_pci_vec;
-> =20
-> -	mt76_pci_disable_aspm(pdev);
-> +	if (mt7921_disable_aspm)
-> +		mt76_pci_disable_aspm(pdev);
-> =20
->  	mdev =3D mt76_alloc_device(&pdev->dev, sizeof(*dev), &mt7921_ops,
->  				 &drv_ops);
-> --=20
-> 2.25.1
->=20
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
 
---yw7NNhvB76jksAQU
-Content-Type: application/pgp-signature; name="signature.asc"
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
 
------BEGIN PGP SIGNATURE-----
+I will wait to hear from you so as to give you details.With love from
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYM8N6QAKCRA6cBh0uS2t
-rNimAP4jh3ekcFwCAH/JZUIv6wMtxWc8AC6WF6ZBLFXVSHKwfgEAo/v9Lpm+g7na
-G+XNKkipa6La+NdzwgzP+qTgpG+nngk=
-=dJNJ
------END PGP SIGNATURE-----
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
 
---yw7NNhvB76jksAQU--
+Mrs. Sarah Koffi
