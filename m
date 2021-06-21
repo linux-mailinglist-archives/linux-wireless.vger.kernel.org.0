@@ -2,35 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A78F3AF27B
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jun 2021 19:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4140B3AF2B2
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jun 2021 19:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232164AbhFURyz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Jun 2021 13:54:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38788 "EHLO mail.kernel.org"
+        id S233025AbhFUR4T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Jun 2021 13:56:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39086 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231961AbhFURyf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Jun 2021 13:54:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A48F76128A;
-        Mon, 21 Jun 2021 17:52:20 +0000 (UTC)
+        id S232340AbhFURzM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Jun 2021 13:55:12 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C54C961289;
+        Mon, 21 Jun 2021 17:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624297941;
-        bh=ZKOlOQEc0Zv2X+bJq4CpdNmLnkZxsej9vDF0pPBnW4s=;
+        s=k20201202; t=1624297969;
+        bh=5kiAwe2sKo+HYspEPVNuKP3QHogOO1UsdneSrcR1T+I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gPRyRiTTkkL/yKhTPhyj7vkwGpxs+x/mfNDWmofz9xDrxfTHasuPYtjtrHK5dPKNe
-         l0Vv7Ysys/fachIQ3vRJoHL7Ep9tsJ3ua8MApJ6H38FsXUzUQW67pd46orUqbrfEc5
-         HvLqdQpTQbKr+JSlU7ezx+sN6rKNG7b0oXMBGItyqB4R3J+9Bcw0S7sLG1JKWUt3Jm
-         82LveauQHAvg0CHZ1w32TA+3zyWHfZOsiiejxWD3LEmdy+TlOoLZwpDiMqRKA//i5E
-         VMTj2PCMm+92Iim8pRF0oe7pndurQ6yDXsa0hopzenc/38ir/CFmxh7RZ1esvUKWlM
-         xC1PjfggtZfig==
+        b=tPq0L0el3BOoRCQd6oI61+i5fnAdAsfggxu8R4Tr7EHZCLMbdy+IugITh+feWPuY4
+         QmvwXup9vD7u8jxPD1kH9CdvO6roikGIwz0dNYBLSFVYRPxKDu2cf2kTmrlnLNYWRT
+         F1+RGCjqtKUzIvs6ZLzq3mCoVB8HcC1PnvJlnROLhH867FSuAFkUTw+rckfy+Mso4E
+         mQF31aAmfnSkbp9EhwQa24NR+6ctaaMzGYwm8Ow1GWBI1J7cZegoN38x6ZRc+prr4s
+         CSA6F+UIByrHg3Fw3bmYN6L5v1TBEEllkxzdcnbvc+0ycd/pA9o58bq0yfAAk6N6h2
+         Y9juYGtrleFOA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 14/39] mac80211: drop multicast fragments
-Date:   Mon, 21 Jun 2021 13:51:30 -0400
-Message-Id: <20210621175156.735062-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.12 33/39] mac80211: reset profile_periodicity/ema_ap
+Date:   Mon, 21 Jun 2021 13:51:49 -0400
+Message-Id: <20210621175156.735062-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210621175156.735062-1-sashal@kernel.org>
 References: <20210621175156.735062-1-sashal@kernel.org>
@@ -44,50 +45,57 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a9799541ca34652d9996e45f80e8e03144c12949 ]
+[ Upstream commit bbc6f03ff26e7b71d6135a7b78ce40e7dee3d86a ]
 
-These are not permitted by the spec, just drop them.
+Apparently we never clear these values, so they'll remain set
+since the setting of them is conditional. Clear the values in
+the relevant other cases.
 
-Link: https://lore.kernel.org/r/20210609161305.23def022b750.Ibd6dd3cdce573dae262fcdc47f8ac52b883a9c50@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20210618133832.316e32d136a9.I2a12e51814258e1e1b526103894f4b9f19a91c8d@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/mac80211/mlme.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 59de7a86599d..cb5cbf02dbac 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -2239,17 +2239,15 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
- 	sc = le16_to_cpu(hdr->seq_ctrl);
- 	frag = sc & IEEE80211_SCTL_FRAG;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 0fe91dc9817e..437d88822d8f 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4062,10 +4062,14 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 		if (elems.mbssid_config_ie)
+ 			bss_conf->profile_periodicity =
+ 				elems.mbssid_config_ie->profile_periodicity;
++		else
++			bss_conf->profile_periodicity = 0;
  
--	if (is_multicast_ether_addr(hdr->addr1)) {
--		I802_DEBUG_INC(rx->local->dot11MulticastReceivedFrameCount);
--		goto out_no_led;
--	}
--
- 	if (rx->sta)
- 		cache = &rx->sta->frags;
+ 		if (elems.ext_capab_len >= 11 &&
+ 		    (elems.ext_capab[10] & WLAN_EXT_CAPA11_EMA_SUPPORT))
+ 			bss_conf->ema_ap = true;
++		else
++			bss_conf->ema_ap = false;
  
- 	if (likely(!ieee80211_has_morefrags(fc) && frag == 0))
- 		goto out;
+ 		/* continue assoc process */
+ 		ifmgd->assoc_data->timeout = jiffies;
+@@ -5802,12 +5806,16 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 					      beacon_ies->data, beacon_ies->len);
+ 		if (elem && elem->datalen >= 3)
+ 			sdata->vif.bss_conf.profile_periodicity = elem->data[2];
++		else
++			sdata->vif.bss_conf.profile_periodicity = 0;
  
-+	if (is_multicast_ether_addr(hdr->addr1))
-+		return RX_DROP_MONITOR;
-+
- 	I802_DEBUG_INC(rx->local->rx_handlers_fragments);
- 
- 	if (skb_linearize(rx->skb))
-@@ -2375,7 +2373,6 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
- 
-  out:
- 	ieee80211_led_rx(rx->local);
-- out_no_led:
- 	if (rx->sta)
- 		rx->sta->rx_stats.packets++;
- 	return RX_CONTINUE;
+ 		elem = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
+ 					  beacon_ies->data, beacon_ies->len);
+ 		if (elem && elem->datalen >= 11 &&
+ 		    (elem->data[10] & WLAN_EXT_CAPA11_EMA_SUPPORT))
+ 			sdata->vif.bss_conf.ema_ap = true;
++		else
++			sdata->vif.bss_conf.ema_ap = false;
+ 	} else {
+ 		assoc_data->timeout = jiffies;
+ 		assoc_data->timeout_started = true;
 -- 
 2.30.2
 
