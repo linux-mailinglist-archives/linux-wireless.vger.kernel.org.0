@@ -2,219 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F33063AEAF3
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jun 2021 16:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01BA13AEB41
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jun 2021 16:29:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229837AbhFUORd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Jun 2021 10:17:33 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:40900 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229747AbhFUORc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Jun 2021 10:17:32 -0400
-X-UUID: fa23f3e2c888414399d25629da4a78ab-20210621
-X-UUID: fa23f3e2c888414399d25629da4a78ab-20210621
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1540848598; Mon, 21 Jun 2021 22:15:14 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 21 Jun 2021 22:15:13 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 21 Jun 2021 22:15:13 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <meichia.chiu@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Money Wang <money.wang@mediatek.com>
-Subject: [PATCH] mt76: mt7915: add LED support
-Date:   Mon, 21 Jun 2021 22:14:30 +0800
-Message-ID: <20210621141430.17577-1-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S230021AbhFUObN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Jun 2021 10:31:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34954 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229747AbhFUObM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 21 Jun 2021 10:31:12 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3BF96600D4;
+        Mon, 21 Jun 2021 14:28:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624285738;
+        bh=Bbqc+TpZHyvo5eaZlnbMGe+NjFZlVQoc3pVkAaPrOO8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=H6Mq0IONHEkDDn82qccbMSxzc96a77FYOeO+ZzpOvLxWbEPNuSLZzpvkzlBOq4NdK
+         asyMqA7H3JJULrtSs2UFBHtPke+rFO+qEKkjG8EpyjEk76/iuNxNMCkz+6kMBuX1hE
+         9glIpeRtrwE20uQuMFoE/7vcdigH1v1e5/no0M7ralZmz0LYUkrxgP1GeQpDzzhXfi
+         s2kdMkONZNlSlw4TvOCau86V5tzgCr+K0oK97zOJ8Ttnxl/gEP5jMyEe2bhP22lMUg
+         QyfYyMxuugZDVGz/RLzST0tsvDDukP56RN/PrfBBsLbtW3HTJWUvRKfNgX8Q9pFKSF
+         2DTHWRrCNGoVw==
+Received: by pali.im (Postfix)
+        id 626A471B; Mon, 21 Jun 2021 16:28:55 +0200 (CEST)
+Date:   Mon, 21 Jun 2021 16:28:55 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        vtolkm@gmail.com, Rob Herring <robh@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        linux-pci@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] PCI: Disallow retraining link for Atheros chips on
+ non-Gen1 PCIe bridges
+Message-ID: <20210621142855.gnqtj3ofovx7xryr@pali>
+References: <20210602190302.d3ibdtwti4yq57vi@pali>
+ <20210616213819.GA3007589@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210616213819.GA3007589@bjorn-Precision-5520>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: MeiChia Chiu <meichia.chiu@mediatek.com>
+On Wednesday 16 June 2021 16:38:19 Bjorn Helgaas wrote:
+> On Wed, Jun 02, 2021 at 09:03:02PM +0200, Pali Rohár wrote:
+> > On Wednesday 02 June 2021 10:55:59 Bjorn Helgaas wrote:
+> > > On Wed, Jun 02, 2021 at 02:08:16PM +0200, Pali Rohár wrote:
+> > > > On Tuesday 01 June 2021 19:00:36 Bjorn Helgaas wrote:
+> > > 
+> > > > > I wonder if this could be restructured as a generic quirk in quirks.c
+> > > > > that simply set the bridge's TLS to 2.5 GT/s during enumeration.  Or
+> > > > > would the retrain fail even in that case?
+> > > > 
+> > > > If I understand it correctly then PCIe link is already up when kernel
+> > > > starts enumeration. So setting Bridge TLS to 2.5 GT/s does not change
+> > > > anything here.
+> > > > 
+> > > > Moreover it would have side effect that cards which are already set to
+> > > > 5+ GT/s would be downgraded to 2.5 GT/s during enumeration and for
+> > > > increasing speed would be needed another round of "enumeration" to set a
+> > > > new TLS and retrain link again. As TLS affects link only after link goes
+> > > > into Recovery state.
+> > > > 
+> > > > So this would just complicate card enumeration and settings.
+> > > 
+> > > The current quirk complicates the ASPM code.  I'm hoping that if we
+> > > set the bridge's Target Link Speed during enumeration, the link
+> > > retrain will "just work" without complicating the ASPM code.
+> > > 
+> > > An enumeration quirk wouldn't have to set the bridge's TLS to 2.5
+> > > GT/s; the quirk would be attached to specific endpoint devices and
+> > > could set the bridge's TLS to whatever the endpoint supports.
+> > 
+> > Now I see what you mean. Yes, I agree this is a good idea and can
+> > simplify code. Quirk is not related to ASPM code and basically has
+> > nothing with it, just I put it into aspm.c because this is the only
+> > place where link retraining was activated.
+> > 
+> > But with this proposal there is one issue. Some kernel drivers already
+> > overwrite PCI_EXP_LNKCTL2_TLS value. So if PCI enumeration code set some
+> > value into PCI_EXP_LNKCTL2_TLS bits then drivers can change it and once
+> > ASPM will try to retrain link this may cause this issue.
+> 
+> I guess you mean the amdgpu, radeon, and hfi1 drivers.  They really
+> shouldn't be mucking with that stuff anyway.  But they do and are
+> unlikely to change because we don't have any good alternative.
 
-Initialize brightness_set and blink_set callbacks to enable LED support.
+Yea, these are examples of such drivers... Maybe it is a good idea to
+ask those people why changing PCI_EXP_LNKCTL2_TLS is needed. As these
+drivers are often derived from codebase of shared multisystem drivers or
+from common documentation, it is possible that original source has this
+code as a workaround or common pattern used in other operating systems,
+not related to linux...
 
-Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Money Wang <money.wang@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/init.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mmio.c |  6 +++--
- .../net/wireless/mediatek/mt76/mt7915/regs.h | 19 ++++++++++++++
- 3 files changed, 92 insertions(+), 2 deletions(-)
+> One way around that would be to add some quirk code to
+> pcie_capability_write_word().  Ugly, but we do have something sort of
+> similar in pcie_capability_read_word() already.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index e027273..defb0ec 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -151,6 +151,64 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
- 	return 0;
- }
- 
-+static void mt7915_led_set_config(struct led_classdev *led_cdev,
-+				  u8 delay_on, u8 delay_off)
-+{
-+	struct mt7915_dev *dev;
-+	struct mt76_dev *mt76;
-+	u32 val;
-+
-+	mt76 = container_of(led_cdev, struct mt76_dev, led_cdev);
-+	dev = container_of(mt76, struct mt7915_dev, mt76);
-+
-+	/* select TX blink mode, 2: only data frames */
-+	mt76_rmw_field(dev, MT_TMAC_TCR0(0), MT_TMAC_TCR0_TX_BLINK, 2);
-+
-+	/* enable LED */
-+	mt76_wr(dev, MT_LED_EN(0), 1);
-+
-+	/* set LED Tx blink on/off time */
-+	val = FIELD_PREP(MT_LED_TX_BLINK_ON_MASK, delay_on) |
-+	      FIELD_PREP(MT_LED_TX_BLINK_OFF_MASK, delay_off);
-+	mt76_wr(dev, MT_LED_TX_BLINK(0), val);
-+
-+	/* control LED */
-+	val = MT_LED_CTRL_BLINK_MODE | MT_LED_CTRL_KICK;
-+	if (dev->mt76.led_al)
-+		val |= MT_LED_CTRL_POLARITY;
-+
-+	mt76_wr(dev, MT_LED_CTRL(0), val);
-+	mt76_clear(dev, MT_LED_CTRL(0), MT_LED_CTRL_KICK);
-+}
-+
-+static int mt7915_led_set_blink(struct led_classdev *led_cdev,
-+				unsigned long *delay_on,
-+				unsigned long *delay_off)
-+{
-+	u16 delta_on, delta_off;
-+
-+#define HW_TICK		10
-+#define TO_HW_TICK(_t)	(((_t) > HW_TICK) ? ((_t) / HW_TICK) : HW_TICK)
-+
-+	if (*delay_on)
-+		delta_on = TO_HW_TICK(*delay_on);
-+	if (*delay_off)
-+		delta_off = TO_HW_TICK(*delay_off);
-+
-+	mt7915_led_set_config(led_cdev, delta_on, delta_off);
-+
-+	return 0;
-+}
-+
-+static void mt7915_led_set_brightness(struct led_classdev *led_cdev,
-+				      enum led_brightness brightness)
-+{
-+	if (!brightness)
-+		mt7915_led_set_config(led_cdev, 0, 0xff);
-+	else
-+		mt7915_led_set_config(led_cdev, 0xff, 0);
-+}
-+
- static void
- mt7915_init_txpower(struct mt7915_dev *dev,
- 		    struct ieee80211_supported_band *sband)
-@@ -308,6 +366,11 @@ static void mt7915_mac_init(struct mt7915_dev *dev)
- 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 	for (i = 0; i < 2; i++)
- 		mt7915_mac_init_band(dev, i);
-+
-+	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-+		i = dev->mt76.led_pin ? MT_LED_GPIO_MUX3 : MT_LED_GPIO_MUX2;
-+		mt76_rmw_field(dev, i, MT_LED_GPIO_SEL_MASK, 4);
-+	}
- }
- 
- static int mt7915_txbf_init(struct mt7915_dev *dev)
-@@ -822,6 +885,12 @@ int mt7915_register_device(struct mt7915_dev *dev)
- 	dev->mt76.test_ops = &mt7915_testmode_ops;
- #endif
- 
-+	/* init led callbacks */
-+	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-+		dev->mt76.led_cdev.brightness_set = mt7915_led_set_brightness;
-+		dev->mt76.led_cdev.blink_set = mt7915_led_set_blink;
-+	}
-+
- 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
- 				   ARRAY_SIZE(mt76_rates));
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index af712a9..43f9245 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -92,10 +92,12 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
- 	}
- 
- 	if ((addr >= 0x18000000 && addr < 0x18c00000) ||
--	    (addr >= 0x70000000 && addr < 0x78000000) ||
--	    (addr >= 0x7c000000 && addr < 0x7c400000))
-+	    (addr >= 0x70000000 && addr < 0x78000000))
- 		return mt7915_reg_map_l1(dev, addr);
- 
-+	if (addr >= 0x7c000000 && addr < 0x7c400000)
-+		return mt7915_reg_map_l1(dev, addr - 0x64000000);
-+
- 	return mt7915_reg_map_l2(dev, addr);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index ff31b3d..b1df0bb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -57,6 +57,7 @@
- #define MT_WF_TMAC(_band, ofs)		(MT_WF_TMAC_BASE(_band) + (ofs))
- 
- #define MT_TMAC_TCR0(_band)		MT_WF_TMAC(_band, 0)
-+#define MT_TMAC_TCR0_TX_BLINK		GENMASK(7, 6)
- #define MT_TMAC_TCR0_TBTT_STOP_CTRL	BIT(25)
- 
- #define MT_TMAC_CDTR(_band)		MT_WF_TMAC(_band, 0x090)
-@@ -426,6 +427,10 @@
- #define MT_TOP_MISC			MT_TOP(0xf0)
- #define MT_TOP_MISC_FW_STATE		GENMASK(2, 0)
- 
-+#define MT_LED_GPIO_MUX2                0x70005058 /* GPIO 18 */
-+#define MT_LED_GPIO_MUX3                0x7000505C /* GPIO 26 */
-+#define MT_LED_GPIO_SEL_MASK            GENMASK(11, 8)
-+
- #define MT_HW_BOUND			0x70010020
- #define MT_HW_CHIPID			0x70010200
- #define MT_HW_REV			0x70010204
-@@ -438,6 +443,20 @@
- #define MT_PCIE_MAC(ofs)		(MT_PCIE_MAC_BASE + (ofs))
- #define MT_PCIE_MAC_INT_ENABLE		MT_PCIE_MAC(0x188)
- 
-+#define MT_LED_TOP_BASE			0x7c013000
-+#define MT_LED_PHYS(_n)			(MT_LED_TOP_BASE + (_n))
-+
-+#define MT_LED_CTRL(_n)			MT_LED_PHYS(0x00 + ((_n) * 4))
-+#define MT_LED_CTRL_KICK		BIT(7)
-+#define MT_LED_CTRL_BLINK_MODE		BIT(2)
-+#define MT_LED_CTRL_POLARITY		BIT(1)
-+
-+#define MT_LED_TX_BLINK(_n)		MT_LED_PHYS(0x10 + ((_n) * 4))
-+#define MT_LED_TX_BLINK_ON_MASK		GENMASK(7, 0)
-+#define MT_LED_TX_BLINK_OFF_MASK        GENMASK(15, 8)
-+
-+#define MT_LED_EN(_n)			MT_LED_PHYS(0x40 + ((_n) * 4))
-+
- #define MT_WF_IRPI_BASE			0x83006000
- #define MT_WF_IRPI(ofs)			(MT_WF_IRPI_BASE + ((ofs) << 16))
- 
--- 
-2.29.2
+Bjorn, do you really want such ugly hack in pcie_capability_write_word?
+It is common code used and called from lot of places so it may affect
+whole system if in future somebody changes it again...
 
+Or we can let it as is, say that those drivers which are doing it are
+buggy and for future try to reduce code which touches registers
+PCI_EXP_LNKCTL2_TLS. Good code review or some checkpatch.pl warnings may
+prevent introduction of other code which will do it.
+
+> 
+> Bjorn
