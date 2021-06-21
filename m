@@ -2,155 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94D9B3AE753
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jun 2021 12:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 963A13AE921
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jun 2021 14:33:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230427AbhFUKm3 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 21 Jun 2021 06:42:29 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:40791 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229904AbhFUKm2 (ORCPT
+        id S229736AbhFUMf7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 21 Jun 2021 08:35:59 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:19080 "EHLO
+        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229663AbhFUMf7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 21 Jun 2021 06:42:28 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 15LAe2mE5007015, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 15LAe2mE5007015
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 21 Jun 2021 18:40:02 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 21 Jun 2021 18:40:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 21 Jun 2021 18:40:01 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::a0a3:e64a:34ad:fe28]) by
- RTEXMBS04.realtek.com.tw ([fe80::a0a3:e64a:34ad:fe28%5]) with mapi id
- 15.01.2106.013; Mon, 21 Jun 2021 18:40:01 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>
-Subject: RE: [PATCH v2] rtw88: Fix some memory leaks
-Thread-Topic: [PATCH v2] rtw88: Fix some memory leaks
-Thread-Index: AQHXZgxATtcHECM3iE6itZ90Mb4OaaseRfiQ
-Date:   Mon, 21 Jun 2021 10:40:01 +0000
-Message-ID: <19c86cb8dbe04b56b76a386b5faeaa89@realtek.com>
-References: <20210620194110.7520-1-Larry.Finger@lwfinger.net>
-In-Reply-To: <20210620194110.7520-1-Larry.Finger@lwfinger.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/6/21_=3F=3F_08:47:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 21 Jun 2021 08:35:59 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15LCRUm5018765;
+        Mon, 21 Jun 2021 12:33:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=y0MMEAfZ2w9bZHucceJzRm8LU11CvbC3WGt+fD7ZgaE=;
+ b=Sctmrf0IA/aLusV8EPGKvfwc+C89O0nivKcdkNVa9qwX1LO0/YdAaK//exu2cOCXZDdu
+ zEjNdBnhkBHUQhnho2G14R80/vErj0jq+VXYGjTE+H4/9doC3O5beqXJKa7Ibs51pjSq
+ WYRlyArjn9olPt1DpxGCNlMzVcLt6ZzYDW1HW5DE7IK0csOET/p8B+W1W626isvLnQec
+ ZjaEQBoNHyozxlcwgM5N1gmG+uHQFDXiztianApb8NhwNGwXLgZjiwSYo73myVy+0sOF
+ bdSmo20QYsOFW6l6NGF079w1HCvkituWAy7dKrNjZ5hJJWS1wg+Zwlnc1QF2SKaXhTxe tg== 
+Received: from oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 39aqqvrck7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 21 Jun 2021 12:33:33 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 15LCXWmH129027;
+        Mon, 21 Jun 2021 12:33:32 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3030.oracle.com with ESMTP id 3996mbvgyp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 21 Jun 2021 12:33:32 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 15LCXV4Z129004;
+        Mon, 21 Jun 2021 12:33:31 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 3996mbvgy8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 21 Jun 2021 12:33:31 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 15LCXUmd027872;
+        Mon, 21 Jun 2021 12:33:30 GMT
+Received: from mwanda (/102.222.70.252)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 21 Jun 2021 05:33:29 -0700
+Date:   Mon, 21 Jun 2021 15:33:20 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Hans deGoede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] brcmfmac: fix "board_type" in brcmf_of_probe()
+Message-ID: <YNCHELb14+eNV94n@mwanda>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 06/21/2021 10:15:36
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 164498 [Jun 21 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/21/2021 10:18:00
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-ORIG-GUID: zLJix7DsWZkbTPlzInMk9nDxrEeSaQNb
+X-Proofpoint-GUID: zLJix7DsWZkbTPlzInMk9nDxrEeSaQNb
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+There are two bugs here:
+1) devm_kzalloc() needs to be checked for allocation errors.
+2) The loop was intended to be:
 
+ Bad:	for (i = 0; i < board_type[i]; i++) {
+Good:	for (i = 0; i < len; i++) {
 
-> -----Original Message-----
-> From: Larry Finger [mailto:larry.finger@gmail.com] On Behalf Of Larry Finger
-> Sent: Monday, June 21, 2021 3:41 AM
-> To: kvalo@codeaurora.org
-> Cc: linux-wireless@vger.kernel.org; Larry Finger; Stable
-> Subject: [PATCH v2] rtw88: Fix some memory leaks
-> 
-> There are memory leaks of skb's from routines rtw_fw_c2h_cmd_rx_irqsafe()
-> and rtw_coex_info_response(), both arising from C2H operations. There are
-> no leaks from the buffers sent to mac80211.
-> 
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Cc: Stable <stable@vger.kernel.org>
-> ---
-> v2 - add the missinf changelog.
-> 
-> ---
->  drivers/net/wireless/realtek/rtw88/coex.c | 4 +++-
->  drivers/net/wireless/realtek/rtw88/fw.c   | 2 ++
->  2 files changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-> index cedbf3825848..e81bf5070183 100644
-> --- a/drivers/net/wireless/realtek/rtw88/coex.c
-> +++ b/drivers/net/wireless/realtek/rtw88/coex.c
-> @@ -591,8 +591,10 @@ void rtw_coex_info_response(struct rtw_dev *rtwdev, struct sk_buff *skb)
->  	struct rtw_coex *coex = &rtwdev->coex;
->  	u8 *payload = get_payload_from_coex_resp(skb);
-> 
-> -	if (payload[0] != COEX_RESP_ACK_BY_WL_FW)
-> +	if (payload[0] != COEX_RESP_ACK_BY_WL_FW) {
-> +		dev_kfree_skb_any(skb);
->  		return;
-> +	}
-> 
->  	skb_queue_tail(&coex->queue, skb);
->  	wake_up(&coex->wait);
-> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-> index 797b08b2a494..43525ad8543f 100644
-> --- a/drivers/net/wireless/realtek/rtw88/fw.c
-> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-> @@ -231,9 +231,11 @@ void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
->  	switch (c2h->id) {
->  	case C2H_BT_MP_INFO:
->  		rtw_coex_info_response(rtwdev, skb);
-> +		dev_kfree_skb_any(skb);
+Neither of these bugs are likely to cause an issue in practice but
+they're worth fixing.  Also the code could be made simpler by using the
+devm_kstrdup() and strreplace() functions.
 
-The rtw_coex_info_response() puts skb into a skb_queue, so we can't free it here.
-Instead, we should free it after we dequeue and do thing. 
-So, we send another patch: 
-https://lore.kernel.org/linux-wireless/20210621103023.41928-1-pkshih@realtek.com/T/#u
+Fixes: 29e354ebeeec ("brcmfmac: Transform compatible string for FW loading")
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: Basically a completely different patch.  :)
 
-I hope this isn't confusing you.
+ .../net/wireless/broadcom/brcm80211/brcmfmac/of.c    | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-
->  		break;
->  	case C2H_WLAN_RFON:
->  		complete(&rtwdev->lps_leave_check);
-> +		dev_kfree_skb_any(skb);
->  		break;
->  	default:
->  		/* pass offset for further operation */
-> --
-> 2.32.0
-
---
-Ping-Ke
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+index a7554265f95f..8ca62cd0e8ac 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -24,20 +24,16 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 	/* Set board-type to the first string of the machine compatible prop */
+ 	root = of_find_node_by_path("/");
+ 	if (root) {
+-		int i, len;
+ 		char *board_type;
+ 		const char *tmp;
+ 
+ 		of_property_read_string_index(root, "compatible", 0, &tmp);
+ 
+ 		/* get rid of '/' in the compatible string to be able to find the FW */
+-		len = strlen(tmp) + 1;
+-		board_type = devm_kzalloc(dev, len, GFP_KERNEL);
+-		strscpy(board_type, tmp, len);
+-		for (i = 0; i < board_type[i]; i++) {
+-			if (board_type[i] == '/')
+-				board_type[i] = '-';
+-		}
++		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
++		if (!board_type)
++			return;
++		strreplace(board_type, '/', '-');
+ 		settings->board_type = board_type;
+ 
+ 		of_node_put(root);
+-- 
+2.30.2
 
