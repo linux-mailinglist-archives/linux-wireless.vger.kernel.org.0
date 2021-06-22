@@ -2,79 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7D653B05D5
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 15:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF26B3B05F3
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 15:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230481AbhFVNbx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Jun 2021 09:31:53 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:44415 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230160AbhFVNbv (ORCPT
+        id S231240AbhFVNl3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Jun 2021 09:41:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33968 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230469AbhFVNl2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Jun 2021 09:31:51 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624368576; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=qw4qwoH2ZqUNGdgEGYLCVJJOtbJiNs6sdFNSqhDVjK0=; b=f1YSM5sE9dVVL+1M1dxUk+LoIhxq6PfrVpo/mckYUIDFI293CigTE9594VVZ3/bkCMfNYOFO
- fhRbNYbNMjGE5wRTZkowLFgn5P72mPkpiGhOT2HJNlUNkR5e6qY7BONlFY/agaq2qY9wVUti
- ky6/fOGhVv6QhkS3YMIAYIns+mw=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60d1e59312003202412c281e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 22 Jun 2021 13:28:51
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DFEFAC43460; Tue, 22 Jun 2021 13:28:50 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9A429C433D3;
-        Tue, 22 Jun 2021 13:28:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9A429C433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Cc:     luciano.coelho@intel.com, linux-wireless@vger.kernel.org,
-        Ayala Beker <ayala.beker@intel.com>
-Subject: Re: [PATCH v2 1/4] iwlwifi: mei: add the driver to allow cooperation with CSME
-References: <20210621080159.12883-1-emmanuel.grumbach@intel.com>
-Date:   Tue, 22 Jun 2021 16:28:46 +0300
-In-Reply-To: <20210621080159.12883-1-emmanuel.grumbach@intel.com> (Emmanuel
-        Grumbach's message of "Mon, 21 Jun 2021 11:01:56 +0300")
-Message-ID: <87k0mmjaep.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 22 Jun 2021 09:41:28 -0400
+Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4CEC061574
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Jun 2021 06:39:12 -0700 (PDT)
+Received: by mail-vs1-xe29.google.com with SMTP id b1so11235049vsh.7
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Jun 2021 06:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=J28wSdJJok/UpidUjauwwEx6MtrLSmD7zBPcnbz8C6g=;
+        b=L0i7+3RS+2urDkT41s3k0BUQtlEmHvSEUUBK4u/HMzzpR2Sw6aC5Ub1usDPdoaAePg
+         /dM66+QC4SunNX7gd3Jl356eKELg1CWo8mu2PkQJVwKXkfZitQ6zciS2NkfQH14LRhAW
+         2OdNB1hd4zXYFgFZvOART3UpOp4Ze+RuFRqRjlTGZQen8xyN4hdNFCdlA/RVXyTkxXtR
+         qm8+z7H2nW+uRC7LEpvnxRXlAAor/2cXcqFeEYzZaL+fMzhWuBsIr/UW8NOQQYy5IW69
+         BtZZmDUH2OBwkYcgVmTcj+anQbK+Qc8JTJhLcVFRn9DBa9herRKanPbeX7PdL6ZcAzzx
+         YaRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=J28wSdJJok/UpidUjauwwEx6MtrLSmD7zBPcnbz8C6g=;
+        b=fNOAcEX4S72BF8VnEu+hN5jRYijkPUtISCvD6lud0eMpC0Ou+uDVyAq7m5m2AJkt7N
+         jd08ugUHAa2j7I+OjT5i/tDsP9OUcGitU+PjnoTVYlGfkaDvp7TlAVfdOism/ePDCWHd
+         WGBcGAAnDCLpc++0mSsacJOvxd+E4w0VTgnNBAUxkHL1ZAzpXOMRJymZcTSgO2MJpgGo
+         +pj9fgNzv2XJP4k1b6y1nN+A8kdIlFV4XCDLOR8x3yYtxd4g2Ekjsd5M76WX2LRoHwLI
+         nNE96kh9m/IESXaoxu44EzCldZEhO77fBqUM1zDKUfR9fr6S+KXJEGmAak5rv/RCzE56
+         iT6A==
+X-Gm-Message-State: AOAM530HTn++KuSjDs1ZH6uc8EngspMF6JyWePIV/esvee37MXbVutj9
+        7iuXC0ZJTcPkAfVeoYnvFGmjMJUaFqfWVlOMkmu+xdhwyWo=
+X-Google-Smtp-Source: ABdhPJwXQQfOdzjVsR70SGiQveawqjf57Jv7JEz4eZ1mkGzMbt8E7wghKzYGDxI6BZG5fQx2wDw3Y1aeaSCD6YpRs0Q=
+X-Received: by 2002:a67:ee84:: with SMTP id n4mr7663620vsp.24.1624369151344;
+ Tue, 22 Jun 2021 06:39:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210621080159.12883-1-emmanuel.grumbach@intel.com> <87k0mmjaep.fsf@tynnyri.adurom.net>
+In-Reply-To: <87k0mmjaep.fsf@tynnyri.adurom.net>
+From:   Emmanuel Grumbach <egrumbach@gmail.com>
+Date:   Tue, 22 Jun 2021 16:39:00 +0300
+Message-ID: <CANUX_P2rdkaBpKV=RTkS9ffLR89hL1yqBHskRp_Vdu8hJVrshg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] iwlwifi: mei: add the driver to allow cooperation
+ with CSME
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Ayala Beker <ayala.beker@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
+On Tue, Jun 22, 2021 at 4:32 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
+>
+> > iwlmei is a driver that handles the communication with the
+> > Wireless driver of the CSME firmware.
+> > More details in the documentation included in this patch.
+>
+> A complicated new feature and just two sentences in the commit log? The
+> commit log should give a proper overview what the patch does and why.
+> This commit log really says to the reader "I don't care, find out
+> yourself".
+>
+> And being nice I did try to read few paragraphs from the patch but as I
+> didn't even see any explanation for CSME or SAP I gave up.
+>
 
-> iwlmei is a driver that handles the communication with the
-> Wireless driver of the CSME firmware.
-> More details in the documentation included in this patch.
+CSME stands for converged security and management engine.
+It is well known and has a driver in the kernel under drivers/misc/mei
 
-A complicated new feature and just two sentences in the commit log? The
-commit log should give a proper overview what the patch does and why.
-This commit log really says to the reader "I don't care, find out
-yourself".
+CSME is a CPU inside the chipset that runs a firmware that is also
+able to control the WLAN device. iwlwifi needs to negotiate with the
+firmware that runs on the CSME to take the device. The language they
+talk is SAP which is just a command based protocol.
+I can add that to the commit message.
 
-And being nice I did try to read few paragraphs from the patch but as I
-didn't even see any explanation for CSME or SAP I gave up.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
