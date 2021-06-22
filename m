@@ -2,160 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A9B3B0724
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 16:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B183B075A
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 16:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231514AbhFVOPC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Jun 2021 10:15:02 -0400
-Received: from mga01.intel.com ([192.55.52.88]:23393 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231899AbhFVOPA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Jun 2021 10:15:00 -0400
-IronPort-SDR: SYgLTIZhKztpKAMUj67kYrsfwSexPGfjuBKAkFsLX+XLtT4XBsu8tCMaRn3MDzbL0ssAwNgiZs
- y2QjzFYsRyZQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,10023"; a="228615221"
-X-IronPort-AV: E=Sophos;i="5.83,291,1616482800"; 
-   d="scan'208";a="228615221"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2021 07:12:08 -0700
-IronPort-SDR: 33hQILjgdvb+dGhMa+a8n3qsxo4Jq48+Z7GyjPN1TQqC9m9v0bCpq9CmmpuhEEc2qPWUApZe6s
- TE9jEgYOK9tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,291,1616482800"; 
-   d="scan'208";a="480822744"
-Received: from orsmsx605.amr.corp.intel.com ([10.22.229.18])
-  by FMSMGA003.fm.intel.com with ESMTP; 22 Jun 2021 07:12:07 -0700
-Received: from orsmsx605.amr.corp.intel.com (10.22.229.18) by
- ORSMSX605.amr.corp.intel.com (10.22.229.18) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.4; Tue, 22 Jun 2021 07:12:06 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx605.amr.corp.intel.com (10.22.229.18) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4
- via Frontend Transport; Tue, 22 Jun 2021 07:12:06 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.107)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2242.4; Tue, 22 Jun 2021 07:12:06 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MI7vuPKkLX4urCqeyKXV0qcOlIBtrjRYrMY+WiJTbcVJ5I+0X2tSm4nI6sgHnziv2dbLUjHK+KghwracDgeip6hzSFooN3w/Z3SHaXbxQi7QX4GFUEBTo5w8xFqt5Fi/gu+4lCuoI8b8phmZSBhSu0aFrdCNGFwC/mggUHcQLt4SGozTKVgYLmaKtB7aUr+WjnfOW0GDBSg2tjbI20FifeIRJmi6NXD8LUQejWz7r4HzS0e60JLNrwaCU/S+BR/wZ6+Nf7CxjV/coGxVNd6jBWVPy/bZ7/hcduCCNyOOv3IJP1586c4By2qNQYqHSYc0R3oC+WKg3rMcR5a1Ke+bFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QWbolih3GT3jHOA5kVyvfM7k10kIeCGwVMB+fBx20w8=;
- b=DTSpKsD43hd+ujx2fvnoI0DwCMaijJtZc90M9dbGSPCQFuMxtfQoNDQaKxZiPpMtjRF0aiZ/I21cSvtPwGyOfaZwHDm/3s3izEP8UcsKfwRY5z4WW8gQKJf8lSy38e0v1fojfLOJ4oDyYC66B/5Jzy/GRaxVNE0uIWSY19N0CGD+qUyuq88220MbleQSxjU6cg7/9epkbxCjfwnLPjUyKcN9Kv6KRnv3XvLz8kaWln07GNVAtT8JkUrUV+nmwvPgw95GVy1DigwOxV1/+q/Hle3MrEFb6080/eGrXAr55GMw1bFjS4OCyaYeSz1G5/mVzZC6vlhOQgY3TypjHLY8hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QWbolih3GT3jHOA5kVyvfM7k10kIeCGwVMB+fBx20w8=;
- b=Fw4iT1lLkwstTdeL2YHFuL96gqNb6DsNK/nj/FIM2d2fYIJ4uGnajTfvNJIcSpG9CkkvmPqbRTD3On1vRZ3FPrs17oUgoyqsAWjiVeBmDZaDpiMD6PnYaB9o6hadwXc77EUZC3sm2LlFLNJuETH2ZksGQ4IUtqZM3li1HwwseRw=
-Received: from BYAPR11MB3207.namprd11.prod.outlook.com (2603:10b6:a03:7c::14)
- by BY5PR11MB3880.namprd11.prod.outlook.com (2603:10b6:a03:184::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.22; Tue, 22 Jun
- 2021 14:12:05 +0000
-Received: from BYAPR11MB3207.namprd11.prod.outlook.com
- ([fe80::5c60:81c3:b049:887f]) by BYAPR11MB3207.namprd11.prod.outlook.com
- ([fe80::5c60:81c3:b049:887f%6]) with mapi id 15.20.4242.024; Tue, 22 Jun 2021
- 14:12:05 +0000
-From:   "Coelho, Luciano" <luciano.coelho@intel.com>
-To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Beker, Ayala" <ayala.beker@intel.com>
-Subject: Re: [PATCH v2 1/4] iwlwifi: mei: add the driver to allow cooperation
- with CSME
-Thread-Topic: [PATCH v2 1/4] iwlwifi: mei: add the driver to allow cooperation
- with CSME
-Thread-Index: AQHXZnPDjMmJD4VExEWItilD4eCUmqsf9IyAgAAfsoA=
-Date:   Tue, 22 Jun 2021 14:12:04 +0000
-Message-ID: <4a3ee9e9665108d678b32de4b8729f0e19f22cef.camel@intel.com>
-References: <20210621080159.12883-1-emmanuel.grumbach@intel.com>
-         <E1lvfMS-001avq-Bi@farmhouse.coelho.fi>
-In-Reply-To: <E1lvfMS-001avq-Bi@farmhouse.coelho.fi>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.38.3-1 
-authentication-results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [91.156.6.193]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 15076ebb-46fd-4875-f123-08d93587b69e
-x-ms-traffictypediagnostic: BY5PR11MB3880:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BY5PR11MB388085D5C92F1B65A134786A90099@BY5PR11MB3880.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: mf8wyF4pJ+gJoqa7spSp0YeuaLYSSRsLp4U/ufcMbLsj4eaF2O+BjuReWU0IcjrKviUQozjWRUgLy8DmDnb3R3g1zHoHnowT8n4+euIUt/rFeN3GFg3olk44eCyTH7thIg5gPomnVU/M4Cos3BWq1C9dVEGc18MyqI+LIbml3G7gF5Ndw2HfbOqhn7QqnH+SOyOzw4sVWO94lJWT9lDkWhqfB7RDjg16WIhAurwV/O8Ug8x1+0zyRytqLYLsn6Foor+JJjutetnen86uHJHbRYhHug1EYf9JUyNNIK+sGSFP8AO1aDhvNZNzS9YwBRVIoHFslyAEC8EZrXLCwCzAOg16DdkfeRzZ5ufKmd0YwlQNKVki8zEQS6XRbwoSRCwxFfC60c9nuPfH28MhgVqCEuwhve2DU4sZQNDBRhpB3ZG5Qq9TZESaVW5M0Y127WPb/ZQJhjc20d0YfttZynI/5QNDqJ5NYxzp4w4loy6fFhpjHs06WAQtvdhfAgj3g0gwG6gIcaVhoXW5b2P2zYg8z0mTlzT60wQRmg+oYGRxDht1VaSYmzNDs+8L9+f6roc6c3PFWbsdBoOALCizRXAcdzP+Qx9M8aUO2mPj9jwIlss=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3207.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(366004)(136003)(376002)(396003)(346002)(6506007)(37006003)(6486002)(107886003)(2906002)(4326008)(6862004)(71200400001)(2616005)(316002)(8936002)(86362001)(8676002)(54906003)(66446008)(186003)(6512007)(38100700002)(122000001)(83380400001)(36756003)(478600001)(5660300002)(66556008)(64756008)(26005)(66476007)(4744005)(76116006)(66946007)(91956017)(6636002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?b2o1WFhqUlEwTHBrdTEraG54ckNncGt1WlFJTVp6WGMxVWoza25Bd0w4NWsv?=
- =?utf-8?B?WHBpU3VOdUZndnJkSE9MQWY2eW8vZDV5aVZ1SDlpdWdESFFtREx6TnoxblFO?=
- =?utf-8?B?eEhXczRUT1lPd0xuQ3BscVg4UlB3RUpVVFBBa1l2UFZVYzV6WmFCaENwTHBP?=
- =?utf-8?B?Zkd4eVdxSzV2SHVBbUQwaU8rZHYwTjJYaVFLNnF0bTJtdG5EeVJOc2hTN2JW?=
- =?utf-8?B?YklxMUQyT01uTFBUK2RqdklzbHplRGRqM2Zjc0VxcStRTk04QWlqODErSHov?=
- =?utf-8?B?bnJlQzRJK1ZEOTR0R015TTVpOUhpYkt2QW9HQnpuRHdVODVGVWNlUUVvNXR4?=
- =?utf-8?B?Uk81M2lJVjBxeFhIZXQrRXRjdDgyTlNOZWZaYWRhU2NaUVlqUTdweE04bzhm?=
- =?utf-8?B?T0x1RHlhMUw5Y3l0Q1JUWndMMzluOHQwR3JNTW5jM2lPSnlQbFZlVC9UT1Fm?=
- =?utf-8?B?YnJXUUUxT0xEMkV3ZFd6SFltM01BOTUrVkQzVTkxd21RZkNhUEl4NlFCc05U?=
- =?utf-8?B?RExtVTl5MStlVzFZQlliOXpiNWtnTFg3OWQvQkpwZ0RyZTVSZVJBeTFDNjNY?=
- =?utf-8?B?SWEySG9LWG5UUEloRnVyajJKRGpVekVUMlJZeU01bjlmTmx4LzZ4eE9wSUlU?=
- =?utf-8?B?L1VvcURRRktKOTdDT3Rud0lIQ041bWJCTkx4VXlzeWhUbmUxNFdiNU80WTVP?=
- =?utf-8?B?aXNGVXh0LzdDSXMwLzMwZ0ZRVjJGSCt4YmhKYnNaUzljcmZzc0s5QjNlMVh2?=
- =?utf-8?B?RGZrK1pzUVdrcXNua2hIMlA1ek84Q3M1dWVIWE42Z2NuejVxUEV0TzVrOHM0?=
- =?utf-8?B?dTQxMFhwYlpwSDBiRnMxcXV5U2prMUFpSmNKamhVVElQeGdZaXUveHlxemRy?=
- =?utf-8?B?cmlzUUUxWllWQXUzTjVRbVJBRnRrRVVCaWNmVkNscW9rM3Y5Vlkvd1NwMlc5?=
- =?utf-8?B?TThkSStLRXNIWWdvbkpJV3o5eEtNNHRYM1BJV1JGZmtoZkg0ZERWUW0ybGYv?=
- =?utf-8?B?bVNESEkzL3RnczM1YUtHdE1rN1BSc2M1OElOUWZBV3VWbHBDQ1JoaWNPVzA1?=
- =?utf-8?B?U3JXRVlsNWJjVWdJR21FNkNJKzUvU0plZHFuYWltV1lpTG1RQnV2R1hHMEN4?=
- =?utf-8?B?Zy9ld2I2MEZGbllDdE1aRUprRERkZG05dFgrdU5FT3ZtQ21odUM1M0JObGlp?=
- =?utf-8?B?OGR1OWZ6VHV1MVNpZ2M0K2VhblgwcXA1a29CRHBjUlNSemdLeUlRRmEyVHFW?=
- =?utf-8?B?bDlTTUUzeE1IdVpibkdJekZPa3RCc2NJTkNPc0cwN1NJclpHUzVqZG5XRDhr?=
- =?utf-8?B?SitVSXJncUhEalhScTE2bWtmZlNzbXAzSS9GSmMyMUQ3TUg4ejZ6aW9SZ1Bs?=
- =?utf-8?B?MlJiWE82SjN5VWpDWW5Ic00rTDkxaE0vN0V1UnJOQ3NvaDJMQVlaaXpYNTZn?=
- =?utf-8?B?cW8yQ05vWWZCU3I0cHFudTZnbG53SUpWWDFKUjNVWkJDR0lzY09KK2ZzUU9M?=
- =?utf-8?B?bTZrM0Q5NDVaZlhDeEh5RWg1bGQ1QUs5Z3JscTVoZElPdWRrTWNIbXVQdUp6?=
- =?utf-8?B?OHBYR0VEcllLY1MzMDdkOHpkSzd1N3NOZllXTVVacnpNeHpXL1dXa3czaDY4?=
- =?utf-8?B?bDBCbFRxMXgrMU9FazYrOWhSMzRMVDZ1TVUwQStINlZYU1gyYVI5SDRtMnA3?=
- =?utf-8?B?bldwL2M1UytXdy83V3U1WDhlckdhVDBuVFdabGFEZWk4RlB1anZaKy9tb0J1?=
- =?utf-8?Q?aR9cTttcJn9lEVoZf9559WwPTrCBRnFUHsAluQ7?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0E0B25E012F0AF4D8544CE28F3D8786D@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S231248AbhFVO1b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Jun 2021 10:27:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:54250 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230047AbhFVO10 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Jun 2021 10:27:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1624371910;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LCflcc9DDHTNNAkd92nsNiNwbbVljRsMVFiiBCW1kJ0=;
+        b=dy8SiCK3qhwdA4pmbMWaLNgQkI0QXiOo4TloUm7KTDP9aZJR3ieYH3Y+7TT5tnoSy8rOYN
+        nhfXWhwMFWKSoluq5W+rCxmIfcg4U8R5vw7ul00/X+ZdJpm+f10rKl50VXH7MYstLYnael
+        jcO10gLdbJH15yeTMpw1fVBDCzKhyfU=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-213-_1XNrca3Mua-5ZCDLnQw0w-1; Tue, 22 Jun 2021 10:25:08 -0400
+X-MC-Unique: _1XNrca3Mua-5ZCDLnQw0w-1
+Received: by mail-ej1-f70.google.com with SMTP id q14-20020a1709066aceb029049fa6bee56fso2089091ejs.21
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Jun 2021 07:25:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=LCflcc9DDHTNNAkd92nsNiNwbbVljRsMVFiiBCW1kJ0=;
+        b=gECqBvJKHzBWohoEnBwnkGGepzJ753HUM4dbFBZm6c/tDpfC69iUa2E2r0uSRKPJ9B
+         7lcHcgC57d7unb3uGOKpjCfAfClbKLyFDwmZVk/z4QFtmP96YUfvyR1eadOpQTphhurE
+         m/R6/SY2wZMXU4lYYyrQ0wM1W7xwNFJo7T7Fg6np4EPgZasz8yadpEViC5fDA5T3wj0d
+         OLJpdOvyVbl6nF5TcfYHIsP/R9qZvWi3DYV/ZFu8fKkcG/FbSofGwDUC3pAzvnl35wkF
+         f/bXfcQRGitH8IY4TFvD8oCeGWU5n9YHLFNKw5/si3k+o8SZc+g9I58vfuzEUCBBtL7Z
+         kOew==
+X-Gm-Message-State: AOAM531v3OppM2s6qtJouslJgbxvnDKtTvHxd86OVTH8Mf2vSqr9Iomu
+        Ydbgr9qpnrvYPgIZRpuiJOzTEgHcNPPVC/gNKlhxkCt07SVq666KeXI8ak+a9cx84nEsyYwwqm0
+        jlWeHm0biAQUcGH0J9PXFRO8TO7c=
+X-Received: by 2002:a17:906:724b:: with SMTP id n11mr4294470ejk.338.1624371907351;
+        Tue, 22 Jun 2021 07:25:07 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzfhQ9n159wBTBj85gnBrCTgrjxKuGkYGuGtBN1OcVEly2AURLap2vSlV+EfQGSjnfFnVPIRw==
+X-Received: by 2002:a17:906:724b:: with SMTP id n11mr4294452ejk.338.1624371907193;
+        Tue, 22 Jun 2021 07:25:07 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id r17sm12057603edt.33.2021.06.22.07.25.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jun 2021 07:25:06 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 8AA2218071E; Tue, 22 Jun 2021 16:25:03 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     make-wifi-fast@lists.bufferbloat.net,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kan Yan <kyan@google.com>, Yibo Zhao <yiboz@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH mac80211-next v8] mac80211: Switch to a virtual
+ time-based airtime scheduler
+In-Reply-To: <20210507094851.180838-1-toke@redhat.com>
+References: <20210507094851.180838-1-toke@redhat.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Tue, 22 Jun 2021 16:25:03 +0200
+Message-ID: <87o8byou2o.fsf@toke.dk>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3207.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15076ebb-46fd-4875-f123-08d93587b69e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2021 14:12:04.9343
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xR9uitKFpq5aIj6/nXnFkTx/kCQdmM6XqLOe61EY9Ftk+BhOUb3mNien9ldd+x34L48r9Z2O3Tde2M1fu4PAWRYwfKYzBTvc579Tt03m0uw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR11MB3880
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVHVlLCAyMDIxLTA2LTIyIGF0IDE1OjE4ICswMzAwLCBMdWNhIENvZWxobyB3cm90ZToNCj4g
-RW1tYW51ZWwgR3J1bWJhY2ggPGVtbWFudWVsLmdydW1iYWNoQGludGVsLmNvbT4gd3JvdGU6DQo+
-IA0KPiA+IGl3bG1laSBpcyBhIGRyaXZlciB0aGF0IGhhbmRsZXMgdGhlIGNvbW11bmljYXRpb24g
-d2l0aCB0aGUNCj4gPiBXaXJlbGVzcyBkcml2ZXIgb2YgdGhlIENTTUUgZmlybXdhcmUuDQo+ID4g
-TW9yZSBkZXRhaWxzIGluIHRoZSBkb2N1bWVudGF0aW9uIGluY2x1ZGVkIGluIHRoaXMgcGF0Y2gu
-DQo+ID4gDQo+ID4gQ28tRGV2ZWxvcGVkLWJ5OiBBeWFsYSBCZWtlciA8YXlhbGEuYmVrZXJAaW50
-ZWwuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEVtbWFudWVsIEdydW1iYWNoIDxlbW1hbnVlbC5n
-cnVtYmFjaEBpbnRlbC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogTHVjYSBDb2VsaG8gPGx1Y2lh
-bm8uY29lbGhvQGludGVsLmNvbT4NCj4gDQo+IDQgcGF0Y2hlcyBhcHBsaWVkIHRvIGl3bHdpZmkt
-bmV4dC5naXQsIHRoYW5rcy4NCj4gDQo+IGY5MGM1YjY3MTU1YiBpd2x3aWZpOiBtZWk6IGFkZCB0
-aGUgZHJpdmVyIHRvIGFsbG93IGNvb3BlcmF0aW9uIHdpdGggQ1NNRQ0KPiAxZDI5ZWQwMzI2MGEg
-aXdsd2lmaTogaW50ZWdyYXRlIHdpdGggaXdsbWVpDQo+IGViNjlkYmI5NTVlYSBubDgwMjExOiB2
-ZW5kb3ItY21kOiBhZGQgSW50ZWwgdmVuZG9yIGNvbW1hbmRzIGZvciBpd2xtZWkgdXNhZ2UNCj4g
-MjViNzRmMTg5N2M4IGl3bHdpZmk6IG12bTogYWRkIHZlbmRvciBjb21tYW5kcyBuZWVkZWQgZm9y
-IGl3bG1laQ0KDQpGb3IgdGhlIHJlY29yZCwgSSBkcm9wcGVkIHRoaXMgZnJvbSB0aGlzIHJlbGVh
-c2Ugb24gS2FsbGUncyByZXF1ZXN0Lg0KDQotLQ0KQ2hlZXJzLA0KTHVjYS4NCg==
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
+
+> This switches the airtime scheduler in mac80211 to use a virtual time-bas=
+ed
+> scheduler instead of the round-robin scheduler used before. This has a
+> couple of advantages:
+>
+> - No need to sync up the round-robin scheduler in firmware/hardware with
+>   the round-robin airtime scheduler.
+>
+> - If several stations are eligible for transmission we can schedule both =
+of
+>   them; no need to hard-block the scheduling rotation until the head of t=
+he
+>   queue has used up its quantum.
+>
+> - The check of whether a station is eligible for transmission becomes
+>   simpler (in ieee80211_txq_may_transmit()).
+>
+> The drawback is that scheduling becomes slightly more expensive, as we ne=
+ed
+> to maintain an rbtree of TXQs sorted by virtual time. This means that
+> ieee80211_register_airtime() becomes O(logN) in the number of currently
+> scheduled TXQs because it can change the order of the scheduled stations.
+> We mitigate this overhead by only resorting when a station changes positi=
+on
+> in the tree, and hopefully N rarely grows too big (it's only TXQs current=
+ly
+> backlogged, not all associated stations), so it shouldn't be too big of an
+> issue.
+>
+> To prevent divisions in the fast path, we maintain both station sums and
+> pre-computed reciprocals of the sums. This turns the fast-path operation
+> into a multiplication, with divisions only happening as the number of
+> active stations change (to re-compute the current sum of all active stati=
+on
+> weights). To prevent this re-computation of the reciprocal from happening
+> too frequently, we use a time-based notion of station activity, instead of
+> updating the weight every time a station gets scheduled or de-scheduled. =
+As
+> queues can oscillate between empty and occupied quite frequently, this can
+> significantly cut down on the number of re-computations. It also has the
+> added benefit of making the station airtime calculation independent on
+> whether the queue happened to have drained at the time an airtime value w=
+as
+> accounted.
+>
+> Co-developed-by: Yibo Zhao <yiboz@codeaurora.org>
+> Signed-off-by: Yibo Zhao <yiboz@codeaurora.org>
+> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+
+Hey Felix
+
+Had a chance to look at this yet? :)
+
+-Toke
+
