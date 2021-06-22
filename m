@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C36F3B0894
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 17:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 614013B0899
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 17:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231552AbhFVPV1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Jun 2021 11:21:27 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:30108 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231815AbhFVPV0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Jun 2021 11:21:26 -0400
+        id S232182AbhFVPV4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Jun 2021 11:21:56 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:38200 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232169AbhFVPV4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Jun 2021 11:21:56 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624375151; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1624375180; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=PRbABvN91y5oNj5TYqyFCxn59p5zZSv6freDS4xOcpA=;
- b=hS8y99oSb2E6GX2wUKdQ5/m51wbTrbXbfw40R1qxqnS6bfj/N772wOdKQgrZd/6w0kERmnDN
- J5VFUGRgnT+1WZOngFK7pVhI7Y52ifvzD7cChCc8QCVGbSakBSiprRHWMVYit+DQaQL0ElVw
- 53PgVlmqVW9z6aIh8NKUAlc9IVI=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ Content-Type: Sender; bh=iJDvUVfRV50lcgkv07h01Gonl2kz48uPaVYOkC54lyk=;
+ b=iz8PJK/+viYkkl02NuSMC0JNGdydLLgYCLMShTS/Re9O4nSUgy7s4mgnRtzIAm+ER6Jdtd3m
+ I0ULVdiSU6QyFbFy/jwNHBkwyEK3f9PXp6EZVnGEuKD9Bkv15vAC0SXndf/JqKp1cwCC3Zhx
+ ze8sUWEZ2mbB2E0EEh9l9hYGFCk=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 60d1ff5032b73d6b281a8c86 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 22 Jun 2021 15:18:40
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 60d1ff731200320241e13da9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 22 Jun 2021 15:19:15
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 33F25C43460; Tue, 22 Jun 2021 15:18:40 +0000 (UTC)
+        id E5611C4338A; Tue, 22 Jun 2021 15:19:14 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,52 +39,46 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 40E83C4338A;
-        Tue, 22 Jun 2021 15:18:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 40E83C4338A
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2DB9DC433F1;
+        Tue, 22 Jun 2021 15:19:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2DB9DC433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 1/3] rtw88: add beacon filter support
+Subject: Re: [PATCH] rtw88: Remove duplicate include of coex.h
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210426013252.5665-1-pkshih@realtek.com>
-References: <20210426013252.5665-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <phhuang@realtek.com>
+In-Reply-To: <20210430024951.33406-1-wanjiabing@vivo.com>
+References: <20210430024951.33406-1-wanjiabing@vivo.com>
+To:     Wan Jiabing <wanjiabing@vivo.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kael_w@yeah.net,
+        Wan Jiabing <wanjiabing@vivo.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210622151840.33F25C43460@smtp.codeaurora.org>
-Date:   Tue, 22 Jun 2021 15:18:40 +0000 (UTC)
+Message-Id: <20210622151914.E5611C4338A@smtp.codeaurora.org>
+Date:   Tue, 22 Jun 2021 15:19:14 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Wan Jiabing <wanjiabing@vivo.com> wrote:
 
-> From: Po-Hao Huang <phhuang@realtek.com>
+> In commit fb8517f4fade4 ("rtw88: 8822c: add CFO tracking"),
+> "coex.h" was added here which caused the duplicate include.
+> Remove the later duplicate include.
 > 
-> Adding this supports beacon filter and CQM.
-> Let firmware perform connection quality monitor and beacon processing.
-> This make host CPU wakeup less under power save mode.
-> To make mechanisms work as usual, fw will notify driver events such as
-> signal change and beacon loss.
-> 
-> This feature needs firmware 9.9.8 or newer to support it, and driver is
-> compatible with older firmware.
-> 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
 
-3 patches applied to wireless-drivers-next.git, thanks.
+Patch applied to wireless-drivers-next.git, thanks.
 
-cd96e22bc1da rtw88: add beacon filter support
-1188301fd8ef rtw88: add path diversity
-05684fd583e1 rtw88: 8822c: fix lc calibration timing
+3eab8ca6b175 rtw88: Remove duplicate include of coex.h
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210426013252.5665-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210430024951.33406-1-wanjiabing@vivo.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
