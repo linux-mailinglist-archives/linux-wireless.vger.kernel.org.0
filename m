@@ -2,106 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55EF93AFD24
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 08:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 096D93AFE4D
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 09:48:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbhFVGnE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Jun 2021 02:43:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38870 "EHLO mail.kernel.org"
+        id S229677AbhFVHuz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Jun 2021 03:50:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36818 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229490AbhFVGnE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Jun 2021 02:43:04 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AD443611CE;
-        Tue, 22 Jun 2021 06:40:48 +0000 (UTC)
+        id S229574AbhFVHuy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Jun 2021 03:50:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B6FFD611BF;
+        Tue, 22 Jun 2021 07:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624344049;
-        bh=8IVeoj39SKXmg91zm5BlPJZ7feT5hJa+UWQdSelyYpE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=q5Fo0hQOj+PgJXEE8O8+cJkzFlyJ/iY5e4XbvTZNMZSR/A4QpP/hHGZ/v/P2/UK8R
-         kCOVTfq7tmpzeaCsxeKBwBTV7lbywvGJ2Gqi43GOF121RPi8K3niEsimgGXDxR+2nT
-         LXxun14q6ObSb0hII/5NU/MhaakH1ApC0EqRbTUfEcDziiatm1qN7921XEzXUagJHQ
-         DeU2xBtraxoNZ0ruMAS38n1gcSl8pwiH7AZvuQiMXwE6ymtjf62SqJirdFeIXyxnW0
-         PsV2I/PVWWAb8qaOV0O0D45z3Mwq/hO8iIXY5lFOpv8mGg2YEqG7YPmUSUl3CPK058
-         qwIeJOXKvlj4g==
-Date:   Tue, 22 Jun 2021 08:40:44 +0200
+        s=k20201202; t=1624348119;
+        bh=d9NcP3YJPo68hGHGOO01M+hZMB5wA8I2ObH6kkzcIzc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OQbMt2e0Ue9aV+mMRnskmTj5YU9eZNBpUsS6vGo0nsc7g1AOL0dd4FoM+MyflafO7
+         dNjCoy84OYsDJmafVOnk5+xx9hIV5GXjCbOq2AfC14Hdn/7+oQCSYY1QCN8UMME7cf
+         mzNLBB5UUIPMeerfN5OiW1yLaO+tDMhb4V46a1hPcr1mqmzVotMskWW03pS84QLH1C
+         5sWohGo5xVT7PARgDZMB2WkWGcUPOgsQXfXEG98jAw27TZfO6Gd+9zFq1fke/aIDjJ
+         xKr1M1kogmmy+U8YvRLdofJUSNvU/ETy1xg7csji5So/dxwghEiydHN1/BlIjbcpR6
+         VI65loYDSfRdQ==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     sean.wang@mediatek.com
-Cc:     lorenzo.bianconi@redhat.com, nbd@nbd.name, Soul.Huang@mediatek.com,
-        YN.Chen@mediatek.com, Leon.Yen@mediatek.com, Deren.Wu@mediatek.com,
-        km.lin@mediatek.com, robin.chiu@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, Eric.Liang@mediatek.com,
-        Stella.Chang@mediatek.com, jemele@google.com, yenlinlai@google.com,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] mt76: mt7921: add .set_sar_specs support
-Message-ID: <YNGF7Bl2uP0SAnv9@lore-desk>
-References: <YM8NBUZp+/97kiIH@lore-desk--annotate>
- <1624315331-16608-1-git-send-email-sean.wang@mediatek.com>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt76x02: fix endianness warnings in mt76x02_mac.c
+Date:   Tue, 22 Jun 2021 09:48:30 +0200
+Message-Id: <be88d99a9a674c697a4586c10183fe7e78bad3ab.1624348082.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="gGYiClTCWJBu/p1R"
-Content-Disposition: inline
-In-Reply-To: <1624315331-16608-1-git-send-email-sean.wang@mediatek.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fix the following sparse warning in mt76x02_mac_write_txwi and
+mt76x02_mac_tx_rate_val routines:
+drivers/net/wireless/mediatek/mt76/mt76x02_mac.c:237:19:
+	warning: restricted __le16 degrades to intege
+	warning: cast from restricted __le16
+drivers/net/wireless/mediatek/mt76/mt76x02_mac.c:383:28:
+	warning: incorrect type in assignment (different base types)
+	expected restricted __le16 [usertype] rate
+	got unsigned long
 
---gGYiClTCWJBu/p1R
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: db9f11d3433f7 ("mt76: store wcid tx rate info in one u32 reduce locking")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-[...]
-> >
-> >I guess there is an use-after-free here since sar is freed at the end of=
- nl80211_set_sar_specs, right?
-> >
->=20
-> Nope, there is no use-after-free case happens here because frp->range jus=
-t points to an entry of const struct cfg80211_sar_specs table, not the one =
-created from nl80211_set_sar_specs.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+index c32e6dc68773..07b21b208582 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -176,7 +176,7 @@ void mt76x02_mac_wcid_set_drop(struct mt76x02_dev *dev, u8 idx, bool drop)
+ 		mt76_wr(dev, MT_WCID_DROP(idx), (val & ~bit) | (bit * drop));
+ }
+ 
+-static __le16
++static u16
+ mt76x02_mac_tx_rate_val(struct mt76x02_dev *dev,
+ 			const struct ieee80211_tx_rate *rate, u8 *nss_val)
+ {
+@@ -222,14 +222,14 @@ mt76x02_mac_tx_rate_val(struct mt76x02_dev *dev,
+ 		rateval |= MT_RXWI_RATE_SGI;
+ 
+ 	*nss_val = nss;
+-	return cpu_to_le16(rateval);
++	return rateval;
+ }
+ 
+ void mt76x02_mac_wcid_set_rate(struct mt76x02_dev *dev, struct mt76_wcid *wcid,
+ 			       const struct ieee80211_tx_rate *rate)
+ {
+ 	s8 max_txpwr_adj = mt76x02_tx_get_max_txpwr_adj(dev, rate);
+-	__le16 rateval;
++	u16 rateval;
+ 	u32 tx_info;
+ 	s8 nss;
+ 
+@@ -342,7 +342,7 @@ void mt76x02_mac_write_txwi(struct mt76x02_dev *dev, struct mt76x02_txwi *txwi,
+ 	struct ieee80211_key_conf *key = info->control.hw_key;
+ 	u32 wcid_tx_info;
+ 	u16 rate_ht_mask = FIELD_PREP(MT_RXWI_RATE_PHY, BIT(1) | BIT(2));
+-	u16 txwi_flags = 0;
++	u16 txwi_flags = 0, rateval;
+ 	u8 nss;
+ 	s8 txpwr_adj, max_txpwr_adj;
+ 	u8 ccmp_pn[8], nstreams = dev->mphy.chainmask & 0xf;
+@@ -380,14 +380,15 @@ void mt76x02_mac_write_txwi(struct mt76x02_dev *dev, struct mt76x02_txwi *txwi,
+ 
+ 	if (wcid && (rate->idx < 0 || !rate->count)) {
+ 		wcid_tx_info = wcid->tx_info;
+-		txwi->rate = FIELD_GET(MT_WCID_TX_INFO_RATE, wcid_tx_info);
++		rateval = FIELD_GET(MT_WCID_TX_INFO_RATE, wcid_tx_info);
+ 		max_txpwr_adj = FIELD_GET(MT_WCID_TX_INFO_TXPWR_ADJ,
+ 					  wcid_tx_info);
+ 		nss = FIELD_GET(MT_WCID_TX_INFO_NSS, wcid_tx_info);
+ 	} else {
+-		txwi->rate = mt76x02_mac_tx_rate_val(dev, rate, &nss);
++		rateval = mt76x02_mac_tx_rate_val(dev, rate, &nss);
+ 		max_txpwr_adj = mt76x02_tx_get_max_txpwr_adj(dev, rate);
+ 	}
++	txwi->rate = cpu_to_le16(rateval);
+ 
+ 	txpwr_adj = mt76x02_tx_get_txpwr_adj(dev, dev->txpower_conf,
+ 					     max_txpwr_adj);
+-- 
+2.31.1
 
-ack, right. I misread the code.
-
-Regards,
-Lorenzo
-
->=20
-> >Regards,
-> >Lorenzo
-> >
-> >> +		frp->power =3D power;
-> >> +	}
-> >> +
-> >> +	err =3D mt76_connac_mcu_set_rate_txpower(mphy);
-> >> +
-> >> +out:
-> >> +	mt7921_mutex_release(dev);
-> >> +
-> >> +	return err;
-> >> +}
-> >> +
-> >>  const struct ieee80211_ops mt7921_ops =3D {
-> >>	.tx =3D mt7921_tx,
-> >>	.start =3D mt7921_start,
-> >> @@ -1209,4 +1253,5 @@ const struct ieee80211_ops mt7921_ops =3D {
-> >>	.set_rekey_data =3D mt7921_set_rekey_data,  #endif /* CONFIG_PM */
-> >>	.flush =3D mt7921_flush,
-> >> +	.set_sar_specs =3D mt7921_set_sar_specs,
-> >>  };
-> >> --
-> >> 2.25.1
-> >>
-
---gGYiClTCWJBu/p1R
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYNGF5wAKCRA6cBh0uS2t
-rBhsAP95npOocHCGoicDiaIO8Uf1rLxnUf6RItP8GT8jhzI96wD9Grh9Tc8PSd/+
-JGauE3SBfDXGS9Ey6tjP/AIhbplcdgY=
-=rm2D
------END PGP SIGNATURE-----
-
---gGYiClTCWJBu/p1R--
