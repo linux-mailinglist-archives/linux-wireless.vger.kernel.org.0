@@ -2,112 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE7693B0EDF
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 22:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C023B0F25
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jun 2021 23:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229970AbhFVUfg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Jun 2021 16:35:36 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:47049 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbhFVUff (ORCPT
+        id S230222AbhFVVEC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Jun 2021 17:04:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51094 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229769AbhFVVEB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Jun 2021 16:35:35 -0400
-Received: from mail-wr1-f46.google.com ([209.85.221.46]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1Mqrs9-1lRSM03R1V-00mrbw; Tue, 22 Jun 2021 22:33:17 +0200
-Received: by mail-wr1-f46.google.com with SMTP id m18so133528wrv.2;
-        Tue, 22 Jun 2021 13:33:17 -0700 (PDT)
-X-Gm-Message-State: AOAM532uPd44LJIKfFzGpLjTCnJEot8IKsQp2+R0J2No2wyfqRGCzWh4
-        V6IJVaLdllkpXYPF17LjcmRSVTNkD+/VNP36FqQ=
-X-Google-Smtp-Source: ABdhPJxIxO/xXDmBL9CuTqUfJPeIqUNEO8k6TjCUhFN3xY3HAWWytEGfglJh+8bqyJP/NPuAFwnum684HVLDv6sIonM=
-X-Received: by 2002:a5d:5905:: with SMTP id v5mr7302490wrd.361.1624393997509;
- Tue, 22 Jun 2021 13:33:17 -0700 (PDT)
+        Tue, 22 Jun 2021 17:04:01 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 244CAC061574
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Jun 2021 14:01:44 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id n20so578670edv.8
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Jun 2021 14:01:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=citymesh-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-transfer-encoding:content-language;
+        bh=DfxZ8O/bWJfZv0+NqRHZSYO3xZTIdwYfJrzqY7LfZpQ=;
+        b=l4hHcLRmVyZjWfWCjMrV8zXfXZzXUpjXXji69Tz8BK7n+CzWnYKytyF2UgE4iaNefd
+         aV3SzJPwjt3rqJhKZghuIHc54mzWnVtyiECFzYCPAZSrBwIeGCnCkBCb2GQw3WFmAtWa
+         moYgSfZR4O7Yb/wgRazoc6Qlmv4lwdKNgjIhlDnri0lPI7PK8YeTySVnnfNXYojxRARl
+         UFkJBTDbHHpu1/yMNCnVGARpYohsmR9epicnGDdgAuMV6qS9w8oY5uJCqGlZ+UdUKs8d
+         J/Xrllxh+fdI+DvH3yqDlVAzlkxcLgAuwGFqaQq6ELOzQTpfPLxgfGAy7EDZk8WqRnqT
+         kPOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=DfxZ8O/bWJfZv0+NqRHZSYO3xZTIdwYfJrzqY7LfZpQ=;
+        b=NNFNzs1UBkluTSjdZnjSZ3xHej0yxoyo/B2JnXoZPDxuYMuYRradehFNWHEVueg/E9
+         Hu+NYdkWjSHFhrNJH7RDiYT9e6x9hVlEqAX8Mx/F5QcqGUT4IC/gXGqZgUPJV75dvlD/
+         B79XM4x4SP35n4+qNzWHXODn+tnYs9RGs8MXfD25NttUwhllxPvJwnU3b2xJOJDhmj/n
+         iFy01HJ/H/NsFiC6BZuk79kvVXg59LpQUzTVYc1eesPeBy4oaW/XMhwCfoDptinvHcOc
+         l8DC1zVDCG+31wpn487r5XZnBZ0aS2b8LsQuk30saJjOaxxjDZHdqVK0scanpjCpww++
+         L5gg==
+X-Gm-Message-State: AOAM531C+vi9vaYbEwsu39s1oNZFlbA9ic7CUF/QB3Es2GoxcYDOpQ/S
+        CR6RoP5d1Vf9MusRfSgIdk0XAQAgxxNTD1d7
+X-Google-Smtp-Source: ABdhPJyLROS3L0Y2KZ/HDVYD9+7G7djdnBoOtzqHAilNViaPjoHDDRizmp34Y4Y7BS/kG07uZxfYPw==
+X-Received: by 2002:a50:eb8c:: with SMTP id y12mr7684862edr.189.1624395702612;
+        Tue, 22 Jun 2021 14:01:42 -0700 (PDT)
+Received: from [192.168.5.225] (178-116-168-169.access.telenet.be. [178.116.168.169])
+        by smtp.gmail.com with ESMTPSA id u17sm6817041edt.67.2021.06.22.14.01.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jun 2021 14:01:42 -0700 (PDT)
+Subject: Re: [Bugreport] ath9k dynack not working/low performance on 5 & 10MHz
+ Bandwidth
+To:     Petrosilius <petrosilius@posteo.de>, linux-wireless@vger.kernel.org
+References: <dd49d9f7-db40-4ab7-f24d-6ab4bbd0bb54@posteo.de>
+ <fd620847-9786-07d2-23be-dba4cedc9089@citymesh.com>
+ <2ffcf571-7068-c06f-3879-d02eacdc4895@posteo.de>
+ <8a3718e1-e988-c24a-d94f-34ba0f5349f4@citymesh.com>
+ <339f7aa7-b7ee-b7a8-2e87-a96634c00a32@posteo.de>
+ <bba886f3-4ce1-94b0-ea44-89ddc8c84e2b@citymesh.com>
+ <ca99a4cc-eb7d-dfca-1d26-5b504a57e31f@posteo.de>
+From:   Koen Vandeputte <koen.vandeputte@citymesh.com>
+Message-ID: <f33b7ef5-8921-fc4c-26e0-cba6d2a1ff1b@citymesh.com>
+Date:   Tue, 22 Jun 2021 23:01:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <20210622202345.795578-1-jernej.skrabec@gmail.com>
-In-Reply-To: <20210622202345.795578-1-jernej.skrabec@gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 22 Jun 2021 22:30:58 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1mvRTTFHtxqREmcbgJS+e94BHajCtAU_fzBhNNKjJBcg@mail.gmail.com>
-Message-ID: <CAK8P3a1mvRTTFHtxqREmcbgJS+e94BHajCtAU_fzBhNNKjJBcg@mail.gmail.com>
-Subject: Re: [RFC PATCH] cw1200: use kmalloc() allocation instead of stack
-To:     Jernej Skrabec <jernej.skrabec@gmail.com>
-Cc:     pizza@shaftnet.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:UDwhB0AIeFYw8fWlG1HJDe/qGwXmYMz69G8vpsnra2CQVSh8lgt
- pbGHN8cMNCDDd8FKbV87kDqsN3VuEryRhvAAXrV2vSRBetLS//TQOipgc3YbZwzZOEIKSPW
- +9hJMSmXD1ehSw5HB2+0QQA92U8q0cDGjPrABSxJ4MeqT3Nxb0iGy87eADLY3+9IWOXHsaS
- XIfzjmWcJYg6w0r08gEKA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mXPUlyWGewU=:qsP5JBu1opz816nEqKxwqX
- LgV2UsCLyCttOFmeWt98zf7GQmQUZLw/Nk91XuZkOiEWEu38PZWJ9mY4syOhYqR8egyoW15bC
- HtCt3cyRYhwUKDRFY73ADtY+Rb/A2Ysg0ymgQ4yhE2h/UeKrm84UzGUo9Q7N7DHwJVonxg+20
- YgSWhXW5mXA+B0nN5B72KoQxXUFLhbPbUkEcyToPsrd66Zh4AeN0BOoLaPjhC5Aap8Jo6S51C
- QOwKmGMgQ0MLbtrTaS7uGqFMXL8GkrC+wPFyxr+bmcI7Hsg0yUj1JNgysO2r/G5XL5J732SGU
- nRoP8H+20ZwwwRtwtpR+CRivE7Ew77kkdbzMURH11Ocxfz0ker+WATZkcCU8njFBRoX9FedYe
- bqf78CbgJhz2063dPV2aajScT6RGNgQM8Aw/C+N9y8qA5wdukMOEHpxBxXoA+5a0QEMSWW9Ru
- XtKC0eEqCZtpbyItnxwhLwNPk4QxTX8gZxjCh8TkoGjt2YCStniJxbIbaTLzDvzAdKupVYb21
- 1Ev1kTozJcz4ZgRYstm9xY=
+In-Reply-To: <ca99a4cc-eb7d-dfca-1d26-5b504a57e31f@posteo.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jun 22, 2021 at 10:24 PM Jernej Skrabec
-<jernej.skrabec@gmail.com> wrote:
+
+On 22.06.21 20:54, Petrosilius wrote:
+> On 22.06.21 14:03, Koen Vandeputte wrote:
+>> Thanks for confirming that.
+>>
+>> What would really help is a small table showing this:
+>>
+>> Real physical distance? (in m)
+>> ack_to reported while stressing the link:
+>>
+>> 20MHz: xx
+>> 10 MHz: yy
+>> 5 MHz: zz
+>>
+>> I'll try to simulate the issue somewhere in the next days.
+>>
+>>
+>> Please do note that ongoing effort is currently going on to improve
+>> dynack on lower distances.
+>>
+>> It was observed and reported by me to Lorenzo that ack_to was way
+>> higher than fixed settings when
+>> real distance is <6km
+>>
+>> Some testing patches were cooked and tested in the field last month
+>> covering long and short distances (1km up to 24km)
+>> and these are matching fixed distance ack_to very close now. (speeds
+>> using dynack were also higher than fixed settings)
+>> It's not finalized yet.
+>>
+>> Also do note that dynack only shows (any) benefit when having links >3km
+>> Below that, timing jitter and processing time seems to have more
+>> influence on ack_to than actual distance.
+>>
+>> Regards,
+>>
+>> Koen
+>>
+> Here the testresults
 >
-> It turns out that if CONFIG_VMAP_STACK is enabled and src or dst is
-> memory allocated on stack, SDIO operations fail due to invalid memory
-> address conversion:
+> real physical distance: 1m
+>
+> BW: 20mhz
+> ackto: 50
+> iperf3
+> [ ID] Interval           Transfer     Bitrate         Retr
+> [  5]   0.00-10.00  sec  86.4 MBytes  72.4 Mbits/sec    0             sender
+> [  5]   0.00-10.01  sec  86.0 MBytes  72.0 Mbits/sec
+> receiver
+>
+> BW: 5mhz
+> ackto: 50
+> iperf3
+> [ ID] Interval           Transfer     Bitrate         Retr
+> [  5]   0.00-10.01  sec  45.2 KBytes  37.0 Kbits/sec   14             sender
+> [  5]   0.00-10.07  sec  5.66 KBytes  4.60 Kbits/sec
+> receiver
+>
+> BW: 10mhz
+> ackto: 50
+> iperf3
+> [ ID] Interval           Transfer     Bitrate         Retr
+> [  5]   0.00-10.00  sec   127 KBytes   104 Kbits/sec   30             sender
+> [  5]   0.00-14.10  sec   107 KBytes  62.4 Kbits/sec
+> receiver
+>
+> Also longer iperf3 tests didnt change anything on this behaviour.
+>
+> After this test we were actually able to get the ack_to doing something
+> for 5mhz (ack_to 641 - ~12MBit iperf3) and 10mhz (ack_to 258 - ~14MBit
+> iperf3) by doing some random wifi-restarts (using openwrt 'wifi'
+> command) and reboots, but this is not really reproducible.
+>
+> We got the gutfeeling that there might be some issue reseting of the
+> dynack part when changing the bandwidths. This might explain, why for
+> the test above the ack_to doesnt change at all from the 50 of the 20Mhz
+> BW. Or is this normal behaviour that the ack_to doesnt change after a
+> bandwidth change?
+>
+> Another observation: Is it normal that 'iw dev' doesnt show 5 & 10 MHz,
+> but always 20 MHz? (We verified that we actually get 5/10MHz Channels by
+> checking visibility of the AP with other clients).
+>
+> To rule out a hardware problem: We used the same hardware successfully
+> on a 8km/20MHz link with dynack.
+>
+> Regards,
+>
+> Julian
+>
+Great!
 
-Thank you for sending this!
+Thanks for the details.
+i'll have a look at it.
 
-It's worth pointing out that even without CONFIG_VMAP_STACK, using
-dma_map_sg() on a stack variable is broken, though it will appear to
-work most of the time but rarely cause a stack data corruption when
-the cache management goes wrong.
+I can't comment for the iw part.
 
-This clearly needs to be fixed somewhere, if not with your patch, then
-a similar one.
+Regards,
 
-> diff --git a/drivers/net/wireless/st/cw1200/hwio.c b/drivers/net/wireless/st/cw1200/hwio.c
-> index 3ba462de8e91..5521cb7f2233 100644
-> --- a/drivers/net/wireless/st/cw1200/hwio.c
-> +++ b/drivers/net/wireless/st/cw1200/hwio.c
-> @@ -66,33 +66,65 @@ static int __cw1200_reg_write(struct cw1200_common *priv, u16 addr,
->  static inline int __cw1200_reg_read_32(struct cw1200_common *priv,
->                                         u16 addr, u32 *val)
->  {
-> -       __le32 tmp;
-> -       int i = __cw1200_reg_read(priv, addr, &tmp, sizeof(tmp), 0);
-> -       *val = le32_to_cpu(tmp);
-> +       __le32 *tmp;
-> +       int i;
-> +
-> +       tmp = kmalloc(sizeof(*tmp), GFP_KERNEL);
-> +       if (!tmp)
-> +               return -ENOMEM;
-> +
-> +       i = __cw1200_reg_read(priv, addr, tmp, sizeof(*tmp), 0);
-> +       *val = le32_to_cpu(*tmp);
-> +       kfree(tmp);
->         return i;
->  }
+Koen
 
-There is a possible problem here when the function gets called from
-atomic context, so it might need to use GFP_ATOMIC instead of
-GFP_KERNEL. If it's never called from atomic context, then this patch
-looks correct to me.
-
-The alternative would be to add a bounce buffer check based on
-is_vmalloc_or_module_addr() in sdio_io_rw_ext_helper(), which would
-add a small bit of complexity there but solve the problem for
-all drivers at once. In this case, it would probably have to use
-GFP_ATOMIC regardless of whether __cw1200_reg_read_32()
-is allowed to sleep, since other callers might not.
-
-      Arnd
