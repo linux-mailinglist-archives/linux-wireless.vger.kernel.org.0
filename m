@@ -2,99 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E80E3B1AA3
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 15:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE51C3B1AF6
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 15:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230251AbhFWNCW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Jun 2021 09:02:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39072 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230019AbhFWNCW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Jun 2021 09:02:22 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FA14C061574
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Jun 2021 06:00:05 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lw2U6-00AZHE-Ib; Wed, 23 Jun 2021 15:00:02 +0200
-Message-ID: <a2342a38a7fca26e0906057461f042981a94dad9.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: Fix sw connection monitor and sw scan when
- STA is connected HE
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Wed, 23 Jun 2021 15:00:01 +0200
-In-Reply-To: <8f1524261420449d87b86e9067f3d74f@realtek.com>
-References: <20210611030422.9608-1-pkshih@realtek.com>
-         <072bfd8473ac4054a43818009e66a914@realtek.com>
-         (sfid-20210611_052347_394259_CA96FBDB) <05835527eb79d7bad22b20247b351b82cc0776d3.camel@sipsolutions.net>
-         <8f1524261420449d87b86e9067f3d74f@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S230411AbhFWNVn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Jun 2021 09:21:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40890 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230163AbhFWNVn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 23 Jun 2021 09:21:43 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8646D61075;
+        Wed, 23 Jun 2021 13:19:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624454366;
+        bh=YfMl0k0uwWCbYGg35fm16QFSPWQC8p7NnZmobKectlg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=q/3+7i/LSRXQeydNxUep7FQPUnLU9KVw1moiqzI5X+V7ffTdN9Jkx22LoXQ3Ih4Mr
+         aFpGMOrHv2R84eGJ5XJGoxq4kpCKpbRyMODdsdz1D+zMGAmGJXvj0oz/qrJfl4XWBE
+         Rjg0rSSoC0UtLZDJK/I9RdwxZqdF47KcIEpAJhEjnEoQOQzTa7sV0YC24+RmO/Ihqt
+         Xxw0HqCEQPlWfg47f59u918jftTkPTm+x+BUOts3WyDNqN/TbWN5g9SVjH6t1O6oXZ
+         4Yxa9ChEEUOdePvVrE8ZdwfxyA9rvCmLtXF/bMCAq1m0i52qjTypIStdbS9IntwqrF
+         ISlnED2aby3Dw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7921: fix survey-dump reporting
+Date:   Wed, 23 Jun 2021 15:19:19 +0200
+Message-Id: <b78d7f13a4d1257ec99eb9754b82ae55f32db000.1624453803.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-06-23 at 12:49 +0000, Pkshih wrote:
-> > -----Original Message-----
-> > From: Johannes Berg [mailto:johannes@sipsolutions.net]
-> > Sent: Wednesday, June 23, 2021 6:33 PM
-> > To: Pkshih
-> > Cc: linux-wireless@vger.kernel.org
-> > Subject: Re: [PATCH] mac80211: Fix sw connection monitor and sw scan
-> > when STA is connected HE
-> > 
-> > > Hi mac80211 team,
-> > > 
-> > > We are working on Realtek 11ax driver, rtw89, not being merged
-> > > yet.
-> > > This driver uses software connection monitor and software scan,
-> > > like
-> > > our 11ac driver rtw88,
-> > > but we found these two functions don't work properly due to
-> > > mac80211
-> > > doesn't send
-> > > null data frame when STA is connected HE.
-> > > 
-> > > We search for the reason why it can't send null frame, but we
-> > > don't
-> > > get the answer.
-> > > Possibly, it is because existing HE hardware supports hardware
-> > > connection monitor
-> > > and scan, or supports TWT to avoid sending null data frame to tell
-> > > AP
-> > > its PS mode.
-> > > Could anyone enlighten me the reason?
-> > 
-> > It was just a workaround for an iwlwifi specific issue that got left
-> > in.
-> > I just merged a patch from Felix to resolve that.
-> > 
-> 
-> I check Felix's patch:
-> https://patchwork.kernel.org/project/linux-wireless/patch/20210619101517.90806-1-nbd@nbd.name/
-> 
-> 
-> I think we should revert the commit f39b07fdfb68 ("mac80211: HE STA
-> disassoc due to QOS NULL not sent"),
-> which fixes connection monitor due to QOS NULL not send.
-> 
+Fix MIB tx-rx MIB counters for survey-dump reporting.
 
-I agree, that makes sense.
+Fixes: 163f4d22c118d ("mt76: mt7921: add MAC support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 4 ++++
+ drivers/net/wireless/mediatek/mt76/mt7921/regs.h | 8 ++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-> 
-> Another place is ieee80211_send_null_response(); I'm not sure if we
-> can remove
-> the checking as well.
-
-Yes, I think so.
-
-Want to send patch(es) for that?
-
-johannes
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 08d85c6a7bc4..e9de038771a0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -106,6 +106,10 @@ mt7921_mac_init_band(struct mt7921_dev *dev, u8 band)
+ 	mt76_set(dev, MT_WF_RMAC_MIB_TIME0(band), MT_WF_RMAC_MIB_RXTIME_EN);
+ 	mt76_set(dev, MT_WF_RMAC_MIB_AIRTIME0(band), MT_WF_RMAC_MIB_RXTIME_EN);
+ 
++	/* enable MIB tx-rx time reporting */
++	mt76_set(dev, MT_MIB_SCR1(band), MT_MIB_TXDUR_EN);
++	mt76_set(dev, MT_MIB_SCR1(band), MT_MIB_RXDUR_EN);
++
+ 	mt76_rmw_field(dev, MT_DMA_DCR0(band), MT_DMA_DCR0_MAX_RX_LEN, 1536);
+ 	/* disable rx rate report by default due to hw issues */
+ 	mt76_clear(dev, MT_DMA_DCR0(band), MT_DMA_DCR0_RXD_G5_EN);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+index b6944c867a57..26fb11823762 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+@@ -96,6 +96,10 @@
+ #define MT_WF_MIB_BASE(_band)		((_band) ? 0xa4800 : 0x24800)
+ #define MT_WF_MIB(_band, ofs)		(MT_WF_MIB_BASE(_band) + (ofs))
+ 
++#define MT_MIB_SCR1(_band)		MT_WF_MIB(_band, 0x004)
++#define MT_MIB_TXDUR_EN			BIT(8)
++#define MT_MIB_RXDUR_EN			BIT(9)
++
+ #define MT_MIB_SDR3(_band)		MT_WF_MIB(_band, 0x698)
+ #define MT_MIB_SDR3_FCS_ERR_MASK	GENMASK(31, 16)
+ 
+@@ -108,9 +112,9 @@
+ #define MT_MIB_SDR34(_band)		MT_WF_MIB(_band, 0x090)
+ #define MT_MIB_MU_BF_TX_CNT		GENMASK(15, 0)
+ 
+-#define MT_MIB_SDR36(_band)		MT_WF_MIB(_band, 0x098)
++#define MT_MIB_SDR36(_band)		MT_WF_MIB(_band, 0x054)
+ #define MT_MIB_SDR36_TXTIME_MASK	GENMASK(23, 0)
+-#define MT_MIB_SDR37(_band)		MT_WF_MIB(_band, 0x09c)
++#define MT_MIB_SDR37(_band)		MT_WF_MIB(_band, 0x058)
+ #define MT_MIB_SDR37_RXTIME_MASK	GENMASK(23, 0)
+ 
+ #define MT_MIB_DR8(_band)		MT_WF_MIB(_band, 0x0c0)
+-- 
+2.31.1
 
