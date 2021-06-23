@@ -2,95 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1CDE3B16CF
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 11:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E89793B1824
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 12:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229970AbhFWJ3l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Jun 2021 05:29:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57816 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229920AbhFWJ3k (ORCPT
+        id S230036AbhFWKfX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Jun 2021 06:35:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34062 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229833AbhFWKfW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Jun 2021 05:29:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1624440443;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RLlcIADNVEZrtAcHj2h6w/jm4njSCgcno22R31dePUE=;
-        b=bIcqYq8/YRX37mUMf/SjrfIQrPB+rknuyZcDvIUaGelvJMgEDfzjodxLO6Vs/evihlW65u
-        DGRsp42c37X2CmE9KF7C+Jl/RLnvSdXj4q9He/E1qkrjSAC9rwU/9u5I2R2rC+C1hkCtvC
-        SuknjALlWUqrtXdNTFjRZtAFa+vt+w8=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-307-wpHMlcnNOsK4DE5zN9qcnA-1; Wed, 23 Jun 2021 05:27:21 -0400
-X-MC-Unique: wpHMlcnNOsK4DE5zN9qcnA-1
-Received: by mail-ed1-f69.google.com with SMTP id j19-20020aa7c4130000b029039497d5cdbeso957333edq.15
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Jun 2021 02:27:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=RLlcIADNVEZrtAcHj2h6w/jm4njSCgcno22R31dePUE=;
-        b=j/63pFyOgdAhDmeWQ4BNdT7jvPaPl8LtoQrbdZTxAF4f9SXHlHMZgFfgJx1T/41xCX
-         dgFHwm6HE/XdDzYJDt94Een7tJHt/7NRNKzh+eI2SyPr9jN+KRecbLdISAWzlm5RN+y+
-         IDsRJfHvIBGzQnGMH03M2DaciWc0F/Nv3GHMigheGYLZewJ82qLth8U2PGRSrhniUCpx
-         q2mmNRLqsKTGY3zVBYZcsF6VmmVbAKI2FpXJWCqBNqYJtNuEdYCo1QOwdl6NaZURgd+b
-         XJPVx6capmAXNVdHv3izkKfRXnctEOdqMQBYjAIeZZBHMlahr+sWWXfarxqkit4FFI7V
-         GtqQ==
-X-Gm-Message-State: AOAM530nNIBMFX3THVaV/z+NIvFQg4GGydIjVn9BHRgJ1C8UOvfnX829
-        Kw1Exk2Psvuy0wYJEDh5PsBLKwRLB0mWfKgLlIv2Z4rsUpE9Kf3IukttDo2PPhvQWe864b/zZf7
-        PuJBWgXlY1SoVNAtOPOrzgkFBVjs=
-X-Received: by 2002:aa7:cf0a:: with SMTP id a10mr10888219edy.329.1624440440651;
-        Wed, 23 Jun 2021 02:27:20 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw6DsQmKva0GCajbr1weRZMN61141xYEHht9jWO04YwA1uVzAskmfRAvJxDiHT4AjDAEC/JMQ==
-X-Received: by 2002:aa7:cf0a:: with SMTP id a10mr10888201edy.329.1624440440477;
-        Wed, 23 Jun 2021 02:27:20 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id g15sm7016179ejb.103.2021.06.23.02.27.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jun 2021 02:27:19 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 07522180730; Wed, 23 Jun 2021 11:27:17 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     make-wifi-fast@lists.bufferbloat.net, Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kan Yan <kyan@google.com>, Yibo Zhao <yiboz@codeaurora.org>
-Subject: Re: [PATCH mac80211-next v8] mac80211: Switch to a virtual
- time-based airtime scheduler
-In-Reply-To: <e1798568decc6df9b44ce97f48be523bdc92bdc4.camel@sipsolutions.net>
-References: <20210507094851.180838-1-toke@redhat.com>
- <e1798568decc6df9b44ce97f48be523bdc92bdc4.camel@sipsolutions.net>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Wed, 23 Jun 2021 11:27:16 +0200
-Message-ID: <87tulpnd6z.fsf@toke.dk>
+        Wed, 23 Jun 2021 06:35:22 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF64C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jun 2021 03:33:05 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lw0Bn-00AWiA-NL; Wed, 23 Jun 2021 12:32:59 +0200
+Message-ID: <05835527eb79d7bad22b20247b351b82cc0776d3.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: Fix sw connection monitor and sw scan when
+ STA is connected HE
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Wed, 23 Jun 2021 12:32:58 +0200
+In-Reply-To: <072bfd8473ac4054a43818009e66a914@realtek.com> (sfid-20210611_052347_394259_CA96FBDB)
+References: <20210611030422.9608-1-pkshih@realtek.com>
+         <072bfd8473ac4054a43818009e66a914@realtek.com>
+         (sfid-20210611_052347_394259_CA96FBDB)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+> Hi mac80211 team,
+> 
+> We are working on Realtek 11ax driver, rtw89, not being merged yet.
+> This driver uses software connection monitor and software scan, like
+> our 11ac driver rtw88,
+> but we found these two functions don't work properly due to mac80211
+> doesn't send
+> null data frame when STA is connected HE.
+> 
+> We search for the reason why it can't send null frame, but we don't
+> get the answer.
+> Possibly, it is because existing HE hardware supports hardware
+> connection monitor
+> and scan, or supports TWT to avoid sending null data frame to tell AP
+> its PS mode.
+> Could anyone enlighten me the reason?
 
-> On Fri, 2021-05-07 at 11:48 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> This switches the airtime scheduler in mac80211 to use a virtual time-ba=
-sed
->
-> Generally, we prefer <=3D72 columns in commit messages ... I started
-> reformatting, but then your code also has a lot of places that go over
-> 80 columns, so I gave up ... Can you please do that?
+It was just a workaround for an iwlwifi specific issue that got left in.
+I just merged a patch from Felix to resolve that.
 
-I thought the new limit was 100? :)
-
-But sure, I can take a look and remove the unnecessary ones...
-
-> Some refactoring, e.g. in sta_apply_parameters(), may also be in order.
-
-Will take a look!
-
--Toke
+johannes
 
