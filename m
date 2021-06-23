@@ -2,37 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A970A3B1B87
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 15:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 930933B1B88
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 15:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbhFWNu5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Jun 2021 09:50:57 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:34998 "EHLO
+        id S230304AbhFWNu6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Jun 2021 09:50:58 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:35000 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbhFWNu4 (ORCPT
+        with ESMTP id S230274AbhFWNu6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Jun 2021 09:50:56 -0400
+        Wed, 23 Jun 2021 09:50:58 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 15NDmVHd9009732, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 15NDmYWj9009745, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 15NDmVHd9009732
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 15NDmYWj9009745
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 23 Jun 2021 21:48:31 +0800
+        Wed, 23 Jun 2021 21:48:34 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 23 Jun 2021 21:48:30 +0800
+ 15.1.2106.2; Wed, 23 Jun 2021 21:48:33 +0800
 Received: from localhost (172.16.16.17) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 23 Jun
- 2021 21:48:30 +0800
+ 2021 21:48:33 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 1/2] mac80211: remove iwlwifi specific workaround NDPs of null_response
-Date:   Wed, 23 Jun 2021 21:48:25 +0800
-Message-ID: <20210623134826.10318-1-pkshih@realtek.com>
+Subject: [PATCH 2/2] Revert "mac80211: HE STA disassoc due to QOS NULL not sent"
+Date:   Wed, 23 Jun 2021 21:48:26 +0800
+Message-ID: <20210623134826.10318-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210623134826.10318-1-pkshih@realtek.com>
+References: <20210623134826.10318-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -77,31 +79,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove the remaining workaround that is not removed by the
-commit e41eb3e408de ("mac80211: remove iwlwifi specific workaround that broke sta NDP tx")
+This reverts commit f39b07fdfb688724fedabf5507e15eaf398f2500.
 
-Fixes: 41cbb0f5a295 ("mac80211: add support for HE")
+Since iwlwifi specific workaround, which blocks to send NDP, is removed,
+we can revert this commit.
+
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- net/mac80211/sta_info.c | 5 -----
- 1 file changed, 5 deletions(-)
+ net/mac80211/mlme.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 641a6657d0c9..e18c3855f616 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1398,11 +1398,6 @@ static void ieee80211_send_null_response(struct sta_info *sta, int tid,
- 	struct ieee80211_tx_info *info;
- 	struct ieee80211_chanctx_conf *chanctx_conf;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index a0572ce99826..a00f11a33699 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2541,10 +2541,7 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
  
--	/* Don't send NDPs when STA is connected HE */
--	if (sdata->vif.type == NL80211_IFTYPE_STATION &&
--	    !(sdata->u.mgd.flags & IEEE80211_STA_DISABLE_HE))
--		return;
--
- 	if (qos) {
- 		fc = cpu_to_le16(IEEE80211_FTYPE_DATA |
- 				 IEEE80211_STYPE_QOS_NULLFUNC |
+ 	if (ieee80211_hw_check(&sdata->local->hw, REPORTS_TX_ACK_STATUS)) {
+ 		ifmgd->nullfunc_failed = false;
+-		if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
+-			ifmgd->probe_send_count--;
+-		else
+-			ieee80211_send_nullfunc(sdata->local, sdata, false);
++		ieee80211_send_nullfunc(sdata->local, sdata, false);
+ 	} else {
+ 		int ssid_len;
+ 
 -- 
 2.25.1
 
