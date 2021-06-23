@@ -2,74 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B10943B168E
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 11:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1CDE3B16CF
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 11:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbhFWJQk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Jun 2021 05:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44404 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229833AbhFWJQj (ORCPT
+        id S229970AbhFWJ3l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Jun 2021 05:29:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57816 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229920AbhFWJ3k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Jun 2021 05:16:39 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 992E3C061574
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Jun 2021 02:14:22 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lvyxf-00AV70-Pb; Wed, 23 Jun 2021 11:14:19 +0200
-Message-ID: <e1798568decc6df9b44ce97f48be523bdc92bdc4.camel@sipsolutions.net>
-Subject: Re: [PATCH mac80211-next v8] mac80211: Switch to a virtual
- time-based airtime scheduler
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        Wed, 23 Jun 2021 05:29:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1624440443;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RLlcIADNVEZrtAcHj2h6w/jm4njSCgcno22R31dePUE=;
+        b=bIcqYq8/YRX37mUMf/SjrfIQrPB+rknuyZcDvIUaGelvJMgEDfzjodxLO6Vs/evihlW65u
+        DGRsp42c37X2CmE9KF7C+Jl/RLnvSdXj4q9He/E1qkrjSAC9rwU/9u5I2R2rC+C1hkCtvC
+        SuknjALlWUqrtXdNTFjRZtAFa+vt+w8=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-307-wpHMlcnNOsK4DE5zN9qcnA-1; Wed, 23 Jun 2021 05:27:21 -0400
+X-MC-Unique: wpHMlcnNOsK4DE5zN9qcnA-1
+Received: by mail-ed1-f69.google.com with SMTP id j19-20020aa7c4130000b029039497d5cdbeso957333edq.15
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jun 2021 02:27:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=RLlcIADNVEZrtAcHj2h6w/jm4njSCgcno22R31dePUE=;
+        b=j/63pFyOgdAhDmeWQ4BNdT7jvPaPl8LtoQrbdZTxAF4f9SXHlHMZgFfgJx1T/41xCX
+         dgFHwm6HE/XdDzYJDt94Een7tJHt/7NRNKzh+eI2SyPr9jN+KRecbLdISAWzlm5RN+y+
+         IDsRJfHvIBGzQnGMH03M2DaciWc0F/Nv3GHMigheGYLZewJ82qLth8U2PGRSrhniUCpx
+         q2mmNRLqsKTGY3zVBYZcsF6VmmVbAKI2FpXJWCqBNqYJtNuEdYCo1QOwdl6NaZURgd+b
+         XJPVx6capmAXNVdHv3izkKfRXnctEOdqMQBYjAIeZZBHMlahr+sWWXfarxqkit4FFI7V
+         GtqQ==
+X-Gm-Message-State: AOAM530nNIBMFX3THVaV/z+NIvFQg4GGydIjVn9BHRgJ1C8UOvfnX829
+        Kw1Exk2Psvuy0wYJEDh5PsBLKwRLB0mWfKgLlIv2Z4rsUpE9Kf3IukttDo2PPhvQWe864b/zZf7
+        PuJBWgXlY1SoVNAtOPOrzgkFBVjs=
+X-Received: by 2002:aa7:cf0a:: with SMTP id a10mr10888219edy.329.1624440440651;
+        Wed, 23 Jun 2021 02:27:20 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw6DsQmKva0GCajbr1weRZMN61141xYEHht9jWO04YwA1uVzAskmfRAvJxDiHT4AjDAEC/JMQ==
+X-Received: by 2002:aa7:cf0a:: with SMTP id a10mr10888201edy.329.1624440440477;
+        Wed, 23 Jun 2021 02:27:20 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id g15sm7016179ejb.103.2021.06.23.02.27.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jun 2021 02:27:19 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 07522180730; Wed, 23 Jun 2021 11:27:17 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org
 Cc:     make-wifi-fast@lists.bufferbloat.net, Felix Fietkau <nbd@nbd.name>,
         Rajkumar Manoharan <rmanohar@codeaurora.org>,
         Kan Yan <kyan@google.com>, Yibo Zhao <yiboz@codeaurora.org>
-Date:   Wed, 23 Jun 2021 11:14:18 +0200
-In-Reply-To: <20210507094851.180838-1-toke@redhat.com> (sfid-20210507_114946_866610_98578A77)
+Subject: Re: [PATCH mac80211-next v8] mac80211: Switch to a virtual
+ time-based airtime scheduler
+In-Reply-To: <e1798568decc6df9b44ce97f48be523bdc92bdc4.camel@sipsolutions.net>
 References: <20210507094851.180838-1-toke@redhat.com>
-         (sfid-20210507_114946_866610_98578A77)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ <e1798568decc6df9b44ce97f48be523bdc92bdc4.camel@sipsolutions.net>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Wed, 23 Jun 2021 11:27:16 +0200
+Message-ID: <87tulpnd6z.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-05-07 at 11:48 +0200, Toke Høiland-Jørgensen wrote:
-> This switches the airtime scheduler in mac80211 to use a virtual time-based
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Generally, we prefer <=72 columns in commit messages ... I started
-reformatting, but then your code also has a lot of places that go over
-80 columns, so I gave up ... Can you please do that?
+> On Fri, 2021-05-07 at 11:48 +0200, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> This switches the airtime scheduler in mac80211 to use a virtual time-ba=
+sed
+>
+> Generally, we prefer <=3D72 columns in commit messages ... I started
+> reformatting, but then your code also has a lot of places that go over
+> 80 columns, so I gave up ... Can you please do that?
 
-Some refactoring, e.g. in sta_apply_parameters(), may also be in order.
-> +/**
-> + * struct airtime_sched_info - state used for airtime scheduling and AQL
-> + *
-> + * @lock: spinlock that protects all the fields in this struct
-> + * @active_txqs: rbtree of currently backlogged queues, sorted by virtual time
-> + * @schedule_pos: the current position maintained while a driver walks the tree
-> + *                with ieee80211_next_txq()
-> + * @active_list: list of struct airtime_info structs that were active within
-> + *               the last AIRTIME_ACTIVE_DURATION (100 ms), used to compute weight_sum
-> + * @last_weight_update: used for rate limiting walking active_list
-> + * @last_schedule_time: tracks the last time a transmission was scheduled; used
-> + *                      for catching up v_t if no stations are eligible for transmission.
-> + * @v_t: global virtual time; queues with v_t < this are eligible for transmission
-> + * @weight_sum: total sum of all active stations used for dividing airtime
-> + * @weight_sum_reciprocal: reciprocal of weight_sum (to avoid divisions in fast
-> + *                         path - see comment above IEEE80211_RECIPROCAL_DIVISOR_64)
-> + * @aql_txq_limit_low: AQL limit when total outstanding airtime is < IEEE80211_AQL_THRESHOLD
-> + * @aql_txq_limit_high: AQL limit when total outstanding airtime is > IEEE80211_AQL_THRESHOLD
+I thought the new limit was 100? :)
 
-This is also needlessly way over.
+But sure, I can take a look and remove the unnecessary ones...
 
-Thanks,
-johannes
+> Some refactoring, e.g. in sta_apply_parameters(), may also be in order.
+
+Will take a look!
+
+-Toke
 
