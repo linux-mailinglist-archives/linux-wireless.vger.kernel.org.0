@@ -2,81 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA9EC3B1865
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 13:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F9F3B18B4
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 13:16:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230036AbhFWLG2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 23 Jun 2021 07:06:28 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:48664 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230028AbhFWLG1 (ORCPT
+        id S230212AbhFWLTF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 23 Jun 2021 07:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43754 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230061AbhFWLTE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 23 Jun 2021 07:06:27 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1lw0ft-001bj2-8p; Wed, 23 Jun 2021 14:04:07 +0300
-Message-ID: <37ccff43592353f2dabcf1fa6d050fa5d23b18d9.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Florian Fainelli <f.fainelli@gmail.com>, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 23 Jun 2021 14:04:03 +0300
-In-Reply-To: <f0b8bcb1e90c4e805db974674e07f55e2ee38c14.camel@coelho.fi>
-References: <20210618104156.747775-1-luca@coelho.fi>
-         <iwlwifi.20210618133832.5b2063dea3b3.I56248f2ce2e22a5c0cf797378726f6904b5de5e2@changeid>
-         <db8585de-f1a2-b40c-0e4d-30dc5ad1d6ae@gmail.com>
-         <f0b8bcb1e90c4e805db974674e07f55e2ee38c14.camel@coelho.fi>
+        Wed, 23 Jun 2021 07:19:04 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B98CC061574
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jun 2021 04:16:47 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lw0s5-00AXaj-0H; Wed, 23 Jun 2021 13:16:41 +0200
+Message-ID: <f14e6e6b81978ace4580774981a7e032b4001182.camel@sipsolutions.net>
+Subject: Re: [PATCH v4 1/3] nl80211: Add support for beacon tx mode
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Maharaja Kennadyrajan <mkenna@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Date:   Wed, 23 Jun 2021 13:16:40 +0200
+In-Reply-To: <1623164855-15910-2-git-send-email-mkenna@codeaurora.org> (sfid-20210608_171052_201356_8AEA5406)
+References: <1623164855-15910-1-git-send-email-mkenna@codeaurora.org>
+         <1623164855-15910-2-git-send-email-mkenna@codeaurora.org>
+         (sfid-20210608_171052_201356_8AEA5406)
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: Re: [PATCH 02/31] mac80211: do not add twice the HE 6GHz cap IE
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-06-18 at 23:17 +0300, Luca Coelho wrote:
-> On Fri, 2021-06-18 at 10:14 -0700, Florian Fainelli wrote:
-> > 
-> > On 6/18/2021 3:41 AM, Luca Coelho wrote:
-> > > From: Shaul Triebitz <shaul.triebitz@intel.com>
-> > > 
-> > > The HE 6GHz capability IE is already added before:
-> > > ieee80211_add_he_ie -> ieee80211_ie_build_he_6ghz_cap
-> > > 
-> > > Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
-> > > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> > > ---
-> > >  net/mac80211/mlme.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-> > > index 2480bd0577bb..310cfd02fda4 100644
-> > > --- a/net/mac80211/mlme.c
-> > > +++ b/net/mac80211/mlme.c
-> > > @@ -8,7 +8,7 @@
-> > >   * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-> > >   * Copyright 2013-2014  Intel Mobile Communications GmbH
-> > >   * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-> > > - * Copyright (C) 2018 - 2020 Intel Corporation
-> > > + * Copyright (C) 2018 - 2021 Intel Corporation
-> > 
-> > This change only bumps the copyright year...
+First, I'd like to see some input from other vendors - is this useful?
+
+I have no objections to it and it comes with an in-kernel driver, so I'm
+inclined to accept it, but maybe we should have other modes, etc.?
+
+
+> + * @NL80211_ATTR_BEACON_TX_MODE: used to configure the beacon tx mode as
+> + *      staggered mode = 1 or burst mode = 2 in %NL80211_CMD_START_AP or
+> + *      %NL80211_CMD_JOIN_MESH from user-space.
+
+
+This should refer to the enum, not the hard-coded constants.
 > 
-> Oops, something went wrong when I applied it.  I'll check and either
-> resend or drop it.
+> +/**
+> + * enum nl80211_beacon_tx_mode - Beacon Tx Mode enum.
+> + *      Used to configure beacon staggered mode or beacon burst mode.
+> + */
+> +enum nl80211_beacon_tx_mode {
 
-Please drop this patch.  It was an internal fixed to a merge damage and
-should not have been sent out (obviously because it resulted in no
-code).
 
---
-Cheers,
-Luca.
+That's missing kernel-doc, and you also don't specify what default
+means. Why is it even here?
+
+> +	[NL80211_ATTR_BEACON_TX_MODE] = NLA_POLICY_RANGE(NLA_U32, 1,
+2),
+
+That really also needs to use the enum, not hard-coded constants...
+
+johannes
 
