@@ -2,208 +2,206 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20B9F3B106A
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 01:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 912843B124E
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jun 2021 05:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229826AbhFVXRb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 22 Jun 2021 19:17:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35544 "EHLO mail.kernel.org"
+        id S230094AbhFWDl4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 22 Jun 2021 23:41:56 -0400
+Received: from mga05.intel.com ([192.55.52.43]:10827 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229774AbhFVXRa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 22 Jun 2021 19:17:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E48CB610C7;
-        Tue, 22 Jun 2021 23:15:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624403714;
-        bh=349vokvWXUEULt4QgtywirkV5miPSSIT3xH8DDEkvjo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qk/vKHetrr3/B3YKvC0vS4LkzCJKc85/DAR8l4nvz6z1jHSu8MSdBqn1V9D5bxy/W
-         kskDrIzFWxbbiGt++b5b2r3eVwpd/5AIcC+b/PZXHlzjqXKNoA2En4eGFZHWdaBl/7
-         BYDEC2mOMd3/r1iIcoCMdPjNnf8XSXFgeGQBFMVxuFfK14KZAw2J9evMtcB01GIcB1
-         +fdD+cr1lIyOGGXkZi9ihHEkcTJXqBLRVs7+YSyET3RzfOkOmP1tXCNsjuxLxNxpYb
-         9rzt5zoRe8rDkxZnw53+PEfy/d1aZ5M+LqwVUVyZqiE9SuqYvA/ICJYGN+29irnU66
-         hfDPhrPCePBTg==
-Received: by pali.im (Postfix)
-        id 80BFBCBA; Wed, 23 Jun 2021 01:15:11 +0200 (CEST)
-Date:   Wed, 23 Jun 2021 01:15:11 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     Luca Coelho <luca@coelho.fi>, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 11/12] mac80211: drop data frames without key on
- encrypted links
-Message-ID: <20210622231511.nb7o2sohnnz5qdhi@pali>
-References: <iwlwifi.20200326150855.6865c7f28a14.I9fb1d911b064262d33e33dfba730cdeef83926ca@changeid>
- <20200327150342.252AF20748@mail.kernel.org>
- <20210611101046.zej2t2oc6hsc67yv@pali>
+        id S230004AbhFWDl4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 22 Jun 2021 23:41:56 -0400
+IronPort-SDR: 02fcM5FzumVSMoYLTRrrJJzMmegM9Tj92RBWdeLEs3Ks/oOK5XQIQ4IZwqtrQXfLBfU9eiImbN
+ FkOfry8Tc4zg==
+X-IronPort-AV: E=McAfee;i="6200,9189,10023"; a="292813175"
+X-IronPort-AV: E=Sophos;i="5.83,293,1616482800"; 
+   d="scan'208";a="292813175"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2021 20:39:39 -0700
+IronPort-SDR: EOuDZDlxJk4MVrITw4QiF23eqqEox4e18TAoMsElnuKz8vL4uU8rD+9CpC1HGqwHdCpd17vuXc
+ uqWzjR5ZD01Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,293,1616482800"; 
+   d="scan'208";a="454500015"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 22 Jun 2021 20:39:38 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lvtjm-0005gv-7t; Wed, 23 Jun 2021 03:39:38 +0000
+Date:   Wed, 23 Jun 2021 11:39:30 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:pending] BUILD SUCCESS
+ 3c181e81018a8cbcd1328d5367e0b84fab337aaa
+Message-ID: <60d2acf2.tJJ4wOtv8nhFHXe/%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210611101046.zej2t2oc6hsc67yv@pali>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday 11 June 2021 12:10:46 Pali Rohár wrote:
-> On Friday 27 March 2020 15:03:41 Sasha Levin wrote:
-> > This commit has been processed because it contains a -stable tag.
-> > The stable tag indicates that it's relevant for the following trees: all
-> > 
-> > The bot has tested the following trees: v5.5.11, v5.4.27, v4.19.112, v4.14.174, v4.9.217, v4.4.217.
-> > 
-> > v5.5.11: Build OK!
-> > v5.4.27: Build OK!
-> > v4.19.112: Failed to apply! Possible dependencies:
-> ...
-> > v4.14.174: Failed to apply! Possible dependencies:
-> ...
-> > v4.9.217: Failed to apply! Possible dependencies:
-> ...
-> > v4.4.217: Failed to apply! Possible dependencies:
-> ...
-> > 
-> > How should we proceed with this patch?
-> 
-> Hello! I have looked at this patch and backported it into 4.19 and older
-> versions. But as this patch is security related and backporting needed
-> some code changes, it is required to review this patch prior including
-> it into any stable branch. Patch is below.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
+branch HEAD: 3c181e81018a8cbcd1328d5367e0b84fab337aaa  Merge tag 'iwlwifi-next-for-kalle-2021-06-22' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next into pending
 
-Hello Sasha and Greg!
+elapsed time: 727m
 
-Do you have any opinion how do you want to process this patch? I would
-like to know if something else is needed from my side.
+configs tested: 144
+configs skipped: 2
 
-> The main change in backported patch is in ieee80211_key_replace()
-> function.
-> 
-> So could you please review this patch if it is correct and if it is
-> suitable for backporting it into stable kernels 4.19 in this (or other)
-> form?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Johannes, you are the original author of this patch, what do you think,
-would you be able to find some time and review at this backported patch?
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                           h3600_defconfig
+powerpc                    klondike_defconfig
+arm                       imx_v6_v7_defconfig
+powerpc                      arches_defconfig
+arm                             rpc_defconfig
+arm                            lart_defconfig
+powerpc                        fsp2_defconfig
+sparc64                             defconfig
+mips                         mpc30x_defconfig
+arm                        multi_v7_defconfig
+powerpc                 mpc8315_rdb_defconfig
+powerpc                   motionpro_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                     powernv_defconfig
+powerpc                 mpc832x_rdb_defconfig
+powerpc                     tqm5200_defconfig
+powerpc                    gamecube_defconfig
+h8300                     edosk2674_defconfig
+sh                           se7724_defconfig
+mips                          malta_defconfig
+arc                           tb10x_defconfig
+sh                           se7705_defconfig
+powerpc                  mpc866_ads_defconfig
+mips                     cu1830-neo_defconfig
+powerpc                      acadia_defconfig
+arc                     nsimosci_hs_defconfig
+arm                         cm_x300_defconfig
+sh                   secureedge5410_defconfig
+mips                  decstation_64_defconfig
+powerpc                     stx_gp3_defconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                         hackkit_defconfig
+arc                     haps_hs_smp_defconfig
+m68k                       m5475evb_defconfig
+arm                       netwinder_defconfig
+um                            kunit_defconfig
+um                           x86_64_defconfig
+sh                          r7785rp_defconfig
+mips                      bmips_stb_defconfig
+sh                        edosk7705_defconfig
+mips                   sb1250_swarm_defconfig
+mips                           ip28_defconfig
+arm                     eseries_pxa_defconfig
+powerpc                     ep8248e_defconfig
+sh                   rts7751r2dplus_defconfig
+arm                    vt8500_v6_v7_defconfig
+arm                         axm55xx_defconfig
+arm                         lpc18xx_defconfig
+arc                    vdk_hs38_smp_defconfig
+powerpc                     tqm8560_defconfig
+openrisc                 simple_smp_defconfig
+mips                         rt305x_defconfig
+mips                           xway_defconfig
+arm                        realview_defconfig
+arm                      jornada720_defconfig
+m68k                        mvme16x_defconfig
+s390                             allmodconfig
+riscv                               defconfig
+sh                                  defconfig
+arm                        mvebu_v5_defconfig
+sh                   sh7770_generic_defconfig
+powerpc                     kmeter1_defconfig
+microblaze                          defconfig
+arm                         orion5x_defconfig
+powerpc                    sam440ep_defconfig
+arm                        shmobile_defconfig
+sh                            titan_defconfig
+mips                            gpr_defconfig
+h8300                               defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210622
+i386                 randconfig-a002-20210622
+i386                 randconfig-a003-20210622
+i386                 randconfig-a006-20210622
+i386                 randconfig-a005-20210622
+i386                 randconfig-a004-20210622
+x86_64               randconfig-a012-20210622
+x86_64               randconfig-a016-20210622
+x86_64               randconfig-a015-20210622
+x86_64               randconfig-a014-20210622
+x86_64               randconfig-a013-20210622
+x86_64               randconfig-a011-20210622
+i386                 randconfig-a011-20210622
+i386                 randconfig-a014-20210622
+i386                 randconfig-a013-20210622
+i386                 randconfig-a015-20210622
+i386                 randconfig-a012-20210622
+i386                 randconfig-a016-20210622
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-> =======================================================================
-> 
-> From 189da5743e28d0c5d211b70b4cb06ce3aff77d86 Mon Sep 17 00:00:00 2001
-> From: Johannes Berg <johannes.berg@intel.com>
-> Date: Thu, 26 Mar 2020 15:09:42 +0200
-> Subject: [PATCH] mac80211: drop data frames without key on encrypted links
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=UTF-8
-> Content-Transfer-Encoding: 8bit
-> 
-> commit a0761a301746ec2d92d7fcb82af69c0a6a4339aa upstream.
-> 
-> If we know that we have an encrypted link (based on having had
-> a key configured for TX in the past) then drop all data frames
-> in the key selection handler if there's no key anymore.
-> 
-> This fixes an issue with mac80211 internal TXQs - there we can
-> buffer frames for an encrypted link, but then if the key is no
-> longer there when they're dequeued, the frames are sent without
-> encryption. This happens if a station is disconnected while the
-> frames are still on the TXQ.
-> 
-> Detecting that a link should be encrypted based on a first key
-> having been configured for TX is fine as there are no use cases
-> for a connection going from with encryption to no encryption.
-> With extended key IDs, however, there is a case of having a key
-> configured for only decryption, so we can't just trigger this
-> behaviour on a key being configured.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Jouni Malinen <j@w1.fi>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> Link: https://lore.kernel.org/r/iwlwifi.20200326150855.6865c7f28a14.I9fb1d911b064262d33e33dfba730cdeef83926ca@changeid
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> [pali: Backported to 4.19 and older versions]
-> Signed-off-by: Pali Rohár <pali@kernel.org>
-> ---
->  net/mac80211/debugfs_sta.c |  1 +
->  net/mac80211/key.c         |  7 +++++--
->  net/mac80211/sta_info.h    |  1 +
->  net/mac80211/tx.c          | 12 +++++++++---
->  4 files changed, 16 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-> index 4105081dc1df..6f390c2e4c8e 100644
-> --- a/net/mac80211/debugfs_sta.c
-> +++ b/net/mac80211/debugfs_sta.c
-> @@ -80,6 +80,7 @@ static const char * const sta_flag_names[] = {
->  	FLAG(MPSP_OWNER),
->  	FLAG(MPSP_RECIPIENT),
->  	FLAG(PS_DELIVER),
-> +	FLAG(USES_ENCRYPTION),
->  #undef FLAG
->  };
->  
-> diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-> index f20bb39f492d..217db25a1afa 100644
-> --- a/net/mac80211/key.c
-> +++ b/net/mac80211/key.c
-> @@ -341,8 +341,11 @@ static void ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
->  	if (sta) {
->  		if (pairwise) {
->  			rcu_assign_pointer(sta->ptk[idx], new);
-> -			sta->ptk_idx = idx;
-> -			ieee80211_check_fast_xmit(sta);
-> +			if (new) {
-> +				set_sta_flag(new->sta, WLAN_STA_USES_ENCRYPTION);
-> +				new->sta->ptk_idx = new->conf.keyidx;
-> +				ieee80211_check_fast_xmit(new->sta);
-> +			}
->  		} else {
->  			rcu_assign_pointer(sta->gtk[idx], new);
->  		}
-> diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-> index 9a04327d71d1..075609c4571d 100644
-> --- a/net/mac80211/sta_info.h
-> +++ b/net/mac80211/sta_info.h
-> @@ -101,6 +101,7 @@ enum ieee80211_sta_info_flags {
->  	WLAN_STA_MPSP_OWNER,
->  	WLAN_STA_MPSP_RECIPIENT,
->  	WLAN_STA_PS_DELIVER,
-> +	WLAN_STA_USES_ENCRYPTION,
->  
->  	NUM_WLAN_STA_FLAGS,
->  };
-> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> index 98d048630ad2..3530d1a5fc98 100644
-> --- a/net/mac80211/tx.c
-> +++ b/net/mac80211/tx.c
-> @@ -593,10 +593,13 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
->  	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx->skb);
->  	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx->skb->data;
->  
-> -	if (unlikely(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT))
-> +	if (unlikely(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT)) {
->  		tx->key = NULL;
-> -	else if (tx->sta &&
-> -		 (key = rcu_dereference(tx->sta->ptk[tx->sta->ptk_idx])))
-> +		return TX_CONTINUE;
-> +	}
-> +
-> +	if (tx->sta &&
-> +	    (key = rcu_dereference(tx->sta->ptk[tx->sta->ptk_idx])))
->  		tx->key = key;
->  	else if (ieee80211_is_group_privacy_action(tx->skb) &&
->  		(key = rcu_dereference(tx->sdata->default_multicast_key)))
-> @@ -657,6 +660,9 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
->  		if (!skip_hw && tx->key &&
->  		    tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
->  			info->control.hw_key = &tx->key->conf;
-> +	} else if (!ieee80211_is_mgmt(hdr->frame_control) && tx->sta &&
-> +		   test_sta_flag(tx->sta, WLAN_STA_USES_ENCRYPTION)) {
-> +		return TX_DROP;
->  	}
->  
->  	return TX_CONTINUE;
-> -- 
-> 2.20.1
+clang tested configs:
+x86_64               randconfig-b001-20210622
+x86_64               randconfig-a002-20210622
+x86_64               randconfig-a001-20210622
+x86_64               randconfig-a005-20210622
+x86_64               randconfig-a003-20210622
+x86_64               randconfig-a004-20210622
+x86_64               randconfig-a006-20210622
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
