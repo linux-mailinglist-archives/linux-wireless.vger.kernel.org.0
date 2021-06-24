@@ -2,57 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 710FD3B376E
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jun 2021 21:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 262703B377F
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jun 2021 21:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232549AbhFXT7U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Jun 2021 15:59:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34894 "EHLO
+        id S232740AbhFXUCE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Jun 2021 16:02:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232178AbhFXT7U (ORCPT
+        with ESMTP id S232653AbhFXUCE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Jun 2021 15:59:20 -0400
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 134C0C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Jun 2021 12:57:01 -0700 (PDT)
-Received: by mail-ua1-x92c.google.com with SMTP id e7so2655331uaj.11
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Jun 2021 12:57:00 -0700 (PDT)
+        Thu, 24 Jun 2021 16:02:04 -0400
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDAF3C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Jun 2021 12:59:43 -0700 (PDT)
+Received: by mail-ua1-x92b.google.com with SMTP id k9so2666418uaq.6
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Jun 2021 12:59:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4d4+8SUdtiuKGmqe6FBgtAiI0aNyLkTa+3Inrevk5H0=;
-        b=OypnznC6Lkav9yidTPEhCW+wUxiS9BAW7BoFUR6KJbGaPPhdB438ce2+SMWYPgFDhs
-         vx9uN/E120itk0R5Gu0NE8lTPMBSLPa4XDnGOD7Tr0aaD10IiCEbx32H7GGksdtjXIGX
-         nY0+Ie1wZuz/Xad+IGe8/KhYcsPemo5k5yPTDMA8fKgI6VjLE019mJ7CJwX7v8IheBlB
-         9MEqYCA7sv7+WllaV1QPTAiYB41FydZY1rEUDhwj1ZjM4TL3jCWqYlnMRKii0mcpDp1K
-         pni6NIYFJkobbAAvJ/PZo6D6AELIqa0gMw3116kjfmve7qF5Iqztshy9yI5mbvBX/D3Q
-         96Rg==
+        bh=MgYUf2UwozZW1M1F4AiO1MTGhl6u3fFGhBU4S5iL+m8=;
+        b=eRLfY5gFUkzk5YtmMD8YX7u2vVMYdAuLTQkrUc3NFS04g4EkTRigpAVEU4FSjnxmaI
+         hoagqiFz28ZcuD7RGwYqKk3V0hmGiZRHbRH64/OcgrPsYgdKuxzBVg4wGg1HyTCZc/Sd
+         R7aYcG24QxcYHYmzqpVtE014ziDUygzMKNSGxqr3vodiqPNmcmGBX5LYbbNBIfzN9jSG
+         tC+pD+Ho6nhyUqHnwQpLFCOCnzM41Qf8Njl76ZSczaCmw6EyNgJJ2TktLOzHVJvnhHsj
+         tILOGc776UEn4261OU7FQvZ5DnnxhUenPxW6sXVIOxMBiq8quRNKbyUAGOkDDx4AFTQr
+         HRTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4d4+8SUdtiuKGmqe6FBgtAiI0aNyLkTa+3Inrevk5H0=;
-        b=tvhM9PVHKcYMXUGOg51/ILvd8ElE9YVyD5TynVBRM+04LzXjNgIpKvuxfrKNtk4IGh
-         LntaYMXlCpg4u9QjcAXfNQasu0SBeZL+AoCf97cD6tPpmyidAAypobjLVrPL2nQWSe+e
-         pBEs/1tqmYloV8+l2U/5tmkWmoWAzP0pzP40IEJzrmPnPYZDkM+2HGMW0S9r/1La+au1
-         rnNOeLpGiUw4Vb5a/vW5/iy4W1LA3f6LuO7kGmgfWMIm5UsWj3+z7OVPHK1t6ts/nD2N
-         w639un//Gl9Tg5N3wt7y3NJ2QXQoYLZwzZYE3KE33M+SRJzqCXfqNIzchSsm3Z05if8U
-         ZMtA==
-X-Gm-Message-State: AOAM5313PXq3pNQfKzt8RoyTHGoFO02uHUgEggl5RzyDWTUPrRska2k1
-        RsvoHz9MqRGs86G8BItbslfAGnt/9Ty+bwN+K+onH9h+seyt5w==
-X-Google-Smtp-Source: ABdhPJxVduDhieFKFQBZPbsR1PoHQGMgzbnpCwYfJc/53SKJCwqq7xudijqxnJWka5J6agxF2yBojN1XW+lqV2PPAWc=
-X-Received: by 2002:ab0:5962:: with SMTP id o31mr7616347uad.89.1624564619964;
- Thu, 24 Jun 2021 12:56:59 -0700 (PDT)
+        bh=MgYUf2UwozZW1M1F4AiO1MTGhl6u3fFGhBU4S5iL+m8=;
+        b=gi3QkcE1leZF5gi3M1oKbCrngFNpYNmK6uh8lDregq8obf4dBRCkjdVcSRyMg+ZHXl
+         be1ZrRvhHSZ4GKhOlPLHVe8WIG+yfMD+Pc7PQSx5IaesKbZB2f8whUo9vWBPc/37sVag
+         oTU4EnbSrkegdSVLyAm2PC5S2PqLD21T3nhPT9OzYEvhFmPE6KI8ocq9zC72cadTFPa3
+         AbiQrLWzIpOOzv99UPpCtakbA1h7lyr62oNOscrxZoBgWaLDsBQuRa29uY0MOxTW51W/
+         i8PZ9yF2BhcHt04501ebLSfWV5iF6gCQJ2peZqMjUQk8Cu7NUWRDRnj111j/Qechrjpd
+         h84w==
+X-Gm-Message-State: AOAM532KGjB7PGHwZyE6IAR5VwOSnoUmxUsHSHGBVqmLuwnyDsqmyeeh
+        b/uf63nMiiTtzywOmy+Nlj8qR3F+XjESbl+QN+U=
+X-Google-Smtp-Source: ABdhPJxYi04gjNK3LvndpwS7jEimg/Cr8CWXk9omD2gF1tgZgznEWA6kL9VaZnpnz9U+BofUFBtCy2/cHIkoiEhFeyc=
+X-Received: by 2002:ab0:6009:: with SMTP id j9mr7796950ual.87.1624564782956;
+ Thu, 24 Jun 2021 12:59:42 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210623141033.27475-1-emmanuel.grumbach@intel.com>
- <20210623141033.27475-3-emmanuel.grumbach@intel.com> <87k0mji43p.fsf@codeaurora.org>
-In-Reply-To: <87k0mji43p.fsf@codeaurora.org>
+ <20210623141033.27475-4-emmanuel.grumbach@intel.com> <87fsx7i416.fsf@codeaurora.org>
+In-Reply-To: <87fsx7i416.fsf@codeaurora.org>
 From:   Emmanuel Grumbach <egrumbach@gmail.com>
-Date:   Thu, 24 Jun 2021 22:56:49 +0300
-Message-ID: <CANUX_P0d0jrq9x99jM824oKOhmi0Wa5WqhECMsX=hd269H6atw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] nl80211: vendor-cmd: add Intel vendor commands for
- iwlmei usage
+Date:   Thu, 24 Jun 2021 22:59:32 +0300
+Message-ID: <CANUX_P3HWWBkeHHSw+-wdQEBFNF1V+GWRDFiEerH7NhksRvOzA@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] iwlwifi: mvm: add vendor commands needed for iwlmei
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         "Coelho, Luciano" <luciano.coelho@intel.com>,
@@ -63,39 +62,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jun 24, 2021 at 8:09 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+On Thu, Jun 24, 2021 at 8:13 PM Kalle Valo <kvalo@codeaurora.org> wrote:
 >
 > Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
 >
-> > iwlmei allows to integrate with the CSME firmware. There are
-> > flows that are prioprietary for this purpose:
+> > Add the vendor commands that must be used by the network manager
+> > to allow proper operation of iwlmei.
 > >
-> > * Get the information the AP, the CSME firmware is connected
-> >   to. This is useful when we need to speed up the connection
-> >   process in case the CSME firmware has an TCP connection
-> >   that must be kept alive across the ownership transition.
-> > * Forbid roaming, which will happen when the CSME firmware
-> >   wants to tell the user space not disrupt the connection.
-> > * Request ownership, upon driver boot when the CSME firmware
-> >   owns the device.
+> > * Send information on the AP CSME is connected to
+> > * Notify the userspace when roaming is forbidden
+> > * Allow the userspace to require ownership
+> >
+> > Co-Developed-by: Ayala Beker <ayala.beker@intel.com>
+> > Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> > ---
+> >  drivers/net/wireless/intel/iwlwifi/Kconfig    |  11 ++
+> >  .../net/wireless/intel/iwlwifi/mvm/Makefile   |   1 +
+> >  .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   2 +
+> >  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   9 +-
+> >  .../wireless/intel/iwlwifi/mvm/vendor-cmd.c   | 186 ++++++++++++++++++
+> >  5 files changed, 203 insertions(+), 6 deletions(-)
+> >  create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/vendor-cmd.c
+> >
+> > diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
+> > index 629aaa26a230..f91516d08b28 100644
+> > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
+> > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+> > @@ -92,11 +92,22 @@ config IWLWIFI_BCAST_FILTERING
+> >         If unsure, don't enable this option, as some programs might
+> >         expect incoming broadcasts for their normal operations.
+> >
+> > +config IWLMVM_VENDOR_CMDS
+> > +     bool "Enable vendor commands"
+> > +     depends on IWLMVM
+> > +     help
+> > +       This option enables support for vendor commands, including some
+> > +       that don't have their own Kconfig option. Other Kconfig options
+> > +       depend on this one as well.
+> > +
+> > +       This is not enabled by default, if unsure, say N.
 >
-> Vendor command requirements are documented here:
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/nl80211#vendor-specific_api
->
-> The commit log is not really answering to those. For example, how a user
-> would use this? Or is there a user space tool?
+> Why do we need a new Kconfig option? Why not always include it in the
+> compilation?
 
-We intend to send those command from the NetworkManager.
-I'll write a commit message that explains this better.
-The gist of it is that the user space will see that the NIC is not
-owned by the host thanks to the new RFKILL reason that I added. Then,
-it can ask CSME what AP it is connected to, check if it has the a
-profile configure for that AP and connect to that same profile.
-I'll respin.
+I expect 99.9% of the users to want to disable this.VENDOR_CMDS adds a
+user space API and in a sense, it increases the attack surface. You
+can claim that I can reuse the IWLMEI Kconfig option, which is true,
+but we have other features that need VENDOR_CMDS that are not (yet)
+upstream. So the idea here is that any feature that needs the
+VENDOR_CMDS will select it and if none of them are enabled (for 99.9%
+of the use cases), then, we would disable VENDOR_CMDS and decrease the
+attack surface.
 
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Makes sense?
