@@ -2,120 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 357F33B3412
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jun 2021 18:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C953B3416
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jun 2021 18:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbhFXQob (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Jun 2021 12:44:31 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:11593 "EHLO m43-7.mailgun.net"
+        id S232033AbhFXQpV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Jun 2021 12:45:21 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:38822 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229721AbhFXQoa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Jun 2021 12:44:30 -0400
+        id S231488AbhFXQpV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Jun 2021 12:45:21 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624552931; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=p4AyN0IckVIgEF0pepUMRnDVIZkiIMMxD6qEertwOF4=; b=B1oQpI5kRJjKt+GV2XBMMnhxsG0xtHbw7x/FAgXk9nVI6Mlu86qYyeGNtv32+EaMv4jrcWNZ
- PIAAXdcptlFTpe0a3KalP8l518jYbG52qxrcWQCfsRvUtB4VDGT3qahacc2mpYMnQSA3K9hX
- 1Ur9wjOmnL4VvuTCchjrw8Dez6U=
+ s=smtp; t=1624552982; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=UrdwEsv/GeGu8n59uVeExy6KofQb0BPJZKoMnLtN7A4=;
+ b=N5cFAA04QxJIDHMEiBHWNJ8cUJNay+DYWb53qJV4RRX9my5udim53CAONIBJqLyIrXMZ++AC
+ 2/kaU787gna5BKl+v5iQQnxnw/Nq6Ee33PM+AxZVEILXI7s2/w3/DPTbjGzhN97woog9yVMt
+ UoXyBh9k9Fa9RAVheFNc7V9+IUc=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 60d4b54c0090905e166fdc9d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 24 Jun 2021 16:39:40
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 60d4b5c37b2963a2826b0222 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 24 Jun 2021 16:41:39
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3F4A6C43146; Thu, 24 Jun 2021 16:39:39 +0000 (UTC)
+        id 2CFA8C433D3; Thu, 24 Jun 2021 16:41:39 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 19ED2C433D3;
-        Thu, 24 Jun 2021 16:39:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 19ED2C433D3
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1B17CC433F1;
+        Thu, 24 Jun 2021 16:41:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1B17CC433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Mikhail Rudenko <mike.rudenko@gmail.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Double Lo <double.lo@cypress.com>,
-        Remi Depommier <rde@setrix.com>,
-        Amar Shankar <amsr@cypress.com>,
-        Saravanan Shanmugham <saravanan.shanmugham@cypress.com>,
-        Frank Kao <frank.kao@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: use separate firmware for 43430 revision 2
-References: <20210509233010.2477973-1-mike.rudenko@gmail.com>
-        <d1bac6c3-aa52-5d76-1f2a-4af9edef71c5@broadcom.com>
-        <87a6oxpsn8.fsf@gmail.com>
-Date:   Thu, 24 Jun 2021 19:39:31 +0300
-In-Reply-To: <87a6oxpsn8.fsf@gmail.com> (Mikhail Rudenko's message of "Fri, 14
-        May 2021 12:41:08 +0300")
-Message-ID: <87o8bvgqt8.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wireless: hostap: Fix a use after free in hostap_80211_rx
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210329110021.7497-1-lyl2019@mail.ustc.edu.cn>
+References: <20210329110021.7497-1-lyl2019@mail.ustc.edu.cn>
+To:     Lv Yunlong <lyl2019@mail.ustc.edu.cn>
+Cc:     j@w1.fi, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Lv Yunlong <lyl2019@mail.ustc.edu.cn>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210624164139.2CFA8C433D3@smtp.codeaurora.org>
+Date:   Thu, 24 Jun 2021 16:41:39 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Mikhail Rudenko <mike.rudenko@gmail.com> writes:
+Lv Yunlong <lyl2019@mail.ustc.edu.cn> wrote:
 
-> On 2021-05-10 at 11:06 MSK, Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
->> On 5/10/2021 1:30 AM, Mikhail Rudenko wrote:
->>> A separate firmware is needed for Broadcom 43430 revision 2.  This
->>> chip can be found in e.g. certain revisions of Ampak AP6212 wireless
->>> IC. Original firmware file from IC vendor is named
->>> 'fw_bcm43436b0.bin', but brcmfmac and also btbcm drivers report chip
->>
->> That is bad naming. There already is a 43436 USB device.
->>
->>> id 43430, so requested firmware file name is
->>> 'brcmfmac43430b0-sdio.bin' in line with other 43430 revisions.
->>
->> As always there is the question about who will be publishing this
->> particular firmware file to linux-firmware.
->
-> The above mentioned file can be easily found by web search. Also, the
-> corresponding patch for the bluetooth part has just been accepted
-> [1]. Is it strictly necessary to have firmware file in linux-firmware in
-> order to have this patch accepted?
+> Function hostap_80211_rx() calls prism2_rx_80211(..,skb,..). In
+> prism2_rx_80211, i found that the skb could be freed by dev_kfree_skb_any(skb)
+> and return 0. Also could be freed by netif_rx(skb) when netif_rx return
+> NET_RX_DROP.
+> 
+> But after called the prism2_rx_80211(..,skb,..), the skb is used by skb->len.
+> 
+> As the new skb->len is returned by prism2_rx_80211(), my patch uses a variable
+> len to repalce skb->len. According to another useage of prism2_rx_80211 in
+> monitor_rx().
+> 
+> Signed-off-by: Lv Yunlong <lyl2019@mail.ustc.edu.cn>
 
-This patch is a bit in the gray area. We have a rule that firmware
-images should be in linux-firmware, but as the vendor won't submit one
-and I assume the license doesn't approve the community submit it either,
-there is not really any solution for the firmware problem.
-
-On the other hand some community members have access to the firmware
-somehow so this patch is useful to the community, and I think taking an
-exception to the rule in this case is justified. So I am inclined
-towards applying the patch.
-
-Thoughts? I also have another similar patch in the queue:
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20210307113550.7720-1-konrad.dybcio@somainline.org/
+Can someone help with reviewing the patch?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210329110021.7497-1-lyl2019@mail.ustc.edu.cn/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
