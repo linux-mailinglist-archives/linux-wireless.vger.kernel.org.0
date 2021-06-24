@@ -2,68 +2,183 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 803B83B29BB
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jun 2021 09:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ECEB3B2A8F
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jun 2021 10:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231781AbhFXHxc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 24 Jun 2021 03:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38190 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231709AbhFXHxc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 24 Jun 2021 03:53:32 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60B18C061574;
-        Thu, 24 Jun 2021 00:51:13 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lwK8f-00AtWB-CA; Thu, 24 Jun 2021 09:51:05 +0200
-Message-ID: <63d3f8ec9095031d5d6b1374f304a76c64a036f2.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: add dependency for MAC80211_LEDS
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Liwei Song <liwei.song@windriver.com>, David <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 24 Jun 2021 09:51:04 +0200
-In-Reply-To: <20210624074956.37298-1-liwei.song@windriver.com>
-References: <20210624074956.37298-1-liwei.song@windriver.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S229902AbhFXIpX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 24 Jun 2021 04:45:23 -0400
+Received: from mga04.intel.com ([192.55.52.120]:7048 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229890AbhFXIpX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 24 Jun 2021 04:45:23 -0400
+IronPort-SDR: gvqanc8QTykskAmJvGbccQoaLxhLuVCjNNxE4PD2JPAIjcpjQ4JY5Q+UG7O0lQwFXWAF/J36/B
+ I/3JvvnaP79g==
+X-IronPort-AV: E=McAfee;i="6200,9189,10024"; a="205601333"
+X-IronPort-AV: E=Sophos;i="5.83,296,1616482800"; 
+   d="scan'208";a="205601333"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2021 01:43:04 -0700
+IronPort-SDR: JjUJQZKvsMscSsZFe5VYHAOSBbtnlo1aWs9ttLlVLeupDXP44UbiZ/S6BVQXb9bj1RdKg4nQj7
+ 6JW5hbDMRBOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,296,1616482800"; 
+   d="scan'208";a="491051010"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 24 Jun 2021 01:43:03 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lwKww-0006Qk-IH; Thu, 24 Jun 2021 08:43:02 +0000
+Date:   Thu, 24 Jun 2021 16:42:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ 559c664751e54f5ddebd91ef640f7d346132ee44
+Message-ID: <60d44564.eseefQySnWSTLi4k%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-06-24 at 15:49 +0800, Liwei Song wrote:
-> Let MAC80211_LEDS depends on LEDS_CLASS=IWLWIFI to fix the below warning:
-> 
-> WARNING: unmet direct dependencies detected for MAC80211_LEDS
->   Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
->   Selected by [m]:
->   - IWLWIFI_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_INTEL [=y] && IWLWIFI [=m] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=IWLWIFI [=m]) && (IWLMVM [=m] || IWLDVM [=m])
-> 
-> Signed-off-by: Liwei Song <liwei.song@windriver.com>
-> ---
->  net/mac80211/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/mac80211/Kconfig b/net/mac80211/Kconfig
-> index 51ec8256b7fa..918a11fed563 100644
-> --- a/net/mac80211/Kconfig
-> +++ b/net/mac80211/Kconfig
-> @@ -69,7 +69,7 @@ config MAC80211_MESH
->  config MAC80211_LEDS
->  	bool "Enable LED triggers"
->  	depends on MAC80211
-> -	depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211
-> +	depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211 || LEDS_CLASS=IWLWIFI
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+branch HEAD: 559c664751e54f5ddebd91ef640f7d346132ee44  Merge tag 'iwlwifi-next-for-kalle-2021-06-22' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
 
-Eh, no. this is the wrong way around. If anything needs to be fixed,
-then it must be in iwlwifi, not the generic core part.
+elapsed time: 880m
 
-johannes
+configs tested: 121
+configs skipped: 3
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                           mtx1_defconfig
+powerpc                      arches_defconfig
+mips                            gpr_defconfig
+m68k                        m5272c3_defconfig
+microblaze                      mmu_defconfig
+nds32                               defconfig
+m68k                          atari_defconfig
+sh                   secureedge5410_defconfig
+arm                              alldefconfig
+sh                          rsk7203_defconfig
+sh                        edosk7760_defconfig
+um                             i386_defconfig
+arm                         lpc32xx_defconfig
+arm                          lpd270_defconfig
+arm                             pxa_defconfig
+arm                           corgi_defconfig
+sparc                            alldefconfig
+arm                      pxa255-idp_defconfig
+arm                             ezx_defconfig
+mips                          ath25_defconfig
+sh                         microdev_defconfig
+parisc                generic-32bit_defconfig
+powerpc                    gamecube_defconfig
+sh                      rts7751r2d1_defconfig
+sh                           se7722_defconfig
+powerpc                 mpc834x_itx_defconfig
+powerpc                     ep8248e_defconfig
+arm                         lubbock_defconfig
+mips                           ip22_defconfig
+arm                        trizeps4_defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                       maple_defconfig
+arm                       aspeed_g5_defconfig
+arm                          ep93xx_defconfig
+m68k                       m5249evb_defconfig
+mips                        omega2p_defconfig
+arm                        magician_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a002-20210623
+x86_64               randconfig-a001-20210623
+x86_64               randconfig-a005-20210623
+x86_64               randconfig-a003-20210623
+x86_64               randconfig-a004-20210623
+x86_64               randconfig-a006-20210623
+i386                 randconfig-a001-20210622
+i386                 randconfig-a002-20210622
+i386                 randconfig-a003-20210622
+i386                 randconfig-a006-20210622
+i386                 randconfig-a005-20210622
+i386                 randconfig-a004-20210622
+x86_64               randconfig-a012-20210622
+x86_64               randconfig-a016-20210622
+x86_64               randconfig-a015-20210622
+x86_64               randconfig-a014-20210622
+x86_64               randconfig-a013-20210622
+x86_64               randconfig-a011-20210622
+i386                 randconfig-a011-20210622
+i386                 randconfig-a014-20210622
+i386                 randconfig-a013-20210622
+i386                 randconfig-a015-20210622
+i386                 randconfig-a012-20210622
+i386                 randconfig-a016-20210622
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-b001-20210623
+x86_64               randconfig-b001-20210622
+x86_64               randconfig-a002-20210622
+x86_64               randconfig-a001-20210622
+x86_64               randconfig-a005-20210622
+x86_64               randconfig-a003-20210622
+x86_64               randconfig-a004-20210622
+x86_64               randconfig-a006-20210622
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
