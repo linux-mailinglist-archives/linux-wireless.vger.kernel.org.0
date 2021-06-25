@@ -2,153 +2,230 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B9243B49B6
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jun 2021 22:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4822B3B4A53
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jun 2021 23:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbhFYUV7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Jun 2021 16:21:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42110 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229573AbhFYUV7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Jun 2021 16:21:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 967A561919;
-        Fri, 25 Jun 2021 20:19:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624652377;
-        bh=60yJ9X0J23Ulbw1ldigcC0FtdixMSauOJnR3E1FmNm4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=TrYJ69EAnOfXj4n7Cx90tDc8bN26tBNSVFxvXxbD9dRcJvZYKomG5ksHe8nEMqwlE
-         fcdb9G0iBzhxpYuykCVCTZHLoTOaFf6O8OAW0Z1feR53gc0LUZuz7FFbimn3KWLUMT
-         LiXJK8aQZN97GuGWwRHZ7hFcrkU4agJNYDlE5KyG9OT8mCwSJmcfSXGWo10wRhgcih
-         GtfPZPNRmRd9al8IJrYeENrVLOxVFeY2OpMJ2k+JwQXmiRgPIeK+yjrTGhHCzpmEzY
-         wejyc1cAY13q16ccczR0hvij9HvSEAjP7xmdguaqEK8tcOuKzUlkN0IiUA3LD7gCD4
-         VW6qiyakv2Pmw==
-Date:   Fri, 25 Jun 2021 15:19:36 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        vtolkm@gmail.com, Rob Herring <robh@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-pci@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] PCI: Disallow retraining link for Atheros chips on
- non-Gen1 PCIe bridges
-Message-ID: <20210625201936.GA3293099@bjorn-Precision-5520>
+        id S229975AbhFYV7E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Jun 2021 17:59:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44012 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229954AbhFYV7E (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Jun 2021 17:59:04 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44290C061574;
+        Fri, 25 Jun 2021 14:56:43 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lwtoW-00BaXN-Pf; Fri, 25 Jun 2021 23:56:40 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211-next 2021-06-25
+Date:   Fri, 25 Jun 2021 23:56:34 +0200
+Message-Id: <20210625215635.10743-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210621142855.gnqtj3ofovx7xryr@pali>
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 21, 2021 at 04:28:55PM +0200, Pali Rohár wrote:
-> On Wednesday 16 June 2021 16:38:19 Bjorn Helgaas wrote:
-> > On Wed, Jun 02, 2021 at 09:03:02PM +0200, Pali Rohár wrote:
-> > > On Wednesday 02 June 2021 10:55:59 Bjorn Helgaas wrote:
-> > > > On Wed, Jun 02, 2021 at 02:08:16PM +0200, Pali Rohár wrote:
-> > > > > On Tuesday 01 June 2021 19:00:36 Bjorn Helgaas wrote:
-> > > > 
-> > > > > > I wonder if this could be restructured as a generic quirk
-> > > > > > in quirks.c that simply set the bridge's TLS to 2.5 GT/s
-> > > > > > during enumeration.  Or would the retrain fail even in
-> > > > > > that case?
-> > > > > 
-> > > > > If I understand it correctly then PCIe link is already up
-> > > > > when kernel starts enumeration. So setting Bridge TLS to 2.5
-> > > > > GT/s does not change anything here.
-> > > > > 
-> > > > > Moreover it would have side effect that cards which are
-> > > > > already set to 5+ GT/s would be downgraded to 2.5 GT/s
-> > > > > during enumeration and for increasing speed would be needed
-> > > > > another round of "enumeration" to set a new TLS and retrain
-> > > > > link again. As TLS affects link only after link goes into
-> > > > > Recovery state.
-> > > > > 
-> > > > > So this would just complicate card enumeration and settings.
-> > > > 
-> > > > The current quirk complicates the ASPM code.  I'm hoping that
-> > > > if we set the bridge's Target Link Speed during enumeration,
-> > > > the link retrain will "just work" without complicating the
-> > > > ASPM code.
-> > > > 
-> > > > An enumeration quirk wouldn't have to set the bridge's TLS to
-> > > > 2.5 GT/s; the quirk would be attached to specific endpoint
-> > > > devices and could set the bridge's TLS to whatever the
-> > > > endpoint supports.
-> > > 
-> > > Now I see what you mean. Yes, I agree this is a good idea and
-> > > can simplify code. Quirk is not related to ASPM code and
-> > > basically has nothing with it, just I put it into aspm.c because
-> > > this is the only place where link retraining was activated.
-> > > 
-> > > But with this proposal there is one issue. Some kernel drivers
-> > > already overwrite PCI_EXP_LNKCTL2_TLS value. So if PCI
-> > > enumeration code set some value into PCI_EXP_LNKCTL2_TLS bits
-> > > then drivers can change it and once ASPM will try to retrain
-> > > link this may cause this issue.
-> > 
-> > I guess you mean the amdgpu, radeon, and hfi1 drivers.  They
-> > really shouldn't be mucking with that stuff anyway.  But they do
-> > and are unlikely to change because we don't have any good
-> > alternative.
-> 
-> Yea, these are examples of such drivers... Maybe it is a good idea
-> to ask those people why changing PCI_EXP_LNKCTL2_TLS is needed. As
-> these drivers are often derived from codebase of shared multisystem
-> drivers or from common documentation, it is possible that original
-> source has this code as a workaround or common pattern used in other
-> operating systems, not related to linux...
-> 
-> > One way around that would be to add some quirk code to
-> > pcie_capability_write_word().  Ugly, but we do have something sort
-> > of similar in pcie_capability_read_word() already.
-> 
-> Bjorn, do you really want such ugly hack in
-> pcie_capability_write_word?  It is common code used and called from
-> lot of places so it may affect whole system if in future somebody
-> changes it again...
+Hi,
 
-I don't know which is uglier, a quirk in pcie_capability_write_word()
-or a quirk in aspm.c that has nothing to do with ASPM.  They're both
-ugly :)
+Here's a bunch of new changes for -next. I meant to include
+another set of patches handling some 6 GHz regulatory stuff,
+but still had some questions so wanted to get this out now,
+so I don't miss the merge window with everything...
 
-FWIW, in pcie_capability_write_word() I would envision not a check for
-Atheros, but rather something like a "dev->max_target_link_speed" that
-could be set by an Atheros quirk.  It does get uglier if we want to
-restrict the bridge's link speed via a quirk, then unrestrict it when
-the endpoint is unplugged.
+Please pull and let me know if there's any problem.
 
-I know pcie_downgrade_link_to_gen1() only returns failure for corner
-cases that "should not occur," but I don't like the fact that it's
-possible to change Common Clock Configuration without doing the
-retrain.  That would leave us with incorrect ASPM exit latencies,
-which is really hard to debug.
+Thanks,
+johannes
 
-Here's the relevant text in the spec (PCIe r5.0):
 
-  7.5.3.6 Link Capabilities
 
-    L0s Exit Latency - This field indicates the L0s exit latency for
-    the given PCI Express Link. The value reported indicates the
-    length of time this Port requires to complete transition from L0s
-    to L0. ...
+The following changes since commit 38f75922a6905b010f597fc70dbb5db28398728e:
 
-    Note that exit latencies may be influenced by PCI Express
-    reference clock configuration depending upon whether a component
-    uses a common or separate reference clock.
+  Merge branch 'mptcp-C-flag-and-fixes' (2021-06-22 14:36:01 -0700)
 
-  7.5.3.6 Link Control
-    Common Clock Configuration - When Set, this bit indicates that
-    this component and the component at the opposite end of this Link
-    are operating with a distributed common reference clock. ...
+are available in the Git repository at:
 
-    After changing the value in this bit in both components on a Link,
-    software must trigger the Link to retrain by writing a 1b to the
-    Retrain Link bit of the Downstream Port.
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2021-06-25
+
+for you to fetch changes up to 2433647bc8d983a543e7d31b41ca2de1c7e2c198:
+
+  mac80211: Switch to a virtual time-based airtime scheduler (2021-06-23 18:12:00 +0200)
+
+----------------------------------------------------------------
+Lots of changes:
+ * aggregation handling improvements for some drivers
+ * hidden AP discovery on 6 GHz and other HE 6 GHz
+   improvements
+ * minstrel improvements for no-ack frames
+ * deferred rate control for TXQs to improve reaction
+   times
+ * virtual time-based airtime scheduler
+ * along with various little cleanups/fixups
+
+----------------------------------------------------------------
+Abinaya Kalaiselvan (1):
+      mac80211: fix NULL ptr dereference during mesh peer connection for non HE devices
+
+Avraham Stern (1):
+      nl80211/cfg80211: add BSS color to NDP ranging parameters
+
+Bassem Dawood (1):
+      mac80211: Enable power save after receiving NULL packet ACK
+
+Christophe JAILLET (1):
+      ieee80211: add the value for Category '6' in "rtw_ieee80211_category"
+
+Dan Carpenter (1):
+      cfg80211: clean up variable use in cfg80211_parse_colocated_ap()
+
+Emmanuel Grumbach (1):
+      cfg80211: expose the rfkill device to the low level driver
+
+Felix Fietkau (2):
+      mac80211: move A-MPDU session check from minstrel_ht to mac80211
+      mac80211: remove iwlwifi specific workaround that broke sta NDP tx
+
+Gustavo A. R. Silva (1):
+      wireless: wext-spy: Fix out-of-bounds warning
+
+Ilan Peer (2):
+      mac80211: Properly WARN on HW scan before restart
+      cfg80211: Support hidden AP discovery over 6GHz band
+
+Johannes Berg (23):
+      cfg80211: remove CFG80211_MAX_NUM_DIFFERENT_CHANNELS
+      mac80211: unify queueing SKB to iface
+      mac80211: refactor SKB queue processing a bit
+      mac80211: use sdata->skb_queue for TDLS
+      mac80211: simplify ieee80211_add_station()
+      mac80211: consider per-CPU statistics if present
+      mac80211: don't open-code LED manipulations
+      mac80211: allow SMPS requests only in client mode
+      mac80211: free skb in WEP error case
+      ieee80211: add defines for HE PHY cap byte 10
+      mac80211: rearrange struct txq_info for fewer holes
+      mac80211: improve AP disconnect message
+      cfg80211: trace more information in assoc trace event
+      mac80211: remove use of ieee80211_get_he_sta_cap()
+      cfg80211: remove ieee80211_get_he_sta_cap()
+      cfg80211: reg: improve bad regulatory warning
+      cfg80211: add cfg80211_any_usable_channels()
+      mac80211: conditionally advertise HE in probe requests
+      cfg80211: allow advertising vendor-specific capabilities
+      mac80211: add vendor-specific capabilities to assoc request
+      mac80211: always include HE 6GHz capability in probe request
+      mac80211: notify driver on mgd TX completion
+      mac80211: add HE 6 GHz capability only if supported
+
+Krishnanand Prabhu (1):
+      ieee80211: define timing measurement in extended capabilities IE
+
+Miri Korenblit (1):
+      cfg80211: set custom regdomain after wiphy registration
+
+Mordechay Goodstein (1):
+      mac80211: handle rate control (RC) racing with chanctx definition
+
+Nguyen Dinh Phi (1):
+      mac80211_hwsim: record stats in non-netlink path
+
+Philipp Borgers (4):
+      mac80211: minstrel_ht: ignore frame that was sent with noAck flag
+      mac80211: add ieee80211_is_tx_data helper function
+      mac80211: do not use low data rates for data frames with no ack flag
+      mac80211: refactor rc_no_data_or_no_ack_use_min function
+
+Ping-Ke Shih (3):
+      cfg80211: fix default HE tx bitrate mask in 2G band
+      mac80211: remove iwlwifi specific workaround NDPs of null_response
+      Revert "mac80211: HE STA disassoc due to QOS NULL not sent"
+
+Ryder Lee (3):
+      mac80211: call ieee80211_tx_h_rate_ctrl() when dequeue
+      mac80211: add rate control support for encap offload
+      mac80211: check per vif offload_flags in Tx path
+
+Shaokun Zhang (1):
+      mac80211: remove the repeated declaration
+
+Shaul Triebitz (2):
+      mac80211: move SMPS mode setting after ieee80211_prep_connection
+      mac80211: add to bss_conf if broadcast TWT is supported
+
+SosthÃ¨ne GuÃ©don (1):
+      nl80211: Fix typo pmsr->pmsr
+
+Toke HÃ¸iland-JÃ¸rgensen (1):
+      mac80211: Switch to a virtual time-based airtime scheduler
+
+Weilun Du (1):
+      mac80211_hwsim: add concurrent channels scanning support over virtio
+
+Wen Gong (1):
+      wireless: add check of field VHT Extended NSS BW Capable for 160/80+80 MHz setting
+
+Yang Li (2):
+      net: wireless: wext_compat.c: Remove redundant assignment to ps
+      mac80211: Remove redundant assignment to ret
+
+Zheng Yongjun (1):
+      mac80211: fix some spelling mistakes
+
+ drivers/net/wireless/ath/ath9k/main.c             |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c       |   3 +
+ drivers/net/wireless/mac80211_hwsim.c             |  55 ++-
+ drivers/net/wireless/realtek/rtw88/mac80211.c     |   2 +-
+ include/linux/ieee80211.h                         |  10 +-
+ include/net/cfg80211.h                            |  49 ++-
+ include/net/mac80211.h                            |  72 +++-
+ include/uapi/linux/nl80211.h                      |   9 +-
+ net/mac80211/cfg.c                                |  45 ++-
+ net/mac80211/chan.c                               | 108 +++--
+ net/mac80211/debugfs.c                            |  70 +++-
+ net/mac80211/debugfs_netdev.c                     |  33 +-
+ net/mac80211/debugfs_sta.c                        |  24 +-
+ net/mac80211/driver-ops.h                         |  26 +-
+ net/mac80211/he.c                                 |   8 +-
+ net/mac80211/ht.c                                 |  18 +-
+ net/mac80211/ieee80211_i.h                        | 194 ++++++++-
+ net/mac80211/iface.c                              | 234 ++++++-----
+ net/mac80211/led.c                                |  12 +-
+ net/mac80211/main.c                               |  32 +-
+ net/mac80211/mesh.h                               |   2 +-
+ net/mac80211/mesh_hwmp.c                          |   2 +-
+ net/mac80211/mesh_pathtbl.c                       |   2 +-
+ net/mac80211/mesh_plink.c                         |   2 +-
+ net/mac80211/mlme.c                               | 248 +++++-------
+ net/mac80211/rate.c                               |  13 +-
+ net/mac80211/rc80211_minstrel_ht.c                |  34 +-
+ net/mac80211/rx.c                                 |  54 ++-
+ net/mac80211/sta_info.c                           |  83 ++--
+ net/mac80211/sta_info.h                           |  11 +-
+ net/mac80211/status.c                             |  26 +-
+ net/mac80211/tdls.c                               |  28 +-
+ net/mac80211/trace.h                              |  33 +-
+ net/mac80211/tx.c                                 | 466 +++++++++++++++-------
+ net/mac80211/util.c                               |  35 +-
+ net/wireless/chan.c                               |  43 +-
+ net/wireless/core.c                               |  50 +--
+ net/wireless/core.h                               |   3 +-
+ net/wireless/nl80211.c                            |  22 +-
+ net/wireless/pmsr.c                               |  12 +
+ net/wireless/rdev-ops.h                           |  12 +-
+ net/wireless/reg.c                                |   5 +-
+ net/wireless/scan.c                               |  22 +-
+ net/wireless/trace.h                              |  36 +-
+ net/wireless/wext-compat.c                        |   8 +-
+ net/wireless/wext-spy.c                           |  14 +-
+ 47 files changed, 1492 insertions(+), 786 deletions(-)
+
