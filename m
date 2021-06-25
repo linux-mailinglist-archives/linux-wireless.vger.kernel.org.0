@@ -2,56 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE21B3B4847
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jun 2021 19:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6DE53B4910
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jun 2021 21:00:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbhFYRk0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 25 Jun 2021 13:40:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43622 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbhFYRkZ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 25 Jun 2021 13:40:25 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04304C061574
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Jun 2021 10:38:04 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lwpmD-00BVYl-Tm; Fri, 25 Jun 2021 19:38:02 +0200
-Message-ID: <a83bfa3f88909706fe9055be28e3664b7d482627.camel@sipsolutions.net>
-Subject: Re: iw: some stats are missing from nla_policy
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sergey Naumov <sknaumov@gmail.com>, linux-wireless@vger.kernel.org
-Date:   Fri, 25 Jun 2021 19:38:01 +0200
-In-Reply-To: <CAH3pVZOevaoOJ1SOOdiuzajM72WiuZYwURNQ8ky4FyUXNFmqHw@mail.gmail.com> (sfid-20210625_121104_830287_B318C078)
-References: <CAH3pVZOevaoOJ1SOOdiuzajM72WiuZYwURNQ8ky4FyUXNFmqHw@mail.gmail.com>
-         (sfid-20210625_121104_830287_B318C078)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S229776AbhFYTCc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 25 Jun 2021 15:02:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44390 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229759AbhFYTCb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 25 Jun 2021 15:02:31 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id B4EE861960;
+        Fri, 25 Jun 2021 19:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624647610;
+        bh=4bx5P918C+2n24hESgkhLgfn1hqIqIb900POO/Jamws=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=NTkBUmZofPJcHO8TCaiZtkGWqUqyXlUq9+6HCuRXSc3eYq9v6ppgwfYWllXjesL97
+         EQXJHqeBZK2tA3dggXj3IUulitwO1v6B05LRSJGV3FLiRvgLDeu6H1LzhcE+Yw3xpF
+         fsGpy9Fer76uEonlIT818jQ8CHpTUixiuKadK98sL9IW7ArJpnsPUx5RO88WlCP3XN
+         Fvp9IlpDsJ9T8mBvsX4PVua+Yt61Yl2DbNu32rWAXtur4URgA2343X/WIl4q23ut/n
+         WEVkijFSBdBVzis78f64cQKKT2v6vnV229b33XjUYUveAo3q7X5stl0P4zQQuoulI8
+         l5aU1SFsZJeMw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id A948C60A53;
+        Fri, 25 Jun 2021 19:00:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-drivers-next-2021-06-25
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162464761068.5473.10028410822181008168.git-patchwork-notify@kernel.org>
+Date:   Fri, 25 Jun 2021 19:00:10 +0000
+References: <20210625121705.57905C433F1@smtp.codeaurora.org>
+In-Reply-To: <20210625121705.57905C433F1@smtp.codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Sergey,
+Hello:
+
+This pull request was applied to netdev/net-next.git (refs/heads/master):
+
+On Fri, 25 Jun 2021 12:17:05 +0000 (UTC) you wrote:
+> Hi,
 > 
-> I noticed that not all parameters are added to nla_policy. For
-> example, NL80211_STA_INFO_CONNECTED_TIME
-> (https://git.kernel.org/pub/scm/linux/kernel/git/jberg/iw.git/commit/?id=087d778f6f82346debfd275ddbb8f646f9a1a167)
-> is parsed, but absent from stats_policy.
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
 > 
-> The question is whether it is done accidentally or deliberately? Is
-> there some hidden logic not to add attributes to policy? And then why
-> to use policy at all if some attributes are not checked anyway?
+> Kalle
+> 
+> [...]
 
-No, there's no particular reason or policy (pun intended) to this ...
+Here is the summary with links:
+  - pull-request: wireless-drivers-next-2021-06-25
+    https://git.kernel.org/netdev/net-next/c/4e3db44a242a
 
-It's kind of just being a bit lazy, and we have to trust the kernel to
-not kill the process anyway, in a sense. But I think the right way still
-would be to have a policy so we can detect errors.
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-johannes
 
