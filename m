@@ -2,81 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2382B3B4DD9
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Jun 2021 11:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E18583B4E2D
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Jun 2021 12:42:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbhFZJqj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Jun 2021 05:46:39 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:29477 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229630AbhFZJqi (ORCPT
+        id S229850AbhFZKoo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Jun 2021 06:44:44 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:12031 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229586AbhFZKoo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Jun 2021 05:46:38 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1624700656; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=cSDl8dR93NgooM2/ky6hGtUFG2ZSdKncVi+7WtxljEM=; b=S6761zFURdo78d9qvqBb27BgjheOk0bb7B5djm/IiR07+nl+lsQ6jVhW2AeTqT3R9fmx4OlI
- SbRLYWgKzbCeurNW91LQgkFHe4phZaJJMHY6bLIU5d7hgUlSgcCRdS7O8QTEuQTbUQBvW6eg
- g0ofCIBVevKRG8e6MslpRQfEyJQ=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60d6f6ea7b2963a2823e3bde (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 26 Jun 2021 09:44:10
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E26F2C4323A; Sat, 26 Jun 2021 09:44:09 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1B83CC433F1;
-        Sat, 26 Jun 2021 09:44:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1B83CC433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mt76: mt7915: fix info leak in mt7915_mcu_set_pre_cal()
-References: <YNXvLvrvllpXgCIn@mwanda>
-Date:   Sat, 26 Jun 2021 12:43:59 +0300
-In-Reply-To: <YNXvLvrvllpXgCIn@mwanda> (Dan Carpenter's message of "Fri, 25
-        Jun 2021 17:58:54 +0300")
-Message-ID: <874kdlj6zk.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Sat, 26 Jun 2021 06:44:44 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4GBr2q6CbRzZjyt;
+        Sat, 26 Jun 2021 18:39:15 +0800 (CST)
+Received: from dggema769-chm.china.huawei.com (10.1.198.211) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Sat, 26 Jun 2021 18:42:19 +0800
+Received: from localhost (10.174.179.215) by dggema769-chm.china.huawei.com
+ (10.1.198.211) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Sat, 26
+ Jun 2021 18:42:18 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <kuba@kernel.org>, <periyasa@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] mac80211: Reject zero MAC address in sta_info_insert_check()
+Date:   Sat, 26 Jun 2021 18:38:56 +0800
+Message-ID: <20210626103856.19816-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggema769-chm.china.huawei.com (10.1.198.211)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+As commit 52dba8d7d5ab ("mac80211: reject zero MAC address in add station")
+said, we don't consider all-zeroes to be a valid MAC address in most places,
+so also reject it here.
 
-> Zero out all the unused members of "req" so that we don't disclose
-> stack information.
->
-> Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Reported-by: syzbot+ef4ca92d9d6f5ba2f880@syzkaller.appspotmail.com
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ net/mac80211/sta_info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Felix, should I take this directly to wireless-drivers? If yes, please
-ack.
-
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index f2fb69da9b6e..3a6887fc9160 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -547,7 +547,7 @@ static int sta_info_insert_check(struct sta_info *sta)
+ 		return -ENETDOWN;
+ 
+ 	if (WARN_ON(ether_addr_equal(sta->sta.addr, sdata->vif.addr) ||
+-		    is_multicast_ether_addr(sta->sta.addr)))
++		    is_valid_ether_addr(sta->sta.addr)))
+ 		return -EINVAL;
+ 
+ 	/* The RCU read lock is required by rhashtable due to
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.17.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
