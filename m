@@ -2,171 +2,257 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8B4C3B4F09
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Jun 2021 16:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4193C3B4F31
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Jun 2021 17:25:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229946AbhFZOkm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Jun 2021 10:40:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42078 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229518AbhFZOkl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Jun 2021 10:40:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EBB3961C2F;
-        Sat, 26 Jun 2021 14:38:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624718299;
-        bh=XBNV7PAmGF76msYV03s+Dw/NGShCLS8n02pNLLWn3XM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EvLdY2C70M3b5+9u5iHBLAlibexRey1MUWAeDjKJO2e3jyjMknlAnb0HyFUZpwRsK
-         ovKXhbt813xNwUlVmpYPxDk+/cArWglM5CRT/jIakMiOpklKs7CV+EqCI80mWb2w1T
-         +bmZSFRy8Nuj/9FfSuPXrB4QBi4TJSp5A7PZCzj7vffGBUTr8w7l67IDBFVVsatwMX
-         3gSt8bB+YIiTPNZ7alRt8HShkhiiwH1OqKA6jT0o2lRd3BOhFMC5r4fvSUGOQbofca
-         0y0BWOcUt3hL97Og5C2fs737Jl8Sie6kKGsb770tj7gvu7zJAW/rNOhk+0uw3v+zja
-         CVbcI1zcR/wzQ==
-Received: by pali.im (Postfix)
-        id 2D06A264; Sat, 26 Jun 2021 16:38:16 +0200 (CEST)
-Date:   Sat, 26 Jun 2021 16:38:16 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        vtolkm@gmail.com, Rob Herring <robh@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-pci@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] PCI: Disallow retraining link for Atheros chips on
- non-Gen1 PCIe bridges
-Message-ID: <20210626143816.2p4qwwzuxfeys2y2@pali>
-References: <20210621142855.gnqtj3ofovx7xryr@pali>
- <20210625201936.GA3293099@bjorn-Precision-5520>
+        id S230046AbhFZP1i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Jun 2021 11:27:38 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:49222 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229946AbhFZP1h (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 26 Jun 2021 11:27:37 -0400
+Received: from localhost.localdomain ([86.243.172.93])
+        by mwinf5d78 with ME
+        id MrR62500921Fzsu03rR6lY; Sat, 26 Jun 2021 17:25:11 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 26 Jun 2021 17:25:11 +0200
+X-ME-IP: 86.243.172.93
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        jirislaby@kernel.org, mickflemm@gmail.com, mcgrof@kernel.org
+Cc:     ath9k-devel@qca.qualcomm.com, ath10k@lists.infradead.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ath: switch from 'pci_' to 'dma_' API
+Date:   Sat, 26 Jun 2021 17:25:04 +0200
+Message-Id: <9150bd6cde9ad592aff8ee3ad94dffa90b004e89.1624720959.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210625201936.GA3293099@bjorn-Precision-5520>
-User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday 25 June 2021 15:19:36 Bjorn Helgaas wrote:
-> On Mon, Jun 21, 2021 at 04:28:55PM +0200, Pali Rohár wrote:
-> > On Wednesday 16 June 2021 16:38:19 Bjorn Helgaas wrote:
-> > > On Wed, Jun 02, 2021 at 09:03:02PM +0200, Pali Rohár wrote:
-> > > > On Wednesday 02 June 2021 10:55:59 Bjorn Helgaas wrote:
-> > > > > On Wed, Jun 02, 2021 at 02:08:16PM +0200, Pali Rohár wrote:
-> > > > > > On Tuesday 01 June 2021 19:00:36 Bjorn Helgaas wrote:
-> > > > > 
-> > > > > > > I wonder if this could be restructured as a generic quirk
-> > > > > > > in quirks.c that simply set the bridge's TLS to 2.5 GT/s
-> > > > > > > during enumeration.  Or would the retrain fail even in
-> > > > > > > that case?
-> > > > > > 
-> > > > > > If I understand it correctly then PCIe link is already up
-> > > > > > when kernel starts enumeration. So setting Bridge TLS to 2.5
-> > > > > > GT/s does not change anything here.
-> > > > > > 
-> > > > > > Moreover it would have side effect that cards which are
-> > > > > > already set to 5+ GT/s would be downgraded to 2.5 GT/s
-> > > > > > during enumeration and for increasing speed would be needed
-> > > > > > another round of "enumeration" to set a new TLS and retrain
-> > > > > > link again. As TLS affects link only after link goes into
-> > > > > > Recovery state.
-> > > > > > 
-> > > > > > So this would just complicate card enumeration and settings.
-> > > > > 
-> > > > > The current quirk complicates the ASPM code.  I'm hoping that
-> > > > > if we set the bridge's Target Link Speed during enumeration,
-> > > > > the link retrain will "just work" without complicating the
-> > > > > ASPM code.
-> > > > > 
-> > > > > An enumeration quirk wouldn't have to set the bridge's TLS to
-> > > > > 2.5 GT/s; the quirk would be attached to specific endpoint
-> > > > > devices and could set the bridge's TLS to whatever the
-> > > > > endpoint supports.
-> > > > 
-> > > > Now I see what you mean. Yes, I agree this is a good idea and
-> > > > can simplify code. Quirk is not related to ASPM code and
-> > > > basically has nothing with it, just I put it into aspm.c because
-> > > > this is the only place where link retraining was activated.
-> > > > 
-> > > > But with this proposal there is one issue. Some kernel drivers
-> > > > already overwrite PCI_EXP_LNKCTL2_TLS value. So if PCI
-> > > > enumeration code set some value into PCI_EXP_LNKCTL2_TLS bits
-> > > > then drivers can change it and once ASPM will try to retrain
-> > > > link this may cause this issue.
-> > > 
-> > > I guess you mean the amdgpu, radeon, and hfi1 drivers.  They
-> > > really shouldn't be mucking with that stuff anyway.  But they do
-> > > and are unlikely to change because we don't have any good
-> > > alternative.
-> > 
-> > Yea, these are examples of such drivers... Maybe it is a good idea
-> > to ask those people why changing PCI_EXP_LNKCTL2_TLS is needed. As
-> > these drivers are often derived from codebase of shared multisystem
-> > drivers or from common documentation, it is possible that original
-> > source has this code as a workaround or common pattern used in other
-> > operating systems, not related to linux...
-> > 
-> > > One way around that would be to add some quirk code to
-> > > pcie_capability_write_word().  Ugly, but we do have something sort
-> > > of similar in pcie_capability_read_word() already.
-> > 
-> > Bjorn, do you really want such ugly hack in
-> > pcie_capability_write_word?  It is common code used and called from
-> > lot of places so it may affect whole system if in future somebody
-> > changes it again...
-> 
-> I don't know which is uglier, a quirk in pcie_capability_write_word()
-> or a quirk in aspm.c that has nothing to do with ASPM.  They're both
-> ugly :)
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-Ok :-)
+The patch has been generated with the coccinelle script below.
 
-> FWIW, in pcie_capability_write_word() I would envision not a check for
-> Atheros, but rather something like a "dev->max_target_link_speed" that
-> could be set by an Atheros quirk.  It does get uglier if we want to
-> restrict the bridge's link speed via a quirk, then unrestrict it when
-> the endpoint is unplugged.
-> 
-> I know pcie_downgrade_link_to_gen1() only returns failure for corner
-> cases that "should not occur,"
+While at it, some 'dma_set_mask()/dma_set_coherent_mask()' have been
+updated to a much less verbose 'dma_set_mask_and_coherent()'.
 
-It is not only corner case. It happens _always_ with at least two
-pci drivers.
+@@ @@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
 
-As I wrote in other email due to this issue, some quirk code which
-allows / disallows link retraining is required in aspm.c file.
+@@ @@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
 
-> but I don't like the fact that it's
-> possible to change Common Clock Configuration without doing the
-> retrain.  That would leave us with incorrect ASPM exit latencies,
-> which is really hard to debug.
+@@ @@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
 
-I see... Any idea how to solve this issue?
+@@ @@
+-    PCI_DMA_NONE
++    DMA_NONE
 
-> Here's the relevant text in the spec (PCIe r5.0):
-> 
->   7.5.3.6 Link Capabilities
-> 
->     L0s Exit Latency - This field indicates the L0s exit latency for
->     the given PCI Express Link. The value reported indicates the
->     length of time this Port requires to complete transition from L0s
->     to L0. ...
-> 
->     Note that exit latencies may be influenced by PCI Express
->     reference clock configuration depending upon whether a component
->     uses a common or separate reference clock.
-> 
->   7.5.3.6 Link Control
->     Common Clock Configuration - When Set, this bit indicates that
->     this component and the component at the opposite end of this Link
->     are operating with a distributed common reference clock. ...
-> 
->     After changing the value in this bit in both components on a Link,
->     software must trigger the Link to retrain by writing a 1b to the
->     Retrain Link bit of the Downstream Port.
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/wireless/ath/ath10k/pci.c |  9 +--------
+ drivers/net/wireless/ath/ath11k/pci.c | 10 ++--------
+ drivers/net/wireless/ath/ath5k/pci.c  |  2 +-
+ drivers/net/wireless/ath/ath9k/pci.c  |  8 +-------
+ 4 files changed, 5 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 71878ab35b93..4d4e2f91e15c 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -3393,19 +3393,12 @@ static int ath10k_pci_claim(struct ath10k *ar)
+ 	}
+ 
+ 	/* Target expects 32 bit DMA. Enforce it. */
+-	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (ret) {
+ 		ath10k_err(ar, "failed to set dma mask to 32-bit: %d\n", ret);
+ 		goto err_region;
+ 	}
+ 
+-	ret = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32));
+-	if (ret) {
+-		ath10k_err(ar, "failed to set consistent dma mask to 32-bit: %d\n",
+-			   ret);
+-		goto err_region;
+-	}
+-
+ 	pci_set_master(pdev);
+ 
+ 	/* Arrange for access to Target SoC registers. */
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index 646ad79f309c..5abb38cc3b55 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -933,20 +933,14 @@ static int ath11k_pci_claim(struct ath11k_pci *ab_pci, struct pci_dev *pdev)
+ 		goto disable_device;
+ 	}
+ 
+-	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(ATH11K_PCI_DMA_MASK));
++	ret = dma_set_mask_and_coherent(&pdev->dev,
++					DMA_BIT_MASK(ATH11K_PCI_DMA_MASK));
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to set pci dma mask to %d: %d\n",
+ 			   ATH11K_PCI_DMA_MASK, ret);
+ 		goto release_region;
+ 	}
+ 
+-	ret = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(ATH11K_PCI_DMA_MASK));
+-	if (ret) {
+-		ath11k_err(ab, "failed to set pci consistent dma mask to %d: %d\n",
+-			   ATH11K_PCI_DMA_MASK, ret);
+-		goto release_region;
+-	}
+-
+ 	pci_set_master(pdev);
+ 
+ 	ab->mem_len = pci_resource_len(pdev, ATH11K_PCI_BAR_NUM);
+diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
+index 43b4ae86e5fb..86b8cb975b1a 100644
+--- a/drivers/net/wireless/ath/ath5k/pci.c
++++ b/drivers/net/wireless/ath/ath5k/pci.c
+@@ -191,7 +191,7 @@ ath5k_pci_probe(struct pci_dev *pdev,
+ 	}
+ 
+ 	/* XXX 32-bit addressing only */
+-	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "32-bit DMA not available\n");
+ 		goto err_dis;
+diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
+index cff9af3af38d..a074e23013c5 100644
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
+@@ -896,18 +896,12 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (pcim_enable_device(pdev))
+ 		return -EIO;
+ 
+-	ret =  pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (ret) {
+ 		pr_err("32-bit DMA not available\n");
+ 		return ret;
+ 	}
+ 
+-	ret = pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32));
+-	if (ret) {
+-		pr_err("32-bit DMA consistent DMA enable failed\n");
+-		return ret;
+-	}
+-
+ 	/*
+ 	 * Cache line size is used to size and align various
+ 	 * structures used to communicate with the hardware.
+-- 
+2.30.2
+
