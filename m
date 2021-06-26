@@ -2,70 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7F03B4E88
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Jun 2021 15:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492FF3B4EFF
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Jun 2021 16:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229952AbhFZNGf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 26 Jun 2021 09:06:35 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:5441 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229796AbhFZNGf (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 26 Jun 2021 09:06:35 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GBvBC5nK8z74Px;
-        Sat, 26 Jun 2021 21:00:51 +0800 (CST)
-Received: from dggema769-chm.china.huawei.com (10.1.198.211) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Sat, 26 Jun 2021 21:04:10 +0800
-Received: from localhost (10.174.179.215) by dggema769-chm.china.huawei.com
- (10.1.198.211) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Sat, 26
- Jun 2021 21:04:09 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <kuba@kernel.org>, <periyasa@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH v2] mac80211: Reject zero MAC address in sta_info_insert_check()
-Date:   Sat, 26 Jun 2021 21:03:34 +0800
-Message-ID: <20210626130334.13624-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S230031AbhFZOdU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 26 Jun 2021 10:33:20 -0400
+Received: from mout.gmx.net ([212.227.15.15]:53779 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229518AbhFZOdU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 26 Jun 2021 10:33:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1624717836;
+        bh=q1xyXqBOrhwD5gZND37RRmGI/O0LWaj0MVp1LAHNDn4=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=RjDUK6/aVKCvYOhjUFv7aMo1lVWjjkl5D/8hsweHavk+Sy7yjn6Uc/vUvsW985/Us
+         CCcZmOgChG0cUF3wlyhM5SVDwymVLAWSIlLkX9ZuSskqhmgvo7Ct2tEo79Mui0gtkm
+         akX5OsLabmN95G/TL2W8QATq+qHchvt4Y3pjCq0o=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ubuntu ([83.52.228.41]) by mail.gmx.net (mrgmx004
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MTAFh-1loedI3rVn-00Ua6O; Sat, 26
+ Jun 2021 16:30:36 +0200
+Date:   Sat, 26 Jun 2021 16:30:10 +0200
+From:   John Wood <john.wood@gmx.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Cc:     John Wood <john.wood@gmx.com>, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mt76/mt7915: Fix unsigned compared against zero
+Message-ID: <20210626143010.GA2936@ubuntu>
+References: <20210612143505.7637-1-john.wood@gmx.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggema769-chm.china.huawei.com (10.1.198.211)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210612143505.7637-1-john.wood@gmx.com>
+X-Provags-ID: V03:K1:tQ2f+TzIa4cFuYvRr3c0vPwUbF+5UbFFSq+mpcgXQdaJ2U//YOI
+ QOyCOm+E6AURnA+9aCQ31jRi8UiTJl8lE1yyJjyZhckYBRACLhoKYME+3IQn9CCh+ek0WVH
+ NSTlQAUrpM90MAeFRndo8hdW8bXh5pS2UXh0CXaE64VlrKCvoj8a9XhB1MAVT1h70Bl8p1R
+ Va3BYV6ljtqROkiyeT9IQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:d10Rb6Q5FAg=:kA+y8IL3xQ9/OlFRJewcGQ
+ p7/uCmxRHhAaqwnaSZqFKwWckGdZJY51F+MwAiaXdbR/OQ4q+X6Xyoha1JJCgmoLG3AJUqUsU
+ o2/Io9kSfF19KQ3XGyWqioK3iA9orJNmrmePk+/c7hPSz42JoW+Z+dQOnh4iR/d3zOeN3SwQE
+ inrZjvAFA3jr5g9CbK+JzDbhfw9YrxGhfmeYABPMiIq6aAB453dwF8jh0fUIiaSzUDm3xyxZo
+ ExgyBLWekuyPy+gYSV5uRXgk3DckvDVrjvphtev5I/EMn4jOd9T/paCfwbIy2Gais9qYApNGQ
+ +TJ8tCLtGznnw7iYoBKjbztv2CLv/6w97/s6p8c2FJX1YeJjc/fx1lcfxuyGuJUjlIS0ARNpJ
+ DKR433pFX3bUcgSXi8UA8nUZoPDGxjFEGFts0MSIDgY7lPvq6RGwLRUvxkIRmQajzHz1H9CIv
+ HX645b1SxR0FC0Pny3wZN0CWYRfnxjXt6s6PaPJCmnAx3D8GnAQcwm0fGaFsvZiFhs1sYrcV5
+ yKoInr3F1Etu7EY2tBYKV6CmD+IdHrG1lTUY1IS6qmiiaG79nuyOVBeL66wAPnTyAzJ5wDgDY
+ fXvHY0b0NNQg55CHrtZ9aCOGQASkM7IPJp5Ye/em+RAVgB3wzlHfN30kqlp6N6zxdeNdhqJYB
+ Rar9hOYq1cK7VVGs+2p0p0b8NOyIi5PlJT4gxOJeraxHleXzUZZ58Fj0e5LADoXs3F+YG7QIQ
+ axxKz89rAgEB+cRQgRpXPJS/Ir+dG2sQZT3O2HxHItfzwehqtAagw95QFd6J/Vt918NQbOQRZ
+ PUpB2cs594tUX4mv7Jr9BuYCeKHtw2TOICM/+3t3Qu0lykswrmZTD3ffgtMX1rNd41yTVkdNK
+ ldiHZOPLHuEzeriwhxNQqoe8I+CwQVsea3O+PL6j4f4mj1xdIJgkhkkw38Un1ksF8sf0j0t1W
+ XgxIuvS/czpvBeiI4BQy3Njbuu9nGvPVxuqLvhFjQsXNWFiErxYCID6Ima5DJuAKQQCmPW2yL
+ FIdla+obJH26Iep49T/huw3wJpNwbsdTpb4UUfrOkzj9ES3sxJkeExD+HE8XVIRUAM5jlg3EN
+ rM/elr9C8s+mU2nnzgCeZM0oFltmMc1FlIP
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-As commit 52dba8d7d5ab ("mac80211: reject zero MAC address in add station")
-said, we don't consider all-zeroes to be a valid MAC address in most places,
-so also reject it here.
+On Sat, Jun 12, 2021 at 04:35:05PM +0200, John Wood wrote:
+> The mt7915_dpd_freq_idx() function can return a negative value but this
+> value is assigned to an unsigned variable named idx. Then, the code
+> tests if this variable is less than zero. This can never happen with an
+> unsigned type.
+>
+> So, change the idx type to a signed one.
+>
+> Addresses-Coverity-ID: 1484753 ("Unsigned compared against 0")
+> Fixes: 495184ac91bb8 ("mt76: mt7915: add support for applying pre-calibr=
+ation data")
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
-v2: Add missing ! operator
+Has anyone had time to review this patch?. Any comment on this?
 
- net/mac80211/sta_info.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index f2fb69da9b6e..3a6887fc9160 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -547,7 +547,7 @@ static int sta_info_insert_check(struct sta_info *sta)
- 		return -ENETDOWN;
- 
- 	if (WARN_ON(ether_addr_equal(sta->sta.addr, sdata->vif.addr) ||
--		    is_multicast_ether_addr(sta->sta.addr)))
-+		    !is_valid_ether_addr(sta->sta.addr)))
- 		return -EINVAL;
- 
- 	/* The RCU read lock is required by rhashtable due to
--- 
-2.17.1
-
+Thanks,
+John Wood
