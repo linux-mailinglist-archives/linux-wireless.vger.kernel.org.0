@@ -2,112 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C7E3B65E6
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 17:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F3AE3B6776
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 19:17:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234673AbhF1Pmv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Jun 2021 11:42:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50714 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233451AbhF1Pmh (ORCPT
+        id S232868AbhF1RTZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Jun 2021 13:19:25 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:41100 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232601AbhF1RTY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Jun 2021 11:42:37 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCDBC0D941D
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Jun 2021 07:54:54 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id a18so10909787lfs.10
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Jun 2021 07:54:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=oTbSUbM1268hTodnYEfrSQ4SI+5Cv+kn+Rphaaes6Oc=;
-        b=syqIAip6E0BSc7B0RdeEki9AoDvvCk7lzUBg0lhzzyG4vg2ICNgbTZfeo1pwX6ijKq
-         dmGRcu/+s70Y6k+L5j4tw8Y9QYNI0Apb2IsgPD1FDzAG4+n5HmaESH6eoLype5hdMAHQ
-         k7ZTaTl2L5OIeTl7Gg8069PaZj/LYNCBAtrr/9J4f5TTqYloxmV9WuTF3XCFQpdl+rf8
-         FA+y7TKlfOjniUwjqMGbo8uJ6G1wkcxjcFn/XCCXn8FH1Vpe85PebxCxouDva8urlJ1w
-         O7tkgJfJLexGMVD66U53I+y6Y6corGwiWYBDSnPRukjs3Wps38v3ots8GKMuj7Z+gBeT
-         wPag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=oTbSUbM1268hTodnYEfrSQ4SI+5Cv+kn+Rphaaes6Oc=;
-        b=KDHLEqdcZruL33soTFPV/XXJgrdYzr8f6cU2G/zy5OKEKZ3Z52UaIXOmCKGPEzYTLm
-         6loruwNE15k0Ihv0merxUUouT79ItkXfUUwgyx90CbFF+/tp0VTktfPqNUGB8uDgXgbC
-         QjbwLQc9n7K9Z1CGiDwl3cGqxcwtP6Yw6Z+5PxG1YeZoYRK/8NZfZFZRkEyqMu8lhb2G
-         /isrviJu1dxdAibmOJGZRqicDoP9sSN2Hlo2z0sSC2vRvgiN8gO/dkrQrcej77LUjT8v
-         3a4jnNt2MU3PC2QmL+lud/A/5cBgB8Th7lNTGv4ZvqHVe4zBgSQXBxuzAgrKi0LDkYm7
-         PgcA==
-X-Gm-Message-State: AOAM533XOWiBMisIGyzOllnguD5K/ifuIv3b5CwxNuzDKOdr6dP7k9cT
-        SQGj0BdYbq8lbtWgrE8NIRQ=
-X-Google-Smtp-Source: ABdhPJwLEtV3ABLea52sfNU/dhIdbp/38NR2pCl2OPlO2G2/0ARj1RAIsJBMSk7nKmo0jUX7hmf7Vg==
-X-Received: by 2002:a05:6512:ad2:: with SMTP id n18mr16625542lfu.543.1624892093285;
-        Mon, 28 Jun 2021 07:54:53 -0700 (PDT)
-Received: from localhost ([62.176.30.88])
-        by smtp.gmail.com with ESMTPSA id y17sm1341296lfg.71.2021.06.28.07.54.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jun 2021 07:54:52 -0700 (PDT)
-From:   Mikhail Rudenko <mike.rudenko@gmail.com>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Mikhail Rudenko <mike.rudenko@gmail.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH v2] brcmfmac: use separate firmware for 43430 revision 2
-Date:   Mon, 28 Jun 2021 17:54:12 +0300
-Message-Id: <20210628145412.26046-1-mike.rudenko@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210509233010.2477973-1-mike.rudenko@gmail.com>
-References: <20210509233010.2477973-1-mike.rudenko@gmail.com>
+        Mon, 28 Jun 2021 13:19:24 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1624900619; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=0HxhNAhRliCFF+rvuk/wLzlKMmnUBHAvobMK4tGIuJc=;
+ b=gkuqq9ByWCiTjidd05z3a6RTAYXPtJLEekcusLqMBW8SbxQAxO+OIsSOeOJRkWt4kHpcEFWS
+ 9z9bxo6mi1G7lnAjwFvm65x36ybrEDMRWaa2fjbay+d8oQ+0iphkzc6l4WRH5poIjxm0wxKF
+ Rg0yTx/yP7n9gFQsZ2ElUv25y7A=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 60da03ed4ca9face349832a3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 28 Jun 2021 17:16:29
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8C469C433D3; Mon, 28 Jun 2021 17:16:28 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DC195C433F1;
+        Mon, 28 Jun 2021 17:16:26 +0000 (UTC)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
+Date:   Mon, 28 Jun 2021 10:16:26 -0700
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>
+Subject: Re: [PATCH v10 2/4] mac80211: multiple bssid support in interface
+ handling
+In-Reply-To: <6dc09b7dcfef37a703e95e264e6ab64738560160.camel@sipsolutions.net>
+References: <20210426190534.12667-1-alokad@codeaurora.org>
+ <20210426190534.12667-3-alokad@codeaurora.org>
+ <6dc09b7dcfef37a703e95e264e6ab64738560160.camel@sipsolutions.net>
+Message-ID: <9451f0db49f603d7e9a00d172ab341e2@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A separate firmware is needed for Broadcom 43430 revision 2.  This
-chip can be found in e.g. certain revisions of Ampak AP6212 wireless
-IC. Original firmware file from IC vendor is named
-'fw_bcm43436b0.bin', but brcmfmac and also btbcm drivers report chip
-id 43430, so requested firmware file name is
-'brcmfmac43430b0-sdio.bin' in line with other 43430 revisions.
+On 2021-06-23 08:57, Johannes Berg wrote:
+> On Mon, 2021-04-26 at 12:05 -0700, Aloka Dixit wrote:
+>> 
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
----
-Changes in v2:
-- use 43430B0 firmware for all 43430 revisions above 1
-- add Reviewed-by tag
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+> Hm wait, didn't I see the same code in cfg80211 - maybe cfg80211 should
+> just pass the pointer?
+>> 
+>>  static int ieee80211_del_iface(struct wiphy *wiphy, struct 
+>> wireless_dev *wdev)
+>>  {
+>> +	struct ieee80211_sub_if_data *sdata = 
+>> IEEE80211_WDEV_TO_SUB_IF(wdev);
+>> +	struct ieee80211_local *local;
+>> +	struct ieee80211_vif *vif;
+>> +
+>> +	if (!sdata)
+>> +		return 0;
+>> +
+>> +	local = sdata->local;
+>> +	vif = &sdata->vif;
+>> +	if (vif->type == NL80211_IFTYPE_AP &&
+>> +	    ieee80211_hw_check(&local->hw, SUPPORTS_MBSSID_AP)) {
+>> +		if (vif->mbssid.flags & IEEE80211_VIF_MBSSID_TX) {
+>> +			struct ieee80211_sub_if_data *child, *tmpsdata;
+>> +
+>> +			wiphy_unlock(local->hw.wiphy);
+>> +			mutex_lock(&local->iflist_mtx);
+> 
+> I really don't think you can drop the locking like that in the middle 
+> of
+> something. That's almost always a recipe for disaster.
+> 
+>> @@ -375,6 +375,18 @@ static void ieee80211_do_stop(struct 
+>> ieee80211_sub_if_data *sdata, bool going_do
+>>  	struct cfg80211_chan_def chandef;
+>>  	bool cancel_scan;
+>>  	struct cfg80211_nan_func *func;
+>> +	struct ieee80211_sub_if_data *parent;
+>> +
+>> +	if (sdata->vif.type == NL80211_IFTYPE_AP &&
+>> +	    ieee80211_hw_check(&local->hw, SUPPORTS_MBSSID_AP) &&
+>> +	    sdata->vif.mbssid.flags & IEEE80211_VIF_MBSSID_NON_TX) {
+>> +		parent = vif_to_sdata(sdata->vif.mbssid.parent);
+>> +		if (parent && ieee80211_sdata_running(parent)) {
+>> +			wiphy_unlock(local->hw.wiphy);
+>> +			dev_close(parent->wdev.netdev);
+>> +			wiphy_lock(local->hw.wiphy);
+> 
+> Same here.
+> 
+> johannes
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 16ed325795a8..97fda7e0be7c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -617,6 +617,7 @@ BRCMF_FW_DEF(4339, "brcmfmac4339-sdio");
- BRCMF_FW_DEF(43430A0, "brcmfmac43430a0-sdio");
- /* Note the names are not postfixed with a1 for backward compatibility */
- BRCMF_FW_DEF(43430A1, "brcmfmac43430-sdio");
-+BRCMF_FW_DEF(43430B0, "brcmfmac43430b0-sdio");
- BRCMF_FW_DEF(43455, "brcmfmac43455-sdio");
- BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
- BRCMF_FW_DEF(4354, "brcmfmac4354-sdio");
-@@ -643,7 +644,8 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
- 	BRCMF_FW_ENTRY(BRCM_CC_43362_CHIP_ID, 0xFFFFFFFE, 43362),
- 	BRCMF_FW_ENTRY(BRCM_CC_4339_CHIP_ID, 0xFFFFFFFF, 4339),
- 	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000001, 43430A0),
--	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0xFFFFFFFE, 43430A1),
-+	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000002, 43430A1),
-+	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0xFFFFFFFC, 43430B0),
- 	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0x00000200, 43456),
- 	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0xFFFFFDC0, 43455),
- 	BRCMF_FW_ENTRY(BRCM_CC_4354_CHIP_ID, 0xFFFFFFFF, 4354),
-@@ -4617,4 +4619,3 @@ int brcmf_sdio_sleep(struct brcmf_sdio *bus, bool sleep)
+Hi Johannes,
 
- 	return ret;
- }
--
---
-2.32.0
+Thanks for the comments, will go through all, but need your help with 
+this particular one -
+
+I'm not able to come up with a different solution which does not cause a 
+deadlock by continuing to hold wiphy_lock() as we discussed last time 
+that dev_close() will in turn call into cfg80211.
+
+You had suggested looking at dev_close() for VLAN, that code also 
+doesn't lock wiphy_lock hence I did same here but locked 
+'local->iflist_mtx'. Dropping both won't be good for sure.
+
+Can you please suggest a better way? I'm really not able to come up with 
+one.
+
+Thanks.
