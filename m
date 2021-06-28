@@ -2,94 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44EAA3B68F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 21:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BD5C3B69CC
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 22:40:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236293AbhF1TUJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Jun 2021 15:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44610 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235667AbhF1TUJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Jun 2021 15:20:09 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E46C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 28 Jun 2021 12:17:42 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1lxwlI-00D0zx-21; Mon, 28 Jun 2021 21:17:40 +0200
-Message-ID: <d21f4ecd99f46cbc2b0229309a4627c2a338b87b.camel@sipsolutions.net>
-Subject: Re: [PATCH v10 2/4] mac80211: multiple bssid support in interface
- handling
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aloka Dixit <alokad@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>
-Date:   Mon, 28 Jun 2021 21:17:39 +0200
-In-Reply-To: <9451f0db49f603d7e9a00d172ab341e2@codeaurora.org>
-References: <20210426190534.12667-1-alokad@codeaurora.org>
-         <20210426190534.12667-3-alokad@codeaurora.org>
-         <6dc09b7dcfef37a703e95e264e6ab64738560160.camel@sipsolutions.net>
-         <9451f0db49f603d7e9a00d172ab341e2@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S236884AbhF1UnW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Jun 2021 16:43:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45720 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236572AbhF1UnU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 28 Jun 2021 16:43:20 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 5CB9C61CDF;
+        Mon, 28 Jun 2021 20:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624912854;
+        bh=L7XJtmlLX/psvTfOrdCovM2x6I8zDVua+ndjGrhBGVs=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=V+BVvWlJfFMvQ8Vr1FwwkZsr+NruBrR+zdEom8veKLmZyEVDhnTEd4+oArVopBfdY
+         DOMOQJxGMZ+srdJvEno+AOPbFT23CLeHfv0zTh/1p9Qq1vdu4T/LAkSfxLIB+Vv1Z4
+         Z/QXGXiguqZYqnUakWf5F807Px8his7VKV9yUfcsFctrOhzZqnz5vNPJV9HV7vpTOT
+         O+588jj2Apkop326n58jPS7AReQLwb2KZmbxf96fU0HKIZQ8ysig8Ixf91HXPTZx9W
+         aXHu2b8dY4pH/ymijAS0pP+gN59KNQ56xqZcOROeTzr0tUqHZOlCMXOcrC5tng1ZKu
+         NuSMpSWc7blxg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 5483B60D34;
+        Mon, 28 Jun 2021 20:40:54 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Subject: Re: pull-request: mac80211-next 2021-06-25
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162491285434.18293.5019013003644904509.git-patchwork-notify@kernel.org>
+Date:   Mon, 28 Jun 2021 20:40:54 +0000
+References: <20210625215635.10743-1-johannes@sipsolutions.net>
+In-Reply-To: <20210625215635.10743-1-johannes@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Aloka,
+Hello:
 
-> > >  static int ieee80211_del_iface(struct wiphy *wiphy, struct 
-> > > wireless_dev *wdev)
-> > >  {
-> > > +	struct ieee80211_sub_if_data *sdata = 
-> > > IEEE80211_WDEV_TO_SUB_IF(wdev);
-> > > +	struct ieee80211_local *local;
-> > > +	struct ieee80211_vif *vif;
-> > > +
-> > > +	if (!sdata)
-> > > +		return 0;
-> > > +
-> > > +	local = sdata->local;
-> > > +	vif = &sdata->vif;
-> > > +	if (vif->type == NL80211_IFTYPE_AP &&
-> > > +	    ieee80211_hw_check(&local->hw, SUPPORTS_MBSSID_AP)) {
-> > > +		if (vif->mbssid.flags & IEEE80211_VIF_MBSSID_TX) {
-> > > +			struct ieee80211_sub_if_data *child, *tmpsdata;
-> > > +
-> > > +			wiphy_unlock(local->hw.wiphy);
-> > > +			mutex_lock(&local->iflist_mtx);
-> > 
-> > I really don't think you can drop the locking like that in the middle 
-> > of something. That's almost always a recipe for disaster.
+This pull request was applied to netdev/net-next.git (refs/heads/master):
 
-[...]
-
+On Fri, 25 Jun 2021 23:56:34 +0200 you wrote:
+> Hi,
 > 
-> I'm not able to come up with a different solution which does not cause a 
-> deadlock by continuing to hold wiphy_lock() as we discussed last time 
-> that dev_close() will in turn call into cfg80211.
+> Here's a bunch of new changes for -next. I meant to include
+> another set of patches handling some 6 GHz regulatory stuff,
+> but still had some questions so wanted to get this out now,
+> so I don't miss the merge window with everything...
 > 
-> You had suggested looking at dev_close() for VLAN, that code also 
-> doesn't lock wiphy_lock hence I did same here but locked 
-> 'local->iflist_mtx'. Dropping both won't be good for sure.
-> 
-> Can you please suggest a better way? I'm really not able to come up with 
-> one.
+> [...]
 
-Yeah, it's a tricky one for sure, especially with the locking changes.
+Here is the summary with links:
+  - pull-request: mac80211-next 2021-06-25
+    https://git.kernel.org/netdev/net-next/c/007b312c6f29
 
-Now that I look at this more closely - the code in ieee80211_del_iface()
-must be redundant since the interface has to go through
-ieee80211_do_stop() (perhaps during this) if it's actually up?
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-
-However, I'm hnsure why you don't understand the VLAN code - see what I
-did in commit d5befb224edb ("mac80211: fix deadlock in AP/VLAN
-handling")?
-
-johannes
 
