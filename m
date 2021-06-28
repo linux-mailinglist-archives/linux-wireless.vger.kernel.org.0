@@ -2,133 +2,276 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F34E3B5F92
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 16:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D7993B6551
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 17:23:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232185AbhF1OI2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Jun 2021 10:08:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59200 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230033AbhF1OI1 (ORCPT
+        id S235174AbhF1PYu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Jun 2021 11:24:50 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:39010 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235187AbhF1PWe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Jun 2021 10:08:27 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87B5C061574;
-        Mon, 28 Jun 2021 07:06:00 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id k8so25881436lja.4;
-        Mon, 28 Jun 2021 07:06:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=references:user-agent:from:to:cc:subject:in-reply-to:date
-         :message-id:mime-version;
-        bh=1R0iH+DWaUknOCEjRDNGWia7J9lYBcVhqVAgEOlMaNg=;
-        b=GcGrlpvy5yF9fsY4YxegiUwYF+38oGxhgYU5mtnIdoHsQq/KpDgtXl9jUogcBfNKcH
-         krtoUNXYrGKumjVU3XCO9C3ifwRX2xdkrpPScOAiCN6GU35qTOb2bbaOb+t31IN/xyX0
-         i1FcK7djGng+NoF5DO/c0I6xQqIulU/ykl2pRQG5rN85N4+K38uepEtyJPlYfsDTutrc
-         tX1SJAysW+LPOYLLqyvydhgjBYEnGmWjYSF9UIDXM42yZ3C4RBhYxf+6zelnS+LDZA63
-         EGYIJoWZvc+1TLGqQxygmqV4pWnkKEBssfkvp8GlSUuqw/VQrAPlzBB/offaEngnOAgq
-         AiKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:references:user-agent:from:to:cc:subject
-         :in-reply-to:date:message-id:mime-version;
-        bh=1R0iH+DWaUknOCEjRDNGWia7J9lYBcVhqVAgEOlMaNg=;
-        b=IQzxrffXYUTZx1vpBUDPYc3Rw64URscFGhmafMmbgICcVVvUEaCTZY8hlG0vtXZBN/
-         s9+cCbdLdsmDwQT0d2VBXh7YGWVC9G/wO2PcwhRIOicfj41+XRAvchtzXr4xZlydR9B0
-         7cKKOAWgv+v8nCq9Ts9nXlFStxO06lbUoDIgpv0bmecf2zCOe3boGHSS8EPYQ5EW2tQS
-         ERTOI20yJngQyBqZzwXqEFQYpU15RNFmLdogSMZQG4Ns1G9pDscuMXDUPuRd0nSPdObV
-         lN4AWHFqVWcA+d3jYgC31uwPpeRzRNO8YoE0MQAsvO5VkyGietm0wk/EFkuZNO1sDjk+
-         Po6w==
-X-Gm-Message-State: AOAM530yBDGM6tHsKfns0Pwotzm5sB6Nj1h6TXQ/W5KBK5FIdwqkh6nI
-        rLg26WI6thZnLck4bFQs/rJJY0ZBymSc7w==
-X-Google-Smtp-Source: ABdhPJzbc9uuPKdCa17OwWSdgQGREWE9z4SHVIBe4YdZ/BPD0trRDMyNsw9uxMp9tuIreRSKTdRoqQ==
-X-Received: by 2002:a2e:a7cd:: with SMTP id x13mr19940525ljp.218.1624889157571;
-        Mon, 28 Jun 2021 07:05:57 -0700 (PDT)
-Received: from razdolb ([62.176.30.88])
-        by smtp.gmail.com with ESMTPSA id bu21sm1440090lfb.180.2021.06.28.07.05.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jun 2021 07:05:56 -0700 (PDT)
-References: <20210509233010.2477973-1-mike.rudenko@gmail.com>
- <c63f85b6-dbca-7f89-a015-70f5821df96d@broadcom.com>
-User-agent: mu4e 1.4.15; emacs 27.2
-From:   Mikhail Rudenko <mike.rudenko@gmail.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Double Lo <double.lo@cypress.com>,
-        Remi Depommier <rde@setrix.com>,
-        Amar Shankar <amsr@cypress.com>,
-        Saravanan Shanmugham <saravanan.shanmugham@cypress.com>,
-        Frank Kao <frank.kao@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: use separate firmware for 43430 revision 2
-In-reply-to: <c63f85b6-dbca-7f89-a015-70f5821df96d@broadcom.com>
-Date:   Mon, 28 Jun 2021 17:05:55 +0300
-Message-ID: <87k0mem6d8.fsf@gmail.com>
+        Mon, 28 Jun 2021 11:22:34 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1624893609; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=o72jrWUVeUYKN5rStHn1/hdFWsyZYhxXq9mo6K9nbNw=;
+ b=XjiFNjMSisikfTHKhldTvNo0VhLyEmz/l27aeO+0lc8eeV4vYph/eCvxzjlO6LnpaQxiiDJD
+ LZzOQBz0jg89ZODMYBuJDNX++gSGPVsuZKF5EFgI+h3AKQkgtulyMl99Om9Fxn5xq0j/2caD
+ UtOdvSoyPRELPeJNhBWpGL1Akgc=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 60d9e8895d0d101e386766ee (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 28 Jun 2021 15:19:37
+ GMT
+Sender: jjohnson=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id B020BC43460; Mon, 28 Jun 2021 15:19:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: jjohnson)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6F402C433F1;
+        Mon, 28 Jun 2021 15:19:36 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 28 Jun 2021 08:19:36 -0700
+From:   Jeff Johnson <jjohnson@codeaurora.org>
+To:     Jouni Malinen <jouni@codeaurora.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        P Praneesh <ppranees@codeaurora.org>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Sriram R <srirrama@codeaurora.org>,
+        ath11k <ath11k-bounces@lists.infradead.org>
+Subject: Re: [PATCH 02/12] ath11k: allocate dst ring descriptors from
+ cacheable memory
+In-Reply-To: <20210615211407.92233-3-jouni@codeaurora.org>
+References: <20210615211407.92233-1-jouni@codeaurora.org>
+ <20210615211407.92233-3-jouni@codeaurora.org>
+Message-ID: <8700923ed5cbabf3d55f18149e1bd2de@codeaurora.org>
+X-Sender: jjohnson@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 2021-06-15 14:13, Jouni Malinen wrote:
+> From: P Praneesh <ppranees@codeaurora.org>
+> 
+> tcl_data and reo_dst rings are currently being allocated
+> using dma_allocate_coherent() which is non cachable.
+> 
+> Allocating ring memory from cacheable memory area
+> allows cached descriptor access and prefetch next
+> descriptors to optimize CPU usage during
+> descriptor processing on NAPI.
+> 
+> Tested-on: QCN9074 hw1.0 PCI 
+> WLAN.HK.2.4.0.1.r2-00012-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01695-QCAHKSWPL_SILICONZ-1
+> 
+> Co-developed-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+> Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+> Co-developed-by: Sriram R <srirrama@codeaurora.org>
+> Signed-off-by: Sriram R <srirrama@codeaurora.org>
+> Signed-off-by: P Praneesh <ppranees@codeaurora.org>
+> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/dp.c  | 34 +++++++++++++++++++++++----
+>  drivers/net/wireless/ath/ath11k/dp.h  |  1 +
+>  drivers/net/wireless/ath/ath11k/hal.c | 25 ++++++++++++++++++--
+>  drivers/net/wireless/ath/ath11k/hal.h |  1 +
+>  4 files changed, 54 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/dp.c
+> b/drivers/net/wireless/ath/ath11k/dp.c
+> index b0c8f6290099..cf869ebc209a 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp.c
+> @@ -101,8 +101,11 @@ void ath11k_dp_srng_cleanup(struct ath11k_base 
+> *ab,
+> struct dp_srng *ring)
+>  	if (!ring->vaddr_unaligned)
+>  		return;
+> 
+> -	dma_free_coherent(ab->dev, ring->size, ring->vaddr_unaligned,
+> -			  ring->paddr_unaligned);
+> +	if (ring->cached)
+> +		kfree(ring->vaddr_unaligned);
+> +	else
+> +		dma_free_coherent(ab->dev, ring->size,
+> ring->vaddr_unaligned,
+> +				  ring->paddr_unaligned);
+> 
+>  	ring->vaddr_unaligned = NULL;
+>  }
+> @@ -222,6 +225,7 @@ int ath11k_dp_srng_setup(struct ath11k_base *ab,
+> struct dp_srng *ring,
+>  	int entry_sz = ath11k_hal_srng_get_entrysize(ab, type);
+>  	int max_entries = ath11k_hal_srng_get_max_entries(ab, type);
+>  	int ret;
+> +	bool cached;
+> 
+>  	if (max_entries < 0 || entry_sz < 0)
+>  		return -EINVAL;
+> @@ -229,10 +233,25 @@ int ath11k_dp_srng_setup(struct ath11k_base *ab,
+> struct dp_srng *ring,
+>  	if (num_entries > max_entries)
+>  		num_entries = max_entries;
+> 
+> +	/* Allocate the reo dst and tx completion rings from cacheable
+> memory */
+> +	switch (type) {
+> +	case HAL_REO_DST:
+> +		cached = true;
+> +	default:
+> +		cached = false;
+> +	}
+> +
+>  	ring->size = (num_entries * entry_sz) + HAL_RING_BASE_ALIGN - 1;
+> -	ring->vaddr_unaligned = dma_alloc_coherent(ab->dev, ring->size,
+> -						   &ring->paddr_unaligned,
+> -						   GFP_KERNEL);
+> +
+> +	if (cached) {
+> +		ring->vaddr_unaligned = kzalloc(ring->size, GFP_KERNEL);
+> +		ring->paddr_unaligned = virt_to_phys(ring->vaddr_unaligned);
 
-On 2021-06-28 at 15:16 MSK, Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
+Internal developers found this is causing a fault in rx data path.
+Suggested fix:
+-               ring->paddr_unaligned = 
+virt_to_phys(ring->vaddr_unaligned);
++               ring->paddr_unaligned = dma_map_single(ab->dev, 
+ring->vaddr_unaligned,
++                                                      ring->size, 
+DMA_FROM_DEVICE);
 
-> On 5/10/2021 1:30 AM, Mikhail Rudenko wrote:
->> A separate firmware is needed for Broadcom 43430 revision 2.  This
->> chip can be found in e.g. certain revisions of Ampak AP6212 wireless
->> IC. Original firmware file from IC vendor is named
->> 'fw_bcm43436b0.bin', but brcmfmac and also btbcm drivers report chip
->> id 43430, so requested firmware file name is
->> 'brcmfmac43430b0-sdio.bin' in line with other 43430 revisions.
->
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
->> ---
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> index 16ed325795a8..f0c22b5bb57c 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
->> @@ -617,6 +617,7 @@ BRCMF_FW_DEF(4339, "brcmfmac4339-sdio");
->>   BRCMF_FW_DEF(43430A0, "brcmfmac43430a0-sdio");
->>   /* Note the names are not postfixed with a1 for backward compatibility */
->>   BRCMF_FW_DEF(43430A1, "brcmfmac43430-sdio");
->> +BRCMF_FW_DEF(43430B0, "brcmfmac43430b0-sdio");
->>   BRCMF_FW_DEF(43455, "brcmfmac43455-sdio");
->>   BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
->>   BRCMF_FW_DEF(4354, "brcmfmac4354-sdio");
->> @@ -643,7 +644,8 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
->>   	BRCMF_FW_ENTRY(BRCM_CC_43362_CHIP_ID, 0xFFFFFFFE, 43362),
->>   	BRCMF_FW_ENTRY(BRCM_CC_4339_CHIP_ID, 0xFFFFFFFF, 4339),
->>   	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000001, 43430A0),
->> -	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0xFFFFFFFE, 43430A1),
->> +	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000002, 43430A1),
->> +	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000004, 43430B0),
->
-> Please follow the existing strategy, ie. support higher chip revisions
-> unless proven otherwise. So 0xFFFFFFFC iso 0x00000004.
 
-Will fix in v2, thanks.
+> +	} else {
+> +		ring->vaddr_unaligned = dma_alloc_coherent(ab->dev,
+> ring->size,
+> +
+> &ring->paddr_unaligned,
+> +							   GFP_KERNEL);
+> +	}
+> +
+>  	if (!ring->vaddr_unaligned)
+>  		return -ENOMEM;
+> 
+> @@ -292,6 +311,11 @@ int ath11k_dp_srng_setup(struct ath11k_base *ab,
+> struct dp_srng *ring,
+>  		return -EINVAL;
+>  	}
+> 
+> +	if (cached) {
+> +		params.flags |= HAL_SRNG_FLAGS_CACHED;
+> +		ring->cached = 1;
+> +	}
+> +
+>  	ret = ath11k_hal_srng_setup(ab, type, ring_num, mac_id, &params);
+>  	if (ret < 0) {
+>  		ath11k_warn(ab, "failed to setup srng: %d ring_id %d\n",
+> diff --git a/drivers/net/wireless/ath/ath11k/dp.h
+> b/drivers/net/wireless/ath/ath11k/dp.h
+> index ee768ccce46e..e6591488a28c 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp.h
+> +++ b/drivers/net/wireless/ath/ath11k/dp.h
+> @@ -64,6 +64,7 @@ struct dp_srng {
+>  	dma_addr_t paddr;
+>  	int size;
+>  	u32 ring_id;
+> +	u8 cached;
+>  };
+> 
+>  struct dp_rxdma_ring {
+> diff --git a/drivers/net/wireless/ath/ath11k/hal.c
+> b/drivers/net/wireless/ath/ath11k/hal.c
+> index eaa0edca5576..a58e86e42b5b 100644
+> --- a/drivers/net/wireless/ath/ath11k/hal.c
+> +++ b/drivers/net/wireless/ath/ath11k/hal.c
+> @@ -627,6 +627,21 @@ u32 *ath11k_hal_srng_dst_peek(struct ath11k_base 
+> *ab,
+> struct hal_srng *srng)
+>  	return NULL;
+>  }
+> 
+> +static void ath11k_hal_srng_prefetch_desc(struct ath11k_base *ab,
+> +					  struct hal_srng *srng)
+> +{
+> +	u32 *desc;
+> +
+> +	/* prefetch only if desc is available */
+> +	desc = ath11k_hal_srng_dst_peek(ab, srng);
+> +	if (likely(desc)) {
+> +		dma_sync_single_for_cpu(ab->dev, virt_to_phys(desc),
+> +					(srng->entry_size * sizeof(u32)),
+> +					DMA_FROM_DEVICE);
+> +		prefetch(desc);
+> +	}
+> +}
+> +
+>  u32 *ath11k_hal_srng_dst_get_next_entry(struct ath11k_base *ab,
+>  					struct hal_srng *srng)
+>  {
+> @@ -642,6 +657,10 @@ u32 *ath11k_hal_srng_dst_get_next_entry(struct
+> ath11k_base *ab,
+>  	srng->u.dst_ring.tp = (srng->u.dst_ring.tp + srng->entry_size) %
+>  			      srng->ring_size;
+> 
+> +	/* Try to prefetch the next descriptor in the ring */
+> +	if (srng->flags & HAL_SRNG_FLAGS_CACHED)
+> +		ath11k_hal_srng_prefetch_desc(ab, srng);
+> +
+>  	return desc;
+>  }
+> 
+> @@ -775,11 +794,13 @@ void ath11k_hal_srng_access_begin(struct 
+> ath11k_base
+> *ab, struct hal_srng *srng)
+>  {
+>  	lockdep_assert_held(&srng->lock);
+> 
+> -	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
+> +	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+>  		srng->u.src_ring.cached_tp =
+>  			*(volatile u32 *)srng->u.src_ring.tp_addr;
+> -	else
+> +	} else {
+>  		srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
+> +		ath11k_hal_srng_prefetch_desc(ab, srng);
+> +	}
+>  }
+> 
+>  /* Update cached ring head/tail pointers to HW.
+> ath11k_hal_srng_access_begin()
+> diff --git a/drivers/net/wireless/ath/ath11k/hal.h
+> b/drivers/net/wireless/ath/ath11k/hal.h
+> index 35ed3a14e200..0f4f9ce74354 100644
+> --- a/drivers/net/wireless/ath/ath11k/hal.h
+> +++ b/drivers/net/wireless/ath/ath11k/hal.h
+> @@ -513,6 +513,7 @@ enum hal_srng_dir {
+>  #define HAL_SRNG_FLAGS_DATA_TLV_SWAP		0x00000020
+>  #define HAL_SRNG_FLAGS_LOW_THRESH_INTR_EN	0x00010000
+>  #define HAL_SRNG_FLAGS_MSI_INTR			0x00020000
+> +#define HAL_SRNG_FLAGS_CACHED                   0x20000000
+>  #define HAL_SRNG_FLAGS_LMAC_RING		0x80000000
+> 
+>  #define HAL_SRNG_TLV_HDR_TAG		GENMASK(9, 1)
+> --
+> 2.25.1
 
->>   	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0x00000200, 43456),
->>   	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0xFFFFFDC0, 43455),
->>   	BRCMF_FW_ENTRY(BRCM_CC_4354_CHIP_ID, 0xFFFFFFFF, 4354),
->>
-
---
-Regards,
-Mikhail
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
+Forum,
+a Linux Foundation Collaborative Project
