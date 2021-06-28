@@ -2,104 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9003B5DCF
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 14:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAF383B5E0A
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 14:33:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232959AbhF1MTU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Jun 2021 08:19:20 -0400
-Received: from lpdvsmtp10.broadcom.com ([192.19.11.229]:39206 "EHLO
-        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232802AbhF1MTT (ORCPT
+        id S232988AbhF1Mf3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Jun 2021 08:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38314 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232984AbhF1Mf2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Jun 2021 08:19:19 -0400
-Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 21B96827D;
-        Mon, 28 Jun 2021 05:16:53 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 21B96827D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1624882613;
-        bh=G9cr5vNy9UFNI35mUQl46GB0uW3+EP/3puSIRnjeyp4=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=U1jRlZVKx1wXrH8FSiAFwg6aqKXtWJSfvsgGqAUCYzHM81Z07U35VkS04qRwDSSMp
-         KNTgHOumsVgq//zh1fVXY4fwjvLrTcEVB0yfNLPgyClvK5Pj7D5lKsWkHF84Q07reU
-         eHS3OiPcbQWCZFHy3nstIR3ASIs8CY+OQuo4GH2w=
-Received: from [10.176.68.80] (39y1yf2.dhcp.broadcom.net [10.176.68.80])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 7692B1874BE;
-        Mon, 28 Jun 2021 05:16:49 -0700 (PDT)
-Subject: Re: [PATCH] brcmfmac: use separate firmware for 43430 revision 2
-To:     Mikhail Rudenko <mike.rudenko@gmail.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Double Lo <double.lo@cypress.com>,
-        Remi Depommier <rde@setrix.com>,
-        Amar Shankar <amsr@cypress.com>,
-        Saravanan Shanmugham <saravanan.shanmugham@cypress.com>,
-        Frank Kao <frank.kao@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210509233010.2477973-1-mike.rudenko@gmail.com>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <c63f85b6-dbca-7f89-a015-70f5821df96d@broadcom.com>
-Date:   Mon, 28 Jun 2021 14:16:47 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Mon, 28 Jun 2021 08:35:28 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D146C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Jun 2021 05:33:01 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id bu12so29800945ejb.0
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Jun 2021 05:33:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=anyfinetworks-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qNRIoc5DV43PIBU2aWhdMhZdZje5YItIZIE7chBQGTk=;
+        b=QF3+dwFZw6auko8c6k4+mP2GTyiOae7hMsUtpP3KO+7fX4Vsl+34jPCaTIiWe64W/h
+         Hig19dcLELQjSFAZpB8c0jaBd1LWZ3bwuEaI+k/N4RSZpjU8W7rDevtnkxmyMQ1T6Cfw
+         gemqr8JMv8jPeRuLRSUDG960CCxgky7OoNETjSDHQIr4UhKvYqfWlBm0yrVtkfV11MCF
+         XzozampItHVQimUHVJZs3fustg3I+yUhDq2FWetb3M3bqRBK/y/RUZZ41VBwVWjhOHYI
+         t9APRiNoyG0UPYIb7qI2cgJ8L/68AsDI0OngvVXHrOI8qAOWmDemPbpIxqQeCUrxy1Ai
+         ry9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qNRIoc5DV43PIBU2aWhdMhZdZje5YItIZIE7chBQGTk=;
+        b=acS4LEnF8NCqxoQiPxvNtsHLmxzOsRt8ZlASKY3n3hdwkDBGQZyP4pOk+iC/dGLLR4
+         bd1pgJvvKirIw+JN5u1oX+VXAGIaGEQnxnuYo49pp7G8/eofk8yCjO+Q6gvW1xeS+vcn
+         XZp+NFnHYd1jrA3jr+a5Z4E8RionxoSOdiEm+sgcIGg/E4907S5vIZu3QmmV3dIcYjjq
+         +nWrn5ljSc75JxGEj4GfAQ7D65T6TM9t4BP/NBPC8gx1zgTa8uPGPWvnPfKQZxelXKlV
+         ArXQJgeXPprP1IXgwgB/QJy7zLnWwmVbA/yGiZ3SuU0enibvas8fkFrXfB4Dlziu8sqR
+         hxiw==
+X-Gm-Message-State: AOAM530qqJE+L5GVgUdqd1e+TmpeACXIpL0wzofED7/lIZKhwLn8x/Ks
+        TTqLHscElgmB4Hv2NqgXvCEJa5HdNDb5BCLbwJg=
+X-Google-Smtp-Source: ABdhPJwCKXfvOoPe1/42r8UTs/ibxiO7bKyO3HqBWYUek46VflKKy9kJmpytiRygN18kZNffloBs6g==
+X-Received: by 2002:a17:906:c2d9:: with SMTP id ch25mr24300815ejb.127.1624883580107;
+        Mon, 28 Jun 2021 05:33:00 -0700 (PDT)
+Received: from anpc2.lan (static-213-115-136-2.sme.telenor.se. [213.115.136.2])
+        by smtp.gmail.com with ESMTPSA id j22sm7139665ejt.11.2021.06.28.05.32.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jun 2021 05:32:59 -0700 (PDT)
+From:   Johan Almbladh <johan.almbladh@anyfinetworks.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Subject: [PATCH] mac80211: Fix monitor MTU limit so that A-MSDUs get through
+Date:   Mon, 28 Jun 2021 14:32:46 +0200
+Message-Id: <20210628123246.2070558-1-johan.almbladh@anyfinetworks.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210509233010.2477973-1-mike.rudenko@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/10/2021 1:30 AM, Mikhail Rudenko wrote:
-> A separate firmware is needed for Broadcom 43430 revision 2.  This
-> chip can be found in e.g. certain revisions of Ampak AP6212 wireless
-> IC. Original firmware file from IC vendor is named
-> 'fw_bcm43436b0.bin', but brcmfmac and also btbcm drivers report chip
-> id 43430, so requested firmware file name is
-> 'brcmfmac43430b0-sdio.bin' in line with other 43430 revisions.
+The maximum MTU was set to 2304, which is the maximum MSDU size. While
+this is valid for normal WLAN interfaces, it is too low for monitor
+interfaces. A monitor interface may receive and inject MPDU frames, and
+the maximum MPDU frame size is larger than 2304. The MPDU may also
+contain an A-MSDU frame, in which case the size may be much larger than
+the MTU limit. Since the maximum size of an A-MSDU depends on the PHY
+mode of the transmitting STA, it is not possible to set an exact MTU
+limit for a monitor interface. Now the maximum MTU for a monitor
+interface is unrestricted.
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> index 16ed325795a8..f0c22b5bb57c 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> @@ -617,6 +617,7 @@ BRCMF_FW_DEF(4339, "brcmfmac4339-sdio");
->   BRCMF_FW_DEF(43430A0, "brcmfmac43430a0-sdio");
->   /* Note the names are not postfixed with a1 for backward compatibility */
->   BRCMF_FW_DEF(43430A1, "brcmfmac43430-sdio");
-> +BRCMF_FW_DEF(43430B0, "brcmfmac43430b0-sdio");
->   BRCMF_FW_DEF(43455, "brcmfmac43455-sdio");
->   BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
->   BRCMF_FW_DEF(4354, "brcmfmac4354-sdio");
-> @@ -643,7 +644,8 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
->   	BRCMF_FW_ENTRY(BRCM_CC_43362_CHIP_ID, 0xFFFFFFFE, 43362),
->   	BRCMF_FW_ENTRY(BRCM_CC_4339_CHIP_ID, 0xFFFFFFFF, 4339),
->   	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000001, 43430A0),
-> -	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0xFFFFFFFE, 43430A1),
-> +	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000002, 43430A1),
-> +	BRCMF_FW_ENTRY(BRCM_CC_43430_CHIP_ID, 0x00000004, 43430B0),
+Signed-off-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
+---
+ net/mac80211/iface.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Please follow the existing strategy, ie. support higher chip revisions 
-unless proven otherwise. So 0xFFFFFFFC iso 0x00000004.
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 1e5e9fc45523..cd96cd337aa8 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -2001,9 +2001,16 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 		netdev_set_default_ethtool_ops(ndev, &ieee80211_ethtool_ops);
+ 
+-		/* MTU range: 256 - 2304 */
++		/* MTU range is normally 256 - 2304, where the upper limit is
++		 * the maximum MSDU size. Monitor interfaces send and receive
++		 * MPDU and A-MSDU frames which may be much larger so we do
++		 * not impose an upper limit in that case.
++		 */
+ 		ndev->min_mtu = 256;
+-		ndev->max_mtu = local->hw.max_mtu;
++		if (type == NL80211_IFTYPE_MONITOR)
++			ndev->max_mtu = 0;
++		else
++			ndev->max_mtu = local->hw.max_mtu;
+ 
+ 		ret = cfg80211_register_netdevice(ndev);
+ 		if (ret) {
+-- 
+2.25.1
 
->   	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0x00000200, 43456),
->   	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0xFFFFFDC0, 43455),
->   	BRCMF_FW_ENTRY(BRCM_CC_4354_CHIP_ID, 0xFFFFFFFF, 4354),
-> 
