@@ -2,66 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BD5C3B69CC
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 22:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEFD93B69ED
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jun 2021 22:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236884AbhF1UnW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Jun 2021 16:43:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45720 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236572AbhF1UnU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Jun 2021 16:43:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 5CB9C61CDF;
-        Mon, 28 Jun 2021 20:40:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624912854;
-        bh=L7XJtmlLX/psvTfOrdCovM2x6I8zDVua+ndjGrhBGVs=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=V+BVvWlJfFMvQ8Vr1FwwkZsr+NruBrR+zdEom8veKLmZyEVDhnTEd4+oArVopBfdY
-         DOMOQJxGMZ+srdJvEno+AOPbFT23CLeHfv0zTh/1p9Qq1vdu4T/LAkSfxLIB+Vv1Z4
-         Z/QXGXiguqZYqnUakWf5F807Px8his7VKV9yUfcsFctrOhzZqnz5vNPJV9HV7vpTOT
-         O+588jj2Apkop326n58jPS7AReQLwb2KZmbxf96fU0HKIZQ8ysig8Ixf91HXPTZx9W
-         aXHu2b8dY4pH/ymijAS0pP+gN59KNQ56xqZcOROeTzr0tUqHZOlCMXOcrC5tng1ZKu
-         NuSMpSWc7blxg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 5483B60D34;
-        Mon, 28 Jun 2021 20:40:54 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S237449AbhF1U6F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 28 Jun 2021 16:58:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38268 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237281AbhF1U6E (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 28 Jun 2021 16:58:04 -0400
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2E7CC061574
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Jun 2021 13:55:37 -0700 (PDT)
+Received: by mail-oo1-xc32.google.com with SMTP id v3-20020a4ac9030000b029024c9d0bff49so1188884ooq.0
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Jun 2021 13:55:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WRDyTO+vfHnO9Ab5rrYlSnfXyxhW3m/rf/oNtrBhS5I=;
+        b=KeDWzxAaIV22z1BVMdMnIqdFVl4YBRm3ILhZYXdQE5dkF8ZALxe94fhs/yz7tIBDAh
+         R6gRZrLguit0ZW7XDypfOPX5NSLmmPl+RSZ3ZDU4W8hsSMF7d5417uMe/pT9StXYcoPT
+         oQPXDzGGOGAnAGf/O9d/FaOSH0lXG2nQ4r+YA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WRDyTO+vfHnO9Ab5rrYlSnfXyxhW3m/rf/oNtrBhS5I=;
+        b=SX8CqwTLUuxSjblvsjxYXbM0Cc5jVcToAEbmFryDdmLXBvnmbiF7lZyZNYzK/XNCOm
+         EAsrmg4sS/+gN9ZhoicvlQnpHOPiuFqUj/bmo8h5y3PbiAP5BIG+pG6ICHwVLLHbxMx5
+         zjwpODlabsUCNS1aRumbVuzbmxfCMJGRetSqKUM70g2wPD448i4cvHy5veIkfbfUeSFg
+         oIzaBMGZ11vSxrxqw5cZml8TogvluhTMYrMukk66Wx9Q/IBoqoChRoMe5lMJyfIUzzbC
+         IcHhJuRyZXprPn02WfL4edqYOeokZcGrQVUJPlX47JAgGovSFV1zN1W2+unIQaBsHcIi
+         AESg==
+X-Gm-Message-State: AOAM531tBegRNk0EN4StqAMnF62kNDT2Y2vigKCSl+LLOfFZcGBDSpu2
+        r9udmMSk2lIMpwMFJZpiKIa9qNqRevWkjQ==
+X-Google-Smtp-Source: ABdhPJz0hLxgoqb87aDBHqJcHv2H+QMOJ8wQHiKHOkk7QHP3Uw8oLhXCmnj2BdzSIdZK9cwySspmXw==
+X-Received: by 2002:a4a:b815:: with SMTP id g21mr1082971oop.70.1624913736976;
+        Mon, 28 Jun 2021 13:55:36 -0700 (PDT)
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com. [209.85.167.171])
+        by smtp.gmail.com with ESMTPSA id h7sm3760288ots.44.2021.06.28.13.55.36
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Jun 2021 13:55:36 -0700 (PDT)
+Received: by mail-oi1-f171.google.com with SMTP id s17so23661503oij.0
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Jun 2021 13:55:36 -0700 (PDT)
+X-Received: by 2002:aca:4c03:: with SMTP id z3mr8224092oia.105.1624913735796;
+ Mon, 28 Jun 2021 13:55:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: mac80211-next 2021-06-25
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162491285434.18293.5019013003644904509.git-patchwork-notify@kernel.org>
-Date:   Mon, 28 Jun 2021 20:40:54 +0000
-References: <20210625215635.10743-1-johannes@sipsolutions.net>
-In-Reply-To: <20210625215635.10743-1-johannes@sipsolutions.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <83a9aeff-ce2c-3442-90fa-7e190acf3dfe@lwfinger.net>
+ <1af1e1f4-caa4-323e-0a2a-b3fdf1cac6b8@justmail.de> <92a3ff23-2763-44e2-a20e-25190d46d4bd@lwfinger.net>
+ <CA+ASDXOY8HRjU6JK8a_Z9KUnXr3w_qXVU7hK56+6c2DQKiyFVg@mail.gmail.com> <75427961-7d9b-d943-f0b0-118ab8645be9@lwfinger.net>
+In-Reply-To: <75427961-7d9b-d943-f0b0-118ab8645be9@lwfinger.net>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 28 Jun 2021 13:55:24 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXOeCOw-HRKj8_3we9ng7+sou3ZRghS22Gq334YJq8qM=A@mail.gmail.com>
+Message-ID: <CA+ASDXOeCOw-HRKj8_3we9ng7+sou3ZRghS22Gq334YJq8qM=A@mail.gmail.com>
+Subject: Re: Memory leak in rtw88-pci
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     =?UTF-8?Q?Klaus_M=C3=BCller?= <kmueller@justmail.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+On Sun, Jun 20, 2021 at 12:33 PM Larry Finger <Larry.Finger@lwfinger.net> wrote:
+> I fixed the leaks, but forgot to submit the patch. My repo at
+> https://github.com/lafingerrtw88.git has the fixes, and does have any leaks on
+> my system. The patch just pushed has the same fixes.
 
-This pull request was applied to netdev/net-next.git (refs/heads/master):
+Thanks for sending! It sounds like Realtek folks also addressed some
+similar issues and more there (I bumped them privately, pointing
+here), so I believe we're in good shape now.
 
-On Fri, 25 Jun 2021 23:56:34 +0200 you wrote:
-> Hi,
-> 
-> Here's a bunch of new changes for -next. I meant to include
-> another set of patches handling some 6 GHz regulatory stuff,
-> but still had some questions so wanted to get this out now,
-> so I don't miss the merge window with everything...
-> 
-> [...]
-
-Here is the summary with links:
-  - pull-request: mac80211-next 2021-06-25
-    https://git.kernel.org/netdev/net-next/c/007b312c6f29
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Brian
