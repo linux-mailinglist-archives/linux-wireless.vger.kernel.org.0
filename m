@@ -2,63 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9293B6C3E
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jun 2021 03:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 951433B6DC1
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jun 2021 06:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230309AbhF2BvQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 28 Jun 2021 21:51:16 -0400
-Received: from mx21.baidu.com ([220.181.3.85]:55244 "EHLO baidu.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229933AbhF2BvP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 28 Jun 2021 21:51:15 -0400
-Received: from BC-Mail-Ex22.internal.baidu.com (unknown [172.31.51.16])
-        by Forcepoint Email with ESMTPS id D53C93C6B6032FDB8816;
-        Tue, 29 Jun 2021 09:48:43 +0800 (CST)
-Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex22.internal.baidu.com (172.31.51.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.4; Tue, 29 Jun 2021 09:48:43 +0800
-Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.4; Tue, 29 Jun 2021 09:48:43 +0800
-From:   Cai Huoqing <caihuoqing@baidu.com>
-To:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Cai Huoqing <caihuoqing@baidu.com>
-Subject: [PATCH] iwlwifi: format '%zd' expects argument of type 'size_t'
-Date:   Tue, 29 Jun 2021 09:48:36 +0800
-Message-ID: <20210629014836.279-1-caihuoqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+        id S229792AbhF2Ewp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Jun 2021 00:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229634AbhF2Ewo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Jun 2021 00:52:44 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7458EC061574;
+        Mon, 28 Jun 2021 21:49:49 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id s137so8541739pfc.4;
+        Mon, 28 Jun 2021 21:49:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=tNHQWqsPBjj0yKLYweJTmYfQXLdv5jACBGV47l7LzU0=;
+        b=VRW61Egj7WXBdR2Iw8XwKEMUMYtL8WeRfWEuhOxv9NjcTRw+ptRSAvlpogQfPh4FOW
+         3PJWIFtaaQ4wxsVwSKS5fmELWr38kH4P7A61D4dZWyZtRuDfWctAgfy99z4JlRyXwR4Y
+         KvPGzM41hu+46HoLMB40m7bKsk2NRJ84QXNJ6frO9KuIqQ+CYz3fFzaA11fIco0w2CIa
+         BuQZxAOSCjV7lPvD8z+ZvHbLedwp1jfGCdGkT8xgoFlO2vMfLQWkzDkwGeibajL2b5o7
+         c8lV2Y8jDzxo2nnZkTwUfKnzW5iufMwGpPlrGLVUcLhOjLWnlYCtOULeR+sA5y+H9DaU
+         aoRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=tNHQWqsPBjj0yKLYweJTmYfQXLdv5jACBGV47l7LzU0=;
+        b=puxozhH1KC//2+rffMO8B8I3AL7+RY/2VjoYoGC6n5yPwqHo3m7pxYCZGR/1ukq3ID
+         n8RaMSvSRUxFK1sB+cuDj/uEWrNmFr0RBNHbxar4hnWYWO9lYAHQ4M7A1Y0OH3sFF5Mj
+         hPHtAaHPUpfCxpDHiuzOQi6UkqVypj4ZbQGsMajXDI7WsS8m2+Pp9M3okQUSZTsfNa++
+         7T4D2MwnUfK9cHMBArsf0LUZ9E4SBF44lHOTeRfyexoLqjXBslk9EYqfHFpRb9nI2wD4
+         v6w1uVsirv2p0Qx1bWz6X6YC1Y61FBcv9BMrolSwYP0JrSAe9QdMqEX0afVQx2KSdPz1
+         Y6uA==
+X-Gm-Message-State: AOAM533EDg8zU/CPd3Ciw2dd46RyAafyHEdQfxZzum8dfTM0NHt9hTtN
+        ouX3qeeYN9V3uiSyZHGJZnFdvn1QH59coSutopt768GhZio=
+X-Google-Smtp-Source: ABdhPJxl0ENo2BNOqLmm6Uinxiso/YG8UoSx6uPCF6BjQGsTZNnT4nePKygJlw9PB/inoSzwHDgn3oI31oOywp7Gr/0=
+X-Received: by 2002:a63:f65:: with SMTP id 37mr15881590pgp.367.1624942188665;
+ Mon, 28 Jun 2021 21:49:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: BC-Mail-Ex21.internal.baidu.com (172.31.51.15) To
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
+From:   Davis <davikovs@gmail.com>
+Date:   Tue, 29 Jun 2021 07:48:00 +0300
+Message-ID: <CAHQn7pKcyC_jYmGyTcPCdk9xxATwW5QPNph=bsZV8d-HPwNsyA@mail.gmail.com>
+Subject: Posible memory corruption from "mac80211: do not accept/forward
+ invalid EAPOL frames"
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-fix warning: format '%zd' expects argument of type 'size_t'
+Greetings!
 
-Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Could it be possible that
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v5.12.13&id=a8c4d76a8dd4fb9666fc8919a703d85fb8f44ed8
+or at least its backport to 4.4 has the potential for memory
+corruption due to incorrect pointer calculation?
+Shouldn't the line:
+  struct ethhdr *ehdr = (void *)skb_mac_header(skb);
+be:
+  struct ethhdr *ehdr = (struct ethhdr *) skb->data;
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index a7c79d814aa4..e755919c1dd0 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -20,7 +20,7 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
- {
-        struct efivar_entry *pnvm_efivar;
-        void *data;
--       unsigned long package_size;
-+       size_t package_size;
-        int err;
- 
-        *len = 0;
--- 
-2.22.0
+Later ehdr->h_dest is referenced, read and (when not equal to expected
+value) written:
+  if (unlikely(skb->protocol == sdata->control_port_protocol &&
+      !ether_addr_equal(ehdr->h_dest, sdata->vif.addr)))
+    ether_addr_copy(ehdr->h_dest, sdata->vif.addr);
 
+In my case after cherry-picking
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v4.4.273&id=e3d4030498c304d7c36bccc6acdedacf55402387
+to 4.4 kernel of an ARM device occasional memory corruption was observed.
+
+To investigate this issue logging was added - the pointer calculation
+was expressed as:
+  struct ethhdr *ehdr = (void *)skb_mac_header(skb);
+  struct ethhdr *ehdr2 = (struct ethhdr *) skb->data;
+and memory writing was replaced by logging:
+  if (unlikely(skb->protocol == sdata->control_port_protocol &&
+      (!ether_addr_equal(ehdr->h_dest, sdata->vif.addr) ||
+!ether_addr_equal(ehdr2->h_dest, sdata->vif.addr))))
+    printk(KERN_ERR "Matching1: %u, matching2: %u, addr1: %px, addr2:
+%px", !ether_addr_equal(ehdr->h_dest, sdata->vif.addr),
+!ether_addr_equal(ehdr2->h_dest, sdata->vif.addr), ehdr->h_dest,
+ehdr2->h_dest);
+
+During normal use of wifi (in residential environment) logging was
+triggered several times, in all cases matching1 was 1 and matching2
+was 0.
+This makes me think that normal control frames were received and
+correctly validated by !ether_addr_equal(ehdr2->h_dest,
+sdata->vif.addr), however !ether_addr_equal(ehdr->h_dest,
+sdata->vif.addr) was checking incorrect buffer and identified the
+frames as malformed/correctable.
+This also explains memory corruption - offset difference between both
+buffers (addr1 and addr2) was close to 64 KB in all cases, virtually
+always a random memory location (around 64 KB away from the correct
+buffer) will belong to something else, will have a value that differs
+from the expected MAC address and will get overwritten by the
+cherry-picked code.
+
+Br,
+Davis
