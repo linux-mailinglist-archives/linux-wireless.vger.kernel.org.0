@@ -2,184 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9BA3B7309
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jun 2021 15:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76E833B772C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jun 2021 19:26:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233999AbhF2NRc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Jun 2021 09:17:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57096 "EHLO
+        id S234332AbhF2R2f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Jun 2021 13:28:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233988AbhF2NRc (ORCPT
+        with ESMTP id S232513AbhF2R2f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Jun 2021 09:17:32 -0400
-Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF89C061760
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Jun 2021 06:15:04 -0700 (PDT)
-Received: by mail-vk1-xa2d.google.com with SMTP id s72so4744089vkb.8
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Jun 2021 06:15:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gMItzUaxhe6fdttuo4IyGPs0+qWXqPORLlw9PPcbKD4=;
-        b=nq2ObkS/7TM/4+Hbv46d6tO4eJBu/6psprzTNtEL34FRvylmaMS3dDzFM6AxBsL7KR
-         Nl2sBJNQYbAaqUJThEMWvvBWG4l9T4s0FpGsl7oVfQYrLhhIwGJckGRJZEG1vyd8xtm/
-         3ZGN/jMev26iRC7Xxh+lLaV+2uKNe23uCnZA5rD4QurJ9K8xrE/8C7gFKgxYyq5rfFas
-         p4mPZZrVL/PLZUffOKKynePl4kRS9Eg6J0ajXv3zsIUoRAzhhE0NcZk3nVzHPAZexL9w
-         HOEVKKYn3DCZj7t7lAR1d+OHyxZJYGd2zLpmqdhmCCo3lAhaWPKbSJdfeDgT6meHC7gX
-         b6uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gMItzUaxhe6fdttuo4IyGPs0+qWXqPORLlw9PPcbKD4=;
-        b=LoKiwgCtwehW8tPEJkSszT0cBSQ954nckvgXJpzNUGIS+EAYVM8MDipEjHPcqaXZom
-         t/vFKRKAMXnjKA3mI1H0CKRUne5CED0Jd5kdSccNHmRfcYgwSoyCGuwxg7yZkICXWetR
-         0ay9vToFMz2xO8M703c+BIC6wcKffl9lINUO+lFSVaLWrQ561sLPJSnriGJy7lzjCkvE
-         O2rdxqi3WFsD3VdSI8MWRjqwuB2eWWxF/CjKrJJHxezhnT37utSQq8zuIzV8IAa70fgd
-         8QcCxlY38HsPdIREVhWBMK/L/CKrbcRPYiWI11LBR8gmyNUxYtJgjGh82eCZ8tHfQdd2
-         sVaw==
-X-Gm-Message-State: AOAM531+ey66vHDHXk6tP01TpXbtrzwPCPRxKE8w8vPUyyNgpgwOyU31
-        xvzxJ+fujqzXyhsohdAxCfwMhfpONAAPuXLxJI4=
-X-Google-Smtp-Source: ABdhPJzA09jp2CZMB4GG/AkyLuh3oprHY1SFTHmW007c6ZZirOIufL7m+P5yWylMpdQz640bceN58GQzHUO2RmPivPU=
-X-Received: by 2002:a1f:a482:: with SMTP id n124mr8456168vke.15.1624972502160;
- Tue, 29 Jun 2021 06:15:02 -0700 (PDT)
+        Tue, 29 Jun 2021 13:28:35 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3642C061760;
+        Tue, 29 Jun 2021 10:26:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:Subject:Cc:From:References:To:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=AOushszHu5ObfXbLP9p4RXQc/aXFhbSNGGH/KTIl1EY=; b=JKSYz1SuRpHGX3wTr0CIwgVeDb
+        WrFZt5r8EuLIGzivo6czR2/LR6VTTUsimjK5pPGjlGQSgr24n0DvceeyJnKg2M4E0F4P6W4pa0kAe
+        +Z1SnAcG2VzWz2S0e48o1teDZphd/zKrY+CfGed2l9yXOAP+KR0U8PjaBH1kL7yaWuus=;
+Received: from p54ae93f7.dip0.t-ipconnect.de ([84.174.147.247] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lyHUp-0007j8-RS; Tue, 29 Jun 2021 19:26:03 +0200
+To:     Davis <davikovs@gmail.com>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <CAHQn7pKcyC_jYmGyTcPCdk9xxATwW5QPNph=bsZV8d-HPwNsyA@mail.gmail.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: Posible memory corruption from "mac80211: do not accept/forward
+ invalid EAPOL frames"
+Message-ID: <a7f11cc2-7bef-4727-91b7-b51da218d2ee@nbd.name>
+Date:   Tue, 29 Jun 2021 19:26:03 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <20210625081717.7680-1-emmanuel.grumbach@intel.com>
-In-Reply-To: <20210625081717.7680-1-emmanuel.grumbach@intel.com>
-From:   Emmanuel Grumbach <egrumbach@gmail.com>
-Date:   Tue, 29 Jun 2021 16:14:51 +0300
-Message-ID: <CANUX_P2sw2bzhUrUC_QTZY1+YA+EyoZn3QeoQvv6=e3L4WHvuw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/5] iwlwifi: mei: add the driver to allow cooperation
- with CSME
-To:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Cc:     "Coelho, Luciano" <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Ayala Beker <ayala.beker@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAHQn7pKcyC_jYmGyTcPCdk9xxATwW5QPNph=bsZV8d-HPwNsyA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
 
->
-> CSME in two words
-> -----------------
-> CSME stands for Converged Security and Management Engine. It is
-> a CPU on the chipset and runs a dedicated firmware.
-> AMT (Active Management Technology) is one of the applications
-> that run on that CPU. AMT allows to control the platform remotely.
-> Here is a partial list of the use cases:
-> * View the screen of the plaform, with keyboard and mouse (KVM)
-> * Attach a remote IDE device
-> * Have a serial console to the device
-> * Query the state of the platform
-> * Reset / shut down / boot the platform
->
-> Networking in CSME
-> ------------------
-> For those uses cases, CSME's firmware has an embedded network
-> stack and is able to use the network devices of the system: LAN
-> and WLAN. This is thanks to the CSME's firmware WLAN driver.
->
-> One can add a profile (SSID / key / certificate) to the CSME's OS
-> and CSME will connect to that profile. Then, one can use the WLAN
-> link to access the applications that run on CSME (AMT is one of
-> them). Note that CSME is active during power state and power state
-> transitions. For example, it is possible to have a KVM session
-> open to the system while the system is rebooting and actually
-> configure the BIOS remotely over WLAN thanks to AMT.
->
-> How all this is related to Linux
-> --------------------------------
-> In Linux, there is a driver that allows the OS to talk to the
-> CSME firmware, this driver is drivers/misc/mei. This driver
-> advertises a bus that allows other kernel drivers or even user
-> space) to talk to components inside the CSME firmware.
-> In practice, the system advertises a PCI device that allows
-> to send / receive data to / from the CSME firmware. The mei
-> bus drivers in drivers/misc/mei is an abstration on top of
-> this PCI device.
-> The driver being added here is called iwlmei and talks to the
-> WLAN driver inside the CSME firmware through the mei bus driver.
-> Note that the mei bus driver only gives bus services, it doesn't
-> define the content of the communication.
->
-> Why do we need this driver?
-> --------------------------
-> CSME uses the same WLAN device that the OS is expecting to see
-> hence we need an arbitration mechanism. This is what iwlmei is
-> in charge of. iwlmei maintains the communication with the CSME
-> firmware's WLAN driver. The language / protocol that is used
-> between the CSME's firmware WLAN driver and iwlmei is OS agnostic
-> and is called SAP which stands for Software Abritration Protocol.
-> With SAP, iwlmei will be able to tell the CSME firmware's WLAN
-> driver:
-> 1) Please give me the device.
-> 2) Please note that the SW/HW rfkill state change.
-> 3) Please note that I am now associated to X.
-> 4) Please note that I received this packet.
-> etc...
->
-> There are messages that go the opposite direction as well:
-> 1) Please note that AMT is en/disable.
-> 2) Please note that I believe the OS is broken and hence I'll take
->    the device *now*, whether you like it or not, to make sure that
->    connectivity is preserved.
-> 3) Please note that I am willing to give the device if the OS
->    needs it.
-> 4) Please give me any packet that is sent on UDP / TCP on IP address
->    XX.XX.XX.XX and an port ZZ.
-> 5) Please send this packet.
-> etc...
->
-> Please check drivers/net/wireless/intel/iwlwifi/mei/sap.h for the
-> full protocol specification.
->
-> Arbitration is not the only purpose of iwlmei and SAP. SAP also
-> allows to maintain the AMT's functionality even when the OS owns
-> the device. To connect to AMT, one needs to initiate an HTTP
-> connection to port 16992. iwlmei will listen to the Rx path and
-> forward (through SAP) to the CSME firmware the data it got. Then,
-> the embedded HTTP server in the chipset will reply to the request
-> and send a SAP notification to ask iwlmei to send the reply.
-> This way, AMT running on the CSME can still work.
->
-> In practice this means that all the use cases quoted above (KVM,
-> remote IDE device, etc...) will work even when the OS uses the
-> WLAN device.
->
-> How to disable all this?
-> ---------------------------
-> iwlmei won't be able to do anything if the CSME's networking stack
-> is not enabled. By default, CSME's networking stack is disabled (this
-> is a BIOS setting).
-> In case the CSME's networking stack is disabled, iwlwifi will just
-> get access to the device because there is no contention with any other
-> actor and, hence, no arbitration is needed.
->
-> In this patch, I only add the iwlmei driver. Integration with
-> iwlwifi will be implemented in the next one.
->
-> Co-Developed-by: Ayala Beker <ayala.beker@intel.com>
-> Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> ---
-> v2: fix a few warnings raised by the different bots
-> v3: rewrite the commit message
-> v4: put the debugfs content in a different patch
-> ---
+Hi,
 
-I think I did all you wanted, I can understand if this series doesn't
-get merged for 5.14, but I really would like to make sure that we are
-ready to apply this after the merge window.
-If you're happy with this, great. If not, let me know so that I can
-fix what you want to see fixed.
-FYI - there is also the patch for mei that I don't send for review
-because it's already ACK'ed by Greg, and there is another patch that I
-haven't sent yet because it relies on a cfg80211 patch that is now in
-net-next: 358ae88881adc3ac1544104272eb7e9408f80b39
-If you merge net-next, I'll be able to rebase and send this one as well.
+On 2021-06-29 06:48, Davis wrote:
+> Greetings!
+> 
+> Could it be possible that
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v5.12.13&id=a8c4d76a8dd4fb9666fc8919a703d85fb8f44ed8
+> or at least its backport to 4.4 has the potential for memory
+> corruption due to incorrect pointer calculation?
+> Shouldn't the line:
+>   struct ethhdr *ehdr = (void *)skb_mac_header(skb);
+> be:
+>   struct ethhdr *ehdr = (struct ethhdr *) skb->data;
+> 
+> Later ehdr->h_dest is referenced, read and (when not equal to expected
+> value) written:
+>   if (unlikely(skb->protocol == sdata->control_port_protocol &&
+>       !ether_addr_equal(ehdr->h_dest, sdata->vif.addr)))
+>     ether_addr_copy(ehdr->h_dest, sdata->vif.addr);
+> 
+> In my case after cherry-picking
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v4.4.273&id=e3d4030498c304d7c36bccc6acdedacf55402387
+> to 4.4 kernel of an ARM device occasional memory corruption was observed.
+> 
+> To investigate this issue logging was added - the pointer calculation
+> was expressed as:
+>   struct ethhdr *ehdr = (void *)skb_mac_header(skb);
+>   struct ethhdr *ehdr2 = (struct ethhdr *) skb->data;
+> and memory writing was replaced by logging:
+>   if (unlikely(skb->protocol == sdata->control_port_protocol &&
+>       (!ether_addr_equal(ehdr->h_dest, sdata->vif.addr) ||
+> !ether_addr_equal(ehdr2->h_dest, sdata->vif.addr))))
+>     printk(KERN_ERR "Matching1: %u, matching2: %u, addr1: %px, addr2:
+> %px", !ether_addr_equal(ehdr->h_dest, sdata->vif.addr),
+> !ether_addr_equal(ehdr2->h_dest, sdata->vif.addr), ehdr->h_dest,
+> ehdr2->h_dest);
+> 
+> During normal use of wifi (in residential environment) logging was
+> triggered several times, in all cases matching1 was 1 and matching2
+> was 0.
+> This makes me think that normal control frames were received and
+> correctly validated by !ether_addr_equal(ehdr2->h_dest,
+> sdata->vif.addr), however !ether_addr_equal(ehdr->h_dest,
+> sdata->vif.addr) was checking incorrect buffer and identified the
+> frames as malformed/correctable.
+> This also explains memory corruption - offset difference between both
+> buffers (addr1 and addr2) was close to 64 KB in all cases, virtually
+> always a random memory location (around 64 KB away from the correct
+> buffer) will belong to something else, will have a value that differs
+> from the expected MAC address and will get overwritten by the
+> cherry-picked code.
+It seems that the 4.4 backport is broken. The problem is the fact that
+skb_mac_header is called before eth_type_trans(). This means that the
+mac header offset still has the default value of (u16)-1, resulting in
+the 64 KB memory offset that you observed.
 
-Thanks.
+I think that for 4.4, the code should be changed to use skb->data
+instead of skb_mac_header. 4.9 looks broken in the same way.
+5.4 seems fine, so newer kernels should be fine as well.
+
+- Felix
