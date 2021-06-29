@@ -2,106 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 951433B6DC1
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jun 2021 06:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FE523B7152
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jun 2021 13:29:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229792AbhF2Ewp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Jun 2021 00:52:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58114 "EHLO
+        id S233421AbhF2Lb0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Jun 2021 07:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbhF2Ewo (ORCPT
+        with ESMTP id S233281AbhF2Lb0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Jun 2021 00:52:44 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7458EC061574;
-        Mon, 28 Jun 2021 21:49:49 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id s137so8541739pfc.4;
-        Mon, 28 Jun 2021 21:49:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=tNHQWqsPBjj0yKLYweJTmYfQXLdv5jACBGV47l7LzU0=;
-        b=VRW61Egj7WXBdR2Iw8XwKEMUMYtL8WeRfWEuhOxv9NjcTRw+ptRSAvlpogQfPh4FOW
-         3PJWIFtaaQ4wxsVwSKS5fmELWr38kH4P7A61D4dZWyZtRuDfWctAgfy99z4JlRyXwR4Y
-         KvPGzM41hu+46HoLMB40m7bKsk2NRJ84QXNJ6frO9KuIqQ+CYz3fFzaA11fIco0w2CIa
-         BuQZxAOSCjV7lPvD8z+ZvHbLedwp1jfGCdGkT8xgoFlO2vMfLQWkzDkwGeibajL2b5o7
-         c8lV2Y8jDzxo2nnZkTwUfKnzW5iufMwGpPlrGLVUcLhOjLWnlYCtOULeR+sA5y+H9DaU
-         aoRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=tNHQWqsPBjj0yKLYweJTmYfQXLdv5jACBGV47l7LzU0=;
-        b=puxozhH1KC//2+rffMO8B8I3AL7+RY/2VjoYoGC6n5yPwqHo3m7pxYCZGR/1ukq3ID
-         n8RaMSvSRUxFK1sB+cuDj/uEWrNmFr0RBNHbxar4hnWYWO9lYAHQ4M7A1Y0OH3sFF5Mj
-         hPHtAaHPUpfCxpDHiuzOQi6UkqVypj4ZbQGsMajXDI7WsS8m2+Pp9M3okQUSZTsfNa++
-         7T4D2MwnUfK9cHMBArsf0LUZ9E4SBF44lHOTeRfyexoLqjXBslk9EYqfHFpRb9nI2wD4
-         v6w1uVsirv2p0Qx1bWz6X6YC1Y61FBcv9BMrolSwYP0JrSAe9QdMqEX0afVQx2KSdPz1
-         Y6uA==
-X-Gm-Message-State: AOAM533EDg8zU/CPd3Ciw2dd46RyAafyHEdQfxZzum8dfTM0NHt9hTtN
-        ouX3qeeYN9V3uiSyZHGJZnFdvn1QH59coSutopt768GhZio=
-X-Google-Smtp-Source: ABdhPJxl0ENo2BNOqLmm6Uinxiso/YG8UoSx6uPCF6BjQGsTZNnT4nePKygJlw9PB/inoSzwHDgn3oI31oOywp7Gr/0=
-X-Received: by 2002:a63:f65:: with SMTP id 37mr15881590pgp.367.1624942188665;
- Mon, 28 Jun 2021 21:49:48 -0700 (PDT)
+        Tue, 29 Jun 2021 07:31:26 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 329A9C061760
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Jun 2021 04:28:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=COxEAXPCUPIInmlp3mCbquU+blypUSMoxsW40vsGPTo=; b=BOO+Q5QrXB9dBDFEh7IN3UT5wr
+        u8qFcGJ/eviBeKpxz6BE5K261+xKCDDlru7QQIKfBTa7QTcIDKEx17bLbH3lxJyx/WnSh0O3MJ3ZR
+        27Oo06n7GqOguzEjCVmRnB1zVIgJ+R0kTEjXDAtNvzoQnCTF9xcBSAah13zrAA5k1aYE=;
+Received: from p54ae93f7.dip0.t-ipconnect.de ([84.174.147.247] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1lyBvD-0006Bt-PZ; Tue, 29 Jun 2021 13:28:55 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH] mac80211: fix starting aggregation sessions on mesh interfaces
+Date:   Tue, 29 Jun 2021 13:28:53 +0200
+Message-Id: <20210629112853.29785-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-From:   Davis <davikovs@gmail.com>
-Date:   Tue, 29 Jun 2021 07:48:00 +0300
-Message-ID: <CAHQn7pKcyC_jYmGyTcPCdk9xxATwW5QPNph=bsZV8d-HPwNsyA@mail.gmail.com>
-Subject: Posible memory corruption from "mac80211: do not accept/forward
- invalid EAPOL frames"
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greetings!
+The logic for starting aggregation sessions was recently moved from minstrel_ht
+to mac80211, into the subif tx handler just after the sta lookup.
+Unfortunately this didn't work for mesh interfaces, since the sta lookup is
+deferred until a much later point in time on those.
+Fix this by also calling the aggregation check right after the deferred sta
+lookup.
 
-Could it be possible that
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v5.12.13&id=a8c4d76a8dd4fb9666fc8919a703d85fb8f44ed8
-or at least its backport to 4.4 has the potential for memory
-corruption due to incorrect pointer calculation?
-Shouldn't the line:
-  struct ethhdr *ehdr = (void *)skb_mac_header(skb);
-be:
-  struct ethhdr *ehdr = (struct ethhdr *) skb->data;
+Fixes: 08a46c642001 ("mac80211: move A-MPDU session check from minstrel_ht to mac80211")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ net/mac80211/tx.c | 57 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
-Later ehdr->h_dest is referenced, read and (when not equal to expected
-value) written:
-  if (unlikely(skb->protocol == sdata->control_port_protocol &&
-      !ether_addr_equal(ehdr->h_dest, sdata->vif.addr)))
-    ether_addr_copy(ehdr->h_dest, sdata->vif.addr);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index e96981144358..8509778ff31f 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1147,6 +1147,29 @@ static bool ieee80211_tx_prep_agg(struct ieee80211_tx_data *tx,
+ 	return queued;
+ }
+ 
++static void
++ieee80211_aggr_check(struct ieee80211_sub_if_data *sdata,
++		     struct sta_info *sta,
++		     struct sk_buff *skb)
++{
++	struct rate_control_ref *ref = sdata->local->rate_ctrl;
++	u16 tid;
++
++	if (!ref || !(ref->ops->capa & RATE_CTRL_CAPA_AMPDU_TRIGGER))
++		return;
++
++	if (!sta || !sta->sta.ht_cap.ht_supported ||
++	    !sta->sta.wme || skb_get_queue_mapping(skb) == IEEE80211_AC_VO ||
++	    skb->protocol == sdata->control_port_protocol)
++		return;
++
++	tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
++	if (likely(sta->ampdu_mlme.tid_tx[tid]))
++		return;
++
++	ieee80211_start_tx_ba_session(&sta->sta, tid, 0);
++}
++
+ /*
+  * initialises @tx
+  * pass %NULL for the station if unknown, a valid pointer if known
+@@ -1160,6 +1183,7 @@ ieee80211_tx_prepare(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_hdr *hdr;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	bool aggr_check = false;
+ 	int tid;
+ 
+ 	memset(tx, 0, sizeof(*tx));
+@@ -1188,8 +1212,10 @@ ieee80211_tx_prepare(struct ieee80211_sub_if_data *sdata,
+ 		} else if (tx->sdata->control_port_protocol == tx->skb->protocol) {
+ 			tx->sta = sta_info_get_bss(sdata, hdr->addr1);
+ 		}
+-		if (!tx->sta && !is_multicast_ether_addr(hdr->addr1))
++		if (!tx->sta && !is_multicast_ether_addr(hdr->addr1)) {
+ 			tx->sta = sta_info_get(sdata, hdr->addr1);
++			aggr_check = true;
++		}
+ 	}
+ 
+ 	if (tx->sta && ieee80211_is_data_qos(hdr->frame_control) &&
+@@ -1199,8 +1225,12 @@ ieee80211_tx_prepare(struct ieee80211_sub_if_data *sdata,
+ 		struct tid_ampdu_tx *tid_tx;
+ 
+ 		tid = ieee80211_get_tid(hdr);
+-
+ 		tid_tx = rcu_dereference(tx->sta->ampdu_mlme.tid_tx[tid]);
++		if (!tid_tx && aggr_check) {
++			ieee80211_aggr_check(sdata, tx->sta, skb);
++			tid_tx = rcu_dereference(tx->sta->ampdu_mlme.tid_tx[tid]);
++		}
++
+ 		if (tid_tx) {
+ 			bool queued;
+ 
+@@ -4120,29 +4150,6 @@ void ieee80211_txq_schedule_start(struct ieee80211_hw *hw, u8 ac)
+ }
+ EXPORT_SYMBOL(ieee80211_txq_schedule_start);
+ 
+-static void
+-ieee80211_aggr_check(struct ieee80211_sub_if_data *sdata,
+-		     struct sta_info *sta,
+-		     struct sk_buff *skb)
+-{
+-	struct rate_control_ref *ref = sdata->local->rate_ctrl;
+-	u16 tid;
+-
+-	if (!ref || !(ref->ops->capa & RATE_CTRL_CAPA_AMPDU_TRIGGER))
+-		return;
+-
+-	if (!sta || !sta->sta.ht_cap.ht_supported ||
+-	    !sta->sta.wme || skb_get_queue_mapping(skb) == IEEE80211_AC_VO ||
+-	    skb->protocol == sdata->control_port_protocol)
+-		return;
+-
+-	tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+-	if (likely(sta->ampdu_mlme.tid_tx[tid]))
+-		return;
+-
+-	ieee80211_start_tx_ba_session(&sta->sta, tid, 0);
+-}
+-
+ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 				  struct net_device *dev,
+ 				  u32 info_flags,
+-- 
+2.30.1
 
-In my case after cherry-picking
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v4.4.273&id=e3d4030498c304d7c36bccc6acdedacf55402387
-to 4.4 kernel of an ARM device occasional memory corruption was observed.
-
-To investigate this issue logging was added - the pointer calculation
-was expressed as:
-  struct ethhdr *ehdr = (void *)skb_mac_header(skb);
-  struct ethhdr *ehdr2 = (struct ethhdr *) skb->data;
-and memory writing was replaced by logging:
-  if (unlikely(skb->protocol == sdata->control_port_protocol &&
-      (!ether_addr_equal(ehdr->h_dest, sdata->vif.addr) ||
-!ether_addr_equal(ehdr2->h_dest, sdata->vif.addr))))
-    printk(KERN_ERR "Matching1: %u, matching2: %u, addr1: %px, addr2:
-%px", !ether_addr_equal(ehdr->h_dest, sdata->vif.addr),
-!ether_addr_equal(ehdr2->h_dest, sdata->vif.addr), ehdr->h_dest,
-ehdr2->h_dest);
-
-During normal use of wifi (in residential environment) logging was
-triggered several times, in all cases matching1 was 1 and matching2
-was 0.
-This makes me think that normal control frames were received and
-correctly validated by !ether_addr_equal(ehdr2->h_dest,
-sdata->vif.addr), however !ether_addr_equal(ehdr->h_dest,
-sdata->vif.addr) was checking incorrect buffer and identified the
-frames as malformed/correctable.
-This also explains memory corruption - offset difference between both
-buffers (addr1 and addr2) was close to 64 KB in all cases, virtually
-always a random memory location (around 64 KB away from the correct
-buffer) will belong to something else, will have a value that differs
-from the expected MAC address and will get overwritten by the
-cherry-picked code.
-
-Br,
-Davis
