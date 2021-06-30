@@ -2,106 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B9FF3B8627
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jun 2021 17:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51AAA3B86B8
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jun 2021 18:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235534AbhF3PUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Jun 2021 11:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235466AbhF3PUU (ORCPT
+        id S236005AbhF3QFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Jun 2021 12:05:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:40327 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235822AbhF3QFA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Jun 2021 11:20:20 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08240C061756
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Jun 2021 08:17:50 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id a5-20020a7bc1c50000b02901e3bbe0939bso1912163wmj.0
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Jun 2021 08:17:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=9Si4/3mbVmM5VJxy6bW+MVjJGaS3XheqtQW8xlZqafc=;
-        b=lVdn7Lp4EpNU4LT33sKXscSBPErMV2XKU55z4P8urc0t8YbcEm9qsxXySDVbd6Jhpi
-         /M0XOy/ykjXbK5sqj+hEPevj8mggSJdX9Src2vwXYC0si+/hlcUZ5JvsZgarDw+fqhMw
-         dLI487lcNJnd0tqiDx4Wb1VxUR5NQ3qU0OiiVxxikSwkGNSrKfeKe988Mrombfgwra2I
-         AeKP8syWoRt7lBYBZN7fnMckNW1F4gaoq2ZicmdTzSCZoQjwKQBakRaTf3Q535ycAbri
-         yhdI6EWrwdprIjGMiKZy9dMMpl4toYpecYuMyeuFf7S7A1P3EHt0IOIflloO2rSSDQin
-         FBiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=9Si4/3mbVmM5VJxy6bW+MVjJGaS3XheqtQW8xlZqafc=;
-        b=WC/AdiU6TZy1EWvenadr4sCgPQz0c64cGCpYRIXNGn7TsyVj7cLJfQuw9eAtpTBPWW
-         ZW4TWdQRKnlRK68S119oSVJ39/ykkh7TPttrIe8XHFR9GMMokXSCmPMZaTecOSsmCc4y
-         W1TJ3nHwvq2q5Ncv3py4VJqhiadvtQ0iyBRvyfE8cmT1CiL6RN0hSBlDZM0Yh1bqoM79
-         2w47ux+UCxviAAVYiT/cF2DBaLANrBR8wIRMBMoBJyd5sSSKuhuSOR7KaQHbJ9NjcE/J
-         PdtdgnEWNPVGuzJzczFDDsNCRwuGWP7goS4cmFX4Bs2VYteUlGKOLRvdP2mlzSjpR2VC
-         1dbw==
-X-Gm-Message-State: AOAM533OYsXxGENyDc6gS2mfHJ25SIZmM3nWkyIrkPoXulMXi1+F8d8R
-        CB/ukewWQlNmgFSVdEV6QiNR1jp+elRVXflYmlEZRam87j4=
-X-Google-Smtp-Source: ABdhPJy5IqKZx5CNsWcNRVg9j8AjosPJZAWplzawZ9lT4NWTEEgeR3s8AzFquXlEESPCdVLndObvFtw1J8TrROjN0J0=
-X-Received: by 2002:a05:600c:4f56:: with SMTP id m22mr5372469wmq.16.1625066268617;
- Wed, 30 Jun 2021 08:17:48 -0700 (PDT)
+        Wed, 30 Jun 2021 12:05:00 -0400
+Received: from 111-240-144-27.dynamic-ip.hinet.net ([111.240.144.27] helo=localhost.localdomain)
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <chris.chiu@canonical.com>)
+        id 1lycfQ-0003Ad-Cl; Wed, 30 Jun 2021 16:02:24 +0000
+From:   chris.chiu@canonical.com
+To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Chiu <chris.chiu@canonical.com>
+Subject: [PATCH] rtl8xxxu: Fix the handling of TX A-MPDU aggregation
+Date:   Thu,  1 Jul 2021 00:01:51 +0800
+Message-Id: <20210630160151.28227-1-chris.chiu@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <a79286b90cdfdee3a83397008c0f7b6d67bc7f69.1607035229.git.b.K.il.h.u+tigbuh@gmail.com>
- <YL+RDtGatz/ybG+M@ubuntu-x1>
-In-Reply-To: <YL+RDtGatz/ybG+M@ubuntu-x1>
-From:   b.K.il.h.u+tigbuh@gmail.com
-Date:   Wed, 30 Jun 2021 17:17:37 +0200
-Message-ID: <CAPuHQ=GbacSTgyimkJtx1FXp319Df=LdrPQZ6ZDnPQ_JVXueKw@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: recent FCC report and order allows
- 5850-5895 immediately
-To:     Seth Forshee <seth.forshee@canonical.com>
-Cc:     wireless-regdb <wireless-regdb@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> On Tue, Jun 8, 2021 at 5:47 PM Seth Forshee <seth.forshee@canonical.com> =
-wrote:
-> I think we concluded previously that both 5730-5850 and 5850-5895 should
-> have a max bandwidth of 160 MHz to permit use of 160 MHz across these
-> channels.
->
+From: Chris Chiu <chris.chiu@canonical.com>
 
-Yes.
+The TX A-MPDU aggregation is not handled in the driver since the
+ieee80211_start_tx_ba_session has never been started properly.
+Start and stop the TX BA session by tracking the TX aggregation
+status of each TID. Fix the ampdu_action and the tx descriptor
+accordingly with the given TID.
 
-> We also discussed using NO-IR for 5850-5895. The regulations forbid
-> active scans, and PMTP-ONLY does not prevent them. NO-IR appears to be
-> the only option which conforms to this restriction, though that will
-> also block running an AP in this range.
->
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+---
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  2 ++
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 33 ++++++++++++++-----
+ 2 files changed, 26 insertions(+), 9 deletions(-)
 
-So we would not be able to operate an OpenWrt or other Linux-based AP,
-while other vendors would be allowed to do this? How is this
-acceptable? How does this help in liberating the band?
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index d1a566cc0c9e..3f7ff84f2056 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1383,6 +1383,8 @@ struct rtl8xxxu_priv {
+ 	u8 no_pape:1;
+ 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
+ 	u8 rssi_level;
++	bool tx_aggr_started[IEEE80211_NUM_TIDS];
++	DECLARE_BITMAP(tid_bitmap, IEEE80211_NUM_TIDS);
+ 	/*
+ 	 * Only one virtual interface permitted because only STA mode
+ 	 * is supported and no iface_combinations are provided.
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 9ff09cf7eb62..03c6ed7efe06 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4805,6 +4805,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 	struct ieee80211_rate *tx_rate = ieee80211_get_tx_rate(hw, tx_info);
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+ 	struct device *dev = &priv->udev->dev;
++	u8 *qc = ieee80211_get_qos_ctl(hdr);
++	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
+ 	u32 rate;
+ 	u16 rate_flags = tx_info->control.rates[0].flags;
+ 	u16 seq_number;
+@@ -4828,7 +4830,7 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 
+ 	tx_desc->txdw3 = cpu_to_le32((u32)seq_number << TXDESC32_SEQ_SHIFT);
+ 
+-	if (ampdu_enable)
++	if (ampdu_enable && test_bit(tid, priv->tid_bitmap))
+ 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_ENABLE);
+ 	else
+ 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_BREAK);
+@@ -4876,6 +4878,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+ 	struct device *dev = &priv->udev->dev;
+ 	struct rtl8xxxu_txdesc40 *tx_desc40;
++	u8 *qc = ieee80211_get_qos_ctl(hdr);
++	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
+ 	u32 rate;
+ 	u16 rate_flags = tx_info->control.rates[0].flags;
+ 	u16 seq_number;
+@@ -4902,7 +4906,7 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 
+ 	tx_desc40->txdw9 = cpu_to_le32((u32)seq_number << TXDESC40_SEQ_SHIFT);
+ 
+-	if (ampdu_enable)
++	if (ampdu_enable && test_bit(tid, priv->tid_bitmap))
+ 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_ENABLE);
+ 	else
+ 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_BREAK);
+@@ -5015,12 +5019,19 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+ 	if (ieee80211_is_data_qos(hdr->frame_control) && sta) {
+ 		if (sta->ht_cap.ht_supported) {
+ 			u32 ampdu, val32;
++			u8 *qc = ieee80211_get_qos_ctl(hdr);
++			u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
+ 
+ 			ampdu = (u32)sta->ht_cap.ampdu_density;
+ 			val32 = ampdu << TXDESC_AMPDU_DENSITY_SHIFT;
+ 			tx_desc->txdw2 |= cpu_to_le32(val32);
+ 
+ 			ampdu_enable = true;
++
++			if (!priv->tx_aggr_started[tid] &&
++				!(skb->protocol == cpu_to_be16(ETH_P_PAE)))
++				if (!ieee80211_start_tx_ba_session(sta, tid, 0))
++					priv->tx_aggr_started[tid] = true;
+ 		}
+ 	}
+ 
+@@ -6089,6 +6100,7 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	struct device *dev = &priv->udev->dev;
+ 	u8 ampdu_factor, ampdu_density;
+ 	struct ieee80211_sta *sta = params->sta;
++	u16 tid = params->tid;
+ 	enum ieee80211_ampdu_mlme_action action = params->action;
+ 
+ 	switch (action) {
+@@ -6101,17 +6113,20 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		dev_dbg(dev,
+ 			"Changed HT: ampdu_factor %02x, ampdu_density %02x\n",
+ 			ampdu_factor, ampdu_density);
+-		break;
++		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
++	case IEEE80211_AMPDU_TX_STOP_CONT:
+ 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
+-		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH\n", __func__);
+-		rtl8xxxu_set_ampdu_factor(priv, 0);
+-		rtl8xxxu_set_ampdu_min_space(priv, 0);
+-		break;
+ 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
+-		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH_CONT\n",
+-			 __func__);
++		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP\n", __func__);
+ 		rtl8xxxu_set_ampdu_factor(priv, 0);
+ 		rtl8xxxu_set_ampdu_min_space(priv, 0);
++		priv->tx_aggr_started[tid] = false;
++		clear_bit(tid, priv->tid_bitmap);
++		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
++		break;
++	case IEEE80211_AMPDU_TX_OPERATIONAL:
++		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_OPERATIONAL\n", __func__);
++		set_bit(tid, priv->tid_bitmap);
+ 		break;
+ 	case IEEE80211_AMPDU_RX_START:
+ 		dev_dbg(dev, "%s: IEEE80211_AMPDU_RX_START\n", __func__);
+-- 
+2.20.1
 
-> I also read the max EIRP for clients as 30 dBm without any TPC
-> requirement. Did I overlook something which limits the EIRP to 27 dBm?
->
-
-The 27 dBm EIRP is needed for 20 MHz operation due to spectral density
-requirements. Is my information correct that regdb has no notion of
-specifying a separate limit for spectral density? (If it did, we might
-be able to double the EIRP for 2.4GHz of 10MHz channels)
-
-I have summarized the reasoning in a comment of the original patch,
-but let me cite it here then (copied from the more recent link you
-have now given):
-
-> "(iii) For client devices operating under the control of an indoor access=
- point in the 5.850-5.895 GHz band, the maximum power spectral density must=
- not exceed 14 dBm e.i.r.p. in any 1-megahertz band, and the maximum e.i.r.=
-p. over the frequency band of operation must not exceed 30 dBm."
-> "the Commission limited indoor access point EIRP spectral density to 20 d=
-Bm/MHz with a maximum EIRP of 36 dBm over the bandwidth of operation (e.g.,=
- 33 dBm/20 MHz and 36 dBm/40 MHz)"
-> "To keep the potential for causing harmful interference low, the Commissi=
-on required client devices to operate under the control of an access point,=
- and limited client device's power spectral density and maximum transmit po=
-wer to 6 dB below the power permitted for the access point."
