@@ -2,164 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CA0D3B8151
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jun 2021 13:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C73883B818E
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jun 2021 14:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234309AbhF3LdW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Jun 2021 07:33:22 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:59217 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234148AbhF3LdW (ORCPT
+        id S234392AbhF3MDK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Jun 2021 08:03:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49380 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234333AbhF3MDI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Jun 2021 07:33:22 -0400
-Received: from mail-wr1-f52.google.com ([209.85.221.52]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MDQqe-1m6psw2LG2-00AWHl; Wed, 30 Jun 2021 13:30:52 +0200
-Received: by mail-wr1-f52.google.com with SMTP id u6so3201405wrs.5;
-        Wed, 30 Jun 2021 04:30:52 -0700 (PDT)
-X-Gm-Message-State: AOAM530OhqXx3vl/xZ5Z29wGFfZDz2BMd5FcuPz35A3NC5FGYgaNCJMg
-        YqSqCKEywXCagFCLj4EXWTGSViZLRLJ1hvYApvg=
-X-Google-Smtp-Source: ABdhPJzYNXi8j/ffCK4PMxsUHoWIPd5fACyahpwza/FwkvHRHJts4aBYBClRyUAZ/tIYQgNnVrENUgbPJf4+hiQbbxo=
-X-Received: by 2002:adf:fd8e:: with SMTP id d14mr18937848wrr.361.1625052652138;
- Wed, 30 Jun 2021 04:30:52 -0700 (PDT)
+        Wed, 30 Jun 2021 08:03:08 -0400
+Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F13C061767
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Jun 2021 05:00:39 -0700 (PDT)
+Received: by mail-ua1-x932.google.com with SMTP id x37so905599uac.13
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Jun 2021 05:00:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=OL62kdeYlXXEkJ1aGiG1sjEtSE7mW2mdMPPQqqcuIxw=;
+        b=GtN/V1W+K3av9LYjLhNVlep99YK92iS+jO2WMN8irtiCujY9UbyESKBImCEyFTSvc2
+         N/9kKpJ5Z+idVw51QclrK/S5v1hCC+YMWrdzDB+c/lgknEujK3RXZBuGL2K6Em+2sqkx
+         hxjQviWx+yPjVjCVldw1zZJoVV+d5AkCzmz2RTozHwBeCsaULN3297BL+DYks+cQfrh2
+         9HZnbbVSRylm+ZHYs7oRA6vupGOXGooPD6JOXo+6QCA61Ba3OPW5fUbdZauH3tDOguww
+         o6Pw9oJ1e1lLB2Na4xHqvXCTbrM4ytKW/XS3fMvB9rQPreyl+INmjhFLLFQeCLHv6fRc
+         21Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=OL62kdeYlXXEkJ1aGiG1sjEtSE7mW2mdMPPQqqcuIxw=;
+        b=IhxA7DNl5qBQ1XnLwA011QsgO6hgCHCGHqQDlTo+OGa6Du9AHb8J5/Lu5JyHRY5N4P
+         f3ird1iMuRt5vH5PzQAl0M1vpu064sti+rL6HBcYRJJaErsEgEUDMYzLTxSWi1iwqA95
+         lGY+C54XUbkdA62vuZ10rCVqsXmLtyEoIXRHgRI4XcCxQYqDhgWx56SQOrymd0mRE6TT
+         ISjLoDpUr73ZLHauSLb0s/Yo0Hi08lKre261Z3eM6CCKSGeUDbx/spM7OhOd3HV/ZXwX
+         ckatWooQcKFGiP9wHov0NFAGNU2L8EEyuv1LCYwWGGLL4pVwj4KdGa0eXcd5DNFr7PMX
+         zUUQ==
+X-Gm-Message-State: AOAM531E6abGH54oPf0sqVmavmwQdWr+RdQMAU9izhL1gMbVnJoIcEln
+        hqxxP7oPIsuLzGEf9Z0loYKTKk554vl07NylQTaCVA==
+X-Google-Smtp-Source: ABdhPJwPGDieMZ+5r43/zWQZ3F64qB/ndaTGdMjbvOXP3BoBFkByykdSNBN4/vPRb1ScCDMM5gnwhSzc1EUNmu10tcw=
+X-Received: by 2002:ab0:484b:: with SMTP id c11mr32650086uad.100.1625054439072;
+ Wed, 30 Jun 2021 05:00:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210622202345.795578-1-jernej.skrabec@gmail.com>
- <CAK8P3a1mvRTTFHtxqREmcbgJS+e94BHajCtAU_fzBhNNKjJBcg@mail.gmail.com> <CAPDyKFqFTCzXFMar88CYdZKc=eMjKszsOCS1LwLmnF0uNQyPAw@mail.gmail.com>
-In-Reply-To: <CAPDyKFqFTCzXFMar88CYdZKc=eMjKszsOCS1LwLmnF0uNQyPAw@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 30 Jun 2021 13:30:36 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2yo6eAe+jZQ7XB9ERYOYvBdCfjMKCYgm=gh-Ekd=SQ3Q@mail.gmail.com>
-Message-ID: <CAK8P3a2yo6eAe+jZQ7XB9ERYOYvBdCfjMKCYgm=gh-Ekd=SQ3Q@mail.gmail.com>
+ <CAPDyKFo6AVGq5Q9bRKPjypRMxisLf0nZWLtSeARGO-3kO7=+zQ@mail.gmail.com> <2049952.mNMznikF6L@jernej-laptop>
+In-Reply-To: <2049952.mNMznikF6L@jernej-laptop>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 30 Jun 2021 14:00:02 +0200
+Message-ID: <CAPDyKFrr3eUAXgdkWVF1nYBL8A73TkzUyqhLUZOSyGe0ebDKuw@mail.gmail.com>
 Subject: Re: [RFC PATCH] cw1200: use kmalloc() allocation instead of stack
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Jernej Skrabec <jernej.skrabec@gmail.com>, pizza@shaftnet.org,
+To:     =?UTF-8?Q?Jernej_=C5=A0krabec?= <jernej.skrabec@gmail.com>
+Cc:     pizza@shaftnet.org, Arnd Bergmann <arnd@arndb.de>,
         Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:SJs4H3RGqU37iJSYEnhIG4mpbI6+IUtkj7f9Rctv24LvQnej3gM
- u+NLdKOYAECXRtMnhvT+qDA8fNxKXa9DA+LcsRW1Uq5zrIUy21euoaXoRK6qpWyyxzSJq11
- MfzeJq7Xbs2vb3qRgJvTHttf8PpC0PQGYUwVQbEmgxsqAuEeMHe6yUkjV4pm326ek8xsf3/
- BylUSSkP6XUj3zsrSuqbQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:y38oMd2jbMw=:C83AR+yAfBf0FglJ4C4gm3
- Ci6MFBwZSXxxyAiCUtSeyiGIvbtjA0qwn8FrpyBMaLLZlGDcCFAXAr/Zagu6BwAjw320//pkX
- NzqJMYO6WSDEID231NK/dSl25CEsBuJa76bYVld3UvLgHxiYoNyxEUUmnQrhxops0ewyRjgPn
- wPK8y0ddqREZEkCRk+JZVzHXXvKPHSBd41cY613uVYJAoi/cFp02Z2KaBJs0wzHTwbrrCZQOO
- 8Qpa1IY2AGpqvdJevfskOIuseUTHdBkE5+fTwBs9Bqjzty+4sZ8Vo3FUKGQcA51/GgZCRE6ro
- AyIm+cGdP+La5U3LcKgiijdcSbJLH1n1yhaTlCAw+ne9Bn1vhbjxYs3hgEMl1O1V4w0DZrHb9
- iwmBC5rbDK4geWNrfdLA4I65sJYeQLeWbo7SMfjB0CZAVvnmsa8dAftlKnpwf9fFoy4a09f6i
- 2+RYrapqC9YvA+o3qhrgP2kaLoy1BIEEDYbCHSQgR9UPOzNs/6nmNhrFzZNTerh+Dq7VgcOhY
- TYnH5SmIXpCbAofy2sn/n3Iqq8aKfqNDmb3rDFOaDjzq4bcGGRLQSlLNnSGzTUqdJgVOwLSjI
- nqhXAN92M/DiVrkuCM6ui7NVJQa8PfpHJUOCL3ixrQkWyA4IAUzNDoSB5Wt59OJ+gf2mjszlX
- 1PM4=
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jun 30, 2021 at 11:56 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+On Wed, 30 Jun 2021 at 12:09, Jernej =C5=A0krabec <jernej.skrabec@gmail.com=
+> wrote:
 >
-> On Tue, 22 Jun 2021 at 22:33, Arnd Bergmann <arnd@arndb.de> wrote:
-> >
-> > On Tue, Jun 22, 2021 at 10:24 PM Jernej Skrabec
-> > <jernej.skrabec@gmail.com> wrote:
-> > >
+> Hi Ulf!
+>
+> Dne sreda, 30. junij 2021 ob 12:03:13 CEST je Ulf Hansson napisal(a):
+> > On Tue, 22 Jun 2021 at 22:23, Jernej Skrabec <jernej.skrabec@gmail.com>
+> wrote:
 > > > It turns out that if CONFIG_VMAP_STACK is enabled and src or dst is
 > > > memory allocated on stack, SDIO operations fail due to invalid memory
 > > > address conversion:
+> > >
+> > > cw1200_wlan_sdio: Probe called
+> > > sunxi-mmc 4021000.mmc: DMA addr 0x0000800051eab954+4 overflow (mask
+> > > ffffffff, bus limit 0). WARNING: CPU: 2 PID: 152 at
+> > > kernel/dma/direct.h:97 dma_direct_map_sg+0x26c/0x28c CPU: 2 PID: 152
+> > > Comm: kworker/2:2 Not tainted 5.13.0-rc1-00026-g84114ef026b9-dirty #8=
+5
+> > > Hardware name: X96 Mate (DT)
+> > > Workqueue: events_freezable mmc_rescan
+> > > pstate: 60000005 (nZCv daif -PAN -UAO -TCO BTYPE=3D--)
+> > > pc : dma_direct_map_sg+0x26c/0x28c
+> > > lr : dma_direct_map_sg+0x26c/0x28c
+> > > sp : ffff800011eab540
+> > > x29: ffff800011eab540 x28: ffff800011eab738 x27: 0000000000000000
+> > > x26: ffff000001daf010 x25: 0000000000000000 x24: 0000000000000000
+> > > x23: 0000000000000002 x22: fffffc0000000000 x21: ffff8000113b0ab0
+> > > x20: ffff80001181abb0 x19: 0000000000000001 x18: ffffffffffffffff
+> > > x17: 00000000fa97f83f x16: 00000000d2e01bf8 x15: ffff8000117ffb1d
+> > > x14: ffffffffffffffff x13: ffff8000117ffb18 x12: fffffffffffc593f
+> > > x11: ffff800011676ad0 x10: fffffffffffe0000 x9 : ffff800011eab540
+> > > x8 : 206b73616d282077 x7 : 000000000000000f x6 : 000000000000000c
+> > > x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000ffffffff
+> > > x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff00000283b800
+> > >
+> > > Call trace:
+> > >  dma_direct_map_sg+0x26c/0x28c
+> > >  dma_map_sg_attrs+0x2c/0x60
+> > >  sunxi_mmc_request+0x70/0x420
+> > >  __mmc_start_request+0x68/0x134
+> > >  mmc_start_request+0x84/0xac
+> > >  mmc_wait_for_req+0x70/0x100
+> > >  mmc_io_rw_extended+0x1cc/0x2c0
+> > >  sdio_io_rw_ext_helper+0x194/0x240
+> > >  sdio_memcpy_fromio+0x20/0x2c
+> > >  cw1200_sdio_memcpy_fromio+0x20/0x2c
+> > >  __cw1200_reg_read+0x34/0x60
+> > >  cw1200_reg_read+0x48/0x70
+> > >  cw1200_load_firmware+0x38/0x5d0
+> > >  cw1200_core_probe+0x794/0x970
+> > >  cw1200_sdio_probe+0x124/0x22c
+> > >  sdio_bus_probe+0xe8/0x1d0
+> > >  really_probe+0xe4/0x504
+> > >  driver_probe_device+0x64/0xcc
+> > >  __device_attach_driver+0xd0/0x14c
+> > >  bus_for_each_drv+0x78/0xd0
+> > >  __device_attach+0xdc/0x184
+> > >  device_initial_probe+0x14/0x20
+> > >  bus_probe_device+0x9c/0xa4
+> > >  device_add+0x350/0x83c
+> > >  sdio_add_func+0x6c/0x90
+> > >  mmc_attach_sdio+0x1b0/0x430
+> > >  mmc_rescan+0x254/0x2e0
+> > >  process_one_work+0x1d0/0x34c
+> > >  worker_thread+0x13c/0x470
+> > >  kthread+0x154/0x160
+> > >  ret_from_fork+0x10/0x34
+> > >
+> > > sunxi-mmc 4021000.mmc: dma_map_sg failed
+> > > sunxi-mmc 4021000.mmc: map DMA failed
+> > > Can't read config register.
+> > >
+> > > Fix that by using kmalloc() allocated memory for read/write 16/32
+> > > funtions.
+> > >
+> > > Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 > >
-> > Thank you for sending this!
-> >
-> > It's worth pointing out that even without CONFIG_VMAP_STACK, using
-> > dma_map_sg() on a stack variable is broken, though it will appear to
-> > work most of the time but rarely cause a stack data corruption when
-> > the cache management goes wrong.
-> >
-> > This clearly needs to be fixed somewhere, if not with your patch, then
-> > a similar one.
-> >
-> > > diff --git a/drivers/net/wireless/st/cw1200/hwio.c b/drivers/net/wireless/st/cw1200/hwio.c
-> > > index 3ba462de8e91..5521cb7f2233 100644
-> > > --- a/drivers/net/wireless/st/cw1200/hwio.c
-> > > +++ b/drivers/net/wireless/st/cw1200/hwio.c
-> > > @@ -66,33 +66,65 @@ static int __cw1200_reg_write(struct cw1200_common *priv, u16 addr,
-> > >  static inline int __cw1200_reg_read_32(struct cw1200_common *priv,
-> > >                                         u16 addr, u32 *val)
-> > >  {
-> > > -       __le32 tmp;
-> > > -       int i = __cw1200_reg_read(priv, addr, &tmp, sizeof(tmp), 0);
-> > > -       *val = le32_to_cpu(tmp);
-> > > +       __le32 *tmp;
-> > > +       int i;
-> > > +
-> > > +       tmp = kmalloc(sizeof(*tmp), GFP_KERNEL);
-> > > +       if (!tmp)
-> > > +               return -ENOMEM;
-> > > +
-> > > +       i = __cw1200_reg_read(priv, addr, tmp, sizeof(*tmp), 0);
-> > > +       *val = le32_to_cpu(*tmp);
-> > > +       kfree(tmp);
-> > >         return i;
-> > >  }
-> >
-> > There is a possible problem here when the function gets called from
-> > atomic context, so it might need to use GFP_ATOMIC instead of
-> > GFP_KERNEL. If it's never called from atomic context, then this patch
-> > looks correct to me.
+> > Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 >
-> I would be surprised if this is called from atomic context (when IRQs
-> are turned off), because in most cases, to complete the read/write
-> request the mmc controller driver relies on IRQs being delivered.
+> Thanks! But I found few more places which need this kind of fix:
+> https://github.com/jernejsk/linux-1/commit/
+> 1cba9a7764c7d5bbdeb4ddeaa91ff20a0339f6ff
 
-I thought I had seen a spinlock in the forked driver, but I don't see
-it now, so I probably misremembered that bit.
+I couldn't find it.
 
-> > The alternative would be to add a bounce buffer check based on
-> > is_vmalloc_or_module_addr() in sdio_io_rw_ext_helper(), which would
-> > add a small bit of complexity there but solve the problem for
-> > all drivers at once. In this case, it would probably have to use
-> > GFP_ATOMIC regardless of whether __cw1200_reg_read_32()
-> > is allowed to sleep, since other callers might not.
 >
-> I like the idea, but...
->
-> I don't think we should see this as an alternative, but rather as a
-> complement which would have performance issues. A warning should be
-> printed, if the buffer isn't properly allocated.
+> I guess I can keep R-b tag?
 
-Fair enough. I found the function call I was looking for: object_is_on_stack(),
-the patch below should print a warning once when a driver passes
-a bad buffer, but I did not test that.
+Well, just send a new version and I will respond to it again, no
+worries. Or send an additional one on top.
 
-There are some possible variations on that: an on-stack buffer by
-itself can work as long as the DMA is cache-coherent and stacks
-are not vmapped. For the is_vmalloc_or_module_addr() case,
-we may decide to just return an error, rather than running into
-a kernel oops.
+[...]
 
-> Additionally, I don't think GFT_ATOMIC should be needed.
-
-Ok, I now see the mmc_wait_for_req() in mmc_io_rw_extended()
-that probably means it can not be called in atomic context at all,
-and that GFP_KERNEL is safe, and that any driver calling it with
-a spinlock held is already broken.
-
-       Arnd
-
-8<---
-diff --git a/drivers/mmc/core/sdio_ops.c b/drivers/mmc/core/sdio_ops.c
-index 4c229dd2b6e5..845f9ca3b200 100644
---- a/drivers/mmc/core/sdio_ops.c
-+++ b/drivers/mmc/core/sdio_ops.c
-@@ -124,6 +124,7 @@ int mmc_io_rw_extended(struct mmc_card *card, int
-write, unsigned fn,
-        int err;
-
-        WARN_ON(blksz == 0);
-+       WARN_ON_ONCE(is_vmalloc_or_module_addr(buf) || object_is_on_stack(buf));
-
-        /* sanity check */
-        if (addr & ~0x1FFFF)
+Kind regards
+Uffe
