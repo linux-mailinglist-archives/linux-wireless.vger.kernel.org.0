@@ -2,115 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2105C3B7CE7
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jun 2021 07:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1274C3B7D9A
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jun 2021 08:49:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231414AbhF3FUY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Jun 2021 01:20:24 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:35058 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230097AbhF3FUX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Jun 2021 01:20:23 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1625030275; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=r6StrvAgtSjDvxY5bx8SeVF3UJV/4tFr9nqHkH2GysI=;
- b=ml7LbDBxwlIDKdBG1nVfptnxKcHOCDMd/jPhnHnzIbZsUlJcTeuJbwaN3Jr4t7rH6GTTmSUg
- DWJWmKF8RXUYZxyq4t6zJCxSvY5q3oVrdCTYnDRfbWe99ss4GsQhr+kiu+5v/fyhK7YYDGZW
- ECOmc2ilPQ3dxB4TlT6VpdR8q5s=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 60dbfe805e3e57240b3cc7e2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 30 Jun 2021 05:17:52
- GMT
-Sender: ppranees=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 16608C433D3; Wed, 30 Jun 2021 05:17:52 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: ppranees)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 41CF5C433F1;
-        Wed, 30 Jun 2021 05:17:51 +0000 (UTC)
+        id S232445AbhF3Gvz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Jun 2021 02:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36118 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232370AbhF3Gvy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 30 Jun 2021 02:51:54 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6C1C061766;
+        Tue, 29 Jun 2021 23:49:25 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lyU29-00Dfk2-PY; Wed, 30 Jun 2021 08:49:17 +0200
+Message-ID: <33878426ded4c2b5af3e0cd5b36fbc2e475e2f43.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 11/12] mac80211: drop data frames without key on
+ encrypted links
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Cc:     Sasha Levin <sashal@kernel.org>, Luca Coelho <luca@coelho.fi>,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Date:   Wed, 30 Jun 2021 08:49:16 +0200
+In-Reply-To: <20210629213214.wgypgbxor7mhutni@pali>
+References: <iwlwifi.20200326150855.6865c7f28a14.I9fb1d911b064262d33e33dfba730cdeef83926ca@changeid>
+         <20200327150342.252AF20748@mail.kernel.org>
+         <20210611101046.zej2t2oc6hsc67yv@pali>
+         <804462f2381df5fb30fba7e186e62375352b8adc.camel@sipsolutions.net>
+         <20210629213214.wgypgbxor7mhutni@pali>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 30 Jun 2021 10:47:51 +0530
-From:   P Praneesh <ppranees@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Jouni Malinen <jouni@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>
-Subject: Re: [PATCH 12/12] ath11k: avoid unnecessary lock contention in
- tx_completion path
-In-Reply-To: <b1dbd11a-e978-16ea-1473-7eb81399981c@nbd.name>
-References: <20210615211407.92233-1-jouni@codeaurora.org>
- <20210615211407.92233-13-jouni@codeaurora.org>
- <b1dbd11a-e978-16ea-1473-7eb81399981c@nbd.name>
-Message-ID: <01aa763e6a2cd58139a6b3685b8151a7@codeaurora.org>
-X-Sender: ppranees@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-06-29 23:05, Felix Fietkau wrote:
-> On 2021-06-15 23:14, Jouni Malinen wrote:
->> From: P Praneesh <ppranees@codeaurora.org>
->> 
->> Lock is not needed for the readable idr operation, so avoid 
->> spin_lock_bh
->> for the idr_find() call. No need to disable the bottom half preempt if
->> it is already in bottom half context, so modify the spin_lock_bh to
->> spin_lock in the data tx completion handler.
->> 
->> Tested-on: IPQ8074 hw2.0 AHB 
->> WLAN.HK.2.4.0.1-01734-QCAHKSWPL_SILICONZ-1 v2
->> 
->> Co-developed-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
->> Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
->> Signed-off-by: P Praneesh <ppranees@codeaurora.org>
->> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
->> ---
->>  drivers/net/wireless/ath/ath11k/dp_tx.c | 18 ++++++++----------
->>  1 file changed, 8 insertions(+), 10 deletions(-)
->> 
->> diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c 
->> b/drivers/net/wireless/ath/ath11k/dp_tx.c
->> index ab9ccf0eb274..659f9d98bc0c 100644
->> --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
->> +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
->> @@ -288,19 +288,18 @@ static void ath11k_dp_tx_free_txbuf(struct 
->> ath11k_base *ab, u8 mac_id,
->>  	struct sk_buff *msdu;
->>  	struct ath11k_skb_cb *skb_cb;
->> 
->> -	spin_lock_bh(&tx_ring->tx_idr_lock);
->>  	msdu = idr_find(&tx_ring->txbuf_idr, msdu_id);
->> -	if (!msdu) {
->> +	if (unlikely(!msdu)) {
->>  		ath11k_warn(ab, "tx completion for unknown msdu_id %d\n",
->>  			    msdu_id);
->> -		spin_unlock_bh(&tx_ring->tx_idr_lock);
->>  		return;
->>  	}
->> 
->>  	skb_cb = ATH11K_SKB_CB(msdu);
->> 
->> +	spin_lock(&tx_ring->tx_idr_lock);
->>  	idr_remove(&tx_ring->txbuf_idr, msdu_id);
-> Why are you doing the lookups twice instead of just using the return
-> value of idr_remove?
+On Tue, 2021-06-29 at 23:32 +0200, Pali Rohár wrote:
+> On Wednesday 23 June 2021 14:16:12 Johannes Berg wrote:
+> > On Fri, 2021-06-11 at 12:10 +0200, Pali Rohár wrote:
+> > > 
+> > > @@ -341,8 +341,11 @@ static void ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
+> > >  	if (sta) {
+> > >  		if (pairwise) {
+> > >  			rcu_assign_pointer(sta->ptk[idx], new);
+> > > -			sta->ptk_idx = idx;
+> > > -			ieee80211_check_fast_xmit(sta);
+> > > +			if (new) {
+> > > +				set_sta_flag(new->sta, WLAN_STA_USES_ENCRYPTION);
+> > > +				new->sta->ptk_idx = new->conf.keyidx;
+> > 
+> > I'm not entirely sure moving that assignment under the guard is correct.
+> > 
+> > > +				ieee80211_check_fast_xmit(new->sta);
+> > 
+> > and I'm pretty sure that moving call under the guard is incorrect,
+> > although in the end it probably doesn't even matter if we will drop all
+> > frames anyway (due to this patch).
+> > 
+> > So all you need under the assignment is the flag, but also only
+> > theoretically, because the function cannot be called with old==NULL &&
+> > new==NULL, the first time around it's called we must have old==NULL (no
+> > key was ever installed), and so the first time it's called it must be
+> > old==NULL && new!=NULL, and then the flag gets set and we never want to
+> > clear it again, so I believe you don't need the "if (new)" condition at
+> > all.
+> > 
+> > In the code as it was in (and before) my patch the condition is
+> > necessary because we use 'new' to obtain the 'sta' and 'local' pointers,
+> > but otherwise we don't really need it even in the current version.
+> > 
+> > johannes
 > 
-> - Felix
-Yes, we will address this in the next version of the patch.
+> Now I see, thank you for explanation. So the code should be like this:
+> 
+>  		if (pairwise) {
+>  			rcu_assign_pointer(sta->ptk[idx], new);
+> +			set_sta_flag(sta, WLAN_STA_USES_ENCRYPTION);
+>  			sta->ptk_idx = idx;
+>  			ieee80211_check_fast_xmit(sta);
+>  		} else {
+> 
+> Right?
+
+Yes, I think so.
+
+johannes
+
