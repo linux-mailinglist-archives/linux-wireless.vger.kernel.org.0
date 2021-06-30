@@ -2,72 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4924B3B86C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jun 2021 18:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5783E3B87E7
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jun 2021 19:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230005AbhF3QKm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Jun 2021 12:10:42 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:32195 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229529AbhF3QKl (ORCPT
+        id S230191AbhF3Rso (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Jun 2021 13:48:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42776 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229573AbhF3Rso (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Jun 2021 12:10:41 -0400
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-255-tT8cdm8GPZOIs52kgRv1lA-1; Wed, 30 Jun 2021 17:08:06 +0100
-X-MC-Unique: tT8cdm8GPZOIs52kgRv1lA-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 30 Jun
- 2021 17:08:06 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.018; Wed, 30 Jun 2021 17:08:06 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Ulf Hansson' <ulf.hansson@linaro.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-CC:     "pizza@shaftnet.org" <pizza@shaftnet.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
-Subject: RE: [RFC PATCH] cw1200: use kmalloc() allocation instead of stack
-Thread-Topic: [RFC PATCH] cw1200: use kmalloc() allocation instead of stack
-Thread-Index: AQHXbZc9wvCgBpnoT0+86NraIUocoqssuE1w
-Date:   Wed, 30 Jun 2021 16:08:05 +0000
-Message-ID: <cd6360a4247e47cdb819343a05b70d05@AcuMS.aculab.com>
-References: <20210622202345.795578-1-jernej.skrabec@gmail.com>
- <CAPDyKFo6AVGq5Q9bRKPjypRMxisLf0nZWLtSeARGO-3kO7=+zQ@mail.gmail.com>
-In-Reply-To: <CAPDyKFo6AVGq5Q9bRKPjypRMxisLf0nZWLtSeARGO-3kO7=+zQ@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Wed, 30 Jun 2021 13:48:44 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7743BC061756
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Jun 2021 10:46:14 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id w127so3946328oig.12
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Jun 2021 10:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :signed-off-by:signed-off-by:content-transfer-encoding;
+        bh=zgXoZGTXhK8ipzSc30Bk2a0gDD9NP9alubpgikMMT+8=;
+        b=B4yExCTOlS5G+/WGjW82eEGGLNLahkm7edLdkFFM6J3+RJgdDiPeiXbe30t/qaPiEu
+         bt2YrJZ4InBgwvVQY0hIASLep7KeqItpioZktcyAIrM22Ac+EzGfEK72u9sP4E88Zpyt
+         6X4g0cUith55zj+S3gneWZWpVC2PJeWsKDQoXKVhiYnwFaz5jtHhMW1KfBAC7ltQezfT
+         X3PKZJyRFUPni4cSmwMf7bD200H+4h+6ssC4vgj4cRuy8w6iA2A9FzyoRTeS8pijyDfy
+         UtdMA/aPET++1oF+a9KwoHU7iSMfycQHyeXWPqKnDRDH2ZQGMF5JBmiSrVWSoNYFFjij
+         5aiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:signed-off-by:signed-off-by:content-transfer-encoding;
+        bh=zgXoZGTXhK8ipzSc30Bk2a0gDD9NP9alubpgikMMT+8=;
+        b=lColgtox/xGnMXtnmVMPqqmQWRVHKGw4fyTcnTH3t880Rtml8m6wIOUvJQ1T3MIRsK
+         R6w4fovICDSJ0jvgmB9MX5g2ZUEzWz04YP9fMGSN3L79LHod3CTO3bKrJZ9ptoJIYRIV
+         i/HcazdRd5/s/Y17czj45X0Z0kLm6vU66qQAu7Lcfvnb18DRdaQT/Iakum2rQtZzaIhy
+         CiinudBuDGUegVR3BcJTo3gQEk+IoSwMILlYBtr4dmJhMpDO3yPOjo4hjuC0BiAxrVEY
+         6/hTl4Raw2v0owtdpVcR98fcwlC0YTv4Bn7db1og1fFNunWIfI0mToDKbGuv7XTLsdzW
+         KTvQ==
+X-Gm-Message-State: AOAM5320sMmCQZ2lwyuuo86QjtkgkBXivQ3m+ElyixKaVWxmO26IuRVC
+        jiUBa7vQdfoDfW4H0i2cu4k=
+X-Google-Smtp-Source: ABdhPJxl6lHZJwXYe8BR6APrNPB+xeChIPnLS1BoRAe/H2b6dV8/rCWNsVKHlrrnyfDCchdEgsH2TA==
+X-Received: by 2002:aca:f09:: with SMTP id 9mr5928624oip.51.1625075173926;
+        Wed, 30 Jun 2021 10:46:13 -0700 (PDT)
+Received: from localhost.localdomain.com (cpe-24-31-245-107.kc.res.rr.com. [24.31.245.107])
+        by smtp.gmail.com with ESMTPSA id e2sm1991496ook.45.2021.06.30.10.46.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Jun 2021 10:46:13 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, Ugo Remery <ugo.remery@gmail.com>
+Subject: [PATCH] rtw88: add quirk to disable pci caps on HP Pavilion 14-ce0xxx
+Date:   Wed, 30 Jun 2021 12:46:08 -0500
+Message-Id: <20210630174608.5329-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Signed-off-by: Ugo Remery <ugo.remery@gmail.com>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogVWxmIEhhbnNzb24NCj4gU2VudDogMzAgSnVuZSAyMDIxIDExOjAzDQouLi4NCj4gPiBJ
-dCB0dXJucyBvdXQgdGhhdCBpZiBDT05GSUdfVk1BUF9TVEFDSyBpcyBlbmFibGVkIGFuZCBzcmMg
-b3IgZHN0IGlzDQo+ID4gbWVtb3J5IGFsbG9jYXRlZCBvbiBzdGFjaywgU0RJTyBvcGVyYXRpb25z
-IGZhaWwgZHVlIHRvIGludmFsaWQgbWVtb3J5DQo+ID4gYWRkcmVzcyBjb252ZXJzaW9uOg0KLi4u
-DQo+ID4gRml4IHRoYXQgYnkgdXNpbmcga21hbGxvYygpIGFsbG9jYXRlZCBtZW1vcnkgZm9yIHJl
-YWQvd3JpdGUgMTYvMzINCj4gPiBmdW50aW9ucy4NCg0KQ291bGQgYSBmaWVsZCBiZSBhZGRlZCB0
-byAnc3RydWN0IGN3MTIwMF9jb21tb24nDQp0aGF0IHRoZSBmdW5jdGlvbnMgY291bGQgdXNlIGFz
-IGEgYm91bmNlIGJ1ZmZlcj8NCg0KSVNUTSB0aGF0IGlzIERNQSBhcmUgYmVpbmcgZG9uZSB0aGVy
-ZSBtdXN0IGJlIHNvbWUNCnNlcmlhbGlzYXRpb24gaW4gdGhlcmUgc29tZXdoZXJlIHRoYXQgd2ls
-bCBzdG9wDQpjb25jdXJyZW50IGFjY2Vzc2VzLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBB
-ZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMs
-IE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+From: Ugo Remery <ugo.remery@gmail.com>
+
+    8821CE causes random freezes on HP Pavilion 14-ce0019nf. Add a quirk
+    to disable pci ASPM capability.
+---
+ drivers/net/wireless/realtek/rtw88/pci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index e7d17ab8f113..31ee859d379b 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -1701,6 +1701,15 @@ static const struct dmi_system_id rtw88_pci_quirks[] = {
+ 		},
+ 		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
+ 	},
++	{
++		.callback = disable_pci_caps,
++		.ident = "HP HP Pavilion Laptop 14-ce0xxx",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion Laptop 14-ce0xxx"),
++		},
++		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
++	},
+ 	{}
+ };
+ 
+-- 
+2.32.0
 
