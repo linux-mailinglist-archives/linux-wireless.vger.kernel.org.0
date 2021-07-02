@@ -2,123 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0121E3B9BC1
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jul 2021 07:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CDDC3B9C85
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jul 2021 08:55:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232096AbhGBFDs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jul 2021 01:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56460 "EHLO
+        id S230192AbhGBG5f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jul 2021 02:57:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbhGBFDs (ORCPT
+        with ESMTP id S230189AbhGBG5c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jul 2021 01:03:48 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8CAC061762
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Jul 2021 22:01:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=XMuXnPoTDjQkYUgcFFGhqMYCAdHbGQMxVZxKtjVRDpI=; b=IdHYs+j2R666VuMcPpR/PpKWnI
-        yQ2BN5jo0SUnnxMdbwf2LMyeDj1OdHyrdvWt4WobgVk7gRLcVeMQrE2dsfybJZ+jjFbPZ/kgCGsTr
-        ftVirL9YD++dTQVeHjst6Y7Rhx/wlo3p+49cg0f8IJq0q43/vQfKZp1kpF/BhcB37gH8=;
-Received: from p54ae93f7.dip0.t-ipconnect.de ([84.174.147.247] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1lzBIf-0003nG-6L; Fri, 02 Jul 2021 07:01:13 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: [PATCH 5.14] mac80211: fix enabling 4-address mode on a sta vif after assoc
-Date:   Fri,  2 Jul 2021 07:01:11 +0200
-Message-Id: <20210702050111.47546-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.30.1
+        Fri, 2 Jul 2021 02:57:32 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10AD5C061762;
+        Thu,  1 Jul 2021 23:55:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=+qqL3stcL81zEanpn177V008fhVVVkp46u6dRYOk8jE=;
+        t=1625208900; x=1626418500; b=MPZAzch1bIKh9tGzRdo3GF5LQgPdbEUhuzDTvOfBZmSIjsK
+        B4AIn5ItCPMUldEfC2Lifz51HM6Rreqdv/+S9x2Pj64rineD1Kp7L2gvGMtwcXvLnp2nxXewBPPeZ
+        8f/iBDYF1riboecutohjZwUF97E933/gHSqT9Dhsjz939q6F0Mkfef1QXIyPGLb9hKKgO705kY8Ev
+        1Zkb0uqi9iZD91GcYuW70gU5WV/x5+53xgYl9UHHDOIRgs0cXCC1sLJOvvYlMFNTFiIgY9MVKO+aI
+        R/MPbzPwhB98E3WKKHl8NC2lEiLaIluJdq16/ML8r+DKxw1da7g7Tce6w+zwClQQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1lzD4g-00EYPk-1G; Fri, 02 Jul 2021 08:54:54 +0200
+Message-ID: <56afa72ef9addbf759ffb130be103a21138712f9.camel@sipsolutions.net>
+Subject: Re: Posible memory corruption from "mac80211: do not accept/forward
+ invalid EAPOL frames"
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Davis Mosenkovs <davikovs@gmail.com>, Felix Fietkau <nbd@nbd.name>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date:   Fri, 02 Jul 2021 08:54:53 +0200
+In-Reply-To: <CAHQn7pJY4Vv_eWpeCvuH_C6SHwAvKrSE2cQ=cTir72Ffcr9VXg@mail.gmail.com> (sfid-20210701_225432_954258_7B6FE103)
+References: <CAHQn7pKcyC_jYmGyTcPCdk9xxATwW5QPNph=bsZV8d-HPwNsyA@mail.gmail.com>
+         <a7f11cc2-7bef-4727-91b7-b51da218d2ee@nbd.name>
+         <YNtdKb+2j02fxfJl@kroah.com>
+         <872e3ea6-bbdf-f67c-58f9-4c2dafc2023a@nbd.name>
+         <CAHQn7pJY4Vv_eWpeCvuH_C6SHwAvKrSE2cQ=cTir72Ffcr9VXg@mail.gmail.com>
+         (sfid-20210701_225432_954258_7B6FE103)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Notify the driver about the 4-address mode change and also send a nulldata
-packet to the AP to notify it about the change
+On Thu, 2021-07-01 at 23:54 +0300, Davis Mosenkovs wrote:
+> 
+> > > > It seems that the 4.4 backport is broken. The problem is the fact that
+> > > > skb_mac_header is called before eth_type_trans(). This means that the
+> > > > mac header offset still has the default value of (u16)-1, resulting in
+> > > > the 64 KB memory offset that you observed.
 
-Fixes: 1ff4e8f2dec8 ("mac80211: notify the driver when a sta uses 4-address mode")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- net/mac80211/cfg.c         | 19 +++++++++++++++++++
- net/mac80211/ieee80211_i.h |  2 ++
- net/mac80211/mlme.c        |  4 ++--
- 3 files changed, 23 insertions(+), 2 deletions(-)
+Agree.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 84cc7733ea66..4e6f11e63df3 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -152,6 +152,8 @@ static int ieee80211_change_iface(struct wiphy *wiphy,
- 				  struct vif_params *params)
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct ieee80211_local *local = sdata->local;
-+	struct sta_info *sta;
- 	int ret;
- 
- 	ret = ieee80211_if_change_type(sdata, type);
-@@ -162,7 +164,24 @@ static int ieee80211_change_iface(struct wiphy *wiphy,
- 		RCU_INIT_POINTER(sdata->u.vlan.sta, NULL);
- 		ieee80211_check_fast_rx_iface(sdata);
- 	} else if (type == NL80211_IFTYPE_STATION && params->use_4addr >= 0) {
-+		struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
-+
-+		if (params->use_4addr == ifmgd->use_4addr)
-+			return 0;
-+
- 		sdata->u.mgd.use_4addr = params->use_4addr;
-+		if (!ifmgd->associated)
-+			return 0;
-+
-+		mutex_lock(&local->sta_mtx);
-+		sta = sta_info_get(sdata, ifmgd->bssid);
-+		if (sta)
-+			drv_sta_set_4addr(local, sdata, &sta->sta,
-+					  params->use_4addr);
-+		mutex_unlock(&local->sta_mtx);
-+
-+		if (params->use_4addr)
-+			ieee80211_send_4addr_nullfunc(local, sdata);
- 	}
- 
- 	if (sdata->vif.type == NL80211_IFTYPE_MONITOR) {
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 22549b95d1aa..30ce6d2ec7ce 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2201,6 +2201,8 @@ void ieee80211_dynamic_ps_timer(struct timer_list *t);
- void ieee80211_send_nullfunc(struct ieee80211_local *local,
- 			     struct ieee80211_sub_if_data *sdata,
- 			     bool powersave);
-+void ieee80211_send_4addr_nullfunc(struct ieee80211_local *local,
-+				   struct ieee80211_sub_if_data *sdata);
- void ieee80211_sta_tx_notify(struct ieee80211_sub_if_data *sdata,
- 			     struct ieee80211_hdr *hdr, bool ack, u16 tx_time);
- 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index a00f11a33699..c0ea3b1aa9e1 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1095,8 +1095,8 @@ void ieee80211_send_nullfunc(struct ieee80211_local *local,
- 	ieee80211_tx_skb(sdata, skb);
- }
- 
--static void ieee80211_send_4addr_nullfunc(struct ieee80211_local *local,
--					  struct ieee80211_sub_if_data *sdata)
-+void ieee80211_send_4addr_nullfunc(struct ieee80211_local *local,
-+				   struct ieee80211_sub_if_data *sdata)
- {
- 	struct sk_buff *skb;
- 	struct ieee80211_hdr *nullfunc;
--- 
-2.30.1
+> > > > I think that for 4.4, the code should be changed to use skb->data
+> > > > instead of skb_mac_header. 4.9 looks broken in the same way.
+> > > > 5.4 seems fine, so newer kernels should be fine as well.
+
+Also agree.
+
+> > > Thanks for looking into this, can you submit a patch to fix this up in
+> > > the older kernel trees?
+> > Sorry, I don't have time to prepare and test the patches at the moment.
+> > 
+> If testing procedure mentioned in my first email is sufficient (and
+> using skb->data is the correct solution in kernel trees where current
+> code doesn't work properly), I can make and test the patches.
+> Should I do that?
+
+Yes, please do.
+
+Thanks,
+johannes
 
