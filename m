@@ -2,192 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3860C3BAA80
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Jul 2021 00:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C11B3BAA86
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Jul 2021 00:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbhGCWTB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Jul 2021 18:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33296 "EHLO
+        id S229548AbhGCWVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Jul 2021 18:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbhGCWTB (ORCPT
+        with ESMTP id S229520AbhGCWVt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Jul 2021 18:19:01 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355FCC061762
-        for <linux-wireless@vger.kernel.org>; Sat,  3 Jul 2021 15:16:27 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id d25so18887389lji.7
-        for <linux-wireless@vger.kernel.org>; Sat, 03 Jul 2021 15:16:27 -0700 (PDT)
+        Sat, 3 Jul 2021 18:21:49 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A912DC061762
+        for <linux-wireless@vger.kernel.org>; Sat,  3 Jul 2021 15:19:14 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id q18so25188291lfc.7
+        for <linux-wireless@vger.kernel.org>; Sat, 03 Jul 2021 15:19:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:subject:to:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=omlS3lwaZNXh47mx/Pp9o9EC1l4YgHc8ORa4P71mqOU=;
-        b=F4LwwBTYoDjVZ+oPGfjbOGQb1NNDAnXm8bqBJdI16tkQi4FD62rRm1Zw3gC7XPvKtp
-         BiMox8wjZ0s6Xpp7Ue6Ok7ymstVThjM+DuBgYZKURpCHiEk/t/Zqi3axpIGs2a/GUiEN
-         N0Ljo7OQo4SZoc3zzReSRRbB/RINNBduDKsK9pfc8XKRzosH3/Xf2JkJTms22AtMeQ1S
-         UbqCzo2+Cd0mJkM5E4xNNXWaz6mclMMFb1VjI4XEoHekXfo3atUHNEid0vORN38Gjk+r
-         5OvVFkBs7l2LVnZu4pkqZKl5pWHuEwOMsWXVMx98lDYOxlODvwcmEztq4YdlTNThoMYg
-         xQ+g==
+        h=subject:from:to:references:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=FtibRfyROtBzthClqwf8DBFw51O6T2jP1B/HiPBaxmQ=;
+        b=N9lAll0hhAcSd+pqNzhFFSxE1yVtUVUJkX/FiLy7/gqCLD8xvWXzQv0IPHjDcJoJq5
+         1OJKvRjlnXxX5l6M+Fqq7fmsdZJdCamB3hQpKqNiDR0MukJnB9HNnflrzeQyxidiymNC
+         B8e66+gYabefeMubFbuss+7ZUQLsjbOOR8K3pc6vPHd5QS+n3srrg2ohvpVhL8WDNSjn
+         s08I2ppS1ypaR8QFqJWHmewjBI5JsGYRIXtpxny3C8CLyxG/8XNSzLndDDSkg/0CaSVL
+         aZFKVFq+32s9LKyewBAGyuLdK4PPF3O7+Qy5hSPZH0eTSLhgbHjzeVJZOqrLTh826jqY
+         eJ8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=omlS3lwaZNXh47mx/Pp9o9EC1l4YgHc8ORa4P71mqOU=;
-        b=mXezTEEBrhMqRMZz0oeJAyQY9nUzoxvMFtRBy2nbwVh+pHP49riSSKtxIXpaIV/Q1q
-         0J1+pUcAYZ/JvFCVguPnwYHAH2T7rjotWtvPqZAG5EqJYnIZuTakx6EyvfKcsfpSGeol
-         y4TwZBV78d2p/864EOVMLAbf4qhSD0/2ynHbmds8CaQvYZWW9BughdbLBtWRiSJYTvAW
-         n8mtwYJo9r/t8p3m38e/F2jbeMUfg0esUH6N3A/tf4byUhYbnR4IxfDOvdcYyihubLvl
-         iAW1MR6U5nRnLFrHZeAaiWBiK5vsEu1WOM6C/ga/lvKkRW9GKhILpiUl+Ab5PsFVDrCf
-         RBLQ==
-X-Gm-Message-State: AOAM531kSzqDwC6Zfc3JHqdI81sr4sggKegJTFJZ1sQuMklVq0xg5X34
-        0Mdx3o/4/nbzaT8XfBAXQpEdevqJ7vk=
-X-Google-Smtp-Source: ABdhPJxHJ/eHC6HfJGcgFsaDaI2EvMQ+HaA12rxXZmZ2jOpqlUmlfzhnz5dsqwA8ZEXCG2zEcu0JLQ==
-X-Received: by 2002:a2e:8e26:: with SMTP id r6mr4861512ljk.313.1625350585558;
-        Sat, 03 Jul 2021 15:16:25 -0700 (PDT)
+        h=x-gm-message-state:subject:from:to:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=FtibRfyROtBzthClqwf8DBFw51O6T2jP1B/HiPBaxmQ=;
+        b=AW473caDudFo22Xq6FkAkT+xwkduIY7ma2xX8W8y9Eq1pNSktWkoQCVrp9lgyLXOXX
+         jO2MmawzfG9RKrI1COxzHRKstqaJdR0ruT/erOGbqvcHROCK+GHthRjz9UvDLkZSDEBU
+         NCsjZd+m6P7vQegw5dgALovBIRfBMGsGnEucUaWzjirAtLQgrdiVZzpMe8xThMe3FAll
+         safsea1hfag3/hdBYXCI3eGThmgw2XjFmSPLbkFzMqvUy7C+tqYgXP8Fet3JBiV68QS8
+         Y4CyKcgr3Q588FoNJCO093OG1txuMwUktEdQFLagNGnN0xHCJPZeWaQjbaSwBQh0AVad
+         NgAQ==
+X-Gm-Message-State: AOAM53357oGU+KxGGkoMSY1bB+nU7aURBic9ijCYo1D5ejWQwSpROG3w
+        s7t8ZjbMaJawWBhn8xnT8P9afptpDjY=
+X-Google-Smtp-Source: ABdhPJzEoR2S2TMrEdhtibXub285vz9EUEmH7pYztAl2sLxDUHb+ePFb29RP9c3el7qAjRlNMYxgGQ==
+X-Received: by 2002:a05:6512:1506:: with SMTP id bq6mr4783548lfb.12.1625350752761;
+        Sat, 03 Jul 2021 15:19:12 -0700 (PDT)
 Received: from localhost.localdomain (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
-        by smtp.googlemail.com with ESMTPSA id i1sm771814ljn.40.2021.07.03.15.16.24
+        by smtp.googlemail.com with ESMTPSA id w13sm871552ljd.27.2021.07.03.15.19.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Jul 2021 15:16:24 -0700 (PDT)
+        Sat, 03 Jul 2021 15:19:12 -0700 (PDT)
+Subject: Re: Unstable WiFi with mt76 on MT7628AN
 From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Subject: Unstable WiFi with mt76 on MT7628AN
 To:     Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
         Ryder Lee <ryder.lee@mediatek.com>,
         Shayne Chen <shayne.chen@mediatek.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Message-ID: <7c96d5ee-86c1-8068-1b58-40db6087a24f@gmail.com>
-Date:   Sun, 4 Jul 2021 00:16:21 +0200
+References: <7c96d5ee-86c1-8068-1b58-40db6087a24f@gmail.com>
+Message-ID: <88dfb184-7f14-d31a-5e07-668f90c909d8@gmail.com>
+Date:   Sun, 4 Jul 2021 00:19:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.1
 MIME-Version: 1.0
+In-Reply-To: <7c96d5ee-86c1-8068-1b58-40db6087a24f@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 04.07.2021 00:16, Rafał Miłecki wrote:
+> My problem is unstable WiFi (as vague as this description is). I often
+> experience stalls (I can't even see beacons) and sometimes some slow
+> downs. I started using this device about 6 hours ago and experienced 3
+> or 4 traffic stops with no beacons.
 
-I decided to start my adventure with mt76. I bought the cheapest router
-I could find: Xiaomi Mi Router 4C and installed OpenWrt 21.02-rc3 on it.
+It may be worth mentioning I found 1 WARNING in my dmesg. I can't tell
+if that has happened during any slow down / stall or not. Unforunately I
+don't have symbols in my backtrace.
 
-OpenWrt 21.02-rc3 contains mt76 from May:
-https://git.openwrt.org/?p=openwrt/openwrt.git;a=commitdiff;h=43e4ba586336383b34698a00d4588a17b853922f
-
-It *does not* include some later changes from June:
-https://git.openwrt.org/?p=openwrt/openwrt.git;a=commitdiff;h=20f66649dda3094320e515006cd5ddc9c096ac30
-(or the very latest changes).
-
-My problem is unstable WiFi (as vague as this description is). I often
-experience stalls (I can't even see beacons) and sometimes some slow
-downs. I started using this device about 6 hours ago and experienced 3
-or 4 traffic stops with no beacons.
-
-WiFi can work flawlessly for an hour, e.g. this iperf2 session:
-[  3]  0.0-3339.0 sec  25.3 GBytes  65.1 Mbits/sec
-
-And another time it can suddently stop:
-[  3] 54.0-55.0 sec  5.38 MBytes  45.1 Mbits/sec
-[  3] 55.0-56.0 sec  5.88 MBytes  49.3 Mbits/sec
-[  3] 56.0-57.0 sec  8.12 MBytes  68.2 Mbits/sec
-[  3] 57.0-58.0 sec  5.12 MBytes  43.0 Mbits/sec
-[  3] 58.0-59.0 sec  6.88 MBytes  57.7 Mbits/sec
-[  3] 59.0-60.0 sec  7.88 MBytes  66.1 Mbits/sec
-[  3] 60.0-61.0 sec  7.88 MBytes  66.1 Mbits/sec
-[  3] 61.0-62.0 sec  5.04 MBytes  42.3 Mbits/sec
-[  3] 62.0-63.0 sec   318 KBytes  2.61 Mbits/sec
-[  3] 63.0-64.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 64.0-65.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 65.0-66.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 66.0-67.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 67.0-68.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 68.0-69.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 69.0-70.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 70.0-71.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 71.0-72.0 sec  0.00 Bytes  0.00 bits/sec
-(I didn't move my AP, didn't move my STA, didn't get new STAs).
-
-After stall as above I can't even reconnect. Most attempts fail as I
-can't even see a single beacon. Sometimes I catch a single beacon and
-even manage to connect but not even ping can reach my AP.
-
-Sometimes traffic just stops for a few seconds:
-[  3] 1120.0-1121.0 sec  2.88 MBytes  24.1 Mbits/sec
-[  3] 1121.0-1122.0 sec  3.62 MBytes  30.4 Mbits/sec
-[  3] 1122.0-1123.0 sec  1.20 MBytes  10.1 Mbits/sec
-[  3] 1123.0-1124.0 sec  2.00 MBytes  16.8 Mbits/sec
-[  3] 1124.0-1125.0 sec  3.12 MBytes  26.2 Mbits/sec
-[  3] 1125.0-1126.0 sec  5.12 MBytes  43.0 Mbits/sec
-[  3] 1126.0-1127.0 sec  4.38 MBytes  36.7 Mbits/sec
-[  3] 1127.0-1128.0 sec  5.25 MBytes  44.0 Mbits/sec
-[  3] 1128.0-1129.0 sec  3.49 MBytes  29.2 Mbits/sec
-[  3] 1129.0-1130.0 sec   509 KBytes  4.17 Mbits/sec
-[  3] 1130.0-1131.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1131.0-1132.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1132.0-1133.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1133.0-1134.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1134.0-1135.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1135.0-1136.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1136.0-1137.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1137.0-1138.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1138.0-1139.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1139.0-1140.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1140.0-1141.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1141.0-1142.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1142.0-1143.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1143.0-1144.0 sec  0.00 Bytes  0.00 bits/sec
-[  3] 1144.0-1145.0 sec   128 KBytes  1.05 Mbits/sec
-[  3] 1145.0-1146.0 sec  3.62 MBytes  30.4 Mbits/sec
-[  3] 1146.0-1147.0 sec  4.38 MBytes  36.7 Mbits/sec
-[  3] 1147.0-1148.0 sec  3.88 MBytes  32.5 Mbits/sec
-[  3] 1148.0-1149.0 sec  4.50 MBytes  37.7 Mbits/sec
-[  3] 1149.0-1150.0 sec  3.75 MBytes  31.5 Mbits/sec
-
-Or slows down:
-[  3] 1316.0-1317.0 sec  3.88 MBytes  32.5 Mbits/sec
-[  3] 1317.0-1318.0 sec  3.00 MBytes  25.2 Mbits/sec
-[  3] 1318.0-1319.0 sec  4.75 MBytes  39.8 Mbits/sec
-[  3] 1319.0-1320.0 sec  3.00 MBytes  25.2 Mbits/sec
-[  3] 1320.0-1321.0 sec  3.88 MBytes  32.5 Mbits/sec
-[  3] 1321.0-1322.0 sec  2.95 MBytes  24.7 Mbits/sec
-[  3] 1322.0-1323.0 sec  1018 KBytes  8.34 Mbits/sec
-[  3] 1323.0-1324.0 sec   954 KBytes  7.82 Mbits/sec
-[  3] 1324.0-1325.0 sec   827 KBytes  6.78 Mbits/sec
-[  3] 1325.0-1326.0 sec   891 KBytes  7.30 Mbits/sec
-[  3] 1326.0-1327.0 sec   827 KBytes  6.78 Mbits/sec
-[  3] 1327.0-1328.0 sec   764 KBytes  6.26 Mbits/sec
-[  3] 1328.0-1329.0 sec  1.50 MBytes  12.6 Mbits/sec
-[  3] 1329.0-1330.0 sec  1.23 MBytes  10.4 Mbits/sec
-[  3] 1330.0-1331.0 sec  1.18 MBytes  9.93 Mbits/sec
-[  3] 1331.0-1332.0 sec  3.00 MBytes  25.2 Mbits/sec
-[  3] 1332.0-1333.0 sec  2.25 MBytes  18.9 Mbits/sec
-[  3] 1333.0-1334.0 sec  1.34 MBytes  11.2 Mbits/sec
-[  3] 1334.0-1335.0 sec  1.24 MBytes  10.4 Mbits/sec
-[  3] 1335.0-1336.0 sec  1.24 MBytes  10.4 Mbits/sec
-[  3] 1336.0-1337.0 sec  1.75 MBytes  14.7 Mbits/sec
-[  3] 1337.0-1338.0 sec  5.25 MBytes  44.0 Mbits/sec
-[  3] 1338.0-1339.0 sec  4.38 MBytes  36.7 Mbits/sec
-[  3] 1339.0-1340.0 sec  3.75 MBytes  31.5 Mbits/sec
-[  3] 1340.0-1341.0 sec  3.88 MBytes  32.5 Mbits/sec
-
-Whenever any issue occurs I don't see anything in my dmesg. Every time
-it happens it affects all of my 3 STAs (notebook + 2 smartphones).
-
-Waiting for few minutes brings things back to normal. I don't need any
-hostapd restart / device reboot.
-
-Stability problem was reported for this router multiple times by
-different users. Reports go back to the October 2020 when OpenWrt
-received that router support.
-
-https://forum.openwrt.org/t/openwrt-for-xiaomi-mi-router-4c/72175/42
-https://forum.openwrt.org/t/openwrt-for-xiaomi-mi-router-4c/72175/46
-https://forum.openwrt.org/t/openwrt-for-xiaomi-mi-router-4c/72175/48
-https://forum.openwrt.org/t/openwrt-for-xiaomi-mi-router-4c/72175/52
-https://forum.openwrt.org/t/openwrt-for-xiaomi-mi-router-4c/72175/65
-https://forum.openwrt.org/t/openwrt-for-xiaomi-mi-router-4c/72175/97
-https://forum.openwrt.org/t/openwrt-for-xiaomi-mi-router-4c/72175/112
-https://forum.openwrt.org/t/openwrt-for-xiaomi-mi-router-4c/72175/113
-
-Is there anything I can do to help debugging / fixing this?
+[ 3245.170684] ------------[ cut here ]------------
+[ 3245.175434] WARNING: CPU: 0 PID: 627 at target-mipsel_24kc_musl/linux-ramips_mt76x8/mt76-2021-05-15-9d736545/mt7603/mac.c:206 0x835e44ac [mt7603e@bb8c9e4c+0x9520]
+[ 3245.190168] Modules linked in: pppoe ppp_async iptable_nat xt_state xt_nat xt_conntrack xt_REDIRECT xt_MASQUERADE xt_FLOWOFFLOAD xt_CT pppox ppp_generic nf_nat nf_flow_table_hw nf_flow_table nf_conntrack mt7603e mt76 mac80211 ipt_REJECT cfg80211 xt_time xt_tcpudp xt_multiport xt_mark xt_mac xt_limit xt_comment xt_TCPMSS xt_LOG slhc nf_reject_ipv4 nf_log_ipv4 nf_defrag_ipv6 nf_defrag_ipv4 iptable_mangle iptable_filter ip_tables crc_ccitt compat nf_log_ipv6 nf_log_common ip6table_mangle 
+ip6table_filter ip6_tables ip6t_REJECT x_tables nf_reject_ipv6 leds_gpio gpio_button_hotplug
+[ 3245.241986] CPU: 0 PID: 627 Comm: kworker/u3:1 Not tainted 5.4.124 #0
+[ 3245.248532] Workqueue: napi_workq 0x80353380
+[ 3245.252871] Stack : 805a0000 834ff700 80505c80 835e44ac 00000000 00000000 00000000 00000000
+[ 3245.261358]         00000000 00000000 00000000 00000000 00000000 00000001 83629bb8 985d1d7f
+[ 3245.269844]         83629c50 00000000 00000000 00000000 00000038 804eb7e4 616e203a 775f6970
+[ 3245.278337]         00000000 000000a1 00000000 0003cad4 00000000 83629b98 00000000 835e44ac
+[ 3245.286827]         00000009 00000002 00000002 835f0000 00000003 802b8bdc 00000000 806f0000
+[ 3245.295314]         ...
+[ 3245.297802] Call Trace:
+[ 3245.297833] [<835e44ac>] 0x835e44ac [mt7603e@bb8c9e4c+0x9520]
+[ 3245.306164] [<804eb7e4>] 0x804eb7e4
+[ 3245.309725] [<835e44ac>] 0x835e44ac [mt7603e@bb8c9e4c+0x9520]
+[ 3245.315571] [<802b8bdc>] 0x802b8bdc
+[ 3245.319131] [<80009790>] 0x80009790
+[ 3245.322680] [<80009798>] 0x80009798
+[ 3245.326227] [<800236d0>] 0x800236d0
+[ 3245.329783] [<835e44ac>] 0x835e44ac [mt7603e@bb8c9e4c+0x9520]
+[ 3245.335623] [<80023778>] 0x80023778
+[ 3245.339181] [<835e44ac>] 0x835e44ac [mt7603e@bb8c9e4c+0x9520]
+[ 3245.345018] [<80351c4c>] 0x80351c4c
+[ 3245.348594] [<835e4644>] 0x835e4644 [mt7603e@bb8c9e4c+0x9520]
+[ 3245.354440] [<835d598c>] 0x835d598c [mt76@879d366c+0x93a0]
+[ 3245.360021] [<835d3538>] 0x835d3538 [mt76@879d366c+0x93a0]
+[ 3245.365614] [<835e1a1c>] 0x835e1a1c [mt7603e@bb8c9e4c+0x9520]
+[ 3245.371470] [<835d47d0>] 0x835d47d0 [mt76@879d366c+0x93a0]
+[ 3245.377089] [<835d153c>] 0x835d153c [mt76@879d366c+0x93a0]
+[ 3245.382669] [<804f0cc8>] 0x804f0cc8
+[ 3245.386216] [<803533a4>] 0x803533a4
+[ 3245.389786] [<803532b0>] 0x803532b0
+[ 3245.393342] [<803533a4>] 0x803533a4
+[ 3245.396899] [<803533c0>] 0x803533c0
+[ 3245.400447] [<804ec9c0>] 0x804ec9c0
+[ 3245.403988] [<8003ac64>] 0x8003ac64
+[ 3245.407547] [<8003b02c>] 0x8003b02c
+[ 3245.411095] [<8003aec4>] 0x8003aec4
+[ 3245.414642] [<804ecbf8>] 0x804ecbf8
+[ 3245.418202] [<8003aec4>] 0x8003aec4
+[ 3245.421750] [<8003fd68>] 0x8003fd68
+[ 3245.425298] [<8003fc30>] 0x8003fc30
+[ 3245.428852] [<8003fc30>] 0x8003fc30
+[ 3245.432407] [<800050b8>] 0x800050b8
+[ 3245.435945]
+[ 3245.437468] ---[ end trace 9c6fbf57c9d56e22 ]---
