@@ -2,141 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79DE83BB9B3
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jul 2021 10:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D256A3BB9BC
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jul 2021 11:00:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbhGEJBq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Jul 2021 05:01:46 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:46622 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230149AbhGEJBq (ORCPT
+        id S230317AbhGEJDA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Jul 2021 05:03:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49360 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230223AbhGEJDA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Jul 2021 05:01:46 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1658wrr77029648, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1658wrr77029648
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 5 Jul 2021 16:58:53 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 5 Jul 2021 16:58:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 5 Jul 2021 16:58:51 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::a0a3:e64a:34ad:fe28]) by
- RTEXMBS04.realtek.com.tw ([fe80::a0a3:e64a:34ad:fe28%5]) with mapi id
- 15.01.2106.013; Mon, 5 Jul 2021 16:58:51 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 04/24] rtw89: add debug files
-Thread-Topic: [PATCH 04/24] rtw89: add debug files
-Thread-Index: AQHXZA3L/KWeN+OUEEWYUAFkKlwvy6su1/4AgAT7bjA=
-Date:   Mon, 5 Jul 2021 08:58:51 +0000
-Message-ID: <ceb8911a8ca0465a9f243e1d84ab911e@realtek.com>
-References: <20210618064625.14131-1-pkshih@realtek.com>
- <20210618064625.14131-5-pkshih@realtek.com>
- <20210702072308.GA4184@pengutronix.de>
-In-Reply-To: <20210702072308.GA4184@pengutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzcvNSDkuIrljYggMDQ6MjM6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 5 Jul 2021 05:03:00 -0400
+Received: from mail-oi1-f197.google.com ([209.85.167.197])
+        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <chris.chiu@canonical.com>)
+        id 1m0KSk-0006yE-8K
+        for linux-wireless@vger.kernel.org; Mon, 05 Jul 2021 09:00:22 +0000
+Received: by mail-oi1-f197.google.com with SMTP id o15-20020a0568080f8fb029023dd6814af4so11673200oiw.9
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Jul 2021 02:00:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=I6wYMggQL4Kc/x8xMyA7h2j3whmdqB7IgTt34u11Uos=;
+        b=nYKhzmofIvT/PfRFUKFdxW3za4dulAJck4ZdtQHFGvcxhzn9c/G/WgGXS9D+PLIBQp
+         eEvUh73FrRHIVXTM8zol6CCK5BSxZ9Q2/JdKC4QZACN0wJXl5eVABvB2EFUZeEoZQS85
+         l45ZfhiZaPj+KjmMElyiKvgr+4l7Nt3gBL/x/zT40fAnEUmGwsf7IQ04KYlJGH+QbcBM
+         uyyj9iprHhKYrdQ2GSNzfpy+Ks9WQhfIrHsJHL/s3f/qmGqzXg4+P7gEnD17oB0VKcoG
+         mtQqwQsF1OD2sHm6D4g9mC1bx+qWQa864+wXcRsFuQBCCmSTJvHGcnqBIeFQc//Ghs9i
+         MQ7A==
+X-Gm-Message-State: AOAM532Ez8kmvbhkXJA1ZkOUL7dhFk3tY4uPZa/4KVenT/lkEXKWKOQ4
+        evALRrOr08QWfedWKzxTG20mAIX7RR8cCN/oJ308en1gd2a+UWjNkUvC6+V6LIwMPwB25Vdc08/
+        bPV0niNcrwBhiBqVqpRsdNIkCelLS9Q68Xv3Gps1elL3qPKht64rR3UuKEY5G
+X-Received: by 2002:a05:6830:1f19:: with SMTP id u25mr6524522otg.303.1625475621314;
+        Mon, 05 Jul 2021 02:00:21 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx9roYChfxAr/TO7KIQukCmHCx/xq1CtOLOyNW4WqCG9AUmbVemwjMekcOUHAfCzMs3mnJDH06AMTJrb7zjkaM=
+X-Received: by 2002:a05:6830:1f19:: with SMTP id u25mr6524509otg.303.1625475621095;
+ Mon, 05 Jul 2021 02:00:21 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/05/2021 08:44:49
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 164833 [Jul 05 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
-X-KSE-AntiSpam-Info: {Tracking_from_exist}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/05/2021 08:48:00
+References: <20210701163354.118403-1-chris.chiu@canonical.com> <87v95thzu1.fsf@codeaurora.org>
+In-Reply-To: <87v95thzu1.fsf@codeaurora.org>
+From:   Chris Chiu <chris.chiu@canonical.com>
+Date:   Mon, 5 Jul 2021 17:00:10 +0800
+Message-ID: <CABTNMG2_Cb7RhguJZNKZxAna6oBaDPhomBWRreO-adFX2Erwkw@mail.gmail.com>
+Subject: Re: [PATCH] rtl8xxxu: disable interrupt_in transfer for 8188cu and 8192cu
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jes.Sorensen@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        code@reto-schneider.ch, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, Linux Kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogT2xla3NpaiBSZW1wZWwg
-W21haWx0bzpvLnJlbXBlbEBwZW5ndXRyb25peC5kZV0NCj4gU2VudDogRnJpZGF5LCBKdWx5IDAy
-LCAyMDIxIDM6MjMgUE0NCj4gVG86IFBrc2hpaA0KPiBDYzoga3ZhbG9AY29kZWF1cm9yYS5vcmc7
-IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDA0
-LzI0XSBydHc4OTogYWRkIGRlYnVnIGZpbGVzDQo+IA0KPiBPbiBGcmksIEp1biAxOCwgMjAyMSBh
-dCAwMjo0NjowNVBNICswODAwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gVG8gcmVjb2duaXpl
-IGlzc3VlcyBoYXBwZW5lZCBpbiBmaWVsZCwgdHdvIGRlYnVnIG1ldGhvZHMsIGRlYnVnIG1lc3Nh
-Z2UgYW5kDQo+ID4gZGVidWdmcywgYXJlIGFkZGVkLg0KPiA+DQo+ID4gVGhlIGRlYnVnIG1lc3Nh
-Z2VzIGFyZSB3cml0dGVuIHRvIGtlcm5lbCBsb2csIGFuZCBmb3VyIGxldmVscyBjYW4gYmUgY2hv
-c2VuDQo+ID4gYWNjb3JkaW5nIHRvIHRoZSBjYXNlcyAtLSBkZWJ1ZywgaW5mbywgd2FybiBhbmQg
-ZXJyLg0KPiA+DQo+ID4gRGVidWdmcyBpcyB1c2VkIHRvIHJlYWQgYW5kIHdyaXRlIHJlZ2lzdGVy
-cyBhbmQgZHJpdmVyIHN0YXR1cy4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFBpbmctS2UgU2hp
-aCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg5L2RlYnVnLmMgfCAyNDA0ICsrKysrKysrKysrKysrKysrKysrDQo+ID4g
-IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZGVidWcuaCB8ICAgNzcgKw0KPiA+
-ICAyIGZpbGVzIGNoYW5nZWQsIDI0ODEgaW5zZXJ0aW9ucygrKQ0KPiA+ICBjcmVhdGUgbW9kZSAx
-MDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9kZWJ1Zy5jDQo+ID4gIGNy
-ZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2RlYnVn
-LmgNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg5L2RlYnVnLmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2RlYnVn
-LmMNCj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAwMDAwMDAwMDAwMC4uMDNk
-MmQyZWI4MTNkDQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL3JlYWx0ZWsvcnR3ODkvZGVidWcuYw0KDQpbLi4uXQ0KDQo+ID4gK3N0YXRpYyBpbnQgcnR3
-ODlfZGVidWdfcHJpdl9yZl9yZWdfZHVtcF9nZXQoc3RydWN0IHNlcV9maWxlICptLCB2b2lkICp2
-KQ0KPiA+ICt7DQo+ID4gKwlzdHJ1Y3QgcnR3ODlfZGVidWdmc19wcml2ICpkZWJ1Z2ZzX3ByaXYg
-PSBtLT5wcml2YXRlOw0KPiA+ICsJc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2ID0gZGVidWdmc19w
-cml2LT5ydHdkZXY7DQo+ID4gKwljb25zdCBzdHJ1Y3QgcnR3ODlfY2hpcF9pbmZvICpjaGlwID0g
-cnR3ZGV2LT5jaGlwOw0KPiA+ICsJdTMyIGFkZHIsIG9mZnNldCwgZGF0YTsNCj4gPiArCXU4IHBh
-dGg7DQo+ID4gKw0KPiA+ICsJZm9yIChwYXRoID0gMDsgcGF0aCA8IGNoaXAtPnJmX3BhdGhfbnVt
-OyBwYXRoKyspIHsNCj4gPiArCQlzZXFfcHJpbnRmKG0sICJSRiBwYXRoICVkOlxuXG4iLCBwYXRo
-KTsNCj4gPiArCQlmb3IgKGFkZHIgPSAwOyBhZGRyIDwgMHgxMDA7IGFkZHIgKz0gNCkgew0KPiA+
-ICsJCQlzZXFfcHJpbnRmKG0sICIweCUwOHg6ICIsIGFkZHIpOw0KPiA+ICsJCQlmb3IgKG9mZnNl
-dCA9IDA7IG9mZnNldCA8IDQ7IG9mZnNldCsrKSB7DQo+ID4gKwkJCQlkYXRhID0gcnR3ODlfcmVh
-ZF9yZihydHdkZXYsIHBhdGgsDQo+ID4gKwkJCQkJCSAgICAgYWRkciArIG9mZnNldCwgUkZSRUdf
-TUFTSyk7DQo+ID4gKwkJCQlzZXFfcHJpbnRmKG0sICIweCUwNXggICIsIGRhdGEpOw0KPiA+ICsJ
-CQl9DQo+ID4gKwkJCXNlcV9wdXRzKG0sICJcbiIpOw0KPiA+ICsJCX0NCj4gPiArCQlzZXFfcHV0
-cyhtLCAiXG4iKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwlyZXR1cm4gMDsNCj4gPiArfQ0KPiAN
-Cj4gQmFzZWQgb24gdGhpcyBhbmQgb3RoZXIgcGFydCBvZiB0aGlzIGRyaXZlciBJIHdvdWxkIHJl
-Y29tbWVuZCB0byB1c2UNCj4gcmVnbWFwLiBJdCB3aWxsIHByb3ZpZGUgdG8gYWRkaXRpb25hbCBp
-bnRlcmZhY2UgZm9yIHRoZSByZWdpc3Rlcg0KPiBhY2Nlc3MuIEFuZCB0eXBpY2FsbHkgZm9yIHRo
-ZSBuZXR3b3JrIGRldmljZXMgd2UgaGF2ZSBhbiBldGh0b29sDQo+IGludGVyZmFjZSBmb3IgdGhh
-dC4NCj4gDQoNCkNvdWxkIEkga25vdyB0aGUgJ3JlZ21hcCcgeW91IG1lbnRpb25lZD8NCg0KSSBz
-dHVkeSBpbnRlcmZhY2VzIG9mIGV0aHRvb2wuIEl0IHNldHMvZ2V0cyBkdW1wIHZpYSBzdHJ1Y3Qg
-ZXRodG9vbF9kdW1wLg0KSSBmYWNlIHByb2JsZW1zOiB0aGlzIGNoaXAgaGFzIG1hbnkgcmVnaXN0
-ZXIgZG9tYWlucywgYnV0IHRoZXJlJ3Mgbm8gd2F5IHRvDQpzcGVjaWZ5IHRoZSBkb21haW4gdHlw
-ZS4gVGhlIGFtb3VudCBvZiByZWdpc3RlcnMgaXMgbGFyZ2UsIHNvIEkgbmVlZCB0byBzcGVjaWZ5
-DQp0aGUgcmFuZ2UgSSB3YW50IHRvIGR1bXAsIGJ1dCBubyBvZmZzZXQvbGVuZ3RoIGNhbiBiZSB1
-c2VkIGJ5IEVUSFRPT0xfU0VUX0RVTVAuDQpBbm90aGVyIHJlYXNvbiBJIGNhbid0IGR1bXAgYWxs
-IHJlZ2lzdGVycyBpcyB0aGF0IHNvbWUgZG9tYWlucyBhcmUgaW5kaXJlY3QNCmFjY2VzcyB3aXRo
-IHR3byByZWdpc3RlcnMgKG9uZSBpcyBjb250cm9sIHJlZ2lzdGVyLCBhbmQgdGhlIG90aGVyIGlz
-IGRhdGENCnJlZ2lzdGVyKSwgSSBjYW4ndCBhY2Nlc3MgdGhlbSBhcmJpdHJhcmlseSBiZWNhdXNl
-IGZpcm13YXJlIGNhbiB1c2UgdGhlbSANCnNpbXVsdGFuZW91c2x5LiBJbnN0ZWFkLCB0aGV5IGFy
-ZSBvbmx5IHVzZWQgaW4gZmF0YWwgY2FzZXMuDQoNClNvLCBJIGNhbid0IHVzZSBpbnRlcmZhY2Vz
-IG9mIGV0aHRvb2wsIGJ1dCBJJ2xsIHRyeSB0byBtZXJnZSBkdXBsaWNhdGUgdG8NCnJlZHVjZSBj
-b2RlIHNpemUuDQoNCi0tDQpQaW5nLUtlDQoNCg==
+On Fri, Jul 2, 2021 at 4:42 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> chris.chiu@canonical.com writes:
+>
+> > From: Chris Chiu <chris.chiu@canonical.com>
+> >
+> > There will be crazy numbers of interrupts triggered by 8188cu and
+> > 8192cu module, around 8000~10000 interrupts per second, on the usb
+> > host controller. Compare with the vendor driver source code, it's
+> > mapping to the configuration CONFIG_USB_INTERRUPT_IN_PIPE and it is
+> > disabled by default.
+> >
+> > Since the interrupt transfer is neither used for TX/RX nor H2C
+> > commands. Disable it to avoid the confusing interrupts for the
+> > 8188cu and 8192cu module which I only have for verification.
+>
+> The last paragraph is not entirely clear for me, can you elaborate it
+> more? What do you mean with "confusing interrupts"? And is this fixing
+> an actual user visible bug or are you just reducing the number of
+> interrupts?
+>
+It's confusing because there are 8000~9000 interrupts per second even
+though the association is not done yet and no traffic is pumped. It's
+also way too many even the reception of the beacon frames triggers the
+interrupt. This huge number overwhelms the normal interrupt we
+expected from the register setting (only < 100/sec if runs with
+rtlwif/rtl8192cu driver instead). It's difficult to judge where/why
+the interrupts come from and what possible overhead it could possibly
+incur.
+
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
