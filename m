@@ -2,91 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DED6B3BAE98
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Jul 2021 21:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB113BB495
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jul 2021 03:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbhGDTKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Jul 2021 15:10:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46716 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229724AbhGDTKy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 4 Jul 2021 15:10:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 88470613E2;
-        Sun,  4 Jul 2021 19:08:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1625425699;
-        bh=VLiKGR1v+9NnuwU1LjnHuZ6Su0GWomCpRT6OA2j6uFw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qiTAXYmDvRFSZ4zinz8MPMNQnVXr4AtbiXkUHkBDWjOEGJ+slrPQMfdzp6h7mX+Ao
-         KADweRq9ekxgcqmCe2PhV4qQV1cKm/qgHZXfChr9CcUjmBenf4z+teDmOIf4zX8j9S
-         919rdrq7H8t0db/BiLYpq3pf4GVvdnOh6m4eaoZc=
-Date:   Sun, 4 Jul 2021 21:08:16 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     John Wood <john.wood@gmx.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] mt76/mt7915: Fix unsigned compared against zero
-Message-ID: <YOIHIC3qLsVdRjdh@kroah.com>
-References: <20210704145920.24899-1-john.wood@gmx.com>
+        id S229725AbhGEBDu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Jul 2021 21:03:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42218 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229549AbhGEBDt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 4 Jul 2021 21:03:49 -0400
+X-Greylist: delayed 1533 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 04 Jul 2021 18:01:13 PDT
+Received: from mxout017.mail.hostpoint.ch (mxout017.mail.hostpoint.ch [IPv6:2a00:d70:0:e::317])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6225C061574
+        for <linux-wireless@vger.kernel.org>; Sun,  4 Jul 2021 18:01:13 -0700 (PDT)
+Received: from [10.0.2.44] (helo=asmtp014.mail.hostpoint.ch)
+        by mxout017.mail.hostpoint.ch with esmtp (Exim 4.94.2 (FreeBSD))
+        (envelope-from <code@reto-schneider.ch>)
+        id 1m0CaG-000ILa-D6; Mon, 05 Jul 2021 02:35:36 +0200
+Received: from [2a02:168:6182:1:4826:4d5:dcc6:d0b0]
+        by asmtp014.mail.hostpoint.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2 (FreeBSD))
+        (envelope-from <code@reto-schneider.ch>)
+        id 1m0CaG-000G3n-BG; Mon, 05 Jul 2021 02:35:36 +0200
+X-Authenticated-Sender-Id: reto-schneider@reto-schneider.ch
+Subject: Re: [PATCH] rtl8xxxu: disable interrupt_in transfer for 8188cu and
+ 8192cu
+To:     chris.chiu@canonical.com, Jes.Sorensen@gmail.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210701163354.118403-1-chris.chiu@canonical.com>
+From:   Reto Schneider <code@reto-schneider.ch>
+Message-ID: <876caa77-702c-eb29-bfd1-c2ebcc4fb641@reto-schneider.ch>
+Date:   Mon, 5 Jul 2021 02:35:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210704145920.24899-1-john.wood@gmx.com>
+In-Reply-To: <20210701163354.118403-1-chris.chiu@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jul 04, 2021 at 04:59:20PM +0200, John Wood wrote:
-> The mt7915_dpd_freq_idx() function can return a negative value but this
-> value is assigned to an unsigned variable named idx. Then, the code
-> tests if this variable is less than zero. This can never happen with an
-> unsigned type.
+On 01.07.21 18:33, chris.chiu@canonical.com wrote:
+> There will be crazy numbers of interrupts triggered by 8188cu and
+> 8192cu module, around 8000~10000 interrupts per second, on the usb
+> host controller. Compare with the vendor driver source code, it's
+> mapping to the configuration CONFIG_USB_INTERRUPT_IN_PIPE and it is
+> disabled by default.
 > 
-> So, change the idx type to a signed one.
-> 
-> Addresses-Coverity-ID: 1484753 ("Unsigned compared against 0")
-> Fixes: 495184ac91bb8 ("mt76: mt7915: add support for applying pre-calibration data")
-> Signed-off-by: John Wood <john.wood@gmx.com>
-> ---
-> Changelog v1 -> v2
-> - Add Cc to stable@vger.kernel.org
-> 
->  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> index b3f14ff67c5a..764f25a828fa 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> @@ -3440,8 +3440,9 @@ int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy)
->  {
->  	struct mt7915_dev *dev = phy->dev;
->  	struct cfg80211_chan_def *chandef = &phy->mt76->chandef;
-> -	u16 total = 2, idx, center_freq = chandef->center_freq1;
-> +	u16 total = 2, center_freq = chandef->center_freq1;
->  	u8 *cal = dev->cal, *eep = dev->mt76.eeprom.data;
-> +	int idx;
-> 
->  	if (!(eep[MT_EE_DO_PRE_CAL] & MT_EE_WIFI_CAL_DPD))
->  		return 0;
-> --
-> 2.25.1
-> 
-<formletter>
+> Since the interrupt transfer is neither used for TX/RX nor H2C
+> commands. Disable it to avoid the confusing interrupts for the
+> 8188cu and 8192cu module which I only have for verification.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+I tested the new code on the GARDENA smart gateway and it works as 
+expected. Interrupts are greatly reduced while the same level of TX/RX 
+performance could be measured as before the change: A (too) high 
+percentage of retransmissions, but otherwise fine.
 
-</formletter>
+Tested-by: reto.schneider@husqvarnagroup.com
+
+Kind regards,
+Reto
