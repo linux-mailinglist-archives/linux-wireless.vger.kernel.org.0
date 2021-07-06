@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C56243BD0C4
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 13:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FC5B3BD0C5
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 13:35:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234206AbhGFLgb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jul 2021 07:36:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47600 "EHLO mail.kernel.org"
+        id S234949AbhGFLgc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jul 2021 07:36:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47622 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236822AbhGFLfm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jul 2021 07:35:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7BEC261A1D;
-        Tue,  6 Jul 2021 11:24:24 +0000 (UTC)
+        id S236860AbhGFLfn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Jul 2021 07:35:43 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 843B5610F7;
+        Tue,  6 Jul 2021 11:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625570665;
-        bh=Jt/aDsq1Stl07LbDBGnFnJezfY3j/6id96MaEfUjrqY=;
+        s=k20201202; t=1625570671;
+        bh=bGPPZWBLMVLgaINi7y8s9K25vCFRqscWNsCygy0K0NQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ty+vuhmWnq/dHVGQcXdOqXwwzM2BJJsoN3ban708yNym9tRTRAji2Nw7Z80MHxvtu
-         CWrvA3a/Ct4hpT+75XoUAGrhMp/u69acEQ4nCPiyM4eoCwkpmk+e2WV2gUjtrY95Qv
-         e1DI43AzrRHql4vjw76Ka+u3q+BphQImN2TXz5PhrvUGqPmx87Toy4iTNdTlCwDJOv
-         q+j06TSozz0Y/+wAZzNnQrMx9Qqg/Shb69H4UWP5Mz/aqSvIaLe8zYeiytcL7GYr/3
-         9OkBjXDfBZW64VtuXEyIW2IJJpun7agOfcWafTPpEWZDmVwtJ02trpH1XPzoaWrFGw
-         sB0TxEqReSKhw==
+        b=QuNMC0aXhOlbVt7yVDRqJV7y2JeQCx+eDhu7EwZsNhU4wbppl6rfaFQnlYNjwK8AY
+         pxGt8iOtcLLOOF/7Pby2P0F+XX2HQfwrIUUiL0bUoIzu1iKZk1rftFdcYw73Fzvq1O
+         Cc8UVNtQ0moacChh/YJNKMVdQ1Sy6QAzKu9TGiVT+Y52UX9jQfN7mbg2NG4J/wBFMk
+         fvZkKvZuAIqQax06H4lx3kWSs/jihQ86yyCtuBs0C4HVZFb3bw47lOBGJGjSOnIy4f
+         xfSVYtgDpB5XP1Sf5pIsWPgR7kEYdSGfc12HbbwFu9tDVweMNP+2725uZL+eI4KNxI
+         /U9tWZuruRkaw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 109/137] iwlwifi: pcie: fix context info freeing
-Date:   Tue,  6 Jul 2021 07:21:35 -0400
-Message-Id: <20210706112203.2062605-109-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 114/137] cfg80211: fix default HE tx bitrate mask in 2G band
+Date:   Tue,  6 Jul 2021 07:21:40 -0400
+Message-Id: <20210706112203.2062605-114-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210706112203.2062605-1-sashal@kernel.org>
 References: <20210706112203.2062605-1-sashal@kernel.org>
@@ -43,41 +43,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 26d18c75a7496c4c52b0b6789e713dc76ebfbc87 ]
+[ Upstream commit 9df66d5b9f45c39b3925d16e8947cc10009b186d ]
 
-After firmware alive, iwl_trans_pcie_gen2_fw_alive() is called
-to free the context info. However, on gen3 that will then free
-the context info with the wrong size.
+In 2G band, a HE sta can only supports HT and HE, but not supports VHT.
+In this case, default HE tx bitrate mask isn't filled, when we use iw to
+set bitrates without any parameter.
 
-Since we free this allocation later, let it stick around until
-the device is stopped for now, freeing some of it earlier is a
-separate change.
-
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://lore.kernel.org/r/20210609075944.51130-1-pkshih@realtek.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20210618105614.afb63fb8cbc1.If4968db8e09f4ce2a1d27a6d750bca3d132d7d70@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/wireless/nl80211.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-index 4c3ca2a37696..b031e9304983 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-@@ -269,7 +269,8 @@ void iwl_trans_pcie_gen2_fw_alive(struct iwl_trans *trans, u32 scd_addr)
- 	/* now that we got alive we can free the fw image & the context info.
- 	 * paging memory cannot be freed included since FW will still use it
- 	 */
--	iwl_pcie_ctxt_info_free(trans);
-+	if (trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
-+		iwl_pcie_ctxt_info_free(trans);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index daf3f29c7f0c..8fb0478888fb 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4625,11 +4625,10 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 		       sband->ht_cap.mcs.rx_mask,
+ 		       sizeof(mask->control[i].ht_mcs));
  
- 	/*
- 	 * Re-enable all the interrupts, including the RF-Kill one, now that
+-		if (!sband->vht_cap.vht_supported)
+-			continue;
+-
+-		vht_tx_mcs_map = le16_to_cpu(sband->vht_cap.vht_mcs.tx_mcs_map);
+-		vht_build_mcs_mask(vht_tx_mcs_map, mask->control[i].vht_mcs);
++		if (sband->vht_cap.vht_supported) {
++			vht_tx_mcs_map = le16_to_cpu(sband->vht_cap.vht_mcs.tx_mcs_map);
++			vht_build_mcs_mask(vht_tx_mcs_map, mask->control[i].vht_mcs);
++		}
+ 
+ 		he_cap = ieee80211_get_he_iftype_cap(sband, wdev->iftype);
+ 		if (!he_cap)
 -- 
 2.30.2
 
