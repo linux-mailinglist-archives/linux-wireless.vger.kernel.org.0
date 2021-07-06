@@ -2,198 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A9353BDA6D
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 17:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C24E83BDA73
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 17:45:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232458AbhGFPrP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jul 2021 11:47:15 -0400
-Received: from mail-wr1-f41.google.com ([209.85.221.41]:38686 "EHLO
-        mail-wr1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232145AbhGFPrP (ORCPT
+        id S232775AbhGFPrq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jul 2021 11:47:46 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36426 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232502AbhGFPrn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jul 2021 11:47:15 -0400
-Received: by mail-wr1-f41.google.com with SMTP id a8so14926915wrp.5;
-        Tue, 06 Jul 2021 08:44:35 -0700 (PDT)
+        Tue, 6 Jul 2021 11:47:43 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69])
+        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1m0nFv-0007um-MU
+        for linux-wireless@vger.kernel.org; Tue, 06 Jul 2021 15:45:03 +0000
+Received: by mail-io1-f69.google.com with SMTP id d200-20020a6bb4d10000b0290509f7e28fb5so6559252iof.1
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Jul 2021 08:45:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bKZq5qbhINauEqvCfmIrG9RDxQlurs+fI84Tr3Es6H0=;
-        b=TqsuAo0uz3dEtKxw/ZJE8FbirvsGz7RGgqBr71Ckb31+Psbc69935mRmkT03r1Vjm7
-         9tiv3nJ0jZZQN6OMCPXdQ//ORCWox/fn2aFNnmkO/Zj1I4SXWz7BK/P7HWLe4ab5IO/q
-         IKa81wEWs8a0dh1nQ+8apoQY+Q7am2v1WNfptEaYj7WGuzRExOcJU0jz7bBBjK3j9RA3
-         MDVqtfSPdOY7ZHh3UOifKrLytahPVXLuZl0bIcmyUExcFj17/7Mz7QKXuwwPdpoaPWL6
-         N5m3Yg5M8iwggBY55m7mgteWhKIINGUuHJCcYf+XJKaz1avuHdC+U+1m/yzXHDjtxqtw
-         Dq7w==
-X-Gm-Message-State: AOAM531QUWiymNfNluqziw9nCAOzs0e1QEVzQv1H2jp19GKLkKXF1zmp
-        m9K6jBXVt342rfLJwE/3m27TmFZbRXQ=
-X-Google-Smtp-Source: ABdhPJxx/Et+AQedt84FDz57T7Z+/lfL0ncYEwTlIodDqA2OSA3cU21wWopkV69x38hG82V40zDMVg==
-X-Received: by 2002:adf:9084:: with SMTP id i4mr22760890wri.23.1625586274261;
-        Tue, 06 Jul 2021 08:44:34 -0700 (PDT)
-Received: from msft-t490s.. (host-79-12-118-22.retail.telecomitalia.it. [79.12.118.22])
-        by smtp.gmail.com with ESMTPSA id v1sm18183321wre.20.2021.07.06.08.44.32
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=kuH2rCrDKE4NUdJyUOHhlsE+UoTWU7LUnvgfUaQcpgQ=;
+        b=exfxHEbFR9bEC855aKlu12YGa+TdX8E2L7X73hbaYDcNVAiHHv0CWsINWbdCZ1K+gt
+         BksBKntM/8uEI8/Fqj74170LkfIjkfBcQTxMVGSIXdZfgiH3gQSk+QhcYsZ4wjts6MqB
+         B8Z62c96w92BHsWCz0ACfQIb3pjtQ+0cE93tSIjaLLbunCbXAeCHTvgFl7zWdP2fDWbt
+         yL0lCzj8luPj5Ug9TSWmTzvuh7NzZMpBlEbyYPDpJpCihv6KJpJYvqxzNwAgx4u2DnBS
+         DB+1P0hFtCAQzYhDrAlvlwb/9iwRnLkfoDB8Gc13NYPb3yD9BecnlCTa5wk10023GugI
+         uD0w==
+X-Gm-Message-State: AOAM533rfR0EW1bDeBkNL0tGpAUs3YulCXuwelr6j6SJDn4ZiylSLht9
+        aTCUmIBl/KNS0f/Klx4w1iw+GnDrWqQbKwRTs2UgAqXQ/n5ta0H6dLaWdaGO0JwJxYPGwL1+VWg
+        VCi2Sx8AxQQSbDqyfMYy+ac/8G3L7SHXXPhivZsqMGFIp
+X-Received: by 2002:a6b:cf12:: with SMTP id o18mr16325417ioa.86.1625586302756;
+        Tue, 06 Jul 2021 08:45:02 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx2ifZJeBGzup8i1SaHJcxs5jLJJ5iH3GorZZjVhVt3btJDDHnNMHea27CovFbBYAGEyjo/yg==
+X-Received: by 2002:a6b:cf12:: with SMTP id o18mr16325405ioa.86.1625586302525;
+        Tue, 06 Jul 2021 08:45:02 -0700 (PDT)
+Received: from localhost ([2605:a601:ac0f:820:defe:f101:dc1c:6a12])
+        by smtp.gmail.com with ESMTPSA id u20sm8475010ilj.77.2021.07.06.08.45.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 08:44:33 -0700 (PDT)
-From:   Matteo Croce <mcroce@linux.microsoft.com>
-To:     linux-wireless@vger.kernel.org,
-        Cody Schuffelen <schuffelen@google.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] virt_wifi: fix error on connect
-Date:   Tue,  6 Jul 2021 17:44:23 +0200
-Message-Id: <20210706154423.11065-1-mcroce@linux.microsoft.com>
-X-Mailer: git-send-email 2.31.1
+        Tue, 06 Jul 2021 08:45:02 -0700 (PDT)
+Date:   Tue, 6 Jul 2021 10:45:01 -0500
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     b.K.il.h.u+tigbuh@gmail.com
+Cc:     wireless-regdb <wireless-regdb@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wireless-regdb: recent FCC report and order allows
+ 5850-5895 immediately
+Message-ID: <YOR6fRX+RkpjWECF@ubuntu-x1>
+References: <a79286b90cdfdee3a83397008c0f7b6d67bc7f69.1607035229.git.b.K.il.h.u+tigbuh@gmail.com>
+ <YL+RDtGatz/ybG+M@ubuntu-x1>
+ <CAPuHQ=GbacSTgyimkJtx1FXp319Df=LdrPQZ6ZDnPQ_JVXueKw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPuHQ=GbacSTgyimkJtx1FXp319Df=LdrPQZ6ZDnPQ_JVXueKw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Matteo Croce <mcroce@microsoft.com>
+I've been on vacation; sorry for the delay.
 
-When connecting without first doing a scan, the BSS list is empty
-and __cfg80211_connect_result() generates this warning:
+On Wed, Jun 30, 2021 at 05:17:37PM +0200, b.K.il.h.u+tigbuh@gmail.com wrote:
+> > On Tue, Jun 8, 2021 at 5:47 PM Seth Forshee <seth.forshee@canonical.com> wrote:
+> > I think we concluded previously that both 5730-5850 and 5850-5895 should
+> > have a max bandwidth of 160 MHz to permit use of 160 MHz across these
+> > channels.
+> >
+> 
+> Yes.
+> 
+> > We also discussed using NO-IR for 5850-5895. The regulations forbid
+> > active scans, and PMTP-ONLY does not prevent them. NO-IR appears to be
+> > the only option which conforms to this restriction, though that will
+> > also block running an AP in this range.
+> >
+> 
+> So we would not be able to operate an OpenWrt or other Linux-based AP,
+> while other vendors would be allowed to do this? How is this
+> acceptable? How does this help in liberating the band?
 
-$ iw dev wlan0 connect -w VirtWifi
-[   15.371989] ------------[ cut here ]------------
-[   15.372179] WARNING: CPU: 0 PID: 92 at net/wireless/sme.c:756 __cfg80211_connect_result+0x402/0x440
-[   15.372383] CPU: 0 PID: 92 Comm: kworker/u2:2 Not tainted 5.13.0-kvm #444
-[   15.372512] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.14.0-3.fc34 04/01/2014
-[   15.372597] Workqueue: cfg80211 cfg80211_event_work
-[   15.372756] RIP: 0010:__cfg80211_connect_result+0x402/0x440
-[   15.372818] Code: 48 2b 04 25 28 00 00 00 75 59 48 8b 3b 48 8b 76 10 48 8d 65 e0 5b 41 5c 41 5d 41 5e 5d 49 8d 65 f0 41 5d e9 d0 d4 fd ff 0f 0b <0f> 0b e9 f6 fd ff ff e8 f2 4a b4 ff e9 ec fd ff ff 0f 0b e9 19 fd
-[   15.372966] RSP: 0018:ffffc900005cbdc0 EFLAGS: 00010246
-[   15.373022] RAX: 0000000000000000 RBX: ffff8880028e2400 RCX: ffff8880028e2472
-[   15.373088] RDX: 0000000000000002 RSI: 00000000fffffe01 RDI: ffffffff815335ba
-[   15.373149] RBP: ffffc900005cbe00 R08: 0000000000000008 R09: ffff888002bdf8b8
-[   15.373209] R10: ffff88803ec208f0 R11: ffffffffffffe9ae R12: ffff88801d687d98
-[   15.373280] R13: ffff88801b5fe000 R14: ffffc900005cbdc0 R15: dead000000000100
-[   15.373330] FS:  0000000000000000(0000) GS:ffff88803ec00000(0000) knlGS:0000000000000000
-[   15.373382] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   15.373425] CR2: 000056421c468958 CR3: 000000001b458001 CR4: 0000000000170eb0
-[   15.373478] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[   15.373529] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[   15.373580] Call Trace:
-[   15.373611]  ? cfg80211_process_wdev_events+0x10e/0x170
-[   15.373743]  cfg80211_process_wdev_events+0x10e/0x170
-[   15.373783]  cfg80211_process_rdev_events+0x21/0x40
-[   15.373846]  cfg80211_event_work+0x20/0x30
-[   15.373892]  process_one_work+0x1e9/0x340
-[   15.373956]  worker_thread+0x4b/0x3f0
-[   15.374017]  ? process_one_work+0x340/0x340
-[   15.374053]  kthread+0x11f/0x140
-[   15.374089]  ? set_kthread_struct+0x30/0x30
-[   15.374153]  ret_from_fork+0x1f/0x30
-[   15.374187] ---[ end trace 321ef0cb7e9c0be1 ]---
-wlan0 (phy #0): connected to 00:00:00:00:00:00
+We're allowing clients which use the rules in the db to connect to APs
+in the band. We may be able to get APs supported later on by getting
+changes to break up passive-scan and no-IR. But with what we have to
+work with right now, and based on my interpretation of the rules, I
+think this is the best we can do currently.
 
-Add the fake bss just before the connect so that cfg80211_get_bss()
-finds the virtual network.
-As some code was duplicated, move it in a common function.
+> > I also read the max EIRP for clients as 30 dBm without any TPC
+> > requirement. Did I overlook something which limits the EIRP to 27 dBm?
+> >
+> 
+> The 27 dBm EIRP is needed for 20 MHz operation due to spectral density
+> requirements. Is my information correct that regdb has no notion of
+> specifying a separate limit for spectral density? (If it did, we might
+> be able to double the EIRP for 2.4GHz of 10MHz channels)
+> 
+> I have summarized the reasoning in a comment of the original patch,
+> but let me cite it here then (copied from the more recent link you
+> have now given):
+> 
+> > "(iii) For client devices operating under the control of an indoor access point in the 5.850-5.895 GHz band, the maximum power spectral density must not exceed 14 dBm e.i.r.p. in any 1-megahertz band, and the maximum e.i.r.p. over the frequency band of operation must not exceed 30 dBm."
+> > "the Commission limited indoor access point EIRP spectral density to 20 dBm/MHz with a maximum EIRP of 36 dBm over the bandwidth of operation (e.g., 33 dBm/20 MHz and 36 dBm/40 MHz)"
+> > "To keep the potential for causing harmful interference low, the Commission required client devices to operate under the control of an access point, and limited client device's power spectral density and maximum transmit power to 6 dB below the power permitted for the access point."
 
-Signed-off-by: Matteo Croce <mcroce@microsoft.com>
----
- drivers/net/wireless/virt_wifi.c | 52 ++++++++++++++++++++------------
- 1 file changed, 32 insertions(+), 20 deletions(-)
+Ah, thanks, I had forgotten about this.
 
-diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
-index 1df959532c7d..514f2c1124b6 100644
---- a/drivers/net/wireless/virt_wifi.c
-+++ b/drivers/net/wireless/virt_wifi.c
-@@ -136,6 +136,29 @@ static struct ieee80211_supported_band band_5ghz = {
- /* Assigned at module init. Guaranteed locally-administered and unicast. */
- static u8 fake_router_bssid[ETH_ALEN] __ro_after_init = {};
- 
-+static void virt_wifi_inform_bss(struct wiphy *wiphy)
-+{
-+	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
-+	struct cfg80211_bss *informed_bss;
-+	static const struct {
-+		u8 tag;
-+		u8 len;
-+		u8 ssid[8];
-+	} __packed ssid = {
-+		.tag = WLAN_EID_SSID,
-+		.len = 8,
-+		.ssid = "VirtWifi",
-+	};
-+
-+	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
-+					   CFG80211_BSS_FTYPE_PRESP,
-+					   fake_router_bssid, tsf,
-+					   WLAN_CAPABILITY_ESS, 0,
-+					   (void *)&ssid, sizeof(ssid),
-+					   DBM_TO_MBM(-50), GFP_KERNEL);
-+	cfg80211_put_bss(wiphy, informed_bss);
-+}
-+
- /* Called with the rtnl lock held. */
- static int virt_wifi_scan(struct wiphy *wiphy,
- 			  struct cfg80211_scan_request *request)
-@@ -156,28 +179,13 @@ static int virt_wifi_scan(struct wiphy *wiphy,
- /* Acquires and releases the rdev BSS lock. */
- static void virt_wifi_scan_result(struct work_struct *work)
- {
--	struct {
--		u8 tag;
--		u8 len;
--		u8 ssid[8];
--	} __packed ssid = {
--		.tag = WLAN_EID_SSID, .len = 8, .ssid = "VirtWifi",
--	};
--	struct cfg80211_bss *informed_bss;
- 	struct virt_wifi_wiphy_priv *priv =
- 		container_of(work, struct virt_wifi_wiphy_priv,
- 			     scan_result.work);
- 	struct wiphy *wiphy = priv_to_wiphy(priv);
- 	struct cfg80211_scan_info scan_info = { .aborted = false };
--	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
- 
--	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
--					   CFG80211_BSS_FTYPE_PRESP,
--					   fake_router_bssid, tsf,
--					   WLAN_CAPABILITY_ESS, 0,
--					   (void *)&ssid, sizeof(ssid),
--					   DBM_TO_MBM(-50), GFP_KERNEL);
--	cfg80211_put_bss(wiphy, informed_bss);
-+	virt_wifi_inform_bss(wiphy);
- 
- 	/* Schedules work which acquires and releases the rtnl lock. */
- 	cfg80211_scan_done(priv->scan_request, &scan_info);
-@@ -225,10 +233,12 @@ static int virt_wifi_connect(struct wiphy *wiphy, struct net_device *netdev,
- 	if (!could_schedule)
- 		return -EBUSY;
- 
--	if (sme->bssid)
-+	if (sme->bssid) {
- 		ether_addr_copy(priv->connect_requested_bss, sme->bssid);
--	else
-+	} else {
-+		virt_wifi_inform_bss(wiphy);
- 		eth_zero_addr(priv->connect_requested_bss);
-+	}
- 
- 	wiphy_debug(wiphy, "connect\n");
- 
-@@ -241,11 +251,13 @@ static void virt_wifi_connect_complete(struct work_struct *work)
- 	struct virt_wifi_netdev_priv *priv =
- 		container_of(work, struct virt_wifi_netdev_priv, connect.work);
- 	u8 *requested_bss = priv->connect_requested_bss;
--	bool has_addr = !is_zero_ether_addr(requested_bss);
- 	bool right_addr = ether_addr_equal(requested_bss, fake_router_bssid);
- 	u16 status = WLAN_STATUS_SUCCESS;
- 
--	if (!priv->is_up || (has_addr && !right_addr))
-+	if (is_zero_ether_addr(requested_bss))
-+		requested_bss = NULL;
-+
-+	if (!priv->is_up || (requested_bss && !right_addr))
- 		status = WLAN_STATUS_UNSPECIFIED_FAILURE;
- 	else
- 		priv->is_connected = true;
--- 
-2.31.1
-
+Seth
