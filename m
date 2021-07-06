@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7383BD0B9
+	by mail.lfdr.de (Postfix) with ESMTP id 530B53BD0B8
 	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 13:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235701AbhGFLeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jul 2021 07:34:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42402 "EHLO mail.kernel.org"
+        id S233333AbhGFLg3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jul 2021 07:36:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47548 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235654AbhGFLaR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jul 2021 07:30:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3147F61DCA;
-        Tue,  6 Jul 2021 11:21:29 +0000 (UTC)
+        id S236744AbhGFLfj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 6 Jul 2021 07:35:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 92DDA61E1A;
+        Tue,  6 Jul 2021 11:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625570489;
-        bh=i9LbO88BQlRz9UewtnHD4ToRZXkZ1jIba8GKpBuY0pk=;
+        s=k20201202; t=1625570649;
+        bh=ZxhQ/s8KZpLwV9wFhgLlnsSd4+04GTiheMdXUWADhsk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CMfhmf3hyheNyBMalAWHPOQ71uzZ2nMMIEeNbf/AKjkiDJrlglW+LkQNHjHaIxB7/
-         C7zZE+VG82+9Y9WWcElBg/H6Nbvk563y0/uHe7DEYREjDgAL9noOWdXE4YzaNLc1hz
-         XWSehGflOAyEyg5/K9r7+THkx28ySD638JXiSduOhPC3N7syxGf0AHWzF0z/lzsMsw
-         dlk6m9wdu1/UBnJlJva0Hoi3ksO0huCUGmRhjnYq5Bf+BwyUpz2U5OlGFIH6lgAnuj
-         O6uBkKkCNszqgvNkOZ7R3E6MnmdsLASbYwlIC23RWPWEURbZfVpri5PW7nrunfZXz1
-         MB9+5yvIXSFyA==
+        b=vOQVM3nrbqpkXwyxTrR7xomE7wnW1DTa7CqC2OnX7HY/jyLa4ezfbeiG5bW5GTBAj
+         ZA4H+GuFZRZAP/8kQNNz/bHtbyNVZlp9K3P0ya8lq+liTcyPBuOzsRfo4eR2O+rMA0
+         2M21KAab8ifZRPm/P60CA5vShO2WjdFr3jP9hJb2EUlNqDzPZi/JBGaVEfZjfePJ8Q
+         E8DJguI3AyA3+Id4mr4f4eqqbR1a6tZcXaycQrjyI1NpxWwfGk/oKznKwdl9ImuBJ+
+         w2i5smrIn0+V60zi+80JzJzyaV7TejFpZE6PJ8kw+AayREL8gqCwTIVvO6z8a7nR7O
+         +UHCI/XdHBPvg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 136/160] mac80211: Properly WARN on HW scan before restart
-Date:   Tue,  6 Jul 2021 07:18:02 -0400
-Message-Id: <20210706111827.2060499-136-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 097/137] mt76: mt7915: fix IEEE80211_HE_PHY_CAP7_MAX_NC for station mode
+Date:   Tue,  6 Jul 2021 07:21:23 -0400
+Message-Id: <20210706112203.2062605-97-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210706111827.2060499-1-sashal@kernel.org>
-References: <20210706111827.2060499-1-sashal@kernel.org>
+In-Reply-To: <20210706112203.2062605-1-sashal@kernel.org>
+References: <20210706112203.2062605-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,55 +44,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit 45daaa1318410794de956fb8e9d06aed2dbb23d0 ]
+[ Upstream commit 2707ff4dd7b1479dbd44ebb3c74788084cc95245 ]
 
-The following race was possible:
+The value of station mode is always 0.
 
-1. The device driver requests HW restart.
-2. A scan is requested from user space and is propagated
-   to the driver. During this flow HW_SCANNING flag is set.
-3. The thread that handles the HW restart is scheduled,
-   and before starting the actual reconfiguration it
-   checks that HW_SCANNING is not set. The flow does so
-   without acquiring any lock, and thus the WARN fires.
-
-Fix this by checking that HW_SCANNING is on only after RTNL is
-acquired, i.e., user space scan request handling is no longer
-in transit.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20210618133832.8238ab3e19ab.I2693c581c70251472b4f9089e37e06fb2c18268f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixed: 00b2e16e0063 ("mt76: mt7915: add TxBF capabilities")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 9dd741b68f26..937a024a13e2 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -257,14 +257,13 @@ static void ieee80211_restart_work(struct work_struct *work)
- 	/* wait for scan work complete */
- 	flush_workqueue(local->workqueue);
- 	flush_work(&local->sched_scan_stopped_work);
-+	flush_work(&local->radar_detected_work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 0232b66acb4f..8f01ca1694bc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -335,6 +335,9 @@ mt7915_set_stream_he_txbf_caps(struct ieee80211_sta_he_cap *he_cap,
+ 	if (nss < 2)
+ 		return;
+ 
++	/* the maximum cap is 4 x 3, (Nr, Nc) = (3, 2) */
++	elem->phy_cap_info[7] |= min_t(int, nss - 1, 2) << 3;
 +
-+	rtnl_lock();
+ 	if (vif != NL80211_IFTYPE_AP)
+ 		return;
  
- 	WARN(test_bit(SCAN_HW_SCANNING, &local->scanning),
- 	     "%s called with hardware scan in progress\n", __func__);
+@@ -348,9 +351,6 @@ mt7915_set_stream_he_txbf_caps(struct ieee80211_sta_he_cap *he_cap,
+ 	c = IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMER_FB |
+ 	    IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB;
+ 	elem->phy_cap_info[6] |= c;
+-
+-	/* the maximum cap is 4 x 3, (Nr, Nc) = (3, 2) */
+-	elem->phy_cap_info[7] |= min_t(int, nss - 1, 2) << 3;
+ }
  
--	flush_work(&local->radar_detected_work);
--	/* we might do interface manipulations, so need both */
--	rtnl_lock();
--	wiphy_lock(local->hw.wiphy);
- 	list_for_each_entry(sdata, &local->interfaces, list) {
- 		/*
- 		 * XXX: there may be more work for other vif types and even
+ static void
 -- 
 2.30.2
 
