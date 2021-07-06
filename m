@@ -2,300 +2,205 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A6753BC500
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 05:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBF473BC8D5
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 11:57:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230058AbhGFDNR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Jul 2021 23:13:17 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:41488 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229991AbhGFDNQ (ORCPT
+        id S231329AbhGFJ7f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jul 2021 05:59:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53532 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231181AbhGFJ7a (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Jul 2021 23:13:16 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1663Aa0tA029341, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1663Aa0tA029341
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 6 Jul 2021 11:10:36 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 6 Jul 2021 11:10:35 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 6 Jul 2021 11:10:34 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::a0a3:e64a:34ad:fe28]) by
- RTEXMBS04.realtek.com.tw ([fe80::a0a3:e64a:34ad:fe28%5]) with mapi id
- 15.01.2106.013; Tue, 6 Jul 2021 11:10:34 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "brewer.doug@gmail.com" <brewer.doug@gmail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: rtw89: product id 0xa85a support on Linux?
-Thread-Topic: rtw89: product id 0xa85a support on Linux?
-Thread-Index: AQHXcOLAdohydq+1T0GLKHM79Zro1KszmvQAgAEAwACAACVZAA==
-Date:   Tue, 6 Jul 2021 03:10:34 +0000
-Message-ID: <6b0788a110ef6382c803ccf18b27116f4634f3ba.camel@realtek.com>
-References: <20210704143510.GA5787@www.com>
-         <8e844938463c470d9669247227db9c30@realtek.com>
-         <CAG0V13RrjFP=+X32G+3ogo2LJbwcrZyoDeZ7LLBbVfR1JEWUyg@mail.gmail.com>
-In-Reply-To: <CAG0V13RrjFP=+X32G+3ogo2LJbwcrZyoDeZ7LLBbVfR1JEWUyg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.17.226]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzcvNSDkuIvljYggMTA6MjU6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: multipart/mixed;
-        boundary="_002_6b0788a110ef6382c803ccf18b27116f4634f3bacamelrealtekcom_"
+        Tue, 6 Jul 2021 05:59:30 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C838BC061760;
+        Tue,  6 Jul 2021 02:56:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=16iZcd8UM9edxy0w5wY5BQzXODSiQ7QkmW3vxkbk5D0=; b=a3mzSZ9zhXvQ7z72FKA8Fdnpk
+        LWcvpcuWofwRYcFCjviYZJk1oPXrs7M3uQJ+ywY1LHJEnj+NRwjgrzF1fC0F4Her/0HY+w0mU3H3Y
+        10CG8a1oWmfqpRlDsr7HNnDdAy6f+2/u33SyEsVG77yaTgZQwrs2MZiscSAA5F+AnLuDVz82jgC0J
+        lYqY2gLTqCI0RBtuMN88P4U2IEdFt2eygNpGPrRxU5Qv7iomPheSViajY02rYqXloTzTH8q6Js++w
+        YBqCoH4+kucnPqJUrbotraNf2h/vP6y9RzvkP75RGSjwQMJ9WI7C7sCONSx2yqdBujcUYV4c5FTfO
+        peWj6rYRg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45790)
+        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1m0hoi-0006RU-5N; Tue, 06 Jul 2021 10:56:36 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1m0hoO-0001sr-Ht; Tue, 06 Jul 2021 10:56:16 +0100
+Date:   Tue, 6 Jul 2021 10:56:16 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Geoff Levand <geoff@infradead.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
+        Moritz Fischer <mdf@kernel.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
+        Jens Taprogge <jens.taprogge@taprogge.org>,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Thorsten Scherer <t.scherer@eckelmann.de>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, Michael Buesch <m@bues.ch>,
+        Sven Van Asbroeck <TheSven73@gmail.com>,
+        Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Rob Herring <robh@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Martyn Welch <martyn@welchs.me.uk>,
+        Manohar Vanga <manohar.vanga@gmail.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Marc Zyngier <maz@kernel.org>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Qinglang Miao <miaoqinglang@huawei.com>,
+        Alexey Kardashevskiy <aik@ozlabs.ru>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Joey Pabalan <jpabalanb@gmail.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Frank Li <lznuaa@gmail.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Bodo Stroesser <bostroesser@gmail.com>,
+        Hannes Reinecke <hare@suse.de>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        SeongJae Park <sjpark@amazon.de>,
+        Julien Grall <jgrall@amazon.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-sunxi@lists.linux.dev, linux-cxl@vger.kernel.org,
+        nvdimm@lists.linux.dev, dmaengine@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
+        industrypack-devel@lists.sourceforge.net,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
+        greybus-dev@lists.linaro.org, target-devel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH] bus: Make remove callback return void
+Message-ID: <20210706095616.GQ22278@shell.armlinux.org.uk>
+References: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/06/2021 03:01:04
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 164845 [Jul 05 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;github.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/06/2021 03:03:00
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---_002_6b0788a110ef6382c803ccf18b27116f4634f3bacamelrealtekcom_
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5D10EC81E39FAA4F81CD32D592AE62E0@realtek.com>
-Content-Transfer-Encoding: base64
+On Tue, Jul 06, 2021 at 11:50:37AM +0200, Uwe Kleine-König wrote:
+> The driver core ignores the return value of this callback because there
+> is only little it can do when a device disappears.
+> 
+> This is the final bit of a long lasting cleanup quest where several
+> buses were converted to also return void from their remove callback.
+> Additionally some resource leaks were fixed that were caused by drivers
+> returning an error code in the expectation that the driver won't go
+> away.
+> 
+> With struct bus_type::remove returning void it's prevented that newly
+> implemented buses return an ignored error code and so don't anticipate
+> wrong expectations for driver authors.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-T24gVHVlLCAyMDIxLTA3LTA2IGF0IDA4OjU2ICswODAwLCBEb3VnIEJyZXdlciB3cm90ZToNCj4g
-T24gTW9uLCBKdWwgNSwgMjAyMSBhdCA5OjQyIEFNIFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29t
-PiB3cm90ZToNCj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBE
-b3VnIEJyZXdlciBbbWFpbHRvOmJyZXdlcmRvdWdAZ21haWwuY29tXQ0KPiA+ID4gU2VudDogU3Vu
-ZGF5LCBKdWx5IDA0LCAyMDIxIDEwOjM1IFBNDQo+ID4gPiBUbzogbGludXgtd2lyZWxlc3NAdmdl
-ci5rZXJuZWwub3JnDQo+ID4gPiBTdWJqZWN0OiBydHc4OTogcHJvZHVjdCBpZCAweGE4NWEgc3Vw
-cG9ydCBvbiBMaW51eD8NCj4gPiA+IA0KPiA+ID4gSGVsbG8sDQo+ID4gPiANCj4gPiA+IFRoZSBI
-UCBMYXB0b3AgMTVzLWVxMjAyOHVyIGhhdmUgYSBSZWFsdGVrIDgwMi4xMWF4IGRldmljZS4gbHNw
-Y2kNCj4gPiAtbiBzaG93cw0KPiA+ID4gDQo+ID4gPiAwMTowMC4wIE5ldHdvcmsgY29udHJvbGxl
-ciBbMDI4MF06IFJlYWx0ZWsgU2VtaWNvbmR1Y3RvciBDby4sDQo+ID4gTHRkLiBEZXZpY2UgWzEw
-ZWM6DQo+ID4gPiBhODVhXQ0KPiA+ID4gDQo+ID4gPiBJIHRyaWVkIHBrc2hpaCdzIHJ0dzg5IHBh
-dGNoc2V0cyBbMV0gYW5kIGFkZGVkIFBJRCB0bw0KPiA+IHJ0dzg5X3BjaV9pZF90YWJsZS4NCj4g
-PiA+IFNjYW5uaW5nIHdvcmtzIGJ1dCBjYW5ub3QgY29ubmVjdCB0byBhY2Nlc3MgcG9pbnRzLg0K
-PiA+ID4gZG1lc2cgc2hvd3MgbGlrZSAoaGlkaW5nIE1BQyBhZGRyZXNzKToNCj4gPiA+IA0KPiA+
-ID4gcnR3ODlfcGNpIDAwMDA6MDE6MDAuMDogRmlybXdhcmUgdmVyc2lvbiAwLjEzLjguMCwgY21k
-IHZlcnNpb24gMCwNCj4gPiB0eXBlIDENCj4gPiA+IHJ0dzg5X3BjaSAwMDAwOjAxOjAwLjA6IEZp
-cm13YXJlIHZlcnNpb24gMC4xMy44LjAsIGNtZCB2ZXJzaW9uIDAsDQo+ID4gdHlwZSAzDQo+ID4g
-PiBydHc4OV9wY2kgMDAwMDowMTowMC4wOiBjaGlwIHJmZV90eXBlIGlzIDENCj4gPiA+IHdsYW4w
-OiBhdXRoZW50aWNhdGUgd2l0aCB4eDp4eDp4eDp4eDp4eDp4eA0KPiA+ID4gd2xhbjA6IHNlbmQg
-YXV0aCB0byB4eDp4eDp4eDp4eDp4eDp4eCAodHJ5IDEvMykNCj4gPiA+IHdsYW4wOiBhdXRoZW50
-aWNhdGVkDQo+ID4gPiB3bGFuMDogYXNzb2NpYXRlIHdpdGggeHg6eHg6eHg6eHg6eHg6eHggKHRy
-eSAxLzMpDQo+ID4gPiB3bGFuMDogUlggQXNzb2NSZXNwIGZyb20geHg6eHg6eHg6eHg6eHg6eHgg
-KGNhcGFiPTB4NDExIHN0YXR1cz0wDQo+ID4gYWlkPTEpDQo+ID4gPiB3bGFuMDogYXNzb2NpYXRl
-ZA0KPiA+ID4gcnR3ODlfcGNpIDAwMDA6MDE6MDAuMDogYzJoIHJlZyB0aW1lb3V0DQo+ID4gPiBy
-dHc4OV9wY2kgMDAwMDowMTowMC4wOiBGVyBkb2VzIG5vdCBwcm9jZXNzIGgyYyByZWdpc3RlcnMN
-Cj4gPiA+IHJ0dzg5X3BjaSAwMDAwOjAxOjAwLjA6IHRpbWVkIG91dCB0byBmbHVzaCBxdWV1ZXMN
-Cj4gPiA+IA0KPiA+ID4gcnR3ODkgd2lsbCBiZSB0aGUgZHJpdmVyIHRvIHN1cHBvcnQgdGhpcyB3
-aWZpIG1vZGVsPyBUaGFua3MuDQo+ID4gPiANCj4gPiANCj4gPiBUaGUgSUQgMHhhODVhIGlzIGEg
-dmFyaWFudCBvZiA4ODUyQUUsIGFuZCBydHc4OSB3aWxsIHN1cHBvcnQgaXQNCj4gPiBsYXRlci4N
-Cj4gPiBJJ2xsIHByb3ZpZGUgeW91IGEgcGF0Y2ggd2hlbiBJIGhhdmUgYSBkcmFmdCBpbXBsZW1l
-bnRhdGlvbi4NCj4gDQo+IFRoYW5rcyEgSSdtIGhhcHB5IHRvIHRlc3QgeW91ciBwYXRjaC4NCj4g
-DQoNCkJlZm9yZSB0cnlpbmcgbmV3IHBhdGNoLCBwbGVhc2UgdXBncmFkZSB5b3VyIGZpcm13YXJl
-IHRvIHYwLjEzLjI0LjANCnRoYXQgeW91IGNhbiBkb3dubG9hZCBpdCB2aWEgbXkgZ2l0aHViOg0K
-DQpodHRwczovL2dpdGh1Yi5jb20vcGtzaGloL2xpbnV4LWZpcm13YXJlL2Jsb2IvYTViNzljNDc5
-MGRhM2ViMzY5MGUyMzU1NDIyNWVmOGRiNDY0ZjJjNi9ydHc4OS9ydHc4ODUyYV9mdy5iaW4NCg0K
-VGhlbiwgY2hlY2sga2VybmVsIGxvZyB0byBjb25maXJtIHRoZSB2ZXJzaW9uIGxpa2UgZG1lc2cg
-eW91IG1lbnRpb25lZC4NCg0KDQpUaGUgcGF0aCBvZiB0aGUgYXR0YWNobWVudCBwYXRjaCBpc24n
-dCBmdWxsIHBhdGgsIHNvIHBsZWFzZSBhcHBseQ0KaXQgd2l0aCBzcGVjaWZpZWQgcGF0aCBkcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5Lw0KDQoNCi0tDQpQaW5nLUtlDQoNCg==
+Yay! For ARM, Amba and related parts:
 
---_002_6b0788a110ef6382c803ccf18b27116f4634f3bacamelrealtekcom_
-Content-Type: text/x-patch; name="20210706_00_0xa85a.patch"
-Content-Description: 20210706_00_0xa85a.patch
-Content-Disposition: attachment; filename="20210706_00_0xa85a.patch";
-	size=9010; creation-date="Tue, 06 Jul 2021 03:10:34 GMT";
-	modification-date="Tue, 06 Jul 2021 03:10:34 GMT"
-Content-ID: <7A349F5AC442CB498AC44A8EDBE8A302@realtek.com>
-Content-Transfer-Encoding: base64
+Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-ZGlmZiAtLWdpdCBhL2NvZXguYyBiL2NvZXguYwppbmRleCA4NjhhYTlkLi5jMjI0NzEyIDEwMDY0
-NAotLS0gYS9jb2V4LmMKKysrIGIvY29leC5jCkBAIC00NDQ5LDYgKzQ0NDksNyBAQCB2b2lkIHJ0
-dzg5X2J0Y19jMmhfaGFuZGxlKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2Rldiwgc3RydWN0IHNrX2J1
-ZmYgKnNrYiwKIHN0YXRpYyB2b2lkIF9zaG93X2N4X2luZm8oc3RydWN0IHJ0dzg5X2RldiAqcnR3
-ZGV2LCBzdHJ1Y3Qgc2VxX2ZpbGUgKm0pCiB7CiAJY29uc3Qgc3RydWN0IHJ0dzg5X2NoaXBfaW5m
-byAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsKKwlzdHJ1Y3QgcnR3ODlfaGFsICpoYWwgPSAmcnR3ZGV2
-LT5oYWw7CiAJc3RydWN0IHJ0dzg5X2J0YyAqYnRjID0gJnJ0d2Rldi0+YnRjOwogCXN0cnVjdCBy
-dHc4OV9idGNfZG0gKmRtID0gJmJ0Yy0+ZG07CiAJc3RydWN0IHJ0dzg5X2J0Y19idF9pbmZvICpi
-dCA9ICZidGMtPmN4LmJ0OwpAQCAtNDUxNSw4ICs0NTE2LDggQEAgc3RhdGljIHZvaWQgX3Nob3df
-Y3hfaW5mbyhzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsIHN0cnVjdCBzZXFfZmlsZSAqbSkKIAkJ
-ICAgIjFBbnRfUG9zOlMxLCAiIDogIjFBbnRfUG9zOlMwLCAiKSkpOwogCiAJc2VxX3ByaW50Ziht
-LCAiM3JkX2NvZXg6JWQsIGRiY2M6JWQsIHR4X251bTolZCwgcnhfbnVtOiVkXG4iLAotCQkgICBi
-dGMtPmN4Lm90aGVyLnR5cGUsIHJ0d2Rldi0+ZGJjY19lbiwgY2hpcC0+dHhfbnNzLAotCQkgICBj
-aGlwLT5yeF9uc3MpOworCQkgICBidGMtPmN4Lm90aGVyLnR5cGUsIHJ0d2Rldi0+ZGJjY19lbiwg
-aGFsLT50eF9uc3MsCisJCSAgIGhhbC0+cnhfbnNzKTsKIH0KIAogc3RhdGljIHZvaWQgX3Nob3df
-d2xfcm9sZV9pbmZvKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2Rldiwgc3RydWN0IHNlcV9maWxlICpt
-KQpkaWZmIC0tZ2l0IGEvY29yZS5jIGIvY29yZS5jCmluZGV4IDNiZDMxZTYuLmY1YzFiZjcgMTAw
-NjQ0Ci0tLSBhL2NvcmUuYworKysgYi9jb3JlLmMKQEAgLTE4MjksMzMgKzE4MjksNDkgQEAgaW50
-IHJ0dzg5X2NvcmVfc3RhX3JlbW92ZShzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsCiBzdGF0aWMg
-dm9pZCBydHc4OV9pbml0X2h0X2NhcChzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsCiAJCQkgICAg
-ICBzdHJ1Y3QgaWVlZTgwMjExX3N0YV9odF9jYXAgKmh0X2NhcCkKIHsKKwlzdGF0aWMgY29uc3Qg
-X19sZTE2IGhpZ2hlc3RbXSA9IHtjcHVfdG9fbGUxNigxNTApLCBjcHVfdG9fbGUxNigzMDApfTsK
-KwlzdHJ1Y3QgcnR3ODlfaGFsICpoYWwgPSAmcnR3ZGV2LT5oYWw7CisJdTggbnNzID0gaGFsLT5y
-eF9uc3M7CisJaW50IGk7CisKIAlodF9jYXAtPmh0X3N1cHBvcnRlZCA9IHRydWU7CiAJaHRfY2Fw
-LT5jYXAgPSAwOwogCWh0X2NhcC0+Y2FwIHw9IElFRUU4MDIxMV9IVF9DQVBfU0dJXzIwIHwKIAkJ
-ICAgICAgIElFRUU4MDIxMV9IVF9DQVBfTUFYX0FNU0RVIHwKIAkJICAgICAgIElFRUU4MDIxMV9I
-VF9DQVBfVFhfU1RCQyB8CiAJCSAgICAgICAoMSA8PCBJRUVFODAyMTFfSFRfQ0FQX1JYX1NUQkNf
-U0hJRlQpOwotCiAJaHRfY2FwLT5jYXAgfD0gSUVFRTgwMjExX0hUX0NBUF9MRFBDX0NPRElORzsK
-LQogCWh0X2NhcC0+Y2FwIHw9IElFRUU4MDIxMV9IVF9DQVBfU1VQX1dJRFRIXzIwXzQwIHwKIAkJ
-ICAgICAgIElFRUU4MDIxMV9IVF9DQVBfRFNTU0NDSzQwIHwKIAkJICAgICAgIElFRUU4MDIxMV9I
-VF9DQVBfU0dJXzQwOwogCWh0X2NhcC0+YW1wZHVfZmFjdG9yID0gSUVFRTgwMjExX0hUX01BWF9B
-TVBEVV82NEs7CiAJaHRfY2FwLT5hbXBkdV9kZW5zaXR5ID0gSUVFRTgwMjExX0hUX01QRFVfREVO
-U0lUWV9OT05FOwogCWh0X2NhcC0+bWNzLnR4X3BhcmFtcyA9IElFRUU4MDIxMV9IVF9NQ1NfVFhf
-REVGSU5FRDsKLQlodF9jYXAtPm1jcy5yeF9tYXNrWzBdID0gMHhGRjsKLQlodF9jYXAtPm1jcy5y
-eF9tYXNrWzFdID0gMHhGRjsKKwlmb3IgKGkgPSAwOyBpIDwgNDsgaSsrKQorCQlodF9jYXAtPm1j
-cy5yeF9tYXNrW2ldID0gaSA8IG5zcyA/IDB4RkYgOiAwOwogCWh0X2NhcC0+bWNzLnJ4X21hc2tb
-NF0gPSAweDAxOwotCWh0X2NhcC0+bWNzLnJ4X2hpZ2hlc3QgPSBjcHVfdG9fbGUxNigzMDApOwor
-CWh0X2NhcC0+bWNzLnJ4X2hpZ2hlc3QgPSBuc3MgPD0gQVJSQVlfU0laRShoaWdoZXN0KSA/IGhp
-Z2hlc3RbbnNzIC0gMV0gOiAwOwogfQogCiBzdGF0aWMgdm9pZCBydHc4OV9pbml0X3ZodF9jYXAo
-c3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LAogCQkJICAgICAgIHN0cnVjdCBpZWVlODAyMTFfc3Rh
-X3ZodF9jYXAgKnZodF9jYXApCiB7Ci0JdTE2IG1jc19tYXA7Ci0JX19sZTE2IGhpZ2hlc3Q7CisJ
-c3RhdGljIGNvbnN0IF9fbGUxNiBoaWdoZXN0W10gPSB7Y3B1X3RvX2xlMTYoNDMzKSwgY3B1X3Rv
-X2xlMTYoODY3KX07CisJc3RydWN0IHJ0dzg5X2hhbCAqaGFsID0gJnJ0d2Rldi0+aGFsOworCXUx
-NiB0eF9tY3NfbWFwID0gMCwgcnhfbWNzX21hcCA9IDA7CiAJdTggc3RzX2NhcCA9IDM7CisJaW50
-IGk7CisKKwlmb3IgKGkgPSAwOyBpIDwgODsgaSsrKSB7CisJCWlmIChpIDwgaGFsLT50eF9uc3Mp
-CisJCQl0eF9tY3NfbWFwIHw9IElFRUU4MDIxMV9WSFRfTUNTX1NVUFBPUlRfMF85IDw8IChpICog
-Mik7CisJCWVsc2UKKwkJCXR4X21jc19tYXAgfD0gSUVFRTgwMjExX1ZIVF9NQ1NfTk9UX1NVUFBP
-UlRFRCA8PCAoaSAqIDIpOworCQlpZiAoaSA8IGhhbC0+cnhfbnNzKQorCQkJcnhfbWNzX21hcCB8
-PSBJRUVFODAyMTFfVkhUX01DU19TVVBQT1JUXzBfOSA8PCAoaSAqIDIpOworCQllbHNlCisJCQly
-eF9tY3NfbWFwIHw9IElFRUU4MDIxMV9WSFRfTUNTX05PVF9TVVBQT1JURUQgPDwgKGkgKiAyKTsK
-Kwl9CiAKIAl2aHRfY2FwLT52aHRfc3VwcG9ydGVkID0gdHJ1ZTsKIAl2aHRfY2FwLT5jYXAgPSBJ
-RUVFODAyMTFfVkhUX0NBUF9NQVhfTVBEVV9MRU5HVEhfMTE0NTQgfApAQCAtMTg2OSwyMCArMTg4
-NSwxMiBAQCBzdGF0aWMgdm9pZCBydHc4OV9pbml0X3ZodF9jYXAoc3RydWN0IHJ0dzg5X2RldiAq
-cnR3ZGV2LAogCXZodF9jYXAtPmNhcCB8PSBJRUVFODAyMTFfVkhUX0NBUF9NVV9CRUFNRk9STUVF
-X0NBUEFCTEUgfAogCQkJSUVFRTgwMjExX1ZIVF9DQVBfU1VfQkVBTUZPUk1FRV9DQVBBQkxFOwog
-CXZodF9jYXAtPmNhcCB8PSBzdHNfY2FwIDw8IElFRUU4MDIxMV9WSFRfQ0FQX0JFQU1GT1JNRUVf
-U1RTX1NISUZUOwotCi0JbWNzX21hcCA9IElFRUU4MDIxMV9WSFRfTUNTX1NVUFBPUlRfMF85IDw8
-IDAgfAotCQkgIElFRUU4MDIxMV9WSFRfTUNTX05PVF9TVVBQT1JURUQgPDwgNCB8Ci0JCSAgSUVF
-RTgwMjExX1ZIVF9NQ1NfTk9UX1NVUFBPUlRFRCA8PCA2IHwKLQkJICBJRUVFODAyMTFfVkhUX01D
-U19OT1RfU1VQUE9SVEVEIDw8IDggfAotCQkgIElFRUU4MDIxMV9WSFRfTUNTX05PVF9TVVBQT1JU
-RUQgPDwgMTAgfAotCQkgIElFRUU4MDIxMV9WSFRfTUNTX05PVF9TVVBQT1JURUQgPDwgMTIgfAot
-CQkgIElFRUU4MDIxMV9WSFRfTUNTX05PVF9TVVBQT1JURUQgPDwgMTQ7Ci0JaGlnaGVzdCA9IGNw
-dV90b19sZTE2KDg2Nyk7Ci0JbWNzX21hcCB8PSBJRUVFODAyMTFfVkhUX01DU19TVVBQT1JUXzBf
-OSA8PCAyOwotCXZodF9jYXAtPnZodF9tY3MucnhfbWNzX21hcCA9IGNwdV90b19sZTE2KG1jc19t
-YXApOwotCXZodF9jYXAtPnZodF9tY3MudHhfbWNzX21hcCA9IGNwdV90b19sZTE2KG1jc19tYXAp
-OwotCXZodF9jYXAtPnZodF9tY3MucnhfaGlnaGVzdCA9IGhpZ2hlc3Q7Ci0Jdmh0X2NhcC0+dmh0
-X21jcy50eF9oaWdoZXN0ID0gaGlnaGVzdDsKKwl2aHRfY2FwLT52aHRfbWNzLnJ4X21jc19tYXAg
-PSBjcHVfdG9fbGUxNihyeF9tY3NfbWFwKTsKKwl2aHRfY2FwLT52aHRfbWNzLnR4X21jc19tYXAg
-PSBjcHVfdG9fbGUxNih0eF9tY3NfbWFwKTsKKwl2aHRfY2FwLT52aHRfbWNzLnJ4X2hpZ2hlc3Qg
-PSBoYWwtPnJ4X25zcyA8PSBBUlJBWV9TSVpFKGhpZ2hlc3QpID8KKwkJCQkgICAgICBoaWdoZXN0
-W2hhbC0+cnhfbnNzIC0gMV0gOiAwOworCXZodF9jYXAtPnZodF9tY3MudHhfaGlnaGVzdCA9IGhh
-bC0+dHhfbnNzIDw9IEFSUkFZX1NJWkUoaGlnaGVzdCkgPworCQkJCSAgICAgIGhpZ2hlc3RbaGFs
-LT50eF9uc3MgLSAxXSA6IDA7CiB9CiAKICNkZWZpbmUgUlRXODlfU0JBTkRfSUZUWVBFU19OUiAy
-CkBAIC0xODk4LDcgKzE5MDYsNyBAQCBzdGF0aWMgdm9pZCBydHc4OV9pbml0X2hlX2NhcChzdHJ1
-Y3QgcnR3ODlfZGV2ICpydHdkZXYsCiAJCSAgICAgICAoY2hpcC0+Y2hpcF9pZCA9PSBSVEw4ODUy
-QiAmJiBoYWwtPmN2ID09IENISVBfQ0FWKTsKIAl1MTYgbWNzX21hcCA9IDA7CiAJaW50IGk7Ci0J
-aW50IG5zcyA9IGNoaXAtPnJ4X25zczsKKwlpbnQgbnNzID0gaGFsLT5yeF9uc3M7CiAJaW50IGlk
-eCA9IDA7CiAKIAlpZnR5cGVfZGF0YSA9IGtjYWxsb2MoUlRXODlfU0JBTkRfSUZUWVBFU19OUiwg
-c2l6ZW9mKCppZnR5cGVfZGF0YSksIEdGUF9LRVJORUwpOwpAQCAtMjIxNyw2ICsyMjI1LDEwIEBA
-IHN0YXRpYyBpbnQgcnR3ODlfY2hpcF9lZnVzZV9pbmZvX3NldHVwKHN0cnVjdCBydHc4OV9kZXYg
-KnJ0d2RldikKIAlpZiAocmV0KQogCQlyZXR1cm4gcmV0OwogCisJcmV0ID0gcnR3ODlfbWFjX3Nl
-dHVwX3BoeWNhcChydHdkZXYpOworCWlmIChyZXQpCisJCXJldHVybiByZXQ7CisKIAlydHc4OV9t
-YWNfcHdyX29mZihydHdkZXYpOwogCiAJcmV0dXJuIDA7CmRpZmYgLS1naXQgYS9jb3JlLmggYi9j
-b3JlLmgKaW5kZXggZDUzNWI5Mi4uNDJlYmQ1OCAxMDA2NDQKLS0tIGEvY29yZS5oCisrKyBiL2Nv
-cmUuaApAQCAtMjMzOCw2ICsyMzM4LDggQEAgc3RydWN0IHJ0dzg5X2hhbCB7CiAJdTMyIHN3X2Ft
-c2R1X21heF9zaXplOwogCXUzMiBhbnRlbm5hX3R4OwogCXUzMiBhbnRlbm5hX3J4OworCXU4IHR4
-X25zczsKKwl1OCByeF9uc3M7CiB9OwogCiAjZGVmaW5lIFJUVzg5X01BWF9NQUNfSURfTlVNIDEy
-OApkaWZmIC0tZ2l0IGEvZncuYyBiL2Z3LmMKaW5kZXggN2JlNWNlMi4uZDA0ODBmMSAxMDA2NDQK
-LS0tIGEvZncuYworKysgYi9mdy5jCkBAIC03NTMsNyArNzUzLDcgQEAgc3RhdGljIHZvaWQgX19n
-ZXRfc3RhX2hlX3BrdF9wYWRkaW5nKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwKIHsKIAlib29s
-IHBwZV90aDsKIAl1OCBwcGUxNiwgcHBlODsKLQl1OCBuc3MgPSBtaW4oc3RhLT5yeF9uc3MsIHJ0
-d2Rldi0+Y2hpcC0+dHhfbnNzKSAtIDE7CisJdTggbnNzID0gbWluKHN0YS0+cnhfbnNzLCBydHdk
-ZXYtPmhhbC50eF9uc3MpIC0gMTsKIAl1OCBwcGVfdGhyZXNfaGRyID0gc3RhLT5oZV9jYXAucHBl
-X3RocmVzWzBdOwogCXU4IHJ1X2JpdG1hcDsKIAl1OCBuLCBpZHgsIHNoOwpkaWZmIC0tZ2l0IGEv
-ZncuaCBiL2Z3LmgKaW5kZXggOWY3YzQ1Mi4uZTAwYmI1ZSAxMDA2NDQKLS0tIGEvZncuaAorKysg
-Yi9mdy5oCkBAIC02Myw2ICs2MywyMiBAQCBlbnVtIHJ0dzg5X21hY19jMmhfdHlwZSB7CiAJUlRX
-ODlfRldDTURfQzJIUkVHX0ZVTkNfTlVMTCA9IDB4RkYKIH07CiAKK3N0cnVjdCBydHc4OV9jMmhf
-cGh5X2NhcCB7CisJdTMyIGZ1bmM6NzsKKwl1MzIgYWNrOjE7CisJdTMyIGxlbjo0OworCXUzMiBz
-ZXE6NDsKKwl1MzIgcnhfbnNzOjg7CisJdTMyIGJ3Ojg7CisKKwl1MzIgdHhfbnNzOjg7CisJdTMy
-IHByb3Q6ODsKKwl1MzIgbmljOjg7CisJdTMyIHdsX2Z1bmM6ODsKKworCXUzMiBod190eXBlOjg7
-Cit9IF9fcGFja2VkOworCiBlbnVtIHJ0dzg5X2Z3X2MyaF9jYXRlZ29yeSB7CiAJUlRXODlfQzJI
-X0NBVF9URVNULAogCVJUVzg5X0MySF9DQVRfTUFDLApkaWZmIC0tZ2l0IGEvbWFjLmMgYi9tYWMu
-YwppbmRleCBlMDA2NTJlLi40NmFmYmIwIDEwMDY0NAotLS0gYS9tYWMuYworKysgYi9tYWMuYwpA
-QCAtMjIwOCw2ICsyMjA4LDUxIEBAIHN0YXRpYyBpbnQgY21hY19pbml0KHN0cnVjdCBydHc4OV9k
-ZXYgKnJ0d2RldiwgdTggbWFjX2lkeCkKIAlyZXR1cm4gcmV0OwogfQogCitzdGF0aWMgaW50IHJ0
-dzg5X21hY19yZWFkX3BoeWNhcChzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsCisJCQkJIHN0cnVj
-dCBydHc4OV9tYWNfYzJoX2luZm8gKmMyaF9pbmZvKQoreworCXN0cnVjdCBydHc4OV9tYWNfaDJj
-X2luZm8gaDJjX2luZm8gPSB7MH07CisJdTMyIHJldDsKKworCWgyY19pbmZvLmlkID0gUlRXODlf
-RldDTURfSDJDUkVHX0ZVTkNfR0VUX0ZFQVRVUkU7CisJaDJjX2luZm8uY29udGVudF9sZW4gPSAw
-OworCisJcmV0ID0gcnR3ODlfZndfbXNnX3JlZyhydHdkZXYsICZoMmNfaW5mbywgYzJoX2luZm8p
-OworCWlmIChyZXQpCisJCXJldHVybiByZXQ7CisKKwlpZiAoYzJoX2luZm8tPmlkICE9IFJUVzg5
-X0ZXQ01EX0MySFJFR19GVU5DX1BIWV9DQVApCisJCXJldHVybiAtRUlOVkFMOworCisJcmV0dXJu
-IDA7Cit9CisKK2ludCBydHc4OV9tYWNfc2V0dXBfcGh5Y2FwKHN0cnVjdCBydHc4OV9kZXYgKnJ0
-d2RldikKK3sKKwlzdHJ1Y3QgcnR3ODlfaGFsICpoYWwgPSAmcnR3ZGV2LT5oYWw7CisJY29uc3Qg
-c3RydWN0IHJ0dzg5X2NoaXBfaW5mbyAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsKKwlzdHJ1Y3QgcnR3
-ODlfbWFjX2MyaF9pbmZvIGMyaF9pbmZvID0gezB9OworCXN0cnVjdCBydHc4OV9jMmhfcGh5X2Nh
-cCAqY2FwID0KKwkJKHN0cnVjdCBydHc4OV9jMmhfcGh5X2NhcCAqKSZjMmhfaW5mby5jMmhyZWdb
-MF07CisJdTMyIHJldDsKKworCXJldCA9IHJ0dzg5X21hY19yZWFkX3BoeWNhcChydHdkZXYsICZj
-MmhfaW5mbyk7CisJaWYgKHJldCkKKwkJcmV0dXJuIHJldDsKKworCWhhbC0+dHhfbnNzID0gY2Fw
-LT50eF9uc3MgPworCQkgICAgICBtaW5fdCh1OCwgY2FwLT50eF9uc3MsIGNoaXAtPnR4X25zcykg
-OiBjaGlwLT50eF9uc3M7CisJaGFsLT5yeF9uc3MgPSBjYXAtPnJ4X25zcyA/CisJCSAgICAgIG1p
-bl90KHU4LCBjYXAtPnJ4X25zcywgY2hpcC0+cnhfbnNzKSA6IGNoaXAtPnJ4X25zczsKKworCXJ0
-dzg5X2RlYnVnKHJ0d2RldiwgUlRXODlfREJHX0ZXLAorCQkgICAgInBoeWNhcCBoYWwvcGh5L2No
-aXA6IHR4X25zcz0weCV4LzB4JXgvMHgleCByeF9uc3M9MHgleC8weCV4LzB4JXhcbiIsCisJCSAg
-ICBoYWwtPnR4X25zcywgY2FwLT50eF9uc3MsIGNoaXAtPnR4X25zcywKKwkJICAgIGhhbC0+cnhf
-bnNzLCBjYXAtPnJ4X25zcywgY2hpcC0+cnhfbnNzKTsKKworCXJldHVybiAwOworfQorCiBzdGF0
-aWMgaW50IHJ0dzg5X2h3X3NjaF90eF9lbl9oMmMoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LCB1
-OCBiYW5kLAogCQkJCSAgdTE2IHR4X2VuX3UxNiwgdTE2IG1hc2tfdTE2KQogewpkaWZmIC0tZ2l0
-IGEvbWFjLmggYi9tYWMuaAppbmRleCBlZmZmN2NiLi5iMDUyODc4IDEwMDY0NAotLS0gYS9tYWMu
-aAorKysgYi9tYWMuaApAQCAtODEyLDYgKzgxMiw3IEBAIHUzMiBydHc4OV9tYWNfZ2V0X2Vycl9z
-dGF0dXMoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2KTsKIGludCBydHc4OV9tYWNfc2V0X2Vycl9z
-dGF0dXMoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LCB1MzIgZXJyKTsKIHZvaWQgcnR3ODlfbWFj
-X2MyaF9oYW5kbGUoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqc2ti
-LAogCQkJICB1MzIgbGVuLCB1OCBjbGFzcywgdTggZnVuYyk7CitpbnQgcnR3ODlfbWFjX3NldHVw
-X3BoeWNhcChzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYpOwogaW50IHJ0dzg5X21hY19zdG9wX3Nj
-aF90eChzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsIHU4IG1hY19pZHgsCiAJCQkgIHUxNiAqdHhf
-ZW4sIGVudW0gcnR3ODlfc2NoX3R4X3NlbCBzZWwpOwogaW50IHJ0dzg5X21hY19yZXN1bWVfc2No
-X3R4KHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgdTggbWFjX2lkeCwgdTE2IHR4X2VuKTsKZGlm
-ZiAtLWdpdCBhL3BjaS5jIGIvcGNpLmMKaW5kZXggMTU1ZjQ2My4uYjVhYWYwZiAxMDA2NDQKLS0t
-IGEvcGNpLmMKKysrIGIvcGNpLmMKQEAgLTMwMTIsNiArMzAxMiw3IEBAIHN0YXRpYyB2b2lkIHJ0
-dzg5X3BjaV9yZW1vdmUoc3RydWN0IHBjaV9kZXYgKnBkZXYpCiAKIHN0YXRpYyBjb25zdCBzdHJ1
-Y3QgcGNpX2RldmljZV9pZCBydHc4OV9wY2lfaWRfdGFibGVbXSA9IHsKIAl7IFBDSV9ERVZJQ0Uo
-UENJX1ZFTkRPUl9JRF9SRUFMVEVLLCAweDg4NTIpLCAuZHJpdmVyX2RhdGEgPSBSVEw4ODUyQSB9
-LAorCXsgUENJX0RFVklDRShQQ0lfVkVORE9SX0lEX1JFQUxURUssIDB4YTg1YSksIC5kcml2ZXJf
-ZGF0YSA9IFJUTDg4NTJBIH0sCiAJe30sCiB9OwogTU9EVUxFX0RFVklDRV9UQUJMRShwY2ksIHJ0
-dzg5X3BjaV9pZF90YWJsZSk7CmRpZmYgLS1naXQgYS9waHkuYyBiL3BoeS5jCmluZGV4IGRlMmIw
-MDAuLmFjNzUxOTMgMTAwNjQ0Ci0tLSBhL3BoeS5jCisrKyBiL3BoeS5jCkBAIC0yNDUsNyArMjQ1
-LDcgQEAgc3RhdGljIHZvaWQgcnR3ODlfcGh5X3JhX3N0YV91cGRhdGUoc3RydWN0IHJ0dzg5X2Rl
-diAqcnR3ZGV2LAogCX0KIAogCWlmIChtb2RlID49IFJUVzg5X1JBX01PREVfSFQpIHsKLQkJZm9y
-IChpID0gMDsgaSA8IHJ0d2Rldi0+Y2hpcC0+dHhfbnNzOyBpKyspCisJCWZvciAoaSA9IDA7IGkg
-PCBydHdkZXYtPmhhbC50eF9uc3M7IGkrKykKIAkJCWhpZ2hfcmF0ZV9tYXNrIHw9IGhpZ2hfcmF0
-ZV9tYXNrc1tpXTsKIAkJcmFfbWFzayAmPSBoaWdoX3JhdGVfbWFzazsKIAkJaWYgKG1vZGUgJiBS
-VFc4OV9SQV9NT0RFX09GRE0pCkBAIC0yOTIsNyArMjkyLDcgQEAgc3RhdGljIHZvaWQgcnR3ODlf
-cGh5X3JhX3N0YV91cGRhdGUoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LAogCXJhLT5tYWNpZCA9
-IHJ0d3N0YS0+bWFjX2lkOwogCXJhLT5zdGJjX2NhcCA9IHN0YmNfZW47CiAJcmEtPmxkcGNfY2Fw
-ID0gbGRwY19lbjsKLQlyYS0+c3NfbnVtID0gbWluKHN0YS0+cnhfbnNzLCBydHdkZXYtPmNoaXAt
-PnR4X25zcykgLSAxOworCXJhLT5zc19udW0gPSBtaW4oc3RhLT5yeF9uc3MsIHJ0d2Rldi0+aGFs
-LnR4X25zcykgLSAxOwogCXJhLT5lbl9zZ2kgPSBzZ2k7CiAJcmEtPnJhX21hc2sgPSByYV9tYXNr
-OwogCg==
-
---_002_6b0788a110ef6382c803ccf18b27116f4634f3bacamelrealtekcom_--
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
