@@ -2,73 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7725D3BDE12
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 21:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72C6D3BDE80
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 22:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229953AbhGFTfq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jul 2021 15:35:46 -0400
-Received: from www62.your-server.de ([213.133.104.62]:43614 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229811AbhGFTfq (ORCPT
+        id S230162AbhGFUqF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jul 2021 16:46:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59322 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229811AbhGFUqE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jul 2021 15:35:46 -0400
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1m0qoa-0003eJ-DF; Tue, 06 Jul 2021 21:33:04 +0200
-Received: from [85.5.47.65] (helo=linux-3.home)
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1m0qoa-000S7C-5t; Tue, 06 Jul 2021 21:33:04 +0200
-Subject: LPC 2021 Networking and BPF Track CFP (Reminder)
-From:   Daniel Borkmann <daniel@iogearbox.net>
-To:     netdev@vger.kernel.org, bpf@vger.kernel.org
-Cc:     xdp-newbies@vger.kernel.org, iovisor-dev@lists.iovisor.org,
-        linux-wireless@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        lwn@lwn.net
-References: <6d225920-9ecc-ef24-2bf8-848ca86c7fb0@iogearbox.net>
-Message-ID: <c549da28-a3c0-9478-4b91-7aa2ff124b69@iogearbox.net>
-Date:   Tue, 6 Jul 2021 21:33:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        Tue, 6 Jul 2021 16:46:04 -0400
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25059C061762
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jul 2021 13:43:25 -0700 (PDT)
+Received: by mail-oo1-xc31.google.com with SMTP id o3-20020a4a84c30000b0290251d599f19bso2953489oog.8
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Jul 2021 13:43:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=pxMY07o9eA6SvMdwqfO/Cy/RP18zRy8WHvKUzTEaaNE=;
+        b=cMEULcwqLZ1Wut54PhoGe8eWn9DWOkTBGefRRfl5OdVDl+rs626G5wMaH28cgDjzcy
+         C3SrxS4IBWN9GT87WmK8g47N1LXQplCWDOfx8int0/GS3k/x/nkilLmTHNlFEJRG7MNd
+         XBIkEEXZ1pU0eRvjS1TRSvA1B76ydqAA34SpYmKB2ihzHjiFB86o3rkOkpvBUwbSv3hH
+         SAJ7sWW3535WnApBT/aqgm8mqOlZd3rAIlZ18pf5XSKHOT2S+byWJIp1xZIbcvBH0etl
+         zsjB18jSpkL6JUn2+voD9bKAbUaWuj/V1AbjBFUkZHMHiCqgtvfqmj4sQqDjclnu51kM
+         rRng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=pxMY07o9eA6SvMdwqfO/Cy/RP18zRy8WHvKUzTEaaNE=;
+        b=jTntgODWg42Ecgiws9pdULvUTOFhnCnAuvSzgqfn0+MtMASjvUBnI09Cb7Gbu8YPKG
+         5+WBzBbsKFqVPPBdT30T5bKHFJn7rqNpaiJ6VwM7rI4ocOWzm+0pe76u2eeo/f2N526+
+         sOSi3niiiq0Kc/jKIAi5L00ki1rL2D30k+1Qlt3S0PEW3NO92HZQ3wrfdVEy9HKFuu7K
+         eOB0IvVI4iD0yr3scMYQDV38X5YQnBH1XqYi0egqVzkQgOMP4fhaccELFvYi9pkpo9qh
+         6ahhSM2LI6n1fAFz2ibqrJ5Ic8tW7VLJ3xTF5NJw2Qeq/5EixPeR2crqu0zMxCPd/F2d
+         OzKQ==
+X-Gm-Message-State: AOAM533NIvEA9ZZANETxrov8LsmLm3uDdm5P5w77TwudHgJ4/VhupmYS
+        6BnMZByBNfjGRltA/6PwgZyW3Q==
+X-Google-Smtp-Source: ABdhPJxDvDPv3ADYsyyhWPVlnzb7CaqMGlOMdSkFiej4dUoXbTCedb2luVlDDH/zGyqw6KpVymfMhg==
+X-Received: by 2002:a4a:d6cc:: with SMTP id j12mr2894172oot.0.1625604204373;
+        Tue, 06 Jul 2021 13:43:24 -0700 (PDT)
+Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id x130sm1332892oix.22.2021.07.06.13.43.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jul 2021 13:43:23 -0700 (PDT)
+Date:   Tue, 6 Jul 2021 15:43:21 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>
+Cc:     nvdimm@lists.linux.dev, linux-hyperv@vger.kernel.org,
+        kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-fpga@vger.kernel.org, linux-pci@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-cxl@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux1394-devel@lists.sourceforge.net, linux-scsi@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-acpi@vger.kernel.org,
+        industrypack-devel@lists.sourceforge.net,
+        linux-input@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, greybus-dev@lists.linaro.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-spi@vger.kernel.org, kernel@pengutronix.de,
+        dmaengine@vger.kernel.org, linux-ntb@googlegroups.com,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
+Message-ID: <YOTAaQ7AnkCvRQaS@yoga>
+References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
+ <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+ <YOSb1+yeVeLxiSRc@yoga>
+ <20210706184323.fudcbsiu4i34dojs@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <6d225920-9ecc-ef24-2bf8-848ca86c7fb0@iogearbox.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.2/26223/Tue Jul  6 13:05:54 2021)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210706184323.fudcbsiu4i34dojs@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a reminder for the Call for Proposals (CFP) for the Networking and
-BPF track at the 2021 edition of the Linux Plumbers Conference (LPC), which
-will be held virtually on the wider Internet, on September 20th - 24th, 2021.
+On Tue 06 Jul 13:43 CDT 2021, Uwe Kleine-K?nig wrote:
 
-This year's Networking and BPF track technical committee is comprised of:
+> Hello Bjorn,
+> 
+> On Tue, Jul 06, 2021 at 01:08:18PM -0500, Bjorn Andersson wrote:
+> > On Tue 06 Jul 10:48 CDT 2021, Uwe Kleine-K?nig wrote:
+> > > diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+> > > index c1404d3dae2c..7f6fac618ab2 100644
+> > > --- a/drivers/rpmsg/rpmsg_core.c
+> > > +++ b/drivers/rpmsg/rpmsg_core.c
+> > > @@ -530,7 +530,7 @@ static int rpmsg_dev_probe(struct device *dev)
+> > >  	return err;
+> > >  }
+> > >  
+> > > -static int rpmsg_dev_remove(struct device *dev)
+> > > +static void rpmsg_dev_remove(struct device *dev)
+> > >  {
+> > >  	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+> > >  	struct rpmsg_driver *rpdrv = to_rpmsg_driver(rpdev->dev.driver);
+> > > @@ -546,8 +546,6 @@ static int rpmsg_dev_remove(struct device *dev)
+> > >  
+> > >  	if (rpdev->ept)
+> > >  		rpmsg_destroy_ept(rpdev->ept);
+> > > -
+> > > -	return err;
+> > 
+> > This leaves err assigned but never used, but I don't mind following up
+> > with a patch cleaning that up after this has landed.
+> 
+> Ah, good catch. If I send out a v3 I will fold the following into this
+> patch:
+> 
+> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+> index 7f6fac618ab2..9151836190ce 100644
+> --- a/drivers/rpmsg/rpmsg_core.c
+> +++ b/drivers/rpmsg/rpmsg_core.c
+> @@ -534,10 +534,9 @@ static void rpmsg_dev_remove(struct device *dev)
+>  {
+>  	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+>  	struct rpmsg_driver *rpdrv = to_rpmsg_driver(rpdev->dev.driver);
+> -	int err = 0;
+>  
+>  	if (rpdev->ops->announce_destroy)
+> -		err = rpdev->ops->announce_destroy(rpdev);
+> +		rpdev->ops->announce_destroy(rpdev);
+>  
+>  	if (rpdrv->remove)
+>  		rpdrv->remove(rpdev);
+> 
 
-   David S. Miller <davem@davemloft.net>
-   Jakub Kicinski <kuba@kernel.org>
-   Eric Dumazet <edumazet@google.com>
-   Alexei Starovoitov <ast@kernel.org>
-   Daniel Borkmann <daniel@iogearbox.net>
-   Andrii Nakryiko <andrii@kernel.org>
+Sounds good, feel free to keep my ack on this.
 
-We are seeking proposals of 40 minutes in length (including Q&A discussion),
-optionally accompanied by papers of 2 to 10 pages in length.
+> Maybe .announce_destroy() should then be changed to return void, too?
+> Something like:
+> 
 
-Any kind of advanced Linux networking and/or BPF related topic will be considered.
+Yes, I saw this opportunity as well. But that will fan out further, so
+let's postpone that until your series has landed and we can follow up
+with such changes through the remoteproc tree.
 
-Please submit your proposals through the official LPC website at:
+> diff --git a/drivers/rpmsg/rpmsg_internal.h b/drivers/rpmsg/rpmsg_internal.h
+> index a76c344253bf..d5204756714c 100644
+> --- a/drivers/rpmsg/rpmsg_internal.h
+> +++ b/drivers/rpmsg/rpmsg_internal.h
+> @@ -40,7 +40,7 @@ struct rpmsg_device_ops {
+>  					    struct rpmsg_channel_info chinfo);
+>  
+>  	int (*announce_create)(struct rpmsg_device *ept);
+> -	int (*announce_destroy)(struct rpmsg_device *ept);
+> +	void (*announce_destroy)(struct rpmsg_device *ept);
+>  };
+>  
+>  /**
+> diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_bus.c
+> index 8e49a3bacfc7..4e05994634f8 100644
+> --- a/drivers/rpmsg/virtio_rpmsg_bus.c
+> +++ b/drivers/rpmsg/virtio_rpmsg_bus.c
+> @@ -340,7 +340,7 @@ static int virtio_rpmsg_announce_create(struct rpmsg_device *rpdev)
+>  	return err;
+>  }
+>  
+> -static int virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
+> +static void virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
+>  {
+>  	struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
+>  	struct virtproc_info *vrp = vch->vrp;
+> @@ -360,8 +360,6 @@ static int virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
+>  		if (err)
+>  			dev_err(dev, "failed to announce service %d\n", err);
+>  	}
+> -
+> -	return err;
+>  }
+>  
+>  static const struct rpmsg_device_ops virtio_rpmsg_ops = {
+> 
+> though it's not obvious for me that the last hunk is sensible. (OTOH the
+> return code is ignored anyhow as rpmsg_dev_remove() is the only caller.
+> 
 
-   https://linuxplumbersconf.org/event/11/abstracts/
+I need to backtrack a little bit more to figure out why we ended up with
+this...
 
-Make sure to select "Networking & BPF Summit" in the Track pull-down menu.
-
-Proposals must be submitted by August 13th, and submitters will be notified of
-acceptance by August 16th.
-
-Final slides and papers (as PDF) are due on the first day of the conference.
+Thanks,
+Bjorn
