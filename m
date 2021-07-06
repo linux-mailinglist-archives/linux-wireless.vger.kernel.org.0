@@ -2,95 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A66323BDC64
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 19:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E523BDCB6
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 20:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbhGFRii (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jul 2021 13:38:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45714 "EHLO
+        id S231182AbhGFSLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jul 2021 14:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229949AbhGFRih (ORCPT
+        with ESMTP id S229954AbhGFSLB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jul 2021 13:38:37 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AF6C061574;
-        Tue,  6 Jul 2021 10:35:59 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id e14so10033178qkl.9;
-        Tue, 06 Jul 2021 10:35:59 -0700 (PDT)
+        Tue, 6 Jul 2021 14:11:01 -0400
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4EA9C061574
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jul 2021 11:08:22 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id l17-20020a9d6a910000b029048a51f0bc3cso10702443otq.13
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Jul 2021 11:08:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Uwfk4YkfYnLUY61LIrInzNWSqJf1Bvs7c1Av+mBNu2I=;
-        b=E7/6U1xptRsZ3HKEB8jG1fXaffia6e6UTsGXHJ+63i9xCHv2a7ahnH55Rb5RXQSadV
-         vVx1flieXFwDSwSdOut8jLqsG+4YbWkTzWOBeefu1cXWzEBE4eipDoHq9igGc+KK/QPB
-         fe12IDUolDkw6/r2cjgNiMUo0bY2pMPpR3/ss3uwaOC7XCaEjsN0pz1EJz26smEZHCTw
-         blq1gVnZIe0HEZu0J1RN8BAkaTI6aQ9GouT4UOQey+UFVUnf3Xe20xcZtM1hGXlVTE42
-         q4KRW/LItVH89sktEgJeGNP9q54kYGt1yU+7pY7kcdZaqPn0SkavBQe870z6Xii65d1s
-         rNDA==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=rFh4HQBpaw9ewOD7eKuJ7KI9YAzHhN8tlxJ6LopMKHs=;
+        b=Sz6rE6fIxKghlltcLCE+UXPsQefAUgPvTMscjeRzq2kl6NTGV49umux5xM0XcDuF3f
+         KuSKKfkZ8nSISGEXHz3w1v+CP9bxuRJkim+LBmkXAMBhskBSVWy4R8UYC7L1pwY+g7hz
+         Zg3WKG3mRVhsusU5VFmdXh5UPocqhZf4lahEU95r9tDGNbsVfHF1Q4HkA+YZfm/i81fd
+         v0xNi9dJEaEvf856OdG6fjSc31APYItT+IUiPzbg0w9QbfcYoXqLRo58SwLlUHuXr/Qb
+         gjgu5RAVRwk/bKL57rYJjqGIxVt7qPeDusZUEamQ36NdV7/ZYwdc/uo7wSJkJLcpf0tD
+         jOXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Uwfk4YkfYnLUY61LIrInzNWSqJf1Bvs7c1Av+mBNu2I=;
-        b=f2Vezkd5Mcr5tZxczdqfOM16pbWYPoxjCksRET8n+D3m7TddMhznvdYN1e+iIX9Zun
-         IwoNYfjIEV2vKrmfEf3xwWkfsOeKF4bsLjcJivA43W/IGNzdDaON9WNv3zXc1J+Bp+Z9
-         rLE0WcxfCAptKdFoURJpWih35cQKKsfYguKeoE79Z1Mj1eeFntZShPnRWH0ikNFFAMsI
-         3JxfqhPoGkf1Zp1jJZhkiRjWVgCfq7lLNavS/kQpP2smAAPlA3t60h9y0Xg9RGv+vSGM
-         3I16VFQ/00blh9q9rSA9zYxQYfyD+6x5sCbeI83I7v5G+a3tY3by1M28HY+zKgOlqmYT
-         O2PQ==
-X-Gm-Message-State: AOAM5323Sv6Z4PLJtoiZyxwCj8GhwWYViMDzQch4MVCD4biZVQD95mm9
-        yVdYaYEZzjYMGdZU5/DRp5CSOw5vSGVGZw==
-X-Google-Smtp-Source: ABdhPJyLuETifOOqasZegMMPnjZoasbg8/SIJEvlmxlvbPDrKji8v3B4r8DcvFcM0+fLAaHWmo+EKQ==
-X-Received: by 2002:a37:e314:: with SMTP id y20mr20525746qki.289.1625592958134;
-        Tue, 06 Jul 2021 10:35:58 -0700 (PDT)
-Received: from [192.168.99.8] (pool-72-69-75-15.nycmny.fios.verizon.net. [72.69.75.15])
-        by smtp.gmail.com with ESMTPSA id g76sm1919659qke.127.2021.07.06.10.35.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jul 2021 10:35:57 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: disable interrupt_in transfer for 8188cu and
- 8192cu
-To:     chris.chiu@canonical.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, code@reto-schneider.ch
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210701163354.118403-1-chris.chiu@canonical.com>
-Message-ID: <d32690a6-f679-c676-1461-10b47ae3428b@gmail.com>
-Date:   Tue, 6 Jul 2021 13:35:56 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=rFh4HQBpaw9ewOD7eKuJ7KI9YAzHhN8tlxJ6LopMKHs=;
+        b=CQQ84578KOA9G0jUtKlbp56MCHSvjafsdwMcGIdWGern/yoyfyxSpMs/COaz9gE3OR
+         xuYINLEm37l661jy3lhqJWyXt772utRpdOZjYxnv1DR1wjDFiXl6BSrERlTJloC937Gd
+         DBOfqMX/009KOMZnYg5JBBiaWncFs7BBuJJl2DPdRtmqDN9u6LNEjMa/kOUmy6QEjmrr
+         F9iIvNRl0oiEgsB7DzXA5qkM75X1tFYsoyF+V0g3MrXppP/eYyaO7T8LPusX5xRszgDt
+         9/xyBedLgJXA89aJMfM5MA1EvJYU8YH5iWCqci9HL2SxG53a8iz+/t3tkKgInofjFWd8
+         MoMQ==
+X-Gm-Message-State: AOAM533BctvFN8ZfBJWbiEw+bLA1hpQ4jUclvXMvwppcHczU3i8M9y6Z
+        wURKt8WfN7rq6PVP57Ucb1y0AQ==
+X-Google-Smtp-Source: ABdhPJwwC8pa+wbm0v5SSaX+DFJoQ7jJmXTjdD3iH0933Y2rw8Y2+zYlxp2w0qjcBNkHXGnjSvRJ6w==
+X-Received: by 2002:a9d:3d3:: with SMTP id f77mr16276146otf.43.1625594902170;
+        Tue, 06 Jul 2021 11:08:22 -0700 (PDT)
+Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id 68sm497113otd.74.2021.07.06.11.08.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jul 2021 11:08:21 -0700 (PDT)
+Date:   Tue, 6 Jul 2021 13:08:18 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>
+Cc:     kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+        dmaengine@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+        linux-fpga@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-i3c@lists.infradead.org,
+        industrypack-devel@lists.sourceforge.net,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
+        greybus-dev@lists.linaro.org, target-devel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
+Message-ID: <YOSb1+yeVeLxiSRc@yoga>
+References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
+ <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20210701163354.118403-1-chris.chiu@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/1/21 12:33 PM, chris.chiu@canonical.com wrote:
-> From: Chris Chiu <chris.chiu@canonical.com>
+On Tue 06 Jul 10:48 CDT 2021, Uwe Kleine-K?nig wrote:
+
+> The driver core ignores the return value of this callback because there
+> is only little it can do when a device disappears.
 > 
-> There will be crazy numbers of interrupts triggered by 8188cu and
-> 8192cu module, around 8000~10000 interrupts per second, on the usb
-> host controller. Compare with the vendor driver source code, it's
-> mapping to the configuration CONFIG_USB_INTERRUPT_IN_PIPE and it is
-> disabled by default.
+> This is the final bit of a long lasting cleanup quest where several
+> buses were converted to also return void from their remove callback.
+> Additionally some resource leaks were fixed that were caused by drivers
+> returning an error code in the expectation that the driver won't go
+> away.
 > 
-> Since the interrupt transfer is neither used for TX/RX nor H2C
-> commands. Disable it to avoid the confusing interrupts for the
-> 8188cu and 8192cu module which I only have for verification.
+> With struct bus_type::remove returning void it's prevented that newly
+> implemented buses return an ignored error code and so don't anticipate
+> wrong expectations for driver authors.
 > 
-> Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
 
-I remember noticing this earlier but never had a chance to dig into it.
+Thanks for doing this!
 
-Thanks for fixing this!
+Acked-by: Bjorn Andersson <bjorn.andersson@linaro.org> (rpmsg and apr)
 
-Acked-by: Jes Sorensen <Jes.Sorensen@gmail.com>
+[..]
+> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+> index c1404d3dae2c..7f6fac618ab2 100644
+> --- a/drivers/rpmsg/rpmsg_core.c
+> +++ b/drivers/rpmsg/rpmsg_core.c
+> @@ -530,7 +530,7 @@ static int rpmsg_dev_probe(struct device *dev)
+>  	return err;
+>  }
+>  
+> -static int rpmsg_dev_remove(struct device *dev)
+> +static void rpmsg_dev_remove(struct device *dev)
+>  {
+>  	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+>  	struct rpmsg_driver *rpdrv = to_rpmsg_driver(rpdev->dev.driver);
+> @@ -546,8 +546,6 @@ static int rpmsg_dev_remove(struct device *dev)
+>  
+>  	if (rpdev->ept)
+>  		rpmsg_destroy_ept(rpdev->ept);
+> -
+> -	return err;
 
-Jes
+This leaves err assigned but never used, but I don't mind following up
+with a patch cleaning that up after this has landed.
 
+>  }
+>  
+>  static struct bus_type rpmsg_bus = {
+
+Regards,
+Bjorn
