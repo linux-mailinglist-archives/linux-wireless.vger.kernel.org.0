@@ -2,709 +2,297 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E67E03BD64F
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 14:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BBE93BD6C6
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 14:44:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240643AbhGFMce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jul 2021 08:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53056 "EHLO
+        id S238483AbhGFMqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jul 2021 08:46:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243391AbhGFMDa (ORCPT
+        with ESMTP id S237662AbhGFMqm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jul 2021 08:03:30 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B159C014CED
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Jul 2021 04:45:29 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id hc16so33651312ejc.12
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Jul 2021 04:45:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soldelgroup-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HZAm1NLlcQ+FL9WqmUzZQTJrdlj2r17cIt4JY2Hixl8=;
-        b=ecBNxb+5B+9nq32A+dwp2So9WvTDSLtkwEdaZ7NuGanKHZpAL0eqXPpFCz2++T+iKD
-         HkaLkIPgn795dwSzNjYEWlU/R9j+iSwd2rsgrZ/I+erQGgJ5ERD1nSfY0ULMvAOJ5xug
-         P/zRBWpmvr7NrzVEm/31TleSez1tzDFpbguH506/iyyIoXc8ChcQFgNsPHkH7ZoNzxN/
-         MF17dIKd8H00WdyGyM7qSbZFSZN/NZ/8kxlOog5Awy02znlGwhAZwI8eF68pG5LpWjfj
-         FBEU1njwZ4pVdOPGKNqwKljll+nHNNv+pv3+jBem0mpwtzJCyCG2ZO0Q/rLBJmRo1mWt
-         YmLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HZAm1NLlcQ+FL9WqmUzZQTJrdlj2r17cIt4JY2Hixl8=;
-        b=CwxtgLaNJNRyRNdJ3hkzEDCZtJXFAlwKK9R0OXbEl0PraECOkq3NPe7cQFq6T9jwWM
-         XttJ/YQV+xfWuJkN3o493nZC/d1WiqJq9/R9E9DlJctasxwPYBGsOwk7BYOX/JfODNGC
-         Wf/BEbTehEU/qNVhcUGbxXPzZEEqVVo2vHPhUJVVtnWP4Fgtj6sfvMwXo+1Kt4f+rtAh
-         /QpgLQJNK1hITmrOyiVLOchE1+fzKKLonKQTSxXSWIzkygNLLsq9vPt6np7cfvJU6v8q
-         miOVQmAZnkofq91v9sOrBsEuwibSB0+ME6WFqjov1w+jyH7+FoyQJZB7tUbxxS4OJliq
-         M50Q==
-X-Gm-Message-State: AOAM531XThHUgIoWPJ4kWCWcUs7XVhTVRt92wnNSqMzXlq9Ikjnveo37
-        GTmIbNxO/5gW9Y6aySpnWnxF8SZefkm0LXCD3BCKSQ==
-X-Google-Smtp-Source: ABdhPJySGpjpsEQZlWPcIzVVibtBPYCQYw38z6OSeOAz1nqDpMhztcJ8z4rF6apmf78g8e+XJYOn01ZLko+gJekBjRU=
-X-Received: by 2002:a17:907:60d3:: with SMTP id hv19mr18181476ejc.208.1625571927860;
- Tue, 06 Jul 2021 04:45:27 -0700 (PDT)
+        Tue, 6 Jul 2021 08:46:42 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0DEC09B04C
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jul 2021 05:21:27 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m0jyQ-0001jl-7p; Tue, 06 Jul 2021 14:14:46 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m0jyP-0001fC-Gy; Tue, 06 Jul 2021 14:14:45 +0200
+Date:   Tue, 6 Jul 2021 14:14:45 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Cornelia Huck <cohuck@redhat.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        nvdimm@lists.linux.dev, Alexey Kardashevskiy <aik@ozlabs.ru>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
+        Jens Taprogge <jens.taprogge@taprogge.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Julien Grall <jgrall@amazon.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Alex Elder <elder@kernel.org>, linux-parisc@vger.kernel.org,
+        Geoff Levand <geoff@infradead.org>, linux-fpga@vger.kernel.org,
+        linux-usb@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Thorsten Scherer <t.scherer@eckelmann.de>,
+        kernel@pengutronix.de, Jon Mason <jdmason@kudzu.us>,
+        linux-ntb@googlegroups.com, Wu Hao <hao.wu@intel.com>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Manohar Vanga <manohar.vanga@gmail.com>,
+        linux-wireless@vger.kernel.org,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        virtualization@lists.linux-foundation.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        target-devel@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        linux-i2c@vger.kernel.org,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Ira Weiny <ira.weiny@intel.com>, Helge Deller <deller@gmx.de>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        industrypack-devel@lists.sourceforge.net,
+        linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
+        linux-media@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
+        Johan Hovold <johan@kernel.org>, greybus-dev@lists.linaro.org,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+        Joey Pabalan <jpabalanb@gmail.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
+        Bodo Stroesser <bostroesser@gmail.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>,
+        SeongJae Park <sjpark@amazon.de>, linux-hyperv@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, Frank Li <lznuaa@gmail.com>,
+        netdev@vger.kernel.org, Qinglang Miao <miaoqinglang@huawei.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        linux-staging@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-input@vger.kernel.org,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Allen Hubbe <allenbh@gmail.com>, Alex Dubov <oakad@yahoo.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Moritz Fischer <mdf@kernel.org>, linux-cxl@vger.kernel.org,
+        Michael Buesch <m@bues.ch>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Martyn Welch <martyn@welchs.me.uk>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-mmc@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sven Van Asbroeck <TheSven73@gmail.com>, kvm@vger.kernel.org,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-remoteproc@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        linux-i3c@lists.infradead.org,
+        linux1394-devel@lists.sourceforge.net,
+        Lee Jones <lee.jones@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        Michael Jamet <michael.jamet@intel.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org,
+        Takashi Iwai <tiwai@suse.com>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Marc Zyngier <maz@kernel.org>, dmaengine@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Maximilian Luz <luzmaximilian@gmail.com>
+Subject: Re: [PATCH] bus: Make remove callback return void
+Message-ID: <20210706121445.o3nxgi4bhzrw5w73@pengutronix.de>
+References: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
+ <87pmvvhfqq.fsf@redhat.com>
+ <87mtqzhesu.fsf@redhat.com>
 MIME-Version: 1.0
-References: <CANw61vGmvnMCrKaWCXO4b=m41YnoacomqpjcRTa2s60Q6w-c9Q@mail.gmail.com>
- <YN7I57URPn0YVaEA@lore-desk> <CANw61vHe0RkG2UP690wJKphRMKWUz4vxeaFd0L=vF1XJ2DQxrQ@mail.gmail.com>
- <CANw61vG8H__zNZ4T3GG1Y2UgJRd-VgvY09P=OOUjfg+h0oVnqA@mail.gmail.com>
-In-Reply-To: <CANw61vG8H__zNZ4T3GG1Y2UgJRd-VgvY09P=OOUjfg+h0oVnqA@mail.gmail.com>
-From:   Christopher Chew <cc@soldelgroup.com>
-Date:   Tue, 6 Jul 2021 12:45:15 +0100
-Message-ID: <CANw61vEEANOpm5bCobhOJjxqc68C8D6LnFuNVshy39uQ3HxjoQ@mail.gmail.com>
-Subject: Re: Netgear A6210 with mt76x2u driver issues?
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qlv3rwmw2vf6tbvn"
+Content-Disposition: inline
+In-Reply-To: <87mtqzhesu.fsf@redhat.com>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Lorenzo,
 
-I apologize again if this is a resend, as I got a rejection notice for
-the email containing html again(thanks Gmail...).
+--qlv3rwmw2vf6tbvn
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But just to sanity check, I should be able to use this USB WiFi
-adapter to connect to a WiFi network and concurrently an access point
-based on the capability that iw list tells me right?
-
-I'm not doing anything wrong am I?
-
-
-Best regards,
-Chris
-
-
-On Fri, Jul 2, 2021 at 12:37 PM Christopher Chew <cc@soldelgroup.com> wrote:
->
-> Hi Lorenzo,
->
-> I just tested this with the v5.12.14 kernel and the situation did not change.
-> First I connect the wpa_supplicant.
-> # wpa_supplicant -i wlan0 -c ./example.conf
-> Successfully initialized wpa_supplicant
-> wlan0: CTRL-EVENT-REGDOM-CHANGE init=USER type=COUNTRY alpha2=GB
-> wlan0: SME: Trying to authenticate with fc:ec:da:8a:84:de (SSID='Test'
-> freq=2412 MHz)
-> wlan0: Trying to associate with fc:ec:da:8a:84:de (SSID='Test' freq=2412 MHz)
-> wlan0: Associated with fc:ec:da:8a:84:de
-> wlan0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
-> wlan0: WPA: Key negotiation completed with fc:ec:da:8a:84:de [PTK=CCMP GTK=CCMP]
-> wlan0: CTRL-EVENT-CONNECTED - Connection to fc:ec:da:8a:84:de
-> completed [id=0 id_str=]
->
-> After that, I ran create_ap.
-> # create_ap wlan0 wlan0 internal password
-> Config dir: /tmp/create_ap.wlan0.conf.QXu8Hu9X
-> PID: 3296
-> wlan0 is already associated with channel 1 (2412 MHz)channel------------------ 1
-> Creating a virtual WiFi interface... ap0 created.
-> Sharing Internet using method: nat
-> hostapd command-line interface: hostapd_cli -p
-> /tmp/create_ap.wlan0.conf.QXu8Hu9X/hostapd_ctrl
-> Configuration file: /tmp/create_ap.wlan0.conf.QXu8Hu9X/hostapd.conf
-> Using interface ap0 with hwaddr 78:d2:94:4a:e0:4d and ssid "internal"
-> ap0: interface state UNINITIALIZED->ENABLED
-> ap0: AP-ENABLED
->
->
-> Just to double check that both are on the same channel, and the kernel
-> I was running.
-> # iw ap0 info
-> Interface ap0
->     ifindex 7
->     wdev 0x4
->     addr 78:d2:94:4a:e0:4d
->     ssid internal
->     type AP
->     wiphy 0
->     channel 1 (2412 MHz), width: 20 MHz (no HT), center1: 2412 MHz
->     txpower 18.00 dBm
-> # iw wlan0 info
-> Interface wlan0
->     ifindex 4
->     wdev 0x1
->     addr 78:d2:94:4a:e0:4c
->     ssid Test
->     type managed
->     wiphy 0
->     channel 1 (2412 MHz), width: 40 MHz, center1: 2422 MHz
->     txpower 18.00 dBm
-> # uname -sr
-> Linux 5.12.14-051214-generic
->
-> But when I try to connect anything to internal, it won't connect. You
-> can see that create_ap's output shows nothing authenticating or
-> pairing.
->
-> If I did the reverse, which is run the create_ap first, then
-> wpa_supplicant, it happens like before. The device connects to the
-> host, but wpa_supplicant cannot connect.
->
-> Create_ap.
-> # create_ap wlan0 wlan0 internal password
-> Config dir: /tmp/create_ap.wlan0.conf.2fMgnI9C
-> PID: 15147
-> Creating a virtual WiFi interface... ap0 created.
-> Sharing Internet using method: nat
-> hostapd command-line interface: hostapd_cli -p
-> /tmp/create_ap.wlan0.conf.2fMgnI9C/hostapd_ctrl
-> Configuration file: /tmp/create_ap.wlan0.conf.2fMgnI9C/hostapd.conf
-> Using interface ap0 with hwaddr 78:d2:94:4a:e0:4d and ssid "internal"
-> ap0: interface state UNINITIALIZED->ENABLED
-> ap0: AP-ENABLED
-> ap0: STA 2a:b6:78:4c:58:b5 IEEE 802.11: authenticated
-> ap0: STA 2a:b6:78:4c:58:b5 IEEE 802.11: associated (aid 1)
-> ap0: AP-STA-CONNECTED 2a:b6:78:4c:58:b5
-> ap0: STA 2a:b6:78:4c:58:b5 RADIUS: starting accounting session E7E0E1887C7A5263
-> ap0: STA 2a:b6:78:4c:58:b5 WPA: pairwise key handshake completed (RSN)
->
-> You can see the device managed to connect.
-> Running wpa_supplicant after that?
-> # wpa_supplicant -i wlan0 -c ./example.conf
-> Successfully initialized wpa_supplicant
-> wlan0: SME: Trying to authenticate with fc:ec:da:8a:84:de (SSID='Test'
-> freq=2412 MHz)
-> wlan0: SME: Trying to authenticate with fc:ec:da:8a:84:de (SSID='Test'
-> freq=2412 MHz)
-> wlan0: SME: Trying to authenticate with fc:ec:da:8a:84:de (SSID='Test'
-> freq=2412 MHz)
-> wlan0: SME: Trying to authenticate with fc:ec:da:8a:84:de (SSID='Test'
-> freq=2412 MHz)
-> wlan0: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="Test" auth_failures=1
-> duration=10 reason=CONN_FAILED
-> wlan0: CTRL-EVENT-SSID-REENABLED id=0 ssid="Test"
-> wlan0: SME: Trying to authenticate with fc:ec:da:8a:84:de (SSID='Test'
-> freq=2412 MHz)
-> wlan0: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="Test" auth_failures=2
-> duration=23 reason=CONN_FAILED
->
-> This will continue forever.
->
-> The change between kernel v5.4 and v5.12.14 is that I can't replicate
-> the kernel panic when I try to run both wpa_supplicant and create_ap
-> at the same time. What always happens now is the create_ap will always
-> manage to create the ap but wpa_supplicant will keep trying to connect
-> forever.
->
->
-> Best regards,
-> Chris
->
->
->
-> On Fri, Jul 2, 2021 at 10:07 AM Christopher Chew <cc@soldelgroup.com> wrote:
+On Tue, Jul 06, 2021 at 01:17:37PM +0200, Cornelia Huck wrote:
+> On Tue, Jul 06 2021, Cornelia Huck <cohuck@redhat.com> wrote:
+>=20
+> > On Tue, Jul 06 2021, Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de=
+> wrote:
 > >
-> > HI Lorenzo,
+> >> The driver core ignores the return value of this callback because there
+> >> is only little it can do when a device disappears.
+> >>
+> >> This is the final bit of a long lasting cleanup quest where several
+> >> buses were converted to also return void from their remove callback.
+> >> Additionally some resource leaks were fixed that were caused by drivers
+> >> returning an error code in the expectation that the driver won't go
+> >> away.
+> >>
+> >> With struct bus_type::remove returning void it's prevented that newly
+> >> implemented buses return an ignored error code and so don't anticipate
+> >> wrong expectations for driver authors.
 > >
-> > yes, they are both running on channel 1, 2.412Mhz.
+> > Yay!
 > >
-> > Let me download the latest kernel and try today. I will get back to
-> > you with more information on that.
+> >>
+> >> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> >> ---
+> >> Hello,
+> >>
+> >> this patch depends on "PCI: endpoint: Make struct pci_epf_driver::remo=
+ve
+> >> return void" that is not yet applied, see
+> >> https://lore.kernel.org/r/20210223090757.57604-1-u.kleine-koenig@pengu=
+tronix.de.
+> >>
+> >> I tested it using allmodconfig on amd64 and arm, but I wouldn't be
+> >> surprised if I still missed to convert a driver. So it would be great =
+to
+> >> get this into next early after the merge window closes.
 > >
-> >
-> > Best regards,
-> > Chris
-> >
-> > On Fri, Jul 2, 2021 at 9:06 AM Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> > >
-> > > > Hi,
-> > > >
-> > > > Sorry for sending this twice but I got an email rejection notice as
-> > > > the original email had snippets of html. I am resending this as pure
-> > > > plain text. Original email continues below.
-> > > >
-> > > > I apologize for cold emailing you but I have been encountering some
-> > > > issues running a Netgear A6210 USB WiFi dongle with Ubuntu 18.04.05
-> > > > with kernel v5.4.
-> > > >
-> > > > Recently, due to network issues, I tried to use this USB adapter to
-> > > > attempt to be both client to a WiFi and also act as an access point to
-> > > > a bunch of devices.
-> > >
-> > > Hi Christopher,
-> > >
-> > > Can you please confirm both ap and client are running on the same channel?
-> > > Can you please try an updated kernel? (5.4 is quite old)
-> > >
-> > > Regards,
-> > > Lorenzo
-> > >
-> > > >
-> > > > Running lsusb -t shows the following.
-> > > > /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/7p, 5000M
-> > > >     |__ Port 3: Dev 2, If 0, Class=Vendor Specific Class, Driver=mt76x2u, 5000M
-> > > >     |__ Port 4: Dev 3, If 0, Class=Video, Driver=uvcvideo, 5000M
-> > > >     |__ Port 4: Dev 3, If 3, Class=Audio, Driver=snd-usb-audio, 5000M
-> > > >     |__ Port 4: Dev 3, If 1, Class=Video, Driver=uvcvideo, 5000M
-> > > >     |__ Port 4: Dev 3, If 2, Class=Audio, Driver=snd-usb-audio, 5000M
-> > > > /:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/8p, 480M
-> > > >     |__ Port 1: Dev 3, If 0, Class=Hub, Driver=hub/4p, 480M
-> > > >         |__ Port 1: Dev 4, If 0, Class=Human Interface Device,
-> > > > Driver=usbhid, 12M
-> > > >         |__ Port 1: Dev 4, If 1, Class=Human Interface Device,
-> > > > Driver=usbhid, 12M
-> > > >         |__ Port 3: Dev 5, If 0, Class=Human Interface Device,
-> > > > Driver=usbhid, 1.5M
-> > > >         |__ Port 3: Dev 5, If 1, Class=Human Interface Device,
-> > > > Driver=usbhid, 1.5M
-> > > >         |__ Port 4: Dev 6, If 2, Class=Audio, Driver=snd-usb-audio, 12M
-> > > >         |__ Port 4: Dev 6, If 0, Class=Audio, Driver=snd-usb-audio, 12M
-> > > >         |__ Port 4: Dev 6, If 3, Class=Human Interface Device,
-> > > > Driver=usbhid, 12M
-> > > >         |__ Port 4: Dev 6, If 1, Class=Audio, Driver=snd-usb-audio, 12M
-> > > >     |__ Port 2: Dev 2, If 2, Class=Audio, Driver=snd-usb-audio, 12M
-> > > >     |__ Port 2: Dev 2, If 0, Class=Audio, Driver=snd-usb-audio, 12M
-> > > >     |__ Port 2: Dev 2, If 3, Class=Human Interface Device, Driver=usbhid, 12M
-> > > >     |__ Port 2: Dev 2, If 1, Class=Audio, Driver=snd-usb-audio, 12M
-> > > >
-> > > > The iw list of the Netgear A6210 USB adapter shows the following.
-> > > >
-> > > >     Wiphy phy0
-> > > >     max # scan SSIDs: 4
-> > > >     max scan IEs length: 2243 bytes
-> > > >     max # sched scan SSIDs: 0
-> > > >     max # match sets: 0
-> > > >     max # scan plans: 1
-> > > >     max scan plan interval: -1
-> > > >     max scan plan iterations: 0
-> > > >     Retry short limit: 7
-> > > >     Retry long limit: 4
-> > > >     Coverage class: 0 (up to 0m)
-> > > >     Device supports RSN-IBSS.
-> > > >     Supported Ciphers:
-> > > >         * WEP40 (00-0f-ac:1)
-> > > >         * WEP104 (00-0f-ac:5)
-> > > >         * TKIP (00-0f-ac:2)
-> > > >         * CCMP-128 (00-0f-ac:4)
-> > > >         * CCMP-256 (00-0f-ac:10)
-> > > >         * GCMP-128 (00-0f-ac:8)
-> > > >         * GCMP-256 (00-0f-ac:9)
-> > > >         * CMAC (00-0f-ac:6)
-> > > >         * CMAC-256 (00-0f-ac:13)
-> > > >         * GMAC-128 (00-0f-ac:11)
-> > > >         * GMAC-256 (00-0f-ac:12)
-> > > >     Available Antennas: TX 0x3 RX 0x3
-> > > >     Configured Antennas: TX 0x3 RX 0x3
-> > > >     Supported interface modes:
-> > > >          * IBSS
-> > > >          * managed
-> > > >          * AP
-> > > >          * AP/VLAN
-> > > >          * monitor
-> > > >          * mesh point
-> > > >     Band 1:
-> > > >         Capabilities: 0x1ff
-> > > >             RX LDPC
-> > > >             HT20/HT40
-> > > >             SM Power Save disabled
-> > > >             RX Greenfield
-> > > >             RX HT20 SGI
-> > > >             RX HT40 SGI
-> > > >             TX STBC
-> > > >             RX STBC 1-stream
-> > > >             Max AMSDU length: 3839 bytes
-> > > >             No DSSS/CCK HT40
-> > > >         Maximum RX AMPDU length 65535 bytes (exponent: 0x003)
-> > > >         Minimum RX AMPDU time spacing: 4 usec (0x05)
-> > > >         HT TX/RX MCS rate indexes supported: 0-15
-> > > >         Bitrates (non-HT):
-> > > >             * 1.0 Mbps (short preamble supported)
-> > > >             * 2.0 Mbps (short preamble supported)
-> > > >             * 5.5 Mbps (short preamble supported)
-> > > >             * 11.0 Mbps (short preamble supported)
-> > > >             * 6.0 Mbps
-> > > >             * 9.0 Mbps
-> > > >             * 12.0 Mbps
-> > > >             * 18.0 Mbps
-> > > >             * 24.0 Mbps
-> > > >             * 36.0 Mbps
-> > > >             * 48.0 Mbps
-> > > >             * 54.0 Mbps
-> > > >         Frequencies:
-> > > >             * 2412 MHz [1] (18.0 dBm)
-> > > >             * 2417 MHz [2] (18.0 dBm)
-> > > >             * 2422 MHz [3] (18.0 dBm)
-> > > >             * 2427 MHz [4] (18.0 dBm)
-> > > >             * 2432 MHz [5] (18.0 dBm)
-> > > >             * 2437 MHz [6] (18.0 dBm)
-> > > >             * 2442 MHz [7] (18.0 dBm)
-> > > >             * 2447 MHz [8] (18.0 dBm)
-> > > >             * 2452 MHz [9] (18.0 dBm)
-> > > >             * 2457 MHz [10] (18.0 dBm)
-> > > >             * 2462 MHz [11] (18.0 dBm)
-> > > >             * 2467 MHz [12] (18.0 dBm) (no IR)
-> > > >             * 2472 MHz [13] (18.0 dBm) (no IR)
-> > > >             * 2484 MHz [14] (18.0 dBm) (no IR)
-> > > >     Band 2:
-> > > >         Capabilities: 0x1ff
-> > > >             RX LDPC
-> > > >             HT20/HT40
-> > > >             SM Power Save disabled
-> > > >             RX Greenfield
-> > > >             RX HT20 SGI
-> > > >             RX HT40 SGI
-> > > >             TX STBC
-> > > >             RX STBC 1-stream
-> > > >             Max AMSDU length: 3839 bytes
-> > > >             No DSSS/CCK HT40
-> > > >         Maximum RX AMPDU length 65535 bytes (exponent: 0x003)
-> > > >         Minimum RX AMPDU time spacing: 4 usec (0x05)
-> > > >         HT TX/RX MCS rate indexes supported: 0-15
-> > > >         VHT Capabilities (0x318001b0):
-> > > >             Max MPDU length: 3895
-> > > >             Supported Channel Width: neither 160 nor 80+80
-> > > >             RX LDPC
-> > > >             short GI (80 MHz)
-> > > >             TX STBC
-> > > >             RX antenna pattern consistency
-> > > >             TX antenna pattern consistency
-> > > >         VHT RX MCS set:
-> > > >             1 streams: MCS 0-9
-> > > >             2 streams: MCS 0-9
-> > > >             3 streams: not supported
-> > > >             4 streams: not supported
-> > > >             5 streams: not supported
-> > > >             6 streams: not supported
-> > > >             7 streams: not supported
-> > > >             8 streams: not supported
-> > > >         VHT RX highest supported: 0 Mbps
-> > > >         VHT TX MCS set:
-> > > >             1 streams: MCS 0-9
-> > > >             2 streams: MCS 0-9
-> > > >             3 streams: not supported
-> > > >             4 streams: not supported
-> > > >             5 streams: not supported
-> > > >             6 streams: not supported
-> > > >             7 streams: not supported
-> > > >             8 streams: not supported
-> > > >         VHT TX highest supported: 0 Mbps
-> > > >         Bitrates (non-HT):
-> > > >             * 6.0 Mbps
-> > > >             * 9.0 Mbps
-> > > >             * 12.0 Mbps
-> > > >             * 18.0 Mbps
-> > > >             * 24.0 Mbps
-> > > >             * 36.0 Mbps
-> > > >             * 48.0 Mbps
-> > > >             * 54.0 Mbps
-> > > >         Frequencies:
-> > > >             * 5180 MHz [36] (18.0 dBm) (no IR)
-> > > >             * 5200 MHz [40] (18.0 dBm) (no IR)
-> > > >             * 5220 MHz [44] (18.0 dBm) (no IR)
-> > > >             * 5240 MHz [48] (18.0 dBm) (no IR)
-> > > >             * 5260 MHz [52] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5280 MHz [56] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5300 MHz [60] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5320 MHz [64] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5500 MHz [100] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5520 MHz [104] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5540 MHz [108] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5560 MHz [112] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5580 MHz [116] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5600 MHz [120] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5620 MHz [124] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5640 MHz [128] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5660 MHz [132] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5680 MHz [136] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5700 MHz [140] (18.0 dBm) (no IR, radar detection)
-> > > >             * 5745 MHz [149] (18.0 dBm) (no IR)
-> > > >             * 5765 MHz [153] (18.0 dBm) (no IR)
-> > > >             * 5785 MHz [157] (18.0 dBm) (no IR)
-> > > >             * 5805 MHz [161] (18.0 dBm) (no IR)
-> > > >             * 5825 MHz [165] (18.0 dBm) (no IR)
-> > > >     Supported commands:
-> > > >          * new_interface
-> > > >          * set_interface
-> > > >          * new_key
-> > > >          * start_ap
-> > > >          * new_station
-> > > >          * new_mpath
-> > > >          * set_mesh_config
-> > > >          * set_bss
-> > > >          * authenticate
-> > > >          * associate
-> > > >          * deauthenticate
-> > > >          * disassociate
-> > > >          * join_ibss
-> > > >          * join_mesh
-> > > >          * set_tx_bitrate_mask
-> > > >          * frame
-> > > >          * frame_wait_cancel
-> > > >          * set_wiphy_netns
-> > > >          * set_channel
-> > > >          * set_wds_peer
-> > > >          * probe_client
-> > > >          * set_noack_map
-> > > >          * register_beacons
-> > > >          * start_p2p_device
-> > > >          * set_mcast_rate
-> > > >          * connect
-> > > >          * disconnect
-> > > >          * set_qos_map
-> > > >          * set_multicast_to_unicast
-> > > >     Supported TX frame types:
-> > > >          * IBSS: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90
-> > > > 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
-> > > >          * managed: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90
-> > > > 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
-> > > >          * AP: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0xa0
-> > > > 0xb0 0xc0 0xd0 0xe0 0xf0
-> > > >          * AP/VLAN: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90
-> > > > 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
-> > > >          * mesh point: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80
-> > > > 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
-> > > >          * P2P-client: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80
-> > > > 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
-> > > >          * P2P-GO: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90
-> > > > 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
-> > > >          * P2P-device: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80
-> > > > 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
-> > > >     Supported RX frame types:
-> > > >          * IBSS: 0x40 0xb0 0xc0 0xd0
-> > > >          * managed: 0x40 0xd0
-> > > >          * AP: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
-> > > >          * AP/VLAN: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
-> > > >          * mesh point: 0xb0 0xc0 0xd0
-> > > >          * P2P-client: 0x40 0xd0
-> > > >          * P2P-GO: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
-> > > >          * P2P-device: 0x40 0xd0
-> > > >     software interface modes (can always be added):
-> > > >          * AP/VLAN
-> > > >          * monitor
-> > > >     valid interface combinations:
-> > > >          * #{ IBSS } <= 1, #{ managed, AP, mesh point } <= 2,
-> > > >            total <= 2, #channels <= 1, STA/AP BI must match
-> > > >     HT Capability overrides:
-> > > >          * MCS: ff ff ff ff ff ff ff ff ff ff
-> > > >          * maximum A-MSDU length
-> > > >          * supported channel width
-> > > >          * short GI for 40 MHz
-> > > >          * max A-MPDU length exponent
-> > > >          * min MPDU start spacing
-> > > >     Device supports TX status socket option.
-> > > >     Device supports HT-IBSS.
-> > > >     Device supports SAE with AUTHENTICATE command
-> > > >     Device supports low priority scan.
-> > > >     Device supports scan flush.
-> > > >     Device supports AP scan.
-> > > >     Device supports per-vif TX power setting
-> > > >     Driver supports full state transitions for AP/GO clients
-> > > >     Driver supports a userspace MPM
-> > > >     Device supports active monitor (which will ACK incoming frames)
-> > > >     Device supports configuring vdev MAC-addr on create.
-> > > >     Device supports VHT-IBSS.
-> > > >
-> > > > Looking at the lines
-> > > > valid interface combinations:
-> > > >      * #{ IBSS } <= 1, #{ managed, AP, mesh point } <= 2,
-> > > >        total <= 2, #channels <= 1, STA/AP BI must match
-> > > >
-> > > > I assumed it should be able to do what I wanted, since I was able to
-> > > > do this on my laptop with a builtin Intel WiFi adapter before.
-> > > >
-> > > > Creating the 2 interfaces for the Netgear A6210 was not a problem.
-> > > > I simply did this.
-> > > > iw phy phy0 interface add sta0 type managed
-> > > > iw phy phy0 interface add ap0 type __ap
-> > > >
-> > > > wpa_supplicant.conf is very generic.
-> > > >
-> > > >     # Giving configuration update rights to wpa_cli
-> > > >     ctrl_interface=/run/wpa_supplicant
-> > > >     ctrl_interface_group=wifi
-> > > >     update_config=1
-> > > >
-> > > >     # AP scanning
-> > > >     ap_scan=1
-> > > >
-> > > >     # ISO/IEC alpha2 country code in which the device is operating
-> > > >     country=GB
-> > > >
-> > > >     # network section generated by wpa_passphrase
-> > > >     network={
-> > > >         ssid="Test"
-> > > >         psk="testtest"
-> > > >     }
-> > > >
-> > > > So with the above configurations, I then attempt to connect with the 2 commands.
-> > > >
-> > > >     wpa_supplicant -i sta0 -c ./test.conf
-> > > >     create_ap ap0 sta0 internal password
-> > > >
-> > > > Everything looks like it is fine. The connection to the Test WiFi
-> > > > network is fine and I can connect to the internet. The create_ap
-> > > > command works fine, it shows that the AP is created and enabled.
-> > > >
-> > > > wpa_supplicant output
-> > > >
-> > > >     # wpa_supplicant -i sta0 -c ./example.conf
-> > > >     Successfully initialized wpa_supplicant
-> > > >     sta0: SME: Trying to authenticate with fc:ec:da:8a:84:de
-> > > > (SSID='Test' freq=2412 MHz)
-> > > >     sta0: Trying to associate with fc:ec:da:8a:84:de (SSID='Test' freq=2412 MHz)
-> > > >     sta0: Associated with fc:ec:da:8a:84:de
-> > > >     sta0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
-> > > >     sta0: WPA: Key negotiation completed with fc:ec:da:8a:84:de
-> > > > [PTK=CCMP GTK=CCMP]
-> > > >     sta0: CTRL-EVENT-CONNECTED - Connection to fc:ec:da:8a:84:de
-> > > > completed [id=0 id_str=]
-> > > >
-> > > > create_ap output
-> > > >
-> > > >     # create_ap ap0 sta0 internal password Config dir:
-> > > > /tmp/create_ap.ap0.conf.EmWaK62U
-> > > >     PID: 5027
-> > > >     command failed: Operation not supported (-95)
-> > > >     Creating a virtual WiFi interface... ap1 created.
-> > > >     Sharing Internet using method: nat
-> > > >     hostapd command-line interface: hostapd_cli -p
-> > > > /tmp/create_ap.ap0.conf.EmWaK62U/hostapd_ctrl
-> > > >     Configuration file: /tmp/create_ap.ap0.conf.EmWaK62U/hostapd.conf
-> > > >     Using interface ap1 with hwaddr 78:d2:94:4a:e0:4c and ssid "internal"
-> > > >     ap1: interface state UNINITIALIZED->ENABLED
-> > > >     ap1: AP-ENABLED
-> > > >
-> > > > So I then try to connect my devices onto "internal" and none of my
-> > > > devices can connect.
-> > > >
-> > > > If I did the reverse, which is to create_ap first, then connect to the
-> > > > wpa_supplicant, the following happens.
-> > > >
-> > > > create_ap
-> > > >
-> > > >     # create_ap ap0 sta0 internal password Config dir:
-> > > > /tmp/create_ap.ap0.conf.BWI2H1Dx
-> > > >     PID: 8258
-> > > >     command failed: Operation not supported (-95)
-> > > >     Creating a virtual WiFi interface... ap1 created.
-> > > >     Sharing Internet using method: nat
-> > > >     hostapd command-line interface: hostapd_cli -p
-> > > > /tmp/create_ap.ap0.conf.BWI2H1Dx/hostapd_ctrl
-> > > >     Configuration file: /tmp/create_ap.ap0.conf.BWI2H1Dx/hostapd.conf
-> > > >     Using interface ap1 with hwaddr 78:d2:94:4a:e0:4c and ssid "internal"
-> > > >     ap1: interface state UNINITIALIZED->ENABLED
-> > > >     ap1: AP-ENABLED
-> > > >     ap1: STA 98:01:a7:48:0f:d8 IEEE 802.11: authenticated
-> > > >     ap1: STA 98:01:a7:48:0f:d8 IEEE 802.11: associated (aid 1)
-> > > >     ap1: AP-STA-CONNECTED 98:01:a7:48:0f:d8
-> > > >     ap1: STA 98:01:a7:48:0f:d8 RADIUS: starting accounting session
-> > > > 57A210FFA9AEB7DF
-> > > >     ap1: STA 98:01:a7:48:0f:d8 WPA: pairwise key handshake completed (RSN)
-> > > >
-> > > > As you can see, create_ap not only is created, but I manage to connect
-> > > > a tablet onto the access point.
-> > > > If I now try to run wpa_supplicant, this now happens.
-> > > >
-> > > >     # wpa_supplicant -i sta0 -c ./example.conf
-> > > >     Successfully initialized wpa_supplicant
-> > > >     sta0: SME: Trying to authenticate with fc:ec:da:8a:84:de
-> > > > (SSID='Test' freq=2412 MHz)
-> > > >     sta0: SME: Trying to authenticate with fc:ec:da:8a:84:de
-> > > > (SSID='Test' freq=2412 MHz)
-> > > >     sta0: SME: Trying to authenticate with fc:ec:da:8a:84:de
-> > > > (SSID='Test' freq=2412 MHz)
-> > > >     sta0: SME: Trying to authenticate with fc:ec:da:8a:84:de
-> > > > (SSID='Test' freq=2412 MHz)
-> > > >     sta0: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="Test"
-> > > > auth_failures=1 duration=10 reason=CONN_FAILED
-> > > >     sta0: CTRL-EVENT-SSID-REENABLED id=0 ssid="Test"
-> > > >     sta0: SME: Trying to authenticate with fc:ec:da:8a:84:de
-> > > > (SSID='Test' freq=2412 MHz)
-> > > >     sta0: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="Test"
-> > > > auth_failures=2 duration=23 reason=CONN_FAILED
-> > > >     sta0: CTRL-EVENT-SSID-REENABLED id=0 ssid="Test"
-> > > >     sta0: SME: Trying to authenticate with fc:ec:da:8a:84:de
-> > > > (SSID='Test' freq=2412 MHz)
-> > > >     sta0: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid="Test"
-> > > > auth_failures=3 duration=46 reason=CONN_FAILED
-> > > >
-> > > > This will go on forever never being able to authenticate.
-> > > >
-> > > > Furthermore, there is a case where I can crash the driver.
-> > > > To do that, what I do is I run wpa_supplicant first. Immediately after
-> > > > I see it has initialized wpa_supplicant and is trying to authenticate,
-> > > > I immediately run create_ap on another terminal window. Create_ap will
-> > > > finish first usually and be able to start the ap. But the wireless
-> > > > network will not be running. Checking dmesg will show this.
-> > > >
-> > > >     [ 1692.699658] wpa_supplicant  D    0  2613   2612 0x00004000
-> > > >     [ 1692.699664] Call Trace:
-> > > >     [ 1692.699673]  __schedule+0x292/0x710
-> > > >     [ 1692.699681]  ? work_busy+0x90/0x90
-> > > >     [ 1692.699686]  schedule+0x33/0xa0
-> > > >     [ 1692.699693]  schedule_timeout+0x1d3/0x320
-> > > >     [ 1692.699700]  ? ttwu_do_activate+0x5a/0x70
-> > > >     [ 1692.699707]  ? work_busy+0x90/0x90
-> > > >     [ 1692.699713]  wait_for_completion+0xba/0x140
-> > > >     [ 1692.699718]  ? wake_up_q+0x80/0x80
-> > > >     [ 1692.699726]  __flush_work+0x18a/0x1c0
-> > > >     [ 1692.699734]  ? worker_detach_from_pool+0xb0/0xb0
-> > > >     [ 1692.699740]  __cancel_work_timer+0x136/0x1b0
-> > > >     [ 1692.699746]  ? schedule_preempt_disabled+0xe/0x10
-> > > >     [ 1692.699754]  ? hrtimer_try_to_cancel+0x2a/0x110
-> > > >     [ 1692.699760]  cancel_work_sync+0x10/0x20
-> > > >     [ 1692.699769]  mt76x02u_stop_pre_tbtt_timer+0x2a/0x40 [mt76x02_usb]
-> > > >     [ 1692.699777]  mt76x02u_pre_tbtt_enable+0x23/0x40 [mt76x02_usb]
-> > > >     [ 1692.699791]  mt76x02_mac_set_beacon_enable+0x33/0x2c0 [mt76x02_lib]
-> > > >     [ 1692.699804]  mt76x02_bss_info_changed+0x107/0x110 [mt76x02_lib]
-> > > >     [ 1692.699872]  ieee80211_bss_info_change_notify+0xab/0x190 [mac80211]
-> > > >     [ 1692.699936]  ieee80211_offchannel_stop_vifs+0x175/0x1b0 [mac80211]
-> > > >     [ 1692.699998]  __ieee80211_start_scan+0x346/0x750 [mac80211]
-> > > >     [ 1692.700061]  ieee80211_request_scan+0x30/0x50 [mac80211]
-> > > >     [ 1692.700129]  ieee80211_scan+0x69/0x90 [mac80211]
-> > > >     [ 1692.700204]  nl80211_trigger_scan+0x5cd/0x740 [cfg80211]
-> > > >     [ 1692.700215]  genl_family_rcv_msg+0x21c/0x490
-> > > >     [ 1692.700224]  ? free_one_page+0xbc/0x480
-> > > >     [ 1692.700233]  genl_rcv_msg+0x4c/0x90
-> > > >     [ 1692.700239]  ? genl_family_rcv_msg+0x490/0x490
-> > > >     [ 1692.700247]  netlink_rcv_skb+0x51/0x120
-> > > >     [ 1692.700254]  genl_rcv+0x28/0x40
-> > > >     [ 1692.700260]  netlink_unicast+0x1a4/0x250
-> > > >     [ 1692.700268]  netlink_sendmsg+0x2eb/0x3f0
-> > > >     [ 1692.700277]  sock_sendmsg+0x63/0x70
-> > > >     [ 1692.700283]  ____sys_sendmsg+0x200/0x280
-> > > >     [ 1692.700291]  ___sys_sendmsg+0x88/0xd0
-> > > >     [ 1692.700297]  ? sock_do_ioctl+0x4d/0x150
-> > > >     [ 1692.700304]  ? __check_object_size+0x4d/0x1b0
-> > > >     [ 1692.700310]  ? sock_ioctl+0x34f/0x3c0
-> > > >     [ 1692.700317]  ? __sys_recvfrom+0xe9/0x160
-> > > >     [ 1692.700325]  __sys_sendmsg+0x63/0xa0
-> > > >     [ 1692.700330]  ? __sys_sendmsg+0x63/0xa0
-> > > >     [ 1692.700339]  __x64_sys_sendmsg+0x1f/0x30
-> > > >     [ 1692.700347]  do_syscall_64+0x57/0x190
-> > > >     [ 1692.700355]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> > > >     [ 1692.700362] RIP: 0033:0x7f7020b67b94
-> > > >     [ 1692.700377] Code: Bad RIP value.
-> > > >     [ 1692.700382] RSP: 002b:00007ffc2f22d978 EFLAGS: 00000246
-> > > > ORIG_RAX: 000000000000002e
-> > > >     [ 1692.700389] RAX: ffffffffffffffda RBX: 000055f6ab3c29f0 RCX:
-> > > > 00007f7020b67b94
-> > > >     [ 1692.700393] RDX: 0000000000000000 RSI: 00007ffc2f22d9b0 RDI:
-> > > > 0000000000000005
-> > > >     [ 1692.700398] RBP: 000055f6ab411700 R08: 0000000000000000 R09:
-> > > > 0000000000000000
-> > > >     [ 1692.700402] R10: 000055f6ab3c0010 R11: 0000000000000246 R12:
-> > > > 000055f6ab3c2900
-> > > >     [ 1692.700406] R13: 00007ffc2f22d9b0 R14: 0000000000000000 R15:
-> > > > 000055f6ab3c2d48
-> > > >
-> > > > So I'm sort of arriving at a conclusion that for some reason, this
-> > > > Netgear A6210 is not able to create both an access point and connect
-> > > > to a WiFi network at the same time. Yet iw list suggests that the
-> > > > driver can. Is there something I'm misunderstanding?
-> > > >
-> > > > Or am I doing something incorrectly? If I am, please do point it out.
-> > > >
-> > > > Lastly, if there is any information missing and you need, please feel
-> > > > free to ask and I will do my best to provide it, or reproduce the
-> > > > issue and provide the information you need.
-> > > >
-> > > >
-> > > > Best regards,
-> > > > Chris
-> > > >
-> > > > ps. Apologies for resending this. I got a rejection notice for one of
-> > > > the recipients because it contained some html.
+> > I'm afraid you missed the s390-specific busses in drivers/s390/cio/
+> > (css/ccw/ccwgroup).
+
+:-\
+
+> The change for vfio/mdev looks good.
+>=20
+> The following should do the trick for s390; not sure if other
+> architectures have easy-to-miss busses as well.
+>=20
+> diff --git a/drivers/s390/cio/ccwgroup.c b/drivers/s390/cio/ccwgroup.c
+> index 9748165e08e9..a66f416138ab 100644
+> --- a/drivers/s390/cio/ccwgroup.c
+> +++ b/drivers/s390/cio/ccwgroup.c
+> @@ -439,17 +439,15 @@ module_exit(cleanup_ccwgroup);
+> =20
+>  /************************** driver stuff ******************************/
+> =20
+> -static int ccwgroup_remove(struct device *dev)
+> +static void ccwgroup_remove(struct device *dev)
+>  {
+>  	struct ccwgroup_device *gdev =3D to_ccwgroupdev(dev);
+>  	struct ccwgroup_driver *gdrv =3D to_ccwgroupdrv(dev->driver);
+> =20
+>  	if (!dev->driver)
+> -		return 0;
+> +		return;
+
+This is fine to be squashed into my patch. In the long run: in a remove
+callback dev->driver cannot be NULL, so this if could go away.
+
+>  	if (gdrv->remove)
+>  		gdrv->remove(gdev);
+> -
+> -	return 0;
+>  }
+> =20
+>  static void ccwgroup_shutdown(struct device *dev)
+> diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
+> index a974943c27da..ebc321edba51 100644
+> --- a/drivers/s390/cio/css.c
+> +++ b/drivers/s390/cio/css.c
+> @@ -1371,15 +1371,14 @@ static int css_probe(struct device *dev)
+>  	return ret;
+>  }
+> =20
+> -static int css_remove(struct device *dev)
+> +static void css_remove(struct device *dev)
+>  {
+>  	struct subchannel *sch;
+> -	int ret;
+> =20
+>  	sch =3D to_subchannel(dev);
+> -	ret =3D sch->driver->remove ? sch->driver->remove(sch) : 0;
+> +	if (sch->driver->remove)
+> +		sch->driver->remove(sch);
+
+Maybe the return type for this function pointer can be changed to void,
+too.
+
+I will add these changes to a v2 that I plan to send out after the dust
+settles some more.
+
+Thanks
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--qlv3rwmw2vf6tbvn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDkSTIACgkQwfwUeK3K
+7AmpKwf/cEGBSAtr38Z6g8D5Sb7wD6N+VKt79z1eeeFykI81lxaibOS1hxqeDq28
+jW5itKeFVh1+cP8UVt8l7VJlvhIUO+xFsMgJ/LrRGoynkDBqMdlbTfQnZ/yOULyX
+KI6vecR8mDHh+M0cs+KxsmbHXtKL+WJfAnGYMVFhrq7cayZ2ZnflKlVAFFyN1iWR
+ewHXQduLqDi718k76IDgu9PZfUuQbRNLuX69ZAwyVl1F+BpBxMCvnMU2apcdJQ1B
+ovWeCbDSh+HLgMrfUAYcVddvRKo81lrMn1i24FK2RuVnrnYdupIRl3L+Y5V4D7Pd
+xOqLOUY6yncBK5uZwnZctg9p3aX8wA==
+=Zesi
+-----END PGP SIGNATURE-----
+
+--qlv3rwmw2vf6tbvn--
