@@ -2,80 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 022743BBD34
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jul 2021 14:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DA273BC4BE
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jul 2021 04:24:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231401AbhGENAs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Jul 2021 09:00:48 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:41198 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbhGENAs (ORCPT
+        id S229781AbhGFC0b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Jul 2021 22:26:31 -0400
+Received: from mailgw02.mediatek.com ([1.203.163.81]:39921 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229760AbhGFC0a (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Jul 2021 09:00:48 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1625489891; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=BOMJhw3Uw7/UNQgjVw/HLum3ELYSQ/KigKj1pc6MwnQ=; b=dz1csQGHFjRRRNXlw8pyIlC306yKkcrjLiOWGMTRdWbvT/BduYE7KhDLGTlq7CY5c6tpo9b6
- /a/mLz3W+bSI1UhD8oXn02mJVW4Fm8EVnmzZKN3cHDlTRvvh9dDsjN2LEHQ1ksq+kl8mq1XV
- 8aVp0GWjTpTa3Ox3rUADwnV0AGY=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60e301d5ec0b18a745f73959 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 05 Jul 2021 12:57:57
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 04D98C43460; Mon,  5 Jul 2021 12:57:56 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E920CC433D3;
-        Mon,  5 Jul 2021 12:57:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E920CC433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bo Jiao <bo.jiao@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
+        Mon, 5 Jul 2021 22:26:30 -0400
+X-UUID: a3de7fc174274b1db267cde38c84c1ff-20210706
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=S5q2VFppu4KoAu2S+UaRDV/ckuPmh1QtZnSnhK3+8RQ=;
+        b=ALeqrIWrRmdlfB0I8jHhdb8JoQoBJ1KiEtfdE5BH0rzIIZRmuz35NlaTb6rhHvGhJGUEmeaRD+QZ9dtu8PDAyf6N4bVCyYrJAFHsfV0e4+UGiZFSssyI/pA2CLvNmycHg6+ABjaASJZdwNWjYAv/i+X0cvgxfknBuE6JyT2eoks=;
+X-UUID: a3de7fc174274b1db267cde38c84c1ff-20210706
+Received: from mtkmrs31.mediatek.inc [(172.27.4.253)] by mailgw02.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 637571671; Tue, 06 Jul 2021 10:23:47 +0800
+Received: from MTKCAS36.mediatek.inc (172.27.4.186) by MTKMBS31N2.mediatek.inc
+ (172.27.4.87) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 6 Jul
+ 2021 10:23:44 +0800
+Received: from [10.19.240.15] (10.19.240.15) by MTKCAS36.mediatek.inc
+ (172.27.4.170) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 6 Jul 2021 10:23:43 +0800
+Message-ID: <1625538223.21641.1.camel@mcddlt001.gcn.mediatek.inc>
+Subject: Re: [PATCH] mt76: mt7915: cleanup miscellaneous errors and
+ redundant codes
+From:   WCDSE <bo.jiao@mediatek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>, Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         Ryder Lee <ryder.lee@mediatek.com>,
         Xing Song <xing.song@mediatek.com>,
         Sujuan Chen <sujuan.chen@mediatek.com>,
         linux-mediatek <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: mt7915: cleanup miscellaneous errors and redundant codes
+Date:   Tue, 6 Jul 2021 10:23:43 +0800
+In-Reply-To: <87sg0sgbov.fsf@tynnyri.adurom.net>
 References: <20210702083949.4431-1-bo.jiao@mediatek.com>
-Date:   Mon, 05 Jul 2021 15:57:52 +0300
-In-Reply-To: <20210702083949.4431-1-bo.jiao@mediatek.com> (Bo Jiao's message
-        of "Fri, 2 Jul 2021 16:39:49 +0800")
-Message-ID: <87sg0sgbov.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+         <87sg0sgbov.fsf@tynnyri.adurom.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 MIME-Version: 1.0
-Content-Type: text/plain
+X-TM-SNTS-SMTP: 477F0D29A4D6719797CFD3710DFAC2E470CF6F177F235CAC9C0B684527F33AA92000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bo Jiao <bo.jiao@mediatek.com> writes:
+T24gTW9uLCAyMDIxLTA3LTA1IGF0IDE1OjU3ICswMzAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBC
+byBKaWFvIDxiby5qaWFvQG1lZGlhdGVrLmNvbT4gd3JpdGVzOg0KPiANCj4gPiBGcm9tOiBCbyBK
+aWFvIDxCby5KaWFvQG1lZGlhdGVrLmNvbT4NCj4gPg0KPiA+IGNsZWFudXAgbWlzY2VsbGFuZW91
+cyBlcnJvcnMgYW5kIHJlZHVuZGFudCBjb2Rlcy4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEJv
+IEppYW8gPEJvLkppYW9AbWVkaWF0ZWsuY29tPg0KPiANCj4gUGxlYXNlIHNwbGl0IHRoaXMgdG8g
+c21hbGxlciBwYXRjaGVzLCBvbmUgZml4IHBlciBwYXRjaCBhbmQgd3JpdGUgcHJvcGVyDQo+IGNv
+bW1pdCBsb2dzLiBTZWUgbW9yZSBpbmZvIGluIHRoZSB3aWtpIGJlbG93Lg0KPiANCmhpIEthbGxl
+LCBnb3QgaXQsIGkgd2lsbCBtb2RpZnkgaXQgQVNBUC4NCmhpIEZlbGl4LCBwbGVhc2UgZHJvcCB0
+aGlzIG9uZSwgaSB3aWxsIHNwbGl0IHRoaXMgdG8gc21hbGxlciBwYXRjaGVzDQp3aXRoIHByb3Bl
+ciBsb2dzLiB0aGFua3MNCg0K
 
-> From: Bo Jiao <Bo.Jiao@mediatek.com>
->
-> cleanup miscellaneous errors and redundant codes.
->
-> Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
-
-Please split this to smaller patches, one fix per patch and write proper
-commit logs. See more info in the wiki below.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
