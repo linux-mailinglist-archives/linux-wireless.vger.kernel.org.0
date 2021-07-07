@@ -2,66 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D10563BE67C
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jul 2021 12:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 212C43BE68A
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jul 2021 12:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231397AbhGGKsO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Jul 2021 06:48:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33670 "EHLO mail.kernel.org"
+        id S231487AbhGGKsy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Jul 2021 06:48:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33974 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231243AbhGGKsO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Jul 2021 06:48:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DF60360FF0;
-        Wed,  7 Jul 2021 10:45:33 +0000 (UTC)
+        id S231474AbhGGKsy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 7 Jul 2021 06:48:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E1EEC61C73;
+        Wed,  7 Jul 2021 10:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625654734;
-        bh=3D/5zjSCzpHDTDTXUpdP6UzY3JY64bboQX+7H4xyk8o=;
+        s=k20201202; t=1625654774;
+        bh=KdVRnitHyB86oNcQyTTnLF0QMsDGQxcMy5DFv3SFvEI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MVlUte8yb2BNRR3yXPmjBhGvOJWr4h1jf+bwVoQVSrkWeTZi2GW+0oipjtsz4qkND
-         lW/eUai7RYA49P8Evpfibsl/tv5livmuLjhDvmQMSMB9OBvxFy3cqBVSmyictzOk3M
-         /JVwaKJPYbKjuSJMoFmqzF/KU0QdbWJdOMV+nJ14S75QT//OLyXbUJp8lPXNTswcK7
-         UjVuRmLvQD9iCugXuUe38TpRSQxkhenBi12DKd9UIj3YFIcDxHMw56JYS9HCRyZrIO
-         1Yl3HHSnVPnrq/a9pydTxd+HJ1711kD6eOlFOU4M3jt/vffbfG9Cw1s9wZXdpHkcNL
-         BaOf/XqOxAg+Q==
-Date:   Wed, 7 Jul 2021 06:45:32 -0400
+        b=oRsfd4KoSV4+ZIUPZ0L9MjLFhVp4g+h5d1l1gYlFRpFxq/+KxUd5SirljP0G0VwaE
+         lknTnGqmBea5Dqtg90lUyR2rH9C7jZV54OGjqQoeOQzhqrF8g6EOzau7xd4Pajepha
+         e2pbnjO0cMDltDnP6+gBm79WSUZTndzZGZsYHZ3RSYWqKr4qbTB9khmZlJDGwGiWiJ
+         92rrzKrBwh15kVtOXz0AqzGjTyzD8Jzn9qvH3294jqZ4RUEo6vftcS0Uk85j9KjjgF
+         HHXMUpUAFvlQNzCgmpZo1P6MIGoOwUlxu3Bmlr1RxHZNq2FgR5pnA/CrIKnpRGNAkY
+         tc6pjQ1qLbQzg==
+Date:   Wed, 7 Jul 2021 06:46:13 -0400
 From:   Sasha Levin <sashal@kernel.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        Kees Cook <keescook@chromium.org>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 113/137] wireless: wext-spy: Fix
- out-of-bounds warning
-Message-ID: <YOWFzFBGGqiYWsI6@sashalap>
-References: <20210706112203.2062605-1-sashal@kernel.org>
- <20210706112203.2062605-113-sashal@kernel.org>
- <5da1f4fbdac533be3b753e54b43e2058ba270bc8.camel@sipsolutions.net>
+Subject: Re: [PATCH AUTOSEL 5.13 152/189] iwlwifi: mvm: support LONG_GROUP
+ for WOWLAN_GET_STATUSES version
+Message-ID: <YOWF9WOUegrto00D@sashalap>
+References: <20210706111409.2058071-1-sashal@kernel.org>
+ <20210706111409.2058071-152-sashal@kernel.org>
+ <d1ee65748d6ee788c1f882b2f73dddaf7eb191e6.camel@sipsolutions.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <5da1f4fbdac533be3b753e54b43e2058ba270bc8.camel@sipsolutions.net>
+In-Reply-To: <d1ee65748d6ee788c1f882b2f73dddaf7eb191e6.camel@sipsolutions.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 06, 2021 at 04:08:09PM +0200, Johannes Berg wrote:
->On Tue, 2021-07-06 at 07:21 -0400, Sasha Levin wrote:
->> From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+On Tue, Jul 06, 2021 at 04:09:10PM +0200, Johannes Berg wrote:
+>On Tue, 2021-07-06 at 07:13 -0400, Sasha Levin wrote:
+>> From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 >>
->> [ Upstream commit e93bdd78406da9ed01554c51e38b2a02c8ef8025 ]
+>> [ Upstream commit d65ab7c0e0b92056754185d3f6925d7318730e94 ]
 >>
->> Fix the following out-of-bounds warning:
->>
->> net/wireless/wext-spy.c:178:2: warning: 'memcpy' offset [25, 28] from the object at 'threshold' is out of the bounds of referenced subobject 'low' with type 'struct iw_quality' at offset 20 [-Warray-bounds]
+>> It's been a while that the firmware uses LONG_GROUP by default
+>> and not LEGACY_GROUP.
+>> Until now the firmware wrongly advertise the WOWLAN_GET_STATUS
+>> command's version with LEGACY_GROUP, but it is now being fixed.
 >
->For the record: while this clearly isn't harmful, there's almost
->basically no chance that the stable kernel will ever compile warning-
->free with -Warray-bounds, so there's not much point in backporting this
->patch.
+>"Being fixed" here is the key - this will affect only firmware versions
+>that the older drivers in stable won't load. No need to backport this.
 
-While the warning is a non-issue, it wasn't clear if it fixes a real bug
-or just silences the warning which is why I took it in.
+I'll drop it, thanks!
 
 -- 
 Thanks,
