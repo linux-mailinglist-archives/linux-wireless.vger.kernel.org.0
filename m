@@ -2,217 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB17D3BF528
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jul 2021 07:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01D303BF567
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jul 2021 08:15:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbhGHFll (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Jul 2021 01:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43964 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbhGHFlk (ORCPT
+        id S229654AbhGHGRu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Jul 2021 02:17:50 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:37412 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229608AbhGHGRu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Jul 2021 01:41:40 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1463C061574
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Jul 2021 22:38:58 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1m1MkA-0006EE-1O; Thu, 08 Jul 2021 07:38:38 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1m1Mk9-00030H-1D; Thu, 08 Jul 2021 07:38:37 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1m1Mk8-0007Hx-U3; Thu, 08 Jul 2021 07:38:36 +0200
-Date:   Thu, 8 Jul 2021 07:38:13 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Sven Van Asbroeck <thesven73@gmail.com>
-Cc:     nvdimm@lists.linux.dev, Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
-        Jens Taprogge <jens.taprogge@taprogge.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jaroslav Kysela <perex@perex.cz>, linux-fpga@vger.kernel.org,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        xen-devel@lists.xenproject.org,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Julien Grall <jgrall@amazon.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Alex Elder <elder@kernel.org>, linux-parisc@vger.kernel.org,
-        Geoff Levand <geoff@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Thorsten Scherer <t.scherer@eckelmann.de>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Jon Mason <jdmason@kudzu.us>, linux-ntb@googlegroups.com,
-        Wu Hao <hao.wu@intel.com>, David Woodhouse <dwmw@amazon.co.uk>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Manohar Vanga <manohar.vanga@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        virtualization@lists.linux-foundation.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        target-devel@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Ira Weiny <ira.weiny@intel.com>, Helge Deller <deller@gmx.de>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        industrypack-devel@lists.sourceforge.net,
-        linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
-        linux-media <linux-media@vger.kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Johan Hovold <johan@kernel.org>, greybus-dev@lists.linaro.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Johannes Thumshirn <morbidrsa@gmail.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Joey Pabalan <jpabalanb@gmail.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
-        Bodo Stroesser <bostroesser@gmail.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Tyrel Datwyler <tyreld@linux.ibm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>,
-        SeongJae Park <sjpark@amazon.de>, linux-hyperv@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, Frank Li <lznuaa@gmail.com>,
-        netdev <netdev@vger.kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        linux-staging@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-input@vger.kernel.org,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Allen Hubbe <allenbh@gmail.com>, Alex Dubov <oakad@yahoo.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Moritz Fischer <mdf@kernel.org>, linux-cxl@vger.kernel.org,
-        Michael Buesch <m@bues.ch>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Martyn Welch <martyn@welchs.me.uk>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-mmc@vger.kernel.org, linux-sunxi@lists.linux.dev,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "David S. Miller" <davem@davemloft.net>, kvm@vger.kernel.org,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        linux-remoteproc@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kirti Wankhede <kwankhede@nvidia.com>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        linux-i3c@lists.infradead.org,
-        linux1394-devel@lists.sourceforge.net,
-        Lee Jones <lee.jones@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        Michael Jamet <michael.jamet@intel.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Hannes Reinecke <hare@suse.de>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org,
-        Takashi Iwai <tiwai@suse.com>,
-        Alexandre Bounine <alex.bou9@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Marc Zyngier <maz@kernel.org>, dmaengine@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Maximilian Luz <luzmaximilian@gmail.com>
-Subject: Re: [PATCH v2 0/4] bus: Make remove callback return void
-Message-ID: <20210708053813.pem2ufjuwkacptv3@pengutronix.de>
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
- <CAGngYiWm4u27o-yy5L5tokMB5G1RUR5uYmKf2oXah2P3J=hK2A@mail.gmail.com>
+        Thu, 8 Jul 2021 02:17:50 -0400
+X-UUID: 15549571d00342beb8b8421c3cc8008c-20210708
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=RDpr6ntUglGbkmdoj5Vw+AU6YP2+5ZVSFjZgAehYXhU=;
+        b=ruYdacKVE2S7RePGOtuVS+QnGu9stWKXV1O3AM+3HhpXF59oQU5E7Gp0VuYo632clb7nf61w7ZQPdF6Nli89dK2nAXhadrdbuezLBHX01iSZgfY0D6Uv7Ht0p0JbQqMqUVpmTymZCXeI+JWBbqTILiec1IITSdPiOD4BFSvts1s=;
+X-UUID: 15549571d00342beb8b8421c3cc8008c-20210708
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 217964000; Thu, 08 Jul 2021 14:15:05 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs01n2.mediatek.inc (172.21.101.79) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 8 Jul 2021 14:15:03 +0800
+Received: from mtksdccf07 (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 8 Jul 2021 14:15:03 +0800
+Message-ID: <60de68ca4e48d1388a90f0ec59f477a93f01ab3d.camel@mediatek.com>
+Subject: Re: [PATCH 1/2] mt76: mt7921: fix mgmt frame using unexpected
+ bitrate
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     <sean.wang@mediatek.com>, <nbd@nbd.name>,
+        <lorenzo.bianconi@redhat.com>
+CC:     <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <jemele@google.com>,
+        <yenlinlai@google.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Date:   Thu, 8 Jul 2021 14:15:03 +0800
+In-Reply-To: <1625718546-14969-1-git-send-email-sean.wang@mediatek.com>
+References: <1625718546-14969-1-git-send-email-sean.wang@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bpxpm3lcta7ifhrg"
-Content-Disposition: inline
-In-Reply-To: <CAGngYiWm4u27o-yy5L5tokMB5G1RUR5uYmKf2oXah2P3J=hK2A@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+T24gVGh1LCAyMDIxLTA3LTA4IGF0IDEyOjI5ICswODAwLCBzZWFuLndhbmdAbWVkaWF0ZWsuY29t
+IHdyb3RlOg0KPiBGcm9tOiBTZWFuIFdhbmcgPHNlYW4ud2FuZ0BtZWRpYXRlay5jb20+DQo+IA0K
+PiBGaXggdGhlIGN1cnJlbnQgZHJpdmVyIG1nbXQgZnJhbWUgaXMgbm90IHJlc3BlY3RpbmcgdGhl
+IGJhc2ljIHJhdGVzDQo+IGZpZWxkDQo+IHByb3ZpZGVkIGJ5IHRoZSBBUCBhbmQgdGhlbiB1bmNv
+bmRpdGlvbmFsbHkgaXMgdXNpbmcgdGhlIGxvd2VzdCAoMSBvcg0KPiA2DQo+IE1icHMpIHJhdGUu
+DQo+IA0KPiBGb3IgZXhhbXBsZSwgaWYgdGhlIEFQIG9ubHkgc3VwcG9ydGVkIGJhc2ljIHJhdGUg
+ezI0LCAzNiwgNDgsIDU0fQ0KPiBNYnBzLA0KPiBtdDc5MjEgY2Fubm90IHNlbmQgbWdtdCBmcmFt
+ZSB3aXRoIHRoZSByYXRlIG5vdCBpbiB0aGUgZ3JvdXAuIFNvLA0KPiBpbnN0ZWFkLCB3ZSBwaWNr
+IHVwIHRoZSBsb3dlc3QgYmFzaWMgcmF0ZSB0aGUgQVAgY2FuIHN1cHBvcnQgdG8gc2VuZC4NCj4g
+DQo+IFRoZSBwYXRjaCBhbHNvIGZpeGVkIHVwIHRoZSBod192YWx1ZSBpbiBpZWVlODAyMTFfcmF0
+ZSBmb3IgTVQ3OTIxDQo+IGhhcmR3YXJlLg0KPiANCj4gRml4ZXM6IDE2M2Y0ZDIyYzExOCAoIm10
+NzY6IG10NzkyMTogYWRkIE1BQyBzdXBwb3J0IikNCj4gU2lnbmVkLW9mZi1ieTogU2VhbiBXYW5n
+IDxzZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KPiAtLS0NCj4gIC4uLi9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc5MjEvaW5pdC5jICB8IDE5ICsrKysrKysrKysrKysrKy0tDQo+ICAuLi4v
+bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTIxL21hYy5jICAgfCAyMSArKysrKysrKysr
+KysrKysNCj4gLS0tLQ0KPiAgLi4uL3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTIxL210Nzky
+MS5oICAgIHwgMTQgKysrKysrKysrKysrKw0KPiAgMyBmaWxlcyBjaGFuZ2VkLCA0OCBpbnNlcnRp
+b25zKCspLCA2IGRlbGV0aW9ucygtKQ0KPiANCj4gDQo+ICsJaW50IGksIG9mZnNldCA9IDA7DQo+
+ICsNCj4gKwlpZiAobXBoeS0+Y2hhbmRlZi5jaGFuLT5iYW5kID09IE5MODAyMTFfQkFORF81R0ha
+KQ0KPiArCQlvZmZzZXQgPSA0Ow0KPiArDQo+ICsJaSA9IGZmcyh2aWYtPmJzc19jb25mLmJhc2lj
+X3JhdGVzKSAtIDE7DQo+ICsJcmF0ZSA9ICZtdDc5MjFfcmF0ZXNbb2Zmc2V0ICsgaV07DQo+ICsN
+Cj4gKwlyZXR1cm4gcmF0ZS0+aHdfdmFsdWU7DQo+ICt9DQo+ICsNCj4gIHZvaWQgbXQ3OTIxX21h
+Y193cml0ZV90eHdpKHN0cnVjdCBtdDc5MjFfZGV2ICpkZXYsIF9fbGUzMiAqdHh3aSwNCj4gIAkJ
+CSAgIHN0cnVjdCBza19idWZmICpza2IsIHN0cnVjdCBtdDc2X3djaWQgKndjaWQsDQo+ICAJCQkg
+ICBzdHJ1Y3QgaWVlZTgwMjExX2tleV9jb25mICprZXksIGJvb2wgYmVhY29uKQ0KPiBAQCAtODE1
+LDEwICs4MzEsNyBAQCB2b2lkIG10NzkyMV9tYWNfd3JpdGVfdHh3aShzdHJ1Y3QgbXQ3OTIxX2Rl
+dg0KPiAqZGV2LCBfX2xlMzIgKnR4d2ksDQo+ICAJCS8qIGhhcmR3YXJlIHdvbid0IGFkZCBIVEMg
+Zm9yIG1nbXQvY3RybCBmcmFtZSAqLw0KPiAgCQl0eHdpWzJdIHw9IGNwdV90b19sZTMyKE1UX1RY
+RDJfSFRDX1ZMRCk7DQo+ICANCj4gLQkJaWYgKG1waHktPmNoYW5kZWYuY2hhbi0+YmFuZCA9PSBO
+TDgwMjExX0JBTkRfNUdIWikNCj4gLQkJCXJhdGUgPSBNVDc5MjFfNUdfUkFURV9ERUZBVUxUOw0K
+PiAtCQllbHNlDQo+IC0JCQlyYXRlID0gTVQ3OTIxXzJHX1JBVEVfREVGQVVMVDsNCj4gKwkJcmF0
+ZSA9IG10NzkyMV9kZWZhdWx0X2Jhc2ljX3JhdGVzKGRldiwgdmlmKTsNCg0KLi4uLg0KDQo+IAkJ
+CQ0KPiBcDQo+ICsJLmJpdHJhdGUgPSBfcmF0ZSwJCQkJCVwNCj4gKwkuZmxhZ3MgPSBJRUVFODAy
+MTFfUkFURV9TSE9SVF9QUkVBTUJMRSwJCQlcDQo+ICsJLmh3X3ZhbHVlID0gKE1UX1BIWV9UWVBF
+X0NDSyA8PCA2KSB8IChfaWR4KSwJCVwNCj4gKwkuaHdfdmFsdWVfc2hvcnQgPSAoTVRfUEhZX1RZ
+UEVfQ0NLIDw8IDYpIHwgKDQgKyBfaWR4KSwJXA0KPiArfQ0KPiArDQo+ICsjZGVmaW5lIE1UNzky
+MV9PRkRNX1JBVEUoX2lkeCwgX3JhdGUpIHsJCQkJDQo+IFwNCj4gKwkuYml0cmF0ZSA9IF9yYXRl
+LAkJCQkJXA0KPiArCS5od192YWx1ZSA9IChNVF9QSFlfVFlQRV9PRkRNIDw8IDYpIHwgKF9pZHgp
+LAkJXA0KPiArCS5od192YWx1ZV9zaG9ydCA9IChNVF9QSFlfVFlQRV9PRkRNIDw8IDYpIHwgKF9p
+ZHgpLAlcDQo+ICt9DQo+ICsNCg0KTmljZSBjYXRjaGluZy4gSSBzaGlmdGVkIHRoZSB3cm9uZyBv
+ZmZzZXQgd2hpbGUgYnJpbmdpbmcgdXAgbXQ3OTE1LCBidXQNCkkgdXNlZCB0aGUgY29ycmVjdCBv
+ZmZzZXQgaW4gVHhEIHJlc3VsdGluZyBpbiB0aGlzIG10NzkyMSBpc3N1ZS4gQ2FuDQp5b3UgZG8g
+bWUgYSBmYXZvciB0byBmaXggdGhlIG9mZnNldCBvZiBtdDc5MTUgYXMgd2VsbD8NCg0KUnlkZXIN
+Cg==
 
---bpxpm3lcta7ifhrg
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Jul 07, 2021 at 10:08:53PM -0400, Sven Van Asbroeck wrote:
-> On Tue, Jul 6, 2021 at 11:50 AM Uwe Kleine-K=F6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
-> >
-> >  drivers/staging/fieldbus/anybuss/host.c   | 4 +---
->=20
-> Awesome !
->=20
-> Acked-by: Sven Van Asbroeck <TheSven73@gmail.com>
-
-I note that as an Ack for patch 4 only, as the others don't touch this
-file.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---bpxpm3lcta7ifhrg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDmjzsACgkQwfwUeK3K
-7Alp5wf+LJkpxzkaW2ldAtFhGuqT1XfOqbe9d5vNgqvqupJS1Q+aeie0kH0038ba
-uN3KDJ2V2DAmMf6OIKUFucVxBpCC92myb63zIHRJs5kGzTu41BRp3yt/I650Xzdr
-+MB/xdEr/XFy2f9gDr/QdCojwh44TXqKzZPG6a7r6uQu8/AAUOdVEcfK6o01hN8W
-szxNTR1qtdQMHj9Ji8fo0wADdSPEez1kGe+HEOJVWBZnhdyCqS0jh774r7GsLjqY
-l8S7HhKPoY6/CCbEHKfYA15GUvexTA14O2tn6vuQPtiTTdDoh/Nl0wj0z5/WbWjX
-HF/tKnNb3l18s65PbEmxEKa2XonjFQ==
-=+Y+1
------END PGP SIGNATURE-----
-
---bpxpm3lcta7ifhrg--
