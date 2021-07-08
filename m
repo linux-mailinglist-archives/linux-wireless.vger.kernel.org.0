@@ -2,88 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26E723BF4C1
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jul 2021 06:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE293BF507
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jul 2021 07:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229568AbhGHEcF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Jul 2021 00:32:05 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:42118 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229554AbhGHEcE (ORCPT
+        id S229600AbhGHF0r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Jul 2021 01:26:47 -0400
+Received: from mail.thinkpuffy.com ([198.13.45.55]:43435 "EHLO
+        mail.thinkpuffy.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229579AbhGHF0r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Jul 2021 00:32:04 -0400
-X-UUID: 38969052e99e4c708f91889f424589a7-20210708
-X-UUID: 38969052e99e4c708f91889f424589a7-20210708
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1190033055; Thu, 08 Jul 2021 12:29:19 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs01n2.mediatek.inc (172.21.101.79) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 8 Jul 2021 12:29:12 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 8 Jul 2021 12:29:12 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 2/2] mt76: connac: fix mt76_connac_gtk_rekey_tlv usage
-Date:   Thu, 8 Jul 2021 12:29:06 +0800
-Message-ID: <1625718546-14969-2-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1625718546-14969-1-git-send-email-sean.wang@mediatek.com>
-References: <1625718546-14969-1-git-send-email-sean.wang@mediatek.com>
+        Thu, 8 Jul 2021 01:26:47 -0400
+X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Jul 2021 01:26:47 EDT
+Received: from localhost (www.thinkpuffy.com [local])
+        by www.thinkpuffy.com (OpenSMTPD) with ESMTPA id 10ce0ac7;
+        Thu, 8 Jul 2021 14:17:24 +0900 (JST)
+Date:   Thu, 8 Jul 2021 14:17:24 +0900
+From:   Doug Brewer <brewer.doug@gmail.com>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: rtw89: product id 0xa85a support on Linux?
+Message-ID: <20210708051724.GA70093@www.com>
+References: <20210704143510.GA5787@www.com>
+ <8e844938463c470d9669247227db9c30@realtek.com>
+ <CAG0V13RrjFP=+X32G+3ogo2LJbwcrZyoDeZ7LLBbVfR1JEWUyg@mail.gmail.com>
+ <6b0788a110ef6382c803ccf18b27116f4634f3ba.camel@realtek.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6b0788a110ef6382c803ccf18b27116f4634f3ba.camel@realtek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Leon Yen <Leon.Yen@mediatek.com>
+On Tue, Jul 06, 2021 at 03:10:34AM +0000, Pkshih wrote:
+> On Tue, 2021-07-06 at 08:56 +0800, Doug Brewer wrote:
+> > On Mon, Jul 5, 2021 at 9:42 AM Pkshih <pkshih@realtek.com> wrote:
+> > > > -----Original Message-----
+> > > > From: Doug Brewer [mailto:brewerdoug@gmail.com]
+> > > > Sent: Sunday, July 04, 2021 10:35 PM
+> > > > To: linux-wireless@vger.kernel.org
+> > > > Subject: rtw89: product id 0xa85a support on Linux?
+> > > > 
+> > > > Hello,
+> > > > 
+> > > > The HP Laptop 15s-eq2028ur have a Realtek 802.11ax device. lspci
+> > > -n shows
+> > > > 
+> > > > 01:00.0 Network controller [0280]: Realtek Semiconductor Co.,
+> > > Ltd. Device [10ec:
+> > > > a85a]
+> > > > 
+> > > > I tried pkshih's rtw89 patchsets [1] and added PID to
+> > > rtw89_pci_id_table.
+> > > > Scanning works but cannot connect to access points.
+> > > > dmesg shows like (hiding MAC address):
+> > > > 
+> > > > rtw89_pci 0000:01:00.0: Firmware version 0.13.8.0, cmd version 0,
+> > > type 1
+> > > > rtw89_pci 0000:01:00.0: Firmware version 0.13.8.0, cmd version 0,
+> > > type 3
+> > > > rtw89_pci 0000:01:00.0: chip rfe_type is 1
+> > > > wlan0: authenticate with xx:xx:xx:xx:xx:xx
+> > > > wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
+> > > > wlan0: authenticated
+> > > > wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
+> > > > wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=0x411 status=0
+> > > aid=1)
+> > > > wlan0: associated
+> > > > rtw89_pci 0000:01:00.0: c2h reg timeout
+> > > > rtw89_pci 0000:01:00.0: FW does not process h2c registers
+> > > > rtw89_pci 0000:01:00.0: timed out to flush queues
+> > > > 
+> > > > rtw89 will be the driver to support this wifi model? Thanks.
+> > > > 
+> > > 
+> > > The ID 0xa85a is a variant of 8852AE, and rtw89 will support it
+> > > later.
+> > > I'll provide you a patch when I have a draft implementation.
+> > 
+> > Thanks! I'm happy to test your patch.
+> > 
+> 
+> Before trying new patch, please upgrade your firmware to v0.13.24.0
+> that you can download it via my github:
+> 
+> https://github.com/pkshih/linux-firmware/blob/a5b79c4790da3eb3690e23554225ef8db464f2c6/rtw89/rtw8852a_fw.bin
+> 
+> Then, check kernel log to confirm the version like dmesg you mentioned.
+> 
+> 
+> The path of the attachment patch isn't full path, so please apply
+> it with specified path drivers/net/wireless/realtek/rtw89/
+> 
+> 
+> --
+> Ping-Ke
 
-The mistaken structure is introduced since we added the GTK rekey offload
-to mt7663. The patch fixes mt76_connac_gtk_rekey_tlv structure according
-to the MT7663 and MT7921 firmware we have submitted into
-linux-firmware.git.
-
-Fixes: b47e21e75c80 ("mt76: mt7615: add gtk rekey offload support")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 1c73beb22677..4bcd728ff97c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -844,14 +844,14 @@ struct mt76_connac_gtk_rekey_tlv {
- 			* 2: rekey update
- 			*/
- 	u8 keyid;
--	u8 pad[2];
-+	u8 option; /* 1: rekey data update without enabling offload */
-+	u8 pad[1];
- 	__le32 proto; /* WPA-RSN-WAPI-OPSN */
- 	__le32 pairwise_cipher;
- 	__le32 group_cipher;
- 	__le32 key_mgmt; /* NONE-PSK-IEEE802.1X */
- 	__le32 mgmt_group_cipher;
--	u8 option; /* 1: rekey data update without enabling offload */
--	u8 reserverd[3];
-+	u8 reserverd[4];
- } __packed;
- 
- #define MT76_CONNAC_WOW_MASK_MAX_LEN			16
--- 
-2.25.1
-
+I tested this out and I can confirm it works. Thanks Ping-Ke!
