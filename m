@@ -2,302 +2,273 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A658E3C1ABC
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jul 2021 22:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF8593C1B54
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jul 2021 00:02:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230463AbhGHU6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Jul 2021 16:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50978 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230442AbhGHU6R (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Jul 2021 16:58:17 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8F24C061574
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Jul 2021 13:55:34 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id k20so632262pgg.7
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Jul 2021 13:55:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=ur2dhkKh5QsoHcMd/5+ZJkh33O5R0BqjlHLhTt0VyY0=;
-        b=IEDLLasp6WgUp/t7St4sZX74h7Bxb9I61Vk0tlYLaIQrvGywBalEOI9lh9k6hsdtnq
-         ciJ6siy5eaxbTCh9hYc8PLOg31uEaktRFDBppcfKFHESfVLwcfVDmL2oCDA7NntzPoii
-         g2Dc+tA3+See5ffJBtPjS7jlaW/kDv8ppp/5+K6AMJjiMfdkt5XErrdcn5sKy1vHU2o8
-         54NfQXhhE21qeLTfKPRqkU7OEkpbDIFcSGJIh2DXiSK7jMHSagX4SOfDxg03XnO6V0Qm
-         pHAstCSr0Sa3z8cLvHwKXXMRzqaGqXlK0VZjCZqQcK/A4JBBuMhwGnegxjj1osu+LpKi
-         wJ6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=ur2dhkKh5QsoHcMd/5+ZJkh33O5R0BqjlHLhTt0VyY0=;
-        b=IdevE6KArzyn5CyxvVQR9sFMh6g4ksIvTknTj0rGGPIaXy2TtHyEC+yzeJRFLUr47e
-         /uavlpwapu5BtKjM/jZNOdE2az54uP8noLwF8NeTV+99jZdKOWWJVIlD0VQ2GMLyZdLo
-         Q9qv2sdUGao1ChLgFgIjnxhjxHZNrTGpO25jNFPMyUySQIbXMUu76AqtOW1K+VpxWTIu
-         qG0e+AMz2LIP1rL/Z+70VWgI12mCJaNRM+v1volV2m8sMc8HcdhGnPaNVFCEv5JRJ3XT
-         M4zme11tHaRD09AcR09LduGugFt7TPVSlzlCIvE8Uz1fnbF09VJaKiLRq1qpfgXqjjl7
-         JL5g==
-X-Gm-Message-State: AOAM532HzYIVTDh2G7HIgJ8XfKdrKoQsIL3OtF7rxQERJGXFc0Vgjkp7
-        u3E/NPKHDvkD3PEVQXjmL7Ln3Yhr5vA68FqRXr4=
-X-Google-Smtp-Source: ABdhPJzbdERvhkwtptRWuJro5Mb8zw0/bUqzXxJu6d45Y/wBrY094ymF6Z60CixE5vob4suTnE2J7YvOnxbX7BgQH54=
-X-Received: by 2002:a63:5a55:: with SMTP id k21mr19717777pgm.218.1625777734139;
- Thu, 08 Jul 2021 13:55:34 -0700 (PDT)
+        id S230129AbhGHWFI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Jul 2021 18:05:08 -0400
+Received: from mout.gmx.net ([212.227.17.22]:40801 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229631AbhGHWFI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Jul 2021 18:05:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1625781743;
+        bh=+GjNuMQByRgziynhFmap4POwPAnwXffpyKdziI+Cifo=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=IAwdp8bV/+33iiTHN5xK8EnYhRCxeyNDLfwqrLNyZgMllnNHuFoRqxlpt/z6LXGNX
+         DZyhMxSCOLutHKzaPDHNsesDAeUIaoxHNfcRQe3kiXixNqXCaLY4/IiKntwPSkgRQA
+         fX54pRA+WqXdomNdHTqJQSITVy3aR9fhMciRvwMs=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost ([62.216.209.78]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MgNh1-1lXDQf3iCV-00hvas; Fri, 09
+ Jul 2021 00:02:22 +0200
+Date:   Fri, 9 Jul 2021 00:02:21 +0200
+From:   Peter Seiderer <ps.report@gmx.net>
+To:     Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Cc:     Petrosilius <petrosilius@posteo.de>,
+        Koen Vandeputte <koen.vandeputte@citymesh.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [Bugreport] ath9k dynack not working/low performance on 5 &
+ 10MHz Bandwidth
+Message-ID: <20210709000221.59899317@gmx.net>
+In-Reply-To: <b98ffbe2-7995-9783-c74f-af1b5f32f575@dd-wrt.com>
+References: <dd49d9f7-db40-4ab7-f24d-6ab4bbd0bb54@posteo.de>
+        <fd620847-9786-07d2-23be-dba4cedc9089@citymesh.com>
+        <2ffcf571-7068-c06f-3879-d02eacdc4895@posteo.de>
+        <b98ffbe2-7995-9783-c74f-af1b5f32f575@dd-wrt.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-From:   Wil <tsangares@gmail.com>
-Date:   Thu, 8 Jul 2021 13:55:22 -0700
-Message-ID: <CAGaza+PgemUHsitD2rnvxFky5JQVaboAqwsZP7uvNPcmu30-7w@mail.gmail.com>
-Subject: Issue: AX210 only works with old iwlwifi version 59.601f3a66.0
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: multipart/mixed; boundary="00000000000053d86305c6a2e0d5"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:02m8dgxxsKPfaAD0qSrERW8vHVJMdtogLboTmZRIDoSmrOskLbX
+ nlBROJulK2GWaXUIEjMCNTgXu/Kc9bd4mhDIUUaK6uxGKARfVH5bYHioeAg5eplkJceP9Ky
+ s7Ka/VqbynlfueqfZsbT/39c1MgrcZ//faVBE6YPAFK7CKKoqj1FiFIx4DCHIvuFuREdY02
+ 9dirjSW81aquAbuh7vU6g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:H5DtBEHTQzA=:JNEFJqD+wOwdSAgOCXQtdr
+ 8t0ToboGG5vrbDk5Wg5QZOZERh529xw3yrqiXhW8FfrVvW0ibRf3Xg0eBp0GdE85U+/lczQ8W
+ Cg1tNeKw9jw1CeDy380IrS2gCFGJy+NvIDNR37o9+zRxJO+eCf+0YUWqcXBfnlZ3i+CnSvzgG
+ CgXXci/3S741+ndD08qUdhB9FWWIXswV/Au0TI2r2tQeov1cZQMLIjjnU2El9ueV3CiF3r6+/
+ YxYwqF2u8Y+ixL9V1B5dv6IKEDyTwzEFGXyTc88ilNLYoNhIr9OiDHyQNZA5Pa+H4G0C41Zo3
+ gPg0vwpdYtyIs/IMcZ3DpnXYw96rX+aC1pbakhX0q6E372pc99nJmE7+Go3ihlnJmjKGV5j38
+ zzpy6WJrIMIrEYsX8rPvoTq+n7JmhU/SYQBcaFnQsgyHsbC+3aIWiZn7tsX2T2M41wyu57Zmz
+ 6ZaIqcaqi0I6/ZtxWyGUvoqZVvfkwvlFOZQOoX5mZHARc/NDYtp19MoyA04SXoL/UQqPmZzXA
+ mAKlAuAANSlinHJS/UzYqIb0i4TZUM5sLIbqxoyUZo0DY6z07vaXP/87hN2z09d4LvpYsGA9F
+ CJ6w1KdQWDX8rxITSJ8LwPJYiagJMIls89F1Ds+6oQHrMmA/Iec+vC/mXdCJ6fJLC+r/QMwVy
+ YXVFIe12WZEXsGr/u7R3jXDOz5jQbt17W5u6G/FsdKwDxDVFNcJoQJ8ytmE8xbC7NyPpo4r0H
+ 4Hfa4b9EwRxWf6HFBgjbOfSS6H8YqUtZyAciZoEowvJ3bQs9s6e43pgbphqVkltb7tXpjBduT
+ 7k2v1tZZpWVnWw8ntng4GMS6WJEOtGGzCVmDZn989G/cVMx3DFHkVli6oas7IdCp52UqHibbJ
+ xR+N5W3SkxFVsgWQoKa1Y/kxIj6qFtDCINTSmrHfrW+Dn+a9IAkdbFLTtE2wn4arPsKGpR3Ea
+ IfhnBkD5I99Vvl7RWu0BW8KIgs9/PX4WkuQPi4OFvOqh5rmNRM54kNode+EkmaeUvLuJYT9Ve
+ Qlk+ow8U5jJoH6WMZQrZYU/p8lesVgDqF2LcErob8Ri83XsAJBkiSypawk5m9OM35rADRUlQl
+ 9AiJe8LmMgDkx4z7kv9WP6Bc976Yp1t8UJm
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000053d86305c6a2e0d5
-Content-Type: text/plain; charset="UTF-8"
+Hello *,
 
-This is my first time trying to submit a bug with kernel packages so
-please correct me and whatnot.
+On Tue, 22 Jun 2021 12:40:31 +0200, Sebastian Gottschall <s.gottschall@dd-w=
+rt.com> wrote:
 
-I am using an AX210 wifi chip and the only kernel that works with this
-wifi card is version linux 5.11.10, because it comes with iwlwifi
-59.601f3a66.0. The newer kernel versions like 5.12.9, come with
-iwlwifi 62.49eeb572.0 and the wifi interface never comes up. I am not
-sure what changed in the newer versions...
+> just some cents from me. i modified the algorithm a long time ago since=20
+> the dynack way ath9k was going was not correct.
+> i will look if it can make a patch out of my experiences, but dont=20
+> expect it within the next 2 days.
+>=20
+> Am 22.06.2021 um 12:12 schrieb Petrosilius:
+> > On 22.06.21 11:54, Koen Vandeputte wrote: =20
+> >> On 18.06.21 13:13, Petrosilius wrote: =20
+> >>> Hello Lorenzo Bianconi,
+> >>>
+> >>> we are running a set of R11e-2HPnD devices and having trouble getting
+> >>> dynack working properly.
+> >>> Setup:
+> >>> * linux-5.4.123
+> >>> * OpenWRT (current development branch) with wireless backports-5.10.3=
+4-1
+> >>> * distance 2m between ap and sta
+> >>> * Low ambient noise wifi environment
+> >>> We experienced some non working dynack or low performance in the
+> >>> connection due to too high calculated ackto's.
+> >>>
+> >>> Here is a ath9k debug output example for a non working dynack @ 10Mhz
+> >>> BW:
+> >>>
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.500427] =
+ath: phy0:
+> >>> {48:8f:5a:3c:bb:03} tx sample 44905341 [dur 8720][h 29-t 30]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.500437] =
+ath: phy0:
+> >>> ack_ts 44844835 st_ts 44905341 st_dur 8720 [17-29]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.500445] =
+ath: phy0:
+> >>> ack_ts 44923425 st_ts 44905341 st_dur ackto.tar8720 [18-29]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.554642] =
+ath: phy0: rx
+> >>> sample 44977693 [h 18-t 20]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.554701] =
+ath: phy0:
+> >>> {48:8f:5a:3c:bb:03} tx sample 44964984 [dur 6032][h 30-t 31]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.554710] =
+ath: phy0:
+> >>> ack_ts 44923425 st_ts 44964984 st_dur 6032 [18-30]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.554718] =
+ath: phy0:
+> >>> ack_ts 44977693 st_ts 44964984 st_dur 6032 [19-30]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.577890] =
+ath: phy0: rx
+> >>> sample 45000939 [h 19-t 21]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.577946] =
+ath: phy0:
+> >>> {48:8f:5a:3c:bb:03} tx sample 44998471 [dur 912][h 31-t 32]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.577956] =
+ath: phy0:
+> >>> ack_ts 44977693 st_ts 44998471 st_dur 912 [19-31]
+> >>> Wed Jun=C2=A0 2 19:08:50 2021 kern.debug kernel: [=C2=A0 400.577964] =
+ath: phy0:
+> >>> ack_ts 45000939 st_ts 44998471 st_dur 912 [20-31]
+> >>>
+> >>> THe above output is generated in dynack.c by
+> >>>
+> >>>  =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 ath_dbg(ath9k_hw_common(=
+ah), DYNACK,
+> >>>  =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 "ack_=
+ts %u st_ts %u st_dur %u [%u-%u]\n",
+> >>>  =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 ack_t=
+s, st_ts->tstamp, st_ts->dur,
+> >>>  =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 da->a=
+ck_rbf.h_rb, da->st_rbf.h_rb);
+> >>>
+> >>> The ackto is afterwards calculated by
+> >>>
+> >>>  =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (ack_ts > st_ts->tsta=
+mp + st_ts->dur) {
+> >>>  =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 ackto=
+ =3D ack_ts - st_ts->tstamp - st_ts->dur;
+> >>>
+> >>> Filling in the values of the first sample:
+> >>>
+> >>> (ack_ts > st_ts->tstamp + st_ts->dur) ?
+> >>> (44844835 > 44905341+8720) ?
+> >>> (44844835 > 44914061) ? ... not given
+> >>>
+> >>> Therefore a new ackto is not calculated and i can also see that in the
+> >>> ack_to file:
+> >>>
+> >>> 600 A
+> >>> 600 A
+> >>> 600 A
+> >>> ...
+> >>>
+> >>> These look like the default values to me (and do not change), but
+> >>> ath_dynack_get_max_to() should return 750 A for our 10MHz BW case - t=
+his
+> >>> looks also suspecious to me.
+> >>>
+> >>> For 5 MHz bandwidth there is a ackto calculated (~382 A, looks a bit =
+too
+> >>> high to me) but the performance is way below expectation (<1MBit)
+> >>> For 20 MHz bandwidth there is a ackto calculated (51 A) and the
+> >>> performance is fitting the expectation.
+> >>> If you want to take a look at the logs for each of these cases for ap
+> >>> and sta, you can download them here:
+> >>> https://cloud.hs-augsburg.de/s/eworxkJoL6JXYzZ
+> >>>
+> >>> Did anyone else experience such a behaviour on non 20MHz Channels or
+> >>> does anyone have an idea on where this behaviour might originate from?
+> >>> I am not experienced in the ath9k driver code, but a uneducated guess
+> >>> might be that the ring buffer where the dynack algorithm is taking its
+> >>> frame-samples from is not behaving as expected for the 5&10MHz case.
+> >>>
+> >>> regards,
+> >>> julian dorner =20
+> >> Are you stressing the link?
+> >> I'll try to simulate this later on
+> >>
+> >> Regards,
+> >>
+> >> Koen
+> >> =20
+> > Hi Koen,
+> >
+> > we didnt stress the link that much.
+> >
+> > There was only SSH from the ap to the sta running to get access to the =
+sta.
+> >
+> > regards,
+> >
+> > Julian
+> >
+> > =20
 
-Attached as wifi_not_working.txt is the dmesg log for kernel 5.12.9
-with iwlwifi 62.49eeb572.0. Attached as wifi_working.txt is the dmesg
-from kernel 5.11.10 and iwlwifi 59.601f3a66.0.
+Did observe same/similar problem, in my case with IBSS mode and three nodes/
+stations A, B, C. IP traffic only between A, B. Node C is 'passive' (sending
+only beacons and broadcasts), but the current algorithm keeps ackto at 600
+(no update of the ackto value for node/station C - added an debugfs entry
+ack_to_detailed dumping the ackto values per station which are evaluated
+in ath_dynack_compute_ackto() where the highest value wins).
 
-I noticed this immediately, when the kernel went past 5.11.10 but I
-have never tried to submit an issue to kernel modules.
+Fixed it by setting the initial ackto value to zero for new nodes/stations:
 
-Please let me know if this is the wrong way to submit issues.
- - William
+diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless=
+/ath/ath9k/dynack.c
+index fbeb4a739..ebf7800bd 100644
+--- a/drivers/net/wireless/ath/ath9k/dynack.c
++++ b/drivers/net/wireless/ath/ath9k/dynack.c
+@@ -235,7 +235,7 @@ void ath_dynack_sample_tx_ts(struct ath_hw *ah, struct =
+sk_buff *skb,
+                                struct ath_node *an;
 
---00000000000053d86305c6a2e0d5
-Content-Type: text/plain; charset="US-ASCII"; name="wifi_working.txt"
-Content-Disposition: attachment; filename="wifi_working.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kqve238i0>
-X-Attachment-Id: f_kqve238i0
+                                an =3D (struct ath_node *)sta->drv_priv;
+-                               an->ackto =3D -1;
++                               an->ackto =3D 0; /* do not vote for ackto u=
+ntil real value is known */
+                        }
+                        da->lto =3D jiffies + LATEACK_DELAY;
+                }
+@@ -323,7 +323,7 @@ void ath_dynack_node_init(struct ath_hw *ah, struct ath=
+_node *an)
+ {
+        struct ath_dynack *da =3D &ah->dynack;
 
-WyAgICAyLjM5MzM3NV0gdXNiY29yZTogcmVnaXN0ZXJlZCBuZXcgaW50ZXJmYWNlIGRyaXZlciB1
-c2JoaWQKWyAgICAyLjM5MzM4MV0gdXNiaGlkOiBVU0IgSElEIGNvcmUgZHJpdmVyClsgICAgMi40
-MDI1NzBdIHJhbmRvbTogZGJ1cy1kYWVtb246IHVuaW5pdGlhbGl6ZWQgdXJhbmRvbSByZWFkICgx
-MiBieXRlcyByZWFkKQpbICAgIDIuNDA3MTE0XSByYW5kb206IGF2YWhpLWRhZW1vbjogdW5pbml0
-aWFsaXplZCB1cmFuZG9tIHJlYWQgKDQgYnl0ZXMgcmVhZCkKWyAgICAyLjQ1OTgwMl0gaXdsd2lm
-aSAwMDAwOjAzOjAwLjA6IGFwaSBmbGFncyBpbmRleCAyIGxhcmdlciB0aGFuIHN1cHBvcnRlZCBi
-eSBkcml2ZXIKWyAgICAyLjQ1OTgzMV0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IFRMVl9GV19GU0VR
-X1ZFUlNJT046IEZTRVEgVmVyc2lvbjogOTMuOC42My4yOApbICAgIDIuNDYwMzU0XSBpd2x3aWZp
-IDAwMDA6MDM6MDAuMDogbG9hZGVkIGZpcm13YXJlIHZlcnNpb24gNTkuNjAxZjNhNjYuMCB0eS1h
-MC1nZi1hMC01OS51Y29kZSBvcF9tb2RlIGl3bG12bQpbICAgIDIuNDg5MzMxXSByYW5kb206IGRi
-dXMtZGFlbW9uOiB1bmluaXRpYWxpemVkIHVyYW5kb20gcmVhZCAoMTIgYnl0ZXMgcmVhZCkKWyAg
-ICAyLjY2MjUxM10gcmFuZG9tOiBjcm5nIGluaXQgZG9uZQpbICAgIDIuNjYyNTE3XSByYW5kb206
-IDUgdXJhbmRvbSB3YXJuaW5nKHMpIG1pc3NlZCBkdWUgdG8gcmF0ZWxpbWl0aW5nClsgICAgMi44
-MTU2MjRdIGNoZWNraW5nIGdlbmVyaWMgKGIwMDAwMDAwIGZhMDAwMCkgdnMgaHcgKGMwMDAwMDAw
-IDEwMDAwMDApCi0tClsgICAgMi44MzI2NzBdIHNuZF9oZGFfY29kZWNfY2lycnVzIGhkYXVkaW9D
-MUQwOiAgICAgIEludGVybmFsIE1pYz0weDFjClsgICAgMi44MzI2NzJdIHNuZF9oZGFfY29kZWNf
-Y2lycnVzIGhkYXVkaW9DMUQwOiAgICAgIE1pYz0weDE4ClsgICAgMi44NTA3MTBdIGFwcGxlIDAw
-MDM6MDVBQzowMjczLjAwMDE6IGhpZGRldjk2LGhpZHJhdzA6IFVTQiBISUQgdjEuMTAgRGV2aWNl
-IFtBcHBsZSBJbmMuIEFwcGxlIEludGVybmFsIEtleWJvYXJkIC8gVHJhY2twYWRdIG9uIHVzYi0w
-MDAwOjAwOjE0LjAtNS9pbnB1dDAKWyAgICAyLjg1MjE5NV0gaW5wdXQ6IEFwcGxlIEluYy4gQXBw
-bGUgSW50ZXJuYWwgS2V5Ym9hcmQgLyBUcmFja3BhZCBhcyAvZGV2aWNlcy9wY2kwMDAwOjAwLzAw
-MDA6MDA6MTQuMC91c2IxLzEtNS8xLTU6MS4xLzAwMDM6MDVBQzowMjczLjAwMDIvaW5wdXQvaW5w
-dXQ5ClsgICAgMi44Njg5MjhdIGl3bHdpZmkgMDAwMDowMzowMC4wOiBEZXRlY3RlZCBJbnRlbChS
-KSBXaS1GaSA2IEFYMjEwIDE2ME1IeiwgUkVWPTB4NDIwClsgICAgMi44NzAyNzRdIGk5MTUgMDAw
-MDowMDowMi4wOiB2Z2FhcmI6IGNoYW5nZWQgVkdBIGRlY29kZXM6IG9sZGRlY29kZXM9aW8rbWVt
-LGRlY29kZXM9aW8rbWVtOm93bnM9aW8rbWVtClsgICAgMi44NzI0OTRdIGlucHV0OiBIREEgSW50
-ZWwgUENIIE1pYyBhcyAvZGV2aWNlcy9wY2kwMDAwOjAwLzAwMDA6MDA6MWIuMC9zb3VuZC9jYXJk
-MS9pbnB1dDYKWyAgICAyLjg5MTM0MV0gaTkxNSAwMDAwOjAwOjAyLjA6IFtkcm1dIFBhbmVsIGFk
-dmVydGlzZXMgRFBDRCBiYWNrbGlnaHQgc3VwcG9ydCwgYnV0IFZCVCBkaXNhZ3JlZXMuIElmIHlv
-dXIgYmFja2xpZ2h0IGNvbnRyb2xzIGRvbid0IHdvcmsgdHJ5IGJvb3Rpbmcgd2l0aCBpOTE1LmVu
-YWJsZV9kcGNkX2JhY2tsaWdodD0xLiBJZiB5b3VyIG1hY2hpbmUgbmVlZHMgdGhpcywgcGxlYXNl
-IGZpbGUgYSBfbmV3XyBidWcgcmVwb3J0IG9uIGRybS9pOTE1LCBzZWUgaHR0cHM6Ly9naXRsYWIu
-ZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC8tL3dpa2lzL0hvdy10by1maWxlLWk5MTUtYnVncyBm
-b3IgZGV0YWlscy4KWyAgICAyLjg5NTE2M10gW2RybV0gSW5pdGlhbGl6ZWQgaTkxNSAxLjYuMCAy
-MDIwMTEwMyBmb3IgMDAwMDowMDowMi4wIG9uIG1pbm9yIDAKLS0KWyAgICAzLjAzMzQ2M10gaW5w
-dXQ6IEhEQSBJbnRlbCBIRE1JIEhETUkvRFAscGNtPTkgYXMgL2RldmljZXMvcGNpMDAwMDowMC8w
-MDAwOjAwOjAzLjAvc291bmQvY2FyZDAvaW5wdXQxNApbICAgIDMuMDMzNTM4XSBpbnB1dDogSERB
-IEludGVsIEhETUkgSERNSS9EUCxwY209MTAgYXMgL2RldmljZXMvcGNpMDAwMDowMC8wMDAwOjAw
-OjAzLjAvc291bmQvY2FyZDAvaW5wdXQxNQpbICAgIDMuMDM2OTI5XSBhcHBsZSAwMDAzOjA1QUM6
-MDI3My4wMDAzOiBoaWRkZXY5OCxoaWRyYXcyOiBVU0IgSElEIHYxLjEwIERldmljZSBbQXBwbGUg
-SW5jLiBBcHBsZSBJbnRlcm5hbCBLZXlib2FyZCAvIFRyYWNrcGFkXSBvbiB1c2ItMDAwMDowMDox
-NC4wLTUvaW5wdXQzClsgICAgMy4wNzk4NjhdIGFwcGxlIDAwMDM6MDVBQzowMjczLjAwMDQ6IGhp
-ZGRldjk5LGhpZHJhdzM6IFVTQiBISUQgdjEuMTAgRGV2aWNlIFtBcHBsZSBJbmMuIEFwcGxlIElu
-dGVybmFsIEtleWJvYXJkIC8gVHJhY2twYWRdIG9uIHVzYi0wMDAwOjAwOjE0LjAtNS9pbnB1dDQK
-WyAgICAzLjA4MDYzOF0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IGJhc2UgSFcgYWRkcmVzczogZmM6
-YjM6YmM6NDQ6MzQ6NjkKWyAgICAzLjA5MzI3M10gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IGl3bG12
-bSBkb2Vzbid0IGFsbG93IHRvIGRpc2FibGUgQlQgQ29leCwgY2hlY2sgYnRfY29leF9hY3RpdmUg
-bW9kdWxlIHBhcmFtZXRlcgpbICAgIDMuMDk0MDg0XSB0aGVybWFsIHRoZXJtYWxfem9uZTM6IGZh
-aWxlZCB0byByZWFkIG91dCB0aGVybWFsIHpvbmUgKC02MSkKWyAgICAzLjEyMDU4MF0gdXNiY29y
-ZTogcmVnaXN0ZXJlZCBuZXcgaW50ZXJmYWNlIGRyaXZlciBidHVzYgpbICAgIDMuMTI0MzkwXSBp
-bnRlbF9yYXBsX2NvbW1vbjogRm91bmQgUkFQTCBkb21haW4gcGFja2FnZQpbICAgIDMuMTI0Mzk0
-XSBpbnRlbF9yYXBsX2NvbW1vbjogRm91bmQgUkFQTCBkb21haW4gY29yZQotLQpbICAgMTUuMjQ2
-NjE3XSB3bGFuMDogYXV0aGVudGljYXRlZApbICAgMTUuMjczODcwXSB3bGFuMDogYXNzb2NpYXRl
-IHdpdGggNTA6ZDQ6Zjc6OGE6Y2Q6OTYgKHRyeSAxLzMpClsgICAxNS4yNzY2OTldIHdsYW4wOiBS
-WCBBc3NvY1Jlc3AgZnJvbSA1MDpkNDpmNzo4YTpjZDo5NiAoY2FwYWI9MHgxNDExIHN0YXR1cz0w
-IGFpZD0zKQpbICAgMTUuMjc2NzQ1XSBici0yY2YyNjA1YmMzZDQ6IHBvcnQgMih2ZXRoMjAwZTJm
-YykgZW50ZXJlZCBkaXNhYmxlZCBzdGF0ZQpbICAgMTUuMjc3ODcyXSBpd2x3aWZpIDAwMDA6MDM6
-MDAuMDogR290IE5TUyA9IDQgLSB0cmltbWluZyB0byAyClsgICAxNS4yNzg0NThdIGRldmljZSB2
-ZXRoMjAwZTJmYyBsZWZ0IHByb21pc2N1b3VzIG1vZGUKWyAgIDE1LjI3ODQ4M10gYnItMmNmMjYw
-NWJjM2Q0OiBwb3J0IDIodmV0aDIwMGUyZmMpIGVudGVyZWQgZGlzYWJsZWQgc3RhdGUKWyAgIDE1
-LjI3OTc4NV0gd2xhbjA6IGFzc29jaWF0ZWQKWyAgIDE1LjMyMzE3OF0ga2F1ZGl0ZF9wcmludGtf
-c2tiOiAzODcgY2FsbGJhY2tzIHN1cHByZXNzZWQK
---00000000000053d86305c6a2e0d5
-Content-Type: text/plain; charset="US-ASCII"; name="wifi_not_working.txt"
-Content-Disposition: attachment; filename="wifi_not_working.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kqve238y1>
-X-Attachment-Id: f_kqve238y1
+-       an->ackto =3D da->ackto;
++       an->ackto =3D 0; /* do not vote for ackto until real value is known=
+ */
 
-WyAgICAyLjQyODQ4MF0gYXBwbGVzbWMgYXBwbGVzbWMuNzY4OiBod21vbl9kZXZpY2VfcmVnaXN0
-ZXIoKSBpcyBkZXByZWNhdGVkLiBQbGVhc2UgY29udmVydCB0aGUgZHJpdmVyIHRvIHVzZSBod21v
-bl9kZXZpY2VfcmVnaXN0ZXJfd2l0aF9pbmZvKCkuClsgICAgMi40NDIzMjldIENyZWF0aW5nIDEg
-TVREIHBhcnRpdGlvbnMgb24gImludGVsLXNwaSI6ClsgICAgMi40NDIzMzVdIDB4MDAwMDAwMDAw
-MDAwLTB4MDAwMDAwODAwMDAwIDogIkJJT1MiClsgICAgMi40NzgwODldIEludGVsKFIpIFdpcmVs
-ZXNzIFdpRmkgZHJpdmVyIGZvciBMaW51eApbICAgIDIuNTU1MzAxXSBpd2x3aWZpIDAwMDA6MDM6
-MDAuMDogYXBpIGZsYWdzIGluZGV4IDIgbGFyZ2VyIHRoYW4gc3VwcG9ydGVkIGJ5IGRyaXZlcgpb
-ICAgIDIuNTU1MzMyXSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogVExWX0ZXX0ZTRVFfVkVSU0lPTjog
-RlNFUSBWZXJzaW9uOiAwLjU5LjIuMjIKWyAgICAyLjU1NTkyNl0gaXdsd2lmaSAwMDAwOjAzOjAw
-LjA6IGxvYWRlZCBmaXJtd2FyZSB2ZXJzaW9uIDYyLjQ5ZWViNTcyLjAgdHktYTAtZ2YtYTAtNjIu
-dWNvZGUgb3BfbW9kZSBpd2xtdm0KWyAgICAyLjc1NDcxNl0gY2hlY2tpbmcgZ2VuZXJpYyAoYjAw
-MDAwMDAgZmEwMDAwKSB2cyBodyAoYzAwMDAwMDAgMTAwMDAwMCkKWyAgICAyLjc1NDcyMV0gY2hl
-Y2tpbmcgZ2VuZXJpYyAoYjAwMDAwMDAgZmEwMDAwKSB2cyBodyAoYjAwMDAwMDAgMTAwMDAwMDAp
-ClsgICAgMi43NTQ3MjNdIGZiMDogc3dpdGNoaW5nIHRvIGludGVsZHJtZmIgZnJvbSBFRkkgVkdB
-ClsgICAgMi43NTcyNjRdIHVzYmNvcmU6IHJlZ2lzdGVyZWQgbmV3IGRldmljZSBkcml2ZXIgYXBw
-bGUtbWZpLWZhc3RjaGFyZ2UKWyAgICAyLjc1OTE3M10gQ29uc29sZTogc3dpdGNoaW5nIHRvIGNv
-bG91ciBkdW1teSBkZXZpY2UgODB4MjUKWyAgICAyLjc1OTIzMl0gaTkxNSAwMDAwOjAwOjAyLjA6
-IHZnYWFyYjogZGVhY3RpdmF0ZSB2Z2EgY29uc29sZQpbICAgIDIuNzcyOTQ4XSBpOTE1IDAwMDA6
-MDA6MDIuMDogdmdhYXJiOiBjaGFuZ2VkIFZHQSBkZWNvZGVzOiBvbGRkZWNvZGVzPWlvK21lbSxk
-ZWNvZGVzPWlvK21lbTpvd25zPWlvK21lbQpbICAgIDIuNzgxMzk0XSBpd2x3aWZpIDAwMDA6MDM6
-MDAuMDogRGV0ZWN0ZWQgSW50ZWwoUikgV2ktRmkgNiBBWDIxMCAxNjBNSHosIFJFVj0weDQyMApb
-ICAgIDIuNzg3NzQzXSB0aGVybWFsIHRoZXJtYWxfem9uZTI6IGZhaWxlZCB0byByZWFkIG91dCB0
-aGVybWFsIHpvbmUgKC02MSkKWyAgICAyLjc5MDQ5NV0gW2RybV0gSW5pdGlhbGl6ZWQgaTkxNSAx
-LjYuMCAyMDIwMTEwMyBmb3IgMDAwMDowMDowMi4wIG9uIG1pbm9yIDAKWyAgICAyLjc5MTg4MV0g
-QUNQSTogdmlkZW86IFZpZGVvIERldmljZSBbSUdQVV0gKG11bHRpLWhlYWQ6IHllcyAgcm9tOiBu
-byAgcG9zdDogbm8pClsgICAgMi43OTIzMzNdIGlucHV0OiBWaWRlbyBCdXMgYXMgL2RldmljZXMv
-TE5YU1lTVE06MDAvTE5YU1lCVVM6MDAvUE5QMEEwODowMC9MTlhWSURFTzowMC9pbnB1dC9pbnB1
-dDgKLS0KWyAgICAyLjk5MzMzNl0gYXBwbGUgMDAwMzowNUFDOjAyNzMuMDAwMjogaW5wdXQsaGlk
-ZGV2OTcsaGlkcmF3MTogVVNCIEhJRCB2MS4xMCBLZXlib2FyZCBbQXBwbGUgSW5jLiBBcHBsZSBJ
-bnRlcm5hbCBLZXlib2FyZCAvIFRyYWNrcGFkXSBvbiB1c2ItMDAwMDowMDoxNC4wLTUvaW5wdXQx
-ClsgICAgMi45OTM1MDJdIGFwcGxlIDAwMDM6MDVBQzowMjczLjAwMDM6IGhpZGRldjk4LGhpZHJh
-dzI6IFVTQiBISUQgdjEuMTAgRGV2aWNlIFtBcHBsZSBJbmMuIEFwcGxlIEludGVybmFsIEtleWJv
-YXJkIC8gVHJhY2twYWRdIG9uIHVzYi0wMDAwOjAwOjE0LjAtNS9pbnB1dDMKWyAgICAyLjk5MzY3
-NV0gYXBwbGUgMDAwMzowNUFDOjAyNzMuMDAwNDogaGlkZGV2OTksaGlkcmF3MzogVVNCIEhJRCB2
-MS4xMCBEZXZpY2UgW0FwcGxlIEluYy4gQXBwbGUgSW50ZXJuYWwgS2V5Ym9hcmQgLyBUcmFja3Bh
-ZF0gb24gdXNiLTAwMDA6MDA6MTQuMC01L2lucHV0NApbICAgIDMuMjYyOTA3XSByYW5kb206IGNy
-bmcgaW5pdCBkb25lClsgICAgMy44MDk2ODNdIGl3bHdpZmkgMDAwMDowMzowMC4wOiBTZWNCb290
-IENQVTEgU3RhdHVzOiAweDcxY2UsIENQVTIgU3RhdHVzOiAweGIwMwpbICAgIDMuODA5Njk1XSBp
-d2x3aWZpIDAwMDA6MDM6MDAuMDogVU1BQyBQQzogMHg4MDQ3ZGZkOApbICAgIDMuODA5NzA1XSBp
-d2x3aWZpIDAwMDA6MDM6MDAuMDogTE1BQyBQQzogMHgwClsgICAgMy44MDk3MDZdIGl3bHdpZmkg
-MDAwMDowMzowMC4wOiBXUlQ6IENvbGxlY3RpbmcgZGF0YTogaW5pIHRyaWdnZXIgMTMgZmlyZWQu
-ClsgICAgNC4wNjAxNjZdIGl3bHdpZmkgMDAwMDowMzowMC4wOiBMb2FkZWQgZmlybXdhcmUgdmVy
-c2lvbjogNjIuNDllZWI1NzIuMCB0eS1hMC1nZi1hMC02Mi51Y29kZQpbICAgIDQuMDYwMTY4XSBp
-d2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwMDAwMCB8IEFEVkFOQ0VEX1NZU0FTU0VSVCAgICAg
-ICAgICAKWyAgICA0LjA2MDE3MF0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCB0
-cm1faHdfc3RhdHVzMApbICAgIDQuMDYwMTcwXSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAw
-MDAwMCB8IHRybV9od19zdGF0dXMxClsgICAgNC4wNjAxNzFdIGl3bHdpZmkgMDAwMDowMzowMC4w
-OiAweDAwMDAwMDAwIHwgYnJhbmNobGluazIKWyAgICA0LjA2MDE3Ml0gaXdsd2lmaSAwMDAwOjAz
-OjAwLjA6IDB4MDAwMDAwMDAgfCBpbnRlcnJ1cHRsaW5rMQpbICAgIDQuMDYwMTczXSBpd2x3aWZp
-IDAwMDA6MDM6MDAuMDogMHgwMDAwMDAwMCB8IGludGVycnVwdGxpbmsyClsgICAgNC4wNjAxNzNd
-IGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwgZGF0YTEKWyAgICA0LjA2MDE3NF0g
-aXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCBkYXRhMgpbICAgIDQuMDYwMTc0XSBp
-d2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwMDAwMCB8IGRhdGEzClsgICAgNC4wNjAxNzVdIGl3
-bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwgYmVhY29uIHRpbWUKWyAgICA0LjA2MDE3
-Nl0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCB0c2YgbG93ClsgICAgNC4wNjAx
-NzZdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwgdHNmIGhpClsgICAgNC4wNjAx
-NzddIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwgdGltZSBncDEKWyAgICA0LjA2
-MDE3OF0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCB0aW1lIGdwMgpbICAgIDQu
-MDYwMTc4XSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwMDAwMCB8IHVDb2RlIHJldmlzaW9u
-IHR5cGUKWyAgICA0LjA2MDE3OV0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCB1
-Q29kZSB2ZXJzaW9uIG1ham9yClsgICAgNC4wNjAxODBdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAw
-eDAwMDAwMDAwIHwgdUNvZGUgdmVyc2lvbiBtaW5vcgpbICAgIDQuMDYwMTgwXSBpd2x3aWZpIDAw
-MDA6MDM6MDAuMDogMHgwMDAwMDAwMCB8IGh3IHZlcnNpb24KWyAgICA0LjA2MDE4MV0gaXdsd2lm
-aSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCBib2FyZCB2ZXJzaW9uClsgICAgNC4wNjAxODJd
-IGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwgaGNtZApbICAgIDQuMDYwMTgyXSBp
-d2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwMDAwMCB8IGlzcjAKWyAgICA0LjA2MDE4M10gaXds
-d2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCBpc3IxClsgICAgNC4wNjAxODRdIGl3bHdp
-ZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwgaXNyMgpbICAgIDQuMDYwMTg0XSBpd2x3aWZp
-IDAwMDA6MDM6MDAuMDogMHgwMDAwMDAwMCB8IGlzcjMKWyAgICA0LjA2MDE4NV0gaXdsd2lmaSAw
-MDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCBpc3I0ClsgICAgNC4wNjAxODZdIGl3bHdpZmkgMDAw
-MDowMzowMC4wOiAweDAwMDAwMDAwIHwgbGFzdCBjbWQgSWQKWyAgICA0LjA2MDE4Nl0gaXdsd2lm
-aSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCB3YWl0X2V2ZW50ClsgICAgNC4wNjAxODddIGl3
-bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwgbDJwX2NvbnRyb2wKWyAgICA0LjA2MDE4
-OF0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCBsMnBfZHVyYXRpb24KWyAgICA0
-LjA2MDE4OF0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDAgfCBsMnBfbWh2YWxpZApb
-ICAgIDQuMDYwMTg5XSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwMDAwMCB8IGwycF9hZGRy
-X21hdGNoClsgICAgNC4wNjAxOTBdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwg
-bG1wbV9wbWdfc2VsClsgICAgNC4wNjAxOTBdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAw
-MDAwIHwgdGltZXN0YW1wClsgICAgNC4wNjAxOTFdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAw
-MDAwMDAwIHwgZmxvd19oYW5kbGVyClsgICAgNC4wNjAyMjJdIGl3bHdpZmkgMDAwMDowMzowMC4w
-OiBTdGFydCBJV0wgRXJyb3IgTG9nIER1bXA6ClsgICAgNC4wNjAyMjNdIGl3bHdpZmkgMDAwMDow
-MzowMC4wOiBTdGF0dXM6IDB4MDAwMDAwMDAsIGNvdW50OiA3ClsgICAgNC4wNjAyMjRdIGl3bHdp
-ZmkgMDAwMDowMzowMC4wOiAweDIwMTAxM0YyIHwgQURWQU5DRURfU1lTQVNTRVJUClsgICAgNC4w
-NjAyMjVdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDAwMDAwIHwgdW1hYyBicmFuY2hsaW5r
-MQpbICAgIDQuMDYwMjI1XSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogMHg4MDQ1QzdFNCB8IHVtYWMg
-YnJhbmNobGluazIKWyAgICA0LjA2MDIyNl0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAw
-MDAgfCB1bWFjIGludGVycnVwdGxpbmsxClsgICAgNC4wNjAyMjddIGl3bHdpZmkgMDAwMDowMzow
-MC4wOiAweDAwMDAwMDAwIHwgdW1hYyBpbnRlcnJ1cHRsaW5rMgpbICAgIDQuMDYwMjI4XSBpd2x3
-aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwMDAwNyB8IHVtYWMgZGF0YTEKWyAgICA0LjA2MDIyOF0g
-aXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAyMDA4MDggfCB1bWFjIGRhdGEyClsgICAgNC4wNjAy
-MjldIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweERFQURCRUVGIHwgdW1hYyBkYXRhMwpbICAgIDQu
-MDYwMjMwXSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwMDAzRSB8IHVtYWMgbWFqb3IKWyAg
-ICA0LjA2MDIzMV0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4NDlFRUI1NzIgfCB1bWFjIG1pbm9y
-ClsgICAgNC4wNjAyMzFdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDExMjdEIHwgZnJhbWUg
-cG9pbnRlcgpbICAgIDQuMDYwMjMyXSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogMHhDMDg4N0YzQyB8
-IHN0YWNrIHBvaW50ZXIKWyAgICA0LjA2MDIzM10gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAw
-MDAwMDAgfCBsYXN0IGhvc3QgY21kClsgICAgNC4wNjAyMzRdIGl3bHdpZmkgMDAwMDowMzowMC4w
-OiAweDAwMDAwMDAwIHwgaXNyIHN0YXR1cyByZWcKWyAgICA0LjA2MDI0M10gaXdsd2lmaSAwMDAw
-OjAzOjAwLjA6IElNTC9ST00gZHVtcDoKWyAgICA0LjA2MDI0M10gaXdsd2lmaSAwMDAwOjAzOjAw
-LjA6IDB4MDAwMDBCMDMgfCBJTUwvUk9NIGVycm9yL3N0YXRlClsgICAgNC4wNjAyNTNdIGl3bHdp
-ZmkgMDAwMDowMzowMC4wOiAweDAwMDA3MUNFIHwgSU1ML1JPTSBkYXRhMQpbICAgIDQuMDYwMjYy
-XSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwMDA4MCB8IElNTC9ST00gV0ZQTV9BVVRIX0tF
-WV8wClsgICAgNC4wNjAyNjhdIGl3bHdpZmkgMDAwMDowMzowMC4wOiBGc2VxIFJlZ2lzdGVyczoK
-WyAgICA0LjA2MDI3MV0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4NjAwMDAwMDAgfCBGU0VRX0VS
-Uk9SX0NPREUKWyAgICA0LjA2MDI3NF0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4ODA0NDAwMDIg
-fCBGU0VRX1RPUF9JTklUX1ZFUlNJT04KWyAgICA0LjA2MDI3N10gaXdsd2lmaSAwMDAwOjAzOjAw
-LjA6IDB4MDAwNzAwMDggfCBGU0VRX0NOVklPX0lOSVRfVkVSU0lPTgpbICAgIDQuMDYwMjgwXSBp
-d2x3aWZpIDAwMDA6MDM6MDAuMDogMHgwMDAwQTY1MiB8IEZTRVFfT1RQX1ZFUlNJT04KWyAgICA0
-LjA2MDI4M10gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4MDAwMDAwMDIgfCBGU0VRX1RPUF9DT05U
-RU5UX1ZFUlNJT04KWyAgICA0LjA2MDI4Nl0gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IDB4NDU1MjQx
-NEUgfCBGU0VRX0FMSVZFX1RPS0VOClsgICAgNC4wNjAyODldIGl3bHdpZmkgMDAwMDowMzowMC4w
-OiAweDAwNDAwNDEwIHwgRlNFUV9DTlZJX0lEClsgICAgNC4wNjAyOTJdIGl3bHdpZmkgMDAwMDow
-MzowMC4wOiAweDAwNDAwNDEwIHwgRlNFUV9DTlZSX0lEClsgICAgNC4wNjAyOTVdIGl3bHdpZmkg
-MDAwMDowMzowMC4wOiAweDAwNDAwNDEwIHwgQ05WSV9BVVhfTUlTQ19DSElQClsgICAgNC4wNjAz
-MDBdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwNDAwNDEwIHwgQ05WUl9BVVhfTUlTQ19DSElQ
-ClsgICAgNC4wNjAzMDVdIGl3bHdpZmkgMDAwMDowMzowMC4wOiAweDAwMDA5MDYxIHwgQ05WUl9T
-Q1VfU0RfUkVHU19TRF9SRUdfRElHX0RDRENfVlRSSU0KWyAgICA0LjA2MDMxMF0gaXdsd2lmaSAw
-MDAwOjAzOjAwLjA6IDB4MDAwMDAwNjEgfCBDTlZSX1NDVV9TRF9SRUdTX1NEX1JFR19BQ1RJVkVf
-VkRJR19NSVJST1IKWyAgICA0LjA2MDMxM10gaXdsd2lmaSAwMDAwOjAzOjAwLjA6IEZhaWxlZCB0
-byBzdGFydCBSVCB1Y29kZTogLTExMApbICAgIDQuMDYwMzE1XSBpd2x3aWZpIDAwMDA6MDM6MDAu
-MDogV1JUOiBDb2xsZWN0aW5nIGRhdGE6IGluaSB0cmlnZ2VyIDEzIGZpcmVkLgpbICAgIDQuMTgw
-MjIwXSBDb25zb2xlOiBzd2l0Y2hpbmcgdG8gY29sb3VyIGZyYW1lIGJ1ZmZlciBkZXZpY2UgMTYw
-eDUwClsgICAgNC4yMDM5NTldIGk5MTUgMDAwMDowMDowMi4wOiBbZHJtXSBmYjA6IGk5MTVkcm1m
-YiBmcmFtZSBidWZmZXIgZGV2aWNlClsgICAgNC41NjIxNThdIEJsdWV0b290aDogQk5FUCAoRXRo
-ZXJuZXQgRW11bGF0aW9uKSB2ZXIgMS4zClsgICAgNC41NjIxNjFdIEJsdWV0b290aDogQk5FUCBm
-aWx0ZXJzOiBwcm90b2NvbCBtdWx0aWNhc3QKLS0KWyAgICA1LjE0NzgwOV0gYXVkaXQ6IHR5cGU9
-MTMyNyBhdWRpdCgxNjI1Nzc0OTk2LjM3MTo3OSk6IHByb2N0aXRsZT02NzY0NkQyRDczNjU3Mzcz
-Njk2RjZFMkQ3NzZGNzI2QjY1NzIyMDVCNzA2MTZEMkY2NzY0NkQyRDYxNzU3NDZGNkM2RjY3Njk2
-RTVEClsgICAgNS4xOTQ5NDBdIGF1ZGl0OiB0eXBlPTExMzAgYXVkaXQoMTYyNTc3NDk5Ni40MTg6
-ODApOiBwaWQ9MSB1aWQ9MCBhdWlkPTQyOTQ5NjcyOTUgc2VzPTQyOTQ5NjcyOTUgbXNnPSd1bml0
-PXVzZXItcnVudGltZS1kaXJAMTAwMCBjb21tPSJzeXN0ZW1kIiBleGU9Ii91c3IvbGliL3N5c3Rl
-bWQvc3lzdGVtZCIgaG9zdG5hbWU9PyBhZGRyPT8gdGVybWluYWw9PyByZXM9c3VjY2VzcycKWyAg
-ICA1LjIwNDIwM10gYXVkaXQ6IHR5cGU9MTEwMSBhdWRpdCgxNjI1Nzc0OTk2LjQyODo4MSk6IHBp
-ZD00ODIgdWlkPTAgYXVpZD00Mjk0OTY3Mjk1IHNlcz00Mjk0OTY3Mjk1IG1zZz0nb3A9UEFNOmFj
-Y291bnRpbmcgZ3JhbnRvcnM9cGFtX2FjY2VzcyxwYW1fdW5peCxwYW1fcGVybWl0LHBhbV90aW1l
-IGFjY3Q9IndpbCIgZXhlPSIvdXNyL2xpYi9zeXN0ZW1kL3N5c3RlbWQiIGhvc3RuYW1lPT8gYWRk
-cj0/IHRlcm1pbmFsPT8gcmVzPXN1Y2Nlc3MnClsgICAgNS4yMDQyMTBdIGF1ZGl0OiB0eXBlPTEx
-MDMgYXVkaXQoMTYyNTc3NDk5Ni40Mjg6ODIpOiBwaWQ9NDgyIHVpZD0wIGF1aWQ9NDI5NDk2NzI5
-NSBzZXM9NDI5NDk2NzI5NSBtc2c9J29wPVBBTTpzZXRjcmVkIGdyYW50b3JzPT8gYWNjdD0id2ls
-IiBleGU9Ii91c3IvbGliL3N5c3RlbWQvc3lzdGVtZCIgaG9zdG5hbWU9PyBhZGRyPT8gdGVybWlu
-YWw9PyByZXM9ZmFpbGVkJwpbICAgIDUuMzE2MTk1XSBpd2x3aWZpIDAwMDA6MDM6MDAuMDogRmFp
-bGVkIHRvIHJ1biBJTklUIHVjb2RlOiAtMTEwClsgICAgNi4wNDAwNjNdIGJyaWRnZTogZmlsdGVy
-aW5nIHZpYSBhcnAvaXAvaXA2dGFibGVzIGlzIG5vIGxvbmdlciBhdmFpbGFibGUgYnkgZGVmYXVs
-dC4gVXBkYXRlIHlvdXIgc2NyaXB0cyB0byBsb2FkIGJyX25ldGZpbHRlciBpZiB5b3UgbmVlZCB0
-aGlzLgpbICAgIDYuMDQzODU2XSBCcmlkZ2UgZmlyZXdhbGxpbmcgcmVnaXN0ZXJlZApbICAgIDYu
-Mzc2ODc5XSBici0yY2YyNjA1YmMzZDQ6IHBvcnQgMSh2ZXRoMjZjZmZkOSkgZW50ZXJlZCBibG9j
-a2luZyBzdGF0ZQpbICAgIDYuMzc2ODg1XSBici0yY2YyNjA1YmMzZDQ6IHBvcnQgMSh2ZXRoMjZj
-ZmZkOSkgZW50ZXJlZCBkaXNhYmxlZCBzdGF0ZQo=
---00000000000053d86305c6a2e0d5--
+        spin_lock_bh(&da->qlock);
+        list_add_tail(&an->list, &da->nodes);
+@@ -368,7 +368,7 @@ void ath_dynack_reset(struct ath_hw *ah)
+
+        da->ackto =3D ath_dynack_get_max_to(ah);
+        list_for_each_entry(an, &da->nodes, list)
+-               an->ackto =3D da->ackto;
++               an->ackto =3D 0; /* do not vote for ackto until real value =
+is known */
+
+        /* init acktimeout */
+        ath_dynack_set_timeout(ah, da->ackto);
+
+
+Another observation is that the initial/default ackto value is dependent on
+the order of the interface configure commands, e.g.:
+
+	$ iw phy0 set distance auto
+	$ iw wlan0 set type ibss
+	$ ifconfig wlan0 10.11.0.3 up
+	$ iw wlan0 ibss join test-ibss1 5180 1a:2b:3c:4d:5e:6f
+
+results in an initial ackto value of 300,
+
+	$ iw wlan0 set type ibss
+	$ ifconfig wlan0 10.11.0.3 up
+	$ iw wlan0 ibss join test-ibss1 5180 1a:2b:3c:4d:5e:6f
+	$ iw phy0 set distance auto
+
+results in an initial ackto value of 600...
+
+Regards,
+Peter
+
+
