@@ -2,74 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FB0C3C1A9F
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jul 2021 22:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23FA73C1ABA
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jul 2021 22:55:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231158AbhGHUmr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Jul 2021 16:42:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34932 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230461AbhGHUmq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Jul 2021 16:42:46 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 32BEA616E9;
-        Thu,  8 Jul 2021 20:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625776804;
-        bh=+5neBRC3/ETp/zdUfgyRaV6iyujCORLImXx5nfaB2ag=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Kuc0VWlqirRzd32TEuGkew1Q/GwXjWstMEpmJcChNqvVisRGqIbvT5lEG6xCmXiW4
-         wggIkxfG5+N5j3sJ2lNPOB8LVdEt5T3cyzkbsHIdFuyy+PDpIWfFH3DotoYMp5rpiG
-         GKkLn/jOHIiXJaAWFBYV1CqSnqzCL1WDfLXk4UjdBQpBmXwzi4/aG60r27Y0poIRR2
-         OPPSueoa/VZCIYhzH1VTt1Do+h3Ka90WKqQKBK+N/KBfO9np93jn7SKQwJqHldQEJl
-         xp1A1ra//y1GAx3HrSmFSBRfdD0jsZcwWjIXlGdeoSdmJUW6OlbDMOg3/KEvvzc17D
-         BXUZlQs0DHyEg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 1F95F60A69;
-        Thu,  8 Jul 2021 20:40:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S230439AbhGHU6H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Jul 2021 16:58:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50940 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230238AbhGHU6H (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 8 Jul 2021 16:58:07 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7819BC061574
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Jul 2021 13:55:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=UmcHnxLom4QcF804YucUVG1Uj8/jgphTI30nZTG+suI=;
+        t=1625777724; x=1626987324; b=Qf6qFNzdk5+33zMatFTn071S9PTxt/sAj4bsgWiIIhs5Szq
+        506fxj1twyp2xRz1lLOraOEN7dLVb8nD+Eln146BiumUqWUekIMHeyKPnXRFvN/8GmNenLAO5BkVA
+        O6BjI+Y4JbNykCYDFuMDzrEyudQCMv3Jwy8W8rtjVAT8+YGDRbW++NZI3Rp1og24w88SK2VFiSv+8
+        6iGUYdRMgmJ7rlBG6v14JslBbSq7DMbYZH6qR5neR2NF6nFZAzeOFRj1N4PJ+pj0keeHmbI+D26h1
+        hnlsH4SGhhn4tbIfo8OvQUoEr7Cn8iAcKkOUYcAZECNoD+6J+x3bJ3fiZEYXgX9w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1m1b3J-00HFcf-K6; Thu, 08 Jul 2021 22:55:21 +0200
+Message-ID: <73a82bb90711f41fef58e2e6103d066c07b5267f.camel@sipsolutions.net>
+Subject: Re: Issue: AX210 only works with old iwlwifi version 59.601f3a66.0
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wil <tsangares@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 08 Jul 2021 22:55:20 +0200
+In-Reply-To: <CAGaza+Oh1qm9vAcNSnoGFHecwJCFt_JKMvqPqi=PaCU=pjwKCg@mail.gmail.com>
+References: <CAGaza+Oh1qm9vAcNSnoGFHecwJCFt_JKMvqPqi=PaCU=pjwKCg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] mt76: mt7921: continue to probe driver when fw already
- downloaded
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162577680412.12322.7727150066013328820.git-patchwork-notify@kernel.org>
-Date:   Thu, 08 Jul 2021 20:40:04 +0000
-References: <20210708131710.695595-1-aaron.ma@canonical.com>
-In-Reply-To: <20210708131710.695595-1-aaron.ma@canonical.com>
-To:     Aaron Ma <aaron.ma@canonical.com>
-Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com, sean.wang@mediatek.com,
-        Soul.Huang@mediatek.com, deren.wu@mediatek.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+On Thu, 2021-07-08 at 13:52 -0700, Wil wrote:
+> This is my first time trying to submit a bug with kernel packages so
+> please correct me and whatnot.
 
-This patch was applied to netdev/net.git (refs/heads/master):
+Looks like you sent as HTML to the list - that wouldn't make it through
+(quoting it
 
-On Thu,  8 Jul 2021 21:17:10 +0800 you wrote:
-> When reboot system, no power cycles, firmware is already downloaded,
-> return -EIO will break driver as error:
-> mt7921e: probe of 0000:03:00.0 failed with error -5
-> 
-> Skip firmware download and continue to probe.
-> 
-> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-> 
-> [...]
+> Please let me know if this is the wrong way to submit issues.
 
-Here is the summary with links:
-  - mt76: mt7921: continue to probe driver when fw already downloaded
-    https://git.kernel.org/netdev/net/c/c34269041185
+Please file a bug, see
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#how_to_report
 
+johannes
 
