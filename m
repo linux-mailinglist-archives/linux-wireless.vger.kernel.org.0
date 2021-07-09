@@ -2,145 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 985593C2796
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jul 2021 18:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CBFC3C27B1
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jul 2021 18:40:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbhGIQe3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jul 2021 12:34:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58588 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229441AbhGIQe2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jul 2021 12:34:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C98CC6139A;
-        Fri,  9 Jul 2021 16:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625848305;
-        bh=PEw0NEaUyBjfW7GXEDHxHYCvnLY7I1NpyX1B2xWF90M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=U1DYYcXCOFbm42pmjM3ROP8WlTfqPN3f97C/qSoFOlKAw3b4Od2DOzJrYlg4c/U9t
-         d41LE5LBhjbAfxKyTh00SH5Hzm6Sf7XDDsNsL6Zq4O/1QITASB/KGLChrwJeO4itfY
-         uex6w1Tb0n/wG7/X9oLNI7LjCLZSmmvb7MJ9uIkDsMntmcXrXBmPMxqVBr8qx89wEy
-         Nmrvlhu1EuOTILdddo8eWVqaYdp5PWiWZIfPYr0WLiiVh9KEusHyWL7QdM7GOY8yUg
-         KM+4+ihGaoKJfKAweCKJwuV/Bl8bMsRXnzw/OS5j5C3oV44WNFi1zQvkJI5KgXpTIp
-         3dwLaHqUz0F1g==
-Received: by pali.im (Postfix)
-        id 3CF6F77D; Fri,  9 Jul 2021 18:31:42 +0200 (CEST)
-Date:   Fri, 9 Jul 2021 18:31:42 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v2 2/2] mwifiex: pcie: add reset_d3cold quirk for Surface
- gen4+ devices
-Message-ID: <20210709163142.e3jilbxjjlpzs7qf@pali>
-References: <20210709145831.6123-1-verdre@v0yd.nl>
- <20210709145831.6123-3-verdre@v0yd.nl>
- <20210709151800.7b2qqezlcicbgrqn@pali>
- <CAHp75Vf71NfbzN_k2F7AXA944O9QZus0Ja7N_seer1NJzZHzeA@mail.gmail.com>
+        id S229606AbhGIQnD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jul 2021 12:43:03 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.49]:57210 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229459AbhGIQnD (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 9 Jul 2021 12:43:03 -0400
+X-Greylist: delayed 374 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Jul 2021 12:43:03 EDT
+Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 55A6B222EC4
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jul 2021 16:34:06 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.203])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 167781A006B;
+        Fri,  9 Jul 2021 16:34:05 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C5B29AC007E;
+        Fri,  9 Jul 2021 16:34:02 +0000 (UTC)
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id C141E13C2B1;
+        Fri,  9 Jul 2021 09:34:01 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C141E13C2B1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1625848441;
+        bh=qS0h/xScgqIvXBaFqVwygpyIfq5IKbJ7mtjvYrRCsKw=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=ihVci9gtNU8XjDfqhL0IhakBD8g5hrCWJg4BYKq0Xic9WpVFFU/0ZcRq5E0YhTUKw
+         9S8onN3IQIV5aKsQdoCxJqWk/C21Qoj9GexmNE+UCKiW93RVVILIzxpyGkTVGozDlF
+         dSbhVCKAQW7KhS6GPNEwz6lchIpp8QJSnkUfYJtE=
+Subject: Re: Kernel crash when scanning for APs in huge WiFi environment -
+ Ath10K - ARMV7 - Linux 4.14.73
+To:     Vincent RUBY <vruby@cube-technologies.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <1cef8054e4e447f2ba02d1de1e6afdf8@Cube-mail.cube.local>
+ <e23f3f12dcab42ea9ab4b7384080cdf2@Cube-mail.cube.local>
+ <c2f66f16-3800-b127-4c58-704a29ec693d@candelatech.com>
+ <2eb86fb560cc482fa63bf42fafb97922@Cube-mail.cube.local>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <2b3885f7-c48a-a3a8-92a9-780405527bf3@candelatech.com>
+Date:   Fri, 9 Jul 2021 09:34:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <2eb86fb560cc482fa63bf42fafb97922@Cube-mail.cube.local>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75Vf71NfbzN_k2F7AXA944O9QZus0Ja7N_seer1NJzZHzeA@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+X-MDID: 1625848445-xXiUFcd9I-sK
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday 09 July 2021 19:01:44 Andy Shevchenko wrote:
-> On Fri, Jul 9, 2021 at 6:18 PM Pali Rohár <pali@kernel.org> wrote:
-> > On Friday 09 July 2021 16:58:31 Jonas Dreßler wrote:
+On 7/9/21 9:15 AM, Vincent RUBY wrote:
+> Thank you Ben for your quick reply.
 > 
+> Unfortunately, when the system crashes, there is no detail. No trace or log can be retrieved, even in dmesg.
+> It is simply rebooting.
 > 
-> > Hello! Now I'm thinking loudly about this patch. Why this kind of reset
-> > is needed only for Surface devices? AFAIK these 88W8897 chips are same
-> > in all cards. Chip itself implements PCIe interface (and also SDIO) so
-> > for me looks very strange if this 88W8897 PCIe device needs DMI specific
-> > quirks. I cannot believe that Microsoft got some special version of
-> > these chips from Marvell which are different than version uses on cards
-> > in mPCIe form factor.
-> >
-> > And now when I'm reading comment below about PCIe bridge to which is
-> > this 88W8897 PCIe chip connected, is not this rather an issue in that
-> > PCIe bridge (instead of mwifiex/88W8897) or in ACPI firmware which
-> > controls this bridge?
-> >
-> > Or are having other people same issues on mPCIe form factor wifi cards
-> > with 88W8897 chips and then this quirk should not DMI dependent?
-> >
-> > Note that I'm seeing issues with reset and other things also on chip
-> > 88W8997 when is connected to system via SDIO. These chips have both PCIe
-> > and SDIO buses, it just depends which pins are used.
+> Trying a newer kernel is not easy since we are hardware driver dependent.
+
+Yep, is sucks to develop on ancient cruft.
+
+You should be able to wire in a serial console somehow, that is first step to
+debugging such kernel crashes.  But, assuming this is some hacked up SDK
+or other non-standard kernel, the fix will be between you and your vendor.
+
+You could also put a similar chipset NIC into a PC and try same test on latest
+upstream kernel and normal OS like Ubunto or Fedora.
+If it crashes there, that would likely be easier to debug and folks on the list
+might could help.
+
+Thanks,
+Ben
+
 > 
-> I'm replying loudly :-)
+> VinceCube
 > 
-> You know that depending on the interface the firmware even for the
-> same chip may be way different. And if you have had any experience
-> working in product companies you should know well that bug in product
-> X is not gonna be fixed if it was not reported, but gets fixed on
-> product Y due to that. Besides that, how do you know that MS has not
-> been given the special edition of the FW?
-
-Yes! But I know something about these chips/cards (I have also one
-development kit) and it is quite different. It is possible that
-Microsoft may have its special version, because I know that e.g. Google
-got "fixed version" for some 88W8xxx chips (it is/was available on
-internet). But firmware is loading by mwifiex driver and we
-(linux-firmware) have just one version of firmware for these cards.
-These 88W8xxx cards lost state and running firmware after reset/power so
-after linux is booted, it loads "linux-firmware" version into 88W8897
-card and then card not run "possibly MS special edition FW".
-
-What can be possible is that we are dealing with ACPI firmware (which is
-same for both Windows and Linux OS) and then it is related to PCIe
-bridge where are some PCIe parts implemented...
-
-> As icing on the cake, the Marvell has been bought and I believe they
-> abandoned their products quite a while ago. You may read kernel
-> bugzilla for the details (last Marvell developer who answered to the
-> reports seems has no clue about the driver).
-
-Marvell 88W[89]xxx wifi cards were sold to NXP together with developers.
-Old @marvell addresses do not work so it is required to find new @nxp
-addresses for developers.
-
-There are recent firmware upgrades from NXP for linux-firmware, see:
-https://lore.kernel.org/linux-firmware/DB7PR04MB453855B0D6C41923BCB0922EFC1C9@DB7PR04MB4538.eurprd04.prod.outlook.com/
-(just only SDIO firmware for 88W8897, not PCIe)
-
-But I know that response from NXP about these cards is slow... And more
-people are complaining about firmware/driver issues for these cards.
-
-> All that said, I believe that we have to follow whatever fixes we
-> would have and be thankful to contributors and testers.
-
-I agree. If this is really fixing these issues and we do not have better
-fix yet, go ahead with it (if PCIe/WiFi maintainers are fine with it).
-
-Once we have better fix, we can replace it.
-
-Currently I'm just trying to understand this issue more deeply (e.g. how
-it can relate with similar issue which I see on SDIO and if I cannot fix
-also SDIO in better way) but seems that nobody knows more than "this
-hack/quirk somehow works for PCIe".
-
-> For the record, I've been suffering from the Linux driver of this
-> hardware for a while. And I'm fully in support of any quirks that will
-> help UX.
+> -----Message d'origine-----
+> De : Ben Greear <greearb@candelatech.com>
+> Envoyé : vendredi 9 juillet 2021 17:59
+> À : Vincent RUBY <vruby@cube-technologies.net>; linux-wireless@vger.kernel.org
+> Objet : Re: Kernel crash when scanning for APs in huge WiFi environment - Ath10K - ARMV7 - Linux 4.14.73
 > 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+> On 7/9/21 8:48 AM, Vincent RUBY wrote:
+>> Hi,
+>>
+>> I apologize in advance if I am writing at the wrong place.
+>> We have developed a custom embedded board based on ARMV7. On the board there is a Telit WE866C3-P Wifi module (based on ath10k).
+>> Linux : 4.14.73 (YOCTO/poky)
+>> Microcontroller : SAMA5D27
+>>
+>> The board is working perfectly in a normal Wifi environment (e.g., at office).
+>> But when the board is put in a huge Wifi environment (e.g., 350 APs with 2 antennas each with more than 600 visible BSSIDS) the Linux kernel crashes when attempting to connect to a Wifi network using wpa_supplicant.
+>> When the Wifi antenna is attenuated with some electromagnetic obstacle (e.g., hand or metallic shield), the board connects without any problem.
+>>
+>> The problem is the same when running a scan from wpa_cli .
+>>
+>> Do you have any idea where I can find some clue to resolve this issue?
+>>
+>> Many thanks in advance !
+>>
+>> VinceCube
+>>
+> 
+> Please show the details of the kernel crash.  And either way, answer is probably to try more recent kernel and see if problem is already fixed.
+> 
+> Thanks,
+> Ben
+> 
+> --
+> Ben Greear <greearb@candelatech.com>
+> Candela Technologies Inc  http://www.candelatech.com
+> 
+
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
