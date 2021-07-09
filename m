@@ -2,90 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 667753C274A
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jul 2021 18:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABF903C273B
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jul 2021 18:02:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbhGIQIx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jul 2021 12:08:53 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.164]:39370 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229487AbhGIQIw (ORCPT
+        id S232366AbhGIQFI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jul 2021 12:05:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231976AbhGIQFI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jul 2021 12:08:52 -0400
-X-Greylist: delayed 435 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Jul 2021 12:08:52 EDT
-Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
-        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 29D02243962
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Jul 2021 15:58:54 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.172])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 12226A006D;
-        Fri,  9 Jul 2021 15:58:53 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id CB0A014007C;
-        Fri,  9 Jul 2021 15:58:52 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 40B3513C2B3;
-        Fri,  9 Jul 2021 08:58:52 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 40B3513C2B3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1625846332;
-        bh=kfC92NJcL8vib23XloHjcGRUxQ9uYE5h0l2TBCAMAMQ=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=pum9wF0+/4Fi+nz0pKV2tpSLtHW3dR3LNWqjHdBbLZibOHd7+rC4RK/aXdiaRaega
-         Iae+zzkvsc/Oti46ujR2qyIL0O9fCh/TSCqsTIesphUBItUqf+es2hYmMGAs5aoc5a
-         axiVqIiioXo6KgAMAIfTeeraeDIEI45VE8bZdBhA=
-Subject: Re: Kernel crash when scanning for APs in huge WiFi environment -
- Ath10K - ARMV7 - Linux 4.14.73
-To:     Vincent RUBY <vruby@cube-technologies.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <1cef8054e4e447f2ba02d1de1e6afdf8@Cube-mail.cube.local>
- <e23f3f12dcab42ea9ab4b7384080cdf2@Cube-mail.cube.local>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <c2f66f16-3800-b127-4c58-704a29ec693d@candelatech.com>
-Date:   Fri, 9 Jul 2021 08:58:51 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Fri, 9 Jul 2021 12:05:08 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C61C0613DD;
+        Fri,  9 Jul 2021 09:02:24 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id x16so9072950pfa.13;
+        Fri, 09 Jul 2021 09:02:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=KOX0eS/luytJGUoS/o7CPT5i4voWSB22+KstGPzrDUw=;
+        b=A2aGqOAT1HzYKDLtNjKm4fcOML1Vyx+W0zUpQyScp8DNcoB4g7frojX1s4Uytxjdce
+         /rCi6eR3cd+yfsuQgsFsHXerKM6lvTrvqQMrB8Rm0eddFJ8IyNLBKsMUw1sQu9zcDAzx
+         tj35OnmDH+Tb9b2258KvzwJJcdIdvYTGIta4IPKVN9J/b8fENFCC6SIZbCSb1RrKZtqn
+         AcGl1dSHqMuZ5iGPkkPjII+I0CZLK7ukvC1zrXmtwDrr1DFBUK06GQFMu5OLR95+U9bH
+         xfQpRsrbdtgwMvdTn1tl+PFOshJgbAKF+CS5js8h0jnwrEFPCG/1OJJKSG+UySQJmfMy
+         L6pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=KOX0eS/luytJGUoS/o7CPT5i4voWSB22+KstGPzrDUw=;
+        b=R9ShkvdMA7B+YaKoxD/rIxd11dFB42iPVJQbRLQPvEOcgM3HRq4+b+DEdmHBckUhmU
+         lf/q92UvfC2y7/6C5fuSe/y1rN5eJzXK0yIz510ZJEazyv/AXGbHA0FcG5M+/oqLpBGc
+         K8LFyZAx0xw6YPyn0zqTLQOS7ZFUKqKYvcyaKkrsUtLKdoXrYouNr6SNLJrZb38FriCV
+         zcwakVw06NNbi23rzxjYn65ZfuKLQUKPSqlISPii3zOOuVMlHjiD/jtKVt24pGNKNoBW
+         JPyp8TD5CaxI54KJMOoGa4u0cGKgkFvpC+58KWXEfJpz9WA6UuuxiFJic19lBeAEbty9
+         vbiA==
+X-Gm-Message-State: AOAM530EqU4ipX3HMsgbEu+iKl6/3VvLJAFc5kWIIDmnej0CB9yNv978
+        ism/peJ452F12ij4EavqT8mr0tsgcf0GB7Bn7SU=
+X-Google-Smtp-Source: ABdhPJyq5aA6d8VRRq/Z+hWh0Y/iF0NwUvJGi+5u84yd4lcpTXMy9OOup82Z53jrOgInbx3w2eYt4vFatjxvpvHVzq0=
+X-Received: by 2002:a63:d014:: with SMTP id z20mr38876122pgf.203.1625846543834;
+ Fri, 09 Jul 2021 09:02:23 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <e23f3f12dcab42ea9ab4b7384080cdf2@Cube-mail.cube.local>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-MDID: 1625846333-lD24sK-WlMP6
+References: <20210709145831.6123-1-verdre@v0yd.nl> <20210709145831.6123-3-verdre@v0yd.nl>
+ <20210709151800.7b2qqezlcicbgrqn@pali>
+In-Reply-To: <20210709151800.7b2qqezlcicbgrqn@pali>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 9 Jul 2021 19:01:44 +0300
+Message-ID: <CAHp75Vf71NfbzN_k2F7AXA944O9QZus0Ja7N_seer1NJzZHzeA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mwifiex: pcie: add reset_d3cold quirk for Surface
+ gen4+ devices
+To:     =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Cc:     =?UTF-8?Q?Jonas_Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/9/21 8:48 AM, Vincent RUBY wrote:
-> Hi,
-> 
-> I apologize in advance if I am writing at the wrong place.
-> We have developed a custom embedded board based on ARMV7. On the board there is a Telit WE866C3-P Wifi module (based on ath10k).
-> Linux : 4.14.73 (YOCTO/poky)
-> Microcontroller : SAMA5D27
-> 
-> The board is working perfectly in a normal Wifi environment (e.g., at office).
-> But when the board is put in a huge Wifi environment (e.g., 350 APs with 2 antennas each with more than 600 visible BSSIDS) the Linux kernel crashes when attempting to connect to a Wifi network using wpa_supplicant.
-> When the Wifi antenna is attenuated with some electromagnetic obstacle (e.g., hand or metallic shield), the board connects without any problem.
-> 
-> The problem is the same when running a scan from wpa_cli .
-> 
-> Do you have any idea where I can find some clue to resolve this issue?
-> 
-> Many thanks in advance !
-> 
-> VinceCube
-> 
+On Fri, Jul 9, 2021 at 6:18 PM Pali Roh=C3=A1r <pali@kernel.org> wrote:
+> On Friday 09 July 2021 16:58:31 Jonas Dre=C3=9Fler wrote:
 
-Please show the details of the kernel crash.  And either way, answer is probably to try more
-recent kernel and see if problem is already fixed.
 
-Thanks,
-Ben
+> Hello! Now I'm thinking loudly about this patch. Why this kind of reset
+> is needed only for Surface devices? AFAIK these 88W8897 chips are same
+> in all cards. Chip itself implements PCIe interface (and also SDIO) so
+> for me looks very strange if this 88W8897 PCIe device needs DMI specific
+> quirks. I cannot believe that Microsoft got some special version of
+> these chips from Marvell which are different than version uses on cards
+> in mPCIe form factor.
+>
+> And now when I'm reading comment below about PCIe bridge to which is
+> this 88W8897 PCIe chip connected, is not this rather an issue in that
+> PCIe bridge (instead of mwifiex/88W8897) or in ACPI firmware which
+> controls this bridge?
+>
+> Or are having other people same issues on mPCIe form factor wifi cards
+> with 88W8897 chips and then this quirk should not DMI dependent?
+>
+> Note that I'm seeing issues with reset and other things also on chip
+> 88W8997 when is connected to system via SDIO. These chips have both PCIe
+> and SDIO buses, it just depends which pins are used.
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+I'm replying loudly :-)
 
+You know that depending on the interface the firmware even for the
+same chip may be way different. And if you have had any experience
+working in product companies you should know well that bug in product
+X is not gonna be fixed if it was not reported, but gets fixed on
+product Y due to that. Besides that, how do you know that MS has not
+been given the special edition of the FW?
+
+As icing on the cake, the Marvell has been bought and I believe they
+abandoned their products quite a while ago. You may read kernel
+bugzilla for the details (last Marvell developer who answered to the
+reports seems has no clue about the driver).
+
+All that said, I believe that we have to follow whatever fixes we
+would have and be thankful to contributors and testers.
+
+For the record, I've been suffering from the Linux driver of this
+hardware for a while. And I'm fully in support of any quirks that will
+help UX.
+
+--=20
+With Best Regards,
+Andy Shevchenko
