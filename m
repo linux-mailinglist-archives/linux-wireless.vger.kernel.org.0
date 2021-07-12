@@ -2,76 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0AE93C6445
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jul 2021 21:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F04A03C65E4
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jul 2021 00:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233686AbhGLT4d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jul 2021 15:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233182AbhGLT4d (ORCPT
+        id S230156AbhGLWGe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Jul 2021 18:06:34 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:47198 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229503AbhGLWGd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jul 2021 15:56:33 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00705C0613DD
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jul 2021 12:53:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=L9yzJbOkUoG3OPTnghxBDJO1uipunb8Z7Cf8ziV+o0I=; t=1626119625; x=1627329225; 
-        b=uT0Me1yf1gcKpem/4PlO3C6KKLT906Udlc8Hw1cgQqxeRC79uEXdR0UYWcG/jZfdHJWCIsFY91z
-        AlffiBzngDdGOuBBjWU8EnnRcHPEybfK6SP7PSUnhxb9PzhITpn0uD5DkYavXBUiUJ9/upW/kmm24
-        BJAUpGYc9Ky5LMm9zL8rYJiIw09mn5/EeUkalIkQScAgey9ioOXg5B5WMeIwMn1beZBCN1+dHRFH5
-        W4JNYJhU0GkQa8pwDIZyIjwNOrUsZ72sFoMo06u92+S2gJBeZaq6Dpxikkeb/1uAL9wEzGIJd5iCD
-        tuGgHQp3XKxOIYW/iqweWdrvL8ibcQZJw10g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1m31zk-001U88-JD; Mon, 12 Jul 2021 21:53:36 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] nl80211: limit band information in non-split data
-Date:   Mon, 12 Jul 2021 21:53:30 +0200
-Message-Id: <20210712215329.31444162a2c2.I5555312e4a074c84f8b4e7ad79dc4d1fbfc5126c@changeid>
-X-Mailer: git-send-email 2.31.1
+        Mon, 12 Jul 2021 18:06:33 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 97E481C0B7C; Tue, 13 Jul 2021 00:03:43 +0200 (CEST)
+Date:   Tue, 13 Jul 2021 00:03:43 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.10 082/137] wlcore/wl12xx: Fix wl12xx get_mac
+ error if device is in ELP
+Message-ID: <20210712220343.GA9766@amd>
+References: <20210706112203.2062605-1-sashal@kernel.org>
+ <20210706112203.2062605-82-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="ZGiS0Q5IWpPtfppv"
+Content-Disposition: inline
+In-Reply-To: <20210706112203.2062605-82-sashal@kernel.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
 
-In non-split data, we shouldn't be adding S1G and 6 GHz
-data (or future bands) since we're really close to the
-4k message size limit. Remove those bands, any modern
-userspace that can use S1G or 6 GHz should already be
-using split dumps, and if not then it needs to update.
+--ZGiS0Q5IWpPtfppv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/nl80211.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Hi!
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 50eb405b0690..395a233eb612 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -2351,7 +2351,10 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 			goto nla_put_failure;
- 
- 		for (band = state->band_start;
--		     band < NUM_NL80211_BANDS; band++) {
-+		     band < state->split ?
-+				NUM_NL80211_BANDS :
-+				NL80211_BAND_60GHZ + 1;
-+		     band++) {
- 			struct ieee80211_supported_band *sband;
- 
- 			/* omit higher bands for ancient software */
--- 
-2.31.1
+> From: Tony Lindgren <tony@atomide.com>
+>=20
+> [ Upstream commit 11ef6bc846dcdce838f0b00c5f6a562c57e5d43b ]
+>=20
+> At least on wl12xx, reading the MAC after boot can fail with a warning
+> at drivers/net/wireless/ti/wlcore/sdio.c:78 wl12xx_sdio_raw_read.
+> The failed call comes from wl12xx_get_mac() that wlcore_nvs_cb() calls
+> after request_firmware_work_func().
 
+> +++ b/drivers/net/wireless/ti/wl12xx/main.c
+> @@ -1503,6 +1503,13 @@ static int wl12xx_get_fuse_mac(struct wl1271 *wl)
+>  	u32 mac1, mac2;
+>  	int ret;
+> =20
+> +	/* Device may be in ELP from the bootloader or kexec */
+> +	ret =3D wlcore_write32(wl, WL12XX_WELP_ARM_COMMAND, WELP_ARM_COMMAND_VA=
+L);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	usleep_range(500000, 700000);
+> +
+
+While this probably improves things.... I don't believe delaying boot
+by extra 200msec is good idea. This should simply be msleep(500),
+AFAICT.
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--ZGiS0Q5IWpPtfppv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmDsvD8ACgkQMOfwapXb+vJPiwCgiYvjMnNc1w8GNzQG94q0TJtI
+QmEAmgNMcJxKnmRmIegdv7JldHsIwxpq
+=Uehq
+-----END PGP SIGNATURE-----
+
+--ZGiS0Q5IWpPtfppv--
