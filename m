@@ -2,117 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 581A03C62BD
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jul 2021 20:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B3393C62C3
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jul 2021 20:40:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235940AbhGLSlr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jul 2021 14:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235913AbhGLSlq (ORCPT
+        id S235760AbhGLSnG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Jul 2021 14:43:06 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:48488 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230477AbhGLSnG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jul 2021 14:41:46 -0400
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F202C0613DD
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jul 2021 11:38:58 -0700 (PDT)
-Received: by mail-oi1-x22e.google.com with SMTP id s23so10842761oij.0
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jul 2021 11:38:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FZWI809EM0kWSYKdDeR8M3Ek3N/OKceTmzxiJRrMjv0=;
-        b=U/qz5/PV6oqvmMd/Zt16iUeVPD3wWnzAUca3PgKD2HuN28lr4NPCgx6/NISCFp3Lvf
-         6NnmIqLkvibjMtlj4qMqP4PURjO1zanRe/ubXj94xzlYNIrJ1A6uZsOF6LWwg/0dAY7M
-         4ycBW0KE8kBx+CyIvNgS+m5OR9aU+vOSCtF2w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FZWI809EM0kWSYKdDeR8M3Ek3N/OKceTmzxiJRrMjv0=;
-        b=HWyJOOUM7YexirIT5Li/ZzdSImBRofT9YlB+/rLXI2ILPBEQS+0eD2RHkMX4i1WSXb
-         Q2FZ5qtuJTT9y6cuPpRO8CPoplAMqhZZlGJm60dxkIQsIYkvghqMuzR600kA71jqg2hv
-         OUCjjJRkGZupmAZHGjgn6WAgrIk3vKIDcsGxNfotPyIzesw5hy+WbG8UqOqb28TmAywg
-         BhpGMTqHFgKjmjwAd8XgEnMgTGLWEO/aQ6JQfYW9/0CEurRrTiK5Ob5FuvFE6ibW3RXE
-         H3Rx/M6syZn63TUCjg+QkcrI9tSBOzDQv54/yzlQ8UHpPow5uzcZECYvt4xk1R2YzYKT
-         pbQQ==
-X-Gm-Message-State: AOAM530/DD7wL7ck/9Hw07855o+MTyVR9xQ/dOeNffn0JQBU/8p9uiQ8
-        iPlzcJIs+YcU4y5otOpFpzVvWvdzelFVAA==
-X-Google-Smtp-Source: ABdhPJx7/3TWoTmVeJzd6r4ipva/Lm6tl43VVZB39HcULp8NzBHkWD87WGn/Q+p8PCoEW5hVfJLshA==
-X-Received: by 2002:a05:6808:d49:: with SMTP id w9mr154587oik.8.1626115137314;
-        Mon, 12 Jul 2021 11:38:57 -0700 (PDT)
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com. [209.85.167.170])
-        by smtp.gmail.com with ESMTPSA id j30sm3265517otc.43.2021.07.12.11.38.55
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jul 2021 11:38:55 -0700 (PDT)
-Received: by mail-oi1-f170.google.com with SMTP id z3so24760135oib.9
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jul 2021 11:38:55 -0700 (PDT)
-X-Received: by 2002:a05:6808:112:: with SMTP id b18mr3729139oie.77.1626115134537;
- Mon, 12 Jul 2021 11:38:54 -0700 (PDT)
+        Mon, 12 Jul 2021 14:43:06 -0400
+X-UUID: c037ae208faa4f2f924fadea624a3289-20210713
+X-UUID: c037ae208faa4f2f924fadea624a3289-20210713
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 326168363; Tue, 13 Jul 2021 02:40:15 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs01n1.mediatek.inc (172.21.101.68) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 13 Jul 2021 02:40:13 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 13 Jul 2021 02:40:14 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2 1/2] mt76: fix mt76_rates for the multiple devices
+Date:   Tue, 13 Jul 2021 02:40:11 +0800
+Message-ID: <a9586764e6cd94bb91e0a9addf9319bb95dfe4db.1626114777.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-References: <20210711141634.6133-1-len.baker@gmx.com> <b0811e08c4a04d2093f3251c55c0edb8@realtek.com>
-In-Reply-To: <b0811e08c4a04d2093f3251c55c0edb8@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 12 Jul 2021 11:38:43 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXOC_dqhf84kP4LsbenJuqeDyKcNFj=EaemrvfJy1oZi_Q@mail.gmail.com>
-Message-ID: <CA+ASDXOC_dqhf84kP4LsbenJuqeDyKcNFj=EaemrvfJy1oZi_Q@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: Fix out-of-bounds write
-To:     Pkshih <pkshih@realtek.com>
-Cc:     Len Baker <len.baker@gmx.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jul 11, 2021 at 6:43 PM Pkshih <pkshih@realtek.com> wrote:
-> > -----Original Message-----
-> > From: Len Baker [mailto:len.baker@gmx.com]
-> >
-> > In the rtw_pci_init_rx_ring function the "if (len > TRX_BD_IDX_MASK)"
-> > statement guarantees that len is less than or equal to GENMASK(11, 0) or
-> > in other words that len is less than or equal to 4095. However the
-> > rx_ring->buf has a size of RTK_MAX_RX_DESC_NUM (defined as 512). This
-> > way it is possible an out-of-bounds write in the for statement due to
-> > the i variable can exceed the rx_ring->buff size.
-> >
-> > Fix it using the ARRAY_SIZE macro.
-> >
-> > Cc: stable@vger.kernel.org
-> > Addresses-Coverity-ID: 1461515 ("Out-of-bounds write")
+From: Sean Wang <sean.wang@mediatek.com>
 
-Coverity seems to be giving a false warning here. I presume it's
-taking the |len| comparison as proof that |len| might be as large as
-TRX_BD_IDX_MASK, but as noted below, that's not really true; the |len|
-comparison is really just dead code.
+PHY offset in either .hw_value or .hw_value_short for mt7615, mt7663,
+mt7915 and mt7921 device all start at bit 6, not 8.
 
-> > Fixes: e3037485c68ec ("rtw88: new Realtek 802.11ac driver")
-> > Signed-off-by: Len Baker <len.baker@gmx.com>
+Suggested-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+v2: splitted out from the patch ("mt76: mt7921: fix mgmt frame using unexpected bitrate")
+    to cover more devices which have the same issue.
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 24 +++++++++----------
+ drivers/net/wireless/mediatek/mt76/mt76.h     | 12 +++++-----
+ .../net/wireless/mediatek/mt76/mt7603/init.c  | 19 +++++++++++++--
+ .../net/wireless/mediatek/mt76/mt76x02_util.c | 16 ++++++-------
+ 4 files changed, 43 insertions(+), 28 deletions(-)
 
-> To prevent the 'len' argument from exceeding the array size of rx_ring->buff, I
-> suggest to add another checking statement, like
->
->         if (len > ARRAY_SIZE(rx_ring->buf)) {
->                 rtw_err(rtwdev, "len %d exceeds maximum RX ring buffer\n", len);
->                 return -EINVAL;
->         }
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index d03aedc3286b..20b2423efc19 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -84,18 +84,18 @@ static const struct ieee80211_tpt_blink mt76_tpt_blink[] = {
+ };
+ 
+ struct ieee80211_rate mt76_rates[] = {
+-	CCK_RATE(0, 10),
+-	CCK_RATE(1, 20),
+-	CCK_RATE(2, 55),
+-	CCK_RATE(3, 110),
+-	OFDM_RATE(11, 60),
+-	OFDM_RATE(15, 90),
+-	OFDM_RATE(10, 120),
+-	OFDM_RATE(14, 180),
+-	OFDM_RATE(9,  240),
+-	OFDM_RATE(13, 360),
+-	OFDM_RATE(8,  480),
+-	OFDM_RATE(12, 540),
++	CCK_RATE(0, 10, 6),
++	CCK_RATE(1, 20, 6),
++	CCK_RATE(2, 55, 6),
++	CCK_RATE(3, 110, 6),
++	OFDM_RATE(11, 60, 6),
++	OFDM_RATE(15, 90, 6),
++	OFDM_RATE(10, 120, 6),
++	OFDM_RATE(14, 180, 6),
++	OFDM_RATE(9,  240, 6),
++	OFDM_RATE(13, 360, 6),
++	OFDM_RATE(8,  480, 6),
++	OFDM_RATE(12, 540, 6),
+ };
+ EXPORT_SYMBOL_GPL(mt76_rates);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 25c5ceef5257..e51ab917296d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -755,17 +755,17 @@ enum mt76_phy_type {
+ 	MT_PHY_TYPE_HE_MU,
+ };
+ 
+-#define CCK_RATE(_idx, _rate) {					\
++#define CCK_RATE(_idx, _rate, _offset) {			\
+ 	.bitrate = _rate,					\
+ 	.flags = IEEE80211_RATE_SHORT_PREAMBLE,			\
+-	.hw_value = (MT_PHY_TYPE_CCK << 8) | (_idx),		\
+-	.hw_value_short = (MT_PHY_TYPE_CCK << 8) | (4 + _idx),	\
++	.hw_value = (MT_PHY_TYPE_CCK << (_offset)) | (_idx),		\
++	.hw_value_short = (MT_PHY_TYPE_CCK << (_offset)) | (4 + _idx),	\
+ }
+ 
+-#define OFDM_RATE(_idx, _rate) {				\
++#define OFDM_RATE(_idx, _rate, _offset) {			\
+ 	.bitrate = _rate,					\
+-	.hw_value = (MT_PHY_TYPE_OFDM << 8) | (_idx),		\
+-	.hw_value_short = (MT_PHY_TYPE_OFDM << 8) | (_idx),	\
++	.hw_value = (MT_PHY_TYPE_OFDM << (_offset)) | (_idx),	\
++	.hw_value_short = (MT_PHY_TYPE_OFDM << (_offset)) | (_idx), \
+ }
+ 
+ extern struct ieee80211_rate mt76_rates[12];
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index 031d39a48a55..59f684b08c55 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -304,6 +304,21 @@ mt7603_init_hardware(struct mt7603_dev *dev)
+ 	return 0;
+ }
+ 
++static struct ieee80211_rate mt7603_rates[] = {
++	CCK_RATE(0, 10, 8),
++	CCK_RATE(1, 20, 8),
++	CCK_RATE(2, 55, 8),
++	CCK_RATE(3, 110, 8),
++	OFDM_RATE(11, 60, 8),
++	OFDM_RATE(15, 90, 8),
++	OFDM_RATE(10, 120, 8),
++	OFDM_RATE(14, 180, 8),
++	OFDM_RATE(9,  240, 8),
++	OFDM_RATE(13, 360, 8),
++	OFDM_RATE(8,  480, 8),
++	OFDM_RATE(12, 540, 8),
++};
++
+ static const struct ieee80211_iface_limit if_limits[] = {
+ 	{
+ 		.max = 1,
+@@ -541,8 +556,8 @@ int mt7603_register_device(struct mt7603_dev *dev)
+ 
+ 	wiphy->reg_notifier = mt7603_regd_notifier;
+ 
+-	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
+-				   ARRAY_SIZE(mt76_rates));
++	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
++				   ARRAY_SIZE(mt7603_rates));
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index ccdbab341271..70a62bf16425 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -19,14 +19,14 @@ struct ieee80211_rate mt76x02_rates[] = {
+ 	MT76x02_CCK_RATE(1, 20),
+ 	MT76x02_CCK_RATE(2, 55),
+ 	MT76x02_CCK_RATE(3, 110),
+-	OFDM_RATE(0, 60),
+-	OFDM_RATE(1, 90),
+-	OFDM_RATE(2, 120),
+-	OFDM_RATE(3, 180),
+-	OFDM_RATE(4, 240),
+-	OFDM_RATE(5, 360),
+-	OFDM_RATE(6, 480),
+-	OFDM_RATE(7, 540),
++	OFDM_RATE(0, 60, 8),
++	OFDM_RATE(1, 90, 8),
++	OFDM_RATE(2, 120, 8),
++	OFDM_RATE(3, 180, 8),
++	OFDM_RATE(4, 240, 8),
++	OFDM_RATE(5, 360, 8),
++	OFDM_RATE(6, 480, 8),
++	OFDM_RATE(7, 540, 8),
+ };
+ EXPORT_SYMBOL_GPL(mt76x02_rates);
+ 
+-- 
+2.25.1
 
-That seems like a better idea, if we really need to patch anything.
-
-> But, I wonder if this a false alarm because 'len' is equal to ARRAY_SIZE(rx_ring->buf)
-> for now.
-
-Or to the point: rtw_pci_init_rx_ring() is only ever called with a
-fixed constant -- RTK_MAX_RX_DESC_NUM (i.e., 512) -- so the alleged
-overflow cannot happen.
-
-Brian
