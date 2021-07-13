@@ -2,91 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E58423C767A
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jul 2021 20:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EE6F3C768E
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jul 2021 20:40:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230376AbhGMSex (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jul 2021 14:34:53 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:53088 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229478AbhGMSew (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jul 2021 14:34:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=9YX3KaYPNTTmjOqBKaIiOKVXMBstGoy/1b6T+CZC0ck=; b=H6tJizJFpKicvb4o0o7PicCO8U
-        NJHCGYB5r0WQBKZm2BePBdcb2fBVVqI/kojVDQljkJZUHVKxtWBNGpIqbDqS3E6eb8BuLQVWD80aR
-        iF0Oa0LyJzjlAM+b4QzwbgKhjPt8dI5x67rYCnaMS3ZtYvAHWxTRiTtMw4uRnRrqHofk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1m3NCI-00DFC4-So; Tue, 13 Jul 2021 20:31:58 +0200
-Date:   Tue, 13 Jul 2021 20:31:58 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
+        id S234326AbhGMSmy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jul 2021 14:42:54 -0400
+Received: from mail.netfilter.org ([217.70.188.207]:38740 "EHLO
+        mail.netfilter.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229944AbhGMSmx (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 13 Jul 2021 14:42:53 -0400
+Received: from netfilter.org (unknown [90.77.255.23])
+        by mail.netfilter.org (Postfix) with ESMTPSA id 2DDF062437;
+        Tue, 13 Jul 2021 20:39:45 +0200 (CEST)
+Date:   Tue, 13 Jul 2021 20:40:02 +0200
+From:   Pablo Neira Ayuso <pablo@netfilter.org>
 To:     Felix Fietkau <nbd@nbd.name>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        pablo@netfilter.org, ryder.lee@mediatek.com
-Subject: Re: [RFC 2/7] net: ethernet: mtk_eth_soc: add support for Wireless
- Ethernet Dispatch (WED)
-Message-ID: <YO3cHoEGwzpWDxnI@lunn.ch>
+        ryder.lee@mediatek.com
+Subject: Re: [RFC 3/7] net: ethernet: mtk_eth_soc: implement flow offloading
+ to WED devices
+Message-ID: <20210713184002.GA26070@salvia>
 References: <20210713160745.59707-1-nbd@nbd.name>
- <20210713160745.59707-3-nbd@nbd.name>
+ <20210713160745.59707-4-nbd@nbd.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210713160745.59707-3-nbd@nbd.name>
+In-Reply-To: <20210713160745.59707-4-nbd@nbd.name>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+On Tue, Jul 13, 2021 at 06:07:41PM +0200, Felix Fietkau wrote:
+[...]
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index c253c2aafe97..7ea6a1db0338 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -885,6 +885,10 @@ int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
+>  		if (WARN_ON_ONCE(last_dev == ctx.dev))
+>  			return -1;
+>  	}
 > +
-> +static inline void
-> +wed_m32(struct mtk_wed_device *dev, u32 reg, u32 mask, u32 val)
-> +{
-> +	regmap_update_bits(dev->hw->regs, reg, mask | val, val);
-> +}
+> +	if (!ctx.dev)
+> +		return ret;
 
-Please don't use inline functions in .c files. Let the compiler
-decide.
+This is not a safety check, right? After this update ctx.dev might be NULL?
 
-> +static void
-> +mtk_wed_reset(struct mtk_wed_device *dev, u32 mask)
-> +{
-> +	int i;
 > +
-> +	wed_w32(dev, MTK_WED_RESET, mask);
-> +	for (i = 0; i < 100; i++) {
-> +		if (wed_r32(dev, MTK_WED_RESET) & mask)
-> +			continue;
-> +
-> +		return;
-> +	}
-
-It may be better to use something from iopoll.h
-
-> +static inline int
-> +mtk_wed_device_attach(struct mtk_wed_device *dev)
-> +{
-> +	int ret = -ENODEV;
-> +
-> +#ifdef CONFIG_NET_MEDIATEK_SOC_WED
-
-if (IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED) is better, since it
-compiles the code, and then the optimizer throws away.
-
-> +	rcu_read_lock();
-> +	dev->ops = rcu_dereference(mtk_soc_wed_ops);
-> +	if (dev->ops)
-> +		ret = dev->ops->attach(dev);
-> +	rcu_read_unlock();
-> +
-> +	if (ret)
-> +		dev->ops = NULL;
-> +#endif
-> +
-> +	return ret;
-> +}
-
-  Andrew
+>  	path = dev_fwd_path(stack);
+>  	if (!path)
+>  		return -1;
+> -- 
+> 2.30.1
+> 
