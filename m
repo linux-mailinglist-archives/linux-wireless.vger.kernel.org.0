@@ -2,77 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 655A63C7460
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jul 2021 18:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC4E93C7535
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jul 2021 18:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231898AbhGMQXY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jul 2021 12:23:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41912 "EHLO
+        id S230342AbhGMQtP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jul 2021 12:49:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229474AbhGMQXY (ORCPT
+        with ESMTP id S229726AbhGMQtO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jul 2021 12:23:24 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC7E6C0613E9
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jul 2021 09:20:33 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id ee25so15737076edb.5
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jul 2021 09:20:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=vhtfZNVwDvwiKPZG1oIn+/06cK03zQNftFw1xpjY+wI=;
-        b=m8kgiSyY/z+wYXaXuTju74R/0XA0M8TZ+KjtycISGttgmsTCW50TTGFBn4EV65wuH6
-         ohpu6fbuA2Ch7/KLaX7gr9l0t9kbwX92n1vkxY1dkvxQJbk91w16K69vI9OOpSjmV4dN
-         zlRu4U9MqMsbRHoRJxpi3oQmd1rTHqzh6qs56Nv622vSnZmBk4UvtidfcP9o5G+TFRZJ
-         XbWdxGFCQiWrT48tMRKShqf1oR2jzhSHgmzESikOfmwhc8iQ7MOrgzhjFzKIcJRyiwUl
-         zWaDSgALR82KTDDwxdwm+wbNYATOAdKnBSBi3RJsXMIb6X8y01sd4Fk3UKcLbZjbtmzX
-         uJnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=vhtfZNVwDvwiKPZG1oIn+/06cK03zQNftFw1xpjY+wI=;
-        b=EXVvxpXJZdFwJjadvwrWt0u2odrDWUo03TnmVC77twJ60JkhHram6mXJ/IPIP0hO3C
-         28NIL1SRXTl/xJf8IBPFxDTStGwnLtCdhdJocMfIFvJ8a1xgxtFcHsWDLPmBOEg0QF7f
-         HOKaKYn+AC7G0f0F842zhcEeYfJSNnRThIb9BERJ2HUKJhNuQgC768HzRP4cbpeQd0gV
-         ZkyOUxjViTKYO7klNTsZHhd/3b/U8zNuBaZ7vUKKH3owpV2Y+bcEv+3OttsP4pPJf8Nx
-         TvFQq5lB5Sgq6Cwo6rVOpLJpcArSLOKixbGqSZwfOBdfANvbMZANJ/KBCoNjJizrG2Dg
-         T+2w==
-X-Gm-Message-State: AOAM532VWV5s9cFzfGOZk1ff9ljt++4Pups0L0SUyJW2RZZyEp4wa4I9
-        NXhfb2cEL4hvyYys6J9hEUm1PDn0UIaicJlpcMs=
-X-Google-Smtp-Source: ABdhPJwJg7cgXoGGjN/QuaKBoMtzo/9lbKxzTAETNLqtjt/zYK6LNhDPtdghKksXgeYVb0gVTnhs4CIuYUG20PJUUps=
-X-Received: by 2002:aa7:dd8d:: with SMTP id g13mr6790267edv.336.1626193232353;
- Tue, 13 Jul 2021 09:20:32 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a17:907:2177:0:0:0:0 with HTTP; Tue, 13 Jul 2021 09:20:31
- -0700 (PDT)
-Reply-To: veroniquebigots001@gmail.com
-From:   Veronique Bigots <laetitiamaura004@gmail.com>
-Date:   Wed, 14 Jul 2021 00:20:31 +0800
-Message-ID: <CAHJvwrQzNDCSk-TeAzd2KF7tK_81EyOmU8MhWz99JXOGoDgPoA@mail.gmail.com>
-Subject: Bonjour
-To:     undisclosed-recipients:;
+        Tue, 13 Jul 2021 12:49:14 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C06C0613DD;
+        Tue, 13 Jul 2021 09:46:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=TTJ8LwE2YLzzQbluXnCR1S6PvuqP3zGFAOpQWY9Sbpw=;
+        t=1626194784; x=1627404384; b=fZN9m2J6Al1zbS6LSebaDMukWsmtgZC49sSVeRBP2yl+x2o
+        U+j9D6zvlWBIeQDfr5dVSXibkmgf9DLFc/hyliQLcF1fkSnh4eQ+axdhGJJCqLxsejW8oSU/SK7+6
+        XTuu03cqjbE2J15HCMiihj9YYHUaetjszfIDzWNlI19a5kENSOCOGvT//PUS48KtDuFtAS1QHQqo3
+        qftp8ncqDBwA6oPuHmy5PU2nkV5BZyL0TkYpcrLnqMcQf+zcXwH3lavBMMYeA3QFrx7TKNl3JbewI
+        VfYbADIN7lz+IwlltON8m7I+4ZZAGXvU2TXrmctXatLW4IBHa0LIZFWxpYVhYulA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1m3LY5-001pwk-5W; Tue, 13 Jul 2021 18:46:21 +0200
+Message-ID: <6d8e441da60ce29d0007c5a6cf173e0a7a1353f6.camel@sipsolutions.net>
+Subject: Re: [RFC 1/7] mac80211: add support for .ndo_fill_forward_path
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, pablo@netfilter.org, ryder.lee@mediatek.com
+Date:   Tue, 13 Jul 2021 18:46:20 +0200
+In-Reply-To: <20210713160745.59707-2-nbd@nbd.name>
+References: <20210713160745.59707-1-nbd@nbd.name>
+         <20210713160745.59707-2-nbd@nbd.name>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bonjour
+On Tue, 2021-07-13 at 18:07 +0200, Felix Fietkau wrote:
+> +
+> +static int ieee80211_netdev_fill_forward_path(struct net_device_path_ctx *ctx,
+> +					      struct net_device_path *path)
+> +{
+> +	struct ieee80211_sub_if_data *sdata;
+> +	struct ieee80211_local *local;
+> +	struct sta_info *sta;
+> +	int ret = -ENOENT;
+> +
+> +	sdata = IEEE80211_DEV_TO_SUB_IF(ctx->dev);
+> +	local = sdata->local;
+> +
+> +	if (!local->ops->net_fill_forward_path)
+> +		return -EOPNOTSUPP;
+> +
+> +	rcu_read_lock();
+> +	switch (sdata->vif.type) {
+> +	case NL80211_IFTYPE_AP_VLAN:
+> +		sta = rcu_dereference(sdata->u.vlan.sta);
+> +		if (sta)
+> +			break;
+> +		if (!sdata->wdev.use_4addr)
+> +			goto out;
 
-Je me nomme Bigots V=C3=A9ronique veuve =C3=A2g=C3=A9e de 52 ans
-Actuellement =C3=A0 Londres en Angleterre pour l'analyse de ma sant=C3=A9 c=
-ar je
-Souffre du
-Cancer de la gorge en phase terminal. Je vous contacte en ce moment
-car je voudrais faire un don =C3=A0 l'endroit des =C3=A2mes sensibles. En e=
-ffet,
-je suis =C3=A9conomiste sans enfant et je souhaiterais faire un don d'une
-somme 353.500 euros  et des bijoux pr=C3=A9cieux  =C3=A0 une
-personne qui en fera bon usage.
-Je vous prie de prendre contact avec mon avocat pour les formalit=C3=A9s
-pour recevoir les fonds voici son adresse mail :
-maitre.robertdurand@gmail.com
+Am I confusing things, or is this condition inverted? If it's not 4-addr
+then you won't have a u.vlan.sta, but you might still want to look up
+the station more generally, no?
 
-cordialement
+> +		fallthrough;
+> +	case NL80211_IFTYPE_AP:
+> +		if (is_multicast_ether_addr(ctx->daddr))
+> +			goto out;
+> +		sta = sta_info_get_bss(sdata, ctx->daddr);
+
+Or maybe this shouldn't use _bss() here, but then you'd need to write a
+sta_info_get() also in the VLAN case, no?
+
+Which might actually be better or even correct, because if the station
+is on the VLAN you probably *don't* want to find it here if the
+interface that's being passed is the AP, no?
+
+johannes
+
