@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 539CA3C6ECE
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jul 2021 12:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42A123C6ED1
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jul 2021 12:46:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235596AbhGMKsz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jul 2021 06:48:55 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:59980 "EHLO
+        id S235681AbhGMKs5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jul 2021 06:48:57 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:59983 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235669AbhGMKsx (ORCPT
+        with ESMTP id S235700AbhGMKsz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jul 2021 06:48:53 -0400
+        Tue, 13 Jul 2021 06:48:55 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16DAjwfgF025065, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16DAk0Vj9025072, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16DAjwfgF025065
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16DAk0Vj9025072
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 13 Jul 2021 18:45:58 +0800
+        Tue, 13 Jul 2021 18:46:00 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 13 Jul 2021 18:45:57 +0800
+ 15.1.2106.2; Tue, 13 Jul 2021 18:46:00 +0800
 Received: from localhost (172.16.20.72) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 13 Jul
- 2021 18:45:57 +0800
+ 2021 18:45:59 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>,
         <phhuang@realtek.com>
-Subject: [PATCH 2/3] rtw88: 8822c: add tx stbc support under HT mode
-Date:   Tue, 13 Jul 2021 18:45:23 +0800
-Message-ID: <20210713104524.47101-2-pkshih@realtek.com>
+Subject: [PATCH 3/3] rtw88: change beacon filter default mode
+Date:   Tue, 13 Jul 2021 18:45:24 +0800
+Message-ID: <20210713104524.47101-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210713104524.47101-1-pkshih@realtek.com>
 References: <20210713104524.47101-1-pkshih@realtek.com>
@@ -86,68 +86,30 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Po-Hao Huang <phhuang@realtek.com>
 
-Enabling this improves tx performance for long distance transmission.
-We used to enable stbc by the rx stbc cap of the associated station.
-But rx cap will be masked out in ieee80211_ht_cap_ie_to_sta_ht_cap
-if we do not declare tx stbc.
+Finetune parameter for firmware.
+Previous mode neglects environment impacts and could lead to
+performance downgrade in some cases.
+This new mode makes fw adapts better under noisy environment.
 
 Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c     | 2 ++
- drivers/net/wireless/realtek/rtw88/main.h     | 6 ++++++
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
- 3 files changed, 9 insertions(+)
+ drivers/net/wireless/realtek/rtw88/fw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index c6364837e83b..6bb55e663fc3 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1338,6 +1338,8 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
+index a8a7162fbe64..ecb8eba59cd7 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.h
++++ b/drivers/net/wireless/realtek/rtw88/fw.h
+@@ -99,7 +99,7 @@ enum rtw_beacon_filter_offload_mode {
+ 	BCN_FILTER_OFFLOAD_MODE_2,
+ 	BCN_FILTER_OFFLOAD_MODE_3,
  
- 	if (rtw_chip_has_rx_ldpc(rtwdev))
- 		ht_cap->cap |= IEEE80211_HT_CAP_LDPC_CODING;
-+	if (rtw_chip_has_tx_stbc(rtwdev))
-+		ht_cap->cap |= IEEE80211_HT_CAP_TX_STBC;
+-	BCN_FILTER_OFFLOAD_MODE_DEFAULT = BCN_FILTER_OFFLOAD_MODE_1,
++	BCN_FILTER_OFFLOAD_MODE_DEFAULT = BCN_FILTER_OFFLOAD_MODE_0,
+ };
  
- 	if (efuse->hw_cap.bw & BIT(RTW_CHANNEL_WIDTH_40))
- 		ht_cap->cap |= IEEE80211_HT_CAP_SUP_WIDTH_20_40 |
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index e5af375b3dd0..56812127a053 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1146,6 +1146,7 @@ struct rtw_chip_info {
- 	u8 txgi_factor;
- 	bool is_pwr_by_rate_dec;
- 	bool rx_ldpc;
-+	bool tx_stbc;
- 	u8 max_power_index;
- 
- 	u16 fw_fifo_addr[RTW_FW_FIFO_MAX];
-@@ -1959,6 +1960,11 @@ static inline bool rtw_chip_has_rx_ldpc(struct rtw_dev *rtwdev)
- 	return rtwdev->chip->rx_ldpc;
- }
- 
-+static inline bool rtw_chip_has_tx_stbc(struct rtw_dev *rtwdev)
-+{
-+	return rtwdev->chip->tx_stbc;
-+}
-+
- static inline void rtw_release_macid(struct rtw_dev *rtwdev, u8 mac_id)
- {
- 	clear_bit(mac_id, rtwdev->mac_id_map);
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 8bf3cd3a3678..f3ad079967a6 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -5288,6 +5288,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
- 	.bfer_su_max_num = 2,
- 	.bfer_mu_max_num = 1,
- 	.rx_ldpc = true,
-+	.tx_stbc = true,
- 
- #ifdef CONFIG_PM
- 	.wow_fw_name = "rtw88/rtw8822c_wow_fw.bin",
+ struct rtw_coex_info_req {
 -- 
 2.25.1
 
