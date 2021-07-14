@@ -2,210 +2,219 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F33D3C7FF7
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jul 2021 10:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA9A3C8095
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jul 2021 10:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238451AbhGNI3E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jul 2021 04:29:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33560 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229940AbhGNI3D (ORCPT
+        id S238716AbhGNIrT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jul 2021 04:47:19 -0400
+Received: from mail-ua1-f46.google.com ([209.85.222.46]:34628 "EHLO
+        mail-ua1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238628AbhGNIrL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jul 2021 04:29:03 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F18C06175F;
-        Wed, 14 Jul 2021 01:26:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Sv0Tb2h7rxwxRk1X2Igl1UV5dheZIeRkSJaiEEevdHY=; b=sTS6CWEFgspO/mAzLph0mBWUHo
-        CPBR/HeaJ48EpY5ennHo45ZWHTV1u94Y6eYEaVRhPBKTHfCt7VM9h0ewd7dnpVjITz/3VaYsni2mc
-        O0h8jKH7qR/9l4wS40ocmCrtGrwneo5n67tULkNTvidgkrMdwrFx0+yAV5BlA4xlVvwY=;
-Received: from p54ae93f7.dip0.t-ipconnect.de ([84.174.147.247] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1m3aDZ-0001JC-2u; Wed, 14 Jul 2021 10:26:09 +0200
-Subject: Re: [RFC 3/7] net: ethernet: mtk_eth_soc: implement flow offloading
- to WED devices
-To:     Pablo Neira Ayuso <pablo@netfilter.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        ryder.lee@mediatek.com
-References: <20210713160745.59707-1-nbd@nbd.name>
- <20210713160745.59707-4-nbd@nbd.name> <20210713185641.GB26070@salvia>
-From:   Felix Fietkau <nbd@nbd.name>
-Message-ID: <ceee6c30-adc1-3a79-31c3-983fe848699c@nbd.name>
-Date:   Wed, 14 Jul 2021 10:26:08 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.11.0
+        Wed, 14 Jul 2021 04:47:11 -0400
+Received: by mail-ua1-f46.google.com with SMTP id s13so354504uao.1;
+        Wed, 14 Jul 2021 01:44:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=r5k/nzvm++7I0kjlsxJbLPoLxldn2GkCJzAXrc4Q3tE=;
+        b=HYt7OhlyET59fENYKovpSBxCiijoiIfp5U60wYyF5ej4/UeoD4xedkgIaeL3k7LJVH
+         TFze34BROVl/KqQ3w4nOvT/eOaJmDh76UNAOdy0C9f1/iPJ2qoKaiU+FtqK5Qm7bNfFy
+         5Jk+Y1W+duADFwm4YoWkJOtejE+Vpnti5lX2qEm5lw2Kbs583dGx5CHcs6i13RnIavhI
+         cKdHiytSHoEWOGUdyv5Bz7FQchQx3Hqe0uBmn2LxnTS9mLHIECd0WOotulSh0J5Xv6DC
+         DLtXPtgD396qs2ITEF0XmaeW9vtjmgzRpce2p0L2jWP7PQl6hIoMf5mGaR+nqm4aBa1s
+         z+Hw==
+X-Gm-Message-State: AOAM530Zu8yDBrP+j3r5+DR4jetcwqgK5OwAdfqEjH0b/Pc9esWnl1vj
+        xEFUtJ5uYfxtLQwC4wcSCbbCm5TzvJ6wFLFuh6k=
+X-Google-Smtp-Source: ABdhPJw+Y3tnjfY/zI+Y1qOhR0PNRzn2MQD3PHuwf/AzIRJfXjUIjP825Ll9FtnbmVsf04QAqWLG0Tq2dErAW2+m0rM=
+X-Received: by 2002:a9f:3f0d:: with SMTP id h13mr12412958uaj.100.1626252258156;
+ Wed, 14 Jul 2021 01:44:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210713185641.GB26070@salvia>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210713193522.1770306-1-u.kleine-koenig@pengutronix.de> <20210713193522.1770306-6-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20210713193522.1770306-6-u.kleine-koenig@pengutronix.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 14 Jul 2021 10:44:06 +0200
+Message-ID: <CAMuHMdW8r6u4O5zv2ee-3=jPP6qwnOSHdSzf8pPE_y=jY3Bn5A@mail.gmail.com>
+Subject: Re: [PATCH v4 5/5] bus: Make remove callback return void
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>, Alex Elder <elder@kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Allen Hubbe <allenbh@gmail.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Andy Gross <agross@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bodo Stroesser <bostroesser@gmail.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Dexuan Cui <decui@microsoft.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Frank Li <lznuaa@gmail.com>,
+        Geoff Levand <geoff@infradead.org>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>, Ira Weiny <ira.weiny@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Jason Wang <jasowang@redhat.com>,
+        Jens Taprogge <jens.taprogge@taprogge.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Joey Pabalan <jpabalanb@gmail.com>,
+        Johan Hovold <johan@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        Jon Mason <jdmason@kudzu.us>, Juergen Gross <jgross@suse.com>,
+        Julien Grall <jgrall@amazon.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Lee Jones <lee.jones@linaro.org>, Len Brown <lenb@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Manohar Vanga <manohar.vanga@gmail.com>,
+        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Martyn Welch <martyn@welchs.me.uk>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Michael Buesch <m@bues.ch>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michael Jamet <michael.jamet@intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Moritz Fischer <mdf@kernel.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
+        Rob Herring <robh@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Samuel Holland <samuel@sholland.org>,
+        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
+        SeongJae Park <sjpark@amazon.de>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Sven Van Asbroeck <TheSven73@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thorsten Scherer <t.scherer@eckelmann.de>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Tom Rix <trix@redhat.com>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vineeth Vijayan <vneethv@linux.ibm.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>, Wu Hao <hao.wu@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Yufen Yu <yuyufen@huawei.com>, alsa-devel@alsa-project.org,
+        dmaengine@vger.kernel.org, greybus-dev@lists.linaro.org,
+        industrypack-devel@lists.sourceforge.net, kvm@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-fpga@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-media@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-ntb@googlegroups.com, linux-parisc@vger.kernel.org,
+        linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-sunxi@lists.linux.dev,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, nvdimm@lists.linux.dev,
+        platform-driver-x86@vger.kernel.org, sparclinux@vger.kernel.org,
+        target-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org,
+        Johannes Thumshirn <jth@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Jul 13, 2021 at 9:35 PM Uwe Kleine-König
+<u.kleine-koenig@pengutronix.de> wrote:
+> The driver core ignores the return value of this callback because there
+> is only little it can do when a device disappears.
+>
+> This is the final bit of a long lasting cleanup quest where several
+> buses were converted to also return void from their remove callback.
+> Additionally some resource leaks were fixed that were caused by drivers
+> returning an error code in the expectation that the driver won't go
+> away.
+>
+> With struct bus_type::remove returning void it's prevented that newly
+> implemented buses return an ignored error code and so don't anticipate
+> wrong expectations for driver authors.
 
-On 2021-07-13 20:56, Pablo Neira Ayuso wrote:
-> On Tue, Jul 13, 2021 at 06:07:41PM +0200, Felix Fietkau wrote:
->> This allows hardware flow offloading from Ethernet to WLAN on MT7622 SoC
->> 
->> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->> ---
->>  drivers/net/ethernet/mediatek/mtk_ppe.c       | 18 +++++
->>  drivers/net/ethernet/mediatek/mtk_ppe.h       | 14 ++--
->>  .../net/ethernet/mediatek/mtk_ppe_offload.c   | 67 ++++++++++++-------
->>  include/linux/netdevice.h                     |  7 ++
->>  net/core/dev.c                                |  4 ++
->>  5 files changed, 78 insertions(+), 32 deletions(-)
->> 
->> diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
->> index 3ad10c793308..472bcd3269a7 100644
->> --- a/drivers/net/ethernet/mediatek/mtk_ppe.c
->> +++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
->> @@ -329,6 +329,24 @@ int mtk_foe_entry_set_pppoe(struct mtk_foe_entry *entry, int sid)
->>  	return 0;
->>  }
->>  
->> +int mtk_foe_entry_set_wdma(struct mtk_foe_entry *entry, int wdma_idx, int txq,
->> +			   int bss, int wcid)
->> +{
->> +	struct mtk_foe_mac_info *l2 = mtk_foe_entry_l2(entry);
->> +	u32 *ib2 = mtk_foe_entry_ib2(entry);
->> +
->> +	*ib2 &= ~MTK_FOE_IB2_PORT_MG;
->> +	*ib2 |= MTK_FOE_IB2_WDMA_WINFO;
->> +	if (wdma_idx)
->> +		*ib2 |= MTK_FOE_IB2_WDMA_DEVIDX;
->> +
->> +	l2->vlan2 = FIELD_PREP(MTK_FOE_VLAN2_WINFO_BSS, bss) |
->> +		    FIELD_PREP(MTK_FOE_VLAN2_WINFO_WCID, wcid) |
->> +		    FIELD_PREP(MTK_FOE_VLAN2_WINFO_RING, txq);
->> +
->> +	return 0;
->> +}
->> +
->>  static inline bool mtk_foe_entry_usable(struct mtk_foe_entry *entry)
->>  {
->>  	return !(entry->ib1 & MTK_FOE_IB1_STATIC) &&
->> diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
->> index 242fb8f2ae65..df8ccaf48171 100644
->> --- a/drivers/net/ethernet/mediatek/mtk_ppe.h
->> +++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
->> @@ -48,9 +48,9 @@ enum {
->>  #define MTK_FOE_IB2_DEST_PORT		GENMASK(7, 5)
->>  #define MTK_FOE_IB2_MULTICAST		BIT(8)
->>  
->> -#define MTK_FOE_IB2_WHNAT_QID2		GENMASK(13, 12)
->> -#define MTK_FOE_IB2_WHNAT_DEVIDX	BIT(16)
->> -#define MTK_FOE_IB2_WHNAT_NAT		BIT(17)
->> +#define MTK_FOE_IB2_WDMA_QID2		GENMASK(13, 12)
->> +#define MTK_FOE_IB2_WDMA_DEVIDX		BIT(16)
->> +#define MTK_FOE_IB2_WDMA_WINFO		BIT(17)
->>  
->>  #define MTK_FOE_IB2_PORT_MG		GENMASK(17, 12)
->>  
->> @@ -58,9 +58,9 @@ enum {
->>  
->>  #define MTK_FOE_IB2_DSCP		GENMASK(31, 24)
->>  
->> -#define MTK_FOE_VLAN2_WHNAT_BSS		GEMMASK(5, 0)
->> -#define MTK_FOE_VLAN2_WHNAT_WCID	GENMASK(13, 6)
->> -#define MTK_FOE_VLAN2_WHNAT_RING	GENMASK(15, 14)
->> +#define MTK_FOE_VLAN2_WINFO_BSS		GENMASK(5, 0)
->> +#define MTK_FOE_VLAN2_WINFO_WCID	GENMASK(13, 6)
->> +#define MTK_FOE_VLAN2_WINFO_RING	GENMASK(15, 14)
->>  
->>  enum {
->>  	MTK_FOE_STATE_INVALID,
->> @@ -281,6 +281,8 @@ int mtk_foe_entry_set_ipv6_tuple(struct mtk_foe_entry *entry,
->>  int mtk_foe_entry_set_dsa(struct mtk_foe_entry *entry, int port);
->>  int mtk_foe_entry_set_vlan(struct mtk_foe_entry *entry, int vid);
->>  int mtk_foe_entry_set_pppoe(struct mtk_foe_entry *entry, int sid);
->> +int mtk_foe_entry_set_wdma(struct mtk_foe_entry *entry, int wdma_idx, int txq,
->> +			   int bss, int wcid);
->>  int mtk_foe_entry_commit(struct mtk_ppe *ppe, struct mtk_foe_entry *entry,
->>  			 u16 timestamp);
->>  int mtk_ppe_debugfs_init(struct mtk_ppe *ppe);
->> diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
->> index b5f68f66d42a..00b1d06f60d1 100644
->> --- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
->> +++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
->> @@ -10,6 +10,7 @@
->>  #include <net/pkt_cls.h>
->>  #include <net/dsa.h>
->>  #include "mtk_eth_soc.h"
->> +#include "mtk_wed.h"
->>  
->>  struct mtk_flow_data {
->>  	struct ethhdr eth;
->> @@ -39,6 +40,7 @@ struct mtk_flow_entry {
->>  	struct rhash_head node;
->>  	unsigned long cookie;
->>  	u16 hash;
->> +	s8 wed_index;
->>  };
->>  
->>  static const struct rhashtable_params mtk_flow_ht_params = {
->> @@ -127,35 +129,38 @@ mtk_flow_mangle_ipv4(const struct flow_action_entry *act,
->>  }
->>  
->>  static int
->> -mtk_flow_get_dsa_port(struct net_device **dev)
->> +mtk_flow_set_output_device(struct mtk_eth *eth, struct mtk_foe_entry *foe,
->> +			   struct net_device *dev, const u8 *dest_mac,
->> +			   int *wed_index)
->>  {
->> -#if IS_ENABLED(CONFIG_NET_DSA)
->> -	struct dsa_port *dp;
->> -
->> -	dp = dsa_port_from_netdev(*dev);
->> -	if (IS_ERR(dp))
->> -		return -ENODEV;
->> -
->> -	if (dp->cpu_dp->tag_ops->proto != DSA_TAG_PROTO_MTK)
->> -		return -ENODEV;
->> +	struct net_device_path_ctx ctx = {
->> +		.dev    = dev,
->> +		.daddr  = dest_mac,
->> +	};
->> +	struct net_device_path path = {};
->> +	int pse_port;
->>  
->> -	*dev = dp->cpu_dp->master;
->> +	if (!dev->netdev_ops->ndo_fill_forward_path ||
->> +	    dev->netdev_ops->ndo_fill_forward_path(&ctx, &path) < 0)
->> +		path.type = DEV_PATH_ETHERNET;
-> 
-> Maybe expose this through flow offload API so there is no need to call
-> ndo_fill_forward_path again from the driver?
-Can you give me a pseudo-code example? I'm not sure how you want it to
-be exposed through the flow offload API.
-To me it seems easier and cleaner to just have a single
-ndo_fill_forward_path call for the final output device to check the
-device types that don't have any corresponding sw offload.
+>  drivers/zorro/zorro-driver.c              | 3 +--
 
->> -	return dp->index;
->> -#else
->> -	return -ENODEV;
->> -#endif
->> -}
->> -
->> -static int
->> -mtk_flow_set_output_device(struct mtk_eth *eth, struct mtk_foe_entry *foe,
->> -			   struct net_device *dev)
->> -{
->> -	int pse_port, dsa_port;
->> +	switch (path.type) {
->> +	case DEV_PATH_DSA:
-> 
-> This DSA update is not related, right?
-I consider it related. Since I'm calling ndo_fill_forward_path now, it's
-better to use it for both DSA and WLAN instead of having independent checks.
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-- Felix
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
