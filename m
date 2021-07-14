@@ -2,94 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D54DD3C7DFC
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jul 2021 07:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A163C7F64
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jul 2021 09:31:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237911AbhGNFl4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jul 2021 01:41:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52562 "EHLO
+        id S238330AbhGNHek (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jul 2021 03:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237903AbhGNFlz (ORCPT
+        with ESMTP id S238245AbhGNHej (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jul 2021 01:41:55 -0400
-Received: from mail.as201155.net (mail.as201155.net [IPv6:2a05:a1c0:f001::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE2D4C0613DD
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jul 2021 22:39:04 -0700 (PDT)
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:33180 helo=webmail.newmedia-net.de)
-        by mail.as201155.net with esmtps (TLSv1:DHE-RSA-AES256-SHA:256)
-        (Exim 4.82_1-5b7a7c0-XX)
-        (envelope-from <s.gottschall@dd-wrt.com>)
-        id 1m3XbU-0006Lw-1n; Wed, 14 Jul 2021 07:38:40 +0200
-X-CTCH-RefID: str=0001.0A782F1A.60EE7860.0036,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID; bh=hg3oPq25LK7mumyAQR3rHjMbizy2SNDDhrpngLZvRt8=;
-        b=rzy0fFtw7CCfrcl3lCdsXKmxa1ldDa+Nw/lpx9eZ2kF+XcBgl8L9szPNDjsTW0Wky1Q+SalSW6OGfROvOOjccWoQgvJuOBLZW5PtI2rZmfaAlnlUZhtDIG9TukHlDjReR3HF5bNhXUyDpDCRAAORw6MZlaVNmxeC30kEUCbYvl8=;
-Message-ID: <8a147d51-9dc0-5767-5d17-793845b9c5f7@dd-wrt.com>
-Date:   Wed, 14 Jul 2021 07:38:39 +0200
+        Wed, 14 Jul 2021 03:34:39 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E10EC06175F
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jul 2021 00:31:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=RG1iCBaT6E1VgpQV+JwxWmlLZlmtPr/DHuj0X5NRrws=;
+        t=1626247908; x=1627457508; b=EMH6028hJevw2RRnDbc8IdUH7buH2s02ecyEFZHITK8dUo7
+        +Ssu3pBBgkMcQaXvsCP6Ju4mOKJvh6NFNKjopVJR+8GUFYsjeg9EFpEtMtsqkLICXyn56uN6C7ib8
+        fJZ/jJ1Aye8F8MolUj7ySXrFiyOIhNJWPwmTbo6HKayGODGmms1g8XzN/B4xyJrRqBugzc+zXX6vs
+        NGHm4U9z4pg5Qtpf0TZKa4nA7h8IpcMOK6HuVdez2rgiQc5aY+qKDBZzq87Hl8xa9iYqTjL8qxGfo
+        Z4NM4nz93G2zbzkqSqY8VZ1W1Z7i5U8+lSixF4EpC8cfAe291XB81Hnek5xLg2Vg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1m3ZMo-0025w2-Pe; Wed, 14 Jul 2021 09:31:38 +0200
+Message-ID: <59ca83f01601a47bf3cfaf38e85570b8a3c5c72a.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/3] mt76 mt7915: take RCU read lock when calling
+ ieee80211_bss_get_elem()
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Date:   Wed, 14 Jul 2021 09:31:37 +0200
+In-Reply-To: <510ef14986079c731ea2879b3095831b60e4f648.1626240767.git.ryder.lee@mediatek.com>
+References: <510ef14986079c731ea2879b3095831b60e4f648.1626240767.git.ryder.lee@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101
- Thunderbird/90.0
-Subject: Re: [Bugreport] ath9k dynack not working/low performance on 5 & 10MHz
- Bandwidth
-To:     Koen Vandeputte <koen.vandeputte@citymesh.com>,
-        Petrosilius <petrosilius@posteo.de>,
-        linux-wireless@vger.kernel.org
-References: <dd49d9f7-db40-4ab7-f24d-6ab4bbd0bb54@posteo.de>
- <fd620847-9786-07d2-23be-dba4cedc9089@citymesh.com>
- <2ffcf571-7068-c06f-3879-d02eacdc4895@posteo.de>
- <8a3718e1-e988-c24a-d94f-34ba0f5349f4@citymesh.com>
- <339f7aa7-b7ee-b7a8-2e87-a96634c00a32@posteo.de>
- <bba886f3-4ce1-94b0-ea44-89ddc8c84e2b@citymesh.com>
- <ca99a4cc-eb7d-dfca-1d26-5b504a57e31f@posteo.de>
- <a7e37fa2-5fe7-6a39-d72d-9e3723540331@citymesh.com>
-From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
-In-Reply-To: <a7e37fa2-5fe7-6a39-d72d-9e3723540331@citymesh.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ACL-Warn: RATELIMIT reached, please don't send to many emails per minute
-X-Received:  from [81.201.155.134] (helo=[172.29.0.186])
-        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.72)
-        (envelope-from <s.gottschall@dd-wrt.com>)
-        id 1m3XbU-0007CW-93; Wed, 14 Jul 2021 07:38:40 +0200
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, 2021-07-14 at 13:36 +0800, Ryder Lee wrote:
+> 
+>  	if (!elem || elem->datalen < 10 ||
+>  	    !(elem->data[10] &
+>  	      WLAN_EXT_CAPA10_OBSS_NARROW_BW_RU_TOLERANCE_SUPPORT))
+>  		data->tolerated = false;
 
->
->
-> Above log is with an iperf session running in the background. :-s
->
-> Will look further into this ..
->
-> Regards,
->
-> Koen
-some cents from me. the chipset has a hw delay/latency which doubles and 
-quadroubles depending on the channel width. this special offset needs to 
-be considered for ack
-timing calculation. especially at very short distances you will run into 
-a problem that if this calculation is wrong, the ack timing register 
-contains a lower value than the hw delay/latency.
-this will result in a effective negative ack value. maybe its worth to 
-check if the values used for this latency offset are correct?
-i found also a patch in my own code which i made many years ago (i 
-cannot remember why) but maybe it helps
-@@ -1128,11 +1110,10 @@
+Unrelated to this patch, but that looks like an off-by-one?
 
-                 slottime = ah->slottime;
-         }
-+
-         /* As defined by IEEE 802.11-2007 17.3.8.6 */
-         slottime += 3 * ah->coverage_class;
-         acktimeout = slottime + sifstime + ack_offset;
-+       eifs += (6 * ah->coverage_class);
-         ctstimeout = acktimeout;
+If datalen == 10, then you can only access data[0] through data[9], not
+data[10]?
 
-         /*
+johannes
 
-Sebastian
-
->
->
