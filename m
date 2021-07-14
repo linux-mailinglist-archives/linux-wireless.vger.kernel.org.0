@@ -2,96 +2,239 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F793C91F8
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jul 2021 22:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 604313C933F
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jul 2021 23:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237623AbhGNUWz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jul 2021 16:22:55 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:57232 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232185AbhGNUWy (ORCPT
+        id S231186AbhGNVrb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jul 2021 17:47:31 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.164]:52670 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229535AbhGNVrb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jul 2021 16:22:54 -0400
-X-UUID: 3e74da53897242f1b5587327c384614f-20210715
-X-UUID: 3e74da53897242f1b5587327c384614f-20210715
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1326171460; Thu, 15 Jul 2021 04:20:01 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 15 Jul 2021 04:19:59 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 15 Jul 2021 04:19:59 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2] mt76: mt7915: fix endianness warnings in mu radiotap
-Date:   Thu, 15 Jul 2021 04:19:57 +0800
-Message-ID: <b4a1c893d91ab7cfae9765e8e7ec3369220211ad.1626293825.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 14 Jul 2021 17:47:31 -0400
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.24])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 35187A0068
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jul 2021 21:44:38 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id F08883C0068
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jul 2021 21:44:37 +0000 (UTC)
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 5C33613C2B1;
+        Wed, 14 Jul 2021 14:44:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5C33613C2B1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1626299077;
+        bh=llrxTKstxoB/Srx3nsoU+2zeq3b0XhABcrDX86NK1lQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gVaH6Gb8E7dYbBSgsZgEXTuSTa4ym4gzhB8D8kdqOV10Zdi7G/4m0BBc4MnAhSjKe
+         QdXfmsYgEoJE9ECFpeXFACcnUBPnQyMs/q85m8+4IYIjKS+EXmGm/Wk0+86ZCAl4cA
+         7hYeJ7QgbfD5XUBuLMPlHQe7hJNyHAyPaTwzlXBg=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH v2 1/8] mt76 - mt7915: Add ethtool stats support.
+Date:   Wed, 14 Jul 2021 14:44:25 -0700
+Message-Id: <20210714214432.15162-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
+X-MDID: 1626299078-EjGeDiPNEJvU
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix sparse: sparse: restricted __le32 degrades to integer
+From: Ben Greear <greearb@candelatech.com>
 
-Fixes: e63fadb87fe1 ("mt76: mt7915: report HE MU radiotap")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+This exposes some tx-path stats to the ethtool API, so that
+ethtool -S wlanX provides some more useful info.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
-v2 - use le32_get_bits instead of FIELD_GET.
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 135 ++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |   3 +
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  12 ++
+ 3 files changed, 150 insertions(+)
 
-Hi Felix, please help to fold this into the previous commit.
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index f1574538315d..b74db3e61098 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -292,19 +292,16 @@ mt7915_mac_decode_he_mu_radiotap(struct sk_buff *skb,
- 			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
- 				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
- 
--	he_mu->ru_ch1[0] = FIELD_GET(MT_CRXV_HE_RU0, cpu_to_le32(rxv[3]));
-+	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
- 
- 	if (status->bw >= RATE_INFO_BW_40) {
- 		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
--		he_mu->ru_ch2[0] =
--			FIELD_GET(MT_CRXV_HE_RU1, cpu_to_le32(rxv[3]));
-+		he_mu->ru_ch2[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
- 	}
- 
- 	if (status->bw >= RATE_INFO_BW_80) {
--		he_mu->ru_ch1[1] =
--			FIELD_GET(MT_CRXV_HE_RU2, cpu_to_le32(rxv[3]));
--		he_mu->ru_ch2[1] =
--			FIELD_GET(MT_CRXV_HE_RU3, cpu_to_le32(rxv[3]));
-+		he_mu->ru_ch1[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
-+		he_mu->ru_ch2[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 1a48b09d0cb7..469028d641c7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -382,4 +382,139 @@ void mt7915_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ {
+ 	debugfs_create_file("fixed_rate", 0600, dir, sta, &fops_fixed_rate);
  }
++
+ #endif
++
++static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] = {
++	"tx_ampdu_len:0-1",
++	"tx_ampdu_len:2-10",
++	"tx_ampdu_len:11-19",
++	"tx_ampdu_len:20-28",
++	"tx_ampdu_len:29-37",
++	"tx_ampdu_len:38-46",
++	"tx_ampdu_len:47-55",
++	"tx_ampdu_len:56-79",
++	"tx_ampdu_len:80-103",
++	"tx_ampdu_len:104-127",
++	"tx_ampdu_len:128-151",
++	"tx_ampdu_len:152-175",
++	"tx_ampdu_len:176-199",
++	"tx_ampdu_len:200-223",
++	"tx_ampdu_len:224-247",
++	"ba_miss_count",
++	"tx_beamformer_ppdu_iBF",
++	"tx_beamformer_ppdu_eBF",
++	"tx_beamformer_rx_feedback_all",
++	"tx_beamformer_rx_feedback_he",
++	"tx_beamformer_rx_feedback_vht",
++	"tx_beamformer_rx_feedback_ht",
++	"tx_beamformer_rx_feedback_bw", /* zero based idx: 20, 40, 80, 160 */
++	"tx_beamformer_rx_feedback_nc",
++	"tx_beamformer_rx_feedback_nr",
++	"tx_beamformee_ok_feedback_pkts",
++	"tx_beamformee_feedback_trig",
++	"tx_mu_beamforming",
++	"tx_mu_mpdu",
++	"tx_mu_successful_mpdu",
++	"tx_su_successful_mpdu",
++	"tx_msdu_pack_1",
++	"tx_msdu_pack_2",
++	"tx_msdu_pack_3",
++	"tx_msdu_pack_4",
++	"tx_msdu_pack_5",
++	"tx_msdu_pack_6",
++	"tx_msdu_pack_7",
++	"tx_msdu_pack_8",
++};
++
++#define MT7915_SSTATS_LEN ARRAY_SIZE(mt7915_gstrings_stats)
++
++/* Ethtool related API */
++void mt7915_debug_get_et_strings(struct ieee80211_hw *hw,
++				 struct ieee80211_vif *vif,
++				 u32 sset, u8 *data)
++{
++	if (sset == ETH_SS_STATS)
++		memcpy(data, *mt7915_gstrings_stats,
++		       sizeof(mt7915_gstrings_stats));
++}
++
++int mt7915_debug_get_et_sset_count(struct ieee80211_hw *hw,
++				   struct ieee80211_vif *vif, int sset)
++{
++	if (sset == ETH_SS_STATS)
++		return MT7915_SSTATS_LEN;
++
++	return 0;
++}
++
++void mt7915_debug_get_et_stats(struct ieee80211_hw *hw,
++			       struct ieee80211_vif *vif,
++			       struct ethtool_stats *stats, u64 *data)
++{
++	struct mt7915_dev *dev = mt7915_hw_dev(hw);
++	struct mt7915_phy *phy = mt7915_hw_phy(hw);
++
++	/* TODO:  These are mostly dev-wide stats at this point.
++	 *  Get some per-vif stats?
++	 */
++
++	/* See mt7915_ampdu_stat_read_phy, etc */
++	bool ext_phy = phy != &dev->phy;
++	int i, n, cnt;
++	int ei = 0;
++
++	if (!phy)
++		return;
++
++	/* Tx ampdu stat */
++	n = ext_phy ? ARRAY_SIZE(dev->mt76.aggr_stats) / 2 : 0;
++	for (i = 0; i < 15 /*ARRAY_SIZE(bound)*/; i++)
++		data[ei++] = dev->mt76.aggr_stats[i + n];
++
++	data[ei++] = phy->mib.ba_miss_cnt;
++
++	/* Tx Beamformer monitor */
++	cnt = mt76_rr(dev, MT_ETBF_TX_APP_CNT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_TX_IBF_CNT, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_TX_EBF_CNT, cnt);
++
++	/* Tx Beamformer Rx feedback monitor */
++	cnt = mt76_rr(dev, MT_ETBF_RX_FB_CNT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_ALL, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_HE, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_VHT, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_HT, cnt);
++
++	cnt = mt76_rr(dev, MT_ETBF_RX_FB_CONT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_BW, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_NC, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_NR, cnt);
++
++	/* Tx Beamformee Rx NDPA & Tx feedback report */
++	cnt = mt76_rr(dev, MT_ETBF_TX_NDP_BFRP(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_TX_FB_CPL, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_TX_FB_TRI, cnt);
++
++	/* Tx SU & MU counters */
++	cnt = mt76_rr(dev, MT_MIB_SDR34(ext_phy));
++	data[ei++] = FIELD_GET(MT_MIB_MU_BF_TX_CNT, cnt);
++
++	cnt = mt76_rr(dev, MT_MIB_DR8(ext_phy));
++	data[ei++] = cnt;
++
++	cnt = mt76_rr(dev, MT_MIB_DR9(ext_phy));
++	data[ei++] = cnt; /* MU MPDU SUccessful */
++
++	cnt = mt76_rr(dev, MT_MIB_DR11(ext_phy));
++	data[ei++] = cnt; /* SU MPDU successful */
++
++	/* TODO:  External phy too?? */
++
++	/* Tx amsdu info (pack-count histogram) */
++	for (i = 0; i < 8; i++)
++		data[ei++] = mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
++
++	WARN_ON(ei != MT7915_SSTATS_LEN);
++}
++
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 48b5e2051bad..ed94e3c3c51d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1052,6 +1052,9 @@ const struct ieee80211_ops mt7915_ops = {
+ 	.get_txpower = mt76_get_txpower,
+ 	.channel_switch_beacon = mt7915_channel_switch_beacon,
+ 	.get_stats = mt7915_get_stats,
++	.get_et_sset_count = mt7915_debug_get_et_sset_count,
++	.get_et_stats = mt7915_debug_get_et_stats,
++	.get_et_strings = mt7915_debug_get_et_strings,
+ 	.get_tsf = mt7915_get_tsf,
+ 	.set_tsf = mt7915_set_tsf,
+ 	.offset_tsf = mt7915_offset_tsf,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 33be449309e0..a3c78365db23 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -419,4 +419,16 @@ void mt7915_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			    struct ieee80211_sta *sta, struct dentry *dir);
+ #endif
  
-@@ -339,7 +336,7 @@ mt7915_mac_decode_he_radiotap(struct sk_buff *skb,
- 	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
- 		    le16_encode_bits(ltf_size,
- 				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
--	if (cpu_to_le32(rxv[0]) & MT_PRXV_TXBF)
-+	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
- 		he->data5 |= HE_BITS(DATA5_TXBF);
- 	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
- 		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
++/* Ethtool API, implementation found in debugfs.c */
++void mt7915_debug_get_et_strings(struct ieee80211_hw *hw,
++				 struct ieee80211_vif *vif,
++				 u32 sset, u8 *data);
++
++int mt7915_debug_get_et_sset_count(struct ieee80211_hw *hw,
++				   struct ieee80211_vif *vif, int sset);
++
++void mt7915_debug_get_et_stats(struct ieee80211_hw *hw,
++			       struct ieee80211_vif *vif,
++			       struct ethtool_stats *stats, u64 *data);
++
+ #endif
 -- 
-2.29.2
+2.20.1
 
