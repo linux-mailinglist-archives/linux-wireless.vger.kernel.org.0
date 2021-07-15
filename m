@@ -2,103 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EAD83C9963
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 09:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D250B3C9DD2
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 13:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240226AbhGOHLI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jul 2021 03:11:08 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:11741 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239044AbhGOHLH (ORCPT
+        id S237798AbhGOLgU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jul 2021 07:36:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40828 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237699AbhGOLgU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jul 2021 03:11:07 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1626332895; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: To: From: Sender;
- bh=kIULp/RNKUD7riG2pNoNJMee4HHcTwYm3+YjPMMBKns=; b=SQf5bvgx7FR2CwuqVl1p6sk9gbztpj/Iq3p/TO5mXqtBWliR//9xeboBW9KCZzq886i/oC+g
- QZUhw11ikOVqo9vt5s846mnWkl3h7+Y6FcIVQSym2slcY8kzxSoXmJeLj0gzd0KLD85PpKH/
- CiJjWWqP/WD8jfvKdZFTDu1Np88=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 60efdecc17c2b4047d967a7c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 15 Jul 2021 07:07:56
- GMT
-Sender: alokad=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 40212C4360C; Thu, 15 Jul 2021 07:07:55 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 70006C433D3;
-        Thu, 15 Jul 2021 07:07:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 70006C433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=alokad@codeaurora.org
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: [PATCH v11 4/4] mac80211: channel switch for non-transmitting interfaces
-Date:   Thu, 15 Jul 2021 00:07:45 -0700
-Message-Id: <20210715070745.5033-5-alokad@codeaurora.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210715070745.5033-1-alokad@codeaurora.org>
-References: <20210715070745.5033-1-alokad@codeaurora.org>
+        Thu, 15 Jul 2021 07:36:20 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACACC06175F
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 04:33:27 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id g16so7330601wrw.5
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 04:33:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DaONZtluKa9peXu6ZwDKNmt2MpZsmruapSIC/LqcI2Q=;
+        b=m9s5uta9WW7Q6jHwzEe7rixce1NSFXpz2DKsXbzkzQCxSIItpJA3fOunv/yNHdyUfG
+         OvOlZdqxvgoq+s0fcHjB3UmOvnEhiDhPwoxGi/tUeC0csjVpfMNDqG+O7HgvAebM/VXr
+         RG5qj8cKjhG5wI3iWW5uHFPmk1E1Z1aZXSE4Yu+sTvGceI+hMX+IIXR5pcfIN7ksNc6A
+         3/Q67WeFe0EBkLpNLraWLvG8yddSVI687fF15IKyqfE00jvQr5E+08H8VvZlYf5QVIMj
+         B2mt8HrBLyV9+Bf767VPQLYHBybXl+dqXE7tq/Lz+/7xbMWeRvofJQqbm9KX6Mb4NmMQ
+         PSRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DaONZtluKa9peXu6ZwDKNmt2MpZsmruapSIC/LqcI2Q=;
+        b=Lo4PKNdY4IBTHvA+qrUj6NqOgtwGAbO17W0Zmv285eAZkS47jZaehLQLSelL2sIGcm
+         H8/gqE6FlPk4DmVM5EIuiStnfFyRvUw76y0Oa2sa30m7VSvpSAmcYsEMkbgsLMP2ayYw
+         r5Y9I6jfdgE9fGJdYI4wwPds+FRVpB2WuXa0wgHHck2LbDmmi05sZIsDNLt6W0c3R1LE
+         IWhbLSt+MH/CTuSTWv2uhceWNg5/j/UZgZu2FsMrlL7wuLFQFnKZGu/PoVu2mqAp1L+j
+         WmlKgyp3xrZgm75+X7R+JnwKjVKuGMGdwecFJ7Oj+puwslk0oCA6LjWPQOmSg+vie8EA
+         FDzw==
+X-Gm-Message-State: AOAM533YEdbDpKzmYUQByVjGwPu41nCAauwTb/oYMkDJ4nSUhJqQMBHR
+        fcN9UScCquLnVjH4NjhECA1Is7LwtA5WBfT62GQ=
+X-Google-Smtp-Source: ABdhPJz6H/6ofyOtsKbliyESjOaVLZyB8Hj8h/MV5J9SgYf/TWrup8G6AMN0xxrycyHvBuKblzZiw5+mIHc3l2lRQtU=
+X-Received: by 2002:adf:e488:: with SMTP id i8mr4968500wrm.285.1626348805763;
+ Thu, 15 Jul 2021 04:33:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:600c:510f:0:0:0:0 with HTTP; Thu, 15 Jul 2021 04:33:24
+ -0700 (PDT)
+Reply-To: barristerdinkarim09@gmail.com
+From:   Din Karim <yawoagnigbadedji@gmail.com>
+Date:   Thu, 15 Jul 2021 11:33:24 +0000
+Message-ID: <CANbOdzU_DcroPtBrGbcBVQ4-sLAyPHmohdxLbC3Sk6L=5j4tZA@mail.gmail.com>
+Subject: hiiii
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: John Crispin <john@phrozen.org>
+Hello dear,
 
-Trigger ieee80211_csa_finish() on the non-transmitting interfaces
-when channel switch concludes on the transmitting interface.
+I'm Barr Din Karim from Republic of Ghana please i wish to have a
+communication with you.
 
-Signed-off-by: John Crispin <john@phrozen.org>
-Co-developed-by: Aloka Dixit <alokad@codeaurora.org>
-Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
----
-v11: Reverted changes from v10.
-v10: Used iflist_mtx instead of rcu_read_lock() as most other
-     accesses to sdata->local->interfaces do so.
-     
- net/mac80211/cfg.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+I wait for your response.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index c95c5aacfbfa..6e1d525bf736 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3244,8 +3244,19 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif)
- {
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
- 
--	ieee80211_queue_work(&sdata->local->hw,
--			     &sdata->csa_finalize_work);
-+	if (vif->mbssid_tx_vif == vif) {
-+		struct ieee80211_sub_if_data *child, *tmp;
-+
-+		list_for_each_entry_safe(child, tmp,
-+					 &sdata->local->interfaces, list)
-+			if (child != sdata && child->vif.mbssid_tx_vif == vif &&
-+			    ieee80211_sdata_running(child)) {
-+				ieee80211_queue_work(&child->local->hw,
-+						     &child->csa_finalize_work);
-+			}
-+	}
-+
-+	ieee80211_queue_work(&sdata->local->hw, &sdata->csa_finalize_work);
- }
- EXPORT_SYMBOL(ieee80211_csa_finish);
- 
--- 
-2.31.1
-
+Barr Din Karim(Esq)
