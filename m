@@ -2,146 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D98E3CAEA7
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 23:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C959D3CAEE4
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 00:02:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230339AbhGOVjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jul 2021 17:39:24 -0400
-Received: from mail.netfilter.org ([217.70.188.207]:43466 "EHLO
-        mail.netfilter.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbhGOVjX (ORCPT
+        id S231274AbhGOWFO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jul 2021 18:05:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46318 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231374AbhGOWFN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jul 2021 17:39:23 -0400
-Received: from netfilter.org (unknown [90.77.255.23])
-        by mail.netfilter.org (Postfix) with ESMTPSA id 2584664228;
-        Thu, 15 Jul 2021 23:36:09 +0200 (CEST)
-Date:   Thu, 15 Jul 2021 23:36:26 +0200
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        ryder.lee@mediatek.com
-Subject: Re: [RFC 3/7] net: ethernet: mtk_eth_soc: implement flow offloading
- to WED devices
-Message-ID: <20210715213626.GA19271@salvia>
-References: <20210713160745.59707-1-nbd@nbd.name>
- <20210713160745.59707-4-nbd@nbd.name>
- <20210713185641.GB26070@salvia>
- <ceee6c30-adc1-3a79-31c3-983fe848699c@nbd.name>
+        Thu, 15 Jul 2021 18:05:13 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF313C06175F;
+        Thu, 15 Jul 2021 15:02:19 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 37so7999181pgq.0;
+        Thu, 15 Jul 2021 15:02:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mosenkovs.lv; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dsjmWnzuwCKGDNv5+cF7xjYKlGjPfXn52Osxyj1z9Rs=;
+        b=A5bDKok4gx7w4KSjPEcW44Mfrh2i0OWHbT02mTojgrqchFjbJCg9/ueipOB70lW7/V
+         ZWT2TI0LbAmhRi6o4/YGoJOXAKnXzNzhu4TvHrmECiMyVQ/6sMCjf1QTwuLq08acl+Ke
+         AthwqxrWVTu9haH1ZGpBke7Y+127fu/0O5MgM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dsjmWnzuwCKGDNv5+cF7xjYKlGjPfXn52Osxyj1z9Rs=;
+        b=E//v29KTLVWVLKk7nel7+jMzUbsXMbADVpvWhmIgpZD2nUP0dUuIN69++/vzEqy8bk
+         3hGGkxir6fkLzH8Vw4JFn5UoyQjbpYZ2LJH18g9AM/6KSfkrdM+xmfvBgYiKyv6YaECk
+         xp9BWV/0XyqAazcKX/F+BrSKlHEENI/5vDnuWZ6voyWn/4o7hqfSY0Xa9eJB+XY5nfH/
+         KMoi+Q1aQL5YVjksgblw75PW4J5Fea6pNM0wx6auGRL3FfWuz+lvsN0PevC+nr1diX0N
+         4dmP2FnEMn4XeZUPKpiFOwzkZv9KMlzLlKp1v70/HfWczlngpma5srzWdW69ZJXGxHAr
+         6/tw==
+X-Gm-Message-State: AOAM5306wPnELcLOIOs70FvY2XBw1dI4kPP+ebdrYXuvvreRleiwb3hE
+        54GEjpL5tnZfFEnYuAVGq2qhmgVCAXhhGr7KY1Ku1QA8bsw=
+X-Google-Smtp-Source: ABdhPJwMxVzfAcdMooIhZigmCBvhy7+BSQCLwGxU1lHdDPFymYEr3Zc3L+1RGdkNOY5WASGXSiRd5N94aMSBgHAhRdg=
+X-Received: by 2002:a63:e43:: with SMTP id 3mr6499099pgo.61.1626386539364;
+ Thu, 15 Jul 2021 15:02:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ceee6c30-adc1-3a79-31c3-983fe848699c@nbd.name>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20210710183710.5687-1-davis@mosenkovs.lv> <YPAiFsEncZ95Oomx@kroah.com>
+In-Reply-To: <YPAiFsEncZ95Oomx@kroah.com>
+From:   Davis <davis@mosenkovs.lv>
+Date:   Fri, 16 Jul 2021 01:02:06 +0300
+Message-ID: <CAHQn7p+dA3-FS+DGPqCvXJGtTZfWqg9hy1GUbtWFwtQFvKcnfg@mail.gmail.com>
+Subject: Re: [PATCH 4.4] mac80211: fix memory corruption in EAPOL handling
+To:     Greg KH <greg@kroah.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 14, 2021 at 10:26:08AM +0200, Felix Fietkau wrote:
-> On 2021-07-13 20:56, Pablo Neira Ayuso wrote:
-[...]
-> >> --- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-> >> +++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-> >> @@ -10,6 +10,7 @@
-> >>  #include <net/pkt_cls.h>
-> >>  #include <net/dsa.h>
-> >>  #include "mtk_eth_soc.h"
-> >> +#include "mtk_wed.h"
-> >>  
-> >>  struct mtk_flow_data {
-> >>  	struct ethhdr eth;
-> >> @@ -39,6 +40,7 @@ struct mtk_flow_entry {
-> >>  	struct rhash_head node;
-> >>  	unsigned long cookie;
-> >>  	u16 hash;
-> >> +	s8 wed_index;
-> >>  };
-> >>  
-> >>  static const struct rhashtable_params mtk_flow_ht_params = {
-> >> @@ -127,35 +129,38 @@ mtk_flow_mangle_ipv4(const struct flow_action_entry *act,
-> >>  }
-> >>  
-> >>  static int
-> >> -mtk_flow_get_dsa_port(struct net_device **dev)
-> >> +mtk_flow_set_output_device(struct mtk_eth *eth, struct mtk_foe_entry *foe,
-> >> +			   struct net_device *dev, const u8 *dest_mac,
-> >> +			   int *wed_index)
-> >>  {
-> >> -#if IS_ENABLED(CONFIG_NET_DSA)
-> >> -	struct dsa_port *dp;
-> >> -
-> >> -	dp = dsa_port_from_netdev(*dev);
-> >> -	if (IS_ERR(dp))
-> >> -		return -ENODEV;
-> >> -
-> >> -	if (dp->cpu_dp->tag_ops->proto != DSA_TAG_PROTO_MTK)
-> >> -		return -ENODEV;
-> >> +	struct net_device_path_ctx ctx = {
-> >> +		.dev    = dev,
-> >> +		.daddr  = dest_mac,
-> >> +	};
-> >> +	struct net_device_path path = {};
-> >> +	int pse_port;
-> >>  
-> >> -	*dev = dp->cpu_dp->master;
-> >> +	if (!dev->netdev_ops->ndo_fill_forward_path ||
-> >> +	    dev->netdev_ops->ndo_fill_forward_path(&ctx, &path) < 0)
-> >> +		path.type = DEV_PATH_ETHERNET;
-> > 
-> > Maybe expose this through flow offload API so there is no need to call
-> > ndo_fill_forward_path again from the driver?
+On 2021-07-15 at 15:36 Greg KH (<greg@kroah.com>) wrote:
 >
-> Can you give me a pseudo-code example? I'm not sure how you want it to
-> be exposed through the flow offload API.
+> On Sat, Jul 10, 2021 at 09:37:10PM +0300, Davis Mosenkovs wrote:
+> > Commit e3d4030498c3 ("mac80211: do not accept/forward invalid EAPOL
+> > frames") uses skb_mac_header() before eth_type_trans() is called
+> > leading to incorrect pointer, the pointer gets written to. This issue
+> > has appeared during backporting to 4.4, 4.9 and 4.14.
+>
+> So this is also needed in 4.9 and 4.14, right?  If so, now queued up
+> everywhere.  If not, please let me know so I can drop it from the other
+> trees.
+>
+> thanks,
+>
+> greg k-h
 
-in a few steps:
+Thank you! Yes - this is needed in 4.4, 4.9 and 4.14.
+Only line offsets and commit messages (they contain references to
+backport commits introducing the issue) differ between kernel versions
+and I see the patches are queued with correct line offsets.
+Patches for 4.9
+(https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-4.9/mac80211-fix-memory-corruption-in-eapol-handling.patch)
+and 4.14 (https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-4.14/mac80211-fix-memory-corruption-in-eapol-handling.patch)
+still contain 4.4 in the cc line in sign-off section. Also these
+patches contain reference to commit e3d4030498c3 that is from 4.4
+branch. Is this OK?
 
-1) Extend nft_dev_path_info() to deal with DEV_PATH_WDMA, it will
-   just actually fetch a pointer to structure that is allocated
-   by the driver.
-
-- Update the net_device_path structure with this layout:
-
-        struct flow_action_wdma {
-                enum wdma_type type;    // MTK_WDMA goes here
-                union {
-                        struct {
-                                ...;
-                        } mtk;
-                };
-        } wdma;
-
-Add:
-        struct flow_action_wdma         *wdma;
-
-to net_device_path.
-
-2) Pass on this pointer to structure to the nf_flow_route
-   wheelbarrow.
-
-3) Store this information in the struct flow_offload_tuple,
-   in a new struct flow_offload_hw *field to store all hardware
-   offload specific information (not needed by software path). There
-   is already hw_outdev that can be placed there.
-
-4) Add a FLOW_ACTION_WDMA action to the flow offload API to
-   pass on the flow_action_wdma structure.
-
-It's a bit of work the first time to accomodate the requirements of
-new API, but then all drivers will benefit from this.
-
-It's also a bit of layering, but with more drivers in the tree, this
-API can be simplified incrementally.
-
-I can take a stab at it and send you a patch.
-
-> To me it seems easier and cleaner to just have a single
-> ndo_fill_forward_path call for the final output device to check the
-> device types that don't have any corresponding sw offload.
-
-It's simpler yes, but this results in two calls for
-ndo_fill_forward_path, one from the core and another from the driver.
-I think it's better there's a single point to call to
-ndo_fill_forward_path for consolidation.
-
-My proposal requires a bit more plumbing, but all drivers will
-get the information that represents the offload in the same way.
+Br,
+Davis
