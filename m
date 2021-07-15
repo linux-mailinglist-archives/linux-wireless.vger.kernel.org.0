@@ -2,90 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AB013C9E1A
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 13:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C2CE3C9EBD
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 14:36:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231391AbhGOMCV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jul 2021 08:02:21 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29]:47413 "EHLO
-        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231338AbhGOMCV (ORCPT
+        id S231480AbhGOMjN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jul 2021 08:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230150AbhGOMjM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jul 2021 08:02:21 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailout.nyi.internal (Postfix) with ESMTP id BBF625C025D;
-        Thu, 15 Jul 2021 07:59:27 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Thu, 15 Jul 2021 07:59:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=APLneAKskgIRuWTFaSNVvav62Ld
-        iHrfIatCHo4V5EYY=; b=df4V4buKqqwTExvtHt9J4pjuh7Bdh/3TDSKnmwFgCSW
-        mdfsqPRCvlREI3ZtgOcwRG/EUOcic5cxoQn9UHjU2u+6dTHFd2EKzB8atW0yGQ9X
-        /RlsWpQ/y/Mk2wAFcvvu4+1YbvrRaJmvzjXd/PlchVTSWpQjGdXTndTXJjn14QJk
-        FeIyIehKvAn1ilDnpUY2KphdH3sQb7R55UphkfJVM+ww6hBavrPxylLOLMpu7k7Z
-        vUeXuqy6XVxAzsbXJ1s16oQETooP4k5mY3pU0bkM/lQ4pEFSPuqtUh/UNZO65JmX
-        dfyqvvlt4zHCg/kFNlEWY+G+zfSWGw+t09TKxZhoIPQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=APLneA
-        KskgIRuWTFaSNVvav62LdiHrfIatCHo4V5EYY=; b=j6nJCppgzgzZP7/EyzIDLW
-        xsUYd50rDQvqO/hPm6MidNsePx8ST2rohA3J028zAf793KpGFU835XxCgjjNEtb6
-        w83Tc00fLjDhGrvi7q87GO2hTroPTFI2LqgUYKzvNCWZMdfFtO2pqZeY9GeBNWZh
-        3LoItnZfDcv7ukiid0OvHTmmAmEpxnmGfr/7/23gkOigVsJ2S1iuKo5V52FqMkWx
-        w0V+8Xu4NDupMAZpzYMoJxYT2jHNBO6yhnOzJa5PowdyDf+ouVPT/G9t+bbOVCwl
-        5ZVcO/ySnlbS0cx/7Ii+Lgj6h+ipAxoH3bRxXFvpTipGMpiJZCyy0jc1dUV7hrkA
-        ==
-X-ME-Sender: <xms:HyPwYL_7EgVsLJmse6mp19KEAkXJ01PltZb9mHEnITaXBvkUOh-6EA>
-    <xme:HyPwYHvmTDUF3ZU3WpYbqB7wFBEAKVHXWK5yHLSiDyVanP4InwSeTXD9BzrO5udZ4
-    MRaHM7vKbqHBw>
-X-ME-Received: <xmr:HyPwYJD8lOMyDsm22mw2CAC_NkT4ZLqHH82bcREXumuGekzzVtsUN8YaSW4Q1CqtRcLs3uAFm7AvByzsHZnZn8RgqQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrvddtgddvlecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepueelledthe
-    ekleethfeludduvdfhffeuvdffudevgeehkeegieffveehgeeftefgnecuffhomhgrihhn
-    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:HyPwYHdV_LoH39GvKpvQKJMrHBNilxFz7h-A4QQWlPj6WEN8hjLK3g>
-    <xmx:HyPwYAMSMYpePQprfIJnywP7zr_oU03MccuuaQeQzZQF9yufqJUvfg>
-    <xmx:HyPwYJn5vaI5q2qT2Fxg2VasD8ChGcI6NEfHd5oB-koAJV1557i2vQ>
-    <xmx:HyPwYMDOws27VDx-hv1-zUoNIQF6b_NRjVV-w35MMirsgAxEsjJ5TA>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Jul 2021 07:59:27 -0400 (EDT)
-Date:   Thu, 15 Jul 2021 13:55:32 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Davis Mosenkovs <davis@mosenkovs.lv>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 4.14] mac80211: fix memory corruption in EAPOL handling
-Message-ID: <YPAiNH03VHTgDwho@kroah.com>
-References: <20210710183807.5792-1-davis@mosenkovs.lv>
+        Thu, 15 Jul 2021 08:39:12 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61320C06175F
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 05:36:18 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id s18so8550168ljg.7
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 05:36:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DaONZtluKa9peXu6ZwDKNmt2MpZsmruapSIC/LqcI2Q=;
+        b=abLYdXn4sfvXaCntd3/K/tRHIiePDWHAkoe4Kr5pZKbmbxk5EHpa94SwPoLnSOWRFg
+         7C0LE/rdcq+JAu9aw6YwePV/LFbns4hZ5jWx/TN4LVq6oVq49tlK6dpNGZhoQvCWsoW/
+         Zae7MPLYuRrwuv22shtVPyVItrZ5BUGf7uQUHuACUr8/WNxcBSS8NWT/6pp+8iBOBXzd
+         ffo73G2riTchd/bQ4ULzuvQucYsbyLG/b48096G1YBDsfKIOapRKsYxedoFIp+uLMfkm
+         tubRvmv+o36v5rqfSe59CO3E6/uyVwjz0mpU3H7cB6TOt/SR/EswoZ/hfldvjhQLucgG
+         eWLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DaONZtluKa9peXu6ZwDKNmt2MpZsmruapSIC/LqcI2Q=;
+        b=tJ/fEL/pRPqdIs+2xLPjpk/S88e8nW0BjuuinckPWJf0aHRLS83VquWnkhMBQhAOvv
+         4XDwXVfmwTv/Sg5BXhaEVOFGCtAFIpwUq/DfC+F5oCLbmkQwV2M8VV9SjYmqQJpGQgNf
+         LelqEuJA265djefkKLm0ngaaVUAat2KWXKgLiU+SGP7Y+v0Z/j9BZdFksuTY8EF4HV23
+         w7gR/Hv68dCCS/pwoNy0T+ICp5VKDwaUyYRIiWL6OmgYLKZRNsHXFExKwo3AUvwkrxKO
+         +fx1EqiHSyZe5b6vmfeJLNFCSoMdDAskEpII8cXE2ktSSQgt1+zJMB51WZO7+lqFD56I
+         LHVg==
+X-Gm-Message-State: AOAM531zx0KnAtzlMQaLLSi37QcP8kKEYWXoXJV52/BCEwaOFc2LlVyA
+        isPQ5RH7d68+7f74VSmMJ6GNHWUVNOT1zPexOM0=
+X-Google-Smtp-Source: ABdhPJzXV0u/H8re79wqZX2mHhtZlwqnu2ODCyqO+NlPgMUnHzGf1s0ZpBSKW2wPnhy8xmHWtv2WpW/28XKzpFoB9UU=
+X-Received: by 2002:a2e:7518:: with SMTP id q24mr3849323ljc.283.1626352576637;
+ Thu, 15 Jul 2021 05:36:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210710183807.5792-1-davis@mosenkovs.lv>
+Received: by 2002:a2e:5841:0:0:0:0:0 with HTTP; Thu, 15 Jul 2021 05:36:16
+ -0700 (PDT)
+Reply-To: barristerdinkarim09@gmail.com
+From:   Din Karim <laura.renzo2020@gmail.com>
+Date:   Thu, 15 Jul 2021 12:36:16 +0000
+Message-ID: <CAELABDvkzW39M9p=hVSQD0eCqvD7DYGCS+FsMc_YVtyHf5k0JQ@mail.gmail.com>
+Subject: hiiii
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jul 10, 2021 at 09:38:07PM +0300, Davis Mosenkovs wrote:
-> Commit 557bb37533a3 ("mac80211: do not accept/forward invalid EAPOL
-> frames") uses skb_mac_header() before eth_type_trans() is called
-> leading to incorrect pointer, the pointer gets written to. This issue
-> has appeared during backporting to 4.4, 4.9 and 4.14.
-> 
-> Fixes: 557bb37533a3 ("mac80211: do not accept/forward invalid EAPOL frames")
-> Link: https://lore.kernel.org/r/CAHQn7pKcyC_jYmGyTcPCdk9xxATwW5QPNph=bsZV8d-HPwNsyA@mail.gmail.com
-> Cc: <stable@vger.kernel.org> # 4.14.x
-> Signed-off-by: Davis Mosenkovs <davis@mosenkovs.lv>
-> ---
->  net/mac80211/rx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+Hello dear,
 
-Ah, see your other backports now, nice, all now is good.
+I'm Barr Din Karim from Republic of Ghana please i wish to have a
+communication with you.
 
-greg k-h
+I wait for your response.
+
+Barr Din Karim(Esq)
