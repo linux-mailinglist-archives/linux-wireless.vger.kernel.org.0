@@ -2,86 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C959D3CAEE4
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 00:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB0D3CAEED
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 00:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231274AbhGOWFO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jul 2021 18:05:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46318 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231374AbhGOWFN (ORCPT
+        id S231501AbhGOWJn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jul 2021 18:09:43 -0400
+Received: from mail-pj1-f51.google.com ([209.85.216.51]:39464 "EHLO
+        mail-pj1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229776AbhGOWJn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jul 2021 18:05:13 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF313C06175F;
-        Thu, 15 Jul 2021 15:02:19 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 37so7999181pgq.0;
-        Thu, 15 Jul 2021 15:02:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mosenkovs.lv; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dsjmWnzuwCKGDNv5+cF7xjYKlGjPfXn52Osxyj1z9Rs=;
-        b=A5bDKok4gx7w4KSjPEcW44Mfrh2i0OWHbT02mTojgrqchFjbJCg9/ueipOB70lW7/V
-         ZWT2TI0LbAmhRi6o4/YGoJOXAKnXzNzhu4TvHrmECiMyVQ/6sMCjf1QTwuLq08acl+Ke
-         AthwqxrWVTu9haH1ZGpBke7Y+127fu/0O5MgM=
+        Thu, 15 Jul 2021 18:09:43 -0400
+Received: by mail-pj1-f51.google.com with SMTP id p14-20020a17090ad30eb02901731c776526so7495358pju.4;
+        Thu, 15 Jul 2021 15:06:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dsjmWnzuwCKGDNv5+cF7xjYKlGjPfXn52Osxyj1z9Rs=;
-        b=E//v29KTLVWVLKk7nel7+jMzUbsXMbADVpvWhmIgpZD2nUP0dUuIN69++/vzEqy8bk
-         3hGGkxir6fkLzH8Vw4JFn5UoyQjbpYZ2LJH18g9AM/6KSfkrdM+xmfvBgYiKyv6YaECk
-         xp9BWV/0XyqAazcKX/F+BrSKlHEENI/5vDnuWZ6voyWn/4o7hqfSY0Xa9eJB+XY5nfH/
-         KMoi+Q1aQL5YVjksgblw75PW4J5Fea6pNM0wx6auGRL3FfWuz+lvsN0PevC+nr1diX0N
-         4dmP2FnEMn4XeZUPKpiFOwzkZv9KMlzLlKp1v70/HfWczlngpma5srzWdW69ZJXGxHAr
-         6/tw==
-X-Gm-Message-State: AOAM5306wPnELcLOIOs70FvY2XBw1dI4kPP+ebdrYXuvvreRleiwb3hE
-        54GEjpL5tnZfFEnYuAVGq2qhmgVCAXhhGr7KY1Ku1QA8bsw=
-X-Google-Smtp-Source: ABdhPJwMxVzfAcdMooIhZigmCBvhy7+BSQCLwGxU1lHdDPFymYEr3Zc3L+1RGdkNOY5WASGXSiRd5N94aMSBgHAhRdg=
-X-Received: by 2002:a63:e43:: with SMTP id 3mr6499099pgo.61.1626386539364;
- Thu, 15 Jul 2021 15:02:19 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=R6F+susvN5sjUJ3zQkT+ICC7UqFu5SaK3lj12wZr4/0=;
+        b=ZwCneMwbj0JO9x7iOUD9weXnHjdvJ1JryMnTL4rQoqSndLneFutoiK1/bRNQGEx8h8
+         MHT+CsQwt2oE9+VIHGG6MMQPGqDpTMQG2lP6BB+5WQxBcPujd9rzNYkfrEWdMYq3e9Xk
+         fTXec5hSRvV1Z5SRbgvhnT89NkN4Bb4g57PUtIpJYBzJYFPpnh28eZOe5AZv/GXSHwpz
+         i3AfoPkGWBGgDG6SdMoyGcFO/sRSg/Q2MbHu9y4PU7yOnUNtUixG8hkbAF8q169c+maP
+         Lp+inf+N+vH4SGpF7XcU7vtskdfuMpPse00gSccPOL9xpu8T2XZbV/yCTLzNhr4JdImp
+         MmlA==
+X-Gm-Message-State: AOAM531/fa5xDwNUsy8KpxUAx3Q/EtuVyIc1bOlr7e3dzhc3FfoIC2QK
+        eFrzN7YXVzrEivBfaUT3clg=
+X-Google-Smtp-Source: ABdhPJyAswla2aaWzBgfxN1RCTmTjsX0BIv5XRpXRfo5GXFJQkNYA0AgYLtvOnNpGa4lxcQIGAlRZQ==
+X-Received: by 2002:a17:90b:1294:: with SMTP id fw20mr12313031pjb.100.1626386808202;
+        Thu, 15 Jul 2021 15:06:48 -0700 (PDT)
+Received: from garbanzo ([191.96.120.37])
+        by smtp.gmail.com with ESMTPSA id y5sm7445783pfn.87.2021.07.15.15.06.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jul 2021 15:06:46 -0700 (PDT)
+Date:   Thu, 15 Jul 2021 15:06:44 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Dwaipayan Ray <dwaipayanray1@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] intersil: remove obsolete prism54 wireless driver
+Message-ID: <20210715220644.2d2xfututdoimszm@garbanzo>
+References: <20210713054025.32006-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-References: <20210710183710.5687-1-davis@mosenkovs.lv> <YPAiFsEncZ95Oomx@kroah.com>
-In-Reply-To: <YPAiFsEncZ95Oomx@kroah.com>
-From:   Davis <davis@mosenkovs.lv>
-Date:   Fri, 16 Jul 2021 01:02:06 +0300
-Message-ID: <CAHQn7p+dA3-FS+DGPqCvXJGtTZfWqg9hy1GUbtWFwtQFvKcnfg@mail.gmail.com>
-Subject: Re: [PATCH 4.4] mac80211: fix memory corruption in EAPOL handling
-To:     Greg KH <greg@kroah.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210713054025.32006-1-lukas.bulwahn@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-07-15 at 15:36 Greg KH (<greg@kroah.com>) wrote:
->
-> On Sat, Jul 10, 2021 at 09:37:10PM +0300, Davis Mosenkovs wrote:
-> > Commit e3d4030498c3 ("mac80211: do not accept/forward invalid EAPOL
-> > frames") uses skb_mac_header() before eth_type_trans() is called
-> > leading to incorrect pointer, the pointer gets written to. This issue
-> > has appeared during backporting to 4.4, 4.9 and 4.14.
->
-> So this is also needed in 4.9 and 4.14, right?  If so, now queued up
-> everywhere.  If not, please let me know so I can drop it from the other
-> trees.
->
-> thanks,
->
-> greg k-h
+On Tue, Jul 13, 2021 at 07:40:25AM +0200, Lukas Bulwahn wrote:
+> Commit 1d89cae1b47d ("MAINTAINERS: mark prism54 obsolete") indicated the
+> prism54 driver as obsolete in July 2010.
+> 
+> Now, after being exposed for ten years to refactoring, general tree-wide
+> changes and various janitor clean-up, it is really time to delete the
+> driver for good.
+> 
+> This was discovered as part of a checkpatch evaluation, investigating all
+> reports of checkpatch's WARNING:OBSOLETE check.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
 
-Thank you! Yes - this is needed in 4.4, 4.9 and 4.14.
-Only line offsets and commit messages (they contain references to
-backport commits introducing the issue) differ between kernel versions
-and I see the patches are queued with correct line offsets.
-Patches for 4.9
-(https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-4.9/mac80211-fix-memory-corruption-in-eapol-handling.patch)
-and 4.14 (https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-4.14/mac80211-fix-memory-corruption-in-eapol-handling.patch)
-still contain 4.4 in the cc line in sign-off section. Also these
-patches contain reference to commit e3d4030498c3 that is from 4.4
-branch. Is this OK?
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
 
-Br,
-Davis
+  Luis
