@@ -2,73 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6330A3CA4F5
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 20:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DAB13CA899
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 21:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232890AbhGOSMM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jul 2021 14:12:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47786 "EHLO
+        id S242241AbhGOTBu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jul 2021 15:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231970AbhGOSML (ORCPT
+        with ESMTP id S241874AbhGOTA5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jul 2021 14:12:11 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C815C06175F
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 11:09:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=KSx2asI5pX+mS3gCmaVT617vwX5KrFoBd1JmsZKmIHg=; b=NuON8Nz2WdXWPVA/dMdLz/x1j/
-        wnV+X7HVQjZ7p4V5R7osU17F4HsGxCdqXhDIKlgw9UEOvUypR0+lI66SNXOO3VbYWZz6oTZThavzP
-        0tkyNn9dxyqgO0EEX5XuTck6B17+C05QzdLfNOAGy5++N9NY9pdzYU7tZ15A9BKE+JpI=;
-Received: from p54ae93f7.dip0.t-ipconnect.de ([84.174.147.247] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1m45nO-0007Qh-7H; Thu, 15 Jul 2021 20:09:14 +0200
-To:     sean.wang@mediatek.com, lorenzo.bianconi@redhat.com
-Cc:     Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
-        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
-        Deren.Wu@mediatek.com, km.lin@mediatek.com,
-        robin.chiu@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, Eric.Liang@mediatek.com,
-        Stella.Chang@mediatek.com, jemele@google.com, yenlinlai@google.com,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <92a8ecfdf198b34f98d5c1489a83adf151657760.1626207204.git.objelf@gmail.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH v3 1/4] mt76: fix mt76_rates for the multiple devices
-Message-ID: <f5b69f1b-cd52-9b30-0301-4454fc825a8c@nbd.name>
-Date:   Thu, 15 Jul 2021 20:09:12 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.11.0
+        Thu, 15 Jul 2021 15:00:57 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B95C06175F
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 11:57:08 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id cu14so4773619pjb.0
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 11:57:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=LpqK/+JnT/yu+43Wp/CTAn4yU0zaOH0GM3Vf86wiOOg=;
+        b=B6T3ffeP6Gfm1546QQw/hH4JWosP8ijd1SUp9Gzpol1VC9nyyxAzy5gJEIX9GB+L53
+         9j9szL8+00cJbXC4ibOub3nxCUd7MSJ0AYVRVIjLa2c8iCF7K3PAH99bLMJmd/YALcFA
+         JSiP0nMuKurGshm7n60hzbG934RLGoH6DzOCE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=LpqK/+JnT/yu+43Wp/CTAn4yU0zaOH0GM3Vf86wiOOg=;
+        b=VOE+Jg4OGP262huMo9KyqnzD7z9fmp+gxpelhpmJddYPbJHqLlcKEtiiUs5KPOSDJL
+         540faQDy8uxCiDenUyhjiFI20z6440v+JPBN56F8AoemaRtGnu3yawgvRtoy7ao0adhP
+         kT5PY61IY2Zepz0jqUjnqO74OJVrSTIZ4uqcL9Bko4Z1TeQ5w0cXWZZLWcJ/MQ8ZE1KN
+         K+OxgbP+4jsPBovvi8doBFGfof8rSTO0luSjJrjjt+235FxX9zEW0YU93lnklV9yXcd2
+         pYfa8rMezX196Cs5YItTiKY5Qd+/poPMCIu+zrM0gL06GFNRIIz1d+FwLJqKKNR+lQit
+         aobw==
+X-Gm-Message-State: AOAM533nEW2tRwm1ZR/TISgwLhVqlpaXYvu9OvZoOLEEPTvu1RBsUST5
+        BbV9OiarFAkVAjbeMFfb1hNLGg==
+X-Google-Smtp-Source: ABdhPJxA6CkuT2I4U6XIvHhxltf1pE+P+YvTq2Efk8xWVgyogQShVA1GFQfapGoXHqoSxo9UN4Dnbw==
+X-Received: by 2002:a17:902:6bc7:b029:129:20c4:1c33 with SMTP id m7-20020a1709026bc7b029012920c41c33mr4671212plt.52.1626375427690;
+        Thu, 15 Jul 2021 11:57:07 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:3f42:6b4d:93b8:910b])
+        by smtp.gmail.com with ESMTPSA id w69sm7501651pfc.58.2021.07.15.11.57.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jul 2021 11:57:06 -0700 (PDT)
+Date:   Thu, 15 Jul 2021 11:57:04 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 03/24] rtw89: add core and trx files
+Message-ID: <YPCFABiygQbiMqcB@google.com>
+References: <20210618064625.14131-1-pkshih@realtek.com>
+ <20210618064625.14131-4-pkshih@realtek.com>
 MIME-Version: 1.0
-In-Reply-To: <92a8ecfdf198b34f98d5c1489a83adf151657760.1626207204.git.objelf@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210618064625.14131-4-pkshih@realtek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
-On 2021-07-13 22:15, sean.wang@mediatek.com wrote:
-> From: Sean Wang <sean.wang@mediatek.com>
-> 
-> PHY offset in either .hw_value or .hw_value_short for mt7615, mt7663,
-> mt7915 and mt7921 device all start at bit 6, not 8.
-> 
-> Suggested-by: Ryder Lee <ryder.lee@mediatek.com>
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Unfortunately this patch causes a few regressions.
-Since tx and rx handling is different in their use of the PHY mode bits,
-the PHY part should of hw_value should be masked out when filling the tx
-rateval. There are a few places in the code that rely on the fixed shift
-of 8, including the generic function mt76_get_rate.
-This patch should be dropped, and the bit offset differences dealt with
-in the other patches of this series.
-I will send an updated version
+On Fri, Jun 18, 2021 at 02:46:04PM +0800, Ping-Ke Shih wrote:
+> --- /dev/null
+> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> @@ -0,0 +1,2359 @@
+> +static void rtw89_traffic_stats_calc(struct rtw89_dev *rtwdev,
+> +				     struct rtw89_traffic_stats *stats)
+> +{
+...
+> +	stats->tx_avg_len = (u32)(stats->tx_cnt ? stats->tx_unicast / stats->tx_cnt : 0);
+> +	stats->rx_avg_len = (u32)(stats->rx_cnt ? stats->rx_unicast / stats->rx_cnt : 0);
 
-- Felix
+You're doing 64-bit division which isn't supported on all architectures.
+You need a do_div()-based solution here, like:
+
+	stats->tx_avg_len = stats->tx_cnt
+			    ? DIV_ROUND_DOWN_ULL(stats->tx_unicast, stats->tx_cnt)
+			    : 0;
+	stats->rx_avg_len = stats->rx_cnt
+			    ? DIV_ROUND_DOWN_ULL(stats->rx_unicast, stats->rx_cnt)
+			    : 0;
+
+Brian
