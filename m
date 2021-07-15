@@ -2,86 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DAB13CA899
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 21:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B1E13CAD8B
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jul 2021 22:03:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242241AbhGOTBu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jul 2021 15:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59432 "EHLO
+        id S1346700AbhGOUGk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jul 2021 16:06:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241874AbhGOTA5 (ORCPT
+        with ESMTP id S241055AbhGOUGc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jul 2021 15:00:57 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B95C06175F
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 11:57:08 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id cu14so4773619pjb.0
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 11:57:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=LpqK/+JnT/yu+43Wp/CTAn4yU0zaOH0GM3Vf86wiOOg=;
-        b=B6T3ffeP6Gfm1546QQw/hH4JWosP8ijd1SUp9Gzpol1VC9nyyxAzy5gJEIX9GB+L53
-         9j9szL8+00cJbXC4ibOub3nxCUd7MSJ0AYVRVIjLa2c8iCF7K3PAH99bLMJmd/YALcFA
-         JSiP0nMuKurGshm7n60hzbG934RLGoH6DzOCE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=LpqK/+JnT/yu+43Wp/CTAn4yU0zaOH0GM3Vf86wiOOg=;
-        b=VOE+Jg4OGP262huMo9KyqnzD7z9fmp+gxpelhpmJddYPbJHqLlcKEtiiUs5KPOSDJL
-         540faQDy8uxCiDenUyhjiFI20z6440v+JPBN56F8AoemaRtGnu3yawgvRtoy7ao0adhP
-         kT5PY61IY2Zepz0jqUjnqO74OJVrSTIZ4uqcL9Bko4Z1TeQ5w0cXWZZLWcJ/MQ8ZE1KN
-         K+OxgbP+4jsPBovvi8doBFGfof8rSTO0luSjJrjjt+235FxX9zEW0YU93lnklV9yXcd2
-         pYfa8rMezX196Cs5YItTiKY5Qd+/poPMCIu+zrM0gL06GFNRIIz1d+FwLJqKKNR+lQit
-         aobw==
-X-Gm-Message-State: AOAM533nEW2tRwm1ZR/TISgwLhVqlpaXYvu9OvZoOLEEPTvu1RBsUST5
-        BbV9OiarFAkVAjbeMFfb1hNLGg==
-X-Google-Smtp-Source: ABdhPJxA6CkuT2I4U6XIvHhxltf1pE+P+YvTq2Efk8xWVgyogQShVA1GFQfapGoXHqoSxo9UN4Dnbw==
-X-Received: by 2002:a17:902:6bc7:b029:129:20c4:1c33 with SMTP id m7-20020a1709026bc7b029012920c41c33mr4671212plt.52.1626375427690;
-        Thu, 15 Jul 2021 11:57:07 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:3f42:6b4d:93b8:910b])
-        by smtp.gmail.com with ESMTPSA id w69sm7501651pfc.58.2021.07.15.11.57.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jul 2021 11:57:06 -0700 (PDT)
-Date:   Thu, 15 Jul 2021 11:57:04 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 03/24] rtw89: add core and trx files
-Message-ID: <YPCFABiygQbiMqcB@google.com>
-References: <20210618064625.14131-1-pkshih@realtek.com>
- <20210618064625.14131-4-pkshih@realtek.com>
+        Thu, 15 Jul 2021 16:06:32 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0D4EC08EE76
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 12:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=OK+MoTyZsq17izadFHbsWJ086j0/zznA0Pv7m3goF2U=; b=n0LTqFGyldprZYDzp4AYeyG04B
+        SgErPCYkoq5smhXDZz0vkJuVUUkZoKs/JO3gsHpEfGKFt4yyLYfnTt+Xxh1b1ct4aOay6Oaey/t6W
+        3DlK4JaU2tiNW7KG4gl43k2Gst+HDgprPCHzgXYXGz0XnCzfGHDjyb2OmHI0GL2J8cPY=;
+Received: from p54ae93f7.dip0.t-ipconnect.de ([84.174.147.247] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1m47Rh-00046W-4e; Thu, 15 Jul 2021 21:54:57 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     Sean Wang <sean.wang@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v4 1/3] mt76: add mt76_default_basic_rate more devices can rely on
+Date:   Thu, 15 Jul 2021 21:54:52 +0200
+Message-Id: <20210715195454.12370-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210618064625.14131-4-pkshih@realtek.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Sean Wang <sean.wang@mediatek.com>
 
-On Fri, Jun 18, 2021 at 02:46:04PM +0800, Ping-Ke Shih wrote:
-> --- /dev/null
-> +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> @@ -0,0 +1,2359 @@
-> +static void rtw89_traffic_stats_calc(struct rtw89_dev *rtwdev,
-> +				     struct rtw89_traffic_stats *stats)
-> +{
-...
-> +	stats->tx_avg_len = (u32)(stats->tx_cnt ? stats->tx_unicast / stats->tx_cnt : 0);
-> +	stats->rx_avg_len = (u32)(stats->rx_cnt ? stats->rx_unicast / stats->rx_cnt : 0);
+add mt76_default_basic_rate to mt76 core more devices can rely on
+to send frames which require the rate in the basic rates.
 
-You're doing 64-bit division which isn't supported on all architectures.
-You need a do_div()-based solution here, like:
+Suggested-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 14 ++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+ 2 files changed, 15 insertions(+)
 
-	stats->tx_avg_len = stats->tx_cnt
-			    ? DIV_ROUND_DOWN_ULL(stats->tx_unicast, stats->tx_cnt)
-			    : 0;
-	stats->rx_avg_len = stats->rx_cnt
-			    ? DIV_ROUND_DOWN_ULL(stats->rx_unicast, stats->rx_cnt)
-			    : 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index ee3a5b8d62d2..7403a012ceed 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1351,3 +1351,17 @@ mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
+ 	return hwq;
+ }
+ EXPORT_SYMBOL_GPL(mt76_init_queue);
++
++u16 mt76_default_basic_rate(struct mt76_phy *phy, struct ieee80211_vif *vif)
++{
++	int i = ffs(vif->bss_conf.basic_rates) - 1, offset = 0;
++	struct ieee80211_rate *rate;
++
++	if (phy->chandef.chan->band == NL80211_BAND_5GHZ)
++		offset = 4;
++
++	rate = &mt76_rates[offset + i];
++
++	return rate->hw_value;
++}
++EXPORT_SYMBOL_GPL(mt76_default_basic_rate);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 0516d3afe262..bf36f9227713 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -891,6 +891,7 @@ int mt76_get_of_eeprom(struct mt76_dev *dev, void *data, int offset, int len);
+ struct mt76_queue *
+ mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
+ 		int ring_base);
++u16 mt76_default_basic_rate(struct mt76_phy *phy, struct ieee80211_vif *vif);
+ static inline int mt76_init_tx_queue(struct mt76_phy *phy, int qid, int idx,
+ 				     int n_desc, int ring_base)
+ {
+-- 
+2.30.1
 
-Brian
