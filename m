@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B56473CB951
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 17:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B3B3CB952
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 17:04:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240667AbhGPPHd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jul 2021 11:07:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46660 "EHLO mail.kernel.org"
+        id S240672AbhGPPHi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jul 2021 11:07:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46692 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240662AbhGPPHc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jul 2021 11:07:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0768A613BB;
-        Fri, 16 Jul 2021 15:04:36 +0000 (UTC)
+        id S240673AbhGPPHe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Jul 2021 11:07:34 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DE907613CF;
+        Fri, 16 Jul 2021 15:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626447878;
-        bh=+yusDybgvtZjiZ69LmYYLfIOL8jJA189Wo8a3SiajrU=;
+        s=k20201202; t=1626447879;
+        bh=33zyDZ6a/ygvaKYLVL5N2Kf6VXeQmdOfvCvfKnycAE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M09NljST+cYqGpOAgAnYqhCgcIwDPJOTI/A27xBqB90crQFdE4v2O9vq+5jeiSqNE
-         5c3yAtnBwEw/t/s2Y/lNIrrR2/w7Oa8+Ol2g2pS++rZGZEV5+WKa6dtDrMxWrFm+xP
-         2cZqbp9tyMquf6d7OHXtB9caLWkohuiLjU9A6O2LKyOdmxpoUn3EG6mzMpBiBBj37Q
-         PdRMsSRQii81vD6vYgtH4GIE28AvZjQJbWtB28D7g+AfuhF39WoHgQyaqgpaBEjCN8
-         LKlBExq+rLlV8GQa5tDntG5sW11LOJqPC/JRJ9CoIeolYrEizvHZLDKqnGlxJCmEJ1
-         na1PKzWFjoMMw==
+        b=lqCLdaRcWhFmRQSUE8WcVeBh9fnR9U/W8ptynDA7X9ZSxl6DIPWBGpCNJgv7gbyJQ
+         gmZOsLBaPfw+ZZEsJAxim28iwEgD/vrlgMzRgn4rY34OTV9Rx4UarP2H5IDfoqFJ4p
+         ZLzMKRSBGo2V682qGlNmFbVZFdB5QVjdwp31PuXxYV8hLO9+3cq+AQJkCW02sbYQ0W
+         ckY2gOksLyNKU7hjV8wmQ6IWbEf2hUOdMLwYvZ1JsWrMs42m+iHGOmSIJLbxFKBHOl
+         TScKKmUAZ71sMz+AIhq/0MMTC5PpghYxCfHLer322E+gZTxE+/P4S5dVQ23ehkYIih
+         J5g0HyaFX5puw==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     johannes@sipsolutions.net, nbd@nbd.name, ryder.lee@mediatek.com,
         lorenzo.bianconi@redhat.com
-Subject: [RFC mac80211-next 3/7] mt76: mt7915: introduce __mt7915_get_tsf routine
-Date:   Fri, 16 Jul 2021 17:04:02 +0200
-Message-Id: <0fec698ce31e079a3567abeb710bf90c108db84c.1626447537.git.lorenzo@kernel.org>
+Subject: [RFC mac80211-next 4/7] mt76: mt7915: introduce mt7915_mcu_twt_agrt_update mcu command
+Date:   Fri, 16 Jul 2021 17:04:03 +0200
+Message-Id: <06007972db561e448364bb7720cf96d878f34137.1626447537.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1626447537.git.lorenzo@kernel.org>
 References: <cover.1626447537.git.lorenzo@kernel.org>
@@ -39,76 +39,137 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce an unlocked verion of mt7915_get_tsf routine.
-This is a preliminary patch to add TWT support to mt7915.
+This is a preliminary patch to add TWT support to mt7915
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 20 ++++++++++++++-----
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +-
- 2 files changed, 16 insertions(+), 6 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 50 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  9 ++++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    | 19 +++++++
+ 3 files changed, 78 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 48b5e2051bad..fa4fd04affd8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -789,10 +789,8 @@ mt7915_get_stats(struct ieee80211_hw *hw,
- 	return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index f84c49969479..2266bc1c0de0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3904,3 +3904,53 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 
+ 	return ret;
  }
- 
--static u64
--mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
-+u64 __mt7915_get_tsf(struct ieee80211_hw *hw, struct mt7915_vif *mvif)
- {
--	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
- 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
- 	bool band = phy != &dev->phy;
-@@ -802,7 +800,7 @@ mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	} tsf;
- 	u16 n;
- 
--	mutex_lock(&dev->mt76.mutex);
-+	lockdep_assert_held(&dev->mt76.mutex);
- 
- 	n = mvif->omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->omac_idx;
- 	/* TSF software read */
-@@ -811,9 +809,21 @@ mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	tsf.t32[0] = mt76_rr(dev, MT_LPON_UTTR0(band));
- 	tsf.t32[1] = mt76_rr(dev, MT_LPON_UTTR1(band));
- 
-+	return tsf.t64;
-+}
 +
-+static u64
-+mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
++#define TWT_AGRT_TRIGGER	BIT(0)
++#define TWT_AGRT_ANNOUNCE	BIT(1)
++#define TWT_AGRT_PROTECT	BIT(2)
++
++int mt7915_mcu_twt_agrt_update(struct mt7915_dev *dev,
++			       struct mt7915_vif *mvif,
++			       struct mt7915_twt_flow *flow,
++			       int cmd)
 +{
-+	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
-+	struct mt7915_dev *dev = mt7915_hw_dev(hw);
-+	u64 ret;
++	struct {
++		u8 tbl_idx;
++		u8 cmd;
++		u8 own_mac_idx;
++		u8 flowid; /* 0xff for group id */
++		__le16 peer_id; /* specify the peer_id (msb=0)
++				 * or group_id (msb=1)
++				 */
++		u8 duration; /* 256 us */
++		u8 bss_idx;
++		__le64 start_tsf;
++		__le16 mantissa;
++		u8 exponent;
++		u8 is_ap;
++		u8 agrt_params;
++		u8 rsv[23];
++	} __packed req = {
++		.tbl_idx = flow->id,
++		.cmd = cmd,
++		.own_mac_idx = mvif->omac_idx,
++		.flowid = flow->id,
++		.peer_id = cpu_to_le16(flow->wcid),
++		.duration = flow->duration,
++		.bss_idx = mvif->idx,
++		.start_tsf = cpu_to_le64(flow->tsf),
++		.mantissa = flow->mantissa,
++		.exponent = flow->exp,
++		.is_ap = true,
++	};
 +
-+	mutex_lock(&dev->mt76.mutex);
-+	ret = __mt7915_get_tsf(hw, mvif);
- 	mutex_unlock(&dev->mt76.mutex);
++	if (flow->protection)
++		req.agrt_params |= TWT_AGRT_PROTECT;
++	if (!flow->flowtype)
++		req.agrt_params |= TWT_AGRT_ANNOUNCE;
++	if (flow->trigger)
++		req.agrt_params |= TWT_AGRT_TRIGGER;
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(TWT_AGRT_UPDATE),
++				 &req, sizeof(req), true);
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index baa27dab0499..f4ba343b9413 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -276,6 +276,7 @@ enum {
+ 	MCU_EXT_CMD_MWDS_SUPPORT = 0x80,
+ 	MCU_EXT_CMD_SET_SER_TRIGGER = 0x81,
+ 	MCU_EXT_CMD_SCS_CTRL = 0x82,
++	MCU_EXT_CMD_TWT_AGRT_UPDATE = 0x94,
+ 	MCU_EXT_CMD_FW_DBG_CTRL = 0x95,
+ 	MCU_EXT_CMD_SET_RDD_TH = 0x9d,
+ 	MCU_EXT_CMD_SET_SPR = 0xa8,
+@@ -284,6 +285,14 @@ enum {
+ 	MCU_EXT_CMD_PHY_STAT_INFO = 0xad,
+ };
  
--	return tsf.t64;
-+	return ret;
- }
- 
- static void
++enum {
++	MCU_TWT_AGRT_ADD,
++	MCU_TWT_AGRT_MODIFY,
++	MCU_TWT_AGRT_DELETE,
++	MCU_TWT_AGRT_TEARDOWN,
++	MCU_TWT_AGRT_GET_TSF,
++};
++
+ enum {
+ 	MCU_WA_PARAM_CMD_QUERY,
+ 	MCU_WA_PARAM_CMD_SET,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index a6b5b300d415..068ef0f881b8 100644
+index 068ef0f881b8..ad97980275a3 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -271,7 +271,7 @@ extern const struct ieee80211_ops mt7915_ops;
- extern const struct mt76_testmode_ops mt7915_testmode_ops;
+@@ -67,6 +67,21 @@ struct mt7915_sta_key_conf {
+ 	u8 key[16];
+ };
  
- u32 mt7915_reg_map(struct mt7915_dev *dev, u32 addr);
--
-+u64 __mt7915_get_tsf(struct ieee80211_hw *hw, struct mt7915_vif *mvif);
- int mt7915_register_device(struct mt7915_dev *dev);
- void mt7915_unregister_device(struct mt7915_dev *dev);
- int mt7915_eeprom_init(struct mt7915_dev *dev);
++struct mt7915_twt_flow {
++	struct list_head list;
++	u64 start_tsf;
++	u64 tsf;
++	u32 duration;
++	u16 wcid;
++	__le16 mantissa;
++	u8 exp;
++	u8 id;
++	u8 protection:1;
++	u8 flowtype:1;
++	u8 trigger:1;
++	u8 sched:1;
++};
++
+ struct mt7915_sta {
+ 	struct mt76_wcid wcid; /* must be first */
+ 
+@@ -284,6 +299,10 @@ int mt7915_dma_init(struct mt7915_dev *dev);
+ void mt7915_dma_prefetch(struct mt7915_dev *dev);
+ void mt7915_dma_cleanup(struct mt7915_dev *dev);
+ int mt7915_mcu_init(struct mt7915_dev *dev);
++int mt7915_mcu_twt_agrt_update(struct mt7915_dev *dev,
++			       struct mt7915_vif *mvif,
++			       struct mt7915_twt_flow *flow,
++			       int cmd);
+ int mt7915_mcu_add_dev_info(struct mt7915_phy *phy,
+ 			    struct ieee80211_vif *vif, bool enable);
+ int mt7915_mcu_add_bss_info(struct mt7915_phy *phy,
 -- 
 2.31.1
 
