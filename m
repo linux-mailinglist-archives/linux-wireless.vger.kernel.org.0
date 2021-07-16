@@ -2,64 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B12A3CBB0C
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 19:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED7E33CBF94
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 01:07:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230431AbhGPRYu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jul 2021 13:24:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56526 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231195AbhGPRXw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jul 2021 13:23:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2BBB4613F6;
-        Fri, 16 Jul 2021 17:20:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1626456054;
-        bh=N5GhpdYtkMLYCoImrlzc1ma0sto2kRkmBuZwOljwAOI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AoH/UlbGrD9OromDziDnSXri7ny7u60h2seb3RvxcSqqzpUVrXTuB9ym3nLtZFk3U
-         wLYJurnEJHu3gW6DwEYyLGuL0FCcMdk6Y2d9fa+WkiV8zRiuZJbIaPn/bmW+JoxHcB
-         6N3YcaGa/RDsS/NGdRoi7l3ihsviBy53XgfkotdQ=
-Date:   Fri, 16 Jul 2021 19:20:48 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Len Baker <len.baker@gmx.com>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Pkshih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] rtw88: Fix out-of-bounds write
-Message-ID: <YPG/8F7yYLm3vAlG@kroah.com>
-References: <20210716155311.5570-1-len.baker@gmx.com>
+        id S237778AbhGPXKE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jul 2021 19:10:04 -0400
+Received: from mail-io1-f72.google.com ([209.85.166.72]:52920 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237208AbhGPXKD (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 16 Jul 2021 19:10:03 -0400
+Received: by mail-io1-f72.google.com with SMTP id b136-20020a6bb28e0000b0290520c8d13420so7013195iof.19
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jul 2021 16:07:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=qaMOIh2upbMs9hOM1Tz4AOxQSYOvrsMlI718rr6A6Is=;
+        b=IQFexnyXUGxjiG8jQNRpTcMJvB2FI2wspSgB4bjE2dKY4LAewQsnSnQdp3uU/cXuAR
+         EMC8h+UU8cjZWf2G3BJZXSl8pwDfjWfB0fiLQggQMFojU9EZMPjTnm8jWv6fSfE+53eH
+         EUVLOv73G2HbYP866XcfbEpjPgcu09fTW2CE+fBoorrwIrKMVDRdqT8c7XuSAGfXhS1n
+         8hh3rlscmT+jD8Aj9RalzflLZQHWcbpMe5iBBsPFAfC3AdpyX6+ViRC9EzFexa+8ahS4
+         U6mm8/EG0ZEJaWfqBhtJfCpGrfp+dG2Uagr05k+vksjy4V1bfAY1r7pDwhZyOA+iU/Yn
+         pp6g==
+X-Gm-Message-State: AOAM533p9LIbJCCcdsezyGbGg7hJuYtdI2Jvf9J7Er1jI2vzN3jE97OP
+        RQSdnB4RLMiExa7hDMqTzR75scw6QGRfOF/NWV9xVvCLfr57
+X-Google-Smtp-Source: ABdhPJxsZhI0CdLIY+rzWPN0HYQv81ux+PuPu2AjkvxwV5y7JgLfQU6oiuU1IVzcs8ebcrTDjOTOzG9MGTpliCM3OpXNwjB3HeBm
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210716155311.5570-1-len.baker@gmx.com>
+X-Received: by 2002:a92:d943:: with SMTP id l3mr8182316ilq.37.1626476826637;
+ Fri, 16 Jul 2021 16:07:06 -0700 (PDT)
+Date:   Fri, 16 Jul 2021 16:07:06 -0700
+In-Reply-To: <00000000000055e16405b0fc1a90@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000007cbbcd05c745a560@google.com>
+Subject: Re: [syzbot] WARNING in sta_info_alloc
+From:   syzbot <syzbot+45d7c243c006f39dc55a@syzkaller.appspotmail.com>
+To:     a@unstable.cc, anand.jain@oracle.com,
+        b.a.t.m.a.n@lists.open-mesh.org, catalin.marinas@arm.com,
+        clm@fb.com, davem@davemloft.net, dsterba@suse.com,
+        johannes@sipsolutions.net, josef@toxicpanda.com, kuba@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-btrfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        mareklindner@neomailbox.ch, netdev@vger.kernel.org,
+        sw@simonwunderlich.de, syzkaller-bugs@googlegroups.com,
+        will.deacon@arm.com, will@kernel.org, zlim.lnx@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jul 16, 2021 at 05:53:11PM +0200, Len Baker wrote:
-> In the rtw_pci_init_rx_ring function the "if (len > TRX_BD_IDX_MASK)"
-> statement guarantees that len is less than or equal to GENMASK(11, 0) or
-> in other words that len is less than or equal to 4095. However the
-> rx_ring->buf has a size of RTK_MAX_RX_DESC_NUM (defined as 512). This
-> way it is possible an out-of-bounds write in the for statement due to
-> the i variable can exceed the rx_ring->buff size.
-> 
-> However, this overflow never happens due to the rtw_pci_init_rx_ring is
-> only ever called with a fixed constant of RTK_MAX_RX_DESC_NUM. But it is
-> better to be defensive in this case and add a new check to avoid
-> overflows if this function is called in a future with a value greater
-> than 512.
+syzbot suspects this issue was fixed by commit:
 
-If this can never happen, then no, this is not needed.  Why would you
-check twice for the same thing?
+commit 282ab3ff16120ec670fe3330e85f8ebf13092f21
+Author: David Sterba <dsterba@suse.com>
+Date:   Mon Oct 14 12:38:33 2019 +0000
 
-thanks,
+    btrfs: reduce compressed_bio members' types
 
-greg k-h
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12d5f6f2300000
+start commit:   7f75285ca572 Merge tag 'for-5.12/dm-fixes-3' of git://git...
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b5591c832f889fd9
+dashboard link: https://syzkaller.appspot.com/bug?extid=45d7c243c006f39dc55a
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=164f385ad00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1427af9ad00000
+
+If the result looks correct, please mark the issue as fixed by replying with:
+
+#syz fix: btrfs: reduce compressed_bio members' types
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
