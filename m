@@ -2,88 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D21313CBAA3
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 18:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C4A73CBAD7
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 18:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbhGPQnR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jul 2021 12:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43894 "EHLO
+        id S229937AbhGPRBV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jul 2021 13:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbhGPQnR (ORCPT
+        with ESMTP id S230191AbhGPRBR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jul 2021 12:43:17 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67422C06175F
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jul 2021 09:40:21 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id h24-20020a9d64180000b029036edcf8f9a6so10484480otl.3
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jul 2021 09:40:21 -0700 (PDT)
+        Fri, 16 Jul 2021 13:01:17 -0400
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859B9C061764
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jul 2021 09:58:21 -0700 (PDT)
+Received: by mail-ot1-x336.google.com with SMTP id f93-20020a9d03e60000b02904b1f1d7c5f4so10504255otf.9
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jul 2021 09:58:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=AHD3bsfusj2mr0aNIndDSdET2tgorIMEstvbAyiTb1w=;
-        b=Mugo6aW7ZRNSmNjQoePTIQ31m1KyvbyLiz4eD4K+Kr3xAN3btUF++tTMi1IQ9GIYNW
-         ZZ1QIzz6nq+PqqVBrdETGqSCP3dVvV0ZszqKWl39e/fXNlgvT1XiaskLpqXxMwH1+9rJ
-         XOAj1GoAnV9KizObdJJJYNwe8iw3WumufVCqRO1V/uFoKKzBxB4ZhgkQRdlK1wtMuWvN
-         qoAArJTGA3FqjTG5HRK8TVOQ6KUSGJdagAfsCk39uwTBVJQGrxeFBRFo5plXJTCGpca+
-         vvKNFC1E5rA2OmiN2AjJYVoIS2eGZ3mp23GcS569huncbEJodEl9ppXjTdLSzJTGPHZ2
-         nTiA==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zF6RFynJImZVZ9iauRKVrADk1+eSALtVWbPASLHhoSw=;
+        b=CYfZq/00WLjjWY1y5nRSBmHv2gLKV/HPnda9tFP2NnVUU0Wmm+FGSaRVjx7ugR8Wu8
+         gVqOAn49/fcLFt2j5zQor/oTx+Jc8rdVjMNfSyuGOUUPuFt7FC/Ok1UjIuCgrVE4R1wQ
+         g97bIBeGzSYqzNZwtdBTzPpYJlV55FMfIxS5Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=AHD3bsfusj2mr0aNIndDSdET2tgorIMEstvbAyiTb1w=;
-        b=E5sq/udS7b/xmsOYGggpVHypV+bF10H7LldyynZj41kOCRvsjWv3TQ51de07n+oglp
-         QltRbXwZLvd9iivXCcLYyVcj569mQ2FtFE9Yz/I/APnUyRUwUastlyDsW43r4ZtxgE15
-         pw+3g4ljHgOr99ByY+tXcf1icWUx5PlEcJ1tzPZrBqgNRIDYMqot6xIEbeQc+1OMBobr
-         MttflFu7mqooAORSkNJj7u8N3N9O/j1qgymsTfE5hKAlxDDKxHWkljVqOY5EHpijBCgT
-         xdZ0a1JY6aUZNIeph3dPIl0lQPqbB/tbwz4tSywXOgHBZsRDjBRMcxeIv9kSk6618/WN
-         O6dw==
-X-Gm-Message-State: AOAM533EeSvBCLhD6l69ZN2chhbCMudh0jktyyqyhDWgXt2SFNxr6qRQ
-        pOEC6vKtdWHLz8GFr2Zb8hnEzxvMGeI=
-X-Google-Smtp-Source: ABdhPJwXiSaLw+79dOTmaynAwuKQ+ifuzg3Go+OKhBKK7SzP3ECP613zjDeXg9OPGs2CNaBP6h+9ZA==
-X-Received: by 2002:a05:6830:4b0:: with SMTP id l16mr8919792otd.97.1626453620505;
-        Fri, 16 Jul 2021 09:40:20 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id n23sm1337577ooq.48.2021.07.16.09.40.19
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zF6RFynJImZVZ9iauRKVrADk1+eSALtVWbPASLHhoSw=;
+        b=aOtL0hkqVXo4BsmPC4zPKdCltSNjTqmJZfYomABJ0dLCMWp6C8z25E1kIVVEt1rf/y
+         uYLBanaREJAf+4yswZpCMhcDyEmBB9c1uFRVfmBXhjs65WtNETySaD/MPEFWrr/DNptZ
+         xsUKzb64FU+yOZ97337R7hApCBW217l/wHPyENxJ2O1L7mFq1Hyqi8eHSaJjPc1x4N7w
+         cLMhRrYf9bi4f5MOL2zZ05jrnd3QjJKBXnYK62+If/cWXy0BKFZSrYfoUUDincd/5Tkp
+         +T0MGzpDcruCFdPdJgCqBXhI9rN83oau26c1OALd14yyKVtZdWAXpHs2tv3sAWsnCcwr
+         maiQ==
+X-Gm-Message-State: AOAM5329mjlVhLr+NzAKS+NciZEUyCNT9/0tHG+xkSfK8yMX6wLDUh7J
+        7xRT+hnf94Fmln9k3l+uRgPbTKWsUfhPPQ==
+X-Google-Smtp-Source: ABdhPJwp/BFipmIPMpyefAZFp6LOUo/QDUCU3lkC99ZOtU6YJ76nNG0ypZv5LONVFHpYhzZhWu+hww==
+X-Received: by 2002:a05:6830:40b6:: with SMTP id x54mr4797152ott.290.1626454700478;
+        Fri, 16 Jul 2021 09:58:20 -0700 (PDT)
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com. [209.85.167.178])
+        by smtp.gmail.com with ESMTPSA id r16sm1083839otu.26.2021.07.16.09.58.18
+        for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jul 2021 09:40:20 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Subject: Re: Difficulty connecting to AP using rtw89
-To:     Pkshih <pkshih@realtek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-References: <f2ee1dbd-28b5-a1e6-8f41-e7ed8dfc2521@lwfinger.net>
- <d74a6a489b2f466eb66df3f5f965a1fa@realtek.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <28f2a476-b690-24dd-df7e-f88f45b9292d@lwfinger.net>
-Date:   Fri, 16 Jul 2021 11:40:18 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Fri, 16 Jul 2021 09:58:18 -0700 (PDT)
+Received: by mail-oi1-f178.google.com with SMTP id p67so11637683oig.2
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jul 2021 09:58:18 -0700 (PDT)
+X-Received: by 2002:aca:304f:: with SMTP id w76mr11034037oiw.77.1626454698098;
+ Fri, 16 Jul 2021 09:58:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <d74a6a489b2f466eb66df3f5f965a1fa@realtek.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210716155311.5570-1-len.baker@gmx.com>
+In-Reply-To: <20210716155311.5570-1-len.baker@gmx.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Fri, 16 Jul 2021 09:58:07 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPSL4bFpyjRYGEOG=Df8dOXc19LYBO06wdFN_k8OkiwKQ@mail.gmail.com>
+Message-ID: <CA+ASDXPSL4bFpyjRYGEOG=Df8dOXc19LYBO06wdFN_k8OkiwKQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rtw88: Fix out-of-bounds write
+To:     Len Baker <len.baker@gmx.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Pkshih <pkshih@realtek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/15/21 10:17 PM, Pkshih wrote:
-> Hi Larry,
-> 
-> I'm not sure if the problem the users met is related to security or not.
-> But, we have a solution to deal with similar symptom.
-> Please apply and try attached patch to see if it is helpful.
+On Fri, Jul 16, 2021 at 8:54 AM Len Baker <len.baker@gmx.com> wrote:
+>
+> In the rtw_pci_init_rx_ring function the "if (len > TRX_BD_IDX_MASK)"
+> statement guarantees that len is less than or equal to GENMASK(11, 0) or
+> in other words that len is less than or equal to 4095. However the
+> rx_ring->buf has a size of RTK_MAX_RX_DESC_NUM (defined as 512). This
+> way it is possible an out-of-bounds write in the for statement due to
+> the i variable can exceed the rx_ring->buff size.
+>
+> However, this overflow never happens due to the rtw_pci_init_rx_ring is
+> only ever called with a fixed constant of RTK_MAX_RX_DESC_NUM. But it is
+> better to be defensive in this case and add a new check to avoid
+> overflows if this function is called in a future with a value greater
+> than 512.
+>
+> Cc: stable@vger.kernel.org
 
-Ping-ke,
+This kinda seems excessive, considering we absolutely know this is not
+currently a bug. But then, LWN nicely highlighted this thread, which
+reminds me that even without the Cc stable, this is likely to
+unnecessarily get picked up:
 
-Two of the 4 users with the problem have reported back that their device now 
-works. Thanks for the patch.
+https://lwn.net/ml/linux-kernel/YO0zXVX9Bx9QZCTs@kroah.com/
 
-In a separate question, will v6 have provisions for IPv6?
+And I guess silencing Coverity is a desirable goal in many cases, even
+if Coverity is being a bit trigger-happy.
 
-Larry
+So, *shrug*.
 
+> Addresses-Coverity-ID: 1461515 ("Out-of-bounds write")
+> Fixes: e3037485c68ec ("rtw88: new Realtek 802.11ac driver")
+> Signed-off-by: Len Baker <len.baker@gmx.com>
+> ---
+> Changelog v1 -> v2
+> - Remove the macro ARRAY_SIZE from the for loop (Pkshih, Brian Norris).
+> - Add a new check for the len variable (Pkshih, Brian Norris).
 
+Reviewed-by: Brian Norris <briannorris@chromium.org>
 
+Thanks.
