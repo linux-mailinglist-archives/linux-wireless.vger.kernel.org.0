@@ -2,71 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EB0D3CAEED
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 00:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD7D3CB031
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 02:51:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231501AbhGOWJn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jul 2021 18:09:43 -0400
-Received: from mail-pj1-f51.google.com ([209.85.216.51]:39464 "EHLO
-        mail-pj1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229776AbhGOWJn (ORCPT
+        id S231264AbhGPAyh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jul 2021 20:54:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55538 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229583AbhGPAyg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jul 2021 18:09:43 -0400
-Received: by mail-pj1-f51.google.com with SMTP id p14-20020a17090ad30eb02901731c776526so7495358pju.4;
-        Thu, 15 Jul 2021 15:06:48 -0700 (PDT)
+        Thu, 15 Jul 2021 20:54:36 -0400
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF96C06175F
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 17:51:41 -0700 (PDT)
+Received: by mail-oi1-x22d.google.com with SMTP id w127so8894059oig.12
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 17:51:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:to:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=QbFumJIJ7vC9OQABvA0we8EcFGh7zdUheBESdjmTWec=;
+        b=kPAzny8lxVz5KlU9WZ1t7zkQcoscUUJso/zcdO4xloOn3MIlfvOrXDQPUDsQXmUXWI
+         YP4ohAUGUKJp9HMFhT72HcyNo46ZKwlXOQbdzv9CKGxRQ9kxseE0vHL64u0IdqazkVv2
+         8BKh6LeFNUrE1MEUCQrgxcF7Wqk9Bp7YrHj2ZYnXeuuP+K37Z+sppSnfVdBuRNU5yE/k
+         lGaB6Q32zmOyt1YVZj78xrYXrAgjUV5CUQ3kOPT1I4KKbZb41OarZRyN97/AaQbPCvdG
+         wHE0HXEpCBSyu0qH4rXWd6E5SMGWZhhouzgGXqKEAMuqWGySLrbGADzGzAmGbz++Jc2Q
+         IbdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=R6F+susvN5sjUJ3zQkT+ICC7UqFu5SaK3lj12wZr4/0=;
-        b=ZwCneMwbj0JO9x7iOUD9weXnHjdvJ1JryMnTL4rQoqSndLneFutoiK1/bRNQGEx8h8
-         MHT+CsQwt2oE9+VIHGG6MMQPGqDpTMQG2lP6BB+5WQxBcPujd9rzNYkfrEWdMYq3e9Xk
-         fTXec5hSRvV1Z5SRbgvhnT89NkN4Bb4g57PUtIpJYBzJYFPpnh28eZOe5AZv/GXSHwpz
-         i3AfoPkGWBGgDG6SdMoyGcFO/sRSg/Q2MbHu9y4PU7yOnUNtUixG8hkbAF8q169c+maP
-         Lp+inf+N+vH4SGpF7XcU7vtskdfuMpPse00gSccPOL9xpu8T2XZbV/yCTLzNhr4JdImp
-         MmlA==
-X-Gm-Message-State: AOAM531/fa5xDwNUsy8KpxUAx3Q/EtuVyIc1bOlr7e3dzhc3FfoIC2QK
-        eFrzN7YXVzrEivBfaUT3clg=
-X-Google-Smtp-Source: ABdhPJyAswla2aaWzBgfxN1RCTmTjsX0BIv5XRpXRfo5GXFJQkNYA0AgYLtvOnNpGa4lxcQIGAlRZQ==
-X-Received: by 2002:a17:90b:1294:: with SMTP id fw20mr12313031pjb.100.1626386808202;
-        Thu, 15 Jul 2021 15:06:48 -0700 (PDT)
-Received: from garbanzo ([191.96.120.37])
-        by smtp.gmail.com with ESMTPSA id y5sm7445783pfn.87.2021.07.15.15.06.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jul 2021 15:06:46 -0700 (PDT)
-Date:   Thu, 15 Jul 2021 15:06:44 -0700
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dwaipayan Ray <dwaipayanray1@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] intersil: remove obsolete prism54 wireless driver
-Message-ID: <20210715220644.2d2xfututdoimszm@garbanzo>
-References: <20210713054025.32006-1-lukas.bulwahn@gmail.com>
+        h=x-gm-message-state:sender:to:from:subject:message-id:date
+         :user-agent:mime-version:content-language:content-transfer-encoding;
+        bh=QbFumJIJ7vC9OQABvA0we8EcFGh7zdUheBESdjmTWec=;
+        b=RunNrQsk47DW1DFSxCy7RN7XL/1nFTWa+tkKZrIZScpMWrJMqNiEyDiwMpiCigwAvS
+         llVcGPBI7OC3gwz+TaoVBk82AwO40i4HhScYZ8oIRDS5jDU+3NWMOtYJunn4eQArkV4/
+         D5prd9EejkfjPiqG+SV7SmV4GIg4sh/e2aa9BkDd9njQ37bxPuJRcpCCcrZywJt5d4se
+         sT4sYukQGJPMt/yJjNJwnXRolrsYSxx5pL6QvoPlUVUgM8/V6hbimVHVhjki+kW9Lk3C
+         WEP1l4Grpt8P4PgPYUFjis1kYo+t7GqSHtO3wUm2vIJbAmFGWjcJHpIALX0vRp7YsJco
+         /gKg==
+X-Gm-Message-State: AOAM533RBULjxAof06X420l+D8rDZdVxZISrTjRUYZ9Lo4mZK0HZs126
+        Er8mTPhT3BBZKAOYqDqGngS0D0oOPiE=
+X-Google-Smtp-Source: ABdhPJwTvTNub3dV+O9F9nMSrFREoo2xE4dzVCeqvjYvm7rxQgwGnrD3/LCZru3wNR3VMZavfbMeEQ==
+X-Received: by 2002:a05:6808:13c5:: with SMTP id d5mr5656908oiw.163.1626396700354;
+        Thu, 15 Jul 2021 17:51:40 -0700 (PDT)
+Received: from 2603-8090-2005-39b3-0000-0000-0000-1001.res6.spectrum.com (2603-8090-2005-39b3-0000-0000-0000-1001.res6.spectrum.com. [2603:8090:2005:39b3::1001])
+        by smtp.gmail.com with ESMTPSA id r1sm1418897ooi.21.2021.07.15.17.51.39
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Jul 2021 17:51:39 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Difficulty connecting to AP using rtw89
+Message-ID: <f2ee1dbd-28b5-a1e6-8f41-e7ed8dfc2521@lwfinger.net>
+Date:   Thu, 15 Jul 2021 19:51:38 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210713054025.32006-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 13, 2021 at 07:40:25AM +0200, Lukas Bulwahn wrote:
-> Commit 1d89cae1b47d ("MAINTAINERS: mark prism54 obsolete") indicated the
-> prism54 driver as obsolete in July 2010.
-> 
-> Now, after being exposed for ten years to refactoring, general tree-wide
-> changes and various janitor clean-up, it is really time to delete the
-> driver for good.
-> 
-> This was discovered as part of a checkpatch evaluation, investigating all
-> reports of checkpatch's WARNING:OBSOLETE check.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
+Hi,
 
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+I am trying to help some users of my GitHub repo for rtw89. Several are having 
+problems trying to connect to their APs. When their AP scan lists the following:
 
-  Luis
+WPA:	 * Version: 1
+	 * Group cipher: TKIP
+	 * Pairwise ciphers: TKIP
+	 * Authentication suites: PSK
+RSN:	 * Version: 1
+	 * Group cipher: TKIP
+	 * Pairwise ciphers: CCMP
+	 * Authentication suites: PSK
+	 * Capabilities: 1-PTKSA-RC 1-GTKSA-RC (0x0000)
+
+I have no problems. My scan results show:
+
+         RSN:     * Version: 1
+                  * Group cipher: CCMP
+                  * Pairwise ciphers: CCMP
+                  * Authentication suites: PSK
+                  * Capabilities: 16-PTKSA-RC 1-GTKSA-RC (0x000c)
+
+At least one of them can connect to a hotspot created on his phone; however, it 
+also shows Capabilities: 16-PTKSA-RC 1-GTKSA-RC (0x000c). I have tried to 
+discover what causes the difference between this value and that of Capabilities: 
+1-PTKSA-RC 1-GTKSA-RC (0x0000). No matter how I setup my APs, I always get 
+16-PTKSA-RC.
+
+Can anyone help me understand this problem?
+
+Thanks,
+
+Larry
