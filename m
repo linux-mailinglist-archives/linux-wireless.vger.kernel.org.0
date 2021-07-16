@@ -2,100 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DD7D3CB031
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 02:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AC3B3CB0A6
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jul 2021 04:00:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231264AbhGPAyh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jul 2021 20:54:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbhGPAyg (ORCPT
+        id S231441AbhGPCDm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jul 2021 22:03:42 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:56483 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230297AbhGPCDm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jul 2021 20:54:36 -0400
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF96C06175F
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 17:51:41 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id w127so8894059oig.12
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jul 2021 17:51:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:to:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=QbFumJIJ7vC9OQABvA0we8EcFGh7zdUheBESdjmTWec=;
-        b=kPAzny8lxVz5KlU9WZ1t7zkQcoscUUJso/zcdO4xloOn3MIlfvOrXDQPUDsQXmUXWI
-         YP4ohAUGUKJp9HMFhT72HcyNo46ZKwlXOQbdzv9CKGxRQ9kxseE0vHL64u0IdqazkVv2
-         8BKh6LeFNUrE1MEUCQrgxcF7Wqk9Bp7YrHj2ZYnXeuuP+K37Z+sppSnfVdBuRNU5yE/k
-         lGaB6Q32zmOyt1YVZj78xrYXrAgjUV5CUQ3kOPT1I4KKbZb41OarZRyN97/AaQbPCvdG
-         wHE0HXEpCBSyu0qH4rXWd6E5SMGWZhhouzgGXqKEAMuqWGySLrbGADzGzAmGbz++Jc2Q
-         IbdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:to:from:subject:message-id:date
-         :user-agent:mime-version:content-language:content-transfer-encoding;
-        bh=QbFumJIJ7vC9OQABvA0we8EcFGh7zdUheBESdjmTWec=;
-        b=RunNrQsk47DW1DFSxCy7RN7XL/1nFTWa+tkKZrIZScpMWrJMqNiEyDiwMpiCigwAvS
-         llVcGPBI7OC3gwz+TaoVBk82AwO40i4HhScYZ8oIRDS5jDU+3NWMOtYJunn4eQArkV4/
-         D5prd9EejkfjPiqG+SV7SmV4GIg4sh/e2aa9BkDd9njQ37bxPuJRcpCCcrZywJt5d4se
-         sT4sYukQGJPMt/yJjNJwnXRolrsYSxx5pL6QvoPlUVUgM8/V6hbimVHVhjki+kW9Lk3C
-         WEP1l4Grpt8P4PgPYUFjis1kYo+t7GqSHtO3wUm2vIJbAmFGWjcJHpIALX0vRp7YsJco
-         /gKg==
-X-Gm-Message-State: AOAM533RBULjxAof06X420l+D8rDZdVxZISrTjRUYZ9Lo4mZK0HZs126
-        Er8mTPhT3BBZKAOYqDqGngS0D0oOPiE=
-X-Google-Smtp-Source: ABdhPJwTvTNub3dV+O9F9nMSrFREoo2xE4dzVCeqvjYvm7rxQgwGnrD3/LCZru3wNR3VMZavfbMeEQ==
-X-Received: by 2002:a05:6808:13c5:: with SMTP id d5mr5656908oiw.163.1626396700354;
-        Thu, 15 Jul 2021 17:51:40 -0700 (PDT)
-Received: from 2603-8090-2005-39b3-0000-0000-0000-1001.res6.spectrum.com (2603-8090-2005-39b3-0000-0000-0000-1001.res6.spectrum.com. [2603:8090:2005:39b3::1001])
-        by smtp.gmail.com with ESMTPSA id r1sm1418897ooi.21.2021.07.15.17.51.39
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jul 2021 17:51:39 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Difficulty connecting to AP using rtw89
-Message-ID: <f2ee1dbd-28b5-a1e6-8f41-e7ed8dfc2521@lwfinger.net>
-Date:   Thu, 15 Jul 2021 19:51:38 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Thu, 15 Jul 2021 22:03:42 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16G20f0O2025106, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16G20f0O2025106
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 16 Jul 2021 10:00:41 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 16 Jul 2021 10:00:40 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 16 Jul 2021 10:00:40 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91]) by
+ RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91%5]) with mapi id
+ 15.01.2106.013; Fri, 16 Jul 2021 10:00:40 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Brian Norris <briannorris@chromium.org>
+CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 03/24] rtw89: add core and trx files
+Thread-Topic: [PATCH 03/24] rtw89: add core and trx files
+Thread-Index: AQHXZA3LU5R+TYuZxkuDWNpxAtkG6KtECC8AgAD7Y4A=
+Date:   Fri, 16 Jul 2021 02:00:40 +0000
+Message-ID: <817153a13a22449d9c6fd95471f3bfa1@realtek.com>
+References: <20210618064625.14131-1-pkshih@realtek.com>
+ <20210618064625.14131-4-pkshih@realtek.com> <YPCFABiygQbiMqcB@google.com>
+In-Reply-To: <YPCFABiygQbiMqcB@google.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/7/15_=3F=3F_07:21:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/16/2021 01:42:56
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165062 [Jul 15 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
+X-KSE-AntiSpam-Info: {Tracking_from_exist}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 07/16/2021 01:46:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-I am trying to help some users of my GitHub repo for rtw89. Several are having 
-problems trying to connect to their APs. When their AP scan lists the following:
+> -----Original Message-----
+> From: Brian Norris [mailto:briannorris@chromium.org]
+> Sent: Friday, July 16, 2021 2:57 AM
+> To: Pkshih
+> Cc: kvalo@codeaurora.org; linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH 03/24] rtw89: add core and trx files
+> 
+> Hi,
+> 
+> On Fri, Jun 18, 2021 at 02:46:04PM +0800, Ping-Ke Shih wrote:
+> > --- /dev/null
+> > +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> > @@ -0,0 +1,2359 @@
+> > +static void rtw89_traffic_stats_calc(struct rtw89_dev *rtwdev,
+> > +				     struct rtw89_traffic_stats *stats)
+> > +{
+> ...
+> > +	stats->tx_avg_len = (u32)(stats->tx_cnt ? stats->tx_unicast / stats->tx_cnt : 0);
+> > +	stats->rx_avg_len = (u32)(stats->rx_cnt ? stats->rx_unicast / stats->rx_cnt : 0);
+> 
+> You're doing 64-bit division which isn't supported on all architectures.
+> You need a do_div()-based solution here, like:
+> 
+> 	stats->tx_avg_len = stats->tx_cnt
+> 			    ? DIV_ROUND_DOWN_ULL(stats->tx_unicast, stats->tx_cnt)
+> 			    : 0;
+> 	stats->rx_avg_len = stats->rx_cnt
+> 			    ? DIV_ROUND_DOWN_ULL(stats->rx_unicast, stats->rx_cnt)
+> 			    : 0;
+> 
 
-WPA:	 * Version: 1
-	 * Group cipher: TKIP
-	 * Pairwise ciphers: TKIP
-	 * Authentication suites: PSK
-RSN:	 * Version: 1
-	 * Group cipher: TKIP
-	 * Pairwise ciphers: CCMP
-	 * Authentication suites: PSK
-	 * Capabilities: 1-PTKSA-RC 1-GTKSA-RC (0x0000)
+The kernel test robot has reported this on mips arch.
+ERROR: modpost: "__udivdi3" [drivers/net/wireless/realtek/rtw89/rtw89_core.ko] undefined!
 
-I have no problems. My scan results show:
+And, my fix is the same as yours. Next submission will include this.
+Thank you.
 
-         RSN:     * Version: 1
-                  * Group cipher: CCMP
-                  * Pairwise ciphers: CCMP
-                  * Authentication suites: PSK
-                  * Capabilities: 16-PTKSA-RC 1-GTKSA-RC (0x000c)
+--
+Ping-Ke
 
-At least one of them can connect to a hotspot created on his phone; however, it 
-also shows Capabilities: 16-PTKSA-RC 1-GTKSA-RC (0x000c). I have tried to 
-discover what causes the difference between this value and that of Capabilities: 
-1-PTKSA-RC 1-GTKSA-RC (0x0000). No matter how I setup my APs, I always get 
-16-PTKSA-RC.
-
-Can anyone help me understand this problem?
-
-Thanks,
-
-Larry
