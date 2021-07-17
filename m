@@ -2,135 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EA383CC396
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 15:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 270D53CC3AA
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 15:48:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233740AbhGQNhP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Jul 2021 09:37:15 -0400
-Received: from mout.gmx.net ([212.227.15.15]:59489 "EHLO mout.gmx.net"
+        id S233640AbhGQNu4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Jul 2021 09:50:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35802 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229746AbhGQNhN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Jul 2021 09:37:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1626528836;
-        bh=5faHKHYVx9kCTpkagsw8dkAx55M4pUI8xJe1C1N28ag=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=U8qUXFX/+guW1owffKHlzQa1YopPIQls/yHtdXUpxQY9WMz85EcSEF01TBbMhJKic
-         paaQEA59LZGL5PT0j97ZnUnoeRJk//WFk4iGL4V3djOcAdUEeQhakjtNi3PPBuWkHp
-         zB+yqlKRdAqFGV5m/3QWN2h4OfJLAlFl1Joi1qj4=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from titan ([83.52.228.41]) by mail.gmx.net (mrgmx004
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1M3UUy-1m4CUD334M-000Yfe; Sat, 17
- Jul 2021 15:33:55 +0200
-Date:   Sat, 17 Jul 2021 15:33:43 +0200
-From:   Len Baker <len.baker@gmx.com>
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Brian Norris <briannorris@chromium.org>
-Cc:     Len Baker <len.baker@gmx.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Pkshih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] rtw88: Fix out-of-bounds write
-Message-ID: <20210717133343.GA2009@titan>
-References: <20210716155311.5570-1-len.baker@gmx.com>
- <YPG/8F7yYLm3vAlG@kroah.com>
+        id S232974AbhGQNu4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 17 Jul 2021 09:50:56 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6FB84613D3;
+        Sat, 17 Jul 2021 13:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626529679;
+        bh=NWSMEiSCehlLGab8IWcnuz5yhKKmsitA/SYxsp/QMXw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ch4Kjoqhqp2TlSoCS2YHd0O4ygbHUQ16J/o0Wyhmy39b4yelpTSEnxgXQb31y2MS6
+         4AfGCcGxQ+AGayB/bpwFciZNqHRng+flccFLUaJGieM97+vyBGaGL2NN0YNzTVqE96
+         DO8t+udaGwfHqmGE/d5ZK23bwrWIguz1j4gRFr5CMihfG/twEiahNKTnNnUI3Y3Ph2
+         Y67lmsD1O8rDUVBrbWMMuRm2Z3jv4C/rn5v4RXPvGT3c5UNyJiZTxhRXhLnYa9fWUc
+         jE81bzpurtSoLEAZdXRmdzocnGqhi1ubSbfL+h0/MXHaszKU61GEFn9tQovoWsQhkQ
+         QwmBdADuTjV6g==
+Received: by pali.im (Postfix)
+        id 09B9495D; Sat, 17 Jul 2021 15:47:56 +0200 (CEST)
+Date:   Sat, 17 Jul 2021 15:47:56 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Sharvari Harisangam <sharvari.harisangam@nxp.com>
+Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
+        Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        linux-wireless@vger.kernel.org,
+        Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>
+Subject: Re: mwifiex: Initialization of FW and net interface
+Message-ID: <20210717134756.njsqcie4kgnyos47@pali>
+References: <20200612103501.vhwo3skvzt2243gz@pali>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YPG/8F7yYLm3vAlG@kroah.com>
-X-Provags-ID: V03:K1:vljdN4kn+ro0ymxfW/qqodGQnXMgpyERHL28x2eV5d8VQeB8NbN
- qUCxTkm6e8XBhjZgAJ2X07qFMGOkDFwodJWVH7brjbzQsW599/zEDssz/zpaZxTBz5xFFEH
- sXU7Qu8awfQGbehGfgHFyXxl7IPTIV9mIAME8lNldi+PQuWxdrbiZZHjQcIfHuPBIjtMym0
- l0EajMfdYcHBVHR4d1ffQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:EYWrHxHOAEc=:2SZ+C1fTyRzy5fRD5BO4M0
- AVwg9wGDsxNakXzaAOySVUV2MyaLeVHl9h6TOUkXuXr1Yxte0aH6lBaw9gDogOso6rrOcgzVC
- f++reXrs9lE9E/+1vj8fXn/z/fHAnRiXkb292IqiN5w6NU+F5J/F9Hp5k3CI2Q//VYQoMCIam
- zUPtUncZFh/Pd3pwPhVcazNL23XjmUbA2PG/K8byGcIXTy/AeljvR5fVYTWxDMXq1n3UtJXz7
- 9gVaICXIFVQ54DU4n0+CuPM9Dy4bMuMTjYIM0YtGxKkSsSpDQvwUBNx2jHx1F7KzsJfQsHUa3
- R1hRdoc+02bAzuDmlQlhipKsXCwH1E7hjG7ko2vrRTUuCgh2OInKjN5vbNYTs6WZpo7q9dgKp
- RnHUUlq2gEk7TTJjTq4ec3vnYgOREWR79h8C34JiUXC513cliIoTubFh4sftO2twoVGkqUJer
- I+8kmMNh79eGkOOfk2jdUr1448f1Xs/4tUtPx39/Pgs4cezyO6ipva4PzI7/U5QAWJWn3Em0I
- 476XAVoCJYHX8RbnUWBD9DNA0Qptwa89SmnZpeNshxUWnSfUmyotE24ASyApapJGOdsHtrJe8
- OUHmkuFiuzWzusDzxxAoyHmIv70oblbhTfFGFcQSHmFKcJKq1VAl1RrFcZHyHDqFAWp4JNAg2
- mgTgzOKjvWIxlsHJzV/SR5I7rByGUt6Fk/Wd07+HMVSFdQ5bqY3v3cZIAJiDCrW1NlrLDq7Bi
- ACHUNbe/eQ0FQZuFmDeIs8a4KXUB6mh4jQrfW9REzt3I4w5vDZXXHC00s0IC0NT/rGKgE/9V+
- hgpqumS3x+hua1P74sz5MViSa1TKmY3xO0H2m1qy+yAANobbaxN6BwGtdAoY6uK5ZXoCn54Ze
- RBEK7zIUszVtdACrYflKbK1KRbWZAlqLS01UEr3Jhc5skLSY9BAuetQhKu8AY+8apFcBNfp4f
- UbmMhg6YumYbSuNH4L0toK8G2AKbhWCQT5CmOnKDEysUlBt/TDA6m3b5WbVRg6fCY6SMzCaXw
- 0JvBjSp0tXQSs8mLO9jxzVgSWBwMCcW7eY2CoLBMjTWk50z3BaRQQYzG/bdtXq5+yCqKQz+Hd
- VrVM29ClBE9nUQOvwVlBKdRxVhu1VGNglh7
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200612103501.vhwo3skvzt2243gz@pali>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jul 16, 2021 at 07:20:48PM +0200, Greg KH wrote:
-> On Fri, Jul 16, 2021 at 05:53:11PM +0200, Len Baker wrote:
-> > In the rtw_pci_init_rx_ring function the "if (len > TRX_BD_IDX_MASK)"
-> > statement guarantees that len is less than or equal to GENMASK(11, 0) =
-or
-> > in other words that len is less than or equal to 4095. However the
-> > rx_ring->buf has a size of RTK_MAX_RX_DESC_NUM (defined as 512). This
-> > way it is possible an out-of-bounds write in the for statement due to
-> > the i variable can exceed the rx_ring->buff size.
-> >
-> > However, this overflow never happens due to the rtw_pci_init_rx_ring i=
-s
-> > only ever called with a fixed constant of RTK_MAX_RX_DESC_NUM. But it =
-is
-> > better to be defensive in this case and add a new check to avoid
-> > overflows if this function is called in a future with a value greater
-> > than 512.
->
-> If this can never happen, then no, this is not needed.
+[+cc: Maximilian and Jonas]
 
-Then, if this can never happen, the current check would not be necessary
-either.
+Hello Sharvari! I'm forwarding to you this email about initialization
+issues in mwifiex driver. Could you as a new NXP maintainer of mwifiex
+driver look at it?
 
-> Why would you check twice for the same thing?
-
-Ok, it makes no sense to double check the "len" variable twice. So, I
-propose to modify the current check as follows:
-
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wirele=
-ss/realtek/rtw88/pci.c
-index e7d17ab8f113..0fd140523868 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -268,8 +268,8 @@ static int rtw_pci_init_rx_ring(struct rtw_dev *rtwdev=
-,
-        int i, allocated;
-        int ret =3D 0;
-
--       if (len > TRX_BD_IDX_MASK) {
--               rtw_err(rtwdev, "len %d exceeds maximum RX entries\n", len=
-);
-+       if (len > ARRAY_SIZE(rx_ring->buf)) {
-+               rtw_err(rtwdev, "len %d exceeds maximum RX ring buffer\n",=
- len);
-                return -EINVAL;
-        }
-
-This way the overflow can never happen with the current call to
-rtw_pci_init_rx_ring function or with a future call with a "len" parameter
-greater than 512. What do you think?
-
-If there are no objections I will send a v3 for review.
-
-Another question: If this can never happen should I include the "Fixes" ta=
-g,
-"Addresses-Coverity-ID" tag and Cc to stable?
-
-Thanks,
-Len
-
->
-> thanks,
->
-> greg k-h
+On Friday 12 June 2020 12:35:01 Pali Rohár wrote:
+> Hello!
+> 
+> I was looking at mwifiex code which initialize card firmware and linux
+> network interface and I think that there are some issues with this code
+> path.
+> 
+> There is a function mwifiex_sta_init_cmd() which basically doing two
+> different things:
+> 
+>  * initial card firmware initialization
+>  * configuration of interface parameters via card firmware
+> 
+> That function has following definition:
+> 
+> int mwifiex_sta_init_cmd(struct mwifiex_private *priv, u8 first_sta, bool init);
+> 
+> 'first_sta' and 'init' is FALSE when doing just configuration of
+> interface parameters (by cfg80211 callbacks).
+> 
+> 'init' is TRUE when doing initial card firmware initialization and it is
+> called when mwifiex driver is doing setup of card. But this function is
+> called with 'init' set to TRUE multiple times when card driver was
+> configured to create multiple linux network interfaces. In this case
+> 'first_sta' is TRUE only for the first call of this function.
+> 
+> And now the first suspicious thing is: Why mwifiex driver calls that
+> initial card firmware initialization multiple times when network
+> interfaces are created during driver setup, and not when they are
+> created later by "iw phy phyX interface add ..."?
+> 
+> Next, looking at code of that function mwifiex_sta_init_cmd() it looks
+> like that all commands send to firmware are "global" and affects all
+> existing mwifiex network interfaces. Why then it is needed to call this
+> function when creating a new interface? (E.g. second bssid for AP mode).
+> 
+> Also if it really affects all existing interfaces, it means that
+> creating a new interface changes configured cfg80211 parameters of all
+> existing interfaces to some default values.
+> 
+> This also affects power save settings which I described in previous email:
+> https://lore.kernel.org/linux-wireless/20200609111544.v7u5ort3yk4s7coy@pali/
+> 
+> And the last and the most suspicious thing in that mwifiex_sta_init_cmd
+> function is that some AP related code is executed only during initial
+> card firmware initialization and only if initial interface is AP mode
+> ('init' = TRUE, 'first_sta' = TRUE, mode = 'AP').
+> 
+> Seems that driver behaves differently if interfaces are created by
+> standard 'iw phy phyX interface add ..." command (via cfg80211 layer)
+> and differently if interfaces are created automatically during driver
+> setup function.
+> 
+> Are there any reasons for these differences? And what to do with the
+> fact that most firmware commands which affects all interfaces and not
+> just one which is initializing?
+> 
+> These issues which I described makes it hard for me to understand what
+> is driver really doing and what should be correct behavior.
+> 
+> By the way, do you have documentation for firmware commands?
