@@ -2,74 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED7E33CBF94
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 01:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC9573CC00A
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 02:18:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237778AbhGPXKE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jul 2021 19:10:04 -0400
-Received: from mail-io1-f72.google.com ([209.85.166.72]:52920 "EHLO
-        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237208AbhGPXKD (ORCPT
+        id S229574AbhGQAV2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jul 2021 20:21:28 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:49662 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229462AbhGQAV2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jul 2021 19:10:03 -0400
-Received: by mail-io1-f72.google.com with SMTP id b136-20020a6bb28e0000b0290520c8d13420so7013195iof.19
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jul 2021 16:07:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=qaMOIh2upbMs9hOM1Tz4AOxQSYOvrsMlI718rr6A6Is=;
-        b=IQFexnyXUGxjiG8jQNRpTcMJvB2FI2wspSgB4bjE2dKY4LAewQsnSnQdp3uU/cXuAR
-         EMC8h+UU8cjZWf2G3BJZXSl8pwDfjWfB0fiLQggQMFojU9EZMPjTnm8jWv6fSfE+53eH
-         EUVLOv73G2HbYP866XcfbEpjPgcu09fTW2CE+fBoorrwIrKMVDRdqT8c7XuSAGfXhS1n
-         8hh3rlscmT+jD8Aj9RalzflLZQHWcbpMe5iBBsPFAfC3AdpyX6+ViRC9EzFexa+8ahS4
-         U6mm8/EG0ZEJaWfqBhtJfCpGrfp+dG2Uagr05k+vksjy4V1bfAY1r7pDwhZyOA+iU/Yn
-         pp6g==
-X-Gm-Message-State: AOAM533p9LIbJCCcdsezyGbGg7hJuYtdI2Jvf9J7Er1jI2vzN3jE97OP
-        RQSdnB4RLMiExa7hDMqTzR75scw6QGRfOF/NWV9xVvCLfr57
-X-Google-Smtp-Source: ABdhPJxsZhI0CdLIY+rzWPN0HYQv81ux+PuPu2AjkvxwV5y7JgLfQU6oiuU1IVzcs8ebcrTDjOTOzG9MGTpliCM3OpXNwjB3HeBm
+        Fri, 16 Jul 2021 20:21:28 -0400
+X-UUID: 151eaf2eca8840e59778b3e943a61a49-20210717
+X-UUID: 151eaf2eca8840e59778b3e943a61a49-20210717
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 352156742; Sat, 17 Jul 2021 08:18:29 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 17 Jul 2021 08:18:27 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 17 Jul 2021 08:18:27 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: add control knobs for thermal throttling
+Date:   Sat, 17 Jul 2021 08:18:25 +0800
+Message-ID: <af157fa64bb37eb9bb44036f7888a0f3a5ddcb1c.1626480942.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-Received: by 2002:a92:d943:: with SMTP id l3mr8182316ilq.37.1626476826637;
- Fri, 16 Jul 2021 16:07:06 -0700 (PDT)
-Date:   Fri, 16 Jul 2021 16:07:06 -0700
-In-Reply-To: <00000000000055e16405b0fc1a90@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000007cbbcd05c745a560@google.com>
-Subject: Re: [syzbot] WARNING in sta_info_alloc
-From:   syzbot <syzbot+45d7c243c006f39dc55a@syzkaller.appspotmail.com>
-To:     a@unstable.cc, anand.jain@oracle.com,
-        b.a.t.m.a.n@lists.open-mesh.org, catalin.marinas@arm.com,
-        clm@fb.com, davem@davemloft.net, dsterba@suse.com,
-        johannes@sipsolutions.net, josef@toxicpanda.com, kuba@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-btrfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        mareklindner@neomailbox.ch, netdev@vger.kernel.org,
-        sw@simonwunderlich.de, syzkaller-bugs@googlegroups.com,
-        will.deacon@arm.com, will@kernel.org, zlim.lnx@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot suspects this issue was fixed by commit:
+With this patch, users can set the trigger/restore temperature for
+thermal service according to their use cases.
 
-commit 282ab3ff16120ec670fe3330e85f8ebf13092f21
-Author: David Sterba <dsterba@suse.com>
-Date:   Mon Oct 14 12:38:33 2019 +0000
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 40 +++++++++++++++++--
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 17 +++-----
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
+ 3 files changed, 43 insertions(+), 15 deletions(-)
 
-    btrfs: reduce compressed_bio members' types
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index eb4c4991d020..77c7486d6a5c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -42,13 +42,17 @@ static const struct ieee80211_iface_combination if_comb[] = {
+ 	}
+ };
+ 
+-static ssize_t mt7915_thermal_show_temp(struct device *dev,
++static ssize_t mt7915_thermal_temp_show(struct device *dev,
+ 					struct device_attribute *attr,
+ 					char *buf)
+ {
+ 	struct mt7915_phy *phy = dev_get_drvdata(dev);
++	int i = to_sensor_dev_attr(attr)->index;
+ 	int temperature;
+ 
++	if (i)
++		return sprintf(buf, "%u\n", phy->throttle_temp[i - 1] * 1000);
++
+ 	temperature = mt7915_mcu_get_temperature(phy);
+ 	if (temperature < 0)
+ 		return temperature;
+@@ -57,11 +61,34 @@ static ssize_t mt7915_thermal_show_temp(struct device *dev,
+ 	return sprintf(buf, "%u\n", temperature * 1000);
+ }
+ 
+-static SENSOR_DEVICE_ATTR(temp1_input, 0444, mt7915_thermal_show_temp,
+-			  NULL, 0);
++static ssize_t mt7915_thermal_temp_store(struct device *dev,
++					 struct device_attribute *attr,
++					 const char *buf, size_t count)
++{
++	struct mt7915_phy *phy = dev_get_drvdata(dev);
++	int ret, i = to_sensor_dev_attr(attr)->index;
++	long val;
++
++	ret = kstrtol(buf, 10, &val);
++	if (ret < 0)
++		return ret;
++
++	mutex_lock(&phy->dev->mt76.mutex);
++	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 60, 130);
++	phy->throttle_temp[i - 1] = val;
++	mutex_unlock(&phy->dev->mt76.mutex);
++
++	return count;
++}
++
++static SENSOR_DEVICE_ATTR_RO(temp1_input, mt7915_thermal_temp, 0);
++static SENSOR_DEVICE_ATTR_RW(temp1_crit, mt7915_thermal_temp, 1);
++static SENSOR_DEVICE_ATTR_RW(temp1_max, mt7915_thermal_temp, 2);
+ 
+ static struct attribute *mt7915_hwmon_attrs[] = {
+ 	&sensor_dev_attr_temp1_input.dev_attr.attr,
++	&sensor_dev_attr_temp1_crit.dev_attr.attr,
++	&sensor_dev_attr_temp1_max.dev_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(mt7915_hwmon);
+@@ -96,6 +123,9 @@ mt7915_thermal_set_cur_throttle_state(struct thermal_cooling_device *cdev,
+ 	if (state > MT7915_THERMAL_THROTTLE_MAX)
+ 		return -EINVAL;
+ 
++	if (phy->throttle_temp[0] > phy->throttle_temp[1])
++		return 0;
++
+ 	if (state == phy->throttle_state)
+ 		return 0;
+ 
+@@ -150,6 +180,10 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
+ 	if (IS_ERR(hwmon))
+ 		return PTR_ERR(hwmon);
+ 
++	/* initialize critical/maximum high temperature */
++	phy->throttle_temp[0] = 110;
++	phy->throttle_temp[1] = 120;
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 8d646aa3d084..cb3f833181d9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3544,10 +3544,6 @@ int mt7915_mcu_set_thermal_throttling(struct mt7915_phy *phy, u8 state)
+ 	};
+ 	int level;
+ 
+-#define TRIGGER_TEMPERATURE	122
+-#define RESTORE_TEMPERATURE	116
+-#define SUSTAIN_PERIOD		10
+-
+ 	if (!state) {
+ 		req.ctrl.ctrl_id = THERMAL_PROTECT_DISABLE;
+ 		goto out;
+@@ -3560,7 +3556,7 @@ int mt7915_mcu_set_thermal_throttling(struct mt7915_phy *phy, u8 state)
+ 		req.ctrl.ctrl_id = THERMAL_PROTECT_DUTY_CONFIG;
+ 		req.ctrl.duty.duty_level = level;
+ 		req.ctrl.duty.duty_cycle = state;
+-		state = state * 4 / 5;
++		state /= 2;
+ 
+ 		ret = mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(THERMAL_PROT),
+ 					&req, sizeof(req.ctrl), false);
+@@ -3568,15 +3564,12 @@ int mt7915_mcu_set_thermal_throttling(struct mt7915_phy *phy, u8 state)
+ 			return ret;
+ 	}
+ 
+-	/* currently use fixed values for throttling, and would be better
+-	 * to implement thermal zone for dynamic trip in the long run.
+-	 */
+-
+ 	/* set high-temperature trigger threshold */
+ 	req.ctrl.ctrl_id = THERMAL_PROTECT_ENABLE;
+-	req.trigger_temp = cpu_to_le32(TRIGGER_TEMPERATURE);
+-	req.restore_temp = cpu_to_le32(RESTORE_TEMPERATURE);
+-	req.sustain_time = cpu_to_le16(SUSTAIN_PERIOD);
++	/* add a safety margin ~10 */
++	req.restore_temp = cpu_to_le32(phy->throttle_temp[0] - 10);
++	req.trigger_temp = cpu_to_le32(phy->throttle_temp[1]);
++	req.sustain_time = cpu_to_le16(10);
+ 
+ out:
+ 	req.ctrl.type.protect_type = 1;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 33be449309e0..7f3482c59603 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -123,6 +123,7 @@ struct mt7915_phy {
+ 
+ 	struct thermal_cooling_device *cdev;
+ 	u8 throttle_state;
++	u32 throttle_temp[2]; /* 0: critical high, 1: maximum */
+ 
+ 	u32 rxfilter;
+ 	u64 omac_mask;
+-- 
+2.29.2
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12d5f6f2300000
-start commit:   7f75285ca572 Merge tag 'for-5.12/dm-fixes-3' of git://git...
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b5591c832f889fd9
-dashboard link: https://syzkaller.appspot.com/bug?extid=45d7c243c006f39dc55a
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=164f385ad00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1427af9ad00000
-
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: btrfs: reduce compressed_bio members' types
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
