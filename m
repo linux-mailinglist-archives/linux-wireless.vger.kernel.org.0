@@ -2,103 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B27DC3CC4E1
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 19:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 799303CC648
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 22:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233441AbhGQRgy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Jul 2021 13:36:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34376 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232828AbhGQRgy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Jul 2021 13:36:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2761360FE9;
-        Sat, 17 Jul 2021 17:33:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1626543236;
-        bh=GDqTCOO4uFGwemmRAEP2WS2n7BZO4bDcvurji9/tB1g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lBbpu4nsV39zDRohQAu43Y327W1pCIkBvQrXND3O1vZP3qSqvDY+SOe5O+rOxL1tn
-         3wvZK+CjfK8Hg5EShc+7YSXxgSHT8qFPXAXs6wD/0El/TMcpcx9ZMil5go+I9AKXk6
-         dQKb9NBQ2MWsHcjBchVILzoX3mE7Q0oYVfWfSUcc=
-Date:   Sat, 17 Jul 2021 19:33:49 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Len Baker <len.baker@gmx.com>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Pkshih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] rtw88: Fix out-of-bounds write
-Message-ID: <YPMUfbDh3jnV8hRZ@kroah.com>
-References: <20210716155311.5570-1-len.baker@gmx.com>
- <YPG/8F7yYLm3vAlG@kroah.com>
- <20210717133343.GA2009@titan>
+        id S235663AbhGQUoW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 17 Jul 2021 16:44:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235549AbhGQUoL (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 17 Jul 2021 16:44:11 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8005C061762;
+        Sat, 17 Jul 2021 13:41:12 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id l6so7879130wmq.0;
+        Sat, 17 Jul 2021 13:41:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vG0sIpzBhVt6BJJBVFqkVBxLXJrhZTlu49Bhd8MJC9A=;
+        b=Wnq6ro1U/OswcapqBzqmYALTMTKdw6WDZvEECOJkaSDjpRjhdnJP+K6G3a3oTgOM+k
+         0ggOU8DnTqCrOJSUShMhlF5RJ+yI7XVIS+R+TzPADvWeJIPghPUcJd1B0BXm18wvDRqD
+         yYBZxHCOHvF4MaDwaa6sCpCudz0FQxupbVoxmk49WA7ct0wlTvik0bvg9i1/LhytnRVP
+         EiGh5fy1EHu13SbK8XXK8hcww6Junmcdvt9Q4YbyBtro6MJEU0tq9JutvIW45DiZ9KZZ
+         wyH3KS3D4/B8Sn/iXfCPhsBmW9YohXoSjRMwIpYXTY6Q6YdL/8rNJGNQdR0hqzH7DVVq
+         OeQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vG0sIpzBhVt6BJJBVFqkVBxLXJrhZTlu49Bhd8MJC9A=;
+        b=AZ+JITg9ihBlcMj90EzOXv6I2yLZGQkl/R6HggN/Yvjbr2Vv2g0GZMZA1BsxaOBihc
+         zi8R3E3vGugUYvcfVz6ZS6nJ0m4G+ShfX+oMcFgVuz5hqx4MCwwhPBMg837toXxza9LS
+         OrKhW9vY3flKmyoz48HMGKzAE0p08K34gK8syseCmuCfUcoW1K0qZfzhuiBXVYeU/wmq
+         Mc8B4Q2NAUmzAMLgw7rnIstzCTT0Rgchuh4axC4Cf+m8f/925Fcpr9A3Ukl3R5Sxsldy
+         sBNPBCqVueYSJP+TGiSdakj3RwQGPsP31n17BDawVdiaKi0gwEi2R7UNKARPpkWcam7n
+         vctg==
+X-Gm-Message-State: AOAM53183/uiyR5sQpSUeNyNW8Q3OjYhgD4pcNU5gG/lZBZOTUaVJqwh
+        UfGm0DycmnaoeqpeEp0gPoNbRw7UUbQ=
+X-Google-Smtp-Source: ABdhPJxSwo07uM+I2ABeTgC9BqzvwaJO2QywvsOnBJomSwkoIjSWMfav00r8wbzEtfYKrtvH1uBNbg==
+X-Received: by 2002:a7b:c1cd:: with SMTP id a13mr23607010wmj.75.1626554470334;
+        Sat, 17 Jul 2021 13:41:10 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a01-0c22-7602-4e00-f22f-74ff-fe21-0725.c22.pool.telefonica.de. [2a01:c22:7602:4e00:f22f:74ff:fe21:725])
+        by smtp.googlemail.com with ESMTPSA id n7sm14078357wmq.37.2021.07.17.13.41.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Jul 2021 13:41:09 -0700 (PDT)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     tony0620emma@gmail.com, kvalo@codeaurora.org,
+        johannes@sipsolutions.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH RFC v1 0/7] rtw88: prepare locking for SDIO support
+Date:   Sat, 17 Jul 2021 22:40:50 +0200
+Message-Id: <20210717204057.67495-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210717133343.GA2009@titan>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jul 17, 2021 at 03:33:43PM +0200, Len Baker wrote:
-> On Fri, Jul 16, 2021 at 07:20:48PM +0200, Greg KH wrote:
-> > On Fri, Jul 16, 2021 at 05:53:11PM +0200, Len Baker wrote:
-> > > In the rtw_pci_init_rx_ring function the "if (len > TRX_BD_IDX_MASK)"
-> > > statement guarantees that len is less than or equal to GENMASK(11, 0) or
-> > > in other words that len is less than or equal to 4095. However the
-> > > rx_ring->buf has a size of RTK_MAX_RX_DESC_NUM (defined as 512). This
-> > > way it is possible an out-of-bounds write in the for statement due to
-> > > the i variable can exceed the rx_ring->buff size.
-> > >
-> > > However, this overflow never happens due to the rtw_pci_init_rx_ring is
-> > > only ever called with a fixed constant of RTK_MAX_RX_DESC_NUM. But it is
-> > > better to be defensive in this case and add a new check to avoid
-> > > overflows if this function is called in a future with a value greater
-> > > than 512.
-> >
-> > If this can never happen, then no, this is not needed.
-> 
-> Then, if this can never happen, the current check would not be necessary
-> either.
-> 
-> > Why would you check twice for the same thing?
-> 
-> Ok, it makes no sense to double check the "len" variable twice. So, I
-> propose to modify the current check as follows:
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-> index e7d17ab8f113..0fd140523868 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -268,8 +268,8 @@ static int rtw_pci_init_rx_ring(struct rtw_dev *rtwdev,
->         int i, allocated;
->         int ret = 0;
-> 
-> -       if (len > TRX_BD_IDX_MASK) {
-> -               rtw_err(rtwdev, "len %d exceeds maximum RX entries\n", len);
-> +       if (len > ARRAY_SIZE(rx_ring->buf)) {
-> +               rtw_err(rtwdev, "len %d exceeds maximum RX ring buffer\n", len);
->                 return -EINVAL;
->         }
-> 
-> This way the overflow can never happen with the current call to
-> rtw_pci_init_rx_ring function or with a future call with a "len" parameter
-> greater than 512. What do you think?
-> 
-> If there are no objections I will send a v3 for review.
-> 
-> Another question: If this can never happen should I include the "Fixes" tag,
-> "Addresses-Coverity-ID" tag and Cc to stable?
+Hello rtw88 and mac80211 maintainers/contributors,
 
-If it can never happen, why have this check at all?
+there is an ongoing effort where Jernej and I are working on adding
+SDIO support to the rtw88 driver.
+The hardware we use at the moment is RTL8822BS and RTL8822CS.
+We are at a point where scanning, assoc etc. works (though it's not
+fast yet, in my tests I got ~6Mbit/s in either direction).
 
-Looks like a Coverity false positive?
+This series contains some preparation work for adding SDIO support.
+While testing our changes we found that there are some "scheduling
+while atomic" errors in the kernel log. These are due to the fact
+that the SDIO accessors (sdio_readb, sdio_writeb and friends) may
+sleep internally.
 
-thanks,
+Some background on why SDIO access (for example: sdio_writeb) cannot
+be done with a spinlock held (this is a copy from my previous mail,
+see [0]):
+- when using for example sdio_writeb the MMC subsystem in Linux
+  prepares a so-called MMC request
+- this request is submitted to the MMC host controller hardware
+- the host controller hardware forwards the MMC request to the card
+- the card signals when it's done processing the request
+- the MMC subsystem in Linux waits for the card to signal that it's
+done processing the request in mmc_wait_for_req_done() -> this uses
+wait_for_completion() internally, which might sleep (which is not
+allowed while a spinlock is held)
 
-greg k-h
+Based on Ping-Ke's suggestion I came up with the code in this series.
+The goal is to use non-atomic locking for all register access in the
+rtw88 driver. One patch adds a new function to mac80211 which did not
+have a "non-atomic" version of it's "atomic" counterpart yet.
+
+As mentioned before I don't have any rtw88 PCIe device so I am unable
+to test on that hardware.
+I am sending this as an RFC series since I am new to the mac80211
+subsystem as well as the rtw88 driver. So any kind of feedback is
+very welcome!
+The actual changes for adding SDIO support will be sent separately in
+the future.
+
+
+[0] https://lore.kernel.org/linux-wireless/CAFBinCDMPPJ7qW7xTkep1Trg+zP0B9Jxei6sgjqmF4NDA1JAhQ@mail.gmail.com/
+
+
+Martin Blumenstingl (7):
+  mac80211: Add stations iterator where the iterator function may sleep
+  rtw88: Use rtw_iterate_vifs where the iterator reads or writes
+    registers
+  rtw88: Use rtw_iterate_stas where the iterator reads or writes
+    registers
+  rtw88: Replace usage of rtw_iterate_keys_rcu() with rtw_iterate_keys()
+  rtw88: Configure the registers from rtw_bf_assoc() outside the RCU
+    lock
+  rtw88: hci: Convert rf_lock from a spinlock to a mutex
+  rtw88: fw: Convert h2c.lock from a spinlock to a mutex
+
+ drivers/net/wireless/realtek/rtw88/bf.c       |  8 ++++++--
+ drivers/net/wireless/realtek/rtw88/fw.c       | 14 +++++++-------
+ drivers/net/wireless/realtek/rtw88/hci.h      | 11 ++++-------
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/main.c     | 16 +++++++---------
+ drivers/net/wireless/realtek/rtw88/main.h     |  4 ++--
+ drivers/net/wireless/realtek/rtw88/phy.c      |  4 ++--
+ drivers/net/wireless/realtek/rtw88/ps.c       |  2 +-
+ drivers/net/wireless/realtek/rtw88/util.h     |  4 ++--
+ drivers/net/wireless/realtek/rtw88/wow.c      |  2 +-
+ include/net/mac80211.h                        | 18 ++++++++++++++++++
+ net/mac80211/util.c                           | 13 +++++++++++++
+ 12 files changed, 64 insertions(+), 34 deletions(-)
+
+-- 
+2.32.0
+
