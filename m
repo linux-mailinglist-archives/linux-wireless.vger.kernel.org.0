@@ -2,194 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC9573CC00A
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 02:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1343C3CC090
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 03:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbhGQAV2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jul 2021 20:21:28 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:49662 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229462AbhGQAV2 (ORCPT
+        id S238347AbhGQBnx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jul 2021 21:43:53 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:49901 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232010AbhGQBnx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jul 2021 20:21:28 -0400
-X-UUID: 151eaf2eca8840e59778b3e943a61a49-20210717
-X-UUID: 151eaf2eca8840e59778b3e943a61a49-20210717
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 352156742; Sat, 17 Jul 2021 08:18:29 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 17 Jul 2021 08:18:27 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 17 Jul 2021 08:18:27 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: add control knobs for thermal throttling
-Date:   Sat, 17 Jul 2021 08:18:25 +0800
-Message-ID: <af157fa64bb37eb9bb44036f7888a0f3a5ddcb1c.1626480942.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Fri, 16 Jul 2021 21:43:53 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16H1enyQ7017818, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16H1enyQ7017818
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Sat, 17 Jul 2021 09:40:49 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Sat, 17 Jul 2021 09:40:47 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Sat, 17 Jul 2021 09:40:47 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91]) by
+ RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91%5]) with mapi id
+ 15.01.2106.013; Sat, 17 Jul 2021 09:40:47 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: RE: Difficulty connecting to AP using rtw89
+Thread-Topic: Difficulty connecting to AP using rtw89
+Thread-Index: AQHXedzEvSHwSXSC2EGxNTyUmGxj/atE4CcwgABoiACAARvNsA==
+Date:   Sat, 17 Jul 2021 01:40:47 +0000
+Message-ID: <04a1e9643c09406697b48f5f781a3e2d@realtek.com>
+References: <f2ee1dbd-28b5-a1e6-8f41-e7ed8dfc2521@lwfinger.net>
+ <d74a6a489b2f466eb66df3f5f965a1fa@realtek.com>
+ <28f2a476-b690-24dd-df7e-f88f45b9292d@lwfinger.net>
+In-Reply-To: <28f2a476-b690-24dd-df7e-f88f45b9292d@lwfinger.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzcvMTYg5LiL5Y2IIDEwOjAwOjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/17/2021 01:27:44
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165065 [Jul 17 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
+X-KSE-AntiSpam-Info: {Tracking_from_exist}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 07/17/2021 01:30:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With this patch, users can set the trigger/restore temperature for
-thermal service according to their use cases.
-
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/init.c  | 40 +++++++++++++++++--
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 17 +++-----
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
- 3 files changed, 43 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index eb4c4991d020..77c7486d6a5c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -42,13 +42,17 @@ static const struct ieee80211_iface_combination if_comb[] = {
- 	}
- };
- 
--static ssize_t mt7915_thermal_show_temp(struct device *dev,
-+static ssize_t mt7915_thermal_temp_show(struct device *dev,
- 					struct device_attribute *attr,
- 					char *buf)
- {
- 	struct mt7915_phy *phy = dev_get_drvdata(dev);
-+	int i = to_sensor_dev_attr(attr)->index;
- 	int temperature;
- 
-+	if (i)
-+		return sprintf(buf, "%u\n", phy->throttle_temp[i - 1] * 1000);
-+
- 	temperature = mt7915_mcu_get_temperature(phy);
- 	if (temperature < 0)
- 		return temperature;
-@@ -57,11 +61,34 @@ static ssize_t mt7915_thermal_show_temp(struct device *dev,
- 	return sprintf(buf, "%u\n", temperature * 1000);
- }
- 
--static SENSOR_DEVICE_ATTR(temp1_input, 0444, mt7915_thermal_show_temp,
--			  NULL, 0);
-+static ssize_t mt7915_thermal_temp_store(struct device *dev,
-+					 struct device_attribute *attr,
-+					 const char *buf, size_t count)
-+{
-+	struct mt7915_phy *phy = dev_get_drvdata(dev);
-+	int ret, i = to_sensor_dev_attr(attr)->index;
-+	long val;
-+
-+	ret = kstrtol(buf, 10, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	mutex_lock(&phy->dev->mt76.mutex);
-+	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 60, 130);
-+	phy->throttle_temp[i - 1] = val;
-+	mutex_unlock(&phy->dev->mt76.mutex);
-+
-+	return count;
-+}
-+
-+static SENSOR_DEVICE_ATTR_RO(temp1_input, mt7915_thermal_temp, 0);
-+static SENSOR_DEVICE_ATTR_RW(temp1_crit, mt7915_thermal_temp, 1);
-+static SENSOR_DEVICE_ATTR_RW(temp1_max, mt7915_thermal_temp, 2);
- 
- static struct attribute *mt7915_hwmon_attrs[] = {
- 	&sensor_dev_attr_temp1_input.dev_attr.attr,
-+	&sensor_dev_attr_temp1_crit.dev_attr.attr,
-+	&sensor_dev_attr_temp1_max.dev_attr.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(mt7915_hwmon);
-@@ -96,6 +123,9 @@ mt7915_thermal_set_cur_throttle_state(struct thermal_cooling_device *cdev,
- 	if (state > MT7915_THERMAL_THROTTLE_MAX)
- 		return -EINVAL;
- 
-+	if (phy->throttle_temp[0] > phy->throttle_temp[1])
-+		return 0;
-+
- 	if (state == phy->throttle_state)
- 		return 0;
- 
-@@ -150,6 +180,10 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
- 	if (IS_ERR(hwmon))
- 		return PTR_ERR(hwmon);
- 
-+	/* initialize critical/maximum high temperature */
-+	phy->throttle_temp[0] = 110;
-+	phy->throttle_temp[1] = 120;
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 8d646aa3d084..cb3f833181d9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3544,10 +3544,6 @@ int mt7915_mcu_set_thermal_throttling(struct mt7915_phy *phy, u8 state)
- 	};
- 	int level;
- 
--#define TRIGGER_TEMPERATURE	122
--#define RESTORE_TEMPERATURE	116
--#define SUSTAIN_PERIOD		10
--
- 	if (!state) {
- 		req.ctrl.ctrl_id = THERMAL_PROTECT_DISABLE;
- 		goto out;
-@@ -3560,7 +3556,7 @@ int mt7915_mcu_set_thermal_throttling(struct mt7915_phy *phy, u8 state)
- 		req.ctrl.ctrl_id = THERMAL_PROTECT_DUTY_CONFIG;
- 		req.ctrl.duty.duty_level = level;
- 		req.ctrl.duty.duty_cycle = state;
--		state = state * 4 / 5;
-+		state /= 2;
- 
- 		ret = mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(THERMAL_PROT),
- 					&req, sizeof(req.ctrl), false);
-@@ -3568,15 +3564,12 @@ int mt7915_mcu_set_thermal_throttling(struct mt7915_phy *phy, u8 state)
- 			return ret;
- 	}
- 
--	/* currently use fixed values for throttling, and would be better
--	 * to implement thermal zone for dynamic trip in the long run.
--	 */
--
- 	/* set high-temperature trigger threshold */
- 	req.ctrl.ctrl_id = THERMAL_PROTECT_ENABLE;
--	req.trigger_temp = cpu_to_le32(TRIGGER_TEMPERATURE);
--	req.restore_temp = cpu_to_le32(RESTORE_TEMPERATURE);
--	req.sustain_time = cpu_to_le16(SUSTAIN_PERIOD);
-+	/* add a safety margin ~10 */
-+	req.restore_temp = cpu_to_le32(phy->throttle_temp[0] - 10);
-+	req.trigger_temp = cpu_to_le32(phy->throttle_temp[1]);
-+	req.sustain_time = cpu_to_le16(10);
- 
- out:
- 	req.ctrl.type.protect_type = 1;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 33be449309e0..7f3482c59603 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -123,6 +123,7 @@ struct mt7915_phy {
- 
- 	struct thermal_cooling_device *cdev;
- 	u8 throttle_state;
-+	u32 throttle_temp[2]; /* 0: critical high, 1: maximum */
- 
- 	u32 rxfilter;
- 	u64 omac_mask;
--- 
-2.29.2
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGFycnkgRmluZ2VyIFtt
+YWlsdG86bGFycnkuZmluZ2VyQGdtYWlsLmNvbV0gT24gQmVoYWxmIE9mIExhcnJ5IEZpbmdlcg0K
+PiBTZW50OiBTYXR1cmRheSwgSnVseSAxNywgMjAyMSAxMjo0MCBBTQ0KPiBUbzogUGtzaGloOyBs
+aW51eC13aXJlbGVzcw0KPiBTdWJqZWN0OiBSZTogRGlmZmljdWx0eSBjb25uZWN0aW5nIHRvIEFQ
+IHVzaW5nIHJ0dzg5DQo+IA0KPiBPbiA3LzE1LzIxIDEwOjE3IFBNLCBQa3NoaWggd3JvdGU6DQo+
+ID4gSGkgTGFycnksDQo+ID4NCj4gPiBJJ20gbm90IHN1cmUgaWYgdGhlIHByb2JsZW0gdGhlIHVz
+ZXJzIG1ldCBpcyByZWxhdGVkIHRvIHNlY3VyaXR5IG9yIG5vdC4NCj4gPiBCdXQsIHdlIGhhdmUg
+YSBzb2x1dGlvbiB0byBkZWFsIHdpdGggc2ltaWxhciBzeW1wdG9tLg0KPiA+IFBsZWFzZSBhcHBs
+eSBhbmQgdHJ5IGF0dGFjaGVkIHBhdGNoIHRvIHNlZSBpZiBpdCBpcyBoZWxwZnVsLg0KPiANCj4g
+UGluZy1rZSwNCj4gDQo+IFR3byBvZiB0aGUgNCB1c2VycyB3aXRoIHRoZSBwcm9ibGVtIGhhdmUg
+cmVwb3J0ZWQgYmFjayB0aGF0IHRoZWlyIGRldmljZSBub3cNCj4gd29ya3MuIFRoYW5rcyBmb3Ig
+dGhlIHBhdGNoLg0KDQpUaGFua3MgZm9yIHRoZSBoZWxwLg0KDQo+IA0KPiBJbiBhIHNlcGFyYXRl
+IHF1ZXN0aW9uLCB3aWxsIHY2IGhhdmUgcHJvdmlzaW9ucyBmb3IgSVB2Nj8NCj4gDQoNClRoZSBk
+cml2ZXIgaGFuZGxlcyBMMiB0aGluZ3Mgb25seSwgYnV0IElQdjYgdGhhdCBpcyBMMyB0aGF0IHdl
+IGRvbid0IGhhdmUgc3BlY2lhbCBkZWFsLg0KQ291bGQgSSBrbm93IHRoZSBwcm9ibGVtIHlvdSBt
+ZXQ/DQoNCi0tDQpQaW5nLUtlDQoNCg0K
