@@ -2,165 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 553933CC652
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jul 2021 22:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71DCC3CC81F
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jul 2021 09:54:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235953AbhGQUof (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 17 Jul 2021 16:44:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46110 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235646AbhGQUoS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 17 Jul 2021 16:44:18 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F49C061767;
-        Sat, 17 Jul 2021 13:41:18 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id d12so16136396wre.13;
-        Sat, 17 Jul 2021 13:41:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=mj2H3msC6oyhKz7UwATyKp0y5VOYMGrKZ8Me0MwbHlo=;
-        b=RRfAQgvDxFkq9BTwC4WA0SaA78PX1voZJS9zeepKtWYEbDR7nr9+rou4xCBIF8M6GZ
-         8YT9n90qbhBNfZtQOLcri2UJPCLvJClXTYirrgpEldvIw8WpJT9lTZRWZuokpQ/P3JAG
-         6gttyHWXP+AQD86M64TZnJhuDXcihS4GrpvpJ/su4a8Ylq9ZGbt6orqtgwu1DFEYcQSc
-         qlPjPxa4JPihb4jfmEOHhXgFJDVT1yfX8OITd++TIw6lhN5yOpjHywNnjeLr95p47kfY
-         zRVl8w9eCaxZFOm//QViM7+Mro0o0vA5KPLiKhWu0xv81AWzjZkSCNbDwHf7C7pxCgwQ
-         +RrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=mj2H3msC6oyhKz7UwATyKp0y5VOYMGrKZ8Me0MwbHlo=;
-        b=biTY/PeHTrM9uodFMeDeSyn0B10qFYcyGNlnmifvD5IDgMiyZuubW39YgdDrFTGlol
-         ovKwai0Be0cg19FCkcNori2eIOtypxfKqMjCw25WabRk+MR/65gaGZ+UQiZ5xMMVBywG
-         gCVL77n6zBAyb9u6tTNnN1X32NG02bHbQX9mC0yIAHSo03f26epbMblSYkRhw0U2zvVT
-         uTZz8Im5TJy9gQNta3HWNT79ayIXw/WSHYjz4qb4Bxh3TypwGDXImclVqC5AXN5kK4uC
-         y2D70yJNhPm/iXuJw9LwdYWH/OFioc1zng3U/Ylzm5CeaGh3w2FOUryl+58S9Cd9ZCd6
-         gVyA==
-X-Gm-Message-State: AOAM531BHylmLXq+WR0724K5+KaEb695Ty30iKEGbkczy5dnsS0s4Muc
-        AMDEU+3P7JobUXqXMvqDUY40KPUWwoc=
-X-Google-Smtp-Source: ABdhPJx0xizcRHPfUYgxXxQWN7LnGYOrn+BzTXtExqnxUqjICf37qSmxBsOHt8Cihcae+Jh+qsuysA==
-X-Received: by 2002:adf:edd1:: with SMTP id v17mr19892978wro.276.1626554477229;
-        Sat, 17 Jul 2021 13:41:17 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a01-0c22-7602-4e00-f22f-74ff-fe21-0725.c22.pool.telefonica.de. [2a01:c22:7602:4e00:f22f:74ff:fe21:725])
-        by smtp.googlemail.com with ESMTPSA id n7sm14078357wmq.37.2021.07.17.13.41.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Jul 2021 13:41:16 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     tony0620emma@gmail.com, kvalo@codeaurora.org,
-        johannes@sipsolutions.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH RFC v1 7/7] rtw88: fw: Convert h2c.lock from a spinlock to a mutex
-Date:   Sat, 17 Jul 2021 22:40:57 +0200
-Message-Id: <20210717204057.67495-8-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210717204057.67495-1-martin.blumenstingl@googlemail.com>
-References: <20210717204057.67495-1-martin.blumenstingl@googlemail.com>
+        id S230307AbhGRH45 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Jul 2021 03:56:57 -0400
+Received: from mout.gmx.net ([212.227.15.15]:55591 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229578AbhGRH44 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Jul 2021 03:56:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1626594818;
+        bh=sSf1sanoNyOf1s8ToImMPkw6H4e74dn8eSrq/chg8Q0=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=QkiEAqWbOy8TBkMzD6dJ6iOxmbJNklBnmN5fmO5auXc39bOBUZNmCiMMq6BzSe3SL
+         JHlnNQq3lUG0HnHZh3kFx69V2wfElMn+LWVlmRU9AMyXD6X98DNztXI7iYaFJD8WVU
+         AzgwOEPvZWB6eThd5AW+lSxBnGfy2WPJ8pLOBjwM=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from titan ([83.52.228.41]) by mail.gmx.net (mrgmx005
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MSbxD-1lgVh247tR-00Swiu; Sun, 18
+ Jul 2021 09:53:38 +0200
+Date:   Sun, 18 Jul 2021 09:53:24 +0200
+From:   Len Baker <len.baker@gmx.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Len Baker <len.baker@gmx.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Pkshih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] rtw88: Fix out-of-bounds write
+Message-ID: <20210718075324.GA3118@titan>
+References: <20210716155311.5570-1-len.baker@gmx.com>
+ <YPG/8F7yYLm3vAlG@kroah.com>
+ <20210717133343.GA2009@titan>
+ <YPMUfbDh3jnV8hRZ@kroah.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YPMUfbDh3jnV8hRZ@kroah.com>
+X-Provags-ID: V03:K1:JhNSeBGs0zGSWWl5J6a1ocVLtAtD6Ugtat/wFNLVSUgDhgjxb5V
+ 88TXcSkGduQlfyCmZIXMllL7WXSwL0iYJIw/HRkeXLaGkZt9TQA+F3lTwKSJ4PMEDZUBFVP
+ FLriM5kbh8nenUg/RbsZH/EMXmeLuR5QD+0VVHlH2ej/P0J6aGKh1GeARjfWvPk9GjpaUWZ
+ eYTCYljvuLwUa/GHZ3XOQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3Gsqx7Fsm5s=:SUyH/zdppSSWWeT2atMcIU
+ OJoajrmk7YOGbQc4atP37nheeL7mYoA/rCw2itbYprFYuOIOcvpG/uhtrhqt513ABup1wKihj
+ aywtvxmPXkr3HjbD71jtoMaOUgwhUXTI5LrPGWV4Siatim/zgF8hBWSHRu8g6c1yvvzNScnvh
+ YYCPLWk10iETYJ/pwWnqMfuKcyOje5409Q9Ck6AjL2vBqO57s4+UoewIdxxqxMC45D3W5Lt7e
+ VtKnvWLaF0Ps68uSJZCH9fVBnj/YCZiePUTQWekXwDQPLq1IcF3Kmdvg8uDr2GotLf/cveiQF
+ bhrtwI4IWT4vf94erqhnwMlGaQU83owU/+ynUZ7D1dQ3LNRaRe0v5R9OVrfBGIU+lquSqoJZ2
+ 2Hkc/US8xqD46BAuvLgnfkP6/Br4TR0gRmqjwZo/4K1n8Ore8Ktn22a7N3bNp6W1/yAft7pTv
+ otxrm/PtOb4jz4nebcLPeMb9nnspC1IqzzUApN8fRlNDvWriLbUpcUQsLFIHe3bFe6zjN9Q2K
+ i35EiwD0le+aP45iaJkjeTZdWx4M+9Ft/edoIxSZ8FUEgE4hU7D9XDtDHUTG4nFK0FBe1n3Qf
+ Kn+JuTihguTNaAQKz2LTYfsoUldZviCz6Fp6x+oqIKvN28tJ+jTb/v8w2BLF7TH0C9CGT6LYY
+ 5KfLkwW5ou/BlZaXuL5z9+LzkDG98Yy/5fwoJ6Ucdv4NJA5iQwEaVVjC8ISNuy8iwLLY8n0KT
+ lgBUBZWe+5h1TsGTKQobDbr8GdJT4hfTJtBZggyeU4KxkxjXZUNBCMjNtr6Yr7p5NzKxjVG5V
+ y9o3DPzhuMhzAGWYRXXvUxiBLvfPsEPqEhn9EpnxJ78iQXBRGdlUsB0v03ZTWqKo/VgTXezPb
+ GBWLKKnCn73OkJx6dAvP6h7sNXz4GZmbRMMqWMUlI9TgZx1dZcF78z7vYBTsTQkBta1YybX+m
+ r3TDnmq8PAqjpYrI71CT+2KPP9xwak5lehy9uMSpkrPRAI52Vfzf2q6vpY86wy2MYiavE7gXA
+ kvSO+HJ1k7SBrkgIMHEqRprmy8Yo6tqvQgh51nhH4lOhk0ClsilVBKuDJ1OTRn/FSJvTKSEob
+ npgU56hW0Zg+ALy5mwXTqA/H3bqcmxIq9de
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Upcoming SDIO support may sleep in the read/write handlers. Switch
-the h2c.lock from a spinlock to a mutex to allow for this behavior.
+On Sat, Jul 17, 2021 at 07:33:49PM +0200, Greg KH wrote:
+> On Sat, Jul 17, 2021 at 03:33:43PM +0200, Len Baker wrote:
+> > Another question: If this can never happen should I include the "Fixes=
+" tag,
+> > "Addresses-Coverity-ID" tag and Cc to stable?
+>
+> If it can never happen, why have this check at all?
+>
+> Looks like a Coverity false positive?
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c   | 14 +++++++-------
- drivers/net/wireless/realtek/rtw88/main.c |  2 +-
- drivers/net/wireless/realtek/rtw88/main.h |  2 +-
- 3 files changed, 9 insertions(+), 9 deletions(-)
+Ok, then I will remove the check and I will send a patch for review.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 3bfa5ecc0053..5acc798299e5 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -285,7 +285,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
- 		h2c[3], h2c[2], h2c[1], h2c[0],
- 		h2c[7], h2c[6], h2c[5], h2c[4]);
- 
--	spin_lock(&rtwdev->h2c.lock);
-+	mutex_lock(&rtwdev->h2c.lock);
- 
- 	box = rtwdev->h2c.last_box_num;
- 	switch (box) {
-@@ -310,9 +310,9 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
- 		goto out;
- 	}
- 
--	ret = read_poll_timeout_atomic(rtw_read8, box_state,
--				       !((box_state >> box) & 0x1), 100, 3000,
--				       false, rtwdev, REG_HMETFR);
-+	ret = read_poll_timeout(rtw_read8, box_state,
-+				!((box_state >> box) & 0x1), 100, 3000, false,
-+				rtwdev, REG_HMETFR);
- 
- 	if (ret) {
- 		rtw_err(rtwdev, "failed to send h2c command\n");
-@@ -328,7 +328,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
- 		rtwdev->h2c.last_box_num = 0;
- 
- out:
--	spin_unlock(&rtwdev->h2c.lock);
-+	mutex_unlock(&rtwdev->h2c.lock);
- }
- 
- void rtw_fw_h2c_cmd_dbg(struct rtw_dev *rtwdev, u8 *h2c)
-@@ -340,7 +340,7 @@ static void rtw_fw_send_h2c_packet(struct rtw_dev *rtwdev, u8 *h2c_pkt)
- {
- 	int ret;
- 
--	spin_lock(&rtwdev->h2c.lock);
-+	mutex_lock(&rtwdev->h2c.lock);
- 
- 	FW_OFFLOAD_H2C_SET_SEQ_NUM(h2c_pkt, rtwdev->h2c.seq);
- 	ret = rtw_hci_write_data_h2c(rtwdev, h2c_pkt, H2C_PKT_SIZE);
-@@ -348,7 +348,7 @@ static void rtw_fw_send_h2c_packet(struct rtw_dev *rtwdev, u8 *h2c_pkt)
- 		rtw_err(rtwdev, "failed to send h2c packet\n");
- 	rtwdev->h2c.seq++;
- 
--	spin_unlock(&rtwdev->h2c.lock);
-+	mutex_unlock(&rtwdev->h2c.lock);
- }
- 
- void
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 5ebc4c0b4ccc..34e5bc97d9f4 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1834,12 +1834,12 @@ int rtw_core_init(struct rtw_dev *rtwdev)
- 	skb_queue_head_init(&rtwdev->coex.queue);
- 	skb_queue_head_init(&rtwdev->tx_report.queue);
- 
--	spin_lock_init(&rtwdev->h2c.lock);
- 	spin_lock_init(&rtwdev->txq_lock);
- 	spin_lock_init(&rtwdev->tx_report.q_lock);
- 
- 	mutex_init(&rtwdev->mutex);
- 	mutex_init(&rtwdev->rf_lock);
-+	mutex_init(&rtwdev->h2c.lock);
- 	mutex_init(&rtwdev->coex.mutex);
- 	mutex_init(&rtwdev->hal.tx_power_mutex);
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index fd213252fbe2..1788fc339afb 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1868,7 +1868,7 @@ struct rtw_dev {
- 		/* incicate the mail box to use with fw */
- 		u8 last_box_num;
- 		/* protect to send h2c to fw */
--		spinlock_t lock;
-+		struct mutex lock;
- 		u32 seq;
- 	} h2c;
- 
--- 
-2.32.0
+>
+> thanks,
+>
+> greg k-h
 
+Regards,
+Len
