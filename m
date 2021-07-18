@@ -2,116 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D34593CC831
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jul 2021 10:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0E073CC963
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jul 2021 15:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230461AbhGRIpr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Jul 2021 04:45:47 -0400
-Received: from mout.gmx.net ([212.227.17.20]:53709 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229578AbhGRIpq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Jul 2021 04:45:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1626597751;
-        bh=XY/zxOCbvhlZeJ1i99rhW5BbBx5vSJgiyjkWBXkdUaQ=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=K/RzuUhT0vSBhVnAMlPPn6+ZyVTTYLjvsEB1KU/J0t+8K3U6h46hDL6e0XNUBJBDK
-         z5G9e/O8tW6yxF/mvz09ndIPw1M+Ezld0UqZkk30uun4WlZCZF8VSL1r8CleCzzryN
-         CDSExAnvyRUr95DHckR1RawSWKHGGUq9SPWQ8FY0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([83.52.228.41]) by mail.gmx.net
- (mrgmx105 [212.227.17.174]) with ESMTPSA (Nemesis) id
- 1MRCOK-1lk5i72TjA-00NC76; Sun, 18 Jul 2021 10:42:31 +0200
-From:   Len Baker <len.baker@gmx.com>
-To:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Len Baker <len.baker@gmx.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pkshih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] rtw88: Remove unnecessary check code
-Date:   Sun, 18 Jul 2021 10:42:02 +0200
-Message-Id: <20210718084202.5118-1-len.baker@gmx.com>
-X-Mailer: git-send-email 2.25.1
+        id S233900AbhGRNxT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Jul 2021 09:53:19 -0400
+Received: from mail-il1-f199.google.com ([209.85.166.199]:35364 "EHLO
+        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233704AbhGRNxS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Jul 2021 09:53:18 -0400
+Received: by mail-il1-f199.google.com with SMTP id f5-20020a92b5050000b02901ff388acf98so8799911ile.2
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Jul 2021 06:50:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=OXoW0tdh3u7kirLpVINFuQ3xib/WnFYX8gUfwjUENjk=;
+        b=UANBX3M+0Y55yGKKV81VmwF3DrKKPAjCvbHS3U/VxKCb/mDmEuPdoxbiAWS3oRoDsb
+         1Y/sMKr1JibyGz5IMbmbjQP70cuU39TYRGAMP7ORGZxl6PeJFexMckduHrtmuy3tSfz4
+         Xp2qlLnY/2Fa/0hTSjCVp2scyYmd+13lLsqNtWGTVxxGm/tWK2ZM83GIa8qv84e14fnD
+         aWGZ/d4g9qJ6p11pOH3zG88skjLbhDeSim5WugV69FoaAl7zlvy9UBrMl+FbFWqD9eaV
+         oJPeD6yLm4Q/etsrUTHuZFCJBzYsu1Y6MUodwbZxOwu77A0ID+U7lnQz6tNvo+x0udMV
+         RE0w==
+X-Gm-Message-State: AOAM531h7209m0aaiauovWIz8pB5cffwwFqmxnZCX8LkCc6r066owlEV
+        wdrm16TcgQ/MjPe+3DmerIDXKekRvp/sxwO6+9w/8AG7m79c
+X-Google-Smtp-Source: ABdhPJyFGBpgqB+KxTMFlxIFRrUzHrB23N5+7Q8y4qgeiIzmmR5jT7VlVjTFWPQysotCZaG+Zalw0PAJkLjKEJRzUYR31zdxvWi1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dynWGx0R5esUpEZg1Xw1+W/TNAzgd/+x0YhsmKEb5KZq1uEUpvg
- XEj0rBZESb0bX9Wm7YC9mFW3kwgO4/3ZfscEGPi80CunbpX3SFGteSWzVz2DC+qge9b6eap
- 0UoKzwXe71hyNtXeoKA+9xtH5hjmbTU7ARseNb/RYw7X03UZtsBOg9DCTqLDn9hhNpRKmud
- Fut9w+m3OPoXFznqr3f9Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3DfUG/U4EK8=:vl30PAveMCYFIoZulZernQ
- hmTVARfIkWsX0DoDNtcaJF42ZsWQL+L7/Jrxo5sL7GBjtSgV67TgieNnm0chCt71RmiA6gbnW
- lWIaUR0E80WPxzgDEoHNKMTvkS5qSUYUOYjDzFmmMxtPcwxyP8hC+4fjldVYPIqZZcQaNPygn
- XJQdKaHdYwdYHnjvSRh3l+iszQzrExJ96+Vc3SZrtjtU94++C+/xeQe2RNACxn24aN7GLIvB5
- GVZzO+j6ijSTAQ6y2mNfSzQ5YszCH15HEFbuoG7ESxMJnAVn/tO1td+fdUp1zDTAuEEgofdsh
- +CZ92IZalHrUAiHyZMUsTmCIq3FDBbqvRkxtC5bYzQv2ZN71p/jctBdL7jA+exH1ZGdJ8Co84
- kIXItjJsUz8yhDag4WbxUb8kxV7BG9RZPSOw2lWIjn8fsDeYFTnlgTiyxutpVne0EXvIpbeaU
- LEa9axJXl5zxzc5M+ISR1CTaoKRTu+iF80KTPoLTyRR2HxDPdwwXNMZLk+NZ4vyZYTU+7M8Rr
- fxKZMY+0r0Ahhj4QmLhldg6NyLSzjSF4mCKgLh7yCkGOQ2hXL4LxTypdSB3R/ORU0v3iix5Ve
- JZRy7w+Eb/Ht+OGoV2X6YgCDjaYyRIab5fzM10UlspofBfSIAI7EEyxu/pSZgPqLPhamsuqYs
- cSWZsN3ZtVSE9UzWSEdAmGdUw19GsYLp/5OXNsQTq7MCK4z5M6JkH/tjYRfCNj8jx1pyKiStF
- sT4er+PDaSYVzSVATUfkseSLeL1QCgNChlXEaq/k0GD1yfsvkHumRI8/fbTW+go+bFQDYI8ld
- SOq1209YGl5AQLn394rYzgMzhMWO5VThvZXHiPgyvhvpRb/nz9TTFaRSFW9DiD00/LPzjlf+A
- k24W/c16tRZ5qc9gJFxiC5xNK2rKUrqe737ibvTGJCSJmn0y4XCSiLWnbePK+F2hu41EmF4Ra
- 9I0yO1GAW9TC4klAH7RMlvJcY/QzIELz6oDSvlXIBmjvX/wCLAQfYO8P1eMLdmJY7jYCVvk32
- Fvj5S39je9rnFpqAgeZxcQZIZovilLe3GTwJ6PejSEzukCOo+uxy7YWFSGAofGpd/xW16nlvm
- 4Kojw2vOsQQekTzOHs/QlqYoeUSaLgzPMYM
+X-Received: by 2002:a05:6e02:550:: with SMTP id i16mr13219001ils.207.1626616220337;
+ Sun, 18 Jul 2021 06:50:20 -0700 (PDT)
+Date:   Sun, 18 Jul 2021 06:50:20 -0700
+In-Reply-To: <0000000000005866b005c7394288@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000ffcb8205c7661908@google.com>
+Subject: Re: [syzbot] BUG: unable to handle kernel paging request in ath9k_htc_rxep
+From:   syzbot <syzbot+dc6c749aec286992cea2@syzkaller.appspotmail.com>
+To:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net, kuba@kernel.org,
+        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The rtw_pci_init_rx_ring function is only ever called with a fixed
-constant or RTK_MAX_RX_DESC_NUM for the "len" argument. Since this
-constant is defined as 512, the "if (len > TRX_BD_IDX_MASK)" check
-can never happen (TRX_BD_IDX_MASK is defined as GENMASK(11, 0) or in
-other words as 4095).
+syzbot has found a reproducer for the following issue on:
 
-So, remove this check.
+HEAD commit:    97db1b081e12 dt-bindings: usb: dwc3: Update dwc3 TX fifo p..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=13b7fd02300000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=db8b503c237253ee
+dashboard link: https://syzkaller.appspot.com/bug?extid=dc6c749aec286992cea2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10431e54300000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13d2dc32300000
 
-Signed-off-by: Len Baker <len.baker@gmx.com>
-=2D--
-Changelog v1 -> v2
-- Remove the macro ARRAY_SIZE from the for loop (Pkshih, Brian Norris).
-- Add a new check for the len variable (Pkshih, Brian Norris).
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+dc6c749aec286992cea2@syzkaller.appspotmail.com
 
-Changelog v2 -> v3
-- Change the subject of the patch.
-- Remove the "if" check statement (Greg KH)
-- Remove the "Fixes" tag, "Addresses-Coverity-ID" tag and Cc to stable.
-
-The previous versions can be found at:
-
-v1
-https://lore.kernel.org/lkml/20210711141634.6133-1-len.baker@gmx.com/
-
-v2
-https://lore.kernel.org/lkml/20210716155311.5570-1-len.baker@gmx.com/
-
- drivers/net/wireless/realtek/rtw88/pci.c | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wirele=
-ss/realtek/rtw88/pci.c
-index e7d17ab8f113..f17e7146f20f 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -268,11 +268,6 @@ static int rtw_pci_init_rx_ring(struct rtw_dev *rtwde=
-v,
- 	int i, allocated;
- 	int ret =3D 0;
-
--	if (len > TRX_BD_IDX_MASK) {
--		rtw_err(rtwdev, "len %d exceeds maximum RX entries\n", len);
--		return -EINVAL;
--	}
--
- 	head =3D dma_alloc_coherent(&pdev->dev, ring_sz, &dma, GFP_KERNEL);
- 	if (!head) {
- 		rtw_err(rtwdev, "failed to allocate rx ring\n");
-=2D-
-2.25.1
+BUG: unable to handle page fault for address: ffffffffffffffc8
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 7426067 P4D 7426067 PUD 7428067 PMD 0 
+Oops: 0000 [#1] SMP KASAN
+CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W         5.14.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:ath9k_htc_rxep+0xb5/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1135
+Code: 8b 43 38 48 8d 58 c8 49 39 c4 0f 84 ee 00 00 00 e8 f0 64 37 fe 48 89 d8 48 c1 e8 03 0f b6 04 28 84 c0 74 06 0f 8e 0a 01 00 00 <44> 0f b6 3b 31 ff 44 89 fe e8 fd 6b 37 fe 45 84 ff 75 a8 e8 c3 64
+RSP: 0018:ffffc900001489b8 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ffffffffffffffc8 RCX: 0000000000000100
+RDX: ffff8881002c0000 RSI: ffffffff830a0050 RDI: ffffc90000148928
+RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000003
+R10: fffff52000029125 R11: 0000000000000000 R12: ffff888119a9b678
+R13: ffff888119a9b240 R14: ffff888119a9b688 R15: ffff8881088974a8
+FS:  0000000000000000(0000) GS:ffff8881f6900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffc8 CR3: 000000010719b000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ ath9k_htc_rx_msg+0x2e4/0xb70 drivers/net/wireless/ath/ath9k/htc_hst.c:461
+ ath9k_hif_usb_reg_in_cb+0x1ac/0x630 drivers/net/wireless/ath/ath9k/hif_usb.c:733
+ __usb_hcd_giveback_urb+0x2b0/0x5c0 drivers/usb/core/hcd.c:1656
+ usb_hcd_giveback_urb+0x367/0x410 drivers/usb/core/hcd.c:1726
+ dummy_timer+0x11f9/0x32b0 drivers/usb/gadget/udc/dummy_hcd.c:1987
+ call_timer_fn+0x1a5/0x630 kernel/time/timer.c:1417
+ expire_timers kernel/time/timer.c:1462 [inline]
+ __run_timers.part.0+0x675/0xa10 kernel/time/timer.c:1731
+ __run_timers kernel/time/timer.c:1712 [inline]
+ run_timer_softirq+0x80/0x120 kernel/time/timer.c:1744
+ __do_softirq+0x1b0/0x910 kernel/softirq.c:558
+ invoke_softirq kernel/softirq.c:432 [inline]
+ __irq_exit_rcu+0x117/0x160 kernel/softirq.c:636
+ irq_exit_rcu+0x5/0x10 kernel/softirq.c:648
+ sysvec_apic_timer_interrupt+0x6a/0x90 arch/x86/kernel/apic/apic.c:1100
+ </IRQ>
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 arch/x86/include/asm/idtentry.h:638
+RIP: 0010:native_save_fl arch/x86/include/asm/irqflags.h:29 [inline]
+RIP: 0010:arch_local_save_flags arch/x86/include/asm/irqflags.h:70 [inline]
+RIP: 0010:arch_irqs_disabled arch/x86/include/asm/irqflags.h:132 [inline]
+RIP: 0010:acpi_safe_halt drivers/acpi/processor_idle.c:110 [inline]
+RIP: 0010:acpi_idle_do_entry+0x1c6/0x250 drivers/acpi/processor_idle.c:553
+Code: 89 de e8 cd ed 80 fb 84 db 75 ac e8 94 e6 80 fb e8 5f f2 86 fb eb 0c e8 88 e6 80 fb 0f 00 2d 81 b0 88 00 e8 7c e6 80 fb fb f4 <9c> 5b 81 e3 00 02 00 00 fa 31 ff 48 89 de e8 07 ef 80 fb 48 85 db
+RSP: 0018:ffffc900000dfd18 EFLAGS: 00000293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff8881002c0000 RSI: ffffffff85c07ec4 RDI: ffffffff85c07eb1
+RBP: ffff888109b93064 R08: 0000000000000000 R09: 0000000000000000
+R10: ffffffff81477148 R11: 0000000000000000 R12: 0000000000000001
+R13: ffff888109b93000 R14: ffff888109b93064 R15: ffff88810cf00004
+ acpi_idle_enter+0x355/0x4f0 drivers/acpi/processor_idle.c:688
+ cpuidle_enter_state+0x1b1/0xc80 drivers/cpuidle/cpuidle.c:237
+ cpuidle_enter+0x4a/0xa0 drivers/cpuidle/cpuidle.c:351
+ call_cpuidle kernel/sched/idle.c:158 [inline]
+ cpuidle_idle_call kernel/sched/idle.c:239 [inline]
+ do_idle+0x3dd/0x580 kernel/sched/idle.c:306
+ cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:403
+ start_secondary+0x267/0x340 arch/x86/kernel/smpboot.c:270
+ secondary_startup_64_no_verify+0xb0/0xbb
+Modules linked in:
+CR2: ffffffffffffffc8
+---[ end trace c812365639e6eb14 ]---
+RIP: 0010:ath9k_htc_rxep+0xb5/0x210 drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:1135
+Code: 8b 43 38 48 8d 58 c8 49 39 c4 0f 84 ee 00 00 00 e8 f0 64 37 fe 48 89 d8 48 c1 e8 03 0f b6 04 28 84 c0 74 06 0f 8e 0a 01 00 00 <44> 0f b6 3b 31 ff 44 89 fe e8 fd 6b 37 fe 45 84 ff 75 a8 e8 c3 64
+RSP: 0018:ffffc900001489b8 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ffffffffffffffc8 RCX: 0000000000000100
+RDX: ffff8881002c0000 RSI: ffffffff830a0050 RDI: ffffc90000148928
+RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000003
+R10: fffff52000029125 R11: 0000000000000000 R12: ffff888119a9b678
+R13: ffff888119a9b240 R14: ffff888119a9b688 R15: ffff8881088974a8
+FS:  0000000000000000(0000) GS:ffff8881f6900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffc8 CR3: 000000010719b000 CR4: 00000000001506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
